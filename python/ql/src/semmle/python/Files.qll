@@ -391,10 +391,14 @@ class Location extends @location {
 
     /** Gets the file for this location */
     File getFile() {
+        result = this.getPath()
+    }
+
+    private Container getPath() {
         locations_default(this, result, _, _, _, _)
         or
         exists(Module m | locations_ast(this, m, _, _, _, _) |
-            result = m.getFile()
+            result = m.getPath()
         )
     }
 
@@ -423,7 +427,7 @@ class Location extends @location {
     }
 
     string toString() {
-        result = this.getFile().getName() + ":" + this.getStartLine().toString()
+        result = this.getPath().getName() + ":" + this.getStartLine().toString()
     }
 
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
