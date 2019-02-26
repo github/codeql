@@ -453,5 +453,5 @@ void cleanedByMemcpy_blockvar(int clean1) {
   int tmp;
   int *capture = &tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // clean (FALSE POSITIVE)
+  sink(tmp); // clean
 }

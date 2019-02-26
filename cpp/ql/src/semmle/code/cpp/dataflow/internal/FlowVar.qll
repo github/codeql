@@ -52,6 +52,12 @@ cached class FlowVar extends TFlowVar {
   cached abstract predicate definedByExpr(Expr e, ControlFlowNode node);
 
   /**
+   * Holds if this `FlowVar` corresponds to the data written by a call that
+   * passes a variable as argument `arg`.
+   */
+  cached abstract predicate definedByReference(Expr arg);
+
+  /**
    * Holds if this `FlowVar` corresponds to the initial value of `v`. The following
    * is an exhaustive list of cases where this may happen.
    *
@@ -137,6 +143,8 @@ module FlowVar_internal {
         or
         assignmentLikeOperation(sbb, v, _)
         or
+        blockVarDefinedByReference(sbb, v, _)
+        or
         blockVarDefinedByVariable(sbb, v)
       )
     }
@@ -174,6 +182,11 @@ module FlowVar_internal {
        else node = def.getDefinition())
     }
 
+    override predicate definedByReference(Expr arg) {
+      definitionByReference(v.getAnAccess(), arg) and
+      arg = def.getDefinition()
+    }
+
     override predicate definedByInitialValue(LocalScopeVariable param) {
       def.definedByParameter(param) and
       param = v
@@ -191,6 +204,8 @@ module FlowVar_internal {
       this.definedByExpr(_, _)
       or
       this.definedByInitialValue(_)
+      or
+      this.definedByReference(_)
     }
 
     /**
@@ -221,7 +236,17 @@ module FlowVar_internal {
     BlockVar() { this = TBlockVar(sbb, v) }
 
     override VariableAccess getAnAccess() {
-      variableAccessInSBB(v, getAReachedBlockVarSBB(this), result)
+      exists(SubBasicBlock reached |
+        reached = getAReachedBlockVarSBB(this)
+      |
+        variableAccessInSBB(v, reached, result)
+        or
+        // Allow flow into a `VariableAccess` that is used as definition by
+        // reference. This flow is blocked by `getAReachedBlockVarSBB` because
+        // flow should not propagate past that.
+        result = reached.getASuccessor().(VariableAccess) and
+        blockVarDefinedByReference(result, v, _)
+      )
     }
 
     override predicate definedByInitialValue(LocalScopeVariable lsv) {
@@ -237,6 +262,10 @@ module FlowVar_internal {
       node = sbb.getANode()
     }
 
+    override predicate definedByReference(Expr arg) {
+      blockVarDefinedByReference(sbb, v, arg)
+    }
+
     override string toString() {
       exists(Expr e |
         this.definedByExpr(e, _) and
@@ -246,9 +275,15 @@ module FlowVar_internal {
       this.definedByInitialValue(_) and
       result = "initial value of "+ v
       or
+      exists(Expr arg |
+        this.definedByReference(arg) and
+        result = "ref def: "+ arg
+      )
+      or
       // impossible case
       not this.definedByExpr(_, _) and
       not this.definedByInitialValue(_) and
+      not this.definedByReference(_) and
       result = "undefined "+ v
     }
 
@@ -373,7 +408,8 @@ module FlowVar_internal {
       mid = getAReachedBlockVarSBB(start) and
       result = mid.getASuccessor() and
       not skipLoop(mid, result, sbbDef, v) and
-      not assignmentLikeOperation(result, v, _)
+      not assignmentLikeOperation(result, v, _) and
+      not blockVarDefinedByReference(result, v, _)
     )
   }
 
@@ -481,6 +517,9 @@ module FlowVar_internal {
    */
   predicate overwrite(VariableAccess va, ControlFlowNode node) {
     va = node.(AssignExpr).getLValue()
+    or
+    va = node and
+    definitionByReference(node, _)
   }
 
   /**
@@ -515,6 +554,11 @@ module FlowVar_internal {
     )
   }
 
+  predicate blockVarDefinedByReference(ControlFlowNode node, Variable v, Expr argument) {
+    node = v.getAnAccess() and
+    definitionByReference(node, argument)
+  }
+
   /**
    * Holds if `v` is initialized by `init` to have value `assignedExpr`.
    */
@@ -534,8 +578,11 @@ module FlowVar_internal {
   class DataFlowSubBasicBlockCutNode extends SubBasicBlockCutNode {
     DataFlowSubBasicBlockCutNode() {
       exists(Variable v |
-        not fullySupportedSsaVariable(v) and
+        not fullySupportedSsaVariable(v)
+      |
         assignmentLikeOperation(this, v, _)
+        or
+        blockVarDefinedByReference(this, v, _)
         // It is not necessary to cut the basic blocks at `Initializer` nodes
         // because the affected variable can have no _other_ value before its
         // initializer. It is not necessary to cut basic blocks at procedure
