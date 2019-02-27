@@ -4,6 +4,11 @@
 <qhelp>
 <overview>
 <p>Classes that implement <code>System.Security.Cryptography.ICryptoTransform</code> are not thread safe.</p>
+<p>The root cause of the problem is because of the way these class are implemented using Microsoft CAPI/CNG patterns.</p>
+<p>For example, a hash class implementing this interface, typically there would be an instance-specific hash object (i.e. using <code>BCryptCreateHash</code> function), which can be called multiple times to add data to the hash (i.e. <code>BCryptHashData</code>), and finally calling the function that would finish the hash & get back the data (i.e. <code>BCryptFinishHash</code>).</p>
+<p>The implementation would potentially allow the same hash object to be called with data from multiple threads before calling the finish function, thus leading to potentially incorrect results.</p>
+<p>Because of this pattern, you can expect that, if you have multiple threads hashing <code>"abc"</code> on a static hash object, you may occasionally obtain the results (incorrectly) for hashing <code>"abcabc"</code>, or face other unexpected behavior.</p>
+<p>It is very unlikely somebody outside Microsoft would write a class that implements <code>ICryptoTransform</code>, and even if they do, it is likely that they will follow the same common pattern than the existing classes implementing this interface.</p>
 <p>Any object that implements <code>System.Security.Cryptography.ICryptoTransform</code> should not be used in concurrent threads as the instance members of such object are also not thread safe.</p>
 <p>Potential problems may not be evident at first, but can range from explicit errors such as exceptions, to incorrect results when sharing an instance of such object in multiple threads.</p>
 
