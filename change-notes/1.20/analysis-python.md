@@ -19,6 +19,7 @@ The API has been improved to declutter the global namespace and improve discover
 | Default version of SSL/TLS may be insecure (`py/insecure-default-protocol`) | security, external/cwe/cwe-327 | Finds instances where an insecure default protocol may be used. Results are shown on LGTM by default. |
 | Incomplete regular expression for hostnames (`py/incomplete-hostname-regexp`) | security, external/cwe/cwe-020 | Finds instances where a hostname is incompletely sanitized because a regular expression contains an unescaped character. Results are shown on LGTM by default. |
 | Incomplete URL substring sanitization (`py/incomplete-url-substring-sanitization`) | security, external/cwe/cwe-020 | Finds instances where a URL is incompletely sanitized due to insufficient checks. Results are shown on LGTM by default. |
+| Insecure temporary file (`py/insecure-temporary-file`) | security, external/cwe/cwe-377 | Finds uses of the insecure and deprecated `tempfile.mktemp`, `os.tempnam`, and `os.tmpnam` functions. Results are shown on LGTM by default. |
 | Overly permissive file permissions (`py/overly-permissive-file`) | security, external/cwe/cwe-732 | Finds instances where a file is created with overly permissive permissions. Results are not shown on LGTM by default. |
 | Use of insecure SSL/TLS version (`py/insecure-protocol`) | security, external/cwe/cwe-327 | Finds instances where a known insecure protocol has been specified. Results are shown on LGTM by default. |
 

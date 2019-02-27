@@ -1,0 +1,3 @@
+| InsecureTemporaryFile.py:5:16:5:23 | mktemp() | Call to deprecated function tempfile.mktemp may be insecure. |
+| InsecureTemporaryFile.py:11:16:11:27 | Attribute() | Call to deprecated function os.tempnam may be insecure. |
+| InsecureTemporaryFile.py:17:16:17:26 | Attribute() | Call to deprecated function os.tmpnam may be insecure. |
