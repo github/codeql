@@ -292,10 +292,14 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
     fromExpr = op.getOperand()
   )
   or
-  toExpr = any(FunctionCall moveCall |
-    moveCall.getTarget().getNamespace().getName() = "std" and
-    moveCall.getTarget().getName() = "move" and
-    fromExpr = moveCall.getArgument(0)
+  toExpr = any(Call call |
+    exists(DataFlowFunction f, FunctionInput inModel , FunctionOutput outModel, int iIn |
+      call.getTarget() = f and
+      f.hasDataFlow(inModel, outModel) and
+      outModel.isOutReturnValue() and
+      inModel.isInParameter(iIn) and
+      fromExpr = call.getArgument(iIn)
+    )
   )
 }
 
