@@ -13,6 +13,8 @@ class CherryPyExposedFunction extends Function {
 
     CherryPyExposedFunction() {
         this.getADecorator().refersTo(CherryPy::expose())
+        or
+        this.getADecorator().(Call).getFunc().refersTo(CherryPy::expose())
     }
 
 }
