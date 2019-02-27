@@ -147,7 +147,7 @@ public class CustomParser extends FlowParser {
 					this.type == TokenType.ellipsis) {
 				elements = this.parseExprList(TokenType.bracketR, true, true, refDestructuringErrors);
 			} else {
-				Expression firstExpr = this.parseMaybeAssign(true, refDestructuringErrors, null);
+				Expression firstExpr = this.parseMaybeAssign(false, refDestructuringErrors, null);
 				// check whether this is a postfix array comprehension
 				if (this.type == TokenType._for || this.type == TokenType._if) {
 					ComprehensionExpression c = this.parseComprehension(startLoc, false, firstExpr);
