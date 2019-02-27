@@ -54,7 +54,7 @@ class Assertion extends MethodCall {
    * ```
    * exists(BasicBlock bb |
    *   bb.getANode() = this.getAControlFlowNode() |
-   *   cb.immediatelyDominates(succ)
+   *   bb.immediatelyDominates(succ)
    * )
    * ```
    *
