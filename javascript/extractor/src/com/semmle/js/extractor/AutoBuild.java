@@ -16,8 +16,10 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,6 +71,8 @@ import com.semmle.util.trap.TrapWriter;
  * <li><code>LGTM_INDEX_FILTERS</code>: a newline-separated list of {@link ProjectLayout}-style
  * patterns that can be used to refine the list of files to include and exclude</li>
  * <li><code>LGTM_INDEX_TYPESCRIPT</code>: whether to extract TypeScript</li>
+ * <li><code>LGTM_INDEX_FILETYPES</code>: a newline-separated list of ".extension:filetype" pairs
+ * specifying which {@link FileType} to use for the given extension</li>
  * <li><code>LGTM_INDEX_THREADS</code>: the maximum number of files to extract in parallel</li>
  * <li><code>LGTM_TRAP_CACHE</code>: the path of a directory to use for trap caching</li>
  * <li><code>LGTM_TRAP_CACHE_BOUND</code>: the size to bound the trap cache to</li>
@@ -160,6 +164,12 @@ import com.semmle.util.trap.TrapWriter;
  * </p>
  *
  * <p>
+ * The environment variable <code>LGTM_INDEX_FILETYPES</code> may be set to a newline-separated
+ * list of file type specifications of the form <code>.extension:filetype</code>, causing all
+ * files whose name ends in <code>.extension</code> to also be included by default.
+ * </p>
+ *
+ * <p>
  * The default exclusion patterns cause the following files to be excluded:
  * </p>
  * <ul>
@@ -171,6 +181,11 @@ import com.semmle.util.trap.TrapWriter;
  * <p>
  * JavaScript files are normally extracted with {@link SourceType#AUTO}, but an explicit
  * source type can be specified in the environment variable <code>LGTM_INDEX_SOURCE_TYPE</code>.
+ * </p>
+ *
+ * <p>
+ * The file type as which a file is extracted can be customised via the <code>LGTM_INDEX_FILETYPES</code>
+ * environment variable explained above.
  * </p>
  *
  * <p>
@@ -193,6 +208,7 @@ import com.semmle.util.trap.TrapWriter;
 public class AutoBuild {
 	private final ExtractorOutputConfig outputConfig;
 	private final ITrapCache trapCache;
+	private final Map<String, FileType> fileTypes = new LinkedHashMap<>();
 	private final Set<Path> includes = new LinkedHashSet<>();
 	private final Set<Path> excludes = new LinkedHashSet<>();
 	private ProjectLayout filters;
@@ -208,6 +224,7 @@ public class AutoBuild {
 		this.trapCache = mkTrapCache();
 		this.typeScriptMode = getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.BASIC);
 		this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
+		setupFileTypes();
 		setupMatchers();
 	}
 
@@ -275,6 +292,25 @@ public class AutoBuild {
 			trapCache = new DummyTrapCache();
 		}
 		return trapCache;
+	}
+
+	private void setupFileTypes() {
+		for (String spec : Main.NEWLINE.split(getEnvVar("LGTM_INDEX_FILETYPES", ""))) {
+			spec = spec.trim();
+			if (spec.isEmpty())
+				continue;
+			String[] fields = spec.split(":");
+			if (fields.length != 2)
+				continue;
+			String extension = fields[0].trim();
+			String fileType = fields[1].trim();
+			try {
+				fileTypes.put(extension, FileType.valueOf(StringUtil.uc(fileType)));
+			} catch (IllegalArgumentException e) {
+				Exceptions.ignore(e, "We construct a better error message.");
+				throw new UserError("Invalid file type '" + fileType + "'.");
+			}
+		}
 	}
 
 	/**
@@ -349,6 +385,10 @@ public class AutoBuild {
 		// include .eslintrc files and package.json files
 		patterns.add("**/.eslintrc*");
 		patterns.add("**/package.json");
+
+		// include any explicitly specified extensions
+		for (String extension : fileTypes.keySet())
+			patterns.add("**/*" + extension);
 
 		// exclude files whose name strongly suggests they are minified
 		patterns.add("-**/*.min.js");
@@ -483,26 +523,46 @@ public class AutoBuild {
 	 * Extract all supported candidate files that pass the filters.
 	 */
 	private void extractSource() throws IOException {
+		// default extractor
+		FileExtractor defaultExtractor = new FileExtractor(mkExtractorConfig(), outputConfig, trapCache);
+
+		// custom extractor for explicitly specified file types
+		Map<String, FileExtractor> customExtractors = new LinkedHashMap<>();
+		for (Map.Entry<String, FileType> spec : fileTypes.entrySet()) {
+			String extension = spec.getKey();
+			String fileType = spec.getValue().name();
+			ExtractorConfig extractorConfig = mkExtractorConfig().withFileType(fileType);
+			customExtractors.put(extension, new FileExtractor(extractorConfig, outputConfig, trapCache));
+		}
+
+		Set<Path> filesToExtract = new LinkedHashSet<>();
+		List<Path> tsconfigFiles = new ArrayList<>();
+		findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
+
+		// extract TypeScript projects and files
+		Set<Path> extractedFiles = extractTypeScript(defaultExtractor, filesToExtract, tsconfigFiles);
+
+		// extract remaining files
+		for (Path f : filesToExtract) {
+			if (extractedFiles.add(f)) {
+				FileExtractor extractor = defaultExtractor;
+				if (!fileTypes.isEmpty()) {
+					String extension = FileUtil.extension(f);
+					if (customExtractors.containsKey(extension))
+						extractor = customExtractors.get(extension);
+				}
+				extract(extractor, f, null);
+			}
+		}
+	}
+
+	private ExtractorConfig mkExtractorConfig() {
 		ExtractorConfig config = new ExtractorConfig(true);
 		config = config.withSourceType(getSourceType());
 		config = config.withTypeScriptMode(typeScriptMode);
 		if (defaultEncoding != null)
 			config = config.withDefaultEncoding(defaultEncoding);
-		FileExtractor extractor = new FileExtractor(config, outputConfig, trapCache);
-
-		Set<Path> filesToExtract = new LinkedHashSet<>();
-		List<Path> tsconfigFiles = new ArrayList<>();
-		findFilesToExtract(extractor, filesToExtract, tsconfigFiles);
-
-		// extract TypeScript projects and files
-		Set<Path> extractedFiles = extractTypeScript(extractor, filesToExtract, tsconfigFiles);
-
-		// extract remaining files
-		for (Path f : filesToExtract) {
-			if (extractedFiles.add(f)) {
-				extract(extractor, f, null);
-			}
-		}
+		return config;
 	}
 
 	private Set<Path> extractTypeScript(FileExtractor extractor, Set<Path> files, List<Path> tsconfig) {
@@ -591,7 +651,11 @@ public class AutoBuild {
 					return FileVisitResult.SKIP_SUBTREE;
 
 				// extract files that are supported and pass the include/exclude patterns
-				if (extractor.supports(file.toFile()) && isFileIncluded(file)) {
+				boolean supported = extractor.supports(file.toFile());
+				if (!supported && !fileTypes.isEmpty()) {
+					supported = fileTypes.containsKey(FileUtil.extension(file));
+				}
+				if (supported && isFileIncluded(file)) {
 					filesToExtract.add(normalizePath(file));
 				}
 
