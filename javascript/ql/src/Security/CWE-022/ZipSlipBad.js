@@ -5,5 +5,5 @@ fs.createReadStream('archive.zip')
   .pipe(unzip.Parse())
   .on('entry', entry => {
     const fileName = entry.path;
-    entry.pipe(fs.createWriteStream(entry.path));
+    entry.pipe(fs.createWriteStream(fileName));
   });
