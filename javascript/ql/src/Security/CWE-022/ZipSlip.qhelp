@@ -48,7 +48,7 @@ instance, if it were created by something like <code>zip archive.zip
 contain any <code>".."</code> in it.
 </p>
 
-<sample src="ZipSlipGood.java" />
+<sample src="ZipSlipGood.js" />
 
 </example>
 </qhelp>
