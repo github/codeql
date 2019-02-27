@@ -693,21 +693,35 @@ class FormatLiteral extends Literal {
     )
   }
 
+  /**
+   * Gets the char type required by the nth conversion specifier.
+   *  - in the base case this is the default for the formatting function
+   *    (e.g. `char` for `printf`, `wchar_t` for `wprintf`).
+   *  - the `%S` format character reverses wideness.
+   *  - the size prefixes 'l'/'w' and 'h' override the type character
+   *    to wide or single-byte characters respectively.
+   */
   private Type getConversionType1b(int n) {
-    exists(string cnv | cnv = this.getEffectiveCharConversionChar(n) |
+    exists(string len, string conv |
+      this.parseConvSpec(n, _, _, _, _, _, len, conv) and
       (
-        cnv = "c" and
-        result instanceof CharType and
-        not result.(CharType).isExplicitlySigned() and
-        not result.(CharType).isExplicitlyUnsigned()
-      ) or (
-        cnv = "C" and
-        isMicrosoft() and
-        result instanceof WideCharType
-      ) or (
-        cnv = "C" and
-        not isMicrosoft() and
-        result.hasName("wint_t")
+        (
+          (conv = "c" or conv = "C") and
+          len = "h" and
+          result instanceof PlainCharType
+        ) or (
+          (conv = "c" or conv = "C") and
+          (len = "l" or len = "w") and
+          result = getWideCharType()
+        ) or (
+          conv = "c" and
+          (len != "l" and len != "w" and len != "h") and
+          result = getDefaultCharType()
+        ) or (
+          conv = "C" and
+          (len != "l" and len != "w" and len != "h") and
+          result = getNonDefaultCharType()
+        )
       )
     )
   }
