@@ -1,0 +1,21 @@
+| tst.js:50:19:50:24 | socket |
+| tst.js:51:3:51:22 | socket.emit('event') |
+| tst.js:52:3:52:17 | socket.to(room) |
+| tst.js:53:3:53:17 | socket.in(room) |
+| tst.js:54:3:54:43 | socket. ...  => {}) |
+| tst.js:55:3:55:27 | socket. ... ssage') |
+| tst.js:56:3:56:19 | socket.join(room) |
+| tst.js:57:3:57:20 | socket.leave(room) |
+| tst.js:58:3:58:16 | socket.use(cb) |
+| tst.js:59:3:59:23 | socket. ... s(true) |
+| tst.js:60:3:60:22 | socket.binary(false) |
+| tst.js:61:3:61:25 | socket. ... t(true) |
+| tst.js:62:3:62:13 | socket.json |
+| tst.js:63:3:63:17 | socket.volatile |
+| tst.js:64:3:64:18 | socket.broadcast |
+| tst.js:65:3:65:14 | socket.local |
+| tst.js:67:22:67:27 | socket |
+| tst.js:68:19:68:24 | socket |
+| tst.js:69:22:69:27 | socket |
+| tst.js:70:3:70:35 | socket. ...  => {}) |
+| tst.js:71:3:71:46 | socket. ...  => {}) |

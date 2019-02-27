@@ -45,6 +45,9 @@ nodes
 | mongooseJsonParse.js:20:19:20:50 | JSON.pa ... ).title |
 | mongooseJsonParse.js:20:30:20:43 | req.query.data |
 | mongooseJsonParse.js:23:19:23:23 | query |
+| socketio.js:10:25:10:30 | handle |
+| socketio.js:11:12:11:53 | `INSERT ... andle}` |
+| socketio.js:11:46:11:51 | handle |
 | tst2.js:9:27:9:78 | "select ... rams.id |
 | tst2.js:9:27:9:84 | "select ... d + "'" |
 | tst2.js:9:66:9:78 | req.params.id |
@@ -125,6 +128,8 @@ edges
 | mongooseJsonParse.js:20:19:20:50 | JSON.pa ... ).title | mongooseJsonParse.js:19:19:19:20 | {} |
 | mongooseJsonParse.js:20:19:20:50 | JSON.pa ... ).title | mongooseJsonParse.js:23:19:23:23 | query |
 | mongooseJsonParse.js:20:30:20:43 | req.query.data | mongooseJsonParse.js:20:19:20:44 | JSON.pa ... y.data) |
+| socketio.js:10:25:10:30 | handle | socketio.js:11:46:11:51 | handle |
+| socketio.js:11:46:11:51 | handle | socketio.js:11:12:11:53 | `INSERT ... andle}` |
 | tst2.js:9:27:9:78 | "select ... rams.id | tst2.js:9:27:9:84 | "select ... d + "'" |
 | tst2.js:9:66:9:78 | req.params.id | tst2.js:9:27:9:78 | "select ... rams.id |
 | tst3.js:8:7:9:55 | query1 | tst3.js:10:14:10:19 | query1 |
@@ -154,6 +159,7 @@ edges
 | mongoose.js:60:25:60:29 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:60:25:60:29 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
 | mongoose.js:63:24:63:28 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:63:24:63:28 | query | This query depends on $@. | mongoose.js:21:19:21:26 | req.body | a user-provided value |
 | mongooseJsonParse.js:23:19:23:23 | query | mongooseJsonParse.js:20:30:20:43 | req.query.data | mongooseJsonParse.js:23:19:23:23 | query | This query depends on $@. | mongooseJsonParse.js:20:30:20:43 | req.query.data | a user-provided value |
+| socketio.js:11:12:11:53 | `INSERT ... andle}` | socketio.js:10:25:10:30 | handle | socketio.js:11:12:11:53 | `INSERT ... andle}` | This query depends on $@. | socketio.js:10:25:10:30 | handle | a user-provided value |
 | tst2.js:9:27:9:84 | "select ... d + "'" | tst2.js:9:66:9:78 | req.params.id | tst2.js:9:27:9:84 | "select ... d + "'" | This query depends on $@. | tst2.js:9:66:9:78 | req.params.id | a user-provided value |
 | tst3.js:10:14:10:19 | query1 | tst3.js:9:16:9:34 | req.params.category | tst3.js:10:14:10:19 | query1 | This query depends on $@. | tst3.js:9:16:9:34 | req.params.category | a user-provided value |
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | This query depends on $@. | tst4.js:8:46:8:60 | $routeParams.id | a user-provided value |

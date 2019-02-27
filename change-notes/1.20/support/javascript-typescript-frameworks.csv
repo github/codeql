@@ -17,6 +17,7 @@ ramda, Utility library
 react, HTML framework
 request, Network communicator
 sequelize, Database
+socket.io, Network communicator
 sqlite3, Database
 superagent, Network communicator
 underscore, Utility library
