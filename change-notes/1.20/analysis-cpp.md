@@ -37,3 +37,4 @@
 * There is a new `Namespace.isInline()` predicate, which holds if the namespace was declared as `inline namespace`.
 * The `Expr.isConstant()` predicate now also holds for _address constant expressions_, which are addresses that will be constant after the program has been linked. These address constants do not have a result for `Expr.getValue()`.
 * There are new `Function.isDeclaredConstexpr()` and `Function.isConstexpr()` predicates. They can be used to tell whether a function was declared as `constexpr`, and whether it actually is `constexpr`.
+* There is a new `Variable.isConstexpr()` predicates. It can be used to tell whether a variable is `constexpr`.
