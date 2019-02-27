@@ -167,7 +167,7 @@ module SocketIO {
     string getEventName() { eventName.mayHaveStringValue(result) }
 
     /** Gets a data flow node representing data received from a client. */
-    DataFlow::Node getAReceivedItem() { result = getCallback(1).getAParameter() }
+    DataFlow::SourceNode getAReceivedItem() { result = getCallback(1).getAParameter() }
   }
 
   /**
