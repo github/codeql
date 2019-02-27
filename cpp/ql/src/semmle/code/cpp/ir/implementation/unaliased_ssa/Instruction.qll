@@ -1475,7 +1475,7 @@ class BufferMayWriteSideEffectInstruction extends SideEffectInstruction {
 }
 
 /**
- * 
+ * An instruction representing a GNU or MSVC inline assembly statement.
  */
 class InlineAsmInstruction extends Instruction {
   InlineAsmInstruction() {

@@ -1101,4 +1101,20 @@ int AsmStmt(int x) {
   return x;
 }
 
+static void AsmStmtWithOutputs(unsigned int& a, unsigned int& b, unsigned int& c, unsigned int& d)
+{
+#if defined(__GNUC__)
+  __asm__ __volatile__
+    (
+  "cpuid\n\t"
+    : "+a" (a), "+b" (b), "+c" (c), "+d" (d)
+    );
+#else
+  a++;
+  b++;
+  c++;
+  d++;
+#endif
+}
+
 // semmle-extractor-options: -std=c++17

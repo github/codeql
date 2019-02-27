@@ -64,6 +64,8 @@ private predicate ignoreExprAndDescendants(Expr expr) {
     // represent them.
     newExpr.getInitializer().getFullyConverted() = expr
   ) or
+  // Ignore descendants of asm statements, since we can't differentiate inputs and outputs
+  getRealParent(expr) instanceof AsmStmt or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
 }
 
