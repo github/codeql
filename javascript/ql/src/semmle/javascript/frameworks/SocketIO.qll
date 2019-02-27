@@ -15,18 +15,6 @@ private import semmle.javascript.dataflow.InferredTypes
  * with each socket belonging to a namespace on a server.
  */
 module SocketIO {
-  /** Gets the name of a method on `EventEmitter` that returns `this`. */
-  private string chainableEventEmitterMethod() {
-    result = "off" or
-    result = "on" or
-    result = "once" or
-    result = "prependListener" or
-    result = "prependOnceListener" or
-    result = "removeAllListeners" or
-    result = "removeListener" or
-    result = "setMaxListeners"
-  }
-
   /** Gets a data flow node that creates a new socket.io server. */
   private DataFlow::SourceNode newServer() {
     result = DataFlow::moduleImport("socket.io").getAnInvocation()
@@ -57,7 +45,7 @@ module SocketIO {
       |
         mcn = base.getAMethodCall(m) and
         // exclude getter versions
-        not mcn.getNumArgument() = 0 and
+        exists(mcn.getAnArgument()) and
         this = mcn and
         srv = base.getServer()
       )
@@ -96,7 +84,7 @@ module SocketIO {
         m = "to" or
         m = "use" or
         m = "write" or
-        m = chainableEventEmitterMethod()
+        m = EventEmitter::chainableMethod()
       |
         exists(NamespaceNode base |
           this = base.getAMethodCall(m) and
@@ -138,7 +126,7 @@ module SocketIO {
         ) and
         (connect = "connect" or connect = "connection")
       |
-        on = base.getAMethodCall("on") and
+        on = base.getAMethodCall(EventEmitter::on()) and
         on.getArgument(0).mayHaveStringValue(connect) and
         this = on.getCallback(1).getParameter(0)
       )
@@ -156,7 +144,7 @@ module SocketIO {
         m = "to" or
         m = "use" or
         m = "write" or
-        m = chainableEventEmitterMethod()
+        m = EventEmitter::chainableMethod()
       |
         this = base.getAMethodCall(m) and
         ns = base.getNamespace()
@@ -184,26 +172,13 @@ module SocketIO {
   class ReceiveNode extends DataFlow::MethodCallNode {
     SocketNode socket;
 
-    DataFlow::Node eventName;
-
-    ReceiveNode() {
-      exists(string on |
-        on = "addListener" or
-        on = "on" or
-        on = "once" or
-        on = "prependListener" or
-        on = "prependOnceListener"
-      |
-        this = socket.getAMethodCall(on) and
-        eventName = getArgument(0)
-      )
-    }
+    ReceiveNode() { this = socket.getAMethodCall(EventEmitter::on()) }
 
     /** Gets the socket through which data is received. */
     SocketNode getSocket() { result = socket }
 
     /** Gets the event name associated with the data, if it can be determined. */
-    string getEventName() { eventName.mayHaveStringValue(result) }
+    string getEventName() { getArgument(0).mayHaveStringValue(result) }
 
     /** Gets a data flow node representing data received from a client. */
     DataFlow::SourceNode getAReceivedItem() { result = getCallback(1).getAParameter() }
@@ -343,5 +318,26 @@ module SocketIO {
 
     /** Gets a textual representation of this namespace. */
     string toString() { result = "socket.io namespace with path '" + path + "'" }
+  }
+}
+
+/** Provides predicates for working with Node.js `EventEmitter`s. */
+private module EventEmitter {
+  /** Gets the name of a method on `EventEmitter` that returns `this`. */
+  string chainableMethod() {
+    result = "off" or
+    result = "removeAllListeners" or
+    result = "removeListener" or
+    result = "setMaxListeners" or
+    result = on()
+  }
+
+  /** Gets the name of a method on `EventEmitter` that registers an event handler. */
+  string on() {
+    result = "addListener" or
+    result = "on" or
+    result = "once" or
+    result = "prependListener" or
+    result = "prependOnceListener"
   }
 }
