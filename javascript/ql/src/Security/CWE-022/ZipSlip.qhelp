@@ -45,7 +45,7 @@ instance, if it were created by something like <code>zip archive.zip
 <sample src="ZipSlipBad.js" />
 
 <p>To fix this vulnerability, we can to check that the path does not
-contain any <code>".."</code> in it.
+contain any <code>".."</code> elements in it.
 </p>
 
 <sample src="ZipSlipGood.js" />

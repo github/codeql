@@ -43,6 +43,7 @@ module ZipSlip {
     // universal) pattern when using nodejs streams, whose return
     // value is the parsed stream.
     exists(DataFlow::MethodCallNode pipe |
+      pipe = result and
       pipe.getMethodName() = "pipe" and
       parsedArchive().flowsTo(pipe.getArgument(0))
     )
@@ -63,11 +64,12 @@ module ZipSlip {
     // there is an `UnzipEntrySource` node corresponding to
     // the expression `entry.path`.
     UnzipEntrySource() {
-      this = parsedArchive()
-            .getAMemberCall("on")
-            .getCallback(1)
-            .getParameter(0)
-            .getAPropertyRead("path")
+      exists(DataFlow::CallNode cn |
+        cn = parsedArchive().getAMemberCall("on") and
+        cn.getArgument(0).mayHaveStringValue("entry") and
+        this = cn.getCallback(1)
+        .getParameter(0)
+        .getAPropertyRead("path"))
     }
   }
 
