@@ -58,6 +58,23 @@ import com.semmle.util.trap.TrapWriter;
  * </ul>
  *
  * <p>
+ * Additionally, the following environment variables may be set to customise extraction
+ * (explained in more detail below):
+ * </p>
+ *
+ * <ul>
+ * <li><code>LGTM_INDEX_INCLUDE</code>: a newline-separated list of paths to include</li>
+ * <li><code>LGTM_INDEX_EXCLUDE</code>: a newline-separated list of paths to exclude</li>
+ * <li><code>LGTM_REPOSITORY_FOLDERS_CSV</code>: the path of a CSV file containing file classifications</li>
+ * <li><code>LGTM_INDEX_FILTERS</code>: a newline-separated list of {@link ProjectLayout}-style
+ * patterns that can be used to refine the list of files to include and exclude</li>
+ * <li><code>LGTM_INDEX_TYPESCRIPT</code>: whether to extract TypeScript</li>
+ * <li><code>LGTM_INDEX_THREADS</code>: the maximum number of files to extract in parallel</li>
+ * <li><code>LGTM_TRAP_CACHE</code>: the path of a directory to use for trap caching</li>
+ * <li><code>LGTM_TRAP_CACHE_BOUND</code>: the size to bound the trap cache to</li>
+ </ul>
+ *
+ * <p>
  * It extracts the following:
  * </p>
  *
