@@ -518,6 +518,7 @@ module ControlFlow {
 
       private class WriteAccessNoNodeExpr extends WriteAccess, NoNodeExpr {
         WriteAccessNoNodeExpr() {
+          // For example a write to a static field, `Foo.Bar = 0`.
           forall(Expr e | e = this.(QualifiableExpr).getQualifier() | e instanceof NoNodeExpr)
         }
       }
