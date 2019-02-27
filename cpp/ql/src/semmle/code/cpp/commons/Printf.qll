@@ -683,7 +683,13 @@ class FormatLiteral extends Literal {
       (len = "l" and result = "C") or
       (len = "w" and result = "C") or
       (len = "h" and result = "c") or
-      (len != "l" and len != "w" and len != "h" and (result = "c" or result = "C") and (if isWideCharDefault() then result != conv else result = conv))
+      (
+        len != "l" and len != "w" and len != "h" and
+        (result = "c" or result = "C") and
+        (
+          if isWideCharDefault() then result != conv else result = conv
+        )
+      )
     )
   }
 
