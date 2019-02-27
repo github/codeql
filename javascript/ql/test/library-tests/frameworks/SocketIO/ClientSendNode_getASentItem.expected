@@ -1,0 +1,3 @@
+| client2.js:14:1:14:32 | sock.em ... there") | client2.js:14:19:14:22 | "hi" |
+| client2.js:14:1:14:32 | sock.em ... there") | client2.js:14:25:14:31 | "there" |
+| client2.js:16:1:16:36 | sock.wr ...  => {}) | client2.js:16:12:16:25 | "do you copy?" |

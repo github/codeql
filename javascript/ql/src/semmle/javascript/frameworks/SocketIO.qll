@@ -6,7 +6,8 @@ import javascript
 private import semmle.javascript.dataflow.InferredTypes
 
 /**
- * Provides classes for working with server-side socket.io code.
+ * Provides classes for working with server-side socket.io code
+ * (npm package `socket.io`).
  *
  * We model three concepts: servers, namespaces, and sockets. A server
  * has one or more namespaces associated with it, each identified by
@@ -324,6 +325,124 @@ module SocketIO {
 
     /** Gets a textual representation of this namespace. */
     string toString() { result = "socket.io namespace with path '" + path + "'" }
+  }
+}
+
+/**
+ * Provides classes for working with client-side socket.io code
+ * (npm package `socket.io-client`).
+ */
+module SocketIOClient {
+  /** A data flow node that may produce a socket object. */
+  class SocketNode extends DataFlow::SourceNode {
+    DataFlow::InvokeNode invk;
+
+    SocketNode() {
+      exists(DataFlow::SourceNode io |
+        io = DataFlow::globalVarRef("io") or
+        io = DataFlow::globalVarRef("io").getAPropertyRead("connect") or
+        io = DataFlow::moduleImport("socket.io-client") or
+        io = DataFlow::moduleMember("socket.io-client", "connect")
+      |
+        invk = io.getAnInvocation() and
+        this = invk
+      )
+    }
+
+    /** Gets the path of the namespace this socket belongs to. */
+    string getNamespacePath() {
+      // the path name of the specified URL
+      exists(string url, string pathRegex |
+        invk.getArgument(0).mayHaveStringValue(url) and
+        pathRegex = "(?<!/)/(?!/)[^?#]*"
+      |
+        result = url.regexpFind(pathRegex, 0, _)
+        or
+        // if the URL does not specify an explicit path, it defaults to "/"
+        not exists(url.regexpFind(pathRegex, _, _)) and
+        result = "/"
+      )
+      or
+      // if no URL is specified, the path defaults to "/"
+      not exists(invk.getArgument(0)) and
+      result = "/"
+    }
+  }
+
+  /**
+   * A data flow node representing an API call that receives data from the server.
+   */
+  class ReceiveNode extends DataFlow::MethodCallNode {
+    SocketNode socket;
+
+    ReceiveNode() { this = socket.getAMethodCall(EventEmitter::on()) }
+
+    /** Gets the socket through which data is received. */
+    SocketNode getSocket() { result = socket }
+
+    /** Gets the event name associated with the data, if it can be determined. */
+    string getEventName() { getArgument(0).mayHaveStringValue(result) }
+
+    /** Gets a data flow node representing data received from the server. */
+    DataFlow::SourceNode getAReceivedItem() {
+      exists(DataFlow::FunctionNode cb | cb = getCallback(1) and result = cb.getAParameter() |
+        // exclude the last parameter if it looks like a callback
+        result != cb.getLastParameter() or not exists(result.getAnInvocation())
+      )
+    }
+
+    /** Gets the acknowledgment callback, if any. */
+    DataFlow::SourceNode getAck() {
+      result = getCallback(1).getLastParameter() and
+      exists(result.getAnInvocation())
+    }
+  }
+
+  /**
+   * A data flow node representing an API call that sends data to the server.
+   */
+  class SendNode extends DataFlow::MethodCallNode {
+    SocketNode base;
+
+    int firstDataIndex;
+
+    SendNode() {
+      exists(string m | this = base.getAMethodCall(m) |
+        // a call to `emit`
+        m = "emit" and
+        firstDataIndex = 1
+        or
+        // a call to `send` or `write`
+        (m = "send" or m = "write") and
+        firstDataIndex = 0
+      )
+    }
+
+    /**
+     * Gets the socket through which data is sent to the server.
+     */
+    SocketNode getSocket() { result = base }
+
+    /**
+     * Gets the path of the namespace to which data is sent.
+     */
+    string getNamespacePath() { result = base.getNamespacePath() }
+
+    /** Gets the event name associated with the data, if it can be determined. */
+    string getEventName() {
+      if firstDataIndex = 1 then getArgument(0).mayHaveStringValue(result) else result = "message"
+    }
+
+    /** Gets a data flow node representing data sent to the server. */
+    DataFlow::Node getASentItem() {
+      exists(int i | result = getArgument(i) and i >= firstDataIndex |
+        // exclude last argument if it looks like a callback
+        result != getLastArgument() or not exists(getAck())
+      )
+    }
+
+    /** Gets the acknowledgment callback, if any. */
+    DataFlow::FunctionNode getAck() { result = getLastArgument().getALocalSource() }
   }
 }
 
