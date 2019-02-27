@@ -3,7 +3,7 @@
 | test.cpp:1:6:1:9 | exit | exit | exits |
 | test.cpp:2:6:2:10 | _exit | _exit | exits |
 | test.cpp:3:6:3:10 | abort | abort | exits |
-| test.cpp:4:6:4:10 | error | error | exits |
+| test.cpp:4:6:4:10 | error | error | returns |
 | test.cpp:5:6:5:18 | __assert_fail | __assert_fail | exits |
 | test.cpp:7:6:7:12 | longjmp | longjmp | exits |
 | test.cpp:8:6:8:15 | DoesReturn | DoesReturn | returns |
