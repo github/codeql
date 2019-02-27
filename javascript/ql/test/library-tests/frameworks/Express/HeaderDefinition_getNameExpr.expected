@@ -1,4 +1,0 @@
-| src/express3.js:5:3:5:51 | res.hea ... "val")) | src/express3.js:5:14:5:32 | req.param("header") |
-| src/express.js:6:3:6:45 | res.hea ... rget")) | src/express.js:6:14:6:23 | "Location" |
-| src/express.js:7:3:7:42 | res.hea ... plain") | src/express.js:7:14:7:27 | "Content-Type" |
-| src/express.js:12:3:12:54 | arg.hea ... , true) | src/express.js:12:14:12:47 | "Access ... ntials" |
