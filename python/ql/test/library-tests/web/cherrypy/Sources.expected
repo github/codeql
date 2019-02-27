@@ -1,0 +1,4 @@
+| ../../../query-tests/Security/lib/cherrypy/__init__.py:10 | _ThreadLocalProxy() | cherrypy.request |
+| ../../../query-tests/Security/lib/cherrypy/__init__.py:10 | request | cherrypy.request |
+| test.py:10 | arg | externally controlled string |
+| test.py:16 | arg | externally controlled string |
