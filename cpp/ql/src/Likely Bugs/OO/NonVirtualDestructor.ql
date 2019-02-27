@@ -7,10 +7,10 @@
  * @id cpp/non-virtual-destructor
  * @problem.severity warning
  * @tags reliability
- * @deprecated
+ * @deprecated This query is deprecated, and replaced by
+ *             jsf/4.10 Classes/AV Rule 78.ql, which has far fewer false
+ *             positives on typical code.
  */
-
-// This query is deprecated, and replaced by jsf/4.10 Classes/AV Rule 78.ql, which has far fewer false positives on typical code.
 
 import cpp
 

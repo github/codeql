@@ -3,10 +3,8 @@
  * @description Query to help investigate mysterious results with ReturnStackAllocatedObject
  * @kind table
  * @id cpp/points-to/debug
- * @deprecated
+ * @deprecated This query is not suitable for production use and has been deprecated.
  */
-
-// This query is not suitable for production use and has been deprecated.
 
 import cpp
 import semmle.code.cpp.pointsto.PointsTo
