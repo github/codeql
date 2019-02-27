@@ -3,10 +3,14 @@
  */
 import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
+private import semmle.code.cpp.models.interfaces.DataFlow
 
 private newtype TNode =
   TExprNode(Expr e) or
   TParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
+  TDefinitionByReferenceNode(VariableAccess va, Expr argument) {
+    definitionByReference(va, argument)
+  } or
   TUninitializedNode(LocalVariable v) {
     not v.hasInitializer()
   }
@@ -26,6 +30,8 @@ class Node extends TNode {
     result = this.asParameter().getFunction()
     or
     result = this.asUninitialized().getFunction()
+    or
+    result = this.asDefiningArgument().getEnclosingFunction()
   }
 
   /**
@@ -40,6 +46,8 @@ class Node extends TNode {
     result = this.asExpr().getType()
     or
     result = asVariable(this).getType()
+    or
+    result = this.asDefiningVariableAccess().getType()
   }
 
   /** Gets the expression corresponding to this node, if any. */
@@ -47,6 +55,14 @@ class Node extends TNode {
 
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+
+  /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
+  Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
+
+  /** Gets the VariableAccess that defines this `DefinitionByReferenceNode`, if any. */
+  VariableAccess asDefiningVariableAccess() {
+    result = this.(DefinitionByReferenceNode).getVariableAccess()
+  }
 
   /**
    * Gets the uninitialized local variable corresponding to this node, if
@@ -101,6 +117,29 @@ class ParameterNode extends Node, TParameterNode {
 }
 
 /**
+ * A node that represents the value of a variable after a function call that
+ * may have changed the variable because it's passed by reference.
+ *
+ * A typical example would be a call `f(&x)`. Firstly, there will be flow into
+ * `x` from previous definitions of `x`. Secondly, there will be a
+ * `DefinitionByReferenceNode` to represent the value of `x` after the call has
+ * returned. This node will have its `getArgument()` equal to `&x` and its
+ * `getVariableAccess()` equal to `x`.
+ */
+class DefinitionByReferenceNode extends Node, TDefinitionByReferenceNode {
+  VariableAccess va;
+  Expr argument;
+
+  DefinitionByReferenceNode() { this = TDefinitionByReferenceNode(va, argument) }
+  override string toString() { result = "ref arg " + argument.toString() }
+  override Location getLocation() { result = argument.getLocation() }
+  /** Gets the argument corresponding to this node. */
+  Expr getArgument() { result = argument }
+  /** Gets the variable access corresponding to this node. */
+  VariableAccess getVariableAccess() { result = va }
+}
+
+/**
  * The value of an uninitialized local variable, viewed as a node in a data
  * flow graph.
  */
@@ -144,6 +183,22 @@ ExprNode exprNode(Expr e) { result.getExpr() = e }
 ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /**
+ * Gets the `Node` corresponding to a definition by reference of the variable
+ * that is passed as `argument` of a call.
+ */
+DefinitionByReferenceNode definitionByReferenceNodeFromArgument(Expr argument) {
+  result.getArgument() = argument
+}
+
+/**
+ * Gets the `Node` corresponding to a definition by reference of the variable
+ * that is passed by reference as `va` in a call argument.
+ */
+DefinitionByReferenceNode definitionByReferenceNodeFromVariableAccess(VariableAccess va) {
+  result.getVariableAccess() = va
+}
+
+/**
  * Gets the `Node` corresponding to the value of an uninitialized local
  * variable `v`.
  */
@@ -171,9 +226,14 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
       exprToVarStep(nodeFrom.asExpr(), var)
       or
       varSourceBaseCase(var, asVariable(nodeFrom))
+      or
+      var.definedByReference(nodeFrom.asDefiningArgument())
     ) and
     varToExprStep(var, nodeTo.asExpr())
   )
+  or
+  // Expr -> DefinitionByReferenceNode
+  exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
 }
 
 /**
@@ -236,6 +296,23 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
     moveCall.getTarget().getNamespace().getName() = "std" and
     moveCall.getTarget().getName() = "move" and
     fromExpr = moveCall.getArgument(0)
+  )
+}
+
+private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
+  exists(DataFlowFunction f, Call call, FunctionOutput outModel, int argOutIndex |
+    call.getTarget() = f and
+    argOut = call.getArgument(argOutIndex) and
+    outModel.isOutParameterPointer(argOutIndex) and
+    exists(int argInIndex, FunctionInput inModel |
+      f.hasDataFlow(inModel, outModel)
+    |
+      inModel.isInParameterPointer(argInIndex) and
+      call.passesByReference(argInIndex, exprIn)
+      or
+      inModel.isInParameter(argInIndex) and
+      exprIn = call.getArgument(argInIndex)
+    )
   )
 }
 

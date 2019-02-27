@@ -430,16 +430,16 @@ void *memcpy(void *dest, const void *src, size_t count);
 void flowThroughMemcpy_ssa_with_local_flow(int source1) {
   int tmp = 0;
   memcpy(&tmp, &source1, sizeof tmp);
-  sink(tmp); // tainted (FALSE NEGATIVE)
+  sink(tmp); // tainted
 }
 
 void flowThroughMemcpy_blockvar_with_local_flow(int source1, int b) {
   int tmp = 0;
   int *capture = &tmp;
   memcpy(&tmp, &source1, sizeof tmp);
-  sink(tmp); // tainted (FALSE NEGATIVE)
+  sink(tmp); // tainted
   if (b) {
-    sink(tmp); // different sub-basic-block
+    sink(tmp); // tainted
   }
 }
 
