@@ -57,8 +57,12 @@ abstract class FormattingFunction extends Function {
    * `char` or `wchar_t`.
    */
   Type getDefaultCharType() {
-    result = stripTopLevelSpecifiersOnly(getParameter(getFormatParameterIndex()).getType().
-      getUnderlyingType().(PointerType).getBaseType())
+    result = 
+      stripTopLevelSpecifiersOnly(
+        stripTopLevelSpecifiersOnly(
+          getParameter(getFormatParameterIndex()).getType().getUnderlyingType()
+        ).(PointerType).getBaseType()
+      )
   }
 
   /**
