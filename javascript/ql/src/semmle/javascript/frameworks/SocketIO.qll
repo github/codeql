@@ -181,7 +181,18 @@ module SocketIO {
     string getEventName() { getArgument(0).mayHaveStringValue(result) }
 
     /** Gets a data flow node representing data received from a client. */
-    DataFlow::SourceNode getAReceivedItem() { result = getCallback(1).getAParameter() }
+    DataFlow::SourceNode getAReceivedItem() {
+      exists(DataFlow::FunctionNode cb | cb = getCallback(1) and result = cb.getAParameter() |
+        // exclude last parameter if it looks like a callback
+        result != cb.getLastParameter() or not exists(result.getAnInvocation())
+      )
+    }
+
+    /** Gets the acknowledgment callback, if any. */
+    DataFlow::SourceNode getAck() {
+      result = getCallback(1).getLastParameter() and
+      exists(result.getAnInvocation())
+    }
   }
 
   /**
@@ -241,14 +252,9 @@ module SocketIO {
 
     /** Gets a data flow node representing data sent to the client. */
     DataFlow::Node getASentItem() {
-      exists(int i |
-        result = getArgument(i) and
-        i >= firstDataIndex and
-        // exclude last argument if it is a callback
-        (
-          i < getNumArgument() - 1 or
-          not result.analyze().getTheType() = TTFunction()
-        )
+      exists(int i | result = getArgument(i) and i >= firstDataIndex |
+        // exclude last argument if it looks like a callback
+        result != getLastArgument() or not exists(getAck())
       )
     }
 
