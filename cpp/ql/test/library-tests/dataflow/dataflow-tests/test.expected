@@ -30,6 +30,11 @@
 | test.cpp:433:8:433:10 | tmp | test.cpp:430:48:430:54 | source1 |
 | test.cpp:440:8:440:10 | tmp | test.cpp:436:53:436:59 | source1 |
 | test.cpp:442:10:442:12 | tmp | test.cpp:436:53:436:59 | source1 |
+| test.cpp:466:8:466:12 | local | test.cpp:465:16:465:20 | ref arg local |
+| test.cpp:472:8:472:12 | local | test.cpp:471:20:471:25 | ref arg & ... |
+| test.cpp:478:8:478:12 | local | test.cpp:477:20:477:24 | ref arg local |
+| test.cpp:485:8:485:12 | local | test.cpp:484:18:484:23 | ref arg & ... |
+| test.cpp:491:8:491:12 | local | test.cpp:490:18:490:22 | ref arg local |
 | true_upon_entry.cpp:21:8:21:8 | x | true_upon_entry.cpp:17:11:17:16 | call to source |
 | true_upon_entry.cpp:29:8:29:8 | x | true_upon_entry.cpp:27:9:27:14 | call to source |
 | true_upon_entry.cpp:39:8:39:8 | x | true_upon_entry.cpp:33:11:33:16 | call to source |

@@ -455,3 +455,39 @@ void cleanedByMemcpy_blockvar(int clean1) {
   memcpy(&tmp, &clean1, sizeof tmp);
   sink(tmp); // clean
 }
+
+void intRefSource(int &ref_source);
+void intPointerSource(int *ref_source);
+void intArraySource(int ref_source[], size_t len);
+
+void intRefSourceCaller() {
+  int local;
+  intRefSource(local);
+  sink(local); // tainted
+}
+
+void intPointerSourceCaller() {
+  int local;
+  intPointerSource(&local);
+  sink(local); // tainted
+}
+
+void intPointerSourceCaller2() {
+  int local[1];
+  intPointerSource(local);
+  sink(local); // tainted
+  sink(*local); // clean
+}
+
+void intArraySourceCaller() {
+  int local;
+  intArraySource(&local, 1);
+  sink(local); // tainted
+}
+
+void intArraySourceCaller2() {
+  int local[2];
+  intArraySource(local, 2);
+  sink(local); // tainted
+  sink(*local); // clean
+}

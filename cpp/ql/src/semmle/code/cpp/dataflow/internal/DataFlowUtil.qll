@@ -121,6 +121,13 @@ class DefinitionByReferenceNode extends Node, TDefinitionByReferenceNode {
   override Location getLocation() { result = argument.getLocation() }
   /** Gets the argument corresponding to this node. */
   Expr getArgument() { result = argument }
+  /** Gets the parameter through which this value is assigned. */
+  Parameter getParameter() {
+    exists(FunctionCall call, int i |
+      argument = call.getArgument(i) and
+      result = call.getTarget().getParameter(i)
+    )
+  }
 }
 
 /**
