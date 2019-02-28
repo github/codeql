@@ -1167,16 +1167,16 @@ module DataFlow {
       }
     }
 
-      
-      /**
-       * Holds if the additional step from `node1` to `node2` jumps between callables.
-       */
-      private predicate additionalJumpStep(Node node1, Node node2, Configuration config) {
-        config.isAdditionalFlowStep(node1, node2) and
-        node1.getEnclosingCallable() != node2.getEnclosingCallable()
-        or
-        jumpStep(node1, node2)
-      }
+    /**
+     * Holds if the additional step from `node1` to `node2` jumps between callables.
+     */
+    bindingset[config]
+    private predicate additionalJumpStep(Node node1, Node node2, Configuration config) {
+      config.isAdditionalFlowStep(node1, node2) and
+      node1.getEnclosingCallable() != node2.getEnclosingCallable()
+      or
+      jumpStep(node1, node2)
+    }
 
     /**
      * Provides predicates for pruning the data flow graph, by only including
