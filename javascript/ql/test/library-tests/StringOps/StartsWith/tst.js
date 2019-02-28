@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import * as R from 'ramda';
 
+
 function f(A, B) {
     if (A.startsWith(B)) {}
     if (_.startsWith(A, B)) {}
