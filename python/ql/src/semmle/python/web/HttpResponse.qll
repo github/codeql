@@ -6,3 +6,4 @@ import semmle.python.web.twisted.Response
 import semmle.python.web.bottle.Response
 import semmle.python.web.turbogears.Response
 import semmle.python.web.falcon.Response
+import semmle.python.web.cherrypy.Response

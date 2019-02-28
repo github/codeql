@@ -1,5 +1,6 @@
 Name, Category
 Bottle, Web framework
+CherryPy, Web framework
 Django, Web application framework
 Falcon, Web API framework
 Flask, Microframework

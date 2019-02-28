@@ -56,4 +56,36 @@ class WsgiEnvironment extends TaintKind {
 
 }
 
+/** A standard morsel object from a HTTP request, a value in a cookie,
+ * typically an instance of `http.cookies.Morsel` */
+class UntrustedMorsel extends TaintKind {
+
+    UntrustedMorsel() {
+        this = "http.Morsel"
+    }
+
+
+    override TaintKind getTaintOfAttribute(string name) {
+        result instanceof ExternalStringKind and
+        (
+            name = "value"
+        )
+    }
+
+}
+
+/** A standard cookie object from a HTTP request, typically an instance of `http.cookies.SimpleCookie` */
+class UntrustedCookie extends TaintKind {
+
+    UntrustedCookie() {
+        this = "http.Cookie"
+    }
+
+    override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        tonode.(SubscriptNode).getValue() = fromnode and
+        result instanceof UntrustedMorsel
+    }
+
+}
+
 

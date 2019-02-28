@@ -1,0 +1,2 @@
+semmle-extractor-options: --max-import-depth=3 --lang=3 -p ../../../query-tests/Security/lib/
+optimize: true
