@@ -23,6 +23,7 @@ import org.junit.Test;
 import com.semmle.js.extractor.AutoBuild;
 import com.semmle.js.extractor.ExtractorState;
 import com.semmle.js.extractor.FileExtractor;
+import com.semmle.js.extractor.FileExtractor.FileType;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.exception.UserError;
 import com.semmle.util.files.FileUtil8;
@@ -74,15 +75,31 @@ public class AutoBuildTests {
 	/**
 	 * Add a file under {@code root} that we either do or don't expect to be extracted,
 	 * depending on the value of {@code extracted}. If the file is expected to be
-	 * extracted, its path is added to {@link #expected}.
+	 * extracted, its path is added to {@link #expected}. If non-null, parameter
+	 * {@code fileType} indicates the file type with which we expect the file to be extracted.
+	 */
+	private Path addFile(boolean extracted, FileType fileType, Path root, String... components) throws IOException {
+		Path f = addFile(root, components);
+		if (extracted) {
+			expected.add(f + (fileType == null ? "" : ":" + fileType.toString()));
+		}
+		return f;
+	}
+
+	/**
+	 * Add a file with default file type; see {@link #addFile(boolean, FileType, Path, String...)}.
 	 */
 	private Path addFile(boolean extracted, Path root, String... components) throws IOException {
+		return addFile(extracted, null, root, components);
+	}
+
+	/**
+	 * Create a file at the specified path under {@code root} and return it.
+	 */
+	private Path addFile(Path root, String... components) throws IOException {
 		Path p = Paths.get(root.toString(), components);
 		Files.createDirectories(p.getParent());
-		Path f = Files.createFile(p);
-		if (extracted)
-			expected.add(f.toString());
-		return f;
+		return Files.createFile(p);
 	}
 
 	/**
@@ -96,7 +113,10 @@ public class AutoBuildTests {
 			new AutoBuild() {
 				@Override
 				protected void extract(FileExtractor extractor, Path file, ExtractorState state) {
-					actual.add(file.toString());
+					String extracted = file.toString();
+					if (extractor.getConfig().hasFileType())
+						extracted += ":" + extractor.getFileType(file.toFile());
+					actual.add(extracted);
 				}
 
 				@Override
@@ -452,5 +472,34 @@ public class AutoBuildTests {
 		addFile(true, LGTM_SRC, "lib", "lodash-min.js");
 		addFile(true, LGTM_SRC, "compute_min.js");
 		runTest();
+	}
+
+	@Test
+	public void customExtensions() throws IOException {
+		envVars.put("LGTM_INDEX_FILETYPES", ".jsm:js\n.soy:html");
+		addFile(true, FileType.JS, LGTM_SRC, "tst.jsm");
+		addFile(false, LGTM_SRC, "tstjsm");
+		addFile(true, FileType.HTML, LGTM_SRC, "tst.soy");
+		addFile(true, LGTM_SRC, "tst.html");
+		addFile(true, LGTM_SRC, "tst.js");
+		runTest();
+	}
+
+	@Test
+	public void overrideExtension() throws IOException {
+		envVars.put("LGTM_INDEX_FILETYPES", ".js:typescript");
+		addFile(true, FileType.TYPESCRIPT, LGTM_SRC, "tst.js");
+		runTest();
+	}
+
+	@Test
+	public void invalidFileType() throws IOException {
+		envVars.put("LGTM_INDEX_FILETYPES", ".jsm:javascript");
+		try {
+			runTest();
+			Assert.fail("expected UserError");
+		} catch (UserError ue) {
+			Assert.assertEquals("Invalid file type 'javascript'.", ue.getMessage());
+		}
 	}
 }
