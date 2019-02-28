@@ -1,0 +1,5 @@
+nodes
+| tst.js:8:48:8:62 | req.query.title |
+edges
+#select
+| tst.js:8:48:8:62 | req.query.title | tst.js:8:48:8:62 | req.query.title | tst.js:8:48:8:62 | req.query.title | User-controlled value from $@ occurs unescaped in a lodash template. | tst.js:8:48:8:62 | req.query.title | here. |

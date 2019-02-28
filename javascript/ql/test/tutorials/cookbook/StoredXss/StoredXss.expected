@@ -1,0 +1,7 @@
+nodes
+| tst.js:9:49:9:52 | data |
+| tst.js:10:15:10:18 | data |
+edges
+| tst.js:9:49:9:52 | data | tst.js:10:15:10:18 | data |
+#select
+| tst.js:10:15:10:18 | data | tst.js:9:49:9:52 | data | tst.js:10:15:10:18 | data | Stored XSS from $@. | tst.js:9:49:9:52 | data | database value. |

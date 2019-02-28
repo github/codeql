@@ -1,0 +1,7 @@
+nodes
+| tst.js:3:11:3:23 | escapeHtml(x) |
+| tst.js:4:20:4:32 | escapeHtml(x) |
+edges
+#select
+| tst.js:3:11:3:23 | escapeHtml(x) | tst.js:3:11:3:23 | escapeHtml(x) | tst.js:3:11:3:23 | escapeHtml(x) | URI decoding invalidates the HTML sanitization performed $@. | tst.js:3:11:3:23 | escapeHtml(x) | here |
+| tst.js:4:20:4:32 | escapeHtml(x) | tst.js:4:20:4:32 | escapeHtml(x) | tst.js:4:20:4:32 | escapeHtml(x) | URI decoding invalidates the HTML sanitization performed $@. | tst.js:4:20:4:32 | escapeHtml(x) | here |

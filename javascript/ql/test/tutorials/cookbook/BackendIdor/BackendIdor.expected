@@ -1,0 +1,11 @@
+nodes
+| tst.js:6:9:6:34 | userId |
+| tst.js:6:18:6:34 | req.params.userId |
+| tst.js:7:61:7:68 | {userId} |
+| tst.js:7:62:7:67 | userId |
+edges
+| tst.js:6:9:6:34 | userId | tst.js:7:62:7:67 | userId |
+| tst.js:6:18:6:34 | req.params.userId | tst.js:6:9:6:34 | userId |
+| tst.js:7:62:7:67 | userId | tst.js:7:61:7:68 | {userId} |
+#select
+| tst.js:7:61:7:68 | {userId} | tst.js:6:18:6:34 | req.params.userId | tst.js:7:61:7:68 | {userId} | Unauthenticated user ID from $@. | tst.js:6:18:6:34 | req.params.userId | here |

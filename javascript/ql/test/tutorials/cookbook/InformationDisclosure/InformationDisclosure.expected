@@ -1,0 +1,11 @@
+nodes
+| tst.js:1:17:6:2 | JSON.st ... y\\n }\\n}) |
+| tst.js:1:32:6:1 | {\\n acti ... ey\\n }\\n} |
+| tst.js:3:8:5:2 | {\\n   ke ... hKey\\n } |
+| tst.js:4:9:4:28 | window.state.authKey |
+edges
+| tst.js:1:32:6:1 | {\\n acti ... ey\\n }\\n} | tst.js:1:17:6:2 | JSON.st ... y\\n }\\n}) |
+| tst.js:3:8:5:2 | {\\n   ke ... hKey\\n } | tst.js:1:32:6:1 | {\\n acti ... ey\\n }\\n} |
+| tst.js:4:9:4:28 | window.state.authKey | tst.js:3:8:5:2 | {\\n   ke ... hKey\\n } |
+#select
+| tst.js:1:17:6:2 | JSON.st ... y\\n }\\n}) | tst.js:4:9:4:28 | window.state.authKey | tst.js:1:17:6:2 | JSON.st ... y\\n }\\n}) | Message leaks the authKey from $@. | tst.js:4:9:4:28 | window.state.authKey | here |
