@@ -185,6 +185,12 @@ module TaintTracking {
         or
         // awaiting a tainted expression gives a tainted result
         e.(AwaitExpr).getOperand() = f
+        or
+        // spreading a tainted object into an object literal gives a tainted object
+        e.(ObjectExpr).getAProperty().(SpreadProperty).getInit().(SpreadElement).getOperand() = f
+        or
+        // spreading a tainted value into an array literal gives a tainted array
+        e.(ArrayExpr).getAnElement().(SpreadElement).getOperand() = f
       )
       or
       // reading from a tainted object yields a tainted result
