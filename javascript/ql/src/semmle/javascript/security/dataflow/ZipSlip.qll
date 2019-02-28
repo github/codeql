@@ -78,7 +78,7 @@ module ZipSlip {
     CreateWriteStreamSink() {
       // This is not covered by `FileSystemWriteSink`, because it is
       // required that a write actually takes place to the stream.
-      // However, we want to consider even the bare createWriteStream
+      // However, we want to consider even the bare `createWriteStream`
       // to be a zipslip vulnerability since it may truncate an
       // existing file.
       this = DataFlow::moduleImport("fs").getAMemberCall("createWriteStream").getArgument(0)
@@ -91,8 +91,8 @@ module ZipSlip {
   }
 
   /**
-   * Gets a string which suffices to search for to ensure that a
-   * filepath will not refer to parent directories.
+   * Gets a string which is sufficient to exclude to make
+   * a filepath definitely not refer to parent directories.
    */
   private string getAParentDirName() { result = ".." or result = "../" }
 

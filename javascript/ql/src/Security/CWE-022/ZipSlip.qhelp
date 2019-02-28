@@ -36,19 +36,32 @@ to prevent writing files to unexpected locations.</p>
 
 <example>
 <p>
-Here is an example of extracting an archive without validating
-filenames. If <code>archive.zip</code> contained relative paths (for
+In this example an archive is extracted without validating file paths.
+If <code>archive.zip</code> contained relative paths (for
 instance, if it were created by something like <code>zip archive.zip
-../file.txt</code>) then executing this code would write to those paths.
+../file.txt</code>) then executing this code could write to locations
+outside the destination directory.
 </p>
 
 <sample src="ZipSlipBad.js" />
 
-<p>To fix this vulnerability, we can to check that the path does not
+<p>To fix this vulnerability, we need to check that the path does not
 contain any <code>".."</code> elements in it.
 </p>
 
 <sample src="ZipSlipGood.js" />
 
 </example>
+<references>
+
+<li>
+Snyk:
+<a href="https://snyk.io/research/zip-slip-vulnerability">Zip Slip Vulnerability</a>.
+</li>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Path_traversal">Path Traversal</a>.
+</li>
+
+</references>
 </qhelp>
