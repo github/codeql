@@ -1,11 +1,11 @@
 | tst.js:25:10:25:19 | io.sockets | socket.io namespace with path '/' |
-| tst.js:26:11:26:23 | io.of("/foo") | socket.io namespace with path '/foo' |
+| tst.js:26:11:26:27 | io.of("/foo/bar") | socket.io namespace with path '/foo/bar' |
 | tst.js:27:1:27:12 | ns.use(auth) | socket.io namespace with path '/' |
 | tst.js:28:1:28:11 | ns.to(room) | socket.io namespace with path '/' |
 | tst.js:29:1:29:11 | ns.in(room) | socket.io namespace with path '/' |
 | tst.js:30:1:30:28 | ns.emit ... event') | socket.io namespace with path '/' |
 | tst.js:31:1:31:20 | ns.send('a message') | socket.io namespace with path '/' |
-| tst.js:32:1:32:22 | ns2.wri ... ssage') | socket.io namespace with path '/foo' |
+| tst.js:32:1:32:22 | ns2.wri ... ssage') | socket.io namespace with path '/foo/bar' |
 | tst.js:33:1:33:14 | ns.clients(cb) | socket.io namespace with path '/' |
 | tst.js:34:1:34:17 | ns.compress(true) | socket.io namespace with path '/' |
 | tst.js:35:1:35:16 | ns.binary(false) | socket.io namespace with path '/' |

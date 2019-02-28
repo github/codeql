@@ -23,7 +23,7 @@ io.origins();
 
 // SocketIO::NamespaceNodes:
 var ns = io.sockets;
-var ns2 = io.of("/foo");
+var ns2 = io.of("/foo/bar");
 ns.use(auth);
 ns.to(room);
 ns.in(room);

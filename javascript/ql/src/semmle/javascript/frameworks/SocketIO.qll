@@ -197,6 +197,12 @@ module SocketIO {
       result = getCallback(1).getLastParameter() and
       exists(result.getAnInvocation())
     }
+
+    /** Gets a client-side node that may be sending the data received here. */
+    SocketIOClient::SendNode getASender() {
+      result.getSocket().getATargetNamespace() = getSocket().getNamespace() and
+      not result.getEventName() != getEventName()
+    }
   }
 
   /**
@@ -273,6 +279,12 @@ module SocketIO {
       exists(getSocket()) and
       result = getLastArgument().getALocalSource()
     }
+
+    /** Gets a client-side node that may be receiving the data sent here. */
+    SocketIOClient::ReceiveNode getAReceiver() {
+      result.getSocket().getATargetNamespace() = getNamespace() and
+      not result.getEventName() != getEventName()
+    }
   }
 
   /** A socket.io server, identified by its creation site. */
@@ -299,6 +311,9 @@ module SocketIO {
 
     /** Gets the default namespace of this server. */
     NamespaceObject getDefaultNamespace() { result = MkNamespace(this, "/") }
+
+    /** Gets the namespace with the given path of this server. */
+    NamespaceObject getNamespace(string path) { result = MkNamespace(this, path) }
 
     /**
      * Holds if this server is created at the specified location.
@@ -375,6 +390,23 @@ module SocketIOClient {
       not exists(invk.getArgument(0)) and
       result = "/"
     }
+
+    /** Gets a server this socket may be communicating with. */
+    SocketIO::ServerObject getATargetServer() {
+      exists(NPMPackage pkg |
+        result.getOrigin().getFile() = pkg.getAFile() and
+        this.getFile() = pkg.getAFile() and
+        exists(result.getNamespace(getNamespacePath()))
+      )
+    }
+
+    /** Gets a namespace this socket may be communicating with. */
+    SocketIO::NamespaceObject getATargetNamespace() {
+      result = getATargetServer().getNamespace(getNamespacePath())
+    }
+
+    /** Gets a server-side socket this client-side socket may be communicating with. */
+    SocketIO::SocketNode getATargetSocket() { result.getNamespace() = getATargetNamespace() }
   }
 
   /**
@@ -406,6 +438,12 @@ module SocketIOClient {
     DataFlow::SourceNode getAck() {
       result = getCallback(1).getLastParameter() and
       exists(result.getAnInvocation())
+    }
+
+    /** Gets a server-side node that may be sending the data received here. */
+    SocketIO::SendNode getASender() {
+      result.getNamespace() = getSocket().getATargetNamespace() and
+      not result.getEventName() != getEventName()
     }
   }
 
@@ -459,6 +497,12 @@ module SocketIOClient {
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::FunctionNode getAck() { result = getLastArgument().getALocalSource() }
+
+    /** Gets a server-side node that may be receiving the data sent here. */
+    SocketIO::ReceiveNode getAReceiver() {
+      result.getSocket().getNamespace() = getSocket().getATargetNamespace() and
+      not result.getEventName() != getEventName()
+    }
   }
 }
 
