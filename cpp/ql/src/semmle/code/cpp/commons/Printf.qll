@@ -671,29 +671,6 @@ class FormatLiteral extends Literal {
   }
 
   /**
-   * Gets the 'effective' char type character, that is, 'c' (meaning a `char`) or
-   * 'C' (meaning a `wchar_t`).
-   *  - in the base case this is the same as the format type character.
-   *  - for a `wprintf` or similar function call, the meanings are reversed.
-   *  - the size prefixes 'l'/'w' (long) and 'h' (short) override the
-   *    type character to effectively 'C' or 'c' respectively.
-   */
-  private string getEffectiveCharConversionChar(int n) {
-    exists(string len, string conv | this.parseConvSpec(n, _, _, _, _, _, len, conv) and (conv = "c" or conv = "C") |
-      (len = "l" and result = "C") or
-      (len = "w" and result = "C") or
-      (len = "h" and result = "c") or
-      (
-        len != "l" and len != "w" and len != "h" and
-        (result = "c" or result = "C") and
-        (
-          if isWideCharDefault() then result != conv else result = conv
-        )
-      )
-    )
-  }
-
-  /**
    * Gets the char type required by the nth conversion specifier.
    *  - in the base case this is the default for the formatting function
    *    (e.g. `char` for `printf`, `wchar_t` for `wprintf`).
