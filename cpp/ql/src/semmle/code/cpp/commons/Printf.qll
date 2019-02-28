@@ -866,15 +866,7 @@ class FormatLiteral extends Literal {
          len = 1
       or (
         this.getConversionChar(n).toLowerCase()="c" and
-        if (this.getEffectiveCharConversionChar(n)="C" and
-            not isMicrosoft() and
-            not isWideCharDefault()) then (
-          len = 6 // MB_LEN_MAX
-            // the wint_t (wide character) argument is converted
-            // to a multibyte sequence by a call to the wcrtomb(3) 
-        ) else (
-          len = 1 // e.g. 'a'
-        )
+        len = 1 // e.g. 'a'
       ) or this.getConversionChar(n).toLowerCase()="f" and
          exists(int dot, int afterdot |
            (if this.getPrecision(n) = 0 then dot = 0 else dot = 1)
