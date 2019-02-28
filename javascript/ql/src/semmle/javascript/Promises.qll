@@ -45,3 +45,57 @@ module Q {
     override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
   }
 }
+
+private module ClosurePromise {
+  /**
+   * A promise created by a call `new goog.Promise(executor)`.
+   */
+  private class ClosurePromiseDefinition extends PromiseDefinition, DataFlow::NewNode {
+    ClosurePromiseDefinition() { this = Closure::moduleImport("goog.Promise").getACall() }
+
+    override DataFlow::FunctionNode getExecutor() { result = getCallback(0) }
+  }
+
+  /**
+   * A promise created by a call `goog.Promise.resolve(value)`.
+   */
+  private class ResolvedClosurePromiseDefinition extends ResolvedPromiseDefinition {
+    ResolvedClosurePromiseDefinition() {
+      this = Closure::moduleImport("goog.Promise.resolve").getACall()
+    }
+
+    override DataFlow::Node getValue() { result = getArgument(0) }
+  }
+
+  /**
+   * Taint steps through closure promise methods.
+   */
+  private class ClosurePromiseTaintStep extends TaintTracking::AdditionalTaintStep {
+    DataFlow::Node pred;
+
+    ClosurePromiseTaintStep() {
+      // static methods in goog.Promise
+      exists (DataFlow::CallNode call, string name |
+        call = Closure::moduleImport("goog.Promise." + name).getACall() and
+        this = call and
+        pred = call.getAnArgument()
+        |
+        name = "all" or
+        name = "allSettled" or
+        name = "firstFulfilled" or
+        name = "race"
+      )
+      or
+      // promise created through goog.promise.withResolver()
+      exists (DataFlow::CallNode resolver |
+        resolver = Closure::moduleImport("goog.Promise.withResolver").getACall() and
+        this = resolver.getAPropertyRead("promise") and
+        pred = resolver.getAMethodCall("resolve").getArgument(0)
+      )
+    }
+
+    override predicate step(DataFlow::Node src, DataFlow::Node dst) {
+      src = pred and dst = this
+    }
+  }
+}
