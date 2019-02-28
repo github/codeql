@@ -5,6 +5,7 @@
 * Support for many frameworks and libraries has been improved, in particular including the following:
   - [a-sync-waterfall](https://www.npmjs.com/package/a-sync-waterfall)
   - [Electron](https://electronjs.org)
+  - [Express](https://npmjs.org/express)
   - [hapi](https://hapijs.com/)
   - [js-cookie](https://github.com/js-cookie/js-cookie)
   - [React](https://reactjs.org/)
