@@ -5,7 +5,7 @@ import semmle.python.security.strings.Basic
 import semmle.python.web.Http
 import semmle.python.web.cherrypy.General
 
-/** A twisted.web.http.Request object */
+/** The cherrypy.request local-proxy object */
 class CherryPyRequest extends TaintKind {
 
     CherryPyRequest() {
