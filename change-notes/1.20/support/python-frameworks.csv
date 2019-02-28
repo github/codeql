@@ -1,6 +1,7 @@
 Name, Category
 Bottle, Web framework
 Django, Web application framework
+Falcon, Web API framework
 Flask, Microframework
 Pyramid, Web application framework
 Tornado, Web application framework and asynchronous networking library

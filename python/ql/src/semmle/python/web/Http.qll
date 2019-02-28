@@ -23,3 +23,37 @@ string httpVerb() {
 string httpVerbLower() {
     result = httpVerb().toLowerCase()
 }
+
+/** Taint kind representing the WSGI environment.
+ * As specified in PEP 3333. https://www.python.org/dev/peps/pep-3333/#environ-variables
+ */
+class WsgiEnvironment extends TaintKind {
+
+    WsgiEnvironment() { this = "wsgi.environment" }
+
+    override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        result = this and TaintFlowImplementation::copyCall(fromnode, tonode)
+        or
+        result = this and
+        tonode.(CallNode).getFunction().refersTo(theDictType()) and
+        tonode.(CallNode).getArg(0) = fromnode
+        or
+        exists(StringObject key, string text |
+            tonode.(CallNode).getFunction().(AttrNode).getObject("get") = fromnode and
+            tonode.(CallNode).getArg(0).refersTo(key)
+            or
+            tonode.(SubscriptNode).getValue() = fromnode and tonode.isLoad() and
+            tonode.(SubscriptNode).getIndex().refersTo(key)
+            |
+            text = key.getText() and result instanceof ExternalStringKind and
+            (
+                text = "QUERY_STRING" or
+                text = "PATH_INFO" or
+                text.prefix(5) = "HTTP_"
+            )
+        )
+    }
+
+}
+
+
