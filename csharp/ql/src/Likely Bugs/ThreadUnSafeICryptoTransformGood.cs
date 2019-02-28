@@ -1,6 +1,9 @@
-internal class TokenCacheThreadUnsafeICryptoTransformDemo
+internal class TokenCacheThreadUnsafeICryptoTransformDemoFixed
 {
-    private static SHA256 _sha = SHA256.Create();
+    // We are replacing the static SHA256 field with an instance one
+    //
+    //private static SHA256 _sha = SHA256.Create();
+    private SHA256 _sha = SHA256.Create();
 
     public string ComputeHash(string data)
     {
@@ -18,8 +21,8 @@ class Program
 
         Action<object> action = (object obj) =>
         {
-            var unsafeObj = new TokenCacheThreadUnsafeICryptoTransformDemo();
-            if (unsafeObj.ComputeHash((string)obj) != "ungWv48Bz+pBQUDeXa4iI7ADYaOWF3qctBD/YfIAFa0=")
+            var safeObj = new TokenCacheThreadUnsafeICryptoTransformDemoFixed();
+            if (safeObj.ComputeHash((string)obj) != "ungWv48Bz+pBQUDeXa4iI7ADYaOWF3qctBD/YfIAFa0=")
             {
                 Console.WriteLine("**** We got incorrect Results!!! ****");
             }
