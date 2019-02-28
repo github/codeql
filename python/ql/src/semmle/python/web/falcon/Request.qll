@@ -13,7 +13,8 @@ class FalconRequest extends TaintKind {
     }
 
     override TaintKind getTaintOfAttribute(string name) {
-        // name = "env" and result instanceof WsgiEnvironment
+        name = "env" and result instanceof WsgiEnvironment
+        or
         result instanceof ExternalStringKind and
         (
             name = "uri" or name = "url" or

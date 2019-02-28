@@ -19,5 +19,10 @@ class Handler(object):
     def on_post(self, req, resp):
         pass
 
+    def on_delete(self, req, resp):
+        env = req.env
+        qs = env["QUERY_STRING"]
+        return qs
+
 app.add_route('/hello', Handler())
 

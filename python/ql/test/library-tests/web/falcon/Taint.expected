@@ -16,3 +16,10 @@
 | test.py:17 | result | {json[externally controlled string]} |
 | test.py:19 | req | falcon.request |
 | test.py:19 | resp | falcon.response |
+| test.py:22 | req | falcon.request |
+| test.py:22 | resp | falcon.response |
+| test.py:23 | Attribute | wsgi.environment |
+| test.py:23 | req | falcon.request |
+| test.py:24 | Subscript | externally controlled string |
+| test.py:24 | env | wsgi.environment |
+| test.py:25 | qs | externally controlled string |
