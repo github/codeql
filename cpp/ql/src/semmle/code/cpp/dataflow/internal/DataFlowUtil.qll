@@ -45,11 +45,6 @@ class Node extends TNode {
   /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
 
-  /** Gets the VariableAccess that defines this `DefinitionByReferenceNode`, if any. */
-  VariableAccess asDefiningVariableAccess() {
-    result = this.(DefinitionByReferenceNode).getVariableAccess()
-  }
-
   /**
    * Gets the uninitialized local variable corresponding to this node, if
    * any.
@@ -113,8 +108,7 @@ class ParameterNode extends Node, TParameterNode {
  * A typical example would be a call `f(&x)`. Firstly, there will be flow into
  * `x` from previous definitions of `x`. Secondly, there will be a
  * `DefinitionByReferenceNode` to represent the value of `x` after the call has
- * returned. This node will have its `getArgument()` equal to `&x` and its
- * `getVariableAccess()` equal to `x`.
+ * returned. This node will have its `getArgument()` equal to `&x`.
  */
 class DefinitionByReferenceNode extends Node, TDefinitionByReferenceNode {
   VariableAccess va;
@@ -127,8 +121,6 @@ class DefinitionByReferenceNode extends Node, TDefinitionByReferenceNode {
   override Location getLocation() { result = argument.getLocation() }
   /** Gets the argument corresponding to this node. */
   Expr getArgument() { result = argument }
-  /** Gets the variable access corresponding to this node. */
-  VariableAccess getVariableAccess() { result = va }
 }
 
 /**
@@ -182,14 +174,6 @@ ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
  */
 DefinitionByReferenceNode definitionByReferenceNodeFromArgument(Expr argument) {
   result.getArgument() = argument
-}
-
-/**
- * Gets the `Node` corresponding to a definition by reference of the variable
- * that is passed by reference as `va` in a call argument.
- */
-DefinitionByReferenceNode definitionByReferenceNodeFromVariableAccess(VariableAccess va) {
-  result.getVariableAccess() = va
 }
 
 /**
