@@ -24,15 +24,7 @@ private newtype TNode =
 */
 class Node extends TNode {
   /** Gets the function to which this node belongs. */
-  Function getFunction() {
-    result = this.asExpr().getEnclosingFunction()
-    or
-    result = this.asParameter().getFunction()
-    or
-    result = this.asUninitialized().getFunction()
-    or
-    result = this.asDefiningArgument().getEnclosingFunction()
-  }
+  Function getFunction() { none() } // overridden in subclasses
 
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
@@ -42,13 +34,7 @@ class Node extends TNode {
   }
 
   /** Gets the type of this node. */
-  Type getType() {
-    result = this.asExpr().getType()
-    or
-    result = asVariable(this).getType()
-    or
-    result = this.asDefiningVariableAccess().getType()
-  }
+  Type getType() { none() } // overridden in subclasses
 
   /** Gets the expression corresponding to this node, if any. */
   Expr asExpr() { result = this.(ExprNode).getExpr() }
@@ -90,6 +76,8 @@ class Node extends TNode {
 class ExprNode extends Node, TExprNode {
   Expr expr;
   ExprNode() { this = TExprNode(expr) }
+  override Function getFunction() { result = expr.getEnclosingFunction() }
+  override Type getType() { result = expr.getType() }
   override string toString() { result = expr.toString() }
   override Location getLocation() { result = expr.getLocation() }
   /** Gets the expression corresponding to this node. */
@@ -103,6 +91,8 @@ class ExprNode extends Node, TExprNode {
 class ParameterNode extends Node, TParameterNode {
   Parameter param;
   ParameterNode() { this = TParameterNode(param) }
+  override Function getFunction() { result = param.getFunction() }
+  override Type getType() { result = param.getType() }
   override string toString() { result = param.toString() }
   override Location getLocation() { result = param.getLocation() }
   /** Gets the parameter corresponding to this node. */
@@ -131,6 +121,8 @@ class DefinitionByReferenceNode extends Node, TDefinitionByReferenceNode {
   Expr argument;
 
   DefinitionByReferenceNode() { this = TDefinitionByReferenceNode(va, argument) }
+  override Function getFunction() { result = va.getEnclosingFunction() }
+  override Type getType() { result = va.getType() }
   override string toString() { result = "ref arg " + argument.toString() }
   override Location getLocation() { result = argument.getLocation() }
   /** Gets the argument corresponding to this node. */
@@ -146,6 +138,8 @@ class DefinitionByReferenceNode extends Node, TDefinitionByReferenceNode {
 class UninitializedNode extends Node, TUninitializedNode {
   LocalVariable v;
   UninitializedNode() { this = TUninitializedNode(v) }
+  override Function getFunction() { result = v.getFunction() }
+  override Type getType() { result = v.getType() }
   override string toString() { result = v.toString() }
   override Location getLocation() { result = v.getLocation() }
   /** Gets the uninitialized local variable corresponding to this node. */
@@ -206,12 +200,6 @@ UninitializedNode uninitializedNode(LocalVariable v) {
   result.getLocalVariable() = v
 }
 
-private Variable asVariable(Node node) {
-  result = node.asParameter()
-  or
-  result = node.asUninitialized()
-}
-
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
@@ -225,7 +213,9 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
     (
       exprToVarStep(nodeFrom.asExpr(), var)
       or
-      varSourceBaseCase(var, asVariable(nodeFrom))
+      varSourceBaseCase(var, nodeFrom.asParameter())
+      or
+      varSourceBaseCase(var, nodeFrom.asUninitialized())
       or
       var.definedByReference(nodeFrom.asDefiningArgument())
     ) and
