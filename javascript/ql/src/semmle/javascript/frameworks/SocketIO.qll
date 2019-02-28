@@ -526,3 +526,39 @@ private module EventEmitter {
     result = "prependOnceListener"
   }
 }
+
+/** A data flow step through socket.io sockets. */
+private class SocketIoStep extends DataFlow::AdditionalFlowStep {
+  DataFlow::Node pred;
+
+  DataFlow::Node succ;
+
+  SocketIoStep() {
+    (
+      exists(SocketIO::SendNode send, SocketIOClient::ReceiveNode recv, int i |
+        recv = send.getAReceiver()
+      |
+        pred = send.getSentItem(i) and
+        succ = recv.getReceivedItem(i)
+        or
+        pred = recv.getAck().getACall().getArgument(i) and
+        succ = send.getAck().getParameter(i)
+      )
+      or
+      exists(SocketIOClient::SendNode send, SocketIO::ReceiveNode recv, int i |
+        recv = send.getAReceiver()
+      |
+        pred = send.getSentItem(i) and
+        succ = recv.getReceivedItem(i)
+        or
+        pred = recv.getAck().getACall().getArgument(i) and
+        succ = send.getAck().getParameter(i)
+      )
+    ) and
+    this = pred
+  }
+
+  override predicate step(DataFlow::Node predNode, DataFlow::Node succNode) {
+    predNode = pred and succNode = succ
+  }
+}

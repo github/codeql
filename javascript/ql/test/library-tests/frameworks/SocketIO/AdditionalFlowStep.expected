@@ -1,0 +1,19 @@
+| client2.js:16:12:16:25 | "do you copy?" | tst.js:70:25:70:27 | msg |
+| client2.js:16:12:16:25 | "do you copy?" | tst.js:71:27:71:31 | data1 |
+| client3.js:1:8:1:9 | io | client3.js:1:8:1:9 | io |
+| tst.js:30:18:30:27 | 'an event' | client2.js:8:23:8:25 | msg |
+| tst.js:30:18:30:27 | 'an event' | client2.js:10:19:10:19 | x |
+| tst.js:31:9:31:19 | 'a message' | client2.js:4:21:4:21 | x |
+| tst.js:31:9:31:19 | 'a message' | client2.js:8:23:8:25 | msg |
+| tst.js:32:11:32:21 | 'a message' | client2.js:18:22:18:22 | x |
+| tst.js:39:20:39:30 | 'a message' | client2.js:4:21:4:21 | x |
+| tst.js:39:20:39:30 | 'a message' | client2.js:8:23:8:25 | msg |
+| tst.js:40:9:40:19 | 'a message' | client2.js:4:21:4:21 | x |
+| tst.js:40:9:40:19 | 'a message' | client2.js:8:23:8:25 | msg |
+| tst.js:41:10:41:20 | 'a message' | client2.js:4:21:4:21 | x |
+| tst.js:41:10:41:20 | 'a message' | client2.js:8:23:8:25 | msg |
+| tst.js:54:15:54:17 | 'a' | client2.js:4:21:4:21 | x |
+| tst.js:54:15:54:17 | 'a' | client2.js:8:23:8:25 | msg |
+| tst.js:54:20:54:28 | 'message' | client2.js:4:24:4:24 | y |
+| tst.js:55:16:55:26 | 'a message' | client2.js:4:21:4:21 | x |
+| tst.js:55:16:55:26 | 'a message' | client2.js:8:23:8:25 | msg |
