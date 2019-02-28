@@ -1,4 +1,0 @@
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | client2.js:4:21:4:21 | x |
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | client2.js:4:24:4:24 | y |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | client2.js:8:23:8:25 | msg |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | client2.js:10:18:10:18 | x |

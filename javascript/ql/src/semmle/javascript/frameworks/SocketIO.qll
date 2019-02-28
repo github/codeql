@@ -181,13 +181,16 @@ module SocketIO {
     /** Gets the event name associated with the data, if it can be determined. */
     string getEventName() { getArgument(0).mayHaveStringValue(result) }
 
-    /** Gets a data flow node representing data received from a client. */
-    DataFlow::SourceNode getAReceivedItem() {
-      exists(DataFlow::FunctionNode cb | cb = getCallback(1) and result = cb.getAParameter() |
+    /** Gets the `i`th parameter through which data is received from a client. */
+    DataFlow::SourceNode getReceivedItem(int i) {
+      exists(DataFlow::FunctionNode cb | cb = getCallback(1) and result = cb.getParameter(i) |
         // exclude last parameter if it looks like a callback
         result != cb.getLastParameter() or not exists(result.getAnInvocation())
       )
     }
+
+    /** Gets a data flow node representing data received from a client. */
+    DataFlow::SourceNode getAReceivedItem() { result = getReceivedItem(_) }
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::SourceNode getAck() {
@@ -251,13 +254,18 @@ module SocketIO {
       if firstDataIndex = 1 then getArgument(0).mayHaveStringValue(result) else result = "message"
     }
 
-    /** Gets a data flow node representing data sent to the client. */
-    DataFlow::Node getASentItem() {
-      exists(int i | result = getArgument(i) and i >= firstDataIndex |
+    /** Gets the `i`th argument through which data is sent to the client. */
+    DataFlow::Node getSentItem(int i) {
+      result = getArgument(i + firstDataIndex) and
+      i >= 0 and
+      (
         // exclude last argument if it looks like a callback
         result != getLastArgument() or not exists(getAck())
       )
     }
+
+    /** Gets a data flow node representing data sent to the client. */
+    DataFlow::Node getASentItem() { result = getSentItem(_) }
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::FunctionNode getAck() {
@@ -383,13 +391,16 @@ module SocketIOClient {
     /** Gets the event name associated with the data, if it can be determined. */
     string getEventName() { getArgument(0).mayHaveStringValue(result) }
 
-    /** Gets a data flow node representing data received from the server. */
-    DataFlow::SourceNode getAReceivedItem() {
-      exists(DataFlow::FunctionNode cb | cb = getCallback(1) and result = cb.getAParameter() |
+    /** Gets the `i`th parameter through which data is received from the server. */
+    DataFlow::SourceNode getReceivedItem(int i) {
+      exists(DataFlow::FunctionNode cb | cb = getCallback(1) and result = cb.getParameter(i) |
         // exclude the last parameter if it looks like a callback
         result != cb.getLastParameter() or not exists(result.getAnInvocation())
       )
     }
+
+    /** Gets a data flow node representing data received from the server. */
+    DataFlow::SourceNode getAReceivedItem() { result = getReceivedItem(_) }
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::SourceNode getAck() {
@@ -433,13 +444,18 @@ module SocketIOClient {
       if firstDataIndex = 1 then getArgument(0).mayHaveStringValue(result) else result = "message"
     }
 
-    /** Gets a data flow node representing data sent to the server. */
-    DataFlow::Node getASentItem() {
-      exists(int i | result = getArgument(i) and i >= firstDataIndex |
+    /** Gets the `i`th argument through which data is sent to the server. */
+    DataFlow::Node getSentItem(int i) {
+      result = getArgument(i + firstDataIndex) and
+      i >= 0 and
+      (
         // exclude last argument if it looks like a callback
         result != getLastArgument() or not exists(getAck())
       )
     }
+
+    /** Gets a data flow node representing data sent to the server. */
+    DataFlow::Node getASentItem() { result = getSentItem(_) }
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::FunctionNode getAck() { result = getLastArgument().getALocalSource() }
