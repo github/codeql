@@ -1,6 +1,6 @@
 /**
  * @name Taint-tracking to 'eval' calls
- * @description Tracks user-controlled values into 'eval' calls.
+ * @description Tracks user-controlled values into 'eval' calls (special case of js/code-injection).
  * @tags security
  * @id js/cookbook/eval-taint
  */
