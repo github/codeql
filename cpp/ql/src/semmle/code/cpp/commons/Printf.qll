@@ -215,8 +215,9 @@ class FormatLiteral extends Literal {
   /**
    * Holds if the default meaning of `%s` is a `wchar_t *`, rather than
    * a `char *` (either way, `%S` will have the opposite meaning).
+   * DEPRECATED: Use getDefaultCharType() instead.
    */
-  predicate isWideCharDefault() {
+  deprecated predicate isWideCharDefault() {
     getUse().getTarget().(FormattingFunction).isWideCharDefault()
   }
 
