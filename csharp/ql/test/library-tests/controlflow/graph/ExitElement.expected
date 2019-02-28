@@ -1,3 +1,235 @@
+| AccessorCalls.cs:5:30:5:30 | access to parameter i | AccessorCalls.cs:5:30:5:30 | access to parameter i | normal |
+| AccessorCalls.cs:5:37:5:39 | {...} | AccessorCalls.cs:5:37:5:39 | {...} | normal |
+| AccessorCalls.cs:7:36:7:38 | {...} | AccessorCalls.cs:7:36:7:38 | {...} | normal |
+| AccessorCalls.cs:7:47:7:49 | {...} | AccessorCalls.cs:7:47:7:49 | {...} | normal |
+| AccessorCalls.cs:11:5:17:5 | {...} | AccessorCalls.cs:16:9:16:23 | ... -= ... | normal |
+| AccessorCalls.cs:12:9:12:12 | this access | AccessorCalls.cs:12:9:12:12 | this access | normal |
+| AccessorCalls.cs:12:9:12:18 | access to field Field | AccessorCalls.cs:12:9:12:12 | this access | normal |
+| AccessorCalls.cs:12:9:12:31 | ... = ... | AccessorCalls.cs:12:9:12:31 | ... = ... | normal |
+| AccessorCalls.cs:12:9:12:32 | ...; | AccessorCalls.cs:12:9:12:31 | ... = ... | normal |
+| AccessorCalls.cs:12:22:12:25 | this access | AccessorCalls.cs:12:22:12:25 | this access | normal |
+| AccessorCalls.cs:12:22:12:31 | access to field Field | AccessorCalls.cs:12:22:12:31 | access to field Field | normal |
+| AccessorCalls.cs:13:9:13:12 | this access | AccessorCalls.cs:13:9:13:12 | this access | normal |
+| AccessorCalls.cs:13:9:13:17 | access to property Prop | AccessorCalls.cs:13:9:13:12 | this access | normal |
+| AccessorCalls.cs:13:9:13:29 | ... = ... | AccessorCalls.cs:13:9:13:29 | ... = ... | normal |
+| AccessorCalls.cs:13:9:13:30 | ...; | AccessorCalls.cs:13:9:13:29 | ... = ... | normal |
+| AccessorCalls.cs:13:21:13:24 | this access | AccessorCalls.cs:13:21:13:24 | this access | normal |
+| AccessorCalls.cs:13:21:13:29 | access to property Prop | AccessorCalls.cs:13:21:13:29 | access to property Prop | normal |
+| AccessorCalls.cs:14:9:14:12 | this access | AccessorCalls.cs:14:9:14:12 | this access | normal |
+| AccessorCalls.cs:14:9:14:15 | access to indexer | AccessorCalls.cs:14:14:14:14 | 0 | normal |
+| AccessorCalls.cs:14:9:14:25 | ... = ... | AccessorCalls.cs:14:9:14:25 | ... = ... | normal |
+| AccessorCalls.cs:14:9:14:26 | ...; | AccessorCalls.cs:14:9:14:25 | ... = ... | normal |
+| AccessorCalls.cs:14:14:14:14 | 0 | AccessorCalls.cs:14:14:14:14 | 0 | normal |
+| AccessorCalls.cs:14:19:14:22 | this access | AccessorCalls.cs:14:19:14:22 | this access | normal |
+| AccessorCalls.cs:14:19:14:25 | access to indexer | AccessorCalls.cs:14:19:14:25 | access to indexer | normal |
+| AccessorCalls.cs:14:24:14:24 | 1 | AccessorCalls.cs:14:24:14:24 | 1 | normal |
+| AccessorCalls.cs:15:9:15:12 | this access | AccessorCalls.cs:15:9:15:12 | this access | normal |
+| AccessorCalls.cs:15:9:15:18 | access to event Event | AccessorCalls.cs:15:9:15:12 | this access | normal |
+| AccessorCalls.cs:15:9:15:23 | ... += ... | AccessorCalls.cs:15:9:15:23 | ... += ... | normal |
+| AccessorCalls.cs:15:9:15:24 | ...; | AccessorCalls.cs:15:9:15:23 | ... += ... | normal |
+| AccessorCalls.cs:15:23:15:23 | access to parameter e | AccessorCalls.cs:15:23:15:23 | access to parameter e | normal |
+| AccessorCalls.cs:16:9:16:12 | this access | AccessorCalls.cs:16:9:16:12 | this access | normal |
+| AccessorCalls.cs:16:9:16:18 | access to event Event | AccessorCalls.cs:16:9:16:12 | this access | normal |
+| AccessorCalls.cs:16:9:16:23 | ... -= ... | AccessorCalls.cs:16:9:16:23 | ... -= ... | normal |
+| AccessorCalls.cs:16:9:16:24 | ...; | AccessorCalls.cs:16:9:16:23 | ... -= ... | normal |
+| AccessorCalls.cs:16:23:16:23 | access to parameter e | AccessorCalls.cs:16:23:16:23 | access to parameter e | normal |
+| AccessorCalls.cs:20:5:26:5 | {...} | AccessorCalls.cs:25:9:25:25 | ... -= ... | normal |
+| AccessorCalls.cs:21:9:21:12 | this access | AccessorCalls.cs:21:9:21:12 | this access | normal |
+| AccessorCalls.cs:21:9:21:14 | access to field x | AccessorCalls.cs:21:9:21:14 | access to field x | normal |
+| AccessorCalls.cs:21:9:21:20 | access to field Field | AccessorCalls.cs:21:9:21:14 | access to field x | normal |
+| AccessorCalls.cs:21:9:21:35 | ... = ... | AccessorCalls.cs:21:9:21:35 | ... = ... | normal |
+| AccessorCalls.cs:21:9:21:36 | ...; | AccessorCalls.cs:21:9:21:35 | ... = ... | normal |
+| AccessorCalls.cs:21:24:21:27 | this access | AccessorCalls.cs:21:24:21:27 | this access | normal |
+| AccessorCalls.cs:21:24:21:29 | access to field x | AccessorCalls.cs:21:24:21:29 | access to field x | normal |
+| AccessorCalls.cs:21:24:21:35 | access to field Field | AccessorCalls.cs:21:24:21:35 | access to field Field | normal |
+| AccessorCalls.cs:22:9:22:12 | this access | AccessorCalls.cs:22:9:22:12 | this access | normal |
+| AccessorCalls.cs:22:9:22:14 | access to field x | AccessorCalls.cs:22:9:22:14 | access to field x | normal |
+| AccessorCalls.cs:22:9:22:19 | access to property Prop | AccessorCalls.cs:22:9:22:14 | access to field x | normal |
+| AccessorCalls.cs:22:9:22:33 | ... = ... | AccessorCalls.cs:22:9:22:33 | ... = ... | normal |
+| AccessorCalls.cs:22:9:22:34 | ...; | AccessorCalls.cs:22:9:22:33 | ... = ... | normal |
+| AccessorCalls.cs:22:23:22:26 | this access | AccessorCalls.cs:22:23:22:26 | this access | normal |
+| AccessorCalls.cs:22:23:22:28 | access to field x | AccessorCalls.cs:22:23:22:28 | access to field x | normal |
+| AccessorCalls.cs:22:23:22:33 | access to property Prop | AccessorCalls.cs:22:23:22:33 | access to property Prop | normal |
+| AccessorCalls.cs:23:9:23:12 | this access | AccessorCalls.cs:23:9:23:12 | this access | normal |
+| AccessorCalls.cs:23:9:23:14 | access to field x | AccessorCalls.cs:23:9:23:14 | access to field x | normal |
+| AccessorCalls.cs:23:9:23:17 | access to indexer | AccessorCalls.cs:23:16:23:16 | 0 | normal |
+| AccessorCalls.cs:23:9:23:29 | ... = ... | AccessorCalls.cs:23:9:23:29 | ... = ... | normal |
+| AccessorCalls.cs:23:9:23:30 | ...; | AccessorCalls.cs:23:9:23:29 | ... = ... | normal |
+| AccessorCalls.cs:23:16:23:16 | 0 | AccessorCalls.cs:23:16:23:16 | 0 | normal |
+| AccessorCalls.cs:23:21:23:24 | this access | AccessorCalls.cs:23:21:23:24 | this access | normal |
+| AccessorCalls.cs:23:21:23:26 | access to field x | AccessorCalls.cs:23:21:23:26 | access to field x | normal |
+| AccessorCalls.cs:23:21:23:29 | access to indexer | AccessorCalls.cs:23:21:23:29 | access to indexer | normal |
+| AccessorCalls.cs:23:28:23:28 | 1 | AccessorCalls.cs:23:28:23:28 | 1 | normal |
+| AccessorCalls.cs:24:9:24:12 | this access | AccessorCalls.cs:24:9:24:12 | this access | normal |
+| AccessorCalls.cs:24:9:24:14 | access to field x | AccessorCalls.cs:24:9:24:14 | access to field x | normal |
+| AccessorCalls.cs:24:9:24:20 | access to event Event | AccessorCalls.cs:24:9:24:14 | access to field x | normal |
+| AccessorCalls.cs:24:9:24:25 | ... += ... | AccessorCalls.cs:24:9:24:25 | ... += ... | normal |
+| AccessorCalls.cs:24:9:24:26 | ...; | AccessorCalls.cs:24:9:24:25 | ... += ... | normal |
+| AccessorCalls.cs:24:25:24:25 | access to parameter e | AccessorCalls.cs:24:25:24:25 | access to parameter e | normal |
+| AccessorCalls.cs:25:9:25:12 | this access | AccessorCalls.cs:25:9:25:12 | this access | normal |
+| AccessorCalls.cs:25:9:25:14 | access to field x | AccessorCalls.cs:25:9:25:14 | access to field x | normal |
+| AccessorCalls.cs:25:9:25:20 | access to event Event | AccessorCalls.cs:25:9:25:14 | access to field x | normal |
+| AccessorCalls.cs:25:9:25:25 | ... -= ... | AccessorCalls.cs:25:9:25:25 | ... -= ... | normal |
+| AccessorCalls.cs:25:9:25:26 | ...; | AccessorCalls.cs:25:9:25:25 | ... -= ... | normal |
+| AccessorCalls.cs:25:25:25:25 | access to parameter e | AccessorCalls.cs:25:25:25:25 | access to parameter e | normal |
+| AccessorCalls.cs:29:5:33:5 | {...} | AccessorCalls.cs:32:9:32:17 | ...++ | normal |
+| AccessorCalls.cs:30:9:30:12 | this access | AccessorCalls.cs:30:9:30:12 | this access | normal |
+| AccessorCalls.cs:30:9:30:18 | access to field Field | AccessorCalls.cs:30:9:30:18 | access to field Field | normal |
+| AccessorCalls.cs:30:9:30:20 | ...++ | AccessorCalls.cs:30:9:30:20 | ...++ | normal |
+| AccessorCalls.cs:30:9:30:21 | ...; | AccessorCalls.cs:30:9:30:20 | ...++ | normal |
+| AccessorCalls.cs:31:9:31:12 | this access | AccessorCalls.cs:31:9:31:12 | this access | normal |
+| AccessorCalls.cs:31:9:31:17 | access to property Prop | AccessorCalls.cs:31:9:31:17 | access to property Prop | normal |
+| AccessorCalls.cs:31:9:31:19 | ...++ | AccessorCalls.cs:31:9:31:19 | ...++ | normal |
+| AccessorCalls.cs:31:9:31:20 | ...; | AccessorCalls.cs:31:9:31:19 | ...++ | normal |
+| AccessorCalls.cs:32:9:32:12 | this access | AccessorCalls.cs:32:9:32:12 | this access | normal |
+| AccessorCalls.cs:32:9:32:15 | access to indexer | AccessorCalls.cs:32:9:32:15 | access to indexer | normal |
+| AccessorCalls.cs:32:9:32:17 | ...++ | AccessorCalls.cs:32:9:32:17 | ...++ | normal |
+| AccessorCalls.cs:32:9:32:18 | ...; | AccessorCalls.cs:32:9:32:17 | ...++ | normal |
+| AccessorCalls.cs:32:14:32:14 | 0 | AccessorCalls.cs:32:14:32:14 | 0 | normal |
+| AccessorCalls.cs:36:5:40:5 | {...} | AccessorCalls.cs:39:9:39:19 | ...++ | normal |
+| AccessorCalls.cs:37:9:37:12 | this access | AccessorCalls.cs:37:9:37:12 | this access | normal |
+| AccessorCalls.cs:37:9:37:14 | access to field x | AccessorCalls.cs:37:9:37:14 | access to field x | normal |
+| AccessorCalls.cs:37:9:37:20 | access to field Field | AccessorCalls.cs:37:9:37:20 | access to field Field | normal |
+| AccessorCalls.cs:37:9:37:22 | ...++ | AccessorCalls.cs:37:9:37:22 | ...++ | normal |
+| AccessorCalls.cs:37:9:37:23 | ...; | AccessorCalls.cs:37:9:37:22 | ...++ | normal |
+| AccessorCalls.cs:38:9:38:12 | this access | AccessorCalls.cs:38:9:38:12 | this access | normal |
+| AccessorCalls.cs:38:9:38:14 | access to field x | AccessorCalls.cs:38:9:38:14 | access to field x | normal |
+| AccessorCalls.cs:38:9:38:19 | access to property Prop | AccessorCalls.cs:38:9:38:19 | access to property Prop | normal |
+| AccessorCalls.cs:38:9:38:21 | ...++ | AccessorCalls.cs:38:9:38:21 | ...++ | normal |
+| AccessorCalls.cs:38:9:38:22 | ...; | AccessorCalls.cs:38:9:38:21 | ...++ | normal |
+| AccessorCalls.cs:39:9:39:12 | this access | AccessorCalls.cs:39:9:39:12 | this access | normal |
+| AccessorCalls.cs:39:9:39:14 | access to field x | AccessorCalls.cs:39:9:39:14 | access to field x | normal |
+| AccessorCalls.cs:39:9:39:17 | access to indexer | AccessorCalls.cs:39:9:39:17 | access to indexer | normal |
+| AccessorCalls.cs:39:9:39:19 | ...++ | AccessorCalls.cs:39:9:39:19 | ...++ | normal |
+| AccessorCalls.cs:39:9:39:20 | ...; | AccessorCalls.cs:39:9:39:19 | ...++ | normal |
+| AccessorCalls.cs:39:16:39:16 | 0 | AccessorCalls.cs:39:16:39:16 | 0 | normal |
+| AccessorCalls.cs:43:5:47:5 | {...} | AccessorCalls.cs:46:9:46:26 | ... = ... | normal |
+| AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:12 | this access | normal |
+| AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:12 | this access | normal |
+| AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:12 | this access | normal |
+| AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:18 | access to field Field | normal |
+| AccessorCalls.cs:44:9:44:32 | ... + ... | AccessorCalls.cs:44:9:44:32 | ... + ... | normal |
+| AccessorCalls.cs:44:9:44:32 | ... += ... | AccessorCalls.cs:44:9:44:32 | ... = ... | normal |
+| AccessorCalls.cs:44:9:44:32 | ... = ... | AccessorCalls.cs:44:9:44:32 | ... = ... | normal |
+| AccessorCalls.cs:44:9:44:33 | ...; | AccessorCalls.cs:44:9:44:32 | ... = ... | normal |
+| AccessorCalls.cs:44:23:44:26 | this access | AccessorCalls.cs:44:23:44:26 | this access | normal |
+| AccessorCalls.cs:44:23:44:32 | access to field Field | AccessorCalls.cs:44:23:44:32 | access to field Field | normal |
+| AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:12 | this access | normal |
+| AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:12 | this access | normal |
+| AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:12 | this access | normal |
+| AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:17 | access to property Prop | normal |
+| AccessorCalls.cs:45:9:45:30 | ... + ... | AccessorCalls.cs:45:9:45:30 | ... + ... | normal |
+| AccessorCalls.cs:45:9:45:30 | ... += ... | AccessorCalls.cs:45:9:45:30 | ... = ... | normal |
+| AccessorCalls.cs:45:9:45:30 | ... = ... | AccessorCalls.cs:45:9:45:30 | ... = ... | normal |
+| AccessorCalls.cs:45:9:45:31 | ...; | AccessorCalls.cs:45:9:45:30 | ... = ... | normal |
+| AccessorCalls.cs:45:22:45:25 | this access | AccessorCalls.cs:45:22:45:25 | this access | normal |
+| AccessorCalls.cs:45:22:45:30 | access to property Prop | AccessorCalls.cs:45:22:45:30 | access to property Prop | normal |
+| AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:9:46:12 | this access | normal |
+| AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:9:46:12 | this access | normal |
+| AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:9:46:15 | access to indexer | normal |
+| AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:14:46:14 | 0 | normal |
+| AccessorCalls.cs:46:9:46:26 | ... + ... | AccessorCalls.cs:46:9:46:26 | ... + ... | normal |
+| AccessorCalls.cs:46:9:46:26 | ... += ... | AccessorCalls.cs:46:9:46:26 | ... = ... | normal |
+| AccessorCalls.cs:46:9:46:26 | ... = ... | AccessorCalls.cs:46:9:46:26 | ... = ... | normal |
+| AccessorCalls.cs:46:9:46:27 | ...; | AccessorCalls.cs:46:9:46:26 | ... = ... | normal |
+| AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:14:46:14 | 0 | normal |
+| AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:14:46:14 | 0 | normal |
+| AccessorCalls.cs:46:20:46:23 | this access | AccessorCalls.cs:46:20:46:23 | this access | normal |
+| AccessorCalls.cs:46:20:46:26 | access to indexer | AccessorCalls.cs:46:20:46:26 | access to indexer | normal |
+| AccessorCalls.cs:46:25:46:25 | 0 | AccessorCalls.cs:46:25:46:25 | 0 | normal |
+| AccessorCalls.cs:50:5:54:5 | {...} | AccessorCalls.cs:53:9:53:30 | ... = ... | normal |
+| AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:12 | this access | normal |
+| AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:12 | this access | normal |
+| AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:14 | access to field x | normal |
+| AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:14 | access to field x | normal |
+| AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:14 | access to field x | normal |
+| AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:20 | access to field Field | normal |
+| AccessorCalls.cs:51:9:51:36 | ... + ... | AccessorCalls.cs:51:9:51:36 | ... + ... | normal |
+| AccessorCalls.cs:51:9:51:36 | ... += ... | AccessorCalls.cs:51:9:51:36 | ... = ... | normal |
+| AccessorCalls.cs:51:9:51:36 | ... = ... | AccessorCalls.cs:51:9:51:36 | ... = ... | normal |
+| AccessorCalls.cs:51:9:51:37 | ...; | AccessorCalls.cs:51:9:51:36 | ... = ... | normal |
+| AccessorCalls.cs:51:25:51:28 | this access | AccessorCalls.cs:51:25:51:28 | this access | normal |
+| AccessorCalls.cs:51:25:51:30 | access to field x | AccessorCalls.cs:51:25:51:30 | access to field x | normal |
+| AccessorCalls.cs:51:25:51:36 | access to field Field | AccessorCalls.cs:51:25:51:36 | access to field Field | normal |
+| AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:12 | this access | normal |
+| AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:12 | this access | normal |
+| AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:14 | access to field x | normal |
+| AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:14 | access to field x | normal |
+| AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:14 | access to field x | normal |
+| AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:19 | access to property Prop | normal |
+| AccessorCalls.cs:52:9:52:34 | ... + ... | AccessorCalls.cs:52:9:52:34 | ... + ... | normal |
+| AccessorCalls.cs:52:9:52:34 | ... += ... | AccessorCalls.cs:52:9:52:34 | ... = ... | normal |
+| AccessorCalls.cs:52:9:52:34 | ... = ... | AccessorCalls.cs:52:9:52:34 | ... = ... | normal |
+| AccessorCalls.cs:52:9:52:35 | ...; | AccessorCalls.cs:52:9:52:34 | ... = ... | normal |
+| AccessorCalls.cs:52:24:52:27 | this access | AccessorCalls.cs:52:24:52:27 | this access | normal |
+| AccessorCalls.cs:52:24:52:29 | access to field x | AccessorCalls.cs:52:24:52:29 | access to field x | normal |
+| AccessorCalls.cs:52:24:52:34 | access to property Prop | AccessorCalls.cs:52:24:52:34 | access to property Prop | normal |
+| AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:12 | this access | normal |
+| AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:12 | this access | normal |
+| AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:9:53:14 | access to field x | normal |
+| AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:9:53:14 | access to field x | normal |
+| AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:9:53:17 | access to indexer | normal |
+| AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:16:53:16 | 0 | normal |
+| AccessorCalls.cs:53:9:53:30 | ... + ... | AccessorCalls.cs:53:9:53:30 | ... + ... | normal |
+| AccessorCalls.cs:53:9:53:30 | ... += ... | AccessorCalls.cs:53:9:53:30 | ... = ... | normal |
+| AccessorCalls.cs:53:9:53:30 | ... = ... | AccessorCalls.cs:53:9:53:30 | ... = ... | normal |
+| AccessorCalls.cs:53:9:53:31 | ...; | AccessorCalls.cs:53:9:53:30 | ... = ... | normal |
+| AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:16:53:16 | 0 | normal |
+| AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:16:53:16 | 0 | normal |
+| AccessorCalls.cs:53:22:53:25 | this access | AccessorCalls.cs:53:22:53:25 | this access | normal |
+| AccessorCalls.cs:53:22:53:27 | access to field x | AccessorCalls.cs:53:22:53:27 | access to field x | normal |
+| AccessorCalls.cs:53:22:53:30 | access to indexer | AccessorCalls.cs:53:22:53:30 | access to indexer | normal |
+| AccessorCalls.cs:53:29:53:29 | 0 | AccessorCalls.cs:53:29:53:29 | 0 | normal |
+| AccessorCalls.cs:57:5:59:5 | {...} | AccessorCalls.cs:58:9:58:85 | ... = ... | normal |
+| AccessorCalls.cs:58:9:58:45 | (..., ...) | AccessorCalls.cs:58:9:58:45 | (..., ...) | normal |
+| AccessorCalls.cs:58:9:58:85 | ... = ... | AccessorCalls.cs:58:9:58:85 | ... = ... | normal |
+| AccessorCalls.cs:58:9:58:86 | ...; | AccessorCalls.cs:58:9:58:85 | ... = ... | normal |
+| AccessorCalls.cs:58:10:58:13 | this access | AccessorCalls.cs:58:10:58:13 | this access | normal |
+| AccessorCalls.cs:58:10:58:19 | access to field Field | AccessorCalls.cs:58:10:58:13 | this access | normal |
+| AccessorCalls.cs:58:22:58:25 | this access | AccessorCalls.cs:58:22:58:25 | this access | normal |
+| AccessorCalls.cs:58:22:58:30 | access to property Prop | AccessorCalls.cs:58:22:58:25 | this access | normal |
+| AccessorCalls.cs:58:33:58:44 | (..., ...) | AccessorCalls.cs:58:33:58:44 | (..., ...) | normal |
+| AccessorCalls.cs:58:37:58:40 | this access | AccessorCalls.cs:58:37:58:40 | this access | normal |
+| AccessorCalls.cs:58:37:58:43 | access to indexer | AccessorCalls.cs:58:42:58:42 | 0 | normal |
+| AccessorCalls.cs:58:42:58:42 | 0 | AccessorCalls.cs:58:42:58:42 | 0 | normal |
+| AccessorCalls.cs:58:49:58:85 | (..., ...) | AccessorCalls.cs:58:49:58:85 | (..., ...) | normal |
+| AccessorCalls.cs:58:50:58:53 | this access | AccessorCalls.cs:58:50:58:53 | this access | normal |
+| AccessorCalls.cs:58:50:58:59 | access to field Field | AccessorCalls.cs:58:50:58:59 | access to field Field | normal |
+| AccessorCalls.cs:58:62:58:65 | this access | AccessorCalls.cs:58:62:58:65 | this access | normal |
+| AccessorCalls.cs:58:62:58:70 | access to property Prop | AccessorCalls.cs:58:62:58:70 | access to property Prop | normal |
+| AccessorCalls.cs:58:73:58:84 | (..., ...) | AccessorCalls.cs:58:73:58:84 | (..., ...) | normal |
+| AccessorCalls.cs:58:74:58:74 | 0 | AccessorCalls.cs:58:74:58:74 | 0 | normal |
+| AccessorCalls.cs:58:77:58:80 | this access | AccessorCalls.cs:58:77:58:80 | this access | normal |
+| AccessorCalls.cs:58:77:58:83 | access to indexer | AccessorCalls.cs:58:77:58:83 | access to indexer | normal |
+| AccessorCalls.cs:58:82:58:82 | 1 | AccessorCalls.cs:58:82:58:82 | 1 | normal |
+| AccessorCalls.cs:62:5:64:5 | {...} | AccessorCalls.cs:63:9:63:97 | ... = ... | normal |
+| AccessorCalls.cs:63:9:63:51 | (..., ...) | AccessorCalls.cs:63:9:63:51 | (..., ...) | normal |
+| AccessorCalls.cs:63:9:63:97 | ... = ... | AccessorCalls.cs:63:9:63:97 | ... = ... | normal |
+| AccessorCalls.cs:63:9:63:98 | ...; | AccessorCalls.cs:63:9:63:97 | ... = ... | normal |
+| AccessorCalls.cs:63:10:63:13 | this access | AccessorCalls.cs:63:10:63:13 | this access | normal |
+| AccessorCalls.cs:63:10:63:15 | access to field x | AccessorCalls.cs:63:10:63:15 | access to field x | normal |
+| AccessorCalls.cs:63:10:63:21 | access to field Field | AccessorCalls.cs:63:10:63:15 | access to field x | normal |
+| AccessorCalls.cs:63:24:63:27 | this access | AccessorCalls.cs:63:24:63:27 | this access | normal |
+| AccessorCalls.cs:63:24:63:29 | access to field x | AccessorCalls.cs:63:24:63:29 | access to field x | normal |
+| AccessorCalls.cs:63:24:63:34 | access to property Prop | AccessorCalls.cs:63:24:63:29 | access to field x | normal |
+| AccessorCalls.cs:63:37:63:50 | (..., ...) | AccessorCalls.cs:63:37:63:50 | (..., ...) | normal |
+| AccessorCalls.cs:63:41:63:44 | this access | AccessorCalls.cs:63:41:63:44 | this access | normal |
+| AccessorCalls.cs:63:41:63:46 | access to field x | AccessorCalls.cs:63:41:63:46 | access to field x | normal |
+| AccessorCalls.cs:63:41:63:49 | access to indexer | AccessorCalls.cs:63:48:63:48 | 0 | normal |
+| AccessorCalls.cs:63:48:63:48 | 0 | AccessorCalls.cs:63:48:63:48 | 0 | normal |
+| AccessorCalls.cs:63:55:63:97 | (..., ...) | AccessorCalls.cs:63:55:63:97 | (..., ...) | normal |
+| AccessorCalls.cs:63:56:63:59 | this access | AccessorCalls.cs:63:56:63:59 | this access | normal |
+| AccessorCalls.cs:63:56:63:61 | access to field x | AccessorCalls.cs:63:56:63:61 | access to field x | normal |
+| AccessorCalls.cs:63:56:63:67 | access to field Field | AccessorCalls.cs:63:56:63:67 | access to field Field | normal |
+| AccessorCalls.cs:63:70:63:73 | this access | AccessorCalls.cs:63:70:63:73 | this access | normal |
+| AccessorCalls.cs:63:70:63:75 | access to field x | AccessorCalls.cs:63:70:63:75 | access to field x | normal |
+| AccessorCalls.cs:63:70:63:80 | access to property Prop | AccessorCalls.cs:63:70:63:80 | access to property Prop | normal |
+| AccessorCalls.cs:63:83:63:96 | (..., ...) | AccessorCalls.cs:63:83:63:96 | (..., ...) | normal |
+| AccessorCalls.cs:63:84:63:84 | 0 | AccessorCalls.cs:63:84:63:84 | 0 | normal |
+| AccessorCalls.cs:63:87:63:90 | this access | AccessorCalls.cs:63:87:63:90 | this access | normal |
+| AccessorCalls.cs:63:87:63:92 | access to field x | AccessorCalls.cs:63:87:63:92 | access to field x | normal |
+| AccessorCalls.cs:63:87:63:95 | access to indexer | AccessorCalls.cs:63:87:63:95 | access to indexer | normal |
+| AccessorCalls.cs:63:94:63:94 | 1 | AccessorCalls.cs:63:94:63:94 | 1 | normal |
 | ArrayCreation.cs:3:19:3:28 | array creation of type Int32[] | ArrayCreation.cs:3:19:3:28 | array creation of type Int32[] | normal |
 | ArrayCreation.cs:3:27:3:27 | 0 | ArrayCreation.cs:3:27:3:27 | 0 | normal |
 | ArrayCreation.cs:5:20:5:32 | array creation of type Int32[,] | ArrayCreation.cs:5:20:5:32 | array creation of type Int32[,] | normal |
@@ -20,10 +252,8 @@
 | ArrayCreation.cs:9:48:9:48 | 3 | ArrayCreation.cs:9:48:9:48 | 3 | normal |
 | Assignments.cs:4:5:15:5 | {...} | Assignments.cs:14:9:14:35 | ... += ... | normal |
 | Assignments.cs:5:9:5:18 | ... ...; | Assignments.cs:5:13:5:17 | Int32 x = ... | normal |
-| Assignments.cs:5:13:5:13 | access to local variable x | Assignments.cs:5:13:5:13 | access to local variable x | normal |
 | Assignments.cs:5:13:5:17 | Int32 x = ... | Assignments.cs:5:13:5:17 | Int32 x = ... | normal |
 | Assignments.cs:5:17:5:17 | 0 | Assignments.cs:5:17:5:17 | 0 | normal |
-| Assignments.cs:6:9:6:9 | access to local variable x | Assignments.cs:6:9:6:9 | access to local variable x | normal |
 | Assignments.cs:6:9:6:9 | access to local variable x | Assignments.cs:6:9:6:9 | access to local variable x | normal |
 | Assignments.cs:6:9:6:14 | ... + ... | Assignments.cs:6:9:6:14 | ... + ... | normal |
 | Assignments.cs:6:9:6:14 | ... += ... | Assignments.cs:6:9:6:14 | ... = ... | normal |
@@ -31,11 +261,9 @@
 | Assignments.cs:6:9:6:15 | ...; | Assignments.cs:6:9:6:14 | ... = ... | normal |
 | Assignments.cs:6:14:6:14 | 1 | Assignments.cs:6:14:6:14 | 1 | normal |
 | Assignments.cs:8:9:8:22 | ... ...; | Assignments.cs:8:17:8:21 | dynamic d = ... | normal |
-| Assignments.cs:8:17:8:17 | access to local variable d | Assignments.cs:8:17:8:17 | access to local variable d | normal |
 | Assignments.cs:8:17:8:21 | dynamic d = ... | Assignments.cs:8:17:8:21 | dynamic d = ... | normal |
 | Assignments.cs:8:21:8:21 | 0 | Assignments.cs:8:21:8:21 | 0 | normal |
 | Assignments.cs:8:21:8:21 | (...) ... | Assignments.cs:8:21:8:21 | (...) ... | normal |
-| Assignments.cs:9:9:9:9 | access to local variable d | Assignments.cs:9:9:9:9 | access to local variable d | normal |
 | Assignments.cs:9:9:9:9 | access to local variable d | Assignments.cs:9:9:9:9 | access to local variable d | normal |
 | Assignments.cs:9:9:9:14 | ... -= ... | Assignments.cs:9:9:9:14 | ... = ... | normal |
 | Assignments.cs:9:9:9:14 | ... = ... | Assignments.cs:9:9:9:14 | ... = ... | normal |
@@ -43,17 +271,15 @@
 | Assignments.cs:9:9:9:15 | ...; | Assignments.cs:9:9:9:14 | ... = ... | normal |
 | Assignments.cs:9:14:9:14 | 2 | Assignments.cs:9:14:9:14 | 2 | normal |
 | Assignments.cs:11:9:11:34 | ... ...; | Assignments.cs:11:13:11:33 | Assignments a = ... | normal |
-| Assignments.cs:11:13:11:13 | access to local variable a | Assignments.cs:11:13:11:13 | access to local variable a | normal |
 | Assignments.cs:11:13:11:33 | Assignments a = ... | Assignments.cs:11:13:11:33 | Assignments a = ... | normal |
 | Assignments.cs:11:17:11:33 | object creation of type Assignments | Assignments.cs:11:17:11:33 | object creation of type Assignments | normal |
-| Assignments.cs:12:9:12:9 | access to local variable a | Assignments.cs:12:9:12:9 | access to local variable a | normal |
 | Assignments.cs:12:9:12:9 | access to local variable a | Assignments.cs:12:9:12:9 | access to local variable a | normal |
 | Assignments.cs:12:9:12:17 | ... += ... | Assignments.cs:12:9:12:17 | ... = ... | normal |
 | Assignments.cs:12:9:12:17 | ... = ... | Assignments.cs:12:9:12:17 | ... = ... | normal |
 | Assignments.cs:12:9:12:17 | call to operator + | Assignments.cs:12:9:12:17 | call to operator + | normal |
 | Assignments.cs:12:9:12:18 | ...; | Assignments.cs:12:9:12:17 | ... = ... | normal |
 | Assignments.cs:12:14:12:17 | this access | Assignments.cs:12:14:12:17 | this access | normal |
-| Assignments.cs:14:9:14:13 | access to event Event | Assignments.cs:14:9:14:13 | access to event Event | normal |
+| Assignments.cs:14:9:14:13 | access to event Event | Assignments.cs:14:9:14:13 | this access | normal |
 | Assignments.cs:14:9:14:13 | this access | Assignments.cs:14:9:14:13 | this access | normal |
 | Assignments.cs:14:9:14:35 | ... += ... | Assignments.cs:14:9:14:35 | ... += ... | normal |
 | Assignments.cs:14:9:14:36 | ...; | Assignments.cs:14:9:14:35 | ... += ... | normal |
@@ -367,19 +593,16 @@
 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | normal |
 | ConditionalAccess.cs:22:5:26:5 | {...} | ConditionalAccess.cs:25:9:25:32 | ... = ... | normal |
 | ConditionalAccess.cs:23:9:23:39 | ... ...; | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | normal |
-| ConditionalAccess.cs:23:13:23:13 | access to local variable j | ConditionalAccess.cs:23:13:23:13 | access to local variable j | normal |
 | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | normal |
 | ConditionalAccess.cs:23:18:23:29 | (...) ... | ConditionalAccess.cs:23:18:23:29 | (...) ... | null |
 | ConditionalAccess.cs:23:26:23:29 | null | ConditionalAccess.cs:23:26:23:29 | null | normal |
 | ConditionalAccess.cs:23:32:23:38 | access to property Length | ConditionalAccess.cs:23:18:23:29 | (...) ... | null |
 | ConditionalAccess.cs:23:32:23:38 | access to property Length | ConditionalAccess.cs:23:32:23:38 | access to property Length | normal |
 | ConditionalAccess.cs:24:9:24:38 | ... ...; | ConditionalAccess.cs:24:13:24:37 | String s = ... | normal |
-| ConditionalAccess.cs:24:13:24:13 | access to local variable s | ConditionalAccess.cs:24:13:24:13 | access to local variable s | normal |
 | ConditionalAccess.cs:24:13:24:37 | String s = ... | ConditionalAccess.cs:24:13:24:37 | String s = ... | normal |
 | ConditionalAccess.cs:24:18:24:24 | (...) ... | ConditionalAccess.cs:24:18:24:24 | (...) ... | non-null |
 | ConditionalAccess.cs:24:24:24:24 | access to parameter i | ConditionalAccess.cs:24:24:24:24 | access to parameter i | normal |
 | ConditionalAccess.cs:24:27:24:37 | call to method ToString | ConditionalAccess.cs:24:27:24:37 | call to method ToString | normal |
-| ConditionalAccess.cs:25:9:25:9 | access to local variable s | ConditionalAccess.cs:25:9:25:9 | access to local variable s | normal |
 | ConditionalAccess.cs:25:9:25:32 | ... = ... | ConditionalAccess.cs:25:9:25:32 | ... = ... | normal |
 | ConditionalAccess.cs:25:9:25:33 | ...; | ConditionalAccess.cs:25:9:25:32 | ... = ... | normal |
 | ConditionalAccess.cs:25:13:25:14 | "" | ConditionalAccess.cs:25:13:25:14 | "" | non-null |
@@ -410,7 +633,6 @@
 | Conditions.cs:8:13:8:16 | ...; | Conditions.cs:8:13:8:15 | ...-- | normal |
 | Conditions.cs:12:5:20:5 | {...} | Conditions.cs:19:9:19:17 | return ...; | return |
 | Conditions.cs:13:9:13:18 | ... ...; | Conditions.cs:13:13:13:17 | Int32 x = ... | normal |
-| Conditions.cs:13:13:13:13 | access to local variable x | Conditions.cs:13:13:13:13 | access to local variable x | normal |
 | Conditions.cs:13:13:13:17 | Int32 x = ... | Conditions.cs:13:13:13:17 | Int32 x = ... | normal |
 | Conditions.cs:13:17:13:17 | 0 | Conditions.cs:13:17:13:17 | 0 | normal |
 | Conditions.cs:14:9:15:16 | if (...) ... | Conditions.cs:14:13:14:13 | access to parameter b | false/false |
@@ -440,7 +662,6 @@
 | Conditions.cs:19:16:19:16 | access to local variable x | Conditions.cs:19:16:19:16 | access to local variable x | normal |
 | Conditions.cs:23:5:31:5 | {...} | Conditions.cs:30:9:30:17 | return ...; | return |
 | Conditions.cs:24:9:24:18 | ... ...; | Conditions.cs:24:13:24:17 | Int32 x = ... | normal |
-| Conditions.cs:24:13:24:13 | access to local variable x | Conditions.cs:24:13:24:13 | access to local variable x | normal |
 | Conditions.cs:24:13:24:17 | Int32 x = ... | Conditions.cs:24:13:24:17 | Int32 x = ... | normal |
 | Conditions.cs:24:17:24:17 | 0 | Conditions.cs:24:17:24:17 | 0 | normal |
 | Conditions.cs:25:9:27:20 | if (...) ... | Conditions.cs:25:13:25:14 | access to parameter b1 | false/false |
@@ -466,18 +687,15 @@
 | Conditions.cs:30:16:30:16 | access to local variable x | Conditions.cs:30:16:30:16 | access to local variable x | normal |
 | Conditions.cs:34:5:44:5 | {...} | Conditions.cs:43:9:43:17 | return ...; | return |
 | Conditions.cs:35:9:35:18 | ... ...; | Conditions.cs:35:13:35:17 | Int32 x = ... | normal |
-| Conditions.cs:35:13:35:13 | access to local variable x | Conditions.cs:35:13:35:13 | access to local variable x | normal |
 | Conditions.cs:35:13:35:17 | Int32 x = ... | Conditions.cs:35:13:35:17 | Int32 x = ... | normal |
 | Conditions.cs:35:17:35:17 | 0 | Conditions.cs:35:17:35:17 | 0 | normal |
 | Conditions.cs:36:9:36:23 | ... ...; | Conditions.cs:36:13:36:22 | Boolean b2 = ... | normal |
-| Conditions.cs:36:13:36:14 | access to local variable b2 | Conditions.cs:36:13:36:14 | access to local variable b2 | normal |
 | Conditions.cs:36:13:36:22 | Boolean b2 = ... | Conditions.cs:36:13:36:22 | Boolean b2 = ... | normal |
 | Conditions.cs:36:18:36:22 | false | Conditions.cs:36:18:36:22 | false | normal |
 | Conditions.cs:37:9:38:20 | if (...) ... | Conditions.cs:37:13:37:14 | access to parameter b1 | false/false |
 | Conditions.cs:37:9:38:20 | if (...) ... | Conditions.cs:38:13:38:19 | ... = ... | normal |
 | Conditions.cs:37:13:37:14 | access to parameter b1 | Conditions.cs:37:13:37:14 | access to parameter b1 | false/false |
 | Conditions.cs:37:13:37:14 | access to parameter b1 | Conditions.cs:37:13:37:14 | access to parameter b1 | true/true |
-| Conditions.cs:38:13:38:14 | access to local variable b2 | Conditions.cs:38:13:38:14 | access to local variable b2 | normal |
 | Conditions.cs:38:13:38:19 | ... = ... | Conditions.cs:38:13:38:19 | ... = ... | normal |
 | Conditions.cs:38:13:38:20 | ...; | Conditions.cs:38:13:38:19 | ... = ... | normal |
 | Conditions.cs:38:18:38:19 | access to parameter b1 | Conditions.cs:38:18:38:19 | access to parameter b1 | normal |
@@ -499,7 +717,6 @@
 | Conditions.cs:43:16:43:16 | access to local variable x | Conditions.cs:43:16:43:16 | access to local variable x | normal |
 | Conditions.cs:47:5:55:5 | {...} | Conditions.cs:54:9:54:17 | return ...; | return |
 | Conditions.cs:48:9:48:18 | ... ...; | Conditions.cs:48:13:48:17 | Int32 y = ... | normal |
-| Conditions.cs:48:13:48:13 | access to local variable y | Conditions.cs:48:13:48:13 | access to local variable y | normal |
 | Conditions.cs:48:13:48:17 | Int32 y = ... | Conditions.cs:48:13:48:17 | Int32 y = ... | normal |
 | Conditions.cs:48:17:48:17 | 0 | Conditions.cs:48:17:48:17 | 0 | normal |
 | Conditions.cs:49:9:53:9 | while (...) ... | Conditions.cs:49:16:49:22 | ... > ... | false/false |
@@ -521,7 +738,6 @@
 | Conditions.cs:54:16:54:16 | access to local variable y | Conditions.cs:54:16:54:16 | access to local variable y | normal |
 | Conditions.cs:58:5:68:5 | {...} | Conditions.cs:67:9:67:17 | return ...; | return |
 | Conditions.cs:59:9:59:18 | ... ...; | Conditions.cs:59:13:59:17 | Int32 y = ... | normal |
-| Conditions.cs:59:13:59:13 | access to local variable y | Conditions.cs:59:13:59:13 | access to local variable y | normal |
 | Conditions.cs:59:13:59:17 | Int32 y = ... | Conditions.cs:59:13:59:17 | Int32 y = ... | normal |
 | Conditions.cs:59:17:59:17 | 0 | Conditions.cs:59:17:59:17 | 0 | normal |
 | Conditions.cs:60:9:64:9 | while (...) ... | Conditions.cs:60:16:60:22 | ... > ... | false/false |
@@ -550,14 +766,12 @@
 | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:67:16:67:16 | access to local variable y | normal |
 | Conditions.cs:71:5:84:5 | {...} | Conditions.cs:83:9:83:17 | return ...; | return |
 | Conditions.cs:72:9:72:30 | ... ...; | Conditions.cs:72:13:72:29 | Boolean b = ... | normal |
-| Conditions.cs:72:13:72:13 | access to local variable b | Conditions.cs:72:13:72:13 | access to local variable b | normal |
 | Conditions.cs:72:13:72:29 | Boolean b = ... | Conditions.cs:72:13:72:29 | Boolean b = ... | normal |
 | Conditions.cs:72:17:72:18 | access to parameter ss | Conditions.cs:72:17:72:18 | access to parameter ss | normal |
 | Conditions.cs:72:17:72:25 | access to property Length | Conditions.cs:72:17:72:25 | access to property Length | normal |
 | Conditions.cs:72:17:72:29 | ... > ... | Conditions.cs:72:17:72:29 | ... > ... | normal |
 | Conditions.cs:72:29:72:29 | 0 | Conditions.cs:72:29:72:29 | 0 | normal |
 | Conditions.cs:73:9:73:18 | ... ...; | Conditions.cs:73:13:73:17 | Int32 x = ... | normal |
-| Conditions.cs:73:13:73:13 | access to local variable x | Conditions.cs:73:13:73:13 | access to local variable x | normal |
 | Conditions.cs:73:13:73:17 | Int32 x = ... | Conditions.cs:73:13:73:17 | Int32 x = ... | normal |
 | Conditions.cs:73:17:73:17 | 0 | Conditions.cs:73:17:73:17 | 0 | normal |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | empty |
@@ -577,7 +791,6 @@
 | Conditions.cs:78:17:78:21 | ... > ... | Conditions.cs:78:17:78:21 | ... > ... | false/false |
 | Conditions.cs:78:17:78:21 | ... > ... | Conditions.cs:78:17:78:21 | ... > ... | true/true |
 | Conditions.cs:78:21:78:21 | 0 | Conditions.cs:78:21:78:21 | 0 | normal |
-| Conditions.cs:79:17:79:17 | access to local variable b | Conditions.cs:79:17:79:17 | access to local variable b | normal |
 | Conditions.cs:79:17:79:25 | ... = ... | Conditions.cs:79:17:79:25 | ... = ... | normal |
 | Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:25 | ... = ... | normal |
 | Conditions.cs:79:21:79:25 | false | Conditions.cs:79:21:79:25 | false | normal |
@@ -592,14 +805,12 @@
 | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:83:16:83:16 | access to local variable x | normal |
 | Conditions.cs:87:5:100:5 | {...} | Conditions.cs:99:9:99:17 | return ...; | return |
 | Conditions.cs:88:9:88:30 | ... ...; | Conditions.cs:88:13:88:29 | Boolean b = ... | normal |
-| Conditions.cs:88:13:88:13 | access to local variable b | Conditions.cs:88:13:88:13 | access to local variable b | normal |
 | Conditions.cs:88:13:88:29 | Boolean b = ... | Conditions.cs:88:13:88:29 | Boolean b = ... | normal |
 | Conditions.cs:88:17:88:18 | access to parameter ss | Conditions.cs:88:17:88:18 | access to parameter ss | normal |
 | Conditions.cs:88:17:88:25 | access to property Length | Conditions.cs:88:17:88:25 | access to property Length | normal |
 | Conditions.cs:88:17:88:29 | ... > ... | Conditions.cs:88:17:88:29 | ... > ... | normal |
 | Conditions.cs:88:29:88:29 | 0 | Conditions.cs:88:29:88:29 | 0 | normal |
 | Conditions.cs:89:9:89:18 | ... ...; | Conditions.cs:89:13:89:17 | Int32 x = ... | normal |
-| Conditions.cs:89:13:89:13 | access to local variable x | Conditions.cs:89:13:89:13 | access to local variable x | normal |
 | Conditions.cs:89:13:89:17 | Int32 x = ... | Conditions.cs:89:13:89:17 | Int32 x = ... | normal |
 | Conditions.cs:89:17:89:17 | 0 | Conditions.cs:89:17:89:17 | 0 | normal |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | empty |
@@ -619,7 +830,6 @@
 | Conditions.cs:94:17:94:21 | ... > ... | Conditions.cs:94:17:94:21 | ... > ... | false/false |
 | Conditions.cs:94:17:94:21 | ... > ... | Conditions.cs:94:17:94:21 | ... > ... | true/true |
 | Conditions.cs:94:21:94:21 | 0 | Conditions.cs:94:21:94:21 | 0 | normal |
-| Conditions.cs:95:17:95:17 | access to local variable b | Conditions.cs:95:17:95:17 | access to local variable b | normal |
 | Conditions.cs:95:17:95:25 | ... = ... | Conditions.cs:95:17:95:25 | ... = ... | normal |
 | Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:17:95:25 | ... = ... | normal |
 | Conditions.cs:95:21:95:25 | false | Conditions.cs:95:21:95:25 | false | normal |
@@ -634,7 +844,6 @@
 | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:99:16:99:16 | access to local variable x | normal |
 | Conditions.cs:103:5:111:5 | {...} | Conditions.cs:110:9:110:17 | return ...; | return |
 | Conditions.cs:104:9:104:29 | ... ...; | Conditions.cs:104:13:104:28 | String x = ... | normal |
-| Conditions.cs:104:13:104:13 | access to local variable x | Conditions.cs:104:13:104:13 | access to local variable x | normal |
 | Conditions.cs:104:13:104:28 | String x = ... | Conditions.cs:104:13:104:28 | String x = ... | normal |
 | Conditions.cs:104:17:104:17 | access to parameter b | Conditions.cs:104:17:104:17 | access to parameter b | normal |
 | Conditions.cs:104:17:104:28 | call to method ToString | Conditions.cs:104:17:104:28 | call to method ToString | normal |
@@ -642,7 +851,6 @@
 | Conditions.cs:105:9:106:20 | if (...) ... | Conditions.cs:106:13:106:19 | ... = ... | normal |
 | Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:105:13:105:13 | access to parameter b | false/false |
 | Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:105:13:105:13 | access to parameter b | true/true |
-| Conditions.cs:106:13:106:13 | access to local variable x | Conditions.cs:106:13:106:13 | access to local variable x | normal |
 | Conditions.cs:106:13:106:13 | access to local variable x | Conditions.cs:106:13:106:13 | access to local variable x | normal |
 | Conditions.cs:106:13:106:19 | ... + ... | Conditions.cs:106:13:106:19 | ... + ... | normal |
 | Conditions.cs:106:13:106:19 | ... += ... | Conditions.cs:106:13:106:19 | ... = ... | normal |
@@ -664,7 +872,6 @@
 | Conditions.cs:108:18:108:18 | access to parameter b | Conditions.cs:108:18:108:18 | access to parameter b | false/false |
 | Conditions.cs:108:18:108:18 | access to parameter b | Conditions.cs:108:18:108:18 | access to parameter b | true/true |
 | Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:17:109:17 | access to local variable x | normal |
-| Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:17:109:17 | access to local variable x | normal |
 | Conditions.cs:109:17:109:23 | ... + ... | Conditions.cs:109:17:109:23 | ... + ... | normal |
 | Conditions.cs:109:17:109:23 | ... += ... | Conditions.cs:109:17:109:23 | ... = ... | normal |
 | Conditions.cs:109:17:109:23 | ... = ... | Conditions.cs:109:17:109:23 | ... = ... | normal |
@@ -674,11 +881,9 @@
 | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:110:16:110:16 | access to local variable x | normal |
 | Conditions.cs:114:5:124:5 | {...} | Conditions.cs:116:24:116:38 | ... < ... | false/false |
 | Conditions.cs:115:9:115:24 | ... ...; | Conditions.cs:115:16:115:23 | String s = ... | normal |
-| Conditions.cs:115:16:115:16 | access to local variable s | Conditions.cs:115:16:115:16 | access to local variable s | normal |
 | Conditions.cs:115:16:115:23 | String s = ... | Conditions.cs:115:16:115:23 | String s = ... | normal |
 | Conditions.cs:115:20:115:23 | null | Conditions.cs:115:20:115:23 | null | normal |
 | Conditions.cs:116:9:123:9 | for (...;...;...) ... | Conditions.cs:116:24:116:38 | ... < ... | false/false |
-| Conditions.cs:116:17:116:17 | access to local variable i | Conditions.cs:116:17:116:17 | access to local variable i | normal |
 | Conditions.cs:116:17:116:21 | Int32 i = ... | Conditions.cs:116:17:116:21 | Int32 i = ... | normal |
 | Conditions.cs:116:21:116:21 | 0 | Conditions.cs:116:21:116:21 | 0 | normal |
 | Conditions.cs:116:24:116:24 | access to local variable i | Conditions.cs:116:24:116:24 | access to local variable i | normal |
@@ -691,7 +896,6 @@
 | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:121:17:121:20 | access to local variable last | false/false |
 | Conditions.cs:117:9:123:9 | {...} | Conditions.cs:122:17:122:24 | ... = ... | normal |
 | Conditions.cs:118:13:118:44 | ... ...; | Conditions.cs:118:17:118:43 | Boolean last = ... | normal |
-| Conditions.cs:118:17:118:20 | access to local variable last | Conditions.cs:118:17:118:20 | access to local variable last | normal |
 | Conditions.cs:118:17:118:43 | Boolean last = ... | Conditions.cs:118:17:118:43 | Boolean last = ... | normal |
 | Conditions.cs:118:24:118:24 | access to local variable i | Conditions.cs:118:24:118:24 | access to local variable i | normal |
 | Conditions.cs:118:24:118:43 | ... == ... | Conditions.cs:118:24:118:43 | ... == ... | normal |
@@ -705,7 +909,6 @@
 | Conditions.cs:119:17:119:21 | !... | Conditions.cs:119:18:119:21 | access to local variable last | true/false |
 | Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:119:18:119:21 | access to local variable last | false/false |
 | Conditions.cs:119:18:119:21 | access to local variable last | Conditions.cs:119:18:119:21 | access to local variable last | true/true |
-| Conditions.cs:120:17:120:17 | access to local variable s | Conditions.cs:120:17:120:17 | access to local variable s | normal |
 | Conditions.cs:120:17:120:22 | ... = ... | Conditions.cs:120:17:120:22 | ... = ... | normal |
 | Conditions.cs:120:17:120:23 | ...; | Conditions.cs:120:17:120:22 | ... = ... | normal |
 | Conditions.cs:120:21:120:22 | "" | Conditions.cs:120:21:120:22 | "" | normal |
@@ -713,7 +916,6 @@
 | Conditions.cs:121:13:122:25 | if (...) ... | Conditions.cs:122:17:122:24 | ... = ... | normal |
 | Conditions.cs:121:17:121:20 | access to local variable last | Conditions.cs:121:17:121:20 | access to local variable last | false/false |
 | Conditions.cs:121:17:121:20 | access to local variable last | Conditions.cs:121:17:121:20 | access to local variable last | true/true |
-| Conditions.cs:122:17:122:17 | access to local variable s | Conditions.cs:122:17:122:17 | access to local variable s | normal |
 | Conditions.cs:122:17:122:24 | ... = ... | Conditions.cs:122:17:122:24 | ... = ... | normal |
 | Conditions.cs:122:17:122:25 | ...; | Conditions.cs:122:17:122:24 | ... = ... | normal |
 | Conditions.cs:122:21:122:24 | null | Conditions.cs:122:21:122:24 | null | normal |
@@ -875,7 +1077,6 @@
 | ExitMethods.cs:121:9:121:29 | ...; | ExitMethods.cs:121:9:121:28 | call to method IsTrue | throw(AssertFailedException) |
 | ExitMethods.cs:121:23:121:27 | false | ExitMethods.cs:121:23:121:27 | false | normal |
 | ExitMethods.cs:122:9:122:18 | ... ...; | ExitMethods.cs:122:13:122:17 | Int32 x = ... | normal |
-| ExitMethods.cs:122:13:122:13 | access to local variable x | ExitMethods.cs:122:13:122:13 | access to local variable x | normal |
 | ExitMethods.cs:122:13:122:17 | Int32 x = ... | ExitMethods.cs:122:13:122:17 | Int32 x = ... | normal |
 | ExitMethods.cs:122:17:122:17 | 0 | ExitMethods.cs:122:17:122:17 | 0 | normal |
 | ExitMethods.cs:126:5:129:5 | {...} | ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | throw(AssertFailedException) |
@@ -884,7 +1085,6 @@
 | ExitMethods.cs:127:9:127:26 | this access | ExitMethods.cs:127:9:127:26 | this access | normal |
 | ExitMethods.cs:127:9:127:27 | ...; | ExitMethods.cs:127:9:127:26 | call to method FailingAssertion | throw(AssertFailedException) |
 | ExitMethods.cs:128:9:128:18 | ... ...; | ExitMethods.cs:128:13:128:17 | Int32 x = ... | normal |
-| ExitMethods.cs:128:13:128:13 | access to local variable x | ExitMethods.cs:128:13:128:13 | access to local variable x | normal |
 | ExitMethods.cs:128:13:128:17 | Int32 x = ... | ExitMethods.cs:128:13:128:17 | Int32 x = ... | normal |
 | ExitMethods.cs:128:17:128:17 | 0 | ExitMethods.cs:128:17:128:17 | 0 | normal |
 | ExitMethods.cs:131:33:131:49 | call to method IsFalse | ExitMethods.cs:131:33:131:49 | call to method IsFalse | normal |
@@ -896,7 +1096,6 @@
 | ExitMethods.cs:135:9:135:26 | ...; | ExitMethods.cs:135:9:135:25 | call to method AssertFalse | throw(AssertFailedException) |
 | ExitMethods.cs:135:21:135:24 | true | ExitMethods.cs:135:21:135:24 | true | normal |
 | ExitMethods.cs:136:9:136:18 | ... ...; | ExitMethods.cs:136:13:136:17 | Int32 x = ... | normal |
-| ExitMethods.cs:136:13:136:13 | access to local variable x | ExitMethods.cs:136:13:136:13 | access to local variable x | normal |
 | ExitMethods.cs:136:13:136:17 | Int32 x = ... | ExitMethods.cs:136:13:136:17 | Int32 x = ... | normal |
 | ExitMethods.cs:136:17:136:17 | 0 | ExitMethods.cs:136:17:136:17 | 0 | normal |
 | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:7:9:7:30 | return ...; | return |
@@ -978,19 +1177,15 @@
 | Initializers.cs:6:28:6:30 | {...} | Initializers.cs:6:28:6:30 | {...} | normal |
 | Initializers.cs:9:5:12:5 | {...} | Initializers.cs:11:13:11:63 | Initializers[] iz = ... | normal |
 | Initializers.cs:10:9:10:54 | ... ...; | Initializers.cs:10:13:10:53 | Initializers i = ... | normal |
-| Initializers.cs:10:13:10:13 | access to local variable i | Initializers.cs:10:13:10:13 | access to local variable i | normal |
 | Initializers.cs:10:13:10:53 | Initializers i = ... | Initializers.cs:10:13:10:53 | Initializers i = ... | normal |
 | Initializers.cs:10:17:10:53 | object creation of type Initializers | Initializers.cs:10:38:10:53 | { ..., ... } | normal |
 | Initializers.cs:10:34:10:35 | "" | Initializers.cs:10:34:10:35 | "" | normal |
 | Initializers.cs:10:38:10:53 | { ..., ... } | Initializers.cs:10:38:10:53 | { ..., ... } | normal |
-| Initializers.cs:10:40:10:40 | access to field F | Initializers.cs:10:40:10:40 | access to field F | normal |
 | Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:40:10:44 | ... = ... | normal |
 | Initializers.cs:10:44:10:44 | 0 | Initializers.cs:10:44:10:44 | 0 | normal |
-| Initializers.cs:10:47:10:47 | access to property G | Initializers.cs:10:47:10:47 | access to property G | normal |
 | Initializers.cs:10:47:10:51 | ... = ... | Initializers.cs:10:47:10:51 | ... = ... | normal |
 | Initializers.cs:10:51:10:51 | 1 | Initializers.cs:10:51:10:51 | 1 | normal |
 | Initializers.cs:11:9:11:64 | ... ...; | Initializers.cs:11:13:11:63 | Initializers[] iz = ... | normal |
-| Initializers.cs:11:13:11:14 | access to local variable iz | Initializers.cs:11:13:11:14 | access to local variable iz | normal |
 | Initializers.cs:11:13:11:63 | Initializers[] iz = ... | Initializers.cs:11:13:11:63 | Initializers[] iz = ... | normal |
 | Initializers.cs:11:18:11:63 | 2 | Initializers.cs:11:18:11:63 | 2 | normal |
 | Initializers.cs:11:18:11:63 | array creation of type Initializers[] | Initializers.cs:11:37:11:63 | { ..., ... } | normal |
@@ -1064,20 +1259,17 @@
 | NullCoalescing.cs:11:68:11:68 | 1 | NullCoalescing.cs:11:68:11:68 | 1 | normal |
 | NullCoalescing.cs:14:5:18:5 | {...} | NullCoalescing.cs:17:9:17:24 | ... = ... | normal |
 | NullCoalescing.cs:15:9:15:32 | ... ...; | NullCoalescing.cs:15:13:15:31 | Int32 j = ... | normal |
-| NullCoalescing.cs:15:13:15:13 | access to local variable j | NullCoalescing.cs:15:13:15:13 | access to local variable j | normal |
 | NullCoalescing.cs:15:13:15:31 | Int32 j = ... | NullCoalescing.cs:15:13:15:31 | Int32 j = ... | normal |
 | NullCoalescing.cs:15:17:15:26 | (...) ... | NullCoalescing.cs:15:17:15:26 | (...) ... | null |
 | NullCoalescing.cs:15:17:15:31 | ... ?? ... | NullCoalescing.cs:15:31:15:31 | 0 | normal |
 | NullCoalescing.cs:15:23:15:26 | null | NullCoalescing.cs:15:23:15:26 | null | normal |
 | NullCoalescing.cs:15:31:15:31 | 0 | NullCoalescing.cs:15:31:15:31 | 0 | normal |
 | NullCoalescing.cs:16:9:16:26 | ... ...; | NullCoalescing.cs:16:13:16:25 | String s = ... | normal |
-| NullCoalescing.cs:16:13:16:13 | access to local variable s | NullCoalescing.cs:16:13:16:13 | access to local variable s | normal |
 | NullCoalescing.cs:16:13:16:25 | String s = ... | NullCoalescing.cs:16:13:16:25 | String s = ... | normal |
 | NullCoalescing.cs:16:17:16:18 | "" | NullCoalescing.cs:16:17:16:18 | "" | non-null |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:16:17:16:18 | "" | non-null |
 | NullCoalescing.cs:16:17:16:25 | ... ?? ... | NullCoalescing.cs:16:23:16:25 | "a" | normal |
 | NullCoalescing.cs:16:23:16:25 | "a" | NullCoalescing.cs:16:23:16:25 | "a" | normal |
-| NullCoalescing.cs:17:9:17:9 | access to local variable j | NullCoalescing.cs:17:9:17:9 | access to local variable j | normal |
 | NullCoalescing.cs:17:9:17:24 | ... = ... | NullCoalescing.cs:17:9:17:24 | ... = ... | normal |
 | NullCoalescing.cs:17:9:17:25 | ...; | NullCoalescing.cs:17:9:17:24 | ... = ... | normal |
 | NullCoalescing.cs:17:13:17:19 | (...) ... | NullCoalescing.cs:17:13:17:19 | (...) ... | non-null |
@@ -1087,7 +1279,6 @@
 | NullCoalescing.cs:17:24:17:24 | 1 | NullCoalescing.cs:17:24:17:24 | 1 | normal |
 | Patterns.cs:6:5:43:5 | {...} | Patterns.cs:40:17:40:17 | access to local variable o | normal |
 | Patterns.cs:7:9:7:24 | ... ...; | Patterns.cs:7:16:7:23 | Object o = ... | normal |
-| Patterns.cs:7:16:7:16 | access to local variable o | Patterns.cs:7:16:7:16 | access to local variable o | normal |
 | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:7:16:7:23 | Object o = ... | normal |
 | Patterns.cs:7:20:7:23 | null | Patterns.cs:7:20:7:23 | null | normal |
 | Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:10:13:10:42 | call to method WriteLine | normal |
@@ -1183,70 +1374,55 @@
 | Qualifiers.cs:8:41:8:44 | null | Qualifiers.cs:8:41:8:44 | null | normal |
 | Qualifiers.cs:11:5:31:5 | {...} | Qualifiers.cs:30:9:30:46 | ... = ... | normal |
 | Qualifiers.cs:12:9:12:22 | ... ...; | Qualifiers.cs:12:13:12:21 | Qualifiers q = ... | normal |
-| Qualifiers.cs:12:13:12:13 | access to local variable q | Qualifiers.cs:12:13:12:13 | access to local variable q | normal |
 | Qualifiers.cs:12:13:12:21 | Qualifiers q = ... | Qualifiers.cs:12:13:12:21 | Qualifiers q = ... | normal |
 | Qualifiers.cs:12:17:12:21 | access to field Field | Qualifiers.cs:12:17:12:21 | access to field Field | normal |
 | Qualifiers.cs:12:17:12:21 | this access | Qualifiers.cs:12:17:12:21 | this access | normal |
-| Qualifiers.cs:13:9:13:9 | access to local variable q | Qualifiers.cs:13:9:13:9 | access to local variable q | normal |
 | Qualifiers.cs:13:9:13:20 | ... = ... | Qualifiers.cs:13:9:13:20 | ... = ... | normal |
 | Qualifiers.cs:13:9:13:21 | ...; | Qualifiers.cs:13:9:13:20 | ... = ... | normal |
 | Qualifiers.cs:13:13:13:20 | access to property Property | Qualifiers.cs:13:13:13:20 | access to property Property | normal |
 | Qualifiers.cs:13:13:13:20 | this access | Qualifiers.cs:13:13:13:20 | this access | normal |
-| Qualifiers.cs:14:9:14:9 | access to local variable q | Qualifiers.cs:14:9:14:9 | access to local variable q | normal |
 | Qualifiers.cs:14:9:14:20 | ... = ... | Qualifiers.cs:14:9:14:20 | ... = ... | normal |
 | Qualifiers.cs:14:9:14:21 | ...; | Qualifiers.cs:14:9:14:20 | ... = ... | normal |
 | Qualifiers.cs:14:13:14:20 | call to method Method | Qualifiers.cs:14:13:14:20 | call to method Method | normal |
 | Qualifiers.cs:14:13:14:20 | this access | Qualifiers.cs:14:13:14:20 | this access | normal |
-| Qualifiers.cs:16:9:16:9 | access to local variable q | Qualifiers.cs:16:9:16:9 | access to local variable q | normal |
 | Qualifiers.cs:16:9:16:22 | ... = ... | Qualifiers.cs:16:9:16:22 | ... = ... | normal |
 | Qualifiers.cs:16:9:16:23 | ...; | Qualifiers.cs:16:9:16:22 | ... = ... | normal |
 | Qualifiers.cs:16:13:16:16 | this access | Qualifiers.cs:16:13:16:16 | this access | normal |
 | Qualifiers.cs:16:13:16:22 | access to field Field | Qualifiers.cs:16:13:16:22 | access to field Field | normal |
-| Qualifiers.cs:17:9:17:9 | access to local variable q | Qualifiers.cs:17:9:17:9 | access to local variable q | normal |
 | Qualifiers.cs:17:9:17:25 | ... = ... | Qualifiers.cs:17:9:17:25 | ... = ... | normal |
 | Qualifiers.cs:17:9:17:26 | ...; | Qualifiers.cs:17:9:17:25 | ... = ... | normal |
 | Qualifiers.cs:17:13:17:16 | this access | Qualifiers.cs:17:13:17:16 | this access | normal |
 | Qualifiers.cs:17:13:17:25 | access to property Property | Qualifiers.cs:17:13:17:25 | access to property Property | normal |
-| Qualifiers.cs:18:9:18:9 | access to local variable q | Qualifiers.cs:18:9:18:9 | access to local variable q | normal |
 | Qualifiers.cs:18:9:18:25 | ... = ... | Qualifiers.cs:18:9:18:25 | ... = ... | normal |
 | Qualifiers.cs:18:9:18:26 | ...; | Qualifiers.cs:18:9:18:25 | ... = ... | normal |
 | Qualifiers.cs:18:13:18:16 | this access | Qualifiers.cs:18:13:18:16 | this access | normal |
 | Qualifiers.cs:18:13:18:25 | call to method Method | Qualifiers.cs:18:13:18:25 | call to method Method | normal |
-| Qualifiers.cs:20:9:20:9 | access to local variable q | Qualifiers.cs:20:9:20:9 | access to local variable q | normal |
 | Qualifiers.cs:20:9:20:23 | ... = ... | Qualifiers.cs:20:9:20:23 | ... = ... | normal |
 | Qualifiers.cs:20:9:20:24 | ...; | Qualifiers.cs:20:9:20:23 | ... = ... | normal |
 | Qualifiers.cs:20:13:20:23 | access to field StaticField | Qualifiers.cs:20:13:20:23 | access to field StaticField | normal |
-| Qualifiers.cs:21:9:21:9 | access to local variable q | Qualifiers.cs:21:9:21:9 | access to local variable q | normal |
 | Qualifiers.cs:21:9:21:26 | ... = ... | Qualifiers.cs:21:9:21:26 | ... = ... | normal |
 | Qualifiers.cs:21:9:21:27 | ...; | Qualifiers.cs:21:9:21:26 | ... = ... | normal |
 | Qualifiers.cs:21:13:21:26 | access to property StaticProperty | Qualifiers.cs:21:13:21:26 | access to property StaticProperty | normal |
-| Qualifiers.cs:22:9:22:9 | access to local variable q | Qualifiers.cs:22:9:22:9 | access to local variable q | normal |
 | Qualifiers.cs:22:9:22:26 | ... = ... | Qualifiers.cs:22:9:22:26 | ... = ... | normal |
 | Qualifiers.cs:22:9:22:27 | ...; | Qualifiers.cs:22:9:22:26 | ... = ... | normal |
 | Qualifiers.cs:22:13:22:26 | call to method StaticMethod | Qualifiers.cs:22:13:22:26 | call to method StaticMethod | normal |
-| Qualifiers.cs:24:9:24:9 | access to local variable q | Qualifiers.cs:24:9:24:9 | access to local variable q | normal |
 | Qualifiers.cs:24:9:24:34 | ... = ... | Qualifiers.cs:24:9:24:34 | ... = ... | normal |
 | Qualifiers.cs:24:9:24:35 | ...; | Qualifiers.cs:24:9:24:34 | ... = ... | normal |
 | Qualifiers.cs:24:13:24:34 | access to field StaticField | Qualifiers.cs:24:13:24:34 | access to field StaticField | normal |
-| Qualifiers.cs:25:9:25:9 | access to local variable q | Qualifiers.cs:25:9:25:9 | access to local variable q | normal |
 | Qualifiers.cs:25:9:25:37 | ... = ... | Qualifiers.cs:25:9:25:37 | ... = ... | normal |
 | Qualifiers.cs:25:9:25:38 | ...; | Qualifiers.cs:25:9:25:37 | ... = ... | normal |
 | Qualifiers.cs:25:13:25:37 | access to property StaticProperty | Qualifiers.cs:25:13:25:37 | access to property StaticProperty | normal |
-| Qualifiers.cs:26:9:26:9 | access to local variable q | Qualifiers.cs:26:9:26:9 | access to local variable q | normal |
 | Qualifiers.cs:26:9:26:37 | ... = ... | Qualifiers.cs:26:9:26:37 | ... = ... | normal |
 | Qualifiers.cs:26:9:26:38 | ...; | Qualifiers.cs:26:9:26:37 | ... = ... | normal |
 | Qualifiers.cs:26:13:26:37 | call to method StaticMethod | Qualifiers.cs:26:13:26:37 | call to method StaticMethod | normal |
-| Qualifiers.cs:28:9:28:9 | access to local variable q | Qualifiers.cs:28:9:28:9 | access to local variable q | normal |
 | Qualifiers.cs:28:9:28:40 | ... = ... | Qualifiers.cs:28:9:28:40 | ... = ... | normal |
 | Qualifiers.cs:28:9:28:41 | ...; | Qualifiers.cs:28:9:28:40 | ... = ... | normal |
 | Qualifiers.cs:28:13:28:34 | access to field StaticField | Qualifiers.cs:28:13:28:34 | access to field StaticField | normal |
 | Qualifiers.cs:28:13:28:40 | access to field Field | Qualifiers.cs:28:13:28:40 | access to field Field | normal |
-| Qualifiers.cs:29:9:29:9 | access to local variable q | Qualifiers.cs:29:9:29:9 | access to local variable q | normal |
 | Qualifiers.cs:29:9:29:46 | ... = ... | Qualifiers.cs:29:9:29:46 | ... = ... | normal |
 | Qualifiers.cs:29:9:29:47 | ...; | Qualifiers.cs:29:9:29:46 | ... = ... | normal |
 | Qualifiers.cs:29:13:29:37 | access to property StaticProperty | Qualifiers.cs:29:13:29:37 | access to property StaticProperty | normal |
 | Qualifiers.cs:29:13:29:46 | access to property Property | Qualifiers.cs:29:13:29:46 | access to property Property | normal |
-| Qualifiers.cs:30:9:30:9 | access to local variable q | Qualifiers.cs:30:9:30:9 | access to local variable q | normal |
 | Qualifiers.cs:30:9:30:46 | ... = ... | Qualifiers.cs:30:9:30:46 | ... = ... | normal |
 | Qualifiers.cs:30:9:30:47 | ...; | Qualifiers.cs:30:9:30:46 | ... = ... | normal |
 | Qualifiers.cs:30:13:30:37 | call to method StaticMethod | Qualifiers.cs:30:13:30:37 | call to method StaticMethod | normal |
@@ -1489,11 +1665,9 @@
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:17:120:17 | 1 | normal |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:13:5:25 | String s = ... | normal |
-| TypeAccesses.cs:5:13:5:13 | access to local variable s | TypeAccesses.cs:5:13:5:13 | access to local variable s | normal |
 | TypeAccesses.cs:5:13:5:25 | String s = ... | TypeAccesses.cs:5:13:5:25 | String s = ... | normal |
 | TypeAccesses.cs:5:17:5:25 | (...) ... | TypeAccesses.cs:5:17:5:25 | (...) ... | normal |
 | TypeAccesses.cs:5:25:5:25 | access to parameter o | TypeAccesses.cs:5:25:5:25 | access to parameter o | normal |
-| TypeAccesses.cs:6:9:6:9 | access to local variable s | TypeAccesses.cs:6:9:6:9 | access to local variable s | normal |
 | TypeAccesses.cs:6:9:6:23 | ... = ... | TypeAccesses.cs:6:9:6:23 | ... = ... | normal |
 | TypeAccesses.cs:6:9:6:24 | ...; | TypeAccesses.cs:6:9:6:23 | ... = ... | normal |
 | TypeAccesses.cs:6:13:6:13 | access to parameter o | TypeAccesses.cs:6:13:6:13 | access to parameter o | normal |
@@ -1506,17 +1680,14 @@
 | TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:18:7:22 | Int32 j | normal |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; | normal |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |
-| TypeAccesses.cs:8:13:8:13 | access to local variable t | TypeAccesses.cs:8:13:8:13 | access to local variable t | normal |
 | TypeAccesses.cs:8:13:8:27 | Type t = ... | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |
 | TypeAccesses.cs:8:17:8:27 | typeof(...) | TypeAccesses.cs:8:17:8:27 | typeof(...) | normal |
 | VarDecls.cs:6:5:11:5 | {...} | VarDecls.cs:9:13:9:29 | return ...; | return |
 | VarDecls.cs:7:9:10:9 | fixed(...) { ... } | VarDecls.cs:9:13:9:29 | return ...; | return |
-| VarDecls.cs:7:22:7:23 | access to local variable c1 | VarDecls.cs:7:22:7:23 | access to local variable c1 | normal |
 | VarDecls.cs:7:22:7:36 | Char* c1 = ... | VarDecls.cs:7:22:7:36 | Char* c1 = ... | normal |
 | VarDecls.cs:7:27:7:33 | access to parameter strings | VarDecls.cs:7:27:7:33 | access to parameter strings | normal |
 | VarDecls.cs:7:27:7:36 | access to array element | VarDecls.cs:7:27:7:36 | access to array element | normal |
 | VarDecls.cs:7:35:7:35 | 0 | VarDecls.cs:7:35:7:35 | 0 | normal |
-| VarDecls.cs:7:39:7:40 | access to local variable c2 | VarDecls.cs:7:39:7:40 | access to local variable c2 | normal |
 | VarDecls.cs:7:39:7:53 | Char* c2 = ... | VarDecls.cs:7:39:7:53 | Char* c2 = ... | normal |
 | VarDecls.cs:7:44:7:50 | access to parameter strings | VarDecls.cs:7:44:7:50 | access to parameter strings | normal |
 | VarDecls.cs:7:44:7:53 | access to array element | VarDecls.cs:7:44:7:53 | access to array element | normal |
@@ -1527,10 +1698,8 @@
 | VarDecls.cs:9:27:9:28 | access to local variable c1 | VarDecls.cs:9:27:9:28 | access to local variable c1 | normal |
 | VarDecls.cs:14:5:17:5 | {...} | VarDecls.cs:16:9:16:23 | return ...; | return |
 | VarDecls.cs:15:9:15:30 | ... ...; | VarDecls.cs:15:24:15:29 | String s2 = ... | normal |
-| VarDecls.cs:15:16:15:17 | access to local variable s1 | VarDecls.cs:15:16:15:17 | access to local variable s1 | normal |
 | VarDecls.cs:15:16:15:21 | String s1 = ... | VarDecls.cs:15:16:15:21 | String s1 = ... | normal |
 | VarDecls.cs:15:21:15:21 | access to parameter s | VarDecls.cs:15:21:15:21 | access to parameter s | normal |
-| VarDecls.cs:15:24:15:25 | access to local variable s2 | VarDecls.cs:15:24:15:25 | access to local variable s2 | normal |
 | VarDecls.cs:15:24:15:29 | String s2 = ... | VarDecls.cs:15:24:15:29 | String s2 = ... | normal |
 | VarDecls.cs:15:29:15:29 | access to parameter s | VarDecls.cs:15:29:15:29 | access to parameter s | normal |
 | VarDecls.cs:16:9:16:23 | return ...; | VarDecls.cs:16:9:16:23 | return ...; | return |
@@ -1542,10 +1711,8 @@
 | VarDecls.cs:21:16:21:22 | object creation of type C | VarDecls.cs:21:16:21:22 | object creation of type C | normal |
 | VarDecls.cs:22:13:22:13 | ; | VarDecls.cs:22:13:22:13 | ; | normal |
 | VarDecls.cs:24:9:25:29 | using (...) {...} | VarDecls.cs:25:13:25:29 | return ...; | return |
-| VarDecls.cs:24:18:24:18 | access to local variable x | VarDecls.cs:24:18:24:18 | access to local variable x | normal |
 | VarDecls.cs:24:18:24:28 | C x = ... | VarDecls.cs:24:18:24:28 | C x = ... | normal |
 | VarDecls.cs:24:22:24:28 | object creation of type C | VarDecls.cs:24:22:24:28 | object creation of type C | normal |
-| VarDecls.cs:24:31:24:31 | access to local variable y | VarDecls.cs:24:31:24:31 | access to local variable y | normal |
 | VarDecls.cs:24:31:24:41 | C y = ... | VarDecls.cs:24:31:24:41 | C y = ... | normal |
 | VarDecls.cs:24:35:24:41 | object creation of type C | VarDecls.cs:24:35:24:41 | object creation of type C | normal |
 | VarDecls.cs:25:13:25:29 | return ...; | VarDecls.cs:25:13:25:29 | return ...; | return |
@@ -1558,11 +1725,9 @@
 | VarDecls.cs:28:51:28:53 | {...} | VarDecls.cs:28:51:28:53 | {...} | normal |
 | cflow.cs:6:5:35:5 | {...} | cflow.cs:24:25:24:31 | ... <= ... | false/false |
 | cflow.cs:7:9:7:28 | ... ...; | cflow.cs:7:13:7:27 | Int32 a = ... | normal |
-| cflow.cs:7:13:7:13 | access to local variable a | cflow.cs:7:13:7:13 | access to local variable a | normal |
 | cflow.cs:7:13:7:27 | Int32 a = ... | cflow.cs:7:13:7:27 | Int32 a = ... | normal |
 | cflow.cs:7:17:7:20 | access to parameter args | cflow.cs:7:17:7:20 | access to parameter args | normal |
 | cflow.cs:7:17:7:27 | access to property Length | cflow.cs:7:17:7:27 | access to property Length | normal |
-| cflow.cs:9:9:9:9 | access to local variable a | cflow.cs:9:9:9:9 | access to local variable a | normal |
 | cflow.cs:9:9:9:39 | ... = ... | cflow.cs:9:9:9:39 | ... = ... | normal |
 | cflow.cs:9:9:9:40 | ...; | cflow.cs:9:9:9:39 | ... = ... | normal |
 | cflow.cs:9:13:9:29 | object creation of type ControlFlow | cflow.cs:9:13:9:29 | object creation of type ControlFlow | normal |
@@ -1601,7 +1766,6 @@
 | cflow.cs:22:18:22:23 | ... < ... | cflow.cs:22:18:22:23 | ... < ... | true/true |
 | cflow.cs:22:22:22:23 | 10 | cflow.cs:22:22:22:23 | 10 | normal |
 | cflow.cs:24:9:34:9 | for (...;...;...) ... | cflow.cs:24:25:24:31 | ... <= ... | false/false |
-| cflow.cs:24:18:24:18 | access to local variable i | cflow.cs:24:18:24:18 | access to local variable i | normal |
 | cflow.cs:24:18:24:22 | Int32 i = ... | cflow.cs:24:18:24:22 | Int32 i = ... | normal |
 | cflow.cs:24:22:24:22 | 1 | cflow.cs:24:22:24:22 | 1 | normal |
 | cflow.cs:24:25:24:25 | access to local variable i | cflow.cs:24:25:24:25 | access to local variable i | normal |
@@ -1849,10 +2013,8 @@
 | cflow.cs:116:27:116:27 | access to parameter s | cflow.cs:116:27:116:27 | access to parameter s | normal |
 | cflow.cs:120:5:124:5 | {...} | cflow.cs:123:9:123:17 | return ...; | return |
 | cflow.cs:121:9:121:18 | ... ...; | cflow.cs:121:13:121:17 | String x = ... | normal |
-| cflow.cs:121:13:121:13 | access to local variable x | cflow.cs:121:13:121:13 | access to local variable x | normal |
 | cflow.cs:121:13:121:17 | String x = ... | cflow.cs:121:13:121:17 | String x = ... | normal |
 | cflow.cs:121:17:121:17 | access to parameter s | cflow.cs:121:17:121:17 | access to parameter s | normal |
-| cflow.cs:122:9:122:9 | access to local variable x | cflow.cs:122:9:122:9 | access to local variable x | normal |
 | cflow.cs:122:9:122:19 | ... = ... | cflow.cs:122:9:122:19 | ... = ... | normal |
 | cflow.cs:122:9:122:20 | ...; | cflow.cs:122:9:122:19 | ... = ... | normal |
 | cflow.cs:122:13:122:13 | access to local variable x | cflow.cs:122:13:122:13 | access to local variable x | normal |
@@ -1873,13 +2035,13 @@
 | cflow.cs:127:53:127:57 | access to field Field | cflow.cs:127:53:127:57 | access to field Field | normal |
 | cflow.cs:127:53:127:57 | this access | cflow.cs:127:53:127:57 | this access | normal |
 | cflow.cs:127:66:127:83 | {...} | cflow.cs:127:68:127:80 | ... = ... | normal |
-| cflow.cs:127:68:127:72 | access to field Field | cflow.cs:127:68:127:72 | access to field Field | normal |
+| cflow.cs:127:68:127:72 | access to field Field | cflow.cs:127:68:127:72 | this access | normal |
 | cflow.cs:127:68:127:72 | this access | cflow.cs:127:68:127:72 | this access | normal |
 | cflow.cs:127:68:127:80 | ... = ... | cflow.cs:127:68:127:80 | ... = ... | normal |
 | cflow.cs:127:68:127:81 | ...; | cflow.cs:127:68:127:80 | ... = ... | normal |
 | cflow.cs:127:76:127:80 | access to parameter value | cflow.cs:127:76:127:80 | access to parameter value | normal |
 | cflow.cs:130:5:132:5 | {...} | cflow.cs:131:9:131:17 | ... = ... | normal |
-| cflow.cs:131:9:131:13 | access to field Field | cflow.cs:131:9:131:13 | access to field Field | normal |
+| cflow.cs:131:9:131:13 | access to field Field | cflow.cs:131:9:131:13 | this access | normal |
 | cflow.cs:131:9:131:13 | this access | cflow.cs:131:9:131:13 | this access | normal |
 | cflow.cs:131:9:131:17 | ... = ... | cflow.cs:131:9:131:17 | ... = ... | normal |
 | cflow.cs:131:9:131:18 | ...; | cflow.cs:131:9:131:17 | ... = ... | normal |
@@ -2032,7 +2194,6 @@
 | cflow.cs:203:13:203:41 | ...; | cflow.cs:203:13:203:40 | call to method WriteLine | normal |
 | cflow.cs:203:31:203:39 | "Finally" | cflow.cs:203:31:203:39 | "Finally" | normal |
 | cflow.cs:206:9:206:19 | ... ...; | cflow.cs:206:13:206:18 | Int32 i = ... | normal |
-| cflow.cs:206:13:206:13 | access to local variable i | cflow.cs:206:13:206:13 | access to local variable i | normal |
 | cflow.cs:206:13:206:18 | Int32 i = ... | cflow.cs:206:13:206:18 | Int32 i = ... | normal |
 | cflow.cs:206:17:206:18 | 10 | cflow.cs:206:17:206:18 | 10 | normal |
 | cflow.cs:207:9:230:9 | while (...) ... | cflow.cs:207:16:207:20 | ... > ... | false/false |
@@ -2193,7 +2354,6 @@
 | cflow.cs:247:9:254:9 | try {...} ... | cflow.cs:253:13:253:13 | ; | normal |
 | cflow.cs:248:9:250:9 | {...} | cflow.cs:249:17:249:40 | Double temp = ... | normal |
 | cflow.cs:249:13:249:41 | ... ...; | cflow.cs:249:17:249:40 | Double temp = ... | normal |
-| cflow.cs:249:17:249:20 | access to local variable temp | cflow.cs:249:17:249:20 | access to local variable temp | normal |
 | cflow.cs:249:17:249:40 | Double temp = ... | cflow.cs:249:17:249:40 | Double temp = ... | normal |
 | cflow.cs:249:24:249:24 | 0 | cflow.cs:249:24:249:24 | 0 | normal |
 | cflow.cs:249:24:249:24 | (...) ... | cflow.cs:249:24:249:24 | (...) ... | normal |
@@ -2204,7 +2364,6 @@
 | cflow.cs:253:13:253:13 | ; | cflow.cs:253:13:253:13 | ; | normal |
 | cflow.cs:258:5:288:5 | {...} | cflow.cs:284:32:284:41 | ... < ... | false/false |
 | cflow.cs:259:9:259:18 | ... ...; | cflow.cs:259:13:259:17 | Int32 x = ... | normal |
-| cflow.cs:259:13:259:13 | access to local variable x | cflow.cs:259:13:259:13 | access to local variable x | normal |
 | cflow.cs:259:13:259:17 | Int32 x = ... | cflow.cs:259:13:259:17 | Int32 x = ... | normal |
 | cflow.cs:259:17:259:17 | 0 | cflow.cs:259:17:259:17 | 0 | normal |
 | cflow.cs:260:9:261:33 | for (...;...;...) ... | cflow.cs:260:16:260:21 | ... < ... | false/false |
@@ -2261,10 +2420,8 @@
 | cflow.cs:281:13:281:15 | ...++ | cflow.cs:281:13:281:15 | ...++ | normal |
 | cflow.cs:281:13:281:16 | ...; | cflow.cs:281:13:281:15 | ...++ | normal |
 | cflow.cs:284:9:287:9 | for (...;...;...) ... | cflow.cs:284:32:284:41 | ... < ... | false/false |
-| cflow.cs:284:18:284:18 | access to local variable i | cflow.cs:284:18:284:18 | access to local variable i | normal |
 | cflow.cs:284:18:284:22 | Int32 i = ... | cflow.cs:284:18:284:22 | Int32 i = ... | normal |
 | cflow.cs:284:22:284:22 | 0 | cflow.cs:284:22:284:22 | 0 | normal |
-| cflow.cs:284:25:284:25 | access to local variable j | cflow.cs:284:25:284:25 | access to local variable j | normal |
 | cflow.cs:284:25:284:29 | Int32 j = ... | cflow.cs:284:25:284:29 | Int32 j = ... | normal |
 | cflow.cs:284:29:284:29 | 0 | cflow.cs:284:29:284:29 | 0 | normal |
 | cflow.cs:284:32:284:32 | access to local variable i | cflow.cs:284:32:284:32 | access to local variable i | normal |
@@ -2285,14 +2442,12 @@
 | cflow.cs:286:35:286:35 | access to local variable j | cflow.cs:286:35:286:35 | access to local variable j | normal |
 | cflow.cs:291:5:294:5 | {...} | cflow.cs:293:24:293:61 | Func<Int32,Int32> z = ... | normal |
 | cflow.cs:292:9:292:38 | ... ...; | cflow.cs:292:24:292:37 | Func<Int32,Int32> y = ... | normal |
-| cflow.cs:292:24:292:24 | access to local variable y | cflow.cs:292:24:292:24 | access to local variable y | normal |
 | cflow.cs:292:24:292:37 | Func<Int32,Int32> y = ... | cflow.cs:292:24:292:37 | Func<Int32,Int32> y = ... | normal |
 | cflow.cs:292:28:292:37 | (...) => ... | cflow.cs:292:28:292:37 | (...) => ... | normal |
 | cflow.cs:292:33:292:33 | access to parameter x | cflow.cs:292:33:292:33 | access to parameter x | normal |
 | cflow.cs:292:33:292:37 | ... + ... | cflow.cs:292:33:292:37 | ... + ... | normal |
 | cflow.cs:292:37:292:37 | 1 | cflow.cs:292:37:292:37 | 1 | normal |
 | cflow.cs:293:9:293:62 | ... ...; | cflow.cs:293:24:293:61 | Func<Int32,Int32> z = ... | normal |
-| cflow.cs:293:24:293:24 | access to local variable z | cflow.cs:293:24:293:24 | access to local variable z | normal |
 | cflow.cs:293:24:293:61 | Func<Int32,Int32> z = ... | cflow.cs:293:24:293:61 | Func<Int32,Int32> z = ... | normal |
 | cflow.cs:293:28:293:61 | delegate(...) { ... } | cflow.cs:293:28:293:61 | delegate(...) { ... } | normal |
 | cflow.cs:293:45:293:61 | {...} | cflow.cs:293:47:293:59 | return ...; | return |
@@ -2331,7 +2486,6 @@
 | cflow.cs:305:5:317:5 | {...} | cflow.cs:311:61:311:61 | access to local variable b | false/false |
 | cflow.cs:305:5:317:5 | {...} | cflow.cs:314:17:314:38 | throw ...; | throw(Exception) |
 | cflow.cs:306:9:306:57 | ... ...; | cflow.cs:306:13:306:56 | Boolean b = ... | normal |
-| cflow.cs:306:13:306:13 | access to local variable b | cflow.cs:306:13:306:13 | access to local variable b | normal |
 | cflow.cs:306:13:306:56 | Boolean b = ... | cflow.cs:306:13:306:56 | Boolean b = ... | normal |
 | cflow.cs:306:17:306:21 | access to field Field | cflow.cs:306:17:306:21 | access to field Field | normal |
 | cflow.cs:306:17:306:21 | this access | cflow.cs:306:17:306:21 | this access | normal |
@@ -2361,7 +2515,6 @@
 | cflow.cs:308:31:308:31 | 0 | cflow.cs:308:31:308:31 | 0 | normal |
 | cflow.cs:308:35:308:39 | false | cflow.cs:308:35:308:39 | false | false/false |
 | cflow.cs:308:43:308:46 | true | cflow.cs:308:43:308:46 | true | true/true |
-| cflow.cs:309:13:309:13 | access to local variable b | cflow.cs:309:13:309:13 | access to local variable b | normal |
 | cflow.cs:309:13:309:48 | ... = ... | cflow.cs:309:13:309:48 | ... = ... | normal |
 | cflow.cs:309:13:309:49 | ...; | cflow.cs:309:13:309:48 | ... = ... | normal |
 | cflow.cs:309:17:309:21 | access to field Field | cflow.cs:309:17:309:21 | access to field Field | normal |
@@ -2418,7 +2571,7 @@
 | cflow.cs:322:9:332:9 | {...} | cflow.cs:328:17:328:32 | ... < ... | false/false |
 | cflow.cs:322:9:332:9 | {...} | cflow.cs:330:17:330:22 | break; | break |
 | cflow.cs:323:13:323:17 | access to field Field | cflow.cs:323:13:323:17 | access to field Field | normal |
-| cflow.cs:323:13:323:17 | access to field Field | cflow.cs:323:13:323:17 | access to field Field | normal |
+| cflow.cs:323:13:323:17 | access to field Field | cflow.cs:323:13:323:17 | this access | normal |
 | cflow.cs:323:13:323:17 | this access | cflow.cs:323:13:323:17 | this access | normal |
 | cflow.cs:323:13:323:17 | this access | cflow.cs:323:13:323:17 | this access | normal |
 | cflow.cs:323:13:323:24 | ... + ... | cflow.cs:323:13:323:24 | ... + ... | normal |
@@ -2464,7 +2617,7 @@
 | cflow.cs:338:9:348:9 | {...} | cflow.cs:344:17:344:32 | ... < ... | false/false |
 | cflow.cs:338:9:348:9 | {...} | cflow.cs:346:17:346:22 | break; | break |
 | cflow.cs:339:13:339:17 | access to field Field | cflow.cs:339:13:339:17 | access to field Field | normal |
-| cflow.cs:339:13:339:17 | access to field Field | cflow.cs:339:13:339:17 | access to field Field | normal |
+| cflow.cs:339:13:339:17 | access to field Field | cflow.cs:339:13:339:17 | this access | normal |
 | cflow.cs:339:13:339:17 | this access | cflow.cs:339:13:339:17 | this access | normal |
 | cflow.cs:339:13:339:17 | this access | cflow.cs:339:13:339:17 | this access | normal |
 | cflow.cs:339:13:339:22 | ... + ... | cflow.cs:339:13:339:22 | ... + ... | normal |
@@ -2557,7 +2710,6 @@
 | cflow.cs:374:9:374:23 | yield return ...; | cflow.cs:374:9:374:23 | yield return ...; | normal |
 | cflow.cs:374:22:374:22 | 0 | cflow.cs:374:22:374:22 | 0 | normal |
 | cflow.cs:375:9:378:9 | for (...;...;...) ... | cflow.cs:375:25:375:30 | ... < ... | false/false |
-| cflow.cs:375:18:375:18 | access to local variable i | cflow.cs:375:18:375:18 | access to local variable i | normal |
 | cflow.cs:375:18:375:22 | Int32 i = ... | cflow.cs:375:18:375:22 | Int32 i = ... | normal |
 | cflow.cs:375:22:375:22 | 1 | cflow.cs:375:22:375:22 | 1 | normal |
 | cflow.cs:375:25:375:25 | access to local variable i | cflow.cs:375:25:375:25 | access to local variable i | normal |

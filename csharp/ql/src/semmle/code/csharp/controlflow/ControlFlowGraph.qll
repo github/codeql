@@ -455,6 +455,7 @@ module ControlFlow {
         }
 
         override ControlFlowElement getChildElement(int i) {
+          not this instanceof GeneralCatchClause and
           not this instanceof FixedStmt and
           not this instanceof UsingStmt and
           result = this.getChild(i)
@@ -496,8 +497,116 @@ module ControlFlow {
       }
 
       /** A conditionally qualified expression. */
-      private class ConditionalQualifiableExpr extends QualifiableExpr {
-        ConditionalQualifiableExpr() { this.isConditional() }
+      private class ConditionallyQualifiedExpr extends QualifiableExpr {
+        ConditionallyQualifiedExpr() { this.isConditional() }
+      }
+
+      /** An expression that should not be included in the control flow graph. */
+      abstract private class NoNodeExpr extends Expr { }
+
+      private class SimpleNoNodeExpr extends NoNodeExpr {
+        SimpleNoNodeExpr() { this instanceof TypeAccess }
+      }
+
+      /** A write access that is not also a read access. */
+      private class WriteAccess extends AssignableWrite {
+        WriteAccess() {
+          // `x++` is both a read and write access
+          not this instanceof AssignableRead
+        }
+      }
+
+      private class WriteAccessNoNodeExpr extends WriteAccess, NoNodeExpr {
+        WriteAccessNoNodeExpr() {
+          // For example a write to a static field, `Foo.Bar = 0`.
+          forall(Expr e | e = this.(QualifiableExpr).getQualifier() | e instanceof NoNodeExpr)
+        }
+      }
+
+      private ControlFlowElement getExprChildElement0(Expr e, int i) {
+        not e instanceof NameOfExpr and
+        not e instanceof QualifiableExpr and
+        not e instanceof Assignment and
+        not e instanceof AnonymousFunctionExpr and
+        result = e.getChild(i)
+        or
+        e = any(ExtensionMethodCall emc | result = emc.getArgument(i))
+        or
+        e = any(QualifiableExpr qe |
+            not qe instanceof ExtensionMethodCall and
+            not qe.isConditional() and
+            result = qe.getChild(i)
+          )
+        or
+        e = any(Assignment a |
+            // The left-hand side of an assignment is evaluated before the right-hand side
+            i = 0 and result = a.getLValue()
+            or
+            i = 1 and result = a.getRValue()
+          )
+      }
+
+      private ControlFlowElement getExprChildElement(Expr e, int i) {
+        result = rank[i + 1](ControlFlowElement cfe, int j |
+            cfe = getExprChildElement0(e, j) and
+            not cfe instanceof NoNodeExpr
+          |
+            cfe order by j
+          )
+      }
+
+      private int getFirstChildElement(Expr e) {
+        result = min(int i | exists(getExprChildElement(e, i)))
+      }
+
+      private int getLastChildElement(Expr e) {
+        result = max(int i | exists(getExprChildElement(e, i)))
+      }
+
+      /**
+       * A qualified write access. In a qualified write access, the access itself is
+       * not evaluated, only the qualifier and the indexer arguments (if any).
+       */
+      private class QualifiedWriteAccess extends WriteAccess, QualifiableExpr {
+        QualifiedWriteAccess() { this.hasQualifier() }
+      }
+
+      /**
+       * An expression that writes via an accessor call, for example `x.Prop = 0`,
+       * where `Prop` is a property.
+       *
+       * Accessor writes need special attention, because we need to model the fact
+       * that the accessor is called *after* the assigned value has been evaluated.
+       * In the example above, this means we want a CFG that looks like
+       *
+       * ```
+       * x -> 0 -> set_Prop -> x.Prop = 0
+       * ```
+       */
+      class AccessorWrite extends Expr {
+        AssignableDefinition def;
+
+        AccessorWrite() {
+          def.getExpr() = this and
+          def.getTargetAccess().(WriteAccess) instanceof AccessorCall and
+          not this instanceof AssignOperationWithExpandedAssignment
+        }
+
+        /**
+         * Gets the `i`th accessor being called in this write. More than one call
+         * can happen in tuple assignments.
+         */
+        AccessorCall getCall(int i) {
+          result = rank[i + 1](AssignableDefinitions::TupleAssignmentDefinition tdef |
+              tdef.getExpr() = this and tdef.getTargetAccess() instanceof AccessorCall
+            |
+              tdef order by tdef.getEvaluationOrder()
+            ).getTargetAccess()
+          or
+          i = 0 and
+          result = def.getTargetAccess() and
+          not def instanceof AssignableDefinitions::TupleAssignmentDefinition
+        }
       }
 
       private class StandardExpr extends StandardElement, Expr {
@@ -509,85 +618,17 @@ module ControlFlow {
           not this instanceof NullCoalescingExpr and
           not this instanceof ConditionalExpr and
           not this instanceof AssignOperationWithExpandedAssignment and
-          not this instanceof ConditionalQualifiableExpr and
+          not this instanceof ConditionallyQualifiedExpr and
           not this instanceof ThrowExpr and
           not this instanceof TypeAccess and
           not this instanceof ObjectCreation and
-          not this instanceof ArrayCreation
+          not this instanceof ArrayCreation and
+          not this instanceof QualifiedWriteAccess and
+          not this instanceof AccessorWrite and
+          not this instanceof NoNodeExpr
         }
 
-        override ControlFlowElement getChildElement(int i) {
-          not this instanceof TypeofExpr and
-          not this instanceof DefaultValueExpr and
-          not this instanceof SizeofExpr and
-          not this instanceof NameOfExpr and
-          not this instanceof QualifiableExpr and
-          not this instanceof Assignment and
-          not this instanceof IsExpr and
-          not this instanceof AsExpr and
-          not this instanceof CastExpr and
-          not this instanceof AnonymousFunctionExpr and
-          not this instanceof DelegateCall and
-          not this instanceof @unknown_expr and
-          result = this.getChild(i)
-          or
-          this = any(ExtensionMethodCall emc | result = emc.getArgument(i))
-          or
-          result = getQualifiableExprChild(this, i)
-          or
-          result = getAssignmentChild(this, i)
-          or
-          result = getIsExprChild(this, i)
-          or
-          result = getAsExprChild(this, i)
-          or
-          result = getCastExprChild(this, i)
-          or
-          result = this.(DelegateCall).getChild(i - 1)
-          or
-          result = getUnknownExprChild(this, i)
-        }
-      }
-
-      private ControlFlowElement getQualifiableExprChild(QualifiableExpr qe, int i) {
-        i >= 0 and
-        not qe instanceof ExtensionMethodCall and
-        not qe.isConditional() and
-        if exists(Expr q | q = qe.getQualifier() | not q instanceof TypeAccess)
-        then result = qe.getChild(i - 1)
-        else result = qe.getChild(i)
-      }
-
-      private ControlFlowElement getAssignmentChild(Assignment a, int i) {
-        // The left-hand side of an assignment is evaluated before the right-hand side
-        i = 0 and result = a.getLValue()
-        or
-        i = 1 and result = a.getRValue()
-      }
-
-      private ControlFlowElement getIsExprChild(IsExpr ie, int i) {
-        // The type access at index 1 is not evaluated at run-time
-        i = 0 and result = ie.getExpr()
-        or
-        i = 1 and result = ie.(IsPatternExpr).getVariableDeclExpr()
-        or
-        i = 1 and result = ie.(IsConstantExpr).getConstant()
-      }
-
-      private ControlFlowElement getAsExprChild(AsExpr ae, int i) {
-        // The type access at index 1 is not evaluated at run-time
-        i = 0 and result = ae.getExpr()
-      }
-
-      private ControlFlowElement getUnknownExprChild(@unknown_expr e, int i) {
-        exists(int c | result = e.(Expr).getChild(c) |
-          c = rank[i + 1](int j | exists(e.(Expr).getChild(j)))
-        )
-      }
-
-      private ControlFlowElement getCastExprChild(CastExpr ce, int i) {
-        // The type access at index 1 is not evaluated at run-time
-        i = 0 and result = ce.getExpr()
+        override ControlFlowElement getChildElement(int i) { result = getExprChildElement(this, i) }
       }
 
       /**
@@ -610,7 +651,7 @@ module ControlFlow {
             result = first(a.getExpandedAssignment())
           )
         or
-        cfe = any(ConditionalQualifiableExpr cqe | result = first(cqe.getChildExpr(-1)))
+        cfe = any(ConditionallyQualifiedExpr cqe | result = first(cqe.getChildExpr(-1)))
         or
         cfe = any(ArrayCreation ac |
             if ac.isImplicitlySized()
@@ -628,6 +669,12 @@ module ControlFlow {
             // emptiness test that determines whether to execute the loop body
             result = first(fs.getIterableExpr())
           )
+        or
+        cfe instanceof QualifiedWriteAccess and
+        result = first(getExprChildElement(cfe, getFirstChildElement(cfe)))
+        or
+        cfe instanceof AccessorWrite and
+        result = first(getExprChildElement(cfe, getFirstChildElement(cfe)))
       }
 
       private class PreOrderElement extends ControlFlowElement {
@@ -660,6 +707,13 @@ module ControlFlow {
         }
       }
 
+      private Expr getObjectCreationArgument(ObjectCreation oc, int i) {
+        i >= 0 and
+        if oc.hasInitializer()
+        then result = getExprChildElement(oc, i + 1)
+        else result = getExprChildElement(oc, i)
+      }
+
       private class PostOrderElement extends ControlFlowElement {
         PostOrderElement() {
           this instanceof StandardExpr or
@@ -672,7 +726,7 @@ module ControlFlow {
           result = this.(StandardExpr).getFirstChildElement() or
           result = this.(JumpStmt).getChild(0) or
           result = this.(ThrowExpr).getExpr() or
-          result = this.(ObjectCreation).getArgument(0)
+          result = getObjectCreationArgument(this, 0)
         }
       }
 
@@ -768,7 +822,7 @@ module ControlFlow {
         or
         result = lastAssignOperationWithExpandedAssignmentExpandedAssignment(cfe, c)
         or
-        cfe = any(ConditionalQualifiableExpr cqe |
+        cfe = any(ConditionallyQualifiedExpr cqe |
             // Post-order: element itself
             result = cqe and
             c.isValidFor(cqe)
@@ -1034,6 +1088,30 @@ module ControlFlow {
             result = nrc and
             c = nrc.getACompletion()
           )
+        or
+        cfe = any(QualifiedWriteAccess qwa |
+            // Skip the access in a qualified write access
+            result = lastQualifiedWriteAccessGetChildElement(qwa, getLastChildElement(qwa), c)
+            or
+            // A child exits abnormally
+            result = lastQualifiedWriteAccessGetChildElement(qwa, _, c) and
+            not c instanceof NormalCompletion
+          )
+        or
+        cfe = any(AccessorWrite aw |
+            // Post-order: element itself
+            result = aw and
+            c.isValidFor(result)
+            or
+            // A child exits abnormally
+            result = lastAccessorWriteGetChildElement(aw, _, c) and
+            not c instanceof NormalCompletion
+            or
+            // An accessor call exits abnormally
+            result = aw.getCall(_) and
+            c.isValidFor(result) and
+            not c instanceof NormalCompletion
+          )
       }
 
       private ControlFlowElement lastConstCaseNoMatch(ConstCase cc, MatchingCompletion c) {
@@ -1122,14 +1200,14 @@ module ControlFlow {
 
       pragma[nomagic]
       private ControlFlowElement lastConditionalQualifiableExprChildExpr(
-        ConditionalQualifiableExpr cqe, int i, Completion c
+        ConditionallyQualifiedExpr cqe, int i, Completion c
       ) {
         result = last(cqe.getChildExpr(i), c)
       }
 
       pragma[nomagic]
       private ControlFlowElement lastObjectCreationArgument(ObjectCreation oc, int i, Completion c) {
-        result = last(oc.getArgument(i), c)
+        result = last(getObjectCreationArgument(oc, i), c)
       }
 
       pragma[nomagic]
@@ -1272,6 +1350,20 @@ module ControlFlow {
         result = last(fs.getInitializer(i), c)
       }
 
+      pragma[nomagic]
+      private ControlFlowElement lastQualifiedWriteAccessGetChildElement(
+        QualifiedWriteAccess qwa, int i, Completion c
+      ) {
+        result = last(getExprChildElement(qwa, i), c)
+      }
+
+      pragma[nomagic]
+      private ControlFlowElement lastAccessorWriteGetChildElement(
+        AccessorWrite aw, int i, Completion c
+      ) {
+        result = last(getExprChildElement(aw, i), c)
+      }
+
       /**
        * Gets a last element from a `try` or `catch` block of this `try` statement
        * that may finish with completion `c`, such that control may be transferred
@@ -1402,7 +1494,7 @@ module ControlFlow {
           result = first(ce.getElse())
         )
         or
-        exists(ConditionalQualifiableExpr parent, int i |
+        exists(ConditionallyQualifiedExpr parent, int i |
           cfe = lastConditionalQualifiableExprChildExpr(parent, i, c) and
           c instanceof NormalCompletion and
           not c.(NullnessCompletion).isNull()
@@ -1422,12 +1514,12 @@ module ControlFlow {
         exists(ObjectCreation oc |
           // Flow from last element of argument `i` to first element of argument `i+1`
           exists(int i | cfe = lastObjectCreationArgument(oc, i, c) |
-            result = first(oc.getArgument(i + 1)) and
+            result = first(getObjectCreationArgument(oc, i + 1)) and
             c instanceof NormalCompletion
           )
           or
           // Flow from last element of last argument to self
-          exists(int last | last = max(int i | exists(oc.getArgument(i))) |
+          exists(int last | last = max(int i | exists(getObjectCreationArgument(oc, i))) |
             cfe = lastObjectCreationArgument(oc, last, c) and
             result = oc and
             c instanceof NormalCompletion
@@ -1806,6 +1898,42 @@ module ControlFlow {
             not cfe = getBlockOrCatchFinallyPred(any(TryStmt ts | ts.hasFinally()), _) and
             result = first(glc.getGotoStmt().getTarget())
           )
+        or
+        // Standard left-to-right evaluation
+        exists(QualifiedWriteAccess qwa, int i |
+          cfe = lastQualifiedWriteAccessGetChildElement(qwa, i, c) and
+          c instanceof NormalCompletion and
+          result = first(getExprChildElement(qwa, i + 1))
+        )
+        or
+        exists(AccessorWrite aw |
+          // Standard left-to-right evaluation
+          exists(int i |
+            cfe = lastAccessorWriteGetChildElement(aw, i, c) and
+            c instanceof NormalCompletion and
+            result = first(getExprChildElement(aw, i + 1))
+          )
+          or
+          // Flow from last element of last child to first accessor call
+          cfe = lastAccessorWriteGetChildElement(aw, getLastChildElement(aw), c) and
+          result = aw.getCall(0) and
+          c instanceof NormalCompletion
+          or
+          // Flow from one call to the next
+          exists(int i | cfe = aw.getCall(i) |
+            result = aw.getCall(i + 1) and
+            c.isValidFor(cfe) and
+            c instanceof NormalCompletion
+          )
+          or
+          // Post-order: flow from last call to element itself
+          exists(int last | last = max(int i | exists(aw.getCall(i))) |
+            cfe = aw.getCall(last) and
+            result = aw and
+            c.isValidFor(cfe) and
+            c instanceof NormalCompletion
+          )
+        )
       }
 
       /**

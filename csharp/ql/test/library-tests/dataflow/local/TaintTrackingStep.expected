@@ -38,7 +38,6 @@
 | LocalDataFlow.cs:69:21:69:51 | object creation of type Dictionary<Int32,String[]> | LocalDataFlow.cs:69:13:69:51 | SSA def(sink2) |
 | LocalDataFlow.cs:70:9:70:13 | access to local variable sink2 | LocalDataFlow.cs:70:9:70:16 | access to indexer |
 | LocalDataFlow.cs:70:9:70:13 | access to local variable sink2 | LocalDataFlow.cs:71:15:71:19 | access to local variable sink2 |
-| LocalDataFlow.cs:70:9:70:16 | access to indexer | LocalDataFlow.cs:70:9:70:19 | access to array element |
 | LocalDataFlow.cs:70:23:70:27 | access to local variable sink1 | LocalDataFlow.cs:70:9:70:13 | access to local variable sink2 |
 | LocalDataFlow.cs:70:23:70:27 | access to local variable sink1 | LocalDataFlow.cs:70:9:70:16 | access to indexer |
 | LocalDataFlow.cs:70:23:70:27 | access to local variable sink1 | LocalDataFlow.cs:76:18:76:22 | access to local variable sink1 |
@@ -861,9 +860,7 @@
 | Splitting.cs:51:17:51:36 | [b (line 46): true] array creation of type String[] | Splitting.cs:51:13:51:36 | [b (line 46): true] SSA def(y) |
 | Splitting.cs:51:32:51:34 | [b (line 46): false] "a" | Splitting.cs:51:17:51:36 | [b (line 46): false] array creation of type String[] |
 | Splitting.cs:51:32:51:34 | [b (line 46): true] "a" | Splitting.cs:51:17:51:36 | [b (line 46): true] array creation of type String[] |
-| Splitting.cs:52:9:52:9 | [b (line 46): false] access to local variable y | Splitting.cs:52:9:52:12 | [b (line 46): false] access to array element |
 | Splitting.cs:52:9:52:9 | [b (line 46): false] access to local variable y | Splitting.cs:53:17:53:17 | [b (line 46): false] access to local variable y |
-| Splitting.cs:52:9:52:9 | [b (line 46): true] access to local variable y | Splitting.cs:52:9:52:12 | [b (line 46): true] access to array element |
 | Splitting.cs:52:9:52:9 | [b (line 46): true] access to local variable y | Splitting.cs:53:17:53:17 | [b (line 46): true] access to local variable y |
 | Splitting.cs:52:16:52:18 | [b (line 46): false] "b" | Splitting.cs:52:9:52:9 | [b (line 46): false] access to local variable y |
 | Splitting.cs:52:16:52:18 | [b (line 46): true] "b" | Splitting.cs:52:9:52:9 | [b (line 46): true] access to local variable y |
