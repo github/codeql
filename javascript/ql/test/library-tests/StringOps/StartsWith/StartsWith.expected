@@ -12,3 +12,5 @@
 | tst.js:17:9:17:38 | A.subst ... ) !== B | tst.js:17:9:17:9 | A | tst.js:17:38:17:38 | B | false |
 | tst.js:18:9:18:35 | A.subst ... ) === B | tst.js:18:9:18:9 | A | tst.js:18:35:18:35 | B | true |
 | tst.js:19:9:19:36 | A.subst ...  "web/" | tst.js:19:9:19:9 | A | tst.js:19:31:19:36 | "web/" | true |
+| tst.js:32:9:32:32 | strings ... h(A, B) | tst.js:32:28:32:28 | A | tst.js:32:31:32:31 | B | true |
+| tst.js:33:9:33:47 | strings ... h(A, B) | tst.js:33:43:33:43 | A | tst.js:33:46:33:46 | B | true |
