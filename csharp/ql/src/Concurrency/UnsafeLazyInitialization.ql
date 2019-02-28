@@ -17,7 +17,7 @@ import semmle.code.csharp.commons.StructuralComparison
 class DoubleCheckedLock extends StructuralComparisonConfiguration {
   DoubleCheckedLock() { this = "double checked lock" }
 
-  override predicate candidate(Element x, Element y) {
+  override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
     exists(IfStmt unlockedIf, IfStmt lockedIf, LockStmt lock |
       x = unlockedIf.getCondition() and
       y = lockedIf.getCondition() and
