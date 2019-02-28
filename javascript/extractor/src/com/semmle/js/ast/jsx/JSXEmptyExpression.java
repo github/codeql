@@ -5,12 +5,12 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
 public class JSXEmptyExpression extends Node implements IJSXExpression {
-	public JSXEmptyExpression(SourceLocation loc) {
-		super("JSXEmptyExpression", loc);
-	}
+  public JSXEmptyExpression(SourceLocation loc) {
+    super("JSXEmptyExpression", loc);
+  }
 
-	@Override
-	public <C, R> R accept(Visitor<C, R> v, C c) {
-		return v.visit(this, c);
-	}
+  @Override
+  public <C, R> R accept(Visitor<C, R> v, C c) {
+    return v.visit(this, c);
+  }
 }

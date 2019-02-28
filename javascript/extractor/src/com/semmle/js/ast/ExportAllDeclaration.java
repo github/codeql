@@ -8,19 +8,19 @@ package com.semmle.js.ast;
  * </pre>
  */
 public class ExportAllDeclaration extends ExportDeclaration {
-	private final Literal source;
+  private final Literal source;
 
-	public ExportAllDeclaration(SourceLocation loc, Literal source) {
-		super("ExportAllDeclaration", loc);
-		this.source = source;
-	}
+  public ExportAllDeclaration(SourceLocation loc, Literal source) {
+    super("ExportAllDeclaration", loc);
+    this.source = source;
+  }
 
-	public Literal getSource() {
-		return source;
-	}
+  public Literal getSource() {
+    return source;
+  }
 
-	@Override
-	public <C, R> R accept(Visitor<C, R> v, C c) {
-		return v.visit(this, c);
-	}
+  @Override
+  public <C, R> R accept(Visitor<C, R> v, C c) {
+    return v.visit(this, c);
+  }
 }

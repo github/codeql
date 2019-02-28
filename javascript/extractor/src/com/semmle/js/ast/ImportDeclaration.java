@@ -15,28 +15,28 @@ import java.util.List;
  * </pre>
  */
 public class ImportDeclaration extends Statement {
-	/** List of import specifiers detailing how declarations are imported; may be empty. */
-	private final List<ImportSpecifier> specifiers;
+  /** List of import specifiers detailing how declarations are imported; may be empty. */
+  private final List<ImportSpecifier> specifiers;
 
-	/** The module from which declarations are imported. */
-	private final Literal source;
+  /** The module from which declarations are imported. */
+  private final Literal source;
 
-	public ImportDeclaration(SourceLocation loc, List<ImportSpecifier> specifiers, Literal source) {
-		super("ImportDeclaration", loc);
-		this.specifiers = specifiers;
-		this.source = source;
-	}
+  public ImportDeclaration(SourceLocation loc, List<ImportSpecifier> specifiers, Literal source) {
+    super("ImportDeclaration", loc);
+    this.specifiers = specifiers;
+    this.source = source;
+  }
 
-	public Literal getSource() {
-		return source;
-	}
+  public Literal getSource() {
+    return source;
+  }
 
-	public List<ImportSpecifier> getSpecifiers() {
-		return specifiers;
-	}
+  public List<ImportSpecifier> getSpecifiers() {
+    return specifiers;
+  }
 
-	@Override
-	public <C, R> R accept(Visitor<C, R> v, C c) {
-		return v.visit(this, c);
-	}
+  @Override
+  public <C, R> R accept(Visitor<C, R> v, C c) {
+    return v.visit(this, c);
+  }
 }

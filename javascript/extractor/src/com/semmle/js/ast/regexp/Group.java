@@ -2,60 +2,49 @@ package com.semmle.js.ast.regexp;
 
 import com.semmle.js.ast.SourceLocation;
 
-/**
- * A parenthesized group in a regular expression.
- */
+/** A parenthesized group in a regular expression. */
 public class Group extends RegExpTerm {
-	private final boolean capture;
-	private final int number;
-	private final String name;
-	private final RegExpTerm operand;
-	
-	public Group(SourceLocation loc, boolean capture, Number number, String name, RegExpTerm operand) {
-		super(loc, "Group");
-		this.capture = capture;
-		this.number = number.intValue();
-		this.name = name;
-		this.operand = operand;
-	}
+  private final boolean capture;
+  private final int number;
+  private final String name;
+  private final RegExpTerm operand;
 
-	@Override
-	public void accept(Visitor v) {
-		v.visit(this);
-	}
+  public Group(
+      SourceLocation loc, boolean capture, Number number, String name, RegExpTerm operand) {
+    super(loc, "Group");
+    this.capture = capture;
+    this.number = number.intValue();
+    this.name = name;
+    this.operand = operand;
+  }
 
-	/**
-	 * Is this a capture group?
-	 */
-	public boolean isCapture() {
-		return capture;
-	}
+  @Override
+  public void accept(Visitor v) {
+    v.visit(this);
+  }
 
-	/**
-	 * Get the index of this group.
-	 */
-	public int getNumber() {
-		return number;
-	}
+  /** Is this a capture group? */
+  public boolean isCapture() {
+    return capture;
+  }
 
-	/**
-	 * Is this a named captured group?
-	 */
-	public boolean isNamed() {
-		return name != null;
-	}
+  /** Get the index of this group. */
+  public int getNumber() {
+    return number;
+  }
 
-	/**
-	 * Get the name of this group, if any.
-	 */
-	public String getName() {
-		return name;
-	}
+  /** Is this a named captured group? */
+  public boolean isNamed() {
+    return name != null;
+  }
 
-	/**
-	 * Get the term inside the group.
-	 */
-	public RegExpTerm getOperand() {
-		return operand;
-	}
+  /** Get the name of this group, if any. */
+  public String getName() {
+    return name;
+  }
+
+  /** Get the term inside the group. */
+  public RegExpTerm getOperand() {
+    return operand;
+  }
 }
