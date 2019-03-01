@@ -46,7 +46,7 @@ predicate flowsToTypeRestrictedExpression(LocalObject obj) {
       type = v.getTypeAnnotation() and
       restricted = v.getAVariable().getAnAssignedExpr()
     )
-    // no need to reason about writes to typed fields, captured nodes do not reach them
+    // no need to reason about writes to typed fields, local nodes do not reach them
   )
 }
 

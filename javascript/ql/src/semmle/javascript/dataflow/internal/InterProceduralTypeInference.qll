@@ -240,13 +240,13 @@ private predicate hasDefiniteReceiver(
   DataFlow::MethodCallNode call, LocalObject receiver
 ) {
   call = receiver.getAMethodCall() and
-  exists (DataFlow::AnalyzedNode receiverNode, AbstractValue abstractCapturedReceiver |
+  exists (DataFlow::AnalyzedNode receiverNode, AbstractValue abstractLocalReceiver |
     receiverNode = call.getReceiver() and
     not receiverNode.getALocalValue().isIndefinite(_) and
-    abstractCapturedReceiver = receiver.analyze().getALocalValue() and
+    abstractLocalReceiver = receiver.analyze().getALocalValue() and
     forall(DataFlow::AbstractValue v |
       receiverNode.getALocalValue() = v |
-      v = abstractCapturedReceiver
+      v = abstractLocalReceiver
     )
   )
 }
