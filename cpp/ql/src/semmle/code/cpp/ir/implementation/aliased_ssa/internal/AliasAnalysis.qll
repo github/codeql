@@ -71,7 +71,8 @@ predicate operandEscapesDomain(Operand operand) {
   not operandIsConsumedWithoutEscaping(operand) and
   not operandIsPropagated(operand, _) and
   not isArgumentForParameter(_, operand, _) and
-  not isOnlyEscapesViaReturnArgument(operand)
+  not isOnlyEscapesViaReturnArgument(operand) and
+  not operand.getUseInstruction() instanceof ReturnValueInstruction
 }
 
 /**

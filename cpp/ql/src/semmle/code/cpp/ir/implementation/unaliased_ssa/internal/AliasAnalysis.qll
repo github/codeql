@@ -71,7 +71,8 @@ predicate operandEscapesDomain(Operand operand) {
   not operandIsConsumedWithoutEscaping(operand) and
   not operandIsPropagated(operand, _) and
   not isArgumentForParameter(_, operand, _) and
-  not isOnlyEscapesViaReturnArgument(operand)
+  not isOnlyEscapesViaReturnArgument(operand) and
+  not operand.getUseInstruction() instanceof ReturnValueInstruction
 }
 
 /**
@@ -208,21 +209,21 @@ predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instructio
   )
 }
 
-predicate isAlwaysReturnedArgument(Operand operand) {
+private predicate isAlwaysReturnedArgument(Operand operand) {
   exists(AliasFunction f |
     f = operand.getUseInstruction().(CallInstruction).getStaticCallTarget() and
     f.parameterIsAlwaysReturned(operand.(PositionalArgumentOperand).getIndex())
   )
 }
 
-predicate isOnlyEscapesViaReturnArgument(Operand operand) {
+private predicate isOnlyEscapesViaReturnArgument(Operand operand) {
   exists(AliasFunction f |
     f = operand.getUseInstruction().(CallInstruction).getStaticCallTarget() and
     f.parameterEscapesOnlyViaReturn(operand.(PositionalArgumentOperand).getIndex())
   )
 }
 
-predicate isNeverEscapesArgument(Operand operand) {
+private predicate isNeverEscapesArgument(Operand operand) {
   exists(AliasFunction f |
     f = operand.getUseInstruction().(CallInstruction).getStaticCallTarget() and
     f.parameterNeverEscapes(operand.(PositionalArgumentOperand).getIndex())
