@@ -364,10 +364,10 @@ void test12(bool cond)
 
 	if (cond)
 	{
-		delete y; // GOOD [FALSE POSITIVE]
+		delete y; // GOOD
 		delete z; // GOOD
 	} else {
-		free(y); // GOOD [FALSE POSITIVE]
+		free(y); // GOOD
 		free(z); // GOOD
 	}
 }

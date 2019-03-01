@@ -46,13 +46,14 @@ predicate allocExprOrIndirect(Expr alloc, string kind) {
     alloc.(FunctionCall).getTarget() = rtn.getEnclosingFunction() and
     (
       allocExprOrIndirect(rtn.getExpr(), kind) or
-      allocReaches(rtn.getExpr(), _, kind)
+      allocReaches0(rtn.getExpr(), _, kind)
     )
   )
 }
 
 /**
- * Holds if `v` is assigned value `e`, and `e` is not known to be `0`.
+ * Holds if `v` is a global variable assigned value `e`, and `e` is not known
+ * to be `0`.
  */
 private predicate nonNullGlobalAssignment(Variable v, Expr e) {
   not v instanceof LocalScopeVariable and
@@ -61,17 +62,13 @@ private predicate nonNullGlobalAssignment(Variable v, Expr e) {
 }
 
 /**
- * Holds if `v` is a non-local variable which is assigned only with allocations of
- * type `kind` (it may also be assigned with NULL).
+ * Holds if `v` is a non-local variable which is assigned with allocations of
+ * type `kind`.
  */
-private predicate allocReachesVariable(Variable v, Expr alloc, string kind) {
+private cached predicate allocReachesVariable(Variable v, Expr alloc, string kind) {
   exists(Expr mid |
     nonNullGlobalAssignment(v, mid) and
-    allocReaches(mid, alloc, kind)
-  ) and
-  forall(Expr mid |
-    nonNullGlobalAssignment(v, mid) |
-    allocReaches(mid, _, kind)
+    allocReaches0(mid, alloc, kind)
   )
 }
 
@@ -80,19 +77,32 @@ private predicate allocReachesVariable(Variable v, Expr alloc, string kind) {
  * result of a previous memory allocation `alloc`.  `kind` is a
  * string describing the type of that allocation.
  */
-predicate allocReaches(Expr e, Expr alloc, string kind) {
+private predicate allocReaches0(Expr e, Expr alloc, string kind) {
   (
     // alloc
     allocExprOrIndirect(alloc, kind) and
     e = alloc
   ) or exists(SsaDefinition def, LocalScopeVariable v |
     // alloc via SSA
-    allocReaches(def.getAnUltimateDefiningValue(v), alloc, kind) and
+    allocReaches0(def.getAnUltimateDefiningValue(v), alloc, kind) and
     e = def.getAUse(v)
   ) or exists(Variable v |
-    // alloc via a singly assigned global
+    // alloc via a global
     allocReachesVariable(v, alloc, kind) and
     e.(VariableAccess).getTarget() = v
+  )
+}
+
+/**
+ * Holds if `e` is an expression which may evaluate to the
+ * result of previous memory allocations `alloc` only of type
+ * `kind`.
+ */
+predicate allocReaches(Expr e, Expr alloc, string kind) {
+  allocReaches0(e, alloc, kind) and
+  not exists(string k2 |
+    allocReaches0(e, _, k2)  and
+    kind != k2
   )
 }
 
