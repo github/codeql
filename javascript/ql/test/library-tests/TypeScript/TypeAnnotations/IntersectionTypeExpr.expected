@@ -1,5 +1,0 @@
-| tst.ts:43:23:43:43 | string& ... boolean | 0 | 3 | tst.ts:43:23:43:28 | string |
-| tst.ts:43:23:43:43 | string& ... boolean | 1 | 3 | tst.ts:43:30:43:35 | number |
-| tst.ts:43:23:43:43 | string& ... boolean | 2 | 3 | tst.ts:43:37:43:43 | boolean |
-| tst.ts:47:18:47:55 | (string ... string) | 0 | 2 | tst.ts:47:18:47:34 | (string \| number) |
-| tst.ts:47:18:47:55 | (string ... string) | 1 | 2 | tst.ts:47:38:47:55 | (boolean \| string) |
