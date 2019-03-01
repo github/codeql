@@ -1,9 +1,5 @@
 package com.semmle.js.extractor;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.semmle.js.ast.Comment;
 import com.semmle.js.ast.jsdoc.AllLiteral;
 import com.semmle.js.ast.jsdoc.ArrayType;
@@ -31,221 +27,224 @@ import com.semmle.js.ast.jsdoc.VoidLiteral;
 import com.semmle.js.parser.JSDocParser;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- * Extractor for populating JSDoc comments.
- */
+/** Extractor for populating JSDoc comments. */
 public class JSDocExtractor {
-	private static final Map<String, Integer> jsdocTypeExprKinds = new LinkedHashMap<String, Integer>();
-	static {
-		jsdocTypeExprKinds.put("AllLiteral", 0);
-		jsdocTypeExprKinds.put("NullLiteral", 1);
-		jsdocTypeExprKinds.put("UndefinedLiteral", 2);
-		jsdocTypeExprKinds.put("NullableLiteral", 3);
-		jsdocTypeExprKinds.put("VoidLiteral", 4);
-		jsdocTypeExprKinds.put("NameExpression", 5);
-		jsdocTypeExprKinds.put("TypeApplication", 6);
-		jsdocTypeExprKinds.put("NullableType", 7);
-		jsdocTypeExprKinds.put("NonNullableType", 8);
-		jsdocTypeExprKinds.put("RecordType", 9);
-		jsdocTypeExprKinds.put("ArrayType", 10);
-		jsdocTypeExprKinds.put("UnionType", 11);
-		jsdocTypeExprKinds.put("FunctionType", 12);
-		jsdocTypeExprKinds.put("OptionalType", 13);
-		jsdocTypeExprKinds.put("RestType", 14);
-	}
+  private static final Map<String, Integer> jsdocTypeExprKinds =
+      new LinkedHashMap<String, Integer>();
 
-	private final TrapWriter trapwriter;
-	private final LocationManager locationManager;
+  static {
+    jsdocTypeExprKinds.put("AllLiteral", 0);
+    jsdocTypeExprKinds.put("NullLiteral", 1);
+    jsdocTypeExprKinds.put("UndefinedLiteral", 2);
+    jsdocTypeExprKinds.put("NullableLiteral", 3);
+    jsdocTypeExprKinds.put("VoidLiteral", 4);
+    jsdocTypeExprKinds.put("NameExpression", 5);
+    jsdocTypeExprKinds.put("TypeApplication", 6);
+    jsdocTypeExprKinds.put("NullableType", 7);
+    jsdocTypeExprKinds.put("NonNullableType", 8);
+    jsdocTypeExprKinds.put("RecordType", 9);
+    jsdocTypeExprKinds.put("ArrayType", 10);
+    jsdocTypeExprKinds.put("UnionType", 11);
+    jsdocTypeExprKinds.put("FunctionType", 12);
+    jsdocTypeExprKinds.put("OptionalType", 13);
+    jsdocTypeExprKinds.put("RestType", 14);
+  }
 
-	public JSDocExtractor(TextualExtractor textualExtractor) {
-		this.trapwriter = textualExtractor.getTrapwriter();
-		this.locationManager = textualExtractor.getLocationManager();
-	}
+  private final TrapWriter trapwriter;
+  private final LocationManager locationManager;
 
-	private class V implements Visitor {
-		private Label parent;
-		private int idx;
+  public JSDocExtractor(TextualExtractor textualExtractor) {
+    this.trapwriter = textualExtractor.getTrapwriter();
+    this.locationManager = textualExtractor.getLocationManager();
+  }
 
-		private Label visit(JSDocTypeExpression nd) {
-			Label key = trapwriter.localID(nd);
-			int kind = jsdocTypeExprKinds.get(nd.getType());
-			trapwriter.addTuple("jsdoc_type_exprs", key, kind, parent, idx, nd.pp());
-			return key;
-		}
+  private class V implements Visitor {
+    private Label parent;
+    private int idx;
 
-		public void visit(Label parent, List<? extends JSDocElement> nds) {
-			Label oldParent = this.parent;
-			int oldIdx = this.idx;
+    private Label visit(JSDocTypeExpression nd) {
+      Label key = trapwriter.localID(nd);
+      int kind = jsdocTypeExprKinds.get(nd.getType());
+      trapwriter.addTuple("jsdoc_type_exprs", key, kind, parent, idx, nd.pp());
+      return key;
+    }
 
-			this.parent = parent;
-			this.idx = 0;
+    public void visit(Label parent, List<? extends JSDocElement> nds) {
+      Label oldParent = this.parent;
+      int oldIdx = this.idx;
 
-			for (JSDocElement element : nds) {
-				element.accept(this);
-				++this.idx;
-			}
+      this.parent = parent;
+      this.idx = 0;
 
-			this.parent = oldParent;
-			this.idx = oldIdx;
-		}
+      for (JSDocElement element : nds) {
+        element.accept(this);
+        ++this.idx;
+      }
 
-		public void visit(JSDocElement child, Label parent, int idx) {
-			if (child == null)
-				return;
+      this.parent = oldParent;
+      this.idx = oldIdx;
+    }
 
-			Label oldParent = this.parent;
-			int oldIdx = this.idx;
+    public void visit(JSDocElement child, Label parent, int idx) {
+      if (child == null) return;
 
-			this.parent = parent;
-			this.idx = idx;
-			child.accept(this);
+      Label oldParent = this.parent;
+      int oldIdx = this.idx;
 
-			this.parent = oldParent;
-			this.idx = oldIdx;
-		}
+      this.parent = parent;
+      this.idx = idx;
+      child.accept(this);
 
-		@Override
-		public void visit(AllLiteral nd) {
-			visit((JSDocTypeExpression)nd);
-		}
+      this.parent = oldParent;
+      this.idx = oldIdx;
+    }
 
-		@Override
-		public void visit(FieldType nd) {
-			trapwriter.addTuple("jsdoc_record_field_name", parent, idx, nd.getKey());
-			if (nd.hasValue())
-				visit(nd.getValue(), parent, idx);
-		}
+    @Override
+    public void visit(AllLiteral nd) {
+      visit((JSDocTypeExpression) nd);
+    }
 
-		@Override
-		public void visit(RecordType nd) {
-			Label label = visit((JSDocTypeExpression)nd);
-			visit(label, nd.getFields());
-		}
+    @Override
+    public void visit(FieldType nd) {
+      trapwriter.addTuple("jsdoc_record_field_name", parent, idx, nd.getKey());
+      if (nd.hasValue()) visit(nd.getValue(), parent, idx);
+    }
 
-		@Override
-		public void visit(NameExpression nd) {
-			visit((JSDocTypeExpression)nd);
-		}
+    @Override
+    public void visit(RecordType nd) {
+      Label label = visit((JSDocTypeExpression) nd);
+      visit(label, nd.getFields());
+    }
 
-		@Override
-		public void visit(NullableLiteral nd) {
-			visit((JSDocTypeExpression)nd);
-		}
+    @Override
+    public void visit(NameExpression nd) {
+      visit((JSDocTypeExpression) nd);
+    }
 
-		@Override
-		public void visit(NullLiteral nd) {
-			visit((JSDocTypeExpression)nd);
-		}
+    @Override
+    public void visit(NullableLiteral nd) {
+      visit((JSDocTypeExpression) nd);
+    }
 
-		@Override
-		public void visit(UndefinedLiteral nd) {
-			visit((JSDocTypeExpression)nd);
-		}
+    @Override
+    public void visit(NullLiteral nd) {
+      visit((JSDocTypeExpression) nd);
+    }
 
-		@Override
-		public void visit(VoidLiteral nd) {
-			visit((JSDocTypeExpression)nd);
-		}
+    @Override
+    public void visit(UndefinedLiteral nd) {
+      visit((JSDocTypeExpression) nd);
+    }
 
-		@Override
-		public void visit(JSDocComment nd) {
-			Label commentLabel = trapwriter.localID(nd.getComment());
-			Label jsdocLabel = trapwriter.freshLabel();
-			trapwriter.addTuple("jsdoc", jsdocLabel, nd.getDescription(), commentLabel);
-			locationManager.emitNodeLocation(nd, jsdocLabel);
-			visit(jsdocLabel, nd.getTags());
-		}
+    @Override
+    public void visit(VoidLiteral nd) {
+      visit((JSDocTypeExpression) nd);
+    }
 
-		@Override
-		public void visit(JSDocTag nd) {
-			Label label = trapwriter.localID(nd);
-			trapwriter.addTuple("jsdoc_tags", label, nd.getTitle(), parent, idx, "@" + nd.getTitle());
-			locationManager.emitNodeLocation(nd, label);
+    @Override
+    public void visit(JSDocComment nd) {
+      Label commentLabel = trapwriter.localID(nd.getComment());
+      Label jsdocLabel = trapwriter.freshLabel();
+      trapwriter.addTuple("jsdoc", jsdocLabel, nd.getDescription(), commentLabel);
+      locationManager.emitNodeLocation(nd, jsdocLabel);
+      visit(jsdocLabel, nd.getTags());
+    }
 
-			if (nd.hasDescription() && !nd.getDescription().isEmpty())
-				trapwriter.addTuple("jsdoc_tag_descriptions", label, nd.getDescription());
-			if (nd.hasName())
-				trapwriter.addTuple("jsdoc_tag_names", label, nd.getName());
-			visit(nd.getType(), label, 0);
+    @Override
+    public void visit(JSDocTag nd) {
+      Label label = trapwriter.localID(nd);
+      trapwriter.addTuple("jsdoc_tags", label, nd.getTitle(), parent, idx, "@" + nd.getTitle());
+      locationManager.emitNodeLocation(nd, label);
 
-			for (String msg : nd.getErrors())
-				trapwriter.addTuple("jsdoc_errors", trapwriter.freshLabel(), label, msg,
-						TextualExtractor.sanitiseToString(msg));
-		}
+      if (nd.hasDescription() && !nd.getDescription().isEmpty())
+        trapwriter.addTuple("jsdoc_tag_descriptions", label, nd.getDescription());
+      if (nd.hasName()) trapwriter.addTuple("jsdoc_tag_names", label, nd.getName());
+      visit(nd.getType(), label, 0);
 
-		@Override
-		public void visit(UnionType nd) {
-			Label label = visit((JSDocTypeExpression)nd);
-			List<JSDocTypeExpression> elements = nd.getElements();
-			visit(label, elements);
-		}
+      for (String msg : nd.getErrors())
+        trapwriter.addTuple(
+            "jsdoc_errors",
+            trapwriter.freshLabel(),
+            label,
+            msg,
+            TextualExtractor.sanitiseToString(msg));
+    }
 
-		@Override
-		public void visit(ArrayType nd) {
-			Label label = visit((JSDocTypeExpression)nd);
-			List<JSDocTypeExpression> elements = nd.getElements();
-			visit(label, elements);
-		}
+    @Override
+    public void visit(UnionType nd) {
+      Label label = visit((JSDocTypeExpression) nd);
+      List<JSDocTypeExpression> elements = nd.getElements();
+      visit(label, elements);
+    }
 
-		@Override
-		public void visit(TypeApplication nd) {
-			Label label = visit((JSDocTypeExpression)nd);
-			visit(nd.getExpression(), label, -1);
-			visit(label, nd.getApplications());
-		}
+    @Override
+    public void visit(ArrayType nd) {
+      Label label = visit((JSDocTypeExpression) nd);
+      List<JSDocTypeExpression> elements = nd.getElements();
+      visit(label, elements);
+    }
 
-		@Override
-		public void visit(FunctionType nd) {
-			Label label = visit((JSDocTypeExpression)nd);
-			visit(label, nd.getParams());
-			visit(nd.getResult(), label, -1);
-			visit(nd.getThis(), label, -2);
-			if (nd.isNew())
-				trapwriter.addTuple("jsdoc_has_new_parameter", label);
-		}
+    @Override
+    public void visit(TypeApplication nd) {
+      Label label = visit((JSDocTypeExpression) nd);
+      visit(nd.getExpression(), label, -1);
+      visit(label, nd.getApplications());
+    }
 
-		@Override
-		public void visit(ParameterType nd) {
-			visit(nd.getExpression(), parent, idx);
-		}
+    @Override
+    public void visit(FunctionType nd) {
+      Label label = visit((JSDocTypeExpression) nd);
+      visit(label, nd.getParams());
+      visit(nd.getResult(), label, -1);
+      visit(nd.getThis(), label, -2);
+      if (nd.isNew()) trapwriter.addTuple("jsdoc_has_new_parameter", label);
+    }
 
-		private void visit(UnaryTypeConstructor nd) {
-			Label label = visit((JSDocTypeExpression)nd);
-			visit(nd.getExpression(), label, 0);
-			if (!(nd instanceof RestType) && nd.isPrefix())
-				trapwriter.addTuple("jsdoc_prefix_qualifier", label);
-		}
+    @Override
+    public void visit(ParameterType nd) {
+      visit(nd.getExpression(), parent, idx);
+    }
 
-		@Override
-		public void visit(NonNullableType nd) {
-			visit((UnaryTypeConstructor)nd);
-		}
+    private void visit(UnaryTypeConstructor nd) {
+      Label label = visit((JSDocTypeExpression) nd);
+      visit(nd.getExpression(), label, 0);
+      if (!(nd instanceof RestType) && nd.isPrefix())
+        trapwriter.addTuple("jsdoc_prefix_qualifier", label);
+    }
 
-		@Override
-		public void visit(NullableType nd) {
-			visit((UnaryTypeConstructor)nd);
-		}
+    @Override
+    public void visit(NonNullableType nd) {
+      visit((UnaryTypeConstructor) nd);
+    }
 
-		@Override
-		public void visit(OptionalType nd) {
-			visit((UnaryTypeConstructor)nd);
-		}
+    @Override
+    public void visit(NullableType nd) {
+      visit((UnaryTypeConstructor) nd);
+    }
 
-		@Override
-		public void visit(RestType nd) {
-			visit((UnaryTypeConstructor)nd);
-		}
-	}
+    @Override
+    public void visit(OptionalType nd) {
+      visit((UnaryTypeConstructor) nd);
+    }
 
-	public void extract(List<Comment> comments) {
-		JSDocParser jsdocParser = new JSDocParser();
+    @Override
+    public void visit(RestType nd) {
+      visit((UnaryTypeConstructor) nd);
+    }
+  }
 
-		for (Comment comment : comments) {
-			if (comment.isDocComment()) {
-				JSDocComment docComment = jsdocParser.parse(comment);
-				docComment.accept(new V());
-			}
-		}
-	}
+  public void extract(List<Comment> comments) {
+    JSDocParser jsdocParser = new JSDocParser();
+
+    for (Comment comment : comments) {
+      if (comment.isDocComment()) {
+        JSDocComment docComment = jsdocParser.parse(comment);
+        docComment.accept(new V());
+      }
+    }
+  }
 }

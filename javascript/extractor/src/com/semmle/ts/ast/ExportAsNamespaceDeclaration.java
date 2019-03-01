@@ -5,24 +5,21 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Statement;
 import com.semmle.js.ast.Visitor;
 
-/**
- * A statement of form <tt>export as namespace X</tt> where <tt>X</tt> is an
- * identifier.
- */
+/** A statement of form <tt>export as namespace X</tt> where <tt>X</tt> is an identifier. */
 public class ExportAsNamespaceDeclaration extends Statement {
-	private Identifier id;
+  private Identifier id;
 
-	public ExportAsNamespaceDeclaration(SourceLocation loc, Identifier id) {
-		super("ExportAsNamespaceDeclaration", loc);
-		this.id = id;
-	}
+  public ExportAsNamespaceDeclaration(SourceLocation loc, Identifier id) {
+    super("ExportAsNamespaceDeclaration", loc);
+    this.id = id;
+  }
 
-	public Identifier getId() {
-		return id;
-	}
+  public Identifier getId() {
+    return id;
+  }
 
-	@Override
-	public <C, R> R accept(Visitor<C, R> v, C c) {
-		return v.visit(this, c);
-	}
+  @Override
+  public <C, R> R accept(Visitor<C, R> v, C c) {
+    return v.visit(this, c);
+  }
 }

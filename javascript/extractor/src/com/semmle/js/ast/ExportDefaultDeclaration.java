@@ -14,23 +14,23 @@ package com.semmle.js.ast;
  * </pre>
  */
 public class ExportDefaultDeclaration extends ExportDeclaration {
-	/**
-	 * Either an {@linkplain Expression} or a {@linkplain FunctionDeclaration} or
-	 * a {@linkplain ClassDeclaration}.
-	 */
-	private final Node declaration;
+  /**
+   * Either an {@linkplain Expression} or a {@linkplain FunctionDeclaration} or a {@linkplain
+   * ClassDeclaration}.
+   */
+  private final Node declaration;
 
-	public ExportDefaultDeclaration(SourceLocation loc, Node declaration) {
-		super("ExportDefaultDeclaration", loc);
-		this.declaration = declaration;
-	}
+  public ExportDefaultDeclaration(SourceLocation loc, Node declaration) {
+    super("ExportDefaultDeclaration", loc);
+    this.declaration = declaration;
+  }
 
-	public Node getDeclaration() {
-		return declaration;
-	}
+  public Node getDeclaration() {
+    return declaration;
+  }
 
-	@Override
-	public <C, R> R accept(Visitor<C, R> v, C c) {
-		return v.visit(this, c);
-	}
+  @Override
+  public <C, R> R accept(Visitor<C, R> v, C c) {
+    return v.visit(this, c);
+  }
 }

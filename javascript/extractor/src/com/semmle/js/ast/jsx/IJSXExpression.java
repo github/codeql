@@ -1,5 +1,3 @@
 package com.semmle.js.ast.jsx;
 
-public interface IJSXExpression {
-
-}
+public interface IJSXExpression {}

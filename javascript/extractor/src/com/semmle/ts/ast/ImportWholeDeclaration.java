@@ -6,29 +6,27 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Statement;
 import com.semmle.js.ast.Visitor;
 
-/**
- * An import of form <tt>import a = E</tt>.
- */
+/** An import of form <tt>import a = E</tt>. */
 public class ImportWholeDeclaration extends Statement {
-	private final Identifier lhs;
-	private final Expression rhs;
+  private final Identifier lhs;
+  private final Expression rhs;
 
-	public ImportWholeDeclaration(SourceLocation loc, Identifier lhs, Expression rhs) {
-		super("ImportWholeDeclaration", loc);
-		this.lhs = lhs;
-		this.rhs = rhs;
-	}
+  public ImportWholeDeclaration(SourceLocation loc, Identifier lhs, Expression rhs) {
+    super("ImportWholeDeclaration", loc);
+    this.lhs = lhs;
+    this.rhs = rhs;
+  }
 
-	public Identifier getLhs() {
-		return lhs;
-	}
+  public Identifier getLhs() {
+    return lhs;
+  }
 
-	public Expression getRhs() {
-		return rhs;
-	}
+  public Expression getRhs() {
+    return rhs;
+  }
 
-	@Override
-	public <C, R> R accept(Visitor<C, R> v, C c) {
-		return v.visit(this, c);
-	}
+  @Override
+  public <C, R> R accept(Visitor<C, R> v, C c) {
+    return v.visit(this, c);
+  }
 }
