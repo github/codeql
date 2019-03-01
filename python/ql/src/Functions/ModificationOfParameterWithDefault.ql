@@ -2,7 +2,7 @@
  * @name Modification of parameter with default
  * @description Modifying the default value of a parameter can lead to unexpected
  *              results.
- * @kind problem
+ * @kind path-problem
  * @tags reliability
  *       maintainability
  * @problem.severity error
