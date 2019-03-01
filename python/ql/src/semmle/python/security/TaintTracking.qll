@@ -148,6 +148,16 @@ abstract class TaintKind extends string {
         none()
     }
 
+    /** Gets the boolean values (may be one, neither, or both) that
+     * may result from the Python expression `bool(this)`
+     */
+    boolean booleanValue() {
+        /* Default to true as the vast majority of taint is strings and 
+         * the empty string is almost always benign.
+         */
+        result = true
+    }
+
     string repr() { result = this }
 
 }
@@ -1190,7 +1200,8 @@ library module TaintFlowImplementation {
                 sanitizer.sanitizingEdge(kind, test)
             )
             |
-            not Filters::isinstance(test.getTest(), _, var.getSourceVariable().getAUse())
+            not Filters::isinstance(test.getTest(), _, var.getSourceVariable().getAUse()) and
+            not test.getTest() = var.getSourceVariable().getAUse()
             or
             exists(ControlFlowNode c, ClassObject cls |
                 Filters::isinstance(test.getTest(), c, var.getSourceVariable().getAUse())
@@ -1200,6 +1211,8 @@ library module TaintFlowImplementation {
                 or
                 test.getSense() = false and not kind.getClass().getAnImproperSuperType() = cls
             )
+            or
+            test.getTest() = var.getSourceVariable().getAUse() and kind.booleanValue() = test.getSense()
         )
     }
 

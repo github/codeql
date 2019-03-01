@@ -32,3 +32,5 @@
 | simple.test | test.py:159 | 160 | t | simple.test |
 | simple.test | test.py:168 | 172 | Subscript | simple.test |
 | simple.test | test.py:169 | 173 | Subscript | simple.test |
+| simple.test | test.py:178 | 180 | t | simple.test |
+| simple.test | test.py:178 | 186 | t | simple.test |
