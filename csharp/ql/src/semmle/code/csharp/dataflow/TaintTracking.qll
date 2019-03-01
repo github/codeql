@@ -90,17 +90,6 @@ module TaintTracking {
       DataFlow::Internal::flowIntoCallableLibraryCall(_, arg, call, p, false, cc)
     }
 
-    final override predicate isAdditionalFlowStepOutOfCall(
-      DataFlow::Node call, DataFlow::Node ret, DataFlow::Node out, CallContext::CallContext cc
-    ) {
-      exists(DispatchCall dc, Callable callable | canYieldReturn(callable, ret.asExpr()) |
-        dc.getCall() = call.asExpr() and
-        call = out and
-        callable = dc.getADynamicTarget() and
-        cc instanceof CallContext::EmptyCallContext
-      )
-    }
-
     /**
      * Holds if taint may flow from `source` to `sink` for this configuration.
      */
@@ -112,8 +101,6 @@ module TaintTracking {
 
   /** INTERNAL: Do not use. */
   module Internal {
-    predicate canYieldReturn(Callable c, Expr e) { c.getSourceDeclaration().canYieldReturn(e) }
-
     private CIL::DataFlowNode asCilDataFlowNode(DataFlow::Node node) {
       result = node.asParameter() or
       result = node.asExpr()
@@ -258,6 +245,10 @@ module TaintTracking {
         )
         or
         DataFlow::Internal::flowThroughCallableLibraryOutRef(_, nodeFrom, nodeTo, false)
+        or
+        exists(Callable c | c.canYieldReturn(nodeFrom.asExpr()) |
+          c = nodeTo.(DataFlow::Internal::YieldReturnNode).getEnclosingCallable()
+        )
       }
     }
     import Cached
