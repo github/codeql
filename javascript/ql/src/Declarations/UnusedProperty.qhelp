@@ -18,7 +18,7 @@
 
 		<p>
 			In this code, the function <code>f</code> initializes a property <code>prop_a</code> with a
-			call to the function <code>expensiveComputation</code>, but later on this property is never read.
+			call to the function <code>expensiveComputation</code>, but later on, this property is never read.
 			Removing <code>prop</code> would improve code quality and performance.
 		</p>
 
