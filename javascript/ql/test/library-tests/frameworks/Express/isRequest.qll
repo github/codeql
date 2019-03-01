@@ -1,3 +1,3 @@
-import semmle.javascript.frameworks.Express
+import javascript
 
 query predicate test_isRequest(Expr nd) { Express::isRequest(nd) }
