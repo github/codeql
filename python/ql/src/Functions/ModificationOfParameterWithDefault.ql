@@ -2,7 +2,7 @@
  * @name Modification of parameter with default
  * @description Modifying the default value of a parameter can lead to unexpected
  *              results.
- * @kind problem
+ * @kind path-problem
  * @tags reliability
  *       maintainability
  * @problem.severity error
@@ -12,6 +12,7 @@
  */
 
 import python
+import semmle.python.security.Paths
 
 predicate safe_method(string name) {
     name = "count" or name = "index" or name = "copy" or name =  "get"  or name = "has_key" or
@@ -21,27 +22,6 @@ predicate safe_method(string name) {
 predicate maybe_parameter(SsaVariable var, Function f, Parameter p) {
     p = var.getAnUltimateDefinition().getDefinition().getNode() and
     f.getAnArg() = p
-}
-
-Name use_of_parameter(Parameter p) {
-    exists(SsaVariable var |
-        p = var.getAnUltimateDefinition().getDefinition().getNode() and
-        var.getAUse().getNode() = result
-    )
-}
-
-predicate modifying_call(Call c, Parameter p) {
-    exists(Attribute a |
-        c.getFunc() = a |
-        a.getObject() = use_of_parameter(p) and
-        not safe_method(a.getName())
-    )
-}
-
-predicate is_modification(AstNode a, Parameter p) {
-    modifying_call(a, p)
-    or
-    a.(AugAssign).getTarget() = use_of_parameter(p)
 }
 
 predicate has_mutable_default(Parameter p) {
@@ -56,6 +36,42 @@ predicate has_mutable_default(Parameter p) {
     )
 }
 
-from AstNode a, Parameter p
-where has_mutable_default(p) and is_modification(a, p)
-select a, "Modification of parameter $@, which has mutable default value.", p, p.asName().getId()
+class MutableValue extends TaintKind {
+    MutableValue() {
+        this = "mutable value"
+    }
+}
+
+class MutableDefaultValue extends TaintSource {
+    MutableDefaultValue() {
+        has_mutable_default(this.(NameNode).getNode())
+    }
+
+    override string toString() {
+        result = "mutable default value"
+    }
+
+    override predicate isSourceOf(TaintKind kind) {
+        kind instanceof MutableValue
+    }
+}
+
+class Mutation extends TaintSink {
+    Mutation() {
+        exists(AugAssign a | a.getTarget().getAFlowNode() = this)
+        or
+        exists(Call c, Attribute a |
+            c.getFunc() = a |
+            a.getObject().getAFlowNode() = this and
+            not safe_method(a.getName())
+        )
+    }
+
+    override predicate sinks(TaintKind kind) {
+        kind instanceof MutableValue
+    }
+}
+
+from TaintedPathSource src, TaintedPathSink sink
+where src.flowsTo(sink)
+select sink.getSink(), src, sink, "$@ flows to here and is mutated.", src.getSource(), "Default value"

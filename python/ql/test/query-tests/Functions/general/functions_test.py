@@ -286,3 +286,13 @@ class Z(zope.interface.Interface):
 
 Z().meth(0)
 
+# indirect modification of parameter with default
+def aug_assign_argument(x):
+    x += ['x']
+
+def mutate_argument(x):
+    x.append('x')
+
+def indirect_modification(y = []):
+    aug_assign_argument(y)
+    mutate_argument(y)
