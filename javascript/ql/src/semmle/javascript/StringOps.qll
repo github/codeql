@@ -112,14 +112,18 @@ module StringOps {
     }
 
     /**
-     * A call of form `_.startsWith(A, B)` or `ramda.startsWith(A, B)`.
+     * A call of form `_.startsWith(A, B)` or `ramda.startsWith(A, B)` or `goog.string.startsWith(A, B)`.
      */
     private class StartsWith_Library extends Range, DataFlow::CallNode {
       StartsWith_Library() {
         getNumArgument() = 2 and
         exists(DataFlow::SourceNode callee | this = callee.getACall() |
           callee = LodashUnderscore::member("startsWith") or
-          callee = DataFlow::moduleMember("ramda", "startsWith")
+          callee = DataFlow::moduleMember("ramda", "startsWith") or
+          exists(string name |
+            callee = Closure::moduleImport("goog.string." + name) and
+            (name = "startsWith" or name = "caseInsensitiveStartsWith")
+          )
         )
       }
 
@@ -250,6 +254,9 @@ module StringOps {
         exists(string name |
           this = LodashUnderscore::member(name).getACall() and
           (name = "includes" or name = "include" or name = "contains")
+          or
+          this = Closure::moduleImport("goog.string." + name).getACall() and
+          (name = "contains" or name = "caseInsensitiveContains")
         )
       }
 
@@ -416,7 +423,11 @@ module StringOps {
         getNumArgument() = 2 and
         exists(DataFlow::SourceNode callee | this = callee.getACall() |
           callee = LodashUnderscore::member("endsWith") or
-          callee = DataFlow::moduleMember("ramda", "endsWith")
+          callee = DataFlow::moduleMember("ramda", "endsWith") or
+          exists(string name |
+            callee = Closure::moduleImport("goog.string." + name) and
+            (name = "endsWith" or name = "caseInsensitiveEndsWith")
+          )
         )
       }
 
