@@ -1,8 +1,8 @@
-(function capturedSource(){
+(function localSource(){
 
-	let captured1 = {};
-	let captured2 = { f: function(){} };
-	let captured3 = { [unknown]: 42 };
+	let local1 = {};
+	let local2 = { f: function(){} };
+	let local3 = { [unknown]: 42 };
 
 	unknown({});
 
@@ -33,17 +33,17 @@
 	({ m: indirectlyUnknown });
 });
 
-(function capturedProperty(){
+(function localProperty(){
 
-	let captured1 = { p: 42 };
-	captured1.p;
-	captured1.p;
+	let local1 = { p: 42 };
+	local1.p;
+	local1.p;
 
-	let captured2 = { p: 42, q: 42 };
-	captured2.p;
-	captured2.p;
-	captured2.q = 42;
-	captured2 = 42;
+	let local2 = { p: 42, q: 42 };
+	local2.p;
+	local2.p;
+	local2.q = 42;
+	local2 = 42;
 
 	let nonObject = function(){}
 	nonObject.p = 42;
@@ -65,22 +65,22 @@
 	overridden3.p;
 
 	function f(o) {
-		let captured3 = { p: 42 };
-		o = o || captured3;
+		let local3 = { p: 42 };
+		o = o || local3;
 		o.p;
 	}
 
-	let captured4 = { };
-	captured4.p;
+	let local4 = { };
+	local4.p;
 
-	let captured5 = { p: 42 },
-	    captured6 = { p: true };
-	(unknown? captured5: captured6).p; // could support this with a bit of extra work
+	let local5 = { p: 42 },
+	    local6 = { p: true };
+	(unknown? local5: local6).p; // could support this with a bit of extra work
 
-	(function(semiCaptured7){
+	(function(semiLocal7){
 		if(unknown)
-			semiCaptured7 = {};
-		semiCaptured7.p = 42;
+			semiLocal7 = {};
+		semiLocal7.p = 42;
 	});
 
 });

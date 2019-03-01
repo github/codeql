@@ -1,9 +1,9 @@
 (function(){
-    var captured1 = {
+    var local1 = {
         used1: 42,
         unused1: 42
     };
-    captured1.used1;
+    local1.used1;
 
     var unused2 = {
         unused2a: 42,
@@ -21,26 +21,26 @@
     ({ used10: 42 }).propertyIsEnumerable;
 
     (function(){
-        var captured11 = {
+        var local11 = {
             used11: 42,
             unused11: 42
         };
-        captured11.used11;
+        local11.used11;
 
-        var captured12 = {
+        var local12 = {
             used12_butNotReally: 42,
             unused12: 42
         };
 
         throw x;
 
-        captured12.used12_butNotReally;
+        local12.used12_butNotReally;
 
-        var captured13 = {
+        var local13 = {
             used13: 42,
             unused13: 42
         };
-        captured13.used13;
+        local13.used13;
     });
     (function(options){
         if(unknown)
@@ -48,18 +48,18 @@
         options.output = 42;
     });
 
-	var captured14 = {
+	var local14 = {
 		unused14: 42
 	};
-	captured14.unused14 = 42;
-	captured14.unused14 = 42;
+	local14.unused14 = 42;
+	local14.unused14 = 42;
 
 
-	var captured15 = {
+	var local15 = {
 		semiUnused15: 42
 	};
-	captured15.semiUnused15 = 42;
-	captured15.semiUnused15;
+	local15.semiUnused15 = 42;
+	local15.semiUnused15;
 });
 (function(unusedParam = {unusedProp: 42}){
 
