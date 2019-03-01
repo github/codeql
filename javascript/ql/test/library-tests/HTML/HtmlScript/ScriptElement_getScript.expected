@@ -1,0 +1,4 @@
+| tst.html:2:3:2:32 | <script>...</> | tst.js:1:1:2:0 | <toplevel> |
+| tst.html:5:3:5:38 | <script>...</> | tst.js:1:1:2:0 | <toplevel> |
+| tst.html:8:3:8:25 | <script>...</> | tst.html:8:11:8:16 | <toplevel> |
+| tst.html:9:3:11:11 | <script>...</> | tst.html:9:11:11:2 | <toplevel> |

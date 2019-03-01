@@ -12,7 +12,9 @@ class SystemNamespace extends Namespace {
 }
 
 /** A class in the `System` namespace. */
-class SystemClass extends Class { SystemClass() { this.getNamespace() instanceof SystemNamespace } }
+class SystemClass extends Class {
+  SystemClass() { this.getNamespace() instanceof SystemNamespace }
+}
 
 /** An unbound generic class in the `System` namespace. */
 class SystemUnboundGenericClass extends UnboundGenericClass {
@@ -50,7 +52,9 @@ class SystemActionTDelegateType extends SystemUnboundGenericDelegateType {
 }
 
 /** `System.Array` class. */
-class SystemArrayClass extends SystemClass { SystemArrayClass() { this.hasName("Array") } }
+class SystemArrayClass extends SystemClass {
+  SystemArrayClass() { this.hasName("Array") }
+}
 
 /** The `System.Boolean` structure. */
 class SystemBooleanStruct extends BoolType {
@@ -75,10 +79,14 @@ class SystemBooleanStruct extends BoolType {
 }
 
 /** The `System.Convert` class. */
-class SystemConvertClass extends SystemClass { SystemConvertClass() { this.hasName("Convert") } }
+class SystemConvertClass extends SystemClass {
+  SystemConvertClass() { this.hasName("Convert") }
+}
 
 /** `System.Delegate` class. */
-class SystemDelegateClass extends SystemClass { SystemDelegateClass() { this.hasName("Delegate") } }
+class SystemDelegateClass extends SystemClass {
+  SystemDelegateClass() { this.hasName("Delegate") }
+}
 
 /** The `System.DivideByZeroException` class. */
 class SystemDivideByZeroExceptionClass extends SystemClass {
@@ -86,7 +94,9 @@ class SystemDivideByZeroExceptionClass extends SystemClass {
 }
 
 /** The `System.Enum` class. */
-class SystemEnumClass extends SystemClass { SystemEnumClass() { this.hasName("Enum") } }
+class SystemEnumClass extends SystemClass {
+  SystemEnumClass() { this.hasName("Enum") }
+}
 
 /** The `System.Exception` class. */
 class SystemExceptionClass extends SystemClass {
@@ -670,7 +680,9 @@ class SystemStruct extends Struct {
 }
 
 /** `System.Guid` struct. */
-class SystemGuid extends SystemStruct { SystemGuid() { this.hasName("Guid") } }
+class SystemGuid extends SystemStruct {
+  SystemGuid() { this.hasName("Guid") }
+}
 
 /** The `System.NotImplementedException` class. */
 class SystemNotImplementedExceptionClass extends SystemClass {

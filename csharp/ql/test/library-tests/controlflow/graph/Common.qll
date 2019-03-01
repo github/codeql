@@ -1,6 +1,8 @@
 import csharp
 
-class StubFile extends File { StubFile() { this.getAbsolutePath().matches("%resources/stubs/%") } }
+class StubFile extends File {
+  StubFile() { this.getAbsolutePath().matches("%resources/stubs/%") }
+}
 
 class SourceControlFlowElement extends ControlFlowElement {
   SourceControlFlowElement() { not this.getLocation().getFile() instanceof StubFile }

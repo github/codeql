@@ -110,9 +110,19 @@ private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
 /* tonode = os.path.join(..., fromnode, ...) */
 private predicate os_path_join(ControlFlowNode fromnode, CallNode tonode) {
     exists(FunctionObject path_join |
-        exists(ModuleObject os | os.getName() = "os" |
-            os.getAttribute("path").(ModuleObject).getAttribute("join") = path_join
-        ) |
+        path_join = ModuleObject::named("os").attr("path").(ModuleObject).attr("join")
+        and
         tonode = path_join.getACall() and tonode.getAnArg() = fromnode 
     )
 }
+
+/** A kind of "taint", representing a dictionary mapping str->"taint" */
+class StringDictKind extends DictKind {
+
+    StringDictKind() {
+        this.getValue() instanceof StringKind
+    }
+
+}
+
+

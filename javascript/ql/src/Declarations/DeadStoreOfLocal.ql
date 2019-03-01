@@ -19,7 +19,7 @@ import DeadStore
  */
 predicate deadStoreOfLocal(VarDef vd, PurelyLocalVariable v) {
   v = vd.getAVariable() and
-  exists(vd.getSource()) and
+  (exists(vd.getSource()) or exists(vd.getDestructuringSource())) and
   // the definition is not in dead code
   exists(ReachableBasicBlock rbb | vd = rbb.getANode()) and
   // but it has no associated SSA definition, that is, it is dead
@@ -49,5 +49,7 @@ where
   // don't flag assignments in externs
   not dead.(ASTNode).inExternsFile() and
   // don't flag exported variables
-  not any(ES2015Module m).exportsAs(v, _)
+  not any(ES2015Module m).exportsAs(v, _) and
+  // don't flag 'exports' assignments in closure modules
+  not any(Closure::ClosureModule mod).getExportsVariable() = v
 select dead, "This definition of " + v.getName() + " is useless, since its value is never read."

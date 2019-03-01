@@ -96,3 +96,14 @@ _names = sys.builtin_module_names
 
 if 'time' in _names:
     import time as t
+
+gv = C()
+
+unrelated_call()
+
+gv
+
+def mod_gv(x):
+    gv.attr = x
+
+

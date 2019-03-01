@@ -1,12 +1,46 @@
 import AliasAnalysis
 import cpp
 private import semmle.code.cpp.ir.implementation.raw.IR
+private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.Overlap
 
+private class IntValue = Ints::IntValue;
+
+private predicate hasResultMemoryAccess(Instruction instr, IRVariable var, Type type, IntValue bitOffset) {
+  resultPointsTo(instr.getResultAddressOperand().getDefinitionInstruction(), var, bitOffset) and
+  type = instr.getResultType()
+}
+
+private predicate hasOperandMemoryAccess(MemoryOperand operand, IRVariable var, Type type, IntValue bitOffset) {
+  resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, bitOffset) and
+  type = operand.getType()
+}
+
+/**
+ * Holds if the specified variable should be modeled in SSA form. For unaliased SSA, we only model a variable if its
+ * address never escapes and all reads and writes of that variable access the entire variable using the original type
+ * of the variable.
+ */
+private predicate isVariableModeled(IRVariable var) {
+  not variableAddressEscapes(var) and
+  // There's no need to check for the right size. An `IRVariable` never has an `UnknownType`, so the test for
+  // `type = var.getType()` is sufficient.
+  forall(Instruction instr, Type type, IntValue bitOffset |
+    hasResultMemoryAccess(instr, var, type, bitOffset) |
+    bitOffset = 0 and
+    type = var.getType()
+  ) and
+  forall(MemoryOperand operand, Type type, IntValue bitOffset |
+    hasOperandMemoryAccess(operand, var, type, bitOffset) |
+    bitOffset = 0 and
+    type = var.getType()
+  )
+}
+
 private newtype TVirtualVariable =
   MkVirtualVariable(IRVariable var) {
-    not variableAddressEscapes(var)
+    isVariableModeled(var)
   }
 
 private VirtualVariable getVirtualVariable(IRVariable var) {
@@ -28,7 +62,6 @@ class VirtualVariable extends TVirtualVariable {
     result = var
   }
 
-  // REVIEW: This should just be on MemoryAccess
   final Type getType() {
     result = var.getType()
   }
@@ -74,16 +107,14 @@ Overlap getOverlap(MemoryAccess def, MemoryAccess use) {
 
 MemoryAccess getResultMemoryAccess(Instruction instr) {
   exists(IRVariable var |
-    instr.getResultMemoryAccess() instanceof IndirectMemoryAccess and
-    resultPointsTo(instr.getAnOperand().(AddressOperand).getDefinitionInstruction(),
-      var, 0) and
+    hasResultMemoryAccess(instr, var, _, _) and
     result = getMemoryAccess(var)
   )
 }
 
-MemoryAccess getOperandMemoryAccess(Operand operand) {
+MemoryAccess getOperandMemoryAccess(MemoryOperand operand) {
   exists(IRVariable var |
-    resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, 0) and
+    hasOperandMemoryAccess(operand, var, _, _) and
     result = getMemoryAccess(var)
   )
 }

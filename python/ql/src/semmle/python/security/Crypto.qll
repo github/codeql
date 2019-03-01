@@ -95,7 +95,7 @@ module Cryptography {
 
     class CipherClass extends ClassObject {
         CipherClass() {
-            ciphers().getAttribute("Cipher") = this
+            ciphers().attr("Cipher") = this
         }
 
     }
@@ -103,7 +103,7 @@ module Cryptography {
     class AlgorithmClass extends ClassObject {
 
         AlgorithmClass()  {
-            ciphers().submodule("algorithms").getAttribute(_) = this
+            ciphers().submodule("algorithms").attr(_) = this
         }
 
         string getAlgorithmName() {

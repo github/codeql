@@ -13,11 +13,11 @@
 import python
 
 FunctionObject iter() {
-    result = builtin_object("iter")
+    result = Object::builtin("iter")
 }
 
 FunctionObject next() {
-    result = builtin_object("next")
+    result = Object::builtin("next")
 }
 
 predicate call_to_iter(CallNode call, EssaVariable sequence) {

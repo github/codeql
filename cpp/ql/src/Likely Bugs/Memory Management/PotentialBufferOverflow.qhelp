@@ -3,13 +3,12 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>This rule highlights potentially overflowing calls to the functions <code>sprintf</code>, <code>vsprintf</code>, and <code>gets</code> with a warning. 
-These functions allow unbounded writes to buffers, which may cause an overflow when used on untrusted data or without adequate checks on the size of the data. Function calls of this type constitute a security risk through buffer overflows. The <code>gets</code> function, in particular,
-is one of the vulnerabilities exploited by the Internet Worm of 1988, one of the first computer worms to spread through the Internet.</p>
+<p>This rule highlights potentially overflowing calls to the functions <code>sprintf</code> and <code>vsprintf</code> with a warning. 
+These functions allow unbounded writes to buffers, which may cause an overflow when used on untrusted data or without adequate checks on the size of the data. Function calls of this type constitute a security risk through buffer overflows.</p>
 
 </overview>
 <recommendation>
-<p>Always control the length of buffer copy and buffer write operations. Use the safer variants <code>snprintf</code>, <code>vsnprintf</code>, and <code>fgets</code>, which include an extra buffer length argument.</p>
+<p>Always control the length of buffer copy and buffer write operations. Use the safer variants <code>snprintf</code> and <code>vsnprintf</code>, which include an extra buffer length argument.</p>
 
 </recommendation>
 <example>
@@ -18,7 +17,6 @@ is one of the vulnerabilities exploited by the Internet Worm of 1988, one of the
 <p>To improve the security of this example code, three changes should be made:</p>
 <ol>
   <li>Introduce a preprocessor define for the size of the buffer.</li>
-  <li>Replace the call to <code>gets</code> with <code>fgets</code>, specifying the define as the maximum length to copy.  This will prevent the buffer overflow.</li>
   <li>Replace both calls to <code>sprintf</code> with <code>snprintf</code>, specifying the define as the maximum length to copy.  This will prevent the buffer overflow.</li>
   <li>Consider using the %g format specifier instead of %f.</li>
 </ol>
@@ -33,8 +31,6 @@ Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/STR31-
 that storage for strings has sufficient space for character data and
 the null terminator</a>.</li>
 <li>M. Howard, D. Leblanc, J. Viega, <i>19 Deadly Sins of Software Security: Programming Flaws and How to Fix Them</i>, McGraw-Hill Osborne, 2005.</li>
-<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Morris_worm">Morris worm</a>.</li>
-<li>E. Spafford. <i>The Internet Worm Program: An Analysis</i>. Purdue Technical Report CSD-TR-823, <a href="http://www.textfiles.com/100/tr823.txt">(online)</a>, 1988.</li>
 
 
 </references>

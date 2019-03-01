@@ -127,7 +127,7 @@ where
     exists(RegExpLiteral rel |
       isBackslashEscape(repl, rel) and
       not allBackslashesEscaped(DataFlow::valueNode(repl)) and
-      msg = "This does not backslash-escape the backslash character."
+      msg = "This does not escape backslash characters in the input."
     )
   )
-select old, msg
+select repl.getCallee(), msg

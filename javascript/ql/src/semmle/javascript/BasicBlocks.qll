@@ -284,13 +284,17 @@ class BasicBlock extends @cfg_node, Locatable {
  * An unreachable basic block, that is, a basic block
  * whose first node is unreachable.
  */
-class UnreachableBlock extends BasicBlock { UnreachableBlock() { getFirstNode().isUnreachable() } }
+class UnreachableBlock extends BasicBlock {
+  UnreachableBlock() { getFirstNode().isUnreachable() }
+}
 
 /**
  * An entry basic block, that is, a basic block
  * whose first node is the entry node of a statement container.
  */
-class EntryBasicBlock extends BasicBlock { EntryBasicBlock() { entryBB(this) } }
+class EntryBasicBlock extends BasicBlock {
+  EntryBasicBlock() { entryBB(this) }
+}
 
 /**
  * A basic block that is reachable from an entry basic block.

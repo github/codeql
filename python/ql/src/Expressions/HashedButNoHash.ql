@@ -19,7 +19,7 @@ import python
 
 predicate numpy_array_type(ClassObject na) {
     exists(ModuleObject np | np.getName() = "numpy" or np.getName() = "numpy.core" |
-        na.getAnImproperSuperType() = np.getAttribute("ndarray")
+        na.getAnImproperSuperType() = np.attr("ndarray")
     )
 }
 

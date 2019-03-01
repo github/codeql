@@ -1,8 +1,8 @@
 <!DOCTYPE qhelp SYSTEM "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Double-checked locking requires that the underlying field is <code>volatile</code>, 
-otherwise the program can behave incorrectly when running in multiple threads, 
+<p>Double-checked locking requires that the underlying field is <code>volatile</code>,
+otherwise the program can behave incorrectly when running in multiple threads,
 for example by computing the field twice.
 </p>
 </overview>
@@ -16,6 +16,7 @@ for example by computing the field twice.
 <li>Make the field volatile using the <code>volatile</code> keyword.</li>
 <li>Use the <code>System.Lazy</code> class, which is guaranteed to be thread-safe. 
 This can often lead to more elegant code.</li>
+<li>Use <code>System.Threading.LazyInitializer</code>.</li>
 </ol>
 
 </recommendation>
@@ -51,19 +52,23 @@ automatically thread-safe (Recommendation 3):</p>
 </example>
 
 <references>
-
-	<li>
-		MSDN: <a href="https://msdn.microsoft.com/en-us/library/ff650316.aspx">Implementing Singleton in C#</a>.
-	</li>
-	<li>
-		MSDN Magazine: <a href="https://msdn.microsoft.com/magazine/jj863136">The C# Memory Model in Theory and Practice</a>.
-	</li>
-	<li>
-		MSDN, C# Reference: <a href="https://msdn.microsoft.com/en-us/library/x13ttww7.aspx">volatile</a>.
-	</li>
-	<li>
-		Wikipedia: <a href="https://en.wikipedia.org/wiki/Double-checked_locking">Double-checked locking</a>.
-	</li>
-	
+  <li>
+    MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.lazy-1">Lazy&lt;T&gt; Class</a>.
+  </li>
+  <li>
+    MSDN: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.threading.lazyinitializer.ensureinitialized">LazyInitializer.EnsureInitialized Method</a>.
+  </li>
+  <li>
+    MSDN: <a href="https://msdn.microsoft.com/en-us/library/ff650316.aspx">Implementing Singleton in C#</a>.
+  </li>
+  <li>
+    MSDN Magazine: <a href="https://msdn.microsoft.com/magazine/jj863136">The C# Memory Model in Theory and Practice</a>.
+  </li>
+  <li>
+    MSDN, C# Reference: <a href="https://msdn.microsoft.com/en-us/library/x13ttww7.aspx">volatile</a>.
+  </li>
+  <li>
+    Wikipedia: <a href="https://en.wikipedia.org/wiki/Double-checked_locking">Double-checked locking</a>.
+  </li>
 </references>
 </qhelp>

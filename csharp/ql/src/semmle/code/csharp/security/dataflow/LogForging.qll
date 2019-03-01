@@ -40,7 +40,9 @@ module LogForging {
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   class HtmlSanitizer extends Sanitizer {
     HtmlSanitizer() { this.asExpr() instanceof HtmlSanitizedExpr }
@@ -49,7 +51,9 @@ module LogForging {
   /**
    * A logger type that extends from an ILogger type.
    */
-  private class LoggerType extends RefType { LoggerType() { getABaseType*().hasName("ILogger") } }
+  private class LoggerType extends RefType {
+    LoggerType() { getABaseType*().hasName("ILogger") }
+  }
 
   /**
    * An argument to a call to a method on a logger class.

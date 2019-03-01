@@ -1,3 +1,29 @@
+| closureUri.js:5:11:5:20 | new Uri(x) | closureUri.js:5:19:5:19 | x | closureUri.js:5:11:5:20 | new Uri(x) |
+| closureUri.js:6:1:6:12 | Uri.parse(x) | closureUri.js:6:11:6:11 | x | closureUri.js:6:1:6:12 | Uri.parse(x) |
+| closureUri.js:7:1:7:17 | Uri.resolve(x, y) | closureUri.js:7:13:7:13 | x | closureUri.js:7:1:7:17 | Uri.resolve(x, y) |
+| closureUri.js:7:1:7:17 | Uri.resolve(x, y) | closureUri.js:7:16:7:16 | y | closureUri.js:7:1:7:17 | Uri.resolve(x, y) |
+| closureUri.js:8:1:8:57 | Uri.cre ... , frag) | closureUri.js:8:12:8:17 | scheme | closureUri.js:8:1:8:57 | Uri.cre ... , frag) |
+| closureUri.js:8:1:8:57 | Uri.cre ... , frag) | closureUri.js:8:26:8:31 | domain | closureUri.js:8:1:8:57 | Uri.cre ... , frag) |
+| closureUri.js:8:1:8:57 | Uri.cre ... , frag) | closureUri.js:8:40:8:43 | path | closureUri.js:8:1:8:57 | Uri.cre ... , frag) |
+| closureUri.js:10:1:10:16 | uri.setScheme(x) | closureUri.js:10:1:10:3 | uri | closureUri.js:10:1:10:16 | uri.setScheme(x) |
+| closureUri.js:10:1:10:16 | uri.setScheme(x) | closureUri.js:10:15:10:15 | x | closureUri.js:5:11:5:20 | new Uri(x) |
+| closureUri.js:11:1:11:18 | uri.setUserInfo(x) | closureUri.js:11:1:11:3 | uri | closureUri.js:11:1:11:18 | uri.setUserInfo(x) |
+| closureUri.js:12:1:12:16 | uri.setDomain(x) | closureUri.js:12:1:12:3 | uri | closureUri.js:12:1:12:16 | uri.setDomain(x) |
+| closureUri.js:12:1:12:16 | uri.setDomain(x) | closureUri.js:12:15:12:15 | x | closureUri.js:5:11:5:20 | new Uri(x) |
+| closureUri.js:13:1:13:14 | uri.setPort(x) | closureUri.js:13:1:13:3 | uri | closureUri.js:13:1:13:14 | uri.setPort(x) |
+| closureUri.js:14:1:14:14 | uri.setPath(x) | closureUri.js:14:1:14:3 | uri | closureUri.js:14:1:14:14 | uri.setPath(x) |
+| closureUri.js:14:1:14:14 | uri.setPath(x) | closureUri.js:14:13:14:13 | x | closureUri.js:5:11:5:20 | new Uri(x) |
+| closureUri.js:15:1:15:15 | uri.setQuery(x) | closureUri.js:15:1:15:3 | uri | closureUri.js:15:1:15:15 | uri.setQuery(x) |
+| closureUri.js:16:1:16:18 | uri.setFragment(x) | closureUri.js:16:1:16:3 | uri | closureUri.js:16:1:16:18 | uri.setFragment(x) |
+| closureUri.js:18:1:18:15 | uri.setQuery(x) | closureUri.js:18:1:18:3 | uri | closureUri.js:18:1:18:15 | uri.setQuery(x) |
+| closureUri.js:18:1:18:26 | uri.set ... Path(y) | closureUri.js:18:1:18:15 | uri.setQuery(x) | closureUri.js:18:1:18:26 | uri.set ... Path(y) |
+| closureUri.js:18:1:18:26 | uri.set ... Path(y) | closureUri.js:18:25:18:25 | y | closureUri.js:5:11:5:20 | new Uri(x) |
+| closureUri.js:18:1:18:39 | uri.set ... heme(z) | closureUri.js:18:1:18:26 | uri.set ... Path(y) | closureUri.js:18:1:18:39 | uri.set ... heme(z) |
+| closureUri.js:18:1:18:39 | uri.set ... heme(z) | closureUri.js:18:38:18:38 | z | closureUri.js:5:11:5:20 | new Uri(x) |
+| closureUri.js:22:1:22:25 | utils.a ... uri, z) | closureUri.js:22:19:22:21 | uri | closureUri.js:22:1:22:25 | utils.a ... uri, z) |
+| closureUri.js:23:1:23:18 | utils.getPath(uri) | closureUri.js:23:15:23:17 | uri | closureUri.js:23:1:23:18 | utils.getPath(uri) |
+| closureUri.js:27:1:27:23 | stringU ... code(x) | closureUri.js:27:22:27:22 | x | closureUri.js:27:1:27:23 | stringU ... code(x) |
+| closureUri.js:28:1:28:23 | stringU ... code(x) | closureUri.js:28:22:28:22 | x | closureUri.js:28:1:28:23 | stringU ... code(x) |
 | punycode.js:3:9:3:26 | punycode.decode(x) | punycode.js:3:25:3:25 | x | punycode.js:3:9:3:26 | punycode.decode(x) |
 | punycode.js:5:5:5:22 | punycode.encode(x) | punycode.js:5:21:5:21 | x | punycode.js:5:5:5:22 | punycode.encode(x) |
 | punycode.js:7:5:7:25 | punycod ... code(x) | punycode.js:7:24:7:24 | x | punycode.js:7:5:7:25 | punycod ... code(x) |

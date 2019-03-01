@@ -20,7 +20,9 @@ module Ssa {
     }
 
     /** An instance field or property. */
-    class InstanceFieldOrProp extends FieldOrProp { InstanceFieldOrProp() { not this.isStatic() } }
+    class InstanceFieldOrProp extends FieldOrProp {
+      InstanceFieldOrProp() { not this.isStatic() }
+    }
 
     /** An access to a field or a property. */
     class FieldOrPropAccess extends AssignableAccess, QualifiableExpr {
@@ -242,7 +244,7 @@ module Ssa {
         def.getTarget() = lv and
         lv.isRef() and
         lv = v.getAssignable() and
-        def.getTargetAccess().getAControlFlowNode() = node and
+        node = def.getAControlFlowNode().getAPredecessor() and
         bb.getNode(i) = node
       )
     }
@@ -585,8 +587,11 @@ module Ssa {
      * (when `k` is `SsaDef()`).
      */
     private predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
-      variableRead(bb, i, v, _, _) and
-      k = SsaRead()
+      exists(ReadKind rk |
+        variableRead(bb, i, v, _, rk) |
+        not rk instanceof RefReadBeforeWrite and
+        k = SsaRead()
+      )
       or
       exists(TrackedDefinition def | definesAt(def, bb, i, v)) and
       k = SsaDef()
@@ -668,7 +673,9 @@ module Ssa {
 
     /** Holds if `v` occurs in `bb` or one of `bb`'s transitive successors. */
     private predicate blockPrecedesVar(TrackedVar v, BasicBlock bb) {
-      varOccursInBlock(v, bb.getASuccessor*())
+      varOccursInBlock(v, bb)
+      or
+      blockPrecedesVar(v, bb.getASuccessor())
     }
 
     /**
@@ -1185,7 +1192,9 @@ module Ssa {
       )
     }
 
-    private class PrunedCallable extends Callable { PrunedCallable() { pruneFromRight(this) } }
+    private class PrunedCallable extends Callable {
+      PrunedCallable() { pruneFromRight(this) }
+    }
 
     private predicate callEdgePruned(PrunedCallable c1, PrunedCallable c2) { callEdge(c1, c2) }
 
@@ -1421,7 +1430,9 @@ module Ssa {
       )
     }
 
-    private class PrunedCallable extends Callable { PrunedCallable() { pruneFromRight(this) } }
+    private class PrunedCallable extends Callable {
+      PrunedCallable() { pruneFromRight(this) }
+    }
 
     private predicate callEdgePruned(PrunedCallable c1, PrunedCallable c2) { callEdge(c1, c2) }
 
@@ -1630,7 +1641,9 @@ module Ssa {
       )
     }
 
-    private class PrunedCallable extends Callable { PrunedCallable() { pruneFromRight(this) } }
+    private class PrunedCallable extends Callable {
+      PrunedCallable() { pruneFromRight(this) }
+    }
 
     private predicate callEdgePruned(PrunedCallable c1, PrunedCallable c2) { callEdge(c1, c2) }
 
@@ -2501,5 +2514,7 @@ module Ssa {
   }
 
   /** INTERNAL: Do not use. */
-  module Internal { import SsaDefReaches }
+  module Internal {
+    import SsaDefReaches
+  }
 }

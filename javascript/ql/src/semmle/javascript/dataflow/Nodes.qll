@@ -83,7 +83,12 @@ class InvokeNode extends DataFlow::SourceNode {
   /** Gets an abstract value representing possible callees of this call site. */
   AbstractValue getACalleeValue() { result = InvokeNode::getACalleeValue(this) }
 
-  /** Gets a potential callee of this call site. */
+  /**
+   * Gets a potential callee of this call site.
+   *
+   * To alter the call graph as seen by the interprocedural data flow libraries, override
+   * the `getACallee(int imprecision)` predicate instead.
+   */
   Function getACallee() { result = InvokeNode::getACallee(this) }
 
   /**
@@ -93,6 +98,9 @@ class InvokeNode extends DataFlow::SourceNode {
    *
    * Callees with imprecision zero, in particular, have either been derived without
    * considering global variables, or are calls to a global variable within the same file.
+   *
+   * This predicate can be overridden to alter the call graph used by the interprocedural
+   * data flow libraries.
    */
   Function getACallee(int imprecision) { result = InvokeNode::getACallee(this, imprecision) }
 
@@ -218,7 +226,9 @@ class MethodCallNode extends CallNode {
 }
 
 /** A data flow node corresponding to a `new` expression. */
-class NewNode extends InvokeNode { override DataFlow::Impl::NewNodeDef impl; }
+class NewNode extends InvokeNode {
+  override DataFlow::Impl::NewNodeDef impl;
+}
 
 /** A data flow node corresponding to the `this` parameter in a function or `this` at the top-level. */
 class ThisNode extends DataFlow::Node, DataFlow::SourceNode {
@@ -282,6 +292,9 @@ DataFlow::SourceNode globalObjectRef() {
   or
   // `require("global")`
   result = moduleImport("global")
+  or
+  // Closure library - based on AST to avoid recursion with Closure library model
+  result = globalVarRef("goog").getAPropertyRead("global")
 }
 
 /**
@@ -401,51 +414,83 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
  *
  * For compatibility with old transpilers, we treat `import * from '...'`
  * as a default import as well.
+ *
+ * Additional import nodes can be added by subclassing `ModuleImportNode::Range`.
  */
 class ModuleImportNode extends DataFlow::SourceNode {
-  string path;
+  ModuleImportNode::Range range;
 
-  ModuleImportNode() {
-    // `require("http")`
-    exists(Require req | req.getImportedPath().getValue() = path | this = DataFlow::valueNode(req))
-    or
-    // `import http = require("http")`
-    exists(ExternalModuleReference req | req.getImportedPath().getValue() = path |
-      this = DataFlow::valueNode(req)
-    )
-    or
-    // `import * as http from 'http'` or `import http from `http`'
-    exists(ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
-      id.getImportedPath().getValue() = path and
-      is = id.getASpecifier() and
-      ssa.getDef() = is and
-      this = DataFlow::ssaDefinitionNode(ssa)
-    |
-      is instanceof ImportNamespaceSpecifier and
-      count(id.getASpecifier()) = 1
-      or
-      is.getImportedName() = "default"
-    )
-    or
-    // declared AMD dependency
-    exists(AMDModuleDefinition amd |
-      this = DataFlow::parameterNode(amd.getDependencyParameter(path))
-    )
-    or
-    // AMD require
-    exists(AMDModuleDefinition amd, CallExpr req |
-      req = amd.getARequireCall() and
-      this = DataFlow::valueNode(req) and
-      path = req.getArgument(0).(ConstantString).getStringValue()
-    )
-  }
+  ModuleImportNode() { this = range }
 
   /** Gets the path of the imported module. */
-  string getPath() { result = path }
+  string getPath() { result = range.getPath() }
+}
+
+module ModuleImportNode {
+  /**
+   * A data flow node that refers to an imported module.
+   */
+  abstract class Range extends DataFlow::SourceNode {
+    /** Gets the path of the imported module. */
+    abstract string getPath();
+  }
+
+  private class DefaultRange extends Range {
+    string path;
+
+    DefaultRange() {
+      // `require("http")`
+      exists(Require req | req.getImportedPath().getValue() = path |
+        this = DataFlow::valueNode(req)
+      )
+      or
+      // `import http = require("http")`
+      exists(ExternalModuleReference req | req.getImportedPath().getValue() = path |
+        this = DataFlow::valueNode(req)
+      )
+      or
+      // `import * as http from 'http'` or `import http from `http`'
+      exists(ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
+        id.getImportedPath().getValue() = path and
+        is = id.getASpecifier() and
+        ssa.getDef() = is and
+        this = DataFlow::ssaDefinitionNode(ssa)
+      |
+        is instanceof ImportNamespaceSpecifier and
+        count(id.getASpecifier()) = 1
+        or
+        is.getImportedName() = "default"
+      )
+      or
+      // `import { createServer } from 'http'`
+      exists(ImportDeclaration id |
+        this = DataFlow::destructuredModuleImportNode(id) and
+        id.getImportedPath().getValue() = path
+      )
+      or
+      // declared AMD dependency
+      exists(AMDModuleDefinition amd |
+        this = DataFlow::parameterNode(amd.getDependencyParameter(path))
+      )
+      or
+      // AMD require
+      exists(AMDModuleDefinition amd, CallExpr req |
+        req = amd.getARequireCall() and
+        this = DataFlow::valueNode(req) and
+        path = req.getArgument(0).(ConstantString).getStringValue()
+      )
+    }
+
+    /** Gets the path of the imported module. */
+    override string getPath() { result = path }
+  }
 }
 
 /**
- * Gets a (default) import of the module with the given path.
+ * Gets a (default) import of the module with the given path, such as `require("fs")`
+ * or `import * as fs from "fs"`.
+ *
+ * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
 ModuleImportNode moduleImport(string path) { result.getPath() = path }
 
@@ -456,14 +501,6 @@ ModuleImportNode moduleImport(string path) { result.getPath() = path }
  */
 DataFlow::SourceNode moduleMember(string path, string m) {
   result = moduleImport(path).getAPropertyRead(m)
-  or
-  exists(ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
-    id.getImportedPath().getValue() = path and
-    is = id.getASpecifier() and
-    is.getImportedName() = m and
-    ssa.getDef() = is and
-    result = DataFlow::ssaDefinitionNode(ssa)
-  )
 }
 
 /**
@@ -554,7 +591,9 @@ class ClassNode extends DataFlow::SourceNode {
    *
    * Does not include methods from superclasses.
    */
-  FunctionNode getInstanceMethod(string name) { result = impl.getInstanceMember(name, MemberKind::method()) }
+  FunctionNode getInstanceMethod(string name) {
+    result = impl.getInstanceMember(name, MemberKind::method())
+  }
 
   /**
    * Gets an instance method declared in this class.
@@ -570,7 +609,9 @@ class ClassNode extends DataFlow::SourceNode {
    *
    * Does not include members from superclasses.
    */
-  FunctionNode getInstanceMember(string name, MemberKind kind) { result = impl.getInstanceMember(name, kind) }
+  FunctionNode getInstanceMember(string name, MemberKind kind) {
+    result = impl.getInstanceMember(name, kind)
+  }
 
   /**
    * Gets an instance method, getter, or setter with the given kind.
@@ -719,8 +760,15 @@ module ClassNode {
    */
   class FunctionStyleClass extends Range, DataFlow::ValueNode {
     override Function astNode;
+    AbstractFunction function;
 
-    FunctionStyleClass() { exists(getAPropertyReference("prototype")) }
+    FunctionStyleClass() {
+      function.getFunction() = astNode and
+      exists (DataFlow::PropRef read |
+        read.getPropertyName() = "prototype" and
+        read.getBase().analyze().getAValue() = function
+      )
+    }
 
     override string getName() { result = astNode.getName() }
 
@@ -743,7 +791,7 @@ module ClassNode {
       kind = MemberKind::method() and
       result = getAPrototypeReference().getAPropertySource(name)
       or
-      exists (PropertyAccessor accessor |
+      exists(PropertyAccessor accessor |
         accessor = getAnAccessor(kind) and
         accessor.getName() = name and
         result = accessor.getInit().flow()
@@ -754,15 +802,13 @@ module ClassNode {
       kind = MemberKind::method() and
       result = getAPrototypeReference().getAPropertyWrite().getRhs().getALocalSource()
       or
-      exists (PropertyAccessor accessor |
+      exists(PropertyAccessor accessor |
         accessor = getAnAccessor(kind) and
         result = accessor.getInit().flow()
       )
     }
 
-    override FunctionNode getStaticMethod(string name) {
-      result = getAPropertySource(name)
-    }
+    override FunctionNode getStaticMethod(string name) { result = getAPropertySource(name) }
 
     override FunctionNode getAStaticMethod() {
       result = getAPropertyWrite().getRhs().getALocalSource()
@@ -771,14 +817,16 @@ module ClassNode {
     /**
      * Gets a reference to the prototype of this class.
      */
-    private DataFlow::SourceNode getAPrototypeReference() {
-      result = getAPropertyRead("prototype")
-      or
-      result = getAPropertySource("prototype")
-      or
-      exists(ExtendCall call |
-        call.getDestinationOperand() = getAPropertyRead("prototype") and
-        result = call.getASourceOperand()
+    DataFlow::SourceNode getAPrototypeReference() {
+      exists (DataFlow::SourceNode base | base.analyze().getAValue() = function |
+        result = base.getAPropertyRead("prototype")
+        or
+        result = base.getAPropertySource("prototype")
+        or
+        exists(ExtendCall call |
+          call.getDestinationOperand() = base.getAPropertyRead("prototype") and
+          result = call.getASourceOperand()
+        )
       )
     }
 

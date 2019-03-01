@@ -12,13 +12,8 @@ import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
 
 
-private ModuleObject yamlModule() {
-    result.getName() = "yaml"
-}
-
-
 private FunctionObject yamlLoad() {
-    result = yamlModule().getAttribute("load")
+    result = ModuleObject::named("yaml").attr("load")
 }
 
 /** `yaml.load(untrusted)` vulnerability. */

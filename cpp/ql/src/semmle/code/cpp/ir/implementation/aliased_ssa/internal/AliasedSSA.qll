@@ -1,11 +1,10 @@
 import cpp
 import AliasAnalysis
-private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
-private import semmle.code.cpp.ir.internal.OperandTag
-private import semmle.code.cpp.ir.internal.Overlap
-
 import semmle.code.cpp.ir.internal.Overlap
+private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
+private import semmle.code.cpp.ir.internal.IntegerInterval as Interval
+private import semmle.code.cpp.ir.internal.OperandTag
 
 private class IntValue = Ints::IntValue;
 
@@ -20,7 +19,7 @@ private VirtualIRVariable getVirtualVariable(IRVariable var) {
 }
 
 private UnknownVirtualVariable getUnknownVirtualVariable(FunctionIR f) {
-  result.getFunctionIR() = f
+  result.getEnclosingFunctionIR() = f
 }
 
 class VirtualVariable extends TVirtualVariable {
@@ -37,6 +36,9 @@ class VirtualVariable extends TVirtualVariable {
   }
 }
 
+/**
+ * A virtual variable representing a single non-escaped `IRVariable`.
+ */
 class VirtualIRVariable extends VirtualVariable, TVirtualIRVariable {
   IRVariable var;
 
@@ -52,7 +54,6 @@ class VirtualIRVariable extends VirtualVariable, TVirtualIRVariable {
     result = var
   }
 
-  // REVIEW: This should just be on MemoryAccess
   override final Type getType() {
     result = var.getType()
   }
@@ -62,6 +63,10 @@ class VirtualIRVariable extends VirtualVariable, TVirtualIRVariable {
   }
 }
 
+/**
+ * A virtual variable representing all escaped memory accessible by the function,
+ * including escaped local variables.
+ */
 class UnknownVirtualVariable extends VirtualVariable, TUnknownVirtualVariable {
   FunctionIR f;
   
@@ -81,29 +86,40 @@ class UnknownVirtualVariable extends VirtualVariable, TUnknownVirtualVariable {
     result instanceof UnknownType
   }
   
-  final FunctionIR getFunctionIR() {
+  final FunctionIR getEnclosingFunctionIR() {
     result = f
   }
 }
 
+private predicate hasResultMemoryAccess(Instruction instr, IRVariable var, IntValue startBitOffset,
+    IntValue endBitOffset) {
+  resultPointsTo(instr.getResultAddressOperand().getDefinitionInstruction(), var, startBitOffset) and
+  if exists(instr.getResultSize()) then
+    endBitOffset = Ints::add(startBitOffset, Ints::mul(instr.getResultSize(), 8))
+  else
+    endBitOffset = Ints::unknown()
+}
+
+private predicate hasOperandMemoryAccess(MemoryOperand operand, IRVariable var, IntValue startBitOffset,
+    IntValue endBitOffset) {
+  resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, startBitOffset) and
+  if exists(operand.getSize()) then
+    endBitOffset = Ints::add(startBitOffset, Ints::mul(operand.getSize(), 8))
+  else
+    endBitOffset = Ints::unknown()
+}
+
 private newtype TMemoryAccess =
-  TVariableMemoryAccess(IRVariable var, IntValue offset, IntValue size) {
-    exists(Instruction instr |
-      exists(MemoryAccessKind mak | instr.getResultMemoryAccess() = mak and not mak instanceof PhiMemoryAccess) and
-      resultPointsTo(instr.getAnOperand().(AddressOperand).getDefinitionInstruction(), var, offset) and
-      if exists(instr.getResultSize())
-      then instr.getResultSize() = size
-      else size = Ints::unknown()
-    )
+  TVariableMemoryAccess(IRVariable var, IntValue startBitOffset, IntValue endBitOffset) {
+    hasResultMemoryAccess(_, var, startBitOffset, endBitOffset) or
+    hasOperandMemoryAccess(_, var, startBitOffset, endBitOffset)
   }
   or
   TUnknownMemoryAccess(UnknownVirtualVariable uvv) or
   TTotalUnknownMemoryAccess(UnknownVirtualVariable uvv)
 
-private VariableMemoryAccess getVariableMemoryAccess(IRVariable var, IntValue offset, IntValue size) {
-  result.getVariable() = var and
-  result.getOffset() = offset and
-  result.getSize() = size
+private VariableMemoryAccess getVariableMemoryAccess(IRVariable var, IntValue startBitOffset, IntValue endBitOffset) {
+  result = TVariableMemoryAccess(var, startBitOffset, endBitOffset)
 }
 
 class MemoryAccess extends TMemoryAccess {
@@ -120,30 +136,40 @@ class MemoryAccess extends TMemoryAccess {
   }
 }
 
+/**
+ * An access to memory within a single known `IRVariable`. The variable may be either an unescaped variable
+ * (with its own `VirtualIRVariable`) or an escaped variable (assiged to `UnknownVirtualVariable`).
+ */
 class VariableMemoryAccess extends TVariableMemoryAccess, MemoryAccess {
   IRVariable var;
-  IntValue offset;
-  IntValue size;
+  IntValue startBitOffset;
+  IntValue endBitOffset;
 
   VariableMemoryAccess() {
-    this = TVariableMemoryAccess(var, offset, size)
+    this = TVariableMemoryAccess(var, startBitOffset, endBitOffset)
   }
 
   override final string toString() {
-    result = var.toString() + "[" + offset.toString() + ".." + (offset + size - 1).toString() + "]"
+    exists(string partialString |
+      result = var.toString() + Interval::getIntervalString(startBitOffset, endBitOffset) + partialString and
+      if isPartialMemoryAccess() then
+        partialString = " (partial)"
+      else
+        partialString = ""
+    )
   }
 
   final override VirtualVariable getVirtualVariable() {
     result = getVirtualVariable(var) or
-    not exists(getVirtualVariable(var)) and result = getUnknownVirtualVariable(var.getFunctionIR())
+    not exists(getVirtualVariable(var)) and result = getUnknownVirtualVariable(var.getEnclosingFunctionIR())
   }
   
-  IntValue getOffset() {
-    result = offset
+  IntValue getStartBitOffset() {
+    result = startBitOffset
   }
   
-  IntValue getSize() {
-    result = size
+  IntValue getEndBitOffset() {
+    result = endBitOffset
   }
   
   final IRVariable getVariable() {
@@ -152,12 +178,15 @@ class VariableMemoryAccess extends TVariableMemoryAccess, MemoryAccess {
 
   final override predicate isPartialMemoryAccess() {
     not exists(getVirtualVariable(var)) or
-    getOffset() != 0
+    getStartBitOffset() != 0
     or
-    getSize() != var.getType().getSize()
+    not Ints::isEQ(getEndBitOffset(), Ints::add(getStartBitOffset(), Ints::mul(var.getType().getSize(), 8)))
   }
 }
 
+/**
+ * An access to memory that is not known to be confined to a specific `IRVariable`.
+ */
 class UnknownMemoryAccess extends TUnknownMemoryAccess, MemoryAccess {
   UnknownVirtualVariable vvar;
   
@@ -176,12 +205,11 @@ class UnknownMemoryAccess extends TUnknownMemoryAccess, MemoryAccess {
   final override predicate isPartialMemoryAccess() {
     any()
   }
-
-  Type getType() {
-    result instanceof UnknownType
-  }
 }
 
+/**
+ * An access to all aliased memory.
+ */
 class TotalUnknownMemoryAccess extends TTotalUnknownMemoryAccess, MemoryAccess {
   UnknownVirtualVariable vvar;
   
@@ -196,85 +224,91 @@ class TotalUnknownMemoryAccess extends TTotalUnknownMemoryAccess, MemoryAccess {
   final override VirtualVariable getVirtualVariable() {
     result = vvar
   }
-  
-  Type getType() {
-    result instanceof UnknownType
-  }
 }
 
 Overlap getOverlap(MemoryAccess def, MemoryAccess use) {
-  def instanceof VariableMemoryAccess and
-  def = use and
-  result instanceof MustExactlyOverlap
-  or
-  exists(VariableMemoryAccess defVMA, VariableMemoryAccess useVMA, int defOffset, int defEnd,
-         int useOffset, int useEnd |
-    defVMA = def and
-    useVMA = use and
-    defVMA.getVirtualVariable() = useVMA.getVirtualVariable() and
-    defVMA != useVMA and
-    defOffset = Ints::getValue(defVMA.getOffset()) and
-    defEnd = Ints::getValue(Ints::add(defVMA.getOffset(), defVMA.getSize())) and
-    useOffset = Ints::getValue(useVMA.getOffset()) and
-    useEnd = Ints::getValue(Ints::add(useVMA.getOffset(), useVMA.getSize()))
-    |
-    defOffset <= useOffset and
-    defEnd >= useEnd and
-    result instanceof MustTotallyOverlap
-    or
-    defOffset > useOffset and
-    defOffset < useEnd and
-    result instanceof MayPartiallyOverlap
-    or
-    defOffset = useOffset and
-    defEnd < useEnd and
-    result instanceof MayPartiallyOverlap
-  )
-  or
-  exists(UnknownVirtualVariable uvv |
-    def = TUnknownMemoryAccess(uvv) and
-    uvv = use.getVirtualVariable() and
-    result instanceof MayPartiallyOverlap
-  )
-  or
-  exists(UnknownVirtualVariable uvv |
-    def = TTotalUnknownMemoryAccess(uvv) and
-    uvv = use.getVirtualVariable() and
-    result instanceof MustTotallyOverlap
+  def.getVirtualVariable() = use.getVirtualVariable() and
+  (
+    // A TotalUnknownMemoryAccess must totally overlap any access to the same virtual variable.
+    def instanceof TotalUnknownMemoryAccess and result instanceof MustTotallyOverlap or
+    // An UnknownMemoryAccess may partially overlap any access to the same virtual variable.
+    def instanceof UnknownMemoryAccess and result instanceof MayPartiallyOverlap or
+    exists(VariableMemoryAccess defVariableAccess |
+      defVariableAccess = def and
+      (
+        (
+          // A VariableMemoryAccess may partially overlap an unknown access to the same virtual variable.
+          ((use instanceof UnknownMemoryAccess) or (use instanceof TotalUnknownMemoryAccess)) and
+          result instanceof MayPartiallyOverlap
+        ) or
+        // A VariableMemoryAccess overlaps another access to the same variable based on the relationship
+        // of the two offset intervals.
+        exists(VariableMemoryAccess useVariableAccess, IntValue defStartOffset, IntValue defEndOffset,
+            IntValue useStartOffset, IntValue useEndOffset |
+          useVariableAccess = use and
+          defStartOffset = defVariableAccess.getStartBitOffset() and
+          defEndOffset = defVariableAccess.getEndBitOffset() and
+          useStartOffset = useVariableAccess.getStartBitOffset() and
+          useEndOffset = useVariableAccess.getEndBitOffset() and
+          result = Interval::getOverlap(defStartOffset, defEndOffset, useStartOffset, useEndOffset)
+        )
+      )
+    )
   )
 }
 
 MemoryAccess getResultMemoryAccess(Instruction instr) {
-  exists(instr.getResultMemoryAccess()) and
-  if exists(IRVariable var, IntValue i |
-    resultPointsTo(instr.getAnOperand().(AddressOperand).getDefinitionInstruction(), var, i)
-  )
-  then exists(IRVariable var, IntValue i |
-    resultPointsTo(instr.getAnOperand().(AddressOperand).getDefinitionInstruction(), var, i) and
-    result = getVariableMemoryAccess(var, i, instr.getResultSize())
-  )
-  else (
-    result = TUnknownMemoryAccess(TUnknownVirtualVariable(instr.getFunctionIR())) and
-    not instr instanceof UnmodeledDefinitionInstruction and
-    not instr instanceof AliasedDefinitionInstruction
-    or
-    result = TTotalUnknownMemoryAccess(TUnknownVirtualVariable(instr.getFunctionIR())) and
-    instr instanceof AliasedDefinitionInstruction
+  exists(MemoryAccessKind kind |
+    kind = instr.getResultMemoryAccess() and
+    (
+      (
+        kind.usesAddressOperand() and
+        if hasResultMemoryAccess(instr, _, _, _) then (
+          exists(IRVariable var, IntValue startBitOffset, IntValue endBitOffset |
+            hasResultMemoryAccess(instr, var, startBitOffset, endBitOffset) and
+            result = getVariableMemoryAccess(var, startBitOffset, endBitOffset)
+          )
+        )
+        else (
+          result = TUnknownMemoryAccess(TUnknownVirtualVariable(instr.getEnclosingFunctionIR()))
+        )
+      ) or
+      (
+        kind instanceof EscapedMemoryAccess and
+        result = TTotalUnknownMemoryAccess(TUnknownVirtualVariable(instr.getEnclosingFunctionIR()))
+      ) or
+      (
+        kind instanceof EscapedMayMemoryAccess and
+        result = TUnknownMemoryAccess(TUnknownVirtualVariable(instr.getEnclosingFunctionIR()))
+      )
+    )
   )
 }
 
-MemoryAccess getOperandMemoryAccess(Operand operand) {
-  exists(operand.getMemoryAccess()) and
-  if exists(IRVariable var, IntValue i |
-    resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, i)
-  )
-  then exists(IRVariable var, IntValue i, int size |
-    resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, i) and
-    result = getVariableMemoryAccess(var, i, size) and
-    size = operand.getDefinitionInstruction().getResultSize()
-  )
-  else (
-    result = TUnknownMemoryAccess(TUnknownVirtualVariable(operand.getInstruction().getFunctionIR())) and
-    not operand.getInstruction() instanceof UnmodeledUseInstruction
+MemoryAccess getOperandMemoryAccess(MemoryOperand operand) {
+  exists(MemoryAccessKind kind |
+    kind = operand.getMemoryAccess() and
+    (
+      (
+        kind.usesAddressOperand() and
+        if hasOperandMemoryAccess(operand, _, _, _) then (
+          exists(IRVariable var, IntValue startBitOffset, IntValue endBitOffset |
+            hasOperandMemoryAccess(operand, var, startBitOffset, endBitOffset) and
+            result = getVariableMemoryAccess(var, startBitOffset, endBitOffset)
+          )
+        )
+        else (
+          result = TUnknownMemoryAccess(TUnknownVirtualVariable(operand.getEnclosingFunctionIR()))
+        )
+      ) or
+      (
+        kind instanceof EscapedMemoryAccess and
+        result = TTotalUnknownMemoryAccess(TUnknownVirtualVariable(operand.getEnclosingFunctionIR()))
+      ) or
+      (
+        kind instanceof EscapedMayMemoryAccess and
+        result = TUnknownMemoryAccess(TUnknownVirtualVariable(operand.getEnclosingFunctionIR()))
+      )
+    )
   )
 }

@@ -47,6 +47,11 @@ module StringConcatenation {
         n = 0
       )
     )
+    or
+    exists(DataFlow::CallNode call | node = call |
+      call = Closure::moduleImport("goog.string.buildString").getACall() and
+      result = call.getArgument(n)
+    )
   }
 
   /** Gets an operand to the string concatenation defining `node`. */
@@ -104,6 +109,6 @@ module StringConcatenation {
    */
   predicate isCoercion(DataFlow::Node node) {
     getNumOperand(node) = 2 and
-    getOperand(node, _).asExpr().getStringValue() = ""
+    getOperand(node, _).getStringValue() = ""
   }
 }

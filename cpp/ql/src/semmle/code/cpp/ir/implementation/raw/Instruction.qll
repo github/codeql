@@ -7,10 +7,9 @@ import cpp
 import semmle.code.cpp.ir.implementation.EdgeKind
 import semmle.code.cpp.ir.implementation.MemoryAccessKind
 import semmle.code.cpp.ir.implementation.Opcode
+private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.OperandTag
-
-class InstructionTag = Construction::InstructionTagType;
 
 module InstructionSanity {
   /**
@@ -31,12 +30,11 @@ module InstructionSanity {
             tag instanceof RightOperandTag
           )
         ) or
-        opcode instanceof CopyOpcode and tag instanceof CopySourceOperandTag or
         opcode instanceof MemoryAccessOpcode and tag instanceof AddressOperandTag or
         opcode instanceof BufferAccessOpcode and tag instanceof BufferSizeOperand or
         opcode instanceof OpcodeWithCondition and tag instanceof ConditionOperandTag or
-        opcode instanceof Opcode::ReturnValue and tag instanceof ReturnValueOperandTag or
-        opcode instanceof Opcode::ThrowValue and tag instanceof ExceptionOperandTag or
+        opcode instanceof OpcodeWithLoad and tag instanceof LoadOperandTag or
+        opcode instanceof Opcode::Store and tag instanceof StoreValueOperandTag or
         opcode instanceof Opcode::UnmodeledUse and tag instanceof UnmodeledUseOperandTag or
         opcode instanceof Opcode::Call and tag instanceof CallTargetOperandTag or
         opcode instanceof Opcode::Chi and tag instanceof ChiTotalOperandTag or
@@ -95,6 +93,14 @@ module InstructionSanity {
     )
   }
 
+  query predicate missingOperandType(Operand operand, string message) {
+    exists(Function func |
+      not exists(operand.getType()) and
+      func = operand.getUseInstruction().getEnclosingFunction() and
+      message = "Operand missing type in function '" + getIdentityString(func) + "'."
+    )
+  }
+
   /**
    * Holds if an instruction, other than `ExitFunction`, has no successors.
    */
@@ -125,7 +131,7 @@ module InstructionSanity {
   query predicate unexplainedLoop(Function f, Instruction instr) {
     exists(IRBlock block |
       instr.getBlock() = block and
-      block.getFunction() = f and
+      block.getEnclosingFunction() = f and
       block.getASuccessor+() = block
     ) and
     not exists(Loop l | l.getEnclosingFunction() = f) and
@@ -145,9 +151,9 @@ module InstructionSanity {
    * a different function.
    */
   query predicate operandAcrossFunctions(Operand operand, Instruction instr, Instruction defInstr) {
-    operand.getInstruction() = instr and
+    operand.getUseInstruction() = instr and
     operand.getDefinitionInstruction() = defInstr and
-    instr.getFunctionIR() != defInstr.getFunctionIR()
+    instr.getEnclosingFunctionIR() != defInstr.getEnclosingFunctionIR()
   }
 
   /**
@@ -171,7 +177,7 @@ module InstructionSanity {
   query predicate containsLoopOfForwardEdges(FunctionIR f) {
     exists(IRBlock block |
       forwardEdge+(block, block) and
-      block.getFunctionIR() = f
+      block.getEnclosingFunctionIR() = f
     )
   }
 
@@ -198,10 +204,10 @@ module InstructionSanity {
    */
   query predicate backEdgeCountMismatch(Function f, int fromInstr, int fromBlock) {
     fromInstr = count(Instruction i1, Instruction i2 |
-        i1.getFunction() = f and i1.getBackEdgeSuccessor(_) = i2
+        i1.getEnclosingFunction() = f and i1.getBackEdgeSuccessor(_) = i2
       ) and
     fromBlock = count(IRBlock b1, IRBlock b2 |
-        b1.getFunction() = f and b1.getBackEdgeSuccessor(_) = b2
+        b1.getEnclosingFunction() = f and b1.getBackEdgeSuccessor(_) = b2
       ) and
     fromInstr != fromBlock
   }
@@ -211,17 +217,6 @@ module InstructionSanity {
  * Represents a single operation in the IR.
  */
 class Instruction extends Construction::TInstruction {
-  Opcode opcode;
-  Locatable ast;
-  InstructionTag instructionTag;
-  Type resultType;
-  FunctionIR funcIR;
-  boolean glvalue;
-
-  Instruction() {
-    this = Construction::MkInstruction(funcIR, opcode, ast, instructionTag, resultType, glvalue)
-  }
-
   final string toString() {
     result = getOpcode().toString() + ": " + getAST().toString()
   }
@@ -244,9 +239,9 @@ class Instruction extends Construction::TInstruction {
    */
   final string getOperationString() {
     if exists(getImmediateString()) then
-      result = getOperationPrefix() + opcode.toString() + "[" + getImmediateString() + "]"
+      result = getOperationPrefix() + getOpcode().toString() + "[" + getImmediateString() + "]"
     else
-      result = getOperationPrefix() + opcode.toString()
+      result = getOperationPrefix() + getOpcode().toString()
   }
 
   /**
@@ -264,7 +259,7 @@ class Instruction extends Construction::TInstruction {
   }
 
   private string getResultPrefix() {
-    if resultType instanceof VoidType then
+    if getResultType() instanceof VoidType then
       result = "v"
     else if hasMemoryResult() then
       if isResultModeled() then
@@ -309,8 +304,8 @@ class Instruction extends Construction::TInstruction {
 
   private string getResultTypeString() {
     exists(string valcat |
-      valcat = getValueCategoryString(resultType.toString()) and
-      if (resultType instanceof UnknownType and
+      valcat = getValueCategoryString(getResultType().toString()) and
+      if (getResultType() instanceof UnknownType and
           not isGLValue() and
           exists(getResultSize())) then (
         result = valcat + "[" + getResultSize().toString() + "]"
@@ -377,29 +372,29 @@ class Instruction extends Construction::TInstruction {
   /**
    * Gets the function that contains this instruction.
    */
-  final Function getFunction() {
-    result = funcIR.getFunction()
+  final Function getEnclosingFunction() {
+    result = getEnclosingFunctionIR().getFunction()
   }
 
   /**
    * Gets the FunctionIR object that contains the IR for this instruction.
    */
-  final FunctionIR getFunctionIR() {
-    result = funcIR
+  final FunctionIR getEnclosingFunctionIR() {
+    result = Construction::getInstructionEnclosingFunctionIR(this)
   }
 
   /**
    * Gets the AST that caused this instruction to be generated.
    */
   final Locatable getAST() {
-    result = ast
+    result = Construction::getInstructionAST(this)
   }
 
   /**
    * Gets the location of the source code for this instruction.
    */
   final Location getLocation() {
-    result = ast.getLocation()
+    result = getAST().getLocation()
   }
 
   /**
@@ -421,7 +416,7 @@ class Instruction extends Construction::TInstruction {
    * instruction does not produce a result, its result type will be `VoidType`.
    */
   final Type getResultType() {
-    result = resultType
+    Construction::instructionHasType(this, result, _)
   }
 
   /**
@@ -443,7 +438,7 @@ class Instruction extends Construction::TInstruction {
    * the integer value loaded from variable `x`.
    */
   final predicate isGLValue() {
-    glvalue = true
+    Construction::instructionHasType(this, _, true)
   }
 
   /**
@@ -460,10 +455,10 @@ class Instruction extends Construction::TInstruction {
         result = nullptr.getSize()
       )
     )
-    else if resultType instanceof UnknownType then
+    else if getResultType() instanceof UnknownType then
       result = Construction::getInstructionResultSize(this)
     else (
-      result = resultType.getSize()
+      result = getResultType().getSize()
     )
   }
 
@@ -471,11 +466,7 @@ class Instruction extends Construction::TInstruction {
    * Gets the opcode that specifies the operation performed by this instruction.
    */
   final Opcode getOpcode() {
-    result = opcode
-  }
-
-  final InstructionTag getTag() {
-    result = instructionTag
+    result = Construction::getInstructionOpcode(this)
   }
 
   /**
@@ -489,7 +480,7 @@ class Instruction extends Construction::TInstruction {
    * Gets all of this instruction's operands.
    */
   final Operand getAnOperand() {
-    result.getInstruction() = this
+    result.getUseInstruction() = this
   }
 
   /**
@@ -505,6 +496,16 @@ class Instruction extends Construction::TInstruction {
    */
   MemoryAccessKind getResultMemoryAccess() {
     none()
+  }
+
+  /**
+   * Returns the operand that holds the memory address to which the instruction stores its
+   * result, if any. For example, in `m3 = Store r1, r2`, the result of `getResultAddressOperand()`
+   * is `r1`.
+   */
+  final AddressOperand getResultAddressOperand() {
+    getResultMemoryAccess().usesAddressOperand() and
+    result.getUseInstruction() = this
   }
 
   /**
@@ -644,19 +645,19 @@ class ConstantValueInstruction extends Instruction {
 
 class EnterFunctionInstruction extends Instruction {
   EnterFunctionInstruction() {
-    opcode instanceof Opcode::EnterFunction
+    getOpcode() instanceof Opcode::EnterFunction
   }
 }
 
 class VariableAddressInstruction extends VariableInstruction {
   VariableAddressInstruction() {
-    opcode instanceof Opcode::VariableAddress
+    getOpcode() instanceof Opcode::VariableAddress
   }
 }
 
 class InitializeParameterInstruction extends VariableInstruction {
   InitializeParameterInstruction() {
-    opcode instanceof Opcode::InitializeParameter
+    getOpcode() instanceof Opcode::InitializeParameter
   }
 
   final Parameter getParameter() {
@@ -673,23 +674,27 @@ class InitializeParameterInstruction extends VariableInstruction {
  */
 class InitializeThisInstruction extends Instruction {
   InitializeThisInstruction() {
-    opcode instanceof Opcode::InitializeThis
+    getOpcode() instanceof Opcode::InitializeThis
   }
 }
 
 class FieldAddressInstruction extends FieldInstruction {
   FieldAddressInstruction() {
-    opcode instanceof Opcode::FieldAddress
+    getOpcode() instanceof Opcode::FieldAddress
+  }
+
+  final UnaryOperand getObjectAddressOperand() {
+    result = getAnOperand()
   }
 
   final Instruction getObjectAddress() {
-    result = getAnOperand().(UnaryOperand).getDefinitionInstruction()
+    result = getObjectAddressOperand().getDefinitionInstruction()
   }
 }
 
 class UninitializedInstruction extends VariableInstruction {
   UninitializedInstruction() {
-    opcode instanceof Opcode::Uninitialized
+    getOpcode() instanceof Opcode::Uninitialized
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
@@ -706,79 +711,111 @@ class UninitializedInstruction extends VariableInstruction {
 
 class NoOpInstruction extends Instruction {
   NoOpInstruction() {
-    opcode instanceof Opcode::NoOp
+    getOpcode() instanceof Opcode::NoOp
   }
 }
 
 class ReturnInstruction extends Instruction {
   ReturnInstruction() {
-    opcode instanceof ReturnOpcode
+    getOpcode() instanceof ReturnOpcode
   }
 }
 
 class ReturnVoidInstruction extends ReturnInstruction {
   ReturnVoidInstruction() {
-    opcode instanceof Opcode::ReturnVoid
+    getOpcode() instanceof Opcode::ReturnVoid
   }
 }
 
 class ReturnValueInstruction extends ReturnInstruction {
   ReturnValueInstruction() {
-    opcode instanceof Opcode::ReturnValue
+    getOpcode() instanceof Opcode::ReturnValue
   }
 
+  final LoadOperand getReturnValueOperand() {
+    result = getAnOperand()
+  }
+  
   final Instruction getReturnValue() {
-    result = getAnOperand().(ReturnValueOperand).getDefinitionInstruction()
+    result = getReturnValueOperand().getDefinitionInstruction()
   }
 }
 
 class CopyInstruction extends Instruction {
   CopyInstruction() {
-    opcode instanceof CopyOpcode
+    getOpcode() instanceof CopyOpcode
+  }
+
+  Operand getSourceValueOperand() {
+    none()
   }
 
   final Instruction getSourceValue() {
-    result = getAnOperand().(CopySourceOperand).getDefinitionInstruction()
+    result = getSourceValueOperand().getDefinitionInstruction()
   }
 }
 
-class CopyValueInstruction extends CopyInstruction {
+class CopyValueInstruction extends CopyInstruction, UnaryInstruction {
   CopyValueInstruction() {
-    opcode instanceof Opcode::CopyValue
+    getOpcode() instanceof Opcode::CopyValue
+  }
+
+  override final UnaryOperand getSourceValueOperand() {
+    result = getAnOperand()
   }
 }
 
 class LoadInstruction extends CopyInstruction {
   LoadInstruction() {
-    opcode instanceof Opcode::Load
+    getOpcode() instanceof Opcode::Load
   }
 
+  final AddressOperand getSourceAddressOperand() {
+    result = getAnOperand()
+  }
+  
   final Instruction getSourceAddress() {
-    result = getAnOperand().(AddressOperand).getDefinitionInstruction()
+    result = getSourceAddressOperand().getDefinitionInstruction()
+  }
+
+  override final LoadOperand getSourceValueOperand() {
+    result = getAnOperand()
   }
 }
 
 class StoreInstruction extends CopyInstruction {
   StoreInstruction() {
-    opcode instanceof Opcode::Store
+    getOpcode() instanceof Opcode::Store
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof IndirectMemoryAccess
   }
 
+  final AddressOperand getDestinationAddressOperand() {
+    result = getAnOperand()
+  }
+  
   final Instruction getDestinationAddress() {
-    result = getAnOperand().(AddressOperand).getDefinitionInstruction()
+    result = getDestinationAddressOperand().getDefinitionInstruction()
+  }
+
+  override final StoreValueOperand getSourceValueOperand() {
+    result = getAnOperand()
   }
 }
 
 class ConditionalBranchInstruction extends Instruction {
   ConditionalBranchInstruction() {
-    opcode instanceof Opcode::ConditionalBranch
+    getOpcode() instanceof Opcode::ConditionalBranch
+  }
+
+  final ConditionOperand getConditionOperand() {
+    result = getAnOperand()
   }
 
   final Instruction getCondition() {
-    result = getAnOperand().(ConditionOperand).getDefinitionInstruction()
+    result = getConditionOperand().getDefinitionInstruction()
   }
 
   final Instruction getTrueSuccessor() {
@@ -792,25 +829,25 @@ class ConditionalBranchInstruction extends Instruction {
 
 class ExitFunctionInstruction extends Instruction {
   ExitFunctionInstruction() {
-    opcode instanceof Opcode::ExitFunction
+    getOpcode() instanceof Opcode::ExitFunction
   }
 }
 
 class ConstantInstruction extends ConstantValueInstruction {
   ConstantInstruction() {
-    opcode instanceof Opcode::Constant
+    getOpcode() instanceof Opcode::Constant
   }
 }
 
 class IntegerConstantInstruction extends ConstantInstruction {
   IntegerConstantInstruction() {
-    resultType instanceof IntegralType
+    getResultType() instanceof IntegralType
   }
 }
 
 class FloatConstantInstruction extends ConstantInstruction {
   FloatConstantInstruction() {
-    resultType instanceof FloatingPointType
+    getResultType() instanceof FloatingPointType
   }
 }
 
@@ -832,90 +869,118 @@ class StringConstantInstruction extends Instruction {
 
 class BinaryInstruction extends Instruction {
   BinaryInstruction() {
-    opcode instanceof BinaryOpcode
+    getOpcode() instanceof BinaryOpcode
   }
 
-  final Instruction getLeftOperand() {
-    result = getAnOperand().(LeftOperand).getDefinitionInstruction()
+  final LeftOperand getLeftOperand() {
+    result = getAnOperand()
+  }
+  
+  final RightOperand getRightOperand() {
+    result = getAnOperand()
   }
 
-  final Instruction getRightOperand() {
-    result = getAnOperand().(RightOperand).getDefinitionInstruction()
+  final Instruction getLeft() {
+    result = getLeftOperand().getDefinitionInstruction()
+  }
+
+  final Instruction getRight() {
+    result = getRightOperand().getDefinitionInstruction()
   }
   
   /**
    * Holds if this instruction's operands are `op1` and `op2`, in either order.
    */
   final predicate hasOperands(Operand op1, Operand op2) {
-    op1 = getAnOperand().(LeftOperand) and op2 = getAnOperand().(RightOperand)
+    op1 = getLeftOperand() and op2 = getRightOperand()
     or
-    op1 = getAnOperand().(RightOperand) and op2 = getAnOperand().(LeftOperand)
+    op1 = getRightOperand() and op2 = getLeftOperand()
   }
 }
 
-class AddInstruction extends BinaryInstruction {
+class ArithmeticInstruction extends Instruction {
+  ArithmeticInstruction() {
+    getOpcode() instanceof ArithmeticOpcode
+  }
+}
+
+class BinaryArithmeticInstruction extends ArithmeticInstruction, BinaryInstruction {}
+
+class UnaryArithmeticInstruction extends ArithmeticInstruction, UnaryInstruction {}
+
+class AddInstruction extends BinaryArithmeticInstruction {
   AddInstruction() {
-    opcode instanceof Opcode::Add
+    getOpcode() instanceof Opcode::Add
   }
 }
 
-class SubInstruction extends BinaryInstruction {
+class SubInstruction extends BinaryArithmeticInstruction {
   SubInstruction() {
-    opcode instanceof Opcode::Sub
+    getOpcode() instanceof Opcode::Sub
   }
 }
 
-class MulInstruction extends BinaryInstruction {
+class MulInstruction extends BinaryArithmeticInstruction {
   MulInstruction() {
-    opcode instanceof Opcode::Mul
+    getOpcode() instanceof Opcode::Mul
   }
 }
 
-class DivInstruction extends BinaryInstruction {
+class DivInstruction extends BinaryArithmeticInstruction {
   DivInstruction() {
-    opcode instanceof Opcode::Div
+    getOpcode() instanceof Opcode::Div
   }
 }
 
-class RemInstruction extends BinaryInstruction {
+class RemInstruction extends BinaryArithmeticInstruction {
   RemInstruction() {
-    opcode instanceof Opcode::Rem
+    getOpcode() instanceof Opcode::Rem
   }
 }
 
-class NegateInstruction extends UnaryInstruction {
+class NegateInstruction extends UnaryArithmeticInstruction {
   NegateInstruction() {
-    opcode instanceof Opcode::Negate
+    getOpcode() instanceof Opcode::Negate
   }
 }
 
-class BitAndInstruction extends BinaryInstruction {
+class BitwiseInstruction extends Instruction {
+  BitwiseInstruction() {
+    getOpcode() instanceof BitwiseOpcode
+  }
+}
+
+class BinaryBitwiseInstruction extends BitwiseInstruction, BinaryInstruction {}
+
+class UnaryBitwiseInstruction extends BitwiseInstruction, UnaryInstruction {}
+
+class BitAndInstruction extends BinaryBitwiseInstruction {
   BitAndInstruction() {
-    opcode instanceof Opcode::BitAnd
+    getOpcode() instanceof Opcode::BitAnd
   }
 }
 
-class BitOrInstruction extends BinaryInstruction {
+class BitOrInstruction extends BinaryBitwiseInstruction {
   BitOrInstruction() {
-    opcode instanceof Opcode::BitOr
+    getOpcode() instanceof Opcode::BitOr
   }
 }
 
-class BitXorInstruction extends BinaryInstruction {
+class BitXorInstruction extends BinaryBitwiseInstruction {
   BitXorInstruction() {
-    opcode instanceof Opcode::BitXor
+    getOpcode() instanceof Opcode::BitXor
   }
 }
 
-class ShiftLeftInstruction extends BinaryInstruction {
+class ShiftLeftInstruction extends BinaryBitwiseInstruction {
   ShiftLeftInstruction() {
-    opcode instanceof Opcode::ShiftLeft
+    getOpcode() instanceof Opcode::ShiftLeft
   }
 }
 
-class ShiftRightInstruction extends BinaryInstruction {
+class ShiftRightInstruction extends BinaryBitwiseInstruction {
   ShiftRightInstruction() {
-    opcode instanceof Opcode::ShiftRight
+    getOpcode() instanceof Opcode::ShiftRight
   }
 }
 
@@ -923,7 +988,7 @@ class PointerArithmeticInstruction extends BinaryInstruction {
   int elementSize;
 
   PointerArithmeticInstruction() {
-    opcode instanceof PointerArithmeticOpcode and
+    getOpcode() instanceof PointerArithmeticOpcode and
     elementSize = Construction::getInstructionElementSize(this)
   }
 
@@ -938,41 +1003,45 @@ class PointerArithmeticInstruction extends BinaryInstruction {
 
 class PointerOffsetInstruction extends PointerArithmeticInstruction {
   PointerOffsetInstruction() {
-    opcode instanceof PointerOffsetOpcode
+    getOpcode() instanceof PointerOffsetOpcode
   }
 }
 
 class PointerAddInstruction extends PointerOffsetInstruction {
   PointerAddInstruction() {
-    opcode instanceof Opcode::PointerAdd
+    getOpcode() instanceof Opcode::PointerAdd
   }
 }
 
 class PointerSubInstruction extends PointerOffsetInstruction {
   PointerSubInstruction() {
-    opcode instanceof Opcode::PointerSub
+    getOpcode() instanceof Opcode::PointerSub
   }
 }
 
 class PointerDiffInstruction extends PointerArithmeticInstruction {
   PointerDiffInstruction() {
-    opcode instanceof Opcode::PointerDiff
+    getOpcode() instanceof Opcode::PointerDiff
   }
 }
 
 class UnaryInstruction extends Instruction {
   UnaryInstruction() {
-    opcode instanceof UnaryOpcode
+    getOpcode() instanceof UnaryOpcode
   }
 
-  final Instruction getOperand() {
-    result = getAnOperand().(UnaryOperand).getDefinitionInstruction()
+  final UnaryOperand getUnaryOperand() {
+    result = getAnOperand()
+  }
+  
+  final Instruction getUnary() {
+    result = getUnaryOperand().getDefinitionInstruction()
   }
 }
 
 class ConvertInstruction extends UnaryInstruction {
   ConvertInstruction() {
-    opcode instanceof Opcode::Convert
+    getOpcode() instanceof Opcode::Convert
   }
 }
 
@@ -1024,7 +1093,7 @@ class InheritanceConversionInstruction extends UnaryInstruction {
  */
 class ConvertToBaseInstruction extends InheritanceConversionInstruction {
   ConvertToBaseInstruction() {
-    opcode instanceof Opcode::ConvertToBase
+    getOpcode() instanceof Opcode::ConvertToBase
   }
 }
 
@@ -1034,7 +1103,7 @@ class ConvertToBaseInstruction extends InheritanceConversionInstruction {
  */
 class ConvertToVirtualBaseInstruction extends InheritanceConversionInstruction {
   ConvertToVirtualBaseInstruction() {
-    opcode instanceof Opcode::ConvertToVirtualBase
+    getOpcode() instanceof Opcode::ConvertToVirtualBase
   }
 }
 
@@ -1044,37 +1113,37 @@ class ConvertToVirtualBaseInstruction extends InheritanceConversionInstruction {
  */
 class ConvertToDerivedInstruction extends InheritanceConversionInstruction {
   ConvertToDerivedInstruction() {
-    opcode instanceof Opcode::ConvertToDerived
+    getOpcode() instanceof Opcode::ConvertToDerived
   }
 }
 
-class BitComplementInstruction extends UnaryInstruction {
+class BitComplementInstruction extends UnaryBitwiseInstruction {
   BitComplementInstruction() {
-    opcode instanceof Opcode::BitComplement
+    getOpcode() instanceof Opcode::BitComplement
   }
 }
 
 class LogicalNotInstruction extends UnaryInstruction {
   LogicalNotInstruction() {
-    opcode instanceof Opcode::LogicalNot
+    getOpcode() instanceof Opcode::LogicalNot
   }
 }
 
 class CompareInstruction extends BinaryInstruction {
   CompareInstruction() {
-    opcode instanceof CompareOpcode
+    getOpcode() instanceof CompareOpcode
   }
 }
 
 class CompareEQInstruction extends CompareInstruction {
   CompareEQInstruction() {
-    opcode instanceof Opcode::CompareEQ
+    getOpcode() instanceof Opcode::CompareEQ
   }
 }
 
 class CompareNEInstruction extends CompareInstruction {
   CompareNEInstruction() {
-    opcode instanceof Opcode::CompareNE
+    getOpcode() instanceof Opcode::CompareNE
   }
 }
 
@@ -1083,7 +1152,7 @@ class CompareNEInstruction extends CompareInstruction {
  */
 class RelationalInstruction extends CompareInstruction {
   RelationalInstruction() {
-    opcode instanceof RelationalOpcode
+    getOpcode() instanceof RelationalOpcode
   }
 
   /**
@@ -1092,7 +1161,7 @@ class RelationalInstruction extends CompareInstruction {
    * if the overall instruction evaluates to `true`; for example on
    * `x <= 20` this is the `20`, and on `y > 0` it is `y`.
    */
-  Instruction getGreaterOperand() {
+  Instruction getGreater() {
     none()
   }
 
@@ -1102,7 +1171,7 @@ class RelationalInstruction extends CompareInstruction {
    * if the overall instruction evaluates to `true`; for example on
    * `x <= 20` this is `x`, and on `y > 0` it is the `0`.
    */
-  Instruction getLesserOperand() {
+  Instruction getLesser() {
     none()
   }
 
@@ -1116,15 +1185,15 @@ class RelationalInstruction extends CompareInstruction {
 
 class CompareLTInstruction extends RelationalInstruction {
   CompareLTInstruction() {
-    opcode instanceof Opcode::CompareLT
+    getOpcode() instanceof Opcode::CompareLT
   }
 
-  override Instruction getLesserOperand() {
-    result = getLeftOperand()
+  override Instruction getLesser() {
+    result = getLeft()
   }
 
-  override Instruction getGreaterOperand() {
-    result = getRightOperand()
+  override Instruction getGreater() {
+    result = getRight()
   }
 
   override predicate isStrict() {
@@ -1134,15 +1203,15 @@ class CompareLTInstruction extends RelationalInstruction {
 
 class CompareGTInstruction extends RelationalInstruction {
   CompareGTInstruction() {
-    opcode instanceof Opcode::CompareGT
+    getOpcode() instanceof Opcode::CompareGT
   }
 
-  override Instruction getLesserOperand() {
-    result = getRightOperand()
+  override Instruction getLesser() {
+    result = getRight()
   }
 
-  override Instruction getGreaterOperand() {
-    result = getLeftOperand()
+  override Instruction getGreater() {
+    result = getLeft()
   }
 
   override predicate isStrict() {
@@ -1152,15 +1221,15 @@ class CompareGTInstruction extends RelationalInstruction {
 
 class CompareLEInstruction extends RelationalInstruction {
   CompareLEInstruction() {
-    opcode instanceof Opcode::CompareLE
+    getOpcode() instanceof Opcode::CompareLE
   }
 
-  override Instruction getLesserOperand() {
-    result = getLeftOperand()
+  override Instruction getLesser() {
+    result = getLeft()
   }
 
-  override Instruction getGreaterOperand() {
-    result = getRightOperand()
+  override Instruction getGreater() {
+    result = getRight()
   }
 
   override predicate isStrict() {
@@ -1170,15 +1239,15 @@ class CompareLEInstruction extends RelationalInstruction {
 
 class CompareGEInstruction extends RelationalInstruction {
   CompareGEInstruction() {
-    opcode instanceof Opcode::CompareGE
+    getOpcode() instanceof Opcode::CompareGE
   }
 
-  override Instruction getLesserOperand() {
-    result = getRightOperand()
+  override Instruction getLesser() {
+    result = getRight()
   }
 
-  override Instruction getGreaterOperand() {
-    result = getLeftOperand()
+  override Instruction getGreater() {
+    result = getLeft()
   }
 
   override predicate isStrict() {
@@ -1188,11 +1257,15 @@ class CompareGEInstruction extends RelationalInstruction {
 
 class SwitchInstruction extends Instruction {
   SwitchInstruction() {
-    opcode instanceof Opcode::Switch
+    getOpcode() instanceof Opcode::Switch
+  }
+
+  final ConditionOperand getExpressionOperand() {
+    result = getAnOperand()
   }
 
   final Instruction getExpression() {
-    result = getAnOperand().(ConditionOperand).getDefinitionInstruction()
+    result = getExpressionOperand().getDefinitionInstruction()
   }
 
   final Instruction getACaseSuccessor() {
@@ -1211,7 +1284,14 @@ class SwitchInstruction extends Instruction {
  */
 class CallInstruction extends Instruction {
   CallInstruction() {
-    opcode instanceof Opcode::Call
+    getOpcode() instanceof Opcode::Call
+  }
+
+  /**
+   * Gets the operand the specifies the target function of the call.
+   */
+  final CallTargetOperand getCallTargetOperand() {
+    result = getAnOperand()
   }
 
   /**
@@ -1220,32 +1300,50 @@ class CallInstruction extends Instruction {
    * function pointer.
    */
   final Instruction getCallTarget() {
-    result = getAnOperand().(CallTargetOperand).getDefinitionInstruction()
+    result = getCallTargetOperand().getDefinitionInstruction()
+  }
+
+  /**
+   * Gets all of the argument operands of the call, including the `this` pointer, if any.
+   */
+  final ArgumentOperand getAnArgumentOperand() {
+    result = getAnOperand()
   }
 
   /**
    * Gets all of the arguments of the call, including the `this` pointer, if any.
    */
   final Instruction getAnArgument() {
-    result = getAnOperand().(ArgumentOperand).getDefinitionInstruction()
+    result = getAnArgumentOperand().getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the `this` pointer argument operand of the call, if any.
+   */
+  final ThisArgumentOperand getThisArgumentOperand() {
+    result = getAnOperand()
   }
 
   /**
    * Gets the `this` pointer argument of the call, if any.
    */
   final Instruction getThisArgument() {
-    result = getAnOperand().(ThisArgumentOperand).getDefinitionInstruction()
+    result = getThisArgumentOperand().getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the argument operand at the specified index.
+   */
+  final PositionalArgumentOperand getPositionalArgumentOperand(int index) {
+    result = getAnOperand() and
+    result.getIndex() = index
   }
 
   /**
    * Gets the argument at the specified index.
    */
   final Instruction getPositionalArgument(int index) {
-    exists(PositionalArgumentOperand operand |
-      operand = getAnOperand() and
-      operand.getIndex() = index and
-      result = operand.getDefinitionInstruction()
-    )
+    result = getPositionalArgumentOperand(index).getDefinitionInstruction()
   }
 }
 
@@ -1254,7 +1352,7 @@ class CallInstruction extends Instruction {
  */
 class SideEffectInstruction extends Instruction {
   SideEffectInstruction() {
-    opcode instanceof SideEffectOpcode
+    getOpcode() instanceof SideEffectOpcode
   }
 
   final Instruction getPrimaryInstruction() {
@@ -1268,11 +1366,11 @@ class SideEffectInstruction extends Instruction {
  */
 class CallSideEffectInstruction extends SideEffectInstruction {
   CallSideEffectInstruction() {
-    opcode instanceof Opcode::CallSideEffect
+    getOpcode() instanceof Opcode::CallSideEffect
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
-    result instanceof EscapedMemoryAccess
+    result instanceof EscapedMayMemoryAccess
   }
 }
 
@@ -1282,7 +1380,7 @@ class CallSideEffectInstruction extends SideEffectInstruction {
  */
 class CallReadSideEffectInstruction extends SideEffectInstruction {
   CallReadSideEffectInstruction() {
-    opcode instanceof Opcode::CallReadSideEffect
+    getOpcode() instanceof Opcode::CallReadSideEffect
   }
 }
 
@@ -1291,7 +1389,7 @@ class CallReadSideEffectInstruction extends SideEffectInstruction {
  */
 class IndirectReadSideEffectInstruction extends SideEffectInstruction {
   IndirectReadSideEffectInstruction() {
-    opcode instanceof Opcode::IndirectReadSideEffect
+    getOpcode() instanceof Opcode::IndirectReadSideEffect
   }
 }
 
@@ -1300,7 +1398,7 @@ class IndirectReadSideEffectInstruction extends SideEffectInstruction {
  */
 class BufferReadSideEffectInstruction extends SideEffectInstruction {
   BufferReadSideEffectInstruction() {
-    opcode instanceof Opcode::BufferReadSideEffect
+    getOpcode() instanceof Opcode::BufferReadSideEffect
   }
 }
 
@@ -1309,7 +1407,7 @@ class BufferReadSideEffectInstruction extends SideEffectInstruction {
  */
 class IndirectWriteSideEffectInstruction extends SideEffectInstruction {
   IndirectWriteSideEffectInstruction() {
-    opcode instanceof Opcode::IndirectWriteSideEffect
+    getOpcode() instanceof Opcode::IndirectWriteSideEffect
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
@@ -1323,7 +1421,7 @@ class IndirectWriteSideEffectInstruction extends SideEffectInstruction {
  */
 class BufferWriteSideEffectInstruction extends SideEffectInstruction {
   BufferWriteSideEffectInstruction() {
-    opcode instanceof Opcode::BufferWriteSideEffect
+    getOpcode() instanceof Opcode::BufferWriteSideEffect
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
@@ -1338,7 +1436,7 @@ class BufferWriteSideEffectInstruction extends SideEffectInstruction {
  */
 class IndirectMayWriteSideEffectInstruction extends SideEffectInstruction {
   IndirectMayWriteSideEffectInstruction() {
-    opcode instanceof Opcode::IndirectMayWriteSideEffect
+    getOpcode() instanceof Opcode::IndirectMayWriteSideEffect
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
@@ -1352,8 +1450,9 @@ class IndirectMayWriteSideEffectInstruction extends SideEffectInstruction {
  */
 class BufferMayWriteSideEffectInstruction extends SideEffectInstruction {
   BufferMayWriteSideEffectInstruction() {
-    opcode instanceof Opcode::BufferMayWriteSideEffect
+    getOpcode() instanceof Opcode::BufferMayWriteSideEffect
   }
+
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof BufferMayMemoryAccess
   }
@@ -1364,7 +1463,7 @@ class BufferMayWriteSideEffectInstruction extends SideEffectInstruction {
  */
 class ThrowInstruction extends Instruction {
   ThrowInstruction() {
-    opcode instanceof ThrowOpcode
+    getOpcode() instanceof ThrowOpcode
   }
 }
 
@@ -1373,21 +1472,35 @@ class ThrowInstruction extends Instruction {
  */
 class ThrowValueInstruction extends ThrowInstruction {
   ThrowValueInstruction() {
-    opcode instanceof Opcode::ThrowValue
+    getOpcode() instanceof Opcode::ThrowValue
+  }
+
+  /**
+   * Gets the address operand of the exception thrown by this instruction.
+   */
+  final AddressOperand getExceptionAddressOperand() {
+    result = getAnOperand()
   }
 
   /**
    * Gets the address of the exception thrown by this instruction.
    */
   final Instruction getExceptionAddress() {
-    result = getAnOperand().(AddressOperand).getDefinitionInstruction()
+    result = getExceptionAddressOperand().getDefinitionInstruction()
+  }
+
+  /**
+   * Gets the operand for the exception thrown by this instruction.
+   */
+  final LoadOperand getExceptionOperand() {
+    result = getAnOperand()
   }
 
   /**
    * Gets the exception thrown by this instruction.
    */
   final Instruction getException() {
-    result = getAnOperand().(ExceptionOperand).getDefinitionInstruction()
+    result = getExceptionOperand().getDefinitionInstruction()
   }
 }
 
@@ -1396,7 +1509,7 @@ class ThrowValueInstruction extends ThrowInstruction {
  */
 class ReThrowInstruction extends ThrowInstruction {
   ReThrowInstruction() {
-    opcode instanceof Opcode::ReThrow
+    getOpcode() instanceof Opcode::ReThrow
   }
 }
 
@@ -1405,7 +1518,7 @@ class ReThrowInstruction extends ThrowInstruction {
  */
 class UnwindInstruction extends Instruction {
   UnwindInstruction() {
-    opcode instanceof Opcode::Unwind
+    getOpcode() instanceof Opcode::Unwind
   }
 }
 
@@ -1414,7 +1527,7 @@ class UnwindInstruction extends Instruction {
  */
 class CatchInstruction extends Instruction {
   CatchInstruction() {
-    opcode instanceof CatchOpcode
+    getOpcode() instanceof CatchOpcode
   }
 }
 
@@ -1425,7 +1538,7 @@ class CatchByTypeInstruction extends CatchInstruction {
   Type exceptionType;
 
   CatchByTypeInstruction() {
-    opcode instanceof Opcode::CatchByType and
+    getOpcode() instanceof Opcode::CatchByType and
     exceptionType = Construction::getInstructionExceptionType(this)
   }
 
@@ -1446,13 +1559,13 @@ class CatchByTypeInstruction extends CatchInstruction {
  */
 class CatchAnyInstruction extends CatchInstruction {
   CatchAnyInstruction() {
-    opcode instanceof Opcode::CatchAny
+    getOpcode() instanceof Opcode::CatchAny
   }
 }
 
 class UnmodeledDefinitionInstruction extends Instruction {
   UnmodeledDefinitionInstruction() {
-    opcode instanceof Opcode::UnmodeledDefinition
+    getOpcode() instanceof Opcode::UnmodeledDefinition
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
@@ -1465,7 +1578,7 @@ class UnmodeledDefinitionInstruction extends Instruction {
  */
 class AliasedDefinitionInstruction extends Instruction {
   AliasedDefinitionInstruction() {
-    opcode instanceof Opcode::AliasedDefinition
+    getOpcode() instanceof Opcode::AliasedDefinition
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
@@ -1475,7 +1588,7 @@ class AliasedDefinitionInstruction extends Instruction {
 
 class UnmodeledUseInstruction extends Instruction {
   UnmodeledUseInstruction() {
-    opcode instanceof Opcode::UnmodeledUse
+    getOpcode() instanceof Opcode::UnmodeledUse
   }
 
   override string getOperandsString() {
@@ -1495,11 +1608,22 @@ class UnmodeledUseInstruction extends Instruction {
  */
 class PhiInstruction extends Instruction {
   PhiInstruction() {
-    opcode instanceof Opcode::Phi
+    getOpcode() instanceof Opcode::Phi
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof PhiMemoryAccess
+  }
+
+  /**
+   * Gets an instruction that defines the input to one of the operands of this
+   * instruction. It's possible for more than one operand to have the same
+   * defining instruction, so this predicate will have the same number of
+   * results as `getAnOperand()` or fewer.
+   */
+  pragma[noinline]
+  final Instruction getAnOperandDefinitionInstruction() {
+    result = this.getAnOperand().(PhiOperand).getDefinitionInstruction()
   }
 }
 
@@ -1509,7 +1633,7 @@ class PhiInstruction extends Instruction {
  *
  * A `ChiInstruction` is inserted immediately after an instruction that writes to memory. The
  * `ChiInstruction` has two operands. The first operand, given by `getTotalOperand()`, represents
- * the previous state of all of the memory that might be alised by the memory write. The second
+ * the previous state of all of the memory that might be aliased by the memory write. The second
  * operand, given by `getPartialOperand()`, represents the memory that was actually modified by the
  * memory write. The result of the `ChiInstruction` represents the same memory as
  * `getTotalOperand()`, updated to include the changes due to the value that was actually stored by
@@ -1547,7 +1671,7 @@ class PhiInstruction extends Instruction {
  */
 class ChiInstruction extends Instruction {
   ChiInstruction() {
-    opcode instanceof Opcode::Chi
+    getOpcode() instanceof Opcode::Chi
   }
 
   override final MemoryAccessKind getResultMemoryAccess() {
@@ -1558,15 +1682,30 @@ class ChiInstruction extends Instruction {
    * Gets the operand that represents the previous state of all memory that might be aliased by the
    * memory write.
    */
-  final Instruction getTotalOperand() {
-    result = getAnOperand().(ChiTotalOperand).getDefinitionInstruction()
+  final ChiTotalOperand getTotalOperand() {
+    result = getAnOperand()
+  }
+
+  /**
+   * Gets the operand that represents the previous state of all memory that might be aliased by the
+   * memory write.
+   */
+  final Instruction getTotal() {
+    result = getTotalOperand().getDefinitionInstruction()
   }
 
   /**
    * Gets the operand that represents the new value written by the memory write.
    */
-  final Instruction getPartialOperand() {
-    result = getAnOperand().(ChiPartialOperand).getDefinitionInstruction()
+  final ChiPartialOperand getPartialOperand() {
+    result = getAnOperand()
+  }
+
+  /**
+   * Gets the operand that represents the new value written by the memory write.
+   */
+  final Instruction getPartial() {
+    result = getPartialOperand().getDefinitionInstruction()
   }
 }
 
@@ -1577,7 +1716,7 @@ class ChiInstruction extends Instruction {
  */
 class UnreachedInstruction extends Instruction {
   UnreachedInstruction() {
-    opcode instanceof Opcode::Unreached
+    getOpcode() instanceof Opcode::Unreached
   }
 }
 
@@ -1587,6 +1726,6 @@ class UnreachedInstruction extends Instruction {
  */
 class BuiltInInstruction extends Instruction {
   BuiltInInstruction() {
-    opcode instanceof BuiltInOpcode
+    getOpcode() instanceof BuiltInOpcode
   }
 }

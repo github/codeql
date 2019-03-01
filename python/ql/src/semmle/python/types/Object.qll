@@ -192,7 +192,7 @@ private Object findByName1(string longName) {
     exists(string owner, string attrname |
         longName = owner + "." + attrname
         |
-        result = findByName0(owner).(ModuleObject).getAttribute(attrname)
+        result = findByName0(owner).(ModuleObject).attr(attrname)
         or
         result = findByName0(owner).(ClassObject).lookupAttribute(attrname)
     )
@@ -204,7 +204,7 @@ private Object findByName2(string longName) {
     exists(string owner, string attrname |
         longName = owner + "." + attrname
         |
-        result = findByName1(owner).(ModuleObject).getAttribute(attrname)
+        result = findByName1(owner).(ModuleObject).attr(attrname)
         or
         result = findByName1(owner).(ClassObject).lookupAttribute(attrname)
     )
@@ -216,7 +216,7 @@ private Object findByName3(string longName) {
     exists(string owner, string attrname |
         longName = owner + "." + attrname
         |
-        result = findByName2(owner).(ModuleObject).getAttribute(attrname)
+        result = findByName2(owner).(ModuleObject).attr(attrname)
         or
         result = findByName2(owner).(ClassObject).lookupAttribute(attrname)
     )
@@ -354,6 +354,14 @@ class TupleObject extends SequenceObject {
 
 }
 
+module TupleObject {
+
+    TupleObject empty() {
+        py_cobjecttypes(result, theTupleType()) and not py_citems(result, _, _)
+    }
+
+}
+
 class NonEmptyTupleObject extends TupleObject {
 
     NonEmptyTupleObject() {
@@ -389,108 +397,82 @@ BuiltinModuleObject theSysModuleObject() {
     py_special_objects(result, "sys")
 }
 
+/** DEPRECATED -- Use `Object::builtin(name)` instead. */
+deprecated
 Object builtin_object(string name) {
-    py_cmembers_versioned(theBuiltinModuleObject(), name, result, major_version().toString())
+    result = Object::builtin(name)
 }
 
 /** The built-in object None */
- Object theNoneObject() {
+Object theNoneObject() {
     py_special_objects(result, "None")
 }
 
 /** The built-in object True */
- Object theTrueObject() {
+Object theTrueObject() {
     py_special_objects(result, "True")
 }
 
 /** The built-in object False */
- Object theFalseObject() {
+Object theFalseObject() {
     py_special_objects(result, "False")
-}
-
-/** The builtin function apply (Python 2 only) */
- Object theApplyFunction() {
-    result = builtin_object("apply")
-}
-
-/** The builtin function hasattr */
- Object theHasattrFunction() {
-    result = builtin_object("hasattr")
-}
-
-/** The builtin function len */
- Object theLenFunction() {
-    result = builtin_object("len")
-}
-
-/** The builtin function format */
- Object theFormatFunction() {
-    result = builtin_object("format")
-}
-
-/** The builtin function open */
- Object theOpenFunction() {
-    result = builtin_object("open")
-}
-
-/** The builtin function print (Python 2.7 upwards) */
- Object thePrintFunction() {
-    result = builtin_object("print")
-}
-
-/** The builtin function input (Python 2 only) */
- Object theInputFunction() {
-    result = builtin_object("input")
-}
-
-/** The builtin function locals */
- Object theLocalsFunction() {
-    py_special_objects(result, "locals")
-}
-
-/** The builtin function globals */
- Object theGlobalsFunction() {
-    py_special_objects(result, "globals")
-}
-
-/** The builtin function sys.exit */
- Object theExitFunctionObject() {
-    py_cmembers_versioned(theSysModuleObject(), "exit", result, major_version().toString())
 }
 
 /** The NameError class */
 Object theNameErrorType() {
-    result = builtin_object("NameError")
+    result = Object::builtin("NameError")
 }
 
 /** The StandardError class */
 Object theStandardErrorType() {
-    result = builtin_object("StandardError")
+    result = Object::builtin("StandardError")
 }
 
 /** The IndexError class */
 Object theIndexErrorType() {
-    result = builtin_object("IndexError")
+    result = Object::builtin("IndexError")
 }
 
 /** The LookupError class */
 Object theLookupErrorType() {
-    result = builtin_object("LookupError")
+    result = Object::builtin("LookupError")
 }
 
-/** The named quitter object (quit or exit) in the builtin namespace */
+/** DEPRECATED -- Use `Object::quitter(name)` instead. */
+deprecated
 Object quitterObject(string name) {
-    (name = "quit" or name = "exit") and
-    result = builtin_object(name)
+    result = Object::quitter(name)
 }
 
-/** The builtin object `NotImplemented`. Not be confused with `NotImplementedError`. */
+/** DEPRECATED -- Use `Object::notImplemented()` instead. */
+deprecated
 Object theNotImplementedObject() {
-    result = builtin_object("NotImplemented")
+    result = Object::builtin("NotImplemented")
 }
 
+/** DEPRECATED -- Use `TupleObject::empty()` instead. */
+deprecated
 Object theEmptyTupleObject() {
-    py_cobjecttypes(result, theTupleType()) and not py_citems(result, _, _)
+    result = TupleObject::empty()
+}
+
+module Object {
+
+    Object builtin(string name) {
+        py_cmembers_versioned(theBuiltinModuleObject(), name, result, major_version().toString())
+    }
+
+    /** The named quitter object (quit or exit) in the builtin namespace */
+    Object quitter(string name) {
+        (name = "quit" or name = "exit") and
+        result = builtin(name)
+    }
+
+    /** The builtin object `NotImplemented`. Not be confused with `NotImplementedError`. */
+    Object notImplemented() {
+        result = builtin("NotImplemented")
+    }
+
 }
 
 

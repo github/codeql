@@ -74,7 +74,9 @@ class WebContextParamValue extends WebXMLElement {
 /**
  * A `<filter>` element in a `web.xml` file.
  */
-class WebFilter extends WebXMLElement { WebFilter() { getName() = "filter" } }
+class WebFilter extends WebXMLElement {
+  WebFilter() { getName() = "filter" }
+}
 
 /**
  * A `<filter-class>` element in a `web.xml` file, nested under a `<filter>` element.
@@ -91,7 +93,9 @@ class WebFilterClass extends WebXMLElement {
 /**
  * A `<servlet>` element in a `web.xml` file.
  */
-class WebServlet extends WebXMLElement { WebServlet() { getName() = "servlet" } }
+class WebServlet extends WebXMLElement {
+  WebServlet() { getName() = "servlet" }
+}
 
 /**
  * A `<servlet-class>` element in a `web.xml` file, nested under a `<servlet>` element.
@@ -108,7 +112,9 @@ class WebServletClass extends WebXMLElement {
 /**
  * A `<listener>` element in a `web.xml` file.
  */
-class WebListener extends WebXMLElement { WebListener() { getName() = "listener" } }
+class WebListener extends WebXMLElement {
+  WebListener() { getName() = "listener" }
+}
 
 /**
  * A `<listener-class>` element in a `web.xml` file, nested under a `<listener>` element.

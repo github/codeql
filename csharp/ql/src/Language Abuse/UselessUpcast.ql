@@ -13,7 +13,9 @@
 import csharp
 
 /** A static callable. */
-class StaticCallable extends Callable { StaticCallable() { this.(Modifiable).isStatic() } }
+class StaticCallable extends Callable {
+  StaticCallable() { this.(Modifiable).isStatic() }
+}
 
 /** An instance callable, that is, a non-static callable. */
 class InstanceCallable extends Callable {

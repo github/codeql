@@ -112,9 +112,7 @@ class Modifiable extends Declaration, @modifiable {
    * Holds if this declaration is effectively `public`, because it
    * and all enclosing types are `public`.
    */
-  predicate isEffectivelyPublic() {
-    not isEffectivelyPrivate() and not isEffectivelyInternal()
-  }
+  predicate isEffectivelyPublic() { not isEffectivelyPrivate() and not isEffectivelyInternal() }
 }
 
 /** A declaration that is a member of a type. */
@@ -341,7 +339,10 @@ class Parameterizable extends Declaration, @parameterizable {
       else
         if p.isRef()
         then prefix = "ref "
-        else if p.isParams() then prefix = "params " else prefix = ""
+        else
+          if p.isParams()
+          then prefix = "params "
+          else prefix = ""
     )
   }
 

@@ -45,7 +45,7 @@ predicate white_list(string name) {
 predicate shadows(Name d, string name, Scope scope, int line) {
     exists(LocalVariable l | d.defines(l) and scope instanceof Function and
            l.getId() = name and
-           exists(builtin_object(l.getId()))
+           exists(Object::builtin(l.getId()))
     ) and
     d.getScope() = scope and
     d.getLocation().getStartLine() = line and

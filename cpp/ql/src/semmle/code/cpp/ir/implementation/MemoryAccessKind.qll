@@ -6,6 +6,7 @@ private newtype TMemoryAccessKind =
   TBufferMemoryAccess() or
   TBufferMayMemoryAccess() or
   TEscapedMemoryAccess() or
+  TEscapedMayMemoryAccess() or
   TPhiMemoryAccess() or
   TUnmodeledMemoryAccess() or
   TChiTotalMemoryAccess() or
@@ -16,7 +17,17 @@ private newtype TMemoryAccessKind =
  * memory result.
  */
 class MemoryAccessKind extends TMemoryAccessKind {
-  abstract string toString();
+  string toString() {
+    none()
+  }
+
+  /**
+   * Holds if the operand or result accesses memory pointed to by the `AddressOperand` on the
+   * same instruction.
+   */
+  predicate usesAddressOperand() {
+    none()
+  }
 }
 
 /**
@@ -27,6 +38,10 @@ class IndirectMemoryAccess extends MemoryAccessKind, TIndirectMemoryAccess {
   override string toString() {
     result = "indirect"
   }
+  
+  override final predicate usesAddressOperand() {
+    any()
+  }
 }
 
 /**
@@ -36,6 +51,10 @@ class IndirectMemoryAccess extends MemoryAccessKind, TIndirectMemoryAccess {
 class IndirectMayMemoryAccess extends MemoryAccessKind, TIndirectMayMemoryAccess {
   override string toString() {
     result = "indirect(may)"
+  }
+
+  override final predicate usesAddressOperand() {
+    any()
   }
 }
 
@@ -48,6 +67,10 @@ class BufferMemoryAccess extends MemoryAccessKind, TBufferMemoryAccess {
   override string toString() {
     result = "buffer"
   }
+
+  override final predicate usesAddressOperand() {
+    any()
+  }
 }
 
 /**
@@ -59,6 +82,10 @@ class BufferMayMemoryAccess extends MemoryAccessKind, TBufferMayMemoryAccess {
   override string toString() {
     result = "buffer(may)"
   }
+
+  override final predicate usesAddressOperand() {
+    any()
+  }
 }
 
 /**
@@ -67,6 +94,15 @@ class BufferMayMemoryAccess extends MemoryAccessKind, TBufferMayMemoryAccess {
 class EscapedMemoryAccess extends MemoryAccessKind, TEscapedMemoryAccess {
   override string toString() {
     result = "escaped"
+  }
+}
+
+/**
+ * The operand or result may access all memory whose address has escaped.
+ */
+class EscapedMayMemoryAccess extends MemoryAccessKind, TEscapedMayMemoryAccess {
+  override string toString() {
+    result = "escaped(may)"
   }
 }
 

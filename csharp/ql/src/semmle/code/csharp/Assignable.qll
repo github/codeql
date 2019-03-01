@@ -402,17 +402,14 @@ module AssignableInternal {
      * `a`, if any.
      */
     cached
-    Expr getAccessorCallValueArgument(Access a) {
-      a.getTarget() instanceof DeclarationWithAccessors and
-      (
-        exists(AssignExpr ae | tupleAssignmentDefinition(ae, a) |
-          tupleAssignmentPair(ae, a, result)
-        )
-        or
-        exists(Assignment ass | a = ass.getLValue() |
-          result = ass.getRValue() and
-          not ass.(AssignOperation).hasExpandedAssignment()
-        )
+    Expr getAccessorCallValueArgument(AccessorCall ac) {
+      exists(AssignExpr ae | tupleAssignmentDefinition(ae, ac) |
+        tupleAssignmentPair(ae, ac, result)
+      )
+      or
+      exists(Assignment ass | ac = ass.getLValue() |
+        result = ass.getRValue() and
+        not ass.(AssignOperation).hasExpandedAssignment()
       )
     }
   }
@@ -581,9 +578,7 @@ module AssignableDefinitions {
       leaf = rank[result + 1](Expr leaf0 |
           exists(TTupleAssignmentDefinition(ae, leaf0))
         |
-          leaf0
-          order by
-            leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
+          leaf0 order by leaf0.getLocation().getStartLine(), leaf0.getLocation().getStartColumn()
         )
     }
 
@@ -606,20 +601,19 @@ module AssignableDefinitions {
     /** Gets the underlying call. */
     Call getCall() { result.getAnArgument() = aa }
 
+    private int getPosition() { aa = this.getCall().getArgument(result) }
+
     /**
      * Gets the index of this definition among the other definitions in the
      * `out`/`ref` assignment. For example, in `M(out x, ref y)` the index of
      * the definitions of `x` and `y` are 0 and 1, respectively.
      */
     int getIndex() {
-      exists(ControlFlow::BasicBlock bb, int i | bb.getNode(i).getElement() = aa |
-        i = rank[result + 1](int j, OutRefDefinition def |
-            bb.getNode(j).getElement() = def.getTargetAccess() and
-            this.getCall() = def.getCall()
-          |
-            j
-          )
-      )
+      this = rank[result + 1](OutRefDefinition def |
+          def.getCall() = this.getCall()
+        |
+          def order by def.getPosition()
+        )
     }
 
     override predicate isCertain() { not isUncertainRefCall(this.getTargetAccess()) }

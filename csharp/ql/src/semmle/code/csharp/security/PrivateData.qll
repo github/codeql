@@ -63,6 +63,8 @@ class PrivateVariableAccess extends PrivateDataExpr, VariableAccess {
 /** Reading the text property of a control that might contain private data. */
 class PrivateControlAccess extends PrivateDataExpr {
   PrivateControlAccess() {
-    exists(TextControl c | this = c.getARead() and c.getName().toLowerCase().matches(privateNames()))
+    exists(TextControl c |
+      this = c.getARead() and c.getName().toLowerCase().matches(privateNames())
+    )
   }
 }

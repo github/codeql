@@ -250,9 +250,13 @@ private newtype TReason =
  * is due to a specific condition, or `NoReason` if the bound is inferred
  * without going through a bounding condition.
  */
-abstract class Reason extends TReason { abstract string toString(); }
+abstract class Reason extends TReason {
+  abstract string toString();
+}
 
-class NoReason extends Reason, TNoReason { override string toString() { result = "NoReason" } }
+class NoReason extends Reason, TNoReason {
+  override string toString() { result = "NoReason" }
+}
 
 class CondReason extends Reason, TCondReason {
   Guard getCond() { this = TCondReason(result) }
@@ -390,7 +394,10 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
       else
         if strictlyNegative(x)
         then upper = true and delta = -1
-        else if negative(x) then upper = true and delta = 0 else none()
+        else
+          if negative(x)
+          then upper = true and delta = 0
+          else none()
   )
   or
   exists(Expr x |
@@ -416,7 +423,10 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
       else
         if strictlyNegative(x)
         then upper = false and delta = 1
-        else if negative(x) then upper = false and delta = 0 else none()
+        else
+          if negative(x)
+          then upper = false and delta = 0
+          else none()
   )
   or
   e2.(RemExpr).getRightOperand() = e1 and positive(e1) and delta = -1 and upper = true

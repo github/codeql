@@ -8,7 +8,7 @@
  * @id js/duplicate-html-id
  * @tags maintainability
  *       correctness
- * @precision very-high
+ * @precision high
  */
 
 import javascript
@@ -26,13 +26,8 @@ predicate idAt(
     id = attr.getStringValue() and
     root = elt.getRoot() and
     elt.getLocation().hasLocationInfo(_, line, column, _, _) and
-    not (
-      // exclude invalid ids (reported by another query)
-      DOM::isInvalidHtmlIdAttributeValue(attr, _)
-      or
-      // exclude attribute values that look like they might be templated
-      attr.mayHaveTemplateValue()
-    )
+    // exclude invalid ids (reported by another query)
+    not DOM::isInvalidHtmlIdAttributeValue(attr, _)
   )
 }
 
@@ -40,8 +35,10 @@ predicate idAt(
  * Holds if attributes `earlier` and `later` are id attributes with the same value in
  * the same document, and `earlier` appears textually before `later`.
  */
-predicate sameId(DOM::AttributeDefinition earlier, DOM::AttributeDefinition later) {
-  exists(string id, DOM::ElementDefinition root, int l1, int c1, int l2, int c2 |
+predicate sameId(
+  DOM::ElementDefinition root, DOM::AttributeDefinition earlier, DOM::AttributeDefinition later
+) {
+  exists(string id, int l1, int c1, int l2, int c2 |
     idAt(earlier, id, root, l1, c1) and idAt(later, id, root, l2, c2)
   |
     l1 < l2
@@ -50,6 +47,21 @@ predicate sameId(DOM::AttributeDefinition earlier, DOM::AttributeDefinition late
   )
 }
 
-from DOM::AttributeDefinition earlier, DOM::AttributeDefinition later
-where sameId(earlier, later) and not sameId(_, earlier)
+/**
+ * Holds if any attribute value in `root` looks like it is templated.
+ */
+predicate mayContainTemplates(DOM::ElementDefinition root) {
+  exists(DOM::AttributeDefinition attr |
+    attr.mayHaveTemplateValue() and
+    root = attr.getElement().getRoot()
+  )
+}
+
+from DOM::ElementDefinition root, DOM::AttributeDefinition earlier, DOM::AttributeDefinition later
+where
+  sameId(root, earlier, later) and
+  // only flag the first ambiguity if there are many
+  not sameId(root, _, earlier) and
+  // exclude templates
+  not mayContainTemplates(root)
 select earlier, "This element has the same id as $@.", later, "another element"

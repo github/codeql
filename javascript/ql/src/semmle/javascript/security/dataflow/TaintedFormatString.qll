@@ -38,7 +38,9 @@ module TaintedFormatString {
   }
 
   /** A source of remote user input, considered as a flow source for format injection. */
-  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   /**
    * A format argument to a printf-like function, considered as a flow sink for format injection.

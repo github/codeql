@@ -17,7 +17,6 @@
 | CSharp7.cs:72:13:72:19 | SSA def(z) | CSharp7.cs:75:16:75:16 | access to local variable z |
 | CSharp7.cs:72:17:72:19 | call to method F | CSharp7.cs:72:13:72:19 | SSA def(z) |
 | CSharp7.cs:74:13:74:15 | call to method F | CSharp7.cs:74:13:74:21 | access to field Item1 |
-| CSharp7.cs:75:16:75:16 | access to local variable z | CSharp7.cs:75:16:75:22 | access to field Item1 |
 | CSharp7.cs:75:16:75:16 | access to local variable z | CSharp7.cs:77:39:77:39 | access to local variable z |
 | CSharp7.cs:75:28:75:28 | 1 | CSharp7.cs:75:27:75:35 | (..., ...) |
 | CSharp7.cs:75:31:75:31 | 2 | CSharp7.cs:75:27:75:35 | (..., ...) |
@@ -82,7 +81,6 @@
 | CSharp7.cs:114:61:114:66 | (..., ...) | CSharp7.cs:114:49:114:67 | (..., ...) |
 | CSharp7.cs:114:62:114:62 | 0 | CSharp7.cs:114:61:114:66 | (..., ...) |
 | CSharp7.cs:114:65:114:65 | 1 | CSharp7.cs:114:61:114:66 | (..., ...) |
-| CSharp7.cs:118:9:118:10 | access to local variable m2 | CSharp7.cs:118:9:118:16 | access to field Item2 |
 | CSharp7.cs:118:9:118:10 | access to local variable m2 | CSharp7.cs:119:19:119:20 | access to local variable m2 |
 | CSharp7.cs:119:19:119:20 | access to local variable m2 | CSharp7.cs:119:19:119:26 | access to field Item1 |
 | CSharp7.cs:123:28:123:36 | "DefUse3" | CSharp7.cs:123:22:123:36 | ... = ... |

@@ -115,6 +115,9 @@ class Module extends Module_, Scope, AstNode {
 
     override Location getLocation() {
         py_scope_location(result, this)
+        or
+        not py_scope_location(_, this) and
+        locations_ast(result, this, 0, 0, 0, 0)
     }
 
     /** Gets a child module or package of this package */

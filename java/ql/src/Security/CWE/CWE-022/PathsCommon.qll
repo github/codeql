@@ -1,7 +1,9 @@
 import java
 import semmle.code.java.controlflow.Guards
 
-abstract class PathCreation extends Expr { abstract Expr getInput(); }
+abstract class PathCreation extends Expr {
+  abstract Expr getInput();
+}
 
 class PathsGet extends PathCreation, MethodAccess {
   PathsGet() {

@@ -13,5 +13,5 @@ import python
 
 from CallNode call, ControlFlowNode func
 where
-major_version() = 2 and call.getFunction() = func and func.refersTo(theApplyFunction())
+major_version() = 2 and call.getFunction() = func and func.refersTo(Object::builtin("apply"))
 select call, "Call to the obsolete builtin function 'apply'."

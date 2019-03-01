@@ -22,7 +22,9 @@ class SystemIODirectoryClass extends SystemIOClass {
 }
 
 /** The `System.IO.File` class. */
-class SystemIOFileClass extends SystemIOClass { SystemIOFileClass() { this.hasName("File") } }
+class SystemIOFileClass extends SystemIOClass {
+  SystemIOFileClass() { this.hasName("File") }
+}
 
 /** The `System.IO.FileStream` class. */
 class SystemIOFileStreamClass extends SystemIOClass {
@@ -35,7 +37,9 @@ class SystemIOStreamWriterClass extends SystemIOClass {
 }
 
 /** The `System.IO.Path` class. */
-class SystemIOPathClass extends SystemIOClass { SystemIOPathClass() { this.hasName("Path") } }
+class SystemIOPathClass extends SystemIOClass {
+  SystemIOPathClass() { this.hasName("Path") }
+}
 
 /** The `System.IO.StringReader` class. */
 class SystemIOStringReaderClass extends SystemIOClass {

@@ -5,7 +5,7 @@ ModuleObject thePyramidViewModule() {
 }
 
 Object thePyramidViewConfig() {
-    result = thePyramidViewModule().getAttribute("view_config")
+    result = thePyramidViewModule().attr("view_config")
 }
 
 predicate is_pyramid_view_function(Function func) {

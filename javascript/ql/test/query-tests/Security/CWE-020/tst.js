@@ -75,3 +75,7 @@ function withIndexOfCheckBad(x, y) {
   let index = x.indexOf(y);
   return index !== 0 && index === x.length - y.length - 1; // NOT OK
 }
+
+function plus(x, y) {
+  return x.indexOf("." + y) === x.length - (y.length + 1); // NOT OK
+}

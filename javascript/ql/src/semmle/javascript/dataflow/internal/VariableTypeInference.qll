@@ -53,9 +53,7 @@ private class SsaVarAccessWithNonLocalAnalysis extends SsaVarAccessAnalysis {
     exists(VarDef varDef |
       varDef = def.(SsaExplicitDefinition).getDef() and
       varDef.getSource().flow() = src and
-      src instanceof CallWithNonLocalAnalyzedReturnFlow and
-      // avoid relating `v` and `f()` in `var {v} = f();`
-      not varDef.getTarget() instanceof DestructuringPattern
+      src instanceof CallWithNonLocalAnalyzedReturnFlow
     )
   }
 
@@ -145,7 +143,7 @@ private class AnalyzedParameter extends AnalyzedVarDef, @vardecl {
 
   override DataFlow::AnalyzedNode getRhs() {
     getFunction().argumentPassing(this, result.asExpr()) or
-    result = this.(Parameter).getDefault().analyze()
+    result = AnalyzedVarDef.super.getRhs()
   }
 
   override AbstractValue getAnRhsValue() {

@@ -51,5 +51,7 @@ module StackTraceExposure {
    * An expression that can become part of an HTTP response body, viewed
    * as a data flow sink for stack trace exposure vulnerabilities.
    */
-  class DefaultSink extends Sink, DataFlow::ValueNode { override HTTP::ResponseBody astNode; }
+  class DefaultSink extends Sink, DataFlow::ValueNode {
+    override HTTP::ResponseBody astNode;
+  }
 }

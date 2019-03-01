@@ -31,7 +31,9 @@ abstract class ConcurrentEntryPoint extends Callable { }
 /**
  * Methods annotated with the `async` keyword are concurrent entry points.
  */
-class AsyncMethod extends ConcurrentEntryPoint { AsyncMethod() { this.(Modifiable).isAsync() } }
+class AsyncMethod extends ConcurrentEntryPoint {
+  AsyncMethod() { this.(Modifiable).isAsync() }
+}
 
 /**
  * Lambdas or methods passed into the thread or task creation library functions

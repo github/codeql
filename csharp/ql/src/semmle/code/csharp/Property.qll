@@ -7,6 +7,7 @@ import Member
 import Stmt
 private import semmle.code.csharp.ExprOrStmtParent
 private import dotnet
+private import cil
 
 /**
  * A declaration that may have accessors. Either an event (`Event`), a property
@@ -495,6 +496,8 @@ class TrivialProperty extends Property {
     isAutoImplemented()
     or
     getGetter().trivialGetterField() = getSetter().trivialSetterField()
+    or
+    exists(CIL::TrivialProperty prop | this.matchesHandle(prop))
   }
 }
 
@@ -513,7 +516,7 @@ class IndexerProperty extends Property {
   IndexerCall getAnIndexerCall() {
     result = getType().(RefType).getAnIndexer().getAnAccessor().getACall() and
     // The qualifier of this indexer call should be a value returned from an access of this property
-    exists(Expr qualifier | qualifier = result.getAccess().getQualifier() |
+    exists(Expr qualifier | qualifier = result.(IndexerAccess).getQualifier() |
       DataFlow::localFlow(DataFlow::exprNode(this.getAnAccess()), DataFlow::exprNode(qualifier))
     )
   }

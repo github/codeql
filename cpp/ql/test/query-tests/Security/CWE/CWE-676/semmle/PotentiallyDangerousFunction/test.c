@@ -28,3 +28,14 @@ int is_morning() {
     struct tm *now = gmtime(time(NULL)); // BAD: gmtime uses shared state
     return (now->tm_hour < 12);
 }
+
+char *gets(char *s);
+
+void testGets() {
+	char buf1[1024];
+	char buf2 = malloc(1024);
+	char *s;
+
+	gets(buf1); // BAD: use of gets
+	s = gets(buf2); // BAD: use of gets
+}

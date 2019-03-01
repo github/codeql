@@ -98,7 +98,9 @@ module XSS {
   /**
    * A data flow sink for cross-site scripting (XSS) vulnerabilities.
    */
-  abstract class Sink extends DataFlow::ExprNode { string explanation() { none() } }
+  abstract class Sink extends DataFlow::ExprNode {
+    string explanation() { none() }
+  }
 
   /**
    * A data flow source for cross-site scripting (XSS) vulnerabilities.
@@ -124,7 +126,9 @@ module XSS {
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

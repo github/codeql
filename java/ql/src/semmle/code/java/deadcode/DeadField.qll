@@ -9,7 +9,9 @@ import semmle.code.java.frameworks.jackson.JacksonSerializability
  *
  * This defines the set of fields for which we will determine liveness.
  */
-library class SourceField extends Field { SourceField() { fromSource() } }
+library class SourceField extends Field {
+  SourceField() { fromSource() }
+}
 
 /**
  * A field is dead if it is never read by a live callable and it is neither reflectively accessed,

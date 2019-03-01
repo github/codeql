@@ -81,9 +81,7 @@ class XMLParent extends @xmlparent {
     result = concat(string chars, int pos |
         xmlChars(_, chars, this, pos, _, _)
       |
-        chars, " "
-        order by
-          pos
+        chars, " " order by pos
       )
   }
 

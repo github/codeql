@@ -15,7 +15,7 @@ import python
 ClassObject jinja2EnvironmentOrTemplate() {
     exists(ModuleObject jinja2, string name |
         jinja2.getName() = "jinja2" and
-        jinja2.getAttribute(name) = result |
+        jinja2.attr(name) = result |
         name = "Environment" or
         name = "Template"
     )

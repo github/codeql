@@ -99,3 +99,30 @@ function getLastLine(input) {
     f10(undefined, undefined);
 
 })();
+
+(function(){
+	function g(p) {
+		return function() {
+			if (p) { // OK, whitelisted
+				g(p);
+			}
+		};
+	}
+
+	function f(p = false) {
+		return function() {
+			if (p) { // OK, whitelisted
+				f(p);
+			}
+		};
+	}
+
+	function h(p = false) {
+		(function() {
+			if (p) { // OK, whitelisted
+
+			}
+		});
+	}
+	h();
+});

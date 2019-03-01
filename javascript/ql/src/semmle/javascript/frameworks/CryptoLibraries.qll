@@ -244,7 +244,9 @@ private module AsmCrypto {
  * A model of the browserid-crypto library.
  */
 private module BrowserIdCrypto {
-  private class Key extends CryptographicKey { Key() { this = any(Apply apply).getKey() } }
+  private class Key extends CryptographicKey {
+    Key() { this = any(Apply apply).getKey() }
+  }
 
   private class Apply extends CryptographicOperation {
     CryptographicAlgorithm algorithm; // non-functional
@@ -276,7 +278,7 @@ private module BrowserIdCrypto {
         mod = DataFlow::moduleImport("browserid-crypto") and
         keygen = mod.getAMemberCall("generateKeypair") and
         algorithmNameNode = keygen.getOptionArgument(0, "algorithm") and
-        algorithm.matchesName(algorithmNameNode.asExpr().getStringValue()) and
+        algorithm.matchesName(algorithmNameNode.getStringValue()) and
         callback = keygen.getCallback(1) and
         this = mod.getAMemberCall("sign").asExpr()
       )
@@ -319,7 +321,7 @@ private module NodeJSCrypto {
       |
         mod = DataFlow::moduleImport("crypto") and
         this = mod.getAMemberCall("create" + createSuffix) and
-        algorithm.matchesName(getArgument(0).asExpr().getStringValue())
+        algorithm.matchesName(getArgument(0).getStringValue())
       )
     }
 
@@ -650,7 +652,9 @@ private module Forge {
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
 
-  private class Key extends CryptographicKey { Key() { this = any(KeyCipher cipher).getKey() } }
+  private class Key extends CryptographicKey {
+    Key() { this = any(KeyCipher cipher).getKey() }
+  }
 }
 
 /**

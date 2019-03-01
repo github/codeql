@@ -12,7 +12,9 @@
 import java
 import HardcodedCredentials
 
-class EqualsAccess extends MethodAccess { EqualsAccess() { getMethod() instanceof EqualsMethod } }
+class EqualsAccess extends MethodAccess {
+  EqualsAccess() { getMethod() instanceof EqualsMethod }
+}
 
 from EqualsAccess sink, HardcodedExpr source, PasswordVariable p
 where

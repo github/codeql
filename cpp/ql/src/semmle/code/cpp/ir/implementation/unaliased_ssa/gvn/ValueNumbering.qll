@@ -136,71 +136,71 @@ private predicate numberableInstruction(Instruction instr) {
 
 private predicate variableAddressValueNumber(VariableAddressInstruction instr, FunctionIR funcIR,
     IRVariable var) {
-  instr.getFunctionIR() = funcIR and
+  instr.getEnclosingFunctionIR() = funcIR and
   instr.getVariable() = var
 }
 
 private predicate initializeParameterValueNumber(InitializeParameterInstruction instr,
     FunctionIR funcIR, IRVariable var) {
-  instr.getFunctionIR() = funcIR and
+  instr.getEnclosingFunctionIR() = funcIR and
   instr.getVariable() = var
 }
 
 private predicate initializeThisValueNumber(InitializeThisInstruction instr, FunctionIR funcIR) {
-  instr.getFunctionIR() = funcIR
+  instr.getEnclosingFunctionIR() = funcIR
 }
 
 private predicate constantValueNumber(ConstantInstruction instr, FunctionIR funcIR, Type type,
     string value) {
-  instr.getFunctionIR() = funcIR and
+  instr.getEnclosingFunctionIR() = funcIR and
   instr.getResultType() = type and
   instr.getValue() = value
 }
 
 private predicate fieldAddressValueNumber(FieldAddressInstruction instr, FunctionIR funcIR,
     Field field, ValueNumber objectAddress) {
-  instr.getFunctionIR() = funcIR and
+  instr.getEnclosingFunctionIR() = funcIR and
   instr.getField() = field and
   valueNumber(instr.getObjectAddress()) = objectAddress
 }
 
 private predicate binaryValueNumber(BinaryInstruction instr, FunctionIR funcIR, Opcode opcode,
     Type type, ValueNumber leftOperand, ValueNumber rightOperand) {
-  instr.getFunctionIR() = funcIR and
+  instr.getEnclosingFunctionIR() = funcIR and
   (not instr instanceof PointerArithmeticInstruction) and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
-  valueNumber(instr.getLeftOperand()) = leftOperand and
-  valueNumber(instr.getRightOperand()) = rightOperand
+  valueNumber(instr.getLeft()) = leftOperand and
+  valueNumber(instr.getRight()) = rightOperand
 }
 
 private predicate pointerArithmeticValueNumber(PointerArithmeticInstruction instr,
     FunctionIR funcIR, Opcode opcode, Type type, int elementSize, ValueNumber leftOperand,
     ValueNumber rightOperand) {
-  instr.getFunctionIR() = funcIR and
+  instr.getEnclosingFunctionIR() = funcIR and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
   instr.getElementSize() = elementSize and
-  valueNumber(instr.getLeftOperand()) = leftOperand and
-  valueNumber(instr.getRightOperand()) = rightOperand
+  valueNumber(instr.getLeft()) = leftOperand and
+  valueNumber(instr.getRight()) = rightOperand
 }
 
 private predicate unaryValueNumber(UnaryInstruction instr, FunctionIR funcIR, Opcode opcode,
     Type type, ValueNumber operand) {
-  instr.getFunctionIR() = funcIR and
+  instr.getEnclosingFunctionIR() = funcIR and
   (not instr instanceof InheritanceConversionInstruction) and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
-  valueNumber(instr.getOperand()) = operand
+  valueNumber(instr.getUnary()) = operand
 }
 
 private predicate inheritanceConversionValueNumber(InheritanceConversionInstruction instr,
     FunctionIR funcIR, Opcode opcode, Class baseClass, Class derivedClass, ValueNumber operand) {
-  instr.getFunctionIR() = funcIR and
+  instr.getEnclosingFunctionIR() = funcIR and
   instr.getOpcode() = opcode and
   instr.getBaseClass() = baseClass and
   instr.getDerivedClass() = derivedClass and
-  valueNumber(instr.getOperand()) = operand
+  valueNumber(instr.getUnary()) = operand
 }
 
 /**
@@ -208,7 +208,7 @@ private predicate inheritanceConversionValueNumber(InheritanceConversionInstruct
  * to determine if two instances of that instruction are equivalent.
  */
 private predicate uniqueValueNumber(Instruction instr, FunctionIR funcIR) {
-  instr.getFunctionIR() = funcIR and
+  instr.getEnclosingFunctionIR() = funcIR and
   (not instr.getResultType() instanceof VoidType) and
   not numberableInstruction(instr)
 }
@@ -237,7 +237,7 @@ ValueNumber valueNumberOfOperand(Operand op) {
  */
 private ValueNumber nonUniqueValueNumber(Instruction instr) {
   exists(FunctionIR funcIR |
-    funcIR = instr.getFunctionIR() and
+    funcIR = instr.getEnclosingFunctionIR() and
     (
       exists(IRVariable var |
         variableAddressValueNumber(instr, funcIR, var) and

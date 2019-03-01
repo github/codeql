@@ -8,7 +8,9 @@ class TypeUrlConnection extends RefType {
   TypeUrlConnection() { hasQualifiedName("java.net", "URLConnection") }
 }
 
-class TypeSocket extends RefType { TypeSocket() { hasQualifiedName("java.net", "Socket") } }
+class TypeSocket extends RefType {
+  TypeSocket() { hasQualifiedName("java.net", "Socket") }
+}
 
 class URLConnectionGetInputStreamMethod extends Method {
   URLConnectionGetInputStreamMethod() {

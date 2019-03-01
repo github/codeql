@@ -137,9 +137,7 @@ string pathToModule(Module source, Module destination, int steps) {
           isImportedAtRuntime(source, mod) and
           numberOfStepsToModule(mod, destination, steps - 1)
         |
-          mod
-          order by
-            mod.getName()
+          mod order by mod.getName()
         ) and
       result = repr(getARuntimeImport(source, next)) + " => " +
           pathToModule(next, destination, steps - 1)

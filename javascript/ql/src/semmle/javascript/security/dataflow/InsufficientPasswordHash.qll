@@ -52,7 +52,9 @@ module InsufficientPasswordHash {
    * with insufficient computational effort.
    */
   class CleartextPasswordSource extends Source, DataFlow::ValueNode {
-    override CleartextPasswordExpr astNode;
+    override SensitiveExpr astNode;
+
+    CleartextPasswordSource() { astNode.getClassification() = SensitiveExpr::password() }
 
     override string describe() { result = astNode.describe() }
   }

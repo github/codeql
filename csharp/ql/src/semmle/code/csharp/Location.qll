@@ -51,6 +51,11 @@ class Location extends @location {
   final int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
 }
 
+/** An empty location. */
+class EmptyLocation extends Location {
+  EmptyLocation() { this.hasLocationInfo("", 0, 0, 0, 0) }
+}
+
 /**
  * A location in source code, comprising of a source file and a segment of text
  * within the file.
@@ -146,7 +151,10 @@ class Version extends string {
   int compareTo(Version other) {
     if this.isEarlierThan(other)
     then result = -1
-    else if other.isEarlierThan(this) then result = 1 else result = 0
+    else
+      if other.isEarlierThan(this)
+      then result = 1
+      else result = 0
   }
 }
 

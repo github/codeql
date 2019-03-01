@@ -91,8 +91,28 @@ private predicate json_subscript_taint(SubscriptNode sub, ControlFlowNode obj, E
 
 private predicate json_load(ControlFlowNode fromnode, CallNode tonode) {
     exists(FunctionObject json_loads |
-        any(ModuleObject json | json.getName() = "json").getAttribute("loads") = json_loads and
+        any(ModuleObject json | json.getName() = "json").attr("loads") = json_loads and
         json_loads.getACall() = tonode and tonode.getArg(0) = fromnode
     )
 }
+
+/** A kind of "taint", representing an open file-like object from an external source. */
+class ExternalFileObject extends TaintKind {
+
+    ExternalFileObject() {
+        this = "file[" + any(ExternalStringKind key) + "]"
+    }
+
+
+    /** Gets the taint kind for the contents of this file */
+    TaintKind getValue() {
+        this = "file[" + result + "]"
+    }
+
+    override TaintKind getTaintOfMethodResult(string name) {
+        name = "read" and result = this.getValue()
+    }
+
+}
+
 

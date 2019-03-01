@@ -112,7 +112,9 @@ private predicate relevant(RefType t) {
 }
 
 /** A node with a type that is relevant for dispatch flow. */
-private class RelevantNode extends Node { RelevantNode() { relevant(this.getType()) } }
+private class RelevantNode extends Node {
+  RelevantNode() { relevant(this.getType()) }
+}
 
 /**
  * Holds if `p` is the `i`th parameter of a viable dispatch target of `call`.

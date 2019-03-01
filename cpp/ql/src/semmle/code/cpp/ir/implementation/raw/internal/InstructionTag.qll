@@ -86,6 +86,12 @@ newtype TInstructionTag =
     elementIsInitialized(elementIndex)
   }
 
+class InstructionTag extends TInstructionTag {
+  final string toString() {
+    result = "Tag"
+  }
+}
+
 /**
  * Gets a unique string for the instruction tag. Primarily used for generating
  * instruction IDs to ensure stable IR dumps.

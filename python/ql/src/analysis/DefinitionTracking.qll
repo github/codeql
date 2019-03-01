@@ -396,7 +396,7 @@ private predicate attribute_assignment_jump_to_defn_attribute(AttributeAssignmen
 private predicate sets_attribute(ArgumentRefinement def, string name) {
     exists(CallNode call |
         call = def.getDefiningNode() and
-        call.getFunction().refersTo(builtin_object("setattr")) and
+        call.getFunction().refersTo(Object::builtin("setattr")) and
         def.getInput().getAUse() = call.getArg(0) and
         call.getArg(1).getNode().(StrConst).getText() = name
     )

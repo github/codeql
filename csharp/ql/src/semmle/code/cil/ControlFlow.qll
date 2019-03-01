@@ -122,13 +122,21 @@ private newtype TFlowType =
   TFalseFlow()
 
 /** A type of control flow. Either normal flow (`NormalFlow`), true flow (`TrueFlow`) or false flow (`FalseFlow`). */
-abstract class FlowType extends TFlowType { abstract string toString(); }
+abstract class FlowType extends TFlowType {
+  abstract string toString();
+}
 
 /** Normal control flow. */
-class NormalFlow extends FlowType, TNormalFlow { override string toString() { result = "" } }
+class NormalFlow extends FlowType, TNormalFlow {
+  override string toString() { result = "" }
+}
 
 /** True control flow. */
-class TrueFlow extends FlowType, TTrueFlow { override string toString() { result = "true" } }
+class TrueFlow extends FlowType, TTrueFlow {
+  override string toString() { result = "true" }
+}
 
 /** False control flow. */
-class FalseFlow extends FlowType, TTrueFlow { override string toString() { result = "false" } }
+class FalseFlow extends FlowType, TTrueFlow {
+  override string toString() { result = "false" }
+}

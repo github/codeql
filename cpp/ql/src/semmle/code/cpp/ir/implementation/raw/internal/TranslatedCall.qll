@@ -112,9 +112,18 @@ abstract class TranslatedCall extends TranslatedExpr {
     ) or
     (
       tag = CallSideEffectTag() and
+      hasSideEffect() and
       operandTag instanceof SideEffectOperandTag and
       result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
     )
+  }
+
+  override final Type getInstructionOperandType(InstructionTag tag,
+      TypedOperandTag operandTag) {
+    tag = CallSideEffectTag() and
+    hasSideEffect() and
+    operandTag instanceof SideEffectOperandTag and
+    result instanceof UnknownType
   }
 
   override final Instruction getResult() {
@@ -208,6 +217,12 @@ abstract class TranslatedCall extends TranslatedExpr {
 
   private predicate hasSideEffect() {
     hasReadSideEffect() or hasWriteSideEffect()
+  }
+
+  override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
+      hasSideEffect() and
+      tag = CallSideEffectTag() and
+      result = getResult()
   }
 }
 

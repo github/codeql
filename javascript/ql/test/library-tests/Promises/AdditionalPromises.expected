@@ -5,3 +5,5 @@
 | promises.js:43:19:45:6 | Q.Promi ... \\n    }) |
 | promises.js:53:19:53:41 | Promise ... source) |
 | promises.js:62:19:62:41 | Promise ... source) |
+| promises.js:71:5:71:27 | Promise ... source) |
+| promises.js:72:5:72:41 | new Pro ... ource)) |

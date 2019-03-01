@@ -6,25 +6,25 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
 public class JSXAttribute extends Node implements IJSXAttribute {
-	private final IJSXName name;
-	private final INode value;
+  private final IJSXName name;
+  private final INode value;
 
-	public JSXAttribute(SourceLocation loc, IJSXName name, INode value) {
-		super("JSXAttribute", loc);
-		this.name = name;
-		this.value = value;
-	}
+  public JSXAttribute(SourceLocation loc, IJSXName name, INode value) {
+    super("JSXAttribute", loc);
+    this.name = name;
+    this.value = value;
+  }
 
-	@Override
-	public <C, R> R accept(Visitor<C, R> v, C c) {
-		return v.visit(this, c);
-	}
+  @Override
+  public <C, R> R accept(Visitor<C, R> v, C c) {
+    return v.visit(this, c);
+  }
 
-	public IJSXName getName() {
-		return name;
-	}
+  public IJSXName getName() {
+    return name;
+  }
 
-	public INode getValue() {
-		return value;
-	}
+  public INode getValue() {
+    return value;
+  }
 }

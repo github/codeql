@@ -6,19 +6,19 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
 public class JSXExpressionContainer extends Node implements IJSXExpression {
-	private final INode expression;
+  private final INode expression;
 
-	public JSXExpressionContainer(SourceLocation loc, INode expression) {
-		super("JSXExpressionContainer", loc);
-		this.expression = expression;
-	}
+  public JSXExpressionContainer(SourceLocation loc, INode expression) {
+    super("JSXExpressionContainer", loc);
+    this.expression = expression;
+  }
 
-	@Override
-	public <C, R> R accept(Visitor<C, R> v, C c) {
-		return v.visit(this, c);
-	}
+  @Override
+  public <C, R> R accept(Visitor<C, R> v, C c) {
+    return v.visit(this, c);
+  }
 
-	public INode getExpression() {
-		return expression;
-	}
+  public INode getExpression() {
+    return expression;
+  }
 }

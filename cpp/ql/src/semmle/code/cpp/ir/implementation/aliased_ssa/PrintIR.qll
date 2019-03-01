@@ -1,6 +1,7 @@
 private import IR
 import cpp
 import semmle.code.cpp.ir.IRConfiguration
+private import semmle.code.cpp.Print
 
 private newtype TPrintIRConfiguration = MkPrintIRConfiguration()
 
@@ -53,10 +54,10 @@ private newtype TPrintableIRNode =
     shouldPrintFunction(funcIR.getFunction())
   } or
   TPrintableIRBlock(IRBlock block) {
-    shouldPrintFunction(block.getFunction())
+    shouldPrintFunction(block.getEnclosingFunction())
   } or
   TPrintableInstruction(Instruction instr) {
-    shouldPrintFunction(instr.getFunction())
+    shouldPrintFunction(instr.getEnclosingFunction())
   }
 
 /**
@@ -130,7 +131,7 @@ class PrintableFunctionIR extends PrintableIRNode, TPrintableFunctionIR {
   }
 
   override string getLabel() {
-    result = funcIR.getFunction().getFullSignature()
+    result = getIdentityString(funcIR.getFunction())
   }
 
   override int getOrder() {
@@ -185,7 +186,7 @@ class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
   }
 
   override final PrintableFunctionIR getParent() {
-    result.getFunctionIR() = block.getFunctionIR()
+    result.getFunctionIR() = block.getEnclosingFunctionIR()
   }
 
   override string getProperty(string key) {

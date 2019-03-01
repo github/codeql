@@ -39,7 +39,9 @@ predicate emptyArrayLiteral(Expr e) {
   )
 }
 
-class EmptyArrayLiteral extends Expr { EmptyArrayLiteral() { emptyArrayLiteral(this) } }
+class EmptyArrayLiteral extends Expr {
+  EmptyArrayLiteral() { emptyArrayLiteral(this) }
+}
 
 from EmptyArrayLiteral l, MethodAccess ma, Method m, GenericInterface coll
 where

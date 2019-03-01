@@ -3,10 +3,14 @@ import javascript
 import HTTP
 
 /** An import of the Osprey module. */
-class OspreyImport extends Require { OspreyImport() { getImportedPath().getValue() = "osprey" } }
+class OspreyImport extends Require {
+  OspreyImport() { getImportedPath().getValue() = "osprey" }
+}
 
 /** A variable that holds the Osprey module. */
-class Osprey extends Variable { Osprey() { getAnAssignedExpr() instanceof OspreyImport } }
+class Osprey extends Variable {
+  Osprey() { getAnAssignedExpr() instanceof OspreyImport }
+}
 
 /** A call to `osprey.create`. */
 class OspreyCreateAPICall extends MethodCallExpr {

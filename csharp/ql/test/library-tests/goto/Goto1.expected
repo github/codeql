@@ -4,8 +4,7 @@
 | goto.cs:7:13:7:14 | s1: | goto.cs:7:17:7:24 | goto ...; | semmle.label | successor |
 | goto.cs:7:17:7:24 | goto ...; | goto.cs:9:9:9:10 | s2: | semmle.label | goto(s2) |
 | goto.cs:9:9:9:10 | s2: | goto.cs:9:13:9:27 | ... ...; | semmle.label | successor |
-| goto.cs:9:13:9:27 | ... ...; | goto.cs:9:20:9:20 | access to local variable s | semmle.label | successor |
-| goto.cs:9:20:9:20 | access to local variable s | goto.cs:9:24:9:26 | "5" | semmle.label | successor |
+| goto.cs:9:13:9:27 | ... ...; | goto.cs:9:24:9:26 | "5" | semmle.label | successor |
 | goto.cs:9:20:9:26 | String s = ... | goto.cs:10:9:18:9 | switch (...) {...} | semmle.label | successor |
 | goto.cs:9:24:9:26 | "5" | goto.cs:9:20:9:26 | String s = ... | semmle.label | successor |
 | goto.cs:10:9:18:9 | switch (...) {...} | goto.cs:10:17:10:17 | access to local variable s | semmle.label | successor |

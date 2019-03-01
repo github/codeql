@@ -2,21 +2,19 @@ package com.semmle.js.ast.jsdoc;
 
 import com.semmle.js.ast.SourceLocation;
 
-/**
- * The void type.
- */
+/** The void type. */
 public class VoidLiteral extends JSDocTypeExpression {
-	public VoidLiteral(SourceLocation loc) {
-		super(loc, "VoidLiteral");
-	}
+  public VoidLiteral(SourceLocation loc) {
+    super(loc, "VoidLiteral");
+  }
 
-	@Override
-	public void accept(Visitor v) {
-		v.visit(this);
-	}
+  @Override
+  public void accept(Visitor v) {
+    v.visit(this);
+  }
 
-	@Override
-	public String pp() {
-		return "void";
-	}
+  @Override
+  public String pp() {
+    return "void";
+  }
 }

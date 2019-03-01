@@ -54,6 +54,8 @@ private class DefaultHtmlSanitizerCall extends HtmlSanitizerCall {
               .getAPropertyRead(name) or
         callee = DataFlow::moduleMember("html-entities", _).getAPropertyRead(name)
       )
+      or
+      callee = Closure::moduleImport("goog.string.htmlEscape")
     )
     or
     // Match home-made sanitizers by name.

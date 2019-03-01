@@ -8,20 +8,12 @@ private import TranslatedExpr
 private import TranslatedStmt
 private import TranslatedFunction
 
-class InstructionTagType extends TInstructionTag {
-  final string toString() {
-    result = "Tag"
-  }
+TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
+  instruction = MkInstruction(result, _)
 }
 
-private TranslatedElement getInstructionTranslatedElement(
-    Instruction instruction) {
-  instruction = result.getInstruction(_)
-}
-
-private TranslatedElement getInstructionTranslatedElementAndTag(
-    Instruction instruction, InstructionTag tag) {
-  instruction = result.getInstruction(tag)
+InstructionTag getInstructionTag(Instruction instruction) {
+  instruction = MkInstruction(_, result)
 }
 
 import Cached
@@ -31,20 +23,9 @@ cached private module Cached {
   }
 
   cached newtype TInstruction =
-    MkInstruction(FunctionIR funcIR, Opcode opcode, Locatable ast,
-        InstructionTag tag, Type resultType, boolean isGLValue) {
-      hasInstruction(funcIR.getFunction(), opcode, ast, tag,
-        resultType, isGLValue)
+    MkInstruction(TranslatedElement element, InstructionTag tag) {
+      element.hasInstruction(_, tag, _, _)
     }
-
-  private predicate hasInstruction(Function func, Opcode opcode, Locatable ast,
-      InstructionTag tag, Type resultType, boolean isGLValue) {
-    exists(TranslatedElement element |
-      element.getAST() = ast and
-      func = element.getFunction() and
-      element.hasInstruction(opcode, tag, resultType, isGLValue)
-    )
-  }
 
   cached predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag,
     Type type) {
@@ -80,9 +61,25 @@ cached private module Cached {
   
   cached Instruction getInstructionOperandDefinition(Instruction instruction, OperandTag tag) {
     result = getInstructionTranslatedElement(instruction).getInstructionOperand(
-      instruction.getTag(), tag)
+      getInstructionTag(instruction), tag)
   }
 
+  cached Type getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
+    // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
+    // the result type of the load.
+    result = instruction.(LoadInstruction).getResultType() or
+    (
+      not instruction instanceof LoadInstruction and 
+      result = getInstructionTranslatedElement(instruction).getInstructionOperandType(
+        getInstructionTag(instruction), tag)
+    )
+  }
+
+  cached int getInstructionOperandSize(Instruction instruction, SideEffectOperandTag tag) {
+    result = getInstructionTranslatedElement(instruction).getInstructionOperandSize(
+      getInstructionTag(instruction), tag)
+  }
+  
   cached Instruction getPhiInstructionOperandDefinition(Instruction instruction,
       IRBlock predecessorBlock) {
     none()
@@ -94,7 +91,7 @@ cached private module Cached {
 
   cached Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
     result = getInstructionTranslatedElement(instruction).getInstructionSuccessor(
-      instruction.getTag(), kind)
+      getInstructionTag(instruction), kind)
   }
 
   // This predicate has pragma[noopt] because otherwise the `getAChild*` calls
@@ -179,9 +176,27 @@ cached private module Cached {
     goto.getLocation().isBefore(goto.getTarget().getLocation())
   }
 
+  cached Locatable getInstructionAST(Instruction instruction) {
+    result = getInstructionTranslatedElement(instruction).getAST()
+  }
+
+  cached predicate instructionHasType(Instruction instruction, Type type, boolean isGLValue) {
+    getInstructionTranslatedElement(instruction)
+      .hasInstruction(_, getInstructionTag(instruction), type, isGLValue)
+  }
+
+  cached Opcode getInstructionOpcode(Instruction instruction) {
+    getInstructionTranslatedElement(instruction)
+      .hasInstruction(result, getInstructionTag(instruction), _, _)
+  }
+
+  cached FunctionIR getInstructionEnclosingFunctionIR(Instruction instruction) {
+    result.getFunction() = getInstructionTranslatedElement(instruction).getFunction()
+  }
+
   cached IRVariable getInstructionVariable(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction).getInstructionVariable(
-      instruction.getTag())
+      getInstructionTag(instruction))
   }
 
   cached Field getInstructionField(Instruction instruction) {
@@ -192,41 +207,39 @@ cached private module Cached {
   }
 
   cached Function getInstructionFunction(Instruction instruction) {
-    exists(InstructionTag tag |
-      result = getInstructionTranslatedElementAndTag(instruction, tag)
-              .getInstructionFunction(tag)
-    )
+    result = getInstructionTranslatedElement(instruction)
+            .getInstructionFunction(getInstructionTag(instruction))
   }
 
   cached string getInstructionConstantValue(Instruction instruction) {
     result =
       getInstructionTranslatedElement(instruction).getInstructionConstantValue(
-        instruction.getTag())
+        getInstructionTag(instruction))
   }
 
   cached StringLiteral getInstructionStringLiteral(Instruction instruction) {
     result =
       getInstructionTranslatedElement(instruction).getInstructionStringLiteral(
-        instruction.getTag())
+        getInstructionTag(instruction))
   }
 
   cached Type getInstructionExceptionType(Instruction instruction) {
     result =
       getInstructionTranslatedElement(instruction).getInstructionExceptionType(
-        instruction.getTag())
+        getInstructionTag(instruction))
   }
 
   cached predicate getInstructionInheritance(Instruction instruction,
       Class baseClass, Class derivedClass) {
     getInstructionTranslatedElement(instruction).getInstructionInheritance(
-      instruction.getTag(), baseClass, derivedClass)
+      getInstructionTag(instruction), baseClass, derivedClass)
   }
 
   pragma[noinline]
   private predicate instructionOrigin(Instruction instruction, 
       TranslatedElement element, InstructionTag tag) {
     element = getInstructionTranslatedElement(instruction) and
-    tag = instruction.getTag()
+    tag = getInstructionTag(instruction)
   }
 
   cached int getInstructionElementSize(Instruction instruction) {
@@ -262,6 +275,6 @@ cached private module CachedForDebugging {
 
   cached string getInstructionUniqueId(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction).getId() + ":" +
-      getInstructionTagId(instruction.getTag())
+      getInstructionTagId(getInstructionTag(instruction))
   }
 }

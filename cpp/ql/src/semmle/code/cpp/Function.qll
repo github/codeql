@@ -20,6 +20,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   override string getName() { functions(underlyingElement(this),result,_) }
 
   /**
+   * DEPRECATED: Use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
    * Gets the full signature of this function, including return type, parameter
    * types, and template arguments.
    *
@@ -100,6 +101,27 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   predicate isDefaulted() {
     function_defaulted(underlyingElement(this))
+  }
+
+  /**
+   * Holds if this function is declared to be `constexpr`.
+   */
+  predicate isDeclaredConstexpr() {
+    this.hasSpecifier("declared_constexpr")
+  }
+
+  /**
+   * Holds if this function is `constexpr`. Normally, this holds if and
+   * only if `isDeclaredConstexpr()` holds, but in some circumstances
+   * they differ. For example, with
+   * ```
+   * int f(int i) { return 6; }
+   * template <typename T> constexpr int g(T x) { return f(x); }
+   * ```
+   * `g<int>` is declared constexpr, but is not constexpr.
+   */
+  predicate isConstexpr() {
+    this.hasSpecifier("is_constexpr")
   }
 
   /**
@@ -332,18 +354,11 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   }
 
   /**
-   * Gets an argument used to instantiate this class from a template
-   * class.
+   * Gets the `i`th template argument used to instantiate this function from a
+   * function template. When called on a function template, this will return the
+   * `i`th template parameter.
    */
-  Type getATemplateArgument() {
-    exists(int i | this.getTemplateArgument(i) = result )
-  }
-
-  /**
-   * Gets a particular argument used to instantiate this class from a
-   * template class.
-   */
-  Type getTemplateArgument(int index) {
+  override Type getTemplateArgument(int index) {
     function_template_argument(underlyingElement(this),index,unresolveElement(result))
   }
 
@@ -1088,8 +1103,19 @@ class TemplateFunction extends Function {
  * A function that is an instantiation of a template.
  */
 class FunctionTemplateInstantiation extends Function {
+  TemplateFunction tf;
+
   FunctionTemplateInstantiation() {
-    exists(TemplateFunction tf | tf.getAnInstantiation() = this)
+    tf.getAnInstantiation() = this
+  }
+
+  /**
+   * Gets the function template from which this instantiation was instantiated.
+   *
+   * Example: For `int const& std::min<int>(int const&, int const&)`, returns `T const& min<T>(T const&, T const&)`.
+   */
+  TemplateFunction getTemplate() { 
+    result = tf
   }
 }
 

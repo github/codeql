@@ -24,9 +24,6 @@ class Element extends DotNet::Element, @element {
    */
   override Location getLocation() { result = ExprOrStmtParentCached::bestLocation(this) }
 
-  /** Gets the URL of this element. */
-  string getURL() { result = ExprOrStmtParentCached::getURL(this) }
-
   /** Gets a location of this element, including sources and assemblies. */
   override Location getALocation() { none() }
 

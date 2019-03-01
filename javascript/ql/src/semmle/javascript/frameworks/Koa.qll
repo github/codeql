@@ -126,12 +126,16 @@ module Koa {
   /**
    * An expression that may hold a Koa request object.
    */
-  class RequestExpr extends HTTP::Servers::StandardRequestExpr { override RequestSource src; }
+  class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+    override RequestSource src;
+  }
 
   /**
    * An expression that may hold a Koa response object.
    */
-  class ResponseExpr extends HTTP::Servers::StandardResponseExpr { override ResponseSource src; }
+  class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+    override ResponseSource src;
+  }
 
   /**
    * An access to a user-controlled Koa request input.

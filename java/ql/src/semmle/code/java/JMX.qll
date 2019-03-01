@@ -8,7 +8,9 @@ import Type
 abstract class ManagedBean extends Interface { }
 
 /** An `MBean`. */
-class MBean extends ManagedBean { MBean() { this.getQualifiedName().matches("%MBean%") } }
+class MBean extends ManagedBean {
+  MBean() { this.getQualifiedName().matches("%MBean%") }
+}
 
 /** An `MXBean`. */
 class MXBean extends ManagedBean {

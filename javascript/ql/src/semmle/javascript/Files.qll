@@ -186,9 +186,7 @@ class Folder extends Container, @folder {
     result = min(int p, string ext |
         p = getFileExtensionPriority(ext)
       |
-        getFile(stem, ext)
-        order by
-          p
+        getFile(stem, ext) order by p
       )
   }
 

@@ -11,7 +11,9 @@ import Expr
  * a binary logical operation (`BinaryLogicalOperation`), or a ternary logical
  * operation (`TernaryLogicalOperation`).
  */
-class LogicalOperation extends Operation, @log_expr { override string getOperator() { none() } }
+class LogicalOperation extends Operation, @log_expr {
+  override string getOperator() { none() }
+}
 
 /**
  * A unary logical operation, that is, a logical 'not' (`LogicalNotExpr`).

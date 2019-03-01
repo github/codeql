@@ -56,7 +56,7 @@ class Options extends string
    * Holds if a call to this function will never return.
    *
    * By default, this holds for `exit`, `_exit`, `abort`, `__assert_fail`,
-   * `longjmp`, `error`, `__builtin_unreachable` and any function with a
+   * `longjmp`, `__builtin_unreachable` and any function with a
    * `noreturn` attribute.
    */
   predicate exits(Function f) {
@@ -67,7 +67,6 @@ class Options extends string
       name = "abort" or
       name = "__assert_fail" or
       name = "longjmp" or
-      name = "error" or
       name = "__builtin_unreachable"
     ) or
     CustomOptions::exits(f) // old Options.qll

@@ -229,3 +229,7 @@
 | r_regressions.py:64 | ControlFlowNode for do_validation() | 64 |
 | r_regressions.py:90 | ControlFlowNode for Attribute | 90 |
 | r_regressions.py:90 | ControlFlowNode for Attribute() | 90 |
+| r_regressions.py:102 | ControlFlowNode for unrelated_call | 102 |
+| r_regressions.py:102 | ControlFlowNode for unrelated_call() | 102 |
+| r_regressions.py:107 | ControlFlowNode for Attribute | 106 |
+| r_regressions.py:107 | ControlFlowNode for x | 106 |

@@ -3,6 +3,7 @@
  * @description Directly sending file data in an outbound network request can indicate unauthorized information disclosure.
  * @kind path-problem
  * @problem.severity warning
+ * @precision medium
  * @id js/file-access-to-http
  * @tags security
  *       external/cwe/cwe-200

@@ -6,19 +6,21 @@
 import csharp
 
 module TaintTracking {
-   private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
-   private import semmle.code.csharp.dispatch.Dispatch
-   private import semmle.code.csharp.commons.ComparisonTest
-   private import cil
-   private import dotnet
+  private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+  private import semmle.code.csharp.dispatch.Dispatch
+  private import semmle.code.csharp.commons.ComparisonTest
+  private import semmle.code.csharp.frameworks.JsonNET
+  private import cil
+  private import dotnet
 
   /**
    * Holds if taint propagates from `source` to `sink` in zero or more local
    * (intra-procedural) steps.
    */
-  predicate localTaint(DataFlow::Node source, DataFlow::Node sink) {
-    localTaintStep*(source, sink)
-  }
+  predicate localTaint(DataFlow::Node source, DataFlow::Node sink) { localTaintStep*(source, sink) }
+
+  /** A member (property or field) that is tainted if its containing object is tainted. */
+  abstract class TaintedMember extends AssignableMember { }
 
   /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
@@ -69,8 +71,7 @@ module TaintTracking {
     /** Holds if the intermediate node `node` is a taint sanitizer. */
     predicate isSanitizer(DataFlow::Node node) { none() }
 
-    final
-    override predicate isBarrier(DataFlow::Node node) { isSanitizer(node) }
+    final override predicate isBarrier(DataFlow::Node node) { isSanitizer(node) }
 
     /**
      * Holds if the additional taint propagation step from `pred` to `succ`
@@ -78,22 +79,22 @@ module TaintTracking {
      */
     predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
-    final
-    override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    final override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       isAdditionalTaintStep(pred, succ) or
       localAdditionalTaintStep(pred, succ) or
       DataFlow::Internal::flowThroughCallableLibraryOutRef(_, pred, succ, false)
     }
 
-    final
-    override predicate isAdditionalFlowStepIntoCall(DataFlow::Node call, DataFlow::Node arg, DotNet::Parameter p, CallContext::CallContext cc) {
+    final override predicate isAdditionalFlowStepIntoCall(
+      DataFlow::Node call, DataFlow::Node arg, DotNet::Parameter p, CallContext::CallContext cc
+    ) {
       DataFlow::Internal::flowIntoCallableLibraryCall(_, arg, call, p, false, cc)
     }
 
-    final
-    override predicate isAdditionalFlowStepOutOfCall(DataFlow::Node call, DataFlow::Node ret, DataFlow::Node out, CallContext::CallContext cc) {
-      exists(DispatchCall dc, Callable callable |
-        canYieldReturn(callable, ret.asExpr()) |
+    final override predicate isAdditionalFlowStepOutOfCall(
+      DataFlow::Node call, DataFlow::Node ret, DataFlow::Node out, CallContext::CallContext cc
+    ) {
+      exists(DispatchCall dc, Callable callable | canYieldReturn(callable, ret.asExpr()) |
         dc.getCall() = call.asExpr() and
         call = out and
         callable = dc.getADynamicTarget() and
@@ -112,9 +113,7 @@ module TaintTracking {
 
   /** INTERNAL: Do not use. */
   module Internal {
-    predicate canYieldReturn(Callable c, Expr e) {
-      c.getSourceDeclaration().canYieldReturn(e)
-    }
+    predicate canYieldReturn(Callable c, Expr e) { c.getSourceDeclaration().canYieldReturn(e) }
 
     private CIL::DataFlowNode asCilDataFlowNode(DataFlow::Node node) {
       result = node.asParameter() or
@@ -126,14 +125,15 @@ module TaintTracking {
     }
 
     /** Gets the qualifier of element access `ea`. */
-    private Expr getElementAccessQualifier(ElementAccess ea) {
-      result = ea.getQualifier()
-    }
+    private Expr getElementAccessQualifier(ElementAccess ea) { result = ea.getQualifier() }
 
     private class LocalTaintExprStepConfiguration extends DataFlow::Internal::ExprStepConfiguration {
       LocalTaintExprStepConfiguration() { this = "LocalTaintExprStepConfiguration" }
 
-      override predicate stepsToExpr(Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
+      override predicate stepsToExpr(
+        Expr exprFrom, Expr exprTo, ControlFlowElement scope, boolean exactScope,
+        boolean isSuccessor
+      ) {
         exactScope = false and
         (
           // Taint propagation using library code
@@ -154,7 +154,11 @@ module TaintTracking {
           or
           // Taint from object initializer
           exists(ElementInitializer ei |
-            ei = exprTo.(ObjectCreation).getInitializer().(CollectionInitializer).getAnElementInitializer() and
+            ei = exprTo
+                  .(ObjectCreation)
+                  .getInitializer()
+                  .(CollectionInitializer)
+                  .getAnElementInitializer() and
             exprFrom = ei.getArgument(ei.getNumberOfArguments() - 1) and // assume the last argument is the value (i.e., not a key)
             scope = exprTo and
             isSuccessor = false
@@ -187,11 +191,11 @@ module TaintTracking {
           or
           // Taint from tuple argument
           exprTo = any(TupleExpr te |
-            exprFrom = te.getAnArgument() and
-            te.isReadAccess() and
-            scope = exprTo and
-            isSuccessor = true
-          )
+              exprFrom = te.getAnArgument() and
+              te.isReadAccess() and
+              scope = exprTo and
+              isSuccessor = true
+            )
           or
           exprFrom = exprTo.(InterpolatedStringExpr).getAChild() and
           scope = exprTo and
@@ -199,19 +203,23 @@ module TaintTracking {
           or
           // Taint from tuple expression
           exprTo = any(MemberAccess ma |
-            ma.getQualifier().getType() instanceof TupleType and
-            exprFrom = ma.getQualifier() and
-            scope = exprTo and
-            isSuccessor = true
-          )
+              ma.getQualifier().getType() instanceof TupleType and
+              exprFrom = ma.getQualifier() and
+              scope = exprTo and
+              isSuccessor = true
+            )
         )
       }
 
-      override predicate stepsToDefinition(Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope, boolean isSuccessor) {
+      override predicate stepsToDefinition(
+        Expr exprFrom, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope,
+        boolean isSuccessor
+      ) {
         // Taint from `foreach` expression
         exists(ForeachStmt fs |
           exprFrom = fs.getIterableExpr() and
-          defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() = fs.getVariableDeclExpr() and
+          defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() = fs
+                .getVariableDeclExpr() and
           isSuccessor = true
         |
           scope = fs and
@@ -226,16 +234,29 @@ module TaintTracking {
       }
     }
 
-    cached module Cached {
-      cached predicate forceCachingInSameStage() { any() }
+    cached
+    module Cached {
+      cached
+      predicate forceCachingInSameStage() { any() }
 
-      cached predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+      cached
+      predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         DataFlow::Internal::Cached::forceCachingInSameStage() and
         any(LocalTaintExprStepConfiguration x).hasStep(nodeFrom, nodeTo)
         or
         DataFlow::Internal::flowOutOfDelegateLibraryCall(nodeFrom, nodeTo, false)
         or
         localTaintStepCil(nodeFrom, nodeTo)
+        or
+        // Taint members
+        exists(Access access |
+          access = nodeTo.asExpr() and
+          access.getTarget() instanceof TaintedMember
+        |
+          access.(FieldRead).getQualifier() = nodeFrom.asExpr()
+          or
+          access.(PropertyRead).getQualifier() = nodeFrom.asExpr()
+        )
       }
     }
     import Cached

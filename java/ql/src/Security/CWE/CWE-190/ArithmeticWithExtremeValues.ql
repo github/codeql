@@ -21,9 +21,13 @@ abstract class ExtremeValueField extends Field {
   ExtremeValueField() { getType() instanceof IntegralType }
 }
 
-class MinValueField extends ExtremeValueField { MinValueField() { this.getName() = "MIN_VALUE" } }
+class MinValueField extends ExtremeValueField {
+  MinValueField() { this.getName() = "MIN_VALUE" }
+}
 
-class MaxValueField extends ExtremeValueField { MaxValueField() { this.getName() = "MAX_VALUE" } }
+class MaxValueField extends ExtremeValueField {
+  MaxValueField() { this.getName() = "MAX_VALUE" }
+}
 
 class ExtremeSource extends VarAccess {
   ExtremeSource() { this.getVariable() instanceof ExtremeValueField }

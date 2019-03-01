@@ -59,11 +59,11 @@ class Test
         return;
     }
 
-    void h()
+    void h(int x)
     {
         try
         {
-            var temp = 0 / System.Math.E;
+            var temp = 0 / x;
         }
         catch (System.DivideByZeroException e)
         {

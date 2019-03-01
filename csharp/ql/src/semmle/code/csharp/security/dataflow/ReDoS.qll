@@ -53,7 +53,9 @@ module ReDoS {
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   /**
    * An expression that represents a regular expression with potential exponential behavior.

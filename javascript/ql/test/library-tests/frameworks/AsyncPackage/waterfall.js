@@ -1,4 +1,5 @@
 let async_ = require('async');
+let waterfall = require('a-sync-waterfall');
 
 var source, sink, somethingWrong;
 
@@ -37,5 +38,20 @@ async_.waterfall([
   function(err, safe) {
     sink(err); // NOT OK
     sink(safe); // OK
+  }
+);
+
+waterfall([
+    function(callback) {
+      callback(null, source());
+    },
+    function(taint, callback) {
+      sink(taint); // NOT OK
+      callback(null, taint);
+    }
+  ],
+  function(err, taint) {
+    sink(err); // OK
+    sink(taint); // NOT OK
   }
 );

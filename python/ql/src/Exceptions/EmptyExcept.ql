@@ -67,9 +67,9 @@ predicate subscript(Stmt s) {
 predicate encode_decode(Expr ex, ClassObject type) {
     exists(string name |
         ex.(Call).getFunc().(Attribute).getName() = name |
-        name = "encode" and type = builtin_object("UnicodeEncodeError")
+        name = "encode" and type = Object::builtin("UnicodeEncodeError")
         or
-        name = "decode" and type = builtin_object("UnicodeDecodeError")
+        name = "decode" and type = Object::builtin("UnicodeDecodeError")
     )
 }
 

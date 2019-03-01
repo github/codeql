@@ -18,7 +18,7 @@ predicate used_as_regex(Expr s, string mode) {
         /* Call to re.xxx(regex, ... [mode]) */
         exists(CallNode call, string name |
             call.getArg(0).refersTo(_, _, s.getAFlowNode()) and
-            call.getFunction().refersTo(re.getAttribute(name)) |
+            call.getFunction().refersTo(re.attr(name)) |
             mode = "None"
             or
             exists(Object obj |
@@ -40,7 +40,7 @@ string mode_from_mode_object(Object obj) {
         result = "MULTILINE" or result = "DOTALL" or result = "UNICODE" or
         result = "VERBOSE"
     ) and
-    ModuleObject::named("sre_constants").getAttribute("SRE_FLAG_" + result) = obj
+    obj = ModuleObject::named("sre_constants").attr("SRE_FLAG_" + result)
     or
     exists(BinaryExpr be, Object sub | obj.getOrigin() = be |
         be.getOp() instanceof BitOr and

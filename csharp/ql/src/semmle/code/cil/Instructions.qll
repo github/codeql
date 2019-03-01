@@ -230,7 +230,9 @@ module Opcodes {
     }
   }
 
-  class Nop extends Instruction, @cil_nop { override string getOpcodeName() { result = "nop" } }
+  class Nop extends Instruction, @cil_nop {
+    override string getOpcodeName() { result = "nop" }
+  }
 
   class Ldstr extends Literal, @cil_ldstr {
     override string getOpcodeName() { result = "ldstr" }
@@ -269,7 +271,9 @@ module Opcodes {
     override string getOpcodeName() { result = "blt.s" }
   }
 
-  class Blt extends BinaryBranch, @cil_blt { override string getOpcodeName() { result = "blt" } }
+  class Blt extends BinaryBranch, @cil_blt {
+    override string getOpcodeName() { result = "blt" }
+  }
 
   class Blt_un_s extends BinaryBranch, @cil_blt_un_s {
     override string getOpcodeName() { result = "blt.un.s" }
@@ -299,7 +303,9 @@ module Opcodes {
     override string getOpcodeName() { result = "bge.un" }
   }
 
-  class Bge extends BinaryBranch, @cil_bge { override string getOpcodeName() { result = "bge" } }
+  class Bge extends BinaryBranch, @cil_bge {
+    override string getOpcodeName() { result = "bge" }
+  }
 
   class Bne_un_s extends BinaryBranch, @cil_bne_un_s {
     override string getOpcodeName() { result = "bne.un.s" }
@@ -309,7 +315,9 @@ module Opcodes {
     override string getOpcodeName() { result = "bne.un" }
   }
 
-  class Beq extends BinaryBranch, @cil_beq { override string getOpcodeName() { result = "beq" } }
+  class Beq extends BinaryBranch, @cil_beq {
+    override string getOpcodeName() { result = "beq" }
+  }
 
   class Beq_s extends BinaryBranch, @cil_beq_s {
     override string getOpcodeName() { result = "beq.s" }
@@ -319,13 +327,17 @@ module Opcodes {
     override string getOpcodeName() { result = "ble.s" }
   }
 
-  class Ble extends BinaryBranch, @cil_ble { override string getOpcodeName() { result = "ble" } }
+  class Ble extends BinaryBranch, @cil_ble {
+    override string getOpcodeName() { result = "ble" }
+  }
 
   class Bgt_s extends BinaryBranch, @cil_bgt_s {
     override string getOpcodeName() { result = "bgt.s" }
   }
 
-  class Bgt extends BinaryBranch, @cil_bgt { override string getOpcodeName() { result = "bgt" } }
+  class Bgt extends BinaryBranch, @cil_bgt {
+    override string getOpcodeName() { result = "bgt" }
+  }
 
   class Bgt_in_s extends BinaryBranch, @cil_bgt_un_s {
     override string getOpcodeName() { result = "bgt.un.s" }
@@ -351,7 +363,9 @@ module Opcodes {
     }
   }
 
-  class Leave_ extends Leave, @cil_leave { override string getOpcodeName() { result = "leave" } }
+  class Leave_ extends Leave, @cil_leave {
+    override string getOpcodeName() { result = "leave" }
+  }
 
   class Leave_s extends Leave, @cil_leave_s {
     override string getOpcodeName() { result = "leave.s" }
@@ -385,7 +399,9 @@ module Opcodes {
   }
 
   // Calls
-  class Call_ extends Call, @cil_call { override string getOpcodeName() { result = "call" } }
+  class Call_ extends Call, @cil_call {
+    override string getOpcodeName() { result = "call" }
+  }
 
   class Callvirt extends Call, @cil_callvirt {
     override string getOpcodeName() { result = "callvirt" }
@@ -393,7 +409,9 @@ module Opcodes {
     override predicate isVirtual() { any() }
   }
 
-  class Tail extends Instruction, @cil_tail { override string getOpcodeName() { result = "tail." } }
+  class Tail extends Instruction, @cil_tail {
+    override string getOpcodeName() { result = "tail." }
+  }
 
   class Jmp extends Call, @cil_jmp {
     override string getOpcodeName() { result = "jmp" }

@@ -16,6 +16,13 @@ class Enum extends UserType, IntegralOrEnumType {
    */
   override string explain() { result =  "enum " + this.getName() }
 
+  override int getSize() {
+    // Workaround for extractor bug CPP-348: No size information for enums.
+    // If the extractor didn't provide a size, assume four bytes.
+    result = UserType.super.getSize() or
+    not exists(UserType.super.getSize()) and result = 4
+  }
+
   /** See `Type.isDeeplyConst` and `Type.isDeeplyConstBelow`. Internal. */
   override predicate isDeeplyConstBelow() { any() } // No subparts
 

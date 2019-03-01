@@ -39,7 +39,9 @@ module XPathInjection {
   }
 
   /** A source of remote user input. */
-  class RemoteSource extends Source { RemoteSource() { this instanceof RemoteFlowSource } }
+  class RemoteSource extends Source {
+    RemoteSource() { this instanceof RemoteFlowSource }
+  }
 
   /** The `xpath` argument to an `XPathExpression.Compile(..)` call. */
   class XPathExpressionCompileSink extends Sink {

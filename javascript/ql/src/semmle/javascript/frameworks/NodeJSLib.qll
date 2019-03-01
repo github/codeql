@@ -268,6 +268,31 @@ module NodeJSLib {
   }
 
   /**
+   * A call to a fs-module method that preserves taint.
+   */
+  private class FsFlowTarget extends TaintTracking::AdditionalTaintStep {
+    DataFlow::Node tainted;
+
+    FsFlowTarget() {
+      exists(DataFlow::CallNode call, string methodName |
+        call = DataFlow::moduleMember("fs", methodName).getACall()
+        |
+        methodName = "realpathSync" and
+        tainted = call.getArgument(0) and
+        this = call
+        or
+        methodName = "realpath" and
+        tainted = call.getArgument(0) and
+        this = call.getCallback(1).getParameter(1)
+      )
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = tainted and succ = this
+    }
+  }
+
+  /**
    * A model of taint propagation through `new Buffer` and `Buffer.from`.
    */
   private class BufferTaintStep extends TaintTracking::AdditionalTaintStep, DataFlow::InvokeNode {

@@ -1,7 +1,7 @@
-const {BrowserView, BrowserWindow, ClientRequest, net} = require('electron')
+const { ipcMain, ipcRenderer, BrowserView, BrowserWindow, ClientRequest, net } = require('electron')
 
-new BrowserWindow({webPreferences: {}})
-new BrowserView({webPreferences: {}})
+var bw = new BrowserWindow({webPreferences: {}})
+var bv = new BrowserView({webPreferences: {}})
 
 function makeClientRequests() {
     net.request('https://example.com').end();
@@ -31,3 +31,28 @@ function makeClientRequests() {
     post.write('stuff');
     post.end('more stuff');
 }
+
+function foo(x) {
+    return x;
+}
+
+foo(bw).webContents;
+foo(bv).webContents;
+
+ipcMain.on('async', (event, arg) => {
+  event.sender.send('reply', 'pong');
+  arg
+});
+
+ipcMain.on('sync', (event, arg) => {
+  event.returnValue = 'pong';
+  arg
+});
+
+ipcRenderer.on('reply', (event, arg) => {
+  arg
+});
+
+ipcRenderer.send('async', 'ping');
+
+ipcRenderer.sendSync('sync', 'ping');

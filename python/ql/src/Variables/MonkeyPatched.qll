@@ -15,7 +15,7 @@ predicate monkey_patched_builtin(string name) {
         bltn.refersTo(theBuiltinModuleObject()) and
         call.getArg(1).getNode() = s and
         s.getText() = name and
-        call.getFunction().refersTo(builtin_object("setattr"))
+        call.getFunction().refersTo(Object::builtin("setattr"))
     )
     or
     exists(AttrNode attr | 

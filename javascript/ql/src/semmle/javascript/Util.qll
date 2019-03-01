@@ -40,7 +40,10 @@ string describeExpression(Expr e) {
       (
         if e instanceof NewExpr
         then prefix = "constructor call"
-        else if e instanceof MethodCallExpr then prefix = "method call" else prefix = "call"
+        else
+          if e instanceof MethodCallExpr
+          then prefix = "method call"
+          else prefix = "call"
       ) and
       (
         if exists(e.(InvokeExpr).getCalleeName())
@@ -57,5 +60,8 @@ string describeExpression(Expr e) {
       else
         if e instanceof PropAccess and exists(e.(PropAccess).getPropertyName())
         then result = "use of property '" + e.(PropAccess).getPropertyName() + "'"
-        else if e instanceof LogNotExpr then result = "negation" else result = "expression"
+        else
+          if e instanceof LogNotExpr
+          then result = "negation"
+          else result = "expression"
 }

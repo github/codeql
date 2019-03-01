@@ -164,7 +164,9 @@
 | r_regressions.py:0 | Module code.r_regressions | f | Function f |
 | r_regressions.py:0 | Module code.r_regressions | fail | Function fail |
 | r_regressions.py:0 | Module code.r_regressions | find_library | Function find_library |
+| r_regressions.py:0 | Module code.r_regressions | gv | C() |
 | r_regressions.py:0 | Module code.r_regressions | method_decorator | Function method_decorator |
+| r_regressions.py:0 | Module code.r_regressions | mod_gv | Function mod_gv |
 | r_regressions.py:0 | Module code.r_regressions | sys | Module sys |
 | r_regressions.py:0 | Module code.r_regressions | t | Module time |
 | r_regressions.py:5 | Class Queue | __init__ | Function __init__ |

@@ -404,7 +404,9 @@ class SwitchStmt extends Stmt, @switchstmt {
  *
  * This includes both normal `case`s and the `default` case.
  */
-class SwitchCase extends Stmt, @case { SwitchStmt getSwitch() { result.getACase() = this } }
+class SwitchCase extends Stmt, @case {
+  SwitchStmt getSwitch() { result.getACase() = this }
+}
 
 /** A constant `case` of a switch statement. */
 class ConstCase extends SwitchCase {

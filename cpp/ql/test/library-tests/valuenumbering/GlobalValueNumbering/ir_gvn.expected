@@ -1,5 +1,5 @@
 test.cpp:
-#    1| test00(int, int) -> int
+#    1| int test00(int, int)
 #    1|   Block 0
 #    1|     v0_0(void)                  = EnterFunction            : 
 #    1|     m0_1(unknown)               = AliasedDefinition        : 
@@ -69,7 +69,7 @@ test.cpp:
 #    1|     v0_34(void)                 = UnmodeledUse             : mu*
 #    1|     v0_35(void)                 = ExitFunction             : 
 
-#   12| test01(int, int) -> int
+#   12| int test01(int, int)
 #   12|   Block 0
 #   12|     v0_0(void)                  = EnterFunction             : 
 #   12|     m0_1(unknown)               = AliasedDefinition         : 
@@ -108,7 +108,7 @@ test.cpp:
 #   16|         valnum = r0_17
 #   16|     r0_18(glval<int>)           = VariableAddress[global01] : 
 #   16|         valnum = r0_18
-#   16|     r0_19(int)                  = Load                      : r0_18, mu0_2
+#   16|     r0_19(int)                  = Load                      : r0_18, m0_1
 #   16|         valnum = unique
 #   16|     r0_20(int)                  = Add                       : r0_17, r0_19
 #   16|         valnum = r0_20
@@ -128,7 +128,7 @@ test.cpp:
 #   17|         valnum = r0_17
 #   17|     r0_28(glval<int>)           = VariableAddress[global01] : 
 #   17|         valnum = r0_18
-#   17|     r0_29(int)                  = Load                      : r0_28, mu0_2
+#   17|     r0_29(int)                  = Load                      : r0_28, m0_1
 #   17|         valnum = unique
 #   17|     r0_30(int)                  = Add                       : r0_27, r0_29
 #   17|         valnum = r0_30
@@ -151,7 +151,7 @@ test.cpp:
 #   12|     v0_40(void)                 = UnmodeledUse              : mu*
 #   12|     v0_41(void)                 = ExitFunction              : 
 
-#   25| test02(int, int) -> int
+#   25| int test02(int, int)
 #   25|   Block 0
 #   25|     v0_0(void)                  = EnterFunction                    : 
 #   25|     m0_1(unknown)               = AliasedDefinition                : 
@@ -190,7 +190,7 @@ test.cpp:
 #   29|         valnum = r0_17
 #   29|     r0_18(glval<int>)           = VariableAddress[global02]        : 
 #   29|         valnum = r0_18
-#   29|     r0_19(int)                  = Load                             : r0_18, mu0_2
+#   29|     r0_19(int)                  = Load                             : r0_18, m0_1
 #   29|         valnum = unique
 #   29|     r0_20(int)                  = Add                              : r0_17, r0_19
 #   29|         valnum = r0_20
@@ -217,7 +217,7 @@ test.cpp:
 #   31|         valnum = r0_17
 #   31|     r0_32(glval<int>)           = VariableAddress[global02]        : 
 #   31|         valnum = r0_18
-#   31|     r0_33(int)                  = Load                             : r0_32, mu0_2
+#   31|     r0_33(int)                  = Load                             : r0_32, m0_26
 #   31|         valnum = unique
 #   31|     r0_34(int)                  = Add                              : r0_31, r0_33
 #   31|         valnum = r0_34
@@ -240,7 +240,7 @@ test.cpp:
 #   25|     v0_44(void)                 = UnmodeledUse                     : mu*
 #   25|     v0_45(void)                 = ExitFunction                     : 
 
-#   39| test03(int, int, int *) -> int
+#   39| int test03(int, int, int*)
 #   39|   Block 0
 #   39|     v0_0(void)                  = EnterFunction             : 
 #   39|     m0_1(unknown)               = AliasedDefinition         : 
@@ -283,7 +283,7 @@ test.cpp:
 #   43|         valnum = r0_19
 #   43|     r0_20(glval<int>)           = VariableAddress[global03] : 
 #   43|         valnum = r0_20
-#   43|     r0_21(int)                  = Load                      : r0_20, mu0_2
+#   43|     r0_21(int)                  = Load                      : r0_20, m0_1
 #   43|         valnum = unique
 #   43|     r0_22(int)                  = Add                       : r0_19, r0_21
 #   43|         valnum = r0_22
@@ -313,7 +313,7 @@ test.cpp:
 #   45|         valnum = r0_19
 #   45|     r0_35(glval<int>)           = VariableAddress[global03] : 
 #   45|         valnum = r0_20
-#   45|     r0_36(int)                  = Load                      : r0_35, mu0_2
+#   45|     r0_36(int)                  = Load                      : r0_35, m0_29
 #   45|         valnum = unique
 #   45|     r0_37(int)                  = Add                       : r0_34, r0_36
 #   45|         valnum = r0_37
@@ -336,7 +336,7 @@ test.cpp:
 #   39|     v0_47(void)                 = UnmodeledUse              : mu*
 #   39|     v0_48(void)                 = ExitFunction              : 
 
-#   49| my_strspn(const char *, const char *) -> unsigned int
+#   49| unsigned int my_strspn(char const*, char const*)
 #   49|   Block 0
 #   49|     v0_0(void)                = EnterFunction              : 
 #   49|     m0_1(unknown)             = AliasedDefinition          : 
@@ -498,7 +498,7 @@ test.cpp:
 #   49|     v9_7(void)                = UnmodeledUse             : mu*
 #   49|     v9_8(void)                = ExitFunction             : 
 
-#   75| test04(two_values *) -> void
+#   75| void test04(two_values*)
 #   75|   Block 0
 #   75|     v0_0(void)                 = EnterFunction              : 
 #   75|     m0_1(unknown)              = AliasedDefinition          : 
@@ -580,7 +580,7 @@ test.cpp:
 #   75|     v2_2(void) = UnmodeledUse : mu*
 #   75|     v2_3(void) = ExitFunction : 
 
-#   84| test05(int, int, void *) -> void
+#   84| void test05(int, int, void*)
 #   84|   Block 0
 #   84|     v0_0(void)           = EnterFunction          : 
 #   84|     m0_1(unknown)        = AliasedDefinition      : 
@@ -653,7 +653,7 @@ test.cpp:
 #   84|     v3_7(void)       = UnmodeledUse               : mu*
 #   84|     v3_8(void)       = ExitFunction               : 
 
-#   91| regression_test00() -> int
+#   91| int regression_test00()
 #   91|   Block 0
 #   91|     v0_0(void)        = EnterFunction            : 
 #   91|     m0_1(unknown)     = AliasedDefinition        : 
@@ -684,7 +684,7 @@ test.cpp:
 #   91|     v0_14(void)       = UnmodeledUse             : mu*
 #   91|     v0_15(void)       = ExitFunction             : 
 
-#  104| inheritanceConversions(Derived *) -> int
+#  104| int inheritanceConversions(Derived*)
 #  104|   Block 0
 #  104|     v0_0(void)              = EnterFunction                 : 
 #  104|     m0_1(unknown)           = AliasedDefinition             : 

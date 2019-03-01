@@ -51,4 +51,13 @@ public class ZipTest {
       throw new Exception();
     FileOutputStream os = new FileOutputStream(file); // OK
   }
+
+  public void m6(ZipEntry entry, Path dir) {
+    String canonicalDest = dir.toFile().getCanonicalPath();
+    Path target = dir.resolve(entry.getName());
+    String canonicalTarget = target.toFile().getCanonicalPath();
+    if (!canonicalTarget.startsWith(canonicalDest + File.separator))
+      throw new Exception();
+    OutputStream os = Files.newOutputStream(target); // OK
+  }
 }

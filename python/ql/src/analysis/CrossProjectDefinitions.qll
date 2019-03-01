@@ -109,7 +109,7 @@ private Object attribute_in_scope(Object obj, string name) {
     or
     exists(ModuleObject mod |
         mod = obj |
-        mod.getAttribute(name) = result and result.(ControlFlowNode).getScope() = mod.getModule()
+        mod.attr(name) = result and result.(ControlFlowNode).getScope() = mod.getModule()
         and not result.(ControlFlowNode).isEntryNode()
     )
 }
