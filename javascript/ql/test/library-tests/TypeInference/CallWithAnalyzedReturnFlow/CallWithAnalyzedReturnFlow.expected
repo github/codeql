@@ -7,6 +7,7 @@
 | tst.js:11:5:11:8 | f1() | file://:0:0:0:0 | undefined |
 | tst.js:14:5:14:8 | f2() | file://:0:0:0:0 | undefined |
 | tst.js:15:5:15:8 | f2() | file://:0:0:0:0 | undefined |
+| tst.js:18:5:18:11 | o1.f3() | file://:0:0:0:0 | undefined |
 | tst.js:23:5:23:8 | f4() | tst.js:21:16:21:30 | function f5 |
 | tst.js:23:5:23:10 | f4()() | file://:0:0:0:0 | undefined |
 | tst.js:30:5:30:8 | f6() | tst.js:26:16:28:9 | function f7 |

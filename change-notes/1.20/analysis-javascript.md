@@ -31,7 +31,7 @@
 | Incomplete URL substring sanitization | correctness, security, external/cwe/cwe-020 | Highlights URL sanitizers that are likely to be incomplete, indicating a violation of [CWE-020](https://cwe.mitre.org/data/definitions/20.html). Results shown on LGTM by default. |
 | Incorrect suffix check (`js/incorrect-suffix-check`) | correctness, security, external/cwe/cwe-020 | Highlights error-prone suffix checks based on `indexOf`, indicating a potential violation of [CWE-20](https://cwe.mitre.org/data/definitions/20.html). Results are shown on LGTM by default. |
 | Loop iteration skipped due to shifting (`js/loop-iteration-skipped-due-to-shifting`) | correctness | Highlights code that removes an element from an array while iterating over it, causing the loop to skip over some elements. Results are shown on LGTM by default. |
-| Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | Additional ways that class methods can be bound are recognized. |
+| Unused property (`js/unused-property`) | maintainability | Highlights properties that are unused. Results are shown on LGTM by default. |
 | Useless comparison test (`js/useless-comparison-test`) | correctness | Highlights code that is unreachable due to a numeric comparison that is always true or always false. Results are shown on LGTM by default. |
 
 ## Changes to existing queries
@@ -44,9 +44,10 @@
 | Insecure randomness | More results | This rule now flags insecure uses of `crypto.pseudoRandomBytes`. |
 | Reflected cross-site scripting             | Fewer false-positive results. | This rule now recognizes custom sanitizers. |
 | Stored cross-site scripting                | Fewer false-positive results. | This rule now recognizes custom sanitizers. |
+| Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | Additional ways that class methods can be bound are recognized. |
 | Uncontrolled data used in network request  | More results                 | This rule now recognizes host values that are vulnerable to injection. |
 | Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
-| Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, and no longer flags variables with leading underscore. |
+| Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, no longer flags variables with leading underscore, and no longer flags variables in dead code. |
 | Uncontrolled data used in path expression | Fewer false-positive results | This rule now recognizes the Express `root` option, which prevents path traversal. |
 | Unneeded defensive code | More true-positive results, fewer false-positive results. | This rule now recognizes additional defensive code patterns. |
 | Useless conditional | Fewer results | Additional defensive coding patterns are now ignored. |
