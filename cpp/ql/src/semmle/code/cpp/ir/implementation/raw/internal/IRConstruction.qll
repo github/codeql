@@ -59,9 +59,15 @@ cached private module Cached {
     )
   }
   
-  cached Instruction getInstructionOperandDefinition(Instruction instruction, OperandTag tag) {
+  cached Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
     result = getInstructionTranslatedElement(instruction).getInstructionOperand(
       getInstructionTag(instruction), tag)
+  }
+
+  cached Instruction getMemoryOperandDefinition(Instruction instruction, MemoryOperandTag tag, Overlap overlap) {
+    result = getInstructionTranslatedElement(instruction).getInstructionOperand(
+      getInstructionTag(instruction), tag) and
+    overlap instanceof MustTotallyOverlap
   }
 
   cached Type getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
@@ -80,8 +86,7 @@ cached private module Cached {
       getInstructionTag(instruction), tag)
   }
   
-  cached Instruction getPhiInstructionOperandDefinition(Instruction instruction,
-      IRBlock predecessorBlock) {
+  cached Instruction getPhiOperandDefinition(PhiInstruction instruction, IRBlock predecessorBlock, Overlap overlap) {
     none()
   }
 

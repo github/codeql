@@ -3,14 +3,18 @@ import Instruction
 import IRBlock
 import cpp
 import semmle.code.cpp.ir.implementation.MemoryAccessKind
+import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.ir.internal.OperandTag
 
 private newtype TOperand =
-  TNonPhiOperand(Instruction useInstr, OperandTag tag, Instruction defInstr) {
-    defInstr = Construction::getInstructionOperandDefinition(useInstr, tag)
+  TRegisterOperand(Instruction useInstr, RegisterOperandTag tag, Instruction defInstr) {
+    defInstr = Construction::getRegisterOperandDefinition(useInstr, tag)
   } or
-  TPhiOperand(PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock) {
-    defInstr = Construction::getPhiInstructionOperandDefinition(useInstr, predecessorBlock)
+  TNonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag, Instruction defInstr, Overlap overlap) {
+    defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap)
+  } or
+  TPhiOperand(PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap) {
+    defInstr = Construction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
   }
 
 /**
@@ -25,8 +29,8 @@ class Operand extends TOperand {
     result = getUseInstruction().getLocation()
   }
 
-  final IRFunction getEnclosingIRFunction() {
-    result = getUseInstruction().getEnclosingIRFunction()
+  final FunctionIR getEnclosingFunctionIR() {
+    result = getUseInstruction().getEnclosingFunctionIR()
   }
   
   /**
@@ -41,6 +45,20 @@ class Operand extends TOperand {
    */
   Instruction getDefinitionInstruction() {
     none()
+  }
+
+  /**
+   * Gets the overlap relationship between the operand's definition and its use.
+   */
+  Overlap getDefinitionOverlap() {
+    none()
+  }
+
+  /**
+   * Holds if the result of the definition instruction does not exactly overlap this use.
+   */
+  final predicate isDefinitionInexact() {
+    not getDefinitionOverlap() instanceof MustExactlyOverlap
   }
 
   /**
@@ -59,6 +77,13 @@ class Operand extends TOperand {
    */
   final string getDumpString() {
     result = getDumpLabel() + getDefinitionInstruction().getResultId()
+  }
+
+  private string getInexactSpecifier() {
+    if isDefinitionInexact() then
+      result = "~"
+    else
+      result = ""
   }
 
   /**
@@ -104,10 +129,8 @@ class Operand extends TOperand {
  */
 class MemoryOperand extends Operand {
   MemoryOperand() {
-    exists(MemoryOperandTag tag |
-      this = TNonPhiOperand(_, tag, _)
-    ) or
-    this = TPhiOperand(_, _, _)
+    this = TNonPhiMemoryOperand(_, _, _, _) or
+    this = TPhiOperand(_, _, _, _)
   }
 
   override predicate isGLValue() {
@@ -134,26 +157,16 @@ class MemoryOperand extends Operand {
 }
 
 /**
- * An operand that consumes a register (non-memory) result.
- */
-class RegisterOperand extends Operand {
-  RegisterOperand() {
-    exists(RegisterOperandTag tag |
-      this = TNonPhiOperand(_, tag, _)
-    )
-  }
-}
-
-/**
  * An operand that is not an operand of a `PhiInstruction`.
  */
-class NonPhiOperand extends Operand, TNonPhiOperand {
+class NonPhiOperand extends Operand {
   Instruction useInstr;
   Instruction defInstr;
   OperandTag tag;
 
   NonPhiOperand() {
-    this = TNonPhiOperand(useInstr, tag, defInstr)
+    this = TRegisterOperand(useInstr, tag, defInstr) or
+    this = TNonPhiMemoryOperand(useInstr, tag, defInstr, _)
   }
 
   override final Instruction getUseInstruction() {
@@ -177,7 +190,32 @@ class NonPhiOperand extends Operand, TNonPhiOperand {
   }
 }
 
-class TypedOperand extends NonPhiOperand, MemoryOperand {
+/**
+ * An operand that consumes a register (non-memory) result.
+ */
+class RegisterOperand extends NonPhiOperand, TRegisterOperand {
+  override RegisterOperandTag tag;
+
+  override final Overlap getDefinitionOverlap() {
+    // All register results overlap exactly with their uses.
+    result instanceof MustExactlyOverlap
+  }
+}
+
+class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOperand {
+  override MemoryOperandTag tag;
+  Overlap overlap;
+
+  NonPhiMemoryOperand() {
+    this = TNonPhiMemoryOperand(useInstr, tag, defInstr, overlap)
+  }
+
+  override final Overlap getDefinitionOverlap() {
+    result = overlap
+  }
+}
+
+class TypedOperand extends NonPhiMemoryOperand {
   override TypedOperandTag tag;
 
   override final Type getType() {
@@ -189,7 +227,7 @@ class TypedOperand extends NonPhiOperand, MemoryOperand {
  * The address operand of an instruction that loads or stores a value from
  * memory (e.g. `Load`, `Store`).
  */
-class AddressOperand extends NonPhiOperand, RegisterOperand {
+class AddressOperand extends RegisterOperand {
   override AddressOperandTag tag;
 
   override string toString() {
@@ -216,7 +254,7 @@ class LoadOperand extends TypedOperand {
 /**
  * The source value operand of a `Store` instruction.
  */
-class StoreValueOperand extends NonPhiOperand, RegisterOperand {
+class StoreValueOperand extends RegisterOperand {
   override StoreValueOperandTag tag;
 
   override string toString() {
@@ -227,7 +265,7 @@ class StoreValueOperand extends NonPhiOperand, RegisterOperand {
 /**
  * The sole operand of a unary instruction (e.g. `Convert`, `Negate`, `Copy`).
  */
-class UnaryOperand extends NonPhiOperand, RegisterOperand {
+class UnaryOperand extends RegisterOperand {
   override UnaryOperandTag tag;
 
   override string toString() {
@@ -238,7 +276,7 @@ class UnaryOperand extends NonPhiOperand, RegisterOperand {
 /**
  * The left operand of a binary instruction (e.g. `Add`, `CompareEQ`).
  */
-class LeftOperand extends NonPhiOperand, RegisterOperand {
+class LeftOperand extends RegisterOperand {
   override LeftOperandTag tag;
 
   override string toString() {
@@ -249,7 +287,7 @@ class LeftOperand extends NonPhiOperand, RegisterOperand {
 /**
  * The right operand of a binary instruction (e.g. `Add`, `CompareEQ`).
  */
-class RightOperand extends NonPhiOperand, RegisterOperand {
+class RightOperand extends RegisterOperand {
   override RightOperandTag tag;
 
   override string toString() {
@@ -260,7 +298,7 @@ class RightOperand extends NonPhiOperand, RegisterOperand {
 /**
  * The condition operand of a `ConditionalBranch` or `Switch` instruction.
  */
-class ConditionOperand extends NonPhiOperand, RegisterOperand {
+class ConditionOperand extends RegisterOperand {
   override ConditionOperandTag tag;
 
   override string toString() {
@@ -272,7 +310,7 @@ class ConditionOperand extends NonPhiOperand, RegisterOperand {
  * An operand of the special `UnmodeledUse` instruction, representing a value
  * whose set of uses is unknown.
  */
-class UnmodeledUseOperand extends NonPhiOperand, MemoryOperand {
+class UnmodeledUseOperand extends NonPhiMemoryOperand {
   override UnmodeledUseOperandTag tag;
 
   override string toString() {
@@ -287,7 +325,7 @@ class UnmodeledUseOperand extends NonPhiOperand, MemoryOperand {
 /**
  * The operand representing the target function of an `Call` instruction.
  */
-class CallTargetOperand extends NonPhiOperand, RegisterOperand {
+class CallTargetOperand extends RegisterOperand {
   override CallTargetOperandTag tag;
 
   override string toString() {
@@ -300,7 +338,7 @@ class CallTargetOperand extends NonPhiOperand, RegisterOperand {
  * positional arguments (represented by `PositionalArgumentOperand`) and the
  * implicit `this` argument, if any (represented by `ThisArgumentOperand`).
  */
-class ArgumentOperand extends NonPhiOperand, RegisterOperand {
+class ArgumentOperand extends RegisterOperand {
   override ArgumentOperandTag tag;
 }
 
@@ -379,13 +417,14 @@ class SideEffectOperand extends TypedOperand {
 /**
  * An operand of a `PhiInstruction`.
  */
-class PhiInputOperand extends MemoryOperand, TPhiOperand {
+class PhiOperand extends MemoryOperand, TPhiOperand {
   PhiInstruction useInstr;
   Instruction defInstr;
   IRBlock predecessorBlock;
+  Overlap overlap;
 
-  PhiInputOperand() {
-    this = TPhiOperand(useInstr, defInstr, predecessorBlock)
+  PhiOperand() {
+    this = TPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
   }
 
   override string toString() {
@@ -398,6 +437,10 @@ class PhiInputOperand extends MemoryOperand, TPhiOperand {
 
   override final Instruction getDefinitionInstruction() {
     result = defInstr
+  }
+
+  override final Overlap getDefinitionOverlap() {
+    result = overlap
   }
 
   override final int getDumpSortOrder() {
@@ -423,10 +466,8 @@ class PhiInputOperand extends MemoryOperand, TPhiOperand {
 /**
  * The total operand of a Chi node, representing the previous value of the memory.
  */
-class ChiTotalOperand extends MemoryOperand {
-  ChiTotalOperand() {
-    this = TNonPhiOperand(_, chiTotalOperand(), _)
-  }
+class ChiTotalOperand extends NonPhiMemoryOperand {
+  override ChiTotalOperandTag tag;
 
   override string toString() {
     result = "ChiTotal"
@@ -441,10 +482,8 @@ class ChiTotalOperand extends MemoryOperand {
 /**
  * The partial operand of a Chi node, representing the value being written to part of the memory.
  */
-class ChiPartialOperand extends MemoryOperand {
-  ChiPartialOperand() {
-    this = TNonPhiOperand(_, chiPartialOperand(), _)
-  }
+class ChiPartialOperand extends NonPhiMemoryOperand {
+  override ChiPartialOperandTag tag;
 
   override string toString() {
     result = "ChiPartial"

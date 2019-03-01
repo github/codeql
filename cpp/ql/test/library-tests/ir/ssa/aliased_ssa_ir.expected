@@ -319,7 +319,7 @@ ssa.cpp:
 #   95|     m0_5(unknown)         = Chi                     : total:m0_1, partial:m0_4
 #   96|     r0_6(glval<Point>)    = VariableAddress[b]      : 
 #   96|     r0_7(glval<Point>)    = VariableAddress[a]      : 
-#   96|     r0_8(Point)           = Load                    : &:r0_7, m0_5
+#   96|     r0_8(Point)           = Load                    : &:r0_7, m0_4
 #   96|     m0_9(Point)           = Store                   : &:r0_6, r0_8
 #   97|     r0_10(glval<unknown>) = FunctionAddress[Escape] : 
 #   97|     r0_11(glval<Point>)   = VariableAddress[a]      : 
@@ -365,12 +365,12 @@ ssa.cpp:
 #  106|     r0_6(glval<int>)      = VariableAddress[x]      : 
 #  106|     r0_7(glval<Point>)    = VariableAddress[a]      : 
 #  106|     r0_8(glval<int>)      = FieldAddress[x]         : r0_7
-#  106|     r0_9(int)             = Load                    : &:r0_8, m0_5
+#  106|     r0_9(int)             = Load                    : &:r0_8, m0_4
 #  106|     m0_10(int)            = Store                   : &:r0_6, r0_9
 #  107|     r0_11(glval<int>)     = VariableAddress[y]      : 
 #  107|     r0_12(glval<Point>)   = VariableAddress[a]      : 
 #  107|     r0_13(glval<int>)     = FieldAddress[y]         : r0_12
-#  107|     r0_14(int)            = Load                    : &:r0_13, m0_5
+#  107|     r0_14(int)            = Load                    : &:r0_13, m0_4
 #  107|     m0_15(int)            = Store                   : &:r0_11, r0_14
 #  108|     r0_16(glval<unknown>) = FunctionAddress[Escape] : 
 #  108|     r0_17(glval<Point>)   = VariableAddress[a]      : 
@@ -497,19 +497,20 @@ ssa.cpp:
 
 #  130|   Block 3
 #  130|     m3_0(Point)        = Phi                : from 1:m1_5, from 2:m2_5
-#  130|     r3_1(glval<int>)   = VariableAddress[x] : 
-#  130|     r3_2(glval<Point>) = VariableAddress[a] : 
-#  130|     r3_3(glval<int>)   = FieldAddress[x]    : r3_2
-#  130|     r3_4(int)          = Load               : &:r3_3, m3_0
-#  130|     m3_5(int)          = Store              : &:r3_1, r3_4
-#  131|     r3_6(glval<Point>) = VariableAddress[b] : 
-#  131|     r3_7(glval<Point>) = VariableAddress[a] : 
-#  131|     r3_8(Point)        = Load               : &:r3_7, m3_0
-#  131|     m3_9(Point)        = Store              : &:r3_6, r3_8
-#  132|     v3_10(void)        = NoOp               : 
-#  122|     v3_11(void)        = ReturnVoid         : 
-#  122|     v3_12(void)        = UnmodeledUse       : mu*
-#  122|     v3_13(void)        = ExitFunction       : 
+#  130|     m3_1(int)          = Phi                : from 1:m1_4, from 2:m2_4
+#  130|     r3_2(glval<int>)   = VariableAddress[x] : 
+#  130|     r3_3(glval<Point>) = VariableAddress[a] : 
+#  130|     r3_4(glval<int>)   = FieldAddress[x]    : r3_3
+#  130|     r3_5(int)          = Load               : &:r3_4, m3_1
+#  130|     m3_6(int)          = Store              : &:r3_2, r3_5
+#  131|     r3_7(glval<Point>) = VariableAddress[b] : 
+#  131|     r3_8(glval<Point>) = VariableAddress[a] : 
+#  131|     r3_9(Point)        = Load               : &:r3_8, m3_0
+#  131|     m3_10(Point)       = Store              : &:r3_7, r3_9
+#  132|     v3_11(void)        = NoOp               : 
+#  122|     v3_12(void)        = ReturnVoid         : 
+#  122|     v3_13(void)        = UnmodeledUse       : mu*
+#  122|     v3_14(void)        = ExitFunction       : 
 
 #  134| void MergeMustExactlyWithMustTotallyOverlap(bool, Point, int)
 #  134|   Block 0
@@ -556,15 +557,16 @@ ssa.cpp:
 
 #  142|   Block 3
 #  142|     m3_0(Point)        = Phi                : from 1:m1_5, from 2:m2_3
-#  142|     r3_1(glval<int>)   = VariableAddress[x] : 
-#  142|     r3_2(glval<Point>) = VariableAddress[a] : 
-#  142|     r3_3(glval<int>)   = FieldAddress[x]    : r3_2
-#  142|     r3_4(int)          = Load               : &:r3_3, m3_0
-#  142|     m3_5(int)          = Store              : &:r3_1, r3_4
-#  143|     v3_6(void)         = NoOp               : 
-#  134|     v3_7(void)         = ReturnVoid         : 
-#  134|     v3_8(void)         = UnmodeledUse       : mu*
-#  134|     v3_9(void)         = ExitFunction       : 
+#  142|     m3_1(int)          = Phi                : from 1:m1_4, from 2:m2_3
+#  142|     r3_2(glval<int>)   = VariableAddress[x] : 
+#  142|     r3_3(glval<Point>) = VariableAddress[a] : 
+#  142|     r3_4(glval<int>)   = FieldAddress[x]    : r3_3
+#  142|     r3_5(int)          = Load               : &:r3_4, m3_1
+#  142|     m3_6(int)          = Store              : &:r3_2, r3_5
+#  143|     v3_7(void)         = NoOp               : 
+#  134|     v3_8(void)         = ReturnVoid         : 
+#  134|     v3_9(void)         = UnmodeledUse       : mu*
+#  134|     v3_10(void)        = ExitFunction       : 
 
 #  145| void MergeMustExactlyWithMayPartiallyOverlap(bool, Point, int)
 #  145|   Block 0
