@@ -1,2 +1,0 @@
-| points.js:20:1:33:1 | class C ... ;\\n  }\\n} | points.js:20:29:20:33 | Point |
-| tst.js:6:1:8:1 | class B ... t); }\\n} | tst.js:6:17:6:17 | A |
