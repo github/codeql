@@ -3,6 +3,8 @@ import cpp
 private import InputIR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 
+private import semmle.code.cpp.models.interfaces.Alias
+
 private class IntValue = Ints::IntValue;
 
 /**
@@ -60,8 +62,18 @@ predicate operandIsConsumedWithoutEscaping(Operand operand) {
       // Converting an address to a `bool` does not escape the address.
       instr.(ConvertInstruction).getResultType() instanceof BoolType
     )
-  )
+  ) or
+  // Some standard function arguments never escape
+  isNeverEscapesArgument(operand)
 }
+
+predicate operandEscapesDomain(Operand operand) {
+  not operandIsConsumedWithoutEscaping(operand) and
+  not operandIsPropagated(operand, _) and
+  not isArgumentForParameter(_, operand, _) and
+  not isOnlyEscapesViaReturnArgument(operand)
+}
+
 /**
  * If the result of instruction `instr` is an integer constant, returns the
  * value of that constant. Otherwise, returns unknown.
@@ -133,58 +145,32 @@ predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       // offset of the field.
       bitOffset = getFieldBitOffset(instr.(FieldAddressInstruction).getField()) or
       // A copy propagates the source value.
-      operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0
-    )
-  )
-}
-
-/**
- * Holds if any address held in operand number `tag` of instruction `instr`
- * escapes outside the domain of the analysis.
- */
- predicate operandEscapes(Operand operand) {
-  // Conservatively assume that the address escapes unless one of the following
-  // holds:
-  not (
-    // The operand is used in a way that does not escape the instruction
-    operandIsConsumedWithoutEscaping(operand) or
-    // The address is propagated to the result of the instruction, but that
-    // result does not itself escape.
-    operandIsPropagated(operand, _) and not resultEscapes(operand.getUseInstruction())
-    or
-    // The operand is used in a function call from which the operand does not escape
-    exists(CallInstruction ci, Instruction init |
-      ci = operand.getUseInstruction() and
-      isArgumentForParameter(ci, operand, init) and
-      not resultEscapesNonReturn(init) and
-      (
-        not resultReturned(init)
-        or
-        not resultEscapes(operand.getUseInstruction())
-      )
+      operand = instr.(CopyInstruction).getSourceValueOperand() and bitOffset = 0 or
+      // Some functions are known to propagate an argument
+      isAlwaysReturnedArgument(operand) and bitOffset = 0
     )
   )
 }
 
 predicate operandEscapesNonReturn(Operand operand) {
-  // Conservatively assume that the address escapes unless one of the following
-  // holds:
-  not (
-    // The operand is used in a way that does not escape the instruction
-    operandIsConsumedWithoutEscaping(operand) or
-    // The address is propagated to the result of the instruction, but that
-    // result does not itself escape.
-    operandIsPropagated(operand, _) and
-    not resultEscapesNonReturn(operand.getUseInstruction())
-    or
-    // The operand is used in a function call from which the operand does not escape
-    exists(CallInstruction ci, Instruction init |
-      isArgumentForParameter(ci, operand, init) and
-      not resultEscapesNonReturn(init) and
-      not resultEscapesNonReturn(ci)
-    ) or
-    operand.getUseInstruction() instanceof ReturnValueInstruction
+  // The address is propagated to the result of the instruction, and that result itself is returned
+  operandIsPropagated(operand, _) and resultEscapesNonReturn(operand.getUseInstruction())
+  or
+  // The operand is used in a function call which returns it, and the return value is then returned
+  exists(CallInstruction ci, Instruction init |
+    ci = operand.getUseInstruction() and
+    isArgumentForParameter(ci, operand, init) and
+    (
+      resultReturned(init) and
+      resultEscapesNonReturn(ci)
+      or
+      resultEscapesNonReturn(init)
+    )
   )
+  or
+  isOnlyEscapesViaReturnArgument(operand) and resultEscapesNonReturn(operand.getUseInstruction())
+  or
+  operandEscapesDomain(operand)
 }
 
 
@@ -202,6 +188,8 @@ predicate operandReturned(Operand operand) {
   or
   // The address is returned
   operand.getUseInstruction() instanceof ReturnValueInstruction
+  or
+  isOnlyEscapesViaReturnArgument(operand) and resultReturned(operand.getUseInstruction())
 }
 
 predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
@@ -215,7 +203,29 @@ predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instructio
       init.getEnclosingFunction() = f and
       operand instanceof ThisArgumentOperand
     ) and
-    not f.isVirtual()
+    not f.isVirtual() and
+    not f instanceof AliasFunction
+  )
+}
+
+predicate isAlwaysReturnedArgument(Operand operand) {
+  exists(AliasFunction f |
+    f = operand.getUseInstruction().(CallInstruction).getStaticCallTarget() and
+    f.parameterIsAlwaysReturned(operand.(PositionalArgumentOperand).getIndex())
+  )
+}
+
+predicate isOnlyEscapesViaReturnArgument(Operand operand) {
+  exists(AliasFunction f |
+    f = operand.getUseInstruction().(CallInstruction).getStaticCallTarget() and
+    f.parameterEscapesOnlyViaReturn(operand.(PositionalArgumentOperand).getIndex())
+  )
+}
+
+predicate isNeverEscapesArgument(Operand operand) {
+  exists(AliasFunction f |
+    f = operand.getUseInstruction().(CallInstruction).getStaticCallTarget() and
+    f.parameterNeverEscapes(operand.(PositionalArgumentOperand).getIndex())
   )
 }
 
@@ -227,12 +237,7 @@ predicate resultReturned(Instruction instr) {
  * Holds if any address held in the result of instruction `instr` escapes
  * outside the domain of the analysis.
  */
-predicate resultEscapes(Instruction instr) {
-  // The result escapes if it has at least one use that escapes.
-  operandEscapes(instr.getAUse())
-}
-
- predicate resultEscapesNonReturn(Instruction instr) {
+predicate resultEscapesNonReturn(Instruction instr) {
   // The result escapes if it has at least one use that escapes.
   operandEscapesNonReturn(instr.getAUse())
 }
