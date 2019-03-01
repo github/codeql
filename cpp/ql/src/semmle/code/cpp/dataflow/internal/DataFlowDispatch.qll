@@ -17,18 +17,32 @@ Function viableCallable(Call call) {
   // together by the operating system's dynamic linker. In case a function with
   // the right signature is present in the database, we return that as a
   // potential callee.
-  exists(Function target |
-    target = call.getTarget() and
-    not exists(target.getBlock()) and
-    exists(result.getBlock()) and
-    exists(string qualifiedName, int nparams |
-      functionSignature(qualifiedName, nparams, target) and
-      functionSignature(qualifiedName, nparams, result)
-    )
+  exists(result.getBlock()) and
+  exists(string qualifiedName, int nparams |
+    callSignatureWithoutBody(qualifiedName, nparams, call) and
+    functionSignature(result, qualifiedName, nparams)
   )
 }
 
-private predicate functionSignature(string qualifiedName, int nparams, Function f) {
+/**
+ * Holds if the target of `call` is a function _with no definition_ that has
+ * name `qualifiedName` and `nparams` parameter count. See `functionSignature`.
+ */
+pragma[noinline]
+private predicate callSignatureWithoutBody(string qualifiedName, int nparams, Call call) {
+  exists(Function target |
+    target = call.getTarget() and
+    not exists(target.getBlock()) and
+    functionSignature(target, qualifiedName, nparams)
+  )
+}
+
+/**
+ * Holds if `f` has name `qualifiedName` and `nparams` parameter count. This is
+ * an approximation of its signature for the purpose of matching functions that
+ * might be the same across link targets.
+ */
+private predicate functionSignature(Function f, string qualifiedName, int nparams) {
   qualifiedName = f.getQualifiedName() and
   nparams = f.getNumberOfParameters() and
   not f.isStatic()
