@@ -12,6 +12,8 @@ class TestAllocationConfig extends DataFlow::Configuration {
     or
     source.asParameter().getName().matches("source%")
     or
+    source.(DataFlow::DefinitionByReferenceNode).getParameter().getName().matches("ref_source%")
+    or
     // Track uninitialized variables
     exists(source.asUninitialized())
   }

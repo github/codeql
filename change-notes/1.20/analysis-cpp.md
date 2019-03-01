@@ -36,6 +36,10 @@
 
 ## Changes to QL libraries
 
+* The `semmle.code.cpp.dataflow.DataFlow` library now supports _definition by reference_ via output parameters of known functions.
+    * Data flows through `memcpy` and `memmove` by default.
+    * Custom flow into or out of arguments assigned by reference can be modelled with the new class `DataFlow::DefinitionByReferenceNode`.
+    * The data flow library adds flow through library functions that are modeled in `semmle.code.cpp.models.interfaces.DataFlow`. Queries can add subclasses of `DataFlowFunction` to specify additional flow.
 * There is a new `Namespace.isInline()` predicate, which holds if the namespace was declared as `inline namespace`.
 * The `Expr.isConstant()` predicate now also holds for _address constant expressions_, which are addresses that will be constant after the program has been linked. These address constants do not have a result for `Expr.getValue()`.
 * There are new `Function.isDeclaredConstexpr()` and `Function.isConstexpr()` predicates. They can be used to tell whether a function was declared as `constexpr`, and whether it actually is `constexpr`.
