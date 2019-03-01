@@ -1273,7 +1273,7 @@ module DataFlow {
       pragma[noinline]
       private predicate jumpStepCand1(Node pred, Node succ, Configuration config) {
         nodeCand1(succ, config) and
-        additionalJumpStep(mid, node, config)
+        additionalJumpStep(pred, succ, config)
       }
 
       pragma[noinline]
