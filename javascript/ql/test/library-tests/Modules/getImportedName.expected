@@ -1,8 +1,0 @@
-| b.js:1:8:1:8 | f | default |
-| d.js:1:10:1:21 | default as g | default |
-| d.js:1:24:1:29 | x as y | x |
-| f.ts:1:8:1:8 | g | default |
-| g.ts:1:9:1:11 | foo | foo |
-| import-in-mjs.mjs:1:8:1:24 | exported_from_mjs | default |
-| tst.html:5:10:5:10 | f | default |
-| unresolved.js:1:8:1:8 | f | default |
