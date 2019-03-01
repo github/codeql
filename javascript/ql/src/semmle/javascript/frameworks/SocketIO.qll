@@ -372,7 +372,7 @@ module SocketIOClient {
       )
     }
 
-    /** Gets the path of the namespace this socket belongs to. */
+    /** Gets the path of the namespace this socket belongs to, if it can be determined. */
     string getNamespacePath() {
       // the path name of the specified URL
       exists(string url, string pathRegex |
@@ -395,7 +395,9 @@ module SocketIOClient {
     SocketIO::ServerObject getATargetServer() {
       exists(NPMPackage pkg |
         result.getOrigin().getFile() = pkg.getAFile() and
-        this.getFile() = pkg.getAFile() and
+        this.getFile() = pkg.getAFile()
+      |
+        not exists(getNamespacePath()) or
         exists(result.getNamespace(getNamespacePath()))
       )
     }
@@ -403,6 +405,10 @@ module SocketIOClient {
     /** Gets a namespace this socket may be communicating with. */
     SocketIO::NamespaceObject getATargetNamespace() {
       result = getATargetServer().getNamespace(getNamespacePath())
+      or
+      // if the namespace of this socket cannot be determined, overapproximate
+      not exists(getNamespacePath()) and
+      result = getATargetServer().getNamespace(_)
     }
 
     /** Gets a server-side socket this client-side socket may be communicating with. */
@@ -473,7 +479,7 @@ module SocketIOClient {
     SocketNode getSocket() { result = base }
 
     /**
-     * Gets the path of the namespace to which data is sent.
+     * Gets the path of the namespace to which data is sent, if it can be determined.
      */
     string getNamespacePath() { result = base.getNamespacePath() }
 
