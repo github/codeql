@@ -122,6 +122,13 @@ class Variable extends Declaration, @variable {
   }
 
   /**
+   * Holds if this variable is `constexpr`.
+   */
+  predicate isConstexpr() {
+    this.hasSpecifier("is_constexpr")
+  }
+
+  /**
    * Holds if this variable is constructed from `v` as a result
    * of template instantiation. If so, it originates either from a template
    * variable or from a variable nested in a template class.
