@@ -1,6 +1,0 @@
-| es6-imported-exec.js:3:1:3:11 | exec("cmd") | es6-imported-exec.js:3:6:3:10 | "cmd" |
-| exec.js:3:1:3:38 | cp.exec ... "], cb) | exec.js:3:13:3:18 | "node" |
-| exec.js:4:1:4:47 | cp.exec ... sion"]) | exec.js:4:17:4:20 | "sh" |
-| exec.js:5:1:5:23 | cp.fork ... "arg"]) | exec.js:5:9:5:13 | "foo" |
-| exec.js:6:1:6:28 | cp.spaw ... "], cb) | exec.js:6:10:6:15 | "echo" |
-| exec.js:7:1:7:37 | cp.spaw ... here"]) | exec.js:7:14:7:19 | "echo" |
