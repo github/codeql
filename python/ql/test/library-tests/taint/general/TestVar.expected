@@ -177,3 +177,8 @@
 | test.py:174 | l_2 | test.py:168 | Taint [simple.test] | List |
 | test.py:175 | d2_0 | test.py:175 | Taint {simple.test} | dict() |
 | test.py:175 | d_2 | test.py:169 | Taint {simple.test} | Dict |
+| test.py:178 | t_0 | test.py:178 | Taint simple.test | SOURCE |
+| test.py:180 | t_1 | test.py:178 | Taint simple.test | SOURCE |
+| test.py:180 | t_2 | test.py:178 | Taint simple.test | SOURCE |
+| test.py:183 | t_3 | test.py:178 | Taint simple.test | SOURCE |
+| test.py:186 | t_4 | test.py:178 | Taint simple.test | SOURCE |

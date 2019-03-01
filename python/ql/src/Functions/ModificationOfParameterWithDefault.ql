@@ -19,32 +19,47 @@ predicate safe_method(string name) {
     name = "items" or name = "keys" or name = "values" or name = "iteritems" or name = "iterkeys" or name = "itervalues"
 }
 
-predicate maybe_parameter(SsaVariable var, Function f, Parameter p) {
-    p = var.getAnUltimateDefinition().getDefinition().getNode() and
-    f.getAnArg() = p
-}
-
-predicate has_mutable_default(Parameter p) {
-    exists(SsaVariable v, FunctionExpr f | maybe_parameter(v, f.getInnerScope(), p) and
-        exists(int i, int def_cnt, int arg_cnt |
-            def_cnt = count(f.getArgs().getADefault()) and
-            arg_cnt = count(f.getInnerScope().getAnArg()) and
-            i in [1 .. arg_cnt] and
-           (f.getArgs().getDefault(def_cnt - i) instanceof Dict or f.getArgs().getDefault(def_cnt - i) instanceof List) and
-            f.getInnerScope().getArgName(arg_cnt - i) = v.getId()
-        )
+/** Gets the truthiness (non emptyness) of the default of `p` if that value is mutable */
+private boolean mutableDefaultValue(Parameter p) {
+    exists(Dict d |
+        p.getDefault() = d |
+        exists(d.getAKey()) and result = true
+        or
+        not exists(d.getAKey()) and result = false
+    )
+    or
+    exists(List l |
+        p.getDefault() = l |
+        exists(l.getAnElt()) and result = true
+        or
+        not exists(l.getAnElt()) and result = false
     )
 }
 
-class MutableValue extends TaintKind {
-    MutableValue() {
-        this = "mutable value"
+
+class NonEmptyMutableValue extends TaintKind {
+    NonEmptyMutableValue() {
+        this = "non-empty mutable value"
     }
 }
 
+class EmptyMutableValue extends TaintKind {
+    EmptyMutableValue() {
+        this = "empty mutable value"
+    }
+
+    override boolean booleanValue() {
+        result = false
+    }
+
+}
+
 class MutableDefaultValue extends TaintSource {
+
+    boolean nonEmpty;
+
     MutableDefaultValue() {
-        has_mutable_default(this.(NameNode).getNode())
+        nonEmpty = mutableDefaultValue(this.(NameNode).getNode())
     }
 
     override string toString() {
@@ -52,7 +67,9 @@ class MutableDefaultValue extends TaintSource {
     }
 
     override predicate isSourceOf(TaintKind kind) {
-        kind instanceof MutableValue
+        nonEmpty = false and kind instanceof EmptyMutableValue
+        or
+        nonEmpty = true and kind instanceof NonEmptyMutableValue
     }
 }
 
@@ -68,7 +85,9 @@ class Mutation extends TaintSink {
     }
 
     override predicate sinks(TaintKind kind) {
-        kind instanceof MutableValue
+        kind instanceof EmptyMutableValue
+        or
+        kind instanceof NonEmptyMutableValue
     }
 }
 
