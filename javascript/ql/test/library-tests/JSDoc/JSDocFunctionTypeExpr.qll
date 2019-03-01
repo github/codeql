@@ -1,7 +1,8 @@
 import semmle.javascript.JSDoc
 
-from JSDocFunctionTypeExpr jsdfte, string ret, string recv, int idx, string isctor
-where
+query predicate test_JSDocFunctionTypeExpr(
+  JSDocFunctionTypeExpr jsdfte, string ret, string recv, int idx, JSDocTypeExpr res, string isctor
+) {
   (
     if exists(jsdfte.getResultType())
     then ret = jsdfte.getResultType().toString()
@@ -12,5 +13,6 @@ where
     then recv = jsdfte.getReceiverType().toString()
     else recv = "(none)"
   ) and
-  (if jsdfte.isConstructorType() then isctor = "yes" else isctor = "no")
-select jsdfte, ret, recv, idx, jsdfte.getParameterType(idx), isctor
+  (if jsdfte.isConstructorType() then isctor = "yes" else isctor = "no") and
+  res = jsdfte.getParameterType(idx)
+}
