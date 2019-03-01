@@ -281,10 +281,6 @@ class Method extends Callable, Virtualizable, Attributable, @method {
     not this.isCompilerGenerated()
   }
 
-  override string toString() { result = Callable.super.toString() }
-
-  override Location getLocation() { result = Callable.super.getLocation() }
-
   override Parameter getRawParameter(int i) {
     if this.isStatic() then result = this.getParameter(i) else result = this.getParameter(i - 1)
   }
@@ -352,10 +348,6 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
 
   override predicate fromSource() { Member.super.fromSource() and not this.isCompilerGenerated() }
 
-  override string toString() { result = Callable.super.toString() }
-
-  override Location getLocation() { result = Callable.super.getLocation() }
-
   override Parameter getRawParameter(int i) {
     if this.isStatic() then result = this.getParameter(i) else result = this.getParameter(i - 1)
   }
@@ -417,10 +409,6 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
   override Destructor getSourceDeclaration() { destructors(this, _, _, result) }
 
   override Location getALocation() { destructor_location(this, result) }
-
-  override string toString() { result = Callable.super.toString() }
-
-  override Location getLocation() { result = Callable.super.getLocation() }
 }
 
 /**
@@ -444,10 +432,6 @@ class Operator extends Callable, Member, Attributable, @operator {
   override Operator getSourceDeclaration() { operators(this, _, _, _, _, result) }
 
   override Location getALocation() { operator_location(this, result) }
-
-  override string toString() { result = Callable.super.toString() }
-
-  override Location getLocation() { result = Callable.super.getLocation() }
 
   override Parameter getRawParameter(int i) { result = getParameter(i) }
 }

@@ -222,8 +222,6 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
 
   override string toString() { result = this.getName() }
 
-  override Location getLocation() { result = LocalScopeVariable.super.getLocation() }
-
   /**
    * Gets the default value of this parameter, if any. For example, the
    * default value of `numberOfTries` is `3` in
@@ -398,10 +396,6 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
   override Field getSourceDeclaration() { fields(this, _, _, _, _, result) }
 
   override FieldAccess getAnAccess() { result = Variable.super.getAnAccess() }
-
-  override string toString() { result = Variable.super.toString() }
-
-  override Location getLocation() { result = Variable.super.getLocation() }
 }
 
 /**

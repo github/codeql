@@ -354,10 +354,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     // and its subclasses will not work
     nested_types(this, _, result)
   }
-
-  override string toString() { result = Type.super.toString() }
-
-  override Location getLocation() { result = Type.super.getLocation() }
 }
 
 /**

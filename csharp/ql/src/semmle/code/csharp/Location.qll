@@ -161,7 +161,7 @@ class Version extends string {
 /**
  * A .NET assembly location.
  */
-class Assembly extends Location, Attributable, @assembly {
+class Assembly extends Location, @assembly {
   /** Gets the full name of this assembly, including its version and public token. */
   string getFullName() { assemblies(this, _, result, _, _) }
 
@@ -170,6 +170,9 @@ class Assembly extends Location, Attributable, @assembly {
 
   /** Gets the version of this assembly. */
   Version getVersion() { assemblies(this, _, _, _, result) }
+
+  /** Gets an attribute attached to this assembly, if any. */
+  final Attribute getAnAttribute() { attributes(result, _, this) }
 
   override File getFile() { assemblies(this, result, _, _, _) }
 

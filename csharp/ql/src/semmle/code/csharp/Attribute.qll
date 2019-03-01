@@ -6,20 +6,15 @@ import Type
 private import semmle.code.csharp.ExprOrStmtParent
 
 /**
- * An element that can have attributes. Either an assembly (`Assembly`), a field (`Field`),
- * a parameter (`Parameter`), an operator (`Operator`), a method (`Method`), a constructor (`Constructor`),
- * a destructor (`Destructor`), a callable accessor (`CallableAccessor`), a value or reference type
- * (`ValueOrRefType`), or a declaration with accessors (`DeclarationWithAccessors`).
+ * An element that can have attributes. Either a field (`Field`), a parameter
+ * (`Parameter`), an operator (`Operator`), a method (`Method`), a constructor
+ * (`Constructor`), a destructor (`Destructor`), a callable accessor
+ * (`CallableAccessor`), a value or reference type (`ValueOrRefType`), or a
+ * declaration with accessors (`DeclarationWithAccessors`).
  */
-class Attributable extends @attributable {
+class Attributable extends Element, @attributable {
   /** Gets an attribute attached to this element, if any. */
   final Attribute getAnAttribute() { result.getTarget() = this }
-
-  /** Gets a textual representation of this element. */
-  string toString() { none() }
-
-  /** Gets the location of this element, if any. */
-  Location getLocation() { none() }
 }
 
 /**
