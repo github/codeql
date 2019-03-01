@@ -296,3 +296,9 @@ def mutate_argument(x):
 def indirect_modification(y = []):
     aug_assign_argument(y)
     mutate_argument(y)
+
+def guarded_modification(z=[]):
+    if z:
+        z.append(0)
+    return z
+
