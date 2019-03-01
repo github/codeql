@@ -496,3 +496,190 @@ ssa.cpp:
 #  122|     v3_10(void)        = ReturnVoid         : 
 #  122|     v3_11(void)        = UnmodeledUse       : mu*
 #  122|     v3_12(void)        = ExitFunction       : 
+
+#  134| void MergeMustExactlyWithMustTotallyOverlap(bool, Point, int)
+#  134|   Block 0
+#  134|     v0_0(void)         = EnterFunction           : 
+#  134|     mu0_1(unknown)     = AliasedDefinition       : 
+#  134|     mu0_2(unknown)     = UnmodeledDefinition     : 
+#  134|     r0_3(glval<bool>)  = VariableAddress[c]      : 
+#  134|     m0_4(bool)         = InitializeParameter[c]  : &:r0_3
+#  134|     r0_5(glval<Point>) = VariableAddress[p]      : 
+#  134|     m0_6(Point)        = InitializeParameter[p]  : &:r0_5
+#  134|     r0_7(glval<int>)   = VariableAddress[x1]     : 
+#  134|     m0_8(int)          = InitializeParameter[x1] : &:r0_7
+#  135|     r0_9(glval<Point>) = VariableAddress[a]      : 
+#  135|     mu0_10(Point)      = Uninitialized[a]        : &:r0_9
+#  135|     r0_11(glval<int>)  = FieldAddress[x]         : r0_9
+#  135|     r0_12(int)         = Constant[0]             : 
+#  135|     mu0_13(int)        = Store                   : &:r0_11, r0_12
+#  135|     r0_14(glval<int>)  = FieldAddress[y]         : r0_9
+#  135|     r0_15(int)         = Constant[0]             : 
+#  135|     mu0_16(int)        = Store                   : &:r0_14, r0_15
+#  136|     r0_17(glval<bool>) = VariableAddress[c]      : 
+#  136|     r0_18(bool)        = Load                    : &:r0_17, m0_4
+#  136|     v0_19(void)        = ConditionalBranch       : r0_18
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  137|   Block 1
+#  137|     r1_0(glval<int>)   = VariableAddress[x1] : 
+#  137|     r1_1(int)          = Load                : &:r1_0, m0_8
+#  137|     r1_2(glval<Point>) = VariableAddress[a]  : 
+#  137|     r1_3(glval<int>)   = FieldAddress[x]     : r1_2
+#  137|     mu1_4(int)         = Store               : &:r1_3, r1_1
+#-----|   Goto -> Block 3
+
+#  140|   Block 2
+#  140|     r2_0(glval<Point>) = VariableAddress[p] : 
+#  140|     r2_1(Point)        = Load               : &:r2_0, m0_6
+#  140|     r2_2(glval<Point>) = VariableAddress[a] : 
+#  140|     mu2_3(Point)       = Store              : &:r2_2, r2_1
+#-----|   Goto -> Block 3
+
+#  142|   Block 3
+#  142|     r3_0(glval<int>)   = VariableAddress[x] : 
+#  142|     r3_1(glval<Point>) = VariableAddress[a] : 
+#  142|     r3_2(glval<int>)   = FieldAddress[x]    : r3_1
+#  142|     r3_3(int)          = Load               : &:r3_2, mu0_2
+#  142|     m3_4(int)          = Store              : &:r3_0, r3_3
+#  143|     v3_5(void)         = NoOp               : 
+#  134|     v3_6(void)         = ReturnVoid         : 
+#  134|     v3_7(void)         = UnmodeledUse       : mu*
+#  134|     v3_8(void)         = ExitFunction       : 
+
+#  145| void MergeMustExactlyWithMayPartiallyOverlap(bool, Point, int)
+#  145|   Block 0
+#  145|     v0_0(void)         = EnterFunction           : 
+#  145|     mu0_1(unknown)     = AliasedDefinition       : 
+#  145|     mu0_2(unknown)     = UnmodeledDefinition     : 
+#  145|     r0_3(glval<bool>)  = VariableAddress[c]      : 
+#  145|     m0_4(bool)         = InitializeParameter[c]  : &:r0_3
+#  145|     r0_5(glval<Point>) = VariableAddress[p]      : 
+#  145|     m0_6(Point)        = InitializeParameter[p]  : &:r0_5
+#  145|     r0_7(glval<int>)   = VariableAddress[x1]     : 
+#  145|     m0_8(int)          = InitializeParameter[x1] : &:r0_7
+#  146|     r0_9(glval<Point>) = VariableAddress[a]      : 
+#  146|     mu0_10(Point)      = Uninitialized[a]        : &:r0_9
+#  146|     r0_11(glval<int>)  = FieldAddress[x]         : r0_9
+#  146|     r0_12(int)         = Constant[0]             : 
+#  146|     mu0_13(int)        = Store                   : &:r0_11, r0_12
+#  146|     r0_14(glval<int>)  = FieldAddress[y]         : r0_9
+#  146|     r0_15(int)         = Constant[0]             : 
+#  146|     mu0_16(int)        = Store                   : &:r0_14, r0_15
+#  147|     r0_17(glval<bool>) = VariableAddress[c]      : 
+#  147|     r0_18(bool)        = Load                    : &:r0_17, m0_4
+#  147|     v0_19(void)        = ConditionalBranch       : r0_18
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  148|   Block 1
+#  148|     r1_0(glval<int>)   = VariableAddress[x1] : 
+#  148|     r1_1(int)          = Load                : &:r1_0, m0_8
+#  148|     r1_2(glval<Point>) = VariableAddress[a]  : 
+#  148|     r1_3(glval<int>)   = FieldAddress[x]     : r1_2
+#  148|     mu1_4(int)         = Store               : &:r1_3, r1_1
+#-----|   Goto -> Block 3
+
+#  151|   Block 2
+#  151|     r2_0(glval<Point>) = VariableAddress[p] : 
+#  151|     r2_1(Point)        = Load               : &:r2_0, m0_6
+#  151|     r2_2(glval<Point>) = VariableAddress[a] : 
+#  151|     mu2_3(Point)       = Store              : &:r2_2, r2_1
+#-----|   Goto -> Block 3
+
+#  153|   Block 3
+#  153|     r3_0(glval<Point>) = VariableAddress[b] : 
+#  153|     r3_1(glval<Point>) = VariableAddress[a] : 
+#  153|     r3_2(Point)        = Load               : &:r3_1, mu0_2
+#  153|     m3_3(Point)        = Store              : &:r3_0, r3_2
+#  154|     v3_4(void)         = NoOp               : 
+#  145|     v3_5(void)         = ReturnVoid         : 
+#  145|     v3_6(void)         = UnmodeledUse       : mu*
+#  145|     v3_7(void)         = ExitFunction       : 
+
+#  156| void MergeMustTotallyOverlapWithMayPartiallyOverlap(bool, Rect, int)
+#  156|   Block 0
+#  156|     v0_0(void)          = EnterFunction             : 
+#  156|     mu0_1(unknown)      = AliasedDefinition         : 
+#  156|     mu0_2(unknown)      = UnmodeledDefinition       : 
+#  156|     r0_3(glval<bool>)   = VariableAddress[c]        : 
+#  156|     m0_4(bool)          = InitializeParameter[c]    : &:r0_3
+#  156|     r0_5(glval<Rect>)   = VariableAddress[r]        : 
+#  156|     m0_6(Rect)          = InitializeParameter[r]    : &:r0_5
+#  156|     r0_7(glval<int>)    = VariableAddress[x1]       : 
+#  156|     m0_8(int)           = InitializeParameter[x1]   : &:r0_7
+#  157|     r0_9(glval<Rect>)   = VariableAddress[a]        : 
+#  157|     mu0_10(Rect)        = Uninitialized[a]          : &:r0_9
+#  157|     r0_11(glval<Point>) = FieldAddress[topLeft]     : r0_9
+#  157|     r0_12(Point)        = Constant[0]               : 
+#  157|     mu0_13(Point)       = Store                     : &:r0_11, r0_12
+#  157|     r0_14(glval<Point>) = FieldAddress[bottomRight] : r0_9
+#  157|     r0_15(Point)        = Constant[0]               : 
+#  157|     mu0_16(Point)       = Store                     : &:r0_14, r0_15
+#  158|     r0_17(glval<bool>)  = VariableAddress[c]        : 
+#  158|     r0_18(bool)         = Load                      : &:r0_17, m0_4
+#  158|     v0_19(void)         = ConditionalBranch         : r0_18
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  159|   Block 1
+#  159|     r1_0(glval<int>)   = VariableAddress[x1]   : 
+#  159|     r1_1(int)          = Load                  : &:r1_0, m0_8
+#  159|     r1_2(glval<Rect>)  = VariableAddress[a]    : 
+#  159|     r1_3(glval<Point>) = FieldAddress[topLeft] : r1_2
+#  159|     r1_4(glval<int>)   = FieldAddress[x]       : r1_3
+#  159|     mu1_5(int)         = Store                 : &:r1_4, r1_1
+#-----|   Goto -> Block 3
+
+#  162|   Block 2
+#  162|     r2_0(glval<Rect>) = VariableAddress[r] : 
+#  162|     r2_1(Rect)        = Load               : &:r2_0, m0_6
+#  162|     r2_2(glval<Rect>) = VariableAddress[a] : 
+#  162|     mu2_3(Rect)       = Store              : &:r2_2, r2_1
+#-----|   Goto -> Block 3
+
+#  164|   Block 3
+#  164|     r3_0(glval<Point>) = VariableAddress[b]    : 
+#  164|     r3_1(glval<Rect>)  = VariableAddress[a]    : 
+#  164|     r3_2(glval<Point>) = FieldAddress[topLeft] : r3_1
+#  164|     r3_3(Point)        = Load                  : &:r3_2, mu0_2
+#  164|     m3_4(Point)        = Store                 : &:r3_0, r3_3
+#  165|     v3_5(void)         = NoOp                  : 
+#  156|     v3_6(void)         = ReturnVoid            : 
+#  156|     v3_7(void)         = UnmodeledUse          : mu*
+#  156|     v3_8(void)         = ExitFunction          : 
+
+#  171| void WrapperStruct(Wrapper)
+#  171|   Block 0
+#  171|     v0_0(void)            = EnterFunction          : 
+#  171|     mu0_1(unknown)        = AliasedDefinition      : 
+#  171|     mu0_2(unknown)        = UnmodeledDefinition    : 
+#  171|     r0_3(glval<Wrapper>)  = VariableAddress[w]     : 
+#  171|     mu0_4(Wrapper)        = InitializeParameter[w] : &:r0_3
+#  172|     r0_5(glval<Wrapper>)  = VariableAddress[x]     : 
+#  172|     r0_6(glval<Wrapper>)  = VariableAddress[w]     : 
+#  172|     r0_7(Wrapper)         = Load                   : &:r0_6, mu0_2
+#  172|     m0_8(Wrapper)         = Store                  : &:r0_5, r0_7
+#  173|     r0_9(glval<int>)      = VariableAddress[a]     : 
+#  173|     r0_10(glval<Wrapper>) = VariableAddress[w]     : 
+#  173|     r0_11(glval<int>)     = FieldAddress[f]        : r0_10
+#  173|     r0_12(int)            = Load                   : &:r0_11, mu0_2
+#  173|     m0_13(int)            = Store                  : &:r0_9, r0_12
+#  174|     r0_14(int)            = Constant[5]            : 
+#  174|     r0_15(glval<Wrapper>) = VariableAddress[w]     : 
+#  174|     r0_16(glval<int>)     = FieldAddress[f]        : r0_15
+#  174|     mu0_17(int)           = Store                  : &:r0_16, r0_14
+#  175|     r0_18(glval<Wrapper>) = VariableAddress[w]     : 
+#  175|     r0_19(glval<int>)     = FieldAddress[f]        : r0_18
+#  175|     r0_20(int)            = Load                   : &:r0_19, mu0_2
+#  175|     r0_21(glval<int>)     = VariableAddress[a]     : 
+#  175|     m0_22(int)            = Store                  : &:r0_21, r0_20
+#  176|     r0_23(glval<Wrapper>) = VariableAddress[w]     : 
+#  176|     r0_24(Wrapper)        = Load                   : &:r0_23, mu0_2
+#  176|     r0_25(glval<Wrapper>) = VariableAddress[x]     : 
+#  176|     m0_26(Wrapper)        = Store                  : &:r0_25, r0_24
+#  177|     v0_27(void)           = NoOp                   : 
+#  171|     v0_28(void)           = ReturnVoid             : 
+#  171|     v0_29(void)           = UnmodeledUse           : mu*
+#  171|     v0_30(void)           = ExitFunction           : 
