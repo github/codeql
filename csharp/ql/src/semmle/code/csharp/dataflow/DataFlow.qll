@@ -996,6 +996,8 @@ module DataFlow {
         or
         Internal::flowOutOfDelegateLibraryCall(nodeFrom, nodeTo, true)
         or
+        flowThroughCallableLibraryOutRef(_, nodeFrom, nodeTo, true)
+        or
         localFlowStepCil(nodeFrom, nodeTo)
       }
 
@@ -1079,17 +1081,12 @@ module DataFlow {
         (isSuccessor = true or isSuccessor = false)
       }
 
-      predicate localFlowStepNoConfig(Node pred, Node succ) {
-        localFlowStep(pred, succ) or
-        flowThroughCallableLibraryOutRef(_, pred, succ, true)
-      }
-
       /**
        * Holds if data may flow in one local step from `pred` to `succ`.
        */
       bindingset[config]
       predicate localFlowStep(Node pred, Node succ, Configuration config) {
-        localFlowStepNoConfig(pred, succ) or
+        localFlowStep(pred, succ) or
         config.isAdditionalFlowStep(pred, succ)
       }
 

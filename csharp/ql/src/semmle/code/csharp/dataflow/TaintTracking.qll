@@ -81,8 +81,7 @@ module TaintTracking {
 
     final override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       isAdditionalTaintStep(pred, succ) or
-      localAdditionalTaintStep(pred, succ) or
-      DataFlow::Internal::flowThroughCallableLibraryOutRef(_, pred, succ, false)
+      localAdditionalTaintStep(pred, succ)
     }
 
     final override predicate isAdditionalFlowStepIntoCall(
@@ -257,6 +256,8 @@ module TaintTracking {
           or
           access.(PropertyRead).getQualifier() = nodeFrom.asExpr()
         )
+        or
+        DataFlow::Internal::flowThroughCallableLibraryOutRef(_, nodeFrom, nodeTo, false)
       }
     }
     import Cached
