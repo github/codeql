@@ -248,15 +248,11 @@ predicate resultEscapesNonReturn(Instruction instr) {
  * domain of the analysis.
  */
 private predicate automaticVariableAddressEscapes(IRAutomaticVariable var) {
-  exists(FunctionIR funcIR |
-    funcIR = var.getEnclosingFunctionIR() and
-    // The variable's address escapes if the result of any
-    // VariableAddressInstruction that computes the variable's address escapes.
-    exists(VariableAddressInstruction instr |
-      instr.getEnclosingFunctionIR() = funcIR and
-      instr.getVariable() = var and
-      resultEscapesNonReturn(instr)
-    )
+  // The variable's address escapes if the result of any
+  // VariableAddressInstruction that computes the variable's address escapes.
+  exists(VariableAddressInstruction instr |
+    instr.getVariable() = var and
+    resultEscapesNonReturn(instr)
   )
 }
 
