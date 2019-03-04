@@ -16,7 +16,7 @@ predicate potentiallyDangerousFunction(Function f, string message) {
     f.getQualifiedName() = "gmtime" and
     message = "Call to gmtime is potentially dangerous"
   ) or (
-    f.hasName("gets") and
+    f.getQualifiedName() = "gets" and
     message = "gets does not guard against buffer overflow"
   )
 }
