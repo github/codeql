@@ -12,3 +12,5 @@
 | test.cpp:235:2:235:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:227:7:227:13 | new | new |
 | test.cpp:239:2:239:5 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:228:7:228:17 | new[] | new[] |
 | test.cpp:272:3:272:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:265:7:265:13 | new | new |
+| test.cpp:367:3:367:10 | delete | There is a malloc/delete mismatch between this delete and the corresponding $@. | test.cpp:359:14:359:19 | call to malloc | malloc |
+| test.cpp:370:3:370:6 | call to free | There is a new/free mismatch between this free and the corresponding $@. | test.cpp:356:7:356:15 | new | new |
