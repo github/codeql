@@ -1,5 +1,0 @@
-| tst.html:3:3:3:57 | <a>...</> | 0 | tst.html:3:6:3:30 | href=https://semmle.com |
-| tst.html:3:3:3:57 | <a>...</> | 1 | tst.html:3:32:3:46 | target=_blank |
-| tst.jsx:4:11:4:75 | <a href ... mle</a> | 0 | tst.jsx:4:14:4:38 | href="h ... le.com" |
-| tst.jsx:4:11:4:75 | <a href ... mle</a> | 1 | tst.jsx:4:40:4:48 | rel={rel} |
-| tst.jsx:4:11:4:75 | <a href ... mle</a> | 2 | tst.jsx:4:50:4:64 | {...otherAttrs} |
