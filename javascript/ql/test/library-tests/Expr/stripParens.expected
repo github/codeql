@@ -1,6 +1,0 @@
-| functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) | functions.js:4:4:6:3 | functio ... _f;\\n\\t\\t} |
-| primaries.js:15:1:15:4 | (23) | primaries.js:15:2:15:3 | 23 |
-| primaries.js:17:1:21:16 | ({ x: 2 ... v) {}}) | primaries.js:17:2:21:15 | { x: 23 ... (v) {}} |
-| primaries.js:28:1:28:6 | ((42)) | primaries.js:28:3:28:4 | 42 |
-| primaries.js:28:2:28:5 | (42) | primaries.js:28:3:28:4 | 42 |
-| unary.js:6:5:6:7 | (0) | unary.js:6:6:6:6 | 0 |
