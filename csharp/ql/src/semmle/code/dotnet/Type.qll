@@ -23,16 +23,28 @@ class ValueOrRefType extends Type, @dotnet_valueorreftype {
   /** Gets the namespace declaring this type, if any. */
   Namespace getDeclaringNamespace() { none() }
 
-  override string getLabel() {
-    result = getPrefixWithTypes() + getUndecoratedName() + getGenericsLabel(this)
-  }
-
   private string getPrefixWithTypes() {
     result = getDeclaringType().getLabel() + "."
     or
     if getDeclaringNamespace().isGlobalNamespace()
     then result = ""
     else result = getDeclaringNamespace().getQualifiedName() + "."
+  }
+
+  pragma[noinline]
+  private string getLabelNonGeneric() {
+    not this instanceof Generic and
+    result = this.getPrefixWithTypes() + this.getUndecoratedName()
+  }
+
+  pragma[noinline]
+  private string getLabelGeneric() {
+    result = this.getPrefixWithTypes() + this.getUndecoratedName() + getGenericsLabel(this)
+  }
+
+  override string getLabel() {
+    result = this.getLabelNonGeneric() or
+    result = this.getLabelGeneric()
   }
 
   /** Gets a base type of this type, if any. */
