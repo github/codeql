@@ -173,3 +173,14 @@ def test_update_extend(x, y):
     SINK(y["key"])
     l2 = list(l)
     d2 = dict(d)
+
+def test_truth():
+    t = SOURCE
+    if t:
+        SINK(t)
+    else:
+        SINK(t)
+    if not t:
+        SINK(t)
+    else:
+        SINK(t)

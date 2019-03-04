@@ -5,6 +5,7 @@ import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 
+cached
 private newtype TNode =
   TExprNode(Expr e) or
   TParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
@@ -195,6 +196,7 @@ UninitializedNode uninitializedNode(LocalVariable v) {
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
+cached
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())

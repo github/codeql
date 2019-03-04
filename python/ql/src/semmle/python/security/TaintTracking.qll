@@ -148,6 +148,16 @@ abstract class TaintKind extends string {
         none()
     }
 
+    /** Gets the boolean values (may be one, neither, or both) that
+     * may result from the Python expression `bool(this)`
+     */
+    boolean booleanValue() {
+        /* Default to true as the vast majority of taint is strings and 
+         * the empty string is almost always benign.
+         */
+        result = true
+    }
+
     string repr() { result = this }
 
 }
@@ -167,6 +177,7 @@ abstract class CollectionKind extends TaintKind {
         /* Prevent any collection kinds more than 2 deep */
         not this.charAt(2) = "[" and not this.charAt(2) = "{"
     }
+
 }
 
 /** A taint kind representing a flat collections of kinds.
@@ -193,7 +204,7 @@ class SequenceKind extends CollectionKind {
             tonode.(BinaryExprNode).getAnOperand() = fromnode
         )
         or
-        result = this and copy_call(fromnode, tonode)
+        result = this and TaintFlowImplementation::copyCall(fromnode, tonode)
         or
         exists(BinaryExprNode mod |
             mod = tonode and
@@ -236,20 +247,6 @@ private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
     )
 }
 
-/* A call that returns a copy (or similar) of the argument */
-private predicate copy_call(ControlFlowNode fromnode, CallNode tonode) {
-    tonode.getFunction().(AttrNode).getObject("copy") = fromnode
-    or
-    exists(ModuleObject copy, string name |
-        name = "copy" or name = "deepcopy" |
-        copy.attr(name).(FunctionObject).getACall() = tonode and
-        tonode.getArg(0) = fromnode
-    )
-    or
-    tonode.getFunction().refersTo(Object::builtin("reversed")) and
-    tonode.getArg(0) = fromnode
-}
-
 /** A taint kind representing a mapping of objects to kinds.
  * Typically a dict, but can include other mappings.
  */
@@ -272,7 +269,7 @@ class DictKind extends CollectionKind {
         result = valueKind and
         tonode.(CallNode).getFunction().(AttrNode).getObject("get") = fromnode
         or
-        result = this and copy_call(fromnode, tonode)
+        result = this and TaintFlowImplementation::copyCall(fromnode, tonode)
         or
         result = this and
         tonode.(CallNode).getFunction().refersTo(theDictType()) and
@@ -1203,7 +1200,8 @@ library module TaintFlowImplementation {
                 sanitizer.sanitizingEdge(kind, test)
             )
             |
-            not Filters::isinstance(test.getTest(), _, var.getSourceVariable().getAUse())
+            not Filters::isinstance(test.getTest(), _, var.getSourceVariable().getAUse()) and
+            not test.getTest() = var.getSourceVariable().getAUse()
             or
             exists(ControlFlowNode c, ClassObject cls |
                 Filters::isinstance(test.getTest(), c, var.getSourceVariable().getAUse())
@@ -1213,6 +1211,8 @@ library module TaintFlowImplementation {
                 or
                 test.getSense() = false and not kind.getClass().getAnImproperSuperType() = cls
             )
+            or
+            test.getTest() = var.getSourceVariable().getAUse() and kind.booleanValue() = test.getSense()
         )
     }
 
@@ -1261,6 +1261,20 @@ library module TaintFlowImplementation {
     predicate tainted_exception_capture(ExceptionCapture def, CallContext context, TaintedNode fromnode) {
         fromnode.getNode() = def.getDefiningNode() and
         context = fromnode.getContext()
+    }
+
+    /* A call that returns a copy (or similar) of the argument */
+    predicate copyCall(ControlFlowNode fromnode, CallNode tonode) {
+        tonode.getFunction().(AttrNode).getObject("copy") = fromnode
+        or
+        exists(ModuleObject copy, string name |
+            name = "copy" or name = "deepcopy" |
+            copy.attr(name).(FunctionObject).getACall() = tonode and
+            tonode.getArg(0) = fromnode
+        )
+        or
+        tonode.getFunction().refersTo(Object::builtin("reversed")) and
+        tonode.getArg(0) = fromnode
     }
 
 }

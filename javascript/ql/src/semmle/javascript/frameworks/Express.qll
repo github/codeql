@@ -604,14 +604,15 @@ module Express {
   }
 
   /**
-   * An argument passed to the `send` method of an HTTP response object.
+   * An argument passed to the `send` or `end` method of an HTTP response object.
    */
   private class ResponseSendArgument extends HTTP::ResponseSendArgument {
     RouteHandler rh;
 
     ResponseSendArgument() {
-      exists(MethodCallExpr mce |
-        mce.calls(rh.getAResponseExpr(), "send") and
+      exists(MethodCallExpr mce, string name |
+        mce.calls(rh.getAResponseExpr(), name) and
+        (name = "send" or name = "end") and
         this = mce.getArgument(0)
       )
     }

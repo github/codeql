@@ -9,22 +9,22 @@ package com.semmle.js.ast;
  * </pre>
  */
 public class ForOfStatement extends EnhancedForStatement {
-	private boolean isAwait;
+  private boolean isAwait;
 
-	public ForOfStatement(SourceLocation loc, Node left, Expression right, Statement body) {
-		super("ForOfStatement", loc, left, right, body);
-	}
+  public ForOfStatement(SourceLocation loc, Node left, Expression right, Statement body) {
+    super("ForOfStatement", loc, left, right, body);
+  }
 
-	public void setAwait(boolean isAwait) {
-		this.isAwait = isAwait;
-	}
+  public void setAwait(boolean isAwait) {
+    this.isAwait = isAwait;
+  }
 
-	public boolean isAwait() {
-		return isAwait;
-	}
+  public boolean isAwait() {
+    return isAwait;
+  }
 
-	@Override
-	public <Q, A> A accept(Visitor<Q, A> v, Q q) {
-		return v.visit(this, q);
-	}
+  @Override
+  public <Q, A> A accept(Visitor<Q, A> v, Q q) {
+    return v.visit(this, q);
+  }
 }

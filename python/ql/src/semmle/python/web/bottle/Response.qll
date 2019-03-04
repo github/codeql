@@ -32,7 +32,7 @@ class BottleResponseBodyAssignment extends TaintSink {
     }
 
     override predicate sinks(TaintKind kind) {
-        kind instanceof UntrustedStringKind
+        kind instanceof StringKind
     }
 
 }
@@ -47,7 +47,7 @@ class BottleHandlerFunctionResult extends TaintSink {
     }
 
     override predicate sinks(TaintKind kind) {
-        kind instanceof UntrustedStringKind
+        kind instanceof StringKind
     }
 
     override string toString() {

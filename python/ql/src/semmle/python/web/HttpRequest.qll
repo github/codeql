@@ -5,3 +5,5 @@ import semmle.python.web.pyramid.Request
 import semmle.python.web.twisted.Request
 import semmle.python.web.bottle.Request
 import semmle.python.web.turbogears.Request
+import semmle.python.web.falcon.Request
+import semmle.python.web.cherrypy.Request

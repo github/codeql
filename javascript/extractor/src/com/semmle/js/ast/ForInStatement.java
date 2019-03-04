@@ -11,19 +11,20 @@ package com.semmle.js.ast;
  * This also includes legacy for-each statements.
  */
 public class ForInStatement extends EnhancedForStatement {
-	private final boolean each;
+  private final boolean each;
 
-	public ForInStatement(SourceLocation loc, Node left, Expression right, Statement body, Boolean each) {
-		super("ForInStatement", loc, left, right, body);
-		this.each = each == Boolean.TRUE;
-	}
+  public ForInStatement(
+      SourceLocation loc, Node left, Expression right, Statement body, Boolean each) {
+    super("ForInStatement", loc, left, right, body);
+    this.each = each == Boolean.TRUE;
+  }
 
-	public boolean isEach() {
-		return each;
-	}
+  public boolean isEach() {
+    return each;
+  }
 
-	@Override
-	public <Q, A> A accept(Visitor<Q, A> v, Q q) {
-		return v.visit(this, q);
-	}
+  @Override
+  public <Q, A> A accept(Visitor<Q, A> v, Q q) {
+    return v.visit(this, q);
+  }
 }

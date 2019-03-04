@@ -6,18 +6,16 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	JSXTests.class,
-	NodeJSDetectorTests.class,
-	TrapTests.class,
-	ObjectRestSpreadTests.class,
-	ClassPropertiesTests.class,
-	FunctionSentTests.class,
-	DecoratorTests.class,
-	ExportExtensionsTests.class,
-	AutoBuildTests.class,
-	RobustnessTests.class,
-	NumericSeparatorTests.class
+  JSXTests.class,
+  NodeJSDetectorTests.class,
+  TrapTests.class,
+  ObjectRestSpreadTests.class,
+  ClassPropertiesTests.class,
+  FunctionSentTests.class,
+  DecoratorTests.class,
+  ExportExtensionsTests.class,
+  AutoBuildTests.class,
+  RobustnessTests.class,
+  NumericSeparatorTests.class
 })
-public class AllTests {
-
-}
+public class AllTests {}

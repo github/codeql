@@ -96,3 +96,23 @@ private predicate json_load(ControlFlowNode fromnode, CallNode tonode) {
     )
 }
 
+/** A kind of "taint", representing an open file-like object from an external source. */
+class ExternalFileObject extends TaintKind {
+
+    ExternalFileObject() {
+        this = "file[" + any(ExternalStringKind key) + "]"
+    }
+
+
+    /** Gets the taint kind for the contents of this file */
+    TaintKind getValue() {
+        this = "file[" + result + "]"
+    }
+
+    override TaintKind getTaintOfMethodResult(string name) {
+        name = "read" and result = this.getValue()
+    }
+
+}
+
+

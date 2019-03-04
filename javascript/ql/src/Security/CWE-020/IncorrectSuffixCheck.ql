@@ -95,9 +95,9 @@ predicate isDerivedFromLength(DataFlow::Node length, DataFlow::Node operand) {
   or
   isDerivedFromLength(length.getAPredecessor(), operand)
   or
-  exists(SubExpr sub |
-    isDerivedFromLength(sub.getAnOperand().flow(), operand) and
-    length = sub.flow()
+  exists(BinaryExpr expr | expr instanceof SubExpr or expr instanceof AddExpr |
+    isDerivedFromLength(expr.getAnOperand().flow(), operand) and
+    length = expr.flow()
   )
 }
 

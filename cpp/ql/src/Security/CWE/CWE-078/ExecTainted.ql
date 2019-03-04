@@ -5,7 +5,7 @@
  *              to command injection.
  * @kind problem
  * @problem.severity error
- * @precision high
+ * @precision low
  * @id cpp/command-line-injection
  * @tags security
  *       external/cwe/cwe-078

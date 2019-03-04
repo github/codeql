@@ -583,7 +583,18 @@ module DataFlow {
 
     override string getPropertyName() { result = prop.getName() }
 
-    override Node getRhs() { result = parameterNode(prop.getParameter()) }
+    override Node getRhs() {
+      exists(Parameter param, Node paramNode |
+        param = prop.getParameter() and
+        parameterNode(paramNode, param)
+        |
+        result = paramNode
+        or
+        // special case: there is no SSA flow step for unused parameters
+        paramNode instanceof UnusedParameterNode and
+        result = param.getDefault().flow()
+      )
+    }
 
     override ControlFlowNode getWriteNode() { result = prop.getParameter() }
   }
@@ -1075,6 +1086,16 @@ module DataFlow {
     exists(ThisExpr thiz |
       pred = TThisNode(thiz.getBindingContainer()) and
       succ = valueNode(thiz)
+    )
+  }
+
+  /**
+   * Holds if there is a step from `pred` to `succ` through a field accessed through `this` in a class.
+   */
+  predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists (ClassNode cls, string prop |
+      pred = cls.getAReceiverNode().getAPropertyWrite(prop).getRhs() and
+      succ = cls.getAReceiverNode().getAPropertyRead(prop)
     )
   }
 
