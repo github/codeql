@@ -77,7 +77,6 @@ private Virtualizable getAnImplementedInterfaceMemberForSubType(Virtualizable m,
   )
 }
 
-// predicate folding for proper join order
 pragma[noinline]
 private predicate hasMemberCompatibleWithInterfaceMember(ValueOrRefType t, Virtualizable m) {
   m = getACompatibleInterfaceMember(t.getAMember())
@@ -128,7 +127,6 @@ private DeclarationWithAccessors getACompatibleInterfaceAccessorCandidate(Declar
   d.isPublic()
 }
 
-// predicate folding for proper join-order
 pragma[noinline]
 private predicate getACompatibleInterfaceAccessorAux(
   DeclarationWithAccessors d, ValueOrRefType t, string name
@@ -162,17 +160,22 @@ ValueOrRefType getAPossibleImplementor(Interface i) {
   not result instanceof Interface
 }
 
+private Indexer getACompatibleInterfaceIndexer0(Indexer i, int j) {
+  result = getACompatibleInterfaceIndexerCandidate(i) and
+  convIdentity(i.getType(), result.getType()) and
+  j = -1
+  or
+  result = getACompatibleInterfaceIndexer0(i, j - 1) and
+  convIdentity(i.getParameter(j).getType(), result.getParameter(j).getType())
+}
+
 /**
  * Gets an interface indexer whose signature matches `i`'s
  * signature, and where `i` can potentially be accessed when
  * the interface indexer is accessed.
  */
 private Indexer getACompatibleInterfaceIndexer(Indexer i) {
-  result = getACompatibleInterfaceIndexerCandidate(i) and
-  convIdentity(i.getType(), result.getType()) and
-  forex(int j | j in [0 .. i.getNumberOfParameters() - 1] |
-    convIdentity(i.getParameter(j).getType(), result.getParameter(j).getType())
-  )
+  result = getACompatibleInterfaceIndexer0(i, i.getNumberOfParameters() - 1)
 }
 
 private Indexer getACompatibleInterfaceIndexerCandidate(Indexer i) {
@@ -180,27 +183,26 @@ private Indexer getACompatibleInterfaceIndexerCandidate(Indexer i) {
   i.isPublic()
 }
 
-// predicate folding for proper join-order
 pragma[noinline]
 private predicate getACompatibleInterfaceIndexerAux(Indexer i, ValueOrRefType t) {
   t = getAPossibleImplementor(i.getDeclaringType())
 }
 
-private Method getACompatibleInterfaceMethod(Method m) {
+private Method getACompatibleInterfaceMethod0(Method m, int i) {
   result = getAnInterfaceMethodCandidate(m) and
-  forex(int i | i in [0 .. m.getNumberOfParameters()] |
-    exists(Type t1, Type t2 |
-      t1 = getArgumentOrReturnType(m, i) and
-      t2 = getArgumentOrReturnType(result, i)
-    |
-      convIdentity(t1, t2)
-      or
-      // In the case where both `m` and `result` are unbound generic methods,
-      // we need to do check for structural equality modulo the method type
-      // parameters
-      structurallyCompatible(m, result, t1, t2)
-    )
+  i = -1
+  or
+  result = getACompatibleInterfaceMethod0(m, i - 1) and
+  exists(Type t1, Type t2 |
+    t1 = getArgumentOrReturnType(m, i) and
+    t2 = getArgumentOrReturnType(result, i)
+  |
+    Gvn::getGlobalValueNumber(t1) = Gvn::getGlobalValueNumber(t2)
   )
+}
+
+private Method getACompatibleInterfaceMethod(Method m) {
+  result = getACompatibleInterfaceMethod0(m, m.getNumberOfParameters())
 }
 
 /**
@@ -215,7 +217,6 @@ private Method getAnInterfaceMethodCandidate(Method m) {
   m.isPublic()
 }
 
-// predicate folding for proper join-order
 pragma[nomagic]
 private predicate getAPotentialInterfaceMethodAux(
   Method m, ValueOrRefType t, string name, int params
@@ -232,90 +233,158 @@ private Type getArgumentOrReturnType(Method m, int i) {
 }
 
 /**
- * Holds if `m2` is an interface method candidate for `m1`
- * (`m2 = getAnInterfaceMethodCandidate(m1)`), both `m1` and `m2` are
- * unbound generic methods, `t1` is a structural sub term of a
- * parameter type of `m1`, `t2` is a structural sub term of a parameter
- * (at the same index) type of `m2`, and `t1` and `t2` are compatible.
+ * INTERNAL: Do not use.
  *
- * Here, compatibility means that the two types are structurally equal
- * modulo identity conversions and method type parameters.
+ * Provides an implementation of Global Value Numbering for types
+ * (see https://en.wikipedia.org/wiki/Global_value_numbering), where
+ * types are considered equal modulo identity conversions and method
+ * type parameters (at the same index).
  */
-private predicate structurallyCompatible(
-  UnboundGenericMethod m1, UnboundGenericMethod m2, Type t1, Type t2
-) {
-  candidateTypes(m1, m2, t1, t2) and
-  (
-    // Base case: identity convertible
-    convIdentity(t1, t2)
+module Gvn {
+  private newtype TCompoundTypeKind =
+    TPointerTypeKind() or
+    TNullableTypeKind() or
+    TArrayTypeKind(int dim, int rnk) {
+      exists(ArrayType at | dim = at.getDimension() and rnk = at.getRank())
+    } or
+    TConstructedType(UnboundGenericType ugt)
+
+  /** A type kind for a compound type. */
+  class CompoundTypeKind extends TCompoundTypeKind {
+    int getNumberOfTypeParameters() {
+      this = TPointerTypeKind() and result = 1
+      or
+      this = TNullableTypeKind() and result = 1
+      or
+      this = TArrayTypeKind(_, _) and result = 1
+      or
+      exists(UnboundGenericType ugt | this = TConstructedType(ugt) |
+        result = ugt.getNumberOfTypeParameters()
+      )
+    }
+
+    string toString() {
+      this = TPointerTypeKind() and result = "*"
+      or
+      this = TNullableTypeKind() and result = "?"
+      or
+      exists(int dim, int rnk | this = TArrayTypeKind(dim, rnk) |
+        result = "[" + dim + ", " + rnk + "]"
+      )
+      or
+      exists(UnboundGenericType ugt | this = TConstructedType(ugt) |
+        result = ugt.getNameWithoutBrackets()
+      )
+    }
+
+    Location getLocation() { result instanceof EmptyLocation }
+  }
+
+  /** Gets the type kind for type `t`, if any. */
+  CompoundTypeKind getTypeKind(Type t) {
+    result = TPointerTypeKind() and t instanceof PointerType
     or
-    // Base case: method type parameter (at same index)
-    exists(int i | structurallyCompatibleTypeParameter(m1, m2, i, t1, m2.getTypeParameter(i)))
+    result = TNullableTypeKind() and t instanceof NullableType
     or
-    // Recursive case
-    (
-      t1 instanceof PointerType and t2 instanceof PointerType
-      or
-      t1 instanceof NullableType and t2 instanceof NullableType
-      or
-      t1.(ArrayType).hasSameShapeAs(t2.(ArrayType))
-      or
-      t1.(ConstructedType).getUnboundGeneric() = t2.(ConstructedType).getUnboundGeneric()
-    ) and
-    structurallyCompatibleChildren(m1, m2, t1, t2, t1.getNumberOfChildren() - 1)
-  )
-}
+    t = any(ArrayType at | result = TArrayTypeKind(at.getDimension(), at.getRank()))
+    or
+    result = TConstructedType(t.(ConstructedType).getUnboundGeneric())
+  }
 
-// Predicate folding to force joining on `candidateTypes` first
-// to prevent `private#structurallyCompatibleTypeParameter#fbbfb`
-pragma[nomagic]
-private predicate structurallyCompatibleTypeParameter(
-  UnboundGenericMethod m1, UnboundGenericMethod m2, int i, Type t1, Type t2
-) {
-  candidateTypes(m1, m2, t1, t2) and
-  t1 = m1.getTypeParameter(i)
-}
+  private class MethodTypeParameter extends TypeParameter {
+    MethodTypeParameter() { this = any(UnboundGenericMethod ugm).getATypeParameter() }
+  }
 
-/**
- * Holds if the `i+1` first children of types `x` and `y` are compatible.
- */
-private predicate structurallyCompatibleChildren(
-  UnboundGenericMethod m1, UnboundGenericMethod m2, Type t1, Type t2, int i
-) {
-  exists(Type t3, Type t4 |
-    i = 0 and
-    candidateChildren(t1, t2, i, t3, t4) and
-    structurallyCompatible(m1, m2, t3, t4)
-  )
-  or
-  exists(Type t3, Type t4 |
-    structurallyCompatibleChildren(m1, m2, t1, t2, i - 1) and
-    candidateChildren(t1, t2, i, t3, t4) and
-    structurallyCompatible(m1, m2, t3, t4)
-  )
-}
+  private class LeafType extends Type {
+    LeafType() {
+      not exists(this.getAChild()) and
+      not this instanceof MethodTypeParameter
+    }
+  }
 
-// manual magic predicate used to enumerate types relevant for structural comparison
-private predicate candidateTypes(UnboundGenericMethod m1, UnboundGenericMethod m2, Type t1, Type t2) {
-  m2 = getAnInterfaceMethodCandidate(m1) and
-  (
-    exists(int i |
-      t1 = getArgumentOrReturnType(m1, i) and
-      t2 = getArgumentOrReturnType(m2, i)
+  private predicate id(LeafType t, int i) = equivalenceRelation(convIdentity/2)(t, i)
+
+  private newtype TGvnType =
+    TLeafGvnType(int i) { id(_, i) } or
+    TMethodTypeParameterGvnType(int i) { i = any(MethodTypeParameter p).getIndex() } or
+    TConstructedGvnType(TConstructedGvnType0 t)
+
+  private newtype TConstructedGvnType0 =
+    TConstructedGvnTypeNil(CompoundTypeKind k) or
+    TConstructedGvnTypeCons(TGvnType head, TConstructedGvnType0 tail) {
+      gvnConstructedCons(_, _, head, tail)
+    }
+
+  private TConstructedGvnType0 gvnConstructed(Type t, int i) {
+    result = TConstructedGvnTypeNil(getTypeKind(t)) and i = -1
+    or
+    exists(TGvnType head, TConstructedGvnType0 tail | gvnConstructedCons(t, i, head, tail) |
+      result = TConstructedGvnTypeCons(head, tail)
     )
-    or
-    exists(Type t3, Type t4, int j |
-      candidateTypes(m1, m2, t3, t4) and
-      t1 = t3.getChild(j) and
-      t2 = t4.getChild(j)
-    )
-  )
-}
+  }
 
-// predicate folding for proper join-order
-pragma[noinline]
-private predicate candidateChildren(Type t1, Type t2, int i, Type t3, Type t4) {
-  candidateTypes(_, _, t1, t2) and
-  t3 = t1.getChild(i) and
-  t4 = t2.getChild(i)
+  pragma[noinline]
+  private TGvnType gvnTypeChild(Type t, int i) { result = getGlobalValueNumber(t.getChild(i)) }
+
+  pragma[noinline]
+  private predicate gvnConstructedCons(Type t, int i, TGvnType head, TConstructedGvnType0 tail) {
+    tail = gvnConstructed(t, i - 1) and
+    head = gvnTypeChild(t, i)
+  }
+
+  /** Gets the global value number for a given type. */
+  GvnType getGlobalValueNumber(Type t) {
+    result = TLeafGvnType(any(int i | id(t, i)))
+    or
+    result = TMethodTypeParameterGvnType(t.(MethodTypeParameter).getIndex())
+    or
+    result = TConstructedGvnType(gvnConstructed(t, getTypeKind(t).getNumberOfTypeParameters() - 1))
+  }
+
+  /** A global value number for a type. */
+  class GvnType extends TGvnType {
+    string toString() {
+      exists(int i | this = TLeafGvnType(i) | result = i.toString())
+      or
+      exists(int i | this = TMethodTypeParameterGvnType(i) | result = "M!" + i)
+      or
+      exists(GvnConstructedType t | this = TConstructedGvnType(t) | result = t.toString())
+    }
+
+    Location getLocation() { result instanceof EmptyLocation }
+  }
+
+  /** A global value number for a constructed type. */
+  class GvnConstructedType extends TConstructedGvnType0 {
+    private CompoundTypeKind getKind() {
+      this = TConstructedGvnTypeNil(result)
+      or
+      exists(GvnConstructedType tail | this = TConstructedGvnTypeCons(_, tail) |
+        result = tail.getKind()
+      )
+    }
+
+    private GvnType getArg(int i) {
+      this = TConstructedGvnTypeCons(result, TConstructedGvnTypeNil(_)) and
+      i = 0
+      or
+      exists(GvnConstructedType tail | this = TConstructedGvnTypeCons(result, tail) |
+        exists(tail.getArg(i - 1))
+      )
+    }
+
+    language[monotonicAggregates]
+    string toString() {
+      exists(CompoundTypeKind k | k = this.getKind() |
+        result = k + "<" +
+            concat(int i |
+              i in [0 .. k.getNumberOfTypeParameters() - 1]
+            |
+              this.getArg(i).toString(), ", "
+            ) + ">"
+      )
+    }
+
+    Location getLocation() { result instanceof EmptyLocation }
+  }
 }
