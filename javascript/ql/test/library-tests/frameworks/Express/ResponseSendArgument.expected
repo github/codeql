@@ -1,4 +1,0 @@
-| src/csurf-example.js:26:12:26:42 | 'csrf w ... t here' | src/csurf-example.js:25:22:27:1 | functio ... ere')\\n} |
-| src/csurf-example.js:33:14:33:34 | 'no csr ... t here' | src/csurf-example.js:32:30:34:3 | functio ... e')\\n  } |
-| src/express3.js:6:12:6:16 | "val" | src/express3.js:4:23:7:1 | functio ... al");\\n} |
-| src/express.js:17:14:17:23 | "Go away." | src/express.js:16:19:18:3 | functio ... ");\\n  } |
