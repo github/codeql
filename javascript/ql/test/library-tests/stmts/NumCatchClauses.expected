@@ -1,4 +1,0 @@
-| guardedCatch.js:2:2:8:2 | try {\\n\\t ... !");\\n\\t} | 2 |
-| try.js:1:1:3:16 | try { / ... ) { ; } | 1 |
-| try.js:4:1:4:20 | try {} finally { ; } | 0 |
-| try.js:5:1:5:29 | try {}  ... ally {} | 1 |
