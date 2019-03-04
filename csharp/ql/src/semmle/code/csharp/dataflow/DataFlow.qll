@@ -1094,6 +1094,12 @@ module DataFlow {
         flowThroughCallableLibraryOutRef(_, pred, succ, true)
       }
 
+      pragma[noinline]
+      private predicate localFlowStep0(Node pred, Node succ, Configuration config, Callable c) {
+        config.isAdditionalFlowStep(pred, succ) and
+        pred.getEnclosingCallable() = c
+      }
+
       /**
        * Holds if data may flow in one local step from `pred` to `succ`.
        */
@@ -1101,8 +1107,7 @@ module DataFlow {
       predicate localFlowStep(Node pred, Node succ, Configuration config) {
         localFlowStepNoConfig(pred, succ)
         or
-        config.isAdditionalFlowStep(pred, succ) and
-        pred.getEnclosingCallable() = succ.getEnclosingCallable()
+        localFlowStep0(pred, succ, config, succ.getEnclosingCallable())
       }
 
       /**
@@ -1587,9 +1592,7 @@ module DataFlow {
     /**
      * A data flow context describing flow into a callable via a call argument.
      */
-    abstract private class ArgumentContext extends Context {
-      abstract DotNet::Expr getCall();
-    }
+    abstract private class ArgumentContext extends Context { abstract DotNet::Expr getCall(); }
 
     /**
      * A data flow context describing flow into a callable via an explicit call argument.
