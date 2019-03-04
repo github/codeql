@@ -1,2 +1,2 @@
 // OK: useless assignment flagged by other query
-exports = module.exports = { a: 23 };
+module.exports = exports = { a: 23 };
