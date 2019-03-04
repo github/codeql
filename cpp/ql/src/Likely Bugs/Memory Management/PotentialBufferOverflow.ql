@@ -9,6 +9,9 @@
  * @tags reliability
  *       security
  *       external/cwe/cwe-676
+ * @deprecated This query is deprecated, use
+ *             Security/CWE/CWE-120/OverrunWrite.ql and
+ *             Security/CWE/CWE-120/OverrunWriteFloat.ql instead.
  */
 import cpp
 import semmle.code.cpp.commons.Buffer
