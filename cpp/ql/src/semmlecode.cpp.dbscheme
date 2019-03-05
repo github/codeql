@@ -128,7 +128,6 @@ compilation_finished(
  * [Tutorial: Incorporating external data](https://help.semmle.com/wiki/display/SD/Tutorial%3A+Incorporating+external+data)
  * for more information.
  */
-#keyset[id, column]
 externalData(
     int id : @externalDataElement,
     string path : string ref,
