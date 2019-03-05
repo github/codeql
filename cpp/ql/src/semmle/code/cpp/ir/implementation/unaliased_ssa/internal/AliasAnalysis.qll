@@ -72,7 +72,8 @@ private predicate operandEscapesDomain(Operand operand) {
   not operandIsPropagated(operand, _) and
   not isArgumentForParameter(_, operand, _) and
   not isOnlyEscapesViaReturnArgument(operand) and
-  not operand.getUseInstruction() instanceof ReturnValueInstruction
+  not operand.getUseInstruction() instanceof ReturnValueInstruction and
+  not operand instanceof PhiOperand
 }
 
 /**
@@ -161,7 +162,7 @@ private predicate operandEscapesNonReturn(Operand operand) {
   exists(CallInstruction ci, Instruction init |
     isArgumentForParameter(ci, operand, init) and
     (
-      resultReturned(init, _) and
+      resultMayReachReturn(init) and
       resultEscapesNonReturn(ci)
       or
       resultEscapesNonReturn(init)
@@ -170,7 +171,32 @@ private predicate operandEscapesNonReturn(Operand operand) {
   or
   isOnlyEscapesViaReturnArgument(operand) and resultEscapesNonReturn(operand.getUseInstruction())
   or
+  operand instanceof PhiOperand and
+  resultEscapesNonReturn(operand.getUseInstruction())
+  or
   operandEscapesDomain(operand)
+}
+
+
+private predicate operandMayReachReturn(Operand operand) {
+  // The address is propagated to the result of the instruction, and that result itself is returned
+    operandIsPropagated(operand, _) and
+    resultMayReachReturn(operand.getUseInstruction())
+  or
+  // The operand is used in a function call which returns it, and the return value is then returned
+  exists(CallInstruction ci, Instruction init |
+    isArgumentForParameter(ci, operand, init) and
+    resultMayReachReturn(init) and
+    resultMayReachReturn(ci)
+  )
+  or
+  // The address is returned
+  operand.getUseInstruction() instanceof ReturnValueInstruction
+  or
+  isOnlyEscapesViaReturnArgument(operand) and resultMayReachReturn(operand.getUseInstruction())
+  or
+  operand instanceof PhiOperand and
+  resultMayReachReturn(operand.getUseInstruction())
 }
 
 private predicate operandReturned(Operand operand, IntValue bitOffset) {
@@ -237,6 +263,10 @@ private predicate isNeverEscapesArgument(Operand operand) {
 
 private predicate resultReturned(Instruction instr, IntValue bitOffset) {
   operandReturned(instr.getAUse(), bitOffset)
+}
+
+private predicate resultMayReachReturn(Instruction instr) {
+  operandMayReachReturn(instr.getAUse())
 }
 
 /**

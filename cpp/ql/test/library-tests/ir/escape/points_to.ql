@@ -29,5 +29,6 @@ where
       not UnAA::resultPointsTo(unInstr, Un::getIRUserVariable(_, var), _) and
       unPointsTo = "none"
     )
-  )
+  ) and
+  rawPointsTo != unPointsTo
 select rawInstr.getLocation().toString(), rawInstr.getOperationString(), rawPointsTo, unPointsTo

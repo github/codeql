@@ -193,10 +193,10 @@ void Escape()
     int passByRef3;
     CallByReferenceParamEscape(ReturnReference(passByRef3));
 
-    int passByPtr4;
-    int passByPtr5;
+    int no_ssa_passByPtr4;
+    int no_ssa_passByPtr5;
     bool no_b2 = false;
-    MaybeReturn(&passByPtr4, &passByPtr5, no_b2);
+    MaybeReturn(&no_ssa_passByPtr4, &no_ssa_passByPtr5, no_b2);
 
     int passByRef6;
     EscapeAndReturn(passByRef6);
@@ -239,5 +239,15 @@ void Escape()
 
     OverrideNone on2;
     CEscapes(on2.Overridden());
+
+    int condEscape1, condEscape2;
+
+    int *no_condTemp;
+    if(GetPointer()) {
+	no_condTemp = &condEscape1;
+    } else {
+        no_condTemp = &condEscape2;
+    }
+    CallByPointer(no_condTemp);
 }
 
