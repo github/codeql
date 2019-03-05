@@ -8,6 +8,7 @@ import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SSAConstruction
 from Raw::Instruction rawInstr, Un::Instruction unInstr, string rawPointsTo, string unPointsTo
 where
   rawInstr = getOldInstruction(unInstr) and
+  not rawInstr instanceof Raw::VariableAddressInstruction and
   (
     exists(Variable var, int rawBitOffset, int unBitOffset |
       RawAA::resultPointsTo(rawInstr, Raw::getIRUserVariable(_, var), rawBitOffset) and
@@ -29,6 +30,5 @@ where
       not UnAA::resultPointsTo(unInstr, Un::getIRUserVariable(_, var), _) and
       unPointsTo = "none"
     )
-  ) and
-  rawPointsTo != unPointsTo
+  )
 select rawInstr.getLocation().toString(), rawInstr.getOperationString(), rawPointsTo, unPointsTo
