@@ -11,14 +11,12 @@ nodes
 | child_process-test.js:21:14:21:16 | cmd |
 | child_process-test.js:22:18:22:20 | cmd |
 | child_process-test.js:23:13:23:15 | cmd |
-| child_process-test.js:25:13:25:23 | "foo" + cmd |
 | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
 | child_process-test.js:25:21:25:23 | cmd |
 | child_process-test.js:36:7:36:20 | sh |
 | child_process-test.js:36:12:36:20 | 'cmd.exe' |
 | child_process-test.js:38:7:38:20 | sh |
 | child_process-test.js:38:12:38:20 | '/bin/sh' |
-| child_process-test.js:39:5:39:5 | sh |
 | child_process-test.js:39:14:39:15 | sh |
 | child_process-test.js:39:18:39:30 | [ flag, cmd ] |
 | child_process-test.js:39:26:39:28 | cmd |
@@ -39,7 +37,6 @@ nodes
 | child_process-test.js:56:12:56:14 | cmd |
 | child_process-test.js:56:17:56:20 | args |
 | execSeries.js:3:20:3:22 | arr |
-| execSeries.js:5:4:5:3 | arr |
 | execSeries.js:6:14:6:16 | arr |
 | execSeries.js:6:14:6:21 | arr[i++] |
 | execSeries.js:13:19:13:26 | commands |
@@ -71,9 +68,12 @@ edges
 | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:38 | url.par ... , true) |
 | child_process-test.js:25:13:25:23 | "foo" + cmd | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
 | child_process-test.js:25:21:25:23 | cmd | child_process-test.js:25:13:25:23 | "foo" + cmd |
+| child_process-test.js:25:21:25:23 | cmd | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" |
 | child_process-test.js:36:7:36:20 | sh | child_process-test.js:39:5:39:5 | sh |
+| child_process-test.js:36:7:36:20 | sh | child_process-test.js:39:14:39:15 | sh |
 | child_process-test.js:36:12:36:20 | 'cmd.exe' | child_process-test.js:36:7:36:20 | sh |
 | child_process-test.js:38:7:38:20 | sh | child_process-test.js:39:5:39:5 | sh |
+| child_process-test.js:38:7:38:20 | sh | child_process-test.js:39:14:39:15 | sh |
 | child_process-test.js:38:12:38:20 | '/bin/sh' | child_process-test.js:38:7:38:20 | sh |
 | child_process-test.js:39:5:39:5 | sh | child_process-test.js:39:14:39:15 | sh |
 | child_process-test.js:41:9:41:17 | args | child_process-test.js:44:30:44:33 | args |
@@ -86,6 +86,7 @@ edges
 | child_process-test.js:55:14:55:16 | cmd | child_process-test.js:56:12:56:14 | cmd |
 | child_process-test.js:55:19:55:22 | args | child_process-test.js:56:17:56:20 | args |
 | execSeries.js:3:20:3:22 | arr | execSeries.js:5:4:5:3 | arr |
+| execSeries.js:3:20:3:22 | arr | execSeries.js:6:14:6:16 | arr |
 | execSeries.js:5:4:5:3 | arr | execSeries.js:6:14:6:16 | arr |
 | execSeries.js:6:14:6:16 | arr | execSeries.js:6:14:6:21 | arr[i++] |
 | execSeries.js:6:14:6:21 | arr[i++] | execSeries.js:14:24:14:30 | command |
