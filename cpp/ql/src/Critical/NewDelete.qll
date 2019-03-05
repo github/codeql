@@ -55,7 +55,7 @@ predicate allocExprOrIndirect(Expr alloc, string kind) {
  * Holds if `v` is a non-local variable which is assigned with allocations of
  * type `kind`.
  */
-private cached predicate allocReachesVariable(Variable v, Expr alloc, string kind) {
+private pragma[nomagic] predicate allocReachesVariable(Variable v, Expr alloc, string kind) {
   exists(Expr mid |
     not v instanceof LocalScopeVariable and
     v.getAnAssignedValue() = mid and
