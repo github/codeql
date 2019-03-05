@@ -101,32 +101,27 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
       |
         succ.dominates(pred)
         or
-        // `pred` might be another split of `cfe`
+        // `pred` might be another split of this element
         pred.getLastNode().getElement() = this and
-        pred.getASuccessorByType(t) = succ and
         t = s
       )
     )
   }
 
-  pragma[nomagic]
-  private JoinBlockPredecessor getAPossiblyControlledPredecessor(
-    JoinBlock controlled, ConditionalSuccessor s
-  ) {
-    exists(BasicBlock mid | this.immediatelyControlsBlockSplit(mid, s) |
-      result = mid.getASuccessor*()
-    ) and
-    result.getASuccessor() = controlled and
-    not controlled.dominates(result)
+  pragma[noinline]
+  private predicate controlsJoinBlockPredecessor(JoinBlock controlled, ConditionalSuccessor s, int i) {
+    this.controlsBlockSplit(controlled.getJoinBlockPredecessor(i), s)
   }
 
-  pragma[nomagic]
-  private predicate isPossiblyControlledJoinBlock(JoinBlock controlled, ConditionalSuccessor s) {
-    exists(this.getAPossiblyControlledPredecessor(controlled, s)) and
-    forall(BasicBlock pred | pred = controlled.getAPredecessor() |
-      pred = this.getAPossiblyControlledPredecessor(controlled, s)
+  private predicate controlsJoinBlockSplit(JoinBlock controlled, ConditionalSuccessor s, int i) {
+    i = -1 and
+    this.controlsJoinBlockPredecessor(controlled, s, _)
+    or
+    this.controlsJoinBlockSplit(controlled, s, i - 1) and
+    (
+      this.controlsJoinBlockPredecessor(controlled, s, i)
       or
-      controlled.dominates(pred)
+      controlled.dominates(controlled.getJoinBlockPredecessor(i))
     )
   }
 
@@ -134,13 +129,28 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
   private predicate controlsBlockSplit(BasicBlock controlled, ConditionalSuccessor s) {
     this.immediatelyControlsBlockSplit(controlled, s)
     or
-    if controlled instanceof JoinBlock
-    then
-      this.isPossiblyControlledJoinBlock(controlled, s) and
-      forall(BasicBlock pred | pred = this.getAPossiblyControlledPredecessor(controlled, s) |
-        this.controlsBlock(pred, s)
-      )
-    else this.controlsBlockSplit(controlled.getAPredecessor(), s)
+    // Equivalent with
+    //
+    // ```
+    // exists(JoinBlockPredecessor pred | pred = controlled.getAPredecessor() |
+    //   this.controlsBlockSplit(pred, s)
+    // ) and
+    // forall(JoinBlockPredecessor pred | pred = controlled.getAPredecessor() |
+    //   this.controlsBlockSplit(pred, s)
+    //   or
+    //   controlled.dominates(pred)
+    // )
+    // ```
+    //
+    // but uses no universal recursion for better performance.
+    exists(int last |
+      last = max(int i | exists(controlled.(JoinBlock).getJoinBlockPredecessor(i)))
+    |
+      this.controlsJoinBlockSplit(controlled, s, last)
+    )
+    or
+    not controlled instanceof JoinBlock and
+    this.controlsBlockSplit(controlled.getAPredecessor(), s)
   }
 
   /**
