@@ -194,7 +194,7 @@ private class CoreLib extends Assembly {
  */
 pragma[noinline]
 private predicate assemblyCompiledWithCoreLib(Assembly a, CoreLib core) {
-  a.getAnAttribute().getType().getABaseType*().getALocation() = core
+  a.getAnAttribute().getType().getBaseClass*().(SystemAttributeClass).getALocation() = core
 }
 
 /** A control flow element that is inside a `try` block. */
@@ -266,7 +266,7 @@ private class TriedControlFlowElement extends ControlFlowElement {
 
   private CoreLib getCoreLibFromACatchClause() {
     exists(SpecificCatchClause scc | scc = try.getACatchClause() |
-      result = scc.getCaughtExceptionType().getABaseType*().getALocation()
+      result = scc.getCaughtExceptionType().getBaseClass*().(SystemExceptionClass).getALocation()
     )
   }
 
@@ -289,12 +289,12 @@ private class TriedControlFlowElement extends ControlFlowElement {
   }
 
   Class getAThrownException() {
-    exists(string name |
-      result = this.getAThrownExceptionFromPlausibleCoreLib(name) |
+    exists(string name | result = this.getAThrownExceptionFromPlausibleCoreLib(name) |
       result = min(Class c |
-        c = this.getAThrownExceptionFromPlausibleCoreLib(name) |
-        c order by c.getLocation().(Assembly).getFullName()
-      )
+          c = this.getAThrownExceptionFromPlausibleCoreLib(name)
+        |
+          c order by c.getLocation().(Assembly).getFullName()
+        )
     )
   }
 }
