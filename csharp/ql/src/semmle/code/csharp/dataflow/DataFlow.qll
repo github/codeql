@@ -1811,7 +1811,12 @@ module DataFlow {
 
     private predicate flowThroughCallable1Scope(OutNode out, Expr e) {
       flowThroughCallable0(_, out, _) and
-      e = out.asExpr().(Expr).getAChildExpr*()
+      e = out.asExpr()
+      or
+      exists(Expr mid |
+        flowThroughCallable1Scope(out, mid) |
+        e = mid.getAChildExpr()
+      )
     }
 
     pragma[nomagic]
