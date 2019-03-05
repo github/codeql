@@ -69,7 +69,7 @@ import java.util.stream.Stream;
  *   <li><code>LGTM_INDEX_TYPESCRIPT</code>: whether to extract TypeScript
  *   <li><code>LGTM_INDEX_FILETYPES</code>: a newline-separated list of ".extension:filetype" pairs
  *       specifying which {@link FileType} to use for the given extension
- *   <li><code>LGTM_INDEX_THREADS</code>: the maximum number of files to extract in parallel
+ *   <li><code>LGTM_THREADS</code>: the maximum number of files to extract in parallel
  *   <li><code>LGTM_TRAP_CACHE</code>: the path of a directory to use for trap caching
  *   <li><code>LGTM_TRAP_CACHE_BOUND</code>: the size to bound the trap cache to
  * </ul>
@@ -163,9 +163,9 @@ import java.util.stream.Stream;
  * following environment variables are available:
  *
  * <ul>
- *   <li><code>LGTM_INDEX_THREADS</code> determines how many threads are used for parallel
+ *   <li><code>LGTM_THREADS</code> determines how many threads are used for parallel
  *       extraction of JavaScript files (TypeScript files cannot currently be extracted in
- *       parallel). If left unspecified, the extractor uses as many threads as there are cores.
+ *       parallel). If left unspecified, the extractor uses a single thread.
  *   <li><code>LGTM_TRAP_CACHE</code> and <code>LGTM_TRAP_CACHE_BOUND</code> can be used to specify
  *       the location and size of a trap cache to be used during extraction.
  * </ul>
@@ -405,8 +405,8 @@ public class AutoBuild {
   }
 
   private void startThreadPool() {
-    int defaultNumThreads = Runtime.getRuntime().availableProcessors();
-    int numThreads = Env.systemEnv().getInt("LGTM_INDEX_THREADS", defaultNumThreads);
+    int defaultNumThreads = 1;
+    int numThreads = Env.systemEnv().getInt("LGTM_THREADS", defaultNumThreads);
     if (numThreads > 1) {
       System.out.println("Parallel extraction with " + numThreads + " threads.");
       threadPool = Executors.newFixedThreadPool(numThreads);
