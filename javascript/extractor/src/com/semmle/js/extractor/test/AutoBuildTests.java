@@ -85,7 +85,7 @@ public class AutoBuildTests {
   }
 
   /**
-   * Add a file with default file type; see {@link #addFile(boolean, FileType, Path, String...)}.
+   * Add a file with default file type.
    */
   private Path addFile(boolean extracted, Path root, String... components) throws IOException {
     return addFile(extracted, null, root, components);
