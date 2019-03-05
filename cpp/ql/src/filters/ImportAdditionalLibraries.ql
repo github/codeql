@@ -22,6 +22,7 @@ module IRDataFlow {
   import semmle.code.cpp.ir.dataflow.DataFlow2
   import semmle.code.cpp.ir.dataflow.DataFlow3
   import semmle.code.cpp.ir.dataflow.DataFlow4
+  import semmle.code.cpp.ir.dataflow.TaintTracking
 }
 
 import semmle.code.cpp.valuenumbering.HashCons
