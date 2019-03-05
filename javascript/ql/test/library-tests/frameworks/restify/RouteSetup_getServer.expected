@@ -1,3 +1,0 @@
-| src/test.js:7:1:7:26 | server2 ... ndler1) | src/test.js:4:15:4:36 | restify ... erver() |
-| src/test.js:9:1:11:2 | server2 ... tion\\n}) | src/test.js:4:15:4:36 | restify ... erver() |
-| src/test.js:12:1:22:2 | server2 ... kie;\\n}) | src/test.js:4:15:4:36 | restify ... erver() |

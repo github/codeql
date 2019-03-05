@@ -1,4 +1,0 @@
-| arrowfns.js:1:24:1:36 | s => s.length | arrowfns.js:1:29:1:36 | s.length |
-| arrowfns.js:2:13:2:23 | () => ++cnt | arrowfns.js:2:19:2:23 | ++cnt |
-| exprclosures.js:1:7:1:21 | function(x) x+1 | exprclosures.js:1:19:1:21 | x+1 |
-| tst.js:14:1:14:37 | functio ... s[0]; } | tst.js:14:23:14:34 | arguments[0] |

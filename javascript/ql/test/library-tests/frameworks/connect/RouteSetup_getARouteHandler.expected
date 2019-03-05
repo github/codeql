@@ -1,7 +1,0 @@
-| src/test.js:6:1:9:2 | app.use ... o');\\n}) | src/test.js:6:9:9:1 | functio ... oo');\\n} |
-| src/test.js:12:1:12:42 | app.use ... word')) | src/test.js:12:9:12:41 | basicAu ... sword') |
-| src/test.js:17:1:17:21 | app.use ... dler()) | src/test.js:15:12:15:32 | functio ...  res){} |
-| src/test.js:17:1:17:21 | app.use ... dler()) | src/test.js:17:9:17:20 | getHandler() |
-| src/test.js:19:1:19:28 | app.use ... res){}) | src/test.js:19:9:19:27 | function(req,res){} |
-| src/test.js:19:1:20:29 | app.use ... res){}) | src/test.js:20:10:20:28 | function(req,res){} |
-| src/test.js:24:1:26:2 | app.use ... '');\\n}) | src/test.js:24:9:26:1 | functio ...  '');\\n} |

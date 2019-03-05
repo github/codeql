@@ -1,9 +1,0 @@
-| tst.html:1:1:5:7 | <html>...</> | html |
-| tst.html:2:1:4:7 | <body>...</> | body |
-| tst.html:3:3:3:57 | <a>...</> | a |
-| tst.js:3:11:3:31 | $("<a/> ... rAttrs) | a |
-| tst.js:23:5:23:30 | React.c ... ('div') | div |
-| tst.js:24:5:24:55 | React.c ... , null) | div |
-| tst.js:27:5:27:14 | factory1() | div |
-| tst.js:31:20:31:55 | <div>He ... }</div> | div |
-| tst.jsx:4:11:4:75 | <a href ... mle</a> | a |

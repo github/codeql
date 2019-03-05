@@ -1,9 +1,0 @@
-| electron | BrowserWindow | destructuringES6.js:1:10:1:22 | BrowserWindow |
-| electron | BrowserWindow | destructuringRequire.js:1:9:1:21 | BrowserWindow |
-| fs | readFileSync | amd1.js:2:3:2:17 | fs.readFileSync |
-| fs | readFileSync | amd2.js:3:3:3:17 | fs.readFileSync |
-| mod | constructorFunction | moduleUses.js:8:9:8:31 | mod.con ... unction |
-| mod | moduleField | moduleUses.js:11:1:11:15 | mod.moduleField |
-| mod | moduleFunction | moduleUses.js:5:9:5:26 | mod.moduleFunction |
-| mod | moduleMethod | moduleUses.js:3:1:3:16 | mod.moduleMethod |
-| myDefaultImportedModuleInstance | default | instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName |

@@ -1,0 +1,86 @@
+test_ModuleImportNode
+| amd1.js:1:25:1:26 | fs | fs | amd1.js:2:3:2:4 | fs | fs |
+| amd2.js:2:12:2:24 | require('fs') | fs | amd2.js:3:3:3:4 | fs | fs |
+| instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:2:1:2:35 | myDefau ... nceName | myDefaultImportedModuleInstanceName |
+| instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:4:5:4:39 | myDefau ... nceName | myDefaultImportedModuleInstanceName |
+| instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:2:1:2:37 | myNames ... nceName | myNamespaceImportedModuleInstanceName |
+| instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:4:5:4:41 | myNames ... nceName | myNamespaceImportedModuleInstanceName |
+| instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance | instanceThroughRequire.js:2:1:2:28 | myRequi ... nceName | myRequiredModuleInstanceName |
+| instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance | instanceThroughRequire.js:4:5:4:32 | myRequi ... nceName | myRequiredModuleInstanceName |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:3:1:3:3 | mod | mod |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:5:9:5:11 | mod | mod |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:8:9:8:11 | mod | mod |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:11:1:11:3 | mod | mod |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:13:1:13:3 | mod | mod |
+| moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:15:5:15:7 | mod | mod |
+test_ModuleImportNode_getAConstructorInvocation
+| destructuringES6.js:1:1:1:41 | import  ... ctron'; | destructuringES6.js:2:1:2:19 | new BrowserWindow() |
+| destructuringRequire.js:1:27:1:45 | require('electron') | destructuringRequire.js:2:1:2:19 | new BrowserWindow() |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:9:1:9:7 | new K() |
+test_moduleImport
+| electron | destructuringES6.js:1:1:1:41 | import  ... ctron'; |
+| electron | destructuringRequire.js:1:27:1:45 | require('electron') |
+| fs | amd1.js:1:25:1:26 | fs |
+| fs | amd2.js:2:12:2:24 | require('fs') |
+| mod | moduleUses.js:1:11:1:24 | require('mod') |
+| myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:1:1:1:82 | import  ... tance'; |
+| myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName |
+| myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName |
+| myRequiredModuleInstance | instanceThroughRequire.js:1:36:1:70 | require ... tance') |
+test_moduleMember
+| electron | BrowserWindow | destructuringES6.js:1:10:1:22 | BrowserWindow |
+| electron | BrowserWindow | destructuringRequire.js:1:9:1:21 | BrowserWindow |
+| fs | readFileSync | amd1.js:2:3:2:17 | fs.readFileSync |
+| fs | readFileSync | amd2.js:3:3:3:17 | fs.readFileSync |
+| mod | constructorFunction | moduleUses.js:8:9:8:31 | mod.con ... unction |
+| mod | moduleField | moduleUses.js:11:1:11:15 | mod.moduleField |
+| mod | moduleFunction | moduleUses.js:5:9:5:26 | mod.moduleFunction |
+| mod | moduleMethod | moduleUses.js:3:1:3:16 | mod.moduleMethod |
+| myDefaultImportedModuleInstance | default | instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName |
+test_ModuleImportNode_getPath
+| amd1.js:1:25:1:26 | fs | fs |
+| amd2.js:2:12:2:24 | require('fs') | fs |
+| destructuringES6.js:1:1:1:41 | import  ... ctron'; | electron |
+| destructuringRequire.js:1:27:1:45 | require('electron') | electron |
+| instanceThroughDefaultImport.js:1:1:1:82 | import  ... tance'; | myDefaultImportedModuleInstance |
+| instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName | myDefaultImportedModuleInstance |
+| instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName | myNamespaceImportedModuleInstance |
+| instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance |
+| moduleUses.js:1:11:1:24 | require('mod') | mod |
+test_ModuleImportNode_getAMethodCall
+| amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
+| amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:29 | fs.read ... a.txt") |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:3:1:3:18 | mod.moduleMethod() |
+test_ModuleImportNode_getAMemberInvocation
+| amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
+| amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:29 | fs.read ... a.txt") |
+| destructuringES6.js:1:1:1:41 | import  ... ctron'; | destructuringES6.js:2:1:2:19 | new BrowserWindow() |
+| destructuringRequire.js:1:27:1:45 | require('electron') | destructuringRequire.js:2:1:2:19 | new BrowserWindow() |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:3:1:3:18 | mod.moduleMethod() |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:6:1:6:3 | f() |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:9:1:9:7 | new K() |
+test_moduleImportProp
+| electron | BrowserWindow | destructuringES6.js:1:10:1:22 | BrowserWindow |
+| electron | BrowserWindow | destructuringRequire.js:1:9:1:21 | BrowserWindow |
+| fs | readFileSync | amd1.js:2:3:2:17 | fs.readFileSync |
+| fs | readFileSync | amd2.js:3:3:3:17 | fs.readFileSync |
+| mod | constructorFunction | moduleUses.js:8:9:8:31 | mod.con ... unction |
+| mod | moduleField | moduleUses.js:11:1:11:15 | mod.moduleField |
+| mod | moduleFunction | moduleUses.js:5:9:5:26 | mod.moduleFunction |
+| mod | moduleMethod | moduleUses.js:3:1:3:16 | mod.moduleMethod |
+| myDefaultImportedModuleInstance | default | instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName |
+test_ModuleImportNode_getAMemberCall
+| amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
+| amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:29 | fs.read ... a.txt") |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:3:1:3:18 | mod.moduleMethod() |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:6:1:6:3 | f() |
+test_ModuleImportNode_getAPropertyRead
+| amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:17 | fs.readFileSync |
+| amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:17 | fs.readFileSync |
+| destructuringES6.js:1:1:1:41 | import  ... ctron'; | destructuringES6.js:1:10:1:22 | BrowserWindow |
+| destructuringRequire.js:1:27:1:45 | require('electron') | destructuringRequire.js:1:9:1:21 | BrowserWindow |
+| instanceThroughDefaultImport.js:1:1:1:82 | import  ... tance'; | instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:3:1:3:16 | mod.moduleMethod |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:5:9:5:26 | mod.moduleFunction |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:8:9:8:31 | mod.con ... unction |
+| moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:11:1:11:15 | mod.moduleField |

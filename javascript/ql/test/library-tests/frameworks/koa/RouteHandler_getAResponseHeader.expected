@@ -1,5 +1,0 @@
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | header1 | src/koa.js:11:3:11:25 | this.se ... 1', '') |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | header2 | src/koa.js:12:3:12:37 | this.re ... 2', '') |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | header3 | src/koa.js:13:3:13:24 | ctx.set ... 3', '') |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | header4 | src/koa.js:14:3:14:36 | ctx.res ... 4', '') |
-| src/koa.js:10:10:28:1 | functio ... az');\\n} | header5 | src/koa.js:16:3:16:27 | rsp.hea ... 5', '') |

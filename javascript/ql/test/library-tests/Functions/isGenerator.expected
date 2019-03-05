@@ -1,2 +1,0 @@
-| generators.js:1:1:4:1 | functio ...  i++;\\n} |
-| generators.js:6:2:6:19 | function* bar() {} |

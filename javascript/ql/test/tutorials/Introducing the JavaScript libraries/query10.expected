@@ -1,1 +1,0 @@
-| tst.js:31:1:33:1 | functio ... ++i);\\n} | This function uses i like a local variable. |

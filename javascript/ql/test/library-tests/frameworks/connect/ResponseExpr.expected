@@ -1,2 +1,0 @@
-| src/test.js:7:5:7:7 | res | src/test.js:6:9:9:1 | functio ... oo');\\n} |
-| src/test.js:25:5:25:7 | res | src/test.js:24:9:26:1 | functio ...  '');\\n} |

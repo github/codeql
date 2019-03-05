@@ -1,2 +1,0 @@
-| tst.ts:113:18:113:46 | { [K in ... umber } | tst.ts:113:21:113:35 | K in keyof Node | tst.ts:113:21:113:21 | K | tst.ts:113:26:113:35 | keyof Node | tst.ts:113:39:113:44 | number |
-| tst.ts:114:18:114:41 | { [K in ... umber } | tst.ts:114:21:114:30 | K in "foo" | tst.ts:114:21:114:21 | K | tst.ts:114:26:114:30 | "foo" | tst.ts:114:34:114:39 | number |

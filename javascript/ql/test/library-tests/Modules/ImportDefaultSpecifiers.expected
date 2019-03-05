@@ -1,5 +1,0 @@
-| b.js:1:8:1:8 | f |
-| f.ts:1:8:1:8 | g |
-| import-in-mjs.mjs:1:8:1:24 | exported_from_mjs |
-| tst.html:5:10:5:10 | f |
-| unresolved.js:1:8:1:8 | f |
