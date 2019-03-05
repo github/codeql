@@ -1,4 +1,0 @@
-| promises.js:3:17:5:4 | new Pro ... );\\n  }) | promises.js:3:29:5:3 | functio ... e);\\n  } |
-| promises.js:10:18:17:4 | new Pro ... );\\n  }) | promises.js:10:30:17:3 | (res, r ... e);\\n  } |
-| promises.js:33:19:35:6 | new Pro ... \\n    }) | promises.js:33:31:35:5 | functio ... ;\\n    } |
-| promises.js:43:19:45:6 | Q.Promi ... \\n    }) | promises.js:43:29:45:5 | functio ... ;\\n    } |
