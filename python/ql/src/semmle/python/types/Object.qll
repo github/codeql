@@ -10,6 +10,13 @@ private cached predicate is_an_object(@py_object obj) {
         exists(@py_cobject mod_type | py_special_objects(mod_type, "ModuleType") and py_cobjecttypes(obj, mod_type)) and
         exists(Module m | py_cobjectnames(obj, m.getName()))
     )
+    and (
+        /* Exclude unmatched builtin objects in the library trap files */
+        obj instanceof ControlFlowNode or
+        py_cobjectnames(obj, _) or
+        py_cobjecttypes(obj, _) or
+        py_special_objects(obj, _)
+    )
 }
 
 /** Instances of this class represent objects in the Python program. However, since
