@@ -4,10 +4,19 @@ import semmle.code.cpp.controlflow.SSA // must be imported for proper caching of
 import semmle.code.cpp.rangeanalysis.RangeSSA // must be imported for proper caching of SSAHelper
 
 /* The dominance frontier of a block `x` is the set of all blocks `w` such that
- * `x` dominates a predecessor of `w` but does not strictly dominate `w`. */
-pragma[noinline]
+ * `x` dominates a predecessor of `w` but does not strictly dominate `w`.
+ *
+ * This implementation is equivalent to:
+ *
+ *     bbDominates(x, w.getAPredecessor()) and not bbStrictlyDominates(x, w)
+ */
 private predicate dominanceFrontier(BasicBlock x, BasicBlock w) {
-    bbDominates(x, w.getAPredecessor()) and not bbStrictlyDominates(x, w)
+    x = w.getAPredecessor() and not bbIDominates(x, w)
+    or
+    exists(BasicBlock prev | dominanceFrontier(prev, w) |
+        bbIDominates(x, prev) and
+        not bbIDominates(x, w)
+    )
 }
 
 /**
