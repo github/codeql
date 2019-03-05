@@ -48,7 +48,7 @@ private IntValue getFieldBitOffset(Field field) {
  * not result in any address held in that operand from escaping beyond the
  * instruction.
  */
-predicate operandIsConsumedWithoutEscaping(Operand operand) {
+private predicate operandIsConsumedWithoutEscaping(Operand operand) {
   // The source/destination address of a Load/Store does not escape (but the
   // loaded/stored value could).
   operand instanceof AddressOperand or
@@ -67,7 +67,7 @@ predicate operandIsConsumedWithoutEscaping(Operand operand) {
   isNeverEscapesArgument(operand)
 }
 
-predicate operandEscapesDomain(Operand operand) {
+private predicate operandEscapesDomain(Operand operand) {
   not operandIsConsumedWithoutEscaping(operand) and
   not operandIsPropagated(operand, _) and
   not isArgumentForParameter(_, operand, _) and
@@ -110,7 +110,7 @@ IntValue getPointerBitOffset(PointerOffsetInstruction instr) {
  * `bitOffset`. If the address is propagated, but the offset is not known to be
  * a constant, then `bitOffset` is unknown.
  */
-predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
+private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
   exists(Instruction instr |
     instr = operand.getUseInstruction() and
     (
@@ -153,13 +153,12 @@ predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
   )
 }
 
-predicate operandEscapesNonReturn(Operand operand) {
+private predicate operandEscapesNonReturn(Operand operand) {
   // The address is propagated to the result of the instruction, and that result itself is returned
   operandIsPropagated(operand, _) and resultEscapesNonReturn(operand.getUseInstruction())
   or
   // The operand is used in a function call which returns it, and the return value is then returned
   exists(CallInstruction ci, Instruction init |
-    ci = operand.getUseInstruction() and
     isArgumentForParameter(ci, operand, init) and
     (
       resultReturned(init) and
@@ -174,14 +173,12 @@ predicate operandEscapesNonReturn(Operand operand) {
   operandEscapesDomain(operand)
 }
 
-
-predicate operandReturned(Operand operand) {
+private predicate operandReturned(Operand operand) {
   // The address is propagated to the result of the instruction, and that result itself is returned
   operandIsPropagated(operand, _) and resultReturned(operand.getUseInstruction())
   or
   // The operand is used in a function call which returns it, and the return value is then returned
   exists(CallInstruction ci, Instruction init |
-    ci = operand.getUseInstruction() and
     isArgumentForParameter(ci, operand, init) and
     resultReturned(init) and
     resultReturned(ci)
@@ -193,7 +190,7 @@ predicate operandReturned(Operand operand) {
   isOnlyEscapesViaReturnArgument(operand) and resultReturned(operand.getUseInstruction())
 }
 
-predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
+private predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
   exists(Function f |
     ci = operand.getUseInstruction() and
     f = ci.getStaticCallTarget() and
@@ -230,7 +227,7 @@ private predicate isNeverEscapesArgument(Operand operand) {
   )
 }
 
-predicate resultReturned(Instruction instr) {
+private predicate resultReturned(Instruction instr) {
   operandReturned(instr.getAUse())
 }
 
@@ -238,7 +235,7 @@ predicate resultReturned(Instruction instr) {
  * Holds if any address held in the result of instruction `instr` escapes
  * outside the domain of the analysis.
  */
-predicate resultEscapesNonReturn(Instruction instr) {
+private predicate resultEscapesNonReturn(Instruction instr) {
   // The result escapes if it has at least one use that escapes.
   operandEscapesNonReturn(instr.getAUse())
 }
@@ -285,16 +282,8 @@ predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) 
     (
       operandIsPropagated(operand, propagatedBitOffset)
       or
-      exists(CallInstruction ci, FunctionIR f, Instruction init |
-        ci = operand.getUseInstruction() and
-        f.getFunction() = ci.getStaticCallTarget() and
-        (
-          init.(InitializeParameterInstruction).getParameter() = f.getFunction().getParameter(operand.(PositionalArgumentOperand).getIndex())
-          or
-          init instanceof InitializeThisInstruction and
-          init.getEnclosingFunctionIR() = f and
-          operand instanceof ThisArgumentOperand
-        ) and
+      exists(CallInstruction ci, Instruction init |
+        isArgumentForParameter(ci, operand, init) and
         resultReturned(init) and
         propagatedBitOffset = Ints::unknown()
       )
