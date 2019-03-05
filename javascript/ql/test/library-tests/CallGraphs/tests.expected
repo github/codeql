@@ -92,9 +92,12 @@ test_getAFunctionValue
 | n.js:5:1:5:4 | m2.f | m2.js:2:6:2:18 | function() {} |
 | protoclass.js:3:1:5:1 | functio ... it();\\n} | protoclass.js:3:1:5:1 | functio ... it();\\n} |
 | protoclass.js:3:10:3:10 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
+| protoclass.js:4:3:4:11 | this.init | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:7:1:7:1 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
 | protoclass.js:7:1:11:1 | F.proto ...  m();\\n} | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:7:20:11:1 | functio ...  m();\\n} | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
+| protoclass.js:8:3:8:13 | this.method | protoclass.js:13:22:13:34 | function() {} |
+| protoclass.js:9:11:9:21 | this.method | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:13:1:13:1 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
 | protoclass.js:13:1:13:34 | F.proto ... on() {} | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:13:22:13:34 | function() {} | protoclass.js:13:22:13:34 | function() {} |
@@ -405,6 +408,8 @@ test_getACallee
 | m.js:3:1:3:18 | module.exports.f() | m.js:1:13:1:25 | function() {} |
 | n.js:2:1:2:5 | m.f() | m.js:1:13:1:25 | function() {} |
 | n.js:5:1:5:6 | m2.f() | m2.js:2:6:2:18 | function() {} |
+| protoclass.js:4:3:4:13 | this.init() | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
+| protoclass.js:8:3:8:15 | this.method() | protoclass.js:13:22:13:34 | function() {} |
 | reflection.js:7:1:7:22 | reflective call | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
 | reflection.js:8:1:8:25 | add.app ... 3, 19]) | reflection.js:5:15:5:39 | functio ... n 56; } |
 | reflection.js:8:1:8:25 | reflective call | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
