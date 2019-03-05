@@ -34,14 +34,13 @@ module DataFlow {
     DotNet::Type getType() { none() }
 
     /** Gets the enclosing callable of this node. */
-    cached
-    DotNet::Callable getEnclosingCallable() { none() }
+    final DotNet::Callable getEnclosingCallable() { result = getEnclosingCallable(this) }
 
     /** Gets a textual representation of this node. */
     string toString() { none() }
 
     /** Gets the location of this node. */
-    Location getLocation() { none() }
+    final Location getLocation() { result = getLocation(this) }
   }
 
   /**
@@ -65,24 +64,11 @@ module DataFlow {
 
     override DotNet::Type getType() { result = this.getExpr().getType() }
 
-    override DotNet::Callable getEnclosingCallable() {
-      result = this.getExpr().getEnclosingCallable()
-    }
-
     override string toString() {
       exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) | result = cfn.toString())
       or
       this = TCilExprNode(_) and
       result = "CIL expression"
-    }
-
-    override Location getLocation() {
-      exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) |
-        result = cfn.getLocation()
-      )
-      or
-      result.getFile().isPdbSourceFile() and
-      exists(CIL::Expr e | this = TCilExprNode(e) | result = e.getALocation())
     }
   }
 
@@ -278,16 +264,10 @@ module DataFlow {
 
       override Type getType() { result = def.getSourceVariable().getType() }
 
-      override Callable getEnclosingCallable() {
-        result = def.getSourceVariable().getEnclosingCallable()
-      }
-
       override string toString() {
         result = def.toString() and
         not this instanceof ExplicitParameterNode
       }
-
-      override Location getLocation() { result = def.getLocation() }
     }
 
     /**
@@ -318,11 +298,7 @@ module DataFlow {
 
       override DotNet::Type getType() { result = parameter.getType() }
 
-      override DotNet::Callable getEnclosingCallable() { result = parameter.getCallable() }
-
       override string toString() { result = parameter.toString() }
-
-      override Location getLocation() { result = parameter.getLocation() }
     }
 
     /**
@@ -409,11 +385,7 @@ module DataFlow {
 
       override Type getType() { result = arg.getType() }
 
-      override Callable getEnclosingCallable() { result = arg.getEnclosingCallable() }
-
       override string toString() { result = "[implicit call] " + arg.toString() }
-
-      override Location getLocation() { result = arg.getLocation() }
     }
 
     /** A data flow node that represents the output of a call. */
@@ -568,11 +540,7 @@ module DataFlow {
 
       override Type getType() { result = v.getType() }
 
-      override Callable getEnclosingCallable() { result = c.getEnclosingCallable() }
-
       override string toString() { result = v + " [implicit argument]" }
-
-      override Location getLocation() { result = c.getLocation() }
     }
 
     /**
@@ -587,11 +555,7 @@ module DataFlow {
     class NormalReturnNode extends ReturnNode, TNormalReturnNode {
       override Type getType() { result = this.getEnclosingCallable().getReturnType() }
 
-      override DotNet::Callable getEnclosingCallable() { this = TNormalReturnNode(result) }
-
       override string toString() { result = "return" }
-
-      override Location getLocation() { result = this.getEnclosingCallable().getLocation() }
     }
 
     /**
@@ -601,11 +565,7 @@ module DataFlow {
     class YieldReturnNode extends ReturnNode, TYieldReturnNode {
       override Type getType() { result = this.getEnclosingCallable().getReturnType() }
 
-      override Callable getEnclosingCallable() { this = TYieldReturnNode(result) }
-
       override string toString() { result = "yield return" }
-
-      override Location getLocation() { result = this.getEnclosingCallable().getLocation() }
     }
 
     /**
@@ -617,11 +577,7 @@ module DataFlow {
 
       override Type getType() { result = this.getParameter().getType() }
 
-      override Callable getEnclosingCallable() { result = this.getParameter().getCallable() }
-
       override string toString() { result = "return (out/ref)" }
-
-      override Location getLocation() { result = this.getParameter().getLocation() }
     }
 
     /**
@@ -1442,6 +1398,49 @@ module DataFlow {
         TNormalReturnNode(DotNet::Callable c) { c.canReturn(_) } or
         TYieldReturnNode(Callable c) { c.canYieldReturn(_) } or
         TOutRefReturnNode(Parameter p) { callableReturnsOutOrRef(_, p, _) }
+
+      cached
+      DotNet::Callable getEnclosingCallable(Node node) {
+        result = node.(ExprNode).getExpr().getEnclosingCallable()
+        or
+        result = node.(SsaDefinitionNode).getDefinition().getSourceVariable().getEnclosingCallable()
+        or
+        result = node.(ExplicitParameterNode).getParameter().getCallable()
+        or
+        result = node.(ImplicitDelegateCallNode).getArgument().getEnclosingCallable()
+        or
+        result = node.(ImplicitCapturedArgumentNode).getCall().getEnclosingCallable()
+        or
+        node = TNormalReturnNode(result)
+        or
+        node = TYieldReturnNode(result)
+        or
+        result = node.(OutRefReturnNode).getParameter().getCallable()
+      }
+
+      cached
+      Location getLocation(Node node) {
+        exists(ControlFlow::Nodes::ElementNode cfn | node = TExprNode(cfn) |
+          result = cfn.getLocation()
+        )
+        or
+        result.getFile().isPdbSourceFile() and
+        exists(CIL::Expr e | node = TCilExprNode(e) | result = e.getALocation())
+        or
+        result = node.(SsaDefinitionNode).getDefinition().getLocation()
+        or
+        result = node.(ExplicitParameterNode).getParameter().getLocation()
+        or
+        result = node.(ImplicitDelegateCallNode).getArgument().getLocation()
+        or
+        result = node.(ImplicitCapturedArgumentNode).getCall().getLocation()
+        or
+        result = node.(NormalReturnNode).getEnclosingCallable().getLocation()
+        or
+        result = node.(YieldReturnNode).getEnclosingCallable().getLocation()
+        or
+        result = node.(OutRefReturnNode).getParameter().getLocation()
+      }
 
       /**
        * Holds if `pred` can flow to `succ`, by jumping from one callable to

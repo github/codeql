@@ -1221,7 +1221,7 @@ module Internal {
       exists(Guard g | e = g.getAChildExpr*() |
         g.controls(bb, _)
         or
-        g.assertionControlsElement(bb.getANode().getElement(), _)
+        g.assertionControlsNode(bb.getANode(), _)
       )
     }
   }
