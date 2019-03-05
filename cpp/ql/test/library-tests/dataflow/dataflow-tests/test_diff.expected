@@ -1,3 +1,4 @@
+| acrossLinkTargets.cpp:19:27:19:32 | acrossLinkTargets.cpp:12:8:12:8 | AST only |
 | test.cpp:66:30:66:36 | test.cpp:71:8:71:9 | AST only |
 | test.cpp:89:28:89:34 | test.cpp:92:8:92:14 | IR only |
 | test.cpp:100:13:100:18 | test.cpp:103:10:103:12 | AST only |
