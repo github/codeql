@@ -161,7 +161,7 @@ private predicate operandEscapesNonReturn(Operand operand) {
   exists(CallInstruction ci, Instruction init |
     isArgumentForParameter(ci, operand, init) and
     (
-      resultReturned(init) and
+      resultReturned(init, _) and
       resultEscapesNonReturn(ci)
       or
       resultEscapesNonReturn(init)
@@ -173,21 +173,29 @@ private predicate operandEscapesNonReturn(Operand operand) {
   operandEscapesDomain(operand)
 }
 
-private predicate operandReturned(Operand operand) {
+private predicate operandReturned(Operand operand, IntValue bitOffset) {
   // The address is propagated to the result of the instruction, and that result itself is returned
-  operandIsPropagated(operand, _) and resultReturned(operand.getUseInstruction())
+  exists(IntValue bitOffset1, IntValue bitOffset2 |
+    operandIsPropagated(operand, bitOffset1) and
+    resultReturned(operand.getUseInstruction(), bitOffset2) and
+    bitOffset = bitOffset1 + bitOffset2
+  )
   or
   // The operand is used in a function call which returns it, and the return value is then returned
-  exists(CallInstruction ci, Instruction init |
+  exists(CallInstruction ci, Instruction init, IntValue bitOffset1, IntValue bitOffset2 |
     isArgumentForParameter(ci, operand, init) and
-    resultReturned(init) and
-    resultReturned(ci)
+    resultReturned(init, bitOffset1) and
+    resultReturned(ci, bitOffset2) and
+    bitOffset = bitOffset1 + bitOffset2
+    
   )
   or
   // The address is returned
-  operand.getUseInstruction() instanceof ReturnValueInstruction
+  operand.getUseInstruction() instanceof ReturnValueInstruction and
+  bitOffset = 0
   or
-  isOnlyEscapesViaReturnArgument(operand) and resultReturned(operand.getUseInstruction())
+  isOnlyEscapesViaReturnArgument(operand) and resultReturned(operand.getUseInstruction(), _) and
+  bitOffset = Ints::unknown()
 }
 
 private predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
@@ -227,8 +235,8 @@ private predicate isNeverEscapesArgument(Operand operand) {
   )
 }
 
-private predicate resultReturned(Instruction instr) {
-  operandReturned(instr.getAUse())
+private predicate resultReturned(Instruction instr, IntValue bitOffset) {
+  operandReturned(instr.getAUse(), bitOffset)
 }
 
 /**
@@ -284,8 +292,7 @@ predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) 
       or
       exists(CallInstruction ci, Instruction init |
         isArgumentForParameter(ci, operand, init) and
-        resultReturned(init) and
-        propagatedBitOffset = Ints::unknown()
+        resultReturned(init, propagatedBitOffset)
       )
     ) and
     bitOffset = Ints::add(originalBitOffset, propagatedBitOffset)
