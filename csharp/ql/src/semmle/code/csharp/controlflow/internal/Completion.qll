@@ -185,38 +185,23 @@ private class Overflowable extends UnaryOperation {
   }
 }
 
-private class SystemType extends ValueOrRefType {
-  SystemType() { this.getNamespace() instanceof SystemNamespace }
-}
-
-private class SystemTypeMention extends TypeMention {
-  SystemTypeMention() { this.getType() instanceof SystemType }
-
-  Assembly getSystemAssembly() { result = this.getType().getALocation() }
-
-  Assembly getAssembly() { result = this.getTarget().(ControlFlowElement).getAssembly() }
+private class CoreLib extends Assembly {
+  CoreLib() { this = any(SystemExceptionClass c).getALocation() }
 }
 
 /**
  * Holds if assembly `a` was definitely compiled with core library `core`.
- *
- * The analysis is conservative, as it requires mentioning of a (non-special)
- * core type inside assembly `a`.
  */
 pragma[noinline]
-private predicate assemblyCompiledWithCoreLib(Assembly a, Assembly core) {
-  exists(SystemTypeMention stm | a = stm.getAssembly() |
-    core = stm.getSystemAssembly() and
-    // Special built-in types like `object` and `int` are collapsed into one entity
-    // in the presence of multiple core libraries, so such entities cannot be used
-    // to determine the actual core library used at compilation
-    strictcount(stm.getSystemAssembly()) = 1
-  )
+private predicate assemblyCompiledWithCoreLib(Assembly a, CoreLib core) {
+  a.getAnAttribute().getType().getABaseType*().getALocation() = core
 }
 
 /** A control flow element that is inside a `try` block. */
 private class TriedControlFlowElement extends ControlFlowElement {
-  TriedControlFlowElement() { this = any(TryStmt try).getATriedElement() }
+  TryStmt try;
+
+  TriedControlFlowElement() { this = try.getATriedElement() }
 
   /**
    * Gets an exception class that is potentially thrown by this element, if any.
@@ -279,14 +264,37 @@ private class TriedControlFlowElement extends ControlFlowElement {
     result instanceof SystemOutOfMemoryExceptionClass
   }
 
-  private Assembly getCoreLib() { assemblyCompiledWithCoreLib(this.getAssembly(), result) }
+  private CoreLib getCoreLibFromACatchClause() {
+    exists(SpecificCatchClause scc | scc = try.getACatchClause() |
+      result = scc.getCaughtExceptionType().getABaseType*().getALocation()
+    )
+  }
 
-  Class getAThrownException() {
+  private CoreLib getCoreLib() {
+    result = this.getCoreLibFromACatchClause()
+    or
+    not exists(this.getCoreLibFromACatchClause()) and
+    assemblyCompiledWithCoreLib(this.getAssembly(), result)
+  }
+
+  pragma[noinline]
+  private Class getAThrownExceptionFromPlausibleCoreLib(string name) {
     result = this.getAThrownException0() and
+    name = result.getQualifiedName() and
     (
       not exists(this.getCoreLib())
       or
       this.getCoreLib() = result.getALocation()
+    )
+  }
+
+  Class getAThrownException() {
+    exists(string name |
+      result = this.getAThrownExceptionFromPlausibleCoreLib(name) |
+      result = min(Class c |
+        c = this.getAThrownExceptionFromPlausibleCoreLib(name) |
+        c order by c.getLocation().(Assembly).getFullName()
+      )
     )
   }
 }
