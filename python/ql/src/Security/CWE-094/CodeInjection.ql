@@ -27,7 +27,7 @@ class CodeInjectionConfiguration extends TaintTracking::Configuration {
 
     CodeInjectionConfiguration() { this = "Code injection configuration" }
 
-    override predicate isSource(TaintTracking::Source source) { source.isSourceOf(any(UntrustedStringKind u)) }
+    override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
 
     override predicate isSink(TaintTracking::Sink sink) { sink instanceof StringEvaluationNode }
 
