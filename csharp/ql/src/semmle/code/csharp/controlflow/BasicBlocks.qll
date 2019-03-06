@@ -407,9 +407,47 @@ class ExitBasicBlock extends BasicBlock {
 /** Holds if `bb` is an exit basic block. */
 private predicate exitBB(BasicBlock bb) { bb.getLastNode() instanceof ControlFlow::Nodes::ExitNode }
 
+private module JoinBlockPredecessors {
+  private import ControlFlow::Nodes
+
+  private class CallableOrCFE extends Element {
+    CallableOrCFE() { this instanceof Callable or this instanceof ControlFlowElement }
+  }
+
+  private predicate id(CallableOrCFE x, CallableOrCFE y) { x = y }
+
+  private predicate idOf(CallableOrCFE x, int y) = equivalenceRelation(id/2)(x, y)
+
+  int getId(JoinBlockPredecessor jbp) {
+    idOf(jbp.getFirstNode().(ElementNode).getElement(), result)
+    or
+    idOf(jbp.(EntryBasicBlock).getCallable(), result)
+  }
+
+  string getSplitString(JoinBlockPredecessor jbp) {
+    result = jbp.getFirstNode().(ElementNode).getSplitsString()
+    or
+    not exists(jbp.getFirstNode().(ElementNode).getSplitsString()) and
+    result = ""
+  }
+}
+
 /** A basic block with more than one predecessor. */
 class JoinBlock extends BasicBlock {
   JoinBlock() { getFirstNode().isJoin() }
+
+  /**
+   * Gets the `i`th predecessor of this join block, with respect to some
+   * arbitrary order.
+   */
+  cached
+  JoinBlockPredecessor getJoinBlockPredecessor(int i) {
+    result = rank[i + 1](JoinBlockPredecessor jbp |
+        jbp = this.getAPredecessor()
+      |
+        jbp order by JoinBlockPredecessors::getId(jbp), JoinBlockPredecessors::getSplitString(jbp)
+      )
+  }
 }
 
 /** A basic block that is an immediate predecessor of a join block. */

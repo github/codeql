@@ -1,4 +1,0 @@
-| tst.ts:75:17:75:28 | this is Leaf | tst.ts:75:17:75:20 | this | tst.ts:75:25:75:28 | Leaf |
-| tst.ts:76:21:76:32 | that is Leaf | tst.ts:76:21:76:24 | that | tst.ts:76:29:76:32 | Leaf |
-| tst.ts:80:36:80:55 | x is Generic<Leaf[]> | tst.ts:80:36:80:36 | x | tst.ts:80:41:80:55 | Generic<Leaf[]> |
-| tst.ts:81:38:81:50 | x is typeof x | tst.ts:81:38:81:38 | x | tst.ts:81:43:81:50 | typeof x |

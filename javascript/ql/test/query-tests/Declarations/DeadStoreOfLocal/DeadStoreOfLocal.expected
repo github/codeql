@@ -1,6 +1,8 @@
 | overload.ts:10:12:10:14 | baz | This definition of baz is useless, since its value is never read. |
 | tst2.js:26:9:26:14 | x = 23 | This definition of x is useless, since its value is never read. |
 | tst2.js:28:9:28:14 | x = 42 | This definition of x is useless, since its value is never read. |
+| tst3.js:2:1:2:36 | exports ... a: 23 } | This definition of exports is useless, since its value is never read. |
+| tst3b.js:2:18:2:36 | exports = { a: 23 } | This definition of exports is useless, since its value is never read. |
 | tst.js:6:2:6:7 | y = 23 | This definition of y is useless, since its value is never read. |
 | tst.js:13:6:13:11 | a = 23 | This definition of a is useless, since its value is never read. |
 | tst.js:13:14:13:19 | a = 42 | This definition of a is useless, since its value is never read. |

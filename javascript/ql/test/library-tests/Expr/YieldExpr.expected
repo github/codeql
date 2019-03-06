@@ -1,2 +1,0 @@
-| es2015.js:24:3:24:9 | yield n | not delegating |
-| es2015.js:25:2:25:14 | yield* foo(1) | delegating |

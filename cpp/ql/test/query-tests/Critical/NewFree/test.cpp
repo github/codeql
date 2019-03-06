@@ -337,3 +337,37 @@ public:
 
 	char *data;
 };
+
+// ---
+
+int *z;
+
+void test12(bool cond)
+{
+	int *x, *y;
+
+	x = new int();
+	delete x; // GOOD
+	x = (int *)malloc(sizeof(int));
+	free(x); // GOOD
+
+	if (cond)
+	{
+		y = new int();
+		z = new int();
+	} else {
+		y = (int *)malloc(sizeof(int));
+		z = (int *)malloc(sizeof(int));
+	}
+
+	// ...
+
+	if (cond)
+	{
+		delete y; // GOOD
+		delete z; // GOOD
+	} else {
+		free(y); // GOOD
+		free(z); // GOOD
+	}
+}

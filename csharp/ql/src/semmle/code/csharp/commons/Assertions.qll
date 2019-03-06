@@ -42,41 +42,81 @@ class Assertion extends MethodCall {
   /** Gets the expression that this assertion pertains to. */
   Expr getExpr() { result = this.getArgumentForParameter(target.getAssertedParameter()) }
 
+  /**
+   * Holds if basic block `succ` is immediately dominated by this assertion.
+   * That is, `succ` can only be reached from the callable entry point by
+   * going via *some* basic block `pred` containing this assertion, and `pred`
+   * is an immediate predecessor of `succ`.
+   *
+   * Moreover, this assertion corresponds to multiple control flow nodes,
+   * which is why
+   *
+   * ```
+   * exists(BasicBlock bb |
+   *   bb.getANode() = this.getAControlFlowNode() |
+   *   bb.immediatelyDominates(succ)
+   * )
+   * ```
+   *
+   * does not work.
+   */
   pragma[nomagic]
-  private JoinBlockPredecessor getAPossiblyDominatedPredecessor(JoinBlock jb) {
+  private predicate immediatelyDominatesBlockSplit(BasicBlock succ) {
     // Only calculate dominance by explicit recursion for split nodes;
     // all other nodes can use regular CFG dominance
     this instanceof ControlFlow::Internal::SplitControlFlowElement and
-    exists(BasicBlock bb | bb = this.getAControlFlowNode().getBasicBlock() |
-      result = bb.getASuccessor*()
-    ) and
-    result.getASuccessor() = jb and
-    not jb.dominates(result)
+    exists(BasicBlock bb | bb.getANode() = this.getAControlFlowNode() |
+      succ = bb.getASuccessor() and
+      forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != bb |
+        succ.dominates(pred)
+        or
+        // `pred` might be another split of this element
+        pred.getANode().getElement() = this
+      )
+    )
   }
 
-  pragma[nomagic]
-  private predicate isPossiblyDominatedJoinBlock(JoinBlock jb) {
-    exists(this.getAPossiblyDominatedPredecessor(jb)) and
-    forall(BasicBlock pred | pred = jb.getAPredecessor() |
-      pred = this.getAPossiblyDominatedPredecessor(jb)
+  pragma[noinline]
+  private predicate strictlyDominatesJoinBlockPredecessor(JoinBlock jb, int i) {
+    this.strictlyDominatesSplit(jb.getJoinBlockPredecessor(i))
+  }
+
+  private predicate strictlyDominatesJoinBlockSplit(JoinBlock jb, int i) {
+    i = -1 and
+    this.strictlyDominatesJoinBlockPredecessor(jb, _)
+    or
+    this.strictlyDominatesJoinBlockSplit(jb, i - 1) and
+    (
+      this.strictlyDominatesJoinBlockPredecessor(jb, i)
       or
-      jb.dominates(pred)
+      this.getAControlFlowNode().getBasicBlock() = jb.getJoinBlockPredecessor(i)
     )
   }
 
   pragma[nomagic]
   private predicate strictlyDominatesSplit(BasicBlock bb) {
-    this.getAControlFlowNode().getBasicBlock().immediatelyDominates(bb)
+    this.immediatelyDominatesBlockSplit(bb)
     or
-    if bb instanceof JoinBlock
-    then
-      this.isPossiblyDominatedJoinBlock(bb) and
-      forall(BasicBlock pred | pred = this.getAPossiblyDominatedPredecessor(bb) |
-        this.strictlyDominatesSplit(pred)
-        or
-        this.getAControlFlowNode().getBasicBlock() = pred
-      )
-    else this.strictlyDominatesSplit(bb.getAPredecessor())
+    // Equivalent with
+    //
+    // ```
+    // exists(JoinBlockPredecessor pred | pred = bb.getAPredecessor() |
+    //   this.strictlyDominatesSplit(pred)
+    // ) and
+    // forall(JoinBlockPredecessor pred | pred = bb.getAPredecessor() |
+    //   this.strictlyDominatesSplit(pred)
+    //   or
+    //   this.getAControlFlowNode().getBasicBlock() = pred
+    // )
+    // ```
+    //
+    // but uses no universal recursion for better performance.
+    exists(int last | last = max(int i | exists(bb.(JoinBlock).getJoinBlockPredecessor(i))) |
+      this.strictlyDominatesJoinBlockSplit(bb, last)
+    )
+    or
+    not bb instanceof JoinBlock and
+    this.strictlyDominatesSplit(bb.getAPredecessor())
   }
 
   /**

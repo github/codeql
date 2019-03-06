@@ -423,3 +423,71 @@ class FlowThroughFields {
     sink(field); // tainted
   }
 };
+
+typedef unsigned long size_t;
+void *memcpy(void *dest, const void *src, size_t count);
+
+void flowThroughMemcpy_ssa_with_local_flow(int source1) {
+  int tmp = 0;
+  memcpy(&tmp, &source1, sizeof tmp);
+  sink(tmp); // tainted
+}
+
+void flowThroughMemcpy_blockvar_with_local_flow(int source1, int b) {
+  int tmp = 0;
+  int *capture = &tmp;
+  memcpy(&tmp, &source1, sizeof tmp);
+  sink(tmp); // tainted
+  if (b) {
+    sink(tmp); // tainted
+  }
+}
+
+void cleanedByMemcpy_ssa(int clean1) {
+  int tmp;
+  memcpy(&tmp, &clean1, sizeof tmp);
+  sink(tmp); // clean
+}
+
+void cleanedByMemcpy_blockvar(int clean1) {
+  int tmp;
+  int *capture = &tmp;
+  memcpy(&tmp, &clean1, sizeof tmp);
+  sink(tmp); // clean
+}
+
+void intRefSource(int &ref_source);
+void intPointerSource(int *ref_source);
+void intArraySource(int ref_source[], size_t len);
+
+void intRefSourceCaller() {
+  int local;
+  intRefSource(local);
+  sink(local); // tainted
+}
+
+void intPointerSourceCaller() {
+  int local;
+  intPointerSource(&local);
+  sink(local); // tainted
+}
+
+void intPointerSourceCaller2() {
+  int local[1];
+  intPointerSource(local);
+  sink(local); // tainted
+  sink(*local); // clean
+}
+
+void intArraySourceCaller() {
+  int local;
+  intArraySource(&local, 1);
+  sink(local); // tainted
+}
+
+void intArraySourceCaller2() {
+  int local[2];
+  intArraySource(local, 2);
+  sink(local); // tainted
+  sink(*local); // clean
+}

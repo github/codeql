@@ -296,6 +296,8 @@ class RootdefCallable extends Callable {
     // Methods that are the target of a member reference need to implement
     // the exact signature of the resulting functional interface.
     exists(MemberRefExpr mre | mre.getReferencedCallable() = this)
+    or
+    this.getAnAnnotation() instanceof OverrideAnnotation
   }
 }
 

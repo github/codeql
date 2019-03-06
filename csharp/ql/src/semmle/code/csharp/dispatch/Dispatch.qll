@@ -39,6 +39,8 @@ class DispatchCall extends Internal::TDispatchCall {
 
 /** Internal implementation details. */
 private module Internal {
+  private import semmle.code.csharp.Implements
+
   cached
   private module Cached {
     /** Internal representation of calls. */
@@ -656,45 +658,28 @@ private module Internal {
       or
       y instanceof TypeParameter
       or
-      // They must have the same kind.
-      (
-        x instanceof PointerType and y instanceof PointerType
-        or
-        x instanceof NullableType and y instanceof NullableType
-        or
-        x.(ArrayType).hasSameShapeAs(y.(ArrayType))
-        or
-        x.(ConstructedType).getUnboundGeneric() = y.(ConstructedType).getUnboundGeneric()
-      ) and
-      // All of their corresponding children must be structurally equal
+      // All of the children must be structurally equal
       sameChildrenModuloTypeParameters(x, y, x.getNumberOfChildren() - 1)
     )
+  }
+
+  pragma[noinline]
+  private Type candidateInternalKind(Type t, Gvn::CompoundTypeKind k) {
+    result = candidateInternal(t) and
+    k = Gvn::getTypeKind(t)
   }
 
   /**
    * Holds if the `i+1` first children of types `x` and `y` are equal
    * modulo type parameters.
    */
+  pragma[nomagic]
   private predicate sameChildrenModuloTypeParameters(Type x, Type y, int i) {
-    exists(Type xChild, Type yChild |
-      i = 0 and
-      candidateChildren(x, i, xChild, yChild) and
-      yChild = y.getChild(i) and
-      sameModuloTypeParameters(xChild, yChild)
-    )
+    i = -1 and
+    y = candidateInternalKind(x, Gvn::getTypeKind(y))
     or
-    exists(Type xChild, Type yChild | sameChildrenModuloTypeParameters(x, y, i - 1) |
-      candidateChildren(x, i, xChild, yChild) and
-      yChild = y.getChild(i) and
-      sameModuloTypeParameters(xChild, yChild)
-    )
-  }
-
-  private predicate candidateChildren(Type x, int i, Type xChild, Type yChild) {
-    exists(Type y | y = candidateInternal(x) |
-      xChild = x.getChild(i) and
-      yChild = y.getChild(i)
-    )
+    sameChildrenModuloTypeParameters(x, y, i - 1) and
+    sameModuloTypeParameters(x.getChild(i), y.getChild(i))
   }
 
   /**

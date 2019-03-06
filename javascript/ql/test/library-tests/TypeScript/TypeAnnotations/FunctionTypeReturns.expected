@@ -1,6 +1,0 @@
-| tst.ts:87:20:87:31 | () => number | tst.ts:87:26:87:31 | number |
-| tst.ts:88:20:88:44 | (param: ...  number | tst.ts:88:39:88:44 | number |
-| tst.ts:89:20:89:37 | <T>(param: T) => T | tst.ts:89:37:89:37 | T |
-| tst.ts:90:23:90:38 | new () => Object | tst.ts:90:33:90:38 | Object |
-| tst.ts:91:23:91:51 | new (pa ...  Object | tst.ts:91:46:91:51 | Object |
-| tst.ts:92:23:92:49 | new <T> ...  Object | tst.ts:92:44:92:49 | Object |

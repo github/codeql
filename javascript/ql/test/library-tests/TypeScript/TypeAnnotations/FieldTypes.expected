@@ -1,6 +1,0 @@
-| tst.ts:15:3:15:22 | numberField: number; | tst.ts:15:16:15:21 | number |
-| tst.ts:16:3:16:22 | stringField: string; | tst.ts:16:16:16:21 | string |
-| tst.ts:17:3:17:28 | interfa ... erface; | tst.ts:17:19:17:27 | Interface |
-| tst.ts:18:3:18:18 | thisField: this; | tst.ts:18:14:18:17 | this |
-| tst.ts:83:21:83:30 | x: number; | tst.ts:83:24:83:29 | number |
-| tst.ts:83:32:83:41 | y: number; | tst.ts:83:35:83:40 | number |

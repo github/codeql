@@ -1,6 +1,0 @@
-| src/auth.js:1:13:1:32 | require('express')() | src/auth.js:4:9:4:52 | basicAu ... rd' }}) |
-| src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:18:9:18:30 | csrf({  ... true }) |
-| src/express2.js:5:11:5:13 | e() | src/express2.js:6:9:6:14 | router |
-| src/express3.js:2:11:2:19 | express() | src/express3.js:12:9:12:20 | getHandler() |
-| src/express.js:2:11:2:19 | express() | src/express.js:44:9:44:25 | getArrowHandler() |
-| src/subrouter.js:2:11:2:19 | express() | src/subrouter.js:5:14:5:28 | makeSubRouter() |

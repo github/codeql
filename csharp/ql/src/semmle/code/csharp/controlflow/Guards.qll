@@ -1271,6 +1271,14 @@ module Internal {
       exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded.getElement()))
     }
 
+    pragma[noinline]
+    private predicate isGuardedByNode2(ControlFlow::Nodes::ElementNode guarded, Ssa::Definition def) {
+      isGuardedByNode1(guarded, _, _, _) and
+      exists(BasicBlock bb | bb = guarded.getBasicBlock() |
+        def = guarded.getElement().(AccessOrCallExpr).getAnSsaQualifier(bb.getANode())
+      )
+    }
+
     cached
     predicate isGuardedByNode(
       ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
@@ -1278,11 +1286,7 @@ module Internal {
       isGuardedByNode1(guarded, g, sub, v) and
       sub = g.getAChildExpr*() and
       forall(Ssa::Definition def | def = sub.getAnSsaQualifier(_) |
-        exists(ControlFlow::Node cfn |
-          def = guarded.getElement().(AccessOrCallExpr).getAnSsaQualifier(cfn)
-        |
-          cfn.getBasicBlock() = guarded.getBasicBlock()
-        )
+        isGuardedByNode2(guarded, def)
       )
     }
 

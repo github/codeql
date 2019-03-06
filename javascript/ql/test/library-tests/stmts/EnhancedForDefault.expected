@@ -1,1 +1,0 @@
-| loops.js:22:1:22:18 | for (x = 0 in xs); | loops.js:22:10:22:10 | 0 |

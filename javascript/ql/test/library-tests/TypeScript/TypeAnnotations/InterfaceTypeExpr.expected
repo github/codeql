@@ -1,3 +1,0 @@
-| tst.ts:83:19:83:43 | { x: nu ... mber; } | tst.ts:83:21:83:30 | x: number; |
-| tst.ts:83:19:83:43 | { x: nu ... mber; } | tst.ts:83:32:83:41 | y: number; |
-| tst.ts:85:25:85:42 | { foo(): number; } | tst.ts:85:27:85:40 | foo(): number; |

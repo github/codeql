@@ -1,5 +1,0 @@
-| src/test.js:6:9:9:1 | functio ... oo');\\n} | src/test.js:4:11:4:19 | connect() |
-| src/test.js:15:12:15:32 | functio ...  res){} | src/test.js:4:11:4:19 | connect() |
-| src/test.js:19:9:19:27 | function(req,res){} | src/test.js:4:11:4:19 | connect() |
-| src/test.js:20:10:20:28 | function(req,res){} | src/test.js:4:11:4:19 | connect() |
-| src/test.js:24:9:26:1 | functio ...  '');\\n} | src/test.js:4:11:4:19 | connect() |

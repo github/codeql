@@ -1,8 +1,0 @@
-| conditionals.js:12:1:12:1 | } |
-| functions.js:9:1:9:1 | } |
-| guardedCatch.js:11:1:11:65 | //semmle-extractor-options: --experimental --extract-program-text |
-| jscript.js:5:1:5:65 | //semmle-extractor-options: --experimental --extract-program-text |
-| legacyletstmt.js:5:1:5:65 | //semmle-extractor-options: --experimental --extract-program-text |
-| loops.js:22:1:22:18 | for (x = 0 in xs); |
-| others.js:4:1:4:14 | var x = 23, y; |
-| try.js:5:1:5:29 | try {} catch(x) {} finally {} |
