@@ -23,3 +23,29 @@ function useData(data) {
 
 function useData2(data) {
 }
+
+
+// Test tracking of callback into function
+function getDataIndirect(cb) {
+  new C(getConnection()).getData(cb);
+}
+getDataIndirect(data => {});
+getDataIndirect(); // suppress precision gains from single-call special case
+
+// Test tracking of callback out of function
+function getDataCurry() {
+  return data => {};
+}
+new C(getConnection()).getData(getDataCurry());
+getDataCurry(); // suppress precision gains from single-call special case
+
+
+// Test call/return matching of callback tracking
+function identity(cb) {
+  return cb;
+}
+new C(getConnection()).getData(identity(realGetDataCallback));
+identity(fakeGetDataCallback);
+
+function realGetDataCallback(data) {}    // not found due to missing summarization
+function fakeGetDataCallback(notData) {} // should not be found
