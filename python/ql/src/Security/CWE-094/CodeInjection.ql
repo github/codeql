@@ -23,7 +23,17 @@ import semmle.python.web.HttpRequest
 /* Sinks */
 import semmle.python.security.injection.Exec
 
+class CodeInjectionConfiguration extends TaintTracking::Configuration {
 
-from TaintedPathSource src, TaintedPathSink sink
-where src.flowsTo(sink)
+    CodeInjectionConfiguration() { this = "Code injection configuration" }
+
+    override predicate isSource(TaintTracking::Source source) { source.isSourceOf(any(UntrustedStringKind u)) }
+
+    override predicate isSink(TaintTracking::Sink sink) { sink instanceof StringEvaluationNode }
+
+}
+
+
+from CodeInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
+where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "$@ flows to here and is interpreted as code.", src.getSource(), "User-provided value"
