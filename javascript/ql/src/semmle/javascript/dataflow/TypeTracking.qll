@@ -20,6 +20,8 @@ private newtype TStepSummary = MkStepSummary(boolean hasReturn, boolean hasCall)
 }
 
 /**
+ * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
+ *
  * Summary of the steps needed to track a value to a given dataflow node.
  */
 class StepSummary extends TStepSummary {
@@ -84,7 +86,7 @@ module StepSummary {
   StepSummary return() { result = MkStepSummary(true, false) }
 
   /**
-   * INTERNAL: Use `SourceNode.track()` instead.
+   * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
    */
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
     exists (DataFlow::Node predNode | pred.flowsTo(predNode) |
@@ -136,6 +138,8 @@ private newtype TTypeTracker = MkTypeTracker(boolean hasCall) {
 }
 
 /**
+ * EXPERIMENTAL.
+ *
  * Summary of the steps needed to track a value to a given dataflow node.
  *
  * This can be used to track objects that implement a certain API in order to
@@ -194,6 +198,8 @@ private newtype TTypeBackTracker = MkTypeBackTracker(boolean hasReturn) {
 }
 
 /**
+ * EXPERIMENTAL.
+ *
  * Summary of the steps needed to back-track a use of a value to a given dataflow node.
  *
  * This can be used to track callbacks that are passed to a certian API call, and are
