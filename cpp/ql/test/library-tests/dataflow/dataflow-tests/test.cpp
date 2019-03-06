@@ -491,3 +491,20 @@ void intArraySourceCaller2() {
   sink(local); // tainted
   sink(*local); // clean
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+void throughStmtExpr(int source1, int clean1) {
+  sink( ({ source1; }) ); // tainted
+  sink( ({ clean1; }) ); // clean
+
+  int local = ({
+    int tmp;
+    if (clean1)
+      tmp = source1;
+    else
+      tmp = clean1;
+    tmp;
+  });
+  sink(local); // tainted
+}

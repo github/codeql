@@ -17,6 +17,8 @@
 | test.cpp:477:20:477:24 | test.cpp:478:8:478:12 | AST only |
 | test.cpp:484:18:484:23 | test.cpp:485:8:485:12 | AST only |
 | test.cpp:490:18:490:22 | test.cpp:491:8:491:12 | AST only |
+| test.cpp:497:26:497:32 | test.cpp:498:9:498:22 | AST only |
+| test.cpp:497:26:497:32 | test.cpp:509:8:509:12 | AST only |
 | true_upon_entry.cpp:9:11:9:16 | true_upon_entry.cpp:13:8:13:8 | IR only |
 | true_upon_entry.cpp:62:11:62:16 | true_upon_entry.cpp:66:8:66:8 | IR only |
 | true_upon_entry.cpp:98:11:98:16 | true_upon_entry.cpp:105:8:105:8 | IR only |
