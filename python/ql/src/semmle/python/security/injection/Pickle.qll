@@ -25,7 +25,7 @@ private FunctionObject pickleLoads() {
 }
 
 /** `pickle.loads(untrusted)` vulnerability. */
-class UnpicklingNode extends TaintSink {
+class UnpicklingNode extends DeserializationSink {
 
     override string toString() { result = "unpickling untrusted data" }
 

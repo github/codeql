@@ -28,7 +28,7 @@ class UnsafeDeserializationConfiguration  extends TaintTracking::Configuration {
 
     UnsafeDeserializationConfiguration() { this = "Unsafe deserialization configuration" }
 
-    override predicate isSource(TaintTracking::Source source) { source.isSourceOf(any(UntrustedStringKind u)) }
+    override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
 
     override predicate isSink(TaintTracking::Sink sink) { sink instanceof DeserializationSink }
 
