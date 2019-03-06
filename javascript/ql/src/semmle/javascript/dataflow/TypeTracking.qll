@@ -103,10 +103,11 @@ module StepSummary {
       // Flow out of function
       returnStep(predNode, succ) and
       summary = return()
+      or
+      // Flow through an instance field between members of the same class
+      DataFlow::localFieldStep(predNode, succ) and
+      summary = level()
     )
-    or
-    DataFlow::localFieldStep(pred, succ) and
-    summary = level()
   }
 
   /**
@@ -207,7 +208,7 @@ private newtype TTypeBackTracker = MkTypeBackTracker(boolean hasReturn) {
  * ```
  * DataFlow::SourceNode myCallback(DataFlow::TypeBackTracker t) {
  *   t.start() and
- *   result = (< some API call >).getParameter(< n >).getALocalSource()
+ *   result = (< some API call >).getArgument(< n >).getALocalSource()
  *   or
  *   exists (DataFlow::TypeTracker t2 |
  *     result = myCallback(t2).backtrack(t2, t)

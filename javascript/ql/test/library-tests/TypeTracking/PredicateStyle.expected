@@ -1,0 +1,15 @@
+apiObject
+| tst.js:3:11:3:21 | new myapi() |
+| tst.js:15:10:15:21 | api.chain1() |
+| tst.js:15:10:15:30 | api.cha ... hain2() |
+connection
+| type tracker with call steps | tst.js:6:15:6:18 | conn |
+| type tracker with call steps | tst.js:10:5:10:19 | this.connection |
+| type tracker without call steps | tst.js:15:10:15:49 | api.cha ... ction() |
+| type tracker without call steps | tst.js:18:7:18:21 | getConnection() |
+dataCallback
+| tst.js:9:11:9:12 | cb |
+| tst.js:20:1:22:1 | functio ... ata);\\n} |
+dataValue
+| tst.js:20:18:20:21 | data |
+| tst.js:24:19:24:22 | data |
