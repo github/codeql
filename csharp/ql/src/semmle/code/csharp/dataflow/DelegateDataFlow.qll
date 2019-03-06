@@ -172,7 +172,7 @@ private predicate flowsFrom(
   // Flow through static field or property
   exists(DataFlow::Node mid |
     flowsFrom(sink, mid, _, _) and
-    Cached::jumpStep(node, mid) and
+    Cached::jumpStepNoConfig(node, mid) and
     isReturned = false and
     lastCall instanceof EmptyCallContext
   )

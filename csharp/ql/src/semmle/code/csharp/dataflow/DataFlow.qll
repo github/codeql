@@ -1118,7 +1118,7 @@ module DataFlow {
         Pruning::nodeCand(node, config) and
         (
           config.isSource(node) or
-          additionalJumpStep(_, node, config) or
+          jumpStep(_, node, config) or
           node instanceof ParameterNode or
           node instanceof OutNode
         )
@@ -1131,7 +1131,7 @@ module DataFlow {
       predicate localFlowExit(Node node, Configuration config) {
         Pruning::nodeCand(node, config) and
         (
-          additionalJumpStep(node, _, config) or
+          jumpStep(node, _, config) or
           node instanceof ArgumentNode or
           node instanceof ReturnNode or
           config.isSink(node)
@@ -1175,12 +1175,21 @@ module DataFlow {
     /**
      * Holds if the additional step from `node1` to `node2` jumps between callables.
      */
-    bindingset[config]
+    pragma[noinline]
     private predicate additionalJumpStep(Node node1, Node node2, Configuration config) {
       config.isAdditionalFlowStep(node1, node2) and
       node1.getEnclosingCallable() != node2.getEnclosingCallable()
+    }
+
+    /**
+     * Holds if `pred` can flow to `succ`, by jumping from one callable to
+     * another.
+     */
+    bindingset[config]
+    private predicate jumpStep(Node node1, Node node2, Configuration config) {
+      additionalJumpStep(node1, node2, config)
       or
-      jumpStep(node1, node2)
+      jumpStepNoConfig(node1, node2)
     }
 
     /**
@@ -1200,7 +1209,7 @@ module DataFlow {
           or
           exists(Node mid | nodeCandFwd1(mid, config) | LocalFlow::localFlowStep(mid, node, config))
           or
-          exists(Node mid | nodeCandFwd1(mid, config) | additionalJumpStep(mid, node, config))
+          exists(Node mid | nodeCandFwd1(mid, config) | jumpStep(mid, node, config))
           or
           exists(ArgumentNode arg | nodeCandFwd1(arg, config) |
             flowIntoCallableStep(_, arg, node, _, config)
@@ -1223,7 +1232,7 @@ module DataFlow {
           or
           exists(Node mid | nodeCand1(mid, config) | LocalFlow::localFlowStep(node, mid, config))
           or
-          exists(Node mid | nodeCand1(mid, config) | additionalJumpStep(node, mid, config))
+          exists(Node mid | nodeCand1(mid, config) | jumpStep(node, mid, config))
           or
           exists(ParameterNode p | nodeCand1(p, config) |
             flowIntoCallableStep(_, node, p, _, config)
@@ -1278,7 +1287,7 @@ module DataFlow {
       pragma[noinline]
       private predicate jumpStepCand1(Node pred, Node succ, Configuration config) {
         nodeCand1(succ, config) and
-        additionalJumpStep(pred, succ, config)
+        jumpStep(pred, succ, config)
       }
 
       pragma[noinline]
@@ -1367,7 +1376,7 @@ module DataFlow {
         or
         nodeCandFwd2(node, _, config) and
         exists(Node mid | nodeCand2(mid, _, config) |
-          additionalJumpStep(node, mid, config) and
+          jumpStep(node, mid, config) and
           isReturned = false
         )
         or
@@ -1422,10 +1431,10 @@ module DataFlow {
 
       /**
        * Holds if `pred` can flow to `succ`, by jumping from one callable to
-       * another.
+       * another. Additional steps specified by the configuration are *not* taken into account.
        */
       cached
-      predicate jumpStep(ExprNode pred, ExprNode succ) {
+      predicate jumpStepNoConfig(ExprNode pred, ExprNode succ) {
         pred.(NonLocalJumpNode).getAJumpSuccessor(true) = succ
       }
 
@@ -1733,7 +1742,7 @@ module DataFlow {
       ctx = mid.getContext() and
       LocalFlow::localFlowBigStep(mid.getNode(), node, mid.getConfiguration())
       or
-      additionalJumpStep(mid.getNode(), node, mid.getConfiguration()) and
+      jumpStep(mid.getNode(), node, mid.getConfiguration()) and
       ctx instanceof NoContext
       or
       flowIntoCallable(mid, node, ctx)
