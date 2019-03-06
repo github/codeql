@@ -67,6 +67,14 @@ module Ssa {
           )
         )
       }
+
+      cached
+      AssignableDefinition getADefinition(ExplicitDefinition def) {
+        exists(TrackedVar tv, AssignableDefinition ad | def = TSsaExplicitDef(tv, ad, _, _) |
+          result = ad or
+          result = getASameOutRefDefAfter(tv, ad)
+        )
+      }
     }
     import Cached
 
@@ -587,8 +595,7 @@ module Ssa {
      * (when `k` is `SsaDef()`).
      */
     private predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
-      exists(ReadKind rk |
-        variableRead(bb, i, v, _, rk) |
+      exists(ReadKind rk | variableRead(bb, i, v, _, rk) |
         not rk instanceof RefReadBeforeWrite and
         k = SsaRead()
       )
@@ -2248,8 +2255,7 @@ module Ssa {
      * where there may be more than one underlying definition.
      */
     AssignableDefinition getADefinition() {
-      result = ad or
-      result = getASameOutRefDefAfter(tv, ad)
+      result = getADefinition(this)
     }
 
     /**
