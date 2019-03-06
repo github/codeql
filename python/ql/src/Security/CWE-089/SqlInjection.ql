@@ -26,7 +26,7 @@ class SQLInjectionConfiguration extends TaintTracking::Configuration {
 
     SQLInjectionConfiguration() { this = "SQL injection configuration" }
 
-    override predicate isSource(TaintTracking::Source source) { source.isSourceOf(any(UntrustedStringKind u)) }
+    override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
 
     override predicate isSink(TaintTracking::Sink sink) { sink instanceof SqlInjectionSink }
 
@@ -34,4 +34,4 @@ class SQLInjectionConfiguration extends TaintTracking::Configuration {
 
 from SQLInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
-select sink.getNode(), src, sink, "This SQL query depends on $@.", src.getNode(), "a user-provided value"
+select sink.getSink(), src, sink, "This SQL query depends on $@.", src.getSource(), "a user-provided value"
