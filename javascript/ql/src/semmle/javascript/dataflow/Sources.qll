@@ -160,19 +160,24 @@ class SourceNode extends DataFlow::Node {
    *
    * See `TypeTracker` for more details about how to use this.
    */
-  DataFlow::SourceNode track(TypeTracker src, TypeTracker dst) {
+  DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) {
     exists(StepSummary summary |
       StepSummary::step(this, result, summary) and
-      dst = StepSummary::append(src, summary)
+      t = StepSummary::append(t2, summary)
     )
   }
 
   /**
    * Gets a node that may flow into this one using one heap and/or interprocedural step.
    *
-   * See `TypeTracker` for more details about how to use this.
+   * See `TypeBackTracker` for more details about how to use this.
    */
-  DataFlow::SourceNode backtrack(TypeTracker src, TypeTracker dst) { this = result.track(src, dst) }
+  DataFlow::SourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
+    exists(StepSummary summary |
+      StepSummary::step(result, this, summary) and
+      t = StepSummary::prepend(summary, t2)
+    )
+  }
 }
 
 module SourceNode {
