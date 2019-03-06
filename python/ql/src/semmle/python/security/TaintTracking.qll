@@ -318,6 +318,14 @@ abstract class Sanitizer extends string {
 
 }
 
+/** Hold if `sanitizer` is valid. A sanitizer is valid if there is
+ * a `TaintTracking::Configuration` that declares `sanitizer` or
+ * there are no `TaintTracking::Configuration`s.
+ */
+private predicate valid_sanitizer(Sanitizer sanitizer) {
+    forall (TaintTracking::Configuration c | c.isSanitizer(sanitizer))
+}
+
 /** DEPRECATED -- Use DataFlowExtension instead.
  *  An extension to taint-flow. For adding library or framework specific flows.
  * Examples include flow from a request to untrusted part of that request or
@@ -590,6 +598,7 @@ private newtype TTaintedNode =
             or
             kind = taint.(TaintFlowImplementation::TrackedAttribute).getKind(_) |
             not exists(Sanitizer sanitizer |
+                valid_sanitizer(sanitizer) and
                 sanitizer.sanitizingNode(kind, n)
             )
         )
@@ -839,26 +848,31 @@ library module TaintFlowImplementation {
         or
         call_taint_step(fromnode, totaint, tocontext, tonode)
         or
-        fromnode.getNode().(DataFlowNode).getASuccessorNode() = tonode and
-        fromnode.getContext() = tocontext and
-        totaint = fromnode.getTrackedValue()
-        or
-        exists(CallNode call |
-            fromnode.getNode().(DataFlowNode).getAReturnSuccessorNode(call) = tonode and
-            fromnode.getContext() = tocontext.getCallee(call) and
+        exists(DataFlowNode fromnodenode |
+            fromnodenode = fromnode.getNode() and
+            forall(TaintTracking::Configuration c | c.isExtension(fromnodenode))
+            |
+            fromnodenode.getASuccessorNode() = tonode and
+            fromnode.getContext() = tocontext and
             totaint = fromnode.getTrackedValue()
-        )
-        or
-        exists(CallNode call |
-            fromnode.getNode().(DataFlowNode).getACalleeSuccessorNode(call) = tonode and
-            fromnode.getContext().getCallee(call) = tocontext and
-            totaint = fromnode.getTrackedValue()
-        )
-        or
-        exists(TaintKind tokind |
-            fromnode.getNode().(DataFlowNode).getASuccessorNode(fromnode.getTaintKind(), tokind) = tonode and
-            totaint = fromnode.getTrackedValue().toKind(tokind) and
-            tocontext = fromnode.getContext()
+            or
+            exists(CallNode call |
+                fromnodenode.getAReturnSuccessorNode(call) = tonode and
+                fromnode.getContext() = tocontext.getCallee(call) and
+                totaint = fromnode.getTrackedValue()
+            )
+            or
+            exists(CallNode call |
+                fromnodenode.getACalleeSuccessorNode(call) = tonode and
+                fromnode.getContext().getCallee(call) = tocontext and
+                totaint = fromnode.getTrackedValue()
+            )
+            or
+            exists(TaintKind tokind |
+                fromnodenode.getASuccessorNode(fromnode.getTaintKind(), tokind) = tonode and
+                totaint = fromnode.getTrackedValue().toKind(tokind) and
+                tocontext = fromnode.getContext()
+            )
         )
         or
         exists(TaintKind tokind |
@@ -1038,8 +1052,12 @@ library module TaintFlowImplementation {
             prev.(DataFlowVariable).getASuccessorVariable() = var
         )
         or
-        origin.getNode().(DataFlowNode).getASuccessorVariable() = var and
-        context = origin.getContext()
+        exists(DataFlowNode originnode |
+            originnode = origin.getNode() and
+            forall(TaintTracking::Configuration c | c.isExtension(originnode)) and
+            originnode.getASuccessorVariable() = var and
+            context = origin.getContext()
+        )
         or
         exists(TrackedTaint taint, EssaVariable prev |
             tainted_var(prev, context, origin) and
@@ -1062,6 +1080,7 @@ library module TaintFlowImplementation {
             exists(TaintKind kind |
                 kind = origin.getTaintKind() and
                 not exists(Sanitizer san |
+                    valid_sanitizer(san) |
                     san.sanitizingDefinition(kind, def)
                     or
                     san.sanitizingNode(kind, def.(EssaNodeDefinition).getDefiningNode())
@@ -1184,6 +1203,7 @@ library module TaintFlowImplementation {
         exists(TaintKind kind |
             kind = origin.getTaintKind() |
             not exists(FunctionObject callee, Sanitizer sanitizer |
+                valid_sanitizer(sanitizer) and
                 callee.getACall() = call.getCall() and
                 sanitizer.sanitizingCall(kind, callee)
             )
@@ -1197,6 +1217,7 @@ library module TaintFlowImplementation {
             var = test.getInput() and
             tainted_var(var, context, origin) and
             not exists(Sanitizer sanitizer |
+                valid_sanitizer(sanitizer) and
                 sanitizer.sanitizingEdge(kind, test)
             )
             |
@@ -1246,6 +1267,7 @@ library module TaintFlowImplementation {
             var = uniphi.getInput() and
             tainted_var(var, context, origin) and
             not exists(Sanitizer sanitizer |
+                valid_sanitizer(sanitizer) and
                 sanitizer.sanitizingSingleEdge(kind, uniphi)
             )
         )
@@ -1437,6 +1459,49 @@ class CallContext extends TCallContext {
     }
 
 }
+
+
+module TaintTracking {
+
+    class Source = TaintSource;
+
+    class Sink = TaintSink;
+
+    class PathSource = TaintedPathSource;
+
+    class PathSink = TaintedPathSink;
+
+    class Extension = DataFlowExtension::DataFlowNode;
+
+    abstract class Configuration extends string {
+
+        bindingset[this]
+        Configuration() { this = this }
+
+        abstract predicate isSource(Source source);
+
+        abstract predicate isSink(Sink sink);
+
+        predicate isSanitizer(Sanitizer sanitizer) { none() }
+
+        predicate isExtension(Extension extension) { none() }
+
+        predicate hasFlowPath(PathSource source, PathSink sink) {
+            this.isSource(source.getNode()) and
+            this.isSink(sink.getNode()) and
+            source.flowsTo(sink)
+        }
+
+        predicate hasFlow(Source source, Sink sink) {
+            this.isSource(source) and
+            this.isSink(sink) and
+            source.flowsToSink(sink)
+        }
+
+    }
+
+}
+
 
 pragma [noinline]
 private predicate dict_construct(ControlFlowNode itemnode, ControlFlowNode dictnode) {
