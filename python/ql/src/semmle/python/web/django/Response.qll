@@ -2,6 +2,7 @@ import python
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
 private import semmle.python.web.django.Shared
+private import semmle.python.web.Http
 
 
 /** A django.http.response.Response object
@@ -39,7 +40,7 @@ class DjangoResponseSource extends TaintSource {
 }
 
 /** A write to a django response, which is vulnerable to external data (xss) */
-class DjangoResponseWrite extends TaintSink {
+class DjangoResponseWrite extends SimpleHttpResponseTaintSink {
 
     DjangoResponseWrite() {
         exists(AttrNode meth, CallNode call |
@@ -60,7 +61,7 @@ class DjangoResponseWrite extends TaintSink {
 }
 
 /** An argument to initialization of a django response, which is vulnerable to external data (xss) */
-class DjangoResponseContent extends TaintSink {
+class DjangoResponseContent extends SimpleHttpResponseTaintSink {
 
     DjangoResponseContent() {
         exists(CallNode call, ClassObject cls |

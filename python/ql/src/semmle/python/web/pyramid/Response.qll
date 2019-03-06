@@ -5,10 +5,11 @@ import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
 
 private import semmle.python.web.pyramid.View
+private import semmle.python.web.Http
 
 /** A pyramid response, which is vulnerable to any sort of 
  * http response malice. */
-class PyramidRoutedResponse extends TaintSink {
+class PyramidRoutedResponse extends SimpleHttpResponseTaintSink {
 
     PyramidRoutedResponse() {
         exists(PyFunctionObject view |

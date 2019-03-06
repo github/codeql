@@ -25,6 +25,17 @@ import semmle.python.web.HttpResponse
 /* Flow */
 import semmle.python.security.strings.Untrusted
 
-from TaintedPathSource src, TaintedPathSink sink
-where src.flowsTo(sink)
+
+class RefectedXssConfiguration extends TaintTracking::Configuration {
+
+    RefectedXssConfiguration() { this = "Reflected XSS configuration" }
+
+    override predicate isSource(TaintTracking::Source source) { source.isSourceOf(any(UntrustedStringKind u)) }
+
+    override predicate isSink(TaintTracking::Sink sink) { sink.sinks(any(UntrustedStringKind u)) }
+
+}
+
+from RefectedXssConfiguration config, TaintedPathSource src, TaintedPathSink sink
+where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "Cross-site scripting vulnerability due to $@.", src.getSource(), "user-provided value"
