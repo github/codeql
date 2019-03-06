@@ -16,7 +16,7 @@ private predicate flask_request_attr(AttrNode attr, string name) {
 }
 
 /** Source of external data from a flask request */
-class FlaskRequestData extends SimpleHttpRequestTaintSource {
+class FlaskRequestData extends HttpRequestTaintSource {
 
     FlaskRequestData() {
         not this instanceof FlaskRequestArgs and
@@ -27,6 +27,10 @@ class FlaskRequestData extends SimpleHttpRequestTaintSource {
         )
     }
 
+    override predicate isSourceOf(TaintKind kind) { 
+        kind instanceof ExternalStringKind
+    }
+
     override string toString() {
         result = "flask.request"
     }
@@ -34,7 +38,7 @@ class FlaskRequestData extends SimpleHttpRequestTaintSource {
 }
 
 /** Source of dictionary whose values are externally controlled */
-class FlaskRequestArgs extends TaintSource {
+class FlaskRequestArgs extends HttpRequestTaintSource {
 
     FlaskRequestArgs() {
         exists(string attr |
