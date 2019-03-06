@@ -30,7 +30,7 @@ class TwistedResponse extends TaintSink {
  * object, which affects the properties of the subsequent response sent to this
  * request.
  */
- class TwistedRequestSetter extends TaintSink {
+ class TwistedRequestSetter extends SimpleHttpResponseTaintSink {
     TwistedRequestSetter() {
         exists(CallNode call, ControlFlowNode node, string name |
             (
