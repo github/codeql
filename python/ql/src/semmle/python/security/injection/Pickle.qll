@@ -9,6 +9,7 @@ import python
 
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
+import semmle.python.security.injection.Deserialization
 
 
 private ModuleObject pickleModule() {
