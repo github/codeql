@@ -19,6 +19,11 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
   /** Gets the enclosing callable of this element, if any. */
   Callable getEnclosingCallable() { none() }
 
+  /** Gets the assembly that this element was compiled into. */
+  Assembly getAssembly() {
+    result = this.getEnclosingCallable().getDeclaringType().getALocation()
+  }
+
   /**
    * Gets a control flow node for this element. That is, a node in the
    * control flow graph that corresponds to this element.
