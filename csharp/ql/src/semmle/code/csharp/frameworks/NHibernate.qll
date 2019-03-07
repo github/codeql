@@ -39,8 +39,6 @@ module NHibernate {
 
   /** A mapped class that is mapped because it is used as a type argument. */
   private class MappedByTypeArgument extends MappedClass {
-    UnboundGeneric gen;
-
     MappedByTypeArgument() {
       this = any(ISessionInterface si).getAMappedObjectTp().getASuppliedType()
     }
