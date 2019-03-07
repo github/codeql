@@ -179,8 +179,8 @@ private predicate operandEscapesNonReturn(Operand operand) {
 
 private predicate operandMayReachReturn(Operand operand) {
   // The address is propagated to the result of the instruction, and that result itself is returned
-    operandIsPropagated(operand, _) and
-    resultMayReachReturn(operand.getUseInstruction())
+  operandIsPropagated(operand, _) and
+  resultMayReachReturn(operand.getUseInstruction())
   or
   // The operand is used in a function call which returns it, and the return value is then returned
   exists(CallInstruction ci, Instruction init |
