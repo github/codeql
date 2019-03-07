@@ -16,10 +16,7 @@ import DataFlow::PathGraph
  */
 bindingset[s]
 string getAPlaceholderInString(string s) {
-  exists(string contents |
-    "<%=" + contents + "%>" = s.regexpFind("<%=\\s*[a-zA-Z0-9_]+\\s*%>", _, _) and
-    result = contents.trim()
-  )
+  result = s.regexpCapture(".*<%=\\s*([a-zA-Z0-9_]+)\\s*%>.*", 1)
 }
 
 class TemplateInjection extends TaintTracking::Configuration {

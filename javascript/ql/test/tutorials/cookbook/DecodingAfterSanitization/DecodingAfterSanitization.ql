@@ -1,6 +1,7 @@
 /**
  * @name Decoding after sanitization
- * @description Tracks the return value of 'escapeHtml' into 'decodeURI'.
+ * @description Tracks the return value of 'escapeHtml' into 'decodeURI', indicating
+                an ineffective sanitization attempt.
  * @kind path-problem
  * @tags security
  * @id js/cookbook/decoding-after-sanitization

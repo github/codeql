@@ -1,7 +1,7 @@
 /**
  * @name IDOR through request to backend service
  * @description Finds cases where the 'userId' field in a request to another service
- *              is an arbitrary user-controlled value.
+ *              is an arbitrary user-controlled value, indicating lack of authentication.
  * @kind path-problem
  * @tags security
  * @id js/cookbook/backend-idor
@@ -26,6 +26,7 @@ class IdorTaint extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {
+    // After a check like `if (userId === session.user.id)`, the userId is considered safe.
     node instanceof EqualityGuard
   }
 }
