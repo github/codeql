@@ -276,11 +276,20 @@ module HTTP {
      * a request object enters the flow graph, such as the request
      * parameter of a route handler.
      */
-    abstract class RequestSource extends DataFlow::TrackedNode {
+    abstract class RequestSource extends DataFlow::Node {
       /**
        * Gets the route handler that handles this request.
        */
       abstract RouteHandler getRouteHandler();
+
+      predicate flowsTo(DataFlow::Node nd) { flowsToSourceNode(_).flowsTo(nd) }
+
+      private DataFlow::SourceNode flowsToSourceNode(DataFlow::TypeTracker t) {
+        t.start() and
+        result = this
+        or
+        exists(DataFlow::TypeTracker prev | result = flowsToSourceNode(prev).track(prev, t))
+      }
     }
 
     /**
@@ -288,11 +297,20 @@ module HTTP {
      * a response object enters the flow graph, such as the response
      * parameter of a route handler.
      */
-    abstract class ResponseSource extends DataFlow::TrackedNode {
+    abstract class ResponseSource extends DataFlow::Node {
       /**
        * Gets the route handler that provides this response.
        */
       abstract RouteHandler getRouteHandler();
+
+      predicate flowsTo(DataFlow::Node nd) { flowsToSourceNode(_).flowsTo(nd) }
+
+      private DataFlow::SourceNode flowsToSourceNode(DataFlow::TypeTracker t) {
+        t.start() and
+        result = this
+        or
+        exists(DataFlow::TypeTracker prev | result = flowsToSourceNode(prev).track(prev, t))
+      }
     }
 
     /**

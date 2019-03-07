@@ -111,8 +111,16 @@ module Express {
     Expr getLastRouteHandlerExpr() { result = max(int i | | getRouteHandlerExpr(i) order by i) }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result.(DataFlow::SourceNode).flowsTo(getARouteHandlerExpr().flow()) or
-      result.(DataFlow::TrackedNode).flowsTo(getARouteHandlerExpr().flow())
+      result = getARouteHandler(_)
+    }
+
+    private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
+      t.start() and
+      result = getARouteHandlerExpr().flow().getALocalSource()
+      or
+      exists(DataFlow::TypeBackTracker next |
+        result = getARouteHandler(next).backtrack(next, t)
+      )
     }
 
     override Expr getServer() { result.(Application).getARouteHandler() = getARouteHandler() }
@@ -766,24 +774,13 @@ module Express {
   }
 
   /**
-   * Tracking for `RouteHandlerCandidate`.
-   */
-  private class TrackedRouteHandlerCandidate extends DataFlow::TrackedNode {
-    TrackedRouteHandlerCandidate() { this instanceof RouteHandlerCandidate }
-  }
-
-  /**
-   * A function that looks like an Express route handler and flows to a route setup.
+   * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
-    override Function astNode;
+    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
 
     TrackedRouteHandlerCandidateWithSetup() {
-      exists(TrackedRouteHandlerCandidate tracked |
-        tracked.flowsTo(any(RouteSetup s).getARouteHandlerExpr().flow()) and
-        this = tracked
-      )
+      this = any(RouteSetup s).getARouteHandler()
     }
 
     override SimpleParameter getRouteHandlerParameter(string kind) {
