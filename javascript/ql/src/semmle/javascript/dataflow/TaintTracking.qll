@@ -443,7 +443,7 @@ module TaintTracking {
           (mce.getMethodName() = "fromCharCode" or mce.getMethodName() = "fromCodePoint")
         )
         or
-        // `(encode|decode)URI(Component)?` and `escape` propagate taint
+        // `(encode|decode)URI(Component)?` propagate taint
         exists(DataFlow::CallNode c, string name |
           this = c and
           c = DataFlow::globalVarRef(name).getACall() and
