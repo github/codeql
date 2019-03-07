@@ -207,7 +207,7 @@ enum my_enum {
 };
 
 int myFunction6(enum my_enum e) {
-	if (e < 0) {
+	if (e < 0) { // BAD
 		return 1;
 	}
 	return 0;
