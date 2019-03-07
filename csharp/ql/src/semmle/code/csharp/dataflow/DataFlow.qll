@@ -710,7 +710,7 @@ module DataFlow {
       CilCall() {
         call = this and
         // No need to include calls that are compiled from source
-        not call.getImplementation().getMethod().compiledFromSource()
+        cilCallWithoutSource(call)
       }
 
       override DotNet::Callable getARuntimeTarget() {
@@ -1538,6 +1538,11 @@ module DataFlow {
       ) {
         ret.flowsOut(out.getDefinition()) and
         call.asExpr() = out.getCall()
+      }
+
+      cached
+      predicate cilCallWithoutSource(CIL::Call call) {
+        not call.getImplementation().getMethod().compiledFromSource()
       }
     }
 
