@@ -43,7 +43,7 @@ namespace Newtonsoft.Json.Linq
 
         public static explicit operator string(JToken t) => null;
 
-        public IEnumerable<JToken> SelectToken(string s) => null; 
+        public IEnumerable<JToken> SelectToken(string s) => null;
     }
 
     public class JObject : JToken
