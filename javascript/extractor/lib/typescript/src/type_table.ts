@@ -24,6 +24,28 @@ function isTypeVariable(type: ts.Type): type is ts.TypeVariable {
 }
 
 /**
+ * Returns `true` if the properties of the given type can safely be extracted
+ * without restricting expansion depth.
+ *
+ * This predicate is very approximate, and considers all unions, intersections,
+ * named types, and mapped types as potentially unsafe.
+ */
+function isTypeAlwaysSafeToExpand(type: ts.Type): boolean {
+  let flags = type.flags;
+  if (flags & ts.TypeFlags.UnionOrIntersection) {
+    return false;
+  }
+  if (flags & ts.TypeFlags.Object) {
+    let objectType = type as ts.ObjectType;
+    let objectFlags = objectType.objectFlags;
+    if (objectFlags & (ts.ObjectFlags.Reference | ts.ObjectFlags.Mapped)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
  * If `type` is a `this` type, returns the enclosing type.
  * Otherwise returns `null`.
  */
@@ -784,7 +806,7 @@ export class TypeTable {
     while (worklist.length > 0) {
       let [type, id] = worklist.pop();
       let isShallowContext = typeExtractionState[id] === TypeExtractionState.PendingShallow;
-      if (isShallowContext && isTypeReference(type)) {
+      if (isShallowContext && !isTypeAlwaysSafeToExpand(type)) {
         typeExtractionState[id] = TypeExtractionState.DoneShallow;
       } else {
         typeExtractionState[id] = TypeExtractionState.DoneFull;
