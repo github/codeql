@@ -462,5 +462,5 @@
 | test.cpp:74:30:74:30 | c | 255.0 |
 | test.cpp:74:34:74:34 | c | 255.0 |
 | test.cpp:75:22:75:30 | c_times_2 | 510.0 |
-| test.cpp:77:5:77:13 | c_times_2 | 0.0 |
-| test.cpp:79:3:79:11 | c_times_2 | 255.0 |
+| test.cpp:77:5:77:13 | c_times_2 | 510.0 |
+| test.cpp:79:3:79:11 | c_times_2 | 510.0 |

@@ -74,7 +74,7 @@ void use_after_cast(unsigned char c)
   unsigned short c_times_2 = c + c;
   if ((unsigned char)c_times_2 == 0)
   {
-    c_times_2; // BUG: upper bound should be 510, not 0
+    c_times_2;
   }
-  c_times_2; // BUG: upper bound should be 510, not 255
+  c_times_2;
 }

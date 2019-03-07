@@ -47,8 +47,8 @@ predicate relOp(
   RelationalOperation rel, Expr lhs, Expr rhs,
   RelationDirection dir, RelationStrictness strict
 ) {
-  lhs = rel.getLeftOperand() and
-  rhs = rel.getRightOperand() and
+  lhs = rel.getLeftOperand().getFullyConverted() and
+  rhs = rel.getRightOperand().getFullyConverted() and
   ((rel instanceof LTExpr and dir = Lesser()  and strict = Strict()) or
    (rel instanceof LEExpr and dir = Lesser()  and strict = Nonstrict()) or
    (rel instanceof GTExpr and dir = Greater() and strict = Strict()) or
@@ -104,8 +104,8 @@ predicate relOpWithSwapAndNegate(
  */
 private
 predicate eqOp(EqualityOperation cmp, Expr lhs, Expr rhs, boolean isEQ) {
-  lhs = cmp.getLeftOperand() and
-  rhs = cmp.getRightOperand() and
+  lhs = cmp.getLeftOperand().getFullyConverted() and
+  rhs = cmp.getRightOperand().getFullyConverted() and
   ((cmp instanceof EQExpr and isEQ = true) or
    (cmp instanceof NEExpr and isEQ = false))
 }
