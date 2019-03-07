@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 case SyntaxKind.GenericName:
                     var gns = (GenericNameSyntax)Syntax;
                     Emit(Loc ?? gns.Identifier.GetLocation(), Parent, Type);
-                    gns.TypeArgumentList.Arguments.Zip(Type.TypeMentions, (s, t) => Create(cx, s, this, t)).Enumerate();
+                    cx.PopulateLater(() => gns.TypeArgumentList.Arguments.Zip(Type.TypeMentions, (s, t) => Create(cx, s, this, t)).Enumerate());
                     return;
                 case SyntaxKind.QualifiedName:
                     if (Type.ContainingType == null)
