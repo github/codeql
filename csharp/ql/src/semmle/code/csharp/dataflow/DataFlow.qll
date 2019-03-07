@@ -1095,7 +1095,7 @@ module DataFlow {
       }
 
       pragma[noinline]
-      private predicate localFlowStep0(Node pred, Node succ, Configuration config, Callable c) {
+      private predicate localFlowStep0(Node pred, Node succ, Configuration config, DotNet::Callable c) {
         config.isAdditionalFlowStep(pred, succ) and
         pred.getEnclosingCallable() = c
       }
