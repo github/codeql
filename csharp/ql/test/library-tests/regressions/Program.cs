@@ -147,4 +147,16 @@ partial class C1<T> where T: DynamicType
 {
 }
 
+namespace NoPia
+{
+    class EmbeddedTypesManager<
+        TEmbeddedTypesManager,
+        TEmbeddedType
+        >
+        where TEmbeddedTypesManager : EmbeddedTypesManager<TEmbeddedTypesManager, TEmbeddedType>
+        where TEmbeddedType : EmbeddedTypesManager<TEmbeddedTypesManager, TEmbeddedType>
+    {
+    }
+}
+
 // semmle-extractor-options: /r:System.Dynamic.Runtime.dll
