@@ -35,7 +35,7 @@ or garbled output.
 <p>
 Use a (well-tested) sanitization library if at all possible. These libraries are much more
 likely to handle corner cases correctly than a custom implementation. For URI encoding,
-you can use the standard `encodeURIComponent` and `decodeURIComponent` functions.
+you can use the standard <code>encodeURIComponent</code> and <code>decodeURIComponent</code> functions.
 </p>
 <p>
 Otherwise, make sure to always escape the escape character first, and unescape it last.
