@@ -502,7 +502,7 @@ class Dict extends Dict_ {
         result = this.getAValue() or result = this.getAKey()
     }
 
-    AstNode getAChildNode() {
+    override AstNode getAChildNode() {
         result = this.getAnItem()
     }
 

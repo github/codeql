@@ -385,7 +385,7 @@ class ClassObject extends Object {
         result.getFunction().refersTo(this)
     }
 
-    predicate notClass() {
+    override predicate notClass() {
         none()
     }
 
