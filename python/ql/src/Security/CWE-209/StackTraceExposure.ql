@@ -19,5 +19,5 @@ import semmle.python.security.Exceptions
 import semmle.python.web.HttpResponse
 
 from TaintedPathSource src, TaintedPathSink sink
-where src.flowsTo(sink)
+where src.flowsTo(sink) and src.getSource() instanceof ErrorInfoSource
 select sink.getSink(), src, sink, "$@ may be exposed to an external user", src.getSource(), "Error information"
