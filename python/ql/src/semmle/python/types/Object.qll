@@ -130,7 +130,7 @@ class Object extends @py_object {
         or
         this = theFalseObject() and result = false 
         or
-        this = theEmptyTupleObject() and result = false 
+        this = TupleObject::empty() and result = false 
         or
         exists(Tuple t | t = this.getOrigin() |
             exists(t.getAnElt()) and result = true
