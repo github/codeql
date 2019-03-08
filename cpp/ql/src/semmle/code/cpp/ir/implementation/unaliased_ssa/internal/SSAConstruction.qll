@@ -388,10 +388,17 @@ private import PhiInsertion
  * location and there is a use of that location reachable from that block without an intervening definition of the
  * location.
  * Within the approach outlined above, we treat a location slightly differently depending on whether or not it is a
- * virtual variable. For a virtual variable, 
- * location into the beginning of a block
+ * virtual variable. For a virtual variable, we will insert a `Phi` instruction on the dominance frontier if there is
+ * a use of any member location of that virtual variable that is reachable from the `Phi` instruction. For a location
+ * that is not a virtual variable, we insert a `Phi` instruction only if there is an exactly-overlapping use of the
+ * location reachable from the `Phi` instruction. This ensures that we insert a `Phi` instruction for a non-virtual
+ * variable only if doing so would allow dataflow analysis to get a more precise result than if we just used a `Phi`
+ * instruction for the virtual variable as a whole.
  */
 private module PhiInsertion {
+  /**
+   * Holds if a `Phi` instruction needs to be inserted for location `defLocation` at the beginning of block `phiBlock`.
+   */
   predicate definitionHasPhiNode(Alias::MemoryLocation defLocation, OldBlock phiBlock) {
     exists(OldBlock defBlock |
       phiBlock = Dominance::getDominanceFrontier(defBlock) and
@@ -402,8 +409,8 @@ private module PhiInsertion {
   }
 
   /**
-    * Holds if the virtual variable `vvar` has a definition in block `block`, either because of an existing instruction
-    * or because of a Phi node.
+    * Holds if the memory location `defLocation` has a definition in block `block`, either because of an existing
+    * instruction, a `Phi` node, or a `Chi` node. 
     */
   private predicate definitionHasDefinitionInBlock(Alias::MemoryLocation defLocation, OldBlock block) {
     definitionHasPhiNode(defLocation, block) or
@@ -501,10 +508,10 @@ private module PhiInsertion {
 private import DefUse
 
 /**
- * Module containing the predicates that connect uses to their reaching definition. The reaching definitios are computed
- * separately for each unique use `MemoryLocation`. An instruction is treated as a definition of a use location if the
- * defined location overlaps the use location in any way. Thus, a single instruction may serve as a definition for
- * multiple use locations, since a single definition location may overlap many use locations.
+ * Module containing the predicates that connect uses to their reaching definition. The reaching definitions are
+ * computed separately for each unique use `MemoryLocation`. An instruction is treated as a definition of a use location
+ * if the defined location overlaps the use location in any way. Thus, a single instruction may serve as a definition
+ * for multiple use locations, since a single definition location may overlap many use locations.
  * 
  * Definitions and uses are identified by a block and an integer "offset". An offset of -1 indicates the definition
  * from a `Phi` instruction at the beginning of the block. An offset of 2*i indicates a definition or use on the

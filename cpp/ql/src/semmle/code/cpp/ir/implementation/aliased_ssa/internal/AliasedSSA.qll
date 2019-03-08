@@ -38,6 +38,13 @@ private newtype TMemoryLocation =
   TUnknownMemoryLocation(FunctionIR funcIR) or
   TUnknownVirtualVariable(FunctionIR funcIR)
 
+/**
+ * Represents the memory location accessed by a memory operand or memory result. In this implementation, the location is
+ * one of the following:
+ * - `VariableMemoryLocation` - A location within a known `IRVariable`, at an offset that is either a constant or is
+ * unknown.
+ * - `UnknownMemoryLocation` - A location not known to be within a specific `IRVariable`.
+ */
 abstract class MemoryLocation extends TMemoryLocation {
   abstract string toString();
   
@@ -53,7 +60,7 @@ abstract class VirtualVariable extends MemoryLocation {
 
 /**
  * An access to memory within a single known `IRVariable`. The variable may be either an unescaped variable
- * (with its own `VirtualIRVariable`) or an escaped variable (assiged to `UnknownVirtualVariable`).
+ * (with its own `VirtualIRVariable`) or an escaped variable (assigned to `UnknownVirtualVariable`).
  */
 class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
   IRVariable var;
@@ -102,10 +109,15 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
    */
   final predicate coversEntireVariable() {
     startBitOffset = 0 and
-    Ints::isEQ(endBitOffset, Ints::mul(var.getType().getSize(), 8))
+    endBitOffset = var.getType().getSize() * 8
   }
 }
 
+/**
+ * Represents the `MemoryLocation` for an `IRVariable` that acts as its own `VirtualVariable`. Includes any
+ * `VariableMemoryLocation` that exactly overlaps its entire `IRVariable`, and only if that `IRVariable` does not
+ * escape.
+ */
 class VariableVirtualVariable extends VariableMemoryLocation, VirtualVariable {
   VariableVirtualVariable() {
     not variableAddressEscapes(var) and

@@ -121,15 +121,15 @@ other `MemoryLocation`.
 #### Aliased SSA
 The current memory model used to construct Aliased SSA models every memory access. There are two
 kinds of `MemoryLocation`:
-- `VariableMemoryAccess` represents an access to a known `IRVariable` with a specific type, at a bit
-offset that may or may not be a known constant. `VariableMemoryAccess` represents any access to a
+- `VariableMemoryLocation` represents an access to a known `IRVariable` with a specific type, at a bit
+offset that may or may not be a known constant. `VariableMemoryLocation` represents any access to a
 known `IRVariable` even if that variable's address escapes.
 - `UnknownMemoryLocation` represents an access where the memory being accessed is not known to be part
 of a single specific `IRVariable`.
 
 In addition, there are two different kinds of `VirtualVariable`:
 - `VariableVirtualVariable` represents an `IRVariable` whose address does not escape. The
-`VariableVirtualVariable` is just the `VariableMemoryAccess` that represents an access to the entire
+`VariableVirtualVariable` is just the `VariableMemoryLocation` that represents an access to the entire
 `IRVariable` with its declared type.
 - `UnknownVirtualVariable` represents all memory that is not covered by a `VariableVirtualVariable`.
 This includes the `UnknownMemoryLocation`, as well as any `VariableMemoryLocation` whose
