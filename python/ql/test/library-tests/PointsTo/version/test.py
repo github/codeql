@@ -11,7 +11,7 @@ import sys
 
 
 
-os_test = sys.platform == "linux"
+os_test = sys.platform == "win32"
 version_test = sys.version_info < (3,)
 
 from module import os_test as t2
@@ -64,3 +64,7 @@ Py2f = sys.version_info[:2] < (2,7)
 #From problem_report
 Py2g = sys.version[0] < '3'
 Py3h = sys.version[0] >= '3'
+
+if os_test:
+    pass
+

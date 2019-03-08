@@ -91,15 +91,15 @@ class VersionGuard extends ConditionBlock {
 }
 
 string os_name(StrConst s) {
-    exists(string t | 
+    exists(string t |
         t = s.getText() |
-        t = "Darwin" and result = "darwin"
+        (t = "linux" or t = "linux2") and result = "Linux"
         or
-        t = "Windows" and result = "win32"
+        t = "win32" and result = "Windows"
         or
-        t = "Linux" and result = "linux"
+        t = "darwin" and result = "Darwin"
         or
-        not t = "Darwin" and not t = "Windows" and not t = "Linux" and result = t
+        not t  = "linux" and not t = "linux2" and not t = "win32" and not t = "darwin" and result = t
     )
 }
 
@@ -154,13 +154,13 @@ class OsGuard extends ConditionBlock {
 
     OsGuard() {
         exists(OsTest t |
-            PointsTo::points_to(this.getLastNode(), _, theBoolType(), t, _)
+            PointsTo::points_to(this.getLastNode(), _, _, theBoolType(), t)
         )
     }
 
     string getOs() {
         exists(OsTest t |
-            PointsTo::points_to(this.getLastNode(), _, theBoolType(), t, _) and result = t.getOs()
+            PointsTo::points_to(this.getLastNode(), _, _, theBoolType(), t) and result = t.getOs()
         )
     }
 
