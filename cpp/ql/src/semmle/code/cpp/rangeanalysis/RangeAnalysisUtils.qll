@@ -201,12 +201,12 @@ predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q) {
   or
   // +(p*v+q) == p*v + q
   exists (UnaryPlusExpr unaryPlusExpr
-  | linearAccess(unaryPlusExpr.getOperand(), v, p, q) and
+  | linearAccess(unaryPlusExpr.getOperand().getFullyConverted(), v, p, q) and
     expr = unaryPlusExpr)
   or
   // -(a*v+b) == -a*v + (-b)
   exists (UnaryMinusExpr unaryMinusExpr, float a, float b
-  | linearAccess(unaryMinusExpr.getOperand(), v, a, b) and
+  | linearAccess(unaryMinusExpr.getOperand().getFullyConverted(), v, a, b) and
     expr = unaryMinusExpr and
     p = -a and
     q = -b)
