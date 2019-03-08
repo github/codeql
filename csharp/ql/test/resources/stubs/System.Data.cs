@@ -71,6 +71,7 @@ namespace System.Data
         IDataReader ExecuteReader();
         CommandType CommandType { get; set; }
         IDataParameterCollection Parameters { get; set; }
+        string CommandText { get; set; }
     }
 
     public interface IDataReader
@@ -117,13 +118,14 @@ namespace System.Data.Common
         public virtual string GetString(int i) => "";
     }
 
-    public class DbCommand : IDbCommand, IDisposable
+    public abstract class DbCommand : IDbCommand, IDisposable
     {
         public DbDataReader ExecuteReader() => null;
         public CommandType CommandType { get; set; }
         public IDataParameterCollection Parameters { get; set; }
         IDataReader IDbCommand.ExecuteReader() => null;
         public void Dispose() { }
+        public string CommandText { get; set; }
     }
 
     public class DbDataAdapter : IDataAdapter, IDbDataAdapter

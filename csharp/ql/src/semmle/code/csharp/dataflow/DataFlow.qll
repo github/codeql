@@ -9,6 +9,7 @@ module DataFlow {
   private import semmle.code.csharp.dataflow.CallContext
   private import semmle.code.csharp.dataflow.DelegateDataFlow
   private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
+  private import semmle.code.csharp.frameworks.EntityFramework
   private import Internal::Cached
   private import dotnet
   private import cil
@@ -116,6 +117,15 @@ module DataFlow {
   predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
   predicate localFlowStep = Internal::LocalFlow::step/2;
+
+  /**
+   * A dataflow node that jumps between callables. This can be extended in framework code
+   * to add additional dataflow steps.
+   */
+  abstract class NonLocalJumpNode extends Node {
+    /** Gets a successor node that is potentially in another callable. */
+    abstract Node getAJumpSuccessor(boolean preservesValue);
+  }
 
   /**
    * A data flow node augmented with a call context and a configuration. Only
@@ -700,7 +710,7 @@ module DataFlow {
       CilCall() {
         call = this and
         // No need to include calls that are compiled from source
-        not call.getImplementation().getMethod().compiledFromSource()
+        cilCallWithoutSource(call)
       }
 
       override DotNet::Callable getARuntimeTarget() {
@@ -1084,13 +1094,20 @@ module DataFlow {
         flowThroughCallableLibraryOutRef(_, pred, succ, true)
       }
 
+      pragma[noinline]
+      private predicate localFlowStep0(Node pred, Node succ, Configuration config, DotNet::Callable c) {
+        config.isAdditionalFlowStep(pred, succ) and
+        pred.getEnclosingCallable() = c
+      }
+
       /**
        * Holds if data may flow in one local step from `pred` to `succ`.
        */
       bindingset[config]
       predicate localFlowStep(Node pred, Node succ, Configuration config) {
-        localFlowStepNoConfig(pred, succ) or
-        config.isAdditionalFlowStep(pred, succ)
+        localFlowStepNoConfig(pred, succ)
+        or
+        localFlowStep0(pred, succ, config, succ.getEnclosingCallable())
       }
 
       /**
@@ -1101,7 +1118,7 @@ module DataFlow {
         Pruning::nodeCand(node, config) and
         (
           config.isSource(node) or
-          jumpStep(_, node) or
+          jumpStep(_, node, config) or
           node instanceof ParameterNode or
           node instanceof OutNode
         )
@@ -1114,7 +1131,7 @@ module DataFlow {
       predicate localFlowExit(Node node, Configuration config) {
         Pruning::nodeCand(node, config) and
         (
-          jumpStep(node, _) or
+          jumpStep(node, _, config) or
           node instanceof ArgumentNode or
           node instanceof ReturnNode or
           config.isSink(node)
@@ -1156,6 +1173,26 @@ module DataFlow {
     }
 
     /**
+     * Holds if the additional step from `node1` to `node2` jumps between callables.
+     */
+    pragma[noinline]
+    private predicate additionalJumpStep(Node node1, Node node2, Configuration config) {
+      config.isAdditionalFlowStep(node1, node2) and
+      node1.getEnclosingCallable() != node2.getEnclosingCallable()
+    }
+
+    /**
+     * Holds if `pred` can flow to `succ`, by jumping from one callable to
+     * another.
+     */
+    bindingset[config]
+    private predicate jumpStep(Node node1, Node node2, Configuration config) {
+      additionalJumpStep(node1, node2, config)
+      or
+      jumpStepNoConfig(node1, node2)
+    }
+
+    /**
      * Provides predicates for pruning the data flow graph, by only including
      * nodes that may potentially be reached in flow from some source to some
      * sink.
@@ -1172,7 +1209,7 @@ module DataFlow {
           or
           exists(Node mid | nodeCandFwd1(mid, config) | LocalFlow::localFlowStep(mid, node, config))
           or
-          exists(Node mid | nodeCandFwd1(mid, config) | jumpStep(mid, node))
+          exists(Node mid | nodeCandFwd1(mid, config) | jumpStep(mid, node, config))
           or
           exists(ArgumentNode arg | nodeCandFwd1(arg, config) |
             flowIntoCallableStep(_, arg, node, _, config)
@@ -1195,7 +1232,7 @@ module DataFlow {
           or
           exists(Node mid | nodeCand1(mid, config) | LocalFlow::localFlowStep(node, mid, config))
           or
-          exists(Node mid | nodeCand1(mid, config) | jumpStep(node, mid))
+          exists(Node mid | nodeCand1(mid, config) | jumpStep(node, mid, config))
           or
           exists(ParameterNode p | nodeCand1(p, config) |
             flowIntoCallableStep(_, node, p, _, config)
@@ -1250,7 +1287,7 @@ module DataFlow {
       pragma[noinline]
       private predicate jumpStepCand1(Node pred, Node succ, Configuration config) {
         nodeCand1(succ, config) and
-        jumpStep(pred, succ)
+        jumpStep(pred, succ, config)
       }
 
       pragma[noinline]
@@ -1339,7 +1376,7 @@ module DataFlow {
         or
         nodeCandFwd2(node, _, config) and
         exists(Node mid | nodeCand2(mid, _, config) |
-          jumpStep(node, mid) and
+          jumpStep(node, mid, config) and
           isReturned = false
         )
         or
@@ -1394,16 +1431,32 @@ module DataFlow {
 
       /**
        * Holds if `pred` can flow to `succ`, by jumping from one callable to
-       * another.
+       * another. Additional steps specified by the configuration are *not* taken into account.
        */
       cached
-      predicate jumpStep(ExprNode pred, ExprNode succ) {
-        exists(FieldLike fl, FieldLikeRead flr | fl.isStatic() |
-          fl.getAnAssignedValue() = pred.getExpr() and
+      predicate jumpStepNoConfig(ExprNode pred, ExprNode succ) {
+        pred.(NonLocalJumpNode).getAJumpSuccessor(true) = succ
+      }
+
+      /** A dataflow node that has field-like dataflow. */
+      private class FieldLikeJumpNode extends NonLocalJumpNode, ExprNode {
+        FieldLike fl;
+
+        FieldLikeRead flr;
+
+        ExprNode succ;
+
+        FieldLikeJumpNode() {
+          fl.isStatic() and
+          fl.getAnAssignedValue() = this.getExpr() and
           fl.getAnAccess() = flr and
           flr = succ.getExpr() and
           hasNonlocalValue(flr)
-        )
+        }
+
+        override ExprNode getAJumpSuccessor(boolean preservesValue) {
+          result = succ and preservesValue = true
+        }
       }
 
       /**
@@ -1486,6 +1539,11 @@ module DataFlow {
         ret.flowsOut(out.getDefinition()) and
         call.asExpr() = out.getCall()
       }
+
+      cached
+      predicate cilCallWithoutSource(CIL::Call call) {
+        not call.getImplementation().getMethod().compiledFromSource()
+      }
     }
 
     private newtype TContext =
@@ -1548,9 +1606,7 @@ module DataFlow {
     /**
      * A data flow context describing flow into a callable via a call argument.
      */
-    abstract private class ArgumentContext extends Context {
-      abstract DotNet::Expr getCall();
-    }
+    abstract private class ArgumentContext extends Context { abstract DotNet::Expr getCall(); }
 
     /**
      * A data flow context describing flow into a callable via an explicit call argument.
@@ -1691,7 +1747,7 @@ module DataFlow {
       ctx = mid.getContext() and
       LocalFlow::localFlowBigStep(mid.getNode(), node, mid.getConfiguration())
       or
-      jumpStep(mid.getNode(), node) and
+      jumpStep(mid.getNode(), node, mid.getConfiguration()) and
       ctx instanceof NoContext
       or
       flowIntoCallable(mid, node, ctx)

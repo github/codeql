@@ -80,9 +80,13 @@ module TaintTracking {
     predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
     final override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-      isAdditionalTaintStep(pred, succ) or
-      localAdditionalTaintStep(pred, succ) or
+      isAdditionalTaintStep(pred, succ)
+      or
+      localAdditionalTaintStep(pred, succ)
+      or
       DataFlow::Internal::flowThroughCallableLibraryOutRef(_, pred, succ, false)
+      or
+      succ = pred.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
     }
 
     final override predicate isAdditionalFlowStepIntoCall(
