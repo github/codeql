@@ -204,6 +204,18 @@ predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q) {
   | linearAccess(unaryPlusExpr.getOperand().getFullyConverted(), v, p, q) and
     expr = unaryPlusExpr)
   or
+  // (larger_type)(p*v+q) == p*v + q
+  exists (Cast cast
+  | linearAccess(cast.getExpr(), v, p, q) and
+    typeLowerBound(cast.getType()) <= typeLowerBound(cast.getExpr().getType()) and
+    typeUpperBound(cast.getType()) >= typeUpperBound(cast.getExpr().getType()) and
+    expr = cast)
+  or
+  // (p*v+q) == p*v + q
+  exists (ParenthesisExpr paren
+  | linearAccess(paren.getExpr(), v, p, q) and
+    expr = paren)
+  or
   // -(a*v+b) == -a*v + (-b)
   exists (UnaryMinusExpr unaryMinusExpr, float a, float b
   | linearAccess(unaryMinusExpr.getOperand().getFullyConverted(), v, a, b) and
