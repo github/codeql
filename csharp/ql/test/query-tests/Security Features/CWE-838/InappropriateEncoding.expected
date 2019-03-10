@@ -6,8 +6,8 @@ edges
 | InappropriateEncoding.cs:36:28:36:55 | call to method UrlEncode | InappropriateEncoding.cs:38:22:38:59 | ... + ... |
 | InappropriateEncoding.cs:36:28:36:55 | call to method UrlEncode | InappropriateEncoding.cs:39:22:39:71 | call to method Format |
 | InappropriateEncoding.cs:57:28:57:56 | call to method HtmlEncode | InappropriateEncoding.cs:58:31:58:42 | access to local variable encodedValue |
-| InappropriateEncoding.cs:66:19:66:24 | return | InappropriateEncoding.cs:15:28:15:40 | call to method Encode |
-| InappropriateEncoding.cs:68:16:68:42 | call to method Replace | InappropriateEncoding.cs:66:19:66:24 | return |
+| InappropriateEncoding.cs:66:19:66:24 | return Encode | InappropriateEncoding.cs:15:28:15:40 | call to method Encode |
+| InappropriateEncoding.cs:68:16:68:42 | call to method Replace | InappropriateEncoding.cs:66:19:66:24 | return Encode |
 | SqlEncode.cs:16:62:16:87 | call to method Replace | SqlEncode.cs:17:46:17:50 | access to local variable query |
 | UrlEncode.cs:12:43:12:69 | call to method HtmlEncode | UrlEncode.cs:12:31:12:69 | ... + ... |
 nodes
@@ -26,7 +26,7 @@ nodes
 | InappropriateEncoding.cs:39:22:39:71 | call to method Format |
 | InappropriateEncoding.cs:57:28:57:56 | call to method HtmlEncode |
 | InappropriateEncoding.cs:58:31:58:42 | access to local variable encodedValue |
-| InappropriateEncoding.cs:66:19:66:24 | return |
+| InappropriateEncoding.cs:66:19:66:24 | return Encode |
 | InappropriateEncoding.cs:68:16:68:42 | call to method Replace |
 | SqlEncode.cs:16:62:16:87 | call to method Replace |
 | SqlEncode.cs:17:46:17:50 | access to local variable query |

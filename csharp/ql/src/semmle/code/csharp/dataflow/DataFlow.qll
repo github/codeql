@@ -565,7 +565,7 @@ module DataFlow {
     class NormalReturnNode extends ReturnNode, TNormalReturnNode {
       override Type getType() { result = this.getEnclosingCallable().getReturnType() }
 
-      override string toString() { result = "return" }
+      override string toString() { result = "return " + this.getEnclosingCallable() }
     }
 
     /**
@@ -575,7 +575,7 @@ module DataFlow {
     class YieldReturnNode extends ReturnNode, TYieldReturnNode {
       override Type getType() { result = this.getEnclosingCallable().getReturnType() }
 
-      override string toString() { result = "yield return" }
+      override string toString() { result = "yield return " + this.getEnclosingCallable() }
     }
 
     /**
@@ -587,7 +587,7 @@ module DataFlow {
 
       override Type getType() { result = this.getParameter().getType() }
 
-      override string toString() { result = "return (out/ref)" }
+      override string toString() { result = "return (out/ref) " + this.getEnclosingCallable() }
     }
 
     /**
@@ -1073,7 +1073,9 @@ module DataFlow {
       }
 
       pragma[noinline]
-      private predicate localFlowStep0(Node pred, Node succ, Configuration config, DotNet::Callable c) {
+      private predicate localFlowStep0(
+        Node pred, Node succ, Configuration config, DotNet::Callable c
+      ) {
         config.isAdditionalFlowStep(pred, succ) and
         pred.getEnclosingCallable() = c
       }
@@ -1099,9 +1101,7 @@ module DataFlow {
           jumpStep(_, node, config) or
           node instanceof ParameterNode or
           node instanceof OutNode or
-          node instanceof NormalReturnNode or
-          node instanceof YieldReturnNode or
-          node instanceof OutRefReturnNode
+          node instanceof ReturnNode
         )
       }
 
@@ -1118,11 +1118,7 @@ module DataFlow {
           or
           node instanceof ReturnNode
           or
-          exists(ReturnNode rn | localFlowStep(node, rn, config) |
-            rn instanceof NormalReturnNode or
-            rn instanceof YieldReturnNode or
-            rn instanceof OutRefReturnNode
-          )
+          localFlowStep(node, any(ReturnNode rn), config)
           or
           config.isSink(node)
         )
@@ -1286,7 +1282,7 @@ module DataFlow {
         flowIntoCallableStep(call, arg, p, _, config)
       }
 
-      // noopt is need to force scan of `nodeCand1()` followed by join on 
+      // noopt is needed to force scan of `nodeCand1()` followed by join on
       // `flowOutOfCallableStep()`, instead of the other way around
       pragma[noopt]
       private predicate flowOutOfCallableStepCand1(
@@ -1344,7 +1340,7 @@ module DataFlow {
         flowIntoCallableStep(_, arg, p, _, config)
       }
 
-      // noopt is need to force scan of `nodeCandFwd2()` followed by join on 
+      // noopt is needed to force scan of `nodeCandFwd2()` followed by join on
       // `flowOutOfCallableStep()`, instead of the other way around
       pragma[noopt]
       private predicate flowOutOfCallableStepCandFwd2(
@@ -1405,7 +1401,7 @@ module DataFlow {
         flowIntoCallableStep(call, arg, p, cc, config)
       }
 
-      // noopt is need to force scan of `nodeCand()` followed by join on 
+      // noopt is needed to force scan of `nodeCand()` followed by join on
       // `flowOutOfCallableStep()`, instead of the other way around
       pragma[noopt]
       predicate flowOutOfCallableStepCand(
@@ -1658,7 +1654,9 @@ module DataFlow {
     /**
      * A data flow context describing flow into a callable via a call argument.
      */
-    abstract private class ArgumentContext extends Context { abstract DotNet::Expr getCall(); }
+    abstract private class ArgumentContext extends Context {
+      abstract DotNet::Expr getCall();
+    }
 
     /**
      * A data flow context describing flow into a callable via an explicit call argument.
