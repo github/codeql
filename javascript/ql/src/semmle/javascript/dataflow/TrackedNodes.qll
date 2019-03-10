@@ -4,6 +4,7 @@
  */
 
 import javascript
+private import internal.FlowSteps as FlowSteps
 
 /**
  * A data flow node that should be tracked inter-procedurally.

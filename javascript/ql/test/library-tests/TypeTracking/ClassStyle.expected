@@ -1,0 +1,26 @@
+test_ApiObject
+| tst.js:3:11:3:21 | new myapi() |
+| tst.js:15:10:15:21 | api.chain1() |
+| tst.js:15:10:15:30 | api.cha ... hain2() |
+test_Connection
+| tst.js:6:15:6:18 | conn |
+| tst.js:10:5:10:19 | this.connection |
+| tst.js:15:10:15:49 | api.cha ... ction() |
+| tst.js:18:7:18:21 | getConnection() |
+| tst.js:30:9:30:23 | getConnection() |
+| tst.js:39:7:39:21 | getConnection() |
+| tst.js:47:7:47:21 | getConnection() |
+test_DataCallback
+| tst.js:9:11:9:12 | cb |
+| tst.js:20:1:22:1 | functio ... ata);\\n} |
+| tst.js:29:26:29:27 | cb |
+| tst.js:32:17:32:26 | data => {} |
+| tst.js:37:10:37:19 | data => {} |
+| tst.js:39:32:39:45 | getDataCurry() |
+| tst.js:44:19:44:20 | cb |
+| tst.js:47:32:47:60 | identit ... llback) |
+test_DataValue
+| tst.js:20:18:20:21 | data |
+| tst.js:24:19:24:22 | data |
+| tst.js:32:17:32:20 | data |
+| tst.js:37:10:37:13 | data |

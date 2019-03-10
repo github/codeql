@@ -1,5 +1,44 @@
 void CallByPointer(int* p);
 void CallByReference(int& r);
+int *GetPointer();
+int &GetReference();
+
+int FetchFromPointer(int *no_p) {
+  return *no_p;
+}
+
+int FetchFromReference(int &no_r) {
+  return no_r;
+}
+
+int *ReturnPointer(int *no_p) {
+  return no_p;
+}
+
+int &ReturnReference(int &no_r) {
+  return no_r;
+}
+
+void CallByPointerParamEscape(int *no_p) {
+  CallByPointer(no_p);
+}
+
+void CallByReferenceParamEscape(int &no_r) {
+  CallByReference(no_r);
+}
+
+int *MaybeReturn(int *no_p, int *no_q, bool no_b) {
+  if (no_b) {
+    return no_p;
+  } else {
+    return no_q;
+  }
+}
+
+int &EscapeAndReturn(int &no_r) {
+  CallByReference(no_r);
+  return no_r;
+}
 
 struct Point {
     float x;
@@ -25,6 +64,40 @@ struct Intermediate2 : ReusedBase {
 
 struct Derived : Intermediate1, Intermediate2 {
     float d;
+};
+
+class C;
+
+void CEscapes(C *no_c);
+
+class C {
+public:
+  void ThisEscapes() {
+    CEscapes(this);
+  }
+
+  C *ThisReturned() {
+    return this;
+  }
+
+  virtual C *Overridden() {
+    CEscapes(this);
+    return nullptr;
+  }
+};
+
+class OverrideReturns : C {
+public:
+  virtual C *Overridden() {
+    return this;
+  }
+};
+
+class OverrideNone : C {
+public:
+  virtual C *Overridden() {
+    return nullptr;
+  }
 };
 
 void Escape()
@@ -95,4 +168,86 @@ void Escape()
 
     int passByRef;
     CallByReference(passByRef);
+
+    int no_ssa_passByPtr;
+    FetchFromPointer(&no_ssa_passByPtr);
+
+    int no_ssa_passByRef;
+    FetchFromReference(no_ssa_passByRef);
+
+    int no_ssa_passByPtr_ret;
+    FetchFromPointer(&no_ssa_passByPtr_ret);
+
+    int no_ssa_passByRef_ret;
+    FetchFromReference(no_ssa_passByRef_ret);
+
+    int passByPtr2;
+    CallByPointerParamEscape(&passByPtr2);
+
+    int passByRef2;
+    CallByReferenceParamEscape(passByRef2);
+
+    int passByPtr3;
+    CallByPointerParamEscape(ReturnPointer(&passByPtr3));
+
+    int passByRef3;
+    CallByReferenceParamEscape(ReturnReference(passByRef3));
+
+    int no_ssa_passByPtr4;
+    int no_ssa_passByPtr5;
+    bool no_b2 = false;
+    MaybeReturn(&no_ssa_passByPtr4, &no_ssa_passByPtr5, no_b2);
+
+    int passByRef6;
+    EscapeAndReturn(passByRef6);
+
+    int no_ssa_passByRef7;
+    ReturnReference(no_ssa_passByRef7);
+
+    C no_ssa_c;
+
+    no_ssa_c.ThisReturned();
+
+    C c;
+
+    c.ThisEscapes();
+
+    C c2;
+
+    CEscapes(&c2);
+
+    C c3;
+
+    c3.ThisReturned()->ThisEscapes();
+
+    C c4;
+
+    CEscapes(c4.ThisReturned());
+
+    C c5;
+
+    c5.Overridden();
+
+    OverrideReturns or1;
+    or1.Overridden();
+
+    OverrideReturns or2;
+    CEscapes(or2.Overridden());
+
+    OverrideNone on1;
+    on1.Overridden();
+
+    OverrideNone on2;
+    CEscapes(on2.Overridden());
+
+    int condEscape1, condEscape2;
+
+    int *no_condTemp;
+    if(GetPointer()) {
+	no_condTemp = &condEscape1;
+    } else {
+        no_condTemp = &condEscape2;
+    }
+    CallByPointer(no_condTemp);
 }
+

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, make_response
 app = Flask(__name__)
 
 
@@ -35,3 +35,8 @@ def server_bad_flow():
 
 def format_error(msg):
     return "[ERROR] " + msg
+
+#Unrelated error
+@app.route('/maybe_xss')
+def maybe_xss():
+    return make_response(request.args.get('name', ''))

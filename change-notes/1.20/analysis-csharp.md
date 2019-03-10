@@ -30,5 +30,9 @@
 
 * The class `TrivialProperty` now includes library properties determined to be trivial using CIL analysis. This may increase the number of results for all queries that use data flow.
 * Taint-tracking steps have been added for the `Json.NET` package. This will improve results for queries that use taint-tracking.
+* Support has been added for EntityFrameworkCore, including
+  - Stored data flow sources
+  - Sinks for SQL expressions
+  - Data flow through fields that are mapped to the database.
 
 ## Changes to the autobuilder
