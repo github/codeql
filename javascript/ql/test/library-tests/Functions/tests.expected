@@ -168,3 +168,22 @@ test_isRestParameter
 | restparms.js:1:18:1:19 | ys |
 test_ReturnStmt
 | tst.js:14:1:14:37 | functio ... s[0]; } | tst.js:14:16:14:35 | return arguments[0]; |
+test_getAnUndefinedReturn
+| arrowfns.js:3:12:3:41 | () => { ... "); ; } | arrowfns.js:3:39:3:39 | ; |
+| defaultargs.js:1:1:1:24 | functio ... +19) {} | defaultargs.js:1:23:1:24 | {} |
+| exprclosures.js:1:7:1:21 | function(x) x+1 | exprclosures.js:1:19:1:21 | x+1 |
+| generators.js:1:1:4:1 | functio ...  i++;\\n} | generators.js:2:17:2:20 | i<=2 |
+| generators.js:6:2:6:19 | function* bar() {} | generators.js:6:18:6:19 | {} |
+| restparms.js:1:1:2:1 | functio ... ys) {\\n} | restparms.js:1:22:2:1 | {\\n} |
+| tst.js:1:1:1:15 | function A() {} | tst.js:1:14:1:15 | {} |
+| tst.js:2:1:2:16 | function B(x) {} | tst.js:2:15:2:16 | {} |
+| tst.js:3:1:3:19 | function C(x, y) {} | tst.js:3:18:3:19 | {} |
+| tst.js:4:9:4:21 | function() {} | tst.js:4:20:4:21 | {} |
+| tst.js:5:2:5:15 | function(x) {} | tst.js:5:14:5:15 | {} |
+| tst.js:6:2:6:18 | function(x, y) {} | tst.js:6:17:6:18 | {} |
+| tst.js:7:9:7:23 | function h() {} | tst.js:7:22:7:23 | {} |
+| tst.js:9:1:9:24 | functio ... nts) {} | tst.js:9:23:9:24 | {} |
+| tst.js:10:1:10:31 | functio ... ents; } | tst.js:10:20:10:28 | arguments |
+| tst.js:11:1:11:35 | functio ... ts; } } | tst.js:11:22:11:30 | arguments |
+| tst.js:12:1:12:44 | functio ... s) {} } | tst.js:12:20:12:22 | { } |
+| tst.js:12:1:12:44 | functio ... s) {} } | tst.js:12:41:12:42 | {} |
