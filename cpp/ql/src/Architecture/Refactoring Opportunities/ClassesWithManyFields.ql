@@ -110,5 +110,5 @@ where n = strictcount(string fieldName
       not c.isConstructedFrom(_) and
       c = vdg.getClass() and
       if c.hasOneVariableGroup() then suffix = "" else suffix = " - see $@"
-select c, kindstr(c) + " " + c.getName() + " has " + n + " fields, which is too many" + suffix + ".",
+select c, kindstr(c) + " " + c.getName() + " has " + n + " fields; we recommend refactoring to 15 fields or fewer" + suffix + ".",
        vdg, vdg.describeGroup()

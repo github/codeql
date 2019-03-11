@@ -6,7 +6,7 @@
 
 <overview>
 <p>This rule finds functions that make too many calls. Having too many dependencies makes a function vulnerable to
-changes and defects in those dependencies, and is also a sign that the function lacks cohesion (i.e. lacks a single purpose).
+changes and defects in those dependencies, and is also a sign that the function may lack cohesion (i.e. lack a single purpose).
 These functions can be split into smaller, more cohesive functions.</p>
 
 </overview>
