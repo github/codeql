@@ -84,8 +84,6 @@ module TaintTracking {
       or
       localAdditionalTaintStep(pred, succ)
       or
-      DataFlow::Internal::flowThroughCallableLibraryOutRef(_, pred, succ, false)
-      or
       succ = pred.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
     }
 
@@ -93,17 +91,6 @@ module TaintTracking {
       DataFlow::Node call, DataFlow::Node arg, DotNet::Parameter p, CallContext::CallContext cc
     ) {
       DataFlow::Internal::flowIntoCallableLibraryCall(_, arg, call, p, false, cc)
-    }
-
-    final override predicate isAdditionalFlowStepOutOfCall(
-      DataFlow::Node call, DataFlow::Node ret, DataFlow::Node out, CallContext::CallContext cc
-    ) {
-      exists(DispatchCall dc, Callable callable | canYieldReturn(callable, ret.asExpr()) |
-        dc.getCall() = call.asExpr() and
-        call = out and
-        callable = dc.getADynamicTarget() and
-        cc instanceof CallContext::EmptyCallContext
-      )
     }
 
     /**
@@ -117,8 +104,6 @@ module TaintTracking {
 
   /** INTERNAL: Do not use. */
   module Internal {
-    predicate canYieldReturn(Callable c, Expr e) { c.getSourceDeclaration().canYieldReturn(e) }
-
     private CIL::DataFlowNode asCilDataFlowNode(DataFlow::Node node) {
       result = node.asParameter() or
       result = node.asExpr()
@@ -260,6 +245,12 @@ module TaintTracking {
           access.(FieldRead).getQualifier() = nodeFrom.asExpr()
           or
           access.(PropertyRead).getQualifier() = nodeFrom.asExpr()
+        )
+        or
+        DataFlow::Internal::flowThroughCallableLibraryOutRef(_, nodeFrom, nodeTo, false)
+        or
+        exists(Callable c | c.canYieldReturn(nodeFrom.asExpr()) |
+          c = nodeTo.(DataFlow::Internal::YieldReturnNode).getEnclosingCallable()
         )
       }
     }
