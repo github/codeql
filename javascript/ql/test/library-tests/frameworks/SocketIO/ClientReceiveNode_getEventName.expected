@@ -1,3 +1,0 @@
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | message |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | event |
-| client2.js:18:1:20:2 | sock2.o ... (x);\\n}) | message |

@@ -1,4 +1,0 @@
-| client2.js:4:1:6:2 | sock.on ...  y);\\n}) | client2.js:1:12:1:56 | require ... lhost") |
-| client2.js:8:1:8:33 | sock.on ...  => {}) | client2.js:1:12:1:56 | require ... lhost") |
-| client2.js:10:1:12:2 | sock.on ... d");\\n}) | client2.js:1:12:1:56 | require ... lhost") |
-| client2.js:18:1:20:2 | sock2.o ... (x);\\n}) | client2.js:2:13:2:85 | require ... v#abc") |
