@@ -570,10 +570,24 @@ private predicate reachableFromInput(
   callInputStep(f, invk, input, nd, cfg) and
   summary = PathSummary::level()
   or
-  exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+  exists(DataFlow::Node mid, PathSummary oldSummary |
     reachableFromInput(f, invk, input, mid, cfg, oldSummary) and
-    flowStep(mid, cfg, nd, newSummary) and
-    summary = oldSummary.append(newSummary)
+    appendStep(mid, cfg, oldSummary, nd, summary)
+  )
+}
+
+/**
+ * Holds if there is a step from `pred` to `succ` under `cfg` that can be appended
+ * to a path represented by `oldSummary` yielding a path represented by `newSummary`.
+ */
+pragma[noinline]
+private predicate appendStep(
+  DataFlow::Node pred, DataFlow::Configuration cfg, PathSummary oldSummary, DataFlow::Node succ,
+  PathSummary newSummary
+) {
+  exists(PathSummary stepSummary |
+    flowStep(pred, cfg, succ, stepSummary) and
+    newSummary = oldSummary.append(stepSummary)
   )
 }
 
