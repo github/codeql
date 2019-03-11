@@ -1,9 +1,5 @@
 import javascript
 
-class TestConfig extends DataFlow::Configuration {
-  TestConfig() { this = "TestConfig" }
-}
-
-from TestConfig cfg, DataFlow::Node pred, DataFlow::Node succ
-where cfg.isAdditionalFlowStep(pred, succ)
+from DataFlow::AdditionalFlowStep afs, DataFlow::Node pred, DataFlow::Node succ
+where afs.step(pred, succ)
 select pred, succ

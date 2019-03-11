@@ -16,7 +16,7 @@ module Electron {
   /**
    * An instantiation of `BrowserWindow` or `BrowserView`.
    */
-  abstract private class NewBrowserObject extends BrowserObject, DataFlow::TrackedNode {
+  abstract private class NewBrowserObject extends BrowserObject, DataFlow::SourceNode {
     DataFlow::NewNode self;
 
     NewBrowserObject() { this = self }
@@ -250,10 +250,10 @@ module Electron {
     /**
      * An additional flow step  via an Electron IPC message.
      */
-    private class IPCAdditionalFlowStep extends DataFlow::Configuration {
-      IPCAdditionalFlowStep() { this instanceof DataFlow::Configuration }
+    private class IPCAdditionalFlowStep extends DataFlow::AdditionalFlowStep {
+      IPCAdditionalFlowStep() { ipcFlowStep(this, _) }
 
-      override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+      override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
         ipcFlowStep(pred, succ)
       }
     }
