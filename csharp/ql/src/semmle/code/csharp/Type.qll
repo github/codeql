@@ -356,8 +356,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   override string toString() { result = Type.super.toString() }
-
-  override Location getLocation() { result = Type.super.getLocation() }
 }
 
 /**

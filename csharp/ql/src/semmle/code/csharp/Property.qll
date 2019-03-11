@@ -43,8 +43,6 @@ class DeclarationWithAccessors extends AssignableMember, Virtualizable, Attribut
   override Type getType() { none() }
 
   override string toString() { result = AssignableMember.super.toString() }
-
-  override Location getLocation() { result = AssignableMember.super.getLocation() }
 }
 
 /**
@@ -360,8 +358,6 @@ class Accessor extends Callable, Modifiable, Attributable, @callable_accessor {
   override Location getALocation() { accessor_location(this, result) }
 
   override string toString() { result = getName() }
-
-  override Location getLocation() { result = Callable.super.getLocation() }
 }
 
 /**
