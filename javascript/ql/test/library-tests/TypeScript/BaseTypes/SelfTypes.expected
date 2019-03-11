@@ -8,7 +8,6 @@
 | CStringSub | CStringSub |
 | CSub | CSub |
 | CollatorOptions | CollatorOptions |
-| Function | Function |
 | IBase | IBase |
 | IEmpty | IEmpty |
 | IEmptySub | IEmptySub |
@@ -18,6 +17,5 @@
 | IStringSub | IStringSub |
 | ISub | ISub |
 | NumberFormatOptions | NumberFormatOptions |
-| Object | Object |
 | RegExp | RegExp |
 | RegExpMatchArray | RegExpMatchArray |
