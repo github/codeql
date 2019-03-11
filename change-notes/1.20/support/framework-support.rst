@@ -15,14 +15,11 @@ The QL libraries and queries in this version have been explicitly checked agains
 C# built-in support
 ================================
 
-* ASP.Net MVC framework
-* ASP.NET Web API
-* ASP.NET Web Forms
-* ASP.NET Core
-* ASP.NET Core MVC
-* ASP.Net Core Razor
-* Razor templates
-
+.. csv-table:: 
+     :file: csharp-frameworks.csv
+     :header-rows: 1
+     :class: fullWidthTable
+     :widths: auto
 
 COBOL built-in support
 ===================================
