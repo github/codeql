@@ -12,3 +12,6 @@
 | tst.js:76:5:76:34 | o.pure1 ... te = 42 | This write to property 'pure16_simpleAliasWrite' is useless, since $@ always overrides it. | tst.js:77:5:77:36 | o16.pur ... te = 42 | another property write |
 | tst.js:95:5:95:17 | o.pure18 = 42 | This write to property 'pure18' is useless, since $@ always overrides it. | tst.js:96:5:96:17 | o.pure18 = 42 | another property write |
 | tst.js:96:5:96:17 | o.pure18 = 42 | This write to property 'pure18' is useless, since $@ always overrides it. | tst.js:97:5:97:17 | o.pure18 = 42 | another property write |
+| tst.js:100:2:102:3 | Object. ... { }\\n\\t}) | This write to property 'setter' is useless, since $@ always overrides it. | tst.js:103:2:103:14 | o.setter = "" | another property write |
+| tst.js:114:2:114:14 | o.setter = 42 | This write to property 'setter' is useless, since $@ always overrides it. | tst.js:115:2:115:14 | o.setter = 87 | another property write |
+| tst.js:122:2:122:78 | Object. ... le:!1}) | This write to property 'prop' is useless, since $@ always overrides it. | tst.js:123:2:123:12 | o.prop = 42 | another property write |
