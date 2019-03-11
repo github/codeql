@@ -6,7 +6,7 @@
 
 <overview>
 <p>This rule finds classes with more than 15 instance (i.e., non-<code>static</code>) fields. Library classes
-are not shown. Having too many fields in one class is a sign that the class lacks cohesion (i.e. lacks a single purpose).
+are not shown. Having too many fields in one class is a sign that the class may lack cohesion (i.e. lack a single purpose).
 These classes can be split into smaller, more cohesive classes. Alternatively, the related fields can be grouped 
 into <code>struct</code>s.</p>
 
