@@ -237,15 +237,8 @@ module FlowVar_internal {
 
     override VariableAccess getAnAccess() {
       exists(SubBasicBlock reached |
-        reached = getAReachedBlockVarSBB(this)
-      |
+        reached = getAReachedBlockVarSBB(this) and
         variableAccessInSBB(v, reached, result)
-        or
-        // Allow flow into a `VariableAccess` that is used as definition by
-        // reference. This flow is blocked by `getAReachedBlockVarSBB` because
-        // flow should not propagate past that.
-        result = reached.getASuccessor().(VariableAccess) and
-        blockVarDefinedByReference(result, v, _)
       )
     }
 
@@ -420,6 +413,12 @@ module FlowVar_internal {
     va.getTarget() = v and
     va = sbb.getANode() and
     not overwrite(va, _)
+    or
+    // Allow flow into a `VariableAccess` that is used as definition by
+    // reference. This flow is blocked by `getAReachedBlockVarSBB` because
+    // flow should not propagate past that.
+    va = sbb.getASuccessor().(VariableAccess) and
+    blockVarDefinedByReference(va, v, _)
   }
 
   /**
