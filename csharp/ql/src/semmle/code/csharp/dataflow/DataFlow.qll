@@ -457,6 +457,7 @@ module DataFlow {
       abstract ArgumentContext getContext(Configuration config);
 
       /** Holds if this argument node does not have an associated control flow node. */
+      cached
       abstract predicate hasNoControlFlowNode();
     }
 
@@ -864,6 +865,16 @@ module DataFlow {
       }
     }
 
+    // noopt is needed to force scan of `config.isAdditionalFlowStep` followed
+    // by join on `getEnclosingCallable()`, instead of the other way around
+    pragma[noopt]
+    private predicate isAdditionalFlowStep(
+      Node pred, Node succ, Configuration config, DotNet::Callable c
+    ) {
+      config.isAdditionalFlowStep(pred, succ) and
+      pred.getEnclosingCallable() = c
+    }
+
     /** Provides predicates related to local data flow. */
     module LocalFlow {
       private class LocalExprStepConfiguration extends ExprStepConfiguration {
@@ -1072,14 +1083,6 @@ module DataFlow {
         (isSuccessor = true or isSuccessor = false)
       }
 
-      pragma[noinline]
-      private predicate localFlowStep0(
-        Node pred, Node succ, Configuration config, DotNet::Callable c
-      ) {
-        config.isAdditionalFlowStep(pred, succ) and
-        pred.getEnclosingCallable() = c
-      }
-
       /**
        * Holds if data may flow in one local step from `pred` to `succ`.
        */
@@ -1087,7 +1090,7 @@ module DataFlow {
       predicate localFlowStep(Node pred, Node succ, Configuration config) {
         localFlowStep(pred, succ)
         or
-        localFlowStep0(pred, succ, config, succ.getEnclosingCallable())
+        isAdditionalFlowStep(pred, succ, config, succ.getEnclosingCallable())
       }
 
       /**
@@ -1163,8 +1166,9 @@ module DataFlow {
      */
     pragma[noinline]
     private predicate additionalJumpStep(Node node1, Node node2, Configuration config) {
-      config.isAdditionalFlowStep(node1, node2) and
-      node1.getEnclosingCallable() != node2.getEnclosingCallable()
+      exists(DotNet::Callable c1 | isAdditionalFlowStep(node1, node2, config, c1) |
+        c1 != node2.getEnclosingCallable()
+      )
     }
 
     /**
