@@ -31,14 +31,7 @@ predicate usesICryptoTransformType( Type t ) {
 }
 
 predicate hasICryptoTransformMember( Class c) {
-  exists( Field f |
-    f = c.getAMember()
-    and ( 
-      exists( ICryptoTransform ict | ict = f.getType() )
-      or hasICryptoTransformMember(f.getType())
-      or usesICryptoTransformType(f.getType())
-    )
-  )
+  c.getAField().getType() instanceof UsesICryptoTransform
 }
 
 class UsesICryptoTransform extends Class {
@@ -67,6 +60,37 @@ class NotThreadSafeCryptoUsageIntoStartingCallingConfig extends TaintTracking::C
   }
 }
 
-from NotThreadSafeCryptoUsageIntoStartingCallingConfig  config, LambdaExpr l, Expr e
-where config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e))
-select e, "A Lambda expression at " + l.getLocation() + " seems to be used to start a new thread is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."
+class NotThreadSafeCryptoUsageIntoParallelInvokeConfig extends TaintTracking::Configuration  {
+  NotThreadSafeCryptoUsageIntoParallelInvokeConfig() { this = "NotThreadSafeCryptoUsageIntoParallelInvokeConfig" }
+ 
+  override predicate isSource(DataFlow::Node source) {    
+    exists( LambdaExpr l, LocalScopeVariable lsvar, UsesICryptoTransform ict |
+      l = source.asExpr() |
+      ict = lsvar.getType()
+      and lsvar.getACapturingCallable() = l
+    )
+  }
+ 
+  override predicate isSink(DataFlow::Node sink) {
+    exists( Class c, Method m, MethodCall mc, Expr e | 
+      e = sink.asExpr() |
+      c.getABaseType*().hasQualifiedName("System.Threading.Tasks", "Parallel")
+      and c.getAMethod() = m
+      and m.getName() = "Invoke"
+      and m.getACall() = mc
+      and mc.getAnArgument() = e
+    )
+  }
+}
+
+from Expr e, string m
+where 
+  exists( NotThreadSafeCryptoUsageIntoParallelInvokeConfig  config, LambdaExpr l |
+    config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e))
+    and m = "A Lambda expression at " + l.getLocation() + " seems to be used to start a new thread using System.Threading.Tasks.Parallel.Invoke, and is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."
+  )
+  or exists ( NotThreadSafeCryptoUsageIntoStartingCallingConfig  config, LambdaExpr l |
+    config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e))
+    and m = "A Lambda expression at " + l.getLocation() + " seems to be used to start a new thread is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."
+  )
+select e, m

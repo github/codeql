@@ -11,7 +11,7 @@
 
 </recommendation>
 <example>
-<p>This example demonstrates the dangers of using a static <code>System.Security.Cryptography.ICryptoTransform</code> in a way that generates incorrect results or may raise an exception.</p>
+<p>This example demonstrates the dangers of using a shared <code>System.Security.Cryptography.ICryptoTransform</code> in a way that generates incorrect results or may raise an exception.</p>
 <sample src="ThreadUnSafeICryptoTransformLambdaBad.cs" />
 
 <p>A simple fix is to change the local variable <code>sha1</code> being captured by the lambda to be a local variable within the lambda.</p>

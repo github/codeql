@@ -1,4 +1,4 @@
-// semmle-extractor-options: /r:System.Security.Cryptography.Csp.dll /r:System.Security.Cryptography.Algorithms.dll /r:System.Security.Cryptography.Primitives.dll /r:System.Threading.Tasks.dll /r:System.Threading.Thread.dll /r:System.Linq.dll /r:System.Collections.dll
+// semmle-extractor-options: /r:System.Security.Cryptography.Csp.dll /r:System.Security.Cryptography.Algorithms.dll /r:System.Security.Cryptography.Primitives.dll /r:System.Threading.Tasks.dll /r:System.Threading.Thread.dll /r:System.Linq.dll /r:System.Collections.dll /r:System.Threading.Tasks.Parallel.dll
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -94,7 +94,7 @@ class IndirectUsagePositiveCase
     }
 }
 
-class indirectUsageNegativeCase
+class IndirectUsageNegativeCase
 {
     public static void Run(int max)
     {
@@ -130,4 +130,33 @@ class LambdaNotStart
 
         var d = myFunc.DynamicInvoke();
     }
+}
+
+class ParallelInvoke
+{
+    public static void Run()
+    {
+        var sha1 = SHA1.Create();
+
+        try
+        {
+            Parallel.Invoke(() =>
+                {
+                    var bytes = new byte[4];
+                    Convert.ToBase64String(sha1.ComputeHash(bytes));
+                },
+                () =>
+                {
+                    var bytes = new byte[4];
+                    Convert.ToBase64String(sha1.ComputeHash(bytes));
+                }
+            );
+
+        }
+        catch (AggregateException e)
+        {
+            Console.WriteLine("An action has thrown an exception. THIS WAS UNEXPECTED.\n{0}", e.InnerException.ToString());
+        }
+    }
+
 }
