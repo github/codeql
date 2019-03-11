@@ -4,6 +4,7 @@ import csharp
 private import semmle.code.csharp.frameworks.system.Data
 private import semmle.code.csharp.frameworks.system.data.SqlClient
 private import semmle.code.csharp.frameworks.EntityFramework
+private import semmle.code.csharp.frameworks.NHibernate
 
 /** An expression containing a SQL command. */
 abstract class SqlExpr extends Expr {
