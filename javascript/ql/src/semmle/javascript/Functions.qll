@@ -159,6 +159,40 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   }
 
   /**
+   * 
+   * Functions can sometimes return without returning a value, in which case they
+   * "return" `undefined`. They can do this in two ways:
+   * 
+   * 1. An explicit return statement with no expression, i.e. the statement `return;`
+   * 
+   * 2. An implicit return resulting from an expression executing as the last thing
+   *    in the function. For example, the test in a final `if` statement:
+   * 
+   *    ```
+   *    function foo() {
+   *      ...
+   *      if (test) { return 1; }
+   *    }
+   *    ```
+   * 
+   * Some things look like they might return undefined but actually don't because
+   * the containing functioning doesn't return at all. For instance, `throw`
+   * statements prevent the containing function from returning, so they don't count
+   * as undefined returns. Similarly, `yield` doesn't actually cause a return,
+   * since the containing function is a generator and can be re-entered, so we also
+   * exclude yields entirely.
+   */
+  
+  ConcreteControlFlowNode getAnUndefinedReturn() {
+    not (this instanceof ArrowFunctionExpr and this.getBody() instanceof Expr) and
+    result.getContainer() = this and
+    result.isAFinalNode() and
+    not (result instanceof ReturnStmt and exists(result.(ReturnStmt).getExpr())) and
+    not result instanceof ThrowStmt and
+    not result instanceof YieldExpr
+  }
+  
+  /**
    * Gets the function whose `this` binding a `this` expression in this function refers to,
    * which is the nearest enclosing non-arrow function.
    */
