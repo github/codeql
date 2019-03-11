@@ -154,6 +154,9 @@ where
     or
     // exclude result from js/overwritten-property
     assign2.getBase() instanceof DataFlow::ObjectLiteralNode
+    or
+    // exclude result from accessor declarations
+    assign1.getWriteNode() instanceof AccessorMethodDeclaration
   )
 select assign1.getWriteNode(),
   "This write to property '" + name + "' is useless, since $@ always overrides it.",
