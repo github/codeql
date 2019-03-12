@@ -184,7 +184,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    */
   
   ConcreteControlFlowNode getAnUndefinedReturn() {
-    not (this instanceof ArrowFunctionExpr and this.getBody() instanceof Expr) and
+    not this.getBody() instanceof Expr and
     result.getContainer() = this and
     result.isAFinalNode() and
     not (result instanceof ReturnStmt and exists(result.(ReturnStmt).getExpr())) and
