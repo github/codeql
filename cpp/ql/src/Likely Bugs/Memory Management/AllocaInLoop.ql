@@ -24,4 +24,4 @@ from Loop l, FunctionCall fc
 where getAnEnclosingLoopOfExpr(fc) = l
   and fc.getTarget().getName() = "__builtin_alloca"
   and not l.(DoStmt).getCondition().getValue() = "0"
-select fc, "Stack allocation is inside a $@ and could lead to overflow.", l, l.toString()
+select fc, "Stack allocation is inside a $@ and could lead to stack overflow; consider hoisting the allocation out of the loop.", l, l.toString()
