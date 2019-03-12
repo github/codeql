@@ -269,7 +269,7 @@ module FlowVar_internal {
     override string toString() {
       exists(Expr e |
         this.definedByExpr(e, _) and
-        result = v +" := "+ e
+        result = "assignment to "+ v
       )
       or
       this.definedByInitialValue(_) and
@@ -277,7 +277,7 @@ module FlowVar_internal {
       or
       exists(Expr arg |
         this.definedByReference(arg) and
-        result = "ref def: "+ arg
+        result = "definition by reference of "+ v
       )
       or
       // impossible case
