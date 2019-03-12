@@ -60,7 +60,7 @@ class Tainted extends TaintType, TTaintedValue { }
 private predicate localExactStep(DataFlowNode src, DataFlowNode sink) {
   src = sink.(Opcodes::Dup).getAnOperand()
   or
-  DefUse::defUse(_, src, sink)
+  defUse(_, src, sink)
   or
   src = sink.(ParameterReadAccess).getTarget()
   or
@@ -187,7 +187,7 @@ private module DefUse {
 
   /** Holds if the update `def` can be used at the read `use`. */
   cached
-  predicate defUse(StackVariable target, DataFlowNode def, ReadAccess use) {
+  predicate defUseImpl(StackVariable target, DataFlowNode def, ReadAccess use) {
     exists(VariableUpdate vu | def = vu.getSource() |
       defReachesReadWithinBlock(target, vu, use)
       or
@@ -224,3 +224,5 @@ private class MethodOutOrRefTarget extends VariableUpdate, Call {
 
   override Expr getSource() { result = this }
 }
+
+predicate defUse = DefUse::defUseImpl/3;

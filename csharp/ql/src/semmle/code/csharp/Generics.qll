@@ -126,11 +126,7 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
   /** Gets the constraints on this type parameter, if any. */
   TypeParameterConstraints getConstraints() { result.getTypeParameter() = this }
 
-  /**
-   * Holds if this type parameter is guaranteed to always be instantiated
-   * to a reference type.
-   */
-  predicate isRefType() {
+  override predicate isRefType() {
     exists(TypeParameterConstraints tpc | tpc = getConstraints() |
       tpc.hasRefTypeConstraint() or
       exists(tpc.getClassConstraint()) or
@@ -139,11 +135,7 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
     )
   }
 
-  /**
-   * Holds if this type parameter is guaranteed to always be instantiated
-   * to a value type.
-   */
-  predicate isValueType() {
+  override predicate isValueType() {
     exists(TypeParameterConstraints tpc | tpc = getConstraints() |
       tpc.hasValueTypeConstraint() or
       tpc.getATypeParameterConstraint().isValueType()
