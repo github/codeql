@@ -323,7 +323,9 @@ abstract class Sanitizer extends string {
  * there are no `TaintTracking::Configuration`s.
  */
 private predicate valid_sanitizer(Sanitizer sanitizer) {
-    forall (TaintTracking::Configuration c | c.isSanitizer(sanitizer))
+    not exists(TaintTracking::Configuration c)
+    or
+    exists(TaintTracking::Configuration c | c.isSanitizer(sanitizer))
 }
 
 /** DEPRECATED -- Use DataFlowExtension instead.
@@ -850,7 +852,11 @@ library module TaintFlowImplementation {
         or
         exists(DataFlowNode fromnodenode |
             fromnodenode = fromnode.getNode() and
-            forall(TaintTracking::Configuration c | c.isExtension(fromnodenode))
+            (
+                not exists(TaintTracking::Configuration c)
+                or
+                exists(TaintTracking::Configuration c | c.isExtension(fromnodenode))
+            )
             |
             fromnodenode.getASuccessorNode() = tonode and
             fromnode.getContext() = tocontext and
