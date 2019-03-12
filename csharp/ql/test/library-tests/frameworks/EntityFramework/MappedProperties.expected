@@ -1,0 +1,4 @@
+| EntityFramework.cs:12:20:12:21 | Id |
+| EntityFramework.cs:13:23:13:26 | Name |
+| EntityFrameworkCore.cs:10:18:10:19 | Id |
+| EntityFrameworkCore.cs:11:21:11:24 | Name |

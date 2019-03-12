@@ -47,9 +47,8 @@ AbstractValue getAnInitialPropertyValue(DefiniteAbstractValue baseVal, string pr
     result = p.getInit().analyze().getALocalValue()
   )
   or
-  // `f.prototype` for functions `f` that are instantiated
+  // `f.prototype` for functions `f`
   propertyName = "prototype" and
-  baseVal = any(NewExpr ne).getCallee().analyze().getALocalValue() and
   result = TAbstractInstance(baseVal)
 }
 

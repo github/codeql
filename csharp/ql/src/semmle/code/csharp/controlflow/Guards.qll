@@ -1200,7 +1200,7 @@ module Internal {
   private class ConditionOnExprComparisonConfig extends InternalStructuralComparisonConfiguration {
     ConditionOnExprComparisonConfig() { this = "ConditionOnExprComparisonConfig" }
 
-    override predicate candidate(Element x, Element y) {
+    override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
       exists(BasicBlock bb, Declaration d |
         candidateAux(x, d, bb) and
         y = any(AccessOrCallExpr e |
@@ -1221,7 +1221,7 @@ module Internal {
       exists(Guard g | e = g.getAChildExpr*() |
         g.controls(bb, _)
         or
-        g.assertionControlsElement(bb.getANode().getElement(), _)
+        g.assertionControlsNode(bb.getANode(), _)
       )
     }
   }

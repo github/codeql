@@ -44,7 +44,7 @@ class Program
             {
                 if (obj2 == null)
                 {
-                	obj2 = null;
+                    obj2 = null;
                 }
             }
         }

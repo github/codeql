@@ -57,7 +57,7 @@ namespace Semmle.Util
         /// Finds the path for the program <paramref name="prog"/> based on the
         /// <code>PATH</code> environment variable, and in the case of Windows the
         /// <code>PATHEXT</code> environment variable.
-        /// 
+        ///
         /// Returns <code>null</code> of no path can be found.
         /// </summary>
         public static string FindProgramOnPath(string prog)

@@ -17,7 +17,7 @@ import semmle.code.csharp.commons.StructuralComparison
 class StructuralComparisonConfig extends StructuralComparisonConfiguration {
   StructuralComparisonConfig() { this = "UselessNullCoalescingExpression" }
 
-  override predicate candidate(Element x, Element y) {
+  override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
     exists(NullCoalescingExpr nce |
       x.(Access) = nce.getLeftOperand() and
       y.(Access) = nce.getRightOperand().getAChildExpr*()

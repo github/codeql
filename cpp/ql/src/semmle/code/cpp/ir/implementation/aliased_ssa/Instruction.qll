@@ -1311,6 +1311,13 @@ class CallInstruction extends Instruction {
   }
 
   /**
+   * Gets the `Function` that the call targets, if this is statically known.
+   */
+  final Function getStaticCallTarget() {
+    result = getCallTarget().(FunctionInstruction).getFunctionSymbol()
+  }
+
+  /**
    * Gets all of the arguments of the call, including the `this` pointer, if any.
    */
   final Instruction getAnArgument() {

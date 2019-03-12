@@ -16,7 +16,7 @@ import semmle.code.csharp.commons.StructuralComparison
 class StructuralComparisonConfig extends StructuralComparisonConfiguration {
   StructuralComparisonConfig() { this = "UselessIsBeforeAs" }
 
-  override predicate candidate(Element x, Element y) {
+  override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
     exists(IfStmt is, AsExpr ae, IsTypeExpr ie |
       ie = is.getCondition().getAChild*() and
       ae.getTargetType() = ie.getCheckedType() and

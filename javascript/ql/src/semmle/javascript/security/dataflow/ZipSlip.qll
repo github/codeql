@@ -16,6 +16,11 @@ module ZipSlip {
   abstract class Sink extends DataFlow::Node { }
 
   /**
+   * A sanitizer for unsafe zip extraction.
+   */
+  abstract class Sanitizer extends DataFlow::Node { }
+
+  /**
    * A sanitizer guard for unsafe zip extraction.
    */
   abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode { }
@@ -27,6 +32,8 @@ module ZipSlip {
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof Sanitizer }
 
     override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode nd) {
       nd instanceof SanitizerGuard
@@ -88,6 +95,13 @@ module ZipSlip {
   /** A file path of a file write, as a sink for unsafe zip extraction. */
   class FileSystemWriteSink extends Sink {
     FileSystemWriteSink() { exists(FileSystemWriteAccess fsw | fsw.getAPathArgument() = this) }
+  }
+
+  /** An expression that sanitizes by calling path.basename */
+  class BasenameSanitizer extends Sanitizer {
+    BasenameSanitizer() {
+      this = DataFlow::moduleImport("path").getAMemberCall("basename")
+    }
   }
 
   /**

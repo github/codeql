@@ -172,7 +172,7 @@ private predicate flowsFrom(
   // Flow through static field or property
   exists(DataFlow::Node mid |
     flowsFrom(sink, mid, _, _) and
-    Cached::jumpStep(node, mid) and
+    Cached::jumpStepNoConfig(node, mid) and
     isReturned = false and
     lastCall instanceof EmptyCallContext
   )
@@ -205,14 +205,14 @@ private predicate flowsFrom(
   exists(DataFlow::Node mid |
     flowsFrom(sink, mid, _, lastCall) and
     isReturned = true and
-    flowOutOfCallableNonDelegateCall(_, node.asExpr(), mid)
+    flowOutOfCallableNonDelegateCall(_, node, mid)
   )
   or
   // Flow out of a callable (delegate call).
   exists(DataFlow::ExprNode mid |
     flowsFrom(sink, mid, _, _) and
     isReturned = true and
-    flowOutOfDelegateCall(mid.getExpr(), node.asExpr(), lastCall)
+    flowOutOfDelegateCall(mid.getExpr(), node, lastCall)
   )
 }
 
@@ -230,7 +230,7 @@ private CallContext getLastCall(CallContext prevLastCall, Expr call, int i) {
   result = prevLastCall
 }
 
-// Predicate folding to get proper join-order
+pragma[noinline]
 private predicate flowIntoDelegateCall(DelegateCall dc, Callable c, Expr e, int i) {
   exists(DelegateFlowSource dfs, DelegateCallExpr dce |
     // the call context is irrelevant because the delegate call
@@ -242,11 +242,13 @@ private predicate flowIntoDelegateCall(DelegateCall dc, Callable c, Expr e, int 
   )
 }
 
-// Predicate folding to get proper join-order
-private predicate flowOutOfDelegateCall(DelegateCall dc, Expr e, CallContext lastCall) {
+pragma[noinline]
+private predicate flowOutOfDelegateCall(
+  DelegateCall dc, DataFlow::Internal::NormalReturnNode ret, CallContext lastCall
+) {
   exists(DelegateFlowSource dfs, DelegateCallExpr dce, Callable c |
     flowsFrom(dce, dfs, _, lastCall) and
-    c.canReturn(e) and
+    ret.getEnclosingCallable() = c and
     c = dfs.getCallable() and
     dc = dce.getDelegateCall()
   )

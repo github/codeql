@@ -29,13 +29,10 @@ nodes
 | angularjs.js:53:32:53:46 | location.search |
 | eslint-escope-build.js:20:22:20:22 | c |
 | eslint-escope-build.js:21:16:21:16 | c |
-| express.js:7:24:7:62 | "return ... obble") |
 | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:44:7:62 | req.param("wobble") |
-| express.js:9:34:9:72 | "return ... obble") |
 | express.js:9:34:9:79 | "return ...  + "];" |
 | express.js:9:54:9:72 | req.param("wobble") |
-| express.js:12:8:12:46 | "return ... obble") |
 | express.js:12:8:12:53 | "return ...  + "];" |
 | express.js:12:28:12:46 | req.param("wobble") |
 | react-native.js:7:7:7:33 | tainted |
@@ -72,10 +69,13 @@ edges
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
 | express.js:7:24:7:62 | "return ... obble") | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:62 | "return ... obble") |
+| express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:9:34:9:72 | "return ... obble") | express.js:9:34:9:79 | "return ...  + "];" |
 | express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:72 | "return ... obble") |
+| express.js:9:54:9:72 | req.param("wobble") | express.js:9:34:9:79 | "return ...  + "];" |
 | express.js:12:8:12:46 | "return ... obble") | express.js:12:8:12:53 | "return ...  + "];" |
 | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:46 | "return ... obble") |
+| express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |

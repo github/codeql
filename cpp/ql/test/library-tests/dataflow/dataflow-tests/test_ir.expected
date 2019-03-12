@@ -6,6 +6,7 @@
 | test.cpp:30:8:30:8 | Load: t | test.cpp:35:10:35:15 | Call: call to source |
 | test.cpp:31:8:31:8 | Load: c | test.cpp:36:13:36:18 | Call: call to source |
 | test.cpp:58:10:58:10 | Load: t | test.cpp:50:14:50:19 | Call: call to source |
+| test.cpp:71:8:71:9 | Load: x4 | test.cpp:66:30:66:36 | InitializeParameter: source1 |
 | test.cpp:76:8:76:9 | Load: u1 | test.cpp:75:7:75:8 | Uninitialized: definition of u1 |
 | test.cpp:84:8:84:18 | Load: ... ? ... : ... | test.cpp:83:7:83:8 | Uninitialized: definition of u2 |
 | test.cpp:86:8:86:9 | Load: i1 | test.cpp:83:7:83:8 | Uninitialized: definition of u2 |
