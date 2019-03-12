@@ -4,7 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
+
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -97,7 +100,7 @@ public class TypeExtractor {
   private void extractType(int id) {
     Label lbl = trapWriter.globalID("type;" + id);
     String contents = table.getTypeString(id);
-    String[] parts = contents.split(";");
+    String[] parts = split(contents);
     int kind = tagToKind.get(parts[0]);
     trapWriter.addTuple("types", lbl, kind, table.getTypeToStringValue(id));
     int firstChild = 1;
@@ -160,14 +163,15 @@ public class TypeExtractor {
   }
 
   private void extractSymbol(int index) {
-    // Format is: kind;decl;name[;parent]
-    String[] parts = table.getSymbolString(index).split(";");
+    // Format is: kind;decl;parent;name
+    String[] parts = split(table.getSymbolString(index), 4);
     int kind = symbolKind.get(parts[0]);
-    String name = parts[2];
+    String name = parts[3];
     Label label = trapWriter.globalID("symbol;" + index);
     trapWriter.addTuple("symbols", label, kind, name);
-    if (parts.length == 4) {
-      Label parentLabel = trapWriter.globalID("symbol;" + parts[3]);
+    String parentStr = parts[2];
+    if (parentStr.length() > 0) {
+      Label parentLabel = trapWriter.globalID("symbol;" + parentStr);
       trapWriter.addTuple("symbol_parent", label, parentLabel);
     }
   }
@@ -185,7 +189,7 @@ public class TypeExtractor {
   private void extractSignature(int index) {
     // Format is:
     // kind;numTypeParams;requiredParams;returnType(;paramName;paramType)*
-    String[] parts = table.getSignatureString(index).split(";");
+    String[] parts = split(table.getSignatureString(index));
     Label label = trapWriter.globalID("signature;" + index);
     int kind = Integer.parseInt(parts[0]);
     int numberOfTypeParameters = Integer.parseInt(parts[1]);
@@ -269,4 +273,35 @@ public class TypeExtractor {
           trapWriter.globalID("type;" + typeId));
     }
   }
+
+  /** Like {@link #split(String)} without a limit. */
+  private static String[] split(String input) {
+    return split(input, -1);
+  }
+
+  /**
+   * Splits the input around the semicolon (<code>;</code>) character, preserving all empty
+   * substrings.
+   *
+   * <p>At most <code>limit</code> substrings will be extracted. If the limit is reached, the last
+   * substring will extend to the end of the string, possibly itself containing semicolons.
+   *
+   * <p>Note that the {@link String#split(String)} method does not preserve empty substrings at the
+   * end of the string in case the string ends with a semicolon.
+   */
+  private static String[] split(String input, int limit) {
+    List<String> result = new ArrayList<String>();
+    int lastPos = 0;
+    for (int i = 0; i < input.length(); ++i) {
+      if (input.charAt(i) == ';') {
+        result.add(input.substring(lastPos, i));
+        lastPos = i + 1;
+        if (result.size() == limit - 1) break;
+      }
+    }
+    result.add(input.substring(lastPos));
+    return result.toArray(EMPTY_STRING_ARRAY);
+  }
+
+  private static final String[] EMPTY_STRING_ARRAY = new String[0];
 }
