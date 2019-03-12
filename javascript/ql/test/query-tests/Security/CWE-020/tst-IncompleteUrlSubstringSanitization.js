@@ -68,4 +68,21 @@
 	} else {
 		doSomeThingWithTrustedURL(x);
 	}
+
+	let trustedDomains = [
+		"secure1.com", // NOT OK, referenced below
+		".secure2.com"
+	];
+	function isTrustedDomain(domain) {
+		for (let trustedDomain of trustedDomains) {
+			if (domain.endsWith(trustedDomain)) return true; // NOT OK
+		}
+		return false;
+	}
+
+	let trustedHosts = [
+		"secure1.com"
+	];
+	trustedHosts.includes(host); // OK: `Array.prototype.includes`
+
 });
