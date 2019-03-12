@@ -181,9 +181,14 @@ module SocketIO {
     /** Gets the event name associated with the data, if it can be determined. */
     string getEventName() { getArgument(0).mayHaveStringValue(result) }
 
+    /** Gets the callback that handles data received from a client. */
+    private DataFlow::FunctionNode getListener() {
+      result = getCallback(1)
+    }
+
     /** Gets the `i`th parameter through which data is received from a client. */
     DataFlow::SourceNode getReceivedItem(int i) {
-      exists(DataFlow::FunctionNode cb | cb = getCallback(1) and result = cb.getParameter(i) |
+      exists(DataFlow::FunctionNode cb | cb = getListener() and result = cb.getParameter(i) |
         // exclude last parameter if it looks like a callback
         result != cb.getLastParameter() or not exists(result.getAnInvocation())
       )
@@ -194,7 +199,7 @@ module SocketIO {
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::SourceNode getAck() {
-      result = getCallback(1).getLastParameter() and
+      result = getListener().getLastParameter() and
       exists(result.getAnInvocation())
     }
 
@@ -391,7 +396,14 @@ module SocketIOClient {
       result = "/"
     }
 
-    /** Gets a server this socket may be communicating with. */
+    /**
+     * Gets a server this socket may be communicating with.
+     *
+     * To avoid matching sockets with unrelated servers, we restrict the search to
+     * servers defined in the same npm package. Furthermore, the server is required
+     * to have a namespace with the same path as the namespace of this socket, if
+     * it can be determined.
+     */
     SocketIO::ServerObject getATargetServer() {
       exists(NPMPackage pkg |
         result.getOrigin().getFile() = pkg.getAFile() and
@@ -429,9 +441,14 @@ module SocketIOClient {
     /** Gets the event name associated with the data, if it can be determined. */
     string getEventName() { getArgument(0).mayHaveStringValue(result) }
 
+    /** Gets the callback that handles data received from the server. */
+    private DataFlow::FunctionNode getListener() {
+      result = getCallback(1)
+    }
+
     /** Gets the `i`th parameter through which data is received from the server. */
     DataFlow::SourceNode getReceivedItem(int i) {
-      exists(DataFlow::FunctionNode cb | cb = getCallback(1) and result = cb.getParameter(i) |
+      exists(DataFlow::FunctionNode cb | cb = getListener() and result = cb.getParameter(i) |
         // exclude the last parameter if it looks like a callback
         result != cb.getLastParameter() or not exists(result.getAnInvocation())
       )
@@ -442,7 +459,7 @@ module SocketIOClient {
 
     /** Gets the acknowledgment callback, if any. */
     DataFlow::SourceNode getAck() {
-      result = getCallback(1).getLastParameter() and
+      result = getListener().getLastParameter() and
       exists(result.getAnInvocation())
     }
 
