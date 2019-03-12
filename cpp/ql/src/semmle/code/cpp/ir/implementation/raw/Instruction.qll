@@ -1,5 +1,5 @@
 private import internal.IRInternal
-import FunctionIR
+import IRFunction
 import IRBlock
 import IRVariable
 import Operand
@@ -153,7 +153,7 @@ module InstructionSanity {
   query predicate operandAcrossFunctions(Operand operand, Instruction instr, Instruction defInstr) {
     operand.getUseInstruction() = instr and
     operand.getDefinitionInstruction() = defInstr and
-    instr.getEnclosingFunctionIR() != defInstr.getEnclosingFunctionIR()
+    instr.getEnclosingIRFunction() != defInstr.getEnclosingIRFunction()
   }
 
   /**
@@ -174,10 +174,10 @@ module InstructionSanity {
    *
    * This check ensures we don't have too _few_ back edges.
    */
-  query predicate containsLoopOfForwardEdges(FunctionIR f) {
+  query predicate containsLoopOfForwardEdges(IRFunction f) {
     exists(IRBlock block |
       forwardEdge+(block, block) and
-      block.getEnclosingFunctionIR() = f
+      block.getEnclosingIRFunction() = f
     )
   }
 
@@ -190,7 +190,7 @@ module InstructionSanity {
    * This check ensures we don't have too _many_ back edges.
    */
   query predicate lostReachability(IRBlock block) {
-    exists(FunctionIR f, IRBlock entry |
+    exists(IRFunction f, IRBlock entry |
       entry = f.getEntryBlock() and
       entry.getASuccessor+() = block and
       not forwardEdge+(entry, block) and
@@ -373,14 +373,14 @@ class Instruction extends Construction::TInstruction {
    * Gets the function that contains this instruction.
    */
   final Function getEnclosingFunction() {
-    result = getEnclosingFunctionIR().getFunction()
+    result = getEnclosingIRFunction().getFunction()
   }
 
   /**
-   * Gets the FunctionIR object that contains the IR for this instruction.
+   * Gets the IRFunction object that contains the IR for this instruction.
    */
-  final FunctionIR getEnclosingFunctionIR() {
-    result = Construction::getInstructionEnclosingFunctionIR(this)
+  final IRFunction getEnclosingIRFunction() {
+    result = Construction::getInstructionEnclosingIRFunction(this)
   }
 
   /**

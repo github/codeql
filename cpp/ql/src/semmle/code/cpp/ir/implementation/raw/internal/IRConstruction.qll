@@ -190,7 +190,7 @@ cached private module Cached {
       .hasInstruction(result, getInstructionTag(instruction), _, _)
   }
 
-  cached FunctionIR getInstructionEnclosingFunctionIR(Instruction instruction) {
+  cached IRFunction getInstructionEnclosingIRFunction(Instruction instruction) {
     result.getFunction() = getInstructionTranslatedElement(instruction).getFunction()
   }
 

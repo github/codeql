@@ -25,8 +25,8 @@ class Operand extends TOperand {
     result = getUseInstruction().getLocation()
   }
 
-  final FunctionIR getEnclosingFunctionIR() {
-    result = getUseInstruction().getEnclosingFunctionIR()
+  final IRFunction getEnclosingIRFunction() {
+    result = getUseInstruction().getEnclosingIRFunction()
   }
   
   /**

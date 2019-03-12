@@ -25,7 +25,7 @@ private IRBlock getAFeasiblePredecessorBlock(IRBlock successor) {
 }
 
 private predicate isBlockReachable(IRBlock block) {
-  exists(FunctionIR f |
+  exists(IRFunction f |
     getAFeasiblePredecessorBlock*(block) = f.getEntryBlock()
   )
 }
@@ -59,7 +59,7 @@ class ReachableInstruction extends Instruction {
 
 module Graph {
   predicate isEntryBlock(ReachableBlock block) {
-    exists(FunctionIR f |
+    exists(IRFunction f |
       block = f.getEntryBlock()
     )
   }
