@@ -27,9 +27,9 @@ class NotThreadSafeCryptoUsageIntoStartingCallingConfig extends TaintTracking::C
  
   override predicate isSink(DataFlow::Node sink) {
     exists( DelegateCreation dc, Expr e | 
-    	e = sink.asExpr() |
-    	dc.getArgument() = e
-    	and dc.getType().getName().matches("%Start")
+      e = sink.asExpr() |
+      dc.getArgument() = e
+      and dc.getType().getName().matches("%Start")
     )
   }
 }
@@ -42,18 +42,18 @@ class NotThreadSafeCryptoUsageIntoParallelInvokeConfig extends TaintTracking::Co
   }
  
   override predicate isSink(DataFlow::Node sink) {
-	    sink instanceof ParallelSink
+    sink instanceof ParallelSink
   }
 }
 
 from Expr e, string m, LambdaExpr l
 where 
   exists( NotThreadSafeCryptoUsageIntoParallelInvokeConfig  config |
-  	config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e))
-  	and m = "A $@ seems to be used to start a new thread using System.Threading.Tasks.Parallel.Invoke, and is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."  	
+    config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e))
+    and m = "A $@ seems to be used to start a new thread using System.Threading.Tasks.Parallel.Invoke, and is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."  	
   )
   or exists ( NotThreadSafeCryptoUsageIntoStartingCallingConfig  config |
-  	config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e))
-	and m = "A $@ seems to be used to start a new thread is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."
+    config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e))
+    and m = "A $@ seems to be used to start a new thread is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."
   )
 select e, m, l, "lambda expression"

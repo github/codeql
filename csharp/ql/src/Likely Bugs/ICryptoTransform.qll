@@ -28,9 +28,9 @@ class UsesICryptoTransform extends Class {
 class LambdaCapturingICryptoTransformSource extends DataFlow::Node {
   LambdaCapturingICryptoTransformSource() {
     exists( LambdaExpr l, LocalScopeVariable lsvar, UsesICryptoTransform ict |
-    	 l = this.asExpr() |
-    	 ict = lsvar.getType()
-    	 and lsvar.getACapturingCallable() = l
+      l = this.asExpr() |
+      ict = lsvar.getType()
+      and lsvar.getACapturingCallable() = l
     )
   }
 }
