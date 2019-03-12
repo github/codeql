@@ -379,12 +379,12 @@ class SideEffectOperand extends TypedOperand {
 /**
  * An operand of a `PhiInstruction`.
  */
-class PhiOperand extends MemoryOperand, TPhiOperand {
+class PhiInputOperand extends MemoryOperand, TPhiOperand {
   PhiInstruction useInstr;
   Instruction defInstr;
   IRBlock predecessorBlock;
 
-  PhiOperand() {
+  PhiInputOperand() {
     this = TPhiOperand(useInstr, defInstr, predecessorBlock)
   }
 
