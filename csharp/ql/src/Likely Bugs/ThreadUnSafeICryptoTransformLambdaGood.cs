@@ -4,9 +4,9 @@ public static void RunThreadUnSafeICryptoTransformLambdaFixed()
     var b = new Barrier(threadCount);
     Action start = () => {
         b.SignalAndWait();
+        // The hash object is no longer shared
         for (int i = 0; i < 1000; i++)
         {
-            // The hash object is no longer shared
             var sha1 = SHA1.Create();
             var pwd = Guid.NewGuid().ToString();
             var bytes = Encoding.UTF8.GetBytes(pwd);
