@@ -158,8 +158,13 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
     result = getAReturnStmt().getExpr()
   }
 
-  /**
-   * 
+  /** 
+   * Gets a `ConcreteControlFlowNode` which corresponds to an executable portion of
+   * the body which can be executed last during a function call, and which does not
+   * result in the return of a value.
+   */
+   
+  /*
    * Functions can sometimes return without returning a value, in which case they
    * "return" `undefined`. They can do this in two ways:
    * 
