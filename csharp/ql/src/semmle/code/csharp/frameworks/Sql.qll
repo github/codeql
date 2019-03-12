@@ -2,8 +2,9 @@
 
 import csharp
 private import semmle.code.csharp.frameworks.system.Data
-private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.data.SqlClient
+private import semmle.code.csharp.frameworks.EntityFramework
+private import semmle.code.csharp.frameworks.NHibernate
 
 /** An expression containing a SQL command. */
 abstract class SqlExpr extends Expr {
@@ -22,7 +23,7 @@ class CommandTextAssignmentSqlExpr extends SqlExpr, AssignExpr {
     )
   }
 
-  override Expr getSql() { result = getRValue() }
+  override Expr getSql() { result = this.getRValue() }
 }
 
 /** A construction of an `IDbCommand` object. */
@@ -34,7 +35,7 @@ class IDbCommandConstructionSqlExpr extends SqlExpr, ObjectCreation {
     )
   }
 
-  override Expr getSql() { result = getArgument(0) }
+  override Expr getSql() { result = this.getArgument(0) }
 }
 
 /** A construction of an `SqlDataAdapter` object. */
@@ -47,7 +48,7 @@ class SqlDataAdapterConstructionSqlExpr extends SqlExpr, ObjectCreation {
     )
   }
 
-  override Expr getSql() { result = getArgument(0) }
+  override Expr getSql() { result = this.getArgument(0) }
 }
 
 /** A `MySql.Data.MySqlClient.MySqlHelper` method. */
@@ -82,26 +83,4 @@ class MicrosoftSqlHelperMethodCallSqlExpr extends SqlExpr, MethodCall {
       this.getTarget().getParameter(i).getType() instanceof StringType
     )
   }
-}
-
-/** A call to `System.Data.Entity.DbSet.SqlQuery`. */
-class SystemDataEntityDbSetSqlExpr extends SqlExpr, MethodCall {
-  SystemDataEntityDbSetSqlExpr() {
-    this.getTarget() = any(SystemDataEntity::DbSet dbSet).getSqlQueryMethod()
-  }
-
-  override Expr getSql() { result = getArgumentForName("sql") }
-}
-
-/** A call to a method in `System.Data.Entity.Database` that executes SQL. */
-class SystemDataEntityDatabaseSqlExpr extends SqlExpr, MethodCall {
-  SystemDataEntityDatabaseSqlExpr() {
-    exists(SystemDataEntity::Database db |
-      this.getTarget() = db.getSqlQueryMethod() or
-      this.getTarget() = db.getExecuteSqlCommandMethod() or
-      this.getTarget() = db.getExecuteSqlCommandAsyncMethod()
-    )
-  }
-
-  override Expr getSql() { result = getArgumentForName("sql") }
 }

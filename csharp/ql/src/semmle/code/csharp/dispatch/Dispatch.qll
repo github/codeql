@@ -222,11 +222,43 @@ private module Internal {
     }
   }
 
-  private class FieldOrProperty extends Assignable {
-    FieldOrProperty() {
-      this instanceof Field or
-      this instanceof Property
+  private class DynamicFieldOrProperty extends Assignable {
+    DynamicFieldOrProperty() {
+      (
+        this instanceof Field or
+        this instanceof Property
+      ) and
+      this.getName() = any(DynamicMemberAccess dma).getLateBoundTargetName()
     }
+
+    predicate isMemberOf(string name, ValueOrRefType t) {
+      name = this.getName() and t.hasMember(this)
+    }
+  }
+
+  private class TypeWithDynamicFieldOrProperty extends ValueOrRefType {
+    DynamicFieldOrProperty fp;
+
+    TypeWithDynamicFieldOrProperty() { fp.isMemberOf(_, this) }
+
+    predicate isImplicitlyConvertibleTo(string name, Type t) {
+      name = fp.getName() and
+      this.isImplicitlyConvertibleTo(t)
+    }
+  }
+
+  pragma[noinline]
+  private predicate isPossibleDynamicMemberAccessQualifierType(
+    DynamicMemberAccess dma, string name, TypeWithDynamicFieldOrProperty t
+  ) {
+    exists(Type qt, boolean isExact |
+      qt = getAPossibleType(dma.getQualifier(), isExact) and
+      name = dma.getLateBoundTargetName()
+    |
+      isExact = true and t = qt
+      or
+      isExact = false and t.isImplicitlyConvertibleTo(name, qt)
+    )
   }
 
   /**
@@ -235,27 +267,16 @@ private module Internal {
    * corresponding to the type of a relevant field or property are included.
    */
   private Type getAPossibleType(Expr e, boolean isExact) {
-    exists(ValueOrRefType qualifierType, FieldOrProperty fp, boolean qualifierTypeIsExact |
-      qualifierType = getAPossibleTypeDynamicMemberAccessQualifier(e, qualifierTypeIsExact, fp)
+    exists(DynamicFieldOrProperty fp, string name, TypeWithDynamicFieldOrProperty t |
+      isPossibleDynamicMemberAccessQualifierType(e, name, t) and
+      fp.isMemberOf(name, t)
     |
-      (
-        if qualifierTypeIsExact = true
-        then qualifierType.hasMember(fp)
-        else fp.getDeclaringType().isImplicitlyConvertibleTo(qualifierType)
-      ) and
       result = fp.getType() and
       isExact = false
     )
     or
     not e instanceof DynamicMemberAccess and
     result = getASourceType(e, isExact)
-  }
-
-  private Type getAPossibleTypeDynamicMemberAccessQualifier(
-    DynamicMemberAccess dma, boolean isExact, FieldOrProperty fp
-  ) {
-    result = getAPossibleType(dma.getQualifier(), isExact) and
-    fp.getName() = dma.getLateBoundTargetName()
   }
 
   /**
@@ -799,22 +820,14 @@ private module Internal {
     //    conflicting types (for example, `Tuple<int, string>` is considered
     //    compatible with `Tuple<T, T>`).
     override RuntimeCallable getADynamicTarget() {
-      // Condition 1
-      result = getADynamicTargetCandidate() and
-      // Condition 2
-      forall(int i | i in [0 .. getNumberOfArguments() - 1] |
-        result = getADynamicTargetCandidateWithCompatibleArg(i)
-      )
+      result = this.getADynamicTarget(this.getNumberOfArguments() - 1)
     }
 
-    private RuntimeCallable getADynamicTargetCandidateWithCompatibleArg(int i) {
-      result = getADynamicTargetCandidateWithCompatibleArg1(i) or
-      result = getADynamicTargetCandidateWithCompatibleArg2(i)
-    }
-
-    pragma[noinline]
-    private RuntimeCallable getADynamicTargetCandidateWithCompatibleArg1(int i) {
-      result = this.getADynamicTargetCandidate() and
+    private RuntimeCallable getADynamicTarget(int i) {
+      i = -1 and
+      result = this.getADynamicTargetCandidate()
+      or
+      result = this.getADynamicTarget(i - 1) and
       exists(Type parameterType, Type argumentType |
         parameterType = this.getAParameterType(result, i) and
         argumentType = getAPossibleType(this.getArgument(i), _)
@@ -827,6 +840,12 @@ private module Internal {
         or
         reflectionOrDynamicArgEqualsParamModuloTypeParameters(argumentType, parameterType)
       )
+      or
+      result = this.getADynamicTarget(i - 1) and
+      exists(Type parameterType, Type t | parameterType = this.getAParameterType(result, i) |
+        this.argumentConvConstExpr(i, t) and
+        t.isImplicitlyConvertibleTo(parameterType)
+      )
     }
 
     private Type getAParameterType(RuntimeCallable c, int i) {
@@ -837,15 +856,6 @@ private module Internal {
         or
         i >= c.getNumberOfParameters() - 1 and
         result = c.(Method).getParamsType()
-      )
-    }
-
-    pragma[noinline]
-    private RuntimeCallable getADynamicTargetCandidateWithCompatibleArg2(int i) {
-      result = this.getADynamicTargetCandidate() and
-      exists(Type parameterType, Type t | parameterType = this.getAParameterType(result, i) |
-        this.argumentConvConstExpr(i, t) and
-        t.isImplicitlyConvertibleTo(parameterType)
       )
     }
 
@@ -954,7 +964,7 @@ private module Internal {
    */
   private predicate isReflectionOrDynamicCallArgumentWithTypeParameters(Type argType, Type paramType) {
     exists(DispatchReflectionOrDynamicCall call, Parameter p, int i, int j |
-      p = call.getAStaticTarget().getParameter(i) and
+      p = call.getADynamicTargetCandidate().getParameter(i) and
       (
         if p.isParams()
         then (

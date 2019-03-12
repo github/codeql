@@ -16,7 +16,7 @@ import semmle.code.csharp.commons.StructuralComparison
 class StructuralComparisonConfig extends StructuralComparisonConfiguration {
   StructuralComparisonConfig() { this = "SelfAssignment" }
 
-  override predicate candidate(Element x, Element y) {
+  override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
     exists(AssignExpr ae |
       // Member initializers are never self-assignments, in particular
       // not initializers such as `new C { F = F };`

@@ -19,7 +19,7 @@ import semmle.code.csharp.commons.StructuralComparison as SC
 class NestedForConditions extends SC::StructuralComparisonConfiguration {
   NestedForConditions() { this = "Compare nested for conditions" }
 
-  override predicate candidate(Element e1, Element e2) {
+  override predicate candidate(ControlFlowElement e1, ControlFlowElement e2) {
     exists(NestedForLoopSameVariable nested |
       e1 = nested.getInnerForStmt().getCondition() and
       e2 = nested.getOuterForStmt().getCondition()

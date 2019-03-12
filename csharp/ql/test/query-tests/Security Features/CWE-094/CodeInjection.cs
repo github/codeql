@@ -55,6 +55,6 @@ public class CommandInjectionHandler : IHttpHandler
     void OnButtonClicked()
     {
         // BAD: Use the Roslyn APIs to dynamically evaluate C#
-    	CSharpScript.EvaluateAsync(box1.Text);
+        CSharpScript.EvaluateAsync(box1.Text);
     }
 }

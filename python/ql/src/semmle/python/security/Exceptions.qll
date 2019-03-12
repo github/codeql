@@ -31,6 +31,10 @@ class ExceptionInfo extends StringKind {
 
 }
 
+/** A class representing sources of information about 
+ * execution state exposed in tracebacks and the like.
+ */
+abstract class ErrorInfoSource extends TaintSource {}
 
 /**
  * This kind represents exceptions themselves.
@@ -56,7 +60,7 @@ class ExceptionKind extends TaintKind {
  * A source of exception objects, either explicitly created, or captured by an
  * `except` statement.
  */
-class ExceptionSource extends TaintSource {
+class ExceptionSource extends ErrorInfoSource {
 
     ExceptionSource() {
         exists(ClassObject cls |
@@ -91,7 +95,7 @@ class ExceptionInfoSequence extends SequenceKind {
  * Represents calls to functions in the `traceback` module that return
  * sequences of exception information.
  */
-class CallToTracebackFunction extends TaintSource {
+class CallToTracebackFunction extends ErrorInfoSource {
 
     CallToTracebackFunction() {
         exists(string name |
@@ -120,7 +124,7 @@ class CallToTracebackFunction extends TaintSource {
  * Represents calls to functions in the `traceback` module that return a single
  * string of information about an exception.
  */
-class FormattedTracebackSource extends TaintSource {
+class FormattedTracebackSource extends ErrorInfoSource {
 
     FormattedTracebackSource() {
         this = traceback_function("format_exc").getACall()

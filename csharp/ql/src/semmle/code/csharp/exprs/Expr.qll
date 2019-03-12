@@ -654,6 +654,14 @@ class QualifiableExpr extends Expr, @qualifiable_expr {
   predicate isConditional() { conditional_access(this) }
 }
 
+private Expr getAnAssignOrForeachChild() {
+  result = any(AssignExpr e).getLValue()
+  or
+  result = any(ForeachStmt fs).getVariableDeclTuple()
+  or
+  result = getAnAssignOrForeachChild().getAChildExpr()
+}
+
 /**
  * An expression representing a tuple, for example
  * `(1, 2)` on line 2 or `(var x, var y)` on line 5 in
@@ -678,10 +686,7 @@ class TupleExpr extends Expr, @tuple_expr {
   Expr getAnArgument() { result = getArgument(_) }
 
   /** Holds if this tuple is a read access. */
-  predicate isReadAccess() {
-    not exists(AssignExpr e | this = e.getLValue().getAChildExpr*()) and
-    not exists(ForeachStmt fs | this = fs.getVariableDeclTuple().getAChildExpr*())
-  }
+  predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
 }
 
 /**

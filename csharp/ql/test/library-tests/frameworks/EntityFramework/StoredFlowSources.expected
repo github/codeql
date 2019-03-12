@@ -1,0 +1,8 @@
+| EntityFramework.cs:26:22:26:25 | access to property Id |
+| EntityFramework.cs:27:24:27:29 | access to property Name |
+| EntityFramework.cs:52:18:52:24 | access to property Name |
+| EntityFramework.cs:53:18:53:34 | access to property Name |
+| EntityFrameworkCore.cs:24:22:24:25 | access to property Id |
+| EntityFrameworkCore.cs:25:24:25:29 | access to property Name |
+| EntityFrameworkCore.cs:60:18:60:24 | access to property Name |
+| EntityFrameworkCore.cs:61:18:61:34 | access to property Name |

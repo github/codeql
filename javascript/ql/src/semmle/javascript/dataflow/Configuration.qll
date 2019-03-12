@@ -881,12 +881,27 @@ class PathNode extends TPathNode {
   /** Gets the summary of the path underlying this path node. */
   PathSummary getPathSummary() { result = summary }
 
-  /** Gets a successor node of this path node. */
-  PathNode getASuccessor() {
+  /**
+   * Gets a successor node of this path node, including hidden nodes.
+   */
+  private PathNode getASuccessorInternal() {
     exists(DataFlow::Node succ, PathSummary newSummary |
       flowStep(nd, id(cfg), succ, newSummary) and
       result = MkPathNode(succ, id(cfg), summary.append(newSummary))
     )
+  }
+
+  /**
+   * Gets a successor of this path node, if it is a hidden node.
+   */
+  private PathNode getAHiddenSuccessor() {
+    isHidden() and
+    result = getASuccessorInternal()
+  }
+
+  /** Gets a successor node of this path node. */
+  PathNode getASuccessor() {
+    result = getASuccessorInternal().getAHiddenSuccessor*()
   }
 
   /** Gets a textual representation of this path node. */
@@ -903,6 +918,19 @@ class PathNode extends TPathNode {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     nd.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
+  /**
+   * Holds if this node is hidden from paths in path explanation queries, except
+   * in cases where it is the source or sink.
+   */
+  predicate isHidden() {
+    // Skip phi, refinement, and capture nodes
+    nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof SsaImplicitDefinition
+    or
+    // Skip to the top of big left-leaning string concatenation trees.
+    nd = any(AddExpr add).flow() and
+    nd = any(AddExpr add).getAnOperand().flow()
   }
 }
 
@@ -925,7 +953,11 @@ class SinkPathNode extends PathNode {
  */
 module PathGraph {
   /** Holds if `nd` is a node in the graph of data flow path explanations. */
-  query predicate nodes(PathNode nd) { any() }
+  query predicate nodes(PathNode nd) {
+    not nd.isHidden() or
+    nd instanceof SourcePathNode or
+    nd instanceof SinkPathNode
+  }
 
   /** Holds if `pred` &rarr; `succ` is an edge in the graph of data flow path explanations. */
   query predicate edges(PathNode pred, PathNode succ) { pred.getASuccessor() = succ }

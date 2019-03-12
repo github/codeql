@@ -56,6 +56,11 @@ class SystemArrayClass extends SystemClass {
   SystemArrayClass() { this.hasName("Array") }
 }
 
+/** `System.Attribute` class. */
+class SystemAttributeClass extends SystemClass {
+  SystemAttributeClass() { this.hasName("Attribute") }
+}
+
 /** The `System.Boolean` structure. */
 class SystemBooleanStruct extends BoolType {
   /** Gets the `Parse(string)` method. */

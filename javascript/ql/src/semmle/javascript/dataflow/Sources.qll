@@ -7,6 +7,7 @@
  */
 
 import javascript
+private import semmle.javascript.dataflow.TypeTracking
 
 /**
  * A source node for local data flow, that is, a node from which local data flow is tracked.
@@ -152,6 +153,34 @@ class SourceNode extends DataFlow::Node {
    */
   DataFlow::SourceNode getAPropertySource(string prop) {
     result.flowsTo(getAPropertyWrite(prop).getRhs())
+  }
+
+  /**
+   * EXPERIMENTAL.
+   *
+   * Gets a node that this node may flow to using one heap and/or interprocedural step.
+   *
+   * See `TypeTracker` for more details about how to use this.
+   */
+  DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) {
+    exists(StepSummary summary |
+      StepSummary::step(this, result, summary) and
+      t = StepSummary::append(t2, summary)
+    )
+  }
+
+  /**
+   * EXPERIMENTAL.
+   *
+   * Gets a node that may flow into this one using one heap and/or interprocedural step.
+   *
+   * See `TypeBackTracker` for more details about how to use this.
+   */
+  DataFlow::SourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
+    exists(StepSummary summary |
+      StepSummary::step(result, this, summary) and
+      t = StepSummary::prepend(summary, t2)
+    )
   }
 }
 
