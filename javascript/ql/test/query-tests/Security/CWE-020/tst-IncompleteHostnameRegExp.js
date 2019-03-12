@@ -9,7 +9,7 @@
 	/http:\/\/(?:.+)\\.test\\.example.com/; // NOT OK, but not yet supported with enough precision
 	/http:\/\/test.example.com\/(?:.*)/; // OK
 	new RegExp("http://test.example.com"); // NOT OK
-	s.match("http://test.example.com"); // NOT OK
+	s.match("^http://test.example.com"); // NOT OK
 
 	function id(e) { return e; }
 	new RegExp(id(id(id("http://test.example.com")))); // NOT OK
@@ -27,7 +27,7 @@
 	}
 	convert({ hostname: 'test.example.com' }); // NOT OK
 
-	let domains = [ { hostname: 'test.example.com' } ];  // NOT OK, but not yet supported
+	let domains = [ { hostname: 'test.example.com' } ];  // NOT OK
 	function convert(domain) {
 		return new RegExp(domain.hostname);
 	}
@@ -44,4 +44,7 @@
 	RegExp('protos?://(localhost|.+.example.net|.+.example-a.com|.+.example-b.com|.+.example.internal)'); // NOT OK
 
 	/example.dev|example.com/; // OK, but still flagged
+
+	new RegExp('^http://localhost:8000|' + '^https?://.+\.example\.com'); // NOT OK
+
 });

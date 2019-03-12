@@ -11,18 +11,27 @@
  */
 
 import javascript
+import SmallStrings
 
 /**
  * A taint tracking configuration for incomplete hostname regular expressions sources.
  */
-class Configuration extends TaintTracking::Configuration {
+class Configuration extends DataFlow::Configuration {
   Configuration() { this = "IncompleteHostnameRegExpTracking" }
 
   override predicate isSource(DataFlow::Node source) {
-    isIncompleteHostNameRegExpPattern(source.getStringValue(), _)
+    exists (string pattern |
+      isSmallRegExpPattern(source, pattern) and
+      isIncompleteHostNameRegExpPattern(pattern, _)
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) { isInterpretedAsRegExp(sink) }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    any(TaintTracking::AdditionalTaintStep dts).step(pred, succ)
+  }
+
 }
 
 /**
@@ -39,13 +48,14 @@ predicate isIncompleteHostNameRegExpPattern(string pattern, string hostPart) {
             "([():|?a-z0-9-]+(\\\\)?[.]" + RegExpPatterns::commonTLD() + ")" + ".*", 1)
 }
 
-from Expr e, string pattern, string hostPart
+from DataFlow::Node e, string pattern, string hostPart
 where
+  isSmallRegExpPattern(e, pattern) and
   (
-    e.(RegExpLiteral).getValue() = pattern
+    e.asExpr() instanceof RegExpLiteral
     or
     exists(Configuration cfg |
-      cfg.hasFlow(e.flow(), _) and
+      cfg.hasFlow(e, _) and
       e.mayHaveStringValue(pattern)
     )
   ) and
