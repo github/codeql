@@ -14,4 +14,5 @@
 | src5.cpp:10:8:10:23 | declaration of my_istream<char> |
 | src5.fwd.hpp:6:17:6:20 | definition of elem |
 | src5.fwd.hpp:6:29:6:38 | declaration of my_istream<elem> |
+| src5.fwd.hpp:6:29:6:38 | declaration of my_istream<elem> |
 | src6.cpp:5:19:5:23 | definition of mis_c |
