@@ -181,7 +181,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
   override predicate hasBody() { exists(getImplementation()) }
 
   override predicate canReturn(DotNet::Expr expr) {
-    exists(Return ret | ret.getImplementation().getMethod() = this and expr = ret.getExpr())
+    exists(Return ret | ret.getImplementation() = this.getImplementation() and expr = ret.getExpr())
   }
 }
 
