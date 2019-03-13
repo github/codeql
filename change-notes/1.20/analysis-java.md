@@ -29,7 +29,7 @@
   collections, maps, and iterators. This affects all security queries, which
   can report more results based on such paths.
 * The `FlowSources` and `TaintTracking` libraries are extended to cover additional remote user
-  input and taint steps from the Apache Thrift, Apache Struts, Guice and Protobuf frameworks.
+  input and taint steps from the following frameworks: Guice, Protobuf, Thrift and Struts.
   This affects all security queries, which may yield additional results on projects
   that use these frameworks.
 
