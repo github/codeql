@@ -79,7 +79,12 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   TypeExpr getReturnTypeAnnotation() { typeexprs(result, _, this, -3, _) }
 
   /** Holds if this function is a generator function. */
-  predicate isGenerator() { isGenerator(this) }
+  predicate isGenerator() {
+    isGenerator(this)
+    or
+    // we also support `yield` in non-generator functions
+    exists(YieldExpr yield | this = yield.getEnclosingFunction())
+  }
 
   /** Holds if the last parameter of this function is a rest parameter. */
   predicate hasRestParameter() { hasRestParameter(this) }
