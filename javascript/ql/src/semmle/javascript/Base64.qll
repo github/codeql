@@ -97,29 +97,29 @@ private class Atob extends Base64::Decode::Range, DataFlow::CallNode {
   override DataFlow::Node getOutput() { result = this }
 }
 
-/** A call to `Buffer.from` with encoding `base64`. */
-private class Buffer_from extends Base64::Encode::Range, DataFlow::CallNode {
-  Buffer_from() {
-    this = DataFlow::globalVarRef("Buffer").getAMemberCall("from") and
-    getArgument(1).mayHaveStringValue("base64")
-  }
-
-  override DataFlow::Node getInput() { result = getArgument(0) }
-
-  override DataFlow::Node getOutput() { result = this }
-}
-
 /**
  * A call to `Buffer.prototype.toString` with encoding `base64`, approximated by
  * looking for calls to `toString` where the first argument is the string `"base64"`.
  */
-private class Buffer_toString extends Base64::Decode::Range, DataFlow::MethodCallNode {
+private class Buffer_toString extends Base64::Encode::Range, DataFlow::MethodCallNode {
   Buffer_toString() {
     getMethodName() = "toString" and
     getArgument(0).mayHaveStringValue("base64")
   }
 
   override DataFlow::Node getInput() { result = getReceiver() }
+
+  override DataFlow::Node getOutput() { result = this }
+}
+
+/** A call to `Buffer.from` with encoding `base64`. */
+private class Buffer_from extends Base64::Decode::Range, DataFlow::CallNode {
+  Buffer_from() {
+    this = DataFlow::globalVarRef("Buffer").getAMemberCall("from") and
+    getArgument(1).mayHaveStringValue("base64")
+  }
+
+  override DataFlow::Node getInput() { result = getArgument(0) }
 
   override DataFlow::Node getOutput() { result = this }
 }
