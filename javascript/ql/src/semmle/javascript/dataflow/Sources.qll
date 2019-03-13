@@ -162,6 +162,7 @@ class SourceNode extends DataFlow::Node {
    *
    * See `TypeTracker` for more details about how to use this.
    */
+  cached
   DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) {
     exists(StepSummary summary |
       StepSummary::step(this, result, summary) and
@@ -176,6 +177,7 @@ class SourceNode extends DataFlow::Node {
    *
    * See `TypeBackTracker` for more details about how to use this.
    */
+  cached
   DataFlow::SourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
     exists(StepSummary summary |
       StepSummary::step(result, this, summary) and
