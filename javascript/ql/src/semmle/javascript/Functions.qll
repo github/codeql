@@ -159,14 +159,11 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   }
 
   /** 
-   * Gets a `ConcreteControlFlowNode` which corresponds to an executable portion of
-   * the body which can be executed last during a function call, and which does not
-   * result in the return of a value.
+   * Gets a return from a function which has undefined value (i.e. implicit returns
+   * and returns w/o expressions).
    */
    
-  /*
-   * Functions can sometimes return without returning a value, in which case they
-   * "return" `undefined`. They can do this in two ways:
+  /* Functions can have undefined returns in a few different ways:
    * 
    * 1. An explicit return statement with no expression, i.e. the statement `return;`
    * 
@@ -185,7 +182,9 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * statements prevent the containing function from returning, so they don't count
    * as undefined returns. Similarly, `yield` doesn't actually cause a return,
    * since the containing function is a generator and can be re-entered, so we also
-   * exclude yields entirely.
+   * exclude yields entirely. Likewise, we exclude generator functions from
+   * consideration, as well as asynchronous functions, since calls to both produce
+   * something distinct from what's explicitly returned by the function.
    */
   
   ConcreteControlFlowNode getAnUndefinedReturn() {
