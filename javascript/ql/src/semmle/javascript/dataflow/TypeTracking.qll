@@ -216,7 +216,7 @@ private newtype TTypeBackTracker = MkTypeBackTracker(boolean hasReturn) {
  *   t.start() and
  *   result = (< some API call >).getArgument(< n >).getALocalSource()
  *   or
- *   exists (DataFlow::TypeTracker t2 |
+ *   exists (DataFlow::TypeBackTracker t2 |
  *     result = myCallback(t2).backtrack(t2, t)
  *   )
  * }
