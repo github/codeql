@@ -4,12 +4,15 @@
 
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
-
-| Dereferenced variable is always null (`cs/dereferenced-value-is-always-null`) | Improved results | The query has been rewritten from scratch, and the analysis is now based on static single assignment (SSA) forms. The query is now enabled by default in LGTM. |
-| Dereferenced variable may be null (`cs/dereferenced-value-may-be-null`) | Improved results | The query has been rewritten from scratch, and the analysis is now based on static single assignment (SSA) forms. The query is now enabled by default in LGTM. |
-| Double-checked lock is not thread-safe (`cs/unsafe-double-checked-lock`) | Fewer false positives, more true positives | Results have been removed where the underlying field was not updated in the `lock` statement, or where the field is a `struct`. Results have been added where there are other statements inside the `lock` statement. |
+| Clear text storage of sensitive information (`cs/cleartext-storage-of-sensitive-information`) | More results | Data sources have been added from user controls in `System.Windows.Forms`. |
+| Dereferenced variable is always null (`cs/dereferenced-value-is-always-null`) | Improved results | The query has been rewritten from scratch, and the analysis is now based on static single assignment (SSA) forms. Results are now shown by default in LGTM. |
+| Dereferenced variable may be null (`cs/dereferenced-value-may-be-null`) | Improved results | The query has been rewritten from scratch, and the analysis is now based on static single assignment (SSA) forms. Results are now shown by default in LGTM. |
+| Double-checked lock is not thread-safe (`cs/unsafe-double-checked-lock`) | Fewer false positive and more true positive results | No longer highlights code where the underlying field was not updated in the `lock` statement, or where the field is a `struct`. Results have been added where there are other statements inside the `lock` statement. |
+| Exposure of private information (`cs/exposure-of-sensitive-information`) | More results | Data sources have been added from user controls in `System.Windows.Forms`. |
+| Improper control of generation of code (`cs/code-injection`) | More results | Data sources have been added from user controls in `System.Windows.Forms`. |
 | Off-by-one comparison against container length (`cs/index-out-of-bounds`) | Fewer false positives | Results have been removed when there are additional guards on the index. |
-| SQL query built from user-controlled sources (`cs/sql-injection`), Improper control of generation of code (`cs/code-injection`), Uncontrolled format string (`cs/uncontrolled-format-string`), Clear text storage of sensitive information (`cs/cleartext-storage-of-sensitive-information`), Exposure of private information (`cs/exposure-of-sensitive-information`) | More results | Data sources have been added from user controls in `System.Windows.Forms`. |
+| SQL query built from user-controlled sources (`cs/sql-injection`) | More results | Data sources have been added from user controls in `System.Windows.Forms`. |
+| Uncontrolled format string (`cs/uncontrolled-format-string`) | More results | Data sources have been added from user controls in `System.Windows.Forms`. |
 | Unused format argument (`cs/format-argument-unused`) | Fewer false positives | Results have been removed where the format string is empty. This is often used as a default value and is not an interesting result. |
 | Use of default ToString() (`cs/call-to-object-tostring`) | Fewer false positives | Results have been removed for `char` arrays passed to `StringBuilder.Append()`, which were incorrectly marked as using `ToString`. |
 | Use of default ToString() (`cs/call-to-object-tostring`) | Fewer results | Results have been removed when the object is an interface or an abstract class. |
