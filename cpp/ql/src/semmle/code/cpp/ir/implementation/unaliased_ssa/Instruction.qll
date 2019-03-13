@@ -50,7 +50,7 @@ module InstructionSanity {
   /**
    * Holds if instruction `instr` is missing an expected operand with tag `tag`.
    */
-  query predicate missingOperand(Instruction instr, string message, FunctionIR func, string funcText) {
+  query predicate missingOperand(Instruction instr, string message, IRFunction func, string funcText) {
     exists(OperandTag tag |
       expectsOperand(instr, tag) and
       not exists(NonPhiOperand operand |
@@ -59,7 +59,7 @@ module InstructionSanity {
       ) and
       message = "Instruction '" + instr.getOpcode().toString() + "' is missing an expected operand with tag '" +
         tag.toString() + "' in function '$@'." and
-      func = instr.getEnclosingFunctionIR() and
+      func = instr.getEnclosingIRFunction() and
       funcText = getIdentityString(func.getFunction())
     )
   }

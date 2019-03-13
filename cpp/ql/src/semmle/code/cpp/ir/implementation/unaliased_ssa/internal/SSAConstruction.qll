@@ -16,7 +16,7 @@ cached private module Cached {
   }
 
   cached predicate functionHasIR(Function func) {
-    exists(OldIR::FunctionIR funcIR |
+    exists(OldIR::IRFunction funcIR |
       funcIR.getFunction() = func
     )
   }
@@ -92,7 +92,7 @@ cached private module Cached {
             )
           )
           else (
-            result = instruction.getEnclosingFunctionIR().getUnmodeledDefinitionInstruction() and
+            result = instruction.getEnclosingIRFunction().getUnmodeledDefinitionInstruction() and
             overlap instanceof MustTotallyOverlap
           )
         ) or
@@ -112,7 +112,7 @@ cached private module Cached {
     tag instanceof ChiPartialOperandTag and
     overlap instanceof MustExactlyOverlap
     or
-    exists(FunctionIR f |
+    exists(IRFunction f |
       tag instanceof UnmodeledUseOperandTag and
       result = f.getUnmodeledDefinitionInstruction() and
       instruction = f.getUnmodeledUseInstruction() and
@@ -288,7 +288,7 @@ cached private module Cached {
     result instanceof Opcode::Unreached
   }
 
-  cached FunctionIR getInstructionEnclosingFunctionIR(Instruction instruction) {
+  cached IRFunction getInstructionEnclosingIRFunction(Instruction instruction) {
     exists(OldInstruction oldInstruction |
       instruction = WrappedInstruction(oldInstruction)
       or

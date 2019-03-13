@@ -29,8 +29,8 @@ class Operand extends TOperand {
     result = getUseInstruction().getLocation()
   }
 
-  final FunctionIR getEnclosingFunctionIR() {
-    result = getUseInstruction().getEnclosingFunctionIR()
+  final IRFunction getEnclosingIRFunction() {
+    result = getUseInstruction().getEnclosingIRFunction()
   }
   
   /**
@@ -417,13 +417,13 @@ class SideEffectOperand extends TypedOperand {
 /**
  * An operand of a `PhiInstruction`.
  */
-class PhiOperand extends MemoryOperand, TPhiOperand {
+class PhiInputOperand extends MemoryOperand, TPhiOperand {
   PhiInstruction useInstr;
   Instruction defInstr;
   IRBlock predecessorBlock;
   Overlap overlap;
 
-  PhiOperand() {
+  PhiInputOperand() {
     this = TPhiOperand(useInstr, defInstr, predecessorBlock, overlap)
   }
 

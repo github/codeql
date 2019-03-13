@@ -35,8 +35,8 @@ private newtype TMemoryLocation =
     hasOperandMemoryAccess(_, var, type, startBitOffset, endBitOffset)
   }
   or
-  TUnknownMemoryLocation(FunctionIR funcIR) or
-  TUnknownVirtualVariable(FunctionIR funcIR)
+  TUnknownMemoryLocation(IRFunction funcIR) or
+  TUnknownVirtualVariable(IRFunction funcIR)
 
 /**
  * Represents the memory location accessed by a memory operand or memory result. In this implementation, the location is
@@ -99,7 +99,7 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
 
   override final VirtualVariable getVirtualVariable() {
     if variableAddressEscapes(var) then
-      result = TUnknownVirtualVariable(var.getEnclosingFunctionIR())
+      result = TUnknownVirtualVariable(var.getEnclosingIRFunction())
     else
       result = TVariableMemoryLocation(var, var.getType(), 0, var.getType().getSize() * 8)
   }
@@ -130,7 +130,7 @@ class VariableVirtualVariable extends VariableMemoryLocation, VirtualVariable {
  * An access to memory that is not known to be confined to a specific `IRVariable`.
  */
 class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
-  FunctionIR funcIR;
+  IRFunction funcIR;
 
   UnknownMemoryLocation() {
     this = TUnknownMemoryLocation(funcIR)
@@ -157,7 +157,7 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
  * An access to all aliased memory.
  */
 class UnknownVirtualVariable extends TUnknownVirtualVariable, VirtualVariable {
-  FunctionIR funcIR;
+  IRFunction funcIR;
 
   UnknownVirtualVariable() {
     this = TUnknownVirtualVariable(funcIR)
@@ -247,16 +247,16 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
           )
         )
         else (
-          result = TUnknownMemoryLocation(instr.getEnclosingFunctionIR())
+          result = TUnknownMemoryLocation(instr.getEnclosingIRFunction())
         )
       ) or
       (
         kind instanceof EscapedMemoryAccess and
-        result = TUnknownVirtualVariable(instr.getEnclosingFunctionIR())
+        result = TUnknownVirtualVariable(instr.getEnclosingIRFunction())
       ) or
       (
         kind instanceof EscapedMayMemoryAccess and
-        result = TUnknownMemoryLocation(instr.getEnclosingFunctionIR())
+        result = TUnknownMemoryLocation(instr.getEnclosingIRFunction())
       )
     )
   )
@@ -275,16 +275,16 @@ MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
           )
         )
         else (
-          result = TUnknownMemoryLocation(operand.getEnclosingFunctionIR())
+          result = TUnknownMemoryLocation(operand.getEnclosingIRFunction())
         )
       ) or
       (
         kind instanceof EscapedMemoryAccess and
-        result = TUnknownVirtualVariable(operand.getEnclosingFunctionIR())
+        result = TUnknownVirtualVariable(operand.getEnclosingIRFunction())
       ) or
       (
         kind instanceof EscapedMayMemoryAccess and
-        result = TUnknownMemoryLocation(operand.getEnclosingFunctionIR())
+        result = TUnknownMemoryLocation(operand.getEnclosingIRFunction())
       )
     )
   )
