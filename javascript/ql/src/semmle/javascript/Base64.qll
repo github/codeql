@@ -130,18 +130,31 @@ private class Buffer_from extends Base64::Decode::Range, DataFlow::CallNode {
  */
 private class NpmBase64Encode extends Base64::Encode::Range, DataFlow::CallNode {
   NpmBase64Encode() {
-    exists(string mod, string meth |
-      mod = "base-64" and meth = "encode"
-      or
-      mod = "Base64" and meth = "btoa"
-      or
-      mod = "base64-js" and meth = "toByteArray"
+    exists(DataFlow::SourceNode enc |
+      enc = DataFlow::moduleImport("b64u") or
+      enc = DataFlow::moduleImport("b64url") or
+      enc = DataFlow::moduleImport("btoa") or
+      enc = DataFlow::moduleMember("Base64", "btoa") or
+      enc = DataFlow::moduleMember("abab", "btoa") or
+      enc = DataFlow::moduleMember("b2a", "btoa") or
+      enc = DataFlow::moduleMember("b64-lite", "btoa") or
+      enc = DataFlow::moduleMember("b64-lite", "toBase64") or
+      enc = DataFlow::moduleMember("b64u", "encode") or
+      enc = DataFlow::moduleMember("b64u", "toBase64") or
+      enc = DataFlow::moduleMember("b64u-lite", "toBase64Url") or
+      enc = DataFlow::moduleMember("b64u-lite", "toBinaryString") or
+      enc = DataFlow::moduleMember("b64url", "encode") or
+      enc = DataFlow::moduleMember("b64url", "toBase64") or
+      enc = DataFlow::moduleMember("base-64", "encode") or
+      enc = DataFlow::moduleMember("base64-js", "toByteArray") or
+      enc = DataFlow::moduleMember("base64-url", "encode") or
+      enc = DataFlow::moduleMember("base64url", "encode") or
+      enc = DataFlow::moduleMember("base64url", "toBase64") or
+      enc = DataFlow::moduleMember("js-base64", "Base64").getAPropertyRead("encode") or
+      enc = DataFlow::moduleMember("js-base64", "Base64").getAPropertyRead("encodeURI") or
+      enc = DataFlow::moduleMember("urlsafe-base64", "encode")
     |
-      this = DataFlow::moduleMember(mod, meth).getACall()
-    )
-    or
-    exists(string meth | meth = "encode" or meth = "encodeURI" |
-      this = DataFlow::moduleMember("js-base64", "Base64").getAMemberCall(meth)
+      this = enc.getACall()
     )
   }
 
@@ -156,17 +169,29 @@ private class NpmBase64Encode extends Base64::Encode::Range, DataFlow::CallNode 
  */
 private class NpmBase64Decode extends Base64::Decode::Range, DataFlow::CallNode {
   NpmBase64Decode() {
-    exists(string mod, string meth |
-      mod = "base-64" and meth = "decode"
-      or
-      mod = "Base64" and meth = "atob"
-      or
-      mod = "base64-js" and meth = "fromByteArray"
+    exists(DataFlow::SourceNode dec |
+      dec = DataFlow::moduleImport("atob") or
+      dec = DataFlow::moduleMember("Base64", "atob") or
+      dec = DataFlow::moduleMember("abab", "atob") or
+      dec = DataFlow::moduleMember("b2a", "atob") or
+      dec = DataFlow::moduleMember("b64-lite", "atob") or
+      dec = DataFlow::moduleMember("b64-lite", "fromBase64") or
+      dec = DataFlow::moduleMember("b64u", "decode") or
+      dec = DataFlow::moduleMember("b64u", "fromBase64") or
+      dec = DataFlow::moduleMember("b64u-lite", "fromBase64Url") or
+      dec = DataFlow::moduleMember("b64u-lite", "fromBinaryString") or
+      dec = DataFlow::moduleMember("b64url", "decode") or
+      dec = DataFlow::moduleMember("b64url", "fromBase64") or
+      dec = DataFlow::moduleMember("base-64", "decode") or
+      dec = DataFlow::moduleMember("base64-js", "fromByteArray") or
+      dec = DataFlow::moduleMember("base64-url", "decode") or
+      dec = DataFlow::moduleMember("base64url", "decode") or
+      dec = DataFlow::moduleMember("base64url", "fromBase64") or
+      dec = DataFlow::moduleMember("js-base64", "Base64").getAPropertyRead("decode") or
+      dec = DataFlow::moduleMember("urlsafe-base64", "decode")
     |
-      this = DataFlow::moduleMember(mod, meth).getACall()
+      this = dec.getACall()
     )
-    or
-    this = DataFlow::moduleMember("js-base64", "Base64").getAMemberCall("decode")
   }
 
   override DataFlow::Node getInput() { result = getArgument(0) }
