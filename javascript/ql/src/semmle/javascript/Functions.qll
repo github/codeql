@@ -185,6 +185,11 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * exclude yields entirely. Likewise, we exclude generator functions from
    * consideration, as well as asynchronous functions, since calls to both produce
    * something distinct from what's explicitly returned by the function.
+   * 
+   * Despite the fact that yield expressions are invalid outside of generators, we
+   * include them anyway just to ensure that we're not relying on a perfect analysis
+   * of a function to be a generator, and instead are looking also explicitly at the
+   * return sites.
    */
   
   ConcreteControlFlowNode getAnUndefinedReturn() {
