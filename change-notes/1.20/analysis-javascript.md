@@ -48,14 +48,14 @@
 | Stored cross-site scripting                | Fewer false-positive results. | This rule now recognizes custom sanitizers. |
 | Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | Additional ways that class methods can be bound are recognized. |
 | Uncontrolled data used in network request  | More results                 | This rule now recognizes host values that are vulnerable to injection. |
-| Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
-| Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, no longer flags variables with leading underscore, and no longer flags variables in dead code. |
 | Uncontrolled data used in path expression | Fewer false-positive results | This rule now recognizes the Express `root` option, which prevents path traversal. |
 | Unneeded defensive code | More true-positive results, fewer false-positive results. | This rule now recognizes additional defensive code patterns. |
-| Useless conditional | Fewer results | Additional defensive coding patterns are now ignored. |
-| Useless assignment to property. | Fewer false-positive results | This rule now treats assignments with complex right-hand sides correctly. |
 | Unsafe dynamic method access              | Fewer false-positive results | This rule no longer flags concatenated strings as unsafe method names. |
+| Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
+| Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, no longer flags variables with leading underscore, and no longer flags variables in dead code. |
 | Unvalidated dynamic method call           | More true-positive results | This rule now flags concatenated strings as unvalidated method names in more cases. |
+| Useless assignment to property. | Fewer false-positive results | This rule now treats assignments with complex right-hand sides correctly. |
+| Useless conditional | Fewer results | Additional defensive coding patterns are now ignored. |
 | Useless conditional | More true-positive results | This rule now flags additional uses of function call values. |
 
 ## Changes to QL libraries
