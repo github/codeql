@@ -190,11 +190,13 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   
   ConcreteControlFlowNode getAnUndefinedReturn() {
     not this.getBody() instanceof Expr and
-    result.getContainer() = this and
-    result.isAFinalNode() and
-    not (result instanceof ReturnStmt and exists(result.(ReturnStmt).getExpr())) and
+    not this.isGenerator() and
+    not this.isAsync() and
     not result instanceof ThrowStmt and
-    not result instanceof YieldExpr
+    not result instanceof YieldExpr and
+    not (result instanceof ReturnStmt and exists(result.(ReturnStmt).getExpr())) and
+    result.getContainer() = this and
+    result.isAFinalNode()
   }
   
   /**
