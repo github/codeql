@@ -9,3 +9,4 @@
 | tst.js:45:6:45:11 | x = 23 | This definition of x is useless, since its value is never read. |
 | tst.js:51:6:51:11 | x = 23 | This definition of x is useless, since its value is never read. |
 | tst.js:132:7:132:13 | {x} = o | This definition of x is useless, since its value is never read. |
+| tst.js:162:6:162:14 | [x] = [0] | This definition of x is useless, since its value is never read. |
