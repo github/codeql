@@ -1595,6 +1595,7 @@ public class TypeScriptASTConverter {
     List<ITypeExpression> paramTypes = convertParameterTypes(node);
     List<DecoratorList> paramDecorators = convertParameterDecorators(node);
     List<TypeParameter> typeParameters = convertChildrenNotNull(node, "typeParameters");
+    ITypeExpression thisType = convertThisParameterType(node);
     FunctionExpression method =
         new FunctionExpression(
             loc,
@@ -1607,7 +1608,7 @@ public class TypeScriptASTConverter {
             paramTypes,
             paramDecorators,
             returnType,
-            null);
+            thisType);
     attachSymbolInformation(method, node);
     return method;
   }

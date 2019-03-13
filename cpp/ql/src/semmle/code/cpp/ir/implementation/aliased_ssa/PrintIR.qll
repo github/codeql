@@ -50,8 +50,8 @@ private string getAdditionalBlockProperty(IRBlock block, string key) {
 }
 
 private newtype TPrintableIRNode =
-  TPrintableFunctionIR(FunctionIR funcIR) {
-    shouldPrintFunction(funcIR.getFunction())
+  TPrintableIRFunction(IRFunction irFunc) {
+    shouldPrintFunction(irFunc.getFunction())
   } or
   TPrintableIRBlock(IRBlock block) {
     shouldPrintFunction(block.getEnclosingFunction())
@@ -113,30 +113,30 @@ abstract class PrintableIRNode extends TPrintableIRNode {
 }
 
 /**
- * An IR graph node representing a `FunctionIR` object.
+ * An IR graph node representing a `IRFunction` object.
  */
-class PrintableFunctionIR extends PrintableIRNode, TPrintableFunctionIR {
-  FunctionIR funcIR;
+class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction {
+  IRFunction irFunc;
 
-  PrintableFunctionIR() {
-    this = TPrintableFunctionIR(funcIR)
+  PrintableIRFunction() {
+    this = TPrintableIRFunction(irFunc)
   }
 
   override string toString() {
-    result = funcIR.toString()
+    result = irFunc.toString()
   }
 
   override Location getLocation() {
-    result = funcIR.getLocation()
+    result = irFunc.getLocation()
   }
 
   override string getLabel() {
-    result = getIdentityString(funcIR.getFunction())
+    result = getIdentityString(irFunc.getFunction())
   }
 
   override int getOrder() {
-    this = rank[result + 1](PrintableFunctionIR orderedFunc, Location location |
-      location = orderedFunc.getFunctionIR().getLocation() |
+    this = rank[result + 1](PrintableIRFunction orderedFunc, Location location |
+      location = orderedFunc.getIRFunction().getLocation() |
       orderedFunc order by location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), orderedFunc.getLabel()
     )
@@ -146,8 +146,8 @@ class PrintableFunctionIR extends PrintableIRNode, TPrintableFunctionIR {
     none()
   }
 
-  final FunctionIR getFunctionIR() {
-    result = funcIR
+  final IRFunction getIRFunction() {
+    result = irFunc
   }
 }
 
@@ -185,8 +185,8 @@ class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
     any()
   }
 
-  override final PrintableFunctionIR getParent() {
-    result.getFunctionIR() = block.getEnclosingFunctionIR()
+  override final PrintableIRFunction getParent() {
+    result.getIRFunction() = block.getEnclosingIRFunction()
   }
 
   override string getProperty(string key) {

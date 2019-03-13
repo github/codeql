@@ -80,6 +80,7 @@ private predicate allocReaches0(Expr e, Expr alloc, string kind) {
   ) or exists(Variable v |
     // alloc via a global
     allocReachesVariable(v, alloc, kind) and
+    strictcount(VariableAccess va | va.getTarget() = v) <= 50 and // avoid very expensive cases 
     e.(VariableAccess).getTarget() = v
   )
 }
