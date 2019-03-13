@@ -1,4 +1,4 @@
-import FunctionIR
+import IRFunction
 import Instruction
 import IRBlock
 import IRVariable

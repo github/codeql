@@ -73,7 +73,7 @@ private predicate operandEscapesDomain(Operand operand) {
   not isArgumentForParameter(_, operand, _) and
   not isOnlyEscapesViaReturnArgument(operand) and
   not operand.getUseInstruction() instanceof ReturnValueInstruction and
-  not operand instanceof PhiOperand
+  not operand instanceof PhiInputOperand
 }
 
 /**
@@ -171,7 +171,7 @@ private predicate operandEscapesNonReturn(Operand operand) {
   or
   isOnlyEscapesViaReturnArgument(operand) and resultEscapesNonReturn(operand.getUseInstruction())
   or
-  operand instanceof PhiOperand and
+  operand instanceof PhiInputOperand and
   resultEscapesNonReturn(operand.getUseInstruction())
   or
   operandEscapesDomain(operand)
@@ -194,7 +194,7 @@ private predicate operandMayReachReturn(Operand operand) {
   or
   isOnlyEscapesViaReturnArgument(operand) and resultMayReachReturn(operand.getUseInstruction())
   or
-  operand instanceof PhiOperand and
+  operand instanceof PhiInputOperand and
   resultMayReachReturn(operand.getUseInstruction())
 }
 

@@ -377,7 +377,7 @@ private predicate boundedNonPhiOperand(NonPhiOperand op, Bound b, int delta, boo
  * - `upper = false` : `op2 >= op1 + delta`
  */
 private predicate boundFlowStepPhi(
-  PhiOperand op2, Operand op1, int delta, boolean upper, Reason reason
+  PhiInputOperand op2, Operand op1, int delta, boolean upper, Reason reason
 ) {
   op2.getDefinitionInstruction().(CopyInstruction).getSourceValueOperand() = op1 and
   (upper = true or upper = false) and
@@ -393,7 +393,7 @@ private predicate boundFlowStepPhi(
 
 
 private predicate boundedPhiOperand(
-  PhiOperand op, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
+  PhiInputOperand op, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
   exists(NonPhiOperand op2, int d1, int d2, Reason r1, Reason r2 |
@@ -446,7 +446,7 @@ private predicate unequalOperand(Operand op, Bound b, int delta, Reason reason) 
 
 private predicate boundedPhiCandValidForEdge(
   PhiInstruction phi, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta,
-  Reason reason, PhiOperand op
+  Reason reason, PhiInputOperand op
 ) {
   boundedPhiCand(phi, upper, b, delta, fromBackEdge, origdelta, reason) and
   (
@@ -469,7 +469,7 @@ private int weakenDelta(boolean upper, int delta) {
 }
 
 private predicate boundedPhiInp(
-  PhiInstruction phi, PhiOperand op, Bound b, int delta, boolean upper, boolean fromBackEdge,
+  PhiInstruction phi, PhiInputOperand op, Bound b, int delta, boolean upper, boolean fromBackEdge,
   int origdelta, Reason reason
 ) {
   phi.getAnOperand() = op and
@@ -499,12 +499,12 @@ private predicate boundedPhiInp(
 
 pragma[noinline]
 private predicate boundedPhiInp1(
-  PhiInstruction phi, PhiOperand op, Bound b, int delta, boolean upper
+  PhiInstruction phi, PhiInputOperand op, Bound b, int delta, boolean upper
 ) {
   boundedPhiInp(phi, op, b, delta, upper, _, _, _)
 }
 
-private predicate selfBoundedPhiInp(PhiInstruction phi, PhiOperand op, boolean upper) {
+private predicate selfBoundedPhiInp(PhiInstruction phi, PhiInputOperand op, boolean upper) {
   exists(int d, ValueNumberBound phibound |
     phibound.getInstruction() = phi and
     boundedPhiInp(phi, op, phibound, d, upper, _, _, _) and
@@ -521,7 +521,7 @@ private predicate boundedPhiCand(
   PhiInstruction phi, boolean upper, Bound b, int delta, boolean fromBackEdge, int origdelta,
   Reason reason
 ) {
-  exists(PhiOperand op |
+  exists(PhiInputOperand op |
     boundedPhiInp(phi, op, b, delta, upper, fromBackEdge, origdelta, reason)
   )
 }
@@ -556,7 +556,7 @@ private predicate boundedInstruction(
   Instruction i, Bound b, int delta, boolean upper, boolean fromBackEdge, int origdelta, Reason reason
 ) {
   i instanceof PhiInstruction and
-  forex(PhiOperand op | op = i.getAnOperand() |
+  forex(PhiInputOperand op | op = i.getAnOperand() |
     boundedPhiCandValidForEdge(i, b, delta, upper, fromBackEdge, origdelta, reason, op)
   )
   or

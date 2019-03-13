@@ -2,19 +2,19 @@ private import internal.IRInternal
 import Instruction
 import cpp
 
-private newtype TFunctionIR =
-  MkFunctionIR(Function func) {
+private newtype TIRFunction =
+  MkIRFunction(Function func) {
     Construction::functionHasIR(func)
   }
 
 /**
  * Represents the IR for a function.
  */
-class FunctionIR extends TFunctionIR {
+class IRFunction extends TIRFunction {
   Function func;
 
-  FunctionIR() {
-    this = MkFunctionIR(func)
+  IRFunction() {
+    this = MkIRFunction(func)
   }
 
   final string toString() {
@@ -40,7 +40,7 @@ class FunctionIR extends TFunctionIR {
    */
   pragma[noinline]
   final EnterFunctionInstruction getEnterFunctionInstruction() {
-    result.getEnclosingFunctionIR() = this
+    result.getEnclosingIRFunction() = this
   }
 
   /**
@@ -48,17 +48,17 @@ class FunctionIR extends TFunctionIR {
    */
   pragma[noinline]
   final ExitFunctionInstruction getExitFunctionInstruction() {
-    result.getEnclosingFunctionIR() = this
+    result.getEnclosingIRFunction() = this
   }
 
   pragma[noinline]
   final UnmodeledDefinitionInstruction getUnmodeledDefinitionInstruction() {
-    result.getEnclosingFunctionIR() = this
+    result.getEnclosingIRFunction() = this
   }
 
   pragma[noinline]
   final UnmodeledUseInstruction getUnmodeledUseInstruction() {
-    result.getEnclosingFunctionIR() = this
+    result.getEnclosingIRFunction() = this
   }
 
   /**
@@ -66,7 +66,7 @@ class FunctionIR extends TFunctionIR {
    */
   pragma[noinline]
   final ReturnInstruction getReturnInstruction() {
-    result.getEnclosingFunctionIR() = this
+    result.getEnclosingIRFunction() = this
   }
 
   /**
@@ -75,7 +75,7 @@ class FunctionIR extends TFunctionIR {
    */
   pragma[noinline]
   final IRReturnVariable getReturnVariable() {
-    result.getEnclosingFunctionIR() = this
+    result.getEnclosingIRFunction() = this
   }
   
   /**
@@ -90,13 +90,13 @@ class FunctionIR extends TFunctionIR {
    * Gets all instructions in this function.
    */
   final Instruction getAnInstruction() {
-    result.getEnclosingFunctionIR() = this
+    result.getEnclosingIRFunction() = this
   }
 
   /**
    * Gets all blocks in this function.
    */
   final IRBlock getABlock() {
-    result.getEnclosingFunctionIR() = this
+    result.getEnclosingIRFunction() = this
   }
 }
