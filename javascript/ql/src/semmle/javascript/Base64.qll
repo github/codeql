@@ -1,5 +1,5 @@
 /**
- * Provides classes and predicates for working with popular base64 encoders and decoders.
+ * Provides classes and predicates for working with base64 encoders and decoders.
  */
 
 import javascript
