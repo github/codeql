@@ -35,10 +35,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/IRVariable.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/IRVariable.qll"
   ],
-  "C++ IR FunctionIR": [
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/FunctionIR.qll",
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/FunctionIR.qll",
-    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/FunctionIR.qll"
+  "C++ IR IRFunction": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/IRFunction.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/IRFunction.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/IRFunction.qll"
   ],
   "C++ IR Operand": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/Operand.qll",

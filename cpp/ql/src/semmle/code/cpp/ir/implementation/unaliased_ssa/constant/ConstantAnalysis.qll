@@ -10,8 +10,8 @@ int getConstantValue(Instruction instr) {
   result = getConstantValue(instr.(CopyInstruction).getSourceValue()) or
   exists(PhiInstruction phi |
     phi = instr and
-    result = max(Instruction def | def = phi.getAnOperandDefinitionInstruction() | getConstantValueToPhi(def)) and
-    result = min(Instruction def | def = phi.getAnOperandDefinitionInstruction() | getConstantValueToPhi(def))
+    result = max(Instruction def | def = phi.getAnInput() | getConstantValueToPhi(def)) and
+    result = min(Instruction def | def = phi.getAnInput() | getConstantValueToPhi(def))
   )
 }
 
@@ -19,7 +19,7 @@ pragma[noinline]
 int getConstantValueToPhi(Instruction def) {
   exists(PhiInstruction phi |
     result = getConstantValue(def) and
-    def = phi.getAnOperandDefinitionInstruction()
+    def = phi.getAnInput()
   )
 }
 

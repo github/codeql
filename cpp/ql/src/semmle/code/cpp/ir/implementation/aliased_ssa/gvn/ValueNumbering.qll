@@ -19,38 +19,38 @@ class ValueNumberPropertyProvider extends IRPropertyProvider {
 }
 
 newtype TValueNumber =
-  TVariableAddressValueNumber(FunctionIR funcIR, IRVariable var) {
-    variableAddressValueNumber(_, funcIR, var)
+  TVariableAddressValueNumber(IRFunction irFunc, IRVariable var) {
+    variableAddressValueNumber(_, irFunc, var)
   } or
-  TInitializeParameterValueNumber(FunctionIR funcIR, IRVariable var) {
-    initializeParameterValueNumber(_, funcIR, var)
+  TInitializeParameterValueNumber(IRFunction irFunc, IRVariable var) {
+    initializeParameterValueNumber(_, irFunc, var)
   } or
-  TInitializeThisValueNumber(FunctionIR funcIR) {
-    initializeThisValueNumber(_, funcIR)
+  TInitializeThisValueNumber(IRFunction irFunc) {
+    initializeThisValueNumber(_, irFunc)
   } or
-  TConstantValueNumber(FunctionIR funcIR, Type type, string value) {
-    constantValueNumber(_, funcIR, type, value)
+  TConstantValueNumber(IRFunction irFunc, Type type, string value) {
+    constantValueNumber(_, irFunc, type, value)
   } or
-  TFieldAddressValueNumber(FunctionIR funcIR, Field field, ValueNumber objectAddress) {
-    fieldAddressValueNumber(_, funcIR, field, objectAddress)
+  TFieldAddressValueNumber(IRFunction irFunc, Field field, ValueNumber objectAddress) {
+    fieldAddressValueNumber(_, irFunc, field, objectAddress)
   } or
-  TBinaryValueNumber(FunctionIR funcIR, Opcode opcode, Type type, ValueNumber leftOperand,
+  TBinaryValueNumber(IRFunction irFunc, Opcode opcode, Type type, ValueNumber leftOperand,
       ValueNumber rightOperand) {
-    binaryValueNumber(_, funcIR, opcode, type, leftOperand, rightOperand)
+    binaryValueNumber(_, irFunc, opcode, type, leftOperand, rightOperand)
   } or
-  TPointerArithmeticValueNumber(FunctionIR funcIR, Opcode opcode, Type type, int elementSize,
+  TPointerArithmeticValueNumber(IRFunction irFunc, Opcode opcode, Type type, int elementSize,
       ValueNumber leftOperand, ValueNumber rightOperand) {
-    pointerArithmeticValueNumber(_, funcIR, opcode, type, elementSize, leftOperand, rightOperand)
+    pointerArithmeticValueNumber(_, irFunc, opcode, type, elementSize, leftOperand, rightOperand)
   } or
-  TUnaryValueNumber(FunctionIR funcIR, Opcode opcode, Type type, ValueNumber operand) {
-    unaryValueNumber(_, funcIR, opcode, type, operand)
+  TUnaryValueNumber(IRFunction irFunc, Opcode opcode, Type type, ValueNumber operand) {
+    unaryValueNumber(_, irFunc, opcode, type, operand)
   } or
-  TInheritanceConversionValueNumber(FunctionIR funcIR, Opcode opcode, Class baseClass,
+  TInheritanceConversionValueNumber(IRFunction irFunc, Opcode opcode, Class baseClass,
       Class derivedClass, ValueNumber operand) {
-    inheritanceConversionValueNumber(_, funcIR, opcode, baseClass, derivedClass, operand)
+    inheritanceConversionValueNumber(_, irFunc, opcode, baseClass, derivedClass, operand)
   } or
-  TUniqueValueNumber(FunctionIR funcIR, Instruction instr) {
-    uniqueValueNumber(instr, funcIR)
+  TUniqueValueNumber(IRFunction irFunc, Instruction instr) {
+    uniqueValueNumber(instr, irFunc)
   }
 
 /**
@@ -134,39 +134,39 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof CongruentCopyInstruction
 }
 
-private predicate variableAddressValueNumber(VariableAddressInstruction instr, FunctionIR funcIR,
+private predicate variableAddressValueNumber(VariableAddressInstruction instr, IRFunction irFunc,
     IRVariable var) {
-  instr.getEnclosingFunctionIR() = funcIR and
+  instr.getEnclosingIRFunction() = irFunc and
   instr.getVariable() = var
 }
 
 private predicate initializeParameterValueNumber(InitializeParameterInstruction instr,
-    FunctionIR funcIR, IRVariable var) {
-  instr.getEnclosingFunctionIR() = funcIR and
+    IRFunction irFunc, IRVariable var) {
+  instr.getEnclosingIRFunction() = irFunc and
   instr.getVariable() = var
 }
 
-private predicate initializeThisValueNumber(InitializeThisInstruction instr, FunctionIR funcIR) {
-  instr.getEnclosingFunctionIR() = funcIR
+private predicate initializeThisValueNumber(InitializeThisInstruction instr, IRFunction irFunc) {
+  instr.getEnclosingIRFunction() = irFunc
 }
 
-private predicate constantValueNumber(ConstantInstruction instr, FunctionIR funcIR, Type type,
+private predicate constantValueNumber(ConstantInstruction instr, IRFunction irFunc, Type type,
     string value) {
-  instr.getEnclosingFunctionIR() = funcIR and
+  instr.getEnclosingIRFunction() = irFunc and
   instr.getResultType() = type and
   instr.getValue() = value
 }
 
-private predicate fieldAddressValueNumber(FieldAddressInstruction instr, FunctionIR funcIR,
+private predicate fieldAddressValueNumber(FieldAddressInstruction instr, IRFunction irFunc,
     Field field, ValueNumber objectAddress) {
-  instr.getEnclosingFunctionIR() = funcIR and
+  instr.getEnclosingIRFunction() = irFunc and
   instr.getField() = field and
   valueNumber(instr.getObjectAddress()) = objectAddress
 }
 
-private predicate binaryValueNumber(BinaryInstruction instr, FunctionIR funcIR, Opcode opcode,
+private predicate binaryValueNumber(BinaryInstruction instr, IRFunction irFunc, Opcode opcode,
     Type type, ValueNumber leftOperand, ValueNumber rightOperand) {
-  instr.getEnclosingFunctionIR() = funcIR and
+  instr.getEnclosingIRFunction() = irFunc and
   (not instr instanceof PointerArithmeticInstruction) and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
@@ -175,9 +175,9 @@ private predicate binaryValueNumber(BinaryInstruction instr, FunctionIR funcIR, 
 }
 
 private predicate pointerArithmeticValueNumber(PointerArithmeticInstruction instr,
-    FunctionIR funcIR, Opcode opcode, Type type, int elementSize, ValueNumber leftOperand,
+    IRFunction irFunc, Opcode opcode, Type type, int elementSize, ValueNumber leftOperand,
     ValueNumber rightOperand) {
-  instr.getEnclosingFunctionIR() = funcIR and
+  instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
   instr.getElementSize() = elementSize and
@@ -185,9 +185,9 @@ private predicate pointerArithmeticValueNumber(PointerArithmeticInstruction inst
   valueNumber(instr.getRight()) = rightOperand
 }
 
-private predicate unaryValueNumber(UnaryInstruction instr, FunctionIR funcIR, Opcode opcode,
+private predicate unaryValueNumber(UnaryInstruction instr, IRFunction irFunc, Opcode opcode,
     Type type, ValueNumber operand) {
-  instr.getEnclosingFunctionIR() = funcIR and
+  instr.getEnclosingIRFunction() = irFunc and
   (not instr instanceof InheritanceConversionInstruction) and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
@@ -195,8 +195,8 @@ private predicate unaryValueNumber(UnaryInstruction instr, FunctionIR funcIR, Op
 }
 
 private predicate inheritanceConversionValueNumber(InheritanceConversionInstruction instr,
-    FunctionIR funcIR, Opcode opcode, Class baseClass, Class derivedClass, ValueNumber operand) {
-  instr.getEnclosingFunctionIR() = funcIR and
+    IRFunction irFunc, Opcode opcode, Class baseClass, Class derivedClass, ValueNumber operand) {
+  instr.getEnclosingIRFunction() = irFunc and
   instr.getOpcode() = opcode and
   instr.getBaseClass() = baseClass and
   instr.getDerivedClass() = derivedClass and
@@ -207,8 +207,8 @@ private predicate inheritanceConversionValueNumber(InheritanceConversionInstruct
  * Holds if `instr` should be assigned a unique value number because this library does not know how
  * to determine if two instances of that instruction are equivalent.
  */
-private predicate uniqueValueNumber(Instruction instr, FunctionIR funcIR) {
-  instr.getEnclosingFunctionIR() = funcIR and
+private predicate uniqueValueNumber(Instruction instr, IRFunction irFunc) {
+  instr.getEnclosingIRFunction() = irFunc and
   (not instr.getResultType() instanceof VoidType) and
   not numberableInstruction(instr)
 }
@@ -218,9 +218,9 @@ private predicate uniqueValueNumber(Instruction instr, FunctionIR funcIR) {
  */
 cached ValueNumber valueNumber(Instruction instr) {
   result = nonUniqueValueNumber(instr) or
-  exists(FunctionIR funcIR |
-    uniqueValueNumber(instr, funcIR) and
-    result = TUniqueValueNumber(funcIR, instr)
+  exists(IRFunction irFunc |
+    uniqueValueNumber(instr, irFunc) and
+    result = TUniqueValueNumber(irFunc, instr)
   )
 }
 
@@ -236,47 +236,47 @@ ValueNumber valueNumberOfOperand(Operand op) {
  * value number.
  */
 private ValueNumber nonUniqueValueNumber(Instruction instr) {
-  exists(FunctionIR funcIR |
-    funcIR = instr.getEnclosingFunctionIR() and
+  exists(IRFunction irFunc |
+    irFunc = instr.getEnclosingIRFunction() and
     (
       exists(IRVariable var |
-        variableAddressValueNumber(instr, funcIR, var) and
-        result = TVariableAddressValueNumber(funcIR, var)
+        variableAddressValueNumber(instr, irFunc, var) and
+        result = TVariableAddressValueNumber(irFunc, var)
       ) or
       exists(IRVariable var |
-        initializeParameterValueNumber(instr, funcIR, var) and
-        result = TInitializeParameterValueNumber(funcIR, var)
+        initializeParameterValueNumber(instr, irFunc, var) and
+        result = TInitializeParameterValueNumber(irFunc, var)
       ) or
       (
-        initializeThisValueNumber(instr, funcIR) and
-        result = TInitializeThisValueNumber(funcIR)
+        initializeThisValueNumber(instr, irFunc) and
+        result = TInitializeThisValueNumber(irFunc)
       ) or
       exists(Type type, string value |
-        constantValueNumber(instr, funcIR, type, value) and
-        result = TConstantValueNumber(funcIR, type, value)
+        constantValueNumber(instr, irFunc, type, value) and
+        result = TConstantValueNumber(irFunc, type, value)
       ) or
       exists(Field field, ValueNumber objectAddress |
-        fieldAddressValueNumber(instr, funcIR, field, objectAddress) and
-        result = TFieldAddressValueNumber(funcIR, field, objectAddress)
+        fieldAddressValueNumber(instr, irFunc, field, objectAddress) and
+        result = TFieldAddressValueNumber(irFunc, field, objectAddress)
       ) or
       exists(Opcode opcode, Type type, ValueNumber leftOperand, ValueNumber rightOperand |
-        binaryValueNumber(instr, funcIR, opcode, type, leftOperand, rightOperand) and
-        result = TBinaryValueNumber(funcIR, opcode, type, leftOperand, rightOperand)
+        binaryValueNumber(instr, irFunc, opcode, type, leftOperand, rightOperand) and
+        result = TBinaryValueNumber(irFunc, opcode, type, leftOperand, rightOperand)
       ) or
       exists(Opcode opcode, Type type, ValueNumber operand |
-        unaryValueNumber(instr, funcIR, opcode, type, operand) and
-        result = TUnaryValueNumber(funcIR, opcode, type, operand)
+        unaryValueNumber(instr, irFunc, opcode, type, operand) and
+        result = TUnaryValueNumber(irFunc, opcode, type, operand)
       ) or
       exists(Opcode opcode, Class baseClass, Class derivedClass, ValueNumber operand |
-        inheritanceConversionValueNumber(instr, funcIR, opcode, baseClass, derivedClass,
+        inheritanceConversionValueNumber(instr, irFunc, opcode, baseClass, derivedClass,
             operand) and
-        result = TInheritanceConversionValueNumber(funcIR, opcode, baseClass, derivedClass, operand)
+        result = TInheritanceConversionValueNumber(irFunc, opcode, baseClass, derivedClass, operand)
       ) or
       exists(Opcode opcode, Type type, int elementSize, ValueNumber leftOperand,
           ValueNumber rightOperand |
-        pointerArithmeticValueNumber(instr, funcIR, opcode, type, elementSize, leftOperand,
+        pointerArithmeticValueNumber(instr, irFunc, opcode, type, elementSize, leftOperand,
             rightOperand) and
-        result = TPointerArithmeticValueNumber(funcIR, opcode, type, elementSize, leftOperand,
+        result = TPointerArithmeticValueNumber(irFunc, opcode, type, elementSize, leftOperand,
             rightOperand)
       ) or
       // The value number of a copy is just the value number of its source value.

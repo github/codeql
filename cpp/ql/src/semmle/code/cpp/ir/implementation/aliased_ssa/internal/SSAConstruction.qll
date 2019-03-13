@@ -15,8 +15,8 @@ cached private module Cached {
   }
 
   cached predicate functionHasIR(Function func) {
-    exists(OldIR::FunctionIR funcIR |
-      funcIR.getFunction() = func
+    exists(OldIR::IRFunction irFunc |
+      irFunc.getFunction() = func
     )
   }
 
@@ -99,7 +99,7 @@ cached private module Cached {
             )
           )
           else (
-            result = instruction.getEnclosingFunctionIR().getUnmodeledDefinitionInstruction()
+            result = instruction.getEnclosingIRFunction().getUnmodeledDefinitionInstruction()
           )
         ) or
         // Connect any definitions that are not being modeled in SSA to the
@@ -118,7 +118,7 @@ cached private module Cached {
     instruction = Chi(getOldInstruction(result)) and
     tag instanceof ChiPartialOperandTag
     or
-    exists(FunctionIR f |
+    exists(IRFunction f |
       tag instanceof UnmodeledUseOperandTag and
       result = f.getUnmodeledDefinitionInstruction() and
       instruction = f.getUnmodeledUseInstruction()
@@ -301,7 +301,7 @@ cached private module Cached {
     result instanceof Opcode::Unreached
   }
 
-  cached FunctionIR getInstructionEnclosingFunctionIR(Instruction instruction) {
+  cached IRFunction getInstructionEnclosingIRFunction(Instruction instruction) {
     exists(OldInstruction oldInstruction |
       instruction = WrappedInstruction(oldInstruction)
       or

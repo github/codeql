@@ -1,5 +1,5 @@
 private import internal.IRInternal
-import FunctionIR
+import IRFunction
 import IRBlock
 import IRVariable
 import Operand
@@ -15,7 +15,7 @@ module InstructionSanity {
   /**
    * Holds if the instruction `instr` should be expected to have an operand
    * with operand tag `tag`. Only holds for singleton operand tags. Tags with
-   * parameters, such as `PhiOperand` and `PositionalArgumentOperand` are handled
+   * parameters, such as `PhiInputOperand` and `PositionalArgumentOperand` are handled
    * separately in `unexpectedOperand`.
    */
   private predicate expectsOperand(Instruction instr, OperandTag tag) {
@@ -87,7 +87,7 @@ module InstructionSanity {
    */
   query predicate missingPhiOperand(PhiInstruction instr, IRBlock pred) {
     pred = instr.getBlock().getAPredecessor() and
-    not exists(PhiOperand operand |
+    not exists(PhiInputOperand operand |
       operand = instr.getAnOperand() and
       operand.getPredecessorBlock() = pred
     )
@@ -153,7 +153,7 @@ module InstructionSanity {
   query predicate operandAcrossFunctions(Operand operand, Instruction instr, Instruction defInstr) {
     operand.getUseInstruction() = instr and
     operand.getDefinitionInstruction() = defInstr and
-    instr.getEnclosingFunctionIR() != defInstr.getEnclosingFunctionIR()
+    instr.getEnclosingIRFunction() != defInstr.getEnclosingIRFunction()
   }
 
   /**
@@ -174,10 +174,10 @@ module InstructionSanity {
    *
    * This check ensures we don't have too _few_ back edges.
    */
-  query predicate containsLoopOfForwardEdges(FunctionIR f) {
+  query predicate containsLoopOfForwardEdges(IRFunction f) {
     exists(IRBlock block |
       forwardEdge+(block, block) and
-      block.getEnclosingFunctionIR() = f
+      block.getEnclosingIRFunction() = f
     )
   }
 
@@ -190,7 +190,7 @@ module InstructionSanity {
    * This check ensures we don't have too _many_ back edges.
    */
   query predicate lostReachability(IRBlock block) {
-    exists(FunctionIR f, IRBlock entry |
+    exists(IRFunction f, IRBlock entry |
       entry = f.getEntryBlock() and
       entry.getASuccessor+() = block and
       not forwardEdge+(entry, block) and
@@ -373,14 +373,14 @@ class Instruction extends Construction::TInstruction {
    * Gets the function that contains this instruction.
    */
   final Function getEnclosingFunction() {
-    result = getEnclosingFunctionIR().getFunction()
+    result = getEnclosingIRFunction().getFunction()
   }
 
   /**
-   * Gets the FunctionIR object that contains the IR for this instruction.
+   * Gets the IRFunction object that contains the IR for this instruction.
    */
-  final FunctionIR getEnclosingFunctionIR() {
-    result = Construction::getInstructionEnclosingFunctionIR(this)
+  final IRFunction getEnclosingIRFunction() {
+    result = Construction::getInstructionEnclosingIRFunction(this)
   }
 
   /**
@@ -1623,14 +1623,21 @@ class PhiInstruction extends Instruction {
   }
 
   /**
+   * Gets all of the instruction's `PhiInputOperand`s, representing the values that flow from each predecessor block.
+   */
+  final PhiInputOperand getAnInputOperand() {
+    result = this.getAnOperand()
+  }
+
+  /**
    * Gets an instruction that defines the input to one of the operands of this
    * instruction. It's possible for more than one operand to have the same
    * defining instruction, so this predicate will have the same number of
-   * results as `getAnOperand()` or fewer.
+   * results as `getAnInputOperand()` or fewer.
    */
   pragma[noinline]
-  final Instruction getAnOperandDefinitionInstruction() {
-    result = this.getAnOperand().(PhiOperand).getDefinitionInstruction()
+  final Instruction getAnInput() {
+    result = this.getAnInputOperand().getDefinitionInstruction()
   }
 }
 

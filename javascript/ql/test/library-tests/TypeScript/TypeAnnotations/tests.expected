@@ -150,6 +150,7 @@ test_IsTypeExpr
 | tst.ts:81:38:81:50 | x is typeof x | tst.ts:81:38:81:38 | x | tst.ts:81:43:81:50 | typeof x |
 test_ThisParameterTypes
 | function hasThisParam | tst.ts:116:29:116:32 | void |
+| method hasThisParam of interface InterfaceWithThisParam | tst.ts:119:22:119:43 | Interfa ... isParam |
 test_ChildIndex
 test_TypeArguments
 | tst.ts:102:13:102:29 | f1<string>("foo") | 0 | 1 | tst.ts:102:16:102:21 | string |
