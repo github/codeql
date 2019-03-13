@@ -125,13 +125,6 @@ abstract class TaintKind extends string {
      */
     predicate additionalFlowStepVar(EssaVariable fromvar, EssaVariable tovar) { none() }
 
-    /** Holds if this kind of taint can start from `expr`.
-     * In other words, is `expr` a source of this kind of taint.
-     */
-    final predicate startsFrom(ControlFlowNode expr) {
-        expr.(TaintSource).isSourceOf(this, _)
-    }
-
     /** Holds if this kind of taint "taints" `expr`.
      */
     final predicate taints(ControlFlowNode expr) {
@@ -324,6 +317,8 @@ abstract class Sanitizer extends string {
  */
 private predicate valid_sanitizer(Sanitizer sanitizer) {
     not exists(TaintTracking::Configuration c)
+    or
+    exists(DataFlow::Configuration c | c.isSanitizer(sanitizer))
     or
     exists(TaintTracking::Configuration c | c.isSanitizer(sanitizer))
 }
@@ -594,6 +589,12 @@ private newtype TTaintedNode =
             n.(TaintSource).isSourceOf(kind, context)
         )
         or
+        exists(DataFlow::Configuration config, TaintKind kind |
+            taint = TaintFlowImplementation::TTrackedTaint(kind) and
+            config.isSource(n) and context.getDepth() = 0 and
+            kind instanceof GenericFlowType
+        )
+        or
         TaintFlowImplementation::step(_, taint, context, n) and
         exists(TaintKind kind |
             kind = taint.(TaintFlowImplementation::TrackedTaint).getKind()
@@ -855,6 +856,8 @@ library module TaintFlowImplementation {
             (
                 not exists(TaintTracking::Configuration c)
                 or
+                exists(DataFlow::Configuration c | c.isExtension(fromnodenode))
+                or
                 exists(TaintTracking::Configuration c | c.isExtension(fromnodenode))
             )
             |
@@ -1060,7 +1063,13 @@ library module TaintFlowImplementation {
         or
         exists(DataFlowNode originnode |
             originnode = origin.getNode() and
-            forall(TaintTracking::Configuration c | c.isExtension(originnode)) and
+            (
+                not exists(TaintTracking::Configuration c)
+                or
+                exists(DataFlow::Configuration c | c.isExtension(originnode))
+                or
+                exists(TaintTracking::Configuration c | c.isExtension(originnode))
+            ) and
             originnode.getASuccessorVariable() = var and
             context = origin.getContext()
         )
@@ -1466,6 +1475,66 @@ class CallContext extends TCallContext {
 
 }
 
+
+/** Data flow module providing an interface compatible with
+ * the other language implementations.
+ */
+module DataFlow {
+
+    class FlowType = TaintKind;
+
+    /** Generic taint kind, source and sink classes for convenience and
+     * compatibility with other language libraries
+     */
+
+    class Node = ControlFlowNode;
+
+    class PathNode = TaintedNode;
+
+    class Extension = DataFlowExtension::DataFlowNode;
+
+    abstract class Configuration extends string {
+
+        bindingset[this]
+        Configuration() { this = this }
+
+        abstract predicate isSource(Node source);
+
+        abstract predicate isSink(Node sink);
+
+        predicate isSanitizer(Sanitizer sanitizer) { none() }
+
+        predicate isExtension(Extension extension) { none() }
+
+        predicate hasFlowPath(PathNode source, PathNode sink) {
+            this.isSource(source.getNode()) and
+            this.isSink(sink.getNode()) and
+            source.getTaintKind() instanceof GenericFlowType and
+            sink.getTaintKind() instanceof GenericFlowType
+        }
+
+        predicate hasFlow(Node source, Node sink) {
+            exists(PathNode psource, PathNode psink |
+                psource.getNode() = source and
+                psink.getNode() = sink and
+                this.isSource(source) and
+                this.isSink(sink) and
+                this.hasFlowPath(psource, psink)
+            )
+        }
+
+    }
+
+}
+
+private class GenericFlowType extends DataFlow::FlowType {
+
+    GenericFlowType() {
+        this = "Generic taint kind"  and
+        exists(DataFlow::Configuration c)
+    }
+
+}
 
 module TaintTracking {
 
