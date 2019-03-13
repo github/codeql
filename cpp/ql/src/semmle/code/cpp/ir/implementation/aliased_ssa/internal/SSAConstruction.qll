@@ -16,8 +16,8 @@ cached private module Cached {
   }
 
   cached predicate functionHasIR(Function func) {
-    exists(OldIR::IRFunction funcIR |
-      funcIR.getFunction() = func
+    exists(OldIR::IRFunction irFunc |
+      irFunc.getFunction() = func
     )
   }
 

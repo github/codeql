@@ -35,8 +35,8 @@ private newtype TMemoryLocation =
     hasOperandMemoryAccess(_, var, type, startBitOffset, endBitOffset)
   }
   or
-  TUnknownMemoryLocation(IRFunction funcIR) or
-  TUnknownVirtualVariable(IRFunction funcIR)
+  TUnknownMemoryLocation(IRFunction irFunc) or
+  TUnknownVirtualVariable(IRFunction irFunc)
 
 /**
  * Represents the memory location accessed by a memory operand or memory result. In this implementation, the location is
@@ -130,10 +130,10 @@ class VariableVirtualVariable extends VariableMemoryLocation, VirtualVariable {
  * An access to memory that is not known to be confined to a specific `IRVariable`.
  */
 class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
-  IRFunction funcIR;
+  IRFunction irFunc;
 
   UnknownMemoryLocation() {
-    this = TUnknownMemoryLocation(funcIR)
+    this = TUnknownMemoryLocation(irFunc)
   }
   
   override final string toString() {
@@ -141,7 +141,7 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
   }
   
   override final VirtualVariable getVirtualVariable() {
-    result = TUnknownVirtualVariable(funcIR)
+    result = TUnknownVirtualVariable(irFunc)
   }
 
   override final Type getType() {
@@ -157,10 +157,10 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
  * An access to all aliased memory.
  */
 class UnknownVirtualVariable extends TUnknownVirtualVariable, VirtualVariable {
-  IRFunction funcIR;
+  IRFunction irFunc;
 
   UnknownVirtualVariable() {
-    this = TUnknownVirtualVariable(funcIR)
+    this = TUnknownVirtualVariable(irFunc)
   }
   
   override final string toString() {
