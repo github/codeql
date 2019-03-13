@@ -1,22 +1,13 @@
 import python
 private import semmle.python.pointsto.Base
+private import semmle.python.types.Builtins
 
 private cached predicate is_an_object(@py_object obj) {
     /* CFG nodes for numeric literals, all of which have a @py_cobject for the value of that literal */
+    obj instanceof ControlFlowNode and
     not obj.(ControlFlowNode).getNode() instanceof ImmutableLiteral
-    and
-    not (
-        /* @py_cobjects for modules which have a corresponding Python module */
-        exists(@py_cobject mod_type | py_special_objects(mod_type, "ModuleType") and py_cobjecttypes(obj, mod_type)) and
-        exists(Module m | py_cobjectnames(obj, m.getName()))
-    )
-    and (
-        /* Exclude unmatched builtin objects in the library trap files */
-        obj instanceof ControlFlowNode or
-        py_cobjectnames(obj, _) or
-        py_cobjecttypes(obj, _) or
-        py_special_objects(obj, _)
-    )
+    or
+    obj instanceof Builtin
 }
 
 /** Instances of this class represent objects in the Python program. However, since
@@ -46,7 +37,7 @@ class Object extends @py_object {
     ClassObject getAnInferredType() {
         exists(ControlFlowNode somewhere | somewhere.refersTo(this, result, _))
         or
-        py_cobjecttypes(this, result) and not this = unknownValue()
+        this.asBuiltin().getClass() = result.asBuiltin()and not this = unknownValue()
         or
         this = unknownValue() and result = theUnknownType()
     }
@@ -54,7 +45,7 @@ class Object extends @py_object {
     /** Whether this a builtin object. A builtin object is one defined by the implementation, 
         such as the integer 4 or by a native extension, such as a NumPy array class. */
     predicate isBuiltin() {
-        py_cobjects(this)
+        exists(this.asBuiltin())
     }
 
     /** Retained for backwards compatibility. See Object.isBuiltin() */
@@ -79,14 +70,18 @@ class Object extends @py_object {
         this.hasOrigin() and this.getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
         or
         not this.hasOrigin() and filepath = ":Compiled Code" and bl = 0 and bc = 0 and el = 0 and ec = 0
-   }
+    }
+
+    /** INTERNAL -- Do not use */
+    Builtin asBuiltin() {
+        result = this
+    }
 
     string toString() {
-        this.isC() and 
         not this = undefinedVariable() and not this = unknownValue() and
-        exists(ClassObject type, string typename, string objname |
-            py_cobjecttypes(this, type) and py_cobjectnames(this, objname) and typename = type.getName() |
-            result = typename + " " + objname
+        exists(ClassObject type |
+            type.asBuiltin() = this.asBuiltin().getClass() |
+            result = type.getName() + " " + this.asBuiltin().getName()
         )
         or
         result = this.getOrigin().toString()
@@ -108,7 +103,7 @@ class Object extends @py_object {
         or
         this.getOrigin() instanceof Module and result = theModuleType()
         or
-        py_cobjecttypes(this, result)
+        result.(Object).asBuiltin() = this.asBuiltin().getClass()
     }
 
     private
@@ -240,9 +235,9 @@ private Object findByName3(string longName) {
 class NumericObject extends Object {
 
     NumericObject() {
-         py_cobjecttypes(this, theIntType()) or 
-         py_cobjecttypes(this, theLongType()) or
-         py_cobjecttypes(this, theFloatType())
+        this.asBuiltin().getClass() = theIntType().asBuiltin() or
+        this.asBuiltin().getClass() = theLongType().asBuiltin() or
+        this.asBuiltin().getClass() = theFloatType().asBuiltin()
     }
 
     /** Gets the Boolean value that this object
@@ -261,23 +256,26 @@ class NumericObject extends Object {
 
     /** Gets the value of this object if it is a constant integer and it fits in a QL int */ 
     int intValue() {
-        (py_cobjecttypes(this, theIntType()) or py_cobjecttypes(this, theLongType()))
+        (
+            this.asBuiltin().getClass() = theIntType().asBuiltin() or
+            this.asBuiltin().getClass() = theLongType().asBuiltin()
+        )
         and
-        exists(string s | py_cobjectnames(this, s) and result = s.toInt())
+        result = this.asBuiltin().getName().toInt()
     }
 
     /** Gets the value of this object if it is a constant float */ 
     float floatValue() {
-        (py_cobjecttypes(this, theFloatType()))
+        this.asBuiltin().getClass() = theFloatType().asBuiltin()
         and
-        exists(string s | py_cobjectnames(this, s) and result = s.toFloat())
+        result = this.asBuiltin().getName().toFloat()
     }
 
     /** Gets the string representation of this object, equivalent to calling repr() in Python */
     string repr() {
-        exists(string s | 
-            py_cobjectnames(this, s) |
-            if py_cobjecttypes(this, theLongType()) then
+        exists(string s |
+            s = this.asBuiltin().getName() |
+            if this.asBuiltin().getClass() = theLongType().asBuiltin() then
                 result = s + "L"
             else
                 result = s
@@ -293,8 +291,8 @@ class NumericObject extends Object {
 class StringObject extends Object {
 
     StringObject() {
-        py_cobjecttypes(this, theUnicodeType()) or
-        py_cobjecttypes(this, theBytesType())
+        this.asBuiltin().getClass() = theUnicodeType().asBuiltin() or
+        this.asBuiltin().getClass() = theBytesType().asBuiltin()
     }
 
     /** Whether this string is composed entirely of ascii encodable characters */
@@ -311,7 +309,8 @@ class StringObject extends Object {
     /** Gets the text for this string */
     cached string getText() {
         exists(string quoted_string |
-            py_cobjectnames(this, quoted_string) and
+            quoted_string = this.asBuiltin().getName()
+            and
             result = quoted_string.regexpCapture("[bu]'([\\s\\S]*)'", 1)
         )
     }
@@ -333,7 +332,7 @@ abstract class SequenceObject extends Object {
 
     /** Gets the nth item of this builtin sequence */
     Object getBuiltinElement(int n) {
-        py_citems(this, n, result)
+        result.asBuiltin() = this.asBuiltin().getItem(n)
     }
 
     /** Gets the nth source element of this sequence */
@@ -352,7 +351,7 @@ abstract class SequenceObject extends Object {
 class TupleObject extends SequenceObject {
 
     TupleObject() {
-        py_cobjecttypes(this, theTupleType())
+        this.asBuiltin().getClass() = theTupleType().asBuiltin()
         or
         this instanceof TupleNode
         or
@@ -364,7 +363,11 @@ class TupleObject extends SequenceObject {
 module TupleObject {
 
     TupleObject empty() {
-        py_cobjecttypes(result, theTupleType()) and not py_citems(result, _, _)
+        exists(Builtin empty |
+            empty = result.asBuiltin() and
+            empty.getClass() = theTupleType().asBuiltin() and 
+            not exists(empty.getItem(_))
+        )
     }
 
 }
@@ -385,7 +388,7 @@ class NonEmptyTupleObject extends TupleObject {
 class ListObject extends SequenceObject {
 
     ListObject() {
-        py_cobjecttypes(this, theListType())
+        this.asBuiltin().getClass() = theListType().asBuiltin()
         or
         this instanceof ListNode
     }
@@ -394,14 +397,12 @@ class ListObject extends SequenceObject {
 
 /** The `builtin` module */
 BuiltinModuleObject theBuiltinModuleObject() {
-    py_special_objects(result, "builtin_module_2") and major_version() = 2
-    or
-    py_special_objects(result, "builtin_module_3") and major_version() = 3
+    result.asBuiltin() = Builtin::builtinModule()
 }
 
 /** The `sys` module */
 BuiltinModuleObject theSysModuleObject() {
-    py_special_objects(result, "sys")
+    result.asBuiltin() = Builtin::special("sys")
 }
 
 /** DEPRECATED -- Use `Object::builtin(name)` instead. */
@@ -412,17 +413,17 @@ Object builtin_object(string name) {
 
 /** The built-in object None */
 Object theNoneObject() {
-    py_special_objects(result, "None")
+    result.asBuiltin() = Builtin::special("None")
 }
 
 /** The built-in object True */
 Object theTrueObject() {
-    py_special_objects(result, "True")
+    result.asBuiltin() = Builtin::special("True")
 }
 
 /** The built-in object False */
 Object theFalseObject() {
-    py_special_objects(result, "False")
+    result.asBuiltin() = Builtin::special("False")
 }
 
 /** The NameError class */
@@ -466,7 +467,7 @@ Object theEmptyTupleObject() {
 module Object {
 
     Object builtin(string name) {
-        py_cmembers_versioned(theBuiltinModuleObject(), name, result, major_version().toString())
+        result.asBuiltin() = Builtin::builtin(name)
     }
 
     /** The named quitter object (quit or exit) in the builtin namespace */
@@ -510,6 +511,6 @@ private ClassObject string_literal(Expr e) {
 }
 
 Object theUnknownType() {
-    py_special_objects(result, "_semmle_unknown_type")
+    result.asBuiltin() = Builtin::unknownType()
 }
 

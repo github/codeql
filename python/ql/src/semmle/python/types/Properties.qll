@@ -12,7 +12,7 @@ abstract class PropertyObject extends Object {
     PropertyObject() {
         property_getter(this, _)
         or
-        py_cobjecttypes(this, theBuiltinPropertyType())
+        this.asBuiltin().getClass() = theBuiltinPropertyType().asBuiltin()
     }
 
     /** Gets the name of this property */
@@ -78,16 +78,16 @@ class PythonPropertyObject extends PropertyObject {
 class BuiltinPropertyObject extends PropertyObject {
 
     BuiltinPropertyObject() {
-        py_cobjecttypes(this, theBuiltinPropertyType())
+        this.asBuiltin().getClass() = theBuiltinPropertyType().asBuiltin()
     }
 
     override string getName() {
-        py_cobjectnames(this, result)
+        result = this.asBuiltin().getName()
     }
 
     /** Gets the getter method wrapper of this property */
     override Object getGetter() {
-         py_cmembers_versioned(this, "__get__", result, major_version().toString())
+        result.asBuiltin() = this.asBuiltin().getMember("__get__")
     }
 
     override ClassObject getInferredPropertyType() {
@@ -96,12 +96,12 @@ class BuiltinPropertyObject extends PropertyObject {
 
     /** Gets the setter method wrapper of this property */
     override Object getSetter() {
-         py_cmembers_versioned(this, "__set__", result, major_version().toString())
+        result.asBuiltin() = this.asBuiltin().getMember("__set__")
     }
 
     /** Gets the deleter method wrapper of this property */
     override Object getDeleter() {
-         py_cmembers_versioned(this, "__delete__", result, major_version().toString())
+         result.asBuiltin() = this.asBuiltin().getMember("__delete__")
     }
 
 }

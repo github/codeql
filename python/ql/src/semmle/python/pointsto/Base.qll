@@ -9,6 +9,7 @@
  */
 import python
 import semmle.python.dataflow.SsaDefinitions
+private import semmle.python.types.Builtins
 
 module BasePointsTo {
     /** INTERNAL -- Use n.refersTo(value, _, origin) instead */
@@ -49,7 +50,7 @@ ClassObject simple_types(Object obj) {
     or
     obj.getOrigin() instanceof Module and result = theModuleType()
     or
-    result = builtin_object_type(obj)
+    result.asBuiltin() = obj.asBuiltin().getClass()
 }
 
 private ClassObject comprehension(Expr e) {
@@ -124,34 +125,6 @@ predicate baseless_is_new_style(ClassObject cls) {
  * analysis.
  */
 
-/** Gets the base class of built-in class `cls` */
-pragma [noinline]
-ClassObject builtin_base_type(ClassObject cls) {
-    /* The extractor uses the special name ".super." to indicate the super class of a builtin class */
-    py_cmembers_versioned(cls, ".super.", result, _)
-}
-
-/** Gets the `name`d attribute of built-in class `cls` */
-pragma [noinline]
-Object builtin_class_attribute(ClassObject cls, string name) {
-    not name = ".super." and
-    py_cmembers_versioned(cls, name, result, _)
-}
-
-/** Holds if the `name`d attribute of built-in module `m` is `value` of `cls` */
-pragma [noinline]
-predicate builtin_module_attribute(ModuleObject m, string name, Object value, ClassObject cls) {
-    py_cmembers_versioned(m, name, value, _) and cls = builtin_object_type(value)
-}
-
-/** Gets the (built-in) class of the built-in object `obj` */
-pragma [noinline]
-ClassObject builtin_object_type(Object obj) {
-    py_cobjecttypes(obj, result) and not obj = unknownValue()
-    or
-    obj = unknownValue() and result = theUnknownType()
-}
-
 /** Holds if this class (not on a super-class) declares name */
 pragma [noinline]
 predicate class_declares_attribute(ClassObject cls, string name) {
@@ -160,11 +133,11 @@ predicate class_declares_attribute(ClassObject cls, string name) {
         class_defines_name(defn, name)
     )
     or
-    exists(Object o |
-        o = builtin_class_attribute(cls, name) and 
-        not exists(ClassObject sup |
-            sup = builtin_base_type(cls) and
-            o = builtin_class_attribute(sup, name)
+    exists(Builtin o |
+        o = cls.asBuiltin().getMember(name) and 
+        not exists(Builtin sup |
+            sup = cls.asBuiltin().getBaseClass() and
+            o = sup.getMember(name)
         )
     )
 }
@@ -556,11 +529,11 @@ Object undefinedVariable() {
 
 /** Gets the pseudo-object representing an unknown value */
 Object unknownValue() {
-    py_special_objects(result, "_1")
+    result.asBuiltin() = Builtin::unknown()
 }
 
 BuiltinCallable theTypeNewMethod() {
-    py_cmembers_versioned(theTypeType(), "__new__", result, major_version().toString())
+    result.asBuiltin() = theTypeType().asBuiltin().getMember("__new__")
 }
 
 /** Gets the `value, cls, origin` that `f` would refer to if it has not been assigned some other value */
@@ -576,7 +549,7 @@ predicate potential_builtin_points_to(NameNode f, Object value, ClassObject cls,
 
 pragma [noinline]
 predicate builtin_name_points_to(string name, Object value, ClassObject cls) {
-    value = Object::builtin(name) and py_cobjecttypes(value, cls)
+    value = Object::builtin(name) and cls.asBuiltin() = value.asBuiltin().getClass()
 }
 
 module BaseFlow {
