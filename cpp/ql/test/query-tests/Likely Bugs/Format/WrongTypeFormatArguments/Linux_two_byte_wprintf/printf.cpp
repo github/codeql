@@ -30,7 +30,7 @@ int sprintf(char *dest, char *format, ...);
 void test1() {
 	WCHAR string[20];
 
-	swprintf(string, u"test %s", u"test"); // GOOD
+	swprintf(string, u"test %s", u"test"); // BAD: `char16_t` string parameter read as `char` string
 }
 
 void test2() {

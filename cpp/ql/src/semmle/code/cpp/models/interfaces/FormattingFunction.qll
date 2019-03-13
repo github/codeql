@@ -22,7 +22,7 @@ private Type stripTopLevelSpecifiersOnly(Type t) {
  */
 Type getAFormatterWideType() {
   exists(FormattingFunction ff |
-    result = stripTopLevelSpecifiersOnly(ff.getDefaultCharType()) and
+    result = stripTopLevelSpecifiersOnly(ff.getFormatCharType()) and
     result.getSize() != 1
   )
 }
@@ -45,6 +45,14 @@ private Type getAFormatterWideTypeOrDefault() {
 abstract class FormattingFunction extends Function {
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
+
+  /**
+   * Holds if this `FormattingFunction` is in a context that supports
+   * Microsoft rules and extensions.
+   */
+  predicate isMicrosoft() {
+    getFile().compiledAsMicrosoft()
+  }
 
   /**
    * Holds if the default meaning of `%s` is a `wchar_t *`, rather than
@@ -71,12 +79,13 @@ abstract class FormattingFunction extends Function {
    * `char` or `wchar_t`.
    */
   Type getDefaultCharType() {
-    result = 
-      stripTopLevelSpecifiersOnly(
-        stripTopLevelSpecifiersOnly(
-          getParameter(getFormatParameterIndex()).getType().getUnderlyingType()
-        ).(PointerType).getBaseType()
-      )
+    (
+      isMicrosoft() and
+      result = getFormatCharType()
+    ) or (
+      not isMicrosoft() and
+      result instanceof PlainCharType
+    )
   }
 
   /**
