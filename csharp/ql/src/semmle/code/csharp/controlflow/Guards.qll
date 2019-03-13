@@ -657,7 +657,7 @@ module Internal {
         not mc.isConditional()
       )
     or
-    e.(DefaultValueExpr).getType() instanceof ValueType
+    e.(DefaultValueExpr).getType().isValueType()
   }
 
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */

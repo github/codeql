@@ -59,7 +59,7 @@ class AlwaysNullExpr extends Expr {
     or
     this.(Cast).getExpr() instanceof AlwaysNullExpr
     or
-    this instanceof DefaultValueExpr and this.getType() instanceof RefType
+    this instanceof DefaultValueExpr and this.getType().isRefType()
     or
     exists(Callable target |
       this.(Call).getTarget() = target and
@@ -83,7 +83,8 @@ class NonNullExpr extends Expr {
     exists(Callable target |
       this.(Call).getTarget() = target and
       not target.(Virtualizable).isVirtual() and
-      alwaysNotNullCallable(target)
+      alwaysNotNullCallable(target) and
+      not this.(QualifiableExpr).isConditional()
     )
   }
 }

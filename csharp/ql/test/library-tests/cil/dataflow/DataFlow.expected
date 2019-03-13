@@ -5,3 +5,6 @@
 | dataflow.cs:20:45:20:53 | "tainted" | dataflow.cs:20:18:20:54 | call to method GetFullPath |
 | dataflow.cs:27:44:27:46 | 1 | dataflow.cs:27:18:27:52 | call to method IEEERemainder |
 | dataflow.cs:27:49:27:51 | 2 | dataflow.cs:27:18:27:52 | call to method IEEERemainder |
+| dataflow.cs:64:30:64:33 | null | dataflow.cs:61:23:61:50 | ... ? ... : ... |
+| dataflow.cs:64:30:64:33 | null | dataflow.cs:70:20:70:33 | call to method IndirectNull |
+| dataflow.cs:71:23:71:26 | null | dataflow.cs:61:23:61:50 | ... ? ... : ... |

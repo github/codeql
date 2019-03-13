@@ -55,5 +55,20 @@ class Test
         var nonNull = default(int);
         var nullFromCil = this.GetType().DeclaringMethod;
         var nonNullFromCil = true.ToString();
+        var null2 = NullFunction() ?? IndirectNull();
+
+        // The following are not always null:
+        var notNull = cond ? NullFunction() : this;
+    }
+
+    object IndirectNull() => null;
+
+    bool cond;
+
+    object NullFunction()
+    {
+        object x = IndirectNull();
+        if (cond) x = null;
+        return x;
     }
 }
