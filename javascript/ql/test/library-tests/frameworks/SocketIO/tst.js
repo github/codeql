@@ -23,13 +23,13 @@ io.origins();
 
 // SocketIO::NamespaceNodes:
 var ns = io.sockets;
-io.of("/");
+var ns2 = io.of("/foo/bar");
 ns.use(auth);
 ns.to(room);
 ns.in(room);
 ns.emit('event', 'an event');
 ns.send('a message');
-ns.write('a message');
+ns2.write('a message');
 ns.clients(cb);
 ns.compress(true);
 ns.binary(false);
