@@ -94,13 +94,13 @@ abstract class FormattingFunction extends Function {
    * which is correct for a particular function.
    */
   Type getNonDefaultCharType() {
-  	(
-  	  getDefaultCharType().getSize() = 1 and
-  	  result = getAFormatterWideTypeOrDefault()
-  	) or (
-  	  getDefaultCharType().getSize() > 1 and
-  	  result instanceof PlainCharType
-  	)
+    (
+      getDefaultCharType().getSize() = 1 and
+      result = getWideCharType()
+    ) or (
+      not getDefaultCharType().getSize() = 1 and
+      result instanceof PlainCharType
+    )
   }
 
   /**
@@ -110,10 +110,12 @@ abstract class FormattingFunction extends Function {
    */
   Type getWideCharType() {
     (
-      result = getDefaultCharType() or
-      result = getNonDefaultCharType()
-    ) and
-    result.getSize() > 1
+      result = getFormatCharType() and
+      result.getSize() > 1
+    ) or (
+      not getFormatCharType().getSize() > 1 and
+      result = getAFormatterWideTypeOrDefault() // may have more than one result
+    )
   }
 
   /**
