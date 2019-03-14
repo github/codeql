@@ -4366,3 +4366,333 @@ ir.cpp:
 #  987|     v0_21(void)             = ReturnValue              : r0_20, mu0_2
 #  987|     v0_22(void)             = UnmodeledUse             : mu*
 #  987|     v0_23(void)             = ExitFunction             : 
+
+# 1011| void EmptyStructInit()
+# 1011|   Block 0
+# 1011|     v0_0(void)               = EnterFunction       : 
+# 1011|     mu0_1(unknown)           = AliasedDefinition   : 
+# 1011|     mu0_2(unknown)           = UnmodeledDefinition : 
+# 1012|     r0_3(glval<EmptyStruct>) = VariableAddress[s]  : 
+# 1012|     mu0_4(EmptyStruct)       = Uninitialized[s]    : r0_3
+# 1013|     v0_5(void)               = NoOp                : 
+# 1011|     v0_6(void)               = ReturnVoid          : 
+# 1011|     v0_7(void)               = UnmodeledUse        : mu*
+# 1011|     v0_8(void)               = ExitFunction        : 
+
+# 1015| void (lambda [] type at line 1015, col. 12)::(constructor)((lambda [] type at line 1015, col. 12)&&)
+# 1015|   Block 0
+# 1015|     v0_0(void)                                           = EnterFunction            : 
+# 1015|     mu0_1(unknown)                                       = AliasedDefinition        : 
+# 1015|     mu0_2(unknown)                                       = UnmodeledDefinition      : 
+# 1015|     r0_3(glval<decltype([...](...){...})>)               = InitializeThis           : 
+#-----|     r0_4(glval<lambda [] type at line 1015, col. 12 &&>) = VariableAddress[p#0]     : 
+#-----|     mu0_5(lambda [] type at line 1015, col. 12 &&)       = InitializeParameter[p#0] : r0_4
+# 1015|     v0_6(void)                                           = NoOp                     : 
+# 1015|     v0_7(void)                                           = ReturnVoid               : 
+# 1015|     v0_8(void)                                           = UnmodeledUse             : mu*
+# 1015|     v0_9(void)                                           = ExitFunction             : 
+
+# 1015| void (lambda [] type at line 1015, col. 12)::operator()() const
+# 1015|   Block 0
+# 1015|     v0_0(void)                             = EnterFunction       : 
+# 1015|     mu0_1(unknown)                         = AliasedDefinition   : 
+# 1015|     mu0_2(unknown)                         = UnmodeledDefinition : 
+# 1015|     r0_3(glval<decltype([...](...){...})>) = InitializeThis      : 
+# 1015|     v0_4(void)                             = NoOp                : 
+# 1015|     v0_5(void)                             = ReturnVoid          : 
+# 1015|     v0_6(void)                             = UnmodeledUse        : mu*
+# 1015|     v0_7(void)                             = ExitFunction        : 
+
+# 1015| void(* (lambda [] type at line 1015, col. 12)::operator void (*)()() const)()
+# 1015|   Block 0
+# 1015|     v0_0(void)                             = EnterFunction            : 
+# 1015|     mu0_1(unknown)                         = AliasedDefinition        : 
+# 1015|     mu0_2(unknown)                         = UnmodeledDefinition      : 
+# 1015|     r0_3(glval<decltype([...](...){...})>) = InitializeThis           : 
+# 1015|     r0_4(glval<..(*)(..)>)                 = VariableAddress[#return] : 
+# 1015|     r0_5(glval<..(*)(..)>)                 = FunctionAddress[_FUN]    : 
+# 1015|     mu0_6(..(*)(..))                       = Store                    : r0_4, r0_5
+# 1015|     r0_7(glval<..(*)(..)>)                 = VariableAddress[#return] : 
+# 1015|     v0_8(void)                             = ReturnValue              : r0_7, mu0_2
+# 1015|     v0_9(void)                             = UnmodeledUse             : mu*
+# 1015|     v0_10(void)                            = ExitFunction             : 
+
+# 1017| void Lambda(int, String const&)
+# 1017|   Block 0
+# 1017|     v0_0(void)                              = EnterFunction                        : 
+# 1017|     mu0_1(unknown)                          = AliasedDefinition                    : 
+# 1017|     mu0_2(unknown)                          = UnmodeledDefinition                  : 
+# 1017|     r0_3(glval<int>)                        = VariableAddress[x]                   : 
+# 1017|     mu0_4(int)                              = InitializeParameter[x]               : r0_3
+# 1017|     r0_5(glval<String &>)                   = VariableAddress[s]                   : 
+# 1017|     mu0_6(String &)                         = InitializeParameter[s]               : r0_5
+# 1018|     r0_7(glval<decltype([...](...){...})>)  = VariableAddress[lambda_empty]        : 
+# 1018|     r0_8(glval<decltype([...](...){...})>)  = VariableAddress[#temp1018:23]        : 
+# 1018|     mu0_9(decltype([...](...){...}))        = Uninitialized[#temp1018:23]          : r0_8
+# 1018|     r0_10(decltype([...](...){...}))        = Load                                 : r0_8, mu0_2
+# 1018|     mu0_11(decltype([...](...){...}))       = Store                                : r0_7, r0_10
+# 1019|     r0_12(char)                             = Constant[65]                         : 
+# 1020|     r0_13(glval<decltype([...](...){...})>) = VariableAddress[lambda_ref]          : 
+# 1020|     r0_14(glval<decltype([...](...){...})>) = VariableAddress[#temp1020:21]        : 
+# 1020|     mu0_15(decltype([...](...){...}))       = Uninitialized[#temp1020:21]          : r0_14
+# 1020|     r0_16(glval<String &>)                  = FieldAddress[s]                      : r0_14
+#-----|     r0_17(glval<String &>)                  = VariableAddress[s]                   : 
+#-----|     r0_18(String &)                         = Load                                 : r0_17, mu0_2
+# 1020|     mu0_19(String &)                        = Store                                : r0_16, r0_18
+# 1020|     r0_20(glval<int &>)                     = FieldAddress[x]                      : r0_14
+#-----|     r0_21(glval<int>)                       = VariableAddress[x]                   : 
+#-----|     mu0_22(int &)                           = Store                                : r0_20, r0_21
+# 1020|     r0_23(decltype([...](...){...}))        = Load                                 : r0_14, mu0_2
+# 1020|     mu0_24(decltype([...](...){...}))       = Store                                : r0_13, r0_23
+# 1021|     r0_25(glval<decltype([...](...){...})>) = VariableAddress[lambda_ref]          : 
+# 1021|     r0_26(glval<decltype([...](...){...})>) = Convert                              : r0_25
+# 1021|     r0_27(glval<unknown>)                   = FunctionAddress[operator()]          : 
+# 1021|     r0_28(float)                            = Constant[1.0]                        : 
+# 1021|     r0_29(char)                             = Call                                 : r0_27, this:r0_26, r0_28
+# 1021|     mu0_30(unknown)                         = ^CallSideEffect                      : mu0_2
+# 1022|     r0_31(glval<decltype([...](...){...})>) = VariableAddress[lambda_val]          : 
+# 1022|     r0_32(glval<unknown>)                   = FunctionAddress[(constructor)]       : 
+# 1022|     r0_33(glval<decltype([...](...){...})>) = VariableAddress[#temp1022:21]        : 
+# 1022|     mu0_34(decltype([...](...){...}))       = Uninitialized[#temp1022:21]          : r0_33
+# 1022|     r0_35(glval<String>)                    = FieldAddress[s]                      : r0_33
+#-----|     r0_36(glval<unknown>)                   = FunctionAddress[String]              : 
+#-----|     v0_37(void)                             = Call                                 : r0_36, this:r0_35
+#-----|     mu0_38(unknown)                         = ^CallSideEffect                      : mu0_2
+# 1022|     r0_39(glval<int>)                       = FieldAddress[x]                      : r0_33
+#-----|     r0_40(glval<int>)                       = VariableAddress[x]                   : 
+#-----|     r0_41(int)                              = Load                                 : r0_40, mu0_2
+#-----|     mu0_42(int)                             = Store                                : r0_39, r0_41
+# 1022|     r0_43(decltype([...](...){...}))        = Load                                 : r0_33, mu0_2
+# 1022|     v0_44(void)                             = Call                                 : r0_32, this:r0_31, r0_43
+# 1022|     mu0_45(unknown)                         = ^CallSideEffect                      : mu0_2
+# 1023|     r0_46(glval<decltype([...](...){...})>) = VariableAddress[lambda_val]          : 
+# 1023|     r0_47(glval<decltype([...](...){...})>) = Convert                              : r0_46
+# 1023|     r0_48(glval<unknown>)                   = FunctionAddress[operator()]          : 
+# 1023|     r0_49(float)                            = Constant[2.0]                        : 
+# 1023|     r0_50(char)                             = Call                                 : r0_48, this:r0_47, r0_49
+# 1023|     mu0_51(unknown)                         = ^CallSideEffect                      : mu0_2
+# 1024|     r0_52(glval<decltype([...](...){...})>) = VariableAddress[lambda_ref_explicit] : 
+# 1024|     r0_53(glval<decltype([...](...){...})>) = VariableAddress[#temp1024:30]        : 
+# 1024|     mu0_54(decltype([...](...){...}))       = Uninitialized[#temp1024:30]          : r0_53
+# 1024|     r0_55(glval<String &>)                  = FieldAddress[s]                      : r0_53
+# 1024|     r0_56(glval<String &>)                  = VariableAddress[s]                   : 
+# 1024|     r0_57(String &)                         = Load                                 : r0_56, mu0_2
+# 1024|     mu0_58(String &)                        = Store                                : r0_55, r0_57
+# 1024|     r0_59(decltype([...](...){...}))        = Load                                 : r0_53, mu0_2
+# 1024|     mu0_60(decltype([...](...){...}))       = Store                                : r0_52, r0_59
+# 1025|     r0_61(glval<decltype([...](...){...})>) = VariableAddress[lambda_ref_explicit] : 
+# 1025|     r0_62(glval<decltype([...](...){...})>) = Convert                              : r0_61
+# 1025|     r0_63(glval<unknown>)                   = FunctionAddress[operator()]          : 
+# 1025|     r0_64(float)                            = Constant[3.0]                        : 
+# 1025|     r0_65(char)                             = Call                                 : r0_63, this:r0_62, r0_64
+# 1025|     mu0_66(unknown)                         = ^CallSideEffect                      : mu0_2
+# 1026|     r0_67(glval<decltype([...](...){...})>) = VariableAddress[lambda_val_explicit] : 
+# 1026|     r0_68(glval<unknown>)                   = FunctionAddress[(constructor)]       : 
+# 1026|     r0_69(glval<decltype([...](...){...})>) = VariableAddress[#temp1026:30]        : 
+# 1026|     mu0_70(decltype([...](...){...}))       = Uninitialized[#temp1026:30]          : r0_69
+# 1026|     r0_71(glval<String>)                    = FieldAddress[s]                      : r0_69
+#-----|     r0_72(glval<unknown>)                   = FunctionAddress[String]              : 
+#-----|     v0_73(void)                             = Call                                 : r0_72, this:r0_71
+#-----|     mu0_74(unknown)                         = ^CallSideEffect                      : mu0_2
+# 1026|     r0_75(decltype([...](...){...}))        = Load                                 : r0_69, mu0_2
+# 1026|     v0_76(void)                             = Call                                 : r0_68, this:r0_67, r0_75
+# 1026|     mu0_77(unknown)                         = ^CallSideEffect                      : mu0_2
+# 1027|     r0_78(glval<decltype([...](...){...})>) = VariableAddress[lambda_val_explicit] : 
+# 1027|     r0_79(glval<decltype([...](...){...})>) = Convert                              : r0_78
+# 1027|     r0_80(glval<unknown>)                   = FunctionAddress[operator()]          : 
+# 1027|     r0_81(float)                            = Constant[4.0]                        : 
+# 1027|     r0_82(char)                             = Call                                 : r0_80, this:r0_79, r0_81
+# 1027|     mu0_83(unknown)                         = ^CallSideEffect                      : mu0_2
+# 1028|     v0_84(void)                             = NoOp                                 : 
+# 1017|     v0_85(void)                             = ReturnVoid                           : 
+# 1017|     v0_86(void)                             = UnmodeledUse                         : mu*
+# 1017|     v0_87(void)                             = ExitFunction                         : 
+
+# 1018| void (void Lambda(int, String const&))::(lambda [] type at line 1018, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1018, col. 23)&&)
+# 1018|   Block 0
+# 1018|     v0_0(void)                                           = EnterFunction            : 
+# 1018|     mu0_1(unknown)                                       = AliasedDefinition        : 
+# 1018|     mu0_2(unknown)                                       = UnmodeledDefinition      : 
+# 1018|     r0_3(glval<decltype([...](...){...})>)               = InitializeThis           : 
+#-----|     r0_4(glval<lambda [] type at line 1018, col. 23 &&>) = VariableAddress[p#0]     : 
+#-----|     mu0_5(lambda [] type at line 1018, col. 23 &&)       = InitializeParameter[p#0] : r0_4
+# 1018|     v0_6(void)                                           = NoOp                     : 
+# 1018|     v0_7(void)                                           = ReturnVoid               : 
+# 1018|     v0_8(void)                                           = UnmodeledUse             : mu*
+# 1018|     v0_9(void)                                           = ExitFunction             : 
+
+# 1018| char (void Lambda(int, String const&))::(lambda [] type at line 1018, col. 23)::operator()(float) const
+# 1018|   Block 0
+# 1018|     v0_0(void)                             = EnterFunction            : 
+# 1018|     mu0_1(unknown)                         = AliasedDefinition        : 
+# 1018|     mu0_2(unknown)                         = UnmodeledDefinition      : 
+# 1018|     r0_3(glval<decltype([...](...){...})>) = InitializeThis           : 
+# 1018|     r0_4(glval<float>)                     = VariableAddress[f]       : 
+# 1018|     mu0_5(float)                           = InitializeParameter[f]   : r0_4
+# 1018|     r0_6(glval<char>)                      = VariableAddress[#return] : 
+# 1018|     r0_7(char)                             = Constant[65]             : 
+# 1018|     mu0_8(char)                            = Store                    : r0_6, r0_7
+# 1018|     r0_9(glval<char>)                      = VariableAddress[#return] : 
+# 1018|     v0_10(void)                            = ReturnValue              : r0_9, mu0_2
+# 1018|     v0_11(void)                            = UnmodeledUse             : mu*
+# 1018|     v0_12(void)                            = ExitFunction             : 
+
+# 1018| char(* (void Lambda(int, String const&))::(lambda [] type at line 1018, col. 23)::operator char (*)(float)() const)(float)
+# 1018|   Block 0
+# 1018|     v0_0(void)                             = EnterFunction            : 
+# 1018|     mu0_1(unknown)                         = AliasedDefinition        : 
+# 1018|     mu0_2(unknown)                         = UnmodeledDefinition      : 
+# 1018|     r0_3(glval<decltype([...](...){...})>) = InitializeThis           : 
+# 1018|     r0_4(glval<..(*)(..)>)                 = VariableAddress[#return] : 
+# 1018|     r0_5(glval<..(*)(..)>)                 = FunctionAddress[_FUN]    : 
+# 1018|     mu0_6(..(*)(..))                       = Store                    : r0_4, r0_5
+# 1018|     r0_7(glval<..(*)(..)>)                 = VariableAddress[#return] : 
+# 1018|     v0_8(void)                             = ReturnValue              : r0_7, mu0_2
+# 1018|     v0_9(void)                             = UnmodeledUse             : mu*
+# 1018|     v0_10(void)                            = ExitFunction             : 
+
+# 1020| char (void Lambda(int, String const&))::(lambda [] type at line 1020, col. 21)::operator()(float) const
+# 1020|   Block 0
+# 1020|     v0_0(void)                                    = EnterFunction            : 
+# 1020|     mu0_1(unknown)                                = AliasedDefinition        : 
+# 1020|     mu0_2(unknown)                                = UnmodeledDefinition      : 
+# 1020|     r0_3(glval<decltype([...](...){...})>)        = InitializeThis           : 
+# 1020|     r0_4(glval<float>)                            = VariableAddress[f]       : 
+# 1020|     mu0_5(float)                                  = InitializeParameter[f]   : r0_4
+# 1020|     r0_6(glval<char>)                             = VariableAddress[#return] : 
+#-----|     r0_7(lambda [] type at line 1020, col. 21 *)  = CopyValue                : r0_3
+#-----|     r0_8(glval<String &>)                         = FieldAddress[s]          : r0_7
+#-----|     r0_9(String &)                                = Load                     : r0_8, mu0_2
+# 1020|     r0_10(glval<unknown>)                         = FunctionAddress[c_str]   : 
+# 1020|     r0_11(char *)                                 = Call                     : r0_10, this:r0_9
+# 1020|     mu0_12(unknown)                               = ^CallSideEffect          : mu0_2
+#-----|     r0_13(lambda [] type at line 1020, col. 21 *) = CopyValue                : r0_3
+#-----|     r0_14(glval<int &>)                           = FieldAddress[x]          : r0_13
+#-----|     r0_15(int &)                                  = Load                     : r0_14, mu0_2
+# 1020|     r0_16(int)                                    = Load                     : r0_15, mu0_2
+# 1020|     r0_17(char *)                                 = PointerAdd[1]            : r0_11, r0_16
+# 1020|     r0_18(char)                                   = Load                     : r0_17, mu0_2
+# 1020|     mu0_19(char)                                  = Store                    : r0_6, r0_18
+# 1020|     r0_20(glval<char>)                            = VariableAddress[#return] : 
+# 1020|     v0_21(void)                                   = ReturnValue              : r0_20, mu0_2
+# 1020|     v0_22(void)                                   = UnmodeledUse             : mu*
+# 1020|     v0_23(void)                                   = ExitFunction             : 
+
+# 1022| void (void Lambda(int, String const&))::(lambda [] type at line 1022, col. 21)::~<unnamed>()
+# 1022|   Block 0
+# 1022|     v0_0(void)                             = EnterFunction            : 
+# 1022|     mu0_1(unknown)                         = AliasedDefinition        : 
+# 1022|     mu0_2(unknown)                         = UnmodeledDefinition      : 
+# 1022|     r0_3(glval<decltype([...](...){...})>) = InitializeThis           : 
+#-----|     v0_4(void)                             = NoOp                     : 
+# 1022|     r0_5(glval<String>)                    = FieldAddress[s]          : r0_3
+# 1022|     r0_6(glval<unknown>)                   = FunctionAddress[~String] : 
+# 1022|     v0_7(void)                             = Call                     : r0_6, this:r0_5
+# 1022|     mu0_8(unknown)                         = ^CallSideEffect          : mu0_2
+# 1022|     v0_9(void)                             = ReturnVoid               : 
+# 1022|     v0_10(void)                            = UnmodeledUse             : mu*
+# 1022|     v0_11(void)                            = ExitFunction             : 
+
+# 1022| char (void Lambda(int, String const&))::(lambda [] type at line 1022, col. 21)::operator()(float) const
+# 1022|   Block 0
+# 1022|     v0_0(void)                                    = EnterFunction            : 
+# 1022|     mu0_1(unknown)                                = AliasedDefinition        : 
+# 1022|     mu0_2(unknown)                                = UnmodeledDefinition      : 
+# 1022|     r0_3(glval<decltype([...](...){...})>)        = InitializeThis           : 
+# 1022|     r0_4(glval<float>)                            = VariableAddress[f]       : 
+# 1022|     mu0_5(float)                                  = InitializeParameter[f]   : r0_4
+# 1022|     r0_6(glval<char>)                             = VariableAddress[#return] : 
+#-----|     r0_7(lambda [] type at line 1022, col. 21 *)  = CopyValue                : r0_3
+#-----|     r0_8(glval<String>)                           = FieldAddress[s]          : r0_7
+# 1022|     r0_9(glval<unknown>)                          = FunctionAddress[c_str]   : 
+# 1022|     r0_10(char *)                                 = Call                     : r0_9, this:r0_8
+# 1022|     mu0_11(unknown)                               = ^CallSideEffect          : mu0_2
+#-----|     r0_12(lambda [] type at line 1022, col. 21 *) = CopyValue                : r0_3
+#-----|     r0_13(glval<int>)                             = FieldAddress[x]          : r0_12
+#-----|     r0_14(int)                                    = Load                     : r0_13, mu0_2
+# 1022|     r0_15(char *)                                 = PointerAdd[1]            : r0_10, r0_14
+# 1022|     r0_16(char)                                   = Load                     : r0_15, mu0_2
+# 1022|     mu0_17(char)                                  = Store                    : r0_6, r0_16
+# 1022|     r0_18(glval<char>)                            = VariableAddress[#return] : 
+# 1022|     v0_19(void)                                   = ReturnValue              : r0_18, mu0_2
+# 1022|     v0_20(void)                                   = UnmodeledUse             : mu*
+# 1022|     v0_21(void)                                   = ExitFunction             : 
+
+# 1024| char (void Lambda(int, String const&))::(lambda [] type at line 1024, col. 30)::operator()(float) const
+# 1024|   Block 0
+# 1024|     v0_0(void)                                   = EnterFunction            : 
+# 1024|     mu0_1(unknown)                               = AliasedDefinition        : 
+# 1024|     mu0_2(unknown)                               = UnmodeledDefinition      : 
+# 1024|     r0_3(glval<decltype([...](...){...})>)       = InitializeThis           : 
+# 1024|     r0_4(glval<float>)                           = VariableAddress[f]       : 
+# 1024|     mu0_5(float)                                 = InitializeParameter[f]   : r0_4
+# 1024|     r0_6(glval<char>)                            = VariableAddress[#return] : 
+#-----|     r0_7(lambda [] type at line 1024, col. 30 *) = CopyValue                : r0_3
+#-----|     r0_8(glval<String &>)                        = FieldAddress[s]          : r0_7
+#-----|     r0_9(String &)                               = Load                     : r0_8, mu0_2
+# 1024|     r0_10(glval<unknown>)                        = FunctionAddress[c_str]   : 
+# 1024|     r0_11(char *)                                = Call                     : r0_10, this:r0_9
+# 1024|     mu0_12(unknown)                              = ^CallSideEffect          : mu0_2
+# 1024|     r0_13(int)                                   = Constant[0]              : 
+# 1024|     r0_14(char *)                                = PointerAdd[1]            : r0_11, r0_13
+# 1024|     r0_15(char)                                  = Load                     : r0_14, mu0_2
+# 1024|     mu0_16(char)                                 = Store                    : r0_6, r0_15
+# 1024|     r0_17(glval<char>)                           = VariableAddress[#return] : 
+# 1024|     v0_18(void)                                  = ReturnValue              : r0_17, mu0_2
+# 1024|     v0_19(void)                                  = UnmodeledUse             : mu*
+# 1024|     v0_20(void)                                  = ExitFunction             : 
+
+# 1026| void (void Lambda(int, String const&))::(lambda [] type at line 1026, col. 30)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1026, col. 30)&&)
+# 1026|   Block 0
+# 1026|     v0_0(void)                                           = EnterFunction            : 
+# 1026|     mu0_1(unknown)                                       = AliasedDefinition        : 
+# 1026|     mu0_2(unknown)                                       = UnmodeledDefinition      : 
+# 1026|     r0_3(glval<decltype([...](...){...})>)               = InitializeThis           : 
+#-----|     r0_4(glval<lambda [] type at line 1026, col. 30 &&>) = VariableAddress[p#0]     : 
+#-----|     mu0_5(lambda [] type at line 1026, col. 30 &&)       = InitializeParameter[p#0] : r0_4
+# 1026|     r0_6(glval<String>)                                  = FieldAddress[s]          : r0_3
+# 1026|     r0_7(glval<unknown>)                                 = FunctionAddress[String]  : 
+# 1026|     v0_8(void)                                           = Call                     : r0_7, this:r0_6
+# 1026|     mu0_9(unknown)                                       = ^CallSideEffect          : mu0_2
+# 1026|     v0_10(void)                                          = NoOp                     : 
+# 1026|     v0_11(void)                                          = ReturnVoid               : 
+# 1026|     v0_12(void)                                          = UnmodeledUse             : mu*
+# 1026|     v0_13(void)                                          = ExitFunction             : 
+
+# 1026| void (void Lambda(int, String const&))::(lambda [] type at line 1026, col. 30)::~<unnamed>()
+# 1026|   Block 0
+# 1026|     v0_0(void)                             = EnterFunction            : 
+# 1026|     mu0_1(unknown)                         = AliasedDefinition        : 
+# 1026|     mu0_2(unknown)                         = UnmodeledDefinition      : 
+# 1026|     r0_3(glval<decltype([...](...){...})>) = InitializeThis           : 
+#-----|     v0_4(void)                             = NoOp                     : 
+# 1026|     r0_5(glval<String>)                    = FieldAddress[s]          : r0_3
+# 1026|     r0_6(glval<unknown>)                   = FunctionAddress[~String] : 
+# 1026|     v0_7(void)                             = Call                     : r0_6, this:r0_5
+# 1026|     mu0_8(unknown)                         = ^CallSideEffect          : mu0_2
+# 1026|     v0_9(void)                             = ReturnVoid               : 
+# 1026|     v0_10(void)                            = UnmodeledUse             : mu*
+# 1026|     v0_11(void)                            = ExitFunction             : 
+
+# 1026| char (void Lambda(int, String const&))::(lambda [] type at line 1026, col. 30)::operator()(float) const
+# 1026|   Block 0
+# 1026|     v0_0(void)                                   = EnterFunction            : 
+# 1026|     mu0_1(unknown)                               = AliasedDefinition        : 
+# 1026|     mu0_2(unknown)                               = UnmodeledDefinition      : 
+# 1026|     r0_3(glval<decltype([...](...){...})>)       = InitializeThis           : 
+# 1026|     r0_4(glval<float>)                           = VariableAddress[f]       : 
+# 1026|     mu0_5(float)                                 = InitializeParameter[f]   : r0_4
+# 1026|     r0_6(glval<char>)                            = VariableAddress[#return] : 
+#-----|     r0_7(lambda [] type at line 1026, col. 30 *) = CopyValue                : r0_3
+#-----|     r0_8(glval<String>)                          = FieldAddress[s]          : r0_7
+# 1026|     r0_9(glval<unknown>)                         = FunctionAddress[c_str]   : 
+# 1026|     r0_10(char *)                                = Call                     : r0_9, this:r0_8
+# 1026|     mu0_11(unknown)                              = ^CallSideEffect          : mu0_2
+# 1026|     r0_12(int)                                   = Constant[0]              : 
+# 1026|     r0_13(char *)                                = PointerAdd[1]            : r0_10, r0_12
+# 1026|     r0_14(char)                                  = Load                     : r0_13, mu0_2
+# 1026|     mu0_15(char)                                 = Store                    : r0_6, r0_14
+# 1026|     r0_16(glval<char>)                           = VariableAddress[#return] : 
+# 1026|     v0_17(void)                                  = ReturnValue              : r0_16, mu0_2
+# 1026|     v0_18(void)                                  = UnmodeledUse             : mu*
+# 1026|     v0_19(void)                                  = ExitFunction             : 

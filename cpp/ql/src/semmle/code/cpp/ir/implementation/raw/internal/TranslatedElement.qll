@@ -268,6 +268,9 @@ newtype TTranslatedElement =
       ) or
       exists(ThrowExpr throw |
         throw.getExpr().getFullyConverted() = expr
+      ) or
+      exists(LambdaExpression lambda |
+        lambda.getChild(0).getFullyConverted() = expr
       )
     )
   } or

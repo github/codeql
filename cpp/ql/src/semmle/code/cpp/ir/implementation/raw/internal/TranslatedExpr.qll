@@ -2608,3 +2608,122 @@ class TranslatedConditionDeclExpr extends TranslatedNonConstantExpr {
     result = getTranslatedExpr(expr.getVariableAccess().getFullyConverted())
   }
 }
+
+/**
+ * The IR translation of a lambda expression. This initializes a temporary variable whose type is that of the lambda,
+ * using the initializer list that represents the captures of the lambda.
+ */
+class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationContext {
+  override LambdaExpression expr;
+
+  override final Instruction getFirstInstruction() {
+    result = getInstruction(InitializerVariableAddressTag())
+  }
+
+  override final TranslatedElement getChild(int id) {
+    id = 0 and result = getInitialization()
+  }
+
+  override Instruction getResult() {
+    result = getInstruction(LoadTag())
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    (
+      tag = InitializerVariableAddressTag() and
+      kind instanceof GotoEdge and
+      result = getInstruction(InitializerStoreTag())
+    ) or
+    (
+      tag = InitializerStoreTag() and
+      kind instanceof GotoEdge and
+      (
+        result = getInitialization().getFirstInstruction() or
+        not hasInitializer() and result = getInstruction(LoadTag())
+      )
+    ) or
+    (
+      tag = LoadTag() and
+      kind instanceof GotoEdge and
+      result = getParent().getChildSuccessor(this)
+    )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getInitialization() and
+    result = getInstruction(LoadTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType,
+      boolean isGLValue) {
+    (
+      tag = InitializerVariableAddressTag() and
+      opcode instanceof Opcode::VariableAddress and
+      resultType = getResultType() and
+      isGLValue = true
+    ) or
+    (
+      tag = InitializerStoreTag() and
+      opcode instanceof Opcode::Uninitialized and
+      resultType = getResultType() and
+      isGLValue = false
+    ) or
+    (
+      tag = LoadTag() and
+      opcode instanceof Opcode::Load and
+      resultType = getResultType() and
+      isGLValue = false
+    )
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    (
+      tag = InitializerStoreTag() and
+      operandTag instanceof AddressOperandTag and
+      result = getInstruction(InitializerVariableAddressTag())
+    ) or
+    (
+      tag = LoadTag() and
+      (
+        (
+          operandTag instanceof AddressOperandTag and
+          result = getInstruction(InitializerVariableAddressTag())
+        ) or
+        (
+          operandTag instanceof LoadOperandTag and
+          result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+        )
+      )
+    )
+  }
+
+  override IRVariable getInstructionVariable(InstructionTag tag) {
+    (
+      tag = InitializerVariableAddressTag() or
+      tag = InitializerStoreTag()
+    ) and
+    result = getTempVariable(LambdaTempVar())
+  }
+
+  override predicate hasTempVariable(TempVariableTag tag, Type type) {
+    tag = LambdaTempVar() and
+    type = getResultType()
+  }
+
+  override final Instruction getTargetAddress() {
+    result = getInstruction(InitializerVariableAddressTag())
+  }
+
+  override final Type getTargetType() {
+    result = getResultType()
+  }
+
+  private predicate hasInitializer() {
+    exists(getInitialization())
+  }
+
+  private TranslatedInitialization getInitialization() {
+    result = getTranslatedInitialization(expr.getChild(0).getFullyConverted())
+  }
+}

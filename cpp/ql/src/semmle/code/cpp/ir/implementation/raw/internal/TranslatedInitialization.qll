@@ -79,7 +79,8 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
  */
 abstract class TranslatedListInitialization extends TranslatedInitialization, InitializationContext {
   override Instruction getFirstInstruction() {
-    result = getChild(0).getFirstInstruction()
+    result = getChild(0).getFirstInstruction() or
+    not exists(getChild(0)) and result = getParent().getChildSuccessor(this)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
