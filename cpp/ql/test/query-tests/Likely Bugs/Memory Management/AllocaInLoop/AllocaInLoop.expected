@@ -1,0 +1,8 @@
+| AllocaInLoop1.cpp:25:18:25:23 | call to __builtin_alloca | Stack allocation is inside a $@ and could lead to stack overflow. | AllocaInLoop1.cpp:16:2:33:2 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1.cpp:49:19:49:24 | call to __builtin_alloca | Stack allocation is inside a $@ and could lead to stack overflow. | AllocaInLoop1.cpp:39:2:58:2 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1.cpp:74:19:74:24 | call to __builtin_alloca | Stack allocation is inside a $@ and could lead to stack overflow. | AllocaInLoop1.cpp:65:3:82:3 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1ms.cpp:22:18:22:24 | call to _alloca | Stack allocation is inside a $@ and could lead to stack overflow. | AllocaInLoop1ms.cpp:13:2:30:2 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1ms.cpp:46:19:46:26 | call to _malloca | Stack allocation is inside a $@ and could lead to stack overflow. | AllocaInLoop1ms.cpp:36:2:57:2 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop1ms.cpp:73:19:73:25 | call to _alloca | Stack allocation is inside a $@ and could lead to stack overflow. | AllocaInLoop1ms.cpp:64:3:81:3 | for(...;...;...) ... | for(...;...;...) ... |
+| AllocaInLoop2.c:39:30:39:35 | call to __builtin_alloca | Stack allocation is inside a $@ and could lead to stack overflow. | AllocaInLoop2.c:29:5:48:19 | do (...) ... | do (...) ... |
+| AllocaInLoop3.cpp:38:23:38:28 | call to __builtin_alloca | Stack allocation is inside a $@ and could lead to stack overflow. | AllocaInLoop3.cpp:36:2:42:19 | do (...) ... | do (...) ... |
