@@ -38,8 +38,8 @@ where
   (
     // target contains a domain on a common TLD, and perhaps some other URL components
     target
-        .regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+(" + RegExpPatterns::commonTLD() +
-            ")(:[0-9]+)?/?")
+        .regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+" + RegExpPatterns::commonTLD() +
+            "(:[0-9]+)?/?")
     or
     // target is a HTTP URL to a domain on any TLD
     target.regexpMatch("(?i)https?://([a-z0-9-]+\\.)+([a-z]+)(:[0-9]+)?/?")
