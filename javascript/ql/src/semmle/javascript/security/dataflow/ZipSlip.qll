@@ -46,6 +46,8 @@ module ZipSlip {
   private DataFlow::SourceNode parsedArchive() {
     result = DataFlow::moduleImport("unzip").getAMemberCall("Parse")
     or
+    result = DataFlow::moduleImport("tar-stream").getAMemberCall("extract")
+    or
     // `streamProducer.pipe(unzip.Parse())` is a typical (but not
     // universal) pattern when using nodejs streams, whose return
     // value is the parsed stream.
@@ -55,6 +57,9 @@ module ZipSlip {
       parsedArchive().flowsTo(pipe.getArgument(0))
     )
   }
+
+  /** Gets a property that is used to get the filename part of an archive entry. */
+  private string getAFilenameProperty() { result = "path" or result = "name" }
 
   /** A zip archive entry path access, as a source for unsafe zip extraction. */
   class UnzipEntrySource extends Source {
@@ -74,9 +79,8 @@ module ZipSlip {
       exists(DataFlow::CallNode cn |
         cn = parsedArchive().getAMemberCall("on") and
         cn.getArgument(0).mayHaveStringValue("entry") and
-        this = cn.getCallback(1)
-        .getParameter(0)
-        .getAPropertyRead("path"))
+        this = cn.getCallback(1).getParameter(0).getAPropertyRead(getAFilenameProperty())
+      )
     }
   }
 
@@ -99,9 +103,7 @@ module ZipSlip {
 
   /** An expression that sanitizes by calling path.basename */
   class BasenameSanitizer extends Sanitizer {
-    BasenameSanitizer() {
-      this = DataFlow::moduleImport("path").getAMemberCall("basename")
-    }
+    BasenameSanitizer() { this = DataFlow::moduleImport("path").getAMemberCall("basename") }
   }
 
   /**
