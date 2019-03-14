@@ -55,6 +55,18 @@ abstract class FormattingFunction extends Function {
   deprecated predicate isWideCharDefault() { none() }
 
   /**
+   * Gets the character type used in the format string for this function.
+   */
+  Type getFormatCharType() {
+    result =  
+      stripTopLevelSpecifiersOnly(
+        stripTopLevelSpecifiersOnly(
+          getParameter(getFormatParameterIndex()).getType().getUnderlyingType()
+        ).(PointerType).getBaseType()
+      )
+  }
+
+  /**
    * Gets the default character type expected for `%s` by this function.  Typically
    * `char` or `wchar_t`.
    */
