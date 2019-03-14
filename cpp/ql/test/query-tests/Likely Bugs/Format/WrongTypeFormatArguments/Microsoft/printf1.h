@@ -119,3 +119,11 @@ void test_chars(char c, wchar_t wc, wint_t wt)
   wprintf(L"%C", wc); // BAD [NOT DETECTED]
   wprintf(L"%C", wt); // BAD [NOT DETECTED]
 }
+
+void test_ws(char *c, wchar_t *wc, wint_t *wt)
+{
+  wprintf(L"%s", c); // BAD [NOT DETECTED]
+  wprintf(L"%s", wc); // GOOD
+  wprintf(L"%S", c); // GOOD
+  wprintf(L"%S", wc); // BAD [NOT DETECTED]
+}
