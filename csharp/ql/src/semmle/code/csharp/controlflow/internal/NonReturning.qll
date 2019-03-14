@@ -44,7 +44,8 @@ private class ThrowingCall extends NonReturningCall {
     exists(CIL::Method m, CIL::Type ex |
       this.getTarget().matchesHandle(m) and
       alwaysThrowsException(m, ex) and
-      c.getExceptionClass().matchesHandle(ex)
+      c.getExceptionClass().matchesHandle(ex) and
+      not m.isVirtual()
     )
   }
 

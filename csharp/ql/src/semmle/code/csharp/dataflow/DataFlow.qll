@@ -646,7 +646,7 @@ module DataFlow {
             sourceDecl.matchesHandle(result.(Callable))
             or
             // CIL callable without C# implementation in the database
-            not sourceDecl.matchesHandle(any(Callable k)) and
+            not sourceDecl.matchesHandle(any(Callable k | k.hasBody())) and
             result = sourceDecl
           else
             // C# callable without C# implementation in the database
@@ -1188,7 +1188,7 @@ module DataFlow {
      * nodes that may potentially be reached in flow from some source to some
      * sink.
      */
-    private module Pruning {
+    module Pruning {
       /**
        * Holds if `node` is reachable from a source in the configuration `config`,
        * ignoring call contexts.

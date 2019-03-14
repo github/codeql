@@ -7,6 +7,13 @@ predicate relevantMethod(CIL::Method m) {
   m.getName() = "get_Item"
   or
   m.getDeclaringType().getName() = "ThrowHelper"
+  or
+  m.getLocation().(CIL::Assembly).getName() = "DataFlow"
+}
+
+// Check that the assembly hasn't been marked as a stub.
+query predicate stubs(string str) {
+  exists(CIL::Assembly asm | CIL::assemblyIsStub(asm) | str = asm.toString())
 }
 
 query predicate alwaysNull(string s, string d) {

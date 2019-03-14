@@ -1,4 +1,11 @@
+stubs
 alwaysNull
+| System.Object Dataflow.NullMethods.ReturnsNull2() | 0: ldarg.0, 1: call Dataflow.NullMethods.ReturnsNull, 2: ret |
+| System.Object Dataflow.NullMethods.ReturnsNull() | 0: ldnull, 1: ret |
+| System.Object Dataflow.NullMethods.ReturnsNullIndirect() | 0: ldarg.0, 1: call Dataflow.NullMethods.ReturnsNull, 2: ret |
+| System.Object Dataflow.NullMethods.VirtualReturnsNull() | 0: ldnull, 1: ret |
+| System.Object Dataflow.NullMethods.get_NullProperty() | 0: ldnull, 1: ret |
+| System.Object Dataflow.NullMethods.get_VirtualNullProperty() | 0: ldnull, 1: ret |
 | System.Object System.Collections.EmptyReadOnlyDictionaryInternal.get_Item(System.Object) | 0: ldarg.1, 1: brtrue.s 6:, 2: ldstr "key", 3: call System.SR.get_ArgumentNull_Key, 4: newobj System.ArgumentNullException..ctor, 5: throw, 6: ldnull, 7: ret |
 alwaysNonNull
 | System.ArgumentException System.ThrowHelper.GetAddingDuplicateWithKeyArgumentException(System.Object) |
@@ -11,6 +18,12 @@ alwaysNonNull
 | System.ArgumentOutOfRangeException System.ThrowHelper.GetArgumentOutOfRangeException(System.ExceptionArgument,System.Int32,System.ExceptionResource) |
 | System.Exception System.ThrowHelper.GetArraySegmentCtorValidationFailedException(System.Array,System.Int32,System.Int32) |
 | System.InvalidOperationException System.ThrowHelper.GetInvalidOperationException(System.ExceptionResource) |
+| System.Object Dataflow.NonNullMethods.ReturnsNonNull2() |
+| System.Object Dataflow.NonNullMethods.ReturnsNonNull() |
+| System.Object Dataflow.NonNullMethods.ReturnsNonNullIndirect() |
+| System.Object Dataflow.NonNullMethods.get_VirtualNonNull() |
+| System.Object Dataflow.NonNullMethods.get_VirtualNonNullProperty() |
+| System.String Dataflow.NonNullMethods.get_NonNullProperty2() |
 | System.Text.Encoder System.Text.ASCIIEncoding.GetEncoder() |
 | System.Text.Encoder System.Text.Encoding.GetEncoder() |
 | System.Text.Encoder System.Text.EncodingNLS.GetEncoder() |
@@ -20,6 +33,10 @@ alwaysNonNull
 | System.Text.Encoder System.Text.UTF32Encoding.GetEncoder() |
 | System.Text.Encoder System.Text.UnicodeEncoding.GetEncoder() |
 alwaysThrows
+| System.Object Dataflow.ThrowingMethods.AlwaysThrows() | System.InvalidOperationException | 0: newobj System.InvalidOperationException..ctor, 1: throw |
+| System.Object Dataflow.ThrowingMethods.VirtualThrows() | System.Exception | 0: newobj System.Exception..ctor, 1: throw |
+| System.Object Dataflow.ThrowingMethods.get_ThrowProperty() | System.Exception | 0: newobj System.Exception..ctor, 1: throw |
+| System.Object Dataflow.ThrowingMethods.get_VirtualThrowProperty() | System.Exception | 0: newobj System.Exception..ctor, 1: throw |
 | System.Object System.ValueTuple.get_Item(System.Int32) | System.IndexOutOfRangeException | 0: newobj System.IndexOutOfRangeException..ctor, 1: throw |
 | System.Void System.ThrowHelper.ThrowAddingDuplicateWithKeyArgumentException(System.Object) | System.ArgumentException | 0: ldarg.0, 1: call System.ThrowHelper.GetAddingDuplicateWithKeyArgumentException, 2: throw |
 | System.Void System.ThrowHelper.ThrowAggregateException(System.Collections.Generic.List<System.Exception>) | System.AggregateException | 0: ldarg.0, 1: newobj System.AggregateException..ctor, 2: throw |
