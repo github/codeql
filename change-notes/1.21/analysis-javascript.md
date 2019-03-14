@@ -12,7 +12,9 @@
 
 ## Changes to existing queries
 
-| **Query**                                  | **Expected impact**          | **Change**                                                                   |
-|--------------------------------------------|------------------------------|------------------------------------------------------------------------------|
+| **Query**                      | **Expected impact**          | **Change**                                                                |
+|--------------------------------|------------------------------|---------------------------------------------------------------------------|
+| Expression has no effect       | Fewer false-positive results | This rule now treats uses of `Object.defineProperty` more conservatively. |
+| Useless assignment to property | Fewer false-positive results | This rule now ignore reads of additional getters. |
 
 ## Changes to QL libraries
