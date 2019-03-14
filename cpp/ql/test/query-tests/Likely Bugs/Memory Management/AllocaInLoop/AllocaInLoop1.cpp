@@ -4,12 +4,18 @@ struct vtype {
 };
 extern int w1, w2;
 
+#ifdef _MSC_VER
+#define restrict __restrict
+#else
+#define restrict __restrict__
+#endif
+
 void *__builtin_alloca(int sz);
 #define alloca __builtin_alloca
 typedef unsigned long size_t;
 
-int printf(const char *format, ...);
-void *memcpy(void *dst, const void *src, size_t len);
+int printf(const char *restrict format, ...);
+void *memcpy(void *restrict dst, const void *restrict src, size_t len);
 
 // case 1: alloca directly contained in an unbounded loop
 void foo(const struct vtype* vec, int count) {

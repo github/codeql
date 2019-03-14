@@ -1,6 +1,13 @@
 // semmle-extractor-options: --clang
-int sprintf(char *buf, const char *format, ...);
-char * strdup(const char *str1);
+
+#ifdef _MSC_VER
+#define restrict __restrict
+#else
+#define restrict __restrict__
+#endif
+
+int sprintf(char *restrict buf, const char *restrict format, ...);
+char * strdup(const char *restrict str1);
 
 void *__builtin_alloca(int sz);
 #define alloca __builtin_alloca

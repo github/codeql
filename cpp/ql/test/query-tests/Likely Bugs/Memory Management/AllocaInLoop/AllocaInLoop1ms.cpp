@@ -5,8 +5,14 @@ struct vtype {
 };
 extern int w1, w2;
 
-int printf(const char *format, ...);
-void *memcpy(void *dst, const void *src, size_t len);
+#ifdef _MSC_VER
+#define restrict __restrict
+#else
+#define restrict __restrict__
+#endif
+
+int printf(const char *restrict format, ...);
+void *memcpy(void *restrict dst, const void *restrict src, size_t len);
 
 // case 1: _alloca directly contained in an unbounded loop
 void foo(const struct vtype* vec, int count) {
