@@ -397,10 +397,10 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
  */
 module RegExpPatterns {
   /**
-   * Gets a pattern that matches common top-level domain names.
+   * Gets a pattern that matches common top-level domain names in lower case.
    */
   string commonTLD() {
     // according to ranking by http://google.com/search?q=site:.<<TLD>>
-    result = "com|org|edu|gov|uk|net|io"
+    result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
   }
 }
