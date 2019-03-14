@@ -18,22 +18,6 @@ import semmle.code.csharp.dataflow.DataFlow
 import ParallelSink
 import ICryptoTransform
 
-class NotThreadSafeCryptoUsageIntoStartingCallingConfig extends TaintTracking::Configuration  {
-  NotThreadSafeCryptoUsageIntoStartingCallingConfig() { this = "NotThreadSafeCryptoUsageIntoStartingCallingConfig" }
- 
-  override predicate isSource(DataFlow::Node source) {    
-    source instanceof LambdaCapturingICryptoTransformSource
-  }
- 
-  override predicate isSink(DataFlow::Node sink) {
-    exists( DelegateCreation dc, Expr e | 
-      e = sink.asExpr() |
-      dc.getArgument() = e
-      and dc.getType().getName().matches("%Start")
-    )
-  }
-}
-
 class NotThreadSafeCryptoUsageIntoParallelInvokeConfig extends TaintTracking::Configuration  {
   NotThreadSafeCryptoUsageIntoParallelInvokeConfig() { this = "NotThreadSafeCryptoUsageIntoParallelInvokeConfig" }
  
@@ -46,14 +30,8 @@ class NotThreadSafeCryptoUsageIntoParallelInvokeConfig extends TaintTracking::Co
   }
 }
 
-from Expr e, string m, LambdaExpr l
+from Expr e, string m, LambdaExpr l, NotThreadSafeCryptoUsageIntoParallelInvokeConfig config
 where 
-  exists( NotThreadSafeCryptoUsageIntoParallelInvokeConfig  config |
-    config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e))
-    and m = "A $@ seems to be used to start a new thread using System.Threading.Tasks.Parallel.Invoke, and is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."  	
-  )
-  or exists ( NotThreadSafeCryptoUsageIntoStartingCallingConfig  config |
-    config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e))
-    and m = "A $@ seems to be used to start a new thread is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."
-  )
+  config.hasFlow(DataFlow::exprNode(l), DataFlow::exprNode(e))
+  and m = "A $@ seems to be used to start a new thread is capturing a local variable that either implements 'System.Security.Cryptography.ICryptoTransform' or has a field of this type."
 select e, m, l, "lambda expression"
