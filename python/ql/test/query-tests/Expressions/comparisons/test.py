@@ -86,3 +86,8 @@ def odasa6782_v3(protocol):
         pass
     else:
         raise ValueError()
+
+#Inverted complex test
+if not (0 > stop >= step) and stop < 0:
+    pass
+
