@@ -4,7 +4,7 @@
 
 //////////////////
 //              //
-//  GOOD CASES  //
+//  DON'T FIND  //
 //              //
 //////////////////
 
@@ -18,11 +18,11 @@ function fn_w_final_return_w_expr() { return 1; }
 
 
 
-/////////////////
-//             //
-//  BAD CASES  //
-//             //
-/////////////////
+////////////
+//        //
+//  FIND  //
+//        //
+////////////
 
 function fn_w_empty_body() { }
 function fn_w_final_return_wo_expr() { return; }

@@ -159,13 +159,12 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   }
 
   /** 
-   * Gets a return from a function which has undefined value (i.e. implicit returns
-   * and returns w/o expressions).
-   */
-   
-  /* Functions can have undefined returns in a few different ways:
+   * Gets a return from a function which has undefined value (that is, implicit
+   * returns and returns without expressions).
+   *
+   * Functions can have undefined returns in a few different ways:
    * 
-   * 1. An explicit return statement with no expression, i.e. the statement `return;`
+   * 1. An explicit return statement with no expression (the statement `return;`)
    * 
    * 2. An implicit return resulting from an expression executing as the last thing
    *    in the function. For example, the test in a final `if` statement:
