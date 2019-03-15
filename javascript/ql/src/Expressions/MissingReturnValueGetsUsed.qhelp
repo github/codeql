@@ -1,0 +1,231 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+
+<qhelp>
+	
+	<overview>
+		
+		
+		<!-- What is the English description of the problem to analyze? -->
+		<p>
+			Problem Structures: A function which does not return a value is called in a context
+			which expects a value.
+		</p>
+		
+		
+		<!-- What is the reason this is a problem that deserves a query? -->
+		<p>
+			Functions need not return values, but calls to them should then not be used as if
+			the function does indeed return a value. Using such functions in this way indicates
+			either that the function was intended to return a value, or that the assignment was
+			unintended.
+		</p>
+		
+		<p>The contexts in which such a call is acceptable are:</p>
+		
+		<ul>
+			<li>As a statement, b/c the function is used for its side effects only</li>
+			<li>When the function is completely empty and has no statements in it</li>
+			<li>When the function is in an error function</li>
+ 			<li>In an immediately invoked function expression (IIFE)</li>
+ 			<li>When the application is immediately returned</li>
+			<li>When the application is in a void expression</li>
+		</ul>
+		
+		
+		<!-- What are the main concepts and potentially relevant libraries? -->
+        <ul>
+          <li>
+            Methods and Calls: function utils (to be able to reference the method by name,
+            independent of how it's called, whether its directly called or called via
+            <code>call</code> or <code>apply</code>)
+          </li>
+          <li>Callbacks: referring expressions / data flow (for indirect reference to callbacks)</li>
+          <li>Return Values: function utils / control flow (for finding returns)</li>
+        </ul>
+        
+        
+	</overview>
+	
+	
+	
+	<!-- When someone finds occurrences of this problem, how can it be fixed? -->
+	<recommendation>
+		<p>
+			Either ensure that the function in question returns a value, or remove the offending
+			use context.
+		</p>
+	</recommendation>
+	
+	
+	
+	<!-- What are some test case examples? Positive and Negative cases -->
+	<source language="javascript">/////////////////
+//             //
+//  BAD CASES  //
+//             //
+/////////////////
+
+
+
+function f0() {
+	return;
+}
+var x0 = f0();
+
+
+function f1() {
+	1;
+}
+var x1 = f1();
+
+
+var f2 = function () {
+	return;
+}
+var x2 = f2();
+
+
+var f3 = function () {
+	1;
+}
+var x3 = f3();
+
+
+var f4 = () => { return; };
+var x4 = f4();
+
+
+
+
+//////////////////
+//              //
+//  GOOD CASES  //
+//              //
+//////////////////
+
+
+
+// Function call as a statement
+
+f0();
+
+
+// Empty functions
+
+function f5() {}
+var x5 = f5();
+
+
+var f6 = function () {};
+var x6 = f6();
+
+
+var f7 = () => {};
+var x7 = f7();
+
+
+// Functions that return values
+
+function f8() {
+	return 1;
+}
+var x8 = f8();
+
+
+var f9 = function () {
+	return 1;
+};
+var x9 = f9();
+
+
+var f10 = () => 1;
+var x10 = f10();
+
+var f11 = () => { return 1; }
+var x11 = f11();
+
+
+// IIFEs
+
+(function () { return; })();
+
+
+// Return chain
+
+function f12() { return f0(); }
+
+
+// Void expr
+
+var x13 = void f0();</source>
+	
+	
+	
+	<!-- What are some representative examples? Explain them and how they can be fixed. -->	
+	<example>
+		<p>
+			In the following code, array elements in <code>arr</code> are logged to the console
+			one at a time.
+		</p>
+		
+		<sample language="javascript">
+			function logAll(callback) {
+				arr.forEach(console.log);
+			}
+			
+			var result = logAll(arr);
+		</sample>
+		
+		<p>
+			This assignment is extraneous, because nothing is returned from the function
+			<code>logAll</code>. Instead, it can be omitted entirely:
+		</p>
+		
+		<sample language="javascript">
+			logAll(arr);
+		</sample>
+	</example>
+	
+	
+	
+	<!-- What are some representative examples? Explain them and how they can be fixed. -->
+	<example>
+		<p>
+			Another common thing that happens is that a return statement is intended, but
+			omitted unintentionally. For example, when one thinks in terms of arrow expressions,
+			but writes function expressions:
+		</p>
+		
+		<sample language="javascript">
+			var square = function (arg) { arg * arg };
+			var result = square(square(5));
+		</sample>
+		
+		<p>
+			In cases like this, adding an explicit return suffices:
+		</p>
+		
+		<sample language="javascript">
+			var square = function (arg) { return arg * arg; };
+			var result = square(square(5));
+		</sample>
+		
+		<p>
+			As does swapping the function expression for an arrow expression:
+		</p>
+		
+		<sample language="javascript">
+			var square = arg => arg * arg;
+			var result = square(square(5));
+		</sample>
+	</example>
+	
+	
+	
+	<!-- What are good places to go if people want to read more? -->
+	<references>
+		<li>DeepScan: <a href="https://deepscan.io/docs/rules/missing-return-value">MISSING_RETURN_VALUE</a></li>
+	</references>
+</qhelp>
