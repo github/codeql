@@ -1,1 +1,0 @@
-| EncodingError.py:5:8:5:8 | Encoding Error | 'ascii' codec can't decode byte 0xc3 in position 47: ordinal not in range(128) |
