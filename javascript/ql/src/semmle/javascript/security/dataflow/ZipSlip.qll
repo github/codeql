@@ -45,6 +45,8 @@ module ZipSlip {
    * Gets a node that can be a parsed archive.
    */
   private DataFlow::SourceNode parsedArchive() {
+    result = DataFlow::moduleImport("unzipper").getAMemberCall("Parse")
+    or
     result = DataFlow::moduleImport("unzip").getAMemberCall("Parse")
     or
     result = DataFlow::moduleImport("tar-stream").getAMemberCall("extract")
