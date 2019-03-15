@@ -17,10 +17,11 @@
 | printf1.h:74:19:74:22 | C_ST | This argument should be of type 'ssize_t' but is of type 'unsigned long long' |
 | printf1.h:75:19:75:28 | sizeof(<expr>) | This argument should be of type 'ssize_t' but is of type 'unsigned long long' |
 | printf1.h:84:23:84:35 | ... - ... | This argument should be of type 'ssize_t' but is of type 'long long' |
-| printf1.h:126:18:126:19 | wc | This argument should be of type 'char *' but is of type '__wchar_t *' |
-| printf1.h:127:18:127:18 | c | This argument should be of type '__wchar_t *' but is of type 'char *' |
+| printf1.h:125:18:125:18 | c | This argument should be of type '__wchar_t *' but is of type 'char *' |
+| printf1.h:128:18:128:19 | wc | This argument should be of type 'char *' but is of type '__wchar_t *' |
 | real_world.h:61:21:61:22 | & ... | This argument should be of type 'int *' but is of type 'short *' |
 | real_world.h:62:22:62:23 | & ... | This argument should be of type 'short *' but is of type 'int *' |
 | real_world.h:63:22:63:24 | & ... | This argument should be of type 'short *' but is of type 'unsigned int *' |
 | real_world.h:64:22:64:24 | & ... | This argument should be of type 'short *' but is of type 'signed int *' |
 | wide_string.h:25:18:25:20 | c | This argument should be of type 'char' but is of type 'char *' |
+| wide_string.h:29:19:29:22 | c | This argument should be of type 'wchar_t' but is of type '__wchar_t *' |

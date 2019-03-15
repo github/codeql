@@ -122,8 +122,8 @@ void test_chars(char c, wchar_t wc, wint_t wt)
 
 void test_ws(char *c, wchar_t *wc, wint_t *wt)
 {
-  wprintf(L"%s", c); // BAD [NOT DETECTED]
-  wprintf(L"%s", wc); // GOOD [FALSE POSITIVE]
-  wprintf(L"%S", c); // GOOD [FALSE POSITIVE]
-  wprintf(L"%S", wc); // BAD [NOT DETECTED]
+  wprintf(L"%s", c); // BAD
+  wprintf(L"%s", wc); // GOOD
+  wprintf(L"%S", c); // GOOD
+  wprintf(L"%S", wc); // BAD
 }
