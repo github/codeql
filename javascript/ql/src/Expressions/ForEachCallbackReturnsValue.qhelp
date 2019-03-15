@@ -1,0 +1,271 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+
+<qhelp>
+	
+	<overview>
+		
+		
+		<!-- What is the English description of the problem to analyze? -->
+		<p>
+			Problem Structures: The array method `forEach`, which expects a callback that returns no value, is
+			called using a callback that returns a value.
+		</p>
+		
+		
+		<!-- What is the reason this is a problem that deserves a query? -->
+		<p>
+			The <code>forEach</code> method on arrays is intended to be used as an alternative
+			to for loops, and as such, it behaves like an iterator where the callback is used
+			for its side effects only. Any value returned by a callback passed to
+			<code>forEach</code> will be ignored.
+		</p>
+		
+		<p>
+			Use of such a callback is an indication that the programmer may have meant to use
+			some other method, such as <code>map</code>, which makes use of the returned value,
+			or use some other language construction. Where side effects are concerned,
+			<code>forEach</code> and <code>map</code> are identical, so such confusion is
+			understandable. 
+		</p>
+		
+		
+		<!-- What are the main concepts and potentially relevant libraries? -->
+        <ul>
+          <li>
+            Methods and Calls: function utils (to be able to reference the method by name,
+            independent of how it's called, whether its directly called or called via
+            <code>call</code> or <code>apply</code>)
+          </li>
+          <li>Callbacks: referring expressions / data flow (for indirect reference to callbacks)</li>
+          <li>Return Values: function utils / control flow (for finding returns)</li>
+        </ul>
+        
+        
+	</overview>
+	
+	
+	
+	<!-- When someone finds occurrences of this problem, how can it be fixed? -->
+	<recommendation>
+		<p>
+			Replace the return with a variable assignment, or use a different array method
+			that actually uses the callback's returned value.
+		</p>
+	</recommendation>
+	
+	
+	
+	<!-- What are some test case examples? Positive and Negative cases -->
+	<source language="javascript">///////////////
+//             //
+//  BAD CASES  //
+//             //
+/////////////////
+
+
+// Application w/ directly referenced functions
+
+[].forEach(function (x) { return 1; });
+Array.prototype.forEach.apply([], [function (x) { return 1; }]);
+Array.prototype.forEach.call([], function (x) { return 1; });
+
+[].forEach(x => 1);
+Array.prototype.forEach.apply([], [x => 1]);
+Array.prototype.forEach.call([], x => 1);
+
+
+// Application w/ indirectly referenced functions
+
+var f0 = function (x) { return 1; };
+[].forEach(f0);
+Array.prototype.forEach.apply([], [f0]);
+Array.prototype.forEach.call([], f0);
+
+var f1 = x => 1;
+[].forEach(f1);
+Array.prototype.forEach.apply([], [f1]);
+Array.prototype.forEach.call([], f1);
+
+
+
+
+//////////////////
+//              //
+//  GOOD CASES  //
+//              //
+//////////////////
+
+//Application w/ directly referenced functions
+
+[].forEach(function (x) { return; });
+Array.prototype.forEach.apply([], [function (x) { return; }]);
+Array.prototype.forEach.call([], function (x) { return; });
+
+[].forEach(x => { return; });
+Array.prototype.forEach.apply([], [x => { return; }]);
+Array.prototype.forEach.call([], x => { return; });
+
+
+// Application w/ indirectly referenced functions
+
+var f2 = function (x) { return; };
+[].forEach(f2);
+Array.prototype.forEach.apply([], [f2]);
+Array.prototype.forEach.call([], f2);
+
+var f3 = x => { return; };
+[].forEach(f3);
+Array.prototype.forEach.apply([], [f3]);
+Array.prototype.forEach.call([], f3);</source>
+	
+	
+	
+	<!-- What are some representative examples? Explain them and how they can be fixed. -->
+	<example>
+		
+		
+		<p>
+			In the following code, the list <code>arr</code> is iterated over using
+			<code>forEach</code>, and returns a boolean true whenever it a predicate holds of
+			the iterated element, with the intention of acting like quantifier to test if the
+			predicate holds of any element.
+		</p>
+		
+		<sample language="javascript">
+			var foundAnElement = arr.forEach(function (el) {
+				if (predicate(el)) {
+					return true;					
+				}
+			});
+		</sample>
+		
+		<p>
+			This doesn't function as described, however. Since <code>forEach</code> ignores its
+			callback's return values, all of the true returns are immediately discarded. The
+			value assigned to <code>foundAnElement</code> will be <code>undefined</code>,
+			because the <code>forEach</code> itself returns nothing at all.
+		</p>
+		
+		<p>
+			The developer should instead treat the callback exactly like a for loop body, and
+			initialize the flag external to the loop, and only flip it internally: 
+		</p>
+		
+		<sample language="javascript">
+			var foundAnElement = false;
+			
+			arr.forEach(function (el) {
+				if (predicate(el)) {
+					foundAnElement = true;					
+				}
+			});
+		</sample>
+		
+		<p>
+			This example also reveals other kinds of conceptual errors that may be at work.
+			The programmer who would write this sort of thing is also possibly intending for the
+			iteration to stop as soon as a satisfying element is found, but <code>forEach</code>
+			will continue to look at every element in the list even though it finds one. This is
+			true independent of whether or not it contains the return statement.
+		</p>
+		
+		<p>
+			In cases like this, it may be instead desirable to use a reducer, either a builtin
+			one such as <code>some</code>:
+		</p>
+		
+		<sample language="javascript">
+			var foundAnElement = arr.some(predicate);
+		</sample>
+		
+		<p>
+			Or to define a custom reducer:
+		</p>
+		
+		<sample language="javascript">
+			Array.prototype.anySatisfiers = function (pred) {
+				for (var i = 0; i < this.length; i++) {
+					if (pred(this[i])) {
+						return true;
+					}
+				}
+				
+				return false;
+			}
+			
+			...
+			
+			var foundAnElement = arr.anySatisfiers(pred);
+		</sample>
+		
+		<p>
+			An even deeper conceptual error is using the inner return as an attempt to return
+			an enclosing function. For example, consider this variation:
+		</p>
+		
+		<sample language="javascript">
+			function anySatisfiers(arr) {
+				arr.forEach(function (el) {
+					if (predicate(el)) {
+						return true;					
+					}
+				});
+				
+				return false;
+			}
+		</sample>
+		
+		<p>
+			Here, the intention is that the inner <code>return true</code> will cause the whole
+			function <code>anySatisfiers</code> to return, as one would expect from the
+			corresponding for loop implementation:
+		</p>
+		
+		<sample language="javascript">
+			function anySatisfiers(arr)
+				for (var el in arr) {
+					if (predicate(el)) {
+						return true;					
+					}
+				}
+				
+				return false;
+			}
+		</sample>
+		
+		<p>
+			However, this is incorrect: the inner <code>return true</code> causes the
+			<em>callback</em> to return true, but has no ability to control the return of
+			<code>anySatisfiers</code>. Instead, the flag method would be required:
+		</p>
+		
+		<sample language="javascript">
+			function anySatisfiers(arr) {
+				var foundAnElement = false;
+				
+				arr.forEach(function (el) {
+					if (predicate(el)) {
+						foundAnElement = true;			
+					}
+				});
+				
+				return foundAnElement;
+			}
+		</sample>
+		
+		<p>
+			Which should be chosen depends on the intended meaning of the code. Some, such as
+			the last example, also make it worthwhile to review the language itself, to ensure
+			that fundamental concepts such as control flow are better understood.
+		</p>
+	</example>
+	
+	
+	
+	<!-- What are good places to go if people want to read more? -->
+	<references>
+		<li>DeepScan: <a href="https://deepscan.io/docs/rules/bad-return-in-foreach">BAD_RETURN_IN_FOREACH</a></li>
+	</references>
+</qhelp>
