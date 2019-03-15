@@ -35,13 +35,20 @@ predicate isDeclaration(Expr e) {
  * Holds if there exists a getter for a property called `name` anywhere in the program.
  */
 predicate isGetterProperty(string name) {
-  // there is a call of the form `Object.defineProperty(..., name, { get: ..., ... })`
-  // or `Object.defineProperty(..., name, <something that's not an object literal>)`
+  // there is a call of the form `Object.defineProperty(..., name, descriptor)` ...
   exists(CallToObjectDefineProperty defProp |
-    name = defProp.getPropertyName() and
-    exists(Expr descriptor | descriptor = defProp.getPropertyDescriptor().asExpr() |
-      exists(descriptor.(ObjectExpr).getPropertyByName("get")) or
-      not descriptor instanceof ObjectExpr
+    name = defProp.getPropertyName() |
+    // ... where `descriptor` defines a getter
+    defProp.getAPropertyAttribute().getPropertyName() = "get" or
+    // ... where `descriptor` may define a getter
+    exists (DataFlow::SourceNode descriptor |
+      descriptor.flowsTo(defProp.getPropertyDescriptor()) |
+      descriptor.isIncomplete(_) or
+      // minimal escape analysis for the descriptor
+      exists (DataFlow::InvokeNode invk |
+        not invk = defProp and
+        descriptor.flowsTo(invk.getAnArgument())
+      )
     )
   )
   or
