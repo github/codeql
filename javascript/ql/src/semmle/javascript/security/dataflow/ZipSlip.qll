@@ -1,31 +1,32 @@
 /**
- * Provides a taint tracking configuration for reasoning about unsafe zip extraction.
+ * Provides a taint tracking configuration for reasoning about unsafe
+ * zip and tar archive extraction.
  */
 
 import javascript
 
 module ZipSlip {
   /**
-   * A data flow source for unsafe zip extraction.
+   * A data flow source for unsafe archive extraction.
    */
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * A data flow sink for unsafe zip extraction.
+   * A data flow sink for unsafe archive extraction.
    */
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A sanitizer for unsafe zip extraction.
+   * A sanitizer for unsafe archive extraction.
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A sanitizer guard for unsafe zip extraction.
+   * A sanitizer guard for unsafe archive extraction.
    */
   abstract class SanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode { }
 
-  /** A taint tracking configuration for unsafe zip extraction. */
+  /** A taint tracking configuration for unsafe archive extraction. */
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "ZipSlip" }
 
@@ -41,7 +42,7 @@ module ZipSlip {
   }
 
   /**
-   * Gets a node that can be a parsed zip archive.
+   * Gets a node that can be a parsed archive.
    */
   private DataFlow::SourceNode parsedArchive() {
     result = DataFlow::moduleImport("unzip").getAMemberCall("Parse")
@@ -61,7 +62,7 @@ module ZipSlip {
   /** Gets a property that is used to get the filename part of an archive entry. */
   private string getAFilenameProperty() { result = "path" or result = "name" }
 
-  /** A zip archive entry path access, as a source for unsafe zip extraction. */
+  /** An archive entry path access, as a source for unsafe archive extraction. */
   class UnzipEntrySource extends Source {
     // For example, in
     // ```javascript
@@ -84,7 +85,7 @@ module ZipSlip {
     }
   }
 
-  /** A call to `fs.createWriteStream`, as a sink for unsafe zip extraction. */
+  /** A call to `fs.createWriteStream`, as a sink for unsafe archive extraction. */
   class CreateWriteStreamSink extends Sink {
     CreateWriteStreamSink() {
       // This is not covered by `FileSystemWriteSink`, because it is
@@ -96,7 +97,7 @@ module ZipSlip {
     }
   }
 
-  /** A file path of a file write, as a sink for unsafe zip extraction. */
+  /** A file path of a file write, as a sink for unsafe archive extraction. */
   class FileSystemWriteSink extends Sink {
     FileSystemWriteSink() { exists(FileSystemWriteAccess fsw | fsw.getAPathArgument() = this) }
   }
