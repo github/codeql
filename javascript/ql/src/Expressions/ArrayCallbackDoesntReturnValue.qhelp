@@ -1,0 +1,210 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+
+<qhelp>
+	
+	<overview>
+	    
+	    
+	    <!-- What is the English description of the problem to analyze? -->
+	    <p>
+		    Problem Structures: An array method which requires a callback that returns a value, is called using a
+		    callback that does not return a value.
+	    </p>
+	    
+	    
+	    <!-- What is the reason this is a problem that deserves a query? -->
+		<p>
+			Many array methods, such as <code>map</code> and <code>filter</code>, take callback
+			arguments which are expected to return values.
+		</p>
+		
+		<p>
+			Use of a callback that can sometimes returning nothing is an indication that the
+			programmer may have meant to use some other function, such as <code>forEach</code>,
+			which makes no use of the returned value.
+		</p>
+		
+		<p>
+			Where side effects are concerned, <code>map</code> and <code>forEach</code> are
+			identical, so such confusion is understandable. 
+		</p>
+		
+		
+		<!-- What are the main concepts and potentially relevant libraries? -->
+        <ul>
+          <li>
+            Methods and Calls: function utils (to be able to reference the method by name,
+            independent of how it's called, whether its directly called or called via
+            <code>call</code> or <code>apply</code>)
+          </li>
+          <li>Callbacks: referring expressions / data flow (for indirect reference to callbacks)</li>
+          <li>Return Values: function utils / control flow (for finding returns)</li>
+        </ul>
+        
+        
+	</overview>
+	
+	
+	
+	<!-- When someone finds occurrences of this problem, how can it be fixed? -->
+	<recommendation>
+		<p>
+			Replace the empty returns with a value return, or possibly replace the method with
+			one that doesn't expect the callback to return a value.
+		</p>
+	</recommendation>
+	
+	
+	
+	<!-- What are some test case examples? Positive and Negative cases -->
+    <source language="javascript">/////////////////
+//             //
+//  POSITIVES  //
+//             //
+/////////////////
+
+
+// Application w/ a directly referenced callback
+
+[].map(function (x) { return; });
+Array.prototype.map.apply([], [function (x) { return; }]);
+Array.prototype.map.call([], function (x) { return; });
+
+[].map(x => { return; });
+Array.prototype.map.apply([], [x => { return; }]);
+Array.prototype.map.call([], x => { return; });
+
+
+// Application w/ an indirectly referenced callback
+
+var f0 = function(x) { return; };
+[].map(f0);
+Array.prototype.map.apply([], [f0]);
+Array.prototype.map.call([], f0);
+
+var f1 = x => { return; };
+[].map(f1);
+Array.prototype.map.apply([], [f1]);
+Array.prototype.map.call([], f1);
+
+
+
+
+/////////////////
+//             //
+//  NEGATIVES  //
+//             //
+/////////////////
+
+
+// Application w/ a directly referenced callback
+
+[].map(function (x) { return 1; });
+Array.prototype.map.apply([], [function (x) { return 1; }]);
+Array.prototype.map.call([], function (x) { return 1; });
+
+[].map(x => 1);
+Array.prototype.map.apply([], [x => 1]);
+Array.prototype.map.call([], x => 1);
+
+
+// Application w/ an indirectly referenced callback
+
+var f2 = function(x) { return 1; };
+[].map(f2);
+Array.prototype.map.apply([], [f2]);
+Array.prototype.map.call([], f2);
+
+var f3 = x => 1;
+[].map(f3);
+Array.prototype.map.apply([], [f3]);
+Array.prototype.map.call([], f3);</source>
+    
+    
+    
+    <!-- What are some representative examples? Explain them and how they can be fixed. -->
+	<example>
+		
+		
+		<p>
+			In the following code, the list <code>arr</code> is mapped over using a callback
+			which returns nothing if the conditional is false. The intention is to purify some
+			array elements in just those cases when the predicate <code>pred</code> is true.
+		</p>
+		
+		<sample language="javascript">
+			var arr2 = arr.map(function (el) {
+				if (pred(el)) {
+					return purify(el);				
+				}			
+			});
+		</sample>
+		
+		<p>
+			This doesn't function as described, however. Since the conditional has no else
+			branch, and no return statement after it, whenever the predicate is false, the
+			function will return <code>undefined</code> instead of the unpurified element.
+		</p>
+		
+		<p>
+			The developer should instead add explicit returns in all branches: 
+		</p>
+		
+		<sample language="javascript">
+			var arr2 = arr.map(function (el) {
+				if (pred(el)) {
+					return purify(el);				
+				} else {
+					return el;
+				}
+			});
+		</sample>
+	</example>
+	
+	
+	
+	<!-- What are some representative examples? Explain them and how they can be fixed. -->
+	<example>
+		<p>
+			Another common use for methods like <code>map</code> is to call some side effecting
+			function on each element of a list. For example:
+		</p>
+		
+		<sample language="javascript">
+			arr.map(function (el) {
+				if (pred(el)) {
+					arr2.push(el)
+				}
+			});
+		</sample>
+		
+		<p>
+			In cases like this, the appropriate thing to do is replace the <code>map</code>
+			method with the <code>forEach</code> method:
+		</p>
+		
+		<sample language="javascript">
+			arr.forEach(function (el) {
+				if (pred(el)) {
+					arr2.push(el)
+				}
+			});
+		</sample>
+		
+		<p>
+			A secondary indicator that this is the underlying intention is that the use of the
+			method is never actually assigned to anything, as in this example.
+		</p>
+	</example>
+	
+	
+	
+	<!-- What are good places to go if people want to read more? -->
+	<references>
+		<ul>
+			<li>DeepScan: <a href="https://deepscan.io/docs/rules/array-callback-return-missing">ARRAY_CALLBACK_RETURN_MISSING</a></li>
+		</ul>
+	</references>
+</qhelp>
