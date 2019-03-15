@@ -66,7 +66,7 @@ abstract class FormattingFunction extends Function {
    * Gets the character type used in the format string for this function.
    */
   Type getFormatCharType() {
-    result =  
+    result =
       stripTopLevelSpecifiersOnly(
         stripTopLevelSpecifiersOnly(
           getParameter(getFormatParameterIndex()).getType().getUnderlyingType()
