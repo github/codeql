@@ -381,9 +381,7 @@ cached class IRGuardCondition extends Instruction {
 }
 
 private ConditionalBranchInstruction get_branch_for_condition(Instruction guard) {
-  exists(ConditionalBranchInstruction branch|
-    branch.getCondition() = guard
-  )
+  result.getCondition() = guard
   or
   exists(LogicalNotInstruction cond | result = get_branch_for_condition(cond) and cond.getUnary() = guard)
 }
