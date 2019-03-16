@@ -143,3 +143,24 @@ char *testArray5()
 
 	return arr; // GOOD
 }
+
+int *returnThreadLocal() {
+  thread_local int threadLocal;
+  return &threadLocal; // GOOD [FALSE POSITIVE]
+}
+
+int returnDereferenced() {
+  int localInt = 2;
+  int &localRef = localInt;
+  return localRef; // GOOD [FALSE POSITIVE]
+}
+
+typedef unsigned long size_t;
+void *memcpy(void *s1, const void *s2, size_t n);
+
+char *returnAfterCopy() {
+  char localBuf[] = "Data";
+  static char staticBuf[sizeof(localBuf)];
+  memcpy(staticBuf, localBuf, sizeof(staticBuf));
+  return staticBuf; // GOOD [FALSE POSITIVE]
+}
