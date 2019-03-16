@@ -41,7 +41,7 @@ where
     // the address escapes into some expression `pointerToLocal`, which flows
     // in a non-trivial way (one or more steps) to a returned expression.
     exists(Expr pointerToLocal |
-      variableAddressEscapesTree(va, pointerToLocal.getFullyConverted()) and
+      variableAddressEscapesTree(va, pointerToLocal) and
       conservativeDataFlowStep+(
         DataFlow::exprNode(pointerToLocal),
         DataFlow::exprNode(r.getExpr())

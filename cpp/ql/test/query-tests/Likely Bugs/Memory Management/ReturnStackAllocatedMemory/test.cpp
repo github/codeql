@@ -152,7 +152,7 @@ int *returnThreadLocal() {
 int returnDereferenced() {
   int localInt = 2;
   int &localRef = localInt;
-  return localRef; // GOOD [FALSE POSITIVE]
+  return localRef; // GOOD
 }
 
 typedef unsigned long size_t;
@@ -162,5 +162,5 @@ char *returnAfterCopy() {
   char localBuf[] = "Data";
   static char staticBuf[sizeof(localBuf)];
   memcpy(staticBuf, localBuf, sizeof(staticBuf));
-  return staticBuf; // GOOD [FALSE POSITIVE]
+  return staticBuf; // GOOD
 }
