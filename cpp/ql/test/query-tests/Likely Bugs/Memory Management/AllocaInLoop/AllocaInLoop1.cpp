@@ -15,7 +15,7 @@ void *__builtin_alloca(int sz);
 typedef unsigned long size_t;
 
 int printf(const char *restrict format, ...);
-void *memcpy(void *restrict dst, const void *restrict src, size_t len);
+void *memcpy(void *restrict s1, const void *restrict s2, size_t n);
 
 // case 1: alloca directly contained in an unbounded loop
 void foo(const struct vtype* vec, int count) {
