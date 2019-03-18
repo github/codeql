@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+  <p>
+In the Secure Shell (SSH) protocol, host keys are used to verify the identity of
+remote hosts. Accepting unknown host keys may leave the connection open to
+man-in-the-middle attacks.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not accept unknown host keys. For the Paramiko library in particular, avoid
+setting the missing host key policy to either <code>AutoAddPolicy</code> or
+<code>WarningPolicy</code>, as both of these will continue even when the host
+key is unknown. The default <code>RejectPolicy</code> throws an exception when
+unknown host keys are encountered.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example opens a connection to <code>example.com</code> with the
+missing host key policy set to <code>AutoAddPolicy</code>. If the host key
+verification fails, the client will continue to interact with the server, even
+though the connection may be compromised.
+</p>
+<sample src="examples/paramiko_host_key.py" />
+</example>
+
+<references>
+<li>
+Paramiko documentation: <a href="http://docs.paramiko.org/en/2.4/api/client.html?highlight=set_missing_host_key_policy#paramiko.client.SSHClient.set_missing_host_key_policy">set_missing_host_key_policy</a>.
+</li>
+</references>
+</qhelp>
+
