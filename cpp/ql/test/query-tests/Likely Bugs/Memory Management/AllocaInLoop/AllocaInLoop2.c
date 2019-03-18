@@ -2,7 +2,7 @@
 int printf(const char *restrict format, ...);
 int sprintf(char *restrict buf, const char *restrict format, ...);
 typedef unsigned long size_t;
-void *memcpy(void *restrict dst, const void *restrict src, size_t len);
+void *memcpy(void *restrict s1, const void *restrict s2, size_t n);
 void *malloc(size_t sz);
 void free(void *ptr);
 
