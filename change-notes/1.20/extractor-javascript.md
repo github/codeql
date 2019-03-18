@@ -4,7 +4,7 @@
 
 ## Changes to code extraction
 
-* Parallel extraction of JavaScript files (but not TypeScript files) on LGTM is now supported. The `LGTM_THREADS` environment variable can be set to indicate how many files should be extracted in parallel. If this variable is not set, parallel extraction is disabled.
+* Parallel extraction of JavaScript files (but not TypeScript files) on LGTM is now supported. If LGTM is configured to evaluate queries using multiple threads, then JavaScript files are also extracted using multiple threads.
 * Experimental support for [E4X](https://developer.mozilla.org/en-US/docs/Archive/Web/E4X), a legacy language extension developed by Mozilla, is available.
 * Additional [Flow](https://flow.org/) syntax is now supported.
 * [Nullish Coalescing](https://github.com/tc39/proposal-nullish-coalescing) expressions are now supported.
