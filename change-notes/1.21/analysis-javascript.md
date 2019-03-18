@@ -19,5 +19,6 @@
 |--------------------------------|------------------------------|---------------------------------------------------------------------------|
 | Expression has no effect       | Fewer false-positive results | This rule now treats uses of `Object.defineProperty` more conservatively. |
 | Useless assignment to property | Fewer false-positive results | This rule now ignore reads of additional getters. |
+| Arbitrary file write during zip extraction ("Zip Slip") | More results | This rule now considers more libraries, including tar as well as zip. |
 
 ## Changes to QL libraries
