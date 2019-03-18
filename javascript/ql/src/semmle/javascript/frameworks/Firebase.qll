@@ -131,11 +131,11 @@ module Firebase {
     /**
      * Gets a node that is passed as the callback to a `Reference.transaction` call.
      */
-    DataFlow::SourceNode transactionCallback(DataFlow::TypeTracker t) {
+    DataFlow::SourceNode transactionCallback(DataFlow::TypeBackTracker t) {
       t.start() and
       result = ref().getAMethodCall("transaction").getArgument(0).getALocalSource()
       or
-      exists (DataFlow::TypeTracker t2 |
+      exists (DataFlow::TypeBackTracker t2 |
         result = transactionCallback(t2).backtrack(t2, t)
       )
     }
@@ -217,7 +217,7 @@ module Firebase {
   /**
    * Gets a value that will be invoked with a `DataSnapshot` value as its first parameter.
    */
-  DataFlow::SourceNode snapshotCallback(DataFlow::TypeTracker t) {
+  DataFlow::SourceNode snapshotCallback(DataFlow::TypeBackTracker t) {
     t.start() and
     (
       result = any(Database::QueryListenCall call).getCallbackNode().getALocalSource()
@@ -225,7 +225,7 @@ module Firebase {
       result = any(CloudFunctions::RefBuilderListenCall call).getCallbackNode().getALocalSource()
     )
     or
-    exists (DataFlow::TypeTracker t2 |
+    exists (DataFlow::TypeBackTracker t2 |
       result = snapshotCallback(t2).backtrack(t2, t)
     )
   }
