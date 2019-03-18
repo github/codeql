@@ -2,10 +2,16 @@
 
 ## General improvements
 
-The extractor now parses all Python code from a single unified grammar. This means that almost all Python code will be successfully parsed, even if mutually incompatible Python code is present in the same project. This also means that Python code for any version can be correctly parsed on a worker running any other supported version of Python. For example, Python 3.7 code is parsed correctly, even if the installed version of Python is only 3.5.
+### Extractor changes
 
-The constants `MULTILINE` and `VERBOSE` in `re` module, are now understood for Python 3.6 and upward. 
-Removes false positives seen when using Python 3.6, but not when using earlier versions.
+The extractor now parses all Python code from a single unified grammar. This means that almost all Python code will be successfully parsed, even if mutually incompatible Python code is present in the same project. This also means that Python code for any version can be correctly parsed on a worker running any other supported version of Python. For example, Python 3.7 code is parsed correctly, even if the installed version of Python is only 3.5. This will reduce the number of syntax errors found in many projects.
+
+### Regular expression analysis improvements
+
+The Python `re` (regular expressions) module library has a couple of constants called `MULTILINE` and `VERBOSE` which determine the parsing of regular expressions. Python 3.6 changed the implementation of these constants, which resulted in false positive results for some queries. The relevant QL libraries have been updated to support both implementations which will remove false positive results from projects that use Python 3.6 and later versions.
+
+### API improvements
+
 The API has been improved to declutter the global namespace and improve discoverability and readability.
  * New predicates `ModuleObject::named(name)` and `ModuleObject.attr(name)` have been added, allowing more readable access to common objects. For example, `(any ModuleObject m | m.getName() = "sys").getAttribute("exit")` can be replaced with `ModuleObject::named("sys").attr("exit")`
  * The API for accessing builtin functions has been improved. Predicates of the form `theXXXFunction()`, such as `theLenFunction()`, have been deprecated in favour of `Object::builtin(name)`.
