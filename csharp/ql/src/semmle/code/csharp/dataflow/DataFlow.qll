@@ -704,6 +704,7 @@ module DataFlow {
       )
     }
 
+    pragma[nomagic]
     private ControlFlowElement getANonExactScopeChild(ControlFlowElement scope) {
       scope = getAScope(false) and
       result = scope
