@@ -8,3 +8,7 @@
 | tests.cpp:35:36:35:43 | Hello | This argument should be of type 'char *' but is of type 'wchar_t *' |
 | tests.cpp:37:36:37:42 | Hello | This argument should be of type 'char16_t *' but is of type 'char *' |
 | tests.cpp:39:36:39:43 | Hello | This argument should be of type 'char16_t *' but is of type 'wchar_t *' |
+| tests.cpp:42:37:42:44 | Hello | This argument should be of type 'char *' but is of type 'char16_t *' |
+| tests.cpp:43:37:43:44 | Hello | This argument should be of type 'char *' but is of type 'wchar_t *' |
+| tests.cpp:45:37:45:43 | Hello | This argument should be of type 'char16_t *' but is of type 'char *' |
+| tests.cpp:47:37:47:44 | Hello | This argument should be of type 'char16_t *' but is of type 'wchar_t *' |

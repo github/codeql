@@ -37,4 +37,12 @@ void tests() {
 	swprintf(buffer, BUF_SIZE, u"%S", "Hello"); // BAD: expecting char16_t
 	swprintf(buffer, BUF_SIZE, u"%S", u"Hello"); // GOOD
 	swprintf(buffer, BUF_SIZE, u"%S", L"Hello"); // BAD: expecting char16_t
+
+	swprintf(buffer, BUF_SIZE, u"%hs", "Hello"); // GOOD
+	swprintf(buffer, BUF_SIZE, u"%hs", u"Hello"); // BAD: expecting char
+	swprintf(buffer, BUF_SIZE, u"%hs", L"Hello"); // BAD: expecting char
+
+	swprintf(buffer, BUF_SIZE, u"%ls", "Hello"); // BAD: expecting char16_t
+	swprintf(buffer, BUF_SIZE, u"%ls", u"Hello"); // GOOD
+	swprintf(buffer, BUF_SIZE, u"%ls", L"Hello"); // BAD: expecting char16_t
 }
