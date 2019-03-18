@@ -14,7 +14,7 @@ The Python `re` (regular expressions) module library has a couple of constants c
 
 The API has been improved to declutter the global namespace and improve discoverability and readability.
  * New predicates `ModuleObject::named(name)` and `ModuleObject.attr(name)` have been added, allowing more readable access to common objects. For example, `(any ModuleObject m | m.getName() = "sys").getAttribute("exit")` can be replaced with `ModuleObject::named("sys").attr("exit")`
- * The API for accessing builtin functions has been improved. Predicates of the form `theXXXFunction()`, such as `theLenFunction()`, have been deprecated in favour of `Object::builtin(name)`.
+ * The API for accessing builtin functions has been improved. Predicates of the form `theXXXFunction()`, such as `theLenFunction()`, have been deprecated in favor of `Object::builtin(name)`.
  * A configuration based API has been added for writing data flow and taint tracking queries. This is provided as a convenience for query authors who have written data flow or taint tracking queries for other languages, so they can use a similar format of query across multiple languages.
 
 ## New queries
