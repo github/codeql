@@ -18,3 +18,6 @@ WebAssembly.compile(document.location.hash);
 
 // NOT OK
 WebAssembly.compileStreaming(document.location.hash);
+
+// NOT OK
+eval(atob(document.location.hash.substring(1)));

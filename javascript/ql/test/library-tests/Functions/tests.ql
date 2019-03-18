@@ -14,3 +14,4 @@ import usesArgumentsObject
 import getEnclosingStmt
 import isRestParameter
 import ReturnStmt
+import getAnUndefinedReturn
