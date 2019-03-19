@@ -46,7 +46,11 @@ predicate allocExprOrIndirect(Expr alloc, string kind) {
     alloc.(FunctionCall).getTarget() = rtn.getEnclosingFunction() and
     (
       allocExprOrIndirect(rtn.getExpr(), kind) or
-      allocReaches0(rtn.getExpr(), _, kind)
+      exists(SsaDefinition def, LocalScopeVariable v |
+        // alloc via SSA
+        allocExprOrIndirect(def.getAnUltimateDefiningValue(v), kind) and
+        rtn.getExpr() = def.getAUse(v)
+      )
     )
   )
 }
