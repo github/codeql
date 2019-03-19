@@ -13,20 +13,23 @@ man-in-the-middle attacks.
 
 <recommendation>
 <p>
-Do not accept unknown host keys. For the Paramiko library in particular, avoid
-setting the missing host key policy to either <code>AutoAddPolicy</code> or
-<code>WarningPolicy</code>, as both of these will continue even when the host
-key is unknown. The default <code>RejectPolicy</code> throws an exception when
-unknown host keys are encountered.
+Do not accept unknown host keys. In particular, do not set the default missing
+host key policy for the Paramiko library to either <code>AutoAddPolicy</code> or
+<code>WarningPolicy</code>. Both of these policies continue even when the host
+key is unknown. The default setting of <code>RejectPolicy</code> is secure
+because it throws an exception when it encounters an unknown host key.
 </p>
 </recommendation>
 
 <example>
 <p>
-The following example opens a connection to <code>example.com</code> with the
-missing host key policy set to <code>AutoAddPolicy</code>. If the host key
-verification fails, the client will continue to interact with the server, even
-though the connection may be compromised.
+The following example shows two ways of opening an SSH connection to
+<code>example.com</code>. The first function sets the missing host key policy to
+<code>AutoAddPolicy</code>. If the host key verification fails, the client will
+continue to interact with the server, even though the connection may be
+compromised. The second function sets the host key policy to
+<code>RejectPolicy</code>, and will throw an exception if the host key
+verification fails.
 </p>
 <sample src="examples/paramiko_host_key.py" />
 </example>

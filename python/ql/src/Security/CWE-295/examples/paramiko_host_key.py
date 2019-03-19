@@ -1,9 +1,19 @@
-from paramiko.client import SSHClient, AutoAddPolicy
+from paramiko.client import SSHClient, AutoAddPolicy, RejectPolicy
 
-client = SSHClient()
-client.set_missing_host_key_policy(AutoAddPolicy)
-client.connect("example.com")
+def unsafe_connect():
+    client = SSHClient()
+    client.set_missing_host_key_policy(AutoAddPolicy)
+    client.connect("example.com")
 
-# ... interaction with server
+    # ... interaction with server
 
-client.close()
+    client.close()
+
+def safe_connect():
+    client = SSHClient()
+    client.set_missing_host_key_policy(RejectPolicy)
+    client.connect("example.com")
+
+    # ... interaction with server
+
+    client.close()

@@ -1,10 +1,10 @@
 /**
- * @name Accepting unknown host keys.
+ * @name Accepting unknown SSH host keys when using Paramiko
  * @description Accepting unknown host keys can allow man-in-the-middle attacks.
  * @kind problem
  * @problem.severity error
  * @precision high
- * @id py/missing-host-key-validation
+ * @id py/paramiko-missing-host-key-validation
  * @tags security
  *       external/cwe/cwe-295
  */
@@ -22,11 +22,15 @@ private ClassObject unsafe_paramiko_policy(string name) {
     result = theParamikoClientModule().attr(name)
 }
 
-from CallNode call, string name
+from CallNode call, ControlFlowNode arg, string name
 where
     call = theParamikoSSHClientClass()
-        .declaredAttribute("set_missing_host_key_policy")
-        .(FunctionObject)
-        .getACall() and
-    call.getAnArg().refersTo(unsafe_paramiko_policy(name))
+           .lookupAttribute("set_missing_host_key_policy")
+           .(FunctionObject)
+           .getACall() and
+    arg = call.getAnArg() and
+    (
+        arg.refersTo(unsafe_paramiko_policy(name)) or
+        arg.refersTo(_, unsafe_paramiko_policy(name), _)
+    )
 select call, "Setting missing host key policy to " + name + " may be unsafe."
