@@ -11,6 +11,7 @@ Removes false positives seen when using Python 3.6, but not when using earlier v
 The API has been improved to declutter the global namespace and improve discoverability and readability.
  * New predicates `ModuleObject::named(name)` and `ModuleObject.attr(name)` have been added, allowing more readable access to common objects. For example, `(any ModuleObject m | m.getName() = "sys").getAttribute("exit")` can be replaced with `ModuleObject::named("sys").attr("exit")`
  * The API for accessing builtin functions has been improved. Predicates of the form `theXXXFunction()`, such as `theLenFunction()`, have been deprecated in favour of `Object::builtin(name)`.
+ * A configuration based API has been added for writing data flow and taint tracking queries. This is provided as a convenience for query authors who have written data flow or taint tracking queries for other languages, so they can use a similar format of query across multiple languages.
 
  ## New queries
 
@@ -30,6 +31,7 @@ The API has been improved to declutter the global namespace and improve discover
 | Comparison using is when operands support \_\_eq\_\_ (`py/comparison-using-is`) | Fewer false positive results | Results where one of the objects being compared is an enum member are no longer reported. |
 | Modification of parameter with default (`py/modification-of-default-value`) | More true positive results | Instances where the mutable default value is mutated inside other functions are now also reported. |
 | Mutation of descriptor in \_\_get\_\_ or \_\_set\_\_ method (`py/mutable-descriptor`) | Fewer false positive results | Results where the mutation does not occur when calling one of the  `__get__`, `__set__` or `__delete__` methods are no longer reported. |
+| Redundant comparison (`py/redundant-comparison`) | Fewer false positive results | Results in chained comparisons are no longer reported. |
 | Unused import (`py/unused-import`) | Fewer false positive results | Results where the imported module is used in a `doctest` string are no longer reported. |
 | Unused import (`py/unused-import`) | Fewer false positive results | Results where the imported module is used in a type-hint comment are no longer reported. |
 

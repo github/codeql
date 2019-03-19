@@ -95,6 +95,14 @@ predicate in_raises_test(Expr e) {
     )
 }
 
+/** Holds if expression has the form of a Python 2 `print >> out, ...` statement */
+predicate python2_print(Expr e) {
+    e.(BinaryExpr).getLeft().(Name).getId() = "print" and
+    e.(BinaryExpr).getOp() instanceof RShift
+    or
+    python2_print(e.(Tuple).getElt(0))
+}
+
 predicate no_effect(Expr e) {
     not e instanceof StrConst and
     not ((StrConst)e).isDocString() and
@@ -107,7 +115,8 @@ predicate no_effect(Expr e) {
         not maybe_side_effecting_attribute(sub)
     ) and
     not in_notebook(e) and
-    not in_raises_test(e)
+    not in_raises_test(e) and
+    not python2_print(e)
 }
 
 from ExprStmt stmt

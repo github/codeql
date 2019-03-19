@@ -13,4 +13,4 @@ We welcome contributions to our standard library and standard checks. Do you hav
 
 ## License
 
-The LGTM queries are licensed under [Apache License 2.0](LICENSE) by [Semmle](https://semmle.com).
+The QL queries in this repository are licensed under [Apache License 2.0](LICENSE) by [Semmle](https://semmle.com).
