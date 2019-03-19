@@ -59,7 +59,14 @@
 	
 	
 	<!-- What are some test case examples? Positive and Negative cases -->
-    <sample src="examples/ArrayCallbackDoesntReturnValue/TestCases.js" />
+	<example>
+		<p>
+			The following source code can be used to test the different cases. The Bad Cases
+			should be found by the query, while the Good Cases should not.
+		</p>
+    	
+    	<sample src="examples/ArrayCallbackDoesntReturnValue/TestCases.js" />
+    </example>
     
     
     
@@ -116,8 +123,6 @@
 	
 	<!-- What are good places to go if people want to read more? -->
 	<references>
-		<ul>
-			<li>DeepScan: <a href="https://deepscan.io/docs/rules/array-callback-return-missing">ARRAY_CALLBACK_RETURN_MISSING</a></li>
-		</ul>
+		<li>DeepScan: <a href="https://deepscan.io/docs/rules/array-callback-return-missing">ARRAY_CALLBACK_RETURN_MISSING</a></li>
 	</references>
 </qhelp>
