@@ -211,7 +211,7 @@ private string moduleNameFromBase(Container file) {
     file instanceof File and result = file.getStem()
 }
 
-private string moduleNameFromFile(Container file) {
+string moduleNameFromFile(Container file) {
     exists(string basename |
         basename = moduleNameFromBase(file) and
         legalShortName(basename)
