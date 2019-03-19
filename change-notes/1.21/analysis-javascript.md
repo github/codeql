@@ -12,6 +12,10 @@
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| foreach-callback-returns-value                | correctness                                          | Find cases where a callback argument to `forEach` returns a value, despite `forEach` discarding all such values.                                                            |
+| array-callback-doesnt-return-value            | correctness                                          | Find cases where an array method that expects a callback argument to return a value is given a callback which doesn't return a value.                                       |
+| missing-return-value-gets-used                | correctness                                          | Find cases where a function application of a function which doesn't return a value is used as if the return value of the function matters.                                  |
+
 
 ## Changes to existing queries
 
