@@ -1,0 +1,1 @@
+var foundAnElement = arr.some(predicate);

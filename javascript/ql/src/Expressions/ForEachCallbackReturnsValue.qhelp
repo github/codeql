@@ -64,67 +64,7 @@
 			should be found by the query, while the Good Cases should not.
 		</p>
 		
-		<sample language="javascript">///////////////
-//             //
-//  BAD CASES  //
-//             //
-/////////////////
-
-
-// Application w/ directly referenced functions
-
-[].forEach(function (x) { return 1; });
-Array.prototype.forEach.apply([], [function (x) { return 1; }]);
-Array.prototype.forEach.call([], function (x) { return 1; });
-
-[].forEach(x => 1);
-Array.prototype.forEach.apply([], [x => 1]);
-Array.prototype.forEach.call([], x => 1);
-
-
-// Application w/ indirectly referenced functions
-
-var f0 = function (x) { return 1; };
-[].forEach(f0);
-Array.prototype.forEach.apply([], [f0]);
-Array.prototype.forEach.call([], f0);
-
-var f1 = x => 1;
-[].forEach(f1);
-Array.prototype.forEach.apply([], [f1]);
-Array.prototype.forEach.call([], f1);
-
-
-
-
-//////////////////
-//              //
-//  GOOD CASES  //
-//              //
-//////////////////
-
-//Application w/ directly referenced functions
-
-[].forEach(function (x) { return; });
-Array.prototype.forEach.apply([], [function (x) { return; }]);
-Array.prototype.forEach.call([], function (x) { return; });
-
-[].forEach(x => { return; });
-Array.prototype.forEach.apply([], [x => { return; }]);
-Array.prototype.forEach.call([], x => { return; });
-
-
-// Application w/ indirectly referenced functions
-
-var f2 = function (x) { return; };
-[].forEach(f2);
-Array.prototype.forEach.apply([], [f2]);
-Array.prototype.forEach.call([], f2);
-
-var f3 = x => { return; };
-[].forEach(f3);
-Array.prototype.forEach.apply([], [f3]);
-Array.prototype.forEach.call([], f3);</sample>
+		<sample src="examples/ForEachCallbackReturnsValue/TestCases.js" />
 	
 	</example>
 	
@@ -155,15 +95,7 @@ Array.prototype.forEach.call([], f3);</sample>
 			initialize the flag external to the loop, and only flip it internally: 
 		</p>
 		
-		<sample language="javascript">
-			var foundAnElement = false;
-			
-			arr.forEach(function (el) {
-				if (predicate(el)) {
-					foundAnElement = true;					
-				}
-			});
-		</sample>
+		<sample src="examples/ForEachCallbackReturnsValue/RepresentativeExample1.js" />
 		
 		<p>
 			This example also reveals other kinds of conceptual errors that may be at work.
@@ -178,44 +110,20 @@ Array.prototype.forEach.call([], f3);</sample>
 			one such as <code>some</code>:
 		</p>
 		
-		<sample language="javascript">
-			var foundAnElement = arr.some(predicate);
-		</sample>
+		<sample src="examples/ForEachCallbackReturnsValue/RepresentativeExample2.js" />
 		
 		<p>
 			Or to define a custom reducer:
 		</p>
 		
-		<sample language="javascript">
-			Array.prototype.anySatisfiers = function (pred) {
-				for (var i = 0; i < this.length; i++) {
-					if (pred(this[i])) {
-						return true;
-					}
-				}
-				
-				return false;
-			}
-			
-			var foundAnElement = arr.anySatisfiers(pred);
-		</sample>
+		<sample src="examples/ForEachCallbackReturnsValue/RepresentativeExample3.js" />
 		
 		<p>
 			An even deeper conceptual error is using the inner return as an attempt to return
 			an enclosing function. For example, consider this variation:
 		</p>
 		
-		<sample language="javascript">
-			function anySatisfiers(arr) {
-				arr.forEach(function (el) {
-					if (predicate(el)) {
-						return true;					
-					}
-				});
-				
-				return false;
-			}
-		</sample>
+		<sample src="examples/ForEachCallbackReturnsValue/RepresentativeExample4.js" />
 		
 		<p>
 			Here, the intention is that the inner <code>return true</code> will cause the whole
@@ -223,17 +131,7 @@ Array.prototype.forEach.call([], f3);</sample>
 			corresponding for loop implementation:
 		</p>
 		
-		<sample language="javascript">
-			function anySatisfiers(arr)
-				for (var el in arr) {
-					if (predicate(el)) {
-						return true;					
-					}
-				}
-				
-				return false;
-			}
-		</sample>
+		<sample src="examples/ForEachCallbackReturnsValue/RepresentativeExample5.js" />
 		
 		<p>
 			However, this is incorrect: the inner <code>return true</code> causes the
@@ -241,19 +139,7 @@ Array.prototype.forEach.call([], f3);</sample>
 			<code>anySatisfiers</code>. Instead, the flag method would be required:
 		</p>
 		
-		<sample language="javascript">
-			function anySatisfiers(arr) {
-				var foundAnElement = false;
-				
-				arr.forEach(function (el) {
-					if (predicate(el)) {
-						foundAnElement = true;			
-					}
-				});
-				
-				return foundAnElement;
-			}
-		</sample>
+		<sample src="examples/ForEachCallbackReturnsValue/RepresentativeExample6.js" />
 		
 		<p>
 			Which should be chosen depends on the intended meaning of the code. Some, such as
