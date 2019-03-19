@@ -183,7 +183,7 @@ module Firebase {
       result = database(_)
     }
     
-    /** Gets a dataflow node holding a `RefBuilder` object. */
+    /** Gets a data flow node holding a `RefBuilder` object. */
     DataFlow::SourceNode refBuilder(DataFlow::TypeTracker t) {
       t.start() and
       result = database().getAMethodCall("ref")
@@ -193,7 +193,7 @@ module Firebase {
       )
     }
 
-    /** Gets a dataflow node holding a `RefBuilder` object. */
+    /** Gets a data flow node holding a `RefBuilder` object. */
     DataFlow::SourceNode ref() {
       result = refBuilder(_)
     }
@@ -206,7 +206,7 @@ module Firebase {
       }
   
       /**
-       * Gets the dataflow node holding the listener callback.
+       * Gets the data flow node holding the listener callback.
        */
       DataFlow::Node getCallbackNode() {
         result = getArgument(0)
