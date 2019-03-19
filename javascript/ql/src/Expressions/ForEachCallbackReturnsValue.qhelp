@@ -203,8 +203,6 @@ Array.prototype.forEach.call([], f3);</sample>
 				return false;
 			}
 			
-			...
-			
 			var foundAnElement = arr.anySatisfiers(pred);
 		</sample>
 		
