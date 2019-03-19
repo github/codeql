@@ -8,10 +8,8 @@ void test() {
   declared_void(); // GOOD
   declared_with(1); // GOOD
   
-  declared_ellipsis(); // GOOD
-  declared_ellipsis(2);  // GOOD
-
-  undeclared(1); // GOOD
+  undeclared();  // GOOD
+  undeclared(1); // BAD
   
   not_yet_declared1(1); // BAD
   not_yet_declared2(1); // GOOD

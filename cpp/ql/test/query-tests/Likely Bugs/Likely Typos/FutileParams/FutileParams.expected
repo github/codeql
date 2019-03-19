@@ -1,4 +1,6 @@
-| test.c:7:3:7:16 | call to declared_empty |
-| test.c:16:3:16:19 | call to not_yet_declared1 |
-| test.c:19:3:19:29 | call to declared_empty_defined_with |
-| test.c:24:3:24:29 | call to declared_empty_defined_with |
+| test.c:7:3:7:16 | call to declared_empty | This call has arguments, but $@ is not declared with any parameters. | test.c:1:6:1:19 | declared_empty | declared_empty |
+| test.c:12:3:12:12 | call to undeclared | This call has arguments, but $@ is not declared with any parameters. | test.c:11:3:11:3 | undeclared | undeclared |
+| test.c:14:3:14:19 | call to not_yet_declared1 | This call has arguments, but $@ is not declared with any parameters. | test.c:14:3:14:3 | not_yet_declared1 | not_yet_declared1 |
+| test.c:14:3:14:19 | call to not_yet_declared1 | This call has arguments, but $@ is not declared with any parameters. | test.c:25:6:25:22 | not_yet_declared1 | not_yet_declared1 |
+| test.c:17:3:17:29 | call to declared_empty_defined_with | This call has arguments, but $@ is not declared with any parameters. | test.c:27:6:27:32 | declared_empty_defined_with | declared_empty_defined_with |
+| test.c:22:3:22:29 | call to declared_empty_defined_with | This call has arguments, but $@ is not declared with any parameters. | test.c:27:6:27:32 | declared_empty_defined_with | declared_empty_defined_with |
