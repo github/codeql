@@ -33,7 +33,7 @@ module Firebase {
       result = initApp(t2).track(t2, t)
     )
   }
-  
+
   /**
    * Gets a reference to a Firebase app, either the `firebase` object or an
    * app created explicitly with `initializeApp()`.
@@ -43,7 +43,7 @@ module Firebase {
   }
 
   module Database {
-  
+
     /** Gets a reference to a Firebase database object, such as `firebase.database()`. */
     private DataFlow::SourceNode database(DataFlow::TypeTracker t) {
       result = app().getAMethodCall("database") and t.start()
@@ -52,12 +52,12 @@ module Firebase {
         result = database(t2).track(t2, t)
       )
     }
-  
+
     /** Gets a reference to a Firebase database object, such as `firebase.database()`. */
     DataFlow::SourceNode database() {
       result = database(_)
     }
-  
+
     /** Gets a node that refers to a `Reference` object, such as `firebase.database().ref()`. */
     DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
@@ -84,12 +84,12 @@ module Firebase {
         result = ref(t2).track(t2, t)
       )
     }
-  
+
     /** Gets a node that refers to a `Reference` object, such as `firebase.database().ref()`. */
     DataFlow::SourceNode ref() {
       result = ref(_)
     }
-  
+
     /** Gets a node that refers to a `Query` or `Reference` object. */
     DataFlow::SourceNode query(DataFlow::TypeTracker t) {
       t.start() and
@@ -108,12 +108,12 @@ module Firebase {
         result = query(t2).track(t2, t)
       )
     }
-  
+
     /** Gets a node that refers to a `Query` or `Reference` object. */
     DataFlow::SourceNode query() {
       result = query(_)
     }
-    
+
     /**
      * A call of form `query.on(...)` or `query.once(...)`.
      */
@@ -122,7 +122,7 @@ module Firebase {
         this = query().getAMethodCall() and
         (getMethodName() = "on" or getMethodName() = "once")
       }
-  
+
       /**
        * Gets the argument in which the callback is passed.
        */
@@ -130,7 +130,7 @@ module Firebase {
         result = getArgument(1)
       }
     }
-    
+
     /**
      * Gets a node that is passed as the callback to a `Reference.transaction` call.
      */
@@ -142,7 +142,7 @@ module Firebase {
         result = transactionCallback(t2).backtrack(t2, t)
       )
     }
-  
+
     /**
      * Gets a node that is passed as the callback to a `Reference.transaction` call.
      */
@@ -165,7 +165,7 @@ module Firebase {
         result = namespace(t2).track(t2, t)
       )
     }
-    
+
     /** Gets a reference to the Cloud Functions namespace. */
     DataFlow::SourceNode namespace() {
       result = namespace(_)
@@ -185,7 +185,7 @@ module Firebase {
     DataFlow::SourceNode database() {
       result = database(_)
     }
-    
+
     /** Gets a data flow node holding a `RefBuilder` object. */
     DataFlow::SourceNode refBuilder(DataFlow::TypeTracker t) {
       t.start() and
@@ -207,7 +207,7 @@ module Firebase {
         this = ref().getAMethodCall() and
         getMethodName() = "on" + any(string s)
       }
-  
+
       /**
        * Gets the data flow node holding the listener callback.
        */
@@ -216,7 +216,7 @@ module Firebase {
       }
     }
   }
-  
+
   /**
    * Gets a value that will be invoked with a `DataSnapshot` value as its first parameter.
    */
