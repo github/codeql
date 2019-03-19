@@ -14,6 +14,8 @@ import cpp
 
 from FunctionCall fc, Function f
   where f = fc.getTarget() and not f.isVarargs()
+  /* There must be a zero-parameter declaration */
+  and exists ( FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() | fde.getNumberOfParameters() = 0)
   /* There must be a mismatch between number of call arguments and number of parameters in some
    * non-implicit declaration of Function f
    */
