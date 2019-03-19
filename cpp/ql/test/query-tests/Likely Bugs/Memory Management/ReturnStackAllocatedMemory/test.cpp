@@ -164,3 +164,28 @@ char *returnAfterCopy() {
   memcpy(staticBuf, localBuf, sizeof(staticBuf));
   return staticBuf; // GOOD
 }
+
+void *conversionBeforeDataFlow() {
+  int myLocal;
+  void *pointerToLocal = (void *)&myLocal; // has conversion
+  return pointerToLocal; // BAD [NOT DETECTED]
+}
+
+void *arrayConversionBeforeDataFlow() {
+  int localArray[4];
+  int *pointerToLocal = localArray; // has conversion
+  return pointerToLocal; // BAD [NOT DETECTED]
+}
+
+int &dataFlowThroughReference() {
+  int myLocal;
+  int &refToLocal = myLocal; // has conversion
+  return refToLocal; // BAD [NOT DETECTED]
+}
+
+int *&conversionInFlow() {
+  int myLocal;
+  int *p = &myLocal;
+  int *&pRef = p; // has conversion in the middle of data flow
+  return pRef; // BAD [MISLEADING ALERT MESSAGE]
+}
