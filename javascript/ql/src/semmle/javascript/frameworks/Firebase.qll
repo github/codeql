@@ -123,6 +123,9 @@ module Firebase {
         (getMethodName() = "on" or getMethodName() = "once")
       }
   
+      /**
+       * Gets the argument in which the callback is passed.
+       */
       DataFlow::Node getCallbackNode() {
         result = getArgument(1)
       }
