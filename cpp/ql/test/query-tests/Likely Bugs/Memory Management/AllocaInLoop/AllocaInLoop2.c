@@ -9,7 +9,7 @@ void free(void *ptr);
 struct vtype { int i1, i2; };
 extern int w1, w2;
 
-void *_builtin_alloca(int sz);
+void *_builtin_alloca(unsigned long long sz);
 #define alloca __builtin_alloca
 
 // We forward-declare the Microsoft routines

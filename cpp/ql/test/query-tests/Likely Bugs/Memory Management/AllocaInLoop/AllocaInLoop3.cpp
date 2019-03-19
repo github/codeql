@@ -9,7 +9,7 @@
 int sprintf(char *restrict buf, const char *restrict format, ...);
 char * strdup(const char *restrict str1);
 
-void *__builtin_alloca(int sz);
+void *__builtin_alloca(unsigned long long sz);
 #define alloca __builtin_alloca
 
 // case 1: a GNU c/c++ lambda with an alloca in it

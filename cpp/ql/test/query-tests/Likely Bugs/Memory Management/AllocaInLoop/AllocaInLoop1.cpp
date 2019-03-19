@@ -10,7 +10,7 @@ extern int w1, w2;
 #define restrict __restrict__
 #endif
 
-void *__builtin_alloca(int sz);
+void *__builtin_alloca(unsigned long long sz);
 #define alloca __builtin_alloca
 typedef unsigned long size_t;
 
