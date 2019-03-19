@@ -27,7 +27,6 @@ alwaysNonNull
 | System.Text.Encoder System.Text.ASCIIEncoding.GetEncoder() |
 | System.Text.Encoder System.Text.Encoding.GetEncoder() |
 | System.Text.Encoder System.Text.EncodingNLS.GetEncoder() |
-| System.Text.Encoder System.Text.OSEncoding.GetEncoder() |
 | System.Text.Encoder System.Text.UTF7Encoding.GetEncoder() |
 | System.Text.Encoder System.Text.UTF8Encoding.GetEncoder() |
 | System.Text.Encoder System.Text.UTF32Encoding.GetEncoder() |

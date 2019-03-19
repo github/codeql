@@ -2,7 +2,7 @@ import cil
 import semmle.code.cil.CallableReturns
 
 predicate relevantMethod(CIL::Method m) {
-  m.getName() = "GetEncoder"
+  m.getName() = "GetEncoder" and not m.getDeclaringType().getName() = "OSEncoding"
   or
   m.getName() = "get_Item"
   or
