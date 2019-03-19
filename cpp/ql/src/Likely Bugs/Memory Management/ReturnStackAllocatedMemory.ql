@@ -22,7 +22,24 @@ import semmle.code.cpp.dataflow.DataFlow
  */
 predicate conservativeDataFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
   DataFlow::localFlowStep(n1, n2) and
-  not n2.asExpr() instanceof FieldAccess
+  not n2.asExpr() instanceof FieldAccess and
+  not hasNontrivialConversion(n2.asExpr())
+}
+
+/**
+ * Holds if `e` has a conversion that changes it from lvalue to pointer or
+ * back. As the data-flow library does not support conversions, we cannot track
+ * data flow through such expressions.
+ */
+predicate hasNontrivialConversion(Expr e) {
+  e instanceof Conversion and not
+  (
+    e instanceof Cast
+    or
+    e instanceof ParenthesisExpr
+  )
+  or
+  hasNontrivialConversion(e.getConversion())
 }
 
 from LocalScopeVariable var, VariableAccess va, ReturnStmt r
@@ -39,9 +56,10 @@ where
     or
     // The data flow library doesn't support conversions, so here we check that
     // the address escapes into some expression `pointerToLocal`, which flows
-    // in a non-trivial way (one or more steps) to a returned expression.
+    // in a one or more steps to a returned expression.
     exists(Expr pointerToLocal |
       variableAddressEscapesTree(va, pointerToLocal.getFullyConverted()) and
+      not hasNontrivialConversion(pointerToLocal) and
       conservativeDataFlowStep+(
         DataFlow::exprNode(pointerToLocal),
         DataFlow::exprNode(r.getExpr())

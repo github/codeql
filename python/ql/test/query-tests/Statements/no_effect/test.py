@@ -133,3 +133,7 @@ def do_action(action):
         stop()
     else:
         raise ValueError(action)
+
+#Python 2 print
+print >> out, message
+

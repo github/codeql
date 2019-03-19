@@ -14,6 +14,6 @@ Note that where there are several versions or dialects of a language, the suppor
 .. container:: footnote-group
 
     .. [1] The best results are achieved with COBOL code that stays close to the ANSI 85 standard.  
-    .. [2] Java 11 refers to the language features used. Builds that execute on Java 6 or higher can be analyzed.
+    .. [2] Builds that execute on Java 6 to 11 can be analyzed. The analysis understands Java 11 language features.
     .. [3] JSX and Flow code, YAML, JSON, and HTML files may also be analyzed with JavaScript files. 
     .. [4] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.   
