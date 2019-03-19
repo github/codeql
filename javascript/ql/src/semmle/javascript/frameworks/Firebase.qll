@@ -59,7 +59,7 @@ module Firebase {
     }
 
     /** Gets a node that refers to a `Reference` object, such as `firebase.database().ref()`. */
-    DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
       (
         exists (string name | result = database().getAMethodCall(name) |
@@ -91,7 +91,7 @@ module Firebase {
     }
 
     /** Gets a node that refers to a `Query` or `Reference` object. */
-    DataFlow::SourceNode query(DataFlow::TypeTracker t) {
+    private DataFlow::SourceNode query(DataFlow::TypeTracker t) {
       t.start() and
       (
         result = ref(t) // a Reference can be used as a Query
@@ -134,7 +134,7 @@ module Firebase {
     /**
      * Gets a node that is passed as the callback to a `Reference.transaction` call.
      */
-    DataFlow::SourceNode transactionCallback(DataFlow::TypeBackTracker t) {
+    private DataFlow::SourceNode transactionCallback(DataFlow::TypeBackTracker t) {
       t.start() and
       result = ref().getAMethodCall("transaction").getArgument(0).getALocalSource()
       or
@@ -157,7 +157,7 @@ module Firebase {
    */
   module CloudFunctions {
     /** Gets a reference to the Cloud Functions namespace. */
-    DataFlow::SourceNode namespace(DataFlow::TypeTracker t) {
+    private DataFlow::SourceNode namespace(DataFlow::TypeTracker t) {
       t.start() and
       result = DataFlow::moduleImport("firebase-functions")
       or
@@ -172,7 +172,7 @@ module Firebase {
     }
 
     /** Gets a reference to a Cloud Functions database object. */
-    DataFlow::SourceNode database(DataFlow::TypeTracker t) {
+    private DataFlow::SourceNode database(DataFlow::TypeTracker t) {
       t.start() and
       result = namespace().getAPropertyRead("database")
       or
@@ -187,7 +187,7 @@ module Firebase {
     }
 
     /** Gets a data flow node holding a `RefBuilder` object. */
-    DataFlow::SourceNode refBuilder(DataFlow::TypeTracker t) {
+    private DataFlow::SourceNode refBuilder(DataFlow::TypeTracker t) {
       t.start() and
       result = database().getAMethodCall("ref")
       or
@@ -220,7 +220,7 @@ module Firebase {
   /**
    * Gets a value that will be invoked with a `DataSnapshot` value as its first parameter.
    */
-  DataFlow::SourceNode snapshotCallback(DataFlow::TypeBackTracker t) {
+  private DataFlow::SourceNode snapshotCallback(DataFlow::TypeBackTracker t) {
     t.start() and
     (
       result = any(Database::QueryListenCall call).getCallbackNode().getALocalSource()
@@ -244,7 +244,7 @@ module Firebase {
    * Gets a node that refers to a `DataSnapshot` value or a promise or `Change`
    * object containing `DataSnapshot`s.
    */
-  DataFlow::SourceNode snapshot(DataFlow::TypeTracker t) {
+  private DataFlow::SourceNode snapshot(DataFlow::TypeTracker t) {
     t.start() and
     (
       result = snapshotCallback().(DataFlow::FunctionNode).getParameter(0)
