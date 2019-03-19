@@ -168,7 +168,7 @@ char *returnAfterCopy() {
 void *conversionBeforeDataFlow() {
   int myLocal;
   void *pointerToLocal = (void *)&myLocal; // has conversion
-  return pointerToLocal; // BAD [NOT DETECTED]
+  return pointerToLocal; // BAD
 }
 
 void *arrayConversionBeforeDataFlow() {
@@ -187,5 +187,5 @@ int *&conversionInFlow() {
   int myLocal;
   int *p = &myLocal;
   int *&pRef = p; // has conversion in the middle of data flow
-  return pRef; // BAD [MISLEADING ALERT MESSAGE]
+  return pRef; // BAD [NOT DETECTED]
 }
