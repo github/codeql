@@ -198,6 +198,21 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
   )
 }
 
+pragma[noinline]
+private predicate sourceVariableMaybeNull(Ssa::SourceVariable v) {
+  defMaybeNull(v.getAnSsaDefinition(), _, _)
+}
+
+pragma[noinline]
+private predicate defNullImpliesStep0(
+  Ssa::SourceVariable v, Ssa::Definition def1, BasicBlock bb1, BasicBlock bb2
+) {
+  sourceVariableMaybeNull(v) and
+  def1.getSourceVariable() = v and
+  def1.isLiveAtEndOfBlock(bb1) and
+  bb2 = bb1.getASuccessor()
+}
+
 /**
  * Holds if `def1` being `null` in basic block `bb1` implies that `def2` might
  * be `null` in basic block `bb2`. The SSA definitions share the same source
@@ -206,10 +221,7 @@ private predicate defMaybeNull(Ssa::Definition def, string msg, Element reason) 
 private predicate defNullImpliesStep(
   Ssa::Definition def1, BasicBlock bb1, Ssa::Definition def2, BasicBlock bb2
 ) {
-  exists(Ssa::SourceVariable v |
-    defMaybeNull(v.getAnSsaDefinition(), _, _) and
-    def1.getSourceVariable() = v
-  |
+  exists(Ssa::SourceVariable v | defNullImpliesStep0(v, def1, bb1, bb2) |
     def2.(Ssa::PseudoDefinition).getAnInput() = def1 and
     bb2 = def2.getBasicBlock()
     or
@@ -219,9 +231,7 @@ private predicate defNullImpliesStep(
       bb2 = def.getBasicBlock()
     )
   ) and
-  def1.isLiveAtEndOfBlock(bb1) and
   not ensureNotNullAt(bb1, _, def1) and
-  bb2 = bb1.getASuccessor() and
   not exists(SuccessorTypes::ConditionalSuccessor s, NullValue nv |
     bb1.getLastNode() = getANullCheck(def1, s, nv).getAControlFlowNode()
   |
