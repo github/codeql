@@ -36,7 +36,7 @@ void foo(const struct vtype* vec, int count) {
                 b1 = (char *)malloc(w1);
             } else {
                 // Allocate the buffer on stack
-                b1 = (char*) alloca(w1);  // [FLAG]
+                b1 = (char*) alloca(w1);  // BAD
                 iter = 1;
             }
         }
@@ -61,7 +61,7 @@ void bar(const struct vtype* vec, int count) {
                 b1 = (char *)malloc(w1);
             } else {
                 // Allocate the buffer on stack
-                b1 = (char*) alloca(w1);  // [DO NOT FLAG]
+                b1 = (char*) alloca(w1);  // GOOD
             }
         }
         } while (0);
@@ -76,7 +76,7 @@ void bar(const struct vtype* vec, int count) {
 // case 3: alloca called outside any loops
 void baz(int count) {
 
-	char *buf = (char *)alloca(32); // [DO NOT FLAG]
+	char *buf = (char *)alloca(32); // GOOD
 	sprintf(buf, "Value is %d\n", count);
 	printf("%s", buf);
 }
@@ -94,7 +94,7 @@ void foo_ms(const struct vtype* vec, int count) {
 				(char *)malloc(w1);
 			} else {
 				// Allocate the buffer on stack
-				b1 = (char*) _alloca(w1);  // [DO NOT FLAG]
+				b1 = (char*) _alloca(w1);  // GOOD
 			}
 		}
 		memcpy(b1, v, w1);
@@ -118,7 +118,7 @@ void bar_ms(const struct vtype* vec, int count) {
 					b1 = (char *)malloc(w1);
 				} else {
 					// Allocate the buffer on stack
-					b1 = (char*) _malloca(w1);  // [DO NOT FLAG]
+					b1 = (char*) _malloca(w1);  // GOOD
 				}
 			}
 		} while (0);
@@ -145,7 +145,7 @@ void baz_ms(const struct vtype* vec, int count) {
 					b1 = (char *)malloc(w1);
 				} else {
 					// Allocate the buffer on stack
-					b1 = (char*) _alloca(w1);  // [DO NOT FLAG]
+					b1 = (char*) _alloca(w1);  // GOOD
 				}
 			}
 			memcpy(b1, v, w1);
