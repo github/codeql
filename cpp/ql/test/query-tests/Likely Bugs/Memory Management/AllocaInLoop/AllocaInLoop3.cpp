@@ -15,7 +15,7 @@ void *__builtin_alloca(int sz);
 // case 1: a GNU c/c++ lambda with an alloca in it
 char *foo(int count) {
 	char *buf = ({
-			char *b = (char *)alloca(32); // [DO NOT FLAG]
+			char *b = (char *)alloca(32); // GOOD
 			sprintf(b, "Value is %d\n", count);
 			b;
 		});
@@ -28,7 +28,7 @@ char *bar(int count) {
 	char *buf;
 	do {
 		buf = ({
-				char *b = (char *)alloca(32); // [DO NOT FLAG]
+				char *b = (char *)alloca(32); // GOOD
 				sprintf(b, "Value is %d\n", count);
 				b;
 			});
@@ -42,7 +42,7 @@ char *baz(int count) {
 	char *buf;
 	do {
 		buf = ({
-				char *b = (char *)alloca(32); // [FLAG]
+				char *b = (char *)alloca(32); // BAD
 				sprintf(b, "Value is %d\n", count);
 				b;
 			});

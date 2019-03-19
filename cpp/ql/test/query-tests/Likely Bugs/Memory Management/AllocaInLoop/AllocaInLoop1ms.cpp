@@ -25,7 +25,7 @@ void foo(const struct vtype* vec, int count) {
 				b1 = new char[w1];
 			} else {
 				// Allocate the buffer on stack
-				b1 = (char*) _alloca(w1);  // [FLAG]
+				b1 = (char*) _alloca(w1);  // BAD
 			}
 		}
 		memcpy(b1, v, w1);
@@ -49,7 +49,7 @@ void bar(const struct vtype* vec, int count) {
 					b1 = new char[w1];
 				} else {
 					// Allocate the buffer on stack
-					b1 = (char*) _malloca(w1);  // [FLAG]
+					b1 = (char*) _malloca(w1);  // BAD
 				}
 			}
 		} while (0);
@@ -76,7 +76,7 @@ void baz(const struct vtype* vec, int count) {
 					b1 = new char[w1];
 				} else {
 					// Allocate the buffer on stack
-					b1 = (char*) _alloca(w1);  // [FLAG]
+					b1 = (char*) _alloca(w1);  // BAD
 				}
 			}
 			memcpy(b1, v, w1);
