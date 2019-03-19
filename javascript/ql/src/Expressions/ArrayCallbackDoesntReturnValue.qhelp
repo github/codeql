@@ -59,7 +59,7 @@
 	
 	
 	<!-- What are some test case examples? Positive and Negative cases -->
-    <source src="examples/ArrayCallbackDoesntReturnValue/TestCases.js" />
+    <sample src="examples/ArrayCallbackDoesntReturnValue/TestCases.js" />
     
     
     
@@ -73,7 +73,7 @@
 			array elements in just those cases when the predicate <code>pred</code> is true.
 		</p>
 		
-		<source src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample0.js" />
+		<sample src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample0.js" />
 		
 		<p>
 			This doesn't function as described, however. Since the conditional has no else
@@ -85,7 +85,7 @@
 			The developer should instead add explicit returns in all branches: 
 		</p>
 		
-		<source src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample1.js" />
+		<sample src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample1.js" />
 	</example>
 	
 	
@@ -97,14 +97,14 @@
 			function on each element of a list. For example:
 		</p>
 		
-		<source src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample2.js" />
+		<sample src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample2.js" />
 		
 		<p>
 			In cases like this, the appropriate thing to do is replace the <code>map</code>
 			method with the <code>forEach</code> method:
 		</p>
 		
-		<source src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample3.js" />
+		<sample src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample3.js" />
 		
 		<p>
 			A secondary indicator that this is the underlying intention is that the use of the
