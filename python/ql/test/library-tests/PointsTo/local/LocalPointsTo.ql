@@ -1,7 +1,7 @@
 
 import python
 import semmle.python.pointsto.PointsTo2
-import semmle.python.objects.TObject
+import semmle.python.objects.ObjectInternal
 
 from ControlFlowNode f, ObjectInternal obj, ControlFlowNode orig
 where exists(ExprStmt s | s.getValue().getAFlowNode() = f) and

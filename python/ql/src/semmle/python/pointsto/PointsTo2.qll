@@ -1,6 +1,6 @@
 import python
 
-private import semmle.python.objects.TObject
+private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.Filters
 private import semmle.python.pointsto.PointsToContext2
 

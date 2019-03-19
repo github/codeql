@@ -1,6 +1,6 @@
 import python
 private import semmle.python.pointsto.PointsTo2
-private import semmle.python.objects.TObject
+private import semmle.python.objects.ObjectInternal
 /*
  * A note on 'cost'. Cost doesn't represent the cost to compute,
  * but (a vague estimate of) the cost to compute per value gained.
