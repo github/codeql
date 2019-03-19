@@ -304,7 +304,7 @@ class File extends Container, @file {
       c.getAFileCompiled() = this and
       (
         c.getAnArgument() = "--microsoft" or
-        c.getAnArgument().matches("%\\\\cl.exe")
+        c.getAnArgument().toLowerCase().replaceAll("\\", "/").matches("%/cl.exe")
       )
     ) or exists(File parent |
       parent.compiledAsMicrosoft() and
