@@ -8,7 +8,7 @@ private import semmle.python.objects.ObjectInternal
  */
 
 private int given_cost() {
-    exists(string depth | 
+    exists(string depth |
         py_flags_versioned("context.cost", depth, _) and
         result = depth.toInt()
     )

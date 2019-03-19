@@ -11,3 +11,12 @@
 | test.py:33:5:33:9 | ControlFlowNode for UnaryExpr | True | test.py:33:5:33:9 | ControlFlowNode for UnaryExpr |
 | test.py:38:9:38:9 | ControlFlowNode for f | False | test.py:20:9:20:13 | ControlFlowNode for False |
 | test.py:41:9:41:9 | ControlFlowNode for t | True | test.py:19:9:19:12 | ControlFlowNode for True |
+| test.py:49:5:49:6 | ControlFlowNode for IntegerLiteral | 17 | test.py:49:5:49:6 | ControlFlowNode for IntegerLiteral |
+| test.py:50:5:50:6 | ControlFlowNode for UnaryExpr | -3 | test.py:50:5:50:6 | ControlFlowNode for UnaryExpr |
+| test.py:52:5:52:9 | ControlFlowNode for Compare | True | test.py:52:5:52:9 | ControlFlowNode for Compare |
+| test.py:57:9:57:9 | ControlFlowNode for w | 2 | test.py:45:9:45:9 | ControlFlowNode for IntegerLiteral |
+| test.py:58:9:58:9 | ControlFlowNode for z | 5 | test.py:48:9:48:9 | ControlFlowNode for IntegerLiteral |
+| test.py:64:9:64:9 | ControlFlowNode for v | 20 | test.py:62:13:62:14 | ControlFlowNode for IntegerLiteral |
+| test.py:66:9:66:9 | ControlFlowNode for v | 10 | test.py:60:13:60:14 | ControlFlowNode for IntegerLiteral |
+| test.py:70:5:70:14 | ControlFlowNode for Str | 'a string' | test.py:70:5:70:14 | ControlFlowNode for Str |
+| test.py:72:9:72:12 | ControlFlowNode for Str | ':)' | test.py:72:9:72:12 | ControlFlowNode for Str |

@@ -101,9 +101,9 @@ module PointsTo2 {
         or
         origin = f and compare_expr_points_to(f, context, value)
         or
-        origin = f and not_points_to(f, context, value)
+        origin = f and unary_points_to(f, context, value)
         or
-        origin = f and value.instantiated(f, context)
+        origin = f and value.introduced(f, context)
         or
         InterModulePointsTo::import_points_to(f, context, value, origin)
         or
@@ -255,7 +255,7 @@ module PointsTo2 {
 
     pragma [nomagic]
     private predicate ssa_node_definition_points_to_unpruned(EssaNodeDefinition def, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
-        parameter_points_to(def, context, value, origin)
+        InterProceduralPointsTo::parameter_points_to(def, context, value, origin)
         or
         assignment_points_to(def, context, value, origin)
         //// TO DO...
@@ -320,32 +320,6 @@ module PointsTo2 {
     }
 
 
-    /** Points-to for parameter. `def foo(param): ...`. */
-    pragma [noinline]
-    private predicate parameter_points_to(ParameterDefinition def, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
-        positional_parameter_points_to(def, context, value, origin)
-        //// TO DO...
-        // or
-        // named_parameter_points_to(def, context, value, origin)
-        // or
-        // default_parameter_points_to(def, context, value, origin)
-        // or
-        // special_parameter_points_to(def, context, value, origin)
-    }
-
-    /** Helper for `parameter_points_to` */
-    pragma [noinline]
-    private predicate positional_parameter_points_to(ParameterDefinition def, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
-        /// To do...
-        //exists(PointsToContext2 caller, ControlFlowNode arg |
-        //    points_to(arg, caller, value, origin) and
-        //    Flow::callsite_argument_transfer(arg, caller, def, context)
-        //)
-        //or
-        not def.isSelf() and not def.getParameter().isVarargs() and not def.getParameter().isKwargs() and
-        context.isRuntime() and value = ObjectInternal::unknown() and origin = def.getDefiningNode()
-    }
-
     /** Holds if the phi-function `phi` refers to `(value, origin)` given the context `context`. */
     pragma [nomagic]
     private predicate ssa_phi_points_to(PhiFunction phi, PointsToContext2 context, ObjectInternal value, CfgOrigin origin) {
@@ -365,13 +339,12 @@ module PointsTo2 {
     pragma [noinline]
     private predicate scope_entry_points_to(ScopeEntryDefinition def, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
         /* Transfer from another scope */
-        /// To do...
-        //exists(EssaVariable var, PointsToContext2 outer, CfgOrigin orig |
-        //    Flow::scope_entry_value_transfer(var, outer, def, context) and
-        //    ssa_variable_points_to(var, outer, value, orig) and
-        //    origin = orig.asCfgNodeOrHere(def.getDefiningNode())
-        //)
-        //or
+        exists(EssaVariable var, PointsToContext2 outer, CfgOrigin orig |
+            InterProceduralPointsTo::scope_entry_value_transfer(var, outer, def, context) and
+            ssa_variable_points_to(var, outer, value, orig) and
+            origin = orig.asCfgNodeOrHere(def.getDefiningNode())
+        )
+        or
         /* Undefined variable */
         exists(Scope scope |
             not def.getVariable().getName() = "__name__" and
@@ -411,48 +384,68 @@ module PointsTo2 {
     private predicate compare_expr_points_to(CompareNode cmp, PointsToContext2 context, ObjectInternal value) {
         exists(ControlFlowNode a, ControlFlowNode b, ObjectInternal o1, ObjectInternal o2 |
             exists(boolean is |
-               equality_test(cmp, a, is, b) and
-               points_to(a, context, o1, _) and
-               points_to(b, context, o2, _) |
-               (o1.isComparable() and o2.isComparable()) and
-               (
-                   o1 = o2 and value = ObjectInternal::bool(is)
-                   or
-                   o1 != o2 and value = ObjectInternal::bool(is.booleanNot())
-               )
-               or
-               (o1.notComparable() or o2.notComparable()) and
-               value = ObjectInternal::bool(_)
-           )
-           // TO DO -- Comparison of int and string constants. Version tests and the like.
-           //or
-           //const_compare(cmp, context, comp, strict)
-           // exists(int comp, boolean strict |
-           //     const_compare(cmp, context, comp, strict)
-           //     |
-           //     comp = -1 and value = theTrueObject()
-           //     or
-           //     comp = 0 and strict = false and value = ObjectInternal::bool(true)
-           //     or
-           //     comp = 0 and strict = true and value = ObjectInternal::bool(false)
-           //     or
-           //     comp = 1 and value = ObjectInternal::bool(false)
-           // )
+                equality_test(cmp, a, is, b) and
+                points_to(a, context, o1, _) and
+                points_to(b, context, o2, _) |
+                (o1.isComparable() and o2.isComparable()) and
+                (
+                    o1 = o2 and value = ObjectInternal::bool(is)
+                    or
+                    o1 != o2 and value = ObjectInternal::bool(is.booleanNot())
+                )
+                or
+                (o1.notComparable() or o2.notComparable()) and
+                value = ObjectInternal::bool(_)
+            )
+            or
+            exists(boolean strict |
+                inequality(cmp, a, b, strict) and
+                points_to(a, context, o1, _) and
+                points_to(b, context, o2, _) |
+                o1.intValue() < o2.intValue() and value = ObjectInternal::bool(true)
+                or 
+                o1.intValue() > o2.intValue() and value = ObjectInternal::bool(false)
+                or
+                o1.intValue() = o2.intValue() and value = ObjectInternal::bool(strict.booleanNot())
+                or
+                o1.strValue() < o2.strValue() and value = ObjectInternal::bool(true)
+                or 
+                o1.strValue() > o2.strValue() and value = ObjectInternal::bool(false)
+                or
+                o1.strValue() = o2.strValue() and value = ObjectInternal::bool(strict.booleanNot())
+            )
            // or
            // value = version_tuple_compare(cmp, context)
         )
     }
 
-    private predicate not_points_to(UnaryExprNode f, PointsToContext2 context, ObjectInternal value) {
-        f.getNode().getOp() instanceof Not and
-        exists(ObjectInternal operand |
+    /** Helper for comparisons. */
+    predicate inequality(CompareNode cmp, ControlFlowNode lesser, ControlFlowNode greater, boolean strict) {
+        exists(Cmpop op |
+            cmp.operands(lesser, op, greater) and op.getSymbol() = "<" and strict = true
+            or
+            cmp.operands(lesser, op, greater) and op.getSymbol() = "<=" and strict = false
+            or
+            cmp.operands(greater, op, lesser) and op.getSymbol() = ">" and strict = true
+            or
+            cmp.operands(greater, op, lesser) and op.getSymbol() = ">=" and strict = false
+        )
+    }
+
+    private predicate unary_points_to(UnaryExprNode f, PointsToContext2 context, ObjectInternal value) {
+        exists(Unaryop op, ObjectInternal operand |
+            op = f.getNode().getOp() and
             points_to(f.getOperand(), context, operand, _)
             |
-            operand.maybe() and value = ObjectInternal::bool(_)
+            op instanceof Not and operand.maybe() and value = ObjectInternal::bool(_)
             or
-            operand.booleanValue() = false and value = ObjectInternal::bool(true)
+            op instanceof Not and operand.booleanValue() = false and value = ObjectInternal::bool(true)
             or
-            operand.booleanValue() = true and value = ObjectInternal::bool(false)
+            op instanceof Not and operand.booleanValue() = true and value = ObjectInternal::bool(false)
+            or
+            op instanceof USub and value = ObjectInternal::fromInt(-operand.intValue())
+            or
+            operand = ObjectInternal::unknown() and value = operand
         )
     }
 
@@ -589,6 +582,122 @@ module InterProceduralPointsTo {
         )
     }
 
+    /** Points-to for parameter. `def foo(param): ...`. */
+    pragma [noinline]
+    predicate parameter_points_to(ParameterDefinition def, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
+        positional_parameter_points_to(def, context, value, origin)
+        or
+        named_parameter_points_to(def, context, value, origin)
+        or
+        default_parameter_points_to(def, context, value, origin)
+        // or
+        // special_parameter_points_to(def, context, value, origin)
+    }
+
+    /** Helper for `parameter_points_to` */
+    pragma [noinline]
+    private predicate positional_parameter_points_to(ParameterDefinition def, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
+        exists(PointsToContext2 caller, ControlFlowNode arg |
+            PointsTo2::points_to(arg, caller, value, origin) and
+            callsite_argument_transfer(arg, caller, def, context)
+        )
+        or
+        not def.isSelf() and not def.getParameter().isVarargs() and not def.getParameter().isKwargs() and
+        context.isRuntime() and value = ObjectInternal::unknown() and origin = def.getDefiningNode()
+    }
+
+
+    /** Helper for `parameter_points_to` */
+    pragma [noinline]
+    private predicate named_parameter_points_to(ParameterDefinition def, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
+        exists(CallNode call, PointsToContext2 caller, PythonFunctionObjectInternal func, string name |
+            context.fromCall(call, func, caller) and
+            def.getParameter() = func.getScope().getArgByName(name) and
+            PointsTo2::points_to(call.getArgByName(name), caller, value, origin)
+        )
+    }
+
+    /** Helper for parameter_points_to */
+    private predicate default_parameter_points_to(ParameterDefinition def, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
+        exists(PointsToContext2 imp | imp.isImport() | PointsTo2::points_to(def.getDefault(), imp, value, origin)) and
+        context_for_default_value(def, context)
+    }
+
+    /** Helper for default_parameter_points_to */
+    pragma [noinline]
+    private predicate context_for_default_value(ParameterDefinition def, PointsToContext2 context) {
+        context.isRuntime()
+        or
+        exists(PointsToContext2 caller, CallNode call, PythonFunctionObjectInternal func, int n |
+            context.fromCall(call, func, caller) and
+            func.getScope().getArg(n) = def.getParameter() and
+            not exists(call.getArg(n)) and
+            not exists(call.getArgByName(def.getParameter().asName().getId())) and
+            not exists(call.getNode().getKwargs()) and
+            not exists(call.getNode().getStarargs())
+        )
+    }
+
+    /** Holds if the `(argument, caller)` pair matches up with `(param, callee)` pair across call. */
+    cached predicate callsite_argument_transfer(ControlFlowNode argument, PointsToContext2 caller, ParameterDefinition param, PointsToContext2 callee) {
+        exists(CallNode call, Function func, int n, int offset |
+            callsite_calls_function(call, caller, func, callee, offset) and
+            argument = call.getArg(n) and
+            param.getParameter() = func.getArg(n+offset)
+        )
+    }
+
+    cached predicate callsite_calls_function(CallNode call, PointsToContext2 caller, Function scope, PointsToContext2 callee, int parameter_offset) {
+        callee.fromCall(call, caller) and
+        exists(ObjectInternal func |
+            PointsTo2::points_to(call.getFunction(), caller, func, _) and
+            func.calleeAndOffset(scope, parameter_offset)
+        )
+    }
+
+    /** Model the transfer of values at scope-entry points. Transfer from `(pred_var, pred_context)` to `(succ_def, succ_context)`. */
+    cached predicate scope_entry_value_transfer(EssaVariable pred_var, PointsToContext2 pred_context, ScopeEntryDefinition succ_def, PointsToContext2 succ_context) {
+        scope_entry_value_transfer_from_earlier(pred_var, pred_context, succ_def, succ_context)
+        // TO DO...
+        //or
+        //callsite_entry_value_transfer(pred_var, pred_context, succ_def, succ_context)
+        //or
+        //pred_context.isImport() and pred_context = succ_context and
+        //class_entry_value_transfer(pred_var, succ_def)
+    }
+
+    /** Helper for `scope_entry_value_transfer`. Transfer of values from a temporally earlier scope to later scope.
+     * Earlier and later scopes are, for example, a module and functions in that module, or an __init__ method and another method. */
+    pragma [noinline]
+    private predicate scope_entry_value_transfer_from_earlier(EssaVariable pred_var, PointsToContext2 pred_context, ScopeEntryDefinition succ_def, PointsToContext2 succ_context) {
+        exists(Scope pred_scope, Scope succ_scope |
+            BaseFlow::scope_entry_value_transfer_from_earlier(pred_var, pred_scope, succ_def, succ_scope) and
+            succ_context.appliesToScope(succ_scope)
+            |
+            succ_context.isRuntime() and succ_context = pred_context
+            or
+            pred_context.isImport() and pred_scope instanceof ImportTimeScope and
+            (succ_context.fromRuntime() or
+            /* A call made at import time, but from another module. Assume this module has been fully imported. */
+            succ_context.isCall() and exists(CallNode call | succ_context.fromCall(call, _) and call.getEnclosingModule() != pred_scope))
+            or
+            /* If predecessor scope is main, then we assume that any global defined exactly once
+             * is available to all functions. Although not strictly true, this gives less surprising
+             * results in practice. */
+            pred_context.isMain() and pred_scope instanceof Module and succ_context.fromRuntime() and
+            exists(Variable v |
+                v = pred_var.getSourceVariable() and
+                not strictcount(v.getAStore()) > 1
+            )
+        )
+        or
+        exists(NonEscapingGlobalVariable var |
+            var = pred_var.getSourceVariable() and var = succ_def.getSourceVariable() and
+            pred_var.getAUse() = succ_context.getRootCall() and pred_context.isImport() and
+            succ_context.appliesToScope(succ_def.getScope())
+        )
+    }
+
 }
 
 /** Gets the `value, origin` that `f` would refer to if it has not been assigned some other value */
@@ -629,6 +738,8 @@ module Conditionals {
         //result = issubclass_test_evaluates_boolean(expr, use, context, val, origin)
         //or
         result = equalityEvaluatesTo(expr, use, context, val, origin)
+        or
+        result = inequalityEvaluatesTo(expr, use, context, val, origin)
         or
         //result = callable_test_evaluates_boolean(expr, use, context, val, origin)
         //or
@@ -674,6 +785,35 @@ module Conditionals {
                 or
                 other.notComparable() and result = maybe()
             )
+        )
+    }
+
+    pragma [noinline]
+    private boolean inequalityEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext2 context, ObjectInternal val, ControlFlowNode origin) {
+        exists(ControlFlowNode r, boolean sense |
+            contains_interesting_expression_within_test(expr, use) |
+            exists(boolean strict, ObjectInternal other |
+                (
+                    PointsTo2::inequality(expr, use, r, strict) and sense = true
+                    or
+                    PointsTo2::inequality(expr, r, use, strict) and sense = false
+                ) and
+                PointsTo2::points_to(use, context, val, origin) and
+                PointsTo2::points_to(r, context, other, _) 
+                |
+                val.intValue() < other.intValue() and result = sense
+                or 
+                val.intValue() > other.intValue() and result = sense.booleanNot()
+                or
+                val.intValue() = other.intValue() and result = strict.booleanXor(sense)
+                or
+                val.strValue() < other.strValue() and result = sense
+                or 
+                val.strValue() > other.strValue() and result = sense.booleanNot()
+                or
+                val.strValue() = other.strValue() and result = strict.booleanXor(sense)
+            )
+
         )
     }
 
