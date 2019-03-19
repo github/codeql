@@ -1,15 +1,15 @@
 // semmle-extractor-options: --clang
 int printf(const char *restrict format, ...);
-int sprintf(char *restrict buf, const char *restrict format, ...);
-typedef unsigned long size_t;
+int sprintf(char *restrict s, const char *restrict format, ...);
+typedef unsigned long long size_t;
 void *memcpy(void *restrict s1, const void *restrict s2, size_t n);
-void *malloc(size_t sz);
+void *malloc(size_t size);
 void free(void *ptr);
 
 struct vtype { int i1, i2; };
 extern int w1, w2;
 
-void *_builtin_alloca(unsigned long long sz);
+void *_builtin_alloca(unsigned long sz);
 #define alloca __builtin_alloca
 
 // We forward-declare the Microsoft routines

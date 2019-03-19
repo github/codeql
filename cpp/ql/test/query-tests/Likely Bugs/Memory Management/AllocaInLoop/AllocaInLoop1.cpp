@@ -10,9 +10,9 @@ extern int w1, w2;
 #define restrict __restrict__
 #endif
 
-void *__builtin_alloca(unsigned long long sz);
+void *__builtin_alloca(unsigned long sz);
 #define alloca __builtin_alloca
-typedef unsigned long size_t;
+typedef unsigned long long size_t;
 
 int printf(const char *restrict format, ...);
 void *memcpy(void *restrict s1, const void *restrict s2, size_t n);
