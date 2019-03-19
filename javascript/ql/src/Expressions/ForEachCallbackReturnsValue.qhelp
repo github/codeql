@@ -141,13 +141,7 @@ Array.prototype.forEach.call([], f3);</sample>
 			predicate holds of any element.
 		</p>
 		
-		<sample language="javascript">
-			var foundAnElement = arr.forEach(function (el) {
-				if (predicate(el)) {
-					return true;					
-				}
-			});
-		</sample>
+		<sample src="examples/ForEachCallbackReturnsValue/RepresentativeExample0.js" />
 		
 		<p>
 			This doesn't function as described, however. Since <code>forEach</code> ignores its
