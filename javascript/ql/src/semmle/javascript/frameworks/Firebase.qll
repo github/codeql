@@ -4,7 +4,7 @@
 import javascript
 
 module Firebase {
-  /** Gets a reference to the firebase API object. */
+  /** Gets a reference to the Firebase API object. */
   private DataFlow::SourceNode firebase(DataFlow::TypeTracker t) {
     t.start() and
     (
@@ -25,7 +25,7 @@ module Firebase {
     result = firebase(_)
   }
 
-  /** Gets a reference to a firebase app created with `initializeApp`. */
+  /** Gets a reference to a Firebase app created with `initializeApp`. */
   private DataFlow::SourceNode initApp(DataFlow::TypeTracker t) {
     result = firebase().getAMethodCall("initializeApp") and t.start()
     or
@@ -35,7 +35,7 @@ module Firebase {
   }
   
   /**
-   * Gets a reference to a firebase app, either the `firebase` object or an
+   * Gets a reference to a Firebase app, either the `firebase` object or an
    * app created explicitly with `initializeApp()`.
    */
   DataFlow::SourceNode app() {
@@ -44,7 +44,7 @@ module Firebase {
 
   module Database {
   
-    /** Gets a reference to a firebase database object, such as `firebase.database()`. */
+    /** Gets a reference to a Firebase database object, such as `firebase.database()`. */
     private DataFlow::SourceNode database(DataFlow::TypeTracker t) {
       result = app().getAMethodCall("database") and t.start()
       or
@@ -53,7 +53,7 @@ module Firebase {
       )
     }
   
-    /** Gets a reference to a firebase database object, such as `firebase.database()`. */
+    /** Gets a reference to a Firebase database object, such as `firebase.database()`. */
     DataFlow::SourceNode database() {
       result = database(_)
     }
