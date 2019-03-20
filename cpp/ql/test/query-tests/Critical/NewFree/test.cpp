@@ -371,3 +371,56 @@ void test12(bool cond)
 		free(z); // GOOD
 	}
 }
+
+// ---
+
+class MyBuffer13
+{
+public:
+	MyBuffer13(int size)
+	{
+		buffer = (char *)malloc(size * sizeof(char));
+	}
+
+	~MyBuffer13()
+	{
+		free(buffer); // GOOD
+	}
+
+	char *getBuffer() // note: this should not be considered an allocation function
+	{
+		return buffer;
+	}
+
+private:
+	char *buffer;
+};
+
+class MyPointer13
+{
+public:
+	MyPointer13(char *_pointer) : pointer(_pointer)
+	{
+	}
+
+	MyPointer13(MyBuffer13 &buffer) : pointer(buffer.getBuffer())
+	{
+	}
+
+	char *getPointer() // note: this should not be considered an allocation function
+	{
+		return pointer;
+	}
+
+private:
+	char *pointer;
+};
+
+void test13()
+{
+	MyBuffer13 myBuffer(100);
+	MyPointer13 myPointer2(myBuffer);
+	MyPointer13 myPointer3(new char[100]);
+
+	delete myPointer2.getPointer(); // GOOD [FALSE POSITIVE]
+}
