@@ -56,7 +56,7 @@ where
     or
     // The data flow library doesn't support conversions, so here we check that
     // the address escapes into some expression `pointerToLocal`, which flows
-    // in a one or more steps to a returned expression.
+    // in one or more steps to a returned expression.
     exists(Expr pointerToLocal |
       variableAddressEscapesTree(va, pointerToLocal.getFullyConverted()) and
       not hasNontrivialConversion(pointerToLocal) and
