@@ -3,7 +3,7 @@ import python
 import semmle.python.security.TaintTracking
 
 private ClassObject theTurboGearsControllerClass() {
-    result = ModuleObject::named("tg").getAttribute("TGController")
+    result = ModuleObject::named("tg").attr("TGController")
 }
 
 
@@ -23,7 +23,7 @@ class TurboGearsControllerMethod extends Function {
         (
             decorator.(CallNode).getFunction().(NameNode).getId() = "expose"
             or
-            decorator.refersTo(_, ModuleObject::named("tg").getAttribute("expose"), _)
+            decorator.refersTo(_, ModuleObject::named("tg").attr("expose"), _)
         )
     }
 
