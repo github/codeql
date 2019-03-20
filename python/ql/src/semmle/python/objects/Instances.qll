@@ -10,7 +10,7 @@ private import semmle.python.types.Builtins
 class InstanceInternal extends TInstance, ObjectInternal {
 
     override string toString() {
-        result = "instance of " + this.getClass().(ClassObjectInternal).getClassDeclaration().getName()
+        result = "instance of " + this.getClass().(ClassObjectInternal).getName()
     }
 
     /** The boolean value of this object, if it has one */

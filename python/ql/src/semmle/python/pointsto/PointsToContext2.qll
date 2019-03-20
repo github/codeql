@@ -174,12 +174,8 @@ class PointsToContext2 extends TPointsToContext {
             this = TCallContext(call, outerContext, _) and
             s = func.getScope()
         )
-        // TO DO...
-        //or
-        //exists(FunctionObject func |
-        //    PointsTo2::Flow::callsite_calls_function(_, _, func, this, _) and
-        //    s = func.getFunction()
-        //)
+        or
+        InterProceduralPointsTo::callsite_calls_function(_, _, s, this, _)
     }
 
     /** Holds if this context can apply to the CFG node `n`. */

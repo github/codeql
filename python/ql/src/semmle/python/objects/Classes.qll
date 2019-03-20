@@ -35,6 +35,9 @@ abstract class ClassObjectInternal extends ObjectInternal {
 
     abstract predicate attribute(string name, ObjectInternal value, CfgOrigin origin);
 
+    boolean isSpecial() {
+        result = Types::getMro(this).isSpecial()
+    }
 }
 
 class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject {
@@ -148,3 +151,55 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
     }
 
 }
+
+
+class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
+
+    override string toString() {
+        none()
+    }
+
+    override ClassDecl getClassDeclaration() {
+        result = Builtin::unknownType()
+    }
+
+    override ObjectInternal getClass() {
+        result = TUnknownClass()
+    }
+
+    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+        none()
+    }
+
+    override predicate isComparable() {
+        none()
+    }
+
+    override predicate notComparable() {
+        any()
+    }
+
+    override Builtin getBuiltin() {
+        none()
+    }
+
+    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown() and
+        callee_for_object(callee, this)
+    }
+
+    override ControlFlowNode getOrigin() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
+    }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        none()
+    }
+
+}
+
+

@@ -73,7 +73,15 @@ newtype TObject =
     or
     TInstance(CallNode instantiation, ClassObjectInternal cls, PointsToContext2 context) {
         PointsTo2::points_to(instantiation.getFunction(), context, cls, _) and
-        normal_class(cls)
+        cls.isSpecial() = false
+    }
+    or
+    TBoundMethod(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext2 context) {
+        exists(ControlFlowNode objnode, string name |
+            objnode = instantiation.getObject(name) and
+            PointsTo2::points_to(objnode, context, self, _) and
+            self.getClass().(ClassObjectInternal).attribute(name, function, _)
+        )
     }
 
 private predicate is_power_2(int n) {
@@ -81,14 +89,6 @@ private predicate is_power_2(int n) {
     exists(int half | is_power_2(half) and n = half*2)
 }
 
-private predicate normal_class(ClassObjectInternal cls) {
-    exists(Builtin bltn |
-        bltn = cls.getBuiltin() |
-        not bltn = Builtin::special(_)
-    )
-    //or
-    //cls.getMro().inheritsFromType(false)
-}
 
 library class ClassDecl extends @py_object {
 
@@ -118,4 +118,25 @@ library class ClassDecl extends @py_object {
         result = this.getClass().getName()
     }
 
+    /** Whether this is a class whose instances we treat specially, rather than as a generic instance.
+     */
+    predicate isSpecial() {
+        exists(string name |
+            this = Builtin::special(name) |
+            not name = "object" and
+            not name = "set" and
+            not name.matches("%Exception") and
+            not name.matches("%Error")
+        )
+    }
+
 }
+
+
+predicate callee_for_object(PointsToContext2 callee, ObjectInternal obj) {
+    exists(CallNode call, PointsToContext2 caller |
+        callee.fromCall(call, caller) and
+        PointsTo2::points_to(call.getFunction(), caller, obj, _)
+    )
+}
+
