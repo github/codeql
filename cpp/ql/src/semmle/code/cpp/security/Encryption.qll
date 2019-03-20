@@ -20,14 +20,17 @@ string hashAlgorithmBlacklist() {
 
 /** A regex for matching strings that look like they contain a blacklisted algorithm */
 string algorithmBlacklistRegex() {
-  // algorithms usually appear in names surrounded by characters that are not
-  // alphabetical characters in the same case. This handles the upper and lower
-  // case cases
-  result = "(^|.*[^A-Z])" + algorithmBlacklist() + "([^A-Z].*|$)"
-  // for lowercase, we want to be careful to avoid being confused by camelCase
-  // hence we require two preceding uppercase letters to be sure of a case switch,
-  // or a preceding non-alphabetic character
-  or result = "(^|.*[A-Z]{2}|.*[^a-zA-Z])" + algorithmBlacklist().toLowerCase() + "([^a-z].*|$)"
+  result =
+    // algorithms usually appear in names surrounded by characters that are not
+    // alphabetical characters in the same case. This handles the upper and lower
+    // case cases
+    "(^|.*[^A-Z])(" + strictconcat(algorithmBlacklist(), "|") + ")([^A-Z].*|$)" +
+    "|" +
+    // for lowercase, we want to be careful to avoid being confused by camelCase
+    // hence we require two preceding uppercase letters to be sure of a case switch,
+    // or a preceding non-alphabetic character
+    "(^|.*[A-Z]{2}|.*[^a-zA-Z])(" + strictconcat(algorithmBlacklist().toLowerCase(), "|") +
+    ")([^a-z].*|$)"
 }
 
 /** A whitelist of algorithms that are known to be secure */
