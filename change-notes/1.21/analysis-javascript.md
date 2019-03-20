@@ -12,6 +12,7 @@
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Array callback doesn't return value (`js/array-callback-doesnt-return-value`) | correctness | Find cases where an array method that expects a callback argument to return a value is given a callback which doesn't return a value. |
 
 ## Changes to existing queries
 
