@@ -17,7 +17,6 @@ import com.semmle.js.ast.INode;
 import com.semmle.js.ast.Identifier;
 import com.semmle.js.ast.IfStatement;
 import com.semmle.js.ast.ImportDeclaration;
-import com.semmle.js.ast.ImportNamespaceSpecifier;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.LabeledStatement;
 import com.semmle.js.ast.LetExpression;
@@ -559,9 +558,7 @@ public class ScopeManager {
 
       @Override
       public Void visit(ImportSpecifier nd, Void c) {
-        return visit(
-            nd.getLocal(),
-            nd instanceof ImportNamespaceSpecifier ? DeclKind.varAndNamespace : DeclKind.all);
+        return visit(nd.getLocal(), DeclKind.all);
       }
 
       @Override
