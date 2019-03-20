@@ -12,6 +12,7 @@
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ForEach callback returns value (`js/foreach-callback-returns-value`) | correctness | Find cases where a callback argument to `forEach` returns a value, despite `forEach` discarding all such values. |
 
 ## Changes to existing queries
 
