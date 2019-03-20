@@ -20,6 +20,7 @@
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Missing return value gets used (`js/missing-return-value-gets-used`) | correctness | Find cases where a callback argument to `forEach` returns a value, despite `forEach` discarding all such values. |
 
 ## Changes to existing queries
 
