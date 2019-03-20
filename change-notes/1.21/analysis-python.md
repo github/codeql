@@ -9,7 +9,7 @@
 ## New queries
   | **Query** | **Tags** | **Purpose** |
   |-----------|----------|-------------|
-  | Accepting unknown SSH host keys when using Paramiko. (`py/paramiko-missing-host-key-validation`) | security, external/cwe/cwe-295 | Finds instances where Paramiko is configured to accept unknown host keys. Results are shown on LGTM by default. |
+  | Accepting unknown SSH host keys when using Paramiko (`py/paramiko-missing-host-key-validation`) | security, external/cwe/cwe-295 | Finds instances where Paramiko is configured to accept unknown host keys. Results are shown on LGTM by default. |
 
 
 ## Changes to existing queries
