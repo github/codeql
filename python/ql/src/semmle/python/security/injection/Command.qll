@@ -83,7 +83,7 @@ class ShellCommand extends TaintSink {
         or
         exists(CallNode call |
             call.getAnArg() = this and
-            call.getFunction().refersTo(any(ModuleObject commands | commands.getName() = "commands"))
+            call.getFunction().refersTo(ModuleObject::named("commands"))
         )
     }
 
