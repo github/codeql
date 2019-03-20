@@ -59,68 +59,14 @@
 	
 	
 	<!-- What are some test case examples? Positive and Negative cases -->
-    <source language="javascript">/////////////////
-//             //
-//  POSITIVES  //
-//             //
-/////////////////
-
-
-// Application w/ a directly referenced callback
-
-[].map(function (x) { return; });
-Array.prototype.map.apply([], [function (x) { return; }]);
-Array.prototype.map.call([], function (x) { return; });
-
-[].map(x => { return; });
-Array.prototype.map.apply([], [x => { return; }]);
-Array.prototype.map.call([], x => { return; });
-
-
-// Application w/ an indirectly referenced callback
-
-var f0 = function(x) { return; };
-[].map(f0);
-Array.prototype.map.apply([], [f0]);
-Array.prototype.map.call([], f0);
-
-var f1 = x => { return; };
-[].map(f1);
-Array.prototype.map.apply([], [f1]);
-Array.prototype.map.call([], f1);
-
-
-
-
-/////////////////
-//             //
-//  NEGATIVES  //
-//             //
-/////////////////
-
-
-// Application w/ a directly referenced callback
-
-[].map(function (x) { return 1; });
-Array.prototype.map.apply([], [function (x) { return 1; }]);
-Array.prototype.map.call([], function (x) { return 1; });
-
-[].map(x => 1);
-Array.prototype.map.apply([], [x => 1]);
-Array.prototype.map.call([], x => 1);
-
-
-// Application w/ an indirectly referenced callback
-
-var f2 = function(x) { return 1; };
-[].map(f2);
-Array.prototype.map.apply([], [f2]);
-Array.prototype.map.call([], f2);
-
-var f3 = x => 1;
-[].map(f3);
-Array.prototype.map.apply([], [f3]);
-Array.prototype.map.call([], f3);</source>
+	<example>
+		<p>
+			The following source code can be used to test the different cases. The Bad Cases
+			should be found by the query, while the Good Cases should not.
+		</p>
+    	
+    	<sample src="examples/ArrayCallbackDoesntReturnValue/TestCases.js" />
+    </example>
     
     
     
@@ -134,13 +80,7 @@ Array.prototype.map.call([], f3);</source>
 			array elements in just those cases when the predicate <code>pred</code> is true.
 		</p>
 		
-		<sample language="javascript">
-			var arr2 = arr.map(function (el) {
-				if (pred(el)) {
-					return purify(el);				
-				}			
-			});
-		</sample>
+		<sample src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample0.js" />
 		
 		<p>
 			This doesn't function as described, however. Since the conditional has no else
@@ -152,15 +92,7 @@ Array.prototype.map.call([], f3);</source>
 			The developer should instead add explicit returns in all branches: 
 		</p>
 		
-		<sample language="javascript">
-			var arr2 = arr.map(function (el) {
-				if (pred(el)) {
-					return purify(el);				
-				} else {
-					return el;
-				}
-			});
-		</sample>
+		<sample src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample1.js" />
 	</example>
 	
 	
@@ -172,26 +104,14 @@ Array.prototype.map.call([], f3);</source>
 			function on each element of a list. For example:
 		</p>
 		
-		<sample language="javascript">
-			arr.map(function (el) {
-				if (pred(el)) {
-					arr2.push(el)
-				}
-			});
-		</sample>
+		<sample src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample2.js" />
 		
 		<p>
 			In cases like this, the appropriate thing to do is replace the <code>map</code>
 			method with the <code>forEach</code> method:
 		</p>
 		
-		<sample language="javascript">
-			arr.forEach(function (el) {
-				if (pred(el)) {
-					arr2.push(el)
-				}
-			});
-		</sample>
+		<sample src="examples/ArrayCallbackDoesntReturnValue/RepresentativeExample3.js" />
 		
 		<p>
 			A secondary indicator that this is the underlying intention is that the use of the
@@ -203,8 +123,6 @@ Array.prototype.map.call([], f3);</source>
 	
 	<!-- What are good places to go if people want to read more? -->
 	<references>
-		<ul>
-			<li>DeepScan: <a href="https://deepscan.io/docs/rules/array-callback-return-missing">ARRAY_CALLBACK_RETURN_MISSING</a></li>
-		</ul>
+		<li>DeepScan: <a href="https://deepscan.io/docs/rules/array-callback-return-missing">ARRAY_CALLBACK_RETURN_MISSING</a></li>
 	</references>
 </qhelp>
