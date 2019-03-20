@@ -19,9 +19,7 @@ abstract class CallableObjectInternal extends ObjectInternal {
         none()
     }
 
-    override predicate isClass() { none() }
-
-    override predicate notClass() { any() }
+    override boolean isClass() { result = false }
 
     /** The boolean value of this object, if it has one */
     override boolean booleanValue() {
@@ -60,13 +58,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         result = TBuiltinClassObject(Builtin::special("FunctionType"))
     }
 
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
-    }
+    override boolean isComparable() { result = true }
 
     override Builtin getBuiltin() {
         none()
@@ -113,13 +105,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
         result = TBuiltinClassObject(this.getBuiltin().getClass())
     }
 
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
-    }
+    override boolean isComparable() { result = true }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
         // TO DO .. Result should be be a unknown value of a known class if the return type is known or just an unknown.
@@ -159,13 +145,7 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
         none()
     }
 
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
-    }
+    override boolean isComparable() { result = true }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
         // TO DO .. Result should be be a unknown value of a known class if the return type is known or just an unknown.
@@ -212,13 +192,7 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
         this = TBoundMethod(node, _, _, context)
     }
 
-    override predicate isComparable() {
-        none()
-    }
-
-    override predicate notComparable() {
-        any()
-    }
+    override boolean isComparable() { result = false }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
         this.getFunction().callResult(callee, obj, origin)

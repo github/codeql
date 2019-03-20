@@ -21,6 +21,10 @@ abstract class ModuleObjectInternal extends ObjectInternal {
         result = this.getSourceModule().getEntryNode()
     }
 
+    override boolean isClass() { result = false }
+
+    override boolean isComparable() { result = true }
+
 }
 
 class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleObject {
@@ -51,20 +55,8 @@ class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleOb
         none()
     }
 
-    override predicate isClass() { none() }
-
-    override predicate notClass() { any() }
-
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(this.getBuiltin().getClass())
-    }
-
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
     }
 
     override Module getSourceModule() {
@@ -117,20 +109,8 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         none()
     }
 
-    override predicate isClass() { none() }
-
-    override predicate notClass() { any() }
-
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(this.getBuiltin().getClass())
-    }
-
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
     }
 
     override Module getSourceModule() {
@@ -201,20 +181,8 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         none()
     }
 
-    override predicate isClass() { none() }
-
-    override predicate notClass() { any() }
-
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(this.getBuiltin().getClass())
-    }
-
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
     }
 
     override Module getSourceModule() {

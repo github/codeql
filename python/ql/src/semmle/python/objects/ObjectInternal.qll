@@ -25,20 +25,16 @@ class ObjectInternal extends TObject {
     /** Gets the class declaration for this object, if it is a declared class. */
     abstract ClassDecl getClassDeclaration();
 
-    abstract predicate isClass();
-
-    abstract predicate notClass();
+    /** True if this "object" is a class. */
+    abstract boolean isClass();
 
     abstract ObjectInternal getClass();
 
-    /** Holds if whatever this "object" represents can be meaningfully analysed for
+    /** True if this "object" can be meaningfully analysed for
      * truth or false in comparisons. For example, `None` or `int` can be, but `int()`
      * or an unknown string cannot.
      */
-    abstract predicate isComparable();
-
-    /** The negation of `isComparable()` */
-    abstract predicate notComparable();
+    abstract boolean isComparable();
 
     /** Gets the `Builtin` for this object, if any.
      * All objects (except unknown and undefined values) should return 
@@ -105,9 +101,7 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
         none()
     }
 
-    override predicate isClass() { none() }
-
-    override predicate notClass() { any() }
+    override boolean isClass() { result = false }
 
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(this.getBuiltin().getClass())
@@ -117,13 +111,7 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
         none()
     }
 
-    override predicate isComparable() {
-        none()
-    }
-
-    override predicate notComparable() {
-        any()
-    }
+    override boolean isComparable() { result = false }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
         obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown() and
@@ -165,9 +153,7 @@ class UnknownInternal extends ObjectInternal, TUnknown {
         none()
     }
 
-    override predicate isClass() { none() }
-
-    override predicate notClass() { any() }
+    override boolean isClass() { result = false }
 
     override ObjectInternal getClass() {
         result = TUnknownClass()
@@ -177,13 +163,7 @@ class UnknownInternal extends ObjectInternal, TUnknown {
         none()
     }
 
-    override predicate isComparable() {
-        none()
-    }
-
-    override predicate notComparable() {
-        any()
-    }
+    override boolean isComparable() { result = false }
 
     override Builtin getBuiltin() {
         none()
@@ -228,9 +208,9 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
         none()
     }
 
-    override predicate isClass() { none() }
+    override boolean isClass() { result = false }
 
-    override predicate notClass() { any() }
+    override boolean isComparable() { result = false }
 
     override ObjectInternal getClass() {
         none()
@@ -238,14 +218,6 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
         none()
-    }
-
-    override predicate isComparable() {
-        none()
-    }
-
-    override predicate notComparable() {
-        any()
     }
 
     override Builtin getBuiltin() {

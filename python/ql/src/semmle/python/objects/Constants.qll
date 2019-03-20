@@ -19,20 +19,13 @@ abstract class BooleanObjectInternal extends ObjectInternal {
         none()
     }
 
-    override predicate isClass() { none() }
+    override boolean isClass() { result = false }
 
-    override predicate notClass() { any() }
+    override boolean isComparable() { result = true }
+
 
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(Builtin::special("bool"))
-    }
-
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
     }
 
     override Builtin getBuiltin() {
@@ -118,9 +111,10 @@ class NoneObjectInternal extends ObjectInternal, TNone {
         none()
     }
 
-    override predicate isClass() { none() }
+    override boolean isClass() { result = false }
 
-    override predicate notClass() { any() }
+    override boolean isComparable() { result = true }
+
 
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(Builtin::special("NoneType"))
@@ -128,14 +122,6 @@ class NoneObjectInternal extends ObjectInternal, TNone {
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
         node.(NameNode).getId() = "None" and context.appliesTo(node)
-    }
-
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
     }
 
     override Builtin getBuiltin() {
@@ -183,21 +169,14 @@ class IntObjectInternal extends ObjectInternal, TInt {
         none()
     }
 
-    override predicate isClass() { none() }
+    override boolean isClass() { result = false }
 
-    override predicate notClass() { any() }
+    override boolean isComparable() { result = true }
 
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(Builtin::special("int"))
     }
 
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
-    }
 
     override Builtin getBuiltin() {
         none()
@@ -250,20 +229,12 @@ class StringObjectInternal extends ObjectInternal, TString {
         none()
     }
 
-    override predicate isClass() { none() }
+    override boolean isClass() { result = false }
 
-    override predicate notClass() { any() }
+    override boolean isComparable() { result = true }
 
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(Builtin::special("str"))
-    }
-
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
     }
 
     override Builtin getBuiltin() {

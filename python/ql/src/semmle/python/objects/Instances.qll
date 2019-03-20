@@ -34,29 +34,12 @@ class InstanceInternal extends TInstance, ObjectInternal {
         none()
     }
 
-    override predicate isClass() {
-        none()
-    }
+    override boolean isClass() { result = false }
 
-    override predicate notClass() {
-        any()
-    }
+    override boolean isComparable() { result = false }
 
     override ObjectInternal getClass() {
         this = TInstance(_, result, _)
-    }
-
-    /** Holds if whatever this "object" represents can be meaningfully analysed for
-     * truth or false in comparisons. For example, `None` or `int` can be, but `int()`
-     * or an unknown string cannot.
-     */
-    override predicate isComparable() {
-        none()
-    }
-
-    /** The negation of `isComparable()` */
-    override predicate notComparable() {
-        any()
     }
 
     /** Gets the `Builtin` for this object, if any.

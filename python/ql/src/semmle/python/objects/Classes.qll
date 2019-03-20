@@ -17,9 +17,7 @@ abstract class ClassObjectInternal extends ObjectInternal {
 
     override predicate maybe() { none() }
 
-    override predicate isClass() { any() }
-
-    override predicate notClass() { none() }
+    override boolean isClass() { result = true }
 
     override int intValue() {
         none()
@@ -93,13 +91,7 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
         none()
     }
 
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
-    }
+    override boolean isComparable() { result = true }
 
 }
 
@@ -142,13 +134,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
         none()
     }
 
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
-        none()
-    }
+    override boolean isComparable() { result = true }
 
 }
 
@@ -171,13 +157,7 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
         none()
     }
 
-    override predicate isComparable() {
-        none()
-    }
-
-    override predicate notComparable() {
-        any()
-    }
+    override boolean isComparable() { result = false }
 
     override Builtin getBuiltin() {
         none()

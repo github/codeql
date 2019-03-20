@@ -390,14 +390,14 @@ module PointsTo2 {
                 equality_test(cmp, a, is, b) and
                 points_to(a, context, o1, _) and
                 points_to(b, context, o2, _) |
-                (o1.isComparable() and o2.isComparable()) and
+                (o1.isComparable() = true and o2.isComparable() = true) and
                 (
                     o1 = o2 and value = ObjectInternal::bool(is)
                     or
                     o1 != o2 and value = ObjectInternal::bool(is.booleanNot())
                 )
                 or
-                (o1.notComparable() or o2.notComparable()) and
+                (o1.isComparable() = false or o2.isComparable() = false) and
                 value = ObjectInternal::bool(_)
             )
             or
@@ -777,16 +777,16 @@ module Conditionals {
             exists(ObjectInternal other |
                 PointsTo2::points_to(use, context, val, origin) and
                 PointsTo2::points_to(r, context, other, _) |
-                val.isComparable() and other.isComparable() and
+                val.isComparable() = true and other.isComparable() = true and
                 (
                     other = val and result = sense
                     or
                     other != val and result = sense.booleanNot()
                 )
                 or
-                val.notComparable() and result = maybe()
+                val.isComparable() = false and result = maybe()
                 or
-                other.notComparable() and result = maybe()
+                other.isComparable() = false and result = maybe()
             )
         )
     }
@@ -972,7 +972,7 @@ module Types {
         exists(ObjectInternal base |
             base = getBase(cls, _) and
             result = ObjectInternal::unknownClass() |
-            base.notClass()
+            base.isClass() = false
             or
             base = ObjectInternal::unknownClass()
         )
