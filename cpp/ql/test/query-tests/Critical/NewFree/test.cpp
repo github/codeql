@@ -152,7 +152,7 @@ void test3()
 	void *b = my_malloc_3(10);
 	
 	free(a); // GOOD
-	delete b; // BAD: malloc -> delete [NOT DETECTED]
+	delete b; // BAD: malloc -> delete
 }
 
 void test4(bool do_array_delete)
