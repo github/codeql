@@ -44,7 +44,7 @@ class DjangoResponseWrite extends TaintSink {
     DjangoResponseWrite() {
         exists(AttrNode meth, CallNode call |
             call.getFunction() = meth and
-            any(DjangoResponse repsonse).taints(meth.getObject("write")) and
+            any(DjangoResponse response).taints(meth.getObject("write")) and
             this = call.getArg(0)
         )
     }
