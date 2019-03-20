@@ -48,6 +48,10 @@ abstract class BooleanObjectInternal extends ObjectInternal {
         none()
     }
 
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
+    }
+
 }
 
 class TrueObjectInternal extends BooleanObjectInternal, TTrue {
@@ -64,6 +68,14 @@ class TrueObjectInternal extends BooleanObjectInternal, TTrue {
         node.(NameNode).getId() = "True" and context.appliesTo(node)
     }
 
+    override int intValue() {
+        result = 1
+    }
+
+    override string strValue() {
+        none()
+    }
+
 }
 
 class FalseObjectInternal extends BooleanObjectInternal, TFalse {
@@ -78,6 +90,14 @@ class FalseObjectInternal extends BooleanObjectInternal, TFalse {
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
         node.(NameNode).getId() = "False" and context.appliesTo(node)
+    }
+
+    override int intValue() {
+        result = 0
+    }
+
+    override string strValue() {
+        none()
     }
 
 }
@@ -128,6 +148,18 @@ class NoneObjectInternal extends ObjectInternal, TNone {
     }
 
     override ControlFlowNode getOrigin() {
+        none()
+    }
+
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
         none()
     }
 
@@ -184,10 +216,18 @@ class IntObjectInternal extends ObjectInternal, TInt {
         this = TInt(result)
     }
 
+    override string strValue() {
+        none()
+    }
+
     override boolean booleanValue() {
         this.intValue() = 0 and result = false
         or
         this.intValue() != 0 and result = true
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
     }
 
 }
@@ -239,6 +279,10 @@ class StringObjectInternal extends ObjectInternal, TString {
         none()
     }
 
+    override int intValue() {
+        none()
+    }
+
     override string strValue() {
         this = TString(result)
     }
@@ -247,6 +291,10 @@ class StringObjectInternal extends ObjectInternal, TString {
         this.strValue() = "" and result = false
         or
         this.strValue() != "" and result = true
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
     }
 
 }

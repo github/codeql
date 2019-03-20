@@ -8,7 +8,7 @@ import semmle.python.objects.Modules
 import semmle.python.objects.Classes
 import semmle.python.objects.Constants
 
-abstract class ObjectInternal extends TObject {
+class ObjectInternal extends TObject {
 
     abstract string toString();
 
@@ -63,18 +63,18 @@ abstract class ObjectInternal extends TObject {
     /** The integer value of things that have integer values.
      * That is, ints and bools.
      */
-    int intValue() {
-        none()
-    }
+    abstract int intValue();
 
     /** The integer value of things that have integer values.
      * That is, strings.
      */
-    string strValue() {
-        none()
-    }
+    abstract string strValue();
 
-    predicate calleeAndOffset(Function scope, int paramOffset) { none() }
+    abstract predicate calleeAndOffset(Function scope, int paramOffset);
+
+    final predicate isBuiltin() {
+        exists(this.getBuiltin())
+    }
 
 }
 
@@ -144,6 +144,14 @@ class PythonFunctionObjectInternal extends ObjectInternal, TPythonFunctionObject
         scope = this.getScope() and paramOffset = 0
     }
 
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
 }
 
 /// BOUND METHODS
@@ -200,6 +208,18 @@ class BuiltinFunctionObjectInternal extends ObjectInternal, TBuiltinFunctionObje
         none()
     }
 
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
+    }
+
 }
 
 
@@ -249,6 +269,18 @@ class BuiltinMethodObjectInternal extends ObjectInternal, TBuiltinMethodObject {
     }
 
     override ControlFlowNode getOrigin() {
+        none()
+    }
+
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
         none()
     }
 
@@ -308,6 +340,18 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
         none()
     }
 
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
+    }
+
 }
 
 private predicate callee_for_object(PointsToContext2 callee, ObjectInternal obj) {
@@ -318,17 +362,11 @@ private predicate callee_for_object(PointsToContext2 callee, ObjectInternal obj)
 }
 
 
-class UnknownClassInternal extends ObjectInternal, TUnknownClass {
+class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
 
     override string toString() {
         none()
     }
-
-    override boolean booleanValue() {
-        none()
-    }
-
-    override predicate maybe() { any() }
 
     override ClassDecl getClassDeclaration() {
         result = Builtin::unknownType()
@@ -364,6 +402,14 @@ class UnknownClassInternal extends ObjectInternal, TUnknownClass {
     }
 
     override ControlFlowNode getOrigin() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
+    }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         none()
     }
 
@@ -415,6 +461,18 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     }
 
     override ControlFlowNode getOrigin() {
+        none()
+    }
+
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
         none()
     }
 
@@ -471,6 +529,18 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
         none()
     }
 
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
+    }
+
 }
 
 module ObjectInternal {
@@ -490,7 +560,7 @@ module ObjectInternal {
         result = TUnknown()
     }
 
-    ObjectInternal unknownClass() {
+    ClassObjectInternal unknownClass() {
         result = TUnknownClass()
     }
 

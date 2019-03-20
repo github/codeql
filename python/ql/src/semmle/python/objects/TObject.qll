@@ -1,5 +1,8 @@
 import python
 private import semmle.python.types.Builtins
+private import semmle.python.objects.ObjectInternal
+private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.PointsToContext2
 
 newtype TObject =
     TBuiltinClassObject(Builtin bltn) {
@@ -22,8 +25,8 @@ newtype TObject =
         callable.getNode() instanceof CallableExpr
     }
     or
-    TPythonClassObject(ControlFlowNode classdef) {
-        classdef.getNode() instanceof ClassDef
+    TPythonClassObject(ControlFlowNode classexpr) {
+        classexpr.getNode() instanceof ClassExpr
     }
     or
     TPackageObject(Folder f)
@@ -67,11 +70,24 @@ newtype TObject =
             s = quoted_string.regexpCapture("[bu]'([\\s\\S]*)'", 1)
         )
     }
-
+    or
+    TInstance(CallNode instantiation, ClassObjectInternal cls, PointsToContext2 context) {
+        PointsTo2::points_to(instantiation.getFunction(), context, cls, _) and
+        normal_class(cls)
+    }
 
 private predicate is_power_2(int n) {
     n = 1 or
     exists(int half | is_power_2(half) and n = half*2)
+}
+
+private predicate normal_class(ClassObjectInternal cls) {
+    exists(Builtin bltn |
+        bltn = cls.getBuiltin() |
+        not bltn = Builtin::special(_)
+    )
+    //or
+    //cls.getMro().inheritsFromType(false)
 }
 
 library class ClassDecl extends @py_object {
@@ -79,19 +95,27 @@ library class ClassDecl extends @py_object {
     ClassDecl() {
         this.(Builtin).isClass() and not this = Builtin::unknownType()
         or
-        this.(ControlFlowNode).getNode() instanceof ClassDef
+        this.(ControlFlowNode).getNode() instanceof ClassExpr
     }
 
     string toString() {
         result = "ClassDecl"
     }
 
+    private Class getClass() {
+        result = this.(ControlFlowNode).getNode().(ClassExpr).getInnerScope()
+    }
+
     predicate declaresAttribute(string name) {
         exists(this.(Builtin).getMember(name))
         or
-        exists(Class cls |
-            cls = this.(ControlFlowNode).getNode().(ClassDef).getDefinedClass() and
-            exists(SsaVariable var | name = var.getId() and var.getAUse() = cls.getANormalExit())
-        )
+        exists(SsaVariable var | name = var.getId() and var.getAUse() = this.getClass().getANormalExit())
     }
+
+    string getName() {
+        result = this.(Builtin).getName()
+        or
+        result = this.getClass().getName()
+    }
+
 }

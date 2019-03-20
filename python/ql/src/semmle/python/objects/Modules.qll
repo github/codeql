@@ -12,8 +12,6 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     abstract Module getSourceModule();
 
-    abstract predicate isBuiltin();
-
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
         // Modules aren't callable
         none()
@@ -73,8 +71,16 @@ class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleOb
         none()
     }
 
-    override predicate isBuiltin() {
-        any()
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
     }
 
 }
@@ -142,10 +148,6 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         )
     }
 
-    override predicate isBuiltin() {
-        none()
-    }
-
     ModuleObjectInternal submodule(string name) {
         result.getName() = this.getName() + "." + name
     }
@@ -155,6 +157,18 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         or
         this.hasNoInitModule() and fp = this.getFolder().getAbsolutePath() and
         bl = 0 and bc = 0 and el = 0 and ec = 0
+    }
+
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
     }
 
 }
@@ -211,7 +225,15 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         result = TPythonModule(this.getSourceModule())
     }
 
-    override predicate isBuiltin() {
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
         none()
     }
 

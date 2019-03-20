@@ -1,8 +1,11 @@
 import python
 
+private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.Filters
 private import semmle.python.pointsto.PointsToContext2
+private import semmle.python.pointsto.MRO2
+private import semmle.python.types.Builtins
 
 /* Use this version for speed */
 library class CfgOrigin extends @py_object {
@@ -818,3 +821,194 @@ module Conditionals {
     }
 
 }
+
+module Types {
+
+    int base_count(ClassObjectInternal cls) {
+        cls = ObjectInternal::builtin("object") and result = 0
+        or
+        exists(cls.getBuiltin()) and cls != ObjectInternal::builtin("object") and result = 1
+        or
+        exists(Class pycls |
+            pycls = cls.(PythonClassObjectInternal).getScope() |
+            result = strictcount(pycls.getABase())
+            or
+            isNewStyle(cls) and not exists(pycls.getABase()) and result = 1
+            or
+            isOldStyle(cls) and not exists(pycls.getABase()) and result = 0
+        )
+    }
+
+    ClassObjectInternal getBase(ClassObjectInternal cls, int n) {
+        result.getBuiltin() = cls.getBuiltin().getBaseClass() and n = 0
+        or
+        exists(Class pycls |
+            pycls = cls.(PythonClassObjectInternal).getScope() |
+            PointsTo2::points_to(pycls.getBase(n).getAFlowNode(), _, result, _)
+            or
+            not exists(pycls.getABase()) and n = 0 and
+            isNewStyle(cls) and result = ObjectInternal::builtin("object")
+        )
+        or
+        cls = ObjectInternal::unknownClass() and n = 0 and
+        result = ObjectInternal::builtin("object")
+    }
+
+    predicate isOldStyle(ClassObjectInternal cls) {
+        //To do...
+        none()
+    }
+
+    predicate isNewStyle(ClassObjectInternal cls) {
+        //To do...
+        any()
+    }
+
+    ClassList getMro(ClassObjectInternal cls) {
+        isNewStyle(cls) and
+        result = Mro::newStyleMro(cls)
+        or
+        // To do, old-style
+        none()
+    }
+
+    predicate declaredAttribute(ClassObjectInternal cls, string name, ObjectInternal value, CfgOrigin origin) {
+        value.getBuiltin() = cls.getBuiltin().getMember(name) and origin = CfgOrigin::unknown()
+        or
+        value != ObjectInternal::undefined() and
+        exists(EssaVariable var |
+            name = var.getName() and
+            var.getAUse() = cls.(PythonClassObjectInternal).getScope().getANormalExit() and
+            PointsTo2::ssa_variable_points_to(var, _, value, origin)
+        )
+    }
+
+    ClassObjectInternal getMetaClass(PythonClassObjectInternal cls) {
+            result = declaredMetaClass(cls)
+            or
+            hasDeclaredMetaclass(cls) = false and result = getInheritedMetaclass(cls)
+    }
+
+    private ClassObjectInternal declaredMetaClass(PythonClassObjectInternal cls) {
+        exists(ObjectInternal obj |
+            PointsTo2::ssa_variable_points_to(metaclass_var(cls.getScope()), _, obj, _) |
+            result = obj
+            or
+            obj = ObjectInternal::unknown() and result = ObjectInternal::unknownClass()
+        )
+        or
+        exists(Builtin meta |
+            result.getBuiltin() = meta and
+            meta = cls.getBuiltin().getClass() and
+            meta.inheritsFromType()
+        )
+        or
+        exists(ControlFlowNode meta |
+            six_add_metaclass(_, cls, meta) and
+            PointsTo2::points_to(meta, _, result, _)
+        )
+    }
+
+    private boolean hasDeclaredMetaclass(PythonClassObjectInternal cls) {
+        result = has_six_add_metaclass(cls).booleanOr(has_metaclass_var_metaclass(cls))
+    }
+
+    private boolean has_six_add_metaclass(PythonClassObjectInternal cls) {
+        // TO DO...
+        none()
+    }
+
+    private boolean has_metaclass_var_metaclass(PythonClassObjectInternal cls) {
+        exists(ObjectInternal obj |
+            PointsTo2::ssa_variable_points_to(metaclass_var(cls.getScope()), _, obj, _) |
+            obj = ObjectInternal::undefined() and result = false
+            or
+            obj != ObjectInternal::undefined() and result = true
+        )
+        or
+        exists(Class pycls |
+            pycls = cls.getScope() and
+            not exists(metaclass_var(pycls)) and result = false
+        )
+    }
+
+    private EssaVariable metaclass_var(Class cls) {
+        result.getASourceUse() = cls.getMetaClass().getAFlowNode()
+        or
+        major_version() = 2 and not exists(cls.getMetaClass()) and
+        result.getName() = "__metaclass__" and
+        cls.(ImportTimeScope).entryEdge(result.getAUse(), _)
+    }
+
+    /** INTERNAL -- Do not use */
+    cached predicate six_add_metaclass(CallNode decorator_call, ClassObjectInternal decorated, ControlFlowNode metaclass) {
+        //TO DO...
+        none()
+        //exists(CallNode decorator |
+        //    decorator_call.getArg(0) = decorated and
+        //    decorator = decorator_call.getFunction() and
+        //    decorator.getArg(0) = metaclass |
+        //    PointsTo2::points_to(decorator.getFunction(), _, six_add_metaclass_function(), _)
+        //    or
+        //    exists(ModuleObjectInternal six |
+        //       six.getName() = "six" and
+        //       PointsTo2::points_to(decorator.getFunction().(AttrNode).getObject("add_metaclass"), _, six, _)
+        //   )
+        //)
+    }
+
+    private ObjectInternal six_add_metaclass_function() {
+        exists(Module six, FunctionExpr add_metaclass |
+            add_metaclass.getInnerScope().getName() = "add_metaclass" and
+            add_metaclass.getScope() = six and
+            result.getOrigin() = add_metaclass.getAFlowNode()
+        )
+    }
+
+    private ClassObjectInternal getInheritedMetaclass(ClassObjectInternal cls) {
+        result = getInheritedMetaclass(cls, 0)
+        or
+        // Best guess if base is not a known class
+        exists(ObjectInternal base |
+            base = getBase(cls, _) and
+            result = ObjectInternal::unknownClass() |
+            base.notClass()
+            or
+            base = ObjectInternal::unknownClass()
+        )
+    }
+
+    private ClassObjectInternal getInheritedMetaclass(ClassObjectInternal cls, int n) {
+        exists(Class c |
+            c = cls.(PythonClassObjectInternal).getScope() and
+            n = count(c.getABase())
+            |
+            result = ObjectInternal::builtin("type")
+        )
+        or
+        exists(ClassObjectInternal meta1, ClassObjectInternal meta2 |
+            meta1 = getMetaClass(getBase(cls, n)) and
+            meta2 = getInheritedMetaclass(cls, n+1)
+            |
+            /* Choose sub-class */
+            improperSuperType(meta1) = meta2 and result = meta1
+            or
+            improperSuperType(meta2) = meta1 and result = meta2
+            or
+            /* Make sure we have a metaclass, even if base is unknown */
+            meta1 = ObjectInternal::unknownClass() and result = ObjectInternal::builtin("type")
+            or
+            meta2 = ObjectInternal::unknownClass() and result = meta1
+        )
+    }
+
+    private ClassObjectInternal improperSuperType(ClassObjectInternal cls) {
+        result = cls
+        or
+        result = improperSuperType(getBase(cls, _))
+    }
+
+}
+
+
+

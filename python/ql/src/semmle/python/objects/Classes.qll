@@ -5,6 +5,7 @@ private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
 private import semmle.python.pointsto.PointsToContext2
+private import semmle.python.pointsto.MRO2
 private import semmle.python.types.Builtins
 
 
@@ -20,40 +21,37 @@ abstract class ClassObjectInternal extends ObjectInternal {
 
     override predicate notClass() { none() }
 
-    override predicate isComparable() {
-        any()
-    }
-
-    override predicate notComparable() {
+    override int intValue() {
         none()
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
-        // TO DO .. Result should (in most cases) be an instance
+    override string strValue() {
         none()
     }
+
+    string getName() {
+        result = this.getClassDeclaration().getName()
+    }
+
+    abstract predicate attribute(string name, ObjectInternal value, CfgOrigin origin);
 
 }
 
 class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject {
 
     Class getScope() {
-        exists(ClassDef def |
-            this = TPythonClassObject(def.getAFlowNode()) and
-            result = def.getDefinedClass()
+        exists(ClassExpr expr |
+            this = TPythonClassObject(expr.getAFlowNode()) and
+            result = expr.getInnerScope()
         )
     }
 
     override string toString() {
-        result = this.getScope().toString()
+        result = "class " + this.getScope().getName()
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
-        exists(DefinitionNode def |
-            this = TPythonClassObject(def) and 
-            node = def.getValue() and
-            context.appliesTo(node)
-        )
+        this = TPythonClassObject(node) and context.appliesTo(node)
     }
 
     override ClassDecl getClassDeclaration() {
@@ -61,7 +59,7 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
     }
 
     override ObjectInternal getClass() {
-        result = TBuiltinClassObject(Builtin::special("FunctionType"))
+        result = Types::getMetaClass(this)
     }
 
     override Builtin getBuiltin() {
@@ -78,6 +76,26 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
             none() |
             init.getScope() = scope and paramOffset = 1
         )
+    }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        exists(ClassObjectInternal decl |
+            decl = Types::getMro(this).findDeclaringClass(name) |
+            Types::declaredAttribute(decl, name, value, origin)
+        )
+    }
+
+    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        // TO DO .. Result should (in most cases) be an instance
+        none()
+    }
+
+    override predicate isComparable() {
+        any()
+    }
+
+    override predicate notComparable() {
+        none()
     }
 
 }
@@ -105,6 +123,27 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
     }
 
     override ControlFlowNode getOrigin() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
+    }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        value.getBuiltin() = this.getBuiltin().getMember(name) and origin = CfgOrigin::unknown()
+    }
+
+    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        // TO DO .. Result should (in most cases) be an instance
+        none()
+    }
+
+    override predicate isComparable() {
+        any()
+    }
+
+    override predicate notComparable() {
         none()
     }
 
