@@ -13,6 +13,10 @@ private class PropertyName extends string {
   PropertyName() { this = any(DataFlow::PropRef pr).getPropertyName() }
 }
 
+private class OptionalPropertyName extends string {
+  OptionalPropertyName() { this instanceof PropertyName or this = "" }
+}
+
 /**
  * A description of a step on an inter-procedural data flow path.
  */
@@ -29,12 +33,6 @@ private newtype TStepSummary =
  * A description of a step on an inter-procedural data flow path.
  */
 class StepSummary extends TStepSummary {
-  /** Indicates whether the step represented by this summary is a return. */
-  boolean hasReturn() { if this instanceof ReturnStep then result = true else result = false }
-
-  /** Indicates whether the step represented by this summary is a call. */
-  boolean hasCall() { if this instanceof CallStep then result = true else result = false }
-
   /** Gets a textual representation of this step summary. */
   string toString() {
     this instanceof LevelStep and result = "level"
@@ -42,6 +40,14 @@ class StepSummary extends TStepSummary {
     this instanceof CallStep and result = "call"
     or
     this instanceof ReturnStep and result = "return"
+    or
+    exists(string prop | this = StoreStep(prop) |
+      result = "store " + prop
+    )
+    or
+    exists(string prop | this = LoadStep(prop) |
+      result = "load" + prop
+    )
   }
 }
 
@@ -80,58 +86,10 @@ module StepSummary {
       )
     )
   }
-
-  /**
-   * INTERNAL. Do not use.
-   *
-   * Appends a step summary onto a type-tracking summary.
-   */
-  TypeTracker append(TypeTracker type, StepSummary summary) {
-    exists(boolean hadCall, boolean hasCall, string oldProp, string newProp |
-      hadCall = type.hasCall() and
-      oldProp = type.getProp()
-    |
-      not (hadCall = true and summary.hasReturn() = true) and
-      hasCall = hadCall.booleanOr(summary.hasCall()) and
-      (
-        if summary instanceof StoreStep
-        then oldProp = "" and summary = StoreStep(newProp)
-        else
-          if summary instanceof LoadStep
-          then summary = LoadStep(oldProp) and newProp = ""
-          else newProp = oldProp
-      ) and
-      result = MkTypeTracker(hasCall, newProp)
-    )
-  }
-
-  /**
-   * INTERNAL. Do not use.
-   *
-   * Prepends a step summary before a backwards type-tracking summary.
-   */
-  TypeBackTracker prepend(StepSummary summary, TypeBackTracker type) {
-    exists(boolean hadReturn, boolean hasReturn, string oldProp, string newProp |
-      hadReturn = type.hasReturn() and
-      oldProp = type.getProp()
-    |
-      not (hadReturn = true and summary.hasCall() = true) and
-      hasReturn = hadReturn.booleanOr(summary.hasReturn()) and
-      (
-        if summary instanceof StoreStep
-        then summary = StoreStep(oldProp) and newProp = ""
-        else
-          if summary instanceof LoadStep
-          then oldProp = "" and summary = LoadStep(newProp)
-          else newProp = oldProp
-      ) and
-      result = MkTypeBackTracker(hasReturn, newProp)
-    )
-  }
 }
 
 private newtype TTypeTracker =
-  MkTypeTracker(Boolean hasCall, string prop) { prop = "" or prop instanceof PropertyName }
+  MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
 
 /**
  * EXPERIMENTAL.
@@ -168,6 +126,20 @@ class TypeTracker extends TTypeTracker {
 
   TypeTracker() { this = MkTypeTracker(hasCall, prop) }
 
+  TypeTracker append(StepSummary step) {
+    step = LevelStep() and result = this
+    or
+    step = CallStep() and result = MkTypeTracker(true, prop)
+    or
+    step = ReturnStep() and hasCall = false and result = this
+    or
+    step = LoadStep(prop) and result = MkTypeTracker(hasCall, "")
+    or
+    exists(string p |
+      step = StoreStep(p) and prop = "" and result = MkTypeTracker(hasCall, p)
+    )
+  }
+
   string toString() {
     exists(string withCall, string withProp |
       (if hasCall = true then withCall = "with" else withCall = "without") and
@@ -198,7 +170,7 @@ module TypeTracker {
 }
 
 private newtype TTypeBackTracker =
-  MkTypeBackTracker(Boolean hasReturn, string prop) { prop = "" or prop instanceof PropertyName }
+  MkTypeBackTracker(Boolean hasReturn, OptionalPropertyName prop)
 
 /**
  * EXPERIMENTAL.
@@ -233,6 +205,20 @@ class TypeBackTracker extends TTypeBackTracker {
   string prop;
 
   TypeBackTracker() { this = MkTypeBackTracker(hasReturn, prop) }
+
+  TypeBackTracker prepend(StepSummary step) {
+    step = LevelStep() and result = this
+    or
+    step = CallStep() and hasReturn = false and result = this
+    or
+    step = ReturnStep() and result = MkTypeBackTracker(true, prop)
+    or
+    exists(string p |
+      step = LoadStep(p) and prop = "" and result = MkTypeBackTracker(hasReturn, p)
+    )
+    or
+    step = StoreStep(prop) and result = MkTypeBackTracker(hasReturn, "")
+  }
 
   string toString() {
     exists(string withReturn, string withProp |
