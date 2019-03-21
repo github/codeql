@@ -422,5 +422,5 @@ void test13()
 	MyPointer13 myPointer2(myBuffer);
 	MyPointer13 myPointer3(new char[100]);
 
-	delete myPointer2.getPointer(); // GOOD
+	delete myPointer3.getPointer(); // GOOD
 }
