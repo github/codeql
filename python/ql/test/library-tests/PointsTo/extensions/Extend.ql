@@ -38,6 +38,19 @@ class AttributeExtension  extends CustomPointsToAttribute {
 
 }
 
+class NoClassExtension extends CustomPointsToObjectFact {
+
+    NoClassExtension() { this = this }
+
+    override predicate pointsTo(Object value) {
+        this.(NameNode).getId() = "five" and value.(NumericObject).intValue() = 5
+        or
+        this.(NameNode).getId() = "six" and value.(NumericObject).intValue() = 6
+    }
+
+}
+
+
 from ControlFlowNode f, Object o
 where f.getLocation().getFile().getBaseName() = "test.py" and f.refersTo(o)
 select f, o.toString()
