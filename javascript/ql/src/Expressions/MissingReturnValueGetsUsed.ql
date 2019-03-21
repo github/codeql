@@ -10,7 +10,6 @@
  */
 
 import javascript
-import semmle.javascript.CFG
  
 /*
  * A function with no return value can be called without being problematic under the following
