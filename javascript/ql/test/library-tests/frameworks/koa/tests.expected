@@ -161,3 +161,5 @@ test_ContextExpr
 | src/koa.js:43:2:43:4 | ctx | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 | src/koa.js:44:2:44:4 | ctx | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 test_RedirectInvocation
+| src/koa.js:43:2:43:18 | ctx.redirect(url) | src/koa.js:43:15:43:17 | url | src/koa.js:30:10:45:1 | async c ... url);\\n} |
+| src/koa.js:44:2:44:27 | ctx.res ... ct(url) | src/koa.js:44:24:44:26 | url | src/koa.js:30:10:45:1 | async c ... url);\\n} |

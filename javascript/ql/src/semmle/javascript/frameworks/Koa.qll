@@ -291,4 +291,20 @@ module Koa {
 
     override RouteHandler getRouteHandler() { result = rh }
   }
+
+  /**
+   * An invocation of the `redirect` method of an HTTP response object.
+   */
+  private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
+    RouteHandler rh;
+
+    RedirectInvocation() {
+      this.(MethodCallExpr).calls(rh.getAResponseOrContextExpr(), "redirect")
+    }
+
+    override Expr getUrlArgument() { result = getArgument(0) }
+
+    override RouteHandler getRouteHandler() { result = rh }
+  }
+
 }
