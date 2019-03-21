@@ -14,10 +14,7 @@ private import internal.FlowSteps
  *
  * Identical to `TPathSummary` except without flow labels.
  */
-private newtype TStepSummary = MkStepSummary(boolean hasReturn, boolean hasCall) {
-  (hasReturn = true or hasReturn = false) and
-  (hasCall = true or hasCall = false)
-}
+private newtype TStepSummary = MkStepSummary(Boolean hasReturn, Boolean hasCall)
 
 /**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
@@ -36,27 +33,6 @@ class StepSummary extends TStepSummary {
 
   /** Indicates whether the path represented by this summary contains any call steps. */
   boolean hasCall() { result = hasCall }
-
-  /**
-   * Gets the summary for the path obtained by appending `that` to `this`.
-   *
-   * Note that a path containing a `return` step cannot be appended to a path containing
-   * a `call` step in order to maintain well-formedness.
-   */
-  StepSummary append(StepSummary that) {
-    exists(Boolean hasReturn2, Boolean hasCall2 |
-      that = MkStepSummary(hasReturn2, hasCall2)
-    |
-      result = MkStepSummary(hasReturn.booleanOr(hasReturn2), hasCall.booleanOr(hasCall2)) and
-      // avoid constructing invalid paths
-      not (hasCall = true and hasReturn2 = true)
-    )
-  }
-
-  /**
-   * Gets the summary for the path obtained by appending `this` to `that`.
-   */
-  StepSummary prepend(StepSummary that) { result = that.append(this) }
 
   /** Gets a textual representation of this path summary. */
   string toString() {
@@ -133,9 +109,7 @@ module StepSummary {
   }
 }
 
-private newtype TTypeTracker = MkTypeTracker(boolean hasCall) {
-  hasCall = true or hasCall = false
-}
+private newtype TTypeTracker = MkTypeTracker(Boolean hasCall)
 
 /**
  * EXPERIMENTAL.
@@ -193,9 +167,7 @@ class TypeTracker extends TTypeTracker {
   }
 }
 
-private newtype TTypeBackTracker = MkTypeBackTracker(boolean hasReturn) {
-  hasReturn = true or hasReturn = false
-}
+private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn)
 
 /**
  * EXPERIMENTAL.
