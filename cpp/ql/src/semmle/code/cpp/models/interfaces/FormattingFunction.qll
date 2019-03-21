@@ -49,16 +49,22 @@ abstract class FormattingFunction extends Function {
   /**
    * Holds if the default meaning of `%s` is a `wchar_t *`, rather than
    * a `char *` (either way, `%S` will have the opposite meaning).
+   *
+   * DEPRECATED: Use getDefaultCharType() instead.
    */
-  predicate isWideCharDefault() { none() }
+  deprecated predicate isWideCharDefault() { none() }
 
   /**
    * Gets the default character type expected for `%s` by this function.  Typically
    * `char` or `wchar_t`.
    */
   Type getDefaultCharType() {
-    result = stripTopLevelSpecifiersOnly(getParameter(getFormatParameterIndex()).getType().
-      getUnderlyingType().(PointerType).getBaseType())
+    result = 
+      stripTopLevelSpecifiersOnly(
+        stripTopLevelSpecifiersOnly(
+          getParameter(getFormatParameterIndex()).getType().getUnderlyingType()
+        ).(PointerType).getBaseType()
+      )
   }
 
   /**

@@ -505,7 +505,16 @@ class TrivialProperty extends Property {
  * A `Property` which holds a type with an indexer.
  */
 class IndexerProperty extends Property {
-  IndexerProperty() { exists(getType().(RefType).getABaseType*().getAnIndexer()) }
+  Indexer i;
+
+  IndexerProperty() { this.getType().(RefType).hasMember(i) }
+
+  pragma[nomagic]
+  private IndexerCall getAnIndexerCall0() {
+    exists(Expr qualifier | qualifier = result.getQualifier() |
+      DataFlow::localFlow(DataFlow::exprNode(this.getAnAccess()), DataFlow::exprNode(qualifier))
+    )
+  }
 
   /**
    * Gets a call to the indexer of the type returned by this property, for a value returned by this
@@ -514,10 +523,27 @@ class IndexerProperty extends Property {
    * This tracks instances returned by the property using local data flow.
    */
   IndexerCall getAnIndexerCall() {
-    result = getType().(RefType).getAnIndexer().getAnAccessor().getACall() and
-    // The qualifier of this indexer call should be a value returned from an access of this property
-    exists(Expr qualifier | qualifier = result.(IndexerAccess).getQualifier() |
-      DataFlow::localFlow(DataFlow::exprNode(this.getAnAccess()), DataFlow::exprNode(qualifier))
-    )
+    result = this.getAnIndexerCall0() and
+    // Omitting the constraint below would potentially include
+    // too many indexer calls, for example the call to the indexer
+    // setter at `dict[0]` in
+    //
+    // ```
+    // class A
+    // {
+    //     Dictionary<int, string> dict;
+    //     public IReadonlyDictionary<int, string> Dict { get => dict; }
+    // }
+    //
+    // class B
+    // {
+    //     void M(A a)
+    //     {
+    //         var dict = (Dictionary<int, string>) a.Dict;
+    //         dict[0] = "";
+    //     }
+    // }
+    // ```
+    result.getIndexer() = i
   }
 }

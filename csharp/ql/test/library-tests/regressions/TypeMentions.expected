@@ -68,3 +68,11 @@
 | Program.cs:142:30:142:40 | DynamicType |
 | Program.cs:146:27:146:27 | T |
 | Program.cs:146:30:146:40 | DynamicType |
+| Program.cs:156:15:156:35 | TEmbeddedTypesManager |
+| Program.cs:156:39:156:58 | EmbeddedTypesManager<,> |
+| Program.cs:156:60:156:80 | TEmbeddedTypesManager |
+| Program.cs:156:83:156:95 | TEmbeddedType |
+| Program.cs:157:15:157:27 | TEmbeddedType |
+| Program.cs:157:31:157:50 | EmbeddedTypesManager<,> |
+| Program.cs:157:52:157:72 | TEmbeddedTypesManager |
+| Program.cs:157:75:157:87 | TEmbeddedType |

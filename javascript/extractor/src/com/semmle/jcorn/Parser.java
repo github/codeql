@@ -721,7 +721,8 @@ public class Parser {
         return this.finishOp(TokenType.prefix, 1);
     }
 
-    this.raise(this.pos, "Unexpected character '" + codePointToString(code) + "'");
+    String msg = String.format("Unexpected character '%s' (U+%04X)", codePointToString(code), code);
+    this.raise(this.pos, msg);
     return null;
   }
 

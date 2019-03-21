@@ -1,3 +1,4 @@
+| acrossLinkTargets.cpp:12:8:12:8 | x | acrossLinkTargets.cpp:19:27:19:32 | call to source |
 | test.cpp:7:8:7:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:9:8:9:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:10:8:10:9 | t2 | test.cpp:6:12:6:17 | call to source |
@@ -35,6 +36,8 @@
 | test.cpp:478:8:478:12 | local | test.cpp:477:20:477:24 | ref arg local |
 | test.cpp:485:8:485:12 | local | test.cpp:484:18:484:23 | ref arg & ... |
 | test.cpp:491:8:491:12 | local | test.cpp:490:18:490:22 | ref arg local |
+| test.cpp:498:9:498:22 | (statement expression) | test.cpp:497:26:497:32 | source1 |
+| test.cpp:509:8:509:12 | local | test.cpp:497:26:497:32 | source1 |
 | true_upon_entry.cpp:21:8:21:8 | x | true_upon_entry.cpp:17:11:17:16 | call to source |
 | true_upon_entry.cpp:29:8:29:8 | x | true_upon_entry.cpp:27:9:27:14 | call to source |
 | true_upon_entry.cpp:39:8:39:8 | x | true_upon_entry.cpp:33:11:33:16 | call to source |

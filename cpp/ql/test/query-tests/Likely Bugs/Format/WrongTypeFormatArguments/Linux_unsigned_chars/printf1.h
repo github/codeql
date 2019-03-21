@@ -101,3 +101,21 @@ void fun1(unsigned char* a, unsigned char* b) {
   printf("%td\n", pdt); // GOOD
   printf("%td\n", a-b); // GOOD
 }
+
+typedef unsigned int wint_t;
+
+void test_chars(char c, wchar_t wc, wint_t wt)
+{
+  printf("%c", c); // GOOD
+  printf("%c", wc); // BAD [NOT DETECTED]
+  printf("%c", wt); // BAD [NOT DETECTED]
+  printf("%C", c); // BAD [NOT DETECTED]
+  printf("%C", wc); // GOOD (converts to wint_t)
+  printf("%C", wt); // GOOD
+  wprintf(L"%c", c); // GOOD
+  wprintf(L"%c", wc); // BAD [NOT DETECTED]
+  wprintf(L"%c", wt); // BAD [NOT DETECTED]
+  wprintf(L"%C", c); // BAD [NOT DETECTED]
+  wprintf(L"%C", wc); // GOOD (converts to wint_t)
+  wprintf(L"%C", wt); // GOOD
+}

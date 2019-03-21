@@ -4,18 +4,20 @@ import csharp
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison as StructuralComparison
 
+pragma[noinline]
+private predicate isConstantCondition0(ControlFlow::Node cfn, boolean b) {
+  exists(
+    cfn.getASuccessorByType(any(ControlFlow::SuccessorTypes::BooleanSuccessor t | t.getValue() = b))
+  ) and
+  strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
+}
+
 /**
  * Holds if `e` is a condition that always evaluates to Boolean value `b`.
  */
 predicate isConstantCondition(Expr e, boolean b) {
   forex(ControlFlow::Node cfn | cfn = e.getAControlFlowNode() |
-    exists(
-      cfn
-          .getASuccessorByType(any(ControlFlow::SuccessorTypes::BooleanSuccessor t |
-              t.getValue() = b
-            ))
-    ) and
-    strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
+    isConstantCondition0(cfn, b)
   )
 }
 

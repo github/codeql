@@ -82,17 +82,47 @@
     }
 
     // DOM
-    o.clientTop = 42;
+    o.clientTop = 42; // OK
     o.clientTop = 42;
 
-    o.defaulted1 = null;
+    o.defaulted1 = null; // OK
     o.defaulted1 = 42;
 
-    o.defaulted2 = -1;
+    o.defaulted2 = -1; // OK
     o.defaulted2 = 42;
 
     var o = {};
     o.pure18 = 42; // NOT OK
     o.pure18 = 42; // NOT OK
     o.pure18 = 42;
+
+	var o = {};
+	Object.defineProperty(o, "setter", { // OK
+		set: function (value) { }
+	});
+	o.setter = "";
+
+	var o = { set setter(value) { } }; // OK
+	o.setter = "";
+
+	var o = {
+		set accessor(value) { }, // OK
+		get accessor() { }
+	};
+
+	var o = { set setter(value) { } };
+	o.setter = 42; // probably OK, but still flagged - it seems fishy
+	o.setter = 87;
+
+	var o = {};
+	Object.defineProperty(o, "prop", {writable:!0,configurable:!0,enumerable:!1, value: getInitialValue()}) // NOT OK
+	o.prop = 42;
+
+	var o = {};
+	Object.defineProperty(o, "prop", {writable:!0,configurable:!0,enumerable:!1, value: undefined}) // OK, default value
+	o.prop = 42;
+
+	var o = {};
+	Object.defineProperty(o, "prop", {writable:!0,configurable:!0,enumerable:!1}) // OK
+	o.prop = 42;
 });

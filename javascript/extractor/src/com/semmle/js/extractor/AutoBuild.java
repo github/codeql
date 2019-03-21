@@ -163,9 +163,9 @@ import java.util.stream.Stream;
  * following environment variables are available:
  *
  * <ul>
- *   <li><code>LGTM_THREADS</code> determines how many threads are used for parallel
- *       extraction of JavaScript files (TypeScript files cannot currently be extracted in
- *       parallel). If left unspecified, the extractor uses a single thread.
+ *   <li><code>LGTM_THREADS</code> determines how many threads are used for parallel extraction of
+ *       JavaScript files (TypeScript files cannot currently be extracted in parallel). If left
+ *       unspecified, the extractor uses a single thread.
  *   <li><code>LGTM_TRAP_CACHE</code> and <code>LGTM_TRAP_CACHE_BOUND</code> can be used to specify
  *       the location and size of a trap cache to be used during extraction.
  * </ul>

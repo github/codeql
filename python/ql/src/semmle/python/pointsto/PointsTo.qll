@@ -1625,7 +1625,7 @@ module PointsTo {
             context.isRuntime() and
             exists(ControlFlowNode param |
                 param = def.getDefiningNode() |
-                varargs_points_to(param, cls) and value = theEmptyTupleObject() and origin = param
+                varargs_points_to(param, cls) and value = TupleObject::empty() and origin = param
                 or
                 varargs_points_to(param, cls) and value = param and origin = param
                 or
