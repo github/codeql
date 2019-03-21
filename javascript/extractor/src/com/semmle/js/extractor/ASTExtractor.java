@@ -42,7 +42,6 @@ import com.semmle.js.ast.IPattern;
 import com.semmle.js.ast.Identifier;
 import com.semmle.js.ast.IfStatement;
 import com.semmle.js.ast.ImportDeclaration;
-import com.semmle.js.ast.ImportNamespaceSpecifier;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.InvokeExpression;
 import com.semmle.js.ast.JumpStatement;
@@ -1449,13 +1448,7 @@ public class ASTExtractor {
     public Label visit(ImportSpecifier nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getImported(), lbl, 0, IdContext.label);
-      visit(
-          nd.getLocal(),
-          lbl,
-          1,
-          nd instanceof ImportNamespaceSpecifier
-              ? IdContext.varAndNamespaceDecl
-              : IdContext.varAndTypeAndNamespaceDecl);
+      visit(nd.getLocal(), lbl, 1, IdContext.varAndTypeAndNamespaceDecl);
       return lbl;
     }
 
