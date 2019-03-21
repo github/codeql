@@ -10,81 +10,60 @@ import javascript
 private import internal.FlowSteps
 
 /**
- * A pair of booleans, indicating whether a path goes through a return and/or a call.
- *
- * Identical to `TPathSummary` except without flow labels.
+ * A description of a step on an inter-procedural data flow path.
  */
-private newtype TStepSummary = MkStepSummary(Boolean hasReturn, Boolean hasCall)
+private newtype TStepSummary =
+  LevelStep() or
+  CallStep() or
+  ReturnStep()
 
 /**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
  *
- * Summary of the steps needed to track a value to a given dataflow node.
+ * A description of a step on an inter-procedural data flow path.
  */
 class StepSummary extends TStepSummary {
-  Boolean hasReturn;
+  /** Indicates whether the step represented by this summary is a return. */
+  boolean hasReturn() { if this instanceof ReturnStep then result = true else result = false }
 
-  Boolean hasCall;
+  /** Indicates whether the step represented by this summary is a call. */
+  boolean hasCall() { if this instanceof CallStep then result = true else result = false }
 
-  StepSummary() { this = MkStepSummary(hasReturn, hasCall) }
-
-  /** Indicates whether the path represented by this summary contains any return steps. */
-  boolean hasReturn() { result = hasReturn }
-
-  /** Indicates whether the path represented by this summary contains any call steps. */
-  boolean hasCall() { result = hasCall }
-
-  /** Gets a textual representation of this path summary. */
+  /** Gets a textual representation of this step summary. */
   string toString() {
-    exists(string withReturn, string withCall |
-      (if hasReturn = true then withReturn = "with" else withReturn = "without") and
-      (if hasCall = true then withCall = "with" else withCall = "without")
-    |
-      result = "path " + withReturn + " return steps and " + withCall + " call steps"
-    )
+    this instanceof LevelStep and result = "level"
+    or
+    this instanceof CallStep and result = "call"
+    or
+    this instanceof ReturnStep and result = "return"
   }
 }
 
 module StepSummary {
   /**
-   * Gets a summary describing a path without any calls or returns.
-   */
-  StepSummary level() { result = MkStepSummary(false, false) }
-
-  /**
-   * Gets a summary describing a path with one or more calls, but no returns.
-   */
-  StepSummary call() { result = MkStepSummary(false, true) }
-
-  /**
-   * Gets a summary describing a path with one or more returns, but no calls.
-   */
-  StepSummary return() { result = MkStepSummary(true, false) }
-
-  /**
    * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
    */
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
-    exists (DataFlow::Node predNode | pred.flowsTo(predNode) |
+    exists(DataFlow::Node predNode | pred.flowsTo(predNode) |
       // Flow through properties of objects
       propertyFlowStep(predNode, succ) and
-      summary = level()
+      summary = LevelStep()
       or
       // Flow through global variables
       globalFlowStep(predNode, succ) and
-      summary = level()
+      summary = LevelStep()
       or
       // Flow into function
       callStep(predNode, succ) and
-      summary = call()
+      summary = CallStep()
       or
       // Flow out of function
       returnStep(predNode, succ) and
-      summary = return()
+      summary = ReturnStep()
       or
       // Flow through an instance field between members of the same class
       DataFlow::localFieldStep(predNode, succ) and
-      summary = level()
+      summary = LevelStep()
     )
   }
 
@@ -153,18 +132,14 @@ class TypeTracker extends TTypeTracker {
   /**
    * Holds if this is the starting point of type tracking.
    */
-  predicate start() {
-    hasCall = false
-  }
+  predicate start() { hasCall = false }
 
   /**
    * INTERNAL. DO NOT USE.
    *
    * Holds if this type has been tracked into a call.
    */
-  boolean hasCall() {
-    result = hasCall
-  }
+  boolean hasCall() { result = hasCall }
 }
 
 private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn)
@@ -210,16 +185,12 @@ class TypeBackTracker extends TTypeBackTracker {
   /**
    * Holds if this is the starting point of type tracking.
    */
-  predicate start() {
-    hasReturn = false
-  }
+  predicate start() { hasReturn = false }
 
   /**
    * INTERNAL. DO NOT USE.
    *
    * Holds if this type has been back-tracked into a call through return edge.
    */
-  boolean hasReturn() {
-    result = hasReturn
-  }
+  boolean hasReturn() { result = hasReturn }
 }
