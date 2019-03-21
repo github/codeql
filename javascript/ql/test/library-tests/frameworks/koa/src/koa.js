@@ -43,3 +43,14 @@ app2.use(async ctx => {
 	ctx.redirect(url);
 	ctx.response.redirect(url);
 });
+
+app2.use(async ctx => {
+	var cookies = ctx.cookies;
+	cookies.get();
+
+	var query = ctx.query;
+	query.foo;
+
+	var headers = ctx.headers;
+	headers.foo;
+});
