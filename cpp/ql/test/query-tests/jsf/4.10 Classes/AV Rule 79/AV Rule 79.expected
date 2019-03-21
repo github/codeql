@@ -14,6 +14,9 @@
 | ListDelete.cpp:21:3:21:21 | ... = ... | Resource first is acquired by class MyThingColection but not released anywhere in this class. |
 | NoDestructor.cpp:23:3:23:20 | ... = ... | Resource n is acquired by class MyClass5 but not released anywhere in this class. |
 | PlacementNew.cpp:36:3:36:36 | ... = ... | Resource p1 is acquired by class MyTestForPlacementNew but not released anywhere in this class. |
+| QObject.cpp:16:5:16:46 | ... = ... | Resource noParent is acquired by class MyQtUser but not released anywhere in this class. |
+| QObject.cpp:20:5:20:54 | ... = ... | Resource constructorParent is acquired by class MyQtUser but not released anywhere in this class. |
+| QObject.cpp:22:5:22:49 | ... = ... | Resource laterParent is acquired by class MyQtUser but not released anywhere in this class. |
 | SelfRegistering.cpp:25:3:25:24 | ... = ... | Resource side is acquired by class MyOwner but not released anywhere in this class. |
 | Variants.cpp:25:3:25:13 | ... = ... | Resource f is acquired by class MyClass4 but not released anywhere in this class. |
 | Variants.cpp:65:3:65:17 | ... = ... | Resource a is acquired by class MyClass6 but not released anywhere in this class. |
