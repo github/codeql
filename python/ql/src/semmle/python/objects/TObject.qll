@@ -69,6 +69,7 @@ newtype TObject =
             quoted_string = bltn.getName() and
             s = quoted_string.regexpCapture("[bu]'([\\s\\S]*)'", 1)
         )
+        or s = "__main__"
     }
     or
     TInstance(CallNode instantiation, ClassObjectInternal cls, PointsToContext2 context) {

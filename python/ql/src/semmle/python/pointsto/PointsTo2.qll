@@ -85,6 +85,12 @@ module CfgOrigin {
         result = unknownValue()
     }
 
+    CfgOrigin fromModule(ModuleObjectInternal mod) {
+        mod.isBuiltin() and result = unknownValue()
+        or
+        result = mod.getSourceModule().getEntryNode()
+    }
+
 }
 
 module PointsTo2 {
@@ -264,14 +270,14 @@ module PointsTo2 {
         //// TO DO...
         // or
         // self_parameter_points_to(def, context, value, origin)
-        // or
-        // delete_points_to(def, context, value, origin)
-        // or
-        // module_name_points_to(def, context, value, origin)
+        or
+        delete_points_to(def, context, value, origin)
+        or
+        module_name_points_to(def, context, value, origin)
         or
         scope_entry_points_to(def, context, value, origin)
-        // or
-        // implicit_submodule_points_to(def, context, value, origin)
+        or
+        InterModulePointsTo::implicit_submodule_points_to(def, context, value, origin)
         // or
         // iteration_definition_points_to(def, context, value, origin)
         /*
@@ -322,6 +328,35 @@ module PointsTo2 {
         points_to(def.getValue(), context, value, origin)
     }
 
+    /** Points-to for deletion: `del name`. */
+    pragma [noinline]
+    private predicate delete_points_to(DeletionDefinition def, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
+        value = ObjectInternal::undefined() and origin = def.getDefiningNode() and context.appliesToScope(def.getScope())
+    }
+
+    /** Implicit "definition" of `__name__` at the start of a module. */
+    pragma [noinline]
+    private predicate module_name_points_to(ScopeEntryDefinition def, PointsToContext2 context, StringObjectInternal value, ControlFlowNode origin) {
+        def.getVariable().getName() = "__name__" and
+        exists(Module m |
+            m = def.getScope()
+            |
+            value = module_dunder_name(m) and context.isImport()
+            or
+            value.strValue() = "__main__" and context.isMain() and context.appliesToScope(m)
+        ) and
+        origin = def.getDefiningNode()
+    }
+
+    private StringObjectInternal module_dunder_name(Module m) {
+        exists(string name |
+            result.strValue() = name |
+            if m.isPackageInit() then
+                name = m.getPackage().getName()
+            else
+                name = m.getName()
+        )
+    }
 
     /** Holds if the phi-function `phi` refers to `(value, origin)` given the context `context`. */
     pragma [nomagic]
@@ -566,9 +601,21 @@ module InterModulePointsTo {
         exists(ModuleObjectInternal mod |
             mod = package.submodule(name) and
             value = mod |
-            origin = CfgOrigin::fromCfgNode(mod.getSourceModule().getEntryNode())
-            or
-            mod.isBuiltin() and origin = CfgOrigin::unknown()
+            origin = CfgOrigin::fromModule(mod)
+        )
+    }
+
+    /** Implicit "definition" of the names of submodules at the start of an `__init__.py` file.
+     *
+     * PointsTo isn't exactly how the interpreter works, but is the best approximation we can manage statically.
+     */
+    pragma [noinline]
+    predicate implicit_submodule_points_to(ImplicitSubModuleDefinition def, PointsToContext2 context, ModuleObjectInternal value, ControlFlowNode origin) {
+        exists(PackageObjectInternal package |
+            package.getSourceModule() = def.getDefiningNode().getScope() |
+            value = package.submodule(def.getSourceVariable().getName()) and
+            origin = CfgOrigin::fromModule(value).fix(def.getDefiningNode()) and
+            context.isImport()
         )
     }
 
