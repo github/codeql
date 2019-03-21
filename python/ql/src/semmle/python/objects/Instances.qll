@@ -10,7 +10,7 @@ private import semmle.python.types.Builtins
 class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
 
     override string toString() {
-        result = this.getOrigin().toString()
+        result = this.getOrigin().getNode().toString()
     }
 
     /** The boolean value of this object, if it has one */
@@ -53,16 +53,17 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
         this = TSpecificInstance(result, _, _)
     }
 
-    /** Holds if `obj` is the result of calling `this` and `origin` is
-     * the origin of `obj`.
-     */
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
+     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         // In general instances aren't callable, but some are...
         // TO DO -- Handle cases where class overrides __call__
         none()
     }
 
-    override int intValue() {
+     override int intValue() {
         none()
     }
 
@@ -96,7 +97,9 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
-        none()
+        context.appliesTo(node) and
+        this.getClass() = ObjectInternal::builtin("float") and 
+        node.getNode() instanceof FloatLiteral
     }
 
     /** Gets the class declaration for this object, if it is a declared class. */
@@ -129,10 +132,11 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
         none()
     }
 
-    /** Holds if `obj` is the result of calling `this` and `origin` is
-     * the origin of `obj`.
-     */
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         // In general instances aren't callable, but some are...
         // TO DO -- Handle cases where class overrides __call__
         none()
@@ -157,3 +161,61 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
     override predicate attributesUnknown() { any() }
 
 }
+
+
+class SuperInstance extends TSuperInstance, ObjectInternal {
+
+    override string toString() {
+        result = "super()"
+    }
+
+    override boolean booleanValue() { result = true }
+
+    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+        exists(ObjectInternal self, ClassObjectInternal startclass |
+            super_instantiation(node, self, startclass, context) and
+            this = TSuperInstance(self, startclass)
+        )
+    }
+
+    ClassObjectInternal getStartClass() {
+        this = TSuperInstance(_, result)
+    }
+
+    ObjectInternal getSelf() {
+        this = TSuperInstance(result, _)
+    }
+
+    override ClassDecl getClassDeclaration() { none() }
+
+    override boolean isClass() { result = false }
+
+    override ObjectInternal getClass() { none() }
+
+    override boolean isComparable() { none() }
+
+    override Builtin getBuiltin() { none() }
+
+    override ControlFlowNode getOrigin() {
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override int intValue() { none() }
+
+    override string strValue() { none() }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate attributesUnknown() { none() }
+
+}
+
+
+
+

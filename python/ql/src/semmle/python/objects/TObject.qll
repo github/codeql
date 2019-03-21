@@ -72,25 +72,132 @@ newtype TObject =
         s = "__main__"
     }
     or
-    TSpecificInstance(CallNode instantiation, ClassObjectInternal cls, PointsToContext2 context) {
-        PointsTo2::points_to(instantiation.getFunction(), context, cls, _) and
+    TSpecificInstance(ControlFlowNode instantiation, ClassObjectInternal cls, PointsToContext2 context) {
+        PointsTo2::points_to(instantiation.(CallNode).getFunction(), context, cls, _) and
         cls.isSpecial() = false
+        or
+        // Self
+        self_parameter(instantiation.getNode(), context, cls)
     }
     or
     TBoundMethod(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext2 context) {
-        exists(ControlFlowNode objnode, string name |
-            objnode = instantiation.getObject(name) and
-            PointsTo2::points_to(objnode, context, self, _) and
-            self.getClass().(ClassObjectInternal).attribute(name, function, _)
-        )
+        method_binding(instantiation, self, function, context)
     }
     or
     TUnknownInstance(ClassObjectInternal cls) { cls != TUnknownClass() }
+    or
+    TSuperInstance(ObjectInternal self, ClassObjectInternal startclass) {
+        super_instantiation(_, self, startclass, _)
+    }
 
 private predicate is_power_2(int n) {
     n = 1 or
     exists(int half | is_power_2(half) and n = half*2)
 }
+
+predicate super_instantiation(CallNode instantiation, ObjectInternal self, ClassObjectInternal startclass, PointsToContext2 context) {
+    PointsTo2::points_to(instantiation.getFunction(), context, ObjectInternal::builtin("super"), _) and
+    (
+        PointsTo2::points_to(instantiation.getArg(0), context, startclass, _) and
+        PointsTo2::points_to(instantiation.getArg(1), context, self, _)
+        or
+        major_version() = 3 and
+        not exists(instantiation.getArg(0)) and
+        exists(Function func |
+            instantiation.getScope() = func and
+            /* Implicit class argument is lexically enclosing scope */
+            func.getScope() = startclass.(PythonClassObjectInternal).getScope() and
+            /* Implicit 'self' is the 0th parameter */
+            PointsTo2::points_to(func.getArg(0).asName().getAFlowNode(), context, self, _)
+        )
+    )
+}
+
+predicate method_binding(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext2 context) {
+    exists(ObjectInternal obj, string name |
+        receiver(instantiation, context, obj, name) |
+        exists(ObjectInternal cls |
+            cls = obj.getClass() and
+            cls != ObjectInternal::builtin("super") and
+            cls.attribute(name, function, _) and
+            self = obj
+        )
+        or
+        exists(SuperInstance sup |
+            sup = obj and
+            sup.getStartClass().attribute(name, function, _) and
+            self = sup.getSelf()
+        )
+    )
+}
+
+
+/** Helper for method_binding */
+pragma [noinline]
+predicate receiver(AttrNode instantiation, PointsToContext2 context, ObjectInternal obj, string name) {
+    PointsTo2::points_to(instantiation.getObject(name), context, obj, _)
+}
+
+/** Helper self parameters: `def meth(self, ...): ...`. */
+pragma [noinline]
+private predicate self_parameter(Parameter def, PointsToContext2 context, PythonClassObjectInternal cls) {
+    def.isSelf() and
+    exists(Function scope |
+        def.(Name).getScope() = scope and
+        def.isSelf() and
+        context.isRuntime() and context.appliesToScope(scope) and
+        scope.getScope() = cls.getScope() and
+        concrete_class(cls) and
+        /* We want to allow decorated functions, otherwise we lose a lot of useful information.
+         * However, we want to exclude any function whose arguments are permuted by the decorator.
+         * In general we can't do that, but we can special case the most common ones.
+         */
+        neither_class_nor_static_method(scope)
+    )
+}
+
+/** INTERNAL -- Use `not cls.isAbstract()` instead. */
+cached predicate concrete_class(PythonClassObjectInternal cls) {
+    cls.getClass() != abcMetaClassObject()
+    or
+    exists(Class c |
+        c = cls.getScope() and
+        not exists(c.getMetaClass())
+        |
+        forall(Function f |
+            f.getScope() = c |
+            not exists(Raise r, Name ex |
+                r.getScope() = f and
+                (r.getException() = ex or r.getException().(Call).getFunc() = ex) and
+                (ex.getId() = "NotImplementedError" or ex.getId() = "NotImplemented")
+            )
+        )
+    )
+}
+
+private PythonClassObjectInternal abcMetaClassObject() {
+    /* Avoid using points-to and thus negative recursion */
+    exists(Class abcmeta |
+        result.getScope() = abcmeta |
+        abcmeta.getName() = "ABCMeta" and
+        abcmeta.getScope().getName() = "abc"
+    )
+}
+
+private predicate neither_class_nor_static_method(Function f) {
+    not exists(f.getADecorator())
+    or
+    exists(ControlFlowNode deco |
+        deco = f.getADecorator().getAFlowNode() |
+        exists(ObjectInternal o |
+            PointsTo2::points_to(deco, _, o, _) |
+            o != ObjectInternal::staticMethod() and
+            o != ObjectInternal::classMethod()
+        )
+        or not deco instanceof NameNode
+    )
+}
+
 
 
 library class ClassDecl extends @py_object {
@@ -133,13 +240,5 @@ library class ClassDecl extends @py_object {
         )
     }
 
-}
-
-
-predicate callee_for_object(PointsToContext2 callee, ObjectInternal obj) {
-    exists(CallNode call, PointsToContext2 caller |
-        callee.fromCall(call, caller) and
-        PointsTo2::points_to(call.getFunction(), caller, obj, _)
-    )
 }
 

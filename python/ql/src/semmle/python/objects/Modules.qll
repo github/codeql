@@ -17,6 +17,11 @@ abstract class ModuleObjectInternal extends ObjectInternal {
         none()
     }
 
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        // Modules aren't callable
+        none()
+    }
+
     override ControlFlowNode getOrigin() {
         result = this.getSourceModule().getEntryNode()
     }
@@ -38,7 +43,7 @@ class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleOb
     }
 
     override string toString() {
-        result = "builtin module " + this.getBuiltin().getName()
+        result = "Module " + this.getBuiltin().getName()
     }
 
     override string getName() {
@@ -93,7 +98,7 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
     }
 
     override string toString() {
-        result = "package " + this.getName()
+        result = "Package " + this.getName()
     }
 
     override string getName() {
@@ -186,7 +191,7 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
     }
 
     override string toString() {
-        result = "package " + this.getName()
+        result = "Module " + this.getName()
     }
 
     override string getName() {

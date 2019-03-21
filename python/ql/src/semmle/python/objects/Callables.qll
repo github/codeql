@@ -81,6 +81,10 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         )
     }
 
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
     override predicate calleeAndOffset(Function scope, int paramOffset) {
         scope = this.getScope() and paramOffset = 0
     }
@@ -98,7 +102,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
     }
 
     override string toString() {
-        result = "builtin function " + this.getBuiltin().getName()
+        result = "Builtin-function " + this.getBuiltin().getName()
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
@@ -112,6 +116,10 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
     override boolean isComparable() { result = true }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         exists(Builtin func, ClassObjectInternal cls |
             func = this.getBuiltin() and
             func != Builtin::builtin("isinstance") and
@@ -121,8 +129,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
             cls = ObjectInternal::fromBuiltin(this.getReturnType()) and
             obj = TUnknownInstance(cls)
         ) and
-        origin = CfgOrigin::unknown() and
-        callee_for_object(callee, this)
+        origin = CfgOrigin::unknown()
     }
 
     override ControlFlowNode getOrigin() {
@@ -185,6 +192,10 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
     override boolean isComparable() { result = true }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         // TO DO .. Result should be be a unknown value of a known class if the return type is known or just an unknown.
         none()
     }
@@ -235,8 +246,12 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
         this.getFunction().callResult(callee, obj, origin)
     }
 
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        this.getFunction().callResult(obj, origin)
+    }
+
     override ControlFlowNode getOrigin() {
-        this = TBoundMethod(result, _, _, _)
+        none()
     }
 
     override predicate calleeAndOffset(Function scope, int paramOffset) {

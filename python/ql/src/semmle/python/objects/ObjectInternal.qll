@@ -50,6 +50,11 @@ class ObjectInternal extends TObject {
     /** Holds if `obj` is the result of calling `this` and `origin` is
      * the origin of `obj`.
      */
+    abstract predicate callResult(ObjectInternal obj, CfgOrigin origin);
+
+    /** Holds if `obj` is the result of calling `this` and `origin` is
+     * the origin of `obj` with callee context `callee`.
+     */
     abstract predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin);
 
     /** The integer value of things that have integer values.
@@ -107,8 +112,11 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
     override boolean isComparable() { result = false }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
-        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown() and
-        callee_for_object(callee, this)
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
     }
 
     override ControlFlowNode getOrigin() {
@@ -167,9 +175,12 @@ class UnknownInternal extends ObjectInternal, TUnknown {
         none()
     }
 
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
+    }
+
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
-        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown() and
-        callee_for_object(callee, this)
+        none()
     }
 
     override ControlFlowNode getOrigin() {
@@ -227,10 +238,13 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         // Accessing an undefined value raises a NameError, but if during import it probably
         // means that we missed an import.
-        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown() and
-        callee.getOuter().isImport()
+        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
     }
 
     override ControlFlowNode getOrigin() {
@@ -311,6 +325,15 @@ module ObjectInternal {
         or
         result = TBuiltinModuleObject(b)
     }
+
+    ObjectInternal classMethod() {
+        result = TBuiltinClassObject(Builtin::special("ClassMethod"))
+    }
+
+    ObjectInternal staticMethod() {
+        result = TBuiltinClassObject(Builtin::special("StaticMethod"))
+    }
+
 }
 
 /** Helper for boolean predicates returning both `true` and `false` */

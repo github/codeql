@@ -86,7 +86,11 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
     override predicate attributesUnknown() { none() }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
-        // TO DO .. Result should (in most cases) be an instance
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        // Handled by Instance classes.
         none()
     }
 
@@ -101,7 +105,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
     }
 
     override string toString() {
-        result = "builtin class " + this.getBuiltin().getName()
+        result = "builtin-class " + this.getBuiltin().getName()
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
@@ -132,6 +136,10 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
     override predicate attributesUnknown() { none() }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         // TO DO .. Result should (in most cases) be an instance
         none()
     }
@@ -166,8 +174,11 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
     }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
-        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown() and
-        callee_for_object(callee, this)
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
     }
 
     override ControlFlowNode getOrigin() {

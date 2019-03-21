@@ -104,6 +104,9 @@ module PointsTo2 {
     predicate points_to_candidate(ControlFlowNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
         use_points_to(f, context, value, origin)
         or
+        /* Not necessary, but for backwards compatibility */
+        def_points_to(f, context, value, origin)
+        or
         attribute_load_points_to(f, context, value, origin)
         or
         subscript_points_to(f, context, value, origin)
@@ -138,10 +141,7 @@ module PointsTo2 {
             guard = b.getImmediatelyControllingBlock() and
             reachableBlock(guard, context)
             |
-            exists(ObjectInternal value |
-                points_to(guard.getLastNode(), context, value, _) and
-                guard.controls(b, value.booleanValue())
-            )
+            allowsFlow(guard, b, context)
             or
             /* Assume the true edge of an assert is reachable (except for assert 0/False) */
             guard.controls(b, true) and
@@ -153,16 +153,30 @@ module PointsTo2 {
         )
     }
 
+    pragma [noopt]
+    private predicate allowsFlow(ConditionBlock guard, BasicBlock b, PointsToContext2 context) {
+        exists(ObjectInternal value, boolean sense, ControlFlowNode test |
+            test = guard.getLastNode() and
+            points_to(test, context, value, _) and
+            sense = value.booleanValue() and
+            guard.controls(b, sense)
+        )
+    }
+
     /* Holds if the edge `pred` -> `succ` is reachable, given the context `context`.
      */
+    pragma [noopt]
     predicate controlledReachableEdge(BasicBlock pred, BasicBlock succ, PointsToContext2 context) {
-        exists(ConditionBlock guard, ObjectInternal value |
-            points_to(guard.getLastNode(), context, value, _) and
-            guard.controlsEdge(pred, succ, value.booleanValue())
+        exists(ConditionBlock guard, ObjectInternal value, boolean sense, ControlFlowNode test |
+            test = guard.getLastNode() and
+            points_to(test, context, value, _) and
+            sense = value.booleanValue() and
+            guard.controlsEdge(pred, succ, sense)
         )
     }
 
     /** Gets an object pointed to by a use (of a variable). */
+    pragma [noinline]
     private predicate use_points_to(NameNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
         exists(CfgOrigin origin_or_obj |
             value != ObjectInternal::undefined() and
@@ -171,6 +185,13 @@ module PointsTo2 {
         )
     }
 
+    /** Gets an object pointed to by the definition of an ESSA variable. */
+    pragma [noinline]
+    private predicate def_points_to(DefinitionNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
+        points_to(f.getValue(), context, value, origin)
+    }
+
+    pragma [noinline]
     private predicate use_points_to_maybe_origin(NameNode f, PointsToContext2 context, ObjectInternal value, CfgOrigin origin_or_obj) {
         ssa_variable_points_to(fast_local_variable(f), context, value,  origin_or_obj)
         or
@@ -181,10 +202,12 @@ module PointsTo2 {
     }
 
     /** Holds if `var` refers to `(value, origin)` given the context `context`. */
+    pragma [noinline]
     predicate ssa_variable_points_to(EssaVariable var, PointsToContext2 context, ObjectInternal value, CfgOrigin origin) {
         ssa_definition_points_to(var.getDefinition(), context, value, origin)
     }
 
+    pragma [noinline]
     private predicate name_lookup_points_to_maybe_origin(NameNode f, PointsToContext2 context, ObjectInternal value, CfgOrigin origin_or_obj) {
         exists(EssaVariable var | var = name_local_variable(f) |
             ssa_variable_points_to(var, context, value, origin_or_obj)
@@ -199,6 +222,7 @@ module PointsTo2 {
         ssa_variable_points_to(name_local_variable(f), context, ObjectInternal::undefined(), _)
     }
 
+    pragma [noinline]
     private predicate global_lookup_points_to_maybe_origin(NameNode f, PointsToContext2 context, ObjectInternal value, CfgOrigin origin_or_obj) {
         ssa_variable_points_to(global_variable(f), context, value, origin_or_obj)
         or
@@ -235,13 +259,17 @@ module PointsTo2 {
     }
 
     /** Holds if `f` is an attribute `x.attr` and points to `(value, cls, origin)`. */
+    pragma [noinline]
     private predicate attribute_load_points_to(AttrNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
         exists(ObjectInternal object, string name, CfgOrigin orig |
             points_to(f.getObject(name), context, object, _) |
             object.attribute(name, value, orig) and
             origin = orig.fix(f)
-            or
-            object.attributesUnknown() and origin = f and value = ObjectInternal::unknown()
+        )
+        or
+        exists(ObjectInternal object |
+            points_to(f.getObject(), context, object, _) and
+            origin = f and value = ObjectInternal::unknown()
         )
         // TO DO -- Support CustomPointsToAttribute
         //or
@@ -298,12 +326,12 @@ module PointsTo2 {
     private predicate ssa_node_refinement_points_to(EssaNodeRefinement def, PointsToContext2 context, ObjectInternal value, CfgOrigin origin) {
         //method_callsite_points_to(def, context, value, origin)
         //or
-        //import_star_points_to(def, context, value, origin)
-        //or
+        InterModulePointsTo::import_star_points_to(def, context, value, origin)
+        or
         //attribute_assignment_points_to(def, context, value, origin)
         //or
-        //callsite_points_to(def, context, value, origin)
-        //or
+        InterProceduralPointsTo::callsite_points_to(def, context, value, origin)
+        or
         //argument_points_to(def, context, value, origin)
         //or
         //attribute_delete_points_to(def, context, value, origin)
@@ -427,7 +455,7 @@ module PointsTo2 {
         none()
     }
 
-
+    pragma [noinline]
     private predicate compare_expr_points_to(CompareNode cmp, PointsToContext2 context, ObjectInternal value) {
         value = ObjectInternal::bool(Conditionals::comparisonEvaluatesTo(cmp, _, context, _, _))
         // or
@@ -447,6 +475,7 @@ module PointsTo2 {
         )
     }
 
+    pragma [noinline]
     private predicate unary_points_to(UnaryExprNode f, PointsToContext2 context, ObjectInternal value) {
         exists(Unaryop op, ObjectInternal operand |
             op = f.getNode().getOp() and
@@ -464,6 +493,7 @@ module PointsTo2 {
 
 module InterModulePointsTo {
 
+    pragma [noinline]
     predicate import_points_to(ControlFlowNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
         exists(string name, ImportExpr i |
             i.getAFlowNode() = f and i.getImportedModuleName() = name and
@@ -474,22 +504,13 @@ module InterModulePointsTo {
     }
 
     predicate from_import_points_to(ImportMemberNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
-        exists(string name, ModuleObjectInternal mod, CfgOrigin orig |
-            PointsTo2::points_to(f.getModule(name), context, mod, _) and
-            origin = orig.asCfgNodeOrHere(f)
-            |
-            // TO DO... $ variables.
-            //mod.getSourceModule() = f.getEnclosingModule() and
-            //not exists(EssaVariable var | var.getSourceVariable().getName() = name and var.getAUse() = f) and
-            //exists(EssaVariable dollar |
-            //    isModuleStateVariable(dollar) and dollar.getAUse() = f and
-            //    SSA::ssa_variable_named_attribute_points_to(dollar, context, name, value, orig)
-            //)
-            //or
-            (mod.getSourceModule() != f.getEnclosingModule() or mod.isBuiltin()) and
-            mod.attribute(name, value, origin)
-        )
+        from_self_import_points_to(f, context, value, origin)
         or
+        from_other_import_points_to(f, context, value, origin)
+    }
+
+    pragma [noinline]
+    predicate from_self_import_points_to(ImportMemberNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
         exists(EssaVariable var, CfgOrigin orig |
             var = ssa_variable_for_module_attribute(f, context) and
             PointsTo2::ssa_variable_points_to(var, context, value, orig) and
@@ -497,6 +518,28 @@ module InterModulePointsTo {
         )
     }
 
+    pragma [noinline]
+    predicate from_other_import_points_to(ImportMemberNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
+        exists(string name, ModuleObjectInternal mod, CfgOrigin orig |
+            from_import_imports(f, context, mod, name) and
+            (mod.getSourceModule() != f.getEnclosingModule() or mod.isBuiltin()) and
+            mod.attribute(name, value, origin) and
+            origin = orig.asCfgNodeOrHere(f)
+            // TO DO... $ variables.
+            //mod.getSourceModule() = f.getEnclosingModule() and
+            //not exists(EssaVariable var | var.getSourceVariable().getName() = name and var.getAUse() = f) and
+            //exists(EssaVariable dollar |
+            //    isModuleStateVariable(dollar) and dollar.getAUse() = f and
+            //    SSA::ssa_variable_named_attribute_points_to(dollar, context, name, value, orig)
+            //)
+        )
+    }
+
+    private predicate from_import_imports(ImportMemberNode f, PointsToContext2 context, ModuleObjectInternal mod, string name) {
+        PointsTo2::points_to(f.getModule(name), context, mod, _)
+    }
+
+    pragma [noinline]
     private EssaVariable ssa_variable_for_module_attribute(ImportMemberNode f, PointsToContext2 context) {
         exists(string name, ModuleObjectInternal mod, Module m |
             mod.getSourceModule() = m and m = f.getEnclosingModule() and m = result.getScope() and
@@ -538,16 +581,114 @@ module InterModulePointsTo {
         )
     }
 
+    /** Points-to for `from ... import *`. */
+    predicate import_star_points_to(ImportStarRefinement def, PointsToContext2 context, ObjectInternal value, CfgOrigin origin) {
+        exists(CfgOrigin orig |
+            origin = orig.fix(def.getDefiningNode())
+            |
+            exists(ModuleObjectInternal mod, string name |
+                PointsTo2::points_to(def.getDefiningNode().(ImportStarNode).getModule(), context, mod, _) and
+                name = def.getSourceVariable().getName() |
+                /* Attribute from imported module */
+                module_exports_boolean(mod, name) = true and
+                mod.attribute(name, value, origin)
+            )
+            or
+            exists(EssaVariable var |
+                /* Retain value held before import */
+                variable_not_redefined_by_import_star(var, context, def) and
+                PointsTo2::ssa_variable_points_to(var, context, value,orig)
+            )
+        )
+    }
+
+
+    /** Holds if `def` is technically a definition of `var`, but the `from ... import *` does not in fact define `var`. */
+    cached predicate variable_not_redefined_by_import_star(EssaVariable var, PointsToContext2 context, ImportStarRefinement def) {
+        var = def.getInput() and
+        exists(ModuleObjectInternal mod |
+            PointsTo2::points_to(def.getDefiningNode().(ImportStarNode).getModule(), context, mod, _) |
+            module_exports_boolean(mod, var.getSourceVariable().getName()) = false
+            or
+            exists(Module m, string name |
+                m = mod.getSourceModule() and name = var.getSourceVariable().getName() |
+                not m.declaredInAll(_) and name.charAt(0) = "_"
+            )
+        )
+    }
+
+    private predicate importsByImportStar(ModuleObjectInternal mod, ModuleObjectInternal imported) {
+        exists(ImportStarNode isn |
+            PointsTo2::points_to(isn.getModule(), _, imported, _) and
+            isn.getScope() = mod.getSourceModule()
+        )
+        or exists(ModuleObjectInternal mid |
+            importsByImportStar(mod, mid) and importsByImportStar(mid, imported)
+        )
+    }
+
+    private predicate ofInterestInModule(ModuleObjectInternal mod, string name) {
+        exists(ImportStarNode isn, Module m |
+            m = mod.getSourceModule() and
+            isn.getScope() = m and
+            exists(EssaVariable var | var.getAUse() = isn and var.getName() = name)
+        )
+    }
+
+    private predicate ofInterestInExports(ModuleObjectInternal mod, string name) {
+        exists(ModuleObjectInternal importer |
+            importsByImportStar(importer, mod) and
+            ofInterestInModule(importer, name)
+        )
+    }
+
+    private boolean module_exports_boolean(ModuleObjectInternal mod, string name) {
+        ofInterestInExports(mod, name) and
+        exists(Module src |
+            src = mod.getSourceModule()
+            |
+            if exists(SsaVariable var | name = var.getId() and var.getAUse() = src.getANormalExit()) then
+                result = true
+            else (
+                exists(ImportStarNode isn, ModuleObjectInternal imported |
+                    isn.getScope() = src and
+                    PointsTo2::points_to(isn.getModule(), _, imported, _) and
+                    result = module_exports_boolean(imported, name)
+                )
+                or
+                not exists(ImportStarNode isn |isn.getScope() = src) and result = false
+            )
+        )
+        or
+        ofInterestInExports(mod, name) and
+        exists(Folder folder |
+            mod.(PackageObjectInternal).hasNoInitModule() and
+            folder = mod.(PackageObjectInternal).getFolder() |
+            if (exists(folder.getChildContainer(name)) or exists(folder.getFile(name + ".py"))) then
+                result = true
+            else
+                result = false
+        )
+        or
+        name = "__name__" and result = true
+    }
+
 }
 
 module InterProceduralPointsTo {
 
+    pragma [noinline]
     predicate call_points_to(CallNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
-        exists(ObjectInternal func,  PointsToContext2 callee, CfgOrigin resultOrigin |
-            callee.fromCall(f, context) and
+        exists(ObjectInternal func, CfgOrigin resultOrigin |
             PointsTo2::points_to(f.getFunction(), context, func, _) and
-            func.callResult(callee, value, resultOrigin) and
             origin = resultOrigin.fix(f)
+            |
+            exists(PointsToContext2 callee |
+                callee.fromCall(f, context) and
+                func.callResult(callee, value, resultOrigin)
+            )
+            or
+            func.callResult(value, resultOrigin)
         )
     }
 
@@ -627,12 +768,11 @@ module InterProceduralPointsTo {
     /** Model the transfer of values at scope-entry points. Transfer from `(pred_var, pred_context)` to `(succ_def, succ_context)`. */
     cached predicate scope_entry_value_transfer(EssaVariable pred_var, PointsToContext2 pred_context, ScopeEntryDefinition succ_def, PointsToContext2 succ_context) {
         scope_entry_value_transfer_from_earlier(pred_var, pred_context, succ_def, succ_context)
-        // TO DO...
-        //or
-        //callsite_entry_value_transfer(pred_var, pred_context, succ_def, succ_context)
-        //or
-        //pred_context.isImport() and pred_context = succ_context and
-        //class_entry_value_transfer(pred_var, succ_def)
+        or
+        callsite_entry_value_transfer(pred_var, pred_context, succ_def, succ_context)
+        or
+        pred_context.isImport() and pred_context = succ_context and
+        class_entry_value_transfer(pred_var, succ_def)
     }
 
     /** Helper for `scope_entry_value_transfer`. Transfer of values from a temporally earlier scope to later scope.
@@ -665,6 +805,59 @@ module InterProceduralPointsTo {
             pred_var.getAUse() = succ_context.getRootCall() and pred_context.isImport() and
             succ_context.appliesToScope(succ_def.getScope())
         )
+    }
+
+    /** Helper for `scope_entry_value_transfer`.
+     * Transfer of values from the callsite to the callee, for enclosing variables, but not arguments/parameters. */
+    pragma [noinline]
+    private predicate callsite_entry_value_transfer(EssaVariable caller_var, PointsToContext2 caller, ScopeEntryDefinition entry_def, PointsToContext2 callee) {
+        entry_def.getSourceVariable() = caller_var.getSourceVariable() and
+        callsite_calls_function(caller_var.getAUse(), caller, entry_def.getScope(), callee, _)
+    }
+
+    /** Helper for `scope_entry_value_transfer`. */
+    private predicate class_entry_value_transfer(EssaVariable pred_var, ScopeEntryDefinition succ_def) {
+        exists(ImportTimeScope scope, ControlFlowNode class_def |
+            class_def = pred_var.getAUse() and
+            scope.entryEdge(class_def, succ_def.getDefiningNode()) and
+            pred_var.getSourceVariable() = succ_def.getSourceVariable()
+        )
+    }
+
+    /** Points-to for a variable (possibly) redefined by a call:
+     * `var = ...; foo(); use(var)`
+     * Where var may be redefined in call to `foo` if `var` escapes (is global or non-local).
+     */
+    pragma [noinline]
+    predicate callsite_points_to(CallsiteRefinement def, PointsToContext2 context, ObjectInternal value, CfgOrigin origin) {
+        exists(SsaSourceVariable srcvar |
+            srcvar = def.getSourceVariable() |
+            if srcvar instanceof EscapingAssignmentGlobalVariable then (
+                /* If global variable can be reassigned, we need to track it through calls */
+                exists(EssaVariable var, Function func, PointsToContext2 callee |
+                    callsite_calls_function(def.getCall(), context, func, callee, _) and
+                    var_at_exit(srcvar, func, var) and
+                    PointsTo2::ssa_variable_points_to(var, callee, value, origin)
+                )
+                or
+                exists(ObjectInternal callable |
+                    PointsTo2::points_to(def.getCall().getFunction(), context, callable, _) and
+                    exists(callable.getBuiltin()) and
+                    PointsTo2::ssa_variable_points_to(def.getInput(), context, value, origin)
+                )
+            ) else (
+                /* Otherwise we can assume its value (but not those of its attributes or members) has not changed. */
+                PointsTo2::ssa_variable_points_to(def.getInput(), context, value, origin)
+            )
+        )
+    }
+
+    /* Helper for computing ESSA variables at scoepe exit. */
+    private predicate var_at_exit(Variable var, Scope scope, EssaVariable evar) {
+        not var instanceof LocalVariable and
+        evar.getSourceVariable() = var and
+        evar.getScope() = scope and
+        BaseFlow::reaches_exit(evar)
     }
 
 }

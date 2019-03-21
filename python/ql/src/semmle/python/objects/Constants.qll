@@ -35,6 +35,11 @@ abstract class BooleanObjectInternal extends ObjectInternal {
         none()
     }
 
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        // Booleans aren't callable
+        none()
+    }
+
     override ControlFlowNode getOrigin() {
         none()
     }
@@ -54,7 +59,7 @@ abstract class BooleanObjectInternal extends ObjectInternal {
 class TrueObjectInternal extends BooleanObjectInternal, TTrue {
 
     override string toString() {
-        result = "True"
+        result = "bool True"
     }
 
     override boolean booleanValue() {
@@ -78,7 +83,7 @@ class TrueObjectInternal extends BooleanObjectInternal, TTrue {
 class FalseObjectInternal extends BooleanObjectInternal, TFalse {
 
     override string toString() {
-        result = "False"
+        result = "bool False"
     }
 
     override boolean booleanValue() {
@@ -134,7 +139,12 @@ class NoneObjectInternal extends ObjectInternal, TNone {
         // None isn't callable
         none()
     }
-
+    
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        // None isn't callable
+        none()
+    }
+    
     override ControlFlowNode getOrigin() {
         none()
     }
@@ -163,7 +173,7 @@ class NoneObjectInternal extends ObjectInternal, TNone {
 class IntObjectInternal extends ObjectInternal, TInt {
 
     override string toString() {
-        result = this.intValue().toString()
+        result = "int " + this.intValue().toString()
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
@@ -189,6 +199,11 @@ class IntObjectInternal extends ObjectInternal, TInt {
     }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        // ints aren't callable
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         // ints aren't callable
         none()
     }
@@ -252,6 +267,11 @@ class StringObjectInternal extends ObjectInternal, TString {
     }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+        // strings aren't callable
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         // strings aren't callable
         none()
     }
