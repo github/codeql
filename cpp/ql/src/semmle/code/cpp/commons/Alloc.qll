@@ -48,10 +48,7 @@ predicate allocationFunction(Function f)
       name = "HeapReAlloc" or
       name = "VirtualAlloc" or
       name = "CoTaskMemAlloc" or
-      name = "CoTaskMemRealloc" or
-      name = "SysAllocString" or
-      name = "SysAllocStringByteLen" or
-      name = "SysAllocStringLen"
+      name = "CoTaskMemRealloc"
     )
   )
 }
@@ -103,8 +100,7 @@ predicate freeFunction(Function f, int argNum)
       (name = "LocalReAlloc" and argNum = 0) or
       (name = "GlobalReAlloc" and argNum = 0) or
       (name = "HeapReAlloc" and argNum = 2) or
-      (name = "CoTaskMemRealloc" and argNum = 0) or
-      (name = "SysReAllocString" and argNum = 0)
+      (name = "CoTaskMemRealloc" and argNum = 0)
     )
   )
 }
