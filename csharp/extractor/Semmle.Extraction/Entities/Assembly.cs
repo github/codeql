@@ -34,7 +34,8 @@ namespace Semmle.Extraction.Entities
             }
         }
 
-        public override bool NeedsPopulation => true;
+        public override bool NeedsPopulation =>
+            assembly != Context.Compilation.Assembly || !Context.IsGlobalContext;
 
         public override int GetHashCode() =>
             symbol == null ? 91187354 : symbol.GetHashCode();

@@ -27,7 +27,7 @@ namespace Semmle.Extraction.Entities
             // On Windows: System.IO.DirectoryInfo.Name returns "L:\"
             string shortName = symbol.Parent == null ? "" : symbol.Name;
 
-            Context.Emit(Tuples.folders(this, Semmle.Extraction.Entities.File.PathAsDatabaseString(Path), shortName));
+            Context.Emit(Tuples.folders(this, File.PathAsDatabaseString(Path), shortName));
             if (symbol.Parent != null)
             {
                 Context.Emit(Tuples.containerparent(Create(Context, symbol.Parent), this));

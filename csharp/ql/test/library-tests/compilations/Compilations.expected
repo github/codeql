@@ -1,0 +1,26 @@
+diags
+| Program.cs:1:1:1:13 | Unnecessary using directive | CS8019 | 0 | Unnecessary using directive | Unnecessary using directive. |
+| Program.cs:7:13:7:13 | Variable is assigned but its value is never used | CS0219 | 2 | Variable is assigned but its value is never used | The variable 'x' is assigned but its value is never used |
+| Program.cs:9:9:9:11 | Unreachable code detected | CS0162 | 2 | Unreachable code detected | Unreachable code detected |
+| Program.cs:9:13:9:13 | Variable is assigned but its value is never used | CS0219 | 2 | Variable is assigned but its value is never used | The variable 'y' is assigned but its value is never used |
+metricTests
+| compilation | Test passed |
+compilation
+| compilation | compilations |
+compilationArguments
+| compilation | 0 | -unsafe |
+| compilation | 1 | -target:library |
+| compilation | 2 | /noconfig |
+| compilation | 3 | /r:System.Private.CoreLib.dll |
+| compilation | 4 | /r:System.dll |
+| compilation | 5 | /r:System.Core.dll |
+| compilation | 6 | /r:System.Runtime.dll |
+| compilation | 7 | /r:System.Console.dll |
+| compilation | 8 | --console |
+| compilation | 9 | --verbosity |
+| compilation | 10 | 2 |
+| compilation | 11 | Program.cs |
+compilationFiles
+| compilation | 0 | Program.cs:0:0:0:0 | Program.cs |
+compilationFolder
+| compilation | folder://compilations | compilations |

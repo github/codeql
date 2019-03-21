@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -82,6 +83,15 @@ namespace Semmle.Extraction
         /// The extractor SHA, obtained from the git log.
         /// </summary>
         string Version { get; }
+
+        /// <summary>
+        /// Creates a new context.
+        /// </summary>
+        /// <param name="c">The C# compilation.</param>
+        /// <param name="trapWriter">The trap writer.</param>
+        /// <param name="scope">The extraction scope (what to include in this trap file).</param>
+        /// <returns></returns>
+        Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope);
     }
 
     /// <summary>
@@ -189,6 +199,11 @@ namespace Semmle.Extraction
         {
             lock (mutex)
                 missingNamespaces.Add(fqdn);
+        }
+
+        public Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope)
+        {
+            return new Context(this, c, trapWriter, scope);
         }
 
         public IEnumerable<string> MissingTypes => missingTypes;

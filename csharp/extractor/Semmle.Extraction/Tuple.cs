@@ -120,6 +120,9 @@ namespace Semmle.Extraction
                     case int i:
                         tb.Append(i);
                         break;
+                    case float f:
+                        tb.Append(f.ToString("0.#####e0"));  // Trap importer won't accept ints
+                        break;
                     case string[] array:
                         tb.Append("\"");
                         if (NeedsTruncation(array))

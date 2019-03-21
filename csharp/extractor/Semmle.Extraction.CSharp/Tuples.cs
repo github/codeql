@@ -41,6 +41,14 @@ namespace Semmle.Extraction.CSharp
 
         internal static Tuple commentline_location(CommentLine commentLine, Location location) => new Tuple("commentline_location", commentLine, location);
 
+        internal static Tuple compilation_args(Compilation compilation, int index, string arg) => new Tuple("compilation_args", compilation, index, arg);
+
+        internal static Tuple compilation_compiling_files(Compilation compilation, int index, File file) => new Tuple("compilation_compiling_files", compilation, index, file);
+
+        internal static Tuple compilation_time(Compilation compilation, int num, int index, float metric) => new Tuple("compilation_time", compilation, num, index, metric);
+
+        internal static Tuple compilations(Compilation compilation, string cwd) => new Tuple("compilations", compilation, cwd);
+
         internal static Tuple compiler_generated(IEntity entity) => new Tuple("compiler_generated", entity);
 
         internal static Tuple conditional_access(Expression access) => new Tuple("conditional_access", access);
@@ -58,6 +66,11 @@ namespace Semmle.Extraction.CSharp
         internal static Tuple destructor_location(Destructor destructor, Location location) => new Tuple("destructor_location", destructor, location);
 
         internal static Tuple destructors(Destructor destructor, string name, Type containingType, Destructor original) => new Tuple("destructors", destructor, name, containingType, original);
+
+        internal static Tuple diagnostic_for(Diagnostic diag, Compilation comp, int fileNo, int index) => new Tuple("diagnostic_for", diag, comp, fileNo, index);
+
+        internal static Tuple diagnostics(Diagnostic diag, int severity, string errorTag, string errorMessage, string fullErrorMessage, Location location) =>
+            new Tuple("diagnostics", diag, severity, errorTag, errorMessage, fullErrorMessage, location);
 
         internal static Tuple dynamic_member_name(Expression e, string name) => new Tuple("dynamic_member_name", e, name);
 

@@ -247,6 +247,8 @@ namespace Semmle.Extraction
             TrapWriter = trapWriter;
         }
 
+        public bool IsGlobalContext => Scope.IsGlobalScope;
+
         public readonly ICommentGenerator CommentGenerator = new CommentProcessor();
 
         readonly IExtractionScope Scope;

@@ -1,0 +1,94 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+
+namespace Semmle.Extraction.CSharp.Entities
+{
+    class Compilation : FreshEntity
+    {
+        public Compilation(Context cx, string cwd, string[] args) : base(cx)
+        {
+            Extraction.Entities.Assembly.CreateOutputAssembly(cx);
+
+            cx.Emit(Tuples.compilations(this, Extraction.Entities.File.PathAsDatabaseString(cwd)));
+
+            // Arguments
+            int index = 0;
+            foreach(var arg in args)
+            {
+                cx.Emit(Tuples.compilation_args(this, index, args[index]));
+                index++;
+            }
+
+            // Files
+            index = 0;
+            foreach(var file in cx.Compilation.SyntaxTrees.Select(tree => Extraction.Entities.File.Create(cx, tree.FilePath)))
+            {
+                cx.Emit(Tuples.compilation_compiling_files(this, index++, file));
+            }
+
+            // Diagnostics
+            index = 0;
+            foreach(var d in cx.Compilation.GetDiagnostics())
+            {
+                var d2 = new Diagnostic(cx, d);
+                cx.Emit(Tuples.diagnostic_for(d2, this, 0, index++));
+            }
+        }
+
+        public void PopulatePerformance(Performance p)
+        {
+            int index = 0;
+            foreach(float metric in p.Metrics)
+            {
+                cx.Emit(Tuples.compilation_time(this, -1, index++, metric));
+            }
+        }
+
+        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+    }
+    class Diagnostic : FreshEntity
+    {
+        public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
+
+        public Diagnostic(Context cx, Microsoft.CodeAnalysis.Diagnostic diag) : base(cx)
+        {
+            cx.Emit(Tuples.diagnostics(this, (int)diag.Severity, diag.Id, diag.Descriptor.Title.ToString(),
+                diag.GetMessage(), Extraction.Entities.Location.Create(cx, diag.Location)));
+        }
+    }
+
+    public struct Timings
+    {
+        public TimeSpan Elapsed, Cpu, User;
+    }
+
+    /// <summary>
+    /// The various performance measures that we log.
+    /// </summary>
+    public struct Performance
+    {
+        public Timings Compiler, Extractor;
+        public long PeakWorkingSet;
+
+        /// <summary>
+        /// These are in database order (0 indexed)
+        /// </summary>
+        public IEnumerable<float> Metrics
+        {
+            get
+            {
+                yield return (float)Compiler.Cpu.TotalSeconds;
+                yield return (float)Compiler.Elapsed.TotalSeconds;
+                yield return (float)Extractor.Cpu.TotalSeconds;
+                yield return (float)Extractor.Elapsed.TotalSeconds;
+
+                yield return (float)Compiler.User.TotalSeconds;
+                yield return (float)Extractor.User.TotalSeconds;
+                yield return PeakWorkingSet / 1024.0f / 1024.0f;
+            }
+        }
+    }
+}

@@ -6,7 +6,7 @@ namespace Semmle.Extraction.Entities
         public Location(Context cx, Microsoft.CodeAnalysis.Location init)
             : base(cx, init) { }
 
-        internal static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) =>
+        public static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) =>
             loc == null ? GeneratedLocation.Create(cx)
                     : loc.IsInSource ? SourceLocation.Create(cx, loc)
                     : Assembly.Create(cx, loc);
