@@ -3,6 +3,7 @@
  */
 import cpp
 import semmle.code.cpp.controlflow.SSA
+import semmle.code.cpp.dataflow.DataFlow
 
 /**
  * Holds if `alloc` is a use of `malloc` or `new`.  `kind` is
@@ -46,7 +47,10 @@ predicate allocExprOrIndirect(Expr alloc, string kind) {
     alloc.(FunctionCall).getTarget() = rtn.getEnclosingFunction() and
     (
       allocExprOrIndirect(rtn.getExpr(), kind) or
-      allocReaches0(rtn.getExpr(), _, kind)
+      exists(Expr e |
+        allocExprOrIndirect(e, kind) and
+        DataFlow::localFlow(DataFlow::exprNode(e), DataFlow::exprNode(rtn.getExpr()))
+      )
     )
   )
 }
