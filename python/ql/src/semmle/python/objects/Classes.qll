@@ -15,8 +15,6 @@ abstract class ClassObjectInternal extends ObjectInternal {
         result = true
     }
 
-    override predicate maybe() { none() }
-
     override boolean isClass() { result = true }
 
     override int intValue() {

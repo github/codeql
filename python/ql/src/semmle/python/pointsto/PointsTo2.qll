@@ -139,13 +139,8 @@ module PointsTo2 {
             reachableBlock(guard, context)
             |
             exists(ObjectInternal value |
-                points_to(guard.getLastNode(), context, value, _)
-                |
-                guard.controls(b, _) and value.maybe()
-                or
-                guard.controls(b, true) and value.booleanValue() = true
-                or
-                guard.controls(b, false) and value.booleanValue() = false
+                points_to(guard.getLastNode(), context, value, _) and
+                guard.controls(b, value.booleanValue())
             )
             or
             /* Assume the true edge of an assert is reachable (except for assert 0/False) */
@@ -162,13 +157,8 @@ module PointsTo2 {
      */
     predicate controlledReachableEdge(BasicBlock pred, BasicBlock succ, PointsToContext2 context) {
         exists(ConditionBlock guard, ObjectInternal value |
-            points_to(guard.getLastNode(), context, value, _)
-            |
-            guard.controlsEdge(pred, succ, _) and value.maybe()
-            or
-            guard.controlsEdge(pred, succ, true) and value.booleanValue() = true
-            or
-            guard.controlsEdge(pred, succ, false) and value.booleanValue() = false
+            points_to(guard.getLastNode(), context, value, _) and
+            guard.controlsEdge(pred, succ, value.booleanValue())
         )
     }
 
@@ -324,7 +314,7 @@ module PointsTo2 {
     /** Holds if ESSA edge refinement, `def`, refers to `(value, cls, origin)`. */
     predicate ssa_filter_definition_points_to(PyEdgeRefinement def, PointsToContext2 context, ObjectInternal value, CfgOrigin origin) {
         exists(ControlFlowNode test, ControlFlowNode use |
-            refinement_test(test, use, Conditionals::evaluatesTo(test, use, context, value, origin.toCfgNode()), def)
+            refinement_test(test, use, Conditionals::branchEvaluatesTo(test, use, context, value, origin.toCfgNode()), def)
         )
     }
 
@@ -337,7 +327,7 @@ module PointsTo2 {
              */
             use = uniphi.getInput().getSourceVariable().(Variable).getAUse() and
             test = uniphi.getDefiningNode() and
-            uniphi.getSense() = Conditionals::evaluatesTo(test, use, context, value, origin.toCfgNode())
+            uniphi.getSense() = Conditionals::branchEvaluatesTo(test, use, context, value, origin.toCfgNode())
         )
     }
 
@@ -439,41 +429,9 @@ module PointsTo2 {
 
 
     private predicate compare_expr_points_to(CompareNode cmp, PointsToContext2 context, ObjectInternal value) {
-        exists(ControlFlowNode a, ControlFlowNode b, ObjectInternal o1, ObjectInternal o2 |
-            exists(boolean is |
-                equality_test(cmp, a, is, b) and
-                points_to(a, context, o1, _) and
-                points_to(b, context, o2, _) |
-                (o1.isComparable() = true and o2.isComparable() = true) and
-                (
-                    o1 = o2 and value = ObjectInternal::bool(is)
-                    or
-                    o1 != o2 and value = ObjectInternal::bool(is.booleanNot())
-                )
-                or
-                (o1.isComparable() = false or o2.isComparable() = false) and
-                value = ObjectInternal::bool(_)
-            )
-            or
-            exists(boolean strict |
-                inequality(cmp, a, b, strict) and
-                points_to(a, context, o1, _) and
-                points_to(b, context, o2, _) |
-                o1.intValue() < o2.intValue() and value = ObjectInternal::bool(true)
-                or 
-                o1.intValue() > o2.intValue() and value = ObjectInternal::bool(false)
-                or
-                o1.intValue() = o2.intValue() and value = ObjectInternal::bool(strict.booleanNot())
-                or
-                o1.strValue() < o2.strValue() and value = ObjectInternal::bool(true)
-                or 
-                o1.strValue() > o2.strValue() and value = ObjectInternal::bool(false)
-                or
-                o1.strValue() = o2.strValue() and value = ObjectInternal::bool(strict.booleanNot())
-            )
-           // or
-           // value = version_tuple_compare(cmp, context)
-        )
+        value = ObjectInternal::bool(Conditionals::comparisonEvaluatesTo(cmp, _, context, _, _))
+        // or
+        // value = version_tuple_compare(cmp, context)
     }
 
     /** Helper for comparisons. */
@@ -494,11 +452,7 @@ module PointsTo2 {
             op = f.getNode().getOp() and
             points_to(f.getOperand(), context, operand, _)
             |
-            op instanceof Not and operand.maybe() and value = ObjectInternal::bool(_)
-            or
-            op instanceof Not and operand.booleanValue() = false and value = ObjectInternal::bool(true)
-            or
-            op instanceof Not and operand.booleanValue() = true and value = ObjectInternal::bool(false)
+            op instanceof Not and value = ObjectInternal::bool(operand.booleanValue().booleanNot())
             or
             op instanceof USub and value = ObjectInternal::fromInt(-operand.intValue())
             or
@@ -734,48 +688,34 @@ module Conditionals {
         result = expr.(UnaryExprNode).getOperand()
     }
 
-    private boolean maybe() {
-        result = true or result = false
+    boolean branchEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext2 context, ObjectInternal val, ControlFlowNode origin) {
+        contains_interesting_expression_within_test(expr, use) and
+        PointsTo2::points_to(use, context, val, origin) and
+        expr = use and
+        val.booleanValue() = result
+        or
+        result = comparisonEvaluatesTo(expr, use, context, val, origin)
+        or
+        result = branchEvaluatesTo(not_operand(expr), use, context, val, origin).booleanNot()
     }
 
-    boolean evaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext2 context, ObjectInternal val, ControlFlowNode origin) {
+    boolean comparisonEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext2 context, ObjectInternal val, ControlFlowNode origin) {
+        result = equalityEvaluatesTo(expr, use, context, val, origin)
+        or
+        result = inequalityEvaluatesTo(expr, use, context, val, origin)
+        // or
         //result = isinstance_test_evaluates_boolean(expr, use, context, val, origin)
         //or
         //result = issubclass_test_evaluates_boolean(expr, use, context, val, origin)
         //or
-        result = equalityEvaluatesTo(expr, use, context, val, origin)
-        or
-        result = inequalityEvaluatesTo(expr, use, context, val, origin)
-        or
         //result = callable_test_evaluates_boolean(expr, use, context, val, origin)
         //or
         //result = hasattr_test_evaluates_boolean(expr, use, context, val, origin)
-        //or
-        result = evaluatesTo(not_operand(expr), use, context, val, origin).booleanNot()
-        or
-        //result = true and evaluates_int(expr, use, context, val, origin) != 0
-        //or
-        //result = false and evaluates_int(expr, use, context, val, origin) = 0
-        //or
-        result = boolEvaluatesTo(expr, use, context, val, origin)
-    }
-
-    pragma [noinline]
-    private boolean boolEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext2 context, ObjectInternal val, ControlFlowNode origin) {
-        contains_interesting_expression_within_test(expr, use) and
-        PointsTo2::points_to(use, context, val, origin) and
-        expr = use and
-        (
-            val.booleanValue() = result
-            or
-            val.maybe() and result = maybe()
-        )
     }
 
     pragma [noinline]
     private boolean equalityEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext2 context, ObjectInternal val, ControlFlowNode origin) {
         exists(ControlFlowNode r, boolean sense |
-            contains_interesting_expression_within_test(expr, use) |
             equality_test(expr, use, sense, r) and
             exists(ObjectInternal other |
                 PointsTo2::points_to(use, context, val, origin) and
@@ -797,7 +737,6 @@ module Conditionals {
     pragma [noinline]
     private boolean inequalityEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext2 context, ObjectInternal val, ControlFlowNode origin) {
         exists(ControlFlowNode r, boolean sense |
-            contains_interesting_expression_within_test(expr, use) |
             exists(boolean strict, ObjectInternal other |
                 (
                     PointsTo2::inequality(expr, use, r, strict) and sense = true
@@ -805,7 +744,7 @@ module Conditionals {
                     PointsTo2::inequality(expr, r, use, strict) and sense = false
                 ) and
                 PointsTo2::points_to(use, context, val, origin) and
-                PointsTo2::points_to(r, context, other, _) 
+                PointsTo2::points_to(r, context, other, _)
                 |
                 val.intValue() < other.intValue() and result = sense
                 or 
@@ -818,6 +757,10 @@ module Conditionals {
                 val.strValue() > other.strValue() and result = sense.booleanNot()
                 or
                 val.strValue() = other.strValue() and result = strict.booleanXor(sense)
+                or
+                val.isComparable() = false and result = maybe()
+                or
+                other.isComparable() = false and result = maybe()
             )
 
         )

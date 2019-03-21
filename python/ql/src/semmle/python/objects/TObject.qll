@@ -64,9 +64,7 @@ newtype TObject =
     or
     TString(string s) {
         // Any string explicitly mentioned in the source code.
-        exists(StrConst str |
-            s = str.getText()
-        )
+        s = any(StrConst str).getText()
         or
         // Any string from the library put in the DB by the extractor.
         s = any(Builtin b).strValue()

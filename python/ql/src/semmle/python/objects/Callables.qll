@@ -26,9 +26,6 @@ abstract class CallableObjectInternal extends ObjectInternal {
         result = true
     }
 
-    /** Holds if this object may be true or false when evaluated as a bool */
-    override predicate maybe() { none() }
-
     override ClassDecl getClassDeclaration() {
         none()
     }

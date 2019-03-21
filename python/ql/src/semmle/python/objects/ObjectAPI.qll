@@ -1,6 +1,6 @@
 import python
 private import TObject
-private import ObjectInternal
+private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
 private import semmle.python.pointsto.PointsToContext2
 
@@ -20,6 +20,19 @@ class Value extends TObject {
 
     Value getClass() {
         result = this.(ObjectInternal).getClass()
+    }
+
+    CallNode getACall() {
+        PointsTo2::points_to(result.getFunction(), _, this, _)
+        or
+        exists(BoundMethodObjectInternal bm |
+            PointsTo2::points_to(result.getFunction(), _, bm, _) and
+            bm.getFunction() = this
+        )
+    }
+
+    Value attr(string name) {
+        this.(ObjectInternal).attribute(name, result, _)
     }
 
 }

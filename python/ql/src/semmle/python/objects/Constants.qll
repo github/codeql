@@ -13,8 +13,6 @@ abstract class BooleanObjectInternal extends ObjectInternal {
         this = TTrue() or this = TFalse()
     }
 
-    override predicate maybe() { none() }
-
     override ClassDecl getClassDeclaration() {
         none()
     }
@@ -111,8 +109,6 @@ class NoneObjectInternal extends ObjectInternal, TNone {
         result = false
     }
 
-    override predicate maybe() { none() }
-
     override ClassDecl getClassDeclaration() {
         none()
     }
@@ -175,8 +171,6 @@ class IntObjectInternal extends ObjectInternal, TInt {
         node.getNode().(IntegerLiteral).getValue() = this.intValue()
     }
 
-    override predicate maybe() { none() }
-
     override ClassDecl getClassDeclaration() {
         none()
     }
@@ -233,15 +227,13 @@ class IntObjectInternal extends ObjectInternal, TInt {
 class StringObjectInternal extends ObjectInternal, TString {
 
     override string toString() {
-        result =  "'" + this.strValue().toString() + "'"
+        result =  "'" + this.strValue() + "'"
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
         context.appliesTo(node) and
         node.getNode().(StrConst).getText() = this.strValue()
     }
-
-    override predicate maybe() { none() }
 
     override ClassDecl getClassDeclaration() {
         none()
@@ -252,7 +244,7 @@ class StringObjectInternal extends ObjectInternal, TString {
     override boolean isComparable() { result = true }
 
     override ObjectInternal getClass() {
-        result = TBuiltinClassObject(Builtin::special("str"))
+        result = TBuiltinClassObject(Builtin::special("unicode"))
     }
 
     override Builtin getBuiltin() {

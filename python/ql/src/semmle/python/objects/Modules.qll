@@ -25,6 +25,10 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     override boolean isComparable() { result = true }
 
+    override boolean booleanValue() {
+        result = true
+    }
+
 }
 
 class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleObject {
@@ -44,12 +48,6 @@ class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleOb
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
         none()
     }
-
-    override boolean booleanValue() {
-        result = true
-    }
-
-    override predicate maybe() { none() }
 
     override ClassDecl getClassDeclaration() {
         none()
@@ -106,12 +104,6 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         none()
     }
 
-    override boolean booleanValue() {
-        result = true
-    }
-
-    override predicate maybe() { none() }
-
     override ClassDecl getClassDeclaration() {
         none()
     }
@@ -137,13 +129,6 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
 
     ModuleObjectInternal submodule(string name) {
         result.getName() = this.getName() + "." + name
-    }
-
-    override predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
-        this.getOrigin().getLocation().hasLocationInfo(fp, bl, bc, el, ec)
-        or
-        this.hasNoInitModule() and fp = this.getFolder().getAbsolutePath() and
-        bl = 0 and bc = 0 and el = 0 and ec = 0
     }
 
     override int intValue() {
@@ -211,12 +196,6 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
         none()
     }
-
-    override boolean booleanValue() {
-        result = true
-    }
-
-    override predicate maybe() { none() }
 
     override ClassDecl getClassDeclaration() {
         none()

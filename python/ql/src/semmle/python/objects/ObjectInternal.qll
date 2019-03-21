@@ -14,11 +14,9 @@ class ObjectInternal extends TObject {
 
     abstract string toString();
 
-    /** The boolean value of this object, if it has one */
+    /** The boolean value of this object, this may be both
+     * true and false if the "object" represents a set of possible objects. */
     abstract boolean booleanValue();
-
-    /** Holds if this object may be true or false when evaluated as a bool */
-    abstract predicate maybe();
 
     abstract predicate introduced(ControlFlowNode node, PointsToContext2 context);
 
@@ -54,10 +52,6 @@ class ObjectInternal extends TObject {
      */
     abstract predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin);
 
-    predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
-        this.getOrigin().getLocation().hasLocationInfo(fp, bl, bc, el, ec)
-    }
-
     /** The integer value of things that have integer values.
      * That is, ints and bools.
      */
@@ -92,13 +86,8 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
     }
 
     override boolean booleanValue() {
-        // TO DO ... Depends on class. `this.getClass().instancesAlways(result)`
-        none()
-    }
-
-    override predicate maybe() {
-        // TO DO ... Depends on class. `this.getClass().instancesMaybe()`
-        any()
+        // TO DO ... Depends on class. `result = this.getClass().instancesBooleanValue()`
+        result = maybe()
     }
 
     override ClassDecl getClassDeclaration() {
@@ -155,10 +144,8 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     }
 
     override boolean booleanValue() {
-        none()
+        result = maybe()
     }
-
-    override predicate maybe() { any() }
 
     override ClassDecl getClassDeclaration() {
         none()
@@ -218,8 +205,6 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     override boolean booleanValue() {
         none()
     }
-
-    override predicate maybe() { none() }
 
     override ClassDecl getClassDeclaration() {
         none()
@@ -328,3 +313,7 @@ module ObjectInternal {
     }
 }
 
+/** Helper for boolean predicates returning both `true` and `false` */
+boolean maybe() {
+    result = true or result = false
+}

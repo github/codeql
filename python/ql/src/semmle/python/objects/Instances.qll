@@ -10,19 +10,13 @@ private import semmle.python.types.Builtins
 class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
 
     override string toString() {
-        result = "instance of " + this.getClass().(ClassObjectInternal).getName()
+        result = this.getOrigin().toString()
     }
 
     /** The boolean value of this object, if it has one */
     override boolean booleanValue() {
-        //this.getClass().instancesAlways(result)
-        none()
-    }
-
-    /** Holds if this object may be true or false when evaluated as a bool */
-    override predicate maybe() {
-        // this.getClass().instancesMaybe()
-        any()
+        //result = this.getClass().instancesBooleanValue()
+        result = maybe()
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
@@ -97,14 +91,8 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
     /** The boolean value of this object, if it has one */
     override boolean booleanValue() {
-        //this.getClass().instancesAlways(result)
-        none()
-    }
-
-    /** Holds if this object may be true or false when evaluated as a bool */
-    override predicate maybe() {
-        // this.getClass().instancesMaybe()
-        any()
+        //result = this.getClass().instancesBooleanValue()
+        result = maybe()
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
