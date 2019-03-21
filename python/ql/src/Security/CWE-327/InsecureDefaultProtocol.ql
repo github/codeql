@@ -27,6 +27,7 @@ CallNode unsafe_call(string method_name) {
     or
     result = ssl_Context_class().getACall() and
     not exists(result.getArgByName("protocol")) and
+    not exists(result.getArg(0)) and
     method_name = "ssl.SSLContext"
 }
 

@@ -48,3 +48,5 @@ from ssl import PROTOCOL_SSLv2
 ssl.wrap_socket(ssl_version=PROTOCOL_SSLv2)
 SSLContext(protocol=PROTOCOL_SSLv2)
 
+# FP for insecure default
+ssl.SSLContext(ssl.SSLv23_METHOD)
