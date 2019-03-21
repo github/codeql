@@ -1,6 +1,6 @@
-| Capture.cs:7:20:7:26 | tainted | Capture.cs:14:9:14:20 | tainted [implicit argument] |
-| Capture.cs:7:20:7:26 | tainted | Capture.cs:25:9:25:20 | tainted [implicit argument] |
-| Capture.cs:7:20:7:26 | tainted | Capture.cs:33:9:33:40 | tainted [implicit argument] |
+| Capture.cs:7:20:7:26 | tainted | Capture.cs:14:9:14:20 | [implicit argument] tainted |
+| Capture.cs:7:20:7:26 | tainted | Capture.cs:25:9:25:20 | [implicit argument] tainted |
+| Capture.cs:7:20:7:26 | tainted | Capture.cs:33:9:33:40 | [implicit argument] tainted |
 | Capture.cs:9:9:13:9 | SSA capture def(tainted) | Capture.cs:11:17:11:32 | SSA def(sink27) |
 | Capture.cs:9:9:13:9 | SSA capture def(tainted) | Capture.cs:11:17:11:32 | SSA def(sink27) |
 | Capture.cs:9:9:13:9 | SSA capture def(tainted) | Capture.cs:11:26:11:32 | access to parameter tainted |
@@ -13,7 +13,7 @@
 | Capture.cs:11:26:11:32 | access to parameter tainted | Capture.cs:11:17:11:32 | SSA def(sink27) |
 | Capture.cs:11:26:11:32 | access to parameter tainted | Capture.cs:12:19:12:24 | access to local variable sink27 |
 | Capture.cs:11:26:11:32 | access to parameter tainted | Capture.cs:12:19:12:24 | access to local variable sink27 |
-| Capture.cs:14:9:14:20 | tainted [implicit argument] | Capture.cs:9:9:13:9 | SSA capture def(tainted) |
+| Capture.cs:14:9:14:20 | [implicit argument] tainted | Capture.cs:9:9:13:9 | SSA capture def(tainted) |
 | Capture.cs:18:13:22:13 | SSA capture def(tainted) | Capture.cs:20:21:20:36 | SSA def(sink28) |
 | Capture.cs:18:13:22:13 | SSA capture def(tainted) | Capture.cs:20:21:20:36 | SSA def(sink28) |
 | Capture.cs:18:13:22:13 | SSA capture def(tainted) | Capture.cs:20:30:20:36 | access to parameter tainted |
@@ -26,7 +26,7 @@
 | Capture.cs:20:30:20:36 | access to parameter tainted | Capture.cs:20:21:20:36 | SSA def(sink28) |
 | Capture.cs:20:30:20:36 | access to parameter tainted | Capture.cs:21:23:21:28 | access to local variable sink28 |
 | Capture.cs:20:30:20:36 | access to parameter tainted | Capture.cs:21:23:21:28 | access to local variable sink28 |
-| Capture.cs:25:9:25:20 | tainted [implicit argument] | Capture.cs:18:13:22:13 | SSA capture def(tainted) |
+| Capture.cs:25:9:25:20 | [implicit argument] tainted | Capture.cs:18:13:22:13 | SSA capture def(tainted) |
 | Capture.cs:27:30:32:9 | SSA def(captureIn3) | Capture.cs:33:30:33:39 | access to local variable captureIn3 |
 | Capture.cs:27:43:27:45 | arg | Capture.cs:27:43:32:9 | return (...) => ... |
 | Capture.cs:27:43:27:45 | arg | Capture.cs:31:20:31:22 | access to parameter arg |
@@ -46,7 +46,7 @@
 | Capture.cs:29:26:29:32 | access to parameter tainted | Capture.cs:30:19:30:24 | access to local variable sink29 |
 | Capture.cs:29:26:29:32 | access to parameter tainted | Capture.cs:30:19:30:24 | access to local variable sink29 |
 | Capture.cs:31:20:31:22 | access to parameter arg | Capture.cs:27:43:32:9 | return (...) => ... |
-| Capture.cs:33:9:33:40 | tainted [implicit argument] | Capture.cs:27:43:32:9 | SSA capture def(tainted) |
+| Capture.cs:33:9:33:40 | [implicit argument] tainted | Capture.cs:27:43:32:9 | SSA capture def(tainted) |
 | Capture.cs:35:9:39:9 | SSA capture def(tainted) | Capture.cs:37:17:37:34 | SSA def(nonSink0) |
 | Capture.cs:35:9:39:9 | SSA capture def(tainted) | Capture.cs:37:28:37:34 | access to parameter tainted |
 | Capture.cs:35:9:39:9 | SSA capture def(tainted) | Capture.cs:38:19:38:26 | access to local variable nonSink0 |
@@ -87,10 +87,10 @@
 | Capture.cs:83:27:83:28 | "" | Capture.cs:88:15:88:22 | access to local variable nonSink0 |
 | Capture.cs:83:27:83:28 | "" | Capture.cs:98:15:98:22 | access to local variable nonSink0 |
 | Capture.cs:88:15:88:22 | access to local variable nonSink0 | Capture.cs:98:15:98:22 | access to local variable nonSink0 |
-| Capture.cs:101:25:101:31 | tainted | Capture.cs:108:9:108:25 | tainted [implicit argument] |
-| Capture.cs:101:25:101:31 | tainted | Capture.cs:120:9:120:25 | tainted [implicit argument] |
-| Capture.cs:101:25:101:31 | tainted | Capture.cs:129:9:129:45 | tainted [implicit argument] |
-| Capture.cs:101:25:101:31 | tainted | Capture.cs:136:22:136:38 | tainted [implicit argument] |
+| Capture.cs:101:25:101:31 | tainted | Capture.cs:108:9:108:25 | [implicit argument] tainted |
+| Capture.cs:101:25:101:31 | tainted | Capture.cs:120:9:120:25 | [implicit argument] tainted |
+| Capture.cs:101:25:101:31 | tainted | Capture.cs:129:9:129:45 | [implicit argument] tainted |
+| Capture.cs:101:25:101:31 | tainted | Capture.cs:136:22:136:38 | [implicit argument] tainted |
 | Capture.cs:101:25:101:31 | tainted | Capture.cs:144:25:144:31 | access to parameter tainted |
 | Capture.cs:101:25:101:31 | tainted | Capture.cs:170:25:170:31 | access to parameter tainted |
 | Capture.cs:103:25:103:26 | "" | Capture.cs:103:16:103:26 | SSA def(sink33) |
@@ -103,8 +103,8 @@
 | Capture.cs:106:22:106:28 | access to parameter tainted | Capture.cs:106:13:106:28 | SSA def(sink33) |
 | Capture.cs:108:9:108:25 | SSA call def(sink33) | Capture.cs:109:15:109:20 | access to local variable sink33 |
 | Capture.cs:108:9:108:25 | SSA call def(sink33) | Capture.cs:109:15:109:20 | access to local variable sink33 |
-| Capture.cs:108:9:108:25 | tainted [implicit argument] | Capture.cs:104:9:107:9 | SSA capture def(tainted) |
-| Capture.cs:108:9:108:25 | tainted [implicit argument] | Capture.cs:108:9:108:25 | SSA call def(sink33) |
+| Capture.cs:108:9:108:25 | [implicit argument] tainted | Capture.cs:104:9:107:9 | SSA capture def(tainted) |
+| Capture.cs:108:9:108:25 | [implicit argument] tainted | Capture.cs:108:9:108:25 | SSA call def(sink33) |
 | Capture.cs:111:25:111:26 | "" | Capture.cs:111:16:111:26 | SSA def(sink34) |
 | Capture.cs:114:13:117:13 | SSA capture def(tainted) | Capture.cs:116:17:116:32 | SSA def(sink34) |
 | Capture.cs:114:13:117:13 | SSA capture def(tainted) | Capture.cs:116:17:116:32 | SSA def(sink34) |
@@ -115,8 +115,8 @@
 | Capture.cs:116:26:116:32 | access to parameter tainted | Capture.cs:116:17:116:32 | SSA def(sink34) |
 | Capture.cs:120:9:120:25 | SSA call def(sink34) | Capture.cs:121:15:121:20 | access to local variable sink34 |
 | Capture.cs:120:9:120:25 | SSA call def(sink34) | Capture.cs:121:15:121:20 | access to local variable sink34 |
-| Capture.cs:120:9:120:25 | tainted [implicit argument] | Capture.cs:114:13:117:13 | SSA capture def(tainted) |
-| Capture.cs:120:9:120:25 | tainted [implicit argument] | Capture.cs:120:9:120:25 | SSA call def(sink34) |
+| Capture.cs:120:9:120:25 | [implicit argument] tainted | Capture.cs:114:13:117:13 | SSA capture def(tainted) |
+| Capture.cs:120:9:120:25 | [implicit argument] tainted | Capture.cs:120:9:120:25 | SSA call def(sink34) |
 | Capture.cs:123:25:123:26 | "" | Capture.cs:123:16:123:26 | SSA def(sink35) |
 | Capture.cs:124:30:128:9 | SSA def(captureThrough3) | Capture.cs:129:30:129:44 | access to local variable captureThrough3 |
 | Capture.cs:124:48:124:50 | arg | Capture.cs:124:48:128:9 | return (...) => ... |
@@ -134,8 +134,8 @@
 | Capture.cs:127:20:127:22 | access to parameter arg | Capture.cs:124:48:128:9 | return (...) => ... |
 | Capture.cs:129:9:129:45 | SSA call def(sink35) | Capture.cs:130:15:130:20 | access to local variable sink35 |
 | Capture.cs:129:9:129:45 | SSA call def(sink35) | Capture.cs:130:15:130:20 | access to local variable sink35 |
-| Capture.cs:129:9:129:45 | tainted [implicit argument] | Capture.cs:124:48:128:9 | SSA capture def(tainted) |
-| Capture.cs:129:9:129:45 | tainted [implicit argument] | Capture.cs:129:9:129:45 | SSA call def(sink35) |
+| Capture.cs:129:9:129:45 | [implicit argument] tainted | Capture.cs:124:48:128:9 | SSA capture def(tainted) |
+| Capture.cs:129:9:129:45 | [implicit argument] tainted | Capture.cs:129:9:129:45 | SSA call def(sink35) |
 | Capture.cs:132:9:135:9 | SSA capture def(tainted) | Capture.cs:132:9:135:9 | return CaptureThrough4 |
 | Capture.cs:132:9:135:9 | SSA capture def(tainted) | Capture.cs:132:9:135:9 | return CaptureThrough4 |
 | Capture.cs:132:9:135:9 | SSA capture def(tainted) | Capture.cs:134:20:134:26 | access to parameter tainted |
@@ -145,12 +145,12 @@
 | Capture.cs:134:20:134:26 | access to parameter tainted | Capture.cs:132:9:135:9 | return CaptureThrough4 |
 | Capture.cs:136:13:136:38 | SSA def(sink36) | Capture.cs:137:15:137:20 | access to local variable sink36 |
 | Capture.cs:136:13:136:38 | SSA def(sink36) | Capture.cs:137:15:137:20 | access to local variable sink36 |
+| Capture.cs:136:22:136:38 | [implicit argument] tainted | Capture.cs:132:9:135:9 | SSA capture def(tainted) |
+| Capture.cs:136:22:136:38 | [implicit argument] tainted | Capture.cs:136:22:136:38 | call to local function CaptureThrough4 |
 | Capture.cs:136:22:136:38 | call to local function CaptureThrough4 | Capture.cs:136:13:136:38 | SSA def(sink36) |
 | Capture.cs:136:22:136:38 | call to local function CaptureThrough4 | Capture.cs:136:13:136:38 | SSA def(sink36) |
 | Capture.cs:136:22:136:38 | call to local function CaptureThrough4 | Capture.cs:137:15:137:20 | access to local variable sink36 |
 | Capture.cs:136:22:136:38 | call to local function CaptureThrough4 | Capture.cs:137:15:137:20 | access to local variable sink36 |
-| Capture.cs:136:22:136:38 | tainted [implicit argument] | Capture.cs:132:9:135:9 | SSA capture def(tainted) |
-| Capture.cs:136:22:136:38 | tainted [implicit argument] | Capture.cs:136:22:136:38 | call to local function CaptureThrough4 |
 | Capture.cs:139:22:139:23 | "" | Capture.cs:139:13:139:23 | SSA def(sink37) |
 | Capture.cs:140:37:140:37 | p | Capture.cs:142:13:142:22 | SSA def(sink37) |
 | Capture.cs:140:37:140:37 | p | Capture.cs:142:13:142:22 | SSA def(sink37) |
@@ -176,9 +176,9 @@
 | Capture.cs:164:9:168:9 | return Id | Capture.cs:170:22:170:32 | call to local function Id |
 | Capture.cs:164:9:168:9 | return Id | Capture.cs:172:20:172:25 | call to local function Id |
 | Capture.cs:164:9:168:9 | return Id | Capture.cs:172:20:172:25 | call to local function Id |
-| Capture.cs:164:26:164:26 | s | Capture.cs:167:20:167:22 | s [implicit argument] |
-| Capture.cs:164:26:164:26 | s | Capture.cs:167:20:167:22 | s [implicit argument] |
-| Capture.cs:164:26:164:26 | s | Capture.cs:167:20:167:22 | s [implicit argument] |
+| Capture.cs:164:26:164:26 | s | Capture.cs:167:20:167:22 | [implicit argument] s |
+| Capture.cs:164:26:164:26 | s | Capture.cs:167:20:167:22 | [implicit argument] s |
+| Capture.cs:164:26:164:26 | s | Capture.cs:167:20:167:22 | [implicit argument] s |
 | Capture.cs:166:13:166:28 | SSA capture def(s) | Capture.cs:166:13:166:28 | return M |
 | Capture.cs:166:13:166:28 | SSA capture def(s) | Capture.cs:166:13:166:28 | return M |
 | Capture.cs:166:13:166:28 | SSA capture def(s) | Capture.cs:166:27:166:27 | access to parameter s |
@@ -186,16 +186,16 @@
 | Capture.cs:166:13:166:28 | return M | Capture.cs:167:20:167:22 | call to local function M |
 | Capture.cs:166:27:166:27 | access to parameter s | Capture.cs:166:13:166:28 | return M |
 | Capture.cs:166:27:166:27 | access to parameter s | Capture.cs:166:13:166:28 | return M |
+| Capture.cs:167:20:167:22 | [implicit argument] s | Capture.cs:166:13:166:28 | SSA capture def(s) |
+| Capture.cs:167:20:167:22 | [implicit argument] s | Capture.cs:166:13:166:28 | SSA capture def(s) |
+| Capture.cs:167:20:167:22 | [implicit argument] s | Capture.cs:166:13:166:28 | SSA capture def(s) |
+| Capture.cs:167:20:167:22 | [implicit argument] s | Capture.cs:167:20:167:22 | call to local function M |
+| Capture.cs:167:20:167:22 | [implicit argument] s | Capture.cs:167:20:167:22 | call to local function M |
+| Capture.cs:167:20:167:22 | [implicit argument] s | Capture.cs:167:20:167:22 | call to local function M |
 | Capture.cs:167:20:167:22 | call to local function M | Capture.cs:164:9:168:9 | return Id |
 | Capture.cs:167:20:167:22 | call to local function M | Capture.cs:164:9:168:9 | return Id |
 | Capture.cs:167:20:167:22 | call to local function M | Capture.cs:164:9:168:9 | return Id |
 | Capture.cs:167:20:167:22 | call to local function M | Capture.cs:164:9:168:9 | return Id |
-| Capture.cs:167:20:167:22 | s [implicit argument] | Capture.cs:166:13:166:28 | SSA capture def(s) |
-| Capture.cs:167:20:167:22 | s [implicit argument] | Capture.cs:166:13:166:28 | SSA capture def(s) |
-| Capture.cs:167:20:167:22 | s [implicit argument] | Capture.cs:166:13:166:28 | SSA capture def(s) |
-| Capture.cs:167:20:167:22 | s [implicit argument] | Capture.cs:167:20:167:22 | call to local function M |
-| Capture.cs:167:20:167:22 | s [implicit argument] | Capture.cs:167:20:167:22 | call to local function M |
-| Capture.cs:167:20:167:22 | s [implicit argument] | Capture.cs:167:20:167:22 | call to local function M |
 | Capture.cs:170:13:170:32 | SSA def(sink38) | Capture.cs:171:15:171:20 | access to local variable sink38 |
 | Capture.cs:170:13:170:32 | SSA def(sink38) | Capture.cs:171:15:171:20 | access to local variable sink38 |
 | Capture.cs:170:22:170:32 | call to local function Id | Capture.cs:170:13:170:32 | SSA def(sink38) |

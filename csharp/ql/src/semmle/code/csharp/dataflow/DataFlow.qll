@@ -552,7 +552,7 @@ module DataFlow {
 
       override Type getType() { result = v.getType() }
 
-      override string toString() { result = v + " [implicit argument]" }
+      override string toString() { result = "[implicit argument] " + v }
     }
 
     /**
