@@ -9,13 +9,19 @@
 import javascript
 private import internal.FlowSteps
 
+private class PropertyName extends string {
+  PropertyName() { this = any(DataFlow::PropRef pr).getPropertyName() }
+}
+
 /**
  * A description of a step on an inter-procedural data flow path.
  */
 private newtype TStepSummary =
   LevelStep() or
   CallStep() or
-  ReturnStep()
+  ReturnStep() or
+  StoreStep(PropertyName prop) or
+  LoadStep(PropertyName prop)
 
 /**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
@@ -64,6 +70,14 @@ module StepSummary {
       // Flow through an instance field between members of the same class
       DataFlow::localFieldStep(predNode, succ) and
       summary = LevelStep()
+      or
+      exists(string prop |
+        basicStoreStep(predNode, succ, prop) and
+        summary = StoreStep(prop)
+        or
+        loadStep(predNode, succ, prop) and
+        summary = LoadStep(prop)
+      )
     )
   }
 
@@ -73,8 +87,22 @@ module StepSummary {
    * Appends a step summary onto a type-tracking summary.
    */
   TypeTracker append(TypeTracker type, StepSummary summary) {
-    not (type.hasCall() = true and summary.hasReturn() = true) and
-    result.hasCall() = type.hasCall().booleanOr(summary.hasCall())
+    exists(boolean hadCall, boolean hasCall, string oldProp, string newProp |
+      hadCall = type.hasCall() and
+      oldProp = type.getProp()
+    |
+      not (hadCall = true and summary.hasReturn() = true) and
+      hasCall = hadCall.booleanOr(summary.hasCall()) and
+      (
+        if summary instanceof StoreStep
+        then oldProp = "" and summary = StoreStep(newProp)
+        else
+          if summary instanceof LoadStep
+          then summary = LoadStep(oldProp) and newProp = ""
+          else newProp = oldProp
+      ) and
+      result = MkTypeTracker(hasCall, newProp)
+    )
   }
 
   /**
@@ -83,12 +111,27 @@ module StepSummary {
    * Prepends a step summary before a backwards type-tracking summary.
    */
   TypeBackTracker prepend(StepSummary summary, TypeBackTracker type) {
-    not (type.hasReturn() = true and summary.hasCall() = true) and
-    result.hasReturn() = type.hasReturn().booleanOr(summary.hasReturn())
+    exists(boolean hadReturn, boolean hasReturn, string oldProp, string newProp |
+      hadReturn = type.hasReturn() and
+      oldProp = type.getProp()
+    |
+      not (hadReturn = true and summary.hasCall() = true) and
+      hasReturn = hadReturn.booleanOr(summary.hasReturn()) and
+      (
+        if summary instanceof StoreStep
+        then summary = StoreStep(oldProp) and newProp = ""
+        else
+          if summary instanceof LoadStep
+          then oldProp = "" and summary = LoadStep(newProp)
+          else newProp = oldProp
+      ) and
+      result = MkTypeBackTracker(hasReturn, newProp)
+    )
   }
 }
 
-private newtype TTypeTracker = MkTypeTracker(Boolean hasCall)
+private newtype TTypeTracker =
+  MkTypeTracker(Boolean hasCall, string prop) { prop = "" or prop instanceof PropertyName }
 
 /**
  * EXPERIMENTAL.
@@ -112,7 +155,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall)
  *   )
  * }
  *
- * DataFlow::SourceNode myType() { result = myType(_) }
+ * DataFlow::SourceNode myType() { result = myType(DataFlow::TypeTracker::end()) }
  * ```
  *
  * To track values backwards, which can be useful for tracking
@@ -121,18 +164,24 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall)
 class TypeTracker extends TTypeTracker {
   Boolean hasCall;
 
-  TypeTracker() { this = MkTypeTracker(hasCall) }
+  string prop;
+
+  TypeTracker() { this = MkTypeTracker(hasCall, prop) }
 
   string toString() {
-    hasCall = true and result = "type tracker with call steps"
-    or
-    hasCall = false and result = "type tracker without call steps"
+    exists(string withCall, string withProp |
+      (if hasCall = true then withCall = "with" else withCall = "without") and
+      (if prop != "" then withProp = " with property " + prop else withProp = "") and
+      result = "type tracker " + withCall + " call steps" + withProp
+    )
   }
 
   /**
    * Holds if this is the starting point of type tracking.
    */
-  predicate start() { hasCall = false }
+  predicate start() { hasCall = false and prop = "" }
+
+  predicate end() { prop = "" }
 
   /**
    * INTERNAL. DO NOT USE.
@@ -140,9 +189,16 @@ class TypeTracker extends TTypeTracker {
    * Holds if this type has been tracked into a call.
    */
   boolean hasCall() { result = hasCall }
+
+  string getProp() { result = prop }
 }
 
-private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn)
+module TypeTracker {
+  TypeTracker end() { result.end() }
+}
+
+private newtype TTypeBackTracker =
+  MkTypeBackTracker(Boolean hasReturn, string prop) { prop = "" or prop instanceof PropertyName }
 
 /**
  * EXPERIMENTAL.
@@ -168,24 +224,30 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn)
  *   )
  * }
  *
- * DataFlow::SourceNode myCallback() { result = myCallback(_) }
+ * DataFlow::SourceNode myCallback() { result = myCallback(DataFlow::TypeBackTracker::end()) }
  * ```
  */
 class TypeBackTracker extends TTypeBackTracker {
   Boolean hasReturn;
 
-  TypeBackTracker() { this = MkTypeBackTracker(hasReturn) }
+  string prop;
+
+  TypeBackTracker() { this = MkTypeBackTracker(hasReturn, prop) }
 
   string toString() {
-    hasReturn = true and result = "type back-tracker with return steps"
-    or
-    hasReturn = false and result = "type back-tracker without return steps"
+    exists(string withReturn, string withProp |
+      (if hasReturn = true then withReturn = "with" else withReturn = "without") and
+      (if prop != "" then withProp = " with property " + prop else withProp = "") and
+      result = "type back-tracker " + withReturn + " return steps" + withProp
+    )
   }
 
   /**
    * Holds if this is the starting point of type tracking.
    */
-  predicate start() { hasReturn = false }
+  predicate start() { hasReturn = false and prop = "" }
+
+  predicate end() { prop = "" }
 
   /**
    * INTERNAL. DO NOT USE.
@@ -193,4 +255,10 @@ class TypeBackTracker extends TTypeBackTracker {
    * Holds if this type has been back-tracked into a call through return edge.
    */
   boolean hasReturn() { result = hasReturn }
+
+  string getProp() { result = prop }
+}
+
+module TypeBackTracker {
+  TypeBackTracker end() { result.end() }
 }

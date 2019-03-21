@@ -61,7 +61,7 @@ module SocketIO {
   class ServerNode extends DataFlow::SourceNode {
     ServerObject srv;
 
-    ServerNode() { this = server(srv, _) }
+    ServerNode() { this = server(srv, DataFlow::TypeTracker::end()) }
 
     /** Gets the server to which this node refers. */
     ServerObject getServer() { result = srv }
@@ -130,7 +130,7 @@ module SocketIO {
   class NamespaceNode extends DataFlow::SourceNode {
     NamespaceObject ns;
 
-    NamespaceNode() { this = namespace(ns, _) }
+    NamespaceNode() { this = namespace(ns, DataFlow::TypeTracker::end()) }
 
     /** Gets the namespace to which this node refers. */
     NamespaceObject getNamespace() { result = ns }
@@ -194,7 +194,7 @@ module SocketIO {
   class SocketNode extends DataFlow::SourceNode {
     NamespaceObject ns;
 
-    SocketNode() { this = socket(ns, _) }
+    SocketNode() { this = socket(ns, DataFlow::TypeTracker::end()) }
 
     /** Gets the namespace to which this socket belongs. */
     NamespaceObject getNamespace() { result = ns }
@@ -417,7 +417,7 @@ module SocketIOClient {
   class SocketNode extends DataFlow::SourceNode {
     DataFlow::InvokeNode invk;
 
-    SocketNode() { this = socket(invk, _) }
+    SocketNode() { this = socket(invk, DataFlow::TypeTracker::end()) }
 
     /** Gets the path of the namespace this socket belongs to, if it can be determined. */
     string getNamespacePath() {

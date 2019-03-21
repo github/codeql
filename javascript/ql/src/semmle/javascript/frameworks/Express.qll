@@ -111,7 +111,7 @@ module Express {
     Expr getLastRouteHandlerExpr() { result = max(int i | | getRouteHandlerExpr(i) order by i) }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = getARouteHandler(_)
+      result = getARouteHandler(DataFlow::TypeBackTracker::end())
     }
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {

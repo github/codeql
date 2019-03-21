@@ -79,7 +79,7 @@ module Koa {
     RouteHandler getRouteHandler() { result = rh }
 
     predicate flowsTo(DataFlow::Node nd) {
-      flowsToSourceNode(_).flowsTo(nd)
+      flowsToSourceNode(DataFlow::TypeTracker::end()).flowsTo(nd)
     }
 
     private DataFlow::SourceNode flowsToSourceNode(DataFlow::TypeTracker t) {

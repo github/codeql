@@ -282,7 +282,7 @@ module HTTP {
        */
       abstract RouteHandler getRouteHandler();
 
-      predicate flowsTo(DataFlow::Node nd) { flowsToSourceNode(_).flowsTo(nd) }
+      predicate flowsTo(DataFlow::Node nd) { flowsToSourceNode(DataFlow::TypeTracker::end()).flowsTo(nd) }
 
       private DataFlow::SourceNode flowsToSourceNode(DataFlow::TypeTracker t) {
         t.start() and
@@ -303,7 +303,7 @@ module HTTP {
        */
       abstract RouteHandler getRouteHandler();
 
-      predicate flowsTo(DataFlow::Node nd) { flowsToSourceNode(_).flowsTo(nd) }
+      predicate flowsTo(DataFlow::Node nd) { flowsToSourceNode(DataFlow::TypeTracker::end()).flowsTo(nd) }
 
       private DataFlow::SourceNode flowsToSourceNode(DataFlow::TypeTracker t) {
         t.start() and

@@ -189,7 +189,7 @@ module NodeJSLib {
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = getARouteHandler(_)
+      result = getARouteHandler(DataFlow::TypeBackTracker::end())
     }
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {

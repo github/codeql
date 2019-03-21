@@ -69,7 +69,7 @@ module Electron {
    * A data flow node whose value may originate from a browser object instantiation.
    */
   private class BrowserObjectByFlow extends BrowserObject {
-    BrowserObjectByFlow() { browserObject(_).flowsTo(this) }
+    BrowserObjectByFlow() { browserObject(DataFlow::TypeTracker::end()).flowsTo(this) }
   }
 
   /**
