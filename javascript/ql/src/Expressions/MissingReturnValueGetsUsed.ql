@@ -35,7 +35,7 @@ predicate isErrorFunction(Function f) { none() }
  * A function with no return value can be called without being problematic under the following
  * conditions on the external properties of the context of the function call:
  * 
- * - As a statement, b/c the function is used for its side effects only
+ * - As a statement, because the function is used for its side effects only
  * - In an immediately invoked function expression (IIFE)
  * - When the application is immediately returned
  * - When the application is in a void expression
