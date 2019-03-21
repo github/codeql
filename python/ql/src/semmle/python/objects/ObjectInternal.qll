@@ -74,6 +74,10 @@ class ObjectInternal extends TObject {
         exists(this.getBuiltin())
     }
 
+    abstract predicate attribute(string name, ObjectInternal value, CfgOrigin origin);
+
+    abstract predicate attributesUnknown();
+
 }
 
 
@@ -84,7 +88,7 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
     }
 
     override string toString() {
-        none()
+        result = this.getBuiltin().toString()
     }
 
     override boolean booleanValue() {
@@ -133,6 +137,13 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
     override predicate calleeAndOffset(Function scope, int paramOffset) {
         none()
     }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        value = ObjectInternal::fromBuiltin(this.getBuiltin().getMember(name)) and
+        origin = CfgOrigin::unknown()
+    }
+
+    override predicate attributesUnknown() { none() }
 
 }
 
@@ -189,6 +200,12 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     override predicate calleeAndOffset(Function scope, int paramOffset) {
         none()
     }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate attributesUnknown() { any() }
 
 }
 
@@ -247,6 +264,12 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
         none()
     }
 
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate attributesUnknown() { none() }
+
 }
 
 module ObjectInternal {
@@ -290,5 +313,18 @@ module ObjectInternal {
         result = TInt(n)
     }
 
+    ObjectInternal fromBuiltin(Builtin b) {
+        result = TInt(b.intValue())
+        or
+        result = TString(b.strValue())
+        or
+        result = TBuiltinClassObject(b)
+        or
+        result = TBuiltinFunctionObject(b)
+        or
+        result = TBuiltinOpaqueObject(b)
+        or
+        result = TBuiltinModuleObject(b)
+    }
 }
 

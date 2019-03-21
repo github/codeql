@@ -34,6 +34,13 @@ abstract class CallableObjectInternal extends ObjectInternal {
     }
 
     abstract string getName();
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate attributesUnknown() { none() }
+
 }
 
 
@@ -108,8 +115,17 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
     override boolean isComparable() { result = true }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
-        // TO DO .. Result should be be a unknown value of a known class if the return type is known or just an unknown.
-        none()
+        exists(Builtin func, ClassObjectInternal cls |
+            func = this.getBuiltin() and
+            func != Builtin::builtin("isinstance") and
+            func != Builtin::builtin("issubclass") and
+            func != Builtin::builtin("callable")
+            |
+            cls = ObjectInternal::fromBuiltin(this.getReturnType()) and
+            obj = TUnknownInstance(cls)
+        ) and
+        origin = CfgOrigin::unknown() and
+        callee_for_object(callee, this)
     }
 
     override ControlFlowNode getOrigin() {
@@ -122,6 +138,30 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
     override string getName() {
         result = this.getBuiltin().getName()
+    }
+
+    Builtin getReturnType() {
+        exists(Builtin func |
+            func = this.getBuiltin() |
+            /* Enumerate the types of a few builtin functions, that the CPython analysis misses.
+            */
+            func = Builtin::builtin("hex") and result = Builtin::special("str")
+            or
+            func = Builtin::builtin("oct") and result = Builtin::special("str")
+            or
+            func = Builtin::builtin("intern") and result = Builtin::special("str")
+            or
+            /* Fix a few minor inaccuracies in the CPython analysis */ 
+            ext_rettype(func, result) and not (
+                func = Builtin::builtin("__import__") and result = Builtin::special("NoneType")
+                or
+                func = Builtin::builtin("compile") and result = Builtin::special("NoneType")
+                or
+                func = Builtin::builtin("sum")
+                or
+                func = Builtin::builtin("filter")
+            )
+        )
     }
 
 }

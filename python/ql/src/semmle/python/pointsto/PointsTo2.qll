@@ -104,6 +104,8 @@ module PointsTo2 {
     predicate points_to_candidate(ControlFlowNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
         use_points_to(f, context, value, origin)
         or
+        attribute_load_points_to(f, context, value, origin)
+        or
         subscript_points_to(f, context, value, origin)
         or
         binary_expr_points_to(f, context, value, origin)
@@ -240,6 +242,23 @@ module PointsTo2 {
         n.isLoad() and
         result.getASourceUse() = n and
         result.getSourceVariable() instanceof GlobalVariable
+    }
+
+    /** Holds if `f` is an attribute `x.attr` and points to `(value, cls, origin)`. */
+    private predicate attribute_load_points_to(AttrNode f, PointsToContext2 context, ObjectInternal value, ControlFlowNode origin) {
+        exists(ObjectInternal object, string name, CfgOrigin orig |
+            points_to(f.getObject(name), context, object, _) |
+            object.attribute(name, value, orig) and
+            origin = orig.fix(f)
+            or
+            object.attributesUnknown() and origin = f and value = ObjectInternal::unknown()
+        )
+        // TO DO -- Support CustomPointsToAttribute
+        //or
+        //exists(CustomPointsToAttribute object, string name |
+        //    points_to(f.getObject(name), context, object, _, _) and
+        //    object.attributePointsTo(name, value, cls, origin)
+        //)
     }
 
     /** Holds if the ESSA definition `def`  refers to `(value, origin)` given the context `context`. */
@@ -514,7 +533,7 @@ module InterModulePointsTo {
             //)
             //or
             (mod.getSourceModule() != f.getEnclosingModule() or mod.isBuiltin()) and
-            module_attribute_points_to(mod, name, value, orig)
+            mod.attribute(name, value, origin)
         )
         or
         exists(EssaVariable var, CfgOrigin orig |
@@ -548,60 +567,6 @@ module InterModulePointsTo {
               sub.(DefinitionNode).getValue() = mod and
               PointsTo2::points_to(mod, _, m, _)
           )
-        )
-    }
-
-    /** Holds if `mod.name` points to `(value, origin)`, where `mod` is a module object. */
-    predicate module_attribute_points_to(ModuleObjectInternal mod, string name, ObjectInternal value, CfgOrigin origin) {
-        py_module_attributes(mod.getSourceModule(), name, value, origin)
-        or
-        package_attribute_points_to(mod, name, value, origin)
-        or
-        value.getBuiltin() = mod.getBuiltin().getMember(name) and
-        origin = CfgOrigin::unknown()
-    }
-
-    /** Holds if `m.name` points to `(value, origin)`, where `m` is a (source) module. */
-    cached predicate py_module_attributes(Module m, string name, ObjectInternal obj, CfgOrigin origin) {
-        exists(EssaVariable var, ControlFlowNode exit, PointsToContext2 imp |
-            exit =  m.getANormalExit() and var.getAUse() = exit and
-            var.getSourceVariable().getName() = name and
-            PointsTo2::ssa_variable_points_to(var, imp, obj, origin) and
-            imp.isImport() and
-            obj != ObjectInternal::undefined()
-        )
-        // TO DO, dollar variable...
-        //or
-        //not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
-        //exists(EssaVariable var, PointsToContext2 imp |
-        //    var.getAUse() = m.getANormalExit() and isModuleStateVariable(var) |
-        //    PointsTo2::ssa_variable_named_attribute_points_to(var, imp, name, obj, origin) and
-        //    imp.isImport() and obj != ObjectInternal::undefined()
-        //)
-    }
-
-    /** Holds if `package.name` points to `(value, origin)`, where `package` is a package object. */
-    cached predicate package_attribute_points_to(PackageObjectInternal package, string name, ObjectInternal value, CfgOrigin origin) {
-        py_module_attributes(package.getInitModule().getSourceModule(), name, value, origin)
-        or
-        // TO DO
-        //exists(Module init |
-        //    init = package.getInitModule().getModule() and
-        //    not exists(EssaVariable var | var.getAUse() = init.getANormalExit() and var.getSourceVariable().getName() = name) and
-        //    exists(EssaVariable var, Context context |
-        //        isModuleStateVariable(var) and var.getAUse() = init.getANormalExit() and
-        //        context.isImport() and
-        //        SSA::ssa_variable_named_attribute_points_to(var, context, name, undefinedVariable(), _, _) and
-        //        origin = value and
-        //        value = package.submodule(name)
-        //    )
-        //)
-        //or
-        package.hasNoInitModule() and
-        exists(ModuleObjectInternal mod |
-            mod = package.submodule(name) and
-            value = mod |
-            origin = CfgOrigin::fromModule(mod)
         )
     }
 
@@ -761,15 +726,6 @@ private predicate potential_builtin_points_to(NameNode f, ObjectInternal value, 
     )
 }
 
-/** Get the ESSA pseudo-variable used to retain module state
- * during module initialization. Module attributes are handled 
- * as attributes of this variable, allowing the SSA form to track 
- * mutations of the module during its creation.
- */
-private predicate isModuleStateVariable(EssaVariable var) {
-    var.getName() = "$" and var.getScope() instanceof Module
-}
-
 module Conditionals {
 
     /** Holds if `expr` is the operand of a unary `not` expression. */
@@ -920,7 +876,7 @@ module Types {
     }
 
     predicate declaredAttribute(ClassObjectInternal cls, string name, ObjectInternal value, CfgOrigin origin) {
-        value.getBuiltin() = cls.getBuiltin().getMember(name) and origin = CfgOrigin::unknown()
+        value = ObjectInternal::fromBuiltin(cls.getBuiltin().getMember(name)) and origin = CfgOrigin::unknown()
         or
         value != ObjectInternal::undefined() and
         exists(EssaVariable var |
@@ -942,12 +898,6 @@ module Types {
             result = obj
             or
             obj = ObjectInternal::unknown() and result = ObjectInternal::unknownClass()
-        )
-        or
-        exists(Builtin meta |
-            result.getBuiltin() = meta and
-            meta = cls.getBuiltin().getClass() and
-            meta.inheritsFromType()
         )
         or
         exists(ControlFlowNode meta |

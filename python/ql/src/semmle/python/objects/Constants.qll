@@ -45,6 +45,12 @@ abstract class BooleanObjectInternal extends ObjectInternal {
         none()
     }
 
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate attributesUnknown() { none() }
+
 }
 
 class TrueObjectInternal extends BooleanObjectInternal, TTrue {
@@ -149,6 +155,12 @@ class NoneObjectInternal extends ObjectInternal, TNone {
         none()
     }
 
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate attributesUnknown() { none() }
+
 }
 
 
@@ -209,6 +221,12 @@ class IntObjectInternal extends ObjectInternal, TInt {
         none()
     }
 
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate attributesUnknown() { none() }
+
 }
 
 
@@ -267,6 +285,12 @@ class StringObjectInternal extends ObjectInternal, TString {
     override predicate calleeAndOffset(Function scope, int paramOffset) {
         none()
     }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate attributesUnknown() { none() }
 
 }
 

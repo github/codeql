@@ -81,6 +81,22 @@ class Builtin extends @py_cobject {
         this.getClass().getName() = "wrapper_descriptor"
     }
 
+    int intValue() {
+        (this.getClass() = Builtin::special("int") or
+        this.getClass() = Builtin::special("long")) and
+        result = this.getName().toInt()
+    }
+
+    string strValue() {
+        (this.getClass() = Builtin::special("unicode") or
+        this.getClass() = Builtin::special("bytes")) and
+        exists(string quoted_string |
+            quoted_string = this.getName()
+            and
+            result = quoted_string.regexpCapture("[bu]'([\\s\\S]*)'", 1)
+        )
+    }
+
 }
 
 module Builtin {

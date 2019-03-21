@@ -31,11 +31,10 @@ abstract class ClassObjectInternal extends ObjectInternal {
         result = this.getClassDeclaration().getName()
     }
 
-    abstract predicate attribute(string name, ObjectInternal value, CfgOrigin origin);
-
     boolean isSpecial() {
         result = Types::getMro(this).isSpecial()
     }
+
 }
 
 class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject {
@@ -86,6 +85,8 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
         )
     }
 
+    override predicate attributesUnknown() { none() }
+
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
         // TO DO .. Result should (in most cases) be an instance
         none()
@@ -126,8 +127,11 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
     }
 
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        value.getBuiltin() = this.getBuiltin().getMember(name) and origin = CfgOrigin::unknown()
+        value = ObjectInternal::fromBuiltin(this.getBuiltin().getMember(name)) and 
+        origin = CfgOrigin::unknown()
     }
+
+    override predicate attributesUnknown() { none() }
 
     override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
         // TO DO .. Result should (in most cases) be an instance
@@ -179,6 +183,8 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         none()
     }
+
+    override predicate attributesUnknown() { any() }
 
 }
 

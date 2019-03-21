@@ -18,6 +18,8 @@ newtype TObject =
     TBuiltinOpaqueObject(Builtin bltn) {
         not bltn.isClass() and not bltn.isFunction() and
         not bltn.isMethod() and not bltn.isModule() and
+        not exists(bltn.intValue()) and
+        not exists(bltn.strValue()) and
         not py_special_objects(bltn, _)
     }
     or
@@ -56,6 +58,8 @@ newtype TObject =
             exists(UnaryExpr neg | neg.getOp() instanceof USub and neg.getOperand() = num)
             and n = -num.getN().toInt()
         )
+        or
+        n = any(Builtin b).intValue()
     }
     or
     TString(string s) {
@@ -65,14 +69,12 @@ newtype TObject =
         )
         or
         // Any string from the library put in the DB by the extractor.
-        exists(string quoted_string, Builtin bltn |
-            quoted_string = bltn.getName() and
-            s = quoted_string.regexpCapture("[bu]'([\\s\\S]*)'", 1)
-        )
-        or s = "__main__"
+        s = any(Builtin b).strValue()
+        or
+        s = "__main__"
     }
     or
-    TInstance(CallNode instantiation, ClassObjectInternal cls, PointsToContext2 context) {
+    TSpecificInstance(CallNode instantiation, ClassObjectInternal cls, PointsToContext2 context) {
         PointsTo2::points_to(instantiation.getFunction(), context, cls, _) and
         cls.isSpecial() = false
     }
@@ -84,6 +86,8 @@ newtype TObject =
             self.getClass().(ClassObjectInternal).attribute(name, function, _)
         )
     }
+    or
+    TUnknownInstance(ClassObjectInternal cls) { cls != TUnknownClass() }
 
 private predicate is_power_2(int n) {
     n = 1 or
