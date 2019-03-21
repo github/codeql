@@ -21,6 +21,9 @@ test_RequestInputAccess
 | src/koa.js:38:2:38:16 | ctx.headers.bar | header | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 | src/koa.js:40:2:40:15 | ctx.get('bar') | header | src/koa.js:30:10:45:1 | async c ... url);\\n} |
 | src/koa.js:42:12:42:27 | ctx.query.target | parameter | src/koa.js:30:10:45:1 | async c ... url);\\n} |
+| src/koa.js:49:2:49:14 | cookies.get() | cookie | src/koa.js:47:10:56:1 | async c ... .foo;\\n} |
+| src/koa.js:52:2:52:10 | query.foo | parameter | src/koa.js:47:10:56:1 | async c ... .foo;\\n} |
+| src/koa.js:55:2:55:12 | headers.foo | header | src/koa.js:47:10:56:1 | async c ... .foo;\\n} |
 test_RouteHandler_getAResponseHeader
 | src/koa.js:10:10:28:1 | functio ... az');\\n} | header1 | src/koa.js:11:3:11:25 | this.se ... 1', '') |
 | src/koa.js:10:10:28:1 | functio ... az');\\n} | header2 | src/koa.js:12:3:12:37 | this.re ... 2', '') |
@@ -97,6 +100,7 @@ test_HeaderAccess
 | src/koa.js:37:2:37:15 | ctx.header.bar | bar |
 | src/koa.js:38:2:38:16 | ctx.headers.bar | bar |
 | src/koa.js:40:2:40:15 | ctx.get('bar') | bar |
+| src/koa.js:55:2:55:12 | headers.foo | foo |
 test_RouteHandler_getAResponseExpr
 | src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:12:3:12:15 | this.response |
 | src/koa.js:10:10:28:1 | functio ... az');\\n} | src/koa.js:14:3:14:14 | ctx.response |

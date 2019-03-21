@@ -202,7 +202,7 @@ module Koa {
           e instanceof ContextExpr and
           kind = "cookie" and
           cookies.accesses(e, "cookies") and
-          this.asExpr().(MethodCallExpr).calls(cookies, "get")
+          this = cookies.flow().(DataFlow::SourceNode).getAMethodCall("get")
         )
         or
         exists(RequestHeaderAccess access | access = this |
@@ -221,7 +221,10 @@ module Koa {
 
   private DataFlow::Node getAQueryParameterAccess(RouteHandler rh) {
     // `ctx.query.name` or `ctx.request.query.name`
-    result.asExpr().(PropAccess).getBase().(PropAccess).accesses(rh.getARequestOrContextExpr(), "query")
+    exists (PropAccess q |
+      q.accesses(rh.getARequestOrContextExpr(), "query") and
+      result = q.flow().(DataFlow::SourceNode).getAPropertyRead()
+    )
   }
 
   /**
@@ -235,7 +238,7 @@ module Koa {
         exists(string propName, PropAccess headers |
           // `ctx.request.header.<name>`, `ctx.request.headers.<name>`
           headers.accesses(e, propName) and
-          this.asExpr().(PropAccess).accesses(headers, _)
+          this = headers.flow().(DataFlow::SourceNode).getAPropertyRead()
         |
           propName = "header" or
           propName = "headers"
