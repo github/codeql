@@ -54,3 +54,7 @@
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x |
+| Splitting.cs:21:28:21:32 | access to parameter value |
+| Splitting.cs:32:15:32:15 | [b (line 24): false] access to local variable x |
+| Splitting.cs:32:15:32:15 | [b (line 24): true] access to local variable x |
+| Splitting.cs:34:19:34:19 | access to local variable x |
