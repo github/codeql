@@ -267,7 +267,7 @@ predicate automaticallyReleased(Assignment acquire)
 {
   // sub-types of the Qt type QObject are released by their parent (if they have one)
   exists(NewExpr alloc |
-    alloc.getType() = qtObject() and
+    alloc.getAllocatedType() = qtObject() and
     acquire.getRValue() = alloc and
     alloc.getInitializer() = qtParentConstructor().getACallToThisFunction()
   )
