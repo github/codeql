@@ -1,3 +1,4 @@
+
 /**
  * Provides classes for working with [Koa](https://koajs.com) applications.
  */
@@ -63,18 +64,13 @@ module Koa {
      * Gets an expression that contains the context or response
      * object of a route handler invocation.
      */
-    Expr getAResponseOrContextExpr() {
-      result = getAResponseExpr() or result = getAContextExpr()
-    }
+    Expr getAResponseOrContextExpr() { result = getAResponseExpr() or result = getAContextExpr() }
 
     /**
      * Gets an expression that contains the context or request
      * object of a route handler invocation.
      */
-    Expr getARequestOrContextExpr() {
-      result = getARequestExpr() or result = getAContextExpr()
-    }
-
+    Expr getARequestOrContextExpr() { result = getARequestExpr() or result = getAContextExpr() }
   }
 
   /**
@@ -184,7 +180,7 @@ module Koa {
         exists(string propName |
           kind = "url" and
           this.asExpr().(PropAccess).accesses(e, propName)
-          |
+        |
           propName = "url"
           or
           propName = "originalUrl"
@@ -221,7 +217,7 @@ module Koa {
 
   private DataFlow::Node getAQueryParameterAccess(RouteHandler rh) {
     // `ctx.query.name` or `ctx.request.query.name`
-    exists (PropAccess q |
+    exists(PropAccess q |
       q.accesses(rh.getARequestOrContextExpr(), "query") and
       result = q.flow().(DataFlow::SourceNode).getAPropertyRead()
     )
@@ -288,7 +284,9 @@ module Koa {
 
     ResponseSendArgument() {
       exists(DataFlow::PropWrite pwn |
-        pwn.writes(DataFlow::valueNode(rh.getAResponseOrContextExpr()), "body", DataFlow::valueNode(this))
+        pwn
+            .writes(DataFlow::valueNode(rh.getAResponseOrContextExpr()), "body",
+              DataFlow::valueNode(this))
       )
     }
 
@@ -301,13 +299,10 @@ module Koa {
   private class RedirectInvocation extends HTTP::RedirectInvocation, MethodCallExpr {
     RouteHandler rh;
 
-    RedirectInvocation() {
-      this.(MethodCallExpr).calls(rh.getAResponseOrContextExpr(), "redirect")
-    }
+    RedirectInvocation() { this.(MethodCallExpr).calls(rh.getAResponseOrContextExpr(), "redirect") }
 
     override Expr getUrlArgument() { result = getArgument(0) }
 
     override RouteHandler getRouteHandler() { result = rh }
   }
-
 }
