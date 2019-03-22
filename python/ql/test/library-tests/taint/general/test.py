@@ -184,3 +184,9 @@ def test_truth():
         SINK(t)
     else:
         SINK(t)
+
+def test_early_exit():
+    t = FALSEY
+    if not t:
+        return
+    t
