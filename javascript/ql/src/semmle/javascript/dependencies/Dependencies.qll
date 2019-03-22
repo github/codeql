@@ -23,7 +23,7 @@ abstract class Dependency extends Locatable {
   /**
    * A use of this dependency, which is of the given `kind`.
    *
-   * Currently, the only supported kind is `"import"`.
+   * Currently, the only supported kinds are `"import"` and `"use"`.
    */
   abstract Locatable getAUse(string kind);
 }
