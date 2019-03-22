@@ -37,7 +37,7 @@ class Object extends @py_object {
     ClassObject getAnInferredType() {
         exists(ControlFlowNode somewhere | somewhere.refersTo(this, result, _))
         or
-        this.asBuiltin().getClass() = result.asBuiltin()and not this = unknownValue()
+        this.asBuiltin().getClass() = result.asBuiltin() and not this = unknownValue()
         or
         this = unknownValue() and result = theUnknownType()
     }

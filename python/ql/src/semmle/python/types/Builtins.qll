@@ -40,6 +40,7 @@ class Builtin extends @py_cobject {
     }
 
     Builtin getBaseClass() {
+        /* The extractor uses the special name ".super." to indicate the super class of a builtin class */
         py_cmembers_versioned(this, ".super.", result, major_version().toString())
     }
 
@@ -54,7 +55,9 @@ class Builtin extends @py_cobject {
     }
 
     predicate isClass() {
-        py_cobjecttypes(_, this) or this = Builtin::unknownType()
+        py_cobjecttypes(_, this) or
+        this = Builtin::unknownType() or
+        exists(Builtin meta | meta.inheritsFromType() and py_cobjecttypes(this, meta))
     }
 
     predicate isFunction() {

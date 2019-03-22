@@ -22,9 +22,7 @@ class ClassObject extends Object {
 
     ClassObject() {
         this.getOrigin() instanceof ClassExpr or
-        exists(Builtin o | o.getClass() = this.asBuiltin()) or
-        this.asBuiltin().getClass().inheritsFromType() or
-        this.asBuiltin() = Builtin::special("_semmle_unknown_type")
+        this.asBuiltin().isClass()
     }
 
     private predicate isStr() {
