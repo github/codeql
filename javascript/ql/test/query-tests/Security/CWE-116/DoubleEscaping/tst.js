@@ -60,3 +60,12 @@ function badPercentEscape(s) {
   s = s.replace(/%/g, '%25');
   return s;
 }
+
+function badEncode(s) {
+  var indirect1 = /"/g;
+  var indirect2 = /'/g;
+  var indirect3 = /&/g;
+  return s.replace(indirect1, "&quot;")
+          .replace(indirect2, "&apos;")
+          .replace(indirect3, "&amp;");
+}
