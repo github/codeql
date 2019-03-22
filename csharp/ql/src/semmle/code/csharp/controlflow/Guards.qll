@@ -3,6 +3,8 @@
  */
 
 import csharp
+private import cil
+private import dotnet
 private import ControlFlow::SuccessorTypes
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
@@ -11,6 +13,7 @@ private import semmle.code.csharp.controlflow.BasicBlocks
 private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.dataflow.Nullness
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.cil.CallableReturns
 
 /** An abstract value. */
 abstract class AbstractValue extends TAbstractValue {
@@ -637,6 +640,15 @@ module Internal {
     TMatchValue(CaseStmt cs, boolean b) { b = true or b = false } or
     TEmptyCollectionValue(boolean b) { b = true or b = false }
 
+  /** A callable that always returns a non-`null` value. */
+  private class NonNullCallable extends DotNet::Callable {
+    NonNullCallable() {
+      exists(CIL::Method m | m.matchesHandle(this) | alwaysNotNullMethod(m) and not m.isVirtual())
+      or
+      this = any(SystemObjectClass c).getGetTypeMethod()
+    }
+  }
+
   /** Holds if expression `e` is a non-`null` value. */
   predicate nonNullValue(Expr e) {
     e instanceof ObjectCreation
@@ -652,12 +664,10 @@ module Internal {
     e instanceof AddExpr and
     e.getType() instanceof StringType
     or
-    e = any(MethodCall mc |
-        mc.getTarget() = any(SystemObjectClass c).getGetTypeMethod() and
-        not mc.isConditional()
-      )
-    or
     e.(DefaultValueExpr).getType().isValueType()
+    or
+    e.(Call).getTarget().getSourceDeclaration() instanceof NonNullCallable and
+    not e.(QualifiableExpr).isConditional()
   }
 
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */
@@ -1288,9 +1298,7 @@ module Internal {
     ) {
       isGuardedByNode1(guarded, g, sub, v) and
       sub = g.getAChildExpr*() and
-      forall(Ssa::Definition def | def = sub.getAnSsaQualifier(_) |
-        isGuardedByNode2(guarded, def)
-      )
+      forall(Ssa::Definition def | def = sub.getAnSsaQualifier(_) | isGuardedByNode2(guarded, def))
     }
 
     /**

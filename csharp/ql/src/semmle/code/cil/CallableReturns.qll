@@ -4,13 +4,31 @@
 
 private import CIL
 
-/** Holds if method `m` always returns null. */
 cached
-predicate alwaysNullMethod(Method m) { forex(Expr e | m.canReturn(e) | alwaysNullExpr(e)) }
+private module Cached {
+  /** Holds if method `m` always returns null. */
+  cached
+  predicate alwaysNullMethod(Method m) { forex(Expr e | m.canReturn(e) | alwaysNullExpr(e)) }
 
-/** Holds if method `m` always returns non-null. */
-cached
-predicate alwaysNotNullMethod(Method m) { forex(Expr e | m.canReturn(e) | alwaysNotNullExpr(e)) }
+  /** Holds if method `m` always returns non-null. */
+  cached
+  predicate alwaysNotNullMethod(Method m) { forex(Expr e | m.canReturn(e) | alwaysNotNullExpr(e)) }
+
+  /** Holds if method `m` always throws an exception. */
+  cached
+  predicate alwaysThrowsMethod(Method m) {
+    m.hasBody() and
+    not exists(m.getImplementation().getAnInstruction().(Return))
+  }
+
+  /** Holds if method `m` always throws an exception of type `t`. */
+  cached
+  predicate alwaysThrowsException(Method m, Type t) {
+    alwaysThrowsMethod(m) and
+    forex(Throw ex | ex = m.getImplementation().getAnInstruction() | t = ex.getExpr().getType())
+  }
+}
+import Cached
 
 /** Holds if expression `expr` always evaluates to `null`. */
 private predicate alwaysNullExpr(Expr expr) {
@@ -18,7 +36,9 @@ private predicate alwaysNullExpr(Expr expr) {
   or
   alwaysNullMethod(expr.(StaticCall).getTarget())
   or
-  forex(VariableUpdate vu | defUse(_, vu, expr) | alwaysNullExpr(vu.getSource()))
+  forex(VariableUpdate vu | DefUse::variableUpdateUse(_, vu, expr) |
+    alwaysNullExpr(vu.getSource())
+  )
 }
 
 /** Holds if expression `expr` always evaluates to non-null. */
@@ -29,19 +49,7 @@ private predicate alwaysNotNullExpr(Expr expr) {
   or
   alwaysNotNullMethod(expr.(StaticCall).getTarget())
   or
-  forex(VariableUpdate vu | defUse(_, vu, expr) | alwaysNotNullExpr(vu.getSource()))
-}
-
-/** Holds if method `m` always throws an exception. */
-cached
-predicate alwaysThrowsMethod(Method m) {
-  m.hasBody() and
-  not exists(m.getImplementation().getAnInstruction().(Return))
-}
-
-/** Holds if method `m` always throws an exception of type `t`. */
-cached
-predicate alwaysThrowsException(Method m, Type t) {
-  alwaysThrowsMethod(m) and
-  forex(Throw ex | ex = m.getImplementation().getAnInstruction() | t = ex.getExpr().getType())
+  forex(VariableUpdate vu | DefUse::variableUpdateUse(_, vu, expr) |
+    alwaysNotNullExpr(vu.getSource())
+  )
 }
