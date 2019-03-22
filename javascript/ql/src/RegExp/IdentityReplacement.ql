@@ -18,7 +18,7 @@ import javascript
  */
 predicate matchesString(Expr e, string s) {
   exists(RegExpLiteral rl |
-    rl = e and
+    rl.flow().(DataFlow::SourceNode).flowsToExpr(e) and
     not rl.isIgnoreCase() and
     regExpMatchesString(rl.getRoot(), s)
   )

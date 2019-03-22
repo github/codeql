@@ -4,3 +4,4 @@
 | tst.js:47:7:47:30 | s.repla ... g, "&") | This replacement may produce '&' characters that are double-unescaped $@. | tst.js:48:7:48:32 | s.repla ... , "\\"") | here |
 | tst.js:53:10:53:33 | s.repla ... , '\\\\') | This replacement may produce '\\' characters that are double-unescaped $@. | tst.js:53:10:54:33 | s.repla ... , '\\'') | here |
 | tst.js:60:7:60:28 | s.repla ...  '%25') | This replacement may double-escape '%' characters from $@. | tst.js:59:7:59:28 | s.repla ...  '%26') | here |
+| tst.js:68:10:70:38 | s.repla ... &amp;") | This replacement may double-escape '&' characters from $@. | tst.js:68:10:69:39 | s.repla ... apos;") | here |
