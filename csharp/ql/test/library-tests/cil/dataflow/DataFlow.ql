@@ -1,7 +1,6 @@
 import csharp
 import semmle.code.csharp.dataflow.DataFlow::DataFlow
-// import DataFlow::PathGraph
- 
+
 class FlowConfig extends Configuration {
   FlowConfig() { this = "FlowConfig" }
 

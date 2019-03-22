@@ -1188,7 +1188,7 @@ module DataFlow {
      * nodes that may potentially be reached in flow from some source to some
      * sink.
      */
-    module Pruning {
+    private module Pruning {
       /**
        * Holds if `node` is reachable from a source in the configuration `config`,
        * ignoring call contexts.

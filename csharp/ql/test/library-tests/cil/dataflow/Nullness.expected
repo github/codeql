@@ -1,9 +1,11 @@
 alwaysNull
 | dataflow.cs:70:21:70:35 | default(...) |
+| dataflow.cs:74:21:74:34 | call to method NullFunction |
 | dataflow.cs:74:39:74:52 | call to method IndirectNull |
 | dataflow.cs:78:21:78:45 | call to method ReturnsNull |
 | dataflow.cs:79:21:79:46 | call to method ReturnsNull2 |
 | dataflow.cs:80:21:80:44 | access to property NullProperty |
+| dataflow.cs:89:31:89:44 | call to method NullFunction |
 alwaysNotNull
 | dataflow.cs:71:24:71:35 | default(...) |
 | dataflow.cs:72:27:72:30 | this access |

@@ -88,7 +88,7 @@ private predicate localTaintStep(DataFlowNode src, DataFlowNode sink) {
 }
 
 cached
-private module DefUse {
+module DefUse {
   /**
    * A classification of variable references into reads and writes.
    */
@@ -185,21 +185,26 @@ private module DefUse {
     )
   }
 
-  /** Holds if the update `def` can be used at the read `use`. */
+  /** Holds if the variable update `vu` can be used at the read `use`. */
   cached
-  predicate defUseImpl(StackVariable target, DataFlowNode def, ReadAccess use) {
-    exists(VariableUpdate vu | def = vu.getSource() |
-      defReachesReadWithinBlock(target, vu, use)
-      or
-      exists(BasicBlock bb, int i |
-        exists(refRank(bb, i, target, Read())) and
-        use = bb.getNode(i) and
-        defReachesEndOfBlock(bb.getAPredecessor(), vu, target) and
-        not defReachesReadWithinBlock(target, _, use)
-      )
+  predicate variableUpdateUse(StackVariable target, VariableUpdate vu, ReadAccess use) {
+    defReachesReadWithinBlock(target, vu, use)
+    or
+    exists(BasicBlock bb, int i |
+      exists(refRank(bb, i, target, Read())) and
+      use = bb.getNode(i) and
+      defReachesEndOfBlock(bb.getAPredecessor(), vu, target) and
+      not defReachesReadWithinBlock(target, _, use)
     )
   }
+
+  /** Holds if the update `def` can be used at the read `use`. */
+  cached
+  predicate defUse(StackVariable target, Expr def, ReadAccess use) {
+    exists(VariableUpdate vu | def = vu.getSource() | variableUpdateUse(target, vu, use))
+  }
 }
+private import DefUse
 
 abstract library class VariableUpdate extends Instruction {
   abstract Expr getSource();
@@ -224,5 +229,3 @@ private class MethodOutOrRefTarget extends VariableUpdate, Call {
 
   override Expr getSource() { result = this }
 }
-
-predicate defUse = DefUse::defUseImpl/3;
