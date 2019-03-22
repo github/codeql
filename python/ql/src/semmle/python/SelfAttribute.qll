@@ -3,7 +3,6 @@
  */
 
 import python
-private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.Filters
 
 /** An attribute access where the left hand side of the attribute expression 

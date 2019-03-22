@@ -4,7 +4,7 @@ import python
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
-private import semmle.python.pointsto.PointsToContext2
+private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO2
 private import semmle.python.types.Builtins
 
@@ -48,7 +48,7 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
         result = "class " + this.getScope().getName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         this = TPythonClassObject(node) and context.appliesTo(node)
     }
 
@@ -85,7 +85,7 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
 
     override predicate attributesUnknown() { none() }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
     }
 
@@ -108,7 +108,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
         result = "builtin-class " + this.getBuiltin().getName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -135,7 +135,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
 
     override predicate attributesUnknown() { none() }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
     }
 
@@ -160,10 +160,10 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
     }
 
     override ObjectInternal getClass() {
-        result = TUnknownClass()
+        result = this
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -173,7 +173,7 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
         none()
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
     }
 

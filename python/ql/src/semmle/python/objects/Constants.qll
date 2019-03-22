@@ -3,7 +3,7 @@ import python
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
-private import semmle.python.pointsto.PointsToContext2
+private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
 
@@ -30,7 +30,7 @@ abstract class BooleanObjectInternal extends ObjectInternal {
         none()
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         // Booleans aren't callable
         none()
     }
@@ -66,7 +66,7 @@ class TrueObjectInternal extends BooleanObjectInternal, TTrue {
         result = true
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         node.(NameNode).getId() = "True" and context.appliesTo(node)
     }
 
@@ -76,6 +76,10 @@ class TrueObjectInternal extends BooleanObjectInternal, TTrue {
 
     override string strValue() {
         none()
+    }
+
+    override @py_object getSource() {
+        result = Builtin::special("True")
     }
 
 }
@@ -90,7 +94,7 @@ class FalseObjectInternal extends BooleanObjectInternal, TFalse {
         result = false
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         node.(NameNode).getId() = "False" and context.appliesTo(node)
     }
 
@@ -100,6 +104,10 @@ class FalseObjectInternal extends BooleanObjectInternal, TFalse {
 
     override string strValue() {
         none()
+    }
+
+    override @py_object getSource() {
+        result = Builtin::special("False")
     }
 
 }
@@ -127,7 +135,7 @@ class NoneObjectInternal extends ObjectInternal, TNone {
         result = TBuiltinClassObject(Builtin::special("NoneType"))
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         node.(NameNode).getId() = "None" and context.appliesTo(node)
     }
 
@@ -135,16 +143,16 @@ class NoneObjectInternal extends ObjectInternal, TNone {
         none()
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         // None isn't callable
         none()
     }
-    
+
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         // None isn't callable
         none()
     }
-    
+
     override ControlFlowNode getOrigin() {
         none()
     }
@@ -167,6 +175,10 @@ class NoneObjectInternal extends ObjectInternal, TNone {
 
     override predicate attributesUnknown() { none() }
 
+    override @py_object getSource() {
+        result = Builtin::special("None")
+    }
+
 }
 
 
@@ -176,7 +188,7 @@ class IntObjectInternal extends ObjectInternal, TInt {
         result = "int " + this.intValue().toString()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         context.appliesTo(node) and
         node.getNode().(IntegerLiteral).getValue() = this.intValue()
     }
@@ -198,7 +210,7 @@ class IntObjectInternal extends ObjectInternal, TInt {
         none()
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         // ints aren't callable
         none()
     }
@@ -236,6 +248,10 @@ class IntObjectInternal extends ObjectInternal, TInt {
 
     override predicate attributesUnknown() { none() }
 
+    override @py_object getSource() {
+        result.(Builtin).intValue() = this.intValue()
+    }
+
 }
 
 
@@ -245,7 +261,7 @@ class StringObjectInternal extends ObjectInternal, TString {
         result =  "'" + this.strValue() + "'"
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         context.appliesTo(node) and
         node.getNode().(StrConst).getText() = this.strValue()
     }
@@ -266,7 +282,7 @@ class StringObjectInternal extends ObjectInternal, TString {
         none()
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         // strings aren't callable
         none()
     }
@@ -303,6 +319,10 @@ class StringObjectInternal extends ObjectInternal, TString {
     }
 
     override predicate attributesUnknown() { none() }
+
+    override @py_object getSource() {
+        result.(Builtin).strValue() = this.strValue()
+    }
 
 }
 

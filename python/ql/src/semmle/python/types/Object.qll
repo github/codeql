@@ -1,5 +1,6 @@
 import python
-private import semmle.python.pointsto.Base
+private import semmle.python.objects.ObjectAPI
+private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
 
 private cached predicate is_an_object(@py_object obj) {
@@ -121,40 +122,25 @@ class Object extends @py_object {
         )
     }
 
+    private boolean booleanFromValue() {
+        exists(ObjectInternal obj |
+            obj.getSource() = this |
+            result = obj.booleanValue()
+        )
+    }
+
     /** The Boolean value of this object if it always evaluates to true or false.
      * For example:
      *     false for None, true for 7 and no result for int(x)
      */
     boolean booleanValue() {
-        this = theNoneObject() and result = false 
-        or
-        this = theTrueObject() and result = true 
-        or
-        this = theFalseObject() and result = false 
-        or
-        this = TupleObject::empty() and result = false 
-        or
-        exists(Tuple t | t = this.getOrigin() |
-            exists(t.getAnElt()) and result = true
-            or
-            not exists(t.getAnElt()) and result = false
-        )
-        or
-        exists(Unicode s | s.getLiteralObject() = this |
-            s.getS() = "" and result = false
-            or
-            s.getS() != "" and result = true
-        )
-        or
-        exists(Bytes s | s.getLiteralObject() = this |
-            s.getS() = "" and result = false
-            or
-            s.getS() != "" and result = true
-        )
+        result = booleanFromValue()
+        and not booleanFromValue() = result.booleanNot()
     }
 
     final predicate maybe() {
-        not exists(this.booleanValue())
+        booleanFromValue() = true and
+        booleanFromValue() = false
     }
 
     predicate notClass() {

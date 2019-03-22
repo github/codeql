@@ -2,7 +2,7 @@ import python
 
 private import semmle.python.objects.TObject
 private import semmle.python.pointsto.PointsTo2
-private import semmle.python.pointsto.PointsToContext2
+private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 import semmle.python.objects.Modules
 import semmle.python.objects.Classes
@@ -18,7 +18,7 @@ class ObjectInternal extends TObject {
      * true and false if the "object" represents a set of possible objects. */
     abstract boolean booleanValue();
 
-    abstract predicate introduced(ControlFlowNode node, PointsToContext2 context);
+    abstract predicate introduced(ControlFlowNode node, PointsToContext context);
 
     /** Gets the class declaration for this object, if it is a declared class. */
     abstract ClassDecl getClassDeclaration();
@@ -35,15 +35,13 @@ class ObjectInternal extends TObject {
     abstract boolean isComparable();
 
     /** Gets the `Builtin` for this object, if any.
-     * All objects (except unknown and undefined values) should return 
+     * Objects (except unknown and undefined values) should attempt to return
      * exactly one result for either this method or `getOrigin()`.
      */
     abstract Builtin getBuiltin();
 
-    /** Gets a control flow node that represents the source origin of this 
+    /** Gets a control flow node that represents the source origin of this
      * objects.
-     * All objects (except unknown and undefined values) should return 
-     * exactly one result for either this method or `getBuiltin()`.
      */
     abstract ControlFlowNode getOrigin();
 
@@ -55,7 +53,7 @@ class ObjectInternal extends TObject {
     /** Holds if `obj` is the result of calling `this` and `origin` is
      * the origin of `obj` with callee context `callee`.
      */
-    abstract predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin);
+    abstract predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin);
 
     /** The integer value of things that have integer values.
      * That is, ints and bools.
@@ -77,6 +75,16 @@ class ObjectInternal extends TObject {
 
     abstract predicate attributesUnknown();
 
+    /** For backwards compatibility shim -- Not all objects have a "source" 
+     * Objects (except unknown and undefined values) should attempt to return
+     * exactly one result for either this method`.
+     * */
+    @py_object getSource() {
+        result = this.getOrigin()
+        or
+        result = this.getBuiltin()
+    }
+
 }
 
 
@@ -87,7 +95,7 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
     }
 
     override string toString() {
-        result = this.getBuiltin().toString()
+        result = this.getBuiltin().getClass().getName() + " object"
     }
 
     override boolean booleanValue() {
@@ -105,13 +113,13 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
         result = TBuiltinClassObject(this.getBuiltin().getClass())
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
     override boolean isComparable() { result = false }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
     }
 
@@ -165,7 +173,7 @@ class UnknownInternal extends ObjectInternal, TUnknown {
         result = TUnknownClass()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -179,7 +187,7 @@ class UnknownInternal extends ObjectInternal, TUnknown {
         obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
     }
 
@@ -229,7 +237,7 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
         none()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -237,7 +245,7 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
         none()
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
     }
 
@@ -334,6 +342,9 @@ module ObjectInternal {
         result = TBuiltinClassObject(Builtin::special("StaticMethod"))
     }
 
+    ObjectInternal moduleType() {
+        result = TBuiltinClassObject(Builtin::special("ModuleType"))
+    }
 }
 
 /** Helper for boolean predicates returning both `true` and `false` */

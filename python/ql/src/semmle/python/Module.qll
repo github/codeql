@@ -1,5 +1,6 @@
 import python
-private import semmle.python.pointsto.PointsTo
+private import semmle.python.objects.ObjectAPI
+private import semmle.python.objects.Modules
 
 /** A module. This is the top level element in an AST, corresponding to a source file. 
  * It is also a Scope; the scope of global variables. */
@@ -66,7 +67,10 @@ class Module extends Module_, Scope, AstNode {
     string getAnExport() {
         py_exports(this, result)
         or
-        not PointsTo::module_defines_name(this, "__all__") and PointsTo::module_defines_name(this, result)
+        exists(ModuleValue mod |
+            mod.getSource() = this.getEntryNode() |
+            not mod.exports(result)
+        )
     }
 
     /** Gets the source file for this module */

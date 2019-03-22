@@ -21,7 +21,7 @@ import python
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
-private import semmle.python.pointsto.PointsToContext2
+private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
 
@@ -97,6 +97,10 @@ class ClassList extends TClassList {
         n = 0 and  result = this.getHead()
         or
         result = this.getTail().getItem(n-1)
+    }
+
+    ClassObjectInternal getAnItem() {
+        result = this.getItem(_)
     }
 
     pragma [inline]

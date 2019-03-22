@@ -1,6 +1,6 @@
 import python
-private import semmle.python.pointsto.PointsTo
-
+private import semmle.python.pointsto.PointsTo2
+private import semmle.python.objects.ObjectInternal
 /*
  * A note on 'cost'. Cost doesn't represent the cost to compute,
  * but (a vague estimate of) the cost to compute per value gained.
@@ -8,7 +8,7 @@ private import semmle.python.pointsto.PointsTo
  */
 
 private int given_cost() {
-    exists(string depth | 
+    exists(string depth |
         py_flags_versioned("context.cost", depth, _) and
         result = depth.toInt()
     )
@@ -148,8 +148,8 @@ class PointsToContext extends TPointsToContext {
     }
 
     /** Holds if `call` is the call-site from which this context was entered and `caller` is the caller's context. */
-    predicate fromCall(CallNode call, FunctionObject callee, PointsToContext caller) {
-        call = PointsTo::get_a_call(callee, caller) and
+    predicate fromCall(CallNode call, PythonFunctionObjectInternal callee, PointsToContext caller) {
+        call = PointsTo2::get_a_call(callee, caller) and
         this = TCallContext(call, caller, _)
     }
 
@@ -169,16 +169,13 @@ class PointsToContext extends TPointsToContext {
         this = TRuntimeContext() and executes_in_runtime_context(s)
         or
         /* Called functions, regardless of their name */
-        exists(FunctionObject func, ControlFlowNode call, TPointsToContext outerContext |
-            call = PointsTo::get_a_call(func, outerContext) and
+        exists(PythonFunctionObjectInternal func, ControlFlowNode call, TPointsToContext outerContext |
+            call = PointsTo2::get_a_call(func, outerContext) and
             this = TCallContext(call, outerContext, _) and
-            s = func.getFunction()
+            s = func.getScope()
         )
         or
-        exists(FunctionObject func |
-            PointsTo::Flow::callsite_calls_function(_, _, func, this, _) and
-            s = func.getFunction()
-        )
+        InterProceduralPointsTo::callsite_calls_function(_, _, s, this, _)
     }
 
     /** Holds if this context can apply to the CFG node `n`. */
@@ -225,6 +222,10 @@ class PointsToContext extends TPointsToContext {
         result = context_cost(this)
     }
 
+    CallNode getCall() {
+        this = TCallContext(result, _, _)
+    }
+
     /** Holds if a call would be too expensive to create a new context for */
     predicate untrackableCall(CallNode call) {
         total_cost(call, this) > max_context_cost()
@@ -268,9 +269,4 @@ private predicate maybe_main(Module m) {
         main.getText() = "__main__"
     )
 }
-
-
-/* For backwards compatibility */
-/** DEPRECATED: Use `PointsToContext` instead */
-deprecated class FinalContext = PointsToContext;
 

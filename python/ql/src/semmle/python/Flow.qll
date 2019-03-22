@@ -1,6 +1,6 @@
 import python
 import semmle.python.flow.NameNode
-private import semmle.python.pointsto.PointsTo
+private import semmle.python.pointsto.PointsTo2
 
 
 /* Note about matching parent and child nodes and CFG splitting:
@@ -212,9 +212,19 @@ class ControlFlowNode extends @py_flow_node {
         py_scope_flow(this, _, -1)
     }
 
-    /** Use ControlFlowNode.refersTo() instead. */
-    deprecated Object pointsTo() {
-        this.refersTo(result)
+    /** The value that this ControlFlowNode points-to. */
+    predicate pointsTo(Value value) {
+        this.pointsTo(_, value, _)
+    }
+
+    /** The value and origin that this ControlFlowNode points-to. */
+    predicate pointsTo(Value value, ControlFlowNode origin) {
+        this.pointsTo(_, value, origin)
+    }
+
+    /** The value and origin that this ControlFlowNode points-to, given the context. */
+    predicate pointsTo(Context context, Value value, ControlFlowNode origin) {
+        PointsTo2::points_to(this, context, value, origin)
     }
 
     /** Gets what this flow node might "refer-to". Performs a combination of localized (intra-procedural) points-to
@@ -222,37 +232,40 @@ class ControlFlowNode extends @py_flow_node {
      *  precise, but may not provide information for a significant number of flow-nodes. 
      *  If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
      */
-    predicate refersTo(Object value, ClassObject cls, ControlFlowNode origin) {
-        not py_special_objects(cls, "_semmle_unknown_type")
-        and
-        not value = unknownValue()
-        and
-        PointsTo::points_to(this, _, value, cls, origin)
+    predicate refersTo(Object obj, ClassObject cls, ControlFlowNode origin) {
+        this.refersTo(_, obj, cls, origin)
     }
 
     /** Gets what this expression might "refer-to" in the given `context`.
      */
-    predicate refersTo(Context context, Object value, ClassObject cls, ControlFlowNode origin) {
-        not py_special_objects(cls, "_semmle_unknown_type")
-        and
-        PointsTo::points_to(this, context, value, cls, origin)
+    predicate refersTo(Context context, Object obj, ClassObject cls, ControlFlowNode origin) {
+        exists(Value value |
+            PointsTo2::points_to(this, context, value, origin) and
+            cls = value.getClass().getSource() |
+            if exists(value.getSource().(Object)) then
+                obj = value.getSource()
+            else
+                obj = origin
+        )
     }
 
     /** Whether this flow node might "refer-to" to `value` which is from `origin` 
      * Unlike `this.refersTo(value, _, origin)` this predicate includes results 
      * where the class cannot be inferred. 
      */
-    predicate refersTo(Object value, ControlFlowNode origin) {
-        PointsTo::points_to(this, _, value, _, origin)
-        and
-        not value = unknownValue()
+    predicate refersTo(Object obj, ControlFlowNode origin) {
+        exists(Value value |
+            PointsTo2::points_to(this, _, value, origin) |
+            if exists(value.getSource().(Object)) then
+                obj = value.getSource()
+            else
+                obj = origin
+        )
     }
 
     /** Equivalent to `this.refersTo(value, _)` */
-    predicate refersTo(Object value) {
-        PointsTo::points_to(this, _, value, _, _)
-        and
-        not value = unknownValue()
+    predicate refersTo(Object obj) {
+        this.refersTo(obj, _)
     }
 
     /** Gets the basic block containing this flow node */

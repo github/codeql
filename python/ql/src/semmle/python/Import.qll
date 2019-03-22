@@ -14,7 +14,7 @@ class Alias extends Alias_ {
 private predicate valid_module_name(string name) {
     exists(Module m | m.getName() = name)
     or
-    exists(Builtin cmod | cmod.getClass() = theModuleType().asBuiltin() and cmod.getName() = name)
+    exists(Builtin cmod | cmod.getClass() = Builtin::special("ModuleType") and cmod.getName() = name)
 }
 
 /** An artificial expression representing an import */

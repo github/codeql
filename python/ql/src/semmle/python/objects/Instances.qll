@@ -4,7 +4,7 @@ import python
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
-private import semmle.python.pointsto.PointsToContext2
+private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
 class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
@@ -19,7 +19,7 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
         result = maybe()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         this = TSpecificInstance(node, _, context)
     }
 
@@ -53,7 +53,7 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
         this = TSpecificInstance(result, _, _)
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
     }
 
@@ -96,7 +96,7 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
         result = maybe()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         context.appliesTo(node) and
         this.getClass() = ObjectInternal::builtin("float") and 
         node.getNode() instanceof FloatLiteral
@@ -132,7 +132,7 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
         none()
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
     }
 
@@ -171,7 +171,7 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
 
     override boolean booleanValue() { result = true }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         exists(ObjectInternal self, ClassObjectInternal startclass |
             super_instantiation(node, self, startclass, context) and
             this = TSuperInstance(self, startclass)
@@ -190,7 +190,9 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
 
     override boolean isClass() { result = false }
 
-    override ObjectInternal getClass() { none() }
+    override ObjectInternal getClass() {
+        result = ObjectInternal::builtin("super")
+    }
 
     override boolean isComparable() { none() }
 
@@ -202,7 +204,7 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) { none() }
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
 
     override int intValue() { none() }
 

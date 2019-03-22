@@ -2,7 +2,7 @@ import python
 private import semmle.python.types.Builtins
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
-private import semmle.python.pointsto.PointsToContext2
+private import semmle.python.pointsto.PointsToContext
 
 newtype TObject =
     TBuiltinClassObject(Builtin bltn) {
@@ -31,7 +31,9 @@ newtype TObject =
         classexpr.getNode() instanceof ClassExpr
     }
     or
-    TPackageObject(Folder f)
+    TPackageObject(Folder f) {
+        exists(moduleNameFromFile(f))
+    }
     or
     TPythonModule(Module m) { not m.isPackage() }
     or
@@ -72,7 +74,7 @@ newtype TObject =
         s = "__main__"
     }
     or
-    TSpecificInstance(ControlFlowNode instantiation, ClassObjectInternal cls, PointsToContext2 context) {
+    TSpecificInstance(ControlFlowNode instantiation, ClassObjectInternal cls, PointsToContext context) {
         PointsTo2::points_to(instantiation.(CallNode).getFunction(), context, cls, _) and
         cls.isSpecial() = false
         or
@@ -80,14 +82,22 @@ newtype TObject =
         self_parameter(instantiation.getNode(), context, cls)
     }
     or
-    TBoundMethod(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext2 context) {
+    TBoundMethod(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext context) {
         method_binding(instantiation, self, function, context)
     }
     or
-    TUnknownInstance(ClassObjectInternal cls) { cls != TUnknownClass() }
+    TUnknownInstance(BuiltinClassObjectInternal cls) { any() }
     or
     TSuperInstance(ObjectInternal self, ClassObjectInternal startclass) {
         super_instantiation(_, self, startclass, _)
+    }
+    or
+    TClassMethod(CallNode instantiation, CallableObjectInternal function) {
+        class_method(instantiation, function, _)
+    }
+    or
+    TStaticMethod(CallNode instantiation, CallableObjectInternal function) {
+        static_method(instantiation, function, _)
     }
 
 private predicate is_power_2(int n) {
@@ -95,7 +105,17 @@ private predicate is_power_2(int n) {
     exists(int half | is_power_2(half) and n = half*2)
 }
 
-predicate super_instantiation(CallNode instantiation, ObjectInternal self, ClassObjectInternal startclass, PointsToContext2 context) {
+predicate static_method(CallNode instantiation, CallableObjectInternal function, PointsToContext context) {
+    PointsTo2::points_to(instantiation.getFunction(), context, ObjectInternal::builtin("staticmethod"), _) and
+    PointsTo2::points_to(instantiation.getArg(0), context, function, _)
+}
+
+predicate class_method(CallNode instantiation, CallableObjectInternal function, PointsToContext context) {
+    PointsTo2::points_to(instantiation.getFunction(), context, ObjectInternal::builtin("classmethod"), _) and
+    PointsTo2::points_to(instantiation.getArg(0), context, function, _)
+}
+
+predicate super_instantiation(CallNode instantiation, ObjectInternal self, ClassObjectInternal startclass, PointsToContext context) {
     PointsTo2::points_to(instantiation.getFunction(), context, ObjectInternal::builtin("super"), _) and
     (
         PointsTo2::points_to(instantiation.getArg(0), context, startclass, _) and
@@ -113,7 +133,7 @@ predicate super_instantiation(CallNode instantiation, ObjectInternal self, Class
     )
 }
 
-predicate method_binding(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext2 context) {
+predicate method_binding(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext context) {
     exists(ObjectInternal obj, string name |
         receiver(instantiation, context, obj, name) |
         exists(ObjectInternal cls |
@@ -134,13 +154,13 @@ predicate method_binding(AttrNode instantiation, ObjectInternal self, CallableOb
 
 /** Helper for method_binding */
 pragma [noinline]
-predicate receiver(AttrNode instantiation, PointsToContext2 context, ObjectInternal obj, string name) {
+predicate receiver(AttrNode instantiation, PointsToContext context, ObjectInternal obj, string name) {
     PointsTo2::points_to(instantiation.getObject(name), context, obj, _)
 }
 
 /** Helper self parameters: `def meth(self, ...): ...`. */
 pragma [noinline]
-private predicate self_parameter(Parameter def, PointsToContext2 context, PythonClassObjectInternal cls) {
+private predicate self_parameter(Parameter def, PointsToContext context, PythonClassObjectInternal cls) {
     def.isSelf() and
     exists(Function scope |
         def.(Name).getScope() = scope and

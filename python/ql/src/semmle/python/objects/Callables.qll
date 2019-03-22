@@ -4,7 +4,7 @@ import python
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
-private import semmle.python.pointsto.PointsToContext2
+private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO2
 private import semmle.python.types.Builtins
 
@@ -54,7 +54,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         result = this.getScope().toString()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         this = TPythonFunctionObject(node) and context.appliesTo(node)
     }
 
@@ -72,7 +72,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         this = TPythonFunctionObject(result)
     }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         exists(Function func, ControlFlowNode rval |
             func = this.getScope() and
             callee.appliesToScope(func) and
@@ -105,7 +105,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
         result = "Builtin-function " + this.getBuiltin().getName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -115,7 +115,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
     override boolean isComparable() { result = true }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
     }
 
@@ -185,13 +185,13 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
         result = TBuiltinClassObject(this.getBuiltin().getClass())
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
     override boolean isComparable() { result = true }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
     }
 
@@ -236,13 +236,13 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
         result = TBuiltinClassObject(Builtin::special("MethodType"))
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         this = TBoundMethod(node, _, _, context)
     }
 
     override boolean isComparable() { result = false }
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         this.getFunction().callResult(callee, obj, origin)
     }
 
@@ -264,6 +264,103 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
 
 }
 
+class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
+
+    override string toString() {
+        result = "classmethod()"
+    }
+
+    override boolean booleanValue() { result = true }
+
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+        exists(CallableObjectInternal function |
+            this = TClassMethod(node, function) and
+            class_method(node, function, context)
+        )
+    }
+
+    CallableObjectInternal getFunction() {
+        this = TClassMethod(_, result)
+    }
+
+    override ClassDecl getClassDeclaration() { none() }
+
+    override boolean isClass() { result = false }
+
+    override ObjectInternal getClass() { result = ObjectInternal::builtin("classmethod") }
+
+    override boolean isComparable() { none() }
+
+    override Builtin getBuiltin() { none() }
+
+    override ControlFlowNode getOrigin() { this = TClassMethod(result, _) }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override int intValue() { none() }
+
+    override string strValue() { none() }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        this.getFunction().calleeAndOffset(scope, paramOffset)
+    }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate attributesUnknown() { none() }
+
+}
+
+class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
+
+    override string toString() {
+        result = "staticmethod()"
+    }
+
+    override boolean booleanValue() { result = true }
+
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+        exists(CallableObjectInternal function |
+            this = TStaticMethod(node, function) and
+            static_method(node, function, context)
+        )
+    }
+
+    CallableObjectInternal getFunction() {
+        this = TStaticMethod(_, result)
+    }
+
+    override ClassDecl getClassDeclaration() { none() }
+
+    override boolean isClass() { result = false }
+
+    override ObjectInternal getClass() { result = ObjectInternal::builtin("staticmethod") }
+
+    override boolean isComparable() { none() }
+
+    override Builtin getBuiltin() { none() }
+
+    override ControlFlowNode getOrigin() { this = TStaticMethod(result, _) }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override int intValue() { none() }
+
+    override string strValue() { none() }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        this.getFunction().calleeAndOffset(scope, paramOffset)
+    }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate attributesUnknown() { none() }
+
+}
 
 
 

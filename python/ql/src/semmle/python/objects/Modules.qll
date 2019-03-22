@@ -3,7 +3,7 @@ import python
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
-private import semmle.python.pointsto.PointsToContext2
+private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
 abstract class ModuleObjectInternal extends ObjectInternal {
@@ -12,7 +12,7 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     abstract Module getSourceModule();
 
-    override predicate callResult(PointsToContext2 callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         // Modules aren't callable
         none()
     }
@@ -34,6 +34,10 @@ abstract class ModuleObjectInternal extends ObjectInternal {
         result = true
     }
 
+    override ObjectInternal getClass() {
+        result = ObjectInternal::moduleType()
+    }
+
 }
 
 class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleObject {
@@ -50,16 +54,12 @@ class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleOb
         result = this.getBuiltin().getName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
     override ClassDecl getClassDeclaration() {
         none()
-    }
-
-    override ObjectInternal getClass() {
-        result = TBuiltinClassObject(this.getBuiltin().getClass())
     }
 
     override Module getSourceModule() {
@@ -93,28 +93,24 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         none()
     }
 
-    Folder getFolder() {
-        this = TPackageObject(result)
-    }
-
     override string toString() {
         result = "Package " + this.getName()
+    }
+
+    Folder getFolder() {
+        this = TPackageObject(result)
     }
 
     override string getName() {
         result = moduleNameFromFile(this.getFolder())
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
     override ClassDecl getClassDeclaration() {
         none()
-    }
-
-    override ObjectInternal getClass() {
-        result = TBuiltinClassObject(this.getBuiltin().getClass())
     }
 
     override Module getSourceModule() {
@@ -191,23 +187,19 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
     }
 
     override string toString() {
-        result = "Module " + this.getName()
+        result = this.getSourceModule().toString()
     }
 
     override string getName() {
         result = this.getSourceModule().getName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext2 context) {
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
     override ClassDecl getClassDeclaration() {
         none()
-    }
-
-    override ObjectInternal getClass() {
-        result = TBuiltinClassObject(this.getBuiltin().getClass())
     }
 
     override Module getSourceModule() {
@@ -231,7 +223,7 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
     }
 
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        exists(EssaVariable var, ControlFlowNode exit, PointsToContext2 imp |
+        exists(EssaVariable var, ControlFlowNode exit, PointsToContext imp |
             exit = this.getSourceModule().getANormalExit() and var.getAUse() = exit and
             var.getSourceVariable().getName() = name and
             PointsTo2::ssa_variable_points_to(var, imp, value, origin) and
@@ -241,7 +233,7 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         // TO DO, dollar variable...
         //or
         //not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
-        //exists(EssaVariable var, PointsToContext2 imp |
+        //exists(EssaVariable var, PointsToContext imp |
         //    var.getAUse() = m.getANormalExit() and isModuleStateVariable(var) |
         //    PointsTo2::ssa_variable_named_attribute_points_to(var, imp, name, obj, origin) and
         //    imp.isImport() and obj != ObjectInternal::undefined()
