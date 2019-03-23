@@ -19,6 +19,7 @@
 
 import csharp
 private import ControlFlow
+private import internal.CallableReturns
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.controlflow.Guards as G
@@ -57,7 +58,24 @@ class AlwaysNullExpr extends Expr {
     this.(AssignExpr).getRValue() instanceof AlwaysNullExpr
     or
     this.(Cast).getExpr() instanceof AlwaysNullExpr
+    or
+    this instanceof DefaultValueExpr and this.getType().isRefType()
+    or
+    this = any(Ssa::Definition def |
+        forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nullDef(u))
+      ).getARead()
+    or
+    exists(Callable target |
+      this.(Call).getTarget() = target and
+      not target.(Virtualizable).isVirtual() and
+      alwaysNullCallable(target)
+    )
   }
+}
+
+/** Holds if SSA definition `def` is always `null`. */
+private predicate nullDef(Ssa::ExplicitDefinition def) {
+  def.getADefinition().getSource() instanceof AlwaysNullExpr
 }
 
 /** An expression that is never `null`. */
@@ -69,15 +87,24 @@ class NonNullExpr extends Expr {
     or
     this instanceof G::NullGuardedExpr
     or
-    exists(Ssa::Definition def | nonNullDef(def) | this = def.getARead())
+    this = any(Ssa::Definition def |
+        forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nonNullDef(u))
+      ).getARead()
+    or
+    exists(Callable target |
+      this.(Call).getTarget() = target and
+      not target.(Virtualizable).isVirtual() and
+      alwaysNotNullCallable(target) and
+      not this.(QualifiableExpr).isConditional()
+    )
   }
 }
 
 /** Holds if SSA definition `def` is never `null`. */
-private predicate nonNullDef(Ssa::Definition v) {
-  v.(Ssa::ExplicitDefinition).getADefinition().getSource() instanceof NonNullExpr
+private predicate nonNullDef(Ssa::ExplicitDefinition def) {
+  def.getADefinition().getSource() instanceof NonNullExpr
   or
-  exists(AssignableDefinition ad | ad = v.(Ssa::ExplicitDefinition).getADefinition() |
+  exists(AssignableDefinition ad | ad = def.getADefinition() |
     ad instanceof AssignableDefinitions::IsPatternDefinition
     or
     ad instanceof AssignableDefinitions::TypeCasePatternDefinition

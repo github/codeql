@@ -137,6 +137,6 @@ class TrueFlow extends FlowType, TTrueFlow {
 }
 
 /** False control flow. */
-class FalseFlow extends FlowType, TTrueFlow {
+class FalseFlow extends FlowType, TFalseFlow {
   override string toString() { result = "false" }
 }

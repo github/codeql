@@ -127,6 +127,9 @@ class FloatLiteral extends Literal, @cil_ldc_r { }
 /** An expression that pushes a `null` value onto the stack. */
 class NullLiteral extends Literal, @cil_ldnull { }
 
+/** An expression that pushes a string onto the stack. */
+class StringLiteral extends Literal, @cil_ldstr { }
+
 /** A branch with one operand. */
 class UnaryBranch extends ConditionalBranch, @cil_unary_jump {
   override int getPopCount() { result = 1 }
