@@ -6876,7 +6876,121 @@ ir.cpp:
 # 1027|               Type = int
 # 1027|               Value = 4
 # 1027|               ValueCategory = prvalue
-# 1028|     10: return ...
+# 1028|     10: declaration
+# 1028|       0: definition of lambda_mixed_explicit
+# 1028|           Type = decltype([...](...){...})
+# 1028|         init: initializer for lambda_mixed_explicit
+# 1028|           expr: [...](...){...}
+# 1028|               Type = decltype([...](...){...})
+# 1028|               ValueCategory = prvalue
+# 1028|             0: {...}
+# 1028|                 Type = decltype([...](...){...})
+# 1028|                 ValueCategory = prvalue
+# 1028|               .s: (reference to)
+# 1028|                   Type = const String &
+# 1028|                   ValueCategory = prvalue
+# 1028|                 expr: (reference dereference)
+# 1028|                     Type = const String
+# 1028|                     ValueCategory = lvalue
+# 1028|                   expr: s
+# 1028|                       Type = const String &
+# 1028|                       ValueCategory = prvalue(load)
+# 1028|               .x: x
+# 1028|                   Type = int
+# 1028|                   ValueCategory = prvalue(load)
+# 1029|     11: ExprStmt
+# 1029|       0: call to operator()
+# 1029|           Type = char
+# 1029|           ValueCategory = prvalue
+# 1029|         -1: (const lambda [] type at line 1028, col. 32)...
+# 1029|             Conversion = glvalue conversion
+# 1029|             Type = const lambda [] type at line 1028, col. 32
+# 1029|             ValueCategory = lvalue
+# 1029|           expr: lambda_mixed_explicit
+# 1029|               Type = decltype([...](...){...})
+# 1029|               ValueCategory = lvalue
+# 1029|         0: (float)...
+# 1029|             Conversion = integral to floating point conversion
+# 1029|             Type = float
+# 1029|             Value = 5.0
+# 1029|             ValueCategory = prvalue
+# 1029|           expr: 5
+# 1029|               Type = int
+# 1029|               Value = 5
+# 1029|               ValueCategory = prvalue
+# 1030|     12: declaration
+# 1030|       0: definition of r
+# 1030|           Type = int
+# 1030|         init: initializer for r
+# 1030|           expr: ... - ...
+# 1030|               Type = int
+# 1030|               ValueCategory = prvalue
+# 1030|             0: x
+# 1030|                 Type = int
+# 1030|                 ValueCategory = prvalue(load)
+# 1030|             1: 1
+# 1030|                 Type = int
+# 1030|                 Value = 1
+# 1030|                 ValueCategory = prvalue
+# 1031|     13: declaration
+# 1031|       0: definition of lambda_inits
+# 1031|           Type = decltype([...](...){...})
+# 1031|         init: initializer for lambda_inits
+# 1031|           expr: [...](...){...}
+# 1031|               Type = decltype([...](...){...})
+# 1031|               ValueCategory = prvalue
+# 1031|             0: {...}
+# 1031|                 Type = decltype([...](...){...})
+# 1031|                 ValueCategory = prvalue
+# 1031|               .s: (reference to)
+# 1031|                   Type = const String &
+# 1031|                   ValueCategory = prvalue
+# 1031|                 expr: (reference dereference)
+# 1031|                     Type = const String
+# 1031|                     ValueCategory = lvalue
+# 1031|                   expr: s
+# 1031|                       Type = const String &
+# 1031|                       ValueCategory = prvalue(load)
+# 1031|               .x: x
+# 1031|                   Type = int
+# 1031|                   ValueCategory = prvalue(load)
+# 1031|               .i: ... + ...
+# 1031|                   Type = int
+# 1031|                   ValueCategory = prvalue
+# 1031|                 0: x
+# 1031|                     Type = int
+# 1031|                     ValueCategory = prvalue(load)
+# 1031|                 1: 1
+# 1031|                     Type = int
+# 1031|                     Value = 1
+# 1031|                     ValueCategory = prvalue
+# 1031|               .j: (reference to)
+# 1031|                   Type = int &
+# 1031|                   ValueCategory = prvalue
+# 1031|                 expr: r
+# 1031|                     Type = int
+# 1031|                     ValueCategory = lvalue
+# 1032|     14: ExprStmt
+# 1032|       0: call to operator()
+# 1032|           Type = char
+# 1032|           ValueCategory = prvalue
+# 1032|         -1: (const lambda [] type at line 1031, col. 23)...
+# 1032|             Conversion = glvalue conversion
+# 1032|             Type = const lambda [] type at line 1031, col. 23
+# 1032|             ValueCategory = lvalue
+# 1032|           expr: lambda_inits
+# 1032|               Type = decltype([...](...){...})
+# 1032|               ValueCategory = lvalue
+# 1032|         0: (float)...
+# 1032|             Conversion = integral to floating point conversion
+# 1032|             Type = float
+# 1032|             Value = 6.0
+# 1032|             ValueCategory = prvalue
+# 1032|           expr: 6
+# 1032|               Type = int
+# 1032|               Value = 6
+# 1032|               ValueCategory = prvalue
+# 1033|     15: return ...
 # 1018| (void Lambda(int, String const&))::(lambda [] type at line 1018, col. 23)& (void Lambda(int, String const&))::(lambda [] type at line 1018, col. 23)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1018, col. 23) const&)
 # 1018|   params: 
 #-----|     0: p#0
@@ -7148,3 +7262,148 @@ ir.cpp:
 # 1026|             Type = int
 # 1026|             Value = 0
 # 1026|             ValueCategory = prvalue
+# 1028| (void Lambda(int, String const&))::(lambda [] type at line 1028, col. 32)& (void Lambda(int, String const&))::(lambda [] type at line 1028, col. 32)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1028, col. 32) const&)
+# 1028|   params: 
+#-----|     0: p#0
+#-----|         Type = const lambda [] type at line 1028, col. 32 &
+# 1028| void (void Lambda(int, String const&))::(lambda [] type at line 1028, col. 32)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1028, col. 32) const&)
+# 1028|   params: 
+#-----|     0: p#0
+#-----|         Type = const lambda [] type at line 1028, col. 32 &
+# 1028| void (void Lambda(int, String const&))::(lambda [] type at line 1028, col. 32)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1028, col. 32)&&)
+# 1028|   params: 
+#-----|     0: p#0
+#-----|         Type = lambda [] type at line 1028, col. 32 &&
+# 1028|   initializations: 
+# 1028|     0: constructor init of field s
+# 1028|         Type = const String &
+# 1028|         ValueCategory = prvalue
+# 1028|       0: Unknown literal
+# 1028|           Type = const String &
+# 1028|           ValueCategory = prvalue
+# 1028|     1: constructor init of field x
+# 1028|         Type = int
+# 1028|         ValueCategory = prvalue
+# 1028|       0: Unknown literal
+# 1028|           Type = int
+# 1028|           ValueCategory = prvalue
+# 1028|   body: { ... }
+# 1028|     0: return ...
+# 1028| void (void Lambda(int, String const&))::(lambda [] type at line 1028, col. 32)::(constructor)()
+# 1028|   params: 
+# 1028| char (void Lambda(int, String const&))::(lambda [] type at line 1028, col. 32)::operator()(float) const
+# 1028|   params: 
+# 1028|     0: f
+# 1028|         Type = float
+# 1028|   body: { ... }
+# 1028|     0: return ...
+# 1028|       0: access to array
+# 1028|           Type = char
+# 1028|           ValueCategory = prvalue(load)
+# 1028|         0: call to c_str
+# 1028|             Type = const char *
+# 1028|             ValueCategory = prvalue
+# 1028|           -1: (reference dereference)
+# 1028|               Type = const String
+# 1028|               ValueCategory = lvalue
+#-----|             expr: s
+#-----|                 Type = const String &
+#-----|                 ValueCategory = prvalue(load)
+#-----|               -1: this
+#-----|                   Type = const lambda [] type at line 1028, col. 32 *
+#-----|                   ValueCategory = prvalue(load)
+#-----|         1: x
+#-----|             Type = int
+#-----|             ValueCategory = prvalue(load)
+#-----|           -1: this
+#-----|               Type = const lambda [] type at line 1028, col. 32 *
+#-----|               ValueCategory = prvalue(load)
+# 1031| (void Lambda(int, String const&))::(lambda [] type at line 1031, col. 23)& (void Lambda(int, String const&))::(lambda [] type at line 1031, col. 23)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1031, col. 23) const&)
+# 1031|   params: 
+#-----|     0: p#0
+#-----|         Type = const lambda [] type at line 1031, col. 23 &
+# 1031| void (void Lambda(int, String const&))::(lambda [] type at line 1031, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1031, col. 23) const&)
+# 1031|   params: 
+#-----|     0: p#0
+#-----|         Type = const lambda [] type at line 1031, col. 23 &
+# 1031| void (void Lambda(int, String const&))::(lambda [] type at line 1031, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1031, col. 23)&&)
+# 1031|   params: 
+#-----|     0: p#0
+#-----|         Type = lambda [] type at line 1031, col. 23 &&
+# 1031|   initializations: 
+# 1031|     0: constructor init of field s
+# 1031|         Type = const String &
+# 1031|         ValueCategory = prvalue
+# 1031|       0: Unknown literal
+# 1031|           Type = const String &
+# 1031|           ValueCategory = prvalue
+# 1031|     1: constructor init of field x
+# 1031|         Type = int
+# 1031|         ValueCategory = prvalue
+# 1031|       0: Unknown literal
+# 1031|           Type = int
+# 1031|           ValueCategory = prvalue
+# 1031|     2: constructor init of field i
+# 1031|         Type = int
+# 1031|         ValueCategory = prvalue
+# 1031|       0: Unknown literal
+# 1031|           Type = int
+# 1031|           ValueCategory = prvalue
+# 1031|     3: constructor init of field j
+# 1031|         Type = int &
+# 1031|         ValueCategory = prvalue
+# 1031|       0: Unknown literal
+# 1031|           Type = int &
+# 1031|           ValueCategory = prvalue
+# 1031|   body: { ... }
+# 1031|     0: return ...
+# 1031| void (void Lambda(int, String const&))::(lambda [] type at line 1031, col. 23)::(constructor)()
+# 1031|   params: 
+# 1031| char (void Lambda(int, String const&))::(lambda [] type at line 1031, col. 23)::operator()(float) const
+# 1031|   params: 
+# 1031|     0: f
+# 1031|         Type = float
+# 1031|   body: { ... }
+# 1031|     0: return ...
+# 1031|       0: access to array
+# 1031|           Type = char
+# 1031|           ValueCategory = prvalue(load)
+# 1031|         0: call to c_str
+# 1031|             Type = const char *
+# 1031|             ValueCategory = prvalue
+# 1031|           -1: (reference dereference)
+# 1031|               Type = const String
+# 1031|               ValueCategory = lvalue
+#-----|             expr: s
+#-----|                 Type = const String &
+#-----|                 ValueCategory = prvalue(load)
+#-----|               -1: this
+#-----|                   Type = const lambda [] type at line 1031, col. 23 *
+#-----|                   ValueCategory = prvalue(load)
+# 1031|         1: ... - ...
+# 1031|             Type = int
+# 1031|             ValueCategory = prvalue
+# 1031|           0: ... + ...
+# 1031|               Type = int
+# 1031|               ValueCategory = prvalue
+#-----|             0: x
+#-----|                 Type = int
+#-----|                 ValueCategory = prvalue(load)
+#-----|               -1: this
+#-----|                   Type = const lambda [] type at line 1031, col. 23 *
+#-----|                   ValueCategory = prvalue(load)
+# 1031|             1: i
+# 1031|                 Type = int
+# 1031|                 ValueCategory = prvalue(load)
+#-----|               -1: this
+#-----|                   Type = const lambda [] type at line 1031, col. 23 *
+#-----|                   ValueCategory = prvalue(load)
+# 1031|           1: (reference dereference)
+# 1031|               Type = int
+# 1031|               ValueCategory = prvalue(load)
+# 1031|             expr: j
+# 1031|                 Type = int &
+# 1031|                 ValueCategory = prvalue(load)
+#-----|               -1: this
+#-----|                   Type = const lambda [] type at line 1031, col. 23 *
+#-----|                   ValueCategory = prvalue(load)
