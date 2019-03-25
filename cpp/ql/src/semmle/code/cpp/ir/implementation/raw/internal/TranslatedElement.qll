@@ -270,7 +270,7 @@ newtype TTranslatedElement =
         throw.getExpr().getFullyConverted() = expr
       ) or
       exists(LambdaExpression lambda |
-        lambda.getChild(0).getFullyConverted() = expr
+        lambda.getInitializer().getFullyConverted() = expr
       )
     )
   } or
