@@ -97,7 +97,7 @@ class myClass7Test
 public:
 	myClass7Test()
 	{
-		success = mc7.open(); // GOOD [FALSE POSITIVE]
+		success = mc7.open(); // GOOD
 	}
 
 	~myClass7Test()
