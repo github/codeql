@@ -197,6 +197,23 @@ private predicate amdModuleTopLevel(AMDModuleDefinition def, TopLevel tl) {
 }
 
 /**
+ * An AMD dependency, viewed as an import.
+ */
+private class AmdDependencyImport extends Import {
+  AmdDependencyImport() {
+    this = any(AMDModuleDefinition def).getADependency()
+  }
+
+  override Module getEnclosingModule() {
+    this = result.(AMDModule).getDefine().getADependency()
+  }
+
+  override PathExpr getImportedPath() {
+    result = this
+  }
+}
+
+/**
  * An AMD-style module.
  */
 class AMDModule extends Module {

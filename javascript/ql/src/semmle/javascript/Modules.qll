@@ -92,8 +92,8 @@ abstract class Module extends TopLevel {
 }
 
 /**
- * An import in a module, which may either be an ECMAScript 2015-style
- * `import` statement or a CommonJS-style `require` import.
+ * An import in a module, which may be an ECMAScript 2015-style
+ * `import` statement, a CommonJS-style `require` import, or an AMD dependency.
  */
 abstract class Import extends ASTNode {
   /** Gets the module in which this import appears. */
