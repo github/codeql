@@ -305,8 +305,8 @@ cached module PointsTo2 {
         or
         assignment_points_to(def, context, value, origin)
         //// TO DO...
-        // or
-        // self_parameter_points_to(def, context, value, origin)
+        or
+        self_parameter_points_to(def, context, value, origin)
         or
         delete_points_to(def, context, value, origin)
         or
@@ -342,6 +342,11 @@ cached module PointsTo2 {
     /** Ignore the effects of calls on their arguments. PointsTo is an approximation, but attempting to improve accuracy would be very expensive for very little gain. */
     private predicate argument_points_to(ArgumentRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
         ssa_variable_points_to(def.getInput(), context, value, origin)
+    }
+
+    private predicate self_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+        origin = CfgOrigin::fromCfgNode(def.getDefiningNode()) and
+        value.(SelfInstanceInternal).parameterAndContext(def, context)
     }
 
     /** Holds if ESSA edge refinement, `def`, refers to `(value, cls, origin)`. */

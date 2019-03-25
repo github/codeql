@@ -78,9 +78,10 @@ newtype TObject =
     TSpecificInstance(ControlFlowNode instantiation, ClassObjectInternal cls, PointsToContext context) {
         PointsTo2::points_to(instantiation.(CallNode).getFunction(), context, cls, _) and
         cls.isSpecial() = false
-        or
-        // Self
-        self_parameter(instantiation.getNode(), context, cls)
+    }
+    or
+    TSelfInstance(ParameterDefinition def, PointsToContext context, PythonClassObjectInternal cls) {
+        self_parameter(def, context, cls)
     }
     or
     TBoundMethod(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext context) {
@@ -169,10 +170,10 @@ predicate receiver(AttrNode instantiation, PointsToContext context, ObjectIntern
 
 /** Helper self parameters: `def meth(self, ...): ...`. */
 pragma [noinline]
-private predicate self_parameter(Parameter def, PointsToContext context, PythonClassObjectInternal cls) {
+private predicate self_parameter(ParameterDefinition def, PointsToContext context, PythonClassObjectInternal cls) {
     def.isSelf() and
     exists(Function scope |
-        def.(Name).getScope() = scope and
+        def.getScope() = scope and
         def.isSelf() and
         context.isRuntime() and context.appliesToScope(scope) and
         scope.getScope() = cls.getScope() and
