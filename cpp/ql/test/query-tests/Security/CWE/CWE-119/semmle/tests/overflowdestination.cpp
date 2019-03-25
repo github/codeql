@@ -43,14 +43,14 @@ void overflowdest_test1(FILE *f)
 	fgets(src, 128, f); // GOOD (taints `src`)
 
 	memcpy(dest, src, sizeof(dest)); // GOOD
-	memcpy(dest, src, sizeof(src)); // BAD: size derived from the source buffer
+	memcpy(dest, src, sizeof(src)); // BAD: size derived from the source buffer [NOT REPORTED]
 	memcpy(dest, dest, sizeof(dest)); // GOOD
 }
 
 void overflowdest_test2(FILE *f, char *dest, char *src)
 {
 	memcpy(dest, src, strlen(dest) + 1); // GOOD
-	memcpy(dest, src, strlen(src) + 1); // BAD: size derived from the source buffer
+	memcpy(dest, src, strlen(src) + 1); // BAD: size derived from the source buffer [NOT REPORTED]
 	memcpy(dest, dest, strlen(dest) + 1); // GOOD
 }
 
@@ -61,7 +61,7 @@ void overflowdest_test3(FILE *f, char *dest, char *src)
 	char *src3 = src;
 
 	memcpy(dest2, src2, strlen(dest2) + 1); // GOOD
-	memcpy(dest2, src2, strlen(src2) + 1); // BAD: size derived from the source buffer
+	memcpy(dest2, src2, strlen(src2) + 1); // BAD: size derived from the source buffer [NOT REPORTED]
 	memcpy(dest2, dest2, strlen(dest2) + 1); // GOOD
 }
 
