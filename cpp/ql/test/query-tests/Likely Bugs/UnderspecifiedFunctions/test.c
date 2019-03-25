@@ -24,6 +24,7 @@ void test() {
   declared_empty_defined_with(3.0f, &x); // BAD (type mismatch)
 
   not_declared_defined_with(1.0, 0, 2U); // GOOD (type mismatch)
+  not_declared_defined_with(4LL, 0, 2); // GOOD (type mismatch)
 }
 
 void not_yet_declared1();

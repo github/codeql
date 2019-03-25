@@ -10,6 +10,7 @@
  * @id cpp/too-few-arguments
  * @tags correctness
  *       maintainability
+ *       security
  */
 
 import cpp
