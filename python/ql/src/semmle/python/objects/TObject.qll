@@ -18,6 +18,7 @@ newtype TObject =
     TBuiltinOpaqueObject(Builtin bltn) {
         not bltn.isClass() and not bltn.isFunction() and
         not bltn.isMethod() and not bltn.isModule() and
+        not bltn.getClass() = Builtin::special("tuple") and
         not exists(bltn.intValue()) and
         not exists(bltn.strValue()) and
         not py_special_objects(bltn, _)
@@ -98,6 +99,14 @@ newtype TObject =
     or
     TStaticMethod(CallNode instantiation, CallableObjectInternal function) {
         static_method(instantiation, function, _)
+    }
+    or
+    TBuiltinTuple(Builtin bltn) {
+        bltn.getClass() = Builtin::special("tuple")
+    }
+    or
+    TPythonTuple(TupleNode origin, PointsToContext context) {
+        context.appliesTo(origin)
     }
 
 private predicate is_power_2(int n) {
@@ -254,6 +263,7 @@ library class ClassDecl extends @py_object {
         exists(string name |
             this = Builtin::special(name) |
             not name = "object" and
+            not name = "list" and
             not name = "set" and
             not name.matches("%Exception") and
             not name.matches("%Error")

@@ -9,6 +9,7 @@ import semmle.python.objects.Classes
 import semmle.python.objects.Instances
 import semmle.python.objects.Callables
 import semmle.python.objects.Constants
+import semmle.python.objects.Sequences
 
 class ObjectInternal extends TObject {
 
