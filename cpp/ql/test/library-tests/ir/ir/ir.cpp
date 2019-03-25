@@ -1032,8 +1032,7 @@ void Lambda(int x, const String& s) {
   lambda_inits(6);
 }
 
-/*
-Explicit capture of `this` requires possible extractor fixes.
+#if 0  // Explicit capture of `this` requires possible extractor fixes.
 
 struct LambdaContainer {
   int x;
@@ -1047,6 +1046,7 @@ struct LambdaContainer {
     lambda_explicit_this_bycopy(3);
   }
 };
-*/
+
+#endif
 
 // semmle-extractor-options: -std=c++17
