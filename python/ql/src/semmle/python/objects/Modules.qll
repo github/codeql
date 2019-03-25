@@ -3,6 +3,7 @@ import python
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.MRO2
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
@@ -38,6 +39,12 @@ abstract class ModuleObjectInternal extends ObjectInternal {
         result = ObjectInternal::moduleType()
     }
 
+    override boolean isDescriptor() { result = false }
+
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 }
 
 class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleObject {

@@ -38,12 +38,16 @@ abstract class CallableObjectInternal extends ObjectInternal {
 
     override predicate attributesUnknown() { none() }
 
+    abstract Function getScope();
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
 }
 
 
 class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFunctionObject {
 
-    Function getScope() {
+    override Function getScope() {
         exists(CallableExpr expr |
             this = TPythonFunctionObject(expr.getAFlowNode()) and
             result = expr.getInnerScope()
@@ -51,7 +55,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
     }
 
     override string toString() {
-        result = this.getScope().toString()
+        result = "Function " + this.getScope().getQualifiedName()
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext context) {
@@ -101,6 +105,12 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
 
     override string getName() {
         result = this.getScope().getName()
+    }
+
+    override boolean isDescriptor() { result = true }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
+        value = TBoundMethod(instance, this) and origin = CfgOrigin::unknown()
     }
 
 }
@@ -176,6 +186,13 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
         )
     }
 
+    override Function getScope() { none() }
+
+    override boolean isDescriptor() { result = false }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+
 }
 
 
@@ -218,6 +235,19 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
         result = this.getBuiltin().getName()
     }
 
+    override Function getScope() { none() }
+
+    override boolean isDescriptor() { result = true }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
+        instance.isClass() = false and
+        value = TBoundMethod(instance, this) and origin = CfgOrigin::unknown()
+        or
+        any(ObjectInternal obj).binds(instance, _, this) and
+        instance.isClass() = true and 
+        value = this and origin = CfgOrigin::unknown()
+    }
+
 }
 
 class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
@@ -227,15 +257,15 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     }
 
     CallableObjectInternal getFunction() {
-        this = TBoundMethod(_, _, result, _)
+        this = TBoundMethod(_, result)
     }
 
     ObjectInternal getSelf() {
-        this = TBoundMethod(_, result, _, _)
+        this = TBoundMethod(result, _)
     }
 
     override string toString() {
-        result = "bound method '" + this.getFunction().getName() + "' of " + this.getSelf().toString()
+        result = "Method(" + this.getFunction() + ", " + this.getSelf() + ")"
     }
 
     override ObjectInternal getClass() {
@@ -243,7 +273,7 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext context) {
-        this = TBoundMethod(node, _, _, context)
+        none()
     }
 
     override boolean isComparable() { result = false }
@@ -253,7 +283,7 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        none()
+        this.getFunction().callResult(obj, origin)
     }
 
     override ControlFlowNode getOrigin() {
@@ -267,6 +297,15 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     override string getName() {
         result = this.getFunction().getName()
     }
+
+
+    override Function getScope() { 
+        result = this.getFunction().getScope()
+    }
+
+    override boolean isDescriptor() { result = false }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
 }
 
@@ -317,6 +356,22 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override predicate attributesUnknown() { none() }
 
+    override boolean isDescriptor() { result = true }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
+        any(ObjectInternal obj).binds(instance, _, this) and
+        (
+            instance.isClass() = false and
+            value = TBoundMethod(instance.getClass(), this.getFunction())
+            or
+            instance.isClass() = true and
+            value = TBoundMethod(instance, this.getFunction())
+        ) and
+        origin = CfgOrigin::unknown()
+    }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
 }
 
 class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
@@ -365,6 +420,15 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
     override predicate attributesUnknown() { none() }
+
+    override boolean isDescriptor() { result = true }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
+        any(ObjectInternal obj).binds(instance, _, this) and
+        value = this.getFunction() and origin = CfgOrigin::unknown()
+    }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
 }
 

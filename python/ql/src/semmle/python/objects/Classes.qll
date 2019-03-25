@@ -33,6 +33,17 @@ abstract class ClassObjectInternal extends ObjectInternal {
         result = Types::getMro(this).isSpecial()
     }
 
+    override boolean isDescriptor() { result = false }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+        instance = this and
+        PointsTo2::attributeRequired(this, name) and
+        this.attribute(name, descriptor, _) and
+        descriptor.isDescriptor() = true
+    }
+
 }
 
 class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject {

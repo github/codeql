@@ -169,10 +169,10 @@ class PointsToContext extends TPointsToContext {
         this = TRuntimeContext() and executes_in_runtime_context(s)
         or
         /* Called functions, regardless of their name */
-        exists(PythonFunctionObjectInternal func, ControlFlowNode call, TPointsToContext outerContext |
-            call = PointsTo2::get_a_call(func, outerContext) and
-            this = TCallContext(call, outerContext, _) and
-            s = func.getScope()
+        exists(CallableObjectInternal callable, ControlFlowNode call, TPointsToContext outerContext |
+            call = PointsTo2::get_a_call(callable, outerContext) and
+            this = TCallContext(call, outerContext, _) |
+            s = callable.getScope()
         )
         or
         InterProceduralPointsTo::callsite_calls_function(_, _, s, this, _)

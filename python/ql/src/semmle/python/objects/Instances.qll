@@ -4,6 +4,7 @@ import python
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.MRO2
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
@@ -76,17 +77,43 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
     }
 
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        none()
+        PointsTo2::attributeRequired(this, name) and
+        instance_getattr(this, Types::getMro(this.getClass()), name, value, origin)
     }
 
     override predicate attributesUnknown() { any() }
 
+    override boolean isDescriptor() { result = false }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+        this = instance and descriptor.isDescriptor() = true and
+        exists(AttrNode attr |
+            PointsTo2::points_to(attr.getObject(name), _, instance, _) and
+            this.getClass().attribute(name, descriptor, _)
+        )
+    }
+
 }
+
+bindingset[instance, mro, name]
+predicate instance_getattr(ObjectInternal instance, ClassList mro, string name, ObjectInternal value, CfgOrigin origin) {
+    exists(ObjectInternal descriptor, CfgOrigin desc_origin |
+        Types::declaredAttribute(mro.findDeclaringClass(name), name, descriptor, desc_origin) |
+        descriptor.isDescriptor() = false and
+        value = descriptor and origin = desc_origin
+        or
+        descriptor.isDescriptor() = true and
+        descriptor.descriptorGet(instance, value, origin)
+    )
+}
+
 
 class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
 
     override string toString() {
-        result = "self"
+        result = "self instance of " + this.getClass().(ClassObjectInternal).getName()
     }
 
     /** The boolean value of this object, if it has one */
@@ -159,10 +186,24 @@ class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
     }
 
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        none()
+        PointsTo2::attributeRequired(this, name) and
+        instance_getattr(this, Types::getMro(this.getClass()), name, value, origin)
     }
 
     override predicate attributesUnknown() { any() }
+
+    override boolean isDescriptor() { result = false }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+        descriptor.isDescriptor() = true and
+        this = instance and
+        exists(AttrNode attr |
+            PointsTo2::points_to(attr.getObject(name), _, this, _) and
+            this.getClass().attribute(name, descriptor, _)
+        )
+    }
 
 }
 
@@ -238,10 +279,24 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
     }
 
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        none()
+        PointsTo2::attributeRequired(this, name) and
+        instance_getattr(this, Types::getMro(this.getClass()), name, value, origin)
     }
 
     override predicate attributesUnknown() { any() }
+
+    override boolean isDescriptor() { result = false }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+        descriptor.isDescriptor() = true and
+        this = instance and
+        exists(AttrNode attr |
+            PointsTo2::points_to(attr.getObject(name), _, this, _) and
+            this.getClass().attribute(name, descriptor, _)
+        )
+    }
 
 }
 
@@ -249,7 +304,7 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 class SuperInstance extends TSuperInstance, ObjectInternal {
 
     override string toString() {
-        result = "super()"
+        result = "super(" + this.getStartClass().toString() + ", " + this.getSelf().toString() + ")"
     }
 
     override boolean booleanValue() { result = true }
@@ -295,12 +350,29 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
 
     override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
-
     override predicate attributesUnknown() { none() }
 
+    override boolean isDescriptor() { result = false }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        PointsTo2::attributeRequired(this, name) and
+        instance_getattr(this.getSelf(), this.getMro(), name, value, origin)
+    }
+
+    private ClassList getMro() {
+        result = Types::getMro(this.getSelf().getClass()).startingAt(this.getStartClass()).getTail()
+    }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+        descriptor.isDescriptor() = true and
+        exists(AttrNode attr |
+            PointsTo2::points_to(attr.getObject(name), _, this, _) and
+            instance = this.getSelf() and
+            Types::declaredAttribute(this.getMro().findDeclaringClass(name), name, descriptor, _)
+        )
+    }
+
 }
-
-
-
 

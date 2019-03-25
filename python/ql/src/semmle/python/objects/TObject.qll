@@ -88,11 +88,12 @@ newtype TObject =
         self_parameter(def, context, cls)
     }
     or
-    TBoundMethod(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext context) {
-        method_binding(instantiation, self, function, context)
+    TBoundMethod(ObjectInternal self, CallableObjectInternal function) {
+        any(ObjectInternal obj).binds(self, _, function) and
+        function.isDescriptor() = true
     }
     or
-    TUnknownInstance(BuiltinClassObjectInternal cls) { any() }
+    TUnknownInstance(BuiltinClassObjectInternal cls) { cls != ObjectInternal::builtin("super") }
     or
     TSuperInstance(ObjectInternal self, ClassObjectInternal startclass) {
         super_instantiation(_, self, startclass, _)
@@ -162,7 +163,10 @@ predicate super_instantiation(CallNode instantiation, ObjectInternal self, Class
     )
 }
 
+
+bindingset[self, function]
 predicate method_binding(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext context) {
+    
     exists(ObjectInternal obj, string name |
         receiver(instantiation, context, obj, name) |
         exists(ObjectInternal cls |
@@ -172,9 +176,10 @@ predicate method_binding(AttrNode instantiation, ObjectInternal self, CallableOb
             self = obj
         )
         or
-        exists(SuperInstance sup |
+        exists(SuperInstance sup, ClassObjectInternal decl |
             sup = obj and
-            sup.getStartClass().attribute(name, function, _) and
+            decl = Types::getMro(self.getClass()).startingAt(sup.getStartClass()).findDeclaringClass(name) and
+            Types::declaredAttribute(decl, name, function, _) and
             self = sup.getSelf()
         )
     )
@@ -283,6 +288,7 @@ library class ClassDecl extends @py_object {
         exists(string name |
             this = Builtin::special(name) |
             name = "type" or
+            name = "super" or
             name = "bool" or
             name = "NoneType" or
             name = "int" or

@@ -129,6 +129,18 @@ cached module PointsTo2 {
         // f.(CustomPointsToFact).pointsTo(context, value, origin)
     }
 
+    /** Holds if the attribute `name` is required for `obj` */
+    cached predicate attributeRequired(ObjectInternal obj, string name) {
+        points_to(any(AttrNode a).getObject(name), _, obj, _)
+        or
+        exists(CallNode call, PointsToContext ctx, StringObjectInternal nameobj |
+            points_to(call.getFunction(), ctx, ObjectInternal::builtin("getattr"), _) and
+            points_to(call.getArg(0), ctx, obj, _) and
+            points_to(call.getArg(1), ctx, nameobj, _) and
+            nameobj.strValue() = name
+        )
+    }
+
     cached CallNode get_a_call(ObjectInternal func, PointsToContext context) {
         points_to(result.getFunction(), context, func, _)
     }
@@ -261,14 +273,13 @@ cached module PointsTo2 {
     /** Holds if `f` is an attribute `x.attr` and points to `(value, cls, origin)`. */
     pragma [noinline]
     private predicate attribute_load_points_to(AttrNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        f.isLoad() and
         exists(ObjectInternal object, string name, CfgOrigin orig |
             points_to(f.getObject(name), context, object, _) |
             object.attribute(name, value, orig) and
             origin = orig.fix(f)
-        )
-        or
-        exists(ObjectInternal object |
-            points_to(f.getObject(), context, object, _) and
+            or
+            object.attributesUnknown() and
             origin = f and value = ObjectInternal::unknown()
         )
         // TO DO -- Support CustomPointsToAttribute

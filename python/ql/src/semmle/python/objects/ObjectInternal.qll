@@ -2,6 +2,7 @@ import python
 
 private import semmle.python.objects.TObject
 private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.MRO2
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 import semmle.python.objects.Modules
@@ -86,6 +87,16 @@ class ObjectInternal extends TObject {
         result = this.getBuiltin()
     }
 
+    abstract boolean isDescriptor();
+
+    abstract predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin);
+
+    /** Holds if attribute lookup on this object may "bind" `instance` to `descriptor`.
+     * Here "bind" means that `instance` is passed to the `descriptor.__get__()` method
+     * at runtime. The term "bind" is used as this most likely results in a bound-method.
+     */
+    abstract predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor);
+
 }
 
 
@@ -151,6 +162,12 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
 
     override predicate attributesUnknown() { none() }
 
+    override boolean isDescriptor() { result = false }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
 }
 
 
@@ -213,6 +230,12 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     }
 
     override predicate attributesUnknown() { any() }
+
+    override boolean isDescriptor() { result = false }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
 }
 
@@ -277,6 +300,12 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     }
 
     override predicate attributesUnknown() { none() }
+
+    override boolean isDescriptor() { none() }
+
+    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
 }
 

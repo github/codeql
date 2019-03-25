@@ -59,7 +59,7 @@ abstract class FunctionObject extends Object {
 
     /** Gets a call-site from where this function is called */
     ControlFlowNode getACall() {
-        result = PointsTo2::get_a_call(theCallable(), _)
+        result = theCallable().getACall()
     }
 
     /** Gets a call-site from where this function is called, given the `context` */
