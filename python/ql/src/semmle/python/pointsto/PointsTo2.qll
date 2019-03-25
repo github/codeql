@@ -166,7 +166,7 @@ cached module PointsTo2 {
     /* Holds if the edge `pred` -> `succ` is reachable, given the context `context`.
      */
     pragma [noopt]
-    private predicate controlledReachableEdge(BasicBlock pred, BasicBlock succ, PointsToContext context) {
+    cached predicate controlledReachableEdge(BasicBlock pred, BasicBlock succ, PointsToContext context) {
         exists(ConditionBlock guard, ObjectInternal value, boolean sense, ControlFlowNode test |
             test = guard.getLastNode() and
             points_to(test, context, value, _) and

@@ -6,7 +6,8 @@ private import semmle.python.types.Builtins
 private cached predicate is_an_object(@py_object obj) {
     /* CFG nodes for numeric literals, all of which have a @py_cobject for the value of that literal */
     obj instanceof ControlFlowNode and
-    not obj.(ControlFlowNode).getNode() instanceof ImmutableLiteral
+    not obj.(ControlFlowNode).getNode() instanceof IntegerLiteral and
+    not obj.(ControlFlowNode).getNode() instanceof StrConst
     or
     obj instanceof Builtin
 }

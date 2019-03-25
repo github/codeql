@@ -80,6 +80,8 @@ newtype TObject =
     TSpecificInstance(ControlFlowNode instantiation, ClassObjectInternal cls, PointsToContext context) {
         PointsTo2::points_to(instantiation.(CallNode).getFunction(), context, cls, _) and
         cls.isSpecial() = false
+        or
+        literal_instantiation(instantiation, cls, context)
     }
     or
     TSelfInstance(ParameterDefinition def, PointsToContext context, PythonClassObjectInternal cls) {
@@ -127,6 +129,19 @@ predicate static_method(CallNode instantiation, CallableObjectInternal function,
 predicate class_method(CallNode instantiation, CallableObjectInternal function, PointsToContext context) {
     PointsTo2::points_to(instantiation.getFunction(), context, ObjectInternal::builtin("classmethod"), _) and
     PointsTo2::points_to(instantiation.getArg(0), context, function, _)
+}
+
+predicate literal_instantiation(ControlFlowNode n, ClassObjectInternal cls, PointsToContext context) {
+    context.appliesTo(n) and
+    (
+        n instanceof ListNode and cls = ObjectInternal::builtin("list")
+        or
+        n instanceof DictNode and cls = ObjectInternal::builtin("dict")
+        or
+        n.getNode() instanceof FloatLiteral and cls = ObjectInternal::builtin("float")
+        or
+        n.getNode() instanceof ImaginaryLiteral and cls = ObjectInternal::builtin("complex")
+    )
 }
 
 predicate super_instantiation(CallNode instantiation, ObjectInternal self, ClassObjectInternal startclass, PointsToContext context) {
@@ -267,12 +282,20 @@ library class ClassDecl extends @py_object {
     predicate isSpecial() {
         exists(string name |
             this = Builtin::special(name) |
-            not name = "object" and
-            not name = "list" and
-            not name = "set" and
-            not name = "dict" and
-            not name.matches("%Exception") and
-            not name.matches("%Error")
+            name = "type" or
+            name = "bool" or
+            name = "NoneType" or
+            name = "int" or
+            name = "long" or
+            name = "str" or
+            name = "bytes" or
+            name = "unicode" or
+            name = "tuple" or
+            name = "property" or
+            name = "classmethod" or
+            name = "staticmethod" or
+            name = "MethodType" or
+            name = "ModuleType"
         )
     }
 
