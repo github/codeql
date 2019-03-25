@@ -472,12 +472,12 @@ module ModuleImportNode {
       )
       or
       // declared AMD dependency
-      exists(AMDModuleDefinition amd |
+      exists(AmdModuleDefinition amd |
         this = DataFlow::parameterNode(amd.getDependencyParameter(path))
       )
       or
       // AMD require
-      exists(AMDModuleDefinition amd, CallExpr req |
+      exists(AmdModuleDefinition amd, CallExpr req |
         req = amd.getARequireCall() and
         this = DataFlow::valueNode(req) and
         path = req.getArgument(0).(ConstantString).getStringValue()

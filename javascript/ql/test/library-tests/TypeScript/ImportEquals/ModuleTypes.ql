@@ -10,7 +10,7 @@ string getModuleType(TopLevel top) {
   top instanceof ES2015Module and
   result = "es2015"
   or
-  top instanceof AMDModule and
+  top instanceof AmdModule and
   result = "amd"
 }
 

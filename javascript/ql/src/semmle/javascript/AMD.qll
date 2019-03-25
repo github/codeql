@@ -23,8 +23,8 @@ import javascript
  * where the first argument is the module name, the second argument an
  * array of dependencies, and the third argument a factory method or object.
  */
-class AMDModuleDefinition extends CallExpr {
-  AMDModuleDefinition() {
+class AmdModuleDefinition extends CallExpr {
+  AmdModuleDefinition() {
     getParent() instanceof ExprStmt and
     getCallee().(GlobalVarAccess).getName() = "define" and
     exists(int n | n = getNumArgument() |
@@ -153,7 +153,7 @@ class AMDModuleDefinition extends CallExpr {
     result = getModuleExpr().analyze().getAValue()
     or
     // explicit exports: anything assigned to `module.exports`
-    exists(AbstractProperty moduleExports, AMDModule m |
+    exists(AbstractProperty moduleExports, AmdModule m |
       this = m.getDefine() and
       moduleExports.getBase().(AbstractModuleObject).getModule() = m and
       moduleExports.getPropertyName() = "exports"
@@ -170,10 +170,15 @@ class AMDModuleDefinition extends CallExpr {
   }
 }
 
+/**
+ * DEPRECATED: Use `AmdModuleDefinition` instead.
+ */
+deprecated class AMDModuleDefinition = AmdModuleDefinition;
+
 /** An AMD dependency, considered as a path expression. */
 private class AmdDependencyPath extends PathExprCandidate {
   AmdDependencyPath() {
-    exists(AMDModuleDefinition amd |
+    exists(AmdModuleDefinition amd |
       this = amd.getDependencies().getAnElement() or
       this = amd.getARequireCall().getAnArgument()
     )
@@ -191,9 +196,9 @@ private class ConstantAmdDependencyPathElement extends PathExprInModule, Constan
  * Holds if `def` is an AMD module definition in `tl` which is not
  * nested inside another module definition.
  */
-private predicate amdModuleTopLevel(AMDModuleDefinition def, TopLevel tl) {
+private predicate amdModuleTopLevel(AmdModuleDefinition def, TopLevel tl) {
   def.getTopLevel() = tl and
-  not def.getParent+() instanceof AMDModuleDefinition
+  not def.getParent+() instanceof AmdModuleDefinition
 }
 
 /**
@@ -201,11 +206,11 @@ private predicate amdModuleTopLevel(AMDModuleDefinition def, TopLevel tl) {
  */
 private class AmdDependencyImport extends Import {
   AmdDependencyImport() {
-    this = any(AMDModuleDefinition def).getADependency()
+    this = any(AmdModuleDefinition def).getADependency()
   }
 
   override Module getEnclosingModule() {
-    this = result.(AMDModule).getDefine().getADependency()
+    this = result.(AmdModule).getDefine().getADependency()
   }
 
   override PathExpr getImportedPath() {
@@ -216,11 +221,11 @@ private class AmdDependencyImport extends Import {
 /**
  * An AMD-style module.
  */
-class AMDModule extends Module {
-  AMDModule() { strictcount(AMDModuleDefinition def | amdModuleTopLevel(def, this)) = 1 }
+class AmdModule extends Module {
+  AmdModule() { strictcount(AmdModuleDefinition def | amdModuleTopLevel(def, this)) = 1 }
 
   /** Gets the definition of this module. */
-  AMDModuleDefinition getDefine() { amdModuleTopLevel(result, this) }
+  AmdModuleDefinition getDefine() { amdModuleTopLevel(result, this) }
 
   override predicate exports(string name, ASTNode export) {
     exists(DataFlow::PropWrite pwn | export = pwn.getAstNode() |
@@ -229,3 +234,8 @@ class AMDModule extends Module {
     )
   }
 }
+
+/**
+ * DEPRECATED: Use `AmdModule` instead.
+ */
+deprecated class AMDModule = AmdModule;

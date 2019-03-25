@@ -1,4 +1,4 @@
 import javascript
 
-from AMDModuleDefinition d
+from AmdModuleDefinition d
 select d, d.getFactoryNode()
