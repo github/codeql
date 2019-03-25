@@ -221,3 +221,64 @@ class PreprocessorPragma extends PreprocessorDirective, @ppd_pragma {
 class PreprocessorLine extends PreprocessorDirective, @ppd_line {
   override string toString() { result = "#line " + this.getHead() }
 }
+
+/**
+ * Holds if the preprocessor branch `pbd` is on line `pbdStartLine` in file `file`.
+ */
+private predicate pbdLocation(PreprocessorBranchDirective pbd, string file, int pbdStartLine) {
+  pbd.getLocation().hasLocationInfo(file, pbdStartLine, _, _, _)
+}
+
+/**
+ * Holds if the body of the function `f` is on lines `fBlockStartLine` to `fBlockEndLine` in file `file`.
+ */
+private predicate functionLocation(Function f, string file, int fBlockStartLine, int fBlockEndLine) {
+  f.getBlock().getLocation().hasLocationInfo(file, fBlockStartLine, _, fBlockEndLine, _)
+}
+
+/**
+ * Holds if the function `f` is inside a preprocessor branch that may have code in another arm.
+ */
+predicate definedInIfDef(Function f) {
+  exists(PreprocessorBranchDirective pbd, string file, int pbdStartLine, int pbdEndLine, int fBlockStartLine,
+      int fBlockEndLine  |
+    functionLocation(f, file, fBlockStartLine, fBlockEndLine) and
+    pbdLocation(pbd, file, pbdStartLine) and
+    pbdLocation(pbd.getNext(), file, pbdEndLine) and
+    pbdStartLine <= fBlockStartLine and
+    pbdEndLine >= fBlockEndLine and
+    // pbd is a preprocessor branch where multiple branches exist
+    (
+      pbd.getNext() instanceof PreprocessorElse or
+      pbd instanceof PreprocessorElse or
+      pbd.getNext() instanceof PreprocessorElif or
+      pbd instanceof PreprocessorElif
+    )
+  )
+}
+
+/**
+ * Holds if the function `f`, or a function called by it, contains
+ * code excluded by the preprocessor.
+ */
+predicate containsDisabledCode(Function f) {
+  // `f` contains a preprocessor branch that was not taken
+  exists(PreprocessorBranchDirective pbd, string file, int pbdStartLine, int fBlockStartLine, int fBlockEndLine |
+      functionLocation(f, file, fBlockStartLine, fBlockEndLine) and
+    pbdLocation(pbd, file, pbdStartLine) and
+    pbdStartLine <= fBlockEndLine and
+    pbdStartLine >= fBlockStartLine and
+    (
+      pbd.(PreprocessorBranch).wasNotTaken() or
+
+      // an else either was not taken, or it's corresponding branch
+      // was not taken.
+      pbd instanceof PreprocessorElse
+    )
+  ) or
+  // recurse into function calls
+  exists(FunctionCall fc |
+    fc.getEnclosingFunction() = f and
+    containsDisabledCode(fc.getTarget())
+  )
+}
