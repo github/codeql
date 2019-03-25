@@ -216,6 +216,59 @@ private class AmdDependencyImport extends Import {
   override PathExpr getImportedPath() {
     result = this
   }
+ 
+  /**
+   * Gets a file that looks like it might be the target of this import.
+   *
+   * Specifically, we look for files whose absolute path ends with the imported path, possibly
+   * adding well-known JavaScript file extensions like `.js`.
+   */
+  private File guessTarget() {
+    exists(PathString imported, string abspath, string dirname, string basename |
+      targetCandidate(result, abspath, imported, dirname, basename)
+    |
+      abspath.regexpMatch(".*/\\Q" + imported + "\\E")
+      or
+      exists(Folder dir |
+        // `dir` ends with the dirname of the imported path
+        dir.getAbsolutePath().regexpMatch(".*/\\Q" + dirname + "\\E") or
+        dirname = ""
+      |
+        result = dir.getJavaScriptFile(basename)
+      )
+    )
+  }
+
+  /**
+   * Holds if `f` is a file whose stem (that is, basename without extension) matches the imported path.
+   *
+   * Additionally, `abspath` is bound to the absolute path of `f`, `imported` to the imported path, and
+   * `dirname` and `basename` to the dirname and basename (respectively) of `imported`.
+   */
+  private predicate targetCandidate(
+    File f, string abspath, PathString imported, string dirname, string basename
+  ) {
+   imported = getImportedPath().getValue() and
+    f.getStem() = imported.getStem() and
+    f.getAbsolutePath() = abspath and
+    dirname = imported.getDirName() and
+    basename = imported.getBaseName()
+  }
+
+  /**
+   * Gets the module whose absolute path matches this import, if there is only a single such module.
+   */
+  private Module resolveByAbsolutePath() {
+    count(guessTarget()) = 1 and
+    result.getFile() = guessTarget()
+  }
+
+  override Module getImportedModule() {
+    result = super.getImportedModule()
+    or
+    not exists(super.getImportedModule()) and
+    result = resolveByAbsolutePath()
+  }
 }
 
 /**

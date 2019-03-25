@@ -1,4 +1,5 @@
 import javascript
 
-from AmdModule m
-select m, m.getAnImportedModule()
+from AmdModule m, Import i
+where i = m.getAnImport()
+select m, i, i.getImportedModule()
