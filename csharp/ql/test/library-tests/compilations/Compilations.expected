@@ -1,8 +1,9 @@
-diags
-| Program.cs:1:1:1:13 | Unnecessary using directive | CS8019 | 0 | Unnecessary using directive | Unnecessary using directive. |
-| Program.cs:7:13:7:13 | Variable is assigned but its value is never used | CS0219 | 2 | Variable is assigned but its value is never used | The variable 'x' is assigned but its value is never used |
-| Program.cs:9:9:9:11 | Unreachable code detected | CS0162 | 2 | Unreachable code detected | Unreachable code detected |
-| Program.cs:9:13:9:13 | Variable is assigned but its value is never used | CS0219 | 2 | Variable is assigned but its value is never used | The variable 'y' is assigned but its value is never used |
+diagnostics
+| Program.cs:1:1:1:13 | CS8019: Unnecessary using directive. | CS8019 | 0 | Unnecessary using directive | Unnecessary using directive. |
+| Program.cs:7:13:7:13 | CS0219: The variable 'x' is assigned but its value is never used | CS0219 | 2 | Variable is assigned but its value is never used | The variable 'x' is assigned but its value is never used |
+| Program.cs:9:9:9:11 | CS0162: Unreachable code detected | CS0162 | 2 | Unreachable code detected | Unreachable code detected |
+| Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | CS0219 | 2 | Variable is assigned but its value is never used | The variable 'y' is assigned but its value is never used |
+compilationErrors
 metricTests
 | compilation | Test passed |
 compilation
@@ -24,3 +25,9 @@ compilationFiles
 | compilation | 0 | Program.cs:0:0:0:0 | Program.cs |
 compilationFolder
 | compilation | folder://compilations | compilations |
+diagnosticElements
+| Program.cs:1:1:1:13 | CS8019: Unnecessary using directive. | Program.cs:1:1:1:13 | using ...; |
+| Program.cs:7:13:7:13 | CS0219: The variable 'x' is assigned but its value is never used | Program.cs:7:13:7:13 | access to local variable x |
+| Program.cs:7:13:7:13 | CS0219: The variable 'x' is assigned but its value is never used | Program.cs:7:13:7:13 | x |
+| Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | Program.cs:9:13:9:13 | access to local variable y |
+| Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | Program.cs:9:13:9:13 | y |

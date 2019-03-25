@@ -94,7 +94,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     case VarianceKind.Out: return Variance.Out;
                     case VarianceKind.In: return Variance.In;
                     default:
-                        throw new InternalError("Unexpected VarianceKind {0}", symbol.Variance);
+                        throw new InternalError($"Unexpected VarianceKind {symbol.Variance}");
                 }
             }
         }
@@ -116,7 +116,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         containingEntity = Create(Context, symbol.ContainingType);
                         break;
                     default:
-                        throw new InternalError(symbol, "Unhandled type parameter kind {0}", symbol.TypeParameterKind);
+                        throw new InternalError(symbol, $"Unhandled type parameter kind {symbol.TypeParameterKind}");
                 }
                 return new Key(containingEntity, "_", symbol.Ordinal, ";", kind);
             }

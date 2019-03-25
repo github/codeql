@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         new Expression(new ExpressionInfo(cx, Type, cx.Create(c.GetLocation()), ExprKind.STRING_LITERAL, this, child++, false, interpolatedText.TextToken.Text));
                         break;
                     default:
-                        throw new InternalError(c, "Unhandled interpolation kind {0}", c.Kind());
+                        throw new InternalError(c, $"Unhandled interpolation kind {c.Kind()}");
                 }
             }
         }

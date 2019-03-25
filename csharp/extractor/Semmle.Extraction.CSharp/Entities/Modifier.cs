@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     HasModifier(cx, type, "private");
                     break;
                 default:
-                    throw new InternalError("Unhandled Microsoft.CodeAnalysis.Accessibility value: {0}", access);
+                    throw new InternalError($"Unhandled Microsoft.CodeAnalysis.Accessibility value: {access}");
             }
         }
 

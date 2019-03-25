@@ -1,6 +1,6 @@
-using Semmle.Util.Logging;
 using Microsoft.CodeAnalysis;
 using System;
+using System.Linq;
 
 namespace Semmle.Extraction
 {
@@ -9,26 +9,31 @@ namespace Semmle.Extraction
     /// </summary>
     public class InternalError : Exception
     {
-        public InternalError(ISymbol symbol, string msg, params object[] args)
+        public InternalError(ISymbol symbol, string msg)
         {
-            ExtractionMessage = new Message { exception = this, symbol = symbol, severity = Severity.Error, message = string.Format(msg, args) };
+            Text = msg;
+            EntityText = symbol.ToString();
+            Location = symbol.Locations.FirstOrDefault();
         }
 
-        public InternalError(SyntaxNode node, string msg, params object[] args)
+        public InternalError(SyntaxNode node, string msg)
         {
-            ExtractionMessage = new Message { exception = this, node = node, severity = Severity.Error, message = string.Format(msg, args) };
+            Text = msg;
+            EntityText = node.ToString();
+            Location = node.GetLocation();
         }
 
-        public InternalError(string msg, params object[] args)
+        public InternalError(string msg)
         {
-            ExtractionMessage = new Message { exception = this, severity = Severity.Error, message = string.Format(msg, args) };
+            Text = msg;
+            EntityText = "";
+            Location = null;
         }
 
-        public Message ExtractionMessage
-        {
-            get; private set;
-        }
+        public Location Location { get; }
+        public string Text;
+        public string EntityText;
 
-        public override string Message => ExtractionMessage.message;
+        public override string Message => Text;
     }
 }

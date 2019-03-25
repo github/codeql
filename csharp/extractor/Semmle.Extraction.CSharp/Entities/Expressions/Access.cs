@@ -34,7 +34,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return ExprKind.PARAMETER_ACCESS;
 
                 default:
-                    cx.ModelError(symbol, "Unhandled access kind '{0}'", symbol.Kind);
+                    cx.ModelError(symbol, $"Unhandled access kind '{symbol.Kind}'");
                     return ExprKind.UNKNOWN;
             }
         }

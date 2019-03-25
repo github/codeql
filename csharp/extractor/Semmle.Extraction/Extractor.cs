@@ -132,7 +132,7 @@ namespace Semmle.Extraction
             lock (mutex)
             {
 
-                if (msg.severity == Severity.Error)
+                if (msg.Severity == Severity.Error)
                 {
                     ++Errors;
                     if (Errors == maxErrors)
@@ -146,24 +146,7 @@ namespace Semmle.Extraction
                     return;
                 }
 
-                Logger.Log(msg.severity, "  {0}", msg.message);
-
-                if (msg.node != null)
-                {
-                    Logger.Log(msg.severity, "    Syntax element '{0}' at {1}", msg.node, msg.node.GetLocation().GetLineSpan());
-                }
-
-                if (msg.symbol != null)
-                {
-                    Logger.Log(msg.severity, "    Symbol '{0}'", msg.symbol);
-                    foreach (var l in msg.symbol.Locations)
-                        Logger.Log(msg.severity, "    Location: {0}", l.IsInSource ? l.GetLineSpan().ToString() : l.MetadataModule.ToString());
-                }
-
-                if (msg.exception != null)
-                {
-                    Logger.Log(msg.severity, "    Exception: {0}", msg.exception);
-                }
+                Logger.Log(msg.Severity, $"  {msg.ToLogString()}");
             }
         }
 

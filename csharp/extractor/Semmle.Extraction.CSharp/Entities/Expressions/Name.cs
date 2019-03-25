@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return Access.Create(info, target, false, Parameter.GetAlreadyCreated(info.Context, (IParameterSymbol)target));
 
                 default:
-                    throw new InternalError(info.Node, "Unhandled identifier kind '{0}'", target.Kind);
+                    throw new InternalError(info.Node, $"Unhandled identifier kind '{target.Kind}'");
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using Semmle.Util.Logging;
 using System;
+using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -70,12 +71,7 @@ namespace Semmle.Extraction.CIL.Entities
                     }
                     catch (InternalError e)
                     {
-                        cx.cx.Extractor.Message(new Message
-                        {
-                            exception = e,
-                            message = "Error processing type definition",
-                            severity = Semmle.Util.Logging.Severity.Error
-                        });
+                        cx.cx.ExtractionError("Error processing type definition", e.Message, GeneratedLocation.Create(cx.cx), e.StackTrace);
                     }
 
                     // Limitation of C#: Cannot yield return inside a try-catch.
@@ -92,12 +88,7 @@ namespace Semmle.Extraction.CIL.Entities
                     }
                     catch (InternalError e)
                     {
-                        cx.cx.Extractor.Message(new Message
-                        {
-                            exception = e,
-                            message = "Error processing bytecode",
-                            severity = Semmle.Util.Logging.Severity.Error
-                        });
+                        cx.cx.ExtractionError("Error processing bytecode", e.Message, GeneratedLocation.Create(cx.cx), e.StackTrace);
                     }
 
                     if (product != null)

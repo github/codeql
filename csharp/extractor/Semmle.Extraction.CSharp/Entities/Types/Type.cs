@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         case TypeKind.Delegate: return Kinds.TypeKind.DELEGATE;
                         case TypeKind.Pointer: return Kinds.TypeKind.POINTER;
                         default:
-                            cx.ModelError(t, "Unhandled type kind '{0}'", t.TypeKind);
+                            cx.ModelError(t, $"Unhandled type kind '{t.TypeKind}'");
                             return Kinds.TypeKind.UNKNOWN;
                     }
             }

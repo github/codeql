@@ -32,6 +32,8 @@ namespace Semmle.Extraction
 
         object ICachedEntity.UnderlyingObject => symbol;
 
+        public Initializer UnderlyingObject => symbol;
+
         public abstract IId Id
         {
             get;

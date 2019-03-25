@@ -120,13 +120,13 @@ diagnostics(
     int location: @location_default ref
 );
 
-extraction_errors(
+extraction_messages(
     unique int id: @extraction_error,
-    int compilation: @compilation ref,
-    int element: @element ref,
     int severity: int ref,
-    string error_tag: string ref,
-    string error_message : string ref,
+    string origin : string ref,
+    string text : string ref,
+    string entity : string ref,
+    int location: @location_default ref,
     string stack_trace : string ref
 );
 

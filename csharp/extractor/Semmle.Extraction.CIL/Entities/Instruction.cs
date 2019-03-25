@@ -409,7 +409,7 @@ namespace Semmle.Extraction.CIL.Entities
                         }
                         else
                         {
-                            throw new InternalError("Unable to create payload type {0} for opcode {1}", PayloadType, OpCode);
+                            throw new InternalError($"Unable to create payload type {PayloadType} for opcode {OpCode}");
                         }
                         break;
                     case Payload.Arg8:
@@ -430,7 +430,7 @@ namespace Semmle.Extraction.CIL.Entities
                         // Some of these are handled by JumpContents().
                         break;
                     default:
-                        throw new InternalError("Unhandled payload type {0}", PayloadType);
+                        throw new InternalError($"Unhandled payload type {PayloadType}");
                 }
             }
         }
@@ -479,7 +479,7 @@ namespace Semmle.Extraction.CIL.Entities
                 // TODO: Find a solution to this.
 
                 // For now, just log the error
-                cx.cx.Extractor.Message(new Message { message = "A CIL instruction jumps outside the current method", severity = Util.Logging.Severity.Warning });
+                cx.cx.ExtractionError("A CIL instruction jumps outside the current method", "", Extraction.Entities.GeneratedLocation.Create(cx.cx), "", Util.Logging.Severity.Warning);
             }
         }
     }

@@ -141,11 +141,9 @@ namespace Semmle.Extraction
                         tb.Append("\"");
                         break;
                     case null:
-                        throw new InternalError("Attempt to write a null argument tuple {0} at column {1}",
-                            Name, column);
+                        throw new InternalError($"Attempt to write a null argument tuple {Name} at column {column}");
                     default:
-                        throw new InternalError("Attempt to write an invalid argument type {0} in tuple {1} at column {2}",
-                            a.GetType(), Name, column);
+                        throw new InternalError($"Attempt to write an invalid argument type {a.GetType()} in tuple {Name} at column {column}");
                 }
 
                 ++column;

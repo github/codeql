@@ -197,7 +197,7 @@ namespace Semmle.Extraction.CIL
                 case PrimitiveTypeCode.UIntPtr: return uintptrId;
                 case PrimitiveTypeCode.Void: return voidId;
                 case PrimitiveTypeCode.TypedReference: return typedReferenceId;
-                default: throw new InternalError("Unhandled type code {0}", typeCode);
+                default: throw new InternalError($"Unhandled type code {typeCode}");
             }
         }
     }

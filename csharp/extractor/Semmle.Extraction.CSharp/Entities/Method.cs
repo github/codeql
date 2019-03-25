@@ -291,7 +291,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 case MethodKind.LocalFunction:
                     return LocalFunction.Create(cx, methodDecl);
                 default:
-                    throw new InternalError(methodDecl, "Unhandled method '{0}' of kind '{1}'", methodDecl, methodDecl.MethodKind);
+                    throw new InternalError(methodDecl, $"Unhandled method '{methodDecl}' of kind '{methodDecl.MethodKind}'");
             }
         }
 

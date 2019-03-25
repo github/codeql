@@ -99,12 +99,7 @@ namespace Semmle.Extraction.CSharp
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    extractor.Message(new Message
-                    {
-                        exception = ex,
-                        message = string.Format("Exception reading reference file {0}: {1}",
-                        reference.FilePath, ex)
-                    });
+                    extractor.Message(new Message("Exception reading reference file", reference.FilePath, null, ex.StackTrace));
                 }
             }
         }
@@ -388,7 +383,7 @@ namespace Semmle.Extraction.CSharp
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                extractor.Message(new Message { exception = ex, message = string.Format("Unhandled exception processing {0}: {1}", tree.FilePath, ex), severity = Severity.Error });
+                extractor.Message(new Message("Unhandled exception processing syntax tree", tree.FilePath, null, ex.StackTrace));
             }
         }
 

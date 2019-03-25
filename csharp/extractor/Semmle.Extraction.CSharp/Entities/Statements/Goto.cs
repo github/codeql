@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 case SyntaxKind.None: return StmtKind.GOTO;
                 case SyntaxKind.DefaultKeyword: return StmtKind.GOTO_DEFAULT;
                 case SyntaxKind.CaseKeyword: return StmtKind.GOTO_CASE;
-                default: throw new InternalError(node, "Unhandled goto statement kind {0}", node.CaseOrDefaultKeyword.Kind());
+                default: throw new InternalError(node, $"Unhandled goto statement kind {node.CaseOrDefaultKeyword.Kind()}");
             }
         }
 

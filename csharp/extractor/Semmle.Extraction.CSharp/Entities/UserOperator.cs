@@ -191,7 +191,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             string result;
             if (!OperatorSymbol(methodName, out result))
-                cx.ModelError("Unhandled operator name in OperatorSymbol(): '{0}'", methodName);
+                cx.ModelError($"Unhandled operator name in OperatorSymbol(): '{methodName}'");
             return result;
         }
 

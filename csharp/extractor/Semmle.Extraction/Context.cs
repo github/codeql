@@ -93,7 +93,7 @@ namespace Semmle.Extraction
         {
             if (idLabelCache.TryGetValue(id, out var originalEntity))
             {
-                Extractor.Message(new Message { message = "Label collision for " + id, severity = Severity.Warning });
+                ExtractionError("Label collision for " + id, entity.Label.ToString(), Entities.Location.Create(this, entity.ReportingLocation), "", Severity.Warning);
             }
             else
             {
@@ -218,11 +218,11 @@ namespace Semmle.Extraction
                 }
                 catch (InternalError ex)
                 {
-                    Extractor.Message(ex.ExtractionMessage);
+                    ExtractionError(new Message(ex.Text, ex.EntityText, Entities.Location.Create(this, ex.Location), ex.StackTrace));
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    Extractor.Message(new Message { severity = Severity.Error, exception = ex, message = "Uncaught exception" });
+                    ExtractionError("Uncaught exception", ex.Message, Entities.Location.Create(this, null), ex.StackTrace);
                 }
             }
         }
@@ -380,7 +380,8 @@ namespace Semmle.Extraction
             {
                 case TrapStackBehaviour.NeedsLabel:
                     if (!tagStack.Any())
-                        Extractor.Message(new Message { message = "Tagstack unexpectedly empty", symbol = optionalSymbol, severity = Severity.Error });
+                        ExtractionError("TagStack unexpectedly empty", optionalSymbol, entity);
+                        // Extractor.Message(new Message { Text = "Tagstack unexpectedly empty", Symbol = optionalSymbol, Severity = Severity.Error });
                     duplicationGuard = false;
                     deferred = false;
                     break;
@@ -450,6 +451,52 @@ namespace Semmle.Extraction
             var duplicationGuardKey = tagStack.Count > 0 ? tagStack.Peek() : null;
             CommentGenerator.RegisterElementLocation(entity.Label, duplicationGuardKey, l);
         }
+
+        /// <summary>
+        /// Log an extraction error.
+        /// </summary>
+        /// <param name="message">The error message.</param>
+        /// <param name="entityText">A textual representation of the failed entity.</param>
+        /// <param name="location">The location of the error.</param>
+        /// <param name="stackTrace">An optional stack trace of the error, or an empty string.</param>
+        /// <param name="severity">The severity of the error.</param>
+        public void ExtractionError(string message, string entityText, Entities.Location location, string stackTrace = "", Severity severity = Severity.Error)
+        {
+            var msg = new Message(message, entityText, location, stackTrace, severity);
+            ExtractionError(msg);
+        }
+
+        /// <summary>
+        /// Log an extraction error.
+        /// </summary>
+        /// <param name="message">The text of the message.</param>
+        /// <param name="optionalSymbol">The symbol of the error, or null.</param>
+        /// <param name="optionalEntity">The entity of the error, or null.</param>
+        public void ExtractionError(string message, ISymbol optionalSymbol, IEntity optionalEntity)
+        {
+            if (!(optionalSymbol is null))
+            {
+                ExtractionError(message, optionalSymbol.ToDisplayString(), Entities.Location.Create(this, optionalSymbol.Locations.FirstOrDefault()));
+            }
+            else if(!(optionalEntity is null))
+            {
+                ExtractionError(message, optionalEntity.Label.ToString(), Entities.Location.Create(this, optionalEntity.ReportingLocation));
+            }
+            else
+            {
+                ExtractionError(message, "", GeneratedLocation.Create(this));
+            }
+        }
+
+        /// <summary>
+        /// Log an extraction message.
+        /// </summary>
+        /// <param name="msg">The message to log.</param>
+        public void ExtractionError(Message msg)
+        {
+            new Entities.ExtractionMessage(this, msg);
+            Extractor.Message(msg);
+        }
     }
 
     static public class ContextExtensions
@@ -459,12 +506,11 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="cx">The context.</param>
         /// <param name="node">The syntax node causing the failure.</param>
-        /// <param name="format">A string format.</param>
-        /// <param name="args">Arguments for the format.</param>
-        static public void ModelError(this Context cx, SyntaxNode node, string format, params object[] args)
+        /// <param name="msg">The error message.</param>
+        static public void ModelError(this Context cx, SyntaxNode node, string msg)
         {
             if (!cx.Extractor.Standalone)
-                throw new InternalError(node, format, args);
+                throw new InternalError(node, msg);
         }
 
         /// <summary>
@@ -472,24 +518,22 @@ namespace Semmle.Extraction
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="node">Symbol causing the error.</param>
-        /// <param name="format">Format of message string.</param>
-        /// <param name="args">Arguments to message string.</param>
-        static public void ModelError(this Context cx, ISymbol symbol, string format, params object[] args)
+        /// <param name="msg">The error message.</param>
+        static public void ModelError(this Context cx, ISymbol symbol, string msg)
         {
             if (!cx.Extractor.Standalone)
-                throw new InternalError(symbol, format, args);
+                throw new InternalError(symbol, msg);
         }
 
         /// <summary>
         /// Signal an error in the program model.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="format">Format of message string.</param>
-        /// <param name="args">Arguments to message string.</param>
-        static public void ModelError(this Context cx, string format, params object[] args)
+        /// <param name="msg">The error message.</param>
+        static public void ModelError(this Context cx, string msg)
         {
             if (!cx.Extractor.Standalone)
-                throw new InternalError(format, args);
+                throw new InternalError(msg);
         }
 
         /// <summary>
@@ -508,30 +552,19 @@ namespace Semmle.Extraction
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                var internalError = ex as InternalError;
-                var message = internalError != null
-                    ? internalError.ExtractionMessage
-                    : new Message { severity = Severity.Error, exception = ex, message = ex.ToString() };
+                Message message;
 
                 if (node != null)
-                    message.node = node;
+                    message = Message.Create(context, ex.Message, node, ex.StackTrace);
+                else if (symbol != null)
+                    message = Message.Create(context, ex.Message, symbol, ex.StackTrace);
+                else if (ex is InternalError ie)
+                    message = new Message(ie.Text, ie.EntityText, Entities.Location.Create(context, ie.Location), ex.StackTrace);
+                else
+                    message = new Message("Uncaught exception", ex.Message, GeneratedLocation.Create(context), ex.StackTrace);
 
-                if (symbol != null)
-                    message.symbol = symbol;
-
-                context.Extractor.Message(message);
+                context.ExtractionError(message);
             }
-        }
-
-        /// <summary>
-        /// Logs the given string.
-        /// </summary>
-        /// <param name="cx">The extractor context.</param>
-        /// <param name="format">The format string.</param>
-        /// <param name="args">The inserts to the format string.</param>
-        static public void Log(this Context cx, string format, params object[] args)
-        {
-            cx.Extractor.Message(new Message { severity = Severity.Info, message = string.Format(format, args) });
         }
 
         /// <summary>
