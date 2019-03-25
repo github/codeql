@@ -75,7 +75,7 @@ abstract class Container extends @container {
    * </table>
    */
   string getBaseName() {
-    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(?:\\.([^.]*))?)", 1)
+    result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 1)
   }
 
   /**
@@ -101,7 +101,7 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"gz"</td></tr>
    * </table>
    */
-  string getExtension() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(\\.([^.]*))?", 3) }
+  string getExtension() { result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 4) }
 
   /**
    * Gets the stem of this container, that is, the prefix of its base name up to
@@ -120,7 +120,7 @@ abstract class Container extends @container {
    * <tr><td>"/tmp/x.tar.gz"</td><td>"x.tar"</td></tr>
    * </table>
    */
-  string getStem() { result = getAbsolutePath().regexpCapture(".*/([^/]*?)(?:\\.([^.]*))?", 1) }
+  string getStem() { result = getAbsolutePath().regexpCapture(".*/(([^/]*?)(\\.([^.]*))?)", 2) }
 
   /** Gets the parent container of this file or folder, if any. */
   Container getParentContainer() { containerparent(result, this) }
