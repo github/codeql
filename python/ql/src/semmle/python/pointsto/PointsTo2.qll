@@ -520,7 +520,7 @@ module InterModulePointsTo {
         exists(string name, ModuleObjectInternal mod, CfgOrigin orig |
             from_import_imports(f, context, mod, name) and
             (mod.getSourceModule() != f.getEnclosingModule() or mod.isBuiltin()) and
-            mod.attribute(name, value, origin) and
+            mod.attribute(name, value, orig) and
             origin = orig.asCfgNodeOrHere(f)
             // TO DO... $ variables.
             //mod.getSourceModule() = f.getEnclosingModule() and
@@ -697,8 +697,8 @@ module InterProceduralPointsTo {
         named_parameter_points_to(def, context, value, origin)
         or
         default_parameter_points_to(def, context, value, origin)
-        // or
-        // special_parameter_points_to(def, context, value, origin)
+        or
+        special_parameter_points_to(def, context, value, origin)
     }
 
     /** Helper for `parameter_points_to` */
@@ -742,6 +742,30 @@ module InterProceduralPointsTo {
             not exists(call.getArgByName(def.getParameter().asName().getId())) and
             not exists(call.getNode().getKwargs()) and
             not exists(call.getNode().getStarargs())
+        )
+    }
+
+    /** Helper for parameter_points_to */
+    pragma [noinline]
+    private predicate special_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        context.isRuntime() and
+        origin = def.getDefiningNode() and
+        exists(ControlFlowNode param |
+            param = def.getDefiningNode() |
+            exists(Function func | func.getVararg() = param.getNode()) and value = TUnknownInstance(ObjectInternal::builtin("tuple"))
+            or
+            exists(Function func | func.getKwarg() = param.getNode()) and value = TUnknownInstance(ObjectInternal::builtin("dict"))
+        )
+        or
+        exists(PointsToContext caller, CallNode call, Function f, Parameter p |
+            context.fromCall(call, caller) and
+            context.appliesToScope(f) and
+            f.getAnArg() = p and p = def.getParameter() and
+            not p.isSelf() and
+            not exists(call.getArg(p.getPosition())) and
+            not exists(call.getArgByName(p.getName())) and
+            (exists(call.getNode().getKwargs()) or exists(call.getNode().getStarargs())) and
+            value = ObjectInternal::unknown() and origin = def.getDefiningNode()
         )
     }
 

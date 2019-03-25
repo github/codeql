@@ -292,7 +292,6 @@ module ObjectInternal {
         result = TNone()
     }
 
-
     ObjectInternal unknown() {
         result = TUnknown()
     }

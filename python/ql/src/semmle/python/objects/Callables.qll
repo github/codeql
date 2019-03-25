@@ -75,12 +75,25 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         exists(Function func, ControlFlowNode rval |
             func = this.getScope() and
-            callee.appliesToScope(func) and
+            callee.appliesToScope(func) |
             rval = func.getAReturnValueFlowNode() and
             PointsTo2::points_to(rval, callee, obj, origin)
+            or
+            exists(Return ret |
+                ret.getScope() = func and
+                PointsTo2::reachableBlock(ret.getAFlowNode().getBasicBlock(), callee) and
+                not exists(ret.getValue()) and
+                obj = ObjectInternal::none_() and
+                origin = CfgOrigin::unknown()
+            )
         )
     }
-    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { 
+        this.getScope().isProcedure() and
+        obj = ObjectInternal::none_() and
+        origin = CfgOrigin::unknown()
+    }
 
     override predicate calleeAndOffset(Function scope, int paramOffset) {
         scope = this.getScope() and paramOffset = 0

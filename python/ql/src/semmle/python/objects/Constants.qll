@@ -140,7 +140,7 @@ class NoneObjectInternal extends ObjectInternal, TNone {
     }
 
     override Builtin getBuiltin() {
-        none()
+        result = Builtin::special("None")
     }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
