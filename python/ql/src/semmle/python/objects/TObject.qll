@@ -6,7 +6,9 @@ private import semmle.python.pointsto.PointsToContext
 
 newtype TObject =
     TBuiltinClassObject(Builtin bltn) {
-        bltn.isClass() and not bltn = Builtin::unknownType()
+        bltn.isClass() and 
+        not bltn = Builtin::unknownType() and
+        not bltn = Builtin::special("type")
     }
     or
     TBuiltinFunctionObject(Builtin bltn) { bltn.isFunction() }
@@ -109,6 +111,8 @@ newtype TObject =
     TPythonTuple(TupleNode origin, PointsToContext context) {
         context.appliesTo(origin)
     }
+    or
+    TType()
 
 private predicate is_power_2(int n) {
     n = 1 or
@@ -266,6 +270,7 @@ library class ClassDecl extends @py_object {
             not name = "object" and
             not name = "list" and
             not name = "set" and
+            not name = "dict" and
             not name.matches("%Exception") and
             not name.matches("%Error")
         )

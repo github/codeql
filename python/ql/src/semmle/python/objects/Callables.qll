@@ -80,10 +80,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
             PointsTo2::points_to(rval, callee, obj, origin)
         )
     }
-
-    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        none()
-    }
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
 
     override predicate calleeAndOffset(Function scope, int paramOffset) {
         scope = this.getScope() and paramOffset = 0
@@ -115,9 +112,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
     override boolean isComparable() { result = true }
 
-    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-        none()
-    }
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         exists(Builtin func, ClassObjectInternal cls |
@@ -191,9 +186,7 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
 
     override boolean isComparable() { result = true }
 
-    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-        none()
-    }
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         // TO DO .. Result should be be a unknown value of a known class if the return type is known or just an unknown.
@@ -247,7 +240,7 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        this.getFunction().callResult(obj, origin)
+        none()
     }
 
     override ControlFlowNode getOrigin() {
@@ -295,9 +288,9 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override ControlFlowNode getOrigin() { this = TClassMethod(result, _) }
 
-    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
-
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
 
     override int intValue() { none() }
 
@@ -344,9 +337,9 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
 
     override ControlFlowNode getOrigin() { this = TStaticMethod(result, _) }
 
-    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
-
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
 
     override int intValue() { none() }
 

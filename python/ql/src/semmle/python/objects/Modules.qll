@@ -12,12 +12,12 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     abstract Module getSourceModule();
 
-    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         // Modules aren't callable
         none()
     }
 
-    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         // Modules aren't callable
         none()
     }

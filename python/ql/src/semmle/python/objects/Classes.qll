@@ -140,7 +140,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
     }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        // TO DO .. Result should (in most cases) be an instance
+        // Handled by Instance classes.
         none()
     }
 
@@ -197,4 +197,55 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
 
 }
 
+class TypeInternal extends ClassObjectInternal, TType {
 
+    override string toString() {
+        result = "type"
+    }
+
+    override ClassDecl getClassDeclaration() {
+        result = Builtin::special("type")
+    }
+
+    override ObjectInternal getClass() {
+        result = this
+    }
+
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+        none()
+    }
+
+    override boolean isComparable() { result = false }
+
+    override Builtin getBuiltin() {
+        result = Builtin::special("type")
+    }
+
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
+        exists(CallNode call, PointsToContext caller, ObjectInternal instance |
+            callee.fromCall(call, caller) |
+            count(call.getAnArg()) = 1 and
+            PointsTo2::points_to(call.getArg(0), caller, instance, origin) and
+            obj = instance.getClass()
+        )
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
+    override ControlFlowNode getOrigin() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
+    }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate attributesUnknown() { any() }
+
+}

@@ -311,6 +311,8 @@ module ObjectInternal {
         result = TBuiltinFunctionObject(Builtin::builtin(name))
         or
         result = TBuiltinOpaqueObject(Builtin::builtin(name))
+        or
+        name = "type" and result = TType()
     }
 
     ObjectInternal sysModules() {
