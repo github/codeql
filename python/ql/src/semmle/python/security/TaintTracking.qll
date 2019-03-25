@@ -1252,14 +1252,14 @@ library module TaintFlowImplementation {
         )
     }
 
-    /** Holds if `expr` is the operand of a unary `not` expression. */
+    /** Gets the operand of a unary `not` expression. */
     private ControlFlowNode not_operand(ControlFlowNode expr) {
         expr.(UnaryExprNode).getNode().getOp() instanceof Not and
         result = expr.(UnaryExprNode).getOperand()
     }
 
     /** Holds if `test` is the test in a branch and `use` is that test
-     * with all the `not` prefices removed.
+     * with all the `not` prefixes removed.
      */
     private predicate boolean_filter(ControlFlowNode test, ControlFlowNode use) {
         any(PyEdgeRefinement ref).getTest() = test and
