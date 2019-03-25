@@ -19,8 +19,6 @@ class ES2015Module extends Module {
   /** Gets an export declaration in this module. */
   ExportDeclaration getAnExport() { result.getTopLevel() = this }
 
-  override Module getAnImportedModule() { result = getAnImport().getImportedModule() }
-
   override predicate exports(string name, ASTNode export) {
     exists(ExportDeclaration ed | ed = getAnExport() and ed = export | ed.exportsAs(_, name))
   }

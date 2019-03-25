@@ -222,8 +222,6 @@ class AMDModule extends Module {
   /** Gets the definition of this module. */
   AMDModuleDefinition getDefine() { amdModuleTopLevel(result, this) }
 
-  override Module getAnImportedModule() { result.getFile() = resolve(getDefine().getADependency()) }
-
   override predicate exports(string name, ASTNode export) {
     exists(DataFlow::PropWrite pwn | export = pwn.getAstNode() |
       pwn.getBase().analyze().getAValue() = getDefine().getAModuleExportsValue() and

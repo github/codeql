@@ -21,7 +21,7 @@ abstract class Module extends TopLevel {
   Import getAnImport() { result.getTopLevel() = this }
 
   /** Gets a module from which this module imports. */
-  abstract Module getAnImportedModule();
+  Module getAnImportedModule() { result = getAnImport().getImportedModule() }
 
   /** Gets a symbol exported by this module. */
   string getAnExportedSymbol() { exports(result, _) }
