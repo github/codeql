@@ -88,6 +88,7 @@ string extraDetail(HeaderFile hf, SomePreprocessorDirective detail1, SomePreproc
  * Header file `hf` uses a macro called `macroName`.
  */
 predicate usesMacro(HeaderFile hf, string macroName) {
+  not hf instanceof IncludeGuardedHeader and // restrict to cases the query looks at
   exists(MacroAccess ma |
     ma.getFile() = hf and
     ma.getMacro().getName() = macroName
