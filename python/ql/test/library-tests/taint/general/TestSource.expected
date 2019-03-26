@@ -41,3 +41,4 @@
 | test.py:168 | SOURCE | simple.test |
 | test.py:169 | SOURCE | simple.test |
 | test.py:178 | SOURCE | simple.test |
+| test.py:189 | FALSEY | falsey |

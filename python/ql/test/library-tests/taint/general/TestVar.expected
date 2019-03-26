@@ -182,3 +182,5 @@
 | test.py:180 | t_2 | test.py:178 | Taint simple.test | SOURCE |
 | test.py:183 | t_3 | test.py:178 | Taint simple.test | SOURCE |
 | test.py:186 | t_4 | test.py:178 | Taint simple.test | SOURCE |
+| test.py:189 | t_0 | test.py:189 | Taint falsey | FALSEY |
+| test.py:191 | t_1 | test.py:189 | Taint falsey | FALSEY |

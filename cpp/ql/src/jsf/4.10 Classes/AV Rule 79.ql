@@ -21,7 +21,7 @@ predicate acquireExpr(Expr acquire, string kind) {
   exists(FunctionCall fc, Function f, string name |
     fc = acquire and
     f = fc.getTarget() and
-    name = f.getName() and 
+    name = f.getQualifiedName() and 
     (
       (
         name = "fopen" and
@@ -47,7 +47,7 @@ predicate releaseExpr(Expr release, Expr resource, string kind) {
   exists(FunctionCall fc, Function f, string name |
     fc = release and
     f = fc.getTarget() and
-    name = f.getName() and 
+    name = f.getQualifiedName() and 
     (
       (
         name = "fclose" and

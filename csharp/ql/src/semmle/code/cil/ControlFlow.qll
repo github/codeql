@@ -104,7 +104,10 @@ class ControlFlowNode extends @cil_controlflow_node {
   Type getType() { none() }
 
   /** Holds if this control flow node has more than one predecessor. */
-  predicate isJoin() { count(getAPredecessor()) > 1 }
+  predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
+
+  /** Holds if this control flow node has more than one successor. */
+  predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
 }
 
 /**
@@ -137,6 +140,6 @@ class TrueFlow extends FlowType, TTrueFlow {
 }
 
 /** False control flow. */
-class FalseFlow extends FlowType, TTrueFlow {
+class FalseFlow extends FlowType, TFalseFlow {
   override string toString() { result = "false" }
 }
