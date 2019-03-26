@@ -53,7 +53,11 @@ class MethodImplementation extends EntryPoint, @cil_method_implementation {
 
   /** Gets a string representing the disassembly of this implementation. */
   string getDisassembly() {
-    result = concat(Instruction i | i = this.getAnInstruction() | i.toString(), ", " order by i.getIndex())
+    result = concat(Instruction i |
+        i = this.getAnInstruction()
+      |
+        i.toString(), ", " order by i.getIndex()
+      )
   }
 }
 
@@ -69,9 +73,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
   MethodImplementation getAnImplementation() { result.getMethod() = this }
 
   /** Gets the "best" implementation of this method, if any. */
-  BestImplementation getImplementation() {
-    result = getAnImplementation()
-  }
+  BestImplementation getImplementation() { result = getAnImplementation() }
 
   override Method getMethod() { result = this }
 
@@ -241,9 +243,7 @@ class TrivialGetter extends Method {
   }
 
   /** Gets the underlying field of this getter. */
-  Field getField() {
-    getImplementation().getAnInstruction().(FieldReadAccess).getTarget() = result
-  }
+  Field getField() { getImplementation().getAnInstruction().(FieldReadAccess).getTarget() = result }
 }
 
 /** A setter. */
