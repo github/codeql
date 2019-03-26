@@ -256,7 +256,7 @@ class FormatLiteral extends Literal {
   }
 
   /**
-   * Gets the format string, with '%%' adn '%@' replaced by '_' (to avoid processing
+   * Gets the format string, with '%%' and '%@' replaced by '_' (to avoid processing
    * them as format specifiers).
    */
   string getFormat() {
