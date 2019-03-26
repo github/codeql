@@ -22,7 +22,7 @@ class Element extends DotNet::Element, @element {
    * Where an element has multiple locations (for example a source file and an assembly),
    * gets only the source location.
    */
-  override Location getLocation() { result = ExprOrStmtParentCached::bestLocation(this) }
+  final override Location getLocation() { result = ExprOrStmtParentCached::bestLocation(this) }
 
   /** Gets a location of this element, including sources and assemblies. */
   override Location getALocation() { none() }

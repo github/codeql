@@ -39,8 +39,6 @@ private import dotnet
  * (`QualifiableExpr`), or a literal (`Literal`).
  */
 class Expr extends DotNet::Expr, ControlFlowElement, @expr {
-  override string toString() { result = "Expression" }
-
   override Location getALocation() { expr_location(this, result) }
 
   /** Gets the type of this expression. */
@@ -716,4 +714,8 @@ class RefExpr extends Expr, @ref_expr {
  */
 class DiscardExpr extends Expr, @discard_expr {
   override string toString() { result = "_" }
+}
+
+private class UnknownExpr extends Expr, @unknown_expr {
+  override string toString() { result = "Expression" }
 }
