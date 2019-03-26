@@ -57,6 +57,14 @@ class LambdaExpression extends Expr, @lambdaexpr {
   Operator getLambdaFunction() {
     result = getType().(Closure).getLambdaFunction()
   }
+
+  /**
+   * Gets the initializer that initializes the captured variables in the closure, if any.
+   * A lambda that does not capture any variables will not have an initializer.
+   */
+  Expr getInitializer() {
+    result = getChild(0)
+  }
 }
 
 /**
