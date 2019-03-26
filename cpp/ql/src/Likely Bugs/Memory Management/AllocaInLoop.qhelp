@@ -5,7 +5,7 @@
 
 
 <overview>
-<p> The <code>alloca</code> macro allocates memory by expanding the current stack frame.Invoking
+<p> The <code>alloca</code> macro allocates memory by expanding the current stack frame. Invoking
 <code>alloca</code> within a loop may lead to a stack overflow because the memory is not released
 until the function returns. 
 </p>
