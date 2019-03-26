@@ -82,6 +82,7 @@
 | Taint explicit.carrier | carrier.py:33 | TAINT_CARRIER_SOURCE |  |  -->  | Taint explicit.carrier | carrier.py:4 | arg | carrier.py:33 |
 | Taint explicit.carrier | carrier.py:34 | Attribute |  |  -->  | Taint explicit.carrier | carrier.py:35 | x |  |
 | Taint explicit.carrier | carrier.py:35 | x |  |  -->  | Taint simple.test | carrier.py:35 | Attribute() |  |
+| Taint falsey | test.py:189 | FALSEY |  |  -->  | Taint falsey | test.py:190 | t |  |
 | Taint paper | rockpaperscissors.py:25 | Attribute() |  |  -->  | Taint paper | rockpaperscissors.py:26 | y |  |
 | Taint paper | rockpaperscissors.py:26 | y |  |  -->  | Taint paper | rockpaperscissors.py:9 | arg | rockpaperscissors.py:26 |
 | Taint paper | rockpaperscissors.py:30 | Attribute() |  |  -->  | Taint paper | rockpaperscissors.py:32 | y |  |

@@ -1237,7 +1237,7 @@ library module TaintFlowImplementation {
             )
             |
             not Filters::isinstance(test.getTest(), _, var.getSourceVariable().getAUse()) and
-            not test.getTest() = var.getSourceVariable().getAUse()
+            not boolean_filter(test.getTest(), var.getSourceVariable().getAUse())
             or
             exists(ControlFlowNode c, ClassObject cls |
                 Filters::isinstance(test.getTest(), c, var.getSourceVariable().getAUse())
@@ -1248,8 +1248,40 @@ library module TaintFlowImplementation {
                 test.getSense() = false and not kind.getClass().getAnImproperSuperType() = cls
             )
             or
-            test.getTest() = var.getSourceVariable().getAUse() and kind.booleanValue() = test.getSense()
+            test.getSense() = test_evaluates(test.getTest(), var.getSourceVariable().getAUse(), kind)
         )
+    }
+
+    /** Gets the operand of a unary `not` expression. */
+    private ControlFlowNode not_operand(ControlFlowNode expr) {
+        expr.(UnaryExprNode).getNode().getOp() instanceof Not and
+        result = expr.(UnaryExprNode).getOperand()
+    }
+
+    /** Holds if `test` is the test in a branch and `use` is that test
+     * with all the `not` prefixes removed.
+     */
+    private predicate boolean_filter(ControlFlowNode test, ControlFlowNode use) {
+        any(PyEdgeRefinement ref).getTest() = test and
+        (
+            use = test
+            or
+            exists(ControlFlowNode notuse |
+                boolean_filter(test, notuse) and
+                use = not_operand(notuse)
+            )
+        )
+    }
+
+    /** Gets the boolean value that `test` evaluates to when `use` is tainted with `kind`
+     * and `test` and `use` are part of a test in a branch.
+     */
+    private boolean test_evaluates(ControlFlowNode test, ControlFlowNode use, TaintKind kind) {
+        boolean_filter(_, use) and
+        kind.taints(use) and
+        test = use and result = kind.booleanValue()
+        or
+        result = test_evaluates(not_operand(test), use, kind).booleanNot()
     }
 
     pragma [noinline]
