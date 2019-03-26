@@ -134,7 +134,7 @@ private HTML::Element getAStartingElement(File f, int l) {
 
 
 /**
- * Gets the number of HTML elements that starts at line `l` in file `f`.
+ * Gets the number of HTML elements that start at line `l` in file `f`.
  */
 private int countStartingHtmlElements(File f, int l) {
   result = strictcount(getAStartingElement(f, l))
