@@ -46,26 +46,61 @@ private DataFlow::SourceNode domElementCreationOrQuery() {
   )
 }
 
+private DataFlow::SourceNode domValueSource(DataFlow::TypeTracker t) {
+  t.start() and
+  (
+    result.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable or
+    result = domValueSource().getAPropertyRead(_) or
+    result = domElementCreationOrQuery() or
+    result = domElementCollection()
+  )
+  or
+  exists(DataFlow::TypeTracker t2 |
+    result = domValueSource(t2).track(t2, t)
+  )
+}
+
 private DataFlow::SourceNode domValueSource() {
-  result.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable or
-  result = domValueSource().getAPropertyRead(_) or
-  result = domElementCreationOrQuery() or
-  result = domElementCollection()
+  result = domValueSource(_)
 }
 
 /** Holds if `e` could hold a value that comes from the DOM. */
 predicate isDomValue(Expr e) { domValueSource().flowsToExpr(e) }
 
 /** Holds if `e` could refer to the `location` property of a DOM node. */
+private DataFlow::SourceNode locationRef(DataFlow::TypeTracker t) {
+  t.start() and
+  exists(Expr e | result.asExpr() = e |
+    e = domValueSource().getAPropertyReference("location").asExpr() or
+    e.accessesGlobal("location")
+  )
+  or
+  exists(DataFlow::TypeTracker t2 |
+    result = locationRef(t2).track(t2, t)
+  )
+}
+
+/** Holds if `e` could refer to the `location` property of a DOM node. */
 predicate isLocation(Expr e) {
-  e = domValueSource().getAPropertyReference("location").asExpr() or
-  e.accessesGlobal("location")
+  locationRef(_).flowsToExpr(e)
 }
 
 /**
  * Gets a reference to the 'document' object.
  */
-DataFlow::SourceNode document() { result = DataFlow::globalVarRef("document") }
+private DataFlow::SourceNode document(DataFlow::TypeTracker t) {
+  t.start() and
+  result = DataFlow::globalVarRef("document")
+  or
+  exists(DataFlow::TypeTracker t2 |
+    result = document(t2).track(t2, t)
+  )
+}
+
+/**
+ * Gets a reference to the 'document' object.
+ */
+DataFlow::SourceNode document() { result = document(_) }
 
 /** Holds if `e` could refer to the `document` object. */
 predicate isDocument(Expr e) { document().flowsToExpr(e) }
