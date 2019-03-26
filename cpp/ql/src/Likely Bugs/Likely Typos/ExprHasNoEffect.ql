@@ -27,12 +27,12 @@ predicate accessInInitOfForStmt(Expr e) {
  * Holds if the function `f`, or a function called by it, contains
  * code excluded by the preprocessor.
  */
-predicate containsDisabledCodeRecursive(Function f) {
-  containsDisabledCode(f) or
+predicate functionContainsDisabledCodeRecursive(Function f) {
+  functionContainsDisabledCode(f) or
   // recurse into function calls
   exists(FunctionCall fc |
     fc.getEnclosingFunction() = f and
-    containsDisabledCode(fc.getTarget())
+    functionContainsDisabledCodeRecursive(fc.getTarget())
   )
 }
 
@@ -40,12 +40,12 @@ predicate containsDisabledCodeRecursive(Function f) {
  * Holds if the function `f`, or a function called by it, is inside a
  * preprocessor branch that may have code in another arm
  */
-predicate definedInIfDefRecursive(Function f) {
-  definedInIfDef(f) or
+predicate functionDefinedInIfDefRecursive(Function f) {
+  functionDefinedInIfDef(f) or
   // recurse into function calls
   exists(FunctionCall fc |
     fc.getEnclosingFunction() = f and
-    definedInIfDef(fc.getTarget())
+    functionDefinedInIfDefRecursive(fc.getTarget())
   )
 }
 
@@ -79,8 +79,8 @@ where // EQExprs are covered by CompareWhereAssignMeant.ql
       not parent instanceof PureExprInVoidContext and
       not peivc.getEnclosingFunction().isCompilerGenerated() and
       not peivc.getType() instanceof UnknownType and
-      not containsDisabledCodeRecursive(peivc.(FunctionCall).getTarget()) and
-      not definedInIfDefRecursive(peivc.(FunctionCall).getTarget()) and
+      not functionContainsDisabledCodeRecursive(peivc.(FunctionCall).getTarget()) and
+      not functionDefinedInIfDefRecursive(peivc.(FunctionCall).getTarget()) and
       if peivc instanceof FunctionCall then
         exists(Function target |
           target = peivc.(FunctionCall).getTarget() and

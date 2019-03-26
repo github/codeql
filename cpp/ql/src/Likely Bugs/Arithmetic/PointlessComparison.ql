@@ -31,7 +31,7 @@ from
 where
   not cmp.isInMacroExpansion() and
   not cmp.isFromTemplateInstantiation(_) and
-  not containsDisabledCode(cmp.getEnclosingFunction()) and
+  not functionContainsDisabledCode(cmp.getEnclosingFunction()) and
   reachablePointlessComparison(cmp, left, right, value, ss) and
 
   // a comparison between an enum and zero is always valid because whether

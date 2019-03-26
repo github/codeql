@@ -239,7 +239,7 @@ private predicate functionLocation(Function f, string file, int fBlockStartLine,
 /**
  * Holds if the function `f` is inside a preprocessor branch that may have code in another arm.
  */
-predicate definedInIfDef(Function f) {
+predicate functionDefinedInIfDef(Function f) {
   exists(PreprocessorBranchDirective pbd, string file, int pbdStartLine, int pbdEndLine, int fBlockStartLine,
       int fBlockEndLine  |
     functionLocation(f, file, fBlockStartLine, fBlockEndLine) and
@@ -258,13 +258,12 @@ predicate definedInIfDef(Function f) {
 }
 
 /**
- * Holds if the function `f`, or a function called by it, contains
- * code excluded by the preprocessor.
+ * Holds if the function `f` contains code excluded by the preprocessor.
  */
-predicate containsDisabledCode(Function f) {
+predicate functionContainsDisabledCode(Function f) {
   // `f` contains a preprocessor branch that was not taken
   exists(PreprocessorBranchDirective pbd, string file, int pbdStartLine, int fBlockStartLine, int fBlockEndLine |
-      functionLocation(f, file, fBlockStartLine, fBlockEndLine) and
+    functionLocation(f, file, fBlockStartLine, fBlockEndLine) and
     pbdLocation(pbd, file, pbdStartLine) and
     pbdStartLine <= fBlockEndLine and
     pbdStartLine >= fBlockStartLine and
@@ -275,10 +274,5 @@ predicate containsDisabledCode(Function f) {
       // was not taken.
       pbd instanceof PreprocessorElse
     )
-  ) or
-  // recurse into function calls
-  exists(FunctionCall fc |
-    fc.getEnclosingFunction() = f and
-    containsDisabledCode(fc.getTarget())
   )
 }
