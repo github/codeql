@@ -2254,9 +2254,7 @@ module Ssa {
      * except for pathological `out`/`ref` assignments like `M(out x, out x)`,
      * where there may be more than one underlying definition.
      */
-    AssignableDefinition getADefinition() {
-      result = getADefinition(this)
-    }
+    AssignableDefinition getADefinition() { result = getADefinition(this) }
 
     /**
      * Holds if this definition updates a captured local scope variable, and the updated
