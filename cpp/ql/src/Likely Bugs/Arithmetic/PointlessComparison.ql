@@ -12,6 +12,7 @@
  *       readability
  */
 import cpp
+private import semmle.code.cpp.commons.Exclusions
 private import semmle.code.cpp.rangeanalysis.PointlessComparison
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import UnsignedGEZero

@@ -11,6 +11,7 @@
  *       external/cwe/cwe-561
  */
 import cpp
+private import semmle.code.cpp.commons.Exclusions
 
 class PureExprInVoidContext extends ExprInVoidContext {
   PureExprInVoidContext() { this.isPure() }
