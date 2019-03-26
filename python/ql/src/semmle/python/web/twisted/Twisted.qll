@@ -3,11 +3,11 @@ import python
 import semmle.python.security.TaintTracking
 
 private ClassObject theTwistedHttpRequestClass() {
-    result = any(ModuleObject m | m.getName() = "twisted.web.http").attr("Request")
+    result = ModuleObject::named("twisted.web.http").attr("Request")
 }
 
 private ClassObject theTwistedHttpResourceClass() {
-    result = any(ModuleObject m | m.getName() = "twisted.web.resource").attr("Resource")
+    result = ModuleObject::named("twisted.web.resource").attr("Resource")
 }
 
 ClassObject aTwistedRequestHandlerClass() {

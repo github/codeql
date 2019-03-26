@@ -4,7 +4,7 @@ import semmle.python.web.Http
 
 /** The falcon API class */
 ClassObject theFalconAPIClass() {
-    result = ModuleObject::named("falcon").getAttribute("API")
+    result = ModuleObject::named("falcon").attr("API")
 }
 
 

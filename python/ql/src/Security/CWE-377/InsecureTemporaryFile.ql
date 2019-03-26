@@ -23,7 +23,7 @@ FunctionObject temporary_name_function(string mod, string function) {
             function = "tempnam"
         )
     ) and
-    result = any(ModuleObject m | m.getName() = mod).getAttribute(function)
+    result = ModuleObject::named(mod).attr(function)
 }
 
 from Call c, string mod, string function

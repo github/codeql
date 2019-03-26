@@ -34,11 +34,11 @@ string insecure_version_name() {
 }
 
 private ModuleObject the_ssl_module() {
-    result = any(ModuleObject m | m.getName() = "ssl")
+    result = ModuleObject::named("ssl")
 }
 
 private ModuleObject the_pyOpenSSL_module() {
-    result = any(ModuleObject m | m.getName() = "pyOpenSSL.SSL")
+    result = ModuleObject::named("pyOpenSSL.SSL")
 }
 
 /* A syntactic check for cases where points-to analysis cannot infer the presence of
@@ -82,7 +82,7 @@ predicate unsafe_ssl_wrap_socket_call(CallNode call, string method_name, string 
 }
 
 ClassObject the_pyOpenSSL_Context_class() {
-    result = any(ModuleObject m | m.getName() = "pyOpenSSL.SSL").attr("Context")
+    result = ModuleObject::named("pyOpenSSL.SSL").attr("Context")
 }
 
 predicate unsafe_pyOpenSSL_Context_call(CallNode call, string insecure_version) {
