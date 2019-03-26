@@ -25,16 +25,15 @@ module SocketIO {
   }
 
   /**
-   * Gets a data flow node that may refer to the socket.io server created at `srv`, with
-   * type tracking info stored in `t`.
+   * Gets a data flow node that may refer to the socket.io server created at `srv`.
    */
   private DataFlow::SourceNode server(ServerObject srv, DataFlow::TypeTracker t) {
     result = newServer() and
     srv = MkServer(result) and
     t.start()
     or
-    exists(DataFlow::TypeTracker s, DataFlow::SourceNode pred | pred = server(srv, s) |
-      result = pred.track(s, t)
+    exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = server(srv, t2) |
+      result = pred.track(t2, t)
       or
       // invocation of a chainable method
       exists(DataFlow::MethodCallNode mcn, string m |
@@ -52,7 +51,7 @@ module SocketIO {
         // exclude getter versions
         exists(mcn.getAnArgument()) and
         result = mcn and
-        t = s
+        t = t2
       )
     )
   }
@@ -85,8 +84,7 @@ module SocketIO {
   }
 
   /**
-   * Gets a data flow node that may refer to the socket.io namespace created at `ns`, with
-   * type tracking info stored in `t`.
+   * Gets a data flow node that may refer to the socket.io namespace created at `ns`.
    */
   private DataFlow::SourceNode namespace(NamespaceObject ns, DataFlow::TypeTracker t) {
     t.start() and
@@ -107,12 +105,12 @@ module SocketIO {
       ns = srv.getServer().getDefaultNamespace()
     )
     or
-    exists(DataFlow::SourceNode pred, DataFlow::TypeTracker s | pred = namespace(ns, s) |
-      result = pred.track(s, t)
+    exists(DataFlow::SourceNode pred, DataFlow::TypeTracker t2 | pred = namespace(ns, t2) |
+      result = pred.track(t2, t)
       or
       // invocation of a chainable method
       result = pred.getAMethodCall(namespaceChainableMethod()) and
-      t = s
+      t = t2
       or
       // invocation of chainable getter method
       exists(string m |
@@ -121,7 +119,7 @@ module SocketIO {
         m = "volatile"
       |
         result = pred.getAPropertyRead(m) and
-        t = s
+        t = t2
       )
     )
   }
@@ -137,8 +135,7 @@ module SocketIO {
   }
 
   /**
-   * Gets a data flow node that may refer to a socket.io socket belonging to namespace `ns`, with
-   * type tracking info stored in `t`.
+   * Gets a data flow node that may refer to a socket.io socket belonging to namespace `ns`.
    */
   private DataFlow::SourceNode socket(NamespaceObject ns, DataFlow::TypeTracker t) {
     // callback accepting a socket
@@ -155,8 +152,8 @@ module SocketIO {
       result = on.getCallback(1).getParameter(0)
     )
     or
-    exists(DataFlow::SourceNode pred, DataFlow::TypeTracker s | pred = socket(ns, s) |
-      result = pred.track(s, t)
+    exists(DataFlow::SourceNode pred, DataFlow::TypeTracker t2 | pred = socket(ns, t2) |
+      result = pred.track(t2, t)
       or
       // invocation of a chainable method
       exists(string m |
@@ -174,7 +171,7 @@ module SocketIO {
         m = EventEmitter::chainableMethod()
       |
         result = pred.getAMethodCall(m) and
-        t = s
+        t = t2
       )
       or
       // invocation of a chainable getter method
@@ -185,7 +182,7 @@ module SocketIO {
         m = "volatile"
       |
         result = pred.getAPropertyRead(m) and
-        t = s
+        t = t2
       )
     )
   }
@@ -395,8 +392,7 @@ module SocketIO {
  */
 module SocketIOClient {
   /**
-   * Gets a data flow node that may refer to the socket.io socket created at `invk`, with
-   * type tracking info stored in `t`.
+   * Gets a data flow node that may refer to the socket.io socket created at `invk`.
    */
   private DataFlow::SourceNode socket(DataFlow::InvokeNode invk, DataFlow::TypeTracker t) {
     t.start() and
@@ -410,7 +406,7 @@ module SocketIOClient {
       result = invk
     )
     or
-    exists(DataFlow::TypeTracker s | result = socket(invk, s).track(s, t))
+    exists(DataFlow::TypeTracker t2 | result = socket(invk, t2).track(t2, t))
   }
 
   /** A data flow node that may produce a socket object. */

@@ -60,8 +60,8 @@ module Electron {
     t.start() and
     result instanceof NewBrowserObject
     or
-    exists(DataFlow::TypeTracker prev |
-      result = browserObject(prev).track(prev, t)
+    exists(DataFlow::TypeTracker t2 |
+      result = browserObject(t2).track(t2, t)
     )
   }
 

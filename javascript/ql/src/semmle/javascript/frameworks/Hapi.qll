@@ -200,8 +200,8 @@ module Hapi {
       t.start() and
       result = handler.flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker next |
-        result = getARouteHandler(next).backtrack(next, t)
+      exists(DataFlow::TypeBackTracker t2 |
+        result = getARouteHandler(t2).backtrack(t2, t)
       )
     }
 

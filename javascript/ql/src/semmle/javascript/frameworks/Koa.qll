@@ -79,15 +79,15 @@ module Koa {
     RouteHandler getRouteHandler() { result = rh }
 
     predicate flowsTo(DataFlow::Node nd) {
-      flowsToSourceNode(DataFlow::TypeTracker::end()).flowsTo(nd)
+      ref(DataFlow::TypeTracker::end()).flowsTo(nd)
     }
 
-    private DataFlow::SourceNode flowsToSourceNode(DataFlow::TypeTracker t) {
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
       result = this
       or
-      exists(DataFlow::TypeTracker prev |
-        result = flowsToSourceNode(prev).track(prev, t)
+      exists(DataFlow::TypeTracker t2 |
+        result = ref(t2).track(t2, t)
       )
     }
   }
