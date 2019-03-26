@@ -189,16 +189,6 @@ class SequenceKind extends CollectionKind {
     }
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        sequence_subscript_taint(tonode, fromnode, this, result)
-        or
-        result = this and
-        (
-            slice(fromnode, tonode) or
-            tonode.(BinaryExprNode).getAnOperand() = fromnode
-        )
-        or
-        result = this and TaintFlowImplementation::copyCall(fromnode, tonode)
-        or
         exists(BinaryExprNode mod |
             mod = tonode and
             mod.getOp() instanceof Mod and
@@ -206,8 +196,6 @@ class SequenceKind extends CollectionKind {
             result = this.getItem() and
             result.getClass() = theStrType()
         )
-        or
-        result = this and sequence_call(fromnode, tonode)
     }
 
     override TaintKind getTaintOfMethodResult(string name) {
@@ -220,25 +208,41 @@ class SequenceKind extends CollectionKind {
 
 }
 
-/* Helper for getTaintForStep() */
-pragma [noinline]
-private predicate sequence_subscript_taint(SubscriptNode sub, ControlFlowNode obj, SequenceKind seq, TaintKind key) {
-    sub.isLoad() and
-    sub.getValue() = obj and
-    if sub.getNode().getIndex() instanceof Slice then
-        seq = key
-    else
-        key = seq.getItem()
+
+module SequenceKind {
+
+    predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        tonode.(BinaryExprNode).getAnOperand() = fromnode
+        or
+        TaintFlowImplementation::copyCall(fromnode, tonode)
+        or
+        sequence_call(fromnode, tonode)
+        or
+        sequence_subscript_slice(fromnode, tonode)
+    }
+
+    predicate itemFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        sequence_subscript_index(fromnode, tonode)
+    }
+
 }
 
-/* tonode = fromnode[:] */
-private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
-    exists(Slice all |
-        all = tonode.getIndex().getNode() and
-        not exists(all.getStart()) and not exists(all.getStop()) and
-        tonode.getValue() = fromnode
-    )
+
+/* Helper for sequence flow steps */
+pragma [noinline]
+private predicate sequence_subscript_index(ControlFlowNode obj, SubscriptNode sub) {
+    sub.isLoad() and
+    sub.getValue() = obj and
+    not sub.getNode().getIndex() instanceof Slice
 }
+
+pragma [noinline]
+private predicate sequence_subscript_slice(ControlFlowNode obj, SubscriptNode sub) {
+    sub.isLoad() and
+    sub.getValue() = obj and
+    sub.getNode().getIndex() instanceof Slice
+}
+
 
 /** A taint kind representing a mapping of objects to kinds.
  * Typically a dict, but can include other mappings.
@@ -255,20 +259,6 @@ class DictKind extends CollectionKind {
         result = valueKind
     }
 
-    override  TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        result = valueKind and
-        tonode.(SubscriptNode).getValue() = fromnode and tonode.isLoad()
-        or
-        result = valueKind and
-        tonode.(CallNode).getFunction().(AttrNode).getObject("get") = fromnode
-        or
-        result = this and TaintFlowImplementation::copyCall(fromnode, tonode)
-        or
-        result = this and
-        tonode.(CallNode).getFunction().refersTo(theDictType()) and
-        tonode.(CallNode).getArg(0) = fromnode
-    }
-
     override TaintKind getTaintOfMethodResult(string name) {
         name = "get" and result = valueKind
         or
@@ -279,6 +269,24 @@ class DictKind extends CollectionKind {
 
     override string repr() {
         result = "dict of " + valueKind
+    }
+
+}
+
+
+module DictKind {
+
+    predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        TaintFlowImplementation::copyCall(fromnode, tonode)
+        or
+        tonode.(CallNode).getFunction().refersTo(theDictType()) and
+        tonode.(CallNode).getArg(0) = fromnode
+    }
+
+    predicate valueFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        tonode.(SubscriptNode).getValue() = fromnode and tonode.isLoad()
+        or
+        tonode.(CallNode).getFunction().(AttrNode).getObject("get") = fromnode
     }
 
 }
@@ -888,6 +896,22 @@ library module TaintFlowImplementation {
             tokind = fromnode.getTaintKind().getTaintForFlowStep(fromnode.getNode(), tonode) and
             totaint = fromnode.getTrackedValue().toKind(tokind) and
             tocontext = fromnode.getContext()
+        )
+        or
+        exists(SequenceKind fromkind |
+            fromkind = fromnode.getTaintKind() and
+            tocontext = fromnode.getContext() |
+            totaint = fromnode.getTrackedValue() and SequenceKind::flowStep(fromnode.getNode(), tonode)
+            or
+            totaint = fromnode.getTrackedValue().toKind(fromkind.getItem()) and SequenceKind::itemFlowStep(fromnode.getNode(), tonode)
+        )
+        or
+        exists(DictKind fromkind |
+            fromkind = fromnode.getTaintKind() and
+            tocontext = fromnode.getContext() |
+            totaint = fromnode.getTrackedValue() and DictKind::flowStep(fromnode.getNode(), tonode)
+            or
+            totaint = fromnode.getTrackedValue().toKind(fromkind.getValue()) and DictKind::valueFlowStep(fromnode.getNode(), tonode)
         )
         or
         exists(TaintFlow flow, TaintKind tokind |
