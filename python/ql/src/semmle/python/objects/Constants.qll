@@ -8,11 +8,8 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
 
-abstract class BooleanObjectInternal extends ObjectInternal {
 
-    BooleanObjectInternal() {
-        this = TTrue() or this = TFalse()
-    }
+abstract class ConstantObjectInternal extends ObjectInternal {
 
     override ClassDecl getClassDeclaration() {
         none()
@@ -22,22 +19,13 @@ abstract class BooleanObjectInternal extends ObjectInternal {
 
     override boolean isComparable() { result = true }
 
-
-    override ObjectInternal getClass() {
-        result = TBuiltinClassObject(Builtin::special("bool"))
-    }
-
-    override Builtin getBuiltin() {
-        none()
-    }
-
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-        // Booleans aren't callable
+        // Constants aren't callable
         none()
     }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        // Booleans aren't callable
+        // Constants aren't callable
         none()
     }
 
@@ -63,6 +51,19 @@ abstract class BooleanObjectInternal extends ObjectInternal {
 
 }
 
+abstract class BooleanObjectInternal extends ConstantObjectInternal {
+
+    BooleanObjectInternal() {
+        this = TTrue() or this = TFalse()
+    }
+
+
+    override ObjectInternal getClass() {
+        result = TBuiltinClassObject(Builtin::special("bool"))
+    }
+
+}
+
 class TrueObjectInternal extends BooleanObjectInternal, TTrue {
 
     override string toString() {
@@ -85,7 +86,7 @@ class TrueObjectInternal extends BooleanObjectInternal, TTrue {
         none()
     }
 
-    override @py_object getSource() {
+    override Builtin getBuiltin() {
         result = Builtin::special("True")
     }
 
@@ -113,13 +114,13 @@ class FalseObjectInternal extends BooleanObjectInternal, TFalse {
         none()
     }
 
-    override @py_object getSource() {
+    override Builtin getBuiltin() {
         result = Builtin::special("False")
     }
 
 }
 
-class NoneObjectInternal extends ObjectInternal, TNone {
+class NoneObjectInternal extends ConstantObjectInternal, TNone {
 
     override string toString() {
         result = "None"
@@ -128,15 +129,6 @@ class NoneObjectInternal extends ObjectInternal, TNone {
     override boolean booleanValue() {
         result = false
     }
-
-    override ClassDecl getClassDeclaration() {
-        none()
-    }
-
-    override boolean isClass() { result = false }
-
-    override boolean isComparable() { result = true }
-
 
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(Builtin::special("NoneType"))
@@ -150,20 +142,6 @@ class NoneObjectInternal extends ObjectInternal, TNone {
         result = Builtin::special("None")
     }
 
-    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-        // None isn't callable
-        none()
-    }
-
-    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        // None isn't callable
-        none()
-    }
-
-    override ControlFlowNode getOrigin() {
-        none()
-    }
-
     override int intValue() {
         none()
     }
@@ -172,30 +150,10 @@ class NoneObjectInternal extends ObjectInternal, TNone {
         none()
     }
 
-    override predicate calleeAndOffset(Function scope, int paramOffset) {
-        none()
-    }
-
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        none()
-    }
-
-    override predicate attributesUnknown() { none() }
-
-    override @py_object getSource() {
-        result = Builtin::special("None")
-    }
-
-    override boolean isDescriptor() { result = false }
-
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
-
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
-
 }
 
 
-class IntObjectInternal extends ObjectInternal, TInt {
+class IntObjectInternal extends ConstantObjectInternal, TInt {
 
     override string toString() {
         result = "int " + this.intValue().toString()
@@ -206,35 +164,12 @@ class IntObjectInternal extends ObjectInternal, TInt {
         node.getNode().(IntegerLiteral).getValue() = this.intValue()
     }
 
-    override ClassDecl getClassDeclaration() {
-        none()
-    }
-
-    override boolean isClass() { result = false }
-
-    override boolean isComparable() { result = true }
-
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(Builtin::special("int"))
     }
 
-
     override Builtin getBuiltin() {
-        none()
-    }
-
-    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-        // ints aren't callable
-        none()
-    }
-
-    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        // ints aren't callable
-        none()
-    }
-
-    override ControlFlowNode getOrigin() {
-        none()
+        result.(Builtin).intValue() = this.intValue()
     }
 
     override int intValue() {
@@ -251,30 +186,10 @@ class IntObjectInternal extends ObjectInternal, TInt {
         this.intValue() != 0 and result = true
     }
 
-    override predicate calleeAndOffset(Function scope, int paramOffset) {
-        none()
-    }
-
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        none()
-    }
-
-    override predicate attributesUnknown() { none() }
-
-    override @py_object getSource() {
-        result.(Builtin).intValue() = this.intValue()
-    }
-
-    override boolean isDescriptor() { result = false }
-
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
-
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
-
 }
 
 
-class StringObjectInternal extends ObjectInternal, TString {
+class StringObjectInternal extends ConstantObjectInternal, TString {
 
     override string toString() {
         result =  "'" + this.strValue() + "'"
@@ -285,34 +200,12 @@ class StringObjectInternal extends ObjectInternal, TString {
         node.getNode().(StrConst).getText() = this.strValue()
     }
 
-    override ClassDecl getClassDeclaration() {
-        none()
-    }
-
-    override boolean isClass() { result = false }
-
-    override boolean isComparable() { result = true }
-
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(Builtin::special("unicode"))
     }
 
     override Builtin getBuiltin() {
-        none()
-    }
-
-    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-        // strings aren't callable
-        none()
-    }
-
-    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        // strings aren't callable
-        none()
-    }
-
-    override ControlFlowNode getOrigin() {
-        none()
+        result.(Builtin).strValue() = this.strValue()
     }
 
     override int intValue() {
@@ -328,26 +221,6 @@ class StringObjectInternal extends ObjectInternal, TString {
         or
         this.strValue() != "" and result = true
     }
-
-    override predicate calleeAndOffset(Function scope, int paramOffset) {
-        none()
-    }
-
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        none()
-    }
-
-    override predicate attributesUnknown() { none() }
-
-    override @py_object getSource() {
-        result.(Builtin).strValue() = this.strValue()
-    }
-
-    override boolean isDescriptor() { result = false }
-
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
-
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
 }
 
