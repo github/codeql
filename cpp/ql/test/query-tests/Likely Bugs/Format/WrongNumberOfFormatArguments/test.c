@@ -40,4 +40,6 @@ void test(int i, const char *str)
 		printf("%2$.*4$f", 0, num, 0, precision); // GOOD [FALSE POSITIVE]
 		printf("%2$.*4$f", num, 0, precision); // BAD (too few format arguments) [INCORRECT MESSAGE]
 	}
+
+	printf("%@ %i %i", 1, 2); // GOOD
 }
