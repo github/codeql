@@ -12,3 +12,7 @@
 | attributes.cs:38:12:38:30 | [AssemblyFileVersion(...)] | 0 | attributes.cs:38:32:38:40 | "1.0.0.0" |
 | attributes.cs:40:2:40:22 | [AttributeUsage(...)] | 0 | attributes.cs:40:24:40:50 | access to constant All |
 | attributes.cs:43:6:43:16 | [Conditional(...)] | 0 | attributes.cs:43:18:43:25 | "DEBUG2" |
+| attributes.cs:51:6:51:16 | [My(...)] | 0 | attributes.cs:51:18:51:22 | false |
+| attributes.cs:54:6:54:16 | [My(...)] | 0 | attributes.cs:54:18:54:21 | true |
+| attributes.cs:54:6:54:16 | [My(...)] | 1 | attributes.cs:54:28:54:29 | "" |
+| attributes.cs:54:6:54:16 | [My(...)] | 2 | attributes.cs:54:36:54:36 | 0 |
