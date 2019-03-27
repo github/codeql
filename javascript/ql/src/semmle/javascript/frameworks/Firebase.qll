@@ -22,7 +22,7 @@ module Firebase {
 
   /** Gets a reference to the `firebase/app` or `firebase-admin` API object. */
   DataFlow::SourceNode firebase() {
-    result = firebase(_)
+    result = firebase(DataFlow::TypeTracker::end())
   }
 
   /** Gets a reference to a Firebase app created with `initializeApp`. */
@@ -39,7 +39,7 @@ module Firebase {
    * app created explicitly with `initializeApp()`.
    */
   DataFlow::SourceNode app() {
-    result = firebase(_) or result = initApp(_)
+    result = firebase(DataFlow::TypeTracker::end()) or result = initApp(DataFlow::TypeTracker::end())
   }
 
   module Database {
@@ -55,7 +55,7 @@ module Firebase {
 
     /** Gets a reference to a Firebase database object, such as `firebase.database()`. */
     DataFlow::SourceNode database() {
-      result = database(_)
+      result = database(DataFlow::TypeTracker::end())
     }
 
     /** Gets a node that refers to a `Reference` object, such as `firebase.database().ref()`. */
@@ -67,12 +67,12 @@ module Firebase {
           name = "refFromURL"
         )
         or
-        exists (string name | result = ref(_).getAMethodCall(name) |
+        exists (string name | result = ref().getAMethodCall(name) |
           name = "push" or
           name = "child"
         )
         or
-        exists (string name | result = ref(_).getAPropertyRead(name) |
+        exists (string name | result = ref().getAPropertyRead(name) |
           name = "parent" or
           name = "root"
         )
@@ -87,7 +87,7 @@ module Firebase {
 
     /** Gets a node that refers to a `Reference` object, such as `firebase.database().ref()`. */
     DataFlow::SourceNode ref() {
-      result = ref(_)
+      result = ref(DataFlow::TypeTracker::end())
     }
 
     /** Gets a node that refers to a `Query` or `Reference` object. */
@@ -96,7 +96,7 @@ module Firebase {
       (
         result = ref(t) // a Reference can be used as a Query
         or
-        exists (string name | result = query(_).getAMethodCall(name) |
+        exists (string name | result = query().getAMethodCall(name) |
           name = "endAt" or
           name = "limitTo" + any(string s) or
           name = "orderBy" + any(string s) or
@@ -111,7 +111,7 @@ module Firebase {
 
     /** Gets a node that refers to a `Query` or `Reference` object. */
     DataFlow::SourceNode query() {
-      result = query(_)
+      result = query(DataFlow::TypeTracker::end())
     }
 
     /**
@@ -147,7 +147,7 @@ module Firebase {
      * Gets a node that is passed as the callback to a `Reference.transaction` call.
      */
     DataFlow::SourceNode transactionCallback() {
-      result = transactionCallback(_)
+      result = transactionCallback(DataFlow::TypeBackTracker::end())
     }
   }
 
@@ -168,7 +168,7 @@ module Firebase {
 
     /** Gets a reference to the Cloud Functions namespace. */
     DataFlow::SourceNode namespace() {
-      result = namespace(_)
+      result = namespace(DataFlow::TypeTracker::end())
     }
 
     /** Gets a reference to a Cloud Functions database object. */
@@ -183,7 +183,7 @@ module Firebase {
 
     /** Gets a reference to a Cloud Functions database object. */
     DataFlow::SourceNode database() {
-      result = database(_)
+      result = database(DataFlow::TypeTracker::end())
     }
 
     /** Gets a data flow node holding a `RefBuilder` object. */
@@ -198,7 +198,7 @@ module Firebase {
 
     /** Gets a data flow node holding a `RefBuilder` object. */
     DataFlow::SourceNode ref() {
-      result = refBuilder(_)
+      result = refBuilder(DataFlow::TypeTracker::end())
     }
 
     /** Gets a call that registers a listener on a `RefBuilder`, such as `ref.onCreate(...)`. */
@@ -237,7 +237,7 @@ module Firebase {
    * Gets a value that will be invoked with a `DataSnapshot` value as its first parameter.
    */
   DataFlow::SourceNode snapshotCallback() {
-    result = snapshotCallback(_)
+    result = snapshotCallback(DataFlow::TypeBackTracker::end())
   }
 
   /**
@@ -251,11 +251,11 @@ module Firebase {
       or
       result instanceof Database::QueryListenCall // returns promise
       or
-      result = snapshot(_).getAMethodCall("child")
+      result = snapshot().getAMethodCall("child")
       or
-      result = snapshot(_).getAMethodCall("forEach").getCallback(0).getParameter(0)
+      result = snapshot().getAMethodCall("forEach").getCallback(0).getParameter(0)
       or
-      exists (string prop | result = snapshot(_).getAPropertyRead(prop) |
+      exists (string prop | result = snapshot().getAPropertyRead(prop) |
         prop = "before" or // only defined on Change objects
         prop = "after"
       )
@@ -273,7 +273,7 @@ module Firebase {
    * `firebase.database().ref().on('value', x => {...})`.
    */
   DataFlow::SourceNode snapshot() {
-    result = snapshot(_)
+    result = snapshot(DataFlow::TypeTracker::end())
   }
 
   /**
