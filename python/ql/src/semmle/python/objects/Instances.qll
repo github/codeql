@@ -221,9 +221,7 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext context) {
-        context.appliesTo(node) and
-        this.getClass() = ObjectInternal::builtin("float") and 
-        node.getNode() instanceof FloatLiteral
+        none()
     }
 
     /** Gets the class declaration for this object, if it is a declared class. */

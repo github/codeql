@@ -169,7 +169,7 @@ class IntObjectInternal extends ConstantObjectInternal, TInt {
     }
 
     override Builtin getBuiltin() {
-        result.(Builtin).intValue() = this.intValue()
+        result.intValue() = this.intValue()
     }
 
     override int intValue() {
@@ -184,6 +184,45 @@ class IntObjectInternal extends ConstantObjectInternal, TInt {
         this.intValue() = 0 and result = false
         or
         this.intValue() != 0 and result = true
+    }
+
+}
+
+class FloatObjectInternal extends ConstantObjectInternal, TFloat {
+
+    override string toString() {
+        result = "float " + this.floatValue().toString()
+    }
+
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+        context.appliesTo(node) and
+        node.getNode().(FloatLiteral).getValue() = this.floatValue()
+    }
+
+    override ObjectInternal getClass() {
+        result = TBuiltinClassObject(Builtin::special("float"))
+    }
+
+    override Builtin getBuiltin() {
+        result.getName().toFloat() = this.floatValue()
+    }
+
+    private float floatValue() {
+        this = TFloat(result)
+    }
+
+    override int intValue() {
+        this = TFloat(result)
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override boolean booleanValue() {
+        this.floatValue() = 0.0 and result = false
+        or
+        this.floatValue() != 0.0 and result = true
     }
 
 }

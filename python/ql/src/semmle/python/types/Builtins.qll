@@ -87,6 +87,11 @@ class Builtin extends @py_cobject {
         result = this.getName().toInt()
     }
 
+    float floatValue() {
+        (this.getClass() = Builtin::special("float")) and
+        result = this.getName().toFloat()
+    }
+
     string strValue() {
         (this.getClass() = Builtin::special("unicode") or
         this.getClass() = Builtin::special("bytes")) and

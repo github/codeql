@@ -22,6 +22,7 @@ newtype TObject =
         not bltn.isMethod() and not bltn.isModule() and
         not bltn.getClass() = Builtin::special("tuple") and
         not exists(bltn.intValue()) and
+        not exists(bltn.floatValue()) and
         not exists(bltn.strValue()) and
         not py_special_objects(bltn, _)
     }
@@ -58,13 +59,17 @@ newtype TObject =
         // And all combinations of flags up to 2^8
         n in [0..511] or
         // Any number explicitly mentioned in the source code.
-        exists(Num num |
-            n = num.getN().toInt() or
+        exists(IntegerLiteral num |
+            n = num.getValue() or
             exists(UnaryExpr neg | neg.getOp() instanceof USub and neg.getOperand() = num)
             and n = -num.getN().toInt()
         )
         or
         n = any(Builtin b).intValue()
+    }
+    or
+    TFloat(float f) {
+        f = any(FloatLiteral num).getValue()
     }
     or
     TString(string s) {
@@ -138,8 +143,6 @@ predicate literal_instantiation(ControlFlowNode n, ClassObjectInternal cls, Poin
         n instanceof ListNode and cls = ObjectInternal::builtin("list")
         or
         n instanceof DictNode and cls = ObjectInternal::builtin("dict")
-        or
-        n.getNode() instanceof FloatLiteral and cls = ObjectInternal::builtin("float")
         or
         n.getNode() instanceof ImaginaryLiteral and cls = ObjectInternal::builtin("complex")
     )
@@ -303,6 +306,8 @@ library class ClassDecl extends @py_object {
             name = "MethodType" or
             name = "ModuleType"
         )
+        or
+        this = Builtin::builtin("float")
     }
 
 }
