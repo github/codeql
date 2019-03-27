@@ -1,6 +1,6 @@
 import python
 import semmle.python.types.Exceptions
-private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.Callables
 private import semmle.python.libraries.Zope
 private import semmle.python.pointsto.Base
@@ -64,7 +64,7 @@ abstract class FunctionObject extends Object {
 
     /** Gets a call-site from where this function is called, given the `context` */
     ControlFlowNode getACall(Context caller_context) {
-        result = PointsTo2::get_a_call(theCallable(), caller_context)
+        result = theCallable().getACall(caller_context)
     }
 
     /** Gets the `ControlFlowNode` that will be passed as the nth argument to `this` when called at `call`.

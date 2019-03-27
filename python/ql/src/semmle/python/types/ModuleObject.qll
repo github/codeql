@@ -1,5 +1,5 @@
 import python
-private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.Modules
 private import semmle.python.types.ModuleKind
 

@@ -93,37 +93,77 @@ module CfgOrigin {
 
 }
 
-cached module PointsTo2 {
+/* The API */
+module PointsTo {
+
+    predicate pointsTo(ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        PointsToInternal::pointsTo(f, context, value, origin)
+    }
+
+    predicate variablePointsTo(EssaVariable var, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        PointsToInternal::variablePointsTo(var, context, value, origin)
+    }
+
+    /* Backwards compatibility */
+    deprecated predicate
+    points_to(ControlFlowNode f, PointsToContext context, Object obj, ClassObject cls, ControlFlowNode origin) {
+        exists(Value value |
+            PointsToInternal::pointsTo(f, context, value, origin) and
+            obj = value.getSource() and
+            cls = value.getClass().getSource()
+        )
+    }
+
+    deprecated predicate
+    ssa_variable_points_to(EssaVariable var, PointsToContext context, Object obj, ClassObject cls, CfgOrigin origin) {
+        exists(Value value |
+            PointsToInternal::variablePointsTo(var, context, value, origin) and
+            obj = value.getSource() and
+            cls = value.getClass().getSource()
+        )
+    }
+
+    deprecated
+    CallNode get_a_call(Object func, PointsToContext context) {
+        exists(Value value |
+            result = value.getACall(context) and
+            func = value.getSource()
+        )
+    }
+
+}
+
+cached module PointsToInternal {
 
     /** INTERNAL -- Use `f.refersTo(value, origin)` instead. */
     cached predicate pointsTo(ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        pointsTo_candidate(f, context, value, origin) and
+        points_to_candidate(f, context, value, origin) and
         reachableBlock(f.getBasicBlock(), context)
     }
 
-    private predicate pointsTo_candidate(ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        use_pointsTo(f, context, value, origin)
+    private predicate points_to_candidate(ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        use_points_to(f, context, value, origin)
         or
         /* Not necessary, but for backwards compatibility */
-        def_pointsTo(f, context, value, origin)
+        def_points_to(f, context, value, origin)
         or
-        attribute_load_pointsTo(f, context, value, origin)
+        attribute_load_points_to(f, context, value, origin)
         or
-        subscript_pointsTo(f, context, value, origin)
+        subscript_points_to(f, context, value, origin)
         or
-        binary_expr_pointsTo(f, context, value, origin)
+        binary_expr_points_to(f, context, value, origin)
         or
-        origin = f and compare_expr_pointsTo(f, context, value)
+        origin = f and compare_expr_points_to(f, context, value)
         or
-        origin = f and unary_pointsTo(f, context, value)
+        origin = f and unary_points_to(f, context, value)
         or
         origin = f and value.introduced(f, context)
         or
-        InterModulePointsTo::import_pointsTo(f, context, value, origin)
+        InterModulePointsTo::import_points_to(f, context, value, origin)
         or
-        InterModulePointsTo::from_import_pointsTo(f, context, value, origin)
+        InterModulePointsTo::from_import_points_to(f, context, value, origin)
         or
-        InterProceduralPointsTo::call_pointsTo(f, context, value, origin)
+        InterProceduralPointsTo::call_points_to(f, context, value, origin)
         // To do... More stuff here :)
         // or
         // f.(CustomPointsToFact).pointsTo(context, value, origin)
@@ -139,10 +179,6 @@ cached module PointsTo2 {
             pointsTo(call.getArg(1), ctx, nameobj, _) and
             nameobj.strValue() = name
         )
-    }
-
-    cached CallNode get_a_call(ObjectInternal func, PointsToContext context) {
-        pointsTo(result.getFunction(), context, func, _)
     }
 
     /* Holds if BasicBlock `b` is reachable, given the context `context`. */
@@ -189,63 +225,63 @@ cached module PointsTo2 {
 
     /** Gets an object pointed to by a use (of a variable). */
     pragma [noinline]
-    private predicate use_pointsTo(NameNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate use_points_to(NameNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(CfgOrigin origin_or_obj |
             value != ObjectInternal::undefined() and
-            use_pointsTo_maybe_origin(f, context, value, origin_or_obj) |
+            use_points_to_maybe_origin(f, context, value, origin_or_obj) |
             origin = origin_or_obj.asCfgNodeOrHere(f)
         )
     }
 
     /** Gets an object pointed to by the definition of an ESSA variable. */
     pragma [noinline]
-    private predicate def_pointsTo(DefinitionNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate def_points_to(DefinitionNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         pointsTo(f.getValue(), context, value, origin)
     }
 
     pragma [noinline]
-    private predicate use_pointsTo_maybe_origin(NameNode f, PointsToContext context, ObjectInternal value, CfgOrigin origin_or_obj) {
-        ssa_variable_pointsTo(fast_local_variable(f), context, value,  origin_or_obj)
+    private predicate use_points_to_maybe_origin(NameNode f, PointsToContext context, ObjectInternal value, CfgOrigin origin_or_obj) {
+        variablePointsTo(fast_local_variable(f), context, value,  origin_or_obj)
         or
-        name_lookup_pointsTo_maybe_origin(f, context, value, origin_or_obj)
+        name_lookup_points_to_maybe_origin(f, context, value, origin_or_obj)
         or
         not exists(fast_local_variable(f)) and not exists(name_local_variable(f)) and
-        global_lookup_pointsTo_maybe_origin(f, context, value, origin_or_obj)
+        global_lookup_points_to_maybe_origin(f, context, value, origin_or_obj)
     }
 
     /** Holds if `var` refers to `(value, origin)` given the context `context`. */
     pragma [noinline]
-    cached predicate ssa_variable_pointsTo(EssaVariable var, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        ssa_definition_pointsTo(var.getDefinition(), context, value, origin)
+    cached predicate variablePointsTo(EssaVariable var, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+        ssa_definition_points_to(var.getDefinition(), context, value, origin)
     }
 
     pragma [noinline]
-    private predicate name_lookup_pointsTo_maybe_origin(NameNode f, PointsToContext context, ObjectInternal value, CfgOrigin origin_or_obj) {
+    private predicate name_lookup_points_to_maybe_origin(NameNode f, PointsToContext context, ObjectInternal value, CfgOrigin origin_or_obj) {
         exists(EssaVariable var | var = name_local_variable(f) |
-            ssa_variable_pointsTo(var, context, value, origin_or_obj)
+            variablePointsTo(var, context, value, origin_or_obj)
         )
         or
         local_variable_undefined(f, context) and
-        global_lookup_pointsTo_maybe_origin(f, context, value, origin_or_obj)
+        global_lookup_points_to_maybe_origin(f, context, value, origin_or_obj)
     }
 
     pragma [noinline]
     private predicate local_variable_undefined(NameNode f, PointsToContext context) {
-        ssa_variable_pointsTo(name_local_variable(f), context, ObjectInternal::undefined(), _)
+        variablePointsTo(name_local_variable(f), context, ObjectInternal::undefined(), _)
     }
 
     pragma [noinline]
-    private predicate global_lookup_pointsTo_maybe_origin(NameNode f, PointsToContext context, ObjectInternal value, CfgOrigin origin_or_obj) {
-        ssa_variable_pointsTo(global_variable(f), context, value, origin_or_obj)
+    private predicate global_lookup_points_to_maybe_origin(NameNode f, PointsToContext context, ObjectInternal value, CfgOrigin origin_or_obj) {
+        variablePointsTo(global_variable(f), context, value, origin_or_obj)
         or
         exists(ControlFlowNode origin |
             origin_or_obj = CfgOrigin::fromCfgNode(origin)
             |
-            ssa_variable_pointsTo(global_variable(f), context, ObjectInternal::undefined(), _) and
-            potential_builtin_pointsTo(f, value, origin)
+            variablePointsTo(global_variable(f), context, ObjectInternal::undefined(), _) and
+            potential_builtin_points_to(f, value, origin)
             or
             not exists(global_variable(f)) and context.appliesToScope(f.getScope()) and
-            potential_builtin_pointsTo(f, value, origin)
+            potential_builtin_points_to(f, value, origin)
         )
     }
 
@@ -272,7 +308,7 @@ cached module PointsTo2 {
 
     /** Holds if `f` is an attribute `x.attr` and points to `(value, cls, origin)`. */
     pragma [noinline]
-    private predicate attribute_load_pointsTo(AttrNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate attribute_load_points_to(AttrNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         f.isLoad() and
         exists(ObjectInternal object, string name, CfgOrigin orig |
             pointsTo(f.getObject(name), context, object, _) |
@@ -291,77 +327,77 @@ cached module PointsTo2 {
     }
 
     /** Holds if the ESSA definition `def`  refers to `(value, origin)` given the context `context`. */
-    private predicate ssa_definition_pointsTo(EssaDefinition def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        ssa_phi_pointsTo(def, context, value, origin)
+    private predicate ssa_definition_points_to(EssaDefinition def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+        ssa_phi_points_to(def, context, value, origin)
         or
         exists(ControlFlowNode orig |
-            ssa_node_definition_pointsTo(def, context, value, orig) and
+            ssa_node_definition_points_to(def, context, value, orig) and
             origin = CfgOrigin::fromCfgNode(orig)
         )
         or
-        ssa_filter_definition_pointsTo(def, context, value, origin)
+        ssa_filter_definition_points_to(def, context, value, origin)
         or
-        ssa_node_refinement_pointsTo(def, context, value, origin)
+        ssa_node_refinement_points_to(def, context, value, origin)
     }
 
     pragma [noinline]
-    private predicate ssa_node_definition_pointsTo(EssaNodeDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate ssa_node_definition_points_to(EssaNodeDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         reachableBlock(def.getDefiningNode().getBasicBlock(), _) and
-        ssa_node_definition_pointsTo_unpruned(def, context, value, origin)
+        ssa_node_definition_points_to_unpruned(def, context, value, origin)
     }
 
     pragma [nomagic]
-    private predicate ssa_node_definition_pointsTo_unpruned(EssaNodeDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        InterProceduralPointsTo::parameter_pointsTo(def, context, value, origin)
+    private predicate ssa_node_definition_points_to_unpruned(EssaNodeDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        InterProceduralPointsTo::parameter_points_to(def, context, value, origin)
         or
-        assignment_pointsTo(def, context, value, origin)
+        assignment_points_to(def, context, value, origin)
         //// TO DO...
         or
-        self_parameter_pointsTo(def, context, value, origin)
+        self_parameter_points_to(def, context, value, origin)
         or
-        delete_pointsTo(def, context, value, origin)
+        delete_points_to(def, context, value, origin)
         or
-        module_name_pointsTo(def, context, value, origin)
+        module_name_points_to(def, context, value, origin)
         or
-        scope_entry_pointsTo(def, context, value, origin)
+        scope_entry_points_to(def, context, value, origin)
         or
-        InterModulePointsTo::implicit_submodule_pointsTo(def, context, value, origin)
+        InterModulePointsTo::implicit_submodule_points_to(def, context, value, origin)
         // or
-        // iteration_definition_pointsTo(def, context, value, origin)
+        // iteration_definition_points_to(def, context, value, origin)
         /*
          * No points-to for non-local function entry definitions yet.
          */
     }
 
     pragma [noinline]
-    private predicate ssa_node_refinement_pointsTo(EssaNodeRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        //method_callsite_pointsTo(def, context, value, origin)
+    private predicate ssa_node_refinement_points_to(EssaNodeRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+        //method_callsite_points_to(def, context, value, origin)
         //or
-        InterModulePointsTo::import_star_pointsTo(def, context, value, origin)
+        InterModulePointsTo::import_star_points_to(def, context, value, origin)
         or
-        //attribute_assignment_pointsTo(def, context, value, origin)
+        //attribute_assignment_points_to(def, context, value, origin)
         //or
-        InterProceduralPointsTo::callsite_pointsTo(def, context, value, origin)
+        InterProceduralPointsTo::callsite_points_to(def, context, value, origin)
         or
-        argument_pointsTo(def, context, value, origin)
+        argument_points_to(def, context, value, origin)
         //or
-        //attribute_delete_pointsTo(def, context, value, origin)
+        //attribute_delete_points_to(def, context, value, origin)
         or
-        uni_edged_phi_pointsTo(def, context, value, origin)
+        uni_edged_phi_points_to(def, context, value, origin)
     }
 
     /** Ignore the effects of calls on their arguments. PointsTo is an approximation, but attempting to improve accuracy would be very expensive for very little gain. */
-    private predicate argument_pointsTo(ArgumentRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        ssa_variable_pointsTo(def.getInput(), context, value, origin)
+    private predicate argument_points_to(ArgumentRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+        variablePointsTo(def.getInput(), context, value, origin)
     }
 
-    private predicate self_parameter_pointsTo(ParameterDefinition def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+    private predicate self_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
         origin = CfgOrigin::fromCfgNode(def.getDefiningNode()) and
         value.(SelfInstanceInternal).parameterAndContext(def, context)
     }
 
     /** Holds if ESSA edge refinement, `def`, refers to `(value, cls, origin)`. */
-    private predicate ssa_filter_definition_pointsTo(PyEdgeRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+    private predicate ssa_filter_definition_points_to(PyEdgeRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
         exists(ControlFlowNode test, ControlFlowNode use |
             refinement_test(test, use, Conditionals::branchEvaluatesTo(test, use, context, value, origin.toCfgNode()), def)
         )
@@ -369,7 +405,7 @@ cached module PointsTo2 {
 
     /** Holds if ESSA definition, `uniphi`, refers to `(value, origin)`. */
     pragma [noinline]
-    private predicate uni_edged_phi_pointsTo(SingleSuccessorGuard uniphi, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+    private predicate uni_edged_phi_points_to(SingleSuccessorGuard uniphi, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
         exists(ControlFlowNode test, ControlFlowNode use |
             /* Because calls such as `len` may create a new variable, we need to go via the source variable
              * That is perfectly safe as we are only dealing with calls that do not mutate their arguments.
@@ -382,19 +418,19 @@ cached module PointsTo2 {
 
     /** Points-to for normal assignments `def = ...`. */
     pragma [noinline]
-    private predicate assignment_pointsTo(AssignmentDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate assignment_points_to(AssignmentDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         pointsTo(def.getValue(), context, value, origin)
     }
 
     /** Points-to for deletion: `del name`. */
     pragma [noinline]
-    private predicate delete_pointsTo(DeletionDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate delete_points_to(DeletionDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         value = ObjectInternal::undefined() and origin = def.getDefiningNode() and context.appliesToScope(def.getScope())
     }
 
     /** Implicit "definition" of `__name__` at the start of a module. */
     pragma [noinline]
-    private predicate module_name_pointsTo(ScopeEntryDefinition def, PointsToContext context, StringObjectInternal value, ControlFlowNode origin) {
+    private predicate module_name_points_to(ScopeEntryDefinition def, PointsToContext context, StringObjectInternal value, ControlFlowNode origin) {
         def.getVariable().getName() = "__name__" and
         exists(Module m |
             m = def.getScope()
@@ -418,26 +454,26 @@ cached module PointsTo2 {
 
     /** Holds if the phi-function `phi` refers to `(value, origin)` given the context `context`. */
     pragma [nomagic]
-    private predicate ssa_phi_pointsTo(PhiFunction phi, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+    private predicate ssa_phi_points_to(PhiFunction phi, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
         exists(EssaVariable input, BasicBlock pred |
             input = phi.getInput(pred) and
-            ssa_variable_pointsTo(input, context, value, origin)
+            variablePointsTo(input, context, value, origin)
             |
             controlledReachableEdge(pred, phi.getBasicBlock(), context)
             or
             not exists(ConditionBlock guard | guard.controlsEdge(pred, phi.getBasicBlock(), _))
         )
         or
-        ssa_variable_pointsTo(phi.getShortCircuitInput(), context, value, origin)
+        variablePointsTo(phi.getShortCircuitInput(), context, value, origin)
     }
 
     /** Points-to for implicit variable declarations at scope-entry. */
     pragma [noinline]
-    private predicate scope_entry_pointsTo(ScopeEntryDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate scope_entry_points_to(ScopeEntryDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         /* Transfer from another scope */
         exists(EssaVariable var, PointsToContext outer, CfgOrigin orig |
             InterProceduralPointsTo::scope_entry_value_transfer(var, outer, def, context) and
-            ssa_variable_pointsTo(var, outer, value, orig) and
+            variablePointsTo(var, outer, value, orig) and
             origin = orig.asCfgNodeOrHere(def.getDefiningNode())
         )
         or
@@ -462,7 +498,7 @@ cached module PointsTo2 {
         )
     }
 
-    private predicate subscript_pointsTo(SubscriptNode sub, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate subscript_points_to(SubscriptNode sub, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         pointsTo(sub.getValue(), context, ObjectInternal::unknown(), _) and
         value = ObjectInternal::unknown() and origin = sub
     }
@@ -470,21 +506,21 @@ cached module PointsTo2 {
     /** Track bitwise expressions so we can handle integer flags and enums.
      * Tracking too many binary expressions is likely to kill performance.
      */
-    private predicate binary_expr_pointsTo(BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate binary_expr_points_to(BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         // TO DO...
         // Track some integer values through `|` and the types of some objects
         none()
     }
 
     pragma [noinline]
-    private predicate compare_expr_pointsTo(CompareNode cmp, PointsToContext context, ObjectInternal value) {
+    private predicate compare_expr_points_to(CompareNode cmp, PointsToContext context, ObjectInternal value) {
         value = ObjectInternal::bool(Conditionals::comparisonEvaluatesTo(cmp, _, context, _, _))
         // or
         // value = version_tuple_compare(cmp, context)
     }
 
     pragma [noinline]
-    private predicate unary_pointsTo(UnaryExprNode f, PointsToContext context, ObjectInternal value) {
+    private predicate unary_points_to(UnaryExprNode f, PointsToContext context, ObjectInternal value) {
         exists(Unaryop op, ObjectInternal operand |
             op = f.getNode().getOp() and
             pointsTo(f.getOperand(), context, operand, _)
@@ -502,7 +538,7 @@ cached module PointsTo2 {
 module InterModulePointsTo {
 
     pragma [noinline]
-    predicate import_pointsTo(ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    predicate import_points_to(ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(string name, ImportExpr i |
             i.getAFlowNode() = f and i.getImportedModuleName() = name and
             module_imported_as(value, name) and
@@ -511,23 +547,23 @@ module InterModulePointsTo {
         )
     }
 
-    predicate from_import_pointsTo(ImportMemberNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        from_self_import_pointsTo(f, context, value, origin)
+    predicate from_import_points_to(ImportMemberNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        from_self_import_points_to(f, context, value, origin)
         or
-        from_other_import_pointsTo(f, context, value, origin)
+        from_other_import_points_to(f, context, value, origin)
     }
 
     pragma [noinline]
-    predicate from_self_import_pointsTo(ImportMemberNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    predicate from_self_import_points_to(ImportMemberNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(EssaVariable var, CfgOrigin orig |
             var = ssa_variable_for_module_attribute(f, context) and
-            PointsTo2::ssa_variable_pointsTo(var, context, value, orig) and
+            PointsToInternal::variablePointsTo(var, context, value, orig) and
             origin = orig.asCfgNodeOrHere(f)
         )
     }
 
     pragma [noinline]
-    predicate from_other_import_pointsTo(ImportMemberNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    predicate from_other_import_points_to(ImportMemberNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(string name, ModuleObjectInternal mod, CfgOrigin orig |
             from_import_imports(f, context, mod, name) and
             (mod.getSourceModule() != f.getEnclosingModule() or mod.isBuiltin()) and
@@ -538,20 +574,20 @@ module InterModulePointsTo {
             //not exists(EssaVariable var | var.getSourceVariable().getName() = name and var.getAUse() = f) and
             //exists(EssaVariable dollar |
             //    isModuleStateVariable(dollar) and dollar.getAUse() = f and
-            //    SSA::ssa_variable_named_attribute_pointsTo(dollar, context, name, value, orig)
+            //    SSA::ssa_variable_named_attribute_points_to(dollar, context, name, value, orig)
             //)
         )
     }
 
     private predicate from_import_imports(ImportMemberNode f, PointsToContext context, ModuleObjectInternal mod, string name) {
-        PointsTo2::pointsTo(f.getModule(name), context, mod, _)
+        PointsToInternal::pointsTo(f.getModule(name), context, mod, _)
     }
 
     pragma [noinline]
     private EssaVariable ssa_variable_for_module_attribute(ImportMemberNode f, PointsToContext context) {
         exists(string name, ModuleObjectInternal mod, Module m |
             mod.getSourceModule() = m and m = f.getEnclosingModule() and m = result.getScope() and
-            PointsTo2::pointsTo(f.getModule(name), context, mod, _) and
+            PointsToInternal::pointsTo(f.getModule(name), context, mod, _) and
             result.getSourceVariable().getName() = name and result.getAUse() = f
         )
     }
@@ -566,11 +602,11 @@ module InterModulePointsTo {
           /* Use previous points-to here to avoid slowing down the recursion too much */
           exists(SubscriptNode sub |
               sub.getValue() = sys_modules_flow and
-              PointsTo2::pointsTo(sys_modules_flow, _, ObjectInternal::sysModules(), _) and
+              PointsToInternal::pointsTo(sys_modules_flow, _, ObjectInternal::sysModules(), _) and
               sub.getIndex() = n and
               n.getNode().(StrConst).getText() = name and
               sub.(DefinitionNode).getValue() = mod and
-              PointsTo2::pointsTo(mod, _, m, _)
+              PointsToInternal::pointsTo(mod, _, m, _)
           )
         )
     }
@@ -580,7 +616,7 @@ module InterModulePointsTo {
      * PointsTo isn't exactly how the interpreter works, but is the best approximation we can manage statically.
      */
     pragma [noinline]
-    predicate implicit_submodule_pointsTo(ImplicitSubModuleDefinition def, PointsToContext context, ModuleObjectInternal value, ControlFlowNode origin) {
+    predicate implicit_submodule_points_to(ImplicitSubModuleDefinition def, PointsToContext context, ModuleObjectInternal value, ControlFlowNode origin) {
         exists(PackageObjectInternal package |
             package.getSourceModule() = def.getDefiningNode().getScope() |
             value = package.submodule(def.getSourceVariable().getName()) and
@@ -590,12 +626,12 @@ module InterModulePointsTo {
     }
 
     /** Points-to for `from ... import *`. */
-    predicate import_star_pointsTo(ImportStarRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+    predicate import_star_points_to(ImportStarRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
         exists(CfgOrigin orig |
             origin = orig.fix(def.getDefiningNode())
             |
             exists(ModuleObjectInternal mod, string name |
-                PointsTo2::pointsTo(def.getDefiningNode().(ImportStarNode).getModule(), context, mod, _) and
+                PointsToInternal::pointsTo(def.getDefiningNode().(ImportStarNode).getModule(), context, mod, _) and
                 name = def.getSourceVariable().getName() |
                 /* Attribute from imported module */
                 module_exports_boolean(mod, name) = true and
@@ -605,7 +641,7 @@ module InterModulePointsTo {
             exists(EssaVariable var |
                 /* Retain value held before import */
                 variable_not_redefined_by_import_star(var, context, def) and
-                PointsTo2::ssa_variable_pointsTo(var, context, value,orig)
+                PointsToInternal::variablePointsTo(var, context, value,orig)
             )
         )
     }
@@ -615,7 +651,7 @@ module InterModulePointsTo {
     cached predicate variable_not_redefined_by_import_star(EssaVariable var, PointsToContext context, ImportStarRefinement def) {
         var = def.getInput() and
         exists(ModuleObjectInternal mod |
-            PointsTo2::pointsTo(def.getDefiningNode().(ImportStarNode).getModule(), context, mod, _) |
+            PointsToInternal::pointsTo(def.getDefiningNode().(ImportStarNode).getModule(), context, mod, _) |
             module_exports_boolean(mod, var.getSourceVariable().getName()) = false
             or
             exists(Module m, string name |
@@ -627,7 +663,7 @@ module InterModulePointsTo {
 
     private predicate importsByImportStar(ModuleObjectInternal mod, ModuleObjectInternal imported) {
         exists(ImportStarNode isn |
-            PointsTo2::pointsTo(isn.getModule(), _, imported, _) and
+            PointsToInternal::pointsTo(isn.getModule(), _, imported, _) and
             isn.getScope() = mod.getSourceModule()
         )
         or exists(ModuleObjectInternal mid |
@@ -660,7 +696,7 @@ module InterModulePointsTo {
             else (
                 exists(ImportStarNode isn, ModuleObjectInternal imported |
                     isn.getScope() = src and
-                    PointsTo2::pointsTo(isn.getModule(), _, imported, _) and
+                    PointsToInternal::pointsTo(isn.getModule(), _, imported, _) and
                     result = module_exports_boolean(imported, name)
                 )
                 or
@@ -686,9 +722,9 @@ module InterModulePointsTo {
 module InterProceduralPointsTo {
 
     pragma [noinline]
-    predicate call_pointsTo(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    predicate call_points_to(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(ObjectInternal func, CfgOrigin resultOrigin |
-            PointsTo2::pointsTo(f.getFunction(), context, func, _) and
+            PointsToInternal::pointsTo(f.getFunction(), context, func, _) and
             origin = resultOrigin.fix(f)
             |
             exists(PointsToContext callee |
@@ -702,21 +738,21 @@ module InterProceduralPointsTo {
 
     /** Points-to for parameter. `def foo(param): ...`. */
     pragma [noinline]
-    predicate parameter_pointsTo(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        positional_parameter_pointsTo(def, context, value, origin)
+    predicate parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        positional_parameter_points_to(def, context, value, origin)
         or
-        named_parameter_pointsTo(def, context, value, origin)
+        named_parameter_points_to(def, context, value, origin)
         or
-        default_parameter_pointsTo(def, context, value, origin)
+        default_parameter_points_to(def, context, value, origin)
         or
-        special_parameter_pointsTo(def, context, value, origin)
+        special_parameter_points_to(def, context, value, origin)
     }
 
-    /** Helper for `parameter_pointsTo` */
+    /** Helper for `parameter_points_to` */
     pragma [noinline]
-    private predicate positional_parameter_pointsTo(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate positional_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(PointsToContext caller, ControlFlowNode arg |
-            PointsTo2::pointsTo(arg, caller, value, origin) and
+            PointsToInternal::pointsTo(arg, caller, value, origin) and
             callsite_argument_transfer(arg, caller, def, context)
         )
         or
@@ -725,23 +761,23 @@ module InterProceduralPointsTo {
     }
 
 
-    /** Helper for `parameter_pointsTo` */
+    /** Helper for `parameter_points_to` */
     pragma [noinline]
-    private predicate named_parameter_pointsTo(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate named_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(CallNode call, PointsToContext caller, PythonFunctionObjectInternal func, string name |
             context.fromCall(call, func, caller) and
             def.getParameter() = func.getScope().getArgByName(name) and
-            PointsTo2::pointsTo(call.getArgByName(name), caller, value, origin)
+            PointsToInternal::pointsTo(call.getArgByName(name), caller, value, origin)
         )
     }
 
-    /** Helper for parameter_pointsTo */
-    private predicate default_parameter_pointsTo(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        exists(PointsToContext imp | imp.isImport() | PointsTo2::pointsTo(def.getDefault(), imp, value, origin)) and
+    /** Helper for parameter_points_to */
+    private predicate default_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        exists(PointsToContext imp | imp.isImport() | PointsToInternal::pointsTo(def.getDefault(), imp, value, origin)) and
         context_for_default_value(def, context)
     }
 
-    /** Helper for default_parameter_pointsTo */
+    /** Helper for default_parameter_points_to */
     pragma [noinline]
     private predicate context_for_default_value(ParameterDefinition def, PointsToContext context) {
         context.isRuntime()
@@ -756,9 +792,9 @@ module InterProceduralPointsTo {
         )
     }
 
-    /** Helper for parameter_pointsTo */
+    /** Helper for parameter_points_to */
     pragma [noinline]
-    private predicate special_parameter_pointsTo(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate special_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         context.isRuntime() and
         origin = def.getDefiningNode() and
         exists(ControlFlowNode param |
@@ -792,7 +828,7 @@ module InterProceduralPointsTo {
     cached predicate callsite_calls_function(CallNode call, PointsToContext caller, Function scope, PointsToContext callee, int parameter_offset) {
         callee.fromCall(call, caller) and
         exists(ObjectInternal func |
-            PointsTo2::pointsTo(call.getFunction(), caller, func, _) and
+            PointsToInternal::pointsTo(call.getFunction(), caller, func, _) and
             func.calleeAndOffset(scope, parameter_offset)
         )
     }
@@ -861,7 +897,7 @@ module InterProceduralPointsTo {
      * Where var may be redefined in call to `foo` if `var` escapes (is global or non-local).
      */
     pragma [noinline]
-    predicate callsite_pointsTo(CallsiteRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+    predicate callsite_points_to(CallsiteRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
         exists(SsaSourceVariable srcvar |
             srcvar = def.getSourceVariable() |
             if srcvar instanceof EscapingAssignmentGlobalVariable then (
@@ -869,17 +905,17 @@ module InterProceduralPointsTo {
                 exists(EssaVariable var, Function func, PointsToContext callee |
                     callsite_calls_function(def.getCall(), context, func, callee, _) and
                     var_at_exit(srcvar, func, var) and
-                    PointsTo2::ssa_variable_pointsTo(var, callee, value, origin)
+                    PointsToInternal::variablePointsTo(var, callee, value, origin)
                 )
                 or
                 exists(ObjectInternal callable |
-                    PointsTo2::pointsTo(def.getCall().getFunction(), context, callable, _) and
+                    PointsToInternal::pointsTo(def.getCall().getFunction(), context, callable, _) and
                     exists(callable.getBuiltin()) and
-                    PointsTo2::ssa_variable_pointsTo(def.getInput(), context, value, origin)
+                    PointsToInternal::variablePointsTo(def.getInput(), context, value, origin)
                 )
             ) else (
                 /* Otherwise we can assume its value (but not those of its attributes or members) has not changed. */
-                PointsTo2::ssa_variable_pointsTo(def.getInput(), context, value, origin)
+                PointsToInternal::variablePointsTo(def.getInput(), context, value, origin)
             )
         )
     }
@@ -896,7 +932,7 @@ module InterProceduralPointsTo {
 
 /** Gets the `value, origin` that `f` would refer to if it has not been assigned some other value */
 pragma [noinline]
-private predicate potential_builtin_pointsTo(NameNode f, ObjectInternal value, ControlFlowNode origin) {
+private predicate potential_builtin_points_to(NameNode f, ObjectInternal value, ControlFlowNode origin) {
     f.isGlobal() and f.isLoad() and origin = f and
     (
         value = ObjectInternal::builtin(f.getId())
@@ -915,7 +951,7 @@ private module Conditionals {
 
     boolean branchEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
         contains_interesting_expression_within_test(expr, use) and
-        PointsTo2::pointsTo(use, context, val, origin) and
+        PointsToInternal::pointsTo(use, context, val, origin) and
         expr = use and
         val.booleanValue() = result
         or
@@ -943,8 +979,8 @@ private module Conditionals {
         exists(ControlFlowNode r, boolean sense |
             equality_test(expr, use, sense, r) and
             exists(ObjectInternal other |
-                PointsTo2::pointsTo(use, context, val, origin) and
-                PointsTo2::pointsTo(r, context, other, _) |
+                PointsToInternal::pointsTo(use, context, val, origin) and
+                PointsToInternal::pointsTo(r, context, other, _) |
                 val.isComparable() = true and other.isComparable() = true and
                 (
                     other = val and result = sense
@@ -968,8 +1004,8 @@ private module Conditionals {
                     or
                     inequality(expr, r, use, strict) and sense = false
                 ) and
-                PointsTo2::pointsTo(use, context, val, origin) and
-                PointsTo2::pointsTo(r, context, other, _)
+                PointsToInternal::pointsTo(use, context, val, origin) and
+                PointsToInternal::pointsTo(r, context, other, _)
                 |
                 val.intValue() < other.intValue() and result = sense
                 or 
@@ -1028,7 +1064,7 @@ cached module Types {
         or
         exists(Class pycls |
             pycls = cls.(PythonClassObjectInternal).getScope() |
-            PointsTo2::pointsTo(pycls.getBase(n).getAFlowNode(), _, result, _)
+            PointsToInternal::pointsTo(pycls.getBase(n).getAFlowNode(), _, result, _)
             or
             not exists(pycls.getABase()) and n = 0 and
             isNewStyle(cls) and result = ObjectInternal::builtin("object")
@@ -1063,7 +1099,7 @@ cached module Types {
         exists(EssaVariable var |
             name = var.getName() and
             var.getAUse() = cls.(PythonClassObjectInternal).getScope().getANormalExit() and
-            PointsTo2::ssa_variable_pointsTo(var, _, value, origin)
+            PointsToInternal::variablePointsTo(var, _, value, origin)
         )
     }
 
@@ -1075,7 +1111,7 @@ cached module Types {
 
     private ClassObjectInternal declaredMetaClass(PythonClassObjectInternal cls) {
         exists(ObjectInternal obj |
-            PointsTo2::ssa_variable_pointsTo(metaclass_var(cls.getScope()), _, obj, _) |
+            PointsToInternal::variablePointsTo(metaclass_var(cls.getScope()), _, obj, _) |
             result = obj
             or
             obj = ObjectInternal::unknown() and result = ObjectInternal::unknownClass()
@@ -1083,7 +1119,7 @@ cached module Types {
         or
         exists(ControlFlowNode meta |
             six_add_metaclass(_, cls, meta) and
-            PointsTo2::pointsTo(meta, _, result, _)
+            PointsToInternal::pointsTo(meta, _, result, _)
         )
     }
 
@@ -1098,7 +1134,7 @@ cached module Types {
 
     private boolean has_metaclass_var_metaclass(PythonClassObjectInternal cls) {
         exists(ObjectInternal obj |
-            PointsTo2::ssa_variable_pointsTo(metaclass_var(cls.getScope()), _, obj, _) |
+            PointsToInternal::variablePointsTo(metaclass_var(cls.getScope()), _, obj, _) |
             obj = ObjectInternal::undefined() and result = false
             or
             obj != ObjectInternal::undefined() and result = true
@@ -1126,11 +1162,11 @@ cached module Types {
         //    decorator_call.getArg(0) = decorated and
         //    decorator = decorator_call.getFunction() and
         //    decorator.getArg(0) = metaclass |
-        //    PointsTo2::pointsTo(decorator.getFunction(), _, six_add_metaclass_function(), _)
+        //    PointsToInternal::pointsTo(decorator.getFunction(), _, six_add_metaclass_function(), _)
         //    or
         //    exists(ModuleObjectInternal six |
         //       six.getName() = "six" and
-        //       PointsTo2::pointsTo(decorator.getFunction().(AttrNode).getObject("add_metaclass"), _, six, _)
+        //       PointsToInternal::pointsTo(decorator.getFunction().(AttrNode).getObject("add_metaclass"), _, six, _)
         //   )
         //)
     }

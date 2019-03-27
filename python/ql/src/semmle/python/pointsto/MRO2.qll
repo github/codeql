@@ -20,7 +20,7 @@ import python
 
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
-private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 

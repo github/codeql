@@ -3,7 +3,7 @@ import python
 
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
-private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO2
 private import semmle.python.types.Builtins
@@ -41,6 +41,10 @@ abstract class CallableObjectInternal extends ObjectInternal {
     abstract Function getScope();
 
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
+    abstract CallNode getACall(PointsToContext ctx);
+
+    CallNode getACall() { result = this.getACall(_) }
 
 }
 
@@ -81,11 +85,11 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
             func = this.getScope() and
             callee.appliesToScope(func) |
             rval = func.getAReturnValueFlowNode() and
-            PointsTo2::pointsTo(rval, callee, obj, origin)
+            PointsToInternal::pointsTo(rval, callee, obj, origin)
             or
             exists(Return ret |
                 ret.getScope() = func and
-                PointsTo2::reachableBlock(ret.getAFlowNode().getBasicBlock(), callee) and
+                PointsToInternal::reachableBlock(ret.getAFlowNode().getBasicBlock(), callee) and
                 not exists(ret.getValue()) and
                 obj = ObjectInternal::none_() and
                 origin = CfgOrigin::unknown()
@@ -111,6 +115,14 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
 
     override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
         value = TBoundMethod(instance, this) and origin = CfgOrigin::unknown()
+    }
+
+    override CallNode getACall(PointsToContext ctx) {
+        PointsTo::pointsTo(result.getFunction(), ctx, this, _)
+        or
+        exists(BoundMethodObjectInternal bm |
+            bm.getACall() = result and this = bm.getFunction()
+        )
     }
 
 }
@@ -192,6 +204,10 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
     override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
+    override CallNode getACall(PointsToContext ctx) {
+        PointsTo::pointsTo(result.getFunction(), ctx, this, _)
+    }
+
 
 }
 
@@ -246,6 +262,10 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
         any(ObjectInternal obj).binds(instance, _, this) and
         instance.isClass() = true and 
         value = this and origin = CfgOrigin::unknown()
+    }
+
+    override CallNode getACall(PointsToContext ctx) {
+        PointsTo::pointsTo(result.getFunction(), ctx, this, _)
     }
 
 }
@@ -306,6 +326,10 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     override boolean isDescriptor() { result = false }
 
     override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override CallNode getACall(PointsToContext ctx) {
+        PointsTo::pointsTo(result.getFunction(), ctx, this, _)
+    }
 
 }
 

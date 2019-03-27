@@ -2,7 +2,7 @@ import python
 
 private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
-private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.MRO2
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
@@ -233,7 +233,7 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         exists(EssaVariable var, ControlFlowNode exit, PointsToContext imp |
             exit = this.getSourceModule().getANormalExit() and var.getAUse() = exit and
             var.getSourceVariable().getName() = name and
-            PointsTo2::ssa_variable_pointsTo(var, imp, value, origin) and
+            PointsTo::variablePointsTo(var, imp, value, origin) and
             imp.isImport() and
             value != ObjectInternal::undefined()
         )
@@ -242,7 +242,7 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         //not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
         //exists(EssaVariable var, PointsToContext imp |
         //    var.getAUse() = m.getANormalExit() and isModuleStateVariable(var) |
-        //    PointsTo2::ssa_variable_named_attribute_pointsTo(var, imp, name, obj, origin) and
+        //    PointsToInternal::ssa_variable_named_attribute_pointsTo(var, imp, name, obj, origin) and
         //    imp.isImport() and obj != ObjectInternal::undefined()
         //)
     }

@@ -1,5 +1,5 @@
 import python
-private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.PointsTo
 private import semmle.python.objects.ObjectInternal
 /*
  * A note on 'cost'. Cost doesn't represent the cost to compute,
@@ -149,7 +149,7 @@ class PointsToContext extends TPointsToContext {
 
     /** Holds if `call` is the call-site from which this context was entered and `caller` is the caller's context. */
     predicate fromCall(CallNode call, PythonFunctionObjectInternal callee, PointsToContext caller) {
-        call = PointsTo2::get_a_call(callee, caller) and
+        call = callee.getACall(caller) and
         this = TCallContext(call, caller, _)
     }
 
@@ -170,7 +170,7 @@ class PointsToContext extends TPointsToContext {
         or
         /* Called functions, regardless of their name */
         exists(CallableObjectInternal callable, ControlFlowNode call, TPointsToContext outerContext |
-            call = PointsTo2::get_a_call(callable, outerContext) and
+            call = callable.getACall(outerContext) and
             this = TCallContext(call, outerContext, _) |
             s = callable.getScope()
         )

@@ -1,7 +1,7 @@
 import python
 private import TObject
 private import semmle.python.objects.ObjectInternal
-private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 
 class ObjectSource = Object;
@@ -19,11 +19,11 @@ class Value extends TObject {
     }
 
     ControlFlowNode getAReference() {
-        PointsTo2::pointsTo(result, _, this, _)
+        PointsToInternal::pointsTo(result, _, this, _)
     }
 
     predicate pointsTo(ControlFlowNode node, PointsToContext context, ControlFlowNode origin) {
-        PointsTo2::pointsTo(node, context, this, origin)
+        PointsToInternal::pointsTo(node, context, this, origin)
     }
 
     Value getClass() {
@@ -31,10 +31,19 @@ class Value extends TObject {
     }
 
     CallNode getACall() {
-        PointsTo2::pointsTo(result.getFunction(), _, this, _)
+        PointsToInternal::pointsTo(result.getFunction(), _, this, _)
         or
         exists(BoundMethodObjectInternal bm |
-            PointsTo2::pointsTo(result.getFunction(), _, bm, _) and
+            PointsToInternal::pointsTo(result.getFunction(), _, bm, _) and
+            bm.getFunction() = this
+        )
+    }
+
+    CallNode getACall(PointsToContext caller) {
+        PointsToInternal::pointsTo(result.getFunction(), caller, this, _)
+        or
+        exists(BoundMethodObjectInternal bm |
+            PointsToInternal::pointsTo(result.getFunction(), caller, bm, _) and
             bm.getFunction() = this
         )
     }

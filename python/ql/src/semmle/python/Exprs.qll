@@ -1,5 +1,5 @@
 import python
-private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.PointsTo
 
 /** An expression */
 class Expr extends Expr_, AstNode {
@@ -86,7 +86,7 @@ class Expr extends Expr_, AstNode {
      */
     predicate refersTo(Context context, Object obj, ClassObject cls, AstNode origin) {
         exists(Value value, ControlFlowNode cfgorigin |
-            PointsTo2::pointsTo(this.getAFlowNode(), context, value, cfgorigin) and
+            PointsTo::pointsTo(this.getAFlowNode(), context, value, cfgorigin) and
             origin.getAFlowNode() = cfgorigin and
             cls = value.getClass().getSource() |
             if exists(value.getSource()) then
@@ -102,7 +102,7 @@ class Expr extends Expr_, AstNode {
      */
     predicate refersTo(Object obj, AstNode origin) {
         exists(Value value, ControlFlowNode cfgorigin |
-            PointsTo2::pointsTo(this.getAFlowNode(), _, value, cfgorigin) and
+            PointsTo::pointsTo(this.getAFlowNode(), _, value, cfgorigin) and
             origin.getAFlowNode() = cfgorigin and
             if exists(value.getSource()) then
                 obj = value.getSource()
