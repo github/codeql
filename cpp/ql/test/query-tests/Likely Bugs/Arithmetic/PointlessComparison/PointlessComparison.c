@@ -285,3 +285,33 @@ int widening_cast2(u8 c) {
   else
     return 1;
 }
+
+int unsigned_implicit_conversion(unsigned int ui1) {
+  // These two comparisons are supported by the range analysis because the
+  // implicit signedness conversion is on the constants (0 and 5), not on the
+  // variables (ui1).
+  if (ui1 == 0) {
+    if (ui1 >= 5) { // BAD
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int signedness_cast1(u8 c) {
+  if ((signed char)c == 0) {
+    if (c >= 5) { // BAD [NOT DETECTED]
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int signedness_cast2(signed char c) {
+  if ((u8)c == 0) {
+    if (c >= 5) { // BAD [NOT DETECTED]
+      return 1;
+    }
+  }
+  return 0;
+}
