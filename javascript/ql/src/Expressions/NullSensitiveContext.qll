@@ -1,7 +1,25 @@
+/**
+ * Provides classes for working with contexts sensitive to containing null
+ * and undefined.
+ */
+
 import javascript
 
 
 
+
+/**
+ * A `NullSensitiveContext` is a syntactic context in which neither null nor
+ * undefined should occur, because the context is guaranteed to inspect its
+ * content and thereby throw an error.
+ * 
+ * The expression found in that context is called the principal argument of
+ * the context.
+ * 
+ * In examples, we denote the position of the principal argument by use of
+ * an underscore. For example, in `_ + 0`, the context's principle argument
+ * is the left operand of the addition.
+ */
 
 abstract class NullSensitiveContext extends Expr {
 	abstract Expr getPrincipalArgument();
@@ -10,7 +28,7 @@ abstract class NullSensitiveContext extends Expr {
 
 
 /*
- * _[prop]
+ * _[p]
  */
 
 class IndexExprBase extends NullSensitiveContext, IndexExpr {
@@ -22,7 +40,7 @@ class IndexExprBase extends NullSensitiveContext, IndexExpr {
 
 
 /*
- * obj[_]
+ * o[_]
  */
 
 class IndexExprIndex extends NullSensitiveContext, IndexExpr {
@@ -34,7 +52,7 @@ class IndexExprIndex extends NullSensitiveContext, IndexExpr {
 
 
 /*
- * _.prop
+ * _.p
  */
 
 class DotExprBase extends NullSensitiveContext, DotExpr {
@@ -70,7 +88,7 @@ class CallExprCallee extends NullSensitiveContext, CallExpr {
 
 
 /*
- * _ + expr
+ * _ + y
  */
 
 class AddExprLeftOperand extends NullSensitiveContext, AddExpr {
@@ -82,7 +100,7 @@ class AddExprLeftOperand extends NullSensitiveContext, AddExpr {
 
 
 /*
- * expr + _
+ * x + _
  */
 
 class AddExprRightOperand extends NullSensitiveContext, AddExpr {
@@ -94,7 +112,7 @@ class AddExprRightOperand extends NullSensitiveContext, AddExpr {
 
 
 /*
- * _ - expr
+ * _ - y
  */
 
 class SubExprLeftOperand extends NullSensitiveContext, SubExpr {
@@ -106,7 +124,7 @@ class SubExprLeftOperand extends NullSensitiveContext, SubExpr {
 
 
 /*
- * expr - _
+ * x - _
  */
 
 class SubExprRightOperand extends NullSensitiveContext, SubExpr {
@@ -118,7 +136,7 @@ class SubExprRightOperand extends NullSensitiveContext, SubExpr {
 
 
 /*
- * _ * expr
+ * _ * u
  */
 
 class MulExprLeftOperand extends NullSensitiveContext, MulExpr {
@@ -130,7 +148,7 @@ class MulExprLeftOperand extends NullSensitiveContext, MulExpr {
 
 
 /*
- * expr * _
+ * x * _
  */
 
 class MulExprRightOperand extends NullSensitiveContext, MulExpr {
@@ -142,7 +160,7 @@ class MulExprRightOperand extends NullSensitiveContext, MulExpr {
 
 
 /*
- * _ / expr
+ * _ / y
  */
 
 class DivExprLeftOperand extends NullSensitiveContext, DivExpr {
@@ -154,7 +172,7 @@ class DivExprLeftOperand extends NullSensitiveContext, DivExpr {
 
 
 /*
- * expr / _
+ * x / _
  */
 
 class DivExprRightOperand extends NullSensitiveContext, DivExpr {
@@ -166,7 +184,7 @@ class DivExprRightOperand extends NullSensitiveContext, DivExpr {
 
 
 /*
- * _ % expr
+ * _ % y
  */
 
 class ModExprLeftOperand extends NullSensitiveContext, ModExpr {
@@ -178,7 +196,7 @@ class ModExprLeftOperand extends NullSensitiveContext, ModExpr {
 
 
 /*
- * expr % _
+ * x % _
  */
 
 class ModExprRightOperand extends NullSensitiveContext, ModExpr {
@@ -382,7 +400,7 @@ class AssignModExprRhs extends NullSensitiveContext, AssignModExpr {
 
 
 /*
- * _ & expr
+ * _ & y
  */
 
 class BitAndExprLeftOperand extends NullSensitiveContext, BitAndExpr {
@@ -394,7 +412,7 @@ class BitAndExprLeftOperand extends NullSensitiveContext, BitAndExpr {
 
 
 /*
- * expr & _
+ * x & _
  */
 
 class BitAndExprRightOperand extends NullSensitiveContext, BitAndExpr {
@@ -406,7 +424,7 @@ class BitAndExprRightOperand extends NullSensitiveContext, BitAndExpr {
 
 
 /*
- * _ | expr
+ * _ | y
  */
 
 class BitOrExprLeftOperand extends NullSensitiveContext, BitOrExpr {
@@ -418,7 +436,7 @@ class BitOrExprLeftOperand extends NullSensitiveContext, BitOrExpr {
 
 
 /*
- * expr | _
+ * x | _
  */
 
 class BitOrExprRightOperand extends NullSensitiveContext, BitOrExpr {
@@ -430,7 +448,7 @@ class BitOrExprRightOperand extends NullSensitiveContext, BitOrExpr {
 
 
 /*
- * _ ^ expr
+ * _ ^ y
  */
 
 class XOrExprLeftOperand extends NullSensitiveContext, XOrExpr {
@@ -442,7 +460,7 @@ class XOrExprLeftOperand extends NullSensitiveContext, XOrExpr {
 
 
 /*
- * expr ^ _
+ * x ^ _
  */
 
 class XOrExprRightOperand extends NullSensitiveContext, XOrExpr {
@@ -454,7 +472,7 @@ class XOrExprRightOperand extends NullSensitiveContext, XOrExpr {
 
 
 /*
- * _ << expr
+ * _ << y
  */
 
 class LShiftExprLeftOperand extends NullSensitiveContext, LShiftExpr {
@@ -466,7 +484,7 @@ class LShiftExprLeftOperand extends NullSensitiveContext, LShiftExpr {
 
 
 /*
- * expr << _
+ * x << _
  */
 
 class LShiftExprRightOperand extends NullSensitiveContext, LShiftExpr {
@@ -478,7 +496,7 @@ class LShiftExprRightOperand extends NullSensitiveContext, LShiftExpr {
 
 
 /*
- * _ >> expr
+ * _ >> y
  */
 
 class RShiftExprLeftOperand extends NullSensitiveContext, RShiftExpr {
@@ -490,7 +508,7 @@ class RShiftExprLeftOperand extends NullSensitiveContext, RShiftExpr {
 
 
 /*
- * expr >> _
+ * x >> _
  */
 
 class RShiftExprRightOperand extends NullSensitiveContext, RShiftExpr {
@@ -502,7 +520,7 @@ class RShiftExprRightOperand extends NullSensitiveContext, RShiftExpr {
 
 
 /*
- * _ >>> expr
+ * _ >>> y
  */
 
 class URShiftExprLeftOperand extends NullSensitiveContext, URShiftExpr {
@@ -514,7 +532,7 @@ class URShiftExprLeftOperand extends NullSensitiveContext, URShiftExpr {
 
 
 /*
- * expr >>> _
+ * x >>> _
  */
 
 class URShiftExprRightOperand extends NullSensitiveContext, URShiftExpr {
@@ -526,7 +544,7 @@ class URShiftExprRightOperand extends NullSensitiveContext, URShiftExpr {
 
 
 /*
- * ~expr
+ * ~_
  */
 
 class BitNotExprOperand extends NullSensitiveContext, BitNotExpr {
