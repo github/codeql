@@ -205,10 +205,12 @@ predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q) {
     expr = unaryPlusExpr)
   or
   // (larger_type)(p*v+q) == p*v + q
-  exists (Cast cast
+  exists (Cast cast, ArithmeticType sourceType, ArithmeticType targetType
   | linearAccess(cast.getExpr(), v, p, q) and
-    typeLowerBound(cast.getType()) <= typeLowerBound(cast.getExpr().getType()) and
-    typeUpperBound(cast.getType()) >= typeUpperBound(cast.getExpr().getType()) and
+    sourceType = cast.getExpr().getType().getUnspecifiedType() and
+    targetType = cast.getType().getUnspecifiedType() and
+    typeLowerBound(targetType) <= typeLowerBound(sourceType) and
+    typeUpperBound(targetType) >= typeUpperBound(sourceType) and
     expr = cast)
   or
   // (p*v+q) == p*v + q
@@ -282,14 +284,14 @@ predicate cmpWithLinearBound(
 }
 
 /**
- * Holds if `lb` and `ub` are the lower and upper bounds of type `t`
- * respectively.
+ * Holds if `lb` and `ub` are the lower and upper bounds of the unspecified
+ * type `t`.
  *
  * For example, if `t` is a signed 32-bit type then holds if `lb` is
  * `-2^31` and `ub` is `2^31 - 1`.
  */
 private
-predicate typeBounds(Type t, float lb, float ub) {
+predicate typeBounds(ArithmeticType t, float lb, float ub) {
   exists (IntegralType integralType, float limit
   | integralType = t and limit = 2.pow(8 * integralType.getSize())
   | if integralType instanceof BoolType
@@ -303,22 +305,22 @@ predicate typeBounds(Type t, float lb, float ub) {
 }
 
 /**
- * Gets the lower bound for type `t`.
+ * Gets the lower bound for the unspecified type `t`.
  *
  * For example, if `t` is a signed 32-bit type then the result is
  * `-2^31`.
  */
-float typeLowerBound(Type t) {
+float typeLowerBound(ArithmeticType t) {
   typeBounds(t, result, _)
 }
 
 /**
- * Gets the upper bound for type `t`.
+ * Gets the upper bound for the unspecified type `t`.
  *
  * For example, if `t` is a signed 32-bit type then the result is
  * `2^31 - 1`.
  */
-float typeUpperBound(Type t) {
+float typeUpperBound(ArithmeticType t) {
   typeBounds(t, _, result)
 }
 

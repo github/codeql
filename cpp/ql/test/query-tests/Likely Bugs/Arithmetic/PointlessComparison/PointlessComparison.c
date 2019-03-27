@@ -270,7 +270,7 @@ typedef unsigned char u8;
 
 int widening_cast1(u8 c) {
   if (c == 0) {
-    if ((int)c > 0) { // BAD [NOT DETECTED]
+    if ((int)c > 0) { // BAD
       return 1;
     }
   }
@@ -280,7 +280,7 @@ int widening_cast1(u8 c) {
 int widening_cast2(u8 c) {
   if (c <= 10)
     return -1;
-  else if ((c >= 11) /* BAD [NOT DETECTED] */ && (c <= 47))
+  else if ((c >= 11) /* BAD */ && (c <= 47))
     return 0;
   else
     return 1;
