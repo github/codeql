@@ -189,8 +189,16 @@ module NodeJSLib {
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result.(DataFlow::SourceNode).flowsTo(handler.flow()) or
-      result.(DataFlow::TrackedNode).flowsTo(handler.flow())
+      result = getARouteHandler(DataFlow::TypeBackTracker::end())
+    }
+
+    private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
+      t.start() and
+      result = handler.flow().getALocalSource()
+      or
+      exists(DataFlow::TypeBackTracker t2 |
+        result = getARouteHandler(t2).backtrack(t2, t)
+      )
     }
 
     override Expr getServer() { result = server }
@@ -613,24 +621,12 @@ module NodeJSLib {
   }
 
   /**
-   * Tracking for `RouteHandlerCandidate`.
-   */
-  private class TrackedRouteHandlerCandidate extends DataFlow::TrackedNode {
-    TrackedRouteHandlerCandidate() { this instanceof RouteHandlerCandidate }
-  }
-
-  /**
-   * A function that looks like a Node.js route handler and flows to a route setup.
+   * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
-    override Function astNode;
-
+    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     TrackedRouteHandlerCandidateWithSetup() {
-      exists(TrackedRouteHandlerCandidate tracked |
-        tracked.flowsTo(any(RouteSetup s).getRouteHandlerExpr().flow()) and
-        this = tracked
-      )
+      this = any(RouteSetup s).getARouteHandler()
     }
   }
 

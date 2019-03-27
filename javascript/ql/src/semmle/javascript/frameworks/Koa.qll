@@ -64,7 +64,7 @@ module Koa {
    * A Koa context source, that is, the context parameter of a
    * route handler, or a `this` access in a route handler.
    */
-  private class ContextSource extends DataFlow::TrackedNode {
+  private class ContextSource extends DataFlow::Node {
     RouteHandler rh;
 
     ContextSource() {
@@ -77,6 +77,19 @@ module Koa {
      * Gets the route handler that handles this request.
      */
     RouteHandler getRouteHandler() { result = rh }
+
+    predicate flowsTo(DataFlow::Node nd) {
+      ref(DataFlow::TypeTracker::end()).flowsTo(nd)
+    }
+
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      t.start() and
+      result = this
+      or
+      exists(DataFlow::TypeTracker t2 |
+        result = ref(t2).track(t2, t)
+      )
+    }
   }
 
   /**

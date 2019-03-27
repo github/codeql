@@ -16,7 +16,7 @@ module Electron {
   /**
    * An instantiation of `BrowserWindow` or `BrowserView`.
    */
-  abstract private class NewBrowserObject extends BrowserObject, DataFlow::SourceNode {
+  abstract private class NewBrowserObject extends BrowserObject {
     DataFlow::NewNode self;
 
     NewBrowserObject() { this = self }
@@ -56,11 +56,20 @@ module Electron {
     }
   }
 
+  private DataFlow::SourceNode browserObject(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof NewBrowserObject
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = browserObject(t2).track(t2, t)
+    )
+  }
+
   /**
    * A data flow node whose value may originate from a browser object instantiation.
    */
   private class BrowserObjectByFlow extends BrowserObject {
-    BrowserObjectByFlow() { any(NewBrowserObject nbo).flowsTo(this) }
+    BrowserObjectByFlow() { browserObject(DataFlow::TypeTracker::end()).flowsTo(this) }
   }
 
   /**

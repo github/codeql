@@ -64,7 +64,7 @@ module Closure {
    * a top-level expression statement.
    */
   private predicate isTopLevelExpr(DataFlow::Node node) {
-    node.getTopLevel().getAChildStmt().(ExprStmt).getExpr().flow() = node
+    any(TopLevel tl).getAChildStmt().(ExprStmt).getExpr().flow() = node
   }
 
   /**

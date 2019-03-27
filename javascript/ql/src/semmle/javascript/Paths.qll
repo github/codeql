@@ -236,3 +236,20 @@ private class ConcatPath extends PathExpr {
     result = this.(AddExpr).getAnOperand().(PathExpr).getSearchRoot(priority)
   }
 }
+
+/**
+ * An expression that appears in a syntactic position where it may represent a path.
+ *
+ * Examples include arguments to the CommonJS `require` function or AMD dependency arguments.
+ */
+abstract class PathExprCandidate extends Expr {
+  /**
+   * Gets an expression that is nested inside this expression.
+   *
+   * Equivalent to `getAChildExpr*()`, but useful to enforce a better join order (in spite of
+   * what the optimizer thinks, there are generally far fewer `PathExprCandidate`s than
+   * `ConstantString`s).
+   */
+  pragma[nomagic]
+  Expr getAPart() { result = this or result = getAPart().getAChildExpr() }
+}
