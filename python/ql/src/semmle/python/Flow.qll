@@ -224,7 +224,7 @@ class ControlFlowNode extends @py_flow_node {
 
     /** The value and origin that this ControlFlowNode points-to, given the context. */
     predicate pointsTo(Context context, Value value, ControlFlowNode origin) {
-        PointsTo2::points_to(this, context, value, origin)
+        PointsTo2::pointsTo(this, context, value, origin)
     }
 
     /** Gets what this flow node might "refer-to". Performs a combination of localized (intra-procedural) points-to
@@ -240,7 +240,7 @@ class ControlFlowNode extends @py_flow_node {
      */
     predicate refersTo(Context context, Object obj, ClassObject cls, ControlFlowNode origin) {
         exists(Value value |
-            PointsTo2::points_to(this, context, value, origin) and
+            PointsTo2::pointsTo(this, context, value, origin) and
             cls = value.getClass().getSource() |
             if exists(value.getSource().(Object)) then
                 obj = value.getSource()
@@ -255,7 +255,7 @@ class ControlFlowNode extends @py_flow_node {
      */
     predicate refersTo(Object obj, ControlFlowNode origin) {
         exists(Value value |
-            PointsTo2::points_to(this, _, value, origin) |
+            PointsTo2::pointsTo(this, _, value, origin) |
             if exists(value.getSource().(Object)) then
                 obj = value.getSource()
             else

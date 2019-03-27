@@ -161,7 +161,7 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         //    exists(EssaVariable var, Context context |
         //        isModuleStateVariable(var) and var.getAUse() = init.getANormalExit() and
         //        context.isImport() and
-        //        SSA::ssa_variable_named_attribute_points_to(var, context, name, undefinedVariable(), _, origin) and
+        //        SSA::ssa_variable_named_attribute_pointsTo(var, context, name, undefinedVariable(), _, origin) and
         //        value = this.submodule(name)
         //    )
         //)
@@ -233,7 +233,7 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         exists(EssaVariable var, ControlFlowNode exit, PointsToContext imp |
             exit = this.getSourceModule().getANormalExit() and var.getAUse() = exit and
             var.getSourceVariable().getName() = name and
-            PointsTo2::ssa_variable_points_to(var, imp, value, origin) and
+            PointsTo2::ssa_variable_pointsTo(var, imp, value, origin) and
             imp.isImport() and
             value != ObjectInternal::undefined()
         )
@@ -242,7 +242,7 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         //not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
         //exists(EssaVariable var, PointsToContext imp |
         //    var.getAUse() = m.getANormalExit() and isModuleStateVariable(var) |
-        //    PointsTo2::ssa_variable_named_attribute_points_to(var, imp, name, obj, origin) and
+        //    PointsTo2::ssa_variable_named_attribute_pointsTo(var, imp, name, obj, origin) and
         //    imp.isImport() and obj != ObjectInternal::undefined()
         //)
     }

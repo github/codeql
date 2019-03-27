@@ -204,7 +204,7 @@ class FloatObjectInternal extends ConstantObjectInternal, TFloat {
     }
 
     override Builtin getBuiltin() {
-        result.getName().toFloat() = this.floatValue()
+        result.floatValue() = this.floatValue()
     }
 
     private float floatValue() {

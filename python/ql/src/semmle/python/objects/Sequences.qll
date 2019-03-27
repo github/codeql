@@ -125,7 +125,7 @@ class PythonTupleObjectInternal extends TPythonTuple, TupleObjectInternal {
     override ObjectInternal getItem(int n) {
         exists(TupleNode t, PointsToContext context |
             this = TPythonTuple(t, context) and
-            PointsTo2::points_to(t.getElement(n), context, result, _)
+            PointsTo2::pointsTo(t.getElement(n), context, result, _)
         )
     }
 

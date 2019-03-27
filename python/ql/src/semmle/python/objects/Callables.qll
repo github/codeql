@@ -81,7 +81,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
             func = this.getScope() and
             callee.appliesToScope(func) |
             rval = func.getAReturnValueFlowNode() and
-            PointsTo2::points_to(rval, callee, obj, origin)
+            PointsTo2::pointsTo(rval, callee, obj, origin)
             or
             exists(Return ret |
                 ret.getScope() = func and

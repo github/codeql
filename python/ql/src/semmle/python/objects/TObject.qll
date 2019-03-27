@@ -83,7 +83,7 @@ newtype TObject =
     }
     or
     TSpecificInstance(ControlFlowNode instantiation, ClassObjectInternal cls, PointsToContext context) {
-        PointsTo2::points_to(instantiation.(CallNode).getFunction(), context, cls, _) and
+        PointsTo2::pointsTo(instantiation.(CallNode).getFunction(), context, cls, _) and
         cls.isSpecial() = false
         or
         literal_instantiation(instantiation, cls, context)
@@ -128,13 +128,13 @@ private predicate is_power_2(int n) {
 }
 
 predicate static_method(CallNode instantiation, CallableObjectInternal function, PointsToContext context) {
-    PointsTo2::points_to(instantiation.getFunction(), context, ObjectInternal::builtin("staticmethod"), _) and
-    PointsTo2::points_to(instantiation.getArg(0), context, function, _)
+    PointsTo2::pointsTo(instantiation.getFunction(), context, ObjectInternal::builtin("staticmethod"), _) and
+    PointsTo2::pointsTo(instantiation.getArg(0), context, function, _)
 }
 
 predicate class_method(CallNode instantiation, CallableObjectInternal function, PointsToContext context) {
-    PointsTo2::points_to(instantiation.getFunction(), context, ObjectInternal::builtin("classmethod"), _) and
-    PointsTo2::points_to(instantiation.getArg(0), context, function, _)
+    PointsTo2::pointsTo(instantiation.getFunction(), context, ObjectInternal::builtin("classmethod"), _) and
+    PointsTo2::pointsTo(instantiation.getArg(0), context, function, _)
 }
 
 predicate literal_instantiation(ControlFlowNode n, ClassObjectInternal cls, PointsToContext context) {
@@ -149,10 +149,10 @@ predicate literal_instantiation(ControlFlowNode n, ClassObjectInternal cls, Poin
 }
 
 predicate super_instantiation(CallNode instantiation, ObjectInternal self, ClassObjectInternal startclass, PointsToContext context) {
-    PointsTo2::points_to(instantiation.getFunction(), context, ObjectInternal::builtin("super"), _) and
+    PointsTo2::pointsTo(instantiation.getFunction(), context, ObjectInternal::builtin("super"), _) and
     (
-        PointsTo2::points_to(instantiation.getArg(0), context, startclass, _) and
-        PointsTo2::points_to(instantiation.getArg(1), context, self, _)
+        PointsTo2::pointsTo(instantiation.getArg(0), context, startclass, _) and
+        PointsTo2::pointsTo(instantiation.getArg(1), context, self, _)
         or
         major_version() = 3 and
         not exists(instantiation.getArg(0)) and
@@ -161,7 +161,7 @@ predicate super_instantiation(CallNode instantiation, ObjectInternal self, Class
             /* Implicit class argument is lexically enclosing scope */
             func.getScope() = startclass.(PythonClassObjectInternal).getScope() and
             /* Implicit 'self' is the 0th parameter */
-            PointsTo2::points_to(func.getArg(0).asName().getAFlowNode(), context, self, _)
+            PointsTo2::pointsTo(func.getArg(0).asName().getAFlowNode(), context, self, _)
         )
     )
 }
@@ -192,7 +192,7 @@ predicate method_binding(AttrNode instantiation, ObjectInternal self, CallableOb
 /** Helper for method_binding */
 pragma [noinline]
 predicate receiver(AttrNode instantiation, PointsToContext context, ObjectInternal obj, string name) {
-    PointsTo2::points_to(instantiation.getObject(name), context, obj, _)
+    PointsTo2::pointsTo(instantiation.getObject(name), context, obj, _)
 }
 
 /** Helper self parameters: `def meth(self, ...): ...`. */
@@ -247,7 +247,7 @@ private predicate neither_class_nor_static_method(Function f) {
     exists(ControlFlowNode deco |
         deco = f.getADecorator().getAFlowNode() |
         exists(ObjectInternal o |
-            PointsTo2::points_to(deco, _, o, _) |
+            PointsTo2::pointsTo(deco, _, o, _) |
             o != ObjectInternal::staticMethod() and
             o != ObjectInternal::classMethod()
         )

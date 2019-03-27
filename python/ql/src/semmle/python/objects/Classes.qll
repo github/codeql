@@ -236,7 +236,7 @@ class TypeInternal extends ClassObjectInternal, TType {
         exists(CallNode call, PointsToContext caller, ObjectInternal instance |
             callee.fromCall(call, caller) |
             count(call.getAnArg()) = 1 and
-            PointsTo2::points_to(call.getArg(0), caller, instance, origin) and
+            PointsTo2::pointsTo(call.getArg(0), caller, instance, origin) and
             obj = instance.getClass()
         )
     }

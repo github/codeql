@@ -90,7 +90,7 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
         this = instance and descriptor.isDescriptor() = true and
         exists(AttrNode attr |
-            PointsTo2::points_to(attr.getObject(name), _, instance, _) and
+            PointsTo2::pointsTo(attr.getObject(name), _, instance, _) and
             this.getClass().attribute(name, descriptor, _)
         )
     }
@@ -200,7 +200,7 @@ class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
         descriptor.isDescriptor() = true and
         this = instance and
         exists(AttrNode attr |
-            PointsTo2::points_to(attr.getObject(name), _, this, _) and
+            PointsTo2::pointsTo(attr.getObject(name), _, this, _) and
             this.getClass().attribute(name, descriptor, _)
         )
     }
@@ -291,7 +291,7 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
         descriptor.isDescriptor() = true and
         this = instance and
         exists(AttrNode attr |
-            PointsTo2::points_to(attr.getObject(name), _, this, _) and
+            PointsTo2::pointsTo(attr.getObject(name), _, this, _) and
             this.getClass().attribute(name, descriptor, _)
         )
     }
@@ -366,7 +366,7 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
         descriptor.isDescriptor() = true and
         exists(AttrNode attr |
-            PointsTo2::points_to(attr.getObject(name), _, this, _) and
+            PointsTo2::pointsTo(attr.getObject(name), _, this, _) and
             instance = this.getSelf() and
             Types::declaredAttribute(this.getMro().findDeclaringClass(name), name, descriptor, _)
         )

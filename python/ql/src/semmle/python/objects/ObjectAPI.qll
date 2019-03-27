@@ -19,11 +19,11 @@ class Value extends TObject {
     }
 
     ControlFlowNode getAReference() {
-        PointsTo2::points_to(result, _, this, _)
+        PointsTo2::pointsTo(result, _, this, _)
     }
 
     predicate pointsTo(ControlFlowNode node, PointsToContext context, ControlFlowNode origin) {
-        PointsTo2::points_to(node, context, this, origin)
+        PointsTo2::pointsTo(node, context, this, origin)
     }
 
     Value getClass() {
@@ -31,10 +31,10 @@ class Value extends TObject {
     }
 
     CallNode getACall() {
-        PointsTo2::points_to(result.getFunction(), _, this, _)
+        PointsTo2::pointsTo(result.getFunction(), _, this, _)
         or
         exists(BoundMethodObjectInternal bm |
-            PointsTo2::points_to(result.getFunction(), _, bm, _) and
+            PointsTo2::pointsTo(result.getFunction(), _, bm, _) and
             bm.getFunction() = this
         )
     }

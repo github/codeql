@@ -86,7 +86,7 @@ class Expr extends Expr_, AstNode {
      */
     predicate refersTo(Context context, Object obj, ClassObject cls, AstNode origin) {
         exists(Value value, ControlFlowNode cfgorigin |
-            PointsTo2::points_to(this.getAFlowNode(), context, value, cfgorigin) and
+            PointsTo2::pointsTo(this.getAFlowNode(), context, value, cfgorigin) and
             origin.getAFlowNode() = cfgorigin and
             cls = value.getClass().getSource() |
             if exists(value.getSource()) then
@@ -102,7 +102,7 @@ class Expr extends Expr_, AstNode {
      */
     predicate refersTo(Object obj, AstNode origin) {
         exists(Value value, ControlFlowNode cfgorigin |
-            PointsTo2::points_to(this.getAFlowNode(), _, value, cfgorigin) and
+            PointsTo2::pointsTo(this.getAFlowNode(), _, value, cfgorigin) and
             origin.getAFlowNode() = cfgorigin and
             if exists(value.getSource()) then
                 obj = value.getSource()
