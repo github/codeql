@@ -256,11 +256,11 @@ class FormatLiteral extends Literal {
   }
 
   /**
-   * Gets the format string, with '%%' replaced by '_' (to avoid processing
-   * '%%' as a format specifier).
+   * Gets the format string, with '%%' and '%@' replaced by '_' (to avoid processing
+   * them as format specifiers).
    */
   string getFormat() {
-    result = this.getValue().replaceAll("%%", "_")
+    result = this.getValue().replaceAll("%%", "_").replaceAll("%@", "_")
   }
 
   /**

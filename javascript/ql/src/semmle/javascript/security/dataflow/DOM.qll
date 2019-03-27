@@ -1,5 +1,5 @@
 /**
- * Provides predicates for reasoning about DOM types.
+ * Provides predicates for reasoning about DOM types and methods.
  */
 
 import javascript

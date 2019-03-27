@@ -125,13 +125,6 @@ abstract class TaintKind extends string {
      */
     predicate additionalFlowStepVar(EssaVariable fromvar, EssaVariable tovar) { none() }
 
-    /** Holds if this kind of taint can start from `expr`.
-     * In other words, is `expr` a source of this kind of taint.
-     */
-    final predicate startsFrom(ControlFlowNode expr) {
-        expr.(TaintSource).isSourceOf(this, _)
-    }
-
     /** Holds if this kind of taint "taints" `expr`.
      */
     final predicate taints(ControlFlowNode expr) {
@@ -196,16 +189,6 @@ class SequenceKind extends CollectionKind {
     }
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        sequence_subscript_taint(tonode, fromnode, this, result)
-        or
-        result = this and
-        (
-            slice(fromnode, tonode) or
-            tonode.(BinaryExprNode).getAnOperand() = fromnode
-        )
-        or
-        result = this and TaintFlowImplementation::copyCall(fromnode, tonode)
-        or
         exists(BinaryExprNode mod |
             mod = tonode and
             mod.getOp() instanceof Mod and
@@ -213,8 +196,6 @@ class SequenceKind extends CollectionKind {
             result = this.getItem() and
             result.getClass() = theStrType()
         )
-        or
-        result = this and sequence_call(fromnode, tonode)
     }
 
     override TaintKind getTaintOfMethodResult(string name) {
@@ -227,25 +208,41 @@ class SequenceKind extends CollectionKind {
 
 }
 
-/* Helper for getTaintForStep() */
-pragma [noinline]
-private predicate sequence_subscript_taint(SubscriptNode sub, ControlFlowNode obj, SequenceKind seq, TaintKind key) {
-    sub.isLoad() and
-    sub.getValue() = obj and
-    if sub.getNode().getIndex() instanceof Slice then
-        seq = key
-    else
-        key = seq.getItem()
+
+module SequenceKind {
+
+    predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        tonode.(BinaryExprNode).getAnOperand() = fromnode
+        or
+        TaintFlowImplementation::copyCall(fromnode, tonode)
+        or
+        sequence_call(fromnode, tonode)
+        or
+        sequence_subscript_slice(fromnode, tonode)
+    }
+
+    predicate itemFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        sequence_subscript_index(fromnode, tonode)
+    }
+
 }
 
-/* tonode = fromnode[:] */
-private predicate slice(ControlFlowNode fromnode, SubscriptNode tonode) {
-    exists(Slice all |
-        all = tonode.getIndex().getNode() and
-        not exists(all.getStart()) and not exists(all.getStop()) and
-        tonode.getValue() = fromnode
-    )
+
+/* Helper for sequence flow steps */
+pragma [noinline]
+private predicate sequence_subscript_index(ControlFlowNode obj, SubscriptNode sub) {
+    sub.isLoad() and
+    sub.getValue() = obj and
+    not sub.getNode().getIndex() instanceof Slice
 }
+
+pragma [noinline]
+private predicate sequence_subscript_slice(ControlFlowNode obj, SubscriptNode sub) {
+    sub.isLoad() and
+    sub.getValue() = obj and
+    sub.getNode().getIndex() instanceof Slice
+}
+
 
 /** A taint kind representing a mapping of objects to kinds.
  * Typically a dict, but can include other mappings.
@@ -262,20 +259,6 @@ class DictKind extends CollectionKind {
         result = valueKind
     }
 
-    override  TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        result = valueKind and
-        tonode.(SubscriptNode).getValue() = fromnode and tonode.isLoad()
-        or
-        result = valueKind and
-        tonode.(CallNode).getFunction().(AttrNode).getObject("get") = fromnode
-        or
-        result = this and TaintFlowImplementation::copyCall(fromnode, tonode)
-        or
-        result = this and
-        tonode.(CallNode).getFunction().refersTo(theDictType()) and
-        tonode.(CallNode).getArg(0) = fromnode
-    }
-
     override TaintKind getTaintOfMethodResult(string name) {
         name = "get" and result = valueKind
         or
@@ -286,6 +269,24 @@ class DictKind extends CollectionKind {
 
     override string repr() {
         result = "dict of " + valueKind
+    }
+
+}
+
+
+module DictKind {
+
+    predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        TaintFlowImplementation::copyCall(fromnode, tonode)
+        or
+        tonode.(CallNode).getFunction().refersTo(theDictType()) and
+        tonode.(CallNode).getArg(0) = fromnode
+    }
+
+    predicate valueFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        tonode.(SubscriptNode).getValue() = fromnode and tonode.isLoad()
+        or
+        tonode.(CallNode).getFunction().(AttrNode).getObject("get") = fromnode
     }
 
 }
@@ -316,6 +317,18 @@ abstract class Sanitizer extends string {
     /** Holds if `def` shows value to be untainted with `taint` */
     predicate sanitizingDefinition(TaintKind taint, EssaDefinition def) { none() }
 
+}
+
+/** Hold if `sanitizer` is valid. A sanitizer is valid if there is
+ * a `TaintTracking::Configuration` that declares `sanitizer` or
+ * there are no `TaintTracking::Configuration`s.
+ */
+private predicate valid_sanitizer(Sanitizer sanitizer) {
+    not exists(TaintTracking::Configuration c)
+    or
+    exists(DataFlow::Configuration c | c.isSanitizer(sanitizer))
+    or
+    exists(TaintTracking::Configuration c | c.isSanitizer(sanitizer))
 }
 
 /** DEPRECATED -- Use DataFlowExtension instead.
@@ -584,12 +597,19 @@ private newtype TTaintedNode =
             n.(TaintSource).isSourceOf(kind, context)
         )
         or
+        exists(DataFlow::Configuration config, TaintKind kind |
+            taint = TaintFlowImplementation::TTrackedTaint(kind) and
+            config.isSource(n) and context.getDepth() = 0 and
+            kind instanceof GenericFlowType
+        )
+        or
         TaintFlowImplementation::step(_, taint, context, n) and
         exists(TaintKind kind |
             kind = taint.(TaintFlowImplementation::TrackedTaint).getKind()
             or
             kind = taint.(TaintFlowImplementation::TrackedAttribute).getKind(_) |
             not exists(Sanitizer sanitizer |
+                valid_sanitizer(sanitizer) and
                 sanitizer.sanitizingNode(kind, n)
             )
         )
@@ -839,32 +859,59 @@ library module TaintFlowImplementation {
         or
         call_taint_step(fromnode, totaint, tocontext, tonode)
         or
-        fromnode.getNode().(DataFlowNode).getASuccessorNode() = tonode and
-        fromnode.getContext() = tocontext and
-        totaint = fromnode.getTrackedValue()
-        or
-        exists(CallNode call |
-            fromnode.getNode().(DataFlowNode).getAReturnSuccessorNode(call) = tonode and
-            fromnode.getContext() = tocontext.getCallee(call) and
+        exists(DataFlowNode fromnodenode |
+            fromnodenode = fromnode.getNode() and
+            (
+                not exists(TaintTracking::Configuration c)
+                or
+                exists(DataFlow::Configuration c | c.isExtension(fromnodenode))
+                or
+                exists(TaintTracking::Configuration c | c.isExtension(fromnodenode))
+            )
+            |
+            fromnodenode.getASuccessorNode() = tonode and
+            fromnode.getContext() = tocontext and
             totaint = fromnode.getTrackedValue()
-        )
-        or
-        exists(CallNode call |
-            fromnode.getNode().(DataFlowNode).getACalleeSuccessorNode(call) = tonode and
-            fromnode.getContext().getCallee(call) = tocontext and
-            totaint = fromnode.getTrackedValue()
-        )
-        or
-        exists(TaintKind tokind |
-            fromnode.getNode().(DataFlowNode).getASuccessorNode(fromnode.getTaintKind(), tokind) = tonode and
-            totaint = fromnode.getTrackedValue().toKind(tokind) and
-            tocontext = fromnode.getContext()
+            or
+            exists(CallNode call |
+                fromnodenode.getAReturnSuccessorNode(call) = tonode and
+                fromnode.getContext() = tocontext.getCallee(call) and
+                totaint = fromnode.getTrackedValue()
+            )
+            or
+            exists(CallNode call |
+                fromnodenode.getACalleeSuccessorNode(call) = tonode and
+                fromnode.getContext().getCallee(call) = tocontext and
+                totaint = fromnode.getTrackedValue()
+            )
+            or
+            exists(TaintKind tokind |
+                fromnodenode.getASuccessorNode(fromnode.getTaintKind(), tokind) = tonode and
+                totaint = fromnode.getTrackedValue().toKind(tokind) and
+                tocontext = fromnode.getContext()
+            )
         )
         or
         exists(TaintKind tokind |
             tokind = fromnode.getTaintKind().getTaintForFlowStep(fromnode.getNode(), tonode) and
             totaint = fromnode.getTrackedValue().toKind(tokind) and
             tocontext = fromnode.getContext()
+        )
+        or
+        exists(SequenceKind fromkind |
+            fromkind = fromnode.getTaintKind() and
+            tocontext = fromnode.getContext() |
+            totaint = fromnode.getTrackedValue() and SequenceKind::flowStep(fromnode.getNode(), tonode)
+            or
+            totaint = fromnode.getTrackedValue().toKind(fromkind.getItem()) and SequenceKind::itemFlowStep(fromnode.getNode(), tonode)
+        )
+        or
+        exists(DictKind fromkind |
+            fromkind = fromnode.getTaintKind() and
+            tocontext = fromnode.getContext() |
+            totaint = fromnode.getTrackedValue() and DictKind::flowStep(fromnode.getNode(), tonode)
+            or
+            totaint = fromnode.getTrackedValue().toKind(fromkind.getValue()) and DictKind::valueFlowStep(fromnode.getNode(), tonode)
         )
         or
         exists(TaintFlow flow, TaintKind tokind |
@@ -1038,8 +1085,18 @@ library module TaintFlowImplementation {
             prev.(DataFlowVariable).getASuccessorVariable() = var
         )
         or
-        origin.getNode().(DataFlowNode).getASuccessorVariable() = var and
-        context = origin.getContext()
+        exists(DataFlowNode originnode |
+            originnode = origin.getNode() and
+            (
+                not exists(TaintTracking::Configuration c)
+                or
+                exists(DataFlow::Configuration c | c.isExtension(originnode))
+                or
+                exists(TaintTracking::Configuration c | c.isExtension(originnode))
+            ) and
+            originnode.getASuccessorVariable() = var and
+            context = origin.getContext()
+        )
         or
         exists(TrackedTaint taint, EssaVariable prev |
             tainted_var(prev, context, origin) and
@@ -1062,6 +1119,7 @@ library module TaintFlowImplementation {
             exists(TaintKind kind |
                 kind = origin.getTaintKind() and
                 not exists(Sanitizer san |
+                    valid_sanitizer(san) |
                     san.sanitizingDefinition(kind, def)
                     or
                     san.sanitizingNode(kind, def.(EssaNodeDefinition).getDefiningNode())
@@ -1184,6 +1242,7 @@ library module TaintFlowImplementation {
         exists(TaintKind kind |
             kind = origin.getTaintKind() |
             not exists(FunctionObject callee, Sanitizer sanitizer |
+                valid_sanitizer(sanitizer) and
                 callee.getACall() = call.getCall() and
                 sanitizer.sanitizingCall(kind, callee)
             )
@@ -1197,11 +1256,12 @@ library module TaintFlowImplementation {
             var = test.getInput() and
             tainted_var(var, context, origin) and
             not exists(Sanitizer sanitizer |
+                valid_sanitizer(sanitizer) and
                 sanitizer.sanitizingEdge(kind, test)
             )
             |
             not Filters::isinstance(test.getTest(), _, var.getSourceVariable().getAUse()) and
-            not test.getTest() = var.getSourceVariable().getAUse()
+            not boolean_filter(test.getTest(), var.getSourceVariable().getAUse())
             or
             exists(ControlFlowNode c, ClassObject cls |
                 Filters::isinstance(test.getTest(), c, var.getSourceVariable().getAUse())
@@ -1212,8 +1272,40 @@ library module TaintFlowImplementation {
                 test.getSense() = false and not kind.getClass().getAnImproperSuperType() = cls
             )
             or
-            test.getTest() = var.getSourceVariable().getAUse() and kind.booleanValue() = test.getSense()
+            test.getSense() = test_evaluates(test.getTest(), var.getSourceVariable().getAUse(), kind)
         )
+    }
+
+    /** Gets the operand of a unary `not` expression. */
+    private ControlFlowNode not_operand(ControlFlowNode expr) {
+        expr.(UnaryExprNode).getNode().getOp() instanceof Not and
+        result = expr.(UnaryExprNode).getOperand()
+    }
+
+    /** Holds if `test` is the test in a branch and `use` is that test
+     * with all the `not` prefixes removed.
+     */
+    private predicate boolean_filter(ControlFlowNode test, ControlFlowNode use) {
+        any(PyEdgeRefinement ref).getTest() = test and
+        (
+            use = test
+            or
+            exists(ControlFlowNode notuse |
+                boolean_filter(test, notuse) and
+                use = not_operand(notuse)
+            )
+        )
+    }
+
+    /** Gets the boolean value that `test` evaluates to when `use` is tainted with `kind`
+     * and `test` and `use` are part of a test in a branch.
+     */
+    private boolean test_evaluates(ControlFlowNode test, ControlFlowNode use, TaintKind kind) {
+        boolean_filter(_, use) and
+        kind.taints(use) and
+        test = use and result = kind.booleanValue()
+        or
+        result = test_evaluates(not_operand(test), use, kind).booleanNot()
     }
 
     pragma [noinline]
@@ -1246,6 +1338,7 @@ library module TaintFlowImplementation {
             var = uniphi.getInput() and
             tainted_var(var, context, origin) and
             not exists(Sanitizer sanitizer |
+                valid_sanitizer(sanitizer) and
                 sanitizer.sanitizingSingleEdge(kind, uniphi)
             )
         )
@@ -1437,6 +1530,109 @@ class CallContext extends TCallContext {
     }
 
 }
+
+
+/** Data flow module providing an interface compatible with
+ * the other language implementations.
+ */
+module DataFlow {
+
+    class FlowType = TaintKind;
+
+    /** Generic taint kind, source and sink classes for convenience and
+     * compatibility with other language libraries
+     */
+
+    class Node = ControlFlowNode;
+
+    class PathNode = TaintedNode;
+
+    class Extension = DataFlowExtension::DataFlowNode;
+
+    abstract class Configuration extends string {
+
+        bindingset[this]
+        Configuration() { this = this }
+
+        abstract predicate isSource(Node source);
+
+        abstract predicate isSink(Node sink);
+
+        predicate isSanitizer(Sanitizer sanitizer) { none() }
+
+        predicate isExtension(Extension extension) { none() }
+
+        predicate hasFlowPath(PathNode source, PathNode sink) {
+            this.isSource(source.getNode()) and
+            this.isSink(sink.getNode()) and
+            source.getTaintKind() instanceof GenericFlowType and
+            sink.getTaintKind() instanceof GenericFlowType
+        }
+
+        predicate hasFlow(Node source, Node sink) {
+            exists(PathNode psource, PathNode psink |
+                psource.getNode() = source and
+                psink.getNode() = sink and
+                this.isSource(source) and
+                this.isSink(sink) and
+                this.hasFlowPath(psource, psink)
+            )
+        }
+
+    }
+
+}
+
+private class GenericFlowType extends DataFlow::FlowType {
+
+    GenericFlowType() {
+        this = "Generic taint kind"  and
+        exists(DataFlow::Configuration c)
+    }
+
+}
+
+module TaintTracking {
+
+    class Source = TaintSource;
+
+    class Sink = TaintSink;
+
+    class PathSource = TaintedPathSource;
+
+    class PathSink = TaintedPathSink;
+
+    class Extension = DataFlowExtension::DataFlowNode;
+
+    abstract class Configuration extends string {
+
+        bindingset[this]
+        Configuration() { this = this }
+
+        abstract predicate isSource(Source source);
+
+        abstract predicate isSink(Sink sink);
+
+        predicate isSanitizer(Sanitizer sanitizer) { none() }
+
+        predicate isExtension(Extension extension) { none() }
+
+        predicate hasFlowPath(PathSource source, PathSink sink) {
+            this.isSource(source.getNode()) and
+            this.isSink(sink.getNode()) and
+            source.flowsTo(sink)
+        }
+
+        predicate hasFlow(Source source, Sink sink) {
+            this.isSource(source) and
+            this.isSink(sink) and
+            source.flowsToSink(sink)
+        }
+
+    }
+
+}
+
 
 pragma [noinline]
 private predicate dict_construct(ControlFlowNode itemnode, ControlFlowNode dictnode) {

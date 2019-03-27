@@ -273,7 +273,10 @@ module ControlFlow {
     }
 
     /** Holds if this node has more than one predecessor. */
-    predicate isJoin() { strictcount(getAPredecessor()) > 1 }
+    predicate isJoin() { strictcount(this.getAPredecessor()) > 1 }
+
+    /** Holds if this node has more than one successor. */
+    predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
   }
 
   /** Provides different types of control flow nodes. */

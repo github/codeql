@@ -76,6 +76,11 @@ class AssignableRead extends AssignableAccess {
     not nameOfChild(_, this)
   }
 
+  pragma[noinline]
+  private ControlFlow::Node getAnAdjacentReadSameVar() {
+    Ssa::Internal::adjacentReadPairSameVar(this.getAControlFlowNode(), result)
+  }
+
   /**
    * Gets a next read of the same underlying assignable. That is, a read
    * that can be reached from this read without passing through any other reads,
@@ -102,7 +107,7 @@ class AssignableRead extends AssignableAccess {
    */
   AssignableRead getANextRead() {
     forex(ControlFlow::Node cfn | cfn = result.getAControlFlowNode() |
-      Ssa::Internal::adjacentReadPairSameVar(this.getAControlFlowNode(), cfn)
+      cfn = this.getAnAdjacentReadSameVar()
     )
   }
 

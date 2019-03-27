@@ -183,7 +183,7 @@ public class TokenType {
       _class = new TokenType(kw("class")),
       _extends = new TokenType(kw("extends").beforeExpr()),
       _export = new TokenType(kw("export")),
-      _import = new TokenType(kw("import")),
+      _import = new TokenType(kw("import").startsExpr()),
       _null = new TokenType(kw("null").startsExpr()),
       _true = new TokenType(kw("true").startsExpr()),
       _false = new TokenType(kw("false").startsExpr()),

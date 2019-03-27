@@ -359,7 +359,7 @@ class TypeDecl extends Identifier, TypeRef, LexicalDecl {
   TypeDecl() {
     this = any(ClassOrInterface ci).getIdentifier() or
     this = any(TypeParameter tp).getIdentifier() or
-    this = any(ImportSpecifier im | not im instanceof ImportNamespaceSpecifier).getLocal() or
+    this = any(ImportSpecifier im).getLocal() or
     this = any(ImportEqualsDeclaration im).getId() or
     this = any(TypeAliasDeclaration td).getIdentifier() or
     this = any(EnumDeclaration ed).getIdentifier() or

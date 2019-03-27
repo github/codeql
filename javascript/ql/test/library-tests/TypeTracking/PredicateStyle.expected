@@ -5,6 +5,7 @@ apiObject
 connection
 | type tracker with call steps | tst.js:6:15:6:18 | conn |
 | type tracker with call steps | tst.js:10:5:10:19 | this.connection |
+| type tracker with call steps with property connection | tst.js:6:14:6:13 | this |
 | type tracker without call steps | tst.js:15:10:15:49 | api.cha ... ction() |
 | type tracker without call steps | tst.js:18:7:18:21 | getConnection() |
 | type tracker without call steps | tst.js:30:9:30:23 | getConnection() |

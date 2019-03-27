@@ -7,9 +7,9 @@ ssl.wrap_socket(ssl_version=ssl.PROTOCOL_SSLv2)
 ssl.wrap_socket(ssl_version=ssl.PROTOCOL_SSLv3)
 ssl.wrap_socket(ssl_version=ssl.PROTOCOL_TLSv1)
 
-SSLContext(ssl_version=ssl.PROTOCOL_SSLv2)
-SSLContext(ssl_version=ssl.PROTOCOL_SSLv3)
-SSLContext(ssl_version=ssl.PROTOCOL_TLSv1)
+SSLContext(protocol=ssl.PROTOCOL_SSLv2)
+SSLContext(protocol=ssl.PROTOCOL_SSLv3)
+SSLContext(protocol=ssl.PROTOCOL_TLSv1)
 
 SSL.Context(SSL.SSLv2_METHOD)
 SSL.Context(SSL.SSLv23_METHOD)
@@ -34,7 +34,7 @@ SSL.Context(METHOD)
 # secure versions
 
 ssl.wrap_socket(ssl_version=ssl.PROTOCOL_TLSv1_1)
-SSLContext(ssl_version=ssl.PROTOCOL_TLSv1_1)
+SSLContext(protocol=ssl.PROTOCOL_TLSv1_1)
 SSL.Context(SSL.TLSv1_1_METHOD)
 
 # possibly insecure default
@@ -46,5 +46,7 @@ context = SSLContext()
 from ssl import PROTOCOL_SSLv2
 
 ssl.wrap_socket(ssl_version=PROTOCOL_SSLv2)
-SSLContext(ssl_version=PROTOCOL_SSLv2)
+SSLContext(protocol=PROTOCOL_SSLv2)
 
+# FP for insecure default
+ssl.SSLContext(ssl.SSLv23_METHOD)

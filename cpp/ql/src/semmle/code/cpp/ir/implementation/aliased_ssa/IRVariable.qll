@@ -1,5 +1,5 @@
 private import internal.IRInternal
-import FunctionIR
+import IRFunction
 import cpp
 import semmle.code.cpp.ir.implementation.TempVariableTag
 private import semmle.code.cpp.ir.internal.IRUtilities
@@ -48,7 +48,7 @@ abstract class IRVariable extends TIRVariable {
   /**
    * Gets the IR for the function that references this variable.
    */
-  final FunctionIR getEnclosingFunctionIR() {
+  final IRFunction getEnclosingIRFunction() {
     result.getFunction() = func
   }
 

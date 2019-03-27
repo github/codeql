@@ -2,7 +2,7 @@
 
 ## General improvements
 
-* Support for many frameworks and libraries has been improved, in particular including the following:
+* Support for many frameworks and libraries has been improved, in particular for:
   - [a-sync-waterfall](https://www.npmjs.com/package/a-sync-waterfall)
   - [Electron](https://electronjs.org)
   - [Express](https://npmjs.org/express)
@@ -12,7 +12,7 @@
   - [socket.io](http://socket.io)
   - [Vue](https://vuejs.org/)
 
-* File classification has been improved to recognize additional generated files, for example files from [HTML Tidy](html-tidy.org).
+* File classification now recognizes additional generated files, for example, files from [HTML Tidy](html-tidy.org).
 
 * The taint tracking library now recognizes flow through persistent storage, class fields, and callbacks in certain cases. Handling of regular expressions has also been improved. This may give more results for the security queries.
 
@@ -24,7 +24,7 @@
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Arbitrary file write during archive extraction ("Zip Slip") (`js/zipslip`) | security, external/cwe/cwe-022 | Identifies extraction routines that allow arbitrary file overwrite vulnerabilities. Results are hidden on LGTM by default. |
+| Arbitrary file write during archive extraction ("Zip Slip") (`js/zipslip`) | security, external/cwe/cwe-022 | Identifies extraction routines that allow arbitrary file overwrite vulnerabilities, indicating a possible violation of [CWE-022](https://cwe.mitre.org/data/definitions/22.html). Results are shown on LGTM by default. |
 | Arrow method on Vue instance (`js/vue/arrow-method-on-vue-instance`) | reliability, frameworks/vue | Highlights arrow functions that are used as methods on Vue instances. Results are shown on LGTM by default.|
 | Cross-window communication with unrestricted target origin (`js/cross-window-information-leak`) | security, external/cwe/201, external/cwe/359 | Highlights code that sends potentially sensitive information to another window without restricting the receiver window's origin, indicating a possible violation of [CWE-201](https://cwe.mitre.org/data/definitions/201.html). Results are shown on LGTM by default. |
 | Double escaping or unescaping (`js/double-escaping`) | correctness, security, external/cwe/cwe-116 | Highlights potential double escaping or unescaping of special characters, indicating a possible violation of [CWE-116](https://cwe.mitre.org/data/definitions/116.html). Results are shown on LGTM by default. |
@@ -39,24 +39,24 @@
 
 | **Query**                                  | **Expected impact**          | **Change**                                                                   |
 |--------------------------------------------|------------------------------|------------------------------------------------------------------------------|
-| Ambiguous HTML id attribute                | Fewer false-positive results | This rule now treats templates more conservatively. Its precision has been revised to 'high'. |
-| Assignment to exports variable             | Fewer results                | This rule no longer flags code that is also flagged by the rule "Useless assignment to local variable". |
-| Client-side cross-site scripting           | More true-positive results, fewer false-positive results. | This rule now recognizes WinJS functions that are vulnerable to HTML injection. It no longer flags certain safe uses of jQuery, and recognizes custom sanitizers. |
-| Hard-coded credentials                     | Fewer false-positive results | This rule no longer flag the empty string as a hardcoded username. |
-| Insecure randomness | More results | This rule now flags insecure uses of `crypto.pseudoRandomBytes`. |
-| Reflected cross-site scripting             | Fewer false-positive results. | This rule now recognizes custom sanitizers. |
-| Stored cross-site scripting                | Fewer false-positive results. | This rule now recognizes custom sanitizers. |
-| Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | Additional ways that class methods can be bound are recognized. |
-| Uncontrolled data used in network request  | More results                 | This rule now recognizes host values that are vulnerable to injection. |
-| Unused parameter                           | Fewer false-positive results | This rule no longer flags parameters with leading underscore. |
-| Unused variable, import, function or class | Fewer false-positive results | This rule now flags fewer variables that are implictly used by JSX elements, no longer flags variables with leading underscore, and no longer flags variables in dead code. |
-| Uncontrolled data used in path expression | Fewer false-positive results | This rule now recognizes the Express `root` option, which prevents path traversal. |
-| Unneeded defensive code | More true-positive results, fewer false-positive results. | This rule now recognizes additional defensive code patterns. |
+| Ambiguous HTML id attribute                | Fewer false positive results | This query now treats templates more conservatively. Its precision has been revised to 'high'. |
+| Assignment to exports variable             | Fewer results                | This query no longer flags code that is also flagged by the query "Useless assignment to local variable". |
+| Client-side cross-site scripting           | More true positive and fewer false positive results. | This query now recognizes WinJS functions that are vulnerable to HTML injection. It no longer flags certain safe uses of jQuery, and recognizes custom sanitizers. |
+| Hard-coded credentials                     | Fewer false positive results | This query no longer flags the empty string as a hardcoded username. |
+| Insecure randomness | More results | This query now flags insecure uses of `crypto.pseudoRandomBytes`. |
+| Reflected cross-site scripting             | Fewer false positive results. | This query now recognizes custom sanitizers. |
+| Stored cross-site scripting                | Fewer false positive results. | This query now recognizes custom sanitizers. |
+| Unbound event handler receiver (`js/unbound-event-handler-receiver`) | Fewer false positive results | Additional ways that class methods can be bound are now recognized. |
+| Uncontrolled data used in network request  | More results                 | This query now recognizes host values that are vulnerable to injection. |
+| Uncontrolled data used in path expression | Fewer false positive results | This query now recognizes the Express `root` option, which prevents path traversal. |
+| Unneeded defensive code | More true positive and fewer false positive results | This query now recognizes additional defensive code patterns. |
+| Unsafe dynamic method access              | Fewer false positive results | This query no longer flags concatenated strings as unsafe method names. |
+| Unused parameter                           | Fewer false positive results | This query no longer flags parameters with leading underscore. |
+| Unused variable, import, function or class | Fewer false positive results | This query now flags fewer variables that are implictly used by JSX elements. It no longer flags variables with a leading underscore and variables in dead code. |
+| Unvalidated dynamic method call           | More true positive results | This query now flags concatenated strings as unvalidated method names in more cases. |
+| Useless assignment to property. | Fewer false positive results | This query now treats assignments with complex right-hand sides correctly. |
 | Useless conditional | Fewer results | Additional defensive coding patterns are now ignored. |
-| Useless assignment to property. | Fewer false-positive results | This rule now treats assignments with complex right-hand sides correctly. |
-| Unsafe dynamic method access              | Fewer false-positive results | This rule no longer flags concatenated strings as unsafe method names. |
-| Unvalidated dynamic method call           | More true-positive results | This rule now flags concatenated strings as unvalidated method names in more cases. |
-| Useless conditional | More true-positive results | This rule now flags additional uses of function call values. |
+| Useless conditional | More true positive results | This query now flags additional uses of function call values. |
 
 ## Changes to QL libraries
 

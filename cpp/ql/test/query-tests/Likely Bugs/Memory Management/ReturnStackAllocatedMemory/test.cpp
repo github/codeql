@@ -143,3 +143,49 @@ char *testArray5()
 
 	return arr; // GOOD
 }
+
+int *returnThreadLocal() {
+  thread_local int threadLocal;
+  return &threadLocal; // GOOD [FALSE POSITIVE]
+}
+
+int returnDereferenced() {
+  int localInt = 2;
+  int &localRef = localInt;
+  return localRef; // GOOD
+}
+
+typedef unsigned long size_t;
+void *memcpy(void *s1, const void *s2, size_t n);
+
+char *returnAfterCopy() {
+  char localBuf[] = "Data";
+  static char staticBuf[sizeof(localBuf)];
+  memcpy(staticBuf, localBuf, sizeof(staticBuf));
+  return staticBuf; // GOOD
+}
+
+void *conversionBeforeDataFlow() {
+  int myLocal;
+  void *pointerToLocal = (void *)&myLocal; // has conversion
+  return pointerToLocal; // BAD
+}
+
+void *arrayConversionBeforeDataFlow() {
+  int localArray[4];
+  int *pointerToLocal = localArray; // has conversion
+  return pointerToLocal; // BAD [NOT DETECTED]
+}
+
+int &dataFlowThroughReference() {
+  int myLocal;
+  int &refToLocal = myLocal; // has conversion
+  return refToLocal; // BAD [NOT DETECTED]
+}
+
+int *&conversionInFlow() {
+  int myLocal;
+  int *p = &myLocal;
+  int *&pRef = p; // has conversion in the middle of data flow
+  return pRef; // BAD [NOT DETECTED]
+}

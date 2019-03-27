@@ -170,20 +170,19 @@ class AMDModuleDefinition extends CallExpr {
   }
 }
 
-/** A path expression appearing in the list of dependencies of an AMD module. */
-private class AMDDependencyPath extends PathExprInModule, ConstantString {
-  AMDDependencyPath() {
-    exists(AMDModuleDefinition amd | this.getParentExpr*() = amd.getDependencies().getAnElement())
+/** An AMD dependency, considered as a path expression. */
+private class AmdDependencyPath extends PathExprCandidate {
+  AmdDependencyPath() {
+    exists(AMDModuleDefinition amd |
+      this = amd.getDependencies().getAnElement() or
+      this = amd.getARequireCall().getAnArgument()
+    )
   }
-
-  override string getValue() { result = this.(ConstantString).getStringValue() }
 }
 
-/** A path expression appearing in a `require` call in an AMD module. */
-private class AMDRequirePath extends PathExprInModule, ConstantString {
-  AMDRequirePath() {
-    exists(AMDModuleDefinition amd | this.getParentExpr*() = amd.getARequireCall().getAnArgument())
-  }
+/** A constant path element appearing in an AMD dependency expression. */
+private class ConstantAmdDependencyPathElement extends PathExprInModule, ConstantString {
+  ConstantAmdDependencyPathElement() { this = any(AmdDependencyPath amd).getAPart() }
 
   override string getValue() { result = this.(ConstantString).getStringValue() }
 }

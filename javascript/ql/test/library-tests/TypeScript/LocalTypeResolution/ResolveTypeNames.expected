@@ -4,6 +4,7 @@
 | exports.ts:16:5:16:8 | Enum | exports.ts:7:6:7:9 | Enum |
 | namespaceDecls.ts:38:8:38:8 | A | namespaceDecls.ts:1:8:1:8 | A |
 | namespaceDecls.ts:38:8:38:8 | A | namespaceDecls.ts:6:11:6:11 | A |
+| namespaceDecls.ts:39:8:39:8 | E | namespaceDecls.ts:4:13:4:13 | E |
 | namespaceDecls.ts:39:8:39:8 | E | namespaceDecls.ts:7:11:7:11 | E |
 | tst.ts:6:9:6:9 | I | tst.ts:4:11:4:11 | I |
 | tst.ts:8:11:8:11 | I | tst.ts:4:11:4:11 | I |

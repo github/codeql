@@ -9,133 +9,87 @@
 import javascript
 private import internal.FlowSteps
 
-/**
- * A pair of booleans, indicating whether a path goes through a return and/or a call.
- *
- * Identical to `TPathSummary` except without flow labels.
- */
-private newtype TStepSummary = MkStepSummary(boolean hasReturn, boolean hasCall) {
-  (hasReturn = true or hasReturn = false) and
-  (hasCall = true or hasCall = false)
+private class PropertyName extends string {
+  PropertyName() { this = any(DataFlow::PropRef pr).getPropertyName() }
 }
+
+private class OptionalPropertyName extends string {
+  OptionalPropertyName() { this instanceof PropertyName or this = "" }
+}
+
+/**
+ * A description of a step on an inter-procedural data flow path.
+ */
+private newtype TStepSummary =
+  LevelStep() or
+  CallStep() or
+  ReturnStep() or
+  StoreStep(PropertyName prop) or
+  LoadStep(PropertyName prop)
 
 /**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
  *
- * Summary of the steps needed to track a value to a given dataflow node.
+ * A description of a step on an inter-procedural data flow path.
  */
 class StepSummary extends TStepSummary {
-  Boolean hasReturn;
-
-  Boolean hasCall;
-
-  StepSummary() { this = MkStepSummary(hasReturn, hasCall) }
-
-  /** Indicates whether the path represented by this summary contains any return steps. */
-  boolean hasReturn() { result = hasReturn }
-
-  /** Indicates whether the path represented by this summary contains any call steps. */
-  boolean hasCall() { result = hasCall }
-
-  /**
-   * Gets the summary for the path obtained by appending `that` to `this`.
-   *
-   * Note that a path containing a `return` step cannot be appended to a path containing
-   * a `call` step in order to maintain well-formedness.
-   */
-  StepSummary append(StepSummary that) {
-    exists(Boolean hasReturn2, Boolean hasCall2 |
-      that = MkStepSummary(hasReturn2, hasCall2)
-    |
-      result = MkStepSummary(hasReturn.booleanOr(hasReturn2), hasCall.booleanOr(hasCall2)) and
-      // avoid constructing invalid paths
-      not (hasCall = true and hasReturn2 = true)
-    )
-  }
-
-  /**
-   * Gets the summary for the path obtained by appending `this` to `that`.
-   */
-  StepSummary prepend(StepSummary that) { result = that.append(this) }
-
-  /** Gets a textual representation of this path summary. */
+  /** Gets a textual representation of this step summary. */
   string toString() {
-    exists(string withReturn, string withCall |
-      (if hasReturn = true then withReturn = "with" else withReturn = "without") and
-      (if hasCall = true then withCall = "with" else withCall = "without")
-    |
-      result = "path " + withReturn + " return steps and " + withCall + " call steps"
+    this instanceof LevelStep and result = "level"
+    or
+    this instanceof CallStep and result = "call"
+    or
+    this instanceof ReturnStep and result = "return"
+    or
+    exists(string prop | this = StoreStep(prop) |
+      result = "store " + prop
+    )
+    or
+    exists(string prop | this = LoadStep(prop) |
+      result = "load" + prop
     )
   }
 }
 
 module StepSummary {
   /**
-   * Gets a summary describing a path without any calls or returns.
-   */
-  StepSummary level() { result = MkStepSummary(false, false) }
-
-  /**
-   * Gets a summary describing a path with one or more calls, but no returns.
-   */
-  StepSummary call() { result = MkStepSummary(false, true) }
-
-  /**
-   * Gets a summary describing a path with one or more returns, but no calls.
-   */
-  StepSummary return() { result = MkStepSummary(true, false) }
-
-  /**
    * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
    */
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
-    exists (DataFlow::Node predNode | pred.flowsTo(predNode) |
+    exists(DataFlow::Node predNode | pred.flowsTo(predNode) |
       // Flow through properties of objects
       propertyFlowStep(predNode, succ) and
-      summary = level()
+      summary = LevelStep()
       or
       // Flow through global variables
       globalFlowStep(predNode, succ) and
-      summary = level()
+      summary = LevelStep()
       or
       // Flow into function
       callStep(predNode, succ) and
-      summary = call()
+      summary = CallStep()
       or
       // Flow out of function
       returnStep(predNode, succ) and
-      summary = return()
+      summary = ReturnStep()
       or
       // Flow through an instance field between members of the same class
       DataFlow::localFieldStep(predNode, succ) and
-      summary = level()
+      summary = LevelStep()
+      or
+      exists(string prop |
+        basicStoreStep(predNode, succ, prop) and
+        summary = StoreStep(prop)
+        or
+        loadStep(predNode, succ, prop) and
+        summary = LoadStep(prop)
+      )
     )
   }
-
-  /**
-   * INTERNAL. Do not use.
-   *
-   * Appends a step summary onto a type-tracking summary.
-   */
-  TypeTracker append(TypeTracker type, StepSummary summary) {
-    not (type.hasCall() = true and summary.hasReturn() = true) and
-    result.hasCall() = type.hasCall().booleanOr(summary.hasCall())
-  }
-
-  /**
-   * INTERNAL. Do not use.
-   *
-   * Prepends a step summary before a backwards type-tracking summary.
-   */
-  TypeBackTracker prepend(StepSummary summary, TypeBackTracker type) {
-    not (type.hasReturn() = true and summary.hasCall() = true) and
-    result.hasReturn() = type.hasReturn().booleanOr(summary.hasReturn())
-  }
 }
 
-private newtype TTypeTracker = MkTypeTracker(boolean hasCall) {
-  hasCall = true or hasCall = false
-}
+private newtype TTypeTracker =
+  MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
 
 /**
  * EXPERIMENTAL.
@@ -159,7 +113,7 @@ private newtype TTypeTracker = MkTypeTracker(boolean hasCall) {
  *   )
  * }
  *
- * DataFlow::SourceNode myType() { result = myType(_) }
+ * DataFlow::SourceNode myType() { result = myType(DataFlow::TypeTracker::end()) }
  * ```
  *
  * To track values backwards, which can be useful for tracking
@@ -168,34 +122,55 @@ private newtype TTypeTracker = MkTypeTracker(boolean hasCall) {
 class TypeTracker extends TTypeTracker {
   Boolean hasCall;
 
-  TypeTracker() { this = MkTypeTracker(hasCall) }
+  string prop;
+
+  TypeTracker() { this = MkTypeTracker(hasCall, prop) }
+
+  TypeTracker append(StepSummary step) {
+    step = LevelStep() and result = this
+    or
+    step = CallStep() and result = MkTypeTracker(true, prop)
+    or
+    step = ReturnStep() and hasCall = false and result = this
+    or
+    step = LoadStep(prop) and result = MkTypeTracker(hasCall, "")
+    or
+    exists(string p |
+      step = StoreStep(p) and prop = "" and result = MkTypeTracker(hasCall, p)
+    )
+  }
 
   string toString() {
-    hasCall = true and result = "type tracker with call steps"
-    or
-    hasCall = false and result = "type tracker without call steps"
+    exists(string withCall, string withProp |
+      (if hasCall = true then withCall = "with" else withCall = "without") and
+      (if prop != "" then withProp = " with property " + prop else withProp = "") and
+      result = "type tracker " + withCall + " call steps" + withProp
+    )
   }
 
   /**
    * Holds if this is the starting point of type tracking.
    */
-  predicate start() {
-    hasCall = false
-  }
+  predicate start() { hasCall = false and prop = "" }
+
+  predicate end() { prop = "" }
 
   /**
    * INTERNAL. DO NOT USE.
    *
    * Holds if this type has been tracked into a call.
    */
-  boolean hasCall() {
-    result = hasCall
-  }
+  boolean hasCall() { result = hasCall }
+
+  string getProp() { result = prop }
 }
 
-private newtype TTypeBackTracker = MkTypeBackTracker(boolean hasReturn) {
-  hasReturn = true or hasReturn = false
+module TypeTracker {
+  TypeTracker end() { result.end() }
 }
+
+private newtype TTypeBackTracker =
+  MkTypeBackTracker(Boolean hasReturn, OptionalPropertyName prop)
 
 /**
  * EXPERIMENTAL.
@@ -216,38 +191,60 @@ private newtype TTypeBackTracker = MkTypeBackTracker(boolean hasReturn) {
  *   t.start() and
  *   result = (< some API call >).getArgument(< n >).getALocalSource()
  *   or
- *   exists (DataFlow::TypeTracker t2 |
+ *   exists (DataFlow::TypeBackTracker t2 |
  *     result = myCallback(t2).backtrack(t2, t)
  *   )
  * }
  *
- * DataFlow::SourceNode myCallback() { result = myCallback(_) }
+ * DataFlow::SourceNode myCallback() { result = myCallback(DataFlow::TypeBackTracker::end()) }
  * ```
  */
 class TypeBackTracker extends TTypeBackTracker {
   Boolean hasReturn;
 
-  TypeBackTracker() { this = MkTypeBackTracker(hasReturn) }
+  string prop;
+
+  TypeBackTracker() { this = MkTypeBackTracker(hasReturn, prop) }
+
+  TypeBackTracker prepend(StepSummary step) {
+    step = LevelStep() and result = this
+    or
+    step = CallStep() and hasReturn = false and result = this
+    or
+    step = ReturnStep() and result = MkTypeBackTracker(true, prop)
+    or
+    exists(string p |
+      step = LoadStep(p) and prop = "" and result = MkTypeBackTracker(hasReturn, p)
+    )
+    or
+    step = StoreStep(prop) and result = MkTypeBackTracker(hasReturn, "")
+  }
 
   string toString() {
-    hasReturn = true and result = "type back-tracker with return steps"
-    or
-    hasReturn = false and result = "type back-tracker without return steps"
+    exists(string withReturn, string withProp |
+      (if hasReturn = true then withReturn = "with" else withReturn = "without") and
+      (if prop != "" then withProp = " with property " + prop else withProp = "") and
+      result = "type back-tracker " + withReturn + " return steps" + withProp
+    )
   }
 
   /**
    * Holds if this is the starting point of type tracking.
    */
-  predicate start() {
-    hasReturn = false
-  }
+  predicate start() { hasReturn = false and prop = "" }
+
+  predicate end() { prop = "" }
 
   /**
    * INTERNAL. DO NOT USE.
    *
    * Holds if this type has been back-tracked into a call through return edge.
    */
-  boolean hasReturn() {
-    result = hasReturn
-  }
+  boolean hasReturn() { result = hasReturn }
+
+  string getProp() { result = prop }
+}
+
+module TypeBackTracker {
+  TypeBackTracker end() { result.end() }
 }

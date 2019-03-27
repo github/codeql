@@ -283,8 +283,6 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 
   override string toString() { result = Callable.super.toString() }
 
-  override Location getLocation() { result = Callable.super.getLocation() }
-
   override Parameter getRawParameter(int i) {
     if this.isStatic() then result = this.getParameter(i) else result = this.getParameter(i - 1)
   }
@@ -354,8 +352,6 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
 
   override string toString() { result = Callable.super.toString() }
 
-  override Location getLocation() { result = Callable.super.getLocation() }
-
   override Parameter getRawParameter(int i) {
     if this.isStatic() then result = this.getParameter(i) else result = this.getParameter(i - 1)
   }
@@ -419,8 +415,6 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
   override Location getALocation() { destructor_location(this, result) }
 
   override string toString() { result = Callable.super.toString() }
-
-  override Location getLocation() { result = Callable.super.getLocation() }
 }
 
 /**
@@ -446,8 +440,6 @@ class Operator extends Callable, Member, Attributable, @operator {
   override Location getALocation() { operator_location(this, result) }
 
   override string toString() { result = Callable.super.toString() }
-
-  override Location getLocation() { result = Callable.super.getLocation() }
 
   override Parameter getRawParameter(int i) { result = getParameter(i) }
 }

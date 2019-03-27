@@ -21,7 +21,7 @@ predicate acquireExpr(Expr acquire, string kind) {
   exists(FunctionCall fc, Function f, string name |
     fc = acquire and
     f = fc.getTarget() and
-    name = f.getName() and 
+    name = f.getQualifiedName() and 
     (
       (
         name = "fopen" and
@@ -47,7 +47,7 @@ predicate releaseExpr(Expr release, Expr resource, string kind) {
   exists(FunctionCall fc, Function f, string name |
     fc = release and
     f = fc.getTarget() and
-    name = f.getName() and 
+    name = f.getQualifiedName() and 
     (
       (
         name = "fclose" and
@@ -267,7 +267,7 @@ predicate automaticallyReleased(Assignment acquire)
 {
   // sub-types of the Qt type QObject are released by their parent (if they have one)
   exists(NewExpr alloc |
-    alloc.getType() = qtObject() and
+    alloc.getAllocatedType() = qtObject() and
     acquire.getRValue() = alloc and
     alloc.getInitializer() = qtParentConstructor().getACallToThisFunction()
   )

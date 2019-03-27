@@ -63,8 +63,8 @@ class IRBlockBase extends TIRBlock {
     result = getInstructionCount(this)
   }
 
-  final FunctionIR getEnclosingFunctionIR() {
-    result = getFirstInstruction(this).getEnclosingFunctionIR()
+  final IRFunction getEnclosingIRFunction() {
+    result = getFirstInstruction(this).getEnclosingIRFunction()
   }
 
   final Function getEnclosingFunction() {
@@ -116,7 +116,7 @@ class IRBlock extends IRBlockBase {
    * Holds if this block is reachable from the entry point of its function
    */
   final predicate isReachableFromFunctionEntry() {
-    this = getEnclosingFunctionIR().getEntryBlock() or
+    this = getEnclosingIRFunction().getEntryBlock() or
     getAPredecessor().isReachableFromFunctionEntry()
   }
 }

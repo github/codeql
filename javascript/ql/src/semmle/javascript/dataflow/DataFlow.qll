@@ -496,6 +496,7 @@ module DataFlow {
     override string getPropertyName() { result = odp.getPropertyName() }
 
     override Node getRhs() {
+      // not using `CallToObjectDefineProperty::getAPropertyAttribute` for performance reasons
       exists(ObjectLiteralNode propdesc |
         propdesc.flowsTo(odp.getPropertyDescriptor()) and
         propdesc.hasPropertyWrite("value", result)

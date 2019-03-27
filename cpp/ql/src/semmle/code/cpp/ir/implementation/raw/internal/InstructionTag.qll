@@ -99,6 +99,7 @@ class InstructionTag extends TInstructionTag {
 string getInstructionTagId(TInstructionTag tag) {
   tag = OnlyInstructionTag() and result = "Only" or  // Single instruction (not including implicit Load)
   tag = InitializerVariableAddressTag() and result = "InitVarAddr" or
+  tag = InitializerLoadStringTag() and result = "InitLoadStr" or
   tag = InitializerStoreTag() and result = "InitStore" or
   tag = InitializerUninitializedTag() and result = "InitUninit" or
   tag = ZeroPadStringConstantTag() and result = "ZeroPadConst" or

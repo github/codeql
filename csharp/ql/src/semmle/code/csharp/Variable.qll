@@ -111,6 +111,8 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
    * Holds if this local variable or parameter is a `ref`.
    */
   predicate isRef() { none() }
+
+  override predicate hasQualifiedName(string qualifier, string name) { none() }
 }
 
 /**
@@ -221,8 +223,6 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   override Parameter getSourceDeclaration() { params(this, _, _, _, _, _, result) }
 
   override string toString() { result = this.getName() }
-
-  override Location getLocation() { result = LocalScopeVariable.super.getLocation() }
 
   /**
    * Gets the default value of this parameter, if any. For example, the
@@ -400,8 +400,6 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
   override FieldAccess getAnAccess() { result = Variable.super.getAnAccess() }
 
   override string toString() { result = Variable.super.toString() }
-
-  override Location getLocation() { result = Variable.super.getLocation() }
 }
 
 /**

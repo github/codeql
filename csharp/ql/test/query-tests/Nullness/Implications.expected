@@ -952,6 +952,8 @@
 | D.cs:212:18:212:18 | access to local variable n | null | D.cs:211:20:211:23 | null | null |
 | D.cs:212:18:212:26 | ... == ... | false | D.cs:212:18:212:18 | access to local variable n | non-null |
 | D.cs:212:18:212:26 | ... == ... | true | D.cs:212:18:212:18 | access to local variable n | null |
+| D.cs:212:18:212:45 | ... ? ... : ... | non-null | D.cs:212:18:212:26 | ... == ... | true |
+| D.cs:212:18:212:45 | ... ? ... : ... | non-null | D.cs:212:30:212:41 | object creation of type Object | non-null |
 | D.cs:212:18:212:45 | ... ? ... : ... | null | D.cs:212:18:212:26 | ... == ... | false |
 | D.cs:212:18:212:45 | ... ? ... : ... | null | D.cs:212:45:212:45 | access to local variable n | null |
 | D.cs:212:45:212:45 | access to local variable n | non-null | D.cs:211:20:211:23 | null | non-null |

@@ -3,7 +3,7 @@ import semmle.python.web.Http
 
 /** The flask module */
 ModuleObject theFlaskModule() {
-    result = any(ModuleObject m | m.getName() = "flask")
+    result = ModuleObject::named("flask")
 }
 
 /** The flask app class */
@@ -13,7 +13,7 @@ ClassObject theFlaskClass() {
 
 /** The flask MethodView class */
 ClassObject theFlaskMethodViewClass() {
-    result = any(ModuleObject m | m.getName() = "flask.views").attr("MethodView")
+    result = ModuleObject::named("flask.views").attr("MethodView")
 }
 
 ClassObject theFlaskReponseClass() {

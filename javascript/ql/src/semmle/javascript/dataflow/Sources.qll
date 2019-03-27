@@ -162,10 +162,11 @@ class SourceNode extends DataFlow::Node {
    *
    * See `TypeTracker` for more details about how to use this.
    */
+  pragma[inline]
   DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) {
     exists(StepSummary summary |
       StepSummary::step(this, result, summary) and
-      t = StepSummary::append(t2, summary)
+      t = t2.append(summary)
     )
   }
 
@@ -176,10 +177,11 @@ class SourceNode extends DataFlow::Node {
    *
    * See `TypeBackTracker` for more details about how to use this.
    */
+  pragma[inline]
   DataFlow::SourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
     exists(StepSummary summary |
       StepSummary::step(result, this, summary) and
-      t = StepSummary::prepend(summary, t2)
+      t = t2.prepend(summary)
     )
   }
 }

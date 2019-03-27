@@ -15,10 +15,7 @@ import semmle.python.web.Http
 
 
 FunctionObject requestFunction() {
-    exists(ModuleObject req |
-        req.getName() = "requests" and
-        result = req.attr(httpVerbLower())
-    )
+    result = ModuleObject::named("requests").attr(httpVerbLower())
 }
 
 /** requests treats None as the default and all other "falsey" values as False */

@@ -251,8 +251,8 @@ export class TypeTable {
    * A symbol string is a `;`-separated string consisting of:
    * - a tag string, `root`, `member`, or `other`,
    * - an empty string or a `file:pos` string to distinguish this from symbols with other lexical roots,
-   * - the unqualified name of the symbol,
-   * - for non-root symbols, the ID of the parent symbol.
+   * - the ID of the parent symbol, or an empty string if this is a root symbol,
+   * - the unqualified name of the symbol.
    *
    * Symbol strings serve the same dual purpose as type strings (see `typeIds`).
    */
@@ -667,11 +667,11 @@ export class TypeTable {
   private getSymbolString(symbol: AugmentedSymbol): string {
     let parent = symbol.parent;
     if (parent == null || parent.escapedName === ts.InternalSymbolName.Global) {
-      return "root;" + this.getSymbolDeclarationString(symbol) + ";" + symbol.name;
+      return "root;" + this.getSymbolDeclarationString(symbol) + ";;" + symbol.name;
     } else if (parent.exports != null && parent.exports.get(symbol.escapedName) === symbol) {
-      return "member;;" + symbol.name + ";" + this.getSymbolId(parent);
+      return "member;;" + this.getSymbolId(parent) + ";" + symbol.name;
     } else {
-      return "other;" + this.getSymbolDeclarationString(symbol) + ";" + symbol.name + ";" + this.getSymbolId(parent);
+      return "other;" + this.getSymbolDeclarationString(symbol) + ";" + this.getSymbolId(parent) + ";" + symbol.name;
     }
   }
 

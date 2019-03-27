@@ -234,7 +234,7 @@ module Opcodes {
     override string getOpcodeName() { result = "nop" }
   }
 
-  class Ldstr extends Literal, @cil_ldstr {
+  class Ldstr extends StringLiteral, @cil_ldstr {
     override string getOpcodeName() { result = "ldstr" }
 
     override string getExtra() { result = "\"" + getValue() + "\"" }
