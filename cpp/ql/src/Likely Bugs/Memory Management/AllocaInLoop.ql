@@ -1,11 +1,13 @@
 /**
- * @name alloca in a loop
+ * @name Call to alloca in a loop
  * @description Using alloca in a loop can lead to a stack overflow
  * @kind problem
  * @problem.severity warning
+ * @precision high
  * @id cpp/alloca-in-loop
  * @tags reliability
  *       correctness
+ *       security
  *       external/cwe/cwe-770
  */
 
