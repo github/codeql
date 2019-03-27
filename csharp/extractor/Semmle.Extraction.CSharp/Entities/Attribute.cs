@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     foreach (var arg in syntax.ArgumentList.Arguments)
                     {
                         var expr = Expression.Create(cx, arg.Expression, this, child++);
-                        if (arg.NameEquals != null)
+                        if (!(arg.NameEquals is null))
                         {
                             cx.Emit(Tuples.expr_argument_name(expr, arg.NameEquals.Name.Identifier.Text));
                         }
