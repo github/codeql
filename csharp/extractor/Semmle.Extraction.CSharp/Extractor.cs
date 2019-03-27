@@ -62,6 +62,7 @@ namespace Semmle.Extraction.CSharp
         /// <returns><see cref="ExitCode"/></returns>
         public static ExitCode Run(string[] args)
         {
+            var stopwatch = new Stopwatch();
             var commandLineArguments = Options.CreateWithEnvironment(args);
             var fileLogger = new FileLogger(commandLineArguments.Verbosity, GetCSharpLogPath());
             var logger = commandLineArguments.Console
@@ -169,10 +170,11 @@ namespace Semmle.Extraction.CSharp
                     var cpuTime2 = currentProcess.TotalProcessorTime;
                     var userTime2 = currentProcess.UserProcessorTime;
 
-                    var performance = new Entities.Performance()
+                    var performance = new Entities.PerformanceMetrics()
                     {
-                        Compiler = new Entities.Timings() { Elapsed = sw1.Elapsed, Cpu = cpuTime1, User = userTime1 },
+                        Frontend = new Entities.Timings() { Elapsed = sw1.Elapsed, Cpu = cpuTime1, User = userTime1 },
                         Extractor = new Entities.Timings() { Elapsed = sw2.Elapsed, Cpu = cpuTime2 - cpuTime1, User = userTime2 - userTime1 },
+                        Total = new Entities.Timings() {  Elapsed = stopwatch.Elapsed, Cpu=cpuTime2, User = userTime2 },
                         PeakWorkingSet = currentProcess.PeakWorkingSet64
                     };
 

@@ -120,8 +120,8 @@ diagnostics(
     int location: @location_default ref
 );
 
-extraction_messages(
-    unique int id: @extraction_error,
+extractor_messages(
+    unique int id: @extractor_message,
     int severity: int ref,
     string origin : string ref,
     string text : string ref,

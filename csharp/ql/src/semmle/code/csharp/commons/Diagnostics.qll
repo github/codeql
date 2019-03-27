@@ -54,7 +54,7 @@ class CompilerError extends Diagnostic {
 }
 
 /** A message from an extractor. */
-class ExtractorMessage extends @extraction_error {
+class ExtractorMessage extends @extractor_message {
   int severity;
 
   string origin;
@@ -68,7 +68,7 @@ class ExtractorMessage extends @extraction_error {
   Location location;
 
   ExtractorMessage() {
-    extraction_messages(this, severity, origin, text, element, location, stackTrace)
+    extractor_messages(this, severity, origin, text, element, location, stackTrace)
   }
 
   /** Gets the severity of this message. */

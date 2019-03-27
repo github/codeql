@@ -21,6 +21,7 @@ class Compilation extends @compilation {
   /** Gets the 'i'th source file in this compilation. */
   File getFileCompiled(int i) { compilation_compiling_files(this, i, result) }
 
+  /** Gets a source file compiled in this compilation. */
   File getAFileCompiled() { result = getFileCompiled(_) }
 
   /** Gets a diagnostic associated with this compilation. */

@@ -38,17 +38,19 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public void PopulatePerformance(Performance p)
+        public void PopulatePerformance(PerformanceMetrics p)
         {
             int index = 0;
             foreach(float metric in p.Metrics)
             {
                 cx.Emit(Tuples.compilation_time(this, -1, index++, metric));
             }
+            cx.Emit(Tuples.compilation_finished(this, (float)p.Total.Cpu.TotalSeconds, (float)p.Total.Elapsed.TotalSeconds));
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
+
     class Diagnostic : FreshEntity
     {
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
@@ -66,11 +68,11 @@ namespace Semmle.Extraction.CSharp.Entities
     }
 
     /// <summary>
-    /// The various performance measures that we log.
+    /// The various performance metrics to log.
     /// </summary>
-    public struct Performance
+    public struct PerformanceMetrics
     {
-        public Timings Compiler, Extractor;
+        public Timings Frontend, Extractor, Total;
         public long PeakWorkingSet;
 
         /// <summary>
@@ -80,12 +82,11 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                yield return (float)Compiler.Cpu.TotalSeconds;
-                yield return (float)Compiler.Elapsed.TotalSeconds;
+                yield return (float)Frontend.Cpu.TotalSeconds;
+                yield return (float)Frontend.Elapsed.TotalSeconds;
                 yield return (float)Extractor.Cpu.TotalSeconds;
                 yield return (float)Extractor.Elapsed.TotalSeconds;
-
-                yield return (float)Compiler.User.TotalSeconds;
+                yield return (float)Frontend.User.TotalSeconds;
                 yield return (float)Extractor.User.TotalSeconds;
                 yield return PeakWorkingSet / 1024.0f / 1024.0f;
             }

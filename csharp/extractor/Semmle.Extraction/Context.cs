@@ -222,7 +222,7 @@ namespace Semmle.Extraction
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    ExtractionError("Uncaught exception", ex.Message, Entities.Location.Create(this, null), ex.StackTrace);
+                    ExtractionError("Uncaught exception", ex.Message, GeneratedLocation.Create(this), ex.StackTrace);
                 }
             }
         }
@@ -381,7 +381,6 @@ namespace Semmle.Extraction
                 case TrapStackBehaviour.NeedsLabel:
                     if (!tagStack.Any())
                         ExtractionError("TagStack unexpectedly empty", optionalSymbol, entity);
-                        // Extractor.Message(new Message { Text = "Tagstack unexpectedly empty", Symbol = optionalSymbol, Severity = Severity.Error });
                     duplicationGuard = false;
                     deferred = false;
                     break;

@@ -240,7 +240,7 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        public void LogPerformance(Entities.Performance p) => compilationEntity.PopulatePerformance(p);
+        public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
  
         /// <summary>
         ///     Extract an assembly to a new trap file.
