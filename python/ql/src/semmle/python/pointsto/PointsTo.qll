@@ -978,7 +978,7 @@ private predicate potential_builtin_points_to(NameNode f, ObjectInternal value, 
 module Conditionals {
 
     boolean testEvaluates(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        //pinode_test(expr, use) and
+        pinode_test(expr, use) and
         result = evaluates(expr, use, context, value, origin).booleanValue()
     }
 
@@ -1010,10 +1010,10 @@ module Conditionals {
             part = not_operand(expr) and result = ObjectInternal::bool(partval.booleanValue().booleanNot())
             or
             result = evaluatesLen(expr, part, context, partval)
-            //or
-            //result = callable_test_evaluates_boolean(expr, use, context, val, origin)
-            //or
-            //result = hasattr_test_evaluates_boolean(expr, use, context, val, origin)
+            or
+            result = callable_test_evaluates(expr, part, context, partval)
+            or
+            result = hasattr_test_evaluates(expr, part, context, partval)
         )
 
     }
@@ -1065,6 +1065,49 @@ module Conditionals {
         PointsToInternal::pointsTo(use, context, val, _) and
         PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("len"), _) and
         result = TInt(val.(SequenceObjectInternal).length())
+    }
+
+    pragma [noinline]
+    private ObjectInternal callable_test_evaluates(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
+        callable_call(call, use, context, val) and
+        (
+            val = ObjectInternal::unknown() and result = ObjectInternal::bool(_)
+            or
+            val = ObjectInternal::unknownClass() and result = ObjectInternal::bool(_)
+            or
+            result = ObjectInternal::bool(Types::hasAttr(val.getClass(), "__call__"))
+        )
+    }
+
+    pragma [noinline]
+    private ObjectInternal hasattr_test_evaluates(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
+        exists(string name |
+            hasattr_call(call, use, context, val, name)
+            |
+            val = ObjectInternal::unknown() and result = ObjectInternal::bool(_)
+            or
+            val = ObjectInternal::unknownClass() and result = ObjectInternal::bool(_)
+            or
+            result = ObjectInternal::bool(Types::hasAttr(val.getClass(), name))
+        )
+    }
+
+    private predicate callable_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
+        pinode_test_part(call, use) and
+        PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("callable"), _) and
+        use = call.getArg(0) and
+        PointsToInternal::pointsTo(use, context, val, _)
+    }
+
+    private predicate hasattr_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, string name) {
+        pinode_test_part(call, use) and
+        PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("hasattr"), _) and
+        use = call.getArg(0) and
+        PointsToInternal::pointsTo(use, context, val, _) and
+        exists(StringObjectInternal str |
+            PointsToInternal::pointsTo(call.getArg(1), context, str, _) and
+            str.strValue() = name
+        )
     }
 
     //private 
@@ -1129,6 +1172,16 @@ module Conditionals {
         )
     }
 
+    predicate requireHasAttr(ClassObjectInternal cls, string name) {
+        cls != ObjectInternal::unknownClass() and
+        exists(ObjectInternal val |
+            val.getClass() = cls |
+            name = "__call__" and callable_call(_, _, _, val)
+            or
+            hasattr_call(_, _, _, val, name)
+        )
+    }
+    
     pragma [noinline]
     private boolean inequalityEvaluatesBoolean(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
         pinode_test_part(expr, use) and 
@@ -1433,5 +1486,27 @@ cached module Types {
         )
     }
 
+    cached boolean hasAttr(ObjectInternal cls, string name) {
+        result = mroHasAttr(Types::getMro(cls), name, 0)
+    }
+
+    private boolean mroHasAttr(ClassList mro, string name, int n) {
+        exists(ClassObjectInternal cls |
+            Conditionals::requireHasAttr(cls, name) and
+            mro = getMro(cls)
+        )
+        and
+        (
+            n = mro.length() and result = false
+            or
+            exists(ClassDecl decl |
+                decl = mro.getItem(n).getClassDeclaration() |
+                if decl.declaresAttribute(name) then
+                    result = true
+                else
+                    result = mroHasAttr(mro, name, n+1)
+            )
+        )
+    }
 
 }
