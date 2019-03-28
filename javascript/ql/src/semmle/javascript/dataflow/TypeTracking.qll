@@ -126,6 +126,7 @@ class TypeTracker extends TTypeTracker {
 
   TypeTracker() { this = MkTypeTracker(hasCall, prop) }
 
+  /** Gets the summary resulting from appending `step` to this type-tracking summary. */
   TypeTracker append(StepSummary step) {
     step = LevelStep() and result = this
     or
@@ -140,6 +141,7 @@ class TypeTracker extends TTypeTracker {
     )
   }
 
+  /** Gets a textual representation of this summary. */
   string toString() {
     exists(string withCall, string withProp |
       (if hasCall = true then withCall = "with" else withCall = "without") and
@@ -153,6 +155,9 @@ class TypeTracker extends TTypeTracker {
    */
   predicate start() { hasCall = false and prop = "" }
 
+  /**
+   * Holds if this is the end point of type tracking.
+   */
   predicate end() { prop = "" }
 
   /**
@@ -162,6 +167,10 @@ class TypeTracker extends TTypeTracker {
    */
   boolean hasCall() { result = hasCall }
 
+  /**
+   * Gets the property this type has been tracked into, or the empty string if
+   * it has not been tracked into a property.
+   */
   string getProp() { result = prop }
 }
 
@@ -206,6 +215,7 @@ class TypeBackTracker extends TTypeBackTracker {
 
   TypeBackTracker() { this = MkTypeBackTracker(hasReturn, prop) }
 
+  /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
   TypeBackTracker prepend(StepSummary step) {
     step = LevelStep() and result = this
     or
@@ -220,6 +230,7 @@ class TypeBackTracker extends TTypeBackTracker {
     step = StoreStep(prop) and result = MkTypeBackTracker(hasReturn, "")
   }
 
+  /** Gets a textual representation of this summary. */
   string toString() {
     exists(string withReturn, string withProp |
       (if hasReturn = true then withReturn = "with" else withReturn = "without") and
@@ -233,6 +244,9 @@ class TypeBackTracker extends TTypeBackTracker {
    */
   predicate start() { hasReturn = false and prop = "" }
 
+  /**
+   * Holds if this is the end point of type tracking.
+   */
   predicate end() { prop = "" }
 
   /**
@@ -242,6 +256,10 @@ class TypeBackTracker extends TTypeBackTracker {
    */
   boolean hasReturn() { result = hasReturn }
 
+  /**
+   * Gets the property this type has been tracked into, or the empty string if
+   * it has not been tracked into a property.
+   */
   string getProp() { result = prop }
 }
 
