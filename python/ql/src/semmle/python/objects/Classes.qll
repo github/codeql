@@ -129,6 +129,9 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
 
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(this.getBuiltin().getClass())
+        or
+        this.getBuiltin().getClass() = Builtin::special("type") and
+        result = TType()
     }
 
     override ControlFlowNode getOrigin() {
@@ -163,7 +166,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
 class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
 
     override string toString() {
-        none()
+        result = "Unknown class"
     }
 
     override ClassDecl getClassDeclaration() {

@@ -16,6 +16,10 @@ class ClassMethodObject extends Object {
         )
     }
 
+    CallNode getACall() {
+        result = this.getFunction().getACall()
+    }
+
 }
 
 /** A static method object. Either a decorated function or an explicit call to staticmethod(f) */ 

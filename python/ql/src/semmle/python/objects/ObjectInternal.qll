@@ -174,7 +174,7 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
 class UnknownInternal extends ObjectInternal, TUnknown {
 
     override string toString() {
-        none()
+        result = "Unknown value"
     }
 
     override boolean booleanValue() {
@@ -242,7 +242,7 @@ class UnknownInternal extends ObjectInternal, TUnknown {
 class UndefinedInternal extends ObjectInternal, TUndefined {
 
     override string toString() {
-        none()
+        result = "Undefined variable"
     }
 
     override boolean booleanValue() {

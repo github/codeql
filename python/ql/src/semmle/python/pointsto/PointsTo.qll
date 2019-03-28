@@ -109,8 +109,14 @@ module PointsTo {
     points_to(ControlFlowNode f, PointsToContext context, Object obj, ClassObject cls, ControlFlowNode origin) {
         exists(Value value |
             PointsToInternal::pointsTo(f, context, value, origin) and
-            obj = value.getSource() and
-            cls = value.getClass().getSource()
+            cls = value.getClass().getSource() |
+            obj = value.getSource() or
+            not exists(value.getSource()) and obj = origin
+        )
+        or
+        f.isParameter() and exists(EssaVariable var |
+            var.getDefinition().(ParameterDefinition).getDefiningNode() = f and
+            ssa_variable_points_to(var, context, obj, cls, origin)
         )
     }
 
@@ -118,8 +124,9 @@ module PointsTo {
     ssa_variable_points_to(EssaVariable var, PointsToContext context, Object obj, ClassObject cls, CfgOrigin origin) {
         exists(Value value |
             PointsToInternal::variablePointsTo(var, context, value, origin) and
-            obj = value.getSource() and
-            cls = value.getClass().getSource()
+            cls = value.getClass().getSource() |
+            obj = value.getSource() or
+            not exists(value.getSource()) and obj = origin
         )
     }
 
@@ -153,9 +160,11 @@ cached module PointsToInternal {
         or
         binary_expr_points_to(f, context, value, origin)
         or
-        origin = f and compare_expr_points_to(f, context, value)
+        origin = f and test_expr_points_to(f, context, value)
         or
         origin = f and unary_points_to(f, context, value)
+        or
+        if_exp_points_to(f, context, value, origin)
         or
         origin = f and value.introduced(f, context)
         or
@@ -375,8 +384,8 @@ cached module PointsToInternal {
         //or
         InterModulePointsTo::import_star_points_to(def, context, value, origin)
         or
-        //attribute_assignment_points_to(def, context, value, origin)
-        //or
+        attribute_assignment_points_to(def, context, value, origin)
+        or
         InterProceduralPointsTo::callsite_points_to(def, context, value, origin)
         or
         argument_points_to(def, context, value, origin)
@@ -384,6 +393,18 @@ cached module PointsToInternal {
         //attribute_delete_points_to(def, context, value, origin)
         or
         uni_edged_phi_points_to(def, context, value, origin)
+    }
+
+    /** Attribute assignments have no effect as far as value tracking is concerned, except for `__class__`. */
+    pragma [noinline]
+    private predicate attribute_assignment_points_to(AttributeAssignment def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+        if def.getName() = "__class__" then
+            exists(ObjectInternal cls |
+                pointsTo(def.getValue(), context, cls, _) and
+                value = TUnknownInstance(cls)
+            )
+        else
+            variablePointsTo(def.getInput(), context, value, origin)
     }
 
     /** Ignore the effects of calls on their arguments. PointsTo is an approximation, but attempting to improve accuracy would be very expensive for very little gain. */
@@ -513,8 +534,8 @@ cached module PointsToInternal {
     }
 
     pragma [noinline]
-    private predicate compare_expr_points_to(CompareNode cmp, PointsToContext context, ObjectInternal value) {
-        value = ObjectInternal::bool(Conditionals::comparisonEvaluatesTo(cmp, _, context, _, _))
+    private predicate test_expr_points_to(ControlFlowNode cmp, PointsToContext context, ObjectInternal value) {
+        value = ObjectInternal::bool(Conditionals::testEvaluatesTo(cmp, _, context, _, _))
         // or
         // value = version_tuple_compare(cmp, context)
     }
@@ -531,6 +552,11 @@ cached module PointsToInternal {
             or
             operand = ObjectInternal::unknown() and value = operand
         )
+    }
+
+    /** Holds if `f` is an expression node `tval if cond else fval` and points to `(value, origin)`. */
+    private predicate if_exp_points_to(IfExprNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        pointsTo(f.getAnOperand(), context, value, origin)
     }
 
 }
@@ -941,7 +967,7 @@ private predicate potential_builtin_points_to(NameNode f, ObjectInternal value, 
     )
 }
 
-private module Conditionals {
+module Conditionals {
 
     /** Holds if `expr` is the operand of a unary `not` expression. */
     private ControlFlowNode not_operand(ControlFlowNode expr) {
@@ -952,22 +978,33 @@ private module Conditionals {
     boolean branchEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
         contains_interesting_expression_within_test(expr, use) and
         PointsToInternal::pointsTo(use, context, val, origin) and
-        expr = use and
-        val.booleanValue() = result
+        (
+            expr = use and
+            val.booleanValue() = result
+            or
+            exists(string name, ObjectInternal attr |
+                expr.(AttrNode).getObject(name) = use |
+                val.attribute(name, attr, _) and
+                result = attr.booleanValue()
+                or
+                val.attributesUnknown() and
+                result = maybe()
+            )
+        )
         or
-        result = comparisonEvaluatesTo(expr, use, context, val, origin)
+        result = testEvaluatesTo(expr, use, context, val, origin)
         or
         result = branchEvaluatesTo(not_operand(expr), use, context, val, origin).booleanNot()
     }
 
-    boolean comparisonEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
+    boolean testEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
         result = equalityEvaluatesTo(expr, use, context, val, origin)
         or
         result = inequalityEvaluatesTo(expr, use, context, val, origin)
-        // or
-        //result = isinstance_test_evaluates_boolean(expr, use, context, val, origin)
-        //or
-        //result = issubclass_test_evaluates_boolean(expr, use, context, val, origin)
+        or
+        result = isinstance_test_evaluates_boolean(expr, use, context, val, origin)
+        or
+        result = issubclass_test_evaluates_boolean(expr, use, context, val, origin)
         //or
         //result = callable_test_evaluates_boolean(expr, use, context, val, origin)
         //or
@@ -991,6 +1028,64 @@ private module Conditionals {
                 val.isComparable() = false and result = maybe()
                 or
                 other.isComparable() = false and result = maybe()
+            )
+        )
+    }
+
+    private predicate isinstance_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ObjectInternal cls, ControlFlowNode origin) {
+        PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("isinstance"), _) and
+        use = call.getArg(0) and
+        PointsToInternal::pointsTo(use, context, val, origin) and
+        PointsToInternal::pointsTo(call.getArg(1), context, cls, _)
+    }
+
+    pragma [nomagic]
+    private boolean isinstance_test_evaluates_boolean(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
+        exists(ObjectInternal cls |
+            isinstance_call(call, use, context, val, cls, origin) |
+            result = Types::improperSubclass(val.getClass(), cls)
+            or
+            val = ObjectInternal::unknown() and result = maybe()
+            or
+            cls = ObjectInternal::unknown() and result = maybe()
+            or
+            cls = ObjectInternal::unknownClass() and result = maybe()
+        )
+    }
+
+    private predicate issubclass_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ObjectInternal cls, ControlFlowNode origin) {
+        PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("issubclass"), _) and
+        use = call.getArg(0) and
+        PointsToInternal::pointsTo(use, context, val, origin) and
+        PointsToInternal::pointsTo(call.getArg(1), context, cls, _)
+    }
+
+    pragma [nomagic]
+    private boolean issubclass_test_evaluates_boolean(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
+        exists(ObjectInternal cls |
+            issubclass_call(call, use, context, val, cls, origin) |
+            result = Types::improperSubclass(val, cls)
+            or
+            val = ObjectInternal::unknownClass() and result = maybe()
+            or
+            val = ObjectInternal::unknown() and result = maybe()
+            or
+            cls = ObjectInternal::unknown() and result = maybe()
+            or
+            cls = ObjectInternal::unknownClass() and result = maybe()
+        )
+    }
+
+    predicate requireSubClass(ObjectInternal sub, ObjectInternal sup) {
+        sup != ObjectInternal::unknownClass() and
+        sub != ObjectInternal::unknownClass() and
+        (sup.isClass() = true or sup instanceof TupleObjectInternal) and
+        (
+            issubclass_call(_, _, _, sub, sup, _) and sub.isClass() = true
+            or
+            exists(ObjectInternal val |
+                isinstance_call(_, _, _, val, sup, _) and
+                sub = val.getClass()
             )
         )
     }
@@ -1248,7 +1343,32 @@ cached module Types {
         exists(int i, int j | getBase(cls, i) = getBase(cls, j) and i != j and reason = "Duplicate bases classes")
     }
 
+    cached boolean improperSubclass(ObjectInternal sub, ObjectInternal sup) {
+        sub = sup and result = true
+        or
+        result = mroContains(Types::getMro(sub), sup)
+        // TO DO...
+        // Handle tuples of classes
+    }
+
+    private boolean mroContains(ClassList mro, ObjectInternal sup) {
+        result = mroContains(mro, sup, 0)
+    }
+
+    private boolean mroContains(ClassList mro, ObjectInternal sup, int n) {
+        exists(ClassObjectInternal cls |
+            Conditionals::requireSubClass(cls, sup) and
+            mro = getMro(cls)
+        )
+        and
+        (
+            n = mro.length() and result = false
+            or
+            mro.getItem(n) = sup and result = true
+            or
+            mro.getItem(n) != sup and result = mroContains(mro, sup, n+1)
+        )
+    }
+
+
 }
-
-
-
