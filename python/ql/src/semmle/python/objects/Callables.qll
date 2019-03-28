@@ -87,13 +87,9 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
             rval = func.getAReturnValueFlowNode() and
             PointsToInternal::pointsTo(rval, callee, obj, origin)
             or
-            exists(Return ret |
-                ret.getScope() = func and
-                PointsToInternal::reachableBlock(ret.getAFlowNode().getBasicBlock(), callee) and
-                not exists(ret.getValue()) and
-                obj = ObjectInternal::none_() and
-                origin = CfgOrigin::unknown()
-            )
+            PointsToInternal::reachableBlock(blockReturningNone(func), callee) and
+            obj = ObjectInternal::none_() and
+            origin = CfgOrigin::unknown()
         )
     }
 
@@ -121,11 +117,21 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         PointsTo::pointsTo(result.getFunction(), ctx, this, _)
         or
         exists(BoundMethodObjectInternal bm |
-            bm.getACall() = result and this = bm.getFunction()
+            bm.getACall(ctx) = result and this = bm.getFunction()
         )
     }
 
 }
+
+
+private BasicBlock blockReturningNone(Function func) {
+    exists(Return ret |
+        not exists(ret.getValue()) and
+        ret.getScope() = func and
+        result = ret.getAFlowNode().getBasicBlock()
+    )
+}
+
 
 class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunctionObject {
 

@@ -395,6 +395,10 @@ class SingleSuccessorGuard extends PyNodeRefinement {
         not exists(this.getSense()) and
         result = PyNodeRefinement.super.getRepresentation() + " [??]"
     }
+
+    ControlFlowNode getTest() {
+        result = this.getDefiningNode()
+    }
 }
 
 /** Implicit definition of the names of sub-modules in a package.

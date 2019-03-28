@@ -319,10 +319,13 @@ cached module PointsToInternal {
     pragma [noinline]
     private predicate attribute_load_points_to(AttrNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         f.isLoad() and
-        exists(ObjectInternal object, string name, CfgOrigin orig |
-            pointsTo(f.getObject(name), context, object, _) |
-            object.attribute(name, value, orig) and
-            origin = orig.fix(f)
+        exists(ObjectInternal object, string name |
+            pointsTo(f.getObject(name), context, object, _)
+            |
+            exists(CfgOrigin orig |
+                object.attribute(name, value, orig) and
+                origin = orig.fix(f)
+            )
             or
             object.attributesUnknown() and
             origin = f and value = ObjectInternal::unknown()
@@ -401,7 +404,8 @@ cached module PointsToInternal {
         if def.getName() = "__class__" then
             exists(ObjectInternal cls |
                 pointsTo(def.getValue(), context, cls, _) and
-                value = TUnknownInstance(cls)
+                value = TUnknownInstance(cls) and
+                origin = CfgOrigin::fromCfgNode(def.getDefiningNode())
             )
         else
             variablePointsTo(def.getInput(), context, value, origin)
@@ -419,9 +423,10 @@ cached module PointsToInternal {
 
     /** Holds if ESSA edge refinement, `def`, refers to `(value, cls, origin)`. */
     private predicate ssa_filter_definition_points_to(PyEdgeRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        exists(ControlFlowNode test, ControlFlowNode use |
-            refinement_test(test, use, Conditionals::branchEvaluatesTo(test, use, context, value, origin.toCfgNode()), def)
-        )
+        def.getSense() = Conditionals::testEvaluates(def.getTest(), def.getInput().getASourceUse(), context, value, origin)
+        //exists(ControlFlowNode test, ControlFlowNode use |
+        //    refinement_test(test, use, Conditionals::branchEvaluatesTo(test, use, context, value, origin.toCfgNode()), def)
+        //)
     }
 
     /** Holds if ESSA definition, `uniphi`, refers to `(value, origin)`. */
@@ -431,9 +436,9 @@ cached module PointsToInternal {
             /* Because calls such as `len` may create a new variable, we need to go via the source variable
              * That is perfectly safe as we are only dealing with calls that do not mutate their arguments.
              */
-            use = uniphi.getInput().getSourceVariable().(Variable).getAUse() and
-            test = uniphi.getDefiningNode() and
-            uniphi.getSense() = Conditionals::branchEvaluatesTo(test, use, context, value, origin.toCfgNode())
+            use = uniphi.getInput().getASourceUse() and
+            test = uniphi.getTest() and
+            uniphi.getSense() = Conditionals::testEvaluates(test, use, context, value, origin.toCfgNode())
         )
     }
 
@@ -535,7 +540,10 @@ cached module PointsToInternal {
 
     pragma [noinline]
     private predicate test_expr_points_to(ControlFlowNode cmp, PointsToContext context, ObjectInternal value) {
-        value = ObjectInternal::bool(Conditionals::testEvaluatesTo(cmp, _, context, _, _))
+        exists(ControlFlowNode use |
+            value = Conditionals::evaluates(cmp, use, context, _, _) and
+            use != cmp
+        )
         // or
         // value = version_tuple_compare(cmp, context)
     }
@@ -969,70 +977,99 @@ private predicate potential_builtin_points_to(NameNode f, ObjectInternal value, 
 
 module Conditionals {
 
+    boolean testEvaluates(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        //pinode_test(expr, use) and
+        result = evaluates(expr, use, context, value, origin).booleanValue()
+    }
+
+    ObjectInternal evaluates(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
+        PointsToInternal::pointsTo(use, context, val, origin) and
+        pinode_test(_, use) and expr = use and result = val
+        or
+        exists(ControlFlowNode part, ObjectInternal partval |
+            pinode_test_part(expr, part) and
+            partval = evaluates(part, use, context, val, origin)
+            |
+            result = equalityEvaluates(expr, part, context, partval)
+            or
+            result = ObjectInternal::bool(inequalityEvaluatesBoolean(expr, part, context, partval))
+            or
+            result = ObjectInternal::bool(isinstance_test_evaluates_boolean(expr, part, context, partval))
+            or
+            result = ObjectInternal::bool(issubclass_test_evaluates_boolean(expr, part, context, partval))
+            or
+            exists(string attr |
+                expr.(AttrNode).getObject(attr) = use |
+                val.attribute(attr, result, _)
+                or
+                val.attributesUnknown() and result = ObjectInternal::unknown()
+            )
+            or
+            expr instanceof BinaryExprNode and result = ObjectInternal::unknown()
+            or
+            part = not_operand(expr) and result = ObjectInternal::bool(partval.booleanValue().booleanNot())
+            or
+            result = evaluatesLen(expr, part, context, partval)
+            //or
+            //result = callable_test_evaluates_boolean(expr, use, context, val, origin)
+            //or
+            //result = hasattr_test_evaluates_boolean(expr, use, context, val, origin)
+        )
+
+    }
+
     /** Holds if `expr` is the operand of a unary `not` expression. */
     private ControlFlowNode not_operand(ControlFlowNode expr) {
         expr.(UnaryExprNode).getNode().getOp() instanceof Not and
         result = expr.(UnaryExprNode).getOperand()
     }
 
-    boolean branchEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
-        contains_interesting_expression_within_test(expr, use) and
-        PointsToInternal::pointsTo(use, context, val, origin) and
-        (
-            expr = use and
-            val.booleanValue() = result
-            or
-            exists(string name, ObjectInternal attr |
-                expr.(AttrNode).getObject(name) = use |
-                val.attribute(name, attr, _) and
-                result = attr.booleanValue()
-                or
-                val.attributesUnknown() and
-                result = maybe()
-            )
-        )
-        or
-        result = testEvaluatesTo(expr, use, context, val, origin)
-        or
-        result = branchEvaluatesTo(not_operand(expr), use, context, val, origin).booleanNot()
-    }
-
-    boolean testEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
-        result = equalityEvaluatesTo(expr, use, context, val, origin)
-        or
-        result = inequalityEvaluatesTo(expr, use, context, val, origin)
-        or
-        result = isinstance_test_evaluates_boolean(expr, use, context, val, origin)
-        or
-        result = issubclass_test_evaluates_boolean(expr, use, context, val, origin)
-        //or
-        //result = callable_test_evaluates_boolean(expr, use, context, val, origin)
-        //or
-        //result = hasattr_test_evaluates_boolean(expr, use, context, val, origin)
-    }
-
     pragma [noinline]
-    private boolean equalityEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
+    private ObjectInternal equalityEvaluates(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
         exists(ControlFlowNode r, boolean sense |
-            equality_test(expr, use, sense, r) and
+            pinode_test_part(expr, use) and equality_test(expr, use, sense, r) and
             exists(ObjectInternal other |
-                PointsToInternal::pointsTo(use, context, val, origin) and
+                PointsToInternal::pointsTo(use, context, val, _) and
                 PointsToInternal::pointsTo(r, context, other, _) |
                 val.isComparable() = true and other.isComparable() = true and
                 (
-                    other = val and result = sense
+                    other = val and result = ObjectInternal::bool(sense)
                     or
-                    other != val and result = sense.booleanNot()
+                    other != val and result = ObjectInternal::bool(sense.booleanNot())
                 )
                 or
-                val.isComparable() = false and result = maybe()
+                val.isComparable() = false and result = ObjectInternal::bool(_)
                 or
-                other.isComparable() = false and result = maybe()
+                other.isComparable() = false and result = ObjectInternal::bool(_)
             )
         )
     }
 
-    private predicate isinstance_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ObjectInternal cls, ControlFlowNode origin) {
+    /** Holds if `c` is a test comparing `x` and `y`. `is` is true if the operator is `is` or `==`, it is false if the operator is `is not` or `!=`. */
+    private predicate equality_test(CompareNode c, ControlFlowNode x, boolean is, ControlFlowNode y) {
+        exists(Cmpop op |
+            c.operands(x, op, y) or
+            c.operands(y, op, x)
+            |
+            (is = true and op instanceof Is or
+             is = false and op instanceof IsNot or
+             is = true and op instanceof Eq or
+             is = false and op instanceof NotEq
+            )
+        )
+    }
+
+    pragma [noinline]
+    private ObjectInternal evaluatesLen(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
+        pinode_test_part(call, use) and 
+        PointsToInternal::pointsTo(use, context, val, _) and
+        PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("len"), _) and
+        result = TInt(val.(SequenceObjectInternal).length())
+    }
+
+    //private 
+    predicate isinstance_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ObjectInternal cls, ControlFlowNode origin) {
+        pinode_test_part(call, use) and
         PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("isinstance"), _) and
         use = call.getArg(0) and
         PointsToInternal::pointsTo(use, context, val, origin) and
@@ -1040,9 +1077,10 @@ module Conditionals {
     }
 
     pragma [nomagic]
-    private boolean isinstance_test_evaluates_boolean(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
+    //private 
+    boolean isinstance_test_evaluates_boolean(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
         exists(ObjectInternal cls |
-            isinstance_call(call, use, context, val, cls, origin) |
+            isinstance_call(call, use, context, val, cls, _) |
             result = Types::improperSubclass(val.getClass(), cls)
             or
             val = ObjectInternal::unknown() and result = maybe()
@@ -1061,9 +1099,10 @@ module Conditionals {
     }
 
     pragma [nomagic]
-    private boolean issubclass_test_evaluates_boolean(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
+    private boolean issubclass_test_evaluates_boolean(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
+        pinode_test_part(call, use) and 
         exists(ObjectInternal cls |
-            issubclass_call(call, use, context, val, cls, origin) |
+            issubclass_call(call, use, context, val, cls, _) |
             result = Types::improperSubclass(val, cls)
             or
             val = ObjectInternal::unknownClass() and result = maybe()
@@ -1091,7 +1130,8 @@ module Conditionals {
     }
 
     pragma [noinline]
-    private boolean inequalityEvaluatesTo(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
+    private boolean inequalityEvaluatesBoolean(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
+        pinode_test_part(expr, use) and 
         exists(ControlFlowNode r, boolean sense |
             exists(boolean strict, ObjectInternal other |
                 (
@@ -1099,7 +1139,7 @@ module Conditionals {
                     or
                     inequality(expr, r, use, strict) and sense = false
                 ) and
-                PointsToInternal::pointsTo(use, context, val, origin) and
+                PointsToInternal::pointsTo(use, context, val, _) and
                 PointsToInternal::pointsTo(r, context, other, _)
                 |
                 val.intValue() < other.intValue() and result = sense
@@ -1132,6 +1172,29 @@ module Conditionals {
             cmp.operands(greater, op, lesser) and op.getSymbol() = ">" and strict = true
             or
             cmp.operands(greater, op, lesser) and op.getSymbol() = ">=" and strict = false
+        )
+    }
+
+    private predicate pinode_test(ControlFlowNode test, NameNode use) {
+        exists(PyEdgeRefinement pi |
+            pi.getInput().getASourceUse() = use and
+            pi.getTest() = test and
+            test.getAChild*() = use
+        )
+        or
+        exists(SingleSuccessorGuard unipi |
+            unipi.getInput().getASourceUse() = use and
+            unipi.getTest() = test and
+            test.getAChild*() = use
+        )
+    }
+
+    private predicate pinode_test_part(ControlFlowNode outer, ControlFlowNode inner) {
+        exists(ControlFlowNode test, NameNode use |
+            pinode_test(test, use) and
+            test.getAChild*() = outer and
+            outer.getAChild+() = inner and
+            inner.getAChild*() = use
         )
     }
 

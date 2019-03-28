@@ -214,7 +214,7 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
 class TypeInternal extends ClassObjectInternal, TType {
 
     override string toString() {
-        result = "type"
+        result = "builtin-class type"
     }
 
     override ClassDecl getClassDeclaration() {
@@ -229,7 +229,7 @@ class TypeInternal extends ClassObjectInternal, TType {
         none()
     }
 
-    override boolean isComparable() { result = false }
+    override boolean isComparable() { result = true }
 
     override Builtin getBuiltin() {
         result = Builtin::special("type")
