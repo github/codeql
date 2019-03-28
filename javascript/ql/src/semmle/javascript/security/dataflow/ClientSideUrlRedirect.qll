@@ -121,10 +121,9 @@ module ClientSideUrlRedirect {
       )
       or
       // A call to `location.replace` or `location.assign`
-      exists(MethodCallExpr locationCall, string name |
-        isLocation(locationCall.getReceiver()) and
-        name = locationCall.getMethodName() and
-        astNode = locationCall.getArgument(0)
+      exists(DataFlow::MethodCallNode locationCall, string name |
+        locationCall = DOM::locationRef().getAMethodCall(name) and
+        this = locationCall.getArgument(0)
       |
         name = "replace" or name = "assign"
       )
@@ -134,8 +133,7 @@ module ClientSideUrlRedirect {
       or
       // An assignment to `location.href`, `location.protocol` or `location.hostname`
       exists(DataFlow::PropWrite pw, string propName |
-        isLocation(pw.getBase().asExpr()) and
-        propName = pw.getPropertyName() and
+        pw = DOM::locationRef().getAPropertyWrite(propName) and
         this = pw.getRhs()
       |
         propName = "href" or propName = "protocol" or propName = "hostname"

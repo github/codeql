@@ -253,4 +253,86 @@ module DOM {
       reason = "must not contain any space characters"
     )
   }
+
+  /** Gets a call that queries the DOM for a collection of DOM nodes. */
+  private DataFlow::SourceNode domElementCollection() {
+    exists(string collectionName |
+      collectionName = "getElementsByClassName" or
+      collectionName = "getElementsByName" or
+      collectionName = "getElementsByTagName" or
+      collectionName = "getElementsByTagNameNS" or
+      collectionName = "querySelectorAll"
+    |
+      (
+        result = documentRef().getAMethodCall(collectionName) or
+        result = DataFlow::globalVarRef(collectionName).getACall()
+      )
+    )
+  }
+
+  /** Gets a call that creates a DOM node or queries the DOM for a DOM node. */
+  private DataFlow::SourceNode domElementCreationOrQuery() {
+    exists(string methodName |
+      methodName = "createElement" or
+      methodName = "createElementNS" or
+      methodName = "createRange" or
+      methodName = "getElementById" or
+      methodName = "querySelector"
+    |
+      result = documentRef().getAMethodCall(methodName) or
+      result = DataFlow::globalVarRef(methodName).getACall()
+    )
+  }
+
+  /** Gets a data flow node that refer directly to a value from the DOM. */
+  DataFlow::SourceNode domValueSource() {
+    result.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable or
+    result = domValueRef().getAPropertyRead(_) or
+    result = domElementCreationOrQuery() or
+    result = domElementCollection()
+  }
+
+  /** Gets a data flow node that may refer to a value from the DOM. */
+  private DataFlow::SourceNode domValueRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result = domValueSource()
+    or
+    exists(DataFlow::TypeTracker t2 | result = domValueRef(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node that may refer to a value from the DOM. */
+  DataFlow::SourceNode domValueRef() { result = domValueRef(DataFlow::TypeTracker::end()) }
+
+  /** Gets a data flow node that directly refers to the DOM `location` object. */
+  DataFlow::SourceNode locationSource() {
+    result = domValueRef().getAPropertyRead("location")
+    or
+    result = DataFlow::globalVarRef("location")
+  }
+
+  /** Gets a reference to the DOM `location` object. */
+  private DataFlow::SourceNode locationRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result = locationSource()
+    or
+    exists(DataFlow::TypeTracker t2 | result = locationRef(t2).track(t2, t))
+  }
+
+  /** Gets a reference to the DOM `location` object. */
+  DataFlow::SourceNode locationRef() { result = locationRef(DataFlow::TypeTracker::end()) }
+
+  /**
+   * Gets a reference to the 'document' object.
+   */
+  private DataFlow::SourceNode documentRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result = DataFlow::globalVarRef("document")
+    or
+    exists(DataFlow::TypeTracker t2 | result = documentRef(t2).track(t2, t))
+  }
+
+  /**
+   * Gets a reference to the 'document' object.
+   */
+  DataFlow::SourceNode documentRef() { result = documentRef(DataFlow::TypeTracker::end()) }
 }

@@ -18,112 +18,35 @@ class DOMGlobalVariable extends GlobalVariable {
   }
 }
 
-private DataFlow::SourceNode domElementCollection() {
-  exists(string collectionName |
-    collectionName = "getElementsByClassName" or
-    collectionName = "getElementsByName" or
-    collectionName = "getElementsByTagName" or
-    collectionName = "getElementsByTagNameNS" or
-    collectionName = "querySelectorAll"
-  |
-    (
-      result = document().getAMethodCall(collectionName) or
-      result = DataFlow::globalVarRef(collectionName).getACall()
-    )
-  )
-}
-
-private DataFlow::SourceNode domElementCreationOrQuery() {
-  exists(string methodName |
-    methodName = "createElement" or
-    methodName = "createElementNS" or
-    methodName = "createRange" or
-    methodName = "getElementById" or
-    methodName = "querySelector"
-  |
-    result = document().getAMethodCall(methodName) or
-    result = DataFlow::globalVarRef(methodName).getACall()
-  )
-}
-
-private DataFlow::SourceNode domValueSource(DataFlow::TypeTracker t) {
-  t.start() and
-  (
-    result.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable or
-    result = domValueSource().getAPropertyRead(_) or
-    result = domElementCreationOrQuery() or
-    result = domElementCollection()
-  )
-  or
-  exists(DataFlow::TypeTracker t2 |
-    result = domValueSource(t2).track(t2, t)
-  )
-}
-
-private DataFlow::SourceNode domValueSource() {
-  result = domValueSource(DataFlow::TypeTracker::end())
-}
-
 /** Holds if `e` could hold a value that comes from the DOM. */
-predicate isDomValue(Expr e) { domValueSource().flowsToExpr(e) }
-
-/** Gets a reference to the DOM `location` object. */
-private DataFlow::SourceNode locationRef(DataFlow::TypeTracker t) {
-  t.start() and
-  exists(Expr e | result.asExpr() = e |
-    e = domValueSource().getAPropertyReference("location").asExpr() or
-    e.accessesGlobal("location")
-  )
-  or
-  exists(DataFlow::TypeTracker t2 |
-    result = locationRef(t2).track(t2, t)
-  )
-}
-
-/** Gets a reference to the DOM `location` object. */
-private DataFlow::SourceNode locationRef() {
-  result = locationRef(DataFlow::TypeTracker::end())
-}
+predicate isDomValue(Expr e) { DOM::domValueRef().flowsToExpr(e) }
 
 /** Holds if `e` could refer to the `location` property of a DOM node. */
 predicate isLocation(Expr e) {
-  locationRef().flowsToExpr(e)
-}
-
-/**
- * Gets a reference to the 'document' object.
- */
-private DataFlow::SourceNode document(DataFlow::TypeTracker t) {
-  t.start() and
-  result = DataFlow::globalVarRef("document")
+  e = DOM::domValueRef().getAPropertyReference("location").asExpr()
   or
-  exists(DataFlow::TypeTracker t2 |
-    result = document(t2).track(t2, t)
-  )
+  e.accessesGlobal("location")
 }
 
 /**
  * Gets a reference to the 'document' object.
  */
-DataFlow::SourceNode document() { result = document(DataFlow::TypeTracker::end()) }
+DataFlow::SourceNode document() { result = DOM::documentRef() }
 
 /** Holds if `e` could refer to the `document` object. */
-predicate isDocument(Expr e) { document().flowsToExpr(e) }
+predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
 
 /** Holds if `e` could refer to the document URL. */
 predicate isDocumentURL(Expr e) {
-  exists(Expr base, string propName | e.(PropAccess).accesses(base, propName) |
-    isDocument(base) and
-    (
-      propName = "documentURI" or
-      propName = "documentURIObject" or
-      propName = "location" or
-      propName = "referrer" or
-      propName = "URL"
-    )
-    or
-    isDomValue(base) and propName = "baseUri"
+  exists(string propName | e = DOM::documentRef().getAPropertyRead(propName).asExpr() |
+    propName = "documentURI" or
+    propName = "documentURIObject" or
+    propName = "location" or
+    propName = "referrer" or
+    propName = "URL"
   )
+  or
+  e = DOM::domValueRef().getAPropertyRead("baseUri").asExpr()
   or
   e.accessesGlobal("location")
 }
@@ -134,7 +57,7 @@ predicate isDocumentURL(Expr e) {
  * `href`, `hash` and `search`.
  */
 predicate isSafeLocationProperty(PropAccess pacc) {
-  exists(Expr loc, string prop | isLocation(loc) and pacc.accesses(loc, prop) |
+  exists(string prop | pacc = DOM::locationRef().getAPropertyRead(prop).asExpr() |
     prop != "href" and prop != "hash" and prop != "search"
   )
 }
