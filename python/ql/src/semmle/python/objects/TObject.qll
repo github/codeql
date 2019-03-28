@@ -149,27 +149,43 @@ predicate literal_instantiation(ControlFlowNode n, ClassObjectInternal cls, Poin
 }
 
 predicate super_instantiation(CallNode instantiation, ObjectInternal self, ClassObjectInternal startclass, PointsToContext context) {
-    PointsToInternal::pointsTo(instantiation.getFunction(), context, ObjectInternal::builtin("super"), _) and
-    (
-        PointsToInternal::pointsTo(instantiation.getArg(0), context, startclass, _) and
-        PointsToInternal::pointsTo(instantiation.getArg(1), context, self, _)
-        or
-        major_version() = 3 and
-        not exists(instantiation.getArg(0)) and
-        exists(Function func |
-            instantiation.getScope() = func and
-            /* Implicit class argument is lexically enclosing scope */
-            func.getScope() = startclass.(PythonClassObjectInternal).getScope() and
-            /* Implicit 'self' is the 0th parameter */
-            PointsToInternal::pointsTo(func.getArg(0).asName().getAFlowNode(), context, self, _)
-        )
+    super_2args(instantiation, self, startclass, context)
+    or
+    super_noargs(instantiation, self, startclass, context)
+}
+
+pragma [noinline]
+private predicate super_2args(CallNode instantiation, ObjectInternal self, ClassObjectInternal startclass, PointsToContext context) {
+    exists(ControlFlowNode func, ControlFlowNode arg0, ControlFlowNode arg1 |
+        call2(instantiation, func, arg0, arg1) and
+        PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("super"), _) and
+        PointsToInternal::pointsTo(arg0, context, startclass, _) and
+        PointsToInternal::pointsTo(arg1, context, self, _)
     )
 }
 
+pragma [noinline]
+private predicate super_noargs(CallNode instantiation, ObjectInternal self, ClassObjectInternal startclass, PointsToContext context) {
+    PointsToInternal::pointsTo(instantiation.getFunction(), context, ObjectInternal::builtin("super"), _) and
+    not exists(instantiation.getArg(0)) and
+    exists(Function func |
+        instantiation.getScope() = func and
+        /* Implicit class argument is lexically enclosing scope */
+        func.getScope() = startclass.(PythonClassObjectInternal).getScope() and
+        /* Implicit 'self' is the 0th parameter */
+        PointsToInternal::pointsTo(func.getArg(0).asName().getAFlowNode(), context, self, _)
+    )
+}
+
+predicate call2(CallNode call, ControlFlowNode func, ControlFlowNode arg0, ControlFlowNode arg1) {
+    not exists(call.getArg(2)) and
+    func = call.getFunction() and
+    arg0 = call.getArg(0) and
+    arg1 = call.getArg(1)
+}
 
 bindingset[self, function]
 predicate method_binding(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext context) {
-    
     exists(ObjectInternal obj, string name |
         receiver(instantiation, context, obj, name) |
         exists(ObjectInternal cls |

@@ -36,7 +36,7 @@ abstract class SequenceObjectInternal extends ObjectInternal {
 abstract class TupleObjectInternal extends SequenceObjectInternal {
 
     override string toString() {
-        result = "tuple()"
+        result = "Tuple"
     }
 
     /** Gets the class declaration for this object, if it is a declared class. */

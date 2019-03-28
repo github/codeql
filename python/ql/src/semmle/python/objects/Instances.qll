@@ -197,12 +197,11 @@ class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
     override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
-        descriptor.isDescriptor() = true and
-        this = instance and
-        exists(AttrNode attr |
-            PointsToInternal::pointsTo(attr.getObject(name), _, this, _) and
-            this.getClass().attribute(name, descriptor, _)
-        )
+        exists(AttrNode attr, ClassObjectInternal cls |
+            receiver_type(attr, name, this, cls) and
+            cls_descriptor(cls, name, descriptor)
+        ) and
+        instance = this
     }
 
 }
@@ -288,16 +287,24 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
     override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
-        descriptor.isDescriptor() = true and
-        this = instance and
-        exists(AttrNode attr |
-            PointsToInternal::pointsTo(attr.getObject(name), _, this, _) and
-            this.getClass().attribute(name, descriptor, _)
-        )
+        exists(AttrNode attr, ClassObjectInternal cls |
+            receiver_type(attr, name, this, cls) and
+            cls_descriptor(cls, name, descriptor)
+        ) and
+        instance = this
     }
 
 }
 
+
+private predicate receiver_type(AttrNode attr, string name, ObjectInternal value, ClassObjectInternal cls) {
+    PointsToInternal::pointsTo(attr.getObject(name), _, value, _) and value.getClass() = cls
+}
+
+private predicate cls_descriptor(ClassObjectInternal cls, string name, ObjectInternal descriptor) {
+    cls.attribute(name, descriptor, _) and
+    descriptor.isDescriptor() = true
+}
 
 class SuperInstance extends TSuperInstance, ObjectInternal {
 

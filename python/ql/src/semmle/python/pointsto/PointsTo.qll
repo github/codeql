@@ -423,10 +423,11 @@ cached module PointsToInternal {
 
     /** Holds if ESSA edge refinement, `def`, refers to `(value, cls, origin)`. */
     private predicate ssa_filter_definition_points_to(PyEdgeRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        def.getSense() = Conditionals::testEvaluates(def.getTest(), def.getInput().getASourceUse(), context, value, origin)
-        //exists(ControlFlowNode test, ControlFlowNode use |
-        //    refinement_test(test, use, Conditionals::branchEvaluatesTo(test, use, context, value, origin.toCfgNode()), def)
-        //)
+        def.getSense() = ssa_filter_definition_bool(def, context, value, origin)
+    }
+
+    private boolean ssa_filter_definition_bool(PyEdgeRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+        result = Conditionals::testEvaluates(def.getTest(), def.getInput().getASourceUse(), context, value, origin)
     }
 
     /** Holds if ESSA definition, `uniphi`, refers to `(value, origin)`. */
@@ -982,6 +983,7 @@ module Conditionals {
         result = evaluates(expr, use, context, value, origin).booleanValue()
     }
 
+    pragma [noinline]
     ObjectInternal evaluates(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val, ControlFlowNode origin) {
         PointsToInternal::pointsTo(use, context, val, origin) and
         pinode_test(_, use) and expr = use and result = val
@@ -1111,19 +1113,21 @@ module Conditionals {
     }
 
     //private 
-    predicate isinstance_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ObjectInternal cls, ControlFlowNode origin) {
+    predicate isinstance_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ObjectInternal cls) {
         pinode_test_part(call, use) and
-        PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("isinstance"), _) and
-        use = call.getArg(0) and
-        PointsToInternal::pointsTo(use, context, val, origin) and
-        PointsToInternal::pointsTo(call.getArg(1), context, cls, _)
+        exists(ControlFlowNode func, ControlFlowNode arg1 |
+            call2(call, func, use, arg1) and
+            PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("isinstance"), _) and
+            PointsToInternal::pointsTo(use, context, val, _) and
+            PointsToInternal::pointsTo(arg1, context, cls, _)
+        )
     }
 
     pragma [nomagic]
     //private 
     boolean isinstance_test_evaluates_boolean(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
         exists(ObjectInternal cls |
-            isinstance_call(call, use, context, val, cls, _) |
+            isinstance_call(call, use, context, val, cls) |
             result = Types::improperSubclass(val.getClass(), cls)
             or
             val = ObjectInternal::unknown() and result = maybe()
@@ -1134,18 +1138,20 @@ module Conditionals {
         )
     }
 
-    private predicate issubclass_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ObjectInternal cls, ControlFlowNode origin) {
-        PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("issubclass"), _) and
-        use = call.getArg(0) and
-        PointsToInternal::pointsTo(use, context, val, origin) and
-        PointsToInternal::pointsTo(call.getArg(1), context, cls, _)
+    private predicate issubclass_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, ObjectInternal cls) {
+        pinode_test_part(call, use) and
+        exists(ControlFlowNode func, ControlFlowNode arg1 |
+            call2(call, func, use, arg1) and
+            PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("issubclass"), _) and
+            PointsToInternal::pointsTo(use, context, val, _) and
+            PointsToInternal::pointsTo(arg1, context, cls, _)
+        )
     }
 
     pragma [nomagic]
     private boolean issubclass_test_evaluates_boolean(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
-        pinode_test_part(call, use) and 
         exists(ObjectInternal cls |
-            issubclass_call(call, use, context, val, cls, _) |
+            issubclass_call(call, use, context, val, cls) |
             result = Types::improperSubclass(val, cls)
             or
             val = ObjectInternal::unknownClass() and result = maybe()
@@ -1161,14 +1167,17 @@ module Conditionals {
     predicate requireSubClass(ObjectInternal sub, ObjectInternal sup) {
         sup != ObjectInternal::unknownClass() and
         sub != ObjectInternal::unknownClass() and
-        (sup.isClass() = true or sup instanceof TupleObjectInternal) and
-        (
-            issubclass_call(_, _, _, sub, sup, _) and sub.isClass() = true
+        exists(ObjectInternal sup_or_tuple |
+            issubclass_call(_, _, _, sub, sup_or_tuple) and sub.isClass() = true
             or
             exists(ObjectInternal val |
-                isinstance_call(_, _, _, val, sup, _) and
+                isinstance_call(_, _, _, val, sup_or_tuple) and
                 sub = val.getClass()
             )
+            |
+            sup = sup_or_tuple
+            or
+            sup = sup_or_tuple.(TupleObjectInternal).getItem(_)
         )
     }
 
@@ -1181,7 +1190,7 @@ module Conditionals {
             hasattr_call(_, _, _, val, name)
         )
     }
-    
+
     pragma [noinline]
     private boolean inequalityEvaluatesBoolean(ControlFlowNode expr, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
         pinode_test_part(expr, use) and 
@@ -1462,16 +1471,21 @@ cached module Types {
     cached boolean improperSubclass(ObjectInternal sub, ObjectInternal sup) {
         sub = sup and result = true
         or
-        result = mroContains(Types::getMro(sub), sup)
-        // TO DO...
-        // Handle tuples of classes
+        result = mroContains(Types::getMro(sub), sup, 0)
+        or
+        result = tupleSubclass(sub, sup, 0)
     }
 
-    private boolean mroContains(ClassList mro, ObjectInternal sup) {
-        result = mroContains(mro, sup, 0)
+    private boolean tupleSubclass(ObjectInternal cls, TupleObjectInternal tpl, int n) {
+        Conditionals::requireSubClass(cls, tpl) and
+        (
+            n = tpl.length() and result = false
+            or
+            result = improperSubclass(cls, tpl.getItem(n)).booleanOr(tupleSubclass(cls, tpl, n+1))
+        )
     }
 
-    private boolean mroContains(ClassList mro, ObjectInternal sup, int n) {
+    private boolean mroContains(ClassList mro, ClassObjectInternal sup, int n) {
         exists(ClassObjectInternal cls |
             Conditionals::requireSubClass(cls, sup) and
             mro = getMro(cls)
