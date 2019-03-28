@@ -10,7 +10,6 @@ predicate nanExcludingComparison(ComparisonOperation guard, boolean polarity) {
   (
     guard instanceof LTExpr or
     guard instanceof LEExpr or
-    guard instanceof LEExpr or
     guard instanceof GTExpr or
     guard instanceof GEExpr or
     guard instanceof EQExpr
