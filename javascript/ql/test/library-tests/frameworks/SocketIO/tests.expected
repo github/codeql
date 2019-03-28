@@ -149,6 +149,7 @@ test_ServerNode
 | tst.js:15:1:15:15 | io.attach(http) | tst.js:1:12:1:33 | socket.io server |
 | tst.js:16:1:16:15 | io.bind(engine) | tst.js:1:12:1:33 | socket.io server |
 | tst.js:17:1:17:23 | io.onco ... socket) | tst.js:1:12:1:33 | socket.io server |
+| tst.js:79:1:79:10 | obj.server | tst.js:1:12:1:33 | socket.io server |
 test_ClientSendNode_getAReceiver
 | client2.js:14:1:14:32 | sock.em ... there") | tst.js:72:3:72:43 | socket. ...  => {}) |
 | client2.js:16:1:16:36 | sock.wr ...  => {}) | tst.js:70:3:70:35 | socket. ...  => {}) |
