@@ -1,6 +1,8 @@
 | attributes.cs:41:7:41:9 | Foo | attributes.cs:40:2:40:22 | [AttributeUsage(...)] | System.AttributeUsageAttribute |
 | attributes.cs:44:17:44:19 | foo | attributes.cs:43:6:43:16 | [Conditional(...)] | System.Diagnostics.ConditionalAttribute |
 | attributes.cs:49:23:49:23 | x | attributes.cs:49:14:49:16 | [Foo(...)] | Foo |
+| attributes.cs:52:10:52:11 | M1 | attributes.cs:51:6:51:16 | [My(...)] | MyAttribute |
+| attributes.cs:55:10:55:11 | M2 | attributes.cs:54:6:54:16 | [My(...)] | MyAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:10:12:10:24 | [AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:11:12:11:30 | [AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:32 | [AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
