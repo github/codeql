@@ -61,13 +61,13 @@ private DataFlow::SourceNode domValueSource(DataFlow::TypeTracker t) {
 }
 
 private DataFlow::SourceNode domValueSource() {
-  result = domValueSource(_)
+  result = domValueSource(DataFlow::TypeTracker::end())
 }
 
 /** Holds if `e` could hold a value that comes from the DOM. */
 predicate isDomValue(Expr e) { domValueSource().flowsToExpr(e) }
 
-/** Holds if `e` could refer to the `location` property of a DOM node. */
+/** Gets a reference to the DOM `location` object. */
 private DataFlow::SourceNode locationRef(DataFlow::TypeTracker t) {
   t.start() and
   exists(Expr e | result.asExpr() = e |
@@ -80,9 +80,14 @@ private DataFlow::SourceNode locationRef(DataFlow::TypeTracker t) {
   )
 }
 
+/** Gets a reference to the DOM `location` object. */
+private DataFlow::SourceNode locationRef() {
+  result = locationRef(DataFlow::TypeTracker::end())
+}
+
 /** Holds if `e` could refer to the `location` property of a DOM node. */
 predicate isLocation(Expr e) {
-  locationRef(_).flowsToExpr(e)
+  locationRef().flowsToExpr(e)
 }
 
 /**
@@ -100,7 +105,7 @@ private DataFlow::SourceNode document(DataFlow::TypeTracker t) {
 /**
  * Gets a reference to the 'document' object.
  */
-DataFlow::SourceNode document() { result = document(_) }
+DataFlow::SourceNode document() { result = document(DataFlow::TypeTracker::end()) }
 
 /** Holds if `e` could refer to the `document` object. */
 predicate isDocument(Expr e) { document().flowsToExpr(e) }
