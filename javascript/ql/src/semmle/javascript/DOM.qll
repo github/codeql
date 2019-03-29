@@ -303,14 +303,14 @@ module DOM {
   /** Gets a data flow node that may refer to a value from the DOM. */
   DataFlow::SourceNode domValueRef() { result = domValueRef(DataFlow::TypeTracker::end()) }
 
-  /** Gets a data flow node that directly refers to the DOM `location` object. */
+  /** Gets a data flow node that directly refers to a DOM `location` object. */
   DataFlow::SourceNode locationSource() {
     result = domValueRef().getAPropertyRead("location")
     or
     result = DataFlow::globalVarRef("location")
   }
 
-  /** Gets a reference to the DOM `location` object. */
+  /** Gets a reference to a DOM `location` object. */
   private DataFlow::SourceNode locationRef(DataFlow::TypeTracker t) {
     t.start() and
     result = locationSource()
@@ -318,7 +318,7 @@ module DOM {
     exists(DataFlow::TypeTracker t2 | result = locationRef(t2).track(t2, t))
   }
 
-  /** Gets a reference to the DOM `location` object. */
+  /** Gets a reference to a DOM `location` object. */
   DataFlow::SourceNode locationRef() { result = locationRef(DataFlow::TypeTracker::end()) }
 
   /**
