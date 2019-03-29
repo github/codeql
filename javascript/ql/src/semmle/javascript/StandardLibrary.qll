@@ -189,7 +189,7 @@ private class PromiseFlowStep extends DataFlow::AdditionalFlowStep {
 /**
  * Holds if taint propagates from `pred` to `succ` through promises.
  */
-private predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+predicate promiseTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   // from `x` to `new Promise((res, rej) => res(x))`
   pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
   or
