@@ -205,18 +205,12 @@ private predicate amdModuleTopLevel(AmdModuleDefinition def, TopLevel tl) {
  * An AMD dependency, viewed as an import.
  */
 private class AmdDependencyImport extends Import {
-  AmdDependencyImport() {
-    this = any(AmdModuleDefinition def).getADependency()
-  }
+  AmdDependencyImport() { this = any(AmdModuleDefinition def).getADependency() }
 
-  override Module getEnclosingModule() {
-    this = result.(AmdModule).getDefine().getADependency()
-  }
+  override Module getEnclosingModule() { this = result.(AmdModule).getDefine().getADependency() }
 
-  override PathExpr getImportedPath() {
-    result = this
-  }
- 
+  override PathExpr getImportedPath() { result = this }
+
   /**
    * Gets a file that looks like it might be the target of this import.
    *
@@ -248,7 +242,7 @@ private class AmdDependencyImport extends Import {
   private predicate targetCandidate(
     File f, string abspath, PathString imported, string dirname, string basename
   ) {
-   imported = getImportedPath().getValue() and
+    imported = getImportedPath().getValue() and
     f.getStem() = imported.getStem() and
     f.getAbsolutePath() = abspath and
     dirname = imported.getDirName() and
