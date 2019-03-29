@@ -12,10 +12,8 @@ query predicate diagnostics(
 
 query predicate compilationErrors(CompilerError e) { any() }
 
-query predicate metricTests(Compilation compilation, string message) {
-  if forall(int metric | metric in [0 .. 6] | compilation.getMetric(metric) > 0.0)
-  then message = "Test passed"
-  else message = "Test failed"
+query predicate metricIsZero(Compilation compilation, int metric) {
+  compilation.getMetric(metric) = 0
 }
 
 query predicate compilation(Compilation c, string f) { f = c.getDirectoryString() }

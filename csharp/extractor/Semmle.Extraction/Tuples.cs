@@ -14,8 +14,8 @@ namespace Semmle.Extraction
         internal static Tuple containerparent(Folder parent, IEntity child) =>
             new Tuple("containerparent", parent, child);
 
-        internal static Tuple extraction_messages(ExtractionMessage error, Semmle.Util.Logging.Severity severity, string origin, string errorMessage, string entityText, Location location, string stackTrace) =>
-            new Tuple("extraction_messages", error, severity, origin, errorMessage, entityText, location, stackTrace);
+        internal static Tuple extractor_messages(ExtractionMessage error, Semmle.Util.Logging.Severity severity, string origin, string errorMessage, string entityText, Location location, string stackTrace) =>
+            new Tuple("extractor_messages", error, severity, origin, errorMessage, entityText, location, stackTrace);
 
         internal static Tuple file_extraction_mode(File file, int mode) =>
             new Tuple("file_extraction_mode", file, mode);

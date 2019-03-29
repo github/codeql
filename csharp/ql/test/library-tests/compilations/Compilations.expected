@@ -4,8 +4,7 @@ diagnostics
 | Program.cs:9:9:9:11 | CS0162: Unreachable code detected | CS0162 | 2 | Unreachable code detected | Unreachable code detected |
 | Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | CS0219 | 2 | Variable is assigned but its value is never used | The variable 'y' is assigned but its value is never used |
 compilationErrors
-metricTests
-| compilation | Test passed |
+metricIsZero
 compilation
 | compilation | compilations |
 compilationArguments

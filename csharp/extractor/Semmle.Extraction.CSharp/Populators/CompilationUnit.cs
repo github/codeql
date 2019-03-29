@@ -119,6 +119,9 @@ namespace Semmle.Extraction.CSharp.Populators
     {
         public static void Extract(Context cx, SyntaxNode unit)
         {
+            // Ensure that the file itself is populated in case the source file is totally empty
+            File.Create(cx, unit.SyntaxTree.FilePath);
+
             ((CSharpSyntaxNode)unit).Accept(new CompilationUnitVisitor(cx));
         }
     }
