@@ -239,6 +239,11 @@ nodes
 | normalizedPaths.js:219:29:219:32 | path |
 | normalizedPaths.js:219:29:219:32 | path |
 | normalizedPaths.js:222:18:222:21 | path |
+| normalizedPaths.js:226:9:226:72 | path |
+| normalizedPaths.js:226:16:226:51 | pathMod ... y.path) |
+| normalizedPaths.js:226:16:226:72 | pathMod ... g, ' ') |
+| normalizedPaths.js:226:37:226:50 | req.query.path |
+| normalizedPaths.js:228:22:228:25 | path |
 | tainted-array-steps.js:9:7:9:48 | path |
 | tainted-array-steps.js:9:14:9:37 | url.par ... , true) |
 | tainted-array-steps.js:9:14:9:43 | url.par ... ).query |
@@ -707,6 +712,10 @@ edges
 | normalizedPaths.js:219:10:219:33 | decodeU ... t(path) | normalizedPaths.js:219:10:219:33 | decodeU ... t(path) |
 | normalizedPaths.js:219:29:219:32 | path | normalizedPaths.js:219:10:219:33 | decodeU ... t(path) |
 | normalizedPaths.js:219:29:219:32 | path | normalizedPaths.js:219:10:219:33 | decodeU ... t(path) |
+| normalizedPaths.js:226:9:226:72 | path | normalizedPaths.js:228:22:228:25 | path |
+| normalizedPaths.js:226:16:226:51 | pathMod ... y.path) | normalizedPaths.js:226:16:226:72 | pathMod ... g, ' ') |
+| normalizedPaths.js:226:16:226:72 | pathMod ... g, ' ') | normalizedPaths.js:226:9:226:72 | path |
+| normalizedPaths.js:226:37:226:50 | req.query.path | normalizedPaths.js:226:16:226:51 | pathMod ... y.path) |
 | tainted-array-steps.js:9:7:9:48 | path | tainted-array-steps.js:11:40:11:43 | path |
 | tainted-array-steps.js:9:7:9:48 | path | tainted-array-steps.js:13:26:13:29 | path |
 | tainted-array-steps.js:9:14:9:37 | url.par ... , true) | tainted-array-steps.js:9:14:9:43 | url.par ... ).query |
@@ -858,6 +867,7 @@ edges
 | normalizedPaths.js:210:18:210:31 | normalizedPath | normalizedPaths.js:174:14:174:27 | req.query.path | normalizedPaths.js:210:18:210:31 | normalizedPath | This path depends on $@. | normalizedPaths.js:174:14:174:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:210:18:210:31 | normalizedPath | normalizedPaths.js:174:14:174:27 | req.query.path | normalizedPaths.js:210:18:210:31 | normalizedPath | This path depends on $@. | normalizedPaths.js:174:14:174:27 | req.query.path | a user-provided value |
 | normalizedPaths.js:222:18:222:21 | path | normalizedPaths.js:214:35:214:48 | req.query.path | normalizedPaths.js:222:18:222:21 | path | This path depends on $@. | normalizedPaths.js:214:35:214:48 | req.query.path | a user-provided value |
+| normalizedPaths.js:228:22:228:25 | path | normalizedPaths.js:226:37:226:50 | req.query.path | normalizedPaths.js:228:22:228:25 | path | This path depends on $@. | normalizedPaths.js:226:37:226:50 | req.query.path | a user-provided value |
 | tainted-array-steps.js:11:29:11:54 | ['publi ... in('/') | tainted-array-steps.js:9:24:9:30 | req.url | tainted-array-steps.js:11:29:11:54 | ['publi ... in('/') | This path depends on $@. | tainted-array-steps.js:9:24:9:30 | req.url | a user-provided value |
 | tainted-array-steps.js:15:29:15:43 | parts.join('/') | tainted-array-steps.js:9:24:9:30 | req.url | tainted-array-steps.js:15:29:15:43 | parts.join('/') | This path depends on $@. | tainted-array-steps.js:9:24:9:30 | req.url | a user-provided value |
 | tainted-require.js:7:19:7:37 | req.param("module") | tainted-require.js:7:19:7:37 | req.param("module") | tainted-require.js:7:19:7:37 | req.param("module") | This path depends on $@. | tainted-require.js:7:19:7:37 | req.param("module") | a user-provided value |

@@ -369,6 +369,19 @@ module TaintedPath {
         input = getAnArgument() and
         output = this
       )
+      or
+      // non-global replace or replace of something other than /\.\./g
+      this.getCalleeName() = "replace" and
+      input = getReceiver() and
+      output = this and
+      not exists(RegExpLiteral literal, RegExpSequence seq |
+        getArgument(0).asExpr() = literal and
+        literal.isGlobal() and
+        literal.getRoot() = seq and
+        seq.getChild(0).(RegExpConstant).getValue() = "." and
+        seq.getChild(1).(RegExpConstant).getValue() = "." and
+        seq.getNumChild() = 2
+      )
     }
 
     /**

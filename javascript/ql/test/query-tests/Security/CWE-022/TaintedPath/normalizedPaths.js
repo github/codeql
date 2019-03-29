@@ -221,3 +221,13 @@ app.get('/decode-after-normalization', (req, res) => {
   if (!pathModule.isAbsolute(path) && !path.startsWith('..'))
     res.sendFile(path); // NOT OK - not normalized
 });
+
+app.get('/replace', (req, res) => {
+    let path = pathModule.normalize(req.query.path).replace(/%20/g, ' ');
+    if (!pathModule.isAbsolute(path)) {
+        res.sendFile(path); // NOT OK
+
+	    path = path.replace(/\.\./g, '');
+	    res.sendFile(path); // OK
+    }
+});
