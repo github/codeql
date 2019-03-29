@@ -322,7 +322,7 @@ module DOM {
   DataFlow::SourceNode locationRef() { result = locationRef(DataFlow::TypeTracker::end()) }
 
   /**
-   * Gets a reference to the 'document' object.
+   * Gets a reference to the `document` object.
    */
   private DataFlow::SourceNode documentRef(DataFlow::TypeTracker t) {
     t.start() and
