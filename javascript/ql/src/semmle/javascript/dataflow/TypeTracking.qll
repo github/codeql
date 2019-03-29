@@ -168,10 +168,12 @@ class TypeTracker extends TTypeTracker {
   boolean hasCall() { result = hasCall }
 
   /**
-   * Gets the property this type has been tracked into, or the empty string if
-   * it has not been tracked into a property.
+   * Gets a type tracker that starts where this one has left off to allow continued
+   * tracking.
+   *
+   * This predicate is only defined if the type has not been tracked into a property.
    */
-  string getProp() { result = prop }
+  TypeTracker continue() { prop = "" and result = this }
 }
 
 module TypeTracker {
@@ -257,10 +259,12 @@ class TypeBackTracker extends TTypeBackTracker {
   boolean hasReturn() { result = hasReturn }
 
   /**
-   * Gets the property this type has been tracked into, or the empty string if
-   * it has not been tracked into a property.
+   * Gets a type tracker that starts where this one has left off to allow continued
+   * tracking.
+   *
+   * This predicate is only defined if the type has not been tracked into a property.
    */
-  string getProp() { result = prop }
+  TypeBackTracker continue() { prop = "" and result = this }
 }
 
 module TypeBackTracker {
