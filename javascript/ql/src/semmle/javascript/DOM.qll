@@ -284,7 +284,7 @@ module DOM {
     )
   }
 
-  /** Gets a data flow node that refer directly to a value from the DOM. */
+  /** Gets a data flow node that refers directly to a value from the DOM. */
   DataFlow::SourceNode domValueSource() {
     result.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable or
     result = domValueRef().getAPropertyRead(_) or
