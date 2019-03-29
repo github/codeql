@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.rangeanalysis.RangeSSA
+private import semmle.code.cpp.rangeanalysis.RangeSSA
 
 /**
  * Holds if `guard` won't return the value `polarity` when either

@@ -45,7 +45,7 @@ import cpp
 private import RangeAnalysisUtils
 import RangeSSA
 import SimpleRangeAnalysisCached
-import NanAnalysis
+private import NanAnalysis
 
 /**
  * This fixed set of lower bounds is used when the lower bounds of an
