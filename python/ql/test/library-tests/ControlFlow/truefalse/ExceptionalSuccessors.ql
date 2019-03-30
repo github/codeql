@@ -1,7 +1,7 @@
 /**
  * @name TrueFalseSuccessors Test
  * @description Tests true/false successors
- * @kind problem
+ * @kind table
  * @problem.severity warning
  */
 

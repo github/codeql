@@ -1,7 +1,7 @@
 /**
  * @name Check all non-scope nodes have an immediate dominator
  * @description Check all non-scope nodes have an immediate dominator
- * @kind problem
+ * @kind table
  * @problem.severity warning
  */
 

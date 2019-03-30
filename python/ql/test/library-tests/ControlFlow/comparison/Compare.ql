@@ -1,7 +1,7 @@
 /**
  * @name CompareTest
  * @description CompareTest
- * @kind problem
+ * @kind table
  * @problem.severity warning
  */
 
