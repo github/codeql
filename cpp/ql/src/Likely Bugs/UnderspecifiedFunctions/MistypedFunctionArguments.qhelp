@@ -24,6 +24,6 @@
 </example>
 
 <references>
-<li>SEI CERT C++ Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/DCL20-C.+Explicitly+specify+void+when+a+function+accepts+no+arguments"> DCL20-C. Explicitly specify void when a function accepts no arguments </a></li>
+<li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/DCL20-C.+Explicitly+specify+void+when+a+function+accepts+no+arguments"> DCL20-C. Explicitly specify void when a function accepts no arguments </a></li>
 </references>
 </qhelp>
