@@ -7,7 +7,7 @@
  * @kind problem
  * @problem.severity error
  * @precision very-high
- * @id cpp/too-few-arguments
+ * @id cpp/futile-params
  * @tags correctness
  *       maintainability
  *       security

@@ -14,68 +14,45 @@
 
 import cpp
 
-predicate argTypeMayBePromoted(Type arg, Type parm) {
+pragma[inline]
+predicate argTypeMayBeImplicitlyConverted(Type arg, Type parm) {
   arg = parm
   or
-  // floating-point and integral promotions
-  arg instanceof FloatType and parm instanceof DoubleType
+  // integral and floating-point types are implicitly convertible in C
+  arg instanceof ArithmeticType and parm instanceof ArithmeticType
   or
-  arg instanceof FloatType and parm instanceof LongDoubleType
+  // integral values may be used to initialize pointers (but NOT array addresses)
+  arg instanceof IntegralType and parm instanceof PointerType
   or
-  arg instanceof DoubleType and parm instanceof LongDoubleType
+  // pointers-to-void may be used for arbitrary pointers
+  arg instanceof VoidPointerType and parm instanceof PointerType
   or
-  arg instanceof CharType and parm instanceof IntType
+  arg instanceof PointerType and parm instanceof VoidPointerType
   or
-  arg instanceof CharType and parm instanceof IntType
+  arg instanceof ArrayType and parm instanceof VoidPointerType
   or
-  arg instanceof CharType and parm instanceof LongType
+  arg instanceof VoidPointerType and parm instanceof ArrayType
   or
-  arg instanceof CharType and parm instanceof LongLongType
-  or
-  arg instanceof ShortType and parm instanceof IntType
-  or
-  arg instanceof ShortType and parm instanceof LongType
-  or
-  arg instanceof ShortType and parm instanceof LongLongType
-  or
-  arg instanceof IntType and parm instanceof LongType
-  or
-  arg instanceof IntType and parm instanceof LongLongType
-  or
-  arg instanceof LongType and parm instanceof LongLongType
-  or
-  arg instanceof Enum and parm instanceof IntType
-  or
-  arg instanceof Enum and parm instanceof LongType
-  or
-  arg instanceof Enum and parm instanceof LongLongType
-  or
-  // enums are usually sized as ints
-  arg instanceof IntType and parm instanceof Enum
-  or
-  // pointer types
+  // pointers to same types
   arg.(PointerType).getBaseType().getUnspecifiedType() = parm
-        .getUnspecifiedType()
         .(PointerType)
         .getBaseType()
         .getUnspecifiedType()
   or
-  // void * parameters accept arbitrary pointer arguments
-  arg instanceof PointerType and
-  parm.(PointerType).getBaseType().getUnspecifiedType() instanceof VoidType
+  arg.(ArrayType).getBaseType().getUnspecifiedType() = parm
+        .(PointerType)
+        .getBaseType()
+        .getUnspecifiedType()
   or
-  // handle reference types
-  argTypeMayBePromoted(arg.(ReferenceType).getBaseType().getUnspecifiedType(), parm)
+  arg.(PointerType).getBaseType().getUnspecifiedType() = parm
+        .(ArrayType)
+        .getBaseType()
+        .getUnspecifiedType()
   or
-  argTypeMayBePromoted(arg, parm.(ReferenceType).getBaseType().getUnspecifiedType())
-  or
-  // array-to-pointer decay
-  argTypeMayBePromoted(arg.(ArrayType).getBaseType().getUnspecifiedType(),
-    parm.(PointerType).getBaseType().getUnspecifiedType())
-  or
-  // pointer-to-array promotion (C99)
-  argTypeMayBePromoted(arg.(PointerType).getBaseType().getUnspecifiedType(),
-    parm.(ArrayType).getBaseType().getUnspecifiedType())
+  arg.(ArrayType).getBaseType().getUnspecifiedType() = parm
+        .(ArrayType)
+        .getBaseType()
+        .getUnspecifiedType()
 }
 
 // This predicate doesn't necessarily have to exist, but if it does exist
@@ -83,20 +60,9 @@ predicate argTypeMayBePromoted(Type arg, Type parm) {
 // compatible types.
 // Its body could also just be hand-inlined where it's used.
 pragma[inline]
-predicate argMayBePromoted(Expr arg, Parameter parm) {
-  argTypeMayBePromoted(arg.getExplicitlyConverted().getType().getUnspecifiedType(),
+predicate argMayBeImplicitlyConverted(Expr arg, Parameter parm) {
+  argTypeMayBeImplicitlyConverted(arg.getFullyConverted().getType().getUnspecifiedType(),
     parm.getType().getUnspecifiedType())
-  or
-  // The value 0 is often passed in to indicate NULL, or to initialize an arbitrary integer type.
-  // we will allow all literal values for simplicity.  Pointer parameters are sometime passed
-  // special-case literals such as -1, -2, etc.
-  arg.(Literal).getType() instanceof IntegralType and
-  (
-    parm.getType().getUnspecifiedType() instanceof PointerType
-    or
-    parm.getType().getUnspecifiedType() instanceof IntegralType and
-    arg.(Literal).getType().getSize() <= parm.getType().getUnspecifiedType().getSize()
-  )
 }
 
 from FunctionCall fc, Function f, Parameter p
@@ -110,8 +76,7 @@ where
     fde.getNumberOfParameters() = 0
   ) and
   // Parameter p and its corresponding call argument must have mismatched types
-  not argMayBePromoted(fc.getArgument(p.getIndex()), p)
+  not argMayBeImplicitlyConverted(fc.getArgument(p.getIndex()), p)
 select fc, "Calling $@: argument $@ of type $@ is incompatible with parameter $@.", f, f.toString(),
-  fc.getArgument(p.getIndex()), fc.getArgument(p.getIndex()).toString(),
-  fc.getArgument(p.getIndex()).getType(), fc.getArgument(p.getIndex()).getType().toString(), p,
-  p.getTypedName()
+  fc.getArgument(p.getIndex()) as arg, arg.toString(), arg.getFullyConverted().getType() as type,
+  type.toString(), p, p.getTypedName()
