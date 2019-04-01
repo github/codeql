@@ -23,7 +23,7 @@ compilationArguments
 compilationFiles
 | compilation | 0 | Program.cs:0:0:0:0 | Program.cs |
 compilationFolder
-| compilation | folder://compilations | compilations |
+| compilation | compilations |
 diagnosticElements
 | Program.cs:1:1:1:13 | CS8019: Unnecessary using directive. | Program.cs:1:1:1:13 | using ...; |
 | Program.cs:7:13:7:13 | CS0219: The variable 'x' is assigned but its value is never used | Program.cs:7:13:7:13 | access to local variable x |

@@ -18,8 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
             int index = 0;
             foreach(var arg in args)
             {
-                cx.Emit(Tuples.compilation_args(this, index, args[index]));
-                index++;
+                cx.Emit(Tuples.compilation_args(this, index++, arg));
             }
 
             // Files
@@ -31,10 +30,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
             // Diagnostics
             index = 0;
-            foreach(var d in cx.Compilation.GetDiagnostics())
+            foreach(var diag in cx.Compilation.GetDiagnostics().Select(d => new Diagnostic(cx, d)))
             {
-                var d2 = new Diagnostic(cx, d);
-                cx.Emit(Tuples.diagnostic_for(d2, this, 0, index++));
+                cx.Emit(Tuples.diagnostic_for(diag, this, 0, index++));
             }
         }
 
