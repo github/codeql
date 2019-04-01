@@ -27,13 +27,13 @@ x *= y
 x /= y
 x %= y
 x , y = p
-[1,2,...xs]
+//[1,2,...xs]
 x & y
 x | y
 x ^ y
 x << y
 x >> y
-x <<< y
+x >>> y
 ~x
 x &= y
 x |= y
