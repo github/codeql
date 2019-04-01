@@ -17,8 +17,6 @@ query predicate metricIsZero(Compilation compilation, int metric) {
   metric != 6 // Peak working set not implemented on Linux
 }
 
-query predicate compilation(Compilation c, string f) { f = c.getDirectoryString() }
-
 query predicate compilationArguments(Compilation compilation, int i, string arg) {
   arg = compilation.getArgument(i)
 }

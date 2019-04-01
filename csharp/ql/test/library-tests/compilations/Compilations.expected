@@ -5,8 +5,6 @@ diagnostics
 | Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | CS0219 | 2 | Variable is assigned but its value is never used | The variable 'y' is assigned but its value is never used |
 compilationErrors
 metricIsZero
-compilation
-| compilation | compilations |
 compilationArguments
 | compilation | 0 | -unsafe |
 | compilation | 1 | -target:library |
