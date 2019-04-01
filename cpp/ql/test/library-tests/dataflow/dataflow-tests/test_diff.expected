@@ -11,10 +11,17 @@
 | test.cpp:430:48:430:54 | test.cpp:433:8:433:10 | AST only |
 | test.cpp:436:53:436:59 | test.cpp:440:8:440:10 | AST only |
 | test.cpp:436:53:436:59 | test.cpp:442:10:442:12 | AST only |
+| test.cpp:447:7:447:9 | test.cpp:449:8:449:10 | AST only |
+| test.cpp:453:7:453:9 | test.cpp:456:8:456:10 | AST only |
+| test.cpp:464:7:464:11 | test.cpp:466:8:466:12 | AST only |
 | test.cpp:465:16:465:20 | test.cpp:466:8:466:12 | AST only |
+| test.cpp:470:7:470:11 | test.cpp:472:8:472:12 | AST only |
 | test.cpp:471:20:471:25 | test.cpp:472:8:472:12 | AST only |
+| test.cpp:476:7:476:11 | test.cpp:478:8:478:12 | AST only |
 | test.cpp:477:20:477:24 | test.cpp:478:8:478:12 | AST only |
+| test.cpp:483:7:483:11 | test.cpp:485:8:485:12 | AST only |
 | test.cpp:484:18:484:23 | test.cpp:485:8:485:12 | AST only |
+| test.cpp:489:7:489:11 | test.cpp:491:8:491:12 | AST only |
 | test.cpp:490:18:490:22 | test.cpp:491:8:491:12 | AST only |
 | true_upon_entry.cpp:9:11:9:16 | true_upon_entry.cpp:13:8:13:8 | IR only |
 | true_upon_entry.cpp:62:11:62:16 | true_upon_entry.cpp:66:8:66:8 | IR only |
