@@ -57,7 +57,7 @@ module TaintedPath {
     ModulePathSink() {
       astNode = any(Require rq).getArgument(0) or
       astNode = any(ExternalModuleReference rq).getExpression() or
-      astNode = any(AMDModuleDefinition amd).getDependencies()
+      astNode = any(AmdModuleDefinition amd).getDependencies()
     }
   }
 

@@ -61,7 +61,7 @@ private predicate mayDynamicallyComputeExports(Module m) {
   or
   // AMD modules can export arbitrary objects, so an import is essentially a property read
   // and hence must be considered indefinite
-  m instanceof AMDModule
+  m instanceof AmdModule
   or
   // `m` re-exports all exports of some other module that dynamically computes its exports
   exists(BulkReExportDeclaration rexp | rexp = m.(ES2015Module).getAnExport() |
@@ -229,7 +229,7 @@ class AnalyzedExternalModuleReference extends AnalyzedPropertyRead, DataFlow::Va
  * Flow analysis for AMD exports.
  */
 private class AnalyzedAmdExport extends AnalyzedPropertyWrite, DataFlow::ValueNode {
-  AMDModule amd;
+  AmdModule amd;
 
   AnalyzedAmdExport() { astNode = amd.getDefine().getModuleExpr() }
 
@@ -248,7 +248,7 @@ private class AnalyzedAmdImport extends AnalyzedPropertyRead, DataFlow::Node {
   Module required;
 
   AnalyzedAmdImport() {
-    exists(AMDModule amd, PathExpr dep, Parameter p |
+    exists(AmdModule amd, PathExpr dep, Parameter p |
       amd.getDefine().dependencyParameter(dep, p) and
       this = DataFlow::parameterNode(p) and
       required.getFile() = amd.resolve(dep)

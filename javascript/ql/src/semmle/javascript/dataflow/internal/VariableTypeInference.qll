@@ -180,7 +180,7 @@ private class AnalyzedAmdParameter extends AnalyzedVarDef {
   AbstractValue implicitInitVal;
 
   AnalyzedAmdParameter() {
-    exists(AMDModule m, AMDModuleDefinition mdef | mdef = m.getDefine() |
+    exists(AmdModule m, AmdModuleDefinition mdef | mdef = m.getDefine() |
       this = mdef.getModuleParameter() and
       implicitInitVal = TAbstractModuleObject(m)
       or

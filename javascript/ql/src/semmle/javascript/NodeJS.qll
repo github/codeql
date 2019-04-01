@@ -21,9 +21,6 @@ class NodeModule extends Module {
   /** Gets the scope induced by this module. */
   override ModuleScope getScope() { result.getScopeElement() = this }
 
-  /** Gets a module imported by this module. */
-  override Module getAnImportedModule() { result = getAnImport().getImportedModule() }
-
   /**
    * Gets an abstract value representing one or more values that may flow
    * into this module's `module.exports` property.

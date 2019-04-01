@@ -17,6 +17,6 @@ where
   not f.inExternsFile() and
   f.getNumParameter() > 7 and
   // exclude AMD modules
-  not exists(AMDModuleDefinition m | f = m.getFactoryNode().(DataFlow::FunctionNode).getAstNode())
+  not exists(AmdModuleDefinition m | f = m.getFactoryNode().(DataFlow::FunctionNode).getAstNode())
 select f.(FirstLineOf),
   capitalize(f.describe()) + " has too many parameters (" + f.getNumParameter() + ")."

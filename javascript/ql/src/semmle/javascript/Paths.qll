@@ -77,6 +77,26 @@ private class ConsPath extends Path, TConsPath {
 }
 
 /**
+ * Gets a regular expression that can be used to parse slash-separated paths.
+ *
+ * The first capture group captures the dirname of the path, that is, everything
+ * before the last slash, or the empty string if there isn't a slash.
+ *
+ * The second capture group captures the basename of the path, that is, everything
+ * after the last slash, or the entire path if there isn't a slash.
+ *
+ * The third capture group captures the stem of the basename, that is, everything
+ * before the last dot, or the entire basename if there isn't a dot.
+ *
+ * Finally, the fourth and fifth capture groups capture the extension of the basename,
+ * that is, everything after the last dot. The fourth group includes the dot, the
+ * fifth does not.
+ */
+private string pathRegex() {
+  result = "(.*)(?:/|^)(([^/]*?)(\\.([^.]*))?)"
+}
+
+/**
  * A string value that represents a (relative or absolute) file system path.
  *
  * Each path string is associated with one or more root folders relative to
@@ -98,7 +118,17 @@ abstract class PathString extends string {
   int getNumComponent() { result = count(int i | exists(getComponent(i))) }
 
   /** Gets the base name of the folder or file this path refers to. */
-  string getBaseName() { result = this.regexpCapture("(.*/|^)([^/]+)", 2) }
+  string getBaseName() { result = this.regexpCapture(pathRegex(), 2) }
+
+  /**
+   * Gets stem of the folder or file this path refers to, that is, the prefix of its base name
+   * up to (but not including) the last dot character if there is one, or the entire
+   * base name if there is not
+   */
+  string getStem() { result = this.regexpCapture(pathRegex(), 3) }
+
+  /** Gets the path of the parent folder of the folder or file this path refers to. */
+  string getDirName() { result = this.regexpCapture(pathRegex(), 1) }
 
   /**
    * Gets the absolute path that the sub-path consisting of the first `n`
