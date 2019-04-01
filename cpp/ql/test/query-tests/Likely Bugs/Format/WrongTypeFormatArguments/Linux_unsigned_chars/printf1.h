@@ -119,3 +119,11 @@ void test_chars(char c, wchar_t wc, wint_t wt)
   wprintf(L"%C", wc); // GOOD (converts to wint_t)
   wprintf(L"%C", wt); // GOOD
 }
+
+void test_ws(char *c, wchar_t *wc)
+{
+  wprintf(L"%s", c); // GOOD
+  wprintf(L"%s", wc); // BAD
+  wprintf(L"%S", c); // BAD
+  wprintf(L"%S", wc); // GOOD
+}

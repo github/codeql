@@ -4,7 +4,7 @@ import external.ExternalArtifact
 predicate printfLikeFunction(Function func, int formatArg) {
   (formatArg = func.(FormattingFunction).getFormatParameterIndex() and not func instanceof UserDefinedFormattingFunction)
   or
-  primitiveVariadicFormatter(func, formatArg, _)
+  primitiveVariadicFormatter(func, formatArg)
   or
   exists(ExternalData data |
     // TODO Do this \ to / conversion in the toolchain?

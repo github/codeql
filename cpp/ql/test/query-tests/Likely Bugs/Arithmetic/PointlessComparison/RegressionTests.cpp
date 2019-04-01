@@ -66,3 +66,17 @@ int regression_test_01(unsigned long bb) {
     return 1;
   }
 }
+
+int containsIfDef(int x) {
+  int result = 0;
+  if (x > 0) {
+    result = 1;
+  }
+#if _CONDITION
+  if (x < 0) {
+    result = -1;
+  }
+#endif
+
+  return result >= 0;
+}

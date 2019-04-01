@@ -121,6 +121,23 @@ private predicate isGeneratedHtml(File f) {
     e.getName() = "meta" and
     e.getAttributeByName("name").getValue() = "generator"
   )
+  or
+  20 < countStartingHtmlElements(f, _)
+}
+
+/**
+ * Gets an element that starts at line `l` in file `f`.
+ */
+private HTML::Element getAStartingElement(File f, int l) {
+  result.getFile() = f and result.getLocation().getStartLine() = l
+}
+
+
+/**
+ * Gets the number of HTML elements that start at line `l` in file `f`.
+ */
+private int countStartingHtmlElements(File f, int l) {
+  result = strictcount(getAStartingElement(f, l))
 }
 
 /**
