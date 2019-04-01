@@ -1,3 +1,4 @@
+test_getParent
 | assignment.js:1:1:1:1 | a | assignment.js:1:1:1:6 | a = 23 |
 | assignment.js:1:1:1:6 | a = 23 | assignment.js:1:1:1:7 | a = 23; |
 | assignment.js:1:5:1:6 | 23 | assignment.js:1:1:1:6 | a = 23 |
@@ -219,127 +220,127 @@
 | mozextensions.js:1:23:1:23 | x | mozextensions.js:1:23:1:25 | x+1 |
 | mozextensions.js:1:23:1:25 | x+1 | mozextensions.js:1:11:1:25 | function(x) x+1 |
 | mozextensions.js:1:25:1:25 | 1 | mozextensions.js:1:23:1:25 | x+1 |
-| nullSensitiveContexts.js:8:1:8:3 | foo | nullSensitiveContexts.js:8:1:8:8 | foo[bar] |
-| nullSensitiveContexts.js:8:1:8:8 | foo[bar] | nullSensitiveContexts.js:8:1:8:8 | foo[bar] |
-| nullSensitiveContexts.js:8:5:8:7 | bar | nullSensitiveContexts.js:8:1:8:8 | foo[bar] |
-| nullSensitiveContexts.js:9:1:9:3 | foo | nullSensitiveContexts.js:9:1:9:7 | foo.bar |
-| nullSensitiveContexts.js:9:1:9:7 | foo.bar | nullSensitiveContexts.js:9:1:9:7 | foo.bar |
-| nullSensitiveContexts.js:9:5:9:7 | bar | nullSensitiveContexts.js:9:1:9:7 | foo.bar |
-| nullSensitiveContexts.js:10:1:10:7 | new Foo | nullSensitiveContexts.js:10:1:10:7 | new Foo |
-| nullSensitiveContexts.js:10:5:10:7 | Foo | nullSensitiveContexts.js:10:1:10:7 | new Foo |
-| nullSensitiveContexts.js:11:1:11:9 | new Foo() | nullSensitiveContexts.js:11:1:11:9 | new Foo() |
-| nullSensitiveContexts.js:11:5:11:7 | Foo | nullSensitiveContexts.js:11:1:11:9 | new Foo() |
-| nullSensitiveContexts.js:12:1:12:3 | foo | nullSensitiveContexts.js:12:1:12:7 | foo.bar |
-| nullSensitiveContexts.js:12:1:12:7 | foo.bar | nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 |
-| nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 | nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 |
-| nullSensitiveContexts.js:12:5:12:7 | bar | nullSensitiveContexts.js:12:1:12:7 | foo.bar |
-| nullSensitiveContexts.js:12:11:12:11 | 5 | nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 |
-| nullSensitiveContexts.js:13:1:13:3 | foo | nullSensitiveContexts.js:13:1:13:8 | foo(bar) |
-| nullSensitiveContexts.js:13:1:13:8 | foo(bar) | nullSensitiveContexts.js:13:1:13:8 | foo(bar) |
-| nullSensitiveContexts.js:13:5:13:7 | bar | nullSensitiveContexts.js:13:1:13:8 | foo(bar) |
-| nullSensitiveContexts.js:14:1:14:1 | x | nullSensitiveContexts.js:14:1:14:5 | x + y |
-| nullSensitiveContexts.js:14:1:14:5 | x + y | nullSensitiveContexts.js:14:1:14:5 | x + y |
-| nullSensitiveContexts.js:14:5:14:5 | y | nullSensitiveContexts.js:14:1:14:5 | x + y |
-| nullSensitiveContexts.js:15:1:15:1 | x | nullSensitiveContexts.js:15:1:15:5 | x - y |
-| nullSensitiveContexts.js:15:1:15:5 | x - y | nullSensitiveContexts.js:15:1:15:5 | x - y |
-| nullSensitiveContexts.js:15:5:15:5 | y | nullSensitiveContexts.js:15:1:15:5 | x - y |
-| nullSensitiveContexts.js:16:1:16:1 | x | nullSensitiveContexts.js:16:1:16:5 | x * y |
-| nullSensitiveContexts.js:16:1:16:5 | x * y | nullSensitiveContexts.js:16:1:16:5 | x * y |
-| nullSensitiveContexts.js:16:5:16:5 | y | nullSensitiveContexts.js:16:1:16:5 | x * y |
-| nullSensitiveContexts.js:17:1:17:1 | x | nullSensitiveContexts.js:17:1:17:5 | x / y |
-| nullSensitiveContexts.js:17:1:17:5 | x / y | nullSensitiveContexts.js:17:1:17:5 | x / y |
-| nullSensitiveContexts.js:17:5:17:5 | y | nullSensitiveContexts.js:17:1:17:5 | x / y |
-| nullSensitiveContexts.js:18:1:18:1 | x | nullSensitiveContexts.js:18:1:18:5 | x % y |
-| nullSensitiveContexts.js:18:1:18:5 | x % y | nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x |
-| nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x | nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x | nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:18:5:18:5 | y | nullSensitiveContexts.js:18:1:18:5 | x % y |
-| nullSensitiveContexts.js:19:2:19:2 | x | nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x |
-| nullSensitiveContexts.js:20:2:20:2 | x | nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:21:1:21:3 | ++x | nullSensitiveContexts.js:21:1:21:3 | ++x |
-| nullSensitiveContexts.js:21:3:21:3 | x | nullSensitiveContexts.js:21:1:21:3 | ++x |
-| nullSensitiveContexts.js:22:1:22:1 | x | nullSensitiveContexts.js:22:1:22:3 | x++ |
-| nullSensitiveContexts.js:22:1:22:3 | x++ | nullSensitiveContexts.js:22:1:22:3 | x++ |
-| nullSensitiveContexts.js:23:1:23:3 | --x | nullSensitiveContexts.js:23:1:23:3 | --x |
-| nullSensitiveContexts.js:23:3:23:3 | x | nullSensitiveContexts.js:23:1:23:3 | --x |
-| nullSensitiveContexts.js:24:1:24:1 | x | nullSensitiveContexts.js:24:1:24:3 | x-- |
-| nullSensitiveContexts.js:24:1:24:3 | x-- | nullSensitiveContexts.js:24:1:24:3 | x-- |
-| nullSensitiveContexts.js:25:1:25:1 | x | nullSensitiveContexts.js:25:1:25:6 | x += y |
-| nullSensitiveContexts.js:25:1:25:6 | x += y | nullSensitiveContexts.js:25:1:25:6 | x += y |
-| nullSensitiveContexts.js:25:6:25:6 | y | nullSensitiveContexts.js:25:1:25:6 | x += y |
-| nullSensitiveContexts.js:26:1:26:1 | x | nullSensitiveContexts.js:26:1:26:6 | x -= y |
-| nullSensitiveContexts.js:26:1:26:6 | x -= y | nullSensitiveContexts.js:26:1:26:6 | x -= y |
-| nullSensitiveContexts.js:26:6:26:6 | y | nullSensitiveContexts.js:26:1:26:6 | x -= y |
-| nullSensitiveContexts.js:27:1:27:1 | x | nullSensitiveContexts.js:27:1:27:6 | x *= y |
-| nullSensitiveContexts.js:27:1:27:6 | x *= y | nullSensitiveContexts.js:27:1:27:6 | x *= y |
-| nullSensitiveContexts.js:27:6:27:6 | y | nullSensitiveContexts.js:27:1:27:6 | x *= y |
-| nullSensitiveContexts.js:28:1:28:1 | x | nullSensitiveContexts.js:28:1:28:6 | x /= y |
-| nullSensitiveContexts.js:28:1:28:6 | x /= y | nullSensitiveContexts.js:28:1:28:6 | x /= y |
-| nullSensitiveContexts.js:28:6:28:6 | y | nullSensitiveContexts.js:28:1:28:6 | x /= y |
-| nullSensitiveContexts.js:29:1:29:1 | x | nullSensitiveContexts.js:29:1:29:6 | x %= y |
-| nullSensitiveContexts.js:29:1:29:6 | x %= y | nullSensitiveContexts.js:29:1:29:6 | x %= y |
-| nullSensitiveContexts.js:29:6:29:6 | y | nullSensitiveContexts.js:29:1:29:6 | x %= y |
-| nullSensitiveContexts.js:30:1:30:1 | x | nullSensitiveContexts.js:30:1:30:9 | x , y = p |
-| nullSensitiveContexts.js:30:1:30:9 | x , y = p | nullSensitiveContexts.js:30:1:30:9 | x , y = p |
-| nullSensitiveContexts.js:30:5:30:5 | y | nullSensitiveContexts.js:30:5:30:9 | y = p |
-| nullSensitiveContexts.js:30:5:30:9 | y = p | nullSensitiveContexts.js:30:1:30:9 | x , y = p |
-| nullSensitiveContexts.js:30:9:30:9 | p | nullSensitiveContexts.js:30:5:30:9 | y = p |
-| nullSensitiveContexts.js:32:1:32:1 | x | nullSensitiveContexts.js:32:1:32:5 | x & y |
-| nullSensitiveContexts.js:32:1:32:5 | x & y | nullSensitiveContexts.js:32:1:32:5 | x & y |
-| nullSensitiveContexts.js:32:5:32:5 | y | nullSensitiveContexts.js:32:1:32:5 | x & y |
-| nullSensitiveContexts.js:33:1:33:1 | x | nullSensitiveContexts.js:33:1:33:5 | x \| y |
-| nullSensitiveContexts.js:33:1:33:5 | x \| y | nullSensitiveContexts.js:33:1:33:5 | x \| y |
-| nullSensitiveContexts.js:33:5:33:5 | y | nullSensitiveContexts.js:33:1:33:5 | x \| y |
-| nullSensitiveContexts.js:34:1:34:1 | x | nullSensitiveContexts.js:34:1:34:5 | x ^ y |
-| nullSensitiveContexts.js:34:1:34:5 | x ^ y | nullSensitiveContexts.js:34:1:34:5 | x ^ y |
-| nullSensitiveContexts.js:34:5:34:5 | y | nullSensitiveContexts.js:34:1:34:5 | x ^ y |
-| nullSensitiveContexts.js:35:1:35:1 | x | nullSensitiveContexts.js:35:1:35:6 | x << y |
-| nullSensitiveContexts.js:35:1:35:6 | x << y | nullSensitiveContexts.js:35:1:35:6 | x << y |
-| nullSensitiveContexts.js:35:6:35:6 | y | nullSensitiveContexts.js:35:1:35:6 | x << y |
-| nullSensitiveContexts.js:36:1:36:1 | x | nullSensitiveContexts.js:36:1:36:6 | x >> y |
-| nullSensitiveContexts.js:36:1:36:6 | x >> y | nullSensitiveContexts.js:36:1:36:6 | x >> y |
-| nullSensitiveContexts.js:36:6:36:6 | y | nullSensitiveContexts.js:36:1:36:6 | x >> y |
-| nullSensitiveContexts.js:37:1:37:1 | x | nullSensitiveContexts.js:37:1:37:7 | x >>> y |
-| nullSensitiveContexts.js:37:1:37:7 | x >>> y | nullSensitiveContexts.js:37:1:37:7 | x >>> y |
-| nullSensitiveContexts.js:37:7:37:7 | y | nullSensitiveContexts.js:37:1:37:7 | x >>> y |
-| nullSensitiveContexts.js:38:1:38:2 | ~x | nullSensitiveContexts.js:38:1:38:2 | ~x |
-| nullSensitiveContexts.js:38:2:38:2 | x | nullSensitiveContexts.js:38:1:38:2 | ~x |
-| nullSensitiveContexts.js:39:1:39:1 | x | nullSensitiveContexts.js:39:1:39:6 | x &= y |
-| nullSensitiveContexts.js:39:1:39:6 | x &= y | nullSensitiveContexts.js:39:1:39:6 | x &= y |
-| nullSensitiveContexts.js:39:6:39:6 | y | nullSensitiveContexts.js:39:1:39:6 | x &= y |
-| nullSensitiveContexts.js:40:1:40:1 | x | nullSensitiveContexts.js:40:1:40:6 | x \|= y |
-| nullSensitiveContexts.js:40:1:40:6 | x \|= y | nullSensitiveContexts.js:40:1:40:6 | x \|= y |
-| nullSensitiveContexts.js:40:6:40:6 | y | nullSensitiveContexts.js:40:1:40:6 | x \|= y |
-| nullSensitiveContexts.js:41:1:41:1 | x | nullSensitiveContexts.js:41:1:41:6 | x ^= y |
-| nullSensitiveContexts.js:41:1:41:6 | x ^= y | nullSensitiveContexts.js:41:1:41:6 | x ^= y |
-| nullSensitiveContexts.js:41:6:41:6 | y | nullSensitiveContexts.js:41:1:41:6 | x ^= y |
-| nullSensitiveContexts.js:42:1:42:1 | x | nullSensitiveContexts.js:42:1:42:7 | x <<= y |
-| nullSensitiveContexts.js:42:1:42:7 | x <<= y | nullSensitiveContexts.js:42:1:42:7 | x <<= y |
-| nullSensitiveContexts.js:42:7:42:7 | y | nullSensitiveContexts.js:42:1:42:7 | x <<= y |
-| nullSensitiveContexts.js:43:1:43:1 | x | nullSensitiveContexts.js:43:1:43:7 | x >>= y |
-| nullSensitiveContexts.js:43:1:43:7 | x >>= y | nullSensitiveContexts.js:43:1:43:7 | x >>= y |
-| nullSensitiveContexts.js:43:7:43:7 | y | nullSensitiveContexts.js:43:1:43:7 | x >>= y |
-| nullSensitiveContexts.js:44:1:44:1 | x | nullSensitiveContexts.js:44:1:44:8 | x >>>= y |
-| nullSensitiveContexts.js:44:1:44:8 | x >>>= y | nullSensitiveContexts.js:44:1:44:8 | x >>>= y |
-| nullSensitiveContexts.js:44:8:44:8 | y | nullSensitiveContexts.js:44:1:44:8 | x >>>= y |
-| nullSensitiveContexts.js:45:10:45:10 | x | nullSensitiveContexts.js:45:6:45:10 | let x |
-| nullSensitiveContexts.js:45:10:45:10 | x | nullSensitiveContexts.js:45:10:45:10 | x |
-| nullSensitiveContexts.js:45:15:45:15 | y | nullSensitiveContexts.js:45:1:45:20 | for (let x of y) { } |
-| nullSensitiveContexts.js:56:1:56:1 | x | nullSensitiveContexts.js:56:1:56:6 | x && y |
-| nullSensitiveContexts.js:56:1:56:6 | x && y | nullSensitiveContexts.js:56:1:56:6 | x && y |
-| nullSensitiveContexts.js:56:6:56:6 | y | nullSensitiveContexts.js:56:1:56:6 | x && y |
-| nullSensitiveContexts.js:57:1:57:1 | x | nullSensitiveContexts.js:57:1:57:6 | x \|\| y |
-| nullSensitiveContexts.js:57:1:57:6 | x \|\| y | nullSensitiveContexts.js:57:1:57:6 | x \|\| y |
-| nullSensitiveContexts.js:57:6:57:6 | y | nullSensitiveContexts.js:57:1:57:6 | x \|\| y |
-| nullSensitiveContexts.js:58:1:58:2 | !x | nullSensitiveContexts.js:58:1:58:2 | !x |
-| nullSensitiveContexts.js:58:2:58:2 | x | nullSensitiveContexts.js:58:1:58:2 | !x |
-| nullSensitiveContexts.js:59:5:59:5 | x | nullSensitiveContexts.js:59:1:59:10 | if (x) { } |
-| nullSensitiveContexts.js:60:8:60:8 | x | nullSensitiveContexts.js:60:1:60:13 | while (x) { } |
-| nullSensitiveContexts.js:61:8:61:8 | y | nullSensitiveContexts.js:61:1:61:16 | for (; y; z) { } |
-| nullSensitiveContexts.js:61:11:61:11 | z | nullSensitiveContexts.js:61:1:61:16 | for (; y; z) { } |
-| nullSensitiveContexts.js:62:10:62:10 | x | nullSensitiveContexts.js:62:6:62:10 | let x |
-| nullSensitiveContexts.js:62:10:62:10 | x | nullSensitiveContexts.js:62:10:62:10 | x |
-| nullSensitiveContexts.js:62:15:62:15 | y | nullSensitiveContexts.js:62:1:62:20 | for (let x in y) { } |
+| nullSensitiveContexts.js:7:1:7:3 | foo | nullSensitiveContexts.js:7:1:7:8 | foo[bar] |
+| nullSensitiveContexts.js:7:1:7:8 | foo[bar] | nullSensitiveContexts.js:7:1:7:8 | foo[bar] |
+| nullSensitiveContexts.js:7:5:7:7 | bar | nullSensitiveContexts.js:7:1:7:8 | foo[bar] |
+| nullSensitiveContexts.js:8:1:8:3 | foo | nullSensitiveContexts.js:8:1:8:7 | foo.bar |
+| nullSensitiveContexts.js:8:1:8:7 | foo.bar | nullSensitiveContexts.js:8:1:8:7 | foo.bar |
+| nullSensitiveContexts.js:8:5:8:7 | bar | nullSensitiveContexts.js:8:1:8:7 | foo.bar |
+| nullSensitiveContexts.js:9:1:9:7 | new Foo | nullSensitiveContexts.js:9:1:9:7 | new Foo |
+| nullSensitiveContexts.js:9:5:9:7 | Foo | nullSensitiveContexts.js:9:1:9:7 | new Foo |
+| nullSensitiveContexts.js:10:1:10:9 | new Foo() | nullSensitiveContexts.js:10:1:10:9 | new Foo() |
+| nullSensitiveContexts.js:10:5:10:7 | Foo | nullSensitiveContexts.js:10:1:10:9 | new Foo() |
+| nullSensitiveContexts.js:11:1:11:3 | foo | nullSensitiveContexts.js:11:1:11:7 | foo.bar |
+| nullSensitiveContexts.js:11:1:11:7 | foo.bar | nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 |
+| nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 | nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 |
+| nullSensitiveContexts.js:11:5:11:7 | bar | nullSensitiveContexts.js:11:1:11:7 | foo.bar |
+| nullSensitiveContexts.js:11:11:11:11 | 5 | nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 |
+| nullSensitiveContexts.js:12:1:12:3 | foo | nullSensitiveContexts.js:12:1:12:8 | foo(bar) |
+| nullSensitiveContexts.js:12:1:12:8 | foo(bar) | nullSensitiveContexts.js:12:1:12:8 | foo(bar) |
+| nullSensitiveContexts.js:12:5:12:7 | bar | nullSensitiveContexts.js:12:1:12:8 | foo(bar) |
+| nullSensitiveContexts.js:13:1:13:1 | x | nullSensitiveContexts.js:13:1:13:5 | x + y |
+| nullSensitiveContexts.js:13:1:13:5 | x + y | nullSensitiveContexts.js:13:1:13:5 | x + y |
+| nullSensitiveContexts.js:13:5:13:5 | y | nullSensitiveContexts.js:13:1:13:5 | x + y |
+| nullSensitiveContexts.js:14:1:14:1 | x | nullSensitiveContexts.js:14:1:14:5 | x - y |
+| nullSensitiveContexts.js:14:1:14:5 | x - y | nullSensitiveContexts.js:14:1:14:5 | x - y |
+| nullSensitiveContexts.js:14:5:14:5 | y | nullSensitiveContexts.js:14:1:14:5 | x - y |
+| nullSensitiveContexts.js:15:1:15:1 | x | nullSensitiveContexts.js:15:1:15:5 | x * y |
+| nullSensitiveContexts.js:15:1:15:5 | x * y | nullSensitiveContexts.js:15:1:15:5 | x * y |
+| nullSensitiveContexts.js:15:5:15:5 | y | nullSensitiveContexts.js:15:1:15:5 | x * y |
+| nullSensitiveContexts.js:16:1:16:1 | x | nullSensitiveContexts.js:16:1:16:5 | x / y |
+| nullSensitiveContexts.js:16:1:16:5 | x / y | nullSensitiveContexts.js:16:1:16:5 | x / y |
+| nullSensitiveContexts.js:16:5:16:5 | y | nullSensitiveContexts.js:16:1:16:5 | x / y |
+| nullSensitiveContexts.js:17:1:17:1 | x | nullSensitiveContexts.js:17:1:17:5 | x % y |
+| nullSensitiveContexts.js:17:1:17:5 | x % y | nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x |
+| nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x | nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
+| nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x | nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
+| nullSensitiveContexts.js:17:5:17:5 | y | nullSensitiveContexts.js:17:1:17:5 | x % y |
+| nullSensitiveContexts.js:18:2:18:2 | x | nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x |
+| nullSensitiveContexts.js:19:2:19:2 | x | nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
+| nullSensitiveContexts.js:20:1:20:3 | ++x | nullSensitiveContexts.js:20:1:20:3 | ++x |
+| nullSensitiveContexts.js:20:3:20:3 | x | nullSensitiveContexts.js:20:1:20:3 | ++x |
+| nullSensitiveContexts.js:21:1:21:1 | x | nullSensitiveContexts.js:21:1:21:3 | x++ |
+| nullSensitiveContexts.js:21:1:21:3 | x++ | nullSensitiveContexts.js:21:1:21:3 | x++ |
+| nullSensitiveContexts.js:22:1:22:3 | --x | nullSensitiveContexts.js:22:1:22:3 | --x |
+| nullSensitiveContexts.js:22:3:22:3 | x | nullSensitiveContexts.js:22:1:22:3 | --x |
+| nullSensitiveContexts.js:23:1:23:1 | x | nullSensitiveContexts.js:23:1:23:3 | x-- |
+| nullSensitiveContexts.js:23:1:23:3 | x-- | nullSensitiveContexts.js:23:1:23:3 | x-- |
+| nullSensitiveContexts.js:24:1:24:1 | x | nullSensitiveContexts.js:24:1:24:6 | x += y |
+| nullSensitiveContexts.js:24:1:24:6 | x += y | nullSensitiveContexts.js:24:1:24:6 | x += y |
+| nullSensitiveContexts.js:24:6:24:6 | y | nullSensitiveContexts.js:24:1:24:6 | x += y |
+| nullSensitiveContexts.js:25:1:25:1 | x | nullSensitiveContexts.js:25:1:25:6 | x -= y |
+| nullSensitiveContexts.js:25:1:25:6 | x -= y | nullSensitiveContexts.js:25:1:25:6 | x -= y |
+| nullSensitiveContexts.js:25:6:25:6 | y | nullSensitiveContexts.js:25:1:25:6 | x -= y |
+| nullSensitiveContexts.js:26:1:26:1 | x | nullSensitiveContexts.js:26:1:26:6 | x *= y |
+| nullSensitiveContexts.js:26:1:26:6 | x *= y | nullSensitiveContexts.js:26:1:26:6 | x *= y |
+| nullSensitiveContexts.js:26:6:26:6 | y | nullSensitiveContexts.js:26:1:26:6 | x *= y |
+| nullSensitiveContexts.js:27:1:27:1 | x | nullSensitiveContexts.js:27:1:27:6 | x /= y |
+| nullSensitiveContexts.js:27:1:27:6 | x /= y | nullSensitiveContexts.js:27:1:27:6 | x /= y |
+| nullSensitiveContexts.js:27:6:27:6 | y | nullSensitiveContexts.js:27:1:27:6 | x /= y |
+| nullSensitiveContexts.js:28:1:28:1 | x | nullSensitiveContexts.js:28:1:28:6 | x %= y |
+| nullSensitiveContexts.js:28:1:28:6 | x %= y | nullSensitiveContexts.js:28:1:28:6 | x %= y |
+| nullSensitiveContexts.js:28:6:28:6 | y | nullSensitiveContexts.js:28:1:28:6 | x %= y |
+| nullSensitiveContexts.js:29:1:29:1 | x | nullSensitiveContexts.js:29:1:29:9 | x , y = p |
+| nullSensitiveContexts.js:29:1:29:9 | x , y = p | nullSensitiveContexts.js:29:1:29:9 | x , y = p |
+| nullSensitiveContexts.js:29:5:29:5 | y | nullSensitiveContexts.js:29:5:29:9 | y = p |
+| nullSensitiveContexts.js:29:5:29:9 | y = p | nullSensitiveContexts.js:29:1:29:9 | x , y = p |
+| nullSensitiveContexts.js:29:9:29:9 | p | nullSensitiveContexts.js:29:5:29:9 | y = p |
+| nullSensitiveContexts.js:31:1:31:1 | x | nullSensitiveContexts.js:31:1:31:5 | x & y |
+| nullSensitiveContexts.js:31:1:31:5 | x & y | nullSensitiveContexts.js:31:1:31:5 | x & y |
+| nullSensitiveContexts.js:31:5:31:5 | y | nullSensitiveContexts.js:31:1:31:5 | x & y |
+| nullSensitiveContexts.js:32:1:32:1 | x | nullSensitiveContexts.js:32:1:32:5 | x \| y |
+| nullSensitiveContexts.js:32:1:32:5 | x \| y | nullSensitiveContexts.js:32:1:32:5 | x \| y |
+| nullSensitiveContexts.js:32:5:32:5 | y | nullSensitiveContexts.js:32:1:32:5 | x \| y |
+| nullSensitiveContexts.js:33:1:33:1 | x | nullSensitiveContexts.js:33:1:33:5 | x ^ y |
+| nullSensitiveContexts.js:33:1:33:5 | x ^ y | nullSensitiveContexts.js:33:1:33:5 | x ^ y |
+| nullSensitiveContexts.js:33:5:33:5 | y | nullSensitiveContexts.js:33:1:33:5 | x ^ y |
+| nullSensitiveContexts.js:34:1:34:1 | x | nullSensitiveContexts.js:34:1:34:6 | x << y |
+| nullSensitiveContexts.js:34:1:34:6 | x << y | nullSensitiveContexts.js:34:1:34:6 | x << y |
+| nullSensitiveContexts.js:34:6:34:6 | y | nullSensitiveContexts.js:34:1:34:6 | x << y |
+| nullSensitiveContexts.js:35:1:35:1 | x | nullSensitiveContexts.js:35:1:35:6 | x >> y |
+| nullSensitiveContexts.js:35:1:35:6 | x >> y | nullSensitiveContexts.js:35:1:35:6 | x >> y |
+| nullSensitiveContexts.js:35:6:35:6 | y | nullSensitiveContexts.js:35:1:35:6 | x >> y |
+| nullSensitiveContexts.js:36:1:36:1 | x | nullSensitiveContexts.js:36:1:36:7 | x >>> y |
+| nullSensitiveContexts.js:36:1:36:7 | x >>> y | nullSensitiveContexts.js:36:1:36:7 | x >>> y |
+| nullSensitiveContexts.js:36:7:36:7 | y | nullSensitiveContexts.js:36:1:36:7 | x >>> y |
+| nullSensitiveContexts.js:37:1:37:2 | ~x | nullSensitiveContexts.js:37:1:37:2 | ~x |
+| nullSensitiveContexts.js:37:2:37:2 | x | nullSensitiveContexts.js:37:1:37:2 | ~x |
+| nullSensitiveContexts.js:38:1:38:1 | x | nullSensitiveContexts.js:38:1:38:6 | x &= y |
+| nullSensitiveContexts.js:38:1:38:6 | x &= y | nullSensitiveContexts.js:38:1:38:6 | x &= y |
+| nullSensitiveContexts.js:38:6:38:6 | y | nullSensitiveContexts.js:38:1:38:6 | x &= y |
+| nullSensitiveContexts.js:39:1:39:1 | x | nullSensitiveContexts.js:39:1:39:6 | x \|= y |
+| nullSensitiveContexts.js:39:1:39:6 | x \|= y | nullSensitiveContexts.js:39:1:39:6 | x \|= y |
+| nullSensitiveContexts.js:39:6:39:6 | y | nullSensitiveContexts.js:39:1:39:6 | x \|= y |
+| nullSensitiveContexts.js:40:1:40:1 | x | nullSensitiveContexts.js:40:1:40:6 | x ^= y |
+| nullSensitiveContexts.js:40:1:40:6 | x ^= y | nullSensitiveContexts.js:40:1:40:6 | x ^= y |
+| nullSensitiveContexts.js:40:6:40:6 | y | nullSensitiveContexts.js:40:1:40:6 | x ^= y |
+| nullSensitiveContexts.js:41:1:41:1 | x | nullSensitiveContexts.js:41:1:41:7 | x <<= y |
+| nullSensitiveContexts.js:41:1:41:7 | x <<= y | nullSensitiveContexts.js:41:1:41:7 | x <<= y |
+| nullSensitiveContexts.js:41:7:41:7 | y | nullSensitiveContexts.js:41:1:41:7 | x <<= y |
+| nullSensitiveContexts.js:42:1:42:1 | x | nullSensitiveContexts.js:42:1:42:7 | x >>= y |
+| nullSensitiveContexts.js:42:1:42:7 | x >>= y | nullSensitiveContexts.js:42:1:42:7 | x >>= y |
+| nullSensitiveContexts.js:42:7:42:7 | y | nullSensitiveContexts.js:42:1:42:7 | x >>= y |
+| nullSensitiveContexts.js:43:1:43:1 | x | nullSensitiveContexts.js:43:1:43:8 | x >>>= y |
+| nullSensitiveContexts.js:43:1:43:8 | x >>>= y | nullSensitiveContexts.js:43:1:43:8 | x >>>= y |
+| nullSensitiveContexts.js:43:8:43:8 | y | nullSensitiveContexts.js:43:1:43:8 | x >>>= y |
+| nullSensitiveContexts.js:44:10:44:10 | x | nullSensitiveContexts.js:44:6:44:10 | let x |
+| nullSensitiveContexts.js:44:10:44:10 | x | nullSensitiveContexts.js:44:10:44:10 | x |
+| nullSensitiveContexts.js:44:15:44:15 | y | nullSensitiveContexts.js:44:1:44:20 | for (let x of y) { } |
+| nullSensitiveContexts.js:54:1:54:1 | x | nullSensitiveContexts.js:54:1:54:6 | x && y |
+| nullSensitiveContexts.js:54:1:54:6 | x && y | nullSensitiveContexts.js:54:1:54:6 | x && y |
+| nullSensitiveContexts.js:54:6:54:6 | y | nullSensitiveContexts.js:54:1:54:6 | x && y |
+| nullSensitiveContexts.js:55:1:55:1 | x | nullSensitiveContexts.js:55:1:55:6 | x \|\| y |
+| nullSensitiveContexts.js:55:1:55:6 | x \|\| y | nullSensitiveContexts.js:55:1:55:6 | x \|\| y |
+| nullSensitiveContexts.js:55:6:55:6 | y | nullSensitiveContexts.js:55:1:55:6 | x \|\| y |
+| nullSensitiveContexts.js:56:1:56:2 | !x | nullSensitiveContexts.js:56:1:56:2 | !x |
+| nullSensitiveContexts.js:56:2:56:2 | x | nullSensitiveContexts.js:56:1:56:2 | !x |
+| nullSensitiveContexts.js:57:5:57:5 | x | nullSensitiveContexts.js:57:1:57:10 | if (x) { } |
+| nullSensitiveContexts.js:58:8:58:8 | x | nullSensitiveContexts.js:58:1:58:13 | while (x) { } |
+| nullSensitiveContexts.js:59:8:59:8 | y | nullSensitiveContexts.js:59:1:59:16 | for (; y; z) { } |
+| nullSensitiveContexts.js:59:11:59:11 | z | nullSensitiveContexts.js:59:1:59:16 | for (; y; z) { } |
+| nullSensitiveContexts.js:60:10:60:10 | x | nullSensitiveContexts.js:60:6:60:10 | let x |
+| nullSensitiveContexts.js:60:10:60:10 | x | nullSensitiveContexts.js:60:10:60:10 | x |
+| nullSensitiveContexts.js:60:15:60:15 | y | nullSensitiveContexts.js:60:1:60:20 | for (let x in y) { } |
 | others.js:1:1:1:2 | 23 | others.js:1:1:1:6 | 23, 42 |
 | others.js:1:1:1:6 | 23, 42 | others.js:1:1:1:7 | 23, 42; |
 | others.js:1:5:1:6 | 42 | others.js:1:1:1:6 | 23, 42 |
@@ -672,127 +673,127 @@ test_getTopLevel
 | mozextensions.js:1:23:1:23 | x | mozextensions.js:1:1:3:42 | <toplevel> |
 | mozextensions.js:1:23:1:25 | x+1 | mozextensions.js:1:1:3:42 | <toplevel> |
 | mozextensions.js:1:25:1:25 | 1 | mozextensions.js:1:1:3:42 | <toplevel> |
-| nullSensitiveContexts.js:8:1:8:3 | foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:8:1:8:8 | foo[bar] | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:8:5:8:7 | bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:9:1:9:3 | foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:9:1:9:7 | foo.bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:9:5:9:7 | bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:10:1:10:7 | new Foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:10:5:10:7 | Foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:11:1:11:9 | new Foo() | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:11:5:11:7 | Foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:12:1:12:3 | foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:12:1:12:7 | foo.bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:12:5:12:7 | bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:12:11:12:11 | 5 | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:13:1:13:3 | foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:13:1:13:8 | foo(bar) | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:13:5:13:7 | bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:14:1:14:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:14:1:14:5 | x + y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:14:5:14:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:15:1:15:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:15:1:15:5 | x - y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:15:5:15:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:16:1:16:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:16:1:16:5 | x * y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:16:5:16:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:17:1:17:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:17:1:17:5 | x / y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:17:5:17:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:18:1:18:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:18:1:18:5 | x % y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:18:5:18:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:19:2:19:2 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:20:2:20:2 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:21:1:21:3 | ++x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:21:3:21:3 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:22:1:22:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:22:1:22:3 | x++ | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:23:1:23:3 | --x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:23:3:23:3 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:24:1:24:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:24:1:24:3 | x-- | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:25:1:25:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:25:1:25:6 | x += y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:25:6:25:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:26:1:26:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:26:1:26:6 | x -= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:26:6:26:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:27:1:27:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:27:1:27:6 | x *= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:27:6:27:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:28:1:28:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:28:1:28:6 | x /= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:28:6:28:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:29:1:29:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:29:1:29:6 | x %= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:29:6:29:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:30:1:30:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:30:1:30:9 | x , y = p | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:30:5:30:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:30:5:30:9 | y = p | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:30:9:30:9 | p | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:32:1:32:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:32:1:32:5 | x & y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:32:5:32:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:33:1:33:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:33:1:33:5 | x \| y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:33:5:33:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:34:1:34:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:34:1:34:5 | x ^ y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:34:5:34:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:35:1:35:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:35:1:35:6 | x << y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:35:6:35:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:36:1:36:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:36:1:36:6 | x >> y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:36:6:36:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:37:1:37:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:37:1:37:7 | x >>> y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:37:7:37:7 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:38:1:38:2 | ~x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:38:2:38:2 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:39:1:39:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:39:1:39:6 | x &= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:39:6:39:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:40:1:40:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:40:1:40:6 | x \|= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:40:6:40:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:41:1:41:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:41:1:41:6 | x ^= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:41:6:41:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:42:1:42:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:42:1:42:7 | x <<= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:42:7:42:7 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:43:1:43:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:43:1:43:7 | x >>= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:43:7:43:7 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:44:1:44:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:44:1:44:8 | x >>>= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:44:8:44:8 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:45:10:45:10 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:45:10:45:10 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:45:15:45:15 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:56:1:56:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:56:1:56:6 | x && y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:56:6:56:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:57:1:57:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:57:1:57:6 | x \|\| y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:57:6:57:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:58:1:58:2 | !x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:58:2:58:2 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:59:5:59:5 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:60:8:60:8 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:61:8:61:8 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:61:11:61:11 | z | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:62:10:62:10 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:62:10:62:10 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:62:15:62:15 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
+| nullSensitiveContexts.js:7:1:7:3 | foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:7:1:7:8 | foo[bar] | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:7:5:7:7 | bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:8:1:8:3 | foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:8:1:8:7 | foo.bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:8:5:8:7 | bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:9:1:9:7 | new Foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:9:5:9:7 | Foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:10:1:10:9 | new Foo() | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:10:5:10:7 | Foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:11:1:11:3 | foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:11:1:11:7 | foo.bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:11:5:11:7 | bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:11:11:11:11 | 5 | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:12:1:12:3 | foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:12:1:12:8 | foo(bar) | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:12:5:12:7 | bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:13:1:13:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:13:1:13:5 | x + y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:13:5:13:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:14:1:14:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:14:1:14:5 | x - y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:14:5:14:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:15:1:15:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:15:1:15:5 | x * y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:15:5:15:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:16:1:16:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:16:1:16:5 | x / y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:16:5:16:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:17:1:17:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:17:1:17:5 | x % y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:17:5:17:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:18:2:18:2 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:19:2:19:2 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:20:1:20:3 | ++x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:20:3:20:3 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:21:1:21:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:21:1:21:3 | x++ | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:22:1:22:3 | --x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:22:3:22:3 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:23:1:23:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:23:1:23:3 | x-- | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:24:1:24:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:24:1:24:6 | x += y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:24:6:24:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:25:1:25:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:25:1:25:6 | x -= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:25:6:25:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:26:1:26:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:26:1:26:6 | x *= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:26:6:26:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:27:1:27:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:27:1:27:6 | x /= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:27:6:27:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:28:1:28:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:28:1:28:6 | x %= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:28:6:28:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:29:1:29:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:29:1:29:9 | x , y = p | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:29:5:29:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:29:5:29:9 | y = p | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:29:9:29:9 | p | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:31:1:31:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:31:1:31:5 | x & y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:31:5:31:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:32:1:32:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:32:1:32:5 | x \| y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:32:5:32:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:33:1:33:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:33:1:33:5 | x ^ y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:33:5:33:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:34:1:34:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:34:1:34:6 | x << y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:34:6:34:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:35:1:35:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:35:1:35:6 | x >> y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:35:6:35:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:36:1:36:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:36:1:36:7 | x >>> y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:36:7:36:7 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:37:1:37:2 | ~x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:37:2:37:2 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:38:1:38:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:38:1:38:6 | x &= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:38:6:38:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:39:1:39:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:39:1:39:6 | x \|= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:39:6:39:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:40:1:40:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:40:1:40:6 | x ^= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:40:6:40:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:41:1:41:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:41:1:41:7 | x <<= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:41:7:41:7 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:42:1:42:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:42:1:42:7 | x >>= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:42:7:42:7 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:43:1:43:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:43:1:43:8 | x >>>= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:43:8:43:8 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:44:10:44:10 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:44:10:44:10 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:44:15:44:15 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:54:1:54:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:54:1:54:6 | x && y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:54:6:54:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:55:1:55:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:55:1:55:6 | x \|\| y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:55:6:55:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:56:1:56:2 | !x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:56:2:56:2 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:57:5:57:5 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:58:8:58:8 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:59:8:59:8 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:59:11:59:11 | z | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:60:10:60:10 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:60:10:60:10 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:60:15:60:15 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
 | others.js:1:1:1:2 | 23 | others.js:1:1:5:2 | <toplevel> |
 | others.js:1:1:1:6 | 23, 42 | others.js:1:1:5:2 | <toplevel> |
 | others.js:1:5:1:6 | 42 | others.js:1:1:5:2 | <toplevel> |
@@ -1049,82 +1050,82 @@ test_getChild
 | mozextensions.js:1:11:1:25 | function(x) x+1 | -2 | mozextensions.js:1:23:1:25 | x+1 |
 | mozextensions.js:1:23:1:25 | x+1 | 0 | mozextensions.js:1:23:1:23 | x |
 | mozextensions.js:1:23:1:25 | x+1 | 1 | mozextensions.js:1:25:1:25 | 1 |
-| nullSensitiveContexts.js:8:1:8:8 | foo[bar] | 0 | nullSensitiveContexts.js:8:1:8:3 | foo |
-| nullSensitiveContexts.js:8:1:8:8 | foo[bar] | 1 | nullSensitiveContexts.js:8:5:8:7 | bar |
-| nullSensitiveContexts.js:9:1:9:7 | foo.bar | 0 | nullSensitiveContexts.js:9:1:9:3 | foo |
-| nullSensitiveContexts.js:9:1:9:7 | foo.bar | 1 | nullSensitiveContexts.js:9:5:9:7 | bar |
-| nullSensitiveContexts.js:10:1:10:7 | new Foo | -1 | nullSensitiveContexts.js:10:5:10:7 | Foo |
-| nullSensitiveContexts.js:11:1:11:9 | new Foo() | -1 | nullSensitiveContexts.js:11:5:11:7 | Foo |
-| nullSensitiveContexts.js:12:1:12:7 | foo.bar | 0 | nullSensitiveContexts.js:12:1:12:3 | foo |
-| nullSensitiveContexts.js:12:1:12:7 | foo.bar | 1 | nullSensitiveContexts.js:12:5:12:7 | bar |
-| nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 | 0 | nullSensitiveContexts.js:12:1:12:7 | foo.bar |
-| nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 | 1 | nullSensitiveContexts.js:12:11:12:11 | 5 |
-| nullSensitiveContexts.js:13:1:13:8 | foo(bar) | 0 | nullSensitiveContexts.js:13:5:13:7 | bar |
-| nullSensitiveContexts.js:13:1:13:8 | foo(bar) | -1 | nullSensitiveContexts.js:13:1:13:3 | foo |
-| nullSensitiveContexts.js:14:1:14:5 | x + y | 0 | nullSensitiveContexts.js:14:1:14:1 | x |
-| nullSensitiveContexts.js:14:1:14:5 | x + y | 1 | nullSensitiveContexts.js:14:5:14:5 | y |
-| nullSensitiveContexts.js:15:1:15:5 | x - y | 0 | nullSensitiveContexts.js:15:1:15:1 | x |
-| nullSensitiveContexts.js:15:1:15:5 | x - y | 1 | nullSensitiveContexts.js:15:5:15:5 | y |
-| nullSensitiveContexts.js:16:1:16:5 | x * y | 0 | nullSensitiveContexts.js:16:1:16:1 | x |
-| nullSensitiveContexts.js:16:1:16:5 | x * y | 1 | nullSensitiveContexts.js:16:5:16:5 | y |
-| nullSensitiveContexts.js:17:1:17:5 | x / y | 0 | nullSensitiveContexts.js:17:1:17:1 | x |
-| nullSensitiveContexts.js:17:1:17:5 | x / y | 1 | nullSensitiveContexts.js:17:5:17:5 | y |
-| nullSensitiveContexts.js:18:1:18:5 | x % y | 0 | nullSensitiveContexts.js:18:1:18:1 | x |
-| nullSensitiveContexts.js:18:1:18:5 | x % y | 1 | nullSensitiveContexts.js:18:5:18:5 | y |
-| nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x | 0 | nullSensitiveContexts.js:18:1:18:5 | x % y |
-| nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x | 1 | nullSensitiveContexts.js:19:2:19:2 | x |
-| nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x | 0 | nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x |
-| nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x | 1 | nullSensitiveContexts.js:20:2:20:2 | x |
-| nullSensitiveContexts.js:21:1:21:3 | ++x | 0 | nullSensitiveContexts.js:21:3:21:3 | x |
-| nullSensitiveContexts.js:22:1:22:3 | x++ | 0 | nullSensitiveContexts.js:22:1:22:1 | x |
-| nullSensitiveContexts.js:23:1:23:3 | --x | 0 | nullSensitiveContexts.js:23:3:23:3 | x |
-| nullSensitiveContexts.js:24:1:24:3 | x-- | 0 | nullSensitiveContexts.js:24:1:24:1 | x |
-| nullSensitiveContexts.js:25:1:25:6 | x += y | 0 | nullSensitiveContexts.js:25:1:25:1 | x |
-| nullSensitiveContexts.js:25:1:25:6 | x += y | 1 | nullSensitiveContexts.js:25:6:25:6 | y |
-| nullSensitiveContexts.js:26:1:26:6 | x -= y | 0 | nullSensitiveContexts.js:26:1:26:1 | x |
-| nullSensitiveContexts.js:26:1:26:6 | x -= y | 1 | nullSensitiveContexts.js:26:6:26:6 | y |
-| nullSensitiveContexts.js:27:1:27:6 | x *= y | 0 | nullSensitiveContexts.js:27:1:27:1 | x |
-| nullSensitiveContexts.js:27:1:27:6 | x *= y | 1 | nullSensitiveContexts.js:27:6:27:6 | y |
-| nullSensitiveContexts.js:28:1:28:6 | x /= y | 0 | nullSensitiveContexts.js:28:1:28:1 | x |
-| nullSensitiveContexts.js:28:1:28:6 | x /= y | 1 | nullSensitiveContexts.js:28:6:28:6 | y |
-| nullSensitiveContexts.js:29:1:29:6 | x %= y | 0 | nullSensitiveContexts.js:29:1:29:1 | x |
-| nullSensitiveContexts.js:29:1:29:6 | x %= y | 1 | nullSensitiveContexts.js:29:6:29:6 | y |
-| nullSensitiveContexts.js:30:1:30:9 | x , y = p | 0 | nullSensitiveContexts.js:30:1:30:1 | x |
-| nullSensitiveContexts.js:30:1:30:9 | x , y = p | 1 | nullSensitiveContexts.js:30:5:30:9 | y = p |
-| nullSensitiveContexts.js:30:5:30:9 | y = p | 0 | nullSensitiveContexts.js:30:5:30:5 | y |
-| nullSensitiveContexts.js:30:5:30:9 | y = p | 1 | nullSensitiveContexts.js:30:9:30:9 | p |
-| nullSensitiveContexts.js:32:1:32:5 | x & y | 0 | nullSensitiveContexts.js:32:1:32:1 | x |
-| nullSensitiveContexts.js:32:1:32:5 | x & y | 1 | nullSensitiveContexts.js:32:5:32:5 | y |
-| nullSensitiveContexts.js:33:1:33:5 | x \| y | 0 | nullSensitiveContexts.js:33:1:33:1 | x |
-| nullSensitiveContexts.js:33:1:33:5 | x \| y | 1 | nullSensitiveContexts.js:33:5:33:5 | y |
-| nullSensitiveContexts.js:34:1:34:5 | x ^ y | 0 | nullSensitiveContexts.js:34:1:34:1 | x |
-| nullSensitiveContexts.js:34:1:34:5 | x ^ y | 1 | nullSensitiveContexts.js:34:5:34:5 | y |
-| nullSensitiveContexts.js:35:1:35:6 | x << y | 0 | nullSensitiveContexts.js:35:1:35:1 | x |
-| nullSensitiveContexts.js:35:1:35:6 | x << y | 1 | nullSensitiveContexts.js:35:6:35:6 | y |
-| nullSensitiveContexts.js:36:1:36:6 | x >> y | 0 | nullSensitiveContexts.js:36:1:36:1 | x |
-| nullSensitiveContexts.js:36:1:36:6 | x >> y | 1 | nullSensitiveContexts.js:36:6:36:6 | y |
-| nullSensitiveContexts.js:37:1:37:7 | x >>> y | 0 | nullSensitiveContexts.js:37:1:37:1 | x |
-| nullSensitiveContexts.js:37:1:37:7 | x >>> y | 1 | nullSensitiveContexts.js:37:7:37:7 | y |
-| nullSensitiveContexts.js:38:1:38:2 | ~x | 0 | nullSensitiveContexts.js:38:2:38:2 | x |
-| nullSensitiveContexts.js:39:1:39:6 | x &= y | 0 | nullSensitiveContexts.js:39:1:39:1 | x |
-| nullSensitiveContexts.js:39:1:39:6 | x &= y | 1 | nullSensitiveContexts.js:39:6:39:6 | y |
-| nullSensitiveContexts.js:40:1:40:6 | x \|= y | 0 | nullSensitiveContexts.js:40:1:40:1 | x |
-| nullSensitiveContexts.js:40:1:40:6 | x \|= y | 1 | nullSensitiveContexts.js:40:6:40:6 | y |
-| nullSensitiveContexts.js:41:1:41:6 | x ^= y | 0 | nullSensitiveContexts.js:41:1:41:1 | x |
-| nullSensitiveContexts.js:41:1:41:6 | x ^= y | 1 | nullSensitiveContexts.js:41:6:41:6 | y |
-| nullSensitiveContexts.js:42:1:42:7 | x <<= y | 0 | nullSensitiveContexts.js:42:1:42:1 | x |
-| nullSensitiveContexts.js:42:1:42:7 | x <<= y | 1 | nullSensitiveContexts.js:42:7:42:7 | y |
-| nullSensitiveContexts.js:43:1:43:7 | x >>= y | 0 | nullSensitiveContexts.js:43:1:43:1 | x |
-| nullSensitiveContexts.js:43:1:43:7 | x >>= y | 1 | nullSensitiveContexts.js:43:7:43:7 | y |
-| nullSensitiveContexts.js:44:1:44:8 | x >>>= y | 0 | nullSensitiveContexts.js:44:1:44:1 | x |
-| nullSensitiveContexts.js:44:1:44:8 | x >>>= y | 1 | nullSensitiveContexts.js:44:8:44:8 | y |
-| nullSensitiveContexts.js:45:10:45:10 | x | 0 | nullSensitiveContexts.js:45:10:45:10 | x |
-| nullSensitiveContexts.js:56:1:56:6 | x && y | 0 | nullSensitiveContexts.js:56:1:56:1 | x |
-| nullSensitiveContexts.js:56:1:56:6 | x && y | 1 | nullSensitiveContexts.js:56:6:56:6 | y |
-| nullSensitiveContexts.js:57:1:57:6 | x \|\| y | 0 | nullSensitiveContexts.js:57:1:57:1 | x |
-| nullSensitiveContexts.js:57:1:57:6 | x \|\| y | 1 | nullSensitiveContexts.js:57:6:57:6 | y |
-| nullSensitiveContexts.js:58:1:58:2 | !x | 0 | nullSensitiveContexts.js:58:2:58:2 | x |
-| nullSensitiveContexts.js:62:10:62:10 | x | 0 | nullSensitiveContexts.js:62:10:62:10 | x |
+| nullSensitiveContexts.js:7:1:7:8 | foo[bar] | 0 | nullSensitiveContexts.js:7:1:7:3 | foo |
+| nullSensitiveContexts.js:7:1:7:8 | foo[bar] | 1 | nullSensitiveContexts.js:7:5:7:7 | bar |
+| nullSensitiveContexts.js:8:1:8:7 | foo.bar | 0 | nullSensitiveContexts.js:8:1:8:3 | foo |
+| nullSensitiveContexts.js:8:1:8:7 | foo.bar | 1 | nullSensitiveContexts.js:8:5:8:7 | bar |
+| nullSensitiveContexts.js:9:1:9:7 | new Foo | -1 | nullSensitiveContexts.js:9:5:9:7 | Foo |
+| nullSensitiveContexts.js:10:1:10:9 | new Foo() | -1 | nullSensitiveContexts.js:10:5:10:7 | Foo |
+| nullSensitiveContexts.js:11:1:11:7 | foo.bar | 0 | nullSensitiveContexts.js:11:1:11:3 | foo |
+| nullSensitiveContexts.js:11:1:11:7 | foo.bar | 1 | nullSensitiveContexts.js:11:5:11:7 | bar |
+| nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 | 0 | nullSensitiveContexts.js:11:1:11:7 | foo.bar |
+| nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 | 1 | nullSensitiveContexts.js:11:11:11:11 | 5 |
+| nullSensitiveContexts.js:12:1:12:8 | foo(bar) | 0 | nullSensitiveContexts.js:12:5:12:7 | bar |
+| nullSensitiveContexts.js:12:1:12:8 | foo(bar) | -1 | nullSensitiveContexts.js:12:1:12:3 | foo |
+| nullSensitiveContexts.js:13:1:13:5 | x + y | 0 | nullSensitiveContexts.js:13:1:13:1 | x |
+| nullSensitiveContexts.js:13:1:13:5 | x + y | 1 | nullSensitiveContexts.js:13:5:13:5 | y |
+| nullSensitiveContexts.js:14:1:14:5 | x - y | 0 | nullSensitiveContexts.js:14:1:14:1 | x |
+| nullSensitiveContexts.js:14:1:14:5 | x - y | 1 | nullSensitiveContexts.js:14:5:14:5 | y |
+| nullSensitiveContexts.js:15:1:15:5 | x * y | 0 | nullSensitiveContexts.js:15:1:15:1 | x |
+| nullSensitiveContexts.js:15:1:15:5 | x * y | 1 | nullSensitiveContexts.js:15:5:15:5 | y |
+| nullSensitiveContexts.js:16:1:16:5 | x / y | 0 | nullSensitiveContexts.js:16:1:16:1 | x |
+| nullSensitiveContexts.js:16:1:16:5 | x / y | 1 | nullSensitiveContexts.js:16:5:16:5 | y |
+| nullSensitiveContexts.js:17:1:17:5 | x % y | 0 | nullSensitiveContexts.js:17:1:17:1 | x |
+| nullSensitiveContexts.js:17:1:17:5 | x % y | 1 | nullSensitiveContexts.js:17:5:17:5 | y |
+| nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x | 0 | nullSensitiveContexts.js:17:1:17:5 | x % y |
+| nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x | 1 | nullSensitiveContexts.js:18:2:18:2 | x |
+| nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x | 0 | nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x |
+| nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x | 1 | nullSensitiveContexts.js:19:2:19:2 | x |
+| nullSensitiveContexts.js:20:1:20:3 | ++x | 0 | nullSensitiveContexts.js:20:3:20:3 | x |
+| nullSensitiveContexts.js:21:1:21:3 | x++ | 0 | nullSensitiveContexts.js:21:1:21:1 | x |
+| nullSensitiveContexts.js:22:1:22:3 | --x | 0 | nullSensitiveContexts.js:22:3:22:3 | x |
+| nullSensitiveContexts.js:23:1:23:3 | x-- | 0 | nullSensitiveContexts.js:23:1:23:1 | x |
+| nullSensitiveContexts.js:24:1:24:6 | x += y | 0 | nullSensitiveContexts.js:24:1:24:1 | x |
+| nullSensitiveContexts.js:24:1:24:6 | x += y | 1 | nullSensitiveContexts.js:24:6:24:6 | y |
+| nullSensitiveContexts.js:25:1:25:6 | x -= y | 0 | nullSensitiveContexts.js:25:1:25:1 | x |
+| nullSensitiveContexts.js:25:1:25:6 | x -= y | 1 | nullSensitiveContexts.js:25:6:25:6 | y |
+| nullSensitiveContexts.js:26:1:26:6 | x *= y | 0 | nullSensitiveContexts.js:26:1:26:1 | x |
+| nullSensitiveContexts.js:26:1:26:6 | x *= y | 1 | nullSensitiveContexts.js:26:6:26:6 | y |
+| nullSensitiveContexts.js:27:1:27:6 | x /= y | 0 | nullSensitiveContexts.js:27:1:27:1 | x |
+| nullSensitiveContexts.js:27:1:27:6 | x /= y | 1 | nullSensitiveContexts.js:27:6:27:6 | y |
+| nullSensitiveContexts.js:28:1:28:6 | x %= y | 0 | nullSensitiveContexts.js:28:1:28:1 | x |
+| nullSensitiveContexts.js:28:1:28:6 | x %= y | 1 | nullSensitiveContexts.js:28:6:28:6 | y |
+| nullSensitiveContexts.js:29:1:29:9 | x , y = p | 0 | nullSensitiveContexts.js:29:1:29:1 | x |
+| nullSensitiveContexts.js:29:1:29:9 | x , y = p | 1 | nullSensitiveContexts.js:29:5:29:9 | y = p |
+| nullSensitiveContexts.js:29:5:29:9 | y = p | 0 | nullSensitiveContexts.js:29:5:29:5 | y |
+| nullSensitiveContexts.js:29:5:29:9 | y = p | 1 | nullSensitiveContexts.js:29:9:29:9 | p |
+| nullSensitiveContexts.js:31:1:31:5 | x & y | 0 | nullSensitiveContexts.js:31:1:31:1 | x |
+| nullSensitiveContexts.js:31:1:31:5 | x & y | 1 | nullSensitiveContexts.js:31:5:31:5 | y |
+| nullSensitiveContexts.js:32:1:32:5 | x \| y | 0 | nullSensitiveContexts.js:32:1:32:1 | x |
+| nullSensitiveContexts.js:32:1:32:5 | x \| y | 1 | nullSensitiveContexts.js:32:5:32:5 | y |
+| nullSensitiveContexts.js:33:1:33:5 | x ^ y | 0 | nullSensitiveContexts.js:33:1:33:1 | x |
+| nullSensitiveContexts.js:33:1:33:5 | x ^ y | 1 | nullSensitiveContexts.js:33:5:33:5 | y |
+| nullSensitiveContexts.js:34:1:34:6 | x << y | 0 | nullSensitiveContexts.js:34:1:34:1 | x |
+| nullSensitiveContexts.js:34:1:34:6 | x << y | 1 | nullSensitiveContexts.js:34:6:34:6 | y |
+| nullSensitiveContexts.js:35:1:35:6 | x >> y | 0 | nullSensitiveContexts.js:35:1:35:1 | x |
+| nullSensitiveContexts.js:35:1:35:6 | x >> y | 1 | nullSensitiveContexts.js:35:6:35:6 | y |
+| nullSensitiveContexts.js:36:1:36:7 | x >>> y | 0 | nullSensitiveContexts.js:36:1:36:1 | x |
+| nullSensitiveContexts.js:36:1:36:7 | x >>> y | 1 | nullSensitiveContexts.js:36:7:36:7 | y |
+| nullSensitiveContexts.js:37:1:37:2 | ~x | 0 | nullSensitiveContexts.js:37:2:37:2 | x |
+| nullSensitiveContexts.js:38:1:38:6 | x &= y | 0 | nullSensitiveContexts.js:38:1:38:1 | x |
+| nullSensitiveContexts.js:38:1:38:6 | x &= y | 1 | nullSensitiveContexts.js:38:6:38:6 | y |
+| nullSensitiveContexts.js:39:1:39:6 | x \|= y | 0 | nullSensitiveContexts.js:39:1:39:1 | x |
+| nullSensitiveContexts.js:39:1:39:6 | x \|= y | 1 | nullSensitiveContexts.js:39:6:39:6 | y |
+| nullSensitiveContexts.js:40:1:40:6 | x ^= y | 0 | nullSensitiveContexts.js:40:1:40:1 | x |
+| nullSensitiveContexts.js:40:1:40:6 | x ^= y | 1 | nullSensitiveContexts.js:40:6:40:6 | y |
+| nullSensitiveContexts.js:41:1:41:7 | x <<= y | 0 | nullSensitiveContexts.js:41:1:41:1 | x |
+| nullSensitiveContexts.js:41:1:41:7 | x <<= y | 1 | nullSensitiveContexts.js:41:7:41:7 | y |
+| nullSensitiveContexts.js:42:1:42:7 | x >>= y | 0 | nullSensitiveContexts.js:42:1:42:1 | x |
+| nullSensitiveContexts.js:42:1:42:7 | x >>= y | 1 | nullSensitiveContexts.js:42:7:42:7 | y |
+| nullSensitiveContexts.js:43:1:43:8 | x >>>= y | 0 | nullSensitiveContexts.js:43:1:43:1 | x |
+| nullSensitiveContexts.js:43:1:43:8 | x >>>= y | 1 | nullSensitiveContexts.js:43:8:43:8 | y |
+| nullSensitiveContexts.js:44:10:44:10 | x | 0 | nullSensitiveContexts.js:44:10:44:10 | x |
+| nullSensitiveContexts.js:54:1:54:6 | x && y | 0 | nullSensitiveContexts.js:54:1:54:1 | x |
+| nullSensitiveContexts.js:54:1:54:6 | x && y | 1 | nullSensitiveContexts.js:54:6:54:6 | y |
+| nullSensitiveContexts.js:55:1:55:6 | x \|\| y | 0 | nullSensitiveContexts.js:55:1:55:1 | x |
+| nullSensitiveContexts.js:55:1:55:6 | x \|\| y | 1 | nullSensitiveContexts.js:55:6:55:6 | y |
+| nullSensitiveContexts.js:56:1:56:2 | !x | 0 | nullSensitiveContexts.js:56:2:56:2 | x |
+| nullSensitiveContexts.js:60:10:60:10 | x | 0 | nullSensitiveContexts.js:60:10:60:10 | x |
 | others.js:1:1:1:6 | 23, 42 | 0 | others.js:1:1:1:2 | 23 |
 | others.js:1:1:1:6 | 23, 42 | 1 | others.js:1:5:1:6 | 42 |
 | others.js:2:1:2:10 | 23, 42, 56 | 0 | others.js:2:1:2:2 | 23 |
@@ -1367,43 +1368,45 @@ test_isPure
 | mozextensions.js:1:23:1:23 | x |
 | mozextensions.js:1:23:1:25 | x+1 |
 | mozextensions.js:1:25:1:25 | 1 |
+| nullSensitiveContexts.js:7:1:7:3 | foo |
+| nullSensitiveContexts.js:7:1:7:8 | foo[bar] |
+| nullSensitiveContexts.js:7:5:7:7 | bar |
 | nullSensitiveContexts.js:8:1:8:3 | foo |
-| nullSensitiveContexts.js:8:1:8:8 | foo[bar] |
+| nullSensitiveContexts.js:8:1:8:7 | foo.bar |
 | nullSensitiveContexts.js:8:5:8:7 | bar |
-| nullSensitiveContexts.js:9:1:9:3 | foo |
-| nullSensitiveContexts.js:9:1:9:7 | foo.bar |
-| nullSensitiveContexts.js:9:5:9:7 | bar |
+| nullSensitiveContexts.js:9:5:9:7 | Foo |
 | nullSensitiveContexts.js:10:5:10:7 | Foo |
-| nullSensitiveContexts.js:11:5:11:7 | Foo |
+| nullSensitiveContexts.js:11:1:11:3 | foo |
+| nullSensitiveContexts.js:11:1:11:7 | foo.bar |
+| nullSensitiveContexts.js:11:5:11:7 | bar |
+| nullSensitiveContexts.js:11:11:11:11 | 5 |
 | nullSensitiveContexts.js:12:1:12:3 | foo |
-| nullSensitiveContexts.js:12:1:12:7 | foo.bar |
 | nullSensitiveContexts.js:12:5:12:7 | bar |
-| nullSensitiveContexts.js:12:11:12:11 | 5 |
-| nullSensitiveContexts.js:13:1:13:3 | foo |
-| nullSensitiveContexts.js:13:5:13:7 | bar |
+| nullSensitiveContexts.js:13:1:13:1 | x |
+| nullSensitiveContexts.js:13:1:13:5 | x + y |
+| nullSensitiveContexts.js:13:5:13:5 | y |
 | nullSensitiveContexts.js:14:1:14:1 | x |
-| nullSensitiveContexts.js:14:1:14:5 | x + y |
+| nullSensitiveContexts.js:14:1:14:5 | x - y |
 | nullSensitiveContexts.js:14:5:14:5 | y |
 | nullSensitiveContexts.js:15:1:15:1 | x |
-| nullSensitiveContexts.js:15:1:15:5 | x - y |
+| nullSensitiveContexts.js:15:1:15:5 | x * y |
 | nullSensitiveContexts.js:15:5:15:5 | y |
 | nullSensitiveContexts.js:16:1:16:1 | x |
-| nullSensitiveContexts.js:16:1:16:5 | x * y |
+| nullSensitiveContexts.js:16:1:16:5 | x / y |
 | nullSensitiveContexts.js:16:5:16:5 | y |
 | nullSensitiveContexts.js:17:1:17:1 | x |
-| nullSensitiveContexts.js:17:1:17:5 | x / y |
+| nullSensitiveContexts.js:17:1:17:5 | x % y |
+| nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x |
+| nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
 | nullSensitiveContexts.js:17:5:17:5 | y |
-| nullSensitiveContexts.js:18:1:18:1 | x |
-| nullSensitiveContexts.js:18:1:18:5 | x % y |
-| nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x |
-| nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:18:5:18:5 | y |
+| nullSensitiveContexts.js:18:2:18:2 | x |
 | nullSensitiveContexts.js:19:2:19:2 | x |
-| nullSensitiveContexts.js:20:2:20:2 | x |
-| nullSensitiveContexts.js:21:3:21:3 | x |
-| nullSensitiveContexts.js:22:1:22:1 | x |
-| nullSensitiveContexts.js:23:3:23:3 | x |
+| nullSensitiveContexts.js:20:3:20:3 | x |
+| nullSensitiveContexts.js:21:1:21:1 | x |
+| nullSensitiveContexts.js:22:3:22:3 | x |
+| nullSensitiveContexts.js:23:1:23:1 | x |
 | nullSensitiveContexts.js:24:1:24:1 | x |
+| nullSensitiveContexts.js:24:6:24:6 | y |
 | nullSensitiveContexts.js:25:1:25:1 | x |
 | nullSensitiveContexts.js:25:6:25:6 | y |
 | nullSensitiveContexts.js:26:1:26:1 | x |
@@ -1413,58 +1416,56 @@ test_isPure
 | nullSensitiveContexts.js:28:1:28:1 | x |
 | nullSensitiveContexts.js:28:6:28:6 | y |
 | nullSensitiveContexts.js:29:1:29:1 | x |
-| nullSensitiveContexts.js:29:6:29:6 | y |
-| nullSensitiveContexts.js:30:1:30:1 | x |
-| nullSensitiveContexts.js:30:5:30:5 | y |
-| nullSensitiveContexts.js:30:9:30:9 | p |
+| nullSensitiveContexts.js:29:5:29:5 | y |
+| nullSensitiveContexts.js:29:9:29:9 | p |
+| nullSensitiveContexts.js:31:1:31:1 | x |
+| nullSensitiveContexts.js:31:1:31:5 | x & y |
+| nullSensitiveContexts.js:31:5:31:5 | y |
 | nullSensitiveContexts.js:32:1:32:1 | x |
-| nullSensitiveContexts.js:32:1:32:5 | x & y |
+| nullSensitiveContexts.js:32:1:32:5 | x \| y |
 | nullSensitiveContexts.js:32:5:32:5 | y |
 | nullSensitiveContexts.js:33:1:33:1 | x |
-| nullSensitiveContexts.js:33:1:33:5 | x \| y |
+| nullSensitiveContexts.js:33:1:33:5 | x ^ y |
 | nullSensitiveContexts.js:33:5:33:5 | y |
 | nullSensitiveContexts.js:34:1:34:1 | x |
-| nullSensitiveContexts.js:34:1:34:5 | x ^ y |
-| nullSensitiveContexts.js:34:5:34:5 | y |
+| nullSensitiveContexts.js:34:1:34:6 | x << y |
+| nullSensitiveContexts.js:34:6:34:6 | y |
 | nullSensitiveContexts.js:35:1:35:1 | x |
-| nullSensitiveContexts.js:35:1:35:6 | x << y |
+| nullSensitiveContexts.js:35:1:35:6 | x >> y |
 | nullSensitiveContexts.js:35:6:35:6 | y |
 | nullSensitiveContexts.js:36:1:36:1 | x |
-| nullSensitiveContexts.js:36:1:36:6 | x >> y |
-| nullSensitiveContexts.js:36:6:36:6 | y |
-| nullSensitiveContexts.js:37:1:37:1 | x |
-| nullSensitiveContexts.js:37:1:37:7 | x >>> y |
-| nullSensitiveContexts.js:37:7:37:7 | y |
-| nullSensitiveContexts.js:38:1:38:2 | ~x |
-| nullSensitiveContexts.js:38:2:38:2 | x |
+| nullSensitiveContexts.js:36:1:36:7 | x >>> y |
+| nullSensitiveContexts.js:36:7:36:7 | y |
+| nullSensitiveContexts.js:37:1:37:2 | ~x |
+| nullSensitiveContexts.js:37:2:37:2 | x |
+| nullSensitiveContexts.js:38:1:38:1 | x |
+| nullSensitiveContexts.js:38:6:38:6 | y |
 | nullSensitiveContexts.js:39:1:39:1 | x |
 | nullSensitiveContexts.js:39:6:39:6 | y |
 | nullSensitiveContexts.js:40:1:40:1 | x |
 | nullSensitiveContexts.js:40:6:40:6 | y |
 | nullSensitiveContexts.js:41:1:41:1 | x |
-| nullSensitiveContexts.js:41:6:41:6 | y |
+| nullSensitiveContexts.js:41:7:41:7 | y |
 | nullSensitiveContexts.js:42:1:42:1 | x |
 | nullSensitiveContexts.js:42:7:42:7 | y |
 | nullSensitiveContexts.js:43:1:43:1 | x |
-| nullSensitiveContexts.js:43:7:43:7 | y |
-| nullSensitiveContexts.js:44:1:44:1 | x |
-| nullSensitiveContexts.js:44:8:44:8 | y |
-| nullSensitiveContexts.js:45:10:45:10 | x |
-| nullSensitiveContexts.js:45:15:45:15 | y |
-| nullSensitiveContexts.js:56:1:56:1 | x |
-| nullSensitiveContexts.js:56:1:56:6 | x && y |
-| nullSensitiveContexts.js:56:6:56:6 | y |
-| nullSensitiveContexts.js:57:1:57:1 | x |
-| nullSensitiveContexts.js:57:1:57:6 | x \|\| y |
-| nullSensitiveContexts.js:57:6:57:6 | y |
-| nullSensitiveContexts.js:58:1:58:2 | !x |
-| nullSensitiveContexts.js:58:2:58:2 | x |
-| nullSensitiveContexts.js:59:5:59:5 | x |
-| nullSensitiveContexts.js:60:8:60:8 | x |
-| nullSensitiveContexts.js:61:8:61:8 | y |
-| nullSensitiveContexts.js:61:11:61:11 | z |
-| nullSensitiveContexts.js:62:10:62:10 | x |
-| nullSensitiveContexts.js:62:15:62:15 | y |
+| nullSensitiveContexts.js:43:8:43:8 | y |
+| nullSensitiveContexts.js:44:10:44:10 | x |
+| nullSensitiveContexts.js:44:15:44:15 | y |
+| nullSensitiveContexts.js:54:1:54:1 | x |
+| nullSensitiveContexts.js:54:1:54:6 | x && y |
+| nullSensitiveContexts.js:54:6:54:6 | y |
+| nullSensitiveContexts.js:55:1:55:1 | x |
+| nullSensitiveContexts.js:55:1:55:6 | x \|\| y |
+| nullSensitiveContexts.js:55:6:55:6 | y |
+| nullSensitiveContexts.js:56:1:56:2 | !x |
+| nullSensitiveContexts.js:56:2:56:2 | x |
+| nullSensitiveContexts.js:57:5:57:5 | x |
+| nullSensitiveContexts.js:58:8:58:8 | x |
+| nullSensitiveContexts.js:59:8:59:8 | y |
+| nullSensitiveContexts.js:59:11:59:11 | z |
+| nullSensitiveContexts.js:60:10:60:10 | x |
+| nullSensitiveContexts.js:60:15:60:15 | y |
 | others.js:1:1:1:2 | 23 |
 | others.js:1:1:1:6 | 23, 42 |
 | others.js:1:5:1:6 | 42 |
@@ -1875,127 +1876,127 @@ test_getContainer
 | mozextensions.js:1:23:1:23 | x | mozextensions.js:1:11:1:25 | function(x) x+1 |
 | mozextensions.js:1:23:1:25 | x+1 | mozextensions.js:1:11:1:25 | function(x) x+1 |
 | mozextensions.js:1:25:1:25 | 1 | mozextensions.js:1:11:1:25 | function(x) x+1 |
-| nullSensitiveContexts.js:8:1:8:3 | foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:8:1:8:8 | foo[bar] | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:8:5:8:7 | bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:9:1:9:3 | foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:9:1:9:7 | foo.bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:9:5:9:7 | bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:10:1:10:7 | new Foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:10:5:10:7 | Foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:11:1:11:9 | new Foo() | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:11:5:11:7 | Foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:12:1:12:3 | foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:12:1:12:7 | foo.bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:12:5:12:7 | bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:12:11:12:11 | 5 | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:13:1:13:3 | foo | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:13:1:13:8 | foo(bar) | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:13:5:13:7 | bar | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:14:1:14:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:14:1:14:5 | x + y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:14:5:14:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:15:1:15:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:15:1:15:5 | x - y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:15:5:15:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:16:1:16:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:16:1:16:5 | x * y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:16:5:16:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:17:1:17:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:17:1:17:5 | x / y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:17:5:17:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:18:1:18:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:18:1:18:5 | x % y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:18:5:18:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:19:2:19:2 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:20:2:20:2 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:21:1:21:3 | ++x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:21:3:21:3 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:22:1:22:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:22:1:22:3 | x++ | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:23:1:23:3 | --x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:23:3:23:3 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:24:1:24:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:24:1:24:3 | x-- | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:25:1:25:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:25:1:25:6 | x += y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:25:6:25:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:26:1:26:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:26:1:26:6 | x -= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:26:6:26:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:27:1:27:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:27:1:27:6 | x *= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:27:6:27:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:28:1:28:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:28:1:28:6 | x /= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:28:6:28:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:29:1:29:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:29:1:29:6 | x %= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:29:6:29:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:30:1:30:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:30:1:30:9 | x , y = p | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:30:5:30:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:30:5:30:9 | y = p | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:30:9:30:9 | p | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:32:1:32:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:32:1:32:5 | x & y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:32:5:32:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:33:1:33:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:33:1:33:5 | x \| y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:33:5:33:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:34:1:34:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:34:1:34:5 | x ^ y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:34:5:34:5 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:35:1:35:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:35:1:35:6 | x << y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:35:6:35:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:36:1:36:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:36:1:36:6 | x >> y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:36:6:36:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:37:1:37:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:37:1:37:7 | x >>> y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:37:7:37:7 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:38:1:38:2 | ~x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:38:2:38:2 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:39:1:39:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:39:1:39:6 | x &= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:39:6:39:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:40:1:40:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:40:1:40:6 | x \|= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:40:6:40:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:41:1:41:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:41:1:41:6 | x ^= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:41:6:41:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:42:1:42:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:42:1:42:7 | x <<= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:42:7:42:7 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:43:1:43:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:43:1:43:7 | x >>= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:43:7:43:7 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:44:1:44:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:44:1:44:8 | x >>>= y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:44:8:44:8 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:45:10:45:10 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:45:10:45:10 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:45:15:45:15 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:56:1:56:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:56:1:56:6 | x && y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:56:6:56:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:57:1:57:1 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:57:1:57:6 | x \|\| y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:57:6:57:6 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:58:1:58:2 | !x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:58:2:58:2 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:59:5:59:5 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:60:8:60:8 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:61:8:61:8 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:61:11:61:11 | z | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:62:10:62:10 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:62:10:62:10 | x | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
-| nullSensitiveContexts.js:62:15:62:15 | y | nullSensitiveContexts.js:1:1:63:0 | <toplevel> |
+| nullSensitiveContexts.js:7:1:7:3 | foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:7:1:7:8 | foo[bar] | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:7:5:7:7 | bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:8:1:8:3 | foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:8:1:8:7 | foo.bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:8:5:8:7 | bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:9:1:9:7 | new Foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:9:5:9:7 | Foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:10:1:10:9 | new Foo() | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:10:5:10:7 | Foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:11:1:11:3 | foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:11:1:11:7 | foo.bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:11:5:11:7 | bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:11:11:11:11 | 5 | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:12:1:12:3 | foo | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:12:1:12:8 | foo(bar) | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:12:5:12:7 | bar | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:13:1:13:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:13:1:13:5 | x + y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:13:5:13:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:14:1:14:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:14:1:14:5 | x - y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:14:5:14:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:15:1:15:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:15:1:15:5 | x * y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:15:5:15:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:16:1:16:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:16:1:16:5 | x / y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:16:5:16:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:17:1:17:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:17:1:17:5 | x % y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:17:5:17:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:18:2:18:2 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:19:2:19:2 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:20:1:20:3 | ++x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:20:3:20:3 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:21:1:21:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:21:1:21:3 | x++ | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:22:1:22:3 | --x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:22:3:22:3 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:23:1:23:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:23:1:23:3 | x-- | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:24:1:24:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:24:1:24:6 | x += y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:24:6:24:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:25:1:25:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:25:1:25:6 | x -= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:25:6:25:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:26:1:26:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:26:1:26:6 | x *= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:26:6:26:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:27:1:27:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:27:1:27:6 | x /= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:27:6:27:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:28:1:28:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:28:1:28:6 | x %= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:28:6:28:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:29:1:29:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:29:1:29:9 | x , y = p | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:29:5:29:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:29:5:29:9 | y = p | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:29:9:29:9 | p | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:31:1:31:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:31:1:31:5 | x & y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:31:5:31:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:32:1:32:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:32:1:32:5 | x \| y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:32:5:32:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:33:1:33:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:33:1:33:5 | x ^ y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:33:5:33:5 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:34:1:34:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:34:1:34:6 | x << y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:34:6:34:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:35:1:35:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:35:1:35:6 | x >> y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:35:6:35:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:36:1:36:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:36:1:36:7 | x >>> y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:36:7:36:7 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:37:1:37:2 | ~x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:37:2:37:2 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:38:1:38:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:38:1:38:6 | x &= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:38:6:38:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:39:1:39:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:39:1:39:6 | x \|= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:39:6:39:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:40:1:40:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:40:1:40:6 | x ^= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:40:6:40:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:41:1:41:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:41:1:41:7 | x <<= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:41:7:41:7 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:42:1:42:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:42:1:42:7 | x >>= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:42:7:42:7 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:43:1:43:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:43:1:43:8 | x >>>= y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:43:8:43:8 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:44:10:44:10 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:44:10:44:10 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:44:15:44:15 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:54:1:54:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:54:1:54:6 | x && y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:54:6:54:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:55:1:55:1 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:55:1:55:6 | x \|\| y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:55:6:55:6 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:56:1:56:2 | !x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:56:2:56:2 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:57:5:57:5 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:58:8:58:8 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:59:8:59:8 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:59:11:59:11 | z | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:60:10:60:10 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:60:10:60:10 | x | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
+| nullSensitiveContexts.js:60:15:60:15 | y | nullSensitiveContexts.js:1:1:61:0 | <toplevel> |
 | others.js:1:1:1:2 | 23 | others.js:1:1:5:2 | <toplevel> |
 | others.js:1:1:1:6 | 23, 42 | others.js:1:1:5:2 | <toplevel> |
 | others.js:1:5:1:6 | 42 | others.js:1:1:5:2 | <toplevel> |
@@ -2299,127 +2300,127 @@ test_getEnclosingStmt
 | mozextensions.js:1:1:1:26 | array.m ... x) x+1) | mozextensions.js:1:1:1:27 | array.m ... ) x+1); |
 | mozextensions.js:1:7:1:9 | map | mozextensions.js:1:1:1:27 | array.m ... ) x+1); |
 | mozextensions.js:1:11:1:25 | function(x) x+1 | mozextensions.js:1:1:1:27 | array.m ... ) x+1); |
-| nullSensitiveContexts.js:8:1:8:3 | foo | nullSensitiveContexts.js:8:1:8:8 | foo[bar] |
-| nullSensitiveContexts.js:8:1:8:8 | foo[bar] | nullSensitiveContexts.js:8:1:8:8 | foo[bar] |
-| nullSensitiveContexts.js:8:5:8:7 | bar | nullSensitiveContexts.js:8:1:8:8 | foo[bar] |
-| nullSensitiveContexts.js:9:1:9:3 | foo | nullSensitiveContexts.js:9:1:9:7 | foo.bar |
-| nullSensitiveContexts.js:9:1:9:7 | foo.bar | nullSensitiveContexts.js:9:1:9:7 | foo.bar |
-| nullSensitiveContexts.js:9:5:9:7 | bar | nullSensitiveContexts.js:9:1:9:7 | foo.bar |
-| nullSensitiveContexts.js:10:1:10:7 | new Foo | nullSensitiveContexts.js:10:1:10:7 | new Foo |
-| nullSensitiveContexts.js:10:5:10:7 | Foo | nullSensitiveContexts.js:10:1:10:7 | new Foo |
-| nullSensitiveContexts.js:11:1:11:9 | new Foo() | nullSensitiveContexts.js:11:1:11:9 | new Foo() |
-| nullSensitiveContexts.js:11:5:11:7 | Foo | nullSensitiveContexts.js:11:1:11:9 | new Foo() |
-| nullSensitiveContexts.js:12:1:12:3 | foo | nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 |
-| nullSensitiveContexts.js:12:1:12:7 | foo.bar | nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 |
-| nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 | nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 |
-| nullSensitiveContexts.js:12:5:12:7 | bar | nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 |
-| nullSensitiveContexts.js:12:11:12:11 | 5 | nullSensitiveContexts.js:12:1:12:11 | foo.bar = 5 |
-| nullSensitiveContexts.js:13:1:13:3 | foo | nullSensitiveContexts.js:13:1:13:8 | foo(bar) |
-| nullSensitiveContexts.js:13:1:13:8 | foo(bar) | nullSensitiveContexts.js:13:1:13:8 | foo(bar) |
-| nullSensitiveContexts.js:13:5:13:7 | bar | nullSensitiveContexts.js:13:1:13:8 | foo(bar) |
-| nullSensitiveContexts.js:14:1:14:1 | x | nullSensitiveContexts.js:14:1:14:5 | x + y |
-| nullSensitiveContexts.js:14:1:14:5 | x + y | nullSensitiveContexts.js:14:1:14:5 | x + y |
-| nullSensitiveContexts.js:14:5:14:5 | y | nullSensitiveContexts.js:14:1:14:5 | x + y |
-| nullSensitiveContexts.js:15:1:15:1 | x | nullSensitiveContexts.js:15:1:15:5 | x - y |
-| nullSensitiveContexts.js:15:1:15:5 | x - y | nullSensitiveContexts.js:15:1:15:5 | x - y |
-| nullSensitiveContexts.js:15:5:15:5 | y | nullSensitiveContexts.js:15:1:15:5 | x - y |
-| nullSensitiveContexts.js:16:1:16:1 | x | nullSensitiveContexts.js:16:1:16:5 | x * y |
-| nullSensitiveContexts.js:16:1:16:5 | x * y | nullSensitiveContexts.js:16:1:16:5 | x * y |
-| nullSensitiveContexts.js:16:5:16:5 | y | nullSensitiveContexts.js:16:1:16:5 | x * y |
-| nullSensitiveContexts.js:17:1:17:1 | x | nullSensitiveContexts.js:17:1:17:5 | x / y |
-| nullSensitiveContexts.js:17:1:17:5 | x / y | nullSensitiveContexts.js:17:1:17:5 | x / y |
-| nullSensitiveContexts.js:17:5:17:5 | y | nullSensitiveContexts.js:17:1:17:5 | x / y |
-| nullSensitiveContexts.js:18:1:18:1 | x | nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:18:1:18:5 | x % y | nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x | nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x | nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:18:5:18:5 | y | nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:19:2:19:2 | x | nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:20:2:20:2 | x | nullSensitiveContexts.js:18:1:20:2 | x % y\\n+x\\n-x |
-| nullSensitiveContexts.js:21:1:21:3 | ++x | nullSensitiveContexts.js:21:1:21:3 | ++x |
-| nullSensitiveContexts.js:21:3:21:3 | x | nullSensitiveContexts.js:21:1:21:3 | ++x |
-| nullSensitiveContexts.js:22:1:22:1 | x | nullSensitiveContexts.js:22:1:22:3 | x++ |
-| nullSensitiveContexts.js:22:1:22:3 | x++ | nullSensitiveContexts.js:22:1:22:3 | x++ |
-| nullSensitiveContexts.js:23:1:23:3 | --x | nullSensitiveContexts.js:23:1:23:3 | --x |
-| nullSensitiveContexts.js:23:3:23:3 | x | nullSensitiveContexts.js:23:1:23:3 | --x |
-| nullSensitiveContexts.js:24:1:24:1 | x | nullSensitiveContexts.js:24:1:24:3 | x-- |
-| nullSensitiveContexts.js:24:1:24:3 | x-- | nullSensitiveContexts.js:24:1:24:3 | x-- |
-| nullSensitiveContexts.js:25:1:25:1 | x | nullSensitiveContexts.js:25:1:25:6 | x += y |
-| nullSensitiveContexts.js:25:1:25:6 | x += y | nullSensitiveContexts.js:25:1:25:6 | x += y |
-| nullSensitiveContexts.js:25:6:25:6 | y | nullSensitiveContexts.js:25:1:25:6 | x += y |
-| nullSensitiveContexts.js:26:1:26:1 | x | nullSensitiveContexts.js:26:1:26:6 | x -= y |
-| nullSensitiveContexts.js:26:1:26:6 | x -= y | nullSensitiveContexts.js:26:1:26:6 | x -= y |
-| nullSensitiveContexts.js:26:6:26:6 | y | nullSensitiveContexts.js:26:1:26:6 | x -= y |
-| nullSensitiveContexts.js:27:1:27:1 | x | nullSensitiveContexts.js:27:1:27:6 | x *= y |
-| nullSensitiveContexts.js:27:1:27:6 | x *= y | nullSensitiveContexts.js:27:1:27:6 | x *= y |
-| nullSensitiveContexts.js:27:6:27:6 | y | nullSensitiveContexts.js:27:1:27:6 | x *= y |
-| nullSensitiveContexts.js:28:1:28:1 | x | nullSensitiveContexts.js:28:1:28:6 | x /= y |
-| nullSensitiveContexts.js:28:1:28:6 | x /= y | nullSensitiveContexts.js:28:1:28:6 | x /= y |
-| nullSensitiveContexts.js:28:6:28:6 | y | nullSensitiveContexts.js:28:1:28:6 | x /= y |
-| nullSensitiveContexts.js:29:1:29:1 | x | nullSensitiveContexts.js:29:1:29:6 | x %= y |
-| nullSensitiveContexts.js:29:1:29:6 | x %= y | nullSensitiveContexts.js:29:1:29:6 | x %= y |
-| nullSensitiveContexts.js:29:6:29:6 | y | nullSensitiveContexts.js:29:1:29:6 | x %= y |
-| nullSensitiveContexts.js:30:1:30:1 | x | nullSensitiveContexts.js:30:1:30:9 | x , y = p |
-| nullSensitiveContexts.js:30:1:30:9 | x , y = p | nullSensitiveContexts.js:30:1:30:9 | x , y = p |
-| nullSensitiveContexts.js:30:5:30:5 | y | nullSensitiveContexts.js:30:1:30:9 | x , y = p |
-| nullSensitiveContexts.js:30:5:30:9 | y = p | nullSensitiveContexts.js:30:1:30:9 | x , y = p |
-| nullSensitiveContexts.js:30:9:30:9 | p | nullSensitiveContexts.js:30:1:30:9 | x , y = p |
-| nullSensitiveContexts.js:32:1:32:1 | x | nullSensitiveContexts.js:32:1:32:5 | x & y |
-| nullSensitiveContexts.js:32:1:32:5 | x & y | nullSensitiveContexts.js:32:1:32:5 | x & y |
-| nullSensitiveContexts.js:32:5:32:5 | y | nullSensitiveContexts.js:32:1:32:5 | x & y |
-| nullSensitiveContexts.js:33:1:33:1 | x | nullSensitiveContexts.js:33:1:33:5 | x \| y |
-| nullSensitiveContexts.js:33:1:33:5 | x \| y | nullSensitiveContexts.js:33:1:33:5 | x \| y |
-| nullSensitiveContexts.js:33:5:33:5 | y | nullSensitiveContexts.js:33:1:33:5 | x \| y |
-| nullSensitiveContexts.js:34:1:34:1 | x | nullSensitiveContexts.js:34:1:34:5 | x ^ y |
-| nullSensitiveContexts.js:34:1:34:5 | x ^ y | nullSensitiveContexts.js:34:1:34:5 | x ^ y |
-| nullSensitiveContexts.js:34:5:34:5 | y | nullSensitiveContexts.js:34:1:34:5 | x ^ y |
-| nullSensitiveContexts.js:35:1:35:1 | x | nullSensitiveContexts.js:35:1:35:6 | x << y |
-| nullSensitiveContexts.js:35:1:35:6 | x << y | nullSensitiveContexts.js:35:1:35:6 | x << y |
-| nullSensitiveContexts.js:35:6:35:6 | y | nullSensitiveContexts.js:35:1:35:6 | x << y |
-| nullSensitiveContexts.js:36:1:36:1 | x | nullSensitiveContexts.js:36:1:36:6 | x >> y |
-| nullSensitiveContexts.js:36:1:36:6 | x >> y | nullSensitiveContexts.js:36:1:36:6 | x >> y |
-| nullSensitiveContexts.js:36:6:36:6 | y | nullSensitiveContexts.js:36:1:36:6 | x >> y |
-| nullSensitiveContexts.js:37:1:37:1 | x | nullSensitiveContexts.js:37:1:37:7 | x >>> y |
-| nullSensitiveContexts.js:37:1:37:7 | x >>> y | nullSensitiveContexts.js:37:1:37:7 | x >>> y |
-| nullSensitiveContexts.js:37:7:37:7 | y | nullSensitiveContexts.js:37:1:37:7 | x >>> y |
-| nullSensitiveContexts.js:38:1:38:2 | ~x | nullSensitiveContexts.js:38:1:38:2 | ~x |
-| nullSensitiveContexts.js:38:2:38:2 | x | nullSensitiveContexts.js:38:1:38:2 | ~x |
-| nullSensitiveContexts.js:39:1:39:1 | x | nullSensitiveContexts.js:39:1:39:6 | x &= y |
-| nullSensitiveContexts.js:39:1:39:6 | x &= y | nullSensitiveContexts.js:39:1:39:6 | x &= y |
-| nullSensitiveContexts.js:39:6:39:6 | y | nullSensitiveContexts.js:39:1:39:6 | x &= y |
-| nullSensitiveContexts.js:40:1:40:1 | x | nullSensitiveContexts.js:40:1:40:6 | x \|= y |
-| nullSensitiveContexts.js:40:1:40:6 | x \|= y | nullSensitiveContexts.js:40:1:40:6 | x \|= y |
-| nullSensitiveContexts.js:40:6:40:6 | y | nullSensitiveContexts.js:40:1:40:6 | x \|= y |
-| nullSensitiveContexts.js:41:1:41:1 | x | nullSensitiveContexts.js:41:1:41:6 | x ^= y |
-| nullSensitiveContexts.js:41:1:41:6 | x ^= y | nullSensitiveContexts.js:41:1:41:6 | x ^= y |
-| nullSensitiveContexts.js:41:6:41:6 | y | nullSensitiveContexts.js:41:1:41:6 | x ^= y |
-| nullSensitiveContexts.js:42:1:42:1 | x | nullSensitiveContexts.js:42:1:42:7 | x <<= y |
-| nullSensitiveContexts.js:42:1:42:7 | x <<= y | nullSensitiveContexts.js:42:1:42:7 | x <<= y |
-| nullSensitiveContexts.js:42:7:42:7 | y | nullSensitiveContexts.js:42:1:42:7 | x <<= y |
-| nullSensitiveContexts.js:43:1:43:1 | x | nullSensitiveContexts.js:43:1:43:7 | x >>= y |
-| nullSensitiveContexts.js:43:1:43:7 | x >>= y | nullSensitiveContexts.js:43:1:43:7 | x >>= y |
-| nullSensitiveContexts.js:43:7:43:7 | y | nullSensitiveContexts.js:43:1:43:7 | x >>= y |
-| nullSensitiveContexts.js:44:1:44:1 | x | nullSensitiveContexts.js:44:1:44:8 | x >>>= y |
-| nullSensitiveContexts.js:44:1:44:8 | x >>>= y | nullSensitiveContexts.js:44:1:44:8 | x >>>= y |
-| nullSensitiveContexts.js:44:8:44:8 | y | nullSensitiveContexts.js:44:1:44:8 | x >>>= y |
-| nullSensitiveContexts.js:45:10:45:10 | x | nullSensitiveContexts.js:45:6:45:10 | let x |
-| nullSensitiveContexts.js:45:10:45:10 | x | nullSensitiveContexts.js:45:6:45:10 | let x |
-| nullSensitiveContexts.js:45:15:45:15 | y | nullSensitiveContexts.js:45:1:45:20 | for (let x of y) { } |
-| nullSensitiveContexts.js:56:1:56:1 | x | nullSensitiveContexts.js:56:1:56:6 | x && y |
-| nullSensitiveContexts.js:56:1:56:6 | x && y | nullSensitiveContexts.js:56:1:56:6 | x && y |
-| nullSensitiveContexts.js:56:6:56:6 | y | nullSensitiveContexts.js:56:1:56:6 | x && y |
-| nullSensitiveContexts.js:57:1:57:1 | x | nullSensitiveContexts.js:57:1:57:6 | x \|\| y |
-| nullSensitiveContexts.js:57:1:57:6 | x \|\| y | nullSensitiveContexts.js:57:1:57:6 | x \|\| y |
-| nullSensitiveContexts.js:57:6:57:6 | y | nullSensitiveContexts.js:57:1:57:6 | x \|\| y |
-| nullSensitiveContexts.js:58:1:58:2 | !x | nullSensitiveContexts.js:58:1:58:2 | !x |
-| nullSensitiveContexts.js:58:2:58:2 | x | nullSensitiveContexts.js:58:1:58:2 | !x |
-| nullSensitiveContexts.js:59:5:59:5 | x | nullSensitiveContexts.js:59:1:59:10 | if (x) { } |
-| nullSensitiveContexts.js:60:8:60:8 | x | nullSensitiveContexts.js:60:1:60:13 | while (x) { } |
-| nullSensitiveContexts.js:61:8:61:8 | y | nullSensitiveContexts.js:61:1:61:16 | for (; y; z) { } |
-| nullSensitiveContexts.js:61:11:61:11 | z | nullSensitiveContexts.js:61:1:61:16 | for (; y; z) { } |
-| nullSensitiveContexts.js:62:10:62:10 | x | nullSensitiveContexts.js:62:6:62:10 | let x |
-| nullSensitiveContexts.js:62:10:62:10 | x | nullSensitiveContexts.js:62:6:62:10 | let x |
-| nullSensitiveContexts.js:62:15:62:15 | y | nullSensitiveContexts.js:62:1:62:20 | for (let x in y) { } |
+| nullSensitiveContexts.js:7:1:7:3 | foo | nullSensitiveContexts.js:7:1:7:8 | foo[bar] |
+| nullSensitiveContexts.js:7:1:7:8 | foo[bar] | nullSensitiveContexts.js:7:1:7:8 | foo[bar] |
+| nullSensitiveContexts.js:7:5:7:7 | bar | nullSensitiveContexts.js:7:1:7:8 | foo[bar] |
+| nullSensitiveContexts.js:8:1:8:3 | foo | nullSensitiveContexts.js:8:1:8:7 | foo.bar |
+| nullSensitiveContexts.js:8:1:8:7 | foo.bar | nullSensitiveContexts.js:8:1:8:7 | foo.bar |
+| nullSensitiveContexts.js:8:5:8:7 | bar | nullSensitiveContexts.js:8:1:8:7 | foo.bar |
+| nullSensitiveContexts.js:9:1:9:7 | new Foo | nullSensitiveContexts.js:9:1:9:7 | new Foo |
+| nullSensitiveContexts.js:9:5:9:7 | Foo | nullSensitiveContexts.js:9:1:9:7 | new Foo |
+| nullSensitiveContexts.js:10:1:10:9 | new Foo() | nullSensitiveContexts.js:10:1:10:9 | new Foo() |
+| nullSensitiveContexts.js:10:5:10:7 | Foo | nullSensitiveContexts.js:10:1:10:9 | new Foo() |
+| nullSensitiveContexts.js:11:1:11:3 | foo | nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 |
+| nullSensitiveContexts.js:11:1:11:7 | foo.bar | nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 |
+| nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 | nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 |
+| nullSensitiveContexts.js:11:5:11:7 | bar | nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 |
+| nullSensitiveContexts.js:11:11:11:11 | 5 | nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 |
+| nullSensitiveContexts.js:12:1:12:3 | foo | nullSensitiveContexts.js:12:1:12:8 | foo(bar) |
+| nullSensitiveContexts.js:12:1:12:8 | foo(bar) | nullSensitiveContexts.js:12:1:12:8 | foo(bar) |
+| nullSensitiveContexts.js:12:5:12:7 | bar | nullSensitiveContexts.js:12:1:12:8 | foo(bar) |
+| nullSensitiveContexts.js:13:1:13:1 | x | nullSensitiveContexts.js:13:1:13:5 | x + y |
+| nullSensitiveContexts.js:13:1:13:5 | x + y | nullSensitiveContexts.js:13:1:13:5 | x + y |
+| nullSensitiveContexts.js:13:5:13:5 | y | nullSensitiveContexts.js:13:1:13:5 | x + y |
+| nullSensitiveContexts.js:14:1:14:1 | x | nullSensitiveContexts.js:14:1:14:5 | x - y |
+| nullSensitiveContexts.js:14:1:14:5 | x - y | nullSensitiveContexts.js:14:1:14:5 | x - y |
+| nullSensitiveContexts.js:14:5:14:5 | y | nullSensitiveContexts.js:14:1:14:5 | x - y |
+| nullSensitiveContexts.js:15:1:15:1 | x | nullSensitiveContexts.js:15:1:15:5 | x * y |
+| nullSensitiveContexts.js:15:1:15:5 | x * y | nullSensitiveContexts.js:15:1:15:5 | x * y |
+| nullSensitiveContexts.js:15:5:15:5 | y | nullSensitiveContexts.js:15:1:15:5 | x * y |
+| nullSensitiveContexts.js:16:1:16:1 | x | nullSensitiveContexts.js:16:1:16:5 | x / y |
+| nullSensitiveContexts.js:16:1:16:5 | x / y | nullSensitiveContexts.js:16:1:16:5 | x / y |
+| nullSensitiveContexts.js:16:5:16:5 | y | nullSensitiveContexts.js:16:1:16:5 | x / y |
+| nullSensitiveContexts.js:17:1:17:1 | x | nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
+| nullSensitiveContexts.js:17:1:17:5 | x % y | nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
+| nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x | nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
+| nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x | nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
+| nullSensitiveContexts.js:17:5:17:5 | y | nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
+| nullSensitiveContexts.js:18:2:18:2 | x | nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
+| nullSensitiveContexts.js:19:2:19:2 | x | nullSensitiveContexts.js:17:1:19:2 | x % y\\n+x\\n-x |
+| nullSensitiveContexts.js:20:1:20:3 | ++x | nullSensitiveContexts.js:20:1:20:3 | ++x |
+| nullSensitiveContexts.js:20:3:20:3 | x | nullSensitiveContexts.js:20:1:20:3 | ++x |
+| nullSensitiveContexts.js:21:1:21:1 | x | nullSensitiveContexts.js:21:1:21:3 | x++ |
+| nullSensitiveContexts.js:21:1:21:3 | x++ | nullSensitiveContexts.js:21:1:21:3 | x++ |
+| nullSensitiveContexts.js:22:1:22:3 | --x | nullSensitiveContexts.js:22:1:22:3 | --x |
+| nullSensitiveContexts.js:22:3:22:3 | x | nullSensitiveContexts.js:22:1:22:3 | --x |
+| nullSensitiveContexts.js:23:1:23:1 | x | nullSensitiveContexts.js:23:1:23:3 | x-- |
+| nullSensitiveContexts.js:23:1:23:3 | x-- | nullSensitiveContexts.js:23:1:23:3 | x-- |
+| nullSensitiveContexts.js:24:1:24:1 | x | nullSensitiveContexts.js:24:1:24:6 | x += y |
+| nullSensitiveContexts.js:24:1:24:6 | x += y | nullSensitiveContexts.js:24:1:24:6 | x += y |
+| nullSensitiveContexts.js:24:6:24:6 | y | nullSensitiveContexts.js:24:1:24:6 | x += y |
+| nullSensitiveContexts.js:25:1:25:1 | x | nullSensitiveContexts.js:25:1:25:6 | x -= y |
+| nullSensitiveContexts.js:25:1:25:6 | x -= y | nullSensitiveContexts.js:25:1:25:6 | x -= y |
+| nullSensitiveContexts.js:25:6:25:6 | y | nullSensitiveContexts.js:25:1:25:6 | x -= y |
+| nullSensitiveContexts.js:26:1:26:1 | x | nullSensitiveContexts.js:26:1:26:6 | x *= y |
+| nullSensitiveContexts.js:26:1:26:6 | x *= y | nullSensitiveContexts.js:26:1:26:6 | x *= y |
+| nullSensitiveContexts.js:26:6:26:6 | y | nullSensitiveContexts.js:26:1:26:6 | x *= y |
+| nullSensitiveContexts.js:27:1:27:1 | x | nullSensitiveContexts.js:27:1:27:6 | x /= y |
+| nullSensitiveContexts.js:27:1:27:6 | x /= y | nullSensitiveContexts.js:27:1:27:6 | x /= y |
+| nullSensitiveContexts.js:27:6:27:6 | y | nullSensitiveContexts.js:27:1:27:6 | x /= y |
+| nullSensitiveContexts.js:28:1:28:1 | x | nullSensitiveContexts.js:28:1:28:6 | x %= y |
+| nullSensitiveContexts.js:28:1:28:6 | x %= y | nullSensitiveContexts.js:28:1:28:6 | x %= y |
+| nullSensitiveContexts.js:28:6:28:6 | y | nullSensitiveContexts.js:28:1:28:6 | x %= y |
+| nullSensitiveContexts.js:29:1:29:1 | x | nullSensitiveContexts.js:29:1:29:9 | x , y = p |
+| nullSensitiveContexts.js:29:1:29:9 | x , y = p | nullSensitiveContexts.js:29:1:29:9 | x , y = p |
+| nullSensitiveContexts.js:29:5:29:5 | y | nullSensitiveContexts.js:29:1:29:9 | x , y = p |
+| nullSensitiveContexts.js:29:5:29:9 | y = p | nullSensitiveContexts.js:29:1:29:9 | x , y = p |
+| nullSensitiveContexts.js:29:9:29:9 | p | nullSensitiveContexts.js:29:1:29:9 | x , y = p |
+| nullSensitiveContexts.js:31:1:31:1 | x | nullSensitiveContexts.js:31:1:31:5 | x & y |
+| nullSensitiveContexts.js:31:1:31:5 | x & y | nullSensitiveContexts.js:31:1:31:5 | x & y |
+| nullSensitiveContexts.js:31:5:31:5 | y | nullSensitiveContexts.js:31:1:31:5 | x & y |
+| nullSensitiveContexts.js:32:1:32:1 | x | nullSensitiveContexts.js:32:1:32:5 | x \| y |
+| nullSensitiveContexts.js:32:1:32:5 | x \| y | nullSensitiveContexts.js:32:1:32:5 | x \| y |
+| nullSensitiveContexts.js:32:5:32:5 | y | nullSensitiveContexts.js:32:1:32:5 | x \| y |
+| nullSensitiveContexts.js:33:1:33:1 | x | nullSensitiveContexts.js:33:1:33:5 | x ^ y |
+| nullSensitiveContexts.js:33:1:33:5 | x ^ y | nullSensitiveContexts.js:33:1:33:5 | x ^ y |
+| nullSensitiveContexts.js:33:5:33:5 | y | nullSensitiveContexts.js:33:1:33:5 | x ^ y |
+| nullSensitiveContexts.js:34:1:34:1 | x | nullSensitiveContexts.js:34:1:34:6 | x << y |
+| nullSensitiveContexts.js:34:1:34:6 | x << y | nullSensitiveContexts.js:34:1:34:6 | x << y |
+| nullSensitiveContexts.js:34:6:34:6 | y | nullSensitiveContexts.js:34:1:34:6 | x << y |
+| nullSensitiveContexts.js:35:1:35:1 | x | nullSensitiveContexts.js:35:1:35:6 | x >> y |
+| nullSensitiveContexts.js:35:1:35:6 | x >> y | nullSensitiveContexts.js:35:1:35:6 | x >> y |
+| nullSensitiveContexts.js:35:6:35:6 | y | nullSensitiveContexts.js:35:1:35:6 | x >> y |
+| nullSensitiveContexts.js:36:1:36:1 | x | nullSensitiveContexts.js:36:1:36:7 | x >>> y |
+| nullSensitiveContexts.js:36:1:36:7 | x >>> y | nullSensitiveContexts.js:36:1:36:7 | x >>> y |
+| nullSensitiveContexts.js:36:7:36:7 | y | nullSensitiveContexts.js:36:1:36:7 | x >>> y |
+| nullSensitiveContexts.js:37:1:37:2 | ~x | nullSensitiveContexts.js:37:1:37:2 | ~x |
+| nullSensitiveContexts.js:37:2:37:2 | x | nullSensitiveContexts.js:37:1:37:2 | ~x |
+| nullSensitiveContexts.js:38:1:38:1 | x | nullSensitiveContexts.js:38:1:38:6 | x &= y |
+| nullSensitiveContexts.js:38:1:38:6 | x &= y | nullSensitiveContexts.js:38:1:38:6 | x &= y |
+| nullSensitiveContexts.js:38:6:38:6 | y | nullSensitiveContexts.js:38:1:38:6 | x &= y |
+| nullSensitiveContexts.js:39:1:39:1 | x | nullSensitiveContexts.js:39:1:39:6 | x \|= y |
+| nullSensitiveContexts.js:39:1:39:6 | x \|= y | nullSensitiveContexts.js:39:1:39:6 | x \|= y |
+| nullSensitiveContexts.js:39:6:39:6 | y | nullSensitiveContexts.js:39:1:39:6 | x \|= y |
+| nullSensitiveContexts.js:40:1:40:1 | x | nullSensitiveContexts.js:40:1:40:6 | x ^= y |
+| nullSensitiveContexts.js:40:1:40:6 | x ^= y | nullSensitiveContexts.js:40:1:40:6 | x ^= y |
+| nullSensitiveContexts.js:40:6:40:6 | y | nullSensitiveContexts.js:40:1:40:6 | x ^= y |
+| nullSensitiveContexts.js:41:1:41:1 | x | nullSensitiveContexts.js:41:1:41:7 | x <<= y |
+| nullSensitiveContexts.js:41:1:41:7 | x <<= y | nullSensitiveContexts.js:41:1:41:7 | x <<= y |
+| nullSensitiveContexts.js:41:7:41:7 | y | nullSensitiveContexts.js:41:1:41:7 | x <<= y |
+| nullSensitiveContexts.js:42:1:42:1 | x | nullSensitiveContexts.js:42:1:42:7 | x >>= y |
+| nullSensitiveContexts.js:42:1:42:7 | x >>= y | nullSensitiveContexts.js:42:1:42:7 | x >>= y |
+| nullSensitiveContexts.js:42:7:42:7 | y | nullSensitiveContexts.js:42:1:42:7 | x >>= y |
+| nullSensitiveContexts.js:43:1:43:1 | x | nullSensitiveContexts.js:43:1:43:8 | x >>>= y |
+| nullSensitiveContexts.js:43:1:43:8 | x >>>= y | nullSensitiveContexts.js:43:1:43:8 | x >>>= y |
+| nullSensitiveContexts.js:43:8:43:8 | y | nullSensitiveContexts.js:43:1:43:8 | x >>>= y |
+| nullSensitiveContexts.js:44:10:44:10 | x | nullSensitiveContexts.js:44:6:44:10 | let x |
+| nullSensitiveContexts.js:44:10:44:10 | x | nullSensitiveContexts.js:44:6:44:10 | let x |
+| nullSensitiveContexts.js:44:15:44:15 | y | nullSensitiveContexts.js:44:1:44:20 | for (let x of y) { } |
+| nullSensitiveContexts.js:54:1:54:1 | x | nullSensitiveContexts.js:54:1:54:6 | x && y |
+| nullSensitiveContexts.js:54:1:54:6 | x && y | nullSensitiveContexts.js:54:1:54:6 | x && y |
+| nullSensitiveContexts.js:54:6:54:6 | y | nullSensitiveContexts.js:54:1:54:6 | x && y |
+| nullSensitiveContexts.js:55:1:55:1 | x | nullSensitiveContexts.js:55:1:55:6 | x \|\| y |
+| nullSensitiveContexts.js:55:1:55:6 | x \|\| y | nullSensitiveContexts.js:55:1:55:6 | x \|\| y |
+| nullSensitiveContexts.js:55:6:55:6 | y | nullSensitiveContexts.js:55:1:55:6 | x \|\| y |
+| nullSensitiveContexts.js:56:1:56:2 | !x | nullSensitiveContexts.js:56:1:56:2 | !x |
+| nullSensitiveContexts.js:56:2:56:2 | x | nullSensitiveContexts.js:56:1:56:2 | !x |
+| nullSensitiveContexts.js:57:5:57:5 | x | nullSensitiveContexts.js:57:1:57:10 | if (x) { } |
+| nullSensitiveContexts.js:58:8:58:8 | x | nullSensitiveContexts.js:58:1:58:13 | while (x) { } |
+| nullSensitiveContexts.js:59:8:59:8 | y | nullSensitiveContexts.js:59:1:59:16 | for (; y; z) { } |
+| nullSensitiveContexts.js:59:11:59:11 | z | nullSensitiveContexts.js:59:1:59:16 | for (; y; z) { } |
+| nullSensitiveContexts.js:60:10:60:10 | x | nullSensitiveContexts.js:60:6:60:10 | let x |
+| nullSensitiveContexts.js:60:10:60:10 | x | nullSensitiveContexts.js:60:6:60:10 | let x |
+| nullSensitiveContexts.js:60:15:60:15 | y | nullSensitiveContexts.js:60:1:60:20 | for (let x in y) { } |
 | others.js:1:1:1:2 | 23 | others.js:1:1:1:7 | 23, 42; |
 | others.js:1:1:1:6 | 23, 42 | others.js:1:1:1:7 | 23, 42; |
 | others.js:1:5:1:6 | 42 | others.js:1:1:1:7 | 23, 42; |
@@ -2614,14 +2615,16 @@ test_inNullSensitiveContext
 | mozextensions.js:1:1:1:9 | array.map |
 | mozextensions.js:1:23:1:23 | x |
 | mozextensions.js:1:25:1:25 | 1 |
+| nullSensitiveContexts.js:7:1:7:3 | foo |
+| nullSensitiveContexts.js:7:5:7:7 | bar |
 | nullSensitiveContexts.js:8:1:8:3 | foo |
-| nullSensitiveContexts.js:8:5:8:7 | bar |
-| nullSensitiveContexts.js:9:1:9:3 | foo |
+| nullSensitiveContexts.js:9:5:9:7 | Foo |
 | nullSensitiveContexts.js:10:5:10:7 | Foo |
-| nullSensitiveContexts.js:11:5:11:7 | Foo |
+| nullSensitiveContexts.js:11:1:11:3 | foo |
+| nullSensitiveContexts.js:11:11:11:11 | 5 |
 | nullSensitiveContexts.js:12:1:12:3 | foo |
-| nullSensitiveContexts.js:12:11:12:11 | 5 |
-| nullSensitiveContexts.js:13:1:13:3 | foo |
+| nullSensitiveContexts.js:13:1:13:1 | x |
+| nullSensitiveContexts.js:13:5:13:5 | y |
 | nullSensitiveContexts.js:14:1:14:1 | x |
 | nullSensitiveContexts.js:14:5:14:5 | y |
 | nullSensitiveContexts.js:15:1:15:1 | x |
@@ -2629,17 +2632,17 @@ test_inNullSensitiveContext
 | nullSensitiveContexts.js:16:1:16:1 | x |
 | nullSensitiveContexts.js:16:5:16:5 | y |
 | nullSensitiveContexts.js:17:1:17:1 | x |
+| nullSensitiveContexts.js:17:1:17:5 | x % y |
+| nullSensitiveContexts.js:17:1:18:2 | x % y\\n+x |
 | nullSensitiveContexts.js:17:5:17:5 | y |
-| nullSensitiveContexts.js:18:1:18:1 | x |
-| nullSensitiveContexts.js:18:1:18:5 | x % y |
-| nullSensitiveContexts.js:18:1:19:2 | x % y\\n+x |
-| nullSensitiveContexts.js:18:5:18:5 | y |
+| nullSensitiveContexts.js:18:2:18:2 | x |
 | nullSensitiveContexts.js:19:2:19:2 | x |
-| nullSensitiveContexts.js:20:2:20:2 | x |
-| nullSensitiveContexts.js:21:3:21:3 | x |
-| nullSensitiveContexts.js:22:1:22:1 | x |
-| nullSensitiveContexts.js:23:3:23:3 | x |
+| nullSensitiveContexts.js:20:3:20:3 | x |
+| nullSensitiveContexts.js:21:1:21:1 | x |
+| nullSensitiveContexts.js:22:3:22:3 | x |
+| nullSensitiveContexts.js:23:1:23:1 | x |
 | nullSensitiveContexts.js:24:1:24:1 | x |
+| nullSensitiveContexts.js:24:6:24:6 | y |
 | nullSensitiveContexts.js:25:1:25:1 | x |
 | nullSensitiveContexts.js:25:6:25:6 | y |
 | nullSensitiveContexts.js:26:1:26:1 | x |
@@ -2648,35 +2651,33 @@ test_inNullSensitiveContext
 | nullSensitiveContexts.js:27:6:27:6 | y |
 | nullSensitiveContexts.js:28:1:28:1 | x |
 | nullSensitiveContexts.js:28:6:28:6 | y |
-| nullSensitiveContexts.js:29:1:29:1 | x |
-| nullSensitiveContexts.js:29:6:29:6 | y |
-| nullSensitiveContexts.js:30:9:30:9 | p |
+| nullSensitiveContexts.js:29:9:29:9 | p |
+| nullSensitiveContexts.js:31:1:31:1 | x |
+| nullSensitiveContexts.js:31:5:31:5 | y |
 | nullSensitiveContexts.js:32:1:32:1 | x |
 | nullSensitiveContexts.js:32:5:32:5 | y |
 | nullSensitiveContexts.js:33:1:33:1 | x |
 | nullSensitiveContexts.js:33:5:33:5 | y |
 | nullSensitiveContexts.js:34:1:34:1 | x |
-| nullSensitiveContexts.js:34:5:34:5 | y |
+| nullSensitiveContexts.js:34:6:34:6 | y |
 | nullSensitiveContexts.js:35:1:35:1 | x |
 | nullSensitiveContexts.js:35:6:35:6 | y |
 | nullSensitiveContexts.js:36:1:36:1 | x |
-| nullSensitiveContexts.js:36:6:36:6 | y |
-| nullSensitiveContexts.js:37:1:37:1 | x |
-| nullSensitiveContexts.js:37:7:37:7 | y |
-| nullSensitiveContexts.js:38:2:38:2 | x |
+| nullSensitiveContexts.js:36:7:36:7 | y |
+| nullSensitiveContexts.js:37:2:37:2 | x |
+| nullSensitiveContexts.js:38:1:38:1 | x |
+| nullSensitiveContexts.js:38:6:38:6 | y |
 | nullSensitiveContexts.js:39:1:39:1 | x |
 | nullSensitiveContexts.js:39:6:39:6 | y |
 | nullSensitiveContexts.js:40:1:40:1 | x |
 | nullSensitiveContexts.js:40:6:40:6 | y |
 | nullSensitiveContexts.js:41:1:41:1 | x |
-| nullSensitiveContexts.js:41:6:41:6 | y |
+| nullSensitiveContexts.js:41:7:41:7 | y |
 | nullSensitiveContexts.js:42:1:42:1 | x |
 | nullSensitiveContexts.js:42:7:42:7 | y |
 | nullSensitiveContexts.js:43:1:43:1 | x |
-| nullSensitiveContexts.js:43:7:43:7 | y |
-| nullSensitiveContexts.js:44:1:44:1 | x |
-| nullSensitiveContexts.js:44:8:44:8 | y |
-| nullSensitiveContexts.js:45:15:45:15 | y |
+| nullSensitiveContexts.js:43:8:43:8 | y |
+| nullSensitiveContexts.js:44:15:44:15 | y |
 | primaries.js:22:5:22:9 | Array |
 | primaries.js:23:5:23:10 | Object |
 | primaries.js:24:5:24:10 | String |
