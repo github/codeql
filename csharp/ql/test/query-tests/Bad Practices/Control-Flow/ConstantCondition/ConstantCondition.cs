@@ -50,6 +50,7 @@ class ConstantNullness
         j = (int?)i ?? 1; // BAD
         s = ""?.CommaJoinWith(s); // BAD
         s = s ?? ""; // GOOD
+        s = (i==0 ? s : null) ?? s;  // BAD (False positive)
     }
 }
 
