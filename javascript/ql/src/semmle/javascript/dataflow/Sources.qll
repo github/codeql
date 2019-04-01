@@ -211,6 +211,7 @@ module SourceNode {
    *   - object expressions
    *   - array expressions
    *   - JSX literals
+   *   - regular expression literals
    *
    * This class is for internal use only and should not normally be used directly.
    */
@@ -224,7 +225,8 @@ module SourceNode {
         astNode instanceof ArrayExpr or
         astNode instanceof JSXNode or
         astNode instanceof GlobalVarAccess or
-        astNode instanceof ExternalModuleReference
+        astNode instanceof ExternalModuleReference or
+        astNode instanceof RegExpLiteral
       )
       or
       exists(SsaExplicitDefinition ssa, VarDef def |

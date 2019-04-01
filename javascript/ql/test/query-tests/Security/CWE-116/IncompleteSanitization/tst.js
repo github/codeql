@@ -163,3 +163,8 @@ app.get('/some/path', function(req, res) {
   flowifyComments(untrusted);
   good11(untrusted);
 });
+
+(function (s) {
+	var indirect = /'/;
+	return s.replace(indirect, ""); // NOT OK
+});

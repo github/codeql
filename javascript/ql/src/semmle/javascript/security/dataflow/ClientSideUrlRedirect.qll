@@ -100,7 +100,7 @@ module ClientSideUrlRedirect {
     or
     exists(MethodCallExpr mce |
       queryAccess.asExpr() = mce and
-      mce.calls(any(RegExpLiteral re), "exec") and
+      mce = any(RegExpLiteral re).flow().(DataFlow::SourceNode).getAMethodCall("exec").asExpr() and
       nd.asExpr() = mce.getArgument(0)
     )
   }
