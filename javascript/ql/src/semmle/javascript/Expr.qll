@@ -161,6 +161,29 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    * file that was extracted without type information.
    */
   Type getType() { ast_node_type(this, result) }
+  
+  /**
+   * Holds if the syntactic context that the expression appears in relies on the expression
+   * being non-null/non-undefined.
+   */
+  predicate getNullSensitiveContext() {
+  	exists(ExprOrStmt ctx |
+  		this = ctx.(PropAccess).getBase() or
+  		this = ctx.(IndexExpr).getPropertyNameExpr() or
+  		this = ctx.(InvokeExpr).getCallee() or
+  		(this = ctx.(BinaryExpr).getAnOperand() and
+  		  not ctx instanceof LogicalBinaryExpr and
+  		  not ctx instanceof EqualityTest) or
+  		(this = ctx.(UnaryExpr).getOperand() and
+  		  not ctx instanceof LogNotExpr) or
+  		this = ctx.(UpdateExpr).getOperand() or
+  		this = ctx.(CompoundAssignExpr).getLhs() or
+  		this = ctx.(CompoundAssignExpr).getRhs() or
+  		this = ctx.(AssignExpr).getRhs() or
+  		this = ctx.(SpreadElement).getOperand() or
+  		this = ctx.(ForOfStmt).getIterationDomain()
+  	)
+  }
 }
 
 /** An identifier. */
