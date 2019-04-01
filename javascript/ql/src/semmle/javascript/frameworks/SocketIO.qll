@@ -51,7 +51,7 @@ module SocketIO {
         // exclude getter versions
         exists(mcn.getAnArgument()) and
         result = mcn and
-        t = t2
+        t = t2.continue()
       )
     )
   }
@@ -110,7 +110,7 @@ module SocketIO {
       or
       // invocation of a chainable method
       result = pred.getAMethodCall(namespaceChainableMethod()) and
-      t = t2
+      t = t2.continue()
       or
       // invocation of chainable getter method
       exists(string m |
@@ -119,7 +119,7 @@ module SocketIO {
         m = "volatile"
       |
         result = pred.getAPropertyRead(m) and
-        t = t2
+        t = t2.continue()
       )
     )
   }
@@ -171,7 +171,7 @@ module SocketIO {
         m = EventEmitter::chainableMethod()
       |
         result = pred.getAMethodCall(m) and
-        t = t2
+        t = t2.continue()
       )
       or
       // invocation of a chainable getter method
@@ -182,7 +182,7 @@ module SocketIO {
         m = "volatile"
       |
         result = pred.getAPropertyRead(m) and
-        t = t2
+        t = t2.continue()
       )
     )
   }
