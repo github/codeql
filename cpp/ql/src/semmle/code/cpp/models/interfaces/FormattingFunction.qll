@@ -22,7 +22,7 @@ private Type stripTopLevelSpecifiersOnly(Type t) {
  */
 Type getAFormatterWideType() {
   exists(FormattingFunction ff |
-    result = stripTopLevelSpecifiersOnly(ff.getDefaultCharType()) and
+    result = stripTopLevelSpecifiersOnly(ff.getFormatCharType()) and
     result.getSize() != 1
   )
 }
@@ -47,6 +47,14 @@ abstract class FormattingFunction extends Function {
   abstract int getFormatParameterIndex();
 
   /**
+   * Holds if this `FormattingFunction` is in a context that supports
+   * Microsoft rules and extensions.
+   */
+  predicate isMicrosoft() {
+    getFile().compiledAsMicrosoft()
+  }
+
+  /**
    * Holds if the default meaning of `%s` is a `wchar_t *`, rather than
    * a `char *` (either way, `%S` will have the opposite meaning).
    *
@@ -55,11 +63,10 @@ abstract class FormattingFunction extends Function {
   deprecated predicate isWideCharDefault() { none() }
 
   /**
-   * Gets the default character type expected for `%s` by this function.  Typically
-   * `char` or `wchar_t`.
+   * Gets the character type used in the format string for this function.
    */
-  Type getDefaultCharType() {
-    result = 
+  Type getFormatCharType() {
+    result =
       stripTopLevelSpecifiersOnly(
         stripTopLevelSpecifiersOnly(
           getParameter(getFormatParameterIndex()).getType().getUnderlyingType()
@@ -68,18 +75,32 @@ abstract class FormattingFunction extends Function {
   }
 
   /**
+   * Gets the default character type expected for `%s` by this function.  Typically
+   * `char` or `wchar_t`.
+   */
+  Type getDefaultCharType() {
+    (
+      isMicrosoft() and
+      result = getFormatCharType()
+    ) or (
+      not isMicrosoft() and
+      result instanceof PlainCharType
+    )
+  }
+
+  /**
    * Gets the non-default character type expected for `%S` by this function.  Typically
    * `wchar_t` or `char`.  On some snapshots there may be multiple results where we can't tell
    * which is correct for a particular function.
    */
   Type getNonDefaultCharType() {
-  	(
-  	  getDefaultCharType().getSize() = 1 and
-  	  result = getAFormatterWideTypeOrDefault()
-  	) or (
-  	  getDefaultCharType().getSize() > 1 and
-  	  result instanceof PlainCharType
-  	)
+    (
+      getDefaultCharType().getSize() = 1 and
+      result = getWideCharType()
+    ) or (
+      not getDefaultCharType().getSize() = 1 and
+      result instanceof PlainCharType
+    )
   }
 
   /**
@@ -89,10 +110,12 @@ abstract class FormattingFunction extends Function {
    */
   Type getWideCharType() {
     (
-      result = getDefaultCharType() or
-      result = getNonDefaultCharType()
-    ) and
-    result.getSize() > 1
+      result = getFormatCharType() and
+      result.getSize() > 1
+    ) or (
+      not getFormatCharType().getSize() > 1 and
+      result = getAFormatterWideTypeOrDefault() // may have more than one result
+    )
   }
 
   /**
