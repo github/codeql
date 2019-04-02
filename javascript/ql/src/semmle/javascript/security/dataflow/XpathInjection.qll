@@ -75,7 +75,7 @@ module XpathInjection {
   class DomXpathSink extends Sink {
     DomXpathSink() {
       exists(string m | m = "evaluate" or m = "createExpression" |
-        this = document().getAMethodCall(m).getArgument(0)
+        this = DOM::documentRef().getAMethodCall(m).getArgument(0)
       )
     }
   }
