@@ -10,6 +10,7 @@
  */
 
 import cpp
+import semmle.code.cpp.commons.Exclusions
 
 Stmt getNextRealStmt(Block b, int i) {
   result = b.getStmt(i + 1) and
@@ -30,4 +31,6 @@ where b.getStmt(i) = js
   // the next statement isn't a loop that can be jumped into
   and not exists (LabelStmt ls | s.(Loop).getStmt().getAChild*() = ls)
   and not exists (SwitchCase sc | s.(Loop).getStmt().getAChild*() = sc)
+  // no preprocessor logic applies
+  and not functionContainsPreprocCode(js.getEnclosingFunction())
 select js, "This statement makes $@ unreachable.", s, s.toString()
