@@ -81,6 +81,7 @@
 
 import java
 private import Completion
+private import controlflow.internal.Preconditions
 
 /** A node in the expression-level control-flow graph. */
 class ControlFlowNode extends Top, @exprparent {
@@ -169,13 +170,22 @@ private module ControlFlowGraphImpl {
     exists(Call c | c = n |
       t = c.getCallee().getAThrownExceptionType() or
       uncheckedExceptionFromCatch(n, t) or
-      uncheckedExceptionFromFinally(n, t)
+      uncheckedExceptionFromFinally(n, t) or
+      uncheckedExceptionFromMethod(c, t)
     )
     or
     exists(CastExpr c | c = n |
       t instanceof TypeClassCastException and
       uncheckedExceptionFromCatch(n, t)
     )
+  }
+
+  /**
+   * Bind `t` to an unchecked exception that may occur in a precondition check.
+   */
+  private predicate uncheckedExceptionFromMethod(MethodAccess ma, ThrowableType t) {
+    conditionCheck(ma, _) and
+    (t instanceof TypeError or t instanceof TypeRuntimeException)
   }
 
   /**

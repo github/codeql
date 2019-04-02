@@ -30,4 +30,21 @@ public class Logic {
     if (o instanceof String) {
     }
   }
+
+  void f2(int i) {
+    checkTrue(i > 0, "i pos");
+    checkFalse(g(100), "g");
+    if (i > 10) {
+      checkTrue(i > 20, "");
+    }
+    int dummy = 0;
+  }
+
+  private static void checkTrue(boolean b, String msg) {
+    if (!b) throw new Exception(msg);
+  }
+
+  private static void checkFalse(boolean b, String msg) {
+    checkTrue(!b, msg);
+  }
 }

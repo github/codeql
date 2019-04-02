@@ -39,10 +39,6 @@ private predicate assertionMethod(Method m, AssertKind kind) {
     preconditions.hasQualifiedName("com.google.common.base", "Preconditions")
   |
     m.hasName("checkNotNull") and kind = AssertKindNotNull()
-    or
-    m.hasName("checkArgument") and kind = AssertKindTrue()
-    or
-    m.hasName("checkState") and kind = AssertKindTrue()
   )
 }
 
