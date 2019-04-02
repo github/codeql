@@ -376,6 +376,11 @@ module ObjectInternal {
     ObjectInternal moduleType() {
         result = TBuiltinClassObject(Builtin::special("ModuleType"))
     }
+
+    ObjectInternal noneType() {
+        result = TBuiltinClassObject(Builtin::special("NoneType"))
+    }
+
 }
 
 /** Helper for boolean predicates returning both `true` and `false` */

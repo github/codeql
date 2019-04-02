@@ -51,7 +51,16 @@ class Builtin extends @py_cobject {
     }
 
     string getName() {
-        py_cobjectnames(this, result)
+        if this.isStr() then
+            result = "str"
+        else
+            py_cobjectnames(this, result)
+    }
+
+    private predicate isStr() {
+        major_version() = 2 and this = Builtin::special("bytes")
+        or
+        major_version() = 3 and this = Builtin::special("unicode")
     }
 
     predicate isClass() {

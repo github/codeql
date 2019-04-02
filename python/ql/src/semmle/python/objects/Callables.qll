@@ -156,14 +156,17 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        exists(Builtin func, ClassObjectInternal cls |
+        exists(Builtin func, BuiltinClassObjectInternal cls |
             func = this.getBuiltin() and
             func != Builtin::builtin("isinstance") and
             func != Builtin::builtin("issubclass") and
-            func != Builtin::builtin("callable")
-            |
-            cls = ObjectInternal::fromBuiltin(this.getReturnType()) and
+            func != Builtin::builtin("callable") and
+            cls = ObjectInternal::fromBuiltin(this.getReturnType()) |
             obj = TUnknownInstance(cls)
+            or
+            cls = ObjectInternal::noneType() and obj = ObjectInternal::none_()
+            or
+            cls = ObjectInternal::builtin("bool") and obj = ObjectInternal::bool(_)
         ) and
         origin = CfgOrigin::unknown()
     }

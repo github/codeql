@@ -36,7 +36,15 @@ abstract class SequenceObjectInternal extends ObjectInternal {
 abstract class TupleObjectInternal extends SequenceObjectInternal {
 
     override string toString() {
-        result = "Tuple"
+        this.length() = 0 and result = "()"
+        or
+        result = "(" + this.contents(0) + ")"
+    }
+
+    string contents(int n) {
+        n = this.length() - 1 and result = this.getItem(n).toString()
+        or
+        result = this.getItem(n).toString() + ", " + this.contents(n+1)
     }
 
     /** Gets the class declaration for this object, if it is a declared class. */

@@ -98,7 +98,11 @@ newtype TObject =
         function.isDescriptor() = true
     }
     or
-    TUnknownInstance(BuiltinClassObjectInternal cls) { cls != ObjectInternal::builtin("super") }
+    TUnknownInstance(BuiltinClassObjectInternal cls) {
+        cls != ObjectInternal::builtin("super") and
+        cls != ObjectInternal::builtin("bool") and
+        cls != ObjectInternal::noneType()
+    }
     or
     TSuperInstance(ObjectInternal self, ClassObjectInternal startclass) {
         super_instantiation(_, self, startclass, _)
