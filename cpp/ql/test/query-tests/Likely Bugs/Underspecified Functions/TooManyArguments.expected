@@ -1,0 +1,5 @@
+| test.c:16:3:16:16 | call to declared_empty | This call has more arguments than required by $@. | test.c:1:6:1:19 | declared_empty | declared_empty |
+| test.c:21:3:21:12 | call to undeclared | This call has more arguments than required by $@. | test.c:20:3:20:3 | undeclared | undeclared |
+| test.c:23:3:23:19 | call to not_yet_declared1 | This call has more arguments than required by $@. | test.c:23:3:23:3 | not_yet_declared1 | not_yet_declared1 |
+| test.c:23:3:23:19 | call to not_yet_declared1 | This call has more arguments than required by $@. | test.c:44:6:44:22 | not_yet_declared1 | not_yet_declared1 |
+| test.c:33:3:33:29 | call to declared_empty_defined_with | This call has more arguments than required by $@. | test.c:46:6:46:32 | declared_empty_defined_with | declared_empty_defined_with |
