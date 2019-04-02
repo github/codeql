@@ -2,8 +2,8 @@
  * @name Short global name
  * @description Global variables should have descriptive names, to help document their use, avoid namespace pollution and reduce the risk of shadowing with local variables.
  * @kind problem
- * @problem.severity warning
- * @precision high
+ * @problem.severity recommendation
+ * @precision very-high
  * @id cpp/short-global-name
  * @tags maintainability
  */
