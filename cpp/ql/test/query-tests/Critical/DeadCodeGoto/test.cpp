@@ -88,7 +88,7 @@ void test8() {
 	int x = 0;
 
 #ifdef CONFIG_DEFINE
-	goto skip; // GOOD (the `x++` is still reachable in some configurations) [FALSE POSITIVE]
+	goto skip; // GOOD (the `x++` is still reachable in some configurations)
 #endif
 	x++;
 
