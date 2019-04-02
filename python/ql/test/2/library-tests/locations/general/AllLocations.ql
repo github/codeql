@@ -1,7 +1,7 @@
 /**
  * @name All must have locations
  * @description
- * @kind problem
+ * @kind table
  * @problem.severity error
  */
 
