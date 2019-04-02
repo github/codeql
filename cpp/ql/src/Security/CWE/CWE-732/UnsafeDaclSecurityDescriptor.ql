@@ -14,6 +14,7 @@
  */
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.dataflow.DataFlow2
 
 /**
  * A function call to SetSecurityDescriptorDacl to set the ACL, specified by (2nd argument) bDaclPresent = TRUE
@@ -28,9 +29,9 @@ class SetSecurityDescriptorDaclFunctionCall extends FunctionCall {
 /**
  * Dataflow that detects a call to SetSecurityDescriptorDacl with a NULL DACL as the pDacl argument
  */
-class SetSecurityDescriptorDaclFunctionConfiguration extends DataFlow::Configuration {
-  SetSecurityDescriptorDaclFunctionConfiguration() {
-    this = "SetSecurityDescriptorDaclFunctionConfiguration"
+class NullDaclConfig extends DataFlow::Configuration {
+  NullDaclConfig() {
+    this = "NullDaclConfig"
   }
 
   override predicate isSource(DataFlow::Node source) {
@@ -49,6 +50,43 @@ class SetSecurityDescriptorDaclFunctionConfiguration extends DataFlow::Configura
   }
 }
 
+/**
+ * Dataflow that detects a call to SetSecurityDescriptorDacl with a pDacl
+ * argument that's _not_ likely to be NULL.
+ */
+class NonNullDaclConfig extends DataFlow2::Configuration {
+  NonNullDaclConfig() {
+    this = "NonNullDaclConfig"
+  }
+
+  override predicate isSource(DataFlow::Node source) {
+    source.getType().getUnspecifiedType().(PointerType).getBaseType() =
+      any(Type t | t.getName() = "ACL").getUnspecifiedType() and
+    (
+      // If the value comes from a function whose body we can't see, assume
+      // it's not null.
+      exists(Call call |
+        not exists(call.getTarget().getBlock()) and
+        source.asExpr() = call
+      )
+      or
+      // If the value is assigned by reference, assume it's not null. The data
+      // flow library cannot currently follow flow from the body of a function to
+      // an assignment by reference, so this rule applies whether we see the
+      // body or not.
+      exists(Call call |
+        call.getAnArgument() = source.asDefiningArgument()
+      )
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(SetSecurityDescriptorDaclFunctionCall call |
+      sink.asExpr() = call.getArgument(2)
+    )
+  }
+}
+
 from SetSecurityDescriptorDaclFunctionCall call, string message
 where exists
   ( 
@@ -59,9 +97,10 @@ where exists
   ) or exists
   ( 
     Expr constassign, VariableAccess var, 
-    SetSecurityDescriptorDaclFunctionConfiguration config |
+    NullDaclConfig nullDaclConfig, NonNullDaclConfig nonNullDaclConfig |
     message = "Setting a DACL to NULL in a SECURITY_DESCRIPTOR using variable " + var + " that is set to NULL will result in an unprotected object." |
     var = call.getArgument(2)
-    and config.hasFlow(DataFlow::exprNode(constassign), DataFlow::exprNode(var))
+    and nullDaclConfig.hasFlow(DataFlow::exprNode(constassign), DataFlow::exprNode(var))
+    and not nonNullDaclConfig.hasFlow(_, DataFlow::exprNode(var))
   )
 select call, message
