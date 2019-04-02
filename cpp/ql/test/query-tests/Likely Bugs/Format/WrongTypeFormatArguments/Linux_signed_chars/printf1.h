@@ -101,3 +101,36 @@ void fun1(unsigned char* a, unsigned char* b) {
   printf("%td\n", pdt); // GOOD
   printf("%td\n", a-b); // GOOD
 }
+
+void extensions()
+{
+	{
+		long double ld;
+		double d;
+
+		printf("%Lg", ld); // GOOD
+		printf("%llg", ld); // GOOD (nonstandard equivalent to %Lg) [FALSE POSITIVE]
+		printf("%Lg", d); // BAD (should be %g)
+		printf("%llg", d); // BAD (should be %g) [NOT DETECTED]
+	}
+
+	{
+		long long int lli;
+		long int li;
+
+		printf("%lld", lli); // GOOD
+		printf("%Ld", lli); // GOOD (nonstandard equivalent to %lld) [FALSE POSITIVE]
+		printf("%Ld", li); // BAD (should be %ld)
+		printf("%lld", li); // BAD (should be %ld) [NOT DETECTED]
+	}
+
+	{
+		unsigned long long int ulli;
+		unsigned long int uli;
+
+		printf("%llu", ulli); // GOOD
+		printf("%Lu", ulli); // GOOD (nonstandard equivalent to %llu) [FALSE POSITIVE]
+		printf("%Lu", uli); // BAD (should be %lu)
+		printf("%llu", uli); // BAD (should be %lu) [NOT DETECTED]
+	}
+}
