@@ -2,8 +2,8 @@
  * @name Function declared in block
  * @description Functions should always be declared at file scope. It is confusing to declare a function at block scope, and the visibility of the function is not what would be expected.
  * @kind problem
- * @problem.severity warning
- * @precision high
+ * @problem.severity recommendation
+ * @precision very-high
  * @id cpp/function-in-block
  * @tags maintainability
  *       readability
