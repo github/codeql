@@ -180,7 +180,7 @@ module NodeJSLib {
 
     RouteSetup() {
       server.flowsTo(this) and
-      handler = getArgument(0)
+      handler = getLastArgument()
       or
       server.flowsTo(getReceiver()) and
       this.(MethodCallExpr).getMethodName().regexpMatch("on(ce)?") and
@@ -663,7 +663,7 @@ module NodeJSLib {
 
     RouteSetupCandidate() {
       getMethodName() = "createServer" and
-      arg = getArgument(0)
+      arg = getLastArgument()
       or
       getMethodName().regexpMatch("on(ce)?") and
       getArgument(0).mayHaveStringValue("request") and
