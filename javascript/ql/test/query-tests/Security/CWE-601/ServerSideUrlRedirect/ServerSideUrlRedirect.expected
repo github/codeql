@@ -22,6 +22,12 @@ nodes
 | express.js:135:23:135:37 | req.params.user |
 | express.js:136:16:136:36 | 'u' + r ... ms.user |
 | express.js:136:22:136:36 | req.params.user |
+| koa.js:6:6:6:27 | url |
+| koa.js:6:12:6:27 | ctx.query.target |
+| koa.js:7:15:7:17 | url |
+| koa.js:8:15:8:26 | `${url}${x}` |
+| koa.js:8:18:8:20 | url |
+| koa.js:14:16:14:18 | url |
 | node.js:6:7:6:52 | target |
 | node.js:6:16:6:39 | url.par ... , true) |
 | node.js:6:16:6:45 | url.par ... ).query |
@@ -60,6 +66,24 @@ edges
 | express.js:134:22:134:36 | req.params.user | express.js:134:16:134:36 | '/' + r ... ms.user |
 | express.js:135:23:135:37 | req.params.user | express.js:135:16:135:37 | '//' +  ... ms.user |
 | express.js:136:22:136:36 | req.params.user | express.js:136:16:136:36 | 'u' + r ... ms.user |
+| koa.js:6:6:6:27 | url | koa.js:7:15:7:17 | url |
+| koa.js:6:6:6:27 | url | koa.js:8:18:8:20 | url |
+| koa.js:6:6:6:27 | url | koa.js:10:40:10:42 | url |
+| koa.js:6:6:6:27 | url | koa.js:10:40:10:42 | url |
+| koa.js:6:6:6:27 | url | koa.js:10:51:10:51 | url |
+| koa.js:6:6:6:27 | url | koa.js:11:6:11:8 | url |
+| koa.js:6:6:6:27 | url | koa.js:14:16:14:18 | url |
+| koa.js:6:12:6:27 | ctx.query.target | koa.js:6:6:6:27 | url |
+| koa.js:8:18:8:20 | url | koa.js:8:15:8:26 | `${url}${x}` |
+| koa.js:10:40:10:42 | url | koa.js:10:51:10:51 | url |
+| koa.js:10:40:10:42 | url | koa.js:10:51:10:51 | url |
+| koa.js:10:40:10:42 | url | koa.js:11:6:11:8 | url |
+| koa.js:10:40:10:42 | url | koa.js:11:6:11:8 | url |
+| koa.js:10:40:10:42 | url | koa.js:14:16:14:18 | url |
+| koa.js:10:40:10:42 | url | koa.js:14:16:14:18 | url |
+| koa.js:10:51:10:51 | url | koa.js:11:6:11:8 | url |
+| koa.js:10:51:10:51 | url | koa.js:14:16:14:18 | url |
+| koa.js:11:6:11:8 | url | koa.js:14:16:14:18 | url |
 | node.js:6:7:6:52 | target | node.js:7:34:7:39 | target |
 | node.js:6:16:6:39 | url.par ... , true) | node.js:6:16:6:45 | url.par ... ).query |
 | node.js:6:16:6:45 | url.par ... ).query | node.js:6:16:6:52 | url.par ... .target |
@@ -95,6 +119,9 @@ edges
 | express.js:134:16:134:36 | '/' + r ... ms.user | express.js:134:22:134:36 | req.params.user | express.js:134:16:134:36 | '/' + r ... ms.user | Untrusted URL redirection due to $@. | express.js:134:22:134:36 | req.params.user | user-provided value |
 | express.js:135:16:135:37 | '//' +  ... ms.user | express.js:135:23:135:37 | req.params.user | express.js:135:16:135:37 | '//' +  ... ms.user | Untrusted URL redirection due to $@. | express.js:135:23:135:37 | req.params.user | user-provided value |
 | express.js:136:16:136:36 | 'u' + r ... ms.user | express.js:136:22:136:36 | req.params.user | express.js:136:16:136:36 | 'u' + r ... ms.user | Untrusted URL redirection due to $@. | express.js:136:22:136:36 | req.params.user | user-provided value |
+| koa.js:7:15:7:17 | url | koa.js:6:12:6:27 | ctx.query.target | koa.js:7:15:7:17 | url | Untrusted URL redirection due to $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
+| koa.js:8:15:8:26 | `${url}${x}` | koa.js:6:12:6:27 | ctx.query.target | koa.js:8:15:8:26 | `${url}${x}` | Untrusted URL redirection due to $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
+| koa.js:14:16:14:18 | url | koa.js:6:12:6:27 | ctx.query.target | koa.js:14:16:14:18 | url | Untrusted URL redirection due to $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
 | node.js:7:34:7:39 | target | node.js:6:26:6:32 | req.url | node.js:7:34:7:39 | target | Untrusted URL redirection due to $@. | node.js:6:26:6:32 | req.url | user-provided value |
 | node.js:15:34:15:45 | '/' + target | node.js:11:26:11:32 | req.url | node.js:15:34:15:45 | '/' + target | Untrusted URL redirection due to $@. | node.js:11:26:11:32 | req.url | user-provided value |
 | node.js:32:34:32:55 | target  ... =" + me | node.js:29:26:29:32 | req.url | node.js:32:34:32:55 | target  ... =" + me | Untrusted URL redirection due to $@. | node.js:29:26:29:32 | req.url | user-provided value |
