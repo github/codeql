@@ -20,9 +20,7 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
   Callable getEnclosingCallable() { none() }
 
   /** Gets the assembly that this element was compiled into. */
-  Assembly getAssembly() {
-    result = this.getEnclosingCallable().getDeclaringType().getALocation()
-  }
+  Assembly getAssembly() { result = this.getEnclosingCallable().getDeclaringType().getALocation() }
 
   /**
    * Gets a control flow node for this element. That is, a node in the
@@ -75,6 +73,40 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
     getAControlFlowNode().getBasicBlock().getASuccessor+().getANode() = result.getAControlFlowNode()
   }
 
+  pragma[noinline]
+  private predicate immediatelyControlsBlockSplit0(
+    ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s
+  ) {
+    // Only calculate dominance by explicit recursion for split nodes;
+    // all other nodes can use regular CFG dominance
+    this instanceof ControlFlow::Internal::SplitControlFlowElement and
+    cb.getLastNode() = this.getAControlFlowNode() and
+    succ = cb.getASuccessorByType(s)
+  }
+
+  pragma[noinline]
+  private predicate immediatelyControlsBlockSplit1(
+    ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s, BasicBlock pred, SuccessorType t
+  ) {
+    this.immediatelyControlsBlockSplit0(cb, succ, s) and
+    pred = succ.getAPredecessorByType(t) and
+    pred != cb
+  }
+
+  pragma[noinline]
+  private predicate immediatelyControlsBlockSplit2(
+    ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s, BasicBlock pred, SuccessorType t
+  ) {
+    this.immediatelyControlsBlockSplit1(cb, succ, s, pred, t) and
+    (
+      succ.dominates(pred)
+      or
+      // `pred` might be another split of this element
+      pred.getLastNode().getElement() = this and
+      t = s
+    )
+  }
+
   /**
    * Holds if basic block `succ` is immediately controlled by this control flow
    * element with conditional value `s`. That is, `succ` can only be reached from
@@ -96,19 +128,11 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    */
   pragma[nomagic]
   private predicate immediatelyControlsBlockSplit(BasicBlock succ, ConditionalSuccessor s) {
-    // Only calculate dominance by explicit recursion for split nodes;
-    // all other nodes can use regular CFG dominance
-    this instanceof ControlFlow::Internal::SplitControlFlowElement and
-    exists(ConditionBlock cb | cb.getLastNode() = this.getAControlFlowNode() |
-      succ = cb.getASuccessorByType(s) and
+    exists(ConditionBlock cb | this.immediatelyControlsBlockSplit0(cb, succ, s) |
       forall(BasicBlock pred, SuccessorType t |
-        pred = succ.getAPredecessorByType(t) and pred != cb
+        this.immediatelyControlsBlockSplit1(cb, succ, s, pred, t)
       |
-        succ.dominates(pred)
-        or
-        // `pred` might be another split of this element
-        pred.getLastNode().getElement() = this and
-        t = s
+        this.immediatelyControlsBlockSplit2(cb, succ, s, pred, t)
       )
     )
   }

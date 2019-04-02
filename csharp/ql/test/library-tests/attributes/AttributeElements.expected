@@ -1,15 +1,17 @@
 | attributes.cs:41:7:41:9 | Foo | attributes.cs:40:2:40:22 | [AttributeUsage(...)] | System.AttributeUsageAttribute |
 | attributes.cs:44:17:44:19 | foo | attributes.cs:43:6:43:16 | [Conditional(...)] | System.Diagnostics.ConditionalAttribute |
 | attributes.cs:49:23:49:23 | x | attributes.cs:49:14:49:16 | [Foo(...)] | Foo |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:10:12:10:24 | [AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:11:12:11:30 | [AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:32 | [AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:13:12:13:26 | [AssemblyCompany(...)] | System.Reflection.AssemblyCompanyAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:14:12:14:26 | [AssemblyProduct(...)] | System.Reflection.AssemblyProductAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:15:12:15:28 | [AssemblyCopyright(...)] | System.Reflection.AssemblyCopyrightAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:16:12:16:28 | [AssemblyTrademark(...)] | System.Reflection.AssemblyTrademarkAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:17:12:17:26 | [AssemblyCulture(...)] | System.Reflection.AssemblyCultureAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:22:12:22:21 | [ComVisible(...)] | System.Runtime.InteropServices.ComVisibleAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:25:12:25:15 | [Guid(...)] | System.Runtime.InteropServices.GuidAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:37:12:37:26 | [AssemblyVersion(...)] | System.Reflection.AssemblyVersionAttribute |
-| file://:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:38:12:38:30 | [AssemblyFileVersion(...)] | System.Reflection.AssemblyFileVersionAttribute |
+| attributes.cs:52:10:52:11 | M1 | attributes.cs:51:6:51:16 | [My(...)] | MyAttribute |
+| attributes.cs:55:10:55:11 | M2 | attributes.cs:54:6:54:16 | [My(...)] | MyAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:10:12:10:24 | [AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:11:12:11:30 | [AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:32 | [AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:13:12:13:26 | [AssemblyCompany(...)] | System.Reflection.AssemblyCompanyAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:14:12:14:26 | [AssemblyProduct(...)] | System.Reflection.AssemblyProductAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:15:12:15:28 | [AssemblyCopyright(...)] | System.Reflection.AssemblyCopyrightAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:16:12:16:28 | [AssemblyTrademark(...)] | System.Reflection.AssemblyTrademarkAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:17:12:17:26 | [AssemblyCulture(...)] | System.Reflection.AssemblyCultureAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:22:12:22:21 | [ComVisible(...)] | System.Runtime.InteropServices.ComVisibleAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:25:12:25:15 | [Guid(...)] | System.Runtime.InteropServices.GuidAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:37:12:37:26 | [AssemblyVersion(...)] | System.Reflection.AssemblyVersionAttribute |
+| attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:38:12:38:30 | [AssemblyFileVersion(...)] | System.Reflection.AssemblyFileVersionAttribute |

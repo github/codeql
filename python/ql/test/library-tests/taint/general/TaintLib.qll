@@ -334,3 +334,35 @@ class OsCommand extends TaintSink {
     }
 
 }
+
+
+class Falsey extends TaintKind {
+
+    Falsey() { this = "falsey" }
+
+    override boolean booleanValue() {
+        result = false
+    }
+
+}
+
+class FalseySource  extends TaintSource {
+
+    FalseySource() {
+         this.(NameNode).getId() = "FALSEY"
+    }
+
+    override predicate isSourceOf(TaintKind kind) {
+        kind instanceof Falsey
+    }
+
+    override string toString() {
+        result = "falsey.source"
+    }
+
+}
+
+
+
+
+

@@ -37,6 +37,12 @@ class Type extends DotNet::Type, Member, TypeContainer, @type {
     or
     not this instanceof UnboundGenericType and getAChild().containsTypeParameters()
   }
+
+  /** Holds if this type is a reference type, or a type parameter that is a reference type. */
+  predicate isRefType() { none() }
+
+  /** Holds if this type is a value type, or a type parameter that is a value type. */
+  predicate isValueType() { none() }
 }
 
 /**
@@ -356,8 +362,6 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   override string toString() { result = Type.super.toString() }
-
-  override Location getLocation() { result = Type.super.getLocation() }
 }
 
 /**
@@ -404,7 +408,9 @@ class VoidType extends DotNet::ValueOrRefType, Type, @void_type {
  * Either a simple type (`SimpleType`), an `enum` (`Enum`), a `struct` (`Struct`),
  * or a nullable type (`NullableType`).
  */
-class ValueType extends ValueOrRefType, @value_type { }
+class ValueType extends ValueOrRefType, @value_type {
+  override predicate isValueType() { any() }
+}
 
 /**
  * A simple type. Simple types in C# are predefined `struct` types.
@@ -659,6 +665,8 @@ class RefType extends ValueOrRefType, @ref_type {
     result = (this.getNumberOverridden() * this.getInheritanceDepth()) /
         this.getNumberOfCallables().(float)
   }
+
+  override predicate isRefType() { any() }
 }
 
 // Helper predicate to avoid slow "negation_body"

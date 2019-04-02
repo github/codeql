@@ -1,4 +1,5 @@
 | IdentityReplacement.js:1:27:1:30 | /"/g | This replaces '"' with itself. |
+| IdentityReplacement.js:4:14:4:21 | indirect | This replaces '"' with itself. |
 | tst.js:1:13:1:16 | "\\\\" | This replaces '\\' with itself. |
 | tst.js:2:13:2:18 | /(\\\\)/ | This replaces '\\' with itself. |
 | tst.js:3:13:3:17 | /["]/ | This replaces '"' with itself. |

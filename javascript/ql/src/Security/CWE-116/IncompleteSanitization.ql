@@ -59,7 +59,7 @@ predicate isSimple(RegExpTerm t) {
  */
 predicate isBackslashEscape(MethodCallExpr mce, RegExpLiteral re) {
   mce.getMethodName() = "replace" and
-  re = mce.getArgument(0) and
+  re.flow().(DataFlow::SourceNode).flowsToExpr(mce.getArgument(0)) and
   re.isGlobal() and
   exists(string new | new = mce.getArgument(1).getStringValue() |
     // `new` is `\$&`, `\$1` or similar
@@ -104,7 +104,7 @@ predicate allBackslashesEscaped(DataFlow::Node nd) {
 from MethodCallExpr repl, Expr old, string msg
 where
   repl.getMethodName() = "replace" and
-  old = repl.getArgument(0) and
+  (old = repl.getArgument(0) or old.flow().(DataFlow::SourceNode).flowsToExpr(repl.getArgument(0))) and
   (
     not old.(RegExpLiteral).isGlobal() and
     msg = "This replaces only the first occurrence of " + old + "." and

@@ -39,7 +39,16 @@ predicate allocationFunction(Function f)
       name = "MmAllocateNodePagesForMdlEx" or
       name = "MmMapLockedPagesWithReservedMapping" or
       name = "MmMapLockedPages" or
-      name = "MmMapLockedPagesSpecifyCache"
+      name = "MmMapLockedPagesSpecifyCache" or
+      name = "LocalAlloc" or
+      name = "LocalReAlloc" or
+      name = "GlobalAlloc" or
+      name = "GlobalReAlloc" or
+      name = "HeapAlloc" or
+      name = "HeapReAlloc" or
+      name = "VirtualAlloc" or
+      name = "CoTaskMemAlloc" or
+      name = "CoTaskMemRealloc"
     )
   )
 }
@@ -81,7 +90,17 @@ predicate freeFunction(Function f, int argNum)
       (name = "MmFreeMappingAddress" and argNum = 0) or
       (name = "MmFreePagesFromMdl" and argNum = 0) or
       (name = "MmUnmapReservedMapping" and argNum = 0) or
-      (name = "MmUnmapLockedPages" and argNum = 0)
+      (name = "MmUnmapLockedPages" and argNum = 0) or
+      (name = "LocalFree" and argNum = 0) or
+      (name = "GlobalFree" and argNum = 0) or
+      (name = "HeapFree" and argNum = 2) or
+      (name = "VirtualFree" and argNum = 0) or
+      (name = "CoTaskMemFree" and argNum = 0) or
+      (name = "SysFreeString" and argNum = 0) or
+      (name = "LocalReAlloc" and argNum = 0) or
+      (name = "GlobalReAlloc" and argNum = 0) or
+      (name = "HeapReAlloc" and argNum = 2) or
+      (name = "CoTaskMemRealloc" and argNum = 0)
     )
   )
 }

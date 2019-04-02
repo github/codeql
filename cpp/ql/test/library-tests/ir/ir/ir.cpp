@@ -1006,4 +1006,47 @@ void OperatorDeleteArray() {
 }
 #endif
 
+struct EmptyStruct {};
+
+void EmptyStructInit() {
+  EmptyStruct s = {};
+}
+
+auto lam = []() {};
+
+void Lambda(int x, const String& s) {
+  auto lambda_empty = [](float f) { return 'A'; };
+  lambda_empty(0);
+  auto lambda_ref = [&](float f) { return s.c_str()[x]; };
+  lambda_ref(1);
+  auto lambda_val = [=](float f) { return s.c_str()[x]; };
+  lambda_val(2);
+  auto lambda_ref_explicit = [&s](float f) { return s.c_str()[0]; };
+  lambda_ref_explicit(3);
+  auto lambda_val_explicit = [s](float f) { return s.c_str()[0]; };
+  lambda_val_explicit(4);
+  auto lambda_mixed_explicit = [&s, x](float f) { return s.c_str()[x]; };
+  lambda_mixed_explicit(5);
+  int r = x - 1;
+  auto lambda_inits = [&s, x, i = x + 1, &j = r](float f) { return s.c_str()[x + i - j]; };
+  lambda_inits(6);
+}
+
+#if 0  // Explicit capture of `this` requires possible extractor fixes.
+
+struct LambdaContainer {
+  int x;
+
+  void LambdaMember(const String& s) {
+    auto lambda_implicit_this = [=](float f) { return s.c_str()[x]; };
+    lambda_implicit_this(1);
+    auto lambda_explicit_this_byref = [this, &s](float f) { return s.c_str()[x]; };
+    lambda_explicit_this_byref(2);
+    auto lambda_explicit_this_bycopy = [*this, &s](float f) { return s.c_str()[x]; };
+    lambda_explicit_this_bycopy(3);
+  }
+};
+
+#endif
+
 // semmle-extractor-options: -std=c++17

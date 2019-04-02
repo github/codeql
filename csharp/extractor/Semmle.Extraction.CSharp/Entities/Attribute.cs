@@ -51,9 +51,12 @@ namespace Semmle.Extraction.CSharp.Entities
                     int child = 0;
                     foreach (var arg in syntax.ArgumentList.Arguments)
                     {
-                        Expression.Create(cx, arg.Expression, this, child++);
+                        var expr = Expression.Create(cx, arg.Expression, this, child++);
+                        if (!(arg.NameEquals is null))
+                        {
+                            cx.Emit(Tuples.expr_argument_name(expr, arg.NameEquals.Name.Identifier.Text));
+                        }
                     }
-                    // !! Handle named arguments
                 });
             }
         }
@@ -63,14 +66,6 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var attribute in symbol.GetAttributes())
             {
                 new Attribute(cx, attribute, entity);
-            }
-        }
-
-        public static void ExtractAttributes(Context cx, IEnumerable<AttributeListSyntax> attributes, IEntity entity)
-        {
-            foreach (var attributeSyntax in attributes.SelectMany(l => l.Attributes))
-            {
-                new Attribute(cx, attributeSyntax, entity);
             }
         }
 

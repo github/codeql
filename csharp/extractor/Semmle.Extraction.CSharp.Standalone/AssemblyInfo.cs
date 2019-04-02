@@ -139,6 +139,7 @@ namespace Semmle.BuildAnalyser
                  *  loading the same assembly from different locations.
                  */
                 using (var pereader = new System.Reflection.PortableExecutable.PEReader(new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                using (var sha1 = new SHA1CryptoServiceProvider())
                 {
                     var metadata = pereader.GetMetadata();
                     unsafe
@@ -173,7 +174,5 @@ namespace Semmle.BuildAnalyser
 
             return result;
         }
-
-        static readonly SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
     }
 }

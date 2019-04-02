@@ -302,3 +302,8 @@ def guarded_modification(z=[]):
         z.append(0)
     return z
 
+def issue1143(expr, param=[]):
+    if not param:
+        return result
+    for i in param:
+        param.remove(i) # Mutation here

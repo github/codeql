@@ -1,19 +1,23 @@
 # Improvements to Python analysis
 
+## General improvements
 
- ## General improvements
+### Extractor changes
 
- > Changes that affect alerts in many files or from many queries
-> For example, changes to file classification
+The extractor now parses all Python code from a single unified grammar. This means that almost all Python code will be successfully parsed, even if mutually incompatible Python code is present in the same project. This also means that Python code for any version can be correctly parsed on a worker running any other supported version of Python. For example, Python 3.7 code is parsed correctly, even if the installed version of Python is only 3.5. This will reduce the number of syntax errors found in many projects.
 
-The constants `MULTILINE` and `VERBOSE` in `re` module, are now understood for Python 3.6 and upward. 
-Removes false positives seen when using Python 3.6, but not when using earlier versions.
+### Regular expression analysis improvements
+
+The Python `re` (regular expressions) module library has a couple of constants called `MULTILINE` and `VERBOSE` which determine the parsing of regular expressions. Python 3.6 changed the implementation of these constants, which resulted in false positive results for some queries. The relevant QL libraries have been updated to support both implementations which will remove false positive results from projects that use Python 3.6 and later versions.
+
+### API improvements
+
 The API has been improved to declutter the global namespace and improve discoverability and readability.
  * New predicates `ModuleObject::named(name)` and `ModuleObject.attr(name)` have been added, allowing more readable access to common objects. For example, `(any ModuleObject m | m.getName() = "sys").getAttribute("exit")` can be replaced with `ModuleObject::named("sys").attr("exit")`
- * The API for accessing builtin functions has been improved. Predicates of the form `theXXXFunction()`, such as `theLenFunction()`, have been deprecated in favour of `Object::builtin(name)`.
+ * The API for accessing builtin functions has been improved. Predicates of the form `theXXXFunction()`, such as `theLenFunction()`, have been deprecated in favor of `Object::builtin(name)`.
  * A configuration based API has been added for writing data flow and taint tracking queries. This is provided as a convenience for query authors who have written data flow or taint tracking queries for other languages, so they can use a similar format of query across multiple languages.
 
- ## New queries
+## New queries
 
  | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
@@ -24,7 +28,7 @@ The API has been improved to declutter the global namespace and improve discover
 | Overly permissive file permissions (`py/overly-permissive-file`) | security, external/cwe/cwe-732 | Finds instances where a file is created with overly permissive permissions. Results are not shown on LGTM by default. |
 | Use of insecure SSL/TLS version (`py/insecure-protocol`) | security, external/cwe/cwe-327 | Finds instances where a known insecure protocol has been specified. Results are shown on LGTM by default. |
 
- ## Changes to existing queries
+## Changes to existing queries
 
  | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
@@ -35,11 +39,8 @@ The API has been improved to declutter the global namespace and improve discover
 | Unused import (`py/unused-import`) | Fewer false positive results | Results where the imported module is used in a `doctest` string are no longer reported. |
 | Unused import (`py/unused-import`) | Fewer false positive results | Results where the imported module is used in a type-hint comment are no longer reported. |
 
- ## Changes to code extraction
 
- * The extractor now parses all Python code from a single unified grammar. This means that almost all Python code will be successfully parsed, even if mutually incompatible Python code is present in the same project. This also means that Python code for any version can be correctly parsed on a worker running any other supported version of Python. For example, Python 3.7 code is parsed correctly, even if the installed version of Python is only 3.5.
-
- ## Changes to QL libraries
+## Changes to QL libraries
 
  * Added support for the `dill` pickle library.
  * Added support for the `bottle` web framework.

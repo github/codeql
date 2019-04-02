@@ -34,19 +34,23 @@ string insecure_version_name() {
 }
 
 private ModuleObject the_ssl_module() {
-    result = any(ModuleObject m | m.getName() = "ssl")
+    result = ModuleObject::named("ssl")
 }
 
 private ModuleObject the_pyOpenSSL_module() {
-    result = any(ModuleObject m | m.getName() = "pyOpenSSL.SSL")
+    result = ModuleObject::named("pyOpenSSL.SSL")
 }
 
 /* A syntactic check for cases where points-to analysis cannot infer the presence of
  * a protocol constant, e.g. if it has been removed in later versions of the `ssl`
  * library.
  */
-predicate probable_insecure_ssl_constant(CallNode call, string insecure_version) {
-    exists(ControlFlowNode arg | arg = call.getArgByName("ssl_version") |
+bindingset[named_argument]
+predicate probable_insecure_ssl_constant(CallNode call, string insecure_version, string named_argument) {
+    exists(ControlFlowNode arg |
+        arg = call.getArgByName(named_argument) or
+        arg = call.getArg(0)
+    |
         arg.(AttrNode).getObject(insecure_version).refersTo(the_ssl_module())
         or
         arg.(NameNode).getId() = insecure_version and
@@ -57,26 +61,28 @@ predicate probable_insecure_ssl_constant(CallNode call, string insecure_version)
     )
 }
 
-predicate unsafe_ssl_wrap_socket_call(CallNode call, string method_name, string insecure_version) {
+predicate unsafe_ssl_wrap_socket_call(CallNode call, string method_name, string insecure_version, string named_argument) {
     (
         call = ssl_wrap_socket().getACall() and
-        method_name = "deprecated method ssl.wrap_socket"
+        method_name = "deprecated method ssl.wrap_socket" and
+        named_argument = "ssl_version"
         or
         call = ssl_Context_class().getACall() and
+        named_argument = "protocol" and
         method_name = "ssl.SSLContext"
     )
     and
     insecure_version = insecure_version_name()
     and
     (
-        call.getArgByName("ssl_version").refersTo(the_ssl_module().attr(insecure_version))
+        call.getArgByName(named_argument).refersTo(the_ssl_module().attr(insecure_version))
         or
-        probable_insecure_ssl_constant(call, insecure_version)
+        probable_insecure_ssl_constant(call, insecure_version, named_argument)
     )
 }
 
 ClassObject the_pyOpenSSL_Context_class() {
-    result = any(ModuleObject m | m.getName() = "pyOpenSSL.SSL").attr("Context")
+    result = ModuleObject::named("pyOpenSSL.SSL").attr("Context")
 }
 
 predicate unsafe_pyOpenSSL_Context_call(CallNode call, string insecure_version) {
@@ -87,7 +93,7 @@ predicate unsafe_pyOpenSSL_Context_call(CallNode call, string insecure_version) 
 
 from CallNode call, string method_name, string insecure_version
 where
-    unsafe_ssl_wrap_socket_call(call, method_name, insecure_version)
+    unsafe_ssl_wrap_socket_call(call, method_name, insecure_version, _)
 or
     unsafe_pyOpenSSL_Context_call(call, insecure_version) and method_name = "pyOpenSSL.SSL.Context"
 select call, "Insecure SSL/TLS protocol version " + insecure_version + " specified in call to " + method_name + "."

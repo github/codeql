@@ -9,7 +9,7 @@ ModuleObject theBottleModule() {
 
 /** The bottle.Bottle class */
 ClassObject theBottleClass() {
-    result = ModuleObject::named("bottle").attr("Bottle")
+    result = theBottleModule().attr("Bottle")
 }
 
 /** Holds if `route` is routed to `func`

@@ -53,10 +53,14 @@ module EntityFramework {
   }
 
   /** The class `Microsoft.EntityFrameworkCore.DbSet<>` or `System.Data.Entity.DbSet<>`. */
-  class DbSet extends EFClass, UnboundGenericClass { DbSet() { this.getName() = "DbSet<>" } }
+  class DbSet extends EFClass, UnboundGenericClass {
+    DbSet() { this.getName() = "DbSet<>" }
+  }
 
   /** The class `Microsoft.EntityFrameworkCore.DbQuery<>` or `System.Data.Entity.DbQuery<>`. */
-  class DbQuery extends EFClass, UnboundGenericClass { DbQuery() { this.hasName("DbQuery<>") } }
+  class DbQuery extends EFClass, UnboundGenericClass {
+    DbQuery() { this.hasName("DbQuery<>") }
+  }
 
   /** A generic type or method that takes a mapped type as its type argument. */
   private predicate usesMappedType(UnboundGeneric g) {

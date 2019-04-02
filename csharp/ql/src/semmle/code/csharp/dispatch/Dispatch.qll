@@ -202,7 +202,7 @@ private module Internal {
      * Gets a non-exact (see `hasQualifierType()`) qualifier type of this call
      * that does not contain type parameters.
      */
-    TypeWithoutTypeParameters getANonExactQualifierTypeWithoutTypeParameters() {
+    private TypeWithoutTypeParameters getANonExactQualifierTypeWithoutTypeParameters() {
       exists(Type qualifierType | hasQualifierType(qualifierType, false) |
         // Qualifier type contains no type parameters: use it
         result = qualifierType
@@ -218,6 +218,20 @@ private module Internal {
         // Qualifier type is a constructed type where some (but not all) type arguments
         // are type parameters: consider all potential instantiations
         result = qualifierType.(QualifierTypeWithTypeParameters).getAPotentialInstance()
+      )
+    }
+
+    /**
+     * Gets a non-exact (see `hasQualifierType()`) qualifier type of this call.
+     */
+    ValueOrRefType getANonExactQualifierType() {
+      exists(TypeWithoutTypeParameters t |
+        t = this.getANonExactQualifierTypeWithoutTypeParameters()
+      |
+        result.(ConstructedType).getUnboundGeneric() = t
+        or
+        not t instanceof UnboundGenericType and
+        result = t
       )
     }
   }
@@ -480,9 +494,9 @@ private module Internal {
      * qualifier types are `B.M` and `C.M`, `C.M`, and none, respectively.
      */
     private RuntimeInstanceMethod getAViableOverrider() {
-      exists(TypeWithoutTypeParameters t, NonConstructedOverridableMethod m |
-        t = getANonExactQualifierTypeWithoutTypeParameters() and
-        getAStaticTarget() = m.getAConstructingMethodOrSelf() and
+      exists(ValueOrRefType t, NonConstructedOverridableMethod m |
+        t = this.getANonExactQualifierType() and
+        this.getAStaticTarget() = m.getAConstructingMethodOrSelf() and
         result = m.getAnOverrider(t)
       )
     }
@@ -620,9 +634,9 @@ private module Internal {
      * respectively.
      */
     private RuntimeAccessor getAViableOverrider() {
-      exists(TypeWithoutTypeParameters t |
-        t = getANonExactQualifierTypeWithoutTypeParameters() and
-        result = getAStaticTarget().(OverridableAccessor).getAnOverrider(t)
+      exists(ValueOrRefType t |
+        t = this.getANonExactQualifierType() |
+        result = this.getAStaticTarget().(OverridableAccessor).getAnOverrider(t)
       )
     }
   }

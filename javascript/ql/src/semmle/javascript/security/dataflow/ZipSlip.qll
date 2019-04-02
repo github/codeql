@@ -91,6 +91,26 @@ module ZipSlip {
     }
   }
 
+  /** An archive entry path access using the `adm-zip` package. */
+  class AdmZipEntrySource extends Source {
+    AdmZipEntrySource() {
+      exists(DataFlow::SourceNode admZip, DataFlow::SourceNode entry |
+        admZip = DataFlow::moduleImport("adm-zip").getAnInstantiation() and
+        this = entry.getAPropertyRead("entryName")
+      |
+        entry = admZip.getAMethodCall("getEntry")
+        or
+        exists(DataFlow::SourceNode entries | entries = admZip.getAMethodCall("getEntries") |
+          entry = entries.getAPropertyRead()
+          or
+          exists(string map | map = "map" or map = "forEach" |
+            entry = entries.getAMethodCall(map).getCallback(0).getParameter(0)
+          )
+        )
+      )
+    }
+  }
+
   /** A call to `fs.createWriteStream`, as a sink for unsafe archive extraction. */
   class CreateWriteStreamSink extends Sink {
     CreateWriteStreamSink() {

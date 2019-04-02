@@ -646,7 +646,7 @@ module DataFlow {
             sourceDecl.matchesHandle(result.(Callable))
             or
             // CIL callable without C# implementation in the database
-            not sourceDecl.matchesHandle(any(Callable k)) and
+            not sourceDecl.matchesHandle(any(Callable k | k.hasBody())) and
             result = sourceDecl
           else
             // C# callable without C# implementation in the database
@@ -704,6 +704,7 @@ module DataFlow {
       )
     }
 
+    pragma[nomagic]
     private ControlFlowElement getANonExactScopeChild(ControlFlowElement scope) {
       scope = getAScope(false) and
       result = scope
@@ -1436,7 +1437,7 @@ module DataFlow {
         TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof Expr } or
         TSsaDefinitionNode(Ssa::Definition def) or
         TCilParameterNode(CIL::Parameter p) { p.getMethod().hasBody() } or
-        TCilExprNode(CIL::Expr e) or
+        TCilExprNode(CIL::Expr e) { e.getImplementation() instanceof CIL::BestImplementation } or
         TImplicitDelegateCallNode(DelegateArgumentToLibraryCallable arg) or
         TImplicitCapturedArgumentNode(Call c, LocalScopeVariable v) {
           exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowIn(_, c) |

@@ -43,12 +43,13 @@ predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
  * - `?` (any suffix becomes part of query)
  * - `#` (any suffix becomes part of fragment)
  * - `/` or `\`, immediately prefixed by a character other than `:`, `/`, or `\` (any suffix becomes part of the path)
+ * - a leading `/` or `\` followed by a character other than `/` or `\` (any suffix becomes part of the path)
  *
- * In the latter case, the additional prefix check is necessary to avoid a `/` that could be interpreted as
+ * In the latter two cases, the additional check is necessary to avoid a `/` that could be interpreted as
  * the `//` separating the (optional) scheme from the hostname.
  */
 private predicate hasHostnameSanitizingSubstring(DataFlow::Node nd) {
-  nd.getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*")
+  nd.getStringValue().regexpMatch(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*")
   or
   hasHostnameSanitizingSubstring(StringConcatenation::getAnOperand(nd))
   or

@@ -17,7 +17,7 @@ class DjangoResponse extends TaintKind {
 }
 
 private ClassObject theDjangoHttpResponseClass() {
-    result = any(ModuleObject m | m.getName() = "django.http.response").attr("HttpResponse") and
+    result = ModuleObject::named("django.http.response").attr("HttpResponse") and
     not result = theDjangoHttpRedirectClass()
 }
 
@@ -44,7 +44,7 @@ class DjangoResponseWrite extends TaintSink {
     DjangoResponseWrite() {
         exists(AttrNode meth, CallNode call |
             call.getFunction() = meth and
-            any(DjangoResponse repsonse).taints(meth.getObject("write")) and
+            any(DjangoResponse response).taints(meth.getObject("write")) and
             this = call.getArg(0)
         )
     }

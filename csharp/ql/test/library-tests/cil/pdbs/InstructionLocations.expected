@@ -31,11 +31,11 @@
 | C:/dev/projects/Sandbox/PortablePdb/Class1.cs:10:4:10:19 | 24: br.s 25: |
 | C:/dev/projects/Sandbox/PortablePdb/Class1.cs:11:3:11:4 | 25: ldloc.3 |
 | C:/dev/projects/Sandbox/PortablePdb/Class1.cs:11:3:11:4 | 26: ret |
-| EmbeddedPdb, Version=1.0.0.0, Culture=neutral | 0: ldarg.0 |
-| EmbeddedPdb, Version=1.0.0.0, Culture=neutral | 1: call System.Object..ctor |
-| EmbeddedPdb, Version=1.0.0.0, Culture=neutral | 2: nop |
-| EmbeddedPdb, Version=1.0.0.0, Culture=neutral | 3: ret |
-| PortablePdb, Version=1.0.0.0, Culture=neutral | 0: ldarg.0 |
-| PortablePdb, Version=1.0.0.0, Culture=neutral | 1: call System.Object..ctor |
-| PortablePdb, Version=1.0.0.0, Culture=neutral | 2: nop |
-| PortablePdb, Version=1.0.0.0, Culture=neutral | 3: ret |
+| EmbeddedPdb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 0: ldarg.0 |
+| EmbeddedPdb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 1: call System.Object..ctor |
+| EmbeddedPdb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 2: nop |
+| EmbeddedPdb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 3: ret |
+| PortablePdb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 0: ldarg.0 |
+| PortablePdb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 1: call System.Object..ctor |
+| PortablePdb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 2: nop |
+| PortablePdb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | 3: ret |

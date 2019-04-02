@@ -49,18 +49,28 @@ predicate isTriedAgainstException(ControlFlowElement cfe, ExceptionClass ec) {
   )
 }
 
+private class DisposeCall extends MethodCall {
+  DisposeCall() { this.getTarget() instanceof DisposeMethod }
+}
+
+private predicate reachesDisposeCall(DisposeCall disposeCall, DataFlow::Node node) {
+  DataFlow::localFlowStep(node, DataFlow::exprNode(disposeCall.getQualifier()))
+  or
+  exists(DataFlow::Node mid | reachesDisposeCall(disposeCall, mid) |
+    DataFlow::localFlowStep(node, mid)
+  )
+}
+
 /**
  * Holds if `disposeCall` disposes the object created by `disposableCreation`.
  */
-predicate disposeReachableFromDisposableCreation(MethodCall disposeCall, Expr disposableCreation) {
+predicate disposeReachableFromDisposableCreation(DisposeCall disposeCall, Expr disposableCreation) {
   // The qualifier of the Dispose call flows from something that introduced a disposable into scope
   (
     disposableCreation instanceof LocalScopeDisposableCreation or
     disposableCreation instanceof MethodCall
   ) and
-  DataFlow::localFlowStep+(DataFlow::exprNode(disposableCreation),
-    DataFlow::exprNode(disposeCall.getQualifier())) and
-  disposeCall.getTarget() instanceof DisposeMethod
+  reachesDisposeCall(disposeCall, DataFlow::exprNode(disposableCreation))
 }
 
 class MethodCallThatMayThrow extends MethodCall {
@@ -73,7 +83,7 @@ ControlFlowElement getACatchOrFinallyClauseChild() {
   result = getACatchOrFinallyClauseChild().getAChild()
 }
 
-from MethodCall disposeCall, Expr disposableCreation, MethodCallThatMayThrow callThatThrows
+from DisposeCall disposeCall, Expr disposableCreation, MethodCallThatMayThrow callThatThrows
 where
   disposeReachableFromDisposableCreation(disposeCall, disposableCreation) and
   // The dispose call is not, itself, within a dispose method.

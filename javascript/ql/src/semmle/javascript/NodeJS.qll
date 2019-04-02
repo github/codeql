@@ -21,9 +21,6 @@ class NodeModule extends Module {
   /** Gets the scope induced by this module. */
   override ModuleScope getScope() { result.getScopeElement() = this }
 
-  /** Gets a module imported by this module. */
-  override Module getAnImportedModule() { result = getAnImport().getImportedModule() }
-
   /**
    * Gets an abstract value representing one or more values that may flow
    * into this module's `module.exports` property.
@@ -239,22 +236,22 @@ class Require extends CallExpr, Import {
   }
 }
 
-/** A literal path expression appearing in a `require` import. */
-private class LiteralRequiredPath extends PathExprInModule, ConstantString {
-  LiteralRequiredPath() { exists(Require req | this.getParentExpr*() = req.getArgument(0)) }
-
-  override string getValue() { result = this.getStringValue() }
-}
-
-/** A literal path expression appearing in a call to `require.resolve`. */
-private class LiteralRequireResolvePath extends PathExprInModule, ConstantString {
-  LiteralRequireResolvePath() {
+/** An argument to `require` or `require.resolve`, considered as a path expression. */
+private class RequirePath extends PathExprCandidate {
+  RequirePath() {
+    this = any(Require req).getArgument(0)
+    or
     exists(RequireVariable req, MethodCallExpr reqres |
       reqres.getReceiver() = req.getAnAccess() and
       reqres.getMethodName() = "resolve" and
-      this.getParentExpr*() = reqres.getArgument(0)
+      this = reqres.getArgument(0)
     )
   }
+}
+
+/** A constant path element appearing in a call to `require` or `require.resolve`. */
+private class ConstantRequirePathElement extends PathExprInModule, ConstantString {
+  ConstantRequirePathElement() { this = any(RequirePath rp).getAPart() }
 
   override string getValue() { result = this.getStringValue() }
 }

@@ -71,3 +71,11 @@ ns.on('connection', (socket) => {
   socket.once('message', (data1, data2) => {});
   socket.addListener(eventName(), () => {});
 });
+
+var obj = {
+  server: io,
+  serveClient: function() { return null; }
+};
+obj.server;                    // SocketIO::ServerNode
+obj.serveClient(false);        // not a SocketIO::ServerNode
+obj.serveClient(false).server; // not a SocketIO::ServerNode

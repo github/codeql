@@ -40,7 +40,7 @@ predicate possible_reflective_name(string name) {
     or
     any(ClassObject c).getName() = name
     or
-    any(ModuleObject m).getName() = name
+    exists(ModuleObject::named(name))
     or
     exists(Object::builtin(name))
 }

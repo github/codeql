@@ -17,8 +17,15 @@
 
 | **Query**                      | **Expected impact**          | **Change**                                                                |
 |--------------------------------|------------------------------|---------------------------------------------------------------------------|
-| Expression has no effect       | Fewer false-positive results | This rule now treats uses of `Object.defineProperty` more conservatively. |
-| Useless assignment to property | Fewer false-positive results | This rule now ignore reads of additional getters. |
 | Arbitrary file write during zip extraction ("Zip Slip") | More results | This rule now considers more libraries, including tar as well as zip. |
+| Client-side URL redirect       | More results and fewer false-positive results | This rule now recognizes additional uses of the document URL. This rule now treats URLs as safe in more cases where the hostname cannot be tampered with. |
+| Double escaping or unescaping | More results | This rule now considers the flow of regular expressions literals. |
+| Expression has no effect       | Fewer false-positive results | This rule now treats uses of `Object.defineProperty` more conservatively. |
+| Incomplete string escaping or encoding | More results | This rule now considers the flow of regular expressions literals. |
+| Replacement of a substring with itself | More results | This rule now considers the flow of regular expressions literals. |
+| Server-side URL redirect       | Fewer false-positive results | This rule now treats URLs as safe in more cases where the hostname cannot be tampered with. |
+| Useless assignment to property | Fewer false-positive results | This rule now ignore reads of additional getters. |
 
 ## Changes to QL libraries
+
+* `RegExpLiteral` is now a `DataFlow::SourceNode`.

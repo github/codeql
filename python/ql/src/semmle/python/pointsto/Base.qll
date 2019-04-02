@@ -50,6 +50,8 @@ ClassObject simple_types(Object obj) {
     obj.getOrigin() instanceof Module and result = theModuleType()
     or
     result = builtin_object_type(obj)
+    or
+    obj = unknownValue() and result = theUnknownType()
 }
 
 private ClassObject comprehension(Expr e) {

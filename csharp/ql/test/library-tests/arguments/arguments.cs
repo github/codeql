@@ -61,4 +61,17 @@ class ArgumentsTest
         var tuple = (13, 14);
         (Prop, this[15, 16]) = tuple;
     }
+
+    [MyAttribute(false)]
+    void f6() { }
+
+    [MyAttribute(true, y = "", x = 0)]
+    void f7() { }
+}
+
+class MyAttribute : Attribute
+{
+    public int x;
+    public string y { get; set; }
+    public MyAttribute(bool b) { }
 }

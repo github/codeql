@@ -32,19 +32,19 @@ class AttributeFormattingFunction extends FormattingFunction {
  * A standard function such as `vprintf` that has a format parameter
  * and a variable argument list of type `va_arg`.
  */
-predicate primitiveVariadicFormatter(TopLevelFunction f, int formatParamIndex, boolean wide) {
+predicate primitiveVariadicFormatter(TopLevelFunction f, int formatParamIndex) {
   f.getName().regexpMatch("_?_?va?[fs]?n?w?printf(_s)?(_p)?(_l)?")
   and (
     if f.getName().matches("%\\_l")
     then formatParamIndex = f.getNumberOfParameters() - 3
     else formatParamIndex = f.getNumberOfParameters() - 2
-  ) and if f.getName().matches("%w%") then wide = true else wide = false
+  )
 }
 
 private
-predicate callsVariadicFormatter(Function f, int formatParamIndex, boolean wide) {
+predicate callsVariadicFormatter(Function f, int formatParamIndex) {
   exists(FunctionCall fc, int i |
-    variadicFormatter(fc.getTarget(), i, wide)
+    variadicFormatter(fc.getTarget(), i)
     and fc.getEnclosingFunction() = f
     and fc.getArgument(i) = f.getParameter(formatParamIndex).getAnAccess()
   )
@@ -54,11 +54,11 @@ predicate callsVariadicFormatter(Function f, int formatParamIndex, boolean wide)
  * Holds if `f` is a function such as `vprintf` that has a format parameter
  * (at `formatParamIndex`) and a variable argument list of type `va_arg`.  
  */
-predicate variadicFormatter(Function f, int formatParamIndex, boolean wide) {
-  primitiveVariadicFormatter(f, formatParamIndex, wide)
+predicate variadicFormatter(Function f, int formatParamIndex) {
+  primitiveVariadicFormatter(f, formatParamIndex)
   or (
     not f.isVarargs()
-    and callsVariadicFormatter(f, formatParamIndex, wide)
+    and callsVariadicFormatter(f, formatParamIndex)
   )
 }
 
@@ -68,12 +68,10 @@ predicate variadicFormatter(Function f, int formatParamIndex, boolean wide) {
  */
 class UserDefinedFormattingFunction extends FormattingFunction {
   UserDefinedFormattingFunction() {
-    isVarargs() and callsVariadicFormatter(this, _, _)
+    isVarargs() and callsVariadicFormatter(this, _)
   }
 
-  override int getFormatParameterIndex() { callsVariadicFormatter(this, result, _) }
-
-  override predicate isWideCharDefault() { callsVariadicFormatter(this, _, true) }
+  override int getFormatParameterIndex() { callsVariadicFormatter(this, result) }
 }
 
 /**
@@ -256,11 +254,11 @@ class FormatLiteral extends Literal {
   }
 
   /**
-   * Gets the format string, with '%%' replaced by '_' (to avoid processing
-   * '%%' as a format specifier).
+   * Gets the format string, with '%%' and '%@' replaced by '_' (to avoid processing
+   * them as format specifiers).
    */
   string getFormat() {
-    result = this.getValue().replaceAll("%%", "_")
+    result = this.getValue().replaceAll("%%", "_").replaceAll("%@", "_")
   }
 
   /**
@@ -674,8 +672,8 @@ class FormatLiteral extends Literal {
   /**
    * Gets the char type required by the nth conversion specifier.
    *  - in the base case this is the default for the formatting function
-   *    (e.g. `char` for `printf`, `wchar_t` for `wprintf`).
-   *  - the `%S` format character reverses wideness.
+   *    (e.g. `char` for `printf`, `char` or `wchar_t` for `wprintf`).
+   *  - the `%C` format character reverses wideness.
    *  - the size prefixes 'l'/'w' and 'h' override the type character
    *    to wide or single-byte characters respectively.
    */
@@ -721,8 +719,8 @@ class FormatLiteral extends Literal {
   /**
    * Gets the string type required by the nth conversion specifier.
    *  - in the base case this is the default for the formatting function
-   *    (e.g. `char` for `printf`, `wchar_t` for `wprintf`).
-   *  - the `%S` format character reverses wideness.
+   *    (e.g. `char *` for `printf`, `char *` or `wchar_t *` for `wprintf`).
+   *  - the `%S` format character reverses wideness on some platforms.
    *  - the size prefixes 'l'/'w' and 'h' override the type character
    *    to wide or single-byte characters respectively.
    */

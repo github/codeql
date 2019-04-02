@@ -257,9 +257,7 @@ private module Internal {
     or
     cfn.isJoin()
     or
-    exists(ControlFlowNode pred | pred = cfn.getAPredecessor() |
-      strictcount(pred.getASuccessor()) > 1
-    )
+    cfn.getAPredecessor().isBranch()
   }
 
   /**

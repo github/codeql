@@ -15,3 +15,4 @@
 | tst.js:61:10:61:18 | s.replace | This replaces only the first occurrence of "'" + "". |
 | tst.js:65:10:65:18 | s.replace | This replaces only the first occurrence of "'". |
 | tst.js:69:10:69:18 | s.replace | This replaces only the first occurrence of "'" + "". |
+| tst.js:169:9:169:17 | s.replace | This replaces only the first occurrence of /'/. |

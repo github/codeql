@@ -302,7 +302,13 @@ class File extends Container, @file {
   predicate compiledAsMicrosoft() {
     exists(Compilation c |
       c.getAFileCompiled() = this and
-      c.getAnArgument() = "--microsoft"
+      (
+        c.getAnArgument() = "--microsoft" or
+        c.getAnArgument().toLowerCase().replaceAll("\\", "/").matches("%/cl.exe")
+      )
+    ) or exists(File parent |
+      parent.compiledAsMicrosoft() and
+      parent.getAnIncludedFile() = this
     )
   }
 

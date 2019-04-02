@@ -3,6 +3,10 @@
  * 
  * This should be considered an advance feature. Modifying the points-to analysis
  * can cause queries to give strange and misleading results, if not done with care.
+ *
+ * WARNING:
+ *     This module interacts with the internals of points-to analysis and
+ *     the classes here are more likely to change than the rest of the library.
  */
 
 import python
@@ -33,6 +37,18 @@ abstract class CustomPointsToOriginFact extends CustomPointsToFact {
     }
 
 }
+
+/* Custom points-to fact with inferred class */
+abstract class CustomPointsToObjectFact extends CustomPointsToFact {
+
+    abstract predicate pointsTo(Object value);
+
+    override predicate pointsTo(Context context, Object value, ClassObject cls, ControlFlowNode origin) {
+        this.pointsTo(value) and cls = simple_types(value) and origin = this and context.appliesTo(this)
+    }
+
+}
+
 
 /** INTERNAL -- Do not use */
 abstract class CustomPointsToAttribute extends Object {

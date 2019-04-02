@@ -22,12 +22,6 @@ nodes
 | express.js:135:23:135:37 | req.params.user |
 | express.js:136:16:136:36 | 'u' + r ... ms.user |
 | express.js:136:22:136:36 | req.params.user |
-| express.js:138:16:138:45 | '/' + ( ... s.user) |
-| express.js:138:22:138:45 | ('/u' + ... s.user) |
-| express.js:138:23:138:44 | '/u' +  ... ms.user |
-| express.js:138:30:138:44 | req.params.user |
-| express.js:139:16:139:37 | '/u' +  ... ms.user |
-| express.js:139:23:139:37 | req.params.user |
 | node.js:6:7:6:52 | target |
 | node.js:6:16:6:39 | url.par ... , true) |
 | node.js:6:16:6:45 | url.par ... ).query |
@@ -66,10 +60,6 @@ edges
 | express.js:134:22:134:36 | req.params.user | express.js:134:16:134:36 | '/' + r ... ms.user |
 | express.js:135:23:135:37 | req.params.user | express.js:135:16:135:37 | '//' +  ... ms.user |
 | express.js:136:22:136:36 | req.params.user | express.js:136:16:136:36 | 'u' + r ... ms.user |
-| express.js:138:22:138:45 | ('/u' + ... s.user) | express.js:138:16:138:45 | '/' + ( ... s.user) |
-| express.js:138:23:138:44 | '/u' +  ... ms.user | express.js:138:22:138:45 | ('/u' + ... s.user) |
-| express.js:138:30:138:44 | req.params.user | express.js:138:23:138:44 | '/u' +  ... ms.user |
-| express.js:139:23:139:37 | req.params.user | express.js:139:16:139:37 | '/u' +  ... ms.user |
 | node.js:6:7:6:52 | target | node.js:7:34:7:39 | target |
 | node.js:6:16:6:39 | url.par ... , true) | node.js:6:16:6:45 | url.par ... ).query |
 | node.js:6:16:6:45 | url.par ... ).query | node.js:6:16:6:52 | url.par ... .target |
@@ -105,8 +95,6 @@ edges
 | express.js:134:16:134:36 | '/' + r ... ms.user | express.js:134:22:134:36 | req.params.user | express.js:134:16:134:36 | '/' + r ... ms.user | Untrusted URL redirection due to $@. | express.js:134:22:134:36 | req.params.user | user-provided value |
 | express.js:135:16:135:37 | '//' +  ... ms.user | express.js:135:23:135:37 | req.params.user | express.js:135:16:135:37 | '//' +  ... ms.user | Untrusted URL redirection due to $@. | express.js:135:23:135:37 | req.params.user | user-provided value |
 | express.js:136:16:136:36 | 'u' + r ... ms.user | express.js:136:22:136:36 | req.params.user | express.js:136:16:136:36 | 'u' + r ... ms.user | Untrusted URL redirection due to $@. | express.js:136:22:136:36 | req.params.user | user-provided value |
-| express.js:138:16:138:45 | '/' + ( ... s.user) | express.js:138:30:138:44 | req.params.user | express.js:138:16:138:45 | '/' + ( ... s.user) | Untrusted URL redirection due to $@. | express.js:138:30:138:44 | req.params.user | user-provided value |
-| express.js:139:16:139:37 | '/u' +  ... ms.user | express.js:139:23:139:37 | req.params.user | express.js:139:16:139:37 | '/u' +  ... ms.user | Untrusted URL redirection due to $@. | express.js:139:23:139:37 | req.params.user | user-provided value |
 | node.js:7:34:7:39 | target | node.js:6:26:6:32 | req.url | node.js:7:34:7:39 | target | Untrusted URL redirection due to $@. | node.js:6:26:6:32 | req.url | user-provided value |
 | node.js:15:34:15:45 | '/' + target | node.js:11:26:11:32 | req.url | node.js:15:34:15:45 | '/' + target | Untrusted URL redirection due to $@. | node.js:11:26:11:32 | req.url | user-provided value |
 | node.js:32:34:32:55 | target  ... =" + me | node.js:29:26:29:32 | req.url | node.js:32:34:32:55 | target  ... =" + me | Untrusted URL redirection due to $@. | node.js:29:26:29:32 | req.url | user-provided value |

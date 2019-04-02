@@ -12,6 +12,7 @@
  *       readability
  */
 import cpp
+private import semmle.code.cpp.commons.Exclusions
 private import semmle.code.cpp.rangeanalysis.PointlessComparison
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import UnsignedGEZero
@@ -31,6 +32,7 @@ from
 where
   not cmp.isInMacroExpansion() and
   not cmp.isFromTemplateInstantiation(_) and
+  not functionContainsDisabledCode(cmp.getEnclosingFunction()) and
   reachablePointlessComparison(cmp, left, right, value, ss) and
 
   // a comparison between an enum and zero is always valid because whether

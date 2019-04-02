@@ -265,3 +265,30 @@ int negative_zero(double dbl) {
   }
   return 0;
 }
+
+int nan(double x) {
+  if (x < 0.0) {
+    return 100;
+  }
+  else if (x >= 0.0) { // GOOD [x could be NaN]
+    return 200;
+  }
+  else {
+    return 300;
+  }
+}
+
+int nan2(double x) {
+  if (x == x) {
+    // If x compares with anything at all, it's not NaN
+    if (x < 0.0) {
+      return 100;
+    }
+    else if (x >= 0.0) { // BAD [Always true]
+      return 200;
+    }
+    else {
+      return 300;
+    }
+  }
+}

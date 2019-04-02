@@ -37,19 +37,21 @@ namespace Semmle.Extraction.CIL.Entities
             if (!def.PublicKey.IsNil)
                 assemblyName.SetPublicKey(cx.mdReader.GetBlobBytes(def.PublicKey));
 
-            ShortId = cx.GetId(assemblyName.FullName) + "#file:///" + cx.assemblyPath.Replace("\\", "/");
+            ShortId = cx.GetId(FullName) + "#file:///" + cx.assemblyPath.Replace("\\", "/");
 
             file = new File(cx, cx.assemblyPath);
         }
 
         static readonly Id suffix = new StringId(";assembly");
 
+        string FullName => assemblyName.GetPublicKey() is null ? assemblyName.FullName + ", PublicKeyToken=null" : assemblyName.FullName;
+
         public override IEnumerable<IExtractionProduct> Contents
         {
             get
             {
                 yield return file;
-                yield return Tuples.assemblies(this, file, assemblyName.FullName, assemblyName.Name, assemblyName.Version.ToString());
+                yield return Tuples.assemblies(this, file, FullName, assemblyName.Name, assemblyName.Version.ToString());
 
                 if (cx.pdb != null)
                 {

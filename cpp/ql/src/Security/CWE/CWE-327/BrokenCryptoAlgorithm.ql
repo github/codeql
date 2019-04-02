@@ -16,9 +16,14 @@ abstract class InsecureCryptoSpec extends Locatable {
   abstract string description();
 }
 
+Function getAnInsecureFunction() {
+  result.getName().regexpMatch(algorithmBlacklistRegex()) and
+  exists(result.getACallToThisFunction())
+}
+
 class InsecureFunctionCall extends InsecureCryptoSpec, FunctionCall {
   InsecureFunctionCall() {
-    this.getTarget().getName().regexpMatch(algorithmBlacklistRegex())
+    this.getTarget() = getAnInsecureFunction()
   }
 
   override string description() { result = "function call" }
@@ -27,9 +32,14 @@ class InsecureFunctionCall extends InsecureCryptoSpec, FunctionCall {
   override Location getLocation() { result = FunctionCall.super.getLocation() }
 }
 
+Macro getAnInsecureMacro() {
+  result.getName().regexpMatch(algorithmBlacklistRegex()) and
+  exists(result.getAnInvocation())
+}
+
 class InsecureMacroSpec extends InsecureCryptoSpec, MacroInvocation {
   InsecureMacroSpec() {
-    this.getMacro().getName().regexpMatch(algorithmBlacklistRegex())
+    this.getMacro() = getAnInsecureMacro()
   }
 
   override string description() { result = "macro invocation" }

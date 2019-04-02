@@ -35,8 +35,7 @@ abstract class InitializationContext extends TranslatedElement {
  * Represents the IR translation of any initialization, whether from an
  * initializer list or from a direct initializer.
  */
-abstract class TranslatedInitialization extends TranslatedElement,
-  TTranslatedInitialization {
+abstract class TranslatedInitialization extends TranslatedElement, TTranslatedInitialization {
   Expr expr;
 
   TranslatedInitialization() {
@@ -78,10 +77,10 @@ abstract class TranslatedInitialization extends TranslatedElement,
 /**
  * Represents the IR translation of an initialization from an initializer list.
  */
-abstract class TranslatedListInitialization extends TranslatedInitialization,
-  InitializationContext {
+abstract class TranslatedListInitialization extends TranslatedInitialization, InitializationContext {
   override Instruction getFirstInstruction() {
-    result = getChild(0).getFirstInstruction()
+    result = getChild(0).getFirstInstruction() or
+    not exists(getChild(0)) and result = getParent().getChildSuccessor(this)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -117,8 +116,7 @@ abstract class TranslatedListInitialization extends TranslatedInitialization,
  * Represents the IR translation of an initialization of a class object from an
  * initializer list.
  */
-class TranslatedClassListInitialization extends
-  TranslatedListInitialization
+class TranslatedClassListInitialization extends TranslatedListInitialization
 {
   override ClassAggregateLiteral expr;
 
@@ -135,8 +133,7 @@ class TranslatedClassListInitialization extends
  * Represents the IR translation of an initialization of an array from an
  * initializer list.
  */
-class TranslatedArrayListInitialization extends
-  TranslatedListInitialization {
+class TranslatedArrayListInitialization extends TranslatedListInitialization {
   override ArrayAggregateLiteral expr;
 
   override TranslatedElement getChild(int id) {
@@ -175,23 +172,20 @@ abstract class TranslatedDirectInitialization extends TranslatedInitialization {
  * expression, where the initialization is performed via bitwise copy (as
  * opposed to a constructor).
  */
-class TranslatedSimpleDirectInitialization extends
-  TranslatedDirectInitialization {
+class TranslatedSimpleDirectInitialization extends TranslatedDirectInitialization {
   TranslatedSimpleDirectInitialization() {
     not expr instanceof ConstructorCall and
     not expr instanceof StringLiteral
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Store and
     resultType = getContext().getTargetType() and
     isGLValue = false
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = InitializerStoreTag() and
     result = getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
@@ -201,8 +195,7 @@ class TranslatedSimpleDirectInitialization extends
     child = getInitializer() and result = getInstruction(InitializerStoreTag())
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = InitializerStoreTag() and
     (
       (
@@ -221,12 +214,10 @@ class TranslatedSimpleDirectInitialization extends
  * Represents the IR translation of an initialization of an array from a string
  * literal.
  */
-class TranslatedStringLiteralInitialization extends
-    TranslatedDirectInitialization {
+class TranslatedStringLiteralInitialization extends TranslatedDirectInitialization {
   override StringLiteral expr;
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     (
       // Load the string literal to make it a prvalue of type `char[len]`
       tag = InitializerLoadStringTag() and
@@ -280,8 +271,7 @@ class TranslatedStringLiteralInitialization extends
     )
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
       (
@@ -321,8 +311,7 @@ class TranslatedStringLiteralInitialization extends
     child = getInitializer() and result = getInstruction(InitializerLoadStringTag())
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     (
       tag = InitializerLoadStringTag() and
       (
@@ -422,17 +411,14 @@ class TranslatedStringLiteralInitialization extends
   }
 }
 
-class TranslatedConstructorInitialization extends
-    TranslatedDirectInitialization, StructorCallContext {
+class TranslatedConstructorInitialization extends TranslatedDirectInitialization, StructorCallContext {
   override ConstructorCall expr;
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     none()
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     none()
   }
 
@@ -440,8 +426,7 @@ class TranslatedConstructorInitialization extends
     child = getInitializer() and result = getParent().getChildSuccessor(this)
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     none()
   }
 
@@ -454,13 +439,11 @@ class TranslatedConstructorInitialization extends
  * Gets the `TranslatedFieldInitialization` for field `field` within initializer
  * list `initList`.
  */
-TranslatedFieldInitialization getTranslatedFieldInitialization(
-  ClassAggregateLiteral initList, Field field) {
+TranslatedFieldInitialization getTranslatedFieldInitialization(ClassAggregateLiteral initList, Field field) {
   result.getAST() = initList and result.getField() = field
 }
 
-TranslatedFieldInitialization getTranslatedConstructorFieldInitialization(
-  ConstructorFieldInit init) {
+TranslatedFieldInitialization getTranslatedConstructorFieldInitialization(ConstructorFieldInit init) {
   result.getAST() = init
 }
 
@@ -496,16 +479,14 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
     result = field.getInitializationOrder()
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     tag = getFieldAddressTag() and
     opcode instanceof Opcode::FieldAddress and
     resultType = field.getType().getUnspecifiedType() and
     isGLValue = true
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = getFieldAddressTag() and
     operandTag instanceof UnaryOperandTag and
     result = getParent().(InitializationContext).getTargetAddress()
@@ -528,9 +509,8 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
  * Represents the IR translation of the initialization of a field from an
  * explicit element in an initializer list.
  */
-class TranslatedExplicitFieldInitialization extends
-  TranslatedFieldInitialization, InitializationContext,
-  TTranslatedExplicitFieldInitialization {
+class TranslatedExplicitFieldInitialization extends TranslatedFieldInitialization, InitializationContext,
+    TTranslatedExplicitFieldInitialization {
   Expr expr;
 
   TranslatedExplicitFieldInitialization() {
@@ -545,8 +525,7 @@ class TranslatedExplicitFieldInitialization extends
     result = field.getType().getUnspecifiedType()
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = getFieldAddressTag() and
     result = getInitialization().getFirstInstruction() and
     kind instanceof GotoEdge
@@ -576,14 +555,12 @@ private string getZeroValue(Type type) {
  * Represents the IR translation of the initialization of a field without a
  * corresponding element in the initializer list.
  */
-class TranslatedFieldValueInitialization extends
-  TranslatedFieldInitialization, TTranslatedFieldValueInitialization {
+class TranslatedFieldValueInitialization extends TranslatedFieldInitialization, TTranslatedFieldValueInitialization {
   TranslatedFieldValueInitialization() {
     this = TTranslatedFieldValueInitialization(ast, field)
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     TranslatedFieldInitialization.super.hasInstruction(opcode, tag, resultType, isGLValue) or
     (
       tag = getFieldDefaultValueTag() and
@@ -599,8 +576,7 @@ class TranslatedFieldValueInitialization extends
     )
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
       (
@@ -623,8 +599,7 @@ class TranslatedFieldValueInitialization extends
     result = getZeroValue(field.getType().getUnspecifiedType())
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     result = TranslatedFieldInitialization.super.getInstructionOperand(tag, operandTag) or
     (
       tag = getFieldDefaultValueStoreTag() and
@@ -681,8 +656,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = getInstruction(getElementIndexTag())
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     (
       tag = getElementIndexTag() and
       opcode instanceof Opcode::Constant and
@@ -697,15 +671,13 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     )
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = getElementIndexTag() and
     result = getInstruction(getElementAddressTag()) and
     kind instanceof GotoEdge
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = getElementAddressTag() and
     (
       (
@@ -764,8 +736,7 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
     result = getElementType()
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     result = TranslatedElementInitialization.super.getInstructionSuccessor(tag, kind) or
     (
       tag = getElementAddressTag() and
@@ -806,8 +777,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
       elementCount)
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     TranslatedElementInitialization.super.hasInstruction(opcode, tag, resultType, isGLValue) or
     (
       tag = getElementDefaultValueTag() and
@@ -823,8 +793,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     )
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     result = TranslatedElementInitialization.super.getInstructionSuccessor(tag, kind) or
     (
       kind instanceof GotoEdge and
@@ -862,8 +831,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     result = elementCount * getElementType().getSize()
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     result = TranslatedElementInitialization.super.getInstructionOperand(tag, operandTag) or
     (
       tag = getElementDefaultValueStoreTag() and
@@ -943,8 +911,7 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
     result = getInstruction(OnlyInstructionTag())
   }
 
-  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType,
-    boolean isGLValue) {
+  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::ConvertToBase and
     resultType = call.getTarget().getDeclaringType().getUnspecifiedType() and
@@ -961,15 +928,13 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
     result = getInstruction(OnlyInstructionTag())
   }
 
-  override final Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
+  override final Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
     result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
   }
 
-  override final predicate getInstructionInheritance(InstructionTag tag,
-    Class baseClass, Class derivedClass) {
+  override final predicate getInstructionInheritance(InstructionTag tag, Class baseClass, Class derivedClass) {
     tag = OnlyInstructionTag() and
     baseClass = call.getTarget().getDeclaringType().getUnspecifiedType() and
     derivedClass = getFunction().getDeclaringType().getUnspecifiedType()
@@ -980,7 +945,7 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
  * Represents a call to a delegating or base class constructor from within a constructor.
  */
 abstract class TranslatedConstructorCallFromConstructor extends TranslatedStructorCallFromStructor,
-  TTranslatedConstructorBaseInit {
+    TTranslatedConstructorBaseInit {
   TranslatedConstructorCallFromConstructor() {
     this = TTranslatedConstructorBaseInit(call)
   }
@@ -1004,8 +969,7 @@ class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromC
     result = getStructorCall().getFirstInstruction()
   }
 
-  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType,
-    boolean isGLValue) {
+  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     none()
   }
 
@@ -1022,8 +986,7 @@ class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromC
  * Represents the IR translation of a call to a base class constructor from within a
  * derived class constructor
  */
-class TranslatedConstructorBaseInit extends TranslatedConstructorCallFromConstructor,
-  TranslatedBaseStructorCall {
+class TranslatedConstructorBaseInit extends TranslatedConstructorCallFromConstructor, TranslatedBaseStructorCall {
   TranslatedConstructorBaseInit() {
     not call instanceof ConstructorDelegationInit
   }
@@ -1041,8 +1004,7 @@ TranslatedDestructorBaseDestruction getTranslatedDestructorBaseDestruction(Destr
  * Represents the IR translation of a call to a base class destructor from within a
  * derived class destructor.
  */
-class TranslatedDestructorBaseDestruction extends TranslatedBaseStructorCall,
-  TTranslatedDestructorBaseDestruction {
+class TranslatedDestructorBaseDestruction extends TranslatedBaseStructorCall, TTranslatedDestructorBaseDestruction {
   TranslatedDestructorBaseDestruction() {
     this = TTranslatedDestructorBaseDestruction(call)
   }
