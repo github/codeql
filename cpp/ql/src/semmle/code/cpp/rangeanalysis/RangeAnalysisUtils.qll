@@ -36,7 +36,7 @@ boolean directionIsLesser(RelationDirection dir) {
 
 /**
  * Holds if `rel` is a relational operation (`<`, `>`, `<=` or `>=`)
- * with left operand `lhs` and right operand `rhs`, described by
+ * with fully-converted children `lhs` and `rhs`, described by
  * `dir` and `strict`.
  *
  * For example, if `rel` is `x < 5` then
@@ -57,7 +57,7 @@ predicate relOp(
 
 /**
  * Holds if `rel` is a relational operation (`<`, `>`, `<=` or `>=`)
- * with children `a` and `b`, described by `dir` and `strict`.
+ * with fully-converted children `a` and `b`, described by `dir` and `strict`.
  *
  * This allows for the relation to be either as written, or with its
  * arguments reversed; for example, if `rel` is `x < 5` then both
@@ -74,7 +74,7 @@ predicate relOpWithSwap(
 
 /**
  * Holds if `rel` is a comparison operation (`<`, `>`, `<=` or `>=`)
- * with children `a` and `b`, described by `dir` and `strict`, with
+ * with fully-converted children `a` and `b`, described by `dir` and `strict`, with
  * result `branch`.
  *
  * This allows for the relation to be either as written, or with its
@@ -95,8 +95,8 @@ predicate relOpWithSwapAndNegate(
 }
 
 /**
- * Holds if `cmp` is an equality operation (`==` or `!=`) with left
- * operand `lhs`, right operand `rhs`, and `isEQ` is true if `cmp` is an
+ * Holds if `cmp` is an equality operation (`==` or `!=`) with  fully-converted
+ * children `lhs` and `rhs`, and `isEQ` is true if `cmp` is an
  * `==` operation and false if it is an `!=` operation.
  *
  * For example, if `rel` is `x == 5` then
@@ -111,8 +111,8 @@ predicate eqOp(EqualityOperation cmp, Expr lhs, Expr rhs, boolean isEQ) {
 }
 
 /**
- * Holds if `cmp` is an equality operation (`==` or `!=`) with operands
- * `a` and `b`, and `isEQ` is true if `cmp` is an `==` operation and
+ * Holds if `cmp` is an equality operation (`==` or `!=`) with fully-converted
+ * operands `a` and `b`, and `isEQ` is true if `cmp` is an `==` operation and
  * false if it is an `!=` operation.
  *
  * This allows for the equality to be either as written, or with its
@@ -127,8 +127,8 @@ predicate eqOpWithSwap(EqualityOperation cmp, Expr a, Expr b, boolean isEQ) {
 }
 
 /**
- * Holds if `cmp` is an equality operation (`==` or `!=`) with operands
- * `a` and `b`, `isEQ` is true if `cmp` is an `==` operation and
+ * Holds if `cmp` is an equality operation (`==` or `!=`) with fully-converted
+ * children `a` and `b`, `isEQ` is true if `cmp` is an `==` operation and
  * false if it is an `!=` operation, and the result is `branch`.
  *
  * This allows for the comparison to be either as written, or with its
