@@ -14,10 +14,8 @@ module Express {
    * Express application.
    */
   DataFlow::SourceNode appCreation() {
-    exists(DataFlow::ModuleImportNode express | express.getPath() = "express" |
-      // `app = [new] express()`
-      result = express.getAnInvocation()
-    )
+    // `app = [new] express()`
+    result = DataFlow::moduleImport("express").getAnInvocation()
     or
     // `app = express.createServer()`
     result = DataFlow::moduleMember("express", "createServer").getAnInvocation()
@@ -40,7 +38,13 @@ module Express {
   private predicate isRouter(Expr e, RouterDefinition router) {
     router.flowsTo(e)
     or
-    isRouter(e.(RouteSetup).getReceiver(), router)
+    exists (DataFlow::MethodCallNode chain, DataFlow::Node base, string name |
+      name = "route" or
+      name = routeSetupMethodName() |
+      chain.calls(base, name) and
+      isRouter(base.asExpr(), router) and
+      chain.flowsToExpr(e)
+    )
   }
 
   /**
@@ -50,10 +54,7 @@ module Express {
     RouterDefinition router;
 
     RouteExpr() {
-      isRouter(this.getReceiver(), router) and
-      this.getMethodName() = "route"
-      or
-      this.(RouteSetup).getReceiver().(RouteExpr).getRouter() = router
+      isRouter(this, router)
     }
 
     /** Gets the router from which this route was created. */
@@ -61,20 +62,27 @@ module Express {
   }
 
   /**
-   * A call to an Express method that sets up a route.
+   * Gets the name of an Express router method that sets up a route.
+   */
+  string routeSetupMethodName() {
+    result = "param" or
+    result = "all" or
+    result = "use" or
+    result = any(HTTP::RequestMethodName m).toLowerCase() or
+    // deprecated methods
+    result = "error" or
+    result = "del"
+  }
+
+  /**
+   * A call to an Express router method that sets up a route.
    */
   class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
     RouterDefinition router;
 
     RouteSetup() {
-      exists(string methodName | methodName = getMethodName() |
-        (isRouter(getReceiver(), router) or getReceiver().(RouteExpr).getRouter() = router) and
-        (
-          methodName = "all" or
-          methodName = "use" or
-          methodName = any(HTTP::RequestMethodName m).toLowerCase()
-        )
-      )
+      isRouter(getReceiver(), router) and
+      getMethodName() = routeSetupMethodName() 
     }
 
     /** Gets the path associated with the route. */
