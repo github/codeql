@@ -81,3 +81,29 @@ void test7(int x, int cond) {
 	}
 	end:
 }
+
+#define CONFIG_DEFINE
+
+void test8() {
+	int x = 0;
+
+#ifdef CONFIG_DEFINE
+	goto skip; // GOOD (the `x++` is still reachable in some configurations)
+#endif
+	x++;
+
+skip:
+}
+
+void test9() {
+	int x = 0;
+
+#ifdef CONFIG_NOTDEFINED
+	goto mid;
+#endif
+	goto end; // GOOD (the `x++` is still reachable in some configurations)
+mid:
+	x++;
+
+end:
+}

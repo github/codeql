@@ -1,7 +1,7 @@
 /**
  * @name ImportTimeScope
  * @description ImportTimeScope Test
- * @kind problem
+ * @kind table
  * @problem.severity warning
  */
 

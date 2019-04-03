@@ -26,3 +26,31 @@ app2.use(function handler2(ctx){ // HTTP::RouteHandler
   ctx.request.get('bar');
   ctx.cookies.get('baz');
 });
+
+app2.use(async ctx => {
+	ctx.body = x;
+	ctx.body;
+	ctx.query.foo;
+	ctx.url;
+	ctx.originalUrl;
+	ctx.href;
+	ctx.header.bar;
+	ctx.headers.bar;
+	ctx.set('bar');
+	ctx.get('bar');
+
+	var url = ctx.query.target;
+	ctx.redirect(url);
+	ctx.response.redirect(url);
+});
+
+app2.use(async ctx => {
+	var cookies = ctx.cookies;
+	cookies.get();
+
+	var query = ctx.query;
+	query.foo;
+
+	var headers = ctx.headers;
+	headers.foo;
+});

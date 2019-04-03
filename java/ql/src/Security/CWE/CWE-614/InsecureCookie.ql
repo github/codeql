@@ -1,6 +1,6 @@
 /**
  * @name Failure to use secure cookies
- * @description Insecured cookies may be sent in cleartext, which makes them vulnerable to
+ * @description Insecure cookies may be sent in cleartext, which makes them vulnerable to
  *              interception.
  * @kind problem
  * @problem.severity error
