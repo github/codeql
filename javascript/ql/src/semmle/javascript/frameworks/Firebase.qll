@@ -215,6 +215,40 @@ module Firebase {
         result = getArgument(0)
       }
     }
+
+    /**
+     * A call to a Firebase method that sets up a route.
+     */
+    private class RouteSetup extends HTTP::Servers::StandardRouteSetup, CallExpr {
+      RouteSetup() { this = namespace().getAPropertyRead("https").getAMemberCall("onRequest").asExpr() }
+
+      override DataFlow::SourceNode getARouteHandler() {
+        result = getARouteHandler(DataFlow::TypeBackTracker::end())
+      }
+
+      private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
+        t.start() and
+        result = getArgument(0).flow().getALocalSource()
+        or
+        exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+      }
+
+      override Expr getServer() { none() }
+    }
+
+    /**
+     * A function used as a route handler.
+     */
+    private class RouteHandler extends Express::RouteHandler, HTTP::Servers::StandardRouteHandler,
+    DataFlow::ValueNode {
+      RouteHandler() { this = any(RouteSetup setup).getARouteHandler() }
+
+      override SimpleParameter getRouteHandlerParameter(string kind) {
+        kind = "request" and result = this.(DataFlow::FunctionNode).getParameter(0).getParameter() or
+        kind = "response" and result = this.(DataFlow::FunctionNode).getParameter(1).getParameter()
+      }
+    }
+
   }
 
   /**
