@@ -41,13 +41,9 @@ class StepSummary extends TStepSummary {
     or
     this instanceof ReturnStep and result = "return"
     or
-    exists(string prop | this = StoreStep(prop) |
-      result = "store " + prop
-    )
+    exists(string prop | this = StoreStep(prop) | result = "store " + prop)
     or
-    exists(string prop | this = LoadStep(prop) |
-      result = "load" + prop
-    )
+    exists(string prop | this = LoadStep(prop) | result = "load" + prop)
   }
 }
 
@@ -88,8 +84,7 @@ module StepSummary {
   }
 }
 
-private newtype TTypeTracker =
-  MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
+private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
 
 /**
  * EXPERIMENTAL.
@@ -136,9 +131,7 @@ class TypeTracker extends TTypeTracker {
     or
     step = LoadStep(prop) and result = MkTypeTracker(hasCall, "")
     or
-    exists(string p |
-      step = StoreStep(p) and prop = "" and result = MkTypeTracker(hasCall, p)
-    )
+    exists(string p | step = StoreStep(p) and prop = "" and result = MkTypeTracker(hasCall, p))
   }
 
   /** Gets a textual representation of this summary. */
@@ -180,8 +173,7 @@ module TypeTracker {
   TypeTracker end() { result.end() }
 }
 
-private newtype TTypeBackTracker =
-  MkTypeBackTracker(Boolean hasReturn, OptionalPropertyName prop)
+private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, OptionalPropertyName prop)
 
 /**
  * EXPERIMENTAL.
@@ -225,9 +217,7 @@ class TypeBackTracker extends TTypeBackTracker {
     or
     step = ReturnStep() and result = MkTypeBackTracker(true, prop)
     or
-    exists(string p |
-      step = LoadStep(p) and prop = "" and result = MkTypeBackTracker(hasReturn, p)
-    )
+    exists(string p | step = LoadStep(p) and prop = "" and result = MkTypeBackTracker(hasReturn, p))
     or
     step = StoreStep(prop) and result = MkTypeBackTracker(hasReturn, "")
   }
