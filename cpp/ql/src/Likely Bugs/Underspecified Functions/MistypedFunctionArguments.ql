@@ -6,16 +6,13 @@
  * arguments on a stack may lead to unpredictable function behavior.
  * @kind problem
  * @problem.severity warning
- * @precision very-high
+ * @precision high
  * @id cpp/mistyped-function-arguments
  * @tags correctness
  *       maintainability
  */
 
 import cpp
-
-pragma[inline]
-int sizeofInt() { result = any(IntType pt).getSize() }
 
 pragma[inline]
 predicate pointerArgTypeMayBeUsed(Type arg, Type parm) {
@@ -47,38 +44,15 @@ pragma[inline]
 predicate argTypeMayBeUsed(Type arg, Type parm) {
   arg = parm
   or
-  // float will be promoted to double, and so it should correspond
-  // to the prototype
-  arg instanceof FloatType and parm instanceof DoubleType
-  or
-  // integral types are promoted "up to" (unsigned) int, but not long long.
+  // we treat signed and unsigned versions of integer types as compatible.
   arg instanceof IntegralType and
-  parm instanceof IntegralType and
-  arg.getSize() <= sizeofInt() and
-  parm.getSize() <= sizeofInt()
+  parm instanceof IntegralType
   or
-  /*
-   *  // we allow interoperability between long long and pointer
-   *  arg.getSize() = parm.getSize() and
-   *  (
-   *    (arg instanceof IntegralType and parm instanceof PointerType)
-   *    or
-   *    (arg instanceof PointerType and parm instanceof IntegralType)
-   *  )
-   *  or
-   */
-
   // pointers to compatible types
   pointerArgTypeMayBeUsed(arg.(PointerType).getBaseType().getUnspecifiedType(),
     parm.(PointerType).getBaseType().getUnspecifiedType())
   or
   pointerArgTypeMayBeUsed(arg.(PointerType).getBaseType().getUnspecifiedType(),
-    parm.(ArrayType).getBaseType().getUnspecifiedType())
-  or
-  pointerArgTypeMayBeUsed(arg.(ArrayType).getBaseType().getUnspecifiedType(),
-    parm.(PointerType).getBaseType().getUnspecifiedType())
-  or
-  pointerArgTypeMayBeUsed(arg.(ArrayType).getBaseType().getUnspecifiedType(),
     parm.(ArrayType).getBaseType().getUnspecifiedType())
 }
 
