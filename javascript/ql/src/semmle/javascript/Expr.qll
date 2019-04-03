@@ -168,6 +168,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    */
   predicate inNullSensitiveContext() {
     exists(ExprOrStmt ctx |
+      // bases cases
       this = ctx.(PropAccess).getBase()
       or
       this = ctx.(IndexExpr).getPropertyNameExpr()
@@ -175,11 +176,18 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       this = ctx.(InvokeExpr).getCallee()
       or
       this = ctx.(BinaryExpr).getAnOperand() and
-      not ctx instanceof LogicalBinaryExpr and
-      not ctx instanceof EqualityTest
+      not ctx instanceof LogicalBinaryExpr and // x LOGOP y is fine b/c of implicit casting
+      not ctx instanceof EqualityTest and // x EQOP y is fine b/c of implicit casting and lack thereof
+      not ctx.(BitOrExpr).getAnOperand().(NumberLiteral).getIntValue() = 0 and // x | 0 is fine b/c it's used to cast to numbers
+      not ctx.(BitOrExpr).getAnOperand().(BigIntLiteral).getIntValue() = 0 and // x | 0 is fine b/c it's used to cast to numbers
+      not ctx.(RShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 and // x >> 0 is fine b/c it's used to cast to numbers
+      not ctx.(RShiftExpr).getRightOperand().(BigIntLiteral).getIntValue() = 0 and // x >> 0 is fine b/c it's used to cast to numbers
+      not ctx.(URShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 and // x >> 0 is fine b/c it's used to cast to numbers
+      not ctx.(URShiftExpr).getRightOperand().(BigIntLiteral).getIntValue() = 0 // x >> 0 is fine b/c it's used to cast to numbers
       or
       this = ctx.(UnaryExpr).getOperand() and
-      not ctx instanceof LogNotExpr
+      not ctx instanceof LogNotExpr and // !x is fine b/c of implicit casting
+      not ctx instanceof PlusExpr // +x is fine b/c of implicit casting
       or
       this = ctx.(UpdateExpr).getOperand()
       or
@@ -187,11 +195,25 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       or
       this = ctx.(CompoundAssignExpr).getRhs()
       or
-      this = ctx.(AssignExpr).getRhs()
+      this = ctx.(AssignExpr).getRhs() and
+      ctx.(AssignExpr).getLhs() instanceof DestructuringPattern
       or
       this = ctx.(SpreadElement).getOperand()
       or
       this = ctx.(ForOfStmt).getIterationDomain()
+      or
+      // recursive cases
+      this = ctx.(ParExpr).getExpression() and
+      ctx.(ParExpr).inNullSensitiveContext()
+      or
+      this = ctx.(SeqExpr).getLastOperand() and
+      ctx.(SeqExpr).inNullSensitiveContext()
+      or
+      this = ctx.(LogicalBinaryExpr).getRightOperand() and
+      ctx.(LogicalBinaryExpr).inNullSensitiveContext()
+      or
+      this = ctx.(ConditionalExpr).getABranch() and
+      ctx.(ConditionalExpr).inNullSensitiveContext()
     )
   }
 }
