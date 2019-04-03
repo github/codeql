@@ -43,7 +43,7 @@ class StepSummary extends TStepSummary {
     or
     exists(string prop | this = StoreStep(prop) | result = "store " + prop)
     or
-    exists(string prop | this = LoadStep(prop) | result = "load" + prop)
+    exists(string prop | this = LoadStep(prop) | result = "load " + prop)
   }
 }
 
