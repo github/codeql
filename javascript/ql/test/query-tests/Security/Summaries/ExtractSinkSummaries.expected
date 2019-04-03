@@ -22,6 +22,9 @@
 | (parameter 0 (member sqlInj (root https://www.npmjs.com/package/infer-sources))) | data | SqlInjection |
 | (parameter 0 (member sqlInj (root https://www.npmjs.com/package/infer-sources))) | taint | SqlInjection |
 | (parameter 0 (member taintedPath (root https://www.npmjs.com/package/infer-sources))) | data | TaintedPath |
+| (parameter 0 (member taintedPath (root https://www.npmjs.com/package/infer-sources))) | normalized-relative-posix-path | TaintedPath |
+| (parameter 0 (member taintedPath (root https://www.npmjs.com/package/infer-sources))) | raw-absolute-posix-path | TaintedPath |
+| (parameter 0 (member taintedPath (root https://www.npmjs.com/package/infer-sources))) | raw-relative-posix-path | TaintedPath |
 | (parameter 0 (member taintedPath (root https://www.npmjs.com/package/infer-sources))) | taint | TaintedPath |
 | (parameter 0 (member unsafeDes (root https://www.npmjs.com/package/infer-sources))) | data | UnsafeDeserialization |
 | (parameter 0 (member unsafeDes (root https://www.npmjs.com/package/infer-sources))) | taint | UnsafeDeserialization |
