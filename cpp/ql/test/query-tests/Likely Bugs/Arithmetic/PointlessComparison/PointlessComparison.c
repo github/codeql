@@ -207,7 +207,7 @@ enum my_enum {
 };
 
 int myFunction6(enum my_enum e) {
-	if (e < 0) { // BAD
+	if (e < 0) { // GOOD (suppressed because it's platform-dependent)
 		return 1;
 	}
 	return 0;

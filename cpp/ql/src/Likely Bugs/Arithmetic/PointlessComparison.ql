@@ -38,7 +38,7 @@ where
   // a comparison between an enum and zero is always valid because whether
   // the underlying type of an enum is signed is compiler-dependent
   not exists (Expr e, ConstantZero z
-      | relOpWithSwap(cmp, e, z, _, _) and
+      | relOpWithSwap(cmp, e.getFullyConverted(), z, _, _) and
         e.getUnderlyingType() instanceof Enum) and
   
   // Construct a reason for the message. Something like: x >= 5 and 3 >= y.
