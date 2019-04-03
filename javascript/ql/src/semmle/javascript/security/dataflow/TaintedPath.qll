@@ -23,7 +23,7 @@ module TaintedPath {
 
   module Label {
     /**
-     * String indicating if a path is normalized, that is, whether internal `../` components
+     * A string indicating if a path is normalized, that is, whether internal `../` components
      * have been removed.
      */
     class Normalization extends string {
@@ -31,7 +31,7 @@ module TaintedPath {
     }
 
     /**
-     * String indicating if a path is relative or absolute.
+     * A string indicating if a path is relative or absolute.
      */
     class Relativeness extends string {
       Relativeness() { this = "relative" or this = "absolute" }
@@ -108,7 +108,7 @@ module TaintedPath {
     PosixPath toPosixPath(DataFlow::FlowLabel label) {
       result = label
       or
-      label = DataFlow::FlowLabel::dataOrTaint()
+      label instanceof DataFlow::StandardFlowLabel
     }
   }
 
@@ -270,7 +270,7 @@ module TaintedPath {
    * Holds if `s` is a relative path.
    */
   bindingset[s]
-  private predicate isRelative(string s) { not s = "/" + any(string q) }
+  private predicate isRelative(string s) { not s.charAt(0) = "/" }
 
   /**
    * A call that normalizes a path.
@@ -375,7 +375,7 @@ module TaintedPath {
       input = getReceiver() and
       output = this and
       not exists(RegExpLiteral literal, RegExpSequence seq |
-        getArgument(0).asExpr() = literal and
+        getArgument(0).getALocalSource().asExpr() = literal and
         literal.isGlobal() and
         literal.getRoot() = seq and
         seq.getChild(0).(RegExpConstant).getValue() = "." and

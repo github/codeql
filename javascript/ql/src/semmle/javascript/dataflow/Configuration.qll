@@ -242,12 +242,6 @@ module FlowLabel {
    * source, but not necessarily directly derived from it.
    */
   FlowLabel taint() { result = "taint" }
-
-  /**
-   * Gets one of the two standard flow labels, `data` or `taint`, describing values that originate
-   * from a flow source or are derived from a flow source.
-   */
-  FlowLabel dataOrTaint() { result = data() or result = taint() }
 }
 
 /**
