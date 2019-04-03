@@ -4,27 +4,12 @@
 import javascript
 
 module ShellJS {
-  /** A reference to the `shelljs` library or a library that mimics its API. */
-  class Instance extends DataFlow::SourceNode {
-    Instance::Range range;
-
-    Instance() { this = range }
-  }
-
-  module Instance {
-    /**
-     * A reference to the `shelljs` library.
-     *
-     * Can be subclassed to recognize aliases for the `shelljs` library.
-     */
-    abstract class Range extends DataFlow::SourceNode { }
-
-    private class DefaultRange extends Range {
-      DefaultRange() {
-        this = DataFlow::moduleImport("shelljs") or
-        this = DataFlow::moduleImport("async-shelljs")
-      }
-    }
+  /**
+   * Gets an import of the `shelljs` or `async-shelljs` module.
+   */
+  DataFlow::SourceNode shelljs() {
+    result = DataFlow::moduleImport("shelljs") or
+    result = DataFlow::moduleImport("async-shelljs")
   }
 
   /** A member of the `shelljs` library. */
@@ -33,6 +18,7 @@ module ShellJS {
 
     Member() { this = range }
 
+    /** Gets the name of `shelljs` member being referenced, such as `cat` in `shelljs.cat`. */
     string getName() { result = range.getName() }
   }
 
@@ -49,7 +35,7 @@ module ShellJS {
     private class DefaultRange extends Range {
       string name;
 
-      DefaultRange() { this = any(Instance inst).getAPropertyRead(name) }
+      DefaultRange() { this = shelljs().getAPropertyRead(name) }
 
       override string getName() { result = name }
     }
