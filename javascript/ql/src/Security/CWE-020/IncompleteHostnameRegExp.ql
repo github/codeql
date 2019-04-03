@@ -36,22 +36,25 @@ predicate isIncompleteHostNameRegExpPattern(string pattern, string hostPart) {
             // an unescaped single `.`
             "(?<!\\\\)[.]" +
             // immediately followed by a sequence of subdomains, perhaps with some regex characters mixed in, followed by a known TLD
-            "([():|?a-z0-9-]+(\\\\)?[.]" + RegExpPatterns::commonTLD() + ")" + ".*", 1)
+            "([():|?a-z0-9-]+(\\\\)?[.](" + RegExpPatterns::commonTLD() + "))" + ".*", 1)
 }
 
-from Expr e, string pattern, string hostPart
+from DataFlow::Node re, string pattern, string hostPart, string kind, DataFlow::Node aux
 where
   (
-    e.(RegExpLiteral).getValue() = pattern
+    re.asExpr().(RegExpLiteral).getValue() = pattern and
+    kind = "regular expression" and
+    aux = re
     or
     exists(Configuration cfg |
-      cfg.hasFlow(e.flow(), _) and
-      e.mayHaveStringValue(pattern)
+      cfg.hasFlow(re, aux) and
+      re.mayHaveStringValue(pattern) and
+      kind = "string, which is used as a regular expression $@,"
     )
   ) and
   isIncompleteHostNameRegExpPattern(pattern, hostPart) and
   // ignore patterns with capture groups after the TLD
-  not pattern.regexpMatch("(?i).*[.]" + RegExpPatterns::commonTLD() + ".*[(][?]:.*[)].*")
-select e,
-  "This regular expression has an unescaped '.' before '" + hostPart +
-    "', so it might match more hosts than expected."
+  not pattern.regexpMatch("(?i).*[.](" + RegExpPatterns::commonTLD() + ").*[(][?]:.*[)].*")
+select re,
+  "This " + kind + " has an unescaped '.' before '" + hostPart +
+    "', so it might match more hosts than expected.", aux, "here"
