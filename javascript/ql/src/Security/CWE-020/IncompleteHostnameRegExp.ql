@@ -13,16 +13,35 @@
 import javascript
 
 /**
- * A taint tracking configuration for incomplete hostname regular expressions sources.
+ * Gets a node whose value may flow (inter-procedurally) to a position where it is interpreted
+ * as a regular expression.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "IncompleteHostnameRegExpTracking" }
+DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker t) {
+  t.start() and
+  re = result and
+  isInterpretedAsRegExp(result)
+  or
+  exists(DataFlow::TypeBackTracker t2, DataFlow::Node succ | succ = regExpSource(re, t2) |
+    t2 = t.smallstep(result, succ)
+    or
+    any(TaintTracking::AdditionalTaintStep dts).step(result, succ) and
+    t = t2
+  )
+}
 
-  override predicate isSource(DataFlow::Node source) {
-    isIncompleteHostNameRegExpPattern(source.getStringValue(), _)
-  }
+DataFlow::Node regExpSource(DataFlow::Node re) {
+  result = regExpSource(re, DataFlow::TypeBackTracker::end())
+}
 
-  override predicate isSink(DataFlow::Node sink) { isInterpretedAsRegExp(sink) }
+/** Holds if `re` is a regular expression with value `pattern`. */
+predicate regexp(DataFlow::Node re, string pattern, string kind, DataFlow::Node aux) {
+  re.asExpr().(RegExpLiteral).getValue() = pattern and
+  kind = "regular expression" and
+  aux = re
+  or
+  re = regExpSource(aux) and
+  pattern = re.getStringValue() and
+  kind = "string, which is used as a regular expression $@,"
 }
 
 /**
@@ -36,22 +55,11 @@ predicate isIncompleteHostNameRegExpPattern(string pattern, string hostPart) {
             // an unescaped single `.`
             "(?<!\\\\)[.]" +
             // immediately followed by a sequence of subdomains, perhaps with some regex characters mixed in, followed by a known TLD
-            "([():|?a-z0-9-]+(\\\\)?[.](" + RegExpPatterns::commonTLD() + "))" + ".*", 1)
+            "([():|?a-z0-9-]+(\\\\)?[.]" + RegExpPatterns::commonTLD() + ")" + ".*", 1)
 }
 
 from DataFlow::Node re, string pattern, string hostPart, string kind, DataFlow::Node aux
-where
-  (
-    re.asExpr().(RegExpLiteral).getValue() = pattern and
-    kind = "regular expression" and
-    aux = re
-    or
-    exists(Configuration cfg |
-      cfg.hasFlow(re, aux) and
-      re.mayHaveStringValue(pattern) and
-      kind = "string, which is used as a regular expression $@,"
-    )
-  ) and
+where regexp(re, pattern, kind, aux) and
   isIncompleteHostNameRegExpPattern(pattern, hostPart) and
   // ignore patterns with capture groups after the TLD
   not pattern.regexpMatch("(?i).*[.](" + RegExpPatterns::commonTLD() + ").*[(][?]:.*[)].*")
