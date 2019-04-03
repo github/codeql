@@ -35,4 +35,20 @@ var server = http.createServer(function(req, res) {
 
     XhrIo.send(new Uri(tainted)); // NOT OK
     new XhrIo().send(new Uri(tainted)); // NOT OK
+
+    let base = require('./config').base;
+
+    request(`http://example.com/${base}/${tainted}`); // NOT OK
+
+    request(`http://example.com/${base}/v1/${tainted}`); // NOT OK
+
+    request('http://example.com/' + base + '/' + tainted); // NOT OK
+
+    request('http://example.com/' + base + ('/' + tainted)); // NOT OK - but not flagged
+
+    request(`http://example.com/?${base}/${tainted}`); // OK
+
+    request(`http://example.com/${base}${tainted}`); // OK - assumed safe
+
+    request(`${base}${tainted}`); // OK - assumed safe
 })
