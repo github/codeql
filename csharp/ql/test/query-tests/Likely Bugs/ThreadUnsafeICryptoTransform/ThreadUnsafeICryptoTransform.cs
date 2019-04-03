@@ -54,7 +54,7 @@ public static class StaticMemberChildUsage
         SHA256,
     }
 
-    private static readonly Dictionary<DigestAlgorithm, HashAlgorithm> HashMap = new Dictionary<DigestAlgorithm, HashAlgorithm>
+    private static readonly IDictionary<DigestAlgorithm, HashAlgorithm> HashMap = new Dictionary<DigestAlgorithm, HashAlgorithm>
         {
             { DigestAlgorithm.SHA1, SHA1.Create() },
             { DigestAlgorithm.SHA256, SHA256.Create() },
@@ -112,3 +112,10 @@ public class TokenCacheNonStat
     }
 }
 
+public class FuncTest
+{
+    /// <summary>
+    /// Should be OK. Does not store the field.
+    /// </summary>
+    public static Func<SHA1> function;
+}
