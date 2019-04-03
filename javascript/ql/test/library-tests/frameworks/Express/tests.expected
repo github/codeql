@@ -517,6 +517,7 @@ test_appCreation
 | src/express4.js:2:11:2:19 | express() |
 | src/express.js:2:11:2:19 | express() |
 | src/responseExprs.js:2:11:2:19 | express() |
+| src/routesetups.js:7:11:7:32 | express ... erver() |
 | src/subrouter.js:2:11:2:19 | express() |
 test_RouteSetup_getRequestMethod
 | src/csurf-example.js:20:1:23:2 | app.get ... ) })\\n}) | GET |
@@ -543,6 +544,7 @@ test_RouteSetup_getRequestMethod
 test_RouteExpr
 | src/route.js:4:1:4:31 | router. ... er_id') | src/route.js:2:14:2:29 | express.Router() |
 | src/route.js:4:1:5:39 | router. ... xt) {}) | src/route.js:2:14:2:29 | express.Router() |
+| src/routesetups.js:11:12:11:28 | router.route('/') | src/routesetups.js:10:14:10:29 | express.Router() |
 test_RouteHandler_getAResponseExpr
 | src/csurf-example.js:20:18:23:1 | functio ... () })\\n} | src/csurf-example.js:22:3:22:5 | res |
 | src/csurf-example.js:25:22:27:1 | functio ... ere')\\n} | src/csurf-example.js:26:3:26:5 | res |
@@ -765,6 +767,9 @@ test_isRouterCreation
 | src/express.js:2:11:2:19 | express() |
 | src/responseExprs.js:2:11:2:19 | express() |
 | src/route.js:2:14:2:29 | express.Router() |
+| src/routesetups.js:3:1:3:16 | express.Router() |
+| src/routesetups.js:7:11:7:32 | express ... erver() |
+| src/routesetups.js:10:14:10:29 | express.Router() |
 | src/subrouter.js:2:11:2:19 | express() |
 | src/subrouter.js:8:16:8:31 | express.Router() |
 test_RouteSetup_getRouteHandlerExpr
@@ -813,6 +818,9 @@ test_RouterDefinition_RouterDefinition
 | src/express.js:2:11:2:19 | express() |
 | src/responseExprs.js:2:11:2:19 | express() |
 | src/route.js:2:14:2:29 | express.Router() |
+| src/routesetups.js:3:1:3:16 | express.Router() |
+| src/routesetups.js:7:11:7:32 | express ... erver() |
+| src/routesetups.js:10:14:10:29 | express.Router() |
 | src/subrouter.js:2:11:2:19 | express() |
 | src/subrouter.js:8:16:8:31 | express.Router() |
 test_RouteHandler_getARequestBodyAccess
