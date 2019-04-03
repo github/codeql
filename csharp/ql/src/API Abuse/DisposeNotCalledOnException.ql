@@ -9,7 +9,6 @@
  * @id cs/dispose-not-called-on-throw
  * @tags efficiency
  *       maintainability
- *       security
  *       external/cwe/cwe-404
  *       external/cwe/cwe-459
  *       external/cwe/cwe-460
