@@ -52,34 +52,39 @@ module StepSummary {
    * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
    */
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
-    exists(DataFlow::Node predNode | pred.flowsTo(predNode) |
-      // Flow through properties of objects
-      propertyFlowStep(predNode, succ) and
-      summary = LevelStep()
+    exists(DataFlow::Node mid | pred.flowsTo(mid) | smallstep(mid, succ, summary))
+  }
+
+  /**
+   * INTERNAL: Use `TypeBackTracker.smallstep()` instead.
+   */
+  predicate smallstep(DataFlow::Node pred, DataFlow::Node succ, StepSummary summary) {
+    // Flow through properties of objects
+    propertyFlowStep(pred, succ) and
+    summary = LevelStep()
+    or
+    // Flow through global variables
+    globalFlowStep(pred, succ) and
+    summary = LevelStep()
+    or
+    // Flow into function
+    callStep(pred, succ) and
+    summary = CallStep()
+    or
+    // Flow out of function
+    returnStep(pred, succ) and
+    summary = ReturnStep()
+    or
+    // Flow through an instance field between members of the same class
+    DataFlow::localFieldStep(pred, succ) and
+    summary = LevelStep()
+    or
+    exists(string prop |
+      basicStoreStep(pred, succ, prop) and
+      summary = StoreStep(prop)
       or
-      // Flow through global variables
-      globalFlowStep(predNode, succ) and
-      summary = LevelStep()
-      or
-      // Flow into function
-      callStep(predNode, succ) and
-      summary = CallStep()
-      or
-      // Flow out of function
-      returnStep(predNode, succ) and
-      summary = ReturnStep()
-      or
-      // Flow through an instance field between members of the same class
-      DataFlow::localFieldStep(predNode, succ) and
-      summary = LevelStep()
-      or
-      exists(string prop |
-        basicStoreStep(predNode, succ, prop) and
-        summary = StoreStep(prop)
-        or
-        loadStep(predNode, succ, prop) and
-        summary = LoadStep(prop)
-      )
+      loadStep(pred, succ, prop) and
+      summary = LoadStep(prop)
     )
   }
 }
@@ -255,6 +260,37 @@ class TypeBackTracker extends TTypeBackTracker {
    * This predicate is only defined if the type has not been tracked into a property.
    */
   TypeBackTracker continue() { prop = "" and result = this }
+
+  /**
+   * Gets the summary that corresponds to having taken a backwards
+   * heap and/or inter-procedural step from `succ` to `pred`.
+   */
+  pragma[inline]
+  TypeBackTracker step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+    exists(StepSummary summary |
+      StepSummary::step(pred, succ, summary) and
+      this = result.prepend(summary)
+    )
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a backwards
+   * local, heap and/or inter-procedural step from `succ` to `pred`.
+   *
+   * Unlike `TypeBackTracker::step`, this predicate exposes all edges
+   * in the flowgraph, and not just the edges between
+   * `SourceNode`s. It may therefore be less performant.
+   */
+  pragma[inline]
+  TypeBackTracker smallstep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(StepSummary summary |
+      StepSummary::smallstep(pred, succ, summary) and
+      this = result.prepend(summary)
+    )
+    or
+    pred = succ.getAPredecessor() and
+    this = result
+  }
 }
 
 module TypeBackTracker {
