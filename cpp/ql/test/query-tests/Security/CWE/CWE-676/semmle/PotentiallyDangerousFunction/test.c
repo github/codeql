@@ -45,7 +45,7 @@ void testGets() {
 
 void testTime()
 {
-	struct tm *now = localtime(time(NULL)); // BAD: localtime uses shared state [NOT DETECTED]
-	char *time_string = ctime(time(NULL)); // BAD: localtime uses shared state [NOT DETECTED]
-	char *time_string2 = asctime(now); // BAD: localtime uses shared state [NOT DETECTED]
+	struct tm *now = localtime(time(NULL)); // BAD: localtime uses shared state
+	char *time_string = ctime(time(NULL)); // BAD: localtime uses shared state
+	char *time_string2 = asctime(now); // BAD: localtime uses shared state
 }
