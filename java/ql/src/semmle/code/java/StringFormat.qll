@@ -85,6 +85,9 @@ class FmtSyntax extends TFmtSyntax {
     or
     result = "logger ({}) syntax" and this = TFmtLogger()
   }
+
+  /** Holds if this syntax is logger ({}) syntax. */
+  predicate isLogger() { this = TFmtLogger() }
 }
 
 /**
