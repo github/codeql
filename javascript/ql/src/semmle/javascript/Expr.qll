@@ -176,18 +176,18 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       this = ctx.(InvokeExpr).getCallee()
       or
       this = ctx.(BinaryExpr).getAnOperand() and
-      not ctx instanceof LogicalBinaryExpr and // x LOGOP y is fine b/c of implicit casting
-      not ctx instanceof EqualityTest and // x EQOP y is fine b/c of implicit casting and lack thereof
-      not ctx.(BitOrExpr).getAnOperand().(NumberLiteral).getIntValue() = 0 and // x | 0 is fine b/c it's used to cast to numbers
-      not ctx.(BitOrExpr).getAnOperand().(BigIntLiteral).getIntValue() = 0 and // x | 0 is fine b/c it's used to cast to numbers
-      not ctx.(RShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 and // x >> 0 is fine b/c it's used to cast to numbers
-      not ctx.(RShiftExpr).getRightOperand().(BigIntLiteral).getIntValue() = 0 and // x >> 0 is fine b/c it's used to cast to numbers
-      not ctx.(URShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 and // x >> 0 is fine b/c it's used to cast to numbers
-      not ctx.(URShiftExpr).getRightOperand().(BigIntLiteral).getIntValue() = 0 // x >> 0 is fine b/c it's used to cast to numbers
+      not ctx instanceof LogicalBinaryExpr and // x LOGOP y is fine because of implicit conversion
+      not ctx instanceof EqualityTest and // x EQOP y is fine because of implicit conversion and lack thereof
+      not ctx.(BitOrExpr).getAnOperand().(NumberLiteral).getIntValue() = 0 and // x | 0 is fine because it's used to convert to numbers
+      not ctx.(BitOrExpr).getAnOperand().(BigIntLiteral).getIntValue() = 0 and // x | 0 is fine because it's used to convert to numbers
+      not ctx.(RShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 and // x >> 0 is fine because it's used to convert to numbers
+      not ctx.(RShiftExpr).getRightOperand().(BigIntLiteral).getIntValue() = 0 and // x >> 0 is fine because it's used to convert to numbers
+      not ctx.(URShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 and // x >> 0 is fine because it's used to convert to numbers
+      not ctx.(URShiftExpr).getRightOperand().(BigIntLiteral).getIntValue() = 0 // x >> 0 is fine because it's used to convert to numbers
       or
       this = ctx.(UnaryExpr).getOperand() and
-      not ctx instanceof LogNotExpr and // !x is fine b/c of implicit casting
-      not ctx instanceof PlusExpr // +x is fine b/c of implicit casting
+      not ctx instanceof LogNotExpr and // !x is fine because of implicit conversion
+      not ctx instanceof PlusExpr // +x is fine because of implicit conversion
       or
       this = ctx.(UpdateExpr).getOperand()
       or
