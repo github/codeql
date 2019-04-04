@@ -236,12 +236,7 @@ class TypeInternal extends ClassObjectInternal, TType {
     }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-        exists(CallNode call, PointsToContext caller, ObjectInternal instance |
-            callee.fromCall(call, caller) |
-            count(call.getAnArg()) = 1 and
-            PointsToInternal::pointsTo(call.getArg(0), caller, instance, origin) and
-            obj = instance.getClass()
-        )
+        none()
     }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {

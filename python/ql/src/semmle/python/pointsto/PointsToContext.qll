@@ -119,6 +119,17 @@ private cached newtype TPointsToContext =
         total_cost(call, outerContext) = cost and
         cost <= max_context_cost()
     }
+    or
+    TObjectContext(SelfInstanceInternal object)
+
+module Context {
+
+    PointsToContext forObject(ObjectInternal object) {
+        result = TObjectContext(object)
+    }
+
+}
+
 
 /** Points-to context. Context can be one of:
  *    * "main": Used for scripts.

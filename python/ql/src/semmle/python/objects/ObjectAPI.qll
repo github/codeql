@@ -53,8 +53,14 @@ class Value extends TObject {
     }
 
     /* For backwards compatibility with old API */
-    ObjectSource getSource() {
+    deprecated ObjectSource getSource() {
         result = this.(ObjectInternal).getSource()
+        or
+        exists(Module p |
+            p.isPackage() and
+            p.getPath() = this.(PackageObjectInternal).getFolder() and
+            result = p.getEntryNode()
+        )
     }
 
     /** Gets the `ControlFlowNode` that will be passed as the nth argument to `this` when called at `call`.

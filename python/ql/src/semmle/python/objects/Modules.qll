@@ -23,10 +23,6 @@ abstract class ModuleObjectInternal extends ObjectInternal {
         none()
     }
 
-    override ControlFlowNode getOrigin() {
-        result = this.getSourceModule().getEntryNode()
-    }
-
     override boolean isClass() { result = false }
 
     override boolean isComparable() { result = true }
@@ -92,6 +88,10 @@ class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleOb
 
     override predicate attributesUnknown() { none() }
 
+    override ControlFlowNode getOrigin() {
+        none()
+    }
+
 }
 
 class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
@@ -154,18 +154,14 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         this.getInitModule().attribute(name, value, origin)
         or
-        // TO DO, dollar variable...
-        //exists(Module init |
-        //    init = this.getSourceModule() and
-        //    not exists(EssaVariable var | var.getAUse() = init.getANormalExit() and var.getSourceVariable().getName() = name) and
-        //    exists(EssaVariable var, Context context |
-        //        isModuleStateVariable(var) and var.getAUse() = init.getANormalExit() and
-        //        context.isImport() and
-        //        SSA::ssa_variable_named_attribute_pointsTo(var, context, name, undefinedVariable(), _, origin) and
-        //        value = this.submodule(name)
-        //    )
-        //)
-        //or
+        exists(Module init |
+            init = this.getSourceModule() and
+            not exists(EssaVariable var | var.getAUse() = init.getANormalExit() and var.getSourceVariable().getName() = name) and
+            ModuleAttributes::pointsToAtExit(init, name, ObjectInternal::undefined(), _) and
+            value = this.submodule(name) and
+            origin = CfgOrigin::fromModule(value)
+        )
+        or
         this.hasNoInitModule() and
         exists(ModuleObjectInternal mod |
             mod = this.submodule(name) and
@@ -175,6 +171,10 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
     }
 
     override predicate attributesUnknown() { none() }
+
+    override ControlFlowNode getOrigin() {
+        none()
+    }
 
 }
 
@@ -248,6 +248,10 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
     }
 
     override predicate attributesUnknown() { none() }
+
+    override ControlFlowNode getOrigin() {
+        result = this.getSourceModule().getEntryNode()
+    }
 
 }
 
