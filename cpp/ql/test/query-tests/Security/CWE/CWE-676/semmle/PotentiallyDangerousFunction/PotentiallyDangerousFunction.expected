@@ -1,3 +1,3 @@
-| test.c:28:22:28:27 | call to gmtime | Call to gmtime is potentially dangerous |
-| test.c:39:2:39:5 | call to gets | gets does not guard against buffer overflow |
-| test.c:40:6:40:9 | call to gets | gets does not guard against buffer overflow |
+| test.c:31:22:31:27 | call to gmtime | Call to gmtime is potentially dangerous |
+| test.c:42:2:42:5 | call to gets | gets does not guard against buffer overflow |
+| test.c:43:6:43:9 | call to gets | gets does not guard against buffer overflow |
