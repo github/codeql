@@ -46,3 +46,87 @@ predicate addWithSizeof(Expr e, Expr sizeofExpr, Type sizeofParam) {
   | e = subExpr.getLeftOperand() and
     multiplyWithSizeof(subExpr.getRightOperand(), sizeofExpr, sizeofParam))
 }
+
+/**
+ * Holds if `t` is a pointer or array type.
+ */
+predicate isPointerType(Type t) {
+  t instanceof PointerType or
+  t instanceof ArrayType
+}
+
+/**
+ * Holds if there is a pointer expression with type `sourceType` at
+ * location `sourceLoc` which might be the source expression for `use`.
+ *
+ * For example, with
+ * ```
+ * int intArray[5] = { 1, 2, 3, 4, 5 };
+ * char *charPointer = (char *)intArray;
+ * return *(charPointer + i);
+ * ```
+ * the array initializer on the first line is a source expression
+ * for the use of `charPointer` on the third line.
+ *
+ * The source will either be an `Expr` or a `Parameter`.
+ */
+predicate exprSourceType(Expr use, Type sourceType, Location sourceLoc) {
+  // Reaching definitions.
+  if exists (SsaDefinition def, LocalScopeVariable v | use = def.getAUse(v)) then
+    exists (SsaDefinition def, LocalScopeVariable v
+    | use = def.getAUse(v)
+    | defSourceType(def, v, sourceType, sourceLoc))
+
+  // Pointer arithmetic
+  else if use instanceof PointerAddExpr then
+    exprSourceType(use.(PointerAddExpr).getLeftOperand(), sourceType, sourceLoc)
+  else if use instanceof PointerSubExpr then
+    exprSourceType(use.(PointerSubExpr).getLeftOperand(), sourceType, sourceLoc)
+  else if use instanceof AddExpr then
+    exprSourceType(use.(AddExpr).getAnOperand(), sourceType, sourceLoc)
+  else if use instanceof SubExpr then
+    exprSourceType(use.(SubExpr).getAnOperand(), sourceType, sourceLoc)
+  else if use instanceof CrementOperation then
+    exprSourceType(use.(CrementOperation).getOperand(), sourceType, sourceLoc)
+
+  // Conversions are not in the AST, so ignore them.
+  else if use instanceof Conversion then
+    none()
+
+  // Source expressions
+  else
+    (sourceType = use.getType().getUnspecifiedType() and
+     isPointerType(sourceType) and
+     sourceLoc = use.getLocation())
+}
+
+/**
+ * Holds if there is a pointer expression with type `sourceType` at
+ * location `sourceLoc` which might define the value of `v` at `def`.
+ */
+predicate defSourceType(SsaDefinition def, LocalScopeVariable v,
+                        Type sourceType, Location sourceLoc) {
+  exprSourceType(def.getDefiningValue(v), sourceType, sourceLoc)
+  or
+  defSourceType(def.getAPhiInput(v), v, sourceType, sourceLoc)
+  or
+  exists (Parameter p
+  | p = v and
+    def.definedByParameter(p) and
+    sourceType = p.getType().getUnspecifiedType() and
+    strictcount(p.getType()) = 1 and
+    isPointerType(sourceType) and
+    sourceLoc = p.getLocation())
+}
+
+/**
+ * Gets the pointer arithmetic expression that `e` is (directly) used
+ * in, if any.
+ *
+ * For example, in `(char*)(p + 1)`, for `p`, ths result is `p + 1`.
+ */
+Expr pointerArithmeticParent(Expr e) {
+  e = result.(PointerAddExpr).getLeftOperand() or
+  e = result.(PointerSubExpr).getLeftOperand() or
+  e = result.(PointerDiffExpr).getAnOperand()
+}
