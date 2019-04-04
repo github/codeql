@@ -44,7 +44,7 @@ void f(char *s, int i, unsigned char *us, const char *cs, signed char *ss, char 
     printf("%d", ull);               // not ok (unsigned long long -> int)
     printf("%u", ull);               // not ok (unsigned long long -> unsigned int)
     printf("%x", ull);               // not ok (unsigned long long -> unsigned int)
-    printf("%Lx", ull);              // not ok (unsigned long long -> unsigned int)
+    printf("%Lx", ull);              // ok
     printf("%llx", ull);             // ok
 }
 
@@ -100,4 +100,37 @@ void fun1(unsigned char* a, unsigned char* b) {
 
   printf("%td\n", pdt); // GOOD
   printf("%td\n", a-b); // GOOD
+}
+
+void extensions()
+{
+	{
+		long double ld;
+		double d;
+
+		printf("%Lg", ld); // GOOD
+		printf("%llg", ld); // GOOD (nonstandard equivalent to %Lg)
+		printf("%Lg", d); // BAD (should be %g)
+		printf("%llg", d); // BAD (should be %g)
+	}
+
+	{
+		long long int lli;
+		long int li;
+
+		printf("%lld", lli); // GOOD
+		printf("%Ld", lli); // GOOD (nonstandard equivalent to %lld)
+		printf("%Ld", li); // BAD (should be %ld) [NOT DETECTED]
+		printf("%lld", li); // BAD (should be %ld) [NOT DETECTED]
+	}
+
+	{
+		unsigned long long int ulli;
+		unsigned long int uli;
+
+		printf("%llu", ulli); // GOOD
+		printf("%Lu", ulli); // GOOD (nonstandard equivalent to %llu)
+		printf("%Lu", uli); // BAD (should be %lu) [NOT DETECTED]
+		printf("%llu", uli); // BAD (should be %lu) [NOT DETECTED]
+	}
 }

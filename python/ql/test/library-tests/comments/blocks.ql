@@ -1,7 +1,7 @@
 /**
  * @name commented_out_code
  * @description Insert description here...
- * @kind problem
+ * @kind table
  * @problem.severity warning
  */
 

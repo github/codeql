@@ -1,7 +1,7 @@
 /**
  * @name SSA
  * @description Insert description here...
- * @kind problem
+ * @kind table
  * @problem.severity warning
  */
 

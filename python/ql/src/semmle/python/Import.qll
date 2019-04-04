@@ -1,5 +1,5 @@
 import python
-
+private import semmle.python.types.Builtins
 
 /** An alias in an import statement, the `mod as name` part of `import mod as name`. May be artificial;
     `import x` is transformed into `import x as x` */
@@ -14,7 +14,7 @@ class Alias extends Alias_ {
 private predicate valid_module_name(string name) {
     exists(Module m | m.getName() = name)
     or
-    exists(Object cmod | py_cobjecttypes(cmod, theModuleType()) and py_cobjectnames(cmod, name))
+    exists(Builtin cmod | cmod.getClass() = theModuleType().asBuiltin() and cmod.getName() = name)
 }
 
 /** An artificial expression representing an import */

@@ -1,7 +1,7 @@
 /**
  * @name Padding Sanity Check
  * @description Performs sanity checks for the padding library. This query should have no results. 
- * @kind problem
+ * @kind table
  * @id cpp/padding-sanity-check
  */
 

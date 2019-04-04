@@ -572,9 +572,8 @@ class FormatLiteral extends Literal {
         ((len="hh" and result instanceof IntType)
       or (len="h" and result instanceof IntType)
       or (len="l" and result = this.getLongType())
-      or ((len="ll" or len="q")
+      or ((len="ll" or len="L" or len="q")
                   and result instanceof LongLongType)
-      or (len="L" and result instanceof IntType)  // doesn't affect integral conversion
       or (len="j" and result = this.getIntmax_t())
       or ((len="z" or len="Z")
                   and (result = this.getSize_t() or result = this.getSsize_t()))
@@ -599,9 +598,8 @@ class FormatLiteral extends Literal {
         ((len="hh" and result instanceof CharType)
       or (len="h" and result instanceof ShortType)
       or (len="l" and result = this.getLongType())
-      or ((len="ll" or len="q")
+      or ((len="ll" or len="L" or len="q")
                   and result instanceof LongLongType)
-      or (len="L" and result instanceof IntType)  // doesn't affect integral conversion
       or (len="j" and result = this.getIntmax_t())
       or ((len="z" or len="Z")
                   and (result = this.getSize_t() or result = this.getSsize_t()))
@@ -622,7 +620,7 @@ class FormatLiteral extends Literal {
    */
   FloatingPointType getFloatingPointConversion(int n) {
     exists(string len | len = this.getLength(n) and
-      if len="L" then
+      if (len="L" or len="ll")  then
         result instanceof LongDoubleType
       else
         result instanceof DoubleType)
@@ -638,7 +636,7 @@ class FormatLiteral extends Literal {
            (len="hh" and base instanceof CharType)
         or (len="h"  and base instanceof ShortType)
         or (len="l"  and base = this.getLongType())
-        or (len="ll" and base instanceof LongLongType)
+        or ((len="ll" or len="L") and base instanceof LongLongType)
         or (len="q" and base instanceof LongLongType)
       )
       and base.isSigned() and base = result.getBaseType()

@@ -10,7 +10,6 @@
 | printf1.h:44:18:44:20 | ull | This argument should be of type 'int' but is of type 'unsigned long long' |
 | printf1.h:45:18:45:20 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:46:18:46:20 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
-| printf1.h:47:19:47:21 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:71:19:71:20 | st | This argument should be of type 'ssize_t' but is of type 'unsigned long long' |
 | printf1.h:72:19:72:20 | ST | This argument should be of type 'ssize_t' but is of type 'unsigned long long' |
 | printf1.h:73:19:73:22 | c_st | This argument should be of type 'ssize_t' but is of type 'unsigned long long' |

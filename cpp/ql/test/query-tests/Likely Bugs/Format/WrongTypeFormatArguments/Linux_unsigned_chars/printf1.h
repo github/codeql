@@ -44,7 +44,7 @@ void f(char *s, int i, unsigned char *us, const char *cs, signed char *ss, char 
     printf("%d", ull);               // not ok (unsigned long long -> int)
     printf("%u", ull);               // not ok (unsigned long long -> unsigned int)
     printf("%x", ull);               // not ok (unsigned long long -> unsigned int)
-    printf("%Lx", ull);              // not ok (unsigned long long -> unsigned int)
+    printf("%Lx", ull);              // ok
     printf("%llx", ull);             // ok
 }
 

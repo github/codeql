@@ -14,7 +14,7 @@ module PropertyInjection {
     node = DataFlow::globalObjectRef()
     or
     // document.write can be accessed
-    isDocument(node.asExpr())
+    node = DOM::documentRef()
     or
     // 'constructor' property leads to the Function constructor.
     node.analyze().getAValue() instanceof AbstractCallable
