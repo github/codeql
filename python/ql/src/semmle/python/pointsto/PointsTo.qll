@@ -8,44 +8,7 @@ private import semmle.python.pointsto.MRO2
 private import semmle.python.types.Builtins
 
 /* Use this version for speed */
-library class CfgOrigin extends @py_object {
-
-    string toString() {
-        /* Not to be displayed */
-        none()
-    }
-
-    /** Get a `ControlFlowNode` from `this` or `here`.
-     * If `this` is a ControlFlowNode then use that, otherwise fall back on `here`
-     */
-    pragma[inline]
-    ControlFlowNode asCfgNodeOrHere(ControlFlowNode here) {
-        result = this
-        or
-        not this instanceof ControlFlowNode and result = here
-    }
-
-    ControlFlowNode toCfgNode() {
-        result = this
-    }
-
-    pragma[inline]
-    CfgOrigin fix(ControlFlowNode here) {
-        if this = Builtin::unknown() then
-            result = here
-        else
-            result = this
-    }
-
-}
-
-/* Use this version for stronger type-checking */
-//private newtype TCfgOrigin =
-//    TUnknownOrigin()
-//    or
-//    TCfgOrigin(ControlFlowNode f)
-//
-//library class CfgOrigin extends TCfgOrigin {
+//library class CfgOrigin extends @py_object {
 //
 //    string toString() {
 //        /* Not to be displayed */
@@ -57,44 +20,92 @@ library class CfgOrigin extends @py_object {
 //     */
 //    pragma[inline]
 //    ControlFlowNode asCfgNodeOrHere(ControlFlowNode here) {
-//        this = TUnknownOrigin() and result = here
+//        result = this
 //        or
-//        this = TCfgOrigin(result)
+//        not this instanceof ControlFlowNode and result = here
 //    }
 //
 //    ControlFlowNode toCfgNode() {
-//        this = TCfgOrigin(result)
+//        result = this
 //    }
 //
+//    pragma[inline]
 //    CfgOrigin fix(ControlFlowNode here) {
-//        this = TUnknownOrigin() and result = TCfgOrigin(here)
-//        or
-//        not this = TUnknownOrigin() and result = this
+//        if this = Builtin::unknown() then
+//            result = here
+//        else
+//            result = this
 //    }
+//
 //}
 //
+//module CfgOrigin {
+//
+//    CfgOrigin fromCfgNode(ControlFlowNode f) {
+//        result = f
+//    }
+//
+//    CfgOrigin unknown() {
+//        result = Builtin::unknown()
+//    }
+//
+//    CfgOrigin fromObject(ObjectInternal obj) {
+//        obj.isBuiltin() and result = unknown()
+//        or
+//        result = obj.getOrigin()
+//    }
+//
+//}
 
+/* Use this version for stronger type-checking */
+private newtype TCfgOrigin =
+    TUnknownOrigin()
+    or
+    TFlowNodeOrigin(ControlFlowNode f)
+
+library class CfgOrigin extends TCfgOrigin {
+
+    string toString() {
+        /* Not to be displayed */
+        none()
+    }
+
+    /** Get a `ControlFlowNode` from `this` or `here`.
+     * If `this` is a ControlFlowNode then use that, otherwise fall back on `here`
+     */
+    pragma[inline]
+    ControlFlowNode asCfgNodeOrHere(ControlFlowNode here) {
+        this = TUnknownOrigin() and result = here
+        or
+        this = TFlowNodeOrigin(result)
+    }
+
+    ControlFlowNode toCfgNode() {
+        this = TFlowNodeOrigin(result)
+    }
+
+    CfgOrigin fix(ControlFlowNode here) {
+        this = TUnknownOrigin() and result = TFlowNodeOrigin(here)
+        or
+        not this = TUnknownOrigin() and result = this
+    }
+
+}
 
 module CfgOrigin {
 
     CfgOrigin fromCfgNode(ControlFlowNode f) {
-        result = f
+        result = TFlowNodeOrigin(f)
     }
 
     CfgOrigin unknown() {
-        result = Builtin::unknown()
-    }
-
-    CfgOrigin fromModule(ModuleObjectInternal mod) {
-        mod.isBuiltin() and result = unknown()
-        or
-        result = mod.getSourceModule().getEntryNode()
+        result = TUnknownOrigin()
     }
 
     CfgOrigin fromObject(ObjectInternal obj) {
         obj.isBuiltin() and result = unknown()
         or
-        result = obj.getOrigin()
+        result = fromCfgNode(obj.getOrigin())
     }
 
 }
@@ -106,7 +117,7 @@ module PointsTo {
         PointsToInternal::pointsTo(f, context, value, origin)
     }
 
-    predicate variablePointsTo(EssaVariable var, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    predicate variablePointsTo(EssaVariable var, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
         PointsToInternal::variablePointsTo(var, context, value, origin)
     }
 
@@ -149,8 +160,7 @@ module PointsTo {
         exists(Value value |
             PointsToInternal::variablePointsTo(var, context, value, origin) and
             cls = value.getClass().getSource() |
-            obj = value.getSource() or
-            not exists(value.getSource()) and obj = origin
+            obj = value.getSource()
         )
     }
 
@@ -444,17 +454,20 @@ cached module PointsToInternal {
         )
     }
 
-    private predicate self_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        origin = CfgOrigin::fromCfgNode(def.getDefiningNode()) and
+    private predicate self_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        origin = def.getDefiningNode() and
         value.(SelfInstanceInternal).parameterAndContext(def, context)
     }
 
     /** Holds if ESSA edge refinement, `def`, refers to `(value, cls, origin)`. */
     private predicate ssa_filter_definition_points_to(PyEdgeRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        def.getSense() = ssa_filter_definition_bool(def, context, value, origin)
+        exists(ControlFlowNode orig |
+            def.getSense() = ssa_filter_definition_bool(def, context, value, orig) and
+            origin = CfgOrigin::fromCfgNode(orig)
+        )
     }
 
-    private boolean ssa_filter_definition_bool(PyEdgeRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+    private boolean ssa_filter_definition_bool(PyEdgeRefinement def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         result = Conditionals::testEvaluates(def.getTest(), def.getInput().getASourceUse(), context, value, origin)
     }
 
@@ -643,7 +656,7 @@ module InterModulePointsTo {
         exists(PackageObjectInternal package |
             package.getSourceModule() = def.getDefiningNode().getScope() |
             value = package.submodule(def.getSourceVariable().getName()) and
-            origin = CfgOrigin::fromModule(value).fix(def.getDefiningNode()) and
+            origin = CfgOrigin::fromObject(value).asCfgNodeOrHere(def.getDefiningNode()) and
             context.isImport()
         )
     }
@@ -748,7 +761,7 @@ module InterProceduralPointsTo {
     predicate call_points_to(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(ObjectInternal func, CfgOrigin resultOrigin |
             call_points_to_callee(f, context, func) and
-            origin = resultOrigin.fix(f)
+            origin = resultOrigin.asCfgNodeOrHere(f)
             |
             exists(PointsToContext callee |
                 callee.fromCall(f, context) and
@@ -816,7 +829,7 @@ module InterProceduralPointsTo {
             func = method.getScope() and
             def.getScope() = func and
             value = method.getSelf() and
-            origin = CfgOrigin::fromObject(value)
+            origin = value.getOrigin()
         )
     }
 
@@ -1007,11 +1020,11 @@ module Expressions {
         attr.isLoad() and
         exists(string name |
             attr.getObject(name) = obj and
-            PointsTo::pointsTo(obj, context, objvalue, _)
+            PointsToInternal::pointsTo(obj, context, objvalue, _)
             |
             exists(CfgOrigin orig |
                 objvalue.attribute(name, value, orig) and
-                origin = orig.fix(attr)
+                origin = orig.asCfgNodeOrHere(attr)
             )
             or
             objvalue.attributesUnknown() and
@@ -1022,7 +1035,7 @@ module Expressions {
     predicate subscriptPointsTo(SubscriptNode subscr, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode obj, ObjectInternal objvalue) {
         subscr.isLoad() and
         obj = subscr.getObject() and
-        PointsTo::pointsTo(obj, context, objvalue, _) and
+        PointsToInternal::pointsTo(obj, context, objvalue, _) and
         value = ObjectInternal::unknown() and origin = subscr
     }
 
@@ -1033,7 +1046,7 @@ module Expressions {
         // TO DO...
         // Track some integer values through `|` and the types of some objects
         operand = b.getAnOperand() and
-        PointsTo::pointsTo(operand, context, opvalue, _) and
+        PointsToInternal::pointsTo(operand, context, opvalue, _) and
         value = ObjectInternal::unknown() and origin = b
     }
 
@@ -1041,7 +1054,7 @@ module Expressions {
         exists(Unaryop op |
             op = u.getNode().getOp() and
             operand = u.getOperand() and
-            PointsTo::pointsTo(operand, context, opvalue, _)
+            PointsToInternal::pointsTo(operand, context, opvalue, _)
             |
             op instanceof Not and value = ObjectInternal::bool(opvalue.booleanValue().booleanNot())
             or
@@ -1636,7 +1649,7 @@ cached module Types {
 
 module AttributePointsTo {
 
-    predicate attributePointsTo(ControlFlowNode f, Context context, string name, ObjectInternal value, CfgOrigin origin) {
+    predicate attributePointsTo(ControlFlowNode f, Context context, string name, ObjectInternal value, ControlFlowNode origin) {
         exists(ObjectInternal obj, Context prev, AttributeAssignment def |
             PointsToInternal::pointsTo(f, context, obj, _) and
             PointsToInternal::variablePointsTo(def.getInput(), prev, obj, _) and

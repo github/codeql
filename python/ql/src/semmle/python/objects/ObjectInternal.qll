@@ -77,9 +77,9 @@ class ObjectInternal extends TObject {
 
     abstract predicate attributesUnknown();
 
-    /** For backwards compatibility shim -- Not all objects have a "source" 
+    /** For backwards compatibility shim -- Not all objects have a "source".
      * Objects (except unknown and undefined values) should attempt to return
-     * exactly one result for either this method`.
+     * exactly one result for this method.
      * */
     @py_object getSource() {
         result = this.getOrigin()

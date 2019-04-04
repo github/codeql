@@ -134,10 +134,11 @@ class ClassObject extends Object {
 
     /** Whether the named attribute refers to the object, class and origin */
     predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
-        exists(Value val |
-            theClass().attribute(name, val, origin) and
+        exists(Value val, CfgOrigin valorig |
+            theClass().attribute(name, val, valorig) and
             obj = val.getSource() and
-            cls = val.getClass().getSource()
+            cls = val.getClass().getSource() and
+            origin = valorig.toCfgNode()
         )
     }
 

@@ -143,7 +143,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
     }
 
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        value = ObjectInternal::fromBuiltin(this.getBuiltin().getMember(name)) and 
+        value = ObjectInternal::fromBuiltin(this.getBuiltin().getMember(name)) and
         origin = CfgOrigin::unknown()
     }
 

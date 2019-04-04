@@ -50,9 +50,10 @@ abstract class ModuleObject extends Object {
     }
 
     predicate attributeRefersTo(string name, Object obj, ControlFlowNode origin) {
-        exists(Value val |
-            theModule().(ModuleObjectInternal).attribute(name, val, origin) and
-            obj = val.getSource()
+        exists(Value val, CfgOrigin valorig |
+            theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
+            obj = val.getSource() and
+            origin = valorig.toCfgNode()
         )
     }
 

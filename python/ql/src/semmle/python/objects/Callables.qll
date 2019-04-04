@@ -82,11 +82,12 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
 
     pragma [noinline]
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-        exists(Function func, ControlFlowNode rval |
+        exists(Function func, ControlFlowNode rval, ControlFlowNode forigin |
             func = this.getScope() and
             callee.appliesToScope(func) |
             rval = func.getAReturnValueFlowNode() and
-            PointsToInternal::pointsTo(rval, callee, obj, origin)
+            PointsToInternal::pointsTo(rval, callee, obj, forigin) and
+            origin = CfgOrigin::fromCfgNode(forigin)
             or
             PointsToInternal::reachableBlock(blockReturningNone(func), callee) and
             obj = ObjectInternal::none_() and
@@ -98,7 +99,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) { 
         this.getScope().isProcedure() and
         obj = ObjectInternal::none_() and
-        origin = this.getScope().getEntryNode()
+        origin = CfgOrigin::fromCfgNode(this.getScope().getEntryNode())
     }
 
     override predicate calleeAndOffset(Function scope, int paramOffset) {

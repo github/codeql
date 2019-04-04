@@ -159,21 +159,21 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
             not exists(EssaVariable var | var.getAUse() = init.getANormalExit() and var.getSourceVariable().getName() = name) and
             ModuleAttributes::pointsToAtExit(init, name, ObjectInternal::undefined(), _) and
             value = this.submodule(name) and
-            origin = CfgOrigin::fromModule(value)
+            origin = CfgOrigin::fromObject(value)
         )
         or
         this.hasNoInitModule() and
         exists(ModuleObjectInternal mod |
             mod = this.submodule(name) and
             value = mod |
-            origin = CfgOrigin::fromModule(mod)
+            origin = CfgOrigin::fromObject(mod)
         )
     }
 
     override predicate attributesUnknown() { none() }
 
     override ControlFlowNode getOrigin() {
-        none()
+        result = this.getSourceModule().getEntryNode()
     }
 
 }
