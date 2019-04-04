@@ -10,7 +10,7 @@
  * @tags security
  *       external/owasp/owasp-a1
  *       external/cwe/cwe-094
- *       external/cwe/cwe-079
+ *       external/cwe/cwe-095
  *       external/cwe/cwe-116
  */
 
