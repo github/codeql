@@ -1,0 +1,2 @@
+| UnintendedDeclaration.cpp:48:2:48:22 | declaration | Functions should be declared at file scope, not inside blocks. |
+| UnintendedDeclaration.cpp:69:2:69:27 | declaration | Functions should be declared at file scope, not inside blocks. |
