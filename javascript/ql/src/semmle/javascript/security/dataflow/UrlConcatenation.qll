@@ -7,8 +7,7 @@
 import javascript
 
 /**
- * Holds if the given data flow node is incomplete or is a string concatenation
- * involving an incomplete operand.
+ * Holds if the given data flow node may refer to a string for which we have incomplete information.
  */
 private predicate hasIncompleteSubstring(DataFlow::Node nd) {
   nd.isIncomplete(_)
@@ -19,7 +18,7 @@ private predicate hasIncompleteSubstring(DataFlow::Node nd) {
 }
 
 /**
- * Holds if the given data flow node refers is a string that ends with a slash.
+ * Holds if the given data flow node refers to a string that ends with a slash.
  */
 private predicate endsWithSlash(DataFlow::Node nd) {
   nd.getStringValue().matches("%/")
