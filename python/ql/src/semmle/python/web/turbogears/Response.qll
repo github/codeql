@@ -7,7 +7,7 @@ import TurboGears
 
 
 
-class ControllerMethodReturnValue extends SimpleHttpResponseTaintSink {
+class ControllerMethodReturnValue extends HttpResponseTaintSink {
 
     ControllerMethodReturnValue() {
         exists(TurboGearsControllerMethod m |
@@ -22,7 +22,7 @@ class ControllerMethodReturnValue extends SimpleHttpResponseTaintSink {
 
 }
 
-class ControllerMethodTemplatedReturnValue extends SimpleHttpResponseTaintSink {
+class ControllerMethodTemplatedReturnValue extends HttpResponseTaintSink {
 
     ControllerMethodTemplatedReturnValue() {
         exists(TurboGearsControllerMethod m |

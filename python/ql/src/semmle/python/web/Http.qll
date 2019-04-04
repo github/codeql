@@ -86,7 +86,7 @@ class UntrustedCookie extends TaintKind {
 
 
 /** Generic taint sink in a http response */
-abstract class SimpleHttpResponseTaintSink extends TaintSink {
+abstract class HttpResponseTaintSink extends TaintSink {
 
     override predicate sinks(TaintKind kind) { 
         kind instanceof ExternalStringKind

@@ -40,7 +40,7 @@ class DjangoResponseSource extends TaintSource {
 }
 
 /** A write to a django response, which is vulnerable to external data (xss) */
-class DjangoResponseWrite extends SimpleHttpResponseTaintSink {
+class DjangoResponseWrite extends HttpResponseTaintSink {
 
     DjangoResponseWrite() {
         exists(AttrNode meth, CallNode call |
@@ -61,7 +61,7 @@ class DjangoResponseWrite extends SimpleHttpResponseTaintSink {
 }
 
 /** An argument to initialization of a django response, which is vulnerable to external data (xss) */
-class DjangoResponseContent extends SimpleHttpResponseTaintSink {
+class DjangoResponseContent extends HttpResponseTaintSink {
 
     DjangoResponseContent() {
         exists(CallNode call, ClassObject cls |

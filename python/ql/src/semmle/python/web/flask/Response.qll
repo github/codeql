@@ -8,7 +8,7 @@ import semmle.python.web.flask.General
 
 /** A flask response, which is vulnerable to any sort of 
  * http response malice. */
-class FlaskRoutedResponse extends SimpleHttpResponseTaintSink {
+class FlaskRoutedResponse extends HttpResponseTaintSink {
 
     FlaskRoutedResponse() {
         exists(PyFunctionObject response |
@@ -28,7 +28,7 @@ class FlaskRoutedResponse extends SimpleHttpResponseTaintSink {
 }
 
 
-class FlaskResponseArgument extends SimpleHttpResponseTaintSink {
+class FlaskResponseArgument extends HttpResponseTaintSink {
 
     FlaskResponseArgument() {
         exists(CallNode call |

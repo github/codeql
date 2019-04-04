@@ -22,7 +22,7 @@ private Object theBottleResponseObject() {
     result = theBottleModule().attr("response")
 }
 
-class BottleResponseBodyAssignment extends SimpleHttpResponseTaintSink {
+class BottleResponseBodyAssignment extends HttpResponseTaintSink {
 
     BottleResponseBodyAssignment() {
         exists(DefinitionNode lhs |
@@ -37,7 +37,7 @@ class BottleResponseBodyAssignment extends SimpleHttpResponseTaintSink {
 
 }
 
-class BottleHandlerFunctionResult extends SimpleHttpResponseTaintSink {
+class BottleHandlerFunctionResult extends HttpResponseTaintSink {
 
     BottleHandlerFunctionResult() {
         exists(BottleRoute route, Return ret |

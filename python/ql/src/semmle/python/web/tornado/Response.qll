@@ -31,7 +31,7 @@ class TornadoConnectionSource extends TaintSource {
 
 }
 
-class TornadoConnectionWrite extends SimpleHttpResponseTaintSink {
+class TornadoConnectionWrite extends HttpResponseTaintSink {
 
     override string toString() {
         result = "tornado.connection.write"
@@ -53,7 +53,7 @@ class TornadoConnectionWrite extends SimpleHttpResponseTaintSink {
 
 }
 
-class TornadoHttpRequestHandlerWrite extends SimpleHttpResponseTaintSink {
+class TornadoHttpRequestHandlerWrite extends HttpResponseTaintSink {
 
     override string toString() {
         result = "tornado.HttpRequesHandler.write"
@@ -73,7 +73,7 @@ class TornadoHttpRequestHandlerWrite extends SimpleHttpResponseTaintSink {
 
 }
 
-class TornadoHttpRequestHandlerRedirect extends SimpleHttpResponseTaintSink {
+class TornadoHttpRequestHandlerRedirect extends HttpResponseTaintSink {
 
     override string toString() {
         result = "tornado.HttpRequesHandler.redirect"

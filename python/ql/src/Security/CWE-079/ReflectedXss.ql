@@ -32,7 +32,7 @@ class RefectedXssConfiguration extends TaintTracking::Configuration {
 
     override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
 
-    override predicate isSink(TaintTracking::Sink sink) { sink instanceof SimpleHttpResponseTaintSink }
+    override predicate isSink(TaintTracking::Sink sink) { sink instanceof HttpResponseTaintSink }
 
 }
 

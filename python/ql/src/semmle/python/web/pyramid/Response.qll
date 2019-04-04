@@ -9,7 +9,7 @@ private import semmle.python.web.Http
 
 /** A pyramid response, which is vulnerable to any sort of 
  * http response malice. */
-class PyramidRoutedResponse extends SimpleHttpResponseTaintSink {
+class PyramidRoutedResponse extends HttpResponseTaintSink {
 
     PyramidRoutedResponse() {
         exists(PyFunctionObject view |
