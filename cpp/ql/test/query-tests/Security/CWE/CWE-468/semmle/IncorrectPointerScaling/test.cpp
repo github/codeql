@@ -139,3 +139,10 @@ void* test17(int* x) {
   // BAD: void pointer arithmetic is not portable across compilers
   return (void*)x + sizeof(int);
 }
+
+int test18(int i) {
+  int intArray[2][2] = { {1, 2}, {3, 4} };
+  char *charPointer = (char *)intArray;
+  // BAD: the pointer arithmetic uses type char*, so the offset is not scaled by sizeof(int).
+  return *(int *)(charPointer + i);
+}
