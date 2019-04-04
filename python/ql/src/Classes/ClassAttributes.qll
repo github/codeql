@@ -130,7 +130,7 @@ class CheckClass extends ClassObject {
 
 
 private Object object_getattribute() {
-    py_cmembers_versioned(theObjectType(), "__getattribute__", result, major_version().toString())
+    result.asBuiltin() = theObjectType().asBuiltin().getMember("__getattribute__")
 }
 
 private predicate auto_name(string name) {

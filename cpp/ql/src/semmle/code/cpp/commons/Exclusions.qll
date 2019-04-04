@@ -58,3 +58,16 @@ predicate functionContainsDisabledCode(Function f) {
     )
   )
 }
+
+/**
+ * Holds if the function `f` contains code that could be excluded by the preprocessor.
+ */
+predicate functionContainsPreprocCode(Function f) {
+  // `f` contains a preprocessor branch
+  exists(PreprocessorBranchDirective pbd, string file, int pbdStartLine, int fBlockStartLine, int fBlockEndLine |
+    functionLocation(f, file, fBlockStartLine, fBlockEndLine) and
+    pbdLocation(pbd, file, pbdStartLine) and
+    pbdStartLine <= fBlockEndLine and
+    pbdStartLine >= fBlockStartLine
+  )
+}

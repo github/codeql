@@ -27,6 +27,7 @@ import python
 private import PointsToContext
 private import Base
 private import semmle.python.types.Extensions
+private import semmle.python.types.Builtins
 private import Filters as BaseFilters
 import semmle.dataflow.SSA
 private import MRO
@@ -311,7 +312,7 @@ module PointsTo {
               exists(SubscriptNode sub, Object sys_modules |
                   sub.getValue() = sys_modules_flow and
                   points_to(sys_modules_flow, _, sys_modules, _, _) and
-                  builtin_module_attribute(theSysModuleObject(), "modules", sys_modules, _) and
+                  sys_modules.asBuiltin() = Builtin::special("sys").getMember("modules") and
                   sub.getIndex() = n and
                   n.getNode().(StrConst).getText() = name and
                   sub.(DefinitionNode).getValue() = mod and
@@ -435,7 +436,7 @@ module PointsTo {
     }
 
     private boolean module_exports_boolean(ModuleObject mod, string name) {
-        py_cmembers_versioned(mod, name, _, major_version().toString()) and
+        exists(mod.asBuiltin().getMember(name)) and
         name.charAt(0) != "_" and result = true
         or
         result = package_exports_boolean(mod, name)
@@ -494,7 +495,8 @@ module PointsTo {
             or
             package_attribute_points_to(mod, name, value, cls, origin)
             or
-            builtin_module_attribute(mod, name, value, cls) and origin = CfgOrigin::unknown()
+            value.asBuiltin() = mod.asBuiltin().getMember(name) and
+            cls.asBuiltin() = value.asBuiltin().getClass() and origin = CfgOrigin::unknown()
         }
 
     }
@@ -2458,7 +2460,7 @@ module PointsTo {
                 is_new_style(cls) and not exists(cls_expr.getBase(0)) and result = theObjectType() and n = 0
             )
             or
-            result = builtin_base_type(cls) and n = 0
+            result.asBuiltin() = cls.asBuiltin().getBaseClass() and n = 0
             or
             cls = theUnknownType() and result = theObjectType() and n = 0
         }
@@ -2482,7 +2484,7 @@ module PointsTo {
             or
             cls = theObjectType() and result = 0
             or
-            exists(builtin_base_type(cls)) and cls != theObjectType() and result = 1
+            exists(cls.asBuiltin().getBaseClass()) and cls != theObjectType() and result = 1
             or
             cls = theUnknownType() and result = 1
         }
@@ -2646,8 +2648,8 @@ module PointsTo {
                 ssa_variable_points_to(var, _, value, vcls, origin)
             )
             or
-            value = builtin_class_attribute(owner, name) and class_declares_attribute(owner, name) and
-            origin = CfgOrigin::unknown() and vcls = builtin_object_type(value)
+            value.asBuiltin() = owner.asBuiltin().getMember(name) and class_declares_attribute(owner, name) and
+            origin = CfgOrigin::unknown() and vcls.asBuiltin() = value.asBuiltin().getClass()
         }
 
         private predicate interesting_class_attribute(ClassList mro, string name) {
@@ -2754,7 +2756,11 @@ module PointsTo {
                 obj = unknownValue() and result = theUnknownType()
             )
             or
-            py_cobjecttypes(cls, result) and is_c_metaclass(result)
+            exists(Builtin meta |
+                result.asBuiltin() = meta and
+                meta = cls.asBuiltin().getClass() and
+                meta.inheritsFromType()
+            )
             or
             exists(ControlFlowNode meta |
                 Types::six_add_metaclass(_, cls, meta) and
@@ -2777,7 +2783,7 @@ module PointsTo {
         }
 
         private boolean has_declared_metaclass(ClassObject cls) {
-            py_cobjecttypes(cls, _) and result = true
+            exists(cls.asBuiltin().getClass()) and result = true
             or
             result = has_six_add_metaclass(cls).booleanOr(has_metaclass_var_metaclass(cls))
         }

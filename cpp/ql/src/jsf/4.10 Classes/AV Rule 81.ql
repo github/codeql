@@ -3,6 +3,7 @@
  * @description The assignment operator shall handle self-assignment correctly.
  * @kind problem
  * @id cpp/jsf/av-rule-81
+ * @precision low
  * @problem.severity error
  * @tags correctness
  *       external/jsf
@@ -77,4 +78,4 @@ where hasResource(op.getDeclaringType())
       and not exists(op.getASelfEqualityTest())
       and not exists(op.getASwapCall())
       and exists(op.getADeleteExpr())
-select op
+select op, "AV Rule 81: The assignment operator shall handle self-assignment correctly."

@@ -8,7 +8,7 @@ abstract class ModuleObject extends Object {
     ModuleObject () {
         exists(Module m | m.getEntryNode() = this)
         or
-        py_cobjecttypes(this, theModuleType())
+        this.asBuiltin().getClass() = theModuleType().asBuiltin()
     }
 
     /** Gets the scope corresponding to this module, if this is a Python module */
@@ -103,19 +103,19 @@ abstract class ModuleObject extends Object {
 class BuiltinModuleObject extends ModuleObject {
 
     BuiltinModuleObject () {
-        py_cobjecttypes(this, theModuleType())
+        this.asBuiltin().getClass() = theModuleType().asBuiltin()
     }
 
     override string getName() {
-        py_cobjectnames(this, result)
+        result = this.asBuiltin().getName()
     }
 
     override Object getAttribute(string name) {
-        py_cmembers_versioned(this, name, result, major_version().toString())
+        result.asBuiltin() = this.asBuiltin().getMember(name)
     }
 
     override predicate hasAttribute(string name) {
-        py_cmembers_versioned(this, name, _, major_version().toString())
+        exists(this.asBuiltin().getMember(name))
     }
 
     override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
@@ -204,9 +204,9 @@ class PythonModuleObject extends ModuleObject {
  * for each module name, with the name b'text' or u'text' (including the quotes).
  */
 Object object_for_string(string text) {
-    py_cobjecttypes(result, theStrType()) and
+    result.asBuiltin().getClass() = theStrType().asBuiltin() and
     exists(string repr |
-        py_cobjectnames(result, repr) and
+        repr = result.asBuiltin().getName() and
         repr.charAt(1) = "'" |
         /* Strip quotes off repr */
         text = repr.substring(2, repr.length()-1)
