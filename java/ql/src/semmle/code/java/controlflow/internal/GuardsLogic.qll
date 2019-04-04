@@ -5,6 +5,7 @@
 
 import java
 import semmle.code.java.controlflow.Guards
+private import Preconditions
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.internal.BaseSSA
 private import semmle.code.java.dataflow.NullGuards
@@ -60,6 +61,13 @@ predicate implies_v1(Guard g1, boolean b1, Guard g2, boolean b2) {
   )
   or
   g1.(DefaultCase).getSwitch().getAConstCase() = g2 and b1 = true and b2 = false
+  or
+  exists(MethodAccess check | check = g1 |
+    conditionCheck(check, _) and
+    g2 = check.getArgument(0) and
+    (b1 = true or b1 = false) and
+    b2 = b1
+  )
   or
   exists(BaseSsaUpdate vbool |
     vbool.getAUse() = g1 and

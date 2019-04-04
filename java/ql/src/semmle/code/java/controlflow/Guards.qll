@@ -1,6 +1,7 @@
 import java
 private import semmle.code.java.controlflow.Dominance
 private import semmle.code.java.controlflow.internal.GuardsLogic
+private import semmle.code.java.controlflow.internal.Preconditions
 
 /**
  * A basic block that terminates in a condition, splitting the subsequent control flow.
@@ -71,7 +72,7 @@ class ConditionBlock extends BasicBlock {
 /**
  * A condition that can be evaluated to either true or false. This can either
  * be an `Expr` of boolean type that isn't a boolean literal, or a case of a
- * switch statement.
+ * switch statement, or a method access that acts as a precondition check.
  *
  * Evaluating a switch case to true corresponds to taking that switch case, and
  * evaluating it to false corresponds to taking some other branch.
@@ -81,6 +82,8 @@ class Guard extends ExprParent {
     this.(Expr).getType() instanceof BooleanType and not this instanceof BooleanLiteral
     or
     this instanceof SwitchCase
+    or
+    conditionCheck(this, _)
   }
 
   /** Gets the immediately enclosing callable whose body contains this guard. */
@@ -128,6 +131,8 @@ class Guard extends ExprParent {
       pred.(Expr).getParent*() = sc.getSwitch().getExpr() and
       bb1 = pred.getBasicBlock()
     )
+    or
+    preconditionBranchEdge(this, bb1, bb2, branch)
   }
 
   /**
@@ -142,6 +147,8 @@ class Guard extends ExprParent {
     )
     or
     switchCaseControls(this, controlled) and branch = true
+    or
+    preconditionControls(this, controlled, branch)
   }
 
   /**
@@ -161,6 +168,24 @@ private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
     caseblock.bbDominates(bb) and
     forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
       pred.(Expr).getParent*() = ss.getExpr()
+    )
+  )
+}
+
+private predicate preconditionBranchEdge(
+  MethodAccess ma, BasicBlock bb1, BasicBlock bb2, boolean branch
+) {
+  conditionCheck(ma, branch) and
+  bb1.getLastNode() = ma.getControlFlowNode() and
+  bb2 = bb1.getLastNode().getANormalSuccessor()
+}
+
+private predicate preconditionControls(MethodAccess ma, BasicBlock controlled, boolean branch) {
+  exists(BasicBlock check, BasicBlock succ |
+    preconditionBranchEdge(ma, check, succ, branch) and
+    succ.bbDominates(controlled) and
+    forall(BasicBlock pred | pred = succ.getABBPredecessor() and pred != check |
+      succ.bbDominates(pred)
     )
   )
 }
