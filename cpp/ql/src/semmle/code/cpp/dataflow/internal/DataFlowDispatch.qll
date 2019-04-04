@@ -67,21 +67,10 @@ predicate reducedViableImplInCallContext(MethodAccess ma, Callable c, Call ctx) 
 
 /**
  * Gets a viable dispatch target of `ma` in the context `ctx`. This is
- * restricted to those `ma`s for which a context might make a difference.
- */
-private Method viableImplInCallContext(MethodAccess ma, Call ctx) {
-  // stub implementation
-  result = viableImpl(ma) and
-  viableCallable(ctx) = ma.getEnclosingFunction()
-}
-
-/**
- * Gets a viable dispatch target of `ma` in the context `ctx`. This is
  * restricted to those `ma`s for which the context makes a difference.
  */
 Method prunedViableImplInCallContext(MethodAccess ma, Call ctx) {
-  result = viableImplInCallContext(ma, ctx) and
-  reducedViableImplInCallContext(ma, _, ctx)
+  none()
 }
 
 /**
@@ -89,12 +78,7 @@ Method prunedViableImplInCallContext(MethodAccess ma, Call ctx) {
  * this path restricts the set of call sites that can be returned to.
  */
 predicate reducedViableImplInReturn(Method m, MethodAccess ma) {
-  exists(int tgts, int ctxtgts |
-    m = viableImpl(ma) and
-    ctxtgts = count(Call ctx | m = viableImplInCallContext(ma, ctx)) and
-    tgts = strictcount(Call ctx | viableCallable(ctx) = ma.getEnclosingFunction()) and
-    ctxtgts < tgts
-  )
+  none()
 }
 
 /**
@@ -103,6 +87,5 @@ predicate reducedViableImplInReturn(Method m, MethodAccess ma) {
  * result to `ma` restricts the possible context `ctx`.
  */
 Method prunedViableImplInCallContextReverse(MethodAccess ma, Call ctx) {
-  result = viableImplInCallContext(ma, ctx) and
-  reducedViableImplInReturn(result, ma)
+  none()
 }
