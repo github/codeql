@@ -1267,6 +1267,8 @@ library module TaintFlowImplementation {
                 Filters::isinstance(test.getTest(), c, var.getSourceVariable().getAUse())
                 and c.refersTo(cls)
                 |
+                test.getSense() = true and not exists(kind.getClass())
+                or
                 test.getSense() = true and kind.getClass().getAnImproperSuperType() = cls
                 or
                 test.getSense() = false and not kind.getClass().getAnImproperSuperType() = cls
