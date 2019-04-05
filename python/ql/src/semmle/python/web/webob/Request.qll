@@ -44,8 +44,8 @@ class WebobRequest extends BaseWebobRequest {
         this = "webob.Request"
     }
 
-    override ClassObject getClass() {
-        result = ModuleObject::named("webob.request").attr("Request")
+    override ClassValue getType() {
+        result = Value::named("webob.request.Request")
     }
 
 }

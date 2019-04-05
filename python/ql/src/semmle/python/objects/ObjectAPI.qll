@@ -94,6 +94,10 @@ class ModuleValue extends Value {
         result = this.(ModuleObjectInternal).getName()
     }
 
+    Module getScope() {
+        result = this.(ModuleObjectInternal).getSourceModule()
+    }
+
 }
 
 module Module {
@@ -126,6 +130,10 @@ class CallableValue extends Value {
     predicate neverReturns() {
         // TO DO..
         none()
+    }
+
+    Function getScope() {
+        result = this.(PythonFunctionObjectInternal).getScope()
     }
 
 }

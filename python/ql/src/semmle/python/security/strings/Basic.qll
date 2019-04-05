@@ -27,8 +27,8 @@ abstract class StringKind extends TaintKind {
         result = this and copy_call(fromnode, tonode)
     }
 
-    override ClassObject getClass() {
-        result = theStrType() or result = theUnicodeType()
+    override ClassValue getType() {
+        result = Value::named("bytes") or result = Value::named("str") or result = Value::named("unicode")
     }
 
 }
