@@ -27,7 +27,11 @@ predicate arraysToStringArgument(Expr e) {
 from Expr arr
 where
   arr.getType() instanceof Array and
-  implicitToStringCall(arr)
+  implicitToStringCall(arr) and
+  not exists(FormattingCall fmtcall |
+    // exclude slf4j formatting as it supports array formatting
+    fmtcall.getAnArgumentToBeFormatted() = arr and fmtcall.getSyntax().isLogger()
+  )
   or
   arr.getType().(Array).getComponentType() instanceof Array and
   arraysToStringArgument(arr)
