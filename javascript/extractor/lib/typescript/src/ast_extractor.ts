@@ -176,7 +176,10 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
 
         if (typeChecker != null) {
             if (isTypedNode(node)) {
-                let type = typeChecker.getTypeAtLocation(node);
+                let contextualType = isContextuallyTypedNode(node)
+                    ? typeChecker.getContextualType(node)
+                    : null;
+                let type = contextualType || typeChecker.getTypeAtLocation(node);
                 if (type != null) {
                     let id = typeTable.buildType(type);
                     if (id != null) {
@@ -325,4 +328,11 @@ function isTypedNode(node: ts.Node): boolean {
       default:
         return ts.isTypeNode(node);
     }
+}
+
+type ContextuallyTypedNode = (ts.ArrayLiteralExpression | ts.ObjectLiteralExpression) & AugmentedNode;
+
+function isContextuallyTypedNode(node: ts.Node): node is ContextuallyTypedNode {
+    let kind = node.kind;
+    return kind === ts.SyntaxKind.ArrayLiteralExpression || kind === ts.SyntaxKind.ObjectLiteralExpression;
 }
