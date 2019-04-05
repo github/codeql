@@ -104,6 +104,18 @@ module Module {
 
 }
 
+module Value {
+
+    Value named(string name) {
+        exists(string modname, string attrname |
+            name = modname + "." + attrname |
+            result = Module::named(modname).attr(attrname)
+        )
+        or
+        result = ObjectInternal::builtin(name)
+    }
+
+}
 
 class CallableValue extends Value {
 
@@ -122,6 +134,11 @@ class ClassValue extends Value {
 
     ClassValue() {
         this.(ObjectInternal).isClass() = true
+    }
+
+    /** Gets an improper super type of this class. */
+    ClassValue getASuperType() {
+        result = Types::getMro(this).getAnItem()
     }
 
 }
