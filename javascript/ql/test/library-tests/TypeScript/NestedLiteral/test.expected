@@ -1,0 +1,19 @@
+| tst.ts:2:3:2:6 | name | string |
+| tst.ts:3:3:3:10 | children | T[] |
+| tst.ts:6:5:6:5 | x | T |
+| tst.ts:6:12:17:1 | {\\n  nam ... }\\n  ]\\n} | { name: string; children: ({ name: string; } \| ... |
+| tst.ts:7:3:7:6 | name | string |
+| tst.ts:7:9:7:11 | 'x' | "x" |
+| tst.ts:8:3:8:10 | children | ({ name: string; } \| { name: string; children: ... |
+| tst.ts:8:13:16:3 | [\\n    { ...   }\\n  ] | ({ name: string; } \| { name: string; children: ... |
+| tst.ts:9:5:9:18 | { name: 'x1' } | { name: string; } |
+| tst.ts:9:7:9:10 | name | string |
+| tst.ts:9:13:9:16 | 'x1' | "x1" |
+| tst.ts:10:5:15:5 | {\\n      ... ]\\n    } | { name: string; children: { name: string; }[]; } |
+| tst.ts:11:7:11:10 | name | string |
+| tst.ts:11:13:11:16 | 'x2' | "x2" |
+| tst.ts:12:7:12:14 | children | { name: string; }[] |
+| tst.ts:12:17:14:7 | [\\n      ...       ] | { name: string; }[] |
+| tst.ts:13:9:13:22 | { name: 'x3' } | { name: string; } |
+| tst.ts:13:11:13:14 | name | string |
+| tst.ts:13:17:13:20 | 'x3' | "x3" |
