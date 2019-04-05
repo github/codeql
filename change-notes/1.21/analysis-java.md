@@ -10,6 +10,7 @@
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
 | Implicit conversion from array to string (`java/print-array`) | Fewer false positive results | Results in slf4j logging calls are no longer reported as slf4j supports array printing. |
+| Result of multiplication cast to wider type (`java/integer-multiplication-cast-to-long`) | Fewer false positive results | Range analysis is now used to exclude results involving multiplication of small values that cannot overflow. |
 
 ## Changes to QL libraries
 
