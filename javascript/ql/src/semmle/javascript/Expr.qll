@@ -180,7 +180,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       not ctx instanceof EqualityTest and // x EQOP y is fine because of implicit conversion and lack thereof
       not ctx.(BitOrExpr).getAnOperand().(NumberLiteral).getIntValue() = 0 and // x | 0 is fine because it's used to convert to numbers
       not ctx.(RShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 and // x >> 0 is fine because it's used to convert to numbers
-      not ctx.(URShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 // x >> 0 is fine because it's used to convert to numbers
+      not ctx.(URShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 // x >>> 0 is fine because it's used to convert to numbers
       or
       this = ctx.(UnaryExpr).getOperand() and
       not ctx instanceof LogNotExpr and // !x is fine because of implicit conversion
