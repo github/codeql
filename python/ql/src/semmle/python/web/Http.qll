@@ -72,6 +72,19 @@ class UntrustedCookie extends TaintKind {
 
 }
 
+abstract class CookieOperation extends @py_flow_node {
+
+    abstract string toString();
+
+    abstract ControlFlowNode getKey();
+
+    abstract ControlFlowNode getValue();
+
+}
+
+abstract class CookieGet extends CookieOperation {}
+
+abstract class CookieSet extends CookieOperation {}
 
 /** Generic taint sink in a http response */
 abstract class HttpResponseTaintSink extends TaintSink {
