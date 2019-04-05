@@ -2746,20 +2746,32 @@ class TranslatedStmtExpr extends TranslatedNonConstantExpr {
   }
   
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    none()
+    tag instanceof OnlyInstructionTag and
+    kind instanceof GotoEdge and
+    result = getParent().getChildSuccessor(this)
   }
   
   override Instruction getChildSuccessor(TranslatedElement child) {
     child = getStmt() and
-    result = getParent().getChildSuccessor(this)
+    result = getInstruction(OnlyInstructionTag())
   }
   
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType,
         boolean isGLValue) {
-    none()
+    opcode instanceof Opcode::CopyValue and
+    tag instanceof OnlyInstructionTag and
+    resultType = expr.getType() and
+    isGLValue = false
   }
   
   override Instruction getResult() {
+    result = getInstruction(OnlyInstructionTag())
+  }
+  
+  override Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    tag instanceof OnlyInstructionTag and
+    operandTag instanceof UnaryOperandTag and
     result = getTranslatedExpr(expr.getResultExpr().getFullyConverted()).getResult()
   }
   

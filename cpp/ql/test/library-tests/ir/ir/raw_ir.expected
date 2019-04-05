@@ -4406,15 +4406,17 @@ ir.cpp:
 #  999|   Block 3
 #  999|     r3_0(glval<int>) = VariableAddress[w]       : 
 #  999|     r3_1(int)        = Load                     : r3_0, mu0_2
-#  992|     mu3_2(int)       = Store                    : r0_9, r3_1
-# 1002|     r3_3(glval<int>) = VariableAddress[#return] : 
-# 1002|     r3_4(glval<int>) = VariableAddress[x]       : 
-# 1002|     r3_5(int)        = Load                     : r3_4, mu0_2
-# 1002|     mu3_6(int)       = Store                    : r3_3, r3_5
-#  991|     r3_7(glval<int>) = VariableAddress[#return] : 
-#  991|     v3_8(void)       = ReturnValue              : r3_7, mu0_2
-#  991|     v3_9(void)       = UnmodeledUse             : mu*
-#  991|     v3_10(void)      = ExitFunction             : 
+#  992|     r3_2(int)        = CopyValue                : r3_1
+#  992|     mu3_3(int)       = Store                    : r0_9, r3_2
+# 1002|     r3_4(glval<int>) = VariableAddress[#return] : 
+# 1002|     r3_5(glval<int>) = VariableAddress[x]       : 
+# 1002|     r3_6(int)        = Load                     : r3_5, mu0_2
+# 1002|     r3_7(int)        = CopyValue                : r3_6
+# 1002|     mu3_8(int)       = Store                    : r3_4, r3_7
+#  991|     r3_9(glval<int>) = VariableAddress[#return] : 
+#  991|     v3_10(void)      = ReturnValue              : r3_9, mu0_2
+#  991|     v3_11(void)      = UnmodeledUse             : mu*
+#  991|     v3_12(void)      = ExitFunction             : 
 
 # 1025| void EmptyStructInit()
 # 1025|   Block 0

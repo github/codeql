@@ -27,6 +27,8 @@
 | test.cpp:314:12:314:12 | Load: x | test.cpp:313:22:313:27 | Call: call to source |
 | test.cpp:337:14:337:14 | Load: x | test.cpp:353:17:353:22 | Call: call to source |
 | test.cpp:366:7:366:7 | Load: x | test.cpp:362:4:362:9 | Call: call to source |
+| test.cpp:498:9:498:22 | CopyValue: (statement expression) | test.cpp:497:26:497:32 | InitializeParameter: source1 |
+| test.cpp:509:8:509:12 | Load: local | test.cpp:497:26:497:32 | InitializeParameter: source1 |
 | true_upon_entry.cpp:13:8:13:8 | Load: x | true_upon_entry.cpp:9:11:9:16 | Call: call to source |
 | true_upon_entry.cpp:21:8:21:8 | Load: x | true_upon_entry.cpp:17:11:17:16 | Call: call to source |
 | true_upon_entry.cpp:29:8:29:8 | Load: x | true_upon_entry.cpp:27:9:27:14 | Call: call to source |
