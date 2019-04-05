@@ -27,7 +27,10 @@ public:
 
 	~Lock()
 	{
-		m->unlock();
+		if (m)
+		{
+			m->unlock();
+		}
 	}
 
 private:
