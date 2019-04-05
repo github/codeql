@@ -12,9 +12,14 @@
 import cpp
 
 predicate potentiallyDangerousFunction(Function f, string message) {
-  (
-    f.getQualifiedName() = "gmtime" and
-    message = "Call to gmtime is potentially dangerous"
+  exists(string name | name = f.getQualifiedName() |
+    (
+      name = "gmtime" or
+      name = "localtime" or
+      name = "ctime" or
+      name = "asctime"
+    ) and
+    message = "Call to " + name + " is potentially dangerous"
   ) or (
     f.getQualifiedName() = "gets" and
     message = "gets does not guard against buffer overflow"
