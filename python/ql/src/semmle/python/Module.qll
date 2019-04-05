@@ -69,7 +69,7 @@ class Module extends Module_, Scope, AstNode {
         or
         exists(ModuleValue mod |
             mod.getSource() = this.getEntryNode() |
-            not mod.exports(result)
+            mod.exports(result)
         )
     }
 
