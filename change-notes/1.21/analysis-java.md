@@ -9,6 +9,7 @@
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Implicit conversion from array to string (`java/print-array`) | Fewer false positive results | Results in slf4j logging calls are no longer reported as slf4j supports array printing. |
 
 ## Changes to QL libraries
 
