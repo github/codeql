@@ -56,6 +56,28 @@ predicate isPointerType(Type t) {
 }
 
 /**
+ * Gets the base type of a pointer or array type.  In the case of an array of
+ * arrays, the inner base type is returned.
+ */
+Type baseType(Type t) {
+  (
+    exists (PointerType dt
+    | dt = t.getUnspecifiedType() and
+      result = dt.getBaseType().getUnspecifiedType()) or
+    exists (ArrayType at
+    | at = t.getUnspecifiedType() and
+      (not at.getBaseType().getUnspecifiedType() instanceof ArrayType) and
+      result = at.getBaseType().getUnspecifiedType()) or
+    exists (ArrayType at, ArrayType at2
+    | at = t.getUnspecifiedType() and
+      at2 = at.getBaseType().getUnspecifiedType() and
+      result = baseType(at2))
+  )
+  // Make sure that the type has a size and that it isn't ambiguous.  
+  and strictcount(result.getSize()) = 1
+}
+
+/**
  * Holds if there is a pointer expression with type `sourceType` at
  * location `sourceLoc` which might be the source expression for `use`.
  *
