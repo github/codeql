@@ -201,7 +201,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       or
       // recursive cases
       this = ctx.(ParExpr).getExpression() and
-      ctx.(ParExpr).inNullSensitiveContext()
+      ctx.inNullSensitiveContext()
       or
       this = ctx.(SeqExpr).getLastOperand() and
       ctx.(SeqExpr).inNullSensitiveContext()
