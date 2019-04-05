@@ -9,8 +9,6 @@
  * @tags security
  *       external/cwe/cwe-468
  */
-import cpp
-import semmle.code.cpp.controlflow.SSA
 import IncorrectPointerScalingCommon
 
 from Expr dest, Type destType, Type sourceType, Type sourceBase,
