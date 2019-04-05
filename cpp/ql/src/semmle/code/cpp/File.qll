@@ -313,8 +313,6 @@ class File extends Container, @file {
       getAbsolutePath().charAt(1) = ":"
       	// this is not ideal, it detects compilation on a Windows file system
       	// as a heuristic approximation to compilation with a Microsoft compiler.
-    ) or (
-      getAbsolutePath().charAt(1) = "/"
     )
   }
 
