@@ -1093,6 +1093,33 @@ class ConditionalExpr extends Expr, @conditionalexpr {
   override string toString() { result = "...?...:..." }
 }
 
+/** A `switch` expression. */
+class SwitchExpr extends Expr, @switchexpr {
+  /** Gets an immediate child statement of this `switch` expression. */
+  Stmt getAStmt() { result.getParent() = this }
+
+  /**
+   * Gets the immediate child statement of this `switch` expression
+   * that occurs at the specified (zero-based) position.
+   */
+  Stmt getStmt(int index) { result = this.getAStmt() and result.getIndex() = index }
+
+  /**
+   * Gets a case of this `switch` expression,
+   * which may be either a normal `case` or a `default`.
+   */
+  SwitchCase getACase() { result = getAConstCase() or result = getDefaultCase() }
+
+  /** Gets a (non-default) `case` of this `switch` expression. */
+  ConstCase getAConstCase() { result.getParent() = this }
+
+  /** Gets the `default` case of this switch expression, if any. */
+  DefaultCase getDefaultCase() { result.getParent() = this }
+
+  /** Gets the expression of this `switch` expression. */
+  Expr getExpr() { result.getParent() = this }
+}
+
 /** A parenthesised expression. */
 class ParExpr extends Expr, @parexpr {
   /** Gets the expression inside the parentheses. */

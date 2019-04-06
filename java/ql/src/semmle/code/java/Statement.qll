@@ -400,23 +400,43 @@ class SwitchStmt extends Stmt, @switchstmt {
 }
 
 /**
- * A case of a `switch` statement.
+ * A case of a `switch` statement or expression.
  *
  * This includes both normal `case`s and the `default` case.
  */
 class SwitchCase extends Stmt, @case {
+  /** Gets the switch statement to which this case belongs, if any. */
   SwitchStmt getSwitch() { result.getACase() = this }
+
+  /** Gets the switch expression to which this case belongs, if any. */
+  SwitchExpr getSwitchExpr() { result.getACase() = this }
+
+  /** Holds if this `case` is a switch labeled rule of the form `... -> ...`. */
+  predicate isRule() {
+    exists(Expr e | e.getParent() = this | e.getIndex() = -1)
+    or
+    exists(Stmt s | s.getParent() = this | s.getIndex() = -1)
+  }
 }
 
 /** A constant `case` of a switch statement. */
 class ConstCase extends SwitchCase {
   ConstCase() { exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
 
-  /** Gets the expression of this `case`. */
+  /** Gets the `case` constant at index 0. */
   Expr getValue() { result.getParent() = this and result.getIndex() = 0 }
 
+  /** Gets the `case` constant at the specified index. */
+  Expr getValue(int i) { result.getParent() = this and result.getIndex() = i and i >= 0 }
+
+  /** Gets the expression on the right-hand side of the arrow, if any. */
+  Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
+
+  /** Gets the statement on the right-hand side of the arrow, if any. */
+  Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
+
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() { result = "case ...:" }
+  override string pp() { result = "case ..." }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "ConstCase" }
@@ -552,9 +572,17 @@ class BreakStmt extends Stmt, @breakstmt {
   /** Holds if this `break` statement has an explicit label. */
   predicate hasLabel() { exists(string s | s = this.getLabel()) }
 
+  /** Gets the value of this `break` statement, if any. */
+  Expr getValue() { result.getParent() = this }
+
+  /** Holds if this `break` statement has a value. */
+  predicate hasValue() { exists(Expr e | e.getParent() = this) }
+
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() {
-    if this.hasLabel() then result = "break " + this.getLabel() else result = "break"
+    if this.hasLabel()
+    then result = "break " + this.getLabel()
+    else (if this.hasValue() then result = "break ..." else result = "break")
   }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
