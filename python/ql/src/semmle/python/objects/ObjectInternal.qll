@@ -365,6 +365,8 @@ module ObjectInternal {
         result = TBuiltinModuleObject(b)
         or
         result = TBuiltinMethodObject(b)
+        or
+        result = TBuiltinTuple(b)
     }
 
     ObjectInternal classMethod() {
