@@ -1,2 +1,1 @@
-@import "python2-queries-lgtm"
-@import "python2-metrics-lgtm"
+@import "python-lgtm"
