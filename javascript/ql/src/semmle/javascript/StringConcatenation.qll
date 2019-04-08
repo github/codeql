@@ -10,7 +10,7 @@ module StringConcatenation {
     result = expr.flow()
     or
     exists(SsaExplicitDefinition def | def.getDef() = expr |
-      result = DataFlow::valueNode(def.getVariable().getAUse())
+      result = DataFlow::ssaDefinitionNode(def)
     )
   }
 

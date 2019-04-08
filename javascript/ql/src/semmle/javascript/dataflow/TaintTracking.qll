@@ -366,7 +366,9 @@ module TaintTracking {
    * Note that since we cannot easily distinguish string append from addition,
    * we consider any `+` operation to propagate taint.
    */
-  class StringConcatenationTaintStep extends AdditionalTaintStep, DataFlow::ValueNode {
+  class StringConcatenationTaintStep extends AdditionalTaintStep {
+    StringConcatenationTaintStep() { StringConcatenation::taintStep(_, this) }
+
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       succ = this and
       StringConcatenation::taintStep(pred, succ)
