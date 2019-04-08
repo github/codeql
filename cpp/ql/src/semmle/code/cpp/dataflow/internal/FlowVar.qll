@@ -93,9 +93,17 @@ module FlowVar_internal {
    * - Supporting fields, globals and statics like the Java SSA library does.
    * - Supporting all local variables, even if their address is taken by
    *   address-of, reference assignments, or lambdas.
+   * - Understanding that assignment to a field of a local struct is a
+   *   definition of the struct but not a complete overwrite. This is what the
+   *   IR library uses chi nodes for.
    */
   predicate fullySupportedSsaVariable(Variable v) {
     v = any(SsaDefinition def).getAVariable() and
+    // After `foo(&x.field)` we need for there to be two definitions of `x`:
+    // the one that existed before the call to `foo` and the def-by-ref from
+    // the call. It's fundamental in SSA that each use is only associated with
+    // one def, so we can't easily get this effect with SSA.
+    not definitionByReference(v.getAnAccess(), _) and
     // SSA variables do not exist before their first assignment, but one
     // feature of this data flow library is to track where uninitialized data
     // ends up.
@@ -183,8 +191,7 @@ module FlowVar_internal {
     }
 
     override predicate definedByReference(Expr arg) {
-      definitionByReference(v.getAnAccess(), arg) and
-      arg = def.getDefinition()
+      none() // Not supported for SSA. See `fullySupportedSsaVariable`.
     }
 
     override predicate definedByInitialValue(LocalScopeVariable param) {
@@ -204,8 +211,6 @@ module FlowVar_internal {
       this.definedByExpr(_, _)
       or
       this.definedByInitialValue(_)
-      or
-      this.definedByReference(_)
     }
 
     /**
@@ -236,10 +241,7 @@ module FlowVar_internal {
     BlockVar() { this = TBlockVar(sbb, v) }
 
     override VariableAccess getAnAccess() {
-      exists(SubBasicBlock reached |
-        reached = getAReachedBlockVarSBB(this) and
-        variableAccessInSBB(v, reached, result)
-      )
+      variableAccessInSBB(v, getAReachedBlockVarSBB(this), result)
     }
 
     override predicate definedByInitialValue(LocalScopeVariable lsv) {
@@ -401,8 +403,7 @@ module FlowVar_internal {
       mid = getAReachedBlockVarSBB(start) and
       result = mid.getASuccessor() and
       not skipLoop(mid, result, sbbDef, v) and
-      not assignmentLikeOperation(result, v, _) and
-      not blockVarDefinedByReference(result, v, _)
+      not assignmentLikeOperation(result, v, _)
     )
   }
 
@@ -413,12 +414,6 @@ module FlowVar_internal {
     va.getTarget() = v and
     va = sbb.getANode() and
     not overwrite(va, _)
-    or
-    // Allow flow into a `VariableAccess` that is used as definition by
-    // reference. This flow is blocked by `getAReachedBlockVarSBB` because
-    // flow should not propagate past that.
-    va = sbb.getASuccessor().(VariableAccess) and
-    blockVarDefinedByReference(va, v, _)
   }
 
   /**
@@ -516,9 +511,6 @@ module FlowVar_internal {
    */
   predicate overwrite(VariableAccess va, ControlFlowNode node) {
     va = node.(AssignExpr).getLValue()
-    or
-    va = node and
-    definitionByReference(node, _)
   }
 
   /**
