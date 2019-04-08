@@ -129,7 +129,7 @@ module PointsTo {
             pointsToValue(f, context, value, origin) and
             cls = value.getClass().getSource() |
             obj = value.getSource() or
-            not exists(value.getSource()) and obj = origin and not cls = theBoundMethodType()
+            not exists(value.getSource()) and obj = origin
         )
         or
         /* Backwards compatibility for *args and **kwargs */
@@ -399,7 +399,6 @@ cached module PointsToInternal {
         InterProceduralPointsTo::parameter_points_to(def, context, value, origin)
         or
         assignment_points_to(def, context, value, origin)
-        //// TO DO...
         or
         self_parameter_points_to(def, context, value, origin)
         or
@@ -606,13 +605,6 @@ module InterModulePointsTo {
             (mod.getSourceModule() != f.getEnclosingModule() or mod.isBuiltin()) and
             mod.attribute(name, value, orig) and
             origin = orig.asCfgNodeOrHere(f)
-            // TO DO... $ variables.
-            //mod.getSourceModule() = f.getEnclosingModule() and
-            //not exists(EssaVariable var | var.getSourceVariable().getName() = name and var.getAUse() = f) and
-            //exists(EssaVariable dollar |
-            //    isModuleStateVariable(dollar) and dollar.getAUse() = f and
-            //    SSA::ssa_variable_named_attribute_points_to(dollar, context, name, value, orig)
-            //)
         )
     }
 
