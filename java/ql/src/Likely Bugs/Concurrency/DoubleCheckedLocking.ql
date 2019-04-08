@@ -33,7 +33,7 @@ where
     1 = strictcount(FieldAccess fa |
         fa.getField() = f and
         fa.getEnclosingCallable() = sync.getEnclosingCallable() and
-        not fa.getEnclosingStmt().getParent*() = sync.getBlock()
+        not fa.getEnclosingStmt().getEnclosingStmt*() = sync.getBlock()
       )
   )
 select sync, "Double-checked locking on the non-volatile field $@ is not thread-safe.", f,

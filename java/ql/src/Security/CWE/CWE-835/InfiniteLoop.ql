@@ -22,16 +22,16 @@ predicate loopCondition(LoopStmt loop, Expr cond, boolean polarity) {
   polarity = true and cond = loop.getCondition()
   or
   exists(IfStmt ifstmt, Stmt exit |
-    ifstmt.getParent*() = loop.getBody() and
+    ifstmt.getEnclosingStmt*() = loop.getBody() and
     ifstmt.getCondition() = cond and
     (
       exit.(BreakStmt).(JumpStmt).getTarget() = loop or
-      exit.(ReturnStmt).getParent*() = loop.getBody()
+      exit.(ReturnStmt).getEnclosingStmt*() = loop.getBody()
     ) and
     (
-      polarity = false and exit.getParent*() = ifstmt.getThen()
+      polarity = false and exit.getEnclosingStmt*() = ifstmt.getThen()
       or
-      polarity = true and exit.getParent*() = ifstmt.getElse()
+      polarity = true and exit.getEnclosingStmt*() = ifstmt.getElse()
     )
   )
 }

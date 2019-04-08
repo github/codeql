@@ -19,8 +19,8 @@ import java
  * and are therefore not propagated to the outer try block `t`.
  */
 private predicate caughtInside(TryStmt t, Stmt s, RefType rt) {
-  exists(TryStmt innerTry | innerTry.getParent+() = t.getBlock() |
-    s.getParent+() = innerTry.getBlock() and
+  exists(TryStmt innerTry | innerTry.getEnclosingStmt+() = t.getBlock() |
+    s.getEnclosingStmt+() = innerTry.getBlock() and
     caughtType(innerTry, _).hasSubtype*(rt)
   )
 }
@@ -43,7 +43,7 @@ private RefType getAThrownExceptionType(TryStmt t) {
   )
   or
   exists(Call call, Exception e |
-    t.getBlock() = call.getEnclosingStmt().getParent*() or
+    t.getBlock() = call.getEnclosingStmt().getEnclosingStmt*() or
     t.getAResourceDecl() = call.getEnclosingStmt()
   |
     (
@@ -55,7 +55,7 @@ private RefType getAThrownExceptionType(TryStmt t) {
   )
   or
   exists(ThrowStmt ts |
-    t.getBlock() = ts.getParent*() and
+    t.getBlock() = ts.getEnclosingStmt*() and
     not caughtInside(t, ts, ts.getExpr().getType()) and
     result = ts.getExpr().getType()
   )

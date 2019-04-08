@@ -28,7 +28,7 @@ predicate guardedByInstanceOf(VarAccess e, RefType t) {
     // The expression appears in one of the branches.
     // (We do not verify here whether the guard is correctly implemented.)
     exists(Stmt branch | branch = s.getThen() or branch = s.getElse() |
-      branch = e.getEnclosingStmt().getParent+()
+      branch = e.getEnclosingStmt().getEnclosingStmt+()
     )
   )
 }

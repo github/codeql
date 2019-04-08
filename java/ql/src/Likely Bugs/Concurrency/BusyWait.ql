@@ -69,8 +69,8 @@ class DangerStmt extends Stmt {
 
 from WhileStmt s, DangerStmt d
 where
-  d.getParent+() = s and
+  d.getEnclosingStmt+() = s and
   not exists(MethodAccess call | callsCommunicationMethod(call.getMethod()) |
-    call.getEnclosingStmt().getParent*() = s
+    call.getEnclosingStmt().getEnclosingStmt*() = s
   )
 select d, "Prefer wait/notify or java.util.concurrent to communicate between threads."

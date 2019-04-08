@@ -17,7 +17,7 @@ import semmle.code.java.JDK
 class CheckedCast extends CastExpr {
   CheckedCast() {
     exists(TryStmt try, RefType cce |
-      this.getEnclosingStmt().getParent+() = try and
+      this.getEnclosingStmt().getEnclosingStmt+() = try and
       try.getACatchClause().getVariable().getType() = cce and
       cce.getQualifiedName() = "java.lang.ClassCastException"
     )

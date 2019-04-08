@@ -22,19 +22,19 @@ private predicate relevantTypeNames(string typeName, string message) {
 
 private Type getAThrownExceptionType(TryStmt t) {
   exists(MethodAccess ma, Exception e |
-    t.getBlock() = ma.getEnclosingStmt().getParent*() and
+    t.getBlock() = ma.getEnclosingStmt().getEnclosingStmt*() and
     ma.getMethod().getAnException() = e and
     result = e.getType()
   )
   or
   exists(ClassInstanceExpr cie, Exception e |
-    t.getBlock() = cie.getEnclosingStmt().getParent*() and
+    t.getBlock() = cie.getEnclosingStmt().getEnclosingStmt*() and
     cie.getConstructor().getAnException() = e and
     result = e.getType()
   )
   or
   exists(ThrowStmt ts |
-    t.getBlock() = ts.getParent*() and
+    t.getBlock() = ts.getEnclosingStmt*() and
     result = ts.getExpr().getType()
   )
 }

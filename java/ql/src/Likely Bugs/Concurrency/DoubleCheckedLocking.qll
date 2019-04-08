@@ -35,8 +35,8 @@ private Expr getANullCheck(Field f) {
  * as they are always safe to initialize with double-checked locking.
  */
 predicate doubleCheckedLocking(IfStmt if1, IfStmt if2, SynchronizedStmt sync, Field f) {
-  if1.getThen() = sync.getParent*() and
-  sync.getBlock() = if2.getParent*() and
+  if1.getThen() = sync.getEnclosingStmt*() and
+  sync.getBlock() = if2.getEnclosingStmt*() and
   if1.getCondition() = getANullCheck(f) and
   if2.getCondition() = getANullCheck(f)
 }

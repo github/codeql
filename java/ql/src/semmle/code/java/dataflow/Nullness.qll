@@ -184,7 +184,7 @@ private predicate varMaybeNull(SsaVariable v, string msg, Expr reason) {
     not v instanceof SsaPhiNode and
     not clearlyNotNull(v) and
     // Comparisons in finally blocks are excluded since missing exception edges in the CFG could otherwise yield FPs.
-    not exists(TryStmt try | try.getFinally() = e.getEnclosingStmt().getParent*()) and
+    not exists(TryStmt try | try.getFinally() = e.getEnclosingStmt().getEnclosingStmt*()) and
     (
       exists(ConditionalExpr c | c.getCondition().getAChildExpr*() = e) or
       not exists(MethodAccess ma | ma.getAnArgument().getAChildExpr*() = e)
@@ -291,8 +291,8 @@ private predicate leavingFinally(BasicBlock bb1, BasicBlock bb2, boolean normale
   exists(TryStmt try, Block finally |
     try.getFinally() = finally and
     bb1.getABBSuccessor() = bb2 and
-    bb1.getEnclosingStmt().getParent*() = finally and
-    not bb2.getEnclosingStmt().getParent*() = finally and
+    bb1.getEnclosingStmt().getEnclosingStmt*() = finally and
+    not bb2.getEnclosingStmt().getEnclosingStmt*() = finally and
     if bb1.getLastNode().getANormalSuccessor() = bb2.getFirstNode()
     then normaledge = true
     else normaledge = false
