@@ -26,6 +26,7 @@
 | minmax.c:18:40:18:40 | Load: y | positive strictlyPositive |
 | minmax.c:18:43:18:43 | Load: z | positive strictlyPositive |
 | minmax.c:20:2:24:3 | Store: ... = ... | positive |
+| minmax.c:20:6:24:3 | CopyValue: (statement expression) | positive |
 | minmax.c:22:18:22:22 | Store: ... = ... | positive strictlyPositive |
 | minmax.c:22:22:22:22 | Load: x | positive strictlyPositive |
 | minmax.c:23:3:23:3 | Load: t | positive |
