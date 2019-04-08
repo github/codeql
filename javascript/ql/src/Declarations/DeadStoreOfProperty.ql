@@ -161,7 +161,7 @@ where
   // exclude results from non-value definitions from `Object.defineProperty`
   (
     assign1 instanceof CallToObjectDefineProperty implies
-    assign1.(CallToObjectDefineProperty).getAPropertyAttribute().getPropertyName() = "value"
+    assign1.(CallToObjectDefineProperty).hasPropertyAttributeWrite("value", _)
   )
 select assign1.getWriteNode(),
   "This write to property '" + name + "' is useless, since $@ always overrides it.",
