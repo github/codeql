@@ -68,4 +68,6 @@ express().get('/some/path/:foo', function(req, res) {
     while (p.length) { // OK
       p = p.substr(1);
     }
+
+    p.length < 1; // OK
 });
