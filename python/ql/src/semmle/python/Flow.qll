@@ -217,6 +217,11 @@ class ControlFlowNode extends @py_flow_node {
         this.pointsTo(_, value, _)
     }
 
+    /** Gets the value that this ControlFlowNode points-to. */
+    Value pointsTo() {
+        this.pointsTo(_, result, _)
+    }
+
     /** The value and origin that this ControlFlowNode points-to. */
     predicate pointsTo(Value value, ControlFlowNode origin) {
         this.pointsTo(_, value, origin)
@@ -239,14 +244,7 @@ class ControlFlowNode extends @py_flow_node {
     /** Gets what this expression might "refer-to" in the given `context`.
      */
     predicate refersTo(Context context, Object obj, ClassObject cls, ControlFlowNode origin) {
-        exists(Value value |
-            PointsTo::pointsTo(this, context, value, origin) and
-            cls = value.getClass().getSource() |
-            if exists(value.getSource().(Object)) then
-                obj = value.getSource()
-            else
-                obj = origin
-        )
+        PointsTo::points_to(this, context, obj, cls, origin)
     }
 
     /** Whether this flow node might "refer-to" to `value` which is from `origin` 
@@ -254,13 +252,7 @@ class ControlFlowNode extends @py_flow_node {
      * where the class cannot be inferred. 
      */
     predicate refersTo(Object obj, ControlFlowNode origin) {
-        exists(Value value |
-            PointsTo::pointsTo(this, _, value, origin) |
-            if exists(value.getSource().(Object)) then
-                obj = value.getSource()
-            else
-                obj = origin
-        )
+        PointsTo::points_to(this, _, obj, _, origin)
     }
 
     /** Equivalent to `this.refersTo(value, _)` */

@@ -80,7 +80,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         this = TPythonFunctionObject(result)
     }
 
-    pragma [noinline]
+    pragma [nomagic]
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         exists(Function func, ControlFlowNode rval, ControlFlowNode forigin |
             func = this.getScope() and
@@ -88,7 +88,15 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
             rval = func.getAReturnValueFlowNode() and
             PointsToInternal::pointsTo(rval, callee, obj, forigin) and
             origin = CfgOrigin::fromCfgNode(forigin)
-            or
+        )
+        or
+        procedureReturnsNone(callee, obj, origin)
+    }
+
+    private predicate procedureReturnsNone(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
+        exists(Function func |
+            func = this.getScope() and
+            callee.appliesToScope(func) |
             PointsToInternal::reachableBlock(blockReturningNone(func), callee) and
             obj = ObjectInternal::none_() and
             origin = CfgOrigin::unknown()
@@ -349,7 +357,7 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
 class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override string toString() {
-        result = "classmethod()"
+        result = "classmethod(" + this.getFunction() + ")"
     }
 
     override boolean booleanValue() { result = true }
@@ -369,7 +377,7 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override boolean isClass() { result = false }
 
-    override ObjectInternal getClass() { result = ObjectInternal::builtin("classmethod") }
+    override ObjectInternal getClass() { result = ObjectInternal::classMethod() }
 
     override boolean isComparable() { none() }
 
@@ -385,9 +393,7 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override string strValue() { none() }
 
-    override predicate calleeAndOffset(Function scope, int paramOffset) {
-        this.getFunction().calleeAndOffset(scope, paramOffset)
-    }
+    override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
@@ -397,17 +403,25 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
         any(ObjectInternal obj).binds(instance, _, this) and
-        (
-            instance.isClass() = false and
-            value = TBoundMethod(instance.getClass(), this.getFunction())
+        exists(ObjectInternal cls |
+            instance.isClass() = false and cls = instance.getClass()
             or
-            instance.isClass() = true and
-            value = TBoundMethod(instance, this.getFunction())
-        ) and
-        origin = CfgOrigin::unknown()
+            instance.isClass() = true and cls = instance
+            |
+            value = TBoundMethod(cls, this.getFunction()) and
+            origin = CfgOrigin::unknown()
+        )
     }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) {
+        descriptor = this.getFunction() and
+        exists(ObjectInternal instance |
+            any(ObjectInternal obj).binds(instance, name, this) |
+            instance.isClass() = false and cls = instance.getClass()
+            or
+            instance.isClass() = true and cls = instance
+        )
+    }
 
 }
 

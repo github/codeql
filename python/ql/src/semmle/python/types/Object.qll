@@ -501,3 +501,20 @@ Object theUnknownType() {
     result.asBuiltin() = Builtin::unknownType()
 }
 
+/* For backwards compatibility */
+
+class SuperBoundMethod extends Object {
+
+    string name;
+
+    SuperBoundMethod() {
+        this.(AttrNode).getObject(name).pointsTo().getClass() = Value::named("super")
+    }
+
+    override string toString() {
+        result = "super()." + name
+    }
+
+}
+
+

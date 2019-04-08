@@ -156,8 +156,11 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         or
         exists(Module init |
             init = this.getSourceModule() and
-            not exists(EssaVariable var | var.getAUse() = init.getANormalExit() and var.getSourceVariable().getName() = name) and
-            ModuleAttributes::pointsToAtExit(init, name, ObjectInternal::undefined(), _) and
+            (
+                not exists(EssaVariable var | var.getAUse() = init.getANormalExit() and var.getSourceVariable().getName() = name)
+                or
+                ModuleAttributes::pointsToAtExit(init, name, ObjectInternal::undefined(), _)
+            ) and
             value = this.submodule(name) and
             origin = CfgOrigin::fromObject(value)
         )
@@ -174,6 +177,14 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
 
     override ControlFlowNode getOrigin() {
         result = this.getSourceModule().getEntryNode()
+    }
+
+    override @py_object getSource() {
+        exists(Module package |
+            package.isPackage() and
+            package.getPath() = this.getFolder() and
+            result = package.getEntryNode()
+        )
     }
 
 }
@@ -237,14 +248,8 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
             imp.isImport() and
             value != ObjectInternal::undefined()
         )
-        // TO DO, dollar variable...
-        //or
-        //not exists(EssaVariable var | var.getAUse() = m.getANormalExit() and var.getSourceVariable().getName() = name) and
-        //exists(EssaVariable var, PointsToContext imp |
-        //    var.getAUse() = m.getANormalExit() and isModuleStateVariable(var) |
-        //    PointsToInternal::ssa_variable_named_attribute_pointsTo(var, imp, name, obj, origin) and
-        //    imp.isImport() and obj != ObjectInternal::undefined()
-        //)
+        or
+        ModuleAttributes::pointsToAtExit(this.getSourceModule(), name, value, origin)
     }
 
     override predicate attributesUnknown() { none() }

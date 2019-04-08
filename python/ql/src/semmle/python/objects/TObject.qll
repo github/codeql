@@ -6,7 +6,7 @@ private import semmle.python.pointsto.PointsToContext
 
 newtype TObject =
     TBuiltinClassObject(Builtin bltn) {
-        bltn.isClass() and 
+        bltn.isClass() and
         not bltn = Builtin::unknownType() and
         not bltn = Builtin::special("type")
     }
@@ -137,7 +137,7 @@ predicate static_method(CallNode instantiation, CallableObjectInternal function,
 }
 
 predicate class_method(CallNode instantiation, CallableObjectInternal function, PointsToContext context) {
-    PointsToInternal::pointsTo(instantiation.getFunction(), context, ObjectInternal::builtin("classmethod"), _) and
+    PointsToInternal::pointsTo(instantiation.getFunction(), context, ObjectInternal::classMethod(), _) and
     PointsToInternal::pointsTo(instantiation.getArg(0), context, function, _)
 }
 
@@ -321,8 +321,8 @@ library class ClassDecl extends @py_object {
             name = "unicode" or
             name = "tuple" or
             name = "property" or
-            name = "classmethod" or
-            name = "staticmethod" or
+            name = "ClassMethod" or
+            name = "StaticMethod" or
             name = "MethodType" or
             name = "ModuleType"
         )

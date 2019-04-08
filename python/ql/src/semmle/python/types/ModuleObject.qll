@@ -57,6 +57,15 @@ abstract class ModuleObject extends Object {
         )
     }
 
+    predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
+        exists(Value val, CfgOrigin valorig |
+            theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
+            obj = val.getSource() and
+            cls = val.getClass().getSource() and
+            origin = valorig.toCfgNode()
+        )
+    }
+
     /** Gets the package for this module. */
     PackageObject getPackage() {
         this.getName().matches("%.%") and

@@ -84,6 +84,7 @@ library class CfgOrigin extends TCfgOrigin {
         this = TFlowNodeOrigin(result)
     }
 
+    pragma[inline]
     CfgOrigin fix(ControlFlowNode here) {
         this = TUnknownOrigin() and result = TFlowNodeOrigin(here)
         or
@@ -128,7 +129,7 @@ module PointsTo {
             pointsToValue(f, context, value, origin) and
             cls = value.getClass().getSource() |
             obj = value.getSource() or
-            not exists(value.getSource()) and obj = origin
+            not exists(value.getSource()) and obj = origin and not cls = theBoundMethodType()
         )
         or
         /* Backwards compatibility for *args and **kwargs */
@@ -663,22 +664,20 @@ module InterModulePointsTo {
 
     /** Points-to for `from ... import *`. */
     predicate import_star_points_to(ImportStarRefinement def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        exists(CfgOrigin orig |
-            origin = orig.fix(def.getDefiningNode())
-            |
-            exists(ModuleObjectInternal mod, string name |
-                PointsToInternal::pointsTo(def.getDefiningNode().(ImportStarNode).getModule(), context, mod, _) and
-                name = def.getSourceVariable().getName() |
-                /* Attribute from imported module */
-                module_exports_boolean(mod, name) = true and
-                mod.attribute(name, value, origin)
-            )
-            or
-            exists(EssaVariable var |
-                /* Retain value held before import */
-                variable_not_redefined_by_import_star(var, context, def) and
-                PointsToInternal::variablePointsTo(var, context, value,orig)
-            )
+        /* Attribute from imported module */
+        exists(CfgOrigin orig, ImportStarNode imp, ModuleObjectInternal mod, string name |
+            imp = def.getDefiningNode() and
+            PointsToInternal::pointsTo(imp.getModule(), context, mod, _) and
+            name = def.getSourceVariable().getName() and
+            module_exports_boolean(mod, name) = true and
+            mod.attribute(name, value, orig) and
+            origin = orig.fix(imp)
+        )
+        or
+        /* Retain value held before import */
+        exists(EssaVariable var |
+            variable_not_redefined_by_import_star(var, context, def) and
+            PointsToInternal::variablePointsTo(var, context, value, origin)
         )
     }
 
@@ -751,6 +750,8 @@ module InterModulePointsTo {
         )
         or
         name = "__name__" and result = true
+        or
+        exists(mod.(BuiltinModuleObjectInternal).getBuiltin().getMember(name)) and result = true
     }
 
 }
@@ -1650,14 +1651,18 @@ cached module Types {
 module AttributePointsTo {
 
     predicate attributePointsTo(ControlFlowNode f, Context context, string name, ObjectInternal value, ControlFlowNode origin) {
-        exists(ObjectInternal obj, Context prev, AttributeAssignment def |
-            PointsToInternal::pointsTo(f, context, obj, _) and
-            PointsToInternal::variablePointsTo(def.getInput(), prev, obj, _) and
+        exists(ObjectInternal defobj, Context prev, AttributeAssignment def, ObjectInternal useobj |
+            PointsToInternal::pointsTo(f, context, useobj, _) and
+            PointsToInternal::variablePointsTo(def.getInput(), prev, defobj, _) and
             PointsToInternal::pointsTo(def.getValue(), prev, value, origin) and name = def.getName()
             |
-            prev.getOuter*().getCall().getBasicBlock().reaches(context.getOuter*().getCall().getBasicBlock())
+            prev.getOuter*().getCall().getBasicBlock().reaches(context.getOuter*().getCall().getBasicBlock()) and
+            useobj.(SelfInstanceInternal).getClass() = defobj.(SelfInstanceInternal).getClass()
             or
-            def.getScope().getScope*().precedes(f.getScope().getScope*())
+            def.getScope().getScope*().precedes(f.getScope().getScope*()) and
+            useobj.(SelfInstanceInternal).getClass() = defobj.(SelfInstanceInternal).getClass()
+            or
+            def.getDefiningNode().getBasicBlock().dominates(f.getBasicBlock()) and defobj = useobj
         )
     }
 
@@ -1697,8 +1702,9 @@ module ModuleAttributes {
     private predicate importStarPointsTo(ImportStarRefinement def, string name, ObjectInternal value, CfgOrigin origin) {
         def.getVariable().getName() = "$" and
         exists(ImportStarNode imp, ModuleObjectInternal mod, CfgOrigin orig |
+            imp = def.getDefiningNode() and
             origin = orig.fix(imp) and
-            PointsToInternal::pointsTo(def.getDefiningNode().(ImportStarNode).getModule(), any(Context ctx | ctx.isImport()), mod, _) |
+            PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _) |
             /* Attribute from imported module */
             InterModulePointsTo::module_exports_boolean(mod, name) = true and
             mod.attribute(name, value, orig) and

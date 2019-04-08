@@ -84,9 +84,6 @@ class Builtin extends @py_cobject {
     predicate isMethod() {
         this.getClass() = Builtin::special("MethodDescriptorType")
         or
-        this.getClass() = Builtin::special("BuiltinFunctionType") and
-        exists(Builtin cls | cls.isClass() and cls.getMember(_) = this)
-        or
         this.getClass().getName() = "wrapper_descriptor"
     }
 

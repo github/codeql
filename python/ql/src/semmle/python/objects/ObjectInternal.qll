@@ -363,6 +363,8 @@ module ObjectInternal {
         result = TBuiltinOpaqueObject(b)
         or
         result = TBuiltinModuleObject(b)
+        or
+        result = TBuiltinMethodObject(b)
     }
 
     ObjectInternal classMethod() {
