@@ -165,6 +165,13 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   /**
    * Holds if the syntactic context that the expression appears in relies on the expression
    * being non-null/non-undefined.
+   * 
+   * A context relies on the subexpression being non-null/non-undefined if either...
+   * 
+   *   * Using null or undefined would cause a runtime error
+   *   * Using null or undefined would cause no error due to type conversion, but the
+   *     behavior in the broader context is sufficiently non-obvious to warrant explicitly
+   *     converting to ensure that readers understand the intent  
    */
   predicate inNullSensitiveContext() {
     exists(ExprOrStmt ctx |
