@@ -57,21 +57,6 @@ class Value extends TObject {
         result = this.(ObjectInternal).getSource()
     }
 
-    /** Gets the `ControlFlowNode` that will be passed as the nth argument to `this` when called at `call`.
-        This predicate will correctly handle `x.y()`, treating `x` as the zeroth argument.
-    */
-    ControlFlowNode getArgumentForCall(CallNode call, int n) {
-        // TO DO..
-        none()
-    }
-
-    /** Gets the `ControlFlowNode` that will be passed as the named argument to `this` when called at `call`.
-        This predicate will correctly handle `x.y()`, treating `x` as the self argument.
-    */
-    ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
-        // TO DO..
-        none()
-    }
 }
 
 class ModuleValue extends Value {
@@ -128,6 +113,28 @@ class CallableValue extends Value {
 
     Function getScope() {
         result = this.(PythonFunctionObjectInternal).getScope()
+    }
+
+    NameNode getParameter(int n) {
+        result = this.(CallableObjectInternal).getParameter(n)
+    }
+
+    NameNode getParameterByName(string name) {
+        result = this.(CallableObjectInternal).getParameterByName(name)
+    }
+
+    ControlFlowNode getArgumentForCall(CallNode call, NameNode param) {
+        this.getACall() = call and
+        (
+            exists(int n | call.getArg(n) = result and param = this.getParameter(n))
+            or
+            exists(string name | call.getArgByName(name) = result and param = this.getParameterByName(name))
+        )
+        or
+        exists(BoundMethodObjectInternal bm |
+            result = getArgumentForCall(call, param) and
+            this = bm.getFunction()
+        )
     }
 
 }

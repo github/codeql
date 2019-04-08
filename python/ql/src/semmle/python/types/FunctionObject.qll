@@ -71,14 +71,14 @@ abstract class FunctionObject extends Object {
         This predicate will correctly handle `x.y()`, treating `x` as the zeroth argument.
     */
     ControlFlowNode getArgumentForCall(CallNode call, int n) {
-        result = theCallable().getArgumentForCall(call, n)
+        result = theCallable().getArgumentForCall(call, this.getFunction().getArg(n).asName().getAFlowNode())
     }
 
     /** Gets the `ControlFlowNode` that will be passed as the named argument to `this` when called at `call`.
         This predicate will correctly handle `x.y()`, treating `x` as the self argument.
     */
     ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
-        result = theCallable().getNamedArgumentForCall(call, name)
+        result = theCallable().getArgumentForCall(call, this.getFunction().getArgByName(name).asName().getAFlowNode())
     }
 
     /** Whether this function never returns. This is an approximation.

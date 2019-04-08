@@ -46,6 +46,10 @@ abstract class CallableObjectInternal extends ObjectInternal {
 
     CallNode getACall() { result = this.getACall(_) }
 
+    abstract NameNode getParameter(int n);
+
+    abstract NameNode getParameterByName(string name);
+
 }
 
 
@@ -130,6 +134,14 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         exists(BoundMethodObjectInternal bm |
             bm.getACall(ctx) = result and this = bm.getFunction()
         )
+    }
+
+    override NameNode getParameter(int n) {
+        result.getNode() = this.getScope().getArg(n)
+    }
+
+    override NameNode getParameterByName(string name) {
+        result.getNode() = this.getScope().getArgByName(name)
     }
 
 }
@@ -229,6 +241,13 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
         PointsTo::pointsTo(result.getFunction(), ctx, this, _)
     }
 
+    override NameNode getParameter(int n) {
+        none()
+    }
+
+    override NameNode getParameterByName(string name) {
+        none()
+    }
 
 }
 
@@ -287,6 +306,14 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
 
     override CallNode getACall(PointsToContext ctx) {
         PointsTo::pointsTo(result.getFunction(), ctx, this, _)
+    }
+
+    override NameNode getParameter(int n) {
+        none()
+    }
+
+    override NameNode getParameterByName(string name) {
+        none()
     }
 
 }
@@ -350,6 +377,14 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
 
     override CallNode getACall(PointsToContext ctx) {
         PointsTo::pointsTo(result.getFunction(), ctx, this, _)
+    }
+
+    override NameNode getParameter(int n) {
+        result = this.getFunction().getParameter(n+1)
+    }
+
+    override NameNode getParameterByName(string name) {
+        result = this.getFunction().getParameterByName(name)
     }
 
 }
