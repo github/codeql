@@ -7,6 +7,26 @@
 import javascript
 
 /**
+ * Holds if the given data flow node may refer to a string for which we have incomplete information.
+ */
+private predicate hasIncompleteSubstring(DataFlow::Node nd) {
+  nd.isIncomplete(_)
+  or
+  hasIncompleteSubstring(StringConcatenation::getAnOperand(nd))
+  or
+  hasIncompleteSubstring(nd.getAPredecessor())
+}
+
+/**
+ * Holds if the given data flow node refers to a string that ends with a slash.
+ */
+private predicate endsWithSlash(DataFlow::Node nd) {
+  nd.getStringValue().matches("%/")
+  or
+  endsWithSlash(StringConcatenation::getLastOperand(nd))
+}
+
+/**
  * Holds if the string value of `nd` prevents anything appended after it
  * from affecting the hostname or path of a URL.
  *
@@ -18,8 +38,6 @@ private predicate hasSanitizingSubstring(DataFlow::Node nd) {
   hasSanitizingSubstring(StringConcatenation::getAnOperand(nd))
   or
   hasSanitizingSubstring(nd.getAPredecessor())
-  or
-  nd.isIncomplete(_)
 }
 
 /**
@@ -31,7 +49,15 @@ private predicate hasSanitizingSubstring(DataFlow::Node nd) {
 predicate sanitizingPrefixEdge(DataFlow::Node source, DataFlow::Node sink) {
   exists(DataFlow::Node operator, int n |
     StringConcatenation::taintStep(source, sink, operator, n) and
-    hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
+    (
+      hasSanitizingSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1]))
+      or
+      // If prefixed by an unknown base URL, assume the URL is safe, unless
+      // separated by a slash, such as `${baseUrl}/${taint}`. The slash is a
+      // good indicator that the incoming value is most likely part of the path.
+      hasIncompleteSubstring(StringConcatenation::getOperand(operator, [0 .. n - 1])) and
+      not endsWithSlash(StringConcatenation::getOperand(operator, n - 1))
+    )
   )
 }
 
