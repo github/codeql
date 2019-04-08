@@ -298,7 +298,12 @@ class File extends Container, @file {
     none()
   }
 
-  /** Holds if this file was compiled by a Microsoft compiler (at any point). */
+  /**
+   * Holds if this file was compiled by a Microsoft compiler (at any point).
+   *
+   * Note: currently unreliable - on some projects only some of the files that
+   * are compiled by a Microsoft compiler are detected by this predicate.
+   */
   predicate compiledAsMicrosoft() {
     exists(Compilation c |
       c.getAFileCompiled() = this and
