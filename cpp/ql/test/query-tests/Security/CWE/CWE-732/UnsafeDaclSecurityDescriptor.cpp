@@ -90,3 +90,43 @@ void Test()
         FALSE);
 
 }
+
+PACL returnUnknownAcl();
+
+PACL returnNull() {
+  return NULL;
+}
+
+PACL returnMaybeAcl(bool b) {
+  PACL pDacl = NULL;
+  if (b) {
+    SetEntriesInAcl(0, NULL, NULL, &pDacl);
+  }
+  return pDacl;
+}
+
+void Test2()
+{
+    PSECURITY_DESCRIPTOR pSecurityDescriptor;
+
+    PACL pDacl1 = returnUnknownAcl();
+    SetSecurityDescriptorDacl(
+        pSecurityDescriptor,
+        TRUE,       // Dacl Present
+        pDacl1,     // Give `returnUnknownAcl` the benefit of the doubt ==> should not be flagged
+        FALSE);
+
+    PACL pDacl2 = returnNull();
+    SetSecurityDescriptorDacl(
+        pSecurityDescriptor,
+        TRUE,       // Dacl Present
+        pDacl2,     // NULL pointer to DACL  == BUG
+        FALSE);
+
+    PACL pDacl3 = returnMaybeAcl(true);
+    SetSecurityDescriptorDacl(
+        pSecurityDescriptor,
+        TRUE,       // Dacl Present
+        pDacl3,     // should not be flagged
+        FALSE);
+}

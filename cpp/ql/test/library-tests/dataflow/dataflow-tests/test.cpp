@@ -443,17 +443,17 @@ void flowThroughMemcpy_blockvar_with_local_flow(int source1, int b) {
   }
 }
 
-void cleanedByMemcpy_ssa(int clean1) {
+void cleanedByMemcpy_ssa(int clean1) { // currently modeled with BlockVar, not SSA
   int tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // clean
+  sink(tmp); // clean [FALSE POSITIVE]
 }
 
 void cleanedByMemcpy_blockvar(int clean1) {
   int tmp;
   int *capture = &tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // clean
+  sink(tmp); // clean [FALSE POSITIVE]
 }
 
 void intRefSource(int &ref_source);
