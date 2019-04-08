@@ -2,7 +2,7 @@ import python
 private import semmle.python.objects.Classes
 private import semmle.python.objects.Instances
 private import semmle.python.pointsto.PointsTo
-private import semmle.python.pointsto.MRO2
+private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 
 

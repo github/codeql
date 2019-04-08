@@ -4,7 +4,7 @@ private import semmle.python.objects.TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.Filters
 private import semmle.python.pointsto.PointsToContext
-private import semmle.python.pointsto.MRO2
+private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 
 /* Use this version for speed */
