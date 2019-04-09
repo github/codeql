@@ -9,6 +9,7 @@
   - [Firebase](https://firebase.google.com/)
   - [Express](https://expressjs.com/)
   - [shelljs](https://www.npmjs.com/package/shelljs)
+  - [cheerio](https://www.npmjs.com/package/cheerio)
 
 * The security queries now track data flow through Base64 decoders such as the Node.js `Buffer` class, the DOM function `atob`, and a number of npm packages intcluding [`abab`](https://www.npmjs.com/package/abab), [`atob`](https://www.npmjs.com/package/atob), [`btoa`](https://www.npmjs.com/package/btoa), [`base-64`](https://www.npmjs.com/package/base-64), [`js-base64`](https://www.npmjs.com/package/js-base64), [`Base64.js`](https://www.npmjs.com/package/Base64) and [`base64-js`](https://www.npmjs.com/package/base64-js).
 
