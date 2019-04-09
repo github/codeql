@@ -274,9 +274,25 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
 
+    pragma [noinline]
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        // TO DO .. Result should be be a unknown value of a known class if the return type is known or just an unknown.
-        none()
+        exists(Builtin func, BuiltinClassObjectInternal cls |
+            func = this.getBuiltin() and
+            cls = ObjectInternal::fromBuiltin(this.getReturnType()) |
+            obj = TUnknownInstance(cls)
+            or
+            cls = ObjectInternal::noneType() and obj = ObjectInternal::none_()
+            or
+            cls = ObjectInternal::builtin("bool") and obj = ObjectInternal::bool(_)
+        ) and
+        origin = CfgOrigin::unknown()
+    }
+
+    Builtin getReturnType() {
+        exists(Builtin func |
+            func = this.getBuiltin() |
+            ext_rettype(func, result)
+        )
     }
 
     override ControlFlowNode getOrigin() {
