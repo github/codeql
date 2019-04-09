@@ -209,8 +209,10 @@ predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q) {
   | linearAccess(cast.getExpr(), v, p, q) and
     sourceType = cast.getExpr().getType().getUnspecifiedType() and
     targetType = cast.getType().getUnspecifiedType() and
-    typeLowerBound(targetType) <= typeLowerBound(sourceType) and
-    typeUpperBound(targetType) >= typeUpperBound(sourceType) and
+    // This allows conversion between signed and unsigned, which is technically
+    // lossy but common enough that we'll just have to assume the user knows
+    // what they're doing.
+    targetType.getSize() >= sourceType.getSize() and
     expr = cast)
   or
   // (p*v+q) == p*v + q
