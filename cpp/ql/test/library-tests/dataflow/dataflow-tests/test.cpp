@@ -140,17 +140,17 @@ void following_pointers(
   sink(sourceStruct1.m1); // flow (due to lack of no-alias tracking)
 
   twoIntFields s = { source(), source() };
-  // TODO: fix this by distinguishing between an AggregateLiteral that
-  // initializes an array and one that initializes a struct.
-  sink(s.m2); // no flow (due to limitations of the analysis)
+
+
+  sink(s.m2); // flow (AST dataflow misses this due to limitations of the analysis)
 
   twoIntFields sArray[1] = { { source(), source() } };
   // TODO: fix this like above
   sink(sArray[0].m2); // no flow (due to limitations of the analysis)
 
   twoIntFields sSwapped = { .m2 = source(), .m1 = 0 };
-  // TODO: fix this like above
-  sink(sSwapped.m2); // no flow (due to limitations of the analysis)
+
+  sink(sSwapped.m2); // flow (AST dataflow misses this due to limitations of the analysis)
 
   sink(sourceFunctionPointer()); // no flow
 
