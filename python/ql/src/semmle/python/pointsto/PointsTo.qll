@@ -409,8 +409,8 @@ cached module PointsToInternal {
         scope_entry_points_to(def, context, value, origin)
         or
         InterModulePointsTo::implicit_submodule_points_to(def, context, value, origin)
-        // or
-        // iteration_definition_points_to(def, context, value, origin)
+        or
+        iteration_definition_points_to(def, context, value, origin)
         /*
          * No points-to for non-local function entry definitions yet.
          */
@@ -562,6 +562,11 @@ cached module PointsToInternal {
             not exists(EssaVariable v | v.getSourceVariable() = var and v.getScope() = mod) and
             value = ObjectInternal::builtin(var.getId()) and origin = def.getDefiningNode()
         )
+    }
+
+    private predicate iteration_definition_points_to(IterationDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        pointsTo(def.getSequence(), context, ObjectInternal::unknown(), _) and
+        value = ObjectInternal::unknown() and origin = def.getDefiningNode()
     }
 
     /** Holds if `f` is an expression node `tval if cond else fval` and points to `(value, origin)`. */
