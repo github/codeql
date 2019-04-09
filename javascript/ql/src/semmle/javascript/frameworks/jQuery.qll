@@ -289,7 +289,7 @@ private class JQueryClientRequest extends CustomClientRequest {
 
 module JQuery {
   /**
-   * Holds if the given method on a jQuery object may interpret any of its
+   * Holds if method `name` on a jQuery object may interpret any of its
    * arguments as HTML.
    */
   predicate isMethodArgumentInterpretedAsHtml(string name) {
