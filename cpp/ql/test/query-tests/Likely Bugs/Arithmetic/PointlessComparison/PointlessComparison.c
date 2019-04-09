@@ -300,7 +300,7 @@ int unsigned_implicit_conversion(unsigned int ui1) {
 
 int signedness_cast1(u8 c) {
   if ((signed char)c == 0) {
-    if (c >= 5) { // BAD [NOT DETECTED]
+    if (c >= 5) { // BAD
       return 1;
     }
   }
@@ -309,7 +309,7 @@ int signedness_cast1(u8 c) {
 
 int signedness_cast2(signed char c) {
   if ((u8)c == 0) {
-    if (c >= 5) { // BAD [NOT DETECTED]
+    if (c >= 5) { // BAD
       return 1;
     }
   }
