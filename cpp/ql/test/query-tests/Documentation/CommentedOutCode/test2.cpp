@@ -39,3 +39,29 @@
 // int myFunction() const { return myValue; }
 
 // int myFunction() const noexcept { return myValue; }
+
+// #define MYMACRO
+
+// #include "include.h"
+
+/*
+#ifdef
+void myFunction();
+#endif
+*/
+
+// define some constants
+
+// don't #include anything here
+
+// #hashtag
+
+// #if(defined(MYMACRO))
+
+// #iffy
+
+// #pragma once
+
+//  # pragma once
+
+/*#error"myerror"*/
