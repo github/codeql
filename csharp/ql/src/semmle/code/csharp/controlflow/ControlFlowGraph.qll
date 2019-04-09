@@ -277,6 +277,9 @@ module ControlFlow {
 
     /** Holds if this node has more than one successor. */
     predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
+
+    /** Gets the enclosing callable of this control flow node. */
+    Callable getEnclosingCallable() { none() }
   }
 
   /** Provides different types of control flow nodes. */
@@ -287,6 +290,8 @@ module ControlFlow {
       Callable getCallable() { this = TEntryNode(result) }
 
       override BasicBlocks::EntryBlock getBasicBlock() { result = Node.super.getBasicBlock() }
+
+      override Callable getEnclosingCallable() { result = this.getCallable() }
 
       override Location getLocation() { result = getCallable().getLocation() }
 
@@ -299,6 +304,8 @@ module ControlFlow {
       Callable getCallable() { this = TExitNode(result) }
 
       override BasicBlocks::ExitBlock getBasicBlock() { result = Node.super.getBasicBlock() }
+
+      override Callable getEnclosingCallable() { result = this.getCallable() }
 
       override Location getLocation() { result = getCallable().getLocation() }
 
@@ -318,6 +325,8 @@ module ControlFlow {
       private ControlFlowElement cfe;
 
       ElementNode() { this = TElementNode(cfe, splits) }
+
+      override Callable getEnclosingCallable() { result = cfe.getEnclosingCallable() }
 
       override ControlFlowElement getElement() { result = cfe }
 
@@ -574,6 +583,14 @@ module ControlFlow {
         QualifiedWriteAccess() { this.hasQualifier() }
       }
 
+      /** A normal or a (potential) dynamic call to an accessor. */
+      private class StatOrDynAccessorCall extends Expr {
+        StatOrDynAccessorCall() {
+          this instanceof AccessorCall or
+          this instanceof DynamicAccess
+        }
+      }
+
       /**
        * An expression that writes via an accessor call, for example `x.Prop = 0`,
        * where `Prop` is a property.
@@ -591,7 +608,7 @@ module ControlFlow {
 
         AccessorWrite() {
           def.getExpr() = this and
-          def.getTargetAccess().(WriteAccess) instanceof AccessorCall and
+          def.getTargetAccess().(WriteAccess) instanceof StatOrDynAccessorCall and
           not this instanceof AssignOperationWithExpandedAssignment
         }
 
@@ -599,9 +616,9 @@ module ControlFlow {
          * Gets the `i`th accessor being called in this write. More than one call
          * can happen in tuple assignments.
          */
-        AccessorCall getCall(int i) {
+        StatOrDynAccessorCall getCall(int i) {
           result = rank[i + 1](AssignableDefinitions::TupleAssignmentDefinition tdef |
-              tdef.getExpr() = this and tdef.getTargetAccess() instanceof AccessorCall
+              tdef.getExpr() = this and tdef.getTargetAccess() instanceof StatOrDynAccessorCall
             |
               tdef order by tdef.getEvaluationOrder()
             ).getTargetAccess()
