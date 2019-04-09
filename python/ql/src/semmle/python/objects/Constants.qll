@@ -191,7 +191,11 @@ class IntObjectInternal extends ConstantObjectInternal, TInt {
 class FloatObjectInternal extends ConstantObjectInternal, TFloat {
 
     override string toString() {
-        result = "float " + this.floatValue().toString()
+        if this.floatValue() = this.floatValue().floor() then (
+            result = "float " + this.floatValue().toString() + ".0"
+        ) else (
+            result = "float " + this.floatValue().toString()
+        )
     }
 
     override predicate introduced(ControlFlowNode node, PointsToContext context) {

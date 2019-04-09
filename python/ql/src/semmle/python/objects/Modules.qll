@@ -189,15 +189,6 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
 
 }
 
-/** Get the ESSA pseudo-variable used to retain module state
- * during module initialization. Module attributes are handled 
- * as attributes of this variable, allowing the SSA form to track 
- * mutations of the module during its creation.
- */
-private predicate isModuleStateVariable(EssaVariable var) {
-    var.getName() = "$" and var.getScope() instanceof Module
-}
-
 class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
 
     override Builtin getBuiltin() {

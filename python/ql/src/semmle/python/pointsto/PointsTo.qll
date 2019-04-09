@@ -661,7 +661,7 @@ module InterModulePointsTo {
             imp = def.getDefiningNode() and
             PointsToInternal::pointsTo(imp.getModule(), context, mod, _) and
             name = def.getSourceVariable().getName() and
-            module_exports_boolean(mod, name) = true and
+            moduleExportsBoolean(mod, name) = true and
             mod.attribute(name, value, orig) and
             origin = orig.fix(imp)
         )
@@ -679,7 +679,7 @@ module InterModulePointsTo {
         var = def.getInput() and
         exists(ModuleObjectInternal mod |
             PointsToInternal::pointsTo(def.getDefiningNode().(ImportStarNode).getModule(), context, mod, _) |
-            module_exports_boolean(mod, var.getSourceVariable().getName()) = false
+            moduleExportsBoolean(mod, var.getSourceVariable().getName()) = false
             or
             exists(Module m, string name |
                 m = mod.getSourceModule() and name = var.getSourceVariable().getName() |
@@ -698,52 +698,77 @@ module InterModulePointsTo {
         )
     }
 
-    private predicate ofInterestInModule(ModuleObjectInternal mod, string name) {
-        exists(ImportStarNode isn, Module m |
-            m = mod.getSourceModule() and
-            isn.getScope() = m and
-            exists(EssaVariable var | var.getAUse() = isn and var.getName() = name)
+    predicate ofInterestInExports(ModuleObjectInternal mod, string name) {
+        exists(ImportStarNode imp, ImportStarRefinement def |
+            imp = def.getDefiningNode() and
+            PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _) |
+            def.getVariable().getName() = "$" and
+            ModuleAttributes::attributePointsTo(def.getInput().getDefinition(), name, _, _)
+            or
+            def.getVariable().getName() = name and not name = "$" and not name = "*"
+        )
+        or
+        exists(PackageObjectInternal package |
+            ofInterestInExports(package, name) and
+            package.getInitModule() = mod
         )
     }
 
-    private predicate ofInterestInExports(ModuleObjectInternal mod, string name) {
-        exists(ModuleObjectInternal importer |
-            importsByImportStar(importer, mod) and
-            ofInterestInModule(importer, name)
-        )
-    }
-
-    boolean module_exports_boolean(ModuleObjectInternal mod, string name) {
-        ofInterestInExports(mod, name) and
+    private boolean pythonModuleExportsBoolean(PythonModuleObjectInternal mod, string name) {
         exists(Module src |
             src = mod.getSourceModule()
             |
-            if exists(SsaVariable var | name = var.getId() and var.getAUse() = src.getANormalExit()) then
-                result = true
-            else (
-                exists(ImportStarNode isn, ModuleObjectInternal imported |
-                    isn.getScope() = src and
-                    PointsToInternal::pointsTo(isn.getModule(), _, imported, _) and
-                    result = module_exports_boolean(imported, name)
-                )
+            src.declaredInAll(name) and result = true
+            or
+            src.declaredInAll(_) and not src.declaredInAll(name) and
+            ofInterestInExports(mod, name) and result = false
+            or
+            not src.declaredInAll(_) and
+            exists(ObjectInternal val |
+                ModuleAttributes::pointsToAtExit(src, name, val, _) |
+                val = ObjectInternal::undefined() and result = false
                 or
-                not exists(ImportStarNode isn |isn.getScope() = src) and result = false
+                val != ObjectInternal::undefined() and result = true
             )
         )
-        or
-        ofInterestInExports(mod, name) and
+    }
+
+    private boolean packageExportsBoolean(PackageObjectInternal mod, string name) {
         exists(Folder folder |
-            mod.(PackageObjectInternal).hasNoInitModule() and
-            folder = mod.(PackageObjectInternal).getFolder() |
-            if (exists(folder.getChildContainer(name)) or exists(folder.getFile(name + ".py"))) then
-                result = true
-            else
-                result = false
+            folder = mod.getFolder() |
+            exportsSubmodule(folder, name) and result = true
+            or
+            not exportsSubmodule(folder, name) and result = moduleExportsBoolean(mod.getInitModule(), name)
+            or
+            mod.hasNoInitModule() and not exportsSubmodule(folder, name) and
+            ofInterestInExports(mod, name) and result = false
         )
+    }
+
+    private predicate exportsSubmodule(Folder folder, string name) {
+        name.regexpMatch("\\p{L}(\\p{L}|\\d|_)*") and
+        (
+            exists(Folder child | child = folder.getChildContainer(name))
+            or
+            exists(folder.getFile(name + ".py"))
+        )
+    }
+
+    boolean builtinModuleExportsBoolean(BuiltinModuleObjectInternal mod, string name) {
+        exists(Builtin bltn |
+            bltn = mod.getBuiltin() |
+            exists(bltn.getMember(name)) and result = true
+            or
+            ofInterestInExports(mod, name) and not exists(bltn.getMember(name)) and result = false
+        )
+    }
+
+    boolean moduleExportsBoolean(ModuleObjectInternal mod, string name) {
+        result = pythonModuleExportsBoolean(mod, name)
         or
-        name = "__name__" and result = true
+        result = packageExportsBoolean(mod, name)
         or
-        exists(mod.(BuiltinModuleObjectInternal).getBuiltin().getMember(name)) and result = true
+        result = builtinModuleExportsBoolean(mod, name)
     }
 
 }
@@ -1678,11 +1703,11 @@ module ModuleAttributes {
         if exists(varAtExit(mod, name)) then (
             PointsToInternal::variablePointsTo(varAtExit(mod, name), any(Context c | c.isImport()), value, origin)
         ) else (
-            moduleAttributePointsTo(moduleStateVarAtExit(mod), name, value, origin)
+            attributePointsTo(moduleStateVarAtExit(mod), name, value, origin)
         )
     }
 
-    private predicate moduleAttributePointsTo(EssaVariable var, string name, ObjectInternal value, CfgOrigin origin) {
+    predicate attributePointsTo(EssaVariable var, string name, ObjectInternal value, CfgOrigin origin) {
         importStarPointsTo(var.getDefinition(), name, value, origin)
         or
         callsitePointsTo(var.getDefinition(), name, value, origin)
@@ -1693,18 +1718,20 @@ module ModuleAttributes {
     pragma [noinline]
     private predicate importStarPointsTo(ImportStarRefinement def, string name, ObjectInternal value, CfgOrigin origin) {
         def.getVariable().getName() = "$" and
-        exists(ImportStarNode imp, ModuleObjectInternal mod, CfgOrigin orig |
+        exists(ImportStarNode imp, ModuleObjectInternal mod |
             imp = def.getDefiningNode() and
-            origin = orig.fix(imp) and
-            PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _) |
+            PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _)
+            |
             /* Attribute from imported module */
-            InterModulePointsTo::module_exports_boolean(mod, name) = true and
-            mod.attribute(name, value, orig) and
-            not exists(Variable v | v.getId() = name and v.getScope() = imp.getScope())
+            exists(CfgOrigin orig |
+                InterModulePointsTo::moduleExportsBoolean(mod, name) = true and
+                mod.attribute(name, value, orig) and origin = orig.fix(imp) and
+                not exists(Variable v | v.getId() = name and v.getScope() = imp.getScope())
+            )
             or
             /* Retain value held before import */
-            InterModulePointsTo::module_exports_boolean(mod, name) = false and
-            moduleAttributePointsTo(def.getInput().getDefinition(), name, value, origin)
+            InterModulePointsTo::moduleExportsBoolean(mod, name) = false and
+            attributePointsTo(def.getInput(), name, value, origin)
         )
     }
 
@@ -1718,25 +1745,30 @@ module ModuleAttributes {
         exists(EssaVariable var, Function func, PointsToContext callee |
             InterProceduralPointsTo::callsite_calls_function(def.getCall(), _, func, callee, _) and
             var = moduleStateVariable(func.getANormalExit()) and
-            moduleAttributePointsTo(var, name, value, origin)
+            attributePointsTo(var, name, value, origin)
         )
     }
 
+    /** Holds if the attribute name of the implicit '$' variable refers to `value` at the start of the scope.
+     * Since it cannot refer to any actual value, it is set to "undefined" for sub module names.
+     */
     pragma [noinline]
     predicate scopeEntryPointsTo(ScopeEntryDefinition def, string name, ObjectInternal value, CfgOrigin origin) {
         def.getVariable().getName() = "$" and
-        /* Transfer from another scope */
-        exists(EssaVariable var, PointsToContext outer |
-            InterProceduralPointsTo::scope_entry_value_transfer(var, outer, def, _) and
-            moduleAttributePointsTo(var, name, value, origin)
-        )
-        or
-        def.getVariable().getName() = "$" and
-        exists(PackageObjectInternal package |
-            package.getSourceModule() = def.getScope() and
-            exists(package.submodule(name)) and
+        exists(Module m |
+            def.getScope() = m and
+            not exists(EssaVariable named | named.getName() = name and named.getScope() = m) and
+            not name = "$" and not name = "*" and
             value = ObjectInternal::undefined() and
             origin = CfgOrigin::unknown()
+            |
+            m.isPackageInit() and exists(m.getPackage().getSubModule(name))
+            or
+            not m.declaredInAll(_) and
+            exists(PythonModuleObjectInternal mod |
+                mod.getSourceModule() = m and
+                InterModulePointsTo::ofInterestInExports(mod, name)
+            )
         )
     }
 

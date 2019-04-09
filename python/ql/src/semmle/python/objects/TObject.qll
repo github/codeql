@@ -84,7 +84,7 @@ newtype TObject =
     or
     TSpecificInstance(ControlFlowNode instantiation, ClassObjectInternal cls, PointsToContext context) {
         PointsToInternal::pointsTo(instantiation.(CallNode).getFunction(), context, cls, _) and
-        cls.isSpecial() = false
+        cls.isSpecial() = false and cls.getClassDeclaration().callReturnsInstance()
         or
         literal_instantiation(instantiation, cls, context)
     }
@@ -275,8 +275,6 @@ private predicate neither_class_nor_static_method(Function f) {
     )
 }
 
-
-
 library class ClassDecl extends @py_object {
 
     ClassDecl() {
@@ -328,6 +326,23 @@ library class ClassDecl extends @py_object {
         )
         or
         this = Builtin::builtin("float")
+    }
+
+    predicate callReturnsInstance() {
+        exists(Class pycls |
+            pycls = this.getClass() |
+            /* Django does this, so we need to account for it */
+            not exists(Function init, LocalVariable self |
+                /* `self.__class__ = ...` in the `__init__` method */
+                pycls.getInitMethod() = init and
+                self.isSelf() and self.getScope() = init and
+                exists(AttrNode a | a.isStore() and a.getObject("__class__") = self.getAUse())
+            )
+            and
+            not exists(Function new | new.getName() = "__new__" and new.getScope() = pycls)
+        )
+        or
+        this instanceof Builtin
     }
 
 }

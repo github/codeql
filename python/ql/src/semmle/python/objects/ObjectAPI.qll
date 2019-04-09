@@ -22,10 +22,6 @@ class Value extends TObject {
         PointsToInternal::pointsTo(result, _, this, _)
     }
 
-    predicate pointsTo(ControlFlowNode node, PointsToContext context, ControlFlowNode origin) {
-        PointsToInternal::pointsTo(node, context, this, origin)
-    }
-
     Value getClass() {
         result = this.(ObjectInternal).getClass()
     }
