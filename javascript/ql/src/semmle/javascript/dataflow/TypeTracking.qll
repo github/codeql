@@ -189,7 +189,7 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, Optional
  * therefore expected to called with a certain type of value.
  *
  * Note that type back-tracking does not provide a source/sink relation, that is,
- * it may determine that a node will be used in an API call somwwhere, but it won't
+ * it may determine that a node will be used in an API call somewhere, but it won't
  * determine exactly where that use was, or the path that led to the use.
  *
  * It is recommended that all uses of this type is written on the following form,
@@ -200,7 +200,7 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, Optional
  *   result = (< some API call >).getArgument(< n >).getALocalSource()
  *   or
  *   exists (DataFlow::TypeBackTracker t2 |
- *     result = myCallback(t2).backtrack(t2, t)
+ *     t2 = t.step(result, myCallback(t2))
  *   )
  * }
  *
