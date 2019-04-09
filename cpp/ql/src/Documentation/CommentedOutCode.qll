@@ -23,7 +23,7 @@ private predicate looksLikeCode(string line) {
           implies
           // ... then there has to be ") {" (or some variation)
           // on the line, suggesting it's a statement like `if`
-          // or a function declaration. Otherwise it's likely to be a
+          // or a function definition. Otherwise it's likely to be a
           // benign use of braces such as a JSON example or explanatory
           // pseudocode.
           trimmed.regexpMatch(".*(\\)|const|volatile|override|final|noexcept|&)\\s*\\{.*")
