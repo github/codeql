@@ -4,14 +4,15 @@
 
 import csharp
 private import semmle.code.csharp.dataflow.DelegateDataFlow
+private import semmle.code.csharp.dispatch.Dispatch
 private import dotnet
 
 // Internal representation of call contexts
 cached
 private newtype TCallContext =
   TEmptyCallContext() or
-  TArgCallContext(DotNet::Call c, int i) { exists(c.getArgument(i)) } or
-  TDynamicAccessorArgCallContext(DynamicAccessorCall dac, int i) { exists(dac.getArgument(i)) } or
+  TArgNonDelegateCallContext(DispatchCall dc, int i) { exists(dc.getArgument(i)) } or
+  TArgDelegateCallContext(DelegateCall dc, int i) { exists(dc.getArgument(i)) } or
   TDelegateToLibraryCallableArgCallContext(DelegateArgumentToLibraryCallable arg, int i) {
     exists(arg.getDelegateType().getParameter(i))
   }
@@ -32,6 +33,8 @@ class CallContext extends TCallContext {
 /** An empty call context. */
 class EmptyCallContext extends CallContext, TEmptyCallContext {
   override string toString() { result = "<empty>" }
+
+  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /**
@@ -46,40 +49,40 @@ abstract class ArgumentCallContext extends CallContext {
   abstract predicate isArgument(DotNet::Expr call, int i);
 }
 
-/** An argument of an ordinary call. */
-class CallArgumentCallContext extends ArgumentCallContext, TArgCallContext {
-  DotNet::Call c;
+/** An argument of a non-delegate call. */
+class NonDelegateCallArgumentCallContext extends ArgumentCallContext, TArgNonDelegateCallContext {
+  DispatchCall dc;
 
   int arg;
 
-  CallArgumentCallContext() { this = TArgCallContext(c, arg) }
+  NonDelegateCallArgumentCallContext() { this = TArgNonDelegateCallContext(dc, arg) }
 
   override predicate isArgument(DotNet::Expr call, int i) {
-    call = c and
+    call = dc.getCall() and
     i = arg
   }
 
-  override string toString() { result = c.getArgument(arg).toString() }
+  override string toString() { result = dc.getArgument(arg).toString() }
 
-  override Location getLocation() { result = c.getArgument(arg).getLocation() }
+  override Location getLocation() { result = dc.getArgument(arg).getLocation() }
 }
 
-/** An argument of a dynamic accessor call. */
-class DynamicAccessorArgumentCallContext extends ArgumentCallContext, TDynamicAccessorArgCallContext {
-  DynamicAccessorCall dac;
+/** An argument of a delegate call. */
+class DelegateCallArgumentCallContext extends ArgumentCallContext, TArgDelegateCallContext {
+  DelegateCall dc;
 
   int arg;
 
-  DynamicAccessorArgumentCallContext() { this = TDynamicAccessorArgCallContext(dac, arg) }
+  DelegateCallArgumentCallContext() { this = TArgDelegateCallContext(dc, arg) }
 
   override predicate isArgument(DotNet::Expr call, int i) {
-    call = dac and
+    call = dc and
     i = arg
   }
 
-  override string toString() { result = dac.getArgument(arg).toString() }
+  override string toString() { result = dc.getArgument(arg).toString() }
 
-  override Location getLocation() { result = dac.getArgument(arg).getLocation() }
+  override Location getLocation() { result = dc.getArgument(arg).getLocation() }
 }
 
 /**

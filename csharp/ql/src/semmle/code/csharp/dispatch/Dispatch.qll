@@ -634,8 +634,7 @@ private module Internal {
      * respectively.
      */
     private RuntimeAccessor getAViableOverrider() {
-      exists(ValueOrRefType t |
-        t = this.getANonExactQualifierType() |
+      exists(ValueOrRefType t | t = this.getANonExactQualifierType() |
         result = this.getAStaticTarget().(OverridableAccessor).getAnOverrider(t)
       )
     }
@@ -1104,21 +1103,20 @@ private module Internal {
     override DynamicMemberAccess getCall() { this = TDispatchDynamicMemberAccess(result) }
 
     override string getName() {
-      exists(DynamicMemberAccess dma | dma = getCall() |
+      exists(DynamicMemberAccess dma | dma = this.getCall() |
         result = "get_" + dma.(DynamicMemberRead).getLateBoundTargetName()
         or
         result = "set_" + dma.(DynamicMemberWrite).getLateBoundTargetName()
       )
     }
 
-    override Expr getQualifier() { result = getCall().getQualifier() }
+    override Expr getQualifier() { result = this.getCall().getQualifier() }
 
     override Expr getArgument(int i) {
-      // Only calls to setters have an argument
-      exists(DynamicMemberWrite dmw |
-        dmw = getCall() and
+      exists(DynamicMemberAccess dma | dma = this.getCall() |
+        // Only calls to setters have an argument
         i = 0 and
-        exists(Assignment a | a.getLValue() = dmw and result = a.getRValue())
+        exists(AssignableDefinition def | def.getTargetAccess() = dma | result = def.getSource())
       )
     }
   }
@@ -1129,23 +1127,22 @@ private module Internal {
     override DynamicElementAccess getCall() { this = TDispatchDynamicElementAccess(result) }
 
     override string getName() {
-      exists(DynamicElementAccess dea | dea = getCall() |
+      exists(DynamicElementAccess dea | dea = this.getCall() |
         dea instanceof DynamicElementRead and result = "get_Item"
         or
         dea instanceof DynamicElementWrite and result = "set_Item"
       )
     }
 
-    override Expr getQualifier() { result = getCall().getQualifier() }
+    override Expr getQualifier() { result = this.getCall().getQualifier() }
 
     override Expr getArgument(int i) {
-      exists(DynamicElementAccess dea | dea = getCall() |
+      exists(DynamicElementAccess dea | dea = this.getCall() |
         result = dea.getIndex(i)
         or
         // Calls to setters have an extra argument
         i = count(dea.getAnIndex()) and
-        dea instanceof DynamicElementWrite and
-        exists(Assignment a | a.getLValue() = dea and result = a.getRValue())
+        exists(AssignableDefinition def | def.getTargetAccess() = dea | result = def.getSource())
       )
     }
   }
