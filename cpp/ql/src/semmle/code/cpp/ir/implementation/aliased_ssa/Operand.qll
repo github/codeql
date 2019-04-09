@@ -76,9 +76,14 @@ class Operand extends TOperand {
    * For example: `this:r3_5`
    */
   final string getDumpString() {
-    result = getDumpLabel() + getDefinitionInstruction().getResultId()
+    result = getDumpLabel() + getInexactSpecifier() + getDefinitionInstruction().getResultId()
   }
 
+  /**
+   * Gets a string prefix to prepend to the operand's definition ID in an IR dump, specifying whether the operand is
+   * an exact or inexact use of its definition. For an inexact use, the prefix is "~". For an exact use, the prefix is
+   * the empty string.
+   */
   private string getInexactSpecifier() {
     if isDefinitionInexact() then
       result = "~"
