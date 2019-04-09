@@ -9,6 +9,7 @@ import python
 
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
+import semmle.python.security.injection.Deserialization
 
 
 private FunctionObject marshalLoads() {
@@ -18,7 +19,7 @@ private FunctionObject marshalLoads() {
 
 /** A taint sink that is potentially vulnerable to malicious marshaled objects.
  * The `vuln` in `marshal.loads(vuln)`. */
-class UnmarshalingNode extends TaintSink {
+class UnmarshalingNode extends DeserializationSink {
 
     override string toString() { result = "unmarshaling vulnerability" }
 

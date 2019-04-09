@@ -3,6 +3,7 @@ import python
 
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
+private import semmle.python.web.Http
 
 import Tornado
 
@@ -30,7 +31,7 @@ class TornadoConnectionSource extends TaintSource {
 
 }
 
-class TornadoConnectionWrite extends TaintSink {
+class TornadoConnectionWrite extends HttpResponseTaintSink {
 
     override string toString() {
         result = "tornado.connection.write"
@@ -52,7 +53,7 @@ class TornadoConnectionWrite extends TaintSink {
 
 }
 
-class TornadoHttpRequestHandlerWrite extends TaintSink {
+class TornadoHttpRequestHandlerWrite extends HttpResponseTaintSink {
 
     override string toString() {
         result = "tornado.HttpRequesHandler.write"
@@ -72,7 +73,7 @@ class TornadoHttpRequestHandlerWrite extends TaintSink {
 
 }
 
-class TornadoHttpRequestHandlerRedirect extends TaintSink {
+class TornadoHttpRequestHandlerRedirect extends HttpResponseTaintSink {
 
     override string toString() {
         result = "tornado.HttpRequesHandler.redirect"

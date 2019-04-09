@@ -2,12 +2,12 @@ import python
 
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
-
+import semmle.python.web.Http
 import TurboGears
 
 
 
-class ControllerMethodReturnValue extends TaintSink {
+class ControllerMethodReturnValue extends HttpResponseTaintSink {
 
     ControllerMethodReturnValue() {
         exists(TurboGearsControllerMethod m |
@@ -22,7 +22,7 @@ class ControllerMethodReturnValue extends TaintSink {
 
 }
 
-class ControllerMethodTemplatedReturnValue extends TaintSink {
+class ControllerMethodTemplatedReturnValue extends HttpResponseTaintSink {
 
     ControllerMethodTemplatedReturnValue() {
         exists(TurboGearsControllerMethod m |

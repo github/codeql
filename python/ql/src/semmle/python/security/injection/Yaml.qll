@@ -10,6 +10,7 @@ import python
 
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
+import semmle.python.security.injection.Deserialization
 
 
 private FunctionObject yamlLoad() {
@@ -17,7 +18,7 @@ private FunctionObject yamlLoad() {
 }
 
 /** `yaml.load(untrusted)` vulnerability. */
-class YamlLoadNode extends TaintSink {
+class YamlLoadNode extends DeserializationSink {
 
     override string toString() { result = "yaml.load vulnerability" }
 

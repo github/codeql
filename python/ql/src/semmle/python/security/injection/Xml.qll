@@ -8,6 +8,7 @@ import python
 
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Untrusted
+import semmle.python.security.injection.Deserialization
 
 
 private ModuleObject xmlElementTreeModule() {
@@ -73,7 +74,7 @@ class ExternalXmlString extends ExternalStringKind {
 /** A call to an XML library function that is potentially vulnerable to a
  * specially crafted XML string.
  */
-class XmlLoadNode extends TaintSink {
+class XmlLoadNode extends DeserializationSink {
 
     override string toString() { result = "xml.load vulnerability" }
 

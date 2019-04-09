@@ -22,7 +22,16 @@ import semmle.python.security.injection.Sql
 import semmle.python.web.django.Db
 import semmle.python.web.django.Model
 
+class SQLInjectionConfiguration extends TaintTracking::Configuration {
 
-from TaintedPathSource src, TaintedPathSink sink
-where src.flowsTo(sink)
+    SQLInjectionConfiguration() { this = "SQL injection configuration" }
+
+    override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
+
+    override predicate isSink(TaintTracking::Sink sink) { sink instanceof SqlInjectionSink }
+
+}
+
+from SQLInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
+where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "This SQL query depends on $@.", src.getSource(), "a user-provided value"

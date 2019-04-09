@@ -3,11 +3,7 @@ import semmle.python.security.TaintTracking
 import semmle.python.security.strings.External
 
 /** Generic taint source from a http request */
-abstract class SimpleHttpRequestTaintSource extends TaintSource {
-
-    override predicate isSourceOf(TaintKind kind) { 
-        kind instanceof ExternalStringKind
-    }
+abstract class HttpRequestTaintSource extends TaintSource {
 
 }
 
@@ -89,3 +85,11 @@ class UntrustedCookie extends TaintKind {
 }
 
 
+/** Generic taint sink in a http response */
+abstract class HttpResponseTaintSink extends TaintSink {
+
+    override predicate sinks(TaintKind kind) { 
+        kind instanceof ExternalStringKind
+    }
+
+}

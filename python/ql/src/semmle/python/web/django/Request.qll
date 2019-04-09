@@ -49,7 +49,7 @@ class DjangoQueryDict extends TaintKind {
 
 }
 
-abstract class DjangoRequestSource extends TaintSource {
+abstract class DjangoRequestSource extends HttpRequestTaintSource {
 
     override string toString() {
         result = "Django request source"
@@ -144,7 +144,7 @@ class UrlRouting extends CallNode {
 }
 
 /** An argument specified in a url routing table */
-class HttpRequestParameter extends TaintSource {
+class HttpRequestParameter extends HttpRequestTaintSource {
 
     HttpRequestParameter() {
         exists(UrlRouting url |

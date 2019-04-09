@@ -7,7 +7,7 @@ import semmle.python.web.cherrypy.General
 
 
 
-class CherryPyExposedFunctionResult extends TaintSink {
+class CherryPyExposedFunctionResult extends HttpResponseTaintSink {
 
     CherryPyExposedFunctionResult() {
         exists(Return ret |

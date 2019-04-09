@@ -30,7 +30,7 @@ class FalconResponseParameter extends TaintSource {
 
 }
 
-class FalconResponseBodySink extends TaintSink {
+class FalconResponseBodySink extends HttpResponseTaintSink {
 
     FalconResponseBodySink() {
         exists(AttrNode attr |
