@@ -30,7 +30,7 @@ private predicate looksLikeCode(string line) {
         )
       ) or (
         // Match comment lines that look like preprocessor code
-        trimmed.regexpMatch("#(include|define|undef|if|ifdef|ifndef|elif|else|endif|error)(\\s.*|)")
+        trimmed.regexpMatch("#\\s*(include|define|undef|if|ifdef|ifndef|elif|else|endif|error|pragma)\\b.*")
       )
     ) and (
       // Exclude lines that start with '>' or contain '@{' or '@}'.
