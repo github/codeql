@@ -1,27 +1,20 @@
-| CSharp7.cs:17:18:17:22 | access to field field | CSharp7.cs:17:9:17:11 | return Foo |
-| CSharp7.cs:18:14:18:14 | 5 | CSharp7.cs:18:14:18:14 | return get_P |
-| CSharp7.cs:21:16:21:20 | call to method Foo | CSharp7.cs:21:9:21:11 | return get_Q |
+| CSharp7.cs:22:9:22:11 | value | CSharp7.cs:22:9:22:11 | value |
 | CSharp7.cs:22:9:22:11 | value | CSharp7.cs:22:24:22:28 | access to parameter value |
-| CSharp7.cs:22:16:22:28 | ... = ... | CSharp7.cs:22:9:22:11 | return set_Q |
-| CSharp7.cs:25:39:25:43 | call to method Foo | CSharp7.cs:25:5:25:27 | return ExpressionBodiedMembers |
-| CSharp7.cs:26:35:26:39 | call to method Foo | CSharp7.cs:26:6:26:28 | return ~ExpressionBodiedMembers |
+| CSharp7.cs:31:19:31:19 | i | CSharp7.cs:31:19:31:19 | i |
 | CSharp7.cs:31:19:31:19 | i | CSharp7.cs:33:16:33:16 | access to parameter i |
 | CSharp7.cs:33:16:33:16 | access to parameter i | CSharp7.cs:33:16:33:20 | ... > ... |
 | CSharp7.cs:33:16:33:16 | access to parameter i | CSharp7.cs:33:24:33:24 | access to parameter i |
 | CSharp7.cs:33:16:33:20 | ... > ... | CSharp7.cs:33:16:33:59 | ... ? ... : ... |
-| CSharp7.cs:33:16:33:59 | ... ? ... : ... | CSharp7.cs:31:9:31:13 | return Throw |
 | CSharp7.cs:33:24:33:24 | access to parameter i | CSharp7.cs:33:16:33:59 | ... ? ... : ... |
 | CSharp7.cs:33:28:33:59 | throw ... | CSharp7.cs:33:16:33:59 | ... ? ... : ... |
-| CSharp7.cs:41:13:41:21 | "tainted" | CSharp7.cs:39:23:39:23 | return (out/ref) F |
 | CSharp7.cs:41:13:41:21 | "tainted" | CSharp7.cs:41:9:41:21 | SSA def(x) |
+| CSharp7.cs:44:19:44:19 | x | CSharp7.cs:44:19:44:19 | x |
 | CSharp7.cs:44:19:44:19 | x | CSharp7.cs:46:13:46:13 | access to parameter x |
-| CSharp7.cs:46:13:46:13 | access to parameter x | CSharp7.cs:44:33:44:33 | return (out/ref) G |
 | CSharp7.cs:46:13:46:13 | access to parameter x | CSharp7.cs:46:9:46:13 | SSA def(y) |
 | CSharp7.cs:51:22:51:23 | SSA def(t1) | CSharp7.cs:53:18:53:19 | access to local variable t1 |
 | CSharp7.cs:52:19:52:20 | SSA def(t2) | CSharp7.cs:56:14:56:15 | access to local variable t2 |
 | CSharp7.cs:54:15:54:16 | SSA def(t1) | CSharp7.cs:55:14:55:15 | access to local variable t1 |
 | CSharp7.cs:57:30:57:31 | SSA def(t4) | CSharp7.cs:58:18:58:19 | access to local variable t4 |
-| CSharp7.cs:66:16:66:21 | (..., ...) | CSharp7.cs:64:16:64:16 | return F |
 | CSharp7.cs:66:17:66:17 | 1 | CSharp7.cs:66:16:66:21 | (..., ...) |
 | CSharp7.cs:66:20:66:20 | 2 | CSharp7.cs:66:16:66:21 | (..., ...) |
 | CSharp7.cs:72:13:72:19 | SSA def(z) | CSharp7.cs:75:16:75:16 | access to local variable z |
@@ -47,9 +40,9 @@
 | CSharp7.cs:78:31:78:31 | access to local variable a | CSharp7.cs:78:27:78:32 | (..., ...) |
 | CSharp7.cs:79:23:79:24 | "" | CSharp7.cs:79:22:79:28 | (..., ...) |
 | CSharp7.cs:79:27:79:27 | access to local variable x | CSharp7.cs:79:22:79:28 | (..., ...) |
+| CSharp7.cs:82:21:82:21 | x | CSharp7.cs:82:21:82:21 | x |
 | CSharp7.cs:82:21:82:21 | x | CSharp7.cs:84:20:84:20 | access to parameter x |
 | CSharp7.cs:84:16:84:24 | (..., ...) | CSharp7.cs:84:16:84:26 | access to field a |
-| CSharp7.cs:84:16:84:26 | access to field a | CSharp7.cs:82:12:82:12 | return I |
 | CSharp7.cs:84:20:84:20 | access to parameter x | CSharp7.cs:84:16:84:24 | (..., ...) |
 | CSharp7.cs:84:23:84:23 | 2 | CSharp7.cs:84:16:84:24 | (..., ...) |
 | CSharp7.cs:89:13:89:34 | SSA def(t1) | CSharp7.cs:90:28:90:29 | access to local variable t1 |
@@ -95,49 +88,43 @@
 | CSharp7.cs:118:9:118:10 | access to local variable m2 | CSharp7.cs:119:19:119:20 | access to local variable m2 |
 | CSharp7.cs:119:19:119:20 | access to local variable m2 | CSharp7.cs:119:19:119:26 | access to field Item1 |
 | CSharp7.cs:123:28:123:36 | "DefUse3" | CSharp7.cs:123:22:123:36 | ... = ... |
+| CSharp7.cs:131:20:131:20 | x | CSharp7.cs:131:20:131:20 | x |
 | CSharp7.cs:131:20:131:20 | x | CSharp7.cs:131:32:131:32 | access to parameter x |
 | CSharp7.cs:131:32:131:32 | access to parameter x | CSharp7.cs:131:32:131:36 | ... + ... |
-| CSharp7.cs:131:32:131:36 | ... + ... | CSharp7.cs:131:9:131:39 | return f1 |
 | CSharp7.cs:131:36:131:36 | 1 | CSharp7.cs:131:32:131:36 | ... + ... |
+| CSharp7.cs:133:22:133:22 | t | CSharp7.cs:133:22:133:22 | t |
 | CSharp7.cs:133:22:133:22 | t | CSharp7.cs:133:39:133:39 | access to parameter t |
-| CSharp7.cs:133:39:133:39 | access to parameter t | CSharp7.cs:133:9:133:42 | return f2 |
-| CSharp7.cs:137:21:137:21 | 2 | CSharp7.cs:137:9:137:22 | return f3 |
+| CSharp7.cs:139:29:139:29 | x | CSharp7.cs:139:29:139:29 | x |
 | CSharp7.cs:139:29:139:29 | x | CSharp7.cs:139:34:139:34 | access to parameter x |
 | CSharp7.cs:139:34:139:34 | access to parameter x | CSharp7.cs:139:34:139:38 | ... + ... |
-| CSharp7.cs:139:34:139:38 | ... + ... | CSharp7.cs:139:29:139:38 | return (...) => ... |
 | CSharp7.cs:139:38:139:38 | 1 | CSharp7.cs:139:34:139:38 | ... + ... |
+| CSharp7.cs:141:20:141:20 | x | CSharp7.cs:141:20:141:20 | x |
 | CSharp7.cs:141:20:141:20 | x | CSharp7.cs:141:26:141:26 | access to parameter x |
 | CSharp7.cs:141:26:141:26 | access to parameter x | CSharp7.cs:141:26:141:30 | ... > ... |
 | CSharp7.cs:141:26:141:26 | access to parameter x | CSharp7.cs:141:41:141:41 | access to parameter x |
 | CSharp7.cs:141:26:141:30 | ... > ... | CSharp7.cs:141:26:141:50 | ... ? ... : ... |
-| CSharp7.cs:141:26:141:50 | ... ? ... : ... | CSharp7.cs:141:9:141:51 | return f6 |
 | CSharp7.cs:141:34:141:34 | 1 | CSharp7.cs:141:34:141:46 | ... + ... |
 | CSharp7.cs:141:34:141:46 | ... + ... | CSharp7.cs:141:26:141:50 | ... ? ... : ... |
 | CSharp7.cs:141:38:141:46 | call to local function f7 | CSharp7.cs:141:34:141:46 | ... + ... |
 | CSharp7.cs:141:50:141:50 | 0 | CSharp7.cs:141:26:141:50 | ... ? ... : ... |
+| CSharp7.cs:143:20:143:20 | x | CSharp7.cs:143:20:143:20 | x |
 | CSharp7.cs:143:20:143:20 | x | CSharp7.cs:143:29:143:29 | access to parameter x |
-| CSharp7.cs:143:26:143:30 | call to local function f6 | CSharp7.cs:143:9:143:31 | return f7 |
+| CSharp7.cs:147:24:147:24 | x | CSharp7.cs:147:24:147:24 | x |
 | CSharp7.cs:147:24:147:24 | x | CSharp7.cs:147:33:147:33 | access to parameter x |
-| CSharp7.cs:147:30:147:34 | call to local function f7 | CSharp7.cs:147:13:147:35 | return f9 |
-| CSharp7.cs:148:20:148:24 | call to local function f9 | CSharp7.cs:145:9:149:9 | return f8 |
-| CSharp7.cs:152:25:152:25 | 0 | CSharp7.cs:152:13:152:26 | return f9 |
-| CSharp7.cs:155:16:155:20 | call to local function f1 | CSharp7.cs:129:9:129:12 | return Main |
-| CSharp7.cs:160:23:160:23 | 1 | CSharp7.cs:160:9:160:24 | return f |
+| CSharp7.cs:161:18:161:18 | t | CSharp7.cs:161:18:161:18 | t |
 | CSharp7.cs:161:18:161:18 | t | CSharp7.cs:161:24:161:24 | access to parameter t |
-| CSharp7.cs:161:24:161:24 | access to parameter t | CSharp7.cs:161:9:161:25 | return g |
+| CSharp7.cs:163:26:163:26 | u | CSharp7.cs:163:26:163:26 | u |
 | CSharp7.cs:163:26:163:26 | u | CSharp7.cs:167:22:167:22 | access to parameter u |
-| CSharp7.cs:165:25:165:30 | call to local function f | CSharp7.cs:165:13:165:31 | return f2 |
-| CSharp7.cs:167:20:167:23 | call to local function g | CSharp7.cs:163:9:168:9 | return h |
 | CSharp7.cs:176:16:176:30 | SSA def(src) | CSharp7.cs:181:23:181:25 | access to local variable src |
 | CSharp7.cs:176:22:176:30 | "tainted" | CSharp7.cs:176:16:176:30 | SSA def(src) |
+| CSharp7.cs:177:25:177:25 | s | CSharp7.cs:177:25:177:25 | s |
 | CSharp7.cs:177:25:177:25 | s | CSharp7.cs:177:33:177:33 | access to parameter s |
 | CSharp7.cs:177:31:177:34 | call to local function g | CSharp7.cs:177:31:177:39 | ... + ... |
-| CSharp7.cs:177:31:177:39 | ... + ... | CSharp7.cs:177:9:177:40 | return f |
 | CSharp7.cs:177:38:177:39 | "" | CSharp7.cs:177:31:177:39 | ... + ... |
+| CSharp7.cs:178:25:178:25 | s | CSharp7.cs:178:25:178:25 | s |
 | CSharp7.cs:178:25:178:25 | s | CSharp7.cs:178:31:178:31 | access to parameter s |
-| CSharp7.cs:178:31:178:31 | access to parameter s | CSharp7.cs:178:9:178:32 | return g |
+| CSharp7.cs:179:25:179:25 | s | CSharp7.cs:179:25:179:25 | s |
 | CSharp7.cs:179:25:179:25 | s | CSharp7.cs:179:37:179:37 | access to parameter s |
-| CSharp7.cs:179:37:179:37 | access to parameter s | CSharp7.cs:179:9:179:40 | return h |
 | CSharp7.cs:181:23:181:25 | access to local variable src | CSharp7.cs:182:23:182:25 | access to local variable src |
 | CSharp7.cs:182:23:182:25 | access to local variable src | CSharp7.cs:183:23:183:25 | access to local variable src |
 | CSharp7.cs:191:13:191:18 | SSA def(v1) | CSharp7.cs:192:26:192:27 | access to local variable v1 |
@@ -154,13 +141,11 @@
 | CSharp7.cs:196:26:196:30 | access to local variable array | CSharp7.cs:196:26:196:33 | access to array element |
 | CSharp7.cs:197:26:197:27 | access to local variable r1 | CSharp7.cs:199:33:199:34 | access to local variable r1 |
 | CSharp7.cs:199:33:199:34 | access to local variable r1 | CSharp7.cs:200:16:200:17 | access to local variable r1 |
+| CSharp7.cs:203:24:203:24 | p | CSharp7.cs:203:24:203:24 | p |
 | CSharp7.cs:203:24:203:24 | p | CSharp7.cs:206:20:206:20 | access to parameter p |
+| CSharp7.cs:205:28:205:28 | q | CSharp7.cs:205:28:205:28 | q |
 | CSharp7.cs:205:28:205:28 | q | CSharp7.cs:205:44:205:44 | access to parameter q |
-| CSharp7.cs:205:40:205:44 | ref ... | CSharp7.cs:205:9:205:47 | return F3 |
-| CSharp7.cs:206:16:206:20 | ref ... | CSharp7.cs:203:13:203:14 | return F2 |
-| CSharp7.cs:216:13:216:17 | false | CSharp7.cs:214:30:214:30 | return (out/ref) f |
 | CSharp7.cs:216:13:216:17 | false | CSharp7.cs:216:9:216:17 | SSA def(x) |
-| CSharp7.cs:217:16:217:23 | (..., ...) | CSharp7.cs:214:19:214:19 | return f |
 | CSharp7.cs:217:17:217:17 | 0 | CSharp7.cs:217:16:217:23 | (..., ...) |
 | CSharp7.cs:217:20:217:22 | 0 | CSharp7.cs:217:16:217:23 | (..., ...) |
 | CSharp7.cs:233:16:233:23 | SSA def(o) | CSharp7.cs:234:13:234:13 | access to local variable o |
@@ -209,9 +194,9 @@
 | CSharp7.cs:283:20:283:48 | object creation of type Dictionary<Int32,String> | CSharp7.cs:283:13:283:48 | SSA def(dict) |
 | CSharp7.cs:284:13:284:62 | SSA def(list) | CSharp7.cs:286:39:286:42 | access to local variable list |
 | CSharp7.cs:284:20:284:62 | call to method Select | CSharp7.cs:284:13:284:62 | SSA def(list) |
+| CSharp7.cs:284:32:284:35 | item | CSharp7.cs:284:32:284:35 | item |
 | CSharp7.cs:284:32:284:35 | item | CSharp7.cs:284:41:284:44 | access to parameter item |
-| CSharp7.cs:284:32:284:61 | [implicit call] (...) => ... | CSharp7.cs:284:20:284:62 | call to method Select |
-| CSharp7.cs:284:40:284:61 | (..., ...) | CSharp7.cs:284:32:284:61 | return (...) => ... |
+| CSharp7.cs:284:32:284:61 | [output] (...) => ... | CSharp7.cs:284:20:284:62 | call to method Select |
 | CSharp7.cs:284:41:284:44 | access to parameter item | CSharp7.cs:284:51:284:54 | access to parameter item |
 | CSharp7.cs:284:41:284:48 | access to property Key | CSharp7.cs:284:40:284:61 | (..., ...) |
 | CSharp7.cs:284:51:284:54 | access to parameter item | CSharp7.cs:284:51:284:60 | access to property Value |

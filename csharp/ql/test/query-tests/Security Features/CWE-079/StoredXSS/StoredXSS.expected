@@ -1,7 +1,4 @@
 edges
 | StoredXSS.cs:24:60:24:86 | call to method GetString | StoredXSS.cs:24:44:24:86 | ... + ... |
-nodes
-| StoredXSS.cs:24:44:24:86 | ... + ... |
-| StoredXSS.cs:24:60:24:86 | call to method GetString |
 #select
 | StoredXSS.cs:24:44:24:86 | ... + ... | StoredXSS.cs:24:60:24:86 | call to method GetString | StoredXSS.cs:24:44:24:86 | ... + ... | $@ flows to here and is written to HTML or JavaScript. | StoredXSS.cs:24:60:24:86 | call to method GetString | Stored user-provided value |

@@ -6,15 +6,6 @@ edges
 | TaintedPath.cs:12:23:12:45 | access to property QueryString | TaintedPath.cs:38:25:38:31 | access to local variable badPath |
 | TaintedPath.cs:12:23:12:45 | access to property QueryString | TaintedPath.cs:40:49:40:55 | access to local variable badPath |
 | TaintedPath.cs:12:23:12:45 | access to property QueryString | TaintedPath.cs:53:26:53:29 | access to local variable path |
-nodes
-| TaintedPath.cs:12:23:12:45 | access to property QueryString |
-| TaintedPath.cs:14:50:14:53 | access to local variable path |
-| TaintedPath.cs:19:51:19:54 | access to local variable path |
-| TaintedPath.cs:27:30:27:33 | access to local variable path |
-| TaintedPath.cs:33:30:33:33 | access to local variable path |
-| TaintedPath.cs:38:25:38:31 | access to local variable badPath |
-| TaintedPath.cs:40:49:40:55 | access to local variable badPath |
-| TaintedPath.cs:53:26:53:29 | access to local variable path |
 #select
 | TaintedPath.cs:14:50:14:53 | access to local variable path | TaintedPath.cs:12:23:12:45 | access to property QueryString | TaintedPath.cs:14:50:14:53 | access to local variable path | $@ flows to here and is used in a path. | TaintedPath.cs:12:23:12:45 | access to property QueryString | User-provided value |
 | TaintedPath.cs:19:51:19:54 | access to local variable path | TaintedPath.cs:12:23:12:45 | access to property QueryString | TaintedPath.cs:19:51:19:54 | access to local variable path | $@ flows to here and is used in a path. | TaintedPath.cs:12:23:12:45 | access to property QueryString | User-provided value |

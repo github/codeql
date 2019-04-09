@@ -1,7 +1,4 @@
 edges
 | ExponentialRegex.cs:15:28:15:50 | access to property QueryString | ExponentialRegex.cs:18:40:18:48 | access to local variable userInput |
-nodes
-| ExponentialRegex.cs:15:28:15:50 | access to property QueryString |
-| ExponentialRegex.cs:18:19:18:31 | "^([a-z]+)+$" |
-| ExponentialRegex.cs:18:40:18:48 | access to local variable userInput |
+| ExponentialRegex.cs:18:19:18:31 | "^([a-z]+)+$" | ExponentialRegex.cs:18:19:18:31 | "^([a-z]+)+$" |
 #select

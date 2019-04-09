@@ -1,9 +1,8 @@
 edges
-nodes
-| ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer |
-| ExposureOfPrivateInformation.cs:20:50:20:65 | call to method getTelephone |
-| ExposureOfPrivateInformation.cs:24:21:24:36 | call to method getTelephone |
-| ExposureOfPrivateInformation.cs:42:21:42:33 | access to property Text |
+| ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer | ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer |
+| ExposureOfPrivateInformation.cs:20:50:20:65 | call to method getTelephone | ExposureOfPrivateInformation.cs:20:50:20:65 | call to method getTelephone |
+| ExposureOfPrivateInformation.cs:24:21:24:36 | call to method getTelephone | ExposureOfPrivateInformation.cs:24:21:24:36 | call to method getTelephone |
+| ExposureOfPrivateInformation.cs:42:21:42:33 | access to property Text | ExposureOfPrivateInformation.cs:42:21:42:33 | access to property Text |
 #select
 | ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer | ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer | ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer | Private data returned by $@ is written to an external location. | ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer | access to indexer |
 | ExposureOfPrivateInformation.cs:20:50:20:65 | call to method getTelephone | ExposureOfPrivateInformation.cs:20:50:20:65 | call to method getTelephone | ExposureOfPrivateInformation.cs:20:50:20:65 | call to method getTelephone | Private data returned by $@ is written to an external location. | ExposureOfPrivateInformation.cs:20:50:20:65 | call to method getTelephone | call to method getTelephone |

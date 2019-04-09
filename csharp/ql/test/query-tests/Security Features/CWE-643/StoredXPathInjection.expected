@@ -3,11 +3,6 @@ edges
 | StoredXPathInjection.cs:24:39:24:65 | call to method GetString | StoredXPathInjection.cs:30:41:30:144 | ... + ... |
 | StoredXPathInjection.cs:25:39:25:65 | call to method GetString | StoredXPathInjection.cs:27:45:27:148 | ... + ... |
 | StoredXPathInjection.cs:25:39:25:65 | call to method GetString | StoredXPathInjection.cs:30:41:30:144 | ... + ... |
-nodes
-| StoredXPathInjection.cs:24:39:24:65 | call to method GetString |
-| StoredXPathInjection.cs:25:39:25:65 | call to method GetString |
-| StoredXPathInjection.cs:27:45:27:148 | ... + ... |
-| StoredXPathInjection.cs:30:41:30:144 | ... + ... |
 #select
 | StoredXPathInjection.cs:27:45:27:148 | ... + ... | StoredXPathInjection.cs:24:39:24:65 | call to method GetString | StoredXPathInjection.cs:27:45:27:148 | ... + ... | $@ flows to here and is used in an XPath expression. | StoredXPathInjection.cs:24:39:24:65 | call to method GetString | Stored user-provided value |
 | StoredXPathInjection.cs:27:45:27:148 | ... + ... | StoredXPathInjection.cs:25:39:25:65 | call to method GetString | StoredXPathInjection.cs:27:45:27:148 | ... + ... | $@ flows to here and is used in an XPath expression. | StoredXPathInjection.cs:25:39:25:65 | call to method GetString | Stored user-provided value |

@@ -1,10 +1,6 @@
 edges
 | ResourceInjection.cs:10:27:10:49 | access to property QueryString | ResourceInjection.cs:13:57:13:72 | access to local variable connectionString |
 | ResourceInjection.cs:10:27:10:49 | access to property QueryString | ResourceInjection.cs:15:42:15:57 | access to local variable connectionString |
-nodes
-| ResourceInjection.cs:10:27:10:49 | access to property QueryString |
-| ResourceInjection.cs:13:57:13:72 | access to local variable connectionString |
-| ResourceInjection.cs:15:42:15:57 | access to local variable connectionString |
 #select
 | ResourceInjection.cs:13:57:13:72 | access to local variable connectionString | ResourceInjection.cs:10:27:10:49 | access to property QueryString | ResourceInjection.cs:13:57:13:72 | access to local variable connectionString | $@ flows to here and is used in a resource descriptor. | ResourceInjection.cs:10:27:10:49 | access to property QueryString | User-provided value |
 | ResourceInjection.cs:15:42:15:57 | access to local variable connectionString | ResourceInjection.cs:10:27:10:49 | access to property QueryString | ResourceInjection.cs:15:42:15:57 | access to local variable connectionString | $@ flows to here and is used in a resource descriptor. | ResourceInjection.cs:10:27:10:49 | access to property QueryString | User-provided value |

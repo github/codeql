@@ -1,7 +1,4 @@
 edges
 | RegexInjection.cs:12:24:12:46 | access to property QueryString | RegexInjection.cs:16:19:16:23 | access to local variable regex |
-nodes
-| RegexInjection.cs:12:24:12:46 | access to property QueryString |
-| RegexInjection.cs:16:19:16:23 | access to local variable regex |
 #select
 | RegexInjection.cs:16:19:16:23 | access to local variable regex | RegexInjection.cs:12:24:12:46 | access to property QueryString | RegexInjection.cs:16:19:16:23 | access to local variable regex | $@ flows to the construction of a regular expression. | RegexInjection.cs:12:24:12:46 | access to property QueryString | User-provided value |

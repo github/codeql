@@ -1,7 +1,4 @@
 edges
 | SecondOrderSqlInjection.cs:21:119:21:145 | call to method GetString | SecondOrderSqlInjection.cs:21:71:21:145 | ... + ... |
-nodes
-| SecondOrderSqlInjection.cs:21:71:21:145 | ... + ... |
-| SecondOrderSqlInjection.cs:21:119:21:145 | call to method GetString |
 #select
 | SecondOrderSqlInjection.cs:21:71:21:145 | ... + ... | SecondOrderSqlInjection.cs:21:119:21:145 | call to method GetString | SecondOrderSqlInjection.cs:21:71:21:145 | ... + ... | $@ flows to here and is used in an SQL query. | SecondOrderSqlInjection.cs:21:119:21:145 | call to method GetString | Stored user-provided value |

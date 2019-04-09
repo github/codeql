@@ -1,5 +1,7 @@
 edges
 | ExponentialRegex.cs:9:55:9:83 | "^(([a-z])+.)+[A-Z]([a-z])+$" | ExponentialRegex.cs:24:19:24:34 | access to field JAVA_CLASS_REGEX |
+| ExponentialRegex.cs:9:55:9:83 | "^(([a-z])+.)+[A-Z]([a-z])+$" | ExponentialRegex.cs:24:19:24:34 | access to field JAVA_CLASS_REGEX |
+| ExponentialRegex.cs:9:55:9:83 | "^(([a-z])+.)+[A-Z]([a-z])+$" | ExponentialRegex.cs:26:32:26:47 | access to field JAVA_CLASS_REGEX |
 | ExponentialRegex.cs:9:55:9:83 | "^(([a-z])+.)+[A-Z]([a-z])+$" | ExponentialRegex.cs:26:32:26:47 | access to field JAVA_CLASS_REGEX |
 | ExponentialRegex.cs:9:55:9:83 | "^(([a-z])+.)+[A-Z]([a-z])+$" | ExponentialRegex.cs:30:32:30:47 | access to field JAVA_CLASS_REGEX |
 | ExponentialRegex.cs:13:28:13:50 | access to property QueryString | ExponentialRegex.cs:17:40:17:48 | access to local variable userInput |
@@ -11,28 +13,14 @@ edges
 | ExponentialRegex.cs:13:28:13:50 | access to property QueryString | ExponentialRegex.cs:29:90:29:98 | access to local variable userInput |
 | ExponentialRegex.cs:13:28:13:50 | access to property QueryString | ExponentialRegex.cs:30:21:30:29 | access to local variable userInput |
 | ExponentialRegex.cs:13:28:13:50 | access to property QueryString | ExponentialRegex.cs:32:57:32:65 | access to local variable userInput |
+| ExponentialRegex.cs:17:19:17:31 | "^([a-z]+)+$" | ExponentialRegex.cs:17:19:17:31 | "^([a-z]+)+$" |
+| ExponentialRegex.cs:18:19:18:31 | "^([a-z]*)*$" | ExponentialRegex.cs:18:19:18:31 | "^([a-z]*)*$" |
+| ExponentialRegex.cs:21:19:21:130 | "^([a-zA-Z0-9])(([\\-.]\|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})\|([a-z]{2,3}[.]{1}[a-z]{2,3}))$" | ExponentialRegex.cs:21:19:21:130 | "^([a-zA-Z0-9])(([\\-.]\|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})\|([a-z]{2,3}[.]{1}[a-z]{2,3}))$" |
+| ExponentialRegex.cs:24:19:24:34 | access to field JAVA_CLASS_REGEX | ExponentialRegex.cs:26:32:26:47 | access to field JAVA_CLASS_REGEX |
 | ExponentialRegex.cs:24:19:24:34 | access to field JAVA_CLASS_REGEX | ExponentialRegex.cs:26:32:26:47 | access to field JAVA_CLASS_REGEX |
 | ExponentialRegex.cs:24:19:24:34 | access to field JAVA_CLASS_REGEX | ExponentialRegex.cs:30:32:30:47 | access to field JAVA_CLASS_REGEX |
 | ExponentialRegex.cs:26:32:26:47 | access to field JAVA_CLASS_REGEX | ExponentialRegex.cs:30:32:30:47 | access to field JAVA_CLASS_REGEX |
-nodes
-| ExponentialRegex.cs:9:55:9:83 | "^(([a-z])+.)+[A-Z]([a-z])+$" |
-| ExponentialRegex.cs:13:28:13:50 | access to property QueryString |
-| ExponentialRegex.cs:17:19:17:31 | "^([a-z]+)+$" |
-| ExponentialRegex.cs:17:40:17:48 | access to local variable userInput |
-| ExponentialRegex.cs:18:19:18:31 | "^([a-z]*)*$" |
-| ExponentialRegex.cs:18:42:18:50 | access to local variable userInput |
-| ExponentialRegex.cs:21:19:21:130 | "^([a-zA-Z0-9])(([\\-.]\|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})\|([a-z]{2,3}[.]{1}[a-z]{2,3}))$" |
-| ExponentialRegex.cs:21:139:21:147 | access to local variable userInput |
-| ExponentialRegex.cs:24:19:24:34 | access to field JAVA_CLASS_REGEX |
-| ExponentialRegex.cs:24:43:24:51 | access to local variable userInput |
-| ExponentialRegex.cs:26:21:26:29 | access to local variable userInput |
-| ExponentialRegex.cs:26:32:26:47 | access to field JAVA_CLASS_REGEX |
-| ExponentialRegex.cs:28:47:28:55 | access to local variable userInput |
-| ExponentialRegex.cs:29:19:29:31 | "^([a-z]+)+$" |
-| ExponentialRegex.cs:29:90:29:98 | access to local variable userInput |
-| ExponentialRegex.cs:30:21:30:29 | access to local variable userInput |
-| ExponentialRegex.cs:30:32:30:47 | access to field JAVA_CLASS_REGEX |
-| ExponentialRegex.cs:32:57:32:65 | access to local variable userInput |
+| ExponentialRegex.cs:29:19:29:31 | "^([a-z]+)+$" | ExponentialRegex.cs:29:19:29:31 | "^([a-z]+)+$" |
 #select
 | ExponentialRegex.cs:17:40:17:48 | access to local variable userInput | ExponentialRegex.cs:13:28:13:50 | access to property QueryString | ExponentialRegex.cs:17:40:17:48 | access to local variable userInput | $@ flows to regular expression operation with dangerous regex. | ExponentialRegex.cs:13:28:13:50 | access to property QueryString | User-provided value |
 | ExponentialRegex.cs:18:42:18:50 | access to local variable userInput | ExponentialRegex.cs:13:28:13:50 | access to property QueryString | ExponentialRegex.cs:18:42:18:50 | access to local variable userInput | $@ flows to regular expression operation with dangerous regex. | ExponentialRegex.cs:13:28:13:50 | access to property QueryString | User-provided value |

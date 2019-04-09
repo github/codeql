@@ -1,30 +1,13 @@
 edges
 | ZipSlip.cs:16:52:16:65 | access to property FullName | ZipSlip.cs:32:41:32:52 | access to local variable destFilePath |
 | ZipSlip.cs:16:52:16:65 | access to property FullName | ZipSlip.cs:36:45:36:56 | access to local variable destFilePath |
-| ZipSlip.cs:16:52:16:65 | access to property FullName | ZipSlip.cs:39:53:39:89 | call to method Combine |
 | ZipSlip.cs:16:52:16:65 | access to property FullName | ZipSlip.cs:40:41:40:52 | access to local variable destFilePath |
 | ZipSlip.cs:19:31:19:44 | access to property FullName | ZipSlip.cs:24:41:24:52 | access to local variable destFileName |
-| ZipSlip.cs:39:53:39:89 | call to method Combine | ZipSlip.cs:40:41:40:52 | access to local variable destFilePath |
 | ZipSlip.cs:62:72:62:85 | access to property FullName | ZipSlip.cs:69:74:69:85 | access to local variable destFilePath |
 | ZipSlip.cs:62:72:62:85 | access to property FullName | ZipSlip.cs:76:71:76:82 | access to local variable destFilePath |
 | ZipSlip.cs:62:72:62:85 | access to property FullName | ZipSlip.cs:83:57:83:68 | access to local variable destFilePath |
 | ZipSlip.cs:62:72:62:85 | access to property FullName | ZipSlip.cs:91:58:91:69 | access to local variable destFilePath |
 | ZipSlipBad.cs:9:59:9:72 | access to property FullName | ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName |
-nodes
-| ZipSlip.cs:16:52:16:65 | access to property FullName |
-| ZipSlip.cs:19:31:19:44 | access to property FullName |
-| ZipSlip.cs:24:41:24:52 | access to local variable destFileName |
-| ZipSlip.cs:32:41:32:52 | access to local variable destFilePath |
-| ZipSlip.cs:36:45:36:56 | access to local variable destFilePath |
-| ZipSlip.cs:39:53:39:89 | call to method Combine |
-| ZipSlip.cs:40:41:40:52 | access to local variable destFilePath |
-| ZipSlip.cs:62:72:62:85 | access to property FullName |
-| ZipSlip.cs:69:74:69:85 | access to local variable destFilePath |
-| ZipSlip.cs:76:71:76:82 | access to local variable destFilePath |
-| ZipSlip.cs:83:57:83:68 | access to local variable destFilePath |
-| ZipSlip.cs:91:58:91:69 | access to local variable destFilePath |
-| ZipSlipBad.cs:9:59:9:72 | access to property FullName |
-| ZipSlipBad.cs:10:29:10:40 | access to local variable destFileName |
 #select
 | ZipSlip.cs:24:41:24:52 | access to local variable destFileName | ZipSlip.cs:19:31:19:44 | access to property FullName | ZipSlip.cs:24:41:24:52 | access to local variable destFileName | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlip.cs:19:31:19:44 | access to property FullName | item path |
 | ZipSlip.cs:32:41:32:52 | access to local variable destFilePath | ZipSlip.cs:16:52:16:65 | access to property FullName | ZipSlip.cs:32:41:32:52 | access to local variable destFilePath | Unsanitized zip archive $@, which may contain '..', is used in a file system operation. | ZipSlip.cs:16:52:16:65 | access to property FullName | item path |

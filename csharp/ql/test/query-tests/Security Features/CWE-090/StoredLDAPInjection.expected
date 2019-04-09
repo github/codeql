@@ -1,7 +1,4 @@
 edges
 | StoredLDAPInjection.cs:24:83:24:109 | call to method GetString | StoredLDAPInjection.cs:24:66:24:109 | ... + ... |
-nodes
-| StoredLDAPInjection.cs:24:66:24:109 | ... + ... |
-| StoredLDAPInjection.cs:24:83:24:109 | call to method GetString |
 #select
 | StoredLDAPInjection.cs:24:66:24:109 | ... + ... | StoredLDAPInjection.cs:24:83:24:109 | call to method GetString | StoredLDAPInjection.cs:24:66:24:109 | ... + ... | $@ flows to here and is used in an LDAP query. | StoredLDAPInjection.cs:24:83:24:109 | call to method GetString | Stored user-provided value |
