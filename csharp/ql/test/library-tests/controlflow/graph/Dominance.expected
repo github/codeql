@@ -236,7 +236,8 @@
 | post | AccessorCalls.cs:68:17:68:21 | dynamic d = ... | AccessorCalls.cs:68:21:68:21 | access to parameter o |
 | post | AccessorCalls.cs:68:21:68:21 | access to parameter o | AccessorCalls.cs:68:9:68:22 | ... ...; |
 | post | AccessorCalls.cs:69:9:69:9 | access to local variable d | AccessorCalls.cs:69:9:69:36 | ...; |
-| post | AccessorCalls.cs:69:9:69:35 | ... = ... | AccessorCalls.cs:69:24:69:35 | dynamic access to member MaybeProp2 |
+| post | AccessorCalls.cs:69:9:69:20 | dynamic access to member MaybeProp1 | AccessorCalls.cs:69:24:69:35 | dynamic access to member MaybeProp2 |
+| post | AccessorCalls.cs:69:9:69:35 | ... = ... | AccessorCalls.cs:69:9:69:20 | dynamic access to member MaybeProp1 |
 | post | AccessorCalls.cs:69:9:69:36 | ...; | AccessorCalls.cs:68:17:68:21 | dynamic d = ... |
 | post | AccessorCalls.cs:69:24:69:24 | access to local variable d | AccessorCalls.cs:69:9:69:9 | access to local variable d |
 | post | AccessorCalls.cs:69:24:69:35 | dynamic access to member MaybeProp2 | AccessorCalls.cs:69:24:69:24 | access to local variable d |
@@ -247,14 +248,16 @@
 | post | AccessorCalls.cs:71:9:71:9 | access to local variable d | AccessorCalls.cs:71:9:71:9 | access to local variable d |
 | post | AccessorCalls.cs:71:9:71:9 | access to local variable d | AccessorCalls.cs:71:9:71:26 | ...; |
 | post | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent | AccessorCalls.cs:71:9:71:9 | access to local variable d |
-| post | AccessorCalls.cs:71:9:71:25 | ... = ... | AccessorCalls.cs:71:9:71:25 | dynamic call to operator + |
+| post | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent | AccessorCalls.cs:71:9:71:25 | dynamic call to operator + |
+| post | AccessorCalls.cs:71:9:71:25 | ... = ... | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent |
 | post | AccessorCalls.cs:71:9:71:25 | dynamic call to operator + | AccessorCalls.cs:71:25:71:25 | access to parameter e |
 | post | AccessorCalls.cs:71:9:71:26 | ...; | AccessorCalls.cs:70:9:70:21 | dynamic call to operator ++ |
 | post | AccessorCalls.cs:71:25:71:25 | access to parameter e | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent |
 | post | AccessorCalls.cs:72:9:72:9 | access to local variable d | AccessorCalls.cs:72:9:72:21 | ...; |
 | post | AccessorCalls.cs:72:9:72:9 | access to local variable d | AccessorCalls.cs:72:11:72:11 | 0 |
+| post | AccessorCalls.cs:72:9:72:12 | dynamic access to element | AccessorCalls.cs:72:9:72:20 | dynamic call to operator + |
 | post | AccessorCalls.cs:72:9:72:12 | dynamic access to element | AccessorCalls.cs:72:11:72:11 | 0 |
-| post | AccessorCalls.cs:72:9:72:20 | ... = ... | AccessorCalls.cs:72:9:72:20 | dynamic call to operator + |
+| post | AccessorCalls.cs:72:9:72:20 | ... = ... | AccessorCalls.cs:72:9:72:12 | dynamic access to element |
 | post | AccessorCalls.cs:72:9:72:20 | dynamic call to operator + | AccessorCalls.cs:72:17:72:20 | dynamic access to element |
 | post | AccessorCalls.cs:72:9:72:21 | ...; | AccessorCalls.cs:71:9:71:25 | ... = ... |
 | post | AccessorCalls.cs:72:11:72:11 | 0 | AccessorCalls.cs:72:9:72:9 | access to local variable d |
@@ -263,13 +266,15 @@
 | post | AccessorCalls.cs:72:17:72:20 | dynamic access to element | AccessorCalls.cs:72:19:72:19 | 1 |
 | post | AccessorCalls.cs:72:19:72:19 | 1 | AccessorCalls.cs:72:17:72:17 | access to local variable d |
 | post | AccessorCalls.cs:73:9:73:44 | (..., ...) | AccessorCalls.cs:73:35:73:43 | (..., ...) |
-| post | AccessorCalls.cs:73:9:73:83 | ... = ... | AccessorCalls.cs:73:24:73:32 | access to property Prop |
+| post | AccessorCalls.cs:73:9:73:83 | ... = ... | AccessorCalls.cs:73:39:73:42 | dynamic access to element |
 | post | AccessorCalls.cs:73:9:73:84 | ...; | AccessorCalls.cs:72:9:72:20 | ... = ... |
 | post | AccessorCalls.cs:73:10:73:10 | access to local variable d | AccessorCalls.cs:73:9:73:84 | ...; |
+| post | AccessorCalls.cs:73:10:73:21 | dynamic access to member MaybeProp1 | AccessorCalls.cs:73:48:73:83 | (..., ...) |
 | post | AccessorCalls.cs:73:24:73:27 | this access | AccessorCalls.cs:73:10:73:10 | access to local variable d |
-| post | AccessorCalls.cs:73:24:73:32 | access to property Prop | AccessorCalls.cs:73:48:73:83 | (..., ...) |
+| post | AccessorCalls.cs:73:24:73:32 | access to property Prop | AccessorCalls.cs:73:10:73:21 | dynamic access to member MaybeProp1 |
 | post | AccessorCalls.cs:73:35:73:43 | (..., ...) | AccessorCalls.cs:73:41:73:41 | 0 |
 | post | AccessorCalls.cs:73:39:73:39 | access to local variable d | AccessorCalls.cs:73:24:73:27 | this access |
+| post | AccessorCalls.cs:73:39:73:42 | dynamic access to element | AccessorCalls.cs:73:24:73:32 | access to property Prop |
 | post | AccessorCalls.cs:73:41:73:41 | 0 | AccessorCalls.cs:73:39:73:39 | access to local variable d |
 | post | AccessorCalls.cs:73:48:73:83 | (..., ...) | AccessorCalls.cs:73:74:73:82 | (..., ...) |
 | post | AccessorCalls.cs:73:49:73:49 | access to local variable d | AccessorCalls.cs:73:9:73:44 | (..., ...) |
@@ -2682,26 +2687,29 @@
 | pre | AccessorCalls.cs:68:17:68:21 | dynamic d = ... | AccessorCalls.cs:69:9:69:36 | ...; |
 | pre | AccessorCalls.cs:68:21:68:21 | access to parameter o | AccessorCalls.cs:68:17:68:21 | dynamic d = ... |
 | pre | AccessorCalls.cs:69:9:69:9 | access to local variable d | AccessorCalls.cs:69:24:69:24 | access to local variable d |
+| pre | AccessorCalls.cs:69:9:69:20 | dynamic access to member MaybeProp1 | AccessorCalls.cs:69:9:69:35 | ... = ... |
 | pre | AccessorCalls.cs:69:9:69:35 | ... = ... | AccessorCalls.cs:70:9:70:22 | ...; |
 | pre | AccessorCalls.cs:69:9:69:36 | ...; | AccessorCalls.cs:69:9:69:9 | access to local variable d |
 | pre | AccessorCalls.cs:69:24:69:24 | access to local variable d | AccessorCalls.cs:69:24:69:35 | dynamic access to member MaybeProp2 |
-| pre | AccessorCalls.cs:69:24:69:35 | dynamic access to member MaybeProp2 | AccessorCalls.cs:69:9:69:35 | ... = ... |
+| pre | AccessorCalls.cs:69:24:69:35 | dynamic access to member MaybeProp2 | AccessorCalls.cs:69:9:69:20 | dynamic access to member MaybeProp1 |
 | pre | AccessorCalls.cs:70:9:70:9 | access to local variable d | AccessorCalls.cs:70:9:70:19 | dynamic access to member MaybeProp |
 | pre | AccessorCalls.cs:70:9:70:19 | dynamic access to member MaybeProp | AccessorCalls.cs:70:9:70:21 | dynamic call to operator ++ |
 | pre | AccessorCalls.cs:70:9:70:21 | dynamic call to operator ++ | AccessorCalls.cs:71:9:71:26 | ...; |
 | pre | AccessorCalls.cs:70:9:70:22 | ...; | AccessorCalls.cs:70:9:70:9 | access to local variable d |
 | pre | AccessorCalls.cs:71:9:71:9 | access to local variable d | AccessorCalls.cs:71:9:71:9 | access to local variable d |
 | pre | AccessorCalls.cs:71:9:71:9 | access to local variable d | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent |
+| pre | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent | AccessorCalls.cs:71:9:71:25 | ... = ... |
 | pre | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent | AccessorCalls.cs:71:25:71:25 | access to parameter e |
 | pre | AccessorCalls.cs:71:9:71:25 | ... = ... | AccessorCalls.cs:72:9:72:21 | ...; |
-| pre | AccessorCalls.cs:71:9:71:25 | dynamic call to operator + | AccessorCalls.cs:71:9:71:25 | ... = ... |
+| pre | AccessorCalls.cs:71:9:71:25 | dynamic call to operator + | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent |
 | pre | AccessorCalls.cs:71:9:71:26 | ...; | AccessorCalls.cs:71:9:71:9 | access to local variable d |
 | pre | AccessorCalls.cs:71:25:71:25 | access to parameter e | AccessorCalls.cs:71:9:71:25 | dynamic call to operator + |
 | pre | AccessorCalls.cs:72:9:72:9 | access to local variable d | AccessorCalls.cs:72:11:72:11 | 0 |
 | pre | AccessorCalls.cs:72:9:72:9 | access to local variable d | AccessorCalls.cs:72:11:72:11 | 0 |
+| pre | AccessorCalls.cs:72:9:72:12 | dynamic access to element | AccessorCalls.cs:72:9:72:20 | ... = ... |
 | pre | AccessorCalls.cs:72:9:72:12 | dynamic access to element | AccessorCalls.cs:72:17:72:17 | access to local variable d |
 | pre | AccessorCalls.cs:72:9:72:20 | ... = ... | AccessorCalls.cs:73:9:73:84 | ...; |
-| pre | AccessorCalls.cs:72:9:72:20 | dynamic call to operator + | AccessorCalls.cs:72:9:72:20 | ... = ... |
+| pre | AccessorCalls.cs:72:9:72:20 | dynamic call to operator + | AccessorCalls.cs:72:9:72:12 | dynamic access to element |
 | pre | AccessorCalls.cs:72:9:72:21 | ...; | AccessorCalls.cs:72:9:72:9 | access to local variable d |
 | pre | AccessorCalls.cs:72:11:72:11 | 0 | AccessorCalls.cs:72:9:72:9 | access to local variable d |
 | pre | AccessorCalls.cs:72:11:72:11 | 0 | AccessorCalls.cs:72:9:72:12 | dynamic access to element |
@@ -2712,12 +2720,14 @@
 | pre | AccessorCalls.cs:73:9:73:83 | ... = ... | AccessorCalls.cs:66:10:66:11 | exit M9 |
 | pre | AccessorCalls.cs:73:9:73:84 | ...; | AccessorCalls.cs:73:10:73:10 | access to local variable d |
 | pre | AccessorCalls.cs:73:10:73:10 | access to local variable d | AccessorCalls.cs:73:24:73:27 | this access |
+| pre | AccessorCalls.cs:73:10:73:21 | dynamic access to member MaybeProp1 | AccessorCalls.cs:73:24:73:32 | access to property Prop |
 | pre | AccessorCalls.cs:73:24:73:27 | this access | AccessorCalls.cs:73:39:73:39 | access to local variable d |
-| pre | AccessorCalls.cs:73:24:73:32 | access to property Prop | AccessorCalls.cs:73:9:73:83 | ... = ... |
+| pre | AccessorCalls.cs:73:24:73:32 | access to property Prop | AccessorCalls.cs:73:39:73:42 | dynamic access to element |
 | pre | AccessorCalls.cs:73:35:73:43 | (..., ...) | AccessorCalls.cs:73:9:73:44 | (..., ...) |
 | pre | AccessorCalls.cs:73:39:73:39 | access to local variable d | AccessorCalls.cs:73:41:73:41 | 0 |
+| pre | AccessorCalls.cs:73:39:73:42 | dynamic access to element | AccessorCalls.cs:73:9:73:83 | ... = ... |
 | pre | AccessorCalls.cs:73:41:73:41 | 0 | AccessorCalls.cs:73:35:73:43 | (..., ...) |
-| pre | AccessorCalls.cs:73:48:73:83 | (..., ...) | AccessorCalls.cs:73:24:73:32 | access to property Prop |
+| pre | AccessorCalls.cs:73:48:73:83 | (..., ...) | AccessorCalls.cs:73:10:73:21 | dynamic access to member MaybeProp1 |
 | pre | AccessorCalls.cs:73:49:73:49 | access to local variable d | AccessorCalls.cs:73:49:73:60 | dynamic access to member MaybeProp1 |
 | pre | AccessorCalls.cs:73:49:73:60 | dynamic access to member MaybeProp1 | AccessorCalls.cs:73:63:73:66 | this access |
 | pre | AccessorCalls.cs:73:63:73:66 | this access | AccessorCalls.cs:73:63:73:71 | access to property Prop |
