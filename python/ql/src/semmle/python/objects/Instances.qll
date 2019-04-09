@@ -91,7 +91,7 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
         this = instance and descriptor.isDescriptor() = true and
         exists(AttrNode attr |
             PointsToInternal::pointsTo(attr.getObject(name), _, instance, _) and
-            this.getClass().attribute(name, descriptor, _)
+            this.getClass().(ClassObjectInternal).lookup(name, descriptor, _)
         )
     }
 
@@ -302,7 +302,7 @@ private predicate receiver_type(AttrNode attr, string name, ObjectInternal value
 }
 
 private predicate cls_descriptor(ClassObjectInternal cls, string name, ObjectInternal descriptor) {
-    cls.attribute(name, descriptor, _) and
+    cls.lookup(name, descriptor, _) and
     descriptor.isDescriptor() = true
 }
 

@@ -40,8 +40,22 @@ abstract class ClassObjectInternal extends ObjectInternal {
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
         instance = this and
         PointsToInternal::attributeRequired(this, name) and
-        this.attribute(name, descriptor, _) and
+        this.lookup(name, descriptor, _) and
         descriptor.isDescriptor() = true
+    }
+
+    abstract predicate lookup(string name, ObjectInternal value, CfgOrigin origin);
+
+    /** Approximation to descriptor protocol, skipping meta-descriptor protocol */
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        exists(ObjectInternal descriptor, CfgOrigin desc_origin |
+            this.lookup(name, descriptor, desc_origin) |
+            descriptor.isDescriptor() = false and
+            value = descriptor and origin = desc_origin
+            or
+            descriptor.isDescriptor() = true and
+            descriptor.descriptorGet(this, value, origin)
+        )
     }
 
 }
@@ -87,7 +101,7 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
         )
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    override predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
         exists(ClassObjectInternal decl |
             decl = Types::getMro(this).findDeclaringClass(name) |
             Types::declaredAttribute(decl, name, value, origin)
@@ -142,7 +156,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    override predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
         value = ObjectInternal::fromBuiltin(this.getBuiltin().getMember(name)) and
         origin = CfgOrigin::unknown()
     }
@@ -203,7 +217,7 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    override predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
         none()
     }
 
@@ -251,7 +265,7 @@ class TypeInternal extends ClassObjectInternal, TType {
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    override predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
         none()
     }
 
