@@ -1,5 +1,5 @@
 /**
- * Provides a model of `cheerio`, a server-side DOM manipulation library like with a jQuery-like API.
+ * Provides a model of `cheerio`, a server-side DOM manipulation library with a jQuery-like API.
  */
 
 import javascript
