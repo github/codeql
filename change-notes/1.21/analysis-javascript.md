@@ -29,6 +29,7 @@
 | Incomplete string escaping or encoding | More results | This rule now considers the flow of regular expressions literals. |
 | Replacement of a substring with itself | More results | This rule now considers the flow of regular expressions literals. |
 | Server-side URL redirect       | Fewer false-positive results | This rule now treats URLs as safe in more cases where the hostname cannot be tampered with. |
+| Type confusion through parameter tampering | Fewer false-positive results | This rule now recognizes additional emptiness checks. |
 | Useless assignment to property | Fewer false-positive results | This rule now ignore reads of additional getters. |
 
 ## Changes to QL libraries
