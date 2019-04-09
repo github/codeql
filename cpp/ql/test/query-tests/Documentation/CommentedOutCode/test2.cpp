@@ -55,3 +55,13 @@ void myFunction();
 // don't #include anything here
 
 // #hashtag
+
+// #if(defined(MYMACRO))
+
+// #iffy
+
+// #pragma once
+
+//  # pragma once
+
+/*#error"myerror"*/
