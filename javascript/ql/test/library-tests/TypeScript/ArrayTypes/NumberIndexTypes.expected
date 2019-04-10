@@ -6,13 +6,13 @@
 | ConcatArray<number>[] | ConcatArray<number> |
 | ConcatArray<string \| number>[] | ConcatArray<string \| number> |
 | NumberIndexable | object |
-| ReadonlyArray<T> | T |
-| ReadonlyArray<number> | number |
 | S[] | S |
 | T[] | T |
 | U[] | U |
 | [number, string] | string \| number |
 | any[] | any |
 | number[] | number |
+| readonly T[] | T |
+| readonly number[] | number |
 | string | string |
 | string[] | string |
