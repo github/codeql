@@ -207,7 +207,7 @@ enum my_enum {
 };
 
 int myFunction6(enum my_enum e) {
-	if (e < 0) {
+	if (e < 0) { // GOOD (suppressed because it's platform-dependent)
 		return 1;
 	}
 	return 0;
@@ -266,7 +266,57 @@ int negative_zero(double dbl) {
   return 0;
 }
 
-int nan(double x) {
+typedef unsigned char u8;
+
+int widening_cast1(u8 c) {
+  if (c == 0) {
+    if ((int)c > 0) { // BAD
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int widening_cast2(u8 c) {
+  if (c <= 10)
+    return -1;
+  else if ((c >= 11) /* BAD */ && (c <= 47))
+    return 0;
+  else
+    return 1;
+}
+
+int unsigned_implicit_conversion(unsigned int ui1) {
+  // These two comparisons are supported by the range analysis because the
+  // implicit signedness conversion is on the constants (0 and 5), not on the
+  // variables (ui1).
+  if (ui1 == 0) {
+    if (ui1 >= 5) { // BAD
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int signedness_cast1(u8 c) {
+  if ((signed char)c == 0) {
+    if (c >= 5) { // BAD
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int signedness_cast2(signed char c) {
+  if ((u8)c == 0) {
+    if (c >= 5) { // BAD
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int nan1(double x) {
   if (x < 0.0) {
     return 100;
   }

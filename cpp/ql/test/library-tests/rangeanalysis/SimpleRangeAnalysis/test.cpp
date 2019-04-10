@@ -68,3 +68,13 @@ bool test3(bool b, int x, int y) {
 
   return b || (bool)t;
 }
+
+void use_after_cast(unsigned char c)
+{
+  unsigned short c_times_2 = c + c;
+  if ((unsigned char)c_times_2 == 0)
+  {
+    c_times_2;
+  }
+  c_times_2;
+}
