@@ -560,6 +560,32 @@ void test20()
 	}
 }
 
+void test21(bool cond)
+{
+	char buffer[100];
+	char *ptr;
+	int i;
+
+	if (buffer[-1] == 0) { return; } // BAD: accesses buffer[-1]
+
+	ptr = buffer;
+	if (cond)
+	{
+		ptr++;
+		if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[0]
+	} else {
+		if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1]
+	}
+	if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1] or buffer[0]
+
+	ptr = buffer;
+	for (i = 0; i < 2; i++)
+	{
+		ptr++;
+	}
+	if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[1]
+}
+
 int main(int argc, char *argv[])
 {
 	long long arr17[19];
@@ -582,6 +608,7 @@ int main(int argc, char *argv[])
 	test18();
 	test19(argc == 0);
 	test20();
+	test21(argc == 0);
 
 	return 0;
 }
