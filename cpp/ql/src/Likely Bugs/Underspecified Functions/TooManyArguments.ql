@@ -1,5 +1,5 @@
 /**
- * @name Call to function with extraneous parameters
+ * @name Call to function with extraneous arguments
  * @description A function call to a function passed more arguments than there are
  *              declared parameters of the function.  This may indicate
  *              that the code does not follow the author's intent.

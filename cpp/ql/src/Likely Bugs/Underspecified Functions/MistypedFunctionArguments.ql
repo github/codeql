@@ -53,10 +53,10 @@ predicate argTypeMayBeUsed(Type arg, Type parm) {
   or
   // pointers to compatible types
   pointerArgTypeMayBeUsed(arg.(PointerType).getBaseType().getUnspecifiedType(),
-    parm.(PointerType).getBaseType().getUnderlyingType().getUnspecifiedType())
+    parm.(PointerType).getBaseType().getUnspecifiedType())
   or
   pointerArgTypeMayBeUsed(arg.(PointerType).getBaseType().getUnspecifiedType(),
-    parm.(ArrayType).getBaseType().getUnderlyingType().getUnspecifiedType())
+    parm.(ArrayType).getBaseType().getUnspecifiedType())
 }
 
 // This predicate doesn't necessarily have to exist, but if it does exist
@@ -65,8 +65,8 @@ predicate argTypeMayBeUsed(Type arg, Type parm) {
 // Its body could also just be hand-inlined where it's used.
 pragma[inline]
 predicate argMayBeUsed(Expr arg, Parameter parm) {
-  argTypeMayBeUsed(arg.getFullyConverted().getType().getUnderlyingType().getUnspecifiedType(),
-    parm.getType().getUnderlyingType().getUnspecifiedType())
+  argTypeMayBeUsed(arg.getFullyConverted().getType().getUnspecifiedType(),
+    parm.getType().getUnspecifiedType())
 }
 
 // True if function was ()-declared, but not (void)-declared
@@ -88,5 +88,5 @@ where
   not argMayBeUsed(fc.getArgument(p.getIndex()), p)
 select fc, "Calling $@: argument $@ of type $@ is incompatible with parameter $@", f, f.toString(),
   fc.getArgument(p.getIndex()) as arg, arg.toString(),
-  arg.getFullyConverted().getType().getUnderlyingType().getUnspecifiedType() as atype,
+  arg.getFullyConverted().getType().getUnspecifiedType() as atype,
   atype.toString(), p, p.getTypedName()
