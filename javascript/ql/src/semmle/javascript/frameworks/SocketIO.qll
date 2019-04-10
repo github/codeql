@@ -399,6 +399,8 @@ module SocketIOClient {
     exists(DataFlow::SourceNode io |
       io = DataFlow::globalVarRef("io") or
       io = DataFlow::globalVarRef("io").getAPropertyRead("connect") or
+      io = DataFlow::moduleImport("io") or
+      io = DataFlow::moduleMember("io", "connect") or
       io = DataFlow::moduleImport("socket.io-client") or
       io = DataFlow::moduleMember("socket.io-client", "connect")
     |
@@ -479,9 +481,18 @@ module SocketIOClient {
     /** Gets the event name associated with the data, if it can be determined. */
     string getEventName() { getArgument(0).mayHaveStringValue(result) }
 
+    private DataFlow::SourceNode getListener(DataFlow::TypeBackTracker t) {
+      t.start() and
+      result = getArgument(1).getALocalSource()
+      or
+      exists(DataFlow::TypeBackTracker t2 |
+        result = getListener(t2).backtrack(t2, t)
+      )
+    }
+
     /** Gets the callback that handles data received from the server. */
     private DataFlow::FunctionNode getListener() {
-      result = getCallback(1)
+      result = getListener(DataFlow::TypeBackTracker::end())
     }
 
     /** Gets the `i`th parameter through which data is received from the server. */

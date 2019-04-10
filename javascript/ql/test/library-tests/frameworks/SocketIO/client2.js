@@ -15,6 +15,4 @@ sock.emit('data', "hi", "there");
 
 sock.write("do you copy?", () => {});
 
-sock2.on('message', (x) => {
-  console.log(x);
-});
+sock2.on('message', require('./handler'));
