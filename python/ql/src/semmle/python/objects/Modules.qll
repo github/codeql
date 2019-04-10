@@ -41,6 +41,9 @@ abstract class ModuleObjectInternal extends ObjectInternal {
     override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
+    override int length() { none() }
+
 }
 
 class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleObject {

@@ -50,6 +50,8 @@ abstract class CallableObjectInternal extends ObjectInternal {
 
     abstract NameNode getParameterByName(string name);
 
+    override int length() { none() }
+
 }
 
 
@@ -474,6 +476,8 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
         )
     }
 
+    override int length() { none() }
+
 }
 
 class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
@@ -531,6 +535,8 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
     }
 
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
+    override int length() { none() }
 
 }
 

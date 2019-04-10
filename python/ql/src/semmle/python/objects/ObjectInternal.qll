@@ -97,6 +97,11 @@ class ObjectInternal extends TObject {
      */
     abstract predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor);
 
+    /** Gets the length of the sequence that this "object" represents.
+     * Always returns a value for a sequence, will be -1 if object has no fixed length.
+     */
+    abstract int length();
+
 }
 
 
@@ -168,6 +173,8 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
 
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
+    override int length() { none() }
+
 }
 
 
@@ -236,6 +243,8 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
+    override int length() { result = -1 }
 
 }
 
@@ -306,6 +315,8 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
     override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
+    override int length() { none() }
 
 }
 

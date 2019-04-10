@@ -840,7 +840,7 @@ module InterProceduralPointsTo {
             callsite_argument_transfer(arg, caller, def, context)
         )
         or
-        not def.isSelf() and not def.getParameter().isVarargs() and not def.getParameter().isKwargs() and
+        not def.isSelf() and not def.isVarargs() and not def.isKwargs() and
         context.isRuntime() and value = ObjectInternal::unknown() and origin = def.getDefiningNode()
     }
 
@@ -881,7 +881,7 @@ module InterProceduralPointsTo {
             context.fromCall(call, func, caller) and
             func.getScope().getArg(n) = def.getParameter() and
             not exists(call.getArg(n)) and
-            not exists(call.getArgByName(def.getParameter().asName().getId())) and
+            not exists(call.getArgByName(def.getVariable().getName())) and
             not exists(call.getNode().getKwargs()) and
             not exists(call.getNode().getStarargs())
         )
@@ -890,25 +890,24 @@ module InterProceduralPointsTo {
     /** Helper for parameter_points_to */
     pragma [noinline]
     private predicate special_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        context.isRuntime() and
-        origin = def.getDefiningNode() and
-        exists(ControlFlowNode param |
-            param = def.getDefiningNode() |
-            exists(Function func | func.getVararg() = param.getNode()) and value = TUnknownInstance(ObjectInternal::builtin("tuple"))
+        (
+            def.isVarargs() and value = TUnknownInstance(ObjectInternal::builtin("tuple"))
             or
-            exists(Function func | func.getKwarg() = param.getNode()) and value = TUnknownInstance(ObjectInternal::builtin("dict"))
+            def.isKwargs() and value = TUnknownInstance(ObjectInternal::builtin("dict"))
         )
-        or
-        exists(PointsToContext caller, CallNode call, Function f, Parameter p |
-            context.fromCall(call, caller) and
-            context.appliesToScope(f) and
-            f.getAnArg() = p and p = def.getParameter() and
-            not p.isSelf() and
-            not exists(call.getArg(p.getPosition())) and
-            not exists(call.getArgByName(p.getName())) and
-            (exists(call.getNode().getKwargs()) or exists(call.getNode().getStarargs())) and
-            value = ObjectInternal::unknown() and origin = def.getDefiningNode()
-        )
+        and
+        (
+            context.isRuntime()
+            or
+            exists(PointsToContext caller, CallNode call, Parameter p |
+                context.fromCall(call, caller) and
+                context.appliesToScope(def.getScope()) and
+                p = def.getParameter() and
+                not exists(call.getArg(p.getPosition())) and
+                not exists(call.getArgByName(p.getName()))
+            )
+        ) and
+        origin = def.getDefiningNode()
     }
 
     /** Holds if the `(argument, caller)` pair matches up with `(param, callee)` pair across call. */
@@ -1093,16 +1092,28 @@ module Expressions {
         arg = call.getArg(0) and
         exists(BuiltinFunctionObjectInternal callable |
             PointsToInternal::pointsTo(call.getFunction(), context, callable, _) |
-            callable = ObjectInternal::builtin("len") and value = TInt(argvalue.(SequenceObjectInternal).length())
-            or
             callable != ObjectInternal::builtin("len") and
             callable != ObjectInternal::builtin("callable") and
             callable != ObjectInternal::builtin("isinstance") and
             callable != ObjectInternal::builtin("issubclass") and
+            callable != ObjectInternal::builtin("hasattr") and
             callable.isClass() = false and
             value = ObjectInternal::unknown()
         ) and
         origin = call
+    }
+
+    pragma [noinline]
+    private predicate lenCallPointsTo(CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode arg, ObjectInternal argvalue) {
+        len_call(call, arg, context, argvalue) and
+        origin = call and
+        exists(int len | 
+            len = argvalue.length()
+            |
+            value = TInt(len) and len >= 0
+            or
+            len < 0 and value = TUnknownInstance(ObjectInternal::builtin("int"))
+        )
     }
 
     private boolean otherComparisonEvaluatesTo(CompareNode comp, PointsToContext context, ControlFlowNode operand, ObjectInternal opvalue) {
@@ -1204,6 +1215,8 @@ module Expressions {
         or
         builtinCallPointsTo(expr, context, value, origin, subexpr, subvalue)
         or
+        lenCallPointsTo(expr, context, value, origin, subexpr, subvalue)
+        or
         value = ObjectInternal::bool(evaluatesTo(expr, context, subexpr, subvalue)) and origin = expr
     }
 
@@ -1270,6 +1283,12 @@ module Expressions {
 
     private predicate callable_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
         PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("callable"), _) and
+        use = call.getArg(0) and
+        PointsToInternal::pointsTo(use, context, val, _)
+    }
+
+    private predicate len_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
+        PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("len"), _) and
         use = call.getArg(0) and
         PointsToInternal::pointsTo(use, context, val, _)
     }

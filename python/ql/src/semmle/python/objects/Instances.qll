@@ -95,6 +95,10 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
         )
     }
 
+    override int length() {
+        result = lengthFromClass(this.getClass())
+    }
+
 }
 
 bindingset[instance, mro, name]
@@ -204,6 +208,10 @@ class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
         instance = this
     }
 
+    override int length() {
+        result = lengthFromClass(this.getClass())
+    }
+
 }
 
 /** Represents a value that has a known class, but no other information */
@@ -294,8 +302,15 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
         instance = this
     }
 
+    override int length() {
+        result = lengthFromClass(this.getClass())
+    }
+
 }
 
+private int lengthFromClass(ClassObjectInternal cls) {
+    Types::getMro(cls).declares("__len__") and result = -1
+}
 
 private predicate receiver_type(AttrNode attr, string name, ObjectInternal value, ClassObjectInternal cls) {
     PointsToInternal::pointsTo(attr.getObject(name), _, value, _) and value.getClass() = cls
@@ -377,6 +392,10 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
             instance = this.getSelf() and
             Types::declaredAttribute(this.getMro().findDeclaringClass(name), name, descriptor, _)
         )
+    }
+
+    override int length() {
+        none()
     }
 
 }

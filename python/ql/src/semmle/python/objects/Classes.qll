@@ -58,6 +58,8 @@ abstract class ClassObjectInternal extends ObjectInternal {
         )
     }
 
+    override int length() { none() }
+
 }
 
 class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject {

@@ -15,8 +15,6 @@ abstract class SequenceObjectInternal extends ObjectInternal {
 
     abstract ObjectInternal getItem(int n);
 
-    abstract int length();
-
     /** The boolean value of this object, this may be both
      * true and false if the "object" represents a set of possible objects. */
     override boolean booleanValue() {

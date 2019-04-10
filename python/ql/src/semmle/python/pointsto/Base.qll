@@ -268,7 +268,24 @@ class ParameterDefinition extends PyNodeDefinition {
     }
 
     ControlFlowNode getDefault() {
-        result.getNode() = this.getParameter().getDefault()
+        exists(Function f, int n, int c, int d, Arguments args |
+            args = f.getDefinition().getArgs() |
+            f.getArg(n) = this.getDefiningNode().getNode() and
+            c = count(f.getAnArg()) and
+            d = count(args.getADefault()) and
+            result.getNode() = args.getDefault(d-c+n)
+        )
+    }
+
+    predicate isVarargs() {
+        exists(Function func | func.getVararg() = this.getDefiningNode().getNode())
+    }
+
+    /** Holds if this parameter is a 'kwargs' parameter.
+     * The `kwargs` in `f(a, b, **kwargs)`.
+     */
+    predicate isKwargs() {
+        exists(Function func | func.getKwarg() = this.getDefiningNode().getNode())
     }
 
     Parameter getParameter() {

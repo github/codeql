@@ -62,6 +62,8 @@ abstract class BooleanObjectInternal extends ConstantObjectInternal {
         result = TBuiltinClassObject(Builtin::special("bool"))
     }
 
+    override int length() { none() }
+
 }
 
 class TrueObjectInternal extends BooleanObjectInternal, TTrue {
@@ -150,6 +152,8 @@ class NoneObjectInternal extends ConstantObjectInternal, TNone {
         none()
     }
 
+    override int length() { none() }
+
 }
 
 
@@ -185,6 +189,8 @@ class IntObjectInternal extends ConstantObjectInternal, TInt {
         or
         this.intValue() != 0 and result = true
     }
+
+    override int length() { none() }
 
 }
 
@@ -229,6 +235,8 @@ class FloatObjectInternal extends ConstantObjectInternal, TFloat {
         this.floatValue() != 0.0 and result = true
     }
 
+    override int length() { none() }
+
 }
 
 
@@ -263,6 +271,10 @@ class StringObjectInternal extends ConstantObjectInternal, TString {
         this.strValue() = "" and result = false
         or
         this.strValue() != "" and result = true
+    }
+
+    override int length() {
+        result = this.strValue().length()
     }
 
 }
