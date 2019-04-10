@@ -814,6 +814,10 @@
 <v>100</v>
 </e>
 <e>
+<k>@readonlytypeexpr</k>
+<v>100</v>
+</e>
+<e>
 <k>@bigintliteraltypeexpr</k>
 <v>100</v>
 </e>
