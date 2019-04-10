@@ -4,16 +4,27 @@ import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
 /** A type of form <tt>keyof T</tt> where <tt>T</tt> is a type. */
-public class KeyofTypeExpr extends TypeExpression {
+public class UnaryTypeExpr extends TypeExpression {
   private final ITypeExpression elementType;
+  private final Kind kind;
 
-  public KeyofTypeExpr(SourceLocation loc, ITypeExpression elementType) {
-    super("KeyofTypeExpr", loc);
+  public enum Kind {
+    Keyof,
+    Readonly
+  }
+
+  public UnaryTypeExpr(SourceLocation loc, Kind kind, ITypeExpression elementType) {
+    super("UnaryTypeExpr", loc);
+    this.kind = kind;
     this.elementType = elementType;
   }
 
   public ITypeExpression getElementType() {
     return elementType;
+  }
+
+  public Kind getKind() {
+    return kind;
   }
 
   @Override

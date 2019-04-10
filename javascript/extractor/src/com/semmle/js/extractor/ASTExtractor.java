@@ -125,7 +125,7 @@ import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
 import com.semmle.ts.ast.IsTypeExpr;
-import com.semmle.ts.ast.KeyofTypeExpr;
+import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
@@ -1672,7 +1672,7 @@ public class ASTExtractor {
     }
 
     @Override
-    public Label visit(KeyofTypeExpr nd, Context c) {
+    public Label visit(UnaryTypeExpr nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getElementType(), key, 0, IdContext.typeBind);
       return key;

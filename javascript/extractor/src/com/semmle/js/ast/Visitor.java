@@ -31,7 +31,7 @@ import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
 import com.semmle.ts.ast.IsTypeExpr;
-import com.semmle.ts.ast.KeyofTypeExpr;
+import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
@@ -250,7 +250,7 @@ public interface Visitor<C, R> {
 
   public R visit(TupleTypeExpr nd, C c);
 
-  public R visit(KeyofTypeExpr nd, C c);
+  public R visit(UnaryTypeExpr nd, C c);
 
   public R visit(GenericTypeExpr nd, C c);
 
