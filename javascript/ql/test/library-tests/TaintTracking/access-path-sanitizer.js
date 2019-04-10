@@ -12,6 +12,6 @@ function foo() {
   }
 
   if (isSafe(obj.x) && typeof obj === "object") {
-    sink(obj.x); // OK - but flagged anyway
+    sink(obj.x); // OK
   }
 }

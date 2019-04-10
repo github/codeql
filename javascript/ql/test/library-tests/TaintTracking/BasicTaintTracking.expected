@@ -1,5 +1,4 @@
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
-| access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:15:10:15:14 | obj.x |
 | addexpr.js:4:10:4:17 | source() | addexpr.js:7:8:7:8 | x |
 | addexpr.js:11:15:11:22 | source() | addexpr.js:21:8:21:12 | value |
 | advanced-callgraph.js:2:13:2:20 | source() | advanced-callgraph.js:6:22:6:22 | v |
