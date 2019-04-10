@@ -98,53 +98,30 @@ module TaintedPath {
         not (isNormalized() and isAbsolute())
       }
     }
-
-    /**
-     * Gets the possible Posix path labels corresponding to `label`.
-     *
-     * A posix path label is just mapped to itself, but `data` and `taint` are assumed
-     * to be fully user-controlled, and thus map to every possible posix path label.
-     */
-    PosixPath toPosixPath(DataFlow::FlowLabel label) {
-      result = label
-      or
-      label instanceof DataFlow::StandardFlowLabel
-    }
-  }
-
-  /** Gets any flow label. */
-  private DataFlow::FlowLabel anyLabel() { any() }
-
-  /**
-   * Maps any label to itself, except `data` which is mapped to `taint`.
-   */
-  private predicate preserveLabel(DataFlow::FlowLabel srclabel, DataFlow::FlowLabel dstlabel) {
-    srclabel != DataFlow::FlowLabel::data() and
-    dstlabel = srclabel
-    or
-    srclabel = DataFlow::FlowLabel::data() and
-    dstlabel = DataFlow::FlowLabel::taint()
   }
 
   /**
    * A taint-tracking configuration for reasoning about tainted-path vulnerabilities.
    */
-  class Configuration extends TaintTracking::Configuration {
+  class Configuration extends DataFlow::Configuration {
     Configuration() { this = "TaintedPath" }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel label) {
+      source instanceof Source and
+      label instanceof Label::PosixPath
+    }
 
     override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
       sink instanceof Sink and
-      label = anyLabel()
+      label instanceof Label::PosixPath
     }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
+    override predicate isBarrier(DataFlow::Node node) {
+      super.isBarrier(node) or
       node instanceof Sanitizer
     }
 
-    override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
+    override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
       guard instanceof StartsWithDotDotSanitizer or
       guard instanceof StartsWithDirSanitizer or
       guard instanceof IsAbsoluteSanitizer or
@@ -168,7 +145,7 @@ module TaintedPath {
       or
       // Ignore all preliminary sanitization after decoding URI components
       srclabel instanceof Label::PosixPath and
-      dstlabel = DataFlow::FlowLabel::taint() and
+      dstlabel instanceof Label::PosixPath and
       (
         any(UriLibraryStep step).step(src, dst)
         or
@@ -179,10 +156,16 @@ module TaintedPath {
           dst = decode
         )
       )
-    }
-
-    override predicate isOmittedTaintStep(DataFlow::Node src, DataFlow::Node dst) {
-      isTaintedPathStep(src, dst, _, _)
+      or
+      promiseTaintStep(src, dst) and srclabel = dstlabel
+      or
+      any(TaintTracking::PersistentStorageTaintStep st).step(src, dst) and srclabel = dstlabel
+      or
+      exists(DataFlow::PropRead read | read = dst |
+        src = read.getBase() and
+        read.getPropertyName() != "length" and
+        srclabel = dstlabel
+      )
     }
 
     /**
@@ -190,38 +173,37 @@ module TaintedPath {
      * standard taint step `src -> dst` should be suppresesd.
      */
     predicate isTaintedPathStep(
-      DataFlow::Node src, DataFlow::Node dst, DataFlow::FlowLabel srclabel,
-      DataFlow::FlowLabel dstlabel
+      DataFlow::Node src, DataFlow::Node dst, Label::PosixPath srclabel,
+      Label::PosixPath dstlabel
     ) {
       // path.normalize() and similar
       exists(NormalizingPathCall call |
         src = call.getInput() and
         dst = call.getOutput() and
-        dstlabel = Label::toPosixPath(srclabel).toNormalized()
+        dstlabel = srclabel.toNormalized()
       )
       or
       // path.resolve() and similar
       exists(ResolvingPathCall call |
         src = call.getInput() and
         dst = call.getOutput() and
-        srclabel = anyLabel() and
-        dstlabel.(Label::PosixPath).isAbsolute() and
-        dstlabel.(Label::PosixPath).isNormalized()
+        dstlabel.isAbsolute() and
+        dstlabel.isNormalized()
       )
       or
       // path.relative() and similar
       exists(NormalizingRelativePathCall call |
         src = call.getInput() and
         dst = call.getOutput() and
-        dstlabel.(Label::PosixPath).isRelative() and
-        dstlabel.(Label::PosixPath).isNormalized()
+        dstlabel.isRelative() and
+        dstlabel.isNormalized()
       )
       or
       // path.dirname() and similar
       exists(PreservingPathCall call |
         src = call.getInput() and
         dst = call.getOutput() and
-        preserveLabel(srclabel, dstlabel)
+        srclabel = dstlabel
       )
       or
       // path.join()
@@ -233,12 +215,12 @@ module TaintedPath {
         (
           // If the initial argument is tainted, just normalize it. It can be relative or absolute.
           n = 0 and
-          dstlabel = Label::toPosixPath(srclabel).toNormalized()
+          dstlabel = srclabel.toNormalized()
           or
           // For later arguments, the flow label depends on whether the first argument is absolute or relative.
           // If in doubt, we assume it is absolute.
           n > 0 and
-          Label::toPosixPath(srclabel).canContainDotDotSlash() and
+          srclabel.canContainDotDotSlash() and
           dstlabel.(Label::PosixPath).isNormalized() and
           if isRelative(join.getArgument(0).getStringValue())
           then dstlabel.(Label::PosixPath).isRelative()
@@ -252,10 +234,10 @@ module TaintedPath {
       |
         // use ordinary taint flow for the first operand
         n = 0 and
-        preserveLabel(srclabel, dstlabel)
+        srclabel = dstlabel
         or
         n > 0 and
-        Label::toPosixPath(srclabel).canContainDotDotSlash() and
+        srclabel.canContainDotDotSlash() and
         dstlabel.(Label::PosixPath).isNonNormalized() and // The ../ is no longer at the beginning of the string.
         (
           if isRelative(StringConcatenation::getOperand(operator, 0).getStringValue())
@@ -414,7 +396,7 @@ module TaintedPath {
    *
    * This is relevant for paths that are known to be normalized.
    */
-  class StartsWithDotDotSanitizer extends TaintTracking::LabeledSanitizerGuardNode {
+  class StartsWithDotDotSanitizer extends DataFlow::LabeledBarrierGuardNode {
     StringOps::StartsWith startsWith;
 
     StartsWithDotDotSanitizer() {
@@ -422,14 +404,14 @@ module TaintedPath {
       isDotDotSlashPrefix(startsWith.getSubstring())
     }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       // Sanitize in the false case for:
       //   .startsWith(".")
       //   .startsWith("..")
       //   .startsWith("../")
       outcome = startsWith.getPolarity().booleanNot() and
       e = startsWith.getBaseString().asExpr() and
-      exists(Label::PosixPath posixPath | posixPath = Label::toPosixPath(label) |
+      exists(Label::PosixPath posixPath | posixPath = label |
         posixPath.isNormalized() and
         posixPath.isRelative()
       )
@@ -440,7 +422,7 @@ module TaintedPath {
    * A check of form `x.startsWith(dir)` that sanitizes normalized absolute paths, since it is then
    * known to be in a subdirectory of `dir`.
    */
-  class StartsWithDirSanitizer extends TaintTracking::LabeledSanitizerGuardNode {
+  class StartsWithDirSanitizer extends DataFlow::LabeledBarrierGuardNode {
     StringOps::StartsWith startsWith;
 
     StartsWithDirSanitizer() {
@@ -450,10 +432,10 @@ module TaintedPath {
       not startsWith.getSubstring().asExpr().getStringValue() = "/"
     }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       outcome = startsWith.getPolarity() and
       e = startsWith.getBaseString().asExpr() and
-      exists(Label::PosixPath posixPath | posixPath = Label::toPosixPath(label) |
+      exists(Label::PosixPath posixPath | posixPath = label |
         posixPath.isAbsolute() and
         posixPath.isNormalized()
       )
@@ -464,7 +446,7 @@ module TaintedPath {
    * A call to `path.isAbsolute` as a sanitizer for relative paths in true branch,
    * and a sanitizer for absolute paths in the false branch.
    */
-  class IsAbsoluteSanitizer extends TaintTracking::LabeledSanitizerGuardNode {
+  class IsAbsoluteSanitizer extends DataFlow::LabeledBarrierGuardNode {
     DataFlow::Node operand;
 
     boolean polarity;
@@ -487,9 +469,9 @@ module TaintedPath {
       ) // !x.startsWith("/home") does not guarantee that x is not absolute
     }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = operand.asExpr() and
-      exists(Label::PosixPath posixPath | posixPath = Label::toPosixPath(label) |
+      exists(Label::PosixPath posixPath | posixPath = label |
         outcome = polarity and posixPath.isRelative()
         or
         negatable = true and
@@ -502,7 +484,7 @@ module TaintedPath {
   /**
    * An expression of form `x.includes("..")` or similar.
    */
-  class ContainsDotDotSanitizer extends TaintTracking::LabeledSanitizerGuardNode {
+  class ContainsDotDotSanitizer extends DataFlow::LabeledBarrierGuardNode {
     StringOps::Includes contains;
 
     ContainsDotDotSanitizer() {
@@ -510,10 +492,10 @@ module TaintedPath {
       isDotDotSlashPrefix(contains.getSubstring())
     }
 
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = contains.getBaseString().asExpr() and
       outcome = contains.getPolarity().booleanNot() and
-      Label::toPosixPath(label).canContainDotDotSlash() // can still be bypassed by normalized absolute path
+      label.(Label::PosixPath).canContainDotDotSlash() // can still be bypassed by normalized absolute path
     }
   }
 
