@@ -106,7 +106,7 @@ void test7(const char *strings) // separated by \0, terminated by \0\0
 
 void concat_strings(char *buf, size_t buf_len, const char **strings, size_t n_strings) {
   while (n_strings > 0) {
-    int ret = snprintf(buf, buf_len, "%s", *strings); // GOOD [FALSE POSITIVE]
+    int ret = snprintf(buf, buf_len, "%s", *strings); // GOOD
     if (ret > buf_len)
       return;
     buf_len -= ret;
