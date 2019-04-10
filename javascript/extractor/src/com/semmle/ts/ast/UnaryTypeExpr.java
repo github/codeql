@@ -3,7 +3,11 @@ package com.semmle.ts.ast;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.Visitor;
 
-/** A type of form <tt>keyof T</tt> where <tt>T</tt> is a type. */
+/**
+ * A unary operator applied to a type.
+ *
+ * This can be <tt>keyof T</tt> or <tt>readonly T</tt>.
+ */
 public class UnaryTypeExpr extends TypeExpression {
   private final ITypeExpression elementType;
   private final Kind kind;
