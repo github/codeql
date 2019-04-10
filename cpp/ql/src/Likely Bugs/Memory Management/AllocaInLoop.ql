@@ -326,5 +326,5 @@ from LoopWithAlloca l
 where
   not l.(DoStmt).getCondition().getValue() = "0" and
   not l.isTightlyBounded()
-select l.getAnAllocaCall(), "Stack allocation is inside a $@ and could lead to stack overflow.", l,
+select l.getAnAllocaCall(), "Stack allocation is inside a $@ loop.", l,
   l.toString()
