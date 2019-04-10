@@ -162,7 +162,7 @@ module TaintedPath {
         guard.sanitizes(_, e, any(Label::PosixPath label)) and
         src.(DataFlow::SourceNode).flowsToExpr(e) and
         dst = src and
-        srclabel = DataFlow::FlowLabel::dataOrTaint() and
+        srclabel instanceof DataFlow::StandardFlowLabel and
         dstlabel instanceof Label::PosixPath
       )
       or
