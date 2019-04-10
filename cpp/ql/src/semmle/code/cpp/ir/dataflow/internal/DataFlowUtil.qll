@@ -1,8 +1,9 @@
 /**
  * Provides C++-specific definitions for use in the data flow library.
  */
-import cpp
-import semmle.code.cpp.ir.IR
+
+private import cpp
+private import semmle.code.cpp.ir.IR
 
 /**
  * A node in a data flow graph.
@@ -10,19 +11,15 @@ import semmle.code.cpp.ir.IR
  * A node can be either an expression, a parameter, or an uninitialized local
  * variable. Such nodes are created with `DataFlow::exprNode`,
  * `DataFlow::parameterNode`, and `DataFlow::uninitializedNode` respectively.
-*/
+ */
 class Node extends Instruction {
   /**
    * INTERNAL: Do not use. Alternative name for `getFunction`.
    */
-  Function getEnclosingCallable() {
-    result = this.getEnclosingFunction()
-  }
+  Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 
   /** Gets the type of this node. */
-  Type getType() {
-    result = this.getResultType()
-  }
+  Type getType() { result = this.getResultType() }
 
   /**
    * Gets the non-conversion expression corresponding to this node, if any. If
@@ -48,9 +45,7 @@ class Node extends Instruction {
    * Gets the uninitialized local variable corresponding to this node, if
    * any.
    */
-  LocalVariable asUninitialized() {
-    result = this.(UninitializedInstruction).getLocalVariable()
-  }
+  LocalVariable asUninitialized() { result = this.(UninitializedInstruction).getLocalVariable() }
 
   /**
    * Gets an upper bound on the type of this node.
@@ -88,17 +83,14 @@ class ParameterNode extends Node, InitializeParameterInstruction {
    * Holds if this node is the parameter of `c` at the specified (zero-based)
    * position. The implicit `this` parameter is considered to have index `-1`.
    */
-  predicate isParameterOf(Function f, int i) {
-    f.getParameter(i) = getParameter()
-  }
+  predicate isParameterOf(Function f, int i) { f.getParameter(i) = getParameter() }
 }
 
 /**
  * The value of an uninitialized local variable, viewed as a node in a data
  * flow graph.
  */
-class UninitializedNode extends Node, UninitializedInstruction {
-}
+class UninitializedNode extends Node, UninitializedInstruction { }
 
 /**
  * A node associated with an object after an operation that might have
@@ -143,9 +135,7 @@ ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
  * Gets the `Node` corresponding to the value of an uninitialized local
  * variable `v`.
  */
-UninitializedNode uninitializedNode(LocalVariable v) {
-  result.getLocalVariable() = v
-}
+UninitializedNode uninitializedNode(LocalVariable v) { result.getLocalVariable() = v }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -162,6 +152,4 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
-predicate localFlow(Node source, Node sink) {
-  localFlowStep*(source, sink)
-}
+predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
