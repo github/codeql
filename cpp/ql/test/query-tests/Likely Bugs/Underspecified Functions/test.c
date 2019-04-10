@@ -39,6 +39,15 @@ void test() {
   declared_with_pointers(3.5e15, 0); // BAD
   declared_with_array("Hello"); // GOOD
   declared_with_array(&x); // BAD
+  
+  defined_with_float(2.f);  // BAD
+  defined_with_float(2.0);  // BAD
+  
+  defined_with_double(2.f); // GOOD
+  defined_with_double('c');  // BAD
+  
+  defined_with_long_long('c');  // BAD
+  defined_with_long_long(3);    // BAD
 }
 
 void not_yet_declared1();
@@ -61,3 +70,15 @@ int dereference(int *x) { return *x; }
 void declared_with_pointers(int *x, void *y);
 void declared_with_array(char a [6]);
 
+float defined_with_float(float f) {
+  return f;
+}
+
+double defined_with_double(double d) {
+  return d;
+}
+
+long long defined_with_long_long(long long ll) {
+  return ll;
+}
+  
