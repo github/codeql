@@ -573,6 +573,7 @@ case @typeexpr.kind of
 | 33 = @optionaltypeexpr
 | 34 = @resttypeexpr
 | 35 = @bigintliteraltypeexpr
+| 36 = @readonlytypeexpr
 ;
 
 @typeref = @typeaccess | @typedecl;

@@ -2132,6 +2132,9 @@ public class TypeScriptASTConverter {
     if (operator.equals("KeyOfKeyword")) {
       return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.Keyof, convertChildAsType(node, "type"));
     }
+    if (operator.equals("ReadonlyKeyword")) {
+      return new UnaryTypeExpr(loc, UnaryTypeExpr.Kind.Readonly, convertChildAsType(node, "type"));
+    }
     if (operator.equals("UniqueKeyword")) {
       return new KeywordTypeExpr(loc, "unique symbol");
     }

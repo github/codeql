@@ -66,6 +66,7 @@ public class TypeExprKinds {
   private static final int optionalTypeExpr = 33;
   private static final int restTypeExpr = 34;
   private static final int bigintLiteralTypeExpr = 35;
+  private static final int readonlyTypeExpr = 36;
 
   public static int getTypeExprKind(final INode type, final IdContext idcontext) {
     Integer kind =
@@ -127,7 +128,11 @@ public class TypeExprKinds {
 
               @Override
               public Integer visit(UnaryTypeExpr nd, Void c) {
-                return keyofTypeExpr;
+                switch (nd.getKind()) {
+                  case Keyof: return keyofTypeExpr;
+                  case Readonly: return readonlyTypeExpr;
+                }
+                throw new CatastrophicError("Unhandled UnaryTypeExpr kind: " + nd.getKind());
               }
 
               @Override

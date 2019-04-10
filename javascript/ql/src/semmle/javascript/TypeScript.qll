@@ -971,6 +971,14 @@ class RestTypeExpr extends @resttypeexpr, TypeExpr {
 }
 
 /**
+ * A type of form `readonly T`, such as `readonly number[]`.
+ */
+class ReadonlyTypeExpr extends @readonlytypeexpr, TypeExpr {
+  /** Gets the type `T` in `readonly T`. */
+  TypeExpr getElementType() { result = getChildTypeExpr(0) }
+}
+
+/**
  * A possibly qualified name that refers to a variable from inside a type.
  *
  * This can occur as
