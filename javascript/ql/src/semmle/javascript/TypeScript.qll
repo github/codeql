@@ -585,7 +585,7 @@ class TypeExpr extends ExprOrType, @typeexpr {
   /** Holds if this is the `bigint` type. */
   predicate isBigInt() { none() }
 
-  /** Holds if this is the `const` keyword, occurding in a type assertion such as `x as const`. */
+  /** Holds if this is the `const` keyword, occurring in a type assertion such as `x as const`. */
   predicate isConstKeyword() { none() }
 
   /** Gets this type expression, with any surrounding parentheses removed. */
