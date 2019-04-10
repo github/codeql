@@ -585,6 +585,9 @@ class TypeExpr extends ExprOrType, @typeexpr {
   /** Holds if this is the `bigint` type. */
   predicate isBigInt() { none() }
 
+  /** Holds if this is the `const` keyword, occurding in a type assertion such as `x as const`. */
+  predicate isConstKeyword() { none() }
+
   /** Gets this type expression, with any surrounding parentheses removed. */
   override TypeExpr stripParens() { result = this }
 
@@ -638,6 +641,8 @@ private class KeywordTypeExpr extends @keywordtypeexpr, TypeExpr {
   override predicate isUnknownKeyword() { getName() = "unknown" }
 
   override predicate isBigInt() { getName() = "bigint" }
+
+  override predicate isConstKeyword() { getName() = "const" }
 }
 
 /**

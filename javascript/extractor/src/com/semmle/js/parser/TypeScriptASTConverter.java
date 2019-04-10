@@ -345,7 +345,7 @@ public class TypeScriptASTConverter {
       case "ArrowFunction":
         return convertArrowFunction(node, loc);
       case "AsExpression":
-        return convertAsExpression(node, loc);
+        return convertTypeAssertionExpression(node, loc);
       case "AwaitExpression":
         return convertAwaitExpression(node, loc);
       case "BigIntKeyword":
@@ -795,11 +795,6 @@ public class TypeScriptASTConverter {
         convertChildrenNotNull(node, "typeParameters"),
         convertParameterTypes(node),
         convertChildAsType(node, "type"));
-  }
-
-  private Node convertAsExpression(JsonObject node, SourceLocation loc) throws ParseError {
-    return new TypeAssertion(
-        loc, convertChild(node, "expression"), convertChildAsType(node, "type"), true);
   }
 
   private Node convertAwaitExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -2115,8 +2110,12 @@ public class TypeScriptASTConverter {
 
   private Node convertTypeAssertionExpression(JsonObject node, SourceLocation loc)
       throws ParseError {
-    return new TypeAssertion(
-        loc, convertChild(node, "expression"), convertChildAsType(node, "type"), false);
+    ITypeExpression type = convertChildAsType(node, "type");
+    // `T as const` is extracted as a cast to the keyword type `const`.
+    if (type instanceof Identifier && ((Identifier) type).getName().equals("const")) {
+      type = new KeywordTypeExpr(type.getLoc(), "const");
+    }
+    return new TypeAssertion(loc, convertChild(node, "expression"), type, false);
   }
 
   private Node convertTypeLiteral(JsonObject obj, SourceLocation loc) throws ParseError {

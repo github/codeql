@@ -80,6 +80,16 @@
 | tst.ts:38:5:38:24 | tupleWithRestElement | [number, ...string[]] |
 | tst.ts:39:5:39:36 | tupleWi ... lements | [number, string?, ...number[]] |
 | tst.ts:40:5:40:15 | unknownType | unknown |
+| tst.ts:42:5:42:21 | constArrayLiteral | readonly [1, 2] |
+| tst.ts:42:25:42:30 | [1, 2] | readonly [1, 2] |
+| tst.ts:42:25:42:39 | [1, 2] as const | readonly [1, 2] |
+| tst.ts:42:26:42:26 | 1 | 1 |
+| tst.ts:42:29:42:29 | 2 | 2 |
+| tst.ts:43:5:43:22 | constObjectLiteral | { readonly foo: "foo"; } |
+| tst.ts:43:26:43:39 | { foo: "foo" } | { readonly foo: "foo"; } |
+| tst.ts:43:26:43:48 | { foo:  ... s const | { readonly foo: "foo"; } |
+| tst.ts:43:28:43:30 | foo | "foo" |
+| tst.ts:43:33:43:37 | "foo" | "foo" |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_definition_objects.ts:1:13:1:17 | dummy | typeof dummy.ts |
 | type_definition_objects.ts:1:24:1:32 | "./dummy" | any |
