@@ -1,6 +1,5 @@
-import DataFlowUtil
-private import DataFlowPrivate
-private import DataFlowDispatch
+private import DataFlowImplSpecific::Private
+import DataFlowImplSpecific::Public
 
 cached
 private module ImplCommon {
@@ -9,11 +8,8 @@ private module ImplCommon {
    * The instance parameter is considered to have index `-1`.
    */
   pragma[nomagic]
-  private predicate viableParam(Call call, int i, ParameterNode p) {
-    exists(Callable callable |
-      callable = viableCallable(call) and
-      p.isParameterOf(callable, i)
-    )
+  private predicate viableParam(DataFlowCall call, int i, ParameterNode p) {
+    p.isParameterOf(viableCallable(call), i)
   }
 
   /**
@@ -21,7 +17,7 @@ private module ImplCommon {
    */
   cached
   predicate viableParamArg(ParameterNode p, ArgumentNode arg) {
-    exists(int i, Call call |
+    exists(int i, DataFlowCall call |
       viableParam(call, i, p) and
       arg.argumentOf(call, i)
     )
@@ -49,24 +45,24 @@ private module ImplCommon {
   }
 
   /**
-   * Holds if `p` can flow to a `ReturnNode` in the same callable using only
-   * value-preserving steps.
+   * Holds if `p` can flow to a return node with position `pos` in the same
+   * callable using only value-preserving steps.
    */
   cached
-  predicate parameterValueFlowsThrough(ParameterNode p) {
-    exists(ReturnNode ret | parameterValueFlow(p, ret))
+  predicate parameterValueFlowsThrough(ParameterNode p, ReturnPosition pos) {
+    parameterValueFlow(p, pos.getAReturnNode())
   }
 
   /**
    * Holds if `arg` flows through `call` using only value-preserving steps.
    */
   cached
-  predicate argumentValueFlowsThrough(ArgumentNode arg, ExprNode call) {
-    exists(ParameterNode param |
+  predicate argumentValueFlowsThrough(ArgumentNode arg, Node out) {
+    exists(ParameterNode param, ReturnPosition ret |
       viableParamArg(param, arg) and
-      parameterValueFlowsThrough(param) and
-      arg.argumentOf(call.getExpr(), _) and
-      compatibleTypes(arg.getType(), call.getType())
+      parameterValueFlowsThrough(param, ret) and
+      out = getAnOutputAtCall(arg.getCall(), ret) and
+      compatibleTypes(arg.getType(), out.getType())
     )
   }
 
@@ -113,7 +109,7 @@ private module ImplCommon {
   private predicate storeViaSideEffect(Node node1, Content f, PostUpdateNode node2) {
     storeStep(node1, f, node2) and readStep(_, f, _)
     or
-    exists(Call call, int i1, int i2 |
+    exists(DataFlowCall call, int i1, int i2 |
       setterCall(call, i1, i2, f) and
       node1.(ArgumentNode).argumentOf(call, i1) and
       node2.getPreUpdateNode().(ArgumentNode).argumentOf(call, i2) and
@@ -133,8 +129,8 @@ private module ImplCommon {
   }
 
   pragma[nomagic]
-  private predicate setterCall(Call call, int i1, int i2, Content f) {
-    exists(Callable callable, ParameterNode p1, ParameterNode p2 |
+  private predicate setterCall(DataFlowCall call, int i1, int i2, Content f) {
+    exists(DataFlowCallable callable, ParameterNode p1, ParameterNode p2 |
       setterInParam(p1, f, p2) and
       callable = viableCallable(call) and
       p1.isParameterOf(callable, i1) and
@@ -147,7 +143,7 @@ private module ImplCommon {
       arg = node1 and
       viableParamArg(p, arg) and
       setterReturn(p, f) and
-      arg.argumentOf(node2.asExpr(), _) and
+      node2 = arg.getCall().getNode() and
       compatibleTypes(node1.getTypeBound(), f.getType()) and
       compatibleTypes(node2.getTypeBound(), f.getContainerType())
     )
@@ -173,7 +169,7 @@ private module ImplCommon {
       arg = node1 and
       viableParamArg(p, arg) and
       getter(p, f) and
-      arg.argumentOf(node2.asExpr(), _) and
+      node2 = arg.getCall().getNode() and
       compatibleTypes(node1.getTypeBound(), f.getContainerType()) and
       compatibleTypes(node2.getTypeBound(), f.getType())
     )
@@ -200,14 +196,14 @@ private module ImplCommon {
    * Holds if `call` passes an implicit or explicit instance argument, i.e., an
    * expression that reaches a `this` parameter.
    */
-  private predicate callHasInstanceArgument(Call call) {
+  private predicate callHasInstanceArgument(DataFlowCall call) {
     exists(ArgumentNode arg | arg.argumentOf(call, -1))
   }
 
   cached
   newtype TCallContext =
     TAnyCallContext() or
-    TSpecificCall(Call call, int i, boolean emptyAp) {
+    TSpecificCall(DataFlowCall call, int i, boolean emptyAp) {
       reducedViableImplInCallContext(_, _, call) and
       (emptyAp = true or emptyAp = false) and
       (
@@ -217,7 +213,7 @@ private module ImplCommon {
       )
     } or
     TSomeCall(ParameterNode p, boolean emptyAp) { emptyAp = true or emptyAp = false } or
-    TReturn(Method m, MethodAccess ma) { reducedViableImplInReturn(m, ma) }
+    TReturn(DataFlowCallable c, DataFlowCall call) { reducedViableImplInReturn(c, call) }
 }
 import ImplCommon
 
@@ -227,14 +223,14 @@ import ImplCommon
  *
  * There are four cases:
  * - `TAnyCallContext()` : No restrictions on method flow.
- * - `TSpecificCall(Call call, int i)` : Flow entered through the `i`th
+ * - `TSpecificCall(DataFlowCall call, int i)` : Flow entered through the `i`th
  *    parameter at the given `call`. This call improves the set of viable
  *    dispatch targets for at least one method call in the current callable.
  * - `TSomeCall(ParameterNode p)` : Flow entered through parameter `p`. The
  *    originating call does not improve the set of dispatch targets for any
  *    method call in the current callable and was therefore not recorded.
- * - `TReturn(Method m, MethodAccess ma)` : Flow reached `ma` from `m` and
- *    this dispatch target of `ma` implies a reduced set of dispatch origins
+ * - `TReturn(Callable c, DataFlowCall call)` : Flow reached `call` from `c` and
+ *    this dispatch target of `call` implies a reduced set of dispatch origins
  *    to which data may flow if it should reach a `return` statement.
  */
 abstract class CallContext extends TCallContext {
@@ -248,7 +244,11 @@ class CallContextAny extends CallContext, TAnyCallContext {
 abstract class CallContextCall extends CallContext { }
 
 class CallContextSpecificCall extends CallContextCall, TSpecificCall {
-  override string toString() { result = "CcCall" }
+  override string toString() {
+    exists(DataFlowCall call, int i | this = TSpecificCall(call, i, _) |
+      result = "CcCall(" + call + ", " + i + ")"
+    )
+  }
 }
 
 class CallContextSomeCall extends CallContextCall, TSomeCall {
@@ -256,23 +256,25 @@ class CallContextSomeCall extends CallContextCall, TSomeCall {
 }
 
 class CallContextReturn extends CallContext, TReturn {
-  override string toString() { result = "CcReturn" }
+  override string toString() {
+    exists(DataFlowCall call | this = TReturn(_, call) | result = "CcReturn(" + call + ")")
+  }
 }
 
 bindingset[cc, callable]
-predicate resolveReturn(CallContext cc, Callable callable, Call call) {
+predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall call) {
   cc instanceof CallContextAny and callable = viableCallable(call)
   or
-  exists(Method m0, MethodAccess ma0 |
-    ma0.getEnclosingCallable() = callable and
-    cc = TReturn(m0, ma0) and
-    m0 = prunedViableImplInCallContextReverse(ma0, call)
+  exists(DataFlowCallable c0, DataFlowCall call0 |
+    call0.getEnclosingCallable() = callable and
+    cc = TReturn(c0, call0) and
+    c0 = prunedViableImplInCallContextReverse(call0, call)
   )
 }
 
 bindingset[call, cc]
-Callable resolveCall(Call call, CallContext cc) {
-  exists(Call ctx | cc = TSpecificCall(ctx, _, _) |
+DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
+  exists(DataFlowCall ctx | cc = TSpecificCall(ctx, _, _) |
     if reducedViableImplInCallContext(call, _, ctx)
     then result = prunedViableImplInCallContext(call, ctx)
     else result = viableCallable(call)

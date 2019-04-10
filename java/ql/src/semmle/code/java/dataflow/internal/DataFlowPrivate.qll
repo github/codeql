@@ -1,5 +1,6 @@
-import java
+private import java
 private import DataFlowUtil
+private import DataFlowDispatch
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TypeFlow
 
@@ -22,7 +23,7 @@ class ArgumentNode extends Node {
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  predicate argumentOf(Call call, int pos) {
+  predicate argumentOf(DataFlowCall call, int pos) {
     exists(Argument arg | this.asExpr() = arg | call = arg.getCall() and pos = arg.getPosition())
     or
     call = this.(ImplicitVarargsArray).getCall() and
@@ -30,11 +31,22 @@ class ArgumentNode extends Node {
     or
     pos = -1 and this = getInstanceArgument(call)
   }
+
+  /** Gets the call in which this node is an argument. */
+  DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
 class ReturnNode extends ExprNode {
   ReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getResult()) }
+
+  /** Gets the position at which this value is returned. */
+  ReturnPosition getPosition() { this = result.getAReturnNode() }
+}
+
+/** A data flow node that represents a call. */
+class OutNode extends ExprNode {
+  OutNode() { this.getExpr() instanceof Call }
 }
 
 /**
@@ -229,4 +241,22 @@ predicate compatibleTypes(Type t1, Type t2) {
     or
     canContainBool(e1) and canContainBool(e2)
   )
+}
+
+/** A node that performs a type cast. */
+class CastNode extends ExprNode {
+  CastNode() { this.getExpr() instanceof CastExpr }
+}
+
+class DataFlowCallable = Callable;
+
+class DataFlowExpr = Expr;
+
+class DataFlowType = RefType;
+
+class DataFlowLocation = Location;
+
+class DataFlowCall extends Call {
+  /** Gets the data flow node corresponding to this call. */
+  ExprNode getNode() { result.getExpr() = this }
 }
