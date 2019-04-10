@@ -269,7 +269,8 @@ locations_default(#20092,#10000,2,3,2,2)
 hasLocation(#20091,#20092)
 enclosingStmt(#20091,#20077)
 exprContainers(#20091,#20001)
-literals("","",#20091)
+literals("
+  ","",#20091)
 #20093=*
 exprs(#20093,89,#20079,-3,"<this.props.icon/>")
 #20094=@"loc,{#10000},2,3,2,20"
@@ -319,7 +320,8 @@ locations_default(#20104,#10000,3,3,3,2)
 hasLocation(#20103,#20104)
 enclosingStmt(#20103,#20077)
 exprContainers(#20103,#20001)
-literals("","",#20103)
+literals("
+  ","",#20103)
 #20105=*
 exprs(#20105,89,#20079,-5,"<name-with-dashes/>")
 #20106=@"loc,{#10000},3,3,3,21"
@@ -342,7 +344,8 @@ locations_default(#20110,#10000,4,1,4,0)
 hasLocation(#20109,#20110)
 enclosingStmt(#20109,#20077)
 exprContainers(#20109,#20001)
-literals("","",#20109)
+literals("
+","",#20109)
 #20111=*
 entry_cfg_node(#20111,#20001)
 #20112=@"loc,{#10000},1,1,1,0"
