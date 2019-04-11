@@ -10,16 +10,17 @@
  * @precision low
  * @tags maintainability
  */
+
 import cpp
 
 //see http://www.gotw.ca/publications/mill18.htm
-
 from MemberFunction f, int hubIndex, Class fclass
-where f.hasSpecifier("public") and
-      f.hasSpecifier("virtual") and
-      f.getFile().fromSource() and
-      not (f instanceof Destructor) and
-      fclass = f.getDeclaringType() and
-      hubIndex = fclass.getMetrics().getAfferentCoupling() * fclass.getMetrics().getEfferentCoupling() and
-      hubIndex > 100
+where
+  f.hasSpecifier("public") and
+  f.hasSpecifier("virtual") and
+  f.getFile().fromSource() and
+  not f instanceof Destructor and
+  fclass = f.getDeclaringType() and
+  hubIndex = fclass.getMetrics().getAfferentCoupling() * fclass.getMetrics().getEfferentCoupling() and
+  hubIndex > 100
 select f, "Avoid having public virtual methods (NVI idiom)"

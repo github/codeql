@@ -7,6 +7,7 @@
  * @tags maintainability
  *       modularity
  */
+
 import cpp
 
 from MetricNamespace a, MetricNamespace b

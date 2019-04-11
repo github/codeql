@@ -39,4 +39,5 @@ where
     beforeArrayAccess(v, access, altcheck) and
     altcheck.getLeftOperand() = v.getAnAccess()
   )
-select access, "This use of offset '" + v.getName() + "' should follow the $@.", rangecheck, "range check"
+select access, "This use of offset '" + v.getName() + "' should follow the $@.", rangecheck,
+  "range check"

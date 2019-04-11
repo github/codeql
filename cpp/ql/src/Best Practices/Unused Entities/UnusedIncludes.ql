@@ -18,10 +18,12 @@ File sourceFile() {
 }
 
 from Include include, File source, File unneeded
-where include.getFile() = source
-  and source = sourceFile()
-  and unneeded = include.getIncludedFile()
-  and not unneeded.getAnIncludedFile*() = source.getMetrics().getAFileDependency()
-  and unneeded.fromSource()
-  and not unneeded.getBaseName().matches("%Debug.h")
-select include, "Redundant include, this file does not require $@.", unneeded, unneeded.getAbsolutePath()
+where
+  include.getFile() = source and
+  source = sourceFile() and
+  unneeded = include.getIncludedFile() and
+  not unneeded.getAnIncludedFile*() = source.getMetrics().getAFileDependency() and
+  unneeded.fromSource() and
+  not unneeded.getBaseName().matches("%Debug.h")
+select include, "Redundant include, this file does not require $@.", unneeded,
+  unneeded.getAbsolutePath()

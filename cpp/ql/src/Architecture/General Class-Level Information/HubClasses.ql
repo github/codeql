@@ -7,11 +7,10 @@
  * @treemap.warnOn highValues
  * @tags maintainability
  */
+
 import cpp
 
 from Class c
 where c.fromSource()
-select c as Class,
-       c.getMetrics().getAfferentCoupling() as AfferentCoupling,
-       c.getMetrics().getEfferentSourceCoupling() as EfferentCoupling
-order by AfferentCoupling desc
+select c as Class, c.getMetrics().getAfferentCoupling() as AfferentCoupling,
+  c.getMetrics().getEfferentSourceCoupling() as EfferentCoupling order by AfferentCoupling desc
