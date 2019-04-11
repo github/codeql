@@ -67,7 +67,7 @@
 | b_condition.py:0 | odasa6261_1 | Exit node for Module code.b_condition |
 | b_condition.py:0 | split_bool1_1 | Exit node for Module code.b_condition |
 | b_condition.py:0 | v2_5 | Exit node for Module code.b_condition |
-| b_condition.py:4 | x_25 | Exit node for Function f |
+| b_condition.py:4 | x_24 | Exit node for Function f |
 | b_condition.py:4 | y_0 | Exit node for Function f |
 | b_condition.py:7 | x_0 | ControlFlowNode for x |
 | b_condition.py:9 | x_3 | ControlFlowNode for x |
@@ -82,7 +82,7 @@
 | b_condition.py:32 | x_18 | ControlFlowNode for x |
 | b_condition.py:34 | x_21 | ControlFlowNode for x |
 | b_condition.py:36 | x_22 | ControlFlowNode for x |
-| b_condition.py:37 | x_24 | ControlFlowNode for x |
+| b_condition.py:37 | x_23 | ControlFlowNode for x |
 | b_condition.py:39 | __name___0 | ControlFlowNode for thing() |
 | b_condition.py:39 | __package___0 | ControlFlowNode for thing() |
 | b_condition.py:39 | double_attr_check_0 | ControlFlowNode for thing() |
@@ -144,9 +144,9 @@
 | b_condition.py:77 | t_0 | ControlFlowNode for t |
 | b_condition.py:79 | t_3 | ControlFlowNode for t |
 | b_condition.py:81 | bar_2 | Exit node for Function odasa6261 |
-| b_condition.py:81 | foo_5 | Exit node for Function odasa6261 |
+| b_condition.py:81 | foo_4 | Exit node for Function odasa6261 |
 | b_condition.py:82 | foo_0 | ControlFlowNode for foo |
-| b_condition.py:84 | foo_3 | ControlFlowNode for foo |
+| b_condition.py:84 | foo_2 | ControlFlowNode for foo |
 | b_condition.py:87 | x_3 | Exit node for Function split_bool1 |
 | b_condition.py:87 | x_8 | Exit node for Function split_bool1 |
 | b_condition.py:87 | y_3 | Exit node for Function split_bool1 |
@@ -164,10 +164,10 @@
 | b_condition.py:96 | y_5 | ControlFlowNode for y |
 | b_condition.py:97 | x_2 | ControlFlowNode for x |
 | b_condition.py:99 | x_7 | ControlFlowNode for x |
-| b_condition.py:101 | a_4 | Exit node for Function not_or_not |
+| b_condition.py:101 | a_3 | Exit node for Function not_or_not |
 | b_condition.py:102 | a_0 | ControlFlowNode for a |
-| b_condition.py:104 | a_2 | ControlFlowNode for a |
-| b_condition.py:105 | a_3 | ControlFlowNode for a |
+| b_condition.py:104 | a_1 | ControlFlowNode for a |
+| b_condition.py:105 | a_2 | ControlFlowNode for a |
 | d_globals.py:0 | D_1 | Exit node for Module code.d_globals |
 | d_globals.py:0 | Ugly_1 | Exit node for Module code.d_globals |
 | d_globals.py:0 | X_1 | Exit node for Module code.d_globals |

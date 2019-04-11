@@ -74,7 +74,6 @@
 | b_condition.py:31 | Local Variable x | ControlFlowNode for x | definition |
 | b_condition.py:33 | Local Variable x | ControlFlowNode for x | definition |
 | b_condition.py:34 | Local Variable x | ControlFlowNode for use() | refinement |
-| b_condition.py:36 | Local Variable x | ControlFlowNode for isinstance() | refinement |
 | b_condition.py:37 | Local Variable x | ControlFlowNode for use() | refinement |
 | b_condition.py:39 | Global Variable v2 | ControlFlowNode for v2 | definition |
 | b_condition.py:41 | Global Variable v2 | ControlFlowNode for Attribute | refinement |
@@ -100,7 +99,6 @@
 | b_condition.py:81 | Global Variable odasa6261 | ControlFlowNode for odasa6261 | definition |
 | b_condition.py:81 | Local Variable bar | Entry node for Function odasa6261 | definition |
 | b_condition.py:81 | Local Variable foo | ControlFlowNode for foo | definition |
-| b_condition.py:82 | Local Variable foo | ControlFlowNode for callable() | refinement |
 | b_condition.py:83 | Local Variable bar | ControlFlowNode for bar | definition |
 | b_condition.py:83 | Local Variable foo | Entry node for Function bar | definition |
 | b_condition.py:87 | Global Variable split_bool1 | ControlFlowNode for split_bool1 | definition |
@@ -117,4 +115,3 @@
 | b_condition.py:101 | Global Variable not_or_not | ControlFlowNode for not_or_not | definition |
 | b_condition.py:101 | Local Variable a | ControlFlowNode for a | definition |
 | b_condition.py:101 | Local Variable a | Entry node for Function not_or_not | definition |
-| b_condition.py:102 | Local Variable a | ControlFlowNode for isinstance() | refinement |

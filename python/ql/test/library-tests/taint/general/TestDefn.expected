@@ -49,58 +49,50 @@
 | sanitizer.py:3 | ParameterDefinition | sanitizer.py:3 | Taint SQL injection | arg |
 | sanitizer.py:5 | ParameterDefinition | sanitizer.py:5 | Taint Command injection | arg |
 | sanitizer.py:5 | ParameterDefinition | sanitizer.py:5 | Taint SQL injection | arg |
-| sanitizer.py:8 | phi(x_3, x_5) | sanitizer.py:9 | Taint Command injection | user_input() |
-| sanitizer.py:8 | phi(x_3, x_5) | sanitizer.py:9 | Taint SQL injection | user_input() |
+| sanitizer.py:8 | phi(x_2, x_4) | sanitizer.py:9 | Taint Command injection | user_input() |
+| sanitizer.py:8 | phi(x_2, x_4) | sanitizer.py:9 | Taint SQL injection | user_input() |
 | sanitizer.py:9 | user_input() | sanitizer.py:9 | Taint Command injection | user_input() |
 | sanitizer.py:9 | user_input() | sanitizer.py:9 | Taint SQL injection | user_input() |
-| sanitizer.py:10 | ArgumentRefinement(x_0) | sanitizer.py:9 | Taint Command injection | user_input() |
-| sanitizer.py:10 | ArgumentRefinement(x_0) | sanitizer.py:9 | Taint SQL injection | user_input() |
-| sanitizer.py:11 | ArgumentRefinement(x_2) | sanitizer.py:9 | Taint Command injection | user_input() |
-| sanitizer.py:11 | Pi(x_1) [true] | sanitizer.py:9 | Taint Command injection | user_input() |
-| sanitizer.py:13 | ArgumentRefinement(x_4) | sanitizer.py:9 | Taint Command injection | user_input() |
-| sanitizer.py:13 | ArgumentRefinement(x_4) | sanitizer.py:9 | Taint SQL injection | user_input() |
-| sanitizer.py:13 | Pi(x_1) [false] | sanitizer.py:9 | Taint Command injection | user_input() |
-| sanitizer.py:13 | Pi(x_1) [false] | sanitizer.py:9 | Taint SQL injection | user_input() |
-| sanitizer.py:15 | phi(x_3, x_5) | sanitizer.py:16 | Taint Command injection | user_input() |
-| sanitizer.py:15 | phi(x_3, x_5) | sanitizer.py:16 | Taint SQL injection | user_input() |
+| sanitizer.py:11 | ArgumentRefinement(x_1) | sanitizer.py:9 | Taint Command injection | user_input() |
+| sanitizer.py:11 | Pi(x_0) [true] | sanitizer.py:9 | Taint Command injection | user_input() |
+| sanitizer.py:13 | ArgumentRefinement(x_3) | sanitizer.py:9 | Taint Command injection | user_input() |
+| sanitizer.py:13 | ArgumentRefinement(x_3) | sanitizer.py:9 | Taint SQL injection | user_input() |
+| sanitizer.py:13 | Pi(x_0) [false] | sanitizer.py:9 | Taint Command injection | user_input() |
+| sanitizer.py:13 | Pi(x_0) [false] | sanitizer.py:9 | Taint SQL injection | user_input() |
+| sanitizer.py:15 | phi(x_2, x_4) | sanitizer.py:16 | Taint Command injection | user_input() |
+| sanitizer.py:15 | phi(x_2, x_4) | sanitizer.py:16 | Taint SQL injection | user_input() |
 | sanitizer.py:16 | user_input() | sanitizer.py:16 | Taint Command injection | user_input() |
 | sanitizer.py:16 | user_input() | sanitizer.py:16 | Taint SQL injection | user_input() |
-| sanitizer.py:17 | ArgumentRefinement(x_0) | sanitizer.py:16 | Taint Command injection | user_input() |
-| sanitizer.py:17 | ArgumentRefinement(x_0) | sanitizer.py:16 | Taint SQL injection | user_input() |
-| sanitizer.py:18 | ArgumentRefinement(x_2) | sanitizer.py:16 | Taint SQL injection | user_input() |
-| sanitizer.py:18 | Pi(x_1) [true] | sanitizer.py:16 | Taint SQL injection | user_input() |
-| sanitizer.py:20 | ArgumentRefinement(x_4) | sanitizer.py:16 | Taint Command injection | user_input() |
-| sanitizer.py:20 | ArgumentRefinement(x_4) | sanitizer.py:16 | Taint SQL injection | user_input() |
-| sanitizer.py:20 | Pi(x_1) [false] | sanitizer.py:16 | Taint Command injection | user_input() |
-| sanitizer.py:20 | Pi(x_1) [false] | sanitizer.py:16 | Taint SQL injection | user_input() |
-| sanitizer.py:23 | phi(x_3, x_5) | sanitizer.py:24 | Taint Command injection | user_input() |
-| sanitizer.py:23 | phi(x_3, x_5) | sanitizer.py:24 | Taint SQL injection | user_input() |
+| sanitizer.py:18 | ArgumentRefinement(x_1) | sanitizer.py:16 | Taint SQL injection | user_input() |
+| sanitizer.py:18 | Pi(x_0) [true] | sanitizer.py:16 | Taint SQL injection | user_input() |
+| sanitizer.py:20 | ArgumentRefinement(x_3) | sanitizer.py:16 | Taint Command injection | user_input() |
+| sanitizer.py:20 | ArgumentRefinement(x_3) | sanitizer.py:16 | Taint SQL injection | user_input() |
+| sanitizer.py:20 | Pi(x_0) [false] | sanitizer.py:16 | Taint Command injection | user_input() |
+| sanitizer.py:20 | Pi(x_0) [false] | sanitizer.py:16 | Taint SQL injection | user_input() |
+| sanitizer.py:23 | phi(x_2, x_4) | sanitizer.py:24 | Taint Command injection | user_input() |
+| sanitizer.py:23 | phi(x_2, x_4) | sanitizer.py:24 | Taint SQL injection | user_input() |
 | sanitizer.py:24 | user_input() | sanitizer.py:24 | Taint Command injection | user_input() |
 | sanitizer.py:24 | user_input() | sanitizer.py:24 | Taint SQL injection | user_input() |
-| sanitizer.py:25 | ArgumentRefinement(x_0) | sanitizer.py:24 | Taint Command injection | user_input() |
-| sanitizer.py:25 | ArgumentRefinement(x_0) | sanitizer.py:24 | Taint SQL injection | user_input() |
-| sanitizer.py:26 | ArgumentRefinement(x_2) | sanitizer.py:24 | Taint Command injection | user_input() |
-| sanitizer.py:26 | ArgumentRefinement(x_2) | sanitizer.py:24 | Taint SQL injection | user_input() |
-| sanitizer.py:26 | Pi(x_1) [true] | sanitizer.py:24 | Taint Command injection | user_input() |
-| sanitizer.py:26 | Pi(x_1) [true] | sanitizer.py:24 | Taint SQL injection | user_input() |
-| sanitizer.py:28 | ArgumentRefinement(x_4) | sanitizer.py:24 | Taint Command injection | user_input() |
-| sanitizer.py:28 | ArgumentRefinement(x_4) | sanitizer.py:24 | Taint SQL injection | user_input() |
-| sanitizer.py:28 | Pi(x_1) [false] | sanitizer.py:24 | Taint Command injection | user_input() |
-| sanitizer.py:28 | Pi(x_1) [false] | sanitizer.py:24 | Taint SQL injection | user_input() |
-| sanitizer.py:30 | phi(x_3, x_5) | sanitizer.py:31 | Taint Command injection | user_input() |
-| sanitizer.py:30 | phi(x_3, x_5) | sanitizer.py:31 | Taint SQL injection | user_input() |
+| sanitizer.py:26 | ArgumentRefinement(x_1) | sanitizer.py:24 | Taint Command injection | user_input() |
+| sanitizer.py:26 | ArgumentRefinement(x_1) | sanitizer.py:24 | Taint SQL injection | user_input() |
+| sanitizer.py:26 | Pi(x_0) [true] | sanitizer.py:24 | Taint Command injection | user_input() |
+| sanitizer.py:26 | Pi(x_0) [true] | sanitizer.py:24 | Taint SQL injection | user_input() |
+| sanitizer.py:28 | ArgumentRefinement(x_3) | sanitizer.py:24 | Taint Command injection | user_input() |
+| sanitizer.py:28 | ArgumentRefinement(x_3) | sanitizer.py:24 | Taint SQL injection | user_input() |
+| sanitizer.py:28 | Pi(x_0) [false] | sanitizer.py:24 | Taint Command injection | user_input() |
+| sanitizer.py:28 | Pi(x_0) [false] | sanitizer.py:24 | Taint SQL injection | user_input() |
+| sanitizer.py:30 | phi(x_2, x_4) | sanitizer.py:31 | Taint Command injection | user_input() |
+| sanitizer.py:30 | phi(x_2, x_4) | sanitizer.py:31 | Taint SQL injection | user_input() |
 | sanitizer.py:31 | user_input() | sanitizer.py:31 | Taint Command injection | user_input() |
 | sanitizer.py:31 | user_input() | sanitizer.py:31 | Taint SQL injection | user_input() |
-| sanitizer.py:32 | ArgumentRefinement(x_0) | sanitizer.py:31 | Taint Command injection | user_input() |
-| sanitizer.py:32 | ArgumentRefinement(x_0) | sanitizer.py:31 | Taint SQL injection | user_input() |
-| sanitizer.py:33 | ArgumentRefinement(x_2) | sanitizer.py:31 | Taint Command injection | user_input() |
-| sanitizer.py:33 | ArgumentRefinement(x_2) | sanitizer.py:31 | Taint SQL injection | user_input() |
-| sanitizer.py:33 | Pi(x_1) [true] | sanitizer.py:31 | Taint Command injection | user_input() |
-| sanitizer.py:33 | Pi(x_1) [true] | sanitizer.py:31 | Taint SQL injection | user_input() |
-| sanitizer.py:35 | ArgumentRefinement(x_4) | sanitizer.py:31 | Taint Command injection | user_input() |
-| sanitizer.py:35 | ArgumentRefinement(x_4) | sanitizer.py:31 | Taint SQL injection | user_input() |
-| sanitizer.py:35 | Pi(x_1) [false] | sanitizer.py:31 | Taint Command injection | user_input() |
-| sanitizer.py:35 | Pi(x_1) [false] | sanitizer.py:31 | Taint SQL injection | user_input() |
+| sanitizer.py:33 | ArgumentRefinement(x_1) | sanitizer.py:31 | Taint Command injection | user_input() |
+| sanitizer.py:33 | ArgumentRefinement(x_1) | sanitizer.py:31 | Taint SQL injection | user_input() |
+| sanitizer.py:33 | Pi(x_0) [true] | sanitizer.py:31 | Taint Command injection | user_input() |
+| sanitizer.py:33 | Pi(x_0) [true] | sanitizer.py:31 | Taint SQL injection | user_input() |
+| sanitizer.py:35 | ArgumentRefinement(x_3) | sanitizer.py:31 | Taint Command injection | user_input() |
+| sanitizer.py:35 | ArgumentRefinement(x_3) | sanitizer.py:31 | Taint SQL injection | user_input() |
+| sanitizer.py:35 | Pi(x_0) [false] | sanitizer.py:31 | Taint Command injection | user_input() |
+| sanitizer.py:35 | Pi(x_0) [false] | sanitizer.py:31 | Taint SQL injection | user_input() |
 | test.py:6 | SOURCE | test.py:6 | Taint simple.test | SOURCE |
 | test.py:7 | ArgumentRefinement(s_0) | test.py:6 | Taint simple.test | SOURCE |
 | test.py:12 | ParameterDefinition | test.py:12 | Taint simple.test | arg |

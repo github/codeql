@@ -446,7 +446,7 @@ cached module SsaSource {
         use.(NameNode).uses(v) and
         call.getArg(0) = use and
         not method_call_refinement(v, _, call) and
-        not test_refinement(v, _, call)
+        not test_contains(_, call)
     }
 
     /** Holds if an attribute is deleted  at `def` and `use` is the use of `v` for that deletion */
