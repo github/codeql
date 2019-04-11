@@ -31,7 +31,7 @@ import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
 import com.semmle.ts.ast.IsTypeExpr;
-import com.semmle.ts.ast.KeyofTypeExpr;
+import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
@@ -700,8 +700,8 @@ public class NodeCopier implements Visitor<Void, INode> {
   }
 
   @Override
-  public INode visit(KeyofTypeExpr nd, Void c) {
-    return new KeyofTypeExpr(visit(nd.getLoc()), copy(nd.getElementType()));
+  public INode visit(UnaryTypeExpr nd, Void c) {
+    return new UnaryTypeExpr(visit(nd.getLoc()), nd.getKind(), copy(nd.getElementType()));
   }
 
   @Override
