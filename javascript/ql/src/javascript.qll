@@ -62,6 +62,7 @@ import semmle.javascript.frameworks.AsyncPackage
 import semmle.javascript.frameworks.AWS
 import semmle.javascript.frameworks.Azure
 import semmle.javascript.frameworks.Babel
+import semmle.javascript.frameworks.Cheerio
 import semmle.javascript.frameworks.ComposedFunctions
 import semmle.javascript.frameworks.ClientRequests
 import semmle.javascript.frameworks.ClosureLibrary

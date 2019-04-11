@@ -66,21 +66,7 @@ class JQueryMethodCall extends CallExpr {
    */
   predicate interpretsArgumentAsHtml(Expr e) {
     // some methods interpret all their arguments as (potential) HTML
-    (
-      name = "after" or
-      name = "append" or
-      name = "appendTo" or
-      name = "before" or
-      name = "html" or
-      name = "insertAfter" or
-      name = "insertBefore" or
-      name = "prepend" or
-      name = "prependTo" or
-      name = "replaceWith" or
-      name = "wrap" or
-      name = "wrapAll" or
-      name = "wrapInner"
-    ) and
+    JQuery::isMethodArgumentInterpretedAsHtml(name) and
     e = getAnArgument()
     or
     // for `$, it's only the first one
@@ -97,15 +83,7 @@ class JQueryMethodCall extends CallExpr {
    */
   predicate interpretsArgumentAsSelector(Expr e) {
     // some methods interpret all their arguments as (potential) selectors
-    (
-      name = "appendTo" or
-      name = "insertAfter" or
-      name = "insertBefore" or
-      name = "prependTo" or
-      name = "wrap" or
-      name = "wrapAll" or
-      name = "wrapInner"
-    ) and
+    JQuery::isMethodArgumentInterpretedAsSelector(name) and
     e = getAnArgument()
     or
     // for `$, it's only the first one
@@ -307,4 +285,40 @@ private class JQueryClientRequest extends CustomClientRequest {
   override DataFlow::Node getHost() { none() }
 
   override DataFlow::Node getADataNode() { result = getOptionArgument([0 .. 1], "data") }
+}
+
+module JQuery {
+  /**
+   * Holds if method `name` on a jQuery object may interpret any of its
+   * arguments as HTML.
+   */
+  predicate isMethodArgumentInterpretedAsHtml(string name) {
+    name = "after" or
+    name = "append" or
+    name = "appendTo" or
+    name = "before" or
+    name = "html" or
+    name = "insertAfter" or
+    name = "insertBefore" or
+    name = "prepend" or
+    name = "prependTo" or
+    name = "replaceWith" or
+    name = "wrap" or
+    name = "wrapAll" or
+    name = "wrapInner"
+  }
+
+  /**
+   * Holds if method `name` on a jQuery object may interpret any of its
+   * arguments as a selector.
+   */
+  predicate isMethodArgumentInterpretedAsSelector(string name) {
+    name = "appendTo" or
+    name = "insertAfter" or
+    name = "insertBefore" or
+    name = "prependTo" or
+    name = "wrap" or
+    name = "wrapAll" or
+    name = "wrapInner"
+  }
 }
