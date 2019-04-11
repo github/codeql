@@ -156,6 +156,7 @@ class CommentBlock extends Comment {
 
   predicate isCommentedOutCode() {
     not this.isDocumentation() and
+    not this.getFile().(HeaderFile).noTopLevelCode() and
     this.numCodeLines().(float) / this.numLines().(float) > 0.5
   }
 
