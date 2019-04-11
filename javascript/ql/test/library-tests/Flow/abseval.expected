@@ -12,6 +12,12 @@
 | amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | c.js:1:1:7:0 | exports object of module c |
 | amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | c.js:1:18:1:19 | object literal |
 | amd3.js:3:7:3:8 | _c | amd3.js:3:12:3:12 | c | file://:0:0:0:0 | indefinite value (call) |
+| amd4.js:2:7:2:8 | _u | amd4.js:2:12:2:12 | u | file://:0:0:0:0 | indefinite value (call) |
+| amd4.js:2:7:2:8 | _u | amd4.js:2:12:2:12 | u | file://:0:0:0:0 | non-empty, non-numeric string |
+| amd4.js:2:7:2:8 | _u | amd4.js:2:12:2:12 | u | reexport/lib/src/utils/util.js:1:1:3:0 | exports object of module util |
+| amd5.js:2:7:2:8 | _u | amd5.js:2:12:2:32 | req('sr ... /util') | file://:0:0:0:0 | indefinite value (call) |
+| amd5.js:2:7:2:8 | _u | amd5.js:2:12:2:32 | req('sr ... /util') | file://:0:0:0:0 | non-empty, non-numeric string |
+| amd5.js:2:7:2:8 | _u | amd5.js:2:12:2:32 | req('sr ... /util') | reexport/lib/src/utils/util.js:1:1:3:0 | exports object of module util |
 | amd.js:2:7:2:7 | m | amd.js:2:11:2:13 | mod | amd.js:1:1:7:0 | module object of module amd |
 | amd.js:2:7:2:7 | m | amd.js:2:11:2:13 | mod | file://:0:0:0:0 | indefinite value (call) |
 | amd.js:3:7:3:7 | e | amd.js:3:11:3:13 | exp | amd.js:1:1:7:0 | exports object of module amd |

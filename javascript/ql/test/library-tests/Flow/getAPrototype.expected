@@ -3,6 +3,8 @@
 | a.js:15:1:17:1 | instance of function bump | a.js:15:1:17:1 | instance of function bump |
 | amd2.js:1:8:3:1 | instance of anonymous function | amd2.js:1:8:3:1 | instance of anonymous function |
 | amd3.js:1:24:4:1 | instance of anonymous function | amd3.js:1:24:4:1 | instance of anonymous function |
+| amd4.js:1:28:3:1 | instance of anonymous function | amd4.js:1:28:3:1 | instance of anonymous function |
+| amd5.js:1:21:3:1 | instance of anonymous function | amd5.js:1:21:3:1 | instance of anonymous function |
 | amd.js:1:31:6:1 | instance of anonymous function | amd.js:1:31:6:1 | instance of anonymous function |
 | arguments.js:1:2:3:1 | instance of anonymous function | arguments.js:1:2:3:1 | instance of anonymous function |
 | arguments.js:5:2:8:1 | instance of anonymous function | arguments.js:5:2:8:1 | instance of anonymous function |

@@ -248,10 +248,18 @@ private class AnalyzedAmdImport extends AnalyzedPropertyRead, DataFlow::Node {
   Module required;
 
   AnalyzedAmdImport() {
-    exists(AmdModule amd, PathExpr dep, Parameter p |
-      amd.getDefine().dependencyParameter(dep, p) and
-      this = DataFlow::parameterNode(p) and
-      required.getFile() = amd.resolve(dep)
+    exists(AmdModule amd, PathExpr dep |
+      exists(Parameter p |
+        amd.getDefine().dependencyParameter(dep, p) and
+        this = DataFlow::parameterNode(p)
+      )
+      or
+      exists(CallExpr requireCall |
+        requireCall = amd.getDefine().getARequireCall() and
+        dep = requireCall.getAnArgument() and
+        this = requireCall.flow()
+      ) |
+      required = dep.(Import).getImportedModule()
     )
   }
 

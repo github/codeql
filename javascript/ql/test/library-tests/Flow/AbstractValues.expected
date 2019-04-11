@@ -19,6 +19,14 @@
 | amd3.js:1:1:5:0 | module object of module amd3 |
 | amd3.js:1:24:4:1 | anonymous function |
 | amd3.js:1:24:4:1 | instance of anonymous function |
+| amd4.js:1:1:4:0 | exports object of module amd4 |
+| amd4.js:1:1:4:0 | module object of module amd4 |
+| amd4.js:1:28:3:1 | anonymous function |
+| amd4.js:1:28:3:1 | instance of anonymous function |
+| amd5.js:1:1:4:0 | exports object of module amd5 |
+| amd5.js:1:1:4:0 | module object of module amd5 |
+| amd5.js:1:21:3:1 | anonymous function |
+| amd5.js:1:21:3:1 | instance of anonymous function |
 | amd.js:1:1:7:0 | exports object of module amd |
 | amd.js:1:1:7:0 | module object of module amd |
 | amd.js:1:31:6:1 | anonymous function |
