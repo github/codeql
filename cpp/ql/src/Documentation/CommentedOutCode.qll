@@ -104,7 +104,7 @@ private int commentId(CppStyleComment c, File f, int line) {
  */
 class CommentBlock extends Comment {
   CommentBlock() {
-  	(
+    (
       this instanceof CppStyleComment
       implies
       not exists(CppStyleComment pred, File f | lineInFile(pred, f) + 1 = lineInFile(this, f))
