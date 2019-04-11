@@ -11,12 +11,7 @@
 | test2.cpp:63:1:63:15 | // #pragma once | This comment appears to contain commented-out code |
 | test2.cpp:65:1:65:17 | //  # pragma once | This comment appears to contain commented-out code |
 | test2.cpp:67:1:67:19 | /*#error"myerror"*/ | This comment appears to contain commented-out code |
-| test2.cpp:73:8:73:24 | // #ifdef MYMACRO | This comment appears to contain commented-out code |
-| test2.cpp:79:7:79:30 | // #if !defined(MYMACRO) | This comment appears to contain commented-out code |
-| test2.cpp:83:8:83:37 | // #else #if !defined(MYMACRO) | This comment appears to contain commented-out code |
-| test2.cpp:89:10:89:45 | //    #ifdef MYMACRO       (comment) | This comment appears to contain commented-out code |
 | test2.cpp:91:1:95:2 | /*\n#ifdef MYMACRO\n\t// ...\n#endif // #ifdef MYMACRO\n*/ | This comment appears to contain commented-out code |
-| test2.cpp:103:3:105:25 | // comment at end of block | This comment appears to contain commented-out code |
 | test.c:2:1:2:22 | // commented out code; | This comment appears to contain commented-out code |
 | test.c:4:1:7:8 | // some; | This comment appears to contain commented-out code |
 | test.c:9:1:13:8 | // also; | This comment appears to contain commented-out code |
