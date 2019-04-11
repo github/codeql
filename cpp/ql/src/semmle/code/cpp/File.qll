@@ -453,6 +453,20 @@ class HeaderFile extends File {
     exists(Include i | i.getIncludedFile() = this)
   }
 
+  /**
+   * Holds if this header file does not contain any declaration entries or top level
+   * declarations.  For example it might be:
+   *  - a file containing only preprocessor directives and/or comments
+   *  - an empty file
+   *  - a file that contains non-top level code or data that's included in an
+   *    unusual way
+   */
+  predicate noTopLevelCode()
+  {
+    not exists(DeclarationEntry de | de.getFile() = this) and
+    not exists(Declaration d | d.getFile() = this and d.isTopLevel()) and
+    not exists(UsingEntry ue | ue.getFile() = this)
+  }
 }
 
 /**
