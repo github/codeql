@@ -12,7 +12,7 @@ import python
 predicate points_to_failure(Expr e) {
     exists(ControlFlowNode f | 
         f = e.getAFlowNode() |
-        not f.refersTo(_)
+        not exists(f.pointsTo())
     )
 }
 

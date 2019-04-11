@@ -16,7 +16,7 @@ FunctionObject iter() {
     result = Object::builtin("iter")
 }
 
-FunctionObject next() {
+BuiltinFunctionObject next() {
     result = Object::builtin("next")
 }
 

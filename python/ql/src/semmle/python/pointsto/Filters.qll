@@ -31,3 +31,16 @@ predicate issubclass(CallNode fc, ControlFlowNode cls, ControlFlowNode use) {
     fc.getArg(0) = use and cls = fc.getArg(1)
 }
 
+/** Holds if `c` is a test comparing `x` and `y`. `is` is true if the operator is `is` or `==`, it is false if the operator is `is not` or `!=`. */
+predicate equality_test(CompareNode c, ControlFlowNode x, boolean is, ControlFlowNode y) {
+    exists(Cmpop op |
+        c.operands(x, op, y) or
+        c.operands(y, op, x)
+        |
+        (is = true and op instanceof Is or
+         is = false and op instanceof IsNot or
+         is = true and op instanceof Eq or
+         is = false and op instanceof NotEq
+        )
+    )
+}

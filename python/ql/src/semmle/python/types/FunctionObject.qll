@@ -257,6 +257,10 @@ abstract class BuiltinCallable extends FunctionObject {
 
     abstract override string getQualifiedName();
 
+    override ControlFlowNode getArgumentForCall(CallNode call, int n) {
+        call = this.getACall() and result = call.getArg(n)
+    }
+
 }
 
 class BuiltinMethodObject extends BuiltinCallable {

@@ -1145,20 +1145,6 @@ module Expressions {
         )
     }
 
-    /** Holds if `c` is a test comparing `x` and `y`. `is` is true if the operator is `is` or `==`, it is false if the operator is `is not` or `!=`. */
-    private predicate equality_test(CompareNode c, ControlFlowNode x, boolean is, ControlFlowNode y) {
-        exists(Cmpop op |
-            c.operands(x, op, y) or
-            c.operands(y, op, x)
-            |
-            (is = true and op instanceof Is or
-             is = false and op instanceof IsNot or
-             is = true and op instanceof Eq or
-             is = false and op instanceof NotEq
-            )
-        )
-    }
-
     pragma [noinline]
     private boolean inequalityEvaluatesTo(ControlFlowNode expr, PointsToContext context, ControlFlowNode use, ObjectInternal val) {
         exists(ControlFlowNode r, boolean sense |

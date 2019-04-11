@@ -6,7 +6,7 @@ from int size
 
 where
 size = count(ControlFlowNode f |
-    not PointsTo::Test::reachableBlock(f.getBasicBlock(), _)
+    not PointsToInternal::reachableBlock(f.getBasicBlock(), _)
 )
 
 

@@ -515,6 +515,15 @@ class SuperBoundMethod extends Object {
         result = "super()." + name
     }
 
+    Object getFunction(string fname) {
+        fname = name and
+        exists(SuperInstance sup, BoundMethodObjectInternal m |
+            sup = this.(AttrNode).getObject(name).pointsTo() and
+            sup.attribute(name, m, _) and
+            result = m.getFunction().getSource()
+        )
+    }
+
 }
 
 
