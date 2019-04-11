@@ -198,6 +198,10 @@ private predicate valueMayEscapeMutablyAt(Expr e) {
     or
     t instanceof ReferenceType and
     not t.(ReferenceType).getBaseType().isConst()
+    or
+    // If the address has been cast to an integral type, conservatively assume that it may eventually be cast back to a
+    // pointer to non-const type.
+    t instanceof IntegralType
   )
 }
 

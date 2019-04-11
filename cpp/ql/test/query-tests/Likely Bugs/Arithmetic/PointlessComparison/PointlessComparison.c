@@ -342,3 +342,25 @@ int nan2(double x) {
     }
   }
 }
+
+struct info_t {
+  int id;
+  unsigned long long value;
+};
+
+int command(void* p, unsigned int s);
+
+int callCommand(void)
+{
+  struct info_t info;
+  unsigned int tmp = 0;
+
+  info.id = 1;
+  info.value = (unsigned long long)& tmp;
+  if (command(&info, sizeof(info))) {
+    return 0;
+  }
+  if (tmp == 1)  // tmp could have been modified by the call.
+    return 1;
+  return 0;
+}
