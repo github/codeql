@@ -6,7 +6,11 @@ private import semmle.python.types.ModuleKind
 abstract class ModuleObject extends Object {
 
     ModuleValue theModule() {
-        result.getSource() = this
+        result.(PythonModuleObjectInternal).getSourceModule() = this.getModule()
+        or
+        result.(PackageObjectInternal).getFolder() = this.(PackageObject).getPath()
+        or
+        result.(BuiltinModuleObjectInternal).getBuiltin() = this
     }
 
     /** Gets the scope corresponding to this module, if this is a Python module */
@@ -223,7 +227,7 @@ class PackageObject extends ModuleObject {
 
     override Object getAttribute(string name) {
         exists(Value val |
-            theModule().(PackageObjectInternal).attribute(name, _, _) and
+            theModule().(PackageObjectInternal).attribute(name, val, _) and
             result = val.getSource()
         )
     }
