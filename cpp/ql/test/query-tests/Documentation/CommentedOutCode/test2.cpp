@@ -104,4 +104,12 @@ void myFunction();
 	#endif // #ifdef MYMACRO2
 #endif // #ifdef MYMACRO1
 
-#include "config.h"
+#include "config.h" // #include "config2.h"
+
+#ifdef MYMACRO
+
+	// ...
+
+#endif /* #ifdef MYMACRO */
+
+#error "error" /* #ifdef MYMACRO */
