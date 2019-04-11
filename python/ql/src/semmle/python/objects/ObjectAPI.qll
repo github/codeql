@@ -146,5 +146,9 @@ class ClassValue extends Value {
         result = Types::getMro(this).getAnItem()
     }
 
+    Value lookup(string name) {
+        this.(ClassObjectInternal).lookup(name, result, _)
+    }
+
 }
 

@@ -108,7 +108,7 @@ class ClassObject extends Object {
       Will include attributes of super-classes */
     Object lookupAttribute(string name) {
         exists(Value val |
-            theClass().attribute(name, val, _) and
+            theClass().lookup(name, val, _) and
             result = val.getSource()
         )
     }
@@ -135,7 +135,7 @@ class ClassObject extends Object {
     /** Whether the named attribute refers to the object, class and origin */
     predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
         exists(Value val, CfgOrigin valorig |
-            theClass().attribute(name, val, valorig) and
+            theClass().lookup(name, val, valorig) and
             obj = val.getSource() and
             cls = val.getClass().getSource() and
             origin = valorig.toCfgNode()

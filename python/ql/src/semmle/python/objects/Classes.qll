@@ -97,9 +97,8 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
 
     override predicate calleeAndOffset(Function scope, int paramOffset) {
         exists(PythonFunctionObjectInternal init |
-            // TO DO... Lookup init...
-            none() |
-            init.getScope() = scope and paramOffset = 1
+            this.lookup("__init__", init, _) and
+            init.calleeAndOffset(scope, paramOffset-1)
         )
     }
 

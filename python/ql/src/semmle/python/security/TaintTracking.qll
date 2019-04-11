@@ -1069,7 +1069,7 @@ library module TaintFlowImplementation {
     predicate self_init_end_transfer(EssaVariable self, CallContext callee, CallNode call, CallContext caller) {
         exists(ClassValue cls, Function init |
             call.getFunction().pointsTo(cls) and
-            init = cls.attr("__init__").(CallableValue).getScope() and
+            init = cls.lookup("__init__").(CallableValue).getScope() and
             self.getSourceVariable().(Variable).isSelf() and self.getScope() = init
             |
             callee = caller.getCallee(call)
@@ -1218,7 +1218,7 @@ library module TaintFlowImplementation {
     pragma [noinline]
     predicate class_initializer_argument(ClassValue cls, int n, CallNode call, CallableValue func, ControlFlowNode argument, NameNode param) {
         call.getFunction().pointsTo(cls) and
-        cls.attr("__init__") = func and
+        cls.lookup("__init__") = func and
         call.getArg(n) = argument and
         param.getNode() = func.getScope().getArg(n+1)
     }
@@ -1510,7 +1510,7 @@ class CallContext extends TCallContext {
         exists(ClassValue cls,CallNode call |
             this = TCalleeContext(call, _, _) and
             call.getFunction().pointsTo(cls) and
-            s = cls.attr("__init__").(CallableValue).getScope() and
+            s = cls.lookup("__init__").(CallableValue).getScope() and
             call.getFunction().pointsTo(cls)
         )
     }
