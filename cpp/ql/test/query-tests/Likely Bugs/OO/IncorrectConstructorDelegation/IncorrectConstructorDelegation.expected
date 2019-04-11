@@ -1,0 +1,2 @@
+| test.cpp:7:3:7:24 | call to MyRect | The constructor MyRect may leave the instance uninitialized, as it tries to delegate to another constructor. |
+| test.cpp:16:3:16:24 | call to MyRect | The constructor MyRect may leave the instance uninitialized, as it tries to delegate to another constructor. |

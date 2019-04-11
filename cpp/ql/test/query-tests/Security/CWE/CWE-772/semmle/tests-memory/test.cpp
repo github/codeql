@@ -555,6 +555,20 @@ void test28()
 	dostuff();
 }
 
+// placement new
+void* operator new(size_t, void* p);
+
+class MyClass29
+{
+};
+
+void test29()
+{
+	void *buf = malloc(sizeof(MyClass29)); // GOOD (freed)
+	MyClass29 *p1 = new (buf) MyClass29(); // GOOD (not really an allocation)
+	free(buf);
+}
+
 // run tests
 int main(int argc, char *argv[])
 {
@@ -585,4 +599,5 @@ int main(int argc, char *argv[])
 	test26();
 	test27();
 	test28();
+	test29();
 }
