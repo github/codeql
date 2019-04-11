@@ -2,8 +2,8 @@ private import csharp
 private import cil
 private import dotnet
 private import DataFlowPrivate
+private import DelegateDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
-private import semmle.code.csharp.dataflow.DelegateDataFlow
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 

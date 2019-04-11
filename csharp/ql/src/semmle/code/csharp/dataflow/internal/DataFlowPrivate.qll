@@ -5,8 +5,8 @@ private import DataFlowPublic
 private import DataFlowDispatch
 private import DataFlowImplCommon
 private import ControlFlowReachability
+private import DelegateDataFlow
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
-private import semmle.code.csharp.dataflow.DelegateDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate

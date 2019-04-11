@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.dataflow.DelegateDataFlow
+private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import dotnet
 
