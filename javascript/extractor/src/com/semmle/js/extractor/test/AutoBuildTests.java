@@ -491,4 +491,12 @@ public class AutoBuildTests {
       Assert.assertEquals("Invalid file type 'javascript'.", ue.getMessage());
     }
   }
+
+  @Test
+  public void includeYaml() throws IOException {
+    addFile(true, LGTM_SRC, "tst.yaml");
+    addFile(true, LGTM_SRC, "tst.yml");
+    addFile(true, LGTM_SRC, "tst.raml");
+    addFile(true, LGTM_SRC, "tst2.YML");
+  }
 }

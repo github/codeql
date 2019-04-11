@@ -128,6 +128,8 @@ import java.util.stream.Stream;
  *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".es6", ".es").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
  *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue").
+ *   <li>All YAML files, that is, files with one of the extensions supported by {@link
+ *       FileType#YAML} (currently ".raml", ".yaml", ".yml").
  *   <li>Files with base name "package.json".
  *   <li>JavaScript, JSON or YAML files whose base name starts with ".eslintrc".
  *   <li>All extension-less files.
@@ -338,10 +340,11 @@ public class AutoBuild {
     // exclude all files with extensions
     patterns.add("-**/*.*");
 
-    // but include HTML, JavaScript and (optionally) TypeScript
+    // but include HTML, JavaScript, YAML and (optionally) TypeScript
     Set<FileType> defaultExtract = new LinkedHashSet<FileType>();
     defaultExtract.add(FileType.HTML);
     defaultExtract.add(FileType.JS);
+    defaultExtract.add(FileType.YAML);
     if (typeScriptMode != TypeScriptMode.NONE) defaultExtract.add(FileType.TYPESCRIPT);
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
