@@ -49,10 +49,21 @@ private predicate looksLikeCode(string line) {
 
 /**
  * Holds if there is a preprocessor directive on the line indicated by
- * `f` and `line`.
+ * `f` and `line` that we permit code comments besides.  For example this
+ * is considered acceptable:
+ * ```
+ * #ifdef MYMACRO
+ * ...
+ * #endif // #ifdef MYMACRO
+ * ```
  */
 private predicate preprocLine(File f, int line) {
   exists(PreprocessorDirective pd, Location l |
+    (
+      pd instanceof PreprocessorElse or
+      pd instanceof PreprocessorElif or
+      pd instanceof PreprocessorEndif
+    ) and
     pd.getLocation() = l and
     l.getFile() = f and
     l.getStartLine() = line
