@@ -101,6 +101,34 @@ predicate allBackslashesEscaped(DataFlow::Node nd) {
   allBackslashesEscaped(nd.getAPredecessor())
 }
 
+/**
+ * Holds if `repl` looks like a call to "String.prototype.replace" that deliberately removes the first occurrence of `str`.
+ */
+predicate removesFirstOccurence(DataFlow::MethodCallNode repl, string str) {
+  repl.getMethodName() = "replace" and
+  repl.getArgument(0).getStringValue() = str and
+  repl.getArgument(1).getStringValue() = ""
+}
+
+/**
+ * Holds if `leftUnwrap` and `rightUnwrap` unwraps a string from a pair of surrounding delimiters.
+ */
+predicate isDelimiterUnwrapper(
+  DataFlow::MethodCallNode leftUnwrap, DataFlow::MethodCallNode rightUnwrap
+) {
+  exists(string left, string right |
+    left = "[" and right = "]"
+    or
+    left = "{" and right = "}"
+    or
+    left = "(" and right = ")"
+  |
+    removesFirstOccurence(leftUnwrap, left) and
+    removesFirstOccurence(rightUnwrap, right) and
+    leftUnwrap.getAMethodCall() = rightUnwrap
+  )
+}
+
 from MethodCallExpr repl, Expr old, string msg
 where
   repl.getMethodName() = "replace" and
@@ -122,7 +150,10 @@ where
       )
     ) and
     // don't flag replace operations in a loop
-    not DataFlow::valueNode(repl.getReceiver()) = DataFlow::valueNode(repl).getASuccessor+()
+    not DataFlow::valueNode(repl.getReceiver()) = DataFlow::valueNode(repl).getASuccessor+() and
+    // dont' flag unwrapper
+    not isDelimiterUnwrapper(repl.flow(), _) and
+    not isDelimiterUnwrapper(_, repl.flow())
     or
     exists(RegExpLiteral rel |
       isBackslashEscape(repl, rel) and
