@@ -46,16 +46,7 @@ where
   or
   l = "Self-Containedness" and
   n = (
-        100 *
-            sum(Class c, int toSum |
-              c.fromSource() and toSum = c.getMetrics().getEfferentSourceCoupling()
-            |
-              toSum
-            ) /
-          sum(Class c, int toSum |
-            c.fromSource() and toSum = c.getMetrics().getEfferentCoupling()
-          |
-            toSum
-          )
+        100 * sum(Class c | c.fromSource() | c.getMetrics().getEfferentSourceCoupling()) /
+          sum(Class c | c.fromSource() | c.getMetrics().getEfferentCoupling())
       ).toString() + "%"
 select l as Title, n as Value
