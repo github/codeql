@@ -103,8 +103,7 @@ class CallableValue extends Value {
     }
 
     predicate neverReturns() {
-        // TO DO..
-        none()
+        this.(CallableObjectInternal).neverReturns()
     }
 
     Function getScope() {

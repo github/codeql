@@ -1268,7 +1268,7 @@ library module TaintFlowImplementation {
                 |
                 test.getSense() = true and not exists(kind.getClass())
                 or
-                test.getSense() = true and kind.getClass().getASuperType() = cls
+                test.getSense() = true and kind.getType().getASuperType() = cls
                 or
                 test.getSense() = false and not kind.getType().getASuperType() = cls
             )

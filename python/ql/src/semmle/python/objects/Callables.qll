@@ -52,6 +52,7 @@ abstract class CallableObjectInternal extends ObjectInternal {
 
     override int length() { none() }
 
+    abstract predicate neverReturns();
 }
 
 
@@ -146,6 +147,10 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         result.getNode() = this.getScope().getArgByName(name)
     }
 
+
+    override predicate neverReturns() {
+        InterProceduralPointsTo::neverReturns(this.getScope())
+    }
 }
 
 
@@ -220,9 +225,11 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
             or
             func = Builtin::builtin("intern") and result = Builtin::special("str")
             or
+            func = Builtin::builtin("__import__") and result = Builtin::special("ModuleType")
+            or
             /* Fix a few minor inaccuracies in the CPython analysis */ 
             ext_rettype(func, result) and not (
-                func = Builtin::builtin("__import__") and result = Builtin::special("NoneType")
+                func = Builtin::builtin("__import__")
                 or
                 func = Builtin::builtin("compile") and result = Builtin::special("NoneType")
                 or
@@ -249,6 +256,10 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
     override NameNode getParameterByName(string name) {
         none()
+    }
+
+    override predicate neverReturns() {
+        this = Module::named("sys").attr("exit")
     }
 
 }
@@ -334,6 +345,8 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
         none()
     }
 
+    override predicate neverReturns() { none() }
+
 }
 
 class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
@@ -404,6 +417,10 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     override NameNode getParameterByName(string name) {
         result = this.getFunction().getParameterByName(name)
     }
+
+    override predicate neverReturns() {
+        this.getFunction().neverReturns()
+   }
 
 }
 
