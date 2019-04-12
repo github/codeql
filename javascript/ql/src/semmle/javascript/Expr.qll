@@ -191,7 +191,8 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       or
       this = ctx.(UnaryExpr).getOperand() and
       not ctx instanceof LogNotExpr and // !x is fine because of implicit conversion
-      not ctx instanceof PlusExpr // +x is fine because of implicit conversion
+      not ctx instanceof PlusExpr and // +x is fine because of implicit conversion
+      not ctx instanceof VoidExpr // void x is fine because it explicitly is for capturing void things
       or
       this = ctx.(UpdateExpr).getOperand()
       or
