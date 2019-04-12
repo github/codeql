@@ -11,6 +11,9 @@
  */
 import cpp
 
+/**
+ * Gets a string describing the kind of a `Class`.
+ */
 string kindstr(Class c)
 {
   exists(int kind | usertypes(unresolveElement(c), _, kind) |
@@ -20,6 +23,9 @@ string kindstr(Class c)
   )
 }
 
+/**
+ * Holds if the arguments correspond to information about a `VariableDeclarationEntry`.
+ */
 predicate vdeInfo(VariableDeclarationEntry vde, Class c, File f, int line)
 {
   c = vde.getVariable().getDeclaringType() and
@@ -27,6 +33,10 @@ predicate vdeInfo(VariableDeclarationEntry vde, Class c, File f, int line)
   line = vde.getLocation().getStartLine()
 }
 
+/**
+ * Holds if `previous` describes a `VariableDeclarationEntry` occurring soon before
+ * `vde` (this may have many results).
+ */
 predicate previousVde(VariableDeclarationEntry previous, VariableDeclarationEntry vde)
 {
   exists(Class c, File f, int line | vdeInfo(vde, c, f, line) |
@@ -40,12 +50,19 @@ predicate previousVde(VariableDeclarationEntry previous, VariableDeclarationEntr
   )
 }
 
+/**
+ * The first `VariableDeclarationEntry` in a group.
+ */
 predicate masterVde(VariableDeclarationEntry master, VariableDeclarationEntry vde)
 {
   (not previousVde(_, vde) and master = vde) or
   exists(VariableDeclarationEntry previous | previousVde(previous, vde) and masterVde(master, previous))
 }
 
+/**
+ * A group of `VariableDeclaratinEntry`'s in the same class and in close proximity
+ * to each other.
+ */
 class VariableDeclarationGroup extends ElementBase {
   VariableDeclarationGroup() {
     this instanceof VariableDeclarationEntry and
