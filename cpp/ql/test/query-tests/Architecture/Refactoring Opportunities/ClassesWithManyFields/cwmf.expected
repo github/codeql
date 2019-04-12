@@ -1,7 +1,7 @@
-| cwmf.cpp:8:3:9:12 | aa | Struct aa has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:8:3:9:12 | definition of f1 | group of 20 fields here |
-| cwmf.cpp:13:3:14:12 | bb | Class bb has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:13:3:14:12 | definition of f1 | group of 20 fields here |
-| cwmf.cpp:24:3:25:12 | dd<T> | Template class dd<T> has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:24:3:25:12 | definition of f1 | group of 20 fields here |
-| cwmf.cpp:30:3:31:12 | ee<U> | Template class ee<U> has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:30:3:31:12 | definition of f1 | group of 20 fields here |
-| cwmf.cpp:41:8:57:22 | MyParticle | Struct MyParticle has 30 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:41:8:57:22 | definition of isActive | group of 30 fields here |
-| different_types.h:15:15:33:10 | DifferentTypes2 | Class DifferentTypes2 has 18 fields; we suggest refactoring to 15 fields or fewer. | different_types.h:15:15:33:10 | definition of i1 | group of 18 fields here |
-| different_types.h:15:15:33:10 | DifferentTypes2 | Class DifferentTypes2 has 18 fields; we suggest refactoring to 15 fields or fewer. | different_types.h:15:15:33:10 | definition of i1 | group of 18 fields here |
+| cwmf.cpp:8:3:9:12 | aa | Struct aa has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:8:3:9:12 | group of 20 fields here | group of 20 fields here |
+| cwmf.cpp:13:3:14:12 | bb | Class bb has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:13:3:14:12 | group of 20 fields here | group of 20 fields here |
+| cwmf.cpp:24:3:25:12 | dd<T> | Template class dd<T> has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:24:3:25:12 | group of 20 fields here | group of 20 fields here |
+| cwmf.cpp:30:3:31:12 | ee<U> | Template class ee<U> has 20 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:30:3:31:12 | group of 20 fields here | group of 20 fields here |
+| cwmf.cpp:41:8:57:22 | MyParticle | Struct MyParticle has 30 fields; we suggest refactoring to 15 fields or fewer. | cwmf.cpp:41:8:57:22 | group of 30 fields here | group of 30 fields here |
+| different_types.h:15:15:33:10 | DifferentTypes2 | Class DifferentTypes2 has 18 fields; we suggest refactoring to 15 fields or fewer. | different_types.h:15:15:33:10 | group of 18 fields here | group of 18 fields here |
+| different_types.h:15:15:33:10 | DifferentTypes2 | Class DifferentTypes2 has 18 fields; we suggest refactoring to 15 fields or fewer. | different_types.h:15:15:33:10 | group of 18 fields here | group of 18 fields here |
