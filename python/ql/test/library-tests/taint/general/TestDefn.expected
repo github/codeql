@@ -182,3 +182,10 @@
 | test.py:186 | ArgumentRefinement(t_3) | test.py:178 | Taint simple.test | SOURCE |
 | test.py:189 | FALSEY | test.py:189 | Taint falsey | FALSEY |
 | test.py:191 | Pi(t_0) [true] | test.py:189 | Taint falsey | FALSEY |
+| test.py:194 | phi(t_3, t_5) | test.py:195 | Taint simple.test | SOURCE |
+| test.py:195 | SOURCE | test.py:195 | Taint simple.test | SOURCE |
+| test.py:196 | ArgumentRefinement(t_0) | test.py:195 | Taint simple.test | SOURCE |
+| test.py:197 | ArgumentRefinement(t_2) | test.py:195 | Taint simple.test | SOURCE |
+| test.py:197 | Pi(t_1) [true] | test.py:195 | Taint simple.test | SOURCE |
+| test.py:199 | ArgumentRefinement(t_4) | test.py:195 | Taint simple.test | SOURCE |
+| test.py:199 | Pi(t_1) [false] | test.py:195 | Taint simple.test | SOURCE |

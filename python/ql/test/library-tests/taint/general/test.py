@@ -190,3 +190,11 @@ def test_early_exit():
     if not t:
         return
     t
+
+def flow_through_type_test_if_no_class():
+    t = SOURCE
+    if isinstance(t, str):
+        SINK(t)
+    else:
+        SINK(t)
+
