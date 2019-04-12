@@ -26,7 +26,7 @@ x -= y
 x *= y
 x /= y
 x %= y
-x , y = p
+[x , y] = p
 //[1,2,...xs]
 x & y
 x | y
