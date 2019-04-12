@@ -66,7 +66,6 @@
 | b_condition.py:34 | Local Variable x | ArgumentRefinement |
 | b_condition.py:34 | Local Variable x | PhiFunction |
 | b_condition.py:34 | Local Variable x | PyEdgeRefinement |
-| b_condition.py:36 | Local Variable x | ArgumentRefinement |
 | b_condition.py:36 | Local Variable x | PyEdgeRefinement |
 | b_condition.py:37 | Local Variable x | ArgumentRefinement |
 | b_condition.py:39 | Global Variable v2 | AssignmentDefinition |
@@ -116,7 +115,6 @@
 | b_condition.py:81 | Local Variable foo | ParameterDefinition |
 | b_condition.py:81 | Local Variable foo | PhiFunction |
 | b_condition.py:81 | Local Variable foo | PyEdgeRefinement |
-| b_condition.py:82 | Local Variable foo | ArgumentRefinement |
 | b_condition.py:83 | Local Variable bar | AssignmentDefinition |
 | b_condition.py:83 | Local Variable foo | PyEdgeRefinement |
 | b_condition.py:83 | Local Variable foo | ScopeEntryDefinition |
@@ -135,7 +133,6 @@
 | b_condition.py:99 | Local Variable x | ArgumentRefinement |
 | b_condition.py:101 | Global Variable not_or_not | AssignmentDefinition |
 | b_condition.py:101 | Local Variable a | ParameterDefinition |
-| b_condition.py:102 | Local Variable a | ArgumentRefinement |
 | b_condition.py:104 | Local Variable a | PyEdgeRefinement |
 | b_condition.py:105 | Local Variable a | PyEdgeRefinement |
 | b_condition.py:107 | Local Variable a | PyEdgeRefinement |
