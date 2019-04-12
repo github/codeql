@@ -125,6 +125,11 @@ newtype TObject =
     }
     or
     TType()
+    or
+    TProperty(CallNode call, Context ctx, CallableObjectInternal getter) {
+        PointsToInternal::pointsTo(call.getFunction(), ctx, ObjectInternal::property(), _) and
+        PointsToInternal::pointsTo(call.getArg(0), ctx, getter, _)
+    }
 
 private predicate is_power_2(int n) {
     n = 1 or

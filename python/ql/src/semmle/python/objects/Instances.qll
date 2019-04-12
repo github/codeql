@@ -352,7 +352,7 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
         result = ObjectInternal::builtin("super")
     }
 
-    override boolean isComparable() { none() }
+    override boolean isComparable() { result = false }
 
     override Builtin getBuiltin() { none() }
 

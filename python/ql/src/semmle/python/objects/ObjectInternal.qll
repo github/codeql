@@ -11,6 +11,7 @@ import semmle.python.objects.Instances
 import semmle.python.objects.Callables
 import semmle.python.objects.Constants
 import semmle.python.objects.Sequences
+import semmle.python.objects.Descriptors
 
 class ObjectInternal extends TObject {
 
@@ -396,6 +397,9 @@ module ObjectInternal {
         result = TBuiltinClassObject(Builtin::special("NoneType"))
     }
 
+    ObjectInternal property() {
+        result = TBuiltinClassObject(Builtin::special("property"))
+    }
 }
 
 /** Helper for boolean predicates returning both `true` and `false` */
