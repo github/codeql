@@ -13,14 +13,27 @@
 
 import cpp
 
+// True if function was ()-declared, but not (void)-declared or K&R-defined
+predicate hasZeroParamDecl(Function f) {
+  exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() |
+    not fde.hasVoidParamList() and fde.getNumberOfParameters() = 0 and not fde.isDefinition()
+  )
+}
+
+// True if this file (or header) was compiled as a C file
+predicate isCompiledAsC(Function f) {
+  exists(File file | file.compiledAsC() |
+    file = f.getFile() or file.getAnIncludedFile+() = f.getFile()
+  )
+}
+
 from FunctionCall fc, Function f
 where
   f = fc.getTarget() and
   not f.isVarargs() and
-  // There must be a zero-parameter declaration (explicit or implicit)
-  exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() |
-    fde.getNumberOfParameters() = 0
-  ) and
+  not f instanceof BuiltInFunction and
+  hasZeroParamDecl(f) and
+  isCompiledAsC(f) and
   // There must not exist a declaration with the number of parameters
   // at least as large as the number of call arguments
   not exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() |

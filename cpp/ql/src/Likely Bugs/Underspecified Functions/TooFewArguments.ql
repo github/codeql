@@ -15,17 +15,30 @@
 
 import cpp
 
+// True if function was ()-declared, but not (void)-declared or K&R-defined
+predicate hasZeroParamDecl(Function f) {
+  exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() |
+    not fde.hasVoidParamList() and fde.getNumberOfParameters() = 0 and not fde.isDefinition()
+  )
+}
+
+// True if this file (or header) was compiled as a C file
+predicate isCompiledAsC(Function f) {
+  exists(File file | file.compiledAsC() |
+    file = f.getFile() or file.getAnIncludedFile+() = f.getFile()
+  )
+}
+
 from FunctionCall fc, Function f
 where
   f = fc.getTarget() and
   not f.isVarargs() and
-  // There must be a zero-parameter declaration (explicit or implicit)
-  exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() |
-    fde.getNumberOfParameters() = 0
-  ) and
+  not f instanceof BuiltInFunction and
+  hasZeroParamDecl(f) and
+  isCompiledAsC(f) and
   // There is an explicit declaration of the function whose parameter count is larger
   // than the number of call arguments
   exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() |
-    not fde.isImplicit() and fde.getNumberOfParameters() > fc.getNumberOfArguments()
+    fde.getNumberOfParameters() > fc.getNumberOfArguments()
   )
 select fc, "This call has fewer arguments than required by $@.", f, f.toString()

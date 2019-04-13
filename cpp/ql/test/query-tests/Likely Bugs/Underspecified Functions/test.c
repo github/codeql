@@ -5,6 +5,13 @@ void declared_empty_defined_with();
 void declared_with_pointers();
 void declared_with_array();
 
+int k_and_r_func(c,d)
+  char c;
+  double d;
+{
+  return c + d;
+}
+
 struct _s { int a, b; } s;
 
 int ca[4] = { 1, 2, 3, 4 };
@@ -48,6 +55,11 @@ void test() {
   
   defined_with_long_long('c');  // BAD
   defined_with_long_long(3);    // BAD
+
+  defined_with_double(2LL);  // BAD
+  defined_with_long_long(2.5e50);  // BAD
+  
+  k_and_r_func(2.5, &s);  // GOOD
 }
 
 void not_yet_declared1();
