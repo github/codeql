@@ -15,8 +15,8 @@
 import cpp
 
 predicate arithTypesMatch(Type arg, Type parm) {
-  arg instanceof ArithmeticType and
-  parm instanceof ArithmeticType and
+  arg = parm
+  or
   arg.getSize() = parm.getSize() and
   (
     arg instanceof IntegralOrEnumType and
@@ -26,10 +26,9 @@ predicate arithTypesMatch(Type arg, Type parm) {
     parm instanceof FloatingPointType
   )
 }
+
 pragma[inline]
 predicate pointerArgTypeMayBeUsed(Type arg, Type parm) {
-  arg = parm
-  or
   // arithmetic types
   arithTypesMatch(arg, parm)
   or
@@ -41,8 +40,6 @@ predicate pointerArgTypeMayBeUsed(Type arg, Type parm) {
 
 pragma[inline]
 predicate argTypeMayBeUsed(Type arg, Type parm) {
-  arg = parm
-  or
   // arithmetic types
   arithTypesMatch(arg, parm)
   or
