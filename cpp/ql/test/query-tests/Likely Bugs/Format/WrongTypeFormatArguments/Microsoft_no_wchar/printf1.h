@@ -129,3 +129,44 @@ void fun3(void *p1, VOIDPTR p2, FUNPTR p3, char *p4)
   printf("%p\n", p4 + 1); // GOOD
   printf("%p\n", 0); // GOOD [FALSE POSITIVE]
 }
+
+void fun4()
+{
+  ptrdiff_t pdt;
+  size_t sz;
+  int i;
+  unsigned int ui;
+  long l;
+  unsigned long ul;
+  long long ll;
+  unsigned long long ull;
+  __int32 i32;
+  unsigned __int32 u32;
+  __int64 i64;
+  unsigned __int64 u64;
+
+  printf("%Ii\n", pdt); // GOOD [FALSE POSITIVE]
+  printf("%Iu\n", sz); // GOOD [FALSE POSITIVE]
+
+  printf("%I32i\n", i); // GOOD
+  printf("%I32u\n", ui); // GOOD
+  printf("%I32i\n", l); // GOOD
+  printf("%I32u\n", ul); // GOOD
+  printf("%I32i\n", ll); // BAD
+  printf("%I32u\n", ull); // BAD
+  printf("%I32i\n", i32); // GOOD
+  printf("%I32u\n", u32); // GOOD
+  printf("%I32i\n", i64); // BAD
+  printf("%I32u\n", u64); // BAD
+
+  printf("%I64i\n", i); // BAD
+  printf("%I64u\n", ui); // BAD
+  printf("%I64i\n", l); // BAD
+  printf("%I64u\n", ul); // BAD
+  printf("%I64i\n", ll); // GOOD
+  printf("%I64u\n", ull); // GOOD
+  printf("%I64i\n", i32); // BAD
+  printf("%I64u\n", u32); // BAD
+  printf("%I64i\n", i64); // GOOD
+  printf("%I64u\n", u64); // GOOD
+}

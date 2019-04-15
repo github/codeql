@@ -12,6 +12,8 @@
 | printf1.h:46:18:46:20 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:113:17:113:17 | d | This argument should be of type 'long double' but is of type 'double' |
 | printf1.h:114:18:114:18 | d | This argument should be of type 'long double' but is of type 'double' |
+| printf1.h:147:19:147:19 | i | This argument should be of type 'long long' but is of type 'int' |
+| printf1.h:148:19:148:20 | ui | This argument should be of type 'unsigned long long' but is of type 'unsigned int' |
 | real_world.h:61:21:61:22 | & ... | This argument should be of type 'int *' but is of type 'short *' |
 | real_world.h:62:22:62:23 | & ... | This argument should be of type 'short *' but is of type 'int *' |
 | real_world.h:63:22:63:24 | & ... | This argument should be of type 'short *' but is of type 'unsigned int *' |
