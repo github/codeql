@@ -15,3 +15,13 @@
 | tst.js:61:10:61:18 | s.replace | This replaces only the first occurrence of "'" + "". |
 | tst.js:65:10:65:18 | s.replace | This replaces only the first occurrence of "'". |
 | tst.js:69:10:69:18 | s.replace | This replaces only the first occurrence of "'" + "". |
+| tst.js:133:2:133:10 | s.replace | This replaces only the first occurrence of '<'. |
+| tst.js:133:2:133:27 | s.repla ... replace | This replaces only the first occurrence of '>'. |
+| tst.js:135:2:135:10 | s.replace | This replaces only the first occurrence of '['. |
+| tst.js:135:2:135:30 | s.repla ... replace | This replaces only the first occurrence of ']'. |
+| tst.js:136:2:136:10 | s.replace | This replaces only the first occurrence of '{'. |
+| tst.js:136:2:136:30 | s.repla ... replace | This replaces only the first occurrence of '}'. |
+| tst.js:140:2:140:10 | s.replace | This replaces only the first occurrence of /{/. |
+| tst.js:140:2:140:27 | s.repla ... replace | This replaces only the first occurrence of /}/. |
+| tst.js:141:2:141:10 | s.replace | This replaces only the first occurrence of ']'. |
+| tst.js:141:2:141:27 | s.repla ... replace | This replaces only the first occurrence of '['. |
