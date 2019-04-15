@@ -3568,7 +3568,7 @@ ir.cpp:
 #  809|     r0_34(glval<Base>)         = ConvertToBase[Middle : Base]           : r0_33
 #  809|     v0_35(void)                = Call                                   : func:r0_32, 0:r0_34
 #  809|     mu0_36(unknown)            = ^CallSideEffect                        : ~mu0_2
-#  809|     r0_37(Base)                = Convert                                : v0_35
+#  809|     r0_37(glval<Base>)         = Convert                                : v0_35
 #  809|     r0_38(Base &)              = Call                                   : func:r0_31, this:r0_30, 0:r0_37
 #  809|     mu0_39(unknown)            = ^CallSideEffect                        : ~mu0_2
 #  810|     r0_40(glval<Base>)         = VariableAddress[b]                     : 
@@ -3578,7 +3578,7 @@ ir.cpp:
 #  810|     r0_44(glval<Base>)         = ConvertToBase[Middle : Base]           : r0_43
 #  810|     v0_45(void)                = Call                                   : func:r0_42, 0:r0_44
 #  810|     mu0_46(unknown)            = ^CallSideEffect                        : ~mu0_2
-#  810|     r0_47(Base)                = Convert                                : v0_45
+#  810|     r0_47(glval<Base>)         = Convert                                : v0_45
 #  810|     r0_48(Base &)              = Call                                   : func:r0_41, this:r0_40, 0:r0_47
 #  810|     mu0_49(unknown)            = ^CallSideEffect                        : ~mu0_2
 #  811|     r0_50(glval<Middle *>)     = VariableAddress[pm]                    : 
@@ -3645,7 +3645,7 @@ ir.cpp:
 #  823|     r0_111(glval<Base>)        = ConvertToBase[Middle : Base]           : r0_110
 #  823|     v0_112(void)               = Call                                   : func:r0_108, 0:r0_111
 #  823|     mu0_113(unknown)           = ^CallSideEffect                        : ~mu0_2
-#  823|     r0_114(Base)               = Convert                                : v0_112
+#  823|     r0_114(glval<Base>)        = Convert                                : v0_112
 #  823|     r0_115(Base &)             = Call                                   : func:r0_107, this:r0_106, 0:r0_114
 #  823|     mu0_116(unknown)           = ^CallSideEffect                        : ~mu0_2
 #  824|     r0_117(glval<Base>)        = VariableAddress[b]                     : 
@@ -3656,7 +3656,7 @@ ir.cpp:
 #  824|     r0_122(glval<Base>)        = ConvertToBase[Middle : Base]           : r0_121
 #  824|     v0_123(void)               = Call                                   : func:r0_119, 0:r0_122
 #  824|     mu0_124(unknown)           = ^CallSideEffect                        : ~mu0_2
-#  824|     r0_125(Base)               = Convert                                : v0_123
+#  824|     r0_125(glval<Base>)        = Convert                                : v0_123
 #  824|     r0_126(Base &)             = Call                                   : func:r0_118, this:r0_117, 0:r0_125
 #  824|     mu0_127(unknown)           = ^CallSideEffect                        : ~mu0_2
 #  825|     r0_128(glval<Derived *>)   = VariableAddress[pd]                    : 
