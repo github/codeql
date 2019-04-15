@@ -130,6 +130,11 @@ newtype TObject =
         PointsToInternal::pointsTo(call.getFunction(), ctx, ObjectInternal::property(), _) and
         PointsToInternal::pointsTo(call.getArg(0), ctx, getter, _)
     }
+    or
+    TDynamicClass(ControlFlowNode instantiation, ClassObjectInternal metacls, PointsToContext context) {
+        PointsToInternal::pointsTo(instantiation.(CallNode).getFunction(), context, metacls, _) and
+        Types::getMro(metacls).contains(TType())
+    }
 
 private predicate is_power_2(int n) {
     n = 1 or

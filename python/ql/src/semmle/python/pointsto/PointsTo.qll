@@ -1445,7 +1445,7 @@ cached module Types {
         )
     }
 
-    cached ClassObjectInternal getBase(ClassObjectInternal cls, int n) {
+    cached ObjectInternal getBase(ClassObjectInternal cls, int n) {
         result.getBuiltin() = cls.getBuiltin().getBaseClass() and n = 0
         or
         exists(Class pycls |

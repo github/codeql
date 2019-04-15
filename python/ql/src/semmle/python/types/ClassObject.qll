@@ -68,7 +68,7 @@ class ClassObject extends Object {
 
     /** Gets a super class of this class (includes transitive super classes) or this class */
     ClassObject getAnImproperSuperType() {
-        result = Types::getMro(theClass()).getAnItem().getSource()
+        result = this.getABaseType*()
     }
 
     /** Whether this class is a new style class. 

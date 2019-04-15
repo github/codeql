@@ -277,3 +277,53 @@ class TypeInternal extends ClassObjectInternal, TType {
     override predicate attributesUnknown() { any() }
 
 }
+
+class DynamicallyCreatedClass extends ClassObjectInternal, TDynamicClass {
+
+    override string toString() {
+        result = this.getOrigin().getNode().toString()
+    }
+
+    override ObjectInternal getClass() {
+        this = TDynamicClass(_, result, _)
+    }
+
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
+        exists(ClassObjectInternal decl |
+            decl = Types::getMro(this).findDeclaringClass(name) |
+            Types::declaredAttribute(decl, name, value, origin)
+        )
+    }
+
+    override Builtin getBuiltin() {
+        none()
+    }
+
+    override ControlFlowNode getOrigin() {
+        this = TDynamicClass(result, _, _)
+    }
+
+    override predicate attributesUnknown() { any() }
+
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+        this = TDynamicClass(node, _, context)
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
+    }
+
+    override boolean isComparable() { result = true }
+
+    override ClassDecl getClassDeclaration() { none() }
+
+}
+
