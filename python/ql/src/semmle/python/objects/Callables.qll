@@ -129,7 +129,12 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
     override boolean isDescriptor() { result = true }
 
     override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
+        instance.isClass() = false and
         value = TBoundMethod(instance, this) and origin = CfgOrigin::unknown()
+        or
+        any(ObjectInternal obj).binds(instance, _, this) and
+        instance.isClass() = true and
+        value = this and origin = CfgOrigin::fromCfgNode(this.getOrigin())
     }
 
     override CallNode getACall(PointsToContext ctx) {
