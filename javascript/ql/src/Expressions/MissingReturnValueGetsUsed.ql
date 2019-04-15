@@ -31,33 +31,6 @@ predicate isEmpty(Function f) { 0 = f.getNumBodyStmt() }
 
 predicate isErrorFunction(Function f) { none() }
 
-/*
- * A function with no return value can be called without being problematic under the following
- * conditions on the external properties of the context of the function call:
- *
- * - As a statement, because the function is used for its side effects only
- * - In an immediately invoked function expression (IIFE)
- * - When the application is immediately returned
- * - When the application is in a void expression
- */
-
-predicate isValidCallOfNoReturnFunction(CallExpr call) {
-  isInExprStmt(call)
-  or
-  isIife(call)
-  or
-  isInReturnExpr(call)
-  or
-  isInVoidExpr(call)
-}
-
-predicate isInExprStmt(CallExpr call) { call.getParent() instanceof ExprStmt }
-
-predicate isIife(CallExpr call) { call.getCallee().stripParens() instanceof Function }
-
-predicate isInReturnExpr(Expr call) { call.getParent() instanceof ReturnStmt }
-
-predicate isInVoidExpr(Expr call) { call.getParent() instanceof VoidExpr }
 
 /*
  * We have a problem when we have a function call `call`, which calls `calleeRef`,
@@ -69,8 +42,8 @@ predicate isInVoidExpr(Expr call) { call.getParent() instanceof VoidExpr }
 from CallNode call, Expr calleeRef, Function callee, ConcreteControlFlowNode undefinedReturn
 where calleeRef = call.getCalleeNode().asExpr() and
       callee = call.getACallee() and
-      not isValidCallOfNoReturnFunction(call.asExpr()) and
-  	  not canBeUsedWithNoReturnValue(callee) and
+      not canBeUsedWithNoReturnValue(callee) and
+      call.asExpr().inNullSensitiveContext() and
       undefinedReturn = callee.getAnUndefinedReturn()
 select call,
   "This function application is used in a context where its value matters, and it calls $@, which is defined as $@, but this can return nothing by executing this last: $@",
