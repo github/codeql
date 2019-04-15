@@ -366,21 +366,9 @@ module ObjectInternal {
     }
 
     ObjectInternal fromBuiltin(Builtin b) {
-        result = TInt(b.intValue())
-        or
-        result = TString(b.strValue())
-        or
-        result = TBuiltinClassObject(b)
-        or
-        result = TBuiltinFunctionObject(b)
-        or
-        result = TBuiltinOpaqueObject(b)
-        or
-        result = TBuiltinModuleObject(b)
-        or
-        result = TBuiltinMethodObject(b)
-        or
-        result = TBuiltinTuple(b)
+        b = result.getBuiltin() and
+        not b = Builtin::unknown() and
+        not b = Builtin::unknownType()
     }
 
     ObjectInternal classMethod() {

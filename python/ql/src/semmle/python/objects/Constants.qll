@@ -198,7 +198,7 @@ class FloatObjectInternal extends ConstantObjectInternal, TFloat {
 
     override string toString() {
         if this.floatValue() = this.floatValue().floor() then (
-            result = "float " + this.floatValue().toString() + ".0"
+            result = "float " + this.floatValue().floor().toString() + ".0"
         ) else (
             result = "float " + this.floatValue().toString()
         )

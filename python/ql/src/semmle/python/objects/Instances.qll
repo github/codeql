@@ -79,6 +79,18 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         PointsToInternal::attributeRequired(this, name) and
         instance_getattr(this, Types::getMro(this.getClass()), name, value, origin)
+        or
+        exists(EssaVariable self, PythonFunctionObjectInternal init, Context callee |
+            BaseFlow::reaches_exit(self) and
+            self.getSourceVariable().(Variable).isSelf() and
+            self.getScope() = init.getScope() and
+            exists(CallNode call, Context caller, ClassObjectInternal cls |
+                this = TSpecificInstance(call, cls, caller) and
+                callee.fromCall(this.getOrigin(), caller) and
+                cls.lookup("__init__", init, _)
+            ) and
+            AttributePointsTo::variableAttributePointsTo(self, callee, name, value, origin)
+        )
     }
 
     override predicate attributesUnknown() { any() }

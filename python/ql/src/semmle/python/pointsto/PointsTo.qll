@@ -126,7 +126,7 @@ module PointsTo {
     deprecated predicate
     points_to(ControlFlowNode f, PointsToContext context, Object obj, ClassObject cls, ControlFlowNode origin) {
         exists(Value value |
-            pointsToValue(f, context, value, origin) and
+            PointsToInternal::pointsTo(f, context, value, origin) and
             cls = value.getClass().getSource() |
             obj = value.getSource() or
             not exists(value.getSource()) and obj = origin
@@ -145,14 +145,6 @@ module PointsTo {
             cls = value.getClass().getSource() |
             obj = value.getSource() or
             not exists(value.getSource()) and obj = origin
-        )
-    }
-
-    private predicate pointsToValue(ControlFlowNode f, PointsToContext context, Value value, ControlFlowNode origin) {
-        PointsToInternal::pointsTo(f, context, value, origin)
-        or
-        exists(string name |
-            AttributePointsTo::attributePointsTo(f.(AttrNode).getObject(name), context, name, value, origin)
         )
     }
 
@@ -199,6 +191,8 @@ cached module PointsToInternal {
         InterModulePointsTo::from_import_points_to(f, context, value, origin)
         or
         InterProceduralPointsTo::call_points_to(f, context, value, origin)
+        or
+        AttributePointsTo::pointsTo(f, context, value, origin)
         // To do... More stuff here :)
         // or
         // f.(CustomPointsToFact).pointsTo(context, value, origin)
@@ -1135,8 +1129,10 @@ module Expressions {
 
     private boolean otherComparisonEvaluatesTo(CompareNode comp, PointsToContext context, ControlFlowNode operand, ObjectInternal opvalue) {
         exists(Cmpop op |
-            comp.operands(operand, op, _) and
-            (op instanceof In or op instanceof NotIn) |
+            comp.operands(operand, op, _) or
+            comp.operands(_, op, operand)
+            |
+            (op instanceof In or op instanceof NotIn) and
             PointsToInternal::pointsTo(operand, context, opvalue, _)
         ) and result = maybe()
     }
@@ -1694,19 +1690,100 @@ cached module Types {
 
 module AttributePointsTo {
 
-    predicate attributePointsTo(ControlFlowNode f, Context context, string name, ObjectInternal value, ControlFlowNode origin) {
-        exists(ObjectInternal defobj, Context prev, AttributeAssignment def, ObjectInternal useobj |
-            PointsToInternal::pointsTo(f, context, useobj, _) and
-            PointsToInternal::variablePointsTo(def.getInput(), prev, defobj, _) and
-            PointsToInternal::pointsTo(def.getValue(), prev, value, origin) and name = def.getName()
-            |
-            prev.getOuter*().getCall().getBasicBlock().reaches(context.getOuter*().getCall().getBasicBlock()) and
-            useobj.(SelfInstanceInternal).getClass() = defobj.(SelfInstanceInternal).getClass()
-            or
-            def.getScope().getScope*().precedes(f.getScope().getScope*()) and
-            useobj.(SelfInstanceInternal).getClass() = defobj.(SelfInstanceInternal).getClass()
-            or
-            def.getDefiningNode().getBasicBlock().dominates(f.getBasicBlock()) and defobj = useobj
+    predicate pointsTo(AttrNode f, Context context, ObjectInternal value, ControlFlowNode origin) {
+        exists(EssaVariable var, string name, CfgOrigin orig |
+            var.getASourceUse() = f.getObject(name) and
+            variableAttributePointsTo(var, context, name, value, orig) and
+            origin = orig.asCfgNodeOrHere(f)
+        )
+    }
+
+    predicate variableAttributePointsTo(EssaVariable var, Context context, string name, ObjectInternal value, CfgOrigin origin) {
+        definitionAttributePointsTo(var.getDefinition(), context, name, value, origin)
+        or
+        exists(EssaVariable prev |
+            var.getDefinition().(PhiFunction).getShortCircuitInput() = prev and
+            variableAttributePointsTo(prev, context, name, value, origin)
+        )
+    }
+
+    predicate definitionAttributePointsTo(EssaDefinition def, Context context, string name, ObjectInternal value, CfgOrigin origin) {
+        variableAttributePointsTo(def.(PhiFunction).getAnInput(), context, name, value, origin)
+        or
+        piNodeAttributePointsTo(def, context, name, value, origin)
+        or
+        refinementAttributePointsTo(def, context, name, value, origin)
+        or
+        selfParameterAttributePointsTo(def, context, name, value, origin)
+        or
+        selfMethodCallsitePointsTo(def, context, name, value, origin)
+    }
+
+    pragma [noinline]
+    private predicate refinementAttributePointsTo(EssaNodeRefinement def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
+        attributeAssignmentAttributePointsTo(def, context, name, value, origin)
+        or
+        attributeDeleteAttributePointsTo(def, context, name, value, origin)
+        or
+        uniEdgedPhiAttributePointsTo(def, context, name, value, origin)
+    }
+
+
+    /** Attribute deletions have no effect as far as value tracking is concerned. */
+    pragma [noinline]
+    private predicate attributeAssignmentAttributePointsTo(AttributeAssignment def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
+        def.getName() != name and
+        variableAttributePointsTo(def.getInput(), context, name, value, origin)
+        or
+        def.getName() = name and
+        exists(ControlFlowNode cfgnode |
+            PointsToInternal::pointsTo(def.getValue(), context, value, cfgnode) and
+            origin = CfgOrigin::fromCfgNode(cfgnode)
+        )
+    }
+
+    /** Attribute deletions have no effect as far as value tracking is concerned. */
+    pragma [noinline]
+    private predicate attributeDeleteAttributePointsTo(EssaAttributeDeletion def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
+        def.getName() != name and
+        variableAttributePointsTo(def.getInput(), context, name, value, origin)
+    }
+
+    private predicate uniEdgedPhiAttributePointsTo(SingleSuccessorGuard uniphi, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
+        variableAttributePointsTo(uniphi.getInput(), context, name, value, origin)
+    }
+
+    private predicate piNodeAttributePointsTo(PyEdgeRefinement pi, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
+        variableAttributePointsTo(pi.getInput(), context, name, value, origin)
+    }
+
+    private predicate selfParameterAttributePointsTo(ParameterDefinition def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
+        exists(MethodCallsiteRefinement call, Function func, PointsToContext caller |
+            selfMethodCall(call, caller, func, context) and
+            def.isSelf() and def.getScope() = func and
+            variableAttributePointsTo(call.getInput(), caller, name, value, origin)
+        )
+    }
+
+    /** Pass through for `self` for the implicit re-definition of `self` in `self.foo()`. */
+    private predicate selfMethodCallsitePointsTo(MethodCallsiteRefinement def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
+        /* The value of self remains the same, only the attributes may change */
+        exists(Function func, PointsToContext callee, EssaVariable exit_self |
+            selfMethodCall(def, context, func, callee) and
+            exit_self.getSourceVariable().(Variable).isSelf() and
+            exit_self.getScope() = func and 
+            BaseFlow::reaches_exit(exit_self) and
+            variableAttributePointsTo(exit_self, context, name, value, origin)
+        )
+    }
+
+    private predicate selfMethodCall(MethodCallsiteRefinement def, PointsToContext caller, Function func, PointsToContext callee) {
+        def.getInput().getSourceVariable().(Variable).isSelf() and
+        exists(PythonFunctionObjectInternal method, CallNode call |
+            method.getScope() = func and
+            call = method.getACall() and
+            call = def.getDefiningNode() and
+            callee.fromCall(call, caller)
         )
     }
 

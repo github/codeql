@@ -131,8 +131,9 @@ newtype TObject =
         PointsToInternal::pointsTo(call.getArg(0), ctx, getter, _)
     }
     or
-    TDynamicClass(ControlFlowNode instantiation, ClassObjectInternal metacls, PointsToContext context) {
-        PointsToInternal::pointsTo(instantiation.(CallNode).getFunction(), context, metacls, _) and
+    TDynamicClass(CallNode instantiation, ClassObjectInternal metacls, PointsToContext context) {
+        PointsToInternal::pointsTo(instantiation.getFunction(), context, metacls, _) and
+        not count(instantiation.getAnArg()) = 1 and
         Types::getMro(metacls).contains(TType())
     }
 
