@@ -45,11 +45,14 @@ from string key, string val, Locatable valElement
 where
   config(key, val, valElement) and
   val != "" and
+  // exclude possible templates
+  not val.regexpMatch(Templating::getDelimiterMatchingRegexp()) and
   (
     key.toLowerCase() = "password"
     or
     key.toLowerCase() != "readme" and
-    val.regexpMatch("(?is).*password\\s*=(?!\\s*;).*")
+    // look for `password=...`, but exclude `password=;` and `password="$(...)"`
+    val.regexpMatch("(?is).*password\\s*=(?!\\s*;)(?!\"?[$`]).*")
   ) and
   not exclude(valElement.getFile())
 select valElement, "Avoid plaintext passwords in configuration files."
