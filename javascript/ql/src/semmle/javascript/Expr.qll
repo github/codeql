@@ -161,6 +161,66 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
    * file that was extracted without type information.
    */
   Type getType() { ast_node_type(this, result) }
+
+  /**
+   * Holds if the syntactic context that the expression appears in relies on the expression
+   * being non-null/non-undefined.
+   * 
+   * A context relies on the subexpression being non-null/non-undefined if either...
+   * 
+   *   * Using null or undefined would cause a runtime error
+   *   * Using null or undefined would cause no error due to type conversion, but the
+   *     behavior in the broader context is sufficiently non-obvious to warrant explicitly
+   *     converting to ensure that readers understand the intent  
+   */
+  predicate inNullSensitiveContext() {
+    exists(ExprOrStmt ctx |
+      // bases cases
+      this = ctx.(PropAccess).getBase()
+      or
+      this = ctx.(IndexExpr).getPropertyNameExpr()
+      or
+      this = ctx.(InvokeExpr).getCallee()
+      or
+      this = ctx.(BinaryExpr).getAnOperand() and
+      not ctx instanceof LogicalBinaryExpr and // x LOGOP y is fine because of implicit conversion
+      not ctx instanceof EqualityTest and // x EQOP y is fine because of implicit conversion and lack thereof
+      not ctx.(BitOrExpr).getAnOperand().(NumberLiteral).getIntValue() = 0 and // x | 0 is fine because it's used to convert to numbers
+      not ctx.(RShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 and // x >> 0 is fine because it's used to convert to numbers
+      not ctx.(URShiftExpr).getRightOperand().(NumberLiteral).getIntValue() = 0 // x >>> 0 is fine because it's used to convert to numbers
+      or
+      this = ctx.(UnaryExpr).getOperand() and
+      not ctx instanceof LogNotExpr and // !x is fine because of implicit conversion
+      not ctx instanceof PlusExpr and // +x is fine because of implicit conversion
+      not ctx instanceof VoidExpr // void x is fine because it explicitly is for capturing void things
+      or
+      this = ctx.(UpdateExpr).getOperand()
+      or
+      this = ctx.(CompoundAssignExpr).getLhs()
+      or
+      this = ctx.(CompoundAssignExpr).getRhs()
+      or
+      this = ctx.(AssignExpr).getRhs() and
+      ctx.(AssignExpr).getLhs() instanceof DestructuringPattern
+      or
+      this = ctx.(SpreadElement).getOperand()
+      or
+      this = ctx.(ForOfStmt).getIterationDomain()
+      or
+      // recursive cases
+      this = ctx.(ParExpr).getExpression() and
+      ctx.(ParExpr).inNullSensitiveContext()
+      or
+      this = ctx.(SeqExpr).getLastOperand() and
+      ctx.(SeqExpr).inNullSensitiveContext()
+      or
+      this = ctx.(LogicalBinaryExpr).getRightOperand() and
+      ctx.(LogicalBinaryExpr).inNullSensitiveContext()
+      or
+      this = ctx.(ConditionalExpr).getABranch() and
+      ctx.(ConditionalExpr).inNullSensitiveContext()
+    )
+  }
 }
 
 /** An identifier. */
