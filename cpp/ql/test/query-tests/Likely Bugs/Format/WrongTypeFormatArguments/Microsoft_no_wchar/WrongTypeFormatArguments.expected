@@ -32,3 +32,4 @@
 | real_world.h:63:22:63:24 | & ... | This argument should be of type 'short *' but is of type 'unsigned int *' |
 | real_world.h:64:22:64:24 | & ... | This argument should be of type 'short *' but is of type 'signed int *' |
 | wide_string.h:25:18:25:20 | c | This argument should be of type 'char' but is of type 'char *' |
+| wide_string.h:29:19:29:22 | c | This argument should be of type 'wchar_t' but is of type 'unsigned short *' |

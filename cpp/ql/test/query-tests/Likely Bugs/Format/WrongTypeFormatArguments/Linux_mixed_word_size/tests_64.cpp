@@ -12,6 +12,6 @@ void test_64()
 
 	printf("%li", l); // GOOD
 	printf("%li", void_ptr); // BAD
-	printf("%p", l); // BAD [NOT DETECTED]
+	printf("%p", l); // BAD
 	printf("%p", void_ptr); // GOOD
 }
