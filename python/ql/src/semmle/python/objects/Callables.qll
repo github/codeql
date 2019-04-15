@@ -53,6 +53,7 @@ abstract class CallableObjectInternal extends ObjectInternal {
     override int length() { none() }
 
     abstract predicate neverReturns();
+
 }
 
 
@@ -151,6 +152,11 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
     override predicate neverReturns() {
         InterProceduralPointsTo::neverReturns(this.getScope())
     }
+
+    override predicate functionAndOffset(CallableObjectInternal function, int offset) {
+        function = this and offset = 0
+    }
+
 }
 
 
@@ -262,6 +268,10 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
         this = Module::named("sys").attr("exit")
     }
 
+    override predicate functionAndOffset(CallableObjectInternal function, int offset) {
+        function = this and offset = 0
+    }
+
 }
 
 
@@ -347,6 +357,10 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
 
     override predicate neverReturns() { none() }
 
+    override predicate functionAndOffset(CallableObjectInternal function, int offset) {
+        function = this and offset = 0
+    }
+
 }
 
 class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
@@ -421,6 +435,10 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     override predicate neverReturns() {
         this.getFunction().neverReturns()
    }
+
+    override predicate functionAndOffset(CallableObjectInternal function, int offset) {
+        function = this.getFunction() and offset = 1
+    }
 
 }
 

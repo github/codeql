@@ -118,17 +118,35 @@ class CallableValue extends Value {
         result = this.(CallableObjectInternal).getParameterByName(name)
     }
 
-    ControlFlowNode getArgumentForCall(CallNode call, NameNode param) {
-        this.getACall() = call and
-        (
-            exists(int n | call.getArg(n) = result and param = this.getParameter(n))
+    ControlFlowNode getArgumentForCall(CallNode call, int n) {
+        exists(ObjectInternal called, int offset |
+            PointsToInternal::pointsTo(call.getFunction(), _, called, _) and
+            called.functionAndOffset(this, offset) 
+            |
+            call.getArg(n-offset) = result
             or
-            exists(string name | call.getArgByName(name) = result and param = this.getParameterByName(name))
+            exists(string name | call.getArgByName(name) = result and this.(PythonFunctionObjectInternal).getScope().getArg(n+offset).getName() = name)
+            or
+            called instanceof BoundMethodObjectInternal and
+            offset = 1 and n = 0 and result = call.getFunction().(AttrNode).getObject()
         )
-        or
-        exists(BoundMethodObjectInternal bm |
-            result = getArgumentForCall(call, param) and
-            this = bm.getFunction()
+    }
+
+    ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
+        exists(CallableObjectInternal called, int offset |
+            PointsToInternal::pointsTo(call.getFunction(), _, called, _) and
+            called.functionAndOffset(this, offset)
+            |
+            exists(int n |
+                call.getArg(n) = result and
+                this.(PythonFunctionObjectInternal).getScope().getArg(n+offset).getName() = name
+            )
+            or
+            call.getArgByName(name) = result and
+            exists(this.(PythonFunctionObjectInternal).getScope().getArgByName(name))
+            or
+            called instanceof BoundMethodObjectInternal and
+            offset = 1 and name = "self" and result = call.getFunction().(AttrNode).getObject()
         )
     }
 

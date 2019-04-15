@@ -122,6 +122,10 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
 
     override boolean isComparable() { result = true }
 
+    override predicate functionAndOffset(CallableObjectInternal function, int offset) {
+        this.lookup("__init__", function, _) and offset = 1
+    }
+
 }
 
 class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObject {

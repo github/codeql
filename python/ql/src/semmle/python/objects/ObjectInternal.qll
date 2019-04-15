@@ -103,6 +103,8 @@ class ObjectInternal extends TObject {
      */
     abstract int length();
 
+    predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }
+
 }
 
 
