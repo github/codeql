@@ -29,6 +29,7 @@
 | Client-side URL redirect       | More results and fewer false-positive results | This rule now recognizes additional uses of the document URL. This rule now treats URLs as safe in more cases where the hostname cannot be tampered with. |
 | Double escaping or unescaping | More results | This rule now considers the flow of regular expressions literals. |
 | Expression has no effect       | Fewer false-positive results | This rule now treats uses of `Object.defineProperty` more conservatively. |
+| Incomplete regular expression for hostnames | More results | This rule now tracks regular expressions for host names further. |
 | Incomplete string escaping or encoding | More results | This rule now considers the flow of regular expressions literals. |
 | Replacement of a substring with itself | More results | This rule now considers the flow of regular expressions literals. |
 | Server-side URL redirect       | Fewer false-positive results | This rule now treats URLs as safe in more cases where the hostname cannot be tampered with. |

@@ -41,13 +41,9 @@ class StepSummary extends TStepSummary {
     or
     this instanceof ReturnStep and result = "return"
     or
-    exists(string prop | this = StoreStep(prop) |
-      result = "store " + prop
-    )
+    exists(string prop | this = StoreStep(prop) | result = "store " + prop)
     or
-    exists(string prop | this = LoadStep(prop) |
-      result = "load" + prop
-    )
+    exists(string prop | this = LoadStep(prop) | result = "load " + prop)
   }
 }
 
@@ -56,40 +52,44 @@ module StepSummary {
    * INTERNAL: Use `SourceNode.track()` or `SourceNode.backtrack()` instead.
    */
   predicate step(DataFlow::SourceNode pred, DataFlow::SourceNode succ, StepSummary summary) {
-    exists(DataFlow::Node predNode | pred.flowsTo(predNode) |
-      // Flow through properties of objects
-      propertyFlowStep(predNode, succ) and
-      summary = LevelStep()
+    exists(DataFlow::Node mid | pred.flowsTo(mid) | smallstep(mid, succ, summary))
+  }
+
+  /**
+   * INTERNAL: Use `TypeBackTracker.smallstep()` instead.
+   */
+  predicate smallstep(DataFlow::Node pred, DataFlow::Node succ, StepSummary summary) {
+    // Flow through properties of objects
+    propertyFlowStep(pred, succ) and
+    summary = LevelStep()
+    or
+    // Flow through global variables
+    globalFlowStep(pred, succ) and
+    summary = LevelStep()
+    or
+    // Flow into function
+    callStep(pred, succ) and
+    summary = CallStep()
+    or
+    // Flow out of function
+    returnStep(pred, succ) and
+    summary = ReturnStep()
+    or
+    // Flow through an instance field between members of the same class
+    DataFlow::localFieldStep(pred, succ) and
+    summary = LevelStep()
+    or
+    exists(string prop |
+      basicStoreStep(pred, succ, prop) and
+      summary = StoreStep(prop)
       or
-      // Flow through global variables
-      globalFlowStep(predNode, succ) and
-      summary = LevelStep()
-      or
-      // Flow into function
-      callStep(predNode, succ) and
-      summary = CallStep()
-      or
-      // Flow out of function
-      returnStep(predNode, succ) and
-      summary = ReturnStep()
-      or
-      // Flow through an instance field between members of the same class
-      DataFlow::localFieldStep(predNode, succ) and
-      summary = LevelStep()
-      or
-      exists(string prop |
-        basicStoreStep(predNode, succ, prop) and
-        summary = StoreStep(prop)
-        or
-        loadStep(predNode, succ, prop) and
-        summary = LoadStep(prop)
-      )
+      loadStep(pred, succ, prop) and
+      summary = LoadStep(prop)
     )
   }
 }
 
-private newtype TTypeTracker =
-  MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
+private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
 
 /**
  * EXPERIMENTAL.
@@ -136,9 +136,7 @@ class TypeTracker extends TTypeTracker {
     or
     step = LoadStep(prop) and result = MkTypeTracker(hasCall, "")
     or
-    exists(string p |
-      step = StoreStep(p) and prop = "" and result = MkTypeTracker(hasCall, p)
-    )
+    exists(string p | step = StoreStep(p) and prop = "" and result = MkTypeTracker(hasCall, p))
   }
 
   /** Gets a textual representation of this summary. */
@@ -180,8 +178,7 @@ module TypeTracker {
   TypeTracker end() { result.end() }
 }
 
-private newtype TTypeBackTracker =
-  MkTypeBackTracker(Boolean hasReturn, OptionalPropertyName prop)
+private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, OptionalPropertyName prop)
 
 /**
  * EXPERIMENTAL.
@@ -192,7 +189,7 @@ private newtype TTypeBackTracker =
  * therefore expected to called with a certain type of value.
  *
  * Note that type back-tracking does not provide a source/sink relation, that is,
- * it may determine that a node will be used in an API call somwwhere, but it won't
+ * it may determine that a node will be used in an API call somewhere, but it won't
  * determine exactly where that use was, or the path that led to the use.
  *
  * It is recommended that all uses of this type is written on the following form,
@@ -203,7 +200,7 @@ private newtype TTypeBackTracker =
  *   result = (< some API call >).getArgument(< n >).getALocalSource()
  *   or
  *   exists (DataFlow::TypeBackTracker t2 |
- *     result = myCallback(t2).backtrack(t2, t)
+ *     t2 = t.step(result, myCallback(t2))
  *   )
  * }
  *
@@ -225,9 +222,7 @@ class TypeBackTracker extends TTypeBackTracker {
     or
     step = ReturnStep() and result = MkTypeBackTracker(true, prop)
     or
-    exists(string p |
-      step = LoadStep(p) and prop = "" and result = MkTypeBackTracker(hasReturn, p)
-    )
+    exists(string p | step = LoadStep(p) and prop = "" and result = MkTypeBackTracker(hasReturn, p))
     or
     step = StoreStep(prop) and result = MkTypeBackTracker(hasReturn, "")
   }
@@ -265,6 +260,37 @@ class TypeBackTracker extends TTypeBackTracker {
    * This predicate is only defined if the type has not been tracked into a property.
    */
   TypeBackTracker continue() { prop = "" and result = this }
+
+  /**
+   * Gets the summary that corresponds to having taken a backwards
+   * heap and/or inter-procedural step from `succ` to `pred`.
+   */
+  pragma[inline]
+  TypeBackTracker step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+    exists(StepSummary summary |
+      StepSummary::step(pred, succ, summary) and
+      this = result.prepend(summary)
+    )
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a backwards
+   * local, heap and/or inter-procedural step from `succ` to `pred`.
+   *
+   * Unlike `TypeBackTracker::step`, this predicate exposes all edges
+   * in the flowgraph, and not just the edges between
+   * `SourceNode`s. It may therefore be less performant.
+   */
+  pragma[inline]
+  TypeBackTracker smallstep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(StepSummary summary |
+      StepSummary::smallstep(pred, succ, summary) and
+      this = result.prepend(summary)
+    )
+    or
+    pred = succ.getAPredecessor() and
+    this = result
+  }
 }
 
 module TypeBackTracker {

@@ -179,10 +179,7 @@ class SourceNode extends DataFlow::Node {
    */
   pragma[inline]
   DataFlow::SourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
-    exists(StepSummary summary |
-      StepSummary::step(result, this, summary) and
-      t = t2.prepend(summary)
-    )
+    t2 = t.step(result, this)
   }
 }
 
