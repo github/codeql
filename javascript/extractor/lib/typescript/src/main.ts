@@ -166,10 +166,7 @@ function getSourceCode(filename: string): string {
 }
 
 function extractFile(filename: string): string {
-    let {ast, code} = getAstForFile(filename);
-
-    // Get the AST and augment it.
-    ast_extractor.augmentAst(ast, code, state.project);
+    let ast = getAstForFile(filename);
 
     return stringifyAST({
         type: "ast",
@@ -205,17 +202,32 @@ function handleParseCommand(command: ParseCommand) {
 }
 
 /**
+ * Returns true if the given source file has an actual AST, as opposed to
+ * a SourceFile that is a "redirect" to another SourceFile.
+ *
+ * The TypeScript API should not expose such redirecting SourceFiles,
+ * but we sometimes get them anyway.
+ */
+function isExtractableSourceFile(ast: ast_extractor.AugmentedSourceFile): boolean {
+    return ast.redirectInfo == null;
+}
+
+/**
  * Gets the AST and source code for the given file, either from
  * an already-open project, or by parsing the file.
  */
-function getAstForFile(filename: string): {ast: ts.SourceFile, code: string} {
+function getAstForFile(filename: string): ts.SourceFile {
     if (state.project != null) {
         let ast = state.project.program.getSourceFile(filename);
-        if (ast != null) {
-            return {ast, code: ast.text};
+        if (ast != null && isExtractableSourceFile(ast)) {
+            ast_extractor.augmentAst(ast, ast.text, state.project);
+            return ast;
         }
     }
-    return parseSingleFile(filename);
+    // Fall back to extracting without a project.
+    let {ast, code} = parseSingleFile(filename);
+    ast_extractor.augmentAst(ast, code, null);
+    return ast;
 }
 
 function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
