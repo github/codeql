@@ -11,29 +11,26 @@ function main() {
 function f0() {
 	return;
 }
-var x0 = f0();
+
+var x0 = 1 + f0();
+
 
 
 function f1() {
 	1;
 }
-var x1 = f1();
+
+x1 *= f1();
 
 
-var f2 = function () {
-	return;
+
+function f2() {
+	if (1 > 2) {
+		return 5;
+	}
 }
-var x2 = f2();
 
-
-var f3 = function () {
-	1;
-}
-var x3 = f3();
-
-
-var f4 = () => { return; };
-var x4 = f4();
+x2[f2()];
 
 
 
@@ -46,59 +43,37 @@ var x4 = f4();
 
 
 
-// Function call as a statement
-
 f0();
 
 
-// Empty functions
 
-function f5() {}
-var x5 = f5();
+function f3() {}
 
-
-var f6 = function () {};
-var x6 = f6();
+f3().foo;
 
 
-var f7 = () => {};
-var x7 = f7();
 
-
-// Functions that return values
-
-function f8() {
+function f4() {
 	return 1;
 }
-var x8 = f8();
+
+var x4 = 1 + f4();
 
 
-var f9 = function () {
-	return 1;
-};
-var x9 = f9();
+
+f0() && x5;
 
 
-var f10 = () => 1;
-var x10 = f10();
-
-var f11 = () => { return 1; }
-var x11 = f11();
-
-
-// IIFEs
 
 (function () { return; })();
 
 
-// Return chain
 
-function f12() { return f0(); }
+function f5() { return f0(); }
 
 
-// Void expr
 
-var x13 = void f0();
+void f0();
 
 
 
