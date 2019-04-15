@@ -171,8 +171,8 @@ void fun4()
   __int64 i64;
   unsigned __int64 u64;
 
-  printf("%Ii\n", pdt); // GOOD [FALSE POSITIVE]
-  printf("%Iu\n", sz); // GOOD [FALSE POSITIVE]
+  printf("%Ii\n", pdt); // GOOD
+  printf("%Iu\n", sz); // GOOD
 
   printf("%I32i\n", i); // GOOD
   printf("%I32u\n", ui); // GOOD

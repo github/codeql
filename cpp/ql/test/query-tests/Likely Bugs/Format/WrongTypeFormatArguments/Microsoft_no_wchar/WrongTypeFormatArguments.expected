@@ -17,8 +17,6 @@
 | printf1.h:75:19:75:28 | sizeof(<expr>) | This argument should be of type 'ssize_t' but is of type 'unsigned long long' |
 | printf1.h:84:23:84:35 | ... - ... | This argument should be of type 'ssize_t' but is of type 'long long' |
 | printf1.h:130:18:130:18 | 0 | This argument should be of type 'void *' but is of type 'int' |
-| printf1.h:148:19:148:21 | pdt | This argument should be of type 'int' but is of type 'long long' |
-| printf1.h:149:19:149:20 | sz | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:155:21:155:22 | ll | This argument should be of type 'int' but is of type 'long long' |
 | printf1.h:156:21:156:23 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:159:21:159:23 | i64 | This argument should be of type 'int' but is of type 'long long' |
