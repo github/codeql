@@ -42,6 +42,8 @@ abstract class Documentable extends ASTNode {
 class JSDocTypeExprParent extends @jsdoc_type_expr_parent {
   /** Gets a textual representation of this element. */
   string toString() { none() }
+
+  JSDoc getJSDocComment() { none() }
 }
 
 /**
@@ -83,6 +85,10 @@ class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent, Locatable {
 
   /** Gets the toplevel in which this tag appears. */
   TopLevel getTopLevel() { result = getParent().getComment().getTopLevel() }
+
+  override JSDoc getJSDocComment() {
+    result.getATag() = this
+  }
 }
 
 /**
@@ -123,6 +129,20 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotatio
   JSDocTypeExpr getChild(int i) { jsdoc_type_exprs(result, _, this, i, _) }
 
   override string toString() { jsdoc_type_exprs(this, _, _, _, result) }
+
+  override JSDoc getJSDocComment() {
+    result = getParent().getJSDocComment()
+  }
+
+  override Stmt getEnclosingStmt() {
+    result.getDocumentation() = getJSDocComment()
+  }
+
+  override StmtContainer getContainer() { result = getEnclosingStmt().getContainer() }
+  
+  override Function getEnclosingFunction() { result = getContainer() }
+  
+  override TopLevel getTopLevel() { result = getEnclosingStmt().getTopLevel() }
 }
 
 /** An `any` type expression `*`. */

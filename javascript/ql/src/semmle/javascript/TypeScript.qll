@@ -540,6 +540,14 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
    * without type information.
    */
   Type getType() { ast_node_type(this, result) }
+  
+  override Stmt getEnclosingStmt() { result = ExprOrType.super.getEnclosingStmt() }
+  
+  override Function getEnclosingFunction() { result = ExprOrType.super.getEnclosingFunction() }
+  
+  override StmtContainer getContainer() { result = ExprOrType.super.getContainer() }
+  
+  override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
 }
 
 /**

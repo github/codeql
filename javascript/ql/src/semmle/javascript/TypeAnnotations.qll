@@ -85,4 +85,20 @@ class TypeAnnotation extends @type_annotation {
    * Holds if this is a reference to the type exported from `moduleName` under the name `exportedName`.
    */
   predicate hasQualifiedName(string moduleName, string exportedName) { none() }
+
+  /** Gets the statement in which this type appears. */
+  Stmt getEnclosingStmt() { none() }
+
+  /** Gets the function in which this type appears, if any. */
+  Function getEnclosingFunction() { none() }
+
+  /**
+   * Gets the statement container (function or toplevel) in which this type appears.
+   */
+  StmtContainer getContainer() { none() }
+
+  /**
+   * Gets the top-level containing this type annotation.
+   */
+  TopLevel getTopLevel() { none() }
 }
