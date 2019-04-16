@@ -619,11 +619,10 @@ class SimpleParameter extends Parameter, VarDecl {
     )
   }
 
-  override JSDocTag getJSDocTag() {
+  override JSDocParamTag getJSDocTag() {
     exists(Function fun |
       this = fun.getAParameter() and
       result = fun.getDocumentation().getATag() and
-      result.getTitle() = "param" and
       result.getName() = getName()
     )
   }
