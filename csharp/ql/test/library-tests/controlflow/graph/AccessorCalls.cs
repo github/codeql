@@ -62,4 +62,14 @@ class AccessorCalls
     {
         (this.x.Field, this.x.Prop, (i, this.x[0])) = (this.x.Field, this.x.Prop, (0, this.x[1]));
     }
+
+    void M9(object o, int i, EventHandler e)
+    {
+        dynamic d = o;
+        d.MaybeProp1 = d.MaybeProp2;
+        d.MaybeProp++;
+        d.MaybeEvent += e;
+        d[0] += d[1];
+        (d.MaybeProp1, this.Prop, (i, d[0])) = (d.MaybeProp1, this.Prop, (0, d[1]));
+    }
 }
