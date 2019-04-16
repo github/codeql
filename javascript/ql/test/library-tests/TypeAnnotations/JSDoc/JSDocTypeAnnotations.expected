@@ -1,21 +1,21 @@
 test_isString
-| string |
+| file://:0:0:0:0 | string |
 test_isNumber
-| number |
+| file://:0:0:0:0 | number |
 test_QualifiedName
-| VarType | VarType |
-| boolean | boolean |
-| foo.bar.baz | foo.bar.baz |
-| number | number |
-| string | string |
+| VarType | file://:0:0:0:0 | VarType |
+| boolean | file://:0:0:0:0 | boolean |
+| foo.bar.baz | file://:0:0:0:0 | foo.bar.baz |
+| number | file://:0:0:0:0 | number |
+| string | file://:0:0:0:0 | string |
 test_ParameterType
-| tst.js:7:12:7:12 | x | string |
-| tst.js:7:15:7:15 | y | number? |
-| tst.js:7:18:7:18 | z | foo.bar.baz |
+| tst.js:7:12:7:12 | x | file://:0:0:0:0 | string |
+| tst.js:7:15:7:15 | y | file://:0:0:0:0 | number? |
+| tst.js:7:18:7:18 | z | file://:0:0:0:0 | foo.bar.baz |
 test_VarType
-| tst.js:7:12:7:12 | x | string |
-| tst.js:7:15:7:15 | y | number? |
-| tst.js:7:18:7:18 | z | foo.bar.baz |
-| tst.js:11:7:11:7 | w | VarType |
+| tst.js:7:12:7:12 | x | file://:0:0:0:0 | string |
+| tst.js:7:15:7:15 | y | file://:0:0:0:0 | number? |
+| tst.js:7:18:7:18 | z | file://:0:0:0:0 | foo.bar.baz |
+| tst.js:11:7:11:7 | w | file://:0:0:0:0 | VarType |
 test_ReturnType
-| tst.js:7:1:12:1 | functio ... null;\\n} | boolean |
+| tst.js:7:1:12:1 | functio ... null;\\n} | file://:0:0:0:0 | boolean |

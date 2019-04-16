@@ -7,10 +7,7 @@ import javascript
 /**
  * A type annotation, either in the form of a TypeScript type or a JSDoc comment.
  */
-class TypeAnnotation extends @type_annotation {
-  /** Gets a string representation of this type. */
-  string toString() { none() }
-
+class TypeAnnotation extends @type_annotation, Locatable {
   /** Holds if this is the `any` type. */
   predicate isAny() { none() }
 
