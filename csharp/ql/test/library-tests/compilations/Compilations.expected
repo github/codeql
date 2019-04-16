@@ -29,9 +29,11 @@ diagnosticElements
 | Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | Program.cs:9:13:9:13 | access to local variable y |
 | Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | Program.cs:9:13:9:13 | y |
 references
-| compilation | 0 | System.Core.dll |
-| compilation | 1 | System.Console.dll |
-| compilation | 2 | mscorlib.dll |
-| compilation | 3 | System.Runtime.dll |
-| compilation | 4 | System.dll |
-| compilation | 5 | System.Private.CoreLib.dll |
+| compilation | System.Console.dll |
+| compilation | System.Core.dll |
+| compilation | System.Private.CoreLib.dll |
+| compilation | System.Runtime.dll |
+| compilation | System.dll |
+| compilation | mscorlib.dll |
+timings
+| compilation |

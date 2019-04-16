@@ -31,6 +31,11 @@ query predicate compilationFolder(Compilation c, string folder) {
 
 query predicate diagnosticElements(Diagnostic d, Element e) { e = d.getElement() }
 
-query predicate references(Compilation c, int i, string reference) {
-  reference = c.getReference(i).getBaseName()
+query predicate references(Compilation c, string reference) {
+  reference = c.getAReference().getBaseName()
+}
+
+query predicate timings(Compilation c) {
+  c.getCpuSeconds() > 0 and
+  c.getElapsedSeconds() > 0
 }

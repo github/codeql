@@ -56,4 +56,10 @@ class Compilation extends @compilation {
 
   /** Gets the peak working set of the extractor process in MB. */
   float getPeakWorkingSetMB() { result = getMetric(6) }
+
+  /** Gets the CPU seconds for the entire extractor process. */
+  float getCpuSeconds() { compilation_finished(this, result, _) }
+
+  /** Gets the elapsed seconds for the entire extractor process. */
+  float getElapsedSeconds() { compilation_finished(this, _, result) }
 }

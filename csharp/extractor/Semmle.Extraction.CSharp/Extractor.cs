@@ -63,6 +63,7 @@ namespace Semmle.Extraction.CSharp
         public static ExitCode Run(string[] args)
         {
             var stopwatch = new Stopwatch();
+            stopwatch.Start();
             var commandLineArguments = Options.CreateWithEnvironment(args);
             var fileLogger = new FileLogger(commandLineArguments.Verbosity, GetCSharpLogPath());
             var logger = commandLineArguments.Console

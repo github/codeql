@@ -77,7 +77,7 @@ class ExtractorMessage extends @extractor_message {
   /** Gets the name of the extractor that produced this message, for example, `C# extractor`. */
   string getOrigin() { result = origin }
 
-  /** Gets the text of this diagnostic. */
+  /** Gets the text of this message. */
   string getText() { result = text }
 
   /** Gets the textual representation of the entity that triggered this message. */
