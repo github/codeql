@@ -465,6 +465,16 @@ class CallNode extends ControlFlowNode {
 
     override Call getNode() { result = super.getNode() }
 
+    predicate isDecoratorCall() {
+        exists(FunctionExpr func |
+            this.getNode() = func.getADecoratorCall()
+        )
+        or
+        exists(ClassExpr cls |
+            this.getNode() = cls.getADecoratorCall()
+        )
+    }
+
 }
 
 /** A control flow corresponding to an attribute expression, such as `value.attr` */

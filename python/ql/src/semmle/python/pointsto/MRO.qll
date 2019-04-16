@@ -155,6 +155,13 @@ class ClassList extends TClassList {
         )
     }
 
+    predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
+        exists(ClassObjectInternal decl |
+            decl = this.findDeclaringClass(name) |
+            Types::declaredAttribute(decl, name, value, origin)
+        )
+    }
+
     predicate declares(string name) {
         this.getHead().getClassDeclaration().declaresAttribute(name)
         or

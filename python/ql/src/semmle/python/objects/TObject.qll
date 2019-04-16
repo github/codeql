@@ -99,7 +99,7 @@ newtype TObject =
     }
     or
     TUnknownInstance(BuiltinClassObjectInternal cls) {
-        cls != ObjectInternal::builtin("super") and
+        cls != ObjectInternal::super_() and
         cls != ObjectInternal::builtin("bool") and
         cls != ObjectInternal::noneType()
     }
@@ -171,11 +171,18 @@ predicate super_instantiation(CallNode instantiation, ObjectInternal self, Class
 
 pragma [noinline]
 private predicate super_2args(CallNode instantiation, ObjectInternal self, ClassObjectInternal startclass, PointsToContext context) {
-    exists(ControlFlowNode func, ControlFlowNode arg0, ControlFlowNode arg1 |
-        call2(instantiation, func, arg0, arg1) and
-        PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("super"), _) and
+    exists(ControlFlowNode arg0, ControlFlowNode arg1 |
+        super_call2(instantiation, arg0, arg1, context) and
         PointsToInternal::pointsTo(arg0, context, startclass, _) and
         PointsToInternal::pointsTo(arg1, context, self, _)
+    )
+}
+
+pragma [noinline]
+private predicate super_call2(CallNode call, ControlFlowNode arg0, ControlFlowNode arg1, PointsToContext context) {
+    exists(ControlFlowNode func |
+        call2(call, func, arg0, arg1) and
+        PointsToInternal::pointsTo(func, context, ObjectInternal::super_(), _)
     )
 }
 
@@ -205,7 +212,7 @@ predicate method_binding(AttrNode instantiation, ObjectInternal self, CallableOb
         receiver(instantiation, context, obj, name) |
         exists(ObjectInternal cls |
             cls = obj.getClass() and
-            cls != ObjectInternal::builtin("super") and
+            cls != ObjectInternal::super_() and
             cls.attribute(name, function, _) and
             self = obj
         )

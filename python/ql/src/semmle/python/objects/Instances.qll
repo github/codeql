@@ -76,9 +76,16 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
         none()
     }
 
+    pragma [nomagic]
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         PointsToInternal::attributeRequired(this, name) and
-        instance_getattr(this, Types::getMro(this.getClass()), name, value, origin)
+        exists(ObjectInternal cls_attr, CfgOrigin attr_orig |
+            this.getClass().(ClassObjectInternal).lookup(name, cls_attr, attr_orig)
+            |
+            cls_attr.isDescriptor() = false and value = cls_attr and origin = attr_orig
+            or
+            cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this, value, origin)
+        )
         or
         exists(EssaVariable self, PythonFunctionObjectInternal init, Context callee |
             BaseFlow::reaches_exit(self) and
@@ -93,36 +100,27 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
         )
     }
 
-    override predicate attributesUnknown() { any() }
+    pragma [noinline] override predicate attributesUnknown() { any() }
 
     override boolean isDescriptor() { result = false }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
-        this = instance and descriptor.isDescriptor() = true and
-        exists(AttrNode attr |
-            PointsToInternal::pointsTo(attr.getObject(name), _, instance, _) and
-            this.getClass().(ClassObjectInternal).lookup(name, descriptor, _)
-        )
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+        exists(ClassObjectInternal cls |
+            receiver_type(_, name, this, cls) and
+            cls.lookup(name, descriptor, _) and
+            descriptor.isDescriptor() = true
+        ) and
+        this = instance
     }
 
     override int length() {
         result = lengthFromClass(this.getClass())
     }
 
-}
-
-bindingset[instance, mro, name]
-predicate instance_getattr(ObjectInternal instance, ClassList mro, string name, ObjectInternal value, CfgOrigin origin) {
-    exists(ObjectInternal descriptor, CfgOrigin desc_origin |
-        Types::declaredAttribute(mro.findDeclaringClass(name), name, descriptor, desc_origin) |
-        descriptor.isDescriptor() = false and
-        value = descriptor and origin = desc_origin
-        or
-        descriptor.isDescriptor() = true and
-        descriptor.descriptorGet(instance, value, origin)
-    )
 }
 
 
@@ -159,19 +157,10 @@ class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
         this = TSelfInstance(_, _, result)
     }
 
-    /** Gets the `Builtin` for this object, if any.
-     * All objects (except unknown and undefined values) should return 
-     * exactly one result for either this method or `getOrigin()`.
-     */
     override Builtin getBuiltin() {
         none()
     }
 
-    /** Gets a control flow node that represents the source origin of this 
-     * objects.
-     * All objects (except unknown and undefined values) should return 
-     * exactly one result for either this method or `getBuiltin()`.
-     */
     override ControlFlowNode getOrigin() {
         exists(ParameterDefinition def |
             this = TSelfInstance(def, _, _) and
@@ -201,18 +190,26 @@ class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    pragma [nomagic] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         PointsToInternal::attributeRequired(this, name) and
-        instance_getattr(this, Types::getMro(this.getClass()), name, value, origin)
+        exists(ObjectInternal cls_attr, CfgOrigin attr_orig |
+            this.getClass().(ClassObjectInternal).lookup(name, cls_attr, attr_orig)
+            |
+            cls_attr.isDescriptor() = false and value = cls_attr and origin = attr_orig
+            or
+            cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this, value, origin)
+        )
     }
 
-    override predicate attributesUnknown() { any() }
+    pragma [noinline] override predicate attributesUnknown() { any() }
 
     override boolean isDescriptor() { result = false }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
         exists(AttrNode attr, ClassObjectInternal cls |
             receiver_type(attr, name, this, cls) and
             cls_descriptor(cls, name, descriptor)
@@ -295,18 +292,26 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         PointsToInternal::attributeRequired(this, name) and
-        instance_getattr(this, Types::getMro(this.getClass()), name, value, origin)
+        exists(ObjectInternal cls_attr, CfgOrigin attr_orig |
+            this.getClass().(ClassObjectInternal).lookup(name, cls_attr, attr_orig)
+            |
+            cls_attr.isDescriptor() = false and value = cls_attr and origin = attr_orig
+            or
+            cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this, value, origin)
+        )
     }
 
-    override predicate attributesUnknown() { any() }
+    pragma [noinline] override predicate attributesUnknown() { any() }
 
     override boolean isDescriptor() { result = false }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
         exists(AttrNode attr, ClassObjectInternal cls |
             receiver_type(attr, name, this, cls) and
             cls_descriptor(cls, name, descriptor)
@@ -322,10 +327,6 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
 private int lengthFromClass(ClassObjectInternal cls) {
     Types::getMro(cls).declares("__len__") and result = -1
-}
-
-private predicate receiver_type(AttrNode attr, string name, ObjectInternal value, ClassObjectInternal cls) {
-    PointsToInternal::pointsTo(attr.getObject(name), _, value, _) and value.getClass() = cls
 }
 
 private predicate cls_descriptor(ClassObjectInternal cls, string name, ObjectInternal descriptor) {
@@ -361,7 +362,7 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
     override boolean isClass() { result = false }
 
     override ObjectInternal getClass() {
-        result = ObjectInternal::builtin("super")
+        result = ObjectInternal::super_()
     }
 
     override boolean isComparable() { result = false }
@@ -382,28 +383,34 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
 
     override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override boolean isDescriptor() { result = false }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         PointsToInternal::attributeRequired(this, name) and
-        instance_getattr(this.getSelf(), this.getMro(), name, value, origin)
-    }
-
-    private ClassList getMro() {
-        result = Types::getMro(this.getSelf().getClass()).startingAt(this.getStartClass()).getTail()
-    }
-
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
-        descriptor.isDescriptor() = true and
-        exists(AttrNode attr |
-            PointsToInternal::pointsTo(attr.getObject(name), _, this, _) and
-            instance = this.getSelf() and
-            Types::declaredAttribute(this.getMro().findDeclaringClass(name), name, descriptor, _)
+        exists(ObjectInternal cls_attr, CfgOrigin attr_orig |
+            this.lookup(name, cls_attr, attr_orig)
+            |
+            cls_attr.isDescriptor() = false and value = cls_attr and origin = attr_orig
+            or
+            cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this.getSelf(), value, origin)
         )
+    }
+
+    private predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
+        Types::getMro(this.getSelf().getClass()).startingAt(this.getStartClass()).getTail().lookup(name, value, origin)
+    }
+
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+        descriptor.isDescriptor() = true and
+        this.lookup(name, descriptor, _) and
+        instance = this.getSelf() and
+        receiver_type(_, name, this, _)
     }
 
     override int length() {

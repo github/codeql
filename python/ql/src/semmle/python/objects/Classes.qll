@@ -35,9 +35,11 @@ abstract class ClassObjectInternal extends ObjectInternal {
 
     override boolean isDescriptor() { result = false }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
         instance = this and
         PointsToInternal::attributeRequired(this, name) and
         this.lookup(name, descriptor, _) and
@@ -47,14 +49,14 @@ abstract class ClassObjectInternal extends ObjectInternal {
     abstract predicate lookup(string name, ObjectInternal value, CfgOrigin origin);
 
     /** Approximation to descriptor protocol, skipping meta-descriptor protocol */
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         exists(ObjectInternal descriptor, CfgOrigin desc_origin |
             this.lookup(name, descriptor, desc_origin) |
             descriptor.isDescriptor() = false and
             value = descriptor and origin = desc_origin
             or
             descriptor.isDescriptor() = true and
-            descriptor.descriptorGet(this, value, origin)
+            descriptor.descriptorGetClass(this, value, origin)
         )
     }
 
@@ -103,13 +105,10 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
     }
 
     override predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
-        exists(ClassObjectInternal decl |
-            decl = Types::getMro(this).findDeclaringClass(name) |
-            Types::declaredAttribute(decl, name, value, origin)
-        )
+        Types::getMro(this).lookup(name, value, origin)
     }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
@@ -166,7 +165,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
         origin = CfgOrigin::unknown()
     }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
@@ -226,7 +225,7 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
         none()
     }
 
-    override predicate attributesUnknown() { any() }
+    pragma [noinline] override predicate attributesUnknown() { any() }
 
 }
 
@@ -274,7 +273,7 @@ class TypeInternal extends ClassObjectInternal, TType {
         none()
     }
 
-    override predicate attributesUnknown() { any() }
+    pragma [noinline] override predicate attributesUnknown() { any() }
 
 }
 
@@ -311,7 +310,7 @@ class DynamicallyCreatedClass extends ClassObjectInternal, TDynamicClass {
         this = TDynamicClass(result, _, _)
     }
 
-    override predicate attributesUnknown() { any() }
+    pragma [noinline] override predicate attributesUnknown() { any() }
 
     override predicate introduced(ControlFlowNode node, PointsToContext context) {
         this = TDynamicClass(node, _, context)

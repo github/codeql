@@ -49,9 +49,9 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
     override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override boolean isDescriptor() { result = true }
 
@@ -67,18 +67,22 @@ class PropertyInternal extends ObjectInternal, TProperty {
         )
     }
 
-    override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) { none() }
+    pragma [noinline] override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) { none() }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) {
+        any(ObjectInternal obj).binds(cls, _, this) and
+        value = this and origin = CfgOrigin::fromCfgNode(this.getOrigin())
+    }
+
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
         /* Just give an unknown value for now. We could improve this, but it would mean
          * changing Contexts to account for property accesses.
          */
-        exists(AttrNode attr, ClassObjectInternal cls, string name |
+        exists(ClassObjectInternal cls, string name |
             name = this.getName() and
-            PointsToInternal::pointsTo(attr.getObject(name), _, instance, _) and
-            instance.getClass() = cls and
+            receiver_type(_, name, instance, cls) and
             cls.lookup(name, this, _) and
-            origin = CfgOrigin::fromCfgNode(attr) and value = ObjectInternal::unknown()
+            origin = CfgOrigin::unknown() and value = ObjectInternal::unknown()
         )
     }
 
@@ -125,25 +129,24 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override boolean isDescriptor() { result = true }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
-        any(ObjectInternal obj).binds(instance, _, this) and
-        exists(ObjectInternal cls |
-            instance.isClass() = false and cls = instance.getClass()
-            or
-            instance.isClass() = true and cls = instance
-            |
-            value = TBoundMethod(cls, this.getFunction()) and
-            origin = CfgOrigin::unknown()
-        )
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) {
+        value = TBoundMethod(cls, this.getFunction()) and
+        origin = CfgOrigin::unknown()
     }
 
-    override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) {
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
+        any(ObjectInternal obj).binds(instance, _, this) and
+        value = TBoundMethod(instance.getClass(), this.getFunction()) and
+        origin = CfgOrigin::unknown()
+    }
+
+    pragma [noinline] override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) {
         descriptor = this.getFunction() and
         exists(ObjectInternal instance |
             any(ObjectInternal obj).binds(instance, name, this) |
@@ -200,18 +203,23 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
         this.getFunction().calleeAndOffset(scope, paramOffset)
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override boolean isDescriptor() { result = true }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) {
+        any(ObjectInternal obj).binds(cls, _, this) and
+        value = this.getFunction() and origin = CfgOrigin::unknown()
+    }
+
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
         any(ObjectInternal obj).binds(instance, _, this) and
         value = this.getFunction() and origin = CfgOrigin::unknown()
     }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     override int length() { none() }
 

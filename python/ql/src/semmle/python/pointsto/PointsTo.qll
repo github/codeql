@@ -175,6 +175,13 @@ cached module PointsToInternal {
         reachableBlock(f.getBasicBlock(), context)
     }
 
+    cached predicate pointsToString(ControlFlowNode f, PointsToContext context, string value) {
+        exists(StringObjectInternal str |
+            PointsToInternal::pointsTo(f, context, str, _) and
+            str.strValue() = value
+        )
+    }
+
     private predicate points_to_candidate(ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         use_points_to(f, context, value, origin)
         or
@@ -202,12 +209,7 @@ cached module PointsToInternal {
     cached predicate attributeRequired(ObjectInternal obj, string name) {
         pointsTo(any(AttrNode a).getObject(name), _, obj, _)
         or
-        exists(CallNode call, PointsToContext ctx, StringObjectInternal nameobj |
-            pointsTo(call.getFunction(), ctx, ObjectInternal::builtin("getattr"), _) and
-            pointsTo(call.getArg(0), ctx, obj, _) and
-            pointsTo(call.getArg(1), ctx, nameobj, _) and
-            nameobj.strValue() = name
-        )
+        Expressions::getattr_call(_, _, _, obj, name)
     }
 
     /* Holds if BasicBlock `b` is reachable, given the context `context`. */
@@ -774,25 +776,49 @@ module InterModulePointsTo {
 
 module InterProceduralPointsTo {
 
+    cached predicate call(CallNode call, PointsToContext caller, ObjectInternal value) {
+        PointsToInternal::pointsTo(call.getFunction(), caller, value, _)
+    }
+
+    cached predicate callWithContext(CallNode call, PointsToContext caller, ObjectInternal value, PointsToContext callee) {
+        callee.fromCall(call, caller) and
+        PointsToInternal::pointsTo(call.getFunction(), caller, value, _)
+    }
+
     pragma [noinline]
-    predicate call_points_to(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        exists(ObjectInternal func, CfgOrigin resultOrigin |
-            call_points_to_callee(f, context, func) and
-            origin = resultOrigin.asCfgNodeOrHere(f)
+    private predicate call_points_to_simple(CallNode f, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+        exists(ObjectInternal func |
+            call(f, context, func)
             |
             exists(PointsToContext callee |
                 callee.fromCall(f, context) and
-                func.callResult(callee, value, resultOrigin)
+                func.callResult(callee, value, origin)
             )
             or
-            func.callResult(value, resultOrigin) and
+            context.untrackableCall(f) and
+            value = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
+            or
+            func.callResult(value, origin) and
             context.appliesTo(f)
         )
+    }
+
+    pragma [noinline]
+    predicate call_points_to(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        exists(ObjectInternal returnValue, CfgOrigin resultOrigin |
+            call_points_to_simple(f, context, returnValue, resultOrigin)
+            |
+            /* Either not a decorator, or we understand the return value */
+            (returnValue != ObjectInternal::unknown() or not f.isDecoratorCall()) and
+            value = returnValue and origin = resultOrigin.asCfgNodeOrHere(f)
+            or
+            /* A decorator and we don't understand it. Use the original, undecorated value */
+            f.isDecoratorCall() and returnValue = ObjectInternal::unknown() and
+            PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
+        )
         or
-        call_to_type(f, context) and
-        exists(ObjectInternal arg |
-            PointsToInternal::pointsTo(f.getArg(0), context, arg, _) and
-            value = arg.getClass() |
+        value = call_to_type(f, context) and
+        (
             value.isBuiltin() and origin = f
             or
             origin = value.getOrigin()
@@ -802,14 +828,13 @@ module InterProceduralPointsTo {
     }
 
     pragma [noinline]
-    private predicate call_to_type(CallNode f, PointsToContext context) {
+    private ObjectInternal call_to_type(CallNode f, PointsToContext context) {
         count(f.getArg(_)) = 1 and
-        PointsToInternal::pointsTo(f.getFunction(), context, ObjectInternal::builtin("type"), _)
-    }
-
-    pragma [noinline]
-    private predicate call_points_to_callee(CallNode f, PointsToContext context, ObjectInternal callee) {
-        PointsToInternal::pointsTo(f.getFunction(), context, callee, _)
+        call(f, context, ObjectInternal::builtin("type")) and
+        exists(ObjectInternal arg |
+            PointsToInternal::pointsTo(f.getArg(0), context, arg, _) and
+            result = arg.getClass()
+        )
     }
 
     /** Points-to for parameter. `def foo(param): ...`. */
@@ -838,15 +863,25 @@ module InterProceduralPointsTo {
         context.isRuntime() and value = ObjectInternal::unknown() and origin = def.getDefiningNode()
     }
 
+    pragma [noinline]
     private predicate self_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         def.isSelf() and
         exists(CallNode call, BoundMethodObjectInternal method, Function func, PointsToContext caller |
-            PointsToInternal::pointsTo(call.getFunction(), caller, method, _) and
-            context.fromCall(call, caller) and
+            callWithContext(call, caller, method, context) and
             func = method.getScope() and
             def.getScope() = func and
             value = method.getSelf() and
             origin = value.getOrigin()
+        )
+    }
+
+    predicate selfMethodCall(MethodCallsiteRefinement def, PointsToContext caller, Function func, PointsToContext callee) {
+        def.getInput().getSourceVariable().(Variable).isSelf() and
+        exists(PythonFunctionObjectInternal method, CallNode call |
+            method.getScope() = func and
+            call = method.getACall() and
+            call = def.getDefiningNode() and
+            callee.fromCall(call, caller)
         )
     }
 
@@ -861,6 +896,7 @@ module InterProceduralPointsTo {
     }
 
     /** Helper for parameter_points_to */
+    pragma [noinline]
     private predicate default_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(PointsToContext imp | imp.isImport() | PointsToInternal::pointsTo(def.getDefault(), imp, value, origin)) and
         context_for_default_value(def, context)
@@ -914,9 +950,8 @@ module InterProceduralPointsTo {
     }
 
     cached predicate callsite_calls_function(CallNode call, PointsToContext caller, Function scope, PointsToContext callee, int parameter_offset) {
-        callee.fromCall(call, caller) and
         exists(ObjectInternal func |
-            PointsToInternal::pointsTo(call.getFunction(), caller, func, _) and
+            callWithContext(call, caller, func, callee) and
             func.calleeAndOffset(scope, parameter_offset)
         )
     }
@@ -1049,11 +1084,16 @@ private predicate potential_builtin_points_to(NameNode f, ObjectInternal value, 
 
 module Expressions {
 
+    pragma [noinline]
+    private predicate attributeObjectPointsto(AttrNode attr, PointsToContext context, string name, ControlFlowNode obj, ObjectInternal objvalue) {
+        attr.isLoad() and attr.getObject(name) = obj and
+        PointsToInternal::pointsTo(obj, context, objvalue, _)
+    }
+
+    pragma [noinline]
     predicate attributePointsTo(AttrNode attr, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode obj, ObjectInternal objvalue) {
-        attr.isLoad() and
         exists(string name |
-            attr.getObject(name) = obj and
-            PointsToInternal::pointsTo(obj, context, objvalue, _)
+            attributeObjectPointsto(attr, context, name, obj, objvalue)
             |
             exists(CfgOrigin orig |
                 objvalue.attribute(name, value, orig) and
@@ -1061,10 +1101,12 @@ module Expressions {
             )
             or
             objvalue.attributesUnknown() and
-            origin = attr and value = ObjectInternal::unknown()
+            origin = attr and
+            value = ObjectInternal::unknown()
         )
     }
 
+    pragma [noinline]
     predicate subscriptPointsTo(SubscriptNode subscr, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode obj, ObjectInternal objvalue) {
         subscr.isLoad() and
         obj = subscr.getObject() and
@@ -1075,6 +1117,7 @@ module Expressions {
     /** Track bitwise expressions so we can handle integer flags and enums.
      * Tracking too many binary expressions is likely to kill performance.
      */
+    pragma [noinline]
     predicate binaryPointsTo(BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode operand, ObjectInternal opvalue) {
         // TO DO...
         // Track some integer values through `|` and the types of some objects
@@ -1083,6 +1126,7 @@ module Expressions {
         value = ObjectInternal::unknown() and origin = b
     }
 
+    pragma [noinline]
     predicate unaryPointsTo(UnaryExprNode u, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode operand, ObjectInternal opvalue) {
         exists(Unaryop op |
             op = u.getNode().getOp() and
@@ -1098,6 +1142,7 @@ module Expressions {
         origin = u
     }
 
+    pragma [noinline]
     predicate builtinCallPointsTo(CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode arg, ObjectInternal argvalue) {
         PointsToInternal::pointsTo(arg, context, argvalue, _) and
         arg = call.getArg(0) and
@@ -1127,6 +1172,37 @@ module Expressions {
         )
     }
 
+    pragma [noinline]
+    private predicate getattrPointsTo(CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode arg, ObjectInternal argvalue) {
+        exists(string name |
+            getattr_call(call, arg, context, argvalue, name)
+            |
+            argvalue.attributesUnknown() and value = ObjectInternal::unknown() and origin = call
+            or
+            exists(CfgOrigin valOrigin |
+                argvalue.attribute(name, value, valOrigin) and origin = valOrigin.asCfgNodeOrHere(call)
+            )
+        )
+    }
+
+    pragma [noinline]
+    predicate getattr_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, string name) {
+        exists(ControlFlowNode arg1 |
+            call_to_getattr(call, context, use, arg1) and
+            PointsToInternal::pointsTo(use, context, val, _) and
+            PointsToInternal::pointsToString(arg1, context, name)
+        )
+    }
+
+    pragma[noinline]
+    private predicate call_to_getattr(ControlFlowNode call, PointsToContext context, ControlFlowNode arg0, ControlFlowNode arg1) {
+        exists(ControlFlowNode func |
+            call2(call, func, arg0, arg1) and
+            PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("getattr"), _)
+        )
+    }
+
+    pragma [noinline]
     private boolean otherComparisonEvaluatesTo(CompareNode comp, PointsToContext context, ControlFlowNode operand, ObjectInternal opvalue) {
         exists(Cmpop op |
             comp.operands(operand, op, _) or
@@ -1139,58 +1215,68 @@ module Expressions {
 
     pragma [noinline]
     private boolean equalityEvaluatesTo(CompareNode comp, PointsToContext context, ControlFlowNode operand, ObjectInternal opvalue) {
-        exists(ControlFlowNode r, boolean sense |
-            equality_test(comp, operand, sense, r) and
-            exists(ObjectInternal other |
-                PointsToInternal::pointsTo(operand, context, opvalue, _) and
-                PointsToInternal::pointsTo(r, context, other, _) |
-                opvalue.isComparable() = true and other.isComparable() = true and
-                (
-                    other = opvalue and result = sense
-                    or
-                    other != opvalue and result = sense.booleanNot()
-                )
+        exists(ObjectInternal other, boolean sense |
+            equalityTest(comp, context, operand, opvalue, other, sense)
+            |
+            opvalue.isComparable() = true and other.isComparable() = true and
+            (
+                other = opvalue and result = sense
                 or
-                opvalue.isComparable() = false and result = maybe()
-                or
-                other.isComparable() = false and result = maybe()
+                other != opvalue and result = sense.booleanNot()
             )
+            or
+            opvalue.isComparable() = false and result = maybe()
+            or
+            other.isComparable() = false and result = maybe()
         )
     }
 
     pragma [noinline]
-    private boolean inequalityEvaluatesTo(ControlFlowNode expr, PointsToContext context, ControlFlowNode use, ObjectInternal val) {
-        exists(ControlFlowNode r, boolean sense |
-            exists(boolean strict, ObjectInternal other |
-                (
-                    inequality(expr, use, r, strict) and sense = true
-                    or
-                    inequality(expr, r, use, strict) and sense = false
-                ) and
-                PointsToInternal::pointsTo(use, context, val, _) and
-                PointsToInternal::pointsTo(r, context, other, _)
-                |
-                val.intValue() < other.intValue() and result = sense
-                or 
-                val.intValue() > other.intValue() and result = sense.booleanNot()
-                or
-                val.intValue() = other.intValue() and result = strict.booleanXor(sense)
-                or
-                val.strValue() < other.strValue() and result = sense
-                or 
-                val.strValue() > other.strValue() and result = sense.booleanNot()
-                or
-                val.strValue() = other.strValue() and result = strict.booleanXor(sense)
-                or
-                val.isComparable() = false and result = maybe()
-                or
-                other.isComparable() = false and result = maybe()
-            )
+    private predicate equalityTest(CompareNode comp, PointsToContext context, ControlFlowNode operand, ObjectInternal opvalue, ObjectInternal other, boolean sense) {
+        exists(ControlFlowNode r |
+            equality_test(comp, operand, sense, r) and
+            PointsToInternal::pointsTo(operand, context, opvalue, _) and
+            PointsToInternal::pointsTo(r, context, other, _)
+        )
+    }
 
+    pragma [noinline]
+    private boolean inequalityEvaluatesTo(CompareNode comp, PointsToContext context, ControlFlowNode use, ObjectInternal val) {
+        exists(boolean strict, boolean sense, ObjectInternal other |
+            inequalityTest(comp, context, use, val, other, strict, sense)
+            |
+            val.intValue() < other.intValue() and result = sense
+            or 
+            val.intValue() > other.intValue() and result = sense.booleanNot()
+            or
+            val.intValue() = other.intValue() and result = strict.booleanXor(sense)
+            or
+            val.strValue() < other.strValue() and result = sense
+            or 
+            val.strValue() > other.strValue() and result = sense.booleanNot()
+            or
+            val.strValue() = other.strValue() and result = strict.booleanXor(sense)
+            or
+            val.isComparable() = false and result = maybe()
+            or
+            other.isComparable() = false and result = maybe()
+        )
+    }
+
+    pragma [noinline]
+    private predicate inequalityTest(CompareNode comp, PointsToContext context, ControlFlowNode operand, ObjectInternal opvalue, ObjectInternal other, boolean strict, boolean sense) {
+        exists(ControlFlowNode r |
+            inequality(comp, operand, r, strict) and sense = true
+            or
+            inequality(comp, r, operand, strict) and sense = false
+            |
+            PointsToInternal::pointsTo(operand, context, opvalue, _) and
+            PointsToInternal::pointsTo(r, context, other, _)
         )
     }
 
     /** Helper for comparisons. */
+    pragma [noinline]
     private predicate inequality(CompareNode cmp, ControlFlowNode lesser, ControlFlowNode greater, boolean strict) {
         exists(Cmpop op |
             cmp.operands(lesser, op, greater) and op.getSymbol() = "<" and strict = true
@@ -1216,9 +1302,12 @@ module Expressions {
         or
         lenCallPointsTo(expr, context, value, origin, subexpr, subvalue)
         or
+        getattrPointsTo(expr, context, value, origin, subexpr, subvalue)
+        or
         value = ObjectInternal::bool(evaluatesTo(expr, context, subexpr, subvalue)) and origin = expr
     }
 
+    pragma [noinline]
     boolean evaluatesTo(ControlFlowNode expr, PointsToContext context, ControlFlowNode subexpr, ObjectInternal subvalue) {
         result = equalityEvaluatesTo(expr, context, subexpr, subvalue)
         or
@@ -1293,20 +1382,19 @@ module Expressions {
     }
 
     private predicate hasattr_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, string name) {
-        exists(ControlFlowNode func, ControlFlowNode arg1 |
-            call2(call, func, use, arg1) and
-            points_to_hasattr(func, context) and
+        exists(ControlFlowNode arg1 |
+            call_to_hasattr(call, context, use, arg1) and
             PointsToInternal::pointsTo(use, context, val, _) and
-            exists(StringObjectInternal str |
-                PointsToInternal::pointsTo(arg1, context, str, _) and
-                str.strValue() = name
-            )
+            PointsToInternal::pointsToString(arg1, context, name)
         )
     }
 
     pragma[noinline]
-    private predicate points_to_hasattr(ControlFlowNode func, PointsToContext context) {
-        PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("hasattr"), _)
+    private predicate call_to_hasattr(ControlFlowNode call, PointsToContext context, ControlFlowNode arg0, ControlFlowNode arg1) {
+        exists(ControlFlowNode func |
+            call2(call, func, arg0, arg1) and
+            PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("hasattr"), _)
+        )
     }
 
     pragma [nomagic]
@@ -1759,7 +1847,7 @@ module AttributePointsTo {
 
     private predicate selfParameterAttributePointsTo(ParameterDefinition def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
         exists(MethodCallsiteRefinement call, Function func, PointsToContext caller |
-            selfMethodCall(call, caller, func, context) and
+            InterProceduralPointsTo::selfMethodCall(call, caller, func, context) and
             def.isSelf() and def.getScope() = func and
             variableAttributePointsTo(call.getInput(), caller, name, value, origin)
         )
@@ -1769,21 +1857,11 @@ module AttributePointsTo {
     private predicate selfMethodCallsitePointsTo(MethodCallsiteRefinement def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
         /* The value of self remains the same, only the attributes may change */
         exists(Function func, PointsToContext callee, EssaVariable exit_self |
-            selfMethodCall(def, context, func, callee) and
+            InterProceduralPointsTo::selfMethodCall(def, context, func, callee) and
             exit_self.getSourceVariable().(Variable).isSelf() and
             exit_self.getScope() = func and 
             BaseFlow::reaches_exit(exit_self) and
             variableAttributePointsTo(exit_self, context, name, value, origin)
-        )
-    }
-
-    private predicate selfMethodCall(MethodCallsiteRefinement def, PointsToContext caller, Function func, PointsToContext callee) {
-        def.getInput().getSourceVariable().(Variable).isSelf() and
-        exists(PythonFunctionObjectInternal method, CallNode call |
-            method.getScope() = func and
-            call = method.getACall() and
-            call = def.getDefiningNode() and
-            callee.fromCall(call, caller)
         )
     }
 
@@ -1819,7 +1897,7 @@ module ModuleAttributes {
         scopeEntryPointsTo(var.getDefinition(), name, value, origin)
     }
 
-    pragma [noinline]
+    pragma [nomagic]
     private predicate importStarPointsTo(ImportStarRefinement def, string name, ObjectInternal value, CfgOrigin origin) {
         def.getVariable().getName() = "$" and
         exists(ImportStarNode imp, ModuleObjectInternal mod |

@@ -32,15 +32,15 @@ abstract class CallableObjectInternal extends ObjectInternal {
 
     abstract string getName();
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         none()
     }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     abstract Function getScope();
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     abstract CallNode getACall(PointsToContext ctx);
 
@@ -112,7 +112,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
     }
 
     pragma [noinline]
-    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { 
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
         this.getScope().isProcedure() and
         obj = ObjectInternal::none_() and
         origin = CfgOrigin::fromCfgNode(this.getScope().getEntryNode())
@@ -128,13 +128,13 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
 
     override boolean isDescriptor() { result = true }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
-        instance.isClass() = false and
-        value = TBoundMethod(instance, this) and origin = CfgOrigin::unknown()
-        or
-        any(ObjectInternal obj).binds(instance, _, this) and
-        instance.isClass() = true and
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) {
+        any(ObjectInternal obj).binds(cls, _, this) and
         value = this and origin = CfgOrigin::fromCfgNode(this.getOrigin())
+    }
+
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
+        value = TBoundMethod(instance, this) and origin = CfgOrigin::unknown()
     }
 
     override CallNode getACall(PointsToContext ctx) {
@@ -255,7 +255,9 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
     override boolean isDescriptor() { result = false }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
     override CallNode getACall(PointsToContext ctx) {
         PointsTo::pointsTo(result.getFunction(), ctx, this, _)
@@ -339,13 +341,13 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
 
     override boolean isDescriptor() { result = true }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
-        instance.isClass() = false and
-        value = TBoundMethod(instance, this) and origin = CfgOrigin::unknown()
-        or
-        any(ObjectInternal obj).binds(instance, _, this) and
-        instance.isClass() = true and 
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) {
+        any(ObjectInternal obj).binds(cls, _, this) and
         value = this and origin = CfgOrigin::unknown()
+    }
+
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) {
+        value = TBoundMethod(instance, this) and origin = CfgOrigin::unknown()
     }
 
     override CallNode getACall(PointsToContext ctx) {
@@ -423,7 +425,9 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
 
     override boolean isDescriptor() { result = false }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
     override CallNode getACall(PointsToContext ctx) {
         PointsTo::pointsTo(result.getFunction(), ctx, this, _)

@@ -25,9 +25,11 @@ abstract class SequenceObjectInternal extends ObjectInternal {
 
     override boolean isDescriptor() { result = false }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
 }
 
@@ -81,9 +83,9 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
 
     override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
 }
 

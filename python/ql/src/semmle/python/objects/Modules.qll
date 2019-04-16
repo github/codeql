@@ -37,10 +37,11 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     override boolean isDescriptor() { result = false }
 
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     override int length() { none() }
 
@@ -84,12 +85,12 @@ class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleOb
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         value = ObjectInternal::fromBuiltin(this.getBuiltin().getMember(name)) and
         origin = CfgOrigin::unknown()
     }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override ControlFlowNode getOrigin() {
         none()
@@ -154,7 +155,7 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         this.getInitModule().attribute(name, value, origin)
         or
         exists(Module init |
@@ -176,7 +177,7 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         )
     }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override ControlFlowNode getOrigin() {
         result = this.getSourceModule().getEntryNode()
@@ -234,19 +235,11 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        exists(EssaVariable var, ControlFlowNode exit, PointsToContext imp |
-            exit = this.getSourceModule().getANormalExit() and var.getAUse() = exit and
-            var.getSourceVariable().getName() = name and
-            PointsTo::variablePointsTo(var, imp, value, origin) and
-            imp.isImport() and
-            value != ObjectInternal::undefined()
-        )
-        or
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         ModuleAttributes::pointsToAtExit(this.getSourceModule(), name, value, origin)
     }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override ControlFlowNode getOrigin() {
         result = this.getSourceModule().getEntryNode()

@@ -14,6 +14,7 @@ private int given_cost() {
     )
 }
 
+pragma [noinline]
 private int max_context_cost() {
     not py_flags_versioned("context.cost", _, _) and result = 7
     or
@@ -103,6 +104,7 @@ private int total_call_cost(CallNode call) {
         result = call_cost(call) + splay_cost(call)
 }
 
+pragma [noinline]
 private int total_cost(CallNode call, PointsToContext ctx) {
     ctx.appliesTo(call) and
     result = total_call_cost(call) + context_cost(ctx)
@@ -238,6 +240,7 @@ class PointsToContext extends TPointsToContext {
     }
 
     /** Holds if a call would be too expensive to create a new context for */
+    pragma [nomagic]
     predicate untrackableCall(CallNode call) {
         total_cost(call, this) > max_context_cost()
     }

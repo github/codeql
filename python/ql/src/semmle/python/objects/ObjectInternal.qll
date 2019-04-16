@@ -90,7 +90,11 @@ class ObjectInternal extends TObject {
 
     abstract boolean isDescriptor();
 
-    abstract predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin);
+    pragma[nomagic]
+    abstract predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin);
+
+    pragma[nomagic]
+    abstract predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin);
 
     /** Holds if attribute lookup on this object may "bind" `instance` to `descriptor`.
      * Here "bind" means that `instance` is passed to the `descriptor.__get__()` method
@@ -163,18 +167,20 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         value = ObjectInternal::fromBuiltin(this.getBuiltin().getMember(name)) and
         origin = CfgOrigin::unknown()
     }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override boolean isDescriptor() { result = false }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     override int length() { none() }
 
@@ -235,17 +241,19 @@ class UnknownInternal extends ObjectInternal, TUnknown {
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         none()
     }
 
-    override predicate attributesUnknown() { any() }
+    pragma [noinline] override predicate attributesUnknown() { any() }
 
     override boolean isDescriptor() { result = false }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     override int length() { result = -1 }
 
@@ -307,17 +315,19 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
         none()
     }
 
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         none()
     }
 
-    override predicate attributesUnknown() { none() }
+    pragma [noinline] override predicate attributesUnknown() { none() }
 
     override boolean isDescriptor() { none() }
 
-    override predicate descriptorGet(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     override int length() { none() }
 
@@ -390,9 +400,21 @@ module ObjectInternal {
     ObjectInternal property() {
         result = TBuiltinClassObject(Builtin::special("property"))
     }
+
+    ObjectInternal super_() {
+        result = TBuiltinClassObject(Builtin::special("super"))
+    }
+
 }
 
 /** Helper for boolean predicates returning both `true` and `false` */
 boolean maybe() {
     result = true or result = false
 }
+
+/** Helper for attributes */
+pragma [nomagic]
+predicate receiver_type(AttrNode attr, string name, ObjectInternal value, ClassObjectInternal cls) {
+    PointsToInternal::pointsTo(attr.getObject(name), _, value, _) and value.getClass() = cls
+}
+
