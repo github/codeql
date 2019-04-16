@@ -102,7 +102,7 @@ class JSDocParamTag extends JSDocTag {
 /**
  * A JSDoc type expression.
  */
-class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent {
+class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotation {
   /**
    * Gets the syntactic element in which this type expression is nested, which may either
    * be another type expression or a JSDoc tag.
@@ -126,24 +126,75 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent {
 }
 
 /** An `any` type expression `*`. */
-class JSDocAnyTypeExpr extends @jsdoc_any_type_expr, JSDocTypeExpr { }
+class JSDocAnyTypeExpr extends @jsdoc_any_type_expr, JSDocTypeExpr {
+  override predicate isAny() { any() }
+}
 
 /** A null type expression. */
-class JSDocNullTypeExpr extends @jsdoc_null_type_expr, JSDocTypeExpr { }
+class JSDocNullTypeExpr extends @jsdoc_null_type_expr, JSDocTypeExpr {
+  override predicate isNull() { any() }
+}
 
 /** A type expression representing the type of `undefined`. */
-class JSDocUndefinedTypeExpr extends @jsdoc_undefined_type_expr, JSDocTypeExpr { }
+class JSDocUndefinedTypeExpr extends @jsdoc_undefined_type_expr, JSDocTypeExpr {
+  override predicate isUndefined() { any() }
+}
 
 /** A type expression representing an unknown type `?`. */
-class JSDocUnknownTypeExpr extends @jsdoc_unknown_type_expr, JSDocTypeExpr { }
+class JSDocUnknownTypeExpr extends @jsdoc_unknown_type_expr, JSDocTypeExpr {
+  override predicate isUnknownKeyword() { any() }
+}
 
 /** A type expression representing the void type. */
-class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr { }
+class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr {
+  override predicate isVoid() { any() }
+}
 
 /** A type expression referring to a named type. */
 class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
   /** Gets the name of the type the expression refers to. */
   string getName() { result = toString() }
+  
+  override predicate isString() {
+    getName() = "string"
+  }
+  
+  override predicate isStringy() {
+    exists(string name | name = getName() |
+      name = "string" or
+      name = "String"
+    )
+  }
+  
+  override predicate isNumber() {
+    getName() = "number"
+  }
+
+  override predicate isNumbery() {
+    exists(string name | name = getName() |
+      name = "number" or
+      name = "Number" or
+      name = "double" or
+      name = "Double" or
+      name = "int" or
+      name = "integer" or
+      name = "Integer"
+    )
+  }
+
+  override predicate isBoolean() {
+    getName() = "boolean"
+  }
+
+  override predicate isBooleany() {
+    getName() = "boolean" or
+    getName() = "Boolean" or
+    getName() = "bool"
+  }
+
+  override predicate isRawFunction() {
+    getName() = "Function"
+  }
 }
 
 /**

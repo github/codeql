@@ -531,9 +531,6 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
 class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override string toString() { typeexprs(this, _, _, _, result) }
 
-  /** Gets this type expression, with any surrounding parentheses removed. */
-  override TypeExpr stripParens() { result = this }
-
   override predicate isAmbient() { any() }
 
   /**
