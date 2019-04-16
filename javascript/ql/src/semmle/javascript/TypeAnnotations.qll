@@ -75,4 +75,14 @@ class TypeAnnotation extends @type_annotation {
    * Note that this only unfolds the syntax of the type annotation. Type aliases are not followed to their definition.
    */
   TypeAnnotation getAnUnderlyingType() { result = this }
+
+  /**
+   * Holds if this is a reference to the type with qualified name `globalName` relative to the global scope.
+   */
+  predicate hasQualifiedName(string globalName) { none() }
+
+  /**
+   * Holds if this is a reference to the type exported from `moduleName` under the name `exportedName`.
+   */
+  predicate hasQualifiedName(string moduleName, string exportedName) { none() }
 }

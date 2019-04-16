@@ -656,6 +656,14 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
    * Gets the canonical name of the type being accessed.
    */
   TypeName getTypeName() { ast_node_symbol(this, result) }
+
+  override predicate hasQualifiedName(string globalName) {
+    getTypeName().hasQualifiedName(globalName)
+  }
+
+  override predicate hasQualifiedName(string moduleName, string exportedName) {
+    getTypeName().hasQualifiedName(moduleName, exportedName)
+  }
 }
 
 /** An identifier that is used as part of a type, such as `Date`. */
@@ -716,6 +724,14 @@ class GenericTypeExpr extends @generictypeexpr, TypeExpr {
 
   /** Gets the number of type arguments. This is always at least one. */
   int getNumTypeArgument() { result = count(getATypeArgument()) }
+
+  override predicate hasQualifiedName(string globalName) {
+    getTypeAccess().hasQualifiedName(globalName)
+  }
+
+  override predicate hasQualifiedName(string moduleName, string exportedName) {
+    getTypeAccess().hasQualifiedName(moduleName, exportedName)
+  }
 }
 
 /**

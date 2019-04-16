@@ -187,6 +187,10 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
   }
 
   override predicate isRawFunction() { getName() = "Function" }
+
+  override predicate hasQualifiedName(string globalName) {
+    globalName = getName()
+  }
 }
 
 /**
@@ -209,6 +213,10 @@ class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
    * For example, in `Array<string>`, `string` is the only argument type.
    */
   JSDocTypeExpr getAnArgument() { result = getArgument(_) }
+
+  override predicate hasQualifiedName(string globalName) {
+    getHead().hasQualifiedName(globalName)
+  }
 }
 
 /**
