@@ -38,7 +38,11 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    *
    * `this` parameter types are specific to TypeScript.
    */
-  TypeExpr getThisTypeAnnotation() { result = getChildTypeExpr(-4) }
+  TypeAnnotation getThisTypeAnnotation() {
+    result = getChildTypeExpr(-4)
+    or
+    result = getDocumentation().getATagByTitle("this").getType()
+  }
 
   /** Gets the identifier specifying the name of this function, if any. */
   VarDecl getId() { result = getChildExpr(-1) }
@@ -76,7 +80,13 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   int getNumBodyStmt() { result = count(getABodyStmt()) }
 
   /** Gets the return type annotation on this function, if any. */
-  TypeExpr getReturnTypeAnnotation() { typeexprs(result, _, this, -3, _) }
+  TypeAnnotation getReturnTypeAnnotation() {
+    typeexprs(result, _, this, -3, _)
+    or
+    exists(string title | title = "return" or title = "returns" |
+      result = getDocumentation().getATagByTitle(title).getType()
+    )
+  }
 
   /** Holds if this function is a generator function. */
   predicate isGenerator() {

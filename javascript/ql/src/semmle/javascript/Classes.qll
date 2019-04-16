@@ -551,7 +551,11 @@ class SetterMethodSignature extends SetterMethodDeclaration, AccessorMethodSigna
  */
 class FieldDeclaration extends MemberDeclaration, @field {
   /** Gets the type annotation of this field, if any, such as `T` in `{ x: T }`. */
-  TypeExpr getTypeAnnotation() { result = getChildTypeExpr(2) }
+  TypeAnnotation getTypeAnnotation() {
+    result = getChildTypeExpr(2)
+    or
+    result = getDocumentation().getATagByTitle("type").getType()
+  }
 
   /** Holds if this is a TypeScript field annotated with the `readonly` keyword. */
   predicate isReadonly() { hasReadonlyKeyword(this) }
@@ -591,7 +595,7 @@ class ParameterField extends FieldDeclaration, @parameter_field {
 
   override Expr getNameExpr() { result = getParameter() }
 
-  override TypeExpr getTypeAnnotation() { result = getParameter().getTypeAnnotation() }
+  override TypeAnnotation getTypeAnnotation() { result = getParameter().getTypeAnnotation() }
 }
 
 /**

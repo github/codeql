@@ -17,6 +17,12 @@ class JSDoc extends @jsdoc, Locatable {
   /** Gets a JSDoc tag within this JSDoc comment. */
   JSDocTag getATag() { result.getParent() = this }
 
+  /** Gets a JSDoc tag within this JSDoc comment with the given title. */
+  JSDocTag getATagByTitle(string title) {
+    result = getATag() and
+    result.getTitle() = title
+  }
+
   override string toString() { result = getComment().toString() }
 }
 
