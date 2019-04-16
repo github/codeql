@@ -786,6 +786,8 @@ class UnionTypeExpr extends @uniontypeexpr, TypeExpr {
 
   /** Gets the number of types in the union. This is always at least two. */
   int getNumElementType() { result = count(getAnElementType()) }
+
+  override TypeExpr getAnUnderlyingType() { result = getAnElementType().getAnUnderlyingType() }
 }
 
 /**
@@ -813,6 +815,8 @@ class IntersectionTypeExpr extends @intersectiontypeexpr, TypeExpr {
 
   /** Gets the number of operands to the intersection type. This is always at least two. */
   int getNumElementType() { result = count(getAnElementType()) }
+
+  override TypeExpr getAnUnderlyingType() { result = getAnElementType().getAnUnderlyingType() }
 }
 
 /**
@@ -823,6 +827,8 @@ class ParenthesizedTypeExpr extends @parenthesizedtypeexpr, TypeExpr {
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
 
   override TypeExpr stripParens() { result = getElementType().stripParens() }
+
+  override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
 }
 
 /**
@@ -902,6 +908,8 @@ class IsTypeExpr extends @istypeexpr, TypeExpr {
 class OptionalTypeExpr extends @optionaltypeexpr, TypeExpr {
   /** Gets the type `T` in `T?` */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
+
+  override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
 }
 
 /**
@@ -921,6 +929,8 @@ class RestTypeExpr extends @resttypeexpr, TypeExpr {
 class ReadonlyTypeExpr extends @readonlytypeexpr, TypeExpr {
   /** Gets the type `T` in `readonly T`. */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
+
+  override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
 }
 
 /**

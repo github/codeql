@@ -3,7 +3,6 @@
  */
 
 import Customizations
-
 import semmle.javascript.Aliases
 import semmle.javascript.AMD
 import semmle.javascript.AST

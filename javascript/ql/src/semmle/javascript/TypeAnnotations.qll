@@ -67,4 +67,12 @@ class TypeAnnotation extends @type_annotation {
 
   /** Holds if this is the `const` keyword, occurring in a type assertion such as `x as const`. */
   predicate isConstKeyword() { none() }
+
+  /** 
+   * Repeatedly unfolds unions, intersections, parentheses, and nullability/readonly modifiers and gets any of the underlying types,
+   * or this type itself if it cannot be unfolded.
+   *
+   * Note that this only unfolds the syntax of the type annotation. Type aliases are not followed to their definition.
+   */
+  TypeAnnotation getAnUnderlyingType() { result = this }
 }

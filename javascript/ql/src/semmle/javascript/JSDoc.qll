@@ -154,21 +154,17 @@ class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr {
 class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
   /** Gets the name of the type the expression refers to. */
   string getName() { result = toString() }
-  
-  override predicate isString() {
-    getName() = "string"
-  }
-  
+
+  override predicate isString() { getName() = "string" }
+
   override predicate isStringy() {
     exists(string name | name = getName() |
       name = "string" or
       name = "String"
     )
   }
-  
-  override predicate isNumber() {
-    getName() = "number"
-  }
+
+  override predicate isNumber() { getName() = "number" }
 
   override predicate isNumbery() {
     exists(string name | name = getName() |
@@ -182,9 +178,7 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
     )
   }
 
-  override predicate isBoolean() {
-    getName() = "boolean"
-  }
+  override predicate isBoolean() { getName() = "boolean" }
 
   override predicate isBooleany() {
     getName() = "boolean" or
@@ -192,9 +186,7 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
     getName() = "bool"
   }
 
-  override predicate isRawFunction() {
-    getName() = "Function"
-  }
+  override predicate isRawFunction() { getName() = "Function" }
 }
 
 /**
@@ -228,6 +220,8 @@ class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
 
   /** Holds if the `?` operator of this type expression is written in prefix notation. */
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
+
+  override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
 }
 
 /**
@@ -239,6 +233,8 @@ class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeE
 
   /** Holds if the `!` operator of this type expression is written in prefix notation. */
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
+
+  override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
 }
 
 /**
@@ -277,6 +273,8 @@ class JSDocArrayTypeExpr extends @jsdoc_array_type_expr, JSDocTypeExpr {
 class JSDocUnionTypeExpr extends @jsdoc_union_type_expr, JSDocTypeExpr {
   /** Gets one of the type alternatives of this union type. */
   JSDocTypeExpr getAnAlternative() { result = getChild(_) }
+
+  override JSDocTypeExpr getAnUnderlyingType() { result = getAnAlternative().getAnUnderlyingType() }
 }
 
 /**
@@ -305,6 +303,8 @@ class JSDocFunctionTypeExpr extends @jsdoc_function_type_expr, JSDocTypeExpr {
 class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTypeExpr {
   /** Gets the underlying type of this optional type. */
   JSDocTypeExpr getUnderlyingType() { result = getChild(0) }
+
+  override JSDocTypeExpr getAnUnderlyingType() { result = getUnderlyingType().getAnUnderlyingType() }
 }
 
 /**
