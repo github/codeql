@@ -22,14 +22,17 @@ class CallToObjectDefineProperty extends DataFlow::MethodCallNode {
   /** Gets the data flow node denoting the descriptor of the property being defined. */
   DataFlow::Node getPropertyDescriptor() { result = getArgument(2) }
 
-  /** Gets a data flow node defining a descriptor attribute of the property being defined. */
-  DataFlow::PropWrite getAPropertyAttribute() {
-    exists (DataFlow::SourceNode descriptor |
+  /**
+   * Holds if there is an assignment to property `name` to the
+   * attributes object on this node, and the right hand side of the
+   * assignment is `rhs`.
+   */
+  predicate hasPropertyAttributeWrite(string name, DataFlow::Node rhs) {
+    exists(DataFlow::SourceNode descriptor |
       descriptor.flowsTo(getPropertyDescriptor()) and
-      result = descriptor.getAPropertyWrite()
+      descriptor.hasPropertyWrite(name, rhs)
     )
   }
-
 }
 
 /**
