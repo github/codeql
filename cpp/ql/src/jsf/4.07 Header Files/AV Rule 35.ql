@@ -133,11 +133,7 @@ where not hf instanceof IncludeGuardedHeader
   // Exclude files which contain no declaration entries or top level
   // declarations (e.g. just preprocessor directives; or non-top level
   // code).
-  and (
-    exists(DeclarationEntry de | de.getFile() = hf) or
-    exists(Declaration d | d.getFile() = hf and d.isTopLevel()) or
-    exists(UsingEntry ue | ue.getFile() = hf)
-  )
+  and not hf.noTopLevelCode()
   // Exclude files which look like they contain 'x-macros'
   and not hasXMacro(hf)
   // Exclude files which are always #imported.

@@ -65,3 +65,57 @@ void myFunction();
 //  # pragma once
 
 /*#error"myerror"*/
+
+#ifdef MYMACRO
+
+	// ...
+
+#endif // #ifdef MYMACRO
+
+#if !defined(MYMACRO)
+
+	// ...
+
+#else // #if !defined(MYMACRO)
+
+	// ...
+
+#endif // #else #if !defined(MYMACRO)
+
+#ifdef MYMACRO
+
+	// ...
+
+#endif   //    #ifdef MYMACRO       (comment)
+
+/*
+#ifdef MYMACRO
+	// ...
+#endif // #ifdef MYMACRO
+*/
+
+
+#ifdef MYMACRO1
+	#ifdef MYMACRO2
+
+		// ...
+
+		// comment at end of block
+	#endif // #ifdef MYMACRO2
+#endif // #ifdef MYMACRO1
+
+#include "config.h" // #include "config2.h"
+
+#ifdef MYMACRO
+
+	// ...
+
+#endif /* #ifdef MYMACRO */
+
+#error "error" /* #ifdef MYMACRO */
+
+// commented_out_code();
+
+#if 0
+	// commented_out_code();
+#endif
