@@ -30,3 +30,7 @@ query predicate compilationFolder(Compilation c, string folder) {
 }
 
 query predicate diagnosticElements(Diagnostic d, Element e) { e = d.getElement() }
+
+query predicate references(Compilation c, int i, string reference) {
+  reference = c.getReference(i).getBaseName()
+}

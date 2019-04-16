@@ -28,3 +28,10 @@ diagnosticElements
 | Program.cs:7:13:7:13 | CS0219: The variable 'x' is assigned but its value is never used | Program.cs:7:13:7:13 | x |
 | Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | Program.cs:9:13:9:13 | access to local variable y |
 | Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | Program.cs:9:13:9:13 | y |
+references
+| compilation | 0 | System.Core.dll |
+| compilation | 1 | System.Console.dll |
+| compilation | 2 | mscorlib.dll |
+| compilation | 3 | System.Runtime.dll |
+| compilation | 4 | System.dll |
+| compilation | 5 | System.Private.CoreLib.dll |

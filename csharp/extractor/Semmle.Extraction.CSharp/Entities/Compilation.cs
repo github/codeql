@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,6 +27,13 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach(var file in cx.Compilation.SyntaxTrees.Select(tree => Extraction.Entities.File.Create(cx, tree.FilePath)))
             {
                 cx.Emit(Tuples.compilation_compiling_files(this, index++, file));
+            }
+
+            // References
+            index = 0;
+            foreach(var file in cx.Compilation.References.OfType<PortableExecutableReference>().Select(r => Extraction.Entities.File.Create(cx, r.FilePath)))
+            {
+                cx.Emit(Tuples.compilation_referencing_files(this, index++, file));
             }
 
             // Diagnostics

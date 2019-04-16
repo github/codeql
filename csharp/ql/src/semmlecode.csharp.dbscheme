@@ -4,19 +4,12 @@
  * compiled per invocation. For example, this command compiles three
  * source files:
  *
- *   gcc -c f1.c f2.c f3.c
+ *   csc f1.cs f2.cs f3.cs
  *
  * The `id` simply identifies the invocation, while `cwd` is the working
  * directory from which the compiler was invoked.
  */
 compilations(
-    /**
-     * An invocation of the compiler. Note that more than one file may
-     * be compiled per invocation. For example, this command compiles
-     * three source files:
-     *
-     *   gcc -c f1.c f2.c f3.c
-     */
     unique int id : @compilation,
     string cwd : string ref
 );
@@ -25,19 +18,18 @@ compilations(
  * The arguments that were passed to the extractor for a compiler
  * invocation. If `id` is for the compiler invocation
  *
- *   gcc -c f1.c f2.c f3.c
+ *   csc f1.cs f2.cs f3.cs
  *
  * then typically there will be rows for
  *
  * num | arg
  * --- | ---
- * 0   | *path to extractor*
- * 1   | `--mimic`
- * 2   | `/usr/bin/gcc`
- * 3   | `-c`
- * 4   | f1.c
- * 5   | f2.c
- * 6   | f3.c
+ * 0   | --compiler
+ * 1   | *path to compiler*
+ * 2   | --cil
+ * 3   | f1.cs
+ * 4   | f2.cs
+ * 5   | f3.cs
  */
 #keyset[id, num]
 compilation_args(
@@ -50,21 +42,39 @@ compilation_args(
  * The source files that are compiled by a compiler invocation.
  * If `id` is for the compiler invocation
  *
- *   gcc -c f1.c f2.c f3.c
+ *   csc f1.cs f2.cs f3.cs
  *
  * then there will be rows for
  *
  * num | arg
  * --- | ---
- * 0   | f1.c
- * 1   | f2.c
- * 2   | f3.c
- *
- * Note that even if those files `#include` headers, those headers
- * do not appear as rows.
+ * 0   | f1.cs
+ * 1   | f2.cs
+ * 2   | f3.cs
  */
 #keyset[id, num]
 compilation_compiling_files(
+    int id : @compilation ref,
+    int num : int ref,
+    int file : @file ref
+);
+
+/**
+ * The references used by a compiler invocation.
+ * If `id` is for the compiler invocation
+ *
+ *   csc f1.cs f2.cs f3.cs /r:ref1.dll /r:ref2.dll /r:ref3.dll
+ *
+ * then there will be rows for
+ *
+ * num | arg
+ * --- | ---
+ * 0   | ref1.dll
+ * 1   | ref2.dll
+ * 2   | ref3.dll
+ */
+#keyset[id, num]
+compilation_referencing_files(
     int id : @compilation ref,
     int num : int ref,
     int file : @file ref

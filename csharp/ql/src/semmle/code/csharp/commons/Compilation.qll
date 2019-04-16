@@ -24,6 +24,12 @@ class Compilation extends @compilation {
   /** Gets a source file compiled in this compilation. */
   File getAFileCompiled() { result = getFileCompiled(_) }
 
+  /** Gets the `i`th reference in this compilation. */
+  File getReference(int i) { compilation_referencing_files(this, i, result) }
+
+  /** Gets a reference in this compilation. */
+  File getAReference() { result = getReference(_) }
+
   /** Gets a diagnostic associated with this compilation. */
   Diagnostic getADiagnostic() { result.getCompilation() = this }
 

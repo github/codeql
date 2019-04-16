@@ -45,6 +45,8 @@ namespace Semmle.Extraction.CSharp
 
         internal static Tuple compilation_compiling_files(Compilation compilation, int index, File file) => new Tuple("compilation_compiling_files", compilation, index, file);
 
+        internal static Tuple compilation_referencing_files(Compilation compilation, int index, File file) => new Tuple("compilation_referencing_files", compilation, index, file);
+
         internal static Tuple compilation_finished(Compilation compilation, float cpuSeconds, float elapsedSeconds) => new Tuple("compilation_finished", compilation, cpuSeconds, elapsedSeconds);
 
         internal static Tuple compilation_time(Compilation compilation, int num, int index, float metric) => new Tuple("compilation_time", compilation, num, index, metric);
