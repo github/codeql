@@ -50,7 +50,8 @@ class ConstantNullness
         j = (int?)i ?? 1; // BAD
         s = ""?.CommaJoinWith(s); // BAD
         s = s ?? ""; // GOOD
-        s = (i==0 ? s : null) ?? s;
+        s = (i==0 ? s : null) ?? s; // GOOD
+        var k = (i==0 ? s : null)?.Length; // GOOD
     }
 }
 
