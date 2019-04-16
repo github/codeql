@@ -126,6 +126,21 @@ function good11(s) {
   return s.replace("%d", "42");
 }
 
+function good12(s) {
+	s.replace('[', '').replace(']', ''); // OK
+	s.replace('(', '').replace(')', ''); // OK
+	s.replace('{', '').replace('}', ''); // OK
+	s.replace('<', '').replace('>', ''); // NOT OK: too common as a bad HTML sanitizer
+
+	s.replace('[', '\\[').replace(']', '\\]'); // NOT OK
+	s.replace('{', '\\{').replace('}', '\\}'); // NOT OK
+
+	s = s.replace('[', ''); // OK
+	s = s.replace(']', ''); // OK
+	s.replace(/{/, '').replace(/}/, ''); // NOT OK: should have used a string literal if a single replacement was intended
+	s.replace(']', '').replace('[', ''); // probably OK, but still flagged
+}
+
 app.get('/some/path', function(req, res) {
   let untrusted = req.param("p");
 
@@ -162,6 +177,7 @@ app.get('/some/path', function(req, res) {
   good10(untrusted);
   flowifyComments(untrusted);
   good11(untrusted);
+  good12(untrusted);
 });
 
 (function (s) {

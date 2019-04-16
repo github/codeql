@@ -326,8 +326,6 @@ abstract class Sanitizer extends string {
 private predicate valid_sanitizer(Sanitizer sanitizer) {
     not exists(TaintTracking::Configuration c)
     or
-    exists(DataFlow::Configuration c | c.isSanitizer(sanitizer))
-    or
     exists(TaintTracking::Configuration c | c.isSanitizer(sanitizer))
 }
 
@@ -600,7 +598,7 @@ private newtype TTaintedNode =
         exists(DataFlow::Configuration config, TaintKind kind |
             taint = TaintFlowImplementation::TTrackedTaint(kind) and
             config.isSource(n) and context.getDepth() = 0 and
-            kind instanceof GenericFlowType
+            kind instanceof DataFlowType
         )
         or
         TaintFlowImplementation::step(_, taint, context, n) and
@@ -864,8 +862,6 @@ library module TaintFlowImplementation {
             (
                 not exists(TaintTracking::Configuration c)
                 or
-                exists(DataFlow::Configuration c | c.isExtension(fromnodenode))
-                or
                 exists(TaintTracking::Configuration c | c.isExtension(fromnodenode))
             )
             |
@@ -1089,8 +1085,6 @@ library module TaintFlowImplementation {
             originnode = origin.getNode() and
             (
                 not exists(TaintTracking::Configuration c)
-                or
-                exists(DataFlow::Configuration c | c.isExtension(originnode))
                 or
                 exists(TaintTracking::Configuration c | c.isExtension(originnode))
             ) and
@@ -1539,15 +1533,11 @@ class CallContext extends TCallContext {
  */
 module DataFlow {
 
-    class FlowType = TaintKind;
-
     /** Generic taint kind, source and sink classes for convenience and
      * compatibility with other language libraries
      */
 
     class Node = ControlFlowNode;
-
-    class PathNode = TaintedNode;
 
     class Extension = DataFlowExtension::DataFlowNode;
 
@@ -1560,19 +1550,14 @@ module DataFlow {
 
         abstract predicate isSink(Node sink);
 
-        predicate isSanitizer(Sanitizer sanitizer) { none() }
-
-        predicate isExtension(Extension extension) { none() }
-
-        predicate hasFlowPath(PathNode source, PathNode sink) {
+        private predicate hasFlowPath(TaintedNode source, TaintedNode sink) {
             this.isSource(source.getNode()) and
             this.isSink(sink.getNode()) and
-            source.getTaintKind() instanceof GenericFlowType and
-            sink.getTaintKind() instanceof GenericFlowType
+            source.getASuccessor*() = sink
         }
 
         predicate hasFlow(Node source, Node sink) {
-            exists(PathNode psource, PathNode psink |
+            exists(TaintedNode psource, TaintedNode psink |
                 psource.getNode() = source and
                 psink.getNode() = sink and
                 this.isSource(source) and
@@ -1585,10 +1570,10 @@ module DataFlow {
 
 }
 
-private class GenericFlowType extends DataFlow::FlowType {
+private class DataFlowType extends TaintKind {
 
-    GenericFlowType() {
-        this = "Generic taint kind"  and
+    DataFlowType() {
+        this = "Data flow"  and
         exists(DataFlow::Configuration c)
     }
 
