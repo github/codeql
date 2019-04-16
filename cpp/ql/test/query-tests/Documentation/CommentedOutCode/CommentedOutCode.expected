@@ -11,6 +11,8 @@
 | test2.cpp:91:1:95:2 | /*\n#ifdef MYMACRO\n\t// ...\n#endif // #ifdef MYMACRO\n*/ | This comment appears to contain commented-out code |
 | test2.cpp:107:21:107:43 | // #include "config2.h" | This comment appears to contain commented-out code |
 | test2.cpp:115:16:115:35 | /* #ifdef MYMACRO */ | This comment appears to contain commented-out code |
+| test2.cpp:117:1:117:24 | // commented_out_code(); | This comment appears to contain commented-out code |
+| test2.cpp:120:2:120:25 | // commented_out_code(); | This comment appears to contain commented-out code |
 | test.c:2:1:2:22 | // commented out code; | This comment appears to contain commented-out code |
 | test.c:4:1:7:8 | // some; | This comment appears to contain commented-out code |
 | test.c:9:1:13:8 | // also; | This comment appears to contain commented-out code |

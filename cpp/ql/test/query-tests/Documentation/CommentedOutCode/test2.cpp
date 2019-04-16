@@ -113,3 +113,9 @@ void myFunction();
 #endif /* #ifdef MYMACRO */
 
 #error "error" /* #ifdef MYMACRO */
+
+// commented_out_code();
+
+#if 0
+	// commented_out_code();
+#endif
