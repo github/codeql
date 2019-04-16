@@ -136,7 +136,7 @@ import java.util.stream.Stream;
  * </ul>
  *
  * <p>Additionally, if the environment variable <code>LGTM_INDEX_TYPESCRIPT</code> is set to "basic"
- * (default) or "full", files with one of the extensions supported by {@link FileType#TYPESCRIPT}
+ * or "full" (default), files with one of the extensions supported by {@link FileType#TYPESCRIPT}
  * (currently ".ts" and ".tsx") are also included. In case of "full", type information from the
  * TypeScript compiler is extracted as well.
  *
@@ -190,7 +190,7 @@ public class AutoBuild {
     this.outputConfig = new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT);
     this.trapCache = mkTrapCache();
     this.typeScriptMode =
-        getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.BASIC);
+        getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.FULL);
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
     setupFileTypes();
     setupMatchers();
