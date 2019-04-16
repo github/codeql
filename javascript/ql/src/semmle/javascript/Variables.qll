@@ -500,7 +500,7 @@ class VariableDeclarator extends Expr, @vardeclarator {
   /** Gets the expression specifying the initial value of the declared variable(s), if any. */
   Expr getInit() { result = this.getChildExpr(1) }
 
-  /** Gets the TypeScript type annotation for the declared variable or binding pattern. */
+  /** Gets the type annotation for the declared variable or binding pattern. */
   TypeAnnotation getTypeAnnotation() {
     result = this.getChildTypeExpr(2)
     or
