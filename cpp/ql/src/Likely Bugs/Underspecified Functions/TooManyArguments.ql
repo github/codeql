@@ -27,13 +27,24 @@ predicate isCompiledAsC(Function f) {
   )
 }
 
+predicate isWhitelisted(Function f) {
+  f instanceof BuiltInFunction
+  or
+  // The following list can be expanded as the need arises
+  exists(string name | name = f.getName() |
+    name = "static_assert" or
+    name = "_Static_assert" or
+    name = "strptime"
+  )
+}
+
 from FunctionCall fc, Function f
 where
   f = fc.getTarget() and
   not f.isVarargs() and
-  not f instanceof BuiltInFunction and
   hasZeroParamDecl(f) and
   isCompiledAsC(f) and
+  not isWhitelisted(f) and
   // There must not exist a declaration with the number of parameters
   // at least as large as the number of call arguments
   not exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() |
