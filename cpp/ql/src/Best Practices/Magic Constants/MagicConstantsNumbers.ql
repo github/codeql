@@ -9,12 +9,14 @@
  *       statistical
  *       non-attributable
  */
+
 import cpp
 import MagicConstants
 
 pragma[noopt]
 predicate selection(Element e, string msg) {
-  magicConstant(e, msg) and exists(Literal l, Type t | l=e and t = l.getType() and numberType(t) and l instanceof Literal)
+  magicConstant(e, msg) and
+  exists(Literal l, Type t | l = e and t = l.getType() and numberType(t) and l instanceof Literal)
 }
 
 from Literal e, string msg

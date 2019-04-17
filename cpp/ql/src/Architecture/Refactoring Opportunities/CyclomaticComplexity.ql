@@ -8,9 +8,11 @@
  *       statistical
  *       non-attributable
  */
+
 import cpp
 
 from Function f, int complexity
-where complexity = f.getMetrics().getCyclomaticComplexity()
-  and complexity > 250
+where
+  complexity = f.getMetrics().getCyclomaticComplexity() and
+  complexity > 250
 select f, "Function has high cyclomatic complexity: " + complexity.toString()

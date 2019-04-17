@@ -8,6 +8,7 @@
  * @tags maintainability
  *       readability
  */
+
 import cpp
 
 class LocalVariableOrParameter extends VariableDeclarationEntry {
@@ -31,6 +32,7 @@ class LocalVariableOrParameter extends VariableDeclarationEntry {
 }
 
 from LocalVariableOrParameter lv, GlobalVariable gv
-where lv.getName() = gv.getName() and
-      lv.getFile() = gv.getFile()
+where
+  lv.getName() = gv.getName() and
+  lv.getFile() = gv.getFile()
 select lv, lv.type() + gv.getName() + " hides $@ with the same name.", gv, "a global variable"

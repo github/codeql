@@ -13,10 +13,11 @@
 import cpp
 
 predicate isInCatch(Expr e) {
-  e.getEnclosingStmt().getParent*() instanceof CatchBlock or // Lexically enclosing catch blocks will cause there to be a current exception,
+  e.getEnclosingStmt().getParent*() instanceof CatchBlock // Lexically enclosing catch blocks will cause there to be a current exception,
+  or
   exists(Function f | f = e.getEnclosingFunction() |
-    isInCatch(f.getACallToThisFunction()) or                 // as will dynamically enclosing catch blocks.
-    f.getName().toLowerCase().matches("%exception%")         // We assume that rethrows are intended when the function is called *exception*.
+    isInCatch(f.getACallToThisFunction()) or // as will dynamically enclosing catch blocks.
+    f.getName().toLowerCase().matches("%exception%") // We assume that rethrows are intended when the function is called *exception*.
   )
 }
 
