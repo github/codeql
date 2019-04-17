@@ -5,6 +5,7 @@
  */
 
 import javascript
+import semmle.javascript.dependencies.Dependencies
 
 /** A data flow node corresponding to an expression. */
 class ExprNode extends DataFlow::ValueNode {
@@ -486,6 +487,15 @@ module ModuleImportNode {
  * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
 ModuleImportNode moduleImport(string path) { result.getPath() = path }
+
+/**
+ * Gets a (default) import of the given dependency `dep`, such as
+ * `require("lodash")` in a context where a package.json file includes
+ * `"lodash"` as a dependency.
+ */
+ModuleImportNode dependencyModuleImport(Dependency dep) {
+  result = dep.getAUse("import").(Import).getDefaultNode()
+}
 
 /**
  * Gets a data flow node that either imports `m` from the module with
