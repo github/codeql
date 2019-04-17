@@ -47,14 +47,15 @@ abstract class FunctionObject extends Object {
 
     /** Gets a call-site from where this function is called as a function */
     CallNode getAFunctionCall() {
-        result.getFunction() instanceof NameNode and
-        result = this.getACall()
+        result.getFunction().inferredValue() = theCallable()
     }
 
     /** Gets a call-site from where this function is called as a method */
     CallNode getAMethodCall() {
-        result.getFunction() instanceof AttrNode and
-        result = this.getACall()
+        exists(BoundMethodObjectInternal bm |
+            result.getFunction().inferredValue() = bm and
+            bm.getFunction() = theCallable()
+        )
     }
 
     /** Gets a call-site from where this function is called */
