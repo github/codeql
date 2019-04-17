@@ -3,38 +3,38 @@
   "qhelp.dtd">
 
 <qhelp>
-	
-	<overview>
-		
-		
-		<!-- What is the English description of the problem to analyze? -->
-		<p>
-			Problem Structures: A function which does not return a value is called in a context
-			which expects a value.
-		</p>
-		
-		
-		<!-- What is the reason this is a problem that deserves a query? -->
-		<p>
-			Functions need not return values, but calls to them should then not be used as if
-			the function does indeed return a value. Using such functions in this way indicates
-			either that the function was intended to return a value, or that the assignment was
-			unintended.
-		</p>
-		
-		<p>The contexts in which such a call is acceptable are:</p>
-		
-		<ul>
-			<li>As a statement, b/c the function is used for its side effects only</li>
-			<li>When the function is completely empty and has no statements in it</li>
-			<li>When the function is in an error function</li>
- 			<li>In an immediately invoked function expression (IIFE)</li>
- 			<li>When the application is immediately returned</li>
-			<li>When the application is in a void expression</li>
-		</ul>
-		
-		
-		<!-- What are the main concepts and potentially relevant libraries? -->
+  
+  <overview>
+    
+    
+    <!-- What is the English description of the problem to analyze? -->
+    <p>
+      Problem Structures: A function which does not return a value is called in a context
+      which expects a value.
+    </p>
+    
+    
+    <!-- What is the reason this is a problem that deserves a query? -->
+    <p>
+      Functions need not return values, but calls to them should then not be used as if
+      the function does indeed return a value. Using such functions in this way indicates
+      either that the function was intended to return a value, or that the assignment was
+      unintended.
+    </p>
+    
+    <p>The contexts in which such a call is acceptable are:</p>
+    
+    <ul>
+      <li>As a statement, b/c the function is used for its side effects only</li>
+      <li>When the function is completely empty and has no statements in it</li>
+      <li>When the function is in an error function</li>
+       <li>In an immediately invoked function expression (IIFE)</li>
+       <li>When the application is immediately returned</li>
+      <li>When the application is in a void expression</li>
+    </ul>
+    
+    
+    <!-- What are the main concepts and potentially relevant libraries? -->
         <ul>
           <li>
             Methods and Calls: function utils (to be able to reference the method by name,
@@ -46,78 +46,78 @@
         </ul>
         
         
-	</overview>
-	
-	
-	
-	<!-- When someone finds occurrences of this problem, how can it be fixed? -->
-	<recommendation>
-		<p>
-			Either ensure that the function in question returns a value, or remove the offending
-			use context.
-		</p>
-	</recommendation>
-	
-	
-	
-	<!-- What are some test case examples? Positive and Negative cases -->
-	<example>
-		<p>
-			The following source code can be used to test the different cases. The Bad Cases
-			should be found by the query, while the Good Cases should not.
-		</p>
-    	
-    	<sample src="examples/MissingReturnValueGetsUsed/TestCases.js" />
+  </overview>
+  
+  
+  
+  <!-- When someone finds occurrences of this problem, how can it be fixed? -->
+  <recommendation>
+    <p>
+      Either ensure that the function in question returns a value, or remove the offending
+      use context.
+    </p>
+  </recommendation>
+  
+  
+  
+  <!-- What are some test case examples? Positive and Negative cases -->
+  <example>
+    <p>
+      The following source code can be used to test the different cases. The Bad Cases
+      should be found by the query, while the Good Cases should not.
+    </p>
+      
+      <sample src="examples/MissingReturnValueGetsUsed/TestCases.js" />
     </example>
-	
-	
-	
-	<!-- What are some representative examples? Explain them and how they can be fixed. -->	
-	<example>
-		<p>
-			In the following code, array elements in <code>arr</code> are logged to the console
-			one at a time.
-		</p>
-		
-		<sample src="examples/MissingReturnValueGetsUsed/RepresentativeExample0.js" />
-		
-		<p>
-			This assignment is extraneous, because nothing is returned from the function
-			<code>logAll</code>. Instead, it can be omitted entirely:
-		</p>
-		
-		<sample src="examples/MissingReturnValueGetsUsed/RepresentativeExample1.js" />
-	</example>
-	
-	
-	
-	<!-- What are some representative examples? Explain them and how they can be fixed. -->
-	<example>
-		<p>
-			Another common thing that happens is that a return statement is intended, but
-			omitted unintentionally. For example, when one thinks in terms of arrow expressions,
-			but writes function expressions:
-		</p>
-		
-		<sample src="examples/MissingReturnValueGetsUsed/RepresentativeExample2.js" />
-		
-		<p>
-			In cases like this, adding an explicit return suffices:
-		</p>
-		
-		<sample src="examples/MissingReturnValueGetsUsed/RepresentativeExample3.js" />
-		
-		<p>
-			As does swapping the function expression for an arrow expression:
-		</p>
-		
-		<sample src="examples/MissingReturnValueGetsUsed/RepresentativeExample4.js" />
-	</example>
-	
-	
-	
-	<!-- What are good places to go if people want to read more? -->
-	<references>
-		<li>DeepScan: <a href="https://deepscan.io/docs/rules/missing-return-value">MISSING_RETURN_VALUE</a></li>
-	</references>
+  
+  
+  
+  <!-- What are some representative examples? Explain them and how they can be fixed. -->  
+  <example>
+    <p>
+      In the following code, array elements in <code>arr</code> are logged to the console
+      one at a time.
+    </p>
+    
+    <sample src="examples/MissingReturnValueGetsUsed/RepresentativeExample0.js" />
+    
+    <p>
+      This assignment is extraneous, because nothing is returned from the function
+      <code>logAll</code>. Instead, it can be omitted entirely:
+    </p>
+    
+    <sample src="examples/MissingReturnValueGetsUsed/RepresentativeExample1.js" />
+  </example>
+  
+  
+  
+  <!-- What are some representative examples? Explain them and how they can be fixed. -->
+  <example>
+    <p>
+      Another common thing that happens is that a return statement is intended, but
+      omitted unintentionally. For example, when one thinks in terms of arrow expressions,
+      but writes function expressions:
+    </p>
+    
+    <sample src="examples/MissingReturnValueGetsUsed/RepresentativeExample2.js" />
+    
+    <p>
+      In cases like this, adding an explicit return suffices:
+    </p>
+    
+    <sample src="examples/MissingReturnValueGetsUsed/RepresentativeExample3.js" />
+    
+    <p>
+      As does swapping the function expression for an arrow expression:
+    </p>
+    
+    <sample src="examples/MissingReturnValueGetsUsed/RepresentativeExample4.js" />
+  </example>
+  
+  
+  
+  <!-- What are good places to go if people want to read more? -->
+  <references>
+    <li>DeepScan: <a href="https://deepscan.io/docs/rules/missing-return-value">MISSING_RETURN_VALUE</a></li>
+  </references>
 </qhelp>
