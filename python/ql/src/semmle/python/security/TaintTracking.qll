@@ -1204,11 +1204,10 @@ library module TaintFlowImplementation {
         exists(ParameterDefinition def |
             def.getDefiningNode() = param and
             exists(CallableValue func, CallNode call |
-                call.getFunction().pointsTo() = func and
                 callee = caller.getCallee(call) |
-                exists(int n | param = func.getParameter(n) and argument = call.getArg(n))
+                exists(int n | param = func.getParameter(n) and argument = func.getArgumentForCall(call, n))
                 or
-                exists(string name | param = func.getParameterByName(name) and argument = call.getArgByName(name))
+                exists(string name | param = func.getParameterByName(name) and argument = func.getNamedArgumentForCall(call, name))
                 or
                 class_initializer_argument(_, _, call, func, argument, param)
             )

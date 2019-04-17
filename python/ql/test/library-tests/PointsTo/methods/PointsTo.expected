@@ -1,9 +1,0 @@
-| test.py:10 ... fail
-| test.py:11:5:11:7 | ControlFlowNode for Attribute | bound method 'm' of instance of C | test.py:11:5:11:7 | ControlFlowNode for Attribute |
-| test.py:12:5:12:10 | ControlFlowNode for Attribute() | 3 | test.py:12:9:12:9 | ControlFlowNode for IntegerLiteral |
-| test.py:16:5:16:5 | ControlFlowNode for t | bound method 'm' of instance of C | test.py:15:9:15:11 | ControlFlowNode for Attribute |
-| test.py:17:5:17:8 | ControlFlowNode for t() | 4 | test.py:17:7:17:7 | ControlFlowNode for IntegerLiteral |
-| test.py:24:1:24:1 | ControlFlowNode for D | class D | test.py:19:1:19:16 | ControlFlowNode for ClassExpr |
-| test.py:25 ... fail
-| test.py:26 ... fail
-| test.py:27 ... fail

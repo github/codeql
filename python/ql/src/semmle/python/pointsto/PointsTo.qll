@@ -1705,15 +1705,9 @@ cached module Types {
         or
         exists(cls.(PythonClassObjectInternal).getScope().getADecorator()) and not six_add_metaclass(_, cls, _) and reason = "Decorator not understood"
         or
-        exists(int i |
-            exists(cls.(PythonClassObjectInternal).getScope().getBase(i)) and reason = "Missing base " + i
-            |
-            not exists(getBase(cls, i))
-        )
+        reason = "Missing base " + missingBase(cls)
         or
         exists(cls.(PythonClassObjectInternal).getScope().getMetaClass()) and not exists(cls.getClass()) and reason = "Failed to infer metaclass"
-        or
-        exists(int i | failedInference(getBase(cls, i), _) and reason = "Failed inference for base class at position " + i)
         or
         exists(int i, ObjectInternal base1, ObjectInternal base2 |
             base1 = getBase(cls, i) and
@@ -1722,7 +1716,24 @@ cached module Types {
             reason = "Multiple bases at position " + i
         )
         or
-        exists(int i, int j | getBase(cls, i) = getBase(cls, j) and i != j and reason = "Duplicate bases classes")
+        duplicateBase(cls) and reason = "Duplicate bases classes"
+        or
+        not exists(getMro(cls)) and reason = "Failed to compute MRO" and not exists(missingBase(cls)) and not duplicateBase(cls)
+        or
+        exists(int i | failedInference(getBase(cls, i), _) and reason = "Failed inference for base class at position " + i)
+    }
+
+    private int missingBase(ClassObjectInternal cls) {
+        exists(cls.(PythonClassObjectInternal).getScope().getBase(result))
+        and
+        not exists(getBase(cls, result)) or getBase(cls, result) = ObjectInternal::unknownClass()
+    }
+
+    private predicate duplicateBase(ClassObjectInternal cls) {
+        exists(int i, int j, ClassObjectInternal dup | 
+            dup = getBase(cls, i) and dup != ObjectInternal::unknownClass() and
+            dup = getBase(cls, j) and i != j
+        )
     }
 
     cached boolean improperSubclass(ObjectInternal sub, ObjectInternal sup) {
