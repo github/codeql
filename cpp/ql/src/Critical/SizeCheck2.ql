@@ -25,20 +25,14 @@ class Allocation extends FunctionCall {
   string getName() { result = this.getTarget().getQualifiedName() }
 
   int getSize() {
-    (
-      this.getName() = "malloc" and
-      this.getArgument(0).getValue().toInt() = result
-    )
+    this.getName() = "malloc" and
+    this.getArgument(0).getValue().toInt() = result
     or
-    (
-      this.getName() = "realloc" and
-      this.getArgument(1).getValue().toInt() = result
-    )
+    this.getName() = "realloc" and
+    this.getArgument(1).getValue().toInt() = result
     or
-    (
-      this.getName() = "calloc" and
-      result = this.getArgument(0).getValue().toInt() * this.getArgument(1).getValue().toInt()
-    )
+    this.getName() = "calloc" and
+    result = this.getArgument(0).getValue().toInt() * this.getArgument(1).getValue().toInt()
   }
 }
 

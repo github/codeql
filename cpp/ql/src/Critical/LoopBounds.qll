@@ -1,33 +1,27 @@
 /** Provides helpers for OverflowStatic.ql */
+
 import cpp
 
-class ZeroAssignment extends AssignExpr
-{
+class ZeroAssignment extends AssignExpr {
   ZeroAssignment() {
     this.getAnOperand() instanceof VariableAccess and
     this.getAnOperand() instanceof Zero
   }
 
-  Variable assignedVariable() {
-    result.getAnAccess() = this.getAnOperand()
-  }
+  Variable assignedVariable() { result.getAnAccess() = this.getAnOperand() }
 }
 
-private predicate staticLimit(RelationalOperation op, Variable v, int limit)
-{
-  (
-    op instanceof LTExpr and
-    op.getLeftOperand() = v.getAnAccess() and
-    op.getRightOperand().getValue().toInt() - 1 = limit
-  ) or (
-    op instanceof LEExpr and
-    op.getLeftOperand() = v.getAnAccess() and
-    op.getRightOperand().getValue().toInt() = limit
-  )
+private predicate staticLimit(RelationalOperation op, Variable v, int limit) {
+  op instanceof LTExpr and
+  op.getLeftOperand() = v.getAnAccess() and
+  op.getRightOperand().getValue().toInt() - 1 = limit
+  or
+  op instanceof LEExpr and
+  op.getLeftOperand() = v.getAnAccess() and
+  op.getRightOperand().getValue().toInt() = limit
 }
 
-private predicate simpleInc(IncrementOperation inc, Variable v)
-{
+private predicate simpleInc(IncrementOperation inc, Variable v) {
   inc.getAChild() = v.getAnAccess()
 }
 
@@ -35,8 +29,7 @@ private predicate simpleInc(IncrementOperation inc, Variable v)
  * A `for` loop of the form `for (x = 0; x < limit; x++)` with no modification
  * of `x` in the body. Variations with `<=` and `++x` are allowed.
  */
-class ClassicForLoop extends ForStmt
-{
+class ClassicForLoop extends ForStmt {
   ClassicForLoop() {
     exists(LocalVariable v |
       this.getInitialization().getAChild() instanceof ZeroAssignment and
@@ -51,13 +44,11 @@ class ClassicForLoop extends ForStmt
   }
 
   /** Gets the loop variable. */
-  LocalVariable counter() {
-    simpleInc(this.getUpdate(), result)
-  }
+  LocalVariable counter() { simpleInc(this.getUpdate(), result) }
 
-  /** Gets the maximum value that the loop variable may have inside the loop
-   * body. The minimum is 0. */
-  int limit() {
-    staticLimit(this.getCondition(), _, result)
-  }
+  /**
+   * Gets the maximum value that the loop variable may have inside the loop
+   * body. The minimum is 0.
+   */
+  int limit() { staticLimit(this.getCondition(), _, result) }
 }

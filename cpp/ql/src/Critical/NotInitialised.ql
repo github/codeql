@@ -11,7 +11,6 @@
 import cpp
 
 // See also InitialisationNotRun.ql and GlobalUseBeforeInit.ql
-
 /**
  * Holds if `s` defines variable `v` (conservative).
  */

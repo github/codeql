@@ -8,22 +8,24 @@
  *       security
  *       external/cwe/cwe-775
  */
+
 import semmle.code.cpp.pointsto.PointsTo
 
-predicate closed(Expr e)
-{
+predicate closed(Expr e) {
   exists(FunctionCall fc |
     fc.getTarget().hasQualifiedName("close") and
-    fc.getArgument(0) = e)
+    fc.getArgument(0) = e
+  )
 }
 
-class ClosedExpr extends PointsToExpr
-{
+class ClosedExpr extends PointsToExpr {
   ClosedExpr() { closed(this) }
+
   override predicate interesting() { closed(this) }
 }
 
 from Expr alloc
-where allocateDescriptorCall(alloc)
-  and not exists(ClosedExpr closed | closed.pointsTo() = alloc)
+where
+  allocateDescriptorCall(alloc) and
+  not exists(ClosedExpr closed | closed.pointsTo() = alloc)
 select alloc, "This file descriptor is never closed"
