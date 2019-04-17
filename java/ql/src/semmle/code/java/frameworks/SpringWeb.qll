@@ -11,7 +11,9 @@ class SpringServletInputAnnotation extends Annotation {
       a.hasName("RequestParam") or
       a.hasName("RequestHeader") or
       a.hasName("CookieValue") or
-      a.hasName("RequestPart")
+      a.hasName("RequestPart") or
+      a.hasName("PathVariable") or
+      a.hasName("RequestBody")
     )
   }
 }
