@@ -33,6 +33,7 @@ class BufferAccess extends ArrayExpr {
       staticBuffer(this.getArrayBase(), _, size) and
       size != 0
     ) and
+
     // exclude accesses in macro implementation of `strcmp`,
     // which are carefully controlled but can look dangerous.
     not exists(Macro m |
