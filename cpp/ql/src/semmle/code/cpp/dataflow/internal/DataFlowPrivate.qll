@@ -47,7 +47,7 @@ predicate jumpStep(Node n1, Node n2) {
 }
 
 /**
- * Holds if `call` does not pass an implicit or explicit qualifier, i.e., a
+ * Holds if `call` passes an implicit or explicit qualifier, i.e., a
  * `this` parameter.
  */
 predicate callHasQualifier(Call call) {
