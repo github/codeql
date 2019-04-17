@@ -48,11 +48,37 @@ private predicate looksLikeCode(string line) {
 }
 
 /**
+ * Holds if there is a preprocessor directive on the line indicated by
+ * `f` and `line` that we permit code comments besides.  For example this
+ * is considered acceptable:
+ * ```
+ * #ifdef MYMACRO
+ * ...
+ * #endif // #ifdef MYMACRO
+ * ```
+ */
+private predicate preprocLine(File f, int line) {
+  exists(PreprocessorDirective pd, Location l |
+    (
+      pd instanceof PreprocessorElse or
+      pd instanceof PreprocessorElif or
+      pd instanceof PreprocessorEndif
+    ) and
+    pd.getLocation() = l and
+    l.getFile() = f and
+    l.getStartLine() = line
+  )
+}
+
+/**
  * The line of a C++-style comment within its file `f`.
  */
 private int lineInFile(CppStyleComment c, File f) {
   f = c.getFile() and
-  result = c.getLocation().getStartLine()
+  result = c.getLocation().getStartLine() and
+
+  // Ignore comments on the same line as a preprocessor directive.
+  not preprocLine(f, result)
 }
 
 /**
@@ -89,9 +115,17 @@ private int commentId(CppStyleComment c, File f, int line) {
  */
 class CommentBlock extends Comment {
   CommentBlock() {
-    this instanceof CppStyleComment
-    implies
-    not exists(CppStyleComment pred, File f | lineInFile(pred, f) + 1 = lineInFile(this, f))
+    (
+      this instanceof CppStyleComment
+      implies
+      not exists(CppStyleComment pred, File f | lineInFile(pred, f) + 1 = lineInFile(this, f))
+    ) and (
+      // Ignore comments on the same line as a preprocessor directive.
+      not exists(Location l |
+        l = this.getLocation() and
+        preprocLine(l.getFile(), l.getStartLine())
+      )
+    )
   }
 
   /**
@@ -133,6 +167,7 @@ class CommentBlock extends Comment {
 
   predicate isCommentedOutCode() {
     not this.isDocumentation() and
+    not this.getFile().(HeaderFile).noTopLevelCode() and
     this.numCodeLines().(float) / this.numLines().(float) > 0.5
   }
 

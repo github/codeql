@@ -39,7 +39,7 @@ predicate isGetterProperty(string name) {
   exists(CallToObjectDefineProperty defProp |
     name = defProp.getPropertyName() |
     // ... where `descriptor` defines a getter
-    defProp.getAPropertyAttribute().getPropertyName() = "get" or
+    defProp.hasPropertyAttributeWrite("get", _) or
     // ... where `descriptor` may define a getter
     exists (DataFlow::SourceNode descriptor |
       descriptor.flowsTo(defProp.getPropertyDescriptor()) |

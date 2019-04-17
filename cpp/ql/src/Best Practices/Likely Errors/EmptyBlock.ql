@@ -11,6 +11,7 @@
  * @tags reliability
  *       readability
  */
+
 import cpp
 
 predicate emptyBlock(ControlStructure s, Block b) {
@@ -35,7 +36,8 @@ class AffectedFile extends File {
  */
 class BlockOrNonChild extends Element {
   BlockOrNonChild() {
-    ( this instanceof Block
+    (
+      this instanceof Block
       or
       this instanceof Comment
       or
@@ -49,26 +51,24 @@ class BlockOrNonChild extends Element {
   private int getNonContiguousStartRankIn(AffectedFile file) {
     // When using `rank` with `order by`, the ranks may not be contiguous.
     this = rank[result](BlockOrNonChild boc, int startLine, int startCol |
-      boc.getLocation()
-         .hasLocationInfo(file.getAbsolutePath(), startLine, startCol, _, _)
-    | boc
-    order by startLine, startCol
-    )
+        boc.getLocation().hasLocationInfo(file.getAbsolutePath(), startLine, startCol, _, _)
+      |
+        boc order by startLine, startCol
+      )
   }
 
   int getStartRankIn(AffectedFile file) {
     this.getNonContiguousStartRankIn(file) = rank[result](int rnk |
-      exists(BlockOrNonChild boc | boc.getNonContiguousStartRankIn(file) = rnk)
-    )
+        exists(BlockOrNonChild boc | boc.getNonContiguousStartRankIn(file) = rnk)
+      )
   }
 
   int getNonContiguousEndRankIn(AffectedFile file) {
     this = rank[result](BlockOrNonChild boc, int endLine, int endCol |
-      boc.getLocation()
-         .hasLocationInfo(file.getAbsolutePath(), _, _, endLine, endCol)
-    | boc
-    order by endLine, endCol
-    )
+        boc.getLocation().hasLocationInfo(file.getAbsolutePath(), _, _, endLine, endCol)
+      |
+        boc order by endLine, endCol
+      )
   }
 }
 
@@ -78,10 +78,10 @@ class BlockOrNonChild extends Element {
 predicate emptyBlockContainsNonchild(Block b) {
   emptyBlock(_, b) and
   exists(BlockOrNonChild c, AffectedFile file |
-    c.(BlockOrNonChild).getStartRankIn(file) =
-      1 + b.(BlockOrNonChild).getStartRankIn(file) and
-    c.(BlockOrNonChild).getNonContiguousEndRankIn(file) <
-      b.(BlockOrNonChild).getNonContiguousEndRankIn(file)
+    c.(BlockOrNonChild).getStartRankIn(file) = 1 + b.(BlockOrNonChild).getStartRankIn(file) and
+    c.(BlockOrNonChild).getNonContiguousEndRankIn(file) < b
+          .(BlockOrNonChild)
+          .getNonContiguousEndRankIn(file)
   )
 }
 
@@ -105,7 +105,8 @@ predicate lineComment(Block b) {
 }
 
 from ControlStructure s, Block eb
-where emptyBlock(s, eb)
-  and not emptyBlockContainsNonchild(eb)
-  and not lineComment(eb)
+where
+  emptyBlock(s, eb) and
+  not emptyBlockContainsNonchild(eb) and
+  not lineComment(eb)
 select eb, "Empty block without comment"

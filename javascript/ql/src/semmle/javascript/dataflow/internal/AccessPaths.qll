@@ -39,12 +39,23 @@ private PropertyName getPropertyName(PropAccess pacc) {
   )
 }
 
+private SsaVariable getRefinedVariable(SsaVariable variable) {
+  result = variable.getDefinition().(SsaRefinementNode).getAnInput()
+}
+
+private SsaVariable getARefinementOf(SsaVariable variable) {
+  variable = getRefinedVariable(result)
+}
+
 /**
  * A representation of a (nested) property access on an SSA variable
  * where each property name is either constant or itself an SSA variable.
  */
 private newtype TAccessPath =
-  MkSsaRoot(SsaVariable var) or
+  MkSsaRoot(SsaVariable var) {
+    not exists(getRefinedVariable(var))
+  }
+  or
   MkThisRoot(Function function) { function.getThisBinder() = function } or
   MkAccessStep(AccessPath base, PropertyName name) {
     exists(PropAccess pacc |
@@ -64,7 +75,7 @@ class AccessPath extends TAccessPath {
   Expr getAnInstanceIn(BasicBlock bb) {
     exists(SsaVariable var |
       this = MkSsaRoot(var) and
-      result = var.getAUseIn(bb)
+      result = getARefinementOf*(var).getAUseIn(bb)
     )
     or
     exists(ThisExpr this_ |

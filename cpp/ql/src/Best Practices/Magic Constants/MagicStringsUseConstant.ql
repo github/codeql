@@ -7,10 +7,12 @@
  * @precision low
  * @tags maintainability
  */
+
 import cpp
 import MagicConstants
 
 from Literal magicLiteral, string message, Variable constant, string linkText
-where stringLiteral(magicLiteral)
-  and literalInsteadOfConstant(magicLiteral, message, constant, linkText)
+where
+  stringLiteral(magicLiteral) and
+  literalInsteadOfConstant(magicLiteral, message, constant, linkText)
 select magicLiteral, message, constant, linkText

@@ -9,6 +9,7 @@
  * @result_ondemand succeed 48
  * @tags maintainability
  */
+
 import cpp
 
 from Class s

@@ -7,6 +7,8 @@ import { Project } from "./common";
  */
 export interface AugmentedSourceFile extends ts.SourceFile {
     parseDiagnostics?: any[];
+    /** Internal property that we expose as a workaround. */
+    redirectInfo?: object | null;
     $tokens?: Token[];
     $symbol?: number;
     $lineStarts?: ReadonlyArray<number>;

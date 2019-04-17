@@ -10,6 +10,7 @@
  *       statistical
  *       non-attributable
  */
+
 import cpp
 
 predicate remoteVarAccess(File source, File target, VariableAccess va) {
@@ -48,16 +49,19 @@ predicate highDependencyCount(File source, File target, int res) {
     variableDependencyCount(source, target, varCount) and
     functionDependencyCount(source, target, funCount) and
     res = varCount + funCount and
-    res > 20)
+    res > 20
+  )
 }
 
 from File a, File b, int ca, int cb
-where highDependencyCount(a, b, ca) and
-      highDependencyCount(b, a, cb) and
-      ca >= cb and
-      a != b and
-      not a instanceof HeaderFile and
-      not b instanceof HeaderFile and
-      b.getShortName().trim().length() > 0
-select a, "File is too closely tied to $@ (" + ca.toString() + " dependencies one way and " + cb.toString() + " the other).",
-       b, b.getBaseName()
+where
+  highDependencyCount(a, b, ca) and
+  highDependencyCount(b, a, cb) and
+  ca >= cb and
+  a != b and
+  not a instanceof HeaderFile and
+  not b instanceof HeaderFile and
+  b.getShortName().trim().length() > 0
+select a,
+  "File is too closely tied to $@ (" + ca.toString() + " dependencies one way and " + cb.toString() +
+    " the other).", b, b.getBaseName()

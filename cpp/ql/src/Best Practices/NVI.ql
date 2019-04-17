@@ -8,13 +8,14 @@
  * @precision low
  * @tags maintainability
  */
+
 import cpp
 
 //see http://www.gotw.ca/publications/mill18.htm
-
 from MemberFunction f
-where f.hasSpecifier("public") and
-      f.hasSpecifier("virtual") and
-      f.getFile().fromSource() and
-      not (f instanceof Destructor)
+where
+  f.hasSpecifier("public") and
+  f.hasSpecifier("virtual") and
+  f.getFile().fromSource() and
+  not f instanceof Destructor
 select f, "Avoid having public virtual methods (NVI idiom)"

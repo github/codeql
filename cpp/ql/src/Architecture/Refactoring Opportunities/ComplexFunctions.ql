@@ -8,11 +8,13 @@
  *       statistical
  *       non-attributable
  */
+
 import cpp
 
 from Function f, int n
-where f.fromSource() and
-      n = f.getMetrics().getNumberOfCalls() and
-      n > 99 and
-      not f.isMultiplyDefined()
+where
+  f.fromSource() and
+  n = f.getMetrics().getNumberOfCalls() and
+  n > 99 and
+  not f.isMultiplyDefined()
 select f as Function, "This function makes too many calls (" + n.toString() + ")"
