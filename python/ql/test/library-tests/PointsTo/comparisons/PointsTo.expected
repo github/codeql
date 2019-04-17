@@ -1,27 +1,27 @@
-| 2 | True |
-| 3 | False |
-| 6 | True |
-| 7 | True |
-| 8 | True |
-| 9 | False |
-| 19 | False |
-| 19 | True |
-| 20 | False |
-| 20 | True |
-| 21 | False |
-| 21 | True |
-| 22 | False |
-| 22 | True |
-| 25 | False |
-| 26 | False |
-| 27 | True |
-| 28 | True |
-| 29 | False |
-| 30 | True |
-| 33 | False |
-| 33 | True |
-| 34 | True |
-| 35 | False |
-| 36 | False |
-| 37 | True |
-| 38 | True |
+| 2 | bool True |
+| 3 | bool False |
+| 6 | bool True |
+| 7 | bool True |
+| 8 | bool True |
+| 9 | bool False |
+| 19 | bool False |
+| 19 | bool True |
+| 20 | bool False |
+| 20 | bool True |
+| 21 | bool False |
+| 21 | bool True |
+| 22 | bool False |
+| 22 | bool True |
+| 25 | bool False |
+| 26 | bool False |
+| 27 | bool True |
+| 28 | bool True |
+| 29 | bool False |
+| 30 | bool True |
+| 33 | bool False |
+| 33 | bool True |
+| 34 | bool True |
+| 35 | bool False |
+| 36 | bool False |
+| 37 | bool True |
+| 38 | bool True |

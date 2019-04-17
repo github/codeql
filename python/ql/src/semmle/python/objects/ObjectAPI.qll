@@ -9,9 +9,9 @@ class ObjectSource = Object;
 class Value extends TObject {
 
     Value() {
-        not this = ObjectInternal::unknown() and
-        not this = ObjectInternal::unknownClass() and
-        not this = ObjectInternal::undefined()
+        this != ObjectInternal::unknown() and
+        this != ObjectInternal::unknownClass() and
+        this != ObjectInternal::undefined()
     }
 
     string toString() {

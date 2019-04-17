@@ -508,7 +508,7 @@ class SuperBoundMethod extends Object {
     string name;
 
     SuperBoundMethod() {
-        this.(AttrNode).getObject(name).pointsTo().getClass() = Value::named("super")
+        this.(AttrNode).getObject(name).inferredValue().getClass() = Value::named("super")
     }
 
     override string toString() {
@@ -518,7 +518,7 @@ class SuperBoundMethod extends Object {
     Object getFunction(string fname) {
         fname = name and
         exists(SuperInstance sup, BoundMethodObjectInternal m |
-            sup = this.(AttrNode).getObject(name).pointsTo() and
+            sup = this.(AttrNode).getObject(name).inferredValue() and
             sup.attribute(name, m, _) and
             result = m.getFunction().getSource()
         )

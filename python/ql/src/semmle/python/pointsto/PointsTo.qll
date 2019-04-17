@@ -6,6 +6,7 @@ private import semmle.python.pointsto.Filters
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
+private import semmle.python.types.Extensions
 
 /* Use this version for speed */
 //library class CfgOrigin extends @py_object {
@@ -125,7 +126,7 @@ module PointsTo {
     /* Backwards compatibility */
     deprecated predicate
     points_to(ControlFlowNode f, PointsToContext context, Object obj, ClassObject cls, ControlFlowNode origin) {
-        exists(Value value |
+        exists(ObjectInternal value |
             PointsToInternal::pointsTo(f, context, value, origin) and
             cls = value.getClass().getSource() |
             obj = value.getSource() or
@@ -200,9 +201,8 @@ cached module PointsToInternal {
         InterProceduralPointsTo::call_points_to(f, context, value, origin)
         or
         AttributePointsTo::pointsTo(f, context, value, origin)
-        // To do... More stuff here :)
-        // or
-        // f.(CustomPointsToFact).pointsTo(context, value, origin)
+        or
+        f.(PointsToExtension).pointsTo(context, value, origin)
     }
 
     /** Holds if the attribute `name` is required for `obj` */

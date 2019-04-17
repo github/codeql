@@ -214,7 +214,7 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     override boolean isComparable() { result = false }
 
     override Builtin getBuiltin() {
-        none()
+        result = Builtin::unknown()
     }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {

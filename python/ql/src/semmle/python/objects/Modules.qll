@@ -180,10 +180,6 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
     pragma [noinline] override predicate attributesUnknown() { none() }
 
     override ControlFlowNode getOrigin() {
-        result = this.getSourceModule().getEntryNode()
-    }
-
-    override @py_object getSource() {
         exists(Module package |
             package.isPackage() and
             package.getPath() = this.getFolder() and

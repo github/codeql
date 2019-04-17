@@ -217,8 +217,8 @@ class ControlFlowNode extends @py_flow_node {
         this.pointsTo(_, value, _)
     }
 
-    /** Gets the value that this ControlFlowNode points-to. */
-    Value pointsTo() {
+    /** Gets a value that this ControlFlowNode may points-to. */
+    Value inferredValue() {
         this.pointsTo(_, result, _)
     }
 

@@ -6,5 +6,5 @@ from int line, ControlFlowNode f, Value v
 where
     any(ExprStmt s).getValue() = f.getNode() and
     line = f.getLocation().getStartLine() and
-    f = v.getAReferent()
+    f.pointsTo(v)
 select line, v
