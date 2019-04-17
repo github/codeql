@@ -160,6 +160,11 @@ abstract class Import extends ASTNode {
       result = resolveFromTypeRoot()
     )
   }
+
+  /**
+   * Gets the data flow node that the default import of this import is available at.
+   */
+  abstract DataFlow::Node getDefaultNode();
 }
 
 /**

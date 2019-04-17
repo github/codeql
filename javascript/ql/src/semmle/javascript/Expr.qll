@@ -1562,6 +1562,8 @@ class DynamicImportExpr extends @dynamicimport, Expr, Import {
   override PathExpr getImportedPath() { result = getSource() }
 
   override Module getEnclosingModule() { result = getTopLevel() }
+
+  override DataFlow::Node getDefaultNode() { result = DataFlow::valueNode(this) }
 }
 
 /** A literal path expression appearing in a dynamic import. */

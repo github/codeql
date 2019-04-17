@@ -212,6 +212,8 @@ class ExternalModuleReference extends Expr, Import, @externalmodulereference {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getExpression().getFirstControlFlowNode()
   }
+
+  override DataFlow::Node getDefaultNode() { result = DataFlow::valueNode(this) }
 }
 
 /** A literal path expression appearing in an external module reference. */

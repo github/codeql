@@ -461,37 +461,9 @@ module ModuleImportNode {
     string path;
 
     DefaultRange() {
-      // `require("http")`
-      exists(Require req | req.getImportedPath().getValue() = path |
-        this = DataFlow::valueNode(req)
-      )
-      or
-      // `import http = require("http")`
-      exists(ExternalModuleReference req | req.getImportedPath().getValue() = path |
-        this = DataFlow::valueNode(req)
-      )
-      or
-      // `import * as http from 'http'` or `import http from `http`'
-      exists(ImportDeclaration id, ImportSpecifier is |
-        id.getImportedPath().getValue() = path and
-        is = id.getASpecifier() and
-        this = DataFlow::ssaDefinitionNode(SSA::definition(is))
-      |
-        is instanceof ImportNamespaceSpecifier and
-        count(id.getASpecifier()) = 1
-        or
-        is.getImportedName() = "default"
-      )
-      or
-      // `import { createServer } from 'http'`
-      exists(ImportDeclaration id |
-        this = DataFlow::destructuredModuleImportNode(id) and
-        id.getImportedPath().getValue() = path
-      )
-      or
-      // declared AMD dependency
-      exists(AmdModuleDefinition amd |
-        this = DataFlow::parameterNode(amd.getDependencyParameter(path))
+      exists(Import i |
+        this = i.getDefaultNode() and
+        i.getImportedPath().getValue() = path
       )
       or
       // AMD require
