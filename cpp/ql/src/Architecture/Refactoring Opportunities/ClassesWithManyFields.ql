@@ -89,7 +89,7 @@ class VariableDeclarationLine extends TVariableDeclarationInfo
   }
 
   /**
-   * Gets the rank of this `VariableDeclarationLine` in it's file and class
+   * Gets the rank of this `VariableDeclarationLine` in its file and class
    * (that is, the first is 0, the second is 1 and so on).
    */
   private int getRank() {
