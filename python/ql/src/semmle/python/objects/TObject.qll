@@ -365,5 +365,15 @@ library class ClassDecl extends @py_object {
         this instanceof Builtin
     }
 
+    predicate isAbstractBaseClass(string name) {
+        exists(Module m |
+            m.getName() = "_abcoll"
+            or
+            m.getName() = "_collections_abc"
+            |
+            this.getClass().getScope() = m and
+            this.getName() = name
+        )
+    }
 }
 

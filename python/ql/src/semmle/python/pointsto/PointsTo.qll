@@ -817,24 +817,7 @@ module InterProceduralPointsTo {
             PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
         )
         or
-        value = call_to_type(f, context) and
-        (
-            value.isBuiltin() and origin = f
-            or
-            origin = value.getOrigin()
-            or
-            value = ObjectInternal::unknownClass() and origin = f
-        )
-    }
-
-    pragma [noinline]
-    private ObjectInternal call_to_type(CallNode f, PointsToContext context) {
-        count(f.getArg(_)) = 1 and
-        call(f, context, ObjectInternal::builtin("type")) and
-        exists(ObjectInternal arg |
-            PointsToInternal::pointsTo(f.getArg(0), context, arg, _) and
-            result = arg.getClass()
-        )
+        Expressions::typeCallPointsTo(f, context, value, origin, _, _)
     }
 
     /** Points-to for parameter. `def foo(param): ...`. */
@@ -1175,6 +1158,16 @@ module Expressions {
     }
 
     pragma [noinline]
+    predicate typeCallPointsTo(CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode arg, ObjectInternal argvalue) {
+        not exists(call.getArg(1)) and
+        arg = call.getArg(0) and
+        InterProceduralPointsTo::call(call, context, ObjectInternal::builtin("type")) and
+        PointsToInternal::pointsTo(arg, context, argvalue, _) and
+        value = argvalue.getClass() and
+        origin = CfgOrigin::fromObject(value).asCfgNodeOrHere(call)
+    }
+
+    pragma [noinline]
     private predicate lenCallPointsTo(CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode arg, ObjectInternal argvalue) {
         len_call(call, arg, context, argvalue) and
         origin = call and
@@ -1316,6 +1309,8 @@ module Expressions {
         builtinCallPointsTo(expr, context, value, origin, subexpr, subvalue)
         or
         lenCallPointsTo(expr, context, value, origin, subexpr, subvalue)
+        or
+        typeCallPointsTo(expr, context, value, origin, subexpr, subvalue)
         or
         getattrPointsTo(expr, context, value, origin, subexpr, subvalue)
         or
@@ -1754,7 +1749,9 @@ cached module Types {
     cached boolean improperSubclass(ObjectInternal sub, ObjectInternal sup) {
         sub = sup and result = true
         or
-        result = mroContains(Types::getMro(sub), sup, 0)
+        result = true and mroContains(Types::getMro(sub), sup)
+        or
+        result = false and mroDoesnotContain(Types::getMro(sub), sup, 0)
         or
         result = tupleSubclass(sub, sup, 0)
     }
@@ -1768,32 +1765,47 @@ cached module Types {
         )
     }
 
-    private boolean mroContains(ClassList mro, ClassObjectInternal sup, int n) {
+    private predicate mroContains(ClassList mro, ClassObjectInternal sup) {
+        mro.contains(sup)
+        or
+        exists(ClassDecl item, ClassDecl sdecl |
+            item = mro.getAnItem().getClassDeclaration() and
+            sdecl = sup.getClassDeclaration() and
+            is_abstract_subclass(item, sdecl)
+        )
+    }
+
+    private predicate mroDoesnotContain(ClassList mro, ClassObjectInternal sup, int n) {
         exists(ClassObjectInternal cls |
             Expressions::requireSubClass(cls, sup) and
             mro = getMro(cls)
         )
         and
         (
-            n = mro.length() and result = false
+            n = mro.length()
             or
-            mro.getItem(n) = sup and result = true
-            or
-            mro.getItem(n) = abc_to_concrete(sup) and result = true
-            or
-            mro.getItem(n) != sup and sup != AbstractBaseClass::named("Iterable") and
-            mro.getItem(n) != abc_to_concrete(sup) and result = mroContains(mro, sup, n+1)
-            or
-            sup = AbstractBaseClass::named("Iterable") and result = mro.getItem(n).isIterableSubclass()
+            mroDoesnotContain(mro, sup, n+1) and
+            mro.getItem(n) != sup and
+            exists(ClassDecl item, ClassDecl sdecl |
+                item = mro.getItem(n).getClassDeclaration() and
+                sdecl = sup.getClassDeclaration() and
+                not is_abstract_subclass(item, sdecl)
+            )
         )
     }
 
-    private ClassObjectInternal abc_to_concrete(ClassObjectInternal c) {
-        c = AbstractBaseClass::named("Sequence") and result = ObjectInternal::builtin("list")
+    private predicate is_abstract_subclass(ClassDecl cls, ClassDecl sup) {
+        cls = Builtin::builtin("list") and sup.isAbstractBaseClass("Sequence")
         or
-        c = AbstractBaseClass::named("Set") and result = ObjectInternal::builtin("set")
+        cls = Builtin::builtin("set") and sup.isAbstractBaseClass("Set")
         or
-        c = AbstractBaseClass::named("Mapping") and result = ObjectInternal::builtin("dict")
+        cls = Builtin::builtin("dict") and sup.isAbstractBaseClass("Mapping")
+        or
+        cls = Builtin::builtin("list") and sup.isAbstractBaseClass("Iterable")
+        or
+        cls = Builtin::builtin("set") and sup.isAbstractBaseClass("Iterable")
+        or
+        cls = Builtin::builtin("dict") and sup.isAbstractBaseClass("Iterable")
     }
 
     cached boolean hasAttr(ObjectInternal cls, string name) {
@@ -1821,19 +1833,6 @@ cached module Types {
 
 }
 
-
-module AbstractBaseClass {
-
-    ClassObjectInternal named(string name) {
-        exists(ModuleObjectInternal m |
-            m.getName() = "_abcoll"
-            or
-            m.getName() = "_collections_abc"
-            |
-            m.attribute(name, result, _)
-        )
-    }
-}
 
 module AttributePointsTo {
 

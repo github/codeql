@@ -53,6 +53,9 @@ class Value extends TObject {
         result = this.(ObjectInternal).getSource()
     }
 
+    predicate isBuiltin() {
+        this.(ObjectInternal).isBuiltin()
+    }
 }
 
 class ModuleValue extends Value {
