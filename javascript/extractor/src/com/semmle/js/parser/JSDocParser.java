@@ -1000,7 +1000,7 @@ public class JSDocParser {
         case STAR:
           loc = loc();
           consume(Token.STAR);
-          return new AllLiteral(loc);
+          return finishNode(new AllLiteral(loc));
 
         case LPAREN:
           return parseUnionType();
@@ -1015,13 +1015,13 @@ public class JSDocParser {
           if (value.equals("null")) {
             loc = loc();
             consume(Token.NAME);
-            return new NullLiteral(loc);
+            return finishNode(new NullLiteral(loc));
           }
 
           if (value.equals("undefined")) {
             loc = loc();
             consume(Token.NAME);
-            return new UndefinedLiteral(loc);
+            return finishNode(new UndefinedLiteral(loc));
           }
 
           context = save();

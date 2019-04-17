@@ -70,6 +70,7 @@ public class JSDocExtractor {
       Label key = trapwriter.localID(nd);
       int kind = jsdocTypeExprKinds.get(nd.getType());
       trapwriter.addTuple("jsdoc_type_exprs", key, kind, parent, idx, nd.pp());
+      locationManager.emitNodeLocation(nd, key);
       return key;
     }
 
