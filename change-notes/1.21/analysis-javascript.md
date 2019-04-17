@@ -31,6 +31,7 @@
 | Expression has no effect       | Fewer false-positive results | This rule now treats uses of `Object.defineProperty` more conservatively. |
 | Incomplete regular expression for hostnames | More results | This rule now tracks regular expressions for host names further. |
 | Incomplete string escaping or encoding | More results | This rule now considers the flow of regular expressions literals. |
+| Password in configuration file | Fewer false positive results | This query now excludes passwords that are inserted into the configuration file using a templating mechanism. |
 | Replacement of a substring with itself | More results | This rule now considers the flow of regular expressions literals. |
 | Server-side URL redirect       | Fewer false-positive results | This rule now treats URLs as safe in more cases where the hostname cannot be tampered with. |
 | Type confusion through parameter tampering | Fewer false-positive results | This rule now recognizes additional emptiness checks. |
