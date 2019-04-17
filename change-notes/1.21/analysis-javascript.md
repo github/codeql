@@ -42,3 +42,6 @@
 ## Changes to QL libraries
 
 * `RegExpLiteral` is now a `DataFlow::SourceNode`.
+* `JSDocTypeExpr` now has source locations and is a subclass of `Locatable` and `TypeAnnotation`.
+* Various predicates named `getTypeAnnotation()` now return `TypeAnnotation` instead of `TypeExpr`.
+  In rare cases, this may cause compilation errors. Cast the result to `TypeExpr` if this happens.
