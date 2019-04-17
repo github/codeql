@@ -647,6 +647,8 @@ module DefUse {
   /**
    * Holds if the specified `useLocation` is live on entry to `block`. This holds if there is a use of `useLocation`
    * that is reachable from the start of `block` without passing through a definition that overlaps `useLocation`.
+   * Note that even a partially-overlapping definition blocks liveness, because such a definition will insert a `Chi`
+   * instruction whose result totally overlaps the location.
    */
   predicate locationLiveOnEntryToBlock(Alias::MemoryLocation useLocation, OldBlock block) {
     definitionHasPhiNode(useLocation, block) or
