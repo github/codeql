@@ -1119,11 +1119,26 @@ module Expressions {
      */
     pragma [noinline]
     predicate binaryPointsTo(BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode operand, ObjectInternal opvalue) {
-        // TO DO...
-        // Track some integer values through `|` and the types of some objects
-        operand = b.getAnOperand() and
-        PointsToInternal::pointsTo(operand, context, opvalue, _) and
-        value = ObjectInternal::unknown() and origin = b
+        origin = b and
+        exists(ControlFlowNode left, Operator op, ControlFlowNode right |
+            b.operands(left, op, right)
+            |
+            not op instanceof BitOr and
+            (operand = left or operand = right) and
+            PointsToInternal::pointsTo(operand, context, opvalue, _) and
+            value = ObjectInternal::unknown()
+            or
+            op instanceof BitOr and
+            exists(ObjectInternal lobj, ObjectInternal robj |
+                PointsToInternal::pointsTo(left, context, lobj, _) and
+                PointsToInternal::pointsTo(right, context, robj, _) and
+                value = TInt(lobj.intValue().bitOr(robj.intValue()))
+                |
+                left = operand and opvalue = lobj
+                or
+                right = operand and opvalue = robj
+            )
+        )
     }
 
     pragma [noinline]

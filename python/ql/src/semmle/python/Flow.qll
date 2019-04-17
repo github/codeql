@@ -658,6 +658,16 @@ class BinaryExprNode extends ControlFlowNode {
         result = this.getNode().getOp()
     }
 
+    /** Whether left and right are a pair of operands for this binary expression */
+    predicate operands(ControlFlowNode left, Operator op, ControlFlowNode right) {
+        exists(BinaryExpr b, Expr eleft, Expr eright |
+            this.getNode() = b and left.getNode() = eleft and right.getNode() = eright  |
+            eleft = b.getLeft() and eright = b.getRight() and op = b.getOp()
+        ) and
+        left.getBasicBlock().dominates(this.getBasicBlock()) and
+        right.getBasicBlock().dominates(this.getBasicBlock())
+    }
+
 }
 
 /** A control flow node corresponding to a boolean shortcut (and/or) operation */
