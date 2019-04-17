@@ -98,4 +98,11 @@ class TypeAnnotation extends @type_annotation, Locatable {
    * Gets the top-level containing this type annotation.
    */
   TopLevel getTopLevel() { none() }
+
+  /**
+   * Gets the static type denoted by this type annotation, if one is provided by the extractor.
+   *
+   * Note that this has no result for JSDoc type annotations.
+   */
+  Type getType() { none() }
 }
