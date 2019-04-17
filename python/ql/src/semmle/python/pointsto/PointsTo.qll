@@ -1746,8 +1746,21 @@ cached module Types {
             or
             mro.getItem(n) = sup and result = true
             or
-            mro.getItem(n) != sup and result = mroContains(mro, sup, n+1)
+            mro.getItem(n) = abc_to_concrete(sup) and result = true
+            or
+            mro.getItem(n) != sup and sup != AbstractBaseClass::named("Iterable") and
+            mro.getItem(n) != abc_to_concrete(sup) and result = mroContains(mro, sup, n+1)
+            or
+            sup = AbstractBaseClass::named("Iterable") and result = mro.getItem(n).isIterableSubclass()
         )
+    }
+
+    private ClassObjectInternal abc_to_concrete(ClassObjectInternal c) {
+        c = AbstractBaseClass::named("Sequence") and result = ObjectInternal::builtin("list")
+        or
+        c = AbstractBaseClass::named("Set") and result = ObjectInternal::builtin("set")
+        or
+        c = AbstractBaseClass::named("Mapping") and result = ObjectInternal::builtin("dict")
     }
 
     cached boolean hasAttr(ObjectInternal cls, string name) {
@@ -1775,6 +1788,19 @@ cached module Types {
 
 }
 
+
+module AbstractBaseClass {
+
+    ClassObjectInternal named(string name) {
+        exists(ModuleObjectInternal m |
+            m.getName() = "_abcoll"
+            or
+            m.getName() = "_collections_abc"
+            |
+            m.attribute(name, result, _)
+        )
+    }
+}
 
 module AttributePointsTo {
 

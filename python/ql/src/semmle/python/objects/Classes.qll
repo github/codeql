@@ -62,6 +62,19 @@ abstract class ClassObjectInternal extends ObjectInternal {
 
     override int length() { none() }
 
+    boolean isIterableSubclass() {
+        this = ObjectInternal::builtin("list") and result = true
+        or
+        this = ObjectInternal::builtin("set") and result = true
+        or
+        this = ObjectInternal::builtin("dict") and result = true
+        or
+        this != ObjectInternal::builtin("list") and
+        this != ObjectInternal::builtin("set") and
+        this != ObjectInternal::builtin("dict") and
+        result = false
+    }
+
 }
 
 class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject {

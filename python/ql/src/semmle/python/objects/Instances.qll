@@ -31,7 +31,7 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
 
     override boolean isClass() { result = false }
 
-    override boolean isComparable() { result = false }
+    override boolean isComparable() { result = true }
 
     override ObjectInternal getClass() {
         this = TSpecificInstance(_, result, _)
