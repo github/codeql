@@ -1533,8 +1533,15 @@ cached module Types {
         result.getBuiltin() = cls.getBuiltin().getBaseClass() and n = 0
         or
         exists(Class pycls |
-            pycls = cls.(PythonClassObjectInternal).getScope() |
-            PointsToInternal::pointsTo(pycls.getBase(n).getAFlowNode(), _, result, _)
+            pycls = cls.(PythonClassObjectInternal).getScope()
+            |
+            exists(ObjectInternal base |
+                PointsToInternal::pointsTo(pycls.getBase(n).getAFlowNode(), _, base, _)
+                |
+                result = base and base != ObjectInternal::unknown()
+                or
+                base = ObjectInternal::unknown() and result = ObjectInternal::unknownClass()
+            )
             or
             not exists(pycls.getABase()) and n = 0 and
             isNewStyle(cls) and result = ObjectInternal::builtin("object")

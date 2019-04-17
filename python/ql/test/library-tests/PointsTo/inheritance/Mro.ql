@@ -2,7 +2,7 @@
 import python
 
 private import semmle.python.objects.ObjectInternal
-private import semmle.python.pointsto.PointsTo2
+private import semmle.python.pointsto.PointsTo
 
 /** Make unknown type visible */
 class UnknownType extends UnknownClassInternal {
