@@ -22,5 +22,6 @@
   methods. This means that more guards are recognized yielding precision
   improvements in a number of queries including `java/index-out-of-bounds`,
   `java/dereferenced-value-may-be-null`, and `java/useless-null-check`.
-
-
+* Spring framework support is enhanced by taking into account additional
+  annotations that indicate remote user input. This affects all security
+  queries, which may yield additional results.
