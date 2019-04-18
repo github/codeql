@@ -28,12 +28,6 @@ class MallocCall extends FunctionCall
   }
 }
 
-predicate terminationProblem(MallocCall malloc, string msg)
-{
-  malloc.getAllocatedSize() instanceof StrlenCall and
-  msg = "This allocation does not include space to null-terminate the string."
-}
-
 predicate spaceProblem(FunctionCall append, string msg)
 {
   exists(MallocCall malloc, StrlenCall strlen, AddExpr add, FunctionCall insert, Variable buffer |
@@ -51,5 +45,5 @@ predicate spaceProblem(FunctionCall append, string msg)
 }
 
 from Expr problem, string msg
-where terminationProblem(problem, msg) or spaceProblem(problem, msg)
+where spaceProblem(problem, msg)
 select problem, msg
