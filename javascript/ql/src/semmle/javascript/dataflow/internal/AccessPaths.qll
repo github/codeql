@@ -53,7 +53,12 @@ private SsaVariable getARefinementOf(SsaVariable variable) {
  */
 private newtype TAccessPath =
   MkSsaRoot(SsaVariable var) {
-    not exists(getRefinedVariable(var))
+    not exists(getRefinedVariable(var)) and
+    not var.getSourceVariable().isCaptured()
+  }
+  or
+  MkCapturedRoot(LocalVariable var) {
+    var.isCaptured()
   }
   or
   MkThisRoot(Function function) { function.getThisBinder() = function } or
@@ -76,6 +81,12 @@ class AccessPath extends TAccessPath {
     exists(SsaVariable var |
       this = MkSsaRoot(var) and
       result = getARefinementOf*(var).getAUseIn(bb)
+    )
+    or
+    exists(Variable var |
+      this = MkCapturedRoot(var) and
+      result = var.getAnAccess() and
+      result.getBasicBlock() = bb
     )
     or
     exists(ThisExpr this_ |
