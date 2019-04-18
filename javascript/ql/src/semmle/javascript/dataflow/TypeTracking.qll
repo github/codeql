@@ -101,7 +101,7 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyNa
  * source/sink relation, that is, it may determine that a node has a given type,
  * but it won't determine where that type came from.
  *
- * It is recommended that all uses of this type is written on the following form,
+ * It is recommended that all uses of this type are written in the following form,
  * for tracking some type `myType`:
  * ```
  * DataFlow::SourceNode myType(DataFlow::TypeTracker t) {
@@ -116,8 +116,12 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyNa
  * DataFlow::SourceNode myType() { result = myType(DataFlow::TypeTracker::end()) }
  * ```
  *
- * To track values backwards, which can be useful for tracking
- * the type of a callback, use the `TypeBackTracker` class instead.
+ * Instead of `result = myType(t2).track(t2, t)`, you can also use the equivalent
+ * `t = t2.step(myType(t2), result)`. If you additionally want to track individual
+ * intra-procedural steps, use `t = t2.smallstep(myCallback(t2), result)`.
+ *
+ * To track values backwards, which can be useful for tracking the type of a callback,
+ * use the `TypeBackTracker` class instead.
  */
 class TypeTracker extends TTypeTracker {
   Boolean hasCall;
@@ -172,6 +176,37 @@ class TypeTracker extends TTypeTracker {
    * This predicate is only defined if the type has not been tracked into a property.
    */
   TypeTracker continue() { prop = "" and result = this }
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * heap and/or inter-procedural step from `pred` to `succ`.
+   */
+  pragma[inline]
+  TypeTracker step(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+    exists(StepSummary summary |
+      StepSummary::step(pred, succ, summary) and
+      result = this.append(summary)
+    )
+  }
+
+   /**
+   * Gets the summary that corresponds to having taken a forwards
+   * local, heap and/or inter-procedural step from `pred` to `succ`.
+   *
+   * Unlike `TypeTracker::step`, this predicate exposes all edges
+   * in the flow graph, and not just the edges between `SourceNode`s.
+   * It may therefore be less performant.
+   */
+  pragma[inline]
+  TypeTracker smallstep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(StepSummary summary |
+      StepSummary::smallstep(pred, succ, summary) and
+      result = this.append(summary)
+    )
+    or
+    succ = pred.getASuccessor() and
+    result = this
+  }
 }
 
 module TypeTracker {
@@ -192,20 +227,25 @@ private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, Optional
  * it may determine that a node will be used in an API call somewhere, but it won't
  * determine exactly where that use was, or the path that led to the use.
  *
- * It is recommended that all uses of this type is written on the following form,
+ * It is recommended that all uses of this type are written in the following form,
  * for back-tracking some callback type `myCallback`:
+ *
  * ```
  * DataFlow::SourceNode myCallback(DataFlow::TypeBackTracker t) {
  *   t.start() and
  *   result = (< some API call >).getArgument(< n >).getALocalSource()
  *   or
  *   exists (DataFlow::TypeBackTracker t2 |
- *     t2 = t.step(result, myCallback(t2))
+ *     result = myCallback(t2).backtrack(t2, t)
  *   )
  * }
  *
  * DataFlow::SourceNode myCallback() { result = myCallback(DataFlow::TypeBackTracker::end()) }
  * ```
+ *
+ * Instead of `result = myCallback(t2).backtrack(t2, t)`, you can also use the equivalent
+ * `t2 = t.step(result, myCallback(t2))`. If you additionally want to track individual
+ * intra-procedural steps, use `t2 = t.smallstep(result, myCallback(t2))`.
  */
 class TypeBackTracker extends TTypeBackTracker {
   Boolean hasReturn;
