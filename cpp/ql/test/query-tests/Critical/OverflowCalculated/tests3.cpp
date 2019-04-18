@@ -22,12 +22,12 @@ void tests3(int case_num)
 	switch (case_num)
 	{
 		case 1:
-			buffer = (char *)std::malloc(strlen(str3global)); // BAD [NOT DETECTED]
+			buffer = (char *)std::malloc(strlen(str3global)); // BAD
 			strcpy(buffer, str3global);
 			break;
 
 		case 2:
-			buffer = (char *)std::malloc(strlen(str3local)); // BAD [NOT DETECTED]
+			buffer = (char *)std::malloc(strlen(str3local)); // BAD
 			strcpy(buffer, str3local);
 			break;
 
