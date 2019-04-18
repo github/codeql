@@ -11,6 +11,8 @@
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Buffer not sufficient for string (`cpp/overflow-calculated`) | Fewer results | This query no longer reports results that would be found by the 'No space for zero terminator' (`cpp/no-space-for-terminator`) query. |
+| No space for zero terminator (`cpp/no-space-for-terminator`) | More correct results | This query now detects calls to `std::malloc`. |
 | Commented-out code (`cpp/commented-out-code`) | More correct results | Commented out preprocessor code is now detected by this query. |
 | Dead code due to goto or break statement (`cpp/dead-code-goto`) | Fewer false positive results | Functions containing preprocessor logic are now excluded from this analysis. |
 | Mismatching new/free or malloc/delete (`cpp/new-free-mismatch`) | Fewer false positive results | Fixed an issue where functions were being identified as allocation functions inappropriately.  Also affects `cpp/new-array-delete-mismatch` and `cpp/new-delete-array-mismatch`. |

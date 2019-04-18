@@ -15,8 +15,12 @@
  */
 import cpp
 
-class MallocCall extends FunctionCall {
-  MallocCall() { this.getTarget().hasGlobalName("malloc") }
+class MallocCall extends FunctionCall
+{
+  MallocCall() {
+  	this.getTarget().hasQualifiedName("malloc") or
+  	this.getTarget().hasQualifiedName("std::malloc")
+  }
 
   Expr getAllocatedSize() {
     if this.getArgument(0) instanceof VariableAccess then

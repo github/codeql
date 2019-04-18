@@ -1,4 +1,1 @@
-| tests1.cpp:26:21:26:26 | call to malloc | This allocation does not include space to null-terminate the string. |
-| tests1.cpp:67:21:67:26 | call to malloc | This allocation does not include space to null-terminate the string. |
-| tests1.cpp:89:25:89:30 | call to malloc | This allocation does not include space to null-terminate the string. |
 | tests2.cpp:34:4:34:9 | call to strcat | This buffer only contains enough room for 'str1' (copied on line 33) |
