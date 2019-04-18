@@ -35,16 +35,18 @@ predicate incomplete_sanitization(Expr sanitizer, StrConst url) {
     (
         sanitizer.(Compare).compares(url, any(In i), _)
         or
-        call_to_startswith(sanitizer, url)
+        unsafe_call_to_startswith(sanitizer, url)
         or
         unsafe_call_to_endswith(sanitizer, url)
     )
 }
 
-predicate call_to_startswith(Call sanitizer, StrConst url) {
+predicate unsafe_call_to_startswith(Call sanitizer, StrConst url) {
     sanitizer.getFunc().(Attribute).getName() = "startswith"
     and
     sanitizer.getArg(0) = url
+    and
+    not url.getText().regexpMatch("(?i)https?://[\\.a-z0-9-]+/.*")
 }
 
 predicate unsafe_call_to_endswith(Call sanitizer, StrConst url) {
