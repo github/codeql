@@ -744,3 +744,23 @@ test.cpp:
 #  104|     v0_28(void)             = ReturnValue                   : r0_27, m0_26
 #  104|     v0_29(void)             = UnmodeledUse                  : mu*
 #  104|     v0_30(void)             = ExitFunction                  : 
+
+#  112| void test06()
+#  112|   Block 0
+#  112|     v0_0(void)           = EnterFunction       : 
+#  112|     m0_1(unknown)        = AliasedDefinition   : 
+#  112|         valnum = unique
+#  112|     mu0_2(unknown)       = UnmodeledDefinition : 
+#  112|         valnum = unique
+#  113|     r0_3(glval<char[2]>) = StringConstant["a"] : 
+#  113|         valnum = r0_3
+#  114|     r0_4(glval<char[2]>) = StringConstant["b"] : 
+#  114|         valnum = unique
+#  115|     r0_5(glval<char[2]>) = StringConstant["a"] : 
+#  115|         valnum = r0_3
+#  116|     r0_6(glval<char[2]>) = StringConstant["c"] : 
+#  116|         valnum = unique
+#  117|     v0_7(void)           = NoOp                : 
+#  112|     v0_8(void)           = ReturnVoid          : 
+#  112|     v0_9(void)           = UnmodeledUse        : mu*
+#  112|     v0_10(void)          = ExitFunction        : 
