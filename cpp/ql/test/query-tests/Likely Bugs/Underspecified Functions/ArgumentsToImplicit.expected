@@ -1,0 +1,1 @@
+| test.c:28:3:28:12 | call to undeclared | This call to an implicitly declared function $@ has arguments. | test.c:27:3:27:3 | undeclared | undeclared |

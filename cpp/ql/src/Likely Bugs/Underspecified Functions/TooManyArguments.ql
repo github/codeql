@@ -14,9 +14,13 @@
 import cpp
 
 // True if function was ()-declared, but not (void)-declared or K&R-defined
+// or implicitly declared (i.e., lacking a prototype)
 predicate hasZeroParamDecl(Function f) {
   exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() |
-    not fde.hasVoidParamList() and fde.getNumberOfParameters() = 0 and not fde.isDefinition()
+    not fde.isImplicit() and
+    not fde.hasVoidParamList() and
+    fde.getNumberOfParameters() = 0 and
+    not fde.isDefinition()
   )
 }
 
