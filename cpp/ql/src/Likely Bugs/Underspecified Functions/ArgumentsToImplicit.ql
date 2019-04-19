@@ -1,7 +1,7 @@
 /**
  * @name Call with arguments to an implicitly declared function
  * @description A function call passed arguments even though the
- *              function in question is only implicitly declared (and 
+ *              function in question is only implicitly declared (and
  *              hence accepting no arguments).  This may indicate
  *              that the code does not follow the author's intent.
  * @kind problem
@@ -16,9 +16,7 @@ import cpp
 
 // True if there is no explicit definition of the function
 predicate hasNoExplicitDecl(Function f) {
-  not exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() |
-    not fde.isImplicit()
-  )
+  not exists(FunctionDeclarationEntry fde | fde = f.getADeclarationEntry() | not fde.isImplicit())
 }
 
 // True if this file (or header) was compiled as a C file
