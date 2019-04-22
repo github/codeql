@@ -31,6 +31,9 @@ newtype TValueNumber =
   TConstantValueNumber(IRFunction irFunc, Type type, string value) {
     constantValueNumber(_, irFunc, type, value)
   } or
+  TStringConstantValueNumber(IRFunction irFunc, Type type, string value) {
+    stringConstantValueNumber(_, irFunc, type, value)
+  } or
   TFieldAddressValueNumber(IRFunction irFunc, Field field, ValueNumber objectAddress) {
     fieldAddressValueNumber(_, irFunc, field, objectAddress)
   } or
@@ -127,6 +130,7 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof InitializeParameterInstruction or
   instr instanceof InitializeThisInstruction or
   instr instanceof ConstantInstruction or
+  instr instanceof StringConstantInstruction or
   instr instanceof FieldAddressInstruction or
   instr instanceof BinaryInstruction or
   instr instanceof UnaryInstruction or
@@ -155,6 +159,13 @@ private predicate constantValueNumber(ConstantInstruction instr, IRFunction irFu
   instr.getEnclosingIRFunction() = irFunc and
   instr.getResultType() = type and
   instr.getValue() = value
+}
+
+private predicate stringConstantValueNumber(StringConstantInstruction instr, IRFunction irFunc, Type type,
+    string value) {
+  instr.getEnclosingIRFunction() = irFunc and
+  instr.getResultType() = type and
+  instr.getValue().getValue() = value
 }
 
 private predicate fieldAddressValueNumber(FieldAddressInstruction instr, IRFunction irFunc,
@@ -254,6 +265,10 @@ private ValueNumber nonUniqueValueNumber(Instruction instr) {
       exists(Type type, string value |
         constantValueNumber(instr, irFunc, type, value) and
         result = TConstantValueNumber(irFunc, type, value)
+      ) or
+      exists(Type type, string value |
+        stringConstantValueNumber(instr, irFunc, type, value) and
+        result = TStringConstantValueNumber(irFunc, type, value)
       ) or
       exists(Field field, ValueNumber objectAddress |
         fieldAddressValueNumber(instr, irFunc, field, objectAddress) and
