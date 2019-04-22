@@ -24,3 +24,6 @@
 | Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | Fewer false positive results | Non-standard uses of %L are now understood. |
 
 ## Changes to QL libraries
+- Additional support for definition by reference has been added to the `semmle.code.cpp.dataflow.TaintTracking` library.
+    - The taint tracking library now includes taint-specific edges for functions modeled in `semmle.code.cpp.models.interfaces.DataFlow`.
+    - The taint tracking library adds flow through library functions that are modeled in `semmle.code.cpp.models.interfaces.Taint`. Queries can add subclasses of `TaintFunction` to specify additional flow.
