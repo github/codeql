@@ -13,3 +13,16 @@ class C(object):
 
     def __get__(self, *args):
         pass
+
+from zope.interface import Interface
+
+class I(Interface):
+    pass
+
+class M(I):
+
+    def __setattr__(name, value):
+        pass
+
+    def __getitem__(name):
+        pass
