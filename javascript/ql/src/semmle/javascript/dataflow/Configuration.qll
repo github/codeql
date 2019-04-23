@@ -557,7 +557,8 @@ private predicate callInputStep(
 /**
  * Holds if `input`, which is either an argument to `f` at `invk` or a definition
  * that is captured by `f`, may flow to `nd` under configuration `cfg` (possibly through
- * callees) along a path summarized by `summary`.
+ * callees, but not containing any unmatched calls or returns) along a path summarized by
+ * `summary`.
  *
  * Note that the summary does not take the initial step from argument to parameter
  * into account.
@@ -577,7 +578,7 @@ private predicate reachableFromInput(
 }
 
 /**
- * Holds if there is a step from `pred` to `succ` under `cfg` that can be appended
+ * Holds if there is a level step from `pred` to `succ` under `cfg` that can be appended
  * to a path represented by `oldSummary` yielding a path represented by `newSummary`.
  */
 pragma[noinline]
@@ -587,6 +588,7 @@ private predicate appendStep(
 ) {
   exists(PathSummary stepSummary |
     flowStep(pred, cfg, succ, stepSummary) and
+    stepSummary.isLevel() and
     newSummary = oldSummary.append(stepSummary)
   )
 }

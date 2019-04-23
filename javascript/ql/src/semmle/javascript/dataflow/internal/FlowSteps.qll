@@ -340,11 +340,16 @@ class PathSummary extends TPathSummary {
 
   PathSummary() { this = MkPathSummary(hasReturn, hasCall, start, end) }
 
-  /** Indicates whether the path represented by this summary contains any return steps. */
+  /** Indicates whether the path represented by this summary contains any unmatched return steps. */
   boolean hasReturn() { result = hasReturn }
 
-  /** Indicates whether the path represented by this summary contains any call steps. */
+  /** Indicates whether the path represented by this summary contains any unmatched call steps. */
   boolean hasCall() { result = hasCall }
+
+  /** Holds if the path represented by this summary contains no unmatched call or return steps. */
+  predicate isLevel() {
+    hasReturn = false and hasCall = false
+  }
 
   /** Gets the flow label describing the value at the start of this flow path. */
   FlowLabel getStartLabel() { result = start }
