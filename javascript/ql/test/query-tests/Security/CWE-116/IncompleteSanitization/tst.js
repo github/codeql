@@ -141,6 +141,14 @@ function good12(s) {
 	s.replace(']', '').replace('[', ''); // probably OK, but still flagged
 }
 
+function newlines(s) {
+	// motivation for whitelist
+	require("child_process").execSync("which emacs").toString().replace("\n", ""); // OK
+
+	x.replace("\n", "").replace(x, y); // NOT OK
+	x.replace(x, y).replace("\n", ""); // NOT OK
+}
+
 app.get('/some/path', function(req, res) {
   let untrusted = req.param("p");
 
