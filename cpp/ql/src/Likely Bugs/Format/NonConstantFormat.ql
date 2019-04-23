@@ -97,7 +97,9 @@ class NonConstFlow extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { isNonConst(source) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
+    exists(FormattingFunctionCall fc |
+      sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex())
+    )
   }
 }
 
