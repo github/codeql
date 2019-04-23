@@ -75,13 +75,13 @@ int mlc_get(const MyLargeClass &c) {
 }
 
 void myFunction4(
-		MyLargeClass a, // GOOD: large, but the copy is written to so can't be trivially replaced with a reference [FALSE POSITIVE]
-		MyLargeClass b, // GOOD [FALSE POSITIVE]
-		MyLargeClass c, // GOOD [FALSE POSITIVE]
-		MyLargeClass d, // GOOD [FALSE POSITIVE]
-		MyLargeClass e, // GOOD [FALSE POSITIVE]
-		MyLargeClass f, // GOOD [FALSE POSITIVE]
-		MyLargeClass g // GOOD [FALSE POSITIVE]
+		MyLargeClass a, // GOOD: large, but the copy is written to so can't be trivially replaced with a reference
+		MyLargeClass b, // GOOD
+		MyLargeClass c, // GOOD
+		MyLargeClass d, // GOOD
+		MyLargeClass e, // GOOD
+		MyLargeClass f, // GOOD
+		MyLargeClass g // GOOD
 	)
 {
 	MyLargeClass *mlc_ptr;
@@ -141,7 +141,7 @@ private:
 	char data[1024];
 };
 
-MyArithmeticClass operator+(MyArithmeticClass lhs, const MyArithmeticClass &rhs) { // GOOD [FALSE POSITIVE]
+MyArithmeticClass operator+(MyArithmeticClass lhs, const MyArithmeticClass &rhs) { // GOOD
 	lhs += rhs; // lhs is copied by design
 	return lhs;
 }
