@@ -239,6 +239,8 @@ module TaintTracking {
       exists(int argInIndex, FunctionInput inModel |
         f.hasDataFlow(inModel, outModel)
       |
+	// Taint flows from a pointer to a dereference, which DataFlow does not handle
+        // memcpy(&dest_var, tainted_ptr, len)
         inModel.isInParameterPointer(argInIndex) and
         exprIn = call.getArgument(argInIndex)
       )

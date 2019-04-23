@@ -12,3 +12,5 @@
 | taint.cpp:168:8:168:14 | tainted | taint.cpp:164:19:164:24 | call to source |
 | taint.cpp:173:8:173:13 | buffer | taint.cpp:164:19:164:24 | call to source |
 | taint.cpp:181:8:181:9 | * ... | taint.cpp:185:11:185:16 | call to source |
+| taint.cpp:195:7:195:7 | x | taint.cpp:192:23:192:28 | source |
+| taint.cpp:195:7:195:7 | x | taint.cpp:193:6:193:6 | x |
