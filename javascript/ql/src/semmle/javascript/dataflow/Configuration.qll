@@ -819,7 +819,7 @@ private predicate reachableFromSource(
     isSource(nd, cfg, lbl) and
     not cfg.isBarrier(nd) and
     not cfg.isLabeledBarrier(nd, lbl) and
-    summary = MkPathSummary(false, false, lbl, lbl)
+    summary = PathSummary::level(lbl)
   )
   or
   exists(DataFlow::Node pred, PathSummary oldSummary, PathSummary newSummary |
@@ -952,14 +952,19 @@ class PathNode extends TPathNode {
  * A path node corresponding to a flow source.
  */
 class SourcePathNode extends PathNode {
-  SourcePathNode() { isSource(nd, cfg, _) }
+  SourcePathNode() {
+    exists(FlowLabel lbl |
+      summary = PathSummary::level(lbl) and
+      isSource(nd, cfg, lbl)
+    )
+  }
 }
 
 /**
  * A path node corresponding to a flow sink.
  */
 class SinkPathNode extends PathNode {
-  SinkPathNode() { isSink(nd, cfg, _) }
+  SinkPathNode() { isSink(nd, cfg, summary.getEndLabel()) }
 }
 
 /**

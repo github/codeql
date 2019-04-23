@@ -406,7 +406,13 @@ module PathSummary {
   /**
    * Gets a summary describing a path without any calls or returns.
    */
-  PathSummary level() { exists(FlowLabel lbl | result = MkPathSummary(false, false, lbl, lbl)) }
+  PathSummary level() { result = level(_) }
+
+  /**
+   * Gets a summary describing a path without any calls or returns, transforming `lbl` into
+   * itself.
+   */
+  PathSummary level(FlowLabel lbl) { result = MkPathSummary(false, false, lbl, lbl) }
 
   /**
    * Gets a summary describing a path with one or more calls, but no returns.
