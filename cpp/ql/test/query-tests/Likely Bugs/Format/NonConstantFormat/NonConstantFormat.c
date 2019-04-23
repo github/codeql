@@ -1,5 +1,9 @@
 extern int printf(const char *fmt, ...);
 
+// For the following `...gettext` functions, we assume that
+// all translations preserve the type and order of `%` specifiers
+// (and hence are safe to use as format strings).  This is
+// assumption is hard-coded into the query.
 
 extern char *gettext (const char *__msgid);
 
@@ -7,7 +11,6 @@ extern char *dgettext (const char *__domainname, const char *__msgid);
 
 extern char *dcgettext (const char *__domainname,
                         const char *__msgid, int __category);
-
 
 extern char *ngettext (const char *__msgid1, const char *__msgid2,
                        unsigned long int __n);
@@ -23,7 +26,9 @@ extern char *dcngettext (const char *__domainname, const char *__msgid1,
 extern char *any_random_function(const char *);
 
 #define NULL ((void*)0)
-#define _(X) any_random_function((X))
+
+// The following is the recommended use for the `_` macro.
+#define _(X) gettext(X)
 
 int main(int argc, char **argv) {
 	if(argc > 1)
@@ -40,10 +45,10 @@ int main(int argc, char **argv) {
 	printf(gettext("%d arguments\n"), argc-1); // ok
 	printf(any_random_function("%d arguments\n"), argc-1); // not ok
 
-	// Our query can't look inside the argument to a macro, so it fails to
-	// flag this call.
+	// Our query also supports looking for `_` as a function.
+#undef _
 	printf(_(any_random_function("%d arguments\n")),
-			argc-1); // not ok [NOT REPORTED]
+			argc-1); // not ok
 
 	return 0;
 }
