@@ -147,3 +147,20 @@ MyArithmeticClass operator+(MyArithmeticClass lhs, const MyArithmeticClass &rhs)
 }
 
 void myFunction6(MyLargeClass a); // GOOD (no definition, so we can't tell what's done with `a`)
+
+// ---
+
+struct big
+{
+	int xs[800];
+	int *ptr;
+};
+
+void myFunction7(
+		big a, // GOOD
+		big b // BAD [NOT DETECTED]
+	)
+{
+	a.xs[0]++; // modifies a
+	b.ptr[0]++; // does not modify b
+}
