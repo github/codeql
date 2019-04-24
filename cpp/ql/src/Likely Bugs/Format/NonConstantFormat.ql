@@ -38,24 +38,40 @@ predicate whitelistFunction(Function f, int arg) {
   (arg = 1 or arg = 2)
 }
 
+predicate underscoreMacro(Expr e) {
+  exists(MacroInvocation mi |
+    mi.getMacroName() = "_" and
+    mi.getExpr() = e and
+    isConstMacro(e)
+  )
+}
+
 predicate whitelisted(Expr e) {
   exists(FunctionCall fc, int arg | fc = e.(FunctionCall) |
     whitelistFunction(fc.getTarget(), arg) and
     isConst(fc.getArgument(arg))
   )
+  or underscoreMacro(e)
 }
 
-predicate isConst(Expr e) {
+predicate isConstMacro(Expr e) {
   e instanceof StringLiteral
   or
   whitelisted(e)
+}
+
+predicate isConst(Expr e) {
+  isConstMacro(e)
+  or
+  underscoreMacro(e)
 }
 
 class ConstFlow extends DataFlow::Configuration {
   ConstFlow() { this = "ConstFlow" }
 
   override predicate isSource(DataFlow::Node source) { 
-    isConst(source.asExpr())
+  	none()
+    //isConst(source.asExpr())
   }
 
   override predicate isSink(DataFlow::Node sink) {

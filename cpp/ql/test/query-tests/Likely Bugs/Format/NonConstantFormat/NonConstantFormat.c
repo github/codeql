@@ -27,8 +27,9 @@ extern char *any_random_function(const char *);
 
 #define NULL ((void*)0)
 
-// The following is the recommended use for the `_` macro.
-#define _(X) gettext(X)
+// The `_` macro is treated specially.  While it is typically set to
+// `gettext`, we allow it to point at any function.
+#define _(X) my_gettext(X)
 
 int main(int argc, char **argv) {
 	if(argc > 1)
@@ -45,7 +46,6 @@ int main(int argc, char **argv) {
 	printf(gettext("%d arguments\n"), argc-1); // ok
 	printf(any_random_function("%d arguments\n"), argc-1); // not ok
 
-	// Our query also supports looking for `_` as a function.
 #undef _
 	printf(_(any_random_function("%d arguments\n")),
 			argc-1); // not ok
