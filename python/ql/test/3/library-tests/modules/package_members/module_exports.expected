@@ -8,6 +8,7 @@
 | Module test_package | module2 |
 | Module test_package | module3 |
 | Module test_package | module4 |
+| Module test_package | module5 |
 | Module test_package | p |
 | Module test_package | q |
 | Module test_package | r |
@@ -36,6 +37,7 @@
 | Module test_star | module2 |
 | Module test_star | module3 |
 | Module test_star | module4 |
+| Module test_star | module5 |
 | Module test_star | p |
 | Module test_star | q |
 | Module test_star | r |

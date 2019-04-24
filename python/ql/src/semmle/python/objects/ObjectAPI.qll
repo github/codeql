@@ -65,7 +65,10 @@ class ModuleValue extends Value {
     }
 
     predicate exports(string name) {
-        not this.(ModuleObjectInternal).attribute("__all__", _, _) and this.(ModuleObjectInternal).attribute(name, _, _)
+        not this.(ModuleObjectInternal).attribute("__all__", _, _) and exists(this.attr(name))
+        and not name.charAt(0) = "_"
+        or
+        py_exports(this.getScope(), name)
     }
 
     string getName() {

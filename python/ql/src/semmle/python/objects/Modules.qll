@@ -47,6 +47,10 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     override predicate subscriptUnknown() { any() }
 
+    predicate isInitModule() {
+        any(PackageObjectInternal package).getInitModule() = this
+    }
+
 }
 
 class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleObject {
