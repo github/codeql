@@ -28,7 +28,7 @@ predicate arithTypesMatch(Type arg, Type parm) {
 }
 
 pragma[inline]
-predicate pointerArgTypeMayBeUsed(Type arg, Type parm) {
+predicate nestedPointerArgTypeMayBeUsed(Type arg, Type parm) {
   // arithmetic types
   arithTypesMatch(arg, parm)
   or
@@ -36,6 +36,18 @@ predicate pointerArgTypeMayBeUsed(Type arg, Type parm) {
   arg instanceof VoidType
   or
   parm instanceof VoidType
+}
+
+pragma[inline]
+predicate pointerArgTypeMayBeUsed(Type arg, Type parm) {
+  nestedPointerArgTypeMayBeUsed(arg, parm)
+  or
+  // nested pointers
+  nestedPointerArgTypeMayBeUsed(arg.(PointerType).getBaseType().getUnspecifiedType(),
+    parm.(PointerType).getBaseType().getUnspecifiedType())
+  or
+  nestedPointerArgTypeMayBeUsed(arg.(ArrayType).getBaseType().getUnspecifiedType(),
+    parm.(PointerType).getBaseType().getUnspecifiedType())
 }
 
 pragma[inline]
@@ -58,10 +70,8 @@ predicate argTypeMayBeUsed(Type arg, Type parm) {
     parm.(ArrayType).getBaseType().getUnspecifiedType())
 }
 
-// This predicate doesn't necessarily have to exist, but if it does exist
-// then it must be inline to make sure we don't enumerate all pairs of
-// compatible types.
-// Its body could also just be hand-inlined where it's used.
+// This predicate holds whenever expression `arg` may be used to initialize
+// function parameter `parm` without need for run-time conversion.
 pragma[inline]
 predicate argMayBeUsed(Expr arg, Parameter parm) {
   argTypeMayBeUsed(arg.getFullyConverted().getType().getUnspecifiedType(),

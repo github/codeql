@@ -18,7 +18,7 @@ int ca[4] = { 1, 2, 3, 4 };
 
 void *pv;
 
-void test() {
+void test(int *argv[]) {
   declared_empty(); // GOOD
   declared_empty(1); // BAD
   declared_void(); // GOOD
@@ -60,6 +60,12 @@ void test() {
   defined_with_long_long(2.5e50);  // BAD
   
   k_and_r_func(2.5, &s);  // GOOD
+  
+  int (*parameterName)[2];
+  defined_with_ptr_ptr(parameterName); // GOOD
+  defined_with_ptr_ptr(argv);   // GOOD
+  defined_with_ptr_arr(parameterName); // GOOD
+  defined_with_ptr_arr(argv);   // GOOD
 }
 
 void not_yet_declared1();
@@ -92,5 +98,12 @@ double defined_with_double(double d) {
 
 long long defined_with_long_long(long long ll) {
   return ll;
+}
+
+unsigned int defined_with_ptr_ptr(unsigned int **ptr) {
+	return **ptr;
+}
+unsigned int defined_with_ptr_arr(unsigned int *ptr[]) {
+	return **ptr;
 }
   

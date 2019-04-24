@@ -1,9 +1,10 @@
 /**
  * @name Call to function with fewer arguments than declared parameters
- * @description A function call passed fewer arguments than the number of
+ * @description A function call is passing fewer arguments than the number of
  *              declared parameters of the function. This may indicate
- *              that the code does not follow the author's intent. It is also a vulnerability,
- *              since the function is like to operate on undefined data.
+ *              that the code does not follow the author's intent. It is also 
+ *              a vulnerability, since the function is likely to operate on 
+ *              undefined data.
  * @kind problem
  * @problem.severity error
  * @precision very-high
