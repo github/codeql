@@ -43,25 +43,38 @@ private SsaVariable getRefinedVariable(SsaVariable variable) {
   result = variable.getDefinition().(SsaRefinementNode).getAnInput()
 }
 
-private SsaVariable getARefinementOf(SsaVariable variable) {
-  variable = getRefinedVariable(result)
-}
+private SsaVariable getARefinementOf(SsaVariable variable) { variable = getRefinedVariable(result) }
 
 /**
- * A representation of a (nested) property access on an SSA variable
+ * A representation of a (nested) property access on an SSA variable or captured variable
  * where each property name is either constant or itself an SSA variable.
  */
 private newtype TAccessPath =
+  /**
+   * An access path rooted in an SSA variable.
+   *
+   * Refinement nodes are treated as no-ops so that all uses of a refined value are
+   * given the same access path. Refinement nodes are therefore never treated as roots.
+   */
   MkSsaRoot(SsaVariable var) {
     not exists(getRefinedVariable(var)) and
-    not var.getSourceVariable().isCaptured()
-  }
-  or
-  MkCapturedRoot(LocalVariable var) {
-    var.isCaptured()
-  }
-  or
+    not var.getSourceVariable().isCaptured() // Handled by MkCapturedRoot
+  } or
+  /**
+   * An access path rooted in a captured variable.
+   *
+   * The SSA form for captured variables is too conservative for constructing
+   * access paths across function boundaries, so in this case we use the source
+   * variable as the root.
+   */
+  MkCapturedRoot(LocalVariable var) { var.isCaptured() } or
+  /**
+   * An access path rooted in the receiver of a function.
+   */
   MkThisRoot(Function function) { function.getThisBinder() = function } or
+  /**
+   * A property access on an access path.
+   */
   MkAccessStep(AccessPath base, PropertyName name) {
     exists(PropAccess pacc |
       pacc.getBase() = base.getAnInstance() and
@@ -70,7 +83,7 @@ private newtype TAccessPath =
   }
 
 /**
- * A representation of a (nested) property access on an SSA variable
+ * A representation of a (nested) property access on an SSA variable or captured variable
  * where each property name is either constant or itself an SSA variable.
  */
 class AccessPath extends TAccessPath {
