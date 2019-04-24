@@ -539,7 +539,7 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
    * Has no result if this occurs in a TypeScript file that was extracted
    * without type information.
    */
-  Type getType() { ast_node_type(this, result) }
+  override Type getType() { ast_node_type(this, result) }
   
   override Stmt getEnclosingStmt() { result = ExprOrType.super.getEnclosingStmt() }
   
