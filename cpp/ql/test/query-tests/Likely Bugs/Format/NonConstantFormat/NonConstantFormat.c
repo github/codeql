@@ -2,7 +2,7 @@ extern int printf(const char *fmt, ...);
 
 // For the following `...gettext` functions, we assume that
 // all translations preserve the type and order of `%` specifiers
-// (and hence are safe to use as format strings).  This is
+// (and hence are safe to use as format strings).  This
 // assumption is hard-coded into the query.
 
 extern char *gettext (const char *__msgid);

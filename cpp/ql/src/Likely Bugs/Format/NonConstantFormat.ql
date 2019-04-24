@@ -70,8 +70,7 @@ class ConstFlow extends DataFlow::Configuration {
   ConstFlow() { this = "ConstFlow" }
 
   override predicate isSource(DataFlow::Node source) { 
-  	none()
-    //isConst(source.asExpr())
+    isConst(source.asExpr())
   }
 
   override predicate isSink(DataFlow::Node sink) {
