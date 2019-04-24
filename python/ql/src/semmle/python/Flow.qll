@@ -1,12 +1,12 @@
 import python
 import semmle.python.flow.NameNode
 private import semmle.python.pointsto.PointsTo
-
+private import semmle.python.Pruning
 
 /* Note about matching parent and child nodes and CFG splitting:
  *
  * As a result of CFG splitting a single AST node may have multiple CFG nodes.
- * Therefore, when matching CFG nodes to children, we need to make sure that 
+ * Therefore, when matching CFG nodes to children, we need to make sure that
  * we don't match the child of one CFG node to the wrong parent.
  * We do this by checking dominance. If the CFG node for the parent precedes that of
  * the child, then he child node matches the parent node if it is dominated by it.
@@ -32,6 +32,10 @@ private AstNode toAst(ControlFlowNode n) {
 *  Edges between control flow nodes include exceptional as well as normal control flow.
 */
 class ControlFlowNode extends @py_flow_node {
+
+    ControlFlowNode() {
+        not Pruner::pruned(this)
+    }
 
     /** Whether this control flow node is a load (including those in augmented assignments) */
     predicate isLoad() {
@@ -219,7 +223,7 @@ class ControlFlowNode extends @py_flow_node {
 
     /** Gets what this flow node might "refer-to". Performs a combination of localized (intra-procedural) points-to
      *  analysis and global module-level analysis. This points-to analysis favours precision over recall. It is highly
-     *  precise, but may not provide information for a significant number of flow-nodes. 
+     *  precise, but may not provide information for a significant number of flow-nodes.
      *  If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
      */
     predicate refersTo(Object value, ClassObject cls, ControlFlowNode origin) {
@@ -238,9 +242,9 @@ class ControlFlowNode extends @py_flow_node {
         PointsTo::points_to(this, context, value, cls, origin)
     }
 
-    /** Whether this flow node might "refer-to" to `value` which is from `origin` 
-     * Unlike `this.refersTo(value, _, origin)` this predicate includes results 
-     * where the class cannot be inferred. 
+    /** Whether this flow node might "refer-to" to `value` which is from `origin`
+     * Unlike `this.refersTo(value, _, origin)` this predicate includes results
+     * where the class cannot be inferred.
      */
     predicate refersTo(Object value, ControlFlowNode origin) {
         PointsTo::points_to(this, _, value, _, origin)
@@ -312,7 +316,7 @@ class ControlFlowNode extends @py_flow_node {
         exists(BasicBlock b |
             start_bb_likely_reachable(b) and
             not end_bb_likely_reachable(b) and
-            /* If there is an unlikely successor edge earlier in the BB 
+            /* If there is an unlikely successor edge earlier in the BB
              * than this node, then this node must be unreachable */
             exists(ControlFlowNode p, int i, int j |
                 p.(RaisingNode).unlikelySuccessor(_) and
@@ -355,7 +359,7 @@ class ControlFlowNode extends @py_flow_node {
     }
 
     /** Whether this dominates other.
-     * Note that all nodes dominate themselves. 
+     * Note that all nodes dominate themselves.
      */
     pragma [inline] predicate dominates(ControlFlowNode other) {
         // This predicate is gigantic, so it must be inlined.
@@ -446,7 +450,7 @@ class CallNode extends ControlFlowNode {
 
     /** Gets the flow node corresponding to the named argument of the call corresponding to this flow node */
     ControlFlowNode getArgByName(string name) {
-        exists(Call c, Keyword k | this.getNode() = c and k = c.getAKeyword() and 
+        exists(Call c, Keyword k | this.getNode() = c and k = c.getAKeyword() and
         k.getValue() = result.getNode() and k.getArg() = name and
         result.getBasicBlock().dominates(this.getBasicBlock()))
     }
@@ -487,7 +491,7 @@ class AttrNode extends ControlFlowNode {
     /** Gets the flow node corresponding to the object of the attribute expression corresponding to this flow node,
         with the matching name */
     ControlFlowNode getObject(string name) {
-        exists(Attribute a | 
+        exists(Attribute a |
             this.getNode() = a and a.getObject() = result.getNode() and
             a.getName() = name and
             result.getBasicBlock().dominates(this.getBasicBlock()))
@@ -558,7 +562,7 @@ class SubscriptNode extends ControlFlowNode {
         toAst(this) instanceof Subscript
     }
 
-    /** DEPRECATED: Use `getObject()` instead. 
+    /** DEPRECATED: Use `getObject()` instead.
      * This will be formally deprecated before the end 2018 and removed in 2019.*/
     ControlFlowNode getValue() {
         exists(Subscript s | this.getNode() = s and s.getObject() = result.getNode() and
@@ -681,7 +685,7 @@ class UnaryExprNode extends ControlFlowNode {
 }
 
 /** A control flow node corresponding to a definition, that is a control flow node
- * where a value is assigned to this node. 
+ * where a value is assigned to this node.
  * Includes control flow nodes for the targets of assignments, simple or augmented,
  * and nodes implicitly assigned in class and function definitions and imports.
  */
@@ -908,7 +912,7 @@ class BasicBlock extends @py_flow_node {
 
     /** Whether this basic block dominates the other */
     pragma[nomagic] predicate dominates(BasicBlock other) {
-        this = other 
+        this = other
         or
         this.strictlyDominates(other)
     }
@@ -917,8 +921,8 @@ class BasicBlock extends @py_flow_node {
         this.firstNode().getImmediateDominator().getBasicBlock() = result
     }
 
-    /** Dominance frontier of a node x is the set of all nodes `other` such that `this` dominates a predecessor 
-     * of `other` but does not strictly dominate `other` */ 
+    /** Dominance frontier of a node x is the set of all nodes `other` such that `this` dominates a predecessor
+     * of `other` but does not strictly dominate `other` */
     predicate dominanceFrontier(BasicBlock other) {
         this.dominates(other.getAPredecessor()) and not this.strictlyDominates(other)
     }
@@ -1058,4 +1062,6 @@ private predicate end_bb_likely_reachable(BasicBlock b) {
         not p = b.getLastNode()
     )
 }
+
+
 
