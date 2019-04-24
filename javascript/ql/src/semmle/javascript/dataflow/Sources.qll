@@ -164,10 +164,7 @@ class SourceNode extends DataFlow::Node {
    */
   pragma[inline]
   DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) {
-    exists(StepSummary summary |
-      StepSummary::step(this, result, summary) and
-      t = t2.append(summary)
-    )
+    t = t2.step(this, result)
   }
 
   /**
