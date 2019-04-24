@@ -1643,19 +1643,17 @@ cached module Types {
 
     /** INTERNAL -- Do not use */
     cached predicate six_add_metaclass(CallNode decorator_call, ClassObjectInternal decorated, ControlFlowNode metaclass) {
-        //TO DO...
-        none()
-        //exists(CallNode decorator |
-        //    decorator_call.getArg(0) = decorated and
-        //    decorator = decorator_call.getFunction() and
-        //    decorator.getArg(0) = metaclass |
-        //    PointsToInternal::pointsTo(decorator.getFunction(), _, six_add_metaclass_function(), _)
-        //    or
-        //    exists(ModuleObjectInternal six |
-        //       six.getName() = "six" and
-        //       PointsToInternal::pointsTo(decorator.getFunction().(AttrNode).getObject("add_metaclass"), _, six, _)
-        //   )
-        //)
+        exists(CallNode decorator |
+            PointsToInternal::pointsTo(decorator_call.getArg(0), _, decorated, _) and
+            decorator = decorator_call.getFunction() and
+            decorator.getArg(0) = metaclass |
+            PointsToInternal::pointsTo(decorator.getFunction(), _, six_add_metaclass_function(), _)
+            or
+            exists(ModuleObjectInternal six |
+               six.getName() = "six" and
+               PointsToInternal::pointsTo(decorator.getFunction().(AttrNode).getObject("add_metaclass"), _, six, _)
+           )
+        )
     }
 
     private ObjectInternal six_add_metaclass_function() {
