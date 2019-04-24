@@ -607,6 +607,9 @@ module InterModulePointsTo {
             mod.attribute(name, value, orig) and
             origin = orig.asCfgNodeOrHere(f)
         )
+        or
+        PointsToInternal::pointsTo(f.getModule(_), context, ObjectInternal::unknown(), _) and
+        value = ObjectInternal::unknown() and origin = f
     }
 
     private predicate from_import_imports(ImportMemberNode f, PointsToContext context, ModuleObjectInternal mod, string name) {
