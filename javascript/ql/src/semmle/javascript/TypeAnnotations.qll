@@ -2,7 +2,7 @@
  * Provides classes for reasoning about type annotations independently of dialect.
  */
 
-import javascript 
+import javascript
 
 /**
  * A type annotation, either in the form of a TypeScript type or a JSDoc comment.
@@ -65,7 +65,7 @@ class TypeAnnotation extends @type_annotation, Locatable {
   /** Holds if this is the `const` keyword, occurring in a type assertion such as `x as const`. */
   predicate isConstKeyword() { none() }
 
-  /** 
+  /**
    * Repeatedly unfolds unions, intersections, parentheses, and nullability/readonly modifiers and gets any of the underlying types,
    * or this type itself if it cannot be unfolded.
    *
