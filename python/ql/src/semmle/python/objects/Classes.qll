@@ -75,6 +75,7 @@ abstract class ClassObjectInternal extends ObjectInternal {
         result = false
     }
 
+    override predicate subscriptUnknown() { none() }
 }
 
 class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject {

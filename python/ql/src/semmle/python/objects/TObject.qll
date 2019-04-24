@@ -136,6 +136,8 @@ newtype TObject =
         not count(instantiation.getAnArg()) = 1 and
         Types::getMro(metacls).contains(TType())
     }
+    or
+    TSysVersionInfo()
 
 private predicate is_power_2(int n) {
     n = 1 or

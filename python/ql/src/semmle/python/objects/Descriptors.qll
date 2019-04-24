@@ -53,6 +53,8 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
     pragma [noinline] override predicate attributesUnknown() { none() }
 
+    override predicate subscriptUnknown() { none() }
+
     override boolean isDescriptor() { result = true }
 
     override int length() { none() }
@@ -133,6 +135,8 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     pragma [noinline] override predicate attributesUnknown() { none() }
 
+    override predicate subscriptUnknown() { none() }
+
     override boolean isDescriptor() { result = true }
 
     pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) {
@@ -206,6 +210,8 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
     pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
     pragma [noinline] override predicate attributesUnknown() { none() }
+
+    override predicate subscriptUnknown() { none() }
 
     override boolean isDescriptor() { result = true }
 

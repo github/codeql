@@ -45,6 +45,8 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     override int length() { none() }
 
+    override predicate subscriptUnknown() { any() }
+
 }
 
 class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleObject {

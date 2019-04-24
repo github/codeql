@@ -43,6 +43,8 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
     pragma [noinline] override predicate attributesUnknown() { none() }
 
+    override predicate subscriptUnknown() { none() }
+
     override boolean isDescriptor() { result = false }
 
     pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }

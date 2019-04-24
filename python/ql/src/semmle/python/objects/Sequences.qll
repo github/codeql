@@ -87,6 +87,8 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
 
     pragma [noinline] override predicate attributesUnknown() { none() }
 
+    override predicate subscriptUnknown() { none() }
+
 }
 
 class BuiltinTupleObjectInternal extends TBuiltinTuple, TupleObjectInternal {
@@ -146,4 +148,80 @@ class PythonTupleObjectInternal extends TPythonTuple, TupleObjectInternal {
 
 }
 
+class SysVersionInfoObjectInternal extends TSysVersionInfo, SequenceObjectInternal {
 
+    override string toString() {
+        result = "sys.version_info"
+    }
+
+    override ObjectInternal getItem(int n) {
+        n = 0 and result = TInt(major_version())
+        or
+        n = 1 and result = TInt(minor_version())
+    }
+
+    override predicate introduced(ControlFlowNode node, PointsToContext context) { none() }
+
+    /** Gets the class declaration for this object, if it is a declared class. */
+    override ClassDecl getClassDeclaration() {
+        result = Builtin::special("sys").getMember("version_info").getClass()
+    }
+
+    /** True if this "object" is a class. */
+    override boolean isClass() { result = false }
+
+    override ObjectInternal getClass() {
+        result.getBuiltin() = this.getClassDeclaration()
+    }
+
+    override boolean isComparable() {
+        result = true
+    }
+
+    /** Gets the `Builtin` for this object, if any.
+     * Objects (except unknown and undefined values) should attempt to return
+     * exactly one result for either this method or `getOrigin()`.
+     */
+    override Builtin getBuiltin() { none() }
+
+    /** Gets a control flow node that represents the source origin of this
+     * objects.
+     */
+    override ControlFlowNode getOrigin() { none() }
+
+    /** Holds if `obj` is the result of calling `this` and `origin` is
+     * the origin of `obj`.
+     */
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
+
+    /** Holds if `obj` is the result of calling `this` and `origin` is
+     * the origin of `obj` with callee context `callee`.
+     */
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
+
+    /** The integer value of things that have integer values.
+     * That is, ints and bools.
+     */
+    override int intValue() { none() }
+
+    /** The integer value of things that have integer values.
+     * That is, strings.
+     */
+    override string strValue() { none() }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate attributesUnknown() { none() }
+
+    override predicate subscriptUnknown() { none() }
+
+    /** Gets the length of the sequence that this "object" represents.
+     * Always returns a value for a sequence, will be -1 if object has no fixed length.
+     */
+    override int length() { result = 5 }
+
+    override predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }
+
+}

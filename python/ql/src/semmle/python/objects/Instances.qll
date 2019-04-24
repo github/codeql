@@ -102,6 +102,8 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
 
     pragma [noinline] override predicate attributesUnknown() { any() }
 
+    override predicate subscriptUnknown() { any() }
+
     override boolean isDescriptor() { result = false }
 
     pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
@@ -202,6 +204,8 @@ class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
     }
 
     pragma [noinline] override predicate attributesUnknown() { any() }
+
+    override predicate subscriptUnknown() { any() }
 
     override boolean isDescriptor() { result = false }
 
@@ -305,6 +309,8 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
     pragma [noinline] override predicate attributesUnknown() { any() }
 
+    override predicate subscriptUnknown() { any() }
+
     override boolean isDescriptor() { result = false }
 
     pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
@@ -384,6 +390,8 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
     override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
     pragma [noinline] override predicate attributesUnknown() { none() }
+
+    override predicate subscriptUnknown() { any() }
 
     override boolean isDescriptor() { result = false }
 

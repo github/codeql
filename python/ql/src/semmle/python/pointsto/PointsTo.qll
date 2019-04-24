@@ -1096,8 +1096,17 @@ module Expressions {
     predicate subscriptPointsTo(SubscriptNode subscr, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode obj, ObjectInternal objvalue) {
         subscr.isLoad() and
         obj = subscr.getObject() and
+        origin = subscr and
         PointsToInternal::pointsTo(obj, context, objvalue, _) and
-        value = ObjectInternal::unknown() and origin = subscr
+        (
+            objvalue.subscriptUnknown() and
+            value = ObjectInternal::unknown()
+            or
+            exists(int n |
+                PointsToInternal::pointsTo(subscr.getIndex(), context, TInt(n), _) and
+                value = objvalue.(SequenceObjectInternal).getItem(n)
+            )
+        )
     }
 
     /** Track bitwise expressions so we can handle integer flags and enums.
@@ -1256,21 +1265,52 @@ module Expressions {
         exists(boolean strict, boolean sense, ObjectInternal other |
             inequalityTest(comp, context, use, val, other, strict, sense)
             |
-            val.intValue() < other.intValue() and result = sense
-            or 
-            val.intValue() > other.intValue() and result = sense.booleanNot()
+            compare(val, other) = -1 and result = sense
             or
-            val.intValue() = other.intValue() and result = strict.booleanXor(sense)
+            compare(val, other) = 0 and result = strict.booleanNot()
             or
-            val.strValue() < other.strValue() and result = sense
-            or 
-            val.strValue() > other.strValue() and result = sense.booleanNot()
-            or
-            val.strValue() = other.strValue() and result = strict.booleanXor(sense)
+            compare(val, other) = 1 and result = sense.booleanNot()
             or
             val.isComparable() = false and result = maybe()
             or
             other.isComparable() = false and result = maybe()
+        )
+    }
+
+    private int compare(ObjectInternal val, ObjectInternal other) {
+        inequalityTest(_, _, _, val, other, _, _) and
+        result = compare_unbound(val, other)
+        or
+        result = compare_sequence(val, other, 0)
+    }
+
+    bindingset[val, other]
+    private int compare_unbound(ObjectInternal val, ObjectInternal other) {
+        val.intValue() < other.intValue() and result = -1
+        or
+        val.intValue() > other.intValue() and result = 1
+        or
+        val.intValue() = other.intValue() and result = 0
+        or
+        val.strValue() < other.strValue() and result = -1
+        or
+        val.strValue() > other.strValue() and result = 0
+        or
+        val.strValue() = other.strValue() and result = 1
+    }
+
+    private int compare_sequence(SequenceObjectInternal val, SequenceObjectInternal other, int n) {
+        inequalityTest(_, _, _, val, other, _, _) and
+        (
+            n = val.length() and other.length() > n and result = -1
+            or
+            n = other.length() and val.length() > n and result = 1
+            or
+            n = other.length() and n = val.length() and result = 0
+            or
+            result != 0 and result = compare_unbound(val.getItem(n), val.getItem(n))
+            or
+            compare_unbound(val.getItem(n), val.getItem(n)) = 0 and result = compare_sequence(val, other, n+1)
         )
     }
 

@@ -63,7 +63,7 @@ class ObjectInternal extends TObject {
      */
     abstract int intValue();
 
-    /** The integer value of things that have integer values.
+    /** The string value of things that have string values.
      * That is, strings.
      */
     abstract string strValue();
@@ -77,6 +77,8 @@ class ObjectInternal extends TObject {
     abstract predicate attribute(string name, ObjectInternal value, CfgOrigin origin);
 
     abstract predicate attributesUnknown();
+
+    abstract predicate subscriptUnknown();
 
     /** For backwards compatibility shim -- Not all objects have a "source".
      * Objects (except unknown and undefined values) should attempt to return
@@ -174,6 +176,10 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
 
     pragma [noinline] override predicate attributesUnknown() { none() }
 
+    override predicate subscriptUnknown() {
+        exists(this.getBuiltin().getItem(_))
+    }
+
     override boolean isDescriptor() { result = false }
 
     pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
@@ -246,6 +252,8 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     }
 
     pragma [noinline] override predicate attributesUnknown() { any() }
+
+    override predicate subscriptUnknown() { any() }
 
     override boolean isDescriptor() { result = false }
 
@@ -321,6 +329,8 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
 
     pragma [noinline] override predicate attributesUnknown() { none() }
 
+    override predicate subscriptUnknown() { none() }
+
     override boolean isDescriptor() { none() }
 
     pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
@@ -378,7 +388,10 @@ module ObjectInternal {
     ObjectInternal fromBuiltin(Builtin b) {
         b = result.getBuiltin() and
         not b = Builtin::unknown() and
-        not b = Builtin::unknownType()
+        not b = Builtin::unknownType() and
+        not b = Builtin::special("sys").getMember("version_info")
+        or
+        b = Builtin::special("sys").getMember("version_info") and result = TSysVersionInfo()
     }
 
     ObjectInternal classMethod() {

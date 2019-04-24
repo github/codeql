@@ -54,6 +54,8 @@ abstract class CallableObjectInternal extends ObjectInternal {
 
     abstract predicate neverReturns();
 
+    override predicate subscriptUnknown() { none() }
+
 }
 
 
