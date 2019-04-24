@@ -975,6 +975,8 @@ case @expr.kind of
 | 109 = @local_function_invocation_expr
 | 110 = @ref_expr
 | 111 = @discard_expr
+| 112 = @range_expr
+| 113 = @index_expr
 ;
 
 @integer_literal_expr = @int_literal_expr | @long_literal_expr | @uint_literal_expr | @ulong_literal_expr;
