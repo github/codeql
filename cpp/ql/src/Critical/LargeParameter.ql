@@ -30,6 +30,8 @@ where f.getAParameter() = p
       exists(FunctionCall fc | fc.getQualifier().getAChild*() = a and not fc.getTarget().hasSpecifier("const"))
     )
   )
+  // if there's no block, we can't tell how the parameter is used
+  and exists(f.getBlock())
 select
   p, "This parameter of type $@ is " + size.toString() + " bytes - consider passing a const pointer/reference instead.",
   t, t.toString()

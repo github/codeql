@@ -146,4 +146,4 @@ MyArithmeticClass operator+(MyArithmeticClass lhs, const MyArithmeticClass &rhs)
 	return lhs;
 }
 
-void myFunction6(MyLargeClass a); // GOOD (no definition, so we can't tell what's done with `a`) [FALSE POSITIVE]
+void myFunction6(MyLargeClass a); // GOOD (no definition, so we can't tell what's done with `a`)
