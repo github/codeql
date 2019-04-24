@@ -145,3 +145,5 @@ MyArithmeticClass operator+(MyArithmeticClass lhs, const MyArithmeticClass &rhs)
 	lhs += rhs; // lhs is copied by design
 	return lhs;
 }
+
+void myFunction6(MyLargeClass a); // GOOD (no definition, so we can't tell what's done with `a`) [FALSE POSITIVE]
