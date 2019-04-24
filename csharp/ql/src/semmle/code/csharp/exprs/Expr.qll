@@ -719,3 +719,37 @@ class DiscardExpr extends Expr, @discard_expr {
 private class UnknownExpr extends Expr, @unknown_expr {
   override string toString() { result = "Expression" }
 }
+
+/**
+ * A range expression, used to create a `System.Range`. For example
+ * ```
+ * 1..3
+ * 1..^1
+ * 3..
+ * ..
+ * ..5
+ * ..^1
+ * ```
+ */
+class RangeExpr extends Expr, @range_expr {
+  override string toString() { result = "... .. ..." }
+
+  /** Gets the left hand operand of this range expression, if any. */
+  Expr getStart() { result = this.getChild(0) }
+
+  /** Gets the right hand operand of this range expression, if any. */
+  Expr getEnd() { result = this.getChild(1) }
+
+  /** Holds if this range expression has a left hand operand. */
+  predicate hasStart() { exists(getStart()) }
+
+  /** Holds if this range expression has a right hand operand. */
+  predicate hasEnd() { exists(getEnd()) }
+}
+
+/** An index expression, for example `^1` meaning "1 from the end". */
+class IndexExpr extends Expr, @index_expr {
+  Expr getExpr() { result.getParent() = this }
+
+  override string toString() { result = "^..." }
+}
