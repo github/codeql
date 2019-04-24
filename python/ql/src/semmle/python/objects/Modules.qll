@@ -171,6 +171,7 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
                 or
                 ModuleAttributes::pointsToAtExit(init, name, ObjectInternal::undefined(), _)
             ) and
+            not name = "__init__" and
             value = this.submodule(name) and
             origin = CfgOrigin::fromObject(value)
         )

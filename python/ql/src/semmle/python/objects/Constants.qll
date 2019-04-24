@@ -244,7 +244,7 @@ class FloatObjectInternal extends ConstantObjectInternal, TFloat {
 }
 
 
-class StringObjectInternal extends ConstantObjectInternal, TString {
+class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
 
     override string toString() {
         result =  "'" + this.strValue() + "'"
@@ -252,7 +252,8 @@ class StringObjectInternal extends ConstantObjectInternal, TString {
 
     override predicate introduced(ControlFlowNode node, PointsToContext context) {
         context.appliesTo(node) and
-        node.getNode().(StrConst).getText() = this.strValue()
+        node.getNode().(StrConst).getText() = this.strValue() and
+        node.getNode().(StrConst).isUnicode()
     }
 
     override ObjectInternal getClass() {
@@ -260,7 +261,8 @@ class StringObjectInternal extends ConstantObjectInternal, TString {
     }
 
     override Builtin getBuiltin() {
-        result.(Builtin).strValue() = this.strValue()
+        result.(Builtin).strValue() = this.strValue() and
+        result.getClass() = Builtin::special("unicode")
     }
 
     override int intValue() {
@@ -268,7 +270,48 @@ class StringObjectInternal extends ConstantObjectInternal, TString {
     }
 
     override string strValue() {
-        this = TString(result)
+        this = TUnicode(result)
+    }
+
+    override boolean booleanValue() {
+        this.strValue() = "" and result = false
+        or
+        this.strValue() != "" and result = true
+    }
+
+    override int length() {
+        result = this.strValue().length()
+    }
+
+}
+
+class BytesObjectInternal extends ConstantObjectInternal, TBytes {
+
+    override string toString() {
+        result =  "'" + this.strValue() + "'"
+    }
+
+    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+        context.appliesTo(node) and
+        node.getNode().(StrConst).getText() = this.strValue() and
+        not node.getNode().(StrConst).isUnicode()
+    }
+
+    override ObjectInternal getClass() {
+        result = TBuiltinClassObject(Builtin::special("bytes"))
+    }
+
+    override Builtin getBuiltin() {
+        result.(Builtin).strValue() = this.strValue() and
+        result.getClass() = Builtin::special("bytes")
+    }
+
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        this = TBytes(result)
     }
 
     override boolean booleanValue() {

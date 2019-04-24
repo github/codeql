@@ -72,12 +72,34 @@ newtype TObject =
         f = any(FloatLiteral num).getValue()
     }
     or
-    TString(string s) {
+    TUnicode(string s) {
         // Any string explicitly mentioned in the source code.
-        s = any(StrConst str).getText()
+        exists(StrConst str | 
+            s = str.getText() and
+            str.isUnicode()
+        )
         or
         // Any string from the library put in the DB by the extractor.
-        s = any(Builtin b).strValue()
+        exists(Builtin b |
+            s = b.strValue() and 
+            b.getClass() = Builtin::special("unicode")
+        )
+        or
+        s = "__main__"
+    }
+    or
+    TBytes(string s) {
+        // Any string explicitly mentioned in the source code.
+        exists(StrConst str | 
+            s = str.getText() and
+            not str.isUnicode()
+        )
+        or
+        // Any string from the library put in the DB by the extractor.
+        exists(Builtin b |
+            s = b.strValue() and 
+            b.getClass() = Builtin::special("bytes")
+        )
         or
         s = "__main__"
     }

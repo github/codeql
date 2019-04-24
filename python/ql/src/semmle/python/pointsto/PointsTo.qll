@@ -177,7 +177,7 @@ cached module PointsToInternal {
     }
 
     cached predicate pointsToString(ControlFlowNode f, PointsToContext context, string value) {
-        exists(StringObjectInternal str |
+        exists(ObjectInternal str |
             PointsToInternal::pointsTo(f, context, str, _) and
             str.strValue() = value
         )
@@ -494,7 +494,7 @@ cached module PointsToInternal {
 
     /** Implicit "definition" of `__name__` at the start of a module. */
     pragma [noinline]
-    private predicate module_name_points_to(ScopeEntryDefinition def, PointsToContext context, StringObjectInternal value, ControlFlowNode origin) {
+    private predicate module_name_points_to(ScopeEntryDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         def.getVariable().getName() = "__name__" and
         exists(Module m |
             m = def.getScope()
@@ -506,7 +506,7 @@ cached module PointsToInternal {
         origin = def.getDefiningNode()
     }
 
-    private StringObjectInternal module_dunder_name(Module m) {
+    private ObjectInternal module_dunder_name(Module m) {
         exists(string name |
             result.strValue() = name |
             if m.isPackageInit() then
@@ -685,6 +685,8 @@ module InterModulePointsTo {
             PointsToInternal::pointsTo(def.getDefiningNode().(ImportStarNode).getModule(), context, mod, _) |
             moduleExportsBoolean(mod, var.getSourceVariable().getName()) = false
             or
+            var.getSourceVariable().getName().charAt(0) = "_"
+            or
             exists(Module m, string name |
                 m = mod.getSourceModule() and name = var.getSourceVariable().getName() |
                 not m.declaredInAll(_) and name.charAt(0) = "_"
@@ -768,11 +770,14 @@ module InterModulePointsTo {
     }
 
     boolean moduleExportsBoolean(ModuleObjectInternal mod, string name) {
-        result = pythonModuleExportsBoolean(mod, name)
-        or
-        result = packageExportsBoolean(mod, name)
-        or
-        result = builtinModuleExportsBoolean(mod, name)
+        not name.charAt(0) = "_" and
+        (
+            result = pythonModuleExportsBoolean(mod, name)
+            or
+            result = packageExportsBoolean(mod, name)
+            or
+            result = builtinModuleExportsBoolean(mod, name)
+        )
     }
 
 }
@@ -2011,7 +2016,8 @@ module ModuleAttributes {
             )
             or
             /* Retain value held before import */
-            InterModulePointsTo::moduleExportsBoolean(mod, name) = false and
+            (InterModulePointsTo::moduleExportsBoolean(mod, name) = false or name.charAt(0) = "_")
+            and
             attributePointsTo(def.getInput(), name, value, origin)
         )
     }
