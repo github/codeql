@@ -127,7 +127,7 @@ private predicate maybe_call_to_exiting_function(CallNode call) {
 /** Prune edges where the predecessor block looks like it might contain a call to an exit function. */
 class ExitFunctionGuardedEdge extends DataFlowExtension::DataFlowVariable {
 
-    predicate prunedSuccessor(EssaVariable succ) {
+    override predicate prunedSuccessor(EssaVariable succ) {
         exists(CallNode exit_call |
             succ.(PhiFunction).getInput(exit_call.getBasicBlock()) = this and
             maybe_call_to_exiting_function(exit_call)
