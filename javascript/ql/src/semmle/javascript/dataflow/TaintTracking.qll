@@ -743,13 +743,26 @@ module TaintTracking {
     override predicate appliesTo(Configuration cfg) { any() }
   }
 
+  /** Gets a variable that is defined exactly once. */
+  private Variable singleDef() {
+    strictcount(result.getADefinition()) = 1
+  }
+
   /** A check of the form `if(x == 'some-constant')`, which sanitizes `x` in its "then" branch. */
   class ConstantComparison extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     Expr x;
 
     override EqualityTest astNode;
 
-    ConstantComparison() { astNode.hasOperands(x, any(ConstantExpr c)) }
+    ConstantComparison() {
+      exists(Expr const |
+        astNode.hasOperands(x, const) |
+        // either the other operand is a constant
+        const instanceof ConstantExpr or
+        // or it's an access to a variable that probably acts as a symbolic constant
+        const = singleDef().getAnAccess()
+      )
+    }
 
     override predicate sanitizes(boolean outcome, Expr e) {
       outcome = astNode.getPolarity() and x = e

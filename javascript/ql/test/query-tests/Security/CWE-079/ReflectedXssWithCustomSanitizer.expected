@@ -8,3 +8,5 @@
 | promises.js:6:25:6:25 | x | Cross-site scripting vulnerability due to $@. | promises.js:5:44:5:57 | req.query.data | user-provided value |
 | tst2.js:7:12:7:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:6:9:6:9 | p | user-provided value |
 | tst2.js:8:12:8:12 | r | Cross-site scripting vulnerability due to $@. | tst2.js:6:12:6:15 | q: r | user-provided value |
+| tst2.js:18:12:18:12 | p | Cross-site scripting vulnerability due to $@. | tst2.js:14:9:14:9 | p | user-provided value |
+| tst2.js:21:14:21:14 | p | Cross-site scripting vulnerability due to $@. | tst2.js:14:9:14:9 | p | user-provided value |
