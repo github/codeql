@@ -7,3 +7,4 @@
 | test.cpp:107:16:107:16 | d | This parameter of type $@ is 4100 bytes - consider passing a const pointer/reference instead. | test.cpp:58:8:58:19 | MyLargeClass | MyLargeClass |
 | test.cpp:108:16:108:16 | e | This parameter of type $@ is 4100 bytes - consider passing a const pointer/reference instead. | test.cpp:58:8:58:19 | MyLargeClass | MyLargeClass |
 | test.cpp:109:16:109:16 | f | This parameter of type $@ is 4100 bytes - consider passing a const pointer/reference instead. | test.cpp:58:8:58:19 | MyLargeClass | MyLargeClass |
+| test.cpp:161:7:161:7 | b | This parameter of type $@ is 3208 bytes - consider passing a const pointer/reference instead. | test.cpp:153:8:153:10 | big | big |

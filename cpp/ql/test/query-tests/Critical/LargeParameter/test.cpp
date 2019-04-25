@@ -158,7 +158,7 @@ struct big
 
 void myFunction7(
 		big a, // GOOD
-		big b // BAD [NOT DETECTED]
+		big b // BAD
 	)
 {
 	a.xs[0]++; // modifies a

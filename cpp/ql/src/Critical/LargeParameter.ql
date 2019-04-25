@@ -22,12 +22,12 @@ where f.getAParameter() = p
   and not f instanceof CopyAssignmentOperator
   // exception: p is written to, which may mean the copy is intended
   and not p.getAnAccess().isAddressOfAccessNonConst()
-  and not exists(Access a |
-    a.getTarget() = p and
+  and not exists(Expr e |
+    variableAccessedAsValue(p.getAnAccess(), e.getFullyConverted()) and
     (
-      exists(Assignment an | an.getLValue().getAChild*() = a) or
-      exists(CrementOperation co | co.getOperand().getAChild*() = a) or
-      exists(FunctionCall fc | fc.getQualifier().getAChild*() = a and not fc.getTarget().hasSpecifier("const"))
+      exists(Assignment an | an.getLValue() = e) or
+      exists(CrementOperation co | co.getOperand() = e) or
+      exists(FunctionCall fc | fc.getQualifier() = e and not fc.getTarget().hasSpecifier("const"))
     )
   )
   // if there's no block, we can't tell how the parameter is used
