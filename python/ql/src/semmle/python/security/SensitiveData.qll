@@ -91,11 +91,11 @@ class SensitiveDataSource extends TaintSource {
         this.(ControlFlowNode).getNode() instanceof SensitiveExpr
     }
 
-    string toString() {
+    override string toString() {
         result = "sensitive.data.source"
     }
 
-    predicate isSourceOf(TaintKind kind) {
+    override predicate isSourceOf(TaintKind kind) {
         kind instanceof SensitiveData
     }
 
