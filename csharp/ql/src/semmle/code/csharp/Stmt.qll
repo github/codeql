@@ -283,7 +283,8 @@ class ConstCase extends LabeledStmt, CaseStmt {
 
   ConstCase() {
     expr = this.getChild(0) and
-    not expr instanceof LocalVariableDeclExpr
+    not expr instanceof LocalVariableDeclExpr and
+    not exists(this.getChild(1))
   }
 
   /** Gets the case expression. */
@@ -309,7 +310,10 @@ class ConstCase extends LabeledStmt, CaseStmt {
  * ```
  */
 class TypeCase extends LabeledStmt, CaseStmt {
-  TypeCase() { this.getChild(1) instanceof TypeAccess }
+  TypeCase() {
+    this.getChild(1) instanceof TypeAccess and
+    not this.getChild(4) instanceof RecursivePatternExpr
+  }
 
   /**
    * Gets the local variable declaration of this type case, if any. For example,
@@ -367,6 +371,38 @@ class TypeCase extends LabeledStmt, CaseStmt {
       result = "case " + this.getTypeAccess().getType().getName() + var + ":"
     )
   }
+}
+
+/**
+ * A recursive pattern case, for example `case string { Length: 0 } empty:`.
+ */
+class RecursivePatternCase extends LabeledStmt, CaseStmt {
+  RecursivePatternExpr pattern;
+
+  RecursivePatternCase() { pattern = this.getChild(4) }
+
+  override string toString() { result = "case { ... }:" }
+
+  /**
+   * Gets the type access of this recursive pattern case, if any.
+   * For example, `string` in `case string { Length: 0 } empty:`.
+   */
+  TypeAccess getTypeAccess() { result = getChild(1) }
+  
+  /**
+   * Gets the checked type of this recursive pattern, if any.
+   * For example, `string` in `case string { Length: 0 } empty:`.
+   */
+  Type getCheckedType() { result = getTypeAccess().getType() }
+  
+    /**
+   * Gets the recursive pattern of this case.
+   * For example, `{ Length: 0 }` in `case string { Length: 0 } empty:`.
+   */
+  
+  RecursivePatternExpr getRecursivePattern() { result = pattern }
+  
+  LocalVariableDeclExpr getVariableDeclExpr() { result = getChild(0) }
 }
 
 /**

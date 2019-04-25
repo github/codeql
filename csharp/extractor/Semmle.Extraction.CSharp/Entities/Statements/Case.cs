@@ -73,14 +73,29 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             if(!isVar)
                 Expressions.TypeAccess.Create(cx, optionalType, this, 1);
 
-            if (cx.Model(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+            switch (designation)
             {
-                var type = Type.Create(cx, symbol.Type);
+                case SingleVariableDesignationSyntax single:
+                    if (cx.Model(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+                    {
+                        var type = Type.Create(cx, symbol.Type);
 
-                if (isVar)
-                    new Expression(new ExpressionInfo(cx, type, cx.Create(varKeyword.GetLocation()), ExprKind.TYPE_ACCESS, this, 1, false, null));
+                        if (isVar)
+                            new Expression(new ExpressionInfo(cx, type, cx.Create(varKeyword.GetLocation()), ExprKind.TYPE_ACCESS, this, 1, false, null));
 
-                Expressions.VariableDeclaration.Create(cx, symbol, type, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 0);
+                        Expressions.VariableDeclaration.Create(cx, symbol, type, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 0);
+                    }
+                    break;
+                case DiscardDesignationSyntax discard:
+                    new Expressions.Discard(cx, discard, this, 0);
+                    break;
+                case null:
+                    break;
+                case ParenthesizedVariableDesignationSyntax paren:
+                    Expressions.VariableDeclaration.CreateParenthesized(cx, pattern as VarPatternSyntax, paren, this, 0);
+                    break;
+                default:
+                    throw new InternalError(pattern, "Unhandled designation in case statement");
             }
         }
 
@@ -96,6 +111,10 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                     break;
                 case ConstantPatternSyntax pattern:
                     Expression.Create(cx, pattern.Expression, this, 0);
+                    break;
+                case RecursivePatternSyntax recPattern:
+                    PopulatePattern(recPattern, recPattern.Type, default(SyntaxToken), recPattern.Designation);
+                    new Expressions.RecursivePattern(cx, recPattern, this, 4, true);
                     break;
                 default:
                     throw new InternalError(Stmt, "Case pattern not handled");

@@ -1553,6 +1553,7 @@
 | Switch.cs:25:35:25:35 | access to local variable s | Switch.cs:25:35:25:35 | access to local variable s | normal |
 | Switch.cs:26:17:26:23 | return ...; | Switch.cs:26:17:26:23 | return ...; | return |
 | Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:18:27:23 | access to type Double | no-match |
+| Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:32:27:38 | call to method Throw | false/false |
 | Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:32:27:38 | call to method Throw | throw(Exception) |
 | Switch.cs:27:13:27:39 | case Double d: | Switch.cs:28:17:28:21 | Label: | normal |
 | Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d | normal |
@@ -1579,10 +1580,12 @@
 | Switch.cs:46:17:46:17 | access to parameter o | Switch.cs:46:17:46:17 | access to parameter o | normal |
 | Switch.cs:48:13:48:23 | case Int32: | Switch.cs:48:18:48:20 | access to type Int32 | no-match |
 | Switch.cs:48:13:48:23 | case Int32: | Switch.cs:49:17:49:22 | break; | break |
+| Switch.cs:48:22:48:22 | _ | Switch.cs:48:22:48:22 | _ | normal |
 | Switch.cs:49:17:49:22 | break; | Switch.cs:49:17:49:22 | break; | break |
 | Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:18:50:21 | access to type Boolean | no-match |
 | Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:30:50:38 | ... != ... | false/false |
 | Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:51:17:51:22 | break; | break |
+| Switch.cs:50:23:50:23 | _ | Switch.cs:50:23:50:23 | _ | normal |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:30:50:30 | access to parameter o | normal |
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:50:30:50:38 | ... != ... | false/false |
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:50:30:50:38 | ... != ... | true/true |
@@ -1612,6 +1615,7 @@
 | Switch.cs:68:25:68:25 | access to parameter s | Switch.cs:68:25:68:25 | access to parameter s | normal |
 | Switch.cs:70:13:70:24 | case Int32: | Switch.cs:70:18:70:20 | access to type Int32 | no-match |
 | Switch.cs:70:13:70:24 | case Int32: | Switch.cs:71:15:71:20 | break; | break |
+| Switch.cs:70:22:70:22 | _ | Switch.cs:70:22:70:22 | _ | normal |
 | Switch.cs:71:15:71:20 | break; | Switch.cs:71:15:71:20 | break; | break |
 | Switch.cs:72:13:72:21 | case ...: | Switch.cs:72:18:72:19 | "" | no-match |
 | Switch.cs:72:13:72:21 | case ...: | Switch.cs:73:15:73:20 | break; | break |
@@ -1655,6 +1659,7 @@
 | Switch.cs:93:17:93:17 | access to parameter o | Switch.cs:93:17:93:17 | access to parameter o | normal |
 | Switch.cs:95:13:95:24 | case Int32: | Switch.cs:95:18:95:20 | access to type Int32 | no-match |
 | Switch.cs:95:13:95:24 | case Int32: | Switch.cs:96:15:96:26 | return ...; | return |
+| Switch.cs:95:22:95:22 | _ | Switch.cs:95:22:95:22 | _ | normal |
 | Switch.cs:96:15:96:26 | return ...; | Switch.cs:96:15:96:26 | return ...; | return |
 | Switch.cs:96:22:96:25 | true | Switch.cs:96:22:96:25 | true | normal |
 | Switch.cs:98:9:98:21 | return ...; | Switch.cs:98:9:98:21 | return ...; | return |
