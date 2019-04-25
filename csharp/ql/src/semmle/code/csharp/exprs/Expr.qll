@@ -251,7 +251,8 @@ class UncheckedExpr extends Expr, @unchecked_expr {
 
 /**
  * An `is` expression.
- * Either an `is` type expression (`IsTypeExpr`) or an `is` constant expression (`IsConstantExpr`).
+ * Either an `is` type expression (`IsTypeExpr`), an `is` constant expression (`IsConstantExpr`),
+ * or an `is` recursive pattern expression (`IsPatternExpr`).
  */
 class IsExpr extends Expr, @is_expr {
   /**
@@ -262,9 +263,7 @@ class IsExpr extends Expr, @is_expr {
   override string toString() { result = "... is ..." }
 }
 
-/**
- * An `is` type expression, for example, `x is string` or `x is string s`.
- */
+/** An `is` type expression, for example, `x is string` or `x is string s`. */
 class IsTypeExpr extends IsExpr {
   TypeAccess typeAccess;
 
@@ -283,19 +282,148 @@ class IsTypeExpr extends IsExpr {
   TypeAccess getTypeAccess() { result = typeAccess }
 }
 
-/**
- * An `is` pattern expression, for example `x is string s`.
- */
-class IsPatternExpr extends IsTypeExpr {
+/** An `is` pattern expression, for example `x is string s`. */
+class IsPatternExpr extends IsExpr {
   LocalVariableDeclExpr typeDecl;
 
-  IsPatternExpr() { typeDecl = this.getChild(2) }
+  IsPatternExpr() { typeDecl = this.getChild(2) and not this instanceof IsRecursivePatternExpr }
 
   /**
    * Gets the local variable declaration in this `is` pattern expression.
    * For example `string s` in `x is string s`.
    */
   LocalVariableDeclExpr getVariableDeclExpr() { result = typeDecl }
+
+  /**
+   * Gets the type being accessed in this `is` expression, for example `string`
+   * in `x is string`.
+   */
+  Type getCheckedType() { result = getTypeAccess().getTarget() }
+
+  /**
+   * Gets the type access in this `is` expression, for example `string` in
+   * `x is string`.
+   */
+  TypeAccess getTypeAccess() { result = this.getChild(1) }
+}
+
+/** An `is` recursive pattern expression, for example `x is string { Length: 5 } s`. */
+class IsRecursivePatternExpr extends IsExpr {
+  RecursivePatternExpr recursivePattern;
+
+  IsRecursivePatternExpr() { recursivePattern = this.getChild(4) }
+
+  override string toString() { result = "... is { ... }" }
+
+  /**
+   * Gets the local variable declaration in this `is` pattern expression, if any.
+   * For example `s` in `x is string { Length: 0 } s`.
+   */
+  LocalVariableDeclExpr getVariableDeclExpr() { result = this.getChild(2) }
+
+  /**
+   * Gets the recursive pattern of this `is` pattern expression. For example,
+   * `{ Length: 5 }` in `x is string { Length: 5 } s`.
+   */
+  RecursivePatternExpr getRecursivePattern() { result = recursivePattern }
+}
+
+/**
+ * A recursive pattern expression, for example `string { Length: 5 } s`
+ */
+class RecursivePatternExpr extends Expr, @recursive_pattern_expr {
+  override string toString() { result = "{ ... }" }
+
+  /**
+   * Gets the position patterns of this recursive pattern, if any.
+   * For example, `(1,_)`.
+   */
+  PositionalPatternExpr getPositionalPatterns() { result = this.getChild(2) }
+
+  /**
+   * Gets the property patterns of this recursive pattern, if any.
+   * For example,
+   * `{ Length: 5 }` in `o is string { Length: 5 } s`
+   */
+  PropertyPatternExpr getPropertyPatterns() { result = this.getChild(3) }
+
+  /**
+   * Gets the type access of this recursive pattern, if any.
+   * For example, `string` in `string { Length: 5 }`
+   */
+  TypeAccess getTypeAccess() { result = this.getChild(1) }
+
+  /**
+   * Gets the local variable declaration of this recursive pattern, if any.
+   * For example, `s` in `string { Length: 5 } s`.
+   */
+  LocalVariableDeclExpr getVariableDeclExpr() { result = this.getChild(0) }
+}
+
+/** A property pattern. For example, `{Length: 5}`. */
+class PropertyPatternExpr extends Expr, @property_pattern_expr {
+  override string toString() { result = "{ ... }" }
+
+  /** Gets the `n`th pattern. */
+  Expr getPattern(int n) { result = this.getChild(n) }
+}
+
+/** A property pattern. For example, `(int x, int y)`. */
+class PositionalPatternExpr extends Expr, @positional_pattern_expr {
+  override string toString() { result = "( ... )" }
+
+  /** Gets the `n`th pattern. */
+  Expr getPattern(int n) { result = this.getChild(n) }
+}
+
+/**
+ * A `switch` expression, for example
+ * ```
+ * (a,b) switch {
+ *     (false, false) => true,
+ *     _ => false
+ * };
+ * ```
+ */
+class SwitchExpr extends Expr, @switch_expr {
+  override string toString() { result = "... switch { ... }" }
+
+  /** Gets the expression being switched. For example `x` in `x switch { ... }`. */
+  Expr getExpr() { result = this.getChild(-1) }
+
+  /** Gets the `n`th case of this switch expression. */
+  SwitchCaseExpr getCase(int n) { result = this.getChild(n) }
+}
+
+/** An arm of a switch expression, for example `(false, false) => true`. */
+class SwitchCaseExpr extends Expr, @switch_case_expr {
+  override string toString() { result = "... => ..." }
+
+  /**
+   * Gets the pattern or matched expression in a switch arm, for example `(false, false)` in
+   * `(false, false) => true`.
+   */
+  Expr getPattern() { result = this.getChild(0) }
+
+  /**
+   * Gets the `when` expression in a switch arm, if any.
+   * For example `s.Length<10` in `string s when s.Length<10 => s`.
+   */
+  Expr getCondition() { result = this.getChild(1) }
+
+  /**
+   * Gets the result of a switch arm, for example `true` in
+   * `(false, false) => true`.
+   */
+  Expr getResult() { result = this.getChild(2) }
+
+  /** Holds if this case expression matches all expressions. */
+  predicate matchesAll() {
+    // Note: There may be other cases as well.
+    // For example `(1,2) switch { (int x, int y) => x+y }`
+    // would match all cases due to the type of the expression.
+    getPattern() instanceof DiscardExpr
+  }
 }
 
 /**

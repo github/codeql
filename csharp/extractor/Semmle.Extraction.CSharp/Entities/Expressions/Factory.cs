@@ -238,6 +238,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.IndexExpression:
                         return Unary.Create(info.SetKind(ExprKind.INDEX));
 
+                    case SyntaxKind.SwitchExpression:
+                        return Switch.Create(info);
+
                     default:
                         info.Context.ModelError(info.Node, $"Unhandled expression '{info.Node}' of kind '{info.Node.Kind()}'");
                         return new Unknown(info);

@@ -328,6 +328,8 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
   or
   exists(CaseStmt cs | cs.getCondition() = e | isBooleanCompletionForParent = false)
   or
+  exists(SwitchCaseExpr sce | sce.getCondition() = e | isBooleanCompletionForParent = false)
+  or
   exists(SpecificCatchClause scc | scc.getFilterClause() = e | isBooleanCompletionForParent = false)
   or
   exists(LogicalNotExpr lne | lne.getAnOperand() = e |
@@ -414,6 +416,10 @@ predicate switchMatching(SwitchStmt ss, CaseStmt cs, ControlFlowElement cfe) {
     cfe = cs.(ConstCase).getExpr()
     or
     cfe = cs.(TypeCase).getTypeAccess() // use type access to represent the type test
+    or
+    cfe = cs.(RecursivePatternCase).getTypeAccess() // use type access to represent the type test
+    or
+    cfe = cs.(RecursivePatternCase).getRecursivePattern() // a recursive pattern match
   )
 }
 

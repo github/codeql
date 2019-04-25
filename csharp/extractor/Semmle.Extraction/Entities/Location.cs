@@ -7,8 +7,8 @@ namespace Semmle.Extraction.Entities
             : base(cx, init) { }
 
         public static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) =>
-            loc == null || loc.Kind == Microsoft.CodeAnalysis.LocationKind.None ?
-                GeneratedLocation.Create(cx) : loc.IsInSource ? SourceLocation.Create(cx, loc)
+            (loc == null || loc.Kind == Microsoft.CodeAnalysis.LocationKind.None) ? GeneratedLocation.Create(cx)
+                    : loc.IsInSource ? SourceLocation.Create(cx, loc)
                     : Assembly.Create(cx, loc);
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol;

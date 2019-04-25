@@ -975,8 +975,14 @@ case @expr.kind of
 | 109 = @local_function_invocation_expr
 | 110 = @ref_expr
 | 111 = @discard_expr
+/* C# 8.0 */ 
 | 112 = @range_expr
 | 113 = @index_expr
+| 114 = @switch_expr
+| 115 = @recursive_pattern_expr
+| 116 = @property_pattern_expr
+| 117 = @positional_pattern_expr
+| 118 = @switch_case_expr
 ;
 
 @integer_literal_expr = @int_literal_expr | @long_literal_expr | @uint_literal_expr | @ulong_literal_expr;
