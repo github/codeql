@@ -39,3 +39,12 @@ def safe2(request):
     if host and host.endswith(".example.com"):
         return redirect(target)
 
+
+@app.route('/some/path/good3')
+def safe3(request):
+    target = request.args.get('target', '')
+    target = urlparse(target)
+    #Start url with https:// and ends with a / so must match the correct domain.
+    if target and target.startswith("https://example.com/"):
+        return redirect(target)
+
