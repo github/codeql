@@ -411,6 +411,11 @@ module SocketIOClient {
     exists(DataFlow::TypeTracker t2 | result = socket(invk, t2).track(t2, t))
   }
 
+  /**
+   * Gets the NPM package that countains `nd`.
+   */
+  private NPMPackage getPackage(DataFlow::SourceNode nd) { result.getAFile() = nd.getFile() }
+
   /** A data flow node that may produce a socket object. */
   class SocketNode extends DataFlow::SourceNode {
     DataFlow::InvokeNode invk;
@@ -445,10 +450,8 @@ module SocketIOClient {
      * it can be determined.
      */
     SocketIO::ServerObject getATargetServer() {
-      exists(NPMPackage pkg |
-        result.getOrigin().getFile() = pkg.getAFile() and
-        this.getFile() = pkg.getAFile()
-      |
+      getPackage(result.getOrigin()) = getPackage(this) and
+      (
         not exists(getNamespacePath()) or
         exists(result.getNamespace(getNamespacePath()))
       )
