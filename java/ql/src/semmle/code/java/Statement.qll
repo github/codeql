@@ -25,11 +25,9 @@ class Stmt extends StmtParent, ExprParent, @stmt {
   StmtParent getParent() { stmts(this, _, result, _, _) }
 
   /**
-   * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
-   *
    * Gets the statement containing this statement, if any.
    */
-  deprecated Stmt getEnclosingStmt() {
+  Stmt getEnclosingStmt() {
     result = this.getParent() or
     result = this.getParent().(SwitchExpr).getEnclosingStmt()
   }
