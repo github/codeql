@@ -13,10 +13,10 @@
 
 import java
 
-/** A `synchronized` method or statement. */
-class Synched extends StmtParent {
+/** A `synchronized` method body or statement. */
+class Synched extends Stmt {
   Synched() {
-    this.(Method).isSynchronized() or
+    this.getParent().(Method).isSynchronized() or
     this instanceof SynchronizedStmt
   }
 }
