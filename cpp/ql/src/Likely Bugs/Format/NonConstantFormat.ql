@@ -17,6 +17,10 @@
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.commons.Printf
 
+// For the following `...gettext` functions, we assume that
+// all translations preserve the type and order of `%` specifiers
+// (and hence are safe to use as format strings).  This
+// assumption is hard-coded into the query.
 predicate whitelistFunction(Function f, int arg) {
   // basic variations of gettext
   f.getName() = "_" and arg = 0
@@ -51,7 +55,8 @@ predicate whitelisted(Expr e) {
     whitelistFunction(fc.getTarget(), arg) and
     isConst(fc.getArgument(arg))
   )
-  or underscoreMacro(e)
+  or
+  underscoreMacro(e)
 }
 
 predicate isConstMacro(Expr e) {
@@ -69,21 +74,20 @@ predicate isConst(Expr e) {
 class ConstFlow extends DataFlow::Configuration {
   ConstFlow() { this = "ConstFlow" }
 
-  override predicate isSource(DataFlow::Node source) { 
-    isConst(source.asExpr())
-  }
+  override predicate isSource(DataFlow::Node source) { isConst(source.asExpr()) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(FormattingFunctionCall fc |
-      sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex())
-    )
+    exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
   }
 }
 
 from FormattingFunctionCall call, Expr formatString
-where call.getArgument(call.getFormatParameterIndex()) = formatString
-  and not exists(ConstFlow cf, DataFlow::Node source, DataFlow::Node sink |
+where
+  call.getArgument(call.getFormatParameterIndex()) = formatString and
+  not exists(ConstFlow cf, DataFlow::Node source, DataFlow::Node sink |
     cf.hasFlow(source, sink) and
     sink.asExpr() = formatString
   )
-select call, "The format string argument to " + call.getTarget().getQualifiedName() + " should be constant to prevent security issues and other potential errors."
+select call,
+  "The format string argument to " + call.getTarget().getQualifiedName() +
+    " should be constant to prevent security issues and other potential errors."
