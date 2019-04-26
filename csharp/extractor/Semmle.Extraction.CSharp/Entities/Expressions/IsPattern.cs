@@ -8,36 +8,43 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
     class IsPattern : Expression<IsPatternExpressionSyntax>
     {
-        IsPattern(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.IS))
+        private IsPattern(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.IS))
         {
+        }
+
+        private void PopulatePattern(PatternSyntax pattern, TypeSyntax optionalType, SyntaxToken varKeyword, VariableDesignationSyntax designation)
+        {
+            bool isVar = optionalType is null;
+            if (!isVar)
+                Expressions.TypeAccess.Create(cx, optionalType, this, 1);
+
+            if (cx.Model(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+            {
+                var type = Type.Create(cx, symbol.Type);
+
+                if (isVar)
+                    new Expression(new ExpressionInfo(cx, type, cx.Create(varKeyword.GetLocation()), ExprKind.TYPE_ACCESS, this, 1, false, null));
+
+                VariableDeclaration.Create(cx, symbol, type, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 2);
+            }
         }
 
         protected override void Populate()
         {
-            var constantPattern = Syntax.Pattern as ConstantPatternSyntax;
-            if (constantPattern != null)
-            {
-                Create(cx, Syntax.Expression, this, 0);
-                Create(cx, constantPattern.Expression, this, 3);
-                return;
-            }
-
-            var pattern = Syntax.Pattern as DeclarationPatternSyntax;
-
-            if (pattern == null)
-            {
-                throw new InternalError(Syntax, "Is-pattern not handled");
-            }
-
             Create(cx, Syntax.Expression, this, 0);
-            TypeAccess.Create(cx, pattern.Type, this, 1);
-
-            var symbol = cx.Model(Syntax).GetDeclaredSymbol(pattern.Designation) as ILocalSymbol;
-            if (symbol != null)
+            switch (Syntax.Pattern)
             {
-                var type = Type.Create(cx, symbol.Type);
-                var isVar = pattern.Type.IsVar;
-                VariableDeclaration.Create(cx, symbol, type, cx.Create(pattern.GetLocation()), cx.Create(pattern.Designation.GetLocation()), isVar, this, 2);
+                case ConstantPatternSyntax constantPattern:
+                    Create(cx, constantPattern.Expression, this, 3);
+                    return;
+                case VarPatternSyntax varPattern:
+                    PopulatePattern(varPattern, null, varPattern.VarKeyword, varPattern.Designation);
+                    return;
+                case DeclarationPatternSyntax declPattern:
+                    PopulatePattern(declPattern, declPattern.Type, default(SyntaxToken), declPattern.Designation);
+                    return;
+                default:
+                    throw new InternalError(Syntax, "Is pattern not handled");
             }
         }
 

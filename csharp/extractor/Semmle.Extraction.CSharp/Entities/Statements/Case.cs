@@ -64,23 +64,35 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
     class CasePattern : Case<CasePatternSwitchLabelSyntax>
     {
-        CasePattern(Context cx, CasePatternSwitchLabelSyntax node, Switch parent, int child)
+        private CasePattern(Context cx, CasePatternSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
+
+        private void PopulatePattern(PatternSyntax pattern, TypeSyntax optionalType, SyntaxToken varKeyword, VariableDesignationSyntax designation)
+        {
+            var isVar = optionalType is null;
+            if(!isVar)
+                Expressions.TypeAccess.Create(cx, optionalType, this, 1);
+
+            if (cx.Model(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+            {
+                var type = Type.Create(cx, symbol.Type);
+
+                if (isVar)
+                    new Expression(new ExpressionInfo(cx, type, cx.Create(varKeyword.GetLocation()), ExprKind.TYPE_ACCESS, this, 1, false, null));
+
+                Expressions.VariableDeclaration.Create(cx, symbol, type, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 0);
+            }
+        }
 
         protected override void Populate()
         {
             switch(Stmt.Pattern)
             {
+                case VarPatternSyntax varPattern:
+                    PopulatePattern(varPattern, null, varPattern.VarKeyword, varPattern.Designation);
+                    break;
                 case DeclarationPatternSyntax declarationPattern:
-                    var symbol = cx.Model(Stmt).GetDeclaredSymbol(declarationPattern.Designation) as ILocalSymbol;
-                    if (symbol != null)
-                    {
-                        var type = Type.Create(cx, symbol.Type);
-                        var isVar = declarationPattern.Type.IsVar;
-                        Expressions.VariableDeclaration.Create(cx, symbol, type, cx.Create(declarationPattern.GetLocation()), cx.Create(declarationPattern.Designation.GetLocation()), isVar, this, 0);
-                    }
-
-                    Expressions.TypeAccess.Create(cx, declarationPattern.Type, this, 1);
+                    PopulatePattern(declarationPattern, declarationPattern.Type, default(SyntaxToken), declarationPattern.Designation);
                     break;
                 case ConstantPatternSyntax pattern:
                     Expression.Create(cx, pattern.Expression, this, 0);
