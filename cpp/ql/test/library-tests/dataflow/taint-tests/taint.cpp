@@ -170,7 +170,7 @@ namespace strings
 		strcpy(buffer, "Hello, ");
 		sink(buffer);
 		strcat(buffer, tainted);
-		sink(buffer); // tainted [NOT DETECTED]
+		sink(buffer); // tainted
 	}
 }
 
@@ -185,4 +185,12 @@ namespace refs {
 		int x = source();
 		callee(&x);
 	}
+}
+
+void *memcpy(void *dest, void *src, int len);
+
+void test_memcpy(int *source) {
+	int x;
+	memcpy(&x, source, sizeof(int));
+	sink(x);
 }

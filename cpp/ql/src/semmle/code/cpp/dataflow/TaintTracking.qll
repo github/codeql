@@ -9,6 +9,8 @@
  */
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.dataflow.DataFlow2
+import semmle.code.cpp.models.interfaces.DataFlow
+import semmle.code.cpp.models.interfaces.Taint
 
 module TaintTracking {
 
@@ -187,6 +189,9 @@ module TaintTracking {
         exprFrom.(PostfixCrementOperation)
       )
     )
+    or
+    // Taint can flow through modeled functions
+    exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
   }
 
   /**
@@ -226,4 +231,37 @@ module TaintTracking {
     e instanceof AlignofOperator
   }
 
+  private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
+    exists(DataFlowFunction f, Call call, FunctionOutput outModel, int argOutIndex |
+      call.getTarget() = f and
+      argOut = call.getArgument(argOutIndex) and
+      outModel.isOutParameterPointer(argOutIndex) and
+      exists(int argInIndex, FunctionInput inModel |
+        f.hasDataFlow(inModel, outModel)
+      |
+        // Taint flows from a pointer to a dereference, which DataFlow does not handle
+        // memcpy(&dest_var, tainted_ptr, len)
+        inModel.isInParameterPointer(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+      )
+    )
+    or
+    exists(TaintFunction f, Call call, FunctionOutput outModel, int argOutIndex |
+      call.getTarget() = f and
+      argOut = call.getArgument(argOutIndex) and
+      outModel.isOutParameterPointer(argOutIndex) and
+      exists(int argInIndex, FunctionInput inModel |
+        f.hasTaintFlow(inModel, outModel)
+      |
+        inModel.isInParameterPointer(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+        or
+        inModel.isInParameterPointer(argInIndex) and
+        call.passesByReference(argInIndex, exprIn)
+        or
+        inModel.isInParameter(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+      )
+    )
+  }
 }
