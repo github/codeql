@@ -412,7 +412,7 @@ module SocketIOClient {
   }
 
   /**
-   * Gets the NPM package that countains `nd`.
+   * Gets the NPM package that contains `nd`.
    */
   private NPMPackage getPackage(DataFlow::SourceNode nd) { result.getAFile() = nd.getFile() }
 
