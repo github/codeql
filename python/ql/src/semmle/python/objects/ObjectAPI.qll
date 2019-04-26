@@ -56,6 +56,15 @@ class Value extends TObject {
     predicate isBuiltin() {
         this.(ObjectInternal).isBuiltin()
     }
+
+    /** Holds if this value represents an entity that is inferred to exist,
+     * but missing from the database.
+     * Most commonly, this is a module that is imported, but wasn't present during extraction.
+     */
+    predicate isMissing() {
+        this.(ObjectInternal).isMissing()
+    }
+
 }
 
 class ModuleValue extends Value {

@@ -344,7 +344,6 @@
 | 263 | ControlFlowNode for Attribute | int 3 | builtin-class int |
 | 263 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int |
 | 263 | ControlFlowNode for self | self | class G |
-| 264 | ControlFlowNode for Attribute | int 0 | builtin-class int |
 | 264 | ControlFlowNode for Attribute | int 3 | builtin-class int |
 | 264 | ControlFlowNode for self | self | class G |
 | 267 | ControlFlowNode for Derived4 | class Derived4 | builtin-class type |

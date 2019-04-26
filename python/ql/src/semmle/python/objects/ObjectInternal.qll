@@ -111,6 +111,12 @@ class ObjectInternal extends TObject {
 
     predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }
 
+    /** Holds if this 'object' represents an entity that is inferred to exist
+     * but is missing from the database */
+    predicate isMissing() {
+        none()
+    }
+
 }
 
 

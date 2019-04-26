@@ -827,6 +827,7 @@
 | t_type.py:7 | ControlFlowNode for sys | import | Module sys | builtin-class module |
 | t_type.py:7 | ControlFlowNode for type | import | builtin-class type | builtin-class type |
 | t_type.py:7 | ControlFlowNode for type() | import | builtin-class module | builtin-class type |
+| t_type.py:8 | ControlFlowNode for ImportExpr | import | Missing module module | builtin-class module |
 | t_type.py:9 | ControlFlowNode for type | import | builtin-class type | builtin-class type |
 | t_type.py:10 | ControlFlowNode for Dict | import | Dict | builtin-class dict |
 | t_type.py:10 | ControlFlowNode for Tuple | import | (builtin-class object) | builtin-class tuple |

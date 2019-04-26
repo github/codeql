@@ -39,7 +39,9 @@ newtype TObject =
         exists(moduleNameFromFile(f))
     }
     or
-    TPythonModule(Module m) { not m.isPackage() }
+    TPythonModule(Module m) {
+        not m.isPackage() and not exists(SyntaxError se | se.getFile() = m.getFile())
+    }
     or
     TTrue()
     or
@@ -160,6 +162,23 @@ newtype TObject =
     }
     or
     TSysVersionInfo()
+    or
+    TAbsentModule(string name) {
+        missing_imported_module(_, _, name)
+    }
+    or
+    TAbsentModuleAttribute(AbsentModuleObjectInternal mod, string attrname) {
+        (
+            PointsToInternal::pointsTo(any(AttrNode attr).getObject(attrname), _, mod, _)
+            or
+            PointsToInternal::pointsTo(any(ImportMemberNode imp).getModule(attrname), _, mod, _)
+        )
+        and
+        exists(string modname |
+            modname = mod.getName() and
+            not common_module_name(modname + "." + attrname)
+        )
+    }
 
 private predicate is_power_2(int n) {
     n = 1 or
@@ -325,6 +344,30 @@ private predicate neither_class_nor_static_method(Function f) {
         )
         or not deco instanceof NameNode
     )
+}
+
+predicate missing_imported_module(ControlFlowNode imp, Context ctx, string name) {
+    ctx.isImport() and imp.(ImportExprNode).getNode().getAnImportedModuleName() = name and
+    (
+        not exists(Module m | m.getName() = name) and
+        not exists(Builtin b | b.isModule() and b.getName() = name)
+        or
+        exists(Module m, SyntaxError se |
+            m.getName() = name and
+            se.getFile() = m.getFile()
+        )
+    )
+    or
+    exists(AbsentModuleObjectInternal mod |
+        PointsToInternal::pointsTo(imp.(ImportMemberNode).getModule(name), ctx, mod, _) and
+        common_module_name(mod.getName() + "." + name)
+    )
+}
+
+predicate common_module_name(string name) {
+    name = "zope.interface"
+    or
+    name = "six.moves"
 }
 
 library class ClassDecl extends @py_object {

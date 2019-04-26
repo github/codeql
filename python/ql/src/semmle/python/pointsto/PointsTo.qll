@@ -130,7 +130,7 @@ module PointsTo {
             PointsToInternal::pointsTo(f, context, value, origin) and
             cls = value.getClass().getSource() |
             obj = value.getSource() or
-            not exists(value.getSource()) and obj = origin
+            not exists(value.getSource()) and not value.isMissing() and obj = origin
         )
         or
         /* Backwards compatibility for *args and **kwargs */

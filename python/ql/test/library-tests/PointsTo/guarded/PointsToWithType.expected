@@ -51,8 +51,6 @@
 | test.py | 314 | ControlFlowNode for b | NoneType None | builtin-class NoneType | 311 |
 | test.py | 332 | ControlFlowNode for Attribute | NoneType None | builtin-class NoneType | 322 |
 | test.py | 332 | ControlFlowNode for Attribute | int 4 | builtin-class int | 322 |
-| test.py | 337 | ControlFlowNode for Attribute | NoneType None | builtin-class NoneType | 324 |
-| test.py | 337 | ControlFlowNode for Attribute | int 3 | builtin-class int | 324 |
 | test.py | 347 | ControlFlowNode for Attribute | NoneType None | builtin-class NoneType | 322 |
 | test.py | 347 | ControlFlowNode for Attribute | int 4 | builtin-class int | 322 |
 | test.py | 357 | ControlFlowNode for g1 | float 7.0 | builtin-class float | 356 |

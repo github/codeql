@@ -341,7 +341,6 @@
 | 263 | ControlFlowNode for Attribute | int 3 |
 | 263 | ControlFlowNode for IntegerLiteral | int 3 |
 | 263 | ControlFlowNode for self | self |
-| 264 | ControlFlowNode for Attribute | int 0 |
 | 264 | ControlFlowNode for Attribute | int 3 |
 | 264 | ControlFlowNode for self | self |
 | 267 | ControlFlowNode for Derived4 | class Derived4 |
