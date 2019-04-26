@@ -56,17 +56,58 @@ predicate explicitNullTestOfInstruction(Instruction checked, Instruction bool) {
     )
 }
 
-from LoadInstruction checked, LoadInstruction deref, SingleValuedInstruction sourceValue
-where
-  explicitNullTestOfInstruction(checked, _) and
+/** Holds if `deref` is a dereference of `sourceValue` in `block`. */
+predicate derefAt(LoadInstruction deref, SingleValuedInstruction sourceValue, IRBlock block) {
   sourceValue = deref.getSourceAddress().(LoadInstruction).getSourceValue() and
+  block = deref.getBlock()
+}
+
+/** Holds if `checked` is where `sourceValue` is checked for nullness. */
+predicate checkAt(LoadInstruction checked, SingleValuedInstruction sourceValue) {
+  explicitNullTestOfInstruction(checked, _) and
   sourceValue = checked.getSourceValue() and
-  // This also holds if the blocks are equal, meaning that the check could come
-  // before the deref. That's still not okay because when they're in the same
-  // basic block then the deref is unavoidable even if the check concluded that
-  // the pointer was null. To follow this idea to its full generality, we
-  // should also give an alert when `check` post-dominates `deref`.
-  deref.getBlock().dominates(checked.getBlock()) and
-  not checked.getAST().isInMacroExpansion()
+  not checked.getAST().isInMacroExpansion() and
+  // For performance, there's no need to start traversing the graph unless we
+  // could possibly reach a deref.
+  derefAt(_, sourceValue, _)
+}
+
+/**
+ * Holds if `block` dominates `checked`, where `checkAt(checked, sourceValue)`
+ * holds, and there is no intervening dereference of `sourceValue`.
+ */
+predicate checkedReaches(LoadInstruction checked, SingleValuedInstruction sourceValue, IRBlock block) {
+  checkAt(checked, sourceValue) and
+  // We say that the check reaches everything in its own block, which means it
+  // also reaches everything that comes before it. That's okay because when
+  // they're in the same basic block then the deref is unavoidable even if the
+  // check concluded that the pointer was null. To follow this idea to its full
+  // generality, we should also give an alert when `check` post-dominates
+  // `deref`.
+  block = checked.getBlock()
+  or
+  exists(IRBlock next |
+    checkedReaches(checked, sourceValue, next) and
+    block.immediatelyDominates(next) and
+    // Stop early to avoid reporting redundant results
+    not derefAt(_, sourceValue, next)
+  )
+}
+
+/**
+ * Holds if `deref` and `checked` are a dereference and null check of the same
+ * value, where `deref` dominates `checked` and there is no intervening
+ * dereference.
+ */
+pragma[noinline]
+predicate derefBeforeChecked(LoadInstruction deref, LoadInstruction checked) {
+  exists(SingleValuedInstruction sourceValue, IRBlock derefBlock |
+    derefAt(deref, sourceValue, derefBlock) and
+    checkedReaches(checked, sourceValue, derefBlock)
+  )
+}
+
+from LoadInstruction deref, LoadInstruction checked
+where derefBeforeChecked(deref, checked)
 select checked, "This null check is redundant because the value is $@ in any case", deref,
   "dereferenced here"
