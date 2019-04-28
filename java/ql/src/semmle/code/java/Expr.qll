@@ -1094,37 +1094,37 @@ class ConditionalExpr extends Expr, @conditionalexpr {
 }
 
 /**
- * DEPRECATED: Preview feature in Java 12. Subject to removal in a future release.
+ * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
  *
  * A `switch` expression.
  */
-deprecated class SwitchExpr extends Expr, @switchexpr {
+class SwitchExpr extends Expr, @switchexpr {
   /** Gets an immediate child statement of this `switch` expression. */
-  deprecated Stmt getAStmt() { result.getParent() = this }
+  Stmt getAStmt() { result.getParent() = this }
 
   /**
    * Gets the immediate child statement of this `switch` expression
    * that occurs at the specified (zero-based) position.
    */
-  deprecated Stmt getStmt(int index) { result = this.getAStmt() and result.getIndex() = index }
+  Stmt getStmt(int index) { result = this.getAStmt() and result.getIndex() = index }
 
   /**
    * Gets a case of this `switch` expression,
    * which may be either a normal `case` or a `default`.
    */
-  deprecated SwitchCase getACase() { result = getAConstCase() or result = getDefaultCase() }
+  SwitchCase getACase() { result = getAConstCase() or result = getDefaultCase() }
 
   /** Gets a (non-default) `case` of this `switch` expression. */
-  deprecated ConstCase getAConstCase() { result.getParent() = this }
+  ConstCase getAConstCase() { result.getParent() = this }
 
   /** Gets the `default` case of this switch expression, if any. */
-  deprecated DefaultCase getDefaultCase() { result.getParent() = this }
+  DefaultCase getDefaultCase() { result.getParent() = this }
 
   /** Gets the expression of this `switch` expression. */
-  deprecated Expr getExpr() { result.getParent() = this }
+  Expr getExpr() { result.getParent() = this }
 
   /** Gets a result expression of this `switch` expression. */
-  deprecated Expr getAResult() {
+  Expr getAResult() {
     result = getACase().getRuleExpression()
     or
     exists(BreakStmt break |
