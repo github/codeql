@@ -94,14 +94,14 @@ int main(int argc, char **argv) {
     const char *hello = "Hello, World\n";
     const char **p = &hello;
     (*p)++;
-    printf(hello); // NOT OK
+    printf(hello); // NOT OK [NOT DETECTED]
   }
   {
     // Same as above block but through a C++ reference
     const char *hello = "Hello, World\n";
     const char *&p = hello;
     p++;
-    printf(hello); // NOT OK
+    printf(hello); // NOT OK [NOT DETECTED]
   }
   if (gettext_debug) {
     printf(new char[100]); // NOT OK
