@@ -45,8 +45,7 @@ predicate whitelistFunction(Function f, int arg) {
 predicate underscoreMacro(Expr e) {
   exists(MacroInvocation mi |
     mi.getMacroName() = "_" and
-    mi.getExpr() = e and
-    isConstMacro(e)
+    mi.getExpr() = e
   )
 }
 
@@ -56,19 +55,14 @@ predicate whitelisted(Expr e) {
     isConst(fc.getArgument(arg))
   )
   or
+  // we let the '_' macro through regardless of what it points at
   underscoreMacro(e)
-}
-
-predicate isConstMacro(Expr e) {
-  e instanceof StringLiteral
-  or
-  whitelisted(e)
 }
 
 predicate isConst(Expr e) {
-  isConstMacro(e)
+  e instanceof StringLiteral
   or
-  underscoreMacro(e)
+  whitelisted(e)
 }
 
 class ConstFlow extends DataFlow::Configuration {
@@ -78,6 +72,20 @@ class ConstFlow extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
+  }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node source, DataFlow::Node sink) {
+  	none()
+  	or
+    // an element picked from an array of string literals is a string literal
+    exists(Variable v, int a |
+      a = sink.asExpr().(ArrayExpr).getArrayOffset().getValue().toInt() and
+      v = sink.asExpr().(ArrayExpr).getArrayBase().(VariableAccess).getTarget()
+    |
+    // we disallow parameters, since they may be bound to unsafe arguments
+    // at various call sites.
+      not v instanceof Parameter and source.asExpr() instanceof StringLiteral
+      )
   }
 }
 

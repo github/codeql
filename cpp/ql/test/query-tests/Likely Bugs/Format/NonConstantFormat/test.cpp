@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
     char hello[] = "hello, World\n";
     hello[0] = 'H';
     printf(hello); // NOT OK
-    printf(_(hello)); // NOT OK
+    printf(_(hello)); // OK
     printf(gettext(hello)); // NOT OK
     printf(const_wash(hello)); // NOT OK
     printf((hello + 1) + 1); // NOT OK
@@ -94,14 +94,14 @@ int main(int argc, char **argv) {
     const char *hello = "Hello, World\n";
     const char **p = &hello;
     (*p)++;
-    printf(hello); // NOT OK
+    printf(hello); // NOT OK [NOT DETECTED]
   }
   {
     // Same as above block but through a C++ reference
     const char *hello = "Hello, World\n";
     const char *&p = hello;
     p++;
-    printf(hello); // NOT OK
+    printf(hello); // NOT OK [NOT DETECTED]
   }
   if (gettext_debug) {
     printf(new char[100]); // NOT OK
@@ -109,14 +109,10 @@ int main(int argc, char **argv) {
   {
     const char *hello = "Hello, World\n";
     const char *const *p = &hello; // harmless reference to const pointer
-    printf(hello); // OK [FALSE POSITIVE]
+    printf(hello); // OK
     hello++; // modification comes after use and so does no harm
   }
   printf(argc > 2 ? "More than one\n" : _("Only one\n")); // OK
 
-  // This false positive arises because we use const_wash in a problematic
-  // place at one call site, and then the error spreads to all call sites. It
-  // does not happen for "_" only because functions with the name "_" are
-  // special-cased and assumed correct in the query.
-  printf(const_wash("Hello, World\n")); // OK [FALSE POSITIVE]
+  printf(const_wash("Hello, World\n")); // OK
 }
