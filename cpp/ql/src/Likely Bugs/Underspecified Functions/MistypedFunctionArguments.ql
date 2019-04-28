@@ -6,7 +6,7 @@
  * arguments on a stack may lead to unpredictable function behavior.
  * @kind problem
  * @problem.severity warning
- * @precision high
+ * @precision medium
  * @id cpp/mistyped-function-arguments
  * @tags correctness
  *       maintainability
