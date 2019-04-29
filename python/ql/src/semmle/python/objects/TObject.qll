@@ -331,7 +331,7 @@ library class ClassDecl extends @py_object {
         result = "ClassDecl"
     }
 
-    private Class getClass() {
+    Class getClass() {
         result = this.(ControlFlowNode).getNode().(ClassExpr).getInnerScope()
     }
 

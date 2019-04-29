@@ -1610,21 +1610,45 @@ cached module Types {
     }
 
     cached predicate isOldStyle(ClassObjectInternal cls) {
-        //To do...
-        none()
+        newStylePython2(cls, 0) = false
     }
 
     cached predicate isNewStyle(ClassObjectInternal cls) {
-        //To do...
-        any()
+        major_version() = 3
+        or
+        cls.isBuiltin()
+        or
+        newStylePython2(cls, 0) = true
+    }
+
+    private boolean newStylePython2(ClassObjectInternal cls, int n) {
+        major_version() = 2 and
+        (
+            hasDeclaredMetaclass(cls) = false and
+            exists(Class pycls |
+                pycls = cls.getClassDeclaration().getClass() and
+                n = count(pycls.getABase()) and result = false
+            )
+            or
+            hasDeclaredMetaclass(cls) = false and
+            exists(ClassObjectInternal base |
+                base = getBase(cls, n) |
+                isOldStyle(base) and result = newStylePython2(cls, n+1)
+                or
+                isNewStyle(base) and result = true
+            )
+            or
+            getMro(declaredMetaClass(cls)).contains(ObjectInternal::type()) and
+            n = 0 and result = true
+        )
     }
 
     cached ClassList getMro(ClassObjectInternal cls) {
         isNewStyle(cls) and
         result = Mro::newStyleMro(cls)
         or
-        // To do, old-style
-        none()
+        isOldStyle(cls) and
+        result = Mro::oldStyleMro(cls)
     }
 
     cached predicate declaredAttribute(ClassObjectInternal cls, string name, ObjectInternal value, CfgOrigin origin) {

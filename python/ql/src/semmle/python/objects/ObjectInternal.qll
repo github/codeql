@@ -410,6 +410,10 @@ module ObjectInternal {
         result = TBuiltinClassObject(Builtin::special("NoneType"))
     }
 
+    ObjectInternal type() {
+        result = TBuiltinClassObject(Builtin::special("type"))
+    }
+
     ObjectInternal property() {
         result = TBuiltinClassObject(Builtin::special("property"))
     }
