@@ -180,10 +180,20 @@ private cached module Cached {
     )
   }
 
+  pragma[noinline]
+  private predicate blockIdentity(TIRBlock b1, TIRBlock b2) { b1 = b2 }
+
+  pragma[noopt]
   cached predicate backEdgeSuccessor(TIRBlock pred, TIRBlock succ, EdgeKind kind) {
     backEdgeSuccessorRaw(pred, succ, kind)
     or
-    forwardEdgeRaw+(pred, pred) and
+    // See the QLDoc on `backEdgeSuccessorRaw`.
+    exists(TIRBlock pred2 |
+      // Joining with `blockIdentity` is a performance trick to get
+      // `forwardEdgeRaw` on the RHS of a join, where it's fast.
+      blockIdentity(pred, pred2) and
+      forwardEdgeRaw+(pred, pred2)
+    ) and
     blockSuccessor(pred, succ, kind)
   }
 
