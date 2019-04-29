@@ -59,9 +59,9 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
     }
 
      override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        // In general instances aren't callable, but some are...
-        // TO DO -- Handle cases where class overrides __call__
-        none()
+        // TO DO -- Handle cases where class overrides __call__ in more detail, like normal calls.
+        this.getClass().(ClassObjectInternal).lookup("__call__", _, _) and
+        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
     }
 
      override int intValue() {
