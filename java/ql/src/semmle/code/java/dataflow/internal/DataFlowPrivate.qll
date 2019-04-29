@@ -46,7 +46,10 @@ class ReturnNode extends ExprNode {
 
 /** A data flow node that represents a call. */
 class OutNode extends ExprNode {
-  OutNode() { this.getExpr() instanceof Call }
+  OutNode() { this.getExpr() instanceof MethodAccess }
+
+  /** Gets the underlying call. */
+  DataFlowCall getCall() { result = this.getExpr() }
 }
 
 /**

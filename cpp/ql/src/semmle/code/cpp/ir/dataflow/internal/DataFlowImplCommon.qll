@@ -24,6 +24,29 @@ private module ImplCommon {
   }
 
   /**
+   * Holds if `p` is the `i`th parameter of a viable dispatch target of a call
+   * that can return values at position `pos` out to the node `out`. The instance
+   * parameter is considered to have index `-1`.
+   */
+  pragma[nomagic]
+  private predicate viableParamOut(int i, ParameterNode p, OutNode out, ReturnPosition ret) {
+    out = getAViableOutNode(ret) and
+    p.isParameterOf(ret.getCallable(), i)
+  }
+
+  /**
+   * Holds if `arg` is a possible argument to `p` taking virtual dispatch into account,
+   * and the callable can return values at position `pos` out to the node `out`.
+   */
+  cached
+  predicate viableParamArgOut(ParameterNode p, ArgumentNode arg, ReturnPosition ret, OutNode out) {
+    exists(int i |
+      viableParamOut(i, p, out, ret) and
+      arg.argumentOf(out.getCall(), i)
+    )
+  }
+
+  /**
    * Holds if `p` can flow to `node` in the same callable using only
    * value-preserving steps.
    */
@@ -54,14 +77,13 @@ private module ImplCommon {
   }
 
   /**
-   * Holds if `arg` flows through `call` using only value-preserving steps.
+   * Holds if `arg` flows through a call to `out` using only value-preserving steps.
    */
   cached
-  predicate argumentValueFlowsThrough(ArgumentNode arg, Node out) {
+  predicate argumentValueFlowsThrough(ArgumentNode arg, OutNode out) {
     exists(ParameterNode param, ReturnPosition ret |
-      viableParamArg(param, arg) and
+      viableParamArgOut(param, arg, ret, out) and
       parameterValueFlowsThrough(param, ret) and
-      out = getAnOutputAtCall(arg.getCall(), ret) and
       compatibleTypes(arg.getType(), out.getType())
     )
   }
@@ -139,21 +161,20 @@ private module ImplCommon {
   }
 
   private predicate storeReturn(Node node1, Content f, Node node2) {
-    exists(ParameterNode p, ArgumentNode arg |
+    exists(ParameterNode p, ArgumentNode arg, ReturnPosition ret |
       arg = node1 and
-      viableParamArg(p, arg) and
-      setterReturn(p, f) and
-      node2 = arg.getCall().getNode() and
+      viableParamArgOut(p, arg, ret, node2) and
+      setterReturn(p, f, ret) and
       compatibleTypes(node1.getTypeBound(), f.getType()) and
       compatibleTypes(node2.getTypeBound(), f.getContainerType())
     )
   }
 
-  private predicate setterReturn(ParameterNode p, Content f) {
-    exists(Node n1, Node n2, ReturnNode ret |
+  private predicate setterReturn(ParameterNode p, Content f, ReturnPosition ret) {
+    exists(Node n1, Node n2 |
       parameterValueFlow(p, n1) and
       store(n1, f, n2) and
-      localValueStep*(n2, ret)
+      localValueStep*(n2, ret.getAReturnNode())
     )
   }
 
@@ -165,21 +186,20 @@ private module ImplCommon {
   predicate read(Node node1, Content f, Node node2) {
     readStep(node1, f, node2) and storeStep(_, f, _)
     or
-    exists(ParameterNode p, ArgumentNode arg |
+    exists(ParameterNode p, ArgumentNode arg, ReturnPosition ret |
       arg = node1 and
-      viableParamArg(p, arg) and
-      getter(p, f) and
-      node2 = arg.getCall().getNode() and
+      viableParamArgOut(p, arg, ret, node2) and
+      getter(p, f, ret) and
       compatibleTypes(node1.getTypeBound(), f.getContainerType()) and
       compatibleTypes(node2.getTypeBound(), f.getType())
     )
   }
 
-  private predicate getter(ParameterNode p, Content f) {
-    exists(Node n1, Node n2, ReturnNode ret |
+  private predicate getter(ParameterNode p, Content f, ReturnPosition ret) {
+    exists(Node n1, Node n2 |
       parameterValueFlow(p, n1) and
       read(n1, f, n2) and
-      localValueStep*(n2, ret)
+      localValueStep*(n2, ret.getAReturnNode())
     )
   }
 

@@ -75,17 +75,14 @@ class ReturnNode extends ExprNode {
 /** A data flow node that represents a call. */
 class OutNode extends ExprNode {
   OutNode() { this.getExpr() instanceof FunctionCall }
+
+  /** Gets the underlying call. */
+  DataFlowCall getCall() { result = this.getExpr() }
 }
 
-/**
- * Gets a node that can read the value returned at position `pos` for the
- * call `call`.
- */
-OutNode getAnOutputAtCall(DataFlowCall call, ReturnPosition pos) {
-  exists(Function f | pos.getCallable() = f |
-    f = viableCallable(call) and
-    result = call.getNode()
-  )
+/** Gets a node that can read the value returned at position `pos`. */
+OutNode getAViableOutNode(ReturnPosition pos) {
+  pos.getCallable() = viableCallable(result.getCall())
 }
 
 /**

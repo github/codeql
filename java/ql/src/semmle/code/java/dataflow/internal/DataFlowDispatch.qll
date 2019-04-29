@@ -202,16 +202,10 @@ private module DispatchImpl {
     reducedViableImplInReturn(result, ma)
   }
 
-  /**
-   * Gets a node that can read the value returned at position `pos` for the
-   * call `call`.
-   */
+  /** Gets a node that can read the value returned at position `pos`. */
   cached
-  OutNode getAnOutputAtCall(DataFlowCall call, ReturnPosition pos) {
-    exists(Method m | pos.getCallable() = m |
-      m = viableCallable(call) and
-      result = call.getNode()
-    )
+  OutNode getAViableOutNode(ReturnPosition pos) {
+    pos.getCallable() = viableCallable(result.getCall())
   }
 }
 import DispatchImpl

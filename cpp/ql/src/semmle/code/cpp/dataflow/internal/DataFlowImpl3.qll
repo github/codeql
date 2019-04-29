@@ -206,7 +206,7 @@ private predicate nodeCandFwd1(Node node, boolean stored, Configuration config) 
     // flow out of a callable
     exists(ReturnNode ret |
       nodeCandFwd1(ret, stored, config) and
-      node = getAnOutputAtCall(_, ret.getPosition())
+      node = getAViableOutNode(ret.getPosition())
     )
   )
 }
@@ -282,7 +282,7 @@ private predicate nodeCand1(Node node, boolean stored, Configuration config) {
     // flow out of a callable
     exists(Node out |
       nodeCand1(out, stored, config) and
-      out = getAnOutputAtCall(_, node.(ReturnNode).getPosition())
+      out = getAViableOutNode(node.(ReturnNode).getPosition())
     )
   )
 }
@@ -366,9 +366,8 @@ private predicate simpleArgumentFlowsThrough(
   exists(ParameterNode param, ReturnNode ret |
     nodeCand1(arg, false, unbind(config)) and
     nodeCand1(out, false, unbind(config)) and
-    viableParamArg(param, arg) and
-    simpleParameterFlow(param, ret, t, config) and
-    out = getAnOutputAtCall(arg.getCall(), ret.getPosition())
+    viableParamArgOut(param, arg, ret.getPosition(), out) and
+    simpleParameterFlow(param, ret, t, config)
   )
 }
 
@@ -410,7 +409,7 @@ private predicate flowOutOfCallableCand1(Node node1, Node node2, Configuration c
     )
     or
     // flow out of a callable
-    node2 = getAnOutputAtCall(_, node1.(ReturnNode).getPosition())
+    node2 = getAViableOutNode(node1.(ReturnNode).getPosition())
   )
 }
 
@@ -1439,7 +1438,7 @@ private predicate flowStep(PathNodeMid mid, Node node, CallContext cc, AccessPat
   or
   flowOutOfCallable(mid, node, cc) and ap = mid.getAp()
   or
-  flowThroughCallable(mid, node, cc) and ap = mid.getAp()
+  flowThroughCallable(mid, node, ap, cc)
 }
 
 private predicate contentReadStep(PathNodeMid mid, Node node, AccessPath ap) {
@@ -1474,11 +1473,12 @@ private predicate flowOutOfCallable0(PathNodeMid mid, ReturnPosition pos, CallCo
  * is a return from a callable and is recorded by `cc`, if needed.
  */
 pragma[noinline]
-private predicate flowOutOfCallable(PathNodeMid mid, Node out, CallContext cc) {
+private predicate flowOutOfCallable(PathNodeMid mid, OutNode out, CallContext cc) {
   exists(ReturnPosition pos, DataFlowCallable c, DataFlowCall call, CallContext innercc |
     flowOutOfCallable0(mid, pos, innercc) and
-    out = getAnOutputAtCall(call, pos) and
+    out = getAViableOutNode(pos) and
     c = pos.getCallable() and
+    call = out.getCall() and
     resolveReturn(innercc, c, call)
   |
     if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
@@ -1563,11 +1563,12 @@ private predicate flowIntoCallable(
 /** Holds if data may flow from `p` to a return at position `pos`. */
 pragma[nomagic]
 private predicate paramFlowsThrough(
-  ParameterNode p, ReturnPosition pos, CallContextCall cc, Configuration config
+  ParameterNode p, ReturnPosition pos, AccessPath ap, CallContextCall cc, Configuration config
 ) {
   exists(PathNodeMid mid |
     mid.getNode() = pos.getAReturnNode() and
     cc = mid.getCallContext() and
+    ap = mid.getAp() and
     config = mid.getConfiguration()
   |
     cc = TSomeCall(p, true)
@@ -1581,11 +1582,11 @@ private predicate paramFlowsThrough(
  * The context `cc` is restored to its value prior to entering the callable.
  */
 pragma[noinline]
-private predicate flowThroughCallable(PathNodeMid mid, Node out, CallContext cc) {
-  exists(DataFlowCall call, ParameterNode p, ReturnPosition pos, CallContext innercc |
-    flowIntoCallable(mid, p, cc, innercc, call) and
-    paramFlowsThrough(p, pos, innercc, unbind(mid.getConfiguration())) and
-    out = getAnOutputAtCall(call, pos)
+private predicate flowThroughCallable(PathNodeMid mid, OutNode out, AccessPath ap, CallContext cc) {
+  exists(ParameterNode p, ReturnPosition pos, CallContext innercc |
+    flowIntoCallable(mid, p, cc, innercc, out.getCall()) and
+    paramFlowsThrough(p, pos, ap, innercc, unbind(mid.getConfiguration())) and
+    out = getAViableOutNode(pos)
   )
 }
 
