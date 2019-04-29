@@ -1099,19 +1099,26 @@ module Expressions {
 
     pragma [noinline]
     predicate subscriptPointsTo(SubscriptNode subscr, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode obj, ObjectInternal objvalue) {
-        subscr.isLoad() and
-        obj = subscr.getObject() and
-        origin = subscr and
-        PointsToInternal::pointsTo(obj, context, objvalue, _) and
-        (
+        exists(ControlFlowNode index |
+            subscriptObjectAndIndex(subscr, context,  obj, objvalue, index)
+            |
             objvalue.subscriptUnknown() and
             value = ObjectInternal::unknown()
             or
             exists(int n |
-                PointsToInternal::pointsTo(subscr.getIndex(), context, TInt(n), _) and
+                PointsToInternal::pointsTo(index, context, TInt(n), _) and
                 value = objvalue.(SequenceObjectInternal).getItem(n)
             )
-        )
+        ) and
+        origin = subscr
+    }
+
+    pragma [noinline]
+    private predicate subscriptObjectAndIndex(SubscriptNode subscr, PointsToContext context, ControlFlowNode obj, ObjectInternal objvalue, ControlFlowNode index) {
+        subscr.isLoad() and
+        obj = subscr.getObject() and
+        PointsToInternal::pointsTo(obj, context, objvalue, _) and
+        index = subscr.getIndex()
     }
 
     /** Track bitwise expressions so we can handle integer flags and enums.
