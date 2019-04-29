@@ -42,16 +42,8 @@ predicate whitelistFunction(Function f, int arg) {
   (arg = 1 or arg = 2)
 }
 
-<<<<<<< HEAD
 predicate whitelisted(FunctionCall fc) {
   exists(Function f, int arg | f = fc.getTarget() | whitelistFunction(f, arg))
-=======
-predicate underscoreMacro(Expr e) {
-  exists(MacroInvocation mi |
-    mi.getMacroName() = "_" and
-    mi.getExpr() = e
-  )
->>>>>>> [CPP-370] First attempt at isAdditionalFlowStep().
 }
 
 predicate isNonConst(DataFlow::Node node) {
@@ -96,26 +88,11 @@ predicate isNonConst(DataFlow::Node node) {
     )
   )
   or
-<<<<<<< HEAD
   node instanceof DataFlow::DefinitionByReferenceNode
 }
 
 class NonConstFlow extends TaintTracking::Configuration {
   NonConstFlow() { this = "NonConstFlow" }
-=======
-  // we let the '_' macro through regardless of what it points at
-  underscoreMacro(e)
-}
-
-predicate isConst(Expr e) {
-  e instanceof StringLiteral
-  or
-  whitelisted(e)
-}
-
-class ConstFlow extends DataFlow::Configuration {
-  ConstFlow() { this = "ConstFlow" }
->>>>>>> [CPP-370] First attempt at isAdditionalFlowStep().
 
   override predicate isSource(DataFlow::Node source) { isNonConst(source) }
 
@@ -123,20 +100,6 @@ class ConstFlow extends DataFlow::Configuration {
     exists(FormattingFunctionCall fc |
       sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex())
     )
-  }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node source, DataFlow::Node sink) {
-  	none()
-  	or
-    // an element picked from an array of string literals is a string literal
-    exists(Variable v, int a |
-      a = sink.asExpr().(ArrayExpr).getArrayOffset().getValue().toInt() and
-      v = sink.asExpr().(ArrayExpr).getArrayBase().(VariableAccess).getTarget()
-    |
-    // we disallow parameters, since they may be bound to unsafe arguments
-    // at various call sites.
-      not v instanceof Parameter and source.asExpr() instanceof StringLiteral
-      )
   }
 }
 
