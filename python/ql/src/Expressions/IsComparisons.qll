@@ -104,8 +104,14 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassObject cls
     /* OK to use 'is' when comparing items from a known set of objects */
     not exists(Expr left, Expr right, Object obj |
         comp.compares(left, op, right) and
-        left.refersTo(obj) and right.refersTo(obj) and
-        exists(ImmutableLiteral il | il.getLiteralObject() = obj)
+        exists(ImmutableLiteral il | il.getLiteralObject() = obj) |
+        left.refersTo(obj) and right.refersTo(obj)
+        or
+        /* Simple constant in module, probably some sort of sentinel */
+        exists(AstNode origin |
+            not left.refersTo(_) and right.refersTo(obj, origin) and
+            origin.getScope().getEnclosingModule() = comp.getScope().getEnclosingModule()
+        )
     )
     and
     /* OK to use 'is' when comparing with a member of an enum */
