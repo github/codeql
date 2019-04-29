@@ -244,6 +244,8 @@ class ControlFlowNode extends @py_flow_node {
     /** Gets what this expression might "refer-to" in the given `context`.
      */
     predicate refersTo(Context context, Object obj, ClassObject cls, ControlFlowNode origin) {
+        not obj = unknownValue() and
+        not cls = theUnknownType() and
         PointsTo::points_to(this, context, obj, cls, origin)
     }
 
@@ -252,6 +254,7 @@ class ControlFlowNode extends @py_flow_node {
      * where the class cannot be inferred. 
      */
     predicate refersTo(Object obj, ControlFlowNode origin) {
+        not obj = unknownValue() and
         PointsTo::points_to(this, _, obj, _, origin)
     }
 
