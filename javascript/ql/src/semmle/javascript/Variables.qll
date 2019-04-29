@@ -326,7 +326,7 @@ class BindingPattern extends @pattern, Expr {
   predicate isLValue() { any() }
 
   /**
-   * Returns the TypeScript type annotation for this variable or pattern, if any.
+   * Returns the type annotation for this variable or pattern, if any.
    *
    * Only the outermost part of a binding pattern can have a type annotation.
    * For instance, in the declaration,
@@ -336,7 +336,7 @@ class BindingPattern extends @pattern, Expr {
    * the variable `x` has no type annotation, whereas the pattern `{x}` has the type
    * annotation `Point`.
    */
-  TypeExpr getTypeAnnotation() {
+  TypeAnnotation getTypeAnnotation() {
     exists(VariableDeclarator decl | decl.getBindingPattern() = this |
       result = decl.getTypeAnnotation()
     )
@@ -500,8 +500,12 @@ class VariableDeclarator extends Expr, @vardeclarator {
   /** Gets the expression specifying the initial value of the declared variable(s), if any. */
   Expr getInit() { result = this.getChildExpr(1) }
 
-  /** Gets the TypeScript type annotation for the declared variable or binding pattern. */
-  TypeExpr getTypeAnnotation() { result = this.getChildTypeExpr(2) }
+  /** Gets the type annotation for the declared variable or binding pattern. */
+  TypeAnnotation getTypeAnnotation() {
+    result = this.getChildTypeExpr(2)
+    or
+    result = getDeclStmt().getDocumentation().getATagByTitle("type").getType()
+  }
 
   /** Holds if this is a TypeScript variable marked as definitely assigned with the `!` operator. */
   predicate hasDefiniteAssignmentAssertion() { hasDefiniteAssignmentAssertion(this) }
@@ -569,8 +573,10 @@ class Parameter extends BindingPattern {
   }
 
   /** Gets the type annotation for this parameter, if any. */
-  override TypeExpr getTypeAnnotation() {
+  override TypeAnnotation getTypeAnnotation() {
     exists(Function f, int n | this = f.getParameter(n) | result = f.getChildTypeExpr(-(4 * n + 6)))
+    or
+    result = getJSDocTag().getType()
   }
 
   /** Holds if this parameter is a rest parameter. */
@@ -619,12 +625,17 @@ class SimpleParameter extends Parameter, VarDecl {
     )
   }
 
-  override JSDocTag getJSDocTag() {
+  override JSDocParamTag getJSDocTag() {
     exists(Function fun |
       this = fun.getAParameter() and
-      result = fun.getDocumentation().getATag() and
-      result.getTitle() = "param" and
-      result.getName() = getName()
+      result = fun.getDocumentation().getATag()
+    ) and
+    // Avoid joining on name
+    exists(string tagName, string paramName |
+      tagName = result.getName() and
+      paramName = this.getName() and
+      tagName <= paramName and
+      paramName <= tagName
     )
   }
 }

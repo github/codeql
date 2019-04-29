@@ -528,68 +528,8 @@ class LocalNamespaceName extends @local_namespace_name, LexicalName {
  * This class includes only explicit type annotations -
  * types inferred by the TypeScript compiler are not type expressions.
  */
-class TypeExpr extends ExprOrType, @typeexpr {
+class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override string toString() { typeexprs(this, _, _, _, result) }
-
-  /** Holds if this is the `any` type. */
-  predicate isAny() { none() }
-
-  /** Holds if this is the `string` type. Does not hold for the (rarely used) `String` type. */
-  predicate isString() { none() }
-
-  /** Holds if this is the `string` or `String` type. */
-  predicate isStringy() { none() }
-
-  /** Holds if this is the `number` type. Does not hold for the (rarely used) `Number` type. */
-  predicate isNumber() { none() }
-
-  /** Holds if this is the `number` or `Number`s type. */
-  predicate isNumbery() { none() }
-
-  /** Holds if this is the `boolean` type. Does not hold for the (rarely used) `Boolean` type. */
-  predicate isBoolean() { none() }
-
-  /** Holds if this is the `boolean` or `Boolean` type. */
-  predicate isBooleany() { none() }
-
-  /** Holds if this is the `undefined` type. */
-  predicate isUndefined() { none() }
-
-  /** Holds if this is the `null` type. */
-  predicate isNull() { none() }
-
-  /** Holds if this is the `void` type. */
-  predicate isVoid() { none() }
-
-  /** Holds if this is the `never` type. */
-  predicate isNever() { none() }
-
-  /** Holds if this is the `this` type. */
-  predicate isThis() { none() }
-
-  /** Holds if this is the `symbol` type. */
-  predicate isSymbol() { none() }
-
-  /** Holds if this is the `unique symbol` type. */
-  predicate isUniqueSymbol() { none() }
-
-  /** Holds if this is the `Function` type. */
-  predicate isRawFunction() { none() }
-
-  /** Holds if this is the `object` type. */
-  predicate isObjectKeyword() { none() }
-
-  /** Holds if this is the `unknown` type. */
-  predicate isUnknownKeyword() { none() }
-
-  /** Holds if this is the `bigint` type. */
-  predicate isBigInt() { none() }
-
-  /** Holds if this is the `const` keyword, occurring in a type assertion such as `x as const`. */
-  predicate isConstKeyword() { none() }
-
-  /** Gets this type expression, with any surrounding parentheses removed. */
-  override TypeExpr stripParens() { result = this }
 
   override predicate isAmbient() { any() }
 
@@ -599,7 +539,15 @@ class TypeExpr extends ExprOrType, @typeexpr {
    * Has no result if this occurs in a TypeScript file that was extracted
    * without type information.
    */
-  Type getType() { ast_node_type(this, result) }
+  override Type getType() { ast_node_type(this, result) }
+  
+  override Stmt getEnclosingStmt() { result = ExprOrType.super.getEnclosingStmt() }
+  
+  override Function getEnclosingFunction() { result = ExprOrType.super.getEnclosingFunction() }
+  
+  override StmtContainer getContainer() { result = ExprOrType.super.getContainer() }
+  
+  override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
 }
 
 /**
@@ -716,6 +664,14 @@ class TypeAccess extends @typeaccess, TypeExpr, TypeRef {
    * Gets the canonical name of the type being accessed.
    */
   TypeName getTypeName() { ast_node_symbol(this, result) }
+
+  override predicate hasQualifiedName(string globalName) {
+    getTypeName().hasQualifiedName(globalName)
+  }
+
+  override predicate hasQualifiedName(string moduleName, string exportedName) {
+    getTypeName().hasQualifiedName(moduleName, exportedName)
+  }
 }
 
 /** An identifier that is used as part of a type, such as `Date`. */
@@ -776,6 +732,14 @@ class GenericTypeExpr extends @generictypeexpr, TypeExpr {
 
   /** Gets the number of type arguments. This is always at least one. */
   int getNumTypeArgument() { result = count(getATypeArgument()) }
+
+  override predicate hasQualifiedName(string globalName) {
+    getTypeAccess().hasQualifiedName(globalName)
+  }
+
+  override predicate hasQualifiedName(string moduleName, string exportedName) {
+    getTypeAccess().hasQualifiedName(moduleName, exportedName)
+  }
 }
 
 /**
@@ -846,6 +810,8 @@ class UnionTypeExpr extends @uniontypeexpr, TypeExpr {
 
   /** Gets the number of types in the union. This is always at least two. */
   int getNumElementType() { result = count(getAnElementType()) }
+
+  override TypeExpr getAnUnderlyingType() { result = getAnElementType().getAnUnderlyingType() }
 }
 
 /**
@@ -873,6 +839,8 @@ class IntersectionTypeExpr extends @intersectiontypeexpr, TypeExpr {
 
   /** Gets the number of operands to the intersection type. This is always at least two. */
   int getNumElementType() { result = count(getAnElementType()) }
+
+  override TypeExpr getAnUnderlyingType() { result = getAnElementType().getAnUnderlyingType() }
 }
 
 /**
@@ -883,6 +851,8 @@ class ParenthesizedTypeExpr extends @parenthesizedtypeexpr, TypeExpr {
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
 
   override TypeExpr stripParens() { result = getElementType().stripParens() }
+
+  override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
 }
 
 /**
@@ -962,6 +932,8 @@ class IsTypeExpr extends @istypeexpr, TypeExpr {
 class OptionalTypeExpr extends @optionaltypeexpr, TypeExpr {
   /** Gets the type `T` in `T?` */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
+
+  override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
 }
 
 /**
@@ -981,6 +953,8 @@ class RestTypeExpr extends @resttypeexpr, TypeExpr {
 class ReadonlyTypeExpr extends @readonlytypeexpr, TypeExpr {
   /** Gets the type `T` in `readonly T`. */
   TypeExpr getElementType() { result = getChildTypeExpr(0) }
+
+  override TypeExpr getAnUnderlyingType() { result = getElementType().getAnUnderlyingType() }
 }
 
 /**

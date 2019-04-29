@@ -3,7 +3,6 @@
  */
 
 import Customizations
-
 import semmle.javascript.Aliases
 import semmle.javascript.AMD
 import semmle.javascript.AST
@@ -49,6 +48,7 @@ import semmle.javascript.StringConcatenation
 import semmle.javascript.StringOps
 import semmle.javascript.Templates
 import semmle.javascript.Tokens
+import semmle.javascript.TypeAnnotations
 import semmle.javascript.TypeScript
 import semmle.javascript.Util
 import semmle.javascript.Variables

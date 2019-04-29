@@ -38,7 +38,11 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    *
    * `this` parameter types are specific to TypeScript.
    */
-  TypeExpr getThisTypeAnnotation() { result = getChildTypeExpr(-4) }
+  TypeAnnotation getThisTypeAnnotation() {
+    result = getChildTypeExpr(-4)
+    or
+    result = getDocumentation().getATagByTitle("this").getType()
+  }
 
   /** Gets the identifier specifying the name of this function, if any. */
   VarDecl getId() { result = getChildExpr(-1) }
@@ -76,7 +80,13 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   int getNumBodyStmt() { result = count(getABodyStmt()) }
 
   /** Gets the return type annotation on this function, if any. */
-  TypeExpr getReturnTypeAnnotation() { typeexprs(result, _, this, -3, _) }
+  TypeAnnotation getReturnTypeAnnotation() {
+    typeexprs(result, _, this, -3, _)
+    or
+    exists(string title | title = "return" or title = "returns" |
+      result = getDocumentation().getATagByTitle(title).getType()
+    )
+  }
 
   /** Holds if this function is a generator function. */
   predicate isGenerator() {
@@ -163,24 +173,24 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
     result = getAReturnStmt().getExpr()
   }
 
-  /** 
+  /**
    * Gets a return from a function which has undefined value (that is, implicit
    * returns and returns without expressions).
    *
    * Functions can have undefined returns in a few different ways:
-   * 
+   *
    * 1. An explicit return statement with no expression (the statement `return;`)
-   * 
+   *
    * 2. An implicit return resulting from an expression executing as the last thing
    *    in the function. For example, the test in a final `if` statement:
-   * 
+   *
    *    ```
    *    function foo() {
    *      ...
    *      if (test) { return 1; }
    *    }
    *    ```
-   * 
+   *
    * Some things look like they might return undefined but actually don't because
    * the containing functioning doesn't return at all. For instance, `throw`
    * statements prevent the containing function from returning, so they don't count
@@ -189,13 +199,12 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * exclude yields entirely. Likewise, we exclude generator functions from
    * consideration, as well as asynchronous functions, since calls to both produce
    * something distinct from what's explicitly returned by the function.
-   * 
+   *
    * Despite the fact that yield expressions are invalid outside of generators, we
    * include them anyway just to ensure that we're not relying on a perfect analysis
    * of a function to be a generator, and instead are looking also explicitly at the
    * return sites.
    */
-  
   ConcreteControlFlowNode getAnUndefinedReturn() {
     not this.getBody() instanceof Expr and
     not this.isGenerator() and
@@ -206,7 +215,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
     result.getContainer() = this and
     result.isAFinalNode()
   }
-  
+
   /**
    * Gets the function whose `this` binding a `this` expression in this function refers to,
    * which is the nearest enclosing non-arrow function.

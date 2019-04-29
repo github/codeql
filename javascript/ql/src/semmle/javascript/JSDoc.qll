@@ -17,6 +17,12 @@ class JSDoc extends @jsdoc, Locatable {
   /** Gets a JSDoc tag within this JSDoc comment. */
   JSDocTag getATag() { result.getParent() = this }
 
+  /** Gets a JSDoc tag within this JSDoc comment with the given title. */
+  JSDocTag getATagByTitle(string title) {
+    result = getATag() and
+    result.getTitle() = title
+  }
+
   override string toString() { result = getComment().toString() }
 }
 
@@ -33,17 +39,16 @@ abstract class Documentable extends ASTNode {
  * A syntactic element that a JSDoc type expression may be nested in, that is,
  * either a JSDoc tag or another JSDoc type expression.
  */
-class JSDocTypeExprParent extends @jsdoc_type_expr_parent {
-  /** Gets a textual representation of this element. */
-  string toString() { none() }
+class JSDocTypeExprParent extends @jsdoc_type_expr_parent, Locatable {
+  override Location getLocation() { hasLocation(this, result) }
+
+  JSDoc getJSDocComment() { none() }
 }
 
 /**
  * A JSDoc tag such as `@param Object options An object literal with options.`
  */
-class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
-
+class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent {
   /** Gets the tag title; for instance, the title of a `@param` tag is `"param"`. */
   string getTitle() { jsdoc_tags(this, result, _, _, _) }
 
@@ -77,6 +82,10 @@ class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent, Locatable {
 
   /** Gets the toplevel in which this tag appears. */
   TopLevel getTopLevel() { result = getParent().getComment().getTopLevel() }
+
+  override JSDoc getJSDocComment() {
+    result.getATag() = this
+  }
 }
 
 /**
@@ -96,7 +105,7 @@ class JSDocParamTag extends JSDocTag {
 /**
  * A JSDoc type expression.
  */
-class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent {
+class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotation {
   /**
    * Gets the syntactic element in which this type expression is nested, which may either
    * be another type expression or a JSDoc tag.
@@ -117,27 +126,88 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent {
   JSDocTypeExpr getChild(int i) { jsdoc_type_exprs(result, _, this, i, _) }
 
   override string toString() { jsdoc_type_exprs(this, _, _, _, result) }
+
+  override JSDoc getJSDocComment() {
+    result = getParent().getJSDocComment()
+  }
+
+  override Stmt getEnclosingStmt() {
+    result.getDocumentation() = getJSDocComment()
+  }
+
+  override StmtContainer getContainer() { result = getEnclosingStmt().getContainer() }
+  
+  override Function getEnclosingFunction() { result = getContainer() }
+  
+  override TopLevel getTopLevel() { result = getEnclosingStmt().getTopLevel() }
 }
 
 /** An `any` type expression `*`. */
-class JSDocAnyTypeExpr extends @jsdoc_any_type_expr, JSDocTypeExpr { }
+class JSDocAnyTypeExpr extends @jsdoc_any_type_expr, JSDocTypeExpr {
+  override predicate isAny() { any() }
+}
 
 /** A null type expression. */
-class JSDocNullTypeExpr extends @jsdoc_null_type_expr, JSDocTypeExpr { }
+class JSDocNullTypeExpr extends @jsdoc_null_type_expr, JSDocTypeExpr {
+  override predicate isNull() { any() }
+}
 
 /** A type expression representing the type of `undefined`. */
-class JSDocUndefinedTypeExpr extends @jsdoc_undefined_type_expr, JSDocTypeExpr { }
+class JSDocUndefinedTypeExpr extends @jsdoc_undefined_type_expr, JSDocTypeExpr {
+  override predicate isUndefined() { any() }
+}
 
 /** A type expression representing an unknown type `?`. */
-class JSDocUnknownTypeExpr extends @jsdoc_unknown_type_expr, JSDocTypeExpr { }
+class JSDocUnknownTypeExpr extends @jsdoc_unknown_type_expr, JSDocTypeExpr {
+  override predicate isUnknownKeyword() { any() }
+}
 
 /** A type expression representing the void type. */
-class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr { }
+class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr {
+  override predicate isVoid() { any() }
+}
 
 /** A type expression referring to a named type. */
 class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
   /** Gets the name of the type the expression refers to. */
   string getName() { result = toString() }
+
+  override predicate isString() { getName() = "string" }
+
+  override predicate isStringy() {
+    exists(string name | name = getName() |
+      name = "string" or
+      name = "String"
+    )
+  }
+
+  override predicate isNumber() { getName() = "number" }
+
+  override predicate isNumbery() {
+    exists(string name | name = getName() |
+      name = "number" or
+      name = "Number" or
+      name = "double" or
+      name = "Double" or
+      name = "int" or
+      name = "integer" or
+      name = "Integer"
+    )
+  }
+
+  override predicate isBoolean() { getName() = "boolean" }
+
+  override predicate isBooleany() {
+    getName() = "boolean" or
+    getName() = "Boolean" or
+    getName() = "bool"
+  }
+
+  override predicate isRawFunction() { getName() = "Function" }
+
+  override predicate hasQualifiedName(string globalName) {
+    globalName = getName()
+  }
 }
 
 /**
@@ -160,6 +230,10 @@ class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
    * For example, in `Array<string>`, `string` is the only argument type.
    */
   JSDocTypeExpr getAnArgument() { result = getArgument(_) }
+
+  override predicate hasQualifiedName(string globalName) {
+    getHead().hasQualifiedName(globalName)
+  }
 }
 
 /**
@@ -171,6 +245,8 @@ class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
 
   /** Holds if the `?` operator of this type expression is written in prefix notation. */
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
+
+  override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
 }
 
 /**
@@ -182,6 +258,8 @@ class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeE
 
   /** Holds if the `!` operator of this type expression is written in prefix notation. */
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
+
+  override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
 }
 
 /**
@@ -220,6 +298,8 @@ class JSDocArrayTypeExpr extends @jsdoc_array_type_expr, JSDocTypeExpr {
 class JSDocUnionTypeExpr extends @jsdoc_union_type_expr, JSDocTypeExpr {
   /** Gets one of the type alternatives of this union type. */
   JSDocTypeExpr getAnAlternative() { result = getChild(_) }
+
+  override JSDocTypeExpr getAnUnderlyingType() { result = getAnAlternative().getAnUnderlyingType() }
 }
 
 /**
@@ -248,6 +328,8 @@ class JSDocFunctionTypeExpr extends @jsdoc_function_type_expr, JSDocTypeExpr {
 class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTypeExpr {
   /** Gets the underlying type of this optional type. */
   JSDocTypeExpr getUnderlyingType() { result = getChild(0) }
+
+  override JSDocTypeExpr getAnUnderlyingType() { result = getUnderlyingType().getAnUnderlyingType() }
 }
 
 /**
