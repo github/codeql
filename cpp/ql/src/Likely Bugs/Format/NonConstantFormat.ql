@@ -65,18 +65,16 @@ predicate isConst(Expr e) {
   whitelisted(e)
 }
 
-class ConstFlow extends DataFlow::Configuration {
-  ConstFlow() { this = "ConstFlow" }
+class NonConstFlow extends DataFlow::Configuration {
+  NonConstFlow() { this = "NonConstFlow" }
 
-  override predicate isSource(DataFlow::Node source) { isConst(source.asExpr()) }
+  override predicate isSource(DataFlow::Node source) { isNonConst(source.asExpr()) }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
   }
 
   override predicate isAdditionalFlowStep(DataFlow::Node source, DataFlow::Node sink) {
-  	none()
-  	or
     // an element picked from an array of string literals is a string literal
     exists(Variable v, int a |
       a = sink.asExpr().(ArrayExpr).getArrayOffset().getValue().toInt() and
@@ -92,10 +90,10 @@ class ConstFlow extends DataFlow::Configuration {
 from FormattingFunctionCall call, Expr formatString
 where
   call.getArgument(call.getFormatParameterIndex()) = formatString and
-  not exists(ConstFlow cf, DataFlow::Node source, DataFlow::Node sink |
+  exists(NonConstFlow cf, DataFlow::Node source, DataFlow::Node sink |
     cf.hasFlow(source, sink) and
     sink.asExpr() = formatString
   )
-select call,
+select formatString,
   "The format string argument to " + call.getTarget().getQualifiedName() +
     " should be constant to prevent security issues and other potential errors."
