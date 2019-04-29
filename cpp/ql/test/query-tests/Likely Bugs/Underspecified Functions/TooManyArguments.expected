@@ -1,4 +1,2 @@
-| test.c:23:3:23:16 | call to declared_empty | This call has more arguments than required by $@. | test.c:1:6:1:19 | declared_empty | declared_empty |
-| test.c:30:3:30:19 | call to not_yet_declared1 | This call has more arguments than required by $@. | test.c:30:3:30:3 | not_yet_declared1 | not_yet_declared1 |
-| test.c:30:3:30:19 | call to not_yet_declared1 | This call has more arguments than required by $@. | test.c:71:6:71:22 | not_yet_declared1 | not_yet_declared1 |
-| test.c:40:3:40:29 | call to declared_empty_defined_with | This call has more arguments than required by $@. | test.c:73:6:73:32 | declared_empty_defined_with | declared_empty_defined_with |
+| test.c:41:3:41:29 | call to declared_empty_defined_with | This call has more arguments than required by $@. | test.c:77:6:77:32 | declared_empty_defined_with | declared_empty_defined_with |
+| test.c:72:3:72:28 | call to declared_and_defined_empty | This call has more arguments than required by $@. | test.c:114:6:114:31 | declared_and_defined_empty | declared_and_defined_empty |

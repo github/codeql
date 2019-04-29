@@ -4,6 +4,7 @@ void declared_with(int);
 void declared_empty_defined_with();
 void declared_with_pointers();
 void declared_with_array();
+void declared_and_defined_empty();
 
 int k_and_r_func(c,d)
   char c;
@@ -20,7 +21,7 @@ void *pv;
 
 void test(int *argv[]) {
   declared_empty(); // GOOD
-  declared_empty(1); // BAD
+  declared_empty(1); // GOOD
   declared_void(); // GOOD
   declared_with(1); // GOOD
   
@@ -66,6 +67,9 @@ void test(int *argv[]) {
   defined_with_ptr_ptr(argv);   // GOOD
   defined_with_ptr_arr(parameterName); // GOOD
   defined_with_ptr_arr(argv);   // GOOD
+
+  declared_and_defined_empty(); // GOOD
+  declared_and_defined_empty(1);  // BAD
 }
 
 void not_yet_declared1();
@@ -106,4 +110,7 @@ unsigned int defined_with_ptr_ptr(unsigned int **ptr) {
 unsigned int defined_with_ptr_arr(unsigned int *ptr[]) {
 	return **ptr;
 }
-  
+
+void declared_and_defined_empty() {
+	return;
+}
