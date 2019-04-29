@@ -1,6 +1,6 @@
 private import cpp
 
-Function viableImpl(FunctionCall call) { result = viableCallable(call) }
+Function viableImpl(Call call) { result = viableCallable(call) }
 
 /**
  * Gets a function that might be called by `call`.
@@ -58,23 +58,23 @@ private predicate functionSignature(Function f, string qualifiedName, int nparam
  * Holds if the call context `ctx` reduces the set of viable dispatch
  * targets of `ma` in `c`.
  */
-predicate reducedViableImplInCallContext(FunctionCall call, Function f, Call ctx) { none() }
+predicate reducedViableImplInCallContext(Call call, Function f, Call ctx) { none() }
 
 /**
  * Gets a viable dispatch target of `ma` in the context `ctx`. This is
  * restricted to those `ma`s for which the context makes a difference.
  */
-Function prunedViableImplInCallContext(FunctionCall call, Call ctx) { none() }
+Function prunedViableImplInCallContext(Call call, Call ctx) { none() }
 
 /**
  * Holds if flow returning from `m` to `ma` might return further and if
  * this path restricts the set of call sites that can be returned to.
  */
-predicate reducedViableImplInReturn(Function f, FunctionCall call) { none() }
+predicate reducedViableImplInReturn(Function f, Call call) { none() }
 
 /**
  * Gets a viable dispatch target of `ma` in the context `ctx`. This is
  * restricted to those `ma`s and results for which the return flow from the
  * result to `ma` restricts the possible context `ctx`.
  */
-Function prunedViableImplInCallContextReverse(FunctionCall call, Call ctx) { none() }
+Function prunedViableImplInCallContextReverse(Call call, Call ctx) { none() }
