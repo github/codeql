@@ -404,7 +404,7 @@ class Instruction extends Construction::TInstruction {
     result = Construction::getInstructionConvertedResultExpression(this) 
   }
   
-    /**
+  /**
    * Gets the unconverted `Expr` whose result is computed by this instruction, if any.
    */
   final Expr getUnconvertedResultExpression() {
@@ -414,6 +414,9 @@ class Instruction extends Construction::TInstruction {
   /**
    * Gets the type of the result produced by this instruction. If the
    * instruction does not produce a result, its result type will be `VoidType`.
+   *
+   * If `isGLValue()` holds, then the result type of this instruction should be
+   * thought of as "pointer to `getResultType()`".
    */
   final Type getResultType() {
     Construction::instructionHasType(this, result, _)
