@@ -71,8 +71,10 @@ class ConstantNullnessCondition extends ConstantCondition {
 
   ConstantNullnessCondition() {
     forex(ControlFlow::Node cfn | cfn = this.getAControlFlowNode() |
-      exists(ControlFlow::SuccessorTypes::NullnessSuccessor t | exists(cfn.getASuccessorByType(t)) |
-        b = t.getValue()
+      exists(ControlFlow::SuccessorTypes::NullnessSuccessor t, ControlFlow::Node s |
+        s = cfn.getASuccessorByType(t) |
+        b = t.getValue() and
+        not s.isJoin()
       ) and
       strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
     )
