@@ -509,9 +509,9 @@ tsutils@^2.12.1:
   dependencies:
     tslib "^1.8.1"
 
-typescript@3.4:
-  version "3.4.3"
-  resolved "typescript-3.4.3.tgz#0eb320e4ace9b10eadf5bc6103286b0f8b7c224f"
+typescript@3.4.5:
+  version "3.4.5"
+  resolved "typescript-3.4.5.tgz#2d2618d10bb566572b8d7aad5180d84257d70a99"
 
 wrappy@1:
   version "1.0.2"
