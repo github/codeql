@@ -1,9 +1,8 @@
 /**
  * @name Call to a function with one or more incompatible arguments
- * @description A call to a function with at least one argument whose type does
- * not match the type of the corresponding function parameter.  This may indicate
- * that the author is not familiar with the function being called.  Passing mistyped
- * arguments on a stack may lead to unpredictable function behavior.
+ * @description When the type of a function argument is not compatible
+ * with the type of the corresponding parameter, it may lead to
+ * unpredictable behavior.
  * @kind problem
  * @problem.severity warning
  * @precision medium
