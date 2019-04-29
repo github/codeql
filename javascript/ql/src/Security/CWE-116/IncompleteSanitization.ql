@@ -129,6 +129,20 @@ predicate isDelimiterUnwrapper(
   )
 }
 
+/*
+ * Holds if `repl` is a standalone use of `String.prototype.replace` to remove a single newline.
+ */
+
+predicate removesTrailingNewLine(DataFlow::MethodCallNode repl) {
+  repl.getMethodName() = "replace" and
+  repl.getArgument(0).mayHaveStringValue("\n") and
+  repl.getArgument(1).mayHaveStringValue("") and
+  not exists(DataFlow::MethodCallNode other | other.getMethodName() = "replace" |
+    repl.getAMethodCall() = other or
+    other.getAMethodCall() = repl
+  )
+}
+
 from MethodCallExpr repl, Expr old, string msg
 where
   repl.getMethodName() = "replace" and
@@ -153,7 +167,9 @@ where
     not DataFlow::valueNode(repl.getReceiver()) = DataFlow::valueNode(repl).getASuccessor+() and
     // dont' flag unwrapper
     not isDelimiterUnwrapper(repl.flow(), _) and
-    not isDelimiterUnwrapper(_, repl.flow())
+    not isDelimiterUnwrapper(_, repl.flow()) and
+    // dont' flag the removal of trailing newlines
+    not removesTrailingNewLine(repl.flow())
     or
     exists(RegExpLiteral rel |
       isBackslashEscape(repl, rel) and
