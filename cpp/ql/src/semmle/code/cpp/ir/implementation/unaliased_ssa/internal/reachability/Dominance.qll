@@ -11,11 +11,12 @@ predicate blockDominates(Graph::Block dominator, Graph::Block block) {
   blockStrictlyDominates(dominator, block) or dominator = block
 }
 
-pragma[noinline]
 Graph::Block getDominanceFrontier(Graph::Block dominator) {
-  exists(Graph::Block pred |
-    Graph::blockSuccessor(pred, result) and
-    blockDominates(dominator, pred) and
-    not blockStrictlyDominates(dominator, result)
+  Graph::blockSuccessor(dominator, result) and
+  not blockImmediatelyDominates(dominator, result)
+  or
+  exists(Graph::Block prev | result = getDominanceFrontier(prev) |
+    blockImmediatelyDominates(dominator, prev) and
+    not blockImmediatelyDominates(dominator, result)
   )
 }
