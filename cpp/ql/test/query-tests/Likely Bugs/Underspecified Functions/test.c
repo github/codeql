@@ -26,9 +26,9 @@ void test(int *argv[]) {
   declared_with(1); // GOOD
   
   undeclared();  // GOOD
-  undeclared(1); // BAD
+  undeclared(1); // GOOD
   
-  not_yet_declared1(1); // BAD
+  not_yet_declared1(1); // GOOD
   not_yet_declared2(1); // GOOD
   not_yet_declared2(ca); // BAD
   not_yet_declared2(); // BAD
