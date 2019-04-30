@@ -373,7 +373,11 @@ cached private module Cached {
     )
   }
 
-  private predicate ssa_variableUpdate(Alias::VirtualVariable vvar,
+  /**
+   * Holds if the previous stage had a definition of `vvar` at `instr`, where
+   * `instr` is at position `index` in `block`.
+   */
+  private predicate hasOldDefinition(Alias::VirtualVariable vvar,
       OldBlock block, int index, OldInstruction instr) {
     block.getInstruction(index) = instr and
     Alias::getResultMemoryAccess(instr).getVirtualVariable() = vvar
@@ -383,11 +387,8 @@ cached private module Cached {
     (
       hasPhiNode(vvar, block) and
       index = -1
-    ) or
-    exists(Alias::MemoryAccess access, OldInstruction def |
-      access = Alias::getResultMemoryAccess(def) and
-      block.getInstruction(index) = def and
-      vvar = access.getVirtualVariable()
+    ) or (
+      hasOldDefinition(vvar, block, index, _)
     )
   }
 
@@ -419,11 +420,11 @@ cached private module Cached {
       firstAccess = min(int index |
           hasUse(vvar, block, index, _)
           or
-          ssa_variableUpdate(vvar, block, index, _)
+          hasOldDefinition(vvar, block, index, _)
         )
     )
     or
-    (variableLiveOnExitFromBlock(vvar, block) and not ssa_variableUpdate(vvar, block, _, _))
+    (variableLiveOnExitFromBlock(vvar, block) and not hasOldDefinition(vvar, block, _, _))
   }
 
   pragma[noinline]
@@ -528,18 +529,28 @@ cached private module Cached {
     )
   }
 
-  private predicate hasFrontierPhiNode(Alias::VirtualVariable vvar, OldBlock phiBlock) {
-    exists(OldBlock defBlock |
-      phiBlock = Dominance::getDominanceFrontier(defBlock) and
-      hasDefinition(vvar, defBlock, _) and
-      /* We can also eliminate those nodes where the variable is not live on any incoming edge */
-      variableLiveOnEntryToBlock(vvar, phiBlock)
+  /**
+   * Gets the block where a phi node should be placed for `vvar` if it has a
+   * definition in `defBlock`, either because it's defined there in the
+   * original source or because it has another phi node there.
+   */
+  private OldBlock getFrontierBlockIfDefinedIn(Alias::VirtualVariable vvar, OldBlock defBlock) {
+    result = Dominance::getDominanceFrontier(defBlock) and
+    variableLiveOnEntryToBlock(vvar, result) and
+    // Cut down the size of this predicate by requiring that `vvar` _could_ be
+    // defined in `defBlock`, either directly or with a phi node.
+    (
+      hasOldDefinition(vvar, defBlock, _, _)
+      or
+      defBlock = Dominance::getDominanceFrontier(_)
     )
   }
 
   private predicate hasPhiNode(Alias::VirtualVariable vvar, OldBlock phiBlock) {
-    hasFrontierPhiNode(vvar, phiBlock)
-    //or ssa_sanitized_custom_phi_node(vvar, block)
+    exists(OldBlock defBlock |
+      hasDefinition(vvar, defBlock, _) and
+      phiBlock = getFrontierBlockIfDefinedIn(vvar, defBlock)
+    )
   }
   
   private predicate hasChiNode(Alias::VirtualVariable vvar, OldInstruction def) {
