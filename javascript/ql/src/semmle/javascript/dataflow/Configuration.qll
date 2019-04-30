@@ -557,7 +557,8 @@ private predicate callInputStep(
 /**
  * Holds if `input`, which is either an argument to `f` at `invk` or a definition
  * that is captured by `f`, may flow to `nd` under configuration `cfg` (possibly through
- * callees) along a path summarized by `summary`.
+ * callees, but not containing any unmatched calls or returns) along a path summarized by
+ * `summary`.
  *
  * Note that the summary does not take the initial step from argument to parameter
  * into account.
@@ -577,7 +578,7 @@ private predicate reachableFromInput(
 }
 
 /**
- * Holds if there is a step from `pred` to `succ` under `cfg` that can be appended
+ * Holds if there is a level step from `pred` to `succ` under `cfg` that can be appended
  * to a path represented by `oldSummary` yielding a path represented by `newSummary`.
  */
 pragma[noinline]
@@ -587,6 +588,7 @@ private predicate appendStep(
 ) {
   exists(PathSummary stepSummary |
     flowStep(pred, cfg, succ, stepSummary) and
+    stepSummary.isLevel() and
     newSummary = oldSummary.append(stepSummary)
   )
 }
@@ -819,7 +821,7 @@ private predicate reachableFromSource(
     isSource(nd, cfg, lbl) and
     not cfg.isBarrier(nd) and
     not cfg.isLabeledBarrier(nd, lbl) and
-    summary = MkPathSummary(false, false, lbl, lbl)
+    summary = PathSummary::level(lbl)
   )
   or
   exists(DataFlow::Node pred, PathSummary oldSummary, PathSummary newSummary |
@@ -952,14 +954,19 @@ class PathNode extends TPathNode {
  * A path node corresponding to a flow source.
  */
 class SourcePathNode extends PathNode {
-  SourcePathNode() { isSource(nd, cfg, _) }
+  SourcePathNode() {
+    exists(FlowLabel lbl |
+      summary = PathSummary::level(lbl) and
+      isSource(nd, cfg, lbl)
+    )
+  }
 }
 
 /**
  * A path node corresponding to a flow sink.
  */
 class SinkPathNode extends PathNode {
-  SinkPathNode() { isSink(nd, cfg, _) }
+  SinkPathNode() { isSink(nd, cfg, summary.getEndLabel()) }
 }
 
 /**

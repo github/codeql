@@ -131,8 +131,8 @@ private module NodeTracking {
 
   /**
    * Holds if `input`, which is either an argument to `f` at `invk` or a definition
-   * that is captured by `f`, may flow to `nd` (possibly through callees) along
-   * a path summarized by `summary`.
+   * that is captured by `f`, may flow to `nd` (possibly through callees, but not containing
+   * any unmatched calls or returns) along a path summarized by `summary`.
    */
   private predicate reachableFromInput(
     Function f, DataFlow::Node invk, DataFlow::Node input, DataFlow::Node nd, PathSummary summary
@@ -143,6 +143,7 @@ private module NodeTracking {
     exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
       reachableFromInput(f, invk, input, mid, oldSummary) and
       flowStep(mid, nd, newSummary) and
+      newSummary.isLevel() and
       summary = oldSummary.append(newSummary)
     )
   }

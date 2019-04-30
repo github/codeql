@@ -78,13 +78,11 @@ edges
 | tst.js:6:34:6:55 | documen ... on.href | tst.js:6:20:6:56 | indirec ... n.href) |
 #select
 | tst2.js:4:21:4:55 | href.su ... '?')+1) | tst2.js:2:14:2:28 | window.location | tst2.js:4:21:4:55 | href.su ... '?')+1) | Untrusted URL redirection due to $@. | tst2.js:2:14:2:28 | window.location | user-provided value |
-| tst2.js:4:21:4:55 | href.su ... '?')+1) | tst2.js:2:14:2:28 | window.location | tst2.js:4:21:4:55 | href.su ... '?')+1) | Untrusted URL redirection due to $@. | tst2.js:2:14:2:28 | window.location | user-provided value |
 | tst6.js:4:21:4:28 | redirect | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:4:21:4:28 | redirect | Untrusted URL redirection due to $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
 | tst6.js:6:17:6:24 | redirect | tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:6:17:6:24 | redirect | Untrusted URL redirection due to $@. | tst6.js:2:18:2:45 | $locati ... irect') | user-provided value |
 | tst6.js:8:21:8:56 | $locati ... + "foo" | tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" | Untrusted URL redirection due to $@. | tst6.js:8:21:8:48 | $locati ... irect') | user-provided value |
 | tst7.js:2:12:2:35 | documen ... .search | tst7.js:2:12:2:28 | document.location | tst7.js:2:12:2:35 | documen ... .search | Untrusted URL redirection due to $@. | tst7.js:2:12:2:28 | document.location | user-provided value |
 | tst7.js:5:27:5:50 | documen ... .search | tst7.js:5:27:5:43 | document.location | tst7.js:5:27:5:50 | documen ... .search | Untrusted URL redirection due to $@. | tst7.js:5:27:5:43 | document.location | user-provided value |
-| tst9.js:2:21:2:55 | documen ... ring(1) | tst9.js:2:21:2:37 | document.location | tst9.js:2:21:2:55 | documen ... ring(1) | Untrusted URL redirection due to $@. | tst9.js:2:21:2:37 | document.location | user-provided value |
 | tst9.js:2:21:2:55 | documen ... ring(1) | tst9.js:2:21:2:37 | document.location | tst9.js:2:21:2:55 | documen ... ring(1) | Untrusted URL redirection due to $@. | tst9.js:2:21:2:37 | document.location | user-provided value |
 | tst10.js:5:17:5:46 | '/' + d ... .search | tst10.js:5:23:5:39 | document.location | tst10.js:5:17:5:46 | '/' + d ... .search | Untrusted URL redirection due to $@. | tst10.js:5:23:5:39 | document.location | user-provided value |
 | tst10.js:8:17:8:47 | '//' +  ... .search | tst10.js:8:24:8:40 | document.location | tst10.js:8:17:8:47 | '//' +  ... .search | Untrusted URL redirection due to $@. | tst10.js:8:24:8:40 | document.location | user-provided value |
