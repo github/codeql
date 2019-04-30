@@ -154,7 +154,21 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
         }
     }
 
-    forEachNode(ast, (node: AugmentedNode) => {
+    // Number of conditional type expressions the visitor is currently inside.
+    // We disable type extraction inside such type expressions, to avoid complications
+    // with `infer` types.
+    let insideConditionalTypes = 0;
+
+    visitAstNode(ast);
+    function visitAstNode(node: AugmentedNode) {
+        if (node.kind === ts.SyntaxKind.ConditionalType) {
+            ++insideConditionalTypes;
+        }
+        ts.forEachChild(node, visitAstNode);
+        if (node.kind === ts.SyntaxKind.ConditionalType) {
+            --insideConditionalTypes;
+        }
+
         // fill in line/column info
         if ("pos" in node) {
             node.$pos = augmentPos(node.pos, true);
@@ -174,7 +188,7 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
             }
         }
 
-        if (typeChecker != null) {
+        if (typeChecker != null && insideConditionalTypes === 0) {
             if (isTypedNode(node)) {
                 let type = typeChecker.getTypeAtLocation(node);
                 if (type != null) {
@@ -245,7 +259,7 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
                 }
             }
         }
-    });
+    }
 }
 
 type NamedNodeWithSymbol = AugmentedNode & (ts.ClassDeclaration | ts.InterfaceDeclaration
