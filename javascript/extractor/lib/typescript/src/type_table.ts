@@ -819,8 +819,24 @@ export class TypeTable {
     this.isInShallowTypeContext = false;
   }
 
+  /**
+   * Returns the properties of the given type, or `null` if the properties of this
+   * type could not be computed.
+   */
+  private tryGetProperties(type: ts.Type) {
+    // Workaround for https://github.com/Microsoft/TypeScript/issues/30845
+    // Should be safe to remove once that has been fixed.
+    try {
+      return type.getProperties();
+    } catch (e) {
+      return null;
+    }
+  }
+
   private extractProperties(type: ts.Type, id: number) {
-    for (let symbol of type.getProperties()) {
+    let props = this.tryGetProperties(type);
+    if (props == null) return;
+    for (let symbol of props) {
       let propertyType = this.typeChecker.getTypeOfSymbolAtLocation(symbol, this.arbitraryAstNode);
       if (propertyType == null) continue;
       let propertyTypeId = this.getId(propertyType);
