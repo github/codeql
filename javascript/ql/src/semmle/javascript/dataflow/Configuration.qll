@@ -599,14 +599,21 @@ private predicate appendStep(
  * configuration `cfg`, possibly through callees.
  */
 private predicate flowThroughCall(
-  DataFlow::Node input, DataFlow::Node invk, DataFlow::Configuration cfg, PathSummary summary
+  DataFlow::Node input, DataFlow::Node output, DataFlow::Configuration cfg, PathSummary summary
 ) {
   exists(Function f, DataFlow::ValueNode ret |
     ret.asExpr() = f.getAReturnedExpr() and
-    calls(invk, f) and // Do not consider partial calls
-    reachableFromInput(f, invk, input, ret, cfg, summary) and
-    not cfg.isBarrier(ret, invk) and
-    not cfg.isLabeledBarrier(invk, summary.getEndLabel())
+    calls(output, f) and // Do not consider partial calls
+    reachableFromInput(f, output, input, ret, cfg, summary) and
+    not cfg.isBarrier(ret, output) and
+    not cfg.isLabeledBarrier(output, summary.getEndLabel())
+  )
+  or
+  exists(Function f, DataFlow::Node invk, DataFlow::Node ret |
+    DataFlow::exceptionalFunctionReturnNode(ret, f) and
+    DataFlow::exceptionalInvocationReturnNode(output, invk.asExpr()) and
+    calls(invk, f) and
+    reachableFromInput(f, invk, input, ret, cfg, summary)
   )
 }
 
