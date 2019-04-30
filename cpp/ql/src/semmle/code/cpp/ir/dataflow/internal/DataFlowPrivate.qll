@@ -1,7 +1,7 @@
 private import cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
-private import semmle.code.cpp.dataflow.internal.DataFlowDispatch
+private import DataFlowDispatch
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
@@ -15,14 +15,9 @@ class ArgumentNode extends Node {
    * The instance argument is considered to have index `-1`.
    */
   predicate argumentOf(DataFlowCall call, int pos) {
-    exists(CallInstruction callInstr |
-      callInstr.getAST() = call and
-      (
-        this = callInstr.getPositionalArgument(pos)
-        or
-        this = callInstr.getThisArgument() and pos = -1
-      )
-    )
+    this = call.getPositionalArgument(pos)
+    or
+    this = call.getThisArgument() and pos = -1
   }
 
   /** Gets the call in which this node is an argument. */
@@ -52,11 +47,9 @@ class ReturnNode extends Node {
 }
 
 /** A data flow node that represents a call. */
-class OutNode extends ExprNode {
-  OutNode() { this.getExpr() instanceof FunctionCall }
-
+class OutNode extends Node, CallInstruction {
   /** Gets the underlying call. */
-  DataFlowCall getCall() { result = this.getExpr() }
+  DataFlowCall getCall() { result = this }
 }
 
 /** Gets a node that can read the value returned at position `pos`. */
@@ -198,19 +191,11 @@ class DataFlowType = Type;
 class DataFlowLocation = Location;
 
 /** A function call relevant for data flow. */
-class DataFlowCall extends Expr {
-  DataFlowCall() { this instanceof Call }
-
+class DataFlowCall extends CallInstruction, Node {
   /**
    * Gets the nth argument for this call.
    *
    * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
    */
-  Expr getArgument(int n) { result = this.(Call).getArgument(n) }
-
-  /** Gets the data flow node corresponding to this call. */
-  ExprNode getNode() { result.getExpr() = this }
-
-  /** Gets the enclosing callable of this call. */
-  Function getEnclosingCallable() { result = this.getEnclosingFunction() }
+  Node getArgument(int n) { result = this.getPositionalArgument(n) }
 }

@@ -3,7 +3,7 @@
  */
 module Private {
   import DataFlowPrivate
-  import semmle.code.cpp.dataflow.internal.DataFlowDispatch
+  import DataFlowDispatch
 }
 
 module Public {
