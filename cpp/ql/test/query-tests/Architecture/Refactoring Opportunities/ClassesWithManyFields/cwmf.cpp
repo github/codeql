@@ -56,3 +56,29 @@ struct MyParticle {
   class texture *tex;
   float u1, v1, u2, v2;
 };
+
+struct MyAlphaClass1 {
+  int a1, b1, c1, d1, e1, f1, g1, h1, i1, j1;
+  int k1, l1, m1, n1, o1, p1, q1, r1, s1, t1;
+  int u1, v1, w1, x1, y1, z1;
+
+  // ...
+  // ...
+  // ...
+
+  int a2, b2, c2, d2, e2, f2, g2, h2, i2, j2;
+  int k2, l2, m2, n2, o2, p2, q2, r2, s2, t2;
+  int u2, v2, w2, x2, y2, z2;
+};
+
+struct MyAlphaClass2 {
+  int x;
+
+  // ...
+  // ...
+  // ...
+
+  int a1, b1, c1, d1, e1, f1, g1, h1, i1, j1;
+  int k1, l1, m1, n1, o1, p1, q1, r1, s1, t1;
+  int u1, v1, w1, x1, y1, z1;
+};
