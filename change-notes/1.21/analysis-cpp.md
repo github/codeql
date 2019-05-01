@@ -6,6 +6,8 @@
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
+| `()`-declared function called with too few arguments (`cpp/too-few-arguments`) | Correctness | Find all cases where the number of arguments is less than the number of parameters of the function, provided the function is also properly declared/defined elsewhere. |
+| `()`-declared function called with mismatched arguments (`cpp/mismatched-function-arguments`) | Correctness | Find all cases where the types of arguments do not match the types of parameters of the function, provided the function is also properly declared/defined elsewhere. |
 
 ## Changes to existing queries
 
@@ -24,6 +26,7 @@
 | Use of potentially dangerous function | More correct results | Calls to `localtime`, `ctime` and `asctime` are now detected by this query. |
 | Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | More correct results and fewer false positive results | This query now more accurately identifies wide and non-wide string/character format arguments on different platforms.  Platform detection has also been made more accurate for the purposes of this query. |
 | Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | Fewer false positive results | Non-standard uses of %L are now understood. |
+| `()`-declared function called with too many arguments (`cpp/futile-params`) | Improved coverage | Query has been generalized to find all cases where the number of arguments exceedes the number of parameters of the function, provided the function is also properly declared/defined elsewhere. |
 
 ## Changes to QL libraries
 - Additional support for definition by reference has been added to the `semmle.code.cpp.dataflow.TaintTracking` library.

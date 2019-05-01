@@ -1,3 +1,0 @@
-| test.c:8:3:8:16 | call to declared_empty | This call has arguments, but $@ is not declared with any parameters. | test.c:1:6:1:19 | declared_empty | declared_empty |
-| test.c:14:3:14:19 | call to not_yet_declared1 | This call has arguments, but $@ is not declared with any parameters. | test.c:14:3:14:3 | not_yet_declared1 | not_yet_declared1 |
-| test.c:14:3:14:19 | call to not_yet_declared1 | This call has arguments, but $@ is not declared with any parameters. | test.c:25:6:25:22 | not_yet_declared1 | not_yet_declared1 |
