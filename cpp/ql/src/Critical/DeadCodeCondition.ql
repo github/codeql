@@ -26,9 +26,9 @@ predicate choice(LocalScopeVariable v, Stmt branch, string value) {
   exists(AnalysedExpr e |
     testAndBranch(e, branch) and
     (
-      (e.getNullSuccessor(v) = branch and value = "null")
+      e.getNullSuccessor(v) = branch and value = "null"
       or
-      (e.getNonNullSuccessor(v) = branch and value = "non-null")
+      e.getNonNullSuccessor(v) = branch and value = "non-null"
     )
   )
 }
@@ -60,9 +60,9 @@ where
   exists(cond.getNullSuccessor(v)) and
   not addressLeak(v, branch.getChildStmt*()) and
   (
-    (cond.isNullCheck(v) and test = "null")
+    cond.isNullCheck(v) and test = "null"
     or
-    (cond.isValidCheck(v) and test = "non-null")
+    cond.isValidCheck(v) and test = "non-null"
   ) and
   (if context = test then testresult = "succeed" else testresult = "fail")
 select cond,

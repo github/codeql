@@ -1,6 +1,7 @@
 /**
  * Provides predicates for associating new/malloc calls with delete/free.
  */
+
 import cpp
 import semmle.code.cpp.controlflow.SSA
 import semmle.code.cpp.dataflow.DataFlow
@@ -12,24 +13,20 @@ import semmle.code.cpp.dataflow.DataFlow
 predicate allocExpr(Expr alloc, string kind) {
   isAllocationExpr(alloc) and
   (
-    (
-      alloc instanceof FunctionCall and
-      kind = "malloc"
-    ) or (
-      alloc instanceof NewExpr and
-      kind = "new" and
-
-      // exclude placement new and custom overloads as they
-      // may not conform to assumptions
-      not alloc.(NewExpr).getAllocatorCall().getTarget().getNumberOfParameters() > 1
-    ) or (
-      alloc instanceof NewArrayExpr and
-      kind = "new[]" and
-
-      // exclude placement new and custom overloads as they
-      // may not conform to assumptions
-      not alloc.(NewArrayExpr).getAllocatorCall().getTarget().getNumberOfParameters() > 1
-    )
+    alloc instanceof FunctionCall and
+    kind = "malloc"
+    or
+    alloc instanceof NewExpr and
+    kind = "new" and
+    // exclude placement new and custom overloads as they
+    // may not conform to assumptions
+    not alloc.(NewExpr).getAllocatorCall().getTarget().getNumberOfParameters() > 1
+    or
+    alloc instanceof NewArrayExpr and
+    kind = "new[]" and
+    // exclude placement new and custom overloads as they
+    // may not conform to assumptions
+    not alloc.(NewArrayExpr).getAllocatorCall().getTarget().getNumberOfParameters() > 1
   )
 }
 
@@ -40,13 +37,14 @@ predicate allocExpr(Expr alloc, string kind) {
  */
 predicate allocExprOrIndirect(Expr alloc, string kind) {
   // direct alloc
-  allocExpr(alloc, kind) or
-
+  allocExpr(alloc, kind)
+  or
   exists(ReturnStmt rtn |
     // indirect alloc via function call
     alloc.(FunctionCall).getTarget() = rtn.getEnclosingFunction() and
     (
-      allocExprOrIndirect(rtn.getExpr(), kind) or
+      allocExprOrIndirect(rtn.getExpr(), kind)
+      or
       exists(Expr e |
         allocExprOrIndirect(e, kind) and
         DataFlow::localFlow(DataFlow::exprNode(e), DataFlow::exprNode(rtn.getExpr()))
@@ -59,7 +57,8 @@ predicate allocExprOrIndirect(Expr alloc, string kind) {
  * Holds if `v` is a non-local variable which is assigned with allocations of
  * type `kind`.
  */
-private pragma[nomagic] predicate allocReachesVariable(Variable v, Expr alloc, string kind) {
+pragma[nomagic]
+private predicate allocReachesVariable(Variable v, Expr alloc, string kind) {
   exists(Expr mid |
     not v instanceof LocalScopeVariable and
     v.getAnAssignedValue() = mid and
@@ -73,18 +72,20 @@ private pragma[nomagic] predicate allocReachesVariable(Variable v, Expr alloc, s
  * string describing the type of that allocation.
  */
 private predicate allocReaches0(Expr e, Expr alloc, string kind) {
-  (
-    // alloc
-    allocExprOrIndirect(alloc, kind) and
-    e = alloc
-  ) or exists(SsaDefinition def, LocalScopeVariable v |
+  // alloc
+  allocExprOrIndirect(alloc, kind) and
+  e = alloc
+  or
+  exists(SsaDefinition def, LocalScopeVariable v |
     // alloc via SSA
     allocReaches0(def.getAnUltimateDefiningValue(v), alloc, kind) and
     e = def.getAUse(v)
-  ) or exists(Variable v |
+  )
+  or
+  exists(Variable v |
     // alloc via a global
     allocReachesVariable(v, alloc, kind) and
-    strictcount(VariableAccess va | va.getTarget() = v) <= 50 and // avoid very expensive cases 
+    strictcount(VariableAccess va | va.getTarget() = v) <= 50 and // avoid very expensive cases
     e.(VariableAccess).getTarget() = v
   )
 }
@@ -97,7 +98,7 @@ private predicate allocReaches0(Expr e, Expr alloc, string kind) {
 predicate allocReaches(Expr e, Expr alloc, string kind) {
   allocReaches0(e, alloc, kind) and
   not exists(string k2 |
-    allocReaches0(e, _, k2)  and
+    allocReaches0(e, _, k2) and
     kind != k2
   )
 }
@@ -108,16 +109,14 @@ predicate allocReaches(Expr e, Expr alloc, string kind) {
  * describing the type of that free or delete.
  */
 predicate freeExpr(Expr free, Expr freed, string kind) {
-  (
-    freeCall(free, freed) and
-    kind = "free"
-  ) or (
-    free.(DeleteExpr).getExpr() = freed and
-    kind = "delete"
-  ) or (
-    free.(DeleteArrayExpr).getExpr() = freed and
-    kind = "delete[]"
-  )
+  freeCall(free, freed) and
+  kind = "free"
+  or
+  free.(DeleteExpr).getExpr() = freed and
+  kind = "delete"
+  or
+  free.(DeleteArrayExpr).getExpr() = freed and
+  kind = "delete[]"
 }
 
 /**
@@ -128,8 +127,8 @@ predicate freeExpr(Expr free, Expr freed, string kind) {
  */
 predicate freeExprOrIndirect(Expr free, Expr freed, string kind) {
   // direct free
-  freeExpr(free, freed, kind) or
-
+  freeExpr(free, freed, kind)
+  or
   // indirect free via function call
   exists(Expr internalFree, Expr internalFreed, int arg |
     freeExprOrIndirect(internalFree, internalFreed, kind) and

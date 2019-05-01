@@ -10,15 +10,17 @@
  *       statistical
  *       non-attributable
  */
+
 import cpp
 
 from Function f, Parameter p, Type t, int size
-where f.getAParameter() = p
-  and p.getType() = t
-  and t.getSize() = size
-  and size > 64
-  and not t.getUnderlyingType() instanceof ArrayType
-  and not f instanceof CopyAssignmentOperator
-select
-  p, "This parameter of type $@ is " + size.toString() + " bytes - consider passing a const pointer/reference instead.",
-  t, t.toString()
+where
+  f.getAParameter() = p and
+  p.getType() = t and
+  t.getSize() = size and
+  size > 64 and
+  not t.getUnderlyingType() instanceof ArrayType and
+  not f instanceof CopyAssignmentOperator
+select p,
+  "This parameter of type $@ is " + size.toString() +
+    " bytes - consider passing a const pointer/reference instead.", t, t.toString()

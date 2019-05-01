@@ -1,6 +1,6 @@
 /**
  * @name Dead code due to goto or break statement
- * @description A goto or break statement is followed by unreachable code. 
+ * @description A goto or break statement is followed by unreachable code.
  * @kind problem
  * @problem.severity warning
  * @precision high
@@ -21,16 +21,17 @@ Stmt getNextRealStmt(Block b, int i) {
 }
 
 from JumpStmt js, Block b, int i, Stmt s
-where b.getStmt(i) = js
-  and s = getNextRealStmt(b, i)
+where
+  b.getStmt(i) = js and
+  s = getNextRealStmt(b, i) and
   // the next statement isn't jumped to
-  and not s instanceof LabelStmt
-  and not s instanceof SwitchCase
+  not s instanceof LabelStmt and
+  not s instanceof SwitchCase and
   // the next statement isn't breaking out of a switch
-  and not s.(BreakStmt).getBreakable() instanceof SwitchStmt
+  not s.(BreakStmt).getBreakable() instanceof SwitchStmt and
   // the next statement isn't a loop that can be jumped into
-  and not exists (LabelStmt ls | s.(Loop).getStmt().getAChild*() = ls)
-  and not exists (SwitchCase sc | s.(Loop).getStmt().getAChild*() = sc)
+  not exists(LabelStmt ls | s.(Loop).getStmt().getAChild*() = ls) and
+  not exists(SwitchCase sc | s.(Loop).getStmt().getAChild*() = sc) and
   // no preprocessor logic applies
-  and not functionContainsPreprocCode(js.getEnclosingFunction())
+  not functionContainsPreprocCode(js.getEnclosingFunction())
 select js, "This statement makes $@ unreachable.", s, s.toString()

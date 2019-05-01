@@ -8,9 +8,11 @@
  *       security
  *       external/cwe/cwe-476
  */
+
 import cpp
 
 from VariableAccess access
-where maybeNull(access)
-  and dereferenced(access)
+where
+  maybeNull(access) and
+  dereferenced(access)
 select access, "Value may be null; it should be checked before dereferencing."
