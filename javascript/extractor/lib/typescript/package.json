@@ -2,7 +2,7 @@
     "name": "typescript-parser-wrapper",
     "private": true,
     "dependencies": {
-        "typescript": "3.4"
+        "typescript": "3.4.5"
     },
     "scripts": {
         "build": "tsc --project tsconfig.json && rollup -c",

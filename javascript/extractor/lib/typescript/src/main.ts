@@ -372,7 +372,9 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     function getEffectiveExportTarget(symbol: ts.Symbol) {
         if (symbol.exports != null && symbol.exports.has(ts.InternalSymbolName.ExportEquals)) {
             let exportAlias = symbol.exports.get(ts.InternalSymbolName.ExportEquals);
-            return typeChecker.getAliasedSymbol(exportAlias);
+            if (exportAlias.flags & ts.SymbolFlags.Alias) {
+                return typeChecker.getAliasedSymbol(exportAlias);
+            }
         }
         return symbol;
     }
