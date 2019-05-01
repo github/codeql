@@ -1017,11 +1017,6 @@ class FoldExpr extends Expr, @foldexpr {
     this.isBinaryFold() and
     if this.isRightFold() then result = getChild(1) else result = getChild(0)
   }
-
-  /**
-   * Holds if this is a binary fold with a child expression representing the initial value.
-   */
-  predicate hasInitExpr() { exists(this.getInitExpr()) }
 }
 
 /**
