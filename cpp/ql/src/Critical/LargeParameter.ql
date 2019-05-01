@@ -10,28 +10,32 @@
  *       statistical
  *       non-attributable
  */
+
 import cpp
 import semmle.code.cpp.dataflow.EscapesTree
 
 from Function f, Parameter p, Type t, int size
-where f.getAParameter() = p
-  and p.getType() = t
-  and t.getSize() = size
-  and size > 64
-  and not t.getUnderlyingType() instanceof ArrayType
-  and not f instanceof CopyAssignmentOperator
+where
+  f.getAParameter() = p and
+  p.getType() = t and
+  t.getSize() = size and
+  size > 64 and
+  not t.getUnderlyingType() instanceof ArrayType and
+  not f instanceof CopyAssignmentOperator and
   // exception: p is written to, which may mean the copy is intended
-  and not p.getAnAccess().isAddressOfAccessNonConst()
-  and not exists(Expr e |
+  not p.getAnAccess().isAddressOfAccessNonConst() and
+  not exists(Expr e |
     variableAccessedAsValue(p.getAnAccess(), e.getFullyConverted()) and
     (
-      exists(Assignment an | an.getLValue() = e) or
-      exists(CrementOperation co | co.getOperand() = e) or
+      exists(Assignment an | an.getLValue() = e)
+      or
+      exists(CrementOperation co | co.getOperand() = e)
+      or
       exists(FunctionCall fc | fc.getQualifier() = e and not fc.getTarget().hasSpecifier("const"))
     )
-  )
+  ) and
   // if there's no block, we can't tell how the parameter is used
-  and exists(f.getBlock())
-select
-  p, "This parameter of type $@ is " + size.toString() + " bytes - consider passing a const pointer/reference instead.",
-  t, t.toString()
+  exists(f.getBlock())
+select p,
+  "This parameter of type $@ is " + size.toString() +
+    " bytes - consider passing a const pointer/reference instead.", t, t.toString()
