@@ -166,7 +166,7 @@ private module TrackedVariablesImpl {
   /** Holds if `f` is accessed inside a loop. */
   private predicate loopAccessed(SsaSourceField f) {
     exists(LoopStmt l, FieldRead fr | fr = f.getAnAccess() |
-      l.getBody() = fr.getEnclosingStmt().getParent*() or
+      l.getBody() = fr.getEnclosingStmt().getEnclosingStmt*() or
       l.getCondition() = fr.getParent*() or
       l.(ForStmt).getAnUpdate() = fr.getParent*()
     )

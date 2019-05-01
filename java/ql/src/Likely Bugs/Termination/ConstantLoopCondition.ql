@@ -29,10 +29,10 @@ predicate loopWhileTrue(LoopStmt loop) {
  * is worth flagging even if it has a reachable exceptional loop exit.
  */
 predicate loopExit(LoopStmt loop, Stmt exit) {
-  exit.getParent*() = loop.getBody() and
+  exit.getEnclosingStmt*() = loop.getBody() and
   (
     exit instanceof ReturnStmt or
-    exit.(BreakStmt).(JumpStmt).getTarget() = loop.getParent*()
+    exit.(BreakStmt).(JumpStmt).getTarget() = loop.getEnclosingStmt*()
   )
 }
 
@@ -43,7 +43,7 @@ predicate loopExit(LoopStmt loop, Stmt exit) {
 predicate loopExitGuard(LoopStmt loop, Expr cond) {
   exists(ConditionBlock cb, boolean branch |
     cond = cb.getCondition() and
-    cond.getEnclosingStmt().getParent*() = loop.getBody() and
+    cond.getEnclosingStmt().getEnclosingStmt*() = loop.getBody() and
     forex(Stmt exit | loopExit(loop, exit) | cb.controls(exit.getBasicBlock(), branch))
   )
 }
@@ -60,7 +60,7 @@ predicate mainLoopCondition(LoopStmt loop, Expr cond) {
     then loopReentry = loop.(ForStmt).getUpdate(0)
     else loopReentry = cond
   |
-    last.getEnclosingStmt().getParent*() = loop.getBody() and
+    last.getEnclosingStmt().getEnclosingStmt*() = loop.getBody() and
     last.getASuccessor().(Expr).getParent*() = loopReentry
   )
 }
@@ -74,7 +74,7 @@ where
   ) and
   // None of the ssa variables in `cond` are updated inside the loop.
   forex(SsaVariable ssa, RValue use | ssa.getAUse() = use and use.getParent*() = cond |
-    not ssa.getCFGNode().getEnclosingStmt().getParent*() = loop or
+    not ssa.getCFGNode().getEnclosingStmt().getEnclosingStmt*() = loop or
     ssa.getCFGNode().(Expr).getParent*() = loop.(ForStmt).getAnInit()
   ) and
   // And `cond` does not use method calls, field reads, or array reads.

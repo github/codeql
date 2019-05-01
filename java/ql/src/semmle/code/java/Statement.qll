@@ -24,6 +24,14 @@ class Stmt extends StmtParent, ExprParent, @stmt {
   /** Gets the parent of this statement. */
   StmtParent getParent() { stmts(this, _, result, _, _) }
 
+  /**
+   * Gets the statement containing this statement, if any.
+   */
+  Stmt getEnclosingStmt() {
+    result = this.getParent() or
+    result = this.getParent().(SwitchExpr).getEnclosingStmt()
+  }
+
   /** Holds if this statement is the child of the specified parent at the specified (zero-based) position. */
   predicate isNthChildOf(StmtParent parent, int index) {
     this.getParent() = parent and this.getIndex() = index
@@ -400,23 +408,63 @@ class SwitchStmt extends Stmt, @switchstmt {
 }
 
 /**
- * A case of a `switch` statement.
+ * A case of a `switch` statement or expression.
  *
  * This includes both normal `case`s and the `default` case.
  */
 class SwitchCase extends Stmt, @case {
+  /** Gets the switch statement to which this case belongs, if any. */
   SwitchStmt getSwitch() { result.getACase() = this }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Gets the switch expression to which this case belongs, if any.
+   */
+  SwitchExpr getSwitchExpr() { result.getACase() = this }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Holds if this `case` is a switch labeled rule of the form `... -> ...`.
+   */
+  predicate isRule() {
+    exists(Expr e | e.getParent() = this | e.getIndex() = -1)
+    or
+    exists(Stmt s | s.getParent() = this | s.getIndex() = -1)
+  }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Gets the expression on the right-hand side of the arrow, if any.
+   */
+  Expr getRuleExpression() { result.getParent() = this and result.getIndex() = -1 }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Gets the statement on the right-hand side of the arrow, if any.
+   */
+  Stmt getRuleStatement() { result.getParent() = this and result.getIndex() = -1 }
 }
 
 /** A constant `case` of a switch statement. */
 class ConstCase extends SwitchCase {
-  ConstCase() { exists(Expr e | e.getParent() = this) }
+  ConstCase() { exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
 
-  /** Gets the expression of this `case`. */
-  Expr getValue() { result.getParent() = this }
+  /** Gets the `case` constant at index 0. */
+  Expr getValue() { result.getParent() = this and result.getIndex() = 0 }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Gets the `case` constant at the specified index.
+   */
+  Expr getValue(int i) { result.getParent() = this and result.getIndex() = i and i >= 0 }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
-  override string pp() { result = "case ...:" }
+  override string pp() { result = "case ..." }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */
   override string getHalsteadID() { result = "ConstCase" }
@@ -424,7 +472,7 @@ class ConstCase extends SwitchCase {
 
 /** A `default` case of a `switch` statement */
 class DefaultCase extends SwitchCase {
-  DefaultCase() { not exists(Expr e | e.getParent() = this) }
+  DefaultCase() { not exists(Expr e | e.getParent() = this | e.getIndex() >= 0) }
 
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() { result = "default" }
@@ -485,12 +533,12 @@ class ThrowStmt extends Stmt, @throwstmt {
   }
 
   private Stmt findEnclosing() {
-    result = getParent()
+    result = getEnclosingStmt()
     or
     exists(Stmt mid |
       mid = findEnclosing() and
       not exists(this.catchClauseForThis(mid.(TryStmt))) and
-      result = mid.getParent()
+      result = mid.getEnclosingStmt()
     )
   }
 
@@ -498,7 +546,7 @@ class ThrowStmt extends Stmt, @throwstmt {
     result = try.getACatchClause() and
     result.getEnclosingCallable() = this.getEnclosingCallable() and
     getExpr().getType().(RefType).hasSupertype*(result.getVariable().getType().(RefType)) and
-    not this.getParent+() = result
+    not this.getEnclosingStmt+() = result
   }
 }
 
@@ -514,14 +562,14 @@ class JumpStmt extends Stmt {
    * `continue` statement refers to, if any.
    */
   LabeledStmt getTargetLabel() {
-    this.getParent+() = result and
+    this.getEnclosingStmt+() = result and
     namestrings(result.getLabel(), _, this)
   }
 
   private Stmt getLabelTarget() { result = getTargetLabel().getStmt() }
 
   private Stmt getAPotentialTarget() {
-    this.getParent+() = result and
+    this.getEnclosingStmt+() = result and
     (
       result instanceof LoopStmt
       or
@@ -529,15 +577,22 @@ class JumpStmt extends Stmt {
     )
   }
 
-  private Stmt getEnclosingTarget() {
+  private SwitchExpr getSwitchExprTarget() {
+    this.(BreakStmt).hasValue() and result = this.getParent+()
+  }
+
+  private StmtParent getEnclosingTarget() {
+    result = getSwitchExprTarget()
+    or
+    not exists(getSwitchExprTarget()) and
     result = getAPotentialTarget() and
-    not exists(Stmt other | other = getAPotentialTarget() | other.getParent+() = result)
+    not exists(Stmt other | other = getAPotentialTarget() | other.getEnclosingStmt+() = result)
   }
 
   /**
-   * Gets the statement that this `break` or `continue` jumps to.
+   * Gets the statement or `switch` expression that this `break` or `continue` jumps to.
    */
-  Stmt getTarget() {
+  StmtParent getTarget() {
     result = getLabelTarget()
     or
     not exists(getLabelTarget()) and result = getEnclosingTarget()
@@ -552,9 +607,25 @@ class BreakStmt extends Stmt, @breakstmt {
   /** Holds if this `break` statement has an explicit label. */
   predicate hasLabel() { exists(string s | s = this.getLabel()) }
 
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Gets the value of this `break` statement, if any.
+   */
+  Expr getValue() { result.getParent() = this }
+
+  /**
+   * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
+   *
+   * Holds if this `break` statement has a value.
+   */
+  predicate hasValue() { exists(Expr e | e.getParent() = this) }
+
   /** Gets a printable representation of this statement. May include more detail than `toString()`. */
   override string pp() {
-    if this.hasLabel() then result = "break " + this.getLabel() else result = "break"
+    if this.hasLabel()
+    then result = "break " + this.getLabel()
+    else if this.hasValue() then result = "break ..." else result = "break"
   }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */

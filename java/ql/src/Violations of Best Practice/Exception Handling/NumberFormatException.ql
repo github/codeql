@@ -81,7 +81,7 @@ from Expr e
 where
   throwsNFE(e) and
   not exists(TryStmt t |
-    t.getBlock() = e.getEnclosingStmt().getParent*() and
+    t.getBlock() = e.getEnclosingStmt().getEnclosingStmt*() and
     catchesNFE(t)
   ) and
   not exists(Callable c |

@@ -23,6 +23,6 @@ from SynchronizedStmt s, Field f, Assignment a
 where
   synchField(s) = f and
   assignmentToField(a) = f and
-  a.getEnclosingStmt().getParent*() = s
+  a.getEnclosingStmt().getEnclosingStmt*() = s
 select a, "Synchronization on field $@ in futile attempt to guard that field.", f,
   f.getDeclaringType().getName() + "." + f.getName()

@@ -24,7 +24,7 @@ predicate withinInitializer(Expr e) {
 }
 
 predicate locallySynchronized(MethodAccess ma) {
-  ma.getEnclosingStmt().getParent+() instanceof SynchronizedStmt
+  ma.getEnclosingStmt().getEnclosingStmt+() instanceof SynchronizedStmt
 }
 
 predicate hasUnsynchronizedCall(Method m) {
@@ -41,7 +41,7 @@ predicate hasUnsynchronizedCall(Method m) {
 
 predicate withinLocalSynchronization(Expr e) {
   e.getEnclosingCallable().isSynchronized() or
-  e.getEnclosingStmt().getParent+() instanceof SynchronizedStmt
+  e.getEnclosingStmt().getEnclosingStmt+() instanceof SynchronizedStmt
 }
 
 class MyField extends Field {

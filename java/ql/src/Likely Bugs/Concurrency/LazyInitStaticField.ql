@@ -94,14 +94,14 @@ where
   not method instanceof StaticInitializer and
   // There must be an unsynchronized read.
   exists(IfStmt unsyncNullCheck | unsyncNullCheck = init.getAnEnclosingNullCheck() |
-    not unsyncNullCheck.getParent+() instanceof ValidSynchStmt
+    not unsyncNullCheck.getEnclosingStmt+() instanceof ValidSynchStmt
   ) and
-  if i.getParent+() instanceof ValidSynchStmt
+  if i.getEnclosingStmt+() instanceof ValidSynchStmt
   then (
     not init.getField().isVolatile() and
     message = "The field must be volatile."
   ) else (
-    if i.getParent+() instanceof SynchronizedStmt
+    if i.getEnclosingStmt+() instanceof SynchronizedStmt
     then message = "Bad synchronization."
     else message = "Missing synchronization."
   )

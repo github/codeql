@@ -444,6 +444,10 @@
 <v>277067</v>
 </e>
 <e>
+<k>@switchexpr</k>
+<v>4</v>
+</e>
+<e>
 <k>@uniontypeaccess</k>
 <v>158</v>
 </e>

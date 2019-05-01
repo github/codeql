@@ -46,7 +46,9 @@ class Synched extends Top {
     or
     result = this.(SynchronizedStmt).getAChild+()
     or
-    exists(MethodAccess ma | ma = result | ma.getEnclosingStmt().getParent*() = this)
+    exists(MethodAccess ma | ma = result |
+      ma.getEnclosingStmt().getEnclosingStmt*() = this or ma.getEnclosingCallable() = this
+    )
   }
 
   /** The variable on which synchronization is performed, provided this element is a `SynchronizedStmt`. */

@@ -34,8 +34,8 @@ class SideEffect extends Expr {
 from IfStmt if1, IfStmt if2, SynchronizedStmt sync, Field f, AssignExpr a, SideEffect se
 where
   doubleCheckedLocking(if1, if2, sync, f) and
-  a.getEnclosingStmt().getParent*() = if2.getThen() and
-  se.getEnclosingStmt().getParent*() = sync.getBlock() and
+  a.getEnclosingStmt().getEnclosingStmt*() = if2.getThen() and
+  se.getEnclosingStmt().getEnclosingStmt*() = sync.getBlock() and
   a.(ControlFlowNode).getASuccessor+() = se and
   a.getDest().(FieldAccess).getField() = f
 select a,
