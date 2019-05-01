@@ -965,7 +965,8 @@ class NoExceptExpr extends Expr, @noexceptexpr {
 }
 
 /**
- * A C++17 fold expression.
+ * A C++17 fold expression. This will only appear in an uninstantiated template; any instantiations
+ * of the template will instead contain the sequence of expressions given by expanding the fold.
  */
 class FoldExpr extends Expr, @foldexpr {
   override string toString() {
