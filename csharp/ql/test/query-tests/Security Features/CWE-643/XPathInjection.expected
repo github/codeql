@@ -3,11 +3,6 @@ edges
 | XPathInjection.cs:12:27:12:49 | access to property QueryString | XPathInjection.cs:19:29:19:132 | ... + ... |
 | XPathInjection.cs:13:27:13:49 | access to property QueryString | XPathInjection.cs:16:33:16:136 | ... + ... |
 | XPathInjection.cs:13:27:13:49 | access to property QueryString | XPathInjection.cs:19:29:19:132 | ... + ... |
-nodes
-| XPathInjection.cs:12:27:12:49 | access to property QueryString |
-| XPathInjection.cs:13:27:13:49 | access to property QueryString |
-| XPathInjection.cs:16:33:16:136 | ... + ... |
-| XPathInjection.cs:19:29:19:132 | ... + ... |
 #select
 | XPathInjection.cs:16:33:16:136 | ... + ... | XPathInjection.cs:12:27:12:49 | access to property QueryString | XPathInjection.cs:16:33:16:136 | ... + ... | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:12:27:12:49 | access to property QueryString | User-provided value |
 | XPathInjection.cs:16:33:16:136 | ... + ... | XPathInjection.cs:13:27:13:49 | access to property QueryString | XPathInjection.cs:16:33:16:136 | ... + ... | $@ flows to here and is used in an XPath expression. | XPathInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |

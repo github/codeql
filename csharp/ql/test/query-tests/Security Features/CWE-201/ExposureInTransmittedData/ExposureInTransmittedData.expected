@@ -1,21 +1,13 @@
 edges
+| ExposureInTransmittedData.cs:16:32:16:39 | access to local variable password | ExposureInTransmittedData.cs:16:32:16:39 | access to local variable password |
+| ExposureInTransmittedData.cs:20:32:20:44 | call to method ToString | ExposureInTransmittedData.cs:20:32:20:44 | call to method ToString |
+| ExposureInTransmittedData.cs:24:32:24:41 | access to property Message | ExposureInTransmittedData.cs:24:32:24:41 | access to property Message |
+| ExposureInTransmittedData.cs:25:32:25:44 | call to method ToString | ExposureInTransmittedData.cs:25:32:25:44 | call to method ToString |
 | ExposureInTransmittedData.cs:26:32:26:38 | access to property Data | ExposureInTransmittedData.cs:26:32:26:50 | access to indexer |
 | ExposureInTransmittedData.cs:32:17:32:36 | call to method GetField | ExposureInTransmittedData.cs:33:53:33:53 | access to local variable p |
 | ExposureInTransmittedData.cs:32:17:32:36 | call to method GetField | ExposureInTransmittedData.cs:33:56:33:56 | access to local variable p |
 | ExposureInTransmittedData.cs:32:17:32:36 | call to method GetField | ExposureInTransmittedData.cs:34:24:34:52 | ... + ... |
 | ExposureInTransmittedData.cs:32:17:32:36 | call to method GetField | ExposureInTransmittedData.cs:35:27:35:27 | access to local variable p |
-nodes
-| ExposureInTransmittedData.cs:16:32:16:39 | access to local variable password |
-| ExposureInTransmittedData.cs:20:32:20:44 | call to method ToString |
-| ExposureInTransmittedData.cs:24:32:24:41 | access to property Message |
-| ExposureInTransmittedData.cs:25:32:25:44 | call to method ToString |
-| ExposureInTransmittedData.cs:26:32:26:38 | access to property Data |
-| ExposureInTransmittedData.cs:26:32:26:50 | access to indexer |
-| ExposureInTransmittedData.cs:32:17:32:36 | call to method GetField |
-| ExposureInTransmittedData.cs:33:53:33:53 | access to local variable p |
-| ExposureInTransmittedData.cs:33:56:33:56 | access to local variable p |
-| ExposureInTransmittedData.cs:34:24:34:52 | ... + ... |
-| ExposureInTransmittedData.cs:35:27:35:27 | access to local variable p |
 #select
 | ExposureInTransmittedData.cs:16:32:16:39 | access to local variable password | ExposureInTransmittedData.cs:16:32:16:39 | access to local variable password | ExposureInTransmittedData.cs:16:32:16:39 | access to local variable password | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:16:32:16:39 | access to local variable password | access to local variable password |
 | ExposureInTransmittedData.cs:20:32:20:44 | call to method ToString | ExposureInTransmittedData.cs:20:32:20:44 | call to method ToString | ExposureInTransmittedData.cs:20:32:20:44 | call to method ToString | Sensitive information from $@ flows to here, and is transmitted to the user. | ExposureInTransmittedData.cs:20:32:20:44 | call to method ToString | call to method ToString |

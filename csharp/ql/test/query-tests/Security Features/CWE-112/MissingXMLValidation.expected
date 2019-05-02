@@ -8,21 +8,6 @@ edges
 | MissingXMLValidation.cs:27:42:27:64 | object creation of type XmlReaderSettings | MissingXMLValidation.cs:29:61:29:72 | access to local variable badSettings2 |
 | MissingXMLValidation.cs:32:42:32:64 | object creation of type XmlReaderSettings | MissingXMLValidation.cs:37:61:37:72 | access to local variable goodSettings |
 | MissingXMLValidation.cs:40:42:40:64 | object creation of type XmlReaderSettings | MissingXMLValidation.cs:47:61:47:72 | access to local variable badSettings3 |
-nodes
-| MissingXMLValidation.cs:14:34:14:56 | access to property QueryString |
-| MissingXMLValidation.cs:18:26:18:58 | object creation of type StringReader |
-| MissingXMLValidation.cs:22:42:22:64 | object creation of type XmlReaderSettings |
-| MissingXMLValidation.cs:23:26:23:58 | object creation of type StringReader |
-| MissingXMLValidation.cs:23:61:23:72 | access to local variable badSettings1 |
-| MissingXMLValidation.cs:27:42:27:64 | object creation of type XmlReaderSettings |
-| MissingXMLValidation.cs:29:26:29:58 | object creation of type StringReader |
-| MissingXMLValidation.cs:29:61:29:72 | access to local variable badSettings2 |
-| MissingXMLValidation.cs:32:42:32:64 | object creation of type XmlReaderSettings |
-| MissingXMLValidation.cs:37:26:37:58 | object creation of type StringReader |
-| MissingXMLValidation.cs:37:61:37:72 | access to local variable goodSettings |
-| MissingXMLValidation.cs:40:42:40:64 | object creation of type XmlReaderSettings |
-| MissingXMLValidation.cs:47:26:47:58 | object creation of type StringReader |
-| MissingXMLValidation.cs:47:61:47:72 | access to local variable badSettings3 |
 #select
 | MissingXMLValidation.cs:18:26:18:58 | object creation of type StringReader | MissingXMLValidation.cs:14:34:14:56 | access to property QueryString | MissingXMLValidation.cs:18:26:18:58 | object creation of type StringReader | $@ flows to here and is processed as XML without validation because there is no 'XmlReaderSettings' instance specifying schema validation. | MissingXMLValidation.cs:14:34:14:56 | access to property QueryString | User-provided value |
 | MissingXMLValidation.cs:23:26:23:58 | object creation of type StringReader | MissingXMLValidation.cs:14:34:14:56 | access to property QueryString | MissingXMLValidation.cs:23:26:23:58 | object creation of type StringReader | $@ flows to here and is processed as XML without validation because the 'XmlReaderSettings' instance does not specify the 'ValidationType' as 'Schema'. | MissingXMLValidation.cs:14:34:14:56 | access to property QueryString | User-provided value |

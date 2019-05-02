@@ -1,4 +1,5 @@
 import csharp
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 
 class MyFlowSource extends DataFlow::Node {
   MyFlowSource() {
@@ -11,7 +12,9 @@ class MyFlowSource extends DataFlow::Node {
     or
     this.asParameter().hasName("tainted")
     or
-    exists(Expr e | e = this.(DataFlow::Internal::ImplicitDelegateCallNode).getArgument() |
+    exists(Expr e |
+      this = DataFlowPrivateCached::TImplicitDelegateOutNode(e.getAControlFlowNode(), _)
+    |
       e.(DelegateCreation).getArgument().(MethodAccess).getTarget().hasName("TaintedMethod") or
       e.(LambdaExpr).getExpressionBody().(StringLiteral).getValue() = "taint source"
     )

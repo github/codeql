@@ -1,10 +1,5 @@
 edges
 | Test.cs:13:50:13:72 | access to property QueryString | Test.cs:13:50:13:84 | access to indexer |
 | Test.cs:18:38:18:60 | object creation of type XmlReaderSettings | Test.cs:23:55:23:62 | access to local variable settings |
-nodes
-| Test.cs:13:50:13:72 | access to property QueryString |
-| Test.cs:13:50:13:84 | access to indexer |
-| Test.cs:18:38:18:60 | object creation of type XmlReaderSettings |
-| Test.cs:23:55:23:62 | access to local variable settings |
 #select
 | Test.cs:13:50:13:84 | access to indexer | Test.cs:13:50:13:72 | access to property QueryString | Test.cs:13:50:13:84 | access to indexer | $@ flows to here and is loaded insecurely as XML (DTD processing is enabled with an insecure resolver). | Test.cs:13:50:13:72 | access to property QueryString | User-provided value |

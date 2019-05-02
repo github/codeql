@@ -6,19 +6,6 @@ edges
 | ConditionalBypass.cs:44:32:44:66 | call to method GetHostByAddress | ConditionalBypass.cs:51:13:51:29 | access to property HostName |
 | ConditionalBypass.cs:72:34:72:52 | access to property Cookies | ConditionalBypass.cs:74:13:74:40 | ... == ... |
 | ConditionalBypass.cs:85:34:85:52 | access to property Cookies | ConditionalBypass.cs:86:13:86:40 | ... == ... |
-nodes
-| ConditionalBypass.cs:14:26:14:48 | access to property QueryString |
-| ConditionalBypass.cs:18:13:18:30 | ... == ... |
-| ConditionalBypass.cs:21:34:21:52 | access to property Cookies |
-| ConditionalBypass.cs:24:13:24:45 | call to method Equals |
-| ConditionalBypass.cs:29:13:29:40 | ... == ... |
-| ConditionalBypass.cs:44:32:44:66 | call to method GetHostByAddress |
-| ConditionalBypass.cs:46:13:46:46 | ... == ... |
-| ConditionalBypass.cs:51:13:51:29 | access to property HostName |
-| ConditionalBypass.cs:72:34:72:52 | access to property Cookies |
-| ConditionalBypass.cs:74:13:74:40 | ... == ... |
-| ConditionalBypass.cs:85:34:85:52 | access to property Cookies |
-| ConditionalBypass.cs:86:13:86:40 | ... == ... |
 #select
 | ConditionalBypass.cs:19:13:19:33 | call to method login | ConditionalBypass.cs:14:26:14:48 | access to property QueryString | ConditionalBypass.cs:18:13:18:30 | ... == ... | Sensitive method may not be executed depending on $@, which flows from $@. | ConditionalBypass.cs:18:13:18:30 | ... == ... | this condition | ConditionalBypass.cs:14:26:14:48 | access to property QueryString | user input |
 | ConditionalBypass.cs:25:13:25:33 | call to method login | ConditionalBypass.cs:21:34:21:52 | access to property Cookies | ConditionalBypass.cs:24:13:24:45 | call to method Equals | Sensitive method may not be executed depending on $@, which flows from $@. | ConditionalBypass.cs:24:13:24:45 | call to method Equals | this condition | ConditionalBypass.cs:21:34:21:52 | access to property Cookies | user input |
