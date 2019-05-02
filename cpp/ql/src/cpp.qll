@@ -1,6 +1,5 @@
 /**
- * Provides classes and predicates for working with C/C++/ObjC/ObjC++
- * code.
+ * Provides classes and predicates for working with C/C++ code.
  *
  * Where the documentation refers to the standards, it gives
  * references to the freely-available drafts.
