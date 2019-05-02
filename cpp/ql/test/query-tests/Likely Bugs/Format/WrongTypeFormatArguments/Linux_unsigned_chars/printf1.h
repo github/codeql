@@ -102,6 +102,34 @@ void fun1(unsigned char* a, unsigned char* b) {
   printf("%td\n", a-b); // GOOD
 }
 
+typedef wchar_t WCHAR_T; // WCHAR_T -> wchar_t -> int
+typedef int MYCHAR; // MYCHAR -> int (notably not via the wchar_t typedef)
+
+void fun2() {
+  wchar_t *myString1;
+  WCHAR_T *myString2;
+  int *myString3;
+  MYCHAR *myString4;
+
+  printf("%S", myString1); // GOOD
+  printf("%S", myString2); // GOOD
+  printf("%S", myString3); // GOOD
+  printf("%S", myString4); // GOOD
+}
+
+typedef void *VOIDPTR;
+typedef int (*FUNPTR)(int);
+
+void fun3(void *p1, VOIDPTR p2, FUNPTR p3, char *p4)
+{
+  printf("%p\n", p1); // GOOD
+  printf("%p\n", p2); // GOOD
+  printf("%p\n", p3); // GOOD
+  printf("%p\n", p4); // GOOD
+  printf("%p\n", p4 + 1); // GOOD
+  printf("%p\n", 0); // GOOD [FALSE POSITIVE]
+}
+
 typedef unsigned int wint_t;
 
 void test_chars(char c, wchar_t wc, wint_t wt)
@@ -126,4 +154,21 @@ void test_ws(char *c, wchar_t *wc)
   wprintf(L"%s", wc); // BAD
   wprintf(L"%S", c); // BAD
   wprintf(L"%S", wc); // GOOD
+}
+
+void fun4()
+{
+  int i;
+  unsigned int ui;
+  long l;
+  unsigned long ul;
+  long long ll;
+  unsigned long long ull;
+
+  printf("%qi\n", i); // BAD
+  printf("%qu\n", ui); // BAD
+  printf("%qi\n", l); // GOOD
+  printf("%qu\n", ul); // GOOD
+  printf("%qi\n", ll); // GOOD
+  printf("%qu\n", ull); // GOOD
 }

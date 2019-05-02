@@ -25,8 +25,7 @@ private predicate formattingFunctionCallExpectedType(FormattingFunctionCall ffc,
       ffc.getTarget() = f and
       f.getFormatParameterIndex() = i and
       ffc.getArgument(i) = fl and
-      fl.getConversionType(pos) = expected and
-      count(fl.getConversionType(pos)) = 1
+      fl.getConversionType(pos) = expected
     )
 }
 
@@ -143,7 +142,10 @@ from FormattingFunctionCall ffc, int n, Expr arg, Type expected, Type actual
 where (
         (
           formatArgType(ffc, n, expected, arg, actual) and
-          not trivialConversion(expected.getUnspecifiedType(), actual.getUnspecifiedType())
+          not exists(Type anyExpected |
+            formatArgType(ffc, n, anyExpected, arg, actual) and
+            trivialConversion(anyExpected.getUnspecifiedType(), actual.getUnspecifiedType())
+          )
         )
         or
         (

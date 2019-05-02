@@ -134,3 +134,20 @@ void extensions()
 		printf("%llu", uli); // BAD (should be %lu) [NOT DETECTED]
 	}
 }
+
+void fun4()
+{
+  int i;
+  unsigned int ui;
+  long l;
+  unsigned long ul;
+  long long ll;
+  unsigned long long ull;
+
+  printf("%qi\n", i); // BAD
+  printf("%qu\n", ui); // BAD
+  printf("%qi\n", l); // GOOD
+  printf("%qu\n", ul); // GOOD
+  printf("%qi\n", ll); // GOOD
+  printf("%qu\n", ull); // GOOD
+}

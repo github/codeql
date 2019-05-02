@@ -578,7 +578,7 @@ class FormatLiteral extends Literal {
       or ((len="z" or len="Z")
                   and (result = this.getSize_t() or result = this.getSsize_t()))
       or (len="t" and result = this.getPtrdiff_t())
-      or (len="I" and result instanceof IntType)
+      or (len="I" and (result = this.getSize_t() or result = this.getPtrdiff_t()))
       or (len="I32" and exists(MicrosoftInt32Type t |
         t.getUnsigned() = result.(IntegralType).getUnsigned() 
       ))
@@ -604,7 +604,7 @@ class FormatLiteral extends Literal {
       or ((len="z" or len="Z")
                   and (result = this.getSize_t() or result = this.getSsize_t()))
       or (len="t" and result = this.getPtrdiff_t())
-      or (len="I" and result instanceof IntType)
+      or (len="I" and (result = this.getSize_t() or result = this.getPtrdiff_t()))
       or (len="I32" and exists(MicrosoftInt32Type t |
         t.getUnsigned() = result.(IntegralType).getUnsigned()
       ))

@@ -1,6 +1,7 @@
 | format.h:16:59:16:61 | str | This argument should be of type 'int' but is of type 'char *' |
 | format.h:16:64:16:64 | i | This argument should be of type 'double' but is of type 'int' |
 | format.h:16:67:16:67 | d | This argument should be of type 'char *' but is of type 'double' |
+| linux_c.c:11:15:11:18 | str3 | This argument should be of type 'char *' but is of type 'short *' |
 | pri_macros.h:15:35:15:40 | my_u64 | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:12:27:12:27 | i | This argument should be of type 'double' but is of type 'int' |
 | printf1.h:18:18:18:18 | i | This argument should be of type 'void *' but is of type 'int' |
@@ -12,6 +13,8 @@
 | printf1.h:46:18:46:20 | ull | This argument should be of type 'unsigned int' but is of type 'unsigned long long' |
 | printf1.h:113:17:113:17 | d | This argument should be of type 'long double' but is of type 'double' |
 | printf1.h:114:18:114:18 | d | This argument should be of type 'long double' but is of type 'double' |
+| printf1.h:147:19:147:19 | i | This argument should be of type 'long long' but is of type 'int' |
+| printf1.h:148:19:148:20 | ui | This argument should be of type 'unsigned long long' but is of type 'unsigned int' |
 | real_world.h:61:21:61:22 | & ... | This argument should be of type 'int *' but is of type 'short *' |
 | real_world.h:62:22:62:23 | & ... | This argument should be of type 'short *' but is of type 'int *' |
 | real_world.h:63:22:63:24 | & ... | This argument should be of type 'short *' but is of type 'unsigned int *' |
