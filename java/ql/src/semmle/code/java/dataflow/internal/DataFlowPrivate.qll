@@ -4,6 +4,26 @@ private import DataFlowDispatch
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TypeFlow
 
+private newtype TReturnKind = TNormalReturnKind()
+
+/**
+ * A return kind. A return kind describes how a value can be returned
+ * from a callable. For Java, this is simply a method return.
+ */
+class ReturnKind extends TReturnKind {
+  /** Gets a textual representation of this return kind. */
+  string toString() { result = "return" }
+}
+
+/**
+ * Gets a node that can read the value returned from `call` with return kind
+ * `kind`.
+ */
+OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+  result = call.getNode() and
+  kind = TNormalReturnKind()
+}
+
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
  * to the callable. Arguments that are wrapped in an implicit varargs array
@@ -40,11 +60,11 @@ class ArgumentNode extends Node {
 class ReturnNode extends ExprNode {
   ReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getResult()) }
 
-  /** Gets the position at which this value is returned. */
-  ReturnPosition getPosition() { this = result.getAReturnNode() }
+  /** Gets the kind of this returned value. */
+  ReturnKind getKind() { any() }
 }
 
-/** A data flow node that represents a call. */
+/** A data flow node that represents the output of a call. */
 class OutNode extends ExprNode {
   OutNode() { this.getExpr() instanceof MethodAccess }
 

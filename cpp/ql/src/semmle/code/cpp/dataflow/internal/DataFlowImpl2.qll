@@ -153,6 +153,12 @@ private predicate localFlowStep(Node node1, Node node2, boolean preservesValue, 
  */
 private predicate useFieldFlow(Configuration config) { config.fieldFlowBranchLimit() >= 1 }
 
+pragma[noinline]
+private ReturnKind viableReturnKind(DataFlowCall call, ReturnPosition pos) {
+  viableImpl(call) = pos.getCallable() and
+  result = pos.getKind()
+}
+
 /**
  * Holds if `node` is reachable from a source in the given configuration
  * ignoring call contexts.
@@ -193,20 +199,21 @@ private predicate nodeCandFwd1(Node node, boolean stored, Configuration config) 
     // flow into a callable
     exists(Node arg |
       nodeCandFwd1(arg, stored, config) and
-      viableParamArg(node, arg)
+      viableParamArg(_, node, arg)
     )
     or
     // flow out of an argument
     exists(PostUpdateNode mid, ParameterNode p |
       nodeCandFwd1(mid, stored, config) and
       parameterValueFlowsToUpdate(p, mid) and
-      viableParamArg(p, node.(PostUpdateNode).getPreUpdateNode())
+      viableParamArg(_, p, node.(PostUpdateNode).getPreUpdateNode())
     )
     or
     // flow out of a callable
-    exists(ReturnNode ret |
+    exists(DataFlowCall call, ReturnNode ret, ReturnKind kind |
       nodeCandFwd1(ret, stored, config) and
-      node = getAViableOutNode(ret.getPosition())
+      kind = viableReturnKind(call, getReturnPosition(ret)) and
+      node = getAnOutNode(call, kind)
     )
   )
 }
@@ -268,21 +275,22 @@ private predicate nodeCand1(Node node, boolean stored, Configuration config) {
     or
     // flow into a callable
     exists(Node param |
-      viableParamArg(param, node) and
+      viableParamArg(_, param, node) and
       nodeCand1(param, stored, config)
     )
     or
     // flow out of an argument
     exists(PostUpdateNode mid, ParameterNode p |
       parameterValueFlowsToUpdate(p, node) and
-      viableParamArg(p, mid.getPreUpdateNode()) and
+      viableParamArg(_, p, mid.getPreUpdateNode()) and
       nodeCand1(mid, stored, config)
     )
     or
     // flow out of a callable
-    exists(Node out |
+    exists(DataFlowCall call, ReturnKind kind, OutNode out |
       nodeCand1(out, stored, config) and
-      out = getAViableOutNode(node.(ReturnNode).getPosition())
+      kind = viableReturnKind(call, getReturnPosition(node)) and
+      out = getAnOutNode(call, kind)
     )
   )
 }
@@ -314,7 +322,12 @@ private predicate simpleParameterFlow(
   nodeCand1(node, false, config) and
   p = node and
   t = getErasedRepr(node.getType()) and
-  not parameterValueFlowsThrough(p, _)
+  exists(ReturnNode ret, CallContextCall cc |
+    returnNodeGetEnclosingCallable(ret) = p.getEnclosingCallable() and
+    cc = getAValidCallContextForParameter(p)
+  |
+    not parameterValueFlowsThrough(p, ret.getKind(), cc)
+  )
   or
   nodeCand1(node, false, unbind(config)) and
   exists(Node mid |
@@ -341,7 +354,7 @@ private predicate simpleParameterFlow(
   nodeCand1(node, false, config) and
   exists(Node arg |
     simpleParameterFlow(p, arg, t, config) and
-    argumentValueFlowsThrough(arg, node) and
+    argumentValueFlowsThrough(arg, node, _) and
     compatibleTypes(t, node.getType())
   )
   or
@@ -353,21 +366,31 @@ private predicate simpleParameterFlow(
   )
 }
 
+pragma[noinline]
+private predicate simpleArgumentFlowsThrough0(
+  DataFlowCall call, ArgumentNode arg, ReturnKind kind, DataFlowType t, Configuration config
+) {
+  exists(ParameterNode p, ReturnNode ret | simpleParameterFlow(p, ret, t, config) |
+    kind = ret.getKind() and
+    viableParamArg(call, p, arg)
+  )
+}
+
 /**
- * Holds if data can flow from `arg` through the `call` taking simple call
- * contexts into consideration and that this is part of a path from a source
- * to a sink. This is restricted to paths through the `call` that does not
+ * Holds if data can flow from `arg` through a call to `out`, taking simple
+ * call contexts into consideration, and that this is part of a path from a
+ * source to a sink. This is restricted to paths through calla that do not
  * necessarily preserve the value of `arg` by making use of at least one
  * additional step from the configuration.
  */
 private predicate simpleArgumentFlowsThrough(
   ArgumentNode arg, Node out, DataFlowType t, Configuration config
 ) {
-  exists(ParameterNode param, ReturnNode ret |
+  exists(DataFlowCall call, ReturnKind kind |
     nodeCand1(arg, false, unbind(config)) and
     nodeCand1(out, false, unbind(config)) and
-    viableParamArgOut(param, arg, ret.getPosition(), out) and
-    simpleParameterFlow(param, ret, t, config)
+    simpleArgumentFlowsThrough0(call, arg, kind, t, config) and
+    out = getAnOutNode(call, kind)
   )
 }
 
@@ -379,7 +402,7 @@ private predicate flowThroughCallableCand1(
 ) {
   simpleArgumentFlowsThrough(node1, node2, _, config) and preservesValue = false
   or
-  argumentValueFlowsThrough(node1, node2) and preservesValue = true
+  argumentValueFlowsThrough(node1, node2, _) and preservesValue = true
 }
 
 /**
@@ -405,11 +428,15 @@ private predicate flowOutOfCallableCand1(Node node1, Node node2, Configuration c
     // flow out of an argument
     exists(ParameterNode p |
       parameterValueFlowsToUpdate(p, node1) and
-      viableParamArg(p, node2.(PostUpdateNode).getPreUpdateNode())
+      viableParamArg(_, p, node2.(PostUpdateNode).getPreUpdateNode())
     )
     or
     // flow out of a callable
-    node2 = getAViableOutNode(node1.(ReturnNode).getPosition())
+    exists(DataFlowCall call, ReturnKind kind |
+      kind = viableReturnKind(call, getReturnPosition(node1))
+    |
+      node2 = getAnOutNode(call, kind)
+    )
   )
 }
 
@@ -418,7 +445,7 @@ private predicate flowOutOfCallableCand1(Node node1, Node node2, Configuration c
  * path from a source to a sink.
  */
 private predicate flowIntoCallableCand1(Node node1, Node node2, Configuration config) {
-  viableParamArg(node2, node1) and
+  viableParamArg(_, node2, node1) and
   nodeCand1(node1, _, unbind(config)) and
   nodeCand1(node2, _, config)
 }
@@ -1438,7 +1465,9 @@ private predicate flowStep(PathNodeMid mid, Node node, CallContext cc, AccessPat
   or
   flowOutOfCallable(mid, node, cc) and ap = mid.getAp()
   or
-  flowThroughCallable(mid, node, ap, cc)
+  flowThroughCallable(mid, node, cc) and ap = TNil(getErasedRepr(node.getType()))
+  or
+  valueFlowThroughCallable(mid, node, cc) and ap = mid.getAp()
 }
 
 private predicate contentReadStep(PathNodeMid mid, Node node, AccessPath ap) {
@@ -1458,14 +1487,24 @@ private predicate contentStoreStep(
   cc = mid.getCallContext()
 }
 
-/**
- * Holds if data may flow from `mid` to a return at position `pos` in the
- * context `innercc`, and the path did not flow through a parameter.
- */
 private predicate flowOutOfCallable0(PathNodeMid mid, ReturnPosition pos, CallContext innercc) {
-  pos.getAReturnNode() = mid.getNode() and
+  pos = getReturnPosition(mid.getNode()) and
   innercc = mid.getCallContext() and
   not innercc instanceof CallContextCall
+}
+
+pragma[noinline]
+private predicate flowOutOfCallable1(
+  PathNodeMid mid, DataFlowCall call, ReturnKind kind, CallContext cc
+) {
+  exists(ReturnPosition pos, DataFlowCallable c, CallContext innercc |
+    flowOutOfCallable0(mid, pos, innercc) and
+    c = pos.getCallable() and
+    kind = pos.getKind() and
+    resolveReturn(innercc, c, call)
+  |
+    if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
+  )
 }
 
 /**
@@ -1474,14 +1513,8 @@ private predicate flowOutOfCallable0(PathNodeMid mid, ReturnPosition pos, CallCo
  */
 pragma[noinline]
 private predicate flowOutOfCallable(PathNodeMid mid, OutNode out, CallContext cc) {
-  exists(ReturnPosition pos, DataFlowCallable c, DataFlowCall call, CallContext innercc |
-    flowOutOfCallable0(mid, pos, innercc) and
-    out = getAViableOutNode(pos) and
-    c = pos.getCallable() and
-    call = out.getCall() and
-    resolveReturn(innercc, c, call)
-  |
-    if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
+  exists(ReturnKind kind, DataFlowCall call | flowOutOfCallable1(mid, call, kind, cc) |
+    out = getAnOutNode(call, kind)
   )
 }
 
@@ -1560,20 +1593,35 @@ private predicate flowIntoCallable(
   )
 }
 
-/** Holds if data may flow from `p` to a return at position `pos`. */
+/** Holds if data may flow from `p` to a return of kind `kind`. */
 pragma[nomagic]
 private predicate paramFlowsThrough(
-  ParameterNode p, ReturnPosition pos, AccessPath ap, CallContextCall cc, Configuration config
+  ParameterNode p, ReturnKind kind, CallContextCall cc, Configuration config
 ) {
-  exists(PathNodeMid mid |
-    mid.getNode() = pos.getAReturnNode() and
+  exists(PathNodeMid mid, ReturnNode ret |
+    mid.getNode() = ret and
+    kind = ret.getKind() and
     cc = mid.getCallContext() and
-    ap = mid.getAp() and
-    config = mid.getConfiguration()
+    config = mid.getConfiguration() and
+    mid.getAp() instanceof AccessPathNil
   |
     cc = TSomeCall(p, true)
     or
-    exists(int i | cc = TSpecificCall(_, i, true) | p.isParameterOf(pos.getCallable(), i))
+    exists(int i | cc = TSpecificCall(_, i, true) |
+      p.isParameterOf(returnNodeGetEnclosingCallable(ret), i)
+    )
+  )
+}
+
+pragma[noinline]
+private predicate flowThroughCallable0(
+  DataFlowCall call, PathNodeMid mid, ReturnKind kind, CallContext cc
+) {
+  exists(ParameterNode p, CallContext innercc |
+    flowIntoCallable(mid, p, cc, innercc, call) and
+    paramFlowsThrough(p, kind, innercc, unbind(mid.getConfiguration())) and
+    not parameterValueFlowsThrough(p, kind, innercc) and
+    mid.getAp() instanceof AccessPathNil
   )
 }
 
@@ -1582,11 +1630,24 @@ private predicate paramFlowsThrough(
  * The context `cc` is restored to its value prior to entering the callable.
  */
 pragma[noinline]
-private predicate flowThroughCallable(PathNodeMid mid, OutNode out, AccessPath ap, CallContext cc) {
-  exists(ParameterNode p, ReturnPosition pos, CallContext innercc |
-    flowIntoCallable(mid, p, cc, innercc, out.getCall()) and
-    paramFlowsThrough(p, pos, ap, innercc, unbind(mid.getConfiguration())) and
-    out = getAViableOutNode(pos)
+private predicate flowThroughCallable(PathNodeMid mid, OutNode out, CallContext cc) {
+  exists(DataFlowCall call, ReturnKind kind | flowThroughCallable0(call, mid, kind, cc) |
+    out = getAnOutNode(call, kind)
+  )
+}
+
+pragma[noinline]
+private predicate valueFlowThroughCallable0(
+  DataFlowCall call, PathNodeMid mid, ReturnKind kind, CallContext cc
+) {
+  exists(ParameterNode p, CallContext innercc | flowIntoCallable(mid, p, cc, innercc, call) |
+    parameterValueFlowsThrough(p, kind, innercc)
+  )
+}
+
+private predicate valueFlowThroughCallable(PathNodeMid mid, OutNode out, CallContext cc) {
+  exists(ReturnKind kind | valueFlowThroughCallable0(out.getCall(), mid, kind, cc) |
+    out = getAnOutNode(_, kind)
   )
 }
 

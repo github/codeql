@@ -2,20 +2,6 @@ private import java
 private import DataFlowPrivate
 import semmle.code.java.dispatch.VirtualDispatch
 
-/**
- * A return position. A return position describes how a value can return
- * from a given callable. For Java, this is simply a method return.
- */
-class ReturnPosition extends Method {
-  ReturnPosition() { exists(ReturnNode ret | ret.getEnclosingCallable() = this) }
-
-  /** Gets the callable that a value can be returned from. */
-  Method getCallable() { result = this }
-
-  /** Gets a return node that can return a value at this position. */
-  ReturnNode getAReturnNode() { result.getEnclosingCallable() = this }
-}
-
 cached
 private module DispatchImpl {
   /**
@@ -200,12 +186,6 @@ private module DispatchImpl {
   Method prunedViableImplInCallContextReverse(MethodAccess ma, Call ctx) {
     result = viableImplInCallContext(ma, ctx) and
     reducedViableImplInReturn(result, ma)
-  }
-
-  /** Gets a node that can read the value returned at position `pos`. */
-  cached
-  OutNode getAViableOutNode(ReturnPosition pos) {
-    pos.getCallable() = viableCallable(result.getCall())
   }
 }
 import DispatchImpl

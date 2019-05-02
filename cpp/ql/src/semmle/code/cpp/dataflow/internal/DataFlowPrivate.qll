@@ -50,29 +50,26 @@ class ArgumentNode extends Node {
   DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
+private newtype TReturnKind = TNormalReturnKind()
+
 /**
- * A return position. A return position describes how a value can return
- * from a given callable. For C++, this is simply a function return.
+ * A return kind. A return kind describes how a value can be returned
+ * from a callable. For C++, this is simply a function return.
  */
-class ReturnPosition extends Function {
-  ReturnPosition() { exists(ReturnNode ret | ret.getEnclosingCallable() = this) }
-
-  /** Gets the callable that a value can be returned from. */
-  Function getCallable() { result = this }
-
-  /** Gets a return node that can return a value at this position. */
-  ReturnNode getAReturnNode() { result.getEnclosingCallable() = this }
+class ReturnKind extends TReturnKind {
+  /** Gets a textual representation of this return kind. */
+  string toString() { result = "return" }
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
 class ReturnNode extends ExprNode {
   ReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getExpr()) }
 
-  /** Gets the position at which this value is returned. */
-  ReturnPosition getPosition() { this = result.getAReturnNode() }
+  /** Gets the kind of this returned value. */
+  ReturnKind getKind() { result = TNormalReturnKind() }
 }
 
-/** A data flow node that represents a call. */
+/** A data flow node that represents the output of a call. */
 class OutNode extends ExprNode {
   OutNode() { this.getExpr() instanceof Call }
 
@@ -80,9 +77,13 @@ class OutNode extends ExprNode {
   DataFlowCall getCall() { result = this.getExpr() }
 }
 
-/** Gets a node that can read the value returned at position `pos`. */
-OutNode getAViableOutNode(ReturnPosition pos) {
-  pos.getCallable() = viableCallable(result.getCall())
+/**
+ * Gets a node that can read the value returned from `call` with return kind
+ * `kind`.
+ */
+OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+  result = call.getNode() and
+  kind = TNormalReturnKind()
 }
 
 /**
