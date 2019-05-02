@@ -965,6 +965,61 @@ class NoExceptExpr extends Expr, @noexceptexpr {
 }
 
 /**
+ * A C++17 fold expression. This will only appear in an uninstantiated template; any instantiations
+ * of the template will instead contain the sequence of expressions given by expanding the fold.
+ */
+class FoldExpr extends Expr, @foldexpr {
+  override string toString() {
+    exists(string op |
+      op = this.getOperatorString() and
+      if this.isUnaryFold()
+      then
+        if this.isLeftFold()
+        then result = "( ... " + op + " pack )"
+        else result = "( pack " + op + " ... )"
+      else
+        if this.isLeftFold()
+        then result = "( init " + op + " ... " + op + " pack )"
+        else result = "( pack " + op + " ... " + op + " init )"
+    )
+  }
+
+  /** Gets the binary operator used in this fold expression, as a string. */
+  string getOperatorString() { fold(underlyingElement(this), result, _) }
+
+  /** Holds if this is a left-fold expression. */
+  predicate isLeftFold() { fold(underlyingElement(this), _, true) }
+
+  /** Holds if this is a right-fold expression. */
+  predicate isRightFold() { fold(underlyingElement(this), _, false) }
+
+  /** Holds if this is a unary fold expression. */
+  predicate isUnaryFold() { getNumChild() = 1 }
+
+  /** Holds if this is a binary fold expression. */
+  predicate isBinaryFold() { getNumChild() = 2 }
+
+  /**
+   * Gets the child expression containing the unexpanded parameter pack.
+   */
+  Expr getPackExpr() {
+    this.isUnaryFold() and
+    result = getChild(0)
+    or
+    this.isBinaryFold() and
+    if this.isRightFold() then result = getChild(0) else result = getChild(1)
+  }
+
+  /**
+   * If this is a binary fold, gets the expression representing the initial value.
+   */
+  Expr getInitExpr() {
+    this.isBinaryFold() and
+    if this.isRightFold() then result = getChild(1) else result = getChild(0)
+  }
+}
+
+/**
  * Holds if `child` is the `n`th child of `parent` in an alternative syntax
  * tree that has `Conversion`s as part of the tree.
  */

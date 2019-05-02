@@ -1432,6 +1432,7 @@ case @expr.kind of
 | 129 = @new_array_expr
 // ... 130 @objc_array_literal deprecated
 // ... 131 @objc_dictionary_literal deprecated
+| 132 = @foldexpr
 // ...
 | 200 = @ctordirectinit
 | 201 = @ctorvirtualinit
@@ -1578,6 +1579,12 @@ lambda_capture(
 @varbindexpr = @varaccess | @ctorfieldinit | @dtorfielddestruct;
 @addressable = @function | @variable ;
 @accessible = @addressable | @enumconstant ;
+
+fold(
+    int expr: @foldexpr ref,
+    string operator: string ref,
+    boolean is_left_fold: boolean ref
+);
 
 stmts(
     unique int id: @stmt,
