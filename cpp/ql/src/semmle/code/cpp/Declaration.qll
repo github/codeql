@@ -57,9 +57,14 @@ abstract class Declaration extends Locatable, @declaration {
   }
 
   /**
+   * DEPRECATED: Prefer `hasGlobalName` or the 2-argument or 3-argument
+   * `hasQualifiedName` predicates. To get the exact same results as this
+   * predicate in all edge cases, use `getQualifiedName()`.
+   *
    * Holds if this declaration has the fully-qualified name `qualifiedName`.
    * See `getQualifiedName`.
    */
+  deprecated
   predicate hasQualifiedName(string qualifiedName) {
     this.getQualifiedName() = qualifiedName
   }
