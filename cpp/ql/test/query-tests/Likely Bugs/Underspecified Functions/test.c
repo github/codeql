@@ -58,7 +58,7 @@ void test(int *argv[]) {
   defined_with_long_long(3);    // BAD
 
   defined_with_double(2LL);  // BAD
-  defined_with_long_long(2.5e50);  // BAD
+  defined_with_long_long(3.5e15);  // BAD
   
   k_and_r_func(2.5, &s);  // GOOD
   
