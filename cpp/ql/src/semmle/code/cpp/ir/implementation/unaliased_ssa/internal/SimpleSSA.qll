@@ -38,20 +38,20 @@ private predicate isVariableModeled(IRVariable var) {
   )
 }
 
-private newtype TVirtualVariable =
-  MkVirtualVariable(IRVariable var) {
+private newtype TMemoryLocation =
+  MkMemoryLocation(IRVariable var) {
     isVariableModeled(var)
   }
 
-private VirtualVariable getVirtualVariable(IRVariable var) {
+private MemoryLocation getMemoryLocation(IRVariable var) {
   result.getIRVariable() = var
 }
 
-class VirtualVariable extends TVirtualVariable {
+class MemoryLocation extends TMemoryLocation {
   IRVariable var;
 
-  VirtualVariable() {
-    this = MkVirtualVariable(var)
+  MemoryLocation() {
+    this = MkMemoryLocation(var)
   }
 
   final string toString() {
@@ -60,6 +60,10 @@ class VirtualVariable extends TVirtualVariable {
 
   final IRVariable getIRVariable() {
     result = var
+  }
+
+  final VirtualVariable getVirtualVariable() {
+    result = this
   }
 
   final Type getType() {
@@ -71,50 +75,25 @@ class VirtualVariable extends TVirtualVariable {
   }
 }
 
-private newtype TMemoryAccess =
-  MkMemoryAccess(VirtualVariable vvar)
-
-private MemoryAccess getMemoryAccess(IRVariable var) {
-  result.getVirtualVariable() = getVirtualVariable(var)
+class VirtualVariable extends MemoryLocation {
 }
 
-class MemoryAccess extends TMemoryAccess {
-  VirtualVariable vvar;
-
-  MemoryAccess() {
-    this = MkMemoryAccess(vvar)
-  }
-
-  string toString() {
-    result = vvar.toString()
-  }
-
-  VirtualVariable getVirtualVariable() {
-    result = vvar
-  }
-
-  predicate isPartialMemoryAccess() {
-    none()
-  }
-}
-
-Overlap getOverlap(MemoryAccess def, MemoryAccess use) {
-  def.getVirtualVariable() = use.getVirtualVariable() and
-  result instanceof MustExactlyOverlap
+Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
+  def = use and result instanceof MustExactlyOverlap
   or
   none() // Avoid compiler error in SSAConstruction
 }
 
-MemoryAccess getResultMemoryAccess(Instruction instr) {
+MemoryLocation getResultMemoryLocation(Instruction instr) {
   exists(IRVariable var |
     hasResultMemoryAccess(instr, var, _, _) and
-    result = getMemoryAccess(var)
+    result = getMemoryLocation(var)
   )
 }
 
-MemoryAccess getOperandMemoryAccess(MemoryOperand operand) {
+MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
   exists(IRVariable var |
     hasOperandMemoryAccess(operand, var, _, _) and
-    result = getMemoryAccess(var)
+    result = getMemoryLocation(var)
   )
 }

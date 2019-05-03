@@ -50,11 +50,17 @@ module InstructionSanity {
   /**
    * Holds if instruction `instr` is missing an expected operand with tag `tag`.
    */
-  query predicate missingOperand(Instruction instr, OperandTag tag) {
-    expectsOperand(instr, tag) and
-    not exists(NonPhiOperand operand |
-      operand = instr.getAnOperand() and
-      operand.getOperandTag() = tag
+  query predicate missingOperand(Instruction instr, string message, IRFunction func, string funcText) {
+    exists(OperandTag tag |
+      expectsOperand(instr, tag) and
+      not exists(NonPhiOperand operand |
+        operand = instr.getAnOperand() and
+        operand.getOperandTag() = tag
+      ) and
+      message = "Instruction '" + instr.getOpcode().toString() + "' is missing an expected operand with tag '" +
+        tag.toString() + "' in function '$@'." and
+      func = instr.getEnclosingIRFunction() and
+      funcText = getIdentityString(func.getFunction())
     )
   }
 
@@ -302,7 +308,7 @@ class Instruction extends Construction::TInstruction {
       result = type
   }
 
-  private string getResultTypeString() {
+  string getResultTypeString() {
     exists(string valcat |
       valcat = getValueCategoryString(getResultType().toString()) and
       if (getResultType() instanceof UnknownType and

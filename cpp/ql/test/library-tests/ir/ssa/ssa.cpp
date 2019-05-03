@@ -72,6 +72,22 @@ void chiNodeAtEndOfLoop(int n, char* p) {
 
 void Escape(void* p);
 
+void ScalarPhi(bool b) {
+  int x = 0;
+  int y = 1;
+  int z = 2;
+  if (b) {
+    x = 3;
+    y = 4;
+  }
+  else {
+    x = 5;
+  }
+  int x_merge = x;
+  int y_merge = y;
+  int z_merge = z;
+}
+
 void MustExactlyOverlap(Point a) {
   Point b = a;
 }
@@ -101,4 +117,61 @@ void MayPartiallyOverlapEscaped(int x, int y) {
   Point a = { x, y };
   Point b = a;
   Escape(&a);
+}
+
+void MergeMustExactlyOverlap(bool c, int x1, int x2) {
+  Point a = {};
+  if (c) {
+    a.x = x1;
+  }
+  else {
+    a.x = x2;
+  }
+  int x = a.x;  // Both reaching defs must exactly overlap.
+  Point b = a;
+}
+
+void MergeMustExactlyWithMustTotallyOverlap(bool c, Point p, int x1) {
+  Point a = {};
+  if (c) {
+    a.x = x1;
+  }
+  else {
+    a = p;
+  }
+  int x = a.x;  // Only one reaching def must exactly overlap, but we should still get a Phi for it.
+}
+
+void MergeMustExactlyWithMayPartiallyOverlap(bool c, Point p, int x1) {
+  Point a = {};
+  if (c) {
+    a.x = x1;
+  }
+  else {
+    a = p;
+  }
+  Point b = a;  // Only one reaching def must exactly overlap, but we should still get a Phi for it.
+}
+
+void MergeMustTotallyOverlapWithMayPartiallyOverlap(bool c, Rect r, int x1) {
+  Rect a = {};
+  if (c) {
+    a.topLeft.x = x1;
+  }
+  else {
+    a = r;
+  }
+  Point b = a.topLeft;  // Neither reaching def must exactly overlap, so we'll just get a Phi of the virtual variable.
+}
+
+struct Wrapper {
+  int f;
+};
+
+void WrapperStruct(Wrapper w) {
+  Wrapper x = w;  // MustExactlyOverlap
+  int a = w.f;  // MustTotallyOverlap, because the types don't match
+  w.f = 5;
+  a = w.f;  // MustExactlyOverlap
+  x = w;  // MustTotallyOverlap
 }

@@ -78,6 +78,10 @@ class AddressOperandTag extends RegisterOperandTag, TAddressOperand {
   override final int getSortOrder() {
     result = 0
   }
+  
+  override final string getLabel() {
+    result = "&:"
+  }
 }
 
 AddressOperandTag addressOperand() {
@@ -247,6 +251,10 @@ class CallTargetOperandTag extends RegisterOperandTag, TCallTargetOperand {
   override final int getSortOrder() {
     result = 10
   }
+
+  override final string getLabel() {
+    result = "func:"
+  }
 }
 
 CallTargetOperandTag callTargetOperand() {
@@ -306,6 +314,10 @@ class PositionalArgumentOperandTag extends ArgumentOperandTag,
     result = 12 + argIndex
   }
 
+  override final string getLabel() {
+    result = argIndex.toString() + ":"
+  }
+  
   final int getArgIndex() {
     result = argIndex
   }
@@ -323,6 +335,10 @@ class ChiTotalOperandTag extends MemoryOperandTag, TChiTotalOperand {
   override final int getSortOrder() {
     result = 13
   }
+
+  override final string getLabel() {
+    result = "total:"
+  }
 }
 
 ChiTotalOperandTag chiTotalOperand() {
@@ -336,6 +352,10 @@ class ChiPartialOperandTag extends MemoryOperandTag, TChiPartialOperand {
 
   override final int getSortOrder() {
     result = 14
+  }
+
+  override final string getLabel() {
+    result = "partial:"
   }
 }
 
