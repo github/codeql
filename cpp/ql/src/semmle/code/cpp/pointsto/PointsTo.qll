@@ -588,7 +588,7 @@ predicate allocateDescriptorCall(FunctionCall fc)
 {
   exists(string name |
     name = "socket" and
-    fc.getTarget().hasQualifiedName(name))
+    fc.getTarget().hasGlobalName(name))
 }
 
 /**

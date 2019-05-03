@@ -3,7 +3,7 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 
 class InetNtoa extends TaintFunction {
   InetNtoa() {
-    hasQualifiedName("inet_ntoa")
+    hasGlobalName("inet_ntoa")
   }
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -14,7 +14,7 @@ class InetNtoa extends TaintFunction {
 
 class InetAton extends TaintFunction, ArrayFunction {
   InetAton() {
-    hasQualifiedName("inet_aton")
+    hasGlobalName("inet_aton")
   }
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -42,7 +42,7 @@ class InetAton extends TaintFunction, ArrayFunction {
 
 class InetAddr extends TaintFunction, ArrayFunction {
   InetAddr() {
-    hasQualifiedName("inet_addr")
+    hasGlobalName("inet_addr")
   }
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -61,7 +61,7 @@ class InetAddr extends TaintFunction, ArrayFunction {
 
 class InetNetwork extends TaintFunction, ArrayFunction {
   InetNetwork() {
-    hasQualifiedName("inet_network")
+    hasGlobalName("inet_network")
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -80,7 +80,7 @@ class InetNetwork extends TaintFunction, ArrayFunction {
 
 class InetMakeaddr extends TaintFunction {
   InetMakeaddr() {
-    hasQualifiedName("inet_makeaddr")
+    hasGlobalName("inet_makeaddr")
   }
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -94,7 +94,7 @@ class InetMakeaddr extends TaintFunction {
 
 class InetLnaof extends TaintFunction {
   InetLnaof() {
-    hasQualifiedName("inet_lnaof")
+    hasGlobalName("inet_lnaof")
   }
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -105,7 +105,7 @@ class InetLnaof extends TaintFunction {
 
 class InetNetof extends TaintFunction {
   InetNetof() {
-    hasQualifiedName("inet_netof")
+    hasGlobalName("inet_netof")
   }
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -116,7 +116,7 @@ class InetNetof extends TaintFunction {
   
 class InetPton extends TaintFunction, ArrayFunction {
   InetPton() {
-    hasQualifiedName("inet_pton")
+    hasGlobalName("inet_pton")
   }
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -146,7 +146,7 @@ class InetPton extends TaintFunction, ArrayFunction {
 
 class Gethostbyname extends TaintFunction, ArrayFunction {
   Gethostbyname() {
-    hasQualifiedName("gethostbyname")
+    hasGlobalName("gethostbyname")
   }
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -165,7 +165,7 @@ class Gethostbyname extends TaintFunction, ArrayFunction {
 
 class Gethostbyaddr extends TaintFunction, ArrayFunction {
   Gethostbyaddr() {
-    hasQualifiedName("gethostbyaddr")
+    hasGlobalName("gethostbyaddr")
   }
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

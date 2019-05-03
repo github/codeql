@@ -14,8 +14,8 @@ import cpp
 
 class MallocCall extends FunctionCall {
   MallocCall() {
-    this.getTarget().hasQualifiedName("malloc") or
-    this.getTarget().hasQualifiedName("std::malloc")
+    this.getTarget().hasGlobalName("malloc") or
+    this.getTarget().hasQualifiedName("std", "malloc")
   }
 
   Expr getAllocatedSize() {
@@ -36,12 +36,12 @@ predicate spaceProblem(FunctionCall append, string msg) {
     malloc.getAllocatedSize() = add and
     buffer.getAnAccess() = strlen.getStringExpr() and
     (
-      insert.getTarget().hasQualifiedName("strcpy") or
-      insert.getTarget().hasQualifiedName("strncpy")
+      insert.getTarget().hasGlobalName("strcpy") or
+      insert.getTarget().hasGlobalName("strncpy")
     ) and
     (
-      append.getTarget().hasQualifiedName("strcat") or
-      append.getTarget().hasQualifiedName("strncat")
+      append.getTarget().hasGlobalName("strcat") or
+      append.getTarget().hasGlobalName("strncat")
     ) and
     malloc.getASuccessor+() = insert and
     insert.getArgument(1) = buffer.getAnAccess() and

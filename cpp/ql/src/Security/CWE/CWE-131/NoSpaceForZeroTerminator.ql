@@ -18,8 +18,8 @@ import cpp
 class MallocCall extends FunctionCall
 {
   MallocCall() {
-  	this.getTarget().hasQualifiedName("malloc") or
-  	this.getTarget().hasQualifiedName("std::malloc")
+  	this.getTarget().hasGlobalName("malloc") or
+  	this.getTarget().hasQualifiedName("std", "malloc")
   }
 
   Expr getAllocatedSize() {

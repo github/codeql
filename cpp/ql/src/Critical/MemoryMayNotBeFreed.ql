@@ -55,7 +55,7 @@ predicate allocCallOrIndirect(Expr e) {
  * can cause memory leaks.
  */
 predicate verifiedRealloc(FunctionCall reallocCall, Variable v, ControlFlowNode verified) {
-  reallocCall.getTarget().hasQualifiedName("realloc") and
+  reallocCall.getTarget().hasGlobalName("realloc") and
   reallocCall.getArgument(0) = v.getAnAccess() and
   (
     exists(Variable newV, ControlFlowNode node |
@@ -82,7 +82,7 @@ predicate verifiedRealloc(FunctionCall reallocCall, Variable v, ControlFlowNode 
 predicate freeCallOrIndirect(ControlFlowNode n, Variable v) {
   // direct free call
   freeCall(n, v.getAnAccess()) and
-  not n.(FunctionCall).getTarget().hasQualifiedName("realloc")
+  not n.(FunctionCall).getTarget().hasGlobalName("realloc")
   or
   // verified realloc call
   verifiedRealloc(_, v, n)

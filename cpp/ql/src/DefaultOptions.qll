@@ -32,7 +32,7 @@ class Options extends string
    */
   predicate overrideReturnsNull(Call call) {
     // Used in CVS:
-    call.(FunctionCall).getTarget().hasQualifiedName("Xstrdup")
+    call.(FunctionCall).getTarget().hasGlobalName("Xstrdup")
     or
     CustomOptions::overrideReturnsNull(call) // old Options.qll
   }
@@ -46,7 +46,7 @@ class Options extends string
    */
   predicate returnsNull(Call call) {
     // Used in CVS:
-    call.(FunctionCall).getTarget().hasQualifiedName("Xstrdup") and
+    call.(FunctionCall).getTarget().hasGlobalName("Xstrdup") and
     nullValue(call.getArgument(0))
     or
     CustomOptions::returnsNull(call) // old Options.qll
@@ -92,7 +92,7 @@ class Options extends string
    * By default holds only for `fgets`.
    */
   predicate alwaysCheckReturnValue(Function f) {
-    f.hasQualifiedName("fgets") or
+    f.hasGlobalName("fgets") or
     CustomOptions::alwaysCheckReturnValue(f) // old Options.qll
   }
 
@@ -108,7 +108,7 @@ class Options extends string
     fc.isInMacroExpansion()
     or
     // common way of sleeping using select:
-    (fc.getTarget().hasQualifiedName("select") and
+    (fc.getTarget().hasGlobalName("select") and
      fc.getArgument(0).getValue() = "0")
     or
     CustomOptions::okToIgnoreReturnValue(fc) // old Options.qll

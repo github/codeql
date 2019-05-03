@@ -13,7 +13,7 @@ import semmle.code.cpp.pointsto.PointsTo
 import Negativity
 
 predicate closeCall(FunctionCall fc, Variable v) {
-  fc.getTarget().hasQualifiedName("close") and v.getAnAccess() = fc.getArgument(0)
+  fc.getTarget().hasGlobalName("close") and v.getAnAccess() = fc.getArgument(0)
   or
   exists(FunctionCall midcall, Function mid, int arg |
     fc.getArgument(arg) = v.getAnAccess() and

@@ -47,7 +47,7 @@ predicate nullCheckExpr(Expr checkExpr, Variable var)
     or
     exists(FunctionCall fc, AnalysedExpr child |
       expr = fc and
-      fc.getTarget().hasQualifiedName("__builtin_expect") and
+      fc.getTarget().hasGlobalName("__builtin_expect") and
       fc.getArgument(0) = child and nullCheckExpr(child, v))
   )
 }
@@ -87,7 +87,7 @@ predicate validCheckExpr(Expr checkExpr, Variable var)
     or
     exists(FunctionCall fc, AnalysedExpr child |
       expr = fc and
-      fc.getTarget().hasQualifiedName("__builtin_expect") and
+      fc.getTarget().hasGlobalName("__builtin_expect") and
       fc.getArgument(0) = child and validCheckExpr(child, v))
   )
 }
