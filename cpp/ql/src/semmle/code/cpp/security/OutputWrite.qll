@@ -66,8 +66,8 @@ private predicate outputWrite(Expr write, Expr source) {
     ) or (
       // puts, putchar
       (
-        f.getQualifiedName() = "puts" or
-        f.getQualifiedName() = "putchar"
+        f.hasGlobalName("puts") or
+        f.hasGlobalName("putchar")
       ) and arg = 0
     ) or exists(Call wrappedCall, Expr wrappedSource |
       // wrapped output call (recursive case)

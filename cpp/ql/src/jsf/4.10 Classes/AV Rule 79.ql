@@ -21,7 +21,7 @@ predicate acquireExpr(Expr acquire, string kind) {
   exists(FunctionCall fc, Function f, string name |
     fc = acquire and
     f = fc.getTarget() and
-    name = f.getQualifiedName() and 
+    f.hasGlobalName(name) and 
     (
       (
         name = "fopen" and
@@ -47,7 +47,7 @@ predicate releaseExpr(Expr release, Expr resource, string kind) {
   exists(FunctionCall fc, Function f, string name |
     fc = release and
     f = fc.getTarget() and
-    name = f.getQualifiedName() and 
+    f.hasGlobalName(name) and 
     (
       (
         name = "fclose" and
@@ -252,7 +252,7 @@ pragma[noopt] predicate badRelease(Resource r, Expr acquire, Function functionCa
   )
 }
 
-Class qtObject() { result.getABaseClass*().getQualifiedName() = "QObject" }
+Class qtObject() { result.getABaseClass*().hasGlobalName("QObject") }
 PointerType qtObjectReference() { result.getBaseType() = qtObject() }
 Constructor qtParentConstructor() {
   exists(Parameter p |

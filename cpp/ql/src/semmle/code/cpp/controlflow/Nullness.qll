@@ -260,13 +260,13 @@ predicate callMayReturnNull(Call call)
  */
 predicate mayReturnNull(Function f)
 {
-  f.getQualifiedName() = "malloc"
+  f.hasGlobalName("malloc")
   or
-  f.getQualifiedName() = "calloc"
+  f.hasGlobalName("calloc")
   or
-//  f.getQualifiedName() = "strchr"
+//  f.hasGlobalName("strchr")
 //  or
-//  f.getQualifiedName() = "strstr"
+//  f.hasGlobalName("strstr")
 //  or
   exists(ReturnStmt ret |
     nullValue(ret.getExpr()) and

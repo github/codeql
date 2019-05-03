@@ -20,7 +20,7 @@ predicate global(GlobalVariable v) {
 }
 
 predicate mainCalled(Function f) {
-  f.getQualifiedName() = "main"
+  f.hasGlobalName("main")
   or
   exists(Function caller | mainCalled(caller) and allCalls(caller, f))
 }

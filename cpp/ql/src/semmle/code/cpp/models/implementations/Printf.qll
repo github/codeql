@@ -69,8 +69,8 @@ class Sprintf extends FormattingFunction {
     or
     hasGlobalName("__builtin___sprintf_chk") and result = 3
     or
-    getQualifiedName() != "g_strdup_printf" and
-    getQualifiedName() != "__builtin___sprintf_chk" and
+    getName() != "g_strdup_printf" and
+    getName() != "__builtin___sprintf_chk" and
     result = 1
   }
   override int getOutputParameterIndex() {
@@ -127,7 +127,7 @@ class Snprintf extends FormattingFunction {
   
   override int getFirstFormatArgumentIndex() {
     exists(string name |
-      name = getQualifiedName()
+      hasGlobalName(name)
       and (
         name = "__builtin___snprintf_chk" and
         result = 5

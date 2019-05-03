@@ -85,8 +85,8 @@ class VarargsExecFunctionCall extends FunctionCall {
    * all the other ones start with the command. */
   private int getCommandIdx() {
     if (
-      getTarget().getQualifiedName().matches("\\_spawn%")
-      or getTarget().getQualifiedName().matches("\\_wspawn%"))
+      getTarget().getName().matches("\\_spawn%")
+      or getTarget().getName().matches("\\_wspawn%"))
     then result = 1
     else result = 0
   }
@@ -137,8 +137,8 @@ class ArrayExecFunctionCall extends FunctionCall {
    * all the other ones start with the command. */
   private int getCommandIdx() {
     if (
-      getTarget().getQualifiedName().matches("\\_spawn%")
-      or getTarget().getQualifiedName().matches("\\_wspawn%"))
+      getTarget().getName().matches("\\_spawn%")
+      or getTarget().getName().matches("\\_wspawn%"))
     then result = 1
     else result = 0
   }

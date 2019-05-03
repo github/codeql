@@ -532,7 +532,7 @@ private int path_max() {
 class RealpathBW extends BufferWriteCall {
   RealpathBW() {
     exists(path_max()) and // Ignore realpath() calls if PATH_MAX cannot be determined
-    getTarget().getQualifiedName() = "realpath" // realpath(path, resolved_path);
+    getTarget().hasGlobalName("realpath") // realpath(path, resolved_path);
   }
 
   override Type getBufferType()

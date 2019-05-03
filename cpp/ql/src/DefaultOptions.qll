@@ -61,7 +61,7 @@ class Options extends string
    */
   predicate exits(Function f) {
     f.getAnAttribute().hasName("noreturn") or
-    exists(string name | f.getQualifiedName() = name |
+    exists(string name | f.hasGlobalName(name) |
       name = "exit" or
       name = "_exit" or
       name = "abort" or

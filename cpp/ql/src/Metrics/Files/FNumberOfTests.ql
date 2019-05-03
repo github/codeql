@@ -13,13 +13,10 @@ import cpp
 
 Expr getTest() {
     // cppunit tests; https://freedesktop.org/wiki/Software/cppunit/
-    exists(Function f | result.(FunctionCall).getTarget() = f
-                    and f.getNamespace().getName() = "CppUnit"
-                    and f.getName() = "addTest")
+    result.(FunctionCall).getTarget().hasQualifiedName("CppUnit", _, "addTest")
     or
     // boost tests; http://www.boost.org/
-    exists(Function f | result.(FunctionCall).getTarget() = f
-                    and f.getQualifiedName() = "boost::unit_test::make_test_case")
+    result.(FunctionCall).getTarget().hasQualifiedName("boost::unit_test", "make_test_case")
 }
 
 from File f, int n
