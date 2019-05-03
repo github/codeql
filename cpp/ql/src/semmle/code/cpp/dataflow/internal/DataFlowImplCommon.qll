@@ -1,6 +1,8 @@
 private import DataFlowImplSpecific::Private
 import DataFlowImplSpecific::Public
 
+private ReturnNode getAReturnNodeOfKind(ReturnKind kind) { result.getKind() = kind }
+
 cached
 private module ImplCommon {
   /**
@@ -83,7 +85,7 @@ private module ImplCommon {
     DataFlowCall call, int i, ArgumentNode arg, DataFlowCallable enclosing
   ) {
     arg.argumentOf(call, i) and
-    argumentValueFlowsThroughNoCtx0(call, arg, _) and
+    argumentValueFlowsThroughNoCtx(arg, _) and
     enclosing = arg.getEnclosingCallable()
   }
 
@@ -94,7 +96,9 @@ private module ImplCommon {
       or
       exists(ParameterNode p | outercc = TSomeCall(p, _) | c = p.getEnclosingCallable())
       or
-      exists(DataFlowCall other | outercc = TSpecificCall(other, _, _) | c = viableCallable(other))
+      exists(DataFlowCall other | outercc = TSpecificCall(other, _, _) |
+        reducedViableImplInCallContext(_, c, other)
+      )
     )
   }
 
@@ -124,12 +128,13 @@ private module ImplCommon {
     )
   }
 
-  cached
-  CallContextCall getAValidCallContextForParameter(ParameterNode p) {
+  private CallContextCall getAValidCallContextForParameter(ParameterNode p) {
     result = TSomeCall(p, _)
     or
-    exists(DataFlowCall call, int i | result = TSpecificCall(call, i, _) |
-      p.isParameterOf(_, i) and p.getEnclosingCallable() = viableCallable(call)
+    exists(DataFlowCall call, int i, DataFlowCallable callable |
+      result = TSpecificCall(call, i, _) and
+      p.isParameterOf(callable, i) and
+      reducedViableImplInCallContext(_, callable, call)
     )
   }
 
@@ -156,8 +161,6 @@ private module ImplCommon {
     )
   }
 
-  private ReturnNode getAReturnNodeOfKind(ReturnKind kind) { result.getKind() = kind }
-
   /**
    * Holds if `p` can flow to a return node of kind `kind` in the same
    * callable using only value-preserving steps, in call context `cc`.
@@ -172,8 +175,7 @@ private module ImplCommon {
     DataFlowCall call, ArgumentNode arg, ReturnKind kind, CallContext cc
   ) {
     exists(ParameterNode param, CallContext innercc |
-      viableParamArg(call, param, arg, cc, innercc)
-    |
+      viableParamArg(call, param, arg, cc, innercc) and
       parameterValueFlowsThrough(param, kind, innercc)
     )
   }
@@ -271,7 +273,8 @@ private module ImplCommon {
   }
 
   private predicate storeReturn(Node node1, Content f, Node node2) {
-    exists(DataFlowCall call, ReturnKind kind | storeReturn0(call, kind, node1, f) |
+    exists(DataFlowCall call, ReturnKind kind |
+      storeReturn0(call, kind, node1, f) and
       node2 = getAnOutNode(call, kind) and
       compatibleTypes(node1.getTypeBound(), f.getType()) and
       compatibleTypes(node2.getTypeBound(), f.getContainerType())
@@ -302,7 +305,8 @@ private module ImplCommon {
   predicate read(Node node1, Content f, Node node2) {
     readStep(node1, f, node2) and storeStep(_, f, _)
     or
-    exists(DataFlowCall call, ReturnKind kind | read0(call, kind, node1, f) |
+    exists(DataFlowCall call, ReturnKind kind |
+      read0(call, kind, node1, f) and
       node2 = getAnOutNode(call, kind) and
       compatibleTypes(node1.getTypeBound(), f.getContainerType()) and
       compatibleTypes(node2.getTypeBound(), f.getType())
