@@ -64,7 +64,6 @@ abstract class Declaration extends Locatable, @declaration {
    * Holds if this declaration has the fully-qualified name `qualifiedName`.
    * See `getQualifiedName`.
    */
-  deprecated
   predicate hasQualifiedName(string qualifiedName) {
     this.getQualifiedName() = qualifiedName
   }
