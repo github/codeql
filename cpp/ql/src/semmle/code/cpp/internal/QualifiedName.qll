@@ -1,3 +1,16 @@
+/**
+ * INTERNAL: Do not use. Provides classes and predicates for getting names of
+ * declarations, especially qualified names. Import this library `private` and
+ * qualified.
+ *
+ * This file contains classes that mirror the standard AST classes for C++, but
+ * these classes are only concerned with naming. The other difference is that
+ * these classes don't use the `ResolveClass.qll` mechanisms like
+ * `unresolveElement` because these classes should eventually be part of the
+ * implementation of `ResolveClass.qll`, allowing it to match up classes when
+ * their qualified names and parameters match.
+ */
+
 class Namespace extends @namespace {
   string toString() { result = "QualifiedName Namespace" }
 
@@ -272,12 +285,6 @@ class TemplateClass extends UserType {
     class_instantiation(result, this) and
     class_template_argument(result, _, _)
   }
-}
-
-deprecated class Property extends Declaration {
-  Property() { none() }
-
-  override string getName() { none() }
 }
 
 class FriendDecl extends Declaration, @frienddecl {
