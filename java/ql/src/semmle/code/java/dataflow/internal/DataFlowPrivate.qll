@@ -1,7 +1,28 @@
-import java
+private import java
 private import DataFlowUtil
+private import DataFlowDispatch
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TypeFlow
+
+private newtype TReturnKind = TNormalReturnKind()
+
+/**
+ * A return kind. A return kind describes how a value can be returned
+ * from a callable. For Java, this is simply a method return.
+ */
+class ReturnKind extends TReturnKind {
+  /** Gets a textual representation of this return kind. */
+  string toString() { result = "return" }
+}
+
+/**
+ * Gets a node that can read the value returned from `call` with return kind
+ * `kind`.
+ */
+OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+  result = call.getNode() and
+  kind = TNormalReturnKind()
+}
 
 /**
  * A data flow node that occurs as the argument of a call and is passed as-is
@@ -22,7 +43,7 @@ class ArgumentNode extends Node {
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  predicate argumentOf(Call call, int pos) {
+  predicate argumentOf(DataFlowCall call, int pos) {
     exists(Argument arg | this.asExpr() = arg | call = arg.getCall() and pos = arg.getPosition())
     or
     call = this.(ImplicitVarargsArray).getCall() and
@@ -30,11 +51,25 @@ class ArgumentNode extends Node {
     or
     pos = -1 and this = getInstanceArgument(call)
   }
+
+  /** Gets the call in which this node is an argument. */
+  DataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
 class ReturnNode extends ExprNode {
   ReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getResult()) }
+
+  /** Gets the kind of this returned value. */
+  ReturnKind getKind() { any() }
+}
+
+/** A data flow node that represents the output of a call. */
+class OutNode extends ExprNode {
+  OutNode() { this.getExpr() instanceof MethodAccess }
+
+  /** Gets the underlying call. */
+  DataFlowCall getCall() { result = this.getExpr() }
 }
 
 /**
@@ -229,4 +264,22 @@ predicate compatibleTypes(Type t1, Type t2) {
     or
     canContainBool(e1) and canContainBool(e2)
   )
+}
+
+/** A node that performs a type cast. */
+class CastNode extends ExprNode {
+  CastNode() { this.getExpr() instanceof CastExpr }
+}
+
+class DataFlowCallable = Callable;
+
+class DataFlowExpr = Expr;
+
+class DataFlowType = RefType;
+
+class DataFlowLocation = Location;
+
+class DataFlowCall extends Call {
+  /** Gets the data flow node corresponding to this call. */
+  ExprNode getNode() { result.getExpr() = this }
 }

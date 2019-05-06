@@ -1,4 +1,5 @@
 private import java
+private import DataFlowPrivate
 import semmle.code.java.dispatch.VirtualDispatch
 
 cached

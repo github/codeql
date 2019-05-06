@@ -1,11 +1,27 @@
 private import cpp
 private import DataFlowUtil
+private import DataFlowDispatch
 
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
   result.asExpr() = call.getQualifier()
   // This does not include the implicit `this` argument on auto-generated
   // base class destructor calls as those do not have an AST element.
+}
+
+/** An argument to a call. */
+private class Argument extends Expr {
+  Call call;
+
+  int pos;
+
+  Argument() { call.getArgument(pos) = this }
+
+  /** Gets the call that has this argument. */
+  Call getCall() { result = call }
+
+  /** Gets the position of this argument. */
+  int getPosition() { result = pos }
 }
 
 /**
@@ -24,17 +40,50 @@ class ArgumentNode extends Node {
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
    */
-  predicate argumentOf(Call call, int pos) {
-    exists(Argument arg | this.asExpr() = arg | call = arg.getCall() and pos = arg.getPosition()) or
+  predicate argumentOf(DataFlowCall call, int pos) {
+    exists(Argument arg | this.asExpr() = arg | call = arg.getCall() and pos = arg.getPosition())
+    or
     pos = -1 and this = getInstanceArgument(call)
   }
+
+  /** Gets the call in which this node is an argument. */
+  DataFlowCall getCall() { this.argumentOf(result, _) }
+}
+
+private newtype TReturnKind = TNormalReturnKind()
+
+/**
+ * A return kind. A return kind describes how a value can be returned
+ * from a callable. For C++, this is simply a function return.
+ */
+class ReturnKind extends TReturnKind {
+  /** Gets a textual representation of this return kind. */
+  string toString() { result = "return" }
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
 class ReturnNode extends ExprNode {
-  ReturnNode() {
-    exists(ReturnStmt ret | this.getExpr() = ret.getExpr())
-  }
+  ReturnNode() { exists(ReturnStmt ret | this.getExpr() = ret.getExpr()) }
+
+  /** Gets the kind of this returned value. */
+  ReturnKind getKind() { result = TNormalReturnKind() }
+}
+
+/** A data flow node that represents the output of a call. */
+class OutNode extends ExprNode {
+  OutNode() { this.getExpr() instanceof Call }
+
+  /** Gets the underlying call. */
+  DataFlowCall getCall() { result = this.getExpr() }
+}
+
+/**
+ * Gets a node that can read the value returned from `call` with return kind
+ * `kind`.
+ */
+OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
+  result = call.getNode() and
+  kind = TNormalReturnKind()
 }
 
 /**
@@ -42,9 +91,7 @@ class ReturnNode extends ExprNode {
  * calling context. For example, this would happen with flow through a
  * global or static variable.
  */
-predicate jumpStep(Node n1, Node n2) {
-  none()
-}
+predicate jumpStep(Node n1, Node n2) { none() }
 
 /**
  * Holds if `call` passes an implicit or explicit qualifier, i.e., a
@@ -56,7 +103,10 @@ predicate callHasQualifier(Call call) {
   call.getTarget() instanceof Destructor
 }
 
-private newtype TContent = TFieldContent(Field f) or TCollectionContent() or TArrayContent()
+private newtype TContent =
+  TFieldContent(Field f) or
+  TCollectionContent() or
+  TArrayContent()
 
 /**
  * A reference contained in an object. Examples include instance fields, the
@@ -65,33 +115,49 @@ private newtype TContent = TFieldContent(Field f) or TCollectionContent() or TAr
 class Content extends TContent {
   /** Gets a textual representation of this element. */
   abstract string toString();
+
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
   }
+
   /** Gets the type of the object containing this content. */
-  abstract RefType getContainerType();
+  abstract Type getContainerType();
+
   /** Gets the type of this content. */
   abstract Type getType();
 }
+
 private class FieldContent extends Content, TFieldContent {
   Field f;
+
   FieldContent() { this = TFieldContent(f) }
+
   Field getField() { result = f }
+
   override string toString() { result = f.toString() }
+
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     f.getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
-  override RefType getContainerType() { result = f.getDeclaringType() }
+
+  override Type getContainerType() { result = f.getDeclaringType() }
+
   override Type getType() { result = f.getType() }
 }
+
 private class CollectionContent extends Content, TCollectionContent {
   override string toString() { result = "collection" }
-  override RefType getContainerType() { none() }
+
+  override Type getContainerType() { none() }
+
   override Type getType() { none() }
 }
+
 private class ArrayContent extends Content, TArrayContent {
   override string toString() { result = "array" }
-  override RefType getContainerType() { none() }
+
+  override Type getContainerType() { none() }
+
   override Type getType() { none() }
 }
 
@@ -118,15 +184,13 @@ predicate readStep(Node node1, Content f, Node node2) {
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
  */
-RefType getErasedRepr(Type t) {
+Type getErasedRepr(Type t) {
   suppressUnusedType(t) and
   result instanceof VoidType // stub implementation
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(Type t) {
-  result = t.toString()
-}
+string ppReprType(Type t) { result = t.toString() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
@@ -142,49 +206,33 @@ private predicate suppressUnusedType(Type t) { any() }
 //////////////////////////////////////////////////////////////////////////////
 // Java QL library compatibility wrappers
 //////////////////////////////////////////////////////////////////////////////
-
-class RefType extends Type {
+/** A node that performs a type cast. */
+class CastNode extends Node {
+  CastNode() { none() } // stub implementation
 }
 
-class CastExpr extends Expr {
-  CastExpr() { none() } // stub implementation
-}
+class DataFlowCallable = Function;
 
-/** An argument to a call. */
-class Argument extends Expr {
-  Call call;
-  int pos;
+class DataFlowExpr = Expr;
 
-  Argument() {
-    call.getArgument(pos) = this
-  }
+class DataFlowType = Type;
 
-  /** Gets the call that has this argument. */
-  Call getCall() { result = call }
+class DataFlowLocation = Location;
 
-  /** Gets the position of this argument. */
-  int getPosition() {
-    result = pos
-  }
-}
+/** A function call relevant for data flow. */
+class DataFlowCall extends Expr {
+  DataFlowCall() { this instanceof Call }
 
-class Callable extends Function { }
-
-/**
- * An alias for `Function` in the C++ library. In the Java library, a `Method`
- * is any callable except a constructor.
- */
-class Method extends Function { }
-
-/**
- * An alias for `FunctionCall` in the C++ library. In the Java library, a
- * `MethodAccess` is any `Call` that does not call a constructor.
- */
-class MethodAccess extends FunctionCall {
   /**
-   * INTERNAL: Do not use. Alternative name for `getEnclosingFunction`.
+   * Gets the nth argument for this call.
+   *
+   * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
    */
-  Callable getEnclosingCallable() {
-    result = this.getEnclosingFunction()
-  }
+  Expr getArgument(int n) { result = this.(Call).getArgument(n) }
+
+  /** Gets the data flow node corresponding to this call. */
+  ExprNode getNode() { result.getExpr() = this }
+
+  /** Gets the enclosing callable of this call. */
+  Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
