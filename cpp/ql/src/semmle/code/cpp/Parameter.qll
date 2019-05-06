@@ -55,7 +55,9 @@ class Parameter extends LocalScopeVariable, @parameter {
    * In other words, this predicate holds precisely when the result of
    * `getName()` is not "p#i" (where `i` is the index of the parameter).
    */
-  predicate isNamed() { exists(this.(Q::Parameter).getANamedDeclarationEntry()) }
+  predicate isNamed() {
+    exists(underlyingElement(this).(Q::Parameter).getANamedDeclarationEntry())
+  }
 
   /**
    * Gets the function to which this parameter belongs, if it is a function
@@ -96,12 +98,12 @@ class Parameter extends LocalScopeVariable, @parameter {
    */
   override Location getLocation() {
     exists(VariableDeclarationEntry vde |
-      vde = this.(Q::Parameter).getAnEffectiveDeclarationEntry() and
+      vde = underlyingElement(this).(Q::Parameter).getAnEffectiveDeclarationEntry() and
       result = vde.getLocation()
     |
       vde.isDefinition()
       or
-      not this.(Q::Parameter).getAnEffectiveDeclarationEntry().isDefinition()
+      not underlyingElement(this).(Q::Parameter).getAnEffectiveDeclarationEntry().isDefinition()
     )
   }
 }

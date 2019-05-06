@@ -31,7 +31,7 @@ abstract class Declaration extends Locatable, @declaration {
    * namespace of the structure.
    */
   Namespace getNamespace() {
-    result = this.(Q::Declaration).getNamespace()
+    result = underlyingElement(this).(Q::Declaration).getNamespace()
     or
     exists (Parameter p
     | p = this and result = p.getFunction().getNamespace())
@@ -53,7 +53,7 @@ abstract class Declaration extends Locatable, @declaration {
    * "namespace1::namespace2::TemplateClass1<int>::Class2::memberName"`.
    */
   string getQualifiedName() {
-    result = this.(Q::Declaration).getQualifiedName()
+    result = underlyingElement(this).(Q::Declaration).getQualifiedName()
   }
 
   /**
@@ -84,7 +84,8 @@ abstract class Declaration extends Locatable, @declaration {
    * `hasQualifiedName("std", "vector", "size")`.
    */
   predicate hasQualifiedName(string namespaceQualifier, string typeQualifier, string baseName) {
-    this.(Q::Declaration).hasQualifiedName(namespaceQualifier, typeQualifier, baseName)
+    underlyingElement(this).(Q::Declaration)
+      .hasQualifiedName(namespaceQualifier, typeQualifier, baseName)
   }
 
   /**
@@ -115,7 +116,7 @@ abstract class Declaration extends Locatable, @declaration {
    * To test whether this declaration has a particular name in the global
    * namespace, use `hasGlobalName`.
    */
-  string getName() { result = this.(Q::Declaration).getName() }
+  string getName() { result = underlyingElement(this).(Q::Declaration).getName() }
 
   /** Holds if this declaration has the given name. */
   predicate hasName(string name) { name = this.getName() }
