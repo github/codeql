@@ -40,7 +40,7 @@ class UnsafeXxeSink extends DataFlow::ExprNode {
 class XxeConfig extends TaintTracking::Configuration {
   XxeConfig() { this = "XXE.ql::XxeConfig" }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteUserInput }
+  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeXxeSink }
 }

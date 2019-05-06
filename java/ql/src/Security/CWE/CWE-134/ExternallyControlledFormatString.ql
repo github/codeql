@@ -17,7 +17,7 @@ import DataFlow::PathGraph
 class ExternallyControlledFormatStringConfig extends TaintTracking::Configuration {
   ExternallyControlledFormatStringConfig() { this = "ExternallyControlledFormatStringConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteUserInput }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(StringFormat formatCall).getFormatArgument()

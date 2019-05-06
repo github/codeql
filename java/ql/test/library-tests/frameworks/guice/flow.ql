@@ -6,7 +6,7 @@ class Conf extends TaintTracking::Configuration {
   Conf() { this = "conf" }
 
   override predicate isSource(DataFlow::Node src) {
-    src instanceof RemoteUserInput
+    src instanceof RemoteFlowSource
   }
 
   override predicate isSink(DataFlow::Node sink) {

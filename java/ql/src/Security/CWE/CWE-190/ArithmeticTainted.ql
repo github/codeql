@@ -32,7 +32,7 @@ predicate sink(ArithExpr exp, VarAccess tainted, string effect) {
 class RemoteUserInputConfig extends TaintTracking::Configuration {
   RemoteUserInputConfig() { this = "ArithmeticTainted.ql:RemoteUserInputConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteUserInput }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink(_, sink.asExpr(), _) }
 
