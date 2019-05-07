@@ -88,4 +88,38 @@ async function throwAsync(x) {
 test(source(), "hello");
 test("hey", "hello"); // no single-call inlining
 
+function testNesting(x) {
+  try {
+    throw source();
+  } catch (e) {
+    sink(e); // NOT OK
+  }
+
+  try {
+    try {
+      throw source();
+    } catch (e) {
+      sink(e); // NOT OK
+    }
+  } catch (e) {
+    sink(e); // OK - not caught by this catch
+  }
+
+  try {
+    if (x) {
+      for (;x;) {
+        while(x) {
+          switch (x) {
+            case 1:
+            default:
+              throw source();
+          }
+        }
+      }
+    }
+  } catch (e) {
+    sink(e); // NOT OK
+  }
+}
+
 // semmle-extractor-options: --experimental
