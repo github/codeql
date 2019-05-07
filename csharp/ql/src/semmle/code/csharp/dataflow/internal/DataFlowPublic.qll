@@ -82,6 +82,7 @@ class ParameterNode extends Node {
     explicitParameterNode(this, _) or
     this.(SsaDefinitionNode).getDefinition() instanceof
       ImplicitCapturedParameterNodeImpl::SsaCapturedEntryDefinition or
+    this = C::TInstanceParameterNode(_) or
     this = C::TCilParameterNode(_) or
     this = C::TTaintedParameterNode(_)
   }

@@ -11,6 +11,61 @@ private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
 
+/** Calculation of the relative order in which `this` references are read. */
+private module ThisFlow {
+  class BasicBlock = ControlFlow::BasicBlock;
+
+  /** Holds if `n` is a `this` access at control flow node `cfn`. */
+  private predicate thisAccess(Node n, ControlFlow::Node cfn) {
+    n.(InstanceParameterNode).getCallable() = cfn.(ControlFlow::Nodes::EntryNode).getCallable()
+    or
+    n.asExprAtNode(cfn) = any(Expr e | e instanceof ThisAccess or e instanceof BaseAccess)
+  }
+
+  private predicate thisAccess(Node n, BasicBlock bb, int i) { thisAccess(n, bb.getNode(i)) }
+
+  private predicate thisRank(Node n, BasicBlock bb, int rankix) {
+    exists(int i |
+      i = rank[rankix](int j | thisAccess(_, bb, j)) and
+      thisAccess(n, bb, i)
+    )
+  }
+
+  private int lastRank(BasicBlock bb) { result = max(int rankix | thisRank(_, bb, rankix)) }
+
+  private predicate blockPrecedesThisAccess(BasicBlock bb) { thisAccess(_, bb.getASuccessor*(), _) }
+
+  private predicate thisAccessBlockReaches(BasicBlock bb1, BasicBlock bb2) {
+    thisAccess(_, bb1, _) and bb2 = bb1.getASuccessor()
+    or
+    exists(BasicBlock mid |
+      thisAccessBlockReaches(bb1, mid) and
+      bb2 = mid.getASuccessor() and
+      not thisAccess(_, mid, _) and
+      blockPrecedesThisAccess(bb2)
+    )
+  }
+
+  private predicate thisAccessBlockStep(BasicBlock bb1, BasicBlock bb2) {
+    thisAccessBlockReaches(bb1, bb2) and
+    thisAccess(_, bb2, _)
+  }
+
+  /** Holds if `n1` and `n2` are control-flow adjacent references to `this`. */
+  predicate adjacentThisRefs(Node n1, Node n2) {
+    exists(int rankix, BasicBlock bb |
+      thisRank(n1, bb, rankix) and
+      thisRank(n2, bb, rankix + 1)
+    )
+    or
+    exists(BasicBlock bb1, BasicBlock bb2 |
+      thisRank(n1, bb1, lastRank(bb1)) and
+      thisAccessBlockStep(bb1, bb2) and
+      thisRank(n2, bb2, 1)
+    )
+  }
+}
+
 /** Provides predicates related to local data flow. */
 module LocalFlow {
   class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -183,6 +238,7 @@ module DataFlowPrivateCached {
     TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof Expr } or
     TCilExprNode(CIL::Expr e) { e.getImplementation() instanceof CIL::BestImplementation } or
     TSsaDefinitionNode(Ssa::Definition def) or
+    TInstanceParameterNode(Callable c) { c.hasBody() and not c.(Modifiable).isStatic() } or
     TCilParameterNode(CIL::Parameter p) { p.getMethod().hasBody() } or
     TTaintedParameterNode(Parameter p) { p.getCallable().hasBody() } or
     TTaintedReturnNode(ControlFlow::Nodes::ElementNode cfn) {
@@ -198,13 +254,16 @@ module DataFlowPrivateCached {
     ) {
       cfn.getElement() instanceof DelegateArgumentToLibraryCallable and
       any(DelegateArgumentConfiguration x).hasExprPath(_, cfn, _, call)
-    }
+    } or
+    TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation }
 
   cached
   DotNet::Callable getEnclosingCallable(Node node) {
     result = node.(ExprNode).getExpr().getEnclosingCallable()
     or
     result = node.(SsaDefinitionNode).getDefinition().getEnclosingCallable()
+    or
+    node = TInstanceParameterNode(result)
     or
     exists(CIL::Parameter p | node = TCilParameterNode(p) | result = p.getCallable())
     or
@@ -219,6 +278,10 @@ module DataFlowPrivateCached {
     exists(ControlFlow::Nodes::ElementNode cfn | node = TImplicitDelegateOutNode(cfn, _) |
       result = cfn.getEnclosingCallable()
     )
+    or
+    exists(ControlFlow::Nodes::ElementNode cfn | node = TMallocNode(cfn) |
+      result = cfn.getEnclosingCallable()
+    )
   }
 
   cached
@@ -226,6 +289,8 @@ module DataFlowPrivateCached {
     result = node.(ExprNode).getExpr().getType()
     or
     result = node.(SsaDefinitionNode).getDefinition().getSourceVariable().getType()
+    or
+    exists(Callable c | node = TInstanceParameterNode(c) | result = c.getDeclaringType())
     or
     exists(CIL::Parameter p | node = TCilParameterNode(p) | result = p.getType())
     or
@@ -238,6 +303,10 @@ module DataFlowPrivateCached {
     exists(ControlFlow::Nodes::ElementNode cfn | node = TImplicitDelegateOutNode(cfn, _) |
       result = cfn.getElement().(Expr).getType()
     )
+    or
+    exists(ControlFlow::Nodes::ElementNode cfn | node = TMallocNode(cfn) |
+      result = cfn.getElement().(Expr).getType()
+    )
   }
 
   cached
@@ -245,6 +314,8 @@ module DataFlowPrivateCached {
     result = node.(ExprNode).getExpr().getLocation()
     or
     result = node.(SsaDefinitionNode).getDefinition().getLocation()
+    or
+    exists(Callable c | node = TInstanceParameterNode(c) | result = c.getLocation())
     or
     exists(CIL::Parameter p | node = TCilParameterNode(p) | result = p.getLocation())
     or
@@ -257,6 +328,10 @@ module DataFlowPrivateCached {
     )
     or
     exists(ControlFlow::Nodes::ElementNode cfn | node = TImplicitDelegateOutNode(cfn, _) |
+      result = cfn.getLocation()
+    )
+    or
+    exists(ControlFlow::Nodes::ElementNode cfn | node = TMallocNode(cfn) |
       result = cfn.getLocation()
     )
   }
@@ -275,6 +350,8 @@ module DataFlowPrivateCached {
       result = def.toString()
     )
     or
+    node = TInstanceParameterNode(_) and result = "this"
+    or
     exists(CIL::Parameter p | node = TCilParameterNode(p) | result = p.toString())
     or
     result = toString(node.(TaintedParameterNode).getUnderlyingNode())
@@ -288,6 +365,8 @@ module DataFlowPrivateCached {
     exists(ControlFlow::Nodes::ElementNode cfn | node = TImplicitDelegateOutNode(cfn, _) |
       result = "[output] " + cfn
     )
+    or
+    node = TMallocNode(_) and result = "malloc"
   }
 
   /**
@@ -312,6 +391,8 @@ module DataFlowPrivateCached {
       nodeFrom = TExprNode(cfnFrom) and
       nodeTo = TExprNode(cfnTo)
     )
+    or
+    ThisFlow::adjacentThisRefs(nodeFrom, nodeTo)
     or
     // Flow into SSA pseudo definition
     exists(Ssa::Definition def, Ssa::PseudoDefinition pseudo |
@@ -388,6 +469,18 @@ private module ParameterNodes {
     override DotNet::Parameter getParameter() { result = parameter }
 
     override predicate isParameterOf(DotNet::Callable c, int i) { c.getParameter(i) = parameter }
+  }
+
+  /** An implicit instance (`this`) parameter. */
+  class InstanceParameterNode extends ParameterNode, TInstanceParameterNode {
+    private Callable callable;
+
+    InstanceParameterNode() { this = TInstanceParameterNode(callable) }
+
+    /** Gets the callable containing this implicit instance parameter. */
+    Callable getCallable() { result = callable }
+
+    override predicate isParameterOf(DotNet::Callable c, int pos) { callable = c and pos = -1 }
   }
 
   /**
@@ -539,7 +632,11 @@ private module ArgumentNodes {
   }
 
   private DotNet::Expr getArgument(DotNet::Expr call, int i) {
-    call = any(DispatchCall dc | result = dc.getArgument(i)).getCall()
+    call = any(DispatchCall dc |
+        result = dc.getArgument(i)
+        or
+        result = dc.getQualifier() and i = -1 and not dc.getAStaticTarget().(Modifiable).isStatic()
+      ).getCall()
     or
     result = call.(DelegateCall).getArgument(i)
     or
@@ -649,6 +746,23 @@ private module ArgumentNodes {
         )
       )
     }
+  }
+
+  /**
+   * A node that corresponds to the value of an object creation (`new C()`) before
+   * the constructor has run.
+   */
+  class MallocNode extends ArgumentNode, TMallocNode {
+    private ControlFlow::Nodes::ElementNode cfn;
+
+    MallocNode() { this = TMallocNode(cfn) }
+
+    override predicate argumentOf(DataFlowCall call, int pos) {
+      call = TNonDelegateCall(cfn, _) and
+      pos = -1
+    }
+
+    override ControlFlow::Node getControlFlowNode() { result = cfn }
   }
 }
 import ArgumentNodes
