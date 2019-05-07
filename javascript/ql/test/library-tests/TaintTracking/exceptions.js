@@ -144,4 +144,30 @@ function throwSource() {
   throw source();
 }
 
+function throwThoughLibrary(xs) {
+  try {
+    xs.forEach(function() {
+      throw source();
+    })
+  } catch (e) {
+    sink(e); // NOT OK
+  }
+
+  try {
+    _.takeWhile(xs, function() {
+      throw source();
+    })
+  } catch (e) {
+    sink(e); // NOT OK
+  }
+
+  try {
+    window.addEventListener("message", function(e) {
+      throw source();
+    })
+  } catch (e) {
+    sink(e); // OK - doesn't catch exception from event listener
+  }
+}
+
 // semmle-extractor-options: --experimental
