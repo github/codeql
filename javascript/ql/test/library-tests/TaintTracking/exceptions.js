@@ -122,4 +122,26 @@ function testNesting(x) {
   }
 }
 
+function testThrowSourceInCallee() {
+  try {
+    throwSource();
+  } catch (e) {
+    sink(e); // NOT OK
+  }
+
+  sink(returnThrownSource()); // NOT OK
+}
+
+function returnThrownSource() {
+  try {
+    throwSource();
+  } catch (e) {
+    return e;
+  }
+}
+
+function throwSource() {
+  throw source();
+}
+
 // semmle-extractor-options: --experimental

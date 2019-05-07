@@ -37,6 +37,8 @@
 | exceptions.js:93:11:93:18 | source() | exceptions.js:95:10:95:10 | e |
 | exceptions.js:100:13:100:20 | source() | exceptions.js:102:12:102:12 | e |
 | exceptions.js:115:21:115:28 | source() | exceptions.js:121:10:121:10 | e |
+| exceptions.js:144:9:144:16 | source() | exceptions.js:129:10:129:10 | e |
+| exceptions.js:144:9:144:16 | source() | exceptions.js:132:8:132:27 | returnThrownSource() |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:17:14:17:14 | x |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:20:14:20:14 | y |
