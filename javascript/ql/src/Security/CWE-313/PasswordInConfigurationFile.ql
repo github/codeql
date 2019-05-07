@@ -35,10 +35,14 @@ predicate config(string key, string val, Locatable valElement) {
 
 /**
  * Holds if file `f` should be excluded because it looks like it may be
- * a dictionary file, or a test or example.
+ * an API specification, a dictionary file, or a test or example.
  */
 predicate exclude(File f) {
-  f.getRelativePath().regexpMatch(".*(^|/)(lang(uage)?s?|locales?|tests?|examples?)/.*")
+  f.getRelativePath().regexpMatch("(?i).*(^|/)(lang(uage)?s?|locales?|tests?|examples?|i18n)/.*")
+  or
+  f.getStem().regexpMatch("(?i)translations?")
+  or
+  f.getExtension().toLowerCase() = "raml"
 }
 
 from string key, string val, Locatable valElement
@@ -48,11 +52,14 @@ where
   // exclude possible templates
   not val.regexpMatch(Templating::getDelimiterMatchingRegexp()) and
   (
-    key.toLowerCase() = "password"
+    key.toLowerCase() = "password" and
+    // exclude interpolations of environment variables
+    not val.regexpMatch("\\$\\w+|\\$[{(].+[)}]|%.*%")
     or
     key.toLowerCase() != "readme" and
-    // look for `password=...`, but exclude `password=;` and `password="$(...)"`
-    val.regexpMatch("(?is).*password\\s*=(?!\\s*;)(?!\"?[$`]).*")
+    // look for `password=...`, but exclude `password=;`, `password="$(...)"`,
+    // `password=%s` and `password==`
+    val.regexpMatch("(?is).*password\\s*=(?!\\s*;)(?!\"?[$`])(?!%s)(?!=).*")
   ) and
   not exclude(valElement.getFile())
 select valElement, "Avoid plaintext passwords in configuration files."
