@@ -221,30 +221,22 @@ module DataFlowPrivateCached {
     )
   }
 
-  private DotNet::Type getDotNetType(Node node) {
+  cached
+  DotNet::Type getType(Node node) {
     result = node.(ExprNode).getExpr().getType()
     or
     result = node.(SsaDefinitionNode).getDefinition().getSourceVariable().getType()
     or
     exists(CIL::Parameter p | node = TCilParameterNode(p) | result = p.getType())
     or
-    result = getDotNetType(node.(TaintedParameterNode).getUnderlyingNode())
+    result = getType(node.(TaintedParameterNode).getUnderlyingNode())
     or
-    result = getDotNetType(node.(TaintedReturnNode).getUnderlyingNode())
+    result = getType(node.(TaintedReturnNode).getUnderlyingNode())
     or
     exists(LocalScopeVariable v | node = TImplicitCapturedArgumentNode(_, v) | result = v.getType())
     or
     exists(ControlFlow::Nodes::ElementNode cfn | node = TImplicitDelegateOutNode(cfn, _) |
       result = cfn.getElement().(Expr).getType()
-    )
-  }
-
-  cached
-  Type getType(Node node) {
-    exists(DotNet::Type t | t = getDotNetType(node) |
-      result = t
-      or
-      t.matchesHandle(result)
     )
   }
 
@@ -1006,7 +998,7 @@ predicate readStep(Node node1, Content f, Node node2) {
   none() // stub implementation
 }
 
-private predicate suppressUnusedType(Type t) { any() }
+private predicate suppressUnusedType(DotNet::Type t) { any() }
 
 /**
  * Gets a representative type for `t` for the purpose of pruning possible flow.
@@ -1014,11 +1006,11 @@ private predicate suppressUnusedType(Type t) { any() }
  * Type-based pruning is disabled for now, so this is a stub implementation.
  */
 bindingset[t]
-Type getErasedRepr(Type t) { suppressUnusedType(t) and result instanceof ObjectType } // stub implementation
+Type getErasedRepr(DotNet::Type t) { suppressUnusedType(t) and result instanceof ObjectType } // stub implementation
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
 bindingset[t]
-string ppReprType(Type t) { suppressUnusedType(t) and result = "" } // stub implementation
+string ppReprType(DotNet::Type t) { suppressUnusedType(t) and result = "" } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
@@ -1027,7 +1019,7 @@ string ppReprType(Type t) { suppressUnusedType(t) and result = "" } // stub impl
  * Type-based pruning is disabled for now, so this is a stub implementation.
  */
 bindingset[t1, t2]
-predicate compatibleTypes(Type t1, Type t2) {
+predicate compatibleTypes(DotNet::Type t1, DotNet::Type t2) {
   any() // stub implementation
 }
 
@@ -1055,6 +1047,6 @@ class DataFlowCallable = DotNet::Callable;
 
 class DataFlowExpr = DotNet::Expr;
 
-class DataFlowType = Type;
+class DataFlowType = DotNet::Type;
 
 class DataFlowLocation = Location;

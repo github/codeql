@@ -25,10 +25,10 @@ class Node extends C::TNode {
   DotNet::Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
   /** Gets the type of this node. */
-  final Type getType() { result = C::getType(this) }
+  final DotNet::Type getType() { result = C::getType(this) }
 
   /** Gets an upper bound on the type of this node. */
-  Type getTypeBound() { result = this.getType() } // stub implementation
+  DotNet::Type getTypeBound() { result = this.getType() } // stub implementation
 
   /** Gets the enclosing callable of this node. */
   final DotNet::Callable getEnclosingCallable() { result = C::getEnclosingCallable(this) }
