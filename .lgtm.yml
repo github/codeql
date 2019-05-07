@@ -20,3 +20,8 @@ extraction:
   python:
     python_setup:
       version: 3
+  javascript:
+    index:
+      exclude:
+        - javascript/ql/test
+        - javascript/extractor/tests
