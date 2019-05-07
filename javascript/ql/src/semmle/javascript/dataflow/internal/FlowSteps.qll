@@ -163,8 +163,10 @@ private module CachedSteps {
   }
 
   /**
-   * Holds if there is a flow step from `pred` to `succ` through returning
-   * from a function call or the receiver flowing out of a constructor call.
+   * Holds if there is a flow step from `pred` to `succ` through:
+   * - returning a value from a function call, or
+   * - throwing an exception out of a function call, or
+   * - the receiver flowing out of a constructor call.
    */
   cached
   predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {

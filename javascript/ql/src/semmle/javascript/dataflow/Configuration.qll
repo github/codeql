@@ -613,7 +613,9 @@ private predicate flowThroughCall(
     DataFlow::exceptionalFunctionReturnNode(ret, f) and
     DataFlow::exceptionalInvocationReturnNode(output, invk.asExpr()) and
     calls(invk, f) and
-    reachableFromInput(f, invk, input, ret, cfg, summary)
+    reachableFromInput(f, invk, input, ret, cfg, summary) and
+    not cfg.isBarrier(ret, output) and
+    not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
 }
 

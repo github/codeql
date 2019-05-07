@@ -369,29 +369,30 @@ module LodashUnderscore {
       exists(string name |
         this = member(name).getACall()
       |
-        // Collection methods
-        name = "countBy" or
+        // Members ending with By, With, or While indicate that they are a variant of
+        // another function that takes a callback.
+        name.matches("%By") or
+        name.matches("%With") or
+        name.matches("%While") or
+
+        // Other members that don't fit the above pattern.
         name = "each" or
         name = "eachRight" or
-        name = "forEach" or
-        name = "forEachRight" or
         name = "every" or
         name = "filter" or
-        name = "groupBy" or
-        name = "orderBy" or
+        name = "find" or
+        name = "findLast" or
+        name = "flatMap" or
+        name = "flatMapDeep" or
+        name = "flatMapDepth" or
+        name = "forEach" or
+        name = "forEachRight" or
         name = "partition" or
         name = "reduce" or
         name = "reduceRight" or
+        name = "replace"
         name = "some" or
-        name = "sortBy" or
-
-        // Array methods
-        name = "dropRightWhile" or
-        name = "dropWhile" or
-        name = "sortedIndexBy" or
-        name = "sortedUniqBy" or
-        name = "takeRightWhile" or
-        name = "takeWhile"
+        name = "transform" or
       )
     }
 
