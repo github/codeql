@@ -108,15 +108,13 @@ class Call extends DotNet::Call, Expr, @call {
     )
   }
 
-  // predicate folding to get proper join-order
   pragma[noinline]
   private Expr getImplicitArgument(int pos) {
     result = getArgument(pos) and
     not exists(result.getExplicitArgumentName())
   }
 
-  // predicate folding to get proper join-order
-  pragma[noinline]
+  pragma[nomagic]
   private Expr getExplicitArgument(string name) {
     result = getAnArgument() and
     result.getExplicitArgumentName() = name
