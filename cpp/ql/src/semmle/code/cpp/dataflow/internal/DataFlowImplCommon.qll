@@ -90,11 +90,14 @@ private module ImplCommon {
   }
 
   pragma[noinline]
+  private ParameterNode getAParameter(DataFlowCallable c) { result.getEnclosingCallable() = c }
+
+  pragma[noinline]
   private predicate viableParamArg0(int i, ArgumentNode arg, CallContext outercc, DataFlowCall call) {
     exists(DataFlowCallable c | argumentOf(call, i, arg, c) |
       outercc = TAnyCallContext()
       or
-      exists(ParameterNode p | outercc = TSomeCall(p, _) | c = p.getEnclosingCallable())
+      outercc = TSomeCall(getAParameter(c), _)
       or
       exists(DataFlowCall other | outercc = TSpecificCall(other, _, _) |
         reducedViableImplInCallContext(_, c, other)
