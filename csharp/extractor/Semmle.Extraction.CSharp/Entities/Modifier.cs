@@ -142,10 +142,9 @@ namespace Semmle.Extraction.CSharp.Entities
                     // Sadly, these properties are internal so cannot be accessed directly.
                     // This seems to be a deficiency in the model.
                     var readonlyProperty = nt.GetType().GetProperty("IsReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
-                    var isByRefProperty = nt.GetType().GetProperty("IsByRefLikeType", BindingFlags.NonPublic | BindingFlags.Instance);
 
                     bool isReadOnly = (bool)readonlyProperty.GetValue(nt);
-                    bool isByRefLikeType = (bool)isByRefProperty.GetValue(nt);
+                    bool isByRefLikeType = nt.IsRefLikeType;
 
                     if (isReadOnly)
                         HasModifier(cx, key, "readonly");
