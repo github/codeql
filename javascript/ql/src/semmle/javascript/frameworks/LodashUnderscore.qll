@@ -390,9 +390,9 @@ module LodashUnderscore {
         name = "partition" or
         name = "reduce" or
         name = "reduceRight" or
-        name = "replace"
+        name = "replace" or
         name = "some" or
-        name = "transform" or
+        name = "transform"
       )
     }
 
