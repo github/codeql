@@ -14,7 +14,7 @@
  *       external/cwe/cwe-134
  */
 
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.dataflow.TaintTracking
 import semmle.code.cpp.commons.Printf
 
 // For the following `...gettext` functions, we assume that
@@ -42,48 +42,58 @@ predicate whitelistFunction(Function f, int arg) {
   (arg = 1 or arg = 2)
 }
 
-predicate underscoreMacro(Expr e) {
-  exists(MacroInvocation mi |
-    mi.getMacroName() = "_" and
-    mi.getExpr() = e
+predicate whitelisted(FunctionCall fc) {
+  exists(Function f, int arg | f = fc.getTarget() | whitelistFunction(f, arg))
+}
+
+predicate isNonConst(Expr e) {
+  exists(FunctionCall fc | fc = e.(FunctionCall) |
+    not whitelisted(fc) and not fc.getTarget().hasDefinition()
+  )
+  or
+  exists(Parameter p | p = e.(VariableAccess).getTarget().(Parameter) |
+    p.getFunction().getName() = "main" and p.getType() instanceof PointerType
+  )
+  or
+  e instanceof CrementOperation
+  or
+  e instanceof AddressOfExpr
+  or
+  e instanceof ReferenceToExpr
+  or
+  e instanceof AssignPointerAddExpr
+  or
+  e instanceof AssignPointerSubExpr
+  or
+  e instanceof PointerArithmeticOperation
+  or
+  e instanceof FieldAccess
+  or
+  e instanceof PointerDereferenceExpr
+  or
+  e instanceof AddressOfExpr
+  or
+  e instanceof ExprCall
+  or
+  e instanceof NewArrayExpr
+  or
+  e instanceof AssignExpr
+  or
+  exists(Variable v | v = e.(VariableAccess).getTarget() |
+    v.getType().(ArrayType).getBaseType() instanceof CharType and
+    exists(AssignExpr ae |
+      ae.getLValue().(ArrayExpr).getArrayBase().(VariableAccess).getTarget() = v
+    )
   )
 }
 
-predicate whitelisted(Expr e) {
-  exists(FunctionCall fc, int arg | fc = e.(FunctionCall) |
-    whitelistFunction(fc.getTarget(), arg) and
-    isConst(fc.getArgument(arg))
-  )
-  or
-  // we let the '_' macro through regardless of what it points at
-  underscoreMacro(e)
-}
-
-predicate isConst(Expr e) {
-  e instanceof StringLiteral
-  or
-  whitelisted(e)
-}
-
-class NonConstFlow extends DataFlow::Configuration {
+class NonConstFlow extends TaintTracking::Configuration {
   NonConstFlow() { this = "NonConstFlow" }
 
   override predicate isSource(DataFlow::Node source) { isNonConst(source.asExpr()) }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
-  }
-
-  override predicate isAdditionalFlowStep(DataFlow::Node source, DataFlow::Node sink) {
-    // an element picked from an array of string literals is a string literal
-    exists(Variable v, int a |
-      a = sink.asExpr().(ArrayExpr).getArrayOffset().getValue().toInt() and
-      v = sink.asExpr().(ArrayExpr).getArrayBase().(VariableAccess).getTarget()
-    |
-    // we disallow parameters, since they may be bound to unsafe arguments
-    // at various call sites.
-      not v instanceof Parameter and source.asExpr() instanceof StringLiteral
-      )
   }
 }
 

@@ -27,28 +27,29 @@ extern char *any_random_function(const char *);
 
 #define NULL ((void*)0)
 
-// The `_` macro is treated specially.  While it is typically set to
-// `gettext`, we allow it to point at any function.
 #define _(X) my_gettext(X)
 
 int main(int argc, char **argv) {
 	if(argc > 1)
-		printf(argv[1]);                   // not ok
+		printf(argv[1]);                  // NOT OK
 	else
-		printf("No argument supplied.\n"); // ok
+		printf("No argument supplied.\n"); // OK
 
-	printf(_("No argument supplied.\n")); // ok
+	printf(_("No argument supplied.\n")); // NOT OK
 
-	printf(dgettext(NULL, "No argument supplied.\n")); // ok
+	printf(dgettext(NULL, "No argument supplied.\n")); // OK
 
-	printf(ngettext("One argument\n", "%d arguments\n", argc-1), argc-1); // ok
+	printf(ngettext("One argument\n", "%d arguments\n", argc-1), argc-1); // OK
 
-	printf(gettext("%d arguments\n"), argc-1); // ok
-	printf(any_random_function("%d arguments\n"), argc-1); // not ok
+	printf(gettext("%d arguments\n"), argc-1); // OK
+	printf(any_random_function("%d arguments\n"), argc-1); // NOT OK
 
 #undef _
-	printf(_(any_random_function("%d arguments\n")),
-			argc-1); // not ok
+    /* The special `..gettext..` functions are allowed arbitrary arguments */
+	printf(_(any_random_function("%d arguments\n")),  // OK
+			argc-1);
+	printf(_("%d more arguments\n"),  // OK
+			argc-1);
 
 	return 0;
 }
