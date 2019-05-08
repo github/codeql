@@ -73,3 +73,9 @@ function f(){
 		return z;
 	}; // ';' is unreachable, but alert is squelched
 }
+
+// test for unreachable throws
+function z() {
+	return 10;
+	throw new Error(); // this throws is unreachable, but alert should not be produced
+}

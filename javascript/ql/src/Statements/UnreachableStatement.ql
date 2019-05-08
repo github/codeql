@@ -26,5 +26,7 @@ where
   // ignore ambient statements
   not s.isAmbient() and
   // ignore empty statements
-  not s instanceof EmptyStmt
+  not s instanceof EmptyStmt and 
+  // ignore unreachable throws
+  not s instanceof ThrowStmt
 select s.(FirstLineOf), "This statement is unreachable."
