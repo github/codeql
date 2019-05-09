@@ -38,7 +38,7 @@
 | Server-side URL redirect       | Fewer false-positive results | This rule now treats URLs as safe in more cases where the hostname cannot be tampered with. |
 | Type confusion through parameter tampering | Fewer false-positive results | This rule now recognizes additional emptiness checks. |
 | Useless assignment to property | Fewer false-positive results | This rule now ignore reads of additional getters. |
-| Unreachable statement | Unreachable throws no longer give an alert | This ignores unreachable throws, as they could be intentional (for eg. to placate the TS compiler). |
+| Unreachable statement | Unreachable throws no longer give an alert | This ignores unreachable throws, as they could be intentional (for example, to placate the TS compiler). |
 
 ## Changes to QL libraries
 
