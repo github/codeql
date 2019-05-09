@@ -234,10 +234,7 @@ class PackageObject extends ModuleObject {
     }
 
     override Container getPath() {
-        exists(ModuleObject m | 
-            m.getPackage() = this |
-            result = m.getPath().getParent()
-        )
+        result = this.getModule().getPath()
     }
 
     ModuleObject submodule(string name) {
