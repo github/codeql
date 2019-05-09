@@ -368,7 +368,7 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
     override boolean isClass() { result = false }
 
     override ObjectInternal getClass() {
-        result = ObjectInternal::super_()
+        result = ObjectInternal::superType()
     }
 
     override boolean isComparable() { result = false }

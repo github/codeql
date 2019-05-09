@@ -418,7 +418,7 @@ module ObjectInternal {
         result = TBuiltinClassObject(Builtin::special("property"))
     }
 
-    ObjectInternal super_() {
+    ObjectInternal superType() {
         result = TBuiltinClassObject(Builtin::special("super"))
     }
 
