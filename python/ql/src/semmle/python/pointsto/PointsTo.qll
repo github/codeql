@@ -1693,9 +1693,27 @@ cached module Types {
         result = has_six_add_metaclass(cls).booleanOr(has_metaclass_var_metaclass(cls))
     }
 
+    private ControlFlowNode decorator_call_callee(PythonClassObjectInternal cls) {
+        result = cls.getScope().getADecorator().getAFlowNode().(CallNode).getFunction()
+    }
+
     private boolean has_six_add_metaclass(PythonClassObjectInternal cls) {
-        // TO DO...
-        result = false
+        exists(ControlFlowNode callee, ObjectInternal func |
+            callee = decorator_call_callee(cls) and
+            PointsToInternal::pointsTo(callee, _, func, _)
+            |
+            func = six_add_metaclass_function() and result = true
+            or
+            func != six_add_metaclass_function() and result = false
+        )
+        or
+        not exists(Module m | m.getName() = "six") and result = false
+        or
+        exists(Class pycls |
+            pycls = cls.getScope() and
+            not exists(pycls.getADecorator()) and
+            result = false
+        )
     }
 
     private boolean has_metaclass_var_metaclass(PythonClassObjectInternal cls) {
