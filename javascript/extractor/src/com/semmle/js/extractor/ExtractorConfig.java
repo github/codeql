@@ -34,7 +34,8 @@ public class ExtractorConfig {
     ECMA2016(2016, 7),
     ECMA2017(2017, 8),
     ECMA2018(2018, 9),
-    ECMA2019(2019, 10);
+    ECMA2019(2019, 10),
+    ECMA2020(2020, 11);
 
     private final int version;
     public final int legacyVersion;
@@ -236,7 +237,7 @@ public class ExtractorConfig {
   private String defaultEncoding;
 
   public ExtractorConfig(boolean experimental) {
-    this.ecmaVersion = experimental ? ECMAVersion.ECMA2019 : ECMAVersion.ECMA2018;
+    this.ecmaVersion = experimental ? ECMAVersion.ECMA2020 : ECMAVersion.ECMA2019;
     this.platform = Platform.AUTO;
     this.jsx = true;
     this.sourceType = SourceType.AUTO;
