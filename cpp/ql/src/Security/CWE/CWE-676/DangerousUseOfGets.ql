@@ -3,7 +3,7 @@
  * @description The standard library 'gets' function is dangerous and should not be used.
  * @kind problem
  * @problem.severity error
- * @precision high
+ * @precision very-high
  * @id cpp/potentially-dangerous-function
  * @tags reliability
  *       security

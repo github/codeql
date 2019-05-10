@@ -2,7 +2,7 @@
  * @name Use of potentially dangerous function
  * @description Certain standard library functions are dangerous to call.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
  * @id cpp/potentially-dangerous-function
  * @tags reliability
