@@ -1,0 +1,3 @@
+| tests.cpp:112:9:112:12 | call to gets | gets does not guard against buffer overflow |
+| tests.cpp:249:2:249:5 | call to gets | gets does not guard against buffer overflow |
+| tests.cpp:250:2:250:5 | call to gets | gets does not guard against buffer overflow |
