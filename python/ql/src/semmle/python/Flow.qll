@@ -34,7 +34,7 @@ private AstNode toAst(ControlFlowNode n) {
 class ControlFlowNode extends @py_flow_node {
 
     ControlFlowNode() {
-        not Pruner::pruned(this)
+        not Pruner::unreachable(this)
     }
 
     /** Whether this control flow node is a load (including those in augmented assignments) */

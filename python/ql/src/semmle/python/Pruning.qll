@@ -3,10 +3,11 @@ import python
 
 module Pruner {
 
-    /** A basic block before pruning */
+    /** A control flow node before pruning */
     class UnprunedCfgNode extends @py_flow_node {
 
-       string toString() { none() }
+        string toString() { none() }
+
         /** Gets a predecessor of this flow node */
         UnprunedCfgNode getAPredecessor() {
             py_successors(result, this)
@@ -50,6 +51,7 @@ module Pruner {
 
     /** A control flow node corresponding to a comparison operation, such as `x<y` */
     class UnprunedCompareNode extends UnprunedCfgNode {
+
         UnprunedCompareNode() {
             py_flow_bb_node(this, any(Compare c), _, _)
         }
@@ -70,7 +72,7 @@ module Pruner {
 
     }
 
-    /** A control flow node corresponding to a unary expression: (`+x`), (`-x`) or (`~x`) */
+    /** A control flow node corresponding to a unary not expression: (`not x`) */
     class UnprunedNot extends UnprunedCfgNode {
         UnprunedNot() {
             exists(UnaryExpr unary |
@@ -79,13 +81,11 @@ module Pruner {
             )
         }
 
-        /** flow node corresponding to the operand of a unary expression */
+        /** Gets the control flow node corresponding to the operand of this `not` expression */
         UnprunedCfgNode getOperand() {
             exists(UnaryExpr u | this.getNode() = u and result.getNode() = u.getOperand()) and
             result.getBasicBlock().dominates(this.getBasicBlock())
         }
-
-        override UnaryExpr getNode() { result = super.getNode() }
 
     }
 
@@ -97,11 +97,11 @@ module Pruner {
         }
 
         /** Whether this basic block contains the specified node */
-        predicate contains(@py_flow_node node) {
+        predicate contains(UnprunedCfgNode node) {
             py_flow_bb_node(node, _, this, _)
         }
 
-       string toString() { none() }
+        string toString() { none() }
 
         /** Whether this basic block strictly dominates the other */
         pragma[nomagic] predicate strictlyDominates(UnprunedBasicBlock other) {
@@ -153,41 +153,50 @@ module Pruner {
 
     private import Comparisons
 
-    newtype TConditionalConstant =
+    newtype TConstraint =
         TTruthy(boolean b) { b = true or b = false }
         or
         TIsNone(boolean b) { b = true or b = false }
         or
-        TComparedToConstant(CompareOp op, int k) {
-            comparison_or_assignment_to_constant(op, k)
+        TConstrainedByConstant(CompareOp op, int k) {
+            exists(Compare comp, Cmpop cop, IntegerLiteral l |
+                comp.compares(_, cop, l) and
+                l.getValue() = k and
+                op.forOp(cop)
+            )
+            or
+            exists(Assign a | a.getValue().(IntegerLiteral).getValue() = k) and op = eq()
         }
 
-        abstract class ConditionalConstant extends TConditionalConstant {
+    /** A constraint that may be applied to an SSA variable.
+     * Used for computing unreachable edges
+     */
+    abstract class Constraint extends TConstraint {
 
         abstract string toString();
 
-        abstract ConditionalConstant invert();
+        abstract Constraint invert();
 
+        /** Holds if this constraint constrains the "truthiness" of the variable.
+         * That is, for a variable `var` constrainted by this constraint
+         * `bool(var) is value`
+         */
         abstract predicate constrainsVariableToBe(boolean value);
 
-        abstract predicate impliesFalse(ConditionalConstant other);
+        /** Holds if this constraint implies that `other` cannot hold for the
+         * same variable.
+         * For example `x > 0` implies that `not bool(x)` is `False`.
+         */
+        abstract predicate impliesFalse(Constraint other);
 
     }
 
-    private predicate comparison_or_assignment_to_constant(CompareOp op, int k) {
-        exists(Compare comp, Cmpop cop, IntegerLiteral l |
-            comp.compares(_, cop, l) and
-            l.getValue() = k and
-            op.forOp(cop)
-        )
-        or
-        exists(Assign a | a.getValue().(IntegerLiteral).getValue() = k) and op = eq()
-    }
-
+    /** A basic block ending in a test (and branch). */
     class UnprunedConditionBlock extends UnprunedBasicBlock {
 
         UnprunedConditionBlock() { this.last().isBranch() }
 
+        /** Holds if `controlled` is only reachable if the test in this block evaluates to `testIsTrue` */
         predicate controls(UnprunedBasicBlock controlled, boolean testIsTrue) {
             /* For this block to control the block 'controlled' with 'testIsTrue' the following must be true:
                Execution must have passed through the test i.e. 'this' must strictly dominate 'controlled'.
@@ -233,11 +242,11 @@ module Pruner {
             )
         }
 
-        /** Holds if this condition controls the edge `pred->succ`, i.e. those edges for which the condition is `testIsTrue`. */
+        /** Holds if the edge `pred->succ` is reachable only if the test in this block evaluates to `testIsTrue` */
         predicate controlsEdge(UnprunedBasicBlock pred, UnprunedBasicBlock succ, boolean testIsTrue) {
             this.controls(pred, testIsTrue) and succ = pred.getASuccessor()
             or
-            pred.last() = this and (
+            pred = this and (
                 testIsTrue = true and succ = this.getATrueSuccessor()
                 or
                 testIsTrue = false and succ = this.getAFalseSuccessor()
@@ -246,7 +255,8 @@ module Pruner {
 
     }
 
-    class Truthy extends ConditionalConstant, TTruthy {
+    /** A constraint that the variable is truthy `bool(var) is True` or falsey `bool(var) is False` */
+    class Truthy extends Constraint, TTruthy {
 
         private boolean booleanValue() {
             this = TTruthy(result)
@@ -258,7 +268,7 @@ module Pruner {
             result = "Falsey" and this.booleanValue() = false
         }
 
-        override ConditionalConstant invert() {
+        override Constraint invert() {
             result = TTruthy(this.booleanValue().booleanNot())
         }
 
@@ -266,13 +276,14 @@ module Pruner {
             value = this.booleanValue()
         }
 
-        override predicate impliesFalse(ConditionalConstant other) {
+        override predicate impliesFalse(Constraint other) {
             other.constrainsVariableToBe(this.booleanValue().booleanNot())
         }
 
     }
 
-    class IsNone extends ConditionalConstant, TIsNone {
+    /** A constraint that the variable is None `(var is None) is True` or not None `(var is None) is False` */
+    class IsNone extends Constraint, TIsNone {
 
         private boolean isNone() {
             this = TIsNone(result)
@@ -284,7 +295,7 @@ module Pruner {
             result = "Is not None" and this.isNone() = false
         }
 
-        override ConditionalConstant invert() {
+        override Constraint invert() {
             result = TIsNone(this.isNone().booleanNot())
         }
 
@@ -292,7 +303,7 @@ module Pruner {
             value = false and this.isNone() = true
         }
 
-        override predicate impliesFalse(ConditionalConstant other) {
+        override predicate impliesFalse(Constraint other) {
             other = TIsNone(this.isNone().booleanNot())
             or
             this.isNone() = true and other = TTruthy(true)
@@ -300,22 +311,25 @@ module Pruner {
 
     }
 
-    class ComparedToConstant extends ConditionalConstant, TComparedToConstant {
+    /** A constraint that the variable fulfils some equality or inequality to an integral constant.
+     * `(var op k) is True` where `op` is an equality or inequality operator and `k` is an integer constant
+     */
+    class ConstrainedByConstant extends Constraint, TConstrainedByConstant {
 
         private int intValue() {
-            this = TComparedToConstant(_, result)
+            this = TConstrainedByConstant(_, result)
         }
 
         private CompareOp getOp() {
-            this = TComparedToConstant(result, _)
+            this = TConstrainedByConstant(result, _)
         }
 
         override string toString() {
             result = this.getOp().repr() + " " + this.intValue().toString()
         }
 
-        override ConditionalConstant invert() {
-            result = TComparedToConstant(this.getOp().invert(), this.intValue())
+        override Constraint invert() {
+            result = TConstrainedByConstant(this.getOp().invert(), this.intValue())
         }
 
         override predicate constrainsVariableToBe(boolean value) {
@@ -336,17 +350,20 @@ module Pruner {
             )
         }
 
-        override predicate impliesFalse(ConditionalConstant other) {
+        override predicate impliesFalse(Constraint other) {
             exists(boolean b |
                 this.constrainsVariableToBe(b) and other = TTruthy(b.booleanNot())
             )
             or
             this.getOp() = eq() and other = TIsNone(true)
             or
-            this.getOp() = ne() and other.(ComparedToConstant).getOp() = eq()
-            and this.intValue() = other.(ComparedToConstant).intValue()
+            this.getOp() = ne() and other.(ConstrainedByConstant).getOp() = eq()
+            and this.intValue() = other.(ConstrainedByConstant).intValue()
         }
 
+        /** The minimum value that a variable fulfilling this constraint may hold
+         * within the bounds of a signed 32 bit number.
+         */
         int minValue() {
             this.getOp() = eq() and result = this.intValue()
             or
@@ -359,6 +376,9 @@ module Pruner {
             this.getOp() = ge() and result = this.intValue()
         }
 
+        /** The maximum value that a variable fulfilling this constraint may hold
+         * within the bounds of a signed 32 bit number.
+         */
         int maxValue() {
             this.getOp() = eq() and result = this.intValue()
             or
@@ -373,27 +393,28 @@ module Pruner {
 
     }
 
-    predicate pruned(@py_flow_node n) {
+    /** Holds if the control flow node `n` is unreachable due to
+     * one or more constraints.
+     */
+    predicate unreachable(UnprunedCfgNode n) {
         exists(UnprunedBasicBlock bb |
-            pruned_bb(bb) and bb.contains(n)
+            unreachableBB(bb) and bb.contains(n)
         )
     }
 
-    //private 
-    predicate pruned_bb(UnprunedBasicBlock bb) {
+    /** Holds if the basic block `bb` is unreachable due to
+     * one or more constraints.
+     */
+    predicate unreachableBB(UnprunedBasicBlock bb) {
         not bb.isEntry() and
         forall(UnprunedBasicBlock pred |
             pred.getASuccessor() = bb
             |
-            pruned_edge(pred, bb)
+            unreachableEdge(pred, bb)
         )
     }
 
-    ConditionalConstant conditionForTest(SsaVariable var, UnprunedBasicBlock test) {
-        result = conditionForNode(var, test.last())
-    }
-
-    private ConditionalConstant conditionForNode(SsaVariable var, UnprunedCfgNode node) {
+    private Constraint constraintFromTest(SsaVariable var, UnprunedCfgNode node) {
         py_ssa_use(node, var) and result = TTruthy(true)
         or
         exists(boolean b |
@@ -402,16 +423,10 @@ module Pruner {
         or
         exists(CompareOp op, int k |
             int_test(node, var, op, k) and
-            result = TComparedToConstant(op, k)
+            result = TConstrainedByConstant(op, k)
         )
         or
-        result = conditionForNode(var, node.(UnprunedNot).getOperand()).invert()
-    }
-
-    predicate impliesFalse(ConditionalConstant a, ConditionalConstant b) {
-        a.impliesFalse(b) or
-        a.(ComparedToConstant).minValue() > b.(ComparedToConstant).maxValue() or
-        a.(ComparedToConstant).maxValue() < b.(ComparedToConstant).minValue()
+        result = constraintFromTest(var, node.(UnprunedNot).getOperand()).invert()
     }
 
     predicate none_test(UnprunedCompareNode test, SsaVariable var, boolean is) {
@@ -452,7 +467,7 @@ module Pruner {
         )
     }
 
-    private boolean truthy_assignment(UnprunedCfgNode asgn, SsaVariable var) {
+    boolean truthy_assignment(UnprunedCfgNode asgn, SsaVariable var) {
         exists(Assign a |
             a.getATarget() = asgn.getNode() and
             py_ssa_use(asgn, var)
@@ -465,10 +480,11 @@ module Pruner {
         module_import(var) and result = true
     }
 
-    private ConditionalConstant conditionForAssign(SsaVariable var, UnprunedBasicBlock asgn) {
+    /** Gets the constraint on `var` resulting from the an assignment in `asgn` */
+    Constraint constraintFromAssignment(SsaVariable var, UnprunedBasicBlock asgn) {
         exists(CompareOp op, int k |
             int_assignment(asgn.getANode(), var, op, k) and
-            result = TComparedToConstant(op, k)
+            result = TConstrainedByConstant(op, k)
         )
         or
         none_assignment(asgn.getANode(), var) and result = TIsNone(true)
@@ -476,7 +492,8 @@ module Pruner {
         result = TTruthy(truthy_assignment(asgn.getANode(), var))
     }
 
-    predicate priorCondition(UnprunedBasicBlock pred, UnprunedBasicBlock succ, ConditionalConstant preval, SsaVariable var) {
+    /** Holds if the constraint `preval` holds for `var` on edge `pred` -> `succ` as a result of a prior test or assignment */
+    predicate priorConstraint(UnprunedBasicBlock pred, UnprunedBasicBlock succ, Constraint preval, SsaVariable var) {
         not (blacklisted(var) and preval = TTruthy(_))
         and
         not var.getVariable().escapes()
@@ -484,52 +501,62 @@ module Pruner {
         exists(UnprunedBasicBlock first |
             not first = pred and
             first.(UnprunedConditionBlock).controlsEdge(pred, succ, true) and
-            preval = conditionForTest(var, first)
+            preval = constraintFromTest(var, first.last())
             or
             not first = pred and
             first.(UnprunedConditionBlock).controlsEdge(pred, succ, false) and
-            preval = conditionForTest(var, first).invert()
+            preval = constraintFromTest(var, first.last()).invert()
             or
-            preval = conditionForAssign(var, first) and
+            preval = constraintFromAssignment(var, first) and
             first.dominates(pred) and
             (succ = pred.getAFalseSuccessor() or succ = pred.getATrueSuccessor())
         )
     }
 
-    predicate branchCondition(UnprunedBasicBlock pred, UnprunedBasicBlock succ, ConditionalConstant cond, SsaVariable var) {
-        cond = conditionForTest(var, pred) and
+    /** Holds if `cond` holds for `var` on conditional edge `pred` -> `succ` as a result of the test for that edge */
+    predicate constraintOnBranch(UnprunedBasicBlock pred, UnprunedBasicBlock succ, Constraint cond, SsaVariable var) {
+        cond = constraintFromTest(var, pred.last()) and
         succ = pred.getATrueSuccessor()
         or
-        cond = conditionForTest(var, pred).invert() and
+        cond = constraintFromTest(var, pred.last()).invert() and
         succ = pred.getAFalseSuccessor()
     }
 
-    predicate controllingConditions(UnprunedBasicBlock pred, UnprunedBasicBlock succ, ConditionalConstant preval, ConditionalConstant postcond) {
+    /** Holds if the pair of constraints (`preval`, `postcond`) holds on the edge `pred` -> `succ` for some SSA variable */
+    predicate controllingConditions(UnprunedBasicBlock pred, UnprunedBasicBlock succ, Constraint preval, Constraint postcond) {
         exists(SsaVariable var |
-            priorCondition(pred, succ, preval, var) and
-            branchCondition(pred, succ, postcond, var)
+            priorConstraint(pred, succ, preval, var) and
+            constraintOnBranch(pred, succ, postcond, var)
         )
     }
 
-    predicate pruned_edge(UnprunedBasicBlock pred, UnprunedBasicBlock succ) {
-        exists(ConditionalConstant pre, ConditionalConstant cond |
+    /** Holds if the edge `pred` -> `succ` should be pruned as it cannot be reached */
+    predicate unreachableEdge(UnprunedBasicBlock pred, UnprunedBasicBlock succ) {
+        exists(Constraint pre, Constraint cond |
             controllingConditions(pred, succ, pre, cond) and
             impliesFalse(pre, cond)
         )
         or
-        pruned_bb(pred) and succ = pred.getASuccessor()
+        unreachableBB(pred) and succ = pred.getASuccessor()
         or
         simply_dead(pred, succ)
     }
 
+    /* Helper for `unreachableEdge` */
+    private predicate impliesFalse(Constraint a, Constraint b) {
+        a.impliesFalse(b) or
+        a.(ConstrainedByConstant).minValue() > b.(ConstrainedByConstant).maxValue() or
+        a.(ConstrainedByConstant).maxValue() < b.(ConstrainedByConstant).minValue()
+    }
+
     /** Holds if edge is simply dead. Stuff like `if False: ...` */
-    //private 
     predicate simply_dead(UnprunedBasicBlock pred, UnprunedBasicBlock succ) {
         constTest(pred.last()) = true and pred.getAFalseSuccessor() = succ
         or
         constTest(pred.last()) = false and pred.getATrueSuccessor() = succ
     }
 
+    /* Helper for simply_dead */
     private boolean constTest(UnprunedCfgNode node) {
         exists(ImmutableLiteral lit |
             result = lit.booleanValue() and lit = node.getNode()
@@ -538,7 +565,7 @@ module Pruner {
         result = constTest(node.(UnprunedNot).getOperand()).booleanNot()
     }
 
-    /** Holds if `var` is blacklisted as having possbily been mutated */
+    /** Holds if `var` is blacklisted as having possibly been mutated */
     predicate blacklisted(SsaVariable var) {
         possibly_mutated(var) and not whitelisted(var)
     }
