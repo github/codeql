@@ -402,6 +402,10 @@ module ObjectInternal {
         result = TBuiltinClassObject(Builtin::special("StaticMethod"))
     }
 
+    ObjectInternal boundMethod() {
+        result = TBuiltinClassObject(Builtin::special("MethodType"))
+    }
+
     ObjectInternal moduleType() {
         result = TBuiltinClassObject(Builtin::special("ModuleType"))
     }

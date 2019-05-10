@@ -232,6 +232,14 @@ predicate call2(CallNode call, ControlFlowNode func, ControlFlowNode arg0, Contr
     arg1 = call.getArg(1)
 }
 
+predicate call3(CallNode call, ControlFlowNode func, ControlFlowNode arg0, ControlFlowNode arg1, ControlFlowNode arg2) {
+    not exists(call.getArg(3)) and
+    func = call.getFunction() and
+    arg0 = call.getArg(0) and
+    arg1 = call.getArg(1) and
+    arg2 = call.getArg(2)
+}
+
 bindingset[self, function]
 predicate method_binding(AttrNode instantiation, ObjectInternal self, CallableObjectInternal function, PointsToContext context) {
     exists(ObjectInternal obj, string name |

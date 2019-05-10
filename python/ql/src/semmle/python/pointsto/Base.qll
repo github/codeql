@@ -378,6 +378,7 @@ class ArgumentRefinement extends PyNodeRefinement {
 
     ControlFlowNode getArgument() { result = argument }
 
+    CallNode getCall() { result = this.getDefiningNode() }
 }
 
 /** Deletion of an attribute `del obj.attr`. */

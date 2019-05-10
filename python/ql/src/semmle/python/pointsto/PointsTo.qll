@@ -872,7 +872,7 @@ module InterProceduralPointsTo {
         )
     }
 
-    predicate selfMethodCall(MethodCallsiteRefinement def, PointsToContext caller, Function func, PointsToContext callee) {
+    predicate selfMethodCall(SelfCallsiteRefinement def, PointsToContext caller, Function func, PointsToContext callee) {
         def.getInput().getSourceVariable().(Variable).isSelf() and
         exists(PythonFunctionObjectInternal method, CallNode call |
             method.getScope() = func and
@@ -1232,11 +1232,28 @@ module Expressions {
         )
     }
 
+    pragma [noinline]
+    predicate setattr_call(CallNode call, PointsToContext context, ControlFlowNode obj, string name, ObjectInternal val, ControlFlowNode origin) {
+        exists(ControlFlowNode arg1, ControlFlowNode arg2 |
+            call_to_setattr(call, context, obj, arg1, arg2) and
+            PointsToInternal::pointsTo(arg2, context, val, origin) and
+            PointsToInternal::pointsToString(arg1, context, name)
+        )
+    }
+
     pragma[noinline]
     private predicate call_to_getattr(ControlFlowNode call, PointsToContext context, ControlFlowNode arg0, ControlFlowNode arg1) {
         exists(ControlFlowNode func |
             call2(call, func, arg0, arg1) and
             PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("getattr"), _)
+        )
+    }
+
+    pragma[noinline]
+    private predicate call_to_setattr(ControlFlowNode call, PointsToContext context, ControlFlowNode arg0, ControlFlowNode arg1, ControlFlowNode arg2) {
+        exists(ControlFlowNode func |
+            call3(call, func, arg0, arg1, arg2) and
+            PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("setattr"), _)
         )
     }
 
@@ -1935,6 +1952,7 @@ cached module Types {
 module AttributePointsTo {
 
     predicate pointsTo(AttrNode f, Context context, ObjectInternal value, ControlFlowNode origin) {
+        f.isLoad() and
         exists(EssaVariable var, string name, CfgOrigin orig |
             var.getASourceUse() = f.getObject(name) and
             variableAttributePointsTo(var, context, name, value, orig) and
@@ -1961,6 +1979,8 @@ module AttributePointsTo {
         selfParameterAttributePointsTo(def, context, name, value, origin)
         or
         selfMethodCallsitePointsTo(def, context, name, value, origin)
+        or
+        argumentRefinementPointsTo(def, context, name, value, origin)
     }
 
     pragma [noinline]
@@ -2002,7 +2022,7 @@ module AttributePointsTo {
     }
 
     private predicate selfParameterAttributePointsTo(ParameterDefinition def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
-        exists(MethodCallsiteRefinement call, Function func, PointsToContext caller |
+        exists(SelfCallsiteRefinement call, Function func, PointsToContext caller |
             InterProceduralPointsTo::selfMethodCall(call, caller, func, context) and
             def.isSelf() and def.getScope() = func and
             variableAttributePointsTo(call.getInput(), caller, name, value, origin)
@@ -2010,14 +2030,33 @@ module AttributePointsTo {
     }
 
     /** Pass through for `self` for the implicit re-definition of `self` in `self.foo()`. */
-    private predicate selfMethodCallsitePointsTo(MethodCallsiteRefinement def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
+    private predicate selfMethodCallsitePointsTo(SelfCallsiteRefinement def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
         /* The value of self remains the same, only the attributes may change */
         exists(Function func, PointsToContext callee, EssaVariable exit_self |
             InterProceduralPointsTo::selfMethodCall(def, context, func, callee) and
             exit_self.getSourceVariable().(Variable).isSelf() and
             exit_self.getScope() = func and 
             BaseFlow::reaches_exit(exit_self) and
-            variableAttributePointsTo(exit_self, context, name, value, origin)
+            variableAttributePointsTo(exit_self, callee, name, value, origin)
+        )
+    }
+
+    private predicate argumentRefinementPointsTo(ArgumentRefinement def, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
+        exists(ObjectInternal callable |
+            PointsToInternal::pointsTo(def.getCall().getFunction(), context, callable, _) and
+            callable != ObjectInternal::builtin("setattr")
+        ) and
+        variableAttributePointsTo(def.getInput(), context, name, value, origin)
+        or
+        exists(string othername |
+            Expressions::setattr_call(def.getCall(), context, def.getInput().getASourceUse(), othername, _, _) and
+            not othername = name
+        ) and
+        variableAttributePointsTo(def.getInput(), context, name, value, origin)
+        or
+        exists(ControlFlowNode orig |
+            Expressions::setattr_call(def.getCall(), context, def.getInput().getASourceUse(), name, value, orig) and
+            origin = CfgOrigin::fromCfgNode(orig)
         )
     }
 
