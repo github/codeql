@@ -123,10 +123,22 @@
 | b_condition.py:97 | ControlFlowNode for x | runtime | None | builtin-class NoneType |
 | b_condition.py:101 | ControlFlowNode for FunctionExpr | import | Function not_or_not | builtin-class function |
 | b_condition.py:102 | ControlFlowNode for Tuple | runtime | (builtin-class tuple, builtin-class list) | builtin-class tuple |
+| b_condition.py:102 | ControlFlowNode for UnaryExpr | runtime | bool False | builtin-class bool |
 | b_condition.py:102 | ControlFlowNode for a | runtime | instance of tuple | builtin-class tuple |
 | b_condition.py:102 | ControlFlowNode for isinstance | runtime | Builtin-function isinstance | builtin-class builtin_function_or_method |
+| b_condition.py:102 | ControlFlowNode for isinstance() | runtime | bool True | builtin-class bool |
 | b_condition.py:102 | ControlFlowNode for list | runtime | builtin-class list | builtin-class type |
 | b_condition.py:102 | ControlFlowNode for tuple | runtime | builtin-class tuple | builtin-class type |
+| b_condition.py:104 | ControlFlowNode for UnaryExpr | runtime | bool False | builtin-class bool |
+| b_condition.py:104 | ControlFlowNode for UnaryExpr | runtime | bool True | builtin-class bool |
+| b_condition.py:104 | ControlFlowNode for a | runtime | instance of tuple | builtin-class tuple |
+| b_condition.py:105 | ControlFlowNode for IntegerLiteral | runtime | int 0 | builtin-class int |
+| b_condition.py:105 | ControlFlowNode for UnaryExpr | runtime | bool False | builtin-class bool |
+| b_condition.py:105 | ControlFlowNode for UnaryExpr | runtime | bool True | builtin-class bool |
+| b_condition.py:105 | ControlFlowNode for a | runtime | instance of tuple | builtin-class tuple |
+| b_condition.py:106 | ControlFlowNode for Exception | runtime | builtin-class Exception | builtin-class type |
+| b_condition.py:106 | ControlFlowNode for Exception() | runtime | Exception() | builtin-class Exception |
+| b_condition.py:107 | ControlFlowNode for Str | runtime | 'Hello' | builtin-class str |
 | e_temporal.py:2 | ControlFlowNode for ImportExpr | import | Module sys | builtin-class module |
 | e_temporal.py:4 | ControlFlowNode for FunctionExpr | import | Function f | builtin-class function |
 | e_temporal.py:5 | ControlFlowNode for Attribute | code/e_temporal.py:12 from import | list object | builtin-class list |
@@ -466,11 +478,9 @@
 | m_attributes.py:12 | ControlFlowNode for Attribute() | import | None | builtin-class NoneType |
 | m_attributes.py:12 | ControlFlowNode for C | import | class C | builtin-class type |
 | m_attributes.py:12 | ControlFlowNode for C() | import | C() | class C |
-| m_attributes.py:12 | ControlFlowNode for C() | import | C() | class C |
 | m_attributes.py:13 | ControlFlowNode for Attribute | import | Method(Function C.foo, C()) | builtin-class method |
 | m_attributes.py:13 | ControlFlowNode for Attribute() | import | None | builtin-class NoneType |
 | m_attributes.py:13 | ControlFlowNode for C | import | class C | builtin-class type |
-| m_attributes.py:13 | ControlFlowNode for C() | import | C() | class C |
 | m_attributes.py:13 | ControlFlowNode for C() | import | C() | class C |
 | m_attributes.py:13 | ControlFlowNode for IntegerLiteral | import | int 100 | builtin-class int |
 | n_nesting.py:8 | ControlFlowNode for FunctionExpr | import | Function foo | builtin-class function |
@@ -483,7 +493,6 @@
 | n_nesting.py:13 | ControlFlowNode for FunctionExpr | runtime | Function foo.inner | builtin-class function |
 | n_nesting.py:15 | ControlFlowNode for Dict | runtime | Dict | builtin-class dict |
 | n_nesting.py:16 | ControlFlowNode for Str | runtime | 'inner' | builtin-class str |
-| n_nesting.py:16 | ControlFlowNode for inner | runtime | Function foo.inner | builtin-class function |
 | n_nesting.py:16 | ControlFlowNode for inner | runtime | Function foo.inner | builtin-class function |
 | n_nesting.py:18 | ControlFlowNode for attrs | runtime | Dict | builtin-class dict |
 | n_nesting.py:22 | ControlFlowNode for FunctionExpr | import | Function f1 | builtin-class function |
@@ -772,12 +781,12 @@
 | r_regressions.py:90 | ControlFlowNode for TestFirst | import | class TestFirst | builtin-class type |
 | r_regressions.py:90 | ControlFlowNode for TestFirst() | import | TestFirst() | class TestFirst |
 | r_regressions.py:93 | ControlFlowNode for ImportExpr | import | Module sys | builtin-class module |
-| r_regressions.py:95 | ControlFlowNode for Attribute | import | ('_ast', '_bisect', '_codecs', '_collections', '_datetime', '_elementtree', '_functools', '_heapq', '_imp', '_io', '_locale', '_md5', '_operator', '_pickle', '_posixsubprocess', '_random', '_sha1', '_sha256', '_sha512', '_signal', '_socket', '_sre', '_stat', '_string', '_struct', '_symtable', '_thread', '_tracemalloc', '_warnings', '_weakref', 'array', 'atexit', 'binascii', 'builtins', 'errno', 'faulthandler', 'fcntl', 'gc', 'grp', 'itertools', 'marshal', 'math', 'posix', 'pwd', 'pyexpat', 'select', 'spwd', 'sys', 'syslog', 'time', 'unicodedata', 'xxsubtype', 'zipimport', 'zlib') | builtin-class tuple |
+| r_regressions.py:95 | ControlFlowNode for Attribute | import | (..., ...) | builtin-class tuple |
 | r_regressions.py:95 | ControlFlowNode for sys | import | Module sys | builtin-class module |
 | r_regressions.py:97 | ControlFlowNode for Compare | import | bool False | builtin-class bool |
 | r_regressions.py:97 | ControlFlowNode for Compare | import | bool True | builtin-class bool |
 | r_regressions.py:97 | ControlFlowNode for Str | import | 'time' | builtin-class str |
-| r_regressions.py:97 | ControlFlowNode for _names | import | ('_ast', '_bisect', '_codecs', '_collections', '_datetime', '_elementtree', '_functools', '_heapq', '_imp', '_io', '_locale', '_md5', '_operator', '_pickle', '_posixsubprocess', '_random', '_sha1', '_sha256', '_sha512', '_signal', '_socket', '_sre', '_stat', '_string', '_struct', '_symtable', '_thread', '_tracemalloc', '_warnings', '_weakref', 'array', 'atexit', 'binascii', 'builtins', 'errno', 'faulthandler', 'fcntl', 'gc', 'grp', 'itertools', 'marshal', 'math', 'posix', 'pwd', 'pyexpat', 'select', 'spwd', 'sys', 'syslog', 'time', 'unicodedata', 'xxsubtype', 'zipimport', 'zlib') | builtin-class tuple |
+| r_regressions.py:97 | ControlFlowNode for _names | import | (..., ...) | builtin-class tuple |
 | r_regressions.py:98 | ControlFlowNode for ImportExpr | import | Module time | builtin-class module |
 | r_regressions.py:100 | ControlFlowNode for C | import | class C | builtin-class type |
 | r_regressions.py:100 | ControlFlowNode for C() | import | C() | class C |

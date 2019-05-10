@@ -130,6 +130,7 @@
 | c_tests.py:32 | ControlFlowNode for unknown | 32 |
 | c_tests.py:32 | ControlFlowNode for unknown() | 32 |
 | c_tests.py:32 | ControlFlowNode for y | 4 |
+| c_tests.py:34 | ControlFlowNode for Attribute | 32 |
 | c_tests.py:34 | ControlFlowNode for Attribute | 34 |
 | c_tests.py:34 | ControlFlowNode for y | 4 |
 | c_tests.py:37 | ControlFlowNode for cond | 37 |
@@ -198,7 +199,9 @@
 | h_classes.py:17 | ControlFlowNode for arg | 14 |
 | h_classes.py:18 | ControlFlowNode for name | 18 |
 | h_classes.py:26 | ControlFlowNode for choice | 25 |
+| h_classes.py:26 | ControlFlowNode for choice | 42 |
 | h_classes.py:28 | ControlFlowNode for choice | 25 |
+| h_classes.py:28 | ControlFlowNode for choice | 42 |
 | h_classes.py:42 | ControlFlowNode for unknown | 42 |
 | h_classes.py:42 | ControlFlowNode for unknown() | 42 |
 | r_regressions.py:9 | ControlFlowNode for Attribute | 9 |
