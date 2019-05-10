@@ -1,14 +1,15 @@
-// BAD: using gmtime
-int is_morning_bad() {
-    const time_t now_seconds = time(NULL);
-    struct tm *now = gmtime(&now_seconds);
-    return (now->tm_hour < 12);
+#define BUFFERSIZE (1024)
+
+// BAD: using gets
+void echo_bad() {
+    char buffer[BUFFERSIZE];
+    gets(buffer);
+    printf("Input was: '%s'\n", buffer);
 }
 
-// GOOD: using gmtime_r
-int is_morning_good() {
-    const time_t now_seconds = time(NULL);
-    struct tm now;
-    gmtime_r(&now_seconds, &now);
-    return (now.tm_hour < 12);
+// GOOD: using fgets
+void echo_good() {
+    char buffer[BUFFERSIZE];
+    fgets(buffer, BUFFERSIZE, stdin);
+    printf("Input was: '%s'\n", buffer);
 }

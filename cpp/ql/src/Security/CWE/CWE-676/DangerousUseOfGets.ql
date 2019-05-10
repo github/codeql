@@ -1,6 +1,6 @@
 /**
- * @name Use of potentially dangerous function
- * @description Certain standard library functions are dangerous to call.
+ * @name Use of dangerous function 'gets'
+ * @description The standard library 'gets' function is dangerous and should not be used.
  * @kind problem
  * @problem.severity error
  * @precision high
@@ -11,24 +11,8 @@
  */
 import cpp
 
-predicate potentiallyDangerousFunction(Function f, string message) {
-  exists(string name | name = f.getQualifiedName() |
-    (
-      name = "gmtime" or
-      name = "localtime" or
-      name = "ctime" or
-      name = "asctime"
-    ) and
-    message = "Call to " + name + " is potentially dangerous"
-  ) or (
-    f.getQualifiedName() = "gets" and
-    message = "gets does not guard against buffer overflow"
-  )
-}
-
-
-from FunctionCall call, Function target, string message
+from FunctionCall call, Function target
 where
   call.getTarget() = target and
-  potentiallyDangerousFunction(target, message)
-select call, message
+  target.getQualifiedName() = "gets"
+select call, "gets does not guard against buffer overflow"

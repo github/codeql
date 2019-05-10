@@ -20,9 +20,6 @@ predicate potentiallyDangerousFunction(Function f, string message) {
       name = "asctime"
     ) and
     message = "Call to " + name + " is potentially dangerous"
-  ) or (
-    f.hasGlobalName("gets") and
-    message = "gets does not guard against buffer overflow"
   )
 }
 
