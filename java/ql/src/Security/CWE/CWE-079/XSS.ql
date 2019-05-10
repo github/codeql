@@ -18,7 +18,7 @@ import DataFlow2::PathGraph
 class XSSConfig extends TaintTracking::Configuration2 {
   XSSConfig() { this = "XSSConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteUserInput }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
 

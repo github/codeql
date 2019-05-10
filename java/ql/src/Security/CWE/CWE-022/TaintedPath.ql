@@ -20,7 +20,7 @@ import DataFlow::PathGraph
 class TaintedPathConfig extends TaintTracking::Configuration {
   TaintedPathConfig() { this = "TaintedPathConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteUserInput }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(Expr e | e = sink.asExpr() | e = any(PathCreation p).getInput() and not guarded(e))

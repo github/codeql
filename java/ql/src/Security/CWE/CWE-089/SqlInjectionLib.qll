@@ -49,7 +49,7 @@ class PersistenceQueryInjectionSink extends QueryInjectionSink {
 private class QueryInjectionFlowConfig extends TaintTracking::Configuration {
   QueryInjectionFlowConfig() { this = "SqlInjectionLib::QueryInjectionFlowConfig" }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteUserInput }
+  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 

@@ -6,7 +6,7 @@ private class RemoteUserInputToArgumentToExecFlowConfig extends TaintTracking::C
     this = "ExecCommon::RemoteUserInputToArgumentToExecFlowConfig"
   }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteUserInput }
+  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }
 

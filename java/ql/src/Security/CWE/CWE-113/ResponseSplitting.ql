@@ -18,7 +18,7 @@ class ResponseSplittingConfig extends TaintTracking::Configuration {
   ResponseSplittingConfig() { this = "ResponseSplittingConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteUserInput and
+    source instanceof RemoteFlowSource and
     not source instanceof WhitelistedSource
   }
 

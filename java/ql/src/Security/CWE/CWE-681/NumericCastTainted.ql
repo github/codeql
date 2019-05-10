@@ -19,7 +19,7 @@ import DataFlow::PathGraph
 private class NumericCastFlowConfig extends TaintTracking::Configuration {
   NumericCastFlowConfig() { this = "NumericCastTainted::RemoteUserInputToNumericNarrowingCastExpr" }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteUserInput }
+  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr()
