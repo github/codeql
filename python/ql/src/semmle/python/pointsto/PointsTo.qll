@@ -1951,10 +1951,13 @@ cached module Types {
 
 module AttributePointsTo {
 
-    predicate pointsTo(AttrNode f, Context context, ObjectInternal value, ControlFlowNode origin) {
-        f.isLoad() and
+    predicate pointsTo(ControlFlowNode f, Context context, ObjectInternal value, ControlFlowNode origin) {
         exists(EssaVariable var, string name, CfgOrigin orig |
-            var.getASourceUse() = f.getObject(name) and
+            f.isLoad() and
+            var.getASourceUse() = f.(AttrNode).getObject(name)
+            or
+            Expressions::getattr_call(f, var.getASourceUse(), context, _, name)
+            |
             variableAttributePointsTo(var, context, name, value, orig) and
             origin = orig.asCfgNodeOrHere(f)
         )
