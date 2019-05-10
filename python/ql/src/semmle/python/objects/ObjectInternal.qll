@@ -411,7 +411,7 @@ module ObjectInternal {
     }
 
     ObjectInternal type() {
-        result = TBuiltinClassObject(Builtin::special("type"))
+        result = TType()
     }
 
     ObjectInternal property() {

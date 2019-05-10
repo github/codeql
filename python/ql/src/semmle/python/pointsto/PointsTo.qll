@@ -823,9 +823,15 @@ module InterProceduralPointsTo {
             /* A decorator and we don't understand it. Use the original, undecorated value */
             f.isDecoratorCall() and returnValue = ObjectInternal::unknown() and
             PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
+            or
+            Types::six_add_metaclass(f, value, _) and
+            PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
         )
         or
         Expressions::typeCallPointsTo(f, context, value, origin, _, _)
+        or
+        Types::six_add_metaclass(f, value, _) and
+        PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
     }
 
     /** Points-to for parameter. `def foo(param): ...`. */
@@ -1390,8 +1396,7 @@ module Expressions {
     }
 
     pragma [nomagic]
-    //private 
-    boolean isinstanceEvaluatesTo(CallNode call, PointsToContext context, ControlFlowNode use, ObjectInternal val) {
+    private boolean isinstanceEvaluatesTo(CallNode call, PointsToContext context, ControlFlowNode use, ObjectInternal val) {
         exists(ObjectInternal cls |
             isinstance_call(call, use, context, val, cls) |
             result = Types::improperSubclass(val.getClass(), cls)
@@ -1637,9 +1642,9 @@ cached module Types {
                 n = count(pycls.getABase()) and result = false
             )
             or
-            hasDeclaredMetaclass(cls) = false and
             exists(ClassObjectInternal base |
                 base = getBase(cls, n) |
+                hasDeclaredMetaclass(cls) = false and
                 isOldStyle(base) and result = newStylePython2(cls, n+1)
                 or
                 isNewStyle(base) and result = true
@@ -1738,7 +1743,6 @@ cached module Types {
         cls.(ImportTimeScope).entryEdge(result.getAUse(), _)
     }
 
-    /** INTERNAL -- Do not use */
     cached predicate six_add_metaclass(CallNode decorator_call, ClassObjectInternal decorated, ControlFlowNode metaclass) {
         exists(CallNode decorator |
             PointsToInternal::pointsTo(decorator_call.getArg(0), _, decorated, _) and
@@ -1754,10 +1758,9 @@ cached module Types {
     }
 
     private ObjectInternal six_add_metaclass_function() {
-        exists(Module six, FunctionExpr add_metaclass |
-            add_metaclass.getInnerScope().getName() = "add_metaclass" and
-            add_metaclass.getScope() = six and
-            result.getOrigin() = add_metaclass.getAFlowNode()
+        exists(ModuleObjectInternal six |
+            six.getName() = "six" and
+            six.attribute("add_metaclass", result, _)
         )
     }
 
@@ -1812,7 +1815,7 @@ cached module Types {
         or
         reason = "Missing base " + missingBase(cls)
         or
-        exists(cls.(PythonClassObjectInternal).getScope().getMetaClass()) and not exists(cls.getClass()) and reason = "Failed to infer metaclass"
+        not exists(ObjectInternal meta | meta = cls.getClass() and not meta = ObjectInternal::unknownClass()) and reason = "Failed to infer metaclass"
         or
         exists(int i, ObjectInternal base1, ObjectInternal base2 |
             base1 = getBase(cls, i) and
@@ -1831,7 +1834,7 @@ cached module Types {
     private int missingBase(ClassObjectInternal cls) {
         exists(cls.(PythonClassObjectInternal).getScope().getBase(result))
         and
-        not exists(getBase(cls, result)) or getBase(cls, result) = ObjectInternal::unknownClass()
+        not exists(ObjectInternal base | base = getBase(cls, result) and not base = ObjectInternal::unknownClass())
     }
 
     private predicate duplicateBase(ClassObjectInternal cls) {

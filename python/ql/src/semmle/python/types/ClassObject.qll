@@ -77,6 +77,12 @@ class ClassObject extends Object {
         Types::isNewStyle(theClass())
     }
 
+    /** Whether this class is an old style class. 
+        An old style class is one does not inherit from `object`. */
+    predicate isOldStyle() {
+        Types::isOldStyle(theClass())
+    }
+
     /** Whether this class is a legal exception class. 
      *  What constitutes a legal exception class differs between major versions */
     predicate isLegalExceptionType() {

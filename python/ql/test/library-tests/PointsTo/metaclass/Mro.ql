@@ -1,6 +1,8 @@
 
 import python
+
 private import semmle.python.objects.ObjectInternal
+private import semmle.python.pointsto.PointsTo
 
 /** Make unknown type visible */
 class UnknownType extends UnknownClassInternal {
@@ -11,6 +13,6 @@ class UnknownType extends UnknownClassInternal {
 
 }
 
-from ClassObject cls
-where cls.getPyClass().getEnclosingModule().getName() = "test"
-select cls.toString(), cls.getMetaClass().toString()
+from PythonClassObjectInternal cls
+where cls.getScope().getEnclosingModule().getName() = "test" and not Types::failedInference(cls, _)
+select cls.toString(), Types::getMro(cls)
