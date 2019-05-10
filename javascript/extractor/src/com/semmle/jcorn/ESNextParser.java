@@ -385,7 +385,7 @@ public class ESNextParser extends JSXParser {
       param = this.parseBindingAtom();
       this.checkLVal(param, true, null);
       this.expect(TokenType.parenR);
-    } else if (!options.esnext()) {
+    } else if (options.ecmaVersion() < 10) {
       this.unexpected();
     }
     BlockStatement catchBody = this.parseBlock(false);
