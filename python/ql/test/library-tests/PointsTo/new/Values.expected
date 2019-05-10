@@ -370,12 +370,15 @@
 | k_getsetattr.py:9 | ControlFlowNode for Str | runtime | 'a' | builtin-class str |
 | k_getsetattr.py:9 | ControlFlowNode for getattr | code/k_getsetattr.py:15 from runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:9 | ControlFlowNode for getattr | runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
+| k_getsetattr.py:9 | ControlFlowNode for getattr() | code/k_getsetattr.py:15 from runtime | int 0 | builtin-class int |
+| k_getsetattr.py:9 | ControlFlowNode for getattr() | runtime | int 0 | builtin-class int |
 | k_getsetattr.py:9 | ControlFlowNode for self | code/k_getsetattr.py:15 from runtime | self instance of C | class C |
 | k_getsetattr.py:9 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:10 | ControlFlowNode for Str | code/k_getsetattr.py:15 from runtime | 'c' | builtin-class str |
 | k_getsetattr.py:10 | ControlFlowNode for Str | runtime | 'c' | builtin-class str |
 | k_getsetattr.py:10 | ControlFlowNode for getattr | code/k_getsetattr.py:15 from runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
 | k_getsetattr.py:10 | ControlFlowNode for getattr | runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
+| k_getsetattr.py:10 | ControlFlowNode for getattr() | code/k_getsetattr.py:15 from runtime | int 2 | builtin-class int |
 | k_getsetattr.py:10 | ControlFlowNode for self | code/k_getsetattr.py:15 from runtime | self instance of C | class C |
 | k_getsetattr.py:10 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:12 | ControlFlowNode for FunctionExpr | import | Function C.meth2 | builtin-class function |
@@ -394,12 +397,15 @@
 | k_getsetattr.py:15 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:16 | ControlFlowNode for Str | runtime | 'a' | builtin-class str |
 | k_getsetattr.py:16 | ControlFlowNode for getattr | runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
+| k_getsetattr.py:16 | ControlFlowNode for getattr() | runtime | int 0 | builtin-class int |
 | k_getsetattr.py:16 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:17 | ControlFlowNode for Str | runtime | 'b' | builtin-class str |
 | k_getsetattr.py:17 | ControlFlowNode for getattr | runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
+| k_getsetattr.py:17 | ControlFlowNode for getattr() | runtime | int 1 | builtin-class int |
 | k_getsetattr.py:17 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:18 | ControlFlowNode for Str | runtime | 'c' | builtin-class str |
 | k_getsetattr.py:18 | ControlFlowNode for getattr | runtime | Builtin-function getattr | builtin-class builtin_function_or_method |
+| k_getsetattr.py:18 | ControlFlowNode for getattr() | runtime | int 2 | builtin-class int |
 | k_getsetattr.py:18 | ControlFlowNode for self | runtime | self instance of C | class C |
 | k_getsetattr.py:21 | ControlFlowNode for FunctionExpr | import | Function k | builtin-class function |
 | k_getsetattr.py:22 | ControlFlowNode for C | runtime | class C | builtin-class type |
