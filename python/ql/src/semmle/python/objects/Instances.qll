@@ -164,6 +164,10 @@ class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
         this = TSelfInstance(_, _, result)
     }
 
+    ParameterDefinition getParameter() {
+        this = TSelfInstance(result, _, _)
+    }
+
     override Builtin getBuiltin() {
         none()
     }

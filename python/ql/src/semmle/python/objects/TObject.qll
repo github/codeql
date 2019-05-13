@@ -220,8 +220,8 @@ private predicate super_noargs(CallNode instantiation, ObjectInternal self, Clas
         instantiation.getScope() = func and
         /* Implicit class argument is lexically enclosing scope */
         func.getScope() = startclass.(PythonClassObjectInternal).getScope() and
-        /* Implicit 'self' is the 0th parameter */
-        PointsToInternal::pointsTo(func.getArg(0).asName().getAFlowNode(), context, self, _)
+        /* Implicit 'self' is the `self` parameter of the enclosing function */
+        self.(SelfInstanceInternal).getParameter().getParameter() = func.getArg(0)
     )
 }
 
