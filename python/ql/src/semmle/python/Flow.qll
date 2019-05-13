@@ -1014,6 +1014,18 @@ class BasicBlock extends @py_flow_node {
         result = this.getLastNode().getAFalseSuccessor().getBasicBlock()
     }
 
+    /** Gets an exceptional successor to this basic block */
+    BasicBlock getAnUnconditionalSuccessor() {
+        result = this.getASuccessor() and
+        not result = this.getATrueSuccessor() and
+        not result = this.getAFalseSuccessor()
+    }
+
+    /** Gets an exceptional successor to this basic block */
+    BasicBlock getAnExceptionalSuccessor() {
+        result = this.getLastNode().getAnExceptionalSuccessor().getBasicBlock()
+    }
+
     /** Gets the scope of this block */
     pragma [nomagic] Scope getScope() {
         exists(ControlFlowNode n |

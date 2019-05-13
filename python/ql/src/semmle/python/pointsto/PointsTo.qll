@@ -214,43 +214,28 @@ cached module PointsToInternal {
 
     /* Holds if BasicBlock `b` is reachable, given the context `context`. */
     cached predicate reachableBlock(BasicBlock b, PointsToContext context) {
-        context.appliesToScope(b.getScope()) and not exists(ConditionBlock guard | guard.controls(b, _))
+        exists(Scope scope |
+            context.appliesToScope(scope) and
+            scope.getEntryNode().getBasicBlock() = b
+        )
         or
-        exists(ConditionBlock guard |
-            guard = b.getImmediatelyControllingBlock() and
-            reachableBlock(guard, context)
-            |
-            allowsFlow(guard, b, context)
+        reachableEdge(_, b, context)
+    }
+
+    private predicate reachableEdge(BasicBlock pred, BasicBlock succ, PointsToContext context) {
+        reachableBlock(pred, context) and
+        (
+            pred.getAnUnconditionalSuccessor() = succ
             or
-            /* Assume the true edge of an assert is reachable (except for assert 0/False) */
-            guard.controls(b, true) and
-            exists(Assert a, Expr test |
-                a.getTest() = test and
-                guard.getLastNode().getNode() = test and
-                not test instanceof ImmutableLiteral
+            exists(ObjectInternal value, boolean sense, ControlFlowNode test |
+                test = pred.getLastNode() and
+                pointsTo(test, context, value, _) and
+                sense = value.booleanValue()
+                |
+                sense = true and succ = pred.getATrueSuccessor()
+                or
+                sense = false and succ = pred.getAFalseSuccessor()
             )
-        )
-    }
-
-    pragma [noopt]
-    private predicate allowsFlow(ConditionBlock guard, BasicBlock b, PointsToContext context) {
-        exists(ObjectInternal value, boolean sense, ControlFlowNode test |
-            test = guard.getLastNode() and
-            pointsTo(test, context, value, _) and
-            sense = value.booleanValue() and
-            guard.controls(b, sense)
-        )
-    }
-
-    /* Holds if the edge `pred` -> `succ` is reachable, given the context `context`.
-     */
-    pragma [noopt]
-    cached predicate controlledReachableEdge(BasicBlock pred, BasicBlock succ, PointsToContext context) {
-        exists(ConditionBlock guard, ObjectInternal value, boolean sense, ControlFlowNode test |
-            test = guard.getLastNode() and
-            pointsTo(test, context, value, _) and
-            sense = value.booleanValue() and
-            guard.controlsEdge(pred, succ, sense)
         )
     }
 
@@ -519,13 +504,18 @@ cached module PointsToInternal {
     /** Holds if the phi-function `phi` refers to `(value, origin)` given the context `context`. */
     pragma [nomagic]
     private predicate ssa_phi_points_to(PhiFunction phi, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        exists(EssaVariable input, BasicBlock pred |
-            input = phi.getInput(pred) and
+        exists(EssaVariable input |
+            ssa_phi_reachable_from_input(phi, context, input) and
             variablePointsTo(input, context, value, origin)
-            |
-            controlledReachableEdge(pred, phi.getBasicBlock(), context)
-            or
-            not exists(ConditionBlock guard | guard.controlsEdge(pred, phi.getBasicBlock(), _))
+        )
+    }
+
+    /* Helper for ssa_phi_points_to */
+    pragma [noinline]
+    private predicate ssa_phi_reachable_from_input(PhiFunction phi, PointsToContext context, EssaVariable input) {
+        exists(BasicBlock pred |
+            input = phi.getInput(pred) and
+            reachableEdge(pred, phi.getBasicBlock(), context)
         )
     }
 
@@ -839,9 +829,7 @@ module InterProceduralPointsTo {
     predicate parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         self_parameter_points_to(def, context, value, origin)
         or
-        positional_parameter_points_to(def, context, value, origin)
-        or
-        named_parameter_points_to(def, context, value, origin)
+        normal_parameter_points_to(def, context, value, origin)
         or
         default_parameter_points_to(def, context, value, origin)
         or
@@ -850,7 +838,7 @@ module InterProceduralPointsTo {
 
     /** Helper for `parameter_points_to` */
     pragma [noinline]
-    private predicate positional_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    private predicate normal_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(PointsToContext caller, ControlFlowNode arg |
             PointsToInternal::pointsTo(arg, caller, value, origin) and
             callsite_argument_transfer(arg, caller, def, context)
@@ -879,16 +867,6 @@ module InterProceduralPointsTo {
             call = method.getACall() and
             call = def.getDefiningNode() and
             callee.fromCall(call, caller)
-        )
-    }
-
-    /** Helper for `parameter_points_to` */
-    pragma [noinline]
-    private predicate named_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        exists(CallNode call, PointsToContext caller, PythonFunctionObjectInternal func, string name |
-            context.fromCall(call, func, caller) and
-            def.getParameter() = func.getScope().getArgByName(name) and
-            PointsToInternal::pointsTo(call.getArgByName(name), caller, value, origin)
         )
     }
 
@@ -939,10 +917,18 @@ module InterProceduralPointsTo {
 
     /** Holds if the `(argument, caller)` pair matches up with `(param, callee)` pair across call. */
     cached predicate callsite_argument_transfer(ControlFlowNode argument, PointsToContext caller, ParameterDefinition param, PointsToContext callee) {
-        exists(CallNode call, Function func, int n, int offset |
-            callsite_calls_function(call, caller, func, callee, offset) and
-            argument = call.getArg(n) and
-            param.getParameter() = func.getArg(n+offset)
+        exists(CallNode call, Function func, int offset |
+            callsite_calls_function(call, caller, func, callee, offset)
+            |
+            exists(int n |
+                argument = call.getArg(n) and
+                param.getParameter() = func.getArg(n+offset)
+            )
+            or
+            exists(string name |
+                argument = call.getArgByName(name) and
+                param.getParameter() = func.getArgByName(name)
+            )
         )
     }
 
@@ -1334,6 +1320,7 @@ module Expressions {
         val.strValue() = other.strValue() and result = 1
     }
 
+    pragma [nomagic]
     private int compare_sequence(SequenceObjectInternal val, SequenceObjectInternal other, int n) {
         inequalityTest(_, _, _, val, other, _, _) and
         (
@@ -1342,11 +1329,17 @@ module Expressions {
             n = other.length() and val.length() > n and result = 1
             or
             n = other.length() and n = val.length() and result = 0
-            or
-            result != 0 and result = compare_unbound(val.getItem(n), other.getItem(n))
-            or
-            compare_unbound(val.getItem(n), other.getItem(n)) = 0 and result = compare_sequence(val, other, n+1)
         )
+        or
+        result != 0 and result = compare_item(val, other, n)
+        or
+        compare_item(val, other, n) = 0 and result = compare_sequence(val, other, n+1)
+    }
+
+    pragma [noinline]
+    private int compare_item(SequenceObjectInternal val, SequenceObjectInternal other, int n) {
+        inequalityTest(_, _, _, val, other, _, _) and
+        result = compare_unbound(val.getItem(n), other.getItem(n))
     }
 
     pragma [noinline]
