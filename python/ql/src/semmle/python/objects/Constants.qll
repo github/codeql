@@ -38,7 +38,11 @@ abstract class ConstantObjectInternal extends ObjectInternal {
     }
 
     pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        none()
+        PointsToInternal::attributeRequired(this, name) and
+        exists(ObjectInternal cls_attr, CfgOrigin attr_orig |
+            this.getClass().(ClassObjectInternal).lookup(name, cls_attr, attr_orig) and
+            cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this, value, origin)
+        )
     }
 
     pragma [noinline] override predicate attributesUnknown() { none() }
@@ -51,7 +55,14 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
     pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
-    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) {
+        exists(ClassObjectInternal cls |
+            receiver_type(_, name, this, cls) and
+            cls.lookup(name, descriptor, _) and
+            descriptor.isDescriptor() = true
+        ) and
+        this = instance
+    }
 
 }
 
