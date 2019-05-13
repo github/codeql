@@ -79,3 +79,13 @@ function withIndexOfCheckBad(x, y) {
 function plus(x, y) {
   return x.indexOf("." + y) === x.length - (y.length + 1); // NOT OK
 }
+
+function withIndexOfCheckLower(x, y) {
+  let index = x.indexOf(y);
+  return !(index < 0) && index === x.length - y.length - 1; // OK
+}
+
+function withIndexOfCheckLowerEq(x, y) {
+  let index = x.indexOf(y);
+  return !(index <= -1) && index === x.length - y.length - 1; // OK
+}
