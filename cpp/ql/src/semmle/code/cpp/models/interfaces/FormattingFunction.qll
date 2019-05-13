@@ -51,7 +51,7 @@ abstract class FormattingFunction extends Function {
    * Microsoft rules and extensions.
    */
   predicate isMicrosoft() {
-    getFile().compiledAsMicrosoft()
+    any(File f).compiledAsMicrosoft()
   }
 
   /**

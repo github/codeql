@@ -250,7 +250,7 @@ class FormatLiteral extends Literal {
    * Microsoft rules and extensions.
    */
   predicate isMicrosoft() {
-    getFile().compiledAsMicrosoft()
+    any(File f).compiledAsMicrosoft()
   }
 
   /**
