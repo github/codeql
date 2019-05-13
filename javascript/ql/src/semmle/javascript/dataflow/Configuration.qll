@@ -172,6 +172,8 @@ abstract class Configuration extends string {
       isBarrierGuard(guard) and
       guard.blocks(node)
     )
+    or
+    none() // relax type inference to account for overriding
   }
 
   /**
