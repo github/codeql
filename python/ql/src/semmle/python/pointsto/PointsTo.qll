@@ -1692,9 +1692,9 @@ cached module Types {
     }
 
     cached ClassObjectInternal getMetaClass(PythonClassObjectInternal cls) {
-            result = declaredMetaClass(cls)
-            or
-            hasDeclaredMetaclass(cls) = false and result = getInheritedMetaclass(cls)
+        result = declaredMetaClass(cls)
+        or
+        hasDeclaredMetaclass(cls) = false and result = getInheritedMetaclass(cls)
     }
 
     private ClassObjectInternal declaredMetaClass(PythonClassObjectInternal cls) {
@@ -1799,7 +1799,9 @@ cached module Types {
             c = cls.(PythonClassObjectInternal).getScope() and
             n = count(c.getABase())
             |
-            result = ObjectInternal::builtin("type")
+            result = ObjectInternal::type() and major_version() = 3
+            or
+            result = ObjectInternal::classType() and major_version() = 2
         )
         or
         exists(ClassObjectInternal meta1, ClassObjectInternal meta2 |
@@ -1810,6 +1812,8 @@ cached module Types {
             improperSuperType(meta1) = meta2 and result = meta1
             or
             improperSuperType(meta2) = meta1 and result = meta2
+            or
+            meta2 = ObjectInternal::classType() and result = meta1
             or
             /* Make sure we have a metaclass, even if base is unknown */
             meta1 = ObjectInternal::unknownClass() and result = ObjectInternal::builtin("type")

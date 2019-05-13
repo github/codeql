@@ -426,6 +426,11 @@ module ObjectInternal {
         result = TBuiltinClassObject(Builtin::special("super"))
     }
 
+    /** The old-style class type (Python 2 only) */
+    ObjectInternal classType() {
+        result = TBuiltinClassObject(Builtin::special("ClassType"))
+    }
+
 }
 
 /** Helper for boolean predicates returning both `true` and `false` */
