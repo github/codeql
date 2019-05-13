@@ -1,35 +1,14 @@
 | class A | Missing base 0 |
 | class B | Failed inference for base class at position 0 |
-| class B | Failed to compute MRO |
 | class C | Failed inference for base class at position 0 |
-| class C | Failed to compute MRO |
 | class D | Duplicate bases classes |
 | class E | Duplicate bases classes |
-| class E | Failed inference for base class at position 0 |
-| class E | Failed inference for base class at position 1 |
-| class E | Failed inference for base class at position 2 |
-| class E | Failed inference for base class at position 3 |
-| class E | Failed inference for base class at position 4 |
-| class E | Failed inference for base class at position 5 |
-| class E | Failed inference for base class at position 6 |
-| class E | Failed inference for base class at position 7 |
-| class E | Failed inference for base class at position 8 |
-| class E | Failed inference for base class at position 9 |
-| class E | Failed inference for base class at position 10 |
 | class G | Failed inference for base class at position 0 |
-| class G | Failed to compute MRO |
 | class H | Failed inference for base class at position 0 |
-| class H | Failed to compute MRO |
 | class J | Missing base 0 |
 | class L | Failed inference for base class at position 0 |
-| class L | Failed to compute MRO |
 | class M | Failed inference for base class at position 0 |
-| class M | Failed to compute MRO |
 | class N | Failed inference for base class at position 0 |
-| class N | Failed to compute MRO |
 | class R | Failed inference for base class at position 0 |
-| class R | Failed to compute MRO |
 | class S | Failed inference for base class at position 0 |
-| class S | Failed to compute MRO |
 | class T | Failed inference for base class at position 0 |
-| class T | Failed to compute MRO |

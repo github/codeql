@@ -1826,31 +1826,38 @@ cached module Types {
 
     /* Holds if type inference failed to compute the full class hierarchy for this class for the reason given. */
     cached predicate failedInference(ClassObjectInternal cls, string reason) {
-        strictcount(cls.(PythonClassObjectInternal).getScope().getADecorator()) > 1 and reason = "Multiple decorators"
+        exists(int priority |
+            failedInference(cls, reason, priority) and
+            priority = max(int p | failedInference(cls, _, p))
+        )
+    }
+
+    /* Holds if type inference failed to compute the full class hierarchy for this class for the reason given. */
+    private predicate failedInference(ClassObjectInternal cls, string reason, int priority) {
+        strictcount(cls.(PythonClassObjectInternal).getScope().getADecorator()) > 1 and reason = "Multiple decorators" and priority = 0
         or
-        exists(cls.(PythonClassObjectInternal).getScope().getADecorator()) and not six_add_metaclass(_, cls, _) and reason = "Decorator not understood"
+        exists(cls.(PythonClassObjectInternal).getScope().getADecorator()) and not six_add_metaclass(_, cls, _) and reason = "Decorator not understood" and priority = 1
         or
-        reason = "Missing base " + missingBase(cls)
+        reason = "Missing base " + missingBase(cls) and priority = 6
         or
-        not exists(ObjectInternal meta | meta = cls.getClass() and not meta = ObjectInternal::unknownClass()) and reason = "Failed to infer metaclass"
+        not exists(ObjectInternal meta | meta = cls.getClass() and not meta = ObjectInternal::unknownClass()) and reason = "Failed to infer metaclass" and priority = 4
         or
         exists(int i, ObjectInternal base1, ObjectInternal base2 |
             base1 = getBase(cls, i) and
             base2 = getBase(cls, i) and
             base1 != base2 and
             reason = "Multiple bases at position " + i
-        )
+        ) and priority = 6
         or
-        duplicateBase(cls) and reason = "Duplicate bases classes"
+        duplicateBase(cls) and reason = "Duplicate bases classes" and priority = 6
         or
-        not exists(getMro(cls)) and reason = "Failed to compute MRO" and not exists(missingBase(cls)) and not duplicateBase(cls)
+        not exists(getMro(cls)) and reason = "Failed to compute MRO" and priority = 3
         or
-        exists(int i | failedInference(getBase(cls, i), _) and reason = "Failed inference for base class at position " + i)
+        exists(int i | failedInference(getBase(cls, i), _, _) and reason = "Failed inference for base class at position " + i) and priority = 5
     }
 
     private int missingBase(ClassObjectInternal cls) {
-        exists(cls.(PythonClassObjectInternal).getScope().getBase(result))
-        and
+        exists(cls.(PythonClassObjectInternal).getScope().getBase(result)) and
         not exists(ObjectInternal base | base = getBase(cls, result) and not base = ObjectInternal::unknownClass())
     }
 
