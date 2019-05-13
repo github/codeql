@@ -1,3 +1,2 @@
 | 41 | ControlFlowNode for func1 | Function func1 | test.py:23 |
 | 42 | ControlFlowNode for func2 | Function wrapper | test.py:10 |
-| 43 | ControlFlowNode for func3 | Function wrapper | test.py:17 |

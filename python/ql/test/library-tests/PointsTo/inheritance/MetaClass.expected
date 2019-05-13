@@ -5,8 +5,5 @@
 | class Derived4 | builtin-class type |
 | class Derived5 | builtin-class type |
 | class Derived6 | builtin-class type |
-| class Missing1 | builtin-class type |
-| class Missing2 | builtin-class type |
-| class Missing3 | builtin-class type |
 | class Wrong1 | builtin-class type |
 | class Wrong2 | builtin-class type |
