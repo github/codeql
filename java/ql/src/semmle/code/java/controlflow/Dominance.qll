@@ -80,6 +80,21 @@ predicate dominanceFrontier(BasicBlock x, BasicBlock w) {
   )
 }
 
+/**
+ * Holds if `(bb1, bb2)` is an edge that dominates `bb2`, that is, all other
+ * predecessors of `bb2` are dominated by `bb2`. This implies that `bb1` is the
+ * immediate dominator of `bb2`.
+ *
+ * This is a necessary and sufficient condition for an edge to dominate anything,
+ * and in particular `dominatingEdge(bb1, bb2) and bb2.bbDominates(bb3)` means
+ * that the edge `(bb1, bb2)` dominates `bb3`.
+ */
+predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+  bbIDominates(bb1, bb2) and
+  bb1.getABBSuccessor() = bb2 and
+  forall(BasicBlock pred | pred = bb2.getABBPredecessor() and pred != bb1 | bbDominates(bb2, pred))
+}
+
 /*
  * Predicates for expression-level dominance.
  */

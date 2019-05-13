@@ -20,51 +20,49 @@ class ConditionBlock extends BasicBlock {
     result = this.getConditionNode().getABranchSuccessor(testIsTrue)
   }
 
+  /*
+   * For this block to control the block `controlled` with `testIsTrue` the following must be true:
+   * Execution must have passed through the test i.e. `this` must strictly dominate `controlled`.
+   * Execution must have passed through the `testIsTrue` edge leaving `this`.
+   *
+   * Although "passed through the true edge" implies that `this.getATrueSuccessor()` dominates `controlled`,
+   * the reverse is not true, as flow may have passed through another edge to get to `this.getATrueSuccessor()`
+   * so we need to assert that `this.getATrueSuccessor()` dominates `controlled` *and* that
+   * all predecessors of `this.getATrueSuccessor()` are either `this` or dominated by `this.getATrueSuccessor()`.
+   *
+   * For example, in the following java snippet:
+   * ```
+   * if (x)
+   *   controlled;
+   * false_successor;
+   * uncontrolled;
+   * ```
+   * `false_successor` dominates `uncontrolled`, but not all of its predecessors are `this` (`if (x)`)
+   *  or dominated by itself. Whereas in the following code:
+   * ```
+   * if (x)
+   *   while (controlled)
+   *     also_controlled;
+   * false_successor;
+   * uncontrolled;
+   * ```
+   * the block `while controlled` is controlled because all of its predecessors are `this` (`if (x)`)
+   * or (in the case of `also_controlled`) dominated by itself.
+   *
+   * The additional constraint on the predecessors of the test successor implies
+   * that `this` strictly dominates `controlled` so that isn't necessary to check
+   * directly.
+   */
+
   /**
    * Holds if `controlled` is a basic block controlled by this condition, that
    * is, a basic blocks for which the condition is `testIsTrue`.
    */
   predicate controls(BasicBlock controlled, boolean testIsTrue) {
-    /*
-     * For this block to control the block `controlled` with `testIsTrue` the following must be true:
-     * Execution must have passed through the test i.e. `this` must strictly dominate `controlled`.
-     * Execution must have passed through the `testIsTrue` edge leaving `this`.
-     *
-     * Although "passed through the true edge" implies that `this.getATrueSuccessor()` dominates `controlled`,
-     * the reverse is not true, as flow may have passed through another edge to get to `this.getATrueSuccessor()`
-     * so we need to assert that `this.getATrueSuccessor()` dominates `controlled` *and* that
-     * all predecessors of `this.getATrueSuccessor()` are either `this` or dominated by `this.getATrueSuccessor()`.
-     *
-     * For example, in the following java snippet:
-     * ```
-     * if (x)
-     *   controlled;
-     * false_successor;
-     * uncontrolled;
-     * ```
-     * `false_successor` dominates `uncontrolled`, but not all of its predecessors are `this` (`if (x)`)
-     *  or dominated by itself. Whereas in the following code:
-     * ```
-     * if (x)
-     *   while (controlled)
-     *     also_controlled;
-     * false_successor;
-     * uncontrolled;
-     * ```
-     * the block `while controlled` is controlled because all of its predecessors are `this` (`if (x)`)
-     * or (in the case of `also_controlled`) dominated by itself.
-     *
-     * The additional constraint on the predecessors of the test successor implies
-     * that `this` strictly dominates `controlled` so that isn't necessary to check
-     * directly.
-     */
-
     exists(BasicBlock succ |
       succ = this.getTestSuccessor(testIsTrue) and
-      succ.bbDominates(controlled) and
-      forall(BasicBlock pred | pred = succ.getABBPredecessor() and pred != this |
-        succ.bbDominates(pred)
-      )
+      dominatingEdge(this, succ) and
+      succ.bbDominates(controlled)
     )
   }
 }
@@ -183,10 +181,8 @@ private predicate preconditionBranchEdge(
 private predicate preconditionControls(MethodAccess ma, BasicBlock controlled, boolean branch) {
   exists(BasicBlock check, BasicBlock succ |
     preconditionBranchEdge(ma, check, succ, branch) and
-    succ.bbDominates(controlled) and
-    forall(BasicBlock pred | pred = succ.getABBPredecessor() and pred != check |
-      succ.bbDominates(pred)
-    )
+    dominatingEdge(check, succ) and
+    succ.bbDominates(controlled)
   )
 }
 
