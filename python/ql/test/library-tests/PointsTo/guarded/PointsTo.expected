@@ -49,14 +49,10 @@
 | test.py | 301 | ControlFlowNode for x | NoneType None | 291 |
 | test.py | 308 | ControlFlowNode for z | int 7 | 305 |
 | test.py | 314 | ControlFlowNode for b | NoneType None | 311 |
-| test.py | 330 | ControlFlowNode for Attribute | NoneType None | 324 |
-| test.py | 330 | ControlFlowNode for Attribute | int 3 | 324 |
 | test.py | 332 | ControlFlowNode for Attribute | NoneType None | 322 |
 | test.py | 332 | ControlFlowNode for Attribute | int 4 | 322 |
 | test.py | 337 | ControlFlowNode for Attribute | NoneType None | 324 |
 | test.py | 337 | ControlFlowNode for Attribute | int 3 | 324 |
-| test.py | 345 | ControlFlowNode for Attribute | NoneType None | 324 |
-| test.py | 345 | ControlFlowNode for Attribute | int 3 | 324 |
 | test.py | 347 | ControlFlowNode for Attribute | NoneType None | 322 |
 | test.py | 347 | ControlFlowNode for Attribute | int 4 | 322 |
 | test.py | 357 | ControlFlowNode for g1 | float 7.0 | 356 |

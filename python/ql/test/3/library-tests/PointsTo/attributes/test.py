@@ -54,7 +54,7 @@ def k(cond):
     c1.z = 10
     if cond:
         c2.z = 20
-    c1.z
+    c1.z # FP here due to self.attribute and local attribute
     c2.z
     c3.z
     c3.z = 30
@@ -85,7 +85,7 @@ class E(object):
 
 E().x
 
-#Make sure that we handle getattr and setattr as well as they are needed for protobuf stubs.
+#Make sure that we handle getattr and setattr as well
 
 class F(object):
 

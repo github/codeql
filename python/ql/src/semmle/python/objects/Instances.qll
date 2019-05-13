@@ -82,7 +82,12 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
         exists(ObjectInternal cls_attr, CfgOrigin attr_orig |
             this.getClass().(ClassObjectInternal).lookup(name, cls_attr, attr_orig)
             |
-            cls_attr.isDescriptor() = false and value = cls_attr and origin = attr_orig
+            /* If class attribute is not a descriptor, that usually means it is some sort of
+             * default value and likely overridden by an instance attribute. In that case
+             * use `unknown` to signal that an attribute exists but to avoid false positives
+             * for due to using the default value.
+             */
+            cls_attr.isDescriptor() = false and value = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
             or
             cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this, value, origin)
         )
