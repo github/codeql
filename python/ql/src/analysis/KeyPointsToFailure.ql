@@ -8,11 +8,12 @@
  */
 
 import python
+import semmle.python.pointsto.PointsTo
 
 predicate points_to_failure(Expr e) {
-    exists(ControlFlowNode f | 
+    exists(ControlFlowNode f |
         f = e.getAFlowNode() |
-        not exists(f.pointsTo())
+        not PointsTo::pointsTo(f, _, _, _)
     )
 }
 
