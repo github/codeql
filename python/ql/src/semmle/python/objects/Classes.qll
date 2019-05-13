@@ -284,7 +284,8 @@ class TypeInternal extends ClassObjectInternal, TType {
     }
 
     override predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
-        none()
+        value = ObjectInternal::fromBuiltin(Builtin::special("type").getMember(name)) and
+        origin = CfgOrigin::unknown()
     }
 
     pragma [noinline] override predicate attributesUnknown() { any() }
