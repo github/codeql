@@ -99,12 +99,7 @@ namespace Semmle.Extraction.CSharp
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    extractor.Message(new Message
-                    {
-                        exception = ex,
-                        message = string.Format("Exception reading reference file {0}: {1}",
-                        reference.FilePath, ex)
-                    });
+                    extractor.Message(new Message("Exception reading reference file", reference.FilePath, null, ex.StackTrace));
                 }
             }
         }
@@ -216,6 +211,38 @@ namespace Semmle.Extraction.CSharp
         }
 
         /// <summary>
+        /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
+        /// </summary>
+        public void AnalyseCompilation(string cwd, string[] args)
+        {
+            extractionTasks.Add(() => DoAnalyseCompilation(cwd, args));
+        }
+
+        Entities.Compilation compilationEntity;
+        IDisposable compilationTrapFile;
+
+        void DoAnalyseCompilation(string cwd, string[] args)
+        {
+            try
+            {
+                var assemblyPath = extractor.OutputPath;
+                var assembly = compilation.Assembly;
+                var projectLayout = layout.LookupProjectOrDefault(assemblyPath);
+                var trapWriter = projectLayout.CreateTrapWriter(Logger, assemblyPath, true);
+                compilationTrapFile = trapWriter;  // Dispose later
+                var cx = extractor.CreateContext(compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath, true));
+
+                compilationEntity = new Entities.Compilation(cx, cwd, args);
+            }
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            {
+                Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", "compilation", ex);
+            }
+        }
+
+        public void LogPerformance(Entities.PerformanceMetrics p) => compilationEntity.PopulatePerformance(p);
+ 
+        /// <summary>
         ///     Extract an assembly to a new trap file.
         ///     If the trap file exists, skip extraction to avoid duplicating
         ///     extraction within the snapshot.
@@ -258,7 +285,7 @@ namespace Semmle.Extraction.CSharp
 
                         if (assembly != null)
                         {
-                            var cx = new Context(extractor, c, trapWriter, new AssemblyScope(assembly, assemblyPath));
+                            var cx = extractor.CreateContext(c, trapWriter, new AssemblyScope(assembly, assemblyPath, false));
 
                             foreach (var module in assembly.Modules)
                             {
@@ -344,7 +371,7 @@ namespace Semmle.Extraction.CSharp
 
                         if (!upToDate)
                         {
-                            Context cx = new Context(extractor, compilation.Clone(), trapWriter, new SourceScope(tree));
+                            Context cx = extractor.CreateContext(compilation.Clone(), trapWriter, new SourceScope(tree));
                             Populators.CompilationUnit.Extract(cx, tree.GetRoot());
                             cx.PopulateAll();
                             cx.ExtractComments(cx.CommentGenerator);
@@ -356,7 +383,7 @@ namespace Semmle.Extraction.CSharp
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                extractor.Message(new Message { exception = ex, message = string.Format("Unhandled exception processing {0}: {1}", tree.FilePath, ex), severity = Severity.Error });
+                extractor.Message(new Message("Unhandled exception processing syntax tree", tree.FilePath, null, ex.StackTrace));
             }
         }
 
@@ -373,6 +400,8 @@ namespace Semmle.Extraction.CSharp
 
         public void Dispose()
         {
+            compilationTrapFile?.Dispose();
+
             stopWatch.Stop();
             Logger.Log(Severity.Info, "  Peak working set = {0} MB", Process.GetCurrentProcess().PeakWorkingSet64 / (1024 * 1024));
 

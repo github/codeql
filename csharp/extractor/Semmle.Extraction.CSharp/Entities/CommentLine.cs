@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     break;
                 // Strangely, these are reported as SingleLineCommentTrivia.
                 case SyntaxKind.DocumentationCommentExteriorTrivia:
-                    cx.ModelError("Unhandled comment type {0} for {1}", trivia.Kind(), trivia);
+                    cx.ModelError($"Unhandled comment type {trivia.Kind()} for {trivia}");
                     break;
             }
         }

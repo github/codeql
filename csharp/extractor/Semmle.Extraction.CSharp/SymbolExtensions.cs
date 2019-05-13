@@ -130,7 +130,7 @@ namespace Semmle.Extraction.CSharp
                         tb.Append("dynamic");
                         return;
                     default:
-                        throw new InternalError(type, "Unhandled type kind '{0}'", type.TypeKind);
+                        throw new InternalError(type, $"Unhandled type kind '{type.TypeKind}'");
                 }
             }
         }
@@ -269,7 +269,7 @@ namespace Semmle.Extraction.CSharp
                         tb.Append("dynamic");
                         return;
                     default:
-                        throw new InternalError(type, "Unhandled type kind '{0}'", type.TypeKind);
+                        throw new InternalError(type, $"Unhandled type kind '{type.TypeKind}'");
                 }
             }
         }

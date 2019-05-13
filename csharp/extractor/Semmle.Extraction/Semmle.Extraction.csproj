@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Semmle.Util\Semmle.Util.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Entities\" />
-  </ItemGroup>
-
 </Project>

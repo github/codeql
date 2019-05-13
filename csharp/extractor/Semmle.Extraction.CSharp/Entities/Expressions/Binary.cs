@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case SyntaxKind.QuestionQuestionToken: return ExprKind.NULL_COALESCING;
                 // !! And the rest
                 default:
-                    cx.ModelError("Unhandled operator type {0}", kind);
+                    cx.ModelError($"Unhandled operator type {kind}");
                     return ExprKind.UNKNOWN;
             }
         }

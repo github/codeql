@@ -243,7 +243,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                         break;
                     default:
-                        throw new InternalError(qc, "Unhandled query clause of kind {0}", qc.Kind());
+                        throw new InternalError(qc, $"Unhandled query clause of kind {qc.Kind()}");
                 }
             }
 

@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void DefaultVisit(SyntaxNode node)
         {
-            cx.ModelError(node, "Unhandled syntax node {0}", node.Kind());
+            cx.ModelError(node, $"Unhandled syntax node {node.Kind()}");
         }
 
         public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CSharp.Populators
                 }
                 catch (System.Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    cx.ModelError(node, "Exception processing syntax node of type {0}: {1}", node.Kind(), ex);
+                    cx.ModelError(node, $"Exception processing syntax node of type {node.Kind()}: {ex.Message}");
                 }
             }
         }

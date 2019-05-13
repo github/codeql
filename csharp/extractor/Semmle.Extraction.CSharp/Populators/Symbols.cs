@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Populators
             this.cx = cx;
         }
 
-        public override IEntity DefaultVisit(ISymbol symbol) => throw new InternalError(symbol, "Unhandled symbol '{0}' of kind '{1}'", symbol, symbol.Kind);
+        public override IEntity DefaultVisit(ISymbol symbol) => throw new InternalError(symbol, $"Unhandled symbol '{symbol}' of kind '{symbol.Kind}'");
 
         public override IEntity VisitArrayType(IArrayTypeSymbol array) => ArrayType.Create(cx, array);
 
@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.Populators
                 }
                 catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
                 {
-                    cx.ModelError(symbol, "Exception processing symbol '{2}' of type '{0}': {1}", symbol.Kind, ex, symbol);
+                    cx.ModelError(symbol, $"Exception processing symbol '{symbol.Kind}' of type '{ex}': {symbol}");
                     return null;
                 }
             }

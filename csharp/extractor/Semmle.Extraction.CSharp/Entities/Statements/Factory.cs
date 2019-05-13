@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 case SyntaxKind.ForEachVariableStatement:
                     return ForEachVariable.Create(cx, (ForEachVariableStatementSyntax)node, parent, child);
                 default:
-                    throw new InternalError(node, "Unhandled statement of kind '{0}'", node.Kind());
+                    throw new InternalError(node, $"Unhandled statement of kind '{node.Kind()}'");
             }
         }
     }

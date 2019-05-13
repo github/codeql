@@ -233,7 +233,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return IsPattern.Create(info);
 
                     default:
-                        info.Context.ModelError(info.Node, "Unhandled expression '{0}' of kind '{1}'", info.Node, info.Node.Kind());
+                        info.Context.ModelError(info.Node, $"Unhandled expression '{info.Node}' of kind '{info.Node.Kind()}'");
                         return new Unknown(info);
                 }
             }

@@ -1,0 +1,37 @@
+diagnostics
+| Program.cs:7:13:7:13 | CS0219: The variable 'x' is assigned but its value is never used | CS0219 | 2 | Variable is assigned but its value is never used | The variable 'x' is assigned but its value is never used |
+| Program.cs:9:9:9:11 | CS0162: Unreachable code detected | CS0162 | 2 | Unreachable code detected | Unreachable code detected |
+| Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | CS0219 | 2 | Variable is assigned but its value is never used | The variable 'y' is assigned but its value is never used |
+compilationErrors
+metricIsZero
+compilationArguments
+| compilation | 0 | -unsafe |
+| compilation | 1 | -target:library |
+| compilation | 2 | /noconfig |
+| compilation | 3 | /r:System.Private.CoreLib.dll |
+| compilation | 4 | /r:System.dll |
+| compilation | 5 | /r:System.Core.dll |
+| compilation | 6 | /r:System.Runtime.dll |
+| compilation | 7 | /r:System.Console.dll |
+| compilation | 8 | --console |
+| compilation | 9 | --verbosity |
+| compilation | 10 | 2 |
+| compilation | 11 | Program.cs |
+compilationFiles
+| compilation | 0 | Program.cs:0:0:0:0 | Program.cs |
+compilationFolder
+| compilation | compilations |
+diagnosticElements
+| Program.cs:7:13:7:13 | CS0219: The variable 'x' is assigned but its value is never used | Program.cs:7:13:7:13 | access to local variable x |
+| Program.cs:7:13:7:13 | CS0219: The variable 'x' is assigned but its value is never used | Program.cs:7:13:7:13 | x |
+| Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | Program.cs:9:13:9:13 | access to local variable y |
+| Program.cs:9:13:9:13 | CS0219: The variable 'y' is assigned but its value is never used | Program.cs:9:13:9:13 | y |
+references
+| compilation | System.Console.dll |
+| compilation | System.Core.dll |
+| compilation | System.Private.CoreLib.dll |
+| compilation | System.Runtime.dll |
+| compilation | System.dll |
+| compilation | mscorlib.dll |
+timings
+| compilation |

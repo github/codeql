@@ -62,6 +62,8 @@ namespace Semmle.Extraction.CSharp
         /// <returns><see cref="ExitCode"/></returns>
         public static ExitCode Run(string[] args)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             var commandLineArguments = Options.CreateWithEnvironment(args);
             var fileLogger = new FileLogger(commandLineArguments.Verbosity, GetCSharpLogPath());
             var logger = commandLineArguments.Console
@@ -118,8 +120,8 @@ namespace Semmle.Extraction.CSharp
                         compilerArguments.Encoding,
                         syntaxTrees);
 
-                    var sw = new Stopwatch();
-                    sw.Start();
+                    var sw1 = new Stopwatch();
+                    sw1.Start();
 
                     Parallel.Invoke(
                         new ParallelOptions { MaxDegreeOfParallelism = commandLineArguments.Threads },
@@ -148,6 +150,7 @@ namespace Semmle.Extraction.CSharp
                         );
 
                     analyser.Initialize(compilerArguments, compilation, commandLineArguments, compilerVersion.ArgsWithResponse);
+                    analyser.AnalyseCompilation(cwd, args);
                     analyser.AnalyseReferences();
 
                     foreach (var tree in compilation.SyntaxTrees)
@@ -155,13 +158,29 @@ namespace Semmle.Extraction.CSharp
                         analyser.AnalyseTree(tree);
                     }
 
-                    sw.Stop();
-                    logger.Log(Severity.Info, "  Models constructed in {0}", sw.Elapsed);
+                    var currentProcess = Process.GetCurrentProcess();
+                    var cpuTime1 = currentProcess.TotalProcessorTime;
+                    var userTime1 = currentProcess.UserProcessorTime;
+                    sw1.Stop();
+                    logger.Log(Severity.Info, "  Models constructed in {0}", sw1.Elapsed);
 
-                    sw.Restart();
+                    var sw2 = new Stopwatch();
+                    sw2.Start();
                     analyser.PerformExtraction(commandLineArguments.Threads);
-                    sw.Stop();
-                    logger.Log(Severity.Info, "  Extraction took {0}", sw.Elapsed);
+                    sw2.Stop();
+                    var cpuTime2 = currentProcess.TotalProcessorTime;
+                    var userTime2 = currentProcess.UserProcessorTime;
+
+                    var performance = new Entities.PerformanceMetrics()
+                    {
+                        Frontend = new Entities.Timings() { Elapsed = sw1.Elapsed, Cpu = cpuTime1, User = userTime1 },
+                        Extractor = new Entities.Timings() { Elapsed = sw2.Elapsed, Cpu = cpuTime2 - cpuTime1, User = userTime2 - userTime1 },
+                        Total = new Entities.Timings() {  Elapsed = stopwatch.Elapsed, Cpu=cpuTime2, User = userTime2 },
+                        PeakWorkingSet = currentProcess.PeakWorkingSet64
+                    };
+
+                    analyser.LogPerformance(performance);
+                    logger.Log(Severity.Info, "  Extraction took {0}", sw2.Elapsed);
 
                     return analyser.TotalErrors == 0 ? ExitCode.Ok : ExitCode.Errors;
                 }

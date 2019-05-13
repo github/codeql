@@ -497,7 +497,7 @@ namespace Semmle.Extraction.CIL.Entities
                         constructedTypeSignature = md.DecodeSignature(cx.TypeSignatureDecoder, this);
                         break;
                     default:
-                        throw new InternalError("Unexpected constructed method handle kind {0}", ms.Method.Kind);
+                        throw new InternalError($"Unexpected constructed method handle kind {ms.Method.Kind}");
                 }
 
                 PopulateParameters(constructedTypeSignature.ParameterTypes);

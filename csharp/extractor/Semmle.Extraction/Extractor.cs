@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -82,6 +83,15 @@ namespace Semmle.Extraction
         /// The extractor SHA, obtained from the git log.
         /// </summary>
         string Version { get; }
+
+        /// <summary>
+        /// Creates a new context.
+        /// </summary>
+        /// <param name="c">The C# compilation.</param>
+        /// <param name="trapWriter">The trap writer.</param>
+        /// <param name="scope">The extraction scope (what to include in this trap file).</param>
+        /// <returns></returns>
+        Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope);
     }
 
     /// <summary>
@@ -122,7 +132,7 @@ namespace Semmle.Extraction
             lock (mutex)
             {
 
-                if (msg.severity == Severity.Error)
+                if (msg.Severity == Severity.Error)
                 {
                     ++Errors;
                     if (Errors == maxErrors)
@@ -136,24 +146,7 @@ namespace Semmle.Extraction
                     return;
                 }
 
-                Logger.Log(msg.severity, "  {0}", msg.message);
-
-                if (msg.node != null)
-                {
-                    Logger.Log(msg.severity, "    Syntax element '{0}' at {1}", msg.node, msg.node.GetLocation().GetLineSpan());
-                }
-
-                if (msg.symbol != null)
-                {
-                    Logger.Log(msg.severity, "    Symbol '{0}'", msg.symbol);
-                    foreach (var l in msg.symbol.Locations)
-                        Logger.Log(msg.severity, "    Location: {0}", l.IsInSource ? l.GetLineSpan().ToString() : l.MetadataModule.ToString());
-                }
-
-                if (msg.exception != null)
-                {
-                    Logger.Log(msg.severity, "    Exception: {0}", msg.exception);
-                }
+                Logger.Log(msg.Severity, $"  {msg.ToLogString()}");
             }
         }
 
@@ -189,6 +182,11 @@ namespace Semmle.Extraction
         {
             lock (mutex)
                 missingNamespaces.Add(fqdn);
+        }
+
+        public Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope)
+        {
+            return new Context(this, c, trapWriter, scope);
         }
 
         public IEnumerable<string> MissingTypes => missingTypes;
