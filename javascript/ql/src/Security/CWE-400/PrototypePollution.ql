@@ -4,7 +4,7 @@
  *              can allow an attacker to modify the built-in Object prototype. 
  * @kind path-problem
  * @problem.severity warning
- * @precision high
+ * @precision medium
  * @id js/prototype-pollution
  * @tags security
  *       external/cwe/cwe-250
