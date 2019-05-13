@@ -1343,9 +1343,9 @@ module Expressions {
             or
             n = other.length() and n = val.length() and result = 0
             or
-            result != 0 and result = compare_unbound(val.getItem(n), val.getItem(n))
+            result != 0 and result = compare_unbound(val.getItem(n), other.getItem(n))
             or
-            compare_unbound(val.getItem(n), val.getItem(n)) = 0 and result = compare_sequence(val, other, n+1)
+            compare_unbound(val.getItem(n), other.getItem(n)) = 0 and result = compare_sequence(val, other, n+1)
         )
     }
 
