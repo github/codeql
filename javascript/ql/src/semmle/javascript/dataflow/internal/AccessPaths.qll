@@ -30,7 +30,7 @@ private newtype PropertyName =
 /**
  * Gets the representation of the property name of `pacc`, if any.
  */
-private PropertyName getPropertyName(PropAccess pacc) {
+private PropertyName getPropertyName(DataFlow::PropRead pacc) {
   result = StaticPropertyName(pacc.getPropertyName())
   or
   exists(SsaVariable var |
@@ -76,7 +76,7 @@ private newtype TAccessPath =
    * A property access on an access path.
    */
   MkAccessStep(AccessPath base, PropertyName name) {
-    exists(PropAccess pacc |
+    exists(DataFlow::PropRead pacc |
       pacc.getBase() = base.getAnInstance() and
       getPropertyName(pacc) = name
     )
@@ -88,23 +88,23 @@ private newtype TAccessPath =
  */
 class AccessPath extends TAccessPath {
   /**
-   * Gets an expression in `bb` represented by this access path.
+   * Gets a data flow node in `bb` represented by this access path.
    */
-  Expr getAnInstanceIn(BasicBlock bb) {
+  DataFlow::Node getAnInstanceIn(BasicBlock bb) {
     exists(SsaVariable var |
       this = MkSsaRoot(var) and
-      result = getARefinementOf*(var).getAUseIn(bb)
+      result = DataFlow::valueNode(getARefinementOf*(var).getAUseIn(bb))
     )
     or
     exists(Variable var |
       this = MkCapturedRoot(var) and
-      result = var.getAnAccess() and
+      result = var.getAnAccess().flow() and
       result.getBasicBlock() = bb
     )
     or
     exists(ThisExpr this_ |
       this = MkThisRoot(this_.getBinder()) and
-      result = this_ and
+      result = this_.flow() and
       this_.getBasicBlock() = bb
     )
     or
@@ -123,16 +123,26 @@ class AccessPath extends TAccessPath {
    * join order in `getAnInstanceIn` above.
    */
   pragma[noinline]
-  private PropAccess getABaseInstanceIn(BasicBlock bb, PropertyName name) {
+  private DataFlow::PropRead getABaseInstanceIn(BasicBlock bb, PropertyName name) {
     exists(AccessPath base | this = MkAccessStep(base, name) |
       result.getBase() = base.getAnInstanceIn(bb)
     )
   }
 
   /**
+   * Gets a data flow node represented by this access path.
+   */
+  DataFlow::Node getAnInstance() { result = getAnInstanceIn(_) }
+
+  /**
+   * Gets an expression in `bb` represented by this access path.
+   */
+  Expr getAnInstanceExprIn(BasicBlock bb) { result = getAnInstanceIn(bb).asExpr() }
+
+  /**
    * Gets an expression represented by this access path.
    */
-  Expr getAnInstance() { result = getAnInstanceIn(_) }
+  Expr getAnInstanceExpr() { result = getAnInstance().asExpr() }
 
   /**
    * Gets a textual representation of this access path.
