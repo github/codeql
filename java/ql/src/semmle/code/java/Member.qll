@@ -117,13 +117,21 @@ class Callable extends StmtParent, Member, @callable {
   /**
    * Holds if this callable may call the specified callable,
    * taking virtual dispatch into account.
+   *
+   * This includes both static call targets and dynamic dispatch targets.
    */
   predicate polyCalls(Callable m) {
-    this.calls(m)
-    or
+    this.calls(m) or this.callsImpl(m)
+  }
+
+  /**
+   * Holds if `c` is a viable implementation of a callable called by this
+   * callable, taking virtual dispatch resolution into account.
+   */
+  predicate callsImpl(Callable c) {
     exists(Call call |
       call.getCaller() = this and
-      viableCallable(call) = m
+      viableCallable(call) = c
     )
   }
 
