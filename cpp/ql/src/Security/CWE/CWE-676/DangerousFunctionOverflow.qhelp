@@ -30,8 +30,8 @@ Potentially Dangerous Function") include <code>strcpy</code>
 and <code>strcat</code>. Use of these functions is highlighted by
 rules for the following CWEs:</p>
 <ul>
-<li>CWE-120 Classic Buffer Overflow
-</li><li>CWE-131 Incorrect Calculation of Buffer Size
+<li><a href="https://cwe.mitre.org/data/definitions/120.html"></a>CWE-120 Classic Buffer Overflow</a>.
+</li><li><a href="https://cwe.mitre.org/data/definitions/131.html"></a>CWE-131 Incorrect Calculation of Buffer Size</a>.
 </li></ul>
 
 </section>
