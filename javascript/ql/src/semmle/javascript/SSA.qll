@@ -521,6 +521,22 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   ) {
     getDef().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  /**
+   * Gets the data flow node representing the incoming value assigned at this definition,
+   * if any.
+   */
+  DataFlow::Node getRhsNode() {
+    exists(VarDef def | def = getDef() |
+      result = def.getSource().flow()
+      or
+      exists(VarRef ref |
+        ref = getSourceVariable().getAReference() and
+        def.getTarget().(BindingPattern).getABindingVarRef() = ref and
+        result = DataFlow::patternPropRead(ref)
+      )
+    )
+  }
 }
 
 /**

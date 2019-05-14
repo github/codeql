@@ -978,6 +978,27 @@ module DataFlow {
   }
 
   /**
+   * INTERNAL. DO NOT USE.
+   *
+   * Gets the `PropRead` node corresponding to the value stored in the given
+   * binding pattern due to destructuring.
+   *
+   * For example, in `let { p: value } = f()`, the `value` pattern maps to a `PropRead`
+   * extracting the `p` property.
+   */
+  DataFlow::PropRead patternPropRead(BindingPattern value) {
+    exists(PropertyPattern prop |
+      value = prop.getValuePattern() and
+      result = TPropNode(prop)
+    )
+    or
+    exists(ArrayPattern array |
+      value = array.getAnElement() and
+      result = TElementPatternNode(array, value)
+    )
+  }
+
+  /**
    * A classification of flows that are not modeled, or only modeled incompletely, by
    * `DataFlowNode`:
    *
