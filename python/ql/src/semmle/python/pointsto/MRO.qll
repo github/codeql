@@ -33,6 +33,8 @@ cached private newtype TClassList = Empty()
 
 /* Keep ClassList finite and as small as possible */
 private predicate required_cons(ClassObjectInternal head, ClassList tail) {
+    tail = Mro::newStyleMro(sole_base(head))
+    or
     tail = merge_of_linearization_of_bases(head)
     or
     exists(ClassObjectInternal cls, int n |
@@ -59,6 +61,11 @@ private predicate required_cons(ClassObjectInternal head, ClassList tail) {
     )
     or
     tail = list_old_style_base_mros(head).flatten()
+}
+
+private ClassObjectInternal sole_base(ClassObjectInternal cls) {
+    Types::base_count(cls) = 1 and
+    result = Types::getBase(cls, 0)
 }
 
 /** A list of classes, used to represent the MRO of a class */
@@ -413,7 +420,7 @@ private ClassListList list_of_linearization_of_bases_plus_bases(ClassObjectInter
 }
 
 private ClassListList list_of_linearization_of_bases_plus_bases(ClassObjectInternal cls, int n) {
-    result = ConsList(bases(cls), EmptyList()) and n = Types::base_count(cls)
+    result = ConsList(bases(cls), EmptyList()) and n = Types::base_count(cls) and n > 1
     or
     exists(ClassListList partial |
         partial = list_of_linearization_of_bases_plus_bases(cls, n+1) and
@@ -476,6 +483,8 @@ module Mro {
         cls = ObjectInternal::builtin("object") and result = Cons(cls, Empty())
         or
         result = Cons(cls, merge_of_linearization_of_bases(cls))
+        or
+        result = Cons(cls, newStyleMro(sole_base(cls)))
     }
 
     cached ClassList oldStyleMro(ClassObjectInternal cls) {
