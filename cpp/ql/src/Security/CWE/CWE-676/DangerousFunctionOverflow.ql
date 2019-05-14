@@ -1,10 +1,10 @@
 /**
- * @name Use of dangerous function 'gets'
- * @description The standard library 'gets' function is dangerous and should not be used.
+ * @name Use of dangerous function
+ * @description Use of a standard library function that does not guard against buffer overflow.
  * @kind problem
  * @problem.severity error
  * @precision very-high
- * @id cpp/potentially-dangerous-function
+ * @id cpp/dangerous-function-overflow
  * @tags reliability
  *       security
  *       external/cwe/cwe-242

@@ -1,6 +1,6 @@
 /**
  * @name Use of potentially dangerous function
- * @description Certain standard library functions are dangerous to call.
+ * @description Use of a standard library function that is not thread-safe.
  * @kind problem
  * @problem.severity warning
  * @precision high
