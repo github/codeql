@@ -46,51 +46,56 @@ predicate whitelisted(FunctionCall fc) {
   exists(Function f, int arg | f = fc.getTarget() | whitelistFunction(f, arg))
 }
 
-predicate isNonConst(Expr e) {
-  exists(FunctionCall fc | fc = e.(FunctionCall) |
-    not whitelisted(fc) and not fc.getTarget().hasDefinition()
-  )
-  or
-  exists(Parameter p | p = e.(VariableAccess).getTarget().(Parameter) |
-    p.getFunction().getName() = "main" and p.getType() instanceof PointerType
-  )
-  or
-  e instanceof CrementOperation
-  or
-  e instanceof AddressOfExpr
-  or
-  e instanceof ReferenceToExpr
-  or
-  e instanceof AssignPointerAddExpr
-  or
-  e instanceof AssignPointerSubExpr
-  or
-  e instanceof PointerArithmeticOperation
-  or
-  e instanceof FieldAccess
-  or
-  e instanceof PointerDereferenceExpr
-  or
-  e instanceof AddressOfExpr
-  or
-  e instanceof ExprCall
-  or
-  e instanceof NewArrayExpr
-  or
-  e instanceof AssignExpr
-  or
-  exists(Variable v | v = e.(VariableAccess).getTarget() |
-    v.getType().(ArrayType).getBaseType() instanceof CharType and
-    exists(AssignExpr ae |
-      ae.getLValue().(ArrayExpr).getArrayBase().(VariableAccess).getTarget() = v
+predicate isNonConst(DataFlow::Node node) {
+  exists(Expr e | e = node.asExpr() |
+    exists(FunctionCall fc | fc = e.(FunctionCall) |
+      not whitelisted(fc) and not fc.getTarget().hasDefinition()
+    )
+    or
+    exists(Parameter p | p = e.(VariableAccess).getTarget().(Parameter) |
+      p.getFunction().getName() = "main" and p.getType() instanceof PointerType
+    )
+    or
+    e instanceof CrementOperation
+    or
+    e instanceof AddressOfExpr
+    or
+    e instanceof ReferenceToExpr
+    or
+    e instanceof AssignPointerAddExpr
+    or
+    e instanceof AssignPointerSubExpr
+    or
+    e instanceof PointerArithmeticOperation
+    or
+    e instanceof FieldAccess
+    or
+    e instanceof PointerDereferenceExpr
+    or
+    e instanceof AddressOfExpr
+    or
+    e instanceof ExprCall
+    or
+    e instanceof NewArrayExpr
+    or
+    e instanceof AssignExpr
+    or
+    exists(Variable v | v = e.(VariableAccess).getTarget() |
+      v.getType().(ArrayType).getBaseType() instanceof CharType and
+      exists(AssignExpr ae |
+        ae.getLValue().(ArrayExpr).getArrayBase().(VariableAccess).getTarget() = v
+      )
     )
   )
+  or
+  // TODO: Figure out what to do with DataFlow::DefinitionByReferenceNode
+  exists(DataFlow::DefinitionByReferenceNode dbr | dbr = node.(DataFlow::DefinitionByReferenceNode))
 }
 
 class NonConstFlow extends TaintTracking::Configuration {
   NonConstFlow() { this = "NonConstFlow" }
 
-  override predicate isSource(DataFlow::Node source) { isNonConst(source.asExpr()) }
+  override predicate isSource(DataFlow::Node source) { isNonConst(source) }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
@@ -105,5 +110,5 @@ where
     sink.asExpr() = formatString
   )
 select formatString,
-  "The format string argument to " + call.getTarget().getQualifiedName() +
+  "The format string argument to " + call.getTarget().getName() +
     " should be constant to prevent security issues and other potential errors."

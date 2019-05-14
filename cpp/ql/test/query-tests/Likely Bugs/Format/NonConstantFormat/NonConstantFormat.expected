@@ -1,17 +1,19 @@
-| NonConstantFormat.c:34:10:34:16 | access to array | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| NonConstantFormat.c:38:9:38:36 | call to my_gettext | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| NonConstantFormat.c:45:9:45:27 | call to any_random_function | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:60:12:60:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:63:12:63:21 | call to const_wash | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:64:12:64:26 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:65:12:65:17 | + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:66:12:66:18 | * ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:67:12:67:18 | & ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:68:12:68:39 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:70:10:70:35 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:73:12:73:20 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:79:12:79:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:85:12:85:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:91:12:91:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:96:12:96:18 | ++ ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:113:12:113:24 | new[] | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| NonConstantFormat.c:30:10:30:16 | access to array | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| NonConstantFormat.c:34:9:34:36 | call to any_random_function | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| NonConstantFormat.c:41:9:41:27 | call to any_random_function | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| NonConstantFormat.c:45:9:45:48 | call to any_random_function | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:45:10:45:21 | call to make_message | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:50:12:50:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:53:12:53:21 | call to const_wash | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:54:12:54:26 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:55:12:55:17 | + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:56:12:56:18 | * ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:57:12:57:18 | & ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:58:12:58:39 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:60:10:60:35 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:63:12:63:20 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:69:12:69:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:75:12:75:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:81:12:81:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:86:12:86:18 | ++ ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:103:12:103:24 | new[] | The format string argument to printf should be constant to prevent security issues and other potential errors. |
