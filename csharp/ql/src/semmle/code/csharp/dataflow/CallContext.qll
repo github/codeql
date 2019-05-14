@@ -5,13 +5,12 @@
 import csharp
 private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
-private import dotnet
 
 // Internal representation of call contexts
 cached
 private newtype TCallContext =
   TEmptyCallContext() or
-  TArgNonDelegateCallContext(DispatchCall dc, int i) { exists(dc.getArgument(i)) } or
+  TArgNonDelegateCallContext(Expr arg) { exists(DispatchCall dc | arg = dc.getArgument(_)) } or
   TArgDelegateCallContext(DelegateCall dc, int i) { exists(dc.getArgument(i)) } or
   TDelegateToLibraryCallableArgCallContext(DelegateArgumentToLibraryCallable arg, int i) {
     exists(arg.getDelegateType().getParameter(i))
@@ -46,25 +45,22 @@ abstract class ArgumentCallContext extends CallContext {
    * Holds if this call context represents the argument at position `i` of the
    * call expression `call`.
    */
-  abstract predicate isArgument(DotNet::Expr call, int i);
+  abstract predicate isArgument(Expr call, int i);
 }
 
 /** An argument of a non-delegate call. */
 class NonDelegateCallArgumentCallContext extends ArgumentCallContext, TArgNonDelegateCallContext {
-  DispatchCall dc;
+  Expr arg;
 
-  int arg;
+  NonDelegateCallArgumentCallContext() { this = TArgNonDelegateCallContext(arg) }
 
-  NonDelegateCallArgumentCallContext() { this = TArgNonDelegateCallContext(dc, arg) }
-
-  override predicate isArgument(DotNet::Expr call, int i) {
-    call = dc.getCall() and
-    i = arg
+  override predicate isArgument(Expr call, int i) {
+    exists(DispatchCall dc | arg = dc.getArgument(i) | call = dc.getCall())
   }
 
-  override string toString() { result = dc.getArgument(arg).toString() }
+  override string toString() { result = arg.toString() }
 
-  override Location getLocation() { result = dc.getArgument(arg).getLocation() }
+  override Location getLocation() { result = arg.getLocation() }
 }
 
 /** An argument of a delegate call. */
@@ -75,7 +71,7 @@ class DelegateCallArgumentCallContext extends ArgumentCallContext, TArgDelegateC
 
   DelegateCallArgumentCallContext() { this = TArgDelegateCallContext(dc, arg) }
 
-  override predicate isArgument(DotNet::Expr call, int i) {
+  override predicate isArgument(Expr call, int i) {
     call = dc and
     i = arg
   }
@@ -96,7 +92,7 @@ class DelegateCallArgumentCallContext extends ArgumentCallContext, TArgDelegateC
  */
 class DelegateArgumentToLibraryCallableArgumentContext extends ArgumentCallContext,
   TDelegateToLibraryCallableArgCallContext {
-  DotNet::Expr delegate;
+  Expr delegate;
 
   int arg;
 
@@ -104,7 +100,7 @@ class DelegateArgumentToLibraryCallableArgumentContext extends ArgumentCallConte
     this = TDelegateToLibraryCallableArgCallContext(delegate, arg)
   }
 
-  override predicate isArgument(DotNet::Expr call, int i) {
+  override predicate isArgument(Expr call, int i) {
     call = delegate and
     i = arg
   }
