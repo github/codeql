@@ -290,7 +290,24 @@ private ControlFlowNode getAGuardBranchSuccessor(Guard g, boolean branch) {
 }
 
 /**
+ * Holds if `guard` dominates `phi` and `guard` evaluating to `branch` controls the definition
+ * `upd = e` where `upd` is a possible input to `phi`.
+ */
+private predicate guardControlsPhiBranch(
+  SsaExplicitUpdate upd, SsaPhiNode phi, Guard guard, boolean branch, Expr e
+) {
+  guard.directlyControls(upd.getBasicBlock(), branch) and
+  upd.getDefiningExpr().(VariableAssign).getSource().getProperExpr() = e and
+  upd = phi.getAPhiInput() and
+  getBasicBlockOfGuard(guard).bbStrictlyDominates(phi.getBasicBlock())
+}
+
+/**
  * Holds if `v` is conditionally assigned `e` under the condition that `guard` evaluates to `branch`.
+ *
+ * The evaluation of `guard` dominates the definition of `v` and `guard` evaluating to `branch`
+ * implies that `e` is assigned to `v`. In particular, this allows us to conclude that if `v` has
+ * a value different from `e` then `guard` must have evaluated to `branch.booleanNot()`.
  */
 private predicate conditionalAssign(SsaVariable v, Guard guard, boolean branch, Expr e) {
   exists(ConditionalExpr c |
@@ -303,11 +320,8 @@ private predicate conditionalAssign(SsaVariable v, Guard guard, boolean branch, 
   )
   or
   exists(SsaExplicitUpdate upd, SsaPhiNode phi |
-    guard.directlyControls(upd.getBasicBlock(), branch) and
-    upd.getDefiningExpr().(VariableAssign).getSource().getProperExpr() = e and
     phi = v and
-    upd = phi.getAPhiInput() and
-    getBasicBlockOfGuard(guard).bbStrictlyDominates(phi.getBasicBlock()) and
+    guardControlsPhiBranch(upd, phi, guard, branch, e) and
     not guard.directlyControls(phi.getBasicBlock(), branch) and
     forall(SsaVariable other | other != upd and other = phi.getAPhiInput() |
       guard.directlyControls(other.getBasicBlock(), branch.booleanNot())
