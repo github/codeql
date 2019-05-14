@@ -8,7 +8,45 @@ private import semmle.python.pointsto.MRO
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
-class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
+abstract class InstanceObject extends ObjectInternal {
+
+    pragma [nomagic]
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        PointsToInternal::attributeRequired(this, name) and
+        (
+            exists(ObjectInternal cls_attr |
+                this.getClass().(ClassObjectInternal).lookup(name, cls_attr, _)
+                |
+                /* If class attribute is not a descriptor, that usually means it is some sort of
+                 * default value and likely overridden by an instance attribute. In that case
+                 * use `unknown` to signal that an attribute exists but to avoid false positives
+                 * f using the default value.
+                 */
+                cls_attr.isDescriptor() = false and value = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
+                or
+                cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this, value, origin)
+            )
+            or
+            exists(EssaVariable self, PythonFunctionObjectInternal init, Context callee |
+                this.initializer(init, callee) and
+                self_variable_reaching_init_exit(self) and
+                self.getScope() = init.getScope() and
+                AttributePointsTo::variableAttributePointsTo(self, callee, name, value, origin)
+            )
+        )
+    }
+
+    abstract predicate initializer(PythonFunctionObjectInternal init, Context callee);
+
+}
+
+private predicate self_variable_reaching_init_exit(EssaVariable self) {
+    BaseFlow::reaches_exit(self) and
+    self.getSourceVariable().(Variable).isSelf() and
+    self.getScope().getName() = "__init__"
+}
+
+class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
 
     override string toString() {
         result = this.getOrigin().getNode().toString()
@@ -76,35 +114,6 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
         none()
     }
 
-    pragma [nomagic]
-    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        PointsToInternal::attributeRequired(this, name) and
-        exists(ObjectInternal cls_attr, CfgOrigin attr_orig |
-            this.getClass().(ClassObjectInternal).lookup(name, cls_attr, attr_orig)
-            |
-            /* If class attribute is not a descriptor, that usually means it is some sort of
-             * default value and likely overridden by an instance attribute. In that case
-             * use `unknown` to signal that an attribute exists but to avoid false positives
-             * for due to using the default value.
-             */
-            cls_attr.isDescriptor() = false and value = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
-            or
-            cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this, value, origin)
-        )
-        or
-        exists(EssaVariable self, PythonFunctionObjectInternal init, Context callee |
-            BaseFlow::reaches_exit(self) and
-            self.getSourceVariable().(Variable).isSelf() and
-            self.getScope() = init.getScope() and
-            exists(CallNode call, Context caller, ClassObjectInternal cls |
-                this = TSpecificInstance(call, cls, caller) and
-                callee.fromCall(this.getOrigin(), caller) and
-                cls.lookup("__init__", init, _)
-            ) and
-            AttributePointsTo::variableAttributePointsTo(self, callee, name, value, origin)
-        )
-    }
-
     pragma [noinline] override predicate attributesUnknown() { any() }
 
     override predicate subscriptUnknown() { any() }
@@ -128,10 +137,18 @@ class SpecificInstanceInternal extends TSpecificInstance, ObjectInternal {
         result = lengthFromClass(this.getClass())
     }
 
+    override predicate initializer(PythonFunctionObjectInternal init, Context callee) {
+        exists(CallNode call, Context caller, ClassObjectInternal cls |
+            this = TSpecificInstance(call, cls, caller) and
+            callee.fromCall(this.getOrigin(), caller) and
+            cls.lookup("__init__", init, _)
+        )
+    }
+
 }
 
 
-class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
+class SelfInstanceInternal extends TSelfInstance, InstanceObject {
 
     override string toString() {
         result = "self instance of " + this.getClass().(ClassObjectInternal).getName()
@@ -201,17 +218,6 @@ class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
         none()
     }
 
-    pragma [nomagic] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        PointsToInternal::attributeRequired(this, name) and
-        exists(ObjectInternal cls_attr, CfgOrigin attr_orig |
-            this.getClass().(ClassObjectInternal).lookup(name, cls_attr, attr_orig)
-            |
-            cls_attr.isDescriptor() = false and value = cls_attr and origin = attr_orig
-            or
-            cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this, value, origin)
-        )
-    }
-
     pragma [noinline] override predicate attributesUnknown() { any() }
 
     override predicate subscriptUnknown() { any() }
@@ -234,6 +240,12 @@ class SelfInstanceInternal extends TSelfInstance, ObjectInternal {
         result = lengthFromClass(this.getClass())
     }
 
+    override predicate initializer(PythonFunctionObjectInternal init, Context callee) {
+        callee.isRuntime() and
+        init.getScope() != this.getParameter().getScope() and
+        this.getClass().attribute("__init__", init, _)
+    }
+
 }
 
 /** Represents a value that has a known class, but no other information */
@@ -245,7 +257,6 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
     /** The boolean value of this object, if it has one */
     override boolean booleanValue() {
-        //result = this.getClass().instancesBooleanValue()
         result = maybe()
     }
 
