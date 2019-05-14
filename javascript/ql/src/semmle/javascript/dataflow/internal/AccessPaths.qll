@@ -140,6 +140,8 @@ class AccessPath extends TAccessPath {
   string toString() {
     exists(SsaVariable var | this = MkSsaRoot(var) | result = var.getSourceVariable().getName())
     or
+    exists(Variable var | this = MkCapturedRoot(var) | result = var.getName())
+    or
     this = MkThisRoot(_) and result = "this"
     or
     exists(AccessPath base, PropertyName name, string rest |
