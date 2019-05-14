@@ -789,45 +789,47 @@ module InterProceduralPointsTo {
     }
 
     pragma [noinline]
-    private predicate call_points_to_simple(CallNode f, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+    private predicate call_points_to_simple(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(ObjectInternal func |
             call(f, context, func)
             |
-            exists(PointsToContext callee |
+            exists(CfgOrigin orig, PointsToContext callee |
                 callee.fromCall(f, context) and
-                func.callResult(callee, value, origin)
+                func.callResult(callee, value, orig) and
+                origin = orig.asCfgNodeOrHere(f)
             )
             or
             context.untrackableCall(f) and
-            value = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
+            value = ObjectInternal::unknown() and origin = f
             or
-            func.callResult(value, origin) and
+            exists(CfgOrigin orig |
+                func.callResult(value, orig) and
+                origin = orig.asCfgNodeOrHere(f)
+            ) and
             context.appliesTo(f)
         )
     }
 
     pragma [noinline]
     predicate call_points_to(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        exists(ObjectInternal returnValue, CfgOrigin resultOrigin |
-            call_points_to_simple(f, context, returnValue, resultOrigin)
-            |
-            /* Either not a decorator, or we understand the return value */
-            (returnValue != ObjectInternal::unknown() or not f.isDecoratorCall()) and
-            value = returnValue and origin = resultOrigin.asCfgNodeOrHere(f)
-            or
-            /* A decorator and we don't understand it. Use the original, undecorated value */
-            f.isDecoratorCall() and returnValue = ObjectInternal::unknown() and
-            PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
-            or
-            Types::six_add_metaclass(f, value, _) and
-            PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
-        )
+        /* Either not a decorator, or we understand the return value */
+        (value != ObjectInternal::unknown() or not f.isDecoratorCall()) and
+        call_points_to_simple(f, context, value, origin)
+        or
+        call_result_is_first_argument(f, context) and
+        PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
         or
         Expressions::typeCallPointsTo(f, context, value, origin, _, _)
-        or
-        Types::six_add_metaclass(f, value, _) and
-        PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
     }
+
+    /** Helper for call_points_to to improve join-order */
+    private predicate call_result_is_first_argument(CallNode f, PointsToContext context) {
+        Types::six_add_metaclass(f, context, _, _)
+        or
+        /* A decorator and we don't understand it. Use the original, undecorated value */
+        f.isDecoratorCall() and call_points_to_simple(f, context, ObjectInternal::unknown(), _)
+    }
+
 
     /** Points-to for parameter. `def foo(param): ...`. */
     pragma [noinline]
@@ -1327,18 +1329,24 @@ module Expressions {
 
     pragma [nomagic]
     private int compare_sequence(SequenceObjectInternal val, SequenceObjectInternal other, int n) {
-        inequalityTest(_, _, _, val, other, _, _) and
-        (
-            n = val.length() and other.length() > n and result = -1
+        exists(int vlen, int olen |
+            sequence_lengths_in_comparison(val, other, vlen, olen)
+            |
+            n = vlen and olen > n and result = -1
             or
-            n = other.length() and val.length() > n and result = 1
+            n = olen and vlen > n and result = 1
             or
-            n = other.length() and n = val.length() and result = 0
+            n = olen and n = vlen and result = 0
         )
         or
         result != 0 and result = compare_item(val, other, n)
         or
         compare_item(val, other, n) = 0 and result = compare_sequence(val, other, n+1)
+    }
+
+    private predicate sequence_lengths_in_comparison(SequenceObjectInternal val, SequenceObjectInternal other, int vlen, int olen) {
+        inequalityTest(_, _, _, val, other, _, _) and
+        vlen = val.length() and olen = other.length()
     }
 
     pragma [noinline]
@@ -1704,7 +1712,7 @@ cached module Types {
         )
         or
         exists(ControlFlowNode meta |
-            six_add_metaclass(_, cls, meta) and
+            six_add_metaclass(_, _, cls, meta) and
             PointsToInternal::pointsTo(meta, _, result, _)
         )
     }
@@ -1758,16 +1766,16 @@ cached module Types {
         cls.(ImportTimeScope).entryEdge(result.getAUse(), _)
     }
 
-    cached predicate six_add_metaclass(CallNode decorator_call, ClassObjectInternal decorated, ControlFlowNode metaclass) {
+    cached predicate six_add_metaclass(CallNode decorator_call, PointsToContext context, ClassObjectInternal decorated, ControlFlowNode metaclass) {
         exists(CallNode decorator |
-            PointsToInternal::pointsTo(decorator_call.getArg(0), _, decorated, _) and
+            PointsToInternal::pointsTo(decorator_call.getArg(0), context, decorated, _) and
             decorator = decorator_call.getFunction() and
             decorator.getArg(0) = metaclass |
-            PointsToInternal::pointsTo(decorator.getFunction(), _, six_add_metaclass_function(), _)
+            PointsToInternal::pointsTo(decorator.getFunction(), context, six_add_metaclass_function(), _)
             or
             exists(ModuleObjectInternal six |
                six.getName() = "six" and
-               PointsToInternal::pointsTo(decorator.getFunction().(AttrNode).getObject("add_metaclass"), _, six, _)
+               PointsToInternal::pointsTo(decorator.getFunction().(AttrNode).getObject("add_metaclass"), context, six, _)
            )
         )
     }
@@ -1838,7 +1846,7 @@ cached module Types {
     private predicate failedInference(ClassObjectInternal cls, string reason, int priority) {
         strictcount(cls.(PythonClassObjectInternal).getScope().getADecorator()) > 1 and reason = "Multiple decorators" and priority = 0
         or
-        exists(cls.(PythonClassObjectInternal).getScope().getADecorator()) and not six_add_metaclass(_, cls, _) and reason = "Decorator not understood" and priority = 1
+        exists(cls.(PythonClassObjectInternal).getScope().getADecorator()) and not six_add_metaclass(_, _, cls, _) and reason = "Decorator not understood" and priority = 1
         or
         reason = "Missing base " + missingBase(cls) and priority = 6
         or
