@@ -1,0 +1,11 @@
+| a | a |
+| b | b |
+| c | c, c |
+| c.z | c.z |
+| this |  |
+| x | x, x, x, x, x |
+| x.y | x.y, x.y, x.y |
+| x.y.z | x.y.z, x.y.z |
+| y | y, y |
+| y.z | y.z |
+| z | z |
