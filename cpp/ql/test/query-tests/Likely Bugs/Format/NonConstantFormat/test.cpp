@@ -10,10 +10,6 @@ const char *messages[] = {
     "%u tasks left\n",
 };
 
-const char *simple_func(const char *str) {
-	return str;
-}
-
 const char *choose_message(unsigned int n) {
   if (n == 0) {
     const char *message = messages[0];
@@ -27,7 +23,7 @@ const char *choose_message(unsigned int n) {
 
 const char *make_message(unsigned int n) {
   static char buf[64];
-  sprintf(buf, "%d tasks left\n", n); // OK
+  sprintf(buf, "%d tasks left\n", n); // ok
   return buf;
 }
 
@@ -46,13 +42,11 @@ const char *const_wash(char *str) {
 
 int main(int argc, char **argv) {
   const char *message = messages[2];
-  printf(simple_func("Hello, World\n")); // OK
   printf(choose_message(argc - 1), argc - 1); // OK
   printf(messages[1]); // OK
   printf(message); // OK
-  printf(make_message(argc - 1)); // OK
+  printf(make_message(argc - 1)); // NOT OK
   printf("Hello, World\n"); // OK
-  printf(gettext("Hello, World\n")); // OK
   printf(_("Hello, World\n")); // OK
   {
     char hello[] = "hello, World\n";
