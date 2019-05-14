@@ -220,6 +220,11 @@ cached module PointsToInternal {
         )
         or
         reachableEdge(_, b, context)
+        or
+        exists(BasicBlock pred |
+            reachableBlock(pred, context) and
+            pred.alwaysReaches(b)
+        )
     }
 
     private predicate reachableEdge(BasicBlock pred, BasicBlock succ, PointsToContext context) {

@@ -1077,6 +1077,22 @@ class BasicBlock extends @py_flow_node {
         not result.(ConditionBlock).controls(this, _)
     }
 
+    /** Holds if flow from this BasicBlock always reaches `succ`
+     */
+    predicate alwaysReaches(BasicBlock succ) {
+        succ = this
+        or
+        strictcount(this.getASuccessor()) = 1
+        and succ = this.getASuccessor()
+        or
+        forex(BasicBlock immsucc |
+            immsucc = this.getASuccessor()
+            |
+            immsucc.alwaysReaches(succ)
+        )
+
+    }
+
 }
 
 private predicate start_bb_likely_reachable(BasicBlock b) {
