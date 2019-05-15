@@ -1,5 +1,4 @@
 nodes
-| src-non-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo |
 | src-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo |
 | src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } |
 | src-vulnerable-lodash/tst.js:11:16:11:30 | req.query.value |
@@ -11,7 +10,6 @@ edges
 | src-vulnerable-lodash/tst.js:15:14:15:28 | req.query.value | src-vulnerable-lodash/tst.js:18:16:18:25 | opts.thing |
 | src-vulnerable-lodash/tst.js:18:16:18:25 | opts.thing | src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } |
 #select
-| src-non-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | src-non-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | src-non-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | Prototype pollution caused by merging a user-controlled value from $@. | src-non-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | here |
-| src-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | src-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | src-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | Prototype pollution caused by merging a user-controlled value from $@. | src-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | here |
-| src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } | src-vulnerable-lodash/tst.js:11:16:11:30 | req.query.value | src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } | Prototype pollution caused by merging a user-controlled value from $@. | src-vulnerable-lodash/tst.js:11:16:11:30 | req.query.value | here |
-| src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } | src-vulnerable-lodash/tst.js:15:14:15:28 | req.query.value | src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } | Prototype pollution caused by merging a user-controlled value from $@. | src-vulnerable-lodash/tst.js:15:14:15:28 | req.query.value | here |
+| src-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | src-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | src-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | Prototype pollution caused by merging a user-controlled value from $@ using a vulnerable version of $@. | src-vulnerable-lodash/tst.js:7:17:7:29 | req.query.foo | here | src-vulnerable-lodash/package.json:3:19:3:26 | "4.17.4" | lodash |
+| src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } | src-vulnerable-lodash/tst.js:11:16:11:30 | req.query.value | src-vulnerable-lodash/tst.js:10:17:12:5 | {\\n      ... K\\n    } | Prototype pollution caused by merging a user-controlled value from $@ using a vulnerable version of $@. | src-vulnerable-lodash/tst.js:11:16:11:30 | req.query.value | here | src-vulnerable-lodash/package.json:3:19:3:26 | "4.17.4" | lodash |
+| src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } | src-vulnerable-lodash/tst.js:15:14:15:28 | req.query.value | src-vulnerable-lodash/tst.js:17:17:19:5 | {\\n      ... K\\n    } | Prototype pollution caused by merging a user-controlled value from $@ using a vulnerable version of $@. | src-vulnerable-lodash/tst.js:15:14:15:28 | req.query.value | here | src-vulnerable-lodash/package.json:3:19:3:26 | "4.17.4" | lodash |
