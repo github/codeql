@@ -1,5 +1,9 @@
-import python
 
+private import AST
+private import Exprs
+private import Stmts
+private import Import
+private import Operations
 
 module Pruner {
 
@@ -67,8 +71,6 @@ module Pruner {
             left.getBasicBlock().dominates(this.getBasicBlock()) and
             right.getBasicBlock().dominates(this.getBasicBlock())
         }
-
-        override Compare getNode() { result = super.getNode() }
 
     }
 
@@ -152,6 +154,7 @@ module Pruner {
     }
 
     private import Comparisons
+    private import SSA
 
     newtype TConstraint =
         TTruthy(boolean b) { b = true or b = false }
@@ -477,7 +480,7 @@ module Pruner {
             a.getValue() instanceof False and result = false
         )
         or
-        module_import(var) and result = true
+        module_import(asgn, var) and result = true
     }
 
     /** Gets the constraint on `var` resulting from the an assignment in `asgn` */
@@ -587,14 +590,14 @@ module Pruner {
      * truthiness.
      */
     predicate whitelisted(SsaVariable var) {
-        module_import(var)
+        module_import(_, var)
     }
 
-    private predicate module_import(SsaVariable var) {
-        exists(Alias alias, UnprunedCfgNode node |
+    private predicate module_import(UnprunedCfgNode asgn, SsaVariable var) {
+        exists(Alias alias |
             alias.getValue() instanceof ImportExpr and
-            py_ssa_defn(var, node) and
-            alias.getAsname() = node.getNode()
+            py_ssa_defn(var, asgn) and
+            alias.getAsname() = asgn.getNode()
         )
     }
 }

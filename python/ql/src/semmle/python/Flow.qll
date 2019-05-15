@@ -33,7 +33,7 @@ private AstNode toAst(ControlFlowNode n) {
 */
 class ControlFlowNode extends @py_flow_node {
 
-    ControlFlowNode() {
+    cached ControlFlowNode() {
         not Pruner::unreachable(this)
     }
 
