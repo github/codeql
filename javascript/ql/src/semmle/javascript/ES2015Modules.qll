@@ -44,7 +44,7 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
   /** Gets an import specifier of this import declaration. */
   ImportSpecifier getASpecifier() { result = getSpecifier(_) }
 
-  override DataFlow::Node getDefaultNode() {
+  override DataFlow::Node getImportedModuleNode() {
     // `import * as http from 'http'` or `import http from `http`'
     exists(ImportSpecifier is |
       is = getASpecifier() and

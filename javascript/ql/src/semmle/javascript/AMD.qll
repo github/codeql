@@ -264,7 +264,7 @@ private class AmdDependencyImport extends Import {
     result = resolveByAbsolutePath()
   }
 
-  override DataFlow::Node getDefaultNode() {
+  override DataFlow::Node getImportedModuleNode() {
     exists(Parameter param |
       any(AmdModuleDefinition def).dependencyParameter(this, param) and
       result = DataFlow::parameterNode(param)

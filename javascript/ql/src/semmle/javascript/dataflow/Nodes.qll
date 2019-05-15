@@ -463,7 +463,7 @@ module ModuleImportNode {
 
     DefaultRange() {
       exists(Import i |
-        this = i.getDefaultNode() and
+        this = i.getImportedModuleNode() and
         i.getImportedPath().getValue() = path
       )
       or
@@ -494,7 +494,7 @@ ModuleImportNode moduleImport(string path) { result.getPath() = path }
  * `"lodash"` as a dependency.
  */
 ModuleImportNode dependencyModuleImport(Dependency dep) {
-  result = dep.getAUse("import").(Import).getDefaultNode()
+  result = dep.getAUse("import").(Import).getImportedModuleNode()
 }
 
 /**
