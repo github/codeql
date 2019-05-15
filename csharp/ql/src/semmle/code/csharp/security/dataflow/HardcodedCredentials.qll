@@ -55,21 +55,21 @@ module HardcodedCredentials {
       not any(ReturnedByMockObject mock).getAnArgument() = sink.asExpr()
     }
 
-    override predicate hasFlow(DataFlow::Node source, DataFlow::Node sink) {
-      super.hasFlow(source, sink) and
+    override predicate hasFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
+      super.hasFlowPath(source, sink) and
       // Exclude hard-coded credentials in tests if they only flow to calls to methods with a name
       // like "Add*" "Create*" or "Update*". The rationale is that hard-coded credentials within
       // tests that are only used for creating or setting values within tests are unlikely to
       // represent credentials to some accessible system.
       not (
-        source.asExpr().getFile() instanceof TestFile and
+        source.getNode().asExpr().getFile() instanceof TestFile and
         exists(MethodCall createOrAddCall, string createOrAddMethodName |
           createOrAddMethodName.matches("Update%") or
           createOrAddMethodName.matches("Create%") or
           createOrAddMethodName.matches("Add%")
         |
           createOrAddCall.getTarget().hasName(createOrAddMethodName) and
-          createOrAddCall.getAnArgument() = sink.asExpr()
+          createOrAddCall.getAnArgument() = sink.getNode().asExpr()
         )
       )
     }

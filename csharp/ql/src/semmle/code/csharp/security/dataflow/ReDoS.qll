@@ -40,15 +40,15 @@ module ReDoS {
       // a sub class of `Sink`, as that results in bad aggregate
       // recursion. Therefore, we overestimate the sinks here
       // and make the restriction later by overriding
-      // `hasFlow()` below.
+      // `hasFlowPath()` below.
       sink.asExpr() = any(RegexOperation ro).getInput()
     }
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate hasFlow(DataFlow::Node source, DataFlow::Node sink) {
-      super.hasFlow(source, sink) and
-      (sink instanceof Sink or sink instanceof ExponentialRegexSink)
+    override predicate hasFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
+      super.hasFlowPath(source, sink) and
+      (sink.getNode() instanceof Sink or sink.getNode() instanceof ExponentialRegexSink)
     }
   }
 

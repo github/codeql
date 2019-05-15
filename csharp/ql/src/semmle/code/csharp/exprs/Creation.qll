@@ -380,7 +380,11 @@ class AnonymousFunctionExpr extends Expr, Callable, @anonymous_function_expr {
   override string getName() { result = "<anonymous>" }
 
   override Type getReturnType() {
-    result = getType().(SystemLinqExpressions::DelegateExtType).getDelegateType().getReturnType()
+    result = this
+          .getType()
+          .(SystemLinqExpressions::DelegateExtType)
+          .getDelegateType()
+          .getReturnType()
   }
 
   override AnonymousFunctionExpr getSourceDeclaration() { result = this }

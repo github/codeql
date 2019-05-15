@@ -2,26 +2,34 @@ import csharp
 private import DataFlowPrivate
 private import DataFlowPublic
 
-private ControlFlowElement getAScope(boolean exactScope) {
-  exists(ControlFlowReachabilityConfiguration c |
-    c.candidate(_, _, result, exactScope, _) or
-    c.candidateDef(_, _, result, exactScope, _)
-  )
+private class ControlFlowScope extends ControlFlowElement {
+  private boolean exactScope;
+
+  ControlFlowScope() {
+    exists(ControlFlowReachabilityConfiguration c |
+      c.candidate(_, _, this, exactScope, _) or
+      c.candidateDef(_, _, this, exactScope, _)
+    )
+  }
+
+  predicate isExact() { exactScope = true }
+
+  predicate isNonExact() { exactScope = false }
 }
 
-private ControlFlowElement getANonExactScopeChild(ControlFlowElement scope) {
-  scope = getAScope(false) and
+private ControlFlowElement getANonExactScopeChild(ControlFlowScope scope) {
+  scope.isNonExact() and
   result = scope
   or
   result = getANonExactScopeChild(scope).getAChild()
 }
 
 pragma[noinline]
-private ControlFlow::BasicBlock getABasicBlockInScope(ControlFlowElement scope, boolean exactScope) {
+private ControlFlow::BasicBlock getABasicBlockInScope(ControlFlowScope scope, boolean exactScope) {
   result.getANode().getElement() = getANonExactScopeChild(scope) and
   exactScope = false
   or
-  scope = getAScope(true) and
+  scope.isExact() and
   result.getANode().getElement() = scope and
   exactScope = true
 }

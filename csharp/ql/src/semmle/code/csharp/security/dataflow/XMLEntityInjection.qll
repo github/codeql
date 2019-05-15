@@ -39,7 +39,7 @@ module XMLEntityInjection {
       // in the charpred, as that results in bad aggregate
       // recursion. Therefore, we overestimate the sinks here
       // and make the restriction later by overriding
-      // `hasFlow()` below.
+      // `hasFlowPath()` below.
       this.getExpr() = any(MethodCall mc |
           mc.getTarget().hasQualifiedName("System.Xml.XmlReader.Create") or
           mc.getTarget().hasQualifiedName("System.Xml.XmlDocument.Load") or
@@ -75,9 +75,9 @@ module XMLEntityInjection {
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate hasFlow(DataFlow::Node source, DataFlow::Node sink) {
-      super.hasFlow(source, sink) and
-      exists(sink.(Sink).getReason())
+    override predicate hasFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
+      super.hasFlowPath(source, sink) and
+      exists(sink.getNode().(Sink).getReason())
     }
   }
 

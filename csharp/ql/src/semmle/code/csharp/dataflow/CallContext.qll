@@ -33,7 +33,7 @@ class CallContext extends TCallContext {
 class EmptyCallContext extends CallContext, TEmptyCallContext {
   override string toString() { result = "<empty>" }
 
-  override Location getLocation() { result instanceof EmptyLocation }
+  override EmptyLocation getLocation() { any() }
 }
 
 /**

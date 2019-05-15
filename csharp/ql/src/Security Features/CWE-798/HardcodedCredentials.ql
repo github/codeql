@@ -21,7 +21,7 @@ from
 where
   source = sourcePath.getNode() and
   sink = sinkPath.getNode() and
-  c.hasFlow(source, sink) and
+  c.hasFlowPath(sourcePath, sinkPath) and
   // Print the source value if it's available
   if exists(source.asExpr().getValue())
   then value = "The hard-coded value \"" + source.asExpr().getValue() + "\""
