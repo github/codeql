@@ -1,0 +1,186 @@
+| Capture.cs:33:9:33:40 | call to method Select | return | Capture.cs:33:9:33:40 | call to method Select |
+| Capture.cs:33:9:33:40 | call to method Select | yield return | Capture.cs:33:9:33:40 | call to method Select |
+| Capture.cs:33:9:33:50 | call to method ToArray | return | Capture.cs:33:9:33:50 | call to method ToArray |
+| Capture.cs:33:30:33:39 | [implicit call] access to local variable captureIn3 | return | Capture.cs:33:30:33:39 | [output] access to local variable captureIn3 |
+| Capture.cs:59:9:59:21 | call to local function CaptureOut1 | captured sink30 | Capture.cs:59:9:59:21 | SSA call def(sink30) |
+| Capture.cs:71:9:71:21 | [transitive] call to local function CaptureOut2 | captured sink31 | Capture.cs:71:9:71:21 | SSA call def(sink31) |
+| Capture.cs:71:9:71:21 | call to local function CaptureOut2 | captured sink31 | Capture.cs:71:9:71:21 | SSA call def(sink31) |
+| Capture.cs:80:9:80:41 | call to method Select | captured sink32 | Capture.cs:80:9:80:41 | SSA call def(sink32) |
+| Capture.cs:80:9:80:41 | call to method Select | return | Capture.cs:80:9:80:41 | call to method Select |
+| Capture.cs:80:9:80:41 | call to method Select | yield return | Capture.cs:80:9:80:41 | call to method Select |
+| Capture.cs:80:9:80:51 | call to method ToArray | return | Capture.cs:80:9:80:51 | call to method ToArray |
+| Capture.cs:80:30:80:40 | [implicit call] access to local variable captureOut3 | captured sink32 | Capture.cs:80:9:80:41 | SSA call def(sink32) |
+| Capture.cs:80:30:80:40 | [implicit call] access to local variable captureOut3 | return | Capture.cs:80:30:80:40 | [output] access to local variable captureOut3 |
+| Capture.cs:108:9:108:25 | call to local function CaptureThrough1 | captured sink33 | Capture.cs:108:9:108:25 | SSA call def(sink33) |
+| Capture.cs:120:9:120:25 | [transitive] call to local function CaptureThrough2 | captured sink34 | Capture.cs:120:9:120:25 | SSA call def(sink34) |
+| Capture.cs:120:9:120:25 | call to local function CaptureThrough2 | captured sink34 | Capture.cs:120:9:120:25 | SSA call def(sink34) |
+| Capture.cs:129:9:129:45 | call to method Select | captured sink35 | Capture.cs:129:9:129:45 | SSA call def(sink35) |
+| Capture.cs:129:9:129:45 | call to method Select | return | Capture.cs:129:9:129:45 | call to method Select |
+| Capture.cs:129:9:129:45 | call to method Select | yield return | Capture.cs:129:9:129:45 | call to method Select |
+| Capture.cs:129:9:129:55 | call to method ToArray | return | Capture.cs:129:9:129:55 | call to method ToArray |
+| Capture.cs:129:30:129:44 | [implicit call] access to local variable captureThrough3 | captured sink35 | Capture.cs:129:9:129:45 | SSA call def(sink35) |
+| Capture.cs:129:30:129:44 | [implicit call] access to local variable captureThrough3 | return | Capture.cs:129:30:129:44 | [output] access to local variable captureThrough3 |
+| Capture.cs:136:22:136:38 | call to local function CaptureThrough4 | return | Capture.cs:136:22:136:38 | call to local function CaptureThrough4 |
+| Capture.cs:144:9:144:32 | call to local function CaptureThrough5 | captured sink37 | Capture.cs:144:9:144:32 | SSA call def(sink37) |
+| Capture.cs:167:20:167:22 | call to local function M | return | Capture.cs:167:20:167:22 | call to local function M |
+| Capture.cs:170:22:170:32 | call to local function Id | return | Capture.cs:170:22:170:32 | call to local function Id |
+| Capture.cs:172:20:172:25 | call to local function Id | return | Capture.cs:172:20:172:25 | call to local function Id |
+| GlobalDataFlow.cs:25:9:25:26 | access to property SinkProperty0 | return | GlobalDataFlow.cs:25:9:25:26 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:26:15:26:32 | access to property SinkProperty0 | return | GlobalDataFlow.cs:26:15:26:32 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:29:9:29:29 | access to property NonSinkProperty0 | return | GlobalDataFlow.cs:29:9:29:29 | access to property NonSinkProperty0 |
+| GlobalDataFlow.cs:30:15:30:35 | access to property NonSinkProperty0 | return | GlobalDataFlow.cs:30:15:30:35 | access to property NonSinkProperty0 |
+| GlobalDataFlow.cs:31:9:31:29 | access to property NonSinkProperty1 | return | GlobalDataFlow.cs:31:9:31:29 | access to property NonSinkProperty1 |
+| GlobalDataFlow.cs:32:15:32:35 | access to property NonSinkProperty1 | return | GlobalDataFlow.cs:32:15:32:35 | access to property NonSinkProperty1 |
+| GlobalDataFlow.cs:35:13:35:30 | access to property SinkProperty0 | return | GlobalDataFlow.cs:35:13:35:30 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:36:26:36:58 | call to method GetMethod | return | GlobalDataFlow.cs:36:26:36:58 | call to method GetMethod |
+| GlobalDataFlow.cs:37:35:37:52 | access to property SinkProperty0 | return | GlobalDataFlow.cs:37:35:37:52 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:38:9:38:37 | call to method Invoke | return | GlobalDataFlow.cs:38:9:38:37 | call to method Invoke |
+| GlobalDataFlow.cs:45:13:45:30 | access to property SinkProperty0 | return | GlobalDataFlow.cs:45:13:45:30 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:52:20:52:37 | access to property SinkProperty0 | return | GlobalDataFlow.cs:52:20:52:37 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:53:28:53:45 | access to property SinkProperty0 | return | GlobalDataFlow.cs:53:28:53:45 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:54:44:54:61 | access to property SinkProperty0 | return | GlobalDataFlow.cs:54:44:54:61 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:55:28:55:45 | access to property SinkProperty0 | return | GlobalDataFlow.cs:55:28:55:45 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:57:35:57:52 | access to property SinkProperty0 | return | GlobalDataFlow.cs:57:35:57:52 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:64:9:64:18 | access to property InProperty | return | GlobalDataFlow.cs:64:9:64:18 | access to property InProperty |
+| GlobalDataFlow.cs:64:22:64:39 | access to property SinkProperty0 | return | GlobalDataFlow.cs:64:22:64:39 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:67:9:67:21 | access to property NonInProperty | return | GlobalDataFlow.cs:67:9:67:21 | access to property NonInProperty |
+| GlobalDataFlow.cs:70:21:70:46 | call to method Return | return | GlobalDataFlow.cs:70:21:70:46 | call to method Return |
+| GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 | return | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 |
+| GlobalDataFlow.cs:72:29:72:64 | call to method GetMethod | return | GlobalDataFlow.cs:72:29:72:64 | call to method GetMethod |
+| GlobalDataFlow.cs:72:29:72:101 | call to method Invoke | return | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke |
+| GlobalDataFlow.cs:75:9:75:35 | call to method ReturnOut | out | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) |
+| GlobalDataFlow.cs:75:9:75:35 | call to method ReturnOut | ref | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) |
+| GlobalDataFlow.cs:78:9:78:35 | call to method ReturnRef | out | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) |
+| GlobalDataFlow.cs:78:9:78:35 | call to method ReturnRef | ref | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) |
+| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven | return | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven |
+| GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven | yield return | GlobalDataFlow.cs:80:22:80:85 | call to method SelectEven |
+| GlobalDataFlow.cs:82:22:82:95 | call to method Select | return | GlobalDataFlow.cs:82:22:82:95 | call to method Select |
+| GlobalDataFlow.cs:82:22:82:95 | call to method Select | yield return | GlobalDataFlow.cs:82:22:82:95 | call to method Select |
+| GlobalDataFlow.cs:82:59:82:72 | call to method First | return | GlobalDataFlow.cs:82:59:82:72 | call to method First |
+| GlobalDataFlow.cs:82:84:82:94 | [implicit call] delegate creation of type Func<String,String> | return | GlobalDataFlow.cs:82:84:82:94 | [output] delegate creation of type Func<String,String> |
+| GlobalDataFlow.cs:84:22:84:136 | call to method Zip | return | GlobalDataFlow.cs:84:22:84:136 | call to method Zip |
+| GlobalDataFlow.cs:84:22:84:136 | call to method Zip | yield return | GlobalDataFlow.cs:84:22:84:136 | call to method Zip |
+| GlobalDataFlow.cs:84:59:84:72 | call to method First | return | GlobalDataFlow.cs:84:59:84:72 | call to method First |
+| GlobalDataFlow.cs:84:125:84:135 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:84:125:84:135 | [output] (...) => ... |
+| GlobalDataFlow.cs:86:22:86:136 | call to method Zip | return | GlobalDataFlow.cs:86:22:86:136 | call to method Zip |
+| GlobalDataFlow.cs:86:22:86:136 | call to method Zip | yield return | GlobalDataFlow.cs:86:22:86:136 | call to method Zip |
+| GlobalDataFlow.cs:86:106:86:119 | call to method First | return | GlobalDataFlow.cs:86:106:86:119 | call to method First |
+| GlobalDataFlow.cs:86:125:86:135 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:86:125:86:135 | [output] (...) => ... |
+| GlobalDataFlow.cs:88:22:88:70 | call to method Aggregate | return | GlobalDataFlow.cs:88:22:88:70 | call to method Aggregate |
+| GlobalDataFlow.cs:88:43:88:61 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:88:43:88:61 | [output] (...) => ... |
+| GlobalDataFlow.cs:88:64:88:69 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:88:64:88:69 | [output] (...) => ... |
+| GlobalDataFlow.cs:90:22:90:118 | call to method Aggregate | return | GlobalDataFlow.cs:90:22:90:118 | call to method Aggregate |
+| GlobalDataFlow.cs:90:75:90:88 | call to method First | return | GlobalDataFlow.cs:90:75:90:88 | call to method First |
+| GlobalDataFlow.cs:90:91:90:109 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:90:91:90:109 | [output] (...) => ... |
+| GlobalDataFlow.cs:90:112:90:117 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:90:112:90:117 | [output] (...) => ... |
+| GlobalDataFlow.cs:93:9:93:42 | call to method TryParse | out | GlobalDataFlow.cs:93:36:93:41 | SSA def(sink21) |
+| GlobalDataFlow.cs:93:9:93:42 | call to method TryParse | ref | GlobalDataFlow.cs:93:36:93:41 | SSA def(sink21) |
+| GlobalDataFlow.cs:93:9:93:42 | call to method TryParse | return | GlobalDataFlow.cs:93:9:93:42 | call to method TryParse |
+| GlobalDataFlow.cs:96:9:96:41 | call to method TryParse | out | GlobalDataFlow.cs:96:35:96:40 | SSA def(sink22) |
+| GlobalDataFlow.cs:96:9:96:41 | call to method TryParse | ref | GlobalDataFlow.cs:96:35:96:40 | SSA def(sink22) |
+| GlobalDataFlow.cs:96:9:96:41 | call to method TryParse | return | GlobalDataFlow.cs:96:9:96:41 | call to method TryParse |
+| GlobalDataFlow.cs:100:24:100:33 | call to method Return | return | GlobalDataFlow.cs:100:24:100:33 | call to method Return |
+| GlobalDataFlow.cs:102:28:102:63 | call to method GetMethod | return | GlobalDataFlow.cs:102:28:102:63 | call to method GetMethod |
+| GlobalDataFlow.cs:102:28:102:103 | call to method Invoke | return | GlobalDataFlow.cs:102:28:102:103 | call to method Invoke |
+| GlobalDataFlow.cs:104:9:104:35 | call to method ReturnOut | out | GlobalDataFlow.cs:104:27:104:34 | SSA def(nonSink0) |
+| GlobalDataFlow.cs:104:9:104:35 | call to method ReturnOut | ref | GlobalDataFlow.cs:104:27:104:34 | SSA def(nonSink0) |
+| GlobalDataFlow.cs:106:9:106:35 | call to method ReturnRef | out | GlobalDataFlow.cs:106:27:106:34 | SSA def(nonSink0) |
+| GlobalDataFlow.cs:106:9:106:35 | call to method ReturnRef | ref | GlobalDataFlow.cs:106:27:106:34 | SSA def(nonSink0) |
+| GlobalDataFlow.cs:108:24:108:90 | call to method SelectEven | return | GlobalDataFlow.cs:108:24:108:90 | call to method SelectEven |
+| GlobalDataFlow.cs:108:24:108:90 | call to method SelectEven | yield return | GlobalDataFlow.cs:108:24:108:90 | call to method SelectEven |
+| GlobalDataFlow.cs:110:20:110:82 | call to method Select | return | GlobalDataFlow.cs:110:20:110:82 | call to method Select |
+| GlobalDataFlow.cs:110:20:110:82 | call to method Select | yield return | GlobalDataFlow.cs:110:20:110:82 | call to method Select |
+| GlobalDataFlow.cs:110:76:110:81 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:110:76:110:81 | [output] (...) => ... |
+| GlobalDataFlow.cs:112:20:112:134 | call to method Zip | return | GlobalDataFlow.cs:112:20:112:134 | call to method Zip |
+| GlobalDataFlow.cs:112:20:112:134 | call to method Zip | yield return | GlobalDataFlow.cs:112:20:112:134 | call to method Zip |
+| GlobalDataFlow.cs:112:57:112:70 | call to method First | return | GlobalDataFlow.cs:112:57:112:70 | call to method First |
+| GlobalDataFlow.cs:112:123:112:133 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:112:123:112:133 | [output] (...) => ... |
+| GlobalDataFlow.cs:114:20:114:134 | call to method Zip | return | GlobalDataFlow.cs:114:20:114:134 | call to method Zip |
+| GlobalDataFlow.cs:114:20:114:134 | call to method Zip | yield return | GlobalDataFlow.cs:114:20:114:134 | call to method Zip |
+| GlobalDataFlow.cs:114:104:114:117 | call to method First | return | GlobalDataFlow.cs:114:104:114:117 | call to method First |
+| GlobalDataFlow.cs:114:123:114:133 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:114:123:114:133 | [output] (...) => ... |
+| GlobalDataFlow.cs:116:20:116:64 | call to method Aggregate | return | GlobalDataFlow.cs:116:20:116:64 | call to method Aggregate |
+| GlobalDataFlow.cs:116:41:116:55 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:116:41:116:55 | [output] (...) => ... |
+| GlobalDataFlow.cs:116:58:116:63 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:116:58:116:63 | [output] (...) => ... |
+| GlobalDataFlow.cs:118:20:118:69 | call to method Aggregate | return | GlobalDataFlow.cs:118:20:118:69 | call to method Aggregate |
+| GlobalDataFlow.cs:118:41:118:59 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:118:41:118:59 | [output] (...) => ... |
+| GlobalDataFlow.cs:118:62:118:68 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:118:62:118:68 | [output] (...) => ... |
+| GlobalDataFlow.cs:120:20:120:67 | call to method Aggregate | return | GlobalDataFlow.cs:120:20:120:67 | call to method Aggregate |
+| GlobalDataFlow.cs:120:46:120:58 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:120:46:120:58 | [output] (...) => ... |
+| GlobalDataFlow.cs:120:61:120:66 | [implicit call] (...) => ... | return | GlobalDataFlow.cs:120:61:120:66 | [output] (...) => ... |
+| GlobalDataFlow.cs:123:9:123:46 | call to method TryParse | out | GlobalDataFlow.cs:123:38:123:45 | SSA def(nonSink2) |
+| GlobalDataFlow.cs:123:9:123:46 | call to method TryParse | ref | GlobalDataFlow.cs:123:38:123:45 | SSA def(nonSink2) |
+| GlobalDataFlow.cs:123:9:123:46 | call to method TryParse | return | GlobalDataFlow.cs:123:9:123:46 | call to method TryParse |
+| GlobalDataFlow.cs:126:9:126:45 | call to method TryParse | out | GlobalDataFlow.cs:126:37:126:44 | SSA def(nonSink3) |
+| GlobalDataFlow.cs:126:9:126:45 | call to method TryParse | ref | GlobalDataFlow.cs:126:37:126:44 | SSA def(nonSink3) |
+| GlobalDataFlow.cs:126:9:126:45 | call to method TryParse | return | GlobalDataFlow.cs:126:9:126:45 | call to method TryParse |
+| GlobalDataFlow.cs:130:45:130:64 | call to method ApplyFunc | return | GlobalDataFlow.cs:130:45:130:64 | call to method ApplyFunc |
+| GlobalDataFlow.cs:131:21:131:34 | delegate call | return | GlobalDataFlow.cs:131:21:131:34 | delegate call |
+| GlobalDataFlow.cs:135:20:135:36 | delegate call | return | GlobalDataFlow.cs:135:20:135:36 | delegate call |
+| GlobalDataFlow.cs:139:21:139:44 | call to method ApplyFunc | return | GlobalDataFlow.cs:139:21:139:44 | call to method ApplyFunc |
+| GlobalDataFlow.cs:143:20:143:40 | call to method ApplyFunc | return | GlobalDataFlow.cs:143:20:143:40 | call to method ApplyFunc |
+| GlobalDataFlow.cs:145:20:145:44 | call to method ApplyFunc | return | GlobalDataFlow.cs:145:20:145:44 | call to method ApplyFunc |
+| GlobalDataFlow.cs:149:21:149:25 | call to method Out | return | GlobalDataFlow.cs:149:21:149:25 | call to method Out |
+| GlobalDataFlow.cs:152:9:152:25 | call to method OutOut | out | GlobalDataFlow.cs:152:20:152:24 | SSA def(sink7) |
+| GlobalDataFlow.cs:152:9:152:25 | call to method OutOut | ref | GlobalDataFlow.cs:152:20:152:24 | SSA def(sink7) |
+| GlobalDataFlow.cs:155:9:155:25 | call to method OutRef | out | GlobalDataFlow.cs:155:20:155:24 | SSA def(sink8) |
+| GlobalDataFlow.cs:155:9:155:25 | call to method OutRef | ref | GlobalDataFlow.cs:155:20:155:24 | SSA def(sink8) |
+| GlobalDataFlow.cs:157:22:157:31 | call to method OutYield | return | GlobalDataFlow.cs:157:22:157:31 | call to method OutYield |
+| GlobalDataFlow.cs:157:22:157:31 | call to method OutYield | yield return | GlobalDataFlow.cs:157:22:157:31 | call to method OutYield |
+| GlobalDataFlow.cs:159:22:159:43 | call to method TaintedParam | return | GlobalDataFlow.cs:159:22:159:43 | call to method TaintedParam |
+| GlobalDataFlow.cs:163:20:163:27 | call to method NonOut | return | GlobalDataFlow.cs:163:20:163:27 | call to method NonOut |
+| GlobalDataFlow.cs:165:9:165:31 | call to method NonOutOut | out | GlobalDataFlow.cs:165:23:165:30 | SSA def(nonSink0) |
+| GlobalDataFlow.cs:165:9:165:31 | call to method NonOutOut | ref | GlobalDataFlow.cs:165:23:165:30 | SSA def(nonSink0) |
+| GlobalDataFlow.cs:167:9:167:31 | call to method NonOutRef | out | GlobalDataFlow.cs:167:23:167:30 | SSA def(nonSink0) |
+| GlobalDataFlow.cs:167:9:167:31 | call to method NonOutRef | ref | GlobalDataFlow.cs:167:23:167:30 | SSA def(nonSink0) |
+| GlobalDataFlow.cs:169:20:169:32 | call to method NonOutYield | return | GlobalDataFlow.cs:169:20:169:32 | call to method NonOutYield |
+| GlobalDataFlow.cs:169:20:169:32 | call to method NonOutYield | yield return | GlobalDataFlow.cs:169:20:169:32 | call to method NonOutYield |
+| GlobalDataFlow.cs:169:20:169:40 | call to method First | return | GlobalDataFlow.cs:169:20:169:40 | call to method First |
+| GlobalDataFlow.cs:171:20:171:44 | call to method NonTaintedParam | return | GlobalDataFlow.cs:171:20:171:44 | call to method NonTaintedParam |
+| GlobalDataFlow.cs:176:21:176:26 | delegate call | return | GlobalDataFlow.cs:176:21:176:26 | delegate call |
+| GlobalDataFlow.cs:181:20:181:27 | delegate call | return | GlobalDataFlow.cs:181:20:181:27 | delegate call |
+| GlobalDataFlow.cs:185:22:185:42 | object creation of type Lazy<String> | return | GlobalDataFlow.cs:185:22:185:42 | object creation of type Lazy<String> |
+| GlobalDataFlow.cs:185:22:185:48 | access to property Value | return | GlobalDataFlow.cs:185:22:185:48 | access to property Value |
+| GlobalDataFlow.cs:185:39:185:41 | [implicit call] delegate creation of type Func<String> | return | GlobalDataFlow.cs:185:39:185:41 | [output] delegate creation of type Func<String> |
+| GlobalDataFlow.cs:189:20:189:43 | object creation of type Lazy<String> | return | GlobalDataFlow.cs:189:20:189:43 | object creation of type Lazy<String> |
+| GlobalDataFlow.cs:189:20:189:49 | access to property Value | return | GlobalDataFlow.cs:189:20:189:49 | access to property Value |
+| GlobalDataFlow.cs:189:37:189:42 | [implicit call] delegate creation of type Func<String> | return | GlobalDataFlow.cs:189:37:189:42 | [output] delegate creation of type Func<String> |
+| GlobalDataFlow.cs:193:22:193:32 | access to property OutProperty | return | GlobalDataFlow.cs:193:22:193:32 | access to property OutProperty |
+| GlobalDataFlow.cs:197:20:197:33 | access to property NonOutProperty | return | GlobalDataFlow.cs:197:20:197:33 | access to property NonOutProperty |
+| GlobalDataFlow.cs:205:76:205:90 | call to method ReturnCheck2 | return | GlobalDataFlow.cs:205:76:205:90 | call to method ReturnCheck2 |
+| GlobalDataFlow.cs:206:22:206:39 | call to method Select | return | GlobalDataFlow.cs:206:22:206:39 | call to method Select |
+| GlobalDataFlow.cs:206:22:206:39 | call to method Select | yield return | GlobalDataFlow.cs:206:22:206:39 | call to method Select |
+| GlobalDataFlow.cs:206:37:206:38 | [implicit call] access to local variable f1 | return | GlobalDataFlow.cs:206:37:206:38 | [output] access to local variable f1 |
+| GlobalDataFlow.cs:208:22:208:39 | call to method Select | return | GlobalDataFlow.cs:208:22:208:39 | call to method Select |
+| GlobalDataFlow.cs:208:37:208:38 | [implicit call] access to local variable f2 | return | GlobalDataFlow.cs:208:37:208:38 | [output] access to local variable f2 |
+| GlobalDataFlow.cs:210:22:210:49 | call to method Select | return | GlobalDataFlow.cs:210:22:210:49 | call to method Select |
+| GlobalDataFlow.cs:210:22:210:49 | call to method Select | yield return | GlobalDataFlow.cs:210:22:210:49 | call to method Select |
+| GlobalDataFlow.cs:210:37:210:48 | [implicit call] delegate creation of type Func<String,String> | return | GlobalDataFlow.cs:210:37:210:48 | [output] delegate creation of type Func<String,String> |
+| GlobalDataFlow.cs:215:76:215:92 | call to method NonReturnCheck | return | GlobalDataFlow.cs:215:76:215:92 | call to method NonReturnCheck |
+| GlobalDataFlow.cs:216:23:216:43 | call to method Select | return | GlobalDataFlow.cs:216:23:216:43 | call to method Select |
+| GlobalDataFlow.cs:216:23:216:43 | call to method Select | yield return | GlobalDataFlow.cs:216:23:216:43 | call to method Select |
+| GlobalDataFlow.cs:216:41:216:42 | [implicit call] access to local variable f1 | return | GlobalDataFlow.cs:216:41:216:42 | [output] access to local variable f1 |
+| GlobalDataFlow.cs:218:19:218:39 | call to method Select | return | GlobalDataFlow.cs:218:19:218:39 | call to method Select |
+| GlobalDataFlow.cs:218:37:218:38 | [implicit call] access to local variable f2 | return | GlobalDataFlow.cs:218:37:218:38 | [output] access to local variable f2 |
+| GlobalDataFlow.cs:220:19:220:39 | call to method Select | return | GlobalDataFlow.cs:220:19:220:39 | call to method Select |
+| GlobalDataFlow.cs:220:19:220:39 | call to method Select | yield return | GlobalDataFlow.cs:220:19:220:39 | call to method Select |
+| GlobalDataFlow.cs:220:37:220:38 | [implicit call] access to local variable f3 | return | GlobalDataFlow.cs:220:37:220:38 | [output] access to local variable f3 |
+| GlobalDataFlow.cs:222:19:222:39 | call to method Select | return | GlobalDataFlow.cs:222:19:222:39 | call to method Select |
+| GlobalDataFlow.cs:222:37:222:38 | [implicit call] access to local variable f4 | return | GlobalDataFlow.cs:222:37:222:38 | [output] access to local variable f4 |
+| GlobalDataFlow.cs:224:19:224:49 | call to method Select | return | GlobalDataFlow.cs:224:19:224:49 | call to method Select |
+| GlobalDataFlow.cs:224:19:224:49 | call to method Select | yield return | GlobalDataFlow.cs:224:19:224:49 | call to method Select |
+| GlobalDataFlow.cs:224:37:224:48 | [implicit call] delegate creation of type Func<String,String> | return | GlobalDataFlow.cs:224:37:224:48 | [output] delegate creation of type Func<String,String> |
+| GlobalDataFlow.cs:273:17:273:38 | call to method ApplyFunc | return | GlobalDataFlow.cs:273:17:273:38 | call to method ApplyFunc |
+| GlobalDataFlow.cs:361:16:361:19 | delegate call | return | GlobalDataFlow.cs:361:16:361:19 | delegate call |
+| GlobalDataFlow.cs:426:44:426:47 | delegate call | return | GlobalDataFlow.cs:426:44:426:47 | delegate call |
+| Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return | return | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return |
+| Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return | return | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return |
+| Splitting.cs:20:22:20:30 | call to method Return | return | Splitting.cs:20:22:20:30 | call to method Return |
+| Splitting.cs:21:21:21:33 | call to method Return | return | Splitting.cs:21:21:21:33 | call to method Return |
+| Splitting.cs:30:9:30:13 | [b (line 24): false] dynamic access to element | return | Splitting.cs:30:9:30:13 | [b (line 24): false] dynamic access to element |
+| Splitting.cs:30:9:30:13 | [b (line 24): true] dynamic access to element | return | Splitting.cs:30:9:30:13 | [b (line 24): true] dynamic access to element |
+| Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element | return | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element |
+| Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element | return | Splitting.cs:31:17:31:26 | [b (line 24): true] dynamic access to element |
+| Splitting.cs:32:9:32:16 | [b (line 24): false] dynamic call to method Check | return | Splitting.cs:32:9:32:16 | [b (line 24): false] dynamic call to method Check |
+| Splitting.cs:32:9:32:16 | [b (line 24): true] dynamic call to method Check | return | Splitting.cs:32:9:32:16 | [b (line 24): true] dynamic call to method Check |
+| Splitting.cs:34:13:34:20 | dynamic call to method Check | return | Splitting.cs:34:13:34:20 | dynamic call to method Check |

@@ -1,11 +1,7 @@
 edges
 | CodeInjection.cs:25:23:25:45 | access to property QueryString | CodeInjection.cs:31:64:31:67 | access to local variable code |
 | CodeInjection.cs:25:23:25:45 | access to property QueryString | CodeInjection.cs:42:36:42:39 | access to local variable code |
-nodes
-| CodeInjection.cs:25:23:25:45 | access to property QueryString |
-| CodeInjection.cs:31:64:31:67 | access to local variable code |
-| CodeInjection.cs:42:36:42:39 | access to local variable code |
-| CodeInjection.cs:58:36:58:44 | access to property Text |
+| CodeInjection.cs:58:36:58:44 | access to property Text | CodeInjection.cs:58:36:58:44 | access to property Text |
 #select
 | CodeInjection.cs:31:64:31:67 | access to local variable code | CodeInjection.cs:25:23:25:45 | access to property QueryString | CodeInjection.cs:31:64:31:67 | access to local variable code | $@ flows to here and is compiled as code. | CodeInjection.cs:25:23:25:45 | access to property QueryString | User-provided value |
 | CodeInjection.cs:42:36:42:39 | access to local variable code | CodeInjection.cs:25:23:25:45 | access to property QueryString | CodeInjection.cs:42:36:42:39 | access to local variable code | $@ flows to here and is compiled as code. | CodeInjection.cs:25:23:25:45 | access to property QueryString | User-provided value |

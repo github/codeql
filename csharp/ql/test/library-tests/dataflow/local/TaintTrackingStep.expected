@@ -1,11 +1,11 @@
-| Capture.cs:7:13:7:17 | SSA def(i) | Capture.cs:13:9:13:16 | i [implicit argument] |
-| Capture.cs:7:13:7:17 | SSA def(i) | Capture.cs:23:9:23:16 | i [implicit argument] |
-| Capture.cs:7:13:7:17 | SSA def(i) | Capture.cs:34:9:34:16 | i [implicit argument] |
+| Capture.cs:7:13:7:17 | SSA def(i) | Capture.cs:13:9:13:16 | [implicit argument] i |
+| Capture.cs:7:13:7:17 | SSA def(i) | Capture.cs:23:9:23:16 | [implicit argument] i |
+| Capture.cs:7:13:7:17 | SSA def(i) | Capture.cs:34:9:34:16 | [implicit argument] i |
 | Capture.cs:7:17:7:17 | 0 | Capture.cs:7:13:7:17 | SSA def(i) |
 | Capture.cs:9:9:12:9 | SSA capture def(i) | Capture.cs:11:17:11:17 | access to local variable i |
 | Capture.cs:17:13:20:13 | SSA capture def(i) | Capture.cs:19:21:19:21 | access to local variable i |
 | Capture.cs:27:13:30:13 | SSA capture def(i) | Capture.cs:29:21:29:21 | access to local variable i |
-| Capture.cs:31:13:31:17 | SSA def(i) | Capture.cs:32:13:32:20 | i [implicit argument] |
+| Capture.cs:31:13:31:17 | SSA def(i) | Capture.cs:32:13:32:20 | [implicit argument] i |
 | Capture.cs:31:17:31:17 | 1 | Capture.cs:31:13:31:17 | SSA def(i) |
 | Capture.cs:38:17:38:17 | 0 | Capture.cs:38:13:38:17 | SSA def(i) |
 | Capture.cs:40:9:40:17 | SSA call def(i) | Capture.cs:41:13:41:13 | access to local variable i |
@@ -14,11 +14,7 @@
 | Capture.cs:58:21:58:21 | 1 | Capture.cs:58:17:58:21 | SSA def(i) |
 | Capture.cs:61:17:61:17 | 1 | Capture.cs:61:13:61:17 | SSA def(i) |
 | Capture.cs:63:9:63:17 | SSA call def(i) | Capture.cs:64:13:64:13 | access to local variable i |
-| LocalDataFlow.cs:16:55:16:58 | null | LocalDataFlow.cs:16:42:16:44 | return get_Item |
-| LocalDataFlow.cs:18:63:18:66 | null | LocalDataFlow.cs:18:50:18:52 | return get_QueryString |
-| LocalDataFlow.cs:20:59:20:62 | null | LocalDataFlow.cs:20:46:20:48 | return get_Headers |
-| LocalDataFlow.cs:22:45:22:48 | null | LocalDataFlow.cs:22:32:22:34 | return get_RawUrl |
-| LocalDataFlow.cs:24:39:24:42 | null | LocalDataFlow.cs:24:26:24:28 | return get_Url |
+| LocalDataFlow.cs:49:30:49:30 | b | LocalDataFlow.cs:49:30:49:30 | b |
 | LocalDataFlow.cs:49:30:49:30 | b | LocalDataFlow.cs:96:21:96:21 | access to parameter b |
 | LocalDataFlow.cs:52:13:52:34 | SSA def(sink0) | LocalDataFlow.cs:53:15:53:19 | access to local variable sink0 |
 | LocalDataFlow.cs:52:21:52:34 | "taint source" | LocalDataFlow.cs:52:13:52:34 | SSA def(sink0) |
@@ -133,19 +129,19 @@
 | LocalDataFlow.cs:136:22:136:27 | access to local variable sink11 | LocalDataFlow.cs:136:22:136:55 | call to method First |
 | LocalDataFlow.cs:136:22:136:27 | access to local variable sink11 | LocalDataFlow.cs:210:22:210:27 | access to local variable sink11 |
 | LocalDataFlow.cs:136:22:136:55 | call to method First | LocalDataFlow.cs:136:13:136:55 | SSA def(sink14) |
+| LocalDataFlow.cs:136:35:136:35 | x | LocalDataFlow.cs:136:35:136:35 | x |
 | LocalDataFlow.cs:136:35:136:35 | x | LocalDataFlow.cs:136:40:136:40 | access to parameter x |
 | LocalDataFlow.cs:136:40:136:40 | access to parameter x | LocalDataFlow.cs:136:40:136:46 | access to property Value |
 | LocalDataFlow.cs:136:40:136:46 | access to property Value | LocalDataFlow.cs:136:40:136:54 | ... != ... |
-| LocalDataFlow.cs:136:40:136:54 | ... != ... | LocalDataFlow.cs:136:35:136:54 | return (...) => ... |
 | LocalDataFlow.cs:140:9:140:55 | SSA def(nonSink3) | LocalDataFlow.cs:206:33:206:40 | access to local variable nonSink3 |
 | LocalDataFlow.cs:140:20:140:27 | access to local variable nonSink1 | LocalDataFlow.cs:140:20:140:55 | call to method First |
 | LocalDataFlow.cs:140:20:140:27 | access to local variable nonSink1 | LocalDataFlow.cs:141:15:141:22 | access to local variable nonSink1 |
 | LocalDataFlow.cs:140:20:140:55 | (...) ... | LocalDataFlow.cs:140:9:140:55 | SSA def(nonSink3) |
 | LocalDataFlow.cs:140:20:140:55 | call to method First | LocalDataFlow.cs:140:20:140:55 | (...) ... |
+| LocalDataFlow.cs:140:35:140:35 | x | LocalDataFlow.cs:140:35:140:35 | x |
 | LocalDataFlow.cs:140:35:140:35 | x | LocalDataFlow.cs:140:40:140:40 | access to parameter x |
 | LocalDataFlow.cs:140:40:140:40 | access to parameter x | LocalDataFlow.cs:140:40:140:46 | access to property Value |
 | LocalDataFlow.cs:140:40:140:46 | access to property Value | LocalDataFlow.cs:140:40:140:54 | ... != ... |
-| LocalDataFlow.cs:140:40:140:54 | ... != ... | LocalDataFlow.cs:140:35:140:54 | return (...) => ... |
 | LocalDataFlow.cs:141:15:141:22 | access to local variable nonSink1 | LocalDataFlow.cs:214:20:214:27 | access to local variable nonSink1 |
 | LocalDataFlow.cs:144:13:144:39 | SSA def(sink15) | LocalDataFlow.cs:145:15:145:20 | access to local variable sink15 |
 | LocalDataFlow.cs:144:22:144:39 | call to method Parse | LocalDataFlow.cs:144:13:144:39 | SSA def(sink15) |
@@ -425,30 +421,28 @@
 | LocalDataFlow.cs:295:30:295:37 | access to local variable nonSink0 | LocalDataFlow.cs:295:9:295:17 | access to local variable nonSink10 |
 | LocalDataFlow.cs:299:13:299:52 | SSA def(sink40) | LocalDataFlow.cs:300:15:300:20 | access to local variable sink40 |
 | LocalDataFlow.cs:299:22:299:52 | object creation of type Lazy<String> | LocalDataFlow.cs:299:13:299:52 | SSA def(sink40) |
-| LocalDataFlow.cs:299:39:299:51 | [implicit call] delegate creation of type Func<String> | LocalDataFlow.cs:299:22:299:52 | object creation of type Lazy<String> |
+| LocalDataFlow.cs:299:39:299:51 | [output] delegate creation of type Func<String> | LocalDataFlow.cs:299:22:299:52 | object creation of type Lazy<String> |
 | LocalDataFlow.cs:300:15:300:20 | access to local variable sink40 | LocalDataFlow.cs:301:22:301:27 | access to local variable sink40 |
 | LocalDataFlow.cs:301:13:301:33 | SSA def(sink41) | LocalDataFlow.cs:302:15:302:20 | access to local variable sink41 |
 | LocalDataFlow.cs:301:22:301:27 | access to local variable sink40 | LocalDataFlow.cs:301:22:301:33 | access to property Value |
 | LocalDataFlow.cs:301:22:301:33 | access to property Value | LocalDataFlow.cs:301:13:301:33 | SSA def(sink41) |
 | LocalDataFlow.cs:303:13:303:59 | SSA def(sink42) | LocalDataFlow.cs:304:15:304:20 | access to local variable sink42 |
 | LocalDataFlow.cs:303:22:303:59 | object creation of type Lazy<String> | LocalDataFlow.cs:303:13:303:59 | SSA def(sink42) |
-| LocalDataFlow.cs:303:39:303:58 | [implicit call] (...) => ... | LocalDataFlow.cs:303:22:303:59 | object creation of type Lazy<String> |
-| LocalDataFlow.cs:303:45:303:58 | "taint source" | LocalDataFlow.cs:303:39:303:58 | return (...) => ... |
+| LocalDataFlow.cs:303:39:303:58 | [output] (...) => ... | LocalDataFlow.cs:303:22:303:59 | object creation of type Lazy<String> |
 | LocalDataFlow.cs:304:15:304:20 | access to local variable sink42 | LocalDataFlow.cs:305:22:305:27 | access to local variable sink42 |
 | LocalDataFlow.cs:305:13:305:33 | SSA def(sink43) | LocalDataFlow.cs:306:15:306:20 | access to local variable sink43 |
 | LocalDataFlow.cs:305:22:305:27 | access to local variable sink42 | LocalDataFlow.cs:305:22:305:33 | access to property Value |
 | LocalDataFlow.cs:305:22:305:33 | access to property Value | LocalDataFlow.cs:305:13:305:33 | SSA def(sink43) |
 | LocalDataFlow.cs:309:13:309:58 | SSA def(nonSink12) | LocalDataFlow.cs:310:15:310:23 | access to local variable nonSink12 |
 | LocalDataFlow.cs:309:25:309:58 | object creation of type Lazy<String> | LocalDataFlow.cs:309:13:309:58 | SSA def(nonSink12) |
-| LocalDataFlow.cs:309:42:309:57 | [implicit call] delegate creation of type Func<String> | LocalDataFlow.cs:309:25:309:58 | object creation of type Lazy<String> |
+| LocalDataFlow.cs:309:42:309:57 | [output] delegate creation of type Func<String> | LocalDataFlow.cs:309:25:309:58 | object creation of type Lazy<String> |
 | LocalDataFlow.cs:310:15:310:23 | access to local variable nonSink12 | LocalDataFlow.cs:311:20:311:28 | access to local variable nonSink12 |
 | LocalDataFlow.cs:311:9:311:34 | SSA def(nonSink0) | LocalDataFlow.cs:312:15:312:22 | access to local variable nonSink0 |
 | LocalDataFlow.cs:311:20:311:28 | access to local variable nonSink12 | LocalDataFlow.cs:311:20:311:34 | access to property Value |
 | LocalDataFlow.cs:311:20:311:34 | access to property Value | LocalDataFlow.cs:311:9:311:34 | SSA def(nonSink0) |
 | LocalDataFlow.cs:313:9:313:46 | SSA def(nonSink12) | LocalDataFlow.cs:314:15:314:23 | access to local variable nonSink12 |
 | LocalDataFlow.cs:313:21:313:46 | object creation of type Lazy<String> | LocalDataFlow.cs:313:9:313:46 | SSA def(nonSink12) |
-| LocalDataFlow.cs:313:38:313:45 | [implicit call] (...) => ... | LocalDataFlow.cs:313:21:313:46 | object creation of type Lazy<String> |
-| LocalDataFlow.cs:313:44:313:45 | "" | LocalDataFlow.cs:313:38:313:45 | return (...) => ... |
+| LocalDataFlow.cs:313:38:313:45 | [output] (...) => ... | LocalDataFlow.cs:313:21:313:46 | object creation of type Lazy<String> |
 | LocalDataFlow.cs:314:15:314:23 | access to local variable nonSink12 | LocalDataFlow.cs:315:20:315:28 | access to local variable nonSink12 |
 | LocalDataFlow.cs:315:9:315:34 | SSA def(nonSink0) | LocalDataFlow.cs:316:15:316:22 | access to local variable nonSink0 |
 | LocalDataFlow.cs:315:20:315:28 | access to local variable nonSink12 | LocalDataFlow.cs:315:20:315:34 | access to property Value |
@@ -564,16 +558,14 @@
 | LocalDataFlow.cs:387:20:387:34 | access to property Value | LocalDataFlow.cs:387:9:387:34 | SSA def(nonSink0) |
 | LocalDataFlow.cs:391:13:391:51 | SSA def(sink67) | LocalDataFlow.cs:392:15:392:20 | access to local variable sink67 |
 | LocalDataFlow.cs:391:22:391:51 | call to method Run | LocalDataFlow.cs:391:13:391:51 | SSA def(sink67) |
-| LocalDataFlow.cs:391:31:391:50 | [implicit call] (...) => ... | LocalDataFlow.cs:391:22:391:51 | call to method Run |
-| LocalDataFlow.cs:391:37:391:50 | "taint source" | LocalDataFlow.cs:391:31:391:50 | return (...) => ... |
+| LocalDataFlow.cs:391:31:391:50 | [output] (...) => ... | LocalDataFlow.cs:391:22:391:51 | call to method Run |
 | LocalDataFlow.cs:392:15:392:20 | access to local variable sink67 | LocalDataFlow.cs:393:28:393:33 | access to local variable sink67 |
 | LocalDataFlow.cs:393:13:393:33 | SSA def(sink68) | LocalDataFlow.cs:394:15:394:20 | access to local variable sink68 |
 | LocalDataFlow.cs:393:22:393:33 | await ... | LocalDataFlow.cs:393:13:393:33 | SSA def(sink68) |
 | LocalDataFlow.cs:393:28:393:33 | access to local variable sink67 | LocalDataFlow.cs:393:22:393:33 | await ... |
 | LocalDataFlow.cs:397:13:397:42 | SSA def(nonSink21) | LocalDataFlow.cs:398:15:398:23 | access to local variable nonSink21 |
 | LocalDataFlow.cs:397:25:397:42 | call to method Run | LocalDataFlow.cs:397:13:397:42 | SSA def(nonSink21) |
-| LocalDataFlow.cs:397:34:397:41 | [implicit call] (...) => ... | LocalDataFlow.cs:397:25:397:42 | call to method Run |
-| LocalDataFlow.cs:397:40:397:41 | "" | LocalDataFlow.cs:397:34:397:41 | return (...) => ... |
+| LocalDataFlow.cs:397:34:397:41 | [output] (...) => ... | LocalDataFlow.cs:397:25:397:42 | call to method Run |
 | LocalDataFlow.cs:398:15:398:23 | access to local variable nonSink21 | LocalDataFlow.cs:399:26:399:34 | access to local variable nonSink21 |
 | LocalDataFlow.cs:399:9:399:34 | SSA def(nonSink0) | LocalDataFlow.cs:400:15:400:22 | access to local variable nonSink0 |
 | LocalDataFlow.cs:399:20:399:34 | await ... | LocalDataFlow.cs:399:9:399:34 | SSA def(nonSink0) |
@@ -606,14 +598,16 @@
 | LocalDataFlow.cs:429:18:429:30 | SSA def(sink72) | LocalDataFlow.cs:430:23:430:28 | access to local variable sink72 |
 | LocalDataFlow.cs:435:17:435:24 | access to local variable nonSink0 | LocalDataFlow.cs:437:18:437:33 | SSA def(nonSink17) |
 | LocalDataFlow.cs:437:18:437:33 | SSA def(nonSink17) | LocalDataFlow.cs:438:23:438:31 | access to local variable nonSink17 |
-| LocalDataFlow.cs:447:37:447:38 | "" | LocalDataFlow.cs:447:12:447:24 | return TaintedMethod |
-| LocalDataFlow.cs:449:40:449:41 | "" | LocalDataFlow.cs:449:12:449:27 | return NonTaintedMethod |
-| LocalDataFlow.cs:458:41:458:45 | access to field anInt | LocalDataFlow.cs:458:28:458:30 | return get_AnInt |
+| LocalDataFlow.cs:458:50:458:52 | value | LocalDataFlow.cs:458:50:458:52 | value |
 | LocalDataFlow.cs:458:50:458:52 | value | LocalDataFlow.cs:458:64:458:68 | access to parameter value |
+| LocalDataFlow.cs:464:41:464:47 | tainted | LocalDataFlow.cs:464:41:464:47 | tainted |
 | LocalDataFlow.cs:464:41:464:47 | tainted | LocalDataFlow.cs:466:15:466:21 | access to parameter tainted |
+| LocalDataFlow.cs:469:44:469:53 | nonTainted | LocalDataFlow.cs:469:44:469:53 | nonTainted |
 | LocalDataFlow.cs:469:44:469:53 | nonTainted | LocalDataFlow.cs:471:15:471:24 | access to parameter nonTainted |
 | SSA.cs:5:17:5:17 | SSA entry def(this.S) | SSA.cs:67:9:67:14 | access to field S |
+| SSA.cs:5:26:5:32 | tainted | SSA.cs:5:26:5:32 | tainted |
 | SSA.cs:5:26:5:32 | tainted | SSA.cs:8:24:8:30 | access to parameter tainted |
+| SSA.cs:5:42:5:51 | nonTainted | SSA.cs:5:42:5:51 | nonTainted |
 | SSA.cs:5:42:5:51 | nonTainted | SSA.cs:12:24:12:33 | access to parameter nonTainted |
 | SSA.cs:8:13:8:30 | SSA def(ssaSink0) | SSA.cs:9:15:9:22 | access to local variable ssaSink0 |
 | SSA.cs:8:24:8:30 | access to parameter tainted | SSA.cs:8:13:8:30 | SSA def(ssaSink0) |
@@ -790,16 +784,16 @@
 | SSA.cs:136:23:136:28 | SSA def(this.S) | SSA.cs:137:15:137:20 | access to field S |
 | SSA.cs:136:23:136:28 | SSA qualifier def(this.S.SsaFieldNonSink0) | SSA.cs:137:15:137:37 | access to field SsaFieldNonSink0 |
 | SSA.cs:136:23:136:28 | access to field S | SSA.cs:136:23:136:28 | SSA def(this.S) |
+| SSA.cs:144:34:144:34 | t | SSA.cs:144:34:144:34 | t |
 | SSA.cs:144:34:144:34 | t | SSA.cs:146:13:146:13 | access to parameter t |
 | SSA.cs:146:13:146:13 | (...) ... | SSA.cs:146:13:146:21 | ... == ... |
 | SSA.cs:146:13:146:13 | access to parameter t | SSA.cs:146:13:146:13 | (...) ... |
 | SSA.cs:146:13:146:13 | access to parameter t | SSA.cs:149:17:149:17 | access to parameter t |
 | SSA.cs:147:13:147:26 | SSA def(t) | SSA.cs:144:17:144:26 | SSA phi(t) |
-| SSA.cs:147:17:147:26 | default(...) | SSA.cs:144:34:144:34 | return (out/ref) Certain |
 | SSA.cs:147:17:147:26 | default(...) | SSA.cs:147:13:147:26 | SSA def(t) |
 | SSA.cs:149:13:149:17 | SSA def(t) | SSA.cs:144:17:144:26 | SSA phi(t) |
-| SSA.cs:149:17:149:17 | access to parameter t | SSA.cs:144:34:144:34 | return (out/ref) Certain |
 | SSA.cs:149:17:149:17 | access to parameter t | SSA.cs:149:13:149:17 | SSA def(t) |
+| SSA.cs:152:36:152:36 | t | SSA.cs:152:36:152:36 | t |
 | SSA.cs:152:36:152:36 | t | SSA.cs:154:13:154:13 | access to parameter t |
 | SSA.cs:154:13:154:13 | (...) ... | SSA.cs:154:13:154:21 | ... == ... |
 | SSA.cs:154:13:154:13 | access to parameter t | SSA.cs:152:17:152:28 | SSA phi(t) |
@@ -807,7 +801,9 @@
 | SSA.cs:154:13:154:13 | access to parameter t | SSA.cs:155:25:155:25 | access to parameter t |
 | SSA.cs:155:25:155:25 | SSA def(t) | SSA.cs:152:17:152:28 | SSA phi(t) |
 | SSA.cs:155:25:155:25 | access to parameter t | SSA.cs:152:17:152:28 | SSA phi(t) |
+| SSA.cs:168:22:168:28 | tainted | SSA.cs:168:22:168:28 | tainted |
 | SSA.cs:168:22:168:28 | tainted | SSA.cs:173:24:173:30 | access to parameter tainted |
+| SSA.cs:168:35:168:35 | i | SSA.cs:168:35:168:35 | i |
 | SSA.cs:168:35:168:35 | i | SSA.cs:171:13:171:13 | access to parameter i |
 | SSA.cs:170:16:170:28 | SSA def(ssaSink5) | SSA.cs:180:9:180:24 | SSA phi(ssaSink5) |
 | SSA.cs:170:27:170:28 | "" | SSA.cs:170:16:170:28 | SSA def(ssaSink5) |
@@ -822,7 +818,9 @@
 | SSA.cs:177:21:177:28 | access to local variable ssaSink5 | SSA.cs:176:21:176:28 | access to local variable ssaSink5 |
 | SSA.cs:177:21:177:28 | access to local variable ssaSink5 | SSA.cs:180:9:180:24 | SSA phi(ssaSink5) |
 | SSA.cs:180:9:180:24 | SSA phi(ssaSink5) | SSA.cs:180:15:180:22 | access to local variable ssaSink5 |
+| Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | b |
 | Splitting.cs:3:18:3:18 | b | Splitting.cs:6:13:6:13 | access to parameter b |
+| Splitting.cs:3:28:3:34 | tainted | Splitting.cs:3:28:3:34 | tainted |
 | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:5:17:5:23 | access to parameter tainted |
 | Splitting.cs:5:13:5:23 | SSA def(x) | Splitting.cs:8:19:8:19 | [b (line 3): true] access to local variable x |
 | Splitting.cs:5:13:5:23 | SSA def(x) | Splitting.cs:12:15:12:15 | [b (line 3): false] access to local variable x |
@@ -833,6 +831,7 @@
 | Splitting.cs:9:17:9:17 | [b (line 3): true] access to local variable x | Splitting.cs:9:17:9:25 | [b (line 3): true] ... == ... |
 | Splitting.cs:9:17:9:17 | [b (line 3): true] access to local variable x | Splitting.cs:12:15:12:15 | [b (line 3): true] access to local variable x |
 | Splitting.cs:12:15:12:15 | [b (line 3): true] access to local variable x | Splitting.cs:14:19:14:19 | access to local variable x |
+| Splitting.cs:17:18:17:18 | b | Splitting.cs:17:18:17:18 | b |
 | Splitting.cs:17:18:17:18 | b | Splitting.cs:20:13:20:13 | access to parameter b |
 | Splitting.cs:19:13:19:18 | SSA def(x) | Splitting.cs:22:19:22:19 | [b (line 17): true] access to local variable x |
 | Splitting.cs:19:13:19:18 | SSA def(x) | Splitting.cs:25:15:25:15 | [b (line 17): false] access to local variable x |
@@ -843,6 +842,7 @@
 | Splitting.cs:23:17:23:30 | [b (line 17): true] "taint source" | Splitting.cs:23:13:23:30 | [b (line 17): true] SSA def(x) |
 | Splitting.cs:25:15:25:15 | [b (line 17): false] access to local variable x | Splitting.cs:29:19:29:19 | access to local variable x |
 | Splitting.cs:25:15:25:15 | [b (line 17): true] access to local variable x | Splitting.cs:27:19:27:19 | access to local variable x |
+| Splitting.cs:32:18:32:18 | b | Splitting.cs:32:18:32:18 | b |
 | Splitting.cs:32:18:32:18 | b | Splitting.cs:35:13:35:13 | access to parameter b |
 | Splitting.cs:35:13:35:13 | access to parameter b | Splitting.cs:39:15:39:15 | [b (line 32): false] access to parameter b |
 | Splitting.cs:35:13:35:13 | access to parameter b | Splitting.cs:39:15:39:15 | [b (line 32): true] access to parameter b |
@@ -863,6 +863,7 @@
 | Splitting.cs:40:23:40:23 | [b (line 32): true] access to local variable x | Splitting.cs:40:15:40:23 | [b (line 32): true] (...) ... |
 | Splitting.cs:41:19:41:21 | [b (line 32): false] "d" | Splitting.cs:41:15:41:21 | [b (line 32): false] ... = ... |
 | Splitting.cs:41:19:41:21 | [b (line 32): true] "d" | Splitting.cs:41:15:41:21 | [b (line 32): true] ... = ... |
+| Splitting.cs:46:18:46:18 | b | Splitting.cs:46:18:46:18 | b |
 | Splitting.cs:46:18:46:18 | b | Splitting.cs:49:13:49:13 | access to parameter b |
 | Splitting.cs:48:13:48:18 | SSA def(x) | Splitting.cs:53:13:53:13 | [b (line 46): false] access to local variable x |
 | Splitting.cs:48:17:48:18 | "" | Splitting.cs:48:13:48:18 | SSA def(x) |

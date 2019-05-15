@@ -4,6 +4,7 @@
 
 import Expr
 import semmle.code.csharp.Callable
+private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 /**
  * Either an object initializer (`ObjectInitializer`) or a collection
@@ -378,7 +379,13 @@ class ArrayCreation extends Expr, @array_creation_expr {
 class AnonymousFunctionExpr extends Expr, Callable, @anonymous_function_expr {
   override string getName() { result = "<anonymous>" }
 
-  override Type getReturnType() { result = getType().(DelegateType).getReturnType() }
+  override Type getReturnType() {
+    result = this
+          .getType()
+          .(SystemLinqExpressions::DelegateExtType)
+          .getDelegateType()
+          .getReturnType()
+  }
 
   override AnonymousFunctionExpr getSourceDeclaration() { result = this }
 

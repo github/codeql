@@ -1,19 +1,16 @@
 edges
+| HardcodedCredentials.cs:17:25:17:36 | "myPa55word" | HardcodedCredentials.cs:17:25:17:36 | "myPa55word" |
+| HardcodedCredentials.cs:33:19:33:28 | "username" | HardcodedCredentials.cs:33:19:33:28 | "username" |
+| HardcodedCredentials.cs:47:39:47:53 | "myNewPa55word" | HardcodedCredentials.cs:47:39:47:53 | "myNewPa55word" |
 | HardcodedCredentials.cs:49:30:49:60 | array creation of type Byte[] | HardcodedCredentials.cs:52:13:52:23 | access to local variable rawCertData |
-nodes
-| HardcodedCredentials.cs:17:25:17:36 | "myPa55word" |
-| HardcodedCredentials.cs:33:19:33:28 | "username" |
-| HardcodedCredentials.cs:47:39:47:53 | "myNewPa55word" |
-| HardcodedCredentials.cs:49:30:49:60 | array creation of type Byte[] |
-| HardcodedCredentials.cs:52:13:52:23 | access to local variable rawCertData |
-| HardcodedCredentials.cs:53:13:53:24 | "myPa55word" |
-| HardcodedCredentials.cs:56:48:56:63 | "Password=12345" |
-| HardcodedCredentials.cs:58:49:58:63 | "User Id=12345" |
-| HardcodedCredentials.cs:76:31:76:42 | "myusername" |
-| HardcodedCredentials.cs:76:45:76:56 | "mypassword" |
-| TestHardcodedCredentials.cs:21:31:21:42 | "myusername" |
-| TestHardcodedCredentials.cs:21:45:21:56 | "mypassword" |
-| TestHardcodedCredentials.cs:26:19:26:28 | "username" |
+| HardcodedCredentials.cs:53:13:53:24 | "myPa55word" | HardcodedCredentials.cs:53:13:53:24 | "myPa55word" |
+| HardcodedCredentials.cs:56:48:56:63 | "Password=12345" | HardcodedCredentials.cs:56:48:56:63 | "Password=12345" |
+| HardcodedCredentials.cs:58:49:58:63 | "User Id=12345" | HardcodedCredentials.cs:58:49:58:63 | "User Id=12345" |
+| HardcodedCredentials.cs:76:31:76:42 | "myusername" | HardcodedCredentials.cs:76:31:76:42 | "myusername" |
+| HardcodedCredentials.cs:76:45:76:56 | "mypassword" | HardcodedCredentials.cs:76:45:76:56 | "mypassword" |
+| TestHardcodedCredentials.cs:21:31:21:42 | "myusername" | TestHardcodedCredentials.cs:21:31:21:42 | "myusername" |
+| TestHardcodedCredentials.cs:21:45:21:56 | "mypassword" | TestHardcodedCredentials.cs:21:45:21:56 | "mypassword" |
+| TestHardcodedCredentials.cs:26:19:26:28 | "username" | TestHardcodedCredentials.cs:26:19:26:28 | "username" |
 #select
 | HardcodedCredentials.cs:56:48:56:63 | "Password=12345" | HardcodedCredentials.cs:56:48:56:63 | "Password=12345" | HardcodedCredentials.cs:56:48:56:63 | "Password=12345" | 'ConnectionString' property includes hard-coded credentials set in $@. | HardcodedCredentials.cs:56:30:56:64 | object creation of type SqlConnection | object creation of type SqlConnection |
 | HardcodedCredentials.cs:58:49:58:63 | "User Id=12345" | HardcodedCredentials.cs:58:49:58:63 | "User Id=12345" | HardcodedCredentials.cs:58:49:58:63 | "User Id=12345" | 'ConnectionString' property includes hard-coded credentials set in $@. | HardcodedCredentials.cs:58:31:58:64 | object creation of type SqlConnection | object creation of type SqlConnection |

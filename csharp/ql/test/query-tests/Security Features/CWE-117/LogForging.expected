@@ -1,10 +1,6 @@
 edges
 | LogForging.cs:19:27:19:49 | access to property QueryString | LogForging.cs:22:21:22:43 | ... + ... |
 | LogForging.cs:19:27:19:49 | access to property QueryString | LogForging.cs:28:50:28:72 | ... + ... |
-nodes
-| LogForging.cs:19:27:19:49 | access to property QueryString |
-| LogForging.cs:22:21:22:43 | ... + ... |
-| LogForging.cs:28:50:28:72 | ... + ... |
 #select
 | LogForging.cs:22:21:22:43 | ... + ... | LogForging.cs:19:27:19:49 | access to property QueryString | LogForging.cs:22:21:22:43 | ... + ... | $@ flows to log entry. | LogForging.cs:19:27:19:49 | access to property QueryString | User-provided value |
 | LogForging.cs:28:50:28:72 | ... + ... | LogForging.cs:19:27:19:49 | access to property QueryString | LogForging.cs:28:50:28:72 | ... + ... | $@ flows to log entry. | LogForging.cs:19:27:19:49 | access to property QueryString | User-provided value |

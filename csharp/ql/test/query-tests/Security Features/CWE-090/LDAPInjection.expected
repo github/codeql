@@ -5,14 +5,6 @@ edges
 | LDAPInjection.cs:13:27:13:49 | access to property QueryString | LDAPInjection.cs:26:53:26:77 | ... + ... |
 | LDAPInjection.cs:13:27:13:49 | access to property QueryString | LDAPInjection.cs:29:48:29:70 | ... + ... |
 | LDAPInjection.cs:13:27:13:49 | access to property QueryString | LDAPInjection.cs:31:20:31:42 | ... + ... |
-nodes
-| LDAPInjection.cs:13:27:13:49 | access to property QueryString |
-| LDAPInjection.cs:16:54:16:78 | ... + ... |
-| LDAPInjection.cs:18:21:18:45 | ... + ... |
-| LDAPInjection.cs:25:21:25:45 | ... + ... |
-| LDAPInjection.cs:26:53:26:77 | ... + ... |
-| LDAPInjection.cs:29:48:29:70 | ... + ... |
-| LDAPInjection.cs:31:20:31:42 | ... + ... |
 #select
 | LDAPInjection.cs:16:54:16:78 | ... + ... | LDAPInjection.cs:13:27:13:49 | access to property QueryString | LDAPInjection.cs:16:54:16:78 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |
 | LDAPInjection.cs:18:21:18:45 | ... + ... | LDAPInjection.cs:13:27:13:49 | access to property QueryString | LDAPInjection.cs:18:21:18:45 | ... + ... | $@ flows to here and is used in an LDAP query. | LDAPInjection.cs:13:27:13:49 | access to property QueryString | User-provided value |

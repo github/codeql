@@ -1021,7 +1021,7 @@ module Ssa {
     }
 
     private module SimpleDelegateAnalysis {
-      private import semmle.code.csharp.dataflow.DelegateDataFlow
+      private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
       private import semmle.code.csharp.dataflow.internal.Steps
       private import semmle.code.csharp.frameworks.system.linq.Expressions
 
@@ -1465,18 +1465,23 @@ module Ssa {
     /**
      * Holds if `call` may change the value of captured variable `v`. The actual
      * update occurs in `writer`. That is, `writer` can be reached from `call`
-     * using zero or more additional calls. One of the intermediate callables
-     * may be the callable that introduces `v`, in which case `call` is not an
-     * actual update.
+     * using zero or more additional calls (as indicated by `additionalCalls`).
+     * One of the intermediate callables may be the callable that introduces `v`,
+     * in which case `call` is not an actual update.
      */
     pragma[noopt]
     private predicate updatesCapturedVariableWriter(
-      Call call, CapturedWrittenLocalScopeSourceVariable v, PrunedCallable writer
+      Call call, CapturedWrittenLocalScopeSourceVariable v, PrunedCallable writer,
+      boolean additionalCalls
     ) {
       exists(PrunedCallable c, CapturedWrittenLocalScopeVariable captured |
         updatesCapturedVariablePrefix(call, v, c, captured) and
         relevantDefinitionProj(writer, captured) and
-        (c = writer or callEdgePrunedPlus(c, writer))
+        (
+          c = writer and additionalCalls = false
+          or
+          callEdgePrunedPlus(c, writer) and additionalCalls = true
+        )
       )
     }
 
@@ -1485,16 +1490,17 @@ module Ssa {
      * update occurs in `def`.
      */
     private predicate updatesCapturedVariablePossiblyLive(
-      BasicBlock bb, int i, Call call, LocalScopeSourceVariable v, AssignableDefinition def
+      BasicBlock bb, int i, Call call, LocalScopeSourceVariable v, AssignableDefinition def,
+      boolean additionalCalls
     ) {
       updateCandidate(bb, i, v, call) and
       exists(Callable writer | relevantDefinition(writer, v.getAssignable(), def) |
-        updatesCapturedVariableWriter(call, v, writer)
+        updatesCapturedVariableWriter(call, v, writer, additionalCalls)
       )
     }
 
     private int firstRefAfter(BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable v) {
-      updatesCapturedVariablePossiblyLive(bb, i, _, v, _) and
+      updatesCapturedVariablePossiblyLive(bb, i, _, v, _, _) and
       result = min(int k | k > i and ref(bb, k, v, _))
     }
 
@@ -1504,10 +1510,12 @@ module Ssa {
      */
     cached
     predicate updatesCapturedVariable(
-      Call call, LocalScopeSourceVariable v, AssignableDefinition def
+      Call call, LocalScopeSourceVariable v, AssignableDefinition def, boolean additionalCalls
     ) {
       forceCachingInSameStage() and
-      exists(BasicBlock bb, int i | updatesCapturedVariablePossiblyLive(bb, i, call, v, def) |
+      exists(BasicBlock bb, int i |
+        updatesCapturedVariablePossiblyLive(bb, i, call, v, def, additionalCalls)
+      |
         not exists(firstRefAfter(bb, i, v)) and
         liveAtExit(bb, v, _)
         or
@@ -1582,9 +1590,11 @@ module Ssa {
      * block `bb` may be read by a callable reachable from the call `c`.
      */
     private predicate implicitReadCandidate(
-      BasicBlock bb, int i, Call c, CapturedReadLocalScopeSourceVariable v
+      BasicBlock bb, int i, ControlFlow::Nodes::ElementNode c,
+      CapturedReadLocalScopeSourceVariable v
     ) {
-      exists(BasicBlock bb0, int i0 | bb0.getNode(i0) = c.getAControlFlowNode() |
+      c.getElement() instanceof Call and
+      exists(BasicBlock bb0, int i0 | bb0.getNode(i0) = c |
         // `c` is in basic block `bb`
         capturedVariableWrite(bb0, i, v) and
         i < i0 and
@@ -1624,7 +1634,7 @@ module Ssa {
      */
     private predicate pruneFromLeft(Callable c) {
       exists(Call call, CapturedReadLocalScopeSourceVariable v |
-        implicitReadCandidate(_, _, call, v) and
+        implicitReadCandidate(_, _, call.getAControlFlowNode(), v) and
         c = getARuntimeTarget(call)
       )
       or
@@ -1659,30 +1669,35 @@ module Ssa {
 
     pragma[noinline]
     private predicate readsCapturedVariablePrefix(
-      Call call, CapturedReadLocalScopeSourceVariable v, PrunedCallable c,
+      ControlFlow::Node call, CapturedReadLocalScopeSourceVariable v, PrunedCallable c,
       CapturedReadLocalScopeVariable captured
     ) {
       implicitReadCandidate(_, _, call, v) and
       captured = v.getAssignable() and
       capturerReads(_, captured) and
-      c = getARuntimeTarget(call)
+      c = getARuntimeTarget(call.getElement())
     }
 
     /**
      * Holds if `call` may read the value of captured variable `v`. The actual
      * read occurs in `reader`. That is, `reader` can be reached from `call`
-     * using zero or more additional calls. One of the intermediate callables
-     * may be a callable that writes to `v`, in which case `call` is not an
-     * actual read.
+     * using zero or more additional calls (as indicated by `additionalCalls`).
+     * One of the intermediate callables may be a callable that writes to `v`,
+     * in which case `call` is not an actual read.
      */
     pragma[noopt]
     private predicate readsCapturedVariable(
-      Call call, CapturedReadLocalScopeSourceVariable v, Callable reader
+      ControlFlow::Nodes::ElementNode call, CapturedReadLocalScopeSourceVariable v, Callable reader,
+      boolean additionalCalls
     ) {
       exists(PrunedCallable c, CapturedReadLocalScopeVariable captured |
         readsCapturedVariablePrefix(call, v, c, captured) and
         capturerReads(reader, captured) and
-        (c = reader or callEdgePrunedPlus(c, reader))
+        (
+          c = reader and additionalCalls = false
+          or
+          callEdgePrunedPlus(c, reader) and additionalCalls = true
+        )
       )
     }
 
@@ -1691,8 +1706,8 @@ module Ssa {
      * write at index `i` inside basic block `bb`.
      *
      * The write is live because of the implicit call definition `def`, which reaches
-     * the write using zero or more additional calls. That is, data can flow from the
-     * write at index `i` out to the call `def`.
+     * the write using zero or more additional calls (as indicated by `additionalCalls`).
+     * That is, data can flow from the write at index `i` out to the call `def`.
      *
      * Example:
      *
@@ -1711,11 +1726,16 @@ module Ssa {
      * definition on line 5.
      */
     predicate liveAfterWriteCapturedOut(
-      BasicBlock bb, int i, LocalScopeSourceVariable v, ImplicitCallDefinition def
+      BasicBlock bb, int i, LocalScopeSourceVariable v, ImplicitCallDefinition def,
+      boolean additionalCalls
     ) {
-      exists(LocalScopeVariable lsv | def.getSourceVariable().getAssignable() = lsv |
+      exists(LocalScopeVariable lsv, AssignableDefinition adef |
+        def.getSourceVariable().getAssignable() = lsv
+      |
         lsv = v.getAssignable() and
-        bb.getNode(i) = def.getAPossibleDefinition().getAControlFlowNode()
+        adef = def.getAPossibleDefinition() and
+        bb.getNode(i) = adef.getAControlFlowNode() and
+        updatesCapturedVariable(def.getCall(), _, adef, additionalCalls)
       )
     }
 
@@ -1724,8 +1744,9 @@ module Ssa {
      * write at index `i` inside basic block `bb`.
      *
      * The write is live because of the implicit entry definition `def`, which can be
-     * reached using one or more calls, starting from call `c`. That is, data can flow from
-     * the write at index `i` into the the callable containing `def`.
+     * reached using one or more calls (as indicated by `additionalCalls`), starting
+     * from call `c`. That is, data can flow from the write at index `i` into the the
+     * callable containing `def`.
      *
      * Example:
      *
@@ -1744,11 +1765,12 @@ module Ssa {
      * reaches the entry definition for `i` in `M2` on line 4.
      */
     predicate liveAfterWriteCapturedIn(
-      BasicBlock bb, int i, LocalScopeSourceVariable v, ImplicitEntryDefinition def, Call c
+      BasicBlock bb, int i, LocalScopeSourceVariable v, ImplicitEntryDefinition def,
+      ControlFlow::Nodes::ElementNode c, boolean additionalCalls
     ) {
       exists(Callable reader |
         implicitReadCandidate(bb, i, c, v) and
-        readsCapturedVariable(c, v, reader) and
+        readsCapturedVariable(c, v, reader, additionalCalls) and
         def.getCallable() = reader and
         def.getSourceVariable().getAssignable() = v.getAssignable()
       )
@@ -1759,8 +1781,8 @@ module Ssa {
      * write at index `i` inside basic block `bb`.
      */
     predicate liveAfterWriteCaptured(BasicBlock bb, int i, LocalScopeSourceVariable v) {
-      liveAfterWriteCapturedOut(bb, i, v, _) or
-      liveAfterWriteCapturedIn(bb, i, v, _, _)
+      liveAfterWriteCapturedOut(bb, i, v, _, _) or
+      liveAfterWriteCapturedIn(bb, i, v, _, _, _)
     }
   }
   private import CapturedVariableLivenessImpl
@@ -1837,7 +1859,7 @@ module Ssa {
           updatesNamedFieldOrProp(c, v, _)
           or
           // Liveness of `v` after `c` is guaranteed by `updatesCapturedVariable`
-          updatesCapturedVariable(c, v, _)
+          updatesCapturedVariable(c, v, _, _)
         )
       } or
       TSsaImplicitQualifierDef(TrackedVar v, Definition qdef) {
@@ -1892,10 +1914,11 @@ module Ssa {
 
     cached
     predicate isCapturedVariableDefinitionFlowIn(
-      ExplicitDefinition def, ImplicitEntryDefinition edef, Call c
+      ExplicitDefinition def, ImplicitEntryDefinition edef, ControlFlow::Nodes::ElementNode c,
+      boolean additionalCalls
     ) {
       exists(BasicBlock bb, int i, LocalScopeSourceVariable v | definesAt(def, bb, i, v) |
-        liveAfterWriteCapturedIn(bb, i, v, edef, c)
+        liveAfterWriteCapturedIn(bb, i, v, edef, c, additionalCalls)
       )
     }
 
@@ -1912,10 +1935,10 @@ module Ssa {
 
     cached
     predicate isCapturedVariableDefinitionFlowOut(
-      ExplicitDefinition def, ImplicitCallDefinition cdef
+      ExplicitDefinition def, ImplicitCallDefinition cdef, boolean additionalCalls
     ) {
       exists(BasicBlock bb, int i, LocalScopeSourceVariable v | definesAt(def, bb, i, v) |
-        liveAfterWriteCapturedOut(bb, i, v, cdef) and
+        liveAfterWriteCapturedOut(bb, i, v, cdef, additionalCalls) and
         isLiveCapturedVariableDefinition(def)
       )
     }
@@ -2211,13 +2234,23 @@ module Ssa {
     BasicBlock getBasicBlock() { this.definesAt(result, _) }
 
     /**
+     * Gets the control flow node of this SSA definition, if any. Phi nodes are examples
+     * of SSA definitions without a control flow node, as they are modelled at index
+     * `-1` in the relevant basic block.
+     */
+    ControlFlow::Node getControlFlowNode() {
+      exists(BasicBlock bb, int i | this.definesAt(bb, i) | result = bb.getNode(i))
+    }
+
+    /**
      * Gets the syntax element associated with this SSA definition, if any.
      * This is either an expression, for example `x = 0`, a parameter, or a
      * callable. Pseudo nodes have no associated syntax element.
      */
-    Element getElement() {
-      exists(BasicBlock bb, int i | this.definesAt(bb, i) | result = bb.getNode(i).getElement())
-    }
+    Element getElement() { result = this.getControlFlowNode().getElement() }
+
+    /** Gets the callable to which this SSA definition belongs. */
+    Callable getEnclosingCallable() { result = this.getSourceVariable().getEnclosingCallable() }
 
     /**
      * Holds if this SSA definition assigns to `out`/`ref` parameter `p`, and the
@@ -2258,8 +2291,8 @@ module Ssa {
 
     /**
      * Holds if this definition updates a captured local scope variable, and the updated
-     * value may be read from the implicit entry definition `def` using one or more calls,
-     * starting from call `c`.
+     * value may be read from the implicit entry definition `def` using one or more calls
+     * (as indicated by `additionalCalls`), starting from call `c`.
      *
      * Example:
      *
@@ -2277,13 +2310,16 @@ module Ssa {
      * If this definition is the update of `i` on line 5, then the value may be read inside
      * `M2` via the the call on line 6.
      */
-    predicate isCapturedVariableDefinitionFlowIn(ImplicitEntryDefinition def, Call c) {
-      isCapturedVariableDefinitionFlowIn(this, def, c)
+    predicate isCapturedVariableDefinitionFlowIn(
+      ImplicitEntryDefinition def, ControlFlow::Nodes::ElementNode c, boolean additionalCalls
+    ) {
+      isCapturedVariableDefinitionFlowIn(this, def, c, additionalCalls)
     }
 
     /**
      * Holds if this definition updates a captured local scope variable, and the updated
-     * value may be read from the implicit call definition `cdef` using one or more calls.
+     * value may be read from the implicit call definition `cdef` using one or more calls
+     * (as indicated by `additionalCalls`).
      *
      * Example:
      *
@@ -2301,8 +2337,10 @@ module Ssa {
      * If this definition is the update of `i` on line 4, then the value may be read outside
      * of `M2` via the the call on line 5.
      */
-    predicate isCapturedVariableDefinitionFlowOut(ImplicitCallDefinition cdef) {
-      isCapturedVariableDefinitionFlowOut(this, cdef)
+    predicate isCapturedVariableDefinitionFlowOut(
+      ImplicitCallDefinition cdef, boolean additionalCalls
+    ) {
+      isCapturedVariableDefinitionFlowOut(this, cdef, additionalCalls)
     }
 
     override Element getElement() { result = ad.getElement() }
@@ -2377,7 +2415,7 @@ module Ssa {
         result.getTarget() = this.getSourceVariable().getAssignable()
       )
       or
-      updatesCapturedVariable(getCall(), _, result) and
+      updatesCapturedVariable(getCall(), _, result, _) and
       result.getTarget() = this.getSourceVariable().getAssignable()
     }
 

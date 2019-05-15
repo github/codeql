@@ -13,27 +13,6 @@ edges
 | UrlRedirectCore.cs:47:51:47:55 | value | UrlRedirectCore.cs:50:28:50:32 | access to parameter value |
 | UrlRedirectCore.cs:47:51:47:55 | value | UrlRedirectCore.cs:55:32:55:45 | object creation of type Uri |
 | UrlRedirectCore.cs:47:51:47:55 | value | UrlRedirectCore.cs:58:31:58:35 | access to parameter value |
-nodes
-| UrlRedirect.cs:14:31:14:53 | access to property QueryString |
-| UrlRedirect.cs:14:31:14:61 | access to indexer |
-| UrlRedirect.cs:24:22:24:44 | access to property QueryString |
-| UrlRedirect.cs:39:44:39:66 | access to property QueryString |
-| UrlRedirect.cs:39:44:39:74 | access to indexer |
-| UrlRedirect.cs:40:47:40:69 | access to property QueryString |
-| UrlRedirect.cs:40:47:40:77 | access to indexer |
-| UrlRedirect.cs:49:29:49:31 | access to local variable url |
-| UrlRedirectCore.cs:15:44:15:48 | value |
-| UrlRedirectCore.cs:18:22:18:26 | access to parameter value |
-| UrlRedirectCore.cs:21:44:21:48 | call to operator implicit conversion |
-| UrlRedirectCore.cs:27:46:27:50 | call to operator implicit conversion |
-| UrlRedirectCore.cs:33:66:33:70 | access to parameter value |
-| UrlRedirectCore.cs:36:49:36:53 | call to operator implicit conversion |
-| UrlRedirectCore.cs:39:69:39:73 | access to parameter value |
-| UrlRedirectCore.cs:42:39:42:53 | ... + ... |
-| UrlRedirectCore.cs:47:51:47:55 | value |
-| UrlRedirectCore.cs:50:28:50:32 | access to parameter value |
-| UrlRedirectCore.cs:55:32:55:45 | object creation of type Uri |
-| UrlRedirectCore.cs:58:31:58:35 | access to parameter value |
 #select
 | UrlRedirect.cs:14:31:14:61 | access to indexer | UrlRedirect.cs:14:31:14:53 | access to property QueryString | UrlRedirect.cs:14:31:14:61 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:14:31:14:53 | access to property QueryString | user-provided value |
 | UrlRedirect.cs:39:44:39:74 | access to indexer | UrlRedirect.cs:39:44:39:66 | access to property QueryString | UrlRedirect.cs:39:44:39:74 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:39:44:39:66 | access to property QueryString | user-provided value |

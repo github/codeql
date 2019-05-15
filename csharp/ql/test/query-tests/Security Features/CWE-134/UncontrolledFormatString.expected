@@ -1,16 +1,10 @@
 edges
 | UncontrolledFormatString.cs:11:23:11:45 | access to property QueryString | UncontrolledFormatString.cs:14:23:14:26 | access to local variable path |
 | UncontrolledFormatString.cs:11:23:11:45 | access to property QueryString | UncontrolledFormatString.cs:17:46:17:49 | access to local variable path |
+| UncontrolledFormatString.cs:20:23:20:38 | "Do not do this" | UncontrolledFormatString.cs:20:23:20:38 | "Do not do this" |
+| UncontrolledFormatString.cs:23:46:23:61 | "Do not do this" | UncontrolledFormatString.cs:23:46:23:61 | "Do not do this" |
+| UncontrolledFormatString.cs:31:23:31:31 | access to property Text | UncontrolledFormatString.cs:31:23:31:31 | access to property Text |
 | UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString | UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format |
-nodes
-| UncontrolledFormatString.cs:11:23:11:45 | access to property QueryString |
-| UncontrolledFormatString.cs:14:23:14:26 | access to local variable path |
-| UncontrolledFormatString.cs:17:46:17:49 | access to local variable path |
-| UncontrolledFormatString.cs:20:23:20:38 | "Do not do this" |
-| UncontrolledFormatString.cs:23:46:23:61 | "Do not do this" |
-| UncontrolledFormatString.cs:31:23:31:31 | access to property Text |
-| UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString |
-| UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format |
 #select
 | UncontrolledFormatString.cs:14:23:14:26 | access to local variable path | UncontrolledFormatString.cs:11:23:11:45 | access to property QueryString | UncontrolledFormatString.cs:14:23:14:26 | access to local variable path | $@ flows to here and is used as a format string. | UncontrolledFormatString.cs:11:23:11:45 | access to property QueryString | access to property QueryString |
 | UncontrolledFormatString.cs:17:46:17:49 | access to local variable path | UncontrolledFormatString.cs:11:23:11:45 | access to property QueryString | UncontrolledFormatString.cs:17:46:17:49 | access to local variable path | $@ flows to here and is used as a format string. | UncontrolledFormatString.cs:11:23:11:45 | access to property QueryString | access to property QueryString |

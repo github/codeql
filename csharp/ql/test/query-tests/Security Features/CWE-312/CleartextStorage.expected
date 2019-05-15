@@ -1,13 +1,12 @@
 edges
-nodes
-| CleartextStorage.cs:14:50:14:59 | access to field accountKey |
-| CleartextStorage.cs:15:62:15:74 | call to method GetPassword |
-| CleartextStorage.cs:16:69:16:81 | call to method GetPassword |
-| CleartextStorage.cs:17:50:17:63 | call to method GetAccountID |
-| CleartextStorage.cs:25:21:25:33 | call to method GetPassword |
-| CleartextStorage.cs:73:21:73:33 | access to property Text |
-| CleartextStorage.cs:74:21:74:29 | access to property Text |
-| CleartextStorage.cs:75:21:75:29 | access to property Text |
+| CleartextStorage.cs:14:50:14:59 | access to field accountKey | CleartextStorage.cs:14:50:14:59 | access to field accountKey |
+| CleartextStorage.cs:15:62:15:74 | call to method GetPassword | CleartextStorage.cs:15:62:15:74 | call to method GetPassword |
+| CleartextStorage.cs:16:69:16:81 | call to method GetPassword | CleartextStorage.cs:16:69:16:81 | call to method GetPassword |
+| CleartextStorage.cs:17:50:17:63 | call to method GetAccountID | CleartextStorage.cs:17:50:17:63 | call to method GetAccountID |
+| CleartextStorage.cs:25:21:25:33 | call to method GetPassword | CleartextStorage.cs:25:21:25:33 | call to method GetPassword |
+| CleartextStorage.cs:73:21:73:33 | access to property Text | CleartextStorage.cs:73:21:73:33 | access to property Text |
+| CleartextStorage.cs:74:21:74:29 | access to property Text | CleartextStorage.cs:74:21:74:29 | access to property Text |
+| CleartextStorage.cs:75:21:75:29 | access to property Text | CleartextStorage.cs:75:21:75:29 | access to property Text |
 #select
 | CleartextStorage.cs:14:50:14:59 | access to field accountKey | CleartextStorage.cs:14:50:14:59 | access to field accountKey | CleartextStorage.cs:14:50:14:59 | access to field accountKey | Sensitive data returned by $@ is stored here. | CleartextStorage.cs:14:50:14:59 | access to field accountKey | access to field accountKey |
 | CleartextStorage.cs:15:62:15:74 | call to method GetPassword | CleartextStorage.cs:15:62:15:74 | call to method GetPassword | CleartextStorage.cs:15:62:15:74 | call to method GetPassword | Sensitive data returned by $@ is stored here. | CleartextStorage.cs:15:62:15:74 | call to method GetPassword | call to method GetPassword |
