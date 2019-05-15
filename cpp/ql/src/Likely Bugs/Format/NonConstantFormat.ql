@@ -88,8 +88,7 @@ predicate isNonConst(DataFlow::Node node) {
     )
   )
   or
-  // TODO: Figure out what to do with DataFlow::DefinitionByReferenceNode
-  exists(DataFlow::DefinitionByReferenceNode dbr | dbr = node.(DataFlow::DefinitionByReferenceNode))
+  node instanceof DataFlow::DefinitionByReferenceNode
 }
 
 class NonConstFlow extends TaintTracking::Configuration {
@@ -98,7 +97,11 @@ class NonConstFlow extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { isNonConst(source) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
+    exists(FormattingFunctionCall fc |
+      sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex())
+    |
+      not fc.getTarget() instanceof UserDefinedFormattingFunction
+    )
   }
 }
 
