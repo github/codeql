@@ -13,10 +13,7 @@ predicate addressConstantExpression(Expr e) {
 /** Holds if `v` is a constexpr variable initialized to a constant address. */
 private predicate addressConstantVariable(Variable v) {
   addressConstantExpression(v.getInitializer().getExpr().getFullyConverted()) and
-  // Here we should also require that `v` is constexpr, but we don't have that
-  // information in the db. See CPP-314. Instead, we require that the variable
-  // is never defined except in its initializer.
-  forall(Expr def | definition(v, def) | def = any(Initializer init).getExpr())
+  v.isConstexpr()
 }
 
 /**
