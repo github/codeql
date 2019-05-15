@@ -44,23 +44,6 @@ private module Cached {
    */
   cached
   module ControlFlowGraphPublic {
-    // The base case of `reachable` is factored out for performance. If it's
-    // written in-line in `reachable`, the compiler inserts a `n instanceof
-    // ControlFlowNode` check because the `not ... and not ...` case doesn't
-    // otherwise bind `n`. The problem is that this check is inserted at the
-    // outermost level of this predicate, so it covers all cases including the
-    // recursive case. The optimizer doesn't eliminate the check even though it's
-    // redundant, and having the check leads to needless extra computation and a
-    // risk of bad join orders.
-    private predicate reachableBaseCase(ControlFlowNode n) {
-      exists(Function f | f.getEntryPoint() = n)
-      or
-      // Okay to use successors_extended directly here
-      (not successors_extended(_,n) and not successors_extended(n,_))
-      or
-      n instanceof Handler
-    }
-
     /**
      * Holds if the control-flow node `n` is reachable, meaning that either
      * it is an entry point, or there exists a path in the control-flow
@@ -72,9 +55,10 @@ private module Cached {
     cached
     predicate reachable(ControlFlowNode n)
     {
-      reachableBaseCase(n)
+      // Okay to use successors_extended directly here
+      reachableRecursive(n)
       or
-      reachable(n.getAPredecessor())
+      (not successors_extended(_,n) and not successors_extended(n,_))
     }
 
     /** Holds if `condition` always evaluates to a nonzero value. */
@@ -169,7 +153,7 @@ private predicate potentiallyReturningFunction(Function f) {
     nonAnalyzableFunction(f)
     or
     // otherwise the exit-point of `f` must be reachable
-    reachable(f)
+    reachableRecursive(f)
   )
 }
 
@@ -307,6 +291,23 @@ private predicate possiblePredecessor(Node pred) {
   not exists(pred.(FunctionCall).getTarget())
   or
   potentiallyReturningFunctionCall(pred)
+}
+
+/**
+ * Holds if the control-flow node `n` is reachable, meaning that either
+ * it is an entry point, or there exists a path in the control-flow
+ * graph of its function that connects an entry point to it.
+ * Compile-time constant conditions are taken into account, so that
+ * the call to `f` is not reachable in `if (0) f();` even if the
+ * `if` statement as a whole is reachable.
+ */
+private predicate reachableRecursive(ControlFlowNode n)
+{
+  exists(Function f | f.getEntryPoint() = n)
+  or
+  n instanceof Handler
+  or
+  reachableRecursive(n.getAPredecessor())
 }
 
 private predicate compileTimeConstantInt(Expr e, int val) {
