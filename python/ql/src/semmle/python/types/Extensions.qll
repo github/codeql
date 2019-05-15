@@ -109,10 +109,10 @@ class ReModulePointToExtension extends PointsToExtension {
     }
 
     override predicate pointsTo(Context context, ObjectInternal value, ControlFlowNode origin) {
-        value = Module::named("sre_constants").attr("SRE_FLAG_" + name) and
-        exists(ModuleObjectInternal sre_constants |
+        exists(ModuleObjectInternal sre_constants, CfgOrigin orig |
             sre_constants.getName() = "sre_constants" and
-            sre_constants.attribute(name, value, CfgOrigin::fromCfgNode(origin))
+            sre_constants.attribute("SRE_FLAG_" + name, value, orig) and
+            origin = orig.asCfgNodeOrHere(this)
         )
         and context.appliesTo(this)
     }
