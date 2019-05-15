@@ -415,9 +415,6 @@ module Express {
           )
         )
         or
-        kind = "body" and
-        this.asExpr() = rh.getARequestBodyAccess()
-        or
         exists(string propName |
           // `req.url` or `req.originalUrl`
           kind = "url" and
@@ -431,6 +428,9 @@ module Express {
         kind = "cookie" and
         this.(DataFlow::PropRef).accesses(request, "cookies")
       )
+      or
+      kind = "body" and
+      this.asExpr() = rh.getARequestBodyAccess()
       or
       exists(RequestHeaderAccess access | this = access |
         rh = access.getRouteHandler() and
