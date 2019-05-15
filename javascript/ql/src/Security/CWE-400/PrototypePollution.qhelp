@@ -6,8 +6,9 @@
 <overview>
   <p>
     Most JavaScript objects inherit the properties of the built-in <code>Object.prototype</code> object.
-    If an attacker is be able to modify <code>Object.prototype</code>, they can tamper with the
-    application logic and often escalate to remote code execution or cross-site scripting.
+    Prototype pollution is a type of vulnerability in which an attacker is be able to modify <code>Object.prototype</code>.
+    Since most objects inherit from the compromised <code>Object.prototype</code>, the attacker can use this
+    to tamper with the application logic, and often escalate to remote code execution or cross-site scripting.
   </p>
 
   <p>
@@ -36,9 +37,13 @@
   <sample src="examples/PrototypePollution1.js"/>
 
   <p>
-    Prior to lodash 4.17.11 this would be vulnerable to prototype pollution. An attacker could send
-    the value <code>{"constructor": {"prototype": {"xxx": true}}}</code> to inject <code>xxx</code>
-    in <code>Object.prototype</code>.
+    Prior to lodash 4.17.11 this would be vulnerable to prototype pollution. An attacker could send the following GET request:
+  </p>
+
+  <pre>GET /news?prefs={"constructor":{"prototype":{"xxx":true}}}</pre>
+
+  <p>
+    This causes the <code>xxx</code> property to be injected on <code>Object.prototype</code>.
     Fix this by updating the lodash version:
   </p>
 
@@ -47,11 +52,17 @@
   <p>
     Note that some web frameworks, such as Express, parse query parameters using extended URL-encoding
     by default.
-    In this case, the application may be vulnerable even if not using <code>JSON.parse</code>.
+    When this is the case, the application may be vulnerable even if not using <code>JSON.parse</code>.
     The example below would also be susceptible to prototype pollution:
   </p>
 
   <sample src="examples/PrototypePollution2.js"/>
+
+  <p>
+    In the above example, an attacker can cause prototype pollution by sending the following GET request:
+  </p>
+
+  <pre>GET /news?prefs[constructor][prototype][xxx]=true</pre>
 </example>
 
 <references>

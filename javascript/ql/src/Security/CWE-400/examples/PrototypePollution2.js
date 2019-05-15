@@ -1,5 +1,5 @@
 app.get('/news', (req, res) => {
-  let prefs = lodash.merge({}, {
-    topic: req.query.topic
+  let config = lodash.merge({}, {
+    prefs: req.query.prefs
   });
 })
