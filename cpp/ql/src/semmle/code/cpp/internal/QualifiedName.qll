@@ -230,11 +230,14 @@ class MemberVariable extends Variable, @membervariable {
   override string getName() { membervariables(this, _, result) }
 }
 
+// Unlike the usual `EnumConstant`, this one doesn't have a
+// `getDeclaringType()`. This simplifies the recursive computation of type
+// qualifier names since it can assume that any declaration with a
+// `getDeclaringType()` should use that type in its type qualifier name.
 class EnumConstant extends Declaration, @enumconstant {
   override string getName() { enumconstants(this, _, _, _, result, _) }
 
   UserType getDeclaringEnum() { enumconstants(this, result, _, _, _, _) }
-  // Unlike the usual `EnumConstant`, this one doesn't have a `getDeclaringType()`.
 }
 
 class Function extends Declaration, @function {

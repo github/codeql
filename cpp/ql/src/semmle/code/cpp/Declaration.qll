@@ -93,7 +93,7 @@ abstract class Declaration extends Locatable, @declaration {
    * component of `namespaceQualifier`, no declaring type, and a base name of
    * `baseName`.
    *
-   * See the 3-argument `hasQualifiedName` for more examples.
+   * See the 3-argument `hasQualifiedName` for examples.
    */
   predicate hasQualifiedName(string namespaceQualifier, string baseName) {
     this.hasQualifiedName(namespaceQualifier, "", baseName)
