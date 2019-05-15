@@ -8,6 +8,7 @@ import Type
 import Annotation
 import Exception
 import metrics.MetricField
+private import dispatch.VirtualDispatch
 
 /**
  * A common abstraction for type member declarations,
@@ -115,13 +116,22 @@ class Callable extends StmtParent, Member, @callable {
 
   /**
    * Holds if this callable may call the specified callable,
-   * taking overriding into account.
+   * taking virtual dispatch into account.
+   *
+   * This includes both static call targets and dynamic dispatch targets.
    */
   predicate polyCalls(Callable m) {
-    this.calls(m)
-    or
-    exists(Method mSuper, VirtualMethodAccess c | c.getCaller() = this and c.getMethod() = mSuper |
-      m.(Method).overrides(mSuper)
+    this.calls(m) or this.callsImpl(m)
+  }
+
+  /**
+   * Holds if `c` is a viable implementation of a callable called by this
+   * callable, taking virtual dispatch resolution into account.
+   */
+  predicate callsImpl(Callable c) {
+    exists(Call call |
+      call.getCaller() = this and
+      viableCallable(call) = c
     )
   }
 
