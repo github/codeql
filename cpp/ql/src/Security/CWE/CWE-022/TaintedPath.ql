@@ -23,7 +23,7 @@ import semmle.code.cpp.security.TaintTracking
  */
 class FileFunction extends FunctionWithWrappers {
   FileFunction() {
-    exists(string nme | this.getQualifiedName() = nme |
+    exists(string nme | this.hasGlobalName(nme) |
       nme = "fopen" or
       nme = "_fopen" or
       nme = "_wfopen" or
@@ -32,10 +32,7 @@ class FileFunction extends FunctionWithWrappers {
       nme = "_wopen" or
 
       // create file function on windows
-      nme.matches("CreateFile%") or
-
-      // Objective C standard library
-      nme.matches("NSFileHandle%::+fileHandleFor%AtPath:")
+      nme.matches("CreateFile%")
     )
     or
     (

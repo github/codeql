@@ -16,8 +16,8 @@ import semmle.code.cpp.security.TaintTracking
 /** A call that prints its arguments to `stdout`. */
 class PrintStdoutCall extends FunctionCall {
   PrintStdoutCall() {
-    getTarget().hasQualifiedName("puts") or
-    getTarget().hasQualifiedName("printf")
+    getTarget().hasGlobalName("puts") or
+    getTarget().hasGlobalName("printf")
   }
 }
 

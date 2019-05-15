@@ -75,20 +75,6 @@ class UserDefinedFormattingFunction extends FormattingFunction {
 }
 
 /**
- * The Objective C method `stringWithFormat:`.
- */
-class NsstringStringWithFormat extends FormattingFunction {
-  NsstringStringWithFormat() {
-    getQualifiedName().matches("NSString%::+stringWithFormat:") or
-    getQualifiedName().matches("NSString%::+localizedStringWithFormat:")
-  }
-
-  override int getFormatParameterIndex() {
-    result = 0
-  }
-}
-
-/**
  * A call to one of the formatting functions.
  */
 class FormattingFunctionCall extends Expr {

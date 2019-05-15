@@ -47,7 +47,7 @@ predicate nullCheckExpr(Expr checkExpr, Variable var)
     or
     exists(FunctionCall fc, AnalysedExpr child |
       expr = fc and
-      fc.getTarget().hasQualifiedName("__builtin_expect") and
+      fc.getTarget().hasGlobalName("__builtin_expect") and
       fc.getArgument(0) = child and nullCheckExpr(child, v))
   )
 }
@@ -87,7 +87,7 @@ predicate validCheckExpr(Expr checkExpr, Variable var)
     or
     exists(FunctionCall fc, AnalysedExpr child |
       expr = fc and
-      fc.getTarget().hasQualifiedName("__builtin_expect") and
+      fc.getTarget().hasGlobalName("__builtin_expect") and
       fc.getArgument(0) = child and validCheckExpr(child, v))
   )
 }
@@ -260,13 +260,13 @@ predicate callMayReturnNull(Call call)
  */
 predicate mayReturnNull(Function f)
 {
-  f.getQualifiedName() = "malloc"
+  f.hasGlobalName("malloc")
   or
-  f.getQualifiedName() = "calloc"
+  f.hasGlobalName("calloc")
   or
-//  f.getQualifiedName() = "strchr"
+//  f.hasGlobalName("strchr")
 //  or
-//  f.getQualifiedName() = "strstr"
+//  f.hasGlobalName("strstr")
 //  or
   exists(ReturnStmt ret |
     nullValue(ret.getExpr()) and

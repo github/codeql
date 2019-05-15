@@ -30,7 +30,7 @@ predicate useFunc(GlobalVariable v, Function f) {
 }
 
 predicate uninitialisedBefore(GlobalVariable v, Function f) {
-  f.hasQualifiedName("main")
+  f.hasGlobalName("main")
   or
   exists(Call call, Function g |
     uninitialisedBefore(v, g) and

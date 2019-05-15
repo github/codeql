@@ -40,7 +40,7 @@ private abstract class DumpDeclaration extends Declaration {
    * Gets a string that uniquely identifies this declaration, suitable for use when debugging queries. Only holds for
    * functions, user-defined types, global and namespace-scope variables, and member variables.
    *
-   * This operation is very expensive, and should not be used in production queries. Consider using `hasName()` or
+   * This operation is very expensive, and should not be used in production queries. Consider using
    * `hasQualifiedName()` for identifying known declarations in production queries.
    */
   string getIdentityString() {

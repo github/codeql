@@ -1,6 +1,7 @@
 import semmle.code.cpp.Location
 import semmle.code.cpp.Declaration
 private import semmle.code.cpp.internal.ResolveClass
+private import semmle.code.cpp.internal.QualifiedName as Q
 
 /**
  * A C/C++ function parameter or catch block parameter.
@@ -13,26 +14,6 @@ private import semmle.code.cpp.internal.ResolveClass
  * have multiple declarations.
  */
 class Parameter extends LocalScopeVariable, @parameter {
-
-  /**
-   * Gets the canonical name, or names, of this parameter.
-   *
-   * The canonical names are the first non-empty category from the
-   * following list:
-   *  1. The name given to the parameter at the function's definition or
-   *     (for catch block parameters) at the catch block.
-   *  2. A name given to the parameter at a function declaration.
-   *  3. The name "p#i" where i is the index of the parameter.
-   */
-  override string getName() {
-    exists (VariableDeclarationEntry vde
-    | vde = getANamedDeclarationEntry() and result = vde.getName()
-    | vde.isDefinition() or not getANamedDeclarationEntry().isDefinition())
-    or
-    (not exists(getANamedDeclarationEntry()) and
-     result = "p#" + this.getIndex().toString())
-  }
-
   /**
    * Gets the name of this parameter, including it's type.
    *
@@ -51,27 +32,6 @@ class Parameter extends LocalScopeVariable, @parameter {
       (if typeString != "" and nameString != ""
          then result = typeString + " " + nameString
          else result = typeString + nameString))
-  }
-
-  private VariableDeclarationEntry getANamedDeclarationEntry() {
-    result = getAnEffectiveDeclarationEntry() and result.getName() != ""
-  }
-
-  /**
-   * Gets a declaration entry corresponding to this declaration.
-   *
-   * This predicate is the same as getADeclarationEntry(), except that for
-   * parameters of instantiated function templates, gives the declaration
-   * entry of the prototype instantiation of the parameter (as
-   * non-prototype instantiations don't have declaration entries of their
-   * own).
-   */
-  private VariableDeclarationEntry getAnEffectiveDeclarationEntry() {
-    if getFunction().isConstructedFrom(_)
-      then exists (Function prototypeInstantiation
-           | prototypeInstantiation.getParameter(getIndex()) = result.getVariable() and
-             getFunction().isConstructedFrom(prototypeInstantiation))
-      else result = getADeclarationEntry()
   }
 
   /**
@@ -95,7 +55,9 @@ class Parameter extends LocalScopeVariable, @parameter {
    * In other words, this predicate holds precisely when the result of
    * `getName()` is not "p#i" (where `i` is the index of the parameter).
    */
-  predicate isNamed() { exists(getANamedDeclarationEntry()) }
+  predicate isNamed() {
+    exists(underlyingElement(this).(Q::Parameter).getANamedDeclarationEntry())
+  }
 
   /**
    * Gets the function to which this parameter belongs, if it is a function
@@ -135,8 +97,13 @@ class Parameter extends LocalScopeVariable, @parameter {
    *    of the declaration locations.
    */
   override Location getLocation() {
-    exists(VariableDeclarationEntry vde | vde = getAnEffectiveDeclarationEntry() and result = vde.getLocation() |
-      vde.isDefinition() or not getAnEffectiveDeclarationEntry().isDefinition()
+    exists(VariableDeclarationEntry vde |
+      vde = underlyingElement(this).(Q::Parameter).getAnEffectiveDeclarationEntry() and
+      result = vde.getLocation()
+    |
+      vde.isDefinition()
+      or
+      not underlyingElement(this).(Q::Parameter).getAnEffectiveDeclarationEntry().isDefinition()
     )
   }
 }

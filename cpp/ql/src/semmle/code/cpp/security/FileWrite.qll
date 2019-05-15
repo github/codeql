@@ -154,7 +154,7 @@ private predicate fileStreamChain(ChainedOutputCall out, Expr source, Expr dest)
  */
 private predicate fileWrite(Call write, Expr source, Expr dest) {
   exists(Function f, int s, int d | f = write.getTarget() and source = write.getArgument(s) and dest = write.getArgument(d) |
-    exists(string name | name = f.getQualifiedName() | 
+    exists(string name | f.hasGlobalName(name) | 
       // named functions
       name = "fwrite" and s = 0 and d = 3 or
       (
@@ -165,14 +165,7 @@ private predicate fileWrite(Call write, Expr source, Expr dest) {
         name = "putc" or
         name = "putwc" or
         name = "putw"
-      ) and s = 0 and d = 1 or
-      name.matches("NSFileManager%::-createFileAtPath:contents:attributes:") and s = 1 and d = 0 or
-      (
-        // methods that write into the receiver
-        dest = write.getQualifier() and
-        source = write.getArgument(0) and
-        name.matches("NSFileHandle%::-writeData:")
-      )
+      ) and s = 0 and d = 1
     ) or (
       // fprintf
       s >= f.(Fprintf).getFormatParameterIndex() and

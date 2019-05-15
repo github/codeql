@@ -9,10 +9,9 @@ private import semmle.code.cpp.internal.ResolveClass
  * `Enum`, and `TypedefType`.
  */
 class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @usertype {
-  /** 
-   * Gets the name of this type.
-   */
-  override string getName() { usertypes(underlyingElement(this),result,_) }
+  override string getName() {
+    result = Declaration.super.getName()
+  }
 
   /**
    * Gets the simple name of this type, without any template parameters.  For example

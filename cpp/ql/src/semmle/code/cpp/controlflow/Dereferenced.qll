@@ -7,7 +7,7 @@ import Nullness
 predicate callDereferences(FunctionCall fc, int i)
 {
   exists(string name |
-    fc.getTarget().hasQualifiedName(name) and
+    fc.getTarget().hasGlobalName(name) and
     (
       (name = "bcopy" and i in [0..1]) or
       (name = "memcpy" and i in [0..1]) or

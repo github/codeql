@@ -1,6 +1,7 @@
 import semmle.code.cpp.Element
 import semmle.code.cpp.Specifier
 import semmle.code.cpp.Namespace
+private import semmle.code.cpp.internal.QualifiedName as Q
 
 /**
  * A C/C++ declaration: for example, a variable declaration, a type
@@ -30,16 +31,7 @@ abstract class Declaration extends Locatable, @declaration {
    * namespace of the structure.
    */
   Namespace getNamespace() {
-    // Top level declaration in a namespace ...
-    result.getADeclaration() = this
-
-    // ... or nested in another structure.
-    or
-    exists (Declaration m
-    | m = this and result = m.getDeclaringType().getNamespace())
-    or
-    exists (EnumConstant c
-    | c = this and result = c.getDeclaringEnum().getNamespace())
+    result = underlyingElement(this).(Q::Declaration).getNamespace()
     or
     exists (Parameter p
     | p = this and result = p.getFunction().getNamespace())
@@ -50,40 +42,61 @@ abstract class Declaration extends Locatable, @declaration {
 
   /**
    * Gets the name of the declaration, fully qualified with its
-   * namespace. For example: "A::B::C::myfcn".
+   * namespace and declaring type.
+   *
+   * For performance, prefer the multi-argument `hasQualifiedName` or
+   * `hasGlobalName` predicates since they don't construct so many intermediate
+   * strings. For debugging, the `semmle.code.cpp.Print` module produces more
+   * detailed output but are also more expensive to compute.
+   *
+   * Example: `getQualifiedName() =
+   * "namespace1::namespace2::TemplateClass1<int>::Class2::memberName"`.
    */
   string getQualifiedName() {
-    // MemberFunction, MemberVariable, MemberType
-    exists (Declaration m
-    | m = this and
-      not m instanceof EnumConstant and
-      result = m.getDeclaringType().getQualifiedName() + "::" + m.getName())
-    or
-    exists (EnumConstant c
-    | c = this and
-      result = c.getDeclaringEnum().getQualifiedName() + "::" + c.getName())
-    or
-    exists (GlobalOrNamespaceVariable v, string s1, string s2
-    | v = this and
-      s2 = v.getNamespace().getQualifiedName() and
-      s1 = v.getName()
-    | (s2 != "" and result = s2 + "::" + s1) or (s2 = "" and result = s1))
-    or
-    exists (Function f, string s1, string s2
-    | f = this and f.isTopLevel() and
-      s2 = f.getNamespace().getQualifiedName() and
-      s1 = f.getName()
-    | (s2 != "" and result = s2 + "::" + s1) or (s2 = "" and result = s1))
-    or
-    exists (UserType t, string s1, string s2
-    | t = this and t.isTopLevel() and
-      s2 = t.getNamespace().getQualifiedName() and
-      s1 = t.getName()
-    | (s2 != "" and result = s2 + "::" + s1) or (s2 = "" and result = s1))
+    result = underlyingElement(this).(Q::Declaration).getQualifiedName()
   }
 
-  predicate hasQualifiedName(string name) {
-    this.getQualifiedName() = name
+  /**
+   * DEPRECATED: Prefer `hasGlobalName` or the 2-argument or 3-argument
+   * `hasQualifiedName` predicates. To get the exact same results as this
+   * predicate in all edge cases, use `getQualifiedName()`.
+   *
+   * Holds if this declaration has the fully-qualified name `qualifiedName`.
+   * See `getQualifiedName`.
+   */
+  predicate hasQualifiedName(string qualifiedName) {
+    this.getQualifiedName() = qualifiedName
+  }
+
+  /**
+   * Holds if this declaration has a fully-qualified name with a name-space
+   * component of `namespaceQualifier`, a declaring type of `typeQualifier`,
+   * and a base name of `baseName`. Template parameters and arguments are
+   * stripped from all components. Missing components are `""`.
+   *
+   * Example: `hasQualifiedName("namespace1::namespace2",
+   * "TemplateClass1::Class2", "memberName")`.
+   *
+   * Example (the class `std::vector`): `hasQualifiedName("std", "", "vector")`
+   * or `hasQualifiedName("std", "vector")`.
+   *
+   * Example (the `size` member function of class `std::vector`):
+   * `hasQualifiedName("std", "vector", "size")`.
+   */
+  predicate hasQualifiedName(string namespaceQualifier, string typeQualifier, string baseName) {
+    underlyingElement(this).(Q::Declaration)
+      .hasQualifiedName(namespaceQualifier, typeQualifier, baseName)
+  }
+
+  /**
+   * Holds if this declaration has a fully-qualified name with a name-space
+   * component of `namespaceQualifier`, no declaring type, and a base name of
+   * `baseName`.
+   *
+   * See the 3-argument `hasQualifiedName` for examples.
+   */
+  predicate hasQualifiedName(string namespaceQualifier, string baseName) {
+    this.hasQualifiedName(namespaceQualifier, "", baseName)
   }
 
   override string toString() { result = this.getName() }
@@ -93,22 +106,24 @@ abstract class Declaration extends Locatable, @declaration {
    *
    * This name doesn't include a namespace or any argument types, so
    * for example both functions `::open()` and `::std::ifstream::open(...)`
-   * have the same name.
+   * have the same name. The name of a template _class_ includes a string
+   * representation of its parameters, and the names of its instantiations
+   * include string representations of their arguments. Template _functions_
+   * and their instantiations do not include template parameters or arguments.
    *
-   * To get the name including the namespace, use `getQualifiedName` or
-   * `hasQualifiedName`.
+   * To get the name including the namespace, use `hasQualifiedName`.
    *
    * To test whether this declaration has a particular name in the global
    * namespace, use `hasGlobalName`.
    */
-  abstract string getName();
+  string getName() { result = underlyingElement(this).(Q::Declaration).getName() }
+
   /** Holds if this declaration has the given name. */
   predicate hasName(string name) { name = this.getName() }
 
   /** Holds if this declaration has the given name in the global namespace. */
   predicate hasGlobalName(string name) {
-    hasName(name)
-    and getNamespace() instanceof GlobalNamespace
+    this.hasQualifiedName("", "", name)
   }
 
   /** Gets a specifier of this declaration. */

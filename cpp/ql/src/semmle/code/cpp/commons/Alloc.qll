@@ -6,7 +6,7 @@ import cpp
 predicate allocationFunction(Function f)
 {
   exists(string name |
-    f.hasQualifiedName(name) and
+    f.hasGlobalName(name) and
     (
       name = "malloc" or
       name = "calloc" or
@@ -61,7 +61,7 @@ predicate allocationCall(FunctionCall fc)
   allocationFunction(fc.getTarget()) and
   (
     // realloc(ptr, 0) only frees the pointer
-    fc.getTarget().hasQualifiedName("realloc") implies
+    fc.getTarget().hasGlobalName("realloc") implies
     not fc.getArgument(1).getValue() = "0"
   )
 }
@@ -72,7 +72,7 @@ predicate allocationCall(FunctionCall fc)
 predicate freeFunction(Function f, int argNum)
 {
   exists(string name |
-    f.hasQualifiedName(name) and
+    f.hasGlobalName(name) and
     (
       (name = "free" and argNum = 0) or
       (name = "realloc" and argNum = 0) or

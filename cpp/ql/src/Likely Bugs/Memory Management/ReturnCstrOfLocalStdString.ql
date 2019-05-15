@@ -58,11 +58,11 @@ predicate refToStdString(Expr e, ConstructorCall source) {
  * will also become invalid.
  */
 predicate flowFunction(Function fcn, int argIndex) {
-  (fcn.getQualifiedName() = "_JNIEnv::NewStringUTF" and argIndex = 0)
+  (fcn.hasQualifiedName("", "_JNIEnv", "NewStringUTF") and argIndex = 0)
   or
-  (fcn.getQualifiedName() = "art::JNI::NewStringUTF" and argIndex = 1)
+  (fcn.hasQualifiedName("art", "JNI", "NewStringUTF") and argIndex = 1)
   or
-  (fcn.getQualifiedName() = "art::CheckJNI::NewStringUTF" and argIndex = 1)
+  (fcn.hasQualifiedName("art", "CheckJNI", "NewStringUTF") and argIndex = 1)
 
   // Add other functions that behave like NewStringUTF here.
 }

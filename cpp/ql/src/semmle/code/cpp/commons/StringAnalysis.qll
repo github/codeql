@@ -56,12 +56,12 @@ class AnalysedString extends Expr
  */
 class StrlenCall extends FunctionCall {
   StrlenCall() {
-    this.getTarget().hasQualifiedName("strlen") or
-    this.getTarget().hasQualifiedName("wcslen") or
-    this.getTarget().hasQualifiedName("_mbslen") or
-    this.getTarget().hasQualifiedName("_mbslen_l") or
-    this.getTarget().hasQualifiedName("_mbstrlen") or
-    this.getTarget().hasQualifiedName("_mbstrlen_l")
+    this.getTarget().hasGlobalName("strlen") or
+    this.getTarget().hasGlobalName("wcslen") or
+    this.getTarget().hasGlobalName("_mbslen") or
+    this.getTarget().hasGlobalName("_mbslen_l") or
+    this.getTarget().hasGlobalName("_mbstrlen") or
+    this.getTarget().hasGlobalName("_mbstrlen_l")
   }
 
   /**
