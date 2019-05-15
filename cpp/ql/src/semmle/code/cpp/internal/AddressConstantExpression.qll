@@ -1,5 +1,4 @@
 private import cpp
-private import semmle.code.cpp.dataflow.EscapesTree
 
 predicate addressConstantExpression(Expr e) {
   constantAddressPointer(e)
