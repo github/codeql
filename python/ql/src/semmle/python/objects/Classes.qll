@@ -8,22 +8,8 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 
-
+/** Class representing classes */
 abstract class ClassObjectInternal extends ObjectInternal {
-
-    override boolean booleanValue() {
-        result = true
-    }
-
-    override boolean isClass() { result = true }
-
-    override int intValue() {
-        none()
-    }
-
-    override string strValue() {
-        none()
-    }
 
     string getName() {
         result = this.getClassDeclaration().getName()
@@ -31,6 +17,33 @@ abstract class ClassObjectInternal extends ObjectInternal {
 
     boolean isSpecial() {
         result = Types::getMro(this).isSpecial()
+    }
+
+    /** Looks up the attribute `name` on this class.
+     * Note that this may be different from `this.attr(name)`.
+     * For example given the class:
+     * ```class C:
+     *        @classmethod
+     *        def f(cls): pass
+     * ```
+     * `this.lookup("f")` is equivent to `C.__dict__['f']`, which is the class-method
+     *  whereas
+     * `this.attr("f") is equivalent to `C.f`, which is a bound-method.
+     */
+    abstract predicate lookup(string name, ObjectInternal value, CfgOrigin origin);
+
+    /** Holds if this is a subclass of the `Iterable` abstract base class. */
+    boolean isIterableSubclass() {
+        this = ObjectInternal::builtin("list") and result = true
+        or
+        this = ObjectInternal::builtin("set") and result = true
+        or
+        this = ObjectInternal::builtin("dict") and result = true
+        or
+        this != ObjectInternal::builtin("list") and
+        this != ObjectInternal::builtin("set") and
+        this != ObjectInternal::builtin("dict") and
+        result = false
     }
 
     override boolean isDescriptor() { result = false }
@@ -46,8 +59,6 @@ abstract class ClassObjectInternal extends ObjectInternal {
         descriptor.isDescriptor() = true
     }
 
-    abstract predicate lookup(string name, ObjectInternal value, CfgOrigin origin);
-
     /** Approximation to descriptor protocol, skipping meta-descriptor protocol */
     pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         exists(ObjectInternal descriptor, CfgOrigin desc_origin |
@@ -62,24 +73,25 @@ abstract class ClassObjectInternal extends ObjectInternal {
 
     override int length() { none() }
 
-    boolean isIterableSubclass() {
-        this = ObjectInternal::builtin("list") and result = true
-        or
-        this = ObjectInternal::builtin("set") and result = true
-        or
-        this = ObjectInternal::builtin("dict") and result = true
-        or
-        this != ObjectInternal::builtin("list") and
-        this != ObjectInternal::builtin("set") and
-        this != ObjectInternal::builtin("dict") and
-        result = false
+    override boolean booleanValue() { result = true }
+
+    override boolean isClass() { result = true }
+
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
     }
 
     override predicate subscriptUnknown() { none() }
 }
 
+/** Class representing Python source classes */
 class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject {
 
+    /** Gets the scope for this Python class */
     Class getScope() {
         exists(ClassExpr expr |
             this = TPythonClassObject(expr.getAFlowNode()) and
@@ -141,6 +153,7 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
 
 }
 
+/** Class representing built-in classes, except `type` */
 class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObject {
 
     override Builtin getBuiltin() {
@@ -194,7 +207,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
 
 }
 
-
+/** A class representing an unknown class */
 class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
 
     override string toString() {
@@ -243,6 +256,7 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
 
 }
 
+/** A class representing the built-in class `type`. */
 class TypeInternal extends ClassObjectInternal, TType {
 
     override string toString() {
@@ -292,6 +306,7 @@ class TypeInternal extends ClassObjectInternal, TType {
 
 }
 
+/** A class representing a dynamically created class `type(name, *args, **kwargs)`. */
 class DynamicallyCreatedClass extends ClassObjectInternal, TDynamicClass {
 
     override string toString() {

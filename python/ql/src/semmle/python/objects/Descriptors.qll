@@ -7,7 +7,29 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 
+/** Class representing property objects in Python */
 class PropertyInternal extends ObjectInternal, TProperty {
+
+    /** Gets the name of this property */
+    string getName() {
+        result = this.getGetter().getName()
+    }
+
+    /** Gets the getter function of this property */
+    CallableObjectInternal getGetter() {
+        this = TProperty(_, _, result)
+    }
+
+    /** Gets the setter function of this property */
+    CallableObjectInternal getSetter() {
+        exists(CallNode call, AttrNode setter |
+            call.getFunction() = setter and 
+            PointsToInternal::pointsTo(setter.getObject("setter"), this.getContext(), this, _) and
+            PointsToInternal::pointsTo(call.getArg(0), this.getContext(), result, _)
+        )
+    }
+
+    private Context getContext() { this = TProperty(_,result,  _) }
 
     override string toString() {
         result = "property" + this.getName()
@@ -25,17 +47,9 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
     override ObjectInternal getClass() { result = ObjectInternal::property() }
 
-    CallableObjectInternal getGetter() {
-        this = TProperty(_, _, result)
-    }
-
     override boolean isComparable() { result = true }
 
     override Builtin getBuiltin() { none() }
-
-    string getName() {
-        result = this.getGetter().getName()
-    }
 
     override ControlFlowNode getOrigin() { this = TProperty(result, _, _) }
 
@@ -58,17 +72,6 @@ class PropertyInternal extends ObjectInternal, TProperty {
     override boolean isDescriptor() { result = true }
 
     override int length() { none() }
-
-    private Context getContext() { this = TProperty(_,result,  _) }
-
-    CallableObjectInternal getSetter() {
-        exists(CallNode call, AttrNode setter |
-            call.getFunction() = setter and 
-            PointsToInternal::pointsTo(setter.getObject("setter"), this.getContext(), this, _) and
-            PointsToInternal::pointsTo(call.getArg(0), this.getContext(), result, _)
-        )
-    }
-
     pragma [noinline] override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) { none() }
 
     pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) {
@@ -90,6 +93,7 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
 }
 
+/** A class representing classmethods in Python */
 class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override string toString() {
@@ -105,6 +109,7 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
         )
     }
 
+    /** Gets the function wrapped by this classmethod object */
     CallableObjectInternal getFunction() {
         this = TClassMethod(_, result)
     }

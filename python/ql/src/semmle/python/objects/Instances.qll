@@ -8,6 +8,7 @@ private import semmle.python.pointsto.MRO
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
+/** A class representing instances */
 abstract class InstanceObject extends ObjectInternal {
 
     pragma [nomagic]
@@ -36,6 +37,7 @@ abstract class InstanceObject extends ObjectInternal {
         )
     }
 
+    /** Holds if `init` in the context `callee` is the initializer of this instance */
     abstract predicate initializer(PythonFunctionObjectInternal init, Context callee);
 
 }
@@ -46,6 +48,9 @@ private predicate self_variable_reaching_init_exit(EssaVariable self) {
     self.getScope().getName() = "__init__"
 }
 
+/** A class representing instances instantiated at a specific point in the program (statically)
+ * For example the code `C()` would be a specific instance of `C`.
+ */
 class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
 
     override string toString() {
@@ -147,7 +152,8 @@ class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
 
 }
 
-
+/** A class representing context-free instances represented by `self` in the source code
+ */
 class SelfInstanceInternal extends TSelfInstance, InstanceObject {
 
     override string toString() {
@@ -248,7 +254,7 @@ class SelfInstanceInternal extends TSelfInstance, InstanceObject {
 
 }
 
-/** Represents a value that has a known class, but no other information */
+/** A class representing a value that has a known class, but no other information */
 class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
     override string toString() {
@@ -360,6 +366,7 @@ private predicate cls_descriptor(ClassObjectInternal cls, string name, ObjectInt
     descriptor.isDescriptor() = true
 }
 
+/** A class representing an instance of the `super` class */
 class SuperInstance extends TSuperInstance, ObjectInternal {
 
     override string toString() {
@@ -375,10 +382,12 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
         )
     }
 
+    /** Gets the class declared as the starting point for MRO lookup. */
     ClassObjectInternal getStartClass() {
         this = TSuperInstance(_, result)
     }
 
+    /** Gets 'self' object */
     ObjectInternal getSelf() {
         this = TSuperInstance(result, _)
     }

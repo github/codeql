@@ -8,7 +8,10 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
 
-
+/** Class representing constants.
+ * Includes `None`, `True` and `False` as
+ * well as strings and integers.
+ */
 abstract class ConstantObjectInternal extends ObjectInternal {
 
     override ClassDecl getClassDeclaration() {
@@ -66,7 +69,7 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
 }
 
-abstract class BooleanObjectInternal extends ConstantObjectInternal {
+private abstract class BooleanObjectInternal extends ConstantObjectInternal {
 
     BooleanObjectInternal() {
         this = TTrue() or this = TFalse()
@@ -79,9 +82,13 @@ abstract class BooleanObjectInternal extends ConstantObjectInternal {
 
     override int length() { none() }
 
+    override string strValue() {
+        none()
+    }
+
 }
 
-class TrueObjectInternal extends BooleanObjectInternal, TTrue {
+private class TrueObjectInternal extends BooleanObjectInternal, TTrue {
 
     override string toString() {
         result = "bool True"
@@ -99,17 +106,13 @@ class TrueObjectInternal extends BooleanObjectInternal, TTrue {
         result = 1
     }
 
-    override string strValue() {
-        none()
-    }
-
     override Builtin getBuiltin() {
         result = Builtin::special("True")
     }
 
 }
 
-class FalseObjectInternal extends BooleanObjectInternal, TFalse {
+private class FalseObjectInternal extends BooleanObjectInternal, TFalse {
 
     override string toString() {
         result = "bool False"
@@ -127,17 +130,13 @@ class FalseObjectInternal extends BooleanObjectInternal, TFalse {
         result = 0
     }
 
-    override string strValue() {
-        none()
-    }
-
     override Builtin getBuiltin() {
         result = Builtin::special("False")
     }
 
 }
 
-class NoneObjectInternal extends ConstantObjectInternal, TNone {
+private class NoneObjectInternal extends ConstantObjectInternal, TNone {
 
     override string toString() {
         result = "None"
@@ -172,7 +171,7 @@ class NoneObjectInternal extends ConstantObjectInternal, TNone {
 }
 
 
-class IntObjectInternal extends ConstantObjectInternal, TInt {
+private class IntObjectInternal extends ConstantObjectInternal, TInt {
 
     override string toString() {
         result = "int " + this.intValue().toString()
@@ -209,7 +208,7 @@ class IntObjectInternal extends ConstantObjectInternal, TInt {
 
 }
 
-class FloatObjectInternal extends ConstantObjectInternal, TFloat {
+private class FloatObjectInternal extends ConstantObjectInternal, TFloat {
 
     override string toString() {
         if this.floatValue() = this.floatValue().floor() then (
@@ -255,7 +254,7 @@ class FloatObjectInternal extends ConstantObjectInternal, TFloat {
 }
 
 
-class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
+private class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
 
     override string toString() {
         result =  "'" + this.strValue() + "'"
@@ -296,7 +295,7 @@ class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
 
 }
 
-class BytesObjectInternal extends ConstantObjectInternal, TBytes {
+private class BytesObjectInternal extends ConstantObjectInternal, TBytes {
 
     override string toString() {
         result =  "'" + this.strValue() + "'"

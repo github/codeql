@@ -7,10 +7,13 @@ private import semmle.python.pointsto.MRO
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
+/** A class representing modules */
 abstract class ModuleObjectInternal extends ObjectInternal {
 
+    /** Gets the name of this module */
     abstract string getName();
 
+    /** Gets the source scope of this module, if it has one. */
     abstract Module getSourceModule();
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
@@ -47,12 +50,14 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     override predicate subscriptUnknown() { any() }
 
+    /** Holds if this module is a `__init__.py` module. */
     predicate isInitModule() {
         any(PackageObjectInternal package).getInitModule() = this
     }
 
 }
 
+/** A class representing built-in modules */
 class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleObject {
 
     override Builtin getBuiltin() {
@@ -104,6 +109,7 @@ class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleOb
 
 }
 
+/** A class representing packages */
 class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
 
     override Builtin getBuiltin() {
@@ -114,6 +120,7 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         result = "Package " + this.getName()
     }
 
+    /** Gets the folder for this package */
     Folder getFolder() {
         this = TPackageObject(result)
     }
@@ -134,6 +141,7 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         result.getFile() = this.getFolder().getFile("__init__.py")
     }
 
+    /** Gets the init module of this package */
     PythonModuleObjectInternal getInitModule() {
         result = TPythonModule(this.getSourceModule())
     }
@@ -145,6 +153,7 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         )
     }
 
+    /** Gets the submodule `name` of this package */
     ModuleObjectInternal submodule(string name) {
         result.getName() = this.getName() + "." + name
     }
@@ -196,6 +205,7 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
 
 }
 
+/** A class representing Python modules */
 class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
 
     override Builtin getBuiltin() {
@@ -222,10 +232,6 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         this = TPythonModule(result)
     }
 
-    PythonModuleObjectInternal getInitModule() {
-        result = TPythonModule(this.getSourceModule())
-    }
-
     override int intValue() {
         none()
     }
@@ -250,6 +256,7 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
 
 }
 
+/** A class representing a module that is missing from the DB, but inferred to exists from imports. */
 class AbsentModuleObjectInternal extends ModuleObjectInternal, TAbsentModule {
 
     override Builtin getBuiltin() {
@@ -276,10 +283,6 @@ class AbsentModuleObjectInternal extends ModuleObjectInternal, TAbsentModule {
     }
 
     override Module getSourceModule() {
-        none()
-    }
-
-    PythonModuleObjectInternal getInitModule() {
         none()
     }
 
@@ -311,6 +314,7 @@ class AbsentModuleObjectInternal extends ModuleObjectInternal, TAbsentModule {
 
 }
 
+/** A class representing an attribute of a missing module. */
 class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleAttribute {
 
     override Builtin getBuiltin() {
@@ -334,10 +338,6 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
     }
 
     override ClassDecl getClassDeclaration() {
-        none()
-    }
-
-    PythonModuleObjectInternal getInitModule() {
         none()
     }
 

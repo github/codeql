@@ -13,6 +13,7 @@ private import semmle.python.types.Builtins
 
 abstract class SequenceObjectInternal extends ObjectInternal {
 
+    /** Gets the `n`th item of this sequence, if one exists. */
     abstract ObjectInternal getItem(int n);
 
     /** The boolean value of this object, this may be both
@@ -41,7 +42,7 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
         result = "(" + this.contents(0) + ")"
     }
 
-    string contents(int n) {
+    private string contents(int n) {
         n = this.length() - 1 and result = this.getItem(n).toString()
         or
         result = this.getItem(n).toString() + ", " + this.contents(n+1)

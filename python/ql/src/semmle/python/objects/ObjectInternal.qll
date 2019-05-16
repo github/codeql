@@ -1,4 +1,7 @@
-import python
+/**
+ * Internal object API.
+ * For use by points-to and testing only.
+ */
 
 private import semmle.python.objects.TObject
 private import semmle.python.pointsto.PointsTo
@@ -13,6 +16,7 @@ import semmle.python.objects.Constants
 import semmle.python.objects.Sequences
 import semmle.python.objects.Descriptors
 
+
 class ObjectInternal extends TObject {
 
     abstract string toString();
@@ -21,14 +25,23 @@ class ObjectInternal extends TObject {
      * true and false if the "object" represents a set of possible objects. */
     abstract boolean booleanValue();
 
+    /** Holds if this object is introduced into the code base at `node` given the `context`
+     * This means that `node`, in `context`, points-to this object, but the object has not flowed
+     * there from anywhere else.
+     * Examples:
+     *  * The object `None` is "introduced" by the keyword "None".
+     *  * A bound method would be "introduced" when relevant attribute on an instance
+     * is accessed. In `x = X(); x.m` `x.m` introduces the bound method.
+     */
     abstract predicate introduced(ControlFlowNode node, PointsToContext context);
 
-    /** Gets the class declaration for this object, if it is a declared class. */
+    /** Gets the class declaration for this object, if it is a class with a declaration. */
     abstract ClassDecl getClassDeclaration();
 
     /** True if this "object" is a class. */
     abstract boolean isClass();
 
+    /** Holds if this object is a class. That is, it's class inherits from `type`  */
     abstract ObjectInternal getClass();
 
     /** True if this "object" can be meaningfully analysed for
@@ -44,7 +57,8 @@ class ObjectInternal extends TObject {
     abstract Builtin getBuiltin();
 
     /** Gets a control flow node that represents the source origin of this
-     * objects.
+     * objects. Source code objects should attempt to return
+     * exactly one result for this method.
      */
     abstract ControlFlowNode getOrigin();
 
@@ -68,16 +82,27 @@ class ObjectInternal extends TObject {
      */
     abstract string strValue();
 
+    /** Holds if the function `scope` is called when this object is called and `paramOffset`
+     * is the difference from the parameter position and the argument position.
+     * For a normal function `paramOffset` is 0. For classes and bound-methods it is 1.
+     */
     abstract predicate calleeAndOffset(Function scope, int paramOffset);
 
     final predicate isBuiltin() {
         exists(this.getBuiltin())
     }
 
+    /** Holds if the result of getting the attribute `name` is `value` and that `value` comes
+     * from `origin`. Note this is *not* the same as class lookup. For example
+     * for an object `x` the attribute `name` (`x.name`) may refer to a bound-method, an attribute of the 
+     * instance, or an attribute of the class.
+     */
     abstract predicate attribute(string name, ObjectInternal value, CfgOrigin origin);
 
+    /** Holds if the attributes of this object are wholy or partly unknowable */
     abstract predicate attributesUnknown();
 
+    /** Holds if the result of subscripting this object are wholy or partly unknowable */
     abstract predicate subscriptUnknown();
 
     /** For backwards compatibility shim -- Not all objects have a "source".
@@ -90,11 +115,20 @@ class ObjectInternal extends TObject {
         result = this.getBuiltin()
     }
 
+    /** Holds if this object is a descriptor.
+     * Holds, for example, for functions and properties and not for integers.
+     */
     abstract boolean isDescriptor();
 
+    /** Holds if the result of attribute access on the class holding this descriptor is `value`, originating at `origin`
+     * For example, although `T.__dict__['name'] = classmethod(f)`, `T.name` is a bound-method, binding `f` and `T`
+     */
     pragma[nomagic]
     abstract predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin);
 
+    /** Holds if the result of attribute access on an instance of a class holding this descriptor is `value`, originating at `origin`
+     * For example, with `T.__dict__['name'] = classmethod(f)`, `T().name` is a bound-method, binding `f` and `T`
+     */
     pragma[nomagic]
     abstract predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin);
 
@@ -109,6 +143,10 @@ class ObjectInternal extends TObject {
      */
     abstract int length();
 
+    /** Holds if the object `function` is called when this object is called and `paramOffset`
+     * is the difference from the parameter position and the argument position.
+     * For a normal function `paramOffset` is 0. For classes and bound-methods it is 1.
+     */
     predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }
 
     /** Holds if this 'object' represents an entity that is inferred to exist

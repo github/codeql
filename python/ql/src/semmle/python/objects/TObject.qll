@@ -304,8 +304,7 @@ private predicate self_parameter(ParameterDefinition def, PointsToContext contex
     )
 }
 
-/** INTERNAL -- Use `not cls.isAbstract()` instead. */
-cached predicate concrete_class(PythonClassObjectInternal cls) {
+private cached predicate concrete_class(PythonClassObjectInternal cls) {
     cls.getClass() != abcMetaClassObject()
     or
     exists(Class c |
@@ -364,12 +363,19 @@ predicate missing_imported_module(ControlFlowNode imp, Context ctx, string name)
     )
 }
 
+/* Helper for missing modules to determine if name `x.y` is a module `x.y` or
+ * an attribute `y` of module `x`. This list should be added to as required.
+ */
 predicate common_module_name(string name) {
     name = "zope.interface"
     or
     name = "six.moves"
 }
 
+/** A declaration of a class, either a built-in class or a source definition
+ * This acts as a helper for ClassObjectInternal allowing some lookup without
+ * recursion.
+ */
 library class ClassDecl extends @py_object {
 
     ClassDecl() {
@@ -382,16 +388,19 @@ library class ClassDecl extends @py_object {
         result = "ClassDecl"
     }
 
+    /** Gets the class scope for Python class declarations */
     Class getClass() {
         result = this.(ControlFlowNode).getNode().(ClassExpr).getInnerScope()
     }
 
+    /** Holds if this class declares the attribute `name` */
     predicate declaresAttribute(string name) {
         exists(this.(Builtin).getMember(name))
         or
         exists(SsaVariable var | name = var.getId() and var.getAUse() = this.getClass().getANormalExit())
     }
 
+    /** Gets the name of this class */
     string getName() {
         result = this.(Builtin).getName()
         or
@@ -423,6 +432,7 @@ library class ClassDecl extends @py_object {
         this = Builtin::builtin("float")
     }
 
+    /** Holds if for class `C`, `C()` returns an instance of `C` */
     predicate callReturnsInstance() {
         exists(Class pycls |
             pycls = this.getClass() |
@@ -440,6 +450,7 @@ library class ClassDecl extends @py_object {
         this instanceof Builtin
     }
 
+    /** Holds if this class is the abstract base class */
     predicate isAbstractBaseClass(string name) {
         exists(Module m |
             m.getName() = "_abcoll"
@@ -450,5 +461,6 @@ library class ClassDecl extends @py_object {
             this.getName() = name
         )
     }
+
 }
 

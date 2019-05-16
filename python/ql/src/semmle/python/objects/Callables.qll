@@ -11,26 +11,33 @@ private import semmle.python.types.Builtins
 
 abstract class CallableObjectInternal extends ObjectInternal {
 
-    override int intValue() {
-        none()
-    }
+    /** Gets the name of this callable */
+    abstract string getName();
 
-    override string strValue() {
-        none()
-    }
+    /** Gets the scope of this callable if it has one */
+    abstract Function getScope();
+
+    /** Gets a call to this callable from the given context */
+    abstract CallNode getACall(PointsToContext ctx);
+
+    /** Gets a call to this callable */
+    CallNode getACall() { result = this.getACall(_) }
 
     override boolean isClass() { result = false }
 
-    /** The boolean value of this object, if it has one */
-    override boolean booleanValue() {
-        result = true
-    }
+    override boolean booleanValue() { result = true }
 
-    override ClassDecl getClassDeclaration() {
-        none()
-    }
+    override ClassDecl getClassDeclaration() { none() }
 
-    abstract string getName();
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
+    abstract NameNode getParameter(int n);
+
+    abstract NameNode getParameterByName(string name);
+
+    abstract predicate neverReturns();
+
+    override int length() { none() }
 
     pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
         none()
@@ -38,27 +45,15 @@ abstract class CallableObjectInternal extends ObjectInternal {
 
     pragma [noinline] override predicate attributesUnknown() { none() }
 
-    abstract Function getScope();
-
-    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
-
-    abstract CallNode getACall(PointsToContext ctx);
-
-    CallNode getACall() { result = this.getACall(_) }
-
-    abstract NameNode getParameter(int n);
-
-    abstract NameNode getParameterByName(string name);
-
-    override int length() { none() }
-
-    abstract predicate neverReturns();
-
     override predicate subscriptUnknown() { none() }
+
+    override int intValue() { none() }
+
+    override string strValue() { none() }
 
 }
 
-
+/** Class representing Python functions */
 class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFunctionObject {
 
     override Function getScope() {
@@ -176,6 +171,7 @@ private BasicBlock blockReturningNone(Function func) {
 }
 
 
+/** Class representing built-in functions such as `len` or `print`. */
 class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunctionObject {
 
     override Builtin getBuiltin() {
@@ -283,7 +279,8 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
 }
 
-
+/** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`.
+ */
 class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethodObject {
 
     override Builtin getBuiltin() {
@@ -372,6 +369,11 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
 
 }
 
+/** Class representing bound-methods.
+ * Note that built-in methods, such as `[].append` are also represented as bound-methods.
+ * Although built-in methods and bound-methods are distinct classes in CPython, their behaviour
+ * is the same and we treat them identically.
+ */
 class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
 
     override Builtin getBuiltin() {
