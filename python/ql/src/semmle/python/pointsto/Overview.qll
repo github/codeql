@@ -44,8 +44,11 @@
  * * Functions (both in the source and builtin)
  * * Literal constants defined in the source (string and numbers)
  * * Constant objects defined in compiled libraries and the interpreter (None, boolean, strings and numbers)
- * * Some calls (many calls are absent as we can infer what the call returns). Consider a call to represent the set of objects that it could return.
- * * Some other constructs that might create a new object.
+ * * A few other constants such as small integers.
+ * * Instances of classes
+ * * Bound methods, static- and class-methods, and properties.
+ * * Instances of `super`.
+ * * Missing modules, where no concrete module is found for an import.
  * 
  * A number of constructs that might create a new object, such as binary operations, are omitted if there is no useful information to can be attached to them and they would just increase the size of the database.
  * 
