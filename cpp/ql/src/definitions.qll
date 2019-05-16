@@ -126,47 +126,32 @@ private cached predicate constructorCallTypeMention(ConstructorCall cc, TypeMent
   )
 }
 
-/**
- * Gets an element, of kind `kind`, that element `e` uses, if any.
- *
- * The `kind` is a string representing what kind of use it is:
- *  - `"M"` for function and method calls
- *  - `"T"` for uses of types
- *  - `"V"` for variable accesses
- *  - `"X"` for macro accesses
- *  - `"I"` for import / include directives
- */
-Top definitionOf(Top e, string kind) {
+private predicate definitionOf1(Top e, Top def, string kind) {
   (
     (
       // call -> function called
       kind = "M" and
-      result = e.(Call).getTarget() and
+      def = e.(Call).getTarget() and
       not e.(Expr).isCompilerGenerated() and
       not e instanceof ConstructorCall // handled elsewhere
     ) or (
-      // access -> function, variable or enum constant accessed
-      kind = "V" and
-      result = e.(Access).getTarget() and
-      not e.(Expr).isCompilerGenerated()
-    ) or (
       // macro access -> macro accessed
       kind = "X" and
-      result = e.(MacroAccess).getMacro()
+      def = e.(MacroAccess).getMacro()
     ) or (
       // type mention -> type
       kind = "T" and
-      e.(TypeMention).getMentionedType() = result and
+      e.(TypeMention).getMentionedType() = def and
       not constructorCallTypeMention(_, e) and // handled elsewhere
       // Multiple type mentions can be generated when a typedef is used, and
       // in such cases we want to exclude all but the originating typedef.
       not exists(Type secondary |
         exists(TypeMention tm, File f, int startline, int startcol |
-          typeMentionStartLoc(e, result, f, startline, startcol) and
+          typeMentionStartLoc(e, def, f, startline, startcol) and
           typeMentionStartLoc(tm, secondary, f, startline, startcol) and
           (
-            result = secondary.(TypedefType).getBaseType() or
-            result = secondary.(TypedefType).getBaseType().(SpecifiedType).getBaseType()
+            def = secondary.(TypedefType).getBaseType() or
+            def = secondary.(TypedefType).getBaseType().(SpecifiedType).getBaseType()
           )
         )
       )
@@ -179,12 +164,12 @@ Top definitionOf(Top e, string kind) {
       kind = "M" and
       exists(ConstructorCall cc |
         constructorCallTypeMention(cc, e) and
-        result = cc.getTarget()
+        def = cc.getTarget()
       )
     ) or (
       // include -> included file
       kind = "I" and
-      result = e.(Include).getIncludedFile() and
+      def = e.(Include).getIncludedFile() and
 
       // exclude `#include` directives containing macros
       not exists(MacroInvocation mi, Location l1, Location l2 |
@@ -213,4 +198,43 @@ Top definitionOf(Top e, string kind) {
     // in future, if we're careful to ensure the above don't apply.
     not e.isFromTemplateInstantiation(_)
   )
+}
+
+private predicate definitionOf2(Top e, Top def, string kind) {
+  (
+    (
+      // access -> function, variable or enum constant accessed
+      kind = "V" and
+      def = e.(Access).getTarget() and
+      not e.(Expr).isCompilerGenerated()
+    )
+  ) and (
+    // exclude things inside macro invocations, as they will overlap
+    // with the macro invocation.
+    not e.(Element).isInMacroExpansion() and
+
+    // exclude results from template instantiations, as:
+    // (1) these dependencies will often be caused by a choice of
+    // template parameter, which is non-local to this part of code; and
+    // (2) overlapping results pointing to different locations will
+    // be very common.
+    // It's possible we could allow a subset of these dependencies
+    // in future, if we're careful to ensure the above don't apply.
+    not e.isFromTemplateInstantiation(_)
+  )
+}
+
+/**
+ * Gets an element, of kind `kind`, that element `e` uses, if any.
+ *
+ * The `kind` is a string representing what kind of use it is:
+ *  - `"M"` for function and method calls
+ *  - `"T"` for uses of types
+ *  - `"V"` for variable accesses
+ *  - `"X"` for macro accesses
+ *  - `"I"` for import / include directives
+ */
+Top definitionOf(Top e, string kind) {
+  definitionOf1(e, result, kind) or
+  definitionOf2(e, result, kind)
 }
