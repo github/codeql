@@ -202,11 +202,15 @@ private predicate legalShortName(string name) {
 }
 
 /** Holds if `f` is potentially a source package.
- * Does it have an __init__.py file and is it within the source archive?
+ * Does it have an __init__.py file (or --respect-init=False for Python 2) and is it within the source archive?
  */
 private predicate isPotentialSourcePackage(Folder f) {
     f.getRelativePath() != "" and
-    exists(f.getFile("__init__.py"))
+    (
+        exists(f.getFile("__init__.py"))
+        or
+        py_flags_versioned("options.respect_init", "False", _) and major_version() = 2
+    )
 }
 
 private string moduleNameFromBase(Container file) {
