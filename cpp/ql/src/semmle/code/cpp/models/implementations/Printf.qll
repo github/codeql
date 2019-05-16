@@ -176,6 +176,71 @@ class Snprintf extends FormattingFunction {
 }
 
 /**
+ * The standard functions `vprintf` and `vwprintf`, and their
+ * assorted variants.
+ */
+class Vprintf extends FormattingFunction {
+  Vprintf() {
+    this instanceof TopLevelFunction and
+    (
+      hasGlobalName("vprintf") or
+      hasGlobalName("__builtin_vprintf") or
+      hasGlobalName("vfprintf") or
+      hasGlobalName("__builtin_vfprintf") or
+      hasGlobalName("vsprintf") or
+      hasGlobalName("__builtin_vsprintf") or
+      hasGlobalName("vsnprintf") or
+      hasGlobalName("__builtin_vsnprintf") or
+      hasGlobalName("vprintf_s") or
+      hasGlobalName("vfprintf_s") or
+      hasGlobalName("vsprintf_s") or
+      hasGlobalName("vsnprintf_s") or
+      hasGlobalName("_vsnprintf_s") or
+      hasGlobalName("_vsnprintf_s_l") or
+      hasGlobalName("vwprintf") or
+      hasGlobalName("vfwprintf") or
+      hasGlobalName("vswprintf") or
+      hasGlobalName("vwprintf_s") or
+      hasGlobalName("vfwprintf_s") or
+      hasGlobalName("vswprintf_s") or
+      hasGlobalName("_vsnwprintf_s") or
+      hasGlobalName("_vsnwprintf_s_l")
+    ) and
+    not exists(getDefinition().getFile().getRelativePath())
+  }
+
+  override int getFormatParameterIndex() {
+    if getName().matches("%\\_l")
+    then result = getFirstFormatArgumentIndex() - 2
+    else result = getFirstFormatArgumentIndex() - 1
+  }
+
+  override int getFirstFormatArgumentIndex() { result = getNumberOfParameters() - 1 }
+
+  override predicate isWideCharDefault() { getName().matches("%w%") }
+
+  override int getOutputParameterIndex() {
+    not (getName().matches("%vprintf%") or getName().matches("%vwprintf%")) and
+    result = 0
+  }
+
+  /**
+   * Holds if this function returns the length of the formatted string
+   * that would have been output, regardless of the amount of space
+   * in the buffer.
+   */
+  predicate returnsFullFormatLength() {
+    (
+      hasGlobalName("vsnprintf") or
+      hasGlobalName("__builtin_vsnprintf")
+    ) and
+    not exists(getDefinition().getFile().getRelativePath())
+  }
+
+  override int getSizeParameterIndex() { getName().matches("%sn%") and result = 1 }
+}
+
+/**
  * The Microsoft `StringCchPrintf` function and variants.
  */
 class StringCchPrintf extends FormattingFunction {
