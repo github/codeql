@@ -1143,6 +1143,23 @@ module DataFlow {
       succ = TDestructuringPatternNode(def.getTarget())
     )
     or
+    // flow from the value read from a property pattern to the value being
+    // destructured in the child pattern. For example, for
+    //
+    //   let { p: { q: x } } = obj
+    //
+    // add edge from the 'p:' pattern to '{ q:x }'.
+    exists(PropertyPattern pattern |
+      pred = TPropNode(pattern) and
+      succ = TDestructuringPatternNode(pattern.getValuePattern())
+    )
+    or
+    // Like the step above, but for array destructuring patterns.
+    exists(Expr elm |
+      pred = TElementPatternNode(_, elm) and
+      succ = TDestructuringPatternNode(elm)
+    )
+    or
     // flow from 'this' parameter into 'this' expressions
     exists(ThisExpr thiz |
       pred = TThisNode(thiz.getBindingContainer()) and
@@ -1154,7 +1171,7 @@ module DataFlow {
    * Holds if there is a step from `pred` to `succ` through a field accessed through `this` in a class.
    */
   predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists (ClassNode cls, string prop |
+    exists(ClassNode cls, string prop |
       pred = cls.getAReceiverNode().getAPropertyWrite(prop).getRhs() and
       succ = cls.getAReceiverNode().getAPropertyRead(prop)
     )
