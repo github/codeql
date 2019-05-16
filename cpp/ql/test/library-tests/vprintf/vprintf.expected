@@ -1,0 +1,2 @@
+| nested.cpp:21:5:21:12 | call to snprintf | Format string fmt0 passed to snprintf |
+| nested.cpp:58:22:58:33 | call to _vsnprintf_s | Format string fmt passed to _vsnprintf_s |
