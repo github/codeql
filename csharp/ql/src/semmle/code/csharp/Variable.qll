@@ -14,53 +14,11 @@ private import semmle.code.csharp.ExprOrStmtParent
  * A variable. Either a variable with local scope (`LocalScopeVariable`) or a field (`Field`).
  */
 class Variable extends Assignable, DotNet::Variable, @variable {
-  /** Gets the type that declares this variable, if any. */
-  override ValueOrRefType getDeclaringType() {
-    fields(this, _, _, result, _, _)
-    or
-    exists(Expr e |
-      localvars(this, _, _, _, _, e) and
-      result = e.getEnclosingStmt().getEnclosingCallable().getDeclaringType()
-    )
-    or
-    exists(Callable parent |
-      params(this, _, _, _, _, parent, _) and result = parent.getDeclaringType()
-    )
-    or
-    exists(Indexer indexer |
-      params(this, _, _, _, _, indexer, _) and result = indexer.getDeclaringType()
-    )
-    or
-    exists(@delegate_type t | params(this, _, _, _, _, t, _) and result = t)
-    or
-    exists(Expr parent |
-      params(this, _, _, _, _, parent, _) and
-      result = parent.getEnclosingCallable().getDeclaringType()
-    )
-  }
-
   override Variable getSourceDeclaration() { result = this }
 
-  override string getName() {
-    params(this, result, _, _, _, _, _) or
-    localvars(this, _, result, _, _, _) or
-    fields(this, _, result, _, _, _)
-  }
-
-  /** Gets the type of this variable. For example `int` in `int x`. */
-  override Type getType() {
-    params(this, _, getTypeRef(result), _, _, _, _) or
-    localvars(this, _, _, _, getTypeRef(result), _) or
-    fields(this, _, _, _, getTypeRef(result), _)
-  }
-
-  override Location getALocation() {
-    param_location(this, result) or
-    localvar_location(this, result) or
-    field_location(this, result)
-  }
-
   override VariableAccess getAnAccess() { result.getTarget() = this }
+
+  override Type getType() { none() }
 
   /** Gets the expression used to initialise this variable, if any. */
   Expr getInitializer() { none() }
@@ -222,6 +180,18 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
 
   override Parameter getSourceDeclaration() { params(this, _, _, _, _, _, result) }
 
+  override ValueOrRefType getDeclaringType() {
+    exists(Parameterizable p | p = this.getDeclaringElement() |
+      if p instanceof DelegateType then result = p else result = p.getDeclaringType()
+    )
+  }
+
+  override string getName() { params(this, result, _, _, _, _, _) }
+
+  override Type getType() { params(this, _, getTypeRef(result), _, _, _, _) }
+
+  override Location getALocation() { param_location(this, result) }
+
   override string toString() { result = this.getName() }
 
   /**
@@ -272,8 +242,6 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
     // At least one other definition than the implicit entry definition
     strictcount(AssignableDefinition def | def.getTarget() = this) > 1
   }
-
-  override Type getType() { result = LocalScopeVariable.super.getType() }
 }
 
 /**
@@ -354,6 +322,16 @@ class LocalVariable extends LocalScopeVariable, @local_variable {
   override Callable getCallable() { result = getEnclosingCallable() }
 
   override predicate isRef() { localvars(this, 3, _, _, _, _) }
+
+  override ValueOrRefType getDeclaringType() {
+    result = this.getVariableDeclExpr().getEnclosingCallable().getDeclaringType()
+  }
+
+  override string getName() { localvars(this, _, result, _, _, _) }
+
+  override Type getType() { localvars(this, _, _, _, getTypeRef(result), _) }
+
+  override Location getALocation() { localvar_location(this, result) }
 }
 
 /**
@@ -398,6 +376,14 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
   override Field getSourceDeclaration() { fields(this, _, _, _, _, result) }
 
   override FieldAccess getAnAccess() { result = Variable.super.getAnAccess() }
+
+  override ValueOrRefType getDeclaringType() { fields(this, _, _, result, _, _) }
+
+  override string getName() { fields(this, _, result, _, _, _) }
+
+  override Type getType() { fields(this, _, _, _, getTypeRef(result), _) }
+
+  override Location getALocation() { field_location(this, result) }
 
   override string toString() { result = Variable.super.toString() }
 }
