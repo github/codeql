@@ -1,18 +1,110 @@
 import cpp
 private import PrimitiveBasicBlocks
 private class Node = ControlFlowNodeBase;
+import Cached
 
-/** A call to a function known not to return. */
-predicate aborting(FunctionCall c) {
-  not potentiallyReturningFunctionCall(c)
+cached
+private module Cached {
+  /** A call to a function known not to return. */
+  cached
+  predicate aborting(FunctionCall c) {
+    not potentiallyReturningFunctionCall(c)
+  }
+
+  /**
+   * Functions that are known not to return. This is normally because the function
+   * exits the program or longjmps to another location.
+   */
+  cached
+  predicate abortingFunction(Function f) {
+    not potentiallyReturningFunction(f)
+  }
+
+  /**
+   * An adapted version of the `successors_extended` relation that excludes
+   * impossible control-flow edges - flow will never occur along these
+   * edges, so it is safe (and indeed sensible) to remove them.
+   */
+  cached predicate successors_adapted(Node pred, Node succ) {
+    successors_extended(pred, succ)
+    and possiblePredecessor(pred)
+    and not impossibleFalseEdge(pred, succ)
+    and not impossibleTrueEdge(pred, succ)
+    and not impossibleSwitchEdge(pred, succ)
+    and not impossibleDefaultSwitchEdge(pred, succ)
+    and not impossibleFunctionReturn(pred, succ)
+    and not getOptions().exprExits(pred)
+  }
+
+  /**
+   * Provides predicates that should be exported as if they were top-level
+   * predicates in `ControlFlowGraph.qll`. They have to be defined in this file
+   * in order to be grouped in a `cached module` with other predicates that
+   * must go in the same cached stage.
+   */
+  cached
+  module ControlFlowGraphPublic {
+    /**
+     * Holds if the control-flow node `n` is reachable, meaning that either
+     * it is an entry point, or there exists a path in the control-flow
+     * graph of its function that connects an entry point to it.
+     * Compile-time constant conditions are taken into account, so that
+     * the call to `f` is not reachable in `if (0) f();` even if the
+     * `if` statement as a whole is reachable.
+     */
+    cached
+    predicate reachable(ControlFlowNode n)
+    {
+      // Okay to use successors_extended directly here
+      reachableRecursive(n)
+      or
+      (not successors_extended(_,n) and not successors_extended(n,_))
+    }
+
+    /** Holds if `condition` always evaluates to a nonzero value. */
+    cached
+    predicate conditionAlwaysTrue(Expr condition) {
+      conditionAlways(condition, true)
+    }
+
+    /** Holds if `condition` always evaluates to zero. */
+    cached
+    predicate conditionAlwaysFalse(Expr condition) {
+      conditionAlways(condition, false)
+      or
+      // If a loop condition evaluates to false upon entry, it will always
+      // be false
+      loopConditionAlwaysUponEntry(_, condition, false)
+    }
+
+    /**
+     * The condition `condition` for the loop `loop` is provably `true` upon entry.
+     * That is, at least one iteration of the loop is guaranteed.
+     */
+    cached
+    predicate loopConditionAlwaysTrueUponEntry(ControlFlowNode loop, Expr condition) {
+      loopConditionAlwaysUponEntry(loop, condition, true)
+    }
+  }
 }
 
-/**
- * Functions that are known not to return. This is normally because the function
- * exits the program or longjmps to another location.
- */
-predicate abortingFunction(Function f) {
-  not potentiallyReturningFunction(f)
+private predicate conditionAlways(Expr condition, boolean b) {
+  exists(ConditionEvaluator x, int val |
+    val = x.getValue(condition) |
+    val != 0 and b = true
+    or
+    val = 0 and b = false
+  )
+}
+
+private predicate loopConditionAlwaysUponEntry(ControlFlowNode loop, Expr condition, boolean b) {
+  exists(LoopEntryConditionEvaluator x, int val |
+    x.isLoopEntry(condition, loop) and
+    val = x.getValue(condition) |
+    val != 0 and b = true
+    or
+    val = 0 and b = false
+  )
 }
 
 /**
@@ -61,7 +153,7 @@ private predicate potentiallyReturningFunction(Function f) {
     nonAnalyzableFunction(f)
     or
     // otherwise the exit-point of `f` must be reachable
-    reachable(f)
+    reachableRecursive(f)
   )
 }
 
@@ -202,19 +294,20 @@ private predicate possiblePredecessor(Node pred) {
 }
 
 /**
- * An adapted version of the `successors_extended` relation that excludes
- * impossible control-flow edges - flow will never occur along these
- * edges, so it is safe (and indeed sensible) to remove them.
+ * Holds if the control-flow node `n` is reachable, meaning that either
+ * it is an entry point, or there exists a path in the control-flow
+ * graph of its function that connects an entry point to it.
+ * Compile-time constant conditions are taken into account, so that
+ * the call to `f` is not reachable in `if (0) f();` even if the
+ * `if` statement as a whole is reachable.
  */
-cached predicate successors_adapted(Node pred, Node succ) {
-  successors_extended(pred, succ)
-  and possiblePredecessor(pred)
-  and not impossibleFalseEdge(pred, succ)
-  and not impossibleTrueEdge(pred, succ)
-  and not impossibleSwitchEdge(pred, succ)
-  and not impossibleDefaultSwitchEdge(pred, succ)
-  and not impossibleFunctionReturn(pred, succ)
-  and not getOptions().exprExits(pred)
+private predicate reachableRecursive(ControlFlowNode n)
+{
+  exists(Function f | f.getEntryPoint() = n)
+  or
+  n instanceof Handler
+  or
+  reachableRecursive(n.getAPredecessor())
 }
 
 private predicate compileTimeConstantInt(Expr e, int val) {
