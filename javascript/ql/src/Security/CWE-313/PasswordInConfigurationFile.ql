@@ -54,7 +54,7 @@ where
   (
     key.toLowerCase() = "password" and
     // exclude interpolations of environment variables
-    not val.regexpMatch("\\$\\w+|\\$[{(].+[)}]|%.*%")
+    not val.regexpMatch("\\$.*|%.*%")
     or
     key.toLowerCase() != "readme" and
     // look for `password=...`, but exclude `password=;`, `password="$(...)"`,
