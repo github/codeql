@@ -1,7 +1,7 @@
 /**
  * @name Filter: non-test files
  * @description Only keep results that aren't in tests
- * @kind file-classifier
+ * @kind problem
  * @id py/not-test-file-filter
  */
 import external.DefectFilter
