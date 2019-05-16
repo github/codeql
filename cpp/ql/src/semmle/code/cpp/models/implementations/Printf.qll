@@ -8,6 +8,7 @@ class Printf extends FormattingFunction {
     this instanceof TopLevelFunction and
     (
       hasGlobalName("printf") or
+      hasGlobalName("__builtin_printf") or
       hasGlobalName("printf_s") or
       hasGlobalName("wprintf") or
       hasGlobalName("wprintf_s") or
@@ -32,6 +33,7 @@ class Fprintf extends FormattingFunction {
     this instanceof TopLevelFunction and
     (
       hasGlobalName("fprintf") or
+      hasGlobalName("__builtin_fprintf") or
       hasGlobalName("fwprintf") or
       hasGlobalName("g_fprintf")
     ) and
@@ -53,6 +55,7 @@ class Sprintf extends FormattingFunction {
     this instanceof TopLevelFunction and
     (
       hasGlobalName("sprintf") or
+      hasGlobalName("__builtin_sprintf") or
       hasGlobalName("_sprintf_l") or
       hasGlobalName("__swprintf_l") or
       hasGlobalName("wsprintf") or
@@ -100,6 +103,7 @@ class Snprintf extends FormattingFunction {
     this instanceof TopLevelFunction and
     (
       hasGlobalName("snprintf") or // C99 defines snprintf
+      hasGlobalName("__builtin_snprintf") or
       hasGlobalName("swprintf") or // The s version of wide-char printf is also always the n version
       // Microsoft has _snprintf as well as several other variations
       hasGlobalName("sprintf_s") or
