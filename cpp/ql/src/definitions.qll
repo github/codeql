@@ -135,10 +135,6 @@ private predicate definitionOf1(Top e, Top def, string kind) {
       not e.(Expr).isCompilerGenerated() and
       not e instanceof ConstructorCall // handled elsewhere
     ) or (
-      // macro access -> macro accessed
-      kind = "X" and
-      def = e.(MacroAccess).getMacro()
-    ) or (
       // type mention -> type
       kind = "T" and
       e.(TypeMention).getMentionedType() = def and
@@ -185,6 +181,27 @@ private predicate definitionOf1(Top e, Top def, string kind) {
     // with the macro invocation.
     not e.(Element).isInMacroExpansion() and
 
+    // exclude results from template instantiations, as:
+    // (1) these dependencies will often be caused by a choice of
+    // template parameter, which is non-local to this part of code; and
+    // (2) overlapping results pointing to different locations will
+    // be very common.
+    // It's possible we could allow a subset of these dependencies
+    // in future, if we're careful to ensure the above don't apply.
+    not e.isFromTemplateInstantiation(_)
+  )
+}
+
+private predicate definitionOf2(Top e, Top def, string kind) {
+  (
+    // macro access -> macro accessed
+    kind = "X" and
+    def = e.(MacroAccess).getMacro()
+  ) and (
+    // exclude things inside macro invocations, as they will overlap
+    // with the macro invocation.
+    not e.(Element).isInMacroExpansion() and
+
     // exclude nested macro invocations, as they will overlap with
     // the top macro invocation.
     not exists(e.(MacroAccess).getParentInvocation()) and
@@ -200,14 +217,12 @@ private predicate definitionOf1(Top e, Top def, string kind) {
   )
 }
 
-private predicate definitionOf2(Top e, Top def, string kind) {
+private predicate definitionOf3(Top e, Top def, string kind) {
   (
-    (
-      // access -> function, variable or enum constant accessed
-      kind = "V" and
-      def = e.(Access).getTarget() and
-      not e.(Expr).isCompilerGenerated()
-    )
+    // access -> function, variable or enum constant accessed
+    kind = "V" and
+    def = e.(Access).getTarget() and
+    not e.(Expr).isCompilerGenerated()
   ) and (
     // exclude things inside macro invocations, as they will overlap
     // with the macro invocation.
@@ -236,5 +251,6 @@ private predicate definitionOf2(Top e, Top def, string kind) {
  */
 Top definitionOf(Top e, string kind) {
   definitionOf1(e, result, kind) or
-  definitionOf2(e, result, kind)
+  definitionOf2(e, result, kind) or
+  definitionOf3(e, result, kind)
 }
