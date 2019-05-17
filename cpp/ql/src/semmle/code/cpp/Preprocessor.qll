@@ -73,13 +73,23 @@ abstract class PreprocessorBranchDirective extends PreprocessorDirective {
    * `somePreprocessorBranchDirective`.
    */
   PreprocessorBranchDirective getNext() {
-    getIf() = result.getIf() and
-    getLocation().getStartLine() < result.getLocation().getStartLine() and
-    not exists(PreprocessorBranchDirective other |
-      getIf() = other.getIf() and
-      getLocation().getStartLine() < other.getLocation().getStartLine() and
-      other.getLocation().getStartLine() < result.getLocation().getStartLine()
+    exists(PreprocessorBranch branch |
+      this.getIndexInBranch(branch) + 1 = result.getIndexInBranch(branch)
     )
+  }
+
+  /**
+   * Gets the index of this branching directive within the matching #if,
+   * #ifdef or #ifndef.
+   */
+  private int getIndexInBranch(PreprocessorBranch branch) {
+    this = rank[result](PreprocessorBranchDirective other |
+        other.getIf() = branch
+      |
+        other
+        order by
+          other.getLocation().getStartLine()
+      )
   }
 }
 
