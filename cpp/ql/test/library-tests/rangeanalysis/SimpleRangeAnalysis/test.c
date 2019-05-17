@@ -398,3 +398,29 @@ unsigned int test_comma01(unsigned int x) {
   y2 = (y++, y += 3, y);
   return y1 + y2;
 }
+
+void out(int i);
+
+void test17() {
+  int i, j;
+
+  i = 10;
+  out(i); // 10
+
+  i = 10;
+  i += 10;
+  out(i); // 20
+
+  i = 40;
+  i -= 10;
+  out(i); // 30
+
+  i = j = 40;
+  out(i); // 40
+
+  i = (j += 10);
+  out(i); // 50
+
+  i = 20 + (j -= 10);
+  out(i); // 60
+}
