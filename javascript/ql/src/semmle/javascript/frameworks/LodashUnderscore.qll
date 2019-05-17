@@ -360,6 +360,47 @@ module LodashUnderscore {
     name = "eachRight" or
     name = "first"
   }
+
+  /**
+   * A data flow step propagating an exception thrown from a callback to a Lodash/Underscore function.
+   */
+  private class ExceptionStep extends DataFlow::CallNode, DataFlow::AdditionalFlowStep {
+    ExceptionStep() {
+      exists(string name |
+        this = member(name).getACall()
+      |
+        // Members ending with By, With, or While indicate that they are a variant of
+        // another function that takes a callback.
+        name.matches("%By") or
+        name.matches("%With") or
+        name.matches("%While") or
+
+        // Other members that don't fit the above pattern.
+        name = "each" or
+        name = "eachRight" or
+        name = "every" or
+        name = "filter" or
+        name = "find" or
+        name = "findLast" or
+        name = "flatMap" or
+        name = "flatMapDeep" or
+        name = "flatMapDepth" or
+        name = "forEach" or
+        name = "forEachRight" or
+        name = "partition" or
+        name = "reduce" or
+        name = "reduceRight" or
+        name = "replace" or
+        name = "some" or
+        name = "transform"
+      )
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = getAnArgument().(DataFlow::FunctionNode).getExceptionalReturn() and
+      succ = this.getExceptionalReturn()
+    }
+  }
 }
 
 /**

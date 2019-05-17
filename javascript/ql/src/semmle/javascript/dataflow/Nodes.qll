@@ -141,6 +141,13 @@ class InvokeNode extends DataFlow::SourceNode {
    * likely to be imprecise or incomplete.
    */
   predicate isUncertain() { isImprecise() or isIncomplete() }
+
+  /**
+   * Gets the data flow node representing an exception thrown from this invocation.
+   */
+  DataFlow::ExceptionalInvocationReturnNode getExceptionalReturn() {
+    DataFlow::exceptionalInvocationReturnNode(result, asExpr())
+  }
 }
 
 /** Auxiliary module used to cache a few related predicates together. */
@@ -356,6 +363,13 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
    * To get the data flow node for `this` in an arrow function, consider using `getThisBinder().getReceiver()`.
    */
   ThisNode getReceiver() { result.getBinder() = this }
+
+  /**
+   * Gets the data flow node representing an exception thrown from this function.
+   */
+  DataFlow::ExceptionalFunctionReturnNode getExceptionalReturn() {
+    DataFlow::exceptionalFunctionReturnNode(result, astNode)
+  }
 }
 
 /** A data flow node corresponding to an object literal expression. */

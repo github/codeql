@@ -55,6 +55,8 @@ private module NodeTracking {
     pred = succ.getAPredecessor()
     or
     any(DataFlow::AdditionalFlowStep afs).step(pred, succ)
+    or
+    localExceptionStep(pred, succ)
   }
 
   /**
@@ -153,9 +155,16 @@ private module NodeTracking {
    * which is either an argument or a definition captured by the function, flows,
    * possibly through callees.
    */
-  private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node invk) {
+  private predicate flowThroughCall(DataFlow::Node input, DataFlow::Node output) {
     exists(Function f, DataFlow::ValueNode ret |
       ret.asExpr() = f.getAReturnedExpr() and
+      reachableFromInput(f, output, input, ret, _)
+    )
+    or
+    exists(Function f, DataFlow::Node invk, DataFlow::Node ret |
+      DataFlow::exceptionalFunctionReturnNode(ret, f) and
+      DataFlow::exceptionalInvocationReturnNode(output, invk.asExpr()) and
+      calls(invk, f) and
       reachableFromInput(f, invk, input, ret, _)
     )
   }

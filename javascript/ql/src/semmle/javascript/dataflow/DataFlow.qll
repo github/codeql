@@ -41,7 +41,9 @@ module DataFlow {
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
     } or
-    THtmlAttributeNode(HTML::Attribute attr)
+    THtmlAttributeNode(HTML::Attribute attr) or
+    TExceptionalFunctionReturnNode(Function f) or
+    TExceptionalInvocationReturnNode(InvokeExpr e)
 
   /**
    * A node in the data flow graph.
@@ -774,6 +776,50 @@ module DataFlow {
   }
 
   /**
+   * A data flow node representing the exceptions thrown by a function.
+   */
+  class ExceptionalFunctionReturnNode extends DataFlow::Node, TExceptionalFunctionReturnNode {
+    Function function;
+
+    ExceptionalFunctionReturnNode() { this = TExceptionalFunctionReturnNode(function) }
+
+    override string toString() { result = "exceptional return of " + function.describe() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /**
+     * Gets the function corresponding to this exceptional return node.
+     */
+    Function getFunction() { result = function }
+  }
+
+  /**
+   * A data flow node representing the exceptions thrown by the callee of an invocation.
+   */
+  class ExceptionalInvocationReturnNode extends DataFlow::Node, TExceptionalInvocationReturnNode {
+    InvokeExpr invoke;
+
+    ExceptionalInvocationReturnNode() { this = TExceptionalInvocationReturnNode(invoke) }
+
+    override string toString() { result = "exceptional return of " + invoke.toString() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      invoke.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /**
+     * Gets the invocation corresponding to this exceptional return node.
+     */
+    DataFlow::InvokeNode getInvocation() { result = invoke.flow() }
+  }
+
+  /**
    * Provides classes representing various kinds of calls.
    *
    * Subclass the classes in this module to introduce new kinds of calls. If you want to
@@ -975,6 +1021,20 @@ module DataFlow {
    */
   DataFlow::Node destructuredModuleImportNode(ImportDeclaration imprt) {
     result = TDestructuredModuleImportNode(imprt)
+  }
+
+  /**
+   * INTERNAL: Use `ExceptionalInvocationReturnNode` instead.
+   */
+  predicate exceptionalInvocationReturnNode(DataFlow::Node nd, InvokeExpr invocation) {
+    nd = TExceptionalInvocationReturnNode(invocation)
+  }
+
+  /**
+   * INTERNAL: Use `ExceptionalFunctionReturnNode` instead.
+   */
+  predicate exceptionalFunctionReturnNode(DataFlow::Node nd, Function function) {
+    nd = TExceptionalFunctionReturnNode(function)
   }
 
   /**

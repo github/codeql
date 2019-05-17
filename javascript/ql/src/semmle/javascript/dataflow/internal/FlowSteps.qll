@@ -51,6 +51,35 @@ predicate localFlowStep(
   )
   or
   configuration.isAdditionalFlowStep(pred, succ, predlbl, succlbl)
+  or
+  localExceptionStep(pred, succ) and
+  predlbl = succlbl
+}
+
+/**
+ * Holds if an exception thrown from `pred` can propagate locally to `succ`.
+ */
+predicate localExceptionStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(Expr expr |
+    expr = any(ThrowStmt throw).getExpr() and
+    pred = expr.flow()
+    or
+    DataFlow::exceptionalInvocationReturnNode(pred, expr)
+  |
+    // Propagate out of enclosing function.
+    not exists(getEnclosingTryStmt(expr.getEnclosingStmt())) and
+    exists(Function f |
+      f = expr.getEnclosingFunction() and
+      DataFlow::exceptionalFunctionReturnNode(succ, f)
+    )
+    or
+    // Propagate to enclosing try/catch.
+    // To avoid false flow, we only propagate to an unguarded catch clause.
+    exists(TryStmt try |
+      try = getEnclosingTryStmt(expr.getEnclosingStmt()) and
+      DataFlow::parameterNode(succ, try.getCatchClause().getAParameter())
+    )
+  )
 }
 
 /**
@@ -121,8 +150,23 @@ private module CachedSteps {
   predicate callStep(DataFlow::Node pred, DataFlow::Node succ) { argumentPassing(_, pred, _, succ) }
 
   /**
-   * Holds if there is a flow step from `pred` to `succ` through returning
-   * from a function call or the receiver flowing out of a constructor call.
+   * Gets the `try` statement containing `stmt` without crossing function boundaries
+   * or other `try ` statements.
+   */
+  cached
+  TryStmt getEnclosingTryStmt(Stmt stmt) {
+    result.getBody() = stmt
+    or
+    not stmt instanceof Function and
+    not stmt = any(TryStmt try).getBody() and
+    result = getEnclosingTryStmt(stmt.getParentStmt())
+  }
+
+  /**
+   * Holds if there is a flow step from `pred` to `succ` through:
+   * - returning a value from a function call, or
+   * - throwing an exception out of a function call, or
+   * - the receiver flowing out of a constructor call.
    */
   cached
   predicate returnStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -131,6 +175,12 @@ private module CachedSteps {
       or
       succ instanceof DataFlow::NewNode and
       DataFlow::thisNode(pred, f)
+    )
+    or
+    exists(InvokeExpr invoke, Function fun |
+      DataFlow::exceptionalFunctionReturnNode(pred, fun) and
+      DataFlow::exceptionalInvocationReturnNode(succ, invoke) and
+      calls(invoke.flow(), fun)
     )
   }
 

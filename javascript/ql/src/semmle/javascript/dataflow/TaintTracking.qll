@@ -580,6 +580,30 @@ module TaintTracking {
   }
 
   /**
+   * A taint step through an exception constructor, such as `x` to `new Error(x)`.
+   */
+  class ErrorConstructorTaintStep extends AdditionalTaintStep, DataFlow::InvokeNode {
+    ErrorConstructorTaintStep() {
+      exists(string name |
+        this = DataFlow::globalVarRef(name).getAnInvocation()
+      |
+        name = "Error" or
+        name = "EvalError" or
+        name = "RangeError" or
+        name = "ReferenceError" or
+        name = "SyntaxError" or
+        name = "TypeError" or
+        name = "URIError"
+      )
+    }
+
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      pred = getArgument(0) and
+      succ = this
+    }
+  }
+
+  /**
    * A conditional checking a tainted string against a regular expression, which is
    * considered to be a sanitizer for all configurations.
    */
