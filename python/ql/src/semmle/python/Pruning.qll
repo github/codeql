@@ -496,6 +496,7 @@ module Pruner {
     }
 
     /** Holds if the constraint `preval` holds for `var` on edge `pred` -> `succ` as a result of a prior test or assignment */
+    pragma [nomagic]
     predicate priorConstraint(UnprunedBasicBlock pred, UnprunedBasicBlock succ, Constraint preval, SsaVariable var) {
         not (blacklisted(var) and preval = TTruthy(_))
         and
