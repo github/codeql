@@ -73,13 +73,24 @@ abstract class PreprocessorBranchDirective extends PreprocessorDirective {
    * `somePreprocessorBranchDirective`.
    */
   PreprocessorBranchDirective getNext() {
-    getIf() = result.getIf() and
-    getLocation().getStartLine() < result.getLocation().getStartLine() and
+    result = getAfter() and
     not exists(PreprocessorBranchDirective other |
-      getIf() = other.getIf() and
-      getLocation().getStartLine() < other.getLocation().getStartLine() and
+      other = getAfter() and
       other.getLocation().getStartLine() < result.getLocation().getStartLine()
     )
+  }
+  
+  /**
+   * Gets all the following `#elif`, `#else` or `#endif` matching this branching
+   * directive.
+   *
+   * For example `somePreprocessorBranchDirective.getIf().getNext().getAfter()`
+   * gets the third, fourth, fifth, etc. directives in the same construct as
+   * `somePreprocessorBranchDirective`.
+   */
+  PreprocessorBranchDirective getAfter() {
+    getIf() = result.getIf() and
+    getLocation().getStartLine() < result.getLocation().getStartLine()
   }
 }
 
