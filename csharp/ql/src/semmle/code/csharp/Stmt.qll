@@ -388,20 +388,19 @@ class RecursivePatternCase extends LabeledStmt, CaseStmt {
    * For example, `string` in `case string { Length: 0 } empty:`.
    */
   TypeAccess getTypeAccess() { result = getChild(1) }
-  
+
   /**
    * Gets the checked type of this recursive pattern, if any.
    * For example, `string` in `case string { Length: 0 } empty:`.
    */
   Type getCheckedType() { result = getTypeAccess().getType() }
-  
-    /**
+
+  /**
    * Gets the recursive pattern of this case.
    * For example, `{ Length: 0 }` in `case string { Length: 0 } empty:`.
    */
-  
   RecursivePatternExpr getRecursivePattern() { result = pattern }
-  
+
   LocalVariableDeclExpr getVariableDeclExpr() { result = getChild(0) }
 }
 
