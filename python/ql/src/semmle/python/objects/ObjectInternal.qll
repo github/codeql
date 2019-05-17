@@ -97,6 +97,7 @@ class ObjectInternal extends TObject {
      * for an object `x` the attribute `name` (`x.name`) may refer to a bound-method, an attribute of the 
      * instance, or an attribute of the class.
      */
+    pragma [nomagic]
     abstract predicate attribute(string name, ObjectInternal value, CfgOrigin origin);
 
     /** Holds if the attributes of this object are wholy or partly unknowable */
