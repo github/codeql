@@ -148,7 +148,7 @@ abstract class UserInput extends DataFlow::Node { }
  *
  * Input that may be controlled by a remote user.
  */
-class RemoteUserInput extends UserInput {
+deprecated class RemoteUserInput extends UserInput {
   RemoteUserInput() { this instanceof RemoteFlowSource }
 
   /**
