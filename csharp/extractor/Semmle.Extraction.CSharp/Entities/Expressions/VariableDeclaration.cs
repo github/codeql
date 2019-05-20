@@ -75,7 +75,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             {
                                 var decl = Create(cx, variable, Type.Create(cx, local.Type), true, tuple, child0++);
                                 var id = single.Identifier;
-                                var declSymbol = cx.Model(single).GetDeclaredSymbol(single);
                                 var location = cx.Create(id.GetLocation());
                                 LocalVariable.Create(cx, local, decl, true, location);
                             }
