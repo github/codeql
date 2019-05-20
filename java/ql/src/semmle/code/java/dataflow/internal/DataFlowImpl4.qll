@@ -683,6 +683,7 @@ private predicate readCand2(Content f, Configuration config) {
   )
 }
 
+pragma[nomagic]
 private predicate storeCand(Content f, Configuration conf) {
   exists(Node n1, Node n2 |
     store(n1, f, n2) and
