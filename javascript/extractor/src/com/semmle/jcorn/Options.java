@@ -51,7 +51,7 @@ public class Options {
   private Function<SyntaxError, ?> onRecoverableError;
 
   public Options() {
-    this.ecmaVersion = 7;
+    this.ecmaVersion = 10;
     this.sourceType = "script";
     this.onInsertedSemicolon = null;
     this.onTrailingComma = null;

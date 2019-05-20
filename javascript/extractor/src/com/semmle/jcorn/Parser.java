@@ -890,6 +890,9 @@ public class Parser {
         out.append(inputSubstring(chunkStart, this.pos));
         out.append(this.readEscapedChar(false));
         chunkStart = this.pos;
+      } else if (options.ecmaVersion() >= 10 && (ch == 0x2028 || ch == 0x2029)) {
+        // ECMAScript 2019 allows Unicode newlines in string literals
+        ++this.pos;
       } else {
         if (Whitespace.isNewLine(ch)) this.raise(this.start, "Unterminated string constant");
         ++this.pos;
