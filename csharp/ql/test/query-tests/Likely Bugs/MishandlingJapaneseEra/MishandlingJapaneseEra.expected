@@ -1,0 +1,8 @@
+| Program.cs:12:31:12:54 | object creation of type DateTime | Hard-coded the beginning of the Japanese Heisei era |
+| Program.cs:15:25:15:50 | { ..., ... } | Hard-coded array with Japanese era years |
+| Program.cs:18:59:18:84 | { ..., ... } | Hard-coded array with Japanese era years |
+| Program.cs:21:66:21:89 | object creation of type DateTime | Hard-coded the beginning of the Japanese Heisei era |
+| Program.cs:28:42:28:98 | object creation of type DateTimeOffset | Hard-coded the beginning of the Japanese Heisei era |
+| Program.cs:35:37:35:71 | call to method ToDateTime | DateTime created from Japanese calendar with explicit or current era and hard-coded year |
+| Program.cs:39:27:39:64 | call to method ToDateTime | DateTime created from Japanese calendar with explicit or current era and hard-coded year |
+| Program.cs:58:28:58:73 | object creation of type DateTime | DateTime constructed from Japanese calendar with explicit or current era and hard-coded year |
