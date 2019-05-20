@@ -151,6 +151,11 @@ class PrintASTNode extends TPrintASTNode {
 }
 
 /**
+ * A concatenation of all the leaf QL types of `el`
+ */
+private string qlClass(Element el) { result = concat(el.getAQlClass(), ",") + ": " }
+
+/**
  * A node representing an AST node.
  */
 abstract class ASTNode extends PrintASTNode, TASTNode {
@@ -184,10 +189,10 @@ class ExprNode extends ASTNode {
     result = super.getProperty(key)
     or
     key = "Value" and
-    result = getValue()
+    result = qlClass(expr) + getValue()
     or
     key = "Type" and
-    result = expr.getType().toString()
+    result = qlClass(expr.getType()) + expr.getType().toString()
     or
     key = "ValueCategory" and
     result = expr.getValueCategoryString()
