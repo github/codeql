@@ -69,6 +69,16 @@ class Expr extends StmtParent, @expr {
   Type getUnderlyingType() { result = this.getType().getUnderlyingType() }
 
   /**
+   * Gets the type of this expression after specifiers have been deeply
+   * stripped and typedefs have been resolved.
+   *
+   * In most cases, this predicate will be the same as getType().  It will
+   * only differ when the result of getType() is a TypedefType, in which
+   * case this predicate will (possibly recursively) resolve the typedef.
+   */
+  Type getUnspecifiedType() { result = this.getType().getUnspecifiedType() }
+
+  /**
    * Gets an integer indicating the type of expression that this represents.
    * 
    * Consider using subclasses of `Expr` rather than relying on this predicate. 

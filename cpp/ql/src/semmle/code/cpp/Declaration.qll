@@ -271,6 +271,16 @@ abstract class DeclarationEntry extends Locatable {
   abstract Type getType();
 
   /**
+   * Gets the type associated with this declaration entrry after specifiers
+   * have been deeply stripped and typedefs have been resolved.
+   *
+   * For variable declarations, get the type of the variable.
+   * For function declarations, get the return type of the function.
+   * For type declarations, get the type being declared.
+   */
+  Type getUnspecifiedType() { result = this.getType().getUnspecifiedType() }
+
+  /**
    * Holds if this declaration entry has a specifier with the given name.
    */
   predicate hasSpecifier(string specifier) {
