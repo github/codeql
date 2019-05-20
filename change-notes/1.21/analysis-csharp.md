@@ -9,10 +9,22 @@
 
 ## Changes to code extraction
 
-* Named attribute arguments are now extracted.
+* The following C# 8 features are now extracted:
+    - Range expressions
+    - Recursive patterns
 
 ## Changes to QL libraries
 
 * The class `Attribute` has two new predicates: `getConstructorArgument()` and `getNamedArgument()`. The first predicate returns arguments to the underlying constructor call and the latter returns named arguments for initializing fields and properties.
+* The following QL classes have been added to model C# 8 features:
+    - Class `IndexExpr` models from end index expressions, for example `^1`
+    - Class `IsRecursivePatternExpr` models `is` recursive patterns, for example `s is string { Length: 0 }`
+    - Class `PositionalPatternExpr` models position patterns, for example `(int x, int y)`
+    - Class `PropertyPatternExpr` models property patterns, for example `Length: int len`
+    - Class `RangeExpr` models range expressions, for example `1..^1`
+    - Class `RecursivePatternCase` models `case` statements using recursive patterns, for example `case string { Length: 0 } x:`
+    - Class `RecursivePatternExpr` models recursive patterns, for example `string { Length: 0 }`
+    - Class `SwitchCaseExpr` models the arm of a switch expression, for example `(false, false) => true`
+    - Class `SwitchExpr` models `switch` expressions, for example `(a, b) switch { ... }`
 
 ## Changes to autobuilder
