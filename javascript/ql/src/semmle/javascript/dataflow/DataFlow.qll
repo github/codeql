@@ -980,6 +980,11 @@ module DataFlow {
    */
   ValueNode valueNode(ASTNode nd) { result.getAstNode() = nd }
 
+  /**
+   * Gets the data flow node corresponding to `e`.
+   */
+  ExprNode exprNode(Expr e) { result = valueNode(e) }
+
   /** Gets the data flow node corresponding to `ssa`. */
   SsaDefinitionNode ssaDefinitionNode(SsaDefinition ssa) { result = TSsaDefNode(ssa) }
 

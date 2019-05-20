@@ -6,6 +6,11 @@
 
 import javascript
 
+/** A data flow node corresponding to an expression. */
+class ExprNode extends DataFlow::ValueNode {
+  override Expr astNode;
+}
+
 /** A data flow node corresponding to a parameter. */
 class ParameterNode extends DataFlow::SourceNode {
   Parameter p;
