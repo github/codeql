@@ -1,5 +1,5 @@
 /**
- * @name Prototype Pollution
+ * @name Prototype pollution
  * @description Recursively merging a user-controlled object into another object
  *              can allow an attacker to modify the built-in Object prototype. 
  * @kind path-problem

@@ -6,7 +6,7 @@
 <overview>
   <p>
     Most JavaScript objects inherit the properties of the built-in <code>Object.prototype</code> object.
-    Prototype pollution is a type of vulnerability in which an attacker is be able to modify <code>Object.prototype</code>.
+    Prototype pollution is a type of vulnerability in which an attacker is able to modify <code>Object.prototype</code>.
     Since most objects inherit from the compromised <code>Object.prototype</code>, the attacker can use this
     to tamper with the application logic, and often escalate to remote code execution or cross-site scripting.
   </p>
@@ -24,7 +24,7 @@
 <recommendation>
   <p>
     Update your library dependencies in order to use a safe version of the <em>merge</em> or <em>extend</em> function.
-    If you library has no fixed version, switch to another library.
+    If your library has no fixed version, switch to another library.
   </p>
 </recommendation>
 
@@ -71,7 +71,7 @@
     <a href="https://hackerone.com/reports/454365">jQuery</a>,
     <a href="https://hackerone.com/reports/381185">extend</a>,
     <a href="https://hackerone.com/reports/430291">just-extend</a>,
-    <a href="https://hackerone.com/reports/381194">merge.recursive</a>,
+    <a href="https://hackerone.com/reports/381194">merge.recursive</a>.
   </li>
   <li>Express:
     <a href="https://expressjs.com/en/api.html#express.urlencoded">urlencoded()</a>
