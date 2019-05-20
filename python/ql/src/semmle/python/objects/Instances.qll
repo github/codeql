@@ -13,27 +13,36 @@ abstract class InstanceObject extends ObjectInternal {
 
     pragma [nomagic]
     override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        PointsToInternal::attributeRequired(this, name) and
-        (
-            exists(ObjectInternal cls_attr |
-                this.getClass().(ClassObjectInternal).lookup(name, cls_attr, _)
-                |
-                /* If class attribute is not a descriptor, that usually means it is some sort of
-                 * default value and likely overridden by an instance attribute. In that case
-                 * use `unknown` to signal that an attribute exists but to avoid false positives
-                 * f using the default value.
-                 */
-                cls_attr.isDescriptor() = false and value = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
-                or
-                cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this, value, origin)
-            )
+        exists(ObjectInternal cls_attr |
+            this.classAttribute(name, cls_attr)
+            |
+            /* If class attribute is not a descriptor, that usually means it is some sort of
+             * default value and likely overridden by an instance attribute. In that case
+             * use `unknown` to signal that an attribute exists but to avoid false positives
+             * f using the default value.
+             */
+            cls_attr.isDescriptor() = false and value = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
             or
-            exists(EssaVariable self, PythonFunctionObjectInternal init, Context callee |
-                this.initializer(init, callee) and
-                self_variable_reaching_init_exit(self) and
-                self.getScope() = init.getScope() and
-                AttributePointsTo::variableAttributePointsTo(self, callee, name, value, origin)
-            )
+            cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this, value, origin)
+        )
+        or
+        this.selfAttribute(name, value, origin)
+    }
+
+    pragma [noinline]
+    private predicate classAttribute(string name, ObjectInternal cls_attr) {
+        PointsToInternal::attributeRequired(this, name) and
+        this.getClass().(ClassObjectInternal).lookup(name, cls_attr, _)
+    }
+
+    pragma [noinline]
+    private predicate selfAttribute(string name, ObjectInternal value, CfgOrigin origin) {
+        PointsToInternal::attributeRequired(this, name) and
+        exists(EssaVariable self, PythonFunctionObjectInternal init, Context callee |
+            this.initializer(init, callee) and
+            self_variable_reaching_init_exit(self) and
+            self.getScope() = init.getScope() and
+            AttributePointsTo::variableAttributePointsTo(self, callee, name, value, origin)
         )
     }
 

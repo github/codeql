@@ -417,6 +417,12 @@ class SingleSuccessorGuard extends PyNodeRefinement {
     ControlFlowNode getTest() {
         result = this.getDefiningNode()
     }
+
+    predicate useAndTest(ControlFlowNode use, ControlFlowNode test) {
+        test = this.getDefiningNode() and
+        SsaSource::test_refinement(this.getSourceVariable(), use, test)
+    }
+
 }
 
 /** Implicit definition of the names of sub-modules in a package.

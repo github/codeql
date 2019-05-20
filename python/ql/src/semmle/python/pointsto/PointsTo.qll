@@ -417,7 +417,7 @@ cached module PointsToInternal {
         or
         attribute_delete_points_to(def, context, value, origin)
         or
-        uni_edged_phi_points_to(def, context, value, origin)
+        uni_edged_pi_points_to(def, context, value, origin)
     }
 
     /** Pass through for `self` for the implicit re-definition of `self` in `self.foo()`. */
@@ -460,16 +460,16 @@ cached module PointsToInternal {
         result = Conditionals::testEvaluates(def.getTest(), def.getInput().getASourceUse(), context, value, origin)
     }
 
-    /** Holds if ESSA definition, `uniphi`, refers to `(value, origin)`. */
+    /** Holds if ESSA definition, `unipi`, refers to `(value, origin)`. */
     pragma [noinline]
-    private predicate uni_edged_phi_points_to(SingleSuccessorGuard uniphi, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
-        exists(ControlFlowNode test, ControlFlowNode use |
+    private predicate uni_edged_pi_points_to(SingleSuccessorGuard unipi, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
+        exists(ControlFlowNode test, ControlFlowNode use, ControlFlowNode orig |
             /* Because calls such as `len` may create a new variable, we need to go via the source variable
              * That is perfectly safe as we are only dealing with calls that do not mutate their arguments.
              */
-            use = uniphi.getInput().getASourceUse() and
-            test = uniphi.getTest() and
-            uniphi.getSense() = Conditionals::testEvaluates(test, use, context, value, origin.toCfgNode())
+            unipi.useAndTest(use, test) and
+            unipi.getSense() = Conditionals::testEvaluates(test, use, context, value, orig) and
+            origin = CfgOrigin::fromCfgNode(orig)
         )
     }
 
@@ -785,7 +785,28 @@ module InterProceduralPointsTo {
     }
 
     pragma [noinline]
-    private predicate call_points_to_simple(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+    predicate call_points_to(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        /* Either not a decorator, or we understand the return value */
+        (value != ObjectInternal::unknown() or not f.isDecoratorCall()) and
+        call_points_to_from_callee(f, context, value, origin)
+        or
+        call_result_is_first_argument(f, context) and
+        PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
+        or
+        Expressions::typeCallPointsTo(f, context, value, origin, _, _)
+    }
+
+    /** Helper for call_points_to to improve join-order */
+    private predicate call_result_is_first_argument(CallNode f, PointsToContext context) {
+        Types::six_add_metaclass(f, context, _, _)
+        or
+        /* A decorator and we don't understand it. Use the original, undecorated value */
+        f.isDecoratorCall() and call_points_to_from_callee(f, context, ObjectInternal::unknown(), _)
+    }
+
+    /** Helper for call_points_to to improve join-order */
+    pragma [noinline]
+    private predicate call_points_to_from_callee(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(ObjectInternal func |
             call(f, context, func)
             |
@@ -805,27 +826,6 @@ module InterProceduralPointsTo {
             context.appliesTo(f)
         )
     }
-
-    pragma [noinline]
-    predicate call_points_to(CallNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        /* Either not a decorator, or we understand the return value */
-        (value != ObjectInternal::unknown() or not f.isDecoratorCall()) and
-        call_points_to_simple(f, context, value, origin)
-        or
-        call_result_is_first_argument(f, context) and
-        PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
-        or
-        Expressions::typeCallPointsTo(f, context, value, origin, _, _)
-    }
-
-    /** Helper for call_points_to to improve join-order */
-    private predicate call_result_is_first_argument(CallNode f, PointsToContext context) {
-        Types::six_add_metaclass(f, context, _, _)
-        or
-        /* A decorator and we don't understand it. Use the original, undecorated value */
-        f.isDecoratorCall() and call_points_to_simple(f, context, ObjectInternal::unknown(), _)
-    }
-
 
     /** Points-to for parameter. `def foo(param): ...`. */
     pragma [noinline]
@@ -898,24 +898,25 @@ module InterProceduralPointsTo {
     /** Helper for parameter_points_to */
     pragma [noinline]
     private predicate special_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        (
-            def.isVarargs() and value = TUnknownInstance(ObjectInternal::builtin("tuple"))
-            or
-            def.isKwargs() and value = TUnknownInstance(ObjectInternal::builtin("dict"))
-        )
-        and
+        special_parameter_value(def, value) and
         (
             context.isRuntime()
             or
-            exists(PointsToContext caller, CallNode call, Parameter p |
+            exists(PointsToContext caller, CallNode call |
                 context.fromCall(call, caller) and
                 context.appliesToScope(def.getScope()) and
-                p = def.getParameter() and
-                not exists(call.getArg(p.getPosition())) and
-                not exists(call.getArgByName(p.getName()))
+                not exists(call.getArg(def.getParameter().getPosition())) and
+                not exists(call.getArgByName(def.getParameter().getName()))
             )
         ) and
         origin = def.getDefiningNode()
+    }
+
+    /** Helper predicate for special_parameter_points_to */
+    private predicate special_parameter_value(ParameterDefinition p, ObjectInternal value) {
+        p.isVarargs() and value = TUnknownInstance(ObjectInternal::builtin("tuple"))
+        or
+        p.isKwargs() and value = TUnknownInstance(ObjectInternal::builtin("dict"))
     }
 
     /** Holds if the `(argument, caller)` pair matches up with `(param, callee)` pair across call. */
@@ -1178,10 +1179,7 @@ module Expressions {
 
     pragma [noinline]
     predicate typeCallPointsTo(CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode arg, ObjectInternal argvalue) {
-        not exists(call.getArg(1)) and
-        arg = call.getArg(0) and
-        InterProceduralPointsTo::call(call, context, ObjectInternal::builtin("type")) and
-        PointsToInternal::pointsTo(arg, context, argvalue, _) and
+        type_call1(call, arg, context, argvalue) and
         value = argvalue.getClass() and
         origin = CfgOrigin::fromObject(value).asCfgNodeOrHere(call)
     }
@@ -1467,6 +1465,13 @@ module Expressions {
         PointsToInternal::pointsTo(use, context, val, _)
     }
 
+    private predicate type_call1(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val) {
+        PointsToInternal::pointsTo(call.getFunction(), context, ObjectInternal::builtin("type"), _) and
+        use = call.getArg(0) and
+        not exists(call.getArg(1)) and
+        PointsToInternal::pointsTo(use, context, val, _)
+    }
+
     private predicate hasattr_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, string name) {
         exists(ControlFlowNode arg1 |
             call_to_hasattr(call, context, use, arg1) and
@@ -1580,11 +1585,7 @@ module Conditionals {
             test.getAChild*() = use
         )
         or
-        exists(SingleSuccessorGuard unipi |
-            unipi.getInput().getASourceUse() = use and
-            unipi.getTest() = test and
-            test.getAChild*() = use
-        )
+        any(SingleSuccessorGuard ssg).useAndTest(use, test)
     }
 
     private predicate pinode_test_part(ControlFlowNode outer, ControlFlowNode inner) {
@@ -1780,6 +1781,7 @@ cached module Types {
         )
     }
 
+    pragma [nomagic]
     private ClassObjectInternal getInheritedMetaclass(ClassObjectInternal cls) {
         result = getInheritedMetaclass(cls, 0)
         or
@@ -2026,8 +2028,8 @@ module AttributePointsTo {
         variableAttributePointsTo(def.getInput(), context, name, value, origin)
     }
 
-    private predicate uniEdgedPhiAttributePointsTo(SingleSuccessorGuard uniphi, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
-        variableAttributePointsTo(uniphi.getInput(), context, name, value, origin)
+    private predicate uniEdgedPhiAttributePointsTo(SingleSuccessorGuard unipi, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
+        variableAttributePointsTo(unipi.getInput(), context, name, value, origin)
     }
 
     private predicate piNodeAttributePointsTo(PyEdgeRefinement pi, PointsToContext context, string name, ObjectInternal value, CfgOrigin origin) {
@@ -2108,21 +2110,30 @@ module ModuleAttributes {
     pragma [nomagic]
     private predicate importStarPointsTo(ImportStarRefinement def, string name, ObjectInternal value, CfgOrigin origin) {
         def.getVariable().isMetaVariable() and
-        exists(ImportStarNode imp, ModuleObjectInternal mod |
-            imp = def.getDefiningNode() and
-            PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _)
-            |
+        /* Attribute from imported module */
+        exists(ModuleObjectInternal mod |
+            importStarDef(def, _, mod)
+            and
             /* Attribute from imported module */
             exists(CfgOrigin orig |
                 InterModulePointsTo::moduleExportsBoolean(mod, name) = true and
-                mod.attribute(name, value, orig) and origin = orig.fix(imp) and
-                not exists(Variable v | v.getId() = name and v.getScope() = imp.getScope())
+                mod.attribute(name, value, orig) and origin = orig.fix(def.getDefiningNode()) and
+                not exists(Variable v | v.getId() = name and v.getScope() = def.getScope())
             )
-            or
-            /* Retain value held before import */
-            (InterModulePointsTo::moduleExportsBoolean(mod, name) = false or name.charAt(0) = "_")
-            and
+        )
+        or
+        /* Retain value held before import */
+        exists(ModuleObjectInternal mod, EssaVariable input |
+            importStarDef(def, input, mod) and
+            (InterModulePointsTo::moduleExportsBoolean(mod, name) = false or name.charAt(0) = "_") and
             attributePointsTo(def.getInput(), name, value, origin)
+        )
+    }
+
+    private predicate importStarDef(ImportStarRefinement def, EssaVariable input, ModuleObjectInternal mod) {
+        exists(ImportStarNode imp |
+            def.getVariable().getName() = "$" and imp = def.getDefiningNode() and
+            input = def.getInput() and PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _)
         )
     }
 
