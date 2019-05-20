@@ -187,6 +187,8 @@ class Function extends Function_, Scope, AstNode {
 /** A def statement. Note that FunctionDef extends Assign as a function definition binds the newly created function */
 class FunctionDef extends Assign {
 
+    /* syntax: def name(...): ... */
+
     FunctionDef() {
         /* This is an artificial assignment the rhs of which is a (possibly decorated) FunctionExpr */
         exists(FunctionExpr f | this.getValue() = f or this.getValue() = f.getADecoratorCall())

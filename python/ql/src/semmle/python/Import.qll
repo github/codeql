@@ -170,6 +170,8 @@ class ImportMember extends ImportMember_ {
 /** An import statement */
 class Import extends Import_ {
 
+    /* syntax: import modname */
+
     private ImportExpr getAModuleExpr() {
         result = this.getAName().getValue()
         or 
@@ -221,6 +223,8 @@ class Import extends Import_ {
 
 /** An import * statement */
 class ImportStar extends ImportStar_ {
+
+    /* syntax: from modname import * */
 
     ImportExpr getModuleExpr() {
         result = this.getModule()
