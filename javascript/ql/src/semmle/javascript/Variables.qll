@@ -217,7 +217,7 @@ class ArgumentsVariable extends Variable {
 /** An identifier that refers to a variable, either in a declaration or in a variable access. */
 class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
   /** Gets the variable this identifier refers to. */
-  Variable getVariable() { none() } // Overriden in VarAccess and VarDecl
+  override Variable getVariable() { none() } // Overriden in VarAccess and VarDecl
 
   override string getName() { result = Identifier.super.getName() }
 
@@ -315,6 +315,9 @@ class GlobalVarAccess extends VarAccess {
 class BindingPattern extends @pattern, Expr {
   /** Gets the name of this binding pattern if it is an identifier. */
   string getName() { none() }
+
+  /** Gets the variable this binding pattern refers to if it is an identifier. */
+  Variable getVariable() { none() }
 
   /** Gets a variable reference in binding position within this pattern. */
   VarRef getABindingVarRef() { none() }
