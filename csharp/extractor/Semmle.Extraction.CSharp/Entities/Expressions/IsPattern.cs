@@ -56,7 +56,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 default:
                     throw new InternalError(syntax, "Is pattern not handled");
             }
-
         }
     }
 
