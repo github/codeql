@@ -435,7 +435,7 @@ library class ExprEvaluator extends int {
       interestingInternal(e, fc, _) |
       f = fc.getTarget()
       and not obviouslyNonConstant(f)
-      and not f.getType().getUnspecifiedType() instanceof VoidType
+      and not f.getUnspecifiedType() instanceof VoidType
     )
   }
 

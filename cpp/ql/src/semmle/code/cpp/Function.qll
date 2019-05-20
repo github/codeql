@@ -1038,7 +1038,7 @@ class CopyAssignmentOperator extends Operator {
     (hasCopySignature(this) or
      // Unlike CopyConstructor, this member allows a non-reference
      // parameter.
-     getParameter(0).getType().getUnspecifiedType() = getDeclaringType()
+     getParameter(0).getUnspecifiedType() = getDeclaringType()
     ) and
     not exists(this.getParameter(1)) and
     not exists(getATemplateArgument())

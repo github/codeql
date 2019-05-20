@@ -61,7 +61,7 @@ class Sprintf extends FormattingFunction {
   }
 
   override predicate isWideCharDefault() {
-    getParameter(getFormatParameterIndex()).getType().getUnspecifiedType().(PointerType).getBaseType().getSize() > 1
+    getParameter(getFormatParameterIndex()).getUnspecifiedType().(PointerType).getBaseType().getSize() > 1
   }
 
   override int getFormatParameterIndex() {
@@ -121,7 +121,7 @@ class Snprintf extends FormattingFunction {
   }
 
   override predicate isWideCharDefault() {
-    getParameter(getFormatParameterIndex()).getType().getUnspecifiedType().(PointerType).getBaseType().getSize() > 1
+    getParameter(getFormatParameterIndex()).getUnspecifiedType().(PointerType).getBaseType().getSize() > 1
   }
   override int getOutputParameterIndex() { result=0 }
   
@@ -183,7 +183,7 @@ class StringCchPrintf extends FormattingFunction {
   }
 
   override predicate isWideCharDefault() {
-    getParameter(getFormatParameterIndex()).getType().getUnspecifiedType().(PointerType).getBaseType().getSize() > 1
+    getParameter(getFormatParameterIndex()).getUnspecifiedType().(PointerType).getBaseType().getSize() > 1
   }
 
   override int getOutputParameterIndex() {

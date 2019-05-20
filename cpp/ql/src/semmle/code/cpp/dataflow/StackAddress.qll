@@ -92,7 +92,7 @@ predicate stackPointerFlowsToUse(
  * expression.
  */
 cached private PointerType getExprPtrType(Expr use) {
-  result = use.getType().getUnspecifiedType()
+  result = use.getUnspecifiedType()
 }
 
 predicate stackReferenceFlowsToUse(
@@ -122,11 +122,11 @@ predicate stackReferenceFlowsToUse(
     // a PointerType for `p`. Luckily, this conversion happens
     // automatically when the variable is used. So we get the correct type
     // provided that we get it from `use` rather than from `var`.
-    useType = use.getType().getUnspecifiedType())
+    useType = use.getUnspecifiedType())
   or
   // Accessing the field of a class, struct, or union.
   exists (FieldAccess access, Class classType
-  | use = access and useType = access.getType().getUnspecifiedType()
+  | use = access and useType = access.getUnspecifiedType()
   | // Handle both x.f and x->f:
     stackReferenceFlowsToUse(access.getQualifier(), classType, source, isLocal) or
     stackPointerFlowsToUse(access.getQualifier(), classType, source, isLocal))
@@ -216,7 +216,7 @@ predicate stackReferenceFlowsToDef_Impl(
 
 /** The type of the variable is a reference type, such as int&. */
 predicate isReferenceVariable(LocalScopeVariable var) {
-  var.getType().getUnspecifiedType() instanceof ReferenceType
+  var.getUnspecifiedType() instanceof ReferenceType
 }
 
 /**

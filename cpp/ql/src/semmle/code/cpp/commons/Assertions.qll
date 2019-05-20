@@ -66,7 +66,7 @@ class RecoverableAssert extends MacroInvocation, Assertion {
     not result.getParent() = this.getAnAssertedExpr() and
     // Remove spurious "string literals" that arise when the macro
     // uses #stringification
-    not result.(Literal).getType().getUnspecifiedType().(ArrayType).getBaseType() instanceof CharType
+    not result.(Literal).getUnspecifiedType().(ArrayType).getBaseType() instanceof CharType
   }
 }
 

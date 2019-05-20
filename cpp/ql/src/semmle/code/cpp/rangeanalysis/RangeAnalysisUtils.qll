@@ -207,8 +207,8 @@ predicate linearAccessImpl(Expr expr, VariableAccess v, float p, float q) {
   // (larger_type)(p*v+q) == p*v + q
   exists (Cast cast, ArithmeticType sourceType, ArithmeticType targetType
   | linearAccess(cast.getExpr(), v, p, q) and
-    sourceType = cast.getExpr().getType().getUnspecifiedType() and
-    targetType = cast.getType().getUnspecifiedType() and
+    sourceType = cast.getExpr().getUnspecifiedType() and
+    targetType = cast.getUnspecifiedType() and
     // This allows conversion between signed and unsigned, which is technically
     // lossy but common enough that we'll just have to assume the user knows
     // what they're doing.
@@ -338,7 +338,7 @@ float typeUpperBound(ArithmeticType t) {
  * `exprMinVal(expr.getFullyConverted())`.
  */
 float exprMinVal(Expr expr) {
-  result = typeLowerBound(expr.getType().getUnspecifiedType())
+  result = typeLowerBound(expr.getUnspecifiedType())
 }
 
 /**
@@ -353,7 +353,7 @@ float exprMinVal(Expr expr) {
  * `exprMaxVal(expr.getFullyConverted())`.
  */
 float exprMaxVal(Expr expr) {
-  result = typeUpperBound(expr.getType().getUnspecifiedType())
+  result = typeUpperBound(expr.getUnspecifiedType())
 }
 
 /**
@@ -364,7 +364,7 @@ float exprMaxVal(Expr expr) {
  * `-2^31`.
  */
 float varMinVal(Variable v) {
-  result = typeLowerBound(v.getType().getUnspecifiedType())
+  result = typeLowerBound(v.getUnspecifiedType())
 }
 
 /**
@@ -375,5 +375,5 @@ float varMinVal(Variable v) {
  * `2^31 - 1`.
  */
 float varMaxVal(Variable v) {
-  result = typeUpperBound(v.getType().getUnspecifiedType())
+  result = typeUpperBound(v.getUnspecifiedType())
 }

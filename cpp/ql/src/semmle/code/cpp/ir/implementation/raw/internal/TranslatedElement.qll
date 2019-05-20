@@ -385,7 +385,7 @@ private int getEndOfValueInitializedRange(ArrayAggregateLiteral initList, int af
   or
   isFirstValueInitializedElementInRange(initList, afterElementIndex) and
   not exists(getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)) and
-  result = initList.getType().getUnspecifiedType().(ArrayType).getArraySize()
+  result = initList.getUnspecifiedType().(ArrayType).getArraySize()
 }
 
 /**

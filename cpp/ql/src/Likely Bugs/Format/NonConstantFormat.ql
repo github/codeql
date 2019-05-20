@@ -48,7 +48,7 @@ predicate gettextFunction(Function f, int arg) {
 
 predicate stringArray(Variable arr, AggregateLiteral init) {
   arr.getInitializer().getExpr() = init and
-  stringType(arr.getType().getUnspecifiedType().(ArrayType).getBaseType(), _)
+  stringType(arr.getUnspecifiedType().(ArrayType).getBaseType(), _)
   // Ideally, this predicate should also check that no item of `arr` is ever
   // reassigned, but such an analysis could get fairly complicated. Instead, we
   // just hope that nobody would initialize an array of constants and then

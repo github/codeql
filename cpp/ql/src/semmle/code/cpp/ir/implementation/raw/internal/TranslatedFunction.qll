@@ -311,7 +311,7 @@ class TranslatedFunction extends TranslatedElement,
   }
 
   private final Type getReturnType() {
-    result = func.getType().getUnspecifiedType()
+    result = func.getUnspecifiedType()
   }
 }
 

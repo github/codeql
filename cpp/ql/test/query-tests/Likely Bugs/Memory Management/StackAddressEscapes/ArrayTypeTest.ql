@@ -7,8 +7,8 @@ import cpp
 from ArrayExpr arrayExpr
 select
   arrayExpr,
-  arrayExpr.getArrayBase().getType().getUnspecifiedType().toString() +
+  arrayExpr.getArrayBase().getUnspecifiedType().toString() +
   ", " +
-  arrayExpr.getArrayBase().getFullyConverted().getType().getUnspecifiedType().toString() +
+  arrayExpr.getArrayBase().getFullyConverted().getUnspecifiedType().toString() +
   ", " +
-  arrayExpr.getType().getUnspecifiedType().toString()
+  arrayExpr.getUnspecifiedType().toString()
