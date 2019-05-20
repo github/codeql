@@ -251,8 +251,8 @@ class UncheckedExpr extends Expr, @unchecked_expr {
 
 /**
  * An `is` expression.
- * Either an `is` type expression (`IsTypeExpr`), an `is` constant expression (`IsConstantExpr`),
- * or an `is` recursive pattern expression (`IsPatternExpr`).
+ * Either an `is` constant expression (`IsConstantExpr`), and `is` pattern expression (`IsPatternExpr`),
+ * an `is` recursive pattern expression (`IsRecursivePatternExpr`), or an `is` type expression (`IsTypeExpr`).
  */
 class IsExpr extends Expr, @is_expr {
   /**
@@ -360,7 +360,7 @@ class RecursivePatternExpr extends Expr, @recursive_pattern_expr {
   LocalVariableDeclExpr getVariableDeclExpr() { result = this.getChild(0) }
 }
 
-/** A property pattern. For example, `{Length: 5}`. */
+/** A property pattern. For example, `{ Length: 5 }`. */
 class PropertyPatternExpr extends Expr, @property_pattern_expr {
   override string toString() { result = "{ ... }" }
 
@@ -407,7 +407,7 @@ class SwitchCaseExpr extends Expr, @switch_case_expr {
 
   /**
    * Gets the `when` expression in a switch arm, if any.
-   * For example `s.Length<10` in `string s when s.Length<10 => s`.
+   * For example `s.Length < 10` in `string s when s.Length < 10 => s`.
    */
   Expr getCondition() { result = this.getChild(1) }
 
@@ -419,9 +419,9 @@ class SwitchCaseExpr extends Expr, @switch_case_expr {
 
   /** Holds if this case expression matches all expressions. */
   predicate matchesAll() {
-    // Note: There may be other cases as well.
-    // For example `(1,2) switch { (int x, int y) => x+y }`
-    // would match all cases due to the type of the expression.
+    // Note: There may be other cases that are not yet handled by this predicate.
+    // For example, `(1,2) switch { (int x, int y) => x+y }`
+    // should match all cases due to the type of the expression.
     getPattern() instanceof DiscardExpr
   }
 }
@@ -869,10 +869,10 @@ class RangeExpr extends Expr, @range_expr {
   Expr getEnd() { result = this.getChild(1) }
 
   /** Holds if this range expression has a left hand operand. */
-  predicate hasStart() { exists(getStart()) }
+  predicate hasStart() { exists(this.getStart()) }
 
   /** Holds if this range expression has a right hand operand. */
-  predicate hasEnd() { exists(getEnd()) }
+  predicate hasEnd() { exists(this.getEnd()) }
 }
 
 /** An index expression, for example `^1` meaning "1 from the end". */
