@@ -18,7 +18,7 @@ import cpp
 from BitField bf
 where not bf.getUnspecifiedType().(IntegralType).isUnsigned()
   and not bf.getUnderlyingType() instanceof Enum
-  and not bf.getUnderlyingType().getUnspecifiedType() instanceof BoolType
+  and not bf.getUnspecifiedType() instanceof BoolType
   and not bf.getType().hasName("BOOL") // At least for C programs on Windows, BOOL is a common typedef for a type representing BoolType.
   and not bf.getDeclaredNumBits() = bf.getType().getSize() * 8 // If this is true, then there cannot be unsigned sign extension or overflow.
   and not bf.isAnonymous()

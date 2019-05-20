@@ -13,6 +13,6 @@
 import cpp
 
 from CatchBlock cb, Class caughtType
-where caughtType = cb.getParameter().getType().getUnderlyingType().getUnspecifiedType()
+where caughtType = cb.getParameter().getUnspecifiedType()
 select cb,
   "This should catch a " + caughtType.getName() + " by (const) reference rather than by value."
