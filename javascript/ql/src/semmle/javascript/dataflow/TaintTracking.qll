@@ -198,11 +198,10 @@ module TaintTracking {
       succ.(DataFlow::PropRead).getBase() = pred
       or
       // iterating over a tainted iterator taints the loop variable
-      exists(EnhancedForLoop efl, SsaExplicitDefinition ssa |
+      exists(EnhancedForLoop efl |
         this = DataFlow::valueNode(efl.getIterationDomain()) and
         pred = this and
-        ssa.getDef() = efl.getIteratorExpr() and
-        succ = DataFlow::ssaDefinitionNode(ssa)
+        succ = DataFlow::ssaDefinitionNode(SSA::definition(efl.getIteratorExpr()))
       )
     }
   }

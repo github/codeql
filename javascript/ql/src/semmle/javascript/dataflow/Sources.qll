@@ -223,11 +223,7 @@ module SourceNode {
         astNode instanceof RegExpLiteral
       )
       or
-      exists(SsaExplicitDefinition ssa, VarDef def |
-        this = DataFlow::ssaDefinitionNode(ssa) and def = ssa.getDef()
-      |
-        def instanceof ImportSpecifier
-      )
+      this = DataFlow::ssaDefinitionNode(SSA::definition(any(ImportSpecifier imp)))
       or
       DataFlow::parameterNode(this, _)
       or
