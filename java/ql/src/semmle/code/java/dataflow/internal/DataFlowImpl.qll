@@ -836,7 +836,11 @@ private predicate flowCandFwd(Node node, boolean fromArg, AccessPathFront apf, C
   if node instanceof CastingNode then compatibleTypes(node.getType(), apf.getType()) else any()
 }
 
-/** A node that should have a `nil` access path front. */
+/**
+ * A node that requires an empty access path and should have its tracked type
+ * (re-)computed. This is either a source or a node reached through an
+ * additional step.
+ */
 private class AccessPathFrontNilNode extends Node {
   AccessPathFrontNilNode() {
     nodeCand(this, _) and
@@ -1101,7 +1105,11 @@ private predicate popWithFront(AccessPath ap0, Content f, AccessPathFront apf, A
 /** Holds if `ap` corresponds to the cons of `f` and `ap0`. */
 private predicate push(AccessPath ap0, Content f, AccessPath ap) { pop(ap, f, ap0) }
 
-/** A node that should have a `nil` access path. */
+/**
+ * A node that requires an empty access path and should have its tracked type
+ * (re-)computed. This is either a source or a node reached through an
+ * additional step.
+ */
 private class AccessPathNilNode extends Node {
   AccessPathNilNode() { flowCand(this.(AccessPathFrontNilNode), _, _, _) }
 
