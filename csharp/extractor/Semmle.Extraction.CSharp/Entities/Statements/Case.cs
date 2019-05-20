@@ -75,7 +75,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
             switch (designation)
             {
-                case SingleVariableDesignationSyntax single:
+                case SingleVariableDesignationSyntax _:
                     if (cx.Model(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
                     {
                         var type = Type.Create(cx, symbol.Type);
@@ -92,7 +92,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                 case null:
                     break;
                 case ParenthesizedVariableDesignationSyntax paren:
-                    Expressions.VariableDeclaration.CreateParenthesized(cx, pattern as VarPatternSyntax, paren, this, 0);
+                    Expressions.VariableDeclaration.CreateParenthesized(cx, (VarPatternSyntax)pattern, paren, this, 0);
                     break;
                 default:
                     throw new InternalError(pattern, "Unhandled designation in case statement");
