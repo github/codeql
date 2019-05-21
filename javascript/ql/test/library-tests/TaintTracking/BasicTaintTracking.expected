@@ -3,21 +3,6 @@ typeInferenceMismatch
 | addexpr.js:4:10:4:17 | source() | addexpr.js:6:3:6:14 | x |
 | addexpr.js:11:15:11:22 | source() | addexpr.js:17:5:17:18 | value |
 | addexpr.js:11:15:11:22 | source() | addexpr.js:19:3:19:14 | value |
-| destruct.js:15:7:15:14 | source() | destruct.js:4:11:4:25 | x: { y: { z } } |
-| destruct.js:15:7:15:14 | source() | destruct.js:4:14:4:25 | { y: { z } } |
-| destruct.js:15:7:15:14 | source() | destruct.js:4:16:4:23 | y: { z } |
-| destruct.js:15:7:15:14 | source() | destruct.js:4:19:4:23 | { z } |
-| destruct.js:15:7:15:14 | source() | destruct.js:4:21:4:21 | z |
-| destruct.js:15:7:15:14 | source() | destruct.js:7:10:7:14 | [[w]] |
-| destruct.js:15:7:15:14 | source() | destruct.js:7:10:7:14 | [[w]] |
-| destruct.js:15:7:15:14 | source() | destruct.js:7:11:7:13 | [w] |
-| destruct.js:15:7:15:14 | source() | destruct.js:7:11:7:13 | [w] |
-| destruct.js:15:7:15:14 | source() | destruct.js:7:12:7:12 | w |
-| destruct.js:15:7:15:14 | source() | destruct.js:10:11:10:25 | x: [ { y: q } ] |
-| destruct.js:15:7:15:14 | source() | destruct.js:10:14:10:25 | [ { y: q } ] |
-| destruct.js:15:7:15:14 | source() | destruct.js:10:16:10:23 | { y: q } |
-| destruct.js:15:7:15:14 | source() | destruct.js:10:16:10:23 | { y: q } |
-| destruct.js:15:7:15:14 | source() | destruct.js:10:18:10:21 | y: q |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:6:23:6:23 | y |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:9:20:9:20 | x |
 #select
