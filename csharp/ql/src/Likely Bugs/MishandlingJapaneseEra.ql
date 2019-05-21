@@ -47,7 +47,7 @@ predicate isEraCollectionCreation(CollectionInitializer cs) {
   cs.getElementInitializer(0).getValue() = "1867" and
   cs.getElementInitializer(1).getValue() = "1911" and
   cs.getElementInitializer(2).getValue() = "1925" and
-  cs.getElementInitializer(3).getValue() = "1988"	
+  cs.getElementInitializer(3).getValue() = "1988"
 }
 
 from Expr expr, string message
@@ -56,5 +56,5 @@ where
   isDateFromJapaneseCalendarCreation(expr) and message = "DateTime constructed from Japanese calendar with explicit or current era and hard-coded year" or
   isEraCollectionCreation(expr) and message = "Hard-coded collection with Japanese era years" or
   inEraArrayCreation (expr) and message = "Hard-coded array with Japanese era years" or
-  isExactEraStartDateCreation(expr) and message = "Hard-coded the beginning of the Japanese Heisei era"  
+  isExactEraStartDateCreation(expr) and message = "Hard-coded the beginning of the Japanese Heisei era"
 select expr, message

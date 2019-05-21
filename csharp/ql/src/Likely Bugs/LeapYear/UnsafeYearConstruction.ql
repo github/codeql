@@ -14,15 +14,15 @@ import semmle.code.csharp.dataflow.TaintTracking
 
 class UnsafeYearCreationFromArithmeticConfiguration extends TaintTracking::Configuration  {
   UnsafeYearCreationFromArithmeticConfiguration() { this = "UnsafeYearCreationFromArithmeticConfiguration" }
- 
+
   override predicate isSource(DataFlow::Node source) { 
-	exists( ArithmeticOperation ao, PropertyAccess pa |
-	  ao = source.asExpr() | 
+    exists( ArithmeticOperation ao, PropertyAccess pa |
+      ao = source.asExpr() | 
       pa = ao.getAChild*()
       and pa.getProperty().getQualifiedName().matches("%DateTime.Year")
     )
   }
- 
+
   override predicate isSink(DataFlow::Node sink) {
     exists( ObjectCreation oc |
       sink.asExpr() = oc.getArgumentForName("year")
