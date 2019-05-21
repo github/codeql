@@ -1272,6 +1272,10 @@ module DataFlow {
       (e instanceof AwaitExpr or e instanceof DynamicImportExpr) and
       cause = "await"
     )
+    or
+    nd instanceof TExceptionalInvocationReturnNode and cause = "call"
+    or
+    nd instanceof TExceptionalFunctionReturnNode and cause = "call"
   }
 
   /**
