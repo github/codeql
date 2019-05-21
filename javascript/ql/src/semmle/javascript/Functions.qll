@@ -174,49 +174,6 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   }
 
   /**
-   * Gets a return from a function which has undefined value (that is, implicit
-   * returns and returns without expressions).
-   *
-   * Functions can have undefined returns in a few different ways:
-   *
-   * 1. An explicit return statement with no expression (the statement `return;`)
-   *
-   * 2. An implicit return resulting from an expression executing as the last thing
-   *    in the function. For example, the test in a final `if` statement:
-   *
-   *    ```
-   *    function foo() {
-   *      ...
-   *      if (test) { return 1; }
-   *    }
-   *    ```
-   *
-   * Some things look like they might return undefined but actually don't because
-   * the containing functioning doesn't return at all. For instance, `throw`
-   * statements prevent the containing function from returning, so they don't count
-   * as undefined returns. Similarly, `yield` doesn't actually cause a return,
-   * since the containing function is a generator and can be re-entered, so we also
-   * exclude yields entirely. Likewise, we exclude generator functions from
-   * consideration, as well as asynchronous functions, since calls to both produce
-   * something distinct from what's explicitly returned by the function.
-   *
-   * Despite the fact that yield expressions are invalid outside of generators, we
-   * include them anyway just to ensure that we're not relying on a perfect analysis
-   * of a function to be a generator, and instead are looking also explicitly at the
-   * return sites.
-   */
-  ConcreteControlFlowNode getAnUndefinedReturn() {
-    not this.getBody() instanceof Expr and
-    not this.isGenerator() and
-    not this.isAsync() and
-    not result instanceof ThrowStmt and
-    not result instanceof YieldExpr and
-    not (result instanceof ReturnStmt and exists(result.(ReturnStmt).getExpr())) and
-    result.getContainer() = this and
-    result.isAFinalNode()
-  }
-
-  /**
    * Gets the function whose `this` binding a `this` expression in this function refers to,
    * which is the nearest enclosing non-arrow function.
    */

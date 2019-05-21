@@ -12,14 +12,6 @@ test_getVariable
 | tst.js:11:1:11:35 | functio ... ts; } } |
 | tst.js:12:1:12:44 | functio ... s) {} } |
 | tst.js:14:1:14:37 | functio ... s[0]; } |
-| undefinedreturns.js:13:1:13:28 | functio ... n() { } |
-| undefinedreturns.js:14:1:14:29 | async f ... n() { } |
-| undefinedreturns.js:15:1:15:40 | functio ... ow 1; } |
-| undefinedreturns.js:16:1:16:41 | functio ... ld 1; } |
-| undefinedreturns.js:17:1:17:49 | functio ... rn 1; } |
-| undefinedreturns.js:27:1:27:30 | functio ... y() { } |
-| undefinedreturns.js:28:1:28:48 | functio ... turn; } |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } |
 test_getScope
 | arrowfns.js:1:24:1:36 | s => s.length |
 | arrowfns.js:2:13:2:23 | () => ++cnt |
@@ -41,17 +33,6 @@ test_getScope
 | tst.js:11:1:11:35 | functio ... ts; } } |
 | tst.js:12:1:12:44 | functio ... s) {} } |
 | tst.js:14:1:14:37 | functio ... s[0]; } |
-| undefinedreturns.js:11:20:11:32 | function () 1 |
-| undefinedreturns.js:12:29:12:35 | () => 1 |
-| undefinedreturns.js:13:1:13:28 | functio ... n() { } |
-| undefinedreturns.js:14:1:14:29 | async f ... n() { } |
-| undefinedreturns.js:15:1:15:40 | functio ... ow 1; } |
-| undefinedreturns.js:16:1:16:41 | functio ... ld 1; } |
-| undefinedreturns.js:17:1:17:49 | functio ... rn 1; } |
-| undefinedreturns.js:27:1:27:30 | functio ... y() { } |
-| undefinedreturns.js:28:1:28:48 | functio ... turn; } |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } |
-| undefinedreturns.js:30:29:30:37 | () => { } |
 test_getParameter
 | arrowfns.js:1:24:1:36 | s => s.length | 0 | arrowfns.js:1:24:1:24 | s |
 | defaultargs.js:1:1:1:24 | functio ... +19) {} | 0 | defaultargs.js:1:12:1:12 | x |
@@ -71,10 +52,6 @@ test_ReturnedExpression
 | arrowfns.js:2:13:2:23 | () => ++cnt | arrowfns.js:2:19:2:23 | ++cnt |
 | exprclosures.js:1:7:1:21 | function(x) x+1 | exprclosures.js:1:19:1:21 | x+1 |
 | tst.js:14:1:14:37 | functio ... s[0]; } | tst.js:14:23:14:34 | arguments[0] |
-| undefinedreturns.js:11:20:11:32 | function () 1 | undefinedreturns.js:11:32:11:32 | 1 |
-| undefinedreturns.js:12:29:12:35 | () => 1 | undefinedreturns.js:12:35:12:35 | 1 |
-| undefinedreturns.js:17:1:17:49 | functio ... rn 1; } | undefinedreturns.js:17:46:17:46 | 1 |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } | undefinedreturns.js:29:49:29:49 | 1 |
 test_getDefaultArguments
 | defaultargs.js:1:15:1:15 | y | defaultargs.js:1:17:1:20 | x+19 |
 test_Function
@@ -98,17 +75,6 @@ test_Function
 | tst.js:11:1:11:35 | functio ... ts; } } |
 | tst.js:12:1:12:44 | functio ... s) {} } |
 | tst.js:14:1:14:37 | functio ... s[0]; } |
-| undefinedreturns.js:11:20:11:32 | function () 1 |
-| undefinedreturns.js:12:29:12:35 | () => 1 |
-| undefinedreturns.js:13:1:13:28 | functio ... n() { } |
-| undefinedreturns.js:14:1:14:29 | async f ... n() { } |
-| undefinedreturns.js:15:1:15:40 | functio ... ow 1; } |
-| undefinedreturns.js:16:1:16:41 | functio ... ld 1; } |
-| undefinedreturns.js:17:1:17:49 | functio ... rn 1; } |
-| undefinedreturns.js:27:1:27:30 | functio ... y() { } |
-| undefinedreturns.js:28:1:28:48 | functio ... turn; } |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } |
-| undefinedreturns.js:30:29:30:37 | () => { } |
 test_getBody
 | arrowfns.js:1:24:1:36 | s => s.length | arrowfns.js:1:29:1:36 | s.length |
 | arrowfns.js:2:13:2:23 | () => ++cnt | arrowfns.js:2:19:2:23 | ++cnt |
@@ -130,17 +96,6 @@ test_getBody
 | tst.js:11:1:11:35 | functio ... ts; } } | tst.js:11:14:11:35 | { { var ... ts; } } |
 | tst.js:12:1:12:44 | functio ... s) {} } | tst.js:12:14:12:44 | { try { ... s) {} } |
 | tst.js:14:1:14:37 | functio ... s[0]; } | tst.js:14:14:14:37 | { retur ... s[0]; } |
-| undefinedreturns.js:11:20:11:32 | function () 1 | undefinedreturns.js:11:32:11:32 | 1 |
-| undefinedreturns.js:12:29:12:35 | () => 1 | undefinedreturns.js:12:35:12:35 | 1 |
-| undefinedreturns.js:13:1:13:28 | functio ... n() { } | undefinedreturns.js:13:26:13:28 | { } |
-| undefinedreturns.js:14:1:14:29 | async f ... n() { } | undefinedreturns.js:14:27:14:29 | { } |
-| undefinedreturns.js:15:1:15:40 | functio ... ow 1; } | undefinedreturns.js:15:29:15:40 | { throw 1; } |
-| undefinedreturns.js:16:1:16:41 | functio ... ld 1; } | undefinedreturns.js:16:30:16:41 | { yield 1; } |
-| undefinedreturns.js:17:1:17:49 | functio ... rn 1; } | undefinedreturns.js:17:37:17:49 | { return 1; } |
-| undefinedreturns.js:27:1:27:30 | functio ... y() { } | undefinedreturns.js:27:28:27:30 | { } |
-| undefinedreturns.js:28:1:28:48 | functio ... turn; } | undefinedreturns.js:28:38:28:48 | { return; } |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } | undefinedreturns.js:29:28:29:54 | { if (t ...  1; } } |
-| undefinedreturns.js:30:29:30:37 | () => { } | undefinedreturns.js:30:35:30:37 | { } |
 test_getId
 | defaultargs.js:1:1:1:24 | functio ... +19) {} | defaultargs.js:1:10:1:10 | f | f |
 | generators.js:1:1:4:1 | functio ...  i++;\\n} | generators.js:1:11:1:13 | foo | foo |
@@ -155,14 +110,6 @@ test_getId
 | tst.js:11:1:11:35 | functio ... ts; } } | tst.js:11:10:11:10 | m | m |
 | tst.js:12:1:12:44 | functio ... s) {} } | tst.js:12:10:12:10 | n | n |
 | tst.js:14:1:14:37 | functio ... s[0]; } | tst.js:14:10:14:10 | p | p |
-| undefinedreturns.js:13:1:13:28 | functio ... n() { } | undefinedreturns.js:13:11:13:22 | generator_fn | generator_fn |
-| undefinedreturns.js:14:1:14:29 | async f ... n() { } | undefinedreturns.js:14:16:14:23 | async_fn | async_fn |
-| undefinedreturns.js:15:1:15:40 | functio ... ow 1; } | undefinedreturns.js:15:10:15:25 | fn_w_final_throw | fn_w_final_throw |
-| undefinedreturns.js:16:1:16:41 | functio ... ld 1; } | undefinedreturns.js:16:11:16:26 | fn_w_final_yield | fn_w_final_yield |
-| undefinedreturns.js:17:1:17:49 | functio ... rn 1; } | undefinedreturns.js:17:10:17:33 | fn_w_fi ... _w_expr | fn_w_final_return_w_expr |
-| undefinedreturns.js:27:1:27:30 | functio ... y() { } | undefinedreturns.js:27:10:27:24 | fn_w_empty_body | fn_w_empty_body |
-| undefinedreturns.js:28:1:28:48 | functio ... turn; } | undefinedreturns.js:28:10:28:34 | fn_w_fi ... wo_expr | fn_w_final_return_wo_expr |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } | undefinedreturns.js:29:10:29:24 | fn_w_final_expr | fn_w_final_expr |
 test_hasRestParameter
 | restparms.js:1:1:2:1 | functio ... ys) {\\n} |
 test_getArgumentsVariable
@@ -183,15 +130,6 @@ test_getArgumentsVariable
 | tst.js:11:1:11:35 | functio ... ts; } } |
 | tst.js:12:1:12:44 | functio ... s) {} } |
 | tst.js:14:1:14:37 | functio ... s[0]; } |
-| undefinedreturns.js:11:20:11:32 | function () 1 |
-| undefinedreturns.js:13:1:13:28 | functio ... n() { } |
-| undefinedreturns.js:14:1:14:29 | async f ... n() { } |
-| undefinedreturns.js:15:1:15:40 | functio ... ow 1; } |
-| undefinedreturns.js:16:1:16:41 | functio ... ld 1; } |
-| undefinedreturns.js:17:1:17:49 | functio ... rn 1; } |
-| undefinedreturns.js:27:1:27:30 | functio ... y() { } |
-| undefinedreturns.js:28:1:28:48 | functio ... turn; } |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } |
 test_getBodyStmt
 | arrowfns.js:3:12:3:41 | () => { ... "); ; } | 0 | arrowfns.js:3:20:3:37 | alert("Wake up!"); |
 | arrowfns.js:3:12:3:41 | () => { ... "); ; } | 1 | arrowfns.js:3:39:3:39 | ; |
@@ -200,16 +138,9 @@ test_getBodyStmt
 | tst.js:11:1:11:35 | functio ... ts; } } | 0 | tst.js:11:16:11:33 | { var arguments; } |
 | tst.js:12:1:12:44 | functio ... s) {} } | 0 | tst.js:12:16:12:42 | try { } ... nts) {} |
 | tst.js:14:1:14:37 | functio ... s[0]; } | 0 | tst.js:14:16:14:35 | return arguments[0]; |
-| undefinedreturns.js:15:1:15:40 | functio ... ow 1; } | 0 | undefinedreturns.js:15:31:15:38 | throw 1; |
-| undefinedreturns.js:16:1:16:41 | functio ... ld 1; } | 0 | undefinedreturns.js:16:32:16:39 | yield 1; |
-| undefinedreturns.js:17:1:17:49 | functio ... rn 1; } | 0 | undefinedreturns.js:17:39:17:47 | return 1; |
-| undefinedreturns.js:28:1:28:48 | functio ... turn; } | 0 | undefinedreturns.js:28:40:28:46 | return; |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } | 0 | undefinedreturns.js:29:30:29:52 | if (tes ... rn 1; } |
 test_isGenerator
 | generators.js:1:1:4:1 | functio ...  i++;\\n} |
 | generators.js:6:2:6:19 | function* bar() {} |
-| undefinedreturns.js:13:1:13:28 | functio ... n() { } |
-| undefinedreturns.js:16:1:16:41 | functio ... ld 1; } |
 test_usesArgumentsObject
 | tst.js:14:1:14:37 | functio ... s[0]; } |
 test_getEnclosingStmt
@@ -233,41 +164,7 @@ test_getEnclosingStmt
 | tst.js:11:1:11:35 | functio ... ts; } } | tst.js:11:1:11:35 | functio ... ts; } } |
 | tst.js:12:1:12:44 | functio ... s) {} } | tst.js:12:1:12:44 | functio ... s) {} } |
 | tst.js:14:1:14:37 | functio ... s[0]; } | tst.js:14:1:14:37 | functio ... s[0]; } |
-| undefinedreturns.js:11:20:11:32 | function () 1 | undefinedreturns.js:11:1:11:33 | const f ... n () 1; |
-| undefinedreturns.js:12:29:12:35 | () => 1 | undefinedreturns.js:12:1:12:36 | const a ... ) => 1; |
-| undefinedreturns.js:13:1:13:28 | functio ... n() { } | undefinedreturns.js:13:1:13:28 | functio ... n() { } |
-| undefinedreturns.js:14:1:14:29 | async f ... n() { } | undefinedreturns.js:14:1:14:29 | async f ... n() { } |
-| undefinedreturns.js:15:1:15:40 | functio ... ow 1; } | undefinedreturns.js:15:1:15:40 | functio ... ow 1; } |
-| undefinedreturns.js:16:1:16:41 | functio ... ld 1; } | undefinedreturns.js:16:1:16:41 | functio ... ld 1; } |
-| undefinedreturns.js:17:1:17:49 | functio ... rn 1; } | undefinedreturns.js:17:1:17:49 | functio ... rn 1; } |
-| undefinedreturns.js:27:1:27:30 | functio ... y() { } | undefinedreturns.js:27:1:27:30 | functio ... y() { } |
-| undefinedreturns.js:28:1:28:48 | functio ... turn; } | undefinedreturns.js:28:1:28:48 | functio ... turn; } |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } | undefinedreturns.js:29:1:29:54 | functio ...  1; } } |
-| undefinedreturns.js:30:29:30:37 | () => { } | undefinedreturns.js:30:1:30:38 | const a ... => { }; |
 test_isRestParameter
 | restparms.js:1:18:1:19 | ys |
 test_ReturnStmt
 | tst.js:14:1:14:37 | functio ... s[0]; } | tst.js:14:16:14:35 | return arguments[0]; |
-| undefinedreturns.js:17:1:17:49 | functio ... rn 1; } | undefinedreturns.js:17:39:17:47 | return 1; |
-| undefinedreturns.js:28:1:28:48 | functio ... turn; } | undefinedreturns.js:28:40:28:46 | return; |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } | undefinedreturns.js:29:42:29:50 | return 1; |
-test_getAnUndefinedReturn
-| arrowfns.js:3:12:3:41 | () => { ... "); ; } | arrowfns.js:3:39:3:39 | ; |
-| defaultargs.js:1:1:1:24 | functio ... +19) {} | defaultargs.js:1:23:1:24 | {} |
-| restparms.js:1:1:2:1 | functio ... ys) {\\n} | restparms.js:1:22:2:1 | {\\n} |
-| tst.js:1:1:1:15 | function A() {} | tst.js:1:14:1:15 | {} |
-| tst.js:2:1:2:16 | function B(x) {} | tst.js:2:15:2:16 | {} |
-| tst.js:3:1:3:19 | function C(x, y) {} | tst.js:3:18:3:19 | {} |
-| tst.js:4:9:4:21 | function() {} | tst.js:4:20:4:21 | {} |
-| tst.js:5:2:5:15 | function(x) {} | tst.js:5:14:5:15 | {} |
-| tst.js:6:2:6:18 | function(x, y) {} | tst.js:6:17:6:18 | {} |
-| tst.js:7:9:7:23 | function h() {} | tst.js:7:22:7:23 | {} |
-| tst.js:9:1:9:24 | functio ... nts) {} | tst.js:9:23:9:24 | {} |
-| tst.js:10:1:10:31 | functio ... ents; } | tst.js:10:20:10:28 | arguments |
-| tst.js:11:1:11:35 | functio ... ts; } } | tst.js:11:22:11:30 | arguments |
-| tst.js:12:1:12:44 | functio ... s) {} } | tst.js:12:20:12:22 | { } |
-| tst.js:12:1:12:44 | functio ... s) {} } | tst.js:12:41:12:42 | {} |
-| undefinedreturns.js:27:1:27:30 | functio ... y() { } | undefinedreturns.js:27:28:27:30 | { } |
-| undefinedreturns.js:28:1:28:48 | functio ... turn; } | undefinedreturns.js:28:40:28:46 | return; |
-| undefinedreturns.js:29:1:29:54 | functio ...  1; } } | undefinedreturns.js:29:34:29:37 | test |
-| undefinedreturns.js:30:29:30:37 | () => { } | undefinedreturns.js:30:35:30:37 | { } |
