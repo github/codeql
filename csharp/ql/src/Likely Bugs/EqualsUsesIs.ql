@@ -12,12 +12,12 @@
 import csharp
 import semmle.code.csharp.frameworks.System
 
-from EqualsMethod m, IsTypeExpr e, Class isType
+from EqualsMethod m, IsExpr e, Class isType
 where
   m.fromSource() and
   e.getEnclosingCallable() = m and
   e.getExpr().(VariableAccess).getTarget() = m.getParameter(0) and
-  isType = e.getCheckedType() and
+  isType = e.getPattern().(TypePatternExpr).getCheckedType() and
   not isType.isSealed() and
   not exists(MethodCall c |
     c.getEnclosingCallable() = m and

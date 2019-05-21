@@ -105,9 +105,7 @@ private predicate nonNullDef(Ssa::ExplicitDefinition def) {
   def.getADefinition().getSource() instanceof NonNullExpr
   or
   exists(AssignableDefinition ad | ad = def.getADefinition() |
-    ad instanceof AssignableDefinitions::IsPatternDefinition
-    or
-    ad instanceof AssignableDefinitions::TypeCasePatternDefinition
+    ad instanceof AssignableDefinitions::PatternDefinition
     or
     ad = any(AssignableDefinitions::LocalVariableDefinition d |
         d.getExpr() = any(SpecificCatchClause scc).getVariableDeclExpr()

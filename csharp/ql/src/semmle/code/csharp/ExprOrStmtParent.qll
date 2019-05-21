@@ -19,8 +19,17 @@ predicate expr_parent_top_level_adjusted(Expr child, int i, @top_level_exprorstm
 }
 
 /**
- * The `expr_parent()` relation adjusted for expandable assignments. For example,
- * the assignment `x += y` is extracted as
+ * Holds if `case` statement `cs` is a type check of the form `case int _`,
+ * where `ta` is the type access `int`.
+ */
+private predicate discardTypeCaseStmt(CaseStmt cs, TypeAccess ta) {
+  expr_parent(ta, 1, cs) and
+  expr_parent(any(DiscardExpr de), 0, cs)
+}
+
+/**
+ * The `expr_parent()` relation adjusted for expandable assignments, `is` expressions,
+ * and `case` statements. For example, the assignment `x += y` is extracted as
  *
  * ```
  *          +=
@@ -50,21 +59,54 @@ predicate expr_parent_top_level_adjusted(Expr child, int i, @top_level_exprorstm
  * ```
  */
 private predicate expr_parent_adjusted(Expr child, int i, ControlFlowElement parent) {
-  exists(AssignExpr ae | ae = parent.(AssignOperation).getExpandedAssignment() |
-    i = 0 and
-    exists(Expr right |
-      // right = `x + y`
-      expr_parent(right, 0, ae)
-    |
-      expr_parent(child, 1, right)
-    )
-    or
-    i = 1 and
-    expr_parent(child, 1, ae)
-  )
-  or
-  not parent.(AssignOperation).hasExpandedAssignment() and
-  expr_parent(child, i, parent)
+  if parent instanceof AssignOperation
+  then
+    parent = any(AssignOperation ao |
+        exists(AssignExpr ae | ae = ao.getExpandedAssignment() |
+          i = 0 and
+          exists(Expr right |
+            // right = `x + y`
+            expr_parent(right, 0, ae)
+          |
+            expr_parent(child, 1, right)
+          )
+          or
+          i = 1 and
+          expr_parent(child, 1, ae)
+        )
+        or
+        not ao.hasExpandedAssignment() and
+        expr_parent(child, i, parent)
+      )
+  else
+    if parent instanceof IsExpr
+    then
+      i = 0 and
+      expr_parent(child, i, parent)
+      or
+      // e.g. `x is string s` or `x is null`
+      i = 1 and
+      expr_parent(child, any(int j | j in [2 .. 3]), parent)
+      or
+      // e.g. `x is string`
+      i = 1 and
+      not expr_parent(_, any(int j | j in [2 .. 3]), parent) and
+      expr_parent(child, i, parent)
+    else
+      if parent instanceof CaseStmt
+      then
+        // e.g. `case string s:` or `case 5:`
+        i = 0 and
+        expr_parent(child, i, parent) and
+        not discardTypeCaseStmt(parent, _)
+        or
+        // e.g. `case string _`
+        i = 0 and
+        discardTypeCaseStmt(parent, child)
+        or
+        i = 1 and
+        expr_parent(child, 2, parent)
+      else expr_parent(child, i, parent)
 }
 
 /**

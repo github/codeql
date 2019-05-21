@@ -70,7 +70,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         private void PopulatePattern(PatternSyntax pattern, TypeSyntax optionalType, SyntaxToken varKeyword, VariableDesignationSyntax designation)
         {
             var isVar = optionalType is null;
-            if(!isVar)
+            if (!isVar)
                 Expressions.TypeAccess.Create(cx, optionalType, this, 1);
 
             switch (designation)
@@ -101,7 +101,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void Populate()
         {
-            switch(Stmt.Pattern)
+            switch (Stmt.Pattern)
             {
                 case VarPatternSyntax varPattern:
                     PopulatePattern(varPattern, null, varPattern.VarKeyword, varPattern.Designation);
@@ -113,8 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                     Expression.Create(cx, pattern.Expression, this, 0);
                     break;
                 case RecursivePatternSyntax recPattern:
-                    PopulatePattern(recPattern, recPattern.Type, default(SyntaxToken), recPattern.Designation);
-                    new Expressions.RecursivePattern(cx, recPattern, this, 4, true);
+                    new Expressions.RecursivePattern(cx, recPattern, this, 0);
                     break;
                 default:
                     throw new InternalError(Stmt, "Case pattern not handled");

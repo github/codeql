@@ -120,7 +120,7 @@ class Patterns
         };
     }
 
-    void Expressions2()
+    void Expressions2(object o)
     {
         var s = new MyStruct { X = 0 };
         var r = s switch
@@ -133,7 +133,7 @@ class Patterns
         
         try
         {
-            r = 0 switch
+            r = o switch
             {
                 1 => throw new ArgumentException(),
                 2 => 3,
