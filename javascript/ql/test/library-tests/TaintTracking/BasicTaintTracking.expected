@@ -3,8 +3,6 @@ typeInferenceMismatch
 | addexpr.js:4:10:4:17 | source() | addexpr.js:6:3:6:14 | x |
 | addexpr.js:11:15:11:22 | source() | addexpr.js:17:5:17:18 | value |
 | addexpr.js:11:15:11:22 | source() | addexpr.js:19:3:19:14 | value |
-| partialCalls.js:4:17:4:24 | source() | partialCalls.js:6:23:6:23 | y |
-| partialCalls.js:4:17:4:24 | source() | partialCalls.js:9:20:9:20 | x |
 #select
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | addexpr.js:4:10:4:17 | source() | addexpr.js:7:8:7:8 | x |

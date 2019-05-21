@@ -1280,6 +1280,8 @@ module DataFlow {
     exists(PropertyPattern p | nd = TPropNode(p)) and cause = "heap"
     or
     nd instanceof TElementPatternNode and cause = "heap"
+    or
+    nd instanceof UnusedParameterNode and cause = "call"
   }
 
   /**
