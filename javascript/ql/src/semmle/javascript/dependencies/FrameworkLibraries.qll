@@ -184,6 +184,7 @@ class FrameworkLibraryInstanceWithMarkerComment extends FrameworkLibraryInstance
  * Holds if comment `c` in toplevel `tl` matches the marker comment of library
  * `fl` at `version`.
  */
+cached
 private predicate matchMarkerComment(
   Comment c, TopLevel tl, FrameworkLibraryWithMarkerComment fl, string version
 ) {
