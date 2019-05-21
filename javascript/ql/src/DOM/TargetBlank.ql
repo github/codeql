@@ -8,6 +8,7 @@
  * @tags maintainability
  *       security
  *       external/cwe/cwe-200
+ *       external/cwe/cwe-1022
  * @precision very-high
  */
 
