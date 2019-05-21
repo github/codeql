@@ -154,19 +154,20 @@ private Expr getQualifier(QualifiableExpr e) {
  * non-matches (`value = false`).
  */
 private predicate isMatchingConstant(Expr e, boolean value) {
-  exists(SwitchStmt ss | mustHaveMatchingCompletion(ss, e) |
-    exists(Expr stripped | stripped = ss.getCondition().stripCasts() |
-      exists(ConstCase cc, string strippedValue |
-        cc = ss.getAConstCase() and
-        e = cc.getExpr() and
+  exists(Switch s | mustHaveMatchingCompletion(s, e) |
+    exists(Expr stripped | stripped = s.getExpr().stripCasts() |
+      exists(Case c, string strippedValue |
+        c = s.getACase() and
+        e = c.getPattern() and
         strippedValue = stripped.getValue()
       |
         if strippedValue = e.getValue() then value = true else value = false
       )
       or
-      exists(TypeCase tc, Type t, Type strippedType | tc = ss.getATypeCase() |
-        e = tc.getTypeAccess() and
-        t = e.getType() and
+      exists(Case c, TypePatternExpr tpe, Type t, Type strippedType | c = s.getACase() |
+        tpe = c.getPattern() and
+        e = tpe and
+        t = tpe.getCheckedType() and
         strippedType = stripped.getType() and
         not t.isImplicitlyConvertibleTo(strippedType) and
         not t instanceof Interface and
@@ -175,6 +176,9 @@ private predicate isMatchingConstant(Expr e, boolean value) {
         value = false
       )
     )
+    or
+    e instanceof DiscardPatternExpr and
+    value = true
   )
 }
 
@@ -326,9 +330,7 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
   or
   exists(LoopStmt ls | ls.getCondition() = e | isBooleanCompletionForParent = false)
   or
-  exists(CaseStmt cs | cs.getCondition() = e | isBooleanCompletionForParent = false)
-  or
-  exists(SwitchCaseExpr sce | sce.getCondition() = e | isBooleanCompletionForParent = false)
+  exists(Case c | c.getCondition() = e | isBooleanCompletionForParent = false)
   or
   exists(SpecificCatchClause scc | scc.getFilterClause() = e | isBooleanCompletionForParent = false)
   or
@@ -407,24 +409,16 @@ private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParen
 }
 
 /**
- * Holds if `cfe` is the element inside case statement `cs`, belonging to `switch`
- * statement `ss`, that has the matching completion.
+ * Holds if `pe` is the pattern inside case `c`, belonging to `switch` `s`, that
+ * has the matching completion.
  */
-predicate switchMatching(SwitchStmt ss, CaseStmt cs, ControlFlowElement cfe) {
-  ss.getACase() = cs and
-  (
-    cfe = cs.(ConstCase).getExpr()
-    or
-    cfe = cs.(TypeCase).getTypeAccess() // use type access to represent the type test
-    or
-    cfe = cs.(RecursivePatternCase).getTypeAccess() // use type access to represent the type test
-    or
-    cfe = cs.(RecursivePatternCase).getRecursivePattern() // a recursive pattern match
-  )
+predicate switchMatching(Switch s, Case c, PatternExpr pe) {
+  s.getACase() = c and
+  pe = c.getPattern()
 }
 
-private predicate mustHaveMatchingCompletion(SwitchStmt ss, ControlFlowElement cfe) {
-  switchMatching(ss, _, cfe)
+private predicate mustHaveMatchingCompletion(Switch s, PatternExpr pe) {
+  switchMatching(s, _, pe)
 }
 
 /**

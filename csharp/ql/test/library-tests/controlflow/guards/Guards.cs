@@ -134,7 +134,7 @@ public class Guards
 
     int M12(string s)
     {
-        if (s is string)
+        if (s is string _)
             return s.Length; // null guarded
         return s.Length; // not null guarded
     }

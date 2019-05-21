@@ -458,9 +458,7 @@ module ControlFlow {
           // The following statements need special treatment
           not this instanceof IfStmt and
           not this instanceof SwitchStmt and
-          not this instanceof ConstCase and
-          not this instanceof TypeCase and
-          not this instanceof RecursivePatternCase and
+          not this instanceof CaseStmt and
           not this instanceof LoopStmt and
           not this instanceof TryStmt and
           not this instanceof SpecificCatchClause and
@@ -518,7 +516,10 @@ module ControlFlow {
       abstract private class NoNodeExpr extends Expr { }
 
       private class SimpleNoNodeExpr extends NoNodeExpr {
-        SimpleNoNodeExpr() { this instanceof TypeAccess }
+        SimpleNoNodeExpr() {
+          this instanceof TypeAccess and
+          not this = any(PatternMatch pm).getPattern()
+        }
       }
 
       /** A write access that is not also a read access. */
@@ -641,7 +642,6 @@ module ControlFlow {
           not this instanceof AssignOperationWithExpandedAssignment and
           not this instanceof ConditionallyQualifiedExpr and
           not this instanceof ThrowExpr and
-          not this instanceof TypeAccess and
           not this instanceof ObjectCreation and
           not this instanceof ArrayCreation and
           not this instanceof QualifiedWriteAccess and
@@ -708,11 +708,7 @@ module ControlFlow {
           or
           this instanceof SwitchStmt
           or
-          this instanceof ConstCase
-          or
-          this instanceof TypeCase
-          or
-          this instanceof RecursivePatternCase
+          this instanceof CaseStmt
           or
           this instanceof TryStmt
           or
@@ -908,16 +904,22 @@ module ControlFlow {
             result = lastIfStmtElse(is, c)
           )
         or
-        cfe = any(SwitchStmt ss |
+        cfe = any(Switch s |
             // Switch expression exits normally and there are no cases
-            result = lastSwitchStmtCondition(ss, c) and
-            not exists(ss.getACase()) and
+            result = lastSwitchExpr(s, c) and
+            not exists(s.getACase()) and
             c instanceof NormalCompletion
             or
             // Switch expression exits abnormally
-            result = lastSwitchStmtCondition(ss, c) and
+            result = lastSwitchExpr(s, c) and
             not c instanceof NormalCompletion
             or
+            // Case condition exits abnormally
+            result = lastCaseCondition(s.getACase(), c) and
+            not c instanceof NormalCompletion
+          )
+        or
+        cfe = any(SwitchStmt ss |
             // A statement exits with a `break` completion
             result = lastSwitchStmtStmt(ss, _, any(BreakCompletion bc)) and
             c instanceof BreakNormalCompletion
@@ -930,10 +932,15 @@ module ControlFlow {
             not c instanceof GotoCaseCompletion
             or
             // Last case exits with a non-match
-            exists(int last | last = max(int i | exists(ss.getCase(i))) |
-              result = lastConstCaseNoMatch(ss.getCase(last), c) or
-              result = lastTypeCaseNoMatch(ss.getCase(last), c) or
-              result = lastRecursivePatternCaseNoMatch(ss.getCase(last), c)
+            exists(CaseStmt cs, int last |
+              last = max(int i | exists(ss.getCase(i))) and
+              cs = ss.getCase(last)
+            |
+              result = lastCasePattern(cs, c) and
+              not c.(MatchingCompletion).isMatch()
+              or
+              result = lastCaseCondition(cs, c) and
+              c instanceof FalseCompletion
             )
             or
             // Last statement exits with any non-break completion
@@ -943,34 +950,41 @@ module ControlFlow {
             )
           )
         or
-        cfe = any(ConstCase cc |
-            // Case expression exits with a non-match
-            result = lastConstCaseNoMatch(cc, c)
+        cfe = any(SwitchExpr se |
+            // A matching case exists with any completion
+            result = lastCaseBody(se.getACase(), c)
             or
-            // Case expression exits abnormally
-            result = lastConstCaseExpr(cc, c) and
-            not c instanceof NormalCompletion
+            // Last case exists with a non-match
+            exists(SwitchCaseExpr sce, int i |
+              sce = se.getCase(i) and
+              not sce.matchesAll() and
+              not exists(se.getCase(i + 1)) and
+              c
+                  .(ThrowCompletion)
+                  .getExceptionClass()
+                  .hasQualifiedName("System.InvalidOperationException")
+            |
+              result = lastCasePattern(sce, _) or
+              result = lastCaseCondition(sce, _)
+            )
           )
         or
-        cfe = any(TypeCase tc |
-            // Type test exits with a non-match
-            result = lastTypeCaseNoMatch(tc, c)
-          )
-        or
-        cfe = any(RecursivePatternCase rpc | result = lastRecursivePatternCaseNoMatch(rpc, c))
-        or
-        cfe = any(CaseStmt cs |
+        cfe = any(Case case |
             // Condition exists with a `false` completion
-            result = lastCaseCondition(cs, c) and
+            result = lastCaseCondition(case, c) and
             c instanceof FalseCompletion
             or
             // Condition exists abnormally
-            result = lastCaseCondition(cs, c) and
+            result = lastCaseCondition(case, c) and
             not c instanceof NormalCompletion
             or
-            // Case statement exits with any completion
-            result = lastCaseStmt(cs, c)
+            // Case pattern exits with a non-match
+            result = lastCasePattern(case, c) and
+            not c.(MatchingCompletion).isMatch()
           )
+        or
+        // Case body exits with any completion
+        result = lastCaseBody(cfe, c)
         or
         exists(LoopStmt ls |
           cfe = ls and
@@ -1144,38 +1158,6 @@ module ControlFlow {
             c.isValidFor(result) and
             not c instanceof NormalCompletion
           )
-        or
-        // Result of a switch expression
-        result = lastSwitchExpr(cfe, c)
-      }
-
-      private ControlFlowElement lastConstCaseNoMatch(ConstCase cc, MatchingCompletion c) {
-        result = lastConstCaseExpr(cc, c) and
-        not c.isMatch()
-      }
-
-      private ControlFlowElement lastTypeCaseNoMatch(TypeCase tc, Completion c) {
-        c.isValidFor(result) and
-        (
-          result = tc.getTypeAccess() and
-          c = any(MatchingCompletion mc | not mc.isMatch())
-          or
-          result = last(tc.getCondition(), _) and
-          c instanceof FalseCompletion
-        )
-      }
-
-      private ControlFlowElement lastRecursivePatternCaseNoMatch(
-        RecursivePatternCase rpc, Completion c
-      ) {
-        c.isValidFor(result) and
-        (
-          result = rpc.getTypeAccess() and
-          c = any(MatchingCompletion mc | not mc.isMatch())
-          or
-          result = last(rpc.getCondition(), _) and
-          c instanceof FalseCompletion
-        )
       }
 
       pragma[nomagic]
@@ -1297,8 +1279,8 @@ module ControlFlow {
       }
 
       pragma[nomagic]
-      private ControlFlowElement lastSwitchStmtCondition(SwitchStmt ss, Completion c) {
-        result = last(ss.getCondition(), c)
+      private ControlFlowElement lastSwitchExpr(Switch s, Completion c) {
+        result = last(s.getExpr(), c)
       }
 
       pragma[nomagic]
@@ -1308,40 +1290,22 @@ module ControlFlow {
 
       pragma[nomagic]
       private ControlFlowElement lastSwitchStmtCaseStmt(SwitchStmt ss, int i, Completion c) {
-        result = last(ss.getStmt(i).(ConstCase).getStmt(), c) or
-        result = last(ss.getStmt(i).(TypeCase).getStmt(), c) or
-        result = last(ss.getStmt(i).(DefaultCase), c)
+        result = last(ss.getStmt(i).(CaseStmt).getBody(), c)
       }
 
       pragma[nomagic]
-      private ControlFlowElement lastConstCaseExpr(ConstCase cc, Completion c) {
-        result = last(cc.getExpr(), c)
+      private ControlFlowElement lastCasePattern(Case case, Completion c) {
+        result = last(case.getPattern(), c)
       }
 
       pragma[nomagic]
-      private ControlFlowElement lastCaseStmt(CaseStmt cs, Completion c) {
-        result = last(cs.(TypeCase).getStmt(), c)
-        or
-        result = last(cs.(ConstCase).getStmt(), c)
-        or
-        result = last(cs.(RecursivePatternCase).getStmt(), c)
+      private ControlFlowElement lastCaseCondition(Case case, Completion c) {
+        result = last(case.getCondition(), c)
       }
 
       pragma[nomagic]
-      private ControlFlowElement lastCaseCondition(CaseStmt cs, Completion c) {
-        result = last(cs.getCondition(), c)
-      }
-
-      pragma[nomagic]
-      private ControlFlowElement lastTypeCaseVariableDeclExpr(TypeCase tc, Completion c) {
-        result = last(tc.getVariableDeclExpr(), c)
-      }
-
-      pragma[nomagic]
-      private ControlFlowElement lastRecursivePatternCaseVariableDeclExpr(
-        RecursivePatternCase tc, Completion c
-      ) {
-        result = last(tc.getVariableDeclExpr(), c)
+      private ControlFlowElement lastCaseBody(Case case, Completion c) {
+        result = last(case.getBody(), c)
       }
 
       pragma[nomagic]
@@ -1628,17 +1592,33 @@ module ControlFlow {
           )
         )
         or
-        exists(SwitchStmt ss |
-          // Pre-order: flow from statement itself to first element of switch expression
-          cfe = ss and
-          result = first(ss.getCondition()) and
+        exists(Switch s |
+          // Pre-order: flow from statement itself to first switch expression
+          cfe = s and
+          result = first(s.getExpr()) and
           c instanceof SimpleCompletion
           or
-          // Flow from last element of switch expression to first element of first statement
-          cfe = lastSwitchStmtCondition(ss, c) and
+          // Flow from last element of switch expression to first element of first case
+          cfe = lastSwitchExpr(s, c) and
           c instanceof NormalCompletion and
-          result = first(ss.getStmt(0))
+          result = first(s.getCase(0))
           or
+          // Flow from last element of case pattern to next case
+          exists(Case case, int i | case = s.getCase(i) |
+            cfe = lastCasePattern(case, c) and
+            c = any(MatchingCompletion mc | not mc.isMatch()) and
+            result = first(s.getCase(i + 1))
+          )
+          or
+          // Flow from last element of condition to next case
+          exists(Case case, int i | case = s.getCase(i) |
+            cfe = lastCaseCondition(case, c) and
+            c instanceof FalseCompletion and
+            result = first(s.getCase(i + 1))
+          )
+        )
+        or
+        exists(SwitchStmt ss |
           // Flow from last element of non-`case` statement `i` to first element of statement `i+1`
           exists(int i | cfe = lastSwitchStmtStmt(ss, i, c) |
             not ss.getStmt(i) instanceof CaseStmt and
@@ -1650,20 +1630,6 @@ module ControlFlow {
           exists(int i | cfe = lastSwitchStmtCaseStmt(ss, i, c) |
             c instanceof NormalCompletion and
             result = first(ss.getStmt(i + 1))
-          )
-          or
-          // Flow from last element of case expression to next case
-          exists(ConstCase cc, int i | cc = ss.getCase(i) |
-            cfe = lastConstCaseExpr(cc, c) and
-            c = any(MatchingCompletion mc | not mc.isMatch()) and
-            result = first(ss.getCase(i + 1))
-          )
-          or
-          // Flow from last element of condition to next case
-          exists(CaseStmt tc, int i | tc = ss.getCase(i) |
-            cfe = lastCaseCondition(tc, c) and
-            c instanceof FalseCompletion and
-            result = first(ss.getCase(i + 1))
           )
           or
           exists(GotoCompletion gc |
@@ -1680,148 +1646,40 @@ module ControlFlow {
             exists(ConstCase cc |
               cc = ss.getAConstCase() and
               cc.getLabel() = gc.(GotoCaseCompletion).getLabel() and
-              result = first(cc.getStmt())
+              result = first(cc.getBody())
             )
           )
         )
         or
-        exists(ConstCase cc |
-          // Pre-order: flow from statement itself to first element of expression
-          cfe = cc and
-          result = first(cc.getExpr()) and
+        exists(Case case |
+          // Pre-order: flow from case itself to first element of pattern
+          cfe = case and
+          result = first(case.getPattern()) and
           c instanceof SimpleCompletion
           or
-          cfe = lastConstCaseExpr(cc, c) and
+          cfe = lastCasePattern(case, c) and
           c.(MatchingCompletion).isMatch() and
           (
-            if exists(cc.getCondition())
+            if exists(case.getCondition())
             then
-              // Flow from the last element of case expression to the condition
-              result = first(cc.getCondition())
+              // Flow from the last element of pattern to the condition
+              result = first(case.getCondition())
             else
-              // Flow from last element of case expression to first element of statement
-              result = first(cc.getStmt())
+              // Flow from last element of pattern to first element of body
+              result = first(case.getBody())
           )
           or
-          // Flow from last element of case condition to first element of statement
-          cfe = lastCaseCondition(cc, c) and
+          // Flow from last element of condition to first element of body
+          cfe = lastCaseCondition(case, c) and
           c instanceof TrueCompletion and
-          result = first(cc.getStmt())
+          result = first(case.getBody())
         )
         or
-        exists(TypeCase tc |
-          // Pre-order: flow from statement itself to type test
-          cfe = tc and
-          result = tc.getTypeAccess() and
-          c instanceof SimpleCompletion
-          or
-          cfe = tc.getTypeAccess() and
-          c.isValidFor(cfe) and
-          c = any(MatchingCompletion mc |
-              if mc.isMatch()
-              then
-                if exists(tc.getVariableDeclExpr())
-                then
-                  // Flow from type test to first element of variable declaration
-                  result = first(tc.getVariableDeclExpr())
-                else
-                  if exists(tc.getCondition())
-                  then
-                    // Flow from type test to first element of condition
-                    result = first(tc.getCondition())
-                  else
-                    // Flow from type test to first element of statement
-                    result = first(tc.getStmt())
-              else
-                // Flow from type test to first element of next case
-                exists(SwitchStmt ss, int i | tc = ss.getCase(i) |
-                  result = first(ss.getCase(i + 1))
-                )
-            )
-          or
-          cfe = lastTypeCaseVariableDeclExpr(tc, c) and
-          if exists(tc.getCondition())
-          then
-            // Flow from variable declaration to first element of condition
-            result = first(tc.getCondition())
-          else
-            // Flow from variable declaration to first element of statement
-            result = first(tc.getStmt())
-          or
-          // Flow from condition to first element of statement
-          cfe = lastCaseCondition(tc, c) and
-          c instanceof TrueCompletion and
-          result = first(tc.getStmt())
-        )
-        or
-        exists(RecursivePatternCase tc |
-          cfe = tc and
-          result = tc.getTypeAccess() and
-          c instanceof SimpleCompletion
-          or
-          // Preorder: From the case stmt:
-          not exists(tc.getTypeAccess()) and
-          cfe = tc and
-          result = first(tc.getRecursivePattern()) and
-          c instanceof SimpleCompletion
-          or
-          // Flow from type test (if exists) to recursive pattern
-          cfe = tc.getTypeAccess() and
-          result = first(tc.getRecursivePattern()) and
-          c.isValidFor(cfe) and
-          c = any(MatchingCompletion mc | mc.isMatch())
-          or
-          // Flow to the next case
-          cfe = lastCaseNodeFailure(tc, c) and
-          exists(SwitchStmt ss2, int i | tc = ss2.getCase(i) | result = first(ss2.getCase(i + 1)))
-          or
-          cfe = last(tc.getRecursivePattern(), _) and
-          c.isValidFor(cfe) and
-          c = any(MatchingCompletion mc |
-              if mc.isMatch()
-              then
-                if exists(tc.getVariableDeclExpr())
-                then
-                  // Flow from type test to first element of variable declaration
-                  result = first(tc.getVariableDeclExpr())
-                else
-                  if exists(tc.getCondition())
-                  then
-                    // Flow from type test to first element of condition
-                    result = first(tc.getCondition())
-                  else
-                    // Flow from type test to first element of statement
-                    result = first(tc.getStmt())
-              else
-                // Flow from type test to first element of next case
-                exists(SwitchStmt ss, int i | tc = ss.getCase(i) |
-                  result = first(ss.getCase(i + 1))
-                )
-            )
-          or
-          cfe = lastRecursivePatternCaseVariableDeclExpr(tc, c) and
-          if exists(tc.getCondition())
-          then
-            // Flow from variable declaration to first element of condition
-            result = first(tc.getCondition())
-          else
-            // Flow from variable declaration to first element of statement
-            result = first(tc.getStmt())
-          or
-          cfe = lastTypeCaseVariableDeclExpr(tc, c) and
-          if exists(tc.getCondition())
-          then
-            // Flow from variable declaration to first element of condition
-            result = first(tc.getCondition())
-          else
-            // Flow from variable declaration to first element of statement
-            result = first(tc.getStmt())
-          or
-          // Flow from condition to first element of statement
-          cfe = lastCaseCondition(tc, c) and
-          c instanceof TrueCompletion and
-          result = first(tc.getStmt())
-        )
+        // Pre-order: flow from statement itself to first element of statement
+        cfe = any(DefaultCase dc |
+            result = first(dc.getStmt()) and
+            c instanceof SimpleCompletion
+          )
         or
         exists(LoopStmt ls |
           // Flow from last element of condition to first element of loop body
@@ -2065,28 +1923,6 @@ module ControlFlow {
             c instanceof NormalCompletion
           )
         )
-        or
-        switchExprSucc(_, cfe, result, c)
-      }
-
-      /** Ways to leave a CaseStmt in the failure case. */
-      ControlFlowElement lastCaseNodeFailure(CaseStmt cfe, Completion c) {
-        c.isValidFor(result) and
-        (
-          c = any(MatchingCompletion m | not m.isMatch()) and
-          (
-            result = last(cfe.(ConstCase).getExpr(), _)
-            or
-            result = cfe.(RecursivePatternCase).getTypeAccess()
-            or
-            result = last(cfe.(RecursivePatternCase).getRecursivePattern(), c)
-            or
-            result = cfe.(TypeCase).getTypeAccess()
-          )
-          or
-          c instanceof FalseCompletion and
-          result = last(cfe.getCondition(), c)
-        )
       }
 
       /**
@@ -2130,60 +1966,6 @@ module ControlFlow {
       Callable succExit(ControlFlowElement cfe, Completion c) {
         cfe = last(result.getBody(), c) and
         not c instanceof GotoCompletion
-      }
-
-      predicate switchExprSucc(
-        SwitchExpr expr, ControlFlowElement a, ControlFlowElement b, Completion c
-      ) {
-        a = expr and b = first(expr.getExpr()) and c instanceof SimpleCompletion
-        or
-        // Go to the first case
-        a = last(expr.getExpr(), _) and b = first(expr.getCase(0)) and c instanceof SimpleCompletion
-        or
-        exists(SwitchCaseExpr case, int n | case = expr.getCase(n) |
-          // Go to the pattern
-          a = case and b = first(case.getPattern()) and c instanceof SimpleCompletion
-          or
-          // Pattern goes to result or condition
-          a = last(case.getPattern(), _) and
-          c = any(MatchingCompletion m | m.isMatch()) and
-          (
-            if exists(case.getCondition())
-            then b = first(case.getCondition())
-            else b = first(case.getResult())
-          )
-          or
-          a = last(case.getCondition(), _) and
-          b = first(case.getResult()) and
-          c.(TrueCompletion).isValidFor(case.getCondition())
-          or
-          a = last(case.getCondition(), _) and
-          b = expr.getCase(n + 1) and
-          c.(FalseCompletion).isValidFor(case.getCondition())
-          or
-          a = last(case.getPattern(), _) and
-          b = expr.getCase(n + 1) and
-          c = any(MatchingCompletion m | not m.isMatch())
-        )
-      }
-
-      ControlFlowElement lastSwitchExpr(SwitchExpr e, Completion c) {
-        result = last(e.getCase(_).getResult(), c)
-        or
-        exists(SwitchCaseExpr case, int i |
-          case = e.getCase(i) and
-          not e.getCase(i).matchesAll() and
-          not exists(e.getCase(i + 1))
-        |
-          (
-            result = case.getPattern() or
-            result = last(case.getCondition(), _)
-          ) and
-          c
-              .(ThrowCompletion)
-              .getExceptionClass()
-              .hasQualifiedName("System.InvalidOperationException")
-        )
       }
     }
     import Successor

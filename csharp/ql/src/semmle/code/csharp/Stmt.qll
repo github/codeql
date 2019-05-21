@@ -142,8 +142,10 @@ class IfStmt extends SelectionStmt, @if_stmt {
  * }
  * ```
  */
-class SwitchStmt extends SelectionStmt, @switch_stmt {
-  override Expr getCondition() { result = this.getChild(0) }
+class SwitchStmt extends SelectionStmt, Switch, @switch_stmt {
+  override Expr getExpr() { result = this.getChild(0) }
+
+  override Expr getCondition() { result = this.getExpr() }
 
   /**
    * Gets the `i`th `case` statement in the body of this `switch` statement.
@@ -164,10 +166,10 @@ class SwitchStmt extends SelectionStmt, @switch_stmt {
    * }
    * ```
    */
-  CaseStmt getCase(int i) { result = SwithStmtInternal::getCase(this, i) }
+  override CaseStmt getCase(int i) { result = SwithStmtInternal::getCase(this, i) }
 
   /** Gets a case of this `switch` statement. */
-  CaseStmt getACase() { result = this.getCase(_) }
+  override CaseStmt getACase() { result = this.getCase(_) }
 
   /** Gets a constant value case of this `switch` statement, if any. */
   ConstCase getAConstCase() { result = this.getACase() }
@@ -176,7 +178,7 @@ class SwitchStmt extends SelectionStmt, @switch_stmt {
   DefaultCase getDefaultCase() { result = this.getACase() }
 
   /** Gets a type case of this `switch` statement, if any. */
-  TypeCase getATypeCase() { result = this.getACase() }
+  deprecated TypeCase getATypeCase() { result = this.getACase() }
 
   override string toString() { result = "switch (...) {...}" }
 
@@ -237,16 +239,23 @@ private module SwithStmtInternal {
 
   private Stmt getLabeledStmt(SwitchStmt ss, int i) {
     result = ss.getChildStmt(i) and
-    not result = any(ConstCase cc).getStmt() and
-    not result = any(TypeCase tc).getStmt()
+    not result = any(CaseStmt cs).getBody()
   }
 }
 
-/**
- * A `case` statement. Either a constant case (`ConstCase`), a type matching
- * case (`TypeCase`), or a `default` case (`DefaultCase`).
- */
-class CaseStmt extends Stmt, @case {
+/** A `case` statement. */
+class CaseStmt extends Case, @case_stmt {
+  override Expr getExpr() { result = any(SwitchStmt ss | ss.getACase() = this).getExpr() }
+
+  override PatternExpr getPattern() { result = this.getChild(0) }
+
+  override Stmt getBody() {
+    exists(int i |
+      this = this.getParent().getChild(i) and
+      result = this.getParent().getChild(i + 1)
+    )
+  }
+
   /**
    * Gets the condition on this case, if any. For example, the type case on line 3
    * has no condition, and the type case on line 4 has condition `s.Length > 0`, in
@@ -261,10 +270,12 @@ class CaseStmt extends Stmt, @case {
    * }
    * ```
    */
-  Expr getCondition() { result = this.getChild(2) }
+  override Expr getCondition() { result = this.getChild(1) }
 
   /** Gets the `switch` statement that this `case` statement belongs to. */
   SwitchStmt getSwitchStmt() { result.getACase() = this }
+
+  override string toString() { result = "case ...:" }
 }
 
 /**
@@ -278,21 +289,14 @@ class CaseStmt extends Stmt, @case {
  * }
  * ```
  */
-class ConstCase extends LabeledStmt, CaseStmt {
-  Expr expr;
+class ConstCase extends CaseStmt, LabeledStmt {
+  private ConstantPatternExpr p;
 
-  ConstCase() {
-    expr = this.getChild(0) and
-    not expr instanceof LocalVariableDeclExpr and
-    not exists(this.getChild(1))
-  }
+  ConstCase() { p = this.getPattern() }
 
-  /** Gets the case expression. */
-  Expr getExpr() { result = expr }
+  override string getLabel() { result = p.getValue() }
 
-  override string getLabel() { result = getExpr().getValue() }
-
-  override string toString() { result = "case ...:" }
+  override string toString() { result = CaseStmt.super.toString() }
 }
 
 /**
@@ -309,11 +313,10 @@ class ConstCase extends LabeledStmt, CaseStmt {
  * }
  * ```
  */
-class TypeCase extends LabeledStmt, CaseStmt {
-  TypeCase() {
-    this.getChild(1) instanceof TypeAccess and
-    not this.getChild(4) instanceof RecursivePatternExpr
-  }
+deprecated class TypeCase extends CaseStmt {
+  private TypeAccess ta;
+
+  TypeCase() { expr_parent(ta, 1, this) }
 
   /**
    * Gets the local variable declaration of this type case, if any. For example,
@@ -330,7 +333,7 @@ class TypeCase extends LabeledStmt, CaseStmt {
    * }
    * ```
    */
-  LocalVariableDeclExpr getVariableDeclExpr() { result = getChild(0) }
+  LocalVariableDeclExpr getVariableDeclExpr() { result = this.getPattern() }
 
   /**
    * Gets the type access of this case, for example access to `string` or
@@ -345,7 +348,7 @@ class TypeCase extends LabeledStmt, CaseStmt {
    * }
    * ```
    */
-  TypeAccess getTypeAccess() { result = getChild(1) }
+  TypeAccess getTypeAccess() { result = ta }
 
   /**
    * Gets the type being checked by this case. For example, the type being checked
@@ -360,48 +363,7 @@ class TypeCase extends LabeledStmt, CaseStmt {
    * }
    * ```
    */
-  Type getCheckedType() { result = getTypeAccess().getType() }
-
-  override string toString() {
-    exists(string var |
-      if exists(this.getVariableDeclExpr())
-      then var = " " + this.getVariableDeclExpr().getName()
-      else var = ""
-    |
-      result = "case " + this.getTypeAccess().getType().getName() + var + ":"
-    )
-  }
-}
-
-/**
- * A recursive pattern case, for example `case string { Length: 0 } empty:`.
- */
-class RecursivePatternCase extends LabeledStmt, CaseStmt {
-  RecursivePatternExpr pattern;
-
-  RecursivePatternCase() { pattern = this.getChild(4) }
-
-  override string toString() { result = "case { ... }:" }
-
-  /**
-   * Gets the type access of this recursive pattern case, if any.
-   * For example, `string` in `case string { Length: 0 } empty:`.
-   */
-  TypeAccess getTypeAccess() { result = getChild(1) }
-
-  /**
-   * Gets the checked type of this recursive pattern, if any.
-   * For example, `string` in `case string { Length: 0 } empty:`.
-   */
-  Type getCheckedType() { result = getTypeAccess().getType() }
-
-  /**
-   * Gets the recursive pattern of this case.
-   * For example, `{ Length: 0 }` in `case string { Length: 0 } empty:`.
-   */
-  RecursivePatternExpr getRecursivePattern() { result = pattern }
-
-  LocalVariableDeclExpr getVariableDeclExpr() { result = getChild(0) }
+  Type getCheckedType() { result = this.getTypeAccess().getType() }
 }
 
 /**
@@ -415,8 +377,10 @@ class RecursivePatternCase extends LabeledStmt, CaseStmt {
  * }
  * ```
  */
-class DefaultCase extends CaseStmt {
+class DefaultCase extends CaseStmt, LabeledStmt {
   DefaultCase() { not exists(Expr e | e.getParent() = this) }
+
+  override string getLabel() { result = "default" }
 
   override string toString() { result = "default:" }
 }

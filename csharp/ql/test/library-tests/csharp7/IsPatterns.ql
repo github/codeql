@@ -1,5 +1,7 @@
 import csharp
 
-from IsPatternExpr e, boolean isVar
-where if e.getVariableDeclExpr().isImplicitlyTyped() then isVar = true else isVar = false
-select e, e.getTypeAccess(), e.getCheckedType().toString(), e.getVariableDeclExpr(), isVar
+from IsExpr e, boolean isVar, VariablePatternExpr vpe
+where
+  vpe = e.getPattern() and
+  if vpe.isImplicitlyTyped() then isVar = true else isVar = false
+select e, vpe.getType().toString(), vpe, isVar

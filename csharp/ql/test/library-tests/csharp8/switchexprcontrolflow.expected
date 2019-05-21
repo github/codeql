@@ -127,8 +127,8 @@
 | patterns.cs:135:9:142:9 | {...} | patterns.cs:136:13:141:14 | ...; | semmle.label | successor |
 | patterns.cs:136:13:141:13 | ... = ... | patterns.cs:123:10:123:21 | exit Expressions2 | semmle.label | successor |
 | patterns.cs:136:13:141:14 | ...; | patterns.cs:136:17:141:13 | ... switch { ... } | semmle.label | successor |
-| patterns.cs:136:17:136:17 | 0 | patterns.cs:138:17:138:50 | ... => ... | semmle.label | successor |
-| patterns.cs:136:17:141:13 | ... switch { ... } | patterns.cs:136:17:136:17 | 0 | semmle.label | successor |
+| patterns.cs:136:17:136:17 | access to parameter o | patterns.cs:138:17:138:50 | ... => ... | semmle.label | successor |
+| patterns.cs:136:17:141:13 | ... switch { ... } | patterns.cs:136:17:136:17 | access to parameter o | semmle.label | successor |
 | patterns.cs:138:17:138:17 | 1 | patterns.cs:138:28:138:50 | object creation of type ArgumentException | semmle.label | match |
 | patterns.cs:138:17:138:17 | 1 | patterns.cs:139:17:139:22 | ... => ... | semmle.label | no-match |
 | patterns.cs:138:17:138:50 | ... => ... | patterns.cs:138:17:138:17 | 1 | semmle.label | successor |
@@ -143,9 +143,9 @@
 | patterns.cs:140:17:140:24 | Object y | patterns.cs:143:9:146:9 | [exception: InvalidOperationException] catch (...) {...} | semmle.label | exception(InvalidOperationException) |
 | patterns.cs:140:17:140:42 | ... => ... | patterns.cs:140:17:140:24 | Object y | semmle.label | successor |
 | patterns.cs:140:31:140:31 | access to local variable y | patterns.cs:140:36:140:37 | { ... } | semmle.label | successor |
-| patterns.cs:140:31:140:37 | ... is { ... } | patterns.cs:140:42:140:42 | 4 | semmle.label | true |
-| patterns.cs:140:31:140:37 | ... is { ... } | patterns.cs:143:9:146:9 | [exception: InvalidOperationException] catch (...) {...} | semmle.label | exception(InvalidOperationException) |
-| patterns.cs:140:36:140:37 | { ... } | patterns.cs:140:31:140:37 | ... is { ... } | semmle.label | successor |
+| patterns.cs:140:31:140:37 | ... is ... | patterns.cs:140:42:140:42 | 4 | semmle.label | true |
+| patterns.cs:140:31:140:37 | ... is ... | patterns.cs:143:9:146:9 | [exception: InvalidOperationException] catch (...) {...} | semmle.label | exception(InvalidOperationException) |
+| patterns.cs:140:36:140:37 | { ... } | patterns.cs:140:31:140:37 | ... is ... | semmle.label | successor |
 | patterns.cs:140:36:140:37 | { ... } | patterns.cs:140:36:140:37 | { ... } | semmle.label | successor |
 | patterns.cs:140:42:140:42 | 4 | patterns.cs:136:13:141:13 | ... = ... | semmle.label | successor |
 | patterns.cs:143:9:146:9 | [exception: ArgumentException] catch (...) {...} | patterns.cs:123:10:123:21 | exit Expressions2 | semmle.label | exception(ArgumentException) |

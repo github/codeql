@@ -87,9 +87,7 @@ class RelevantDefinition extends AssignableDefinition {
         lvde = any(ForeachStmt fs).getVariableDeclExpr()
       )
     or
-    this instanceof AssignableDefinitions::IsPatternDefinition
-    or
-    this instanceof AssignableDefinitions::TypeCasePatternDefinition
+    this instanceof AssignableDefinitions::PatternDefinition
   }
 
   /** Holds if this assignment may be live. */
