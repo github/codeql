@@ -153,7 +153,7 @@ class PrintASTNode extends TPrintASTNode {
 /**
  * A concatenation of all the leaf QL types of `el`
  */
-private string qlClass(Element el) { result = concat(el.getAQlClass(), ",") + ": " }
+private string qlClass(Element el) { result = "["+ concat(el.getAQlClass(), ",") + "]: " }
 
 /**
  * A node representing an AST node.
@@ -163,7 +163,7 @@ abstract class ASTNode extends PrintASTNode, TASTNode {
 
   ASTNode() { this = TASTNode(ast) }
 
-  override string toString() { result = ast.toString() }
+  override string toString() { result = qlClass(ast) + ast.toString() }
 
   final override Location getLocation() { result = getRepresentativeLocation(ast) }
 
@@ -240,7 +240,7 @@ class CastNode extends ConversionNode {
     result = super.getProperty(key)
     or
     key = "Conversion" and
-    result = cast.getSemanticConversionString()
+    result = qlClass(cast) + cast.getSemanticConversionString()
   }
 }
 
@@ -258,7 +258,7 @@ class DeclarationEntryNode extends ASTNode {
     result = super.getProperty(key)
     or
     key = "Type" and
-    result = entry.getType().toString()
+    result = qlClass(entry.getType()) + entry.getType().toString()
   }
 }
 
