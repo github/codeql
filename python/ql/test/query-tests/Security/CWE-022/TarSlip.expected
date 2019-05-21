@@ -1,0 +1,9 @@
+edges
+| tarslip.py:12:7:12:39 | tarfile.open | tarslip.py:13:1:13:3 | tarfile.open |
+| tarslip.py:12:7:12:39 | tarfile.open | tarslip.py:14:1:14:3 | tarfile.open |
+| tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:17:14:17:16 | tarfile.open |
+| tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:18:5:18:7 | tarfile.open |
+parents
+#select
+| tarslip.py:13:1:13:3 | Taint sink | tarslip.py:12:7:12:39 | tarfile.open | tarslip.py:13:1:13:3 | tarfile.open | Extraction of tarfile from $@ | tarslip.py:12:7:12:39 | Taint source | a potentially untrusted source |
+| tarslip.py:18:5:18:7 | Taint sink | tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:18:5:18:7 | tarfile.open | Extraction of tarfile from $@ | tarslip.py:16:7:16:39 | Taint source | a potentially untrusted source |
