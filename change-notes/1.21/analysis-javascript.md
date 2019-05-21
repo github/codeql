@@ -41,6 +41,7 @@
 | Type confusion through parameter tampering | Fewer false-positive results | This rule now recognizes additional emptiness checks. |
 | Useless assignment to property | Fewer false-positive results | This rule now ignore reads of additional getters. |
 | Unreachable statement | Unreachable throws no longer give an alert | This ignores unreachable throws, as they could be intentional (for example, to placate the TS compiler). |
+| Incorrect suffix check | Fewer false-positive results | This rule now recognizes valid checks in more cases. |
 
 ## Changes to QL libraries
 

@@ -139,6 +139,16 @@ class UnsafeIndexOfComparison extends EqualityTest {
         not test.isInclusive() and
         value = -1
       )
+    ) and
+    // Check for indexOf being <0, or <=-1
+    not exists(RelationalComparison test |
+      test.getLesserOperand() = indexOf.getAnEquivalentIndexOfCall().getAUse() and
+      exists(int value | value = test.getGreaterOperand().getIntValue() |
+        value < 0
+        or
+        not test.isInclusive() and
+        value = 0
+      )
     )
   }
 
