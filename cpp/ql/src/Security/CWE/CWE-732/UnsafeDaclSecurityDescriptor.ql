@@ -60,7 +60,7 @@ class NonNullDaclConfig extends DataFlow2::Configuration {
   }
 
   override predicate isSource(DataFlow::Node source) {
-    source.getUnspecifiedType().(PointerType).getBaseType() =
+    source.getType().getUnspecifiedType().(PointerType).getBaseType() =
       any(Type t | t.getName() = "ACL").getUnspecifiedType() and
     (
       // If the value comes from a function whose body we can't see, assume
