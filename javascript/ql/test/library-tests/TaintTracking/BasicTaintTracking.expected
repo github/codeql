@@ -1,3 +1,63 @@
+typeInferenceMismatch
+| addexpr.js:4:10:4:17 | source() | addexpr.js:4:5:4:17 | x |
+| addexpr.js:4:10:4:17 | source() | addexpr.js:6:3:6:14 | x |
+| addexpr.js:11:15:11:22 | source() | addexpr.js:17:5:17:18 | value |
+| addexpr.js:11:15:11:22 | source() | addexpr.js:19:3:19:14 | value |
+| destruct.js:15:7:15:14 | source() | destruct.js:4:11:4:25 | x: { y: { z } } |
+| destruct.js:15:7:15:14 | source() | destruct.js:4:14:4:25 | { y: { z } } |
+| destruct.js:15:7:15:14 | source() | destruct.js:4:16:4:23 | y: { z } |
+| destruct.js:15:7:15:14 | source() | destruct.js:4:19:4:23 | { z } |
+| destruct.js:15:7:15:14 | source() | destruct.js:4:21:4:21 | z |
+| destruct.js:15:7:15:14 | source() | destruct.js:7:10:7:14 | [[w]] |
+| destruct.js:15:7:15:14 | source() | destruct.js:7:10:7:14 | [[w]] |
+| destruct.js:15:7:15:14 | source() | destruct.js:7:11:7:13 | [w] |
+| destruct.js:15:7:15:14 | source() | destruct.js:7:11:7:13 | [w] |
+| destruct.js:15:7:15:14 | source() | destruct.js:7:12:7:12 | w |
+| destruct.js:15:7:15:14 | source() | destruct.js:10:11:10:25 | x: [ { y: q } ] |
+| destruct.js:15:7:15:14 | source() | destruct.js:10:14:10:25 | [ { y: q } ] |
+| destruct.js:15:7:15:14 | source() | destruct.js:10:16:10:23 | { y: q } |
+| destruct.js:15:7:15:14 | source() | destruct.js:10:16:10:23 | { y: q } |
+| destruct.js:15:7:15:14 | source() | destruct.js:10:18:10:21 | y: q |
+| exceptions.js:3:15:3:22 | source() | exceptions.js:3:5:3:23 | exceptional return of throwRaw2(source()) |
+| exceptions.js:3:15:3:22 | source() | exceptions.js:66:1:69:1 | exceptional return of function throwRaw2 |
+| exceptions.js:3:15:3:22 | source() | exceptions.js:67:3:67:14 | exceptional return of throwRaw1(x) |
+| exceptions.js:3:15:3:22 | source() | exceptions.js:68:3:68:14 | exceptional return of throwRaw1(x) |
+| exceptions.js:3:15:3:22 | source() | exceptions.js:71:1:73:1 | exceptional return of function throwRaw1 |
+| exceptions.js:21:17:21:24 | source() | exceptions.js:21:5:21:25 | exceptional return of throwEr ... urce()) |
+| exceptions.js:21:17:21:24 | source() | exceptions.js:75:1:78:1 | exceptional return of function throwError2 |
+| exceptions.js:21:17:21:24 | source() | exceptions.js:76:3:76:16 | exceptional return of throwError1(x) |
+| exceptions.js:21:17:21:24 | source() | exceptions.js:77:3:77:16 | exceptional return of throwError1(x) |
+| exceptions.js:21:17:21:24 | source() | exceptions.js:80:1:82:1 | exceptional return of function throwError1 |
+| exceptions.js:48:16:48:23 | source() | exceptions.js:48:5:48:24 | exceptional return of throwAsync(source()) |
+| exceptions.js:48:16:48:23 | source() | exceptions.js:84:1:86:1 | exceptional return of function throwAsync |
+| exceptions.js:53:14:53:21 | source() | exceptions.js:1:1:64:1 | exceptional return of function test |
+| exceptions.js:53:14:53:21 | source() | exceptions.js:53:3:53:22 | exceptional return of throwAsync(source()) |
+| exceptions.js:53:14:53:21 | source() | exceptions.js:84:1:86:1 | exceptional return of function throwAsync |
+| exceptions.js:53:14:53:21 | source() | exceptions.js:88:1:88:23 | exceptional return of test(so ... hello") |
+| exceptions.js:53:14:53:21 | source() | exceptions.js:89:1:89:20 | exceptional return of test("hey", "hello") |
+| exceptions.js:59:24:59:31 | source() | exceptions.js:59:13:59:32 | exceptional return of throwAsync(source()) |
+| exceptions.js:59:24:59:31 | source() | exceptions.js:84:1:86:1 | exceptional return of function throwAsync |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:9:5:9:21 | exceptional return of throwRaw2(unsafe) |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:30:5:30:23 | exceptional return of throwError2(unsafe) |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:66:1:69:1 | exceptional return of function throwRaw2 |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:67:3:67:14 | exceptional return of throwRaw1(x) |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:68:3:68:14 | exceptional return of throwRaw1(x) |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:71:1:73:1 | exceptional return of function throwRaw1 |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:75:1:78:1 | exceptional return of function throwError2 |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:76:3:76:16 | exceptional return of throwError1(x) |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:77:3:77:16 | exceptional return of throwError1(x) |
+| exceptions.js:88:6:88:13 | source() | exceptions.js:80:1:82:1 | exceptional return of function throwError1 |
+| exceptions.js:144:9:144:16 | source() | exceptions.js:127:5:127:17 | exceptional return of throwSource() |
+| exceptions.js:144:9:144:16 | source() | exceptions.js:137:5:137:17 | exceptional return of throwSource() |
+| exceptions.js:144:9:144:16 | source() | exceptions.js:143:1:145:1 | exceptional return of function throwSource |
+| exceptions.js:150:13:150:20 | source() | exceptions.js:149:5:151:6 | exceptional return of xs.forE ... \\n    }) |
+| exceptions.js:150:13:150:20 | source() | exceptions.js:149:16:151:5 | exceptional return of anonymous function |
+| exceptions.js:158:13:158:20 | source() | exceptions.js:157:5:159:6 | exceptional return of _.takeW ... \\n    }) |
+| exceptions.js:158:13:158:20 | source() | exceptions.js:157:21:159:5 | exceptional return of anonymous function |
+| exceptions.js:166:13:166:20 | source() | exceptions.js:165:40:167:5 | exceptional return of anonymous function |
+| partialCalls.js:4:17:4:24 | source() | partialCalls.js:6:23:6:23 | y |
+| partialCalls.js:4:17:4:24 | source() | partialCalls.js:9:20:9:20 | x |
+#select
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | addexpr.js:4:10:4:17 | source() | addexpr.js:7:8:7:8 | x |
 | addexpr.js:11:15:11:22 | source() | addexpr.js:21:8:21:12 | value |
