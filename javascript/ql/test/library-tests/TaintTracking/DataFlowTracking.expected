@@ -1,6 +1,4 @@
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
-| addexpr.js:4:10:4:17 | source() | addexpr.js:7:8:7:8 | x |
-| addexpr.js:11:15:11:22 | source() | addexpr.js:21:8:21:12 | value |
 | advanced-callgraph.js:2:13:2:20 | source() | advanced-callgraph.js:6:22:6:22 | v |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:34:27:34:27 | x |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:35:27:35:27 | x |
@@ -13,30 +11,16 @@
 | callbacks.js:50:18:50:25 | source() | callbacks.js:30:29:30:29 | y |
 | callbacks.js:51:18:51:25 | source() | callbacks.js:30:29:30:29 | y |
 | captured-sanitizer.js:25:3:25:10 | source() | captured-sanitizer.js:15:10:15:10 | x |
-| closure.js:6:15:6:22 | source() | closure.js:8:8:8:31 | string. ... (taint) |
-| closure.js:6:15:6:22 | source() | closure.js:9:8:9:25 | string.trim(taint) |
-| closure.js:6:15:6:22 | source() | closure.js:10:8:10:33 | string. ... nt, 50) |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:18:8:18:14 | c.taint |
 | constructor-calls.js:4:18:4:25 | source() | constructor-calls.js:22:8:22:19 | c_safe.taint |
 | constructor-calls.js:10:16:10:23 | source() | constructor-calls.js:26:8:26:14 | d.taint |
 | constructor-calls.js:10:16:10:23 | source() | constructor-calls.js:30:8:30:19 | d_safe.taint |
 | constructor-calls.js:14:15:14:22 | source() | constructor-calls.js:17:8:17:14 | c.param |
 | constructor-calls.js:14:15:14:22 | source() | constructor-calls.js:25:8:25:14 | d.param |
-| destruct.js:15:7:15:14 | source() | destruct.js:5:10:5:10 | z |
-| destruct.js:15:7:15:14 | source() | destruct.js:8:10:8:10 | w |
-| destruct.js:15:7:15:14 | source() | destruct.js:11:10:11:10 | q |
 | exceptions.js:3:15:3:22 | source() | exceptions.js:5:10:5:10 | e |
-| exceptions.js:21:17:21:24 | source() | exceptions.js:23:10:23:10 | e |
-| exceptions.js:21:17:21:24 | source() | exceptions.js:24:10:24:21 | e.toString() |
-| exceptions.js:21:17:21:24 | source() | exceptions.js:25:10:25:18 | e.message |
-| exceptions.js:21:17:21:24 | source() | exceptions.js:26:10:26:19 | e.fileName |
 | exceptions.js:48:16:48:23 | source() | exceptions.js:50:10:50:10 | e |
 | exceptions.js:59:24:59:31 | source() | exceptions.js:61:12:61:12 | e |
 | exceptions.js:88:6:88:13 | source() | exceptions.js:11:10:11:10 | e |
-| exceptions.js:88:6:88:13 | source() | exceptions.js:32:10:32:10 | e |
-| exceptions.js:88:6:88:13 | source() | exceptions.js:33:10:33:21 | e.toString() |
-| exceptions.js:88:6:88:13 | source() | exceptions.js:34:10:34:18 | e.message |
-| exceptions.js:88:6:88:13 | source() | exceptions.js:35:10:35:19 | e.fileName |
 | exceptions.js:93:11:93:18 | source() | exceptions.js:95:10:95:10 | e |
 | exceptions.js:100:13:100:20 | source() | exceptions.js:102:12:102:12 | e |
 | exceptions.js:115:21:115:28 | source() | exceptions.js:121:10:121:10 | e |
@@ -45,41 +29,16 @@
 | exceptions.js:150:13:150:20 | source() | exceptions.js:153:10:153:10 | e |
 | exceptions.js:158:13:158:20 | source() | exceptions.js:161:10:161:10 | e |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
+| indexOf.js:4:11:4:18 | source() | indexOf.js:13:10:13:10 | x |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:17:14:17:14 | x |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:20:14:20:14 | y |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:30:14:30:20 | x.value |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:41:10:41:18 | id(taint) |
 | partialCalls.js:4:17:4:24 | source() | partialCalls.js:51:14:51:14 | x |
-| promise.js:4:24:4:31 | source() | promise.js:4:8:4:32 | Promise ... urce()) |
-| promise.js:5:25:5:32 | source() | promise.js:5:8:5:33 | bluebir ... urce()) |
-| promise.js:10:24:10:31 | source() | promise.js:10:8:10:32 | Promise ... urce()) |
-| promise.js:12:20:12:27 | source() | promise.js:13:8:13:23 | resolver.promise |
 | sanitizer-guards.js:2:11:2:18 | source() | sanitizer-guards.js:4:8:4:8 | x |
 | sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:15:10:15:15 | this.x |
 | sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:21:14:21:19 | this.x |
 | sanitizer-guards.js:13:14:13:21 | source() | sanitizer-guards.js:26:9:26:14 | this.x |
-| spread.js:2:15:2:22 | source() | spread.js:4:8:4:19 | { ...taint } |
-| spread.js:2:15:2:22 | source() | spread.js:5:8:5:43 | { f: 'h ... orld' } |
-| spread.js:2:15:2:22 | source() | spread.js:7:8:7:19 | [ ...taint ] |
-| spread.js:2:15:2:22 | source() | spread.js:8:8:8:28 | [ 1, 2, ... nt, 3 ] |
 | thisAssignments.js:4:17:4:24 | source() | thisAssignments.js:5:10:5:18 | obj.field |
 | thisAssignments.js:7:19:7:26 | source() | thisAssignments.js:8:10:8:20 | this.field2 |
 | tst.js:2:13:2:20 | source() | tst.js:4:10:4:10 | x |
-| tst.js:2:13:2:20 | source() | tst.js:5:10:5:22 | "/" + x + "!" |
-| tst.js:2:13:2:20 | source() | tst.js:14:10:14:17 | x.sort() |
-| tst.js:2:13:2:20 | source() | tst.js:17:10:17:10 | a |
-| tst.js:2:13:2:20 | source() | tst.js:19:10:19:10 | a |
-| tst.js:2:13:2:20 | source() | tst.js:23:10:23:10 | b |
-| tst.js:2:13:2:20 | source() | tst.js:25:10:25:16 | x.pop() |
-| tst.js:2:13:2:20 | source() | tst.js:26:10:26:18 | x.shift() |
-| tst.js:2:13:2:20 | source() | tst.js:27:10:27:18 | x.slice() |
-| tst.js:2:13:2:20 | source() | tst.js:28:10:28:19 | x.splice() |
-| tst.js:2:13:2:20 | source() | tst.js:30:10:30:22 | Array.from(x) |
-| tst.js:2:13:2:20 | source() | tst.js:33:14:33:16 | elt |
-| tst.js:2:13:2:20 | source() | tst.js:35:14:35:16 | ary |
-| tst.js:2:13:2:20 | source() | tst.js:39:14:39:16 | elt |
-| tst.js:2:13:2:20 | source() | tst.js:41:14:41:16 | ary |
-| tst.js:2:13:2:20 | source() | tst.js:44:10:44:30 | innocen ... ) => x) |
-| tst.js:2:13:2:20 | source() | tst.js:45:10:45:24 | x.map(x2 => x2) |
-| tst.js:2:13:2:20 | source() | tst.js:47:10:47:30 | Buffer. ...  'hex') |
-| tst.js:2:13:2:20 | source() | tst.js:48:10:48:22 | new Buffer(x) |
