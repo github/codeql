@@ -320,6 +320,13 @@ abstract class BarrierGuardNode extends DataFlow::Node {
  */
 abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
   override predicate blocks(boolean outcome, Expr e) { none() }
+
+  /**
+   * DEPRECATED: Use `blocks(outcome, e, label)` or `sanitizes(outcome, e, label)` instead.
+   *
+   * Overriding this predicate has no effect.
+   */
+  deprecated FlowLabel getALabel() { none() }
 }
 
 /**
