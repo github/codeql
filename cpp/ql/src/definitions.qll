@@ -30,7 +30,7 @@ class Top extends Element {
   predicate hasLocationInfo(string filepath,
                             int startline, int startcolumn,
                             int endline, int endcolumn) {
-    this instanceof Element and
+    interestingElement(this) and
     not this instanceof MacroAccess and
     not this instanceof Include and
     exists(Location l |
@@ -74,6 +74,13 @@ predicate hasLocationInfo_Include(Include i, string path, int sl, int sc, int el
     el = l.getEndLine() and
     ec = l.getEndColumn()
   )
+}
+
+/** Holds if `e` is a source or a target of jump-to-definition. */
+predicate interestingElement(Element e) {
+  exists(definitionOf(e, _))
+  or
+  e = definitionOf(_, _)
 }
 
 /**
