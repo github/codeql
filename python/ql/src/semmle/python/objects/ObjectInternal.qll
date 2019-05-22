@@ -38,15 +38,14 @@ class ObjectInternal extends TObject {
     /** Gets the class declaration for this object, if it is a class with a declaration. */
     abstract ClassDecl getClassDeclaration();
 
-    /** True if this "object" is a class. */
+    /** True if this "object" is a class. That is, its class inherits from `type` */
     abstract boolean isClass();
 
-    /** Holds if this object is a class. That is, it's class inherits from `type`  */
+    /** Gets the class of this object.  */
     abstract ObjectInternal getClass();
 
-    /** True if this "object" can be meaningfully analysed for
-     * truth or false in comparisons. For example, `None` or `int` can be, but `int()`
-     * or an unknown string cannot.
+    /** True if this "object" can be meaningfully analysed to determine its boolean value in comparisons.
+     * For example, `None` or `int` can be, but `int()` or an unknown string cannot.
      */
     abstract boolean isComparable();
 
@@ -57,7 +56,7 @@ class ObjectInternal extends TObject {
     abstract Builtin getBuiltin();
 
     /** Gets a control flow node that represents the source origin of this
-     * objects. Source code objects should attempt to return
+     * object. Source code objects should attempt to return
      * exactly one result for this method.
      */
     abstract ControlFlowNode getOrigin();
@@ -100,10 +99,10 @@ class ObjectInternal extends TObject {
     pragma [nomagic]
     abstract predicate attribute(string name, ObjectInternal value, CfgOrigin origin);
 
-    /** Holds if the attributes of this object are wholy or partly unknowable */
+    /** Holds if the attributes of this object are wholly or partly unknowable */
     abstract predicate attributesUnknown();
 
-    /** Holds if the result of subscripting this object are wholy or partly unknowable */
+    /** Holds if the result of subscripting this object are wholly or partly unknowable */
     abstract predicate subscriptUnknown();
 
     /** For backwards compatibility shim -- Not all objects have a "source".
@@ -140,7 +139,7 @@ class ObjectInternal extends TObject {
     abstract predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor);
 
     /** Gets the length of the sequence that this "object" represents.
-     * Always returns a value for a sequence, will be -1 if object has no fixed length.
+     * Always returns a value for a sequence, will be -1 if the object has no fixed length.
      */
     abstract int length();
 

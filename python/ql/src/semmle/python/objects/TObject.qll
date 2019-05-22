@@ -4,19 +4,27 @@ private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 
+/** Internal type backing `ObjectInternal` and `Value`
+ * See `ObjectInternal.qll` for an explanation of the API.
+ */
 newtype TObject =
+    /* Builtin class objects */
     TBuiltinClassObject(Builtin bltn) {
         bltn.isClass() and
         not bltn = Builtin::unknownType() and
         not bltn = Builtin::special("type")
     }
     or
+    /* Builtin function objects (module members) */
     TBuiltinFunctionObject(Builtin bltn) { bltn.isFunction() }
     or
+    /* Builtin method objects (class members) */
     TBuiltinMethodObject(Builtin bltn) { bltn.isMethod() }
     or
+    /* Builtin module objects */
     TBuiltinModuleObject(Builtin bltn) { bltn.isModule() }
     or
+    /* Other builtin objects from the interpreter */
     TBuiltinOpaqueObject(Builtin bltn) {
         not bltn.isClass() and not bltn.isFunction() and
         not bltn.isMethod() and not bltn.isModule() and
@@ -27,34 +35,45 @@ newtype TObject =
         not py_special_objects(bltn, _)
     }
     or
+    /* Python function objects (including lambdas) */
     TPythonFunctionObject(ControlFlowNode callable) {
         callable.getNode() instanceof CallableExpr
     }
     or
+    /* Python class objects */
     TPythonClassObject(ControlFlowNode classexpr) {
         classexpr.getNode() instanceof ClassExpr
     }
     or
+    /* Package objects */
     TPackageObject(Folder f) {
         exists(moduleNameFromFile(f))
     }
     or
+    /* Python module objects */
     TPythonModule(Module m) {
         not m.isPackage() and not exists(SyntaxError se | se.getFile() = m.getFile())
     }
     or
+    /* `True` */
     TTrue()
     or
+    /* `False` */
     TFalse()
     or
+    /* `None` */
     TNone()
     or
+    /* Represents any value about which nothing useful is known */
     TUnknown()
     or
+    /* Represents any value known to be a class, but not known to be any specific class */
     TUnknownClass()
     or
+    /* Represents the absence of a value. Used by points-to for tracking undefined variables */
     TUndefined()
     or
+    /* The integer `n` */
     TInt(int n) {
         // Powers of 2 are used for flags
         is_power_2(n) or
@@ -70,10 +89,12 @@ newtype TObject =
         n = any(Builtin b).intValue()
     }
     or
+    /* The float `f` */
     TFloat(float f) {
         f = any(FloatLiteral num).getValue()
     }
     or
+    /* The unicode string `s` */
     TUnicode(string s) {
         // Any string explicitly mentioned in the source code.
         exists(StrConst str | 
@@ -90,6 +111,7 @@ newtype TObject =
         s = "__main__"
     }
     or
+    /* The byte string `s` */
     TBytes(string s) {
         // Any string explicitly mentioned in the source code.
         exists(StrConst str | 
@@ -106,6 +128,7 @@ newtype TObject =
         s = "__main__"
     }
     or
+    /* An instance of `cls`, instantiated at `instantiation` given the `context`. */
     TSpecificInstance(ControlFlowNode instantiation, ClassObjectInternal cls, PointsToContext context) {
         PointsToInternal::pointsTo(instantiation.(CallNode).getFunction(), context, cls, _) and
         cls.isSpecial() = false and cls.getClassDeclaration().callReturnsInstance()
@@ -113,60 +136,74 @@ newtype TObject =
         literal_instantiation(instantiation, cls, context)
     }
     or
+    /* A non-specific instance `cls` which enters the scope at `def` given the callee `context`. */
     TSelfInstance(ParameterDefinition def, PointsToContext context, PythonClassObjectInternal cls) {
         self_parameter(def, context, cls)
     }
     or
+    /* A bound method */
     TBoundMethod(ObjectInternal self, CallableObjectInternal function) {
         any(ObjectInternal obj).binds(self, _, function) and
         function.isDescriptor() = true
     }
     or
+    /* Represents any value whose class is known, but nothing else */
     TUnknownInstance(BuiltinClassObjectInternal cls) {
         cls != ObjectInternal::superType() and
         cls != ObjectInternal::builtin("bool") and
         cls != ObjectInternal::noneType()
     }
     or
+    /* Represents an instance of `super` */
     TSuperInstance(ObjectInternal self, ClassObjectInternal startclass) {
         super_instantiation(_, self, startclass, _)
     }
     or
+    /* Represents an instance of `classmethod` */
     TClassMethod(CallNode instantiation, CallableObjectInternal function) {
         class_method(instantiation, function, _)
     }
     or
+    /* Represents an instance of `staticmethod` */
     TStaticMethod(CallNode instantiation, CallableObjectInternal function) {
         static_method(instantiation, function, _)
     }
     or
+    /* Represents a builtin tuple */
     TBuiltinTuple(Builtin bltn) {
         bltn.getClass() = Builtin::special("tuple")
     }
     or
+    /* Represents a tuple in the Python source */
     TPythonTuple(TupleNode origin, PointsToContext context) {
         context.appliesTo(origin)
     }
     or
+    /* `type` */
     TType()
     or
+    /* Represents an instance of `property` */
     TProperty(CallNode call, Context ctx, CallableObjectInternal getter) {
         PointsToInternal::pointsTo(call.getFunction(), ctx, ObjectInternal::property(), _) and
         PointsToInternal::pointsTo(call.getArg(0), ctx, getter, _)
     }
     or
+    /* Represents a dynamically created class */
     TDynamicClass(CallNode instantiation, ClassObjectInternal metacls, PointsToContext context) {
         PointsToInternal::pointsTo(instantiation.getFunction(), context, metacls, _) and
         not count(instantiation.getAnArg()) = 1 and
         Types::getMro(metacls).contains(TType())
     }
     or
+    /* Represents `sys.version_info`. Acts like a tuple with a range of values depending on the version being analysed. */
     TSysVersionInfo()
     or
+    /* Represents a module that is inferred to perhaps exist, but is not present in the database. */
     TAbsentModule(string name) {
         missing_imported_module(_, _, name)
     }
     or
+    /* Represents an attribute of a module that is inferred to perhaps exist, but is not present in the database. */
     TAbsentModuleAttribute(AbsentModuleObjectInternal mod, string attrname) {
         (
             PointsToInternal::pointsTo(any(AttrNode attr).getObject(attrname), _, mod, _)
