@@ -198,3 +198,9 @@ def flow_through_type_test_if_no_class():
     else:
         SINK(t)
 
+def flow_in_iteration():
+    t = ITERABLE_SOURCE
+    for i in t:
+        i
+    return i
+

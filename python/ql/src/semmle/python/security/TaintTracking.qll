@@ -159,6 +159,12 @@ abstract class TaintKind extends string {
 
     string repr() { result = this }
 
+    /** Gets the taint resulting from iterating over this kind of taint.
+     * For example iterating over a text file produces lines. So iterating
+     * over a tainted file would result in tainted strings
+     */
+    TaintKind getTaintForIteration() { none() }
+
 }
 
 /** Taint kinds representing collections of other taint kind.
@@ -210,6 +216,10 @@ class SequenceKind extends CollectionKind {
 
     override string repr() {
         result = "sequence of " + itemKind
+    }
+
+    override TaintKind getTaintForIteration() {
+        result = itemKind
     }
 
 }
@@ -863,6 +873,8 @@ library module TaintFlowImplementation {
         or
         call_taint_step(fromnode, totaint, tocontext, tonode)
         or
+        iteration_step(fromnode, totaint, tocontext, tonode)
+        or
         exists(DataFlowNode fromnodenode |
             fromnodenode = fromnode.getNode() and
             (
@@ -1067,6 +1079,13 @@ library module TaintFlowImplementation {
         )
     }
 
+    /** Holds if `v` is defined by a `for` statement, the definition being `defn` */
+    cached predicate iteration_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, ControlFlowNode iter) {
+        exists(ForNode for | for.iterates(iter, fromnode.getNode())) and
+        totaint = TTrackedTaint(fromnode.getTaintKind().getTaintForIteration()) and
+        tocontext = fromnode.getContext()
+    }
+
     predicate self_init_end_transfer(EssaVariable self, CallContext callee, CallNode call, CallContext caller) {
         exists(ClassValue cls, Function init |
             call.getFunction().pointsTo(cls) and
@@ -1161,6 +1180,9 @@ library module TaintFlowImplementation {
         tainted_with(def, context, origin)
         or
         tainted_exception_capture(def, context, origin)
+        or
+        tainted_iteration(def, context, origin)
+
     }
 
     predicate tainted_scope_entry(ScopeEntryDefinition def, CallContext context, TaintedNode origin) {
@@ -1360,6 +1382,12 @@ library module TaintFlowImplementation {
     pragma [noinline]
     predicate tainted_exception_capture(ExceptionCapture def, CallContext context, TaintedNode fromnode) {
         fromnode.getNode() = def.getDefiningNode() and
+        context = fromnode.getContext()
+    }
+
+    pragma [noinline]
+    private predicate tainted_iteration(IterationDefinition def, CallContext context, TaintedNode fromnode) {
+        def.getDefiningNode() = fromnode.getNode() and
         context = fromnode.getContext()
     }
 
