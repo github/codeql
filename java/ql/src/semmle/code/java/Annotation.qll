@@ -25,11 +25,15 @@ class Annotation extends @annotation, Expr {
 
   /** Gets the element being annotated. */
   Element getAnnotatedElement() {
-    this.getParent().(Field).getDeclaration().getAField() = result and
-    this.getCompilationUnit().fromSource()
-    or
-    not result.(Field).getCompilationUnit().fromSource() and
-    this.getParent() = result
+    exists(Element e | e = this.getParent() |
+      if e.(Field).getCompilationUnit().fromSource()
+      then
+        exists(FieldDeclaration decl |
+          decl.getField(0) = e and
+          result = decl.getAField()
+        )
+      else result = e
+    )
   }
 
   /** Gets the annotation type declaration for this annotation. */
