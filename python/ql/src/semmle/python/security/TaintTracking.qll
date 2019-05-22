@@ -1209,17 +1209,22 @@ library module TaintFlowImplementation {
                 or
                 exists(string name | param = func.getParameterByName(name) and argument = func.getNamedArgumentForCall(call, name))
                 or
-                class_initializer_argument(_, _, call, func, argument, param)
+                class_initializer_argument(call, func, argument, param)
             )
         )
     }
 
+    /* Helper for parameter_step */
     pragma [noinline]
-    predicate class_initializer_argument(ClassValue cls, int n, CallNode call, CallableValue func, ControlFlowNode argument, NameNode param) {
-        call.getFunction().pointsTo(cls) and
-        cls.lookup("__init__") = func and
-        call.getArg(n) = argument and
-        param.getNode() = func.getScope().getArg(n+1)
+    private predicate class_initializer_argument(CallNode call, CallableValue func, ControlFlowNode argument, NameNode param) {
+        exists(ClassValue cls |
+            cls.getACall() = call and
+            cls.lookup("__init__") = func
+        ) and
+        exists(int n |
+            call.getArg(n) = argument and
+            param.getNode() = func.getScope().getArg(n+1)
+        )
     }
 
     pragma [noinline]
