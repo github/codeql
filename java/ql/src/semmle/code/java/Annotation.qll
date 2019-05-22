@@ -27,7 +27,11 @@ class Annotation extends @annotation, Expr {
   Element getAnnotatedElement() {
     exists(Element e | e = this.getParent() |
       if e.(Field).getCompilationUnit().fromSource()
-      then result = e.(Field).getDeclaration().getAField()
+      then
+        exists(FieldDeclaration decl |
+          decl.getField(0) = e and
+          result = decl.getAField()
+        )
       else result = e
     )
   }
