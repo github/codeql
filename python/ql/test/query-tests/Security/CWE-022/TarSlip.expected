@@ -1,9 +1,13 @@
 edges
 | tarslip.py:12:7:12:39 | tarfile.open | tarslip.py:13:1:13:3 | tarfile.open |
-| tarslip.py:12:7:12:39 | tarfile.open | tarslip.py:14:1:14:3 | tarfile.open |
 | tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:17:14:17:16 | tarfile.open |
-| tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:18:5:18:7 | tarfile.open |
+| tarslip.py:17:5:17:9 | tarfile.entry | tarslip.py:18:17:18:21 | tarfile.entry |
+| tarslip.py:17:14:17:16 | tarfile.open | tarslip.py:17:5:17:9 | tarfile.entry |
+| tarslip.py:33:7:33:39 | tarfile.open | tarslip.py:34:14:34:16 | tarfile.open |
+| tarslip.py:34:5:34:9 | tarfile.entry | tarslip.py:37:17:37:21 | tarfile.entry |
+| tarslip.py:34:14:34:16 | tarfile.open | tarslip.py:34:5:34:9 | tarfile.entry |
 parents
 #select
 | tarslip.py:13:1:13:3 | Taint sink | tarslip.py:12:7:12:39 | tarfile.open | tarslip.py:13:1:13:3 | tarfile.open | Extraction of tarfile from $@ | tarslip.py:12:7:12:39 | Taint source | a potentially untrusted source |
-| tarslip.py:18:5:18:7 | Taint sink | tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:18:5:18:7 | tarfile.open | Extraction of tarfile from $@ | tarslip.py:16:7:16:39 | Taint source | a potentially untrusted source |
+| tarslip.py:18:17:18:21 | Taint sink | tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:18:17:18:21 | tarfile.entry | Extraction of tarfile from $@ | tarslip.py:16:7:16:39 | Taint source | a potentially untrusted source |
+| tarslip.py:37:17:37:21 | Taint sink | tarslip.py:33:7:33:39 | tarfile.open | tarslip.py:37:17:37:21 | tarfile.entry | Extraction of tarfile from $@ | tarslip.py:33:7:33:39 | Taint source | a potentially untrusted source |

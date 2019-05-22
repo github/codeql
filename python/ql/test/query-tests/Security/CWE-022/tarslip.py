@@ -20,3 +20,18 @@ for entry in tar:
 tar = tarfile.open(safe_filename_tar)
 tar.extractall()
 tar.close()
+
+
+#Sanitized
+tar = tarfile.open(unsafe_filename_tar)
+for entry in tar:
+    if os.path.isabs(entry.name) or ".." in entry.name:
+        raise ValueError("Illegal tar archive entry")
+    tar.extract(entry, "/tmp/unpack/")
+
+#Part Sanitized
+tar = tarfile.open(unsafe_filename_tar)
+for entry in tar:
+    if ".." in entry.name:
+        raise ValueError("Illegal tar archive entry")
+    tar.extract(entry, "/tmp/unpack/")
