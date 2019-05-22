@@ -1,7 +1,6 @@
 /**
  * @name Compilation error
- * @description A compilation error can lead to extraction problems, and may indicate
- *              a bug in the extractor.
+ * @description A compilation error can cause extraction problems, and could lead to inaccurate results.
  * @kind problem
  * @problem.severity recommendation
  * @precision medium

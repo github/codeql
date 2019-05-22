@@ -1,0 +1,17 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+This is an internal query that finds all compilation errors reported by the C# compiler.</p>
+</overview>
+
+<recommendation>
+<p>
+Fix the cause of the compilation error.
+</p>
+</recommendation>
+
+</qhelp>

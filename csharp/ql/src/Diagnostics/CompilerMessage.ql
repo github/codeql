@@ -1,10 +1,10 @@
 /**
  * @name Compilation message
- * @description A message emitted by the compiler.
+ * @description A message emitted by the compiler, including warnings and errors.
  * @kind problem
  * @problem.severity recommendation
  * @precision medium
- * @id cs/compilation-warning
+ * @id cs/compilation-message
  * @tags internal
  */
 
