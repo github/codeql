@@ -139,16 +139,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (nt.TypeKind == TypeKind.Struct)
                 {
-                    // Sadly, these properties are internal so cannot be accessed directly.
-                    // This seems to be a deficiency in the model.
-                    var readonlyProperty = nt.GetType().GetProperty("IsReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
-
-                    bool isReadOnly = (bool)readonlyProperty.GetValue(nt);
-                    bool isByRefLikeType = nt.IsRefLikeType;
-
-                    if (isReadOnly)
+                    if (nt.IsReadOnly)
                         HasModifier(cx, key, "readonly");
-                    if (isByRefLikeType)
+                    if (nt.IsRefLikeType)
                         HasModifier(cx, key, "ref");
                 }
             }
