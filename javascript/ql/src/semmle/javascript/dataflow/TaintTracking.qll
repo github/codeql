@@ -129,20 +129,35 @@ module TaintTracking {
    * A node that can act as a sanitizer when appearing in a condition.
    */
   abstract class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
-    final override predicate blocks(boolean outcome, Expr e) { sanitizes(outcome, e) }
+    override predicate blocks(boolean outcome, Expr e) { sanitizes(outcome, e) }
 
     /**
      * Holds if this node sanitizes expression `e`, provided it evaluates
      * to `outcome`.
      */
     abstract predicate sanitizes(boolean outcome, Expr e);
+
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      sanitizes(outcome, e, label)
+    }
+
+    /**
+     * Holds if this node sanitizes expression `e`, provided it evaluates
+     * to `outcome`.
+     */
+    predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
   }
 
   /**
    * A sanitizer guard node that only blocks specific flow labels.
    */
-  abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode,
-    DataFlow::LabeledBarrierGuardNode { }
+  abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode, DataFlow::BarrierGuardNode {
+    final override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      sanitizes(outcome, e, label)
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) { none() }
+  }
 
   /**
    * A taint-propagating data flow edge that should be added to all taint tracking
