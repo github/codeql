@@ -223,6 +223,9 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
   /** Holds if these constraints include a general value type constraint. */
   predicate hasValueTypeConstraint() { general_type_parameter_constraints(this, 2) }
 
+  /** Holds if these constraints include an unmanaged type constraint. */
+  predicate hasUnmanagedTypeConstraint() { general_type_parameter_constraints(this, 4) }
+
   /** Gets a textual representation of these constraints. */
   override string toString() { result = "where " + this.getTypeParameter().toString() + ": ..." }
 }
