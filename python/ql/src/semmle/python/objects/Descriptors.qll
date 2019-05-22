@@ -37,7 +37,7 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
     override boolean booleanValue() { result = true }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         this = TProperty(node, context, _)
     }
 
@@ -47,7 +47,7 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
     override ObjectInternal getClass() { result = ObjectInternal::property() }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override Builtin getBuiltin() { none() }
 
@@ -102,7 +102,7 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override boolean booleanValue() { result = true }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         exists(CallableObjectInternal function |
             this = TClassMethod(node, function) and
             class_method(node, function, context)
@@ -120,7 +120,7 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override ObjectInternal getClass() { result = ObjectInternal::classMethod() }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override Builtin getBuiltin() { none() }
 
@@ -177,7 +177,7 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
 
     override boolean booleanValue() { result = true }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         exists(CallableObjectInternal function |
             this = TStaticMethod(node, function) and
             static_method(node, function, context)
@@ -194,7 +194,7 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
 
     override ObjectInternal getClass() { result = ObjectInternal::builtin("staticmethod") }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override Builtin getBuiltin() { none() }
 

@@ -60,7 +60,7 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
      * truth or false in comparisons. For example, `None` or `int` can be, but `int()`
      * or an unknown string cannot.
      */
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     /** Holds if `obj` is the result of calling `this` and `origin` is
      * the origin of `obj`.
@@ -94,7 +94,7 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
 
 class BuiltinTupleObjectInternal extends TBuiltinTuple, TupleObjectInternal {
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -121,7 +121,7 @@ class BuiltinTupleObjectInternal extends TBuiltinTuple, TupleObjectInternal {
 
 class PythonTupleObjectInternal extends TPythonTuple, TupleObjectInternal {
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         this = TPythonTuple(node, context)
     }
 
@@ -161,7 +161,7 @@ class SysVersionInfoObjectInternal extends TSysVersionInfo, SequenceObjectIntern
         n = 1 and result = TInt(minor_version())
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) { none() }
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) { none() }
 
     /** Gets the class declaration for this object, if it is a declared class. */
     override ClassDecl getClassDeclaration() {
@@ -175,7 +175,7 @@ class SysVersionInfoObjectInternal extends TSysVersionInfo, SequenceObjectIntern
         result.getBuiltin() = this.getClassDeclaration()
     }
 
-    override boolean isComparable() {
+    override boolean testableForEquality() {
         result = true
     }
 

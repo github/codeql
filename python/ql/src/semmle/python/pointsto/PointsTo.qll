@@ -192,7 +192,7 @@ cached module PointsToInternal {
         or
         if_exp_points_to(f, context, value, origin)
         or
-        origin = f and value.introduced(f, context)
+        origin = f and value.introducedAt(f, context)
         or
         InterModulePointsTo::import_points_to(f, context, value, origin)
         or
@@ -1266,16 +1266,16 @@ module Expressions {
         exists(ObjectInternal other, boolean sense |
             equalityTest(comp, context, operand, opvalue, other, sense)
             |
-            opvalue.isComparable() = true and other.isComparable() = true and
+            opvalue.testableForEquality() = true and other.testableForEquality() = true and
             (
                 other = opvalue and result = sense
                 or
                 other != opvalue and result = sense.booleanNot()
             )
             or
-            opvalue.isComparable() = false and result = maybe()
+            opvalue.testableForEquality() = false and result = maybe()
             or
-            other.isComparable() = false and result = maybe()
+            other.testableForEquality() = false and result = maybe()
         )
     }
 
@@ -1299,9 +1299,9 @@ module Expressions {
             or
             compare(val, other) = 1 and result = sense.booleanNot()
             or
-            val.isComparable() = false and result = maybe()
+            val.testableForEquality() = false and result = maybe()
             or
-            other.isComparable() = false and result = maybe()
+            other.testableForEquality() = false and result = maybe()
         )
     }
 

@@ -33,7 +33,7 @@ class ObjectInternal extends TObject {
      *  * A bound method would be "introduced" when relevant attribute on an instance
      * is accessed. In `x = X(); x.m` `x.m` introduces the bound method.
      */
-    abstract predicate introduced(ControlFlowNode node, PointsToContext context);
+    abstract predicate introducedAt(ControlFlowNode node, PointsToContext context);
 
     /** Gets the class declaration for this object, if it is a class with a declaration. */
     abstract ClassDecl getClassDeclaration();
@@ -44,10 +44,11 @@ class ObjectInternal extends TObject {
     /** Gets the class of this object.  */
     abstract ObjectInternal getClass();
 
-    /** True if this "object" can be meaningfully analysed to determine its boolean value in comparisons.
+    /** True if this "object" can be meaningfully analysed to determine the boolean value of
+     * equality tests on it.
      * For example, `None` or `int` can be, but `int()` or an unknown string cannot.
      */
-    abstract boolean isComparable();
+    abstract boolean testableForEquality();
 
     /** Gets the `Builtin` for this object, if any.
      * Objects (except unknown and undefined values) should attempt to return
@@ -56,8 +57,10 @@ class ObjectInternal extends TObject {
     abstract Builtin getBuiltin();
 
     /** Gets a control flow node that represents the source origin of this
-     * object. Source code objects should attempt to return
-     * exactly one result for this method.
+     * object, if it has a meaningful location in the source code.
+     * This method exists primarily for providing backwards compatibility and
+     * locations for source objects.
+     * Source code objects should attempt to return exactly one result for this method.
      */
     abstract ControlFlowNode getOrigin();
 
@@ -71,8 +74,9 @@ class ObjectInternal extends TObject {
      */
     abstract predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin);
 
-    /** The integer value of things that have integer values.
-     * That is, ints and bools.
+    /** The integer value of things that have integer values and whose integer value is
+     * tracked.
+     * That is, some ints, mainly small numbers, and bools.
      */
     abstract int intValue();
 
@@ -84,6 +88,7 @@ class ObjectInternal extends TObject {
     /** Holds if the function `scope` is called when this object is called and `paramOffset`
      * is the difference from the parameter position and the argument position.
      * For a normal function `paramOffset` is 0. For classes and bound-methods it is 1.
+     * Used by points-to to help determine flow from arguments to parameters.
      */
     abstract predicate calleeAndOffset(Function scope, int paramOffset);
 
@@ -146,6 +151,7 @@ class ObjectInternal extends TObject {
     /** Holds if the object `function` is called when this object is called and `paramOffset`
      * is the difference from the parameter position and the argument position.
      * For a normal function `paramOffset` is 0. For classes and bound-methods it is 1.
+     * This is used to implement the `CallableValue` public API.
      */
     predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }
 
@@ -183,11 +189,11 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
         result = TBuiltinClassObject(this.getBuiltin().getClass())
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
-    override boolean isComparable() { result = false }
+    override boolean testableForEquality() { result = false }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
@@ -257,11 +263,11 @@ class UnknownInternal extends ObjectInternal, TUnknown {
         result = TUnknownClass()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
-    override boolean isComparable() { result = false }
+    override boolean testableForEquality() { result = false }
 
     override Builtin getBuiltin() {
         result = Builtin::unknown()
@@ -327,13 +333,13 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
 
     override boolean isClass() { result = false }
 
-    override boolean isComparable() { result = false }
+    override boolean testableForEquality() { result = false }
 
     override ObjectInternal getClass() {
         none()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 

@@ -28,7 +28,7 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     override boolean isClass() { result = false }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override boolean booleanValue() {
         result = true
@@ -72,7 +72,7 @@ class BuiltinModuleObjectInternal extends ModuleObjectInternal, TBuiltinModuleOb
         result = this.getBuiltin().getName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -129,7 +129,7 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         result = moduleNameFromFile(this.getFolder())
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -220,7 +220,7 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
         result = this.getSourceModule().getName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -274,7 +274,7 @@ class AbsentModuleObjectInternal extends ModuleObjectInternal, TAbsentModule {
         this = TAbsentModule(result)
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         missing_imported_module(node, context, this.getName())
     }
 
@@ -328,7 +328,7 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
         )
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         exists(ModuleObjectInternal mod, string name |
             this = TAbsentModuleAttribute(mod, name) |
             PointsToInternal::pointsTo(node.(AttrNode).getObject(name), context, mod, _)
@@ -375,7 +375,7 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
 
     override boolean isClass() { result = maybe() }
 
-    override boolean isComparable() { result = false }
+    override boolean testableForEquality() { result = false }
 
     override boolean booleanValue() {
         result = maybe()

@@ -20,7 +20,7 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
     override boolean isClass() { result = false }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         // Constants aren't callable
@@ -98,7 +98,7 @@ private class TrueObjectInternal extends BooleanObjectInternal, TTrue {
         result = true
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         node.(NameNode).getId() = "True" and context.appliesTo(node)
     }
 
@@ -122,7 +122,7 @@ private class FalseObjectInternal extends BooleanObjectInternal, TFalse {
         result = false
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         node.(NameNode).getId() = "False" and context.appliesTo(node)
     }
 
@@ -150,7 +150,7 @@ private class NoneObjectInternal extends ConstantObjectInternal, TNone {
         result = TBuiltinClassObject(Builtin::special("NoneType"))
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         node.(NameNode).getId() = "None" and context.appliesTo(node)
     }
 
@@ -177,7 +177,7 @@ private class IntObjectInternal extends ConstantObjectInternal, TInt {
         result = "int " + this.intValue().toString()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         context.appliesTo(node) and
         node.getNode().(IntegerLiteral).getValue() = this.intValue()
     }
@@ -218,7 +218,7 @@ private class FloatObjectInternal extends ConstantObjectInternal, TFloat {
         )
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         context.appliesTo(node) and
         node.getNode().(FloatLiteral).getValue() = this.floatValue()
     }
@@ -260,7 +260,7 @@ private class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
         result =  "'" + this.strValue() + "'"
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         context.appliesTo(node) and
         node.getNode().(StrConst).getText() = this.strValue() and
         node.getNode().(StrConst).isUnicode()
@@ -301,7 +301,7 @@ private class BytesObjectInternal extends ConstantObjectInternal, TBytes {
         result =  "'" + this.strValue() + "'"
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         context.appliesTo(node) and
         node.getNode().(StrConst).getText() = this.strValue() and
         not node.getNode().(StrConst).isUnicode()

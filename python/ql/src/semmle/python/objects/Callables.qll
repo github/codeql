@@ -67,7 +67,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         result = "Function " + this.getScope().getQualifiedName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         this = TPythonFunctionObject(node) and context.appliesTo(node)
     }
 
@@ -75,7 +75,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         result = TBuiltinClassObject(Builtin::special("FunctionType"))
     }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override Builtin getBuiltin() {
         none()
@@ -182,7 +182,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
         result = "Builtin-function " + this.getBuiltin().getName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -190,7 +190,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
         result = TBuiltinClassObject(this.getBuiltin().getClass())
     }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
 
@@ -295,11 +295,11 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
         result = TBuiltinClassObject(this.getBuiltin().getClass())
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
 
@@ -396,11 +396,11 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
         result = TBuiltinClassObject(Builtin::special("MethodType"))
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
-    override boolean isComparable() { result = false }
+    override boolean testableForEquality() { result = false }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         this.getFunction().callResult(callee, obj, origin)

@@ -103,7 +103,7 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
         result = "class " + this.getScope().getName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         this = TPythonClassObject(node) and context.appliesTo(node)
     }
 
@@ -145,7 +145,7 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
         none()
     }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override predicate functionAndOffset(CallableObjectInternal function, int offset) {
         this.lookup("__init__", function, _) and offset = 1
@@ -164,7 +164,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
         result = "builtin-class " + this.getBuiltin().getName()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -203,7 +203,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
         none()
     }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
 }
 
@@ -222,11 +222,11 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
         result = this
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
-    override boolean isComparable() { result = false }
+    override boolean testableForEquality() { result = false }
 
     override Builtin getBuiltin() {
         result = Builtin::unknownType()
@@ -271,11 +271,11 @@ class TypeInternal extends ClassObjectInternal, TType {
         result = this
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override Builtin getBuiltin() {
         result = Builtin::special("type")
@@ -342,7 +342,7 @@ class DynamicallyCreatedClass extends ClassObjectInternal, TDynamicClass {
 
     pragma [noinline] override predicate attributesUnknown() { any() }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         this = TDynamicClass(node, _, context)
     }
 
@@ -350,7 +350,7 @@ class DynamicallyCreatedClass extends ClassObjectInternal, TDynamicClass {
         none()
     }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override ClassDecl getClassDeclaration() { none() }
 

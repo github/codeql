@@ -63,7 +63,7 @@ class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
         result = maybe()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         this = TSpecificInstance(node, _, context)
     }
 
@@ -74,7 +74,7 @@ class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
 
     override boolean isClass() { result = false }
 
-    override boolean isComparable() { result = true }
+    override boolean testableForEquality() { result = true }
 
     override ObjectInternal getClass() {
         this = TSpecificInstance(_, result, _)
@@ -166,7 +166,7 @@ class SelfInstanceInternal extends TSelfInstance, InstanceObject {
         result = maybe()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -181,7 +181,7 @@ class SelfInstanceInternal extends TSelfInstance, InstanceObject {
 
     override boolean isClass() { result = false }
 
-    override boolean isComparable() { result = false }
+    override boolean testableForEquality() { result = false }
 
     override ObjectInternal getClass() {
         this = TSelfInstance(_, _, result)
@@ -266,7 +266,7 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
         result = maybe()
     }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         none()
     }
 
@@ -277,7 +277,7 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
     override boolean isClass() { result = false }
 
-    override boolean isComparable() { result = false }
+    override boolean testableForEquality() { result = false }
 
     override ObjectInternal getClass() {
         this = TUnknownInstance(result)
@@ -375,7 +375,7 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
 
     override boolean booleanValue() { result = true }
 
-    override predicate introduced(ControlFlowNode node, PointsToContext context) {
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         exists(ObjectInternal self, ClassObjectInternal startclass |
             super_instantiation(node, self, startclass, context) and
             this = TSuperInstance(self, startclass)
@@ -400,7 +400,7 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
         result = ObjectInternal::superType()
     }
 
-    override boolean isComparable() { result = false }
+    override boolean testableForEquality() { result = false }
 
     override Builtin getBuiltin() { none() }
 
