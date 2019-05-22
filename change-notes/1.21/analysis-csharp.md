@@ -12,10 +12,12 @@
 * The following C# 8 features are now extracted:
     - Range expressions
     - Recursive patterns
+* The `unmanaged` type parameter constraint is now extracted.
 
 ## Changes to QL libraries
 
 * The class `Attribute` has two new predicates: `getConstructorArgument()` and `getNamedArgument()`. The first predicate returns arguments to the underlying constructor call and the latter returns named arguments for initializing fields and properties.
+* The class `TypeParameterConstraints` has a new predicate `hasUnmanagedTypeConstraint()`, indicating that the type parameter has the `unmanaged` constraint.
 * The following QL classes have been added to model C# 8 features:
     - Class `IndexExpr` models from-end index expressions, for example `^1`
     - Class `PatternExpr` is an `Expr` that appears in a pattern. It has the new subclasses `DiscardPatternExpr`, `LabeledPatternExpr`, `RecursivePatternExpr`, `TypeAccessPatternExpr`, `TypePatternExpr`, and `VariablePatternExpr`.
