@@ -326,7 +326,15 @@ module DOM {
 
     private class DefaultRange extends Range {
       DefaultRange() {
-        this = domValueRef().getAPropertyRead("location")
+        exists(string propName | this = documentRef().getAPropertyRead(propName) |
+          propName = "documentURI" or
+          propName = "documentURIObject" or
+          propName = "location" or
+          propName = "referrer" or
+          propName = "URL"
+        )
+        or
+        this = DOM::domValueRef().getAPropertyRead("baseUri")
         or
         this = DataFlow::globalVarRef("location")
       }

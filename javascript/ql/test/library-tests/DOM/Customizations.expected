@@ -1,5 +1,6 @@
 test_documentRef
 | customization.js:2:13:2:31 | customGetDocument() |
 test_locationRef
+| customization.js:3:3:3:14 | doc.location |
 test_domValueRef
 | customization.js:4:3:4:28 | doc.get ... 'test') |
