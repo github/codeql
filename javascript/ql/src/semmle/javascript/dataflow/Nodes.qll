@@ -6,6 +6,11 @@
 
 import javascript
 
+/** A data flow node corresponding to an expression. */
+class ExprNode extends DataFlow::ValueNode {
+  override Expr astNode;
+}
+
 /** A data flow node corresponding to a parameter. */
 class ParameterNode extends DataFlow::SourceNode {
   Parameter p;
@@ -467,11 +472,10 @@ module ModuleImportNode {
       )
       or
       // `import * as http from 'http'` or `import http from `http`'
-      exists(ImportDeclaration id, ImportSpecifier is, SsaExplicitDefinition ssa |
+      exists(ImportDeclaration id, ImportSpecifier is |
         id.getImportedPath().getValue() = path and
         is = id.getASpecifier() and
-        ssa.getDef() = is and
-        this = DataFlow::ssaDefinitionNode(ssa)
+        this = DataFlow::ssaDefinitionNode(SSA::definition(is))
       |
         is instanceof ImportNamespaceSpecifier and
         count(id.getASpecifier()) = 1

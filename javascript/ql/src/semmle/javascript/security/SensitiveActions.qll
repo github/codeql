@@ -165,11 +165,7 @@ private class BasicSensitiveWrite extends SensitiveWrite {
       exists(VarDef v | v.getAVariable().getName() = name |
         if exists(v.getSource())
         then v.getSource() = this.asExpr()
-        else
-          exists(SsaExplicitDefinition ssa |
-            DataFlow::ssaDefinitionNode(ssa) = this and
-            ssa.getDef() = v
-          )
+        else this = DataFlow::ssaDefinitionNode(SSA::definition(v))
       )
     )
   }

@@ -9,9 +9,7 @@ module StringConcatenation {
   private DataFlow::Node getAssignAddResult(AssignAddExpr expr) {
     result = expr.flow()
     or
-    exists(SsaExplicitDefinition def | def.getDef() = expr |
-      result = DataFlow::ssaDefinitionNode(def)
-    )
+    result = DataFlow::ssaDefinitionNode(SSA::definition(expr))
   }
 
   /** Gets the `n`th operand to the string concatenation defining `node`. */

@@ -378,11 +378,8 @@ private class FlowStepThroughImport extends AdditionalFlowStep, DataFlow::ValueN
   override ImportSpecifier astNode;
 
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(SsaExplicitDefinition ssa |
-      pred = this and
-      ssa.getDef() = astNode and
-      succ = DataFlow::ssaDefinitionNode(ssa)
-    )
+    pred = this and
+    succ = DataFlow::ssaDefinitionNode(SSA::definition(astNode))
   }
 }
 
@@ -927,9 +924,7 @@ class PathNode extends TPathNode {
   }
 
   /** Gets a successor node of this path node. */
-  PathNode getASuccessor() {
-    result = getASuccessorInternal().getAHiddenSuccessor*()
-  }
+  PathNode getASuccessor() { result = getASuccessorInternal().getAHiddenSuccessor*() }
 
   /** Gets a textual representation of this path node. */
   string toString() { result = nd.toString() }
@@ -953,7 +948,8 @@ class PathNode extends TPathNode {
    */
   predicate isHidden() {
     // Skip phi, refinement, and capture nodes
-    nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof SsaImplicitDefinition
+    nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof
+      SsaImplicitDefinition
     or
     // Skip to the top of big left-leaning string concatenation trees.
     nd = any(AddExpr add).flow() and
