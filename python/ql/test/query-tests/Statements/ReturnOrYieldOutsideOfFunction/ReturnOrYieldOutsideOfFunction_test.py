@@ -36,7 +36,7 @@ class InvalidClass2(object):
         yield 1
 
 # invalid class with yield from outside of a function
-class InvalidClass2(object):
+class InvalidClass3(object):
     while True:
         yield from [1, 2]
 
