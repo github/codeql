@@ -38,7 +38,7 @@ predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
 
 /** Holds if `e` could refer to the document URL. */
 predicate isDocumentURL(Expr e) {
-  DOM::locationRef().flowsToExpr(e)
+  e.flow() = DOM::locationSource()
 }
 
 /**

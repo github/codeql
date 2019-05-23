@@ -42,7 +42,7 @@ module DomBasedXss {
   /**
    * An access of the URL of this page, or of the referrer to this page.
    */
-  class LocationSource extends Source, DataFlow::ValueNode {
-    LocationSource() { isDocumentURL(astNode) }
+  class LocationSource extends Source {
+    LocationSource() { this = DOM::locationSource() }
   }
 }

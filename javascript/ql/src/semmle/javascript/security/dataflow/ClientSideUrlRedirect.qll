@@ -40,7 +40,7 @@ module ClientSideUrlRedirect {
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
     override predicate isSource(DataFlow::Node source, DataFlow::FlowLabel lbl) {
-      isDocumentURL(source.asExpr()) and
+      source = DOM::locationSource() and
       lbl instanceof DocumentUrl
     }
 
