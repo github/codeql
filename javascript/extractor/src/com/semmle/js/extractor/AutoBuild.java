@@ -10,6 +10,7 @@ import com.semmle.js.parser.TypeScriptParser;
 import com.semmle.ts.extractor.TypeExtractor;
 import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
+import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.ResourceError;
 import com.semmle.util.exception.UserError;
@@ -23,6 +24,7 @@ import com.semmle.util.trap.TrapWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -68,7 +70,9 @@ import java.util.stream.Stream;
  *       patterns that can be used to refine the list of files to include and exclude
  *   <li><code>LGTM_INDEX_TYPESCRIPT</code>: whether to extract TypeScript
  *   <li><code>LGTM_INDEX_FILETYPES</code>: a newline-separated list of ".extension:filetype" pairs
- *       specifying which {@link FileType} to use for the given extension
+ *       specifying which {@link FileType} to use for the given extension; the additional file
+ *       type <code>XML</code> is also supported
+ *   <li><code>LGTM_INDEX_XML_MODE</code>: whether to extract XML files
  *   <li><code>LGTM_THREADS</code>: the maximum number of files to extract in parallel
  *   <li><code>LGTM_TRAP_CACHE</code>: the path of a directory to use for trap caching
  *   <li><code>LGTM_TRAP_CACHE_BOUND</code>: the size to bound the trap cache to
@@ -158,6 +162,12 @@ import java.util.stream.Stream;
  * <p>The file type as which a file is extracted can be customised via the <code>
  * LGTM_INDEX_FILETYPES</code> environment variable explained above.
  *
+ * <p>If <code>LGTM_INDEX_XML_MODE</code> is set to <code>ALL</code>, then all files with extension
+ * <code>.xml</code> under <code>LGTM_SRC</code> are extracted as XML (in addition to any files
+ * whose file type is specified to be <code>XML</code> via <code>LGTM_INDEX_SOURCE_TYPE</code>).
+ * Currently XML extraction does not respect inclusion and exclusion filters, but this is a bug,
+ * not a feature, and hence will change eventually.
+ *
  * <p>Note that all these customisations only apply to <code>LGTM_SRC</code>. Extraction of externs
  * is not customisable.
  *
@@ -178,6 +188,7 @@ public class AutoBuild {
   private final Map<String, FileType> fileTypes = new LinkedHashMap<>();
   private final Set<Path> includes = new LinkedHashSet<>();
   private final Set<Path> excludes = new LinkedHashSet<>();
+  private final Set<String> xmlExtensions = new LinkedHashSet<>();
   private ProjectLayout filters;
   private final Path LGTM_SRC, SEMMLE_DIST;
   private final TypeScriptMode typeScriptMode;
@@ -193,6 +204,7 @@ public class AutoBuild {
         getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.FULL);
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
     setupFileTypes();
+    setupXmlMode();
     setupMatchers();
   }
 
@@ -272,12 +284,28 @@ public class AutoBuild {
       String extension = fields[0].trim();
       String fileType = fields[1].trim();
       try {
-        fileTypes.put(extension, FileType.valueOf(StringUtil.uc(fileType)));
+        fileType = StringUtil.uc(fileType);
+        if ("XML".equals(fileType)) {
+          if (extension.length() < 2)
+            throw new UserError("Invalid extension '" + extension + "'.");
+          xmlExtensions.add(extension.substring(1));
+        } else {
+          fileTypes.put(extension, FileType.valueOf(fileType));
+        }
       } catch (IllegalArgumentException e) {
         Exceptions.ignore(e, "We construct a better error message.");
         throw new UserError("Invalid file type '" + fileType + "'.");
       }
     }
+  }
+
+  private void setupXmlMode() {
+    String xmlMode = getEnvVar("LGTM_INDEX_XML_MODE", "DISABLED");
+    xmlMode = StringUtil.uc(xmlMode.trim());
+    if ("ALL".equals(xmlMode))
+      xmlExtensions.add("xml");
+    else if (!"DISABLED".equals(xmlMode))
+      throw new UserError("Invalid XML mode '" + xmlMode + "' (should be either ALL or DISABLED).");
   }
 
   /** Set up include and exclude matchers based on environment variables. */
@@ -402,6 +430,7 @@ public class AutoBuild {
     try {
       extractSource();
       extractExterns();
+      extractXml();
     } finally {
       shutdownThreadPool();
     }
@@ -733,10 +762,33 @@ public class AutoBuild {
     System.out.flush();
   }
 
+  public Set<String> getXmlExtensions() {
+    return xmlExtensions;
+  }
+
+  protected void extractXml() throws IOException {
+    if (xmlExtensions.isEmpty())
+      return;
+    List<String> cmd = new ArrayList<>();
+    cmd.add("odasa");
+    cmd.add("index");
+    cmd.add("--xml");
+    cmd.add("--extensions");
+    cmd.addAll(xmlExtensions);
+    ProcessBuilder pb = new ProcessBuilder(cmd);
+    try {
+      pb.redirectError(Redirect.INHERIT);
+      pb.redirectOutput(Redirect.INHERIT);
+      pb.start().waitFor();
+    } catch (InterruptedException e) {
+      throw new CatastrophicError(e);
+    }
+  }
+
   public static void main(String[] args) {
     try {
       new AutoBuild().run();
-    } catch (IOException | UserError e) {
+    } catch (IOException | UserError | CatastrophicError e) {
       System.err.println(e.toString());
       System.exit(1);
     }
