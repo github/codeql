@@ -48,4 +48,7 @@
 * `RegExpLiteral` is now a `DataFlow::SourceNode`.
 * `JSDocTypeExpr` now has source locations and is a subclass of `Locatable` and `TypeAnnotation`.
 * Various predicates named `getTypeAnnotation()` now return `TypeAnnotation` instead of `TypeExpr`.
-  In rare cases, this may cause compilation errors. Cast the result to `TypeExpr` if this happens.
+  In rare cases, this may cause compilation errors in existing code. Cast the result to `TypeExpr` if this happens.
+* The `getALabel` predicate in `LabeledBarrierGuardNode` and `LabeledSanitizerGuardNode`
+  has been deprecated and overriding it no longer has any effect.
+  Instead use the 3-parameter version of `blocks` or `sanitizes`.
