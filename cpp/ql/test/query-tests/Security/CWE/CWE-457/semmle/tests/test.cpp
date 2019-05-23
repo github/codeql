@@ -265,7 +265,7 @@ int test23() {
 		val = 1;
 		loop = false;
 	}
-	return val; // GOOD [FALSE POSITIVE]
+	return val; // GOOD
 }
 
 int test24() {
@@ -289,7 +289,7 @@ int test25() {
 		val = 1;
 		loop = false;
 	}
-	return val; // GOOD [FALSE POSITIVE]
+	return val; // GOOD
 }
 
 int test26() {
@@ -301,7 +301,7 @@ int test26() {
 		val = 1;
 		loop = false;
 	}
-	return val; // GOOD [FALSE POSITIVE]
+	return val; // GOOD
 }
 
 int test27() {
@@ -313,7 +313,7 @@ int test27() {
 		val = 1;
 		loop = false;
 	}
-	return val; // GOOD [FALSE POSITIVE]
+	return val; // GOOD
 }
 
 int test28() {
@@ -339,7 +339,7 @@ int test29() {
 		b = false;
 		c = false;
 	}
-	return val; // GOOD [FALSE POSITIVE]
+	return val; // GOOD
 }
 
 int test30() {
