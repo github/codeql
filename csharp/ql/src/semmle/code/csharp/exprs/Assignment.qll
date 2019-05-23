@@ -230,3 +230,10 @@ class AddEventExpr extends AddOrRemoveEventExpr, @add_event_expr {
 class RemoveEventExpr extends AddOrRemoveEventExpr, @remove_event_expr {
   override string toString() { result = "... -= ..." }
 }
+
+/**
+ * A null-coalescing assignment operation, for example `x ??= y`.
+ */
+class AssignCoalesceExpr extends AssignOperation, @assign_coalesce_expr {
+  override string toString() { result = "... ??= ..." }
+}

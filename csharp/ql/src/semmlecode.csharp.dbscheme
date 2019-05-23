@@ -526,7 +526,7 @@ specific_type_parameter_constraints(
 
 @modifiable = @modifiable_direct | @event_accessor;
 
-@modifiable_direct = @member | @accessor;
+@modifiable_direct = @member | @accessor | @local_function;
 
 modifiers(
   unique int id: @modifier,
@@ -983,6 +983,7 @@ case @expr.kind of
 | 116 = @property_pattern_expr
 | 117 = @positional_pattern_expr
 | 118 = @switch_case_expr
+| 119 = @assign_coalesce_expr
 ;
 
 @switch = @switch_stmt | @switch_expr;
@@ -995,7 +996,7 @@ case @expr.kind of
               | @string_literal_expr | @null_literal_expr;
 
 @assign_expr = @simple_assign_expr | @assign_op_expr | @local_var_decl_expr;
-@assign_op_expr =  @assign_arith_expr | @assign_bitwise_expr | @assign_event_expr;
+@assign_op_expr =  @assign_arith_expr | @assign_bitwise_expr | @assign_event_expr | @assign_coalesce_expr;
 @assign_event_expr = @add_event_expr | @remove_event_expr;
 
 @assign_arith_expr = @assign_add_expr | @assign_sub_expr | @assign_mul_expr | @assign_div_expr

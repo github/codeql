@@ -80,6 +80,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.RightShiftAssignmentExpression:
                     case SyntaxKind.DivideAssignmentExpression:
                     case SyntaxKind.ModuloAssignmentExpression:
+                    case SyntaxKind.CoalesceAssignmentExpression:
                         return Assignment.Create(info);
 
                     case SyntaxKind.ObjectCreationExpression:
