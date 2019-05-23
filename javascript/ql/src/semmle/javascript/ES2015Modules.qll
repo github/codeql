@@ -30,6 +30,12 @@ class ES2015Module extends Module {
     // modules are implicitly strict
     any()
   }
+
+  override predicate hasImplicitTopLevelVariable(string name) {
+    // Handle ES2015 modules that compile to Node.js
+    NodeModule::looksLikeNodeModule(this) and
+    NodeModule::hasImplicitTopLevelVariable(name)
+  }
 }
 
 /** An import declaration. */

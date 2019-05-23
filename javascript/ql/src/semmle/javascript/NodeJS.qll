@@ -97,6 +97,110 @@ class NodeModule extends Module {
       findNodeModulesFolder(getFile().getParentContainer(), searchRoot, priority)
     )
   }
+
+  override predicate hasImplicitTopLevelVariable(string name) {
+    getFile().getExtension() != "mjs" and
+    NodeModule::hasImplicitTopLevelVariable(name)
+  }
+}
+
+module NodeModule {
+  /**
+   * INTERNAL. DO NOT USE.
+   *
+   * Holds if `tl` looks like a Node.js module.
+   *
+   * This works by syntactically recognizing `require` calls and
+   * `exports` assignments near the top-level of the file.
+   */
+  predicate looksLikeNodeModule(Module tl) {
+    containsExportOrRequireCall(tl.getAStmt())
+  }
+
+  /**
+   * Holds if `node` is or contains a likely `require` call or `exports` assignment.
+   */
+  private predicate containsExportOrRequireCall(ExprOrStmt node) {
+    node.getTopLevel() instanceof Module and // restrict size of predicate
+    isExportOrRequire(node)
+    or
+    exists(ExprOrStmt child | containsExportOrRequireCall(child) |
+      child = node.(TryStmt).getAChildStmt()
+      or
+      child = node.(BlockStmt).getAStmt()
+      or
+      child = node.(IfStmt).getAChildStmt()
+      or
+      child = node.(ExprStmt).getExpr()
+      or
+      child = node.(DeclStmt).getADecl().getInit()
+    )
+    or
+    exists(ImmediatelyInvokedFunctionExpr iife |
+      containsExportOrRequireCall(iife.getBody()) and
+      node = iife.getInvocation()
+    )
+  }
+
+  /** Holds if `e` is either a `require` call or an `exports` assignment. */
+  private predicate isExportOrRequire(Expr e) {
+    isRequireCall(e) or
+    isExport(e)
+  }
+
+  /** Holds if `e` is a call to a function named `require` or immediately contains such a call. */
+  private predicate isRequireCall(Expr e) {
+    exists(CallExpr call | call = e |
+      call.getCalleeName() = "require" and
+      call.getNumArgument() = 1
+    )
+    or
+    isRequireCall(e.(PropAccess).getBase())
+    or
+    isRequireCall(e.(AssignExpr).getRhs())
+  }
+
+  /**
+   * Holds if `e` is a likely `exports` assignment, that is, it assigns to a property
+   * on the `exports` object, or assigns to `module.exports`.
+   */
+  private predicate isExport(Expr e) {
+    e.getTopLevel() instanceof Module and  // restrict size of predicate
+    exists(AssignExpr assign, Expr lhs | assign = e and lhs = assign.getLhs() |
+      // exports.foo = ...
+      lhs.(PropAccess).getBase().(VarAccess).getName() = "exports"
+      or
+      // module.exports = ...
+      isModuleExportAccess(lhs)
+      or
+      // module.exports.foo = ...
+      isModuleExportAccess(lhs.(PropAccess).getBase())
+      or
+      // foo = exports.foo = ...
+      isExport(assign.getRhs())
+    )
+  }
+
+  /**
+   * Holds if `e` is syntactically of form `module.exports`.
+   */
+  private predicate isModuleExportAccess(PropAccess e) {
+    e.getBase().(VarAccess).getName() = "module" and
+    e.getPropertyName() = "exports"
+  }
+
+  /**
+   * Holds if `name` is the name of a variable implicitly defined in the
+   * top-level of Node.js modules.
+   */
+  predicate hasImplicitTopLevelVariable(string name) {
+    name = "require" or
+    name = "module" or
+    name = "exports" or
+    name = "__filename" or
+    name = "__dirname" or
+    name = "arguments"
+  }
 }
 
 /**

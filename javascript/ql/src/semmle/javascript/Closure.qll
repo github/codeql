@@ -169,6 +169,16 @@ module Closure {
         )
       )
     }
+
+    override predicate hasImplicitTopLevelVariable(string name) {
+      // goog.module() style modules have a variable named 'exports'
+      exists(MethodCallExpr call |
+        getAStmt().(ExprStmt).getExpr() = call and
+        call.getReceiver() = Variable::getATopLevelVarAccess("goog") and
+        call.getMethodName() = "module"
+      ) and
+      name = "exports"
+    }
   }
 
   /**
