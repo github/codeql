@@ -808,11 +808,12 @@ case @stmt.kind of
 | 28 = @catch
 | 29 = @case_stmt
 | 30 = @local_function_stmt
+| 31 = @using_decl_stmt
   ;
 
 @labeled_stmt = @label_stmt | @case;
 
-@decl_stmt = @var_decl_stmt | @const_decl_stmt;
+@decl_stmt = @var_decl_stmt | @const_decl_stmt | @using_decl_stmt;
 
 @cond_stmt = @if_stmt | @switch_stmt;
 

@@ -1255,6 +1255,17 @@ class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
 }
 
 /**
+ * A `using` declaration statement, for example
+ *
+ * ```
+ * using FileStream f = File.Open("settings.xml");
+ * ```
+ */
+class UsingDeclStmt extends LocalVariableDeclStmt, @using_decl_stmt {
+  override string toString() { result = "using ... ...;" }
+}
+
+/**
  * An empty statement, for example line 2 in
  *
  * ```
