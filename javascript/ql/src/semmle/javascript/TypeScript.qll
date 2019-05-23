@@ -981,7 +981,7 @@ class VarTypeAccess extends @vartypeaccess, TypeExpr { }
  */
 class LocalVarTypeAccess extends @localvartypeaccess, VarTypeAccess, LexicalAccess, Identifier {
   /** Gets the variable being referenced, or nothing if this is a `this` keyword. */
-  Variable getVariable() { bind(this, result) }
+  Variable getVariable() { Variable::bindx(this, result) }
 }
 
 /**

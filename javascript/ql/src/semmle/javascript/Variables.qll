@@ -120,6 +120,18 @@ class NamespaceScope extends Scope, @namespacescope {
   override string toString() { result = "namespace scope" }
 }
 
+module Variable {
+  /** Temporary alias for `bind`. */
+  predicate bindx(Identifier id, Variable variable) {
+    bind(id, variable)
+  }
+
+  /** Temporary alias for `decl`. */
+  predicate declx(Identifier id, Variable variable) {
+    decl(id, variable)
+  }
+}
+
 /** A variable declared in a scope. */
 class Variable extends @variable, LexicalName {
   /** Gets the name of this variable. */
@@ -236,7 +248,7 @@ class VarAccess extends @varaccess, VarRef, LexicalAccess {
    * When analyzing TypeScript code, a variable may spuriously be resolved as a
    * global due to incomplete modeling of exported variables in namespaces.
    */
-  override Variable getVariable() { bind(this, result) }
+  override Variable getVariable() { Variable::bindx(this, result) }
 
   override predicate isLValue() {
     exists(Assignment assgn | assgn.getTarget() = this)
@@ -355,7 +367,7 @@ abstract class DestructuringPattern extends BindingPattern {
 
 /** An identifier that declares a variable. */
 class VarDecl extends @vardecl, VarRef, LexicalDecl {
-  override Variable getVariable() { decl(this, result) }
+  override Variable getVariable() { Variable::declx(this, result) }
 
   override predicate isLValue() {
     exists(VariableDeclarator vd | vd.getBindingPattern() = this |
@@ -699,8 +711,8 @@ class LexicalRef extends Identifier, @lexical_ref {
    * For example, a class name declares both a type and a variable.
    */
   LexicalName getALexicalName() {
-    bind(this, result) or
-    decl(this, result) or
+    Variable::bindx(this, result) or
+    Variable::declx(this, result) or
     typebind(this, result) or
     typedecl(this, result) or
     namespacebind(this, result) or

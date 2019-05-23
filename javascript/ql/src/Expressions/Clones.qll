@@ -101,7 +101,7 @@ abstract class StructurallyCompared extends ASTNode {
      * position, either both bind to a variable or neither does.
      */
 
-    (bind(this, _) implies exists(Variable v | bind(this, v) and bind(that, v))) and
+    (Variable::bindx(this, _) implies exists(Variable v | Variable::bindx(this, v) and Variable::bindx(that, v))) and
     /*
      * Check that `this` and `that` have the same constant value, if any.
      * As above, it suffices to check one implication.
