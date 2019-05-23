@@ -89,6 +89,17 @@ abstract class Module extends TopLevel {
       )
     )
   }
+
+  /**
+   * Holds if this module has an implicit top-level variable named `var`.
+   *
+   * For example, in a Node.js module, the variables `module`, `exports`, and
+   * `require` are implicitly part of the top-level scope.
+   *
+   * Overriders of this method should be careful not to rely on anything that depends
+   * on variable binding.
+   */
+  predicate hasImplicitTopLevelVariable(string var) { none() }
 }
 
 /**

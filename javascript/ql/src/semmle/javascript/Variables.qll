@@ -122,13 +122,62 @@ class NamespaceScope extends Scope, @namespacescope {
 
 module Variable {
   /** Temporary alias for `bind`. */
+  cached
   predicate bindx(Identifier id, Variable variable) {
-    bind(id, variable)
+    bind(id, getAnAliasOf(variable))
   }
 
   /** Temporary alias for `decl`. */
+  cached
   predicate declx(Identifier id, Variable variable) {
-    decl(id, variable)
+    decl(id, getAnAliasOf(variable))
+  }
+
+  /**
+   * Gets a variable that should be replaced by `var` in all name bindings.
+   */
+  Variable getAnAliasOf(Variable var) {
+    rebind(result) = var
+  }
+
+  /**
+   * Gets a variable that should replace `var` in all name bindings.
+   */
+  Variable rebind(Variable var) {
+    exists(ModuleScope scope, string name | variables(var, name, scope) |
+      if decl(_, var) or scope.getModule().hasImplicitTopLevelVariable(name) then
+        result = var
+      else
+        result.(GlobalVariable).getName() = name
+    )
+    or
+    exists(Scope scope | variables(var, _, scope) |
+      not scope instanceof ModuleScope and
+      result = var
+    )
+  }
+
+  /**
+   * Gets an access to an variable that is declared in the top-level
+   * or is not declared at all.
+   *
+   * Can be used by subclasses of `Module` to reason about top-level variables
+   * without depending on variable binding.
+   */
+  VarAccess getATopLevelVarAccess(string name) {
+    exists(TopLevelVariable variable | bind(result, variable) |
+      variable.getName() = name
+    )
+  }
+
+  /** A global variable or a top-level module variable. */
+  private class TopLevelVariable extends Variable {
+    TopLevelVariable() {
+      exists(Scope scope | variables(this, _, scope) |
+        scope instanceof GlobalScope or
+        scope instanceof ModuleScope
+      )
+    }
   }
 }
 

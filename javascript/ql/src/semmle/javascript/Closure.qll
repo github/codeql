@@ -123,7 +123,7 @@ module Closure {
       // Use AST-based predicate to cut recursive dependencies.
       exists(MethodCallExpr call |
         getAStmt().(ExprStmt).getExpr() = call and
-        call.getReceiver().(GlobalVarAccess).getName() = "goog" and
+        call.getReceiver() = Variable::getATopLevelVarAccess("goog") and
         (call.getMethodName() = "module" or call.getMethodName() = "declareModuleId")
       )
     }

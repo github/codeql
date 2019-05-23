@@ -26,7 +26,7 @@ import javascript
 class AmdModuleDefinition extends CallExpr {
   AmdModuleDefinition() {
     getParent() instanceof ExprStmt and
-    getCallee().(GlobalVarAccess).getName() = "define" and
+    getCallee() = Variable::getATopLevelVarAccess("define") and
     exists(int n | n = getNumArgument() |
       n = 1
       or
