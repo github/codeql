@@ -98,13 +98,13 @@ public class ScopeManager {
 
   private final TrapWriter trapWriter;
   private Scope curScope;
-  private final Scope toplevelScope;
+  private final Scope globalScope;
   private final ECMAVersion ecmaVersion;
   private final Set<String> implicitGlobals = new LinkedHashSet<String>();
 
   public ScopeManager(TrapWriter trapWriter, ECMAVersion ecmaVersion) {
     this.trapWriter = trapWriter;
-    this.toplevelScope = enterScope(0, trapWriter.globalID("global_scope"), null);
+    this.globalScope = enterScope(0, trapWriter.globalID("global_scope"), null);
     this.ecmaVersion = ecmaVersion;
   }
 
@@ -145,7 +145,7 @@ public class ScopeManager {
    * label and will thus not exist at the QL level.
    */
   public void enterGlobalAugmentationScope() {
-    curScope = new Scope(curScope, toplevelScope.scopeLabel);
+    curScope = new Scope(curScope, globalScope.scopeLabel);
   }
 
   /** Re-enter a scope that was previously established. */
@@ -158,8 +158,8 @@ public class ScopeManager {
     curScope = curScope.outer;
   }
 
-  public Scope getToplevelScope() {
-    return toplevelScope;
+  public Scope getGlobalScope() {
+    return globalScope;
   }
 
   private static final Map<String, Integer> scopeKinds = new LinkedHashMap<String, Integer>();
@@ -197,7 +197,7 @@ public class ScopeManager {
   public Label getVarKey(String name) {
     Label lbl = curScope.lookupVariable(name);
     if (lbl == null) {
-      lbl = addVariable(name, toplevelScope);
+      lbl = addVariable(name, globalScope);
       implicitGlobals.add(name);
     }
     return lbl;
@@ -285,7 +285,7 @@ public class ScopeManager {
   public boolean isStrictlyInScope(String name) {
     for (Scope scope = curScope; scope != null; scope = scope.outer) {
       if (scope.variableBindings.containsKey(name)
-          && !(scope == toplevelScope && implicitGlobals.contains(name))) {
+          && !(scope == globalScope && implicitGlobals.contains(name))) {
         return true;
       }
     }
