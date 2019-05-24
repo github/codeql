@@ -542,7 +542,7 @@ compiler_generated(unique int id: @modifiable_direct ref);
 
 @member = @method | @constructor | @destructor | @field | @property | @event | @operator | @indexer | @type;
 
-@named_exprorstmt = @goto_stmt | @labeled_stmt | @literal_expr;
+@named_exprorstmt = @goto_stmt | @labeled_stmt | @expr;
 
 @virtualizable = @method | @property | @indexer | @event;
 
@@ -806,7 +806,7 @@ case @stmt.kind of
 | 26 = @fixed_stmt
 | 27 = @label_stmt
 | 28 = @catch
-| 29 = @case
+| 29 = @case_stmt
 | 30 = @local_function_stmt
   ;
 
@@ -984,6 +984,10 @@ case @expr.kind of
 | 117 = @positional_pattern_expr
 | 118 = @switch_case_expr
 ;
+
+@switch = @switch_stmt | @switch_expr;
+@case = @case_stmt | @switch_case_expr;
+@pattern_match = @case | @is_expr;
 
 @integer_literal_expr = @int_literal_expr | @long_literal_expr | @uint_literal_expr | @ulong_literal_expr;
 @real_literal_expr = @float_literal_expr | @double_literal_expr | @decimal_literal_expr;
