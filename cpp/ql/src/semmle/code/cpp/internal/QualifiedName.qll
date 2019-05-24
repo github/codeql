@@ -1,3 +1,4 @@
+private import semmle.code.cpp.Declaration as D
 /**
  * INTERNAL: Do not use. Provides classes and predicates for getting names of
  * declarations, especially qualified names. Import this library `private` and
@@ -37,8 +38,7 @@ abstract class Declaration extends @declaration {
   string toString() { result = "QualifiedName Declaration" }
 
   /** Gets the name of this declaration. */
-  cached
-  abstract string getName();
+  final string getName() { result = this.(D::Declaration).getName() }
 
   string getTypeQualifierWithoutArgs() {
     exists(UserType declaringType |
@@ -133,8 +133,6 @@ abstract class Declaration extends @declaration {
 }
 
 class Variable extends Declaration, @variable {
-  override string getName() { none() }
-
   VariableDeclarationEntry getADeclarationEntry() { result.getDeclaration() = this }
 }
 
@@ -147,7 +145,6 @@ class TemplateVariable extends Variable {
 class LocalScopeVariable extends Variable, @localscopevariable { }
 
 class LocalVariable extends LocalScopeVariable, @localvariable {
-  override string getName() { localvariables(this, _, result) }
 }
 
 /**
@@ -174,60 +171,9 @@ class Parameter extends LocalScopeVariable, @parameter {
   int index;
 
   Parameter() { params(this, function, index, _) }
-
-  /**
-   * Gets the canonical name, or names, of this parameter.
-   *
-   * The canonical names are the first non-empty category from the
-   * following list:
-   *  1. The name given to the parameter at the function's definition or
-   *     (for catch block parameters) at the catch block.
-   *  2. A name given to the parameter at a function declaration.
-   *  3. The name "p#i" where i is the index of the parameter.
-   */
-  override string getName() {
-    exists(VariableDeclarationEntry vde |
-      vde = getANamedDeclarationEntry() and result = vde.getName()
-    |
-      vde.isDefinition() or not getANamedDeclarationEntry().isDefinition()
-    )
-    or
-    not exists(getANamedDeclarationEntry()) and
-    result = "p#" + index.toString()
-  }
-
-  VariableDeclarationEntry getANamedDeclarationEntry() {
-    result = getAnEffectiveDeclarationEntry() and exists(result.getName())
-  }
-
-  /**
-   * Gets a declaration entry corresponding to this declaration.
-   *
-   * This predicate is the same as getADeclarationEntry(), except that for
-   * parameters of instantiated function templates, gives the declaration
-   * entry of the prototype instantiation of the parameter (as
-   * non-prototype instantiations don't have declaration entries of their
-   * own).
-   */
-  VariableDeclarationEntry getAnEffectiveDeclarationEntry() {
-    if function.(Function).isConstructedFrom(_)
-    then
-      exists(Function prototypeInstantiation |
-        prototypeInstantiation.getParameter(index) = result.getVariable() and
-        function.(Function).isConstructedFrom(prototypeInstantiation)
-      )
-    else result = getADeclarationEntry()
-  }
 }
 
 class GlobalOrNamespaceVariable extends Variable, @globalvariable {
-  override string getName() { globalvariables(this, _, result) }
-}
-
-class MemberVariable extends Variable, @membervariable {
-  MemberVariable() { this.isMember() }
-
-  override string getName() { membervariables(this, _, result) }
 }
 
 // Unlike the usual `EnumConstant`, this one doesn't have a
@@ -235,14 +181,10 @@ class MemberVariable extends Variable, @membervariable {
 // qualifier names since it can assume that any declaration with a
 // `getDeclaringType()` should use that type in its type qualifier name.
 class EnumConstant extends Declaration, @enumconstant {
-  override string getName() { enumconstants(this, _, _, _, result, _) }
-
   UserType getDeclaringEnum() { enumconstants(this, result, _, _, _, _) }
 }
 
 class Function extends Declaration, @function {
-  override string getName() { functions(this, result, _) }
-
   predicate isConstructedFrom(Function f) { function_instantiation(this, f) }
 
   Parameter getParameter(int n) { params(result, this, n, _) }
@@ -258,8 +200,6 @@ class TemplateFunction extends Function {
 }
 
 class UserType extends Declaration, @usertype {
-  override string getName() { result = getUserTypeNameWithArgs(this) }
-
   predicate isLocal() { enclosingfunction(this, _) }
 
   // Gets a member of this class, if it's a class.
@@ -291,10 +231,6 @@ class TemplateClass extends UserType {
 }
 
 class FriendDecl extends Declaration, @frienddecl {
-  override string getName() {
-    result = getUserTypeNameWithArgs(this.getDeclaringClass()) + "'s friend"
-  }
-
   UserType getDeclaringClass() { frienddecls(this, result, _, _) }
 }
 
