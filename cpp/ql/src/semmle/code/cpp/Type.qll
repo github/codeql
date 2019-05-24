@@ -1276,7 +1276,7 @@ private predicate suppressUnusedThis(Type t) { any() }
 
 /** A source code location referring to a type */
 class TypeMention extends Locatable, @type_mention {
-  override string toString() {result = "mention of " + getMentionedType()}
+  override string toString() {result = "type mention"}
   
   /**
    * Gets the type being referenced by this type mention.
