@@ -1,10 +1,13 @@
 import csharp
 
-query predicate localVars(LocalVariable decl) { any() }
+query predicate localVars(LocalVariable decl) {
+  decl.getEnclosingCallable().hasName("TestUsingDeclarations")
+}
 
 query predicate localVariableDeclarations(
   LocalVariableDeclStmt stmt, int i, LocalVariableDeclExpr decl
 ) {
+  decl.getEnclosingCallable().hasName("TestUsingDeclarations") and
   decl = stmt.getVariableDeclExpr(i)
 }
 
