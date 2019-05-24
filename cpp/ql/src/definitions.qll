@@ -25,40 +25,37 @@ class Top extends Element {
    * For more information, see
    * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
    */
+  pragma[noopt]
+  final
   predicate hasLocationInfo(string filepath,
                             int startline, int startcolumn,
                             int endline, int endcolumn) {
-    exists(Location l | l = this.getLocation()
-                    and filepath    = l.getFile().getAbsolutePath()
-                    and startline   = l.getStartLine()
-                    and startcolumn = l.getStartColumn()
-                    and endline     = l.getEndLine()
-                    and endcolumn   = l.getEndColumn())
-  }
-}
-
-/**
- * A `MacroAccess` with a `hasLocationInfo` predicate.
- *
- * This has a location that covers only the name of the accessed
- * macro, not its arguments (which are included by `MacroAccess`'s
- * `getLocation()`).
- */
-class MacroAccessWithHasLocationInfo extends Top {
-  MacroAccessWithHasLocationInfo() {
-    this instanceof MacroAccess
-  }
-
-  override
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    exists(MacroAccess ma, Location l |
-           ma = this
-       and l = ma.getLocation()
-       and path = l.getFile().getAbsolutePath()
-       and sl = l.getStartLine()
-       and sc = l.getStartColumn()
-       and el = sl
-       and ec = sc + ma.getMacroName().length() - 1)
+    interestingElement(this) and
+    not this instanceof MacroAccess and
+    not this instanceof Include and
+    exists(Location l |
+      l = this.getLocation() and
+      l.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    )
+    or
+    // This has a location that covers only the name of the accessed
+    // macro, not its arguments (which are included by `MacroAccess`'s
+    // `getLocation()`).
+    exists(Location l, MacroAccess ma |
+      ma instanceof MacroAccess and
+      ma = this and
+      l = ma.getLocation() and
+      l.hasLocationInfo(filepath, startline, startcolumn, _, _) and
+      endline = startline and
+      exists(string macroName, int nameLength, int nameLengthMinusOne |
+        macroName = ma.getMacroName() and
+        nameLength = macroName.length() and
+        nameLengthMinusOne = nameLength - 1 and
+        endcolumn = startcolumn + nameLengthMinusOne
+      )
+    )
+    or
+    hasLocationInfo_Include(this, filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -68,23 +65,22 @@ class MacroAccessWithHasLocationInfo extends Top {
  * This has a location that covers only the name of the included
  * file, not the `#include` text or whitespace before it.
  */
-class IncludeWithHasLocationInfo extends Top {
-  IncludeWithHasLocationInfo() {
-    this instanceof Include
-  }
+predicate hasLocationInfo_Include(Include i, string path, int sl, int sc, int el, int ec) {
+  exists(Location l |
+    l = i.getLocation() and
+    path = l.getFile().getAbsolutePath() and
+    sl = l.getEndLine() and
+    sc = l.getEndColumn() + 1 - i.getIncludeText().length() and
+    el = l.getEndLine() and
+    ec = l.getEndColumn()
+  )
+}
 
-  override
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    exists(Include i, Location l |
-      i = this and
-      l = i.getLocation() and
-      path = l.getFile().getAbsolutePath() and
-      sl = l.getEndLine() and
-      sc = l.getEndColumn() + 1 - i.getIncludeText().length() and
-      el = l.getEndLine() and
-      ec = l.getEndColumn()
-    )
-  }
+/** Holds if `e` is a source or a target of jump-to-definition. */
+predicate interestingElement(Element e) {
+  exists(definitionOf(e, _))
+  or
+  e = definitionOf(_, _)
 }
 
 /**
