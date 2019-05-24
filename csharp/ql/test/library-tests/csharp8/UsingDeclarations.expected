@@ -1,0 +1,18 @@
+localVars
+| NullCoalescingAssignment.cs:7:16:7:16 | o |
+| UsingDeclarations.cs:8:26:8:30 | file1 |
+| UsingDeclarations.cs:8:72:8:76 | file2 |
+| UsingDeclarations.cs:10:26:10:30 | file3 |
+| UsingDeclarations.cs:10:72:10:76 | file4 |
+localVariableDeclarations
+| NullCoalescingAssignment.cs:7:9:7:24 | ... ...; | 0 | NullCoalescingAssignment.cs:7:16:7:23 | Object o = ... |
+usingStmts1
+| UsingDeclarations.cs:8:9:8:116 | using ... ...; |
+| UsingDeclarations.cs:10:9:12:9 | using (...) {...} |
+| UsingDeclarations.cs:14:9:15:13 | using (...) {...} |
+usingStmts
+| UsingDeclarations.cs:10:9:12:9 | using (...) {...} | 0 | UsingDeclarations.cs:10:26:10:69 | FileStream file3 = ... |
+| UsingDeclarations.cs:10:9:12:9 | using (...) {...} | 1 | UsingDeclarations.cs:10:72:10:115 | FileStream file4 = ... |
+usingDecls
+| UsingDeclarations.cs:8:9:8:116 | using ... ...; | 0 | UsingDeclarations.cs:8:26:8:69 | FileStream file1 = ... |
+| UsingDeclarations.cs:8:9:8:116 | using ... ...; | 1 | UsingDeclarations.cs:8:72:8:115 | FileStream file2 = ... |

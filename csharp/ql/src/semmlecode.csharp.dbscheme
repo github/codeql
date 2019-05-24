@@ -798,7 +798,7 @@ case @stmt.kind of
 | 18 = @checked_stmt
 | 19 = @unchecked_stmt
 | 20 = @lock_stmt
-| 21 = @using_stmt
+| 21 = @using_block_stmt
 | 22 = @var_decl_stmt
 | 23 = @const_decl_stmt
 | 24 = @empty_stmt
@@ -810,6 +810,8 @@ case @stmt.kind of
 | 30 = @local_function_stmt
 | 31 = @using_decl_stmt
   ;
+
+@using_stmt = @using_block_stmt | @using_decl_stmt;
 
 @labeled_stmt = @label_stmt | @case;
 

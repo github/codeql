@@ -480,7 +480,7 @@ module ControlFlow {
               i = max(int j | exists(fs.getVariableDeclExpr(j))) + 1
             )
           or
-          this = any(UsingStmt us |
+          this = any(UsingBlockStmt us |
               if exists(us.getExpr())
               then (
                 result = us.getExpr() and
