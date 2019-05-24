@@ -36,7 +36,7 @@ module InsecureRandomness {
       node instanceof Sanitizer
     }
 
-    override predicate isSanitizer(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
       // stop propagation at the sinks to avoid double reporting
       pred instanceof Sink and
       // constrain succ

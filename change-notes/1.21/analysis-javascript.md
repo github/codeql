@@ -46,5 +46,6 @@
 
 * `RegExpLiteral` is now a `DataFlow::SourceNode`.
 * `JSDocTypeExpr` now has source locations and is a subclass of `Locatable` and `TypeAnnotation`.
+* The two-parameter versions of predicate `isBarrier` in `DataFlow::Configuration` and of predicate `isSanitizer` in `TaintTracking::Configuration` have been renamed to `isBarrierEdge` and `isSanitizerEdge`, respectively. The old names are maintained for backwards-compatibility in this version, but will be deprecated in the next version and subsequently removed.
 * Various predicates named `getTypeAnnotation()` now return `TypeAnnotation` instead of `TypeExpr`.
   In rare cases, this may cause compilation errors. Cast the result to `TypeExpr` if this happens.

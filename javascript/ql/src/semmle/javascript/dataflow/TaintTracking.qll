@@ -51,11 +51,27 @@ module TaintTracking {
     /** Holds if the intermediate node `node` is a taint sanitizer. */
     predicate isSanitizer(DataFlow::Node node) { none() }
 
-    /** Holds if the edge from `source` to `sink` is a taint sanitizer. */
+    /**
+     * DEPRECATED: Use `isSanitizerEdge` instead.
+     *
+     * Holds if the edge from `source` to `sink` is a taint sanitizer.
+     */
     predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) { none() }
 
-    /** Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`. */
+    /**
+     * DEPRECATED: Use `isSanitizerEdge` instead.
+     *
+     * Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`.
+     */
     predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl) {
+      none()
+    }
+
+    /** Holds if the edge from `pred` to `succ` is a taint sanitizer. */
+    predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /** Holds if the edge from `pred` to `succ` is a taint sanitizer for data labelled with `lbl`. */
+    predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel lbl) {
       none()
     }
 
@@ -74,16 +90,18 @@ module TaintTracking {
       isSanitizer(node)
     }
 
-    final override predicate isBarrier(DataFlow::Node source, DataFlow::Node sink) {
-      super.isBarrier(source, sink) or
-      isSanitizer(source, sink)
+    final override predicate isBarrierEdge(DataFlow::Node source, DataFlow::Node sink) {
+      super.isBarrierEdge(source, sink) or
+      isSanitizer(source, sink) or
+      isSanitizerEdge(source, sink)
     }
 
-    final override predicate isBarrier(
+    final override predicate isBarrierEdge(
       DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
     ) {
-      super.isBarrier(source, sink, lbl) or
-      isSanitizer(source, sink, lbl)
+      super.isBarrierEdge(source, sink, lbl) or
+      isSanitizer(source, sink, lbl) or
+      isSanitizerEdge(source, sink, lbl)
     }
 
     final override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {

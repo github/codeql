@@ -17,7 +17,7 @@ class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node src, DataFlow::Node snk) {
+  override predicate isSanitizerEdge(DataFlow::Node src, DataFlow::Node snk) {
     src = src and
     snk.asExpr().(PropAccess).getPropertyName() = "notTracked"
     or

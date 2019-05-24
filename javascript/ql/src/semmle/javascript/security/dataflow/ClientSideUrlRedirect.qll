@@ -51,7 +51,7 @@ module ClientSideUrlRedirect {
       node instanceof Sanitizer
     }
 
-    override predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) {
+    override predicate isSanitizerEdge(DataFlow::Node source, DataFlow::Node sink) {
       hostnameSanitizingPrefixEdge(source, sink)
     }
 
