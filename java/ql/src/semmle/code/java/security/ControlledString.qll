@@ -1,4 +1,4 @@
-/*
+/**
  * Controlled strings are the opposite of tainted strings.
  * There is positive evidence that they are fully controlled by
  * the program source code.
@@ -90,7 +90,7 @@ predicate controlledString(Expr expr) {
       boxedToString(method)
     )
     or
-    exists(ValidatedVariable var | var.getAnAccess() = expr)
+    expr instanceof ValidatedVariableAccess
     or
     forex(Expr other | controlledStringLimitedProp(other, expr) | controlledString(other))
   ) and
