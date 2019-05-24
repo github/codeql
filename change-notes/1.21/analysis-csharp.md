@@ -17,7 +17,7 @@
 
 * The class `Attribute` has two new predicates: `getConstructorArgument()` and `getNamedArgument()`. The first predicate returns arguments to the underlying constructor call and the latter returns named arguments for initializing fields and properties.
 * The following QL classes have been added to model C# 8 features:
-    - Class `IndexExpr` models from end index expressions, for example `^1`
+    - Class `IndexExpr` models from-end index expressions, for example `^1`
     - Class `PatternExpr` is an `Expr` that appears in a pattern. It has the new subclasses `DiscardPatternExpr`, `LabeledPatternExpr`, `RecursivePatternExpr`, `TypeAccessPatternExpr`, `TypePatternExpr`, and `VariablePatternExpr`.
     - Class `PatternMatch` models a pattern being matched. It has the subclasses `Case` and `IsExpr`.
     - Class `PositionalPatternExpr` models position patterns, for example `(int x, int y)`

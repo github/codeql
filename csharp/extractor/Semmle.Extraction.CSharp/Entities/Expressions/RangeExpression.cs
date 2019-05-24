@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (!(Syntax.LeftOperand is null))
                 Expression.Create(cx, Syntax.LeftOperand, this, 0);
             if (!(Syntax.RightOperand is null))
-            Expression.Create(cx, Syntax.RightOperand, this, 1);
+                Expression.Create(cx, Syntax.RightOperand, this, 1);
         }
 
         public static Expression Create(ExpressionNodeInfo info) => new RangeExpression(info).TryPopulate();
