@@ -563,9 +563,8 @@ public class ASTExtractor {
                     + locationManager.getStartLine()
                     + ","
                     + locationManager.getStartColumn());
-        scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
-        scopeManager.addVariables(
-            sourceType.getPredefinedLocals(platform, locationManager.getSourceFileExtension()));
+        Scope module = scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
+        scopeManager.setTopLevelScope(module);
         trapwriter.addTuple("isModule", toplevelLabel);
       }
 

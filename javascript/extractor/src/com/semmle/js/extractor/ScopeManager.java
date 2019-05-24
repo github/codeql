@@ -98,6 +98,7 @@ public class ScopeManager {
 
   private final TrapWriter trapWriter;
   private Scope curScope;
+  private Scope topLevelScope;
   private final Scope globalScope;
   private final ECMAVersion ecmaVersion;
   private final Set<String> implicitGlobals = new LinkedHashSet<String>();
@@ -105,6 +106,7 @@ public class ScopeManager {
   public ScopeManager(TrapWriter trapWriter, ECMAVersion ecmaVersion) {
     this.trapWriter = trapWriter;
     this.globalScope = enterScope(0, trapWriter.globalID("global_scope"), null);
+    this.topLevelScope = globalScope;
     this.ecmaVersion = ecmaVersion;
   }
 
@@ -127,6 +129,15 @@ public class ScopeManager {
       trapWriter.addTuple("scopenesting", curScope.scopeLabel, outerScopeLabel);
 
     return curScope;
+  }
+
+  /**
+   * Sets the current default scope.
+   *
+   * Undeclared variables are resolved to the default scope.
+   */
+  public void setTopLevelScope(Scope defaultScope) {
+    this.topLevelScope = defaultScope;
   }
 
   /** Enter the scope induced by a given AST node. */
@@ -192,12 +203,12 @@ public class ScopeManager {
 
   /**
    * Get the label for a given variable in the current scope; if it cannot be found, add it to the
-   * global scope.
+   * default scope (that is, the global scope or top-level module scope).
    */
   public Label getVarKey(String name) {
     Label lbl = curScope.lookupVariable(name);
     if (lbl == null) {
-      lbl = addVariable(name, globalScope);
+      lbl = addVariable(name, topLevelScope);
       implicitGlobals.add(name);
     }
     return lbl;
@@ -220,10 +231,24 @@ public class ScopeManager {
   }
 
   /** Add a variable to a given scope. */
-  private Label addVariable(String name, Scope scope) {
+  private Label addVariableToTrapWriter(String name, Scope scope) {
     Label key = trapWriter.globalID("var;{" + name + "};{" + scope.scopeLabel + "}");
-    scope.variableBindings.put(name, key);
     trapWriter.addTuple("variables", key, name, scope.scopeLabel);
+    return key;
+  }
+
+  /**
+   * Add a variable to a given scope, while ensuring that all top-level variables have
+   * corresponding global variables.
+   */
+  private Label addVariable(String name, Scope scope) {
+    Label key = addVariableToTrapWriter(name, scope);
+    scope.variableBindings.put(name, key);
+    if (scope == topLevelScope && topLevelScope != globalScope) {
+      // When adding a top-level variable we must ensure that the corresponding global
+      // variable exists as well, so it's possible to rebind it to a global variable in QL.
+      addVariableToTrapWriter(name, globalScope);
+    }
     return key;
   }
 
@@ -285,7 +310,7 @@ public class ScopeManager {
   public boolean isStrictlyInScope(String name) {
     for (Scope scope = curScope; scope != null; scope = scope.outer) {
       if (scope.variableBindings.containsKey(name)
-          && !(scope == globalScope && implicitGlobals.contains(name))) {
+          && !(scope == topLevelScope && implicitGlobals.contains(name))) {
         return true;
       }
     }

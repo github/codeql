@@ -96,34 +96,6 @@ public class ExtractorConfig {
     public boolean isStrictMode() {
       return this == MODULE;
     }
-
-    private static final Set<String> closureLocals = Collections.singleton("exports");
-    private static final Set<String> commonJsLocals =
-        new LinkedHashSet<>(
-            Arrays.asList("require", "module", "exports", "__filename", "__dirname", "arguments"));
-
-    /**
-     * Returns the set of local variables in scope at the top-level of this module.
-     *
-     * <p>If this source type has no local scope, the empty set is returned.
-     */
-    public Set<String> getPredefinedLocals(Platform platform, String extension) {
-      switch (this) {
-        case CLOSURE_MODULE:
-          return closureLocals;
-        case COMMONJS_MODULE:
-          return commonJsLocals;
-        case MODULE:
-          if (platform == Platform.NODE && !extension.equals(".mjs")) {
-            // An ES2015 module that is compiled to a Node.js module effectively has the locals
-            // from Node.js even if they are not part of the ES2015 standard.
-            return commonJsLocals;
-          }
-          return Collections.emptySet();
-        default:
-          return Collections.emptySet();
-      }
-    }
   };
 
   public static enum Platform {
