@@ -41,6 +41,9 @@ class Variable extends Declaration, @variable {
   /** Holds if this variable is `volatile`. */
   predicate isVolatile() { this.getType().isVolatile() }
 
+  /** Gets the name of this variable. */
+  override string getName() { none() }
+
   /** Gets the type of this variable. */
   Type getType() { none() }
 
@@ -294,6 +297,8 @@ deprecated class StackVariable extends Variable {
  * A local variable can be declared by a `DeclStmt` or a `ConditionDeclExpr`.
  */
 class LocalVariable extends LocalScopeVariable, @localvariable {
+  override string getName() { localvariables(underlyingElement(this),_,result) }
+
   override Type getType() { localvariables(underlyingElement(this),unresolveElement(result),_) }
 
   override Function getFunction() {
@@ -306,6 +311,8 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
  * A C/C++ variable which has global scope or namespace scope.
  */
 class GlobalOrNamespaceVariable extends Variable, @globalvariable {
+  override string getName() { globalvariables(underlyingElement(this),_,result) }
+
   override Type getType() { globalvariables(underlyingElement(this),unresolveElement(result),_) }
 
   override Element getEnclosingElement() { none() }
@@ -352,6 +359,8 @@ class MemberVariable extends Variable, @membervariable {
 
   /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
+
+  override string getName() { membervariables(underlyingElement(this),_,result) }
 
   override Type getType() {
     if (strictcount(this.getAType()) = 1) then (

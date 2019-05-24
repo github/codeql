@@ -17,6 +17,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * in more detail in `Declaration.qll`.
  */
 class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
+  override string getName() { functions(underlyingElement(this),result,_) }
+
   /**
    * DEPRECATED: Use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
    * Gets the full signature of this function, including return type, parameter
