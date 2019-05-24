@@ -5,9 +5,9 @@
  *              to inaccurate results.
  * @kind problem
  * @problem.severity recommendation
- * @precision medium
+ * @precision high
  * @id cs/extraction-error
- * @tags internal
+ * @tags internal non-attributable
  */
 
 import csharp

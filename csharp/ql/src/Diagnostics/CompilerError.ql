@@ -3,9 +3,9 @@
  * @description A compilation error can cause extraction problems, and could lead to inaccurate results.
  * @kind problem
  * @problem.severity recommendation
- * @precision medium
+ * @precision high
  * @id cs/compilation-error
- * @tags internal
+ * @tags internal non-attributable
  */
 
 import csharp

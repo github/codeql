@@ -5,15 +5,9 @@
 
 <overview>
 <p>
-This is an internal query that finds all messages reported by the compiler. This may include both compiler errors and
-compiler warnings. Compiler errors can lead to inaccurate results and should be fixed.
+This is an internal query that finds all messages reported by the C# compiler used by the C# extractor. This may include both compiler errors and
+compiler warnings.
 </p>
 </overview>
-
-<recommendation>
-<p>
-Fix the cause of the compilation error.
-</p>
-</recommendation>
 
 </qhelp>

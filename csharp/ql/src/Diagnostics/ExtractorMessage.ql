@@ -3,9 +3,9 @@
  * @description An error message reported by the extractor. This could lead to inaccurate results.
  * @kind problem
  * @problem.severity recommendation
- * @precision medium
+ * @precision high
  * @id cs/extraction-message
- * @tags internal
+ * @tags internal non-attributable
  */
 
 import csharp
