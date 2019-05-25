@@ -66,8 +66,7 @@ module SsaChecks {
       not d = any(ForeachStmt fs).getVariableDeclExpr() and
       not d = any(SpecificCatchClause scc).getVariableDeclExpr() and
       not d.getVariable().getType() instanceof Struct and
-      not d = any(TypeCase ts).getVariableDeclExpr() and
-      not d = any(IsPatternExpr ipe).getVariableDeclExpr()
+      not d = any(BindingPatternExpr bpe).getVariableDeclExpr()
     ) and
     m = "Local variable declaration has unexpected SSA definition"
   }

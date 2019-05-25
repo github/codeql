@@ -1091,7 +1091,7 @@
 | Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:22:13:22:23 | case ...: |
 | Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:22:18:22:22 | "xyz" |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; |
-| Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:13:24:36 | case Int32 i2: |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:13:24:36 | case ...: |
 | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | Int32 i2 |
 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:31 | access to local variable i2 |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:30:24:31 | access to local variable i2 |
@@ -1102,7 +1102,7 @@
 | Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:25:37:25:45 | "positive " |
 | Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:25:47:25:48 | access to local variable i2 |
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:26:17:26:22 | break; |
-| Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:27:13:27:24 | case Int32 i3: |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:13:27:24 | case ...: |
 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | Int32 i3 |
 | Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:28:37:28:40 | "int " |
 | Patterns.cs:28:17:28:47 | ...; | Patterns.cs:28:17:28:47 | ...; |
@@ -1110,7 +1110,7 @@
 | Patterns.cs:28:37:28:40 | "int " | Patterns.cs:28:37:28:40 | "int " |
 | Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:28:42:28:43 | access to local variable i3 |
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:29:17:29:22 | break; |
-| Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:30:13:30:27 | case String s2: |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:13:30:27 | case ...: |
 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | String s2 |
 | Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:31:37:31:43 | "string " |
 | Patterns.cs:31:17:31:50 | ...; | Patterns.cs:31:17:31:50 | ...; |
@@ -1118,7 +1118,7 @@
 | Patterns.cs:31:37:31:43 | "string " | Patterns.cs:31:37:31:43 | "string " |
 | Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:31:45:31:46 | access to local variable s2 |
 | Patterns.cs:32:17:32:22 | break; | Patterns.cs:32:17:32:22 | break; |
-| Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:33:13:33:24 | case Object v2: |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:13:33:24 | case ...: |
 | Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | Object v2 |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:35:13:35:20 | default: |
@@ -1201,7 +1201,7 @@
 | Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:13:18:22 | case ...: |
 | Switch.cs:18:18:18:21 | null | Switch.cs:18:18:18:21 | null |
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; |
-| Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:20:13:20:23 | case Int32 i: |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:13:20:23 | case ...: |
 | Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | Int32 i |
 | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:17:22:27 | if (...) ... |
 | Switch.cs:21:21:21:21 | access to parameter o | Switch.cs:21:21:21:21 | access to parameter o |
@@ -1210,7 +1210,7 @@
 | Switch.cs:22:21:22:27 | return ...; | Switch.cs:22:21:22:27 | return ...; |
 | Switch.cs:23:17:23:28 | goto case ...; | Switch.cs:23:27:23:27 | 0 |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:27:23:27 | 0 |
-| Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:13:24:56 | case String s: |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:13:24:56 | case ...: |
 | Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | String s |
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:24:32:24:32 | access to local variable s |
 | Switch.cs:24:32:24:39 | access to property Length | Switch.cs:24:32:24:32 | access to local variable s |
@@ -1224,7 +1224,7 @@
 | Switch.cs:25:17:25:37 | ...; | Switch.cs:25:17:25:37 | ...; |
 | Switch.cs:25:35:25:35 | access to local variable s | Switch.cs:25:35:25:35 | access to local variable s |
 | Switch.cs:26:17:26:23 | return ...; | Switch.cs:26:17:26:23 | return ...; |
-| Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:13:27:39 | case Double d: |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:13:27:39 | case ...: |
 | Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw |
 | Switch.cs:28:17:28:21 | Label: | Switch.cs:28:17:28:21 | Label: |
@@ -1239,9 +1239,13 @@
 | Switch.cs:45:5:53:5 | {...} | Switch.cs:45:5:53:5 | {...} |
 | Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:46:9:52:9 | switch (...) {...} |
 | Switch.cs:46:17:46:17 | access to parameter o | Switch.cs:46:17:46:17 | access to parameter o |
-| Switch.cs:48:13:48:23 | case Int32: | Switch.cs:48:13:48:23 | case Int32: |
+| Switch.cs:48:13:48:23 | case ...: | Switch.cs:48:13:48:23 | case ...: |
+| Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:48:18:48:20 | access to type Int32 |
+| Switch.cs:48:22:48:22 | _ | Switch.cs:48:22:48:22 | _ |
 | Switch.cs:49:17:49:22 | break; | Switch.cs:49:17:49:22 | break; |
-| Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:13:50:39 | case Boolean: |
+| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:13:50:39 | case ...: |
+| Switch.cs:50:18:50:21 | access to type Boolean | Switch.cs:50:18:50:21 | access to type Boolean |
+| Switch.cs:50:23:50:23 | _ | Switch.cs:50:23:50:23 | _ |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:30:50:30 | access to parameter o |
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:50:30:50:30 | access to parameter o |
 | Switch.cs:50:35:50:38 | null | Switch.cs:50:35:50:38 | null |
@@ -1261,7 +1265,9 @@
 | Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:68:9:74:9 | switch (...) {...} |
 | Switch.cs:68:17:68:25 | (...) ... | Switch.cs:68:25:68:25 | access to parameter s |
 | Switch.cs:68:25:68:25 | access to parameter s | Switch.cs:68:25:68:25 | access to parameter s |
-| Switch.cs:70:13:70:24 | case Int32: | Switch.cs:70:13:70:24 | case Int32: |
+| Switch.cs:70:13:70:24 | case ...: | Switch.cs:70:13:70:24 | case ...: |
+| Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:70:18:70:20 | access to type Int32 |
+| Switch.cs:70:22:70:22 | _ | Switch.cs:70:22:70:22 | _ |
 | Switch.cs:71:15:71:20 | break; | Switch.cs:71:15:71:20 | break; |
 | Switch.cs:72:13:72:21 | case ...: | Switch.cs:72:13:72:21 | case ...: |
 | Switch.cs:72:18:72:19 | "" | Switch.cs:72:18:72:19 | "" |
@@ -1287,7 +1293,9 @@
 | Switch.cs:92:5:99:5 | {...} | Switch.cs:92:5:99:5 | {...} |
 | Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:93:9:97:9 | switch (...) {...} |
 | Switch.cs:93:17:93:17 | access to parameter o | Switch.cs:93:17:93:17 | access to parameter o |
-| Switch.cs:95:13:95:24 | case Int32: | Switch.cs:95:13:95:24 | case Int32: |
+| Switch.cs:95:13:95:24 | case ...: | Switch.cs:95:13:95:24 | case ...: |
+| Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:95:18:95:20 | access to type Int32 |
+| Switch.cs:95:22:95:22 | _ | Switch.cs:95:22:95:22 | _ |
 | Switch.cs:96:15:96:26 | return ...; | Switch.cs:96:22:96:25 | true |
 | Switch.cs:96:22:96:25 | true | Switch.cs:96:22:96:25 | true |
 | Switch.cs:98:9:98:21 | return ...; | Switch.cs:98:16:98:20 | false |

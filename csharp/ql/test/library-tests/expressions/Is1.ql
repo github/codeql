@@ -4,10 +4,11 @@
 
 import csharp
 
-from Method m, IsTypeExpr e
+from Method m, IsExpr e, TypePatternExpr tpe
 where
   m.hasName("MainIsAsCast") and
   e.getEnclosingCallable() = m and
   e.getExpr().(ParameterAccess).getTarget().getName() = "o" and
-  e.getCheckedType().(Class).hasQualifiedName("Expressions.Class")
+  tpe = e.getPattern() and
+  tpe.getCheckedType().(Class).hasQualifiedName("Expressions.Class")
 select m, e

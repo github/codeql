@@ -64,16 +64,16 @@ module LocalFlow {
         scope = def.getExpr() and
         isSuccessor = true
         or
-        scope = def.(AssignableDefinitions::IsPatternDefinition).getIsPatternExpr() and
+        scope = def.(AssignableDefinitions::PatternDefinition).getMatch().(IsExpr) and
         isSuccessor = false
         or
-        exists(SwitchStmt ss |
-          ss = def.(AssignableDefinitions::TypeCasePatternDefinition).getTypeCase().getSwitchStmt() and
+        exists(Switch s |
+          s.getACase() = def.(AssignableDefinitions::PatternDefinition).getMatch() and
           isSuccessor = true
         |
-          scope = ss.getCondition()
+          scope = s.getExpr()
           or
-          scope = ss.getACase()
+          scope = s.getACase()
         )
       )
     }

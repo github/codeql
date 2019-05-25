@@ -1314,13 +1314,13 @@
 | E.cs:85:18:85:29 | ... != ... | true | E.cs:85:18:85:21 | access to parameter vals | non-null |
 | E.cs:85:18:85:35 | ... && ... | true | E.cs:85:18:85:29 | ... != ... | true |
 | E.cs:85:18:85:35 | ... && ... | true | E.cs:85:34:85:35 | access to parameter b2 | true |
-| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:83:13:83:24 | ... != ... | true |
-| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:83:29:83:30 | access to parameter b1 | true |
-| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:85:18:85:29 | ... != ... | true |
-| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:85:34:85:35 | access to parameter b2 | true |
-| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:90:17:90:27 | access to local variable switchguard | 1 |
-| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:90:17:90:27 | access to local variable switchguard | 2 |
-| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:90:17:90:27 | access to local variable switchguard | 3 |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_A | E.cs:83:13:83:24 | ... != ... | true |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_A | E.cs:83:29:83:30 | access to parameter b1 | true |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_A | E.cs:90:17:90:27 | access to local variable switchguard | 1 |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_B | E.cs:85:18:85:29 | ... != ... | true |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_B | E.cs:85:34:85:35 | access to parameter b2 | true |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_B | E.cs:90:17:90:27 | access to local variable switchguard | 2 |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_C | E.cs:90:17:90:27 | access to local variable switchguard | 3 |
 | E.cs:107:15:107:25 | Int32[] arr2 = ... | non-null | E.cs:107:15:107:18 | access to local variable arr2 | non-null |
 | E.cs:107:15:107:25 | Int32[] arr2 = ... | null | E.cs:107:15:107:18 | access to local variable arr2 | null |
 | E.cs:109:13:109:39 | ... = ... | non-null | E.cs:109:13:109:16 | access to local variable arr2 | non-null |

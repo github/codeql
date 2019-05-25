@@ -3,20 +3,20 @@ import csharp
 // Branching points in the sense of cyclomatic complexity are binary,
 // so there should be a branching point for each non-default switch
 // case (ignoring those that just fall through to the next case).
-private predicate branchingSwitchCase(ConstCase sc) {
+private predicate branchingSwitchCase(ConstCase c) {
   // in C# the successor of a case is the expression for the case's value
-  not sc = precedingSharedCase(_) and
-  not sc = precedingSharedCase(_) and
-  not defaultFallThrough(sc)
+  not c = precedingSharedCase(_) and
+  not c = precedingSharedCase(_) and
+  not defaultFallThrough(c)
 }
 
-private Stmt precedingSharedCase(@case case) {
+private Stmt precedingSharedCase(Case case) {
   exists(Stmt parent, int n | case = parent.getChild(n) and result = parent.getChild(n - 1))
 }
 
-private predicate defaultFallThrough(ConstCase sc) {
-  precedingSharedCase(sc) instanceof DefaultCase or
-  defaultFallThrough(precedingSharedCase(sc))
+private predicate defaultFallThrough(Case c) {
+  precedingSharedCase(c) instanceof DefaultCase or
+  defaultFallThrough(precedingSharedCase(c))
 }
 
 /** A branching statement used for the computation of cyclomatic complexity */

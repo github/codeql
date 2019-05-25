@@ -105,6 +105,13 @@ namespace Semmle.Extraction.Kinds
         TUPLE = 108,
         LOCAL_FUNCTION_INVOCATION = 109,
         REF = 110,
-        DISCARD = 111
+        DISCARD = 111,
+        RANGE = 112,
+        INDEX = 113,
+        SWITCH = 114,
+        RECURSIVE_PATTERN = 115,
+        PROPERTY_PATTERN = 116,
+        POSITIONAL_PATTERN = 117,
+        SWITCH_CASE = 118
     }
 }

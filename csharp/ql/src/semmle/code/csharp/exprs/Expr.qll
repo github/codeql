@@ -249,23 +249,180 @@ class UncheckedExpr extends Expr, @unchecked_expr {
   override string toString() { result = "unchecked (...)" }
 }
 
+cached
+private predicate hasChildPattern(ControlFlowElement pm, Expr child) {
+  child = pm.getChildExpr(1) and
+  pm instanceof @is_expr
+  or
+  child = pm.getChildExpr(0) and
+  pm instanceof @switch_case_expr
+  or
+  child = pm.getChildExpr(0) and
+  pm instanceof @case_stmt
+  or
+  exists(Expr mid |
+    hasChildPattern(pm, mid) and
+    mid instanceof @recursive_pattern_expr
+  |
+    child = mid.getChild(2).getAChildExpr() or
+    child = mid.getChild(3).getAChildExpr()
+  )
+}
+
 /**
- * An `is` expression.
- * Either an `is` type expression (`IsTypeExpr`) or an `is` constant expression (`IsConstantExpr`).
+ * A pattern expression, for example `(_, false)` in
+ *
+ * ```
+ * (a,b) switch {
+ *     (_, false) => true,
+ *     _ => false
+ * };
+ * ```
  */
-class IsExpr extends Expr, @is_expr {
+class PatternExpr extends Expr {
+  private PatternMatch pm;
+
+  PatternExpr() { hasChildPattern(pm, this) }
+
   /**
-   * Gets the expression being checked, for example `x` in `x is string`.
+   * Gets the pattern match that this pattern expression belongs to
+   * (transitively). For example, `_`, `false`, and `(_, false)` belong to the
+   * pattern match `(_, false) => true` in
+   *
+   * ```
+   * (a,b) switch {
+   *     (_, false) => true,
+   *     _ => false
+   * };
+   * ```
    */
-  Expr getExpr() { result = this.getChild(0) }
+  PatternMatch getPatternMatch() { result = pm }
+}
+
+/** A discard pattern, for example `_` in `x is (_, false)` */
+class DiscardPatternExpr extends DiscardExpr, PatternExpr { }
+
+/** A constant pattern, for example `false` in `x is (_, false)`. */
+class ConstantPatternExpr extends PatternExpr {
+  ConstantPatternExpr() { this.hasValue() }
+}
+
+/**
+ * A type pattern, for example `string` in `x is string`, `string s` in
+ * `x is string s`, or `string _` in `x is string _`.
+ */
+class TypePatternExpr extends PatternExpr {
+  private Type t;
+  TypePatternExpr() {
+    t = this.(TypeAccess).getTarget() or
+    t = this.(LocalVariableDeclExpr).getVariable().getType()
+  }
+
+  /** Gets the type checked by this pattern. */
+  Type getCheckedType() { result = t }
+}
+
+/** A type access pattern, for example `string` in `x is string`. */
+class TypeAccessPatternExpr extends TypePatternExpr, TypeAccess { }
+
+/** A pattern that may bind a variable, for example `string s` in `x is string s`. */
+class BindingPatternExpr extends PatternExpr {
+  BindingPatternExpr() {
+    this instanceof LocalVariableDeclExpr or
+    this instanceof @recursive_pattern_expr
+  }
+
+  /**
+   * Gets the local variable declaration of this pattern, if any. For example,
+   * `string s` in `string { Length: 5 } s`.
+   */
+  LocalVariableDeclExpr getVariableDeclExpr() { none() }
+}
+
+/** A variable declaration pattern, for example `string s` in `x is string s`. */
+class VariablePatternExpr extends BindingPatternExpr, LocalVariableDeclExpr {
+  override LocalVariableDeclExpr getVariableDeclExpr() { result = this }
+}
+
+/**
+ * A recursive pattern expression, for example `string { Length: 5 } s` in
+ * `x is string { Length: 5 } s`.
+ */
+class RecursivePatternExpr extends BindingPatternExpr, @recursive_pattern_expr {
+  override string toString() { result = "{ ... }" }
+
+  /**
+   * Gets the position patterns of this recursive pattern, if any.
+   * For example, `(1, _)`.
+   */
+  PositionalPatternExpr getPositionalPatterns() { result = this.getChild(2) }
+
+  /**
+   * Gets the property patterns of this recursive pattern, if any.
+   * For example, `{ Length: 5 }` in `o is string { Length: 5 } s`
+   */
+  PropertyPatternExpr getPropertyPatterns() { result = this.getChild(3) }
+
+  /**
+   * Gets the type access of this recursive pattern, if any.
+   * For example, `string` in `string { Length: 5 }`
+   */
+  TypeAccess getTypeAccess() { result = this.getChild(1) }
+
+  override LocalVariableDeclExpr getVariableDeclExpr() { result = this.getChild(0) }
+}
+
+/** A property pattern. For example, `{ Length: 5 }`. */
+class PropertyPatternExpr extends Expr, @property_pattern_expr {
+  override string toString() { result = "{ ... }" }
+
+  /** Gets the `n`th pattern. */
+  PatternExpr getPattern(int n) { result = this.getChild(n) }
+}
+
+/**
+ * A labeled pattern in a property pattern, for example `Length: 5` in
+ * `{ Length: 5 }`.
+ */
+class LabeledPatternExpr extends PatternExpr {
+  LabeledPatternExpr() { this.getParent() instanceof PropertyPatternExpr }
+
+  /** Gets the label of this pattern. */
+  string getLabel() { exprorstmt_name(this, result) }
+}
+
+/** A positional pattern. For example, `(int x, int y)`. */
+class PositionalPatternExpr extends Expr, @positional_pattern_expr {
+  override string toString() { result = "( ... )" }
+
+  /** Gets the `n`th pattern. */
+  PatternExpr getPattern(int n) { result = this.getChild(n) }
+}
+
+/**
+ * An expression or statement that matches the value of an expression against
+ * a pattern. Either an `is` expression or a `case` expression/statement.
+ */
+class PatternMatch extends ControlFlowElement, @pattern_match {
+  /** Gets the pattern of this match. */
+  PatternExpr getPattern() { none() }
+
+  /** Gets the expression that is matched against a pattern. */
+  Expr getExpr() { none() }
+}
+
+/** An `is` expression. */
+class IsExpr extends Expr, PatternMatch, @is_expr {
+  /** Gets the expression being checked, for example `x` in `x is string`. */
+  override Expr getExpr() { result = this.getChild(0) }
+
+  override PatternExpr getPattern() { result = this.getChild(1) }
 
   override string toString() { result = "... is ..." }
 }
 
-/**
- * An `is` type expression, for example, `x is string` or `x is string s`.
- */
-class IsTypeExpr extends IsExpr {
+/** An `is` type expression, for example, `x is string` or `x is string s`. */
+deprecated class IsTypeExpr extends IsExpr {
   TypeAccess typeAccess;
 
   IsTypeExpr() { typeAccess = this.getChild(1) }
@@ -283,10 +440,8 @@ class IsTypeExpr extends IsExpr {
   TypeAccess getTypeAccess() { result = typeAccess }
 }
 
-/**
- * An `is` pattern expression, for example `x is string s`.
- */
-class IsPatternExpr extends IsTypeExpr {
+/** An `is` pattern expression, for example `x is string s`. */
+deprecated class IsPatternExpr extends IsExpr {
   LocalVariableDeclExpr typeDecl;
 
   IsPatternExpr() { typeDecl = this.getChild(2) }
@@ -296,21 +451,102 @@ class IsPatternExpr extends IsTypeExpr {
    * For example `string s` in `x is string s`.
    */
   LocalVariableDeclExpr getVariableDeclExpr() { result = typeDecl }
+
+  /**
+   * Gets the type being accessed in this `is` expression, for example `string`
+   * in `x is string`.
+   */
+  Type getCheckedType() { result = getTypeAccess().getTarget() }
+
+  /**
+   * Gets the type access in this `is` expression, for example `string` in
+   * `x is string`.
+   */
+  TypeAccess getTypeAccess() { result = this.getChild(1) }
 }
 
 /**
  * An `is` constant expression, for example `x is 5`.
  */
-class IsConstantExpr extends IsExpr {
-  Expr constant;
+deprecated class IsConstantExpr extends IsExpr {
+  ConstantPatternExpr constant;
 
-  IsConstantExpr() { constant = this.getChild(3) }
+  IsConstantExpr() { constant = this.getPattern() }
 
   /** Gets the constant expression, for example `5` in `x is 5`. */
   Expr getConstant() { result = constant }
 
   /** Gets the value of the constant, for example 5 in `x is 5`. */
   string getConstantValue() { result = constant.getValue() }
+}
+
+/** A `switch` expression or statement. */
+class Switch extends ControlFlowElement, @switch {
+  /** Gets the `i`th case of this `switch`. */
+  Case getCase(int i) { none() }
+
+  /** Gets a case of this `switch`. */
+  Case getACase() { result = this.getCase(_) }
+
+  /**
+   * Gets the expression being switched against. For example, `x` in
+   * `x switch { ... }`.
+   */
+  Expr getExpr() { none() }
+}
+
+/**
+ * A `switch` expression, for example
+ * ```
+ * (a,b) switch {
+ *     (false, false) => true,
+ *     _ => false
+ * };
+ * ```
+ */
+class SwitchExpr extends Expr, Switch, @switch_expr {
+  override string toString() { result = "... switch { ... }" }
+
+  override Expr getExpr() { result = this.getChild(-1) }
+
+  override SwitchCaseExpr getCase(int n) { result = this.getChild(n) }
+}
+
+/** A `case` expression or statement. */
+class Case extends PatternMatch, @case {
+  /**
+   * Gets the `when` expression of this case, if any. For example, `s.Length < 10`
+   * in `string s when s.Length < 10 => s`
+    */
+  Expr getCondition() { none() }
+
+  /** Gets the body of this `case`. */
+  ControlFlowElement getBody() { none() }
+}
+
+/** An arm of a switch expression, for example `(false, false) => true`. */
+class SwitchCaseExpr extends Expr, Case, @switch_case_expr {
+  override string toString() { result = "... => ..." }
+
+  override Expr getExpr() { result = any(SwitchExpr se | se.getCase(_) = this).getExpr() }
+
+  override PatternExpr getPattern() { result = this.getChild(0) }
+
+  override Expr getCondition() { result = this.getChild(1) }
+
+  /**
+   * Gets the result of a switch arm, for example `true` in
+   * `(false, false) => true`.
+   */
+  override Expr getBody() { result = this.getChild(2) }
+
+  /** Holds if this case expression matches all expressions. */
+  predicate matchesAll() {
+    // Note: There may be other cases that are not yet handled by this predicate.
+    // For example, `(1,2) switch { (int x, int y) => x+y }`
+    // should match all cases due to the type of the expression.
+    this.getPattern() instanceof DiscardPatternExpr
+  }
 }
 
 /**
@@ -718,4 +954,38 @@ class DiscardExpr extends Expr, @discard_expr {
 
 private class UnknownExpr extends Expr, @unknown_expr {
   override string toString() { result = "Expression" }
+}
+
+/**
+ * A range expression, used to create a `System.Range`. For example
+ * ```
+ * 1..3
+ * 1..^1
+ * 3..
+ * ..
+ * ..5
+ * ..^1
+ * ```
+ */
+class RangeExpr extends Expr, @range_expr {
+  override string toString() { result = "... .. ..." }
+
+  /** Gets the left hand operand of this range expression, if any. */
+  Expr getStart() { result = this.getChild(0) }
+
+  /** Gets the right hand operand of this range expression, if any. */
+  Expr getEnd() { result = this.getChild(1) }
+
+  /** Holds if this range expression has a left hand operand. */
+  predicate hasStart() { exists(this.getStart()) }
+
+  /** Holds if this range expression has a right hand operand. */
+  predicate hasEnd() { exists(this.getEnd()) }
+}
+
+/** An index expression, for example `^1` meaning "1 from the end". */
+class IndexExpr extends Expr, @index_expr {
+  Expr getExpr() { result.getParent() = this }
+
+  override string toString() { result = "^..." }
 }
