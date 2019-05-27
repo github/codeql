@@ -34,5 +34,4 @@ module CommandInjection {
   class SystemCommandExecutionSink extends Sink, DataFlow::ValueNode {
     SystemCommandExecutionSink() { this = any(SystemCommandExecution sys).getACommandArgument() }
   }
-
 }

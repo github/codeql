@@ -23,7 +23,7 @@ private class RemoteFlowPassword extends HeuristicSource, RemoteFlowSource {
 }
 
 /**
- * A use of `JSON.stringify`, viewed as a source for command line injections
+ * A use of `JSON.stringify`, viewed as a source for command-line injections
  * since it does not properly escape single quotes and dollar symbols.
  */
 private class JSONStringifyAsCommandInjectionSource extends HeuristicSource,
