@@ -161,6 +161,60 @@ module DataFlow {
 
     /** Gets a textual representation of this element. */
     string toString() { none() }
+
+    /**
+     * Gets the immediate predecessor of this node, if any.
+     *
+     * A node with an immediate predecessor can only ever have the value that flows
+     * into its from its immediate predecessor. It can be treated as an alias for
+     * the immediate predecessor.
+     */
+    cached
+    DataFlow::Node getImmediatePredecessor() {
+      // Use of variable -> definition of variable
+      exists(SsaVariable var |
+        this = DataFlow::valueNode(var.getAUse()) and
+        result.(DataFlow::SsaDefinitionNode).getSsaVariable() = var
+      )
+      or
+      // Refinement of variable -> original definition of variable
+      exists(SsaRefinementNode refinement |
+        this.(DataFlow::SsaDefinitionNode).getSsaVariable() = refinement.getVariable() and
+        result.(DataFlow::SsaDefinitionNode).getSsaVariable() = refinement.getAnInput()
+      )
+      or
+      // Definition of variable -> RHS of definition
+      exists(SsaExplicitDefinition def |
+        this = TSsaDefNode(def) and
+        result = def.getRhsNode()
+      )
+      or
+      // IIFE call -> return value of IIFE
+      // Note: not sound in case function falls over end and returns 'undefined'
+      exists(Function fun |
+        localCall(this.asExpr(), fun) and
+        result = fun.getAReturnedExpr().flow() and
+        strictcount(fun.getAReturnedExpr()) = 1
+      )
+      or
+      // IIFE parameter -> IIFE call
+      exists(Parameter param |
+        this = DataFlow::parameterNode(param) and
+        localArgumentPassing(result.asExpr(), param)
+      )
+      or
+      // `{ x } -> e` in `let { x } = e`
+      exists(DestructuringPattern pattern |
+        this = TDestructuringPatternNode(pattern)
+      |
+        exists(VarDef def |
+          pattern = def.getTarget() and
+          result = DataFlow::valueNode(def.getDestructuringSource())
+        )
+        or
+        result = patternPropRead(pattern)
+      )
+    }
   }
 
   /**
