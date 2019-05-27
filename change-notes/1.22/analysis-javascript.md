@@ -17,9 +17,10 @@
   
 ## New queries
 
-| **Query** | **Tags** | **Purpose** |
-|-----------|----------|-------------|
-|           |          |             |
+| **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
+|---------------------------------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Indirect uncontrolled command line (`js/indirect-command-line-injection`) | correctness, security, external/cwe/cwe-078, external/cwe/cwe-088 | Highlights command-line invocations that may indirectly introduce a command-line injection vulnerability elsewhere, indicating a possible violation of [CWE-78](https://cwe.mitre.org/data/definitions/78.html). Results are not shown on LGTM by default. |
+
 
 ## Changes to existing queries
 
