@@ -6,6 +6,8 @@ alwaysNull
 | dataflow.cs:79:21:79:46 | call to method ReturnsNull2 |
 | dataflow.cs:80:21:80:44 | access to property NullProperty |
 | dataflow.cs:89:31:89:44 | call to method NullFunction |
+| dataflow.cs:99:9:99:50 | ... = ... |
+| dataflow.cs:99:22:99:50 | call to method MaybeNull2 |
 alwaysNotNull
 | dataflow.cs:71:24:71:35 | default(...) |
 | dataflow.cs:72:27:72:30 | this access |
@@ -30,3 +32,10 @@ alwaysNotNull
 | dataflow.cs:90:24:90:34 | access to local variable nullMethods |
 | dataflow.cs:91:24:91:34 | access to local variable nullMethods |
 | dataflow.cs:92:26:92:32 | access to local variable nonNull |
+| dataflow.cs:95:25:95:31 | access to local variable nonNull |
+| dataflow.cs:96:26:96:32 | access to local variable nonNull |
+| dataflow.cs:97:32:97:73 | object creation of type MaybeNullMethods |
+| dataflow.cs:98:21:98:36 | access to local variable maybeNullMethods |
+| dataflow.cs:99:9:99:50 | ... = ... |
+| dataflow.cs:99:22:99:37 | access to local variable maybeNullMethods |
+| dataflow.cs:99:22:99:50 | call to method MaybeNull2 |

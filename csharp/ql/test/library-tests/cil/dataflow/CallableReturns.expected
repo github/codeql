@@ -7,6 +7,7 @@ alwaysNull
 | System.Object Dataflow.NullMethods.get_NullProperty() | 0: ldnull, 1: ret |
 | System.Object Dataflow.NullMethods.get_VirtualNullProperty() | 0: ldnull, 1: ret |
 | System.Object System.Collections.EmptyReadOnlyDictionaryInternal.get_Item(System.Object) | 0: ldarg.1, 1: brtrue.s 6:, 2: ldstr "key", 3: call System.SR.get_ArgumentNull_Key, 4: newobj System.ArgumentNullException..ctor, 5: throw, 6: ldnull, 7: ret |
+| System.String DataflowUnoptimized.MaybeNullMethods.MaybeNull2() | 0: nop, 1: ldarg.0, 2: ldfld cond, 3: brtrue.s 6:, 4: ldstr "not null", 5: br.s 7:, 6: ldnull, 7: stloc.0 L0, 8: br.s 9:, 9: ldloc.0, 10: ret |
 alwaysNonNull
 | System.ArgumentException System.ThrowHelper.GetAddingDuplicateWithKeyArgumentException(System.Object) |
 | System.ArgumentException System.ThrowHelper.GetArgumentException(System.ExceptionResource) |
@@ -24,6 +25,7 @@ alwaysNonNull
 | System.Object Dataflow.NonNullMethods.get_VirtualNonNull() |
 | System.Object Dataflow.NonNullMethods.get_VirtualNonNullProperty() |
 | System.String Dataflow.NonNullMethods.get_NonNullProperty2() |
+| System.String DataflowUnoptimized.MaybeNullMethods.MaybeNull2() |
 | System.Text.Encoder System.Text.ASCIIEncoding.GetEncoder() |
 | System.Text.Encoder System.Text.Encoding.GetEncoder() |
 | System.Text.Encoder System.Text.EncodingNLS.GetEncoder() |

@@ -90,6 +90,13 @@ class Test
         var notNull2 = nullMethods.VirtualReturnsNull();
         var notNull3 = nullMethods.VirtualNullProperty;
         var notNonNull = nonNull.VirtualNonNull;
+
+        // The following are maybe null
+        var maybeNull = nonNull.MaybeNull();
+        var maybeNull2 = nonNull.MaybeNull2();
+        var maybeNullMethods = new DataflowUnoptimized.MaybeNullMethods();
+        maybeNull = maybeNullMethods.MaybeNull();
+        maybeNull2 = maybeNullMethods.MaybeNull2();
     }
 
     object IndirectNull() => null;
