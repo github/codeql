@@ -63,7 +63,7 @@ abstract class FrameworkLibrary extends string {
  * a file or script containing the code for a particular
  * version of a framework.
  */
-abstract class FrameworkLibraryInstance extends Script {
+abstract class FrameworkLibraryInstance extends TopLevel {
   /**
    * Holds if this is an instance of version `v` of framework library `fl`.
    */
