@@ -57,7 +57,7 @@ class Expr extends StmtParent, @expr {
    * As the type of an expression can sometimes be a TypedefType, calling getUnderlyingType()
    * is often more useful than calling this predicate.
    */
-  pragma[nomagic] Type getType() { expr_types(underlyingElement(this),unresolveElement(result),_) }
+  pragma[nomagic] cached Type getType() { expr_types(underlyingElement(this),unresolveElement(result),_) }
 
   /**
    * Gets the type of this expression after typedefs have been resolved.
