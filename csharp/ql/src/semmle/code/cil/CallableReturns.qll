@@ -36,7 +36,9 @@ private predicate alwaysNullExpr(Expr expr) {
   or
   alwaysNullMethod(expr.(StaticCall).getTarget())
   or
-  forex(VariableUpdate vu | DefUse::variableUpdateUse(_, vu, expr) | alwaysNullExpr(vu.getSource()))
+  forex(VariableUpdate vu | DefUse::variableUpdateUse(_, vu, expr) |
+    forex(Expr src | src = vu.getSource() | alwaysNullExpr(src))
+  )
 }
 
 /** Holds if expression `expr` always evaluates to non-null. */
@@ -48,6 +50,6 @@ private predicate alwaysNotNullExpr(Expr expr) {
   alwaysNotNullMethod(expr.(StaticCall).getTarget())
   or
   forex(VariableUpdate vu | DefUse::variableUpdateUse(_, vu, expr) |
-    alwaysNotNullExpr(vu.getSource())
+    forex(Expr src | src = vu.getSource() | alwaysNotNullExpr(src))
   )
 }
