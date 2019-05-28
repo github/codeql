@@ -403,7 +403,7 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
    */
   private predicate zeroInitRange(int startIndex, int elementCount) {
     exists(int targetCount |
-      startIndex = expr.getType().getUnspecifiedType().(ArrayType).getArraySize() and
+      startIndex = expr.getUnspecifiedType().(ArrayType).getArraySize() and
       targetCount = getContext().getTargetType().(ArrayType).getArraySize() and
       elementCount = targetCount - startIndex and
       elementCount > 0
@@ -482,7 +482,7 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     tag = getFieldAddressTag() and
     opcode instanceof Opcode::FieldAddress and
-    resultType = field.getType().getUnspecifiedType() and
+    resultType = field.getUnspecifiedType() and
     isGLValue = true
   }
 
@@ -522,7 +522,7 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
   }
 
   override Type getTargetType() {
-    result = field.getType().getUnspecifiedType()
+    result = field.getUnspecifiedType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -565,13 +565,13 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization, 
     (
       tag = getFieldDefaultValueTag() and
       opcode instanceof Opcode::Constant and
-      resultType = field.getType().getUnspecifiedType() and
+      resultType = field.getUnspecifiedType() and
       isGLValue = false
     ) or
     (
       tag = getFieldDefaultValueStoreTag() and
       opcode instanceof Opcode::Store and
-      resultType = field.getType().getUnspecifiedType() and
+      resultType = field.getUnspecifiedType() and
       isGLValue = false
     )
   }
@@ -596,7 +596,7 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization, 
 
   override string getInstructionConstantValue(InstructionTag tag) {
     tag = getFieldDefaultValueTag() and
-    result = getZeroValue(field.getType().getUnspecifiedType())
+    result = getZeroValue(field.getUnspecifiedType())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -711,7 +711,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   }
 
   final Type getElementType() {
-    result = initList.getType().getUnspecifiedType().(ArrayType).
+    result = initList.getUnspecifiedType().(ArrayType).
       getBaseType().getUnspecifiedType()
   }
 }

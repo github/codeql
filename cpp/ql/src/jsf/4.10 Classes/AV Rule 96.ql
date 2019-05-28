@@ -30,5 +30,5 @@ where e.getType() instanceof ArrayType
      and
       baseElement(e.getType(), cl) // only interested in arrays with classes
      and
-      not compatible(f.getParameter(i).getType().getUnspecifiedType(), e.getType().getUnspecifiedType()))
+      not compatible(f.getParameter(i).getUnspecifiedType(), e.getUnspecifiedType()))
   select e, "AV Rule 96: Arrays shall not be teated polymorphically"

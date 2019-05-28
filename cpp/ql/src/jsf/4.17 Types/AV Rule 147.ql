@@ -24,8 +24,8 @@ class InvalidFloatCastExpr extends Expr {
 
   InvalidFloatCastExpr() {
     exists(Type src, Type dst |
-      src = this.getUnderlyingType().getUnspecifiedType() and
-      dst = this.getActualType().getUnderlyingType().getUnspecifiedType() and
+      src = this.getUnspecifiedType() and
+      dst = this.getFullyConverted().getUnspecifiedType() and
       src.(GeneralPointerType).getBaseType() instanceof FloatingPointType and
       src.(GeneralPointerType).getBaseType() != dst.(GeneralPointerType).getBaseType()
     )

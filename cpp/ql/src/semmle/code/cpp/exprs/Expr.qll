@@ -69,6 +69,12 @@ class Expr extends StmtParent, @expr {
   Type getUnderlyingType() { result = this.getType().getUnderlyingType() }
 
   /**
+   * Gets the type of this expression after specifiers have been deeply
+   * stripped and typedefs have been resolved.
+   */
+  Type getUnspecifiedType() { result = this.getType().getUnspecifiedType() }
+
+  /**
    * Gets an integer indicating the type of expression that this represents.
    * 
    * Consider using subclasses of `Expr` rather than relying on this predicate. 
@@ -215,7 +221,7 @@ class Expr extends StmtParent, @expr {
       exists ( Expr e2 |
         e.(TypeidOperator).getExpr() = e2 and
         (
-          not e2.getActualType().getUnspecifiedType().(Class).isPolymorphic() or
+          not e2.getFullyConverted().getUnspecifiedType().(Class).isPolymorphic() or
           not e2.isGLValueCategory()
         )
       ) or

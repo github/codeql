@@ -84,12 +84,12 @@ string nthString (int num) {
  * with a fixed size array.
  */
 int arrayExprFixedSize(Expr e) {
-  result = e.getType().getUnspecifiedType().(ArrayType).getSize()
+  result = e.getUnspecifiedType().(ArrayType).getSize()
   or
   result = e.(NewArrayExpr).getAllocatedType().(ArrayType).getSize()
   or
   exists (SsaDefinition def, LocalVariable v
-  | not (e.getType().getUnspecifiedType() instanceof ArrayType) and
+  | not (e.getUnspecifiedType() instanceof ArrayType) and
     e = def.getAUse(v) and
     result = arrayExprFixedSize(def.getDefiningValue(v)))
 }
@@ -103,7 +103,7 @@ where
   copySource = fc.getArgument(argSrc) and
   // Some of the functions operate on a larger char type, like `wchar_t`, so we
   // need to take this into account in the fixed size case.
-  charSize = f.getParameter(argDest).getType().getUnspecifiedType().(PointerType).getBaseType().getSize() and
+  charSize = f.getParameter(argDest).getUnspecifiedType().(PointerType).getBaseType().getSize() and
   if exists(fc.getArgument(argLimit).getValue().toInt()) then (
     // Fixed sized case
     exists(int size |

@@ -75,7 +75,7 @@ class LoopWithAlloca extends Stmt {
       conditionRequires(eq, truth) and
       eq.getAnOperand().getValue().toInt() = 1 and
       e = eq.getAnOperand() and
-      e.getType().getUnspecifiedType() instanceof BoolType and
+      e.getUnspecifiedType() instanceof BoolType and
       not exists(e.getValue())
     )
     or
@@ -84,7 +84,7 @@ class LoopWithAlloca extends Stmt {
       conditionRequires(eq, truth.booleanNot()) and
       eq.getAnOperand().getValue().toInt() = 1 and
       e = eq.getAnOperand() and
-      e.getType().getUnspecifiedType() instanceof BoolType and
+      e.getUnspecifiedType() instanceof BoolType and
       not exists(e.getValue())
     )
     or

@@ -34,7 +34,7 @@ predicate bindThrownType(ThrowExpr te, Type thrown)
 
   // For rethrows, we use the unqualified version of the type caught by the enclosing catch block.
   // Note that this is not precise, but is a reasonable first approximation.
-  or exists(CatchBlock cb | bindEnclosingCatch(te, cb) and bindStrippedReferenceType(cb.getParameter().getType().getUnspecifiedType(), thrown))
+  or exists(CatchBlock cb | bindEnclosingCatch(te, cb) and bindStrippedReferenceType(cb.getParameter().getUnspecifiedType(), thrown))
 }
 
 // This predicate determines the catch blocks that can catch the exceptions thrown by each throw expression.
@@ -43,7 +43,7 @@ predicate canCatch(ThrowExpr te, CatchBlock cb)
 {
   exists(Type thrown, Type caught |
     bindThrownType(te, thrown)
-    and caught = cb.getParameter().getType().getUnspecifiedType()
+    and caught = cb.getParameter().getUnspecifiedType()
     and not bindEnclosingCatch(te, cb)
 
     and

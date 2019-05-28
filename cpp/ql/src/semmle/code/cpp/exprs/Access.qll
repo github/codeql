@@ -146,7 +146,7 @@ class FieldAccess extends VariableAccess {
 class PointerFieldAccess extends FieldAccess {
   PointerFieldAccess() {
     exists (PointerType t
-    | t = getQualifier().getFullyConverted().getType().getUnspecifiedType() and
+    | t = getQualifier().getFullyConverted().getUnspecifiedType() and
       t.getBaseType() instanceof Class)
   }
 }
@@ -160,7 +160,7 @@ class PointerFieldAccess extends FieldAccess {
 class DotFieldAccess extends FieldAccess {
   DotFieldAccess() {
     exists (Class c
-    | c = getQualifier().getFullyConverted().getType().getUnspecifiedType())
+    | c = getQualifier().getFullyConverted().getUnspecifiedType())
   }
 }
 

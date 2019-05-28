@@ -17,11 +17,11 @@ import cpp
 class CandidateParameter extends Parameter {
   CandidateParameter() {
       // an array parameter
-      getType().getUnspecifiedType() instanceof ArrayType
+      getUnspecifiedType() instanceof ArrayType
       or
       (
         // a pointer parameter
-        getType().getUnspecifiedType() instanceof PointerType and
+        getUnspecifiedType() instanceof PointerType and
         
         // whose address is never taken (rules out common
         // false positive patterns)

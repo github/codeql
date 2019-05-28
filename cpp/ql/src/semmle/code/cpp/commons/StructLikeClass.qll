@@ -88,7 +88,7 @@ predicate getter(MemberVariable v, MemberFunction f, Class c) {
  */
 predicate sameBaseType(Type t1, Type t2) {
   exists (Type base1, Type base2 |
-    base1 = t1.getUnderlyingType().getUnspecifiedType() and
+    base1 = t1.getUnspecifiedType() and
     base2 = t2.getUnspecifiedType().getUnspecifiedType() and
     (
       base1 = base2 or

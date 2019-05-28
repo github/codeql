@@ -18,13 +18,13 @@ private Type getDecayedType(Type type) {
  */
 Type getVariableType(Variable v) {
   exists(Type declaredType |
-    declaredType = v.getType().getUnspecifiedType() and
+    declaredType = v.getUnspecifiedType() and
     if v instanceof Parameter then (
       result = getDecayedType(declaredType) or
       not exists(getDecayedType(declaredType)) and result = declaredType
     )
     else if declaredType instanceof ArrayType and not declaredType.(ArrayType).hasArraySize() then (
-      result = v.getInitializer().getExpr().getType().getUnspecifiedType() or
+      result = v.getInitializer().getExpr().getUnspecifiedType() or
       not exists(v.getInitializer()) and result = declaredType
     )
     else (

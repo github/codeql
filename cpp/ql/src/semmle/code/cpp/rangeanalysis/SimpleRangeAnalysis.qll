@@ -278,7 +278,7 @@ predicate isRecursiveDef(RangeSsaDefinition def, LocalScopeVariable v) {
  */
 private
 predicate assignmentDef(RangeSsaDefinition def, LocalScopeVariable v, Expr expr) {
-  v.getType().getUnspecifiedType() instanceof ArithmeticType
+  v.getUnspecifiedType() instanceof ArithmeticType
   and
   ((def = v.getInitializer().getExpr() and def = expr)
    or
@@ -587,7 +587,7 @@ float getLowerBoundsImpl(Expr expr) {
   // whether the value of the expression is equal to 0.
   exists (Conversion convExpr
   | expr = convExpr
-  | if convExpr.getType().getUnspecifiedType() instanceof BoolType
+  | if convExpr.getUnspecifiedType() instanceof BoolType
       then result = boolConversionLowerBound(convExpr.getExpr())
       else result = getTruncatedLowerBounds(convExpr.getExpr()))
   or
@@ -705,7 +705,7 @@ float getUpperBoundsImpl(Expr expr) {
   // whether the value of the expression is equal to 0.
   exists (Conversion convExpr
   | expr = convExpr
-  | if convExpr.getType().getUnspecifiedType() instanceof BoolType
+  | if convExpr.getUnspecifiedType() instanceof BoolType
       then result = boolConversionUpperBound(convExpr.getExpr())
       else result = getTruncatedUpperBounds(convExpr.getExpr()))
   or
@@ -730,7 +730,7 @@ private predicate exprIsUsedAsBool(Expr expr) {
   expr = any(UnaryLogicalOperation op).getOperand().getFullyConverted() or
   expr = any(ConditionalExpr c).getCondition().getFullyConverted() or
   exists (Conversion cast
-  | cast.getType().getUnspecifiedType() instanceof BoolType
+  | cast.getUnspecifiedType() instanceof BoolType
   | expr = cast.getExpr())
 }
 
@@ -944,7 +944,7 @@ float getDefLowerBounds(RangeSsaDefinition def, LocalScopeVariable v) {
            // recursion from exploding.
            result =
              max (float widenLB
-             | widenLB = wideningLowerBounds(v.getType().getUnspecifiedType()) and
+             | widenLB = wideningLowerBounds(v.getUnspecifiedType()) and
                not (widenLB > truncatedLB)
              | widenLB)
       else result = truncatedLB)
@@ -970,7 +970,7 @@ float getDefUpperBounds(RangeSsaDefinition def, LocalScopeVariable v) {
            // from exploding.
            result =
              min (float widenUB
-             | widenUB = wideningUpperBounds(v.getType().getUnspecifiedType()) and
+             | widenUB = wideningUpperBounds(v.getUnspecifiedType()) and
                not (widenUB < truncatedUB)
              | widenUB)
       else result = truncatedUB)
@@ -1001,9 +1001,9 @@ predicate unanalyzableDefBounds(
  */
 bindingset[guard, v, branch]
 predicate nonNanGuardedVariable(ComparisonOperation guard, VariableAccess v, boolean branch) {
-  v.getType().getUnspecifiedType() instanceof IntegralType
+  v.getUnspecifiedType() instanceof IntegralType
   or
-  v.getType().getUnspecifiedType() instanceof FloatingPointType and v instanceof NonNanVariableAccess
+  v.getUnspecifiedType() instanceof FloatingPointType and v instanceof NonNanVariableAccess
   or
   // The reason the following case is here is to ensure that when we say
   // `if (x > 5) { ...then... } else { ...else... }`
@@ -1026,7 +1026,7 @@ predicate lowerBoundFromGuard(
   | boundFromGuard(guard, v, childLB, true, strictness, branch)
   | if nonNanGuardedVariable(guard, v, branch)
     then (if (strictness = Nonstrict() or
-            not (v.getType().getUnspecifiedType() instanceof IntegralType))
+            not (v.getUnspecifiedType() instanceof IntegralType))
           then lb = childLB
           else lb = childLB+1)
     else lb = varMinVal(v.getTarget()))
@@ -1045,7 +1045,7 @@ predicate upperBoundFromGuard(
   | boundFromGuard(guard, v, childUB, false, strictness, branch)
   | if nonNanGuardedVariable(guard, v, branch)
     then (if (strictness = Nonstrict() or
-            not (v.getType().getUnspecifiedType() instanceof IntegralType))
+            not (v.getUnspecifiedType() instanceof IntegralType))
           then ub = childUB
           else ub = childUB-1)
     else ub = varMaxVal(v.getTarget()))
@@ -1088,7 +1088,7 @@ predicate linearBoundFromGuard(
   // For the comparison x < RHS, we create two bounds:
   //
   //   1. x < upperbound(RHS)
-  //   2. x >= typeLowerBound(RHS.getType().getUnspecifiedType())
+  //   2. x >= typeLowerBound(RHS.getUnspecifiedType())
   //
   exists (Expr lhs, Expr rhs, RelationDirection dir, RelationStrictness st
   | linearAccess(lhs, v, p, q) and
@@ -1108,8 +1108,8 @@ predicate linearBoundFromGuard(
   //
   // For x != RHS, we create trivial bounds:
   //
-  //   1. x <= typeUpperBound(RHS.getType().getUnspecifiedType())
-  //   2. x >= typeLowerBound(RHS.getType().getUnspecifiedType())
+  //   1. x <= typeUpperBound(RHS.getUnspecifiedType())
+  //   2. x >= typeLowerBound(RHS.getUnspecifiedType())
   //
   or
   exists (Expr lhs, Expr rhs, boolean isEQ

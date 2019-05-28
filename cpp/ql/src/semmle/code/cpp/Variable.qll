@@ -47,6 +47,12 @@ class Variable extends Declaration, @variable {
   /** Gets the type of this variable, after typedefs have been resolved. */
   Type getUnderlyingType() { result = this.getType().getUnderlyingType() }
 
+  /** 
+   * Gets the type of this variable, after specifiers have been deeply
+   * stripped and typedefs have been resolved.
+   */
+  Type getUnspecifiedType() { result = this.getType().getUnspecifiedType() }
+
   /**
    * Gets the type of this variable prior to deduction caused by the C++11
    * `auto` keyword.

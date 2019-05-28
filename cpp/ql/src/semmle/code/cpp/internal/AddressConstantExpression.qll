@@ -132,7 +132,7 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
     pointerOut instanceof PointerSubExpr
   ) and
   pointerIn = pointerOut.getAChild().getFullyConverted() and
-  pointerIn.getType().getUnspecifiedType() instanceof PointerType and
+  pointerIn.getUnspecifiedType() instanceof PointerType and
   // The pointer arg won't be constant in the sense of `hasConstantValue`, so
   // this will have to match the integer argument.
   hasConstantValue(pointerOut.getAChild().getFullyConverted())

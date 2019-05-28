@@ -33,8 +33,8 @@ class AnalysedString extends Expr
 {
   AnalysedString()
   {
-    this.getType().getUnspecifiedType() instanceof ArrayType or
-    this.getType().getUnspecifiedType() instanceof PointerType
+    this.getUnspecifiedType() instanceof ArrayType or
+    this.getUnspecifiedType() instanceof PointerType
   }
 
   /**
