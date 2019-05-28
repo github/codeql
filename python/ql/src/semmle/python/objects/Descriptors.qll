@@ -155,6 +155,11 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
         origin = CfgOrigin::unknown()
     }
 
+    /** Holds if attribute lookup on this object may "bind" `cls` to `descriptor`.
+     * `cls` will always be a class as this is a classmethod.
+     * Here "bind" means that `instance` is passed to the `classmethod.__get__()` method
+     * at runtime. The term "bind" is used as this most likely results in a bound-method.
+     */
     pragma [noinline] override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) {
         descriptor = this.getFunction() and
         exists(ObjectInternal instance |

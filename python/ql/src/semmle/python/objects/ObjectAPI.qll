@@ -47,12 +47,7 @@ class Value extends TObject {
 
     /** Gets a call to this object */
     CallNode getACall() {
-        PointsToInternal::pointsTo(result.getFunction(), _, this, _)
-        or
-        exists(BoundMethodObjectInternal bm |
-            PointsToInternal::pointsTo(result.getFunction(), _, bm, _) and
-            bm.getFunction() = this
-        )
+        result = this.getACall(_)
     }
 
     /** Gets a call to this object with the given `caller` context. */
@@ -249,7 +244,7 @@ class ClassValue extends Value {
      *        @classmethod
      *        def f(cls): pass
      * ```
-     * `this.lookup("f")` is equivent to `C.__dict__['f']`, which is the class-method
+     * `this.lookup("f")` is equivalent to `C.__dict__['f']`, which is the class-method
      *  whereas
      * `this.attr("f") is equivalent to `C.f`, which is a bound-method.
      */

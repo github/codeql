@@ -176,8 +176,10 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         exists(Module init |
             init = this.getSourceModule() and
             (
+                /* There is no variable shadowing the name of the child module */
                 not exists(EssaVariable var | var.getAUse() = init.getANormalExit() and var.getSourceVariable().getName() = name)
                 or
+                /* The variable shadowing the name of the child module is undefined at exit */
                 ModuleAttributes::pointsToAtExit(init, name, ObjectInternal::undefined(), _)
             ) and
             not name = "__init__" and
