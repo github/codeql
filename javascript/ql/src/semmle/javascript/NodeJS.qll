@@ -10,6 +10,9 @@ class NodeModule extends Module {
   NodeModule() {
     isModule(this) and
     isNodejs(this)
+    or
+    not isES2015Module(this) and
+    NodeModule::looksLikeNodeModule(this)
   }
 
   /** Gets the `module` variable of this module. */
@@ -113,7 +116,7 @@ module NodeModule {
    * This works by syntactically recognizing `require` calls and
    * `exports` assignments near the top-level of the file.
    */
-  predicate looksLikeNodeModule(Module tl) {
+  predicate looksLikeNodeModule(TopLevel tl) {
     containsExportOrRequireCall(tl.getAStmt())
   }
 
@@ -121,7 +124,6 @@ module NodeModule {
    * Holds if `node` is or contains a likely `require` call or `exports` assignment.
    */
   private predicate containsExportOrRequireCall(ExprOrStmt node) {
-    node.getTopLevel() instanceof Module and // restrict size of predicate
     isExportOrRequire(node)
     or
     exists(ExprOrStmt child | containsExportOrRequireCall(child) |
@@ -165,7 +167,6 @@ module NodeModule {
    * on the `exports` object, or assigns to `module.exports`.
    */
   private predicate isExport(Expr e) {
-    e.getTopLevel() instanceof Module and  // restrict size of predicate
     exists(AssignExpr assign, Expr lhs | assign = e and lhs = assign.getLhs() |
       // exports.foo = ...
       lhs.(PropAccess).getBase().(VarAccess).getName() = "exports"

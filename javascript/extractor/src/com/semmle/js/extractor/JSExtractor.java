@@ -136,8 +136,6 @@ public class JSExtractor {
     }
 
     if (config.isExterns()) textualExtractor.getTrapwriter().addTuple("isExterns", toplevelLabel);
-    if (platform == Platform.NODE && sourceType == SourceType.COMMONJS_MODULE)
-      textualExtractor.getTrapwriter().addTuple("isNodejs", toplevelLabel);
 
     return Pair.make(toplevelLabel, loc);
   }
