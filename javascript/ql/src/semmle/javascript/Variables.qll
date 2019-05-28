@@ -141,11 +141,21 @@ module Variable {
   }
 
   /**
+   * Holds if `variable` has a non-ambient declaration.
+   */
+  private predicate hasDeclaration(Variable var) {
+    exists(VarDecl id |
+      decl(id, var) and
+      not id.isAmbient()
+    )
+  }
+
+  /**
    * Gets a variable that should replace `var` in all name bindings.
    */
   Variable rebind(Variable var) {
     exists(ModuleScope scope, string name | variables(var, name, scope) |
-      if decl(_, var) or scope.getModule().hasImplicitTopLevelVariable(name) then
+      if hasDeclaration(var) or scope.getModule().hasImplicitTopLevelVariable(name) then
         result = var
       else
         result.(GlobalVariable).getName() = name
