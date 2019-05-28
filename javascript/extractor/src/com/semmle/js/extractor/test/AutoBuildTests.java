@@ -497,6 +497,6 @@ public class AutoBuildTests {
     addFile(true, LGTM_SRC, "tst.yaml");
     addFile(true, LGTM_SRC, "tst.yml");
     addFile(true, LGTM_SRC, "tst.raml");
-    addFile(true, LGTM_SRC, "tst2.YML");
+    runTest();
   }
 }
