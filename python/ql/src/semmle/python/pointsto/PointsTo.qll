@@ -540,7 +540,7 @@ cached module PointsToInternal {
         /* Undefined variable */
         exists(Scope scope |
             not def.getVariable().getName() = "__name__" and
-            not def.getVariable().getName() = "$" and
+            not def.getVariable().isMetaVariable() and
             def.getScope() = scope and context.appliesToScope(scope) |
             def.getSourceVariable() instanceof GlobalVariable and scope instanceof Module
             or
@@ -693,13 +693,16 @@ module InterModulePointsTo {
     }
 
     predicate ofInterestInExports(ModuleObjectInternal mod, string name) {
-        exists(ImportStarNode imp, ImportStarRefinement def |
+        exists(ImportStarNode imp, ImportStarRefinement def, EssaVariable var |
             imp = def.getDefiningNode() and
-            PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _) |
-            def.getVariable().getName() = "$" and
-            ModuleAttributes::attributePointsTo(def.getInput().getDefinition(), name, _, _)
-            or
-            def.getVariable().getName() = name and not name = "$" and not name = "*"
+            PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _) and
+            var = def.getVariable()
+            |
+            if var.isMetaVariable() then (
+                ModuleAttributes::attributePointsTo(def.getInput().getDefinition(), name, _, _)
+            ) else (
+                def.getVariable().getName() = name
+            )
         )
         or
         exists(PackageObjectInternal package |
@@ -2082,7 +2085,7 @@ module ModuleAttributes {
     }
 
     EssaVariable moduleStateVariable(ControlFlowNode use) {
-        result.getName() = "$" and result.getAUse() = use
+        result.isMetaVariable() and result.getAUse() = use
     }
 
     private EssaVariable moduleStateVarAtExit(Module mod) {
@@ -2107,7 +2110,7 @@ module ModuleAttributes {
 
     pragma [nomagic]
     private predicate importStarPointsTo(ImportStarRefinement def, string name, ObjectInternal value, CfgOrigin origin) {
-        def.getVariable().getName() = "$" and
+        def.getVariable().isMetaVariable() and
         exists(ImportStarNode imp, ModuleObjectInternal mod |
             imp = def.getDefiningNode() and
             PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _)
@@ -2132,7 +2135,7 @@ module ModuleAttributes {
      */
     pragma [noinline]
     predicate callsitePointsTo(CallsiteRefinement def, string name, ObjectInternal value, CfgOrigin origin) {
-        def.getVariable().getName() = "$" and
+        def.getVariable().isMetaVariable() and
         exists(EssaVariable var, Function func, PointsToContext callee |
             InterProceduralPointsTo::callsite_calls_function(def.getCall(), _, func, callee, _) and
             var = moduleStateVariable(func.getANormalExit()) and
@@ -2145,11 +2148,10 @@ module ModuleAttributes {
      */
     pragma [noinline]
     predicate scopeEntryPointsTo(ScopeEntryDefinition def, string name, ObjectInternal value, CfgOrigin origin) {
-        def.getVariable().getName() = "$" and
+        def.getVariable().isMetaVariable() and
         exists(Module m |
             def.getScope() = m and
             not exists(EssaVariable named | named.getName() = name and named.getScope() = m) and
-            not name = "$" and not name = "*" and
             value = ObjectInternal::undefined() and
             origin = CfgOrigin::unknown()
             |

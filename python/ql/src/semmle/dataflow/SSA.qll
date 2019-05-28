@@ -128,6 +128,14 @@ class EssaVariable extends TEssaDefinition {
         result = this.getDefinition().getScope()
     }
 
+    /** Holds if this the meta-variable for a scope.
+     * This is used to attach attributes for undeclared variables implicitly
+     * defined by `from ... import *` and the like.
+     */
+    predicate isMetaVariable() {
+        this.getName() = "$"
+    }
+
 }
 
 /* Helper for location_string 
