@@ -122,7 +122,7 @@
 | b_condition.py:96 | ControlFlowNode for y | runtime | None | builtin-class NoneType |
 | b_condition.py:97 | ControlFlowNode for x | runtime | None | builtin-class NoneType |
 | b_condition.py:101 | ControlFlowNode for FunctionExpr | import | Function not_or_not | builtin-class function |
-| b_condition.py:102 | ControlFlowNode for Tuple | runtime | (builtin-class tuple, builtin-class list) | builtin-class tuple |
+| b_condition.py:102 | ControlFlowNode for Tuple | runtime | (builtin-class tuple, builtin-class list, ) | builtin-class tuple |
 | b_condition.py:102 | ControlFlowNode for UnaryExpr | runtime | bool False | builtin-class bool |
 | b_condition.py:102 | ControlFlowNode for a | runtime | instance of tuple | builtin-class tuple |
 | b_condition.py:102 | ControlFlowNode for isinstance | runtime | Builtin-function isinstance | builtin-class builtin_function_or_method |
@@ -238,7 +238,7 @@
 | h_classes.py:11 | ControlFlowNode for type | import | builtin-class type | builtin-class type |
 | h_classes.py:11 | ControlFlowNode for type() | import | builtin-class module | builtin-class type |
 | h_classes.py:12 | ControlFlowNode for Dict | import | Dict | builtin-class dict |
-| h_classes.py:12 | ControlFlowNode for Tuple | import | (builtin-class object) | builtin-class tuple |
+| h_classes.py:12 | ControlFlowNode for Tuple | import | (builtin-class object, ) | builtin-class tuple |
 | h_classes.py:12 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | h_classes.py:12 | ControlFlowNode for type | import | builtin-class type | builtin-class type |
 | h_classes.py:12 | ControlFlowNode for type() | import | type() | builtin-class type |
@@ -252,7 +252,7 @@
 | h_classes.py:16 | ControlFlowNode for type() | runtime | builtin-class module | builtin-class type |
 | h_classes.py:17 | ControlFlowNode for type | runtime | builtin-class type | builtin-class type |
 | h_classes.py:18 | ControlFlowNode for Dict | runtime | Dict | builtin-class dict |
-| h_classes.py:18 | ControlFlowNode for Tuple | runtime | (builtin-class object) | builtin-class tuple |
+| h_classes.py:18 | ControlFlowNode for Tuple | runtime | (builtin-class object, ) | builtin-class tuple |
 | h_classes.py:18 | ControlFlowNode for object | runtime | builtin-class object | builtin-class type |
 | h_classes.py:18 | ControlFlowNode for type | runtime | builtin-class type | builtin-class type |
 | h_classes.py:18 | ControlFlowNode for type() | runtime | type() | builtin-class type |
@@ -830,7 +830,7 @@
 | t_type.py:8 | ControlFlowNode for ImportExpr | import | Missing module module | builtin-class module |
 | t_type.py:9 | ControlFlowNode for type | import | builtin-class type | builtin-class type |
 | t_type.py:10 | ControlFlowNode for Dict | import | Dict | builtin-class dict |
-| t_type.py:10 | ControlFlowNode for Tuple | import | (builtin-class object) | builtin-class tuple |
+| t_type.py:10 | ControlFlowNode for Tuple | import | (builtin-class object, ) | builtin-class tuple |
 | t_type.py:10 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | t_type.py:10 | ControlFlowNode for type | import | builtin-class type | builtin-class type |
 | t_type.py:10 | ControlFlowNode for type() | import | type() | builtin-class type |
@@ -844,7 +844,7 @@
 | t_type.py:14 | ControlFlowNode for type() | runtime | builtin-class module | builtin-class type |
 | t_type.py:15 | ControlFlowNode for type | runtime | builtin-class type | builtin-class type |
 | t_type.py:16 | ControlFlowNode for Dict | runtime | Dict | builtin-class dict |
-| t_type.py:16 | ControlFlowNode for Tuple | runtime | (builtin-class object) | builtin-class tuple |
+| t_type.py:16 | ControlFlowNode for Tuple | runtime | (builtin-class object, ) | builtin-class tuple |
 | t_type.py:16 | ControlFlowNode for object | runtime | builtin-class object | builtin-class type |
 | t_type.py:16 | ControlFlowNode for type | runtime | builtin-class type | builtin-class type |
 | t_type.py:16 | ControlFlowNode for type() | runtime | type() | builtin-class type |

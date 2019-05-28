@@ -1,8 +1,8 @@
 | builtin-class dict | builtin-class dict |
 | builtin-class dict | builtin-class list |
-| builtin-class int | (builtin-class float, builtin-class dict) |
-| builtin-class int | (builtin-class list, builtin-class int) |
-| builtin-class int | (builtin-class list, builtin-class int) |
+| builtin-class int | (builtin-class float, builtin-class dict, ) |
+| builtin-class int | (builtin-class list, builtin-class int, ) |
+| builtin-class int | (builtin-class list, builtin-class int, ) |
 | builtin-class int | builtin-class dict |
 | builtin-class int | builtin-class float |
 | builtin-class int | builtin-class int |
