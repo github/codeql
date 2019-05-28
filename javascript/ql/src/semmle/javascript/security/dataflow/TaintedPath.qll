@@ -221,10 +221,10 @@ module TaintedPath {
           // If in doubt, we assume it is absolute.
           n > 0 and
           srclabel.canContainDotDotSlash() and
-          dstlabel.(Label::PosixPath).isNormalized() and
+          dstlabel.isNormalized() and
           if isRelative(join.getArgument(0).getStringValue())
-          then dstlabel.(Label::PosixPath).isRelative()
-          else dstlabel.(Label::PosixPath).isAbsolute()
+          then dstlabel.isRelative()
+          else dstlabel.isAbsolute()
         )
       )
       or
@@ -238,11 +238,11 @@ module TaintedPath {
         or
         n > 0 and
         srclabel.canContainDotDotSlash() and
-        dstlabel.(Label::PosixPath).isNonNormalized() and // The ../ is no longer at the beginning of the string.
+        dstlabel.isNonNormalized() and // The ../ is no longer at the beginning of the string.
         (
           if isRelative(StringConcatenation::getOperand(operator, 0).getStringValue())
-          then dstlabel.(Label::PosixPath).isRelative()
-          else dstlabel.(Label::PosixPath).isAbsolute()
+          then dstlabel.isRelative()
+          else dstlabel.isAbsolute()
         )
       )
     }
