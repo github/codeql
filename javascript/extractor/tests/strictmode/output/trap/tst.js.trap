@@ -43,31 +43,35 @@ toplevels(#20001,0)
 #20013=@"loc,{#10000},1,1,2,1"
 locations_default(#20013,#10000,1,1,2,1)
 hasLocation(#20001,#20013)
-#20014=*
-stmts(#20014,2,#20001,0,"'use strict';")
-hasLocation(#20014,#20003)
-stmtContainers(#20014,#20001)
+#20014=@"module;{#10000},1,1"
+scopes(#20014,3)
+scopenodes(#20001,#20014)
+scopenesting(#20014,#20000)
 #20015=*
-exprs(#20015,4,#20014,0,"'use strict'")
-hasLocation(#20015,#20007)
-enclosingStmt(#20015,#20014)
-exprContainers(#20015,#20001)
-literals("use strict","'use strict'",#20015)
+stmts(#20015,2,#20001,0,"'use strict';")
+hasLocation(#20015,#20003)
+stmtContainers(#20015,#20001)
 #20016=*
-stmts(#20016,0,#20001,1,";")
-hasLocation(#20016,#20005)
-stmtContainers(#20016,#20001)
+exprs(#20016,4,#20015,0,"'use strict'")
+hasLocation(#20016,#20007)
+enclosingStmt(#20016,#20015)
+exprContainers(#20016,#20001)
+literals("use strict","'use strict'",#20016)
 #20017=*
-entry_cfg_node(#20017,#20001)
-#20018=@"loc,{#10000},1,1,1,0"
-locations_default(#20018,#10000,1,1,1,0)
-hasLocation(#20017,#20018)
-#20019=*
-exit_cfg_node(#20019,#20001)
-hasLocation(#20019,#20012)
-successor(#20016,#20019)
-successor(#20014,#20015)
+stmts(#20017,0,#20001,1,";")
+hasLocation(#20017,#20005)
+stmtContainers(#20017,#20001)
+#20018=*
+entry_cfg_node(#20018,#20001)
+#20019=@"loc,{#10000},1,1,1,0"
+locations_default(#20019,#10000,1,1,1,0)
+hasLocation(#20018,#20019)
+#20020=*
+exit_cfg_node(#20020,#20001)
+hasLocation(#20020,#20012)
+successor(#20017,#20020)
 successor(#20015,#20016)
-successor(#20017,#20014)
+successor(#20016,#20017)
+successor(#20018,#20015)
 numlines(#10000,2,2,0)
 filetype(#10000,"javascript")
