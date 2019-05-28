@@ -271,7 +271,7 @@ abstract class DeclarationEntry extends Locatable {
   abstract Type getType();
 
   /**
-   * Gets the type associated with this declaration entrry after specifiers
+   * Gets the type associated with this declaration entry after specifiers
    * have been deeply stripped and typedefs have been resolved.
    *
    * For variable declarations, get the type of the variable.

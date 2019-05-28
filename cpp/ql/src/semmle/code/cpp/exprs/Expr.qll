@@ -71,10 +71,6 @@ class Expr extends StmtParent, @expr {
   /**
    * Gets the type of this expression after specifiers have been deeply
    * stripped and typedefs have been resolved.
-   *
-   * In most cases, this predicate will be the same as getType().  It will
-   * only differ when the result of getType() is a TypedefType, in which
-   * case this predicate will (possibly recursively) resolve the typedef.
    */
   Type getUnspecifiedType() { result = this.getType().getUnspecifiedType() }
 
@@ -225,7 +221,7 @@ class Expr extends StmtParent, @expr {
       exists ( Expr e2 |
         e.(TypeidOperator).getExpr() = e2 and
         (
-          not e2.getActualType().getUnspecifiedType().(Class).isPolymorphic() or
+          not e2.getFullyConverted().getUnspecifiedType().(Class).isPolymorphic() or
           not e2.isGLValueCategory()
         )
       ) or
