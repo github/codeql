@@ -14,5 +14,5 @@ import cpp
 from FunctionCall call, Function target
 where
   call.getTarget() = target and
-  target.getQualifiedName() = "gets"
+  target.hasGlobalName("gets")
 select call, "gets does not guard against buffer overflow"
