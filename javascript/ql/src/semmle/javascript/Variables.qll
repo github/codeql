@@ -52,9 +52,21 @@ class LocalScope extends Scope {
 }
 
 /**
+ * A local scope induced by a top-level.
+ */
+class TopLevelScope extends Scope, @modulescope {
+  /** Gets the top-level that induces this scope. */
+  TopLevel getTopLevel() { result = getScopeElement() }
+
+  override string toString() { result = "top-level scope" }
+}
+
+/**
  * A scope induced by a Node.js or ES2015 module
  */
 class ModuleScope extends Scope, @modulescope {
+  ModuleScope() { getScopeElement() instanceof Module }
+
   /** Gets the module that induces this scope. */
   Module getModule() { result = getScopeElement() }
 
@@ -134,16 +146,27 @@ module Variable {
   }
 
   /**
-   * Gets a variable that should be replaced by `var` in all name bindings.
+   * A variable, possibly rebound to a different variable.
    */
-  Variable getAnAliasOf(Variable var) {
-    rebind(result) = var
+  private class InternalVariable extends @variable {
+    string toString() { none() }
+
+    /** Gets the name of the variable. */
+    string getName() { variables(this, result, _) }
+
+    /** Gets the scope declaring the variable. */
+    Scope getScope() { variables(this, _, result) }
+  }
+
+  /** Gets the global variable with the given name. */
+  private InternalVariable getGlobalVariable(string name) {
+    variables(result, name, any(GlobalScope scope))
   }
 
   /**
    * Holds if `variable` has a non-ambient declaration.
    */
-  private predicate hasDeclaration(Variable var) {
+  private predicate hasDeclaration(InternalVariable var) {
     exists(VarDecl id |
       decl(id, var) and
       not id.isAmbient()
@@ -153,46 +176,61 @@ module Variable {
   /**
    * Gets a variable that should replace `var` in all name bindings.
    */
-  Variable rebind(Variable var) {
+  InternalVariable rebind(InternalVariable var) {
+    // Non-top level variables have their original binding
+    exists(Scope scope | variables(var, _, scope) |
+      not scope instanceof TopLevelScope and
+      result = var
+    )
+    or
+    // Non-module top-level variables that are not modules are rebound to globals
+    exists(TopLevelScope scope, string name | variables(var, name, scope) |
+      not scope instanceof ModuleScope and
+      result = getGlobalVariable(name)
+    )
+    or
+    // Module variables are rebound to globals unless explicitly or implicitly declared
     exists(ModuleScope scope, string name | variables(var, name, scope) |
       if hasDeclaration(var) or scope.getModule().hasImplicitTopLevelVariable(name) then
         result = var
       else
-        result.(GlobalVariable).getName() = name
-    )
-    or
-    exists(Scope scope | variables(var, _, scope) |
-      not scope instanceof ModuleScope and
-      result = var
+        result = getGlobalVariable(name)
     )
   }
 
   /**
-   * Gets an access to an variable that is declared in the top-level
-   * or is not declared at all.
+   * Gets a variable that should be replaced by `var` in all name bindings; inverse of `rebind`.
+   */
+  InternalVariable getAnAliasOf(InternalVariable var) {
+    rebind(result) = var
+  }
+
+  /**
+   * Gets an access to a global or top-level variable.
    *
    * Can be used by subclasses of `Module` to reason about top-level variables
    * without depending on variable binding.
    */
   VarAccess getATopLevelVarAccess(string name) {
-    exists(TopLevelVariable variable | bind(result, variable) |
-      variable.getName() = name
-    )
-  }
-
-  /** A global variable or a top-level module variable. */
-  private class TopLevelVariable extends Variable {
-    TopLevelVariable() {
-      exists(Scope scope | variables(this, _, scope) |
-        scope instanceof GlobalScope or
-        scope instanceof ModuleScope
+    exists(InternalVariable var, Scope scope |
+      bind(result, var) and
+      variables(var, name, scope) and
+      (
+        scope instanceof TopLevelScope
+        or
+        // Backwards compatibility with snapshots built before 1.21.
+        scope instanceof GlobalScope
       )
-    }
+    )
   }
 }
 
 /** A variable declared in a scope. */
 class Variable extends @variable, LexicalName {
+  Variable() {
+    Variable::rebind(this) = this
+  }
+
   /** Gets the name of this variable. */
   override string getName() { variables(this, result, _) }
 

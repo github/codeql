@@ -553,18 +553,20 @@ public class ASTExtractor {
       // Add platform-specific globals.
       scopeManager.addVariables(platform.getPredefinedGlobals());
 
-      // Introduce local scope if there is one.
+      // Introduce local scope in case there is one.
+      Label moduleScopeKey =
+      trapwriter.globalID(
+          "module;{"
+              + locationManager.getFileLabel()
+              + "},"
+              + locationManager.getStartLine()
+              + ","
+              + locationManager.getStartColumn());
+      Scope module = scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
+      scopeManager.setTopLevelScope(module);
+
+      // Legacy module detection
       if (sourceType.hasLocalScope()) {
-        Label moduleScopeKey =
-            trapwriter.globalID(
-                "module;{"
-                    + locationManager.getFileLabel()
-                    + "},"
-                    + locationManager.getStartLine()
-                    + ","
-                    + locationManager.getStartColumn());
-        Scope module = scopeManager.enterScope(3, moduleScopeKey, toplevelLabel);
-        scopeManager.setTopLevelScope(module);
         trapwriter.addTuple("isModule", toplevelLabel);
       }
 
@@ -587,8 +589,7 @@ public class ASTExtractor {
       visitAll(nd.getBody(), toplevelLabel);
 
       // Leave the local scope again.
-      if (sourceType.hasLocalScope()) scopeManager.leaveScope();
-
+      scopeManager.leaveScope();
       contextManager.leaveContainer();
 
       emitNodeSymbol(nd, toplevelLabel);
