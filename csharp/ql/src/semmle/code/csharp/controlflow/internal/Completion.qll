@@ -417,9 +417,7 @@ predicate switchMatching(Switch s, Case c, PatternExpr pe) {
   pe = c.getPattern()
 }
 
-private predicate mustHaveMatchingCompletion(Switch s, PatternExpr pe) {
-  switchMatching(s, _, pe)
-}
+private predicate mustHaveMatchingCompletion(Switch s, PatternExpr pe) { switchMatching(s, _, pe) }
 
 /**
  * Holds if a normal completion of `cfe` must be a matching completion. Thats is,

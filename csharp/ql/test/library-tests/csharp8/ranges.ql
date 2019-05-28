@@ -11,7 +11,7 @@ Expr stripConversions(Expr expr) {
   if getConversion(expr, _) then getConversion(expr, result) else result = expr
 }
 
-query predicate indexes(IndexExpr e, Expr c) { c = e.getExpr()  }
+query predicate indexes(IndexExpr e, Expr c) { c = e.getExpr() }
 
 query predicate ranges(RangeExpr e) { any() }
 

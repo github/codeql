@@ -19,17 +19,8 @@ predicate expr_parent_top_level_adjusted(Expr child, int i, @top_level_exprorstm
 }
 
 /**
- * Holds if `case` statement `cs` is a type check of the form `case int _`,
- * where `ta` is the type access `int`.
- */
-private predicate discardTypeCaseStmt(CaseStmt cs, TypeAccess ta) {
-  expr_parent(ta, 1, cs) and
-  expr_parent(any(DiscardExpr de), 0, cs)
-}
-
-/**
- * The `expr_parent()` relation adjusted for expandable assignments, `is` expressions,
- * and `case` statements. For example, the assignment `x += y` is extracted as
+ * The `expr_parent()` relation adjusted for expandable assignments. For example,
+ * the assignment `x += y` is extracted as
  *
  * ```
  *          +=
@@ -78,35 +69,7 @@ private predicate expr_parent_adjusted(Expr child, int i, ControlFlowElement par
         not ao.hasExpandedAssignment() and
         expr_parent(child, i, parent)
       )
-  else
-    if parent instanceof IsExpr
-    then
-      i = 0 and
-      expr_parent(child, i, parent)
-      or
-      // e.g. `x is string s` or `x is null`
-      i = 1 and
-      expr_parent(child, any(int j | j in [2 .. 3]), parent)
-      or
-      // e.g. `x is string`
-      i = 1 and
-      not expr_parent(_, any(int j | j in [2 .. 3]), parent) and
-      expr_parent(child, i, parent)
-    else
-      if parent instanceof CaseStmt
-      then
-        // e.g. `case string s:` or `case 5:`
-        i = 0 and
-        expr_parent(child, i, parent) and
-        not discardTypeCaseStmt(parent, _)
-        or
-        // e.g. `case string _`
-        i = 0 and
-        discardTypeCaseStmt(parent, child)
-        or
-        i = 1 and
-        expr_parent(child, 2, parent)
-      else expr_parent(child, i, parent)
+  else expr_parent(child, i, parent)
 }
 
 /**

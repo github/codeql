@@ -306,9 +306,8 @@ module AssignableInternal {
   /** A local variable declaration at the top-level of a pattern. */
   class TopLevelPatternDecl extends LocalVariableDeclExpr {
     private PatternMatch pm;
-    TopLevelPatternDecl() {
-      this = pm.getPattern().(BindingPatternExpr).getVariableDeclExpr()
-    }
+
+    TopLevelPatternDecl() { this = pm.getPattern().(BindingPatternExpr).getVariableDeclExpr() }
 
     PatternMatch getMatch() { result = pm }
   }

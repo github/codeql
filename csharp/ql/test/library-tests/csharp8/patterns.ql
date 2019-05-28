@@ -66,6 +66,4 @@ query predicate isRecursivePatternExprWithDecl(
   decl = expr.getRecursivePattern().getVariableDeclExpr()
 }
 
-query predicate labeledPatternExpr(LabeledPatternExpr e, string s) {
-  s = e.getLabel()
-}
+query predicate labeledPatternExpr(LabeledPatternExpr e, string s) { s = e.getLabel() }
