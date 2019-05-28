@@ -7,7 +7,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
   JSXTests.class,
-  NodeJSDetectorTests.class,
   TrapTests.class,
   ObjectRestSpreadTests.class,
   ClassPropertiesTests.class,

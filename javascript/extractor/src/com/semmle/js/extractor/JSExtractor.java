@@ -95,7 +95,6 @@ public class JSExtractor {
     LexicalExtractor lexicalExtractor;
     LoCInfo loc;
     if (ast != null) {
-      platform = getPlatform(platform, ast);
       if (sourceType == SourceType.SCRIPT && platform == Platform.NODE) {
         sourceType = SourceType.COMMONJS_MODULE;
       }
@@ -138,12 +137,5 @@ public class JSExtractor {
     if (config.isExterns()) textualExtractor.getTrapwriter().addTuple("isExterns", toplevelLabel);
 
     return Pair.make(toplevelLabel, loc);
-  }
-
-  private Platform getPlatform(Platform platform, Node ast) {
-    if (platform == Platform.AUTO)
-      return NodeJSDetector.looksLikeNodeJS(ast) ? Platform.NODE : Platform.WEB;
-
-    return platform;
   }
 }
