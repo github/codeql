@@ -184,3 +184,5 @@
 | Splitting.cs:32:9:32:16 | [b (line 24): false] dynamic call to method Check | return | Splitting.cs:32:9:32:16 | [b (line 24): false] dynamic call to method Check |
 | Splitting.cs:32:9:32:16 | [b (line 24): true] dynamic call to method Check | return | Splitting.cs:32:9:32:16 | [b (line 24): true] dynamic call to method Check |
 | Splitting.cs:34:13:34:20 | dynamic call to method Check | return | Splitting.cs:34:13:34:20 | dynamic call to method Check |
+| This.cs:17:9:17:18 | object creation of type This | return | This.cs:17:9:17:18 | object creation of type This |
+| This.cs:28:13:28:21 | object creation of type Sub | return | This.cs:28:13:28:21 | object creation of type Sub |
