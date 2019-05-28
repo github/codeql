@@ -1270,6 +1270,16 @@ module DataFlow {
       (e instanceof AwaitExpr or e instanceof DynamicImportExpr) and
       cause = "await"
     )
+    or
+    nd instanceof TExceptionalInvocationReturnNode and cause = "call"
+    or
+    nd instanceof TExceptionalFunctionReturnNode and cause = "call"
+    or
+    exists(PropertyPattern p | nd = TPropNode(p)) and cause = "heap"
+    or
+    nd instanceof TElementPatternNode and cause = "heap"
+    or
+    nd instanceof UnusedParameterNode and cause = "call"
   }
 
   /**
@@ -1288,9 +1298,6 @@ module DataFlow {
     or
     exists(ComprehensionBlock cb | def = cb.getIterator()) and
     cause = "yield"
-    or
-    def.getTarget() instanceof DestructuringPattern and
-    cause = "heap"
   }
   import Nodes
   import Sources
