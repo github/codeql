@@ -3,3 +3,4 @@
 | RedundantNullCheckSimple.cpp:48:12:48:12 | Load: p | This null check is redundant because the value is $@ in any case | RedundantNullCheckSimple.cpp:51:10:51:11 | Load: * ... | dereferenced here |
 | RedundantNullCheckSimple.cpp:79:7:79:9 | Load: * ... | This null check is redundant because the value is $@ in any case | RedundantNullCheckSimple.cpp:78:7:78:10 | Load: * ... | dereferenced here |
 | RedundantNullCheckSimple.cpp:93:13:93:13 | Load: p | This null check is redundant because the value is $@ in any case | RedundantNullCheckSimple.cpp:92:13:92:18 | Load: * ... | dereferenced here |
+| RedundantNullCheckSimple.cpp:108:12:108:18 | Load: * ... | This null check is redundant because the value is $@ in any case | RedundantNullCheckSimple.cpp:108:12:108:18 | Load: * ... | dereferenced here |

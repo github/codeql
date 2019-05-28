@@ -100,3 +100,13 @@ void test_field_local(bool boolvar) {
     }
   }
 }
+
+struct S {
+  long **pplong;
+
+  void test_phi() {
+    while (*pplong != nullptr) { // GOOD [FALSE POSITIVE]
+      pplong++;
+    }
+  }
+};
