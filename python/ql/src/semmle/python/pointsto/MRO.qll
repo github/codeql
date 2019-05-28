@@ -231,7 +231,10 @@ class ClassList extends TClassList {
         reverse_step(this, Empty(), result)
     }
 
-    boolean isSpecial() {
+    /** Holds if this MRO contains a class whose instances we treat specially, rather than as a generic instance.
+     * For example, `type` or `int`.
+     */
+    boolean containsSpecial() {
         this = Empty() and result = false
         or
         exists(ClassDecl decl |
@@ -239,7 +242,7 @@ class ClassList extends TClassList {
             if decl.isSpecial() then
                 result = true
             else
-                result = this.getTail().isSpecial()
+                result = this.getTail().containsSpecial()
         )
     }
 

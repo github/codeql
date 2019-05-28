@@ -1014,7 +1014,7 @@ class BasicBlock extends @py_flow_node {
         result = this.getLastNode().getAFalseSuccessor().getBasicBlock()
     }
 
-    /** Gets an exceptional successor to this basic block */
+    /** Gets an unconditional successor to this basic block */
     BasicBlock getAnUnconditionalSuccessor() {
         result = this.getASuccessor() and
         not result = this.getATrueSuccessor() and

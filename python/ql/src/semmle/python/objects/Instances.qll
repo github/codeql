@@ -57,7 +57,6 @@ class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
         result = this.getOrigin().getNode().toString()
     }
 
-    /** The boolean value of this object, if it has one */
     override boolean booleanValue() {
         //result = this.getClass().instancesBooleanValue()
         result = maybe()
@@ -261,7 +260,6 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
         result = "instance of " + this.getClass().(ClassObjectInternal).getName()
     }
 
-    /** The boolean value of this object, if it has one */
     override boolean booleanValue() {
         result = maybe()
     }

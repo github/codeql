@@ -16,8 +16,6 @@ abstract class SequenceObjectInternal extends ObjectInternal {
     /** Gets the `n`th item of this sequence, if one exists. */
     abstract ObjectInternal getItem(int n);
 
-    /** The boolean value of this object, this may be both
-     * true and false if the "object" represents a set of possible objects. */
     override boolean booleanValue() {
         this.length() = 0 and result = false
         or
@@ -37,13 +35,11 @@ abstract class SequenceObjectInternal extends ObjectInternal {
 abstract class TupleObjectInternal extends SequenceObjectInternal {
 
     override string toString() {
-        this.length() = 0 and result = "()"
-        or
         result = "(" + this.contents(0) + ")"
     }
 
     private string contents(int n) {
-        n = this.length() - 1 and result = this.getItem(n).toString()
+        n = this.length() and result = ""
         or
         result = this.getItem(n).toString() + ", " + this.contents(n+1)
     }
@@ -149,6 +145,9 @@ class PythonTupleObjectInternal extends TPythonTuple, TupleObjectInternal {
 
 }
 
+/** The `sys.version_info` object. We treat this specially to prevent premature pruning and
+ * false positives when we are unsure of the actual version of Python that the code is expecting.
+ */
 class SysVersionInfoObjectInternal extends TSysVersionInfo, SequenceObjectInternal {
 
     override string toString() {

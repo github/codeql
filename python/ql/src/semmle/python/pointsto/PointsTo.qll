@@ -205,7 +205,10 @@ cached module PointsToInternal {
         f.(PointsToExtension).pointsTo(context, value, origin)
     }
 
-    /** Holds if the attribute `name` is required for `obj` */
+    /** Holds if the attribute `name` is required for `obj` 
+     * For object `x` and attribute `name` it means that there exists somewhere in the code
+     * `x.name` or `getattr(x, "name")`.
+     */
     cached predicate attributeRequired(ObjectInternal obj, string name) {
         pointsTo(any(AttrNode a).getObject(name), _, obj, _)
         or
@@ -686,16 +689,6 @@ module InterModulePointsTo {
                 m = mod.getSourceModule() and name = var.getSourceVariable().getName() |
                 not m.declaredInAll(_) and name.charAt(0) = "_"
             )
-        )
-    }
-
-    private predicate importsByImportStar(ModuleObjectInternal mod, ModuleObjectInternal imported) {
-        exists(ImportStarNode isn |
-            PointsToInternal::pointsTo(isn.getModule(), _, imported, _) and
-            isn.getScope() = mod.getSourceModule()
-        )
-        or exists(ModuleObjectInternal mid |
-            importsByImportStar(mod, mid) and importsByImportStar(mid, imported)
         )
     }
 

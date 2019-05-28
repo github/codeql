@@ -15,8 +15,11 @@ abstract class ClassObjectInternal extends ObjectInternal {
         result = this.getClassDeclaration().getName()
     }
 
+    /** Holds if this is a class whose instances we treat specially, rather than as a generic instance.
+     * For example, `type` or `int`.
+     */
     boolean isSpecial() {
-        result = Types::getMro(this).isSpecial()
+        result = Types::getMro(this).containsSpecial()
     }
 
     /** Looks up the attribute `name` on this class.
