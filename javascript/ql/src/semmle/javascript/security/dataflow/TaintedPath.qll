@@ -134,15 +134,6 @@ module TaintedPath {
     ) {
       isTaintedPathStep(src, dst, srclabel, dstlabel)
       or
-      // Introduce the specialized flow labels when approaching a specialized sanitizer guard.
-      exists(TaintTracking::LabeledSanitizerGuardNode guard, Expr e |
-        guard.sanitizes(_, e, any(Label::PosixPath label)) and
-        src.(DataFlow::SourceNode).flowsToExpr(e) and
-        dst = src and
-        srclabel instanceof DataFlow::StandardFlowLabel and
-        dstlabel instanceof Label::PosixPath
-      )
-      or
       // Ignore all preliminary sanitization after decoding URI components
       srclabel instanceof Label::PosixPath and
       dstlabel instanceof Label::PosixPath and
