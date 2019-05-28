@@ -18,13 +18,20 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case DeclarationPatternSyntax declPattern:
                     // Creates a single local variable declaration.
                     {
-                        if (declPattern.Designation is VariableDesignationSyntax designation && cx.Model(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+                        if (declPattern.Designation is VariableDesignationSyntax designation)
                         {
-                            var type = Type.Create(cx, symbol.Type);
-
-                            return VariableDeclaration.Create(cx, symbol, type, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, parent, child);
+                            if (cx.Model(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+                            {
+                                var type = Type.Create(cx, symbol.Type);
+                                return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, parent, child);
+                            }
+                            if (designation is DiscardDesignationSyntax)
+                            {
+                                return Expressions.TypeAccess.Create(cx, declPattern.Type, parent, child);
+                            }
+                            throw new InternalError(designation, "Designation pattern not handled");
                         }
-                        throw new InternalError(syntax, "Is pattern not handled");
+                        throw new InternalError(declPattern, "Declaration pattern not handled");
                     }
 
                 case RecursivePatternSyntax recPattern:
@@ -40,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             {
                                 var type = Type.Create(cx, symbol.Type);
 
-                                return VariableDeclaration.Create(cx, symbol, type, cx.Create(syntax.GetLocation()), cx.Create(varDesignation.GetLocation()), false, parent, child);
+                                return VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), cx.Create(varDesignation.GetLocation()), false, parent, child);
                             }
                             else
                             {
@@ -54,7 +61,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return new Discard(cx, dp, parent, child);
 
                 default:
-                    throw new InternalError(syntax, "Is pattern not handled");
+                    throw new InternalError(syntax, "Pattern not handled");
             }
         }
     }
@@ -108,7 +115,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var type = Type.Create(cx, symbol.Type);
 
-                VariableDeclaration.Create(cx, symbol, type, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, this, 0);
+                VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, this, 0);
             }
 
             if (syntax.PositionalPatternClause is PositionalPatternClauseSyntax posPc)
@@ -135,7 +142,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (!(designation is null) && cx.Model(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
             {
                 var type = Type.Create(cx, symbol.Type);
-                VariableDeclaration.Create(cx, symbol, type, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 2);
+                VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 1);
             }
             else if (!isVar)
                 Expressions.TypeAccess.Create(cx, optionalType, this, 1);
