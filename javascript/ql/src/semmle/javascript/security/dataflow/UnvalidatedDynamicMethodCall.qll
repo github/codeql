@@ -102,7 +102,7 @@ module UnvalidatedDynamicMethodCall {
    * The page URL considered as a flow source for unvalidated dynamic method calls.
    */
   class DocumentUrlAsSource extends Source {
-    DocumentUrlAsSource() { isDocumentURL(asExpr()) }
+    DocumentUrlAsSource() { this = DOM::locationSource() }
   }
 
   /**

@@ -272,7 +272,7 @@ function jqueryLocation() {
     var loc3 = document.location;
     $(loc1); // OK
     $(loc2); // OK
-    $(loc3); // OK - but still flagged
+    $(loc3); // OK
 
     $("body").append(location); // NOT OK
 }

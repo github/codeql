@@ -64,8 +64,8 @@ module XpathInjection {
   }
 
   /** A part of the document URL, considered as a flow source for XPath injection. */
-  class DocumentUrlSource extends Source, DataFlow::ValueNode {
-    DocumentUrlSource() { isDocumentURL(astNode) }
+  class DocumentUrlSource extends Source {
+    DocumentUrlSource() { this = DOM::locationSource() }
   }
 
   /**

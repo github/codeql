@@ -70,7 +70,7 @@ module DomBasedXss {
           strval = prefix.getStringValue() and
           not strval.regexpMatch("\\s*<.*")
         ) and
-        not isDocumentURL(astNode)
+        not DOM::locationRef().flowsTo(this)
       )
       or
       // call to an Angular method that interprets its argument as HTML
