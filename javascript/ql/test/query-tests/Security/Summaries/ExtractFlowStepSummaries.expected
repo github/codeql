@@ -11,7 +11,6 @@
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | data | (return (member h (root https://www.npmjs.com/package/infer-sources))) | data | StackTraceExposure |
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | data | (return (member h (root https://www.npmjs.com/package/infer-sources))) | data | StoredXss |
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | data | (return (member h (root https://www.npmjs.com/package/infer-sources))) | data | TaintedFormatString |
-| (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | data | (return (member h (root https://www.npmjs.com/package/infer-sources))) | data | TaintedPath |
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | data | (return (member h (root https://www.npmjs.com/package/infer-sources))) | data | UnsafeDeserialization |
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | data | (return (member h (root https://www.npmjs.com/package/infer-sources))) | data | XmlBomb |
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | data | (return (member h (root https://www.npmjs.com/package/infer-sources))) | data | XpathInjection |
@@ -29,7 +28,6 @@
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member h (root https://www.npmjs.com/package/infer-sources))) | taint | StackTraceExposure |
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member h (root https://www.npmjs.com/package/infer-sources))) | taint | StoredXss |
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member h (root https://www.npmjs.com/package/infer-sources))) | taint | TaintedFormatString |
-| (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member h (root https://www.npmjs.com/package/infer-sources))) | taint | TaintedPath |
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member h (root https://www.npmjs.com/package/infer-sources))) | taint | UnsafeDeserialization |
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member h (root https://www.npmjs.com/package/infer-sources))) | taint | XmlBomb |
 | (parameter 0 (member h (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member h (root https://www.npmjs.com/package/infer-sources))) | taint | XpathInjection |
@@ -47,7 +45,6 @@
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | StackTraceExposure |
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | StoredXss |
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | TaintedFormatString |
-| (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | TaintedPath |
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | UnsafeDeserialization |
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | XmlBomb |
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | data | XpathInjection |
@@ -65,7 +62,6 @@
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | StackTraceExposure |
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | StoredXss |
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | TaintedFormatString |
-| (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | TaintedPath |
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | UnsafeDeserialization |
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | XmlBomb |
 | (parameter 0 (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notASink (root https://www.npmjs.com/package/infer-sources))) | taint | XpathInjection |
@@ -83,7 +79,6 @@
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | StackTraceExposure |
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | StoredXss |
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | TaintedFormatString |
-| (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | TaintedPath |
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | UnsafeDeserialization |
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | XmlBomb |
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | data | XpathInjection |
@@ -101,7 +96,6 @@
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | StackTraceExposure |
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | StoredXss |
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | TaintedFormatString |
-| (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | TaintedPath |
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | UnsafeDeserialization |
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | XmlBomb |
 | (parameter 0 (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | (return (member notATaintedSource (root https://www.npmjs.com/package/infer-sources))) | taint | XpathInjection |
