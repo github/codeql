@@ -7570,3 +7570,13 @@ ir.cpp:
 # 1077|             0: break;
 # 1079|     2: label ...:
 # 1080|     3: return ...
+# 1099| int AsmStmt(int)
+# 1099|   params: 
+# 1099|     0: x
+# 1099|         Type = int
+# 1099|   body: { ... }
+# 1100|     0: asm statement
+# 1101|     1: return ...
+# 1101|       0: x
+# 1101|           Type = int
+# 1101|           ValueCategory = prvalue(load)

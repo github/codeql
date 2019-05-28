@@ -4998,3 +4998,20 @@ ir.cpp:
 # 1068|     v10_2(void) = ReturnVoid   : 
 # 1068|     v10_3(void) = UnmodeledUse : mu*
 # 1068|     v10_4(void) = ExitFunction : 
+
+# 1099| int AsmStmt(int)
+# 1099|   Block 0
+# 1099|     v0_0(void)        = EnterFunction            : 
+# 1099|     mu0_1(unknown)    = AliasedDefinition        : 
+# 1099|     mu0_2(unknown)    = UnmodeledDefinition      : 
+# 1099|     r0_3(glval<int>)  = VariableAddress[x]       : 
+# 1099|     mu0_4(int)        = InitializeParameter[x]   : &:r0_3
+# 1100|     mu0_5(unknown)    = InlineAsm                : ~mu0_2
+# 1101|     r0_6(glval<int>)  = VariableAddress[#return] : 
+# 1101|     r0_7(glval<int>)  = VariableAddress[x]       : 
+# 1101|     r0_8(int)         = Load                     : &:r0_7, ~mu0_2
+# 1101|     mu0_9(int)        = Store                    : &:r0_6, r0_8
+# 1099|     r0_10(glval<int>) = VariableAddress[#return] : 
+# 1099|     v0_11(void)       = ReturnValue              : &:r0_10, ~mu0_2
+# 1099|     v0_12(void)       = UnmodeledUse             : mu*
+# 1099|     v0_13(void)       = ExitFunction             : 

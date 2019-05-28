@@ -810,3 +810,48 @@ class TranslatedSwitchStmt extends TranslatedStmt {
     child = getBody() and result = getParent().getChildSuccessor(this)
   }
 }
+
+class TranslatedAsmStmt extends TranslatedStmt {
+  override AsmStmt stmt;
+
+  override TranslatedElement getChild(int id) {
+    none()
+  }
+
+  override Instruction getFirstInstruction() {
+    result = getInstruction(OnlyInstructionTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+    Type resultType, boolean isGLValue) {
+    tag = OnlyInstructionTag() and
+    opcode instanceof Opcode::InlineAsm and
+    resultType instanceof UnknownType and
+    isGLValue = false
+  }
+  
+  override Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag instanceof SideEffectOperandTag and
+    result = getTranslatedFunction(stmt.getEnclosingFunction()).getUnmodeledDefinitionInstruction()
+  }
+
+  override final Type getInstructionOperandType(InstructionTag tag,
+      TypedOperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag instanceof SideEffectOperandTag and
+    result instanceof UnknownType
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    none()
+  }
+}

@@ -1096,4 +1096,9 @@ struct LambdaContainer {
 
 #endif
 
+int AsmStmt(int x) {
+  __asm__("");
+  return x;
+}
+
 // semmle-extractor-options: -std=c++17

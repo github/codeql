@@ -175,3 +175,8 @@ void WrapperStruct(Wrapper w) {
   a = w.f;  // MustExactlyOverlap
   x = w;  // MustTotallyOverlap
 }
+
+int AsmStmt(int *p) {
+  __asm__("");
+  return *p;
+}

@@ -40,7 +40,7 @@ module InstructionSanity {
         opcode instanceof Opcode::Chi and tag instanceof ChiTotalOperandTag or
         opcode instanceof Opcode::Chi and tag instanceof ChiPartialOperandTag or
         (
-          (opcode instanceof ReadSideEffectOpcode or opcode instanceof MayWriteSideEffectOpcode) and
+          (opcode instanceof ReadSideEffectOpcode or opcode instanceof MayWriteSideEffectOpcode or opcode instanceof Opcode::InlineAsm) and
           tag instanceof SideEffectOperandTag
         )
       )
@@ -1471,6 +1471,19 @@ class BufferMayWriteSideEffectInstruction extends SideEffectInstruction {
 
   override final MemoryAccessKind getResultMemoryAccess() {
     result instanceof BufferMayMemoryAccess
+  }
+}
+
+/**
+ * 
+ */
+class InlineAsmInstruction extends Instruction {
+  InlineAsmInstruction() {
+    getOpcode() instanceof Opcode::InlineAsm
+  }
+  
+  override final MemoryAccessKind getResultMemoryAccess() {
+    result instanceof EscapedMayMemoryAccess
   }
 }
 
