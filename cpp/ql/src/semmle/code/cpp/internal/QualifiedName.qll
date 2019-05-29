@@ -26,6 +26,22 @@ class Namespace extends @namespace {
     else result = this.getName()
   }
 
+  string getQualifierForMembers() {
+    if namespacembrs(_, this)
+    then
+      exists(Namespace ns |
+        namespacembrs(ns, this)
+      |
+        result = ns.getQualifierForMembers() + "::" + this.getName()
+        or
+        // If this is an inline namespace, its members are also visible in any
+        // namespace where the members of the parent are visible.
+        namespace_inline(this) and
+        result = ns.getQualifierForMembers()
+      )
+    else result = this.getName()
+  }
+
   Declaration getADeclaration() {
     if this.getName() = ""
     then result.isTopLevel() and not namespacembrs(_, result)
@@ -331,7 +347,7 @@ cached
 private predicate declarationHasQualifiedName(
   string baseName, string typeQualifier, string namespaceQualifier, Declaration d
 ) {
-  namespaceQualifier = d.getNamespace().getQualifiedName() and
+  namespaceQualifier = d.getNamespace().getQualifierForMembers() and
   (
     if hasTypeQualifier(d)
     then typeQualifier = d.getTypeQualifierWithoutArgs()

@@ -62,12 +62,12 @@ namespace templates {
 
 namespace std {
   inline namespace cpp17 {
-    void functionInTwoNamespaces(); // BUG: should also show up in `std`
-    class classInTwoNameSpaces { // BUG: should also show up in `std`
+    void functionInTwoNamespaces();
+    class classInTwoNameSpaces {
     };
     inline namespace implementation {
       namespace ns {
-        void functionInFourNamespaces(); // BUG: should also show up the outer namespaces
+        void functionInFourNamespaces();
       }
     }
   }

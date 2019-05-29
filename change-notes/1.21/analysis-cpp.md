@@ -31,7 +31,7 @@
 
 ## Changes to QL libraries
 - The predicate `Declaration.hasGlobalName` now only holds for declarations that are not nested in a class. For example, it no longer holds for a member function `MyClass::myFunction` or a constructor `MyClass::MyClass`, whereas previously it would classify those two declarations as global names.
-- In class `Declaration`, predicates `getQualifiedName/0` and `hasQualifiedName/1` are no longer recommended for finding functions by name. Instead, use `hasGlobalName/1` and the new `hasQualifiedName/2` and `hasQualifiedName/3` predicates. This improves performance and makes it more reliable to identify names involving templates.
+- In class `Declaration`, predicates `getQualifiedName/0` and `hasQualifiedName/1` are no longer recommended for finding functions by name. Instead, use `hasGlobalName/1` and the new `hasQualifiedName/2` and `hasQualifiedName/3` predicates. This improves performance and makes it more reliable to identify names involving templates and inline namespaces.
 - Additional support for definition by reference has been added to the `semmle.code.cpp.dataflow.TaintTracking` library.
     - The taint tracking library now includes taint-specific edges for functions modeled in `semmle.code.cpp.models.interfaces.DataFlow`.
     - The taint tracking library adds flow through library functions that are modeled in `semmle.code.cpp.models.interfaces.Taint`. Queries can add subclasses of `TaintFunction` to specify additional flow.
