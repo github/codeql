@@ -1318,9 +1318,9 @@ module Expressions {
         or
         val.strValue() < other.strValue() and result = -1
         or
-        val.strValue() > other.strValue() and result = 0
+        val.strValue() > other.strValue() and result = 1
         or
-        val.strValue() = other.strValue() and result = 1
+        val.strValue() = other.strValue() and result = 0
     }
 
     pragma [nomagic]
