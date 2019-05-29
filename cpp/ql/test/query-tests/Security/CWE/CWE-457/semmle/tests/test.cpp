@@ -395,3 +395,43 @@ int test33() {
 		return val; // GOOD
 	}
 }
+
+int test34() {
+	bool loop = true;
+	int val;
+
+	{
+		while (loop)
+		{
+			val = 1;
+			loop = false;
+		}
+	}
+	return val; // GOOD [FALSE POSITIVE]
+}
+
+int test35() {
+	int i, j;
+
+	for (int i = 0; i < 10; i++, j = 1) {
+		return j; // BAD
+	}
+}
+
+int test36() {
+	int i, j;
+
+	for (int i = 0; i < 10; i++, j = 1) {
+	}
+
+	return j; // GOOD
+}
+
+int test38() {
+	int i, j;
+
+	for (int i = 0; false; i++, j = 1) {
+	}
+
+	return j; // BAD
+}
