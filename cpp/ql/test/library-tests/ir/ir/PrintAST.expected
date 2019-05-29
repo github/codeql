@@ -7427,3 +7427,146 @@ ir.cpp:
 #-----|               -1: this
 #-----|                   Type = const lambda [] type at line 1045, col. 23 *
 #-----|                   ValueCategory = prvalue(load)
+# 1050| vector<int>& vector<int>::operator=(vector<int> const&)
+# 1050|   params: 
+#-----|     0: p#0
+#-----|         Type = const vector<int> &
+# 1050| vector<int>& vector<int>::operator=(vector<int>&&)
+# 1050|   params: 
+#-----|     0: p#0
+#-----|         Type = vector<int> &&
+# 1051| vector<int>::iterator& vector<int>::iterator::operator=(vector<int>::iterator const public&)
+# 1051|   params: 
+#-----|     0: p#0
+#-----|         Type = const iterator &
+# 1051| vector<int>::iterator& vector<int>::iterator::operator=(vector<int>::iterator&&)
+# 1051|   params: 
+#-----|     0: p#0
+#-----|         Type = iterator &&
+# 1053| vector<T>::iterator& vector<T>::iterator::operator++()
+# 1053|   params: 
+# 1053| vector<int>::iterator& vector<int>::iterator::operator++()
+# 1053|   params: 
+# 1054| T& vector<T>::iterator::operator*() const
+# 1054|   params: 
+# 1054| int& vector<int>::iterator::operator*() const
+# 1054|   params: 
+# 1056| bool vector<T>::iterator::operator!=(vector<T>::iterator) const
+# 1056|   params: 
+# 1056|     0: right
+# 1056|         Type = iterator
+# 1056| bool vector<int>::iterator::operator!=(vector<int>::iterator) const
+# 1056|   params: 
+# 1056|     0: right
+# 1056|         Type = iterator
+# 1059| vector<T>::iterator vector<T>::begin() const
+# 1059|   params: 
+# 1059| vector<int>::iterator vector<int>::begin() const
+# 1059|   params: 
+# 1060| vector<T>::iterator vector<T>::end() const
+# 1060|   params: 
+# 1060| vector<int>::iterator vector<int>::end() const
+# 1060|   params: 
+# 1064| bool operator==<T>(iterator, iterator)
+# 1064|   params: 
+# 1064|     0: left
+# 1064|         Type = iterator
+# 1064|     1: right
+# 1064|         Type = iterator
+# 1066| bool operator!=<T>(iterator, iterator)
+# 1066|   params: 
+# 1066|     0: left
+# 1066|         Type = iterator
+# 1066|     1: right
+# 1066|         Type = iterator
+# 1068| void RangeBasedFor(vector<int> const&)
+# 1068|   params: 
+# 1068|     0: v
+# 1068|         Type = const vector<int> &
+# 1068|   body: { ... }
+# 1069|     0: for(...:...) ...
+# 1069|       0: declaration
+# 1069|       1: declaration
+# 1069|       2: call to operator!=
+# 1069|           Type = bool
+# 1069|           ValueCategory = prvalue
+#-----|         -1: (const iterator)...
+#-----|             Conversion = glvalue conversion
+#-----|             Type = const iterator
+#-----|             ValueCategory = lvalue
+#-----|           expr: (__begin)
+#-----|               Type = iterator
+#-----|               ValueCategory = lvalue
+#-----|         0: (__end)
+#-----|             Type = iterator
+#-----|             ValueCategory = prvalue(load)
+# 1069|       3: (reference dereference)
+# 1069|           Type = iterator
+# 1069|           ValueCategory = lvalue
+# 1069|         expr: call to operator++
+# 1069|             Type = iterator &
+# 1069|             ValueCategory = prvalue
+#-----|           -1: (__begin)
+#-----|               Type = iterator
+#-----|               ValueCategory = lvalue
+# 1069|       4: declaration
+# 1069|       5: { ... }
+# 1070|         0: if (...) ... 
+# 1070|           0: ... > ...
+# 1070|               Type = bool
+# 1070|               ValueCategory = prvalue
+# 1070|             0: e
+# 1070|                 Type = int
+# 1070|                 ValueCategory = prvalue(load)
+# 1070|             1: 0
+# 1070|                 Type = int
+# 1070|                 Value = 0
+# 1070|                 ValueCategory = prvalue
+# 1070|           1: { ... }
+# 1071|             0: continue;
+# 1069|         1: label ...:
+# 1075|     1: for(...:...) ...
+# 1075|       0: declaration
+# 1075|       1: declaration
+# 1075|       2: call to operator!=
+# 1075|           Type = bool
+# 1075|           ValueCategory = prvalue
+#-----|         -1: (const iterator)...
+#-----|             Conversion = glvalue conversion
+#-----|             Type = const iterator
+#-----|             ValueCategory = lvalue
+#-----|           expr: (__begin)
+#-----|               Type = iterator
+#-----|               ValueCategory = lvalue
+#-----|         0: (__end)
+#-----|             Type = iterator
+#-----|             ValueCategory = prvalue(load)
+# 1075|       3: (reference dereference)
+# 1075|           Type = iterator
+# 1075|           ValueCategory = lvalue
+# 1075|         expr: call to operator++
+# 1075|             Type = iterator &
+# 1075|             ValueCategory = prvalue
+#-----|           -1: (__begin)
+#-----|               Type = iterator
+#-----|               ValueCategory = lvalue
+# 1075|       4: declaration
+# 1075|       5: { ... }
+# 1076|         0: if (...) ... 
+# 1076|           0: ... < ...
+# 1076|               Type = bool
+# 1076|               ValueCategory = prvalue
+# 1076|             0: (reference dereference)
+# 1076|                 Type = int
+# 1076|                 ValueCategory = prvalue(load)
+# 1076|               expr: e
+# 1076|                   Type = const int &
+# 1076|                   ValueCategory = prvalue(load)
+# 1076|             1: 5
+# 1076|                 Type = int
+# 1076|                 Value = 5
+# 1076|                 ValueCategory = prvalue
+# 1076|           1: { ... }
+# 1077|             0: break;
+# 1079|     2: label ...:
+# 1080|     3: return ...
