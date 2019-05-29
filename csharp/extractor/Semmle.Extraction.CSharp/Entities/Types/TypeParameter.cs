@@ -34,6 +34,9 @@ namespace Semmle.Extraction.CSharp.Entities
             if (symbol.HasConstructorConstraint)
                 Context.Emit(Tuples.general_type_parameter_constraints(constraints, 3));
 
+            if(symbol.HasUnmanagedTypeConstraint)
+                Context.Emit(Tuples.general_type_parameter_constraints(constraints, 4));
+
             ITypeSymbol baseType = symbol.HasValueTypeConstraint ?
                     Context.Compilation.GetTypeByMetadataName(valueTypeName) :
                     Context.Compilation.ObjectType;
