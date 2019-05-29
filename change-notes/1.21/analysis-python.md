@@ -10,7 +10,7 @@
   | **Query** | **Tags** | **Purpose** |
   |-----------|----------|-------------|
   | Accepting unknown SSH host keys when using Paramiko (`py/paramiko-missing-host-key-validation`) | security, external/cwe/cwe-295 | Finds instances where Paramiko is configured to accept unknown host keys. Results are shown on LGTM by default. |
-
+  | Using `return`, `yield`, or `yield from` outside a function or a class method | reliability, correctness | Finds instances where `return`, `yield`, and `yield from` are used outside a function. Results are not shown on LGTM by default. |
 
 ## Changes to existing queries
 

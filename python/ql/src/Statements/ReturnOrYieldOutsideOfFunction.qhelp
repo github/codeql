@@ -4,20 +4,20 @@
 <qhelp>
 
 <overview>
-<p>In Python, <code>return</code> and <code>yield</code> statements as well as <code>yield from</code>
-expression can only be used within a function. Having them placed outside of a function or a class
-method will raise a <code>SyntaxError</code> at runtime.</p>
+<p>In Python, <code>return</code> and <code>yield</code> statements and the <code>yield from</code>
+expression can only be used within a function. Using them outside a function or a class
+method results in a <code>SyntaxError</code> at runtime.</p>
 </overview>
 
 <recommendation>
-<p>The presence of <code>return</code> and <code>yield</code> statements or <code>yield from</code>
-expression outside of a function or a class method suggests a logical error, so it is not possible
-to suggest a general fix.</p>
+<p>Using these elements outside a function or a class method usually indicates an error in the logic.
+Consequently, it is not possible to suggest a general fix.</p>
 </recommendation>
 
 <example>
-<p>In this example, a <code>return</code> statement is used outside of a class method in a class and
-a <code>yield</code> statement is used outside of a function in a scope of a module.</p>
+<p>In this example, a <code>return</code> statement is used outside a class method in a class and
+a <code>yield</code> statement is used outside a function in a scope of a module which would result
+in a <code>SyntaxError</code> when running this code.</p>
 <sample src="ReturnOrYieldOutsideOfFunction.py" />
 </example>
 

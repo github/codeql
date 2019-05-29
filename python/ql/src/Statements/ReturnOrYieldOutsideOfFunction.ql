@@ -1,6 +1,6 @@
 /**
- * @name return or yield are used outside of a function
- * @description return and yield statements should be used only within a function.
+ * @name Using 'return' or 'yield' outside a function causes a 'SyntaxError' at runtime
+ * @description Statements 'return' and 'yield' should be used only within a function.
  * @kind problem
  * @tags reliability
  *       correctness
