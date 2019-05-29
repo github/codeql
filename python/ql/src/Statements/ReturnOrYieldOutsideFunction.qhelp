@@ -18,7 +18,7 @@ Consequently, it is not possible to suggest a general fix.</p>
 <p>In this example, a <code>return</code> statement is used outside a class method in a class and
 a <code>yield</code> statement is used outside a function in a scope of a module which would result
 in a <code>SyntaxError</code> when running this code.</p>
-<sample src="ReturnOrYieldOutsideOfFunction.py" />
+<sample src="ReturnOrYieldOutsideFunction.py" />
 </example>
 
 <references>

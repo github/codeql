@@ -1,13 +1,13 @@
 /**
- * @name Using 'return' or 'yield' outside a function causes a 'SyntaxError' at runtime
- * @description Statements 'return' and 'yield' should be used only within a function.
+ * @name Use of 'return' or 'yield' outside a function
+ * @description Using 'return' or 'yield' outside a function causes a 'SyntaxError' at runtime.
  * @kind problem
  * @tags reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low
- * @precision very-high
- * @id py/return-or-yield-outside-of-function
+ * @precision medium
+ * @id py/return-or-yield-outside-function
  */
 
 import python
@@ -22,4 +22,4 @@ where
     or
     node instanceof YieldFrom and kind = "yield from"
   )
-select node, "'" + kind + "' is used outside of a function."
+select node, "'" + kind + "' is used outside a function."
