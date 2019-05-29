@@ -4,4 +4,8 @@
 | UselessUpcast.cs:85:12:85:15 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:20:7:20:7 | B | B | UselessUpcast.cs:13:7:13:7 | A | A |
 | UselessUpcast.cs:94:12:94:15 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:20:7:20:7 | B | B | UselessUpcast.cs:13:7:13:7 | A | A |
 | UselessUpcast.cs:105:16:105:19 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:27:7:27:7 | C | C | UselessUpcast.cs:20:7:20:7 | B | B |
+| UselessUpcast.cs:141:32:141:36 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:153:11:153:13 | Sub | Sub | UselessUpcast.cs:9:11:9:12 | I2 | I2 |
+| UselessUpcast.cs:146:26:146:30 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:136:7:136:18 | Constructors | Constructors | UselessUpcast.cs:9:11:9:12 | I2 | I2 |
+| UselessUpcast.cs:160:34:160:40 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:158:11:158:16 | SubSub | SubSub | UselessUpcast.cs:153:11:153:13 | Sub | Sub |
+| UselessUpcast.cs:164:21:164:27 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcast.cs:158:11:158:16 | SubSub | SubSub | UselessUpcast.cs:153:11:153:13 | Sub | Sub |
 | UselessUpcastBad.cs:9:23:9:32 | (...) ... | There is no need to upcast from $@ to $@ - the conversion can be done implicitly. | UselessUpcastBad.cs:4:11:4:13 | Sub | Sub | UselessUpcastBad.cs:3:11:3:15 | Super | Super |
