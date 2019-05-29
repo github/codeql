@@ -350,8 +350,8 @@
 | Guards.cs:270:16:270:25 | call to method GetType | non-null | Guards.cs:270:13:270:14 | access to parameter o1 | non-null |
 | Guards.cs:270:33:270:42 | call to method GetType | non-null | Guards.cs:270:30:270:31 | access to parameter o2 | non-null |
 | Guards.cs:276:16:276:16 | access to parameter o | match "" | Guards.cs:276:16:276:16 | access to parameter o | non-null |
-| Guards.cs:276:16:276:16 | access to parameter o | match Action<Object> a | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:276:16:276:16 | access to parameter o | match Action<String> a | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:276:16:276:16 | access to parameter o | match access to type Action<Object> | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:276:16:276:16 | access to parameter o | match null | Guards.cs:276:16:276:16 | access to parameter o | null |
 | Guards.cs:276:16:276:16 | access to parameter o | non-match null | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Guards.cs:281:17:281:17 | access to local variable a | non-null | Guards.cs:276:16:276:16 | access to parameter o | non-null |
