@@ -30,6 +30,11 @@ private module Cached {
 }
 import Cached
 
+pragma[noinline]
+private predicate alwaysNullVariableUpdate(VariableUpdate vu) {
+  forex(Expr src | src = vu.getSource() | alwaysNullExpr(src))
+}
+
 /** Holds if expression `expr` always evaluates to `null`. */
 private predicate alwaysNullExpr(Expr expr) {
   expr instanceof NullLiteral
@@ -37,8 +42,13 @@ private predicate alwaysNullExpr(Expr expr) {
   alwaysNullMethod(expr.(StaticCall).getTarget())
   or
   forex(VariableUpdate vu | DefUse::variableUpdateUse(_, vu, expr) |
-    forex(Expr src | src = vu.getSource() | alwaysNullExpr(src))
+    alwaysNullVariableUpdate(vu)
   )
+}
+
+pragma[noinline]
+private predicate alwaysNotNullVariableUpdate(VariableUpdate vu) {
+  forex(Expr src | src = vu.getSource() | alwaysNotNullExpr(src))
 }
 
 /** Holds if expression `expr` always evaluates to non-null. */
@@ -50,6 +60,6 @@ private predicate alwaysNotNullExpr(Expr expr) {
   alwaysNotNullMethod(expr.(StaticCall).getTarget())
   or
   forex(VariableUpdate vu | DefUse::variableUpdateUse(_, vu, expr) |
-    forex(Expr src | src = vu.getSource() | alwaysNotNullExpr(src))
+    alwaysNotNullVariableUpdate(vu)
   )
 }
