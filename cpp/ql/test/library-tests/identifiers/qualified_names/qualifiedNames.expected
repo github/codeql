@@ -52,3 +52,10 @@
 | qualifiedNames.cpp:53:12:53:12 | getMember | templates::getMember | templates |  | getMember | (not global) |
 | qualifiedNames.cpp:53:12:53:20 | getMember | templates::getMember | templates |  | getMember | (not global) |
 | qualifiedNames.cpp:57:8:57:10 | use | templates::use | templates |  | use | (not global) |
+| qualifiedNames.cpp:65:10:65:32 | functionInTwoNamespaces | std::cpp17::functionInTwoNamespaces | std::cpp17 |  | functionInTwoNamespaces | (not global) |
+| qualifiedNames.cpp:66:11:66:11 | operator= | std::cpp17::classInTwoNameSpaces::operator= | std::cpp17 | classInTwoNameSpaces | operator= | (not global) |
+| qualifiedNames.cpp:66:11:66:11 | operator= | std::cpp17::classInTwoNameSpaces::operator= | std::cpp17 | classInTwoNameSpaces | operator= | (not global) |
+| qualifiedNames.cpp:66:11:66:30 | classInTwoNameSpaces | std::cpp17::classInTwoNameSpaces | std::cpp17 |  | classInTwoNameSpaces | (not global) |
+| qualifiedNames.cpp:70:14:70:37 | functionInFourNamespaces | std::cpp17::implementation::ns::functionInFourNamespaces | std::cpp17::implementation::ns |  | functionInFourNamespaces | (not global) |
+| qualifiedNames.cpp:78:7:78:15 | void_fptr | void_fptr |  |  | void_fptr | void_fptr |
+| qualifiedNames.cpp:79:11:79:14 | ptrs | ptrs |  |  | ptrs | ptrs |
