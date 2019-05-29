@@ -1,26 +1,5 @@
 package com.semmle.js.extractor;
 
-import com.semmle.js.extractor.ExtractorConfig.SourceType;
-import com.semmle.js.extractor.FileExtractor.FileType;
-import com.semmle.js.extractor.trapcache.DefaultTrapCache;
-import com.semmle.js.extractor.trapcache.DummyTrapCache;
-import com.semmle.js.extractor.trapcache.ITrapCache;
-import com.semmle.js.parser.ParsedProject;
-import com.semmle.js.parser.TypeScriptParser;
-import com.semmle.ts.extractor.TypeExtractor;
-import com.semmle.ts.extractor.TypeTable;
-import com.semmle.util.data.StringUtil;
-import com.semmle.util.exception.CatastrophicError;
-import com.semmle.util.exception.Exceptions;
-import com.semmle.util.exception.ResourceError;
-import com.semmle.util.exception.UserError;
-import com.semmle.util.extraction.ExtractorOutputConfig;
-import com.semmle.util.files.FileUtil;
-import com.semmle.util.io.csv.CSVReader;
-import com.semmle.util.language.LegacyLanguage;
-import com.semmle.util.process.Env;
-import com.semmle.util.projectstructure.ProjectLayout;
-import com.semmle.util.trap.TrapWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -47,6 +26,28 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
+
+import com.semmle.js.extractor.ExtractorConfig.SourceType;
+import com.semmle.js.extractor.FileExtractor.FileType;
+import com.semmle.js.extractor.trapcache.DefaultTrapCache;
+import com.semmle.js.extractor.trapcache.DummyTrapCache;
+import com.semmle.js.extractor.trapcache.ITrapCache;
+import com.semmle.js.parser.ParsedProject;
+import com.semmle.js.parser.TypeScriptParser;
+import com.semmle.ts.extractor.TypeExtractor;
+import com.semmle.ts.extractor.TypeTable;
+import com.semmle.util.data.StringUtil;
+import com.semmle.util.exception.CatastrophicError;
+import com.semmle.util.exception.Exceptions;
+import com.semmle.util.exception.ResourceError;
+import com.semmle.util.exception.UserError;
+import com.semmle.util.extraction.ExtractorOutputConfig;
+import com.semmle.util.files.FileUtil;
+import com.semmle.util.io.csv.CSVReader;
+import com.semmle.util.language.LegacyLanguage;
+import com.semmle.util.process.Env;
+import com.semmle.util.projectstructure.ProjectLayout;
+import com.semmle.util.trap.TrapWriter;
 
 /**
  * An alternative entry point to the JavaScript extractor.
@@ -194,6 +195,7 @@ public class AutoBuild {
   private final TypeScriptMode typeScriptMode;
   private final String defaultEncoding;
   private ExecutorService threadPool;
+  private volatile boolean seenCode = false;
 
   public AutoBuild() {
     this.LGTM_SRC = toRealPath(getPathFromEnvVar("LGTM_SRC"));
@@ -425,7 +427,7 @@ public class AutoBuild {
   }
 
   /** Perform extraction. */
-  public void run() throws IOException {
+  public int run() throws IOException {
     startThreadPool();
     try {
       extractSource();
@@ -434,6 +436,11 @@ public class AutoBuild {
     } finally {
       shutdownThreadPool();
     }
+    if (!seenCode) {
+      warn("No JavaScript or TypeScript code found.");
+      return -1;
+    }
+    return 0;
   }
 
   private void startThreadPool() {
@@ -736,7 +743,9 @@ public class AutoBuild {
 
     try {
       long start = logBeginProcess("Extracting " + file);
-      extractor.extract(f, state);
+      Integer loc = extractor.extract(f, state);
+      if (!extractor.getConfig().isExterns() && (loc == null || loc != 0))
+        seenCode = true;
       logEndProcess(start, "Done extracting " + file);
     } catch (Throwable t) {
       System.err.println("Exception while extracting " + file + ".");
@@ -787,7 +796,7 @@ public class AutoBuild {
 
   public static void main(String[] args) {
     try {
-      new AutoBuild().run();
+      System.exit(new AutoBuild().run());
     } catch (IOException | UserError | CatastrophicError e) {
       System.err.println(e.toString());
       System.exit(1);

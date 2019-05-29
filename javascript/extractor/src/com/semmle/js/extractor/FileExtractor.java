@@ -384,7 +384,10 @@ public class FileExtractor {
     return config.hasFileType() || FileType.forFile(f, config) != null;
   }
 
-  public void extract(File f, ExtractorState state) throws IOException {
+  /**
+   * @return the number of lines of code extracted, or {@code null} if the file was cached
+   */
+  public Integer extract(File f, ExtractorState state) throws IOException {
     // populate source archive
     String source = new WholeIO(config.getDefaultEncoding()).strictread(f);
     outputConfig.getSourceArchive().add(f, source);
@@ -396,7 +399,7 @@ public class FileExtractor {
     locationManager.emitFileLocation(fileLabel, 0, 0, 0, 0);
 
     // now extract the contents
-    extractContents(f, fileLabel, source, locationManager, state);
+    return extractContents(f, fileLabel, source, locationManager, state);
   }
 
   /**
@@ -420,7 +423,7 @@ public class FileExtractor {
    * <p>Also note that we support extraction with TRAP writer factories that are not file-backed;
    * obviously, no caching is done in that scenario.
    */
-  private void extractContents(
+  private Integer extractContents(
       File f, Label fileLabel, String source, LocationManager locationManager, ExtractorState state)
       throws IOException {
     TrapWriter trapwriter = locationManager.getTrapWriter();
@@ -440,7 +443,7 @@ public class FileExtractor {
 
       if (cacheFile.exists()) {
         FileUtil.append(cacheFile, resultFile);
-        return;
+        return null;
       }
 
       // not in the cache yet, so use a caching TRAP writer to
@@ -463,6 +466,7 @@ public class FileExtractor {
       trapwriter.addTuple("numlines", fileLabel, numLines, linesOfCode, linesOfComments);
       trapwriter.addTuple("filetype", fileLabel, fileType.toString());
       successful = true;
+      return linesOfCode;
     } finally {
       if (!successful && trapwriter instanceof CachingTrapWriter)
         ((CachingTrapWriter) trapwriter).discard();
