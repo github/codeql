@@ -46,22 +46,24 @@ predicate explicitNullTestOfInstruction(Instruction checked, Instruction bool) {
     )
 }
 
-predicate candidateResult(LoadInstruction checked, ValueNumber value)
+pragma[noinline]
+predicate candidateResult(LoadInstruction checked, ValueNumber value, IRBlock dominator)
 {
   explicitNullTestOfInstruction(checked, _) and
   not checked.getAST().isInMacroExpansion() and
-  value.getAnInstruction() = checked
+  value.getAnInstruction() = checked and
+  dominator.dominates(checked.getBlock())
 }
 
-from LoadInstruction checked, LoadInstruction deref, ValueNumber sourceValue
+from LoadInstruction checked, LoadInstruction deref, ValueNumber sourceValue, IRBlock dominator
 where
-  candidateResult(checked, sourceValue) and
+  candidateResult(checked, sourceValue, dominator) and
   sourceValue.getAnInstruction() = deref.getSourceAddress() and
   // This also holds if the blocks are equal, meaning that the check could come
   // before the deref. That's still not okay because when they're in the same
   // basic block then the deref is unavoidable even if the check concluded that
   // the pointer was null. To follow this idea to its full generality, we
   // should also give an alert when `check` post-dominates `deref`.
-  deref.getBlock().dominates(checked.getBlock())
+  deref.getBlock() = dominator
 select checked, "This null check is redundant because the value is $@ in any case", deref,
   "dereferenced here"
