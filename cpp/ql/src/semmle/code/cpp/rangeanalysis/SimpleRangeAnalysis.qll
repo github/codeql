@@ -106,6 +106,9 @@ predicate analyzableExpr(Expr e) {
    (e instanceof ConditionalExpr) or
    (e instanceof AddExpr) or
    (e instanceof SubExpr) or
+   (e instanceof AssignExpr) or
+   (e instanceof AssignAddExpr) or
+   (e instanceof AssignSubExpr) or
    (e instanceof CrementOperation) or
    (e instanceof RemExpr) or
    (e instanceof CommaExpr) or
@@ -200,6 +203,18 @@ predicate exprDependsOnDef(
   | exprDependsOnDef(addExpr.getAnOperand(), srcDef, srcVar))
   or
   exists (SubExpr subExpr
+  | e = subExpr
+  | exprDependsOnDef(subExpr.getAnOperand(), srcDef, srcVar))
+  or
+  exists (AssignExpr addExpr
+  | e = addExpr
+  | exprDependsOnDef(addExpr.getRValue(), srcDef, srcVar))
+  or
+  exists (AssignAddExpr addExpr
+  | e = addExpr
+  | exprDependsOnDef(addExpr.getAnOperand(), srcDef, srcVar))
+  or
+  exists (AssignSubExpr subExpr
   | e = subExpr
   | exprDependsOnDef(subExpr.getAnOperand(), srcDef, srcVar))
   or
@@ -534,6 +549,22 @@ float getLowerBoundsImpl(Expr expr) {
     yHigh = getFullyConvertedUpperBounds(subExpr.getRightOperand()) and
     result = addRoundingDown(xLow, -yHigh))
   or
+  exists (AssignExpr assign
+  | expr = assign and
+    result = getFullyConvertedLowerBounds(assign.getRValue()))
+  or
+  exists (AssignAddExpr addExpr, float xLow, float yLow
+  | expr = addExpr and
+    xLow = getFullyConvertedLowerBounds(addExpr.getLValue()) and
+    yLow = getFullyConvertedLowerBounds(addExpr.getRValue()) and
+    result = addRoundingDown(xLow, yLow))
+  or
+  exists (AssignSubExpr subExpr, float xLow, float yHigh
+  | expr = subExpr and
+    xLow = getFullyConvertedLowerBounds(subExpr.getLValue()) and
+    yHigh = getFullyConvertedUpperBounds(subExpr.getRValue()) and
+    result = addRoundingDown(xLow, -yHigh))
+  or
   exists (PrefixIncrExpr incrExpr, float xLow
   | expr = incrExpr and
     xLow = getFullyConvertedLowerBounds(incrExpr.getOperand()) and
@@ -654,6 +685,22 @@ float getUpperBoundsImpl(Expr expr) {
   | expr = subExpr and
     xHigh = getFullyConvertedUpperBounds(subExpr.getLeftOperand()) and
     yLow = getFullyConvertedLowerBounds(subExpr.getRightOperand()) and
+    result = addRoundingUp(xHigh, -yLow))
+  or
+  exists (AssignExpr assign
+  | expr = assign and
+    result = getFullyConvertedUpperBounds(assign.getRValue()))
+  or
+  exists (AssignAddExpr addExpr, float xHigh, float yHigh
+  | expr = addExpr and
+    xHigh = getFullyConvertedUpperBounds(addExpr.getLValue()) and
+    yHigh = getFullyConvertedUpperBounds(addExpr.getRValue()) and
+    result = addRoundingUp(xHigh, yHigh))
+  or
+  exists (AssignSubExpr subExpr, float xHigh, float yLow
+  | expr = subExpr and
+    xHigh = getFullyConvertedUpperBounds(subExpr.getLValue()) and
+    yLow = getFullyConvertedLowerBounds(subExpr.getRValue()) and
     result = addRoundingUp(xHigh, -yLow))
   or
   exists (PrefixIncrExpr incrExpr, float xHigh
@@ -1156,7 +1203,7 @@ private cached module SimpleRangeAnalysisCached {
     // single minimum value.
     result = min(float lb | lb = getTruncatedLowerBounds(expr) | lb)
   }
-  
+
   /**
    * Gets the upper bound of the expression.
    *
@@ -1175,7 +1222,7 @@ private cached module SimpleRangeAnalysisCached {
     // single maximum value.
     result = max(float ub | ub = getTruncatedUpperBounds(expr) | ub)
   }
-  
+
   /**
    * Holds if `expr` has a provably empty range. For example:
    *
@@ -1204,13 +1251,13 @@ private cached module SimpleRangeAnalysisCached {
   predicate defMightOverflowNegatively(RangeSsaDefinition def, LocalScopeVariable v) {
     getDefLowerBoundsImpl(def, v) < varMinVal(v)
   }
-  
+
   /** Holds if the definition might overflow positively. */
   cached
   predicate defMightOverflowPositively(RangeSsaDefinition def, LocalScopeVariable v) {
     getDefUpperBoundsImpl(def, v) > varMaxVal(v)
   }
-  
+
   /**
    * Holds if the definition might overflow (either positively or
    * negatively).
@@ -1220,7 +1267,7 @@ private cached module SimpleRangeAnalysisCached {
     defMightOverflowNegatively(def, v) or
     defMightOverflowPositively(def, v)
   }
-  
+
   /**
    * Holds if the expression might overflow negatively. This predicate
    * does not consider the possibility that the expression might overflow
@@ -1228,9 +1275,14 @@ private cached module SimpleRangeAnalysisCached {
    */
   cached
   predicate exprMightOverflowNegatively(Expr expr) {
-    getLowerBoundsImpl(expr) < exprMinVal(expr)
+    getLowerBoundsImpl(expr) < exprMinVal(expr) or
+
+    // The lower bound of the expression `x--` is the same as the lower
+    // bound of `x`, so the standard logic (above) does not work for
+    // detecting whether it might overflow.
+    getLowerBoundsImpl(expr.(PostfixDecrExpr)) = exprMinVal(expr)
   }
-  
+
   /**
    * Holds if the expression might overflow negatively. Conversions
    * are also taken into account. For example the expression
@@ -1242,7 +1294,7 @@ private cached module SimpleRangeAnalysisCached {
     exprMightOverflowNegatively(expr) or
     convertedExprMightOverflowNegatively(expr.getConversion())
   }
-  
+
     /**
    * Holds if the expression might overflow positively. This predicate
    * does not consider the possibility that the expression might overflow
@@ -1250,9 +1302,14 @@ private cached module SimpleRangeAnalysisCached {
    */
   cached
   predicate exprMightOverflowPositively(Expr expr) {
-    getUpperBoundsImpl(expr) > exprMaxVal(expr)
+    getUpperBoundsImpl(expr) > exprMaxVal(expr) or
+
+    // The upper bound of the expression `x++` is the same as the upper
+    // bound of `x`, so the standard logic (above) does not work for
+    // detecting whether it might overflow.
+    getUpperBoundsImpl(expr.(PostfixIncrExpr)) = exprMaxVal(expr)
   }
-  
+
   /**
    * Holds if the expression might overflow positively. Conversions
    * are also taken into account. For example the expression
@@ -1264,7 +1321,7 @@ private cached module SimpleRangeAnalysisCached {
     exprMightOverflowPositively(expr) or
     convertedExprMightOverflowPositively(expr.getConversion())
   }
-  
+
   /**
    * Holds if the expression might overflow (either positively or
    * negatively). The possibility that the expression might overflow
