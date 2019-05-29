@@ -349,6 +349,32 @@
 | Guards.cs:268:16:268:25 | call to method GetType | non-null | Guards.cs:268:13:268:14 | access to parameter o1 | non-null |
 | Guards.cs:270:16:270:25 | call to method GetType | non-null | Guards.cs:270:13:270:14 | access to parameter o1 | non-null |
 | Guards.cs:270:33:270:42 | call to method GetType | non-null | Guards.cs:270:30:270:31 | access to parameter o2 | non-null |
+| Guards.cs:276:16:276:16 | access to parameter o | match "" | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:276:16:276:16 | access to parameter o | match Action<Object> a | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:276:16:276:16 | access to parameter o | match Action<String> a | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:276:16:276:16 | access to parameter o | match null | Guards.cs:276:16:276:16 | access to parameter o | null |
+| Guards.cs:276:16:276:16 | access to parameter o | non-match null | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:281:17:281:17 | access to local variable a | non-null | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:281:17:281:17 | access to local variable a | null | Guards.cs:276:16:276:16 | access to parameter o | null |
+| Guards.cs:293:13:293:21 | Boolean b2 = ... | false | Guards.cs:293:13:293:14 | access to local variable b2 | false |
+| Guards.cs:293:13:293:21 | Boolean b2 = ... | true | Guards.cs:293:13:293:14 | access to local variable b2 | true |
+| Guards.cs:295:13:295:22 | ... = ... | false | Guards.cs:295:13:295:14 | access to local variable b2 | false |
+| Guards.cs:295:13:295:22 | ... = ... | true | Guards.cs:295:13:295:14 | access to local variable b2 | true |
+| Guards.cs:296:16:296:17 | access to local variable b2 | match true | Guards.cs:294:13:294:14 | access to parameter b1 | false |
+| Guards.cs:296:16:296:17 | access to local variable b2 | match true | Guards.cs:296:16:296:17 | access to local variable b2 | true |
+| Guards.cs:305:13:305:22 | Boolean b2 = ... | false | Guards.cs:305:13:305:14 | access to local variable b2 | false |
+| Guards.cs:305:13:305:22 | Boolean b2 = ... | true | Guards.cs:305:13:305:14 | access to local variable b2 | true |
+| Guards.cs:307:13:307:21 | ... = ... | false | Guards.cs:307:13:307:14 | access to local variable b2 | false |
+| Guards.cs:307:13:307:21 | ... = ... | true | Guards.cs:307:13:307:14 | access to local variable b2 | true |
+| Guards.cs:308:16:308:17 | access to local variable b2 | match true | Guards.cs:306:13:306:14 | access to parameter b1 | true |
+| Guards.cs:308:16:308:17 | access to local variable b2 | match true | Guards.cs:308:16:308:17 | access to local variable b2 | true |
+| Guards.cs:308:16:308:17 | access to local variable b2 | non-match true | Guards.cs:306:13:306:14 | access to parameter b1 | false |
+| Guards.cs:320:16:320:16 | access to local variable i | match 1 | Guards.cs:318:13:318:13 | access to parameter b | true |
+| Guards.cs:320:16:320:16 | access to local variable i | match 1 | Guards.cs:320:16:320:16 | access to local variable i | 1 |
+| Guards.cs:320:16:320:16 | access to local variable i | non-match 1 | Guards.cs:318:13:318:13 | access to parameter b | false |
+| Guards.cs:332:16:332:16 | access to local variable e | match access to constant B | Guards.cs:330:13:330:13 | access to parameter b | true |
+| Guards.cs:332:16:332:16 | access to local variable e | match access to constant B | Guards.cs:332:16:332:16 | access to local variable e | 1 |
+| Guards.cs:332:16:332:16 | access to local variable e | non-match access to constant B | Guards.cs:330:13:330:13 | access to parameter b | false |
 | Splitting.cs:12:17:12:25 | ... != ... | false | Splitting.cs:12:17:12:17 | access to parameter o | null |
 | Splitting.cs:12:17:12:25 | ... != ... | true | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
 | Splitting.cs:22:17:22:25 | ... != ... | false | Splitting.cs:22:17:22:17 | access to parameter o | null |

@@ -70,13 +70,13 @@ module AbstractValues {
   }
 
   /** An integer value. */
-  class IntergerValue extends AbstractValue, TIntegerValue {
+  class IntegerValue extends AbstractValue, TIntegerValue {
     /** Gets the underlying integer value. */
     int getValue() { this = TIntegerValue(result) }
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) { none() }
 
-    override BooleanValue getDualValue() { none() }
+    override IntegerValue getDualValue() { none() }
 
     override Expr getAnExpr() {
       result.getValue().toInt() = this.getValue() and
@@ -199,7 +199,9 @@ class DereferenceableExpr extends Expr {
       // incorrectly `int`, while it should have been `int?`. We apply
       // `getNullEquivParent()` as a workaround
       this = getNullEquivParent*(e) and
-      t = e.getType()
+      t = e.getType() and
+      not this instanceof SwitchCaseExpr and
+      not this instanceof PatternExpr
     |
       t instanceof NullableType and
       isNullableType = true
@@ -734,6 +736,8 @@ module Internal {
     Guard() {
       this.getType() instanceof BoolType and
       not this instanceof BoolLiteral and
+      not this instanceof SwitchCaseExpr and
+      not this instanceof PatternExpr and
       val = TBooleanValue(_)
       or
       this instanceof DereferenceableExpr and
@@ -1037,9 +1041,9 @@ module Internal {
         ck.isInequality() and branch = false
       )
       or
-      result = any(PatternMatch pm |
-          pm.getExpr() = e1 and
-          e2 = pm.getPattern().(ConstantPatternExpr) and
+      result = any(IsExpr ie |
+          ie.getExpr() = e1 and
+          e2 = ie.getPattern().(ConstantPatternExpr) and
           branch = true
         )
     )
@@ -1068,11 +1072,11 @@ module Internal {
    * then `o` is guaranteed to be equal to `""`.
    */
   private Expr getAMatchingEqualityCheck(Expr e1, MatchValue v, Expr e2) {
-    exists(Switch s, ConstCase case | case = v.getCase() |
+    exists(Switch s, Case case | case = v.getCase() |
       e1 = s.getExpr() and
       result = e1 and
       case = s.getACase() and
-      e2 = case.getPattern() and
+      e2 = case.getPattern().(ConstantPatternExpr) and
       v.isMatch()
     )
   }
