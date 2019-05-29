@@ -5,11 +5,8 @@
 <overview>
 <p>This rule finds calls to functions that are dangerous to
 use. Currently, it checks for calls
-to <code>gets</code>, <code>gmtime</code>, <code>localtime</code>,
-<code>ctime</code> and <code>asctime</code>. See <strong>Related
-rules</strong> below for rules that identify other dangerous functions.</p>
-
-<p>The <code>gets</code> function is one of the vulnerabilities exploited by the Internet Worm of 1988, one of the first computer worms to spread through the Internet.  The <code>gets</code> function provides no way to limit the amount of data that is read and stored, so without prior knowledge of the input it is impossible to use it safely with any size of buffer.</p>
+to <code>gmtime</code>, <code>localtime</code>,
+<code>ctime</code> and <code>asctime</code>.
 
 <p>The time related functions such as <code>gmtime</code>
 fill data into a <code>tm</code> struct or <code>char</code> array in
@@ -20,8 +17,6 @@ then the calls will overwrite each other's data.</p>
 
 </overview>
 <recommendation>
-
-<p>Replace calls to <code>gets</code> with <code>fgets</code>, specifying the maximum length to copy.  This will prevent the buffer overflow.</p>
 
 <p>Replace calls to <code>gmtime</code> with <code>gmtime_r</code>.
 With <code>gmtime_r</code>, the application code manages allocation of
@@ -47,20 +42,7 @@ struct on every call, it is immune to other calls to <code>gmtime</code>
 or <code>gmtime_r</code>.</p>
 
 </example>
-<section title="Related rules">
-<p>Other dangerous functions identified by CWE-676 ("Use of
-Potentially Dangerous Function") include <code>strcpy</code>
-and <code>strcat</code>. Use of these functions is highlighted by
-rules for the following CWEs:</p>
-<ul>
-<li>CWE-120 Classic Buffer Overflow
-</li><li>CWE-131 Incorrect Calculation of Buffer Size
-</li></ul>
-
-</section>
 <references>
-<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Morris_worm">Morris worm</a>.</li>
-<li>E. Spafford. <i>The Internet Worm Program: An Analysis</i>. Purdue Technical Report CSD-TR-823, <a href="http://www.textfiles.com/100/tr823.txt">(online)</a>, 1988.</li>
 <li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/CON33-C.+Avoid+race+conditions+when+using+library+functions">CON33-C. Avoid race conditions when using library functions</a>.</li>
 </references>
 </qhelp>

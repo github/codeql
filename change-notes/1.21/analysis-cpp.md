@@ -9,6 +9,7 @@
 | `()`-declared function called with too few arguments (`cpp/too-few-arguments`) | Correctness | Find all cases where the number of arguments is less than the number of parameters of the function, provided the function is also properly declared/defined elsewhere. |
 | `()`-declared function called with mismatched arguments (`cpp/mismatched-function-arguments`) | Correctness | Find all cases where the types of arguments do not match the types of parameters of the function, provided the function is also properly declared/defined elsewhere. |
 | Call to alloca in a loop (`cpp/alloca-in-loop`) | reliability, correctness, external/cwe/cwe-770 | Finds calls to `alloca` in loops, which can lead to stack overflow if the number of iterations is large.  Newly displayed on LGTM. |
+| Use of dangerous function (`dangerous-function-overflow`) | reliability, security, external/cwe/cwe-242 | Finds calls to `gets`, which does not guard against buffer overflow.  These results were previously detected by the `cpp/potentially-dangerous-function` query. |
 
 ## Changes to existing queries
 
@@ -28,6 +29,7 @@
 | Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | More correct results and fewer false positive results | This query now more accurately identifies wide and non-wide string/character format arguments on different platforms.  Platform detection has also been made more accurate for the purposes of this query. |
 | Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | Fewer false positive results | Non-standard uses of %L are now understood. |
 | `()`-declared function called with too many arguments (`cpp/futile-params`) | Improved coverage | Query has been generalized to find all cases where the number of arguments exceedes the number of parameters of the function, provided the function is also properly declared/defined elsewhere. |
+| Use of potentially dangerous function (`cpp/potentially-dangerous-function`) | Fewer results | Results relating to the standard library `gets` function have been moved into a new query (`dangerous-function-overflow`). |
 
 ## Changes to QL libraries
 - The predicate `Declaration.hasGlobalName` now only holds for declarations that are not nested in a class. For example, it no longer holds for a member function `MyClass::myFunction` or a constructor `MyClass::MyClass`, whereas previously it would classify those two declarations as global names.
