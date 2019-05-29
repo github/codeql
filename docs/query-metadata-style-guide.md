@@ -43,7 +43,7 @@ Query file metadata contains important information which defines the identifier 
  */
  ```
 
-In order to help others use your query, and to ensure that the query works correctly on LGTM, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see the [Query meta reference](https://help.semmle.com/QL/learn-ql/ql/writing-queries/query-metadata.html) on help.semmle.com.
+In order to help others use your query, and to ensure that the query works correctly on LGTM, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Query metadata](https://help.semmle.com/QL/learn-ql/ql/writing-queries/query-metadata.html) on help.semmle.com.
 
 ### Query name `@name`
 
