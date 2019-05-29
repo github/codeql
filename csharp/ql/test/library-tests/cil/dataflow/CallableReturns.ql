@@ -8,7 +8,7 @@ predicate relevantMethod(CIL::Method m) {
   or
   m.getDeclaringType().getName() = "ThrowHelper"
   or
-  m.getLocation().(CIL::Assembly).getName() = "DataFlow"
+  m.getLocation().(CIL::Assembly).getName().matches("DataFlow%")
 }
 
 // Check that the assembly hasn't been marked as a stub.

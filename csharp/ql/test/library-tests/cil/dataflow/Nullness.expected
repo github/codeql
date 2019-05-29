@@ -30,3 +30,8 @@ alwaysNotNull
 | dataflow.cs:90:24:90:34 | access to local variable nullMethods |
 | dataflow.cs:91:24:91:34 | access to local variable nullMethods |
 | dataflow.cs:92:26:92:32 | access to local variable nonNull |
+| dataflow.cs:95:25:95:31 | access to local variable nonNull |
+| dataflow.cs:96:26:96:32 | access to local variable nonNull |
+| dataflow.cs:97:32:97:73 | object creation of type MaybeNullMethods |
+| dataflow.cs:98:21:98:36 | access to local variable maybeNullMethods |
+| dataflow.cs:99:22:99:37 | access to local variable maybeNullMethods |

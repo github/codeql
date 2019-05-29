@@ -1,3 +1,5 @@
+// Generate DataFlow.dll: `csc /o /target:library DataFlow.cs_ /out:DataFlow.dll`
+
 using System;
 
 namespace Dataflow
