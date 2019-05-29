@@ -105,19 +105,10 @@ class ValueNumber extends TValueNumber {
  * definition because it accesses the exact same memory.
  * The use of `p.x` on line 3 is linked to the definition of `p` on line 1 as well, but is not
  * congruent to that definition because `p.x` accesses only a subset of the memory defined by `p`.
- *
- * This concept should probably be exposed in the public IR API.
  */
 private class CongruentCopyInstruction extends CopyInstruction {
   CongruentCopyInstruction() {
-    exists(Instruction def |
-      def = this.getSourceValue() and
-      (
-        def.getResultMemoryAccess() instanceof IndirectMemoryAccess or
-        def.getResultMemoryAccess() instanceof PhiMemoryAccess or
-        not def.hasMemoryResult()
-      )
-    )
+    this.getSourceValueOperand().getDefinitionOverlap() instanceof MustExactlyOverlap
   }
 }
 

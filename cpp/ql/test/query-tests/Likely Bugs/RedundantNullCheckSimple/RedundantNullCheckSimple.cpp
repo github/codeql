@@ -105,7 +105,7 @@ struct S {
   long **pplong;
 
   void test_phi() {
-    while (*pplong != nullptr) { // GOOD [FALSE POSITIVE]
+    while (*pplong != nullptr) { // GOOD
       pplong++;
     }
   }
