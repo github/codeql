@@ -17,7 +17,7 @@
 
 * The security queries now treat comparisons with symbolic constants as sanitizers, resulting in fewer false positives.
 
-* TypeScript 3.4 features are now supported.
+* TypeScript 3.5 is now supported.
 
 * On LGTM, TypeScript projects now have static type information extracted by default, resulting in more security results.
   Users of the command-line tools must still pass `--typescript-full` to the extractor to enable this.
