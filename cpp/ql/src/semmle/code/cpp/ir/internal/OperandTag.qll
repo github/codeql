@@ -28,7 +28,12 @@ private newtype TOperandTag =
     )
   } or
   TChiTotalOperand() or
-  TChiPartialOperand()
+  TChiPartialOperand() or
+  TAsmOperand(int index) {
+    exists(AsmStmt asm |
+      exists(asm.getChild(index))
+    )
+  } 
 
 /**
  * Identifies the kind of operand on an instruction. Each `Instruction` has at
@@ -361,4 +366,28 @@ class ChiPartialOperandTag extends MemoryOperandTag, TChiPartialOperand {
 
 ChiPartialOperandTag chiPartialOperand() {
   result = TChiPartialOperand()
+}
+
+class AsmOperandTag extends RegisterOperandTag, TAsmOperand {
+  int index;
+
+  AsmOperandTag() {
+    this = TAsmOperand(index)
+  }
+
+  override final string toString() {
+    result = "AsmOperand(" + index + ")"
+  }
+
+  override final int getSortOrder() {
+    result = 15 + index
+  }
+
+  override final string getLabel() {
+    result = index.toString() + ":"
+  }
+}
+
+AsmOperandTag asmOperand(int index) {
+  result = TAsmOperand(index)
 }

@@ -701,3 +701,26 @@ ssa.cpp:
 #  179|     v0_12(void)        = ReturnValue              : &:r0_11, m0_10
 #  179|     v0_13(void)        = UnmodeledUse             : mu*
 #  179|     v0_14(void)        = ExitFunction             : 
+
+#  184| void AsmStmtWithOutputs(unsigned int&, unsigned int&, unsigned int&, unsigned int&)
+#  184|   Block 0
+#  184|     v0_0(void)                   = EnterFunction          : 
+#  184|     mu0_1(unknown)               = AliasedDefinition      : 
+#  184|     mu0_2(unknown)               = UnmodeledDefinition    : 
+#  184|     r0_3(glval<unsigned int &>)  = VariableAddress[a]     : 
+#  184|     mu0_4(unsigned int &)        = InitializeParameter[a] : &:r0_3
+#  184|     r0_5(glval<unsigned int &>)  = VariableAddress[b]     : 
+#  184|     mu0_6(unsigned int &)        = InitializeParameter[b] : &:r0_5
+#  184|     r0_7(glval<unsigned int &>)  = VariableAddress[c]     : 
+#  184|     mu0_8(unsigned int &)        = InitializeParameter[c] : &:r0_7
+#  184|     r0_9(glval<unsigned int &>)  = VariableAddress[d]     : 
+#  184|     mu0_10(unsigned int &)       = InitializeParameter[d] : &:r0_9
+#  187|     r0_11(glval<unsigned int &>) = VariableAddress[a]     : 
+#  187|     r0_12(glval<unsigned int &>) = VariableAddress[b]     : 
+#  187|     r0_13(glval<unsigned int &>) = VariableAddress[c]     : 
+#  187|     r0_14(glval<unsigned int &>) = VariableAddress[d]     : 
+#  187|     mu0_15(unknown)              = InlineAsm              : ~mu0_2, 0:r0_11, 1:r0_12, 2:r0_13, 3:r0_14
+#  199|     v0_16(void)                  = NoOp                   : 
+#  184|     v0_17(void)                  = ReturnVoid             : 
+#  184|     v0_18(void)                  = UnmodeledUse           : mu*
+#  184|     v0_19(void)                  = ExitFunction           : 

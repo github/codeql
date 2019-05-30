@@ -819,36 +819,69 @@ class TranslatedAsmStmt extends TranslatedStmt {
   }
 
   override Instruction getFirstInstruction() {
-    result = getInstruction(OnlyInstructionTag())
+    if exists(stmt.getChild(0))
+    then result = getInstruction(AsmInputTag(0))
+    else result = getInstruction(AsmTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
       Type resultType, boolean isGLValue) {
-    tag = OnlyInstructionTag() and
+    tag = AsmTag() and
     opcode instanceof Opcode::InlineAsm and
     resultType instanceof UnknownType and
     isGLValue = false
+    or
+    exists(int index, VariableAccess va |
+      tag = AsmInputTag(index) and
+      stmt.getChild(index) = va and
+      opcode instanceof Opcode::VariableAddress and
+      resultType = va.getType().getUnspecifiedType() and
+      isGLValue = true
+    )
+  }
+
+  override IRVariable getInstructionVariable(InstructionTag tag) {
+    exists(int index |
+      tag = AsmInputTag(index) and
+      result = getIRUserVariable(stmt.getEnclosingFunction(), stmt.getChild(index).(VariableAccess).getTarget())
+    )
   }
   
   override Instruction getInstructionOperand(InstructionTag tag,
       OperandTag operandTag) {
-    tag = OnlyInstructionTag() and
+    tag = AsmTag() and
     operandTag instanceof SideEffectOperandTag and
     result = getTranslatedFunction(stmt.getEnclosingFunction()).getUnmodeledDefinitionInstruction()
+    or
+    exists(int index |
+      tag = AsmTag() and
+      operandTag = asmOperand(index) and
+      result = getInstruction(AsmInputTag(index))
+    )
   }
 
   override final Type getInstructionOperandType(InstructionTag tag,
       TypedOperandTag operandTag) {
-    tag = OnlyInstructionTag() and
+    tag = AsmTag() and
     operandTag instanceof SideEffectOperandTag and
     result instanceof UnknownType
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
       EdgeKind kind) {
-    tag = OnlyInstructionTag() and
+    tag = AsmTag() and
     result = getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
+    or
+    exists(int index |
+      tag = AsmInputTag(index) and
+      kind instanceof GotoEdge and
+      if exists(stmt.getChild(index + 1))
+      then 
+        result = getInstruction(AsmInputTag(index + 1))
+      else
+        result = getInstruction(AsmTag())
+    )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {

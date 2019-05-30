@@ -84,7 +84,13 @@ newtype TInstructionTag =
   } or
   InitializerElementDefaultValueStoreTag(int elementIndex) {
     elementIsInitialized(elementIndex)
-  }
+  } or
+  AsmTag() or
+  AsmInputTag(int elementIndex) {
+    exists(AsmStmt asm |
+      exists(asm.getChild(elementIndex))
+    )
+  } 
 
 class InstructionTag extends TInstructionTag {
   final string toString() {
@@ -161,5 +167,9 @@ string getInstructionTagId(TInstructionTag tag) {
       tag = InitializerElementDefaultValueStoreTag(index) and tagName = "InitElemDefValStore"
     ) and
     result = tagName + "(" + index + ")"
+  ) or
+  tag = AsmTag() and result = "Asm" or
+  exists(int index |
+    tag = AsmInputTag(index) and result = "AsmInputTag(" + index + ")"
   )
 }

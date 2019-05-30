@@ -730,3 +730,31 @@ ssa.cpp:
 #  179|     v0_13(void)        = ReturnValue              : &:r0_12, m0_11
 #  179|     v0_14(void)        = UnmodeledUse             : mu*
 #  179|     v0_15(void)        = ExitFunction             : 
+
+#  184| void AsmStmtWithOutputs(unsigned int&, unsigned int&, unsigned int&, unsigned int&)
+#  184|   Block 0
+#  184|     v0_0(void)                   = EnterFunction          : 
+#  184|     m0_1(unknown)                = AliasedDefinition      : 
+#  184|     mu0_2(unknown)               = UnmodeledDefinition    : 
+#  184|     r0_3(glval<unsigned int &>)  = VariableAddress[a]     : 
+#  184|     m0_4(unsigned int &)         = InitializeParameter[a] : &:r0_3
+#  184|     m0_5(unknown)                = Chi                    : total:m0_1, partial:m0_4
+#  184|     r0_6(glval<unsigned int &>)  = VariableAddress[b]     : 
+#  184|     m0_7(unsigned int &)         = InitializeParameter[b] : &:r0_6
+#  184|     m0_8(unknown)                = Chi                    : total:m0_5, partial:m0_7
+#  184|     r0_9(glval<unsigned int &>)  = VariableAddress[c]     : 
+#  184|     m0_10(unsigned int &)        = InitializeParameter[c] : &:r0_9
+#  184|     m0_11(unknown)               = Chi                    : total:m0_8, partial:m0_10
+#  184|     r0_12(glval<unsigned int &>) = VariableAddress[d]     : 
+#  184|     m0_13(unsigned int &)        = InitializeParameter[d] : &:r0_12
+#  184|     m0_14(unknown)               = Chi                    : total:m0_11, partial:m0_13
+#  187|     r0_15(glval<unsigned int &>) = VariableAddress[a]     : 
+#  187|     r0_16(glval<unsigned int &>) = VariableAddress[b]     : 
+#  187|     r0_17(glval<unsigned int &>) = VariableAddress[c]     : 
+#  187|     r0_18(glval<unsigned int &>) = VariableAddress[d]     : 
+#  187|     m0_19(unknown)               = InlineAsm              : ~mu0_2, 0:r0_15, 1:r0_16, 2:r0_17, 3:r0_18
+#  187|     m0_20(unknown)               = Chi                    : total:m0_14, partial:m0_19
+#  199|     v0_21(void)                  = NoOp                   : 
+#  184|     v0_22(void)                  = ReturnVoid             : 
+#  184|     v0_23(void)                  = UnmodeledUse           : mu*
+#  184|     v0_24(void)                  = ExitFunction           : 

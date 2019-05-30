@@ -73,7 +73,8 @@ module InstructionSanity {
       operand.getOperandTag() = tag) and
     not expectsOperand(instr, tag) and
     not (instr instanceof CallInstruction and tag instanceof ArgumentOperandTag) and
-    not (instr instanceof BuiltInInstruction and tag instanceof PositionalArgumentOperandTag)
+    not (instr instanceof BuiltInInstruction and tag instanceof PositionalArgumentOperandTag) and
+    not (instr instanceof InlineAsmInstruction and tag instanceof AsmOperandTag)
   }
 
   /**
