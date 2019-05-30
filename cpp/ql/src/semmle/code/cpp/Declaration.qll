@@ -116,7 +116,7 @@ abstract class Declaration extends Locatable, @declaration {
    * To test whether this declaration has a particular name in the global
    * namespace, use `hasGlobalName`.
    */
-  string getName() { result = underlyingElement(this).(Q::Declaration).getName() }
+  abstract string getName();
 
   /** Holds if this declaration has the given name. */
   predicate hasName(string name) { name = this.getName() }

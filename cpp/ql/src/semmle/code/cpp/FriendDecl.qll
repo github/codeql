@@ -35,6 +35,11 @@ class FriendDecl extends Declaration, @frienddecl {
   /** Gets the location of this friend declaration. */
   override Location getLocation() { frienddecls(underlyingElement(this),_,_,result) }
 
+  /** Gets a descriptive string for this friend declaration. */
+  override string getName() {
+    result = this.getDeclaringClass().getName() + "'s friend"
+  }
+
   /**
    * Friend declarations do not have specifiers. It makes no difference
    * whether they are declared in a public, protected or private section of
