@@ -13,4 +13,4 @@ Java,"Java 6 to 11 [2]_.","javac (OpenJDK and Oracle JDK)
 Eclipse compiler for Java (ECJ) batch compiler",``.java``
 JavaScript,ECMAScript 2019 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhm``, ``.xhtml``, ``.vue``, ``.json``, ``.yaml``, ``.yml``, ``.raml`` [3]_."
 Python,"2.7, 3.5, 3.6, 3.7",Not applicable,``.py``
-TypeScript [4]_.,"2.6-3.4",Standard TypeScript compiler,"``.ts``, ``.tsx``"
+TypeScript [4]_.,"2.6-3.5",Standard TypeScript compiler,"``.ts``, ``.tsx``"
