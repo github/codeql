@@ -26,18 +26,28 @@ class Namespace extends @namespace {
     else result = this.getName()
   }
 
-  string getQualifierForMembers() {
+  /**
+   * Gets a namespace qualifier, like `"namespace1::namespace2"`, through which
+   * the members of this namespace can be named. When `inline namespace` is
+   * used, this predicate may have multiple results.
+   *
+   * This predicate does not take namespace aliases into account. Unlike inline
+   * namespaces, specialization of templates cannot happen through an alias.
+   * Aliases are also local to the compilation unit, while inline namespaces
+   * affect the whole program.
+   */
+  string getAQualifierForMembers() {
     if namespacembrs(_, this)
     then
       exists(Namespace ns |
         namespacembrs(ns, this)
       |
-        result = ns.getQualifierForMembers() + "::" + this.getName()
+        result = ns.getAQualifierForMembers() + "::" + this.getName()
         or
         // If this is an inline namespace, its members are also visible in any
         // namespace where the members of the parent are visible.
         namespace_inline(this) and
-        result = ns.getQualifierForMembers()
+        result = ns.getAQualifierForMembers()
       )
     else result = this.getName()
   }
@@ -347,7 +357,7 @@ cached
 private predicate declarationHasQualifiedName(
   string baseName, string typeQualifier, string namespaceQualifier, Declaration d
 ) {
-  namespaceQualifier = d.getNamespace().getQualifierForMembers() and
+  namespaceQualifier = d.getNamespace().getAQualifierForMembers() and
   (
     if hasTypeQualifier(d)
     then typeQualifier = d.getTypeQualifierWithoutArgs()
