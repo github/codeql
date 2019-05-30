@@ -28,7 +28,7 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     override boolean isClass() { result = false }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override boolean booleanValue() {
         result = true
@@ -377,7 +377,7 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
 
     override boolean isClass() { result = maybe() }
 
-    override boolean testableForEquality() { result = false }
+    override predicate notTestableForEquality() { any() }
 
     override boolean booleanValue() {
         result = maybe()

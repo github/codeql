@@ -56,7 +56,7 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
      * truth or false in comparisons. For example, `None` or `int` can be, but `int()`
      * or an unknown string cannot.
      */
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     /** Holds if `obj` is the result of calling `this` and `origin` is
      * the origin of `obj`.
@@ -174,9 +174,7 @@ class SysVersionInfoObjectInternal extends TSysVersionInfo, SequenceObjectIntern
         result.getBuiltin() = this.getClassDeclaration()
     }
 
-    override boolean testableForEquality() {
-        result = true
-    }
+    override predicate notTestableForEquality() { none() }
 
     /** Gets the `Builtin` for this object, if any.
      * Objects (except unknown and undefined values) should attempt to return

@@ -48,7 +48,7 @@ class ObjectInternal extends TObject {
      * equality tests on it.
      * For example, `None` or `int` can be, but `int()` or an unknown string cannot.
      */
-    abstract boolean testableForEquality();
+    abstract predicate notTestableForEquality();
 
     /** Gets the `Builtin` for this object, if any.
      * Objects (except unknown and undefined values) should attempt to return
@@ -193,7 +193,7 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
         none()
     }
 
-    override boolean testableForEquality() { result = false }
+    override predicate notTestableForEquality() { any() }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         none()
@@ -267,7 +267,7 @@ class UnknownInternal extends ObjectInternal, TUnknown {
         none()
     }
 
-    override boolean testableForEquality() { result = false }
+    override predicate notTestableForEquality() { any() }
 
     override Builtin getBuiltin() {
         result = Builtin::unknown()
@@ -333,7 +333,7 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
 
     override boolean isClass() { result = false }
 
-    override boolean testableForEquality() { result = false }
+    override predicate notTestableForEquality() { any() }
 
     override ObjectInternal getClass() {
         none()

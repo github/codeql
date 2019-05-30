@@ -75,7 +75,7 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         result = TBuiltinClassObject(Builtin::special("FunctionType"))
     }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override Builtin getBuiltin() {
         none()
@@ -190,7 +190,7 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
         result = TBuiltinClassObject(this.getBuiltin().getClass())
     }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
 
@@ -299,7 +299,7 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
         none()
     }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
 
@@ -400,7 +400,7 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
         none()
     }
 
-    override boolean testableForEquality() { result = false }
+    override predicate notTestableForEquality() { any() }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         this.getFunction().callResult(callee, obj, origin)

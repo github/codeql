@@ -47,7 +47,7 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
     override ObjectInternal getClass() { result = ObjectInternal::property() }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override Builtin getBuiltin() { none() }
 
@@ -120,7 +120,7 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override ObjectInternal getClass() { result = ObjectInternal::classMethod() }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override Builtin getBuiltin() { none() }
 
@@ -199,7 +199,7 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
 
     override ObjectInternal getClass() { result = ObjectInternal::builtin("staticmethod") }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override Builtin getBuiltin() { none() }
 

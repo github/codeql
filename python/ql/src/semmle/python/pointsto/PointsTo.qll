@@ -1262,16 +1262,13 @@ module Expressions {
         exists(ObjectInternal other, boolean sense |
             equalityTest(comp, context, operand, opvalue, other, sense)
             |
-            opvalue.testableForEquality() = true and other.testableForEquality() = true and
-            (
-                other = opvalue and result = sense
-                or
-                other != opvalue and result = sense.booleanNot()
-            )
+            other = opvalue and result = sense
             or
-            opvalue.testableForEquality() = false and result = maybe()
+            other != opvalue and result = sense.booleanNot()
             or
-            other.testableForEquality() = false and result = maybe()
+            opvalue.notTestableForEquality() and result = maybe()
+            or
+            other.notTestableForEquality() and result = maybe()
         )
     }
 
@@ -1295,9 +1292,9 @@ module Expressions {
             or
             compare(val, other) = 1 and result = sense.booleanNot()
             or
-            val.testableForEquality() = false and result = maybe()
+            val.notTestableForEquality() and result = maybe()
             or
-            other.testableForEquality() = false and result = maybe()
+            other.notTestableForEquality() and result = maybe()
         )
     }
 

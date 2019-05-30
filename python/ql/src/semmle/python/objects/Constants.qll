@@ -20,7 +20,7 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
     override boolean isClass() { result = false }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
         // Constants aren't callable

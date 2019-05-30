@@ -148,7 +148,7 @@ class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject 
         none()
     }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override predicate functionAndOffset(CallableObjectInternal function, int offset) {
         this.lookup("__init__", function, _) and offset = 1
@@ -206,7 +206,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
         none()
     }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
 }
 
@@ -229,7 +229,7 @@ class UnknownClassInternal extends ClassObjectInternal, TUnknownClass {
         none()
     }
 
-    override boolean testableForEquality() { result = false }
+    override predicate notTestableForEquality() { any() }
 
     override Builtin getBuiltin() {
         result = Builtin::unknownType()
@@ -278,7 +278,7 @@ class TypeInternal extends ClassObjectInternal, TType {
         none()
     }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override Builtin getBuiltin() {
         result = Builtin::special("type")
@@ -353,7 +353,7 @@ class DynamicallyCreatedClass extends ClassObjectInternal, TDynamicClass {
         none()
     }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override ClassDecl getClassDeclaration() { none() }
 

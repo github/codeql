@@ -73,7 +73,7 @@ class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
 
     override boolean isClass() { result = false }
 
-    override boolean testableForEquality() { result = true }
+    override predicate notTestableForEquality() { none() }
 
     override ObjectInternal getClass() {
         this = TSpecificInstance(_, result, _)
@@ -180,7 +180,7 @@ class SelfInstanceInternal extends TSelfInstance, InstanceObject {
 
     override boolean isClass() { result = false }
 
-    override boolean testableForEquality() { result = false }
+    override predicate notTestableForEquality() { any() }
 
     override ObjectInternal getClass() {
         this = TSelfInstance(_, _, result)
@@ -275,7 +275,7 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
     override boolean isClass() { result = false }
 
-    override boolean testableForEquality() { result = false }
+    override predicate notTestableForEquality() { any() }
 
     override ObjectInternal getClass() {
         this = TUnknownInstance(result)
@@ -398,7 +398,7 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
         result = ObjectInternal::superType()
     }
 
-    override boolean testableForEquality() { result = false }
+    override predicate notTestableForEquality() { any() }
 
     override Builtin getBuiltin() { none() }
 
