@@ -78,7 +78,7 @@ class ClassObject extends Object {
     }
 
     /** Whether this class is an old style class. 
-        An old style class is one does not inherit from `object`. */
+        An old style class is one that does not inherit from `object`. */
     predicate isOldStyle() {
         Types::isOldStyle(theClass())
     }

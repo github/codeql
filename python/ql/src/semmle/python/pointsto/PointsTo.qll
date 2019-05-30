@@ -1029,7 +1029,7 @@ module InterProceduralPointsTo {
         )
     }
 
-    /* Helper for computing ESSA variables at scoepe exit. */
+    /* Helper for computing ESSA variables at scope exit. */
     private predicate var_at_exit(Variable var, Scope scope, EssaVariable evar) {
         not var instanceof LocalVariable and
         evar.getSourceVariable() = var and
@@ -1215,31 +1215,31 @@ module Expressions {
     pragma [noinline]
     predicate getattr_call(CallNode call, ControlFlowNode use, PointsToContext context, ObjectInternal val, string name) {
         exists(ControlFlowNode arg1 |
-            call_to_getattr(call, context, use, arg1) and
+            call_and_args_for_getattr(call, context, use, arg1) and
             PointsToInternal::pointsTo(use, context, val, _) and
             PointsToInternal::pointsToString(arg1, context, name)
         )
     }
 
-    pragma [noinline]
-    predicate setattr_call(CallNode call, PointsToContext context, ControlFlowNode obj, string name, ObjectInternal val, ControlFlowNode origin) {
-        exists(ControlFlowNode arg1, ControlFlowNode arg2 |
-            call_to_setattr(call, context, obj, arg1, arg2) and
-            PointsToInternal::pointsTo(arg2, context, val, origin) and
-            PointsToInternal::pointsToString(arg1, context, name)
-        )
-    }
-
     pragma[noinline]
-    private predicate call_to_getattr(ControlFlowNode call, PointsToContext context, ControlFlowNode arg0, ControlFlowNode arg1) {
+    private predicate call_and_args_for_getattr(ControlFlowNode call, PointsToContext context, ControlFlowNode arg0, ControlFlowNode arg1) {
         exists(ControlFlowNode func |
             call2(call, func, arg0, arg1) and
             PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("getattr"), _)
         )
     }
 
+    pragma [noinline]
+    predicate setattr_call(CallNode call, PointsToContext context, ControlFlowNode obj, string name, ObjectInternal val, ControlFlowNode origin) {
+        exists(ControlFlowNode arg1, ControlFlowNode arg2 |
+            call_and_args_for_setattr(call, context, obj, arg1, arg2) and
+            PointsToInternal::pointsTo(arg2, context, val, origin) and
+            PointsToInternal::pointsToString(arg1, context, name)
+        )
+    }
+
     pragma[noinline]
-    private predicate call_to_setattr(ControlFlowNode call, PointsToContext context, ControlFlowNode arg0, ControlFlowNode arg1, ControlFlowNode arg2) {
+    private predicate call_and_args_for_setattr(ControlFlowNode call, PointsToContext context, ControlFlowNode arg0, ControlFlowNode arg1, ControlFlowNode arg2) {
         exists(ControlFlowNode func |
             call3(call, func, arg0, arg1, arg2) and
             PointsToInternal::pointsTo(func, context, ObjectInternal::builtin("setattr"), _)
@@ -1247,7 +1247,7 @@ module Expressions {
     }
 
     pragma [noinline]
-    private boolean otherComparisonEvaluatesTo(CompareNode comp, PointsToContext context, ControlFlowNode operand, ObjectInternal opvalue) {
+    private boolean containsComparisonEvaluatesTo(CompareNode comp, PointsToContext context, ControlFlowNode operand, ObjectInternal opvalue) {
         exists(Cmpop op |
             comp.operands(operand, op, _) or
             comp.operands(_, op, operand)
@@ -1403,7 +1403,7 @@ module Expressions {
         or
         result = inequalityEvaluatesTo(expr, context, subexpr, subvalue)
         or
-        result = otherComparisonEvaluatesTo(expr, context, subexpr, subvalue)
+        result = containsComparisonEvaluatesTo(expr, context, subexpr, subvalue)
         or
         result = isinstanceEvaluatesTo(expr, context, subexpr, subvalue)
         or

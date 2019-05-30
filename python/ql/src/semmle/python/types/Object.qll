@@ -135,8 +135,8 @@ class Object extends @py_object {
      *     false for None, true for 7 and no result for int(x)
      */
     boolean booleanValue() {
-        result = booleanFromValue()
-        and not booleanFromValue() = result.booleanNot()
+        result = this.booleanFromValue() and
+        not this.maybe()
     }
 
     final predicate maybe() {
