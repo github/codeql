@@ -242,10 +242,10 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge through persistent storage.
    */
-  private class StorageTaintStep extends AdditionalTaintStep {
+  class PersistentStorageTaintStep extends AdditionalTaintStep {
     PersistentReadAccess read;
 
-    StorageTaintStep() { this = read }
+    PersistentStorageTaintStep() { this = read }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = read.getAWrite().getValue() and
