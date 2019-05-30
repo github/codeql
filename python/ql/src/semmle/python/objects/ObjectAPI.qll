@@ -188,7 +188,7 @@ class CallableValue extends Value {
     }
 
     /** Gets the argument corresponding to the `n'th parameter node of this callable. */
-    ControlFlowNode getArgumentForCall(CallNode call, int n) {
+    cached ControlFlowNode getArgumentForCall(CallNode call, int n) {
         exists(ObjectInternal called, int offset |
             PointsToInternal::pointsTo(call.getFunction(), _, called, _) and
             called.functionAndOffset(this, offset) 
@@ -204,7 +204,7 @@ class CallableValue extends Value {
 
 
     /** Gets the argument corresponding to the `name`d parameter node of this callable. */
-    ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
+    cached ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
         exists(CallableObjectInternal called, int offset |
             PointsToInternal::pointsTo(call.getFunction(), _, called, _) and
             called.functionAndOffset(this, offset)

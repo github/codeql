@@ -124,7 +124,7 @@ module PointsTo {
     }
 
     /* Backwards compatibility */
-    deprecated predicate
+    deprecated cached predicate
     points_to(ControlFlowNode f, PointsToContext context, Object obj, ClassObject cls, ControlFlowNode origin) {
         exists(ObjectInternal value |
             PointsToInternal::pointsTo(f, context, value, origin) and
@@ -568,15 +568,34 @@ cached module PointsToInternal {
         pointsTo(f.getAnOperand(), context, value, origin)
     }
 
+    /* Holds if `import name` will import the module `m`. */
+    cached predicate module_imported_as(ModuleObjectInternal m, string name) {
+        /* Normal imports */
+        m.getName() = name
+        or
+        /* sys.modules['name'] = m */
+        exists(ControlFlowNode sys_modules_flow, ControlFlowNode n, ControlFlowNode mod |
+          /* Use previous points-to here to avoid slowing down the recursion too much */
+          exists(SubscriptNode sub |
+              sub.getValue() = sys_modules_flow and
+              pointsTo(sys_modules_flow, _, ObjectInternal::sysModules(), _) and
+              sub.getIndex() = n and
+              n.getNode().(StrConst).getText() = name and
+              sub.(DefinitionNode).getValue() = mod and
+              pointsTo(mod, _, m, _)
+          )
+        )
+    }
+
 }
 
-module InterModulePointsTo {
+private module InterModulePointsTo {
 
     pragma [noinline]
     predicate import_points_to(ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(string name, ImportExpr i |
             i.getAFlowNode() = f and i.getImportedModuleName() = name and
-            module_imported_as(value, name) and
+            PointsToInternal::module_imported_as(value, name) and
             origin = f and
             context.appliesTo(f)
         )
@@ -620,25 +639,6 @@ module InterModulePointsTo {
             mod.getSourceModule() = m and m = f.getEnclosingModule() and m = result.getScope() and
             PointsToInternal::pointsTo(f.getModule(name), context, mod, _) and
             result.getSourceVariable().getName() = name and result.getAUse() = f
-        )
-    }
-
-    /* Holds if `import name` will import the module `m`. */
-    predicate module_imported_as(ModuleObjectInternal m, string name) {
-        /* Normal imports */
-        m.getName() = name
-        or
-        /* sys.modules['name'] = m */
-        exists(ControlFlowNode sys_modules_flow, ControlFlowNode n, ControlFlowNode mod |
-          /* Use previous points-to here to avoid slowing down the recursion too much */
-          exists(SubscriptNode sub |
-              sub.getValue() = sys_modules_flow and
-              PointsToInternal::pointsTo(sys_modules_flow, _, ObjectInternal::sysModules(), _) and
-              sub.getIndex() = n and
-              n.getNode().(StrConst).getText() = name and
-              sub.(DefinitionNode).getValue() = mod and
-              PointsToInternal::pointsTo(mod, _, m, _)
-          )
         )
     }
 
@@ -2077,13 +2077,13 @@ module AttributePointsTo {
 
 }
 
-module ModuleAttributes {
+cached module ModuleAttributes {
 
     private EssaVariable varAtExit(Module mod, string name) {
         result.getName() = name and result.getAUse() = mod.getANormalExit()
     }
 
-    EssaVariable moduleStateVariable(ControlFlowNode use) {
+    private EssaVariable moduleStateVariable(ControlFlowNode use) {
         result.isMetaVariable() and result.getAUse() = use
     }
 
@@ -2091,7 +2091,7 @@ module ModuleAttributes {
         result = moduleStateVariable(mod.getANormalExit())
     }
 
-    predicate pointsToAtExit(Module mod, string name, ObjectInternal value, CfgOrigin origin) {
+    cached predicate pointsToAtExit(Module mod, string name, ObjectInternal value, CfgOrigin origin) {
         if exists(varAtExit(mod, name)) then (
             PointsToInternal::variablePointsTo(varAtExit(mod, name), any(Context c | c.isImport()), value, origin)
         ) else (
@@ -2099,7 +2099,7 @@ module ModuleAttributes {
         )
     }
 
-    predicate attributePointsTo(EssaVariable var, string name, ObjectInternal value, CfgOrigin origin) {
+    cached predicate attributePointsTo(EssaVariable var, string name, ObjectInternal value, CfgOrigin origin) {
         importStarPointsTo(var.getDefinition(), name, value, origin)
         or
         callsitePointsTo(var.getDefinition(), name, value, origin)
@@ -2142,7 +2142,7 @@ module ModuleAttributes {
      * Where var may be redefined in call to `foo` if `var` escapes (is global or non-local).
      */
     pragma [noinline]
-    predicate callsitePointsTo(CallsiteRefinement def, string name, ObjectInternal value, CfgOrigin origin) {
+    private predicate callsitePointsTo(CallsiteRefinement def, string name, ObjectInternal value, CfgOrigin origin) {
         def.getVariable().isMetaVariable() and
         exists(EssaVariable var, Function func, PointsToContext callee |
             InterProceduralPointsTo::callsite_calls_function(def.getCall(), _, func, callee, _) and
@@ -2155,7 +2155,7 @@ module ModuleAttributes {
      * Since it cannot refer to any actual value, it is set to "undefined" for sub module names.
      */
     pragma [noinline]
-    predicate scopeEntryPointsTo(ScopeEntryDefinition def, string name, ObjectInternal value, CfgOrigin origin) {
+    private predicate scopeEntryPointsTo(ScopeEntryDefinition def, string name, ObjectInternal value, CfgOrigin origin) {
         def.getVariable().isMetaVariable() and
         exists(Module m |
             def.getScope() = m and

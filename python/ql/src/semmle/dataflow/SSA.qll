@@ -340,8 +340,7 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
     }
 
     /** Gets the input variable for this phi node on the edge `pred` -> `this.getBasicBlock()`, if any. */
-    pragma [noinline]
-    EssaVariable getInput(BasicBlock pred) {
+    cached EssaVariable getInput(BasicBlock pred) {
         result.getDefinition() = this.reachingDefinition(pred)
         or
         result.getDefinition() = this.inputEdgeRefinement(pred)

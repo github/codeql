@@ -589,8 +589,7 @@ module BaseFlow {
     }
 
     /* Helper for this_scope_entry_value_transfer(...). Transfer of values from earlier scope to later on */
-    pragma [noinline]
-    predicate scope_entry_value_transfer_from_earlier(EssaVariable pred_var, Scope pred_scope, ScopeEntryDefinition succ_def, Scope succ_scope) {
+    cached predicate scope_entry_value_transfer_from_earlier(EssaVariable pred_var, Scope pred_scope, ScopeEntryDefinition succ_def, Scope succ_scope) {
         exists(SsaSourceVariable var |
             reaches_exit(pred_var) and
             pred_var.getScope() = pred_scope and
