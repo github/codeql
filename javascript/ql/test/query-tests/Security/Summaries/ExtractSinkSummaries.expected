@@ -1,5 +1,3 @@
-| (member name (parameter 0 (member regexpInj (root https://www.npmjs.com/package/infer-sources)))) | data | RegExpInjection |
-| (member name (parameter 0 (member regexpInj (root https://www.npmjs.com/package/infer-sources)))) | taint | RegExpInjection |
 | (parameter 0 (member codeInjection (root https://www.npmjs.com/package/infer-sources))) | data | CodeInjection |
 | (parameter 0 (member codeInjection (root https://www.npmjs.com/package/infer-sources))) | taint | CodeInjection |
 | (parameter 0 (member commandInjection (root https://www.npmjs.com/package/infer-sources))) | data | CommandInjection |
@@ -16,8 +14,6 @@
 | (parameter 0 (member reflected (root https://www.npmjs.com/package/infer-sources))) | data | StoredXss |
 | (parameter 0 (member reflected (root https://www.npmjs.com/package/infer-sources))) | taint | ReflectedXss |
 | (parameter 0 (member reflected (root https://www.npmjs.com/package/infer-sources))) | taint | StoredXss |
-| (parameter 0 (member regexpInj (root https://www.npmjs.com/package/infer-sources))) | data | RegExpInjection |
-| (parameter 0 (member regexpInj (root https://www.npmjs.com/package/infer-sources))) | taint | RegExpInjection |
 | (parameter 0 (member sqlInj (root https://www.npmjs.com/package/infer-sources))) | data | SqlInjection |
 | (parameter 0 (member sqlInj (root https://www.npmjs.com/package/infer-sources))) | taint | SqlInjection |
 | (parameter 0 (member unsafeDes (root https://www.npmjs.com/package/infer-sources))) | data | UnsafeDeserialization |
@@ -26,9 +22,5 @@
 | (parameter 0 (member xmlBomb (root https://www.npmjs.com/package/infer-sources))) | data | Xxe |
 | (parameter 0 (member xmlBomb (root https://www.npmjs.com/package/infer-sources))) | taint | XmlBomb |
 | (parameter 0 (member xmlBomb (root https://www.npmjs.com/package/infer-sources))) | taint | Xxe |
-| (parameter 0 (member xpathInj (root https://www.npmjs.com/package/infer-sources))) | data | XpathInjection |
-| (parameter 0 (member xpathInj (root https://www.npmjs.com/package/infer-sources))) | taint | XpathInjection |
 | (parameter 0 (member xxe (root https://www.npmjs.com/package/infer-sources))) | data | XmlBomb |
 | (parameter 0 (member xxe (root https://www.npmjs.com/package/infer-sources))) | taint | XmlBomb |
-| (parameter 1 (member remotePropeInjection (root https://www.npmjs.com/package/infer-sources))) | data | RemotePropertyInjection |
-| (parameter 1 (member remotePropeInjection (root https://www.npmjs.com/package/infer-sources))) | taint | RemotePropertyInjection |
