@@ -9,7 +9,7 @@
  * @id js/step-summary-extraction
  */
 
-import AllConfigurations
+import Configurations
 import PortalExitSource
 import PortalEntrySink
 

@@ -12,15 +12,10 @@ import semmle.javascript.security.dataflow.CommandInjection
 import semmle.javascript.security.dataflow.DomBasedXss as DomBasedXss
 import semmle.javascript.security.dataflow.NosqlInjection
 import semmle.javascript.security.dataflow.ReflectedXss as ReflectedXss
-import semmle.javascript.security.dataflow.RegExpInjection
-import semmle.javascript.security.dataflow.RemotePropertyInjection
 import semmle.javascript.security.dataflow.ServerSideUrlRedirect
 import semmle.javascript.security.dataflow.SqlInjection
-import semmle.javascript.security.dataflow.StackTraceExposure
 import semmle.javascript.security.dataflow.StoredXss as StoredXss
-import semmle.javascript.security.dataflow.TaintedFormatString
 import semmle.javascript.security.dataflow.TaintedPath
 import semmle.javascript.security.dataflow.UnsafeDeserialization
 import semmle.javascript.security.dataflow.XmlBomb
-import semmle.javascript.security.dataflow.XpathInjection
 import semmle.javascript.security.dataflow.Xxe
