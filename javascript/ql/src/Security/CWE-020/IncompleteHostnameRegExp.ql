@@ -26,9 +26,19 @@ predicate isIncompleteHostNameRegExpPattern(string pattern, string hostPart) {
             "([():|?a-z0-9-]+(\\\\)?[.]" + RegExpPatterns::commonTLD() + ")" + ".*", 1)
 }
 
-from DataFlow::Node re, string pattern, string hostPart, string kind, DataFlow::Node aux
-where regexp(re, pattern, kind, aux) and
+from RegExpPatternSource re, string pattern, string hostPart, string kind, DataFlow::Node aux
+where
+  pattern = re.getPattern() and
   isIncompleteHostNameRegExpPattern(pattern, hostPart) and
+  (
+    if re instanceof StringRegExpPatternSource
+    then (
+      kind = "string, which is used as a regular expression $@," and
+      aux = re.(StringRegExpPatternSource).getAUse()
+    ) else (
+      kind = "regular expression" and aux = re
+    )
+  ) and
   // ignore patterns with capture groups after the TLD
   not pattern.regexpMatch("(?i).*[.](" + RegExpPatterns::commonTLD() + ").*[(][?]:.*[)].*")
 select re,
