@@ -27,6 +27,7 @@
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Prototype pollution (`js/prototype-pollution`)    | security, external/cwe-250, external/cwe-400 | Highlights code that allows an attacker to modify a built-in prototype object through an unsanitized recursive merge function. The results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
