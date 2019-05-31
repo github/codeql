@@ -20,8 +20,8 @@ import javascript
  * The canonical example of such a mistake is: `^a|b|c`, which is
  * parsed as `(^a)|(b)|(c)`.
  */
-predicate isAnInterestingSemiAnchoredRegExpString(RegExpPatternSource src, string msg) {
-  exists(string str, string maybeGroupedStr, string regex, string anchorPart, string posString, string escapedDot |
+predicate isInterestingSemiAnchoredRegExpString(RegExpPatternSource src, string msg) {
+  exists(string str, string maybeGroupedStr, string regex, string anchorPart, string escapedDot |
     // a dot that might be escaped in a regular expression, for example `/\./` or new `RegExp('\\.')`
     escapedDot = "\\\\\\\\?[.]" and
     // a string that is mostly free from special reqular expression symbols
@@ -30,17 +30,14 @@ predicate isAnInterestingSemiAnchoredRegExpString(RegExpPatternSource src, strin
     maybeGroupedStr = "(?:" + str + "|\\(" + str + "\\))" and
     (
       // a problematic pattern: `^a|b|...|x`
-      regex = "(?i)(\\^" + maybeGroupedStr + ")(?:\\|" + maybeGroupedStr + ")+" and
-      posString = "beginning"
+      regex = "(?i)(\\^" + maybeGroupedStr + ")(?:\\|" + maybeGroupedStr + ")+"
       or
       // a problematic pattern: `a|b|...|x$`
-      regex = "(?i)(?:" + maybeGroupedStr + "\\|)+(" + maybeGroupedStr + "\\$)" and
-      posString = "end"
+      regex = "(?i)(?:" + maybeGroupedStr + "\\|)+(" + maybeGroupedStr + "\\$)"
     ) and
     anchorPart = src.getPattern().regexpCapture(regex, 1) and
     anchorPart.regexpMatch("(?i).*[a-z].*") and
-    msg = "The alternative '" + anchorPart + "' uses an anchor to match from the " + posString +
-        " of a string, but the other alternatives of this regular expression do not use anchors."
+    msg = "Misleading operator precedence. The subexpression '" + anchorPart + "' is anchored, but the other parts of this regular expression are not"
   )
 }
 
@@ -48,7 +45,7 @@ predicate isAnInterestingSemiAnchoredRegExpString(RegExpPatternSource src, strin
  * Holds if `src` is an unanchored pattern for a URL, indicating a
  * mistake explained by `msg`.
  */
-predicate isAnInterestingUnanchoredRegExpString(RegExpPatternSource src, string msg) {
+predicate isInterestingUnanchoredRegExpString(RegExpPatternSource src, string msg) {
   exists(string pattern | pattern = src.getPattern() |
     // a substring sequence of a protocol and subdomains, perhaps with some regex characters mixed in, followed by a known TLD
     pattern
@@ -80,7 +77,7 @@ predicate isAnInterestingUnanchoredRegExpString(RegExpPatternSource src, string 
 
 from DataFlow::Node nd, string msg
 where
-  isAnInterestingUnanchoredRegExpString(nd, msg)
+  isInterestingUnanchoredRegExpString(nd, msg)
   or
-  isAnInterestingSemiAnchoredRegExpString(nd, msg)
+  isInterestingSemiAnchoredRegExpString(nd, msg)
 select nd, msg

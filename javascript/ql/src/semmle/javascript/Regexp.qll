@@ -41,6 +41,9 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
 
   override string toString() { regexpterm(this, _, _, _, result) }
 
+  /** Gets the raw source text of this term. */
+  string getRawValue() { regexpterm(this, _, _, _, result) }
+
   /** Holds if this regular expression term can match the empty string. */
   abstract predicate isNullable();
 
@@ -453,7 +456,7 @@ class RegExpLiteralPatternSource extends RegExpPatternSource {
   string pattern;
 
   RegExpLiteralPatternSource() {
-    exists(string raw | raw = asExpr().(RegExpLiteral).getRoot().toString() |
+    exists(string raw | raw = asExpr().(RegExpLiteral).getRoot().getRawValue() |
       // hide the fact that `/` is escaped in the literal
       pattern = raw.regexpReplaceAll("\\\\/", "/")
     )
