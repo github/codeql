@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>In Python, <code>return</code> and <code>yield</code> statements and the <code>yield from</code>
+expression can only be used within a function. Using them outside a function or a class
+method results in a <code>SyntaxError</code> at runtime.</p>
+</overview>
+
+<recommendation>
+<p>Using these elements outside a function or a class method usually indicates an error in the logic.
+Consequently, it is not possible to suggest a general fix.</p>
+</recommendation>
+
+<example>
+<p>In this example, a <code>return</code> statement is used outside a class method in a class and
+a <code>yield</code> statement is used outside a function in a scope of a module which would result
+in a <code>SyntaxError</code> when running this code.
+
+In this example, the invalid class could be corrected by placing the <code>return</code> statement
+in a class method, or by refactoring the class into a function. The invalid <code>yield</code> statement
+could become part of a new generator function containing the <code>for</code> loop.</p>
+<sample src="ReturnOrYieldOutsideFunction.py" />
+</example>
+
+<references>
+    <li>Python reference: <a href="https://docs.python.org/3.7/reference/simple_stmts.html#the-return-statement">
+    The return statement</a>.</li>
+    <li>Python reference: <a href="https://docs.python.org/3.7/reference/simple_stmts.html#yield">
+    The yield statement</a>.</li>
+    <li>Python PEP-380: <a href="https://docs.python.org/3/whatsnew/3.3.html#pep-380">
+    The yield from expression</a>.</li>
+</references>
+</qhelp>
