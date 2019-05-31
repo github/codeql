@@ -984,6 +984,7 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
   // destructors" node. For performance, only do this when the nodes exist.
   exists(Pos afterDtors | afterDtors.isAfterDestructors() | subEdge(afterDtors, n1, _, _)) and
   not exists(getDestructorCallAfterNode(n1, 0)) and
+  not synthetic_destructor_call(n1, 0, _) and
   p1.nodeBeforeDestructors(n1, n1) and
   p2.nodeAfterDestructors(n2, n1)
   or
@@ -1011,6 +1012,32 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
       p2.nodeAfterDestructors(n2, n)
     )
   )
+  or
+  exists(Node n |
+    // before destructors -> access(max)
+    exists(int maxCallIndex |
+      maxCallIndex = max(int i | exists(getSynthesisedDestructorCallAfterNode(n, i))) and
+      p1.nodeBeforeDestructors(n1, n) and
+      p2.nodeAt(n2, getSynthesisedDestructorCallVariableAccessAfterNode(n, maxCallIndex)))
+    or
+    // call(i+1) -> access(i)
+    exists(int i |
+      p1.nodeAt(n1, getSynthesisedDestructorCallAfterNode(n, i + 1)) and
+      p2.nodeAt(n2, getSynthesisedDestructorCallVariableAccessAfterNode(n, i))
+    )
+    or
+    // call(0) -> after destructors end
+    p1.nodeAt(n1, getSynthesisedDestructorCallAfterNode(n, 0)) and
+    p2.nodeAfterDestructors(n2, n)
+  )
+}
+
+DestructorCall getSynthesisedDestructorCallAfterNode(Node n, int i) {
+  synthetic_destructor_call(n, i, result)
+}
+
+VariableAccess getSynthesisedDestructorCallVariableAccessAfterNode(Node n, int i) {
+  result = getSynthesisedDestructorCallAfterNode(n, i).getChild(-1)
 }
 
 /**

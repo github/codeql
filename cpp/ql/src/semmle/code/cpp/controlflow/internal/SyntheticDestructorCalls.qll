@@ -31,6 +31,7 @@ class SyntheticDestructorCall extends FunctionCall {
         not exists(target.getName())
       )
     ) and
+    not synthetic_destructor_call(_, _, this) and
     not exists(this.getParent()) and
     not isDeleteDestructorCall(this) and
     not this.isUnevaluated() and

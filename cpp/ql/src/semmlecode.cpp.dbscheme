@@ -1041,6 +1041,11 @@ exprconv(
 
 compgenerated(unique int id: @element ref);
 
+synthetic_destructor_call(
+    int element: @element ref,
+    int i: int ref,
+    unique int destructor_call: @routineexpr ref
+);
 
 namespaces(
     unique int id: @namespace,
