@@ -7,7 +7,7 @@ private import semmle.python.pointsto.PointsToContext
 /** Internal type backing `ObjectInternal` and `Value`
  * See `ObjectInternal.qll` for an explanation of the API.
  */
-newtype TObject =
+cached newtype TObject =
     /* Builtin class objects */
     TBuiltinClassObject(Builtin bltn) {
         bltn.isClass() and
