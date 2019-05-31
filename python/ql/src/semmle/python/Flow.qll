@@ -237,12 +237,14 @@ class ControlFlowNode extends @py_flow_node {
      *  precise, but may not provide information for a significant number of flow-nodes. 
      *  If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
      */
+    pragma [nomagic]
     predicate refersTo(Object obj, ClassObject cls, ControlFlowNode origin) {
         this.refersTo(_, obj, cls, origin)
     }
 
     /** Gets what this expression might "refer-to" in the given `context`.
      */
+    pragma [nomagic]
     predicate refersTo(Context context, Object obj, ClassObject cls, ControlFlowNode origin) {
         not obj = unknownValue() and
         not cls = theUnknownType() and
@@ -253,6 +255,7 @@ class ControlFlowNode extends @py_flow_node {
      * Unlike `this.refersTo(value, _, origin)` this predicate includes results 
      * where the class cannot be inferred. 
      */
+    pragma [nomagic]
     predicate refersTo(Object obj, ControlFlowNode origin) {
         not obj = unknownValue() and
         PointsTo::points_to(this, _, obj, _, origin)

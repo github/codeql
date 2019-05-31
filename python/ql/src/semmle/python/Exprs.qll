@@ -85,30 +85,16 @@ class Expr extends Expr_, AstNode {
     /** Gets what this expression might "refer-to" in the given `context`.
      */
     predicate refersTo(Context context, Object obj, ClassObject cls, AstNode origin) {
-        exists(Value value, ControlFlowNode cfgorigin |
-            PointsTo::pointsTo(this.getAFlowNode(), context, value, cfgorigin) and
-            origin.getAFlowNode() = cfgorigin and
-            cls = value.getClass().getSource() |
-            if exists(value.getSource()) then
-                obj = value.getSource()
-            else
-                obj = cfgorigin
-        )
+        this.getAFlowNode().refersTo(context, obj, cls, origin.getAFlowNode())
     }
 
     /** Whether this expression might "refer-to" to `value` which is from `origin` 
      * Unlike `this.refersTo(value, _, origin)`, this predicate includes results 
      * where the class cannot be inferred.
      */
+    pragma[nomagic]
     predicate refersTo(Object obj, AstNode origin) {
-        exists(Value value, ControlFlowNode cfgorigin |
-            PointsTo::pointsTo(this.getAFlowNode(), _, value, cfgorigin) and
-            origin.getAFlowNode() = cfgorigin and
-            if exists(value.getSource()) then
-                obj = value.getSource()
-            else
-                obj = cfgorigin
-        )
+        this.getAFlowNode().refersTo(obj, origin.getAFlowNode())
     }
 
     /** Equivalent to `this.refersTo(value, _)` */
