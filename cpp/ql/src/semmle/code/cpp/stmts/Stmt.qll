@@ -675,7 +675,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * ```
    * the result is `int x`.
    */
-  Variable getVariable() { result = getChild(4).(DeclStmt).getADeclaration() }
+  LocalVariable getVariable() { result = getChild(4).(DeclStmt).getADeclaration() }
 
   /**
    * Gets the expression giving the range to iterate over.
@@ -689,7 +689,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   Expr getRange() { result = getRangeVariable().getInitializer().getExpr() }
 
   /** Gets the compiler-generated `__range` variable after desugaring. */
-  Variable getRangeVariable() {
+  LocalVariable getRangeVariable() {
     result = getChild(0).(DeclStmt).getADeclaration()
   }
 
@@ -709,6 +709,16 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    */
   DeclStmt getBeginEndDeclaration() { result = this.getChild(1) }
 
+  /** Gets the compiler-generated `__begin` variable after desugaring. */
+  LocalVariable getBeginVariable() {
+    result = getBeginEndDeclaration().getDeclaration(0)
+  }
+
+  /** Gets the compiler-generated `__end` variable after desugaring. */
+  LocalVariable getEndVariable() {
+    result = getBeginEndDeclaration().getDeclaration(1)
+  }
+
   /**
    * Gets the compiler-generated `++__begin` which is the update
    * expression of this for statement after desugaring. It will
@@ -718,8 +728,8 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   Expr getUpdate() { result = this.getChild(3) }
 
   /** Gets the compiler-generated `__begin` variable after desugaring. */
-  Variable getAnIterationVariable() {
-    result = getUpdate().getAChild().(VariableAccess).getTarget()
+  LocalVariable getAnIterationVariable() {
+    result = getBeginVariable()
   }
 }
 

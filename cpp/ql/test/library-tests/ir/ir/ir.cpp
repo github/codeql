@@ -1046,6 +1046,39 @@ void Lambda(int x, const String& s) {
   lambda_inits(6);
 }
 
+template<typename T>
+struct vector {
+    struct iterator {
+        T* p;
+        iterator& operator++();
+        T& operator*() const;
+
+        bool operator!=(iterator right) const;
+    };
+
+    iterator begin() const;
+    iterator end() const;
+};
+
+template<typename T>
+bool operator==(typename vector<T>::iterator left, typename vector<T>::iterator right);
+template<typename T>
+bool operator!=(typename vector<T>::iterator left, typename vector<T>::iterator right);
+
+void RangeBasedFor(const vector<int>& v) {
+    for (int e : v) {
+        if (e > 0) {
+            continue;
+        }
+    }
+
+    for (const int& e : v) {
+        if (e < 5) {
+            break;
+        }
+    }
+}
+
 #if 0  // Explicit capture of `this` requires possible extractor fixes.
 
 struct LambdaContainer {

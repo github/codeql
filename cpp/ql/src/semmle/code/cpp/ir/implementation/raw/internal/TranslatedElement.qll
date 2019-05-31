@@ -359,6 +359,16 @@ newtype TTranslatedElement =
       declStmt.getADeclarationEntry() = entry
     )
   } or
+  // A compiler-generated variable to implement a range-based for loop. These don't have a
+  // `DeclarationEntry` in the database, so we have to go by the `Variable` itself.
+  TTranslatedRangeBasedForVariableDeclaration(RangeBasedForStmt forStmt, LocalVariable var) {
+    translateStmt(forStmt) and
+    (
+      var = forStmt.getRangeVariable()  or
+      var = forStmt.getBeginEndDeclaration().getADeclaration() or
+      var = forStmt.getVariable()
+    )
+  } or
   // An allocator call in a `new` or `new[]` expression
   TTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
     not ignoreExpr(newExpr)
