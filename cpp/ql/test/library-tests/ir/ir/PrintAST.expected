@@ -7591,29 +7591,29 @@ ir.cpp:
 # 1104|     3: d
 # 1104|         Type = unsigned int &
 # 1105|   body: { ... }
-# 1107|     0: asm statement
-# 1110|       0: (reference dereference)
-# 1110|           Type = unsigned int
-# 1110|           ValueCategory = lvalue
-# 1110|         expr: a
-# 1110|             Type = unsigned int &
-# 1110|             ValueCategory = prvalue(load)
-# 1110|       1: (reference dereference)
-# 1110|           Type = unsigned int
-# 1110|           ValueCategory = lvalue
-# 1110|         expr: b
-# 1110|             Type = unsigned int &
-# 1110|             ValueCategory = prvalue(load)
-# 1110|       2: (reference dereference)
-# 1110|           Type = unsigned int
-# 1110|           ValueCategory = lvalue
-# 1110|         expr: c
-# 1110|             Type = unsigned int &
-# 1110|             ValueCategory = prvalue(load)
-# 1110|       3: (reference dereference)
-# 1110|           Type = unsigned int
-# 1110|           ValueCategory = lvalue
-# 1110|         expr: d
-# 1110|             Type = unsigned int &
-# 1110|             ValueCategory = prvalue(load)
-# 1118|     1: return ...
+# 1106|     0: asm statement
+# 1109|       0: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: a
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1109|       1: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: b
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1109|       2: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: c
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1109|       3: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: d
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1111|     1: return ...

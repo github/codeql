@@ -5006,7 +5006,7 @@ ir.cpp:
 # 1099|     mu0_2(unknown)    = UnmodeledDefinition      : 
 # 1099|     r0_3(glval<int>)  = VariableAddress[x]       : 
 # 1099|     mu0_4(int)        = InitializeParameter[x]   : &:r0_3
-# 1100|     mu0_5(unknown)    = InlineAsm                : ~mu0_2
+# 1100|     mu0_5(unknown)    = ^InlineAsm               : ~mu0_2
 # 1101|     r0_6(glval<int>)  = VariableAddress[#return] : 
 # 1101|     r0_7(glval<int>)  = VariableAddress[x]       : 
 # 1101|     r0_8(int)         = Load                     : &:r0_7, ~mu0_2
@@ -5029,12 +5029,12 @@ ir.cpp:
 # 1104|     mu0_8(unsigned int &)        = InitializeParameter[c] : &:r0_7
 # 1104|     r0_9(glval<unsigned int &>)  = VariableAddress[d]     : 
 # 1104|     mu0_10(unsigned int &)       = InitializeParameter[d] : &:r0_9
-# 1107|     r0_11(glval<unsigned int &>) = VariableAddress[a]     : 
-# 1107|     r0_12(glval<unsigned int &>) = VariableAddress[b]     : 
-# 1107|     r0_13(glval<unsigned int &>) = VariableAddress[c]     : 
-# 1107|     r0_14(glval<unsigned int &>) = VariableAddress[d]     : 
-# 1107|     mu0_15(unknown)              = InlineAsm              : ~mu0_2, 0:r0_11, 1:r0_12, 2:r0_13, 3:r0_14
-# 1118|     v0_16(void)                  = NoOp                   : 
+# 1106|     r0_11(glval<unsigned int &>) = VariableAddress[a]     : 
+# 1106|     r0_12(glval<unsigned int &>) = VariableAddress[b]     : 
+# 1106|     r0_13(glval<unsigned int &>) = VariableAddress[c]     : 
+# 1106|     r0_14(glval<unsigned int &>) = VariableAddress[d]     : 
+# 1106|     mu0_15(unknown)              = ^InlineAsm             : ~mu0_2, 0:r0_11, 1:r0_12, 2:r0_13, 3:r0_14
+# 1111|     v0_16(void)                  = NoOp                   : 
 # 1104|     v0_17(void)                  = ReturnVoid             : 
 # 1104|     v0_18(void)                  = UnmodeledUse           : mu*
 # 1104|     v0_19(void)                  = ExitFunction           : 
