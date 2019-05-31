@@ -5,6 +5,7 @@
  */
 
 import javascript
+import semmle.javascript.dependencies.Dependencies
 
 /** A data flow node corresponding to an expression. */
 class ExprNode extends DataFlow::ValueNode {
@@ -461,37 +462,9 @@ module ModuleImportNode {
     string path;
 
     DefaultRange() {
-      // `require("http")`
-      exists(Require req | req.getImportedPath().getValue() = path |
-        this = DataFlow::valueNode(req)
-      )
-      or
-      // `import http = require("http")`
-      exists(ExternalModuleReference req | req.getImportedPath().getValue() = path |
-        this = DataFlow::valueNode(req)
-      )
-      or
-      // `import * as http from 'http'` or `import http from `http`'
-      exists(ImportDeclaration id, ImportSpecifier is |
-        id.getImportedPath().getValue() = path and
-        is = id.getASpecifier() and
-        this = DataFlow::ssaDefinitionNode(SSA::definition(is))
-      |
-        is instanceof ImportNamespaceSpecifier and
-        count(id.getASpecifier()) = 1
-        or
-        is.getImportedName() = "default"
-      )
-      or
-      // `import { createServer } from 'http'`
-      exists(ImportDeclaration id |
-        this = DataFlow::destructuredModuleImportNode(id) and
-        id.getImportedPath().getValue() = path
-      )
-      or
-      // declared AMD dependency
-      exists(AmdModuleDefinition amd |
-        this = DataFlow::parameterNode(amd.getDependencyParameter(path))
+      exists(Import i |
+        this = i.getImportedModuleNode() and
+        i.getImportedPath().getValue() = path
       )
       or
       // AMD require
@@ -514,6 +487,15 @@ module ModuleImportNode {
  * This predicate can be extended by subclassing `ModuleImportNode::Range`.
  */
 ModuleImportNode moduleImport(string path) { result.getPath() = path }
+
+/**
+ * Gets a (default) import of the given dependency `dep`, such as
+ * `require("lodash")` in a context where a package.json file includes
+ * `"lodash"` as a dependency.
+ */
+ModuleImportNode dependencyModuleImport(Dependency dep) {
+  result = dep.getAUse("import").(Import).getImportedModuleNode()
+}
 
 /**
  * Gets a data flow node that either imports `m` from the module with

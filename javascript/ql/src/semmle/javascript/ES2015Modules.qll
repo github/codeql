@@ -43,6 +43,22 @@ class ImportDeclaration extends Stmt, Import, @importdeclaration {
 
   /** Gets an import specifier of this import declaration. */
   ImportSpecifier getASpecifier() { result = getSpecifier(_) }
+
+  override DataFlow::Node getImportedModuleNode() {
+    // `import * as http from 'http'` or `import http from `http`'
+    exists(ImportSpecifier is |
+      is = getASpecifier() and
+      result = DataFlow::ssaDefinitionNode(SSA::definition(is))
+    |
+      is instanceof ImportNamespaceSpecifier and
+      count(getASpecifier()) = 1
+      or
+      is.getImportedName() = "default"
+    )
+    or
+    // `import { createServer } from 'http'`
+    result = DataFlow::destructuredModuleImportNode(this)
+  }
 }
 
 /** A literal path expression appearing in an `import` declaration. */
