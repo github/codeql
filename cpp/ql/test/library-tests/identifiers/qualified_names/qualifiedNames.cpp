@@ -59,3 +59,26 @@ namespace templates {
     return getMember(tc, typedefC());
   }
 }
+
+namespace std {
+  inline namespace cpp17 {
+    void functionInTwoNamespaces();
+    class classInTwoNameSpaces {
+    };
+    inline namespace implementation {
+      namespace ns {
+        void functionInFourNamespaces();
+      }
+    }
+  }
+}
+
+// This code demonstrates that `functionInFourNamespaces` is indeed visible in
+// four name spaces.
+using void_fptr = void(*)();
+void_fptr ptrs[] = {
+  std::ns::functionInFourNamespaces,
+  std::cpp17::ns::functionInFourNamespaces,
+  std::implementation::ns::functionInFourNamespaces,
+  std::cpp17::implementation::ns::functionInFourNamespaces,
+};
