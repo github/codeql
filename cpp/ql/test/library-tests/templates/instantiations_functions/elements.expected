@@ -362,15 +362,15 @@
 | test.cpp:34:6:34:11 | define |
 | test.cpp:34:6:34:11 | definition of define |
 | test.cpp:34:15:37:1 | { ... } |
-| test.cpp:35:5:35:10 | mention of action<actor1<composite<int>>> |
+| test.cpp:35:5:35:10 | type mention |
 | test.cpp:35:5:35:37 | declaration |
-| test.cpp:35:12:35:17 | mention of actor1<composite<int>> |
-| test.cpp:35:19:35:27 | mention of composite<int> |
+| test.cpp:35:12:35:17 | type mention |
+| test.cpp:35:19:35:27 | type mention |
 | test.cpp:35:36:35:36 | call to action |
 | test.cpp:35:36:35:36 | definition of z |
 | test.cpp:35:36:35:36 | initializer for z |
 | test.cpp:35:36:35:36 | z |
-| test.cpp:36:5:36:8 | mention of rule |
+| test.cpp:36:5:36:8 | type mention |
 | test.cpp:36:5:36:27 | declaration |
 | test.cpp:36:10:36:22 | definition of pp_expression |
 | test.cpp:36:10:36:22 | pp_expression |
