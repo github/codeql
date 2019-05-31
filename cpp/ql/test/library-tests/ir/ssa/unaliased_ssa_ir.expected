@@ -691,7 +691,7 @@ ssa.cpp:
 #  179|     mu0_2(unknown)     = UnmodeledDefinition      : 
 #  179|     r0_3(glval<int *>) = VariableAddress[p]       : 
 #  179|     m0_4(int *)        = InitializeParameter[p]   : &:r0_3
-#  180|     mu0_5(unknown)     = ^InlineAsm               : ~mu0_2
+#  180|     mu0_5(unknown)     = InlineAsm                : ~mu0_2
 #  181|     r0_6(glval<int>)   = VariableAddress[#return] : 
 #  181|     r0_7(glval<int *>) = VariableAddress[p]       : 
 #  181|     r0_8(int *)        = Load                     : &:r0_7, m0_4
@@ -719,7 +719,7 @@ ssa.cpp:
 #  186|     r0_12(glval<unsigned int &>) = VariableAddress[b]     : 
 #  186|     r0_13(glval<unsigned int &>) = VariableAddress[c]     : 
 #  186|     r0_14(glval<unsigned int &>) = VariableAddress[d]     : 
-#  186|     mu0_15(unknown)              = ^InlineAsm             : ~mu0_2, 0:r0_11, 1:r0_12, 2:r0_13, 3:r0_14
+#  186|     mu0_15(unknown)              = InlineAsm              : ~mu0_2, 0:r0_11, 1:r0_12, 2:r0_13, 3:r0_14
 #  192|     v0_16(void)                  = NoOp                   : 
 #  184|     v0_17(void)                  = ReturnVoid             : 
 #  184|     v0_18(void)                  = UnmodeledUse           : mu*

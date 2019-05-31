@@ -215,6 +215,6 @@ module Opcode {
   class BufferWriteSideEffect extends WriteSideEffectOpcode, BufferAccessOpcode, TBufferWriteSideEffect { override final string toString() { result = "BufferWriteSideEffect" } }
   class BufferMayWriteSideEffect extends MayWriteSideEffectOpcode, BufferAccessOpcode, TBufferMayWriteSideEffect { override final string toString() { result = "BufferMayWriteSideEffect" } }
   class Chi extends Opcode, TChi { override final string toString() { result = "Chi" } }
-  class InlineAsm extends MayWriteSideEffectOpcode, TInlineAsm { override final string toString() { result = "InlineAsm" } }
+  class InlineAsm extends Opcode, TInlineAsm { override final string toString() { result = "InlineAsm" } }
   class Unreached extends Opcode, TUnreached { override final string toString() { result = "Unreached" } }
 }
