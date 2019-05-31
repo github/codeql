@@ -27,6 +27,7 @@
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Missing regular expression anchor (`js/regex/missing-regexp-anchor`) | correctness, security, external/cwe/cwe-20 | Highlights regular expression patterns that may be missing an anchor, indicating a possible violation of [CWE-20](https://cwe.mitre.org/data/definitions/20.html). Results are not shown on LGTM by default. |
 | Prototype pollution (`js/prototype-pollution`)    | security, external/cwe-250, external/cwe-400 | Highlights code that allows an attacker to modify a built-in prototype object through an unsanitized recursive merge function. The results are shown on LGTM by default. |
 
 ## Changes to existing queries
