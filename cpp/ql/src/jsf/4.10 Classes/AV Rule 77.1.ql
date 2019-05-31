@@ -2,8 +2,8 @@
  * @name Constructor with default arguments will be used as a copy constructor
  * @description Constructors with default arguments should not be signature-compatible with a copy constructor when their default arguments are taken into account.
  * @kind problem
- * @problem.severity error
- * @precision high
+ * @problem.severity warning
+ * @precision low
  * @id cpp/constructor-used-as-copy-constructor
  * @tags reliability
  *       readability

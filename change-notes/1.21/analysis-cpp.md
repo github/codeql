@@ -30,6 +30,7 @@
 | Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | Fewer false positive results | Non-standard uses of %L are now understood. |
 | `()`-declared function called with too many arguments (`cpp/futile-params`) | Improved coverage | Query has been generalized to find all cases where the number of arguments exceedes the number of parameters of the function, provided the function is also properly declared/defined elsewhere. |
 | Use of potentially dangerous function (`cpp/potentially-dangerous-function`) | Fewer results | Results relating to the standard library `gets` function have been moved into a new query (`dangerous-function-overflow`). |
+| Constructor with default arguments will be used as a copy constructor (`cpp/constructor-used-as-copy-constructor`) | Lowered severity and precision | The severity and precision of this query have been reduced to "warning" and "low", respectively, due to this coding pattern being used intentionally and safely in a number of real-world projects. |
 
 ## Changes to QL libraries
 - The predicate `Declaration.hasGlobalName` now only holds for declarations that are not nested in a class. For example, it no longer holds for a member function `MyClass::myFunction` or a constructor `MyClass::MyClass`, whereas previously it would classify those two declarations as global names.
