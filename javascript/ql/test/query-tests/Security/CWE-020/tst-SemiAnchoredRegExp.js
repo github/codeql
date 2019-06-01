@@ -29,7 +29,9 @@
 
 	/^good.com|better.com/; // NOT OK
 	/^good\.com|better\.com/; // NOT OK
-	/^good\\.com|better\\.com/; // NOT OK
+	/^good\\.com|better\\.com/;
+	/^good\\\.com|better\\\.com/;
+	/^good\\\\.com|better\\\\.com/;
 });
 
 (function coreString() {
@@ -64,6 +66,8 @@
 	new RegExp('^good.com|better.com'); // NOT OK
 	new RegExp('^good\.com|better\.com'); // NOT OK
 	new RegExp('^good\\.com|better\\.com'); // NOT OK
+	new RegExp('^good\\\.com|better\\\.com'); // NOT OK
+	new RegExp('^good\\\\.com|better\\\\.com');
 });
 
 (function realWorld() {
