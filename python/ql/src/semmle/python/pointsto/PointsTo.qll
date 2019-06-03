@@ -844,11 +844,13 @@ module InterProceduralPointsTo {
     private predicate normal_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(PointsToContext caller, ControlFlowNode arg |
             PointsToInternal::pointsTo(arg, caller, value, origin) and
-            callsite_argument_transfer(arg, caller, def, context)
+            named_argument_transfer(arg, caller, def, context)
         )
         or
         not def.isSelf() and not def.isVarargs() and not def.isKwargs() and
         context.isRuntime() and value = ObjectInternal::unknown() and origin = def.getDefiningNode()
+        or
+        positional_parameter_points_to(def, context, value, origin)
     }
 
     pragma [noinline]
@@ -921,7 +923,7 @@ module InterProceduralPointsTo {
         exists(int parameter_offset |
             callsite_calls_function(call, caller, scope, callee, parameter_offset) and
             startOffset = scope.getPositionalParameterCount() - parameter_offset and
-            length = call.getNode().getPositionalArgumentCount() - startOffset and
+            length = positional_argument_count(call, caller) - startOffset and
             length > 0
         )
     }
@@ -929,7 +931,7 @@ module InterProceduralPointsTo {
     predicate varargs_empty_tuple(Function scope, PointsToContext callee) {
         exists(CallNode call, PointsToContext caller, int parameter_offset |
             callsite_calls_function(call, caller, scope, callee, parameter_offset) and
-            scope.getPositionalParameterCount() - parameter_offset >= call.getNode().getPositionalArgumentCount()
+            scope.getPositionalParameterCount() - parameter_offset >= positional_argument_count(call, caller)
         )
     }
 
@@ -940,16 +942,39 @@ module InterProceduralPointsTo {
         p.isKwargs() and value = TUnknownInstance(ObjectInternal::builtin("dict"))
     }
 
-    /** Holds if the `(argument, caller)` pair matches up with `(param, callee)` pair across call. */
-    cached predicate callsite_argument_transfer(ControlFlowNode argument, PointsToContext caller, ParameterDefinition param, PointsToContext callee) {
+    predicate positional_argument_points_to(CallNode call, int argument, PointsToContext caller, ObjectInternal value, ControlFlowNode origin) {
+        PointsToInternal::pointsTo(call.getArg(argument), caller, value, origin)
+        or
+        exists(SequenceObjectInternal arg, int pos |
+            pos = call.getNode().getPositionalArgumentCount() and
+            PointsToInternal::pointsTo(origin, caller, arg, _) and
+            value = arg.getItem(argument-pos) and
+            origin = call.getStarArg()
+        )
+    }
+
+    private int positional_argument_count(CallNode call, PointsToContext caller) {
+        result = call.getNode().getPositionalArgumentCount() and not exists(call.getStarArg()) and caller.appliesTo(call)
+        or
+        exists(SequenceObjectInternal arg, int pos |
+            pos = call.getNode().getPositionalArgumentCount() and
+            PointsToInternal::pointsTo(call.getStarArg(), caller, arg, _) and
+            result = pos + arg.length()
+        )
+    }
+
+    predicate positional_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        exists(CallNode call, int argument, PointsToContext caller, Function func, int offset |
+            positional_argument_points_to(call, argument, caller, value, origin) and
+            callsite_calls_function(call, caller, func, context, offset) and
+            def.getParameter() = func.getArg(argument+offset)
+        )
+    }
+
+    cached predicate named_argument_transfer(ControlFlowNode argument, PointsToContext caller, ParameterDefinition param, PointsToContext callee) {
         exists(CallNode call, Function func, int offset |
             callsite_calls_function(call, caller, func, callee, offset)
             |
-            exists(int n |
-                argument = call.getArg(n) and
-                param.getParameter() = func.getArg(n+offset)
-            )
-            or
             exists(string name |
                 argument = call.getArgByName(name) and
                 param.getParameter() = func.getArgByName(name)

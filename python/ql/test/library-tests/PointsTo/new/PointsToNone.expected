@@ -75,6 +75,7 @@
 | k_getsetattr.py:15 | ControlFlowNode for Attribute() | 6 |
 | l_calls.py:4 | ControlFlowNode for Attribute() | 4 |
 | l_calls.py:9 | ControlFlowNode for foo() | 4 |
+| l_calls.py:48 | ControlFlowNode for None | 48 |
 | m_attributes.py:12 | ControlFlowNode for Attribute() | 8 |
 | m_attributes.py:13 | ControlFlowNode for Attribute() | 8 |
 | o_no_returns.py:7 | ControlFlowNode for fail() | 10 |

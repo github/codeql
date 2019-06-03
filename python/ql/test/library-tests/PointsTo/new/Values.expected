@@ -468,6 +468,7 @@
 | l_calls.py:25 | ControlFlowNode for a | runtime | class Owner | builtin-class type |
 | l_calls.py:29 | ControlFlowNode for FunctionExpr | import | Function f | builtin-class function |
 | l_calls.py:30 | ControlFlowNode for args | code/l_calls.py:37 from import | (int 1, int 2, int 3, ) | builtin-class tuple |
+| l_calls.py:30 | ControlFlowNode for args | code/l_calls.py:42 from import | ('a', 'b', 'c', ) | builtin-class tuple |
 | l_calls.py:30 | ControlFlowNode for args | runtime | instance of tuple | builtin-class tuple |
 | l_calls.py:32 | ControlFlowNode for ClassExpr | import | class E | builtin-class type |
 | l_calls.py:32 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
@@ -498,6 +499,33 @@
 | l_calls.py:39 | ControlFlowNode for IntegerLiteral | import | int 3 | builtin-class int |
 | l_calls.py:39 | ControlFlowNode for IntegerLiteral | import | int 4 | builtin-class int |
 | l_calls.py:39 | ControlFlowNode for IntegerLiteral | import | int 5 | builtin-class int |
+| l_calls.py:41 | ControlFlowNode for Str | import | 'a' | builtin-class str |
+| l_calls.py:41 | ControlFlowNode for Str | import | 'b' | builtin-class str |
+| l_calls.py:41 | ControlFlowNode for Str | import | 'c' | builtin-class str |
+| l_calls.py:41 | ControlFlowNode for Tuple | import | ('a', 'b', 'c', ) | builtin-class tuple |
+| l_calls.py:42 | ControlFlowNode for f | import | Function f | builtin-class function |
+| l_calls.py:42 | ControlFlowNode for f() | import | ('a', 'b', 'c', ) | builtin-class tuple |
+| l_calls.py:42 | ControlFlowNode for t | import | ('a', 'b', 'c', ) | builtin-class tuple |
+| l_calls.py:44 | ControlFlowNode for FunctionExpr | import | Function g | builtin-class function |
+| l_calls.py:45 | ControlFlowNode for a | code/l_calls.py:51 from import | 'a' | builtin-class str |
+| l_calls.py:47 | ControlFlowNode for ClassExpr | import | class F | builtin-class type |
+| l_calls.py:47 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
+| l_calls.py:48 | ControlFlowNode for FunctionExpr | import | Function F.m | builtin-class function |
+| l_calls.py:48 | ControlFlowNode for None | import | None | builtin-class NoneType |
+| l_calls.py:49 | ControlFlowNode for x | code/l_calls.py:52 from import | 'a' | builtin-class str |
+| l_calls.py:49 | ControlFlowNode for x | code/l_calls.py:53 from import | 'b' | builtin-class str |
+| l_calls.py:51 | ControlFlowNode for g | import | Function g | builtin-class function |
+| l_calls.py:51 | ControlFlowNode for g() | import | 'a' | builtin-class str |
+| l_calls.py:51 | ControlFlowNode for t | import | ('a', 'b', 'c', ) | builtin-class tuple |
+| l_calls.py:52 | ControlFlowNode for Attribute | import | Method(Function F.m, F()) | builtin-class method |
+| l_calls.py:52 | ControlFlowNode for Attribute() | import | 'a' | builtin-class str |
+| l_calls.py:52 | ControlFlowNode for F | import | class F | builtin-class type |
+| l_calls.py:52 | ControlFlowNode for F() | import | F() | class F |
+| l_calls.py:52 | ControlFlowNode for t | import | ('a', 'b', 'c', ) | builtin-class tuple |
+| l_calls.py:53 | ControlFlowNode for Attribute | import | Function F.m | builtin-class function |
+| l_calls.py:53 | ControlFlowNode for Attribute() | import | 'b' | builtin-class str |
+| l_calls.py:53 | ControlFlowNode for F | import | class F | builtin-class type |
+| l_calls.py:53 | ControlFlowNode for t | import | ('a', 'b', 'c', ) | builtin-class tuple |
 | m_attributes.py:3 | ControlFlowNode for ClassExpr | import | class C | builtin-class type |
 | m_attributes.py:3 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | m_attributes.py:5 | ControlFlowNode for FunctionExpr | import | Function C.__init__ | builtin-class function |

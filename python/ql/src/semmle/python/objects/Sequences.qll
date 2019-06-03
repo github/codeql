@@ -41,7 +41,7 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
     private string contents(int n) {
         n < 4 and n = this.length() and result = ""
         or
-        n = 4 and n < this.length() and result = "... " + (this.length()-4).toString() + " more"
+        n = 3 and this.length() > 3 and result = (this.length()-3).toString() + " more..."
         or
         result = this.getItem(n).toString() + ", " + this.contents(n+1)
     }
@@ -165,7 +165,7 @@ class VarargsTupleObjectInternal extends TVarargsTuple,  TupleObjectInternal {
         exists(CallNode call, PointsToContext context, int offset, int length |
             this = TVarargsTuple(call, context, offset, length) and
             n < length and
-            PointsToInternal::pointsTo(call.getArg(offset+n), context, result, _)
+            InterProceduralPointsTo::positional_argument_points_to(call, offset+n, context, result, _)
         )
     }
 

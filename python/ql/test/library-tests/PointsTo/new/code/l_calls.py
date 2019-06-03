@@ -37,3 +37,18 @@ class E(object):
 f(1, 2, 3)
 E().m(2, 3, 4)
 E.m(3, 4, 5)
+
+t = 'a', 'b', 'c'
+f(*t)
+
+def g(a, b, c):
+    return a
+
+class F(object):
+    def m(self, x, y, z=None):
+        return x
+
+g(*t)
+F().m(*t)
+F.m(*t)
+
