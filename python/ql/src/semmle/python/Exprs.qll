@@ -227,6 +227,10 @@ class Call extends Call_ {
         result = this.getKwargs().(Dict).getAKey().(StrConst).getText()
     }
 
+    int getPositionalArgumentCount() {
+        count(this.getStarargs()) < 2 and
+        result = count(this.getAPositionalArg())
+    }
 }
 
 /** A conditional expression such as, `body if test else orelse` */

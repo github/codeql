@@ -179,6 +179,11 @@ cached newtype TObject =
         context.appliesTo(origin)
     }
     or
+    /* Varargs tuple */
+    TVarargsTuple(CallNode call, PointsToContext context, int offset, int length) {
+        InterProceduralPointsTo::varargs_tuple(call, _, context, _, offset, length)
+    }
+    or
     /* `type` */
     TType()
     or

@@ -39,7 +39,9 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
     }
 
     private string contents(int n) {
-        n = this.length() and result = ""
+        n < 4 and n = this.length() and result = ""
+        or
+        n = 4 and n < this.length() and result = "... " + (this.length()-4).toString() + " more"
         or
         result = this.getItem(n).toString() + ", " + this.contents(n+1)
     }
@@ -144,6 +146,34 @@ class PythonTupleObjectInternal extends TPythonTuple, TupleObjectInternal {
     }
 
 }
+
+class VarargsTupleObjectInternal extends TVarargsTuple,  TupleObjectInternal {
+
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
+        none()
+    }
+
+    override Builtin getBuiltin() {
+        none()
+    }
+
+    override ControlFlowNode getOrigin() {
+        none()
+    }
+
+    override ObjectInternal getItem(int n) {
+        exists(CallNode call, PointsToContext context, int offset, int length |
+            this = TVarargsTuple(call, context, offset, length) and
+            n < length and
+            PointsToInternal::pointsTo(call.getArg(offset+n), context, result, _)
+        )
+    }
+
+    override int length() {
+        this = TVarargsTuple(_, _, _, result)
+    }
+}
+
 
 /** The `sys.version_info` object. We treat this specially to prevent premature pruning and
  * false positives when we are unsure of the actual version of Python that the code is expecting.
