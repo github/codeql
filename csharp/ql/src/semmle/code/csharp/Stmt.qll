@@ -1126,6 +1126,28 @@ class UsingStmt extends Stmt, @using_stmt {
   LocalVariableDeclExpr getAVariableDeclExpr() { result = this.getVariableDeclExpr(_) }
 
   /**
+   * Gets an expression that is used in this `using` statement. Either an
+   * expression assigned to a variable, for example `File.Open("settings.xml")`
+   * in
+   *
+   * ```
+   * using (FileStream f = File.Open("settings.xml")) {
+   *   ...
+   * }
+   * ```
+   *
+   * or an expression directly used, for example `File.Open("settings.xml")`
+   * in
+   *
+   * ```
+   * using (File.Open("settings.xml")) {
+   *   ...
+   * }
+   * ```
+   */
+  Expr getAnExpr() { none() }
+
+  /**
    * DEPRECATED: Use UsingBlockStmt.getExpr() instead.
    * Gets the expression directly used by this `using` statement, if any. For
    * example, `f` on line 2 in
@@ -1178,27 +1200,7 @@ class UsingBlockStmt extends UsingStmt, @using_block_stmt {
    */
   override Expr getExpr() { result = this.getChild(0) }
 
-  /**
-   * Gets an expression that is used in this `using` statement. Either an
-   * expression assigned to a variable, for example `File.Open("settings.xml")`
-   * in
-   *
-   * ```
-   * using (FileStream f = File.Open("settings.xml")) {
-   *   ...
-   * }
-   * ```
-   *
-   * or an expression directly used, for example `File.Open("settings.xml")`
-   * in
-   *
-   * ```
-   * using (File.Open("settings.xml")) {
-   *   ...
-   * }
-   * ```
-   */
-  Expr getAnExpr() {
+  override Expr getAnExpr() {
     result = this.getAVariableDeclExpr().getInitializer()
     or
     result = this.getExpr()
@@ -1299,6 +1301,10 @@ class UsingDeclStmt extends LocalVariableDeclStmt, UsingStmt, @using_decl_stmt {
 
   override LocalConstantDeclExpr getVariableDeclExpr(int n) {
     result = LocalVariableDeclStmt.super.getVariableDeclExpr(n)
+  }
+
+  override Expr getAnExpr() {
+    result = this.getAVariableDeclExpr().getInitializer()
   }
 }
 
