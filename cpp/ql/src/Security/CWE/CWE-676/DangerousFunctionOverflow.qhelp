@@ -17,7 +17,7 @@ rules</strong> below for rules that identify other dangerous functions.</p>
 </recommendation>
 <example>
 <p>The following example gets a string from standard input in two ways:</p>
-<sample src="DangerousUseOfGets" />
+<sample src="DangerousFunctionOverflow.c" />
 
 <p>The first version uses <code>gets</code> and will overflow if the input
 is longer than the buffer. The second version of the code
