@@ -409,7 +409,7 @@ module RegExpPatterns {
 }
 
 /**
- * Gets a node whose value may flow (inter-procedurally) to a position where it is interpreted
+ * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
  * as a part of a regular expression.
  */
 private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker t) {
@@ -426,7 +426,7 @@ private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker
 }
 
 /**
- * Gets a node whose value may flow (inter-procedurally) to a position where it is interpreted
+ * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
  * as a part of a regular expression.
  */
 private DataFlow::Node regExpSource(DataFlow::Node re) {
@@ -439,12 +439,14 @@ private DataFlow::Node regExpSource(DataFlow::Node re) {
  */
 abstract class RegExpPatternSource extends DataFlow::Node {
   /**
-   * Gets the pattern of this node.
+   * Gets the pattern of this node that is interpreted as a part of a
+   * regular expression.
    */
   abstract string getPattern();
 
   /**
-   * Gets a regular expression object that is built from the value of this node.
+   * Gets a regular expression object that is constructed from the pattern
+   * of this node.
    */
   abstract DataFlow::SourceNode getARegExpObject();
 }
@@ -477,7 +479,7 @@ class StringRegExpPatternSource extends RegExpPatternSource {
   StringRegExpPatternSource() { this = regExpSource(use) }
 
   /**
-   * Gets a node that use this source as a regular expression pattern.
+   * Gets a node that uses this source as a regular expression pattern.
    */
   DataFlow::Node getAUse() { result = use }
 
