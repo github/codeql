@@ -175,3 +175,18 @@ void WrapperStruct(Wrapper w) {
   a = w.f;  // MustExactlyOverlap
   x = w;  // MustTotallyOverlap
 }
+
+int AsmStmt(int *p) {
+  __asm__("");
+  return *p;
+}
+
+static void AsmStmtWithOutputs(unsigned int& a, unsigned int& b, unsigned int& c, unsigned int& d)
+{
+  __asm__ __volatile__
+    (
+  "cpuid\n\t"
+    : "+a" (a), "+b" (b)
+    : "c" (c), "d" (d)
+    );
+}

@@ -1096,4 +1096,18 @@ struct LambdaContainer {
 
 #endif
 
+int AsmStmt(int x) {
+  __asm__("");
+  return x;
+}
+
+static void AsmStmtWithOutputs(unsigned int& a, unsigned int& b, unsigned int& c, unsigned int& d)
+{
+  __asm__ __volatile__
+    (
+  "cpuid\n\t"
+    : "+a" (a), "+b" (b), "+c" (c), "+d" (d)
+    );
+}
+
 // semmle-extractor-options: -std=c++17

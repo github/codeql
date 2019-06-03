@@ -7570,3 +7570,50 @@ ir.cpp:
 # 1077|             0: break;
 # 1079|     2: label ...:
 # 1080|     3: return ...
+# 1099| int AsmStmt(int)
+# 1099|   params: 
+# 1099|     0: x
+# 1099|         Type = int
+# 1099|   body: { ... }
+# 1100|     0: asm statement
+# 1101|     1: return ...
+# 1101|       0: x
+# 1101|           Type = int
+# 1101|           ValueCategory = prvalue(load)
+# 1104| void AsmStmtWithOutputs(unsigned int&, unsigned int&, unsigned int&, unsigned int&)
+# 1104|   params: 
+# 1104|     0: a
+# 1104|         Type = unsigned int &
+# 1104|     1: b
+# 1104|         Type = unsigned int &
+# 1104|     2: c
+# 1104|         Type = unsigned int &
+# 1104|     3: d
+# 1104|         Type = unsigned int &
+# 1105|   body: { ... }
+# 1106|     0: asm statement
+# 1109|       0: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: a
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1109|       1: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: b
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1109|       2: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: c
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1109|       3: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: d
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1111|     1: return ...

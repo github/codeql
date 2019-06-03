@@ -64,6 +64,8 @@ private predicate ignoreExprAndDescendants(Expr expr) {
     // represent them.
     newExpr.getInitializer().getFullyConverted() = expr
   ) or
+  // Do not translate input/output variables in GNU asm statements
+  getRealParent(expr) instanceof AsmStmt or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
 }
 
