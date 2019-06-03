@@ -31,10 +31,10 @@ where
   pattern = re.getPattern() and
   isIncompleteHostNameRegExpPattern(pattern, hostPart) and
   (
-    if re instanceof StringRegExpPatternSource
+    if re.getAParse() != re
     then (
       kind = "string, which is used as a regular expression $@," and
-      aux = re.(StringRegExpPatternSource).getAUse()
+      aux = re.getAParse()
     ) else (
       kind = "regular expression" and aux = re
     )

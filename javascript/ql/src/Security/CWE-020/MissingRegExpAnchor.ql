@@ -63,7 +63,7 @@ predicate isInterestingUnanchoredRegExpString(RegExpPatternSource src, string ms
         arg = mcn.getArgument(0) and
         (
           src.getARegExpObject().flowsTo(arg) or
-          src.(StringRegExpPatternSource).getAUse() = arg
+          src.getAParse() = arg
         )
       |
         name = "replace"

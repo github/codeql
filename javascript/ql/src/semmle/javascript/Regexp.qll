@@ -439,6 +439,12 @@ private DataFlow::Node regExpSource(DataFlow::Node re) {
  */
 abstract class RegExpPatternSource extends DataFlow::Node {
   /**
+   * Gets a node where the pattern of this node is parsed as a part of
+   * a regular expression.
+   */
+  abstract DataFlow::Node getAParse();
+
+  /**
    * Gets the pattern of this node that is interpreted as a part of a
    * regular expression.
    */
@@ -454,7 +460,7 @@ abstract class RegExpPatternSource extends DataFlow::Node {
 /**
  * A regular expression literal, viewed as the pattern source for itself.
  */
-class RegExpLiteralPatternSource extends RegExpPatternSource {
+private class RegExpLiteralPatternSource extends RegExpPatternSource {
   string pattern;
 
   RegExpLiteralPatternSource() {
@@ -463,6 +469,8 @@ class RegExpLiteralPatternSource extends RegExpPatternSource {
       pattern = raw.regexpReplaceAll("\\\\/", "/")
     )
   }
+
+  override DataFlow::Node getAParse() { result = this }
 
   override string getPattern() { result = pattern }
 
@@ -473,20 +481,17 @@ class RegExpLiteralPatternSource extends RegExpPatternSource {
  * A node whose string value may flow to a position where it is interpreted
  * as a part of a regular expression.
  */
-class StringRegExpPatternSource extends RegExpPatternSource {
-  DataFlow::Node use;
+private class StringRegExpPatternSource extends RegExpPatternSource {
+  DataFlow::Node parse;
 
-  StringRegExpPatternSource() { this = regExpSource(use) }
+  StringRegExpPatternSource() { this = regExpSource(parse) }
 
-  /**
-   * Gets a node that uses this source as a regular expression pattern.
-   */
-  DataFlow::Node getAUse() { result = use }
+  override DataFlow::Node getAParse() { result = parse }
 
   override DataFlow::SourceNode getARegExpObject() {
     exists(DataFlow::InvokeNode constructor |
       constructor = DataFlow::globalVarRef("RegExp").getAnInvocation() and
-      use = constructor.getArgument(0) and
+      parse = constructor.getArgument(0) and
       result = constructor
     )
   }
