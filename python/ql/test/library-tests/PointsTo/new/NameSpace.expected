@@ -112,12 +112,15 @@
 | k_getsetattr.py:0 | Module code.k_getsetattr | k | Function k |
 | k_getsetattr.py:4 | Class C | meth1 | Function meth1 |
 | k_getsetattr.py:4 | Class C | meth2 | Function meth2 |
+| l_calls.py:0 | Module code.l_calls | E | class E |
 | l_calls.py:0 | Module code.l_calls | Owner | class Owner |
 | l_calls.py:0 | Module code.l_calls | bar | Function bar |
+| l_calls.py:0 | Module code.l_calls | f | Function f |
 | l_calls.py:0 | Module code.l_calls | foo | Function foo |
 | l_calls.py:12 | Class Owner | cm | classmethod() |
 | l_calls.py:12 | Class Owner | cm2 | classmethod() |
 | l_calls.py:12 | Class Owner | m | Function m |
+| l_calls.py:32 | Class E | m | Function m |
 | o_no_returns.py:0 | Module code.o_no_returns | bar | Function bar |
 | o_no_returns.py:0 | Module code.o_no_returns | fail | Function fail |
 | o_no_returns.py:0 | Module code.o_no_returns | foo | Function foo |

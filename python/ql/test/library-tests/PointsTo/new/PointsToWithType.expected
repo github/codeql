@@ -675,6 +675,39 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | l_calls.py:25 | ControlFlowNode for Attribute() | int 1 | builtin-class int | 25 |
 | l_calls.py:25 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 25 |
 | l_calls.py:25 | ControlFlowNode for a | class Owner | builtin-class type | 12 |
+| l_calls.py:29 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 29 |
+| l_calls.py:29 | ControlFlowNode for args | args | builtin-class tuple | 29 |
+| l_calls.py:29 | ControlFlowNode for f | Function f | builtin-class function | 29 |
+| l_calls.py:30 | ControlFlowNode for args | args | builtin-class tuple | 29 |
+| l_calls.py:32 | ControlFlowNode for ClassExpr | class E | builtin-class type | 32 |
+| l_calls.py:32 | ControlFlowNode for E | class E | builtin-class type | 32 |
+| l_calls.py:32 | ControlFlowNode for object | builtin-class object | builtin-class type | 32 |
+| l_calls.py:33 | ControlFlowNode for FunctionExpr | Function m | builtin-class function | 33 |
+| l_calls.py:33 | ControlFlowNode for args | args | builtin-class tuple | 33 |
+| l_calls.py:33 | ControlFlowNode for m | Function m | builtin-class function | 33 |
+| l_calls.py:34 | ControlFlowNode for self | E() | class E | 38 |
+| l_calls.py:34 | ControlFlowNode for self | int 3 | builtin-class int | 39 |
+| l_calls.py:34 | ControlFlowNode for self | self | builtin-class tuple | 33 |
+| l_calls.py:34 | ControlFlowNode for self | self | class E | 33 |
+| l_calls.py:35 | ControlFlowNode for args | args | builtin-class tuple | 33 |
+| l_calls.py:37 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 37 |
+| l_calls.py:37 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 37 |
+| l_calls.py:37 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 37 |
+| l_calls.py:37 | ControlFlowNode for f | Function f | builtin-class function | 29 |
+| l_calls.py:37 | ControlFlowNode for f() | args | builtin-class tuple | 29 |
+| l_calls.py:38 | ControlFlowNode for Attribute | Attribute | builtin-class method | 38 |
+| l_calls.py:38 | ControlFlowNode for Attribute() | args | builtin-class tuple | 33 |
+| l_calls.py:38 | ControlFlowNode for E | class E | builtin-class type | 32 |
+| l_calls.py:38 | ControlFlowNode for E() | E() | class E | 38 |
+| l_calls.py:38 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 38 |
+| l_calls.py:38 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 38 |
+| l_calls.py:38 | ControlFlowNode for IntegerLiteral | int 4 | builtin-class int | 38 |
+| l_calls.py:39 | ControlFlowNode for Attribute | Function m | builtin-class function | 33 |
+| l_calls.py:39 | ControlFlowNode for Attribute() | args | builtin-class tuple | 33 |
+| l_calls.py:39 | ControlFlowNode for E | class E | builtin-class type | 32 |
+| l_calls.py:39 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 39 |
+| l_calls.py:39 | ControlFlowNode for IntegerLiteral | int 4 | builtin-class int | 39 |
+| l_calls.py:39 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 39 |
 | s_scopes.py:4 | ControlFlowNode for True | bool True | builtin-class bool | 4 |
 | s_scopes.py:4 | ControlFlowNode for float | bool True | builtin-class bool | 4 |
 | s_scopes.py:7 | ControlFlowNode for C2 | class C2 | builtin-class type | 7 |

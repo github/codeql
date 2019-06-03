@@ -899,17 +899,38 @@ module InterProceduralPointsTo {
     pragma [noinline]
     private predicate special_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         special_parameter_value(def, value) and
-        (
-            context.isRuntime()
-            or
-            exists(PointsToContext caller, CallNode call |
-                context.fromCall(call, caller) and
-                context.appliesToScope(def.getScope()) and
-                not exists(call.getArg(def.getParameter().getPosition())) and
-                not exists(call.getArgByName(def.getParameter().getName()))
-            )
+        context.isRuntime() and
+        origin = def.getDefiningNode()
+        or
+        exists(CallNode call, Function scope, PointsToContext caller, int offset, int length |
+            varargs_tuple(call, scope, caller, context, offset, length) and
+            value = TVarargsTuple(call, caller, offset, length) and
+            def.getScope() = scope
         ) and
         origin = def.getDefiningNode()
+        or
+        exists(Function scope |
+            varargs_empty_tuple(scope, context) and
+            value.(BuiltinTupleObjectInternal).length() = 0 and
+            def.getScope() = scope
+        ) and
+        origin = def.getDefiningNode()
+    }
+
+    predicate varargs_tuple(CallNode call, Function scope, PointsToContext caller, PointsToContext callee, int startOffset, int length) {
+        exists(int parameter_offset |
+            callsite_calls_function(call, caller, scope, callee, parameter_offset) and
+            startOffset = scope.getPositionalParameterCount() - parameter_offset and
+            length = call.getNode().getPositionalArgumentCount() - startOffset and
+            length > 0
+        )
+    }
+
+    predicate varargs_empty_tuple(Function scope, PointsToContext callee) {
+        exists(CallNode call, PointsToContext caller, int parameter_offset |
+            callsite_calls_function(call, caller, scope, callee, parameter_offset) and
+            scope.getPositionalParameterCount() - parameter_offset >= call.getNode().getPositionalArgumentCount()
+        )
     }
 
     /** Helper predicate for special_parameter_points_to */
