@@ -137,7 +137,9 @@ class Patterns
             {
                 1 => throw new ArgumentException(),
                 2 => 3,
-                object y when y is {} => 4
+                object y when y is {} => 4,
+                string _ => 5,
+                MyStruct { X: 10 } _ => 6
             };
         }
         catch(InvalidOperationException ex)

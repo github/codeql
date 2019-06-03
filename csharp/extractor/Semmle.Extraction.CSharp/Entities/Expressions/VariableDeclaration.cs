@@ -11,10 +11,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         VariableDeclaration(IExpressionInfo info) : base(info) { }
 
-        public static VariableDeclaration Create(Context cx, ISymbol symbol, Type type, Extraction.Entities.Location exprLocation, Extraction.Entities.Location declLocation, bool isVar, IExpressionParentEntity parent, int child)
+        public static VariableDeclaration Create(Context cx, ISymbol symbol, Type type, TypeSyntax optionalSyntax, Extraction.Entities.Location exprLocation, Extraction.Entities.Location declLocation, bool isVar, IExpressionParentEntity parent, int child)
         {
             var ret = new VariableDeclaration(new ExpressionInfo(cx, type, exprLocation, ExprKind.LOCAL_VAR_DECL, parent, child, false, null));
-            cx.Try(null, null, () => LocalVariable.Create(cx, symbol, ret, isVar, declLocation));
+            cx.Try(null, null, () =>
+            {
+                LocalVariable.Create(cx, symbol, ret, isVar, declLocation);
+                if (optionalSyntax != null)
+                    TypeMention.Create(cx, optionalSyntax, parent, type);
+            });
             return ret;
         }
 
@@ -65,7 +70,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var child0 = 0;
                 foreach (var variable in designation.Variables)
-                    switch(variable)
+                    switch (variable)
                     {
                         case ParenthesizedVariableDesignationSyntax paren:
                             CreateParenthesized(cx, varPattern, paren, tuple, child0++);
@@ -97,7 +102,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         static Expression Create(Context cx, DeclarationExpressionSyntax node, VariableDesignationSyntax designation, IExpressionParentEntity parent, int child)
         {
-            switch(designation)
+            switch (designation)
             {
                 case SingleVariableDesignationSyntax single:
                     return CreateSingle(cx, node, single, parent, child);

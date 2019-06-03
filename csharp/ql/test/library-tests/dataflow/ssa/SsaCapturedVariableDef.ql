@@ -1,6 +1,8 @@
 import csharp
 
-from string inout, Ssa::ExplicitDefinition def, Ssa::Definition targetDef, ControlFlow::Node call, boolean additionalCalls
+from
+  string inout, Ssa::ExplicitDefinition def, Ssa::Definition targetDef, ControlFlow::Node call,
+  boolean additionalCalls
 where
   inout = "in" and def.isCapturedVariableDefinitionFlowIn(targetDef, call, additionalCalls)
   or

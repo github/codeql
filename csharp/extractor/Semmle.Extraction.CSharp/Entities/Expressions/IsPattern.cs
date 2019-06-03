@@ -18,13 +18,20 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case DeclarationPatternSyntax declPattern:
                     // Creates a single local variable declaration.
                     {
-                        if (declPattern.Designation is VariableDesignationSyntax designation && cx.Model(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+                        if (declPattern.Designation is VariableDesignationSyntax designation)
                         {
-                            var type = Type.Create(cx, symbol.Type);
-
-                            return VariableDeclaration.Create(cx, symbol, type, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, parent, child);
+                            if (cx.Model(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+                            {
+                                var type = Type.Create(cx, symbol.Type);
+                                return VariableDeclaration.Create(cx, symbol, type, declPattern.Type, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, parent, child);
+                            }
+                            if (designation is DiscardDesignationSyntax)
+                            {
+                                return Expressions.TypeAccess.Create(cx, declPattern.Type, parent, child);
+                            }
+                            throw new InternalError(designation, "Designation pattern not handled");
                         }
-                        throw new InternalError(syntax, "Is pattern not handled");
+                        throw new InternalError(declPattern, "Declaration pattern not handled");
                     }
 
                 case RecursivePatternSyntax recPattern:
@@ -40,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             {
                                 var type = Type.Create(cx, symbol.Type);
 
-                                return VariableDeclaration.Create(cx, symbol, type, cx.Create(syntax.GetLocation()), cx.Create(varDesignation.GetLocation()), false, parent, child);
+                                return VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), cx.Create(varDesignation.GetLocation()), false, parent, child);
                             }
                             else
                             {
@@ -54,7 +61,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return new Discard(cx, dp, parent, child);
 
                 default:
-                    throw new InternalError(syntax, "Is pattern not handled");
+                    throw new InternalError(syntax, "Pattern not handled");
             }
         }
     }
@@ -108,7 +115,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var type = Type.Create(cx, symbol.Type);
 
-                VariableDeclaration.Create(cx, symbol, type, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, this, 0);
+                VariableDeclaration.Create(cx, symbol, type, null, cx.Create(syntax.GetLocation()), cx.Create(designation.GetLocation()), false, this, 0);
             }
 
             if (syntax.PositionalPatternClause is PositionalPatternClauseSyntax posPc)
@@ -131,19 +138,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private void PopulatePattern(PatternSyntax pattern, TypeSyntax optionalType, SyntaxToken varKeyword, VariableDesignationSyntax designation)
         {
-            bool isVar = optionalType is null;
-            if (!isVar)
-                Expressions.TypeAccess.Create(cx, optionalType, this, 1);
-
+            var isVar = optionalType is null;
             if (!(designation is null) && cx.Model(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
             {
                 var type = Type.Create(cx, symbol.Type);
-
-                if (isVar)
-                    new Expression(new ExpressionInfo(cx, type, cx.Create(varKeyword.GetLocation()), ExprKind.TYPE_ACCESS, this, 1, false, null));
-
-                VariableDeclaration.Create(cx, symbol, type, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 2);
+                VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 1);
             }
+            else if (!isVar)
+                Expressions.TypeAccess.Create(cx, optionalType, this, 1);
         }
 
         protected override void Populate()
@@ -152,7 +154,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             switch (Syntax.Pattern)
             {
                 case ConstantPatternSyntax constantPattern:
-                    Create(cx, constantPattern.Expression, this, 3);
+                    Create(cx, constantPattern.Expression, this, 1);
                     return;
                 case VarPatternSyntax varPattern:
                     PopulatePattern(varPattern, null, varPattern.VarKeyword, varPattern.Designation);
@@ -161,7 +163,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     PopulatePattern(declPattern, declPattern.Type, default(SyntaxToken), declPattern.Designation);
                     return;
                 case RecursivePatternSyntax recPattern:
-                    new RecursivePattern(cx, recPattern, this, 3);
+                    new RecursivePattern(cx, recPattern, this, 1);
                     return;
                 default:
                     throw new InternalError(Syntax, "Is pattern not handled");

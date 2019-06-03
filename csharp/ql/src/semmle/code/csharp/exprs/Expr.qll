@@ -313,6 +313,7 @@ class ConstantPatternExpr extends PatternExpr {
  */
 class TypePatternExpr extends PatternExpr {
   private Type t;
+
   TypePatternExpr() {
     t = this.(TypeAccess).getTarget() or
     t = this.(LocalVariableDeclExpr).getVariable().getType()
@@ -517,7 +518,7 @@ class Case extends PatternMatch, @case {
   /**
    * Gets the `when` expression of this case, if any. For example, `s.Length < 10`
    * in `string s when s.Length < 10 => s`
-    */
+   */
   Expr getCondition() { none() }
 
   /** Gets the body of this `case`. */

@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             SwitchedExpr = Expression.Create(cx, Syntax.GoverningExpression, this, -1);
             int child = 0;
-            foreach(var arm in Syntax.Arms)
+            foreach (var arm in Syntax.Arms)
             {
                 new SwitchCase(cx, arm, this, child++);
             }

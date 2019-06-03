@@ -275,7 +275,7 @@ public class Guards
     {
         return o switch
         {
-            Action<object> a =>
+            Action<object> _ =>
                 o.ToString(), // null guarded
             Action<string> a =>
                 a.ToString(), // not null (but not a guard)

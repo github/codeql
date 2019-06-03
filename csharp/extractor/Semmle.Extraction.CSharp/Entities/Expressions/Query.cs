@@ -66,12 +66,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Extraction.Entities.Location nameLoc;
 
                 Type declType;
+                TypeSyntax declTypeSyntax = null;
                 if (getElement)
                 {
                     var from = node as FromClauseSyntax;
-                    declType = from != null && from.Type != null
-                         ? Type.Create(cx, cx.GetType(from.Type))
-                         : type.ElementType;
+                    (declType, declTypeSyntax) = from != null && from.Type != null
+                         ? (Type.Create(cx, cx.GetType(from.Type)), from.Type)
+                         : (type.ElementType, null);
                 }
                 else
                     declType = type;
@@ -79,6 +80,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var decl = VariableDeclaration.Create(cx,
                     variableSymbol,
                     declType,
+                    declTypeSyntax,
                     cx.Create(node.GetLocation()),
                     nameLoc = cx.Create(name.GetLocation()),
                     true,
