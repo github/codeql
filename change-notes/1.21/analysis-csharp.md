@@ -13,6 +13,10 @@
 * The following C# 8 features are now extracted:
     - Range expressions
     - Recursive patterns
+    - Using declaration statements
+    - `static` modifiers on local functions
+    - Null-coalescing assignment expressions
+
 * The `unmanaged` type parameter constraint is now extracted.
 
 ## Changes to QL libraries
@@ -20,6 +24,7 @@
 * The class `Attribute` has two new predicates: `getConstructorArgument()` and `getNamedArgument()`. The first predicate returns arguments to the underlying constructor call and the latter returns named arguments for initializing fields and properties.
 * The class `TypeParameterConstraints` has a new predicate `hasUnmanagedTypeConstraint()`, indicating that the type parameter has the `unmanaged` constraint.
 * The following QL classes have been added to model C# 8 features:
+    - Class `AssignCoalesceExpr` models null-coalescing assignment, for example `x ??= y`
     - Class `IndexExpr` models from-end index expressions, for example `^1`
     - Class `PatternExpr` is an `Expr` that appears in a pattern. It has the new subclasses `DiscardPatternExpr`, `LabeledPatternExpr`, `RecursivePatternExpr`, `TypeAccessPatternExpr`, `TypePatternExpr`, and `VariablePatternExpr`.
     - Class `PatternMatch` models a pattern being matched. It has the subclasses `Case` and `IsExpr`.
@@ -31,5 +36,6 @@
     - Classes `IsConstantExpr`, `IsTypeExpr` and `IsPatternExpr` are deprecated in favour of `IsExpr`
     - Class `Switch` models both `SwitchExpr` and `SwitchStmt`
     - Class `Case` models both `CaseStmt` and `SwitchCaseExpr`
+    - Class `UsingStmt` models both `UsingBlockStmt` and `UsingDeclStmt`
 
 ## Changes to autobuilder
