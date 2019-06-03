@@ -143,7 +143,7 @@ private predicate bbLoopConditionAlwaysTrueUponEntrySuccessor(BasicBlock pred, B
     loopConditionAlwaysTrueUponEntry(loop, _) and
     (
       (
-        succ = loop.(Loop).getFollowingStmt() and
+        not succ = loop.(Loop).getStmt() and
         pred.getAFalseSuccessor() = succ and
         skipsLoop = true
       ) or (

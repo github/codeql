@@ -12,6 +12,5 @@
 | test.cpp:336:10:336:10 | a | The variable $@ may not be initialized here. | test.cpp:333:7:333:7 | a | a |
 | test.cpp:369:10:369:10 | a | The variable $@ may not be initialized here. | test.cpp:358:7:358:7 | a | a |
 | test.cpp:378:9:378:11 | val | The variable $@ may not be initialized here. | test.cpp:359:6:359:8 | val | val |
-| test.cpp:410:9:410:11 | val | The variable $@ may not be initialized here. | test.cpp:401:6:401:8 | val | val |
 | test.cpp:417:10:417:10 | j | The variable $@ may not be initialized here. | test.cpp:414:9:414:9 | j | j |
 | test.cpp:436:9:436:9 | j | The variable $@ may not be initialized here. | test.cpp:431:9:431:9 | j | j |

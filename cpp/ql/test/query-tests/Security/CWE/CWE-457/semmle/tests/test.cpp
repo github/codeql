@@ -407,7 +407,7 @@ int test34() {
 			loop = false;
 		}
 	}
-	return val; // GOOD [FALSE POSITIVE]
+	return val; // GOOD
 }
 
 int test35() {
