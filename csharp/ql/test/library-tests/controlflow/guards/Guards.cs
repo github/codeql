@@ -270,4 +270,69 @@ public class Guards
         if (o1?.GetType() == o2?.GetType())
           o1.ToString(); // not null guarded
     }
+
+    string M23(object o)
+    {
+        return o switch
+        {
+            Action<object> a =>
+                o.ToString(), // null guarded
+            Action<string> a =>
+                a.ToString(), // not null (but not a guard)
+            "" =>
+                o.ToString(), // null guarded
+            null =>
+                o.ToString(), // not null guarded
+            _ =>
+                o.ToString() // null guarded
+        };
+    }
+
+    int M24(bool b1)
+    {
+        var b2 = true;
+        if (b1)
+            b2 = false;
+        return b2 switch
+        {
+            true => 0,
+            _ => 1
+        };
+    }
+
+    int M25(bool b1)
+    {
+        var b2 = false;
+        if (b1)
+            b2 = true;
+        return b2 switch
+        {
+            true => 0,
+            _ => 1
+        };
+    }
+
+    int M26(bool b)
+    {
+        var i = 0;
+        if (b)
+            i = 1;
+        return i switch
+        {
+            1 => 0,
+            _ => 1
+        };
+    }
+
+    int M27(bool b)
+    {
+        var e = E.A;
+        if (b)
+            e = E.B;
+        return e switch
+        {
+            E.B => 0,
+            _ => 1
+        };
+    }
 }
