@@ -128,6 +128,14 @@ class EssaVariable extends TEssaDefinition {
         result = this.getDefinition().getScope()
     }
 
+    /** Holds if this the meta-variable for a scope.
+     * This is used to attach attributes for undeclared variables implicitly
+     * defined by `from ... import *` and the like.
+     */
+    predicate isMetaVariable() {
+        this.getName() = "$"
+    }
+
 }
 
 /* Helper for location_string 
@@ -332,8 +340,7 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
     }
 
     /** Gets the input variable for this phi node on the edge `pred` -> `this.getBasicBlock()`, if any. */
-    pragma [noinline]
-    EssaVariable getInput(BasicBlock pred) {
+    cached EssaVariable getInput(BasicBlock pred) {
         result.getDefinition() = this.reachingDefinition(pred)
         or
         result.getDefinition() = this.inputEdgeRefinement(pred)

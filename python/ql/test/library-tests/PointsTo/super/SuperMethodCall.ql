@@ -2,8 +2,9 @@
 import python
 import semmle.python.pointsto.PointsTo
 import semmle.python.pointsto.PointsToContext
+import semmle.python.objects.ObjectInternal
 
-from CallNode call, FunctionObject method
-where PointsTo::Test::super_method_call(_, call, _, method)
-select call.getLocation().getStartLine(), call.toString(), method.getQualifiedName()
-
+from CallNode call, SuperInstance sup, BoundMethodObjectInternal bm
+where call.getFunction().inferredValue() = bm and
+call.getFunction().(AttrNode).getObject().inferredValue() = sup
+select call.getLocation().getStartLine(), call.toString(), bm.getFunction().getSource().(FunctionObject).getQualifiedName()

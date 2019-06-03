@@ -77,6 +77,7 @@
 | 56 | ControlFlowNode for Attribute | int 20 | 56 |
 | 56 | ControlFlowNode for IntegerLiteral | int 20 | 56 |
 | 56 | ControlFlowNode for c2 | C() | 52 |
+| 57 | ControlFlowNode for Attribute | int 1 | 10 |
 | 57 | ControlFlowNode for Attribute | int 10 | 54 |
 | 57 | ControlFlowNode for c1 | C() | 51 |
 | 58 | ControlFlowNode for Attribute | int 1 | 10 |
@@ -114,6 +115,7 @@
 | 72 | ControlFlowNode for Attribute | int 2 | 72 |
 | 72 | ControlFlowNode for IntegerLiteral | int 2 | 72 |
 | 72 | ControlFlowNode for self | self | 70 |
+| 73 | ControlFlowNode for Attribute | Attribute | 73 |
 | 73 | ControlFlowNode for Attribute() | NoneType None | 64 |
 | 73 | ControlFlowNode for self | self | 70 |
 | 74 | ControlFlowNode for Attribute | int 0 | 65 |
@@ -174,6 +176,7 @@
 | 100 | ControlFlowNode for self | self | 98 |
 | 100 | ControlFlowNode for setattr | Builtin-function setattr | 100 |
 | 100 | ControlFlowNode for setattr() | NoneType None | 100 |
+| 101 | ControlFlowNode for Attribute | Attribute | 101 |
 | 101 | ControlFlowNode for Attribute() | NoneType None | 92 |
 | 101 | ControlFlowNode for self | self | 98 |
 | 102 | ControlFlowNode for Str | str u'a' | 102 |
@@ -198,5 +201,6 @@
 | 109 | ControlFlowNode for self | self | 108 |
 | 109 | ControlFlowNode for setattr | Builtin-function setattr | 109 |
 | 109 | ControlFlowNode for setattr() | NoneType None | 109 |
+| 111 | ControlFlowNode for Attribute | int 0 | 109 |
 | 111 | ControlFlowNode for G | class G | 106 |
 | 111 | ControlFlowNode for G() | G() | 111 |

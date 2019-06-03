@@ -1,6 +1,7 @@
 
 import python
 import semmle.python.pointsto.PointsTo
+import semmle.python.objects.ObjectInternal
 
 predicate ssa_sanity(string clsname, string problem, string what) {
     /* Exactly one definition of each SSA variable */
@@ -105,15 +106,6 @@ predicate ssa_sanity(string clsname, string problem, string what) {
             def.getVariable().getName() = "__name__"
         ) and
         problem = "does not have an ImplicitModuleNameDefinition"
-    )
-    or
-    // Unknown value should always have the class unknownType
-    exists(ControlFlowNode f, ClassObject cls |
-        PointsTo::points_to(f, _, unknownValue(), cls, _) and
-        clsname = f.getAQlClass() and
-        cls != theUnknownType() and
-        problem = "unknownValue() has class != theUnknownType()" and
-        what = cls.getName()
     )
 }
 

@@ -54,26 +54,3 @@ class BottleRoute extends ControlFlowNode {
 }
 
 
-/* bottle module route constants */
-
-class BottleRoutePointToExtension extends CustomPointsToFact {
-
-    string name;
-
-    BottleRoutePointToExtension() {
-        exists(DefinitionNode defn |
-            defn.getScope().(Module).getName() = "bottle" and
-            this = defn.getValue() and
-            name = defn.(NameNode).getId()
-            |
-            name = "route" or
-            name = httpVerbLower()
-        )
-    }
-
-    override predicate pointsTo(Context context, Object value, ClassObject cls, ControlFlowNode origin) {
-        context.isImport() and
-        ModuleObject::named("bottle").attr("Bottle").(ClassObject).attributeRefersTo(name, value, cls, origin)
-    }
-}
-

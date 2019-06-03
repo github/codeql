@@ -1,45 +1,23 @@
 import python
-private import semmle.python.pointsto.PointsTo
+private import semmle.python.objects.ObjectInternal
 
-/** A bound method object, x.f where type(x) has a method f */
-class BoundMethod extends Object {
-
-    BoundMethod() {
-        bound_method(this, _)
-    }
-
-    /* Gets the method 'f' in 'x.f' */
-    FunctionObject getMethod() {
-         bound_method(this, result)
-    }
-
-}
-
-private predicate bound_method(AttrNode binding, FunctionObject method) {
-    binding = method.getAMethodCall().getFunction()
-}
-
-private predicate decorator_call(Object method, ClassObject decorator, FunctionObject func) {
-    exists(CallNode f |
-        method = f and
-        f.getFunction().refersTo(decorator) and
-        PointsTo::points_to(f.getArg(0), _, func, _, _)
-    )
-}
 
 /** A class method object. Either a decorated function or an explicit call to classmethod(f) */ 
 class ClassMethodObject extends Object {
 
     ClassMethodObject() {
-        PointsTo::class_method(this, _)
+        any(ClassMethodObjectInternal cm).getOrigin() = this
     }
 
     FunctionObject getFunction() {
-        PointsTo::class_method(this, result)
+        exists(ClassMethodObjectInternal cm |
+            cm.getOrigin() = this and
+            result = cm.getFunction().getSource()
+        )
     }
 
     CallNode getACall() {
-        PointsTo::class_method_call(this, _, _, _, result)
+        result = this.getFunction().getACall()
     }
 
 }
@@ -48,11 +26,14 @@ class ClassMethodObject extends Object {
 class StaticMethodObject extends Object {
 
     StaticMethodObject() {
-        decorator_call(this, theStaticMethodType(), _)
+        any(StaticMethodObjectInternal sm).getOrigin() = this
     }
 
     FunctionObject getFunction() {
-        decorator_call(this, theStaticMethodType(), result)
+        exists(StaticMethodObjectInternal sm |
+            sm.getOrigin() = this and
+            result = sm.getFunction().getSource()
+        )
     }
 
 }

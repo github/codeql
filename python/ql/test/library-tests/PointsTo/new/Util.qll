@@ -1,4 +1,5 @@
 import python
+import semmle.python.objects.ObjectInternal
 
 bindingset[which]
 string locate(Location l, string which) {
@@ -27,4 +28,18 @@ string repr(Object o) {
     result = "'" + o.(StringObject).getText() + "'"
     or
     o = theBoundMethodType() and result = "builtin-class method"
+}
+
+predicate long_tuple(Value v) {
+    v.(TupleObjectInternal).length() > 3
+}
+
+string vrepr(Value v) {
+    /* Work around differing names in 2/3 */
+    not v = ObjectInternal::boundMethod() and
+    not long_tuple(v) and result = v.toString()
+    or
+    v = ObjectInternal::boundMethod() and result = "builtin-class method"
+    or
+    long_tuple(v) and result = "(..., ...)"
 }

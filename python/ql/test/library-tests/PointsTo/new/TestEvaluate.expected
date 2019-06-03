@@ -1,3 +1,5 @@
+WARNING: Predicate getSource has been deprecated and may be removed in future (TestEvaluate.ql:14,16-25)
+WARNING: Predicate getSource has been deprecated and may be removed in future (TestEvaluate.ql:16,20-29)
 | b_condition.py:7 | Compare | true | x | NoneType None |
 | b_condition.py:13 | Compare | false | x | NoneType None |
 | b_condition.py:19 | UnaryExpr | true | x | NoneType None |
@@ -6,7 +8,6 @@
 | b_condition.py:36 | isinstance() | true | x | int 1 |
 | b_condition.py:36 | isinstance() | true | x | int 7 |
 | b_condition.py:71 | UnaryExpr | false | b | bool True |
-| b_condition.py:77 | Compare | true | object | builtin-class object |
 | b_condition.py:77 | Compare | true | t | builtin-class type |
 | b_condition.py:82 | callable() | false | foo | bool True |
 | b_condition.py:88 | x | false | x | NoneType None |
@@ -17,28 +18,23 @@
 | b_condition.py:96 | y | false | y | NoneType None |
 | b_condition.py:102 | UnaryExpr | false | a | a |
 | b_condition.py:104 | UnaryExpr | false | a | a |
+| b_condition.py:104 | UnaryExpr | true | a | a |
+| b_condition.py:105 | UnaryExpr | false | a | a |
+| b_condition.py:105 | UnaryExpr | true | a | a |
 | c_tests.py:7 | Compare | true | x | NoneType None |
 | c_tests.py:12 | x | false | x | int 0 |
 | c_tests.py:12 | x | true | x | int 1 |
 | c_tests.py:17 | Compare | false | x | int 1 |
 | c_tests.py:17 | Compare | true | x | int 0 |
+| c_tests.py:23 | len() | false | x | List |
 | c_tests.py:23 | len() | true | x | List |
 | c_tests.py:23 | len() | true | x | Tuple |
+| c_tests.py:26 | Compare | false | x | List |
 | c_tests.py:26 | Compare | false | x | Tuple |
 | c_tests.py:26 | Compare | true | x | List |
 | c_tests.py:26 | Compare | true | x | Tuple |
 | c_tests.py:29 | isinstance() | false | x | List |
 | c_tests.py:29 | isinstance() | true | x | Tuple |
-| c_tests.py:34 | Compare | true | Attribute | NoneType None |
-| c_tests.py:39 | Attribute | false | Attribute | int 0 |
-| c_tests.py:39 | Attribute | true | Attribute | int 1 |
-| c_tests.py:44 | Compare | false | Attribute | int 1 |
-| c_tests.py:44 | Compare | true | Attribute | int 0 |
-| c_tests.py:50 | isinstance() | false | Attribute | List |
-| c_tests.py:50 | isinstance() | true | Attribute | Tuple |
-| c_tests.py:53 | Compare | false | Attribute | Tuple |
-| c_tests.py:53 | Compare | true | Attribute | List |
-| c_tests.py:53 | Compare | true | Attribute | Tuple |
 | c_tests.py:60 | issubclass() | false | x | builtin-class type |
 | c_tests.py:60 | issubclass() | true | x | builtin-class bool |
 | c_tests.py:65 | hasattr() | false | x | builtin-class float |

@@ -36,5 +36,6 @@ import semmle.dataflow.SSA
 import semmle.python.pointsto.Base
 import semmle.python.pointsto.Context
 import semmle.python.pointsto.CallGraph
+import semmle.python.objects.ObjectAPI
 
 import site

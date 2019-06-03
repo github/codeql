@@ -17,3 +17,5 @@ def fail(message):
 # To get the FP result reported in ODASA-6418, 
 #bump_version must be called (directly or transitively) from the module scope
 bump_version()
+str.join
+"".join

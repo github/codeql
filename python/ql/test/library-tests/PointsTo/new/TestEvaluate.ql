@@ -5,10 +5,15 @@ import semmle.python.pointsto.PointsToContext
 import Util
 
 
-from ControlFlowNode test, ControlFlowNode use, Object val, boolean eval, ClassObject cls, PointsToContext ctx
+from ControlFlowNode test, ControlFlowNode use, Value val, boolean eval, PointsToContext ctx, ControlFlowNode origin, string what
 where 
 not use instanceof NameConstantNode and
 not use.getNode() instanceof ImmutableLiteral and
-PointsTo::points_to(use, ctx, val, cls, _) and
-eval = PointsTo::test_evaluates_boolean(test, use, ctx, val, cls, _)
-select locate(test.getLocation(), "bc"), test.getNode().toString(), eval.toString(), use.getNode().toString(), val.toString()
+eval = Conditionals::testEvaluates(test, use, ctx, val, origin) and
+(
+    what = val.getSource().toString()
+    or
+    not exists(val.getSource()) and what = origin.getNode().toString()
+)
+select locate(test.getLocation(), "bc"), test.getNode().toString(), eval.toString(), use.getNode().toString(), what
+

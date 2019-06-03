@@ -11,6 +11,7 @@
 | Module test_package | module2 | Module test_package.module2 |
 | Module test_package | module3 | Module test_package.module3 |
 | Module test_package | module4 | Module test_package.module4 |
+| Module test_package | module5 | Module test_package.module5 |
 | Module test_package | p | str u'p' |
 | Module test_package | q | str u'q' |
 | Module test_package | r | str u'r' |
@@ -52,6 +53,7 @@
 | Module test_star | module2 | Module test_package.module2 |
 | Module test_star | module3 | Module test_package.module3 |
 | Module test_star | module4 | Module test_package.module4 |
+| Module test_star | module5 | Module test_package.module5 |
 | Module test_star | p | str u'p' |
 | Module test_star | q | str u'q' |
 | Module test_star | r | str u'r' |

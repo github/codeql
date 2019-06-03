@@ -212,9 +212,24 @@ class ControlFlowNode extends @py_flow_node {
         py_scope_flow(this, _, -1)
     }
 
-    /** Use ControlFlowNode.refersTo() instead. */
-    deprecated Object pointsTo() {
-        this.refersTo(result)
+    /** The value that this ControlFlowNode points-to. */
+    predicate pointsTo(Value value) {
+        this.pointsTo(_, value, _)
+    }
+
+    /** Gets a value that this ControlFlowNode may points-to. */
+    Value inferredValue() {
+        this.pointsTo(_, result, _)
+    }
+
+    /** The value and origin that this ControlFlowNode points-to. */
+    predicate pointsTo(Value value, ControlFlowNode origin) {
+        this.pointsTo(_, value, origin)
+    }
+
+    /** The value and origin that this ControlFlowNode points-to, given the context. */
+    predicate pointsTo(Context context, Value value, ControlFlowNode origin) {
+        PointsTo::pointsTo(this, context, value, origin)
     }
 
     /** Gets what this flow node might "refer-to". Performs a combination of localized (intra-procedural) points-to
@@ -222,37 +237,33 @@ class ControlFlowNode extends @py_flow_node {
      *  precise, but may not provide information for a significant number of flow-nodes. 
      *  If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
      */
-    predicate refersTo(Object value, ClassObject cls, ControlFlowNode origin) {
-        not py_special_objects(cls, "_semmle_unknown_type")
-        and
-        not value = unknownValue()
-        and
-        PointsTo::points_to(this, _, value, cls, origin)
+    pragma [nomagic]
+    predicate refersTo(Object obj, ClassObject cls, ControlFlowNode origin) {
+        this.refersTo(_, obj, cls, origin)
     }
 
     /** Gets what this expression might "refer-to" in the given `context`.
      */
-    predicate refersTo(Context context, Object value, ClassObject cls, ControlFlowNode origin) {
-        not py_special_objects(cls, "_semmle_unknown_type")
-        and
-        PointsTo::points_to(this, context, value, cls, origin)
+    pragma [nomagic]
+    predicate refersTo(Context context, Object obj, ClassObject cls, ControlFlowNode origin) {
+        not obj = unknownValue() and
+        not cls = theUnknownType() and
+        PointsTo::points_to(this, context, obj, cls, origin)
     }
 
     /** Whether this flow node might "refer-to" to `value` which is from `origin` 
      * Unlike `this.refersTo(value, _, origin)` this predicate includes results 
      * where the class cannot be inferred. 
      */
-    predicate refersTo(Object value, ControlFlowNode origin) {
-        PointsTo::points_to(this, _, value, _, origin)
-        and
-        not value = unknownValue()
+    pragma [nomagic]
+    predicate refersTo(Object obj, ControlFlowNode origin) {
+        not obj = unknownValue() and
+        PointsTo::points_to(this, _, obj, _, origin)
     }
 
     /** Equivalent to `this.refersTo(value, _)` */
-    predicate refersTo(Object value) {
-        PointsTo::points_to(this, _, value, _, _)
-        and
-        not value = unknownValue()
+    predicate refersTo(Object obj) {
+        this.refersTo(obj, _)
     }
 
     /** Gets the basic block containing this flow node */
@@ -460,6 +471,16 @@ class CallNode extends ControlFlowNode {
 
     override Call getNode() { result = super.getNode() }
 
+    predicate isDecoratorCall() {
+        exists(FunctionExpr func |
+            this.getNode() = func.getADecoratorCall()
+        )
+        or
+        exists(ClassExpr cls |
+            this.getNode() = cls.getADecoratorCall()
+        )
+    }
+
 }
 
 /** A control flow corresponding to an attribute expression, such as `value.attr` */
@@ -641,6 +662,16 @@ class BinaryExprNode extends ControlFlowNode {
     /** Gets the operator of this binary expression node. */
     Operator getOp() {
         result = this.getNode().getOp()
+    }
+
+    /** Whether left and right are a pair of operands for this binary expression */
+    predicate operands(ControlFlowNode left, Operator op, ControlFlowNode right) {
+        exists(BinaryExpr b, Expr eleft, Expr eright |
+            this.getNode() = b and left.getNode() = eleft and right.getNode() = eright  |
+            eleft = b.getLeft() and eright = b.getRight() and op = b.getOp()
+        ) and
+        left.getBasicBlock().dominates(this.getBasicBlock()) and
+        right.getBasicBlock().dominates(this.getBasicBlock())
     }
 
 }
@@ -986,6 +1017,18 @@ class BasicBlock extends @py_flow_node {
         result = this.getLastNode().getAFalseSuccessor().getBasicBlock()
     }
 
+    /** Gets an unconditional successor to this basic block */
+    BasicBlock getAnUnconditionalSuccessor() {
+        result = this.getASuccessor() and
+        not result = this.getATrueSuccessor() and
+        not result = this.getAFalseSuccessor()
+    }
+
+    /** Gets an exceptional successor to this basic block */
+    BasicBlock getAnExceptionalSuccessor() {
+        result = this.getLastNode().getAnExceptionalSuccessor().getBasicBlock()
+    }
+
     /** Gets the scope of this block */
     pragma [nomagic] Scope getScope() {
         exists(ControlFlowNode n |
@@ -1035,6 +1078,22 @@ class BasicBlock extends @py_flow_node {
     private BasicBlock nonControllingImmediateDominator() {
         result = this.getImmediateDominator() and
         not result.(ConditionBlock).controls(this, _)
+    }
+
+    /** Holds if flow from this BasicBlock always reaches `succ`
+     */
+    predicate alwaysReaches(BasicBlock succ) {
+        succ = this
+        or
+        strictcount(this.getASuccessor()) = 1
+        and succ = this.getASuccessor()
+        or
+        forex(BasicBlock immsucc |
+            immsucc = this.getASuccessor()
+            |
+            immsucc.alwaysReaches(succ)
+        )
+
     }
 
 }
