@@ -45,6 +45,10 @@ class Stmt extends StmtParent, @stmt {
 
   /**
    * Gets the statement following this statement in the same block, if any.
+   *
+   * Note that this is not widely useful, because this doesn't have a result for
+   * the last statement of a block.  Consider using the `ControlFlowNode` class
+   * to trace the flow of control instead.
    */
   Stmt getFollowingStmt() {
     exists(Block b, int i | this   = b.getStmt(i) and
