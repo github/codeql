@@ -22,7 +22,7 @@ import javascript
  */
 predicate isInterestingSemiAnchoredRegExpString(RegExpPatternSource src, string msg) {
   exists(string str, string maybeGroupedStr, string regex, string anchorPart, string escapedDot |
-    // a dot that might be escaped in a regular expression, for example `/\./` or new `RegExp('\\.')`
+    // a dot that might be escaped in a regular expression, for example `/\./` or `new RegExp('\\.')`
     escapedDot = "\\\\[.]" and
     // a string that is mostly free from special reqular expression symbols
     str = "(?:(?:" + escapedDot + ")|[a-z:/.?_,@0-9 -])+" and
