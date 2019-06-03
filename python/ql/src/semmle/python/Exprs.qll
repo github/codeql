@@ -168,12 +168,12 @@ class Call extends Call_ {
 
     override CallNode getAFlowNode() { result = super.getAFlowNode() }
 
-    /** Gets a tuple (*) argument of this class definition. */
+    /** Gets a tuple (*) argument of this call. */
     Expr getStarargs() {
         result = this.getAPositionalArg().(Starred).getValue()
     }
 
-    /** Gets a dictionary (**) argument of this class definition. */
+    /** Gets a dictionary (**) argument of this call. */
     Expr getKwargs() {
         result = this.getANamedArg().(DictUnpacking).getValue()
     }
@@ -227,10 +227,18 @@ class Call extends Call_ {
         result = this.getKwargs().(Dict).getAKey().(StrConst).getText()
     }
 
+    /** Gets the positional argument count of this call, provided there is no more than one tuple (*) argument. */
     int getPositionalArgumentCount() {
         count(this.getStarargs()) < 2 and
-        result = count(this.getAPositionalArg())
+        result = count(Expr arg | arg = this.getAPositionalArg() and not arg instanceof Starred)
     }
+
+    /** Gets the tuple (*) argument of this call, provided there is exactly one. */
+    Expr getStarArg() {
+        count(this.getStarargs()) < 2 and
+        result = getStarargs()
+    }
+
 }
 
 /** A conditional expression such as, `body if test else orelse` */
