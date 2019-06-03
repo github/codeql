@@ -1,4 +1,3 @@
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Kinds;
@@ -9,9 +8,11 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
     {
         static StmtKind GetKind(LocalDeclarationStatementSyntax declStmt)
         {
-            if (declStmt.UsingKeyword.RawKind != 0) return StmtKind.USING_DECL;
+            if (declStmt.UsingKeyword.RawKind != 0)
+                return StmtKind.USING_DECL;
 
-            if (declStmt.IsConst) return StmtKind.CONST_DECL;
+            if (declStmt.IsConst)
+                return StmtKind.CONST_DECL;
 
             return StmtKind.VAR_DECL;
         }

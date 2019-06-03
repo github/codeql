@@ -1115,7 +1115,7 @@ class LockStmt extends Stmt, @lock_stmt {
 }
 
 /**
- * A using block or declaration. Either a using declaration (`UsingDecStmt`) or
+ * A using block or declaration. Either a using declaration (`UsingDeclStmt`) or
  * a using block (`UsingBlockStmt`).
  */
 class UsingStmt extends Stmt, @using_stmt {
@@ -1123,7 +1123,7 @@ class UsingStmt extends Stmt, @using_stmt {
   LocalVariableDeclExpr getVariableDeclExpr(int i) { none() }
 
   /** Gets a local variable declaration of this `using` statement. */
-  LocalVariableDeclExpr getAVariableDeclExpr() { none() }
+  LocalVariableDeclExpr getAVariableDeclExpr() { result = this.getVariableDeclExpr(_) }
 
   /**
    * DEPRECATED: Use UsingBlockStmt.getExpr() instead.
@@ -1164,9 +1164,6 @@ class UsingBlockStmt extends UsingStmt, @using_block_stmt {
 
   /** Gets the `i`th local variable declaration of this `using` statement. */
   override LocalVariableDeclExpr getVariableDeclExpr(int i) { result = this.getChild(-i - 1) }
-
-  /** Gets a local variable declaration of this `using` statement. */
-  override LocalVariableDeclExpr getAVariableDeclExpr() { result = this.getVariableDeclExpr(_) }
 
   /**
    * Gets the expression directly used by this `using` statement, if any. For
