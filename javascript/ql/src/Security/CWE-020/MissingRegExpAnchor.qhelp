@@ -7,7 +7,7 @@
 		<p>
 
 			Sanitizing untrusted input with regular expressions is a
-			common technique.  However, it is error prone to match untrusted input
+			common technique.  However, it is error-prone to match untrusted input
 			against regular expressions without anchors such as <code>^</code> or
 			<code>$</code>.  Malicious input can bypass such security checks by
 			embedding one of the allowed patterns in an unexpected location.
@@ -17,8 +17,8 @@
 		<p>
 
 			Even if the matching is not done in a security-critical
-			context, it may still cause undesirable behaviors when the regular
-			expression matches accidentally.
+			context, it may still cause undesirable behavior when the regular
+			expression accidentally matches.
 
 		</p>
 	</overview>
