@@ -81,6 +81,7 @@ private predicate str_format(ControlFlowNode fromnode, CallNode tonode) {
 /* tonode = codec.[en|de]code(fromnode)*/
 private predicate encode_decode(ControlFlowNode fromnode, CallNode tonode) {
     exists(FunctionObject func, string name |
+        not func.getFunction().isMethod() and
         func.getACall() = tonode and
         tonode.getAnArg() = fromnode and
         func.getName() = name |
