@@ -11,14 +11,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         VariableDeclaration(IExpressionInfo info) : base(info) { }
 
-        public static VariableDeclaration Create(Context cx, ISymbol symbol, Type type, TypeSyntax mention, Extraction.Entities.Location exprLocation, Extraction.Entities.Location declLocation, bool isVar, IExpressionParentEntity parent, int child)
+        public static VariableDeclaration Create(Context cx, ISymbol symbol, Type type, TypeSyntax optionalSyntax, Extraction.Entities.Location exprLocation, Extraction.Entities.Location declLocation, bool isVar, IExpressionParentEntity parent, int child)
         {
             var ret = new VariableDeclaration(new ExpressionInfo(cx, type, exprLocation, ExprKind.LOCAL_VAR_DECL, parent, child, false, null));
             cx.Try(null, null, () =>
             {
                 LocalVariable.Create(cx, symbol, ret, isVar, declLocation);
-                if (mention != null)
-                    TypeMention.Create(cx, mention, parent, type);
+                if (optionalSyntax != null)
+                    TypeMention.Create(cx, optionalSyntax, parent, type);
             });
             return ret;
         }

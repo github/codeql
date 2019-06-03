@@ -80,10 +80,10 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                     }
                     break;
                 case DiscardDesignationSyntax discard:
-                    if (!isVar)
-                        Expressions.TypeAccess.Create(cx, optionalType, this, 0);
-                    else
+                    if (isVar)
                         new Expressions.Discard(cx, discard, this, 0);
+                    else
+                        Expressions.TypeAccess.Create(cx, optionalType, this, 0);
                     break;
                 case null:
                     break;
