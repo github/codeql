@@ -132,4 +132,11 @@ class Assignables
         var x = 0;
         d(ref x, out string s);
     }
+
+    void UsingDeclarations()
+    {
+        using var x = new System.IO.MemoryStream();
+    }
 }
+
+// semmle-extractor-options: /langversion:8.0

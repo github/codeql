@@ -18,3 +18,5 @@ query predicate usingStmts(UsingStmt stmt, int i, LocalVariableDeclExpr decl) {
 }
 
 query predicate usingDecls(UsingDeclStmt stmt, int i, Expr e) { e = stmt.getChild(i) }
+
+query predicate usingExprs(UsingStmt stmt, Expr e) { e = stmt.getAnExpr() }

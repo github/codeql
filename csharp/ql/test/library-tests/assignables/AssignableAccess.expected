@@ -104,6 +104,7 @@
 | Assignables.cs:133:15:133:15 | access to local variable x | Assignables.cs:132:13:132:13 | x | read |
 | Assignables.cs:133:15:133:15 | access to local variable x | Assignables.cs:132:13:132:13 | x | write |
 | Assignables.cs:133:29:133:29 | String s | Assignables.cs:133:29:133:29 | s | write |
+| Assignables.cs:138:19:138:19 | access to local variable x | Assignables.cs:138:19:138:19 | x | write |
 | Discards.cs:7:9:7:9 | access to parameter x | Discards.cs:5:30:5:30 | x | write |
 | Discards.cs:20:32:20:32 | Boolean z | Discards.cs:20:32:20:32 | z | write |
 | Discards.cs:25:27:25:30 | access to parameter args | Discards.cs:23:27:23:30 | args | read |

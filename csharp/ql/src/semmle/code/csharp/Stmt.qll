@@ -1295,11 +1295,11 @@ class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
 class UsingDeclStmt extends LocalVariableDeclStmt, UsingStmt, @using_decl_stmt {
   override string toString() { result = "using ... ...;" }
 
-  override LocalConstantDeclExpr getAVariableDeclExpr() {
+  override LocalVariableDeclExpr getAVariableDeclExpr() {
     result = LocalVariableDeclStmt.super.getAVariableDeclExpr()
   }
 
-  override LocalConstantDeclExpr getVariableDeclExpr(int n) {
+  override LocalVariableDeclExpr getVariableDeclExpr(int n) {
     result = LocalVariableDeclStmt.super.getVariableDeclExpr(n)
   }
 
