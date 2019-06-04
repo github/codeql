@@ -12,6 +12,7 @@
  */
 
 import javascript
+import semmle.javascript.RestrictedLocations
 
 /**
  * Holds if some JSON or YAML file contains a property with name `key`
@@ -45,7 +46,7 @@ predicate exclude(File f) {
   f.getExtension().toLowerCase() = "raml"
 }
 
-from string key, string val, Locatable valElement
+from string key, string val, Locatable valElement, string pwd
 where
   config(key, val, valElement) and
   val != "" and
@@ -53,13 +54,14 @@ where
   not val.regexpMatch(Templating::getDelimiterMatchingRegexp()) and
   (
     key.toLowerCase() = "password" and
+    pwd = val and
     // exclude interpolations of environment variables
     not val.regexpMatch("\\$.*|%.*%")
     or
     key.toLowerCase() != "readme" and
     // look for `password=...`, but exclude `password=;`, `password="$(...)"`,
     // `password=%s` and `password==`
-    val.regexpMatch("(?is).*password\\s*=(?!\\s*;)(?!\"?[$`])(?!%s)(?!=).*")
+    pwd = val.regexpCapture("(?is).*password\\s*=\\s*(?!;|\"?[$`]|%s|=)(\\S+).*", 1)
   ) and
   not exclude(valElement.getFile())
-select valElement, "Avoid plaintext passwords in configuration files."
+select (FirstLineOf)valElement, "Hard-coded password '" + pwd + "' in configuration file."
