@@ -18,7 +18,7 @@ extern "C" int snprintf ( char * s, int n, const char * format, ... );
 struct A {
   void do_print(const char *fmt0) {
     char buf[32];
-    snprintf(buf, 32, fmt0); // BAD [should detect at top-most call]
+    snprintf(buf, 32, fmt0); // GOOD
   }
 };
 
@@ -39,7 +39,7 @@ struct C {
 
 void foo(void) {
   C c;
-  c.do_some_printing(c.ext_fmt_str());  // BAD [not detected at this location]
+  c.do_some_printing(c.ext_fmt_str());
 }
 
 struct some_class {
@@ -77,4 +77,14 @@ void diagnostic(const char *fmt, ...)
 
 void bar(void) {
     diagnostic (some_instance->get_fmt());  // GOOD
+}
+
+namespace ns {
+
+  class blab {
+    void out1(void) {
+      char *fmt = (char *)__builtin_alloca(10);
+      diagnostic(fmt);  // GOOD
+    }
+  };
 }
