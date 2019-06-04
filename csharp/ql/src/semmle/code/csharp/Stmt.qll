@@ -1303,9 +1303,7 @@ class UsingDeclStmt extends LocalVariableDeclStmt, UsingStmt, @using_decl_stmt {
     result = LocalVariableDeclStmt.super.getVariableDeclExpr(n)
   }
 
-  override Expr getAnExpr() {
-    result = this.getAVariableDeclExpr().getInitializer()
-  }
+  override Expr getAnExpr() { result = this.getAVariableDeclExpr().getInitializer() }
 }
 
 /**

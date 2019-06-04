@@ -18,11 +18,11 @@ class Element extends DotNet::Element, @element {
   override string toStringWithTypes() { result = this.toString() }
 
   /**
-   * Gets the location of this element, if any.
-   * Where an element has multiple locations (for example a source file and an assembly),
-   * gets only the source location.
+   * Gets the location of this element. Where an element has locations in
+   * source and assemblies, choose the source location. If there are multiple
+   * assembly locations, choose only one.
    */
-  final override Location getLocation() { result = ExprOrStmtParentCached::bestLocation(this) }
+  final override Location getLocation() { result = bestLocation(this) }
 
   /** Gets a location of this element, including sources and assemblies. */
   override Location getALocation() { none() }

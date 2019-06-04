@@ -142,6 +142,96 @@ class AssignableWrite extends AssignableAccess {
   AssignableWrite() { exists(AssignableDefinition def | def.getTargetAccess() = this) }
 }
 
+/**
+ * A `ref` argument in a call.
+ *
+ * All predicates in this class deliberately do not use the `Call` class, or any
+ * subclass thereof, as that results in too conservative negative recursion
+ * compilation errors.
+ */
+private class RefArg extends AssignableAccess {
+  private Expr call;
+
+  private int position;
+
+  RefArg() {
+    this.isRefArgument() and
+    this = call.getChildExpr(position) and
+    (
+      call instanceof @method_invocation_expr
+      or
+      call instanceof @delegate_invocation_expr
+      or
+      call instanceof @local_function_invocation_expr
+      or
+      call instanceof @object_creation_expr
+    )
+  }
+
+  pragma[noinline]
+  Parameter getAParameter(string name) {
+    exists(Callable callable | result = callable.getAParameter() |
+      expr_call(call, callable) and
+      result.getName() = name
+    )
+  }
+
+  /** Gets the parameter that this argument corresponds to. */
+  private Parameter getParameter() {
+    exists(string name | result = this.getAParameter(name) |
+      // Appears in the positional part of the call
+      result.getPosition() = position and
+      not exists(this.getExplicitArgumentName())
+      or
+      // Appears in the named part of the call
+      name = this.getExplicitArgumentName()
+    )
+  }
+
+  private Callable getSourceDeclarationTarget(Parameter p) {
+    p = this.getParameter().getSourceDeclaration() and
+    result.getAParameter() = p
+  }
+
+  /**
+   * Holds if the assignment to this `ref` argument via parameter `p` is
+   * analyzable. That is, the target callable is non-overridable and from
+   * source.
+   */
+  predicate isAnalyzable(Parameter p) {
+    exists(Callable callable | callable = this.getSourceDeclarationTarget(p) |
+      not callable.(Virtualizable).isOverridableOrImplementable() and
+      callable.hasBody()
+    )
+  }
+
+  /** Gets an assignment to analyzable parameter `p`. */
+  AssignableDefinition getAnAnalyzableRefDef(Parameter p) {
+    this.isAnalyzable(p) and
+    result.getTarget() = p and
+    not result = TImplicitParameterDefinition(_)
+  }
+
+  /**
+   * Holds if this `ref` assignment is *not* analyzable. Equivalent with
+   * `not this.isAnalyzable(_)`, but avoids negative recursion.
+   */
+  private predicate isNonAnalyzable() {
+    call instanceof @delegate_invocation_expr
+    or
+    exists(Callable callable | callable = this.getSourceDeclarationTarget(_) |
+      callable.(Virtualizable).isOverridableOrImplementable() or
+      not callable.hasBody()
+    )
+  }
+
+  /** Holds if this `ref` access is a potential assignment. */
+  predicate isPotentialAssignment() {
+    this.isNonAnalyzable() or
+    exists(this.getAnAnalyzableRefDef(_))
+  }
+}
+
 /** INTERNAL: Do not use. */
 module AssignableInternal {
   private predicate tupleAssignmentDefinition(AssignExpr ae, Expr leaf) {
@@ -166,123 +256,6 @@ module AssignableInternal {
     exists(TupleExpr l, TupleExpr r, int i | tupleAssignmentPair(ae, l, r) |
       left = l.getArgument(i) and
       right = r.getArgument(i)
-    )
-  }
-
-  /**
-   * A `ref` argument in a call.
-   *
-   * All predicates in this class deliberately do not use the `Call` class, or any
-   * subclass thereof, as that results in too conservative negative recursion
-   * compilation errors.
-   */
-  private class RefArg extends AssignableAccess {
-    private Expr call;
-
-    private int position;
-
-    RefArg() {
-      this.isRefArgument() and
-      this = call.getChildExpr(position) and
-      (
-        call instanceof @method_invocation_expr
-        or
-        call instanceof @delegate_invocation_expr
-        or
-        call instanceof @local_function_invocation_expr
-        or
-        call instanceof @object_creation_expr
-      )
-    }
-
-    pragma[noinline]
-    Parameter getAParameter(string name) {
-      exists(Callable callable | result = callable.getAParameter() |
-        expr_call(call, callable) and
-        result.getName() = name
-      )
-    }
-
-    /** Gets the parameter that this argument corresponds to. */
-    private Parameter getParameter() {
-      exists(string name | result = this.getAParameter(name) |
-        // Appears in the positional part of the call
-        result.getPosition() = position and
-        not exists(this.getExplicitArgumentName())
-        or
-        // Appears in the named part of the call
-        name = this.getExplicitArgumentName()
-      )
-    }
-
-    private Callable getSourceDeclarationTarget(Parameter p) {
-      p = this.getParameter().getSourceDeclaration() and
-      result.getAParameter() = p
-    }
-
-    /**
-     * Holds if the assignment to this `ref` argument via parameter `p` is
-     * analyzable. That is, the target callable is non-overridable and from
-     * source.
-     */
-    predicate isAnalyzable(Parameter p) {
-      exists(Callable callable | callable = this.getSourceDeclarationTarget(p) |
-        not callable.(Virtualizable).isOverridableOrImplementable() and
-        callable.hasBody()
-      )
-    }
-
-    /** Gets an assignment to analyzable parameter `p`. */
-    AssignableDefinition getAnAnalyzableRefDef(Parameter p) {
-      this.isAnalyzable(p) and
-      result.getTarget() = p and
-      not result = TImplicitParameterDefinition(_)
-    }
-
-    /**
-     * Holds if this `ref` assignment is *not* analyzable. Equivalent with
-     * `not this.isAnalyzable(_)`, but avoids negative recursion.
-     */
-    private predicate isNonAnalyzable() {
-      call instanceof @delegate_invocation_expr
-      or
-      exists(Callable callable | callable = this.getSourceDeclarationTarget(_) |
-        callable.(Virtualizable).isOverridableOrImplementable() or
-        not callable.hasBody()
-      )
-    }
-
-    /** Holds if this `ref` access is a potential assignment. */
-    predicate isPotentialAssignment() {
-      this.isNonAnalyzable() or
-      exists(this.getAnAnalyzableRefDef(_))
-    }
-  }
-
-  /** Holds if a node in basic block `bb` assigns to `ref` parameter `p` via definition `def`. */
-  private predicate basicBlockRefParamDef(
-    ControlFlow::BasicBlock bb, Parameter p, AssignableDefinition def
-  ) {
-    def = any(RefArg arg).getAnAnalyzableRefDef(p) and
-    bb.getANode() = def.getAControlFlowNode()
-  }
-
-  /**
-   * Holds if `p` is an analyzable `ref` parameter and there is a path from the
-   * entry point of `p`'s callable to basic block `bb` without passing through
-   * any assignments to `p`.
-   */
-  private predicate parameterReachesWithoutDef(Parameter p, ControlFlow::BasicBlock bb) {
-    forall(AssignableDefinition def | basicBlockRefParamDef(bb, p, def) |
-      isUncertainRefCall(def.getTargetAccess())
-    ) and
-    (
-      any(RefArg arg).isAnalyzable(p) and
-      p.getCallable().getEntryPoint() = bb.getFirstNode()
-      or
-      exists(ControlFlow::BasicBlock mid | parameterReachesWithoutDef(p, mid) |
-        bb = mid.getASuccessor()
-      )
     )
   }
 
@@ -352,18 +325,6 @@ module AssignableInternal {
     Expr getTupleSource(TTupleAssignmentDefinition def) {
       exists(AssignExpr ae, Expr leaf | def = TTupleAssignmentDefinition(ae, leaf) |
         tupleAssignmentPair(ae, leaf, result)
-      )
-    }
-
-    /**
-     * Holds if the `ref` assignment to `aa` via call `c` is uncertain.
-     */
-    cached
-    predicate isUncertainRefCall(RefArg arg) {
-      arg.isPotentialAssignment() and
-      exists(ControlFlow::BasicBlock bb, Parameter p | arg.isAnalyzable(p) |
-        parameterReachesWithoutDef(p, bb) and
-        bb.getLastNode() = p.getCallable().getExitPoint()
       )
     }
 
@@ -592,6 +553,47 @@ module AssignableDefinitions {
     }
 
     override string toString() { result = ae.toString() }
+  }
+
+  /** Holds if a node in basic block `bb` assigns to `ref` parameter `p` via definition `def`. */
+  private predicate basicBlockRefParamDef(
+    ControlFlow::BasicBlock bb, Parameter p, AssignableDefinition def
+  ) {
+    def = any(RefArg arg).getAnAnalyzableRefDef(p) and
+    bb.getANode() = def.getAControlFlowNode()
+  }
+
+  /**
+   * Holds if `p` is an analyzable `ref` parameter and there is a path from the
+   * entry point of `p`'s callable to basic block `bb` without passing through
+   * any assignments to `p`.
+   */
+  private predicate parameterReachesWithoutDef(Parameter p, ControlFlow::BasicBlock bb) {
+    forall(AssignableDefinition def | basicBlockRefParamDef(bb, p, def) |
+      isUncertainRefCall(def.getTargetAccess())
+    ) and
+    (
+      any(RefArg arg).isAnalyzable(p) and
+      p.getCallable().getEntryPoint() = bb.getFirstNode()
+      or
+      exists(ControlFlow::BasicBlock mid | parameterReachesWithoutDef(p, mid) |
+        bb = mid.getASuccessor()
+      )
+    )
+  }
+
+  /**
+   * Holds if the `ref` assignment to `aa` via call `c` is uncertain.
+   */
+  // Not in the cached module `Cached`, as that would introduce a dependency
+  // on the CFG construction, and effectively collapse too many stages into one
+  cached
+  predicate isUncertainRefCall(RefArg arg) {
+    arg.isPotentialAssignment() and
+    exists(ControlFlow::BasicBlock bb, Parameter p | arg.isAnalyzable(p) |
+      parameterReachesWithoutDef(p, bb) and
+      bb.getLastNode() = p.getCallable().getExitPoint()
+    )
   }
 
   /**

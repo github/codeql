@@ -18,10 +18,12 @@ private int maxSplits() { result = 7 }
 
 cached
 private module Cached {
+  private import semmle.code.csharp.Caching
+
   cached
   newtype TBooleanSplitSubKind =
     TSsaBooleanSplitSubKind(PreSsa::Definition def) {
-      ControlFlow::Internal::forceCachingInSameStage()
+      Stages::ControlFlowStage::forceCachingInSameStage()
     }
 
   cached

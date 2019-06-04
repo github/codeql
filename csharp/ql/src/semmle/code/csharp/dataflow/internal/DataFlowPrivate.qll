@@ -6,6 +6,7 @@ private import DataFlowDispatch
 private import DataFlowImplCommon
 private import ControlFlowReachability
 private import DelegateDataFlow
+private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.LibraryTypeDataFlow
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
@@ -221,33 +222,12 @@ module LocalFlow {
 
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
-module DataFlowPrivateCached {
-  cached
-  predicate forceCachingInSameStage() {
-    exists(TAnyCallContext()) // force evaluation of cached predicates in `DataFlowImplCommon.qll`
-    or
-    DataFlowDispatchCached::forceCachingInSameStage()
-    or
-    TaintTracking::Internal::Cached::forceCachingInSameStage()
-    or
-    any(ArgumentNode n).argumentOf(_, _)
-    or
-    exists(any(Node n).getEnclosingCallable())
-    or
-    exists(any(Node n).getControlFlowNode())
-    or
-    exists(any(Node n).getType())
-    or
-    exists(any(Node n).getLocation())
-    or
-    exists(any(Node n).toString())
-    or
-    exists(any(OutNode n).getCall())
-  }
-
+private module Cached {
   cached
   newtype TNode =
-    TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof Expr } or
+    TExprNode(ControlFlow::Nodes::ElementNode cfn) {
+      Stages::DataFlowStage::forceCachingInSameStage() and cfn.getElement() instanceof Expr
+    } or
     TCilExprNode(CIL::Expr e) { e.getImplementation() instanceof CIL::BestImplementation } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInstanceParameterNode(Callable c) { c.hasBody() and not c.(Modifiable).isStatic() } or
@@ -329,7 +309,7 @@ module DataFlowPrivateCached {
     pred.(NonLocalJumpNode).getAJumpSuccessor(true) = succ
   }
 }
-private import DataFlowPrivateCached
+import Cached
 
 /** An SSA definition, viewed as a node in a data flow graph. */
 class SsaDefinitionNode extends Node, TSsaDefinitionNode {
@@ -626,7 +606,11 @@ private module ArgumentNodes {
       flowIntoCallableLibraryCall(_, this, c, i)
     }
 
-    override predicate argumentOf(DataFlowCall call, int pos) { call = c and pos = i }
+    override predicate argumentOf(DataFlowCall call, int pos) {
+      Stages::DataFlowStage::forceCachingInSameStage() and
+      call = c and
+      pos = i
+    }
   }
 
   /**
@@ -859,7 +843,9 @@ private module OutNodes {
       )
     }
 
-    override DataFlowCall getCall() { result = call }
+    override DataFlowCall getCall() {
+      Stages::DataFlowStage::forceCachingInSameStage() and result = call
+    }
   }
 
   /**

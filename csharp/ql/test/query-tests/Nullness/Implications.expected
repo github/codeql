@@ -611,6 +611,7 @@
 | C.cs:222:13:222:13 | access to local variable s | non-null | C.cs:221:13:221:14 | "" | non-null |
 | C.cs:222:13:222:13 | access to local variable s | null | C.cs:221:13:221:14 | "" | null |
 | C.cs:222:13:222:21 | ... != ... | false | C.cs:222:13:222:13 | access to local variable s | null |
+| C.cs:222:13:222:21 | ... != ... | false | C.cs:222:18:222:21 | null | non-null |
 | C.cs:222:13:222:21 | ... != ... | true | C.cs:222:13:222:13 | access to local variable s | non-null |
 | C.cs:222:13:222:42 | ... && ... | true | C.cs:222:13:222:21 | ... != ... | true |
 | C.cs:222:13:222:42 | ... && ... | true | C.cs:222:26:222:42 | ... == ... | true |
@@ -938,6 +939,7 @@
 | D.cs:196:13:196:13 | access to local variable o | null | D.cs:195:17:195:28 | object creation of type Object | null |
 | D.cs:196:13:196:21 | ... == ... | false | D.cs:196:13:196:13 | access to local variable o | non-null |
 | D.cs:196:13:196:21 | ... == ... | true | D.cs:196:13:196:13 | access to local variable o | null |
+| D.cs:196:13:196:21 | ... == ... | true | D.cs:196:18:196:21 | null | non-null |
 | D.cs:197:13:197:13 | access to local variable o | non-null | D.cs:195:17:195:28 | object creation of type Object | non-null |
 | D.cs:197:13:197:13 | access to local variable o | null | D.cs:195:17:195:28 | object creation of type Object | null |
 | D.cs:198:9:198:9 | access to local variable o | non-null | D.cs:195:17:195:28 | object creation of type Object | non-null |
@@ -966,6 +968,7 @@
 | D.cs:216:13:216:14 | access to local variable o3 | null | D.cs:215:18:215:22 | "abc" | null |
 | D.cs:216:13:216:22 | ... == ... | false | D.cs:216:13:216:14 | access to local variable o3 | non-null |
 | D.cs:216:13:216:22 | ... == ... | true | D.cs:216:13:216:14 | access to local variable o3 | null |
+| D.cs:216:13:216:22 | ... == ... | true | D.cs:216:19:216:22 | null | non-null |
 | D.cs:217:13:217:14 | access to local variable o3 | non-null | D.cs:215:18:215:22 | "abc" | non-null |
 | D.cs:217:13:217:14 | access to local variable o3 | null | D.cs:215:18:215:22 | "abc" | null |
 | D.cs:218:9:218:10 | access to local variable o3 | non-null | D.cs:215:18:215:22 | "abc" | non-null |
@@ -979,6 +982,7 @@
 | D.cs:221:13:221:14 | access to local variable o4 | null | D.cs:220:18:220:26 | ... + ... | null |
 | D.cs:221:13:221:22 | ... == ... | false | D.cs:221:13:221:14 | access to local variable o4 | non-null |
 | D.cs:221:13:221:22 | ... == ... | true | D.cs:221:13:221:14 | access to local variable o4 | null |
+| D.cs:221:13:221:22 | ... == ... | true | D.cs:221:19:221:22 | null | non-null |
 | D.cs:222:13:222:14 | access to local variable o4 | non-null | D.cs:220:18:220:26 | ... + ... | non-null |
 | D.cs:222:13:222:14 | access to local variable o4 | null | D.cs:220:18:220:26 | ... + ... | null |
 | D.cs:223:9:223:10 | access to local variable o4 | non-null | D.cs:220:18:220:26 | ... + ... | non-null |
@@ -1688,6 +1692,7 @@
 | StringConcatenation.cs:30:9:30:9 | access to local variable s | null | StringConcatenation.cs:29:20:29:24 | "abc" | null |
 | StringConcatenation.cs:30:9:30:17 | ... + ... | non-null | StringConcatenation.cs:30:9:30:9 | access to local variable s | non-null |
 | StringConcatenation.cs:30:9:30:17 | ... + ... | non-null | StringConcatenation.cs:30:14:30:17 | null | non-null |
+| StringConcatenation.cs:30:9:30:17 | ... + ... | null | StringConcatenation.cs:30:14:30:17 | null | null |
 | StringConcatenation.cs:30:9:30:17 | ... += ... | non-null | StringConcatenation.cs:30:9:30:9 | access to local variable s | non-null |
 | StringConcatenation.cs:30:9:30:17 | ... += ... | null | StringConcatenation.cs:30:9:30:9 | access to local variable s | null |
 | StringConcatenation.cs:30:9:30:17 | ... = ... | non-null | StringConcatenation.cs:30:9:30:9 | access to local variable s | non-null |

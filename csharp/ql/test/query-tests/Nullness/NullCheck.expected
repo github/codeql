@@ -69,6 +69,7 @@
 | C.cs:218:13:218:21 | ... == ... | C.cs:218:13:218:13 | access to local variable s | true | true |
 | C.cs:222:13:222:21 | ... != ... | C.cs:222:13:222:13 | access to local variable s | false | true |
 | C.cs:222:13:222:21 | ... != ... | C.cs:222:13:222:13 | access to local variable s | true | false |
+| C.cs:222:13:222:21 | ... != ... | C.cs:222:18:222:21 | null | false | false |
 | C.cs:230:22:230:30 | ... != ... | C.cs:230:22:230:22 | access to local variable s | false | true |
 | C.cs:230:22:230:30 | ... != ... | C.cs:230:22:230:22 | access to local variable s | true | false |
 | C.cs:236:24:236:32 | ... == ... | C.cs:236:24:236:24 | access to local variable s | false | false |
@@ -116,14 +117,17 @@
 | D.cs:152:17:152:27 | ... != ... | D.cs:152:17:152:19 | access to parameter obj | true | false |
 | D.cs:196:13:196:21 | ... == ... | D.cs:196:13:196:13 | access to local variable o | false | false |
 | D.cs:196:13:196:21 | ... == ... | D.cs:196:13:196:13 | access to local variable o | true | true |
+| D.cs:196:13:196:21 | ... == ... | D.cs:196:18:196:21 | null | true | false |
 | D.cs:206:17:206:25 | ... == ... | D.cs:206:17:206:17 | access to local variable e | false | false |
 | D.cs:206:17:206:25 | ... == ... | D.cs:206:17:206:17 | access to local variable e | true | true |
 | D.cs:212:18:212:26 | ... == ... | D.cs:212:18:212:18 | access to local variable n | false | false |
 | D.cs:212:18:212:26 | ... == ... | D.cs:212:18:212:18 | access to local variable n | true | true |
 | D.cs:216:13:216:22 | ... == ... | D.cs:216:13:216:14 | access to local variable o3 | false | false |
 | D.cs:216:13:216:22 | ... == ... | D.cs:216:13:216:14 | access to local variable o3 | true | true |
+| D.cs:216:13:216:22 | ... == ... | D.cs:216:19:216:22 | null | true | false |
 | D.cs:221:13:221:22 | ... == ... | D.cs:221:13:221:14 | access to local variable o4 | false | false |
 | D.cs:221:13:221:22 | ... == ... | D.cs:221:13:221:14 | access to local variable o4 | true | true |
+| D.cs:221:13:221:22 | ... == ... | D.cs:221:19:221:22 | null | true | false |
 | D.cs:242:13:242:25 | ... == ... | D.cs:242:13:242:17 | access to local variable other | false | false |
 | D.cs:242:13:242:25 | ... == ... | D.cs:242:13:242:17 | access to local variable other | true | true |
 | D.cs:244:13:244:25 | ... != ... | D.cs:244:13:244:17 | access to local variable other | false | true |
