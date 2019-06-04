@@ -468,7 +468,7 @@ module ControlFlow {
         override ControlFlowElement getChildElement(int i) {
           not this instanceof GeneralCatchClause and
           not this instanceof FixedStmt and
-          not this instanceof UsingStmt and
+          not this instanceof UsingBlockStmt and
           result = this.getChild(i)
           or
           this = any(GeneralCatchClause gcc | i = 0 and result = gcc.getBlock())
