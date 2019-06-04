@@ -900,38 +900,46 @@ module InterProceduralPointsTo {
     /** Helper for parameter_points_to */
     pragma [noinline]
     private predicate special_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        /* Runtime: Just an unknown tuple (or dict for `**` args) */
         special_parameter_value(def, value) and
         context.isRuntime() and
         origin = def.getDefiningNode()
         or
+        /* A tuple constructed from positional arguments for a `*` parameter. */
         exists(CallNode call, Function scope, PointsToContext caller, int offset, int length |
-            varargs_tuple(call, scope, caller, context, offset, length) and
+            varargs_tuple(call, caller, scope, context, offset, length) and
             value = TVarargsTuple(call, caller, offset, length) and
             def.getScope() = scope
         ) and
         origin = def.getDefiningNode()
         or
+        /* A `*` parameter with no surplus positional arguments; an empty tuple */
         exists(Function scope |
             varargs_empty_tuple(scope, context) and
-            value.(BuiltinTupleObjectInternal).length() = 0 and
+            value = ObjectInternal::emptyTuple() and
             def.getScope() = scope
         ) and
         origin = def.getDefiningNode()
     }
 
-    predicate varargs_tuple(CallNode call, Function scope, PointsToContext caller, PointsToContext callee, int startOffset, int length) {
+    /** Holds if `call` in context `caller` calls into the function scope `func` in context `callee` and
+     * that the number of position arguments (including expansion of `*` argument) exceeds the number of positional arguments by
+     * `length` and that the excess arguments start at `start`.
+     */
+    predicate varargs_tuple(CallNode call, PointsToContext caller, Function scope, PointsToContext callee, int start, int length) {
         exists(int parameter_offset |
             callsite_calls_function(call, caller, scope, callee, parameter_offset) and
-            startOffset = scope.getPositionalParameterCount() - parameter_offset and
-            length = positional_argument_count(call, caller) - startOffset and
+            start = scope.getPositionalParameterCount() - parameter_offset and
+            length = positional_argument_count(call, caller) - start and
             length > 0
         )
     }
 
-    predicate varargs_empty_tuple(Function scope, PointsToContext callee) {
+    /** Holds if for function scope `func` in context `callee` the `*` parameter will hold the empty tuple. */
+    predicate varargs_empty_tuple(Function func, PointsToContext callee) {
         exists(CallNode call, PointsToContext caller, int parameter_offset |
-            callsite_calls_function(call, caller, scope, callee, parameter_offset) and
-            scope.getPositionalParameterCount() - parameter_offset >= positional_argument_count(call, caller)
+            callsite_calls_function(call, caller, func, callee, parameter_offset) and
+            func.getPositionalParameterCount() - parameter_offset >= positional_argument_count(call, caller)
         )
     }
 
@@ -942,17 +950,21 @@ module InterProceduralPointsTo {
         p.isKwargs() and value = TUnknownInstance(ObjectInternal::builtin("dict"))
     }
 
-    predicate positional_argument_points_to(CallNode call, int argument, PointsToContext caller, ObjectInternal value, ControlFlowNode origin) {
-        PointsToInternal::pointsTo(call.getArg(argument), caller, value, origin)
+    /** Holds if the `n`th argument in call `call` with context `caller` points-to `value` from `origin`, including values in tuples
+     * expanded by a `*` argument. For example, for the call `f('a', *(`x`,`y`))` the arguments are `('a', 'x', y')`
+     */
+    predicate positional_argument_points_to(CallNode call, int n, PointsToContext caller, ObjectInternal value, ControlFlowNode origin) {
+        PointsToInternal::pointsTo(call.getArg(n), caller, value, origin)
         or
         exists(SequenceObjectInternal arg, int pos |
             pos = call.getNode().getPositionalArgumentCount() and
             PointsToInternal::pointsTo(origin, caller, arg, _) and
-            value = arg.getItem(argument-pos) and
+            value = arg.getItem(n-pos) and
             origin = call.getStarArg()
         )
     }
 
+    /** Gets the number of positional arguments including values in tuples expanded by a `*` argument.*/
     private int positional_argument_count(CallNode call, PointsToContext caller) {
         result = call.getNode().getPositionalArgumentCount() and not exists(call.getStarArg()) and caller.appliesTo(call)
         or
@@ -963,6 +975,7 @@ module InterProceduralPointsTo {
         )
     }
 
+    /** Holds if the parameter definition `def` points-to `value` from `origin` given the context `context` */
     predicate positional_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         exists(CallNode call, int argument, PointsToContext caller, Function func, int offset |
             positional_argument_points_to(call, argument, caller, value, origin) and
@@ -971,6 +984,7 @@ module InterProceduralPointsTo {
         )
     }
 
+    /** Holds if the named `argument` given the context `caller` is transferred to the parameter `param` with conntext `callee` by a call. */
     cached predicate named_argument_transfer(ControlFlowNode argument, PointsToContext caller, ParameterDefinition param, PointsToContext callee) {
         exists(CallNode call, Function func, int offset |
             callsite_calls_function(call, caller, func, callee, offset)
@@ -982,6 +996,9 @@ module InterProceduralPointsTo {
         )
     }
 
+    /** Holds if the `call` with context `caller` calls the function `scope` in context `callee` 
+     * and the offset from argument to parameter is `parameter_offset`
+     */
     cached predicate callsite_calls_function(CallNode call, PointsToContext caller, Function scope, PointsToContext callee, int parameter_offset) {
         exists(ObjectInternal func |
             callWithContext(call, caller, func, callee) and

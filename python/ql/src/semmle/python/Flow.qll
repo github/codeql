@@ -481,6 +481,7 @@ class CallNode extends ControlFlowNode {
         )
     }
 
+    /** Gets the tuple (*) argument of this call, provided there is exactly one. */
     ControlFlowNode getStarArg() {
         result.getNode() = this.getNode().getStarArg() and
         result.getBasicBlock().dominates(this.getBasicBlock())

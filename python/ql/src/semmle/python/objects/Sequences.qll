@@ -90,6 +90,7 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
 
 }
 
+/** A tuple built-in to the interpreter, including the empty tuple. */
 class BuiltinTupleObjectInternal extends TBuiltinTuple, TupleObjectInternal {
 
     override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
@@ -116,7 +117,7 @@ class BuiltinTupleObjectInternal extends TBuiltinTuple, TupleObjectInternal {
     }
 }
 
-
+/** A tuple declared by a tuple expression in the Python source code */
 class PythonTupleObjectInternal extends TPythonTuple, TupleObjectInternal {
 
     override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
@@ -147,6 +148,7 @@ class PythonTupleObjectInternal extends TPythonTuple, TupleObjectInternal {
 
 }
 
+/** A tuple created by a `*` parameter */
 class VarargsTupleObjectInternal extends TVarargsTuple,  TupleObjectInternal {
 
     override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
