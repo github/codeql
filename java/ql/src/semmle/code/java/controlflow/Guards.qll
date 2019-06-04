@@ -93,7 +93,8 @@ class Guard extends ExprParent {
   /** Gets the statement containing this guard. */
   Stmt getEnclosingStmt() {
     result = this.(Expr).getEnclosingStmt() or
-    result = this.(SwitchCase).getSwitch()
+    result = this.(SwitchCase).getSwitch() or
+    result = this.(SwitchCase).getSwitchExpr().getEnclosingStmt()
   }
 
   /**
@@ -126,7 +127,7 @@ class Guard extends ExprParent {
       branch = true and
       bb2.getFirstNode() = sc.getControlFlowNode() and
       pred = sc.getControlFlowNode().getAPredecessor() and
-      pred.(Expr).getParent*() = sc.getSwitch().getExpr() and
+      pred.(Expr).getParent*() = sc.getTestExpr() and
       bb1 = pred.getBasicBlock()
     )
     or
@@ -160,12 +161,12 @@ class Guard extends ExprParent {
 }
 
 private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
-  exists(BasicBlock caseblock, SwitchStmt ss |
-    ss.getACase() = sc and
+  exists(BasicBlock caseblock, Expr switchTest |
+    switchTest = sc.getTestExpr() and
     caseblock.getFirstNode() = sc.getControlFlowNode() and
     caseblock.bbDominates(bb) and
     forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
-      pred.(Expr).getParent*() = ss.getExpr()
+      pred.(Expr).getParent*() = switchTest
     )
   )
 }
@@ -254,7 +255,8 @@ private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
   exists(ConstCase cc |
     cc = g and
     polarity = true and
-    cc.getSwitch().getExpr().getProperExpr() = e1 and
-    cc.getValue() = e2
+    cc.getTestExpr().getProperExpr() = e1 and
+    cc.getValue() = e2 and
+    strictcount(cc.getValue(_)) = 1
   )
 }
