@@ -139,16 +139,17 @@ private predicate bbLoopEntryConditionAlwaysTrueAt(BasicBlock bb, int i, Control
  * within a complex loop condition are not matched by this predicate.
  */
 private predicate bbLoopConditionAlwaysTrueUponEntrySuccessor(BasicBlock pred, BasicBlock succ, boolean skipsLoop) {
-  exists(ControlFlowNode loop |
-    loopConditionAlwaysTrueUponEntry(loop, _) and
+  exists(Expr cond |
+    loopConditionAlwaysTrueUponEntry(_, cond) and
+    cond.getAChild*() = pred.getEnd() and
+    succ = pred.getASuccessor() and
+    not cond.getAChild*() = succ.getStart() and
     (
       (
-        not succ = loop.(Loop).getStmt() and
-        pred.getAFalseSuccessor() = succ and
+        succ = pred.getAFalseSuccessor() and
         skipsLoop = true
       ) or (
-        succ = loop.(Loop).getStmt() and
-        pred.getATrueSuccessor() = succ and
+        succ = pred.getATrueSuccessor() and
         skipsLoop = false
       )
     )
