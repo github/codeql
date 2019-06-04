@@ -481,6 +481,10 @@ module ObjectInternal {
         result = TBuiltinClassObject(Builtin::special("ClassType"))
     }
 
+    ObjectInternal emptyTuple() {
+        result.(BuiltinTupleObjectInternal).length() = 0
+    }
+
 }
 
 /** Helper for boolean predicates returning both `true` and `false` */
