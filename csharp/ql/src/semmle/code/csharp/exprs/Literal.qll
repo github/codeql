@@ -15,8 +15,6 @@ private import dotnet
  */
 class Literal extends DotNet::Literal, Expr, @literal_expr {
   override string toString() { result = this.getValue() }
-
-  override string getValue() { result = Expr.super.getValue() }
 }
 
 /**

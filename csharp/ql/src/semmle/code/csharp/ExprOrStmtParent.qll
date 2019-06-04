@@ -50,21 +50,26 @@ predicate expr_parent_top_level_adjusted(Expr child, int i, @top_level_exprorstm
  * ```
  */
 private predicate expr_parent_adjusted(Expr child, int i, ControlFlowElement parent) {
-  exists(AssignExpr ae | ae = parent.(AssignOperation).getExpandedAssignment() |
-    i = 0 and
-    exists(Expr right |
-      // right = `x + y`
-      expr_parent(right, 0, ae)
-    |
-      expr_parent(child, 1, right)
-    )
-    or
-    i = 1 and
-    expr_parent(child, 1, ae)
-  )
-  or
-  not parent.(AssignOperation).hasExpandedAssignment() and
-  expr_parent(child, i, parent)
+  if parent instanceof AssignOperation
+  then
+    parent = any(AssignOperation ao |
+        exists(AssignExpr ae | ae = ao.getExpandedAssignment() |
+          i = 0 and
+          exists(Expr right |
+            // right = `x + y`
+            expr_parent(right, 0, ae)
+          |
+            expr_parent(child, 1, right)
+          )
+          or
+          i = 1 and
+          expr_parent(child, 1, ae)
+        )
+        or
+        not ao.hasExpandedAssignment() and
+        expr_parent(child, i, parent)
+      )
+  else expr_parent(child, i, parent)
 }
 
 /**

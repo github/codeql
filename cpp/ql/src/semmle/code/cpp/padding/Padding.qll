@@ -184,7 +184,7 @@ Field getAnInitialField(PaddedType t) {
     result = t.getAField() or
     // Initial field of the type of a field of the union
     result = getAnInitialField(
-      t.getAField().getType().getUnspecifiedType().(PaddedType))
+      t.getAField().getUnspecifiedType().(PaddedType))
   )
   else (
     exists(Field firstField |
@@ -193,7 +193,7 @@ Field getAnInitialField(PaddedType t) {
       result = firstField or
       // Initial field of the first field of `t`
       result = getAnInitialField(
-        firstField.getType().getUnspecifiedType().(PaddedType))
+        firstField.getUnspecifiedType().(PaddedType))
     )
   )
 }
@@ -212,7 +212,7 @@ abstract class UnixArchitecture extends Architecture {
     if(not exists(cd.getBaseClass().getABaseClass*().getAField()) and
       not exists(PaddedType fieldType |
         fieldType = getAnInitialField(cd.getDerivedClass()).
-          getType().getUnspecifiedType() and (
+          getUnspecifiedType() and (
             // Check if the type of the field is a base type of the class, or
             // vice versa. This is an approximation of the actual rule, which is
             // that the field type and the class must not share a common

@@ -58,19 +58,19 @@ module CastSanity {
     // Every cast should have exactly one semantic conversion kind
     count(cast.getSemanticConversionString()) > 1 and
     kind = cast.getSemanticConversionString() and
-    fromType = cast.getExpr().getType().getUnspecifiedType()
+    fromType = cast.getExpr().getUnspecifiedType()
   }
 
   query predicate missingSemanticConversionString(Cast cast, Type fromType) {
     // Every cast should have exactly one semantic conversion kind
     not exists(cast.getSemanticConversionString()) and
-    fromType = cast.getExpr().getType().getUnspecifiedType()
+    fromType = cast.getExpr().getUnspecifiedType()
   }
 
   query predicate unknownSemanticConversionString(Cast cast, Type fromType) {
     // Every cast should have a known semantic conversion kind
     cast.getSemanticConversionString() = "unknown conversion" and
-    fromType = cast.getExpr().getType().getUnspecifiedType()
+    fromType = cast.getExpr().getUnspecifiedType()
   }
 }
 
@@ -137,8 +137,8 @@ private predicate isPointerToMemberOrNullPointer(Type type) {
 class ArithmeticConversion extends Cast {
   ArithmeticConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isArithmeticOrEnum(getType().getUnspecifiedType()) and
-    isArithmeticOrEnum(getExpr().getType().getUnspecifiedType())
+    isArithmeticOrEnum(getUnspecifiedType()) and
+    isArithmeticOrEnum(getExpr().getUnspecifiedType())
   }
 
   override string getSemanticConversionString() {
@@ -151,8 +151,8 @@ class ArithmeticConversion extends Cast {
  */
 class IntegralConversion extends ArithmeticConversion {
   IntegralConversion() {
-    isIntegralOrEnum(getType().getUnspecifiedType()) and
-    isIntegralOrEnum(getExpr().getType().getUnspecifiedType())
+    isIntegralOrEnum(getUnspecifiedType()) and
+    isIntegralOrEnum(getExpr().getUnspecifiedType())
   }
 
   override string getSemanticConversionString() {
@@ -165,8 +165,8 @@ class IntegralConversion extends ArithmeticConversion {
  */
 class FloatingPointConversion extends ArithmeticConversion {
   FloatingPointConversion() {
-    getType().getUnspecifiedType() instanceof FloatingPointType and
-    getExpr().getType().getUnspecifiedType() instanceof FloatingPointType
+    getUnspecifiedType() instanceof FloatingPointType and
+    getExpr().getUnspecifiedType() instanceof FloatingPointType
   }
 
   override string getSemanticConversionString() {
@@ -179,8 +179,8 @@ class FloatingPointConversion extends ArithmeticConversion {
  */
 class FloatingPointToIntegralConversion extends ArithmeticConversion {
   FloatingPointToIntegralConversion() {
-    isIntegralOrEnum(getType().getUnspecifiedType()) and
-    getExpr().getType().getUnspecifiedType() instanceof FloatingPointType
+    isIntegralOrEnum(getUnspecifiedType()) and
+    getExpr().getUnspecifiedType() instanceof FloatingPointType
   }
 
   override string getSemanticConversionString() {
@@ -193,8 +193,8 @@ class FloatingPointToIntegralConversion extends ArithmeticConversion {
  */
 class IntegralToFloatingPointConversion extends ArithmeticConversion {
   IntegralToFloatingPointConversion() {
-    getType().getUnspecifiedType() instanceof FloatingPointType and
-    isIntegralOrEnum(getExpr().getType().getUnspecifiedType())
+    getUnspecifiedType() instanceof FloatingPointType and
+    isIntegralOrEnum(getExpr().getUnspecifiedType())
   }
 
   override string getSemanticConversionString() {
@@ -211,8 +211,8 @@ class IntegralToFloatingPointConversion extends ArithmeticConversion {
 class PointerConversion extends Cast {
   PointerConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isPointerOrNullPointer(getType().getUnspecifiedType()) and
-    isPointerOrNullPointer(getExpr().getType().getUnspecifiedType())
+    isPointerOrNullPointer(getUnspecifiedType()) and
+    isPointerOrNullPointer(getExpr().getUnspecifiedType())
   }
 
   override string getSemanticConversionString() {
@@ -230,8 +230,8 @@ class PointerToMemberConversion extends Cast {
   PointerToMemberConversion() {
     conversionkinds(underlyingElement(this), 0) and
     exists(Type fromType, Type toType |
-      fromType = getExpr().getType().getUnspecifiedType() and
-      toType = getType().getUnspecifiedType() and
+      fromType = getExpr().getUnspecifiedType() and
+      toType = getUnspecifiedType() and
       isPointerToMemberOrNullPointer(fromType) and
       isPointerToMemberOrNullPointer(toType) and
       // A conversion from nullptr to nullptr is a `PointerConversion`, not a
@@ -254,8 +254,8 @@ class PointerToMemberConversion extends Cast {
 class PointerToIntegralConversion extends Cast {
   PointerToIntegralConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isIntegralOrEnum(getType().getUnspecifiedType()) and
-    isPointerOrNullPointer(getExpr().getType().getUnspecifiedType())
+    isIntegralOrEnum(getUnspecifiedType()) and
+    isPointerOrNullPointer(getExpr().getUnspecifiedType())
   }
 
   override string getSemanticConversionString() {
@@ -269,8 +269,8 @@ class PointerToIntegralConversion extends Cast {
 class IntegralToPointerConversion extends Cast {
   IntegralToPointerConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    isPointerOrNullPointer(getType().getUnspecifiedType()) and
-    isIntegralOrEnum(getExpr().getType().getUnspecifiedType())
+    isPointerOrNullPointer(getUnspecifiedType()) and
+    isIntegralOrEnum(getExpr().getUnspecifiedType())
   }
 
   override string getSemanticConversionString() {
@@ -298,7 +298,7 @@ class BoolConversion extends Cast {
 class VoidConversion extends Cast {
   VoidConversion() {
     conversionkinds(underlyingElement(this), 0) and
-    getType().getUnspecifiedType() instanceof VoidType
+    getUnspecifiedType() instanceof VoidType
   }
 
   override string getSemanticConversionString() {
@@ -353,7 +353,7 @@ class InheritanceConversion extends Cast {
  */
 private Class getConversionClass(Expr expr) {
   exists(Type operandType |
-    operandType = expr.getType().getUnspecifiedType() and
+    operandType = expr.getUnspecifiedType() and
     (
       result = operandType or
       result = operandType.(PointerType).getBaseType()

@@ -268,7 +268,24 @@ class ParameterDefinition extends PyNodeDefinition {
     }
 
     ControlFlowNode getDefault() {
-        result.getNode() = this.getParameter().getDefault()
+        exists(Function f, int n, int c, int d, Arguments args |
+            args = f.getDefinition().getArgs() |
+            f.getArg(n) = this.getDefiningNode().getNode() and
+            c = count(f.getAnArg()) and
+            d = count(args.getADefault()) and
+            result.getNode() = args.getDefault(d-c+n)
+        )
+    }
+
+    predicate isVarargs() {
+        exists(Function func | func.getVararg() = this.getDefiningNode().getNode())
+    }
+
+    /** Holds if this parameter is a 'kwargs' parameter.
+     * The `kwargs` in `f(a, b, **kwargs)`.
+     */
+    predicate isKwargs() {
+        exists(Function func | func.getKwarg() = this.getDefiningNode().getNode())
     }
 
     Parameter getParameter() {
@@ -361,6 +378,7 @@ class ArgumentRefinement extends PyNodeRefinement {
 
     ControlFlowNode getArgument() { result = argument }
 
+    CallNode getCall() { result = this.getDefiningNode() }
 }
 
 /** Deletion of an attribute `del obj.attr`. */
@@ -395,6 +413,16 @@ class SingleSuccessorGuard extends PyNodeRefinement {
         not exists(this.getSense()) and
         result = PyNodeRefinement.super.getRepresentation() + " [??]"
     }
+
+    ControlFlowNode getTest() {
+        result = this.getDefiningNode()
+    }
+
+    predicate useAndTest(ControlFlowNode use, ControlFlowNode test) {
+        test = this.getDefiningNode() and
+        SsaSource::test_refinement(this.getSourceVariable(), use, test)
+    }
+
 }
 
 /** Implicit definition of the names of sub-modules in a package.
@@ -561,8 +589,7 @@ module BaseFlow {
     }
 
     /* Helper for this_scope_entry_value_transfer(...). Transfer of values from earlier scope to later on */
-    pragma [noinline]
-    predicate scope_entry_value_transfer_from_earlier(EssaVariable pred_var, Scope pred_scope, ScopeEntryDefinition succ_def, Scope succ_scope) {
+    cached predicate scope_entry_value_transfer_from_earlier(EssaVariable pred_var, Scope pred_scope, ScopeEntryDefinition succ_def, Scope succ_scope) {
         exists(SsaSourceVariable var |
             reaches_exit(pred_var) and
             pred_var.getScope() = pred_scope and

@@ -69,3 +69,44 @@ int test_inverted_logic(int *p) {
     return 0;
   }
 }
+
+void test_indirect_local() {
+  int a = 0;
+  int *p = &a;
+  int **pp = &p;
+  int x;
+  x = **pp;
+  if (*pp == nullptr) { // BAD
+    return;
+  }
+}
+
+void test_field_local(bool boolvar) {
+  int a = 0;
+  struct {
+    int *p;
+  } s = { &a };
+  auto sp = &s;
+
+  if (boolvar) {
+    int x = *sp->p;
+    if (sp->p == nullptr) { // BAD
+      return;
+    }
+  } else {
+    int *x = sp->p;
+    if (sp == nullptr) { // BAD [NOT DETECTED]
+      return;
+    }
+  }
+}
+
+struct S {
+  long **pplong;
+
+  void test_phi() {
+    while (*pplong != nullptr) { // GOOD
+      pplong++;
+    }
+  }
+};

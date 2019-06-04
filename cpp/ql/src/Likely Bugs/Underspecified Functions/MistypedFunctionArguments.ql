@@ -73,8 +73,8 @@ predicate argTypeMayBeUsed(Type arg, Type parm) {
 // function parameter `parm` without need for run-time conversion.
 pragma[inline]
 predicate argMayBeUsed(Expr arg, Parameter parm) {
-  argTypeMayBeUsed(arg.getFullyConverted().getType().getUnspecifiedType(),
-    parm.getType().getUnspecifiedType())
+  argTypeMayBeUsed(arg.getFullyConverted().getUnspecifiedType(),
+    parm.getUnspecifiedType())
 }
 
 // True if function was ()-declared, but not (void)-declared or K&R-defined
@@ -104,5 +104,5 @@ where
   not argMayBeUsed(fc.getArgument(p.getIndex()), p)
 select fc, "Calling $@: argument $@ of type $@ is incompatible with parameter $@.", f, f.toString(),
   fc.getArgument(p.getIndex()) as arg, arg.toString(),
-  arg.getExplicitlyConverted().getType().getUnspecifiedType() as atype, atype.toString(), p,
+  arg.getExplicitlyConverted().getUnspecifiedType() as atype, atype.toString(), p,
   p.getTypedName()

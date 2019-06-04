@@ -292,15 +292,15 @@
 | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:17:9:18:9 | {...} | 1 |
 | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:22:18:22:22 | "xyz" | 4 |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; | 1 |
-| Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:18:24:20 | access to type Int32 | 2 |
-| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:30:24:35 | ... > ... | 4 |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:18:24:23 | Int32 i2 | 2 |
+| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:35 | ... > ... | 3 |
 | Patterns.cs:25:17:25:52 | ...; | Patterns.cs:26:17:26:22 | break; | 6 |
-| Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:27:18:27:20 | access to type Int32 | 2 |
-| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:29:17:29:22 | break; | 7 |
-| Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:30:18:30:23 | access to type String | 2 |
-| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:32:17:32:22 | break; | 7 |
-| Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:33:18:33:20 | access to type Object | 2 |
-| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:34:17:34:22 | break; | 2 |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Int32 i3 | 2 |
+| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:29:17:29:22 | break; | 6 |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | String s2 | 2 |
+| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:32:17:32:22 | break; | 6 |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:18:33:23 | Object v2 | 2 |
+| Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; | 1 |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:37:17:37:22 | break; | 5 |
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | exit Test | 3 |
 | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | exit Method | 3 |
@@ -314,22 +314,22 @@
 | Switch.cs:17:23:17:37 | object creation of type Exception | Switch.cs:17:17:17:38 | throw ...; | 2 |
 | Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:18:18:21 | null | 2 |
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; | 1 |
-| Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:20:18:20:20 | access to type Int32 | 2 |
-| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:21:21:21:29 | ... == ... | 5 |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:18:20:22 | Int32 i | 2 |
+| Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:21:21:29 | ... == ... | 4 |
 | Switch.cs:22:21:22:27 | return ...; | Switch.cs:22:21:22:27 | return ...; | 1 |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:17:23:28 | goto case ...; | 2 |
-| Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:18:24:23 | access to type String | 2 |
-| Switch.cs:24:18:24:25 | String s | Switch.cs:24:32:24:43 | ... > ... | 6 |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:18:24:25 | String s | 2 |
+| Switch.cs:24:32:24:55 | ... && ... | Switch.cs:24:32:24:43 | ... > ... | 5 |
 | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:24:48:24:55 | ... != ... | 3 |
 | Switch.cs:25:17:25:37 | ...; | Switch.cs:26:17:26:23 | return ...; | 4 |
-| Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:18:27:23 | access to type Double | 2 |
-| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:32:27:38 | call to method Throw | 2 |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | Double d | 2 |
+| Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw | 1 |
 | Switch.cs:30:13:30:20 | default: | Switch.cs:29:17:29:23 | return ...; | 4 |
 | Switch.cs:35:10:35:11 | enter M3 | Switch.cs:35:10:35:11 | exit M3 | 5 |
 | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:48:18:48:20 | access to type Int32 | 6 |
 | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:44:10:44:11 | exit M4 | 1 |
 | Switch.cs:49:17:49:22 | break; | Switch.cs:49:17:49:22 | break; | 1 |
-| Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:18:50:21 | access to type Boolean | 2 |
+| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:18:50:21 | access to type Boolean | 2 |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:30:50:38 | ... != ... | 3 |
 | Switch.cs:51:17:51:22 | break; | Switch.cs:51:17:51:22 | break; | 1 |
 | Switch.cs:55:10:55:11 | enter M5 | Switch.cs:55:10:55:11 | exit M5 | 12 |

@@ -110,7 +110,7 @@ module UnsafeDynamicMethodAccess {
    * The page URL considered as a flow source for unsafe dynamic method access.
    */
   class DocumentUrlAsSource extends Source {
-    DocumentUrlAsSource() { isDocumentURL(asExpr()) }
+    DocumentUrlAsSource() { this = DOM::locationSource() }
   }
 
   /**

@@ -1,4 +1,7 @@
 import csharp
 
-from ConstCase cc
-select cc, cc.getExpr()
+from Case c, Expr e
+where
+  e = c.getPattern().stripCasts() and
+  (e instanceof @unknown_expr or e instanceof ConstantPatternExpr)
+select c, e

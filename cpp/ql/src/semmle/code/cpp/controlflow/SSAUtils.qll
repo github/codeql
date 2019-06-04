@@ -69,7 +69,7 @@ private predicate addressTakenVariable(LocalScopeVariable var) {
 }
 
 private predicate isReferenceVar(LocalScopeVariable v) {
-  v.getType().getUnspecifiedType() instanceof ReferenceType
+  v.getUnspecifiedType() instanceof ReferenceType
 }
 
 /**

@@ -51,8 +51,8 @@ module CodeInjection {
   /**
    * An access to a property that may hold (parts of) the document URL.
    */
-  class LocationSource extends Source, DataFlow::ValueNode {
-    LocationSource() { isDocumentURL(astNode) }
+  class LocationSource extends Source {
+    LocationSource() { this = DOM::locationSource() }
   }
 
   /**

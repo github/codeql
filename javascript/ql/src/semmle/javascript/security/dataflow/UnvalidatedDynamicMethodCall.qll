@@ -102,7 +102,7 @@ module UnvalidatedDynamicMethodCall {
    * The page URL considered as a flow source for unvalidated dynamic method calls.
    */
   class DocumentUrlAsSource extends Source {
-    DocumentUrlAsSource() { isDocumentURL(asExpr()) }
+    DocumentUrlAsSource() { this = DOM::locationSource() }
   }
 
   /**
@@ -142,11 +142,10 @@ module UnvalidatedDynamicMethodCall {
       astNode.getAnOperand().getUnderlyingValue() = t
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       outcome = astNode.getPolarity() and
-      e = t.getOperand().getUnderlyingValue()
+      e = t.getOperand().getUnderlyingValue() and
+      label instanceof MaybeNonFunction
     }
-
-    override DataFlow::FlowLabel getALabel() { result instanceof MaybeNonFunction }
   }
 }

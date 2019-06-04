@@ -70,13 +70,13 @@ module AbstractValues {
   }
 
   /** An integer value. */
-  class IntergerValue extends AbstractValue, TIntegerValue {
+  class IntegerValue extends AbstractValue, TIntegerValue {
     /** Gets the underlying integer value. */
     int getValue() { this = TIntegerValue(result) }
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) { none() }
 
-    override BooleanValue getDualValue() { none() }
+    override IntegerValue getDualValue() { none() }
 
     override Expr getAnExpr() {
       result.getValue().toInt() = this.getValue() and
@@ -120,27 +120,30 @@ module AbstractValues {
     override string toString() { if this.isNull() then result = "null" else result = "non-null" }
   }
 
-  /** A value that represents match or non-match against a specific `case` statement. */
+  /** A value that represents match or non-match against a specific pattern. */
   class MatchValue extends AbstractValue, TMatchValue {
+    /** Gets the case. */
+    Case getCase() { this = TMatchValue(result, _) }
+
     /** Gets the case statement. */
-    CaseStmt getCaseStmt() { this = TMatchValue(result, _) }
+    deprecated CaseStmt getCaseStmt() { result = this.getCase() }
 
     /** Holds if this value represents a match. */
     predicate isMatch() { this = TMatchValue(_, true) }
 
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TMatchValue(_, s.(MatchingSuccessor).getValue()) and
-      exists(MatchingCompletion c, SwitchStmt ss, CaseStmt cs | s.matchesCompletion(c) |
+      exists(MatchingCompletion c, Switch switch, Case case | s.matchesCompletion(c) |
         c.isValidFor(cfe) and
-        switchMatching(ss, cs, cfe) and
-        e = ss.getCondition() and
-        cs = this.getCaseStmt()
+        switchMatching(switch, case, cfe) and
+        e = switch.getExpr() and
+        case = this.getCase()
       )
     }
 
     override MatchValue getDualValue() {
       result = any(MatchValue mv |
-          mv.getCaseStmt() = this.getCaseStmt() and
+          mv.getCase() = this.getCase() and
           if this.isMatch() then not mv.isMatch() else mv.isMatch()
         )
     }
@@ -150,7 +153,7 @@ module AbstractValues {
     override predicate isSingleton() { none() }
 
     override string toString() {
-      exists(string s | s = this.getCaseStmt().toString() |
+      exists(string s | s = this.getCase().getPattern().toString() |
         if this.isMatch() then result = "match " + s else result = "non-match " + s
       )
     }
@@ -196,7 +199,9 @@ class DereferenceableExpr extends Expr {
       // incorrectly `int`, while it should have been `int?`. We apply
       // `getNullEquivParent()` as a workaround
       this = getNullEquivParent*(e) and
-      t = e.getType()
+      t = e.getType() and
+      not this instanceof SwitchCaseExpr and
+      not this instanceof PatternExpr
     |
       t instanceof NullableType and
       isNullableType = true
@@ -254,9 +259,9 @@ class DereferenceableExpr extends Expr {
         isNull = false
       )
       or
-      result = any(IsExpr ie |
-          ie.getExpr() = this and
-          if ie.(IsConstantExpr).getConstant() instanceof NullLiteral
+      result = any(PatternMatch pm |
+          pm.getExpr() = this and
+          if pm.getPattern() instanceof NullLiteral
           then
             // E.g. `x is null`
             isNull = branch
@@ -265,7 +270,7 @@ class DereferenceableExpr extends Expr {
             branch = true and isNull = false
             or
             // E.g. `x is string` where `x` has type `string`
-            ie = any(IsTypeExpr ite | ite.getCheckedType() = ite.getExpr().getType()) and
+            pm.getPattern().(TypePatternExpr).getCheckedType() = pm.getExpr().getType() and
             branch = false and
             isNull = true
           )
@@ -304,19 +309,19 @@ class DereferenceableExpr extends Expr {
    * then `o` is guaranteed to be non-`null`.
    */
   private Expr getAMatchingNullCheck(MatchValue v, boolean isNull) {
-    exists(SwitchStmt ss, CaseStmt cs |
-      cs = v.getCaseStmt() and
-      this = ss.getCondition() and
+    exists(Switch s, Case case |
+      case = v.getCase() and
+      this = s.getExpr() and
       result = this and
-      cs = ss.getACase()
+      case = s.getACase()
     |
       // E.g. `case string`
-      cs instanceof TypeCase and
+      case.getPattern() instanceof TypePatternExpr and
       v.isMatch() and
       isNull = false
       or
-      cs = any(ConstCase cc |
-          if cc.getExpr() instanceof NullLiteral
+      case.getPattern() = any(ConstantPatternExpr cpe |
+          if cpe instanceof NullLiteral
           then
             // `case null`
             if v.isMatch() then isNull = true else isNull = false
@@ -637,7 +642,7 @@ module Internal {
     TBooleanValue(boolean b) { b = true or b = false } or
     TIntegerValue(int i) { i = any(Expr e).getValue().toInt() } or
     TNullValue(boolean b) { b = true or b = false } or
-    TMatchValue(CaseStmt cs, boolean b) { b = true or b = false } or
+    TMatchValue(Case c, boolean b) { b = true or b = false } or
     TEmptyCollectionValue(boolean b) { b = true or b = false }
 
   /** A callable that always returns a non-`null` value. */
@@ -731,6 +736,8 @@ module Internal {
     Guard() {
       this.getType() instanceof BoolType and
       not this instanceof BoolLiteral and
+      not this instanceof SwitchCaseExpr and
+      not this instanceof PatternExpr and
       val = TBooleanValue(_)
       or
       this instanceof DereferenceableExpr and
@@ -1036,7 +1043,7 @@ module Internal {
       or
       result = any(IsExpr ie |
           ie.getExpr() = e1 and
-          e2 = ie.(IsConstantExpr).getConstant() and
+          e2 = ie.getPattern().(ConstantPatternExpr) and
           branch = true
         )
     )
@@ -1065,11 +1072,11 @@ module Internal {
    * then `o` is guaranteed to be equal to `""`.
    */
   private Expr getAMatchingEqualityCheck(Expr e1, MatchValue v, Expr e2) {
-    exists(SwitchStmt ss, ConstCase cc | cc = v.getCaseStmt() |
-      e1 = ss.getCondition() and
+    exists(Switch s, Case case | case = v.getCase() |
+      e1 = s.getExpr() and
       result = e1 and
-      cc = ss.getACase() and
-      e2 = cc.getExpr() and
+      case = s.getACase() and
+      e2 = case.getPattern().(ConstantPatternExpr) and
       v.isMatch()
     )
   }
@@ -1414,7 +1421,7 @@ module Internal {
       v1 = any(MatchValue mv |
           mv.isMatch() and
           g2 = g1 and
-          v2.getAnExpr() = mv.getCaseStmt().(ConstCase).getExpr() and
+          v2.getAnExpr() = mv.getCase().getPattern().(ConstantPatternExpr) and
           v1 != v2
         )
       or

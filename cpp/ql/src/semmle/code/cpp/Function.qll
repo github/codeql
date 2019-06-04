@@ -17,6 +17,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * in more detail in `Declaration.qll`.
  */
 class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
+  override string getName() { functions(underlyingElement(this),result,_) }
+
   /**
    * DEPRECATED: Use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
    * Gets the full signature of this function, including return type, parameter
@@ -132,6 +134,12 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
 
   /** Gets the return type of this function. */
   Type getType() { function_return_type(underlyingElement(this),unresolveElement(result)) }
+
+  /**
+   * Gets the return type of this function after specifiers have been deeply
+   * stripped and typedefs have been resolved.
+   */
+  Type getUnspecifiedType() { result = getType().getUnspecifiedType() }
 
   /** Gets the nth parameter of this function. */
   Parameter getParameter(int n) { params(unresolveElement(result),underlyingElement(this),n,_) }
@@ -1032,7 +1040,7 @@ class CopyAssignmentOperator extends Operator {
     (hasCopySignature(this) or
      // Unlike CopyConstructor, this member allows a non-reference
      // parameter.
-     getParameter(0).getType().getUnspecifiedType() = getDeclaringType()
+     getParameter(0).getUnspecifiedType() = getDeclaringType()
     ) and
     not exists(this.getParameter(1)) and
     not exists(getATemplateArgument())

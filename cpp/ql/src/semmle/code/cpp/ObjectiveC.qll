@@ -148,6 +148,9 @@ deprecated class FinallyBlock extends Block {
 deprecated class Property extends Declaration {
   Property() { none() }
 
+  /** Gets the name of this property. */
+  override string getName() { none() }
+
   /**
    * Gets nothing (provided for compatibility with Declaration).
    *

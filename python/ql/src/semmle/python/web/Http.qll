@@ -1,23 +1,11 @@
 import python
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.External
+import HttpConstants
 
 /** Generic taint source from a http request */
 abstract class HttpRequestTaintSource extends TaintSource {
 
-}
-
-/** Gets an http verb */
-string httpVerb() {
-    result = "GET" or result = "POST" or
-    result = "PUT" or result = "PATCH" or
-    result = "DELETE" or result = "OPTIONS" or
-    result = "HEAD"
-}
-
-/** Gets an http verb, in lower case */
-string httpVerbLower() {
-    result = httpVerb().toLowerCase()
 }
 
 /** Taint kind representing the WSGI environment.

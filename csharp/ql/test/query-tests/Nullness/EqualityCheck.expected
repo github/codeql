@@ -190,9 +190,9 @@
 | E.cs:83:13:83:24 | ... != ... | false | E.cs:83:21:83:24 | null | E.cs:83:13:83:16 | access to parameter vals |
 | E.cs:85:18:85:29 | ... != ... | false | E.cs:85:18:85:21 | access to parameter vals | E.cs:85:26:85:29 | null |
 | E.cs:85:18:85:29 | ... != ... | false | E.cs:85:26:85:29 | null | E.cs:85:18:85:21 | access to parameter vals |
-| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:92:18:92:27 | access to constant MY_CONST_A |
-| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:95:18:95:27 | access to constant MY_CONST_C |
-| E.cs:90:17:90:27 | access to local variable switchguard | match case ...: | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:97:18:97:27 | access to constant MY_CONST_B |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_A | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:92:18:92:27 | access to constant MY_CONST_A |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_B | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:97:18:97:27 | access to constant MY_CONST_B |
+| E.cs:90:17:90:27 | access to local variable switchguard | match access to constant MY_CONST_C | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:95:18:95:27 | access to constant MY_CONST_C |
 | E.cs:126:21:126:29 | ... == ... | true | E.cs:126:21:126:24 | access to local variable step | E.cs:126:29:126:29 | 0 |
 | E.cs:126:21:126:29 | ... == ... | true | E.cs:126:29:126:29 | 0 | E.cs:126:21:126:24 | access to local variable step |
 | E.cs:153:13:153:24 | ... != ... | false | E.cs:153:13:153:16 | access to local variable obj2 | E.cs:153:21:153:24 | null |

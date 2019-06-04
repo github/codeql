@@ -1,0 +1,30 @@
+| import | test.py:17:1:17:3 | ControlFlowNode for bar | Function bar | test.py:2:1:2:19 | ControlFlowNode for FunctionExpr |
+| import | test.py:18:1:18:7 | ControlFlowNode for bar() | int 21 | test.py:18:5:18:6 | ControlFlowNode for IntegerLiteral |
+| import | test.py:19:1:19:13 | ControlFlowNode for bar() | int 22 | test.py:19:5:19:6 | ControlFlowNode for IntegerLiteral |
+| import | test.py:20:1:20:13 | ControlFlowNode for bar() | bool True | test.py:20:9:20:12 | ControlFlowNode for True |
+| import | test.py:21:1:21:11 | ControlFlowNode for bar() | int 24 | test.py:21:5:21:6 | ControlFlowNode for IntegerLiteral |
+| import | test.py:22:1:22:13 | ControlFlowNode for bar() | int 7 | test.py:22:7:22:7 | ControlFlowNode for IntegerLiteral |
+| runtime | test.py:4:5:4:5 | ControlFlowNode for b | None | test.py:2:14:2:17 | ControlFlowNode for None |
+| runtime | test.py:11:5:11:7 | ControlFlowNode for bar | Function bar | test.py:2:1:2:19 | ControlFlowNode for FunctionExpr |
+| runtime | test.py:12:5:12:11 | ControlFlowNode for bar() | int 11 | test.py:12:9:12:10 | ControlFlowNode for IntegerLiteral |
+| runtime | test.py:13:5:13:17 | ControlFlowNode for bar() | int 12 | test.py:13:9:13:10 | ControlFlowNode for IntegerLiteral |
+| runtime | test.py:14:5:14:17 | ControlFlowNode for bar() | bool True | test.py:14:13:14:16 | ControlFlowNode for True |
+| runtime | test.py:15:5:15:15 | ControlFlowNode for bar() | int 14 | test.py:15:9:15:10 | ControlFlowNode for IntegerLiteral |
+| test.py:12 from runtime | test.py:3:5:3:5 | ControlFlowNode for a | int 11 | test.py:12:9:12:10 | ControlFlowNode for IntegerLiteral |
+| test.py:12 from runtime | test.py:4:5:4:5 | ControlFlowNode for b | None | test.py:2:14:2:17 | ControlFlowNode for None |
+| test.py:13 from runtime | test.py:3:5:3:5 | ControlFlowNode for a | int 12 | test.py:13:9:13:10 | ControlFlowNode for IntegerLiteral |
+| test.py:13 from runtime | test.py:4:5:4:5 | ControlFlowNode for b | None | test.py:13:13:13:16 | ControlFlowNode for None |
+| test.py:14 from runtime | test.py:3:5:3:5 | ControlFlowNode for a | int 13 | test.py:14:9:14:10 | ControlFlowNode for IntegerLiteral |
+| test.py:14 from runtime | test.py:4:5:4:5 | ControlFlowNode for b | bool True | test.py:14:13:14:16 | ControlFlowNode for True |
+| test.py:15 from runtime | test.py:3:5:3:5 | ControlFlowNode for a | int 14 | test.py:15:9:15:10 | ControlFlowNode for IntegerLiteral |
+| test.py:15 from runtime | test.py:4:5:4:5 | ControlFlowNode for b | '' | test.py:15:13:15:14 | ControlFlowNode for Str |
+| test.py:18 from import | test.py:3:5:3:5 | ControlFlowNode for a | int 21 | test.py:18:5:18:6 | ControlFlowNode for IntegerLiteral |
+| test.py:18 from import | test.py:4:5:4:5 | ControlFlowNode for b | None | test.py:2:14:2:17 | ControlFlowNode for None |
+| test.py:19 from import | test.py:3:5:3:5 | ControlFlowNode for a | int 22 | test.py:19:5:19:6 | ControlFlowNode for IntegerLiteral |
+| test.py:19 from import | test.py:4:5:4:5 | ControlFlowNode for b | None | test.py:19:9:19:12 | ControlFlowNode for None |
+| test.py:20 from import | test.py:3:5:3:5 | ControlFlowNode for a | int 23 | test.py:20:5:20:6 | ControlFlowNode for IntegerLiteral |
+| test.py:20 from import | test.py:4:5:4:5 | ControlFlowNode for b | bool True | test.py:20:9:20:12 | ControlFlowNode for True |
+| test.py:21 from import | test.py:3:5:3:5 | ControlFlowNode for a | int 24 | test.py:21:5:21:6 | ControlFlowNode for IntegerLiteral |
+| test.py:21 from import | test.py:4:5:4:5 | ControlFlowNode for b | '' | test.py:21:9:21:10 | ControlFlowNode for Str |
+| test.py:22 from import | test.py:3:5:3:5 | ControlFlowNode for a | int 3 | test.py:22:12:22:12 | ControlFlowNode for IntegerLiteral |
+| test.py:22 from import | test.py:4:5:4:5 | ControlFlowNode for b | int 7 | test.py:22:7:22:7 | ControlFlowNode for IntegerLiteral |

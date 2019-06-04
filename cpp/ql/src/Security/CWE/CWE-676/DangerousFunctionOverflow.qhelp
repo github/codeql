@@ -1,0 +1,42 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>This rule finds calls to the <code>gets</code> function, which is dangerous and
+should not be used. See <strong>Related
+rules</strong> below for rules that identify other dangerous functions.</p>
+
+<p>The <code>gets</code> function is one of the vulnerabilities exploited by the Internet Worm of 1988, one of the first computer worms to spread through the Internet.  The <code>gets</code> function provides no way to limit the amount of data that is read and stored, so without prior knowledge of the input it is impossible to use it safely with any size of buffer.</p>
+
+</overview>
+<recommendation>
+
+<p>Replace calls to <code>gets</code> with <code>fgets</code>, specifying the maximum length to copy.  This will prevent the buffer overflow.</p>
+
+</recommendation>
+<example>
+<p>The following example gets a string from standard input in two ways:</p>
+<sample src="DangerousFunctionOverflow.c" />
+
+<p>The first version uses <code>gets</code> and will overflow if the input
+is longer than the buffer. The second version of the code
+uses <code>fgets</code> and will not overflow, because the amount of data
+written is limited by the length parameter.</p>
+</example>
+<section title="Related rules">
+<p>Other dangerous functions identified by CWE-676 ("Use of
+Potentially Dangerous Function") include <code>strcpy</code>
+and <code>strcat</code>. Use of these functions is highlighted by
+rules for the following CWEs:</p>
+<ul>
+<li><a href="https://cwe.mitre.org/data/definitions/120.html">CWE-120 Classic Buffer Overflow</a>.
+</li><li><a href="https://cwe.mitre.org/data/definitions/131.html">CWE-131 Incorrect Calculation of Buffer Size</a>.
+</li></ul>
+
+</section>
+<references>
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Morris_worm">Morris worm</a>.</li>
+<li>E. Spafford. <i>The Internet Worm Program: An Analysis</i>. Purdue Technical Report CSD-TR-823, <a href="http://www.textfiles.com/100/tr823.txt">(online)</a>, 1988.</li>
+</references>
+</qhelp>

@@ -163,6 +163,10 @@ namespace Semmle.Extraction.CSharp.Entities
                         if (method.ContainingType != null && method.ContainingType.TypeKind == Microsoft.CodeAnalysis.TypeKind.Delegate)
                             return CallType.UserOperator;
                         return CallType.BuiltInOperator;
+                    case MethodKind.Constructor:
+                        // The index operator ^... generates a constructor call to System.Index.
+                        // Instead, treat this as a regular operator.
+                        return CallType.None;
                     default:
                         return CallType.UserOperator;
                 }

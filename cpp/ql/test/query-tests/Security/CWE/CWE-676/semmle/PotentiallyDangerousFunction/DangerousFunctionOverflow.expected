@@ -1,0 +1,2 @@
+| test.c:42:2:42:5 | call to gets | gets does not guard against buffer overflow |
+| test.c:43:6:43:9 | call to gets | gets does not guard against buffer overflow |

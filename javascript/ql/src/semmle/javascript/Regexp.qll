@@ -41,6 +41,9 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
 
   override string toString() { regexpterm(this, _, _, _, result) }
 
+  /** Gets the raw source text of this term. */
+  string getRawValue() { regexpterm(this, _, _, _, result) }
+
   /** Holds if this regular expression term can match the empty string. */
   abstract predicate isNullable();
 
@@ -403,4 +406,95 @@ module RegExpPatterns {
     // according to ranking by http://google.com/search?q=site:.<<TLD>>
     result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
   }
+}
+
+/**
+ * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
+ * as a part of a regular expression.
+ */
+private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker t) {
+  t.start() and
+  re = result and
+  isInterpretedAsRegExp(result)
+  or
+  exists(DataFlow::TypeBackTracker t2, DataFlow::Node succ | succ = regExpSource(re, t2) |
+    t2 = t.smallstep(result, succ)
+    or
+    any(TaintTracking::AdditionalTaintStep dts).step(result, succ) and
+    t = t2
+  )
+}
+
+/**
+ * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
+ * as a part of a regular expression.
+ */
+private DataFlow::Node regExpSource(DataFlow::Node re) {
+  result = regExpSource(re, DataFlow::TypeBackTracker::end())
+}
+
+/**
+ * A node whose value may flow to a position where it is interpreted
+ * as a part of a regular expression.
+ */
+abstract class RegExpPatternSource extends DataFlow::Node {
+  /**
+   * Gets a node where the pattern of this node is parsed as a part of
+   * a regular expression.
+   */
+  abstract DataFlow::Node getAParse();
+
+  /**
+   * Gets the pattern of this node that is interpreted as a part of a
+   * regular expression.
+   */
+  abstract string getPattern();
+
+  /**
+   * Gets a regular expression object that is constructed from the pattern
+   * of this node.
+   */
+  abstract DataFlow::SourceNode getARegExpObject();
+}
+
+/**
+ * A regular expression literal, viewed as the pattern source for itself.
+ */
+private class RegExpLiteralPatternSource extends RegExpPatternSource {
+  string pattern;
+
+  RegExpLiteralPatternSource() {
+    exists(string raw | raw = asExpr().(RegExpLiteral).getRoot().getRawValue() |
+      // hide the fact that `/` is escaped in the literal
+      pattern = raw.regexpReplaceAll("\\\\/", "/")
+    )
+  }
+
+  override DataFlow::Node getAParse() { result = this }
+
+  override string getPattern() { result = pattern }
+
+  override DataFlow::SourceNode getARegExpObject() { result = this }
+}
+
+/**
+ * A node whose string value may flow to a position where it is interpreted
+ * as a part of a regular expression.
+ */
+private class StringRegExpPatternSource extends RegExpPatternSource {
+  DataFlow::Node parse;
+
+  StringRegExpPatternSource() { this = regExpSource(parse) }
+
+  override DataFlow::Node getAParse() { result = parse }
+
+  override DataFlow::SourceNode getARegExpObject() {
+    exists(DataFlow::InvokeNode constructor |
+      constructor = DataFlow::globalVarRef("RegExp").getAnInvocation() and
+      parse = constructor.getArgument(0) and
+      result = constructor
+    )
+  }
+
+  override string getPattern() { result = getStringValue() }
 }

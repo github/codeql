@@ -1,11 +1,13 @@
 import python
-private import semmle.python.pointsto.Base
+private import semmle.python.objects.ObjectAPI
+private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
 
 private cached predicate is_an_object(@py_object obj) {
     /* CFG nodes for numeric literals, all of which have a @py_cobject for the value of that literal */
     obj instanceof ControlFlowNode and
-    not obj.(ControlFlowNode).getNode() instanceof ImmutableLiteral
+    not obj.(ControlFlowNode).getNode() instanceof IntegerLiteral and
+    not obj.(ControlFlowNode).getNode() instanceof StrConst
     or
     obj instanceof Builtin
 }
@@ -121,40 +123,25 @@ class Object extends @py_object {
         )
     }
 
+    private boolean booleanFromValue() {
+        exists(ObjectInternal obj |
+            obj.getSource() = this |
+            result = obj.booleanValue()
+        )
+    }
+
     /** The Boolean value of this object if it always evaluates to true or false.
      * For example:
      *     false for None, true for 7 and no result for int(x)
      */
     boolean booleanValue() {
-        this = theNoneObject() and result = false 
-        or
-        this = theTrueObject() and result = true 
-        or
-        this = theFalseObject() and result = false 
-        or
-        this = TupleObject::empty() and result = false 
-        or
-        exists(Tuple t | t = this.getOrigin() |
-            exists(t.getAnElt()) and result = true
-            or
-            not exists(t.getAnElt()) and result = false
-        )
-        or
-        exists(Unicode s | s.getLiteralObject() = this |
-            s.getS() = "" and result = false
-            or
-            s.getS() != "" and result = true
-        )
-        or
-        exists(Bytes s | s.getLiteralObject() = this |
-            s.getS() = "" and result = false
-            or
-            s.getS() != "" and result = true
-        )
+        result = this.booleanFromValue() and
+        not this.maybe()
     }
 
     final predicate maybe() {
-        not exists(this.booleanValue())
+        booleanFromValue() = true and
+        booleanFromValue() = false
     }
 
     predicate notClass() {
@@ -513,4 +500,30 @@ private ClassObject string_literal(Expr e) {
 Object theUnknownType() {
     result.asBuiltin() = Builtin::unknownType()
 }
+
+/* For backwards compatibility */
+
+class SuperBoundMethod extends Object {
+
+    string name;
+
+    SuperBoundMethod() {
+        this.(AttrNode).getObject(name).inferredValue().getClass() = Value::named("super")
+    }
+
+    override string toString() {
+        result = "super()." + name
+    }
+
+    Object getFunction(string fname) {
+        fname = name and
+        exists(SuperInstance sup, BoundMethodObjectInternal m |
+            sup = this.(AttrNode).getObject(name).inferredValue() and
+            sup.attribute(name, m, _) and
+            result = m.getFunction().getSource()
+        )
+    }
+
+}
+
 

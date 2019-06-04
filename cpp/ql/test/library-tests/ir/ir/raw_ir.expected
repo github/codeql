@@ -4861,3 +4861,180 @@ ir.cpp:
 # 1045|     v0_29(void)                                   = ReturnValue              : &:r0_28, ~mu0_2
 # 1045|     v0_30(void)                                   = UnmodeledUse             : mu*
 # 1045|     v0_31(void)                                   = ExitFunction             : 
+
+# 1068| void RangeBasedFor(vector<int> const&)
+# 1068|   Block 0
+# 1068|     v0_0(void)                  = EnterFunction              : 
+# 1068|     mu0_1(unknown)              = AliasedDefinition          : 
+# 1068|     mu0_2(unknown)              = UnmodeledDefinition        : 
+# 1068|     r0_3(glval<vector<int> &>)  = VariableAddress[v]         : 
+# 1068|     mu0_4(vector<int> &)        = InitializeParameter[v]     : &:r0_3
+# 1069|     r0_5(glval<vector<int> &>)  = VariableAddress[(__range)] : 
+# 1069|     r0_6(glval<vector<int> &>)  = VariableAddress[v]         : 
+# 1069|     r0_7(vector<int> &)         = Load                       : &:r0_6, ~mu0_2
+# 1069|     mu0_8(vector<int> &)        = Store                      : &:r0_5, r0_7
+# 1069|     r0_9(glval<iterator>)       = VariableAddress[(__begin)] : 
+#-----|     r0_10(glval<vector<int> &>) = VariableAddress[(__range)] : 
+#-----|     r0_11(vector<int> &)        = Load                       : &:r0_10, ~mu0_2
+# 1069|     r0_12(glval<unknown>)       = FunctionAddress[begin]     : 
+# 1069|     r0_13(iterator)             = Call                       : func:r0_12, this:r0_11
+# 1069|     mu0_14(unknown)             = ^CallSideEffect            : ~mu0_2
+# 1069|     mu0_15(iterator)            = Store                      : &:r0_9, r0_13
+# 1069|     r0_16(glval<iterator>)      = VariableAddress[(__end)]   : 
+#-----|     r0_17(glval<vector<int> &>) = VariableAddress[(__range)] : 
+#-----|     r0_18(vector<int> &)        = Load                       : &:r0_17, ~mu0_2
+# 1069|     r0_19(glval<unknown>)       = FunctionAddress[end]       : 
+# 1069|     r0_20(iterator)             = Call                       : func:r0_19, this:r0_18
+# 1069|     mu0_21(unknown)             = ^CallSideEffect            : ~mu0_2
+# 1069|     mu0_22(iterator)            = Store                      : &:r0_16, r0_20
+#-----|   Goto -> Block 1
+
+#-----|   Block 1
+#-----|     r1_0(glval<iterator>) = VariableAddress[(__begin)]  : 
+#-----|     r1_1(glval<iterator>) = Convert                     : r1_0
+# 1069|     r1_2(glval<unknown>)  = FunctionAddress[operator!=] : 
+#-----|     r1_3(glval<iterator>) = VariableAddress[(__end)]    : 
+#-----|     r1_4(iterator)        = Load                        : &:r1_3, ~mu0_2
+# 1069|     r1_5(bool)            = Call                        : func:r1_2, this:r1_1, 0:r1_4
+# 1069|     mu1_6(unknown)        = ^CallSideEffect             : ~mu0_2
+# 1069|     v1_7(void)            = ConditionalBranch           : r1_5
+#-----|   False -> Block 5
+#-----|   True -> Block 2
+
+# 1069|   Block 2
+# 1069|     r2_0(glval<int>)      = VariableAddress[e]         : 
+#-----|     r2_1(glval<iterator>) = VariableAddress[(__begin)] : 
+#-----|     r2_2(glval<iterator>) = Convert                    : r2_1
+# 1069|     r2_3(glval<unknown>)  = FunctionAddress[operator*] : 
+# 1069|     r2_4(int &)           = Call                       : func:r2_3, this:r2_2
+# 1069|     mu2_5(unknown)        = ^CallSideEffect            : ~mu0_2
+# 1069|     r2_6(int)             = Load                       : &:r2_4, ~mu0_2
+# 1069|     mu2_7(int)            = Store                      : &:r2_0, r2_6
+# 1070|     r2_8(glval<int>)      = VariableAddress[e]         : 
+# 1070|     r2_9(int)             = Load                       : &:r2_8, ~mu0_2
+# 1070|     r2_10(int)            = Constant[0]                : 
+# 1070|     r2_11(bool)           = CompareGT                  : r2_9, r2_10
+# 1070|     v2_12(void)           = ConditionalBranch          : r2_11
+#-----|   False -> Block 4
+#-----|   True -> Block 3
+
+# 1071|   Block 3
+# 1071|     v3_0(void) = NoOp : 
+#-----|   Goto -> Block 4
+
+# 1069|   Block 4
+# 1069|     v4_0(void)            = NoOp                        : 
+#-----|     r4_1(glval<iterator>) = VariableAddress[(__begin)]  : 
+# 1069|     r4_2(glval<unknown>)  = FunctionAddress[operator++] : 
+# 1069|     r4_3(iterator &)      = Call                        : func:r4_2, this:r4_1
+# 1069|     mu4_4(unknown)        = ^CallSideEffect             : ~mu0_2
+#-----|   Goto (back edge) -> Block 1
+
+# 1075|   Block 5
+# 1075|     r5_0(glval<vector<int> &>)  = VariableAddress[(__range)] : 
+# 1075|     r5_1(glval<vector<int> &>)  = VariableAddress[v]         : 
+# 1075|     r5_2(vector<int> &)         = Load                       : &:r5_1, ~mu0_2
+# 1075|     mu5_3(vector<int> &)        = Store                      : &:r5_0, r5_2
+# 1075|     r5_4(glval<iterator>)       = VariableAddress[(__begin)] : 
+#-----|     r5_5(glval<vector<int> &>)  = VariableAddress[(__range)] : 
+#-----|     r5_6(vector<int> &)         = Load                       : &:r5_5, ~mu0_2
+# 1075|     r5_7(glval<unknown>)        = FunctionAddress[begin]     : 
+# 1075|     r5_8(iterator)              = Call                       : func:r5_7, this:r5_6
+# 1075|     mu5_9(unknown)              = ^CallSideEffect            : ~mu0_2
+# 1075|     mu5_10(iterator)            = Store                      : &:r5_4, r5_8
+# 1075|     r5_11(glval<iterator>)      = VariableAddress[(__end)]   : 
+#-----|     r5_12(glval<vector<int> &>) = VariableAddress[(__range)] : 
+#-----|     r5_13(vector<int> &)        = Load                       : &:r5_12, ~mu0_2
+# 1075|     r5_14(glval<unknown>)       = FunctionAddress[end]       : 
+# 1075|     r5_15(iterator)             = Call                       : func:r5_14, this:r5_13
+# 1075|     mu5_16(unknown)             = ^CallSideEffect            : ~mu0_2
+# 1075|     mu5_17(iterator)            = Store                      : &:r5_11, r5_15
+#-----|   Goto -> Block 6
+
+#-----|   Block 6
+#-----|     r6_0(glval<iterator>) = VariableAddress[(__begin)]  : 
+#-----|     r6_1(glval<iterator>) = Convert                     : r6_0
+# 1075|     r6_2(glval<unknown>)  = FunctionAddress[operator!=] : 
+#-----|     r6_3(glval<iterator>) = VariableAddress[(__end)]    : 
+#-----|     r6_4(iterator)        = Load                        : &:r6_3, ~mu0_2
+# 1075|     r6_5(bool)            = Call                        : func:r6_2, this:r6_1, 0:r6_4
+# 1075|     mu6_6(unknown)        = ^CallSideEffect             : ~mu0_2
+# 1075|     v6_7(void)            = ConditionalBranch           : r6_5
+#-----|   False -> Block 10
+#-----|   True -> Block 8
+
+#-----|   Block 7
+#-----|     r7_0(glval<iterator>) = VariableAddress[(__begin)]  : 
+# 1075|     r7_1(glval<unknown>)  = FunctionAddress[operator++] : 
+# 1075|     r7_2(iterator &)      = Call                        : func:r7_1, this:r7_0
+# 1075|     mu7_3(unknown)        = ^CallSideEffect             : ~mu0_2
+#-----|   Goto (back edge) -> Block 6
+
+# 1075|   Block 8
+# 1075|     r8_0(glval<int &>)    = VariableAddress[e]         : 
+#-----|     r8_1(glval<iterator>) = VariableAddress[(__begin)] : 
+#-----|     r8_2(glval<iterator>) = Convert                    : r8_1
+# 1075|     r8_3(glval<unknown>)  = FunctionAddress[operator*] : 
+# 1075|     r8_4(int &)           = Call                       : func:r8_3, this:r8_2
+# 1075|     mu8_5(unknown)        = ^CallSideEffect            : ~mu0_2
+# 1075|     r8_6(glval<int>)      = Convert                    : r8_4
+# 1075|     mu8_7(int &)          = Store                      : &:r8_0, r8_6
+# 1076|     r8_8(glval<int &>)    = VariableAddress[e]         : 
+# 1076|     r8_9(int &)           = Load                       : &:r8_8, ~mu0_2
+# 1076|     r8_10(int)            = Load                       : &:r8_9, ~mu0_2
+# 1076|     r8_11(int)            = Constant[5]                : 
+# 1076|     r8_12(bool)           = CompareLT                  : r8_10, r8_11
+# 1076|     v8_13(void)           = ConditionalBranch          : r8_12
+#-----|   False -> Block 7
+#-----|   True -> Block 9
+
+# 1077|   Block 9
+# 1077|     v9_0(void) = NoOp : 
+#-----|   Goto -> Block 10
+
+# 1079|   Block 10
+# 1079|     v10_0(void) = NoOp         : 
+# 1080|     v10_1(void) = NoOp         : 
+# 1068|     v10_2(void) = ReturnVoid   : 
+# 1068|     v10_3(void) = UnmodeledUse : mu*
+# 1068|     v10_4(void) = ExitFunction : 
+
+# 1099| int AsmStmt(int)
+# 1099|   Block 0
+# 1099|     v0_0(void)        = EnterFunction            : 
+# 1099|     mu0_1(unknown)    = AliasedDefinition        : 
+# 1099|     mu0_2(unknown)    = UnmodeledDefinition      : 
+# 1099|     r0_3(glval<int>)  = VariableAddress[x]       : 
+# 1099|     mu0_4(int)        = InitializeParameter[x]   : &:r0_3
+# 1100|     mu0_5(unknown)    = InlineAsm                : ~mu0_2
+# 1101|     r0_6(glval<int>)  = VariableAddress[#return] : 
+# 1101|     r0_7(glval<int>)  = VariableAddress[x]       : 
+# 1101|     r0_8(int)         = Load                     : &:r0_7, ~mu0_2
+# 1101|     mu0_9(int)        = Store                    : &:r0_6, r0_8
+# 1099|     r0_10(glval<int>) = VariableAddress[#return] : 
+# 1099|     v0_11(void)       = ReturnValue              : &:r0_10, ~mu0_2
+# 1099|     v0_12(void)       = UnmodeledUse             : mu*
+# 1099|     v0_13(void)       = ExitFunction             : 
+
+# 1104| void AsmStmtWithOutputs(unsigned int&, unsigned int&, unsigned int&, unsigned int&)
+# 1104|   Block 0
+# 1104|     v0_0(void)                   = EnterFunction          : 
+# 1104|     mu0_1(unknown)               = AliasedDefinition      : 
+# 1104|     mu0_2(unknown)               = UnmodeledDefinition    : 
+# 1104|     r0_3(glval<unsigned int &>)  = VariableAddress[a]     : 
+# 1104|     mu0_4(unsigned int &)        = InitializeParameter[a] : &:r0_3
+# 1104|     r0_5(glval<unsigned int &>)  = VariableAddress[b]     : 
+# 1104|     mu0_6(unsigned int &)        = InitializeParameter[b] : &:r0_5
+# 1104|     r0_7(glval<unsigned int &>)  = VariableAddress[c]     : 
+# 1104|     mu0_8(unsigned int &)        = InitializeParameter[c] : &:r0_7
+# 1104|     r0_9(glval<unsigned int &>)  = VariableAddress[d]     : 
+# 1104|     mu0_10(unsigned int &)       = InitializeParameter[d] : &:r0_9
+# 1106|     r0_11(glval<unsigned int &>) = VariableAddress[a]     : 
+# 1106|     r0_12(glval<unsigned int &>) = VariableAddress[b]     : 
+# 1106|     r0_13(glval<unsigned int &>) = VariableAddress[c]     : 
+# 1106|     r0_14(glval<unsigned int &>) = VariableAddress[d]     : 
+# 1106|     mu0_15(unknown)              = InlineAsm              : ~mu0_2, 0:r0_11, 1:r0_12, 2:r0_13, 3:r0_14
+# 1111|     v0_16(void)                  = NoOp                   : 
+# 1104|     v0_17(void)                  = ReturnVoid             : 
+# 1104|     v0_18(void)                  = UnmodeledUse           : mu*
+# 1104|     v0_19(void)                  = ExitFunction           : 

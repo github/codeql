@@ -1,4 +1,6 @@
 import semmle.code.java.Expr
+import semmle.code.java.dataflow.SSA
+import semmle.code.java.controlflow.Guards
 
 bindingset[result, i]
 private int unbindInt(int i) { i <= result and i >= result }
@@ -25,8 +27,49 @@ predicate validationMethod(Method method, int arg) {
   )
 }
 
-/** A variable that is ever passed to a string verification method. */
-class ValidatedVariable extends Variable {
+private predicate validationCall(MethodAccess ma, VarAccess va) {
+  exists(int arg | validationMethod(ma.getMethod(), arg) and ma.getArgument(arg) = va)
+}
+
+private predicate validatedAccess(VarAccess va) {
+  exists(SsaVariable v, MethodAccess guardcall |
+    va = v.getAUse() and
+    validationCall(guardcall, v.getAUse())
+  |
+    guardcall.(Guard).controls(va.getBasicBlock(), _)
+    or
+    exists(ControlFlowNode node |
+      guardcall.getMethod().getReturnType() instanceof VoidType and
+      guardcall.getControlFlowNode() = node
+    |
+      exists(BasicBlock succ |
+        succ = node.getANormalSuccessor() and
+        dominatingEdge(node.getBasicBlock(), succ) and
+        succ.bbDominates(va.getBasicBlock())
+      )
+      or
+      exists(BasicBlock bb, int i |
+        bb.getNode(i) = node and
+        bb.getNode(i + 1) = node.getANormalSuccessor()
+      |
+        bb.bbStrictlyDominates(va.getBasicBlock()) or
+        bb.getNode(any(int j | j > i)) = va
+      )
+    )
+  )
+}
+
+/** A variable access that is guarded by a string verification method. */
+class ValidatedVariableAccess extends VarAccess {
+  ValidatedVariableAccess() { validatedAccess(this) }
+}
+
+/**
+ * DEPRECATED: Use ValidatedVariableAccess instead.
+ *
+ * A variable that is ever passed to a string verification method.
+ */
+deprecated class ValidatedVariable extends Variable {
   ValidatedVariable() {
     exists(MethodAccess call, int arg, VarAccess access |
       validationMethod(call.getMethod(), arg) and

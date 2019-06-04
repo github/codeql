@@ -3,6 +3,7 @@ import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
+private import TranslatedCondition
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedStmt
@@ -156,6 +157,23 @@ cached private module Cached {
           inLoop = bodyOrUpdate.getAChild*()
         ) and
         instruction = inLoop.getInstruction(tag)
+      )
+    )
+    or
+    // Range-based for loop:
+    // Any edge from within the update of the loop to the condition of
+    // the loop is a back edge.
+    exists(TranslatedRangeBasedForStmt s, TranslatedCondition condition |
+      s instanceof TranslatedRangeBasedForStmt and
+      condition = s.getCondition() and
+      result = condition.getFirstInstruction() and
+      exists(TranslatedElement inUpdate, InstructionTag tag |
+        result = inUpdate.getInstructionSuccessor(tag, kind) and
+        exists(TranslatedElement update |
+          update = s.getUpdate() |
+          inUpdate = update.getAChild*()
+        ) and
+        instruction = inUpdate.getInstruction(tag)
       )
     )
     or

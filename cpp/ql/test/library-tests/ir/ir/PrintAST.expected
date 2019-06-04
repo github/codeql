@@ -5122,25 +5122,19 @@ ir.cpp:
 #  809|                 Conversion = glvalue conversion
 #  809|                 Type = const Base
 #  809|                 ValueCategory = lvalue
-#  809|               expr: (reference dereference)
-#  809|                   Type = Base
-#  809|                   ValueCategory = lvalue
-#  809|                 expr: (reference to)
-#  809|                     Type = Base &
+#  809|               expr: call to Base
+#  809|                   Type = void
+#  809|                   ValueCategory = prvalue
+#  809|                 0: (reference to)
+#  809|                     Type = const Base &
 #  809|                     ValueCategory = prvalue
-#  809|                   expr: call to Base
-#  809|                       Type = void
-#  809|                       ValueCategory = prvalue
-#  809|                     0: (reference to)
-#  809|                         Type = const Base &
-#  809|                         ValueCategory = prvalue
-#  809|                       expr: (const Base)...
-#  809|                           Conversion = base class conversion
-#  809|                           Type = const Base
-#  809|                           ValueCategory = lvalue
-#  809|                         expr: m
-#  809|                             Type = Middle
-#  809|                             ValueCategory = lvalue
+#  809|                   expr: (const Base)...
+#  809|                       Conversion = base class conversion
+#  809|                       Type = const Base
+#  809|                       ValueCategory = lvalue
+#  809|                     expr: m
+#  809|                         Type = Middle
+#  809|                         ValueCategory = lvalue
 #  810|     8: ExprStmt
 #  810|       0: (reference dereference)
 #  810|           Type = Base
@@ -5158,25 +5152,19 @@ ir.cpp:
 #  810|                 Conversion = glvalue conversion
 #  810|                 Type = const Base
 #  810|                 ValueCategory = lvalue
-#  810|               expr: (reference dereference)
-#  810|                   Type = Base
-#  810|                   ValueCategory = lvalue
-#  810|                 expr: (reference to)
-#  810|                     Type = Base &
+#  810|               expr: call to Base
+#  810|                   Type = void
+#  810|                   ValueCategory = prvalue
+#  810|                 0: (reference to)
+#  810|                     Type = const Base &
 #  810|                     ValueCategory = prvalue
-#  810|                   expr: call to Base
-#  810|                       Type = void
-#  810|                       ValueCategory = prvalue
-#  810|                     0: (reference to)
-#  810|                         Type = const Base &
-#  810|                         ValueCategory = prvalue
-#  810|                       expr: (const Base)...
-#  810|                           Conversion = base class conversion
-#  810|                           Type = const Base
-#  810|                           ValueCategory = lvalue
-#  810|                         expr: m
-#  810|                             Type = Middle
-#  810|                             ValueCategory = lvalue
+#  810|                   expr: (const Base)...
+#  810|                       Conversion = base class conversion
+#  810|                       Type = const Base
+#  810|                       ValueCategory = lvalue
+#  810|                     expr: m
+#  810|                         Type = Middle
+#  810|                         ValueCategory = lvalue
 #  811|     9: ExprStmt
 #  811|       0: ... = ...
 #  811|           Type = Base *
@@ -5364,29 +5352,23 @@ ir.cpp:
 #  823|                 Conversion = glvalue conversion
 #  823|                 Type = const Base
 #  823|                 ValueCategory = lvalue
-#  823|               expr: (reference dereference)
-#  823|                   Type = Base
-#  823|                   ValueCategory = lvalue
-#  823|                 expr: (reference to)
-#  823|                     Type = Base &
+#  823|               expr: call to Base
+#  823|                   Type = void
+#  823|                   ValueCategory = prvalue
+#  823|                 0: (reference to)
+#  823|                     Type = const Base &
 #  823|                     ValueCategory = prvalue
-#  823|                   expr: call to Base
-#  823|                       Type = void
-#  823|                       ValueCategory = prvalue
-#  823|                     0: (reference to)
-#  823|                         Type = const Base &
-#  823|                         ValueCategory = prvalue
-#  823|                       expr: (const Base)...
-#  823|                           Conversion = base class conversion
-#  823|                           Type = const Base
+#  823|                   expr: (const Base)...
+#  823|                       Conversion = base class conversion
+#  823|                       Type = const Base
+#  823|                       ValueCategory = lvalue
+#  823|                     expr: (const Middle)...
+#  823|                         Conversion = base class conversion
+#  823|                         Type = const Middle
+#  823|                         ValueCategory = lvalue
+#  823|                       expr: d
+#  823|                           Type = Derived
 #  823|                           ValueCategory = lvalue
-#  823|                         expr: (const Middle)...
-#  823|                             Conversion = base class conversion
-#  823|                             Type = const Middle
-#  823|                             ValueCategory = lvalue
-#  823|                           expr: d
-#  823|                               Type = Derived
-#  823|                               ValueCategory = lvalue
 #  824|     20: ExprStmt
 #  824|       0: (reference dereference)
 #  824|           Type = Base
@@ -5404,29 +5386,23 @@ ir.cpp:
 #  824|                 Conversion = glvalue conversion
 #  824|                 Type = const Base
 #  824|                 ValueCategory = lvalue
-#  824|               expr: (reference dereference)
-#  824|                   Type = Base
-#  824|                   ValueCategory = lvalue
-#  824|                 expr: (reference to)
-#  824|                     Type = Base &
+#  824|               expr: call to Base
+#  824|                   Type = void
+#  824|                   ValueCategory = prvalue
+#  824|                 0: (reference to)
+#  824|                     Type = const Base &
 #  824|                     ValueCategory = prvalue
-#  824|                   expr: call to Base
-#  824|                       Type = void
-#  824|                       ValueCategory = prvalue
-#  824|                     0: (reference to)
-#  824|                         Type = const Base &
-#  824|                         ValueCategory = prvalue
-#  824|                       expr: (const Base)...
-#  824|                           Conversion = base class conversion
-#  824|                           Type = const Base
+#  824|                   expr: (const Base)...
+#  824|                       Conversion = base class conversion
+#  824|                       Type = const Base
+#  824|                       ValueCategory = lvalue
+#  824|                     expr: (const Middle)...
+#  824|                         Conversion = base class conversion
+#  824|                         Type = const Middle
+#  824|                         ValueCategory = lvalue
+#  824|                       expr: d
+#  824|                           Type = Derived
 #  824|                           ValueCategory = lvalue
-#  824|                         expr: (const Middle)...
-#  824|                             Conversion = base class conversion
-#  824|                             Type = const Middle
-#  824|                             ValueCategory = lvalue
-#  824|                           expr: d
-#  824|                               Type = Derived
-#  824|                               ValueCategory = lvalue
 #  825|     21: ExprStmt
 #  825|       0: ... = ...
 #  825|           Type = Base *
@@ -6810,24 +6786,18 @@ ir.cpp:
 # 1036|             0: (reference to)
 # 1036|                 Type = lambda [] type at line 1036, col. 21 &
 # 1036|                 ValueCategory = prvalue
-# 1036|               expr: (reference dereference)
+# 1036|               expr: [...](...){...}
 # 1036|                   Type = decltype([...](...){...})
 # 1036|                   ValueCategory = xvalue
-# 1036|                 expr: (reference to)
-# 1036|                     Type = lambda [] type at line 1036, col. 21 &
+# 1036|                 0: {...}
+# 1036|                     Type = decltype([...](...){...})
 # 1036|                     ValueCategory = prvalue
-# 1036|                   expr: [...](...){...}
-# 1036|                       Type = decltype([...](...){...})
-# 1036|                       ValueCategory = xvalue
-# 1036|                     0: {...}
-# 1036|                         Type = decltype([...](...){...})
-# 1036|                         ValueCategory = prvalue
-#-----|                       .s: call to String
-#-----|                           Type = void
-#-----|                           ValueCategory = prvalue
-#-----|                       .x: x
-#-----|                           Type = int
-#-----|                           ValueCategory = prvalue(load)
+#-----|                   .s: call to String
+#-----|                       Type = void
+#-----|                       ValueCategory = prvalue
+#-----|                   .x: x
+#-----|                       Type = int
+#-----|                       ValueCategory = prvalue(load)
 # 1037|     5: ExprStmt
 # 1037|       0: call to operator()
 # 1037|           Type = char
@@ -6897,21 +6867,15 @@ ir.cpp:
 # 1040|             0: (reference to)
 # 1040|                 Type = lambda [] type at line 1040, col. 30 &
 # 1040|                 ValueCategory = prvalue
-# 1040|               expr: (reference dereference)
+# 1040|               expr: [...](...){...}
 # 1040|                   Type = decltype([...](...){...})
 # 1040|                   ValueCategory = xvalue
-# 1040|                 expr: (reference to)
-# 1040|                     Type = lambda [] type at line 1040, col. 30 &
+# 1040|                 0: {...}
+# 1040|                     Type = decltype([...](...){...})
 # 1040|                     ValueCategory = prvalue
-# 1040|                   expr: [...](...){...}
-# 1040|                       Type = decltype([...](...){...})
-# 1040|                       ValueCategory = xvalue
-# 1040|                     0: {...}
-# 1040|                         Type = decltype([...](...){...})
-# 1040|                         ValueCategory = prvalue
-#-----|                       .s: call to String
-#-----|                           Type = void
-#-----|                           ValueCategory = prvalue
+#-----|                   .s: call to String
+#-----|                       Type = void
+#-----|                       ValueCategory = prvalue
 # 1041|     9: ExprStmt
 # 1041|       0: call to operator()
 # 1041|           Type = char
@@ -7463,3 +7427,193 @@ ir.cpp:
 #-----|               -1: this
 #-----|                   Type = const lambda [] type at line 1045, col. 23 *
 #-----|                   ValueCategory = prvalue(load)
+# 1050| vector<int>& vector<int>::operator=(vector<int> const&)
+# 1050|   params: 
+#-----|     0: p#0
+#-----|         Type = const vector<int> &
+# 1050| vector<int>& vector<int>::operator=(vector<int>&&)
+# 1050|   params: 
+#-----|     0: p#0
+#-----|         Type = vector<int> &&
+# 1051| vector<int>::iterator& vector<int>::iterator::operator=(vector<int>::iterator const public&)
+# 1051|   params: 
+#-----|     0: p#0
+#-----|         Type = const iterator &
+# 1051| vector<int>::iterator& vector<int>::iterator::operator=(vector<int>::iterator&&)
+# 1051|   params: 
+#-----|     0: p#0
+#-----|         Type = iterator &&
+# 1053| vector<T>::iterator& vector<T>::iterator::operator++()
+# 1053|   params: 
+# 1053| vector<int>::iterator& vector<int>::iterator::operator++()
+# 1053|   params: 
+# 1054| T& vector<T>::iterator::operator*() const
+# 1054|   params: 
+# 1054| int& vector<int>::iterator::operator*() const
+# 1054|   params: 
+# 1056| bool vector<T>::iterator::operator!=(vector<T>::iterator) const
+# 1056|   params: 
+# 1056|     0: right
+# 1056|         Type = iterator
+# 1056| bool vector<int>::iterator::operator!=(vector<int>::iterator) const
+# 1056|   params: 
+# 1056|     0: right
+# 1056|         Type = iterator
+# 1059| vector<T>::iterator vector<T>::begin() const
+# 1059|   params: 
+# 1059| vector<int>::iterator vector<int>::begin() const
+# 1059|   params: 
+# 1060| vector<T>::iterator vector<T>::end() const
+# 1060|   params: 
+# 1060| vector<int>::iterator vector<int>::end() const
+# 1060|   params: 
+# 1064| bool operator==<T>(iterator, iterator)
+# 1064|   params: 
+# 1064|     0: left
+# 1064|         Type = iterator
+# 1064|     1: right
+# 1064|         Type = iterator
+# 1066| bool operator!=<T>(iterator, iterator)
+# 1066|   params: 
+# 1066|     0: left
+# 1066|         Type = iterator
+# 1066|     1: right
+# 1066|         Type = iterator
+# 1068| void RangeBasedFor(vector<int> const&)
+# 1068|   params: 
+# 1068|     0: v
+# 1068|         Type = const vector<int> &
+# 1068|   body: { ... }
+# 1069|     0: for(...:...) ...
+# 1069|       0: declaration
+# 1069|       1: declaration
+# 1069|       2: call to operator!=
+# 1069|           Type = bool
+# 1069|           ValueCategory = prvalue
+#-----|         -1: (const iterator)...
+#-----|             Conversion = glvalue conversion
+#-----|             Type = const iterator
+#-----|             ValueCategory = lvalue
+#-----|           expr: (__begin)
+#-----|               Type = iterator
+#-----|               ValueCategory = lvalue
+#-----|         0: (__end)
+#-----|             Type = iterator
+#-----|             ValueCategory = prvalue(load)
+# 1069|       3: (reference dereference)
+# 1069|           Type = iterator
+# 1069|           ValueCategory = lvalue
+# 1069|         expr: call to operator++
+# 1069|             Type = iterator &
+# 1069|             ValueCategory = prvalue
+#-----|           -1: (__begin)
+#-----|               Type = iterator
+#-----|               ValueCategory = lvalue
+# 1069|       4: declaration
+# 1069|       5: { ... }
+# 1070|         0: if (...) ... 
+# 1070|           0: ... > ...
+# 1070|               Type = bool
+# 1070|               ValueCategory = prvalue
+# 1070|             0: e
+# 1070|                 Type = int
+# 1070|                 ValueCategory = prvalue(load)
+# 1070|             1: 0
+# 1070|                 Type = int
+# 1070|                 Value = 0
+# 1070|                 ValueCategory = prvalue
+# 1070|           1: { ... }
+# 1071|             0: continue;
+# 1069|         1: label ...:
+# 1075|     1: for(...:...) ...
+# 1075|       0: declaration
+# 1075|       1: declaration
+# 1075|       2: call to operator!=
+# 1075|           Type = bool
+# 1075|           ValueCategory = prvalue
+#-----|         -1: (const iterator)...
+#-----|             Conversion = glvalue conversion
+#-----|             Type = const iterator
+#-----|             ValueCategory = lvalue
+#-----|           expr: (__begin)
+#-----|               Type = iterator
+#-----|               ValueCategory = lvalue
+#-----|         0: (__end)
+#-----|             Type = iterator
+#-----|             ValueCategory = prvalue(load)
+# 1075|       3: (reference dereference)
+# 1075|           Type = iterator
+# 1075|           ValueCategory = lvalue
+# 1075|         expr: call to operator++
+# 1075|             Type = iterator &
+# 1075|             ValueCategory = prvalue
+#-----|           -1: (__begin)
+#-----|               Type = iterator
+#-----|               ValueCategory = lvalue
+# 1075|       4: declaration
+# 1075|       5: { ... }
+# 1076|         0: if (...) ... 
+# 1076|           0: ... < ...
+# 1076|               Type = bool
+# 1076|               ValueCategory = prvalue
+# 1076|             0: (reference dereference)
+# 1076|                 Type = int
+# 1076|                 ValueCategory = prvalue(load)
+# 1076|               expr: e
+# 1076|                   Type = const int &
+# 1076|                   ValueCategory = prvalue(load)
+# 1076|             1: 5
+# 1076|                 Type = int
+# 1076|                 Value = 5
+# 1076|                 ValueCategory = prvalue
+# 1076|           1: { ... }
+# 1077|             0: break;
+# 1079|     2: label ...:
+# 1080|     3: return ...
+# 1099| int AsmStmt(int)
+# 1099|   params: 
+# 1099|     0: x
+# 1099|         Type = int
+# 1099|   body: { ... }
+# 1100|     0: asm statement
+# 1101|     1: return ...
+# 1101|       0: x
+# 1101|           Type = int
+# 1101|           ValueCategory = prvalue(load)
+# 1104| void AsmStmtWithOutputs(unsigned int&, unsigned int&, unsigned int&, unsigned int&)
+# 1104|   params: 
+# 1104|     0: a
+# 1104|         Type = unsigned int &
+# 1104|     1: b
+# 1104|         Type = unsigned int &
+# 1104|     2: c
+# 1104|         Type = unsigned int &
+# 1104|     3: d
+# 1104|         Type = unsigned int &
+# 1105|   body: { ... }
+# 1106|     0: asm statement
+# 1109|       0: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: a
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1109|       1: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: b
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1109|       2: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: c
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1109|       3: (reference dereference)
+# 1109|           Type = unsigned int
+# 1109|           ValueCategory = lvalue
+# 1109|         expr: d
+# 1109|             Type = unsigned int &
+# 1109|             ValueCategory = prvalue(load)
+# 1111|     1: return ...

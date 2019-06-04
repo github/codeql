@@ -17,10 +17,10 @@
 import cpp
 
 from BitField bf
-where not bf.getType().getUnspecifiedType().(IntegralType).isExplicitlySigned()
-  and not bf.getType().getUnspecifiedType().(IntegralType).isExplicitlyUnsigned()
-  and not bf.getType().getUnspecifiedType() instanceof Enum
-  and not bf.getType().getUnspecifiedType() instanceof BoolType
+where not bf.getUnspecifiedType().(IntegralType).isExplicitlySigned()
+  and not bf.getUnspecifiedType().(IntegralType).isExplicitlyUnsigned()
+  and not bf.getUnspecifiedType() instanceof Enum
+  and not bf.getUnspecifiedType() instanceof BoolType
   // At least for C programs on Windows, BOOL is a common typedef for a type
   // representing BoolType.
   and not bf.getType().hasName("BOOL")

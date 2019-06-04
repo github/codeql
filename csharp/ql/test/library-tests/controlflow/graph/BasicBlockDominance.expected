@@ -578,15 +578,15 @@
 | post | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:17:9:18:9 | {...} |
 | post | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:20:9:38:9 | switch (...) {...} |
 | post | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; |
-| post | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:13:24:36 | case Int32 i2: |
-| post | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | Int32 i2 |
+| post | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:13:24:36 | case ...: |
+| post | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:31 | access to local variable i2 |
 | post | Patterns.cs:25:17:25:52 | ...; | Patterns.cs:25:17:25:52 | ...; |
-| post | Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:27:13:27:24 | case Int32 i3: |
-| post | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | Int32 i3 |
-| post | Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:30:13:30:27 | case String s2: |
-| post | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | String s2 |
-| post | Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:33:13:33:24 | case Object v2: |
-| post | Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | Object v2 |
+| post | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:13:27:24 | case ...: |
+| post | Patterns.cs:28:17:28:47 | ...; | Patterns.cs:28:17:28:47 | ...; |
+| post | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:13:30:27 | case ...: |
+| post | Patterns.cs:31:17:31:50 | ...; | Patterns.cs:31:17:31:50 | ...; |
+| post | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:13:33:24 | case ...: |
+| post | Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; |
 | post | Patterns.cs:35:13:35:20 | default: | Patterns.cs:35:13:35:20 | default: |
 | post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | enter Test |
 | post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:9:9:11:9 | {...} |
@@ -596,15 +596,15 @@
 | post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:17:9:18:9 | {...} |
 | post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:20:9:38:9 | switch (...) {...} |
 | post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:23:17:23:22 | break; |
-| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:24:13:24:36 | case Int32 i2: |
-| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:24:18:24:23 | Int32 i2 |
+| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:24:13:24:36 | case ...: |
+| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:24:30:24:31 | access to local variable i2 |
 | post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:25:17:25:52 | ...; |
-| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:27:13:27:24 | case Int32 i3: |
-| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:27:18:27:23 | Int32 i3 |
-| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:30:13:30:27 | case String s2: |
-| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:30:18:30:26 | String s2 |
-| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:33:13:33:24 | case Object v2: |
-| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:33:18:33:23 | Object v2 |
+| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:27:13:27:24 | case ...: |
+| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:28:17:28:47 | ...; |
+| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:30:13:30:27 | case ...: |
+| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:31:17:31:50 | ...; |
+| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:33:13:33:24 | case ...: |
+| post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:34:17:34:22 | break; |
 | post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:35:13:35:20 | default: |
 | post | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:40:9:42:9 | switch (...) {...} |
 | post | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | enter Method |
@@ -619,16 +619,16 @@
 | post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:17:23:17:37 | object creation of type Exception |
 | post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:18:13:18:22 | case ...: |
 | post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:19:17:19:29 | goto default; |
-| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:20:13:20:23 | case Int32 i: |
-| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:20:18:20:22 | Int32 i |
+| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:20:13:20:23 | case ...: |
+| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:21:17:22:27 | if (...) ... |
 | post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:22:21:22:27 | return ...; |
 | post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:23:27:23:27 | 0 |
-| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:24:13:24:56 | case String s: |
-| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:24:18:24:25 | String s |
+| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:24:13:24:56 | case ...: |
+| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:24:32:24:55 | ... && ... |
 | post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:24:48:24:48 | access to local variable s |
 | post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:25:17:25:37 | ...; |
-| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:27:13:27:39 | case Double d: |
-| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:27:18:27:25 | Double d |
+| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:27:13:27:39 | case ...: |
+| post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:27:32:27:38 | call to method Throw |
 | post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:30:13:30:20 | default: |
 | post | Switch.cs:15:17:15:23 | return ...; | Switch.cs:15:17:15:23 | return ...; |
 | post | Switch.cs:16:13:16:19 | case ...: | Switch.cs:16:13:16:19 | case ...: |
@@ -636,16 +636,16 @@
 | post | Switch.cs:17:23:17:37 | object creation of type Exception | Switch.cs:23:27:23:27 | 0 |
 | post | Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:13:18:22 | case ...: |
 | post | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; |
-| post | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:20:13:20:23 | case Int32 i: |
-| post | Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | Int32 i |
+| post | Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:13:20:23 | case ...: |
+| post | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:17:22:27 | if (...) ... |
 | post | Switch.cs:22:21:22:27 | return ...; | Switch.cs:22:21:22:27 | return ...; |
 | post | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:27:23:27 | 0 |
-| post | Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:13:24:56 | case String s: |
-| post | Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | String s |
+| post | Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:13:24:56 | case ...: |
+| post | Switch.cs:24:32:24:55 | ... && ... | Switch.cs:24:32:24:55 | ... && ... |
 | post | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:24:48:24:48 | access to local variable s |
 | post | Switch.cs:25:17:25:37 | ...; | Switch.cs:25:17:25:37 | ...; |
-| post | Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:13:27:39 | case Double d: |
-| post | Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d |
+| post | Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:13:27:39 | case ...: |
+| post | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw |
 | post | Switch.cs:30:13:30:20 | default: | Switch.cs:19:17:19:29 | goto default; |
 | post | Switch.cs:30:13:30:20 | default: | Switch.cs:30:13:30:20 | default: |
 | post | Switch.cs:35:10:35:11 | enter M3 | Switch.cs:35:10:35:11 | enter M3 |
@@ -653,11 +653,11 @@
 | post | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:44:10:44:11 | enter M4 |
 | post | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:44:10:44:11 | exit M4 |
 | post | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:49:17:49:22 | break; |
-| post | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:50:13:50:39 | case Boolean: |
+| post | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:50:13:50:39 | case ...: |
 | post | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:50:30:50:30 | access to parameter o |
 | post | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:51:17:51:22 | break; |
 | post | Switch.cs:49:17:49:22 | break; | Switch.cs:49:17:49:22 | break; |
-| post | Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:13:50:39 | case Boolean: |
+| post | Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:13:50:39 | case ...: |
 | post | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:30:50:30 | access to parameter o |
 | post | Switch.cs:51:17:51:22 | break; | Switch.cs:51:17:51:22 | break; |
 | post | Switch.cs:55:10:55:11 | enter M5 | Switch.cs:55:10:55:11 | enter M5 |
@@ -2000,15 +2000,15 @@
 | pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:17:9:18:9 | {...} |
 | pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:20:9:38:9 | switch (...) {...} |
 | pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:23:17:23:22 | break; |
-| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:24:13:24:36 | case Int32 i2: |
-| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:24:18:24:23 | Int32 i2 |
+| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:24:13:24:36 | case ...: |
+| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:24:30:24:31 | access to local variable i2 |
 | pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:25:17:25:52 | ...; |
-| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:27:13:27:24 | case Int32 i3: |
-| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:27:18:27:23 | Int32 i3 |
-| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:30:13:30:27 | case String s2: |
-| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:30:18:30:26 | String s2 |
-| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:33:13:33:24 | case Object v2: |
-| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:33:18:33:23 | Object v2 |
+| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:27:13:27:24 | case ...: |
+| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:28:17:28:47 | ...; |
+| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:30:13:30:27 | case ...: |
+| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:31:17:31:50 | ...; |
+| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:33:13:33:24 | case ...: |
+| pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:34:17:34:22 | break; |
 | pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:35:13:35:20 | default: |
 | pre | Patterns.cs:5:10:5:13 | enter Test | Patterns.cs:40:9:42:9 | switch (...) {...} |
 | pre | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:9:9:11:9 | {...} |
@@ -2022,49 +2022,49 @@
 | pre | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:17:9:18:9 | {...} |
 | pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:20:9:38:9 | switch (...) {...} |
 | pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:23:17:23:22 | break; |
-| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:24:13:24:36 | case Int32 i2: |
-| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:24:18:24:23 | Int32 i2 |
+| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:24:13:24:36 | case ...: |
+| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:24:30:24:31 | access to local variable i2 |
 | pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:25:17:25:52 | ...; |
-| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:27:13:27:24 | case Int32 i3: |
-| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:27:18:27:23 | Int32 i3 |
-| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:30:13:30:27 | case String s2: |
-| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:30:18:30:26 | String s2 |
-| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:33:13:33:24 | case Object v2: |
-| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:33:18:33:23 | Object v2 |
+| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:27:13:27:24 | case ...: |
+| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:28:17:28:47 | ...; |
+| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:30:13:30:27 | case ...: |
+| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:31:17:31:50 | ...; |
+| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:33:13:33:24 | case ...: |
+| pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:34:17:34:22 | break; |
 | pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:35:13:35:20 | default: |
 | pre | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:40:9:42:9 | switch (...) {...} |
 | pre | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; |
-| pre | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:13:24:36 | case Int32 i2: |
-| pre | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:18:24:23 | Int32 i2 |
-| pre | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:25:17:25:52 | ...; |
-| pre | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:27:13:27:24 | case Int32 i3: |
-| pre | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:27:18:27:23 | Int32 i3 |
-| pre | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:30:13:30:27 | case String s2: |
-| pre | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:30:18:30:26 | String s2 |
-| pre | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:33:13:33:24 | case Object v2: |
-| pre | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:33:18:33:23 | Object v2 |
-| pre | Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:35:13:35:20 | default: |
-| pre | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | Int32 i2 |
-| pre | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:25:17:25:52 | ...; |
+| pre | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:13:24:36 | case ...: |
+| pre | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:30:24:31 | access to local variable i2 |
+| pre | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:25:17:25:52 | ...; |
+| pre | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:27:13:27:24 | case ...: |
+| pre | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:28:17:28:47 | ...; |
+| pre | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:30:13:30:27 | case ...: |
+| pre | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:31:17:31:50 | ...; |
+| pre | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:33:13:33:24 | case ...: |
+| pre | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:34:17:34:22 | break; |
+| pre | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:35:13:35:20 | default: |
+| pre | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:31 | access to local variable i2 |
+| pre | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:25:17:25:52 | ...; |
 | pre | Patterns.cs:25:17:25:52 | ...; | Patterns.cs:25:17:25:52 | ...; |
-| pre | Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:27:13:27:24 | case Int32 i3: |
-| pre | Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:27:18:27:23 | Int32 i3 |
-| pre | Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:30:13:30:27 | case String s2: |
-| pre | Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:30:18:30:26 | String s2 |
-| pre | Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:33:13:33:24 | case Object v2: |
-| pre | Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:33:18:33:23 | Object v2 |
-| pre | Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:35:13:35:20 | default: |
-| pre | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | Int32 i3 |
-| pre | Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:30:13:30:27 | case String s2: |
-| pre | Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:30:18:30:26 | String s2 |
-| pre | Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:33:13:33:24 | case Object v2: |
-| pre | Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:33:18:33:23 | Object v2 |
-| pre | Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:35:13:35:20 | default: |
-| pre | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | String s2 |
-| pre | Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:33:13:33:24 | case Object v2: |
-| pre | Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:33:18:33:23 | Object v2 |
-| pre | Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:35:13:35:20 | default: |
-| pre | Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | Object v2 |
+| pre | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:13:27:24 | case ...: |
+| pre | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:28:17:28:47 | ...; |
+| pre | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:30:13:30:27 | case ...: |
+| pre | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:31:17:31:50 | ...; |
+| pre | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:33:13:33:24 | case ...: |
+| pre | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:34:17:34:22 | break; |
+| pre | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:35:13:35:20 | default: |
+| pre | Patterns.cs:28:17:28:47 | ...; | Patterns.cs:28:17:28:47 | ...; |
+| pre | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:13:30:27 | case ...: |
+| pre | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:31:17:31:50 | ...; |
+| pre | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:33:13:33:24 | case ...: |
+| pre | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:34:17:34:22 | break; |
+| pre | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:35:13:35:20 | default: |
+| pre | Patterns.cs:31:17:31:50 | ...; | Patterns.cs:31:17:31:50 | ...; |
+| pre | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:13:33:24 | case ...: |
+| pre | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:34:17:34:22 | break; |
+| pre | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:35:13:35:20 | default: |
+| pre | Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; |
 | pre | Patterns.cs:35:13:35:20 | default: | Patterns.cs:35:13:35:20 | default: |
 | pre | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:40:9:42:9 | switch (...) {...} |
 | pre | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | enter Method |
@@ -2078,16 +2078,16 @@
 | pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:17:23:17:37 | object creation of type Exception |
 | pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:18:13:18:22 | case ...: |
 | pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:19:17:19:29 | goto default; |
-| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:20:13:20:23 | case Int32 i: |
-| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:20:18:20:22 | Int32 i |
+| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:20:13:20:23 | case ...: |
+| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:21:17:22:27 | if (...) ... |
 | pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:22:21:22:27 | return ...; |
 | pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:23:27:23:27 | 0 |
-| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:24:13:24:56 | case String s: |
-| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:24:18:24:25 | String s |
+| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:24:13:24:56 | case ...: |
+| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:24:32:24:55 | ... && ... |
 | pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:24:48:24:48 | access to local variable s |
 | pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:25:17:25:37 | ...; |
-| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:27:13:27:39 | case Double d: |
-| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:27:18:27:25 | Double d |
+| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:27:13:27:39 | case ...: |
+| pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:27:32:27:38 | call to method Throw |
 | pre | Switch.cs:10:10:10:11 | enter M2 | Switch.cs:30:13:30:20 | default: |
 | pre | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:10:10:10:11 | exit M2 |
 | pre | Switch.cs:15:17:15:23 | return ...; | Switch.cs:15:17:15:23 | return ...; |
@@ -2095,75 +2095,75 @@
 | pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:17:23:17:37 | object creation of type Exception |
 | pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:18:13:18:22 | case ...: |
 | pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:19:17:19:29 | goto default; |
-| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:20:13:20:23 | case Int32 i: |
-| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:20:18:20:22 | Int32 i |
+| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:20:13:20:23 | case ...: |
+| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:21:17:22:27 | if (...) ... |
 | pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:22:21:22:27 | return ...; |
 | pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:23:27:23:27 | 0 |
-| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:24:13:24:56 | case String s: |
-| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:24:18:24:25 | String s |
+| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:24:13:24:56 | case ...: |
+| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:24:32:24:55 | ... && ... |
 | pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:24:48:24:48 | access to local variable s |
 | pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:25:17:25:37 | ...; |
-| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:27:13:27:39 | case Double d: |
-| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:27:18:27:25 | Double d |
+| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:27:13:27:39 | case ...: |
+| pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:27:32:27:38 | call to method Throw |
 | pre | Switch.cs:16:13:16:19 | case ...: | Switch.cs:30:13:30:20 | default: |
 | pre | Switch.cs:17:23:17:37 | object creation of type Exception | Switch.cs:17:23:17:37 | object creation of type Exception |
 | pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:13:18:22 | case ...: |
 | pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:19:17:19:29 | goto default; |
-| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:20:13:20:23 | case Int32 i: |
-| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:20:18:20:22 | Int32 i |
+| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:20:13:20:23 | case ...: |
+| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:21:17:22:27 | if (...) ... |
 | pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:22:21:22:27 | return ...; |
 | pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:23:27:23:27 | 0 |
-| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:24:13:24:56 | case String s: |
-| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:24:18:24:25 | String s |
+| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:24:13:24:56 | case ...: |
+| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:24:32:24:55 | ... && ... |
 | pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:24:48:24:48 | access to local variable s |
 | pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:25:17:25:37 | ...; |
-| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:27:13:27:39 | case Double d: |
-| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:27:18:27:25 | Double d |
+| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:27:13:27:39 | case ...: |
+| pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:27:32:27:38 | call to method Throw |
 | pre | Switch.cs:18:13:18:22 | case ...: | Switch.cs:30:13:30:20 | default: |
 | pre | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; |
-| pre | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:20:13:20:23 | case Int32 i: |
-| pre | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:20:18:20:22 | Int32 i |
-| pre | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:22:21:22:27 | return ...; |
-| pre | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:23:27:23:27 | 0 |
-| pre | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:24:13:24:56 | case String s: |
-| pre | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:24:18:24:25 | String s |
-| pre | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:24:48:24:48 | access to local variable s |
-| pre | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:25:17:25:37 | ...; |
-| pre | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:27:13:27:39 | case Double d: |
-| pre | Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:27:18:27:25 | Double d |
-| pre | Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | Int32 i |
-| pre | Switch.cs:20:18:20:22 | Int32 i | Switch.cs:22:21:22:27 | return ...; |
-| pre | Switch.cs:20:18:20:22 | Int32 i | Switch.cs:23:27:23:27 | 0 |
+| pre | Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:13:20:23 | case ...: |
+| pre | Switch.cs:20:13:20:23 | case ...: | Switch.cs:21:17:22:27 | if (...) ... |
+| pre | Switch.cs:20:13:20:23 | case ...: | Switch.cs:22:21:22:27 | return ...; |
+| pre | Switch.cs:20:13:20:23 | case ...: | Switch.cs:23:27:23:27 | 0 |
+| pre | Switch.cs:20:13:20:23 | case ...: | Switch.cs:24:13:24:56 | case ...: |
+| pre | Switch.cs:20:13:20:23 | case ...: | Switch.cs:24:32:24:55 | ... && ... |
+| pre | Switch.cs:20:13:20:23 | case ...: | Switch.cs:24:48:24:48 | access to local variable s |
+| pre | Switch.cs:20:13:20:23 | case ...: | Switch.cs:25:17:25:37 | ...; |
+| pre | Switch.cs:20:13:20:23 | case ...: | Switch.cs:27:13:27:39 | case ...: |
+| pre | Switch.cs:20:13:20:23 | case ...: | Switch.cs:27:32:27:38 | call to method Throw |
+| pre | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:17:22:27 | if (...) ... |
+| pre | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:22:21:22:27 | return ...; |
+| pre | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:23:27:23:27 | 0 |
 | pre | Switch.cs:22:21:22:27 | return ...; | Switch.cs:22:21:22:27 | return ...; |
 | pre | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:27:23:27 | 0 |
-| pre | Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:13:24:56 | case String s: |
-| pre | Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:18:24:25 | String s |
-| pre | Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:48:24:48 | access to local variable s |
-| pre | Switch.cs:24:13:24:56 | case String s: | Switch.cs:25:17:25:37 | ...; |
-| pre | Switch.cs:24:13:24:56 | case String s: | Switch.cs:27:13:27:39 | case Double d: |
-| pre | Switch.cs:24:13:24:56 | case String s: | Switch.cs:27:18:27:25 | Double d |
-| pre | Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | String s |
-| pre | Switch.cs:24:18:24:25 | String s | Switch.cs:24:48:24:48 | access to local variable s |
-| pre | Switch.cs:24:18:24:25 | String s | Switch.cs:25:17:25:37 | ...; |
+| pre | Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:13:24:56 | case ...: |
+| pre | Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:32:24:55 | ... && ... |
+| pre | Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:48:24:48 | access to local variable s |
+| pre | Switch.cs:24:13:24:56 | case ...: | Switch.cs:25:17:25:37 | ...; |
+| pre | Switch.cs:24:13:24:56 | case ...: | Switch.cs:27:13:27:39 | case ...: |
+| pre | Switch.cs:24:13:24:56 | case ...: | Switch.cs:27:32:27:38 | call to method Throw |
+| pre | Switch.cs:24:32:24:55 | ... && ... | Switch.cs:24:32:24:55 | ... && ... |
+| pre | Switch.cs:24:32:24:55 | ... && ... | Switch.cs:24:48:24:48 | access to local variable s |
+| pre | Switch.cs:24:32:24:55 | ... && ... | Switch.cs:25:17:25:37 | ...; |
 | pre | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:24:48:24:48 | access to local variable s |
 | pre | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:25:17:25:37 | ...; |
 | pre | Switch.cs:25:17:25:37 | ...; | Switch.cs:25:17:25:37 | ...; |
-| pre | Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:13:27:39 | case Double d: |
-| pre | Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:18:27:25 | Double d |
-| pre | Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d |
+| pre | Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:13:27:39 | case ...: |
+| pre | Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:32:27:38 | call to method Throw |
+| pre | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw |
 | pre | Switch.cs:30:13:30:20 | default: | Switch.cs:30:13:30:20 | default: |
 | pre | Switch.cs:35:10:35:11 | enter M3 | Switch.cs:35:10:35:11 | enter M3 |
 | pre | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:44:10:44:11 | enter M4 |
 | pre | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:44:10:44:11 | exit M4 |
 | pre | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:49:17:49:22 | break; |
-| pre | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:50:13:50:39 | case Boolean: |
+| pre | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:50:13:50:39 | case ...: |
 | pre | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:50:30:50:30 | access to parameter o |
 | pre | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:51:17:51:22 | break; |
 | pre | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:44:10:44:11 | exit M4 |
 | pre | Switch.cs:49:17:49:22 | break; | Switch.cs:49:17:49:22 | break; |
-| pre | Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:13:50:39 | case Boolean: |
-| pre | Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:30:50:30 | access to parameter o |
-| pre | Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:51:17:51:22 | break; |
+| pre | Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:13:50:39 | case ...: |
+| pre | Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:30:50:30 | access to parameter o |
+| pre | Switch.cs:50:13:50:39 | case ...: | Switch.cs:51:17:51:22 | break; |
 | pre | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:30:50:30 | access to parameter o |
 | pre | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:51:17:51:22 | break; |
 | pre | Switch.cs:51:17:51:22 | break; | Switch.cs:51:17:51:22 | break; |

@@ -43,7 +43,7 @@ where exists(pointerArithmeticParent(dest))
   // ```
   and forall(Expr parent |
              parent = pointerArithmeticParent+(dest) |
-             parent.getFullyConverted().getType().getUnspecifiedType() instanceof PointerType)
+             parent.getFullyConverted().getUnspecifiedType() instanceof PointerType)
 select
   dest,
   "This pointer might have type $@ (size " + sourceBase.getSize() +

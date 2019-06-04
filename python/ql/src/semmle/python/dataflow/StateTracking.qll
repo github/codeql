@@ -11,6 +11,7 @@ import python
 private import semmle.python.pointsto.Base
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
+private import semmle.python.objects.ObjectInternal
 
 /** A state that should be tracked. */
 abstract class TrackableState extends string {
@@ -106,23 +107,23 @@ module StateTracking {
                 exists(int n |
                     f = b.getNode(n) and
                     appliesToNode(state, b.getNode(n-1), ctx, sense) and
-                    not exists(PyFunctionObject func, Context callee |
+                    not exists(PythonFunctionObjectInternal func, Context callee |
                         callee.fromCall(f, func, ctx)
                     )
                 )
             )
             or
             /* Function entry via call */
-            exists(FunctionObject func, CallNode call, Context caller |
+            exists(PythonFunctionObjectInternal func, CallNode call, Context caller |
                 ctx.fromCall(call, func, caller) and
-                func.getFunction().getEntryNode() = f and
+                func.getScope().getEntryNode() = f and
                 appliesToNode(state, call.getAPredecessor(), caller, sense)
             )
             or
             /* Function return */
-            exists(PyFunctionObject func, Context callee |
+            exists(PythonFunctionObjectInternal func, Context callee |
                 callee.fromCall(f, func, ctx) and
-                appliesToNode(state, func.getFunction().getANormalExit(), callee, sense)
+                appliesToNode(state, func.getScope().getANormalExit(), callee, sense)
             )
             or
             /* Other scope entries */

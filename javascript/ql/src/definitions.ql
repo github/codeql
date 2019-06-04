@@ -123,18 +123,12 @@ predicate propertyLookup(Expr prop, ASTNode write, string kind) {
 }
 
 /**
- * Holds if `ref` is an identifier that refers to a type or namespace declared at `decl`.
+ * Holds if `ref` is an identifier that refers to a type declared at `decl`.
  */
 predicate typeLookup(ASTNode ref, ASTNode decl, string kind) {
   exists(TypeAccess typeAccess |
     ref = typeAccess.getIdentifier() and
     decl = typeAccess.getTypeName().getADefinition() and
-    kind = "T"
-  )
-  or
-  exists(NamespaceAccess namespaceAccess |
-    ref = namespaceAccess.getIdentifier() and
-    decl = namespaceAccess.getNamespace().getADefinition() and
     kind = "T"
   )
 }

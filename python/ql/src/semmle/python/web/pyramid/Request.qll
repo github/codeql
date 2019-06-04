@@ -11,8 +11,8 @@ class PyramidRequest extends BaseWebobRequest {
         this = "pyramid.request"
     }
 
-    override ClassObject getClass() {
-        result = ModuleObject::named("pyramid.request").attr("Request")
+    override ClassValue getType() {
+        result = Value::named("pyramid.request.Request")
     }
 
 }

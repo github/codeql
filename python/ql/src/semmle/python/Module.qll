@@ -1,5 +1,6 @@
 import python
-private import semmle.python.pointsto.PointsTo
+private import semmle.python.objects.ObjectAPI
+private import semmle.python.objects.Modules
 
 /** A module. This is the top level element in an AST, corresponding to a source file. 
  * It is also a Scope; the scope of global variables. */
@@ -66,7 +67,10 @@ class Module extends Module_, Scope, AstNode {
     string getAnExport() {
         py_exports(this, result)
         or
-        not PointsTo::module_defines_name(this, "__all__") and PointsTo::module_defines_name(this, result)
+        exists(ModuleValue mod |
+            mod.getSource() = this.getEntryNode() |
+            mod.exports(result)
+        )
     }
 
     /** Gets the source file for this module */
@@ -198,11 +202,15 @@ private predicate legalShortName(string name) {
 }
 
 /** Holds if `f` is potentially a source package.
- * Does it have an __init__.py file and is it within the source archive?
+ * Does it have an __init__.py file (or --respect-init=False for Python 2) and is it within the source archive?
  */
 private predicate isPotentialSourcePackage(Folder f) {
     f.getRelativePath() != "" and
-    exists(f.getFile("__init__.py"))
+    (
+        exists(f.getFile("__init__.py"))
+        or
+        py_flags_versioned("options.respect_init", "False", _) and major_version() = 2
+    )
 }
 
 private string moduleNameFromBase(Container file) {
@@ -211,7 +219,7 @@ private string moduleNameFromBase(Container file) {
     file instanceof File and result = file.getStem()
 }
 
-private string moduleNameFromFile(Container file) {
+string moduleNameFromFile(Container file) {
     exists(string basename |
         basename = moduleNameFromBase(file) and
         legalShortName(basename)

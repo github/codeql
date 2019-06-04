@@ -164,7 +164,7 @@ class ClassAggregateLiteral extends AggregateLiteral {
   Class classType;
 
   ClassAggregateLiteral() {
-    classType = this.getType().getUnspecifiedType()
+    classType = this.getUnspecifiedType()
   }
 
   /**
@@ -223,7 +223,7 @@ class ArrayAggregateLiteral extends AggregateLiteral {
   ArrayType arrayType;
 
   ArrayAggregateLiteral() {
-    arrayType = this.getType().getUnspecifiedType()
+    arrayType = this.getUnspecifiedType()
   }
 
   /**

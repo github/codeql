@@ -69,6 +69,7 @@ private newtype TOpcode =
   TBufferWriteSideEffect() or
   TBufferMayWriteSideEffect() or
   TChi() or
+  TInlineAsm() or
   TUnreached()
 
 class Opcode extends TOpcode {
@@ -214,5 +215,6 @@ module Opcode {
   class BufferWriteSideEffect extends WriteSideEffectOpcode, BufferAccessOpcode, TBufferWriteSideEffect { override final string toString() { result = "BufferWriteSideEffect" } }
   class BufferMayWriteSideEffect extends MayWriteSideEffectOpcode, BufferAccessOpcode, TBufferMayWriteSideEffect { override final string toString() { result = "BufferMayWriteSideEffect" } }
   class Chi extends Opcode, TChi { override final string toString() { result = "Chi" } }
+  class InlineAsm extends Opcode, TInlineAsm { override final string toString() { result = "InlineAsm" } }
   class Unreached extends Opcode, TUnreached { override final string toString() { result = "Unreached" } }
 }

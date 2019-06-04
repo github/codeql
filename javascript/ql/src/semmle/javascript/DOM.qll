@@ -284,12 +284,25 @@ module DOM {
     )
   }
 
+  module DomValueSource {
+    /**
+     * A data flow node that should be considered a source of DOM values.
+     */
+    abstract class Range extends DataFlow::Node {}
+
+    private class DefaultRange extends Range {
+      DefaultRange() {
+        this.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable or
+        this = domValueRef().getAPropertyRead() or
+        this = domElementCreationOrQuery() or
+        this = domElementCollection()
+      }
+    }
+  }
+
   /** Gets a data flow node that refers directly to a value from the DOM. */
   DataFlow::SourceNode domValueSource() {
-    result.asExpr().(VarAccess).getVariable() instanceof DOMGlobalVariable or
-    result = domValueRef().getAPropertyRead() or
-    result = domElementCreationOrQuery() or
-    result = domElementCollection()
+    result instanceof DomValueSource::Range
   }
 
   /** Gets a data flow node that may refer to a value from the DOM. */
@@ -303,11 +316,34 @@ module DOM {
   /** Gets a data flow node that may refer to a value from the DOM. */
   DataFlow::SourceNode domValueRef() { result = domValueRef(DataFlow::TypeTracker::end()) }
 
+  module LocationSource {
+    /**
+     * A data flow node that should be considered a source of the DOM `location` object.
+     *
+     * Can be subclassed to add additional such nodes.
+     */
+    abstract class Range extends DataFlow::Node {}
+
+    private class DefaultRange extends Range {
+      DefaultRange() {
+        exists(string propName | this = documentRef().getAPropertyRead(propName) |
+          propName = "documentURI" or
+          propName = "documentURIObject" or
+          propName = "location" or
+          propName = "referrer" or
+          propName = "URL"
+        )
+        or
+        this = DOM::domValueRef().getAPropertyRead("baseUri")
+        or
+        this = DataFlow::globalVarRef("location")
+      }
+    }
+  }
+
   /** Gets a data flow node that directly refers to a DOM `location` object. */
   DataFlow::SourceNode locationSource() {
-    result = domValueRef().getAPropertyRead("location")
-    or
-    result = DataFlow::globalVarRef("location")
+    result instanceof LocationSource::Range
   }
 
   /** Gets a reference to a DOM `location` object. */
@@ -321,12 +357,32 @@ module DOM {
   /** Gets a reference to a DOM `location` object. */
   DataFlow::SourceNode locationRef() { result = locationRef(DataFlow::TypeTracker::end()) }
 
+  module DocumentSource {
+    /**
+     * A data flow node that should be considered a source of the `document` object.
+     *
+     * Can be subclassed to add additional such nodes.
+     */
+    abstract class Range extends DataFlow::Node {}
+
+    private class DefaultRange extends Range {
+      DefaultRange() { this = DataFlow::globalVarRef("document") }
+    }
+  }
+
+  /**
+   * Gets a direct reference to the `document` object.
+   */
+  DataFlow::SourceNode documentSource() {
+    result instanceof DocumentSource::Range
+  }
+
   /**
    * Gets a reference to the `document` object.
    */
   private DataFlow::SourceNode documentRef(DataFlow::TypeTracker t) {
     t.start() and
-    result = DataFlow::globalVarRef("document")
+    result instanceof DocumentSource::Range
     or
     exists(DataFlow::TypeTracker t2 | result = documentRef(t2).track(t2, t))
   }

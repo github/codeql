@@ -1,8 +1,4 @@
-/**
- * @name class_attr
- * @kind test
- * @problem.severity warning
- */
+
 
 import python
 

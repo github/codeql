@@ -182,7 +182,9 @@ class TopLevel extends @toplevel, StmtContainer {
 /**
  * A stand-alone file or script originating from an HTML `<script>` element.
  */
-abstract class Script extends TopLevel { }
+class Script extends TopLevel {
+  Script() { this instanceof @script or this instanceof @inline_script }
+}
 
 /**
  * A stand-alone file or an external script originating from an HTML `<script>` element.
@@ -197,7 +199,9 @@ class InlineScript extends @inline_script, Script { }
 /**
  * A code snippet originating from an HTML attribute value.
  */
-abstract class CodeInAttribute extends TopLevel { }
+class CodeInAttribute extends TopLevel {
+  CodeInAttribute() { this instanceof @event_handler or this instanceof @javascript_url }
+}
 
 /**
  * A code snippet originating from an event handler attribute.

@@ -1,4 +1,5 @@
 import csharp
 
-from TypeCase c
+from Case c
+where c.getPattern() instanceof VariablePatternExpr
 select c, c.getCondition()

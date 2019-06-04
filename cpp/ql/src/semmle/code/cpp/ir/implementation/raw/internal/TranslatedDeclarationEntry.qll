@@ -191,6 +191,44 @@ class TranslatedVariableDeclarationEntry extends TranslatedVariableDeclaration,
   }
 }
 
+/**
+ * Gets the `TranslatedRangeBasedForVariableDeclaration` that represents the declaration of
+ * `var`.
+ */
+TranslatedRangeBasedForVariableDeclaration getTranslatedRangeBasedForVariableDeclaration(
+    LocalVariable var) {
+  result.getVariable() = var
+}
+
+/**
+ * Represents the IR translation of a compiler-generated variable in a range-based `for` loop.
+ */
+class TranslatedRangeBasedForVariableDeclaration extends TranslatedVariableDeclaration,
+    TTranslatedRangeBasedForVariableDeclaration {
+  RangeBasedForStmt forStmt;
+  LocalVariable var;
+
+  TranslatedRangeBasedForVariableDeclaration() {
+    this = TTranslatedRangeBasedForVariableDeclaration(forStmt, var)
+  }
+
+  override string toString() {
+    result = var.toString()
+  }
+
+  override Locatable getAST() {
+    result = var
+  }
+
+  override Function getFunction() {
+    result = forStmt.getEnclosingFunction()
+  }
+
+  override LocalVariable getVariable() {
+    result = var
+  }
+}
+
 TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
   result.getAST() = expr
 }

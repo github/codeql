@@ -139,7 +139,7 @@ module Vue {
      */
     pragma[noinline]
     private DataFlow::Node getAMethod() {
-      exists(DataFlow::SourceNode methods |
+      exists(DataFlow::ObjectLiteralNode methods |
         methods.flowsTo(getMethods()) and
         result = methods.getAPropertyWrite().getRhs()
       )
@@ -150,13 +150,13 @@ module Vue {
      */
     pragma[noinline]
     private DataFlow::Node getAnAccessor(string kind) {
-      exists(DataFlow::SourceNode computedObj, DataFlow::Node accessorObjOrGetter |
+      exists(DataFlow::ObjectLiteralNode computedObj, DataFlow::Node accessorObjOrGetter |
         computedObj.flowsTo(getComputed()) and
         computedObj.getAPropertyWrite().getRhs() = accessorObjOrGetter
       |
         result = accessorObjOrGetter and kind = "get"
         or
-        exists(DataFlow::SourceNode accessorObj |
+        exists(DataFlow::ObjectLiteralNode accessorObj |
           accessorObj.flowsTo(accessorObjOrGetter) and
           result = accessorObj.getAPropertyWrite(kind).getRhs()
         )
@@ -167,13 +167,13 @@ module Vue {
      * Gets a node for a member `name` of the `computed` option of this instance that matches `kind` ("get" or "set").
      */
     private DataFlow::Node getAccessor(string name, string kind) {
-      exists(DataFlow::SourceNode computedObj, DataFlow::SourceNode accessorObjOrGetter |
+      exists(DataFlow::ObjectLiteralNode computedObj, DataFlow::SourceNode accessorObjOrGetter |
         computedObj.flowsTo(getComputed()) and
         accessorObjOrGetter.flowsTo(computedObj.getAPropertyWrite(name).getRhs())
       |
         result = accessorObjOrGetter and kind = "get"
         or
-        exists(DataFlow::SourceNode accessorObj |
+        exists(DataFlow::ObjectLiteralNode accessorObj |
           accessorObj.flowsTo(accessorObjOrGetter) and
           result = accessorObj.getAPropertyWrite(kind).getRhs()
         )

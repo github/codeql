@@ -300,9 +300,16 @@ module AssignableInternal {
     or
     def = TAddressOfDefinition(result)
     or
-    def = TIsPatternDefinition(any(IsPatternExpr ipe | result = ipe.getVariableDeclExpr()))
-    or
-    def = TTypeCasePatternDefinition(any(TypeCase tc | result = tc.getVariableDeclExpr()))
+    def = TPatternDefinition(result)
+  }
+
+  /** A local variable declaration at the top-level of a pattern. */
+  class TopLevelPatternDecl extends LocalVariableDeclExpr {
+    private PatternMatch pm;
+
+    TopLevelPatternDecl() { this = pm.getPattern().(BindingPatternExpr).getVariableDeclExpr() }
+
+    PatternMatch getMatch() { result = pm }
   }
 
   cached
@@ -320,8 +327,7 @@ module AssignableInternal {
       TLocalVariableDefinition(LocalVariableDeclExpr lvde) {
         not lvde.hasInitializer() and
         not exists(getTupleSource(TTupleAssignmentDefinition(_, lvde))) and
-        not lvde = any(IsPatternExpr ipe).getVariableDeclExpr() and
-        not lvde = any(TypeCase tc).getVariableDeclExpr() and
+        not lvde instanceof TopLevelPatternDecl and
         not lvde.isOutArgument()
       } or
       TImplicitParameterDefinition(Parameter p) {
@@ -333,8 +339,7 @@ module AssignableInternal {
         )
       } or
       TAddressOfDefinition(AddressOfExpr aoe) or
-      TIsPatternDefinition(IsPatternExpr ipe) or
-      TTypeCasePatternDefinition(TypeCase tc) or
+      TPatternDefinition(TopLevelPatternDecl tlpd) or
       TInitializer(Assignable a, Expr e) {
         e = a.(Field).getInitializer() or
         e = a.(Property).getInitializer()
@@ -377,12 +382,8 @@ module AssignableInternal {
           result = decl.getDeclaration().getVariable()
         )
       or
-      def = any(AssignableDefinitions::IsPatternDefinition is |
-          result = is.getDeclaration().getVariable()
-        )
-      or
-      def = any(AssignableDefinitions::TypeCasePatternDefinition case |
-          result = case.getDeclaration().getVariable()
+      def = any(AssignableDefinitions::PatternDefinition pd |
+          result = pd.getDeclaration().getVariable()
         )
       or
       def = any(AssignableDefinitions::InitializerDefinition init | result = init.getAssignable())
@@ -431,9 +432,8 @@ private import AssignableInternal
  * a mutation update (`AssignableDefinitions::MutationDefinition`), a local variable
  * declaration without an initializer (`AssignableDefinitions::LocalVariableDefinition`),
  * an implicit parameter definition (`AssignableDefinitions::ImplicitParameterDefinition`),
- * an address-of definition (`AssignableDefinitions::AddressOfDefinition`), an `is` pattern
- * definition (`AssignableDefinitions::IsPatternDefinition`), or a type case pattern
- * definition (`AssignableDefinitions::TypeCasePatternDefinition`).
+ * an address-of definition (`AssignableDefinitions::AddressOfDefinition`), or a pattern
+ * definition (`AssignableDefinitions::PatternDefinition`).
  */
 class AssignableDefinition extends TAssignableDefinition {
   /**
@@ -694,50 +694,20 @@ module AssignableDefinitions {
   }
 
   /**
-   * A local variable definition in an `is` pattern, for example `x is int i`.
+   * A local variable definition in a pattern, for example `x is int i`.
    */
-  class IsPatternDefinition extends AssignableDefinition, TIsPatternDefinition {
-    IsPatternExpr ipe;
+  class PatternDefinition extends AssignableDefinition, TPatternDefinition {
+    TopLevelPatternDecl tlpd;
 
-    IsPatternDefinition() { this = TIsPatternDefinition(ipe) }
+    PatternDefinition() { this = TPatternDefinition(tlpd) }
 
-    /** Gets the underlying `is` expression. */
-    IsPatternExpr getIsPatternExpr() { result = ipe }
+    /** Gets the element matches against this pattern. */
+    PatternMatch getMatch() { result = tlpd.getMatch() }
 
     /** Gets the underlying local variable declaration. */
-    LocalVariableDeclExpr getDeclaration() { result = ipe.getVariableDeclExpr() }
+    LocalVariableDeclExpr getDeclaration() { result = tlpd }
 
-    override Expr getSource() { result = ipe.getExpr() }
-
-    override string toString() { result = this.getDeclaration().toString() }
-  }
-
-  /**
-   * A local variable definition in a type `case` pattern, for example
-   * line 2 in
-   *
-   * ```
-   * switch(p) {
-   *   case string s:
-   *     break;
-   *   ...
-   * }
-   * ```
-   */
-  class TypeCasePatternDefinition extends AssignableDefinition, TTypeCasePatternDefinition {
-    TypeCase tc;
-
-    TypeCasePatternDefinition() { this = TTypeCasePatternDefinition(tc) }
-
-    /** Gets the underlying `case` statement. */
-    TypeCase getTypeCase() { result = tc }
-
-    /** Gets the underlying local variable declaration. */
-    LocalVariableDeclExpr getDeclaration() { result = tc.getVariableDeclExpr() }
-
-    override Expr getSource() {
-      result = any(SwitchStmt ss | ss.getATypeCase() = tc).getCondition()
-    }
+    override Expr getSource() { result = this.getMatch().getExpr() }
 
     override string toString() { result = this.getDeclaration().toString() }
   }

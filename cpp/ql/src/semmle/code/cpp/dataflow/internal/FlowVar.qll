@@ -118,7 +118,7 @@ module FlowVar_internal {
     // The SSA library has a theoretically accurate treatment of reference types,
     // treating them as immutable, but for data flow it gives better results in
     // practice to make the variable synonymous with its contents.
-    not v.getType().getUnspecifiedType() instanceof ReferenceType
+    not v.getUnspecifiedType() instanceof ReferenceType
   }
 
   /**

@@ -13,11 +13,13 @@
 
 import csharp
 
+TypePatternExpr getTypeCondition(IfStmt is) { result = is.getCondition().(IsExpr).getPattern() }
+
 int isCountForIfChain(IfStmt is) {
   exists(int rest |
     (if is.getElse() instanceof IfStmt then rest = isCountForIfChain(is.getElse()) else rest = 0) and
     (
-      if is.getCondition().(IsTypeExpr).getCheckedType().getSourceDeclaration().fromSource()
+      if getTypeCondition(is).getCheckedType().getSourceDeclaration().fromSource()
       then result = 1 + rest
       else result = rest
     )

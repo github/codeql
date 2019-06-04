@@ -17,13 +17,18 @@
 
 * The security queries now treat comparisons with symbolic constants as sanitizers, resulting in fewer false positives.
 
-* TypeScript 3.4 features are now supported.
+* TypeScript 3.5 is now supported.
+
+* On LGTM, TypeScript projects now have static type information extracted by default, resulting in more security results.
+  Users of the command-line tools must still pass `--typescript-full` to the extractor to enable this.
 
 
 ## New queries
 
 | **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
 |-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Missing regular expression anchor (`js/regex/missing-regexp-anchor`) | correctness, security, external/cwe/cwe-20 | Highlights regular expression patterns that may be missing an anchor, indicating a possible violation of [CWE-20](https://cwe.mitre.org/data/definitions/20.html). Results are not shown on LGTM by default. |
+| Prototype pollution (`js/prototype-pollution`)    | security, external/cwe-250, external/cwe-400 | Highlights code that allows an attacker to modify a built-in prototype object through an unsanitized recursive merge function. The results are shown on LGTM by default. |
 
 ## Changes to existing queries
 
@@ -42,10 +47,15 @@
 | Useless assignment to property | Fewer false-positive results | This rule now ignore reads of additional getters. |
 | Unreachable statement | Unreachable throws no longer give an alert | This ignores unreachable throws, as they could be intentional (for example, to placate the TS compiler). |
 | Incorrect suffix check | Fewer false-positive results | This rule now recognizes valid checks in more cases. |
+| Tainted path | More results and fewer false-positive results | This rule now analyses path manipulation code more precisely. |
 
 ## Changes to QL libraries
 
 * `RegExpLiteral` is now a `DataFlow::SourceNode`.
 * `JSDocTypeExpr` now has source locations and is a subclass of `Locatable` and `TypeAnnotation`.
+* The two-parameter versions of predicate `isBarrier` in `DataFlow::Configuration` and of predicate `isSanitizer` in `TaintTracking::Configuration` have been renamed to `isBarrierEdge` and `isSanitizerEdge`, respectively. The old names are maintained for backwards-compatibility in this version, but will be deprecated in the next version and subsequently removed.
 * Various predicates named `getTypeAnnotation()` now return `TypeAnnotation` instead of `TypeExpr`.
-  In rare cases, this may cause compilation errors. Cast the result to `TypeExpr` if this happens.
+  In rare cases, this may cause compilation errors in existing code. Cast the result to `TypeExpr` if this happens.
+* The `getALabel` predicate in `LabeledBarrierGuardNode` and `LabeledSanitizerGuardNode`
+  has been deprecated and overriding it no longer has any effect.
+  Instead use the 3-parameter version of `blocks` or `sanitizes`.

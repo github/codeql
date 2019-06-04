@@ -55,7 +55,7 @@ abstract class TranslatedExpr extends TranslatedElement {
    * Gets the type of the result produced by this expression.
    */
   final Type getResultType() {
-    result = expr.getType().getUnspecifiedType()
+    result = expr.getUnspecifiedType()
   }
 
   override final Locatable getAST() {
@@ -323,7 +323,7 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
       Type resultType, boolean isGLValue) {
     tag = LoadTag() and
     opcode instanceof Opcode::Load and
-    resultType = expr.getType().getUnspecifiedType() and
+    resultType = expr.getUnspecifiedType() and
     if expr.isGLValueCategory() then
       isGLValue = true
     else
@@ -763,7 +763,7 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
     Type resultType, boolean isGLValue) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::CopyValue and
-    resultType = expr.getType().getUnspecifiedType() and
+    resultType = expr.getUnspecifiedType() and
     isGLValue = false
   }
 
@@ -911,7 +911,7 @@ class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
     Type resultType, boolean isGLValue) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::FunctionAddress and
-    resultType = expr.getType().getUnspecifiedType() and
+    resultType = expr.getUnspecifiedType() and
     isGLValue = true
   }
 
@@ -1405,7 +1405,7 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
     // left-to-right.
     exists(PointerAddExpr ptrAdd, Type rightType |
       ptrAdd = expr and
-      rightType = ptrAdd.getRightOperand().getType().getUnspecifiedType() and
+      rightType = ptrAdd.getRightOperand().getUnspecifiedType() and
       rightType instanceof PointerType
     )
   }
@@ -1767,7 +1767,7 @@ class TranslatedConstantAllocationSize extends TranslatedAllocationSize {
       Type resultType, boolean isGLValue) {
     tag = AllocationSizeTag() and
     opcode instanceof Opcode::Constant and
-    resultType = expr.getAllocator().getParameter(0).getType().getUnspecifiedType() and
+    resultType = expr.getAllocator().getParameter(0).getUnspecifiedType() and
     isGLValue = false
   }
 
@@ -1813,7 +1813,7 @@ class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
       Type resultType, boolean isGLValue) {
     isGLValue = false and
-    resultType = expr.getAllocator().getParameter(0).getType().getUnspecifiedType() and
+    resultType = expr.getAllocator().getParameter(0).getUnspecifiedType() and
     (
       // Convert the extent to `size_t`, because the AST doesn't do this already.
       tag = AllocationExtentConvertTag() and opcode instanceof Opcode::Convert or
@@ -1901,7 +1901,7 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall,
   }
 
   override final Type getCallResultType() {
-    result = expr.getAllocator().getType().getUnspecifiedType()
+    result = expr.getAllocator().getUnspecifiedType()
   }
 
   override final TranslatedExpr getQualifier() {
@@ -1961,7 +1961,7 @@ class TranslatedDestructorFieldDestruction extends TranslatedNonConstantExpr,
     Type resultType, boolean isGLValue) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::FieldAddress and
-    resultType = expr.getTarget().getType().getUnspecifiedType() and
+    resultType = expr.getTarget().getUnspecifiedType() and
     isGLValue = true
   }
 
@@ -2341,7 +2341,7 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr,
   }
 
   private Type getExceptionType() {
-    result = expr.getType().getUnspecifiedType()
+    result = expr.getUnspecifiedType()
   }
 }
 

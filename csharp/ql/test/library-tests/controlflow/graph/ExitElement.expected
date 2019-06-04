@@ -1384,10 +1384,11 @@
 | Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:22:18:22:22 | "xyz" | match |
 | Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:22:18:22:22 | "xyz" | no-match |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; | break |
-| Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:18:24:20 | access to type Int32 | no-match |
-| Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:30:24:35 | ... > ... | false/false |
-| Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:25:17:25:51 | call to method WriteLine | normal |
-| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | Int32 i2 | normal |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:18:24:23 | Int32 i2 | no-match |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:30:24:35 | ... > ... | false/false |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:25:17:25:51 | call to method WriteLine | normal |
+| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | Int32 i2 | match |
+| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | Int32 i2 | no-match |
 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:31 | access to local variable i2 | normal |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:30:24:35 | ... > ... | false/false |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:30:24:35 | ... > ... | true/true |
@@ -1398,29 +1399,32 @@
 | Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:25:37:25:45 | "positive " | normal |
 | Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:25:47:25:48 | access to local variable i2 | normal |
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:26:17:26:22 | break; | break |
-| Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:27:18:27:20 | access to type Int32 | no-match |
-| Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:28:17:28:46 | call to method WriteLine | normal |
-| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | Int32 i3 | normal |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Int32 i3 | no-match |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:28:17:28:46 | call to method WriteLine | normal |
+| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | Int32 i3 | match |
+| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | Int32 i3 | no-match |
 | Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:28:17:28:46 | call to method WriteLine | normal |
 | Patterns.cs:28:17:28:47 | ...; | Patterns.cs:28:17:28:46 | call to method WriteLine | normal |
 | Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:28:35:28:45 | $"..." | normal |
 | Patterns.cs:28:37:28:40 | "int " | Patterns.cs:28:37:28:40 | "int " | normal |
 | Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:28:42:28:43 | access to local variable i3 | normal |
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:29:17:29:22 | break; | break |
-| Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:30:18:30:23 | access to type String | no-match |
-| Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:31:17:31:49 | call to method WriteLine | normal |
-| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | String s2 | normal |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | String s2 | no-match |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:31:17:31:49 | call to method WriteLine | normal |
+| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | String s2 | match |
+| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | String s2 | no-match |
 | Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:31:17:31:49 | call to method WriteLine | normal |
 | Patterns.cs:31:17:31:50 | ...; | Patterns.cs:31:17:31:49 | call to method WriteLine | normal |
 | Patterns.cs:31:35:31:48 | $"..." | Patterns.cs:31:35:31:48 | $"..." | normal |
 | Patterns.cs:31:37:31:43 | "string " | Patterns.cs:31:37:31:43 | "string " | normal |
 | Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:31:45:31:46 | access to local variable s2 | normal |
 | Patterns.cs:32:17:32:22 | break; | Patterns.cs:32:17:32:22 | break; | break |
-| Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:33:18:33:20 | access to type Object | no-match |
-| Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:34:17:34:22 | break; | break |
-| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | Object v2 | normal |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:18:33:23 | Object v2 | no-match |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:34:17:34:22 | break; | break |
+| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | Object v2 | match |
+| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | Object v2 | no-match |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; | break |
-| Patterns.cs:35:13:35:20 | default: | Patterns.cs:35:13:35:20 | default: | normal |
+| Patterns.cs:35:13:35:20 | default: | Patterns.cs:36:17:36:51 | call to method WriteLine | normal |
 | Patterns.cs:36:17:36:51 | call to method WriteLine | Patterns.cs:36:17:36:51 | call to method WriteLine | normal |
 | Patterns.cs:36:17:36:52 | ...; | Patterns.cs:36:17:36:51 | call to method WriteLine | normal |
 | Patterns.cs:36:35:36:50 | "Something else" | Patterns.cs:36:35:36:50 | "Something else" | normal |
@@ -1518,10 +1522,11 @@
 | Switch.cs:18:18:18:21 | null | Switch.cs:18:18:18:21 | null | match |
 | Switch.cs:18:18:18:21 | null | Switch.cs:18:18:18:21 | null | no-match |
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; | goto default |
-| Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:20:18:20:20 | access to type Int32 | no-match |
-| Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:21:21:21:29 | ... == ... | false/false |
-| Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:22:21:22:27 | return ...; | return |
-| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | Int32 i | normal |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:18:20:22 | Int32 i | no-match |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:21:21:21:29 | ... == ... | false/false |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:22:21:22:27 | return ...; | return |
+| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | Int32 i | match |
+| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | Int32 i | no-match |
 | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:21:21:29 | ... == ... | false/false |
 | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:22:21:22:27 | return ...; | return |
 | Switch.cs:21:21:21:21 | access to parameter o | Switch.cs:21:21:21:21 | access to parameter o | normal |
@@ -1531,11 +1536,12 @@
 | Switch.cs:22:21:22:27 | return ...; | Switch.cs:22:21:22:27 | return ...; | return |
 | Switch.cs:23:17:23:28 | goto case ...; | Switch.cs:23:17:23:28 | goto case ...; | goto case(0) |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:27:23:27 | 0 | normal |
-| Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:18:24:23 | access to type String | no-match |
-| Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:32:24:43 | ... > ... | false/false |
-| Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:48:24:55 | ... != ... | false/false |
-| Switch.cs:24:13:24:56 | case String s: | Switch.cs:25:17:25:36 | call to method WriteLine | normal |
-| Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | String s | normal |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:18:24:25 | String s | no-match |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:32:24:43 | ... > ... | false/false |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:48:24:55 | ... != ... | false/false |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:25:17:25:36 | call to method WriteLine | normal |
+| Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | String s | match |
+| Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | String s | no-match |
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:24:32:24:32 | access to local variable s | normal |
 | Switch.cs:24:32:24:39 | access to property Length | Switch.cs:24:32:24:39 | access to property Length | normal |
 | Switch.cs:24:32:24:43 | ... > ... | Switch.cs:24:32:24:43 | ... > ... | false/false |
@@ -1552,21 +1558,22 @@
 | Switch.cs:25:17:25:37 | ...; | Switch.cs:25:17:25:36 | call to method WriteLine | normal |
 | Switch.cs:25:35:25:35 | access to local variable s | Switch.cs:25:35:25:35 | access to local variable s | normal |
 | Switch.cs:26:17:26:23 | return ...; | Switch.cs:26:17:26:23 | return ...; | return |
-| Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:18:27:23 | access to type Double | no-match |
-| Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:32:27:38 | call to method Throw | throw(Exception) |
-| Switch.cs:27:13:27:39 | case Double d: | Switch.cs:28:17:28:21 | Label: | normal |
-| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d | normal |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | Double d | no-match |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:32:27:38 | call to method Throw | throw(Exception) |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:28:17:28:21 | Label: | normal |
+| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d | match |
+| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d | no-match |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw | throw(Exception) |
 | Switch.cs:28:17:28:21 | Label: | Switch.cs:28:17:28:21 | Label: | normal |
 | Switch.cs:29:17:29:23 | return ...; | Switch.cs:29:17:29:23 | return ...; | return |
-| Switch.cs:30:13:30:20 | default: | Switch.cs:30:13:30:20 | default: | normal |
+| Switch.cs:30:13:30:20 | default: | Switch.cs:31:17:31:27 | goto ...; | goto(Label) |
 | Switch.cs:31:17:31:27 | goto ...; | Switch.cs:31:17:31:27 | goto ...; | goto(Label) |
 | Switch.cs:36:5:42:5 | {...} | Switch.cs:37:17:37:23 | call to method Throw | throw(Exception) |
 | Switch.cs:36:5:42:5 | {...} | Switch.cs:40:17:40:23 | return ...; | return |
 | Switch.cs:37:9:41:9 | switch (...) {...} | Switch.cs:37:17:37:23 | call to method Throw | throw(Exception) |
 | Switch.cs:37:9:41:9 | switch (...) {...} | Switch.cs:40:17:40:23 | return ...; | return |
 | Switch.cs:37:17:37:23 | call to method Throw | Switch.cs:37:17:37:23 | call to method Throw | throw(Exception) |
-| Switch.cs:39:13:39:20 | default: | Switch.cs:39:13:39:20 | default: | normal |
+| Switch.cs:39:13:39:20 | default: | Switch.cs:40:17:40:23 | return ...; | return |
 | Switch.cs:40:17:40:23 | return ...; | Switch.cs:40:17:40:23 | return ...; | return |
 | Switch.cs:45:5:53:5 | {...} | Switch.cs:49:17:49:22 | break; | normal (break) |
 | Switch.cs:45:5:53:5 | {...} | Switch.cs:50:18:50:21 | access to type Boolean | no-match |
@@ -1577,12 +1584,16 @@
 | Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:50:30:50:38 | ... != ... | false/false |
 | Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:51:17:51:22 | break; | normal (break) |
 | Switch.cs:46:17:46:17 | access to parameter o | Switch.cs:46:17:46:17 | access to parameter o | normal |
-| Switch.cs:48:13:48:23 | case Int32: | Switch.cs:48:18:48:20 | access to type Int32 | no-match |
-| Switch.cs:48:13:48:23 | case Int32: | Switch.cs:49:17:49:22 | break; | break |
+| Switch.cs:48:13:48:23 | case ...: | Switch.cs:48:18:48:20 | access to type Int32 | no-match |
+| Switch.cs:48:13:48:23 | case ...: | Switch.cs:49:17:49:22 | break; | break |
+| Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:48:18:48:20 | access to type Int32 | match |
+| Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:48:18:48:20 | access to type Int32 | no-match |
 | Switch.cs:49:17:49:22 | break; | Switch.cs:49:17:49:22 | break; | break |
-| Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:18:50:21 | access to type Boolean | no-match |
-| Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:30:50:38 | ... != ... | false/false |
-| Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:51:17:51:22 | break; | break |
+| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:18:50:21 | access to type Boolean | no-match |
+| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:30:50:38 | ... != ... | false/false |
+| Switch.cs:50:13:50:39 | case ...: | Switch.cs:51:17:51:22 | break; | break |
+| Switch.cs:50:18:50:21 | access to type Boolean | Switch.cs:50:18:50:21 | access to type Boolean | match |
+| Switch.cs:50:18:50:21 | access to type Boolean | Switch.cs:50:18:50:21 | access to type Boolean | no-match |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:30:50:30 | access to parameter o | normal |
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:50:30:50:38 | ... != ... | false/false |
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:50:30:50:38 | ... != ... | true/true |
@@ -1610,8 +1621,9 @@
 | Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:73:15:73:20 | break; | normal (break) |
 | Switch.cs:68:17:68:25 | (...) ... | Switch.cs:68:17:68:25 | (...) ... | normal |
 | Switch.cs:68:25:68:25 | access to parameter s | Switch.cs:68:25:68:25 | access to parameter s | normal |
-| Switch.cs:70:13:70:24 | case Int32: | Switch.cs:70:18:70:20 | access to type Int32 | no-match |
-| Switch.cs:70:13:70:24 | case Int32: | Switch.cs:71:15:71:20 | break; | break |
+| Switch.cs:70:13:70:24 | case ...: | Switch.cs:70:18:70:20 | access to type Int32 | no-match |
+| Switch.cs:70:13:70:24 | case ...: | Switch.cs:71:15:71:20 | break; | break |
+| Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:70:18:70:20 | access to type Int32 | no-match |
 | Switch.cs:71:15:71:20 | break; | Switch.cs:71:15:71:20 | break; | break |
 | Switch.cs:72:13:72:21 | case ...: | Switch.cs:72:18:72:19 | "" | no-match |
 | Switch.cs:72:13:72:21 | case ...: | Switch.cs:73:15:73:20 | break; | break |
@@ -1653,8 +1665,10 @@
 | Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:95:18:95:20 | access to type Int32 | no-match |
 | Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:96:15:96:26 | return ...; | return |
 | Switch.cs:93:17:93:17 | access to parameter o | Switch.cs:93:17:93:17 | access to parameter o | normal |
-| Switch.cs:95:13:95:24 | case Int32: | Switch.cs:95:18:95:20 | access to type Int32 | no-match |
-| Switch.cs:95:13:95:24 | case Int32: | Switch.cs:96:15:96:26 | return ...; | return |
+| Switch.cs:95:13:95:24 | case ...: | Switch.cs:95:18:95:20 | access to type Int32 | no-match |
+| Switch.cs:95:13:95:24 | case ...: | Switch.cs:96:15:96:26 | return ...; | return |
+| Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:95:18:95:20 | access to type Int32 | match |
+| Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:95:18:95:20 | access to type Int32 | no-match |
 | Switch.cs:96:15:96:26 | return ...; | Switch.cs:96:15:96:26 | return ...; | return |
 | Switch.cs:96:22:96:25 | true | Switch.cs:96:22:96:25 | true | normal |
 | Switch.cs:98:9:98:21 | return ...; | Switch.cs:98:9:98:21 | return ...; | return |
@@ -1925,7 +1939,7 @@
 | cflow.cs:54:17:54:48 | ...; | cflow.cs:54:17:54:47 | call to method WriteLine | normal |
 | cflow.cs:54:35:54:46 | "The answer" | cflow.cs:54:35:54:46 | "The answer" | normal |
 | cflow.cs:55:17:55:22 | break; | cflow.cs:55:17:55:22 | break; | break |
-| cflow.cs:56:13:56:20 | default: | cflow.cs:56:13:56:20 | default: | normal |
+| cflow.cs:56:13:56:20 | default: | cflow.cs:57:17:57:51 | call to method WriteLine | normal |
 | cflow.cs:57:17:57:51 | call to method WriteLine | cflow.cs:57:17:57:51 | call to method WriteLine | normal |
 | cflow.cs:57:17:57:52 | ...; | cflow.cs:57:17:57:51 | call to method WriteLine | normal |
 | cflow.cs:57:35:57:50 | "Not the answer" | cflow.cs:57:35:57:50 | "Not the answer" | normal |
@@ -2755,7 +2769,7 @@
 | cflow.cs:364:18:364:18 | 2 | cflow.cs:364:18:364:18 | 2 | match |
 | cflow.cs:364:18:364:18 | 2 | cflow.cs:364:18:364:18 | 2 | no-match |
 | cflow.cs:365:17:365:27 | goto ...; | cflow.cs:365:17:365:27 | goto ...; | goto(Label) |
-| cflow.cs:366:13:366:20 | default: | cflow.cs:366:13:366:20 | default: | normal |
+| cflow.cs:366:13:366:20 | default: | cflow.cs:367:17:367:36 | call to method WriteLine | normal |
 | cflow.cs:367:17:367:36 | call to method WriteLine | cflow.cs:367:17:367:36 | call to method WriteLine | normal |
 | cflow.cs:367:17:367:37 | ...; | cflow.cs:367:17:367:36 | call to method WriteLine | normal |
 | cflow.cs:367:35:367:35 | 0 | cflow.cs:367:35:367:35 | 0 | normal |

@@ -25,22 +25,27 @@ class Node extends C::TNode {
   DotNet::Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
   /** Gets the type of this node. */
-  final DotNet::Type getType() { result = C::getType(this) }
+  cached
+  DotNet::Type getType() { none() }
 
   /** Gets an upper bound on the type of this node. */
   DotNet::Type getTypeBound() { result = this.getType() } // stub implementation
 
   /** Gets the enclosing callable of this node. */
-  final DotNet::Callable getEnclosingCallable() { result = C::getEnclosingCallable(this) }
+  cached
+  DotNet::Callable getEnclosingCallable() { none() }
 
   /** Gets the control flow node corresponding to this node, if any. */
+  cached
   ControlFlow::Node getControlFlowNode() { none() }
 
   /** Gets a textual representation of this node. */
-  final string toString() { result = C::toString(this) }
+  cached
+  string toString() { none() }
 
   /** Gets the location of this node. */
-  final Location getLocation() { result = C::getLocation(this) }
+  cached
+  Location getLocation() { none() }
 }
 
 /**
@@ -69,7 +74,22 @@ class ExprNode extends Node {
     result = cfn.getElement()
   }
 
+  override DotNet::Callable getEnclosingCallable() {
+    result = this.getExpr().getEnclosingCallable()
+  }
+
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { this = C::TExprNode(result) }
+
+  override DotNet::Type getType() { result = this.getExpr().getType() }
+
+  override Location getLocation() { result = this.getExpr().getLocation() }
+
+  override string toString() {
+    result = this.getControlFlowNode().toString()
+    or
+    this = C::TCilExprNode(_) and
+    result = "CIL expression"
+  }
 }
 
 /**
@@ -82,6 +102,7 @@ class ParameterNode extends Node {
     explicitParameterNode(this, _) or
     this.(SsaDefinitionNode).getDefinition() instanceof
       ImplicitCapturedParameterNodeImpl::SsaCapturedEntryDefinition or
+    this = C::TInstanceParameterNode(_) or
     this = C::TCilParameterNode(_) or
     this = C::TTaintedParameterNode(_)
   }

@@ -63,7 +63,7 @@ abstract class FrameworkLibrary extends string {
  * a file or script containing the code for a particular
  * version of a framework.
  */
-abstract class FrameworkLibraryInstance extends Script {
+abstract class FrameworkLibraryInstance extends TopLevel {
   /**
    * Holds if this is an instance of version `v` of framework library `fl`.
    */
@@ -184,6 +184,7 @@ class FrameworkLibraryInstanceWithMarkerComment extends FrameworkLibraryInstance
  * Holds if comment `c` in toplevel `tl` matches the marker comment of library
  * `fl` at `version`.
  */
+cached
 private predicate matchMarkerComment(
   Comment c, TopLevel tl, FrameworkLibraryWithMarkerComment fl, string version
 ) {

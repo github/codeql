@@ -35,7 +35,7 @@ class PureFunction extends ArrayFunction, TaintFunction {
   }
   
   override predicate hasArrayInput(int bufParam) {
-    getParameter(bufParam).getType().getUnspecifiedType() instanceof PointerType
+    getParameter(bufParam).getUnspecifiedType() instanceof PointerType
   }
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -43,13 +43,13 @@ class PureFunction extends ArrayFunction, TaintFunction {
       input.isInParameter(i) or
       (
         input.isInParameterPointer(i) and
-        getParameter(i).getType().getUnspecifiedType() instanceof PointerType
+        getParameter(i).getUnspecifiedType() instanceof PointerType
       )
     ) and
     (
       (
         output.isOutReturnPointer() and
-        getType().getUnspecifiedType() instanceof PointerType
+        getUnspecifiedType() instanceof PointerType
       ) or
       output.isOutReturnValue()
     )

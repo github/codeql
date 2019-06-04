@@ -699,3 +699,11 @@ class SsaRefinementNode extends SsaPseudoDefinition, TRefinement {
     getGuard().getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
+
+module SSA {
+  /** Gets the SSA definition corresponding to `d`. */
+  SsaExplicitDefinition definition(VarDef d) { result.getDef() = d }
+
+  /** Gets the SSA variable corresponding to `d`. */
+  SsaVariable variable(VarDef d) { result.getDefinition() = definition(d) }
+}

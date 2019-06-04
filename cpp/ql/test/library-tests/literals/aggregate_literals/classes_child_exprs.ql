@@ -7,4 +7,4 @@ import cpp
 
 from ClassAggregateLiteral cal, int i, Field f
 where cal.getFieldExpr(f) = cal.getChild(i)
-select cal, cal.getType().getUnspecifiedType(), i, cal.getChild(i), f
+select cal, cal.getUnspecifiedType(), i, cal.getChild(i), f

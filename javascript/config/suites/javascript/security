@@ -3,6 +3,7 @@
 + semmlecode-javascript-queries/Security/CWE-020/IncompleteHostnameRegExp.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-020/IncompleteUrlSubstringSanitization.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-020/IncorrectSuffixCheck.ql: /Security/CWE/CWE-020
++ semmlecode-javascript-queries/Security/CWE-020/MissingRegExpAnchor.ql: /Security/CWE/CWE-020
 + semmlecode-javascript-queries/Security/CWE-022/TaintedPath.ql: /Security/CWE/CWE-022
 + semmlecode-javascript-queries/Security/CWE-022/ZipSlip.ql: /Security/CWE/CWE-022
 + semmlecode-javascript-queries/Security/CWE-078/CommandInjection.ql: /Security/CWE/CWE-078
@@ -25,6 +26,7 @@
 + semmlecode-javascript-queries/Security/CWE-346/CorsMisconfigurationForCredentials.ql: /Security/CWE/CWE-346
 + semmlecode-javascript-queries/Security/CWE-352/MissingCsrfMiddleware.ql: /Security/CWE/CWE-352
 + semmlecode-javascript-queries/Security/CWE-400/RemotePropertyInjection.ql: /Security/CWE/CWE-400
++ semmlecode-javascript-queries/Security/CWE-400/PrototypePollution.ql: /Security/CWE/CWE-400
 + semmlecode-javascript-queries/Security/CWE-502/UnsafeDeserialization.ql: /Security/CWE/CWE-502
 + semmlecode-javascript-queries/Security/CWE-506/HardcodedDataInterpretedAsCode.ql: /Security/CWE/CWE-506
 + semmlecode-javascript-queries/Security/CWE-601/ClientSideUrlRedirect.ql: /Security/CWE/CWE-601

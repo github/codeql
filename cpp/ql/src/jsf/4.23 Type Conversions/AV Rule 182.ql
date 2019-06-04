@@ -19,8 +19,8 @@ class NullPointer extends Expr {
 }
 
 from Expr e, Type t1, Type t2
-where t1 = e.getUnderlyingType().getUnspecifiedType() and
-      t2 = e.getActualType().getUnderlyingType().getUnspecifiedType() and
+where t1 = e.getUnspecifiedType() and
+      t2 = e.getFullyConverted().getUnspecifiedType() and
       t1 != t2 and
       (t1 instanceof PointerType or t2 instanceof PointerType) and
       not (t2 instanceof VoidPointerType and t1 instanceof PointerType) and

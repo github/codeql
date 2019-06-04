@@ -22,6 +22,11 @@
   methods. This means that more guards are recognized yielding precision
   improvements in a number of queries including `java/index-out-of-bounds`,
   `java/dereferenced-value-may-be-null`, and `java/useless-null-check`.
+* The default sanitizer in taint tracking has been made more precise. The
+  sanitizer works by looking for guards that inspect tainted strings, and it
+  used to work at the level of individual variables. This has been changed to
+  use the `Guards` library, such that only guarded variable accesses are
+  sanitized. This may give additional results in the security queries.
 * Spring framework support is enhanced by taking into account additional
   annotations that indicate remote user input. This affects all security
   queries, which may yield additional results.

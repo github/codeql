@@ -78,37 +78,28 @@ class Expr extends Expr_, AstNode {
      * NOTE: For complex dataflow, involving multiple stages of points-to analysis, it may be more precise to use 
      * `ControlFlowNode.refersTo(...)` instead.
      */
-    predicate refersTo(Object value, ClassObject cls, AstNode origin) {
-        not py_special_objects(cls, "_semmle_unknown_type")
-        and
-        not value = unknownValue()
-        and
-        PointsTo::points_to(this.getAFlowNode(), _, value, cls, origin.getAFlowNode())
+    predicate refersTo(Object obj, ClassObject cls, AstNode origin) {
+        this.refersTo(_, obj, cls, origin)
     }
 
     /** Gets what this expression might "refer-to" in the given `context`.
      */
-    predicate refersTo(Context context, Object value, ClassObject cls, AstNode origin) {
-        not py_special_objects(cls, "_semmle_unknown_type")
-        and
-        PointsTo::points_to(this.getAFlowNode(), context, value, cls, origin.getAFlowNode())
+    predicate refersTo(Context context, Object obj, ClassObject cls, AstNode origin) {
+        this.getAFlowNode().refersTo(context, obj, cls, origin.getAFlowNode())
     }
 
     /** Whether this expression might "refer-to" to `value` which is from `origin` 
      * Unlike `this.refersTo(value, _, origin)`, this predicate includes results 
      * where the class cannot be inferred.
      */
-    predicate refersTo(Object value, AstNode origin) {
-        PointsTo::points_to(this.getAFlowNode(), _, value, _, origin.getAFlowNode())
-        and
-        not value = unknownValue()
+    pragma[nomagic]
+    predicate refersTo(Object obj, AstNode origin) {
+        this.getAFlowNode().refersTo(obj, origin.getAFlowNode())
     }
 
     /** Equivalent to `this.refersTo(value, _)` */
-    predicate refersTo(Object value) {
-        PointsTo::points_to(this.getAFlowNode(), _, value, _, _)
-        and
-        not value = unknownValue()
+    predicate refersTo(Object obj) {
+        this.refersTo(obj, _)
     }
 
 }

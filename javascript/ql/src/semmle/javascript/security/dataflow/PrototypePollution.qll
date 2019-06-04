@@ -5,6 +5,8 @@
 
 import javascript
 import semmle.javascript.security.TaintedObject
+import semmle.javascript.dependencies.Dependencies
+import semmle.javascript.dependencies.SemVer
 
 module PrototypePollution {
   /**
@@ -47,6 +49,11 @@ module PrototypePollution {
      * Gets the type of data that can taint this sink.
      */
     abstract DataFlow::FlowLabel getAFlowLabel();
+
+    /**
+     * Gets the dependency that defines this sink.
+     */
+    abstract Dependency getDependency();
   }
 
   /**
@@ -103,30 +110,15 @@ module PrototypePollution {
 
     override DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
   }
-  
-  string getModuleName(ExtendCall call) {
-    call = DataFlow::moduleImport(result).getACall() or
-    call = DataFlow::moduleMember(result, _).getACall()
-  }
 
   class DeepExtendSink extends Sink {
     ExtendCall call;
 
+    Dependency dependency;
+
     DeepExtendSink() {
       this = call.getASourceOperand() and
-      call.isDeep() and
-      exists(string moduleName | moduleName = getModuleName(call) |
-        moduleName = "lodash" + any(string s) or
-        moduleName = "just-extend" or
-        moduleName = "extend" or
-        moduleName = "extend2" or
-        moduleName = "node.extend" or
-        moduleName = "merge" or
-        moduleName = "smart-extend" or
-        moduleName = "js-extend" or
-        moduleName = "deep" or
-        moduleName = "defaults-deep"
-      )
+      isVulnerableDeepExtendCall(call, dependency)
     }
 
     override DataFlow::FlowLabel getAFlowLabel() {
@@ -134,5 +126,57 @@ module PrototypePollution {
       or
       result = TaintedObjectWrapper::label()
     }
+
+    override Dependency getDependency() { result = dependency }
+  }
+
+  /**
+   * Holds if `call` is vulnerable to prototype pollution because the callee is defined by `dep`.
+   */
+  predicate isVulnerableDeepExtendCall(ExtendCall call, Dependency dep) {
+    call.isDeep() and
+    (
+      call = DataFlow::dependencyModuleImport(dep).getAMemberCall(_) or
+      call = DataFlow::dependencyModuleImport(dep).getACall()
+    ) and
+    exists(DependencySemVer version, string id | dep.info(id, version) |
+      id = "assign-deep" and
+      version.maybeBefore("0.4.7")
+      or
+      id = "deep"
+      or
+      id = "deep-extend" and
+      version.maybeBefore("0.5.1")
+      or
+      id = "defaults-deep" and
+      version.maybeBefore("0.2.4")
+      or
+      id = "extend" and
+      (version.maybeBefore("2.0.2") or version.maybeBetween("3.0.0", "3.0.2"))
+      or
+      id = "extend2"
+      or
+      id = "js-extend"
+      or
+      id = "just-extend" and
+      version.maybeBefore("4.0.1")
+      or
+      id = "lodash" + any(string s) and
+      version.maybeBefore("4.17.11")
+      or
+      id = "merge" and
+      version.maybeBefore("1.2.1")
+      or
+      id = "merge-deep" and
+      version.maybeBefore("3.0.1")
+      or
+      id = "merge-options" and
+      version.maybeBefore("1.0.1")
+      or
+      id = "node.extend" and
+      (version.maybeBefore("1.1.7") or version.maybeBetween("2.0.0", "2.0.1"))
+      or
+      id = "smart-extend"
+    )
   }
 }

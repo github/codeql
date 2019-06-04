@@ -36,7 +36,7 @@ module DataFlow {
     } or
     TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel } or
     TUnusedParameterNode(SimpleParameter p) {
-      not exists(SsaExplicitDefinition ssa | p = ssa.getDef())
+      not exists(SSA::definition(p))
     } or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
@@ -718,10 +718,7 @@ module DataFlow {
     ImportSpecifierAsPropRead() {
       spec = imprt.getASpecifier() and
       exists(spec.getImportedName()) and
-      exists(SsaExplicitDefinition ssa |
-        ssa.getDef() = spec and
-        this = TSsaDefNode(ssa)
-      )
+      this = ssaDefinitionNode(SSA::definition(spec))
     }
 
     override Node getBase() { result = TDestructuredModuleImportNode(imprt) }
@@ -980,6 +977,11 @@ module DataFlow {
    */
   ValueNode valueNode(ASTNode nd) { result.getAstNode() = nd }
 
+  /**
+   * Gets the data flow node corresponding to `e`.
+   */
+  ExprNode exprNode(Expr e) { result = valueNode(e) }
+
   /** Gets the data flow node corresponding to `ssa`. */
   SsaDefinitionNode ssaDefinitionNode(SsaDefinition ssa) { result = TSsaDefNode(ssa) }
 
@@ -990,11 +992,7 @@ module DataFlow {
    * INTERNAL: Use `parameterNode(Parameter)` instead.
    */
   predicate parameterNode(DataFlow::Node nd, Parameter p) {
-    exists(SsaExplicitDefinition ssa |
-      nd = ssaDefinitionNode(ssa) and
-      p = ssa.getDef() and
-      p instanceof SimpleParameter
-    )
+    nd = ssaDefinitionNode(SSA::definition((SimpleParameter)p))
     or
     nd = TDestructuringPatternNode(p)
     or
@@ -1272,6 +1270,16 @@ module DataFlow {
       (e instanceof AwaitExpr or e instanceof DynamicImportExpr) and
       cause = "await"
     )
+    or
+    nd instanceof TExceptionalInvocationReturnNode and cause = "call"
+    or
+    nd instanceof TExceptionalFunctionReturnNode and cause = "call"
+    or
+    exists(PropertyPattern p | nd = TPropNode(p)) and cause = "heap"
+    or
+    nd instanceof TElementPatternNode and cause = "heap"
+    or
+    nd instanceof UnusedParameterNode and cause = "call"
   }
 
   /**
@@ -1290,9 +1298,6 @@ module DataFlow {
     or
     exists(ComprehensionBlock cb | def = cb.getIterator()) and
     cause = "yield"
-    or
-    def.getTarget() instanceof DestructuringPattern and
-    cause = "heap"
   }
   import Nodes
   import Sources

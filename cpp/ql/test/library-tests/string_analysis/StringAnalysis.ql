@@ -6,7 +6,7 @@ import cpp
 
 from AnalysedString s, string str
 where
-	if s.(StringLiteral).getType().getUnspecifiedType().(DerivedType).getBaseType() instanceof Wchar_t then (
+	if s.(StringLiteral).getUnspecifiedType().(DerivedType).getBaseType() instanceof Wchar_t then (
 		str = "[?]"
 	) else (
 		str = s.toString()

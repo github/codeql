@@ -63,11 +63,11 @@
 | 22 | 18 | cflow.cs:22:18:22:23 | ... < ... | true | 20 | 9 | cflow.cs:20:9:22:9 | {...} |
 | 24 | 25 | cflow.cs:24:25:24:31 | ... <= ... | false | 5 | 17 | cflow.cs:5:17:5:20 | exit Main |
 | 24 | 25 | cflow.cs:24:25:24:31 | ... <= ... | true | 25 | 9 | cflow.cs:25:9:34:9 | {...} |
-| 24 | 30 | Patterns.cs:24:30:24:35 | ... > ... | false | 27 | 13 | Patterns.cs:27:13:27:24 | case Int32 i3: |
+| 24 | 30 | Patterns.cs:24:30:24:35 | ... > ... | false | 27 | 13 | Patterns.cs:27:13:27:24 | case ...: |
 | 24 | 30 | Patterns.cs:24:30:24:35 | ... > ... | true | 25 | 17 | Patterns.cs:25:17:25:52 | ...; |
-| 24 | 32 | Switch.cs:24:32:24:43 | ... > ... | false | 27 | 13 | Switch.cs:27:13:27:39 | case Double d: |
+| 24 | 32 | Switch.cs:24:32:24:43 | ... > ... | false | 27 | 13 | Switch.cs:27:13:27:39 | case ...: |
 | 24 | 32 | Switch.cs:24:32:24:43 | ... > ... | true | 24 | 48 | Switch.cs:24:48:24:48 | access to local variable s |
-| 24 | 48 | Switch.cs:24:48:24:55 | ... != ... | false | 27 | 13 | Switch.cs:27:13:27:39 | case Double d: |
+| 24 | 48 | Switch.cs:24:48:24:55 | ... != ... | false | 27 | 13 | Switch.cs:27:13:27:39 | case ...: |
 | 24 | 48 | Switch.cs:24:48:24:55 | ... != ... | true | 25 | 17 | Switch.cs:25:17:25:37 | ...; |
 | 25 | 13 | Conditions.cs:25:13:25:14 | access to parameter b1 | false | 28 | 9 | Conditions.cs:28:9:29:16 | if (...) ... |
 | 25 | 13 | Conditions.cs:25:13:25:14 | access to parameter b1 | true | 26 | 13 | Conditions.cs:26:13:27:20 | if (...) ... |

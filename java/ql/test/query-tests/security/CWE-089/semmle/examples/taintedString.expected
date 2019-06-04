@@ -18,6 +18,7 @@
 | Test.java:29:22:29:28 | tainted | 27 | Test.java:56:47:56:61 | querySbToString |
 | Test.java:29:22:29:28 | tainted | 31 | Test.java:60:22:60:25 | args |
 | Test.java:29:22:29:28 | tainted | 31 | Test.java:60:22:60:28 | ...[...] |
+| Test.java:29:22:29:28 | tainted | 32 | Test.java:61:31:61:38 | category |
 | Test.java:99:22:99:25 | good | 3 | Test.java:102:22:102:25 | args |
 | Test.java:99:22:99:25 | good | 3 | Test.java:102:22:102:28 | ...[...] |
 | Test.java:99:22:99:25 | good | 6 | Test.java:105:27:105:34 | category |
@@ -30,3 +31,7 @@
 | Test.java:190:21:190:24 | main | 1 | Test.java:191:11:191:14 | args |
 | Test.java:190:21:190:24 | main | 3 | Test.java:193:8:193:11 | args |
 | Test.java:190:21:190:24 | main | 5 | Test.java:195:14:195:17 | args |
+| Validation.java:6:21:6:35 | checkIdentifier | 1 | Validation.java:7:23:7:24 | id |
+| Validation.java:6:21:6:35 | checkIdentifier | 2 | Validation.java:8:13:8:14 | id |
+| Validation.java:6:21:6:35 | checkIdentifier | 4 | Validation.java:10:32:10:58 | ... + ... |
+| Validation.java:6:21:6:35 | checkIdentifier | 4 | Validation.java:10:57:10:58 | id |

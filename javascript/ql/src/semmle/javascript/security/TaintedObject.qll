@@ -84,7 +84,6 @@ module TaintedObject {
    * Sanitizer guard that blocks deep object taint.
    */
   abstract class SanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode {
-    override FlowLabel getALabel() { result = label() }
   }
 
   /**
@@ -110,9 +109,10 @@ module TaintedObject {
       )
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate sanitizes(boolean outcome, Expr e, FlowLabel label) {
       polarity = outcome and
-      e = typeof.getOperand()
+      e = typeof.getOperand() and
+      label = label()
     }
   }
 }

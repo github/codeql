@@ -11,8 +11,7 @@ when their default arguments are taken into account. An example would be a const
 of the form <code>X(const X&amp; rhs, int i = 0)</code>. A compiler will use such a constructor as a copy
 constructor in preference to the default member-wise copy constructor that it would otherwise generate.
 Since this is usually not what was intended, constructors of the form often do not provide the right
-semantics for copying objects of the class, making them potentially dangerous. Even when this sort of
-thing has been done intentionally, it is confusing and in bad taste, and should be avoided.
+semantics for copying objects of the class, making them potentially dangerous.
 </p>
 
 </overview>

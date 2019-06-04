@@ -64,6 +64,8 @@ private predicate ignoreExprAndDescendants(Expr expr) {
     // represent them.
     newExpr.getInitializer().getFullyConverted() = expr
   ) or
+  // Do not translate input/output variables in GNU asm statements
+  getRealParent(expr) instanceof AsmStmt or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
 }
 
@@ -359,6 +361,16 @@ newtype TTranslatedElement =
       declStmt.getADeclarationEntry() = entry
     )
   } or
+  // A compiler-generated variable to implement a range-based for loop. These don't have a
+  // `DeclarationEntry` in the database, so we have to go by the `Variable` itself.
+  TTranslatedRangeBasedForVariableDeclaration(RangeBasedForStmt forStmt, LocalVariable var) {
+    translateStmt(forStmt) and
+    (
+      var = forStmt.getRangeVariable()  or
+      var = forStmt.getBeginEndDeclaration().getADeclaration() or
+      var = forStmt.getVariable()
+    )
+  } or
   // An allocator call in a `new` or `new[]` expression
   TTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
     not ignoreExpr(newExpr)
@@ -385,7 +397,7 @@ private int getEndOfValueInitializedRange(ArrayAggregateLiteral initList, int af
   or
   isFirstValueInitializedElementInRange(initList, afterElementIndex) and
   not exists(getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)) and
-  result = initList.getType().getUnspecifiedType().(ArrayType).getArraySize()
+  result = initList.getUnspecifiedType().(ArrayType).getArraySize()
 }
 
 /**

@@ -1,6 +1,5 @@
 | Module six | BytesIO | class StringIO |
 | Module six | Iterator | class Iterator |
-| Module six | MAXSIZE | int() |
 | Module six | PY2 | bool True |
 | Module six | PY3 | bool False |
 | Module six | StringIO | class StringIO |
@@ -46,8 +45,17 @@
 | Module six | iterlists | Function iterlists |
 | Module six | itervalues | Function itervalues |
 | Module six | moves | Module six.moves |
+| Module six | moves.__init__ | Module six.moves.__init__ |
+| Module six | moves.urllib | Module six.moves.urllib |
+| Module six | moves.urllib.__init__ | Module six.moves.urllib.__init__ |
+| Module six | moves.urllib_error | Module six.moves.urllib_error |
+| Module six | moves.urllib_parse | Module six.moves.urllib_parse |
+| Module six | moves.urllib_request | Module six.moves.urllib_request |
+| Module six | moves.urllib_response | Module six.moves.urllib_response |
+| Module six | moves.urllib_robotparser | Module six.moves.urllib_robotparser |
 | Module six | next | Builtin-function next |
 | Module six | operator | Module operator |
+| Module six | print_ | Function print_ |
 | Module six | remove_move | Function remove_move |
 | Module six | reraise | Function reraise |
 | Module six | string_types | Tuple |
@@ -59,7 +67,6 @@
 | Module six | with_metaclass | Function with_metaclass |
 | Module six.__init__ | BytesIO | class StringIO |
 | Module six.__init__ | Iterator | class Iterator |
-| Module six.__init__ | MAXSIZE | int() |
 | Module six.__init__ | PY2 | bool True |
 | Module six.__init__ | PY3 | bool False |
 | Module six.__init__ | StringIO | class StringIO |
@@ -107,6 +114,7 @@
 | Module six.__init__ | moves | Module six.moves |
 | Module six.__init__ | next | Builtin-function next |
 | Module six.__init__ | operator | Module operator |
+| Module six.__init__ | print_ | Function print_ |
 | Module six.__init__ | remove_move | Function remove_move |
 | Module six.__init__ | reraise | Function reraise |
 | Module six.__init__ | string_types | Tuple |
@@ -123,6 +131,8 @@
 | Module six.moves | SimpleHTTPServer | Module SimpleHTTPServer |
 | Module six.moves | StringIO | class StringIO |
 | Module six.moves | UserDict | class UserDict |
+| Module six.moves | UserList | class UserList |
+| Module six.moves | UserString | class UserString |
 | Module six.moves | __name__ | str b'six.moves' |
 | Module six.moves | _dummy_thread | Module dummy_thread |
 | Module six.moves | _thread | Module thread |
@@ -164,6 +174,7 @@
 | Module six.moves | tkinter_tksimpledialog | Module tkSimpleDialog |
 | Module six.moves | tkinter_ttk | Module ttk |
 | Module six.moves | urllib | Module six.moves.urllib |
+| Module six.moves | urllib.__init__ | Module six.moves.urllib.__init__ |
 | Module six.moves | urllib_error | Module six.moves.urllib_error |
 | Module six.moves | urllib_parse | Module six.moves.urllib_parse |
 | Module six.moves | urllib_request | Module six.moves.urllib_request |
@@ -181,6 +192,8 @@
 | Module six.moves.__init__ | SimpleHTTPServer | Module SimpleHTTPServer |
 | Module six.moves.__init__ | StringIO | class StringIO |
 | Module six.moves.__init__ | UserDict | class UserDict |
+| Module six.moves.__init__ | UserList | class UserList |
+| Module six.moves.__init__ | UserString | class UserString |
 | Module six.moves.__init__ | __name__ | str b'six.moves' |
 | Module six.moves.__init__ | _dummy_thread | Module dummy_thread |
 | Module six.moves.__init__ | _thread | Module thread |

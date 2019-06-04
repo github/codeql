@@ -1,15 +1,17 @@
 
 import python
 import semmle.python.pointsto.MRO
+import semmle.python.pointsto.PointsTo
+import semmle.python.objects.ObjectInternal
 
-ClassList mro(ClassObject cls) {
-    if cls.isNewStyle() then
-        result = new_style_mro(cls)
+ClassList mro(ClassObjectInternal cls) {
+    if Types::isNewStyle(cls) then
+        result = Mro::newStyleMro(cls)
     else
-        result = old_style_mro(cls)
+        result = Mro::oldStyleMro(cls)
 }
 
-from ClassObject cls
+from ClassObjectInternal cls
 where not cls.isBuiltin()
 
 select cls.toString(), mro(cls)

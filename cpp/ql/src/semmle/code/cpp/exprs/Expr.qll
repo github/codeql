@@ -57,7 +57,7 @@ class Expr extends StmtParent, @expr {
    * As the type of an expression can sometimes be a TypedefType, calling getUnderlyingType()
    * is often more useful than calling this predicate.
    */
-  pragma[nomagic] Type getType() { expr_types(underlyingElement(this),unresolveElement(result),_) }
+  pragma[nomagic] cached Type getType() { expr_types(underlyingElement(this),unresolveElement(result),_) }
 
   /**
    * Gets the type of this expression after typedefs have been resolved.
@@ -67,6 +67,12 @@ class Expr extends StmtParent, @expr {
    * case this predicate will (possibly recursively) resolve the typedef.
    */
   Type getUnderlyingType() { result = this.getType().getUnderlyingType() }
+
+  /**
+   * Gets the type of this expression after specifiers have been deeply
+   * stripped and typedefs have been resolved.
+   */
+  Type getUnspecifiedType() { result = this.getType().getUnspecifiedType() }
 
   /**
    * Gets an integer indicating the type of expression that this represents.
@@ -215,7 +221,7 @@ class Expr extends StmtParent, @expr {
       exists ( Expr e2 |
         e.(TypeidOperator).getExpr() = e2 and
         (
-          not e2.getActualType().getUnspecifiedType().(Class).isPolymorphic() or
+          not e2.getFullyConverted().getUnspecifiedType().(Class).isPolymorphic() or
           not e2.isGLValueCategory()
         )
       ) or

@@ -21,8 +21,8 @@
 | dataflow.cs:48:28:48:28 | 1 | dataflow.cs:48:18:48:29 | call to method Taint3 |
 | dataflow.cs:49:35:49:38 | "t6" | dataflow.cs:49:18:49:45 | call to method TaintIndirect |
 | dataflow.cs:49:41:49:44 | "t6" | dataflow.cs:49:18:49:45 | call to method TaintIndirect |
-| dataflow.cs:95:30:95:33 | null | dataflow.cs:74:21:74:52 | ... ?? ... |
-| dataflow.cs:95:30:95:33 | null | dataflow.cs:89:24:89:51 | ... ? ... : ... |
-| dataflow.cs:95:30:95:33 | null | dataflow.cs:101:20:101:33 | call to method IndirectNull |
-| dataflow.cs:102:23:102:26 | null | dataflow.cs:74:21:74:52 | ... ?? ... |
-| dataflow.cs:102:23:102:26 | null | dataflow.cs:89:24:89:51 | ... ? ... : ... |
+| dataflow.cs:102:30:102:33 | null | dataflow.cs:74:21:74:52 | ... ?? ... |
+| dataflow.cs:102:30:102:33 | null | dataflow.cs:89:24:89:51 | ... ? ... : ... |
+| dataflow.cs:102:30:102:33 | null | dataflow.cs:108:20:108:33 | call to method IndirectNull |
+| dataflow.cs:109:23:109:26 | null | dataflow.cs:74:21:74:52 | ... ?? ... |
+| dataflow.cs:109:23:109:26 | null | dataflow.cs:89:24:89:51 | ... ? ... : ... |

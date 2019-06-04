@@ -1,0 +1,2 @@
+| test.py:11 | request | django.request.HttpRequest |
+| test.py:31 | request | django.request.HttpRequest |
