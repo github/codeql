@@ -6,7 +6,7 @@
 <p>This rule finds calls to functions that are dangerous to
 use. Currently, it checks for calls
 to <code>gmtime</code>, <code>localtime</code>,
-<code>ctime</code> and <code>asctime</code>.
+<code>ctime</code> and <code>asctime</code>.</p>
 
 <p>The time related functions such as <code>gmtime</code>
 fill data into a <code>tm</code> struct or <code>char</code> array in
