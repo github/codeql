@@ -924,7 +924,7 @@ module InterProceduralPointsTo {
         origin = def.getDefiningNode()
     }
 
-    /** Holds if `call` in context `caller` calls into the function scope `func` in context `callee` and
+    /** Holds if `call` in context `caller` calls into the function scope `scope` in context `callee` and
      * that the number of position arguments (including expansion of `*` argument) exceeds the number of positional arguments by
      * `length` and that the excess arguments start at `start`.
      */
