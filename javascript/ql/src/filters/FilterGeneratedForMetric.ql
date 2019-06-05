@@ -5,6 +5,7 @@
  *              mapping comment.
  * @kind treemap
  * @id js/not-generated-file-metric-filter
+ * @metricType file
  */
 
 import semmle.javascript.GeneratedCode

@@ -58,6 +58,10 @@ class Test
         SqlConnection c1f = new SqlConnection();
         Throw2(c1f);
         c1f.Dispose();
+
+        // GOOD: using declaration
+        using SqlConnection c2 = new SqlConnection("");
+        c2.Open();
     }
 
     void Throw1(SqlConnection sc)
@@ -71,3 +75,5 @@ class Test
         return sc == null ? throw new Exception() : sc;
     }
 }
+
+// semmle-extractor-options: /langversion:8.0

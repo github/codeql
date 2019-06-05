@@ -424,6 +424,14 @@ class SwitchCase extends Stmt, @case {
   SwitchExpr getSwitchExpr() { result.getACase() = this }
 
   /**
+   * Gets the expression of the surrounding switch that this case is compared
+   * against.
+   */
+  Expr getSelectorExpr() {
+    result = this.getSwitch().getExpr() or result = this.getSwitchExpr().getExpr()
+  }
+
+  /**
    * PREVIEW FEATURE in Java 12. Subject to removal in a future release.
    *
    * Holds if this `case` is a switch labeled rule of the form `... -> ...`.
@@ -625,7 +633,10 @@ class BreakStmt extends Stmt, @breakstmt {
   override string pp() {
     if this.hasLabel()
     then result = "break " + this.getLabel()
-    else if this.hasValue() then result = "break ..." else result = "break"
+    else
+      if this.hasValue()
+      then result = "break ..."
+      else result = "break"
   }
 
   /** This statement's Halstead ID (used to compute Halstead metrics). */

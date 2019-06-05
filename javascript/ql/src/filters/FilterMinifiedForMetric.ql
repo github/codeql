@@ -3,6 +3,7 @@
  * @description Only keep results from files that are not minified.
  * @kind treemap
  * @id js/not-minified-file-metric-filter
+ * @metricType file
  */
 
 import javascript

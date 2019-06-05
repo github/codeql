@@ -71,6 +71,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return ExprKind.ASSIGN_LSHIFT;
                 case SyntaxKind.GreaterThanGreaterThanEqualsToken:
                     return ExprKind.ASSIGN_RSHIFT;
+                case SyntaxKind.QuestionQuestionEqualsToken:
+                    return ExprKind.ASSIGN_COALESCE;
                 default:
                     cx.ModelError(syntax, "Unrecognised assignment type " + GetKind(cx, syntax));
                     return ExprKind.UNKNOWN;
@@ -142,6 +144,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return ExprKind.SUB;
                     case ExprKind.ASSIGN_XOR:
                         return ExprKind.BIT_XOR;
+                    case ExprKind.ASSIGN_COALESCE:
+                        return ExprKind.NULL_COALESCING;
                     default:
                         cx.ModelError(Syntax, "Couldn't unfold assignment of type " + kind);
                         return ExprKind.UNKNOWN;

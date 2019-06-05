@@ -360,8 +360,12 @@
 <v>1854</v>
 </e>
 <e>
-<k>@using_stmt</k>
+<k>@using_block_stmt</k>
 <v>5815</v>
+</e>
+<e>
+<k>@using_decl_stmt</k>
+<v>1000</v>
 </e>
 <e>
 <k>@var_decl_stmt</k>
@@ -685,6 +689,10 @@
 </e>
 <e>
 <k>@assign_rshift_expr</k>
+<v>116</v>
+</e>
+<e>
+<k>@assign_coalesce_expr</k>
 <v>116</v>
 </e>
 <e>

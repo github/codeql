@@ -86,6 +86,7 @@
 | Assignables.cs:132:13:132:17 | Int32 x = ... | Assignables.cs:132:13:132:17 | Int32 x = ... |
 | Assignables.cs:133:15:133:15 | access to local variable x | Assignables.cs:133:9:133:30 | delegate call |
 | Assignables.cs:133:29:133:29 | String s | Assignables.cs:133:9:133:30 | delegate call |
+| Assignables.cs:138:19:138:50 | MemoryStream x = ... | Assignables.cs:138:19:138:50 | MemoryStream x = ... |
 | Discards.cs:5:30:5:30 | x | Discards.cs:5:19:5:19 | enter f |
 | Discards.cs:7:9:7:17 | ... = ... | Discards.cs:7:9:7:17 | ... = ... |
 | Discards.cs:13:9:13:20 | ... = ... | Discards.cs:13:9:13:20 | ... = ... |

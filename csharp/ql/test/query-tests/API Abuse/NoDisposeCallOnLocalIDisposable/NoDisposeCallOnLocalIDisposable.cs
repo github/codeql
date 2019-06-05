@@ -78,6 +78,9 @@ class Test
         // GOOD: Passed to a library. This is only detected in CIL.
         Console.SetOut(new StreamWriter("output.txt"));
 
+        // GOOD: Disposed automatically.
+        using var c2 = new Timer(TimerProc);
+
         return null;
     }
 
@@ -88,3 +91,5 @@ class Test
     {
     }
 }
+
+// semmle-extractor-options: /langversion:8.0
