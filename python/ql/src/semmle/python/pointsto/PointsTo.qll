@@ -906,6 +906,7 @@ module InterProceduralPointsTo {
         origin = def.getDefiningNode()
         or
         /* A tuple constructed from positional arguments for a `*` parameter. */
+        def.isVarargs() and
         exists(CallNode call, Function scope, PointsToContext caller, int offset, int length |
             varargs_tuple(call, caller, scope, context, offset, length) and
             value = TVarargsTuple(call, caller, offset, length) and
@@ -914,6 +915,7 @@ module InterProceduralPointsTo {
         origin = def.getDefiningNode()
         or
         /* A `*` parameter with no surplus positional arguments; an empty tuple */
+        def.isVarargs() and
         exists(Function scope |
             varargs_empty_tuple(scope, context) and
             value = ObjectInternal::emptyTuple() and
