@@ -1,0 +1,4 @@
+nullcoalescing
+| NullCoalescingAssignment.cs:8:9:8:18 | ... ?? ... |
+assignments
+| NullCoalescingAssignment.cs:8:9:8:18 | ... ??= ... | NullCoalescingAssignment.cs:8:9:8:18 | ... = ... |

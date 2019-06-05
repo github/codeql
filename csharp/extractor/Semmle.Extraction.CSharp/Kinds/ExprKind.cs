@@ -112,6 +112,7 @@ namespace Semmle.Extraction.Kinds
         RECURSIVE_PATTERN = 115,
         PROPERTY_PATTERN = 116,
         POSITIONAL_PATTERN = 117,
-        SWITCH_CASE = 118
+        SWITCH_CASE = 118,
+        ASSIGN_COALESCE = 119 
     }
 }

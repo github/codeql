@@ -5,7 +5,7 @@
 import csharp
 
 where
-  forall(UsingStmt s |
+  forall(UsingBlockStmt s |
     exists(s.getAnExpr()) and
     exists(s.getBody())
   )

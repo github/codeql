@@ -526,7 +526,7 @@ specific_type_parameter_constraints(
 
 @modifiable = @modifiable_direct | @event_accessor;
 
-@modifiable_direct = @member | @accessor | @local_function;
+@modifiable_direct = @member | @accessor;
 
 modifiers(
   unique int id: @modifier,
@@ -798,7 +798,7 @@ case @stmt.kind of
 | 18 = @checked_stmt
 | 19 = @unchecked_stmt
 | 20 = @lock_stmt
-| 21 = @using_block_stmt
+| 21 = @using_stmt
 | 22 = @var_decl_stmt
 | 23 = @const_decl_stmt
 | 24 = @empty_stmt
@@ -808,14 +808,11 @@ case @stmt.kind of
 | 28 = @catch
 | 29 = @case_stmt
 | 30 = @local_function_stmt
-| 31 = @using_decl_stmt
   ;
-
-@using_stmt = @using_block_stmt | @using_decl_stmt;
 
 @labeled_stmt = @label_stmt | @case;
 
-@decl_stmt = @var_decl_stmt | @const_decl_stmt | @using_decl_stmt;
+@decl_stmt = @var_decl_stmt | @const_decl_stmt;
 
 @cond_stmt = @if_stmt | @switch_stmt;
 
@@ -986,7 +983,6 @@ case @expr.kind of
 | 116 = @property_pattern_expr
 | 117 = @positional_pattern_expr
 | 118 = @switch_case_expr
-| 119 = @assign_coalesce_expr
 ;
 
 @switch = @switch_stmt | @switch_expr;
@@ -999,7 +995,7 @@ case @expr.kind of
               | @string_literal_expr | @null_literal_expr;
 
 @assign_expr = @simple_assign_expr | @assign_op_expr | @local_var_decl_expr;
-@assign_op_expr =  @assign_arith_expr | @assign_bitwise_expr | @assign_event_expr | @assign_coalesce_expr;
+@assign_op_expr =  @assign_arith_expr | @assign_bitwise_expr | @assign_event_expr;
 @assign_event_expr = @add_event_expr | @remove_event_expr;
 
 @assign_arith_expr = @assign_add_expr | @assign_sub_expr | @assign_mul_expr | @assign_div_expr

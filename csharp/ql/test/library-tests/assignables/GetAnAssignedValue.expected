@@ -37,6 +37,7 @@
 | Assignables.cs:125:13:125:13 | s | Assignables.cs:125:17:125:25 | nameof(...) |
 | Assignables.cs:125:13:125:13 | s | Assignables.cs:126:13:126:30 | nameof(...) |
 | Assignables.cs:132:13:132:13 | x | Assignables.cs:132:17:132:17 | 0 |
+| Assignables.cs:138:19:138:19 | x | Assignables.cs:138:23:138:50 | object creation of type MemoryStream |
 | Discards.cs:5:30:5:30 | x | Discards.cs:7:13:7:17 | false |
 | Finally.cs:7:13:7:13 | i | Finally.cs:7:17:7:17 | 0 |
 | Finally.cs:7:13:7:13 | i | Finally.cs:15:17:15:17 | 1 |

@@ -1115,39 +1115,15 @@ class LockStmt extends Stmt, @lock_stmt {
 }
 
 /**
- * A `using` statement, for example
- *
- * ```
- * using (FileStream f = File.Open("settings.xml")) {
- *   ...
- * }
- * ```
+ * A using block or declaration. Either a using declaration (`UsingDeclStmt`) or
+ * a using block (`UsingBlockStmt`).
  */
 class UsingStmt extends Stmt, @using_stmt {
-  /** Gets the `i`th local variable of this `using` statement. */
-  LocalVariable getVariable(int i) { result = this.getVariableDeclExpr(i).getVariable() }
-
-  /** Gets a local variable of this `using` statement. */
-  LocalVariable getAVariable() { result = this.getVariable(_) }
-
   /** Gets the `i`th local variable declaration of this `using` statement. */
-  LocalVariableDeclExpr getVariableDeclExpr(int i) { result = this.getChild(-i - 1) }
+  LocalVariableDeclExpr getVariableDeclExpr(int i) { none() }
 
   /** Gets a local variable declaration of this `using` statement. */
   LocalVariableDeclExpr getAVariableDeclExpr() { result = this.getVariableDeclExpr(_) }
-
-  /**
-   * Gets the expression directly used by this `using` statement, if any. For
-   * example, `f` on line 2 in
-   *
-   * ```
-   * var f = File.Open("settings.xml");
-   * using (f) {
-   *   ...
-   * }
-   * ```
-   */
-  Expr getExpr() { result = this.getChild(0) }
 
   /**
    * Gets an expression that is used in this `using` statement. Either an
@@ -1169,14 +1145,69 @@ class UsingStmt extends Stmt, @using_stmt {
    * }
    * ```
    */
-  Expr getAnExpr() {
+  Expr getAnExpr() { none() }
+
+  /**
+   * DEPRECATED: Use UsingBlockStmt.getExpr() instead.
+   * Gets the expression directly used by this `using` statement, if any. For
+   * example, `f` on line 2 in
+   *
+   * ```
+   * var f = File.Open("settings.xml");
+   * using (f) {
+   *   ...
+   * }
+   * ```
+   */
+  deprecated Expr getExpr() { none() }
+
+  /**
+   * DEPRECATED: Use UsingBlockStmt.getBody() instead.
+   * Gets the body of this `using` statement.
+   */
+  deprecated Stmt getBody() { none() }
+}
+
+/**
+ * A `using` block statement, for example
+ *
+ * ```
+ * using (FileStream f = File.Open("settings.xml")) {
+ *   ...
+ * }
+ * ```
+ */
+class UsingBlockStmt extends UsingStmt, @using_block_stmt {
+  /** Gets the `i`th local variable of this `using` statement. */
+  LocalVariable getVariable(int i) { result = this.getVariableDeclExpr(i).getVariable() }
+
+  /** Gets a local variable of this `using` statement. */
+  LocalVariable getAVariable() { result = this.getVariable(_) }
+
+  /** Gets the `i`th local variable declaration of this `using` statement. */
+  override LocalVariableDeclExpr getVariableDeclExpr(int i) { result = this.getChild(-i - 1) }
+
+  /**
+   * Gets the expression directly used by this `using` statement, if any. For
+   * example, `f` on line 2 in
+   *
+   * ```
+   * var f = File.Open("settings.xml");
+   * using (f) {
+   *   ...
+   * }
+   * ```
+   */
+  override Expr getExpr() { result = this.getChild(0) }
+
+  override Expr getAnExpr() {
     result = this.getAVariableDeclExpr().getInitializer()
     or
     result = this.getExpr()
   }
 
   /** Gets the body of this `using` statement. */
-  Stmt getBody() { result.getParent() = this }
+  override Stmt getBody() { result.getParent() = this }
 
   override string toString() { result = "using (...) {...}" }
 }
@@ -1252,6 +1283,29 @@ class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
   override LocalConstantDeclExpr getVariableDeclExpr(int n) { result = this.getChild(n) }
 
   override string toString() { result = "const ... ...;" }
+}
+
+/**
+ * A `using` declaration statement, for example
+ *
+ * ```
+ * using FileStream f = File.Open("settings.xml");
+ * ```
+ */
+class UsingDeclStmt extends LocalVariableDeclStmt, UsingStmt, @using_decl_stmt {
+  override string toString() { result = "using ... ...;" }
+
+  override LocalVariableDeclExpr getAVariableDeclExpr() {
+    result = LocalVariableDeclStmt.super.getAVariableDeclExpr()
+  }
+
+  override LocalVariableDeclExpr getVariableDeclExpr(int n) {
+    result = LocalVariableDeclStmt.super.getVariableDeclExpr(n)
+  }
+
+  override Expr getAnExpr() {
+    result = this.getAVariableDeclExpr().getInitializer()
+  }
 }
 
 /**

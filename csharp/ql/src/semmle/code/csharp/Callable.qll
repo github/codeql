@@ -903,7 +903,7 @@ class ExplicitConversionOperator extends ConversionOperator {
  * }
  * ```
  */
-class LocalFunction extends Callable, @local_function {
+class LocalFunction extends Callable, Modifiable, @local_function {
   override string getName() { local_functions(this, result, _, _) }
 
   override LocalFunction getSourceDeclaration() { local_functions(this, _, _, result) }
