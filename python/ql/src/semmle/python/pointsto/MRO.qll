@@ -25,7 +25,7 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
 
-cached private newtype TClassList = Empty()
+cached newtype TClassList = Empty()
     or
     Cons(ClassObjectInternal head, TClassList tail) {
         required_cons(head, tail)
