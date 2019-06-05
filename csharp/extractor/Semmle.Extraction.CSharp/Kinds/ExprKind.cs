@@ -113,6 +113,7 @@ namespace Semmle.Extraction.Kinds
         PROPERTY_PATTERN = 116,
         POSITIONAL_PATTERN = 117,
         SWITCH_CASE = 118,
-        ASSIGN_COALESCE = 119 
+        ASSIGN_COALESCE = 119,
+        SUPPRESS_NULLABLE_WARNING = 120
     }
 }
