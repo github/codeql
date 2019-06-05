@@ -37,6 +37,6 @@ module Templating {
    * storing it in its first (and only) capture group.
    */
   string getDelimiterMatchingRegexp() {
-    result = ".*(" + concat("\\Q" + getADelimiter() + "\\E", "|") + ").*"
+    result = "(?s).*(" + concat("\\Q" + getADelimiter() + "\\E", "|") + ").*"
   }
 }
