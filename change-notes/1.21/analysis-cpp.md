@@ -40,4 +40,3 @@
     - The taint tracking library adds flow through library functions that are modeled in `semmle.code.cpp.models.interfaces.Taint`. Queries can add subclasses of `TaintFunction` to specify additional flow.
 - There is a new `FoldExpr` class, representing C++17 fold expressions.
 - The member predicates `DeclarationEntry.getUnspecifiedType`, `Expr.getUnspecifiedType`, and `Variable.getUnspecifiedType` have been added. These should be preferred over the existing `getUnderlyingType` predicates.
-- The predicate `TypeMention.toString()` has been simplified to always return the string "`type mention`".  This may improve performance when using `Element.toString()` or its descendants.
