@@ -212,6 +212,15 @@ predicate file_sanity(string clsname, string problem, string what) {
     )
 }
 
+predicate class_value_sanity(string clsname, string problem, string what) {
+    exists(ClassValue value |
+        exists(value.getASuperType().lookup(what)) and
+        not exists(value.lookup(what)) and
+        clsname = value.getAQlClass() and
+        problem = "is missing attribute that superclass has"
+    )
+}
+
 from string clsname, string problem, string what
 where 
 ast_sanity(clsname, problem, what) or
@@ -224,5 +233,6 @@ source_object_sanity(clsname, problem, what) or
 function_object_sanity(clsname, problem, what) or
 points_to_sanity(clsname, problem, what) or
 jump_to_definition_sanity(clsname, problem, what) or
-file_sanity(clsname, problem, what)
+file_sanity(clsname, problem, what) or
+class_value_sanity(clsname, problem, what)
 select clsname + " " + what + " has " + problem
