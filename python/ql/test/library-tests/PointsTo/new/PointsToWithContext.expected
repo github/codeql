@@ -612,8 +612,6 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | l_calls.py:33 | ControlFlowNode for m | Function m | builtin-class function | 33 | import |
 | l_calls.py:34 | ControlFlowNode for self | E() | class E | 38 | code/l_calls.py:38 from import |
 | l_calls.py:34 | ControlFlowNode for self | int 3 | builtin-class int | 39 | code/l_calls.py:39 from import |
-| l_calls.py:34 | ControlFlowNode for self | self | builtin-class tuple | 33 | code/l_calls.py:38 from import |
-| l_calls.py:34 | ControlFlowNode for self | self | builtin-class tuple | 33 | code/l_calls.py:39 from import |
 | l_calls.py:34 | ControlFlowNode for self | self | class E | 33 | runtime |
 | l_calls.py:35 | ControlFlowNode for args | args | builtin-class tuple | 33 | code/l_calls.py:38 from import |
 | l_calls.py:35 | ControlFlowNode for args | args | builtin-class tuple | 33 | code/l_calls.py:39 from import |

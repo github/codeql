@@ -473,9 +473,7 @@
 | l_calls.py:32 | ControlFlowNode for ClassExpr | import | class E | builtin-class type |
 | l_calls.py:32 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | l_calls.py:33 | ControlFlowNode for FunctionExpr | import | Function E.m | builtin-class function |
-| l_calls.py:34 | ControlFlowNode for self | code/l_calls.py:38 from import | (int 2, int 3, int 4, ) | builtin-class tuple |
 | l_calls.py:34 | ControlFlowNode for self | code/l_calls.py:38 from import | E() | class E |
-| l_calls.py:34 | ControlFlowNode for self | code/l_calls.py:39 from import | (int 4, int 5, ) | builtin-class tuple |
 | l_calls.py:34 | ControlFlowNode for self | code/l_calls.py:39 from import | int 3 | builtin-class int |
 | l_calls.py:34 | ControlFlowNode for self | runtime | self instance of E | class E |
 | l_calls.py:35 | ControlFlowNode for args | code/l_calls.py:38 from import | (int 2, int 3, int 4, ) | builtin-class tuple |
