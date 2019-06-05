@@ -427,7 +427,7 @@ class SwitchCase extends Stmt, @case {
    * Gets the expression of the surrounding switch that this case is compared
    * against.
    */
-  Expr getTestExpr() {
+  Expr getSelectorExpr() {
     result = this.getSwitch().getExpr() or result = this.getSwitchExpr().getExpr()
   }
 
