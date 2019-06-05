@@ -52,11 +52,19 @@ private class DisposeCall extends MethodCall {
   DisposeCall() { this.getTarget() instanceof DisposeMethod }
 }
 
+private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  DataFlow::localFlowStep(nodeFrom, nodeTo) and
+  not exists(AssignableDefinition def, UsingStmt uds |
+    nodeTo.asExpr() = def.getAReachableRead() and
+    def.getTargetAccess() = uds.getAVariableDeclExpr().getAccess()
+  )
+}
+
 private predicate reachesDisposeCall(DisposeCall disposeCall, DataFlow::Node node) {
-  DataFlow::localFlowStep(node, DataFlow::exprNode(disposeCall.getQualifier()))
+  localFlowStep(node, DataFlow::exprNode(disposeCall.getQualifier()))
   or
   exists(DataFlow::Node mid | reachesDisposeCall(disposeCall, mid) |
-    DataFlow::localFlowStep(node, mid)
+    localFlowStep(node, mid)
   )
 }
 
