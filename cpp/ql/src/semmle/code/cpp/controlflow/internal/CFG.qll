@@ -80,7 +80,6 @@
  */
 
 private import cpp
-private import semmle.code.cpp.controlflow.internal.SyntheticDestructorCalls
 
 /**
  * A control-flow node. This class exists to provide a shorter name than
@@ -115,8 +114,7 @@ private class Node extends ControlFlowNodeBase {
  */
 private predicate excludeNodeAndNodesBelow(Expr e) {
   not exists(e.getParent()) and
-  not e instanceof DestructorCall and
-  not e instanceof SyntheticDestructorCall // Workaround for CPP-320
+  not e instanceof DestructorCall
   or
   // Constructor init lists should be evaluated, and we can change this in
   // the future, but it would mean that a `Function` entry point is not
@@ -983,35 +981,9 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
   // called, connect the "before destructors" node directly to the "after
   // destructors" node. For performance, only do this when the nodes exist.
   exists(Pos afterDtors | afterDtors.isAfterDestructors() | subEdge(afterDtors, n1, _, _)) and
-  not exists(getDestructorCallAfterNode(n1, 0)) and
   not synthetic_destructor_call(n1, 0, _) and
   p1.nodeBeforeDestructors(n1, n1) and
   p2.nodeAfterDestructors(n2, n1)
-  or
-  exists(Node n |
-    // before destructors -> access(0)
-    p1.nodeBeforeDestructors(n1, n) and
-    p2.nodeAt(n2, getDestructorCallAfterNode(n, 0).getAccess())
-    or
-    // access(i) -> call(i)
-    exists(int i |
-      p1.nodeAt(n1, getDestructorCallAfterNode(n, i).getAccess()) and
-      p2.nodeAt(n2, getDestructorCallAfterNode(n, i))
-    )
-    or
-    // call(i) -> access(i+1)
-    exists(int i |
-      p1.nodeAt(n1, getDestructorCallAfterNode(n, i)) and
-      p2.nodeAt(n2, getDestructorCallAfterNode(n, i + 1).getAccess())
-    )
-    or
-    // call(max) -> after destructors end
-    exists(int maxCallIndex |
-      maxCallIndex = max(int i | exists(getDestructorCallAfterNode(n, i))) and
-      p1.nodeAt(n1, getDestructorCallAfterNode(n, maxCallIndex)) and
-      p2.nodeAfterDestructors(n2, n)
-    )
-  )
   or
   exists(Node n |
     // before destructors -> access(max)
@@ -1032,6 +1004,34 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
   )
 }
 
+/**
+ * Gets the `index`'th synthetic destructor call that should follow `node`. The
+ * exact placement of that call in the CFG depends on the type of `node` as
+ * follows:
+ *
+ * - `Block`: after ordinary control flow falls off the end of the block
+ *   without jumps or exceptions.
+ * - `ReturnStmt`: After the statement itself or after its operand (if
+ *   present).
+ * - `ThrowExpr`: After the `throw` expression or after its operand (if
+ *   present).
+ * - `JumpStmt` (`BreakStmt`, `ContinueStmt`, `GotoStmt`): after the statement.
+ * - A `ForStmt`, `WhileStmt`, `SwitchStmt`, or `IfStmt`: after control flow
+ *   falls off the end of the statement without jumping. Destruction can occur
+ *   here for `for`-loops that have an initializer (`for (C x = a; ...; ...)`)
+ *   and for statements whose condition is a `ConditionDeclExpr`
+ *   (`if (C x = a)`).
+ * - The `getUpdate()` of a `ForStmt`: after the `getUpdate()` expression. This
+ *   can happen when the condition is a `ConditionDeclExpr`
+ * - `Handler`: On the edge out of the `Handler` for the case where the
+ *   exception was not matched and is propagated to the next handler or
+ *   function exit point.
+ * - `MicrosoftTryExceptStmt`: After the false-edge out of the `e` in
+ *   `__except(e)`, before propagating the exception up to the next handler or
+ *   function exit point.
+ * - `MicrosoftTryFinallyStmt`: On the edge following the `__finally` block for
+ *   the case where an exception was thrown and needs to be propagated.
+ */
 DestructorCall getSynthesisedDestructorCallAfterNode(Node n, int i) {
   synthetic_destructor_call(n, i, result)
 }
