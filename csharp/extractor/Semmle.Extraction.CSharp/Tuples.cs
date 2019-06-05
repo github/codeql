@@ -188,13 +188,9 @@ namespace Semmle.Extraction.CSharp
 
         internal static Tuple properties(Property propKey, string name, Type declaringType, Type memberType, Property unboundProperty) => new Tuple("properties", propKey, name, declaringType, memberType, unboundProperty);
 
-        internal static Tuple ref_returns(IEntity method) => new Tuple("ref_returns", method);
-
-        internal static Tuple ref_readonly_returns(IEntity method) => new Tuple("ref_readonly_returns", method);
-
         internal static Tuple statements(Statement stmt, StmtKind kind) => new Tuple("statements", stmt, kind);
 
-        internal static Tuple specific_type_parameter_constraints(TypeParameterConstraints constraints, Type baseType) => new Tuple("specific_type_parameter_constraints", constraints, baseType);
+        internal static Tuple specific_type_parameter_constraints(TypeParameterConstraints constraints, Type baseType, Kinds.TypeAnnotation annotation) => new Tuple("specific_type_parameter_constraints", constraints, baseType, (int)annotation);
 
         internal static Tuple successors(IEntity from, IEntity to) => new Tuple("successors", from, to);
 
@@ -207,6 +203,10 @@ namespace Semmle.Extraction.CSharp
         internal static Tuple tuple_element(TupleType type, int index, Field field) => new Tuple("tuple_element", type, index, field);
 
         internal static Tuple tuple_underlying_type(TupleType type, NamedType underlying) => new Tuple("tuple_underlying_type", type, underlying);
+
+        internal static Tuple type_annotation(IEntity element, Kinds.TypeAnnotation annotation) => new Tuple("type_annotation", element, (int)annotation);
+
+        internal static Tuple type_argument_annotation(IEntity element, int index, Kinds.TypeAnnotation annotation) => new Tuple("type_argument_annotation", element, index, (int)annotation);
 
         internal static Tuple type_mention(TypeMention ta, Type type, IEntity parent) => new Tuple("type_mention", ta, type, parent);
 

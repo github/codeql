@@ -27,6 +27,27 @@ namespace Semmle.Extraction.CSharp.Entities
                 Attribute.ExtractAttributes(Context, symbol, this);
         }
 
+        protected void ExtractNullability(NullableAnnotation annotation)
+        {
+            Context.Emit(Tuples.type_annotation(this, (Kinds.TypeAnnotation)annotation));
+        }
+
+        protected void ExtractRefKind(RefKind kind)
+        {
+            switch (kind)
+            {
+                case RefKind.Out:
+                    Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Out));
+                    break;
+                case RefKind.Ref:
+                    Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
+                    break;
+                case RefKind.RefReadOnly:
+                    Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef));
+                    break;
+            }
+        }
+
         protected void ExtractCompilerGenerated()
         {
             if (symbol.IsImplicitlyDeclared)

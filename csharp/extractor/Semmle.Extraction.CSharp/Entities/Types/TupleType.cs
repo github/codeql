@@ -63,6 +63,6 @@ namespace Semmle.Extraction.CSharp.Entities
         readonly Lazy<Field[]> tupleElementsLazy;
         public Field[] TupleElements => tupleElementsLazy.Value;
 
-        public override IEnumerable<Type> TypeMentions => TupleElements.Select(e => e.Type);
+        public override IEnumerable<Type> TypeMentions => TupleElements.Select(e => e.Type.Type);
     }
 }

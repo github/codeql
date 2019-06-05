@@ -30,19 +30,25 @@ namespace Semmle.Extraction.CSharp.Entities
                     var ats = (ArrayTypeSyntax)Syntax;
                     var at = (ArrayType)Type;
                     Emit(Loc ?? Syntax.GetLocation(), Parent, Type);
-                    Create(cx, ats.ElementType, this, at.ElementType);
+                    Create(cx, ats.ElementType, this, at.ElementType.Type);
                     return;
                 case SyntaxKind.NullableType:
                     var nts = (NullableTypeSyntax)Syntax;
-                    var nt = (NamedType)Type;
-                    Emit(Loc ?? Syntax.GetLocation(), Parent, Type);
-                    Create(cx, nts.ElementType, this, nt.symbol.IsReferenceType ? nt : nt.TypeArguments[0]);
+                    if (Type is NamedType nt)
+                    {
+                        Emit(Loc ?? Syntax.GetLocation(), Parent, Type);
+                        Create(cx, nts.ElementType, this, nt.symbol.IsReferenceType ? nt : nt.TypeArguments[0]);
+                    }
+                    else if(Type is ArrayType array)
+                    {
+                        Create(cx, nts.ElementType, Parent, array);
+                    }
                     return;
                 case SyntaxKind.TupleType:
                     var tts = (TupleTypeSyntax)Syntax;
                     var tt = (TupleType)Type;
                     Emit(Loc ?? Syntax.GetLocation(), Parent, Type);
-                    tts.Elements.Zip(tt.TupleElements, (s, t) => Create(cx, s.Type, this, t.Type)).Enumerate();
+                    tts.Elements.Zip(tt.TupleElements, (s, t) => Create(cx, s.Type, this, t.Type.Type)).Enumerate();
                     return;
                 case SyntaxKind.PointerType:
                     var pts = (PointerTypeSyntax)Syntax;

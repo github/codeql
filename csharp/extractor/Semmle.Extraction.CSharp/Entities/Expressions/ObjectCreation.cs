@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         static ExprKind GetKind(Context cx, ObjectCreationExpressionSyntax node)
         {
             var si = cx.Model(node).GetSymbolInfo(node.Type);
-            return Type.IsDelegate(si.Symbol as INamedTypeSymbol) ? ExprKind.EXPLICIT_DELEGATE_CREATION : ExprKind.OBJECT_CREATION;
+            return Entities.Type.IsDelegate(si.Symbol as INamedTypeSymbol) ? ExprKind.EXPLICIT_DELEGATE_CREATION : ExprKind.OBJECT_CREATION;
         }
 
         ExplicitObjectCreation(ExpressionNodeInfo info)
@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 }
             }
 
-            TypeMention.Create(cx, Syntax.Type, this, Type);
+            TypeMention.Create(cx, Syntax.Type, this, Type.Type);
         }
 
         static SyntaxToken? GetDynamicName(CSharpSyntaxNode name)
@@ -121,7 +121,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 // Create an "assignment"
                 var property = cx.Model(init).GetDeclaredSymbol(init);
                 var propEntity = Property.Create(cx, property);
-                var type = Type.Create(cx, property.Type);
+                var type = Entities.Type.Create(cx, property.GetAnnotatedType());
                 var loc = cx.Create(init.GetLocation());
 
                 var assignment = new Expression(new ExpressionInfo(cx, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer, child++, false, null));

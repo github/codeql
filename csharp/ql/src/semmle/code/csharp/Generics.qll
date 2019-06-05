@@ -69,6 +69,11 @@ class ConstructedGeneric extends DotNet::ConstructedGeneric, Generic {
   override Type getTypeArgument(int i) { none() }
 
   override Type getATypeArgument() { result = getTypeArgument(_) }
+
+  /** Gets the annotated type of type argument `i`. */
+  final AnnotatedType getAnnotatedTypeArgument(int i) {
+    result.appliesToTypeArgument(this, i)
+  }
 }
 
 /**
@@ -196,18 +201,23 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
  * ```
  */
 class TypeParameterConstraints extends Element, @type_parameter_constraints {
-  /** Gets a specific interface constraint (if any). */
+  /** Gets a specific interface constraint, if any. */
   Interface getAnInterfaceConstraint() {
-    specific_type_parameter_constraints(this, getTypeRef(result))
+    specific_type_parameter_constraints(this, getTypeRef(result), _)
   }
 
-  /** Gets a specific type parameter constraint (if any). */
+  /** Gets a specific type parameter constraint, if any. */
   TypeParameter getATypeParameterConstraint() {
-    specific_type_parameter_constraints(this, getTypeRef(result))
+    specific_type_parameter_constraints(this, getTypeRef(result), _)
   }
 
-  /** Gets the specific class constraint (if any). */
-  Class getClassConstraint() { specific_type_parameter_constraints(this, getTypeRef(result)) }
+  /** Gets the specific class constraint, if any. */
+  Class getClassConstraint() { specific_type_parameter_constraints(this, getTypeRef(result), _) }
+
+  /** Gets an annotated specific type constraint, if any. */
+  AnnotatedType getAnAnnotatedTypeConstraint() {
+    result.appliesToTypeConstraint(this)
+  }
 
   override Location getALocation() { type_parameter_constraints_location(this, result) }
 
@@ -225,6 +235,9 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
 
   /** Holds if these constraints include an unmanaged type constraint. */
   predicate hasUnmanagedTypeConstraint() { general_type_parameter_constraints(this, 4) }
+
+  /** Holds if these constraints include a nullable reference type constraint. */
+  predicate hasNullableRefTypeConstraint() { general_type_parameter_constraints(this, 5) }
 
   /** Gets a textual representation of these constraints. */
   override string toString() { result = "where " + this.getTypeParameter().toString() + ": ..." }

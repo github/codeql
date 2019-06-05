@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 // Type conversion
                 OperatorCall(Syntax);
-                TypeMention.Create(cx, Syntax.Type, this, Type);
+                TypeMention.Create(cx, Syntax.Type, this, Type.Type);
             }
         }
 

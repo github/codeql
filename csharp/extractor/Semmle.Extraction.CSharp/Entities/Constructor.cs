@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             var initInfo = new ExpressionInfo(Context,
-                initializerType,
+                new AnnotatedType(initializerType, NullableAnnotation.NotAnnotated),
                 Context.Create(initializer.ThisOrBaseKeyword.GetLocation()),
                 Kinds.ExprKind.CONSTRUCTOR_INIT,
                 this,

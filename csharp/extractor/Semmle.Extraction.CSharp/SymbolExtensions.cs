@@ -6,8 +6,52 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp
 {
+    /// <summary>
+    /// An ITypeSymbol with nullability annotations.
+    /// Although a similar class has been implemented in Rolsyn,
+    /// https://github.com/dotnet/roslyn/blob/090e52e27c38ad8f1ea4d033114c2a107604ddaa/src/Compilers/CSharp/Portable/Symbols/TypeWithAnnotations.cs
+    /// it is an internal struct that has not yet been exposed on the public interface.
+    /// </summary>
+    public struct AnnotatedTypeSymbol
+    {
+        public ITypeSymbol Symbol;
+        public NullableAnnotation Nullability;
+
+        public AnnotatedTypeSymbol(ITypeSymbol symbol, NullableAnnotation nullability)
+        {
+            Symbol = symbol;
+            Nullability = nullability;
+        }
+    }
+
     static class SymbolExtensions
     {
+        /// <summary>
+        /// Tries to recover from an ErrorType.
+        /// </summary>
+        ///
+        /// <param name="type">The type to disambiguate.</param>
+        /// <returns></returns>
+        public static ITypeSymbol DisambiguateType(this ITypeSymbol type)
+        {
+            /* A type could not be determined.
+             * Sometimes this happens due to a missing reference,
+             * or sometimes because the same type is defined in multiple places.
+             *
+             * In the case that a symbol is multiply-defined, Roslyn tells you which
+             * symbols are candidates. It usually resolves to the same DB entity,
+             * so it's reasonably safe to just pick a candidate.
+             *
+             * The conservative option would be to resolve all error types as null.
+             */
+
+            var errorType = type as IErrorTypeSymbol;
+
+            return errorType != null && errorType.CandidateSymbols.Any() ?
+                errorType.CandidateSymbols.First() as ITypeSymbol :
+                type;
+        }
+
         /// <summary>
         /// Gets the name of this symbol.
         ///
@@ -184,6 +228,12 @@ namespace Semmle.Extraction.CSharp
                 subTermAction(cx, tb, named.ConstructedFrom);
                 tb.Append("<");
                 tb.BuildList(",", named.TypeArguments, (ta, tb0) => subTermAction(cx, tb0, ta));
+
+                // Encode the nullability of the type arguments in the label.
+                // Type arguments with different nullability can result in 
+                // a constructed type with different nullability of its members and methods,
+                // so we need to create a distinct database entity for it.
+                tb.BuildList("", named.TypeArgumentsNullableAnnotations, (a, tb1) => tb.Append((int)a));
                 tb.Append(">");
             }
         }
@@ -367,5 +417,110 @@ namespace Semmle.Extraction.CSharp
                 return property.IsSourceDeclaration();
             return true;
         }
+
+        public static IEntity CreateEntity(this Context cx, ISymbol symbol)
+        {
+            if (symbol == null) return null;
+
+            using (cx.StackGuard)
+            {
+                try
+                {
+                    return symbol.Accept(new Populators.Symbols(cx));
+                }
+                catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+                {
+                    cx.ModelError(symbol, $"Exception processing symbol '{symbol.Kind}' of type '{ex}': {symbol}");
+                    return null;
+                }
+            }
+        }
+
+        public static TypeInfo GetTypeInfo(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node) =>
+            cx.Model(node).GetTypeInfo(node);
+
+        public static SymbolInfo GetSymbolInfo(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node) =>
+            cx.Model(node).GetSymbolInfo(node);
+
+        /// <summary>
+        /// Gets the symbol for a particular syntax node.
+        /// Throws an exception if the symbol is not found.
+        /// </summary>
+        ///
+        /// <remarks>
+        /// This gives a nicer message than a "null pointer exception",
+        /// and should be used where we require a symbol to be resolved.
+        /// </remarks>
+        ///
+        /// <param name="cx">The extraction context.</param>
+        /// <param name="node">The syntax node.</param>
+        /// <returns>The resolved symbol.</returns>
+        public static ISymbol GetSymbol(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node)
+        {
+            var info = GetSymbolInfo(cx, node);
+            if (info.Symbol == null)
+            {
+                throw new InternalError(node, "Could not resolve symbol");
+            }
+
+            return info.Symbol;
+        }
+
+        /// <summary>
+        /// Determines the type of a node, or default
+        /// if the type could not be determined.
+        /// </summary>
+        /// <param name="cx">Extractor context.</param>
+        /// <param name="node">The node to determine.</param>
+        /// <returns>The type symbol of the node, or default.</returns>
+        public static AnnotatedTypeSymbol GetType(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node)
+        {
+            var info = GetTypeInfo(cx, node);
+            return new AnnotatedTypeSymbol(info.Type.DisambiguateType(), info.Nullability.Annotation);
+        }
+
+        /// <summary>
+        /// Gets the annotated type of an ILocalSymbol.
+        /// This has not yet been exposed on the public API.
+        /// </summary>
+        public static AnnotatedTypeSymbol GetAnnotatedType(this ILocalSymbol symbol) => new AnnotatedTypeSymbol(symbol.Type, symbol.NullableAnnotation);
+
+        /// <summary>
+        /// Gets the annotated type of an IPropertySymbol.
+        /// This has not yet been exposed on the public API.
+        /// </summary>
+        public static AnnotatedTypeSymbol GetAnnotatedType(this IPropertySymbol symbol) => new AnnotatedTypeSymbol(symbol.Type, symbol.NullableAnnotation);
+
+        /// <summary>
+        /// Gets the annotated type of an ILocalSymbol.
+        /// This has not yet been exposed on the public API.
+        /// </summary>
+        public static AnnotatedTypeSymbol GetAnnotatedType(this IFieldSymbol symbol) => new AnnotatedTypeSymbol(symbol.Type, symbol.NullableAnnotation);
+
+        /// <summary>
+        /// Gets the annotated return type of an IMethodSymbol.
+        /// This has not yet been exposed on the public API.
+        /// </summary>
+        public static AnnotatedTypeSymbol GetAnnotatedReturnType(this IMethodSymbol symbol) => new AnnotatedTypeSymbol(symbol.ReturnType, symbol.ReturnNullableAnnotation);
+
+        /// <summary>
+        /// Gets the annotated element type of an IArrayTypeSymbol.
+        /// This has not yet been exposed on the public API.
+        /// </summary>
+        public static AnnotatedTypeSymbol GetAnnotatedElementType(this IArrayTypeSymbol symbol) =>
+            new AnnotatedTypeSymbol(symbol.ElementType, symbol.ElementNullableAnnotation);
+
+        /// <summary>
+        /// Gets the annotated type arguments of an INamedTypeSymbol.
+        /// This has not yet been exposed on the public API.
+        /// </summary>
+        public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
+            symbol.TypeArguments.Zip(symbol.TypeArgumentsNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+
+        /// <summary>
+        /// Creates an AnnotatedTypeSymbol from an ITypeSymbol.
+        /// </summary>
+        public static AnnotatedTypeSymbol WithAnnotation(this ITypeSymbol symbol, NullableAnnotation annotation) =>
+            new AnnotatedTypeSymbol(symbol, annotation);
     }
 }

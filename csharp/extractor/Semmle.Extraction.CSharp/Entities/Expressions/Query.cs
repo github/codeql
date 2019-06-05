@@ -23,7 +23,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private class QueryCall : Expression
         {
             public QueryCall(Context cx, IMethodSymbol method, SyntaxNode clause, IExpressionParentEntity parent, int child)
-                : base(new ExpressionInfo(cx, Type.Create(cx, method?.ReturnType), cx.Create(clause.GetLocation()), ExprKind.METHOD_INVOCATION, parent, child, false, null))
+                : base(new ExpressionInfo(cx, method is null ? NullType.Create(cx) : Entities.Type.Create(cx, method.GetAnnotatedReturnType()),
+                        cx.Create(clause.GetLocation()),
+                        ExprKind.METHOD_INVOCATION, parent, child, false, null))
             {
                 if (method != null)
                     cx.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
@@ -65,14 +67,20 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var type = Type.Create(cx, cx.GetType(Expr));
                 Extraction.Entities.Location nameLoc;
 
-                Type declType;
+                AnnotatedType declType;
                 TypeSyntax declTypeSyntax = null;
                 if (getElement)
                 {
-                    var from = node as FromClauseSyntax;
-                    (declType, declTypeSyntax) = from != null && from.Type != null
-                         ? (Type.Create(cx, cx.GetType(from.Type)), from.Type)
-                         : (type.ElementType, null);
+                    if(node is FromClauseSyntax from && from.Type != null)
+                    {
+                        declTypeSyntax = from.Type;
+                        declType = Type.Create(cx, cx.GetType(from.Type));
+                    }
+                    else
+                    {
+                        declTypeSyntax = null;
+                        declType = type.Type.ElementType;
+                    }
                 }
                 else
                     declType = type;

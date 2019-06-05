@@ -479,6 +479,34 @@ type_mention_location(
   unique int id: @type_mention ref,
   int loc: @location ref);
 
+@has_type_annotation = @assignable | @type_parameter | @callable | @array_type | @expr | @delegate_type;
+
+/**
+ * A direct annotation on an entity, for example `string? x;`.
+ *
+ * Annotations:
+ * 0 = reftype nullability is not applicable
+ * 1 = reftype nullability disabled
+ * 2 = reftype is not annotated "!"
+ * 3 = reftype is annotated "?"
+ * 4 = readonly ref type / in parameter
+ * 5 = ref type parameter, return or local variable
+ * 6 = out parameter
+ *
+ * Note that the annotation depends on the element it annotates.
+ * @assignable: The annotation is on the type of the assignable, for example the variable type.
+ * @type_parameter: The annotation is on the reftype constraint
+ * @callable: The annotation is on the return type
+ * @array_type: The annotation is on the element type
+ */
+type_annotation(int id: @has_type_annotation ref, int annotation: int ref);
+
+/** The annotation of the callable's receiver. */
+receiver_type_annotation(int callable: @callable ref, int annotation: int ref);
+
+/** The annotation of type arguments of a constructed type or method. */ 
+type_argument_annotation(int constructedgeneric: @generic ref, int position: int ref, int annotation: int ref);
+
 /** GENERICS **/
 
 @generic = @type | @method | @local_function;
@@ -519,7 +547,8 @@ general_type_parameter_constraints(
 
 specific_type_parameter_constraints(
   int id: @type_parameter_constraints ref,
-  int base_id: @type_or_ref ref);
+  int base_id: @type_or_ref ref,
+  int nullability: int ref);
 
 
 /** MODIFIERS */
@@ -690,12 +719,6 @@ local_functions(
 local_function_stmts(
     unique int fn: @local_function_stmt ref,
     int stmt: @local_function ref);
-
-@ref_callable = @local_function | @method | @delegate_type;
-
-ref_returns(int fn: @ref_callable ref);
-
-ref_readonly_returns(int fn: @ref_callable ref);
 
 /** VARIABLES **/
 

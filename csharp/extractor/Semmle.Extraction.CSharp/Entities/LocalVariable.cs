@@ -22,12 +22,19 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate()
         {
+            if (symbol is ILocalSymbol local)
+            {
+                ExtractNullability(local.NullableAnnotation);
+                if (local.IsRef)
+                    Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
+            }
+
             Context.Emit(Tuples.localvars(
                 this,
                 IsRef ? 3 : IsConst ? 2 : 1,
                 symbol.Name,
                 IsVar ? 1 : 0,
-                Type.TypeRef,
+                Type.Type.TypeRef,
                 Parent));
 
             Context.Emit(Tuples.localvar_location(this, DeclLocation));
@@ -64,12 +71,12 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        Type Type
+        AnnotatedType Type
         {
             get
             {
                 var local = symbol as ILocalSymbol;
-                return local == null ? Parent.Type : Type.Create(Context, local.Type);
+                return local == null ? Parent.Type : Entities.Type.Create(Context, local.GetAnnotatedType());
             }
         }
 

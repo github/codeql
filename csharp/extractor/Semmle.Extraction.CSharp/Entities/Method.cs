@@ -123,6 +123,12 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     tb.Append("<");
                     tb.BuildList(",", m.symbol.TypeArguments, (ta, tb0) => AddSignatureTypeToId(m.Context, tb0, m.symbol, ta));
+
+                    // Encode the nullability of the type arguments in the label.
+                    // Type arguments with different nullability can result in 
+                    // a constructed method with different nullability of its parameters and return type,
+                    // so we need to create a distinct database entity for it.
+                    tb.BuildList("", m.symbol.TypeArgumentsNullableAnnotations, (a, tb1) => tb.Append((int)a));
                     tb.Append(">");
                 }
             }
@@ -338,6 +344,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     Context.Emit(Tuples.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol)));
                     foreach (var tp in symbol.TypeArguments)
                     {
+                        Context.Emit(Tuples.type_argument_annotation(this, child, (Kinds.TypeAnnotation)symbol.TypeArgumentsNullableAnnotations[child]));
                         Context.Emit(Tuples.type_arguments(Type.Create(Context, tp), child++, this));
                     }
                 }
@@ -346,7 +353,8 @@ namespace Semmle.Extraction.CSharp.Entities
                     Context.Emit(Tuples.is_generic(this));
                     foreach (var typeParam in symbol.TypeParameters.Select(tp => TypeParameter.Create(Context, tp)))
                     {
-                        Context.Emit(Tuples.type_parameters(typeParam, child++, this));
+                        Context.Emit(Tuples.type_parameters(typeParam, child, this));
+                        child++;
                     }
                 }
             }
@@ -355,9 +363,9 @@ namespace Semmle.Extraction.CSharp.Entities
         protected void ExtractRefReturn()
         {
             if (symbol.ReturnsByRef)
-                Context.Emit(Tuples.ref_returns(this));
+                Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
             if (symbol.ReturnsByRefReadonly)
-                Context.Emit(Tuples.ref_readonly_returns(this));
+                Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef));
         }
 
         protected void PopulateMethod()
@@ -369,6 +377,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractMethodBody();
             ExtractGenerics();
             ExtractMetadataHandle();
+            ExtractNullability(symbol.ReturnNullableAnnotation);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

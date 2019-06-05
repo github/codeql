@@ -1,8 +1,8 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Kinds;
-using Semmle.Extraction.Entities;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.Entities;
+using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         Discard(Context cx, CSharpSyntaxNode syntax, IExpressionParentEntity parent, int child) :
-            base(new ExpressionInfo(cx, Type.Create(cx, cx.Model(syntax).GetTypeInfo(syntax).Type), cx.Create(syntax.GetLocation()), ExprKind.DISCARD, parent, child, false, null))
+            base(new ExpressionInfo(cx, Entities.Type.Create(cx, cx.GetType(syntax)), cx.Create(syntax.GetLocation()), ExprKind.DISCARD, parent, child, false, null))
         {
         }
 

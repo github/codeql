@@ -3,5 +3,5 @@ import csharp
 from DelegateType del
 where
   del.fromSource() and
-  del.returnsRefReadonly()
+  del.getAnnotatedReturnType().getAnnotation().isReadonlyRef()
 select del
