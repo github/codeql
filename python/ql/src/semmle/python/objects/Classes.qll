@@ -191,8 +191,7 @@ class BuiltinClassObjectInternal extends ClassObjectInternal, TBuiltinClassObjec
     }
 
     override predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
-        value = ObjectInternal::fromBuiltin(this.getBuiltin().getMember(name)) and
-        origin = CfgOrigin::unknown()
+        Types::getMro(this).lookup(name, value, origin)
     }
 
     pragma [noinline] override predicate attributesUnknown() { none() }
@@ -301,8 +300,7 @@ class TypeInternal extends ClassObjectInternal, TType {
     }
 
     override predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
-        value = ObjectInternal::fromBuiltin(Builtin::special("type").getMember(name)) and
-        origin = CfgOrigin::unknown()
+        Types::getMro(this).lookup(name, value, origin)
     }
 
     pragma [noinline] override predicate attributesUnknown() { any() }
