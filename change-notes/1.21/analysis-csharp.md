@@ -1,12 +1,16 @@
 # Improvements to C# analysis
 
+## General improvements
+
+C# analysis now supports the extraction and analysis of many C# 8 features. For details see [Changes to code extraction](#changes-to-code-extraction) and [Changes to QL libraries](#changes-to-ql-libraries) below.
+
 ## Changes to existing queries
 
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
-| Class defines a field that uses an ICryptoTransform class in a way that would be unsafe for concurrent threads (`cs/thread-unsafe-icryptotransform-field-in-class`) | Fewer false positive results | The criteria for a result has changed to include nested properties, nested fields and collections. The format of the alert message has changed to highlight the static field. |
-| Constant condition (`cs/constant-condition`) | Fewer false positive results | Results have been removed where the `null` value is in a conditional expression on the left hand side of a null-coalescing expression. For example, in `(a ? b : null) ?? c`, `null` is not considered to be a constant condition. |
-| Useless upcast (`cs/useless-upcast`) | Fewer false positive results | Results have been removed where the upcast is used to disambiguate the target of a constructor call. |
+| Class defines a field that uses an ICryptoTransform class in a way that would be unsafe for concurrent threads (`cs/thread-unsafe-icryptotransform-field-in-class`) | Fewer false positive results | The criteria for a result has changed to include nested properties, nested fields, and collections. The format of the alert message has changed to highlight the static field. |
+| Constant condition (`cs/constant-condition`) | Fewer false positive results | Results where the `null` value is in a conditional expression on the left hand side of a null-coalescing expression are now ignored. For example, in `(a ? b : null) ?? c`, `null` is not considered to be a constant condition. |
+| Useless upcast (`cs/useless-upcast`) | Fewer false positive results | Results where the upcast is used to disambiguate the target of a constructor call are now ignored. |
 
 ## Changes to code extraction
 
@@ -17,12 +21,12 @@
     - `static` modifiers on local functions
     - Null-coalescing assignment expressions
 
-* The `unmanaged` type parameter constraint is now extracted.
+* The `unmanaged` type parameter constraint is also now extracted.
 
 ## Changes to QL libraries
 
-* The class `Attribute` has two new predicates: `getConstructorArgument()` and `getNamedArgument()`. The first predicate returns arguments to the underlying constructor call and the latter returns named arguments for initializing fields and properties.
-* The class `TypeParameterConstraints` has a new predicate `hasUnmanagedTypeConstraint()`, indicating that the type parameter has the `unmanaged` constraint.
+* The class `Attribute` has two new predicates: `getConstructorArgument()` and `getNamedArgument()`. The first predicate returns arguments to the underlying constructor call and the second returns named arguments for initializing fields and properties.
+* The class `TypeParameterConstraints` has a new predicate `hasUnmanagedTypeConstraint()`. This shows whether the type parameter has the `unmanaged` constraint.
 * The following QL classes have been added to model C# 8 features:
     - Class `AssignCoalesceExpr` models null-coalescing assignment, for example `x ??= y`
     - Class `IndexExpr` models from-end index expressions, for example `^1`
@@ -37,5 +41,3 @@
     - Class `Switch` models both `SwitchExpr` and `SwitchStmt`
     - Class `Case` models both `CaseStmt` and `SwitchCaseExpr`
     - Class `UsingStmt` models both `UsingBlockStmt` and `UsingDeclStmt`
-
-## Changes to autobuilder
