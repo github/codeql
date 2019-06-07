@@ -19,7 +19,13 @@
 
 ## Changes to code extraction
 
-* *Series of bullet points*
+* String literals as expressions within literal string interpolation (f-strings) are now handled correctly.
+
+* The Python extractor now handles invalid input more robustly. In particular, it exits gracefully when:
+
+    * A non-existent file or directory is specified using the `--path` option, or as a file name.
+    * An invalid number is specified for the `--max-procs` option.
+
 
 ## Changes to QL libraries
 
