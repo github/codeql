@@ -981,7 +981,7 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
   // called, connect the "before destructors" node directly to the "after
   // destructors" node. For performance, only do this when the nodes exist.
   exists(Pos afterDtors | afterDtors.isAfterDestructors() | subEdge(afterDtors, n1, _, _)) and
-  not synthetic_destructor_call(n1, 0, _) and
+  not exists(getSynthesisedDestructorCallAfterNode(n1, 0)) and
   p1.nodeBeforeDestructors(n1, n1) and
   p2.nodeAfterDestructors(n2, n1)
   or
@@ -990,12 +990,12 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
     exists(int maxCallIndex |
       maxCallIndex = max(int i | exists(getSynthesisedDestructorCallAfterNode(n, i))) and
       p1.nodeBeforeDestructors(n1, n) and
-      p2.nodeAt(n2, getSynthesisedDestructorCallVariableAccessAfterNode(n, maxCallIndex)))
+      p2.nodeAt(n2, getSynthesisedDestructorCallAfterNode(n, maxCallIndex).getQualifier()))
     or
     // call(i+1) -> access(i)
     exists(int i |
       p1.nodeAt(n1, getSynthesisedDestructorCallAfterNode(n, i + 1)) and
-      p2.nodeAt(n2, getSynthesisedDestructorCallVariableAccessAfterNode(n, i))
+      p2.nodeAt(n2, getSynthesisedDestructorCallAfterNode(n, i).getQualifier())
     )
     or
     // call(0) -> after destructors end
@@ -1005,9 +1005,13 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
 }
 
 /**
- * Gets the `index`'th synthetic destructor call that should follow `node`. The
- * exact placement of that call in the CFG depends on the type of `node` as
- * follows:
+ * Gets the synthetic constructor call for the `index`'th entity that
+ * should be destructed following `node`. Note that entities should be
+ * destructed in reverse construction order, so these should be called
+ * from highest to lowest index.
+ *
+ * The exact placement of that call in the CFG depends on the type of
+ * `node` as follows:
  *
  * - `Block`: after ordinary control flow falls off the end of the block
  *   without jumps or exceptions.
@@ -1034,10 +1038,6 @@ private predicate subEdgeIncludingDestructors(Pos p1, Node n1, Node n2, Pos p2) 
  */
 DestructorCall getSynthesisedDestructorCallAfterNode(Node n, int i) {
   synthetic_destructor_call(n, i, result)
-}
-
-VariableAccess getSynthesisedDestructorCallVariableAccessAfterNode(Node n, int i) {
-  result = getSynthesisedDestructorCallAfterNode(n, i).getChild(-1)
 }
 
 /**
