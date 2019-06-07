@@ -200,9 +200,7 @@ module NodeJSLib {
       t.start() and
       result = handler.flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 |
-        result = getARouteHandler(t2).backtrack(t2, t)
-      )
+      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
 
     override Expr getServer() { result = server }
@@ -288,7 +286,7 @@ module NodeJSLib {
     FsFlowTarget() {
       exists(DataFlow::CallNode call, string methodName |
         call = DataFlow::moduleMember("fs", methodName).getACall()
-        |
+      |
         methodName = "realpathSync" and
         tainted = call.getArgument(0) and
         this = call
@@ -629,9 +627,7 @@ module NodeJSLib {
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
     HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-    TrackedRouteHandlerCandidateWithSetup() {
-      this = any(RouteSetup s).getARouteHandler()
-    }
+    TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
   }
 
   /**

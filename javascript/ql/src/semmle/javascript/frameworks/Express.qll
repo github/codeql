@@ -38,9 +38,10 @@ module Express {
   private predicate isRouter(Expr e, RouterDefinition router) {
     router.flowsTo(e)
     or
-    exists (DataFlow::MethodCallNode chain, DataFlow::Node base, string name |
+    exists(DataFlow::MethodCallNode chain, DataFlow::Node base, string name |
       name = "route" or
-      name = routeSetupMethodName() |
+      name = routeSetupMethodName()
+    |
       chain.calls(base, name) and
       isRouter(base.asExpr(), router) and
       chain.flowsToExpr(e)
@@ -53,9 +54,7 @@ module Express {
   class RouteExpr extends MethodCallExpr {
     RouterDefinition router;
 
-    RouteExpr() {
-      isRouter(this, router)
-    }
+    RouteExpr() { isRouter(this, router) }
 
     /** Gets the router from which this route was created. */
     RouterDefinition getRouter() { result = router }
@@ -82,7 +81,7 @@ module Express {
 
     RouteSetup() {
       isRouter(getReceiver(), router) and
-      getMethodName() = routeSetupMethodName() 
+      getMethodName() = routeSetupMethodName()
     }
 
     /** Gets the path associated with the route. */
@@ -126,9 +125,7 @@ module Express {
       t.start() and
       result = getARouteHandlerExpr().flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 |
-        result = getARouteHandler(t2).backtrack(t2, t)
-      )
+      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
 
     override Expr getServer() { result.(Application).getARouteHandler() = getARouteHandler() }
@@ -775,10 +772,7 @@ module Express {
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
     HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-
-    TrackedRouteHandlerCandidateWithSetup() {
-      this = any(RouteSetup s).getARouteHandler()
-    }
+    TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
 
     override SimpleParameter getRouteHandlerParameter(string kind) {
       result = getRouteHandlerParameter(astNode, kind)
