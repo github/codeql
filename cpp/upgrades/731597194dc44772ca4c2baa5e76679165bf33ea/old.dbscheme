@@ -181,24 +181,17 @@ tokens(
     int endColumn : int ref
 );
 
-/**
- * Information about packages that provide code used during compilation.
- * The `id` is just a unique identifier.
- * The `namespace` is typically the name of the package manager that
- * provided the package (e.g. "dpkg" or "yum").
- * The `package_name` is the name of the package, and `version` is its
- * version (as a string).
+/*
+ * Mapping of header files to packages
  */
+
 external_packages(
     unique int id: @external_package,
-    string namespace : string ref,
+    string namespace : string ref, // "dpkg", "yum", ...
     string package_name : string ref,
     string version : string ref
 );
 
-/**
- * Holds if File `fileid` was provided by package `package`.
- */
 header_to_external_package(
     int fileid : @file ref,
     int package : @external_package ref
@@ -1048,17 +1041,6 @@ exprconv(
 
 compgenerated(unique int id: @element ref);
 
-/**
- * `destructor_call` destructs the `i`'th entity that should be
- * destructed following `element`. Note that entities should be
- * destructed in reverse construction order, so for a given `element`
- * these should be called from highest to lowest `i`.
- */
-synthetic_destructor_call(
-    int element: @element ref,
-    int i: int ref,
-    unique int destructor_call: @routineexpr ref
-);
 
 namespaces(
     unique int id: @namespace,
