@@ -28,7 +28,7 @@
 | Overflow in uncontrolled allocation size (`cpp/uncontrolled-allocation-size`) | More correct results | This query has been reworked so that it can find a wider variety of results. |
 | Resource not released in destructor (`cpp/resource-not-released-in-destructor`) | Fewer false positive results | Resource allocation and deallocation functions are now determined more accurately. |
 | Use of potentially dangerous function | More correct results | Calls to `localtime`, `ctime` and `asctime` are now detected by this query. |
-| Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | More correct results and fewer false positive results | This query now understands non-standard uses of `%L`. In addition, it more accurately identifies wide and non-wide string/character format arguments on different platforms.  Platform detection has also been made more accurate for this query. |
+| Wrong type of arguments to formatting function (`cpp/wrong-type-format-argument`) | More correct results and fewer false positive results | This query now understands non-standard uses of `%L`. In addition, it more accurately identifies wide and non-wide string/character format arguments on different platforms. |
 | Use of potentially dangerous function (`cpp/potentially-dangerous-function`) | Fewer results | Results relating to the standard library `gets` function have been moved into a new query (`cpp/dangerous-function-overflow`). |
 
 ## Changes to QL libraries
