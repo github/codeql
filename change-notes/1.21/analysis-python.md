@@ -19,7 +19,12 @@
 
 ## Changes to code extraction
 
-* *Series of bullet points*
+* The extractor now exits gracefully if passed a non-existent file or directory either as a `--path` option or as a file name.
+
+* The extractor now exits gracefully if an invalid number was given as the `--max-procs` option.
+
+* String literals as expressions within literal string interpolation (f-strings) are now handled correctly.
+
 
 ## Changes to QL libraries
 
