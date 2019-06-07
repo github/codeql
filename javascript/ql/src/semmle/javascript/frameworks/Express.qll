@@ -380,14 +380,14 @@ module Express {
   /**
    * An Express response expression.
    */
-  class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+  class ResponseExpr extends NodeJSLib::ResponseExpr {
     override ResponseSource src;
   }
 
   /**
    * An Express request expression.
    */
-  class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+  class RequestExpr extends NodeJSLib::RequestExpr {
     override RequestSource src;
   }
 
@@ -415,14 +415,9 @@ module Express {
           )
         )
         or
-        exists(string propName |
-          // `req.url` or `req.originalUrl`
-          kind = "url" and
-          this.(DataFlow::PropRef).accesses(request, propName)
-        |
-          propName = "url" or
-          propName = "originalUrl"
-        )
+        // `req.originalUrl`
+        kind = "url" and
+        this.(DataFlow::PropRef).accesses(request, "originalUrl")
         or
         // `req.cookies`
         kind = "cookie" and
@@ -431,11 +426,6 @@ module Express {
       or
       kind = "body" and
       this.asExpr() = rh.getARequestBodyAccess()
-      or
-      exists(RequestHeaderAccess access | this = access |
-        rh = access.getRouteHandler() and
-        kind = "header"
-      )
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -626,9 +616,8 @@ module Express {
     RouteHandler rh;
 
     ResponseSendArgument() {
-      exists(MethodCallExpr mce, string name |
-        mce.calls(rh.getAResponseExpr(), name) and
-        (name = "send" or name = "end") and
+      exists(MethodCallExpr mce |
+        mce.calls(rh.getAResponseExpr(), "send") and
         this = mce.getArgument(0)
       )
     }

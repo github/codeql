@@ -146,7 +146,7 @@ module NodeJSLib {
       )
     }
 
-    override RouteHandler getRouteHandler() { result = request.getRouteHandler() }
+    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
     override string getKind() { result = kind }
   }
@@ -170,7 +170,7 @@ module NodeJSLib {
       result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
     }
 
-    override RouteHandler getRouteHandler() { result = request.getRouteHandler() }
+    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
     override string getKind() { result = "header" }
 
