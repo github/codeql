@@ -229,7 +229,7 @@ module FinallySplitting {
      */
     predicate isExitNode(TryStmt try, Completion c) {
       this = getAFinallyDescendant(try) and
-      this = lastTryStmtFinally(try, c)
+      this = last(try.getFinally(), c)
     }
   }
 
@@ -503,7 +503,7 @@ module ExceptionHandlerSplitting {
     private predicate hasLastExit(ControlFlowElement pred, ThrowCompletion c) {
       this.appliesToPredecessor(pred, c) and
       exists(TryStmt ts, SpecificCatchClause scc, int last |
-        pred = lastTryStmtCatchClause(ts, last, c)
+        pred = last(ts.getCatchClause(last), c)
       |
         ts.getCatchClause(last) = scc and
         scc.isLast() and
@@ -538,7 +538,7 @@ module ExceptionHandlerSplitting {
       not succ = first(any(SpecificCatchClause scc).getBlock()) and
       not succ instanceof GeneralCatchClause and
       not exists(TryStmt ts, SpecificCatchClause scc, int last |
-        pred = lastTryStmtCatchClause(ts, last, c)
+        pred = last(ts.getCatchClause(last), c)
       |
         ts.getCatchClause(last) = scc and
         scc.isLast()
