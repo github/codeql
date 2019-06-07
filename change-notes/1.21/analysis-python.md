@@ -19,11 +19,12 @@
 
 ## Changes to code extraction
 
-* The extractor now exits gracefully if passed a non-existent file or directory either as a `--path` option or as a file name.
-
-* The extractor now exits gracefully if an invalid number was given as the `--max-procs` option.
-
 * String literals as expressions within literal string interpolation (f-strings) are now handled correctly.
+
+* The Python extractor now handles invalid input more robustly. In particular, it exits gracefully when:
+
+    * A non-existent file or directory is specified using the `--path` option, or as a file name.
+    * An invalid number is specified for the `--max-procs` option.
 
 
 ## Changes to QL libraries
