@@ -329,8 +329,12 @@
 | Switch.cs:118:25:118:31 | ... == ... | Switch.cs:118:42:118:42 | 2 | true |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:34:125:34 | access to local variable b | true |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:37:125:46 | ... => ... | false |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:126:13:126:19 | return ...; | true |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:126:13:126:19 | return ...; | true |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:40:131:40 | access to local variable s | true |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:43:131:51 | ... => ... | false |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:56:131:66 | call to method ToString | true |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:56:131:66 | call to method ToString | false |
 | TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:7:25:7:25 | ; | true |
 | VarDecls.cs:25:20:25:20 | access to parameter b | VarDecls.cs:25:24:25:24 | access to local variable x | true |
 | VarDecls.cs:25:20:25:20 | access to parameter b | VarDecls.cs:25:28:25:28 | access to local variable y | false |

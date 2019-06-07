@@ -366,12 +366,15 @@
 | Switch.cs:118:42:118:42 | 2 | Switch.cs:118:35:118:43 | return ...; | 2 |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:9:120:18 | return ...; | 3 |
 | Switch.cs:123:10:123:12 | enter M11 | Switch.cs:125:24:125:29 | Boolean b | 7 |
+| Switch.cs:123:10:123:12 | exit M11 | Switch.cs:123:10:123:12 | exit M11 | 1 |
 | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b | 1 |
 | Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:42:125:46 | false | 3 |
+| Switch.cs:126:13:126:19 | return ...; | Switch.cs:126:13:126:19 | return ...; | 1 |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:28:131:35 | String s | 6 |
+| Switch.cs:131:9:131:67 | return ...; | Switch.cs:129:12:129:14 | exit M12 | 2 |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s | 1 |
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:48:131:51 | null | 3 |
-| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:129:12:129:14 | exit M12 | 3 |
+| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString | 1 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:13:7:22 | ... is ... | 14 |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; | 1 |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | exit M | 4 |

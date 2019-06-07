@@ -1264,6 +1264,7 @@
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:34:125:34 | access to local variable b | semmle.label | match |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:37:125:46 | ... => ... | semmle.label | no-match |
 | Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:29 | Boolean b | semmle.label | successor |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:126:13:126:19 | return ...; | semmle.label | true |
 | Switch.cs:125:37:125:37 | _ | Switch.cs:125:42:125:46 | false | semmle.label | match |
 | Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:37 | _ | semmle.label | successor |
 | Switch.cs:130:5:132:5 | {...} | Switch.cs:131:17:131:53 | ... switch { ... } | semmle.label | successor |
@@ -1272,10 +1273,11 @@
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:40:131:40 | access to local variable s | semmle.label | match |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:43:131:51 | ... => ... | semmle.label | no-match |
 | Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:35 | String s | semmle.label | successor |
-| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:56:131:66 | call to method ToString | semmle.label | successor |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:9:131:67 | return ...; | semmle.label | null |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:56:131:66 | call to method ToString | semmle.label | non-null |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:48:131:51 | null | semmle.label | match |
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:43 | _ | semmle.label | successor |
-| Switch.cs:131:48:131:51 | null | Switch.cs:131:56:131:66 | call to method ToString | semmle.label | successor |
+| Switch.cs:131:48:131:51 | null | Switch.cs:131:9:131:67 | return ...; | semmle.label | null |
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:9:131:67 | return ...; | semmle.label | successor |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:5:9:5:26 | ... ...; | semmle.label | successor |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:25:5:25 | access to parameter o | semmle.label | successor |

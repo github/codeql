@@ -1734,33 +1734,45 @@
 | Switch.cs:120:9:120:18 | return ...; | Switch.cs:120:9:120:18 | return ...; | return |
 | Switch.cs:120:16:120:17 | -... | Switch.cs:120:16:120:17 | -... | normal |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:17:120:17 | 1 | normal |
+| Switch.cs:124:5:127:5 | {...} | Switch.cs:125:34:125:34 | access to local variable b | false/false |
+| Switch.cs:124:5:127:5 | {...} | Switch.cs:125:42:125:46 | false | false/false |
 | Switch.cs:124:5:127:5 | {...} | Switch.cs:126:13:126:19 | return ...; | return |
+| Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:125:34:125:34 | access to local variable b | false/false |
+| Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:125:42:125:46 | false | false/false |
 | Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:126:13:126:19 | return ...; | return |
 | Switch.cs:125:13:125:13 | access to parameter o | Switch.cs:125:13:125:13 | access to parameter o | normal |
-| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:34:125:34 | access to local variable b | normal |
-| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:42:125:46 | false | normal |
+| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:34:125:34 | access to local variable b | false/false |
+| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:34:125:34 | access to local variable b | true/true |
+| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:42:125:46 | false | false/false |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | Boolean b | match |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | Boolean b | no-match |
 | Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:29 | Boolean b | no-match |
-| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:34:125:34 | access to local variable b | normal |
-| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b | normal |
+| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:34:125:34 | access to local variable b | false/false |
+| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:34:125:34 | access to local variable b | true/true |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b | false/false |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b | true/true |
 | Switch.cs:125:37:125:37 | _ | Switch.cs:125:37:125:37 | _ | match |
-| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:42:125:46 | false | normal |
-| Switch.cs:125:42:125:46 | false | Switch.cs:125:42:125:46 | false | normal |
+| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:42:125:46 | false | false/false |
+| Switch.cs:125:42:125:46 | false | Switch.cs:125:42:125:46 | false | false/false |
 | Switch.cs:126:13:126:19 | return ...; | Switch.cs:126:13:126:19 | return ...; | return |
 | Switch.cs:130:5:132:5 | {...} | Switch.cs:131:9:131:67 | return ...; | return |
 | Switch.cs:131:9:131:67 | return ...; | Switch.cs:131:9:131:67 | return ...; | return |
 | Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:131:17:131:17 | access to parameter o | normal |
-| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:40:131:40 | access to local variable s | normal |
-| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:48:131:51 | null | normal |
+| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:40:131:40 | access to local variable s | non-null |
+| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:40:131:40 | access to local variable s | null |
+| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:48:131:51 | null | null |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | String s | match |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | String s | no-match |
 | Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:35 | String s | no-match |
-| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:40:131:40 | access to local variable s | normal |
-| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s | normal |
+| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:40:131:40 | access to local variable s | non-null |
+| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:40:131:40 | access to local variable s | null |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s | non-null |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s | null |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:43:131:43 | _ | match |
-| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:48:131:51 | null | normal |
-| Switch.cs:131:48:131:51 | null | Switch.cs:131:48:131:51 | null | normal |
+| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:48:131:51 | null | null |
+| Switch.cs:131:48:131:51 | null | Switch.cs:131:48:131:51 | null | null |
+| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:40:131:40 | access to local variable s | null |
+| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:48:131:51 | null | null |
 | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString | normal |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:8:13:8:27 | Type t = ... | normal |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:13:5:25 | String s = ... | normal |
