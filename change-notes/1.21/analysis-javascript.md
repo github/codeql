@@ -44,7 +44,7 @@
 | Password in configuration file | Fewer false positive results | This query now excludes passwords that are inserted into the configuration file using a templating mechanism or read from environment variables. Results are no longer shown on LGTM by default. |
 | Replacement of a substring with itself | More results | This rule now considers the flow of regular expressions literals. |
 | Server-side URL redirect       | Fewer false-positive results | This rule now treats URLs as safe in more cases where the hostname cannot be tampered with. |
-| Tainted path | More results and fewer false-positive results | This rule now analyses path manipulation code more precisely. |
+| Tainted path | More results and fewer false-positive results | This rule now analyzes path manipulation code more precisely. |
 | Type confusion through parameter tampering | Fewer false-positive results | This rule now recognizes additional emptiness checks. |
 | Useless assignment to property | Fewer false-positive results | This rule now ignores reads of additional getters. |
 | Unreachable statement | Unreachable throws no longer give an alert | This ignores unreachable throws, as they could be intentional (for example, to placate the TS compiler). |
