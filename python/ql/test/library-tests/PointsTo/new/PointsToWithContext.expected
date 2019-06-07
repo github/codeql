@@ -598,6 +598,73 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | l_calls.py:25 | ControlFlowNode for Attribute() | int 1 | builtin-class int | 25 | runtime |
 | l_calls.py:25 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 25 | runtime |
 | l_calls.py:25 | ControlFlowNode for a | class Owner | builtin-class type | 12 | runtime |
+| l_calls.py:29 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 29 | import |
+| l_calls.py:29 | ControlFlowNode for args | args | builtin-class tuple | 29 | runtime |
+| l_calls.py:29 | ControlFlowNode for f | Function f | builtin-class function | 29 | import |
+| l_calls.py:30 | ControlFlowNode for args | args | builtin-class tuple | 29 | code/l_calls.py:37 from import |
+| l_calls.py:30 | ControlFlowNode for args | args | builtin-class tuple | 29 | code/l_calls.py:42 from import |
+| l_calls.py:30 | ControlFlowNode for args | args | builtin-class tuple | 29 | runtime |
+| l_calls.py:32 | ControlFlowNode for ClassExpr | class E | builtin-class type | 32 | import |
+| l_calls.py:32 | ControlFlowNode for E | class E | builtin-class type | 32 | import |
+| l_calls.py:32 | ControlFlowNode for object | builtin-class object | builtin-class type | 32 | import |
+| l_calls.py:33 | ControlFlowNode for FunctionExpr | Function m | builtin-class function | 33 | import |
+| l_calls.py:33 | ControlFlowNode for args | args | builtin-class tuple | 33 | runtime |
+| l_calls.py:33 | ControlFlowNode for m | Function m | builtin-class function | 33 | import |
+| l_calls.py:34 | ControlFlowNode for self | E() | class E | 38 | code/l_calls.py:38 from import |
+| l_calls.py:34 | ControlFlowNode for self | int 3 | builtin-class int | 39 | code/l_calls.py:39 from import |
+| l_calls.py:34 | ControlFlowNode for self | self | class E | 33 | runtime |
+| l_calls.py:35 | ControlFlowNode for args | args | builtin-class tuple | 33 | code/l_calls.py:38 from import |
+| l_calls.py:35 | ControlFlowNode for args | args | builtin-class tuple | 33 | code/l_calls.py:39 from import |
+| l_calls.py:35 | ControlFlowNode for args | args | builtin-class tuple | 33 | runtime |
+| l_calls.py:37 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 37 | import |
+| l_calls.py:37 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 37 | import |
+| l_calls.py:37 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 37 | import |
+| l_calls.py:37 | ControlFlowNode for f | Function f | builtin-class function | 29 | import |
+| l_calls.py:37 | ControlFlowNode for f() | args | builtin-class tuple | 29 | import |
+| l_calls.py:38 | ControlFlowNode for Attribute | Attribute | builtin-class method | 38 | import |
+| l_calls.py:38 | ControlFlowNode for Attribute() | args | builtin-class tuple | 33 | import |
+| l_calls.py:38 | ControlFlowNode for E | class E | builtin-class type | 32 | import |
+| l_calls.py:38 | ControlFlowNode for E() | E() | class E | 38 | import |
+| l_calls.py:38 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 38 | import |
+| l_calls.py:38 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 38 | import |
+| l_calls.py:38 | ControlFlowNode for IntegerLiteral | int 4 | builtin-class int | 38 | import |
+| l_calls.py:39 | ControlFlowNode for Attribute | Function m | builtin-class function | 33 | import |
+| l_calls.py:39 | ControlFlowNode for Attribute() | args | builtin-class tuple | 33 | import |
+| l_calls.py:39 | ControlFlowNode for E | class E | builtin-class type | 32 | import |
+| l_calls.py:39 | ControlFlowNode for IntegerLiteral | int 3 | builtin-class int | 39 | import |
+| l_calls.py:39 | ControlFlowNode for IntegerLiteral | int 4 | builtin-class int | 39 | import |
+| l_calls.py:39 | ControlFlowNode for IntegerLiteral | int 5 | builtin-class int | 39 | import |
+| l_calls.py:41 | ControlFlowNode for Str | 'a' | builtin-class str | 41 | import |
+| l_calls.py:41 | ControlFlowNode for Str | 'b' | builtin-class str | 41 | import |
+| l_calls.py:41 | ControlFlowNode for Str | 'c' | builtin-class str | 41 | import |
+| l_calls.py:41 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 41 | import |
+| l_calls.py:41 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 | import |
+| l_calls.py:42 | ControlFlowNode for f | Function f | builtin-class function | 29 | import |
+| l_calls.py:42 | ControlFlowNode for f() | args | builtin-class tuple | 29 | import |
+| l_calls.py:42 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 | import |
+| l_calls.py:44 | ControlFlowNode for FunctionExpr | Function g | builtin-class function | 44 | import |
+| l_calls.py:44 | ControlFlowNode for g | Function g | builtin-class function | 44 | import |
+| l_calls.py:45 | ControlFlowNode for a | 'a' | builtin-class str | 51 | code/l_calls.py:51 from import |
+| l_calls.py:47 | ControlFlowNode for ClassExpr | class F | builtin-class type | 47 | import |
+| l_calls.py:47 | ControlFlowNode for F | class F | builtin-class type | 47 | import |
+| l_calls.py:47 | ControlFlowNode for object | builtin-class object | builtin-class type | 47 | import |
+| l_calls.py:48 | ControlFlowNode for FunctionExpr | Function m | builtin-class function | 48 | import |
+| l_calls.py:48 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 48 | import |
+| l_calls.py:48 | ControlFlowNode for m | Function m | builtin-class function | 48 | import |
+| l_calls.py:49 | ControlFlowNode for x | 'a' | builtin-class str | 52 | code/l_calls.py:52 from import |
+| l_calls.py:49 | ControlFlowNode for x | 'b' | builtin-class str | 53 | code/l_calls.py:53 from import |
+| l_calls.py:51 | ControlFlowNode for g | Function g | builtin-class function | 44 | import |
+| l_calls.py:51 | ControlFlowNode for g() | 'a' | builtin-class str | 51 | import |
+| l_calls.py:51 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 | import |
+| l_calls.py:52 | ControlFlowNode for Attribute | Attribute | builtin-class method | 52 | import |
+| l_calls.py:52 | ControlFlowNode for Attribute() | 'a' | builtin-class str | 52 | import |
+| l_calls.py:52 | ControlFlowNode for F | class F | builtin-class type | 47 | import |
+| l_calls.py:52 | ControlFlowNode for F() | F() | class F | 52 | import |
+| l_calls.py:52 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 | import |
+| l_calls.py:53 | ControlFlowNode for Attribute | Function m | builtin-class function | 48 | import |
+| l_calls.py:53 | ControlFlowNode for Attribute() | 'b' | builtin-class str | 53 | import |
+| l_calls.py:53 | ControlFlowNode for F | class F | builtin-class type | 47 | import |
+| l_calls.py:53 | ControlFlowNode for t | Tuple | builtin-class tuple | 41 | import |
 | m_attributes.py:3 | ControlFlowNode for C | class C | builtin-class type | 3 | import |
 | m_attributes.py:3 | ControlFlowNode for ClassExpr | class C | builtin-class type | 3 | import |
 | m_attributes.py:3 | ControlFlowNode for object | builtin-class object | builtin-class type | 3 | import |
