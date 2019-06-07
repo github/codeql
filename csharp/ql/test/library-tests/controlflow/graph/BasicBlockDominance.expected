@@ -722,6 +722,16 @@
 | post | Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:118:25:118:25 | access to parameter s |
 | post | Switch.cs:118:42:118:42 | 2 | Switch.cs:118:42:118:42 | 2 |
 | post | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:17:120:17 | 1 |
+| post | Switch.cs:123:10:123:12 | enter M11 | Switch.cs:123:10:123:12 | enter M11 |
+| post | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b |
+| post | Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:46 | ... => ... |
+| post | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:129:12:129:14 | enter M12 |
+| post | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s |
+| post | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:51 | ... => ... |
+| post | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:129:12:129:14 | enter M12 |
+| post | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:40:131:40 | access to local variable s |
+| post | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:43:131:51 | ... => ... |
+| post | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString |
 | post | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | enter M |
 | post | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; |
 | post | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | enter M |
@@ -2244,6 +2254,18 @@
 | pre | Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:118:42:118:42 | 2 |
 | pre | Switch.cs:118:42:118:42 | 2 | Switch.cs:118:42:118:42 | 2 |
 | pre | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:17:120:17 | 1 |
+| pre | Switch.cs:123:10:123:12 | enter M11 | Switch.cs:123:10:123:12 | enter M11 |
+| pre | Switch.cs:123:10:123:12 | enter M11 | Switch.cs:125:34:125:34 | access to local variable b |
+| pre | Switch.cs:123:10:123:12 | enter M11 | Switch.cs:125:37:125:46 | ... => ... |
+| pre | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b |
+| pre | Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:46 | ... => ... |
+| pre | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:129:12:129:14 | enter M12 |
+| pre | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:40:131:40 | access to local variable s |
+| pre | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:43:131:51 | ... => ... |
+| pre | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:56:131:66 | call to method ToString |
+| pre | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s |
+| pre | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:51 | ... => ... |
+| pre | Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString |
 | pre | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:3:10:3:10 | enter M |
 | pre | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:25:7:25 | ; |
 | pre | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:8:9:8:28 | ... ...; |

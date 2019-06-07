@@ -1257,6 +1257,26 @@
 | Switch.cs:118:42:118:42 | 2 | Switch.cs:118:35:118:43 | return ...; | semmle.label | successor |
 | Switch.cs:120:16:120:17 | -... | Switch.cs:120:9:120:18 | return ...; | semmle.label | successor |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:16:120:17 | -... | semmle.label | successor |
+| Switch.cs:124:5:127:5 | {...} | Switch.cs:125:9:126:19 | if (...) ... | semmle.label | successor |
+| Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:125:13:125:48 | ... switch { ... } | semmle.label | successor |
+| Switch.cs:125:13:125:13 | access to parameter o | Switch.cs:125:24:125:34 | ... => ... | semmle.label | successor |
+| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:13:125:13 | access to parameter o | semmle.label | successor |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:34:125:34 | access to local variable b | semmle.label | match |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:37:125:46 | ... => ... | semmle.label | no-match |
+| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:29 | Boolean b | semmle.label | successor |
+| Switch.cs:125:37:125:37 | _ | Switch.cs:125:42:125:46 | false | semmle.label | match |
+| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:37 | _ | semmle.label | successor |
+| Switch.cs:130:5:132:5 | {...} | Switch.cs:131:17:131:53 | ... switch { ... } | semmle.label | successor |
+| Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:131:28:131:40 | ... => ... | semmle.label | successor |
+| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:17 | access to parameter o | semmle.label | successor |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:40:131:40 | access to local variable s | semmle.label | match |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:43:131:51 | ... => ... | semmle.label | no-match |
+| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:35 | String s | semmle.label | successor |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:56:131:66 | call to method ToString | semmle.label | successor |
+| Switch.cs:131:43:131:43 | _ | Switch.cs:131:48:131:51 | null | semmle.label | match |
+| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:43 | _ | semmle.label | successor |
+| Switch.cs:131:48:131:51 | null | Switch.cs:131:56:131:66 | call to method ToString | semmle.label | successor |
+| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:9:131:67 | return ...; | semmle.label | successor |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:5:9:5:26 | ... ...; | semmle.label | successor |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:25:5:25 | access to parameter o | semmle.label | successor |
 | TypeAccesses.cs:5:13:5:25 | String s = ... | TypeAccesses.cs:6:9:6:24 | ...; | semmle.label | successor |
