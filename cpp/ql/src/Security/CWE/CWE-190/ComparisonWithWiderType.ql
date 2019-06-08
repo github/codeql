@@ -5,14 +5,13 @@
  * @id cpp/comparison-with-wider-type
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @tags reliability
  *       security
  *       external/cwe/cwe-190
  *       external/cwe/cwe-197
  *       external/cwe/cwe-835
- * 
-*/
+ */
 
 import cpp
 import semmle.code.cpp.controlflow.Dominance
