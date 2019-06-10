@@ -31,17 +31,12 @@ The increased precision in tracking of values through `*` arguments may remove f
 Overall the number of true positive results should increase and the number false negative results should decline.
 We welcome feedback on the new implementation, particularly any surprising changes in results.
 
-
 ## New queries
-  | **Query** | **Tags** | **Purpose** |
-  |-----------|----------|-------------|
-  | Accepting unknown SSH host keys when using Paramiko (`py/paramiko-missing-host-key-validation`) | security, external/cwe/cwe-295 | Finds instances where Paramiko is configured to accept unknown host keys. Results are shown on LGTM by default. |
-  | Use of 'return' or 'yield' outside a function (`py/return-or-yield-outside-function`) | reliability, correctness | Finds instances where `return`, `yield`, and `yield from` are used outside a function. Results are not shown on LGTM by default. |
 
-## Changes to existing queries
-
-  | **Query** | **Expected impact** | **Change** |
-  |-----------|---------------------|------------|
+| **Query** | **Tags** | **Purpose** |
+|-----------|----------|-------------|
+| Accepting unknown SSH host keys when using Paramiko (`py/paramiko-missing-host-key-validation`) | security, external/cwe/cwe-295 | Finds instances where Paramiko is configured to accept unknown host keys. Results are shown [on LGTM](https://lgtm.com/rules/1508297729270/) by default. |
+| Use of 'return' or 'yield' outside a function (`py/return-or-yield-outside-function`) | reliability, correctness | Finds instances where `return`, `yield`, and `yield from` are used outside a function. Results are not shown on LGTM by default. |
 
 ## Changes to code extraction
 
@@ -51,8 +46,3 @@ We welcome feedback on the new implementation, particularly any surprising chang
 
     * A non-existent file or directory is specified using the `--path` option, or as a file name.
     * An invalid number is specified for the `--max-procs` option.
-
-
-## Changes to QL libraries
-
-* *Series of bullet points*
