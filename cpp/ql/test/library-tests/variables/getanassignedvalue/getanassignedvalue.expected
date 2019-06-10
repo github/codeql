@@ -7,6 +7,9 @@
 | test.cpp:10:10:10:11 | 13 | test.cpp:6:7:6:11 | ref_v |
 | test.cpp:11:6:11:10 | ... + ... | test.cpp:4:6:4:6 | v |
 | test.cpp:19:32:19:35 | 0.0 | test.cpp:19:27:19:28 | _y |
+| test.cpp:19:42:19:43 | _x | test.cpp:24:8:24:8 | x |
+| test.cpp:19:49:19:50 | _y | test.cpp:24:11:24:11 | y |
+| test.cpp:19:54:19:60 | 0.0 | test.cpp:24:14:24:14 | z |
 | test.cpp:35:16:35:25 | {...} | test.cpp:35:11:35:12 | v1 |
 | test.cpp:35:17:35:17 | 1 | test.cpp:31:6:31:8 | num |
 | test.cpp:35:20:35:24 | One | test.cpp:32:14:32:16 | str |
