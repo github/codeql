@@ -23,12 +23,13 @@ The old API is now deprecated, but will be continued to be supported for at leas
 
 ### Impact on existing queries.
 
-As points-to underpins many queries and provides the call-graph and reachability analysis required for taint-tracking, many queries will have additional results and some may have fewer results.
+As points-to analysis underpins many queries, and provides the call-graph and reachability analysis required for taint-tracking, the results of many queries may change.
 
-New results are a result of the improved reachability analysis and non-local tracking of bound-methods.
-Removed results are a result of more precise tracking of values through `*` arguments.
-The expectation is that number of true positives will increase and the number of false negatives will decline.
-However, this is new code and may still contain errors.
+The improved reachability analysis and non-local tracking of bound methods may identify new results.
+The increased precision in tracking of values through `*` arguments may remove false positive results.
+
+Overall the number of true positive results should increase and the number false negative results should decline.
+We welcome feedback on the new implementation, particularly any surprising changes in results.
 
 
 ## New queries
