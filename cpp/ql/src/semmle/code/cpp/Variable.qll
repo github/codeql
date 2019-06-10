@@ -163,6 +163,14 @@ class Variable extends Declaration, @variable {
   predicate isCompilerGenerated() { compgenerated(underlyingElement(this)) }
 }
 
+class ExtendedField extends Field {
+  override Expr getAnAssignedValue() {
+    exists(AggregateLiteral l |
+      this.getDeclaringType() = l.getType() and result = l.getChild(this.getInitializationOrder())
+    )
+  }
+}
+
 /**
  * A particular declaration or definition of a C/C++ variable.
  */

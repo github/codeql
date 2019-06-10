@@ -32,10 +32,10 @@ struct myStruct1
 	const char *str;
 };
 
-myStruct1 v1 = {1, "One"}; // assigment to `v1`
-myStruct1 v2 = {.num = 2, .str = "Two"}; // assigment to `v2`
+myStruct1 v1 = {1, "One"}; // assigments to `v1`, `num`, `str`
+myStruct1 v2 = {.num = 2, .str = "Two"}; // assigments to `v2`, `num`, `str`
 
-void test2(myStruct1 v = {3, "Three"}) // assignment to `v` (literal `{...}` has no location)
+void test2(myStruct1 v = {3, "Three"}) // assignments to `v` (literal `{...}` has no location), `num`, `str`
 {
 	// ...
 }
@@ -45,7 +45,7 @@ struct myStruct2
 	myStruct1 ms2;
 };
 
-myStruct2 v3 = {{4, "Four"}}; // assigment to `v3`
+myStruct2 v3 = {{4, "Four"}}; // assigments to `v3`, `ms2`, `num`, `str`
 
 // ---
 
