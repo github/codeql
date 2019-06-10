@@ -42,14 +42,22 @@ predicate whitelistFunction(Function f, int arg) {
   (arg = 1 or arg = 2)
 }
 
-predicate whitelisted(FunctionCall fc) {
-  exists(Function f, int arg | f = fc.getTarget() | whitelistFunction(f, arg))
+// we assume that ALL uses of the `_` macro
+// return constant string literals
+predicate underscoreMacro(Expr e) {
+  exists(MacroInvocation mi |
+    mi.getMacroName() = "_" and
+    mi.getExpr() = e
+  )
 }
 
 predicate isNonConst(DataFlow::Node node) {
   exists(Expr e | e = node.asExpr() |
     exists(FunctionCall fc | fc = e.(FunctionCall) |
-      not whitelisted(fc) and not fc.getTarget().hasDefinition()
+      not (
+        whitelistFunction(fc.getTarget(), _) or
+        fc.getTarget().hasDefinition()
+      )
     )
     or
     exists(Parameter p | p = e.(VariableAccess).getTarget().(Parameter) |
@@ -97,10 +105,10 @@ class NonConstFlow extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { isNonConst(source) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(FormattingFunctionCall fc |
-      sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex())
-    )
+    exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
   }
+
+  override predicate isSanitizer(DataFlow::Node node) { underscoreMacro(node.asExpr()) }
 }
 
 from FormattingFunctionCall call, Expr formatString

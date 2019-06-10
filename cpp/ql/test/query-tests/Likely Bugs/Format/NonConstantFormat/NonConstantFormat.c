@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 	else
 		printf("No argument supplied.\n"); // ok
 
-	printf(_("No argument supplied.\n")); // not ok
+	printf(_("No argument supplied.\n")); // ok
 
 	printf(dgettext(NULL, "No argument supplied.\n")); // ok
 
@@ -40,10 +40,10 @@ int main(int argc, char **argv) {
 	printf(gettext("%d arguments\n"), argc-1); // ok
 	printf(any_random_function("%d arguments\n"), argc-1); // not ok
 
-	// Since `_` is mapped to `some_random_function` above,
-	// the following call will be flagged.
+	// Even though `_` is mapped to `some_random_function` above,
+	// the following call should not  be flagged.
 	printf(_(any_random_function("%d arguments\n")),
-			argc-1); // not ok
+			argc-1); // ok
 
 	return 0;
 }
