@@ -170,6 +170,11 @@ module PointsTo {
 
 cached module PointsToInternal {
 
+    pragma[noinline]
+    cached predicate importCtxPointsTo(ControlFlowNode f, ObjectInternal value, ControlFlowNode origin) {
+    	PointsToInternal::pointsTo(f, any(Context ctx | ctx.isImport()), value, origin)
+    }
+
     /** INTERNAL -- Use `f.refersTo(value, origin)` instead. */
     cached predicate pointsTo(ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         points_to_candidate(f, context, value, origin) and
@@ -695,7 +700,7 @@ private module InterModulePointsTo {
     predicate ofInterestInExports(ModuleObjectInternal mod, string name) {
         exists(ImportStarNode imp, ImportStarRefinement def, EssaVariable var |
             imp = def.getDefiningNode() and
-            PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _) and
+            PointsToInternal::importCtxPointsTo(imp.getModule(), mod, _) and
             var = def.getVariable()
             |
             if var.isMetaVariable() then (
@@ -878,7 +883,7 @@ module InterProceduralPointsTo {
     /** Helper for parameter_points_to */
     pragma [noinline]
     private predicate default_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        exists(PointsToContext imp | imp.isImport() | PointsToInternal::pointsTo(def.getDefault(), imp, value, origin)) and
+        PointsToInternal::importCtxPointsTo(def.getDefault(), value, origin) and
         context_for_default_value(def, context)
     }
 
@@ -2198,7 +2203,7 @@ cached module ModuleAttributes {
     private predicate importStarDef(ImportStarRefinement def, EssaVariable input, ModuleObjectInternal mod) {
         exists(ImportStarNode imp |
             def.getVariable().getName() = "$" and imp = def.getDefiningNode() and
-            input = def.getInput() and PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _)
+            input = def.getInput() and PointsToInternal::importCtxPointsTo(imp.getModule(), mod, _)
         )
     }
 
