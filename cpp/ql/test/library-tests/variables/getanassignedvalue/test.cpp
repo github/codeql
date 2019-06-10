@@ -23,3 +23,33 @@ public:
 private:
 	float x, y, z;
 };
+
+// ---
+
+struct myStruct1
+{
+	int num;
+	const char *str;
+};
+
+myStruct1 v1 = {1, "One"}; // assigment to `v1`
+myStruct1 v2 = {.num = 2, .str = "Two"}; // assigment to `v2`
+
+void test2(myStruct1 v = {3, "Three"}) // assignment to `v` (literal `{...}` has no location)
+{
+	// ...
+}
+
+struct myStruct2
+{
+	myStruct1 ms2;
+};
+
+myStruct2 v3 = {{4, "Four"}}; // assigment to `v3`
+
+// ---
+
+int myArray[10] = {1, 2, 3}; // assigment to `myArray`
+char chars1[] = "abc"; // assignment to `chars1` (literal "abc" has no location)
+char chars2[] = {'a', 'b', 'c'}; // assigment to `chars2`
+char *chars3 = "abc"; // assigment to `chars3`
