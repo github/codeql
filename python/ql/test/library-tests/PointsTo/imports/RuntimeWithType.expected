@@ -52,4 +52,6 @@
 | test.py | 24 | ControlFlowNode for argv | int 0 | builtin-class int | ControlFlowNode for IntegerLiteral |
 | test.py | 27 | ControlFlowNode for ImportExpr | Module sys | builtin-class module | ControlFlowNode for ImportExpr |
 | test.py | 31 | ControlFlowNode for argv | list object | builtin-class list | ControlFlowNode for from sys import * |
+| test.py | 33 | ControlFlowNode for ImportExpr | Module socket | builtin-class module | ControlFlowNode for ImportExpr |
+| test.py | 34 | ControlFlowNode for timeout | builtin-class socket.timeout | builtin-class type | ControlFlowNode for from _socket import * |
 | x.py | 2 | ControlFlowNode for ImportExpr | Module sys | builtin-class module | ControlFlowNode for ImportExpr |

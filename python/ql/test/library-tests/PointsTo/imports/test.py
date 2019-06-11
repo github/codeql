@@ -29,3 +29,6 @@ except:
     pass
 
 argv
+
+from socket import *
+timeout

@@ -717,15 +717,28 @@ private module InterModulePointsTo {
             |
             src.declaredInAll(name) and result = true
             or
-            src.declaredInAll(_) and not src.declaredInAll(name) and
+            declared_all_is_simple(src) and
+            not src.declaredInAll(name) and
             ofInterestInExports(mod, name) and result = false
             or
-            not src.declaredInAll(_) and
+            (not src.declaredInAll(name) and not declared_all_is_simple(src))
+            and
             exists(ObjectInternal val |
                 ModuleAttributes::pointsToAtExit(src, name, val, _) |
                 val = ObjectInternal::undefined() and result = false
                 or
                 val != ObjectInternal::undefined() and result = true
+            )
+        )
+    }
+
+    /** Holds if __all__ is declared and not mutated */
+    private predicate declared_all_is_simple(Module m) {
+        exists(AssignStmt a, GlobalVariable all |
+            a.defines(all) and a.getScope() = m and
+            all.getId() = "__all__" and
+            not exists(Attribute attr |
+                all.getALoad() = attr.getObject()
             )
         )
     }
