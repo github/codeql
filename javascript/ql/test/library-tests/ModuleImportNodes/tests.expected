@@ -13,6 +13,7 @@ test_ModuleImportNode
 | moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:11:1:11:3 | mod | mod |
 | moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:13:1:13:3 | mod | mod |
 | moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:15:5:15:7 | mod | mod |
+| process2.js:2:10:2:16 | process | process | process2.js:2:10:2:16 | process | process |
 test_ModuleImportNode_getAConstructorInvocation
 | destructuringES6.js:1:1:1:41 | import  ... ctron'; | destructuringES6.js:2:1:2:19 | new BrowserWindow() |
 | destructuringRequire.js:1:27:1:45 | require('electron') | destructuringRequire.js:2:1:2:19 | new BrowserWindow() |
@@ -22,11 +23,15 @@ test_moduleImport
 | electron | destructuringRequire.js:1:27:1:45 | require('electron') |
 | fs | amd1.js:1:25:1:26 | fs |
 | fs | amd2.js:2:12:2:24 | require('fs') |
+| fs | process2.js:1:1:1:13 | require('fs') |
 | mod | moduleUses.js:1:11:1:24 | require('mod') |
 | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:1:1:1:82 | import  ... tance'; |
 | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName |
 | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName |
 | myRequiredModuleInstance | instanceThroughRequire.js:1:36:1:70 | require ... tance') |
+| process | process2.js:2:10:2:16 | process |
+| process | process.js:1:10:1:27 | require('process') |
+| process | process.js:2:10:2:23 | global.process |
 test_moduleMember
 | electron | BrowserWindow | destructuringES6.js:1:10:1:22 | BrowserWindow |
 | electron | BrowserWindow | destructuringRequire.js:1:9:1:21 | BrowserWindow |
@@ -47,6 +52,10 @@ test_ModuleImportNode_getPath
 | instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName | myNamespaceImportedModuleInstance |
 | instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance |
 | moduleUses.js:1:11:1:24 | require('mod') | mod |
+| process2.js:1:1:1:13 | require('fs') | fs |
+| process2.js:2:10:2:16 | process | process |
+| process.js:1:10:1:27 | require('process') | process |
+| process.js:2:10:2:23 | global.process | process |
 test_ModuleImportNode_getAMethodCall
 | amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
 | amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:29 | fs.read ... a.txt") |
