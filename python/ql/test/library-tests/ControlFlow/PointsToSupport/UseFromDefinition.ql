@@ -1,9 +1,3 @@
-/**
- * @name UseFromDefinition
- * @description Insert description here...
- * @kind table
- * @problem.severity warning
- */
 
 import python
 
