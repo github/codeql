@@ -83,6 +83,10 @@ module LocalFlow {
         scope = e2 and
         isSuccessor = true
         or
+        e1 = e2.(SuppressNullableWarningExpr).getExpr() and
+        scope = e2 and
+        isSuccessor = true
+        or
         e2 = any(ConditionalExpr ce |
             e1 = ce.getThen() or
             e1 = ce.getElse()

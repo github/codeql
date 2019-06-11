@@ -990,3 +990,20 @@ class IndexExpr extends Expr, @index_expr {
 
   override string toString() { result = "^..." }
 }
+
+/**
+ * A nullable warning suppression expression, for example `x!` in
+ * ```
+ * string GetName()
+ * {
+ *     string? x = ...;
+ *     return x!;
+ * }
+ * ```
+ */
+class SuppressNullableWarningExpr extends Expr, @suppress_nullable_warning_expr {
+  /** Gets the expression, for example `x` in `x!`. */
+  Expr getExpr() { result.getParent() = this }
+
+  override string toString() { result = "...!" }
+}
