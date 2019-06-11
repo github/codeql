@@ -9,9 +9,13 @@ class Module extends Module_, Scope, AstNode {
     override string toString() {
         result = this.getKind() + " " + this.getName()
         or
-        /* No name is defined, which means that this is not on an import path. So it must be a script */
+        /* No name is defined, which means that this module is not on an import path. So it must be a script */
         not exists(this.getName()) and not this.isPackage() and
         result = "Script " + this.getFile().getShortName()
+        or
+        /* Package missing name, so just use the path instead */
+        not exists(this.getName()) and this.isPackage() and
+        result = "Package at "  + this.getPath().getAbsolutePath()
     }
 
     /** This method will be deprecated in the next release. Please use `getEnclosingScope()` instead.

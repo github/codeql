@@ -32,6 +32,9 @@ abstract class ModuleObject extends Object {
 
     override string toString() {
         result = "Module " + this.getName()
+        or
+        not exists(this.getName()) and
+        result = this.getModule().toString()
     }
 
     /** Gets the named attribute of this module. Using attributeRefersTo() instead
