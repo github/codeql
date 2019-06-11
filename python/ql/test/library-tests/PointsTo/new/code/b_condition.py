@@ -106,3 +106,10 @@ def not_or_not(*a):
         raise Exception()
     "Hello"
 
+def method_check(x):
+    if x.m():
+        use(x)
+    else:
+        use(x)
+
+

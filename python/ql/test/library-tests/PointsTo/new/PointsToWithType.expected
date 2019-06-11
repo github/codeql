@@ -185,6 +185,8 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | b_condition.py:106 | ControlFlowNode for Exception | builtin-class Exception | builtin-class type | 106 |
 | b_condition.py:106 | ControlFlowNode for Exception() | Exception() | builtin-class Exception | 106 |
 | b_condition.py:107 | ControlFlowNode for Str | 'Hello' | builtin-class str | 107 |
+| b_condition.py:109 | ControlFlowNode for FunctionExpr | Function method_check | builtin-class function | 109 |
+| b_condition.py:109 | ControlFlowNode for method_check | Function method_check | builtin-class function | 109 |
 | d_globals.py:2 | ControlFlowNode for FunctionExpr | Function j | builtin-class function | 2 |
 | d_globals.py:2 | ControlFlowNode for j | Function j | builtin-class function | 2 |
 | d_globals.py:3 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 3 |

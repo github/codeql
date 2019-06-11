@@ -162,6 +162,8 @@
 | Global Variable list | b_condition.py:101 | entry |
 | Global Variable loop | b_condition.py:42 | exit |
 | Global Variable loop | b_condition.py:43 | entry |
+| Global Variable method_check | b_condition.py:42 | exit |
+| Global Variable method_check | b_condition.py:43 | entry |
 | Global Variable not_or_not | b_condition.py:42 | exit |
 | Global Variable not_or_not | b_condition.py:43 | entry |
 | Global Variable object | b_condition.py:0 | entry |
@@ -298,6 +300,10 @@
 | Global Variable use | b_condition.py:88 | exit |
 | Global Variable use | b_condition.py:90 | entry |
 | Global Variable use | b_condition.py:90 | exit |
+| Global Variable use | b_condition.py:109 | entry |
+| Global Variable use | b_condition.py:110 | exit |
+| Global Variable use | b_condition.py:111 | entry |
+| Global Variable use | b_condition.py:113 | entry |
 | Global Variable v2 | b_condition.py:42 | exit |
 | Global Variable v2 | b_condition.py:43 | entry |
 | Global Variable v2 | b_condition.py:44 | exit |
@@ -372,6 +378,12 @@
 | Local Variable x | b_condition.py:88 | exit |
 | Local Variable x | b_condition.py:90 | entry |
 | Local Variable x | b_condition.py:90 | exit |
+| Local Variable x | b_condition.py:109 | entry |
+| Local Variable x | b_condition.py:110 | exit |
+| Local Variable x | b_condition.py:111 | entry |
+| Local Variable x | b_condition.py:111 | exit |
+| Local Variable x | b_condition.py:113 | entry |
+| Local Variable x | b_condition.py:113 | exit |
 | Local Variable y | b_condition.py:5 | entry |
 | Local Variable y | b_condition.py:5 | exit |
 | Local Variable y | b_condition.py:7 | exit |
