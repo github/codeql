@@ -1,4 +1,5 @@
 import csharp
+import semmle.code.csharp.dataflow.Nullness
 
 query predicate suppressNullableWarnings(SuppressNullableWarningExpr e, Expr op) {
   op = e.getExpr()
@@ -14,4 +15,8 @@ query predicate nullableControlFlow(
 ) {
   a.getEnclosingCallable().hasName("TestNullableRefTypes") and
   b = a.getASuccessorByType(t)
+}
+
+query predicate nonNullExpressions(NonNullExpr e) {
+  e.getEnclosingCallable().getName() = "TestNullableRefTypes"
 }

@@ -673,6 +673,8 @@ module Internal {
     or
     e.(Call).getTarget().getSourceDeclaration() instanceof NonNullCallable and
     not e.(QualifiableExpr).isConditional()
+    or
+    e instanceof SuppressNullableWarningExpr
   }
 
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */
