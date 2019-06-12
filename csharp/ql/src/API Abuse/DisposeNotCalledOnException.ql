@@ -54,9 +54,9 @@ private class DisposeCall extends MethodCall {
 
 private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   DataFlow::localFlowStep(nodeFrom, nodeTo) and
-  not exists(AssignableDefinition def, UsingStmt uds |
+  not exists(AssignableDefinition def, UsingStmt us |
     nodeTo.asExpr() = def.getAReachableRead() and
-    def.getTargetAccess() = uds.getAVariableDeclExpr().getAccess()
+    def.getTargetAccess() = us.getAVariableDeclExpr().getAccess()
   )
 }
 
