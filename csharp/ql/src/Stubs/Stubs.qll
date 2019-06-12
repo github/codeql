@@ -505,7 +505,6 @@ private predicate isKeyword(string s) {
   s = "unsafe" or
   s = "ushort" or
   s = "using" or
-  s = "using static" or
   s = "virtual" or
   s = "void" or
   s = "volatile" or
