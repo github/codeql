@@ -37,6 +37,7 @@
 | b_condition.py:0 | Global Variable h | ScopeEntryDefinition |
 | b_condition.py:0 | Global Variable k | ScopeEntryDefinition |
 | b_condition.py:0 | Global Variable loop | ScopeEntryDefinition |
+| b_condition.py:0 | Global Variable method_check | ScopeEntryDefinition |
 | b_condition.py:0 | Global Variable not_or_not | ScopeEntryDefinition |
 | b_condition.py:0 | Global Variable odasa6261 | ScopeEntryDefinition |
 | b_condition.py:0 | Global Variable split_bool1 | ScopeEntryDefinition |
@@ -136,6 +137,13 @@
 | b_condition.py:104 | Local Variable a | PyEdgeRefinement |
 | b_condition.py:105 | Local Variable a | PyEdgeRefinement |
 | b_condition.py:107 | Local Variable a | PyEdgeRefinement |
+| b_condition.py:109 | Global Variable method_check | AssignmentDefinition |
+| b_condition.py:109 | Local Variable x | ParameterDefinition |
+| b_condition.py:109 | Local Variable x | PhiFunction |
+| b_condition.py:111 | Local Variable x | ArgumentRefinement |
+| b_condition.py:111 | Local Variable x | PyEdgeRefinement |
+| b_condition.py:113 | Local Variable x | ArgumentRefinement |
+| b_condition.py:113 | Local Variable x | PyEdgeRefinement |
 | d_globals.py:0 | Global Variable D | ScopeEntryDefinition |
 | d_globals.py:0 | Global Variable Ugly | ScopeEntryDefinition |
 | d_globals.py:0 | Global Variable X | ScopeEntryDefinition |

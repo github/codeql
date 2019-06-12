@@ -139,6 +139,7 @@
 | b_condition.py:106 | ControlFlowNode for Exception | runtime | builtin-class Exception | builtin-class type |
 | b_condition.py:106 | ControlFlowNode for Exception() | runtime | Exception() | builtin-class Exception |
 | b_condition.py:107 | ControlFlowNode for Str | runtime | 'Hello' | builtin-class str |
+| b_condition.py:109 | ControlFlowNode for FunctionExpr | import | Function method_check | builtin-class function |
 | e_temporal.py:2 | ControlFlowNode for ImportExpr | import | Module sys | builtin-class module |
 | e_temporal.py:4 | ControlFlowNode for FunctionExpr | import | Function f | builtin-class function |
 | e_temporal.py:5 | ControlFlowNode for Attribute | code/e_temporal.py:12 from import | list object | builtin-class list |

@@ -1,0 +1,3 @@
+| test.js:4:5:4:22 | firstArg |
+| test.js:4:16:4:22 | args[2] |
+| test.js:5:13:5:20 | firstArg |
