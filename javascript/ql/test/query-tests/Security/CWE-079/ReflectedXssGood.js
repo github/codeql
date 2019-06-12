@@ -42,3 +42,10 @@ app.get('/user/:id', function(req, res) {
     // TODO: do something exciting
     ;
 });
+
+app.get('/echo', function(req, res) {
+	var msg = req.params.msg;
+	res.setHeader('Content-Type', 'application/json');
+	res.setHeader('Content-Length', msg.length);
+	res.end(msg);
+});

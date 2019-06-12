@@ -8,6 +8,7 @@
   - [exec](https://www.npmjs.com/package/exec)
   - [execa](https://www.npmjs.com/package/execa)
   - [exec-async](https://www.npmjs.com/package/exec-async)
+  - [express](https://www.npmjs.com/package/express)
   - [remote-exec](https://www.npmjs.com/package/remote-exec)
   
 ## New queries
