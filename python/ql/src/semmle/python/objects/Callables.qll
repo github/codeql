@@ -270,7 +270,10 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
     }
 
     override predicate neverReturns() {
-        this = Module::named("sys").attr("exit")
+        exists(ModuleObjectInternal sys |
+            sys.getName() = "sys" and
+            sys.attribute("exit", this, _)
+        )
     }
 
     override predicate functionAndOffset(CallableObjectInternal function, int offset) {

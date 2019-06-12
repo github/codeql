@@ -11,7 +11,7 @@ private import semmle.python.types.Builtins
 class PropertyInternal extends ObjectInternal, TProperty {
 
     /** Gets the name of this property */
-    string getName() {
+    override string getName() {
         result = this.getGetter().getName()
     }
 
@@ -172,6 +172,10 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override int length() { none() }
 
+    override string getName() {
+        result = this.getFunction().getName()
+    }
+
 }
 
 class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
@@ -238,5 +242,9 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
     pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     override int length() { none() }
+
+    override string getName() {
+        result = this.getFunction().getName()
+    }
 
 }

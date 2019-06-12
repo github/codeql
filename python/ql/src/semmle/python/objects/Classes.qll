@@ -11,7 +11,7 @@ private import semmle.python.types.Builtins
 /** Class representing classes */
 abstract class ClassObjectInternal extends ObjectInternal {
 
-    string getName() {
+    override string getName() {
         result = this.getClassDeclaration().getName()
     }
 

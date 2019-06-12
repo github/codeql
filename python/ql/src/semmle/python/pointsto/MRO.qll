@@ -25,7 +25,7 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.types.Builtins
 
 
-cached private newtype TClassList = Empty()
+cached newtype TClassList = Empty()
     or
     Cons(ClassObjectInternal head, TClassList tail) {
         required_cons(head, tail)
@@ -80,10 +80,16 @@ class ClassList extends TClassList {
         or
         exists(ClassObjectInternal head |
             head = this.getHead() |
-            this.getTail() = Empty() and result = head.getName()
+            this.getTail() = Empty() and result = className(head)
             or
-            this.getTail() != Empty() and result = head.getName() + ", " + this.getTail().contents()
+            this.getTail() != Empty() and result = className(head) + ", " + this.getTail().contents()
         )
+    }
+
+    private string className(ClassObjectInternal cls) {
+        result = cls.getName()
+        or
+        cls = ObjectInternal::unknownClass() and result = "??"
     }
 
     int length() {
