@@ -54,6 +54,7 @@
 | b_condition.py:0 | h_0 = ScopeEntryDefinition |
 | b_condition.py:0 | k_0 = ScopeEntryDefinition |
 | b_condition.py:0 | loop_0 = ScopeEntryDefinition |
+| b_condition.py:0 | method_check_0 = ScopeEntryDefinition |
 | b_condition.py:0 | not_or_not_0 = ScopeEntryDefinition |
 | b_condition.py:0 | odasa6261_0 = ScopeEntryDefinition |
 | b_condition.py:0 | split_bool1_0 = ScopeEntryDefinition |
@@ -160,6 +161,13 @@
 | b_condition.py:104 | a_1 = Pi(a_0) [false] |
 | b_condition.py:105 | a_2 = Pi(a_1) [false] |
 | b_condition.py:107 | a_3 = Pi(a_2) [false] |
+| b_condition.py:109 | method_check_1 = FunctionExpr |
+| b_condition.py:109 | x_0 = ParameterDefinition |
+| b_condition.py:109 | x_5 = phi(x_2, x_4) |
+| b_condition.py:111 | x_1 = Pi(x_0) [true] |
+| b_condition.py:111 | x_2 = ArgumentRefinement(x_1) |
+| b_condition.py:113 | x_3 = Pi(x_0) [false] |
+| b_condition.py:113 | x_4 = ArgumentRefinement(x_3) |
 | d_globals.py:0 | D_0 = ScopeEntryDefinition |
 | d_globals.py:0 | Ugly_0 = ScopeEntryDefinition |
 | d_globals.py:0 | X_0 = ScopeEntryDefinition |

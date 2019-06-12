@@ -63,6 +63,7 @@
 | b_condition.py:0 | h_1 | Exit node for Module code.b_condition |
 | b_condition.py:0 | k_1 | Exit node for Module code.b_condition |
 | b_condition.py:0 | loop_1 | Exit node for Module code.b_condition |
+| b_condition.py:0 | method_check_1 | Exit node for Module code.b_condition |
 | b_condition.py:0 | not_or_not_1 | Exit node for Module code.b_condition |
 | b_condition.py:0 | odasa6261_1 | Exit node for Module code.b_condition |
 | b_condition.py:0 | split_bool1_1 | Exit node for Module code.b_condition |
@@ -91,6 +92,7 @@
 | b_condition.py:39 | h_0 | ControlFlowNode for thing() |
 | b_condition.py:39 | k_0 | ControlFlowNode for thing() |
 | b_condition.py:39 | loop_0 | ControlFlowNode for thing() |
+| b_condition.py:39 | method_check_0 | ControlFlowNode for thing() |
 | b_condition.py:39 | not_or_not_0 | ControlFlowNode for thing() |
 | b_condition.py:39 | odasa6261_0 | ControlFlowNode for thing() |
 | b_condition.py:39 | split_bool1_0 | ControlFlowNode for thing() |
@@ -105,6 +107,7 @@
 | b_condition.py:43 | h_0 | ControlFlowNode for use() |
 | b_condition.py:43 | k_0 | ControlFlowNode for use() |
 | b_condition.py:43 | loop_0 | ControlFlowNode for use() |
+| b_condition.py:43 | method_check_0 | ControlFlowNode for use() |
 | b_condition.py:43 | not_or_not_0 | ControlFlowNode for use() |
 | b_condition.py:43 | odasa6261_0 | ControlFlowNode for use() |
 | b_condition.py:43 | split_bool1_0 | ControlFlowNode for use() |
@@ -118,6 +121,7 @@
 | b_condition.py:44 | h_0 | ControlFlowNode for use() |
 | b_condition.py:44 | k_0 | ControlFlowNode for use() |
 | b_condition.py:44 | loop_0 | ControlFlowNode for use() |
+| b_condition.py:44 | method_check_0 | ControlFlowNode for use() |
 | b_condition.py:44 | not_or_not_0 | ControlFlowNode for use() |
 | b_condition.py:44 | odasa6261_0 | ControlFlowNode for use() |
 | b_condition.py:44 | split_bool1_0 | ControlFlowNode for use() |
@@ -168,6 +172,10 @@
 | b_condition.py:102 | a_0 | ControlFlowNode for a |
 | b_condition.py:104 | a_1 | ControlFlowNode for a |
 | b_condition.py:105 | a_2 | ControlFlowNode for a |
+| b_condition.py:109 | x_5 | Exit node for Function method_check |
+| b_condition.py:110 | x_0 | ControlFlowNode for x |
+| b_condition.py:111 | x_1 | ControlFlowNode for x |
+| b_condition.py:113 | x_3 | ControlFlowNode for x |
 | d_globals.py:0 | D_1 | Exit node for Module code.d_globals |
 | d_globals.py:0 | Ugly_1 | Exit node for Module code.d_globals |
 | d_globals.py:0 | X_1 | Exit node for Module code.d_globals |

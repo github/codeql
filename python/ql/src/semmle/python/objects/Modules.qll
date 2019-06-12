@@ -155,7 +155,12 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
 
     /** Gets the submodule `name` of this package */
     ModuleObjectInternal submodule(string name) {
-        result.getName() = this.getName() + "." + name
+        exists(string fullName, int lastDotIndex |
+            fullName = result.getName() and
+            lastDotIndex = max(fullName.indexOf(".")) and
+            name = fullName.substring(lastDotIndex + 1, fullName.length()) and
+            this.getName() = fullName.substring(0, lastDotIndex)
+        )
     }
 
     override int intValue() {

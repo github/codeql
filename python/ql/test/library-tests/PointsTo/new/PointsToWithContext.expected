@@ -185,6 +185,8 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | b_condition.py:106 | ControlFlowNode for Exception | builtin-class Exception | builtin-class type | 106 | runtime |
 | b_condition.py:106 | ControlFlowNode for Exception() | Exception() | builtin-class Exception | 106 | runtime |
 | b_condition.py:107 | ControlFlowNode for Str | 'Hello' | builtin-class str | 107 | runtime |
+| b_condition.py:109 | ControlFlowNode for FunctionExpr | Function method_check | builtin-class function | 109 | import |
+| b_condition.py:109 | ControlFlowNode for method_check | Function method_check | builtin-class function | 109 | import |
 | e_temporal.py:2 | ControlFlowNode for ImportExpr | Module sys | builtin-class module | 2 | import |
 | e_temporal.py:2 | ControlFlowNode for sys | Module sys | builtin-class module | 2 | import |
 | e_temporal.py:4 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 4 | import |

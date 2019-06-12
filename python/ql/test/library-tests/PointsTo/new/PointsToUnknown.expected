@@ -114,6 +114,13 @@
 | b_condition.py:99 | ControlFlowNode for use() | 99 |
 | b_condition.py:105 | ControlFlowNode for Subscript | 105 |
 | b_condition.py:105 | ControlFlowNode for UnaryExpr | 105 |
+| b_condition.py:110 | ControlFlowNode for Attribute | 110 |
+| b_condition.py:110 | ControlFlowNode for Attribute() | 110 |
+| b_condition.py:110 | ControlFlowNode for x | 109 |
+| b_condition.py:111 | ControlFlowNode for use | 111 |
+| b_condition.py:111 | ControlFlowNode for use() | 111 |
+| b_condition.py:113 | ControlFlowNode for use | 113 |
+| b_condition.py:113 | ControlFlowNode for use() | 113 |
 | c_tests.py:5 | ControlFlowNode for IfExp | 5 |
 | c_tests.py:5 | ControlFlowNode for cond | 5 |
 | c_tests.py:5 | ControlFlowNode for unknown | 5 |

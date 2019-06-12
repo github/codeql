@@ -50,6 +50,7 @@
 | b_condition.py:0 | Global Variable h | Entry node for Module code.b_condition | definition |
 | b_condition.py:0 | Global Variable k | Entry node for Module code.b_condition | definition |
 | b_condition.py:0 | Global Variable loop | Entry node for Module code.b_condition | definition |
+| b_condition.py:0 | Global Variable method_check | Entry node for Module code.b_condition | definition |
 | b_condition.py:0 | Global Variable not_or_not | Entry node for Module code.b_condition | definition |
 | b_condition.py:0 | Global Variable odasa6261 | Entry node for Module code.b_condition | definition |
 | b_condition.py:0 | Global Variable split_bool1 | Entry node for Module code.b_condition | definition |
@@ -115,3 +116,7 @@
 | b_condition.py:101 | Global Variable not_or_not | ControlFlowNode for not_or_not | definition |
 | b_condition.py:101 | Local Variable a | ControlFlowNode for a | definition |
 | b_condition.py:101 | Local Variable a | Entry node for Function not_or_not | definition |
+| b_condition.py:109 | Global Variable method_check | ControlFlowNode for method_check | definition |
+| b_condition.py:109 | Local Variable x | ControlFlowNode for x | definition |
+| b_condition.py:111 | Local Variable x | ControlFlowNode for use() | refinement |
+| b_condition.py:113 | Local Variable x | ControlFlowNode for use() | refinement |
