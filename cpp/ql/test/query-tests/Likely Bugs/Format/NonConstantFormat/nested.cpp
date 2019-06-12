@@ -18,7 +18,7 @@ extern "C" int snprintf ( char * s, int n, const char * format, ... );
 struct A {
   void do_print(const char *fmt0) {
     char buf[32];
-    snprintf(buf, 32, fmt0); // BAD [FALSE POSITIVE]
+    snprintf(buf, 32, fmt0); // GOOD [FALSE POSITIVE]
   }
 };
 
@@ -39,7 +39,7 @@ struct C {
 
 void foo(void) {
   C c;
-  c.do_some_printing(c.ext_fmt_str()); // GOOD [NOT DETECTED]
+  c.do_some_printing(c.ext_fmt_str()); // BAD [NOT DETECTED]
 }
 
 struct some_class {
@@ -54,7 +54,7 @@ struct debug_ {
         va_list args)
     {
         char str[4096];
-        int length = _vsnprintf_s(str, sizeof(str), 0, fmt, args);
+        int length = _vsnprintf_s(str, sizeof(str), 0, fmt, args); // GOOD
         if (length > 0)
         {
             return 0;
