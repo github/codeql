@@ -1,5 +1,6 @@
 import python
 private import semmle.python.pointsto.PointsTo
+private import semmle.python.objects.TObject
 
 /** An expression */
 class Expr extends Expr_, AstNode {
@@ -73,9 +74,9 @@ class Expr extends Expr_, AstNode {
 
     /** Gets what this expression might "refer-to". Performs a combination of localized (intra-procedural) points-to
      *  analysis and global module-level analysis. This points-to analysis favours precision over recall. It is highly
-     *  precise, but may not provide information for a significant number of flow-nodes. 
+     *  precise, but may not provide information for a significant number of flow-nodes.
      *  If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
-     * NOTE: For complex dataflow, involving multiple stages of points-to analysis, it may be more precise to use 
+     * NOTE: For complex dataflow, involving multiple stages of points-to analysis, it may be more precise to use
      * `ControlFlowNode.refersTo(...)` instead.
      */
     predicate refersTo(Object obj, ClassObject cls, AstNode origin) {
@@ -88,8 +89,8 @@ class Expr extends Expr_, AstNode {
         this.getAFlowNode().refersTo(context, obj, cls, origin.getAFlowNode())
     }
 
-    /** Whether this expression might "refer-to" to `value` which is from `origin` 
-     * Unlike `this.refersTo(value, _, origin)`, this predicate includes results 
+    /** Whether this expression might "refer-to" to `value` which is from `origin`
+     * Unlike `this.refersTo(value, _, origin)`, this predicate includes results
      * where the class cannot be inferred.
      */
     pragma[nomagic]
@@ -180,7 +181,7 @@ class Call extends Call_ {
 
     /* Backwards compatibility */
 
-    /** Gets the nth keyword argument of this call expression, provided it is not preceded by a double-starred argument. 
+    /** Gets the nth keyword argument of this call expression, provided it is not preceded by a double-starred argument.
      * This exists primarily for backwards compatibility. You are recommended to use
      * Call.getNamedArg(index) instead.
      * */
@@ -188,7 +189,7 @@ class Call extends Call_ {
         result = this.getNamedArg(index) and not exists(DictUnpacking d, int lower | d = this.getNamedArg(lower) and lower < index)
     }
 
-    /** Gets a keyword argument of this call expression, provided it is not preceded by a double-starred argument. 
+    /** Gets a keyword argument of this call expression, provided it is not preceded by a double-starred argument.
      * This exists primarily for backwards compatibility. You are recommended to use
      * Call.getANamedArg() instead.
      * */
@@ -326,6 +327,10 @@ class Bytes extends StrConst {
         )
     }
 
+    override Value getLiteralValue() {
+        result = TBytes(this.getText())
+    }
+
 }
 
 /** An ellipsis expression, such as `...` */
@@ -342,11 +347,12 @@ class Ellipsis extends Ellipsis_ {
  *  and numeric literals.
  */
 abstract class ImmutableLiteral extends Expr {
- 
+
     abstract Object getLiteralObject();
 
     abstract boolean booleanValue();
 
+    abstract Value getLiteralValue();
 }
 
 /** A numerical constant expression, such as `7` or `4.2` */
@@ -358,7 +364,7 @@ abstract class Num extends Num_, ImmutableLiteral {
 
     /* We want to declare this abstract, but currently we cannot. */
     override string toString() {
-        none() 
+        none()
     }
 
 }
@@ -383,7 +389,11 @@ class IntegerLiteral extends Num {
     override Object getLiteralObject() {
         py_cobjecttypes(result, theIntType()) and py_cobjectnames(result, this.getN())
         or
-        py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, this.getN())   
+        py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, this.getN())
+    }
+
+    override Value getLiteralValue() {
+        result = TInt(this.getValue())
     }
 
     override boolean booleanValue() {
@@ -411,7 +421,7 @@ class FloatLiteral extends Num {
     }
 
     override Object getLiteralObject() {
-        py_cobjecttypes(result, theFloatType()) and py_cobjectnames(result, this.getN())   
+        py_cobjecttypes(result, theFloatType()) and py_cobjectnames(result, this.getN())
     }
 
     override boolean booleanValue() {
@@ -421,6 +431,10 @@ class FloatLiteral extends Num {
         this.getValue() = -0.0 and result = false
         or
         this.getValue() != 0.0 and this.getValue() != -0.0 and result = true
+    }
+
+    override Value getLiteralValue() {
+        result = TFloat(this.getValue())
     }
 
 }
@@ -443,7 +457,11 @@ class ImaginaryLiteral extends Num {
     }
 
     override Object getLiteralObject() {
-        py_cobjecttypes(result, theComplexType()) and py_cobjectnames(result, this.getN())   
+        py_cobjecttypes(result, theComplexType()) and py_cobjectnames(result, this.getN())
+    }
+
+    override Value getLiteralValue() {
+        none()
     }
 
     override boolean booleanValue() {
@@ -479,6 +497,10 @@ class Unicode extends StrConst {
             u_unquoted = this.getS() |
             result = "u'" + u_unquoted + "'"
         )
+    }
+
+    override Value getLiteralValue() {
+        result = TUnicode(this.getText())
     }
 
 }
@@ -694,6 +716,8 @@ class StrConst extends Str_, ImmutableLiteral {
 
     override Object getLiteralObject() { none() }
 
+    override Value getLiteralValue() { none() }
+
 }
 
 private predicate name_consts(Name_ n, string id) {
@@ -743,11 +767,15 @@ class True extends BooleanLiteral {
     }
 
     override Object getLiteralObject() {
-        name_consts(this, "True") and result = theTrueObject() 
+        name_consts(this, "True") and result = theTrueObject()
+    }
+
+    override Value getLiteralValue() {
+        result = TTrue()
     }
 
     override boolean booleanValue() {
-        result = true 
+        result = true
     }
 
 }
@@ -767,6 +795,10 @@ class False extends BooleanLiteral {
         result = false
     }
 
+    override Value getLiteralValue() {
+        result = TFalse()
+    }
+
 }
 
 /** `None` */
@@ -782,6 +814,10 @@ class None extends NameConstant {
 
     override boolean booleanValue() {
         result = false
+    }
+
+    override Value getLiteralValue() {
+        result = TNone()
     }
 
 }
