@@ -6,12 +6,12 @@
   <include src="LeapYear.qhelp" />
 
 <p>This query helps to detect when a developer allocates an array or other fixed-length data structure such as <code>std::vector</code> with 365 elements – one for each day of the year.</p>
-<p>Since leap years have 366 days, there will be no allocated element on December 31st at the end of a leap year; which will lead to a buffer overflow on a leap-year.</p>
+<p>Since leap years have 366 days, there will be no allocated element on December 31st at the end of a leap year; which will lead to a buffer overflow on a leap year.</p>
 
 </overview>
 <recommendation>
-<p>When allocating memory for storing elements for each day of the year, ensure that the correct amount of elements are being allocated</p>
-<p>It is also highly recommended to compile teh code with array-bounds checking enabled whenever possible.</p>
+<p>When allocating memory for storing elements for each day of the year, ensure that the correct number of elements are allocated.</p>
+<p>It is also highly recommended to compile the code with array-bounds checking enabled whenever possible.</p>
 
 </recommendation>
 <example>

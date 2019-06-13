@@ -33,4 +33,4 @@ where
         and cc.getTarget().hasName("vector")
         and cc.getArgument(0).getValue().toInt() = 365
     )
-select element, "There is an array or std::vector allocation with a hardcoded set of 365 elements, which may indicate number of days of days in a year without considering leap year scenarios"
+select element, "There is an array or std::vector allocation with a hard-coded set of 365 elements, which may indicate the number of days in a year without considering leap year scenarios."

@@ -1,5 +1,5 @@
 /**
- * Provides a library for helping create leap year realted queries
+ * Provides a library for helping create leap year related queries
  */
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
@@ -8,7 +8,6 @@ import semmle.code.cpp.commons.DateTime
 
 /**
  * Get the top-level BinaryOperation enclosing the expression e
- * Not 
  */
 BinaryOperation getATopLevelBinaryOperationExpression(Expr e)
 {
@@ -73,7 +72,7 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
    * Holds if the field access is a modification, 
    * and it involves an arithmetic operation. 
    * In order to avoid false positives, the operation does not includes values that are normal for year normalization.
-   *     
+   *
    * 1900 - struct tm counts years since 1900
    * 1980/80 -  FAT32 epoch
    */
