@@ -392,23 +392,24 @@ BuiltinModuleObject theSysModuleObject() {
     result.asBuiltin() = Builtin::special("sys")
 }
 
-/** DEPRECATED -- Use `Object::builtin(name)` instead. */
+/** DEPRECATED -- Use `Value::named(name)` instead. */
 deprecated
 Object builtin_object(string name) {
     result = Object::builtin(name)
 }
 
-/** The built-in object None */
+
+/** DEPRECATED -- Use `Value::named("None")` instead. */
 Object theNoneObject() {
     result.asBuiltin() = Builtin::special("None")
 }
 
-/** The built-in object True */
+/** DEPRECATED -- Use `Value::named("True")` instead. */
 Object theTrueObject() {
     result.asBuiltin() = Builtin::special("True")
 }
 
-/** The built-in object False */
+/** DEPRECATED -- Use `Value::named("False")` instead. */
 Object theFalseObject() {
     result.asBuiltin() = Builtin::special("False")
 }
