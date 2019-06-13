@@ -30,6 +30,8 @@ abstract class SequenceObjectInternal extends ObjectInternal {
 
     pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
+    override string getName() { none() }
+
 }
 
 abstract class TupleObjectInternal extends SequenceObjectInternal {

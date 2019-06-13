@@ -10,9 +10,6 @@ private import semmle.python.types.Builtins
 /** A class representing modules */
 abstract class ModuleObjectInternal extends ObjectInternal {
 
-    /** Gets the name of this module */
-    abstract string getName();
-
     /** Gets the source scope of this module, if it has one. */
     abstract Module getSourceModule();
 
@@ -407,6 +404,9 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
     override predicate isMissing() {
         any()
     }
+
+    /* We know what this is called, but not its innate name */
+    override string getName() { none() }
 
 }
 

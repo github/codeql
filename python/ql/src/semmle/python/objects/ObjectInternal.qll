@@ -161,6 +161,12 @@ class ObjectInternal extends TObject {
         none()
     }
 
+    /** Gets the name of this of this object if it has a meaningful name.
+     * Note that the name of an object is not necessarily the name by which it is called
+     * For example the function named `posixpath.join` will be called `os.path.join`.
+     */
+    abstract string getName();
+
 }
 
 
@@ -240,6 +246,9 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
 
     override int length() { none() }
 
+    override string getName() {
+        result = this.getBuiltin().getName()
+    }
 }
 
 
@@ -314,6 +323,8 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     override int length() { result = -1 }
+
+    override string getName() { none() }
 
 }
 
@@ -390,6 +401,8 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     override int length() { none() }
+
+    override string getName() { none() }
 
 }
 

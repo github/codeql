@@ -7,8 +7,6 @@ class UnknownType extends UnknownClassInternal {
 
     override string toString() { result = "*UNKNOWN TYPE" }
 
-    override string getName() { result = "UNKNOWN" }
-
 }
 
 from ClassObject cls
