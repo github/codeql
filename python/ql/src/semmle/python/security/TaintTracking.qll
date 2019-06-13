@@ -88,6 +88,7 @@
 
 import python
 private import semmle.python.pointsto.Filters as Filters
+private import semmle.python.objects.ObjectInternal
 
 /** A 'kind' of taint. This may be almost anything,
  * but it is typically something like a "user-defined string".
@@ -199,7 +200,7 @@ class SequenceKind extends CollectionKind {
             mod.getOp() instanceof Mod and
             mod.getAnOperand() = fromnode and
             result = this.getItem() and
-            result.getType() = Value::named("str")
+            result.getType() = ObjectInternal::builtin("str")
         )
     }
 
@@ -284,7 +285,7 @@ module DictKind {
     predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
         TaintFlowImplementation::copyCall(fromnode, tonode)
         or
-        tonode.(CallNode).getFunction().pointsTo(Value::named("dict")) and
+        tonode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
         tonode.(CallNode).getArg(0) = fromnode
     }
 
@@ -982,7 +983,7 @@ library module TaintFlowImplementation {
     pragma [noinline]
     predicate getattr_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, CallNode tonode) {
         exists(ControlFlowNode arg, string name |
-            tonode.getFunction().pointsTo(Value::named("getattr")) and
+            tonode.getFunction().pointsTo(ObjectInternal::builtin("getattr")) and
             arg = tonode.getArg(0) and
             name = tonode.getArg(1).getNode().(StrConst).getText() and
             arg = fromnode.getNode() and
@@ -1372,7 +1373,7 @@ library module TaintFlowImplementation {
             tonode.getArg(0) = fromnode
         )
         or
-        tonode.getFunction().pointsTo(Value::named("reversed")) and
+        tonode.getFunction().pointsTo(ObjectInternal::builtin("reversed")) and
         tonode.getArg(0) = fromnode
     }
 
@@ -1635,7 +1636,7 @@ pragma [noinline]
 private predicate dict_construct(ControlFlowNode itemnode, ControlFlowNode dictnode) {
     dictnode.(DictNode).getAValue() = itemnode
     or
-    dictnode.(CallNode).getFunction().pointsTo(Value::named("dict")) and
+    dictnode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
     dictnode.(CallNode).getArgByName(_) = itemnode
 }
 
@@ -1658,11 +1659,11 @@ private predicate sequence_call(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getArg(0) = fromnode and
     exists(ControlFlowNode cls |
         cls = tonode.getFunction() |
-        cls.pointsTo(Value::named("list"))
+        cls.pointsTo(ObjectInternal::builtin("list"))
         or
-        cls.pointsTo(Value::named("tuple"))
+        cls.pointsTo(ObjectInternal::builtin("tuple"))
         or
-        cls.pointsTo(Value::named("set"))
+        cls.pointsTo(ObjectInternal::builtin("set"))
     )
 }
 
