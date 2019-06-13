@@ -162,11 +162,7 @@ module Pruner {
         TIsNone(boolean b) { b = true or b = false }
         or
         TConstrainedByConstant(CompareOp op, int k) {
-            exists(Compare comp, Cmpop cop, IntegerLiteral l |
-                comp.compares(_, cop, l) and
-                l.getValue() = k and
-                op.forOp(cop)
-            )
+            int_test(_, _, op, k)
             or
             exists(Assign a | a.getValue().(IntegerLiteral).getValue() = k) and op = eq()
         }
@@ -416,7 +412,7 @@ module Pruner {
         )
     }
 
-    private Constraint constraintFromTest(SsaVariable var, UnprunedCfgNode node) {
+    Constraint constraintFromTest(SsaVariable var, UnprunedCfgNode node) {
         py_ssa_use(node, var) and result = TTruthy(true)
         or
         exists(boolean b |
@@ -443,13 +439,20 @@ module Pruner {
         )
     }
 
-    predicate int_test(UnprunedCompareNode test, SsaVariable var, CompareOp op, int k) {
+    predicate int_test(UnprunedCfgNode test, SsaVariable var, CompareOp op, int k) {
         exists(UnprunedCfgNode left, UnprunedCfgNode right, Cmpop cop |
+            test.(UnprunedCompareNode).operands(left, cop, right)
+            |
+            op.forOp(cop) and
             py_ssa_use(left, var) and
-            test.operands(left, cop, right) and
-            right.getNode().(IntegerLiteral).getValue() = k and
-            op.forOp(cop)
+            right.getNode().(IntegerLiteral).getValue() = k
+            or
+            op.reverse().forOp(cop) and
+            py_ssa_use(right, var) and
+            left.getNode().(IntegerLiteral).getValue() = k
         )
+        or
+        int_test(test.(UnprunedNot).getOperand(), var, op.invert(), k)
     }
 
     predicate int_assignment(UnprunedCfgNode asgn, SsaVariable var, CompareOp op, int k) {

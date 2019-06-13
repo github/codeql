@@ -190,3 +190,22 @@ def func2():
             except IOError:
                 true12 = 0
                 count
+
+def inequality1(x):
+    if x < 4:
+        return
+    if x < 4:
+        count
+
+def inequality2(x):
+    if x < 4:
+        return
+    if not x >= 4:
+        count
+
+def reversed_inequality(x):
+    if x < 4:
+        return
+    if 4 > x:
+        count
+
