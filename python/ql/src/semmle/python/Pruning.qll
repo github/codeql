@@ -190,7 +190,7 @@ module Pruner {
          * same variable.
          * For example `x > 0` implies that `not bool(x)` is `False`.
          */
-        abstract predicate impliesFalse(Constraint other);
+        abstract predicate contradicts(Constraint other);
 
     }
 
@@ -279,13 +279,14 @@ module Pruner {
             value = this.booleanValue()
         }
 
-        override predicate impliesFalse(Constraint other) {
+        override predicate contradicts(Constraint other) {
             other.constrainsVariableToBe(this.booleanValue().booleanNot())
         }
 
     }
 
-    /** A constraint that the variable is None `(var is None) is True` or not None `(var is None) is False` */
+    /** A constraint that the variable is None `(var is None) is True` or not None `(var is None) is False`.
+     * This includes the `is not` operator, `x is not None` being equivalent to `not x is None` */
     class IsNone extends Constraint, TIsNone {
 
         private boolean isNone() {
@@ -306,7 +307,7 @@ module Pruner {
             value = false and this.isNone() = true
         }
 
-        override predicate impliesFalse(Constraint other) {
+        override predicate contradicts(Constraint other) {
             other = TIsNone(this.isNone().booleanNot())
             or
             this.isNone() = true and other = TTruthy(true)
@@ -351,7 +352,7 @@ module Pruner {
             )
         }
 
-        override predicate impliesFalse(Constraint other) {
+        override predicate contradicts(Constraint other) {
             exists(boolean b |
                 this.constrainsVariableToBe(b) and other.constrainsVariableToBe(b.booleanNot())
             )
@@ -481,7 +482,7 @@ module Pruner {
         module_import(asgn, var) and result = true
     }
 
-    /** Gets the constraint on `var` resulting from the an assignment in `asgn` */
+    /** Gets the constraint on `var` resulting from the assignment in `asgn` */
     Constraint constraintFromAssignment(SsaVariable var, UnprunedBasicBlock asgn) {
         exists(CompareOp op, int k |
             int_assignment(asgn.getANode(), var, op, k) and
@@ -536,7 +537,7 @@ module Pruner {
     predicate unreachableEdge(UnprunedBasicBlock pred, UnprunedBasicBlock succ) {
         exists(Constraint pre, Constraint cond |
             controllingConditions(pred, succ, pre, cond) and
-            impliesFalse(pre, cond)
+            contradicts(pre, cond)
         )
         or
         unreachableBB(pred) and succ = pred.getASuccessor()
@@ -545,8 +546,8 @@ module Pruner {
     }
 
     /* Helper for `unreachableEdge` */
-    private predicate impliesFalse(Constraint a, Constraint b) {
-        a.impliesFalse(b) or
+    private predicate contradicts(Constraint a, Constraint b) {
+        a.contradicts(b) or
         a.(ConstrainedByConstant).minValue() > b.(ConstrainedByConstant).maxValue() or
         a.(ConstrainedByConstant).maxValue() < b.(ConstrainedByConstant).minValue()
     }

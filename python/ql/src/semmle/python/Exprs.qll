@@ -466,9 +466,9 @@ class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
     }
 
     override Object getLiteralObject() {
-        py_cobjecttypes(result, theIntType()) and py_cobjectnames(result, "-" + this.getOperand().(IntegerLiteral).getN())
-        or
-        py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, "-" + this.getOperand().(IntegerLiteral).getN())
+        (py_cobjecttypes(result, theIntType()) or  py_cobjecttypes(result, theLongType()))
+        and
+        py_cobjectnames(result, "-" + this.getOperand().(IntegerLiteral).getN())
     }
 
 }
