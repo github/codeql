@@ -4,6 +4,7 @@ private import semmle.python.objects.Instances
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
+private import semmle.python.objects.ObjectInternal
 
 
 /** A class whose instances represents Python classes.
@@ -99,7 +100,7 @@ class ClassObject extends Object {
 
     /** Returns an attribute declared on this class (not on a super-class) */
     Object declaredAttribute(string name) {
-        exists(Value val |
+        exists(ObjectInternal val |
             Types::declaredAttribute(theClass(), name, val, _) and
             result = val.getSource()
         )
@@ -113,7 +114,7 @@ class ClassObject extends Object {
     /** Returns an attribute as it would be when looked up at runtime on this class.
       Will include attributes of super-classes */
     Object lookupAttribute(string name) {
-        exists(Value val |
+        exists(ObjectInternal val |
             theClass().lookup(name, val, _) and
             result = val.getSource()
         )
@@ -125,7 +126,7 @@ class ClassObject extends Object {
 
     /** Looks up an attribute by searching this class' MRO starting at `start` */
     Object lookupMro(ClassObject start, string name) {
-        exists(ClassObjectInternal other, ClassObjectInternal decl, Value val |
+        exists(ClassObjectInternal other, ClassObjectInternal decl, ObjectInternal val |
             other.getSource() = start and
             decl = Types::getMro(theClass()).startingAt(other).findDeclaringClass(name) and
             Types::declaredAttribute(decl, name, val, _) and
@@ -140,7 +141,7 @@ class ClassObject extends Object {
 
     /** Whether the named attribute refers to the object, class and origin */
     predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
-        exists(Value val, CfgOrigin valorig |
+        exists(ObjectInternal val, CfgOrigin valorig |
             theClass().lookup(name, val, valorig) and
             obj = val.getSource() and
             cls = val.getClass().getSource() and

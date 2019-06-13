@@ -144,7 +144,7 @@ abstract class TaintKind extends string {
      * the `result` would be `theStrType()`.
      */
     ClassValue getType() {
-        result.getSource() = this.getClass()
+        result.(ClassObjectInternal).getSource() = this.getClass()
     }
 
     /** Gets the boolean values (may be one, neither, or both) that

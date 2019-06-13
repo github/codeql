@@ -1142,6 +1142,7 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | t_type.py:7 | ControlFlowNode for sys | Module sys | builtin-class module | 1 | import |
 | t_type.py:7 | ControlFlowNode for type | builtin-class type | builtin-class type | 7 | import |
 | t_type.py:7 | ControlFlowNode for type() | builtin-class module | builtin-class type | 7 | import |
+| t_type.py:8 | ControlFlowNode for unknown | ImportMember | *UNKNOWN TYPE* | 8 | import |
 | t_type.py:9 | ControlFlowNode for type | builtin-class type | builtin-class type | 9 | import |
 | t_type.py:9 | ControlFlowNode for type() | *UNKNOWN TYPE* | *UNKNOWN TYPE* | 9 | import |
 | t_type.py:10 | ControlFlowNode for Dict | Dict | builtin-class dict | 10 | import |

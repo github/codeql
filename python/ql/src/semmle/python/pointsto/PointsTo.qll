@@ -141,7 +141,7 @@ module PointsTo {
         )
         or
         not f.isParameter() and
-        exists(Value value |
+        exists(ObjectInternal value |
             PointsToInternal::pointsTo(f.(DefinitionNode).getValue(), context, value, origin) and
             cls = value.getClass().getSource() |
             obj = value.getSource() or
@@ -151,7 +151,7 @@ module PointsTo {
 
     deprecated predicate
     ssa_variable_points_to(EssaVariable var, PointsToContext context, Object obj, ClassObject cls, CfgOrigin origin) {
-        exists(Value value |
+        exists(ObjectInternal value |
             PointsToInternal::variablePointsTo(var, context, value, origin) and
             cls = value.getClass().getSource() |
             obj = value.getSource()
@@ -160,8 +160,8 @@ module PointsTo {
 
     deprecated
     CallNode get_a_call(Object func, PointsToContext context) {
-        exists(Value value |
-            result = value.getACall(context) and
+        exists(ObjectInternal value |
+            result = value.(Value).getACall(context) and
             func = value.getSource()
         )
     }
