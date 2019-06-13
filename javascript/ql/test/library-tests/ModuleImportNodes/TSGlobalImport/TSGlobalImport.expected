@@ -1,0 +1,6 @@
+| client1.ts:4:28:4:29 | F1 | framework1 |
+| client1.ts:6:9:6:11 | net | net |
+| client2.ts:4:28:4:29 | F2 | framework2 |
+| client2_lazy.ts:4:28:4:29 | F2 | framework2 |
+| declare-module-client2.ts:3:1:3:22 | import  ...  'foo'; | foo |
+| declare-module-client.ts:3:1:3:22 | import  ...  'foo'; | foo |

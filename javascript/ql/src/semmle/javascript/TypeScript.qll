@@ -1475,6 +1475,41 @@ class ExternalModuleScope extends @externalmodulescope, Scope {
 }
 
 /**
+ * TypeScript import declared in an explicit augmentation to global, 
+ * in the form of a variable of typeof the import.
+ * For example:
+ * import * as net_outer from "net"
+ * declare global {
+ * 		var net: typeof net_outer
+ * }
+ * 
+ * var s = net.createServer(); // this reference to net is an import
+ * 
+ * This import pattern was observed when analyzing the package web-component-tester
+ * https://www.npmjs.com/package/web-component-tester
+ */
+class TSGlobalDeclImport extends DataFlow::ModuleImportNode::Range {
+  string path;
+
+  TSGlobalDeclImport() {
+    exists(LocalVarTypeAccess q, ImportDeclaration i |
+      q.getContainer() instanceof GlobalAugmentationDeclaration and
+      i.(BulkImportDeclaration).getLocal().getVariable() = q.getVariable() and
+      path = i.getImportedPath().getValue() and
+      this = DataFlow::globalVarRef(q
+              .getEnclosingStmt()
+              .(VarDeclStmt)
+              .getADecl()
+              .getBindingPattern()
+              .getAVariable()
+              .getName())
+    )
+  }
+
+  override string getPath() { result = path }
+}
+
+/**
  * A TypeScript comment of one of the two forms:
  * ```
  * /// <reference path="FILE.d.ts"/>
