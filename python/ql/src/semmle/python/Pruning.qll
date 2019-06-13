@@ -181,7 +181,7 @@ module Pruner {
         abstract Constraint invert();
 
         /** Holds if this constraint constrains the "truthiness" of the variable.
-         * That is, for a variable `var` constrainted by this constraint
+         * That is, for a variable `var` constrained by this constraint
          * `bool(var) is value`
          */
         abstract predicate constrainsVariableToBe(boolean value);
@@ -341,8 +341,6 @@ module Pruner {
             value = true and (
                 this.getOp() = eq() and this.intValue() != 0
                 or
-                this.getOp() = ne() and this.intValue() = 0
-                or
                 this.getOp() = lt() and this.intValue() <= 0
                 or
                 this.getOp() = le() and this.intValue() < 0
@@ -355,7 +353,7 @@ module Pruner {
 
         override predicate impliesFalse(Constraint other) {
             exists(boolean b |
-                this.constrainsVariableToBe(b) and other = TTruthy(b.booleanNot())
+                this.constrainsVariableToBe(b) and other.constrainsVariableToBe(b.booleanNot())
             )
             or
             this.getOp() = eq() and other = TIsNone(true)
