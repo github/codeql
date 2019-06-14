@@ -39,19 +39,19 @@ abstract class StructFieldAccess extends FieldAccess {
 
 /**
  * abstract class of type FieldAccess where access is to a day of the month field of the struct
- * This is to be derived form for a specific struct's day of the month field access
+ * This is to be derived from for a specific struct's day of the month field access
  */
 abstract class DayFieldAccess extends StructFieldAccess { }
 
 /**
  * abstract class of type FieldAccess where access is to a month field of the struct
- * This is to be derived form for a specific struct's month field access
+ * This is to be derived from for a specific struct's month field access
  */
 abstract class MonthFieldAccess extends StructFieldAccess {}
 
 /**
  * abstract class of type FieldAccess where access is to a year field of the struct
- * This is to be derived form for a specific struct's year field access
+ * This is to be derived from for a specific struct's year field access
  */
 abstract class YearFieldAccess extends StructFieldAccess {}
 

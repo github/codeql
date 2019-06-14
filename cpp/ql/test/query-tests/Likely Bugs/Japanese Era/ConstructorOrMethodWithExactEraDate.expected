@@ -1,3 +1,3 @@
-| ConstructorOrMethodWithExactDate.cpp:27:31:27:53 | call to EraInfo | Call that appears to have hard-coded Japanese era start date as parameter |
-| ConstructorOrMethodWithExactDate.cpp:30:32:30:77 | call to EraInfo | Call that appears to have hard-coded Japanese era start date as parameter |
-| ConstructorOrMethodWithExactDate.cpp:36:32:36:55 | call to EraInfoFromDate | Call that appears to have hard-coded Japanese era start date as parameter |
+| ConstructorOrMethodWithExactDate.cpp:27:31:27:53 | call to EraInfo | Call that appears to have hard-coded Japanese era start date as parameter. |
+| ConstructorOrMethodWithExactDate.cpp:30:32:30:77 | call to EraInfo | Call that appears to have hard-coded Japanese era start date as parameter. |
+| ConstructorOrMethodWithExactDate.cpp:36:32:36:55 | call to EraInfoFromDate | Call that appears to have hard-coded Japanese era start date as parameter. |
