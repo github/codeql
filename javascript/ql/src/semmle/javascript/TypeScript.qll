@@ -542,13 +542,13 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
    * without type information.
    */
   override Type getType() { ast_node_type(this, result) }
-  
+
   override Stmt getEnclosingStmt() { result = ExprOrType.super.getEnclosingStmt() }
-  
+
   override Function getEnclosingFunction() { result = ExprOrType.super.getEnclosingFunction() }
-  
+
   override StmtContainer getContainer() { result = ExprOrType.super.getContainer() }
-  
+
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
 }
 
@@ -1475,34 +1475,37 @@ class ExternalModuleScope extends @externalmodulescope, Scope {
 }
 
 /**
- * TypeScript import declared in an explicit augmentation to global, 
- * in the form of a variable of typeof the import.
+ * A reference to a global variable for which there is a
+ * TypeScript type annotation suggesting that it contains
+ * the namespace object of a module.
+ *
  * For example:
+ * ```
  * import * as net_outer from "net"
  * declare global {
  * 		var net: typeof net_outer
  * }
- * 
+ *
  * var s = net.createServer(); // this reference to net is an import
- * 
- * This import pattern was observed when analyzing the package web-component-tester
- * https://www.npmjs.com/package/web-component-tester
+ * ```
  */
 class TSGlobalDeclImport extends DataFlow::ModuleImportNode::Range {
   string path;
 
   TSGlobalDeclImport() {
-    exists(LocalVarTypeAccess q, ImportDeclaration i |
-      q.getContainer() instanceof GlobalAugmentationDeclaration and
-      i.(BulkImportDeclaration).getLocal().getVariable() = q.getVariable() and
+    exists(
+      GlobalVariable gv, VariableDeclarator vd, TypeofTypeExpr tt, LocalVarTypeAccess pkg,
+      BulkImportDeclaration i
+    |
+      // gv is declared with type "typeof pkg"
+      vd.getBindingPattern() = gv.getADeclaration() and
+      tt = vd.getTypeAnnotation() and
+      pkg = tt.getExpressionName() and
+      // then, check pkg is imported as "import * as pkg from path"
+      i.getLocal().getVariable() = pkg.getVariable() and
       path = i.getImportedPath().getValue() and
-      this = DataFlow::globalVarRef(q
-              .getEnclosingStmt()
-              .(VarDeclStmt)
-              .getADecl()
-              .getBindingPattern()
-              .getAVariable()
-              .getName())
+      // finally, "this" needs to be a reference to gv
+      this = DataFlow::globalVarRef(gv.getName())
     )
   }
 
