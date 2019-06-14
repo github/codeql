@@ -22,4 +22,7 @@
 <sample src="UnsafeArrayForDaysOfYearGood.c" />
 </example>
 
+<references>
+  <include src="LeapYearReferences.qhelp" />
+</references>
 </qhelp>

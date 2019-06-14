@@ -33,4 +33,7 @@
 <sample src="UncheckedLeapYearAfterYearModificationGood.c" />
 </example>
 
+<references>
+  <include src="LeapYearReferences.qhelp" />
+</references>
 </qhelp>
