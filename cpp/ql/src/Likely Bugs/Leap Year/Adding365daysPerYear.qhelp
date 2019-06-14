@@ -1,0 +1,20 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+  <include src="LeapYear.qhelp" />
+
+<p>When performing arithmetic operations on a variable that represents a date, leap years must be taken into account.
+It is not safe to assume that a year is 365 days long.</p>
+</overview>
+
+<recommendation>
+<p>Determine whether the time span in question contains a leap day, then perform the calculation using the correct number
+of days.  Alternatively, use an established library routine that already contains correct leap year logic.</p>
+</recommendation>
+
+<references>
+  <include src="LeapYearReferences.qhelp" />
+</references>
+</qhelp>
