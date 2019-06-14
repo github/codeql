@@ -71,13 +71,6 @@ class Value extends TObject {
         this.(ObjectInternal).attribute(name, result, _)
     }
 
-    /** DEPRECATED: For backwards compatibility with old API
-     * Use `Value` instead of `ObjectSource`.
-     */
-    deprecated ObjectSource getSource() {
-        result = this.(ObjectInternal).getSource()
-    }
-
     /** Holds if this value is builtin. Applies to built-in functions and methods,
      * but also integers and strings.
      */

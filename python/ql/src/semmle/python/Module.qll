@@ -71,9 +71,9 @@ class Module extends Module_, Scope, AstNode {
     string getAnExport() {
         py_exports(this, result)
         or
-        exists(ModuleValue mod |
+        exists(ModuleObjectInternal mod |
             mod.getSource() = this.getEntryNode() |
-            mod.exports(result)
+            mod.(ModuleValue).exports(result)
         )
     }
 
