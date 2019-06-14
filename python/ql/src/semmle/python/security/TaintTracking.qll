@@ -1512,7 +1512,7 @@ class CallContext extends TCallContext {
             f.getFunction() = s and f.getACall() = call
         )
         or
-        exists(ClassValue cls,CallNode call |
+        exists(ClassValue cls, CallNode call |
             this = TCalleeContext(call, _, _) and
             call.getFunction().pointsTo(cls) and
             s = cls.lookup("__init__").(CallableValue).getScope() and

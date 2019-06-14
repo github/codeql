@@ -1856,9 +1856,13 @@ cached module Types {
         result = getInheritedMetaclass(cls, 0)
         or
         // Best guess if base is not a known class
+        hasUnknownBase(cls) and result = ObjectInternal::unknownClass()
+    }
+
+    /* Helper for getInheritedMetaclass */
+    private predicate hasUnknownBase(ClassObjectInternal cls) {
         exists(ObjectInternal base |
-            base = getBase(cls, _) and
-            result = ObjectInternal::unknownClass() |
+            base = getBase(cls, _) |
             base.isClass() = false
             or
             base = ObjectInternal::unknownClass()
@@ -1868,14 +1872,18 @@ cached module Types {
     private ClassObjectInternal getInheritedMetaclass(ClassObjectInternal cls, int n) {
         exists(Class c |
             c = cls.(PythonClassObjectInternal).getScope() and
-            n = count(c.getABase())
+            n = count(c.getABase()) and n != 1
             |
             result = ObjectInternal::type() and major_version() = 3
             or
             result = ObjectInternal::classType() and major_version() = 2
         )
         or
+        base_count(cls) = 1 and n = 0 and
+        result = getBase(cls, 0).getClass()
+        or
         exists(ClassObjectInternal meta1, ClassObjectInternal meta2 |
+            base_count(cls) > 1 and
             meta1 = getBase(cls, n).getClass() and
             meta2 = getInheritedMetaclass(cls, n+1)
             |
