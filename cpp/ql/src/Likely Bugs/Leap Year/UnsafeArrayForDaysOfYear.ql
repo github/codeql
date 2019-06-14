@@ -3,7 +3,7 @@
  * @description An array of 365 items typically indicates one entry per day of the year, but without considering leap years, which would be 366 days.
  *              An access on a leap year could result in buffer overflow bugs.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id cpp/leap-year/unsafe-array-for-days-of-the-year
  * @precision medium
  * @tags security

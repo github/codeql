@@ -2,9 +2,9 @@
  * @name Year field changed using an arithmetic operation without checking for leap year
  * @description A field that represents a year is being modified by an arithmetic operation, but no proper check for leap years can be detected afterwards.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @id cpp/leap-year/unchecked-after-arithmetic-year-modification
- * @precision high
+ * @precision medium
  * @tags security
  *       leap-year
  */
