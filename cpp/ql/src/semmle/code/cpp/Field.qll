@@ -54,7 +54,7 @@ class Field extends MemberVariable {
    * which the field will be initialized, whether by an initializer list or in a
    * constructor.
    */
-  final int getInitializationOrder() {
+  final pragma[nomagic] int getInitializationOrder() {
     exists(Class cls, int memberIndex | 
       this = cls.getCanonicalMember(memberIndex) and
       memberIndex = rank[result + 1](int index |

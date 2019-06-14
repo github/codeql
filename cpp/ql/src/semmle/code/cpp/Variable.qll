@@ -117,6 +117,11 @@ class Variable extends Declaration, @variable {
     or
     exists (AssignExpr ae
     | ae.getLValue().(Access).getTarget() = this and result = ae.getRValue())
+    or
+    exists(AggregateLiteral l |
+      this.getDeclaringType() = l.getType() and
+      result = l.getChild(this.(Field).getInitializationOrder())
+    )
   }
 
   /**
