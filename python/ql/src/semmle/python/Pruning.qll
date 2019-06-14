@@ -548,7 +548,8 @@ module Pruner {
         simply_dead(pred, succ)
     }
 
-    /* Helper for `unreachableEdge` */
+    /* Helper for `unreachableEdge`, deal with inequalities here to avoid blow up */
+    pragma [inline]
     private predicate contradicts(Constraint a, Constraint b) {
         a.contradicts(b) or
         a.(ConstrainedByConstant).minValue() > b.(ConstrainedByConstant).maxValue() or
