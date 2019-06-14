@@ -125,9 +125,6 @@ module AbstractValues {
     /** Gets the case. */
     Case getCase() { this = TMatchValue(result, _) }
 
-    /** Gets the case statement. */
-    deprecated CaseStmt getCaseStmt() { result = this.getCase() }
-
     /** Holds if this value represents a match. */
     predicate isMatch() { this = TMatchValue(_, true) }
 
