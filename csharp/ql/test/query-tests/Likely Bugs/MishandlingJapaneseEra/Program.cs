@@ -11,12 +11,6 @@ namespace JapaneseDates
             // BAD: hard-coded era start date
             var henseiStart = new DateTime(1989, 1, 8);
 
-            // BAD: hard-coded era start years, array initialization
-            int[] era = { 1867, 1911, 1925, 1988 };
-
-            // BAD: hard-coded era start years, collection initialization
-            List<int> listOfEra = new List<int> (new int[]{ 1867, 1911, 1925, 1988 });
-
             // BAD: hard-coded era start dates, list
             List<DateTime> listOfEraStart = new List<DateTime> { new DateTime(1989, 1, 8) };
 
@@ -51,9 +45,6 @@ namespace JapaneseDates
             int realYear = 1988 + jk.GetYear(datejk);
             Console.WriteLine("Which converts to year {0}", realYear);
 
-            int convertedYear = dateThisEra.Year + jk.GetYear(datejk);
-            RoundTripDate();
-
             // BAD: creating DateTime using specified Japanese era date. This may yield a different date when era changes
             DateTime val = new DateTime(32, 2, 1, new JapaneseCalendar());
             Console.WriteLine("DateTime from constructor {0}", val);
@@ -62,27 +53,5 @@ namespace JapaneseDates
             DateTime val1 = new DateTime(jk.GetYear(datejk), 2, 1, new JapaneseCalendar());
             Console.WriteLine("DateTime from constructor {0}", val);
         }
-
-        public static void RoundTripDate()
-        {
-            var ciJapanese = new CultureInfo("ja-JP")
-            {
-                DateTimeFormat = { Calendar = new JapaneseCalendar() }
-            };
-
-            // Original user input date string. 
-            string formattedString = "平成 32年2月1日 0:00:00";
-
-            // Parse the string to a DateTime object.
-            DateTime dt = DateTime.Parse(formattedString, ciJapanese);
-
-            // Get the era name of the parsed DateTime object. 
-            string roundTrippedString = dt.ToString("gg", ciJapanese);
-            // Check whether the date is formatted using a different era than the original formatted string.
-            if (roundTrippedString.IndexOf("平成") < 0)
-            {
-                Console.WriteLine("Detected failure in round tripping ");
-            }
-        }
-}
+    }
 }

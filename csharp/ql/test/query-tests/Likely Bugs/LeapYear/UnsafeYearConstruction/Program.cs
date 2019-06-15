@@ -9,20 +9,20 @@ namespace LeapYear
         public PipelineProperties()
         {
             var now = DateTime.UtcNow;
-            // BUG
+            // BAD
             this.Start = new DateTime(now.Year - 1, now.Month, now.Day, 0, 0, 0, DateTimeKind.Utc);
 
             var endYear = now.Year + 1;
-            // BUG
+            // BAD
             this.End = new DateTime(endYear, now.Month, now.Day, 0, 0, 1, DateTimeKind.Utc);
 
-            // OK
+            // GOOD
             this.Start = now.AddYears(-1).Date;
         }
 
         private void Test(int year, int month, int day)
         {
-            // BUG (arithmetic operation from StartTest)
+            // BAD (arithmetic operation from StartTest)
             this.Start = new DateTime(year, month, day);
         }
 
