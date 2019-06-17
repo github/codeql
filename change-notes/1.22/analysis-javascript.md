@@ -26,6 +26,7 @@
 | **Query**                      | **Expected impact**          | **Change**                                                                |
 |--------------------------------|------------------------------|---------------------------------------------------------------------------|
 | Shift out of range | Fewer false positive results | This rule now correctly handles BigInt shift operands. |
+| Superfluous trailing arguments | Fewer false-positive results. | This rule no longer flags calls to placeholder functions that trivially throw an exception. |
 
 ## Changes to QL libraries
 
