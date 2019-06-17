@@ -94,5 +94,10 @@ where
     f instanceof ArrowFunctionExpr or // cannot be empty
     f instanceof ExternalFunction or // always empty
     f.isAmbient() // always empty
+  ) and
+  not (
+    // exclude no-param functions that trivially throw exceptions, they are probably placeholders
+    f.getNumParameter() = 0 and
+    f.getBodyStmt(0) instanceof ThrowStmt
   )
 select args, "Superfluous " + arguments + " passed to $@.", f, f.describe()

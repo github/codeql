@@ -76,4 +76,47 @@ parseFloat("123", 10);
 	new ImplicitEmptyConstructor(42); // NOT OK
 	new ExplicitEmptyConstructor(42); // NOT OK
 	parseFloat("123", 10); // NOT OK
-})
+});
+
+(function testWhitelistThrowingFunctions() {
+	function notAPlainThrower1(){
+		if(DEBUG) {
+			throw new Error("Remove this statement and implement this function");
+		}
+	};
+	function notAPlainThrower2(){
+		f();
+		throw new Error("Internal error: should have thrown an exception before this.");
+	};
+	function notAPlainThrower3(){
+		return;
+		throw new Error("Internal error: should have returned before this.");
+	};
+	function thrower(){
+		throw new Error("Remove this statement and implement this function");
+	};
+	const throwerArrow = () => { throw new Error("Remove this statement and implement this function"); };
+	function throwerCustom(){
+		throw new MyError("Remove this statement and implement this function");
+	};
+	function throwerWithParam(p){
+		throw new Error(p);
+	};
+	function throwerIndirect(){
+		(function(){
+			{
+				{
+					throw Error("Remove this statement and implement this function");
+				}
+			}
+		})();
+	}
+	notAPlainThrower1(42); // NOT OK
+	notAPlainThrower2(42); // NOT OK
+	notAPlainThrower3(42); // NOT OK
+	thrower(42); // OK
+	throwerArrow(42); // OK
+	throwerCustom(42); // OK
+	throwerWithParam(42, 87); // NOT OK
+	throwerIndirect(42); // OK, but still flagged due to complexity
+});
