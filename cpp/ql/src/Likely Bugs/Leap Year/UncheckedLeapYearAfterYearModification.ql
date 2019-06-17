@@ -12,47 +12,53 @@
 import cpp
 import LeapYear
 
-from Variable var, LeapYearFieldAccess yfa 
+from Variable var, LeapYearFieldAccess yfa
 where
-   exists(VariableAccess va |
-     yfa.getQualifier() = va
-     and var.getAnAccess() = va
-     // The year is modified with an arithmetic operation. Avoid values that are likely false positives
-     and yfa.isModifiedByArithmeticOperationNotForNormalization()
-     // Avoid false positives
-     and not (
-        // If there is a local check for leap year after the modification
-        exists( LeapYearFieldAccess yfacheck |
-          yfacheck.getQualifier() = var.getAnAccess()
-          and yfacheck.isUsedInCorrectLeapYearCheck()
-          and yfacheck = yfa.getASuccessor*()
-        )
-        // If there is a data flow from the variable that was modified to a function that seems to check for leap year 
-        or exists(VariableAccess source,
-          ChecksForLeapYearFunctionCall fc, 
-          LeapYearCheckConfiguration config |
-          source = var.getAnAccess()
-          and config.hasFlow( DataFlow::exprNode(source), DataFlow::exprNode(fc.getAnArgument()))
-       )
-       // If there is a data flow from the field that was modified to a function that seems to check for leap year
-       or exists(VariableAccess vacheck,
-         YearFieldAccess yfacheck,
-         ChecksForLeapYearFunctionCall fc, 
-         LeapYearCheckConfiguration config |
-         vacheck = var.getAnAccess()
-         and yfacheck.getQualifier() = vacheck
-         and config.hasFlow( DataFlow::exprNode(yfacheck), DataFlow::exprNode(fc.getAnArgument()))
-       )
-       // If there is a successor or predecessor that sets the month = 1
-       or exists(MonthFieldAccess  mfa, AssignExpr ae |
-          mfa.getQualifier() = var.getAnAccess()
-          and mfa.isModified()
-          and (mfa = yfa.getASuccessor*()
-               or yfa = mfa.getASuccessor*())
-          and ae = mfa.getEnclosingElement()
-          and ae.getAnOperand().getValue().toInt() = 1 
-       )
-     )
-   )
-select yfa
-  , "Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found.", yfa.getTarget(), yfa.getTarget().toString(), var, var.toString()
+  exists(VariableAccess va |
+    yfa.getQualifier() = va and
+    var.getAnAccess() = va and
+    // The year is modified with an arithmetic operation. Avoid values that are likely false positives
+    yfa.isModifiedByArithmeticOperationNotForNormalization() and
+    // Avoid false positives
+    not (
+      // If there is a local check for leap year after the modification
+      exists(LeapYearFieldAccess yfacheck |
+        yfacheck.getQualifier() = var.getAnAccess() and
+        yfacheck.isUsedInCorrectLeapYearCheck() and
+        yfacheck = yfa.getASuccessor*()
+      )
+      or
+      // If there is a data flow from the variable that was modified to a function that seems to check for leap year
+      exists(
+        VariableAccess source, ChecksForLeapYearFunctionCall fc, LeapYearCheckConfiguration config
+      |
+        source = var.getAnAccess() and
+        config.hasFlow(DataFlow::exprNode(source), DataFlow::exprNode(fc.getAnArgument()))
+      )
+      or
+      // If there is a data flow from the field that was modified to a function that seems to check for leap year
+      exists(
+        VariableAccess vacheck, YearFieldAccess yfacheck, ChecksForLeapYearFunctionCall fc,
+        LeapYearCheckConfiguration config
+      |
+        vacheck = var.getAnAccess() and
+        yfacheck.getQualifier() = vacheck and
+        config.hasFlow(DataFlow::exprNode(yfacheck), DataFlow::exprNode(fc.getAnArgument()))
+      )
+      or
+      // If there is a successor or predecessor that sets the month = 1
+      exists(MonthFieldAccess mfa, AssignExpr ae |
+        mfa.getQualifier() = var.getAnAccess() and
+        mfa.isModified() and
+        (
+          mfa = yfa.getASuccessor*() or
+          yfa = mfa.getASuccessor*()
+        ) and
+        ae = mfa.getEnclosingElement() and
+        ae.getAnOperand().getValue().toInt() = 1
+      )
+    )
+  )
+select yfa,
+  "Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found.",
+  yfa.getTarget(), yfa.getTarget().toString(), var, var.toString()
