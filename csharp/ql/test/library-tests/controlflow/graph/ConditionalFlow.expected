@@ -197,6 +197,9 @@
 | 119 | 18 | Conditions.cs:119:18:119:21 | access to local variable last | true | 121 | 13 | Conditions.cs:121:13:122:25 | [last (line 118): true] if (...) ... |
 | 121 | 17 | Conditions.cs:121:17:121:20 | [last (line 118): false] access to local variable last | false | 116 | 41 | Conditions.cs:116:41:116:41 | access to local variable i |
 | 121 | 17 | Conditions.cs:121:17:121:20 | [last (line 118): true] access to local variable last | true | 122 | 17 | Conditions.cs:122:17:122:25 | ...; |
+| 125 | 34 | Switch.cs:125:34:125:34 | access to local variable b | false | 123 | 10 | Switch.cs:123:10:123:12 | exit M11 |
+| 125 | 34 | Switch.cs:125:34:125:34 | access to local variable b | true | 126 | 13 | Switch.cs:126:13:126:19 | return ...; |
+| 125 | 42 | Switch.cs:125:42:125:46 | false | false | 123 | 10 | Switch.cs:123:10:123:12 | exit M11 |
 | 127 | 32 | cflow.cs:127:32:127:44 | ... == ... | false | 127 | 53 | cflow.cs:127:53:127:57 | this access |
 | 127 | 32 | cflow.cs:127:32:127:44 | ... == ... | true | 127 | 48 | cflow.cs:127:48:127:49 | "" |
 | 131 | 16 | Conditions.cs:131:16:131:19 | [Field1 (line 129): false] true | true | 132 | 9 | Conditions.cs:132:9:140:9 | [Field1 (line 129): false] {...} |

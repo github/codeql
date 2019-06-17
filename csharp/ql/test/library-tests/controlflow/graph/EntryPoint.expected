@@ -101,6 +101,8 @@
 | Switch.cs:101:9:101:10 | M9 | Switch.cs:102:5:109:5 | {...} |
 | Switch.cs:111:17:111:21 | Throw | Switch.cs:111:34:111:48 | object creation of type Exception |
 | Switch.cs:113:9:113:11 | M10 | Switch.cs:114:5:121:5 | {...} |
+| Switch.cs:123:10:123:12 | M11 | Switch.cs:124:5:127:5 | {...} |
+| Switch.cs:129:12:129:14 | M12 | Switch.cs:130:5:132:5 | {...} |
 | TypeAccesses.cs:3:10:3:10 | M | TypeAccesses.cs:4:5:9:5 | {...} |
 | VarDecls.cs:5:18:5:19 | M1 | VarDecls.cs:6:5:11:5 | {...} |
 | VarDecls.cs:13:12:13:13 | M2 | VarDecls.cs:14:5:17:5 | {...} |

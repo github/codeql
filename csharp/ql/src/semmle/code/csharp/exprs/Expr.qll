@@ -511,6 +511,8 @@ class SwitchExpr extends Expr, Switch, @switch_expr {
   override Expr getExpr() { result = this.getChild(-1) }
 
   override SwitchCaseExpr getCase(int n) { result = this.getChild(n) }
+
+  override SwitchCaseExpr getACase() { result = this.getCase(_) }
 }
 
 /** A `case` expression or statement. */
