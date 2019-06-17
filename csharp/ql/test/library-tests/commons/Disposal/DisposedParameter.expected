@@ -1,5 +1,11 @@
 | BufferedStream(Stream) | 0 |
 | BufferedStream(Stream, int) | 0 |
+| CachedConnection(HttpConnection) | 0 |
+| ChunkedEncodingReadStream(HttpConnection) | 0 |
+| ChunkedEncodingWriteStream(HttpConnection) | 0 |
+| ConnectionCloseReadStream(HttpConnection) | 0 |
+| ContentLengthReadStream(HttpConnection, ulong) | 0 |
+| ContentLengthWriteStream(HttpConnection) | 0 |
 | CopyAsync(Stream, Stream, int, bool, CancellationToken) | 0 |
 | CopyToWriter(XmlWriter) | 0 |
 | Create(Stream) | 0 |
@@ -17,6 +23,8 @@
 | Create(XmlWriter, XmlWriterSettings) | 0 |
 | CreateAsyncCheckWrapper(XmlReader) | 0 |
 | CreateReader(Stream, string) | 0 |
+| DecompressedContent(HttpContent) | 0 |
+| DeflateDecompressedContent(HttpContent) | 0 |
 | DelegatingHandler(HttpMessageHandler) | 0 |
 | DelegatingStream(Stream) | 0 |
 | Deserialize(Stream) | 0 |
@@ -29,8 +37,10 @@
 | Disposal(IDisposable, object, TextWriter) | 0 |
 | Disposal(IDisposable, object, TextWriter) | 1 |
 | Disposal(IDisposable, object, TextWriter) | 2 |
+| DrainResponseAsync(HttpResponseMessage) | 0 |
 | EventsToWriter(XmlWriter) | 0 |
 | Execute(object, XmlResolver, XsltArgumentList, XmlWriter) | 3 |
+| GZipDecompressedContent(HttpContent) | 0 |
 | GetSynchronizedTextReader(TextReader) | 0 |
 | HtmlEncodedRawTextWriter(Stream, XmlWriterSettings) | 0 |
 | HtmlEncodedRawTextWriter(TextWriter, XmlWriterSettings) | 0 |
@@ -38,33 +48,49 @@
 | HtmlEncodedRawTextWriterIndent(TextWriter, XmlWriterSettings) | 0 |
 | HtmlUtf8RawTextWriter(Stream, XmlWriterSettings) | 0 |
 | HtmlUtf8RawTextWriterIndent(Stream, XmlWriterSettings) | 0 |
+| HttpAuthenticatedConnectionHandler(HttpConnectionPoolManager) | 0 |
 | HttpClient(HttpMessageHandler) | 0 |
 | HttpClient(HttpMessageHandler, bool) | 0 |
+| HttpConnectionHandler(HttpConnectionPoolManager) | 0 |
+| HttpContentDuplexStream(HttpConnection) | 0 |
+| HttpContentReadStream(HttpConnection) | 0 |
+| HttpContentStream(HttpConnection) | 0 |
+| HttpContentWriteStream(HttpConnection) | 0 |
 | HttpMessageInvoker(HttpMessageHandler) | 0 |
 | HttpMessageInvoker(HttpMessageHandler, bool) | 0 |
 | Load(Stream) | 0 |
 | Load(TextReader) | 0 |
 | MessageProcessingHandler(HttpMessageHandler) | 0 |
+| PatchAsync(string, HttpContent) | 1 |
+| PatchAsync(string, HttpContent, CancellationToken) | 1 |
 | PostAsync(string, HttpContent) | 1 |
 | PostAsync(string, HttpContent, CancellationToken) | 1 |
 | PutAsync(string, HttpContent) | 1 |
 | PutAsync(string, HttpContent, CancellationToken) | 1 |
+| RawConnectionStream(HttpConnection) | 0 |
 | Read(Stream, ValidationEventHandler) | 0 |
 | Read(TextReader, ValidationEventHandler) | 0 |
 | ReadOnlyStream(Stream) | 0 |
+| RedirectHandler(int, HttpMessageHandler, HttpMessageHandler) | 1 |
+| RedirectHandler(int, HttpMessageHandler, HttpMessageHandler) | 2 |
 | ReflectionXmlSerializationReader(XmlMapping, XmlReader, XmlDeserializationEvents, string) | 1 |
+| ReturnConnection(HttpConnection) | 0 |
 | Save(TextWriter) | 0 |
+| SendWithNtProxyAuthAsync(HttpConnection, HttpRequestMessage, CancellationToken) | 0 |
 | Serialize(TextWriter, object) | 0 |
 | Serialize(TextWriter, object, XmlSerializerNamespaces) | 0 |
 | SetError(TextWriter) | 0 |
+| SetGssContext(SafeGssContextHandle) | 0 |
 | SetIn(TextReader) | 0 |
 | SetOut(TextWriter) | 0 |
+| SetStream(HttpContentStream) | 0 |
 | StreamContent(Stream) | 0 |
 | StreamContent(Stream, int) | 0 |
 | Synchronized(Stream) | 0 |
 | System.IO.Stream System.IO.Stream.Synchronized(System.IO.Stream) | 0 |
 | System.IO.SyncTextReader System.IO.SyncTextReader.GetSynchronizedTextReader(System.IO.TextReader) | 0 |
 | System.IO.SyncTextWriter System.IO.SyncTextWriter.GetSynchronizedTextWriter(System.IO.TextWriter) | 0 |
+| System.Int32 System.Net.Http.HttpConnection.ChunkedEncodingReadStream.ReadChunksFromConnectionBuffer(System.Span<System.Byte>,System.Threading.CancellationTokenRegistration) | 1 |
 | System.Object System.Xml.Serialization.TempAssembly.InvokeReader(System.Xml.Serialization.XmlMapping,System.Xml.XmlReader,System.Xml.Serialization.XmlDeserializationEvents,System.String) | 1 |
 | System.Object System.Xml.Serialization.XmlSerializer.Deserialize(System.IO.Stream) | 0 |
 | System.Object System.Xml.Serialization.XmlSerializer.Deserialize(System.IO.TextReader) | 0 |
@@ -73,6 +99,10 @@
 | System.Object System.Xml.Serialization.XmlSerializer.Deserialize(System.Xml.XmlReader,System.String,System.Xml.Serialization.XmlDeserializationEvents) | 0 |
 | System.Object System.Xml.Serialization.XmlSerializer.Deserialize(System.Xml.XmlReader,System.Xml.Serialization.XmlDeserializationEvents) | 0 |
 | System.Object System.Xml.Serialization.XmlSerializer.DeserializePrimitive(System.Xml.XmlReader,System.Xml.Serialization.XmlDeserializationEvents) | 0 |
+| System.Object System.Xml.Serialization.XmlSerializer.DeserializeUsingReflection(System.Xml.XmlReader,System.String,System.Xml.Serialization.XmlDeserializationEvents) | 0 |
+| System.ReadOnlyMemory<System.Byte> System.Net.Http.HttpConnection.ChunkedEncodingReadStream.ReadChunkFromConnectionBuffer(System.Int32,System.Threading.CancellationTokenRegistration) | 1 |
+| System.Threading.Tasks.Task System.Net.Http.HttpConnection.DrainResponseAsync(System.Net.Http.HttpResponseMessage) | 0 |
+| System.Threading.Tasks.Task System.Net.Http.HttpConnection.SendRequestContentWithExpect100ContinueAsync(System.Net.Http.HttpRequestMessage,System.Threading.Tasks.Task<System.Boolean>,System.Net.Http.HttpConnection.HttpContentWriteStream,System.Threading.Timer,System.Threading.CancellationToken) | 3 |
 | System.Threading.Tasks.Task System.Net.Http.HttpContent.LoadIntoBufferAsyncCore(System.Threading.Tasks.Task,System.IO.MemoryStream) | 1 |
 | System.Threading.Tasks.Task System.Net.Http.StreamToStreamCopy.CopyAsync(System.IO.Stream,System.IO.Stream,System.Int32,System.Boolean,System.Threading.CancellationToken) | 0 |
 | System.Threading.Tasks.Task System.Net.Http.StreamToStreamCopy.DisposeSourceWhenCompleteAsync(System.Threading.Tasks.Task,System.IO.Stream) | 1 |
@@ -80,8 +110,16 @@
 | System.Threading.Tasks.Task System.Xml.XmlTextReaderImpl.InitStreamInputAsync(System.Uri,System.String,System.IO.Stream,System.Byte[],System.Int32,System.Text.Encoding) | 2 |
 | System.Threading.Tasks.Task System.Xml.XmlTextReaderImpl.InitTextReaderInputAsync(System.String,System.IO.TextReader) | 1 |
 | System.Threading.Tasks.Task System.Xml.XmlTextReaderImpl.InitTextReaderInputAsync(System.String,System.Uri,System.IO.TextReader) | 2 |
+| System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.AuthenticationHelper.InnerSendAsync(System.Net.Http.HttpRequestMessage,System.Boolean,System.Net.Http.HttpConnectionPool,System.Net.Http.HttpConnection,System.Threading.CancellationToken) | 3 |
+| System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.AuthenticationHelper.SendWithNtAuthAsync(System.Net.Http.HttpRequestMessage,System.Uri,System.Net.ICredentials,System.Boolean,System.Net.Http.HttpConnection,System.Net.Http.HttpConnectionPool,System.Threading.CancellationToken) | 4 |
+| System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.AuthenticationHelper.SendWithNtConnectionAuthAsync(System.Net.Http.HttpRequestMessage,System.Net.ICredentials,System.Net.Http.HttpConnection,System.Net.Http.HttpConnectionPool,System.Threading.CancellationToken) | 2 |
+| System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.AuthenticationHelper.SendWithNtProxyAuthAsync(System.Net.Http.HttpRequestMessage,System.Uri,System.Net.ICredentials,System.Net.Http.HttpConnection,System.Net.Http.HttpConnectionPool,System.Threading.CancellationToken) | 3 |
 | System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.FinishSendAsyncBuffered(System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage>,System.Net.Http.HttpRequestMessage,System.Threading.CancellationTokenSource,System.Boolean) | 2 |
 | System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.FinishSendAsyncUnbuffered(System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage>,System.Net.Http.HttpRequestMessage,System.Threading.CancellationTokenSource,System.Boolean) | 2 |
+| System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.PatchAsync(System.String,System.Net.Http.HttpContent) | 1 |
+| System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.PatchAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken) | 1 |
+| System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent) | 1 |
+| System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken) | 1 |
 | System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.PostAsync(System.String,System.Net.Http.HttpContent) | 1 |
 | System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.PostAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken) | 1 |
 | System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent) | 1 |
@@ -90,6 +128,8 @@
 | System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.PutAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken) | 1 |
 | System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent) | 1 |
 | System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken) | 1 |
+| System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpConnectionPool.SendWithNtConnectionAuthAsync(System.Net.Http.HttpConnection,System.Net.Http.HttpRequestMessage,System.Boolean,System.Threading.CancellationToken) | 0 |
+| System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> System.Net.Http.HttpConnectionPool.SendWithNtProxyAuthAsync(System.Net.Http.HttpConnection,System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken) | 0 |
 | System.Void System.Console.SetError(System.IO.TextWriter) | 0 |
 | System.Void System.Console.SetIn(System.IO.TextReader) | 0 |
 | System.Void System.Console.SetOut(System.IO.TextWriter) | 0 |
@@ -99,25 +139,49 @@
 | System.Void System.IO.SyncTextReader..ctor(System.IO.TextReader) | 0 |
 | System.Void System.IO.SyncTextWriter..ctor(System.IO.TextWriter) | 0 |
 | System.Void System.IO.UnmanagedMemoryStreamWrapper..ctor(System.IO.UnmanagedMemoryStream) | 0 |
+| System.Void System.Net.Http.DecompressionHandler..ctor(System.Net.DecompressionMethods,System.Net.Http.HttpMessageHandler) | 1 |
+| System.Void System.Net.Http.DecompressionHandler.DecompressedContent..ctor(System.Net.Http.HttpContent) | 0 |
+| System.Void System.Net.Http.DecompressionHandler.DeflateDecompressedContent..ctor(System.Net.Http.HttpContent) | 0 |
+| System.Void System.Net.Http.DecompressionHandler.GZipDecompressedContent..ctor(System.Net.Http.HttpContent) | 0 |
 | System.Void System.Net.Http.DelegatingHandler..ctor(System.Net.Http.HttpMessageHandler) | 0 |
 | System.Void System.Net.Http.DelegatingHandler.set_InnerHandler(System.Net.Http.HttpMessageHandler) | 0 |
 | System.Void System.Net.Http.DelegatingStream..ctor(System.IO.Stream) | 0 |
 | System.Void System.Net.Http.DiagnosticsHandler..ctor(System.Net.Http.HttpMessageHandler) | 0 |
+| System.Void System.Net.Http.HttpAuthenticatedConnectionHandler..ctor(System.Net.Http.HttpConnectionPoolManager) | 0 |
 | System.Void System.Net.Http.HttpClient..ctor(System.Net.Http.HttpMessageHandler) | 0 |
 | System.Void System.Net.Http.HttpClient..ctor(System.Net.Http.HttpMessageHandler,System.Boolean) | 0 |
 | System.Void System.Net.Http.HttpClient.HandleFinishSendAsyncCleanup(System.Threading.CancellationTokenSource,System.Boolean) | 0 |
+| System.Void System.Net.Http.HttpConnection..ctor(System.Net.Http.HttpConnectionPool,System.Net.Sockets.Socket,System.IO.Stream,System.Net.TransportContext) | 2 |
+| System.Void System.Net.Http.HttpConnection.ChunkedEncodingReadStream..ctor(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpConnection.ChunkedEncodingWriteStream..ctor(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpConnection.ConnectionCloseReadStream..ctor(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpConnection.ContentLengthReadStream..ctor(System.Net.Http.HttpConnection,System.UInt64) | 0 |
+| System.Void System.Net.Http.HttpConnection.ContentLengthWriteStream..ctor(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpConnection.HttpConnectionResponseContent.SetStream(System.Net.Http.HttpContentStream) | 0 |
+| System.Void System.Net.Http.HttpConnection.HttpContentReadStream..ctor(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpConnection.HttpContentWriteStream..ctor(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpConnection.RawConnectionStream..ctor(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpConnectionHandler..ctor(System.Net.Http.HttpConnectionPoolManager) | 0 |
+| System.Void System.Net.Http.HttpConnectionPool.<>c.<CleanCacheAndDisposeIfUnused>b__55_0(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpConnectionPool.CachedConnection..ctor(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpConnectionPool.ReturnConnection(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpConnectionWithFinalizer..ctor(System.Net.Http.HttpConnectionPool,System.Net.Sockets.Socket,System.IO.Stream,System.Net.TransportContext) | 2 |
+| System.Void System.Net.Http.HttpContentDuplexStream..ctor(System.Net.Http.HttpConnection) | 0 |
+| System.Void System.Net.Http.HttpContentStream..ctor(System.Net.Http.HttpConnection) | 0 |
 | System.Void System.Net.Http.HttpMessageInvoker..ctor(System.Net.Http.HttpMessageHandler) | 0 |
 | System.Void System.Net.Http.HttpMessageInvoker..ctor(System.Net.Http.HttpMessageHandler,System.Boolean) | 0 |
 | System.Void System.Net.Http.HttpRequestMessage.set_Content(System.Net.Http.HttpContent) | 0 |
 | System.Void System.Net.Http.HttpResponseMessage.set_Content(System.Net.Http.HttpContent) | 0 |
 | System.Void System.Net.Http.MessageProcessingHandler..ctor(System.Net.Http.HttpMessageHandler) | 0 |
-| System.Void System.Net.Http.NoWriteNoSeekStreamContent..ctor(System.IO.Stream,System.Threading.CancellationToken) | 0 |
+| System.Void System.Net.Http.NoWriteNoSeekStreamContent..ctor(System.IO.Stream) | 0 |
+| System.Void System.Net.Http.RedirectHandler..ctor(System.Int32,System.Net.Http.HttpMessageHandler,System.Net.Http.HttpMessageHandler) | 1 |
+| System.Void System.Net.Http.RedirectHandler..ctor(System.Int32,System.Net.Http.HttpMessageHandler,System.Net.Http.HttpMessageHandler) | 2 |
 | System.Void System.Net.Http.StreamContent..ctor(System.IO.Stream) | 0 |
 | System.Void System.Net.Http.StreamContent..ctor(System.IO.Stream,System.Int32) | 0 |
-| System.Void System.Net.Http.StreamContent..ctor(System.IO.Stream,System.Int32,System.Threading.CancellationToken) | 0 |
+| System.Void System.Net.Http.StreamContent.InitializeContent(System.IO.Stream,System.Int32) | 0 |
 | System.Void System.Net.Http.StreamContent.ReadOnlyStream..ctor(System.IO.Stream) | 0 |
 | System.Void System.Net.Http.StreamToStreamCopy.DisposeSource(System.IO.Stream) | 0 |
-| System.Void System.Threading.Mutex.MutexCleanupInfo..ctor(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Boolean) | 0 |
+| System.Void System.Net.Security.SafeDeleteNegoContext.SetGssContext(Microsoft.Win32.SafeHandles.SafeGssContextHandle) | 0 |
 | System.Void System.TypeNameParser..ctor(System.SafeTypeNameParserHandle) | 0 |
 | System.Void System.Xml.HtmlEncodedRawTextWriter..ctor(System.IO.Stream,System.Xml.XmlWriterSettings) | 0 |
 | System.Void System.Xml.HtmlEncodedRawTextWriter..ctor(System.IO.TextWriter,System.Xml.XmlWriterSettings) | 0 |
