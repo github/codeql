@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>Semmle.Autobuild</AssemblyName>
     <RootNamespace>Semmle.Autobuild</RootNamespace>
     <ApplicationIcon />
