@@ -1,5 +1,4 @@
 import csharp
-import semmle.code.csharp.controlflow.ControlFlowGraph
 
 query predicate edges(ControlFlow::Node node1, ControlFlow::Node node2, string label, string value) {
   label = "semmle.label" and

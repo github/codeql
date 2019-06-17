@@ -1,5 +1,4 @@
 import csharp
-import semmle.code.csharp.controlflow.ControlFlowGraph
 
 /**
  * A method call where the target is unknown.
