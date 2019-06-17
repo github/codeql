@@ -47,12 +47,13 @@ cached newtype TObject =
     or
     /* Package objects */
     TPackageObject(Folder f) {
-        exists(moduleNameFromFile(f))
+        isPreferredModuleForName(f, _)
     }
     or
     /* Python module objects */
     TPythonModule(Module m) {
-        not m.isPackage() and not exists(SyntaxError se | se.getFile() = m.getFile())
+        not m.isPackage() and isPreferredModuleForName(m.getFile(), _) and
+        not exists(SyntaxError se | se.getFile() = m.getFile())
     }
     or
     /* `True` */
