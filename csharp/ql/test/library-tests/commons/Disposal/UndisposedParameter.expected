@@ -7,6 +7,7 @@
 | System.IO.TextWriter System.Console.EnsureInitialized<System.IO.TextWriter>(System.IO.TextWriter,System.Func<System.IO.TextWriter>) | 0 |
 | System.IO.TextWriter System.IO.TextWriter.Synchronized(System.IO.TextWriter) | 0 |
 | System.IO.TextWriter System.Threading.Volatile.Read<System.IO.TextWriter>(System.IO.TextWriter) | 0 |
+| System.Tuple<System.IO.TextWriter,System.ReadOnlyMemory<System.Char>> System.Tuple.Create<System.IO.TextWriter,System.ReadOnlyMemory<System.Char>>(System.IO.TextWriter,System.ReadOnlyMemory<System.Char>) | 0 |
 | System.Void System.CodeDom.Compiler.IndentedTextWriter..ctor(System.IO.TextWriter) | 0 |
 | System.Void System.CodeDom.Compiler.IndentedTextWriter..ctor(System.IO.TextWriter,System.String) | 0 |
 | System.Void System.IO.TextWriter.SyncTextWriter..ctor(System.IO.TextWriter) | 0 |
@@ -17,6 +18,7 @@
 | System.Void System.Tuple<System.Char,System.IO.TextWriter>..ctor(System.IO.TextWriter,System.Char) | 0 |
 | System.Void System.Tuple<System.Char[],System.IO.TextWriter,System.Int32,System.Int32>..ctor(System.IO.TextWriter,System.Char[],System.Int32,System.Int32) | 0 |
 | System.Void System.Tuple<System.IO.TextWriter,System.String>..ctor(System.IO.TextWriter,System.String) | 0 |
+| System.Void System.Xml.Serialization.IndentedWriter..ctor(System.IO.TextWriter,System.Boolean) | 0 |
 | System.Void System.Xml.XmlTextEncoder..ctor(System.IO.TextWriter) | 0 |
 | System.Void System.Xml.Xsl.XslTransform.Transform(System.Xml.XPath.IXPathNavigable,System.Xml.Xsl.XsltArgumentList,System.IO.TextWriter) | 2 |
 | System.Void System.Xml.Xsl.XslTransform.Transform(System.Xml.XPath.IXPathNavigable,System.Xml.Xsl.XsltArgumentList,System.IO.TextWriter,System.Xml.XmlResolver) | 2 |

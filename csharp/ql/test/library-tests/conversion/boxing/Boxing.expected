@@ -21,6 +21,7 @@
 | Int32 | IConvertible |
 | Int32 | IEquatable<Int32> |
 | Int32 | IFormattable |
+| Int32 | ISpanFormattable |
 | Int32 | Object |
 | Int32 | ValueType |
 | Int32 | dynamic |
@@ -29,6 +30,7 @@
 | Nullable<Int32> | IConvertible |
 | Nullable<Int32> | IEquatable<Int32> |
 | Nullable<Int32> | IFormattable |
+| Nullable<Int32> | ISpanFormattable |
 | Nullable<Int32> | Object |
 | Nullable<Int32> | ValueType |
 | Nullable<Int32> | dynamic |
