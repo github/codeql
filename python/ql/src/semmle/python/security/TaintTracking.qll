@@ -703,13 +703,20 @@ class TaintedNode extends TTaintedNode {
     /** Holds if the underlying CFG node for this node is a vulnerable node
      * and is vulnerable to this node's taint.
      */
-    predicate isVulnerableSink() {
+    predicate isSink() {
         exists(TaintedNode src, TaintSink vuln |
             src.isSource() and
             src.getASuccessor*() = this and
             vuln = this.getNode() and
             vuln.sinks(this.getTaintKind())
         )
+    }
+
+    /** DEPRECATED -- Use `TaintedNode.isSink()` instead
+     * Sinks are not necessarily vulnerable
+     * For removal 2020-07-01 */
+    deprecated predicate isVulnerableSink() {
+        this.isSink()
     }
 
     TaintFlowImplementation::TrackedTaint fromAttribute(string name) {

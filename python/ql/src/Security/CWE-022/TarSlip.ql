@@ -49,6 +49,9 @@ class TarfileOpen extends TaintSource {
          * this tarfile is safe.
          */
         not this.(CallNode).getAnArg().refersTo(any(StringObject str))
+        and
+        /* Ignore opens within the tarfile module itself */
+        not this.(ControlFlowNode).getLocation().getFile().getBaseName() = "tarfile.py"
     }
 
     override predicate isSourceOf(TaintKind kind) {
@@ -73,13 +76,33 @@ class TarFileInfo extends TaintKind {
 }
 
 
+/* For efficiency we don't want to track the flow of taint
+ * around the tarfile module. */
+class ExcludeTarFilePy extends Sanitizer {
+
+    ExcludeTarFilePy() {
+        this = "Tar sanitizer"
+    }
+
+    override predicate sanitizingNode(TaintKind taint, ControlFlowNode node) {
+        node.getLocation().getFile().getBaseName() = "tarfile.py" and
+        (
+            taint instanceof OpenTarFile
+            or
+            taint instanceof TarFileInfo
+        )
+    }
+
+}
+
 /* Any call to an extractall method */
 class ExtractAllSink extends TaintSink {
 
     CallNode call;
 
     ExtractAllSink() {
-        this = call.getFunction().(AttrNode).getObject("extractall")
+        this = call.getFunction().(AttrNode).getObject("extractall") and
+        count(call.getAnArg()) = 0
     }
 
     override predicate sinks(TaintKind kind) {
@@ -104,6 +127,25 @@ class ExtractSink extends TaintSink {
 
 }
 
+
+/* Members argument to extract method */
+class ExtractMembersSink extends TaintSink {
+
+    CallNode call;
+
+    ExtractMembersSink() {
+        call.getFunction().(AttrNode).getName() = "extractall" and
+        (this = call.getArg(0) or this = call.getArgByName("members"))
+    }
+
+    override predicate sinks(TaintKind kind) {
+        kind.(SequenceKind).getItem() instanceof TarFileInfo
+        or
+        kind instanceof OpenTarFile
+    }
+
+}
+
 class TarFileInfoSanitizer extends Sanitizer {
 
     TarFileInfoSanitizer() {
@@ -114,19 +156,16 @@ class TarFileInfoSanitizer extends Sanitizer {
         path_sanitizing_test(test.getTest()) and
         taint instanceof TarFileInfo
     }
+
+
 }
 
 private predicate path_sanitizing_test(ControlFlowNode test) {
-    checks_not_absolute(test) and
-    test.getAChild+().getNode().(StrConst).getText() = ".."
-}
-
-private predicate checks_not_absolute(ControlFlowNode test) {
-    test.getAChild+().(CallNode).getFunction().pointsTo(Module::named("os.path").attr("absfile"))
+    /* Assume that any test with "path" in it is a sanitizer */
+    test.getAChild+().(AttrNode).getName() = "path"
     or
-    test.getAChild+().getNode().(StrConst).getText() = "/"
+    test.getAChild+().(NameNode).getId() = "path"
 }
-
 
 class TarSlipConfiguration extends TaintTracking::Configuration {
 
@@ -134,18 +173,22 @@ class TarSlipConfiguration extends TaintTracking::Configuration {
 
     override predicate isSource(TaintTracking::Source source) { source instanceof TarfileOpen }
 
-    override predicate isSink(TaintTracking::Sink sink) { 
-        sink instanceof ExtractSink or sink instanceof ExtractAllSink
+    override predicate isSink(TaintTracking::Sink sink) {
+        sink instanceof ExtractSink or
+        sink instanceof ExtractAllSink or
+        sink instanceof ExtractMembersSink
     }
 
     override predicate isSanitizer(Sanitizer sanitizer) {
         sanitizer instanceof TarFileInfoSanitizer
+        or
+        sanitizer instanceof ExcludeTarFilePy
     }
+
 }
 
 
 from TarSlipConfiguration config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "Extraction of tarfile from $@", src.getSource(), "a potentially untrusted source"
-
 
