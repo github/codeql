@@ -875,6 +875,8 @@ library module TaintFlowImplementation {
         or
         iteration_step(fromnode, totaint, tocontext, tonode)
         or
+        yield_step(fromnode, totaint, tocontext, tonode)
+        or
         exists(DataFlowNode fromnodenode |
             fromnodenode = fromnode.getNode() and
             (
@@ -1062,6 +1064,26 @@ library module TaintFlowImplementation {
             callee = caller.getCallee(call)
             or
             caller = callee and caller = TTop()
+        )
+    }
+
+    predicate yield_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, CallNode call) {
+        exists(PyFunctionObject func |
+            func.getFunction().isGenerator() and
+            func.getACall() = call and
+            (
+                fromnode.getContext() = tocontext.getCallee(call)
+                or
+                fromnode.getContext() = tocontext and tocontext = TTop()
+            ) and
+            exists(Yield yield |
+                yield.getScope() = func.getFunction() and
+                yield.getValue() = fromnode.getNode().getNode()
+            ) and
+            exists(SequenceKind seq |
+                seq.getItem() = fromnode.getTaintKind() and
+                totaint = fromnode.getTrackedValue().toKind(seq)
+            )
         )
     }
 

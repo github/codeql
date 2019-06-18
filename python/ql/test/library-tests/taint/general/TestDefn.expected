@@ -183,3 +183,9 @@
 | test.py:202 | ITERABLE_SOURCE | test.py:202 | Taint iterable.simple | ITERABLE_SOURCE |
 | test.py:203 | IterationDefinition | test.py:203 | Taint simple.test | i |
 | test.py:203 | phi(i_0, i_2) | test.py:203 | Taint simple.test | i |
+| test.py:208 | List | test.py:208 | Taint [simple.test] | List |
+| test.py:209 | IterationDefinition | test.py:209 | Taint simple.test | i |
+| test.py:209 | phi(i_0, i_2) | test.py:209 | Taint simple.test | i |
+| test.py:213 | IterationDefinition | test.py:213 | Taint simple.test | x |
+| test.py:213 | phi(x_2, x_3) | test.py:213 | Taint simple.test | x |
+| test.py:214 | ArgumentRefinement(x_1) | test.py:213 | Taint simple.test | x |

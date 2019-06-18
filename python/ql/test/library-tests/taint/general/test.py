@@ -204,3 +204,12 @@ def flow_in_iteration():
         i
     return i
 
+def flow_in_generator():
+    seq = [SOURCE]
+    for i in seq:
+        yield i
+
+def flow_from_generator():
+    for x in flow_in_generator():
+        SINK(x)
+

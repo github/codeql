@@ -67,6 +67,9 @@
 | Taint [simple.test] | test.py:172 | x |  |
 | Taint [simple.test] | test.py:174 | l |  |
 | Taint [simple.test] | test.py:174 | list() |  |
+| Taint [simple.test] | test.py:208 | List |  |
+| Taint [simple.test] | test.py:209 | seq |  |
+| Taint [simple.test] | test.py:213 | flow_in_generator() |  |
 | Taint basic.custom | test.py:72 | arg | test.py:121 |
 | Taint basic.custom | test.py:73 | arg | test.py:121 |
 | Taint basic.custom | test.py:120 | CUSTOM_SOURCE |  |
@@ -231,6 +234,11 @@
 | Taint simple.test | test.py:203 | i |  |
 | Taint simple.test | test.py:204 | i |  |
 | Taint simple.test | test.py:205 | i |  |
+| Taint simple.test | test.py:208 | SOURCE |  |
+| Taint simple.test | test.py:209 | i |  |
+| Taint simple.test | test.py:210 | i |  |
+| Taint simple.test | test.py:213 | x |  |
+| Taint simple.test | test.py:214 | x |  |
 | Taint {simple.test} | test.py:169 | Dict |  |
 | Taint {simple.test} | test.py:171 | d |  |
 | Taint {simple.test} | test.py:173 | y |  |
