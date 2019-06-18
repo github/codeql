@@ -44,8 +44,8 @@ class CastToPointerArithFlow extends DataFlow::Configuration {
 }
 
 /**
- * `derived` has a (possibly indirect) base class of `base`, and `derived`
- * introduces at least one new field that isn't in a base class.
+ * `derived` has a (possibly indirect) base class of `base`, and at least one new
+ * field has been introduced in the inheritance chain after `base`.
  */
 predicate introducesNewField(Class derived, Class base) {
   (
