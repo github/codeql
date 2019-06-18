@@ -64,11 +64,11 @@ OWASP:
 </li>
 <li>
 Python Library Reference:
-< href="https://docs.python.org/3/library/tarfile.html#tarfile.TarFile.extract">TarFile.extract</a>.
+<a href="https://docs.python.org/3/library/tarfile.html#tarfile.TarFile.extract">TarFile.extract</a>.
 </li>
 <li>
 Python Library Reference:
-< href="https://docs.python.org/3/library/tarfile.html#tarfile.TarFile.extractall">TarFile.extractall</a>.
+<a href="https://docs.python.org/3/library/tarfile.html#tarfile.TarFile.extractall">TarFile.extractall</a>.
 </li>
 
 </references>
