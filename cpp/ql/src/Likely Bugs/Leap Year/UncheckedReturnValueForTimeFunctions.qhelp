@@ -8,7 +8,7 @@
 <p>When using a function that transforms a date structure, and the year on the input argument for the API has been manipulated, it is important to check for the return value of the function to make sure it succeeded.</p>
 <p>Otherwise, the function may have failed, and the output parameter may contain invalid data that can cause any number of problems on the affected system.</p>
 <p>The following is a list of the functions that this query covers:</p>
-  <list>
+<ul>
   <li><code>FileTimeToSystemTime</code></li>
   <li><code>SystemTimeToFileTime</code></li>
   <li><code>SystemTimeToTzSpecificLocalTime</code></li>
@@ -18,7 +18,7 @@
   <li><code>RtlLocalTimeToSystemTime</code></li>
   <li><code>RtlTimeToSecondsSince1970</code></li>
   <li><code>_mkgmtime</code></li>
-</list>
+</ul>
 
 </overview>
 <recommendation>
@@ -34,6 +34,8 @@
 </example>
 
 <references>
-  <include src="LeapYearReferences.qhelp" />
+  <li>U.S. Naval Observatory Website - <a href="https://aa.usno.navy.mil/faq/docs/calendars.php"> Introduction to Calendars</a></li>
+  <li>Wikipedia - <a href="https://en.wikipedia.org/wiki/Leap_year_bug"> Leap year bug</a> </li>
+  <li>Microsoft Azure blog - <a href="https://azure.microsoft.com/en-us/blog/is-your-code-ready-for-the-leap-year/"> Is your code ready for the leap year?</a> </li>
 </references>
 </qhelp>
