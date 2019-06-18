@@ -2,9 +2,7 @@
 | a_simple.py:24 | ControlFlowNode for x | 23 |
 | a_simple.py:29 | ControlFlowNode for x | 27 |
 | a_simple.py:35 | ControlFlowNode for Subscript | 35 |
-| a_simple.py:35 | ControlFlowNode for UnaryExpr | 35 |
 | a_simple.py:36 | ControlFlowNode for Subscript | 36 |
-| a_simple.py:36 | ControlFlowNode for UnaryExpr | 36 |
 | b_condition.py:5 | ControlFlowNode for IfExp | 5 |
 | b_condition.py:5 | ControlFlowNode for cond | 5 |
 | b_condition.py:5 | ControlFlowNode for unknown | 5 |
@@ -25,7 +23,6 @@
 | b_condition.py:17 | ControlFlowNode for cond | 17 |
 | b_condition.py:17 | ControlFlowNode for unknown | 17 |
 | b_condition.py:17 | ControlFlowNode for unknown() | 17 |
-| b_condition.py:19 | ControlFlowNode for UnaryExpr | 19 |
 | b_condition.py:19 | ControlFlowNode for x | 17 |
 | b_condition.py:21 | ControlFlowNode for use | 21 |
 | b_condition.py:21 | ControlFlowNode for use() | 21 |
@@ -48,7 +45,6 @@
 | b_condition.py:31 | ControlFlowNode for cond | 31 |
 | b_condition.py:31 | ControlFlowNode for unknown | 31 |
 | b_condition.py:31 | ControlFlowNode for unknown() | 31 |
-| b_condition.py:32 | ControlFlowNode for UnaryExpr | 32 |
 | b_condition.py:32 | ControlFlowNode for x | 31 |
 | b_condition.py:34 | ControlFlowNode for use | 34 |
 | b_condition.py:34 | ControlFlowNode for use() | 34 |
@@ -89,7 +85,6 @@
 | b_condition.py:70 | ControlFlowNode for cond | 70 |
 | b_condition.py:70 | ControlFlowNode for unknown | 70 |
 | b_condition.py:70 | ControlFlowNode for unknown() | 70 |
-| b_condition.py:71 | ControlFlowNode for UnaryExpr | 71 |
 | b_condition.py:71 | ControlFlowNode for b | 70 |
 | b_condition.py:73 | ControlFlowNode for b | 70 |
 | b_condition.py:79 | ControlFlowNode for use | 79 |
@@ -112,8 +107,8 @@
 | b_condition.py:97 | ControlFlowNode for x | 87 |
 | b_condition.py:99 | ControlFlowNode for use | 99 |
 | b_condition.py:99 | ControlFlowNode for use() | 99 |
+| b_condition.py:99 | ControlFlowNode for x | 87 |
 | b_condition.py:105 | ControlFlowNode for Subscript | 105 |
-| b_condition.py:105 | ControlFlowNode for UnaryExpr | 105 |
 | b_condition.py:110 | ControlFlowNode for Attribute | 110 |
 | b_condition.py:110 | ControlFlowNode for Attribute() | 110 |
 | b_condition.py:110 | ControlFlowNode for x | 109 |
@@ -178,7 +173,6 @@
 | c_tests.py:83 | ControlFlowNode for cond | 83 |
 | c_tests.py:83 | ControlFlowNode for unknown | 83 |
 | c_tests.py:83 | ControlFlowNode for unknown() | 83 |
-| c_tests.py:84 | ControlFlowNode for UnaryExpr | 84 |
 | c_tests.py:84 | ControlFlowNode for b | 83 |
 | c_tests.py:85 | ControlFlowNode for b | 83 |
 | c_tests.py:87 | ControlFlowNode for unknown | 87 |
@@ -193,7 +187,6 @@
 | c_tests.py:94 | ControlFlowNode for cond | 94 |
 | c_tests.py:94 | ControlFlowNode for unknown | 94 |
 | c_tests.py:94 | ControlFlowNode for unknown() | 94 |
-| c_tests.py:95 | ControlFlowNode for UnaryExpr | 95 |
 | c_tests.py:95 | ControlFlowNode for x | 94 |
 | c_tests.py:99 | ControlFlowNode for bar | 99 |
 | c_tests.py:99 | ControlFlowNode for bar() | 99 |
@@ -222,7 +215,6 @@
 | r_regressions.py:29 | ControlFlowNode for x | 27 |
 | r_regressions.py:31 | ControlFlowNode for y | 27 |
 | r_regressions.py:33 | ControlFlowNode for y | 27 |
-| r_regressions.py:35 | ControlFlowNode for UnaryExpr | 35 |
 | r_regressions.py:36 | ControlFlowNode for z | 27 |
 | r_regressions.py:39 | ControlFlowNode for use | 39 |
 | r_regressions.py:39 | ControlFlowNode for use() | 39 |

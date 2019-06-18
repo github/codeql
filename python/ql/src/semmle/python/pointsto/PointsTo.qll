@@ -1238,7 +1238,7 @@ module Expressions {
             or
             op instanceof USub and value = ObjectInternal::fromInt(-opvalue.intValue())
             or
-            opvalue = ObjectInternal::unknown() and value = opvalue
+            not op instanceof Not and opvalue = ObjectInternal::unknown() and value = opvalue
         ) and
         origin = u
     }

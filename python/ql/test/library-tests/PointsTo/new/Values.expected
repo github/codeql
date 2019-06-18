@@ -115,6 +115,8 @@
 | b_condition.py:87 | ControlFlowNode for None | import | None | builtin-class NoneType |
 | b_condition.py:88 | ControlFlowNode for x | runtime | None | builtin-class NoneType |
 | b_condition.py:88 | ControlFlowNode for y | runtime | None | builtin-class NoneType |
+| b_condition.py:90 | ControlFlowNode for UnaryExpr | runtime | bool False | builtin-class bool |
+| b_condition.py:90 | ControlFlowNode for UnaryExpr | runtime | bool True | builtin-class bool |
 | b_condition.py:90 | ControlFlowNode for x | runtime | None | builtin-class NoneType |
 | b_condition.py:90 | ControlFlowNode for y | runtime | None | builtin-class NoneType |
 | b_condition.py:92 | ControlFlowNode for x | runtime | None | builtin-class NoneType |

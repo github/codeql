@@ -703,10 +703,14 @@ class UnaryExprNode extends ControlFlowNode {
         toAst(this) instanceof UnaryExpr
     }
 
-    /** flow node corresponding to the operand of a unary expression */
+    /** Gets flow node corresponding to the operand of a unary expression.
+     * Note that this might not be the flow node for the AST operand.
+     * In `not (a or b)` the AST operand is `(a or b)`, but as `a or b` is
+     * a short-circuiting operation, there will be two `not` CFG nodes, one will
+     * have `a` or `b` as it operand, the other will have just `b`.
+     */
      ControlFlowNode getOperand() {
-        exists(UnaryExpr u | this.getNode() = u and result.getNode() = u.getOperand()) and
-        result.getBasicBlock().dominates(this.getBasicBlock())
+         result = this.getAPredecessor()
     }
 
     override UnaryExpr getNode() { result = super.getNode() }
