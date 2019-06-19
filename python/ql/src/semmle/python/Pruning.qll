@@ -182,11 +182,8 @@ module Pruner {
          */
         abstract predicate constrainsVariableToBe(boolean value);
 
-        /** Holds if this constraint implies that `other` cannot hold for the
-         * same variable.
-         * For example `x > 0` implies that `not bool(x)` is `False`.
-         */
-        abstract predicate contradicts(Constraint other);
+        /** Holds if this constraint implies that `other` cannot be `None` */
+        abstract predicate cannotBeNone();
 
     }
 
@@ -275,8 +272,8 @@ module Pruner {
             value = this.booleanValue()
         }
 
-        override predicate contradicts(Constraint other) {
-            other.constrainsVariableToBe(this.booleanValue().booleanNot())
+        override predicate cannotBeNone() {
+            this.booleanValue() = true
         }
 
     }
@@ -303,10 +300,8 @@ module Pruner {
             value = false and this.isNone() = true
         }
 
-        override predicate contradicts(Constraint other) {
-            other = TIsNone(this.isNone().booleanNot())
-            or
-            this.isNone() = true and other = TTruthy(true)
+        override predicate cannotBeNone() {
+            this = TIsNone(false)
         }
 
     }
@@ -348,15 +343,16 @@ module Pruner {
             )
         }
 
-        override predicate contradicts(Constraint other) {
-            exists(boolean b |
-                this.constrainsVariableToBe(b) and other.constrainsVariableToBe(b.booleanNot())
-            )
-            or
-            this.getOp() = eq() and other = TIsNone(true)
-            or
-            this.getOp() = ne() and other.(ConstrainedByConstant).getOp() = eq()
-            and this.intValue() = other.(ConstrainedByConstant).intValue()
+        predicate eq(int val) {
+            this = TConstrainedByConstant(eq(), val)
+        }
+
+        predicate ne(int val) {
+            this = TConstrainedByConstant(ne(), val)
+        }
+
+        override predicate cannotBeNone() {
+            this.getOp() = eq()
         }
 
         /** The minimum value that a variable fulfilling this constraint may hold
@@ -551,9 +547,23 @@ module Pruner {
     /* Helper for `unreachableEdge`, deal with inequalities here to avoid blow up */
     pragma [inline]
     private predicate contradicts(Constraint a, Constraint b) {
-        a.contradicts(b) or
-        a.(ConstrainedByConstant).minValue() > b.(ConstrainedByConstant).maxValue() or
+        a = TIsNone(true) and b.cannotBeNone()
+        or
+        a.cannotBeNone() and b = TIsNone(true)
+        or
+        a.constrainsVariableToBe(true) and b.constrainsVariableToBe(false)
+        or
+        a.constrainsVariableToBe(false) and b.constrainsVariableToBe(true)
+        or
+        a.(ConstrainedByConstant).minValue() > b.(ConstrainedByConstant).maxValue()
+        or
         a.(ConstrainedByConstant).maxValue() < b.(ConstrainedByConstant).minValue()
+        or
+        exists(int val |
+            a.(ConstrainedByConstant).eq(val) and b.(ConstrainedByConstant).ne(val)
+            or
+            a.(ConstrainedByConstant).ne(val) and b.(ConstrainedByConstant).eq(val)
+        )
     }
 
     /** Holds if edge is simply dead. Stuff like `if False: ...` */
