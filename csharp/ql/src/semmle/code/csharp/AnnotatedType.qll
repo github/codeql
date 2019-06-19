@@ -178,9 +178,9 @@ private int getTypeArgumentFlags(ConstructedGeneric generic, int argument) {
 }
 
 private int getTypeParameterFlags(TypeParameterConstraints constraints, Type type) {
-  specific_type_parameter_constraints(constraints, getTypeRef(type), _) and
+  specific_type_parameter_annotation(constraints, getTypeRef(type), _) and
   result = sum(int b |
-      specific_type_parameter_constraints(constraints, getTypeRef(type), b)
+      specific_type_parameter_annotation(constraints, getTypeRef(type), b)
     |
       getBitMask(b)
     )

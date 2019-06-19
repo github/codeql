@@ -44,12 +44,14 @@ namespace Semmle.Extraction.CSharp.Entities
             if(symbol.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
                 Context.Emit(Tuples.general_type_parameter_constraints(constraints, 5));
 
-            foreach (var abase in symbol.ConstraintTypes.Zip(symbol.ConstraintNullableAnnotations, (type, nullability) => (Type:type, Nullability:nullability)))
+            foreach (var abase in symbol.GetAnnotatedTypeConstraints())
             {
-                if (abase.Type.TypeKind != TypeKind.Interface)
-                    baseType = abase.Type;
-                var t = Create(Context, abase.Type);
-                Context.Emit(Tuples.specific_type_parameter_constraints(constraints, t.TypeRef, (Kinds.TypeAnnotation)abase.Nullability));
+                if (abase.Symbol.TypeKind != TypeKind.Interface)
+                    baseType = abase.Symbol;
+                var t = Create(Context, abase.Symbol);
+                Context.Emit(Tuples.specific_type_parameter_constraints(constraints, t.TypeRef));
+                if (abase.Nullability.NeedsExtraction())
+                    Context.Emit(Tuples.specific_type_parameter_annotation(constraints, t.TypeRef, abase.Nullability));
             }
 
             Context.Emit(Tuples.types(this, Semmle.Extraction.Kinds.TypeKind.TYPE_PARAMETER, symbol.Name));

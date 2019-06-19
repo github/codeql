@@ -504,6 +504,13 @@ namespace Semmle.Extraction.CSharp
         public static AnnotatedTypeSymbol GetAnnotatedReturnType(this IMethodSymbol symbol) => new AnnotatedTypeSymbol(symbol.ReturnType, symbol.ReturnNullableAnnotation);
 
         /// <summary>
+        /// Holds if the annotation should be extracted.
+        /// The "Disabled" and "NotApplicable" annotations can be inferred so
+        /// do not need to be stored in the database.
+        /// </summary>
+        public static bool NeedsExtraction(this NullableAnnotation info) => info == NullableAnnotation.Annotated || info == NullableAnnotation.NotAnnotated;
+
+        /// <summary>
         /// Gets the annotated element type of an IArrayTypeSymbol.
         /// This has not yet been exposed on the public API.
         /// </summary>
@@ -516,6 +523,20 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
             symbol.TypeArguments.Zip(symbol.TypeArgumentsNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+
+        /// <summary>
+        /// Gets the annotated type arguments of an IMethodSymbol.
+        /// This has not yet been exposed on the public API.
+        /// </summary>
+        public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this IMethodSymbol symbol) =>
+            symbol.TypeArguments.Zip(symbol.TypeArgumentsNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
+
+        /// <summary>
+        /// Gets the annotated type constraints of an ITypeParameterSymbol.
+        /// This has not yet been exposed on the public API.
+        /// </summary>
+        public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeConstraints(this ITypeParameterSymbol symbol) =>
+            symbol.ConstraintTypes.Zip(symbol.ConstraintNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
 
         /// <summary>
         /// Creates an AnnotatedTypeSymbol from an ITypeSymbol.

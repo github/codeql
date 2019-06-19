@@ -190,7 +190,9 @@ namespace Semmle.Extraction.CSharp
 
         internal static Tuple statements(Statement stmt, StmtKind kind) => new Tuple("statements", stmt, kind);
 
-        internal static Tuple specific_type_parameter_constraints(TypeParameterConstraints constraints, Type baseType, Kinds.TypeAnnotation annotation) => new Tuple("specific_type_parameter_constraints", constraints, baseType, (int)annotation);
+        internal static Tuple specific_type_parameter_constraints(TypeParameterConstraints constraints, Type baseType) => new Tuple("specific_type_parameter_constraints", constraints, baseType);
+
+        internal static Tuple specific_type_parameter_annotation(TypeParameterConstraints constraints, Type baseType, Microsoft.CodeAnalysis.NullableAnnotation annotation) => new Tuple("specific_type_parameter_annotation", constraints, baseType, (int)annotation);
 
         internal static Tuple successors(IEntity from, IEntity to) => new Tuple("successors", from, to);
 

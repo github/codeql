@@ -342,10 +342,12 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     Context.Emit(Tuples.is_constructed(this));
                     Context.Emit(Tuples.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol)));
-                    foreach (var tp in symbol.TypeArguments)
+                    foreach (var tp in symbol.GetAnnotatedTypeArguments())
                     {
-                        Context.Emit(Tuples.type_argument_annotation(this, child, (Kinds.TypeAnnotation)symbol.TypeArgumentsNullableAnnotations[child]));
-                        Context.Emit(Tuples.type_arguments(Type.Create(Context, tp), child++, this));
+                        Context.Emit(Tuples.type_arguments(Type.Create(Context, tp.Symbol), child, this));
+                        if(tp.Nullability.NeedsExtraction())
+                            Context.Emit(Tuples.type_argument_annotation(this, child, (Kinds.TypeAnnotation)symbol.TypeArgumentsNullableAnnotations[child]));
+                        child++;
                     }
                 }
                 else

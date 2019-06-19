@@ -203,16 +203,16 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
 class TypeParameterConstraints extends Element, @type_parameter_constraints {
   /** Gets a specific interface constraint, if any. */
   Interface getAnInterfaceConstraint() {
-    specific_type_parameter_constraints(this, getTypeRef(result), _)
+    specific_type_parameter_constraints(this, getTypeRef(result))
   }
 
   /** Gets a specific type parameter constraint, if any. */
   TypeParameter getATypeParameterConstraint() {
-    specific_type_parameter_constraints(this, getTypeRef(result), _)
+    specific_type_parameter_constraints(this, getTypeRef(result))
   }
 
   /** Gets the specific class constraint, if any. */
-  Class getClassConstraint() { specific_type_parameter_constraints(this, getTypeRef(result), _) }
+  Class getClassConstraint() { specific_type_parameter_constraints(this, getTypeRef(result)) }
 
   /** Gets an annotated specific type constraint, if any. */
   AnnotatedType getAnAnnotatedTypeConstraint() {
