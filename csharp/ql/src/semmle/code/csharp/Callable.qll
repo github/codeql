@@ -25,12 +25,12 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   /** Gets the annotated return type of this callable. */
   final AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
-  /** Holds if this callable returns a `ref`. */
+  /** DEPRECATED: Use `getAnnotatedReturnType().isRef()` instead. */
   deprecated predicate returnsRef() {
     this.getAnnotatedReturnType().isRef()
   }
 
-  /** Holds if this callable returns a `ref readonly`. */
+  /** DEPRECATED: Use `getAnnotatedReturnType().isReadonlyRef()` instead. */
   deprecated predicate returnsRefReadonly() {
     this.getAnnotatedReturnType().isReadonlyRef()
   }

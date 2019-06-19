@@ -8,7 +8,7 @@
 
 import csharp
 
-module Annotations {
+private module Annotations {
   private newtype TAnnotation =
     TDisabledNullability() or
     TNotApplicableNullability() or
