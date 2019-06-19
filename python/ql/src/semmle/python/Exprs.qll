@@ -342,7 +342,7 @@ class Ellipsis extends Ellipsis_ {
  *  and numeric literals.
  */
 abstract class ImmutableLiteral extends Expr {
- 
+
     abstract Object getLiteralObject();
 
     abstract boolean booleanValue();
@@ -383,7 +383,7 @@ class IntegerLiteral extends Num {
     override Object getLiteralObject() {
         py_cobjecttypes(result, theIntType()) and py_cobjectnames(result, this.getN())
         or
-        py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, this.getN())   
+        py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, this.getN())
     }
 
     override boolean booleanValue() {
@@ -453,6 +453,25 @@ class ImaginaryLiteral extends Num {
         this.getValue() = -0.0 and result = false
         or
         this.getValue() != 0.0 and this.getValue() != -0.0 and result = true
+    }
+
+}
+
+class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
+
+    NegativeIntegerLiteral() {
+        this.getOp() instanceof USub and
+        this.getOperand() instanceof IntegerLiteral
+    }
+
+    override boolean booleanValue() {
+        result = this.getOperand().(IntegerLiteral).booleanValue()
+    }
+
+    override Object getLiteralObject() {
+        (py_cobjecttypes(result, theIntType()) or  py_cobjecttypes(result, theLongType()))
+        and
+        py_cobjectnames(result, "-" + this.getOperand().(IntegerLiteral).getN())
     }
 
 }
