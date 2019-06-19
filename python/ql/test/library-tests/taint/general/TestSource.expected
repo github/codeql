@@ -43,3 +43,5 @@
 | test.py:178 | SOURCE | simple.test |
 | test.py:189 | FALSEY | falsey |
 | test.py:195 | SOURCE | simple.test |
+| test.py:202 | ITERABLE_SOURCE | iterable.simple |
+| test.py:208 | SOURCE | simple.test |
