@@ -10,8 +10,6 @@ import csharp
 
 private module Annotations {
   private newtype TAnnotation =
-    TDisabledNullability() or
-    TNotApplicableNullability() or
     TNotNullableRefType() or
     TNullableRefType() or
     TReadonlyRefType() or
@@ -31,26 +29,6 @@ private module Annotations {
 
     /** Gets a string representation of this type annotation. */
     abstract string toString();
-  }
-
-  /**
-   * An annotation indicating that nullability is disabled for the type,
-   * for example if the type was not compiled in a nullable context.
-   */
-  class DisabledNullabilty extends TypeAnnotation, TDisabledNullability {
-    override string toString() { result = "disabled nullability" }
-
-    override int getBit() { result = 0 }
-  }
-
-  /**
-   * An annotation indicating that nullability is not applicable for the type,
-   * perhaps because the type is a value type.
-   */
-  class NotApplicableNullability extends TypeAnnotation, TNotApplicableNullability {
-    override string toString() { result = "not applicable nullability" }
-
-    override int getBit() { result = 1 }
   }
 
   /** An annotation indicating that the type is not nullable. */
@@ -231,16 +209,6 @@ class AnnotatedType extends TAnnotatedType {
 
   /** Gets a type annotation of this annotated type. */
   Annotations::TypeAnnotation getAnAnnotation() { result = getAnnotations().getAnAnnotation() }
-
-  /** Holds if nullability is not applicable to the type. */
-  predicate isNullabilityNotApplicable() {
-    this.getAnAnnotation() instanceof Annotations::NotApplicableNullability
-  }
-
-  /** Holds if nullability is disabled for the type. */
-  predicate isNullabilityDisabled() {
-    this.getAnAnnotation() instanceof Annotations::NotApplicableNullability
-  }
 
   /** Holds if the type is a non-nullable reference. */
   predicate isNonNullableRefType() {
