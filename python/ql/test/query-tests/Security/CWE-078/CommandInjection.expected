@@ -1,7 +1,6 @@
 edges
 | command_injection.py:10:13:10:24 | dict of externally controlled string | command_injection.py:10:13:10:41 | externally controlled string |
 | command_injection.py:10:13:10:41 | externally controlled string | command_injection.py:12:23:12:27 | externally controlled string |
-| command_injection.py:12:15:12:27 | externally controlled string | ../lib/os/__init__.py:1:12:1:14 | externally controlled string |
 | command_injection.py:12:23:12:27 | externally controlled string | command_injection.py:12:15:12:27 | externally controlled string |
 | command_injection.py:17:13:17:24 | dict of externally controlled string | command_injection.py:17:13:17:41 | externally controlled string |
 | command_injection.py:17:13:17:41 | externally controlled string | command_injection.py:19:29:19:33 | externally controlled string |
@@ -12,11 +11,8 @@ edges
 | command_injection.py:25:23:25:25 | externally controlled string | command_injection.py:25:22:25:36 | sequence of externally controlled string |
 | command_injection.py:30:13:30:24 | dict of externally controlled string | command_injection.py:30:13:30:41 | externally controlled string |
 | command_injection.py:30:13:30:41 | externally controlled string | command_injection.py:32:22:32:26 | externally controlled string |
-| command_injection.py:32:14:32:26 | externally controlled string | ../lib/os/__init__.py:4:11:4:13 | externally controlled string |
 | command_injection.py:32:22:32:26 | externally controlled string | command_injection.py:32:14:32:26 | externally controlled string |
 parents
-| ../lib/os/__init__.py:1:12:1:14 | externally controlled string | command_injection.py:12:15:12:27 | externally controlled string |
-| ../lib/os/__init__.py:4:11:4:13 | externally controlled string | command_injection.py:32:14:32:26 | externally controlled string |
 #select
 | command_injection.py:12:15:12:27 | shell command | command_injection.py:10:13:10:24 | dict of externally controlled string | command_injection.py:12:15:12:27 | externally controlled string | This command depends on $@. | command_injection.py:10:13:10:24 | flask.request.args | a user-provided value |
 | command_injection.py:19:22:19:34 | shell command | command_injection.py:17:13:17:24 | dict of externally controlled string | command_injection.py:19:22:19:34 | sequence of externally controlled string | This command depends on $@. | command_injection.py:17:13:17:24 | flask.request.args | a user-provided value |
