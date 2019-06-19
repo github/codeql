@@ -90,6 +90,8 @@ class ExcludeTarFilePy extends Sanitizer {
             taint instanceof OpenTarFile
             or
             taint instanceof TarFileInfo
+            or
+            taint.(SequenceKind).getItem() instanceof TarFileInfo
         )
     }
 
@@ -162,9 +164,9 @@ class TarFileInfoSanitizer extends Sanitizer {
 
 private predicate path_sanitizing_test(ControlFlowNode test) {
     /* Assume that any test with "path" in it is a sanitizer */
-    test.getAChild+().(AttrNode).getName() = "path"
+    test.getAChild+().(AttrNode).getName().matches("%path")
     or
-    test.getAChild+().(NameNode).getId() = "path"
+    test.getAChild+().(NameNode).getId().matches("%path")
 }
 
 class TarSlipConfiguration extends TaintTracking::Configuration {
