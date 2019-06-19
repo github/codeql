@@ -56,3 +56,52 @@ int main(int argc, char **argv) {
 
 	return 0;
 }
+
+FILE *fopen(const char *filename, const char *mode);
+size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
+int fclose(FILE *stream);
+
+void processData1(char *buffer, int size)
+{
+	char *copy;
+
+	copy = new char[size]; // GOOD
+
+	// ...
+
+	delete [] copy;
+}
+
+void processData2(char *start, char *end)
+{
+	char *copy;
+
+	copy = new char[end - start]; // GOOD
+
+	// ...
+
+	delete [] copy;
+}
+
+void processFile()
+{
+	char buffer[256], *copy;
+	size_t amount;
+	FILE *f;
+
+	// open file
+	f = fopen("myfile.txt", "r");
+	if (f != 0)
+	{
+		// read a bounded amount of data
+		amount = fread(buffer, sizeof(char), 256, f);
+		if (amount > 0)
+		{
+			processData1(buffer, amount);
+			processData2(buffer, buffer + amount);
+		}
+
+		// close file
+		fclose(f);
+	}
+}

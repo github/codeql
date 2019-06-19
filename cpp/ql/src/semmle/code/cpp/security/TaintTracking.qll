@@ -75,7 +75,11 @@ predicate moveToDependingOnSide(Expr src, Expr dest) {
     and (base = binop.getLeftOperand() or base = binop.getRightOperand())
     and isPointer(base.getType())
     and base.getTarget() instanceof LocalScopeVariable
-    and src = base)
+    and src = base
+
+    // flow through pointer-pointer subtraction is dubious, the result should be
+    // a number bounded by the size of the pointed-to thing.
+    and not binop instanceof PointerDiffExpr)
   or exists (UnaryOperation unop |
     dest = unop
     and unop.getAnOperand() = src)
