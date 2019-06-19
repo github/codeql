@@ -402,7 +402,7 @@ cached module PointsToInternal {
         or
         scope_entry_points_to(def, context, value, origin)
         or
-        InterModulePointsTo::implicit_submodule_points_to(def, context, value, origin)
+        InterModulePointsTo::implicit_submodule_points_to(def, value, origin) and context.isImport()
         or
         iteration_definition_points_to(def, context, value, origin)
         /*
@@ -647,18 +647,22 @@ private module InterModulePointsTo {
         )
     }
 
+    /* Helper for implicit_submodule_points_to */
+    private ModuleObjectInternal getModule(ImplicitSubModuleDefinition def) {
+       exists(PackageObjectInternal package |
+           package.getSourceModule() = def.getDefiningNode().getScope() and 
+           result =  package.submodule(def.getSourceVariable().getName())
+       )
+    }
+
     /** Implicit "definition" of the names of submodules at the start of an `__init__.py` file.
      *
      * PointsTo isn't exactly how the interpreter works, but is the best approximation we can manage statically.
      */
     pragma [noinline]
-    predicate implicit_submodule_points_to(ImplicitSubModuleDefinition def, PointsToContext context, ModuleObjectInternal value, ControlFlowNode origin) {
-        exists(PackageObjectInternal package |
-            package.getSourceModule() = def.getDefiningNode().getScope() |
-            value = package.submodule(def.getSourceVariable().getName()) and
-            origin = CfgOrigin::fromObject(value).asCfgNodeOrHere(def.getDefiningNode()) and
-            context.isImport()
-        )
+    predicate implicit_submodule_points_to(ImplicitSubModuleDefinition def, ModuleObjectInternal value, ControlFlowNode origin) {
+        value = getModule(def) and
+        origin = CfgOrigin::fromObject(value).asCfgNodeOrHere(def.getDefiningNode())
     }
 
     /** Points-to for `from ... import *`. */
