@@ -37,14 +37,14 @@ class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
    * Gets a first control flow node executed within this element.
    */
   Node getAControlFlowEntryNode() {
-    result = ControlFlowGraph::Internal::getAControlFlowEntryNode(this).getAControlFlowNode()
+    result = Internal::getAControlFlowEntryNode(this).getAControlFlowNode()
   }
 
   /**
    * Gets a potential last control flow node executed within this element.
    */
   Node getAControlFlowExitNode() {
-    result = ControlFlowGraph::Internal::getAControlFlowExitNode(this).getAControlFlowNode()
+    result = Internal::getAControlFlowExitNode(this).getAControlFlowNode()
   }
 
   /**
