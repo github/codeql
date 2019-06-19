@@ -1,16 +1,20 @@
-from @element element, int annotation
-where 
-  exists(int mode | 
-    params(param, _, _, _, mode, _, _)
-  |
-    mode = 1 and annotation = 5 // ref
+class Element extends @element {
+  string toString() { none() }
+
+  int getAnnotation() {
+    exists(int mode | params(this, _, _, _, mode, _, _) |
+      mode = 1 and result = 5 // ref
+      or
+      mode = 2 and result = 6 // out
+      or
+      mode = 5 and result = 4 // in
+    )
     or
-    mode = 2 and annotation = 6 // out
+    ref_returns(this) and result = 5
     or
-    mode = 5 and annotation = 4 // in
-  )
-  or
-  returns_ref(element) and annotation = 5
-  or
-  returns_readonly_ref(element) and annotation = 4
-select element, annotation
+    ref_readonly_returns(this) and result = 4
+  }
+}
+
+from Element element
+select element, element.getAnnotation()
