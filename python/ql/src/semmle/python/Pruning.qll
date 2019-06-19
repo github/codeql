@@ -182,7 +182,7 @@ module Pruner {
          */
         abstract predicate constrainsVariableToBe(boolean value);
 
-        /** Holds if this constraint implies that `other` cannot be `None` */
+        /** Holds if the value constrained by this constraint cannot be `None` */
         abstract predicate cannotBeNone();
 
     }
