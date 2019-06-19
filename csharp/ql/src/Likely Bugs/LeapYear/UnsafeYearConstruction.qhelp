@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
   <p>When creating a <code>System.DateTime</code> object by setting the year, month, and day in the constructor by performing an arithmetic operation on a different <code>DateTime</code> object, there is a risk that the date you are setting is invalid.</p>
-  <p>On a leap year, such code may throw an <code>ArgumentOutOfRangeException</code> with a message of <code>"Year, Month, and Day parameters describe an un-representable DateTime."</code></p>
+  <p>On a leap year, such code may throw an <code>ArgumentOutOfRangeException</code> with a message of <code>"Year, Month, and Day parameters describe an unrepresentable DateTime."</code></p>
 </overview>
 <recommendation>
   <p>Creating a <code>System.DateTime</code> object based on a different <code>System.DateTime</code> object, use the appropriate methods to manipulate the date instead of arithmetic.</p>

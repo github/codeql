@@ -1,7 +1,7 @@
 using System;
-public class UnsafeYearConstructionBad
+public class UnsafeYearConstructionGood
 {
-    public UnsafeYearConstructionBad()
+    public UnsafeYearConstructionGood()
     {
         DateTime Start;
         DateTime End;
