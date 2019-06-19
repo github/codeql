@@ -1505,7 +1505,7 @@ class TSGlobalDeclImport extends DataFlow::ModuleImportNode::Range {
       i.getLocal().getVariable() = pkg.getVariable() and
       path = i.getImportedPath().getValue() and
       // finally, "this" needs to be a reference to gv
-      this = DataFlow::globalVarRef(gv.getName())
+      this = DataFlow::exprNode(gv.getAnAccess())
     )
   }
 
