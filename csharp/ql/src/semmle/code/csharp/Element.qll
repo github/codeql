@@ -27,10 +27,6 @@ class Element extends DotNet::Element, @element {
   /** Gets a location of this element, including sources and assemblies. */
   override Location getALocation() { none() }
 
-  override File getFile() { result = getLocation().getFile() }
-
-  override predicate fromSource() { this.getFile().fromSource() }
-
   /** Holds if this element is from an assembly. */
   predicate fromLibrary() { this.getFile().fromLibrary() }
 

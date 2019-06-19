@@ -242,6 +242,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.SwitchExpression:
                         return Switch.Create(info);
 
+                    case SyntaxKind.SuppressNullableWarningExpression:
+                        return PostfixUnary.Create(info.SetKind(ExprKind.SUPPRESS_NULLABLE_WARNING), ((PostfixUnaryExpressionSyntax)info.Node).Operand);
+
                     default:
                         info.Context.ModelError(info.Node, $"Unhandled expression '{info.Node}' of kind '{info.Node.Kind()}'");
                         return new Unknown(info);

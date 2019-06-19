@@ -370,6 +370,12 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
     inBooleanContext(nce, _) and
     isBooleanCompletionForParent = true
   )
+  or
+  exists(SwitchExpr se |
+    inBooleanContext(se, _) and
+    e = se.getACase().getBody() and
+    isBooleanCompletionForParent = true
+  )
 }
 
 /**
@@ -404,6 +410,12 @@ private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParen
   or
   exists(NullCoalescingExpr nce | inNullnessContext(nce, _) |
     e = nce.getRightOperand() and
+    isNullnessCompletionForParent = true
+  )
+  or
+  exists(SwitchExpr se |
+    inNullnessContext(se, _) and
+    e = se.getACase().getBody() and
     isNullnessCompletionForParent = true
   )
 }

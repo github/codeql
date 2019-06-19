@@ -36,3 +36,4 @@
 | simple.test | test.py:178 | 186 | t | simple.test |
 | simple.test | test.py:195 | 197 | t | simple.test |
 | simple.test | test.py:195 | 199 | t | simple.test |
+| simple.test | test.py:208 | 214 | x | simple.test |

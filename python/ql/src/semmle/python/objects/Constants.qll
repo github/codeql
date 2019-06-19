@@ -67,6 +67,8 @@ abstract class ConstantObjectInternal extends ObjectInternal {
         this = instance
     }
 
+    override string getName() { none() }
+
 }
 
 private abstract class BooleanObjectInternal extends ConstantObjectInternal {

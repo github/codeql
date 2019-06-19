@@ -356,7 +356,8 @@ cached module SsaSource {
     /** Holds if `v` is used as the receiver in a method call. */
     cached predicate method_call_refinement(Variable v, ControlFlowNode use, CallNode call) {
         use = v.getAUse() and
-        call.getFunction().(AttrNode).getObject() = use
+        call.getFunction().(AttrNode).getObject() = use and
+        not test_contains(_, call)
     }
 
     /** Holds if `v` is defined by assignment at `defn` and given `value`. */

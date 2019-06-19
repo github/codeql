@@ -86,6 +86,7 @@ WARNING: Predicate ssa_variable_points_to has been deprecated and may be removed
 | b_condition.py:96 | y_6 = SingleSuccessorGuard(y_5) [false] | NoneType None | builtin-class NoneType |
 | b_condition.py:97 | x_3 = ArgumentRefinement(x_2) | NoneType None | builtin-class NoneType |
 | b_condition.py:101 | not_or_not_1 = FunctionExpr | Function not_or_not | builtin-class function |
+| b_condition.py:109 | method_check_1 = FunctionExpr | Function method_check | builtin-class function |
 | c_tests.py:0 | __name___0 = ScopeEntryDefinition | 'code.c_tests' | builtin-class str |
 | c_tests.py:4 | f_0 = FunctionExpr | Function f | builtin-class function |
 | c_tests.py:5 | x_0 = IfExp | NoneType None | builtin-class NoneType |

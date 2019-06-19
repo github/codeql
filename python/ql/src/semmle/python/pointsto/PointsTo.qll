@@ -170,6 +170,11 @@ module PointsTo {
 
 cached module PointsToInternal {
 
+    pragma[noinline]
+    cached predicate importCtxPointsTo(ControlFlowNode f, ObjectInternal value, ControlFlowNode origin) {
+    	PointsToInternal::pointsTo(f, any(Context ctx | ctx.isImport()), value, origin)
+    }
+
     /** INTERNAL -- Use `f.refersTo(value, origin)` instead. */
     cached predicate pointsTo(ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
         points_to_candidate(f, context, value, origin) and
@@ -695,7 +700,7 @@ private module InterModulePointsTo {
     predicate ofInterestInExports(ModuleObjectInternal mod, string name) {
         exists(ImportStarNode imp, ImportStarRefinement def, EssaVariable var |
             imp = def.getDefiningNode() and
-            PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _) and
+            PointsToInternal::importCtxPointsTo(imp.getModule(), mod, _) and
             var = def.getVariable()
             |
             if var.isMetaVariable() then (
@@ -717,15 +722,28 @@ private module InterModulePointsTo {
             |
             src.declaredInAll(name) and result = true
             or
-            src.declaredInAll(_) and not src.declaredInAll(name) and
+            declared_all_is_simple(src) and
+            not src.declaredInAll(name) and
             ofInterestInExports(mod, name) and result = false
             or
-            not src.declaredInAll(_) and
+            (not src.declaredInAll(name) and not declared_all_is_simple(src))
+            and
             exists(ObjectInternal val |
                 ModuleAttributes::pointsToAtExit(src, name, val, _) |
                 val = ObjectInternal::undefined() and result = false
                 or
                 val != ObjectInternal::undefined() and result = true
+            )
+        )
+    }
+
+    /** Holds if __all__ is declared and not mutated */
+    private predicate declared_all_is_simple(Module m) {
+        exists(AssignStmt a, GlobalVariable all |
+            a.defines(all) and a.getScope() = m and
+            all.getId() = "__all__" and
+            not exists(Attribute attr |
+                all.getALoad() = attr.getObject()
             )
         )
     }
@@ -878,7 +896,7 @@ module InterProceduralPointsTo {
     /** Helper for parameter_points_to */
     pragma [noinline]
     private predicate default_parameter_points_to(ParameterDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        exists(PointsToContext imp | imp.isImport() | PointsToInternal::pointsTo(def.getDefault(), imp, value, origin)) and
+        PointsToInternal::importCtxPointsTo(def.getDefault(), value, origin) and
         context_for_default_value(def, context)
     }
 
@@ -2198,7 +2216,7 @@ cached module ModuleAttributes {
     private predicate importStarDef(ImportStarRefinement def, EssaVariable input, ModuleObjectInternal mod) {
         exists(ImportStarNode imp |
             def.getVariable().getName() = "$" and imp = def.getDefiningNode() and
-            input = def.getInput() and PointsToInternal::pointsTo(imp.getModule(), any(Context ctx | ctx.isImport()), mod, _)
+            input = def.getInput() and PointsToInternal::importCtxPointsTo(imp.getModule(), mod, _)
         )
     }
 

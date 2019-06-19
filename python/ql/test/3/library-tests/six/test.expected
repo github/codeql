@@ -46,14 +46,6 @@
 | Module six | iterlists | Function iterlists |
 | Module six | itervalues | Function itervalues |
 | Module six | moves | Module six.moves |
-| Module six | moves.__init__ | Module six.moves.__init__ |
-| Module six | moves.urllib | Module six.moves.urllib |
-| Module six | moves.urllib.__init__ | Module six.moves.urllib.__init__ |
-| Module six | moves.urllib_error | Module six.moves.urllib_error |
-| Module six | moves.urllib_parse | Module six.moves.urllib_parse |
-| Module six | moves.urllib_request | Module six.moves.urllib_request |
-| Module six | moves.urllib_response | Module six.moves.urllib_response |
-| Module six | moves.urllib_robotparser | Module six.moves.urllib_robotparser |
 | Module six | next | Builtin-function next |
 | Module six | operator | Module operator |
 | Module six | print_ | Function print_ |
@@ -174,7 +166,6 @@
 | Module six.moves | tkinter_tksimpledialog | Module tkinter.simpledialog |
 | Module six.moves | tkinter_ttk | Module tkinter.ttk |
 | Module six.moves | urllib | Module six.moves.urllib |
-| Module six.moves | urllib.__init__ | Module six.moves.urllib.__init__ |
 | Module six.moves | urllib_error | Module six.moves.urllib_error |
 | Module six.moves | urllib_parse | Module six.moves.urllib_parse |
 | Module six.moves | urllib_request | Module six.moves.urllib_request |

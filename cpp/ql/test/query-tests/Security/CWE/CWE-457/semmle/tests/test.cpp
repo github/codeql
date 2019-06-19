@@ -243,3 +243,195 @@ void test21()
 	v3 = v1 >> i; // BAD: i is not initialized
 	v3 = v2 >> 1; // BAD: v2 is not initialized [NOT DETECTED]
 }
+
+int test22() {
+	bool loop = true;
+	int val;
+
+	while (loop)
+	{
+		val = 1;
+		loop = false;
+	}
+	return val; // GOOD
+}
+
+int test23() {
+	bool loop = true, stop = false;
+	int val;
+
+	while (loop && true)
+	{
+		val = 1;
+		loop = false;
+	}
+	return val; // GOOD
+}
+
+int test24() {
+	bool stop = false;
+	int val;
+
+	while (!stop)
+	{
+		val = 1;
+		stop = true;
+	}
+	return val; // GOOD
+}
+
+int test25() {
+	bool loop = true, stop = false;
+	int val;
+
+	while (true && loop)
+	{
+		val = 1;
+		loop = false;
+	}
+	return val; // GOOD
+}
+
+int test26() {
+	bool loop = true, stop = false;
+	int val;
+
+	while (loop && loop)
+	{
+		val = 1;
+		loop = false;
+	}
+	return val; // GOOD
+}
+
+int test27() {
+	bool loop = true, stop = false;
+	int val;
+
+	while (loop || false)
+	{
+		val = 1;
+		loop = false;
+	}
+	return val; // GOOD
+}
+
+int test28() {
+	bool a = true, b = true, c = true;
+	int val;
+
+	while (a ? b : c)
+	{
+		val = 1;
+		a = false;
+		c = false;
+	}
+	return val; // GOOD [FALSE POSITIVE]
+}
+
+int test29() {
+	bool a, b = true, c = true;
+	int val;
+
+	while ((a && b) || c) // BAD (a is uninitialized)
+	{
+		val = 1;
+		b = false;
+		c = false;
+	}
+	return val; // GOOD
+}
+
+int test30() {
+	int val;
+
+	do
+	{
+		val = 1;
+	} while (false);
+	return val; // GOOD
+}
+
+int test31() {
+	bool loop = true;
+	bool stop = false;
+	bool a, b = true, c = true;
+	int val;
+
+	while (loop || false)
+	{
+		loop = false;
+	}
+	while (!stop)
+	{
+		stop = true;
+	}
+	while ((a && b) || c) // BAD (a is uninitialized)
+	{
+		b = false;
+		c = false;
+	}
+	do
+	{
+	} while (false);
+
+	return val; // BAD
+}
+
+int test32() {
+	int val;
+
+	while (true)
+	{
+	}
+
+	return val; // GOOD (never reached)
+}
+
+int test33() {
+	int val;
+
+	while (val = 1, true) {
+		return val; // GOOD
+	}
+}
+
+int test34() {
+	bool loop = true;
+	int val;
+
+	{
+		while (loop)
+		{
+			val = 1;
+			loop = false;
+		}
+	}
+	return val; // GOOD
+}
+
+int test35() {
+	int i, j;
+
+	for (int i = 0; i < 10; i++, j = 1) {
+		return j; // BAD
+	}
+}
+
+int test36() {
+	int i, j;
+
+	for (int i = 0; i < 10; i++, j = 1) {
+	}
+
+	return j; // GOOD
+}
+
+int test38() {
+	int i, j;
+
+	for (int i = 0; false; i++, j = 1) {
+	}
+
+	return j; // BAD
+}

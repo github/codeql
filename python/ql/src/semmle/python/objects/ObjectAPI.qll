@@ -11,11 +11,17 @@ private import TObject
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
+private import semmle.python.pointsto.MRO
 
 /* Use the term `ObjectSource` to refer to DB entity. Either a CFG node
  * for Python objects, or `@py_cobject` entity for built-in objects.
  */
 class ObjectSource = Object;
+
+/* Aliases for scopes */
+class FunctionScope = Function;
+class ClassScope = Class;
+class ModuleScope = Module;
 
 /** Class representing values in the Python program
  * Each `Value` is a static approximation to a set of one or more real objects.
@@ -41,7 +47,7 @@ class Value extends TObject {
      * Strictly, the `Value` representing the class of the objects
      * represented by this Value.
      */
-    Value getClass() {
+    ClassValue getClass() {
         result = this.(ObjectInternal).getClass()
     }
 
@@ -87,6 +93,21 @@ class Value extends TObject {
         this.(ObjectInternal).isMissing()
     }
 
+    predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
+        this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
+        or
+        not exists(this.(ObjectInternal).getOrigin()) and
+        filepath = "" and bl = 0 and bc = 0 and el = 0 and ec = 0
+    }
+
+    /** Gets the name of this value, if it has one. 
+     * Note this is the innate name of the
+     * object, not necessarily all the names by which it can be called.
+     */
+    final string getName() {
+        result = this.(ObjectInternal).getName()
+    }
+
 }
 
 /** Class representing modules in the Python program
@@ -110,23 +131,49 @@ class ModuleValue extends Value {
         py_exports(this.getScope(), name)
     }
 
-    /** Gets the name of this module */
-    string getName() {
-        result = this.(ModuleObjectInternal).getName()
+    /** Gets the scope for this module, provided that it is a Python module. */
+    ModuleScope getScope() {
+        result = this.(ModuleObjectInternal).getSourceModule()
     }
 
-    /** Gets the scope for this module, provided that it is a Python module. */
-    Module getScope() {
-        result = this.(ModuleObjectInternal).getSourceModule()
+    /** Gets the container path for this module. Will be the file for a Python module,
+     * the folder for a package and no result for a builtin module.
+     */
+    Container getPath() {
+        result = this.(PackageObjectInternal).getFolder()
+        or
+        result = this.(PythonModuleObjectInternal).getSourceModule().getFile()
     }
 
 }
 
 module Module {
 
-    /** Gets the `ModuleValue` named `name` */
+    /** Gets the `ModuleValue` named `name`.
+     *
+     * Note that the name used to refer to a module is not
+     * necessarily its name. For example,
+     * there are modules refered to by the name `os.path`,
+     * but that are not named `os.path`, for example the module `posixpath`.
+     * Such that the follwing is true:
+     * `Module::named("os.path").getName() = "posixpath"
+     */
     ModuleValue named(string name) {
         result.getName() = name
+        or
+        result = named(name, _)
+    }
+
+    /* Prevent runaway recursion when a module has itself as an attribute. */
+    private ModuleValue named(string name, int dots) {
+        dots = 0 and not name.charAt(_) = "." and
+        result.getName() = name
+        or
+        dots <= 3 and
+        exists(string modname, string attrname |
+            name = modname + "." + attrname |
+            result = named(modname, dots-1).attr(attrname)
+        )
     }
 
 }
@@ -134,13 +181,13 @@ module Module {
 module Value {
 
     /** Gets the `Value` named `name`.
-     * If has at least one '.' in `name`, then the part of
+     * If there is at least one '.' in `name`, then the part of
      * the name to the left of the rightmost '.' is interpreted as a module name
      * and the part after the rightmost '.' as an attribute of that module.
-     * For example, `Value::named("os.path.join")` is the `Value` representing the function
-     * `join` in the module `os.path`.
+     * For example, `Value::named("os.path.join")` is the `Value` representing the
+     * `join` function of the `os.path` module.
      * If there is no '.' in `name`, then the `Value` returned is the builtin
-     * object of that name. 
+     * object of that name.
      * For example `Value::named("len")` is the `Value` representing the `len` built-in function.
      */
     Value named(string name) {
@@ -150,6 +197,12 @@ module Value {
         )
         or
         result = ObjectInternal::builtin(name)
+        or
+        name = "None" and result = ObjectInternal::none_()
+        or
+        name = "True" and result = TTrue()
+        or
+        name = "False" and result = TFalse()
     }
 
 }
@@ -171,9 +224,8 @@ class CallableValue extends Value {
         this.(CallableObjectInternal).neverReturns()
     }
 
-
     /** Gets the scope for this function, provided that it is a Python function. */
-    Function getScope() {
+    FunctionScope getScope() {
         result = this.(PythonFunctionObjectInternal).getScope()
     }
 
@@ -250,6 +302,64 @@ class ClassValue extends Value {
      */
     Value lookup(string name) {
         this.(ClassObjectInternal).lookup(name, result, _)
+    }
+
+    predicate isCallable() {
+        this.(ClassObjectInternal).lookup("__call__", _, _)
+    }
+
+    /** Gets the qualified name for this class.
+     * Should return the same name as the `__qualname__` attribute on classes in Python 3.
+     */
+    string getQualifiedName() {
+        result = this.(ClassObjectInternal).getBuiltin().getName()
+        or
+        result = this.(PythonClassObjectInternal).getScope().getQualifiedName()
+    }
+
+    /** Gets the MRO for this class */
+    MRO getMro() {
+        result = Types::getMro(this)
+    }
+
+    predicate failedInference(string reason) {
+        Types::failedInference(this, reason)
+    }
+
+    /** Gets the nth base class of this class */
+    ClassValue getBaseType(int n) {
+        result = Types::getBase(this, n)
+    }
+
+    /** Holds if this class is a new style class. 
+        A new style class is one that implicitly or explicitly inherits from `object`. */
+    predicate isNewStyle() {
+        Types::isNewStyle(this)
+    }
+
+    /** Holds if this class is an old style class. 
+        An old style class is one that does not inherit from `object`. */
+    predicate isOldStyle() {
+        Types::isOldStyle(this)
+    }
+
+    /** Gets the scope associated with this class, if it is not a builtin class */
+    ClassScope getScope() {
+        result = this.(PythonClassObjectInternal).getScope()
+    }
+
+}
+
+/** A method-resolution-order sequence of classes */
+class MRO extends TClassList {
+
+    string toString() {
+        result = this.(ClassList).toString()
+    }
+
+    /** Gets the `n`th class in this MRO */
+    ClassValue getItem(int n) {
+        result = this.(ClassList).getItem(n)
     }
 
 }

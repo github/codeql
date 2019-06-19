@@ -1,10 +1,8 @@
 edges
 | test.py:7:22:7:33 | dict of externally controlled string | test.py:7:22:7:51 | externally controlled string |
 | test.py:7:22:7:51 | externally controlled string | test.py:8:21:8:26 | externally controlled string |
-| test.py:8:21:8:26 | externally controlled string | ../lib/flask/__init__.py:11:14:11:21 | externally controlled string |
 | test.py:15:17:15:28 | dict of externally controlled string | test.py:15:17:15:42 | externally controlled string |
 | test.py:15:17:15:42 | externally controlled string | test.py:17:13:17:21 | externally controlled string |
 parents
-| ../lib/flask/__init__.py:11:14:11:21 | externally controlled string | test.py:8:21:8:26 | externally controlled string |
 #select
 | test.py:8:21:8:26 | flask.redirect | test.py:7:22:7:33 | dict of externally controlled string | test.py:8:21:8:26 | externally controlled string | Untrusted URL redirection due to $@. | test.py:7:22:7:33 | flask.request.args | a user-provided value |

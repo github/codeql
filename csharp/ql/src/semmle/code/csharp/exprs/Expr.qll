@@ -511,6 +511,8 @@ class SwitchExpr extends Expr, Switch, @switch_expr {
   override Expr getExpr() { result = this.getChild(-1) }
 
   override SwitchCaseExpr getCase(int n) { result = this.getChild(n) }
+
+  override SwitchCaseExpr getACase() { result = this.getCase(_) }
 }
 
 /** A `case` expression or statement. */
@@ -989,4 +991,21 @@ class IndexExpr extends Expr, @index_expr {
   Expr getExpr() { result.getParent() = this }
 
   override string toString() { result = "^..." }
+}
+
+/**
+ * A nullable warning suppression expression, for example `x!` in
+ * ```
+ * string GetName()
+ * {
+ *     string? x = ...;
+ *     return x!;
+ * }
+ * ```
+ */
+class SuppressNullableWarningExpr extends Expr, @suppress_nullable_warning_expr {
+  /** Gets the expression, for example `x` in `x!`. */
+  Expr getExpr() { result.getParent() = this }
+
+  override string toString() { result = "...!" }
 }

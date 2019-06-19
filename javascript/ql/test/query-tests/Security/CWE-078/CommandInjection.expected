@@ -50,6 +50,23 @@ nodes
 | execSeries.js:18:34:18:40 | req.url |
 | execSeries.js:19:12:19:16 | [cmd] |
 | execSeries.js:19:13:19:15 | cmd |
+| other.js:5:9:5:49 | cmd |
+| other.js:5:15:5:38 | url.par ... , true) |
+| other.js:5:15:5:44 | url.par ... ).query |
+| other.js:5:15:5:49 | url.par ... ry.path |
+| other.js:5:25:5:31 | req.url |
+| other.js:7:33:7:35 | cmd |
+| other.js:8:28:8:30 | cmd |
+| other.js:9:32:9:34 | cmd |
+| other.js:10:29:10:31 | cmd |
+| other.js:11:29:11:31 | cmd |
+| other.js:12:27:12:29 | cmd |
+| other.js:14:28:14:30 | cmd |
+| other.js:15:34:15:36 | cmd |
+| other.js:16:21:16:23 | cmd |
+| other.js:17:27:17:29 | cmd |
+| other.js:18:22:18:24 | cmd |
+| other.js:19:36:19:38 | cmd |
 edges
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:17:13:17:15 | cmd |
 | child_process-test.js:6:9:6:49 | cmd | child_process-test.js:18:17:18:19 | cmd |
@@ -101,6 +118,22 @@ edges
 | execSeries.js:18:34:18:40 | req.url | execSeries.js:18:13:18:47 | require ... , true) |
 | execSeries.js:19:12:19:16 | [cmd] | execSeries.js:13:19:13:26 | commands |
 | execSeries.js:19:13:19:15 | cmd | execSeries.js:19:12:19:16 | [cmd] |
+| other.js:5:9:5:49 | cmd | other.js:7:33:7:35 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:8:28:8:30 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:9:32:9:34 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:10:29:10:31 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:11:29:11:31 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:12:27:12:29 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:14:28:14:30 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:15:34:15:36 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:16:21:16:23 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:17:27:17:29 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:18:22:18:24 | cmd |
+| other.js:5:9:5:49 | cmd | other.js:19:36:19:38 | cmd |
+| other.js:5:15:5:38 | url.par ... , true) | other.js:5:15:5:44 | url.par ... ).query |
+| other.js:5:15:5:44 | url.par ... ).query | other.js:5:15:5:49 | url.par ... ry.path |
+| other.js:5:15:5:49 | url.par ... ry.path | other.js:5:9:5:49 | cmd |
+| other.js:5:25:5:31 | req.url | other.js:5:15:5:38 | url.par ... , true) |
 #select
 | child_process-test.js:17:13:17:15 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:17:13:17:15 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | child_process-test.js:18:17:18:19 | cmd | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:18:17:18:19 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
@@ -115,3 +148,15 @@ edges
 | child_process-test.js:51:5:51:39 | cp.exec ... , args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:50:15:50:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | child_process-test.js:56:3:56:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:43:15:43:17 | cmd | This command depends on $@. | child_process-test.js:6:25:6:31 | req.url | a user-provided value |
 | execSeries.js:14:41:14:47 | command | execSeries.js:18:34:18:40 | req.url | execSeries.js:14:41:14:47 | command | This command depends on $@. | execSeries.js:18:34:18:40 | req.url | a user-provided value |
+| other.js:7:33:7:35 | cmd | other.js:5:25:5:31 | req.url | other.js:7:33:7:35 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:8:28:8:30 | cmd | other.js:5:25:5:31 | req.url | other.js:8:28:8:30 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:9:32:9:34 | cmd | other.js:5:25:5:31 | req.url | other.js:9:32:9:34 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:10:29:10:31 | cmd | other.js:5:25:5:31 | req.url | other.js:10:29:10:31 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:11:29:11:31 | cmd | other.js:5:25:5:31 | req.url | other.js:11:29:11:31 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:12:27:12:29 | cmd | other.js:5:25:5:31 | req.url | other.js:12:27:12:29 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:14:28:14:30 | cmd | other.js:5:25:5:31 | req.url | other.js:14:28:14:30 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:15:34:15:36 | cmd | other.js:5:25:5:31 | req.url | other.js:15:34:15:36 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:16:21:16:23 | cmd | other.js:5:25:5:31 | req.url | other.js:16:21:16:23 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:17:27:17:29 | cmd | other.js:5:25:5:31 | req.url | other.js:17:27:17:29 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:18:22:18:24 | cmd | other.js:5:25:5:31 | req.url | other.js:18:22:18:24 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |
+| other.js:19:36:19:38 | cmd | other.js:5:25:5:31 | req.url | other.js:19:36:19:38 | cmd | This command depends on $@. | other.js:5:25:5:31 | req.url | a user-provided value |

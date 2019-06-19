@@ -8,19 +8,23 @@ import semmle.javascript.security.SensitiveActions
 
 module NodeJSLib {
   /**
-   * Gets a reference to the 'process' object.
+   * An access to the global `process` variable in a Node.js module, interpreted as
+   * an import of the `process` module.
    */
-  DataFlow::SourceNode process() {
-    result = DataFlow::globalVarRef("process") or
-    result = DataFlow::moduleImport("process")
+  private class ImplicitProcessImport extends DataFlow::ModuleImportNode::Range {
+    ImplicitProcessImport() {
+      this = DataFlow::globalVarRef("process") and
+      getTopLevel() instanceof NodeModule
+    }
+
+    override string getPath() { result = "process" }
   }
 
   /**
-   * Gets a reference to a member of the 'process' object.
+   * Gets a reference to the 'process' object.
    */
-  private DataFlow::SourceNode processMember(string member) {
-    result = process().getAPropertyRead(member) or
-    result = DataFlow::moduleMember("process", member)
+  DataFlow::SourceNode process() {
+    result = DataFlow::moduleImport("process")
   }
 
   /**
@@ -142,7 +146,7 @@ module NodeJSLib {
       )
     }
 
-    override RouteHandler getRouteHandler() { result = request.getRouteHandler() }
+    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
     override string getKind() { result = kind }
   }
@@ -166,7 +170,7 @@ module NodeJSLib {
       result = this.(DataFlow::PropRead).getPropertyName().toLowerCase()
     }
 
-    override RouteHandler getRouteHandler() { result = request.getRouteHandler() }
+    override HTTP::RouteHandler getRouteHandler() { result = request.getRouteHandler() }
 
     override string getKind() { result = "header" }
 
@@ -196,9 +200,7 @@ module NodeJSLib {
       t.start() and
       result = handler.flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 |
-        result = getARouteHandler(t2).backtrack(t2, t)
-      )
+      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
 
     override Expr getServer() { result = server }
@@ -284,7 +286,7 @@ module NodeJSLib {
     FsFlowTarget() {
       exists(DataFlow::CallNode call, string methodName |
         call = DataFlow::moduleMember("fs", methodName).getACall()
-        |
+      |
         methodName = "realpathSync" and
         tainted = call.getArgument(0) and
         this = call
@@ -363,7 +365,7 @@ module NodeJSLib {
     ProcessTermination() {
       this = DataFlow::moduleImport("exit").getAnInvocation()
       or
-      this = processMember("exit").getACall()
+      this = DataFlow::moduleMember("process", "exit").getACall()
     }
   }
 
@@ -625,9 +627,7 @@ module NodeJSLib {
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
     HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-    TrackedRouteHandlerCandidateWithSetup() {
-      this = any(RouteSetup s).getARouteHandler()
-    }
+    TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
   }
 
   /**

@@ -12,7 +12,7 @@ class Version extends int {
     predicate includes(int major, int minor) {
         this = 2 and major = 2 and minor = 7
         or
-        this = 3 and major = 3 and minor in [4..7]
+        this = 3 and major = 3 and minor in [4..8]
     }
 
 }

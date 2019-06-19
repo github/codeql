@@ -186,35 +186,39 @@ private predicate exactType(TypeFlowNode n, RefType t) {
 }
 
 /**
- * Holds if `e` occurs in a position where type information might be discarded;
- * `t` is the potentially boxed type of `e`, `t1` is the erasure of `t`, and
+ * Holds if `n` occurs in a position where type information might be discarded;
+ * `t` is the potentially boxed type of `n`, `t1` is the erasure of `t`, and
  * `t2` is the erased type of the implicit or explicit cast.
  */
 pragma[noinline]
-private predicate upcastCand(Expr e, RefType t, RefType t1, RefType t2) {
-  t = boxIfNeeded(e.getType()) and
+private predicate upcastCand(TypeFlowNode n, RefType t, RefType t1, RefType t2) {
+  t = boxIfNeeded(n.getType()) and
   t.getErasure() = t1 and
   (
-    exists(Variable v | v.getAnAssignedValue() = e and t2 = v.getType().getErasure())
+    exists(Variable v | v.getAnAssignedValue() = n.asExpr() and t2 = v.getType().getErasure())
     or
-    exists(CastExpr c | c.getExpr() = e and t2 = c.getType().getErasure())
+    exists(CastExpr c | c.getExpr() = n.asExpr() and t2 = c.getType().getErasure())
     or
     exists(ReturnStmt ret |
-      ret.getResult() = e and t2 = ret.getEnclosingCallable().getReturnType().getErasure()
+      ret.getResult() = n.asExpr() and t2 = ret.getEnclosingCallable().getReturnType().getErasure()
     )
     or
-    exists(Parameter p | privateParamArg(p, e) and t2 = p.getType().getErasure())
+    exists(MethodAccess ma | viableImpl_v1(ma) = n.asMethod() and t2 = ma.getType())
     or
-    exists(ConditionalExpr cond | cond.getTrueExpr() = e or cond.getFalseExpr() = e |
+    exists(Parameter p | privateParamArg(p, n.asExpr()) and t2 = p.getType().getErasure())
+    or
+    exists(ConditionalExpr cond |
+      cond.getTrueExpr() = n.asExpr() or cond.getFalseExpr() = n.asExpr()
+    |
       t2 = cond.getType().getErasure()
     )
   )
 }
 
-/** Holds if `e` occurs in a position where type information is discarded. */
-private predicate upcast(Expr e, RefType t) {
+/** Holds if `n` occurs in a position where type information is discarded. */
+private predicate upcast(TypeFlowNode n, RefType t) {
   exists(RefType t1, RefType t2 |
-    upcastCand(e, t, t1, t2) and
+    upcastCand(n, t, t1, t2) and
     t1.getASourceSupertype+() = t2
   )
 }
@@ -316,13 +320,15 @@ private predicate typeFlowJoin(int r, TypeFlowNode n, RefType t) {
  * likely to be better than the static type of `n`.
  */
 private predicate typeFlow(TypeFlowNode n, RefType t) {
-  upcast(n.asExpr(), t)
+  upcast(n, t)
   or
   upcastEnhancedForStmt(n.asSsa(), t)
   or
   downcastSuccessor(n.asExpr(), t)
   or
   instanceOfGuarded(n.asExpr(), t)
+  or
+  n.asExpr().(FunctionalExpr).getConstructedType() = t
   or
   exists(TypeFlowNode mid | typeFlow(mid, t) and step(mid, n))
   or

@@ -89,8 +89,8 @@ abstract private class GeneratedType extends ValueOrRefType, GeneratedElement {
     else
       result = this.stubComment() + this.stubAttributes() + this.stubAbstractModifier() +
           this.stubStaticModifier() + this.stubAccessibilityModifier() + this.stubKeyword() + " " +
-          this.getUndecoratedName() + stubGenericArguments(this) + stubBaseTypesString() + "\n{\n" +
-          stubMembers() + "}\n\n"
+          this.getUndecoratedName() + stubGenericArguments(this) + stubBaseTypesString() +
+          stubTypeParametersConstraints(this) + "\n{\n" + stubMembers() + "}\n\n"
   }
 
   private ValueOrRefType getAnInterestingBaseType() {
@@ -270,11 +270,16 @@ private string stubAccessibility(Member m) {
 }
 
 private string stubModifiers(Member m) {
-  result = stubAccessibility(m) + stubStatic(m) + stubOverride(m)
+  result = stubAccessibility(m) + stubStaticOrConst(m) + stubOverride(m)
 }
 
-private string stubStatic(Member m) {
-  if m.(Modifiable).isStatic() then result = "static " else result = ""
+private string stubStaticOrConst(Member m) {
+  if m.(Modifiable).isStatic()
+  then result = "static "
+  else
+    if m.(Modifiable).isConst()
+    then result = "const "
+    else result = ""
 }
 
 private string stubOverride(Member m) {
@@ -386,18 +391,135 @@ private string stubGenericMethodParams(Method m) {
   else result = ""
 }
 
+private string stubConstraints(TypeParameterConstraints tpc) {
+  tpc.hasConstructorConstraint() and result = "new()"
+  or
+  tpc.hasUnmanagedTypeConstraint() and result = "unmanaged"
+  or
+  tpc.hasValueTypeConstraint() and result = "struct"
+  or
+  tpc.hasRefTypeConstraint() and result = "class"
+  or
+  result = tpc.getATypeParameterConstraint().getName()
+  or
+  result = stubClassName(tpc.getAnInterfaceConstraint())
+  or
+  result = stubClassName(tpc.getClassConstraint())
+}
+
+private string stubTypeParameterConstraints(TypeParameter tp) {
+  exists(TypeParameterConstraints tpc | tpc = tp.getConstraints() |
+    result = " where " + tp.getName() + ": " +
+        strictconcat(string s | s = stubConstraints(tpc) | s, ", ")
+  )
+}
+
+private string stubTypeParametersConstraints(Declaration d) {
+  if d instanceof UnboundGeneric
+  then
+    result = concat(TypeParameter tp |
+        tp = d.(UnboundGeneric).getATypeParameter()
+      |
+        stubTypeParameterConstraints(tp), " "
+      )
+  else result = ""
+}
+
 private string stubImplementation(Virtualizable c) {
   if c.isAbstract() or c.getDeclaringType() instanceof Interface
   then result = ""
   else result = " => throw null"
 }
 
+private predicate isKeyword(string s) {
+  s = "abstract" or
+  s = "as" or
+  s = "base" or
+  s = "bool" or
+  s = "break" or
+  s = "byte" or
+  s = "case" or
+  s = "catch" or
+  s = "char" or
+  s = "checked" or
+  s = "class" or
+  s = "const" or
+  s = "continue" or
+  s = "decimal" or
+  s = "default" or
+  s = "delegate" or
+  s = "do" or
+  s = "double" or
+  s = "else" or
+  s = "enum" or
+  s = "event" or
+  s = "explicit" or
+  s = "extern" or
+  s = "false" or
+  s = "finally" or
+  s = "fixed" or
+  s = "float" or
+  s = "for" or
+  s = "foreach" or
+  s = "goto" or
+  s = "if" or
+  s = "implicit" or
+  s = "in" or
+  s = "int" or
+  s = "interface" or
+  s = "internal" or
+  s = "is" or
+  s = "lock" or
+  s = "long" or
+  s = "namespace" or
+  s = "new" or
+  s = "null" or
+  s = "object" or
+  s = "operator" or
+  s = "out" or
+  s = "override" or
+  s = "params" or
+  s = "private" or
+  s = "protected" or
+  s = "public" or
+  s = "readonly" or
+  s = "ref" or
+  s = "return" or
+  s = "sbyte" or
+  s = "sealed" or
+  s = "short" or
+  s = "sizeof" or
+  s = "stackalloc" or
+  s = "static" or
+  s = "string" or
+  s = "struct" or
+  s = "switch" or
+  s = "this" or
+  s = "throw" or
+  s = "true" or
+  s = "try" or
+  s = "typeof" or
+  s = "uint" or
+  s = "ulong" or
+  s = "unchecked" or
+  s = "unsafe" or
+  s = "ushort" or
+  s = "using" or
+  s = "virtual" or
+  s = "void" or
+  s = "volatile" or
+  s = "while"
+}
+
+bindingset[s]
+private string escapeIfKeyword(string s) { if isKeyword(s) then result = "@" + s else result = s }
+
 private string stubParameters(Parameterizable p) {
   result = concat(int i, Parameter param |
       param = p.getParameter(i) and not param.getType() instanceof ArglistType
     |
-      stubParameterModifiers(param) + stubClassName(param.getType()) + " " + param.getName() +
-          stubDefaultValue(param), ", "
+      stubParameterModifiers(param) + stubClassName(param.getType()) + " " +
+          escapeIfKeyword(param.getName()) + stubDefaultValue(param), ", "
       order by
         i
     )
@@ -437,7 +559,7 @@ private string stubMember(Member m) {
   exists(Method c | m = c and not m.getDeclaringType() instanceof Enum |
     result = "    " + stubModifiers(c) + stubClassName(c.getReturnType()) + " " +
         stubExplicitImplementation(c) + c.getName() + stubGenericMethodParams(c) + "(" +
-        stubParameters(c) + ")" + stubImplementation(c) + ";\n"
+        stubParameters(c) + ")" + stubTypeParametersConstraints(c) + stubImplementation(c) + ";\n"
   )
   or
   exists(Operator op |
@@ -469,8 +591,10 @@ private string stubMember(Member m) {
         "] { " + stubGetter(i) + stubSetter(i) + "}\n"
   )
   or
-  exists(Field f | f = m and not f instanceof EnumConstant |
-    result = "    " + stubModifiers(m) + stubClassName(f.getType()) + " " + f.getName() + ";\n"
+  exists(Field f, string impl | f = m and not f instanceof EnumConstant |
+    (if f.isConst() then impl = " = throw null" else impl = "") and
+    result = "    " + stubModifiers(m) + stubClassName(f.getType()) + " " + f.getName() + impl +
+        ";\n"
   )
 }
 

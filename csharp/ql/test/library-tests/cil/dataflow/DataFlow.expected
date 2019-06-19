@@ -1,7 +1,7 @@
 | dataflow.cs:18:18:18:26 | "tainted" | dataflow.cs:18:18:18:37 | call to method ToString |
-| dataflow.cs:19:27:19:28 | 12 | dataflow.cs:19:18:19:29 | call to method Abs |
 | dataflow.cs:20:27:20:27 | 2 | dataflow.cs:20:18:20:31 | call to method Max |
 | dataflow.cs:20:30:20:30 | 3 | dataflow.cs:20:18:20:31 | call to method Max |
+| dataflow.cs:21:29:21:31 | 0.5 | dataflow.cs:21:18:21:32 | call to method Round |
 | dataflow.cs:22:45:22:53 | "tainted" | dataflow.cs:22:18:22:54 | call to method GetFullPath |
 | dataflow.cs:29:44:29:46 | 1 | dataflow.cs:29:18:29:52 | call to method IEEERemainder |
 | dataflow.cs:29:49:29:51 | 2 | dataflow.cs:29:18:29:52 | call to method IEEERemainder |

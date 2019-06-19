@@ -49,6 +49,8 @@ abstract class InstanceObject extends ObjectInternal {
     /** Holds if `init` in the context `callee` is the initializer of this instance */
     abstract predicate initializer(PythonFunctionObjectInternal init, Context callee);
 
+    override string getName() { none() }
+
 }
 
 private predicate self_variable_reaching_init_exit(EssaVariable self) {
@@ -362,6 +364,8 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
         result = lengthFromClass(this.getClass())
     }
 
+    override string getName() { none() }
+
 }
 
 private int lengthFromClass(ClassObjectInternal cls) {
@@ -460,6 +464,8 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
     override int length() {
         none()
     }
+
+    override string getName() { none() }
 
 }
 

@@ -198,3 +198,18 @@ def flow_through_type_test_if_no_class():
     else:
         SINK(t)
 
+def flow_in_iteration():
+    t = ITERABLE_SOURCE
+    for i in t:
+        i
+    return i
+
+def flow_in_generator():
+    seq = [SOURCE]
+    for i in seq:
+        yield i
+
+def flow_from_generator():
+    for x in flow_in_generator():
+        SINK(x)
+
