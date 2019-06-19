@@ -440,14 +440,19 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
     pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
     pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        PointsToInternal::attributeRequired(this, name) and
         exists(ObjectInternal cls_attr, CfgOrigin attr_orig |
-            this.lookup(name, cls_attr, attr_orig)
+            this.attribute_descriptor(name, cls_attr, attr_orig)
             |
             cls_attr.isDescriptor() = false and value = cls_attr and origin = attr_orig
             or
             cls_attr.isDescriptor() = true and cls_attr.descriptorGetInstance(this.getSelf(), value, origin)
         )
+    }
+
+    /* Helper for `attribute` */
+    pragma [noinline] private predicate attribute_descriptor(string name, ObjectInternal cls_attr, CfgOrigin attr_orig) {
+        PointsToInternal::attributeRequired(this, name) and
+        this.lookup(name, cls_attr, attr_orig)
     }
 
     private predicate lookup(string name, ObjectInternal value, CfgOrigin origin) {
