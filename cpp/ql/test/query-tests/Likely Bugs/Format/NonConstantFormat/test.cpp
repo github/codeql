@@ -133,3 +133,11 @@ void another_func(void) {
   printf("Hello, World\n"); // GOOD
   printf(gettext("Hello, World\n")); // GOOD
 }
+
+void set_value_of(int *i);
+
+void print_ith_message() {
+  int i;
+  set_value_of(&i);
+  printf(messages[i], 1U); // GOOD [FALSE POSITIVE]
+}
