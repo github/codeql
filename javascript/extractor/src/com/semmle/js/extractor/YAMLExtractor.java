@@ -166,8 +166,10 @@ public class YAMLExtractor implements IExtractor {
                 NodeId.scalar,
                 scalar.getValue(),
                 scalar.getImplicit().canOmitTagInPlainScalar());
+        Character style = scalar.getStyle();
+        int styleCode = style == null ? 0 : (int) style;
         trapWriter.addTuple(
-            YAMLTables.YAML_SCALARS, label, (int) scalar.getStyle(), scalar.getValue());
+            YAMLTables.YAML_SCALARS, label, styleCode, scalar.getValue());
       } else if (start.is(Event.ID.SequenceStart)) {
         kind = NodeKind.SEQUENCE;
         SequenceStartEvent sequenceStart = (SequenceStartEvent) start;
