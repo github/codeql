@@ -44,7 +44,6 @@ test_moduleImport
 | net | client1.ts:6:9:6:11 | net |
 | process | process2.js:2:10:2:16 | process |
 | process | process.js:1:10:1:27 | require('process') |
-| process | process.js:2:10:2:23 | global.process |
 test_moduleMember
 | electron | BrowserWindow | destructuringES6.js:1:10:1:22 | BrowserWindow |
 | electron | BrowserWindow | destructuringRequire.js:1:9:1:21 | BrowserWindow |
@@ -78,7 +77,6 @@ test_ModuleImportNode_getPath
 | process2.js:1:1:1:13 | require('fs') | fs |
 | process2.js:2:10:2:16 | process | process |
 | process.js:1:10:1:27 | require('process') | process |
-| process.js:2:10:2:23 | global.process | process |
 test_ModuleImportNode_getAMethodCall
 | amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
 | amd2.js:2:12:2:24 | require('fs') | amd2.js:3:3:3:29 | fs.read ... a.txt") |

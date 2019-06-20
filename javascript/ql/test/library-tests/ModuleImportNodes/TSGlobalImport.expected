@@ -16,4 +16,3 @@
 | process2.js:1:1:1:13 | require('fs') | fs |
 | process2.js:2:10:2:16 | process | process |
 | process.js:1:10:1:27 | require('process') | process |
-| process.js:2:10:2:23 | global.process | process |

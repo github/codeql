@@ -13,7 +13,10 @@ module NodeJSLib {
    */
   private class ImplicitProcessImport extends DataFlow::ModuleImportNode::Range {
     ImplicitProcessImport() {
-      this = DataFlow::globalVarRef("process") and
+      exists(GlobalVariable process |
+        process.getName() = "process" and
+        this = DataFlow::exprNode(process.getAnAccess())
+      ) and
       getTopLevel() instanceof NodeModule
     }
 
@@ -24,7 +27,15 @@ module NodeJSLib {
    * Gets a reference to the 'process' object.
    */
   DataFlow::SourceNode process() {
+    result = DataFlow::globalVarRef("process") or
     result = DataFlow::moduleImport("process")
+  }
+
+  /**
+   * Gets a reference to a member of the 'process' object.
+   */
+  private DataFlow::SourceNode processMember(string member) {
+    result = process().getAPropertyRead(member)
   }
 
   /**
@@ -365,7 +376,7 @@ module NodeJSLib {
     ProcessTermination() {
       this = DataFlow::moduleImport("exit").getAnInvocation()
       or
-      this = DataFlow::moduleMember("process", "exit").getACall()
+      this = processMember("exit").getACall()
     }
   }
 
