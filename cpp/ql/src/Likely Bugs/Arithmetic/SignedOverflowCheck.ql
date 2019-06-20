@@ -5,7 +5,7 @@
  *              unsigned integer values.
  * @kind problem
  * @problem.severity warning
- * @precision high
+ * @precision__temp_removed_from_lgtm_suite high
  * @id cpp/signed-overflow-check
  * @tags correctness
  *       security

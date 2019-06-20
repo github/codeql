@@ -4,7 +4,7 @@
  *              to an attacker.
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @precision__temp_removed_from_lgtm_suite medium
  * @id cpp/cleartext-storage-file
  * @tags security
  *       external/cwe/cwe-313

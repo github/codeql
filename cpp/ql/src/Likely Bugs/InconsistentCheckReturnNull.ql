@@ -6,7 +6,7 @@
  *              omitting the check could crash the program.
  * @kind problem
  * @problem.severity error
- * @precision medium
+ * @precision__temp_removed_from_lgtm_suite medium
  * @id cpp/inconsistent-null-check
  * @tags reliability
  *       correctness

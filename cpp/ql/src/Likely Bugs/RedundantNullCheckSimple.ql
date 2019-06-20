@@ -5,15 +5,11 @@
  *              it should be moved before the dereference.
  * @kind problem
  * @problem.severity error
+ * @precision high
  * @id cpp/redundant-null-check-simple
  * @tags reliability
  *       correctness
  *       external/cwe/cwe-476
- */
-
-/*
- * Note: this query is not assigned a precision yet because we don't want it on
- * LGTM until its performance is well understood.
  */
 
 import cpp
