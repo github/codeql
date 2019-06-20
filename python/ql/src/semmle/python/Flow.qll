@@ -884,15 +884,36 @@ class ForNode extends ControlFlowNode {
 
     override For getNode() { result = super.getNode() }
 
-    /** Whether this `for` statement causes iteration over `sequence` storing each step of the iteration in `target` */
+    /** Holds if this `for` statement causes iteration over `sequence` storing each step of the iteration in `target` */
     predicate iterates(ControlFlowNode target, ControlFlowNode sequence) {
+        sequence = getSequence() and
+        target = possibleTarget() and
+        not target = unrolledSuffix().possibleTarget()
+    }
+
+    /** Gets the sequence node for this `for` statement. */
+    ControlFlowNode getSequence() {
         exists(For for |
             toAst(this) = for and
-            for.getTarget() = target.getNode() and
-            for.getIter() = sequence.getNode() |
-            sequence.getBasicBlock().dominates(this.getBasicBlock()) and
-            sequence.getBasicBlock().dominates(target.getBasicBlock())
+            for.getIter() = result.getNode() |
+            result.getBasicBlock().dominates(this.getBasicBlock())
         )
+    }
+
+    /** A possible `target` for this `for` statement, not accounting for loop unrolling */
+    private ControlFlowNode possibleTarget() {
+        exists(For for |
+            toAst(this) = for and
+            for.getTarget() = result.getNode() and
+            this.getBasicBlock().dominates(result.getBasicBlock())
+        )
+    }
+
+    /** The unrolled `for` statement node matching this one */
+    private ForNode unrolledSuffix() {
+        not this = result and
+        toAst(this) = toAst(result) and
+        this.getBasicBlock().dominates(result.getBasicBlock())
     }
 
 }
