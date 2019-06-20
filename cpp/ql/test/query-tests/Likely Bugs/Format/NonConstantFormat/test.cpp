@@ -139,5 +139,5 @@ void set_value_of(int *i);
 void print_ith_message() {
   int i;
   set_value_of(&i);
-  printf(messages[i], 1U); // GOOD [FALSE POSITIVE]
+  printf(messages[i], 1U); // GOOD
 }
