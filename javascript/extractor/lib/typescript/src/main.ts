@@ -40,12 +40,6 @@ import * as ast_extractor from "./ast_extractor";
 import { Project } from "./common";
 import { TypeTable } from "./type_table";
 
-// Modify the TypeScript `System` object to ensure BOMs are being
-// stripped off.
-ts.sys.readFile = (path: string, encoding?: string) => {
-    return getSourceCode(path);
-};
-
 interface ParseCommand {
     command: "parse";
     filename: string;
@@ -149,22 +143,6 @@ function stringifyAST(obj: any) {
     });
 }
 
-/**
- * Reads the contents of a file as UTF8 and strips off a leading BOM.
- *
- * This must match how the source is read in the Java part of the extractor,
- * as source offsets will not otherwise match.
- */
-function getSourceCode(filename: string): string {
-    let code = fs.readFileSync(filename, "utf-8");
-
-    if (code.charCodeAt(0) === 0xfeff) {
-        code = code.substring(1);
-    }
-
-    return code;
-}
-
 function extractFile(filename: string): string {
     let ast = getAstForFile(filename);
 
@@ -231,7 +209,7 @@ function getAstForFile(filename: string): ts.SourceFile {
 }
 
 function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
-    let code = getSourceCode(filename);
+    let code = ts.sys.readFile(filename);
 
     // create a compiler host that only allows access to `filename`
     let compilerHost: ts.CompilerHost = {
@@ -266,15 +244,14 @@ function parseSingleFile(filename: string): {ast: ts.SourceFile, code: string} {
 
 function handleOpenProjectCommand(command: OpenProjectCommand) {
     let tsConfigFilename = String(command.tsConfig);
-    let tsConfigText = fs.readFileSync(tsConfigFilename, "utf8");
-    let tsConfig = ts.parseConfigFileTextToJson(tsConfigFilename, tsConfigText);
+    let tsConfig = ts.readConfigFile(tsConfigFilename, ts.sys.readFile)
     let basePath = pathlib.dirname(tsConfigFilename);
 
     let parseConfigHost: ts.ParseConfigHost = {
         useCaseSensitiveFileNames: true,
         readDirectory: ts.sys.readDirectory,
         fileExists: (path: string) => fs.existsSync(path),
-        readFile: getSourceCode,
+        readFile: ts.sys.readFile,
     };
     let config = ts.parseJsonConfigFileContent(tsConfig, parseConfigHost, basePath);
     let project = new Project(tsConfigFilename, config, state.typeTable);
