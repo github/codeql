@@ -9,3 +9,4 @@
 | test.cpp:636:11:636:17 | tm_year | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:56:6:56:12 | tm_year | tm_year | test.cpp:628:12:628:19 | timeinfo | timeinfo |
 | test.cpp:640:5:640:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:629:13:629:14 | st | st |
 | test.cpp:642:5:642:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:629:13:629:14 | st | st |
+| test.cpp:677:5:677:11 | tm_year | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:56:6:56:12 | tm_year | tm_year | test.cpp:664:12:664:12 | t | t |
