@@ -176,3 +176,24 @@ void antipattern2()
 	// convert back to SYSTEMTIME for display or other usage
 	FileTimeToSystemTime(&ft, &st);
 }
+
+time_t mktime(struct tm *timeptr);
+struct tm *gmtime(const time_t *timer);
+
+time_t mkTime(int days)
+{
+	struct tm tm;
+	time_t t;
+
+	tm.tm_sec = 0;
+	tm.tm_min = 0;
+	tm.tm_hour = 0;
+	tm.tm_mday = 0;
+	tm.tm_mon = 0;
+	tm.tm_year = days / 365; // BAD
+	// ...
+
+	t = mktime(&tm); // convert tm -> time_t
+
+	return t;
+}
