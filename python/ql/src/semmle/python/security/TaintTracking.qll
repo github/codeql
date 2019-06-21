@@ -144,7 +144,7 @@ abstract class TaintKind extends string {
      * the `result` would be `theStrType()`.
      */
     ClassValue getType() {
-        result.getSource() = this.getClass()
+        result.(ClassObjectInternal).getSource() = this.getClass()
     }
 
     /** Gets the boolean values (may be one, neither, or both) that
@@ -1562,7 +1562,7 @@ class CallContext extends TCallContext {
             f.getFunction() = s and f.getACall() = call
         )
         or
-        exists(ClassValue cls,CallNode call |
+        exists(ClassValue cls, CallNode call |
             this = TCalleeContext(call, _, _) and
             call.getFunction().pointsTo(cls) and
             s = cls.lookup("__init__").(CallableValue).getScope() and

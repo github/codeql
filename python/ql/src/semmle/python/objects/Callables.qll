@@ -11,9 +11,6 @@ private import semmle.python.types.Builtins
 
 abstract class CallableObjectInternal extends ObjectInternal {
 
-    /** Gets the name of this callable */
-    abstract string getName();
-
     /** Gets the scope of this callable if it has one */
     abstract Function getScope();
 

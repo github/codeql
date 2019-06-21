@@ -1,5 +1,3 @@
-WARNING: Predicate getSource has been deprecated and may be removed in future (TestEvaluate.ql:14,16-25)
-WARNING: Predicate getSource has been deprecated and may be removed in future (TestEvaluate.ql:16,20-29)
 | b_condition.py:7 | Compare | true | x | NoneType None |
 | b_condition.py:13 | Compare | false | x | NoneType None |
 | b_condition.py:19 | UnaryExpr | true | x | NoneType None |

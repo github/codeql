@@ -141,7 +141,7 @@ module PointsTo {
         )
         or
         not f.isParameter() and
-        exists(Value value |
+        exists(ObjectInternal value |
             PointsToInternal::pointsTo(f.(DefinitionNode).getValue(), context, value, origin) and
             cls = value.getClass().getSource() |
             obj = value.getSource() or
@@ -151,7 +151,7 @@ module PointsTo {
 
     deprecated predicate
     ssa_variable_points_to(EssaVariable var, PointsToContext context, Object obj, ClassObject cls, CfgOrigin origin) {
-        exists(Value value |
+        exists(ObjectInternal value |
             PointsToInternal::variablePointsTo(var, context, value, origin) and
             cls = value.getClass().getSource() |
             obj = value.getSource()
@@ -160,8 +160,8 @@ module PointsTo {
 
     deprecated
     CallNode get_a_call(Object func, PointsToContext context) {
-        exists(Value value |
-            result = value.getACall(context) and
+        exists(ObjectInternal value |
+            result = value.(Value).getACall(context) and
             func = value.getSource()
         )
     }
@@ -402,7 +402,7 @@ cached module PointsToInternal {
         or
         scope_entry_points_to(def, context, value, origin)
         or
-        InterModulePointsTo::implicit_submodule_points_to(def, context, value, origin)
+        InterModulePointsTo::implicit_submodule_points_to(def, value, origin) and context.isImport()
         or
         iteration_definition_points_to(def, context, value, origin)
         /*
@@ -647,18 +647,22 @@ private module InterModulePointsTo {
         )
     }
 
+    /* Helper for implicit_submodule_points_to */
+    private ModuleObjectInternal getModule(ImplicitSubModuleDefinition def) {
+       exists(PackageObjectInternal package |
+           package.getSourceModule() = def.getDefiningNode().getScope() and 
+           result =  package.submodule(def.getSourceVariable().getName())
+       )
+    }
+
     /** Implicit "definition" of the names of submodules at the start of an `__init__.py` file.
      *
      * PointsTo isn't exactly how the interpreter works, but is the best approximation we can manage statically.
      */
     pragma [noinline]
-    predicate implicit_submodule_points_to(ImplicitSubModuleDefinition def, PointsToContext context, ModuleObjectInternal value, ControlFlowNode origin) {
-        exists(PackageObjectInternal package |
-            package.getSourceModule() = def.getDefiningNode().getScope() |
-            value = package.submodule(def.getSourceVariable().getName()) and
-            origin = CfgOrigin::fromObject(value).asCfgNodeOrHere(def.getDefiningNode()) and
-            context.isImport()
-        )
+    predicate implicit_submodule_points_to(ImplicitSubModuleDefinition def, ModuleObjectInternal value, ControlFlowNode origin) {
+        value = getModule(def) and
+        origin = CfgOrigin::fromObject(value).asCfgNodeOrHere(def.getDefiningNode())
     }
 
     /** Points-to for `from ... import *`. */
@@ -1869,9 +1873,13 @@ cached module Types {
         result = getInheritedMetaclass(cls, 0)
         or
         // Best guess if base is not a known class
+        hasUnknownBase(cls) and result = ObjectInternal::unknownClass()
+    }
+
+    /* Helper for getInheritedMetaclass */
+    private predicate hasUnknownBase(ClassObjectInternal cls) {
         exists(ObjectInternal base |
-            base = getBase(cls, _) and
-            result = ObjectInternal::unknownClass() |
+            base = getBase(cls, _) |
             base.isClass() = false
             or
             base = ObjectInternal::unknownClass()
@@ -1881,14 +1889,18 @@ cached module Types {
     private ClassObjectInternal getInheritedMetaclass(ClassObjectInternal cls, int n) {
         exists(Class c |
             c = cls.(PythonClassObjectInternal).getScope() and
-            n = count(c.getABase())
+            n = count(c.getABase()) and n != 1
             |
             result = ObjectInternal::type() and major_version() = 3
             or
             result = ObjectInternal::classType() and major_version() = 2
         )
         or
+        base_count(cls) = 1 and n = 0 and
+        result = getBase(cls, 0).getClass()
+        or
         exists(ClassObjectInternal meta1, ClassObjectInternal meta2 |
+            base_count(cls) > 1 and
             meta1 = getBase(cls, n).getClass() and
             meta2 = getInheritedMetaclass(cls, n+1)
             |
