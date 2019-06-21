@@ -23,6 +23,7 @@
 | BreakInTry.cs:38:10:38:11 | M3 | BreakInTry.cs:39:5:54:5 | {...} |
 | BreakInTry.cs:56:10:56:11 | M4 | BreakInTry.cs:57:5:71:5 | {...} |
 | CatchInFinally.cs:5:10:5:11 | M1 | CatchInFinally.cs:6:5:28:5 | {...} |
+| CatchInFinally.cs:34:24:34:25 | M2 | CatchInFinally.cs:35:5:51:5 | {...} |
 | CompileTimeOperators.cs:5:9:5:15 | Default | CompileTimeOperators.cs:6:5:8:5 | {...} |
 | CompileTimeOperators.cs:10:9:10:14 | Sizeof | CompileTimeOperators.cs:11:5:13:5 | {...} |
 | CompileTimeOperators.cs:15:10:15:15 | Typeof | CompileTimeOperators.cs:16:5:18:5 | {...} |

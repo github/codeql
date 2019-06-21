@@ -92,6 +92,38 @@
 | CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:38 | [finally: exception(Exception)] ...; |
 | CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:35:25:36 | [finally: exception(ArgumentNullException)] "" |
 | CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:35:25:36 | [finally: exception(Exception)] "" |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:41:9:50:9 | [finally: exception(ExceptionA), b1 (line 34): true] {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:42:13:49:13 | [finally: exception(Exception), b1 (line 34): true] try {...} ... |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:42:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] try {...} ... |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:43:13:45:13 | [finally: exception(Exception), b1 (line 34): true] {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:43:13:45:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:17:44:47 | [finally: exception(Exception), b1 (line 34): true] if (...) ... |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:17:44:47 | [finally: exception(ExceptionA), b1 (line 34): true] if (...) ... |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:21:44:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b2 |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:21:44:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b2 |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:25:44:47 | [finally: exception(Exception), b1 (line 34): true] throw ...; |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:25:44:47 | [finally: exception(ExceptionA), b1 (line 34): true] throw ...; |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true] object creation of type ExceptionB |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true] object creation of type ExceptionB |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true] catch (...) {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: ExceptionB, b1 (line 34): true] catch (...) {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true] catch (...) {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 34): true] catch (...) {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true] access to parameter b2 |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: ExceptionB, b1 (line 34): true] access to parameter b2 |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true] access to parameter b2 |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 34): true] access to parameter b2 |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:47:13:49:13 | [finally: exception(Exception), b1 (line 34): true] {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:47:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:17:48:47 | [finally: exception(Exception), b1 (line 34): true] if (...) ... |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:17:48:47 | [finally: exception(ExceptionA), b1 (line 34): true] if (...) ... |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:21:48:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b1 |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:21:48:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b1 |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:25:48:47 | [finally: exception(Exception)] throw ...; |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:25:48:47 | [finally: exception(ExceptionA)] throw ...; |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:31:48:46 | [finally: exception(Exception)] object creation of type ExceptionC |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:31:48:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:36:9:38:9 | [finally: goto(End)] {...} |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | [finally: goto(End)] call to method WriteLine |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:41 | [finally: goto(End)] ...; |
