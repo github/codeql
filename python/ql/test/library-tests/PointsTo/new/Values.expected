@@ -23,6 +23,32 @@
 | a_simple.py:36 | ControlFlowNode for UnaryExpr | runtime | bool False | builtin-class bool |
 | a_simple.py:36 | ControlFlowNode for UnaryExpr | runtime | bool True | builtin-class bool |
 | a_simple.py:36 | ControlFlowNode for kwargs | runtime | instance of dict | builtin-class dict |
+| a_simple.py:38 | ControlFlowNode for FunctionExpr | import | Function multi_assign_and_packing | builtin-class function |
+| a_simple.py:38 | ControlFlowNode for Str | import | 'b' | builtin-class str |
+| a_simple.py:38 | ControlFlowNode for Str | import | 'c' | builtin-class str |
+| a_simple.py:39 | ControlFlowNode for IntegerLiteral | runtime | int 1 | builtin-class int |
+| a_simple.py:39 | ControlFlowNode for IntegerLiteral | runtime | int 2 | builtin-class int |
+| a_simple.py:39 | ControlFlowNode for IntegerLiteral | runtime | int 3 | builtin-class int |
+| a_simple.py:39 | ControlFlowNode for Tuple | runtime | (int 1, int 2, int 3, ) | builtin-class tuple |
+| a_simple.py:40 | ControlFlowNode for Tuple | runtime | (Unknown value, 'b', 'c', ) | builtin-class tuple |
+| a_simple.py:40 | ControlFlowNode for Tuple | runtime | (Unknown value, 'b', Unknown value, ) | builtin-class tuple |
+| a_simple.py:40 | ControlFlowNode for Tuple | runtime | (Unknown value, Unknown value, 'c', ) | builtin-class tuple |
+| a_simple.py:40 | ControlFlowNode for Tuple | runtime | (Unknown value, Unknown value, Unknown value, ) | builtin-class tuple |
+| a_simple.py:40 | ControlFlowNode for b | runtime | 'b' | builtin-class str |
+| a_simple.py:40 | ControlFlowNode for c | runtime | 'c' | builtin-class str |
+| a_simple.py:41 | ControlFlowNode for t | runtime | (int 1, int 2, int 3, ) | builtin-class tuple |
+| a_simple.py:42 | ControlFlowNode for w | runtime | (Unknown value, 'b', 'c', ) | builtin-class tuple |
+| a_simple.py:42 | ControlFlowNode for w | runtime | (Unknown value, 'b', Unknown value, ) | builtin-class tuple |
+| a_simple.py:42 | ControlFlowNode for w | runtime | (Unknown value, Unknown value, 'c', ) | builtin-class tuple |
+| a_simple.py:42 | ControlFlowNode for w | runtime | (Unknown value, Unknown value, Unknown value, ) | builtin-class tuple |
+| a_simple.py:49 | ControlFlowNode for Tuple | runtime | (Unknown value, 'b', 'c', ) | builtin-class tuple |
+| a_simple.py:49 | ControlFlowNode for Tuple | runtime | (Unknown value, 'b', Unknown value, ) | builtin-class tuple |
+| a_simple.py:49 | ControlFlowNode for Tuple | runtime | (Unknown value, Unknown value, 'c', ) | builtin-class tuple |
+| a_simple.py:49 | ControlFlowNode for Tuple | runtime | (Unknown value, Unknown value, Unknown value, ) | builtin-class tuple |
+| a_simple.py:49 | ControlFlowNode for b | runtime | 'b' | builtin-class str |
+| a_simple.py:49 | ControlFlowNode for c | runtime | 'c' | builtin-class str |
+| a_simple.py:51 | ControlFlowNode for h | runtime | 'b' | builtin-class str |
+| a_simple.py:52 | ControlFlowNode for i | runtime | 'c' | builtin-class str |
 | b_condition.py:4 | ControlFlowNode for FunctionExpr | import | Function f | builtin-class function |
 | b_condition.py:5 | ControlFlowNode for IfExp | runtime | None | builtin-class NoneType |
 | b_condition.py:5 | ControlFlowNode for None | runtime | None | builtin-class NoneType |

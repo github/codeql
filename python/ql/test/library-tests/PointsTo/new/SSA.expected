@@ -26,6 +26,13 @@ WARNING: Predicate ssa_variable_points_to has been deprecated and may be removed
 | a_simple.py:23 | with_definition_0 = FunctionExpr | Function with_definition | builtin-class function |
 | a_simple.py:27 | multi_loop_in_try_0 = FunctionExpr | Function multi_loop_in_try | builtin-class function |
 | a_simple.py:34 | f_0 = FunctionExpr | Function f | builtin-class function |
+| a_simple.py:38 | b_0 = ParameterDefinition | 'b' | builtin-class str |
+| a_simple.py:38 | c_0 = ParameterDefinition | 'c' | builtin-class str |
+| a_simple.py:38 | multi_assign_and_packing_0 = FunctionExpr | Function multi_assign_and_packing | builtin-class function |
+| a_simple.py:39 | t_0 = Tuple | Tuple | builtin-class tuple |
+| a_simple.py:40 | w_0 = Tuple | Tuple | builtin-class tuple |
+| a_simple.py:49 | h_0 = b | 'b' | builtin-class str |
+| a_simple.py:49 | i_0 = c | 'c' | builtin-class str |
 | b_condition.py:0 | __name___0 = ScopeEntryDefinition | 'code.b_condition' | builtin-class str |
 | b_condition.py:4 | f_0 = FunctionExpr | Function f | builtin-class function |
 | b_condition.py:5 | x_0 = IfExp | NoneType None | builtin-class NoneType |

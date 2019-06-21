@@ -1,8 +1,19 @@
+| a_simple.py:20 | ControlFlowNode for For | 20 |
 | a_simple.py:20 | ControlFlowNode for seq | 18 |
 | a_simple.py:24 | ControlFlowNode for x | 23 |
+| a_simple.py:29 | ControlFlowNode for For | 29 |
 | a_simple.py:29 | ControlFlowNode for x | 27 |
 | a_simple.py:35 | ControlFlowNode for Subscript | 35 |
 | a_simple.py:36 | ControlFlowNode for Subscript | 36 |
+| a_simple.py:40 | ControlFlowNode for a | 38 |
+| a_simple.py:40 | ControlFlowNode for b | 38 |
+| a_simple.py:40 | ControlFlowNode for c | 38 |
+| a_simple.py:49 | ControlFlowNode for a | 38 |
+| a_simple.py:49 | ControlFlowNode for b | 38 |
+| a_simple.py:49 | ControlFlowNode for c | 38 |
+| a_simple.py:50 | ControlFlowNode for g | 38 |
+| a_simple.py:51 | ControlFlowNode for h | 38 |
+| a_simple.py:52 | ControlFlowNode for i | 38 |
 | b_condition.py:5 | ControlFlowNode for IfExp | 5 |
 | b_condition.py:5 | ControlFlowNode for cond | 5 |
 | b_condition.py:5 | ControlFlowNode for unknown | 5 |
@@ -68,6 +79,7 @@
 | b_condition.py:44 | ControlFlowNode for v2 | 39 |
 | b_condition.py:51 | ControlFlowNode for x | 50 |
 | b_condition.py:52 | ControlFlowNode for x | 50 |
+| b_condition.py:56 | ControlFlowNode for For | 56 |
 | b_condition.py:56 | ControlFlowNode for seq | 55 |
 | b_condition.py:57 | ControlFlowNode for v | 56 |
 | b_condition.py:58 | ControlFlowNode for use | 58 |

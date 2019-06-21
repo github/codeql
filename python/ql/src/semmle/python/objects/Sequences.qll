@@ -32,6 +32,8 @@ abstract class SequenceObjectInternal extends ObjectInternal {
 
     override string getName() { none() }
 
+    override ObjectInternal getIterNext() { result = this.getItem(_) }
+
 }
 
 abstract class TupleObjectInternal extends SequenceObjectInternal {

@@ -91,6 +91,9 @@ class PropertyInternal extends ObjectInternal, TProperty {
         )
     }
 
+    /* Properties aren't iterable */
+    override ObjectInternal getIterNext() { none() }
+
 }
 
 /** A class representing classmethods in Python */
@@ -176,6 +179,9 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
         result = this.getFunction().getName()
     }
 
+    /* Classmethods aren't iterable */
+    override ObjectInternal getIterNext() { none() }
+
 }
 
 class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
@@ -246,5 +252,8 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
     override string getName() {
         result = this.getFunction().getName()
     }
+
+    /* Staticmethods aren't iterable */
+    override ObjectInternal getIterNext() { none() }
 
 }
