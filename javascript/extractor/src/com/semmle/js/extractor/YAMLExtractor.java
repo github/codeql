@@ -226,16 +226,19 @@ public class YAMLExtractor implements IExtractor {
    * <i>n</i> characters, where <i>n</i> is the number of spaces preceding the caret character on
    * the second line.
    *
-   * <p>This is only an approximation, since the context never extends across newlines, but it
-   * suffices for the purposes of <code>toString</code>.
+   * <p>This is only an approximation, since the context is limited to relatively short strings that
+   * never extend across newlines, but it suffices for the purposes of <code>toString</code>.
    */
   private String mkToString(Mark startMark, Mark endMark) {
     String snippet = startMark.get_snippet(0, Integer.MAX_VALUE);
     int nl = snippet.indexOf('\n');
     String context = snippet.substring(0, nl);
     String src = context.substring(snippet.substring(nl + 1).indexOf('^'));
-    if (endMark.getLine() == startMark.getLine())
-      src = src.substring(0, endMark.getColumn() - startMark.getColumn());
+    int desiredStringLength = endMark.getColumn() - startMark.getColumn();
+    boolean hasAccessToDesiredString = src.length() >= desiredStringLength;
+    boolean isSingleLine = endMark.getLine() == startMark.getLine();
+    if (isSingleLine && hasAccessToDesiredString)
+    	src = src.substring(0, desiredStringLength);
     return TextualExtractor.sanitiseToString(src);
   }
 
