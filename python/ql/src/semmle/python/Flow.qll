@@ -34,7 +34,7 @@ private AstNode toAst(ControlFlowNode n) {
 class ControlFlowNode extends @py_flow_node {
 
     cached ControlFlowNode() {
-        not Pruner::unreachable(this)
+        Pruner::reachable(this)
     }
 
     /** Whether this control flow node is a load (including those in augmented assignments) */
@@ -175,12 +175,13 @@ class ControlFlowNode extends @py_flow_node {
 
     /** Gets a predecessor of this flow node */
     ControlFlowNode getAPredecessor() {
-        py_successors(result, this)
+        this = result.getASuccessor()
     }
 
     /** Gets a successor of this flow node */
     ControlFlowNode getASuccessor() {
-        py_successors(this, result)
+        py_successors(this, result) and
+        not Pruner::unreachableEdge(this, result)
     }
 
     /** Gets the immediate dominator of this flow node */
@@ -291,22 +292,25 @@ class ControlFlowNode extends @py_flow_node {
 
     /** Gets a successor for this node if the relevant condition is True. */
     ControlFlowNode getATrueSuccessor() {
+        result = this.getASuccessor() and
         py_true_successors(this, result)
     }
 
     /** Gets a successor for this node if the relevant condition is False. */
     ControlFlowNode getAFalseSuccessor() {
+        result = this.getASuccessor() and
         py_false_successors(this, result)
     }
 
     /** Gets a successor for this node if an exception is raised. */
     ControlFlowNode getAnExceptionalSuccessor() {
+        result = this.getASuccessor() and
         py_exception_successors(this, result)
     }
 
     /** Gets a successor for this node if no exception is raised. */
     ControlFlowNode getANormalSuccessor() {
-        py_successors(this, result) and not
+        result = this.getASuccessor() and not
         py_exception_successors(this, result)
     }
 
@@ -942,21 +946,91 @@ predicate defined_by(NameNode def, Variable v) {
     exists(NameNode p | defined_by(p, v) and p.getASuccessor() = def and not p.defines(v))
 }
 
-/** A basic block (ignoring exceptional flow edges to scope exit) */
-class BasicBlock extends @py_flow_node {
+/* Combine extractor-generated basic block after pruning */
 
-    BasicBlock() {
-        py_flow_bb_node(_, _, this, _)
+private class BasicBlockPart extends @py_flow_node {
+
+    string toString() { result = "Basic block part" }
+
+    BasicBlockPart() {
+        py_flow_bb_node(_, _, this, _) and
+        Pruner::reachable(this)
     }
 
-    /** Whether this basic block contains the specified node */
+    predicate isHead() {
+        count(this.(ControlFlowNode).getAPredecessor()) != 1
+        or
+        exists(ControlFlowNode pred | pred = this.(ControlFlowNode).getAPredecessor() | strictcount(pred.getASuccessor()) > 1)
+    }
+
+    private BasicBlockPart previous() {
+        not this.isHead() and
+        py_flow_bb_node(this.(ControlFlowNode).getAPredecessor(), _, result, _)
+    }
+
+    BasicBlockPart getHead() {
+        this.isHead() and result = this
+        or
+        result = this.previous().getHead()
+    }
+
+    predicate isLast() {
+        not exists(BasicBlockPart part | part.previous() = this)
+    }
+
+    int length() {
+        result = max(int j | py_flow_bb_node(_, _, this, j)) + 1
+    }
+
+    int startIndex() {
+        this.isHead() and result = 0
+        or
+        exists(BasicBlockPart prev |
+            prev = this.previous() and
+            result = prev.startIndex() + prev.length()
+        )
+    }
+
     predicate contains(ControlFlowNode node) {
         py_flow_bb_node(node, _, this, _)
     }
 
+    int indexOf(ControlFlowNode node) {
+        py_flow_bb_node(node, _, this, result)
+    }
+
+    ControlFlowNode lastNode() {
+        this.indexOf(result) = max(this.indexOf(_))
+    }
+
+    BasicBlockPart getImmediateDominator() {
+        result.contains(this.(ControlFlowNode).getImmediateDominator())
+    }
+
+}
+
+/** A basic block (ignoring exceptional flow edges to scope exit) */
+class BasicBlock extends @py_flow_node {
+
+    BasicBlock() {
+        this.(BasicBlockPart).isHead()
+    }
+
+    private BasicBlockPart getAPart() {
+        result.getHead() = this
+    }
+
+    /** Whether this basic block contains the specified node */
+    predicate contains(ControlFlowNode node) {
+        this.getAPart().contains(node)
+    }
+
     /** Gets the nth node in this basic block */
     ControlFlowNode getNode(int n) {
-        py_flow_bb_node(result, _, this, n)
+        exists(BasicBlockPart part |
+            part = this.getAPart() and
+            n = part.startIndex() + part.indexOf(result)
+        )
     }
 
     string toString() {
@@ -976,7 +1050,7 @@ class BasicBlock extends @py_flow_node {
     }
 
     BasicBlock getImmediateDominator() {
-        this.firstNode().getImmediateDominator().getBasicBlock() = result
+        this.getAPart().getImmediateDominator() = result.getAPart()
     }
 
     /** Dominance frontier of a node x is the set of all nodes `other` such that `this` dominates a predecessor
@@ -991,9 +1065,10 @@ class BasicBlock extends @py_flow_node {
 
     /** Gets the last node in this basic block */
     ControlFlowNode getLastNode() {
-        exists(int i |
-            this.getNode(i) = result and
-            i = max(int j | py_flow_bb_node(_, _, this, j))
+        exists(BasicBlockPart part |
+            part = this.getAPart() and
+            part.isLast() and
+            result = part.lastNode()
         )
     }
 
