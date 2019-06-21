@@ -3,5 +3,5 @@ import csharp
 from Callable c
 where
   c.fromSource() and
-  c.getAnnotatedReturnType().getAnnotation().isReadonlyRef()
+  c.getAnnotatedReturnType().isReadonlyRef()
 select c
