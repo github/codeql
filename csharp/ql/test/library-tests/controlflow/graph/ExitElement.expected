@@ -379,13 +379,13 @@
 | BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... | BreakInTry.cs:32:21:32:21 | ; | normal (break) |
 | BreakInTry.cs:22:22:22:24 | String arg | BreakInTry.cs:22:22:22:24 | String arg | normal |
 | BreakInTry.cs:22:29:22:32 | access to parameter args | BreakInTry.cs:22:29:22:32 | access to parameter args | normal |
-| BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:31:21:31:32 | ... == ... | break |
+| BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:31:21:31:32 | ... == ... | break [false/false] |
 | BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:31:21:31:32 | ... == ... | false/false |
-| BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:32:21:32:21 | ; | break |
+| BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:32:21:32:21 | ; | break [normal] |
 | BreakInTry.cs:23:9:34:9 | {...} | BreakInTry.cs:32:21:32:21 | ; | normal |
-| BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:31:21:31:32 | ... == ... | break |
+| BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:31:21:31:32 | ... == ... | break [false/false] |
 | BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:31:21:31:32 | ... == ... | false/false |
-| BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:32:21:32:21 | ; | break |
+| BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:32:21:32:21 | ; | break [normal] |
 | BreakInTry.cs:24:13:33:13 | try {...} ... | BreakInTry.cs:32:21:32:21 | ; | normal |
 | BreakInTry.cs:25:13:28:13 | {...} | BreakInTry.cs:26:21:26:31 | ... == ... | false/false |
 | BreakInTry.cs:25:13:28:13 | {...} | BreakInTry.cs:27:21:27:26 | break; | break |
@@ -406,13 +406,13 @@
 | BreakInTry.cs:31:29:31:32 | null | BreakInTry.cs:31:29:31:32 | null | normal |
 | BreakInTry.cs:32:21:32:21 | ; | BreakInTry.cs:32:21:32:21 | ; | normal |
 | BreakInTry.cs:35:7:35:7 | ; | BreakInTry.cs:35:7:35:7 | ; | normal |
-| BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | return |
-| BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:50:21:50:26 | break; | return |
+| BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | return [empty] |
+| BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:50:21:50:26 | break; | return [normal (break)] |
 | BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:53:7:53:7 | ; | normal |
 | BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | empty |
-| BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | return |
+| BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:47:13:51:13 | foreach (... ... in ...) ... | return [empty] |
 | BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:50:21:50:26 | break; | normal (break) |
-| BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:50:21:50:26 | break; | return |
+| BreakInTry.cs:40:9:52:9 | try {...} ... | BreakInTry.cs:50:21:50:26 | break; | return [normal (break)] |
 | BreakInTry.cs:41:9:44:9 | {...} | BreakInTry.cs:42:17:42:28 | ... == ... | false/false |
 | BreakInTry.cs:41:9:44:9 | {...} | BreakInTry.cs:43:17:43:23 | return ...; | return |
 | BreakInTry.cs:42:13:43:23 | if (...) ... | BreakInTry.cs:42:17:42:28 | ... == ... | false/false |
@@ -439,13 +439,13 @@
 | BreakInTry.cs:50:21:50:26 | break; | BreakInTry.cs:50:21:50:26 | break; | break |
 | BreakInTry.cs:53:7:53:7 | ; | BreakInTry.cs:53:7:53:7 | ; | normal |
 | BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | empty |
-| BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | return |
+| BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | return [empty] |
 | BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:68:21:68:26 | break; | normal (break) |
-| BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:68:21:68:26 | break; | return |
+| BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:68:21:68:26 | break; | return [normal (break)] |
 | BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | empty |
-| BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | return |
+| BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:65:13:69:13 | foreach (... ... in ...) ... | return [empty] |
 | BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:68:21:68:26 | break; | normal (break) |
-| BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:68:21:68:26 | break; | return |
+| BreakInTry.cs:58:9:70:9 | try {...} ... | BreakInTry.cs:68:21:68:26 | break; | return [normal (break)] |
 | BreakInTry.cs:59:9:62:9 | {...} | BreakInTry.cs:60:17:60:28 | ... == ... | false/false |
 | BreakInTry.cs:59:9:62:9 | {...} | BreakInTry.cs:61:17:61:23 | return ...; | return |
 | BreakInTry.cs:60:13:61:23 | if (...) ... | BreakInTry.cs:60:17:60:28 | ... == ... | false/false |
@@ -471,23 +471,23 @@
 | BreakInTry.cs:67:28:67:31 | null | BreakInTry.cs:67:28:67:31 | null | normal |
 | BreakInTry.cs:68:21:68:26 | break; | BreakInTry.cs:68:21:68:26 | break; | break |
 | CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:16:21:16:36 | ... == ... | false/false |
-| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(ArgumentNullException) |
-| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(Exception) |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(ArgumentNullException) [false/false] |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(Exception) [false/false] |
 | CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | normal |
-| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(ArgumentNullException) |
-| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(Exception) |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(ArgumentNullException) [normal] |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(Exception) [normal] |
 | CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
-| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(ArgumentNullException) |
-| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(Exception) |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(ArgumentNullException) [normal] |
+| CatchInFinally.cs:6:5:28:5 | {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(Exception) [normal] |
 | CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:36 | ... == ... | false/false |
-| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(ArgumentNullException) |
-| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(Exception) |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(ArgumentNullException) [false/false] |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:16:21:16:36 | ... == ... | throw(Exception) [false/false] |
 | CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | normal |
-| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(ArgumentNullException) |
-| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(Exception) |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(ArgumentNullException) [normal] |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:21:17:21:42 | call to method WriteLine | throw(Exception) [normal] |
 | CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
-| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(ArgumentNullException) |
-| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(Exception) |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(ArgumentNullException) [normal] |
+| CatchInFinally.cs:7:9:27:9 | try {...} ... | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | throw(Exception) [normal] |
 | CatchInFinally.cs:8:9:11:9 | {...} | CatchInFinally.cs:9:17:9:28 | ... == ... | false/false |
 | CatchInFinally.cs:8:9:11:9 | {...} | CatchInFinally.cs:10:17:10:50 | throw ...; | throw(ArgumentNullException) |
 | CatchInFinally.cs:8:9:11:9 | {...} | CatchInFinally.cs:10:23:10:49 | object creation of type ArgumentNullException | throw(Exception) |
@@ -554,26 +554,26 @@
 | CatchInFinally.cs:25:17:25:38 | ...; | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | normal |
 | CatchInFinally.cs:25:35:25:36 | "" | CatchInFinally.cs:25:35:25:36 | "" | normal |
 | CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | false/false |
-| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | throw(Exception) |
-| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | throw(ExceptionA) |
-| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(Exception) |
-| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(ExceptionB) |
-| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(Exception) |
-| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(ExceptionB) |
+| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | throw(Exception) [false/false] |
+| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | throw(ExceptionA) [false/false] |
+| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(Exception) [no-match] |
+| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(ExceptionB) [no-match] |
+| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(Exception) [false/false] |
+| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(ExceptionB) [false/false] |
 | CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | false/false |
-| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | throw(Exception) |
-| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | throw(ExceptionA) |
+| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | throw(Exception) [false/false] |
+| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | throw(ExceptionA) [false/false] |
 | CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:48:25:48:47 | throw ...; | throw(ExceptionC) |
 | CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | false/false |
-| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | throw(Exception) |
-| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | throw(ExceptionA) |
-| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(Exception) |
-| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(ExceptionB) |
-| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(Exception) |
-| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(ExceptionB) |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | throw(Exception) [false/false] |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | throw(ExceptionA) [false/false] |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(Exception) [no-match] |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(ExceptionB) [no-match] |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(Exception) [false/false] |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(ExceptionB) [false/false] |
 | CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | false/false |
-| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | throw(Exception) |
-| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | throw(ExceptionA) |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | throw(Exception) [false/false] |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | throw(ExceptionA) [false/false] |
 | CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:48:25:48:47 | throw ...; | throw(ExceptionC) |
 | CatchInFinally.cs:37:9:39:9 | {...} | CatchInFinally.cs:38:17:38:18 | access to parameter b1 | false/false |
 | CatchInFinally.cs:37:9:39:9 | {...} | CatchInFinally.cs:38:21:38:43 | throw ...; | throw(ExceptionA) |
@@ -588,17 +588,17 @@
 | CatchInFinally.cs:38:27:38:42 | object creation of type ExceptionA | CatchInFinally.cs:38:27:38:42 | object creation of type ExceptionA | normal |
 | CatchInFinally.cs:38:27:38:42 | object creation of type ExceptionA | CatchInFinally.cs:38:27:38:42 | object creation of type ExceptionA | throw(Exception) |
 | CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | false/false |
-| CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(Exception) |
-| CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(ExceptionB) |
-| CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(Exception) |
-| CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(ExceptionB) |
+| CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(Exception) [no-match] |
+| CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(ExceptionB) [no-match] |
+| CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(Exception) [false/false] |
+| CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(ExceptionB) [false/false] |
 | CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | false/false |
 | CatchInFinally.cs:41:9:50:9 | {...} | CatchInFinally.cs:48:25:48:47 | throw ...; | throw(ExceptionC) |
 | CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | false/false |
-| CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(Exception) |
-| CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(ExceptionB) |
-| CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(Exception) |
-| CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(ExceptionB) |
+| CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(Exception) [no-match] |
+| CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(ExceptionB) [no-match] |
+| CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(Exception) [false/false] |
+| CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(ExceptionB) [false/false] |
 | CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | false/false |
 | CatchInFinally.cs:42:13:49:13 | try {...} ... | CatchInFinally.cs:48:25:48:47 | throw ...; | throw(ExceptionC) |
 | CatchInFinally.cs:43:13:45:13 | {...} | CatchInFinally.cs:44:21:44:22 | access to parameter b2 | false/false |
@@ -613,10 +613,10 @@
 | CatchInFinally.cs:44:25:44:47 | throw ...; | CatchInFinally.cs:44:31:44:46 | object creation of type ExceptionB | throw(Exception) |
 | CatchInFinally.cs:44:31:44:46 | object creation of type ExceptionB | CatchInFinally.cs:44:31:44:46 | object creation of type ExceptionB | normal |
 | CatchInFinally.cs:44:31:44:46 | object creation of type ExceptionB | CatchInFinally.cs:44:31:44:46 | object creation of type ExceptionB | throw(Exception) |
-| CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(Exception) |
-| CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(ExceptionB) |
-| CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(Exception) |
-| CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(ExceptionB) |
+| CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(Exception) [no-match] |
+| CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | throw(ExceptionB) [no-match] |
+| CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(Exception) [false/false] |
+| CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | throw(ExceptionB) [false/false] |
 | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:48:21:48:22 | access to parameter b1 | false/false |
 | CatchInFinally.cs:46:13:49:13 | catch (...) {...} | CatchInFinally.cs:48:25:48:47 | throw ...; | throw(ExceptionC) |
 | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | CatchInFinally.cs:46:38:46:39 | access to parameter b2 | false/false |
@@ -642,14 +642,14 @@
 | CompileTimeOperators.cs:22:9:22:25 | return ...; | CompileTimeOperators.cs:22:9:22:25 | return ...; | return |
 | CompileTimeOperators.cs:22:16:22:24 | nameof(...) | CompileTimeOperators.cs:22:16:22:24 | nameof(...) | normal |
 | CompileTimeOperators.cs:22:23:22:23 | access to parameter i | CompileTimeOperators.cs:22:23:22:23 | access to parameter i | normal |
-| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) |
-| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) |
-| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(OutOfMemoryException) |
+| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) [normal] |
+| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) [normal] |
+| CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | CompileTimeOperators.cs:29:5:41:5 | {...} | CompileTimeOperators.cs:40:14:40:37 | call to method WriteLine | normal |
-| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) |
+| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | goto(End) [normal] |
 | CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | normal |
-| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) |
-| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(OutOfMemoryException) |
+| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(Exception) [normal] |
+| CompileTimeOperators.cs:30:9:38:9 | try {...} ... | CompileTimeOperators.cs:37:13:37:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:32:13:32:21 | goto ...; | goto(End) |
 | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | normal |
 | CompileTimeOperators.cs:31:9:34:9 | {...} | CompileTimeOperators.cs:33:13:33:37 | call to method WriteLine | throw(Exception) |
@@ -1162,9 +1162,9 @@
 | ExitMethods.cs:88:9:88:28 | ...; | ExitMethods.cs:88:9:88:27 | call to method Exit | exit |
 | ExitMethods.cs:88:26:88:26 | 0 | ExitMethods.cs:88:26:88:26 | 0 | normal |
 | ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
-| ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit |
+| ExitMethods.cs:92:5:102:5 | {...} | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit [normal] |
 | ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
-| ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit |
+| ExitMethods.cs:93:9:101:9 | try {...} ... | ExitMethods.cs:100:13:100:40 | call to method WriteLine | exit [normal] |
 | ExitMethods.cs:94:9:96:9 | {...} | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
 | ExitMethods.cs:95:13:95:18 | call to method Exit | ExitMethods.cs:95:13:95:18 | call to method Exit | exit |
 | ExitMethods.cs:95:13:95:18 | this access | ExitMethods.cs:95:13:95:18 | this access | normal |
@@ -2257,30 +2257,30 @@
 | cflow.cs:144:46:144:51 | ... + ... | cflow.cs:144:46:144:51 | ... + ... | normal |
 | cflow.cs:144:50:144:51 | "" | cflow.cs:144:50:144:51 | "" | normal |
 | cflow.cs:144:60:144:62 | {...} | cflow.cs:144:60:144:62 | {...} | normal |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:154:13:154:40 | call to method WriteLine | throw(Exception) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:154:13:154:40 | call to method WriteLine | throw(OutOfMemoryException) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:186:13:186:40 | call to method WriteLine | return |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:186:13:186:40 | call to method WriteLine | throw(Exception) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:186:13:186:40 | call to method WriteLine | throw(IOException) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:203:13:203:40 | call to method WriteLine | return |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:203:13:203:40 | call to method WriteLine | throw(Exception) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:203:13:203:40 | call to method WriteLine | throw(IOException) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:203:13:203:40 | call to method WriteLine | throw(OutOfMemoryException) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:227:21:227:23 | ...-- | return |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:227:21:227:23 | ...-- | throw(Exception) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:243:17:243:32 | ... > ... | return |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:243:17:243:32 | ... > ... | throw(Exception) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:243:17:243:32 | ... > ... | throw(NullReferenceException) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:243:17:243:32 | ... > ... | throw(OutOfMemoryException) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:244:17:244:36 | call to method WriteLine | return |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:244:17:244:36 | call to method WriteLine | throw(Exception) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:244:17:244:36 | call to method WriteLine | throw(NullReferenceException) |
-| cflow.cs:147:5:255:5 | {...} | cflow.cs:244:17:244:36 | call to method WriteLine | throw(OutOfMemoryException) |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:154:13:154:40 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:154:13:154:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:186:13:186:40 | call to method WriteLine | return [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:186:13:186:40 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:186:13:186:40 | call to method WriteLine | throw(IOException) [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:203:13:203:40 | call to method WriteLine | return [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:203:13:203:40 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:203:13:203:40 | call to method WriteLine | throw(IOException) [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:203:13:203:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:227:21:227:23 | ...-- | return [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:227:21:227:23 | ...-- | throw(Exception) [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:243:17:243:32 | ... > ... | return [false/false] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:243:17:243:32 | ... > ... | throw(Exception) [false/false] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:243:17:243:32 | ... > ... | throw(NullReferenceException) [false/false] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:243:17:243:32 | ... > ... | throw(OutOfMemoryException) [false/false] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:244:17:244:36 | call to method WriteLine | return [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:244:17:244:36 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:244:17:244:36 | call to method WriteLine | throw(NullReferenceException) [normal] |
+| cflow.cs:147:5:255:5 | {...} | cflow.cs:244:17:244:36 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | cflow.cs:147:5:255:5 | {...} | cflow.cs:249:17:249:40 | Double temp = ... | normal |
 | cflow.cs:147:5:255:5 | {...} | cflow.cs:253:13:253:13 | ; | normal |
 | cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:154:13:154:40 | call to method WriteLine | normal |
-| cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:154:13:154:40 | call to method WriteLine | throw(Exception) |
-| cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:154:13:154:40 | call to method WriteLine | throw(OutOfMemoryException) |
+| cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:154:13:154:40 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:148:9:155:9 | try {...} ... | cflow.cs:154:13:154:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | cflow.cs:149:9:151:9 | {...} | cflow.cs:150:13:150:37 | call to method WriteLine | normal |
 | cflow.cs:149:9:151:9 | {...} | cflow.cs:150:13:150:37 | call to method WriteLine | throw(Exception) |
 | cflow.cs:149:9:151:9 | {...} | cflow.cs:150:31:150:36 | "Try1" | throw(OutOfMemoryException) |
@@ -2297,9 +2297,9 @@
 | cflow.cs:154:13:154:41 | ...; | cflow.cs:154:13:154:40 | call to method WriteLine | normal |
 | cflow.cs:154:31:154:39 | "Finally" | cflow.cs:154:31:154:39 | "Finally" | normal |
 | cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:186:13:186:40 | call to method WriteLine | normal |
-| cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:186:13:186:40 | call to method WriteLine | return |
-| cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:186:13:186:40 | call to method WriteLine | throw(Exception) |
-| cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:186:13:186:40 | call to method WriteLine | throw(IOException) |
+| cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:186:13:186:40 | call to method WriteLine | return [normal] |
+| cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:186:13:186:40 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:157:9:187:9 | try {...} ... | cflow.cs:186:13:186:40 | call to method WriteLine | throw(IOException) [normal] |
 | cflow.cs:158:9:161:9 | {...} | cflow.cs:159:13:159:37 | call to method WriteLine | throw(Exception) |
 | cflow.cs:158:9:161:9 | {...} | cflow.cs:159:31:159:36 | "Try2" | throw(OutOfMemoryException) |
 | cflow.cs:158:9:161:9 | {...} | cflow.cs:160:13:160:19 | return ...; | return |
@@ -2342,10 +2342,10 @@
 | cflow.cs:186:13:186:41 | ...; | cflow.cs:186:13:186:40 | call to method WriteLine | normal |
 | cflow.cs:186:31:186:39 | "Finally" | cflow.cs:186:31:186:39 | "Finally" | normal |
 | cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:203:13:203:40 | call to method WriteLine | normal |
-| cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:203:13:203:40 | call to method WriteLine | return |
-| cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:203:13:203:40 | call to method WriteLine | throw(Exception) |
-| cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:203:13:203:40 | call to method WriteLine | throw(IOException) |
-| cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:203:13:203:40 | call to method WriteLine | throw(OutOfMemoryException) |
+| cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:203:13:203:40 | call to method WriteLine | return [normal] |
+| cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:203:13:203:40 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:203:13:203:40 | call to method WriteLine | throw(IOException) [normal] |
+| cflow.cs:189:9:204:9 | try {...} ... | cflow.cs:203:13:203:40 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | cflow.cs:190:9:193:9 | {...} | cflow.cs:191:13:191:37 | call to method WriteLine | throw(Exception) |
 | cflow.cs:190:9:193:9 | {...} | cflow.cs:191:31:191:36 | "Try3" | throw(OutOfMemoryException) |
 | cflow.cs:190:9:193:9 | {...} | cflow.cs:192:13:192:19 | return ...; | return |
@@ -2364,10 +2364,10 @@
 | cflow.cs:194:48:194:51 | true | cflow.cs:194:48:194:51 | true | true/true |
 | cflow.cs:195:9:197:9 | {...} | cflow.cs:196:13:196:18 | throw ...; | throw(IOException) |
 | cflow.cs:196:13:196:18 | throw ...; | cflow.cs:196:13:196:18 | throw ...; | throw(IOException) |
-| cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:9:200:9 | catch (...) {...} | throw(Exception) |
-| cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:9:200:9 | catch (...) {...} | throw(OutOfMemoryException) |
-| cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:35:198:51 | ... != ... | throw(Exception) |
-| cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:35:198:51 | ... != ... | throw(OutOfMemoryException) |
+| cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:9:200:9 | catch (...) {...} | throw(Exception) [no-match] |
+| cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:9:200:9 | catch (...) {...} | throw(OutOfMemoryException) [no-match] |
+| cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:35:198:51 | ... != ... | throw(Exception) [false/false] |
+| cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:198:35:198:51 | ... != ... | throw(OutOfMemoryException) [false/false] |
 | cflow.cs:198:9:200:9 | catch (...) {...} | cflow.cs:199:9:200:9 | {...} | normal |
 | cflow.cs:198:26:198:26 | Exception e | cflow.cs:198:26:198:26 | Exception e | normal |
 | cflow.cs:198:35:198:35 | access to local variable e | cflow.cs:198:35:198:35 | access to local variable e | normal |
@@ -2385,22 +2385,22 @@
 | cflow.cs:206:17:206:18 | 10 | cflow.cs:206:17:206:18 | 10 | normal |
 | cflow.cs:207:9:230:9 | while (...) ... | cflow.cs:207:16:207:20 | ... > ... | false/false |
 | cflow.cs:207:9:230:9 | while (...) ... | cflow.cs:227:21:227:23 | ...-- | normal (break) |
-| cflow.cs:207:9:230:9 | while (...) ... | cflow.cs:227:21:227:23 | ...-- | return |
-| cflow.cs:207:9:230:9 | while (...) ... | cflow.cs:227:21:227:23 | ...-- | throw(Exception) |
+| cflow.cs:207:9:230:9 | while (...) ... | cflow.cs:227:21:227:23 | ...-- | return [normal] |
+| cflow.cs:207:9:230:9 | while (...) ... | cflow.cs:227:21:227:23 | ...-- | throw(Exception) [normal] |
 | cflow.cs:207:16:207:16 | access to local variable i | cflow.cs:207:16:207:16 | access to local variable i | normal |
 | cflow.cs:207:16:207:20 | ... > ... | cflow.cs:207:16:207:20 | ... > ... | false/false |
 | cflow.cs:207:16:207:20 | ... > ... | cflow.cs:207:16:207:20 | ... > ... | true/true |
 | cflow.cs:207:20:207:20 | 0 | cflow.cs:207:20:207:20 | 0 | normal |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:227:21:227:23 | ...-- | break |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:227:21:227:23 | ...-- | continue |
+| cflow.cs:208:9:230:9 | {...} | cflow.cs:227:21:227:23 | ...-- | break [normal] |
+| cflow.cs:208:9:230:9 | {...} | cflow.cs:227:21:227:23 | ...-- | continue [normal] |
 | cflow.cs:208:9:230:9 | {...} | cflow.cs:227:21:227:23 | ...-- | normal |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:227:21:227:23 | ...-- | return |
-| cflow.cs:208:9:230:9 | {...} | cflow.cs:227:21:227:23 | ...-- | throw(Exception) |
-| cflow.cs:209:13:229:13 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | break |
-| cflow.cs:209:13:229:13 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | continue |
+| cflow.cs:208:9:230:9 | {...} | cflow.cs:227:21:227:23 | ...-- | return [normal] |
+| cflow.cs:208:9:230:9 | {...} | cflow.cs:227:21:227:23 | ...-- | throw(Exception) [normal] |
+| cflow.cs:209:13:229:13 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | break [normal] |
+| cflow.cs:209:13:229:13 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | continue [normal] |
 | cflow.cs:209:13:229:13 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | normal |
-| cflow.cs:209:13:229:13 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | return |
-| cflow.cs:209:13:229:13 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | throw(Exception) |
+| cflow.cs:209:13:229:13 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | return [normal] |
+| cflow.cs:209:13:229:13 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | throw(Exception) [normal] |
 | cflow.cs:210:13:217:13 | {...} | cflow.cs:212:21:212:27 | return ...; | return |
 | cflow.cs:210:13:217:13 | {...} | cflow.cs:214:21:214:29 | continue; | continue |
 | cflow.cs:210:13:217:13 | {...} | cflow.cs:215:21:215:26 | ... == ... | false/false |
@@ -2427,9 +2427,9 @@
 | cflow.cs:215:26:215:26 | 2 | cflow.cs:215:26:215:26 | 2 | normal |
 | cflow.cs:216:21:216:26 | break; | cflow.cs:216:21:216:26 | break; | break |
 | cflow.cs:219:13:229:13 | {...} | cflow.cs:227:21:227:23 | ...-- | normal |
-| cflow.cs:219:13:229:13 | {...} | cflow.cs:227:21:227:23 | ...-- | throw(Exception) |
+| cflow.cs:219:13:229:13 | {...} | cflow.cs:227:21:227:23 | ...-- | throw(Exception) [normal] |
 | cflow.cs:220:17:228:17 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | normal |
-| cflow.cs:220:17:228:17 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | throw(Exception) |
+| cflow.cs:220:17:228:17 | try {...} ... | cflow.cs:227:21:227:23 | ...-- | throw(Exception) [normal] |
 | cflow.cs:221:17:224:17 | {...} | cflow.cs:222:25:222:30 | ... == ... | false/false |
 | cflow.cs:221:17:224:17 | {...} | cflow.cs:223:25:223:46 | throw ...; | throw(Exception) |
 | cflow.cs:221:17:224:17 | {...} | cflow.cs:223:31:223:45 | object creation of type Exception | throw(Exception) |
@@ -2449,15 +2449,15 @@
 | cflow.cs:227:21:227:23 | ...-- | cflow.cs:227:21:227:23 | ...-- | normal |
 | cflow.cs:227:21:227:24 | ...; | cflow.cs:227:21:227:23 | ...-- | normal |
 | cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:243:17:243:32 | ... > ... | false/false |
-| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:243:17:243:32 | ... > ... | return |
-| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:243:17:243:32 | ... > ... | throw(Exception) |
-| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:243:17:243:32 | ... > ... | throw(NullReferenceException) |
-| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:243:17:243:32 | ... > ... | throw(OutOfMemoryException) |
+| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:243:17:243:32 | ... > ... | return [false/false] |
+| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:243:17:243:32 | ... > ... | throw(Exception) [false/false] |
+| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:243:17:243:32 | ... > ... | throw(NullReferenceException) [false/false] |
+| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:243:17:243:32 | ... > ... | throw(OutOfMemoryException) [false/false] |
 | cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:244:17:244:36 | call to method WriteLine | normal |
-| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:244:17:244:36 | call to method WriteLine | return |
-| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:244:17:244:36 | call to method WriteLine | throw(Exception) |
-| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:244:17:244:36 | call to method WriteLine | throw(NullReferenceException) |
-| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:244:17:244:36 | call to method WriteLine | throw(OutOfMemoryException) |
+| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:244:17:244:36 | call to method WriteLine | return [normal] |
+| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:244:17:244:36 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:244:17:244:36 | call to method WriteLine | throw(NullReferenceException) [normal] |
+| cflow.cs:232:9:245:9 | try {...} ... | cflow.cs:244:17:244:36 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | cflow.cs:233:9:238:9 | {...} | cflow.cs:234:17:234:21 | access to field Field | throw(NullReferenceException) |
 | cflow.cs:233:9:238:9 | {...} | cflow.cs:234:17:234:28 | access to property Length | throw(Exception) |
 | cflow.cs:233:9:238:9 | {...} | cflow.cs:234:17:234:28 | access to property Length | throw(NullReferenceException) |
@@ -2891,9 +2891,9 @@
 | cflow.cs:367:35:367:35 | 0 | cflow.cs:367:35:367:35 | 0 | normal |
 | cflow.cs:368:17:368:22 | break; | cflow.cs:368:17:368:22 | break; | break |
 | cflow.cs:373:5:388:5 | {...} | cflow.cs:386:13:386:41 | call to method WriteLine | normal |
-| cflow.cs:373:5:388:5 | {...} | cflow.cs:386:13:386:41 | call to method WriteLine | return |
-| cflow.cs:373:5:388:5 | {...} | cflow.cs:386:13:386:41 | call to method WriteLine | throw(Exception) |
-| cflow.cs:373:5:388:5 | {...} | cflow.cs:386:13:386:41 | call to method WriteLine | throw(OutOfMemoryException) |
+| cflow.cs:373:5:388:5 | {...} | cflow.cs:386:13:386:41 | call to method WriteLine | return [normal] |
+| cflow.cs:373:5:388:5 | {...} | cflow.cs:386:13:386:41 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:373:5:388:5 | {...} | cflow.cs:386:13:386:41 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | cflow.cs:374:9:374:23 | yield return ...; | cflow.cs:374:9:374:23 | yield return ...; | normal |
 | cflow.cs:374:22:374:22 | 0 | cflow.cs:374:22:374:22 | 0 | normal |
 | cflow.cs:375:9:378:9 | for (...;...;...) ... | cflow.cs:375:25:375:30 | ... < ... | false/false |
@@ -2909,9 +2909,9 @@
 | cflow.cs:377:13:377:27 | yield return ...; | cflow.cs:377:13:377:27 | yield return ...; | normal |
 | cflow.cs:377:26:377:26 | access to local variable i | cflow.cs:377:26:377:26 | access to local variable i | normal |
 | cflow.cs:379:9:387:9 | try {...} ... | cflow.cs:386:13:386:41 | call to method WriteLine | normal |
-| cflow.cs:379:9:387:9 | try {...} ... | cflow.cs:386:13:386:41 | call to method WriteLine | return |
-| cflow.cs:379:9:387:9 | try {...} ... | cflow.cs:386:13:386:41 | call to method WriteLine | throw(Exception) |
-| cflow.cs:379:9:387:9 | try {...} ... | cflow.cs:386:13:386:41 | call to method WriteLine | throw(OutOfMemoryException) |
+| cflow.cs:379:9:387:9 | try {...} ... | cflow.cs:386:13:386:41 | call to method WriteLine | return [normal] |
+| cflow.cs:379:9:387:9 | try {...} ... | cflow.cs:386:13:386:41 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:379:9:387:9 | try {...} ... | cflow.cs:386:13:386:41 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | cflow.cs:380:9:383:9 | {...} | cflow.cs:381:13:381:24 | yield break; | return |
 | cflow.cs:380:9:383:9 | {...} | cflow.cs:382:13:382:42 | call to method WriteLine | normal |
 | cflow.cs:380:9:383:9 | {...} | cflow.cs:382:13:382:42 | call to method WriteLine | throw(Exception) |
@@ -2938,13 +2938,13 @@
 | cflow.cs:397:34:397:45 | call to method ToString | cflow.cs:397:34:397:45 | call to method ToString | normal |
 | cflow.cs:397:48:397:50 | {...} | cflow.cs:397:48:397:50 | {...} | normal |
 | cflow.cs:403:5:414:5 | {...} | cflow.cs:410:13:410:44 | throw ...; | throw(ArgumentException) |
-| cflow.cs:403:5:414:5 | {...} | cflow.cs:411:13:411:37 | call to method WriteLine | throw(Exception) |
-| cflow.cs:403:5:414:5 | {...} | cflow.cs:411:13:411:37 | call to method WriteLine | throw(OutOfMemoryException) |
+| cflow.cs:403:5:414:5 | {...} | cflow.cs:411:13:411:37 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:403:5:414:5 | {...} | cflow.cs:411:13:411:37 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | cflow.cs:403:5:414:5 | {...} | cflow.cs:413:9:413:33 | call to method WriteLine | normal |
 | cflow.cs:404:9:412:9 | try {...} ... | cflow.cs:410:13:410:44 | throw ...; | throw(ArgumentException) |
 | cflow.cs:404:9:412:9 | try {...} ... | cflow.cs:411:13:411:37 | call to method WriteLine | normal |
-| cflow.cs:404:9:412:9 | try {...} ... | cflow.cs:411:13:411:37 | call to method WriteLine | throw(Exception) |
-| cflow.cs:404:9:412:9 | try {...} ... | cflow.cs:411:13:411:37 | call to method WriteLine | throw(OutOfMemoryException) |
+| cflow.cs:404:9:412:9 | try {...} ... | cflow.cs:411:13:411:37 | call to method WriteLine | throw(Exception) [normal] |
+| cflow.cs:404:9:412:9 | try {...} ... | cflow.cs:411:13:411:37 | call to method WriteLine | throw(OutOfMemoryException) [normal] |
 | cflow.cs:405:9:407:9 | {...} | cflow.cs:406:13:406:36 | call to method WriteLine | normal |
 | cflow.cs:405:9:407:9 | {...} | cflow.cs:406:13:406:36 | call to method WriteLine | throw(Exception) |
 | cflow.cs:405:9:407:9 | {...} | cflow.cs:406:31:406:35 | "Try" | throw(OutOfMemoryException) |

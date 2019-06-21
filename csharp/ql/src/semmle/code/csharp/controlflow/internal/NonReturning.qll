@@ -28,11 +28,11 @@ private class ExitingCall extends NonReturningCall {
     )
   }
 
-  override ExitCompletion getACompletion() { any() }
+  override ExitCompletionDirect getACompletion() { any() }
 }
 
 private class ThrowingCall extends NonReturningCall {
-  private ThrowCompletion c;
+  private ThrowCompletionDirect c;
 
   ThrowingCall() {
     c = this.getTarget().(ThrowingCallable).getACallCompletion()
@@ -49,7 +49,7 @@ private class ThrowingCall extends NonReturningCall {
     )
   }
 
-  override ThrowCompletion getACompletion() { result = c }
+  override ThrowCompletionDirect getACompletion() { result = c }
 }
 
 abstract private class NonReturningCallable extends Callable {
@@ -104,7 +104,7 @@ private class ThrowingCallable extends NonReturningCallable {
   }
 
   /** Gets a valid completion for a call to this throwing callable. */
-  ThrowCompletion getACallCompletion() { this.getABody() = getAThrowingElement(result) }
+  ThrowCompletionDirect getACallCompletion() { this.getABody() = getAThrowingElement(result) }
 }
 
 private predicate directlyThrows(ThrowElement te, ThrowCompletion c) {
@@ -114,7 +114,7 @@ private predicate directlyThrows(ThrowElement te, ThrowCompletion c) {
   not isStub(te)
 }
 
-private ControlFlowElement getAThrowingElement(ThrowCompletion c) {
+private ControlFlowElement getAThrowingElement(ThrowCompletionDirect c) {
   c = result.(ThrowingCall).getACompletion()
   or
   directlyThrows(result, c)
@@ -122,14 +122,14 @@ private ControlFlowElement getAThrowingElement(ThrowCompletion c) {
   result = getAThrowingStmt(c)
 }
 
-private Stmt getAThrowingStmt(ThrowCompletion c) {
+private Stmt getAThrowingStmt(ThrowCompletionDirect c) {
   directlyThrows(result, c)
   or
   result.(ExprStmt).getExpr() = getAThrowingElement(c)
   or
   result.(BlockStmt).getFirstStmt() = getAThrowingStmt(c)
   or
-  exists(IfStmt ifStmt, ThrowCompletion c1, ThrowCompletion c2 |
+  exists(IfStmt ifStmt, ThrowCompletionDirect c1, ThrowCompletionDirect c2 |
     result = ifStmt and
     ifStmt.getThen() = getAThrowingStmt(c1) and
     ifStmt.getElse() = getAThrowingStmt(c2)

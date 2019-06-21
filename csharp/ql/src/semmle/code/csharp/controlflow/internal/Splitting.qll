@@ -760,9 +760,11 @@ module BooleanSplitting {
         (exists(succ(last, c)) or exists(succExit(last, c))) and
         // Respect the value recorded in this split for all correlated conditions
         forall(boolean inverted | bb = this.getACorrelatedCondition(inverted) |
-          c instanceof BooleanCompletion
+          c.getSourceCompletion() instanceof BooleanCompletion
           implies
-          c = any(BooleanCompletion bc | bc.getInnerValue() = this.getBranch().booleanXor(inverted))
+          c.getSourceCompletion() = any(BooleanCompletion bc |
+              bc.getInnerValue() = this.getBranch().booleanXor(inverted)
+            )
         )
       )
     }
