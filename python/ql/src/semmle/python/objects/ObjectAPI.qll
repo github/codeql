@@ -71,13 +71,6 @@ class Value extends TObject {
         this.(ObjectInternal).attribute(name, result, _)
     }
 
-    /** DEPRECATED: For backwards compatibility with old API
-     * Use `Value` instead of `ObjectSource`.
-     */
-    deprecated ObjectSource getSource() {
-        result = this.(ObjectInternal).getSource()
-    }
-
     /** Holds if this value is builtin. Applies to built-in functions and methods,
      * but also integers and strings.
      */
@@ -153,9 +146,9 @@ module Module {
      *
      * Note that the name used to refer to a module is not
      * necessarily its name. For example,
-     * there are modules refered to by the name `os.path`,
+     * there are modules referred to by the name `os.path`,
      * but that are not named `os.path`, for example the module `posixpath`.
-     * Such that the follwing is true:
+     * Such that the following is true:
      * `Module::named("os.path").getName() = "posixpath"
      */
     ModuleValue named(string name) {

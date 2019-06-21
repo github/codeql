@@ -73,11 +73,6 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
 private abstract class BooleanObjectInternal extends ConstantObjectInternal {
 
-    BooleanObjectInternal() {
-        this = TTrue() or this = TFalse()
-    }
-
-
     override ObjectInternal getClass() {
         result = TBuiltinClassObject(Builtin::special("bool"))
     }

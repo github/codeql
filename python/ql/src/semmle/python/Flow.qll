@@ -981,6 +981,7 @@ class BasicBlock extends @py_flow_node {
 
     /** Dominance frontier of a node x is the set of all nodes `other` such that `this` dominates a predecessor
      * of `other` but does not strictly dominate `other` */
+    pragma[noinline]
     predicate dominanceFrontier(BasicBlock other) {
         this.dominates(other.getAPredecessor()) and not this.strictlyDominates(other)
     }
