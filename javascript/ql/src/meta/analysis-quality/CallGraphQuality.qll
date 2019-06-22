@@ -1,14 +1,22 @@
 /**
- * @name Call graph quality
- * @description Measures the number of resolved and unresolved calls, for diagnostic purposes.
- * @id js/meta/call-graph-quality
+ * Provides predicates for measuring the quality of the call graph, that is,
+ * the number of calls that could be resolved to a callee.
  */
 
-import javascript::DataFlow
-import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
-import semmle.javascript.dependencies.Dependencies
-import semmle.javascript.dependencies.FrameworkLibraries
-import semmle.javascript.frameworks.Testing
+import javascript
+
+private import semmle.javascript.dataflow.internal.FlowSteps as FlowSteps
+private import semmle.javascript.dependencies.Dependencies
+private import semmle.javascript.dependencies.FrameworkLibraries
+private import semmle.javascript.frameworks.Testing
+private import DataFlow
+
+/**
+ * Gets the root folder of the snapshot.
+ *
+ * This is selected as the location for project-wide metrics.
+ */
+Folder projectRoot() { result.getRelativePath() = "" }
 
 /** A file we ignore because it is a test file or compiled/generated/bundled code. */
 class IgnoredFile extends File {
@@ -140,59 +148,60 @@ SourceNode resolvableCallback() {
 }
 
 /**
- * Gets a call site that can be resolved to an function in the same project.
+ * Acall site that can be resolved to a function in the same project.
  */
-RelevantInvoke resolvedCall() {
-  FlowSteps::calls(result, _)
-  or
-  result = resolvableCallback().getAnInvocation()
+class ResolvedCall extends RelevantInvoke {
+  ResolvedCall() {
+    FlowSteps::calls(this, _)
+    or
+    this = resolvableCallback().getAnInvocation()
+  }
 }
 
 /**
- * Gets a call site that is believed to call an external function.
+ * A call site that is believed to call an external function.
  */
-RelevantInvoke externalCall() {
-  not result = resolvedCall() and // avoid double counting
-  (
-    // Call to modelled external library
-    result = externalNode()
-    or
-    // 'require' call or similar
-    result = moduleImport(_)
-    or
-    // Resolved to externs file
-    exists(result.(InvokeNode).getACallee(1))
-    or
-    // Modelled as taint step but isn't from an NPM module. E.g. `substring` or `push`.
-    exists(TaintTracking::AdditionalTaintStep step |
-      step.step(_, result)
+class ExternalCall extends RelevantInvoke {
+  ExternalCall() {
+    not this instanceof ResolvedCall and // avoid double counting
+    (
+      // Call to modelled external library
+      this = externalNode()
       or
-      step.step(result.getAnArgument(), _)
+      // 'require' call or similar
+      this = moduleImport(_)
       or
-      step.step(_, result.getCallback(_).getParameter(_))
+      // Resolved to externs file
+      exists(this.(InvokeNode).getACallee(1))
+      or
+      // Modelled as taint step but isn't from an NPM module. E.g. `substring` or `push`.
+      exists(TaintTracking::AdditionalTaintStep step |
+        step.step(_, this)
+        or
+        step.step(this.getAnArgument(), _)
+      )
+      or
+      // Modelled as remote flow but not found by the above for whatever reason
+      this instanceof RemoteFlowSource
     )
-    or
-    // Commonly used methods that are usually external and not found by the above
-    exists(string name | name = result.(MethodCallNode).getMethodName() |
-      name = "indexOf" or
-      name = "lastIndexOf" or
-      name = "then"
-    )
-  )
+  }
 }
 
 /**
  * Gets a call site that could not be resolved.
  */
-RelevantInvoke unresolvedCall() {
-  not result = resolvedCall() and
-  not result = externalCall()
+class UnresolvedCall extends RelevantInvoke {
+  UnresolvedCall() {
+    not this instanceof ResolvedCall and
+    not this instanceof ExternalCall
+  }
 }
 
-// Name all columns in the 'from' clause to get named columns in metadata
-from int resolved, int calls, float ratio
-where
-  calls = count(resolvedCall()) + count(unresolvedCall()) and
-  resolved = count(resolvedCall()) and
-  ratio = resolved / (float)calls
-select resolved, calls, ratio
+/**
+ * A call that is believed to call a function within the same project.
+ */
+class NonExternalCall extends RelevantInvoke {
+  NonExternalCall() {
+    not this instanceof ExternalCall
+  }
+}
