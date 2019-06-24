@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                         var info = new ExpressionInfo(
                             cx,
-                            new AnnotatedType(Entities.Type.Create(cx, cx.Compilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32)), NullableAnnotation.NotAnnotated),
+                            new AnnotatedType(Entities.Type.Create(cx, cx.Compilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32)), Kinds.TypeAnnotation.NotAnnotated),
                             Location,
                             ExprKind.INT_LITERAL,
                             this,

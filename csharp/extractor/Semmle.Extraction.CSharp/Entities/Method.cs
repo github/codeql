@@ -122,13 +122,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 else
                 {
                     tb.Append("<");
-                    tb.BuildList(",", m.symbol.TypeArguments, (ta, tb0) => AddSignatureTypeToId(m.Context, tb0, m.symbol, ta));
-
                     // Encode the nullability of the type arguments in the label.
                     // Type arguments with different nullability can result in 
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    tb.BuildList("", m.symbol.TypeArgumentsNullableAnnotations, (a, tb1) => tb.Append((int)a));
+                    tb.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); tb.Append((int)ta.Nullability); });
                     tb.Append(">");
                 }
             }
@@ -345,8 +343,9 @@ namespace Semmle.Extraction.CSharp.Entities
                     foreach (var tp in symbol.GetAnnotatedTypeArguments())
                     {
                         Context.Emit(Tuples.type_arguments(Type.Create(Context, tp.Symbol), child, this));
-                        if(tp.Nullability.NeedsExtraction())
-                            Context.Emit(Tuples.type_argument_annotation(this, child, (Kinds.TypeAnnotation)symbol.TypeArgumentsNullableAnnotations[child]));
+                        var ta = tp.Nullability.GetTypeAnnotation();
+                        if (ta != Kinds.TypeAnnotation.None)
+                            Context.Emit(Tuples.type_argument_annotation(this, child, ta));
                         child++;
                     }
                 }

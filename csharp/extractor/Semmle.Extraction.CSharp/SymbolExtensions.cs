@@ -227,13 +227,11 @@ namespace Semmle.Extraction.CSharp
             {
                 subTermAction(cx, tb, named.ConstructedFrom);
                 tb.Append("<");
-                tb.BuildList(",", named.TypeArguments, (ta, tb0) => subTermAction(cx, tb0, ta));
-
                 // Encode the nullability of the type arguments in the label.
                 // Type arguments with different nullability can result in 
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
-                tb.BuildList("", named.TypeArgumentsNullableAnnotations, (a, tb1) => tb.Append((int)a));
+                tb.BuildList(",", named.GetAnnotatedTypeArguments(), (ta, tb0) => { subTermAction(cx, tb0, ta.Symbol); tb.Append((int)ta.Nullability); });
                 tb.Append(">");
             }
         }
@@ -492,7 +490,7 @@ namespace Semmle.Extraction.CSharp
         public static AnnotatedTypeSymbol GetAnnotatedType(this IPropertySymbol symbol) => new AnnotatedTypeSymbol(symbol.Type, symbol.NullableAnnotation);
 
         /// <summary>
-        /// Gets the annotated type of an ILocalSymbol.
+        /// Gets the annotated type of an IFieldSymbol.
         /// This has not yet been exposed on the public API.
         /// </summary>
         public static AnnotatedTypeSymbol GetAnnotatedType(this IFieldSymbol symbol) => new AnnotatedTypeSymbol(symbol.Type, symbol.NullableAnnotation);
@@ -504,11 +502,20 @@ namespace Semmle.Extraction.CSharp
         public static AnnotatedTypeSymbol GetAnnotatedReturnType(this IMethodSymbol symbol) => new AnnotatedTypeSymbol(symbol.ReturnType, symbol.ReturnNullableAnnotation);
 
         /// <summary>
-        /// Holds if the annotation should be extracted.
-        /// The "Disabled" and "NotApplicable" annotations can be inferred so
-        /// do not need to be stored in the database.
+        /// Gets the type annotation for a NullableAnnotation.
         /// </summary>
-        public static bool NeedsExtraction(this NullableAnnotation info) => info == NullableAnnotation.Annotated || info == NullableAnnotation.NotAnnotated;
+        public static Kinds.TypeAnnotation GetTypeAnnotation(this NullableAnnotation na)
+        {
+            switch(na)
+            {
+                case NullableAnnotation.Annotated:
+                    return Kinds.TypeAnnotation.Annotated;
+                case NullableAnnotation.NotAnnotated:
+                    return Kinds.TypeAnnotation.NotAnnotated;
+                default:
+                    return Kinds.TypeAnnotation.None;
+            }
+        }
 
         /// <summary>
         /// Gets the annotated element type of an IArrayTypeSymbol.

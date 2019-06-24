@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 }
             }
 
-            TypeMention.Create(cx, Syntax.Type, this, Type.Type);
+            TypeMention.Create(cx, Syntax.Type, this, Type);
         }
 
         static SyntaxToken? GetDynamicName(CSharpSyntaxNode name)

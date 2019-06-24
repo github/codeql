@@ -192,7 +192,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static Tuple specific_type_parameter_constraints(TypeParameterConstraints constraints, Type baseType) => new Tuple("specific_type_parameter_constraints", constraints, baseType);
 
-        internal static Tuple specific_type_parameter_annotation(TypeParameterConstraints constraints, Type baseType, Microsoft.CodeAnalysis.NullableAnnotation annotation) => new Tuple("specific_type_parameter_annotation", constraints, baseType, (int)annotation);
+        internal static Tuple specific_type_parameter_annotation(TypeParameterConstraints constraints, Type baseType, TypeAnnotation annotation) => new Tuple("specific_type_parameter_annotation", constraints, baseType, (int)annotation);
 
         internal static Tuple successors(IEntity from, IEntity to) => new Tuple("successors", from, to);
 

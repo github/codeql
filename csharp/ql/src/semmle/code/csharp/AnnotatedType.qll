@@ -147,21 +147,17 @@ private int getBitMask(int bit) {
 }
 
 private int getElementTypeFlags(@has_type_annotation element) {
-  result = sum(int b | type_annotation(element, b) | getBitMask(b))
+  result = sum(int b | type_annotation(element, b) | b)
 }
 
 private int getTypeArgumentFlags(ConstructedGeneric generic, int argument) {
   exists(generic.getTypeArgument(argument)) and
-  result = sum(int b | type_argument_annotation(generic, argument, b) | getBitMask(b))
+  result = sum(int b | type_argument_annotation(generic, argument, b) | b)
 }
 
 private int getTypeParameterFlags(TypeParameterConstraints constraints, Type type) {
   specific_type_parameter_annotation(constraints, getTypeRef(type), _) and
-  result = sum(int b |
-      specific_type_parameter_annotation(constraints, getTypeRef(type), b)
-    |
-      getBitMask(b)
-    )
+  result = sum(int b | specific_type_parameter_annotation(constraints, getTypeRef(type), b) | b)
 }
 
 private newtype TAnnotatedType =

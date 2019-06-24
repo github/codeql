@@ -30,7 +30,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     var ats = (ArrayTypeSyntax)Syntax;
                     var at = (ArrayType)Type;
                     Emit(Loc ?? Syntax.GetLocation(), Parent, Type);
-                    Create(cx, ats.ElementType, this, at.ElementType.Type);
+                    Create(cx, ats.ElementType, this, at.ElementType);
                     return;
                 case SyntaxKind.NullableType:
                     var nts = (NullableTypeSyntax)Syntax;
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     var tts = (TupleTypeSyntax)Syntax;
                     var tt = (TupleType)Type;
                     Emit(Loc ?? Syntax.GetLocation(), Parent, Type);
-                    tts.Elements.Zip(tt.TupleElements, (s, t) => Create(cx, s.Type, this, t.Type.Type)).Enumerate();
+                    tts.Elements.Zip(tt.TupleElements, (s, t) => Create(cx, s.Type, this, t.Type)).Enumerate();
                     return;
                 case SyntaxKind.PointerType:
                     var pts = (PointerTypeSyntax)Syntax;
@@ -93,6 +93,9 @@ namespace Semmle.Extraction.CSharp.Entities
             cx.Try(syntax, null, () => ret.Populate());
             return ret;
         }
+
+        public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, AnnotatedType type, Microsoft.CodeAnalysis.Location loc = null) =>
+            Create(cx, syntax, parent, type.Type, loc);
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;
     }

@@ -13,14 +13,14 @@ namespace Semmle.Extraction.CSharp.Entities
     /// </summary>
     public struct AnnotatedType
     {
-        public AnnotatedType(Type t, NullableAnnotation a)
+        public AnnotatedType(Type t, Kinds.TypeAnnotation a)
         {
             Type = t;
             Annotation = a;
         }
 
         public Type Type;
-        public NullableAnnotation Annotation;
+        public Kinds.TypeAnnotation Annotation;
     }
 
     public abstract class Type : CachedSymbol<ITypeSymbol>
@@ -291,7 +291,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public static AnnotatedType Create(Context cx, AnnotatedTypeSymbol type) =>
-            new AnnotatedType(Create(cx, type.Symbol), type.Nullability);
+            new AnnotatedType(Create(cx, type.Symbol), type.Nullability.GetTypeAnnotation());
 
         public virtual int Dimension => 0;
 

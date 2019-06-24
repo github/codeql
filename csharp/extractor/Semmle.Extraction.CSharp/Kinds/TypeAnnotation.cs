@@ -1,13 +1,15 @@
-﻿namespace Semmle.Extraction.Kinds
+﻿using System;
+
+namespace Semmle.Extraction.Kinds
 {
-    enum TypeAnnotation
+    [Flags]
+    public enum TypeAnnotation
     {
-        NotApplicable,
-        Disabled,
-        NotAnnotated,
-        Annotated,
-        ReadonlyRef,
-        Ref,
-        Out
+        None = 0,
+        NotAnnotated = 4,
+        Annotated = 8,
+        ReadonlyRef = 16,
+        Ref = 32,
+        Out = 64
     }
 }

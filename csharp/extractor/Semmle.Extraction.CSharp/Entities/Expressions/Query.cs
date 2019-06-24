@@ -71,7 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 TypeSyntax declTypeSyntax = null;
                 if (getElement)
                 {
-                    if(node is FromClauseSyntax from && from.Type != null)
+                    if (node is FromClauseSyntax from && from.Type != null)
                     {
                         declTypeSyntax = from.Type;
                         declType = Type.Create(cx, cx.GetType(from.Type));

@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             if (typeSymbol.Name != "_")
                 Expressions.VariableDeclaration.Create(cx, typeSymbol, type, Stmt.Type, location, location, Stmt.Type.IsVar, this, 0);
             else
-                TypeMention.Create(cx, Stmt.Type, this, type.Type);
+                TypeMention.Create(cx, Stmt.Type, this, type);
 
             Statement.Create(cx, Stmt.Statement, this, 2);
         }

@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 LocalVariable.Create(cx, symbol, ret, isVar, declLocation);
                 if (optionalSyntax != null)
-                    TypeMention.Create(cx, optionalSyntax, parent, type.Type);
+                    TypeMention.Create(cx, optionalSyntax, parent, type);
             });
             return ret;
         }
@@ -135,7 +135,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var declSymbol = cx.Model(d).GetDeclaredSymbol(d);
                 var location = cx.Create(id.GetLocation());
                 LocalVariable.Create(cx, declSymbol, ret, isVar, location);
-                TypeMention.Create(cx, d.Type, ret, type.Type);
+                TypeMention.Create(cx, d.Type, ret, type);
             });
             return ret;
         }
@@ -161,7 +161,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 var decl = d.Parent as VariableDeclarationSyntax;
                 if (decl != null)
-                    TypeMention.Create(cx, decl.Type, ret, type.Type);
+                    TypeMention.Create(cx, decl.Type, ret, type);
             });
             return ret;
         }

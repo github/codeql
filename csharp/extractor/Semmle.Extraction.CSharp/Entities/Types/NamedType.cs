@@ -56,7 +56,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
                     for (int i = 0; i < symbol.TypeArguments.Length; ++i)
                     {
-                        Context.Emit(Tuples.type_argument_annotation(this, i, (Kinds.TypeAnnotation)symbol.TypeArgumentsNullableAnnotations[i]));
+                        var ta = symbol.TypeArgumentsNullableAnnotations[i].GetTypeAnnotation();
+                        if (ta != Kinds.TypeAnnotation.None)
+                            Context.Emit(Tuples.type_argument_annotation(this, i, ta));
                         Context.Emit(Tuples.type_arguments(TypeArguments[i].TypeRef, i, this));
                     }
                 }

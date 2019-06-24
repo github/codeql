@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return obj != null && obj.GetType() == typeof(NullType);
         }
 
-        public static AnnotatedType Create(Context cx) => new AnnotatedType(NullTypeFactory.Instance.CreateEntity(cx, null), NullableAnnotation.NotApplicable);
+        public static AnnotatedType Create(Context cx) => new AnnotatedType(NullTypeFactory.Instance.CreateEntity(cx, null), Kinds.TypeAnnotation.None);
 
         class NullTypeFactory : ICachedEntityFactory<ITypeSymbol, NullType>
         {

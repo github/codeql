@@ -29,8 +29,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected void ExtractNullability(NullableAnnotation annotation)
         {
-            if (annotation.NeedsExtraction())
-                Context.Emit(Tuples.type_annotation(this, (Kinds.TypeAnnotation)annotation));
+            var ta = annotation.GetTypeAnnotation();
+            if (ta != Kinds.TypeAnnotation.None)
+                Context.Emit(Tuples.type_annotation(this, ta));
         }
 
         protected void ExtractRefKind(RefKind kind)

@@ -82,7 +82,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 foreach (var syntax in symbol.DeclaringSyntaxReferences.
                     Select(d => d.GetSyntax()).OfType<VariableDeclaratorSyntax>().
                     Select(d => d.Parent).OfType<VariableDeclarationSyntax>())
-                    TypeMention.Create(Context, syntax.Type, this, Type.Type);
+                    TypeMention.Create(Context, syntax.Type, this, Type);
         }
 
         readonly Lazy<AnnotatedType> type;

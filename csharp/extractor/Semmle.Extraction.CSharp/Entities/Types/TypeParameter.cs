@@ -50,8 +50,8 @@ namespace Semmle.Extraction.CSharp.Entities
                     baseType = abase.Symbol;
                 var t = Create(Context, abase.Symbol);
                 Context.Emit(Tuples.specific_type_parameter_constraints(constraints, t.TypeRef));
-                if (abase.Nullability.NeedsExtraction())
-                    Context.Emit(Tuples.specific_type_parameter_annotation(constraints, t.TypeRef, abase.Nullability));
+                if (abase.Nullability.GetTypeAnnotation() != Kinds.TypeAnnotation.None)
+                    Context.Emit(Tuples.specific_type_parameter_annotation(constraints, t.TypeRef, abase.Nullability.GetTypeAnnotation()));
             }
 
             Context.Emit(Tuples.types(this, Semmle.Extraction.Kinds.TypeKind.TYPE_PARAMETER, symbol.Name));
