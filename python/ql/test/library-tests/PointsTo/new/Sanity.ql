@@ -109,7 +109,17 @@ predicate ssa_sanity(string clsname, string problem, string what) {
     )
 }
 
+predicate undefined_sanity(string clsname, string problem, string what) {
+    /* Variables may be undefined, but values cannot be */
+    exists(ControlFlowNode f |
+        PointsToInternal::pointsTo(f, _, ObjectInternal::undefined(), _) and
+        clsname = f.getAQlClass() and not clsname = "AnyNode" and
+        problem = " points-to an undefined variable" and
+        what = f.toString()
+    )
+}
+
 from string clsname, string problem, string what
-where ssa_sanity(clsname, problem, what)
+where ssa_sanity(clsname, problem, what) or undefined_sanity(clsname, problem, what)
 select clsname, what, problem
 

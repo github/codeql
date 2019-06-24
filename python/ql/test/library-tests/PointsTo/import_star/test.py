@@ -1,0 +1,2 @@
+from nested import *
+nested
