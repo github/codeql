@@ -16,5 +16,5 @@ int __attribute__((__weak__)) myWeakNothingFunction()
 
 void testWeak() {
 	myNothingFunction(); // BAD
-	myWeakNothingFunction(); // GOOD [FALSE POSITIVE]
+	myWeakNothingFunction(); // GOOD
 }

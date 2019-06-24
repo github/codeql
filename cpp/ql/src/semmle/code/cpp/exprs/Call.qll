@@ -275,12 +275,14 @@ class FunctionCall extends Call, @funbindexpr {
   override predicate mayBeImpure() {
     this.getChild(_).mayBeImpure() or
     this.getTarget().mayHaveSideEffects() or
-    isVirtual()
+    isVirtual() or
+    getTarget().getAnAttribute().getName() = "weak"
   }
   override predicate mayBeGloballyImpure() {
     this.getChild(_).mayBeGloballyImpure() or
     this.getTarget().mayHaveSideEffects() or
-    isVirtual()
+    isVirtual() or
+    getTarget().getAnAttribute().getName() = "weak"
   }
 }
 

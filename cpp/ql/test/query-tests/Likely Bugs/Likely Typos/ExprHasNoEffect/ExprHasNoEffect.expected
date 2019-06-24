@@ -34,4 +34,3 @@
 | volatile.c:16:5:16:7 | * ... | This expression has no effect. | volatile.c:16:5:16:7 | * ... |  |
 | volatile.c:20:5:20:13 | * ... | This expression has no effect. | volatile.c:20:5:20:13 | * ... |  |
 | weak.c:18:2:18:18 | call to myNothingFunction | This expression has no effect (because $@ has no external side effects). | weak.c:2:5:2:21 | myNothingFunction | myNothingFunction |
-| weak.c:19:2:19:22 | call to myWeakNothingFunction | This expression has no effect (because $@ has no external side effects). | weak.c:9:31:9:51 | myWeakNothingFunction | myWeakNothingFunction |
