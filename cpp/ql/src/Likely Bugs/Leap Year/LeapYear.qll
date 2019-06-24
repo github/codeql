@@ -91,6 +91,9 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
             mulBy100.getAChild().getValue().toInt() = 100 )))
         or exists( BinaryArithmeticOperation bao |
           bao = op.getAnOperand()
+          // we're specifically interested in calculations that update the existing
+          // value (like `x = x + 1`), so look for a child `YearFieldAccess`.
+          and bao.getAChild*() instanceof YearFieldAccess
           and not ( bao.getAChild().getValue().toInt() = 1900
             or bao.getAChild().getValue().toInt() = 2000
             or bao.getAChild().getValue().toInt() = 1980 
