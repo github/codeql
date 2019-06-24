@@ -196,11 +196,11 @@ locations_default(#20066,#10000,26,5,26,10)
 hasLocation(#20065,#20066)
 #20067=*
 yaml_scalars(#20067,0,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxx/xxxxxx/xxxxxxxxxxxxxxxxxxx/xxxxxxxxxxx/xxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxx/xxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxxxxxxxxx+xxxxxxxxxxxxxxx=")
-yaml(#20067,0,#20064,-1,"tag:yaml.org,2002:str","xxxxxxx ... xxxxxxx")
+yaml(#20067,0,#20064,-1,"tag:yaml.org,2002:str","xxxxxxx ... xxxxxx=")
 #20068=@"loc,{#10000},26,13,26,696"
 locations_default(#20068,#10000,26,13,26,696)
 hasLocation(#20067,#20068)
-yaml(#20064,1,#20061,-1,"tag:yaml.org,2002:map","xxxxxx: ... xxxxxxx")
+yaml(#20064,1,#20061,-1,"tag:yaml.org,2002:map","xxxxxx: ... xxxxxx=")
 #20069=@"loc,{#10000},26,5,27,0"
 locations_default(#20069,#10000,26,5,27,0)
 hasLocation(#20064,#20069)
