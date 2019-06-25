@@ -59,8 +59,7 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
       (
         op instanceof AssignArithmeticOperation or
         exists(BinaryArithmeticOperation bao | bao = op.getAnOperand()) or
-        op instanceof PostfixCrementOperation or
-        op instanceof PrefixCrementOperation
+        op instanceof CrementOperation
       )
     )
   }
@@ -117,9 +116,7 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
           )
         )
         or
-        op instanceof PostfixCrementOperation
-        or
-        op instanceof PrefixCrementOperation
+        op instanceof CrementOperation
       )
     )
   }
