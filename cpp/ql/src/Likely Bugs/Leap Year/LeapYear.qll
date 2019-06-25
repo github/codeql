@@ -35,7 +35,7 @@ class CheckForLeapYearOperation extends Operation {
   CheckForLeapYearOperation() {
     exists(BinaryArithmeticOperation bo | bo = this |
       bo.getAnOperand().getValue().toInt() = 4 and
-      bo.getOperator().toString() = "%" and
+      bo.getOperator() = "%" and
       additionalLogicalCheck(this.getEnclosingElement(), "%", 100) and
       additionalLogicalCheck(this.getEnclosingElement(), "%", 400)
     )
@@ -144,7 +144,7 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
     exists(BinaryArithmeticOperation bo |
       bo.getAnOperand() = this and
       bo.getAnOperand().getValue().toInt() = 4 and
-      bo.getOperator().toString() = "%"
+      bo.getOperator() = "%"
     )
   }
 
@@ -168,14 +168,14 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
  * `YearFieldAccess` for the `SYSTEMTIME` struct.
  */
 class StructSystemTimeLeapYearFieldAccess extends LeapYearFieldAccess {
-  StructSystemTimeLeapYearFieldAccess() { this.toString() = "wYear" }
+  StructSystemTimeLeapYearFieldAccess() { this.getTarget().getName() = "wYear" }
 }
 
 /**
  * `YearFieldAccess` for `struct tm`.
  */
 class StructTmLeapYearFieldAccess extends LeapYearFieldAccess {
-  StructTmLeapYearFieldAccess() { this.toString() = "tm_year" }
+  StructTmLeapYearFieldAccess() { this.getTarget().getName() = "tm_year" }
 
   override predicate isUsedInCorrectLeapYearCheck() {
     this.isUsedInMod4Operation() and

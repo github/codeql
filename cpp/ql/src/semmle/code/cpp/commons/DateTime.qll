@@ -9,8 +9,8 @@ import cpp
  */
 class FileTimeStruct extends Type {
   FileTimeStruct() {
-    this.toString() = "_FILETIME"
-    or this.toString().matches("_FILETIME %")
+    this.getName() = "_FILETIME"
+    or this.getName().matches("_FILETIME %")
   }
 }
 
@@ -20,12 +20,12 @@ class FileTimeStruct extends Type {
  */
 class DateDataStruct extends Type {
   DateDataStruct() {
-    this.toString() = "_SYSTEMTIME"
-    or this.toString() = "SYSTEMTIME"
-    or this.toString() = "tm"
-    or this.toString().matches("_SYSTEMTIME %")
-    or this.toString().matches("SYSTEMTIME %")
-    or this.toString().matches("tm %")
+    this.getName() = "_SYSTEMTIME"
+    or this.getName() = "SYSTEMTIME"
+    or this.getName() = "tm"
+    or this.getName().matches("_SYSTEMTIME %")
+    or this.getName().matches("SYSTEMTIME %")
+    or this.getName().matches("tm %")
   }
 }
 
@@ -61,7 +61,7 @@ abstract class YearFieldAccess extends StructFieldAccess {}
  */
 class SystemTimeDayFieldAccess extends DayFieldAccess {
   SystemTimeDayFieldAccess () {
-    this.toString() = "wDay"
+    this.getTarget().getName() = "wDay"
   }
 }
 
@@ -70,7 +70,7 @@ class SystemTimeDayFieldAccess extends DayFieldAccess {
  */
 class SystemTimeMonthFieldAccess extends MonthFieldAccess {
   SystemTimeMonthFieldAccess () {
-    this.toString() = "wMonth"
+    this.getTarget().getName() = "wMonth"
   }
 }
 
@@ -79,7 +79,7 @@ class SystemTimeMonthFieldAccess extends MonthFieldAccess {
  */
 class StructSystemTimeYearFieldAccess extends YearFieldAccess {
   StructSystemTimeYearFieldAccess() {
-    this.toString() = "wYear"
+    this.getTarget().getName() = "wYear"
   }
 }
 
@@ -88,7 +88,7 @@ class StructSystemTimeYearFieldAccess extends YearFieldAccess {
  */
 class StructTmDayFieldAccess extends DayFieldAccess {
   StructTmDayFieldAccess() {
-    this.toString() = "tm_mday"
+    this.getTarget().getName() = "tm_mday"
   }
 }
 
@@ -97,7 +97,7 @@ class StructTmDayFieldAccess extends DayFieldAccess {
  */
 class StructTmMonthFieldAccess extends MonthFieldAccess {
   StructTmMonthFieldAccess() {
-    this.toString() = "tm_mon"
+    this.getTarget().getName() = "tm_mon"
   }
 }
 
@@ -106,6 +106,6 @@ class StructTmMonthFieldAccess extends MonthFieldAccess {
  */
 class StructTmYearFieldAccess extends YearFieldAccess {
   StructTmYearFieldAccess() {
-    this.toString() = "tm_year"
+    this.getTarget().getName() = "tm_year"
   }
 }
