@@ -47,7 +47,7 @@ class MyClass
     delegate MyClass? Del(MyClass x);
     event Del? P;
         
-    // Nullable method type arguments
+    // Nullable method type parameters
     object Q<T>(T t) where T: MyClass? => null;
 
     // Nullable type parameters

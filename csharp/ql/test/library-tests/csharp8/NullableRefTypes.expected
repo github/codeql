@@ -56,12 +56,12 @@ assignableTypes
 | NullableRefTypes.cs:19:13:19:16 | Item | NullableRefTypes.cs:6:7:6:13 | MyClass! |
 | NullableRefTypes.cs:19:27:19:27 | i | NullableRefTypes.cs:6:7:6:13 | MyClass? |
 | NullableRefTypes.cs:19:27:19:27 | i | NullableRefTypes.cs:6:7:6:13 | MyClass? |
-| NullableRefTypes.cs:22:16:22:17 | G1 | NullableRefTypes.cs:6:7:6:13 | MyClass[]! |
-| NullableRefTypes.cs:23:17:23:18 | G2 | NullableRefTypes.cs:6:7:6:13 | MyClass[]? |
-| NullableRefTypes.cs:24:16:24:17 | G3 | NullableRefTypes.cs:6:7:6:13 | MyClass[]! |
-| NullableRefTypes.cs:25:18:25:18 | H | NullableRefTypes.cs:6:7:6:13 | MyClass[][]! |
-| NullableRefTypes.cs:26:38:26:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass[][]! |
-| NullableRefTypes.cs:27:38:27:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass[][]! |
+| NullableRefTypes.cs:22:16:22:17 | G1 | NullableRefTypes.cs:6:7:6:13 | MyClass?[]! |
+| NullableRefTypes.cs:23:17:23:18 | G2 | NullableRefTypes.cs:6:7:6:13 | MyClass?[]? |
+| NullableRefTypes.cs:24:16:24:17 | G3 | NullableRefTypes.cs:6:7:6:13 | MyClass?[]! |
+| NullableRefTypes.cs:25:18:25:18 | H | NullableRefTypes.cs:6:7:6:13 | MyClass?[]![]! |
+| NullableRefTypes.cs:26:38:26:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass![]?[]! |
+| NullableRefTypes.cs:27:38:27:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass?[]![]! |
 | NullableRefTypes.cs:32:20:32:20 | a | NullableRefTypes.cs:6:7:6:13 | MyClass! |
 | NullableRefTypes.cs:32:31:32:31 | b | NullableRefTypes.cs:6:7:6:13 | MyClass? |
 | NullableRefTypes.cs:37:17:37:17 | a | NullableRefTypes.cs:6:7:6:13 | MyClass! |
@@ -76,7 +76,7 @@ assignableTypes
 | NullableRefTypes.cs:48:16:48:16 | value | NullableRefTypes.cs:47:23:47:25 | Del? |
 | NullableRefTypes.cs:51:19:51:19 | t | NullableRefTypes.cs:6:7:6:13 | MyClass |
 | NullableRefTypes.cs:51:19:51:19 | t | NullableRefTypes.cs:51:14:51:14 | T! |
-| NullableRefTypes.cs:59:54:59:59 | items2 | NullableRefTypes.cs:54:11:54:33 | Generic<MyClass,MyClass,IDisposable,MyClass>! |
+| NullableRefTypes.cs:59:54:59:59 | items2 | NullableRefTypes.cs:54:11:54:33 | Generic<MyClass?, MyClass!, IDisposable!, MyClass!>! |
 | NullableRefTypes.cs:61:25:61:25 | x | NullableRefTypes.cs:6:7:6:13 | MyClass |
 | NullableRefTypes.cs:61:25:61:25 | x | NullableRefTypes.cs:61:20:61:20 | T! |
 | NullableRefTypes.cs:67:18:67:18 | x | NullableRefTypes.cs:6:7:6:13 | MyClass? |
@@ -98,9 +98,9 @@ arrayElements
 | NullableRefTypes.cs:22:16:22:17 | G1 | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass? |
 | NullableRefTypes.cs:23:17:23:18 | G2 | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass? |
 | NullableRefTypes.cs:24:16:24:17 | G3 | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass? |
-| NullableRefTypes.cs:25:18:25:18 | H | NullableRefTypes.cs:6:7:6:13 | MyClass[][] | NullableRefTypes.cs:6:7:6:13 | MyClass[]! |
-| NullableRefTypes.cs:26:38:26:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass[][] | NullableRefTypes.cs:6:7:6:13 | MyClass[]? |
-| NullableRefTypes.cs:27:38:27:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass[][] | NullableRefTypes.cs:6:7:6:13 | MyClass[]! |
+| NullableRefTypes.cs:25:18:25:18 | H | NullableRefTypes.cs:6:7:6:13 | MyClass[][] | NullableRefTypes.cs:6:7:6:13 | MyClass?[]! |
+| NullableRefTypes.cs:26:38:26:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass[][] | NullableRefTypes.cs:6:7:6:13 | MyClass![]? |
+| NullableRefTypes.cs:27:38:27:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass[][] | NullableRefTypes.cs:6:7:6:13 | MyClass?[]! |
 returnTypes
 | NullableRefTypes.cs:6:7:6:13 | MyClass | Void |
 | NullableRefTypes.cs:13:19:13:22 | get_C | MyClass? |

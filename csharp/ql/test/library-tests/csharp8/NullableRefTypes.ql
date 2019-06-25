@@ -36,7 +36,7 @@ query predicate arrayElements(Variable v, ArrayType array, AnnotatedType element
 
 query predicate returnTypes(Callable c, string t) {
   c.getFile().getBaseName() = "NullableRefTypes.cs" and
-  t = c.getAnnotatedReturnType().toStringWithTypes()
+  t = c.getAnnotatedReturnType().toString()
 }
 
 query predicate typeArguments(ConstructedGeneric generic, int arg, string argument) {
@@ -45,7 +45,7 @@ query predicate typeArguments(ConstructedGeneric generic, int arg, string argume
     or
     generic = any(MethodCall mc).getTarget()
   ) and
-  argument = generic.getAnnotatedTypeArgument(arg).toStringWithTypes()
+  argument = generic.getAnnotatedTypeArgument(arg).toString()
 }
 
 query predicate nullableTypeParameters(TypeParameter p) {

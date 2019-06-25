@@ -9,7 +9,7 @@
 import csharp
 
 private module Annotations {
-  private newtype TAnnotation =
+  newtype TAnnotation =
     TNotNullableRefType() or
     TNullableRefType() or
     TReadonlyRefType() or
@@ -182,16 +182,10 @@ class AnnotatedType extends TAnnotatedType {
 
   /** Gets a textual representation of this annotated type. */
   string toString() {
-    result = annotations.getTypePrefix() + underlyingType.toString() + annotations.getTypeSuffix()
+    result = annotations.getTypePrefix() + underlyingType.toStringWithTypes() + annotations.getTypeSuffix()
   }
 
-  /** Gets a textual representation of this annotated type, with full type information. */
-  string toStringWithTypes() {
-    result = annotations.getTypePrefix() + underlyingType.toStringWithTypes() +
-        annotations.getTypeSuffix()
-  }
-
-  /** Gets the location of this annotated type, if any. */
+  /** Gets the location of this annotated type. */
   Location getLocation() { result = underlyingType.getLocation() }
 
   /**
@@ -201,26 +195,26 @@ class AnnotatedType extends TAnnotatedType {
   Type getUnderlyingType() { result = underlyingType }
 
   /** Gets the type annotation set of this annotated type. */
-  Annotations::TypeAnnotations getAnnotations() { result = annotations }
+  private Annotations::TypeAnnotations getAnnotations() { result = annotations }
 
   /** Gets a type annotation of this annotated type. */
-  Annotations::TypeAnnotation getAnAnnotation() { result = getAnnotations().getAnAnnotation() }
+  private Annotations::TypeAnnotation getAnAnnotation() { result = getAnnotations().getAnAnnotation() }
 
-  /** Holds if the type is a non-nullable reference. */
+  /** Holds if the type is a non-nullable reference, for example, `string` in a nullable-enabled context. */
   predicate isNonNullableRefType() {
     this.getAnAnnotation() instanceof Annotations::NonNullableRefType
   }
 
-  /** Holds if the type is a nullable reference. */
+  /** Holds if the type is a nullable reference, for example `string?`. */
   predicate isNullableRefType() { this.getAnAnnotation() instanceof Annotations::NullableRefType }
 
-  /** Holds if the type is a `ref`. */
+  /** Holds if the type is a `ref`, for example the return type of `ref int F()`. */
   predicate isRef() { this.getAnAnnotation() instanceof Annotations::RefTypeAnnotation }
 
-  /** Holds if the type is a `readonly ref`. */
+  /** Holds if the type is a `ref readonly`, for example the return type of `ref readonly int F()`. */
   predicate isReadonlyRef() { this.getAnAnnotation() instanceof Annotations::ReadonlyRefType }
 
-  /** Holds if the type is an `out`. */
+  /** Holds if the type is an `out`, for example parameter p in `void F(out int p)`. */
   predicate isOut() { this.getAnAnnotation() instanceof Annotations::OutType }
 
   /** Holds if this annotated type applies to element `e`. */

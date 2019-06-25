@@ -71,9 +71,7 @@ class ConstructedGeneric extends DotNet::ConstructedGeneric, Generic {
   override Type getATypeArgument() { result = getTypeArgument(_) }
 
   /** Gets the annotated type of type argument `i`. */
-  final AnnotatedType getAnnotatedTypeArgument(int i) {
-    result.appliesToTypeArgument(this, i)
-  }
+  final AnnotatedType getAnnotatedTypeArgument(int i) { result.appliesToTypeArgument(this, i) }
 }
 
 /**
@@ -134,8 +132,8 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
   override predicate isRefType() {
     exists(TypeParameterConstraints tpc | tpc = getConstraints() |
       tpc.hasRefTypeConstraint() or
-      exists(tpc.getClassConstraint()) or
-      tpc.getATypeParameterConstraint().isRefType()
+      tpc.getATypeConstraint() instanceof Class or
+      tpc.getATypeConstraint().(TypeParameter).isRefType()
       // NB: an interface constraint is not a guarantee, as structs can implement interfaces
     )
   }
@@ -143,7 +141,7 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
   override predicate isValueType() {
     exists(TypeParameterConstraints tpc | tpc = getConstraints() |
       tpc.hasValueTypeConstraint() or
-      tpc.getATypeParameterConstraint().isValueType()
+      tpc.getATypeConstraint().(TypeParameter).isValueType()
     )
   }
 
@@ -201,23 +199,29 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
  * ```
  */
 class TypeParameterConstraints extends Element, @type_parameter_constraints {
-  /** Gets a specific interface constraint, if any. */
-  Interface getAnInterfaceConstraint() {
-    specific_type_parameter_constraints(this, getTypeRef(result))
-  }
+  /**
+   * DEPRECATED: Use `getATypeConstraint()` instead.
+   * Gets a specific interface constraint, if any.
+   */
+  deprecated Interface getAnInterfaceConstraint() { result = getATypeConstraint() }
 
-  /** Gets a specific type parameter constraint, if any. */
-  TypeParameter getATypeParameterConstraint() {
-    specific_type_parameter_constraints(this, getTypeRef(result))
-  }
+  /**
+   * DEPRECATED: Use `getATypeConstraint()` instead.
+   * Gets a specific type parameter constraint, if any.
+   */
+  deprecated TypeParameter getATypeParameterConstraint() { result = getATypeConstraint() }
 
-  /** Gets the specific class constraint, if any. */
-  Class getClassConstraint() { specific_type_parameter_constraints(this, getTypeRef(result)) }
+  /**
+   * DEPRECATED: Use `getATypeConstraint()` instead.
+   * Gets the specific class constraint, if any.
+   */
+  deprecated Class getClassConstraint() { result = getATypeConstraint() }
+
+  /** Gets a type constraint, if any. */
+  Type getATypeConstraint() { specific_type_parameter_constraints(this, getTypeRef(result)) }
 
   /** Gets an annotated specific type constraint, if any. */
-  AnnotatedType getAnAnnotatedTypeConstraint() {
-    result.appliesToTypeConstraint(this)
-  }
+  AnnotatedType getAnAnnotatedTypeConstraint() { result.appliesToTypeConstraint(this) }
 
   override Location getALocation() { type_parameter_constraints_location(this, result) }
 
@@ -366,8 +370,18 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
 
+  language[monotonicAggregates]
+  string annotatedTypeArgumentsToString() {
+    result = concat(int i |
+        exists(this.getAnnotatedTypeArgument(i))
+      |
+        this.getAnnotatedTypeArgument(i).toString(), ", " order by i
+      )
+  }
+
   override string toStringWithTypes() {
-    result = getUnboundGeneric().getNameWithoutBrackets() + "<" + this.typeArgumentsToString() + ">"
+    result = getUnboundGeneric().getNameWithoutBrackets() + "<" +
+        this.annotatedTypeArgumentsToString() + ">"
   }
 
   final override Type getChild(int n) { result = getTypeArgument(n) }

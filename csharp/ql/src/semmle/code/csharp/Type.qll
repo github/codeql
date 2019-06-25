@@ -808,22 +808,13 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     if i = getRank() - 1 then result = "" else result = "," + getRankString(i + 1)
   }
 
-  private string getDimensionString(AnnotatedType elementType) {
-    exists(AnnotatedType et, string res |
-      et = getAnnotatedElementType() and
-      res = "[" + getRankString(0) + "]" and
-      if et.getUnderlyingType() instanceof ArrayType
-      then result = res + et.getUnderlyingType().(ArrayType).getDimensionString(elementType)
-      else (
-        result = res and elementType = et
-      )
-    )
+  private string getDimensionString()
+  {
+      result = "[" + getRankString(0) + "]"
   }
 
   override string toStringWithTypes() {
-    exists(AnnotatedType elementType |
-      result = elementType.toStringWithTypes() + this.getDimensionString(elementType)
-    )
+    result = this.getAnnotatedElementType().toString() + this.getDimensionString()
   }
 
   override Type getChild(int n) { result = getElementType() and n = 0 }
