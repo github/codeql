@@ -17,8 +17,8 @@ import LeapYear
  * NOTE:
  * To change this class to work for general purpose date transformations that do not check the return value,
  * make the following changes:
- *  -> extends FieldAccess (line 27)
- *  -> this.isModified (line 33)
+ *  - change `extends LeapYearFieldAccess` to `extends FieldAccess`.
+ *  - change `this.isModifiedByArithmeticOperation()` to `this.isModified()`.
  * Expect a lower precision for a general purpose version.
  */
 class DateStructModifiedFieldAccess extends LeapYearFieldAccess {
