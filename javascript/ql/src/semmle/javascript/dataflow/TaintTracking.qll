@@ -268,7 +268,8 @@ module TaintTracking {
         (name = "map" or name = "forEach") and
         (i = 0 or i = 2) and
         call.getArgument(0).analyze().getAValue().(AbstractFunction).getFunction() = f and
-        pred.(DataFlow::SourceNode).getAMethodCall(name) = call and
+        call.(DataFlow::MethodCallNode).getMethodName() = name and
+        pred = call.getReceiver() and
         succ = DataFlow::parameterNode(f.getParameter(i))
       )
       or
