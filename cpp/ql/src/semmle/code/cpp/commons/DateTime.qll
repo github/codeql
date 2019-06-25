@@ -32,8 +32,8 @@ class DateDataStruct extends Type {
 /**
  * A `FieldAccess` that would represent an access to a field on a `struct`.
  */
-abstract class StructFieldAccess extends FieldAccess {
-    StructFieldAccess () {
+private abstract class DateStructFieldAccess extends FieldAccess {
+    DateStructFieldAccess () {
       exists(Field f, StructLikeClass struct |
         f.getAnAccess() = this
         and struct.getAField() = f
@@ -44,17 +44,17 @@ abstract class StructFieldAccess extends FieldAccess {
 /**
  * A `FieldAccess` where access is to a day of the month field of the `struct`.
  */
-abstract class DayFieldAccess extends StructFieldAccess { }
+abstract class DayFieldAccess extends DateStructFieldAccess { }
 
 /**
  * A `FieldAccess` where access is to a month field of the `struct`.
  */
-abstract class MonthFieldAccess extends StructFieldAccess {}
+abstract class MonthFieldAccess extends DateStructFieldAccess {}
 
 /**
  * A `FieldAccess` where access is to a year field of the `struct`.
  */
-abstract class YearFieldAccess extends StructFieldAccess {}
+abstract class YearFieldAccess extends DateStructFieldAccess {}
 
 /**
  * A `DayFieldAccess` for the `SYSTEMTIME` struct.
