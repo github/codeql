@@ -12,7 +12,7 @@
 
 import python
 import Undefined
-
+import semmle.python.pointsto.PointsTo
 
 predicate uninitialized_local(NameNode use) {
     exists(FastLocalVariable local |
@@ -21,7 +21,7 @@ predicate uninitialized_local(NameNode use) {
     )
     and
     (
-        any(Uninitialized uninit).taints(use)
+        any(Uninitialized uninit).taints(use) and PointsToInternal::reachableBlock(use.getBasicBlock(), _)
         or
         not exists(EssaVariable var | var.getASourceUse() = use)
     )
