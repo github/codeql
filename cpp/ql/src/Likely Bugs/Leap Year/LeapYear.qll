@@ -238,7 +238,7 @@ class FiletimeYearArithmeticOperationCheckConfiguration extends DataFlow::Config
 
   override predicate isSink(DataFlow::Node sink) {
     exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr, Expr e | e = sink.asExpr() |
-      dds instanceof FileTimeStruct and
+      dds instanceof PackedTimeType and
       fa.getQualifier().getUnderlyingType() = dds and
       fa.isModified() and
       aexpr.getAChild() = fa and
@@ -269,7 +269,7 @@ class PossibleYearArithmeticOperationCheckConfiguration extends DataFlow::Config
       e = node1.asExpr() and
       aexpr = node2.asExpr()
     |
-      (dds instanceof FileTimeStruct or dds instanceof DateDataStruct) and
+      (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
       fa.getQualifier().getUnderlyingType() = dds and
       aexpr.getLValue() = fa and
       aexpr.getRValue().getAChild*() = e
@@ -278,7 +278,7 @@ class PossibleYearArithmeticOperationCheckConfiguration extends DataFlow::Config
 
   override predicate isSink(DataFlow::Node sink) {
     exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr | aexpr = sink.asExpr() |
-      (dds instanceof FileTimeStruct or dds instanceof DateDataStruct) and
+      (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
       fa.getQualifier().getUnderlyingType() = dds and
       fa.isModified() and
       aexpr.getLValue() = fa

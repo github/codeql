@@ -26,7 +26,7 @@ class DateStructModifiedFieldAccess extends LeapYearFieldAccess {
     exists(Field f, StructLikeClass struct |
       f.getAnAccess() = this and
       struct.getAField() = f and
-      struct.getUnderlyingType() instanceof DateDataStruct and
+      struct.getUnderlyingType() instanceof UnpackedTimeType and
       this.isModifiedByArithmeticOperation()
     )
   }
@@ -64,7 +64,7 @@ from FunctionCall fcall, TimeConversionFunction trf, Variable var
 where
   fcall = trf.getACallToThisFunction() and
   fcall instanceof ExprInVoidContext and
-  var.getUnderlyingType() instanceof DateDataStruct and
+  var.getUnderlyingType() instanceof UnpackedTimeType and
   (
     exists(AddressOfExpr aoe |
       aoe = fcall.getAnArgument() and

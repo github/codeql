@@ -7,8 +7,8 @@ import cpp
 /**
  * A type that is used to represent time in a 'packed' form, such as an integer.
  */
-class FileTimeStruct extends Type {
-  FileTimeStruct() {
+class PackedTimeType extends Type {
+  PackedTimeType() {
     this.getName() = "_FILETIME"
     or this.getName().matches("_FILETIME %")
   }
@@ -18,8 +18,8 @@ class FileTimeStruct extends Type {
  * A type that is used to represent times and dates in an 'unpacked' form, that is,
  * with separate fields for day, month, year etc.
  */
-class DateDataStruct extends Type {
-  DateDataStruct() {
+class UnpackedTimeType extends Type {
+  UnpackedTimeType() {
     this.getName() = "_SYSTEMTIME"
     or this.getName() = "SYSTEMTIME"
     or this.getName() = "tm"
