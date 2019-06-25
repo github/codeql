@@ -1,9 +1,12 @@
 /**
- * Provides a library for helping working with a set of known data structures representing dates in C++
+ * Provides a library for helping working with a set of known data structures representing dates in C++.
  */
 
 import cpp
 
+/**
+ * A type that is used to represent time in a 'packed' form, such as an integer.
+ */
 class FileTimeStruct extends Type {
   FileTimeStruct() {
     this.toString().matches("_FILETIME")
@@ -12,7 +15,8 @@ class FileTimeStruct extends Type {
 }
 
 /**
- * Type of known data structures that are used for date representation.
+ * A type that is used to represent times and dates in an 'unpacked' form, that is,
+ * with separate fields for day, month, year etc.
  */
 class DateDataStruct extends Type {
   DateDataStruct() {
@@ -26,7 +30,7 @@ class DateDataStruct extends Type {
 }
 
 /**
- * abstract class of type FieldAccess that would represent an access to a field on a struct
+ * A `FieldAccess` that would represent an access to a field on a `struct`.
  */
 abstract class StructFieldAccess extends FieldAccess {
     StructFieldAccess () {
@@ -38,25 +42,22 @@ abstract class StructFieldAccess extends FieldAccess {
 }
 
 /**
- * abstract class of type FieldAccess where access is to a day of the month field of the struct
- * This is to be derived from for a specific struct's day of the month field access
+ * A `FieldAccess` where access is to a day of the month field of the `struct`.
  */
 abstract class DayFieldAccess extends StructFieldAccess { }
 
 /**
- * abstract class of type FieldAccess where access is to a month field of the struct
- * This is to be derived from for a specific struct's month field access
+ * A `FieldAccess` where access is to a month field of the `struct`.
  */
 abstract class MonthFieldAccess extends StructFieldAccess {}
 
 /**
- * abstract class of type FieldAccess where access is to a year field of the struct
- * This is to be derived from for a specific struct's year field access
+ * A `FieldAccess` where access is to a year field of the `struct`.
  */
 abstract class YearFieldAccess extends StructFieldAccess {}
 
 /**
- * DayFieldAccess for SYSTEMTIME struct
+ * A `DayFieldAccess` for the `SYSTEMTIME` struct.
  */
 class SystemTimeDayFieldAccess extends DayFieldAccess {
   SystemTimeDayFieldAccess () {
@@ -65,7 +66,7 @@ class SystemTimeDayFieldAccess extends DayFieldAccess {
 }
 
 /**
- * MonthFieldAccess for SYSTEMTIME struct
+ * A `MonthFieldAccess` for the `SYSTEMTIME` struct.
  */
 class SystemTimeMonthFieldAccess extends MonthFieldAccess {
   SystemTimeMonthFieldAccess () {
@@ -74,7 +75,7 @@ class SystemTimeMonthFieldAccess extends MonthFieldAccess {
 }
 
 /**
- * YearFieldAccess for SYSTEMTIME struct
+ * A `YearFieldAccess` for the `SYSTEMTIME` struct.
  */
 class StructSystemTimeYearFieldAccess extends YearFieldAccess {
   StructSystemTimeYearFieldAccess() {
@@ -83,7 +84,7 @@ class StructSystemTimeYearFieldAccess extends YearFieldAccess {
 }
 
 /**
- * DayFieldAccess for struct tm
+ * A `DayFieldAccess` for `struct tm`.
  */
 class StructTmDayFieldAccess extends DayFieldAccess {
   StructTmDayFieldAccess() {
@@ -92,7 +93,7 @@ class StructTmDayFieldAccess extends DayFieldAccess {
 }
 
 /**
- * MonthFieldAccess for struct tm
+ * A `MonthFieldAccess` for `struct tm`.
  */
 class StructTmMonthFieldAccess extends MonthFieldAccess {
   StructTmMonthFieldAccess() {
@@ -101,7 +102,7 @@ class StructTmMonthFieldAccess extends MonthFieldAccess {
 }
 
 /**
- * YearFieldAccess for struct tm
+ * A `YearFieldAccess` for `struct tm`.
  */
 class StructTmYearFieldAccess extends YearFieldAccess {
   StructTmYearFieldAccess() {

@@ -1,5 +1,5 @@
 /**
- * Provides a library for helping create leap year related queries
+ * Provides a library for helping create leap year related queries.
  */
 
 import cpp
@@ -8,7 +8,7 @@ import semmle.code.cpp.controlflow.Guards
 import semmle.code.cpp.commons.DateTime
 
 /**
- * Get the top-level BinaryOperation enclosing the expression e
+ * Get the top-level `BinaryOperation` enclosing the expression e.
  */
 BinaryOperation getATopLevelBinaryOperationExpression(Expr e) {
   result = e.getEnclosingElement().(BinaryOperation)
@@ -17,7 +17,7 @@ BinaryOperation getATopLevelBinaryOperationExpression(Expr e) {
 }
 
 /**
- * Holds if the top-level binary operation for expression `e` includes the operator specified in `operator` with an operand specified by `valueToCheck`
+ * Holds if the top-level binary operation for expression `e` includes the operator specified in `operator` with an operand specified by `valueToCheck`.
  */
 predicate additionalLogicalCheck(Expr e, string operation, int valueToCheck) {
   exists(BinaryLogicalOperation bo | bo = getATopLevelBinaryOperationExpression(e) |
@@ -29,7 +29,7 @@ predicate additionalLogicalCheck(Expr e, string operation, int valueToCheck) {
 }
 
 /**
- * Operation that seems to be checking for leap year
+ * An `Operation` that seems to be checking for leap year.
  */
 class CheckForLeapYearOperation extends Operation {
   CheckForLeapYearOperation() {
@@ -45,12 +45,12 @@ class CheckForLeapYearOperation extends Operation {
 }
 
 /**
- * abstract class of type YearFieldAccess that would represent an access to a year field on a struct and is used for arguing about leap year calculations
+ * A `YearFieldAccess` that would represent an access to a year field on a struct and is used for arguing about leap year calculations.
  */
 abstract class LeapYearFieldAccess extends YearFieldAccess {
   /**
    * Holds if the field access is a modification,
-   * and it involves an arithmetic operation
+   * and it involves an arithmetic operation.
    */
   predicate isModifiedByArithmeticOperation() {
     this.isModified() and
@@ -69,8 +69,8 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
    * and it involves an arithmetic operation.
    * In order to avoid false positives, the operation does not includes values that are normal for year normalization.
    *
-   * 1900 - struct tm counts years since 1900
-   * 1980/80 -  FAT32 epoch
+   * 1900 - `struct tm` counts years since 1900
+   * 1980/80 - FAT32 epoch
    */
   predicate isModifiedByArithmeticOperationNotForNormalization() {
     this.isModified() and
@@ -122,14 +122,14 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
   }
 
   /**
-   * Holds if the top-level binary operation includes a modulus operator with an operand specified by `valueToCheck`
+   * Holds if the top-level binary operation includes a modulus operator with an operand specified by `valueToCheck`.
    */
   predicate additionalModulusCheckForLeapYear(int valueToCheck) {
     additionalLogicalCheck(this, "%", valueToCheck)
   }
 
   /**
-   * Holds if the top-level binary operation includes an addition or subtraction operator with an operand specified by `valueToCheck`
+   * Holds if the top-level binary operation includes an addition or subtraction operator with an operand specified by `valueToCheck`.
    */
   predicate additionalAdditionOrSubstractionCheckForLeapYear(int valueToCheck) {
     additionalLogicalCheck(this, "+", valueToCheck) or
@@ -137,7 +137,7 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
   }
 
   /**
-   * Holds true if this object is used on a modulus 4 operation, which would likely indicate the start of a leap year check
+   * Holds if this object is used on a modulus 4 operation, which would likely indicate the start of a leap year check.
    */
   predicate isUsedInMod4Operation() {
     not this.isModified() and
@@ -149,7 +149,7 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
   }
 
   /**
-   * Holds true if this object seems to be used in a valid gregorian calendar leap year check
+   * Holds if this object seems to be used in a valid gregorian calendar leap year check.
    */
   predicate isUsedInCorrectLeapYearCheck() {
     // The Gregorian leap year rule is:
@@ -165,14 +165,14 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
 }
 
 /**
- * YearFieldAccess for SYSTEMTIME struct
+ * `YearFieldAccess` for the `SYSTEMTIME` struct.
  */
 class StructSystemTimeLeapYearFieldAccess extends LeapYearFieldAccess {
   StructSystemTimeLeapYearFieldAccess() { this.toString().matches("wYear") }
 }
 
 /**
- * YearFieldAccess for struct tm
+ * `YearFieldAccess` for `struct tm`.
  */
 class StructTmLeapYearFieldAccess extends LeapYearFieldAccess {
   StructTmLeapYearFieldAccess() { this.toString().matches("tm_year") }
@@ -195,7 +195,7 @@ class StructTmLeapYearFieldAccess extends LeapYearFieldAccess {
 }
 
 /**
- * FunctionCall that includes an operation that is checking for leap year
+ * `FunctionCall` that includes an operation that is checking for leap year.
  */
 class ChecksForLeapYearFunctionCall extends FunctionCall {
   ChecksForLeapYearFunctionCall() {
@@ -206,8 +206,8 @@ class ChecksForLeapYearFunctionCall extends FunctionCall {
 }
 
 /**
- * DataFlow::Configuration for finding a variable access that would flow into
- * a function call that includes an operation to check for leap year
+ * `DataFlow::Configuration` for finding a variable access that would flow into
+ * a function call that includes an operation to check for leap year.
  */
 class LeapYearCheckConfiguration extends DataFlow::Configuration {
   LeapYearCheckConfiguration() { this = "LeapYearCheckConfiguration" }
@@ -222,7 +222,7 @@ class LeapYearCheckConfiguration extends DataFlow::Configuration {
 }
 
 /**
- * DataFlow::Configuration for finding an operation w/hardcoded 365 that will flow into a FILEINFO field
+ * `DataFlow::Configuration` for finding an operation with hardcoded 365 that will flow into a `FILEINFO` field.
  */
 class FiletimeYearArithmeticOperationCheckConfiguration extends DataFlow::Configuration {
   FiletimeYearArithmeticOperationCheckConfiguration() {
@@ -248,7 +248,7 @@ class FiletimeYearArithmeticOperationCheckConfiguration extends DataFlow::Config
 }
 
 /**
- * DataFlow::Configuration for finding an operation w/hardcoded 365 that will flow into any known date/time field
+ * `DataFlow::Configuration` for finding an operation with hardcoded 365 that will flow into any known date/time field.
  */
 class PossibleYearArithmeticOperationCheckConfiguration extends DataFlow::Configuration {
   PossibleYearArithmeticOperationCheckConfiguration() {

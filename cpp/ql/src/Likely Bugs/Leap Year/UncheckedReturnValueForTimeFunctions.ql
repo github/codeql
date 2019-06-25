@@ -12,7 +12,7 @@ import cpp
 import LeapYear
 
 /**
- * A YearFieldAccess that is modifying the year by any arithmetic operation
+ * A `YearFieldAccess` that is modifying the year by any arithmetic operation.
  *
  * NOTE:
  * To change this class to work for general purpose date transformations that do not check the return value,
@@ -33,7 +33,7 @@ class DateStructModifiedFieldAccess extends LeapYearFieldAccess {
 }
 
 /**
- * This is a list of APIs that will get the system time, and therefore guarantee that the value is valid
+ * This is a list of APIs that will get the system time, and therefore guarantee that the value is valid.
  */
 class SafeTimeGatheringFunction extends Function {
   SafeTimeGatheringFunction() {
@@ -44,7 +44,7 @@ class SafeTimeGatheringFunction extends Function {
 }
 
 /**
- * This list of APIs should check for the return value to detect problems during the conversion
+ * This list of APIs should check for the return value to detect problems during the conversion.
  */
 class TimeConversionFunction extends Function {
   TimeConversionFunction() {
