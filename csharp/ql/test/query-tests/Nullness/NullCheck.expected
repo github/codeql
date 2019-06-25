@@ -208,6 +208,15 @@
 | E.cs:306:31:306:31 | access to field l | E.cs:306:31:306:31 | access to field l | null | true |
 | E.cs:309:13:309:22 | access to property HasValue | E.cs:309:13:309:13 | access to field l | false | true |
 | E.cs:309:13:309:22 | access to property HasValue | E.cs:309:13:309:13 | access to field l | true | false |
+| E.cs:321:13:321:30 | ... is ... | E.cs:321:14:321:21 | ... ?? ... | false | false |
+| E.cs:321:13:321:30 | ... is ... | E.cs:321:14:321:21 | ... ?? ... | true | true |
+| E.cs:321:14:321:15 | access to parameter s1 | E.cs:321:14:321:15 | access to parameter s1 | non-null | false |
+| E.cs:321:14:321:15 | access to parameter s1 | E.cs:321:14:321:15 | access to parameter s1 | null | true |
+| E.cs:330:17:330:28 | (...) ... | E.cs:330:17:330:28 | (...) ... | null | true |
+| E.cs:336:17:336:17 | access to parameter s | E.cs:336:17:336:17 | access to parameter s | non-null | false |
+| E.cs:336:17:336:17 | access to parameter s | E.cs:336:17:336:17 | access to parameter s | null | true |
+| E.cs:342:17:342:17 | access to parameter s | E.cs:342:17:342:17 | access to parameter s | non-null | false |
+| E.cs:342:17:342:17 | access to parameter s | E.cs:342:17:342:17 | access to parameter s | null | true |
 | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | Forwarding.cs:9:14:9:14 | access to local variable s | false | false |
 | Forwarding.cs:14:13:14:32 | call to method IsNotNullOrEmpty | Forwarding.cs:14:13:14:13 | access to local variable s | true | false |
 | Forwarding.cs:19:14:19:23 | call to method IsNull | Forwarding.cs:19:14:19:14 | access to local variable s | false | false |

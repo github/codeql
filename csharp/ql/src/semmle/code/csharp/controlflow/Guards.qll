@@ -661,11 +661,15 @@ module Internal {
     e1 = e2.(AssignExpr).getRValue()
     or
     e1 = e2.(Cast).getExpr()
+    or
+    e2 = e1.(NullCoalescingExpr).getAnOperand()
   }
 
   /** Holds if expression `e3` is a `null` value whenever `e1` and `e2` are. */
   predicate nullValueImpliedBinary(Expr e1, Expr e2, Expr e3) {
     e3 = any(ConditionalExpr ce | e1 = ce.getThen() and e2 = ce.getElse())
+    or
+    e3 = any(NullCoalescingExpr nce | e1 = nce.getLeftOperand() and e2 = nce.getRightOperand())
   }
 
   /** A callable that always returns a non-`null` value. */
@@ -684,11 +688,15 @@ module Internal {
     e instanceof ArrayCreation
     or
     e.hasValue() and
-    not e instanceof NullLiteral and
-    not e instanceof DefaultValueExpr
+    exists(Expr stripped | stripped = e.stripCasts() |
+      not stripped instanceof NullLiteral and
+      not stripped instanceof DefaultValueExpr
+    )
     or
     e instanceof ThisAccess
     or
+    // "In string concatenation operations, the C# compiler treats a null string the same as an empty string."
+    // (https://docs.microsoft.com/en-us/dotnet/csharp/how-to/concatenate-multiple-strings)
     e instanceof AddExpr and
     e.getType() instanceof StringType
     or
@@ -705,6 +713,8 @@ module Internal {
     e1 = e2.(CastExpr).getExpr()
     or
     e1 = e2.(AssignExpr).getRValue()
+    or
+    e1 = e2.(NullCoalescingExpr).getAnOperand()
   }
 
   /**
@@ -1405,6 +1415,10 @@ module Internal {
           not preControlsDirect(g2, any(PreBasicBlocks::PreBasicBlock bb | g1 = bb.getAnElement()),
             v2)
         )
+        or
+        g2 = g1.(NullCoalescingExpr).getAnOperand() and
+        v1.(NullValue).isNull() and
+        v2 = v1
       }
 
       cached

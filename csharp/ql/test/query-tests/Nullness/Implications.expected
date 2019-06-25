@@ -1488,6 +1488,30 @@
 | E.cs:317:22:317:38 | ... ? ... : ... | non-null | E.cs:317:37:317:38 | "" | non-null |
 | E.cs:317:22:317:38 | ... ? ... : ... | null | E.cs:317:22:317:26 | access to field Field | true |
 | E.cs:317:22:317:38 | ... ? ... : ... | null | E.cs:317:30:317:33 | null | null |
+| E.cs:321:13:321:30 | ... is ... | false | E.cs:321:14:321:21 | ... ?? ... | non-null |
+| E.cs:321:13:321:30 | ... is ... | true | E.cs:321:14:321:21 | ... ?? ... | null |
+| E.cs:321:14:321:21 | ... ?? ... | null | E.cs:321:14:321:15 | access to parameter s1 | null |
+| E.cs:321:14:321:21 | ... ?? ... | null | E.cs:321:20:321:21 | access to parameter s2 | null |
+| E.cs:330:13:330:36 | String x = ... | non-null | E.cs:330:13:330:13 | access to local variable x | non-null |
+| E.cs:330:13:330:36 | String x = ... | null | E.cs:330:13:330:13 | access to local variable x | null |
+| E.cs:330:17:330:28 | (...) ... | non-null | E.cs:330:25:330:28 | null | non-null |
+| E.cs:330:17:330:28 | (...) ... | null | E.cs:330:25:330:28 | null | null |
+| E.cs:330:17:330:36 | ... ?? ... | null | E.cs:330:17:330:28 | (...) ... | null |
+| E.cs:330:17:330:36 | ... ?? ... | null | E.cs:330:33:330:36 | null | null |
+| E.cs:331:9:331:9 | access to local variable x | non-null | E.cs:330:17:330:36 | ... ?? ... | non-null |
+| E.cs:331:9:331:9 | access to local variable x | null | E.cs:330:17:330:36 | ... ?? ... | null |
+| E.cs:336:13:336:23 | String x = ... | non-null | E.cs:336:13:336:13 | access to local variable x | non-null |
+| E.cs:336:13:336:23 | String x = ... | null | E.cs:336:13:336:13 | access to local variable x | null |
+| E.cs:336:17:336:23 | ... ?? ... | null | E.cs:336:17:336:17 | access to parameter s | null |
+| E.cs:336:17:336:23 | ... ?? ... | null | E.cs:336:22:336:23 | "" | null |
+| E.cs:337:9:337:9 | access to local variable x | non-null | E.cs:336:17:336:23 | ... ?? ... | non-null |
+| E.cs:337:9:337:9 | access to local variable x | null | E.cs:336:17:336:23 | ... ?? ... | null |
+| E.cs:342:13:342:32 | String x = ... | non-null | E.cs:342:13:342:13 | access to local variable x | non-null |
+| E.cs:342:13:342:32 | String x = ... | null | E.cs:342:13:342:13 | access to local variable x | null |
+| E.cs:342:17:342:32 | ... ?? ... | null | E.cs:342:17:342:17 | access to parameter s | null |
+| E.cs:342:17:342:32 | ... ?? ... | null | E.cs:342:22:342:32 | ... as ... | null |
+| E.cs:343:9:343:9 | access to local variable x | non-null | E.cs:342:17:342:32 | ... ?? ... | non-null |
+| E.cs:343:9:343:9 | access to local variable x | null | E.cs:342:17:342:32 | ... ?? ... | null |
 | Forwarding.cs:7:16:7:23 | String s = ... | non-null | Forwarding.cs:7:16:7:16 | access to local variable s | non-null |
 | Forwarding.cs:7:16:7:23 | String s = ... | null | Forwarding.cs:7:16:7:16 | access to local variable s | null |
 | Forwarding.cs:9:13:9:30 | !... | false | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | true |

@@ -257,10 +257,14 @@
 | Guards.cs:108:27:108:36 | access to property Property | null | Guards.cs:106:22:106:25 | null | null |
 | Guards.cs:113:13:114:38 | String dummy = ... | non-null | Guards.cs:113:13:113:17 | access to local variable dummy | non-null |
 | Guards.cs:113:13:114:38 | String dummy = ... | null | Guards.cs:113:13:113:17 | access to local variable dummy | null |
+| Guards.cs:113:21:114:38 | ... ?? ... | null | Guards.cs:113:21:113:45 | access to field Field | null |
+| Guards.cs:113:21:114:38 | ... ?? ... | null | Guards.cs:114:14:114:38 | access to field Field | null |
 | Guards.cs:115:9:115:55 | ... = ... | non-null | Guards.cs:115:9:115:13 | access to local variable dummy | non-null |
 | Guards.cs:115:9:115:55 | ... = ... | non-null | Guards.cs:115:17:115:55 | ... ?? ... | non-null |
 | Guards.cs:115:9:115:55 | ... = ... | null | Guards.cs:115:9:115:13 | access to local variable dummy | null |
 | Guards.cs:115:9:115:55 | ... = ... | null | Guards.cs:115:17:115:55 | ... ?? ... | null |
+| Guards.cs:115:17:115:55 | ... ?? ... | null | Guards.cs:115:17:115:41 | access to field Field | null |
+| Guards.cs:115:17:115:55 | ... ?? ... | null | Guards.cs:115:46:115:55 | throw ... | null |
 | Guards.cs:117:9:117:25 | ... = ... | non-null | Guards.cs:117:9:117:18 | access to property Property | non-null |
 | Guards.cs:117:9:117:25 | ... = ... | non-null | Guards.cs:117:22:117:25 | null | non-null |
 | Guards.cs:117:9:117:25 | ... = ... | null | Guards.cs:117:9:117:18 | access to property Property | null |

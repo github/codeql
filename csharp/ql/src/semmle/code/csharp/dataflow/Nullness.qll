@@ -35,11 +35,17 @@ class MaybeNullExpr extends Expr {
     or
     this instanceof AsExpr
     or
-    exists(MaybeNullExpr e | G::Internal::nullValueImpliedUnary(e, this))
+    this.(AssignExpr).getRValue() instanceof MaybeNullExpr
     or
-    exists(MaybeNullExpr e | G::Internal::nullValueImpliedBinary(e, _, this))
+    this.(Cast).getExpr() instanceof MaybeNullExpr
     or
-    exists(MaybeNullExpr e | G::Internal::nullValueImpliedBinary(_, e, this))
+    this = any(ConditionalExpr ce |
+        ce.getThen() instanceof MaybeNullExpr
+        or
+        ce.getElse() instanceof MaybeNullExpr
+      )
+    or
+    this.(NullCoalescingExpr).getRightOperand() instanceof MaybeNullExpr
   }
 }
 
