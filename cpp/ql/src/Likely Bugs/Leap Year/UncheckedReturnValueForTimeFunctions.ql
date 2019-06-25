@@ -37,9 +37,9 @@ class DateStructModifiedFieldAccess extends LeapYearFieldAccess {
  */
 class SafeTimeGatheringFunction extends Function {
   SafeTimeGatheringFunction() {
-    this.getQualifiedName().matches("GetFileTime") or
-    this.getQualifiedName().matches("GetSystemTime") or
-    this.getQualifiedName().matches("NtQuerySystemTime")
+    this.getQualifiedName() = "GetFileTime" or
+    this.getQualifiedName() = "GetSystemTime" or
+    this.getQualifiedName() = "NtQuerySystemTime"
   }
 }
 
@@ -48,15 +48,15 @@ class SafeTimeGatheringFunction extends Function {
  */
 class TimeConversionFunction extends Function {
   TimeConversionFunction() {
-    this.getQualifiedName().matches("FileTimeToSystemTime") or
-    this.getQualifiedName().matches("SystemTimeToFileTime") or
-    this.getQualifiedName().matches("SystemTimeToTzSpecificLocalTime") or
-    this.getQualifiedName().matches("SystemTimeToTzSpecificLocalTimeEx") or
-    this.getQualifiedName().matches("TzSpecificLocalTimeToSystemTime") or
-    this.getQualifiedName().matches("TzSpecificLocalTimeToSystemTimeEx") or
-    this.getQualifiedName().matches("RtlLocalTimeToSystemTime") or
-    this.getQualifiedName().matches("RtlTimeToSecondsSince1970") or
-    this.getQualifiedName().matches("_mkgmtime")
+    this.getQualifiedName() = "FileTimeToSystemTime" or
+    this.getQualifiedName() = "SystemTimeToFileTime" or
+    this.getQualifiedName() = "SystemTimeToTzSpecificLocalTime" or
+    this.getQualifiedName() = "SystemTimeToTzSpecificLocalTimeEx" or
+    this.getQualifiedName() = "TzSpecificLocalTimeToSystemTime" or
+    this.getQualifiedName() = "TzSpecificLocalTimeToSystemTimeEx" or
+    this.getQualifiedName() = "RtlLocalTimeToSystemTime" or
+    this.getQualifiedName() = "RtlTimeToSecondsSince1970" or
+    this.getQualifiedName() = "_mkgmtime"
   }
 }
 

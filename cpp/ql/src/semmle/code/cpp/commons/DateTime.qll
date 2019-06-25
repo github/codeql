@@ -9,7 +9,7 @@ import cpp
  */
 class FileTimeStruct extends Type {
   FileTimeStruct() {
-    this.toString().matches("_FILETIME")
+    this.toString() = "_FILETIME"
     or this.toString().matches("_FILETIME %")
   }
 }
@@ -20,9 +20,9 @@ class FileTimeStruct extends Type {
  */
 class DateDataStruct extends Type {
   DateDataStruct() {
-    this.toString().matches("_SYSTEMTIME")
-    or this.toString().matches("SYSTEMTIME")
-    or this.toString().matches("tm")
+    this.toString() = "_SYSTEMTIME"
+    or this.toString() = "SYSTEMTIME"
+    or this.toString() = "tm"
     or this.toString().matches("_SYSTEMTIME %")
     or this.toString().matches("SYSTEMTIME %")
     or this.toString().matches("tm %")
@@ -61,7 +61,7 @@ abstract class YearFieldAccess extends StructFieldAccess {}
  */
 class SystemTimeDayFieldAccess extends DayFieldAccess {
   SystemTimeDayFieldAccess () {
-    this.toString().matches("wDay") 
+    this.toString() = "wDay"
   }
 }
 
@@ -70,7 +70,7 @@ class SystemTimeDayFieldAccess extends DayFieldAccess {
  */
 class SystemTimeMonthFieldAccess extends MonthFieldAccess {
   SystemTimeMonthFieldAccess () {
-    this.toString().matches("wMonth") 
+    this.toString() = "wMonth"
   }
 }
 
@@ -79,7 +79,7 @@ class SystemTimeMonthFieldAccess extends MonthFieldAccess {
  */
 class StructSystemTimeYearFieldAccess extends YearFieldAccess {
   StructSystemTimeYearFieldAccess() {
-    this.toString().matches("wYear") 
+    this.toString() = "wYear"
   }
 }
 
@@ -88,7 +88,7 @@ class StructSystemTimeYearFieldAccess extends YearFieldAccess {
  */
 class StructTmDayFieldAccess extends DayFieldAccess {
   StructTmDayFieldAccess() {
-    this.toString().matches("tm_mday") 
+    this.toString() = "tm_mday"
   }
 }
 
@@ -97,7 +97,7 @@ class StructTmDayFieldAccess extends DayFieldAccess {
  */
 class StructTmMonthFieldAccess extends MonthFieldAccess {
   StructTmMonthFieldAccess() {
-    this.toString().matches("tm_mon") 
+    this.toString() = "tm_mon"
   }
 }
 
@@ -106,6 +106,6 @@ class StructTmMonthFieldAccess extends MonthFieldAccess {
  */
 class StructTmYearFieldAccess extends YearFieldAccess {
   StructTmYearFieldAccess() {
-    this.toString().matches("tm_year") 
+    this.toString() = "tm_year"
   }
 }

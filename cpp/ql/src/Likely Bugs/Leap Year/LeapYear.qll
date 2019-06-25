@@ -168,14 +168,14 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
  * `YearFieldAccess` for the `SYSTEMTIME` struct.
  */
 class StructSystemTimeLeapYearFieldAccess extends LeapYearFieldAccess {
-  StructSystemTimeLeapYearFieldAccess() { this.toString().matches("wYear") }
+  StructSystemTimeLeapYearFieldAccess() { this.toString() = "wYear" }
 }
 
 /**
  * `YearFieldAccess` for `struct tm`.
  */
 class StructTmLeapYearFieldAccess extends LeapYearFieldAccess {
-  StructTmLeapYearFieldAccess() { this.toString().matches("tm_year") }
+  StructTmLeapYearFieldAccess() { this.toString() = "tm_year" }
 
   override predicate isUsedInCorrectLeapYearCheck() {
     this.isUsedInMod4Operation() and
