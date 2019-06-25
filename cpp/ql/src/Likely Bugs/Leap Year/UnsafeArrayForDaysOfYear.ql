@@ -16,22 +16,26 @@ class LeapYearUnsafeDaysOfTheYearArrayType extends ArrayType {
   LeapYearUnsafeDaysOfTheYearArrayType() { this.getArraySize() = 365 }
 }
 
-from Element element
+from Element element, string allocType
 where
   exists(NewArrayExpr nae |
     element = nae and
-    nae.getAllocatedType() instanceof LeapYearUnsafeDaysOfTheYearArrayType
+    nae.getAllocatedType() instanceof LeapYearUnsafeDaysOfTheYearArrayType and
+    allocType = "an array allocation"
   )
   or
   exists(Variable var |
     var = element and
-    var.getType() instanceof LeapYearUnsafeDaysOfTheYearArrayType
+    var.getType() instanceof LeapYearUnsafeDaysOfTheYearArrayType and
+    allocType = "an array allocation"
   )
   or
   exists(ConstructorCall cc |
     element = cc and
     cc.getTarget().hasName("vector") and
-    cc.getArgument(0).getValue().toInt() = 365
+    cc.getArgument(0).getValue().toInt() = 365 and
+    allocType = "a std::vector allocation"
   )
 select element,
-  "There is an array or std::vector allocation with a hard-coded set of 365 elements, which may indicate the number of days in a year without considering leap year scenarios."
+  "There is " + allocType +
+    " with a hard-coded set of 365 elements, which may indicate the number of days in a year without considering leap year scenarios."
