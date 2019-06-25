@@ -10,7 +10,7 @@ import semmle.code.cpp.commons.DateTime
 /**
  * Get the top-level `BinaryOperation` enclosing the expression e.
  */
-BinaryOperation getATopLevelBinaryOperationExpression(Expr e) {
+private BinaryOperation getATopLevelBinaryOperationExpression(Expr e) {
   result = e.getEnclosingElement().(BinaryOperation)
   or
   result = getATopLevelBinaryOperationExpression(e.getEnclosingElement())
@@ -19,7 +19,7 @@ BinaryOperation getATopLevelBinaryOperationExpression(Expr e) {
 /**
  * Holds if the top-level binary operation for expression `e` includes the operator specified in `operator` with an operand specified by `valueToCheck`.
  */
-predicate additionalLogicalCheck(Expr e, string operation, int valueToCheck) {
+private predicate additionalLogicalCheck(Expr e, string operation, int valueToCheck) {
   exists(BinaryLogicalOperation bo | bo = getATopLevelBinaryOperationExpression(e) |
     exists(BinaryArithmeticOperation bao | bao = bo.getAChild*() |
       bao.getAnOperand().getValue().toInt() = valueToCheck and
