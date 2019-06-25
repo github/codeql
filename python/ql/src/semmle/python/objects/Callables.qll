@@ -156,6 +156,8 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         function = this and offset = 0
     }
 
+    override predicate contextSensitiveCallee() { any() }
+
 }
 
 
@@ -277,6 +279,8 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
         function = this and offset = 0
     }
 
+    override predicate contextSensitiveCallee() { none() }
+
 }
 
 /** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`.
@@ -367,6 +371,8 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
         function = this and offset = 0
     }
 
+    override predicate contextSensitiveCallee() { none() }
+
 }
 
 /** Class representing bound-methods.
@@ -422,7 +428,6 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
         result = this.getFunction().getName()
     }
 
-
     override Function getScope() { 
         result = this.getFunction().getScope()
     }
@@ -453,8 +458,9 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
         function = this.getFunction() and offset = 1
     }
 
+    override predicate contextSensitiveCallee() {
+        this.getFunction().contextSensitiveCallee()
+    }
+
 }
-
-
-
 

@@ -839,6 +839,7 @@ module InterProceduralPointsTo {
             )
             or
             context.untrackableCall(f) and
+            func.contextSensitiveCallee() and
             value = ObjectInternal::unknown() and origin = f
             or
             exists(CfgOrigin orig |

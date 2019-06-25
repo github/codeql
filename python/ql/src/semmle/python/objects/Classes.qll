@@ -89,6 +89,9 @@ abstract class ClassObjectInternal extends ObjectInternal {
     }
 
     override predicate subscriptUnknown() { none() }
+
+    override predicate contextSensitiveCallee() { none() }
+
 }
 
 /** Class representing Python source classes */

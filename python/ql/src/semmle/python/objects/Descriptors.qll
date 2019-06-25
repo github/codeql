@@ -91,6 +91,8 @@ class PropertyInternal extends ObjectInternal, TProperty {
         )
     }
 
+    override predicate contextSensitiveCallee() { none() }
+
 }
 
 /** A class representing classmethods in Python */
@@ -176,6 +178,8 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
         result = this.getFunction().getName()
     }
 
+    override predicate contextSensitiveCallee() { none() }
+
 }
 
 class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
@@ -246,5 +250,7 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
     override string getName() {
         result = this.getFunction().getName()
     }
+
+    override predicate contextSensitiveCallee() { none() }
 
 }

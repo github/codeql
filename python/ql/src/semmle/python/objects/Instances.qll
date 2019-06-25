@@ -51,6 +51,8 @@ abstract class InstanceObject extends ObjectInternal {
 
     override string getName() { none() }
 
+    override predicate contextSensitiveCallee() { none() }
+
 }
 
 private predicate self_variable_reaching_init_exit(EssaVariable self) {
@@ -366,6 +368,8 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
     override string getName() { none() }
 
+    override predicate contextSensitiveCallee() { none() }
+
 }
 
 private int lengthFromClass(ClassObjectInternal cls) {
@@ -471,6 +475,8 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
     }
 
     override string getName() { none() }
+
+    override predicate contextSensitiveCallee() { none() }
 
 }
 

@@ -167,6 +167,8 @@ class ObjectInternal extends TObject {
      */
     abstract string getName();
 
+    abstract predicate contextSensitiveCallee();
+
 }
 
 
@@ -249,6 +251,9 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
     override string getName() {
         result = this.getBuiltin().getName()
     }
+
+    override predicate contextSensitiveCallee() { none() }
+
 }
 
 
@@ -325,6 +330,8 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     override int length() { result = -1 }
 
     override string getName() { none() }
+
+    override predicate contextSensitiveCallee() { none() }
 
 }
 
@@ -403,6 +410,8 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     override int length() { none() }
 
     override string getName() { none() }
+
+    override predicate contextSensitiveCallee() { none() }
 
 }
 
