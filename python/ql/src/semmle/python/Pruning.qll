@@ -396,16 +396,25 @@ module Pruner {
         )
     }
 
+    predicate reachable(UnprunedCfgNode n) {
+        exists(UnprunedBasicBlock bb |
+            reachableBB(bb) and bb.contains(n)
+        )
+    }
+
     /** Holds if the basic block `bb` is unreachable due to
      * one or more constraints.
      */
     predicate unreachableBB(UnprunedBasicBlock bb) {
-        not bb.isEntry() and
-        forall(UnprunedBasicBlock pred |
-            pred.getASuccessor() = bb
-            |
-            unreachableEdge(pred, bb)
-        )
+        not reachableBB(bb)
+    }
+
+    /** Holds if the basic block `bb` is reachable despite
+     * constraints
+     */
+    predicate reachableBB(UnprunedBasicBlock bb) {
+        bb.isEntry() or
+        reachableEdge(_, bb)
     }
 
     Constraint constraintFromTest(SsaVariable var, UnprunedCfgNode node) {
@@ -533,18 +542,30 @@ module Pruner {
     }
 
     /** Holds if the edge `pred` -> `succ` should be pruned as it cannot be reached */
-    predicate unreachableEdge(UnprunedBasicBlock pred, UnprunedBasicBlock succ) {
+    predicate unreachableEdge(UnprunedCfgNode pred, UnprunedCfgNode succ) {
+        exists(UnprunedBasicBlock predBB, UnprunedBasicBlock succBB |
+            succBB = predBB.getASuccessor() and
+            not reachableEdge(predBB, succBB) and
+            pred = predBB.last() and succ = succBB.first()
+        )
+    }
+
+    /** Holds if the edge `pred` -> `succ` is reachable as a result of
+     * `pred` being reachable and this edge not being pruned. */
+    predicate reachableEdge(UnprunedBasicBlock pred, UnprunedBasicBlock succ) {
+        reachableBB(pred) and succ = pred.getASuccessor() and
+        not contradictoryEdge(pred, succ) and
+        not simplyDead(pred, succ)
+    }
+
+    predicate contradictoryEdge(UnprunedBasicBlock pred, UnprunedBasicBlock succ) {
         exists(Constraint pre, Constraint cond |
             controllingConditions(pred, succ, pre, cond) and
             contradicts(pre, cond)
         )
-        or
-        unreachableBB(pred) and succ = pred.getASuccessor()
-        or
-        simply_dead(pred, succ)
     }
 
-    /* Helper for `unreachableEdge`, deal with inequalities here to avoid blow up */
+    /* Helper for `contradictoryEdge`, deal with inequalities here to avoid blow up */
     pragma [inline]
     private predicate contradicts(Constraint a, Constraint b) {
         a = TIsNone(true) and b.cannotBeNone()
@@ -567,13 +588,13 @@ module Pruner {
     }
 
     /** Holds if edge is simply dead. Stuff like `if False: ...` */
-    predicate simply_dead(UnprunedBasicBlock pred, UnprunedBasicBlock succ) {
+    predicate simplyDead(UnprunedBasicBlock pred, UnprunedBasicBlock succ) {
         constTest(pred.last()) = true and pred.getAFalseSuccessor() = succ
         or
         constTest(pred.last()) = false and pred.getATrueSuccessor() = succ
     }
 
-    /* Helper for simply_dead */
+    /* Helper for simplyDead */
     private boolean constTest(UnprunedCfgNode node) {
         exists(ImmutableLiteral lit |
             result = lit.booleanValue() and lit = node.getNode()

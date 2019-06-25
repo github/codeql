@@ -1,2 +1,2 @@
-semmle-extractor-options: --max-import-depth=4
+semmle-extractor-options: --max-import-depth=4 --dont-prune-graph
 optimize: true
