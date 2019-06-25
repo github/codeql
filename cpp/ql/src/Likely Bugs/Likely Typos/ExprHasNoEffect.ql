@@ -73,6 +73,7 @@ where // EQExprs are covered by CompareWhereAssignMeant.ql
       not baseCall(peivc) and
       not accessInInitOfForStmt(peivc) and
       not peivc.isCompilerGenerated() and
+      not peivc.getEnclosingFunction().isDefaulted() and
       not exists(Macro m | peivc = m.getAnInvocation().getAnExpandedElement()) and
       not peivc.isFromTemplateInstantiation(_) and
       parent = peivc.getParent() and
