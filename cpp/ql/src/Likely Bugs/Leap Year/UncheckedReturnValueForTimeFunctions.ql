@@ -5,8 +5,7 @@
  * @problem.severity warning
  * @id cpp/leap-year/unchecked-return-value-for-time-conversion-function
  * @precision medium
- * @tags security
- *       leap-year
+ * @tags leap-year
  */
 
 import cpp
