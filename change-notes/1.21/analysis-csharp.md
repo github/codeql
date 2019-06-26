@@ -4,11 +4,17 @@
 
 C# analysis now supports the extraction and analysis of many C# 8 features. For details see [Changes to code extraction](#changes-to-code-extraction) and [Changes to QL libraries](#changes-to-ql-libraries) below.
 
+## New queries
+
+| **Query**                                     | **Tags**                                             | **Purpose**                                                                                                                                                                 |
+|-----------------------------------------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Class defines a field that uses an ICryptoTransform class in a way that would be unsafe for concurrent threads (`cs/thread-unsafe-icryptotransform-field-in-class`) | concurrency, security, external/cwe/cwe-362 | Highlights classes with fields that make use of a static `System.Security.Cryptography.ICryptoTransform` object. Using these classes in concurrent threads is dangerous. It may result an error and may also give incorrect results. |
+| Potential usage of an object implementing ICryptoTransform class in a way that would be unsafe for concurrent threads (`cs/thread-unsafe-icryptotransform-captured-in-lambda`) | concurrency, security, external/cwe/cwe-362 | Highlights instances of classes where a field of type `System.Security.Cryptography.ICryptoTransform` is captured by a lambda, and appears to be used in a thread initialization method. |
+
 ## Changes to existing queries
 
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
-| Class defines a field that uses an ICryptoTransform class in a way that would be unsafe for concurrent threads (`cs/thread-unsafe-icryptotransform-field-in-class`) | Fewer false positive results | The criteria for a result has changed to include nested properties, nested fields, and collections. The format of the alert message has changed to highlight the static field. |
 | Constant condition (`cs/constant-condition`) | Fewer false positive results | The query now ignores code where the `null` value is in a conditional expression on the left hand side of a null-coalescing expression. For example, in `(a ? b : null) ?? c`, `null` is not considered to be a constant condition. |
 | Useless upcast (`cs/useless-upcast`) | Fewer false positive results | The query now ignores code where the upcast is used to disambiguate the target of a constructor call. |
 
