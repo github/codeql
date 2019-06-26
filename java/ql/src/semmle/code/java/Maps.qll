@@ -4,11 +4,7 @@ import Collections
 /** A reference type that extends a parameterization of `java.util.Map`. */
 class MapType extends RefType {
   MapType() {
-    exists(ParameterizedInterface coll |
-      coll.getSourceDeclaration().hasQualifiedName("java.util", "Map")
-    |
-      this.hasSupertype*(coll)
-    )
+    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.util", "Map")
   }
 
   /** Gets the type of keys stored in this map. */
