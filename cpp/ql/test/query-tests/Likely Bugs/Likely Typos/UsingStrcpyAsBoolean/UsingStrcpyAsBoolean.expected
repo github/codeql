@@ -19,6 +19,9 @@
 | test.cpp:103:9:103:15 | call to strncpy | Return value of strncpy used directly in a conditional expression. |
 | test.cpp:107:9:107:15 | call to wcsncpy | Return value of wcsncpy used directly in a conditional expression. |
 | test.cpp:111:9:111:16 | call to _mbsncpy | Return value of _mbsncpy used directly in a conditional expression. |
+| test.cpp:115:9:115:18 | call to _strncpy_l | Return value of _strncpy_l used directly in a conditional expression. |
+| test.cpp:119:9:119:18 | call to _wcsncpy_l | Return value of _wcsncpy_l used directly in a conditional expression. |
+| test.cpp:123:9:123:18 | call to _mbsncpy_l | Return value of _mbsncpy_l used directly in a conditional expression. |
 | test.cpp:127:9:127:37 | ! ... | Return value of strncpy used in a logical operation. |
 | test.cpp:131:14:131:20 | call to strncpy | Return value of strncpy used as a Boolean. |
 | test.cpp:133:19:133:47 | ! ... | Return value of strncpy used in a logical operation. |

@@ -12,8 +12,11 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
     this.hasName("_mbscpy") or
     this.hasName("wcscpy") or
     this.hasName("strncpy") or
+    this.hasName("_strncpy_l") or
     this.hasName("_mbsncpy") or
-    this.hasName("wcsncpy")
+    this.hasName("_mbsncpy_l") or
+    this.hasName("wcsncpy") or
+    this.hasName("_wcsncpy_l")
   }
   
   override predicate hasArrayInput(int bufParam) {
@@ -31,8 +34,11 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
   override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
     (
       this.hasName("strncpy") or
+      this.hasName("_strncpy_l") or
       this.hasName("_mbsncpy") or
-      this.hasName("wcsncpy")
+      this.hasName("_mbsncpy_l") or
+      this.hasName("wcsncpy") or
+      this.hasName("_wcsncpy_l")
     ) and
     bufParam = 0 and
     countParam = 2
@@ -76,8 +82,11 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
       // these may do only a partial copy of the input buffer to the output
       // buffer
       this.hasName("strncpy") or
+      this.hasName("_strncpy_l") or
       this.hasName("_mbsncpy") or
-      this.hasName("wcsncpy")
+      this.hasName("_mbsncpy_l") or
+      this.hasName("wcsncpy") or
+      this.hasName("_wcsncpy_l")
     ) and (
       input.isInParameter(2) or
       input.isInParameterPointer(1)
