@@ -11,7 +11,7 @@
 
 import python
 import semmle.python.security.TaintTracking
-
+import semmle.python.web.HttpRequest
 
 /**
  * Provides heuristics for identifying names related to sensitive information.
@@ -142,7 +142,7 @@ module SensitiveData {
         }
 
         override string repr() {
-            result = "Call returning " + data.repr()
+            result = "a call returning " + data.repr()
         }
 
     }
@@ -162,6 +162,28 @@ module SensitiveData {
 
         override string repr() {
             result = "an attribute or property containing " + data.repr()
+        }
+
+    }
+
+    private class SensitiveRequestParameter extends SensitiveData::Source {
+
+        SensitiveData data;
+
+        SensitiveRequestParameter() {
+            this.(CallNode).getFunction().(AttrNode).getName() = "get" and
+            exists(string sensitive |
+                this.(CallNode).getAnArg().refersTo(any(StringObject s | s.getText() = sensitive)) and
+                data = HeuristicNames::getSensitiveDataForName(sensitive)
+            )
+        }
+
+        override predicate isSourceOf(TaintKind kind) {
+            kind = data
+        }
+
+        override string repr() {
+            result = "a request parameter containing " + data.repr()
         }
 
     }
