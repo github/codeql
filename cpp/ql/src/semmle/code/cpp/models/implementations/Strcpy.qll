@@ -43,7 +43,7 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
     bufParam = 0 and
     countParam = 2
   }
-  
+
   override predicate hasArrayWithUnknownSize(int bufParam) {
     (
       this.hasName("strcpy") or
@@ -52,7 +52,6 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
     ) and
     bufParam = 0
   }
-  
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
     (
@@ -76,7 +75,7 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
       output.isOutReturnValue()
     )
   }
-  
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     (
       // these may do only a partial copy of the input buffer to the output
