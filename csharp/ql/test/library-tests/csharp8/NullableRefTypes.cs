@@ -107,7 +107,43 @@ class RefTypes
     ref MyClass RefProperty => ref Property!;
 }
 
+class ToStringWithTypes
+{
+    MyStruct? a;
+    MyStruct[]? b;
+    MyStruct?[] c;
+    MyStruct?[]? d;
+
+    MyClass? e;
+    MyClass?[] f;
+    MyClass[]? g;
+    MyClass?[]? h;
+
+    MyClass[,,]?[,][] i;
+    MyClass[,,][,][] j;
+    MyClass[,,,][][,][,,] k;
+    MyClass?[,,,][][,]?[,,] l;
+}
+
 #nullable disable
+
+class ToStringWithTypes2
+{
+    MyStruct? a;
+    MyStruct[]? b;
+    MyStruct?[] c;
+    MyStruct?[]? d;
+
+    MyClass? e;
+    MyClass?[] f;
+    MyClass[]? g;
+    MyClass?[]? h;
+
+    MyClass[,,]?[,][] i;
+    MyClass[,,][,][] j;
+    MyClass[,,,][][,][,,] k;
+    MyClass?[,,,][][,]?[,,] l;
+}
 
 class DisabledNullability
 {

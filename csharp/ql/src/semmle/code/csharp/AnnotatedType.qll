@@ -174,31 +174,44 @@ private newtype TAnnotatedType =
 
 /** A type with additional information. */
 class AnnotatedType extends TAnnotatedType {
-  Type underlyingType;
+  Type type;
 
   Annotations::TypeAnnotations annotations;
 
-  AnnotatedType() { this = TAnnotatedTypeNullability(underlyingType, annotations) }
+  AnnotatedType() { this = TAnnotatedTypeNullability(type, annotations) }
 
   /** Gets a textual representation of this annotated type. */
   string toString() {
-    result = annotations.getTypePrefix() + underlyingType.toStringWithTypes() + annotations.getTypeSuffix()
+    result = annotations.getTypePrefix() + getUnderlyingType().toStringWithTypes() + annotations.getTypeSuffix()
   }
 
   /** Gets the location of this annotated type. */
-  Location getLocation() { result = underlyingType.getLocation() }
+  Location getLocation() { result = type.getLocation() }
+
+  /**
+   * Gets the unannotated type, for example `string` in `string?`.
+   * Note that this might be a nullable value type (`System.Nullable`).
+   */
+  final Type getType() { result = type }
 
   /**
    * Gets the underlying type, for example `string` in `string?`
-   * Note that this might itself be a nullable value type (`System.Nullable`).
+   * or `int` in `int?`. This also gets the underlying type of
+   * nullable value types (`System.Nullable`).
    */
-  Type getUnderlyingType() { result = underlyingType }
+  final Type getUnderlyingType() {
+    if type instanceof NullableType
+    then result = type.(NullableType).getUnderlyingType()
+    else result = type
+  }
 
   /** Gets the type annotation set of this annotated type. */
   private Annotations::TypeAnnotations getAnnotations() { result = annotations }
 
   /** Gets a type annotation of this annotated type. */
-  private Annotations::TypeAnnotation getAnAnnotation() { result = getAnnotations().getAnAnnotation() }
+  private Annotations::TypeAnnotation getAnAnnotation() {
+    result = getAnnotations().getAnAnnotation()
+  }
 
   /** Holds if the type is a non-nullable reference, for example, `string` in a nullable-enabled context. */
   predicate isNonNullableRefType() {
@@ -214,23 +227,20 @@ class AnnotatedType extends TAnnotatedType {
   /** Holds if the type is a `ref readonly`, for example the return type of `ref readonly int F()`. */
   predicate isReadonlyRef() { this.getAnAnnotation() instanceof Annotations::ReadonlyRefType }
 
-  /** Holds if the type is an `out`, for example parameter p in `void F(out int p)`. */
+  /** Holds if the type is an `out`, for example parameter `p` in `void F(out int p)`. */
   predicate isOut() { this.getAnAnnotation() instanceof Annotations::OutType }
 
   /** Holds if this annotated type applies to element `e`. */
-  predicate appliesTo(Element e) {
-    Annotations::elementTypeAnnotations(e, this.getUnderlyingType(), annotations)
-  }
+  predicate appliesTo(Element e) { Annotations::elementTypeAnnotations(e, type, annotations) }
 
   /** Holds if this annotated type applies to type parameter constraints `constraints`. */
   predicate appliesToTypeConstraint(TypeParameterConstraints constraints) {
-    annotations = Annotations::TAnnotationFlags(getTypeParameterFlags(constraints,
-          this.getUnderlyingType()))
+    annotations = Annotations::TAnnotationFlags(getTypeParameterFlags(constraints, type))
   }
 
   /** Holds if this annotated type applies to the `i`th type argument of constructed generic `g`. */
   predicate appliesToTypeArgument(ConstructedGeneric g, int i) {
-    this.getUnderlyingType() = g.getTypeArgument(i) and
+    type = g.getTypeArgument(i) and
     this.getAnnotations() = Annotations::TAnnotationFlags(getTypeArgumentFlags(g, i))
   }
 }

@@ -743,9 +743,7 @@ class DelegateType extends RefType, Parameterizable, @delegate_type {
   deprecated predicate returnsRef() { this.getAnnotatedReturnType().isRef() }
 
   /** Holds if this delegate returns a `ref readonly`. */
-  deprecated predicate returnsRefReadonly() {
-    this.getAnnotatedReturnType().isReadonlyRef()
-  }
+  deprecated predicate returnsRefReadonly() { this.getAnnotatedReturnType().isReadonlyRef() }
 }
 
 /**
@@ -808,13 +806,22 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     if i = getRank() - 1 then result = "" else result = "," + getRankString(i + 1)
   }
 
-  private string getDimensionString()
-  {
-      result = "[" + getRankString(0) + "]"
+  private string getDimensionString(AnnotatedType elementType) {
+    exists(AnnotatedType et, string res |
+      et = getAnnotatedElementType() and
+      res = "[" + getRankString(0) + "]" and
+      if et.getUnderlyingType() instanceof ArrayType and not et.isNullableRefType()
+      then result = res + et.getUnderlyingType().(ArrayType).getDimensionString(elementType)
+      else (
+        result = res and elementType = et
+      )
+    )
   }
 
   override string toStringWithTypes() {
-    result = this.getAnnotatedElementType().toString() + this.getDimensionString()
+    exists(AnnotatedType elementType |
+      result = elementType.toString() + this.getDimensionString(elementType)
+    )
   }
 
   override Type getChild(int n) { result = getElementType() and n = 0 }

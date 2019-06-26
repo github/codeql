@@ -217,7 +217,7 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
    */
   deprecated Class getClassConstraint() { result = getATypeConstraint() }
 
-  /** Gets a type constraint, if any. */
+  /** Gets a specific type constraint, if any. */
   Type getATypeConstraint() { specific_type_parameter_constraints(this, getTypeRef(result)) }
 
   /** Gets an annotated specific type constraint, if any. */
