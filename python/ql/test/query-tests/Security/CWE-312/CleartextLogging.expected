@@ -1,0 +1,6 @@
+edges
+| test.py:7:16:7:29 | a password | test.py:8:35:8:42 | a password |
+parents
+#select
+| test.py:8:35:8:42 | Taint sink | test.py:7:16:7:29 | a password | test.py:8:35:8:42 | a password | Sensitive data returned by $@ is stored here. | test.py:7:16:7:29 | Taint source | Call returning a password |
+| test.py:14:30:14:39 | Taint sink | test.py:14:30:14:39 | a certificate or key | test.py:14:30:14:39 | a certificate or key | Sensitive data returned by $@ is stored here. | test.py:14:30:14:39 | Taint source | Call returning a certificate or key |

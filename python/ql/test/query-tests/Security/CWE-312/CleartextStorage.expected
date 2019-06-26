@@ -1,0 +1,11 @@
+edges
+| file:///usr/lib/python3.6/keyword.py:65:10:65:34 | an open file | file:///usr/lib/python3.6/keyword.py:66:18:66:19 | an open file |
+| file:///usr/lib/python3.6/keyword.py:70:10:70:22 | an open file | file:///usr/lib/python3.6/keyword.py:73:21:73:22 | an open file |
+| file:///usr/lib/python3.6/keyword.py:90:10:90:39 | an open file | file:///usr/lib/python3.6/keyword.py:91:9:91:10 | an open file |
+| password_in_cookie.py:7:16:7:27 | dict of externally controlled string | password_in_cookie.py:7:16:7:43 | externally controlled string |
+| password_in_cookie.py:7:16:7:43 | a password | password_in_cookie.py:9:33:9:40 | a password |
+| password_in_cookie.py:7:16:7:43 | externally controlled string | password_in_cookie.py:9:33:9:40 | externally controlled string |
+| test.py:7:16:7:29 | a password | test.py:8:35:8:42 | a password |
+parents
+#select
+| password_in_cookie.py:9:33:9:40 | Taint sink | password_in_cookie.py:7:16:7:43 | a password | password_in_cookie.py:9:33:9:40 | a password | Sensitive data from $@ is stored here. | password_in_cookie.py:7:16:7:43 | Taint source | a request parameter containing a password |
