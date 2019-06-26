@@ -21,7 +21,7 @@
 
 | **Query**                      | **Expected impact**          | **Change**                                                                |
 |--------------------------------|------------------------------|---------------------------------------------------------------------------|
-
+| Shift out of range | Fewer false positive results | This rule now correctly handles BigInt shift operands. |
 
 ## Changes to QL libraries
 
