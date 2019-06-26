@@ -880,6 +880,7 @@ private AstNode assigned_value(Expr lhs) {
         result = values.getElt(index)
     )
     or
+    /* for lhs in seq: => `result` is the `for` node, representing the `iter(next(seq))` operation. */
     result.(For).getTarget() = lhs
 }
 
