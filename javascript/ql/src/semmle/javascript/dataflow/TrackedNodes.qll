@@ -102,7 +102,7 @@ private module NodeTracking {
       or
       basicStoreStep(mid, nd, _)
       or
-      loadStep(mid, nd, _)
+      basicLoadStep(mid, nd, _)
       or
       callback(mid, nd)
       or
@@ -218,7 +218,7 @@ private module NodeTracking {
   ) {
     exists(string prop, DataFlow::Node base |
       reachableFromStoreBase(prop, pred, base, summary) and
-      loadStep(base, succ, prop)
+      basicLoadStep(base, succ, prop)
     )
   }
 

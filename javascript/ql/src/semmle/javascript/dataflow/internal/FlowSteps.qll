@@ -296,7 +296,7 @@ private module CachedSteps {
    * that is, `succ` is a read of property `prop` from `pred`.
    */
   cached
-  predicate loadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
+  predicate basicLoadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
     succ.accesses(pred, prop)
   }
 
