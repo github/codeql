@@ -125,20 +125,27 @@ private module CachedSteps {
    */
   cached
   predicate argumentPassing(
-    DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, DataFlow::ParameterNode parm
+    DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, DataFlow::SourceNode parm
   ) {
     calls(invk, f) and
-    exists(int i |
-      f.getParameter(i) = parm.getParameter() and
-      not parm.isRestParameter() and
-      arg = invk.getArgument(i)
+    (
+      exists(int i, Parameter p |
+        f.getParameter(i) = p and
+        not p.isRestParameter() and
+        arg = invk.getArgument(i) and
+        parm = DataFlow::parameterNode(p)
+      )
+      or
+      arg = invk.(DataFlow::MethodCallNode).getReceiver() and
+      parm = DataFlow::thisNode(f)
     )
     or
-    exists(DataFlow::Node callback, int i |
+    exists(DataFlow::Node callback, int i, Parameter p |
       invk.(DataFlow::AdditionalPartialInvokeNode).isPartialArgument(callback, arg, i) and
       partiallyCalls(invk, callback, f) and
-      parm.getParameter() = f.getParameter(i) and
-      not parm.isRestParameter()
+      f.getParameter(i) = p and
+      not p.isRestParameter() and
+      parm = DataFlow::parameterNode(p)
     )
   }
 

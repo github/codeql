@@ -215,7 +215,7 @@ private module NodeTracking {
     basicLoadStep(pred, succ, prop) and
     summary = PathSummary::level()
     or
-    exists (Function f, DataFlow::ParameterNode parm |
+    exists (Function f, DataFlow::SourceNode parm |
       argumentPassing(succ, pred, f, parm) and
       reachesReturn(f, parm.getAPropertyRead(prop), summary)
     )
@@ -263,7 +263,7 @@ private module NodeTracking {
   ) {
     exists(
       Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
-      DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary
+      DataFlow::Node innerArg, DataFlow::SourceNode cbParm, PathSummary oldSummary
     |
       reachableFromInput(f, outer, arg, innerArg, oldSummary) and
       argumentPassing(outer, cb, f, cbParm) and

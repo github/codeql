@@ -795,7 +795,7 @@ private predicate summarizedHigherOrderCall(
 ) {
   exists(
     Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
-    DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary
+    DataFlow::Node innerArg, DataFlow::SourceNode cbParm, PathSummary oldSummary
   |
     reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
     argumentPassing(outer, cb, f, cbParm) and
