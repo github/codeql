@@ -12,19 +12,8 @@
  */
 
 import cpp
+import semmle.code.cpp.models.implementations.Strcpy
 import semmle.code.cpp.dataflow.DataFlow
-
-predicate isStringComparisonFunction(string functionName) {
-  functionName = "strcpy" or
-  functionName = "wcscpy" or
-  functionName = "_mbscpy" or
-  functionName = "strncpy" or
-  functionName = "_strncpy_l" or
-  functionName = "wcsncpy" or
-  functionName = "_wcsncpy_l" or
-  functionName = "_mbsncpy" or
-  functionName = "_mbsncpy_l"
-}
 
 predicate isBoolean(Expr e1) {
   exists(Type t1 |
@@ -36,12 +25,12 @@ predicate isBoolean(Expr e1) {
 predicate isStringCopyCastedAsBoolean(FunctionCall func, Expr expr1, string msg) {
   DataFlow::localFlow(DataFlow::exprNode(func), DataFlow::exprNode(expr1)) and
   isBoolean(expr1.getConversion*()) and
-  isStringComparisonFunction(func.getTarget().getName()) and
+  func.getTarget() instanceof StrcpyFunction and
   msg = "Return value of " + func.getTarget().getName() + " used as a Boolean."
 }
 
 predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr expr1, string msg) {
-  isStringComparisonFunction(func.getTarget().getName()) and
+  func.getTarget() instanceof StrcpyFunction and
   (
     (
       // it is being used in an equality or logical operation
