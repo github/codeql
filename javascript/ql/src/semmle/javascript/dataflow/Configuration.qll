@@ -698,10 +698,59 @@ private predicate storeStep(
 }
 
 /**
+ * Holds if `f` may `read` property `prop` of parameter `parm`.
+ */
+private predicate parameterPropRead(
+  Function f, DataFlow::Node invk, DataFlow::Node arg, string prop, DataFlow::PropRead read,
+  DataFlow::Configuration cfg
+) {
+  exists(DataFlow::SourceNode parm |
+    callInputStep(f, invk, arg, parm, cfg) and
+    read = parm.getAPropertyRead(prop)
+  )
+}
+
+/**
+ * Holds if `nd` may flow into a return statement of `f` under configuration `cfg`
+ * (possibly through callees) along a path summarized by `summary`.
+ */
+private predicate reachesReturn(
+  Function f, DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary
+) {
+  isRelevant(nd, cfg) and
+  returnExpr(f, nd, _) and
+  summary = PathSummary::level()
+  or
+  exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+    flowStep(nd, cfg, mid, oldSummary) and
+    reachesReturn(f, mid, cfg, newSummary) and
+    summary = oldSummary.append(newSummary)
+  )
+}
+
+/**
+ * Holds if property `prop` of `pred` may flow into `succ` along a path summarized by
+ * `summary`.
+ */
+private predicate loadStep(
+  DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg,
+  PathSummary summary
+) {
+  basicLoadStep(pred, succ, prop) and
+  summary = PathSummary::level()
+  or
+  exists(Function f, DataFlow::PropRead read |
+    parameterPropRead(f, succ, pred, prop, read, cfg) and
+    reachesReturn(f, read, cfg, summary)
+  )
+}
+
+/**
  * Holds if `rhs` is the right-hand side of a write to property `prop`, and `nd` is reachable
  * from the base of that write under configuration `cfg` (possibly through callees) along a
  * path summarized by `summary`.
  */
+pragma[nomagic]
 private predicate reachableFromStoreBase(
   string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
   PathSummary summary
@@ -723,11 +772,14 @@ private predicate reachableFromStoreBase(
  *
  * In other words, `pred` may flow to `succ` through a property.
  */
+pragma[noinline]
 private predicate flowThroughProperty(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists(string prop, DataFlow::Node base | reachableFromStoreBase(prop, pred, base, cfg, summary) |
-    basicLoadStep(base, succ, prop)
+  exists(string prop, DataFlow::Node base, PathSummary oldSummary, PathSummary newSummary |
+    reachableFromStoreBase(prop, pred, base, cfg, oldSummary) and
+    loadStep(base, succ, prop, cfg, newSummary) and
+    summary = oldSummary.append(newSummary)
   )
 }
 

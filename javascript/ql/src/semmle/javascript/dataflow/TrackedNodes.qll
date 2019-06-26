@@ -151,6 +151,21 @@ private module NodeTracking {
   }
 
   /**
+   * Holds if `nd` may flow into a return statement of `f`
+   * (possibly through callees) along a path summarized by `summary`.
+   */
+  private predicate reachesReturn(Function f, DataFlow::Node nd, PathSummary summary) {
+    returnExpr(f, nd, _) and
+    summary = PathSummary::level()
+    or
+    exists (DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+      flowStep(nd, mid, oldSummary) and
+      reachesReturn(f, mid, newSummary) and
+      summary = oldSummary.append(newSummary)
+    )
+  }
+
+  /**
    * Holds if a function invoked at `invk` may return an expression into which `input`,
    * which is either an argument or a definition captured by the function, flows,
    * possibly through callees.
@@ -192,6 +207,21 @@ private module NodeTracking {
   }
 
   /**
+   * Holds if property `prop` of `pred` may flow into `succ` along a path summarized by
+   * `summary`.
+   */
+  private predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop,
+                            PathSummary summary) {
+    basicLoadStep(pred, succ, prop) and
+    summary = PathSummary::level()
+    or
+    exists (Function f, DataFlow::ParameterNode parm |
+      argumentPassing(succ, pred, f, parm) and
+      reachesReturn(f, parm.getAPropertyRead(prop), summary)
+    )
+  }
+
+  /**
    * Holds if `rhs` is the right-hand side of a write to property `prop`, and `nd` is reachable
    * from the base of that write (possibly through callees) along a path summarized by `summary`.
    */
@@ -216,9 +246,10 @@ private module NodeTracking {
   private predicate flowThroughProperty(
     DataFlow::Node pred, DataFlow::Node succ, PathSummary summary
   ) {
-    exists(string prop, DataFlow::Node base |
-      reachableFromStoreBase(prop, pred, base, summary) and
-      basicLoadStep(base, succ, prop)
+    exists (string prop, DataFlow::Node base, PathSummary oldSummary, PathSummary newSummary |
+      reachableFromStoreBase(prop, pred, base, oldSummary) and
+      loadStep(base, succ, prop, newSummary) and
+      summary = oldSummary.append(newSummary)
     )
   }
 

@@ -30,6 +30,7 @@
 | promises.js:12:22:12:31 | "rejected" | promises.js:24:20:24:20 | v |
 | promises.js:12:22:12:31 | "rejected" | promises.js:27:16:27:16 | v |
 | properties2.js:7:14:7:21 | "source" | properties2.js:8:12:8:24 | foo(source).p |
+| properties2.js:7:14:7:21 | "source" | properties2.js:33:13:33:20 | getP(o3) |
 | properties.js:2:16:2:24 | "tainted" | properties.js:5:14:5:23 | a.someProp |
 | properties.js:2:16:2:24 | "tainted" | properties.js:12:15:12:24 | x.someProp |
 | properties.js:2:16:2:24 | "tainted" | properties.js:14:15:14:27 | tmp1.someProp |
