@@ -411,6 +411,8 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
 
     override string getName() { none() }
 
+    /** Holds if this object requires context to determine the object resulting from a call to it.
+     * True for most callables. */
     override predicate contextSensitiveCallee() { none() }
 
 }
