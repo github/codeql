@@ -1,5 +1,5 @@
 /**
- * @name Potential usage of an object implementing ICryptoTransform class in a way that would be unsafe for concurrent threads.
+ * @name Thread-unsafe capturing of an ICryptoTransform object
  * @description An instance of a class that either implements or has a field of type System.Security.Cryptography.ICryptoTransform is being captured by a lambda,
  *              and used in what seems to be a thread initialization method.
  *              Using an instance of this class in concurrent threads is dangerous as it may not only result in an error,
