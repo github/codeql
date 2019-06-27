@@ -120,6 +120,7 @@ string algorithmBlacklistRegex() {
 private string algorithmWhitelist() {
   result = "RSA" or
   result = "SHA256" or
+  result = "SHA512" or
   result = "CCM" or
   result = "GCM" or
   result = "AES" or
