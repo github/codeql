@@ -49,9 +49,9 @@
 | 36 | ControlFlowNode for classmethod() | classmethod() |
 | 37 | ControlFlowNode for FunctionExpr | Function method1 |
 | 37 | ControlFlowNode for method1 | classmethod() |
-| 40 | ControlFlowNode for deco() | Function method2 |
+| 40 | ControlFlowNode for deco() | deco() |
 | 41 | ControlFlowNode for FunctionExpr | Function method2 |
-| 41 | ControlFlowNode for method2 | Function method2 |
+| 41 | ControlFlowNode for method2 | deco() |
 | 44 | ControlFlowNode for FunctionExpr | Function deco |
 | 44 | ControlFlowNode for deco | Function deco |
 | 47 | ControlFlowNode for v1 | class C |
@@ -93,7 +93,7 @@
 | 66 | ControlFlowNode for tuple | builtin-class tuple |
 | 69 | ControlFlowNode for Attribute | Attribute |
 | 69 | ControlFlowNode for X | class X |
-| 70 | ControlFlowNode for Attribute | Function method2 |
+| 70 | ControlFlowNode for Attribute | deco() |
 | 70 | ControlFlowNode for X | class X |
 | 72 | ControlFlowNode for ImportExpr | Module abc |
 | 72 | ControlFlowNode for ImportMember | Function abstractmethod |

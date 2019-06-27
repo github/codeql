@@ -222,6 +222,11 @@ cached newtype TObject =
             not common_module_name(modname + "." + attrname)
         )
     }
+    or
+    /* Opaque object representing the result of calling a decorator on a function that we don't understand */
+    TDecoratedFunction(CallNode call) {
+        call.isFunctionDecoratorCall()
+    }
 
 private predicate is_power_2(int n) {
     n = 1 or

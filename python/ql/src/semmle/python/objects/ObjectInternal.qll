@@ -523,6 +523,93 @@ module ObjectInternal {
 
 }
 
+class DecoratedFunction extends ObjectInternal, TDecoratedFunction {
+
+
+    CallNode getDecoratorCall() {
+        this = TDecoratedFunction(result)
+    }
+
+    override Builtin getBuiltin() {
+        none()
+    }
+
+    private ObjectInternal decoratedObject() {
+        PointsTo::pointsTo(this.getDecoratorCall().getArg(0), _, result, _)
+    }
+
+    override string getName() {
+        result = this.decoratedObject().getName()
+    }
+
+    override string toString() {
+        result = "Decorated " + this.decoratedObject().toString()
+    }
+
+    override boolean booleanValue() { result = true }
+
+    override ClassDecl getClassDeclaration() {
+        none()
+    }
+
+    override boolean isClass() { result = false }
+
+    override ObjectInternal getClass() { result = TUnknownClass() }
+
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
+        none()
+    }
+
+    override predicate notTestableForEquality() { none() }
+
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
+        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
+    }
+
+    override ControlFlowNode getOrigin() {
+        result = this.getDecoratorCall()
+    }
+
+    override int intValue() {
+        none()
+    }
+
+    override string strValue() {
+        none()
+    }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset) {
+        none()
+    }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        none()
+    }
+
+    override predicate attributesUnknown() { none() }
+
+    override predicate subscriptUnknown() { none() }
+
+    override boolean isDescriptor() { result = false }
+
+    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
+    override int length() { none() }
+
+    override ObjectInternal getIterNext() { none() }
+
+    override predicate contextSensitiveCallee() { none() }
+
+}
+
 /** Helper for boolean predicates returning both `true` and `false` */
 boolean maybe() {
     result = true or result = false
