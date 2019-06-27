@@ -26,7 +26,8 @@ predicate isExactEraStartDateCreation(ObjectCreation cr) {
     cr.getType().hasQualifiedName("System.DateTime") or
     cr.getType().hasQualifiedName("System.DateTimeOffset")
   ) and
-  isEraStart(cr.getArgument(0).getValue().toInt(), cr.getArgument(1).getValue().toInt(), cr.getArgument(2).getValue().toInt())
+  isEraStart(cr.getArgument(0).getValue().toInt(), cr.getArgument(1).getValue().toInt(),
+    cr.getArgument(2).getValue().toInt())
 }
 
 predicate isDateFromJapaneseCalendarToDateTime(MethodCall mc) {
@@ -64,9 +65,12 @@ predicate isDateFromJapaneseCalendarCreation(ObjectCreation cr) {
 
 from Expr expr, string message
 where
-  isDateFromJapaneseCalendarToDateTime(expr) and message = "'DateTime' created from Japanese calendar with explicit or current era and hard-coded year."
+  isDateFromJapaneseCalendarToDateTime(expr) and
+  message = "'DateTime' created from Japanese calendar with explicit or current era and hard-coded year."
   or
-  isDateFromJapaneseCalendarCreation(expr) and message = "'DateTime' constructed from Japanese calendar with explicit or current era and hard-coded year."
+  isDateFromJapaneseCalendarCreation(expr) and
+  message = "'DateTime' constructed from Japanese calendar with explicit or current era and hard-coded year."
   or
-  isExactEraStartDateCreation(expr) and message = "Hard-coded the beginning of the Japanese Heisei era."
+  isExactEraStartDateCreation(expr) and
+  message = "Hard-coded the beginning of the Japanese Heisei era."
 select expr, message

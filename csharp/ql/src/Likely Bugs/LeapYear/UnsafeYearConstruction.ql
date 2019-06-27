@@ -34,6 +34,10 @@ class UnsafeYearCreationFromArithmeticConfiguration extends TaintTracking::Confi
   }
 }
 
-from UnsafeYearCreationFromArithmeticConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from
+  UnsafeYearCreationFromArithmeticConfiguration config, DataFlow::PathNode source,
+  DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink, source, sink, "This $@ based on a 'System.DateTime.Year' property is used in a construction of a new 'System.DateTime' object, flowing to the 'year' argument.", source, "arithmetic operation"
+select sink, source, sink,
+  "This $@ based on a 'System.DateTime.Year' property is used in a construction of a new 'System.DateTime' object, flowing to the 'year' argument.",
+  source, "arithmetic operation"

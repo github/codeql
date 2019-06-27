@@ -63,9 +63,7 @@ private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) 
 private predicate reachesDisposeCall(DisposeCall disposeCall, DataFlow::Node node) {
   localFlowStep(node, DataFlow::exprNode(disposeCall.getQualifier()))
   or
-  exists(DataFlow::Node mid | reachesDisposeCall(disposeCall, mid) |
-    localFlowStep(node, mid)
-  )
+  exists(DataFlow::Node mid | reachesDisposeCall(disposeCall, mid) | localFlowStep(node, mid))
 }
 
 /**
