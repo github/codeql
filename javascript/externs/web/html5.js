@@ -2068,8 +2068,10 @@ MessagePort.prototype.onmessage;
  * @constructor
  * @extends {Event}
  * @template T
+ * @param {string} type
+ * @param {Object=} init
  */
-function MessageEvent() {}
+function MessageEvent(type, init) {}
 
 /**
  * The data payload of the message.
