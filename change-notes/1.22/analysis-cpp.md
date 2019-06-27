@@ -11,6 +11,7 @@
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Continue statement that does not continue (`cpp/continue-in-false-loop`) | Fewer false positive results | Analysis is now restricted to `do`-`while` loops. |
 | Expression has no effect (`cpp/useless-expression`) | Fewer false positive results | Calls to functions with the `weak` attribute are no longer considered to be side effect free, because they could be overridden with a different implementation at link time. |
 | No space for zero terminator (`cpp/no-space-for-terminator`) | Fewer false positive results | False positives involving strings that are not null-terminated have been excluded. |
 | Suspicious pointer scaling (`cpp/suspicious-pointer-scaling`) | Lower precision | The precision of this query has been reduced to "medium". This coding pattern is used intentionally and safely in a number of real-world projects. Results are no longer displayed on LGTM unless you choose to display them. |
