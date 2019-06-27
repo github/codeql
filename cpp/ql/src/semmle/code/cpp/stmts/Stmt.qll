@@ -57,8 +57,12 @@ class Stmt extends StmtParent, @stmt {
 
   override Location getLocation() { stmts(underlyingElement(this),_,result) }
 
-  /** Gets an int indicating the type of statement that this represents. */
-  int getKind() { stmts(underlyingElement(this),result,_) }
+  /**
+   * Gets an int indicating the type of statement that this represents.
+   *
+   * DEPRECATED: use the subclasses of `Stmt` rather than relying on this predicate.
+   */
+  deprecated int getKind() { stmts(underlyingElement(this),result,_) }
 
   override string toString() { none() }
 
