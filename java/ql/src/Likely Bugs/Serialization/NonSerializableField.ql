@@ -34,6 +34,7 @@ predicate serializableType(RefType t) {
   // Collection interfaces are not serializable, but their implementations are
   // likely to be.
   collectionOrMapType(t) and
+  not t instanceof RawType and
   forall(RefType param | param = t.(ParameterizedType).getATypeArgument() | serializableType(param))
   or
   exists(BoundedType bt | bt = t | serializableType(bt.getUpperBoundType()))
