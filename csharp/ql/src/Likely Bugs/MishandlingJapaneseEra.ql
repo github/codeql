@@ -4,7 +4,6 @@
  * @id cs/mishandling-japanese-era
  * @kind problem
  * @problem.severity warning
- * @precision medium
  * @tags reliability
  *       date-time
  */
