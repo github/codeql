@@ -2,13 +2,13 @@ private import csharp
 private import cil
 private import dotnet
 private import DataFlowPrivate
-private import DataFlowPrivateCached as C
+private import semmle.code.csharp.Caching
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
  * (`ExprNode`) or a parameter (`ParameterNode`).
  */
-class Node extends C::TNode {
+class Node extends TNode {
   /** Gets the expression corresponding to this node, if any. */
   DotNet::Expr asExpr() { result = this.(ExprNode).getExpr() }
 
@@ -17,7 +17,7 @@ class Node extends C::TNode {
    * if any.
    */
   Expr asExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
-    this = C::TExprNode(cfn) and
+    this = TExprNode(cfn) and
     result = cfn.getElement()
   }
 
@@ -56,13 +56,13 @@ class Node extends C::TNode {
  * `ControlFlow::Node`s.
  */
 class ExprNode extends Node {
-  ExprNode() { this = C::TExprNode(_) or this = C::TCilExprNode(_) }
+  ExprNode() { this = TExprNode(_) or this = TCilExprNode(_) }
 
   /** Gets the expression corresponding to this node. */
   DotNet::Expr getExpr() {
     result = this.getExprAtNode(_)
     or
-    this = C::TCilExprNode(result)
+    this = TCilExprNode(result)
   }
 
   /**
@@ -70,24 +70,32 @@ class ExprNode extends Node {
    * if any.
    */
   Expr getExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
-    this = C::TExprNode(cfn) and
+    this = TExprNode(cfn) and
     result = cfn.getElement()
   }
 
   override DotNet::Callable getEnclosingCallable() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
     result = this.getExpr().getEnclosingCallable()
   }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNode() { this = C::TExprNode(result) }
+  override ControlFlow::Nodes::ElementNode getControlFlowNode() {
+    Stages::DataFlowStage::forceCachingInSameStage() and this = TExprNode(result)
+  }
 
-  override DotNet::Type getType() { result = this.getExpr().getType() }
+  override DotNet::Type getType() {
+    Stages::DataFlowStage::forceCachingInSameStage() and result = this.getExpr().getType()
+  }
 
-  override Location getLocation() { result = this.getExpr().getLocation() }
+  override Location getLocation() {
+    Stages::DataFlowStage::forceCachingInSameStage() and result = this.getExpr().getLocation()
+  }
 
   override string toString() {
+    Stages::DataFlowStage::forceCachingInSameStage() and
     result = this.getControlFlowNode().toString()
     or
-    this = C::TCilExprNode(_) and
+    this = TCilExprNode(_) and
     result = "CIL expression"
   }
 }
@@ -102,9 +110,9 @@ class ParameterNode extends Node {
     explicitParameterNode(this, _) or
     this.(SsaDefinitionNode).getDefinition() instanceof
       ImplicitCapturedParameterNodeImpl::SsaCapturedEntryDefinition or
-    this = C::TInstanceParameterNode(_) or
-    this = C::TCilParameterNode(_) or
-    this = C::TTaintedParameterNode(_)
+    this = TInstanceParameterNode(_) or
+    this = TCilParameterNode(_) or
+    this = TTaintedParameterNode(_)
   }
 
   /** Gets the parameter corresponding to this node, if any. */
@@ -125,7 +133,7 @@ ExprNode exprNode(DotNet::Expr e) { result.getExpr() = e }
  */
 ParameterNode parameterNode(DotNet::Parameter p) { result.getParameter() = p }
 
-predicate localFlowStep = C::localFlowStepImpl/2;
+predicate localFlowStep = localFlowStepImpl/2;
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local

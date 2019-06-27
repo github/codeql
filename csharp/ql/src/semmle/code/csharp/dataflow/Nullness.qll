@@ -31,35 +31,32 @@ private import semmle.code.csharp.frameworks.Test
 /** An expression that may be `null`. */
 class MaybeNullExpr extends Expr {
   MaybeNullExpr() {
-    this instanceof NullLiteral
+    G::Internal::nullValue(this)
     or
-    this.(ConditionalExpr).getThen() instanceof MaybeNullExpr
-    or
-    this.(ConditionalExpr).getElse() instanceof MaybeNullExpr
+    this instanceof AsExpr
     or
     this.(AssignExpr).getRValue() instanceof MaybeNullExpr
     or
     this.(Cast).getExpr() instanceof MaybeNullExpr
     or
-    this instanceof AsExpr
+    this = any(ConditionalExpr ce |
+        ce.getThen() instanceof MaybeNullExpr
+        or
+        ce.getElse() instanceof MaybeNullExpr
+      )
+    or
+    this.(NullCoalescingExpr).getRightOperand() instanceof MaybeNullExpr
   }
 }
 
 /** An expression that is always `null`. */
 class AlwaysNullExpr extends Expr {
   AlwaysNullExpr() {
-    this instanceof NullLiteral
+    G::Internal::nullValue(this)
     or
-    this = any(ConditionalExpr ce |
-        ce.getThen() instanceof AlwaysNullExpr and
-        ce.getElse() instanceof AlwaysNullExpr
-      )
+    exists(AlwaysNullExpr e | G::Internal::nullValueImpliedUnary(e, this))
     or
-    this.(AssignExpr).getRValue() instanceof AlwaysNullExpr
-    or
-    this.(Cast).getExpr() instanceof AlwaysNullExpr
-    or
-    this instanceof DefaultValueExpr and this.getType().isRefType()
+    exists(AlwaysNullExpr e1, AlwaysNullExpr e2 | G::Internal::nullValueImpliedBinary(e1, e2, this))
     or
     this = any(Ssa::Definition def |
         forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nullDef(u))
@@ -83,7 +80,7 @@ class NonNullExpr extends Expr {
   NonNullExpr() {
     G::Internal::nonNullValue(this)
     or
-    exists(NonNullExpr mid | G::Internal::nonNullValueImplied(mid, this))
+    exists(NonNullExpr mid | G::Internal::nonNullValueImpliedUnary(mid, this))
     or
     this instanceof G::NullGuardedExpr
     or

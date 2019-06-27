@@ -241,24 +241,6 @@ class MultiImplementationsParent extends ExprOrStmtParent {
   }
 }
 
-/**
- * INTERNAL: Do not use.
- *
- * Holds if accessor `a` has an auto-implementation in file `f`.
- */
-predicate hasAccessorAutoImplementation(Accessor a, File f) {
-  exists(SourceLocation sl | sl = a.getALocation() |
-    f = sl.getFile() and
-    not exists(ControlFlowElement cfe, Location l | sl.getFile() = l.getFile() |
-      stmt_parent_top_level(cfe, _, a) and
-      stmt_location(cfe, l)
-      or
-      expr_parent_top_level_adjusted(cfe, 0, a) and
-      expr_location(cfe, l)
-    )
-  )
-}
-
 /** Gets the top-level type containing declaration `d`. */
 private ValueOrRefType getTopLevelDeclaringType(Declaration d) {
   result = getDeclaringType+(d) and
@@ -332,8 +314,24 @@ private int getImplementationSize(ValueOrRefType t, File f) {
   else result = getImplementationSize1(t, f)
 }
 
+/**
+ * Holds if declaration `d` should have a location in file `f`, because it is part of a
+ * type with multiple implementations, where the most likely run-time implementation is
+ * in `f`.
+ */
+private predicate mustHaveLocationInFile(Declaration d, File f) {
+  exists(MultiImplementationsParent p, ValueOrRefType t |
+    t = getTopLevelDeclaringType(p) and
+    f = p.getBestFile()
+  |
+    t = getTopLevelDeclaringType(d) or d = t or d = p
+  )
+}
+
+private predicate hasNoSourceLocation(Element e) { not e.getALocation() instanceof SourceLocation }
+
 cached
-module ExprOrStmtParentCached {
+private module Cached {
   cached
   ControlFlowElement getTopLevelChild(ExprOrStmtParent p, int i) {
     result = p.(MultiImplementationsParent).getBestChild(i)
@@ -342,32 +340,6 @@ module ExprOrStmtParentCached {
     (stmt_parent_top_level(result, i, p) or expr_parent_top_level_adjusted(result, i, p))
   }
 
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Holds if declaration `d` should have a location in file `f`, because it is part of a
-   * type with multiple implementations, where the most likely run-time implementation is
-   * in `f`.
-   */
-  cached
-  predicate mustHaveLocationInFile(Declaration d, File f) {
-    exists(MultiImplementationsParent p, ValueOrRefType t |
-      t = getTopLevelDeclaringType(p) and
-      f = p.getBestFile()
-    |
-      t = getTopLevelDeclaringType(d) or d = t or d = p
-    )
-  }
-
-  private predicate hasNoSourceLocation(Element e) {
-    not e.getALocation() instanceof SourceLocation
-  }
-
-  /**
-   * Gets the "best" location for element `e`. Where an element has locations in
-   * source and assemblies, choose the source location. If there are multiple assembly
-   * locations, choose only one.
-   */
   cached
   Location bestLocation(Element e) {
     result = e.getALocation().(SourceLocation) and
@@ -379,5 +351,24 @@ module ExprOrStmtParentCached {
     not exists(e.getALocation()) and
     result instanceof EmptyLocation
   }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Holds if accessor `a` has an auto-implementation in file `f`.
+   */
+  cached
+  predicate hasAccessorAutoImplementation(Accessor a, File f) {
+    exists(SourceLocation sl | sl = a.getALocation() |
+      f = sl.getFile() and
+      not exists(ControlFlowElement cfe, Location l | sl.getFile() = l.getFile() |
+        stmt_parent_top_level(cfe, _, a) and
+        stmt_location(cfe, l)
+        or
+        expr_parent_top_level_adjusted(cfe, 0, a) and
+        expr_location(cfe, l)
+      )
+    )
+  }
 }
-private import ExprOrStmtParentCached
+import Cached

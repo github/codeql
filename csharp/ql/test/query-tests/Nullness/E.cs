@@ -315,6 +315,33 @@ public class E
 
     public bool Field;
     string Make() => Field ? null : "";
+
+    static void Ex27(string s1, string s2)
+    {
+        if ((s1 ?? s2) is null)
+        {
+            s1.ToString(); // BAD (always)
+            s2.ToString(); // BAD (always)
+        }
+    }
+
+    static void Ex28()
+    {
+        var x = (string)null ?? null;
+        x.ToString(); // BAD (always)
+    }
+
+    static void Ex29(string s)
+    {
+        var x = s ?? "";
+        x.ToString(); // GOOD
+    }
+
+    static void Ex30(string s, object o)
+    {
+        var x = s ?? o as string;
+        x.ToString(); // BAD (maybe)
+    }
 }
 
 public static class Extensions

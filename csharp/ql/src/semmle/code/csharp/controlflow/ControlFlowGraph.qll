@@ -1933,8 +1933,7 @@ module ControlFlow {
 
     cached
     private module Cached {
-      cached
-      predicate forceCachingInSameStage() { any() }
+      private import semmle.code.csharp.Caching
 
       /**
        * Internal representation of control flow nodes in the control flow graph.
@@ -1942,7 +1941,10 @@ module ControlFlow {
        */
       cached
       newtype TNode =
-        TEntryNode(Callable c) { succEntrySplits(c, _, _, _) } or
+        TEntryNode(Callable c) {
+          Stages::ControlFlowStage::forceCachingInSameStage() and
+          succEntrySplits(c, _, _, _)
+        } or
         TExitNode(Callable c) {
           exists(Reachability::SameSplitsBlock b | b.isReachable(_) |
             succExitSplits(b.getAnElement(), _, c, _)

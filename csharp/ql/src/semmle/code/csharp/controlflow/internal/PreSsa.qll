@@ -50,11 +50,8 @@ private predicate phiNodeMaybeLive(PreBasicBlock bb, SimpleAssignable a) {
   exists(PreBasicBlock def | defAt(def, _, _, a) | def.inDominanceFrontier(bb))
 }
 
-cached
 private newtype TPreSsaDef =
   TExplicitPreSsaDef(PreBasicBlock bb, int i, AssignableDefinition def, SimpleAssignable a) {
-    Guards::Internal::CachedWithCFG::forceCachingInSameStage() and
-    ControlFlow::Internal::forceCachingInSameStage() and
     assignableDefAtLive(bb, i, def, a)
   } or
   TImplicitEntryPreSsaDef(Callable c, PreBasicBlock bb, Assignable a) {
@@ -124,6 +121,11 @@ class Definition extends TPreSsaDef {
       bb.getAPredecessor() = phiPred and
       ssaDefReachesEndOfBlock(phiPred, result, a)
     )
+  }
+
+  Definition getAnUltimateDefinition() {
+    result = this.getAPhiInput*() and
+    not this = TPhiPreSsaDef(_, _)
   }
 }
 
