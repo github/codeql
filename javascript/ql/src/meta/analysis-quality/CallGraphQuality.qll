@@ -180,9 +180,6 @@ class ExternalCall extends RelevantInvoke {
         or
         step.step(this.getAnArgument(), _)
       )
-      or
-      // Modelled as remote flow but not found by the above for whatever reason
-      this instanceof RemoteFlowSource
     )
   }
 }
