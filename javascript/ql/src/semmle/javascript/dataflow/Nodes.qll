@@ -868,7 +868,7 @@ module ClassNode {
       result = getAPrototypeReference().getAPropertySource(name)
       or
       kind = MemberKind::method() and
-      result = getConstructor().getReceiver().getAPropertyWrite(name).getRhs().getALocalSource()
+      result = getConstructor().getReceiver().getAPropertySource(name)
       or
       exists(PropertyAccessor accessor |
         accessor = getAnAccessor(kind) and

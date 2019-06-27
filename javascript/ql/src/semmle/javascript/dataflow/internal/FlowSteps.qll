@@ -102,11 +102,11 @@ private module CachedSteps {
    * or one of its super classes.
    */
   cached
-  predicate callResolvesToClass(DataFlow::InvokeNode invoke, DataFlow::ClassNode cls, string name) {
+  predicate callResolvesToMember(DataFlow::InvokeNode invoke, DataFlow::ClassNode cls, string name) {
     invoke = cls.getAnInstanceReference().getAMethodCall(name)
     or
     exists(DataFlow::ClassNode subclass |
-      callResolvesToClass(invoke, subclass, name) and
+      callResolvesToMember(invoke, subclass, name) and
       not exists(subclass.getAnInstanceMember(name)) and
       cls = subclass.getADirectSuperClass()
     )
@@ -120,7 +120,7 @@ private module CachedSteps {
     f = invk.getACallee(0)
     or
     exists(DataFlow::ClassNode cls, string name |
-      callResolvesToClass(invk, cls, name) and
+      callResolvesToMember(invk, cls, name) and
       f = cls.getInstanceMethod(name).getFunction()
     )
   }
