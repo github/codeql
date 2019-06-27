@@ -5,8 +5,7 @@
  * @problem.severity warning
  * @id cpp/leap-year/adding-365-days-per-year
  * @precision medium
- * @tags security
- *       leap-year
+ * @tags leap-year
  */
 
 import cpp

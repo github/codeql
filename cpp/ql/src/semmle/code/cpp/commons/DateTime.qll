@@ -1,35 +1,39 @@
 /**
- * Provides a library for helping working with a set of known data structures representing dates in C++
+ * Provides a library for helping working with a set of known data structures representing dates in C++.
  */
 
 import cpp
 
-class FileTimeStruct extends Type {
-  FileTimeStruct() {
-    this.toString().matches("_FILETIME")
-    or this.toString().matches("_FILETIME %")
+/**
+ * A type that is used to represent time in a 'packed' form, such as an integer.
+ */
+class PackedTimeType extends Type {
+  PackedTimeType() {
+    this.getName() = "_FILETIME"
+    or this.getName().matches("_FILETIME %")
   }
 }
 
 /**
- * Type of known data structures that are used for date representation.
+ * A type that is used to represent times and dates in an 'unpacked' form, that is,
+ * with separate fields for day, month, year etc.
  */
-class DateDataStruct extends Type {
-  DateDataStruct() {
-    this.toString().matches("_SYSTEMTIME")
-    or this.toString().matches("SYSTEMTIME")
-    or this.toString().matches("tm")
-    or this.toString().matches("_SYSTEMTIME %")
-    or this.toString().matches("SYSTEMTIME %")
-    or this.toString().matches("tm %")
+class UnpackedTimeType extends Type {
+  UnpackedTimeType() {
+    this.getName() = "_SYSTEMTIME"
+    or this.getName() = "SYSTEMTIME"
+    or this.getName() = "tm"
+    or this.getName().matches("_SYSTEMTIME %")
+    or this.getName().matches("SYSTEMTIME %")
+    or this.getName().matches("tm %")
   }
 }
 
 /**
- * abstract class of type FieldAccess that would represent an access to a field on a struct
+ * A `FieldAccess` that would represent an access to a field on a `struct`.
  */
-abstract class StructFieldAccess extends FieldAccess {
-    StructFieldAccess () {
+private abstract class DateStructFieldAccess extends FieldAccess {
+    DateStructFieldAccess () {
       exists(Field f, StructLikeClass struct |
         f.getAnAccess() = this
         and struct.getAField() = f
@@ -38,73 +42,70 @@ abstract class StructFieldAccess extends FieldAccess {
 }
 
 /**
- * abstract class of type FieldAccess where access is to a day of the month field of the struct
- * This is to be derived from for a specific struct's day of the month field access
+ * A `FieldAccess` where access is to a day of the month field of the `struct`.
  */
-abstract class DayFieldAccess extends StructFieldAccess { }
+abstract class DayFieldAccess extends DateStructFieldAccess { }
 
 /**
- * abstract class of type FieldAccess where access is to a month field of the struct
- * This is to be derived from for a specific struct's month field access
+ * A `FieldAccess` where access is to a month field of the `struct`.
  */
-abstract class MonthFieldAccess extends StructFieldAccess {}
+abstract class MonthFieldAccess extends DateStructFieldAccess {}
 
 /**
- * abstract class of type FieldAccess where access is to a year field of the struct
- * This is to be derived from for a specific struct's year field access
+ * A `FieldAccess` where access is to a year field of the `struct`.
  */
-abstract class YearFieldAccess extends StructFieldAccess {}
+abstract class YearFieldAccess extends DateStructFieldAccess {}
 
 /**
- * DayFieldAccess for SYSTEMTIME struct
+ * A `DayFieldAccess` for the `SYSTEMTIME` struct.
  */
 class SystemTimeDayFieldAccess extends DayFieldAccess {
   SystemTimeDayFieldAccess () {
-    this.toString().matches("wDay") 
+    this.getTarget().getName() = "wDay"
   }
 }
 
 /**
- * MonthFieldAccess for SYSTEMTIME struct
+ * A `MonthFieldAccess` for the `SYSTEMTIME` struct.
  */
 class SystemTimeMonthFieldAccess extends MonthFieldAccess {
   SystemTimeMonthFieldAccess () {
-    this.toString().matches("wMonth") 
+    this.getTarget().getName() = "wMonth"
   }
 }
 
 /**
- * YearFieldAccess for SYSTEMTIME struct
+ * A `YearFieldAccess` for the `SYSTEMTIME` struct.
  */
 class StructSystemTimeYearFieldAccess extends YearFieldAccess {
   StructSystemTimeYearFieldAccess() {
-    this.toString().matches("wYear") 
+    this.getTarget().getName() = "wYear"
   }
 }
 
 /**
- * DayFieldAccess for struct tm
+ * A `DayFieldAccess` for `struct tm`.
  */
 class StructTmDayFieldAccess extends DayFieldAccess {
   StructTmDayFieldAccess() {
-    this.toString().matches("tm_mday") 
+    this.getTarget().getName() = "tm_mday"
   }
 }
 
 /**
- * MonthFieldAccess for struct tm
+ * A `MonthFieldAccess` for `struct tm`.
  */
 class StructTmMonthFieldAccess extends MonthFieldAccess {
   StructTmMonthFieldAccess() {
-    this.toString().matches("tm_mon") 
+    this.getTarget().getName() = "tm_mon"
   }
 }
 
 /**
- * YearFieldAccess for struct tm
+ * A `YearFieldAccess` for `struct tm`.
  */
 class StructTmYearFieldAccess extends YearFieldAccess {
   StructTmYearFieldAccess() {
-    this.toString().matches("tm_year") 
+    this.getTarget().getName() = "tm_year"
   }
 }

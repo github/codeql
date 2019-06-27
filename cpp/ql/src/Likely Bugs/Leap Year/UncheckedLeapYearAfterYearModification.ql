@@ -5,8 +5,7 @@
  * @problem.severity warning
  * @id cpp/leap-year/unchecked-after-arithmetic-year-modification
  * @precision medium
- * @tags security
- *       leap-year
+ * @tags leap-year
  */
 
 import cpp
