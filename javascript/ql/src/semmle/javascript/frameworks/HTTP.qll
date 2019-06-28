@@ -248,8 +248,20 @@ module HTTP {
     /**
      * A standard server definition.
      */
-    abstract class StandardServerDefinition extends ServerDefinition, DataFlow::TrackedExpr {
+    abstract class StandardServerDefinition extends ServerDefinition {
       override RouteHandler getARouteHandler() { result.(StandardRouteHandler).getServer() = this }
+
+      private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+        t.start() and
+        result = DataFlow::exprNode(this)
+        or
+        exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+      }
+
+      /**
+       * Holds if `sink` may refer to this server definition.
+       */
+      predicate flowsTo(Expr sink) { ref(DataFlow::TypeTracker::end()).flowsToExpr(sink) }
     }
 
     /**
