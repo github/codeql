@@ -90,6 +90,8 @@ abstract class ClassObjectInternal extends ObjectInternal {
 
     override predicate subscriptUnknown() { none() }
 
+    override predicate contextSensitiveCallee() { none() }
+
     /* Classes aren't usually iterable, but can e.g. Enums */
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 

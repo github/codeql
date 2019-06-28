@@ -52,6 +52,8 @@ abstract class ModuleObjectInternal extends ObjectInternal {
         any(PackageObjectInternal package).getInitModule() = this
     }
 
+    override predicate contextSensitiveCallee() { none() }
+
     /* Modules aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
@@ -410,6 +412,8 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
 
     /* We know what this is called, but not its innate name */
     override string getName() { none() }
+
+    override predicate contextSensitiveCallee() { none() }
 
     /* Modules aren't iterable */
     override ObjectInternal getIterNext() { none() }

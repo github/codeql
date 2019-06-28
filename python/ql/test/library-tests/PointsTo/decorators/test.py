@@ -41,3 +41,35 @@ def func3():
 func1
 func2
 func3
+
+
+#Fancy decorators
+
+def register(name=None):
+    def decorator(func):
+        if not callable(func):
+            raise ValueError("not a callable")
+        return func
+
+    if callable(name):
+        return decorator(name)
+    else:
+        return decorator
+
+@register(17)
+def foo():
+    pass
+
+foo
+
+@register
+def bar():
+    pass
+
+bar()
+
+@register()
+def baz():
+    pass
+
+baz()

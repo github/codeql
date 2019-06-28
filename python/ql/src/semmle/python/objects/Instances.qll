@@ -51,6 +51,8 @@ abstract class InstanceObject extends ObjectInternal {
 
     override string getName() { none() }
 
+    override predicate contextSensitiveCallee() { none() }
+
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
 }
@@ -368,6 +370,8 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
 
     override string getName() { none() }
 
+    override predicate contextSensitiveCallee() { none() }
+
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
 }
@@ -475,6 +479,8 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
     }
 
     override string getName() { none() }
+
+    override predicate contextSensitiveCallee() { none() }
 
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 

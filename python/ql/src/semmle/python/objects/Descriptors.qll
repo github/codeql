@@ -91,6 +91,8 @@ class PropertyInternal extends ObjectInternal, TProperty {
         )
     }
 
+    override predicate contextSensitiveCallee() { none() }
+
     /* Properties aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
@@ -179,6 +181,8 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
         result = this.getFunction().getName()
     }
 
+    override predicate contextSensitiveCallee() { none() }
+
     /* Classmethods aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
@@ -252,6 +256,8 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
     override string getName() {
         result = this.getFunction().getName()
     }
+
+    override predicate contextSensitiveCallee() { none() }
 
     /* Staticmethods aren't iterable */
     override ObjectInternal getIterNext() { none() }

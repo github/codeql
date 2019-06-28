@@ -167,6 +167,8 @@ class ObjectInternal extends TObject {
      */
     abstract string getName();
 
+    abstract predicate contextSensitiveCallee();
+
     /** Gets the 'object' resulting from iterating over this object.
      * Used in the context `for i in this:`. The result is the 'object'
      * assigned to `i`.
@@ -256,6 +258,8 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
         result = this.getBuiltin().getName()
     }
 
+    override predicate contextSensitiveCallee() { none() }
+
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
 }
@@ -334,6 +338,8 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     override int length() { result = -1 }
 
     override string getName() { none() }
+
+    override predicate contextSensitiveCallee() { none() }
 
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
@@ -414,6 +420,10 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     override int length() { none() }
 
     override string getName() { none() }
+
+    /** Holds if this object requires context to determine the object resulting from a call to it.
+     * True for most callables. */
+    override predicate contextSensitiveCallee() { none() }
 
     override ObjectInternal getIterNext() { none() }
 
