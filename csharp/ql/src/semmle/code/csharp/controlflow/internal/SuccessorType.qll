@@ -127,9 +127,7 @@ module SuccessorTypes {
     override string toString() { if this.isNull() then result = "null" else result = "non-null" }
 
     override predicate matchesCompletion(Completion c) {
-      if this.isNull()
-      then c.(NullnessCompletion).isNull()
-      else c = any(NullnessCompletion nc | not nc.isNull())
+      if this.isNull() then c.(NullnessCompletion).isNull() else c.(NullnessCompletion).isNonNull()
     }
   }
 
@@ -176,7 +174,7 @@ module SuccessorTypes {
     override predicate matchesCompletion(Completion c) {
       if this.isMatch()
       then c.(MatchingCompletion).isMatch()
-      else c = any(MatchingCompletion mc | not mc.isMatch())
+      else c.(MatchingCompletion).isNonMatch()
     }
   }
 

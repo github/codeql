@@ -22,6 +22,7 @@
 import csharp
 private import semmle.code.csharp.commons.Constants
 private import semmle.code.csharp.frameworks.System
+private import NonReturning
 
 // Internal representation of completions
 private newtype TCompletion =
@@ -60,40 +61,75 @@ class Completion extends TCompletion {
    * otherwise it is a normal non-Boolean completion.
    */
   predicate isValidFor(ControlFlowElement cfe) {
-    this.(ThrowCompletion).getExceptionClass() = cfe.(TriedControlFlowElement).getAThrownException()
-    or
-    if mustHaveBooleanCompletion(cfe)
-    then
-      exists(boolean value | isBooleanConstant(cfe, value) |
-        this = TBooleanCompletion(value, value)
-      )
+    if cfe instanceof NonReturningCall
+    then this = cfe.(NonReturningCall).getACompletion()
+    else (
+      this.(ThrowCompletion).getExceptionClass() = cfe
+            .(TriedControlFlowElement)
+            .getAThrownException()
       or
-      not isBooleanConstant(cfe, _) and
-      exists(boolean b | this = TBooleanCompletion(b, b))
-      or
-      // Corner case: In `if (x ?? y) { ... }`, `x` must have both a `true`
-      // completion, a `false` completion, and a `null` completion (but not a
-      // non-`null` completion)
-      mustHaveNullnessCompletion(cfe) and
-      this = TNullnessCompletion(true)
-    else
-      if mustHaveNullnessCompletion(cfe)
-      then
-        exists(boolean value | isNullnessConstant(cfe, value) | this = TNullnessCompletion(value))
-        or
-        not isNullnessConstant(cfe, _) and
-        this = TNullnessCompletion(_)
+      if cfe instanceof ThrowElement
+      then this.(ThrowCompletion).getExceptionClass() = cfe.(ThrowElement).getThrownExceptionType()
       else
-        if mustHaveMatchingCompletion(cfe)
+        if mustHaveBooleanCompletion(cfe)
         then
-          exists(boolean value | isMatchingConstant(cfe, value) | this = TMatchingCompletion(value))
+          exists(boolean value | isBooleanConstant(cfe, value) |
+            this = TBooleanCompletion(value, value)
+          )
           or
-          not isMatchingConstant(cfe, _) and
-          this = TMatchingCompletion(_)
+          not isBooleanConstant(cfe, _) and
+          exists(boolean b | this = TBooleanCompletion(b, b))
+          or
+          // Corner case: In `if (x ?? y) { ... }`, `x` must have both a `true`
+          // completion, a `false` completion, and a `null` completion (but not a
+          // non-`null` completion)
+          mustHaveNullnessCompletion(cfe) and
+          this = TNullnessCompletion(true)
         else
-          if mustHaveEmptinessCompletion(cfe)
-          then this = TEmptinessCompletion(_)
-          else this = TNormalCompletion()
+          if mustHaveNullnessCompletion(cfe)
+          then
+            exists(boolean value | isNullnessConstant(cfe, value) |
+              this = TNullnessCompletion(value)
+            )
+            or
+            not isNullnessConstant(cfe, _) and
+            this = TNullnessCompletion(_)
+          else
+            if mustHaveMatchingCompletion(cfe)
+            then
+              exists(boolean value | isMatchingConstant(cfe, value) |
+                this = TMatchingCompletion(value)
+              )
+              or
+              not isMatchingConstant(cfe, _) and
+              this = TMatchingCompletion(_)
+            else
+              if mustHaveEmptinessCompletion(cfe)
+              then this = TEmptinessCompletion(_)
+              else
+                if cfe instanceof BreakStmt
+                then this instanceof BreakCompletion
+                else
+                  if cfe instanceof ContinueStmt
+                  then this instanceof ContinueCompletion
+                  else
+                    if cfe instanceof GotoDefaultStmt
+                    then this instanceof GotoDefaultCompletion
+                    else
+                      if cfe instanceof GotoStmt
+                      then
+                        cfe = this.(GotoLabelCompletion).getGotoStmt() or
+                        cfe = this.(GotoCaseCompletion).getGotoStmt()
+                      else
+                        if cfe instanceof ReturnStmt
+                        then this instanceof ReturnCompletion
+                        else
+                          if cfe instanceof YieldBreakStmt
+                          then
+                            // `yield break` behaves like a return statement
+                            this instanceof ReturnCompletion
+                          else this = TNormalCompletion()
+    )
   }
 
   /**
@@ -508,6 +544,9 @@ class NullnessCompletion extends ConditionalCompletion, TNullnessCompletion {
   /** Holds if the last sub expression of this expression evaluates to `null`. */
   predicate isNull() { this = TNullnessCompletion(true) }
 
+  /** Holds if the last sub expression of this expression evaluates to a non-`null` value. */
+  predicate isNonNull() { this = TNullnessCompletion(false) }
+
   override string toString() { if this.isNull() then result = "null" else result = "non-null" }
 }
 
@@ -518,6 +557,9 @@ class NullnessCompletion extends ConditionalCompletion, TNullnessCompletion {
 class MatchingCompletion extends ConditionalCompletion, TMatchingCompletion {
   /** Holds if there is a match. */
   predicate isMatch() { this = TMatchingCompletion(true) }
+
+  /** Holds if there is not a match. */
+  predicate isNonMatch() { this = TMatchingCompletion(false) }
 
   override string toString() { if this.isMatch() then result = "match" else result = "no-match" }
 }
