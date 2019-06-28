@@ -7,6 +7,8 @@
 | ConstantCondition.cs:64:18:64:18 | 2 | Pattern never matches. |
 | ConstantCondition.cs:66:18:66:18 | 3 | Pattern always matches. |
 | ConstantCondition.cs:77:18:77:20 | access to type Int32 | Pattern never matches. |
+| ConstantCondition.cs:97:13:97:13 | _ | Pattern always matches. |
+| ConstantCondition.cs:106:13:106:13 | _ | Pattern always matches. |
 | ConstantConditionBad.cs:5:16:5:20 | ... > ... | Condition always evaluates to 'false'. |
 | ConstantConditionalExpressionCondition.cs:11:22:11:34 | ... == ... | Condition always evaluates to 'true'. |
 | ConstantConditionalExpressionCondition.cs:12:21:12:25 | false | Condition always evaluates to 'false'. |
