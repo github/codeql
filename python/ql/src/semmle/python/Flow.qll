@@ -745,6 +745,8 @@ class DefinitionNode extends ControlFlowNode {
         exists(Assign a | a.getATarget().(Tuple).getAnElt().getAFlowNode() = this)
         or
         exists(Assign a | a.getATarget().(List).getAnElt().getAFlowNode() = this)
+        or
+        exists(For for | for.getTarget().getAFlowNode() = this)
     }
 
     /** flow node corresponding to the value assigned for the definition corresponding to this flow node */
@@ -864,7 +866,7 @@ class DictNode extends ControlFlowNode {
 
 }
 
-private Expr assigned_value(Expr lhs) {
+private AstNode assigned_value(Expr lhs) {
     /* lhs = result */
     exists(Assign a | a.getATarget() = lhs and result = a.getValue())
     or
@@ -881,6 +883,9 @@ private Expr assigned_value(Expr lhs) {
         lhs = target.getElt(index) and
         result = values.getElt(index)
     )
+    or
+    /* for lhs in seq: => `result` is the `for` node, representing the `iter(next(seq))` operation. */
+    result.(For).getTarget() = lhs
 }
 
 /** A flow node for a `for` statement. */

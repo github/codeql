@@ -83,6 +83,9 @@ private abstract class BooleanObjectInternal extends ConstantObjectInternal {
         none()
     }
 
+    /* Booleans aren't iterable */
+    override ObjectInternal getIterNext() { none() }
+
 }
 
 private class TrueObjectInternal extends BooleanObjectInternal, TTrue {
@@ -165,6 +168,9 @@ private class NoneObjectInternal extends ConstantObjectInternal, TNone {
 
     override int length() { none() }
 
+    /* None isn't iterable */
+    override ObjectInternal getIterNext() { none() }
+
 }
 
 
@@ -202,6 +208,9 @@ private class IntObjectInternal extends ConstantObjectInternal, TInt {
     }
 
     override int length() { none() }
+
+    /* ints aren't iterable */
+    override ObjectInternal getIterNext() { none() }
 
 }
 
@@ -248,6 +257,9 @@ private class FloatObjectInternal extends ConstantObjectInternal, TFloat {
 
     override int length() { none() }
 
+    /* floats aren't iterable */
+    override ObjectInternal getIterNext() { none() }
+
 }
 
 
@@ -290,6 +302,10 @@ private class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
         result = this.strValue().length()
     }
 
+    override ObjectInternal getIterNext() {
+        result = TUnknownInstance(this.getClass())
+    }
+
 }
 
 private class BytesObjectInternal extends ConstantObjectInternal, TBytes {
@@ -329,6 +345,10 @@ private class BytesObjectInternal extends ConstantObjectInternal, TBytes {
 
     override int length() {
         result = this.strValue().length()
+    }
+
+    override ObjectInternal getIterNext() {
+        result = TUnknownInstance(this.getClass())
     }
 
 }

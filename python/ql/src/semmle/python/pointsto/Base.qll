@@ -234,12 +234,20 @@ class ExceptionCapture  extends PyNodeDefinition {
 class MultiAssignmentDefinition extends PyNodeDefinition {
 
     MultiAssignmentDefinition() {
-        SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode())
+        SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode(), _, _)
     }
 
     override string getRepresentation() {
-        result = "..."
+        exists(ControlFlowNode value, int n |
+            this.indexOf(n, value) and
+            result = value.(DefinitionNode).getValue().getNode().toString() + "[" + n + "]"
+        )
     }
+
+    predicate indexOf(int index, SequenceNode lhs) {
+        SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode(), index, lhs)
+    }
+
 
 }
 
@@ -294,20 +302,26 @@ class ParameterDefinition extends PyNodeDefinition {
 
 }
 
-/** A definition of a variable in a for loop `for v in ...:` */
-class IterationDefinition extends PyNodeDefinition {
 
-    ControlFlowNode sequence;
+private newtype TIterationDefinition = 
+    TIterationDefinition_(SsaSourceVariable var, ControlFlowNode def, ControlFlowNode sequence) {
+        SsaSource::iteration_defined_variable(var, def, sequence)
+    }
 
-    IterationDefinition() {
-        SsaSource::iteration_defined_variable(this.getSourceVariable(), this.getDefiningNode(), sequence)
+/** DEPRECATED. For backwards compatibility only.
+ * A definition of a variable in a for loop `for v in ...:` */
+deprecated class IterationDefinition extends TIterationDefinition {
+
+    string toString() {
+        result = "IterationDefinition"
     }
 
     ControlFlowNode getSequence() {
-        result = sequence
+        this = TIterationDefinition_(_, _, result)
     }
 
 }
+
 
 /** A deletion of a variable `del v` */
 class DeletionDefinition extends PyNodeDefinition {

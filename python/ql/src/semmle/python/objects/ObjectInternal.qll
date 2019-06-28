@@ -167,6 +167,12 @@ class ObjectInternal extends TObject {
      */
     abstract string getName();
 
+    /** Gets the 'object' resulting from iterating over this object.
+     * Used in the context `for i in this:`. The result is the 'object'
+     * assigned to `i`.
+     */
+    abstract ObjectInternal getIterNext();
+
 }
 
 
@@ -249,6 +255,9 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
     override string getName() {
         result = this.getBuiltin().getName()
     }
+
+    override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
+
 }
 
 
@@ -325,6 +334,8 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     override int length() { result = -1 }
 
     override string getName() { none() }
+
+    override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
 }
 
@@ -403,6 +414,8 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     override int length() { none() }
 
     override string getName() { none() }
+
+    override ObjectInternal getIterNext() { none() }
 
 }
 

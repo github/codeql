@@ -5,6 +5,7 @@
 | a_simple.py:0 | Global Variable f1 | Entry node for Module code.a_simple | definition |
 | a_simple.py:0 | Global Variable func | Entry node for Module code.a_simple | definition |
 | a_simple.py:0 | Global Variable i1 | Entry node for Module code.a_simple | definition |
+| a_simple.py:0 | Global Variable multi_assign_and_packing | Entry node for Module code.a_simple | definition |
 | a_simple.py:0 | Global Variable multi_loop | Entry node for Module code.a_simple | definition |
 | a_simple.py:0 | Global Variable multi_loop_in_try | Entry node for Module code.a_simple | definition |
 | a_simple.py:0 | Global Variable s | Entry node for Module code.a_simple | definition |
@@ -42,6 +43,32 @@
 | a_simple.py:34 | Local Variable args | Entry node for Function f | definition |
 | a_simple.py:34 | Local Variable kwargs | ControlFlowNode for kwargs | definition |
 | a_simple.py:34 | Local Variable kwargs | Entry node for Function f | definition |
+| a_simple.py:38 | Global Variable multi_assign_and_packing | ControlFlowNode for multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable a | ControlFlowNode for a | definition |
+| a_simple.py:38 | Local Variable b | ControlFlowNode for b | definition |
+| a_simple.py:38 | Local Variable c | ControlFlowNode for c | definition |
+| a_simple.py:38 | Local Variable g | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable h | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable i | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable p | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable q | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable r | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable t | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable w | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable x | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable y | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:38 | Local Variable z | Entry node for Function multi_assign_and_packing | definition |
+| a_simple.py:39 | Local Variable t | ControlFlowNode for t | definition |
+| a_simple.py:40 | Local Variable w | ControlFlowNode for w | definition |
+| a_simple.py:41 | Local Variable p | ControlFlowNode for p | definition |
+| a_simple.py:41 | Local Variable q | ControlFlowNode for q | definition |
+| a_simple.py:41 | Local Variable r | ControlFlowNode for r | definition |
+| a_simple.py:42 | Local Variable x | ControlFlowNode for x | definition |
+| a_simple.py:42 | Local Variable y | ControlFlowNode for y | definition |
+| a_simple.py:42 | Local Variable z | ControlFlowNode for z | definition |
+| a_simple.py:49 | Local Variable g | ControlFlowNode for g | definition |
+| a_simple.py:49 | Local Variable h | ControlFlowNode for h | definition |
+| a_simple.py:49 | Local Variable i | ControlFlowNode for i | definition |
 | b_condition.py:0 | Global Variable __name__ | Entry node for Module code.b_condition | definition |
 | b_condition.py:0 | Global Variable __package__ | Entry node for Module code.b_condition | definition |
 | b_condition.py:0 | Global Variable double_attr_check | Entry node for Module code.b_condition | definition |

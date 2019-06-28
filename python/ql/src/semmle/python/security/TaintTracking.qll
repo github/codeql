@@ -1102,8 +1102,8 @@ library module TaintFlowImplementation {
     }
 
     /** Holds if `v` is defined by a `for` statement, the definition being `defn` */
-    cached predicate iteration_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, ControlFlowNode iter) {
-        exists(ForNode for | for.iterates(iter, fromnode.getNode())) and
+    cached predicate iteration_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, ForNode for) {
+        for.iterates(_, fromnode.getNode()) and
         totaint = TTrackedTaint(fromnode.getTaintKind().getTaintForIteration()) and
         tocontext = fromnode.getContext()
     }
@@ -1202,9 +1202,6 @@ library module TaintFlowImplementation {
         tainted_with(def, context, origin)
         or
         tainted_exception_capture(def, context, origin)
-        or
-        tainted_iteration(def, context, origin)
-
     }
 
     predicate tainted_scope_entry(ScopeEntryDefinition def, CallContext context, TaintedNode origin) {
@@ -1407,11 +1404,6 @@ library module TaintFlowImplementation {
         context = fromnode.getContext()
     }
 
-    pragma [noinline]
-    private predicate tainted_iteration(IterationDefinition def, CallContext context, TaintedNode fromnode) {
-        def.getDefiningNode() = fromnode.getNode() and
-        context = fromnode.getContext()
-    }
 
     /* A call that returns a copy (or similar) of the argument */
     predicate copyCall(ControlFlowNode fromnode, CallNode tonode) {

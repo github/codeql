@@ -7,6 +7,7 @@
 | a_simple.py:0 | f1 | Exit node for Module code.a_simple |
 | a_simple.py:0 | func | Exit node for Module code.a_simple |
 | a_simple.py:0 | i1 | Exit node for Module code.a_simple |
+| a_simple.py:0 | multi_assign_and_packing | Exit node for Module code.a_simple |
 | a_simple.py:0 | multi_loop | Exit node for Module code.a_simple |
 | a_simple.py:0 | multi_loop_in_try | Exit node for Module code.a_simple |
 | a_simple.py:0 | object | Exit node for Module code.a_simple |
@@ -40,6 +41,37 @@
 | a_simple.py:34 | kwargs | Exit node for Function f |
 | a_simple.py:35 | args | ControlFlowNode for args |
 | a_simple.py:36 | kwargs | ControlFlowNode for kwargs |
+| a_simple.py:38 | a | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | b | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | c | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | g | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | h | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | i | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | p | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | q | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | r | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | t | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | w | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | x | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | y | Exit node for Function multi_assign_and_packing |
+| a_simple.py:38 | z | Exit node for Function multi_assign_and_packing |
+| a_simple.py:40 | a | ControlFlowNode for a |
+| a_simple.py:40 | b | ControlFlowNode for b |
+| a_simple.py:40 | c | ControlFlowNode for c |
+| a_simple.py:41 | t | ControlFlowNode for t |
+| a_simple.py:42 | w | ControlFlowNode for w |
+| a_simple.py:43 | p | ControlFlowNode for p |
+| a_simple.py:44 | q | ControlFlowNode for q |
+| a_simple.py:45 | r | ControlFlowNode for r |
+| a_simple.py:46 | x | ControlFlowNode for x |
+| a_simple.py:47 | y | ControlFlowNode for y |
+| a_simple.py:48 | z | ControlFlowNode for z |
+| a_simple.py:49 | a | ControlFlowNode for a |
+| a_simple.py:49 | b | ControlFlowNode for b |
+| a_simple.py:49 | c | ControlFlowNode for c |
+| a_simple.py:50 | g | ControlFlowNode for g |
+| a_simple.py:51 | h | ControlFlowNode for h |
+| a_simple.py:52 | i | ControlFlowNode for i |
 | b_condition.py:0 | Exception | Exit node for Module code.b_condition |
 | b_condition.py:0 | TypeError | Exit node for Module code.b_condition |
 | b_condition.py:0 | __name__ | Exit node for Module code.b_condition |
