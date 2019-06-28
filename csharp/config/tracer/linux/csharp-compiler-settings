@@ -4,6 +4,6 @@
   prepend --compiler
   prepend "${compiler}"
   prepend --cil
-**/bin/mono*:
+**/mono*:
 **/dotnet:
   invoke ${odasa_tools}/extract-csharp.sh
