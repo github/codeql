@@ -36,6 +36,7 @@ We welcome feedback on the new implementation, particularly any surprising chang
 | **Query** | **Tags** | **Purpose** |
 |-----------|----------|-------------|
 | Accepting unknown SSH host keys when using Paramiko (`py/paramiko-missing-host-key-validation`) | security, external/cwe/cwe-295 | Finds instances where Paramiko is configured to accept unknown host keys. Results are shown [on LGTM](https://lgtm.com/rules/1508297729270/) by default. |
+| Pythagorean calculation with sub-optimal numerics (`py/pythagorean`) | accuracy | Finds instances of hypotenuse calculation using `math.sqrt` instead of `math.hypot`. Results are not shown on LGTM by default. |
 | Use of 'return' or 'yield' outside a function (`py/return-or-yield-outside-function`) | reliability, correctness | Finds instances where `return`, `yield`, and `yield from` are used outside a function. Results are not shown on LGTM by default. |
 
 ## Changes to code extraction

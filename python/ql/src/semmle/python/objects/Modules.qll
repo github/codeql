@@ -182,13 +182,8 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         or
         exists(Module init |
             init = this.getSourceModule() and
-            (
-                /* There is no variable shadowing the name of the child module */
-                not exists(EssaVariable var | var.getAUse() = init.getANormalExit() and var.getSourceVariable().getName() = name)
-                or
-                /* The variable shadowing the name of the child module is undefined at exit */
-                ModuleAttributes::pointsToAtExit(init, name, ObjectInternal::undefined(), _)
-            ) and
+            /* The variable shadowing the name of the child module is undefined at exit */
+            ModuleAttributes::pointsToAtExit(init, name, ObjectInternal::undefined(), _) and
             not name = "__init__" and
             value = this.submodule(name) and
             origin = CfgOrigin::fromObject(value)
@@ -254,6 +249,7 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
     }
 
     pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
+        value != ObjectInternal::undefined() and
         ModuleAttributes::pointsToAtExit(this.getSourceModule(), name, value, origin)
     }
 
