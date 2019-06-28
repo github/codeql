@@ -838,6 +838,7 @@ private predicate summarizedHigherOrderCall(
  * - The flow label mapping of the summary corresponds to the transformation from `arg` to the
  *   invocation of the callback.
  */
+pragma[nomagic]
 private predicate higherOrderCall(
   DataFlow::Node arg, DataFlow::SourceNode callback, int i, DataFlow::Configuration cfg,
   PathSummary summary
