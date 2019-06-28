@@ -401,11 +401,16 @@ class ControlFlowNode extends @py_flow_node {
         py_true_successors(this, _) or py_false_successors(this, _)
     }
 
-    /* Gets a CFG node that corresponds to a child of the AST node for this node */
-    pragma [noinline]
     ControlFlowNode getAChild() {
-        this.getNode().getAChildNode() = result.getNode() and
+        result = this.getExprChild() and
         result.getBasicBlock().dominates(this.getBasicBlock())
+    }
+
+    /* join-ordering helper for `getAChild() */
+    pragma [noinline]
+    private ControlFlowNode getExprChild() {
+        this.getNode().(Expr).getAChildNode() = result.getNode() and
+        not this instanceof UnaryExprNode
     }
 
 }
@@ -1066,7 +1071,7 @@ class BasicBlock extends @py_flow_node {
         this.strictlyDominates(other)
     }
 
-    BasicBlock getImmediateDominator() {
+    cached BasicBlock getImmediateDominator() {
         this.getAPart().getImmediateDominator() = result.getAPart()
     }
 
