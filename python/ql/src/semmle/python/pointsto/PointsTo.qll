@@ -208,6 +208,8 @@ cached module PointsToInternal {
         AttributePointsTo::pointsTo(f, context, value, origin)
         or
         f.(PointsToExtension).pointsTo(context, value, origin)
+        or
+        iteration_points_to(f, context, value, origin)
     }
 
     /** Holds if the attribute `name` is required for `obj` 
@@ -368,6 +370,20 @@ cached module PointsToInternal {
         //)
     }
 
+    /* Treat `ForNode` as intermediate step between sequence and iteration variable.
+     * In otherwords treat `for i in x:` as being equivalent to `i = next(iter(x))`
+     * attaching the value of `next(iter(x))` to the `ForNode`.
+     */
+    pragma [noinline]
+    private predicate iteration_points_to(ForNode for, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        exists(ControlFlowNode seqNode, ObjectInternal seq |
+            for.iterates(_, seqNode) and
+            pointsTo(seqNode, context, seq, _) and
+            value = seq.getIterNext() and
+            origin = for
+        )
+    }
+
     /** Holds if the ESSA definition `def`  refers to `(value, origin)` given the context `context`. */
     private predicate ssa_definition_points_to(EssaDefinition def, PointsToContext context, ObjectInternal value, CfgOrigin origin) {
         ssa_phi_points_to(def, context, value, origin)
@@ -394,6 +410,8 @@ cached module PointsToInternal {
         or
         assignment_points_to(def, context, value, origin)
         or
+        multi_assignment_points_to(def, context, value, origin)
+        or
         self_parameter_points_to(def, context, value, origin)
         or
         delete_points_to(def, context, value, origin)
@@ -403,8 +421,6 @@ cached module PointsToInternal {
         scope_entry_points_to(def, context, value, origin)
         or
         InterModulePointsTo::implicit_submodule_points_to(def, value, origin) and context.isImport()
-        or
-        iteration_definition_points_to(def, context, value, origin)
         /*
          * No points-to for non-local function entry definitions yet.
          */
@@ -484,6 +500,16 @@ cached module PointsToInternal {
         pointsTo(def.getValue(), context, value, origin)
     }
 
+    pragma [noinline]
+    private predicate multi_assignment_points_to(MultiAssignmentDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
+        exists(int index, ControlFlowNode rhs, SequenceObjectInternal sequence |
+            def.indexOf(index, rhs) and
+            pointsTo(rhs, context, sequence, _) and
+            value = sequence.getItem(index) and
+            origin = def.getDefiningNode()
+        )
+    }
+
     /** Points-to for deletion: `del name`. */
     pragma [noinline]
     private predicate delete_points_to(DeletionDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
@@ -561,11 +587,6 @@ cached module PointsToInternal {
             not exists(EssaVariable v | v.getSourceVariable() = var and v.getScope() = mod) and
             value = ObjectInternal::builtin(var.getId()) and origin = def.getDefiningNode()
         )
-    }
-
-    private predicate iteration_definition_points_to(IterationDefinition def, PointsToContext context, ObjectInternal value, ControlFlowNode origin) {
-        pointsTo(def.getSequence(), context, ObjectInternal::unknown(), _) and
-        value = ObjectInternal::unknown() and origin = def.getDefiningNode()
     }
 
     /** Holds if `f` is an expression node `tval if cond else fval` and points to `(value, origin)`. */

@@ -8,7 +8,7 @@ private import CIL
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
  * without branches or joins.
  */
-class BasicBlock extends Internal::TBasicBlockStart {
+class BasicBlock extends Cached::TBasicBlockStart {
   /** Gets an immediate successor of this basic block, if any. */
   BasicBlock getASuccessor() { result.getFirstNode() = getLastNode().getASuccessor() }
 
@@ -52,13 +52,13 @@ class BasicBlock extends Internal::TBasicBlockStart {
   BasicBlock getAFalseSuccessor() { result.getFirstNode() = getLastNode().getFalseSuccessor() }
 
   /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
-  ControlFlowNode getNode(int pos) { Internal::bbIndex(getFirstNode(), result, pos) }
+  ControlFlowNode getNode(int pos) { Cached::bbIndex(getFirstNode(), result, pos) }
 
   /** Gets a control flow node in this basic block. */
   ControlFlowNode getANode() { result = getNode(_) }
 
   /** Gets the first control flow node in this basic block. */
-  ControlFlowNode getFirstNode() { this = Internal::TBasicBlockStart(result) }
+  ControlFlowNode getFirstNode() { this = Cached::TBasicBlockStart(result) }
 
   /** Gets the last control flow node in this basic block. */
   ControlFlowNode getLastNode() { result = getNode(length() - 1) }
@@ -246,7 +246,7 @@ class BasicBlock extends Internal::TBasicBlockStart {
  * Internal implementation details.
  */
 cached
-private module Internal {
+private module Cached {
   /** Internal representation of basic blocks. */
   cached
   newtype TBasicBlock = TBasicBlockStart(ControlFlowNode cfn) { startsBB(cfn) }

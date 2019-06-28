@@ -209,3 +209,18 @@ def reversed_inequality(x):
     if 4 > x:
         count
 
+
+#Splittings with boolean expressions:
+def split_bool1(x=None,y=None):
+    if x and y:
+        raise
+    if not (x or y):
+        raise
+    if x:
+        count
+    else:
+        count
+    if y:
+        count
+    else:
+        count

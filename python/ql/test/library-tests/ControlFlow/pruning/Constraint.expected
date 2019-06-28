@@ -105,3 +105,10 @@
 | 207 | x | x | Truthy |
 | 209 | Compare | x | < 4 |
 | 209 | x | x | Truthy |
+| 214 | None | None | Truthy |
+| 215 | x | x | Truthy |
+| 215 | y | y | Truthy |
+| 217 | x | x | Truthy |
+| 217 | y | y | Truthy |
+| 219 | x | x | Truthy |
+| 223 | y | y | Truthy |

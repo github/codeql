@@ -2,7 +2,7 @@ SYSTEMTIME st;
 FILETIME ft;
 GetSystemTime(&st);
 
-// Flawed logic will result in invalid date
+// Flawed logic may result in invalid date
 st.wYear++;
 
 // Check for leap year, and adjust the date accordingly

@@ -5,21 +5,20 @@
  * @problem.severity warning
  * @id cpp/leap-year/unchecked-return-value-for-time-conversion-function
  * @precision medium
- * @tags security
- *       leap-year
+ * @tags leap-year
  */
 
 import cpp
 import LeapYear
 
 /**
- * A YearFieldAccess that is modifying the year by any arithmetic operation
+ * A `YearFieldAccess` that is modifying the year by any arithmetic operation.
  *
  * NOTE:
  * To change this class to work for general purpose date transformations that do not check the return value,
  * make the following changes:
- *  -> extends FieldAccess (line 27)
- *  -> this.isModified (line 33)
+ *  - change `extends LeapYearFieldAccess` to `extends FieldAccess`.
+ *  - change `this.isModifiedByArithmeticOperation()` to `this.isModified()`.
  * Expect a lower precision for a general purpose version.
  */
 class DateStructModifiedFieldAccess extends LeapYearFieldAccess {
@@ -27,37 +26,37 @@ class DateStructModifiedFieldAccess extends LeapYearFieldAccess {
     exists(Field f, StructLikeClass struct |
       f.getAnAccess() = this and
       struct.getAField() = f and
-      struct.getUnderlyingType() instanceof DateDataStruct and
+      struct.getUnderlyingType() instanceof UnpackedTimeType and
       this.isModifiedByArithmeticOperation()
     )
   }
 }
 
 /**
- * This is a list of APIs that will get the system time, and therefore guarantee that the value is valid
+ * This is a list of APIs that will get the system time, and therefore guarantee that the value is valid.
  */
 class SafeTimeGatheringFunction extends Function {
   SafeTimeGatheringFunction() {
-    this.getQualifiedName().matches("GetFileTime") or
-    this.getQualifiedName().matches("GetSystemTime") or
-    this.getQualifiedName().matches("NtQuerySystemTime")
+    this.getQualifiedName() = "GetFileTime" or
+    this.getQualifiedName() = "GetSystemTime" or
+    this.getQualifiedName() = "NtQuerySystemTime"
   }
 }
 
 /**
- * This list of APIs should check for the return value to detect problems during the conversion
+ * This list of APIs should check for the return value to detect problems during the conversion.
  */
 class TimeConversionFunction extends Function {
   TimeConversionFunction() {
-    this.getQualifiedName().matches("FileTimeToSystemTime") or
-    this.getQualifiedName().matches("SystemTimeToFileTime") or
-    this.getQualifiedName().matches("SystemTimeToTzSpecificLocalTime") or
-    this.getQualifiedName().matches("SystemTimeToTzSpecificLocalTimeEx") or
-    this.getQualifiedName().matches("TzSpecificLocalTimeToSystemTime") or
-    this.getQualifiedName().matches("TzSpecificLocalTimeToSystemTimeEx") or
-    this.getQualifiedName().matches("RtlLocalTimeToSystemTime") or
-    this.getQualifiedName().matches("RtlTimeToSecondsSince1970") or
-    this.getQualifiedName().matches("_mkgmtime")
+    this.getQualifiedName() = "FileTimeToSystemTime" or
+    this.getQualifiedName() = "SystemTimeToFileTime" or
+    this.getQualifiedName() = "SystemTimeToTzSpecificLocalTime" or
+    this.getQualifiedName() = "SystemTimeToTzSpecificLocalTimeEx" or
+    this.getQualifiedName() = "TzSpecificLocalTimeToSystemTime" or
+    this.getQualifiedName() = "TzSpecificLocalTimeToSystemTimeEx" or
+    this.getQualifiedName() = "RtlLocalTimeToSystemTime" or
+    this.getQualifiedName() = "RtlTimeToSecondsSince1970" or
+    this.getQualifiedName() = "_mkgmtime"
   }
 }
 
@@ -65,7 +64,7 @@ from FunctionCall fcall, TimeConversionFunction trf, Variable var
 where
   fcall = trf.getACallToThisFunction() and
   fcall instanceof ExprInVoidContext and
-  var.getUnderlyingType() instanceof DateDataStruct and
+  var.getUnderlyingType() instanceof UnpackedTimeType and
   (
     exists(AddressOfExpr aoe |
       aoe = fcall.getAnArgument() and

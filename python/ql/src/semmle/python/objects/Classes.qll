@@ -92,6 +92,9 @@ abstract class ClassObjectInternal extends ObjectInternal {
 
     override predicate contextSensitiveCallee() { none() }
 
+    /* Classes aren't usually iterable, but can e.g. Enums */
+    override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
+
 }
 
 /** Class representing Python source classes */

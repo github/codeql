@@ -58,11 +58,9 @@ abstract class PythonSsaSourceVariable extends SsaSourceVariable {
         or
         SsaSource::assignment_definition(this, def, _)
         or
-        SsaSource::multi_assignment_definition(this, def)
+        SsaSource::multi_assignment_definition(this, def, _, _)
         or
         SsaSource::deletion_definition(this, def)
-        or
-        SsaSource::iteration_defined_variable(this, def, _)
         or
         SsaSource::init_module_submodule_defn(this, def)
         or
@@ -381,10 +379,11 @@ cached module SsaSource {
     }
 
     /** Holds if `v` is defined by multiple assignment at `defn`. */
-    cached predicate multi_assignment_definition(Variable v, ControlFlowNode defn) {
+    cached predicate multi_assignment_definition(Variable v, ControlFlowNode defn, int n, SequenceNode lhs) {
         defn.(NameNode).defines(v) and 
         not exists(defn.(DefinitionNode).getValue()) and
-        exists(SequenceNode s | s.getAnElement() = defn)
+        lhs.getElement(n) = defn and
+        lhs.getBasicBlock().dominates(defn.getBasicBlock())
     }
 
     /** Holds if `v` is defined by a `for` statement, the definition being `defn` */

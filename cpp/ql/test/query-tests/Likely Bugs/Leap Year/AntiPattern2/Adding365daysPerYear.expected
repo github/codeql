@@ -1,2 +1,0 @@
-| test.cpp:173:29:173:38 | qwLongTime | This arithmetic operation $@ uses a constant value of 365 ends up modifying the date/time located at $@, without considering leap year scenarios. | test.cpp:170:2:170:47 | ... += ... | ... += ... | test.cpp:173:29:173:38 | qwLongTime | qwLongTime |
-| test.cpp:174:30:174:39 | qwLongTime | This arithmetic operation $@ uses a constant value of 365 ends up modifying the date/time located at $@, without considering leap year scenarios. | test.cpp:170:2:170:47 | ... += ... | ... += ... | test.cpp:174:30:174:39 | qwLongTime | qwLongTime |

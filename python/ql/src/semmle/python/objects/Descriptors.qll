@@ -93,6 +93,9 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
     override predicate contextSensitiveCallee() { none() }
 
+    /* Properties aren't iterable */
+    override ObjectInternal getIterNext() { none() }
+
 }
 
 /** A class representing classmethods in Python */
@@ -180,6 +183,9 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override predicate contextSensitiveCallee() { none() }
 
+    /* Classmethods aren't iterable */
+    override ObjectInternal getIterNext() { none() }
+
 }
 
 class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
@@ -252,5 +258,8 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
     }
 
     override predicate contextSensitiveCallee() { none() }
+
+    /* Staticmethods aren't iterable */
+    override ObjectInternal getIterNext() { none() }
 
 }

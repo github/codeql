@@ -656,3 +656,27 @@ IncrementMonth(LPSYSTEMTIME pst)
 		pst->wYear++;
 	}
 }
+
+/////////////////////////////////////////////////////////
+
+void mkDateTest(int year)
+{
+	struct tm t;
+
+	t.tm_sec = 0;
+	t.tm_min = 0;
+	t.tm_hour = 0;
+	t.tm_mday = 1;  // day of the month - [1, 31]
+	t.tm_mon = 0;   // months since January - [0, 11]
+	if (year >= 1900)
+	{
+		// 4-digit year
+		t.tm_year = year - 1900; // GOOD
+	} else if ((year >= 0) && (year < 100)) {
+		// 2-digit year assumed in the range 2000 - 2099
+		t.tm_year = year + 100; // GOOD [FALSE POSITIVE]
+	} else {
+		// fail
+	}
+	// ...
+}

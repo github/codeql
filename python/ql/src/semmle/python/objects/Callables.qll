@@ -48,6 +48,9 @@ abstract class CallableObjectInternal extends ObjectInternal {
 
     override string strValue() { none() }
 
+    /* Callables aren't iterable */
+    override ObjectInternal getIterNext() { none() }
+
 }
 
 /** Class representing Python functions */

@@ -34,6 +34,8 @@ abstract class SequenceObjectInternal extends ObjectInternal {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override ObjectInternal getIterNext() { result = this.getItem(_) }
+
 }
 
 abstract class TupleObjectInternal extends SequenceObjectInternal {

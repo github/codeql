@@ -68,7 +68,8 @@ abstract class RegexString extends Expr {
     /** Whether there is a character class, between start (inclusive) and end (exclusive) */
     predicate charSet(int start, int end) {
         exists(int inner_start, int inner_end |
-            this.char_set_start(start, inner_start) |
+            this.char_set_start(start, inner_start) and
+            not this.char_set_start(_, start) |
             end = inner_end + 1 and inner_end > inner_start and
             this.nonEscapedCharAt(inner_end) = "]" and
             not exists(int mid | this.nonEscapedCharAt(mid) = "]" |

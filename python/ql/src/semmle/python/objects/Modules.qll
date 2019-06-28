@@ -54,6 +54,9 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     override predicate contextSensitiveCallee() { none() }
 
+    /* Modules aren't iterable */
+    override ObjectInternal getIterNext() { none() }
+
 }
 
 /** A class representing built-in modules */
@@ -411,6 +414,9 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
     override string getName() { none() }
 
     override predicate contextSensitiveCallee() { none() }
+
+    /* Modules aren't iterable */
+    override ObjectInternal getIterNext() { none() }
 
 }
 

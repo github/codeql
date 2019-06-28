@@ -3,6 +3,7 @@
 | a_simple.py:0 | Module code.a_simple | f1 | float 1.0 |
 | a_simple.py:0 | Module code.a_simple | func | Function func |
 | a_simple.py:0 | Module code.a_simple | i1 | int 0 |
+| a_simple.py:0 | Module code.a_simple | multi_assign_and_packing | Function multi_assign_and_packing |
 | a_simple.py:0 | Module code.a_simple | multi_loop | Function multi_loop |
 | a_simple.py:0 | Module code.a_simple | multi_loop_in_try | Function multi_loop_in_try |
 | a_simple.py:0 | Module code.a_simple | s | Tuple |

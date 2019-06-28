@@ -76,10 +76,10 @@ class Expr extends StmtParent, @expr {
 
   /**
    * Gets an integer indicating the type of expression that this represents.
-   * 
-   * Consider using subclasses of `Expr` rather than relying on this predicate. 
+   *
+   * DEPRECATED: use the subclasses of `Expr` rather than relying on this predicate.
    */
-  int getKind() { exprs(underlyingElement(this),result,_) }
+  deprecated int getKind() { exprs(underlyingElement(this),result,_) }
 
   /** Gets a textual representation of this expression. */
   override string toString() { none() }
