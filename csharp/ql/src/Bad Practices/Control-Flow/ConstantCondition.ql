@@ -101,6 +101,13 @@ class ConstantMatchingCondition extends ConstantCondition {
     )
   }
 
+  override predicate isWhiteListed() {
+    exists(SwitchExpr se |
+      se.getACase().getPattern() = this.(DiscardExpr) and
+      strictcount(se.getACase()) > 1
+    )
+  }
+
   override string getMessage() {
     if b = true then result = "Pattern always matches." else result = "Pattern never matches."
   }
