@@ -371,7 +371,7 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
   override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
 
   language[monotonicAggregates]
-  string annotatedTypeArgumentsToString() {
+  private string annotatedTypeArgumentsToString() {
     result = concat(int i |
         exists(this.getAnnotatedTypeArgument(i))
       |
