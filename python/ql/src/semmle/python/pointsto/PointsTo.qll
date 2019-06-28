@@ -833,18 +833,18 @@ module InterProceduralPointsTo {
         (value != ObjectInternal::unknown() or not f.isDecoratorCall()) and
         call_points_to_from_callee(f, context, value, origin)
         or
-        call_result_is_first_argument(f, context) and
+        f.isFunctionDecoratorCall() and
+        call_points_to_from_callee(f, context, ObjectInternal::unknown(), _) and
+        value = TDecoratedFunction(f) and origin = f
+        or
+        f.isClassDecoratorCall() and
+        call_points_to_from_callee(f, context, ObjectInternal::unknown(), _) and
+        PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
+        or
+        Types::six_add_metaclass(f, context, _, _) and
         PointsToInternal::pointsTo(f.getArg(0), context, value, origin)
         or
         Expressions::typeCallPointsTo(f, context, value, origin, _, _)
-    }
-
-    /** Helper for call_points_to to improve join-order */
-    private predicate call_result_is_first_argument(CallNode f, PointsToContext context) {
-        Types::six_add_metaclass(f, context, _, _)
-        or
-        /* A decorator and we don't understand it. Use the original, undecorated value */
-        f.isDecoratorCall() and call_points_to_from_callee(f, context, ObjectInternal::unknown(), _)
     }
 
     /** Helper for call_points_to to improve join-order */

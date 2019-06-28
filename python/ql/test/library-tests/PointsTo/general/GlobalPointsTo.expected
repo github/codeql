@@ -32,9 +32,9 @@
 | Class X | 36 | ControlFlowNode for classmethod() | classmethod() |
 | Class X | 37 | ControlFlowNode for FunctionExpr | Function method1 |
 | Class X | 37 | ControlFlowNode for method1 | classmethod() |
-| Class X | 40 | ControlFlowNode for deco() | Function method2 |
+| Class X | 40 | ControlFlowNode for deco() | deco() |
 | Class X | 41 | ControlFlowNode for FunctionExpr | Function method2 |
-| Class X | 41 | ControlFlowNode for method2 | Function method2 |
+| Class X | 41 | ControlFlowNode for method2 | deco() |
 | Module pointsto_test | 17 | ControlFlowNode for Attribute | list object |
 | Module pointsto_test | 17 | ControlFlowNode for Compare | bool False |
 | Module pointsto_test | 17 | ControlFlowNode for Compare | bool True |
@@ -85,7 +85,7 @@
 | Module pointsto_test | 66 | ControlFlowNode for tuple | builtin-class tuple |
 | Module pointsto_test | 69 | ControlFlowNode for Attribute | Attribute |
 | Module pointsto_test | 69 | ControlFlowNode for X | class X |
-| Module pointsto_test | 70 | ControlFlowNode for Attribute | Function method2 |
+| Module pointsto_test | 70 | ControlFlowNode for Attribute | deco() |
 | Module pointsto_test | 70 | ControlFlowNode for X | class X |
 | Module pointsto_test | 72 | ControlFlowNode for ImportExpr | Module abc |
 | Module pointsto_test | 72 | ControlFlowNode for ImportMember | Function abstractmethod |

@@ -480,12 +480,20 @@ class CallNode extends ControlFlowNode {
     override Call getNode() { result = super.getNode() }
 
     predicate isDecoratorCall() {
-        exists(FunctionExpr func |
-            this.getNode() = func.getADecoratorCall()
-        )
+        this.isClassDecoratorCall()
         or
+        this.isFunctionDecoratorCall()
+    }
+
+    predicate isClassDecoratorCall() {
         exists(ClassExpr cls |
             this.getNode() = cls.getADecoratorCall()
+        )
+    }
+
+    predicate isFunctionDecoratorCall() {
+        exists(FunctionExpr func |
+            this.getNode() = func.getADecoratorCall()
         )
     }
 

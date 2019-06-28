@@ -466,4 +466,3 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     }
 
 }
-

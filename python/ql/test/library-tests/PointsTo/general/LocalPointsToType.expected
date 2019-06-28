@@ -51,9 +51,7 @@
 | 36 | ControlFlowNode for classmethod() | classmethod() | builtin-class classmethod |
 | 37 | ControlFlowNode for FunctionExpr | Function method1 | builtin-class function |
 | 37 | ControlFlowNode for method1 | classmethod() | builtin-class classmethod |
-| 40 | ControlFlowNode for deco() | Function method2 | builtin-class function |
 | 41 | ControlFlowNode for FunctionExpr | Function method2 | builtin-class function |
-| 41 | ControlFlowNode for method2 | Function method2 | builtin-class function |
 | 44 | ControlFlowNode for FunctionExpr | Function deco | builtin-class function |
 | 44 | ControlFlowNode for deco | Function deco | builtin-class function |
 | 47 | ControlFlowNode for v1 | class C | builtin-class type |
@@ -96,7 +94,6 @@
 | 66 | ControlFlowNode for tuple | builtin-class tuple | builtin-class type |
 | 69 | ControlFlowNode for Attribute | Attribute | builtin-class method |
 | 69 | ControlFlowNode for X | class X | builtin-class type |
-| 70 | ControlFlowNode for Attribute | Function method2 | builtin-class function |
 | 70 | ControlFlowNode for X | class X | builtin-class type |
 | 72 | ControlFlowNode for ImportExpr | Module abc | builtin-class module |
 | 72 | ControlFlowNode for ImportMember | Function abstractmethod | builtin-class function |
