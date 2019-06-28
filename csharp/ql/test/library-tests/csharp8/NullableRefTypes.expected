@@ -1,47 +1,207 @@
 suppressNullableWarnings
-| NullableRefTypes.cs:8:20:8:21 | ...! | NullableRefTypes.cs:8:20:8:20 | access to local variable x |
-| NullableRefTypes.cs:9:13:9:14 | ...! | NullableRefTypes.cs:9:13:9:13 | access to local variable x |
-| NullableRefTypes.cs:9:13:9:15 | ...! | NullableRefTypes.cs:9:13:9:14 | ...! |
-| NullableRefTypes.cs:11:13:11:14 | ...! | NullableRefTypes.cs:11:13:11:13 | access to local variable x |
+| NullableRefTypes.cs:79:20:79:21 | ...! | NullableRefTypes.cs:79:20:79:20 | access to local variable x |
+| NullableRefTypes.cs:80:13:80:14 | ...! | NullableRefTypes.cs:80:13:80:13 | access to local variable x |
+| NullableRefTypes.cs:80:13:80:15 | ...! | NullableRefTypes.cs:80:13:80:14 | ...! |
+| NullableRefTypes.cs:82:13:82:14 | ...! | NullableRefTypes.cs:82:13:82:13 | access to local variable x |
+| NullableRefTypes.cs:107:36:107:44 | ...! | NullableRefTypes.cs:107:36:107:43 | access to field Property |
 nullableDataFlow
-| NullableRefTypes.cs:7:17:7:28 | SSA def(x) | NullableRefTypes.cs:8:20:8:20 | access to local variable x |
-| NullableRefTypes.cs:7:21:7:28 | "source" | NullableRefTypes.cs:7:17:7:28 | SSA def(x) |
-| NullableRefTypes.cs:8:20:8:20 | access to local variable x | NullableRefTypes.cs:8:20:8:21 | ...! |
-| NullableRefTypes.cs:8:20:8:20 | access to local variable x | NullableRefTypes.cs:9:13:9:13 | access to local variable x |
-| NullableRefTypes.cs:9:13:9:13 | access to local variable x | NullableRefTypes.cs:9:13:9:14 | ...! |
-| NullableRefTypes.cs:9:13:9:14 | ...! | NullableRefTypes.cs:9:13:9:15 | ...! |
-| NullableRefTypes.cs:10:9:10:16 | SSA def(x) | NullableRefTypes.cs:11:13:11:13 | access to local variable x |
-| NullableRefTypes.cs:10:13:10:16 | null | NullableRefTypes.cs:10:9:10:16 | SSA def(x) |
-| NullableRefTypes.cs:11:13:11:13 | access to local variable x | NullableRefTypes.cs:11:13:11:14 | ...! |
+| NullableRefTypes.cs:78:17:78:28 | SSA def(x) | NullableRefTypes.cs:79:20:79:20 | access to local variable x |
+| NullableRefTypes.cs:78:21:78:28 | "source" | NullableRefTypes.cs:78:17:78:28 | SSA def(x) |
+| NullableRefTypes.cs:79:20:79:20 | access to local variable x | NullableRefTypes.cs:79:20:79:21 | ...! |
+| NullableRefTypes.cs:79:20:79:20 | access to local variable x | NullableRefTypes.cs:80:13:80:13 | access to local variable x |
+| NullableRefTypes.cs:80:13:80:13 | access to local variable x | NullableRefTypes.cs:80:13:80:14 | ...! |
+| NullableRefTypes.cs:80:13:80:14 | ...! | NullableRefTypes.cs:80:13:80:15 | ...! |
+| NullableRefTypes.cs:81:9:81:16 | SSA def(x) | NullableRefTypes.cs:82:13:82:13 | access to local variable x |
+| NullableRefTypes.cs:81:13:81:16 | null | NullableRefTypes.cs:81:9:81:16 | SSA def(x) |
+| NullableRefTypes.cs:82:13:82:13 | access to local variable x | NullableRefTypes.cs:82:13:82:14 | ...! |
 nullableControlFlow
-| NullableRefTypes.cs:5:10:5:29 | enter TestNullableRefTypes | NullableRefTypes.cs:6:5:12:5 | {...} | successor |
-| NullableRefTypes.cs:6:5:12:5 | {...} | NullableRefTypes.cs:7:9:7:29 | ... ...; | successor |
-| NullableRefTypes.cs:7:9:7:29 | ... ...; | NullableRefTypes.cs:7:21:7:28 | "source" | successor |
-| NullableRefTypes.cs:7:17:7:28 | String x = ... | NullableRefTypes.cs:8:9:8:22 | ... ...; | successor |
-| NullableRefTypes.cs:7:21:7:28 | "source" | NullableRefTypes.cs:7:17:7:28 | String x = ... | successor |
-| NullableRefTypes.cs:8:9:8:22 | ... ...; | NullableRefTypes.cs:8:20:8:20 | access to local variable x | successor |
-| NullableRefTypes.cs:8:16:8:21 | String y = ... | NullableRefTypes.cs:9:9:9:16 | ...; | successor |
-| NullableRefTypes.cs:8:20:8:20 | access to local variable x | NullableRefTypes.cs:8:20:8:21 | ...! | successor |
-| NullableRefTypes.cs:8:20:8:21 | ...! | NullableRefTypes.cs:8:16:8:21 | String y = ... | successor |
-| NullableRefTypes.cs:9:9:9:15 | ... = ... | NullableRefTypes.cs:10:9:10:17 | ...; | successor |
-| NullableRefTypes.cs:9:9:9:16 | ...; | NullableRefTypes.cs:9:13:9:13 | access to local variable x | successor |
-| NullableRefTypes.cs:9:13:9:13 | access to local variable x | NullableRefTypes.cs:9:13:9:14 | ...! | successor |
-| NullableRefTypes.cs:9:13:9:14 | ...! | NullableRefTypes.cs:9:13:9:15 | ...! | successor |
-| NullableRefTypes.cs:9:13:9:15 | ...! | NullableRefTypes.cs:9:9:9:15 | ... = ... | successor |
-| NullableRefTypes.cs:10:9:10:16 | ... = ... | NullableRefTypes.cs:11:9:11:15 | ...; | successor |
-| NullableRefTypes.cs:10:9:10:17 | ...; | NullableRefTypes.cs:10:13:10:16 | null | successor |
-| NullableRefTypes.cs:10:13:10:16 | null | NullableRefTypes.cs:10:9:10:16 | ... = ... | successor |
-| NullableRefTypes.cs:11:9:11:14 | ... = ... | NullableRefTypes.cs:5:10:5:29 | exit TestNullableRefTypes | successor |
-| NullableRefTypes.cs:11:9:11:15 | ...; | NullableRefTypes.cs:11:13:11:13 | access to local variable x | successor |
-| NullableRefTypes.cs:11:13:11:13 | access to local variable x | NullableRefTypes.cs:11:13:11:14 | ...! | successor |
-| NullableRefTypes.cs:11:13:11:14 | ...! | NullableRefTypes.cs:11:9:11:14 | ... = ... | successor |
+| NullableRefTypes.cs:76:10:76:40 | enter TestSuppressNullableWarningExpr | NullableRefTypes.cs:77:5:83:5 | {...} | successor |
+| NullableRefTypes.cs:77:5:83:5 | {...} | NullableRefTypes.cs:78:9:78:29 | ... ...; | successor |
+| NullableRefTypes.cs:78:9:78:29 | ... ...; | NullableRefTypes.cs:78:21:78:28 | "source" | successor |
+| NullableRefTypes.cs:78:17:78:28 | String x = ... | NullableRefTypes.cs:79:9:79:22 | ... ...; | successor |
+| NullableRefTypes.cs:78:21:78:28 | "source" | NullableRefTypes.cs:78:17:78:28 | String x = ... | successor |
+| NullableRefTypes.cs:79:9:79:22 | ... ...; | NullableRefTypes.cs:79:20:79:20 | access to local variable x | successor |
+| NullableRefTypes.cs:79:16:79:21 | String y = ... | NullableRefTypes.cs:80:9:80:16 | ...; | successor |
+| NullableRefTypes.cs:79:20:79:20 | access to local variable x | NullableRefTypes.cs:79:20:79:21 | ...! | successor |
+| NullableRefTypes.cs:79:20:79:21 | ...! | NullableRefTypes.cs:79:16:79:21 | String y = ... | successor |
+| NullableRefTypes.cs:80:9:80:15 | ... = ... | NullableRefTypes.cs:81:9:81:17 | ...; | successor |
+| NullableRefTypes.cs:80:9:80:16 | ...; | NullableRefTypes.cs:80:13:80:13 | access to local variable x | successor |
+| NullableRefTypes.cs:80:13:80:13 | access to local variable x | NullableRefTypes.cs:80:13:80:14 | ...! | successor |
+| NullableRefTypes.cs:80:13:80:14 | ...! | NullableRefTypes.cs:80:13:80:15 | ...! | successor |
+| NullableRefTypes.cs:80:13:80:15 | ...! | NullableRefTypes.cs:80:9:80:15 | ... = ... | successor |
+| NullableRefTypes.cs:81:9:81:16 | ... = ... | NullableRefTypes.cs:82:9:82:15 | ...; | successor |
+| NullableRefTypes.cs:81:9:81:17 | ...; | NullableRefTypes.cs:81:13:81:16 | null | successor |
+| NullableRefTypes.cs:81:13:81:16 | null | NullableRefTypes.cs:81:9:81:16 | ... = ... | successor |
+| NullableRefTypes.cs:82:9:82:14 | ... = ... | NullableRefTypes.cs:76:10:76:40 | exit TestSuppressNullableWarningExpr | successor |
+| NullableRefTypes.cs:82:9:82:15 | ...; | NullableRefTypes.cs:82:13:82:13 | access to local variable x | successor |
+| NullableRefTypes.cs:82:13:82:13 | access to local variable x | NullableRefTypes.cs:82:13:82:14 | ...! | successor |
+| NullableRefTypes.cs:82:13:82:14 | ...! | NullableRefTypes.cs:82:9:82:14 | ... = ... | successor |
 nonNullExpressions
-| NullableRefTypes.cs:7:21:7:28 | "source" |
-| NullableRefTypes.cs:8:20:8:20 | access to local variable x |
-| NullableRefTypes.cs:8:20:8:21 | ...! |
-| NullableRefTypes.cs:9:9:9:15 | ... = ... |
-| NullableRefTypes.cs:9:13:9:13 | access to local variable x |
-| NullableRefTypes.cs:9:13:9:14 | ...! |
-| NullableRefTypes.cs:9:13:9:15 | ...! |
-| NullableRefTypes.cs:11:9:11:14 | ... = ... |
-| NullableRefTypes.cs:11:13:11:14 | ...! |
+| NullableRefTypes.cs:78:21:78:28 | "source" |
+| NullableRefTypes.cs:79:20:79:20 | access to local variable x |
+| NullableRefTypes.cs:79:20:79:21 | ...! |
+| NullableRefTypes.cs:80:9:80:15 | ... = ... |
+| NullableRefTypes.cs:80:13:80:13 | access to local variable x |
+| NullableRefTypes.cs:80:13:80:14 | ...! |
+| NullableRefTypes.cs:80:13:80:15 | ...! |
+| NullableRefTypes.cs:82:9:82:14 | ... = ... |
+| NullableRefTypes.cs:82:13:82:14 | ...! |
+assignableTypes
+| NullableRefTypes.cs:9:14:9:14 | A | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:10:13:10:13 | B | NullableRefTypes.cs:6:7:6:13 | MyClass! |
+| NullableRefTypes.cs:13:14:13:14 | C | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:14:13:14:13 | D | NullableRefTypes.cs:6:7:6:13 | MyClass! |
+| NullableRefTypes.cs:17:14:17:17 | Item | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:18:13:18:16 | Item | NullableRefTypes.cs:6:7:6:13 | MyClass! |
+| NullableRefTypes.cs:19:13:19:16 | Item | NullableRefTypes.cs:6:7:6:13 | MyClass! |
+| NullableRefTypes.cs:19:27:19:27 | i | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:19:27:19:27 | i | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:22:16:22:17 | G1 | NullableRefTypes.cs:6:7:6:13 | MyClass?[]! |
+| NullableRefTypes.cs:23:17:23:18 | G2 | NullableRefTypes.cs:6:7:6:13 | MyClass?[]? |
+| NullableRefTypes.cs:24:16:24:17 | G3 | NullableRefTypes.cs:6:7:6:13 | MyClass?[]! |
+| NullableRefTypes.cs:25:18:25:18 | H | NullableRefTypes.cs:6:7:6:13 | MyClass?[][]! |
+| NullableRefTypes.cs:26:38:26:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass![]?[]! |
+| NullableRefTypes.cs:27:38:27:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass?[][]! |
+| NullableRefTypes.cs:32:20:32:20 | a | NullableRefTypes.cs:6:7:6:13 | MyClass! |
+| NullableRefTypes.cs:32:31:32:31 | b | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:37:17:37:17 | a | NullableRefTypes.cs:6:7:6:13 | MyClass! |
+| NullableRefTypes.cs:38:18:38:18 | b | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:39:21:39:21 | c | NullableRefTypes.cs:6:7:6:13 | ref MyClass! |
+| NullableRefTypes.cs:40:22:40:22 | d | NullableRefTypes.cs:6:7:6:13 | ref MyClass? |
+| NullableRefTypes.cs:47:35:47:35 | x | NullableRefTypes.cs:6:7:6:13 | MyClass! |
+| NullableRefTypes.cs:47:35:47:35 | x | NullableRefTypes.cs:6:7:6:13 | MyClass! |
+| NullableRefTypes.cs:47:35:47:35 | x | NullableRefTypes.cs:6:7:6:13 | MyClass! |
+| NullableRefTypes.cs:48:16:48:16 | P | NullableRefTypes.cs:47:23:47:25 | Del? |
+| NullableRefTypes.cs:48:16:48:16 | value | NullableRefTypes.cs:47:23:47:25 | Del? |
+| NullableRefTypes.cs:48:16:48:16 | value | NullableRefTypes.cs:47:23:47:25 | Del? |
+| NullableRefTypes.cs:51:19:51:19 | t | NullableRefTypes.cs:6:7:6:13 | MyClass |
+| NullableRefTypes.cs:51:19:51:19 | t | NullableRefTypes.cs:51:14:51:14 | T! |
+| NullableRefTypes.cs:59:54:59:59 | items2 | NullableRefTypes.cs:54:11:54:33 | Generic<MyClass?, MyClass!, IDisposable!, MyClass!>! |
+| NullableRefTypes.cs:61:25:61:25 | x | NullableRefTypes.cs:6:7:6:13 | MyClass |
+| NullableRefTypes.cs:61:25:61:25 | x | NullableRefTypes.cs:61:20:61:20 | T! |
+| NullableRefTypes.cs:67:18:67:18 | x | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:97:42:97:42 | r | NullableRefTypes.cs:6:7:6:13 | ref MyClass! |
+| NullableRefTypes.cs:98:42:98:42 | r | NullableRefTypes.cs:6:7:6:13 | ref MyClass? |
+| NullableRefTypes.cs:99:51:99:51 | r | NullableRefTypes.cs:6:7:6:13 | readonly MyClass? |
+| NullableRefTypes.cs:100:50:100:50 | r | NullableRefTypes.cs:6:7:6:13 | readonly MyClass! |
+| NullableRefTypes.cs:101:49:101:49 | r | NullableRefTypes.cs:6:7:6:13 | readonly MyClass! |
+| NullableRefTypes.cs:102:50:102:50 | r | NullableRefTypes.cs:6:7:6:13 | readonly MyClass? |
+| NullableRefTypes.cs:104:34:104:35 | p1 | NullableRefTypes.cs:6:7:6:13 | ref MyClass! |
+| NullableRefTypes.cs:104:51:104:52 | p2 | NullableRefTypes.cs:6:7:6:13 | out MyClass? |
+| NullableRefTypes.cs:106:14:106:21 | Property | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:107:17:107:27 | RefProperty | NullableRefTypes.cs:6:7:6:13 | ref MyClass! |
+| NullableRefTypes.cs:112:15:112:15 | a | NullableRefTypes.cs:159:8:159:15 | MyStruct? |
+| NullableRefTypes.cs:113:17:113:17 | b | NullableRefTypes.cs:159:8:159:15 | MyStruct![]? |
+| NullableRefTypes.cs:114:17:114:17 | c | NullableRefTypes.cs:159:8:159:15 | MyStruct?[]! |
+| NullableRefTypes.cs:115:18:115:18 | d | NullableRefTypes.cs:159:8:159:15 | MyStruct?[]? |
+| NullableRefTypes.cs:117:14:117:14 | e | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:118:16:118:16 | f | NullableRefTypes.cs:6:7:6:13 | MyClass?[]! |
+| NullableRefTypes.cs:119:16:119:16 | g | NullableRefTypes.cs:6:7:6:13 | MyClass![]? |
+| NullableRefTypes.cs:120:17:120:17 | h | NullableRefTypes.cs:6:7:6:13 | MyClass?[]? |
+| NullableRefTypes.cs:122:23:122:23 | i | NullableRefTypes.cs:6:7:6:13 | MyClass![,,]?[,][]! |
+| NullableRefTypes.cs:123:22:123:22 | j | NullableRefTypes.cs:6:7:6:13 | MyClass![,,][,][]! |
+| NullableRefTypes.cs:124:27:124:27 | k | NullableRefTypes.cs:6:7:6:13 | MyClass![,,,][][,][,,]! |
+| NullableRefTypes.cs:125:29:125:29 | l | NullableRefTypes.cs:6:7:6:13 | MyClass?[,,,][][,]?[,,]! |
+| NullableRefTypes.cs:132:15:132:15 | a | NullableRefTypes.cs:159:8:159:15 | MyStruct? |
+| NullableRefTypes.cs:133:17:133:17 | b | NullableRefTypes.cs:159:8:159:15 | MyStruct![]? |
+| NullableRefTypes.cs:134:17:134:17 | c | NullableRefTypes.cs:159:8:159:15 | MyStruct?[] |
+| NullableRefTypes.cs:135:18:135:18 | d | NullableRefTypes.cs:159:8:159:15 | MyStruct?[]? |
+| NullableRefTypes.cs:137:14:137:14 | e | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:138:16:138:16 | f | NullableRefTypes.cs:6:7:6:13 | MyClass?[] |
+| NullableRefTypes.cs:139:16:139:16 | g | NullableRefTypes.cs:6:7:6:13 | MyClass[]? |
+| NullableRefTypes.cs:140:17:140:17 | h | NullableRefTypes.cs:6:7:6:13 | MyClass?[]? |
+| NullableRefTypes.cs:142:23:142:23 | i | NullableRefTypes.cs:6:7:6:13 | MyClass[,,]?[,][] |
+| NullableRefTypes.cs:143:22:143:22 | j | NullableRefTypes.cs:6:7:6:13 | MyClass[,,][,][] |
+| NullableRefTypes.cs:144:27:144:27 | k | NullableRefTypes.cs:6:7:6:13 | MyClass[,,,][][,][,,] |
+| NullableRefTypes.cs:145:29:145:29 | l | NullableRefTypes.cs:6:7:6:13 | MyClass?[,,,][][,]?[,,] |
+| NullableRefTypes.cs:150:13:150:14 | f1 | NullableRefTypes.cs:6:7:6:13 | MyClass |
+| NullableRefTypes.cs:151:13:151:13 | P | NullableRefTypes.cs:6:7:6:13 | MyClass |
+| NullableRefTypes.cs:152:24:152:24 | p | NullableRefTypes.cs:6:7:6:13 | MyClass |
+| NullableRefTypes.cs:154:17:154:17 | a | NullableRefTypes.cs:6:7:6:13 | MyClass |
+arrayElements
+| NullableRefTypes.cs:22:16:22:17 | G1 | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:23:17:23:18 | G2 | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:24:16:24:17 | G3 | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:25:18:25:18 | H | NullableRefTypes.cs:6:7:6:13 | MyClass[][] | NullableRefTypes.cs:6:7:6:13 | MyClass?[]! |
+| NullableRefTypes.cs:26:38:26:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass[][] | NullableRefTypes.cs:6:7:6:13 | MyClass![]? |
+| NullableRefTypes.cs:27:38:27:38 | x | NullableRefTypes.cs:6:7:6:13 | MyClass[][] | NullableRefTypes.cs:6:7:6:13 | MyClass?[]! |
+| NullableRefTypes.cs:113:17:113:17 | b | NullableRefTypes.cs:159:8:159:15 | MyStruct[] | NullableRefTypes.cs:159:8:159:15 | MyStruct! |
+| NullableRefTypes.cs:114:17:114:17 | c | NullableRefTypes.cs:159:8:159:15 | Nullable | NullableRefTypes.cs:159:8:159:15 | MyStruct? |
+| NullableRefTypes.cs:115:18:115:18 | d | NullableRefTypes.cs:159:8:159:15 | Nullable | NullableRefTypes.cs:159:8:159:15 | MyStruct? |
+| NullableRefTypes.cs:118:16:118:16 | f | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:119:16:119:16 | g | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass! |
+| NullableRefTypes.cs:120:17:120:17 | h | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:122:23:122:23 | i | NullableRefTypes.cs:6:7:6:13 | MyClass[,,][][,] | NullableRefTypes.cs:6:7:6:13 | MyClass![,,]?[]! |
+| NullableRefTypes.cs:123:22:123:22 | j | NullableRefTypes.cs:6:7:6:13 | MyClass[][,][,,] | NullableRefTypes.cs:6:7:6:13 | MyClass![,][]! |
+| NullableRefTypes.cs:124:27:124:27 | k | NullableRefTypes.cs:6:7:6:13 | MyClass[,,][,][][,,,] | NullableRefTypes.cs:6:7:6:13 | MyClass![][,][,,]! |
+| NullableRefTypes.cs:125:29:125:29 | l | NullableRefTypes.cs:6:7:6:13 | MyClass[,][][,,,][,,] | NullableRefTypes.cs:6:7:6:13 | MyClass?[,,,][][,]? |
+| NullableRefTypes.cs:133:17:133:17 | b | NullableRefTypes.cs:159:8:159:15 | MyStruct[] | NullableRefTypes.cs:159:8:159:15 | MyStruct! |
+| NullableRefTypes.cs:134:17:134:17 | c | NullableRefTypes.cs:159:8:159:15 | Nullable | NullableRefTypes.cs:159:8:159:15 | MyStruct? |
+| NullableRefTypes.cs:135:18:135:18 | d | NullableRefTypes.cs:159:8:159:15 | Nullable | NullableRefTypes.cs:159:8:159:15 | MyStruct? |
+| NullableRefTypes.cs:138:16:138:16 | f | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:139:16:139:16 | g | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass |
+| NullableRefTypes.cs:140:17:140:17 | h | NullableRefTypes.cs:6:7:6:13 | MyClass[] | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:142:23:142:23 | i | NullableRefTypes.cs:6:7:6:13 | MyClass[,,][][,] | NullableRefTypes.cs:6:7:6:13 | MyClass[,,]?[] |
+| NullableRefTypes.cs:143:22:143:22 | j | NullableRefTypes.cs:6:7:6:13 | MyClass[][,][,,] | NullableRefTypes.cs:6:7:6:13 | MyClass[,][] |
+| NullableRefTypes.cs:144:27:144:27 | k | NullableRefTypes.cs:6:7:6:13 | MyClass[,,][,][][,,,] | NullableRefTypes.cs:6:7:6:13 | MyClass[][,][,,] |
+| NullableRefTypes.cs:145:29:145:29 | l | NullableRefTypes.cs:6:7:6:13 | MyClass[,][][,,,][,,] | NullableRefTypes.cs:6:7:6:13 | MyClass?[,,,][][,]? |
+returnTypes
+| NullableRefTypes.cs:6:7:6:13 | MyClass | Void |
+| NullableRefTypes.cs:13:19:13:22 | get_C | MyClass? |
+| NullableRefTypes.cs:14:18:14:21 | get_D | MyClass! |
+| NullableRefTypes.cs:17:29:17:32 | get_Item | MyClass? |
+| NullableRefTypes.cs:18:31:18:34 | get_Item | MyClass! |
+| NullableRefTypes.cs:19:33:19:36 | get_Item | MyClass! |
+| NullableRefTypes.cs:26:16:26:23 | ArrayFn1 | MyClass![]? |
+| NullableRefTypes.cs:27:16:27:23 | ArrayFn2 | MyClass?[]! |
+| NullableRefTypes.cs:30:14:30:14 | M | MyClass? |
+| NullableRefTypes.cs:31:13:31:13 | N | MyClass! |
+| NullableRefTypes.cs:32:10:32:10 | O | Void! |
+| NullableRefTypes.cs:35:10:35:15 | Locals | Void! |
+| NullableRefTypes.cs:44:23:44:26 | BeginInvoke | IAsyncResult |
+| NullableRefTypes.cs:44:23:44:26 | Del1 | Void |
+| NullableRefTypes.cs:44:23:44:26 | EndInvoke | MyClass? |
+| NullableRefTypes.cs:44:23:44:26 | Invoke | MyClass? |
+| NullableRefTypes.cs:47:23:47:25 | BeginInvoke | IAsyncResult |
+| NullableRefTypes.cs:47:23:47:25 | Del | Void |
+| NullableRefTypes.cs:47:23:47:25 | EndInvoke | MyClass? |
+| NullableRefTypes.cs:47:23:47:25 | Invoke | MyClass? |
+| NullableRefTypes.cs:48:16:48:16 | add_P | Void |
+| NullableRefTypes.cs:48:16:48:16 | remove_P | Void |
+| NullableRefTypes.cs:51:12:51:15 | Q | object! |
+| NullableRefTypes.cs:51:12:51:15 | Q | object! |
+| NullableRefTypes.cs:54:11:54:33 | Generic | Void |
+| NullableRefTypes.cs:61:10:61:21 | GenericFn | Void! |
+| NullableRefTypes.cs:61:10:61:21 | GenericFn | Void! |
+| NullableRefTypes.cs:65:14:65:18 | CallF | MyStruct! |
+| NullableRefTypes.cs:74:7:74:22 | NullableRefTypes | Void |
+| NullableRefTypes.cs:76:10:76:40 | TestSuppressNullableWarningExpr | Void! |
+| NullableRefTypes.cs:85:10:85:34 | FunctionInNullableContext | Void! |
+| NullableRefTypes.cs:94:7:94:14 | RefTypes | Void |
+| NullableRefTypes.cs:97:18:97:28 | ReturnsRef1 | ref MyClass? |
+| NullableRefTypes.cs:98:17:98:27 | ReturnsRef2 | ref MyClass! |
+| NullableRefTypes.cs:99:27:99:37 | ReturnsRef3 | readonly MyClass? |
+| NullableRefTypes.cs:100:27:100:37 | ReturnsRef4 | readonly MyClass? |
+| NullableRefTypes.cs:101:26:101:36 | ReturnsRef5 | readonly MyClass! |
+| NullableRefTypes.cs:102:26:102:36 | ReturnsRef6 | readonly MyClass! |
+| NullableRefTypes.cs:104:10:104:20 | Parameters1 | Void! |
+| NullableRefTypes.cs:107:32:107:44 | get_RefProperty | MyClass! |
+| NullableRefTypes.cs:110:7:110:23 | ToStringWithTypes | Void |
+| NullableRefTypes.cs:130:7:130:24 | ToStringWithTypes2 | Void |
+| NullableRefTypes.cs:148:7:148:25 | DisabledNullability | Void |
+| NullableRefTypes.cs:151:18:151:30 | get_P | MyClass |
+| NullableRefTypes.cs:152:13:152:14 | Fn | MyClass |
+| NullableRefTypes.cs:159:8:159:15 | MyStruct | Void |
+typeArguments
+| NullableRefTypes.cs:51:12:51:15 | Q | 0 | MyClass |
+| NullableRefTypes.cs:54:11:54:33 | Generic<MyClass,MyClass,IDisposable,MyClass> | 0 | MyClass? |
+| NullableRefTypes.cs:54:11:54:33 | Generic<MyClass,MyClass,IDisposable,MyClass> | 1 | MyClass! |
+| NullableRefTypes.cs:54:11:54:33 | Generic<MyClass,MyClass,IDisposable,MyClass> | 2 | IDisposable! |
+| NullableRefTypes.cs:54:11:54:33 | Generic<MyClass,MyClass,IDisposable,MyClass> | 3 | MyClass! |
+| NullableRefTypes.cs:61:10:61:21 | GenericFn | 0 | MyClass |
+nullableTypeParameters
+| NullableRefTypes.cs:54:19:54:20 | T1 |
+annotatedTypeConstraints
+| NullableRefTypes.cs:51:14:51:14 | T | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:54:23:54:24 | T2 | NullableRefTypes.cs:6:7:6:13 | MyClass? |
+| NullableRefTypes.cs:54:31:54:32 | T4 | NullableRefTypes.cs:6:7:6:13 | MyClass! |

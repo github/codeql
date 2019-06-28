@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         if (callingMethod == null)
                             cx.ModelError(Syntax, "Couldn't determine implicit this type");
                         else
-                            This.CreateImplicit(cx, Type.Create(cx, callingMethod.ContainingType), Location, this, child++);
+                            This.CreateImplicit(cx, Entities.Type.Create(cx, callingMethod.ContainingType), Location, this, child++);
                     }
                     else
                     {

@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
         Field(Context cx, IFieldSymbol init)
             : base(cx, init)
         {
-            type = new Lazy<Type>(() => Type.Create(cx, symbol.Type));
+            type = new Lazy<AnnotatedType>(() => Entities.Type.Create(cx, symbol.GetAnnotatedType()));
         }
 
         public static Field Create(Context cx, IFieldSymbol field) => FieldFactory.Instance.CreateEntity(cx, field);
@@ -27,9 +27,10 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractMetadataHandle();
             ExtractAttributes();
             ContainingType.ExtractGenerics();
+            ExtractNullability(symbol.NullableAnnotation);
 
             Field unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
-            Context.Emit(Tuples.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.TypeRef, unboundFieldKey));
+            Context.Emit(Tuples.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey));
 
             ExtractModifiers();
 
@@ -84,8 +85,8 @@ namespace Semmle.Extraction.CSharp.Entities
                     TypeMention.Create(Context, syntax.Type, this, Type);
         }
 
-        readonly Lazy<Type> type;
-        public Type Type => type.Value;
+        readonly Lazy<AnnotatedType> type;
+        public AnnotatedType Type => type.Value;
 
         public override IId Id => new Key(ContainingType, ".", symbol.Name, ";field");
 

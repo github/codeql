@@ -21,11 +21,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case SyntaxKind.DefaultLiteralExpression:
                     return ExprKind.DEFAULT;
                 case SyntaxKind.NullLiteralExpression:
-                    info.Type = Type.Create(info.Context, null);  // Don't use converted type.
+                    info.Type = Entities.NullType.Create(info.Context);  // Don't use converted type.
                     return ExprKind.NULL_LITERAL;
             }
 
-            var type = info.Type.symbol;
+            var type = info.Type.Type.symbol;
 
             switch (type.SpecialType)
             {

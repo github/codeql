@@ -41,12 +41,17 @@ namespace Semmle.Extraction.CSharp.Entities
                     Context.Compilation.GetTypeByMetadataName(valueTypeName) :
                     Context.Compilation.ObjectType;
 
-            foreach (var abase in symbol.ConstraintTypes)
+            if(symbol.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
+                Context.Emit(Tuples.general_type_parameter_constraints(constraints, 5));
+
+            foreach (var abase in symbol.GetAnnotatedTypeConstraints())
             {
-                if (abase.TypeKind != TypeKind.Interface)
-                    baseType = abase;
-                var t = Create(Context, abase);
+                if (abase.Symbol.TypeKind != TypeKind.Interface)
+                    baseType = abase.Symbol;
+                var t = Create(Context, abase.Symbol);
                 Context.Emit(Tuples.specific_type_parameter_constraints(constraints, t.TypeRef));
+                if (abase.Nullability.GetTypeAnnotation() != Kinds.TypeAnnotation.None)
+                    Context.Emit(Tuples.specific_type_parameter_annotation(constraints, t.TypeRef, abase.Nullability.GetTypeAnnotation()));
             }
 
             Context.Emit(Tuples.types(this, Semmle.Extraction.Kinds.TypeKind.TYPE_PARAMETER, symbol.Name));

@@ -2,6 +2,6 @@ import csharp
 
 from Callable f
 where
-  f.returnsRef() and
+  f.getAnnotatedReturnType().isRef() and
   f.fromSource()
 select f

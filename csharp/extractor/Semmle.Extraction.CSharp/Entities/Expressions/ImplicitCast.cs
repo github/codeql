@@ -15,13 +15,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         }
 
         public ImplicitCast(ExpressionNodeInfo info)
-            : base(new ExpressionInfo(info.Context, Type.Create(info.Context, info.ConvertedType), info.Location, ExprKind.CAST, info.Parent, info.Child, true, info.ExprValue))
+            : base(new ExpressionInfo(info.Context, Entities.Type.Create(info.Context, info.ConvertedType), info.Location, ExprKind.CAST, info.Parent, info.Child, true, info.ExprValue))
         {
             Expr = Factory.Create(new ExpressionNodeInfo(cx, info.Node, this, 0));
         }
 
         public ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
-            : base(new ExpressionInfo(info.Context, Type.Create(info.Context, info.ConvertedType), info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue) )
+            : base(new ExpressionInfo(info.Context, Entities.Type.Create(info.Context, info.ConvertedType), info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue) )
         {
             Expr = Factory.Create(info.SetParent(this, 0));
 
@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (conversion.MethodSymbol != null)
             {
-                bool convertedToDelegate = Type.IsDelegate(convertedType);
+                bool convertedToDelegate = Entities.Type.IsDelegate(convertedType.Symbol);
 
                 if (convertedToDelegate)
                 {
@@ -67,17 +67,17 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return Factory.Create(info);
                 }
 
-                if (resolvedType != null)
+                if (resolvedType.Symbol != null)
                     return new ImplicitCast(info, conversion.MethodSymbol);
             }
 
             bool implicitUpcast = conversion.IsImplicit &&
-                convertedType != null &&
+                convertedType.Symbol != null &&
                 !conversion.IsBoxing &&
                 (
-                    resolvedType == null ||
+                    resolvedType.Symbol == null ||
                     conversion.IsReference ||
-                    convertedType.SpecialType == SpecialType.System_Object)
+                    convertedType.Symbol.SpecialType == SpecialType.System_Object)
                 ;
 
             if (!conversion.IsIdentity && !implicitUpcast)

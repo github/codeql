@@ -104,6 +104,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate()
         {
             ExtractAttributes();
+            ExtractNullability(symbol.NullableAnnotation);
+            ExtractRefKind(symbol.RefKind);
 
             if (symbol.Name != Original.symbol.Name)
                 Context.ModelError(symbol, "Inconsistent parameter declaration");

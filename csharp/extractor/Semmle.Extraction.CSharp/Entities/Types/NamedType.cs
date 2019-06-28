@@ -56,6 +56,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
                     for (int i = 0; i < symbol.TypeArguments.Length; ++i)
                     {
+                        var ta = symbol.TypeArgumentsNullableAnnotations[i].GetTypeAnnotation();
+                        if (ta != Kinds.TypeAnnotation.None)
+                            Context.Emit(Tuples.type_argument_annotation(this, i, ta));
                         Context.Emit(Tuples.type_arguments(TypeArguments[i].TypeRef, i, this));
                     }
                 }
@@ -127,33 +130,28 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="cx">Extraction context.</param>
         /// <param name="type">The enumerable type.</param>
         /// <returns>The element type, or null.</returns>
-        static ITypeSymbol GetElementType(Context cx, INamedTypeSymbol type)
+        static AnnotatedTypeSymbol GetElementType(Context cx, INamedTypeSymbol type)
         {
-            return GetEnumerableType(cx, type) ??
-                    type.AllInterfaces.
+            var et = GetEnumerableType(cx, type);
+            if (et.Symbol != null) return et;
+
+            return type.AllInterfaces.
                         Where(i => i.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T).
                         Concat(type.AllInterfaces.Where(i => i.SpecialType == SpecialType.System_Collections_IEnumerable)).
                         Select(i => GetEnumerableType(cx, i)).
                         FirstOrDefault();
         }
 
-        static ITypeSymbol GetEnumerableType(Context cx, INamedTypeSymbol type)
+        static AnnotatedTypeSymbol GetEnumerableType(Context cx, INamedTypeSymbol type)
         {
             return type.SpecialType == SpecialType.System_Collections_IEnumerable ?
-                    cx.Compilation.ObjectType :
+                    cx.Compilation.ObjectType.WithAnnotation(NullableAnnotation.NotAnnotated) :
                     type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T ?
-                    type.TypeArguments.First() :
-                    null;
+                    type.GetAnnotatedTypeArguments().First() :
+                    default(AnnotatedTypeSymbol);
         }
 
-        public override Type ElementType
-        {
-            get
-            {
-                var elementType = GetElementType(Context, symbol);
-                return elementType == null ? null : Create(Context, elementType);
-            }
-        }
+        public override AnnotatedType ElementType => Type.Create(Context, GetElementType(Context, symbol));
 
         class NamedTypeFactory : ICachedEntityFactory<INamedTypeSymbol, NamedType>
         {

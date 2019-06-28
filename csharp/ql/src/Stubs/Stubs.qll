@@ -400,11 +400,11 @@ private string stubConstraints(TypeParameterConstraints tpc) {
   or
   tpc.hasRefTypeConstraint() and result = "class"
   or
-  result = tpc.getATypeParameterConstraint().getName()
+  result = tpc.getATypeConstraint().(TypeParameter).getName()
   or
-  result = stubClassName(tpc.getAnInterfaceConstraint())
+  result = stubClassName(tpc.getATypeConstraint().(Interface))
   or
-  result = stubClassName(tpc.getClassConstraint())
+  result = stubClassName(tpc.getATypeConstraint().(Class))
 }
 
 private string stubTypeParameterConstraints(TypeParameter tp) {

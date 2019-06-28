@@ -13,6 +13,9 @@ class Assignable extends Declaration, @assignable {
   /** Gets the type of this assignable. */
   Type getType() { none() }
 
+  /** Gets the annotated type of this assignable. */
+  final AnnotatedType getAnnotatedType() { result.appliesTo(this) }
+
   /** Gets an access to this assignable. */
   AssignableAccess getAnAccess() { result.getTarget() = this }
 

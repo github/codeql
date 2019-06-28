@@ -26,6 +26,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate()
         {
+            ExtractNullability(symbol.NullableAnnotation);
+
             var type = Type.Create(Context, symbol.Type);
             Context.Emit(Tuples.events(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition)));
 

@@ -683,9 +683,9 @@ private Class effectiveBaseClassCandidate(TypeParameter tp) {
   exists(TypeParameterConstraints tpc | tpc = tp.getConstraints() |
     tpc.hasValueTypeConstraint() and result instanceof SystemValueTypeClass
     or
-    result = tpc.getClassConstraint()
+    result = tpc.getATypeConstraint()
     or
-    result = effectiveBaseClassCandidate(tpc.getATypeParameterConstraint())
+    result = effectiveBaseClassCandidate(tpc.getATypeConstraint())
     or
     tpc.hasRefTypeConstraint() and result instanceof ObjectType
   )
@@ -694,7 +694,7 @@ private Class effectiveBaseClassCandidate(TypeParameter tp) {
 /** 10.1.5: Whether type parameter `tp` has primary constraints. */
 private predicate hasPrimaryConstraints(TypeParameter tp) {
   exists(TypeParameterConstraints tpc | tpc = tp.getConstraints() |
-    exists(tpc.getClassConstraint())
+    tpc.getATypeConstraint() instanceof Class
     or
     tpc.hasRefTypeConstraint()
     or
@@ -705,14 +705,14 @@ private predicate hasPrimaryConstraints(TypeParameter tp) {
 /** 10.1.5: The effective interface set of a type parameter `tp` */
 private Interface effectiveInterfaceSet(TypeParameter tp) {
   exists(TypeParameterConstraints tpc | tpc = tp.getConstraints() |
-    result = tpc.getAnInterfaceConstraint()
+    result = tpc.getATypeConstraint()
     or
-    result = effectiveInterfaceSet(tpc.getATypeParameterConstraint())
+    result = effectiveInterfaceSet(tpc.getATypeConstraint())
   )
 }
 
 private TypeParameter getATypeParameterFromConstraints(TypeParameter tp) {
-  result = tp.getConstraints().getATypeParameterConstraint()
+  result = tp.getConstraints().getATypeConstraint()
 }
 
 /**

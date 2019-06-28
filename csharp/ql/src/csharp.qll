@@ -12,6 +12,7 @@ import semmle.code.csharp.Generics
 import semmle.code.csharp.Location
 import semmle.code.csharp.Member
 import semmle.code.csharp.Namespace
+import semmle.code.csharp.AnnotatedType
 import semmle.code.csharp.Property
 import semmle.code.csharp.Stmt
 import semmle.code.csharp.Type

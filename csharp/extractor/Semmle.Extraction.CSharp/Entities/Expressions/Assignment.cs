@@ -86,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var kind = GetAssignmentOperation(cx, syntax);
             var leftType = cx.GetType(syntax.Left);
 
-            if (leftType != null && leftType.SpecialType != SpecialType.None)
+            if (leftType.Symbol != null && leftType.Symbol.SpecialType != SpecialType.None)
             {
                 // In Mono, the builtin types did not specify their operator invocation
                 // even though EVERY operator has an invocation in C#. (This is a flaw in the dbscheme and should be fixed).
