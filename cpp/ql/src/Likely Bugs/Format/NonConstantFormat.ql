@@ -51,6 +51,15 @@ predicate underscoreMacro(Expr e) {
   )
 }
 
+/**
+ * Holds if `t` cannot hold a character array, directly or indirectly.
+ */
+predicate cannotContainString(Type t) {
+  t.getUnspecifiedType() instanceof BuiltInType
+  or
+  t.getUnspecifiedType() instanceof IntegralOrEnumType
+}
+
 predicate isNonConst(DataFlow::Node node) {
   exists(Expr e | e = node.asExpr() |
     exists(FunctionCall fc | fc = e.(FunctionCall) |
@@ -99,16 +108,26 @@ predicate isNonConst(DataFlow::Node node) {
   node instanceof DataFlow::DefinitionByReferenceNode
 }
 
+pragma[noinline]
+predicate isSanitizerNode(DataFlow::Node node) {
+  underscoreMacro(node.asExpr())
+  or
+  cannotContainString(node.getType())
+}
+
 class NonConstFlow extends TaintTracking::Configuration {
   NonConstFlow() { this = "NonConstFlow" }
 
-  override predicate isSource(DataFlow::Node source) { isNonConst(source) }
+  override predicate isSource(DataFlow::Node source) {
+    isNonConst(source) and
+    not cannotContainString(source.getType())
+  }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { underscoreMacro(node.asExpr()) }
+  override predicate isSanitizer(DataFlow::Node node) { isSanitizerNode(node) }
 }
 
 from FormattingFunctionCall call, Expr formatString
