@@ -780,7 +780,7 @@ module ControlFlow {
         TLastRecNonContinueCompletion() or
         TLastRecLoopBodyAbnormal()
 
-      private TLastComputation selfValid(ControlFlowElement cfe) {
+      private TSelf getValidSelfCompletion(ControlFlowElement cfe) {
         result = TSelf(any(Completion c | c.isValidFor(cfe)))
       }
 
@@ -801,13 +801,13 @@ module ControlFlow {
             or
             ss.isLeafElement() and
             result = ss and
-            c = selfValid(result)
+            c = getValidSelfCompletion(result)
           )
         or
         // Post-order: element itself
         cfe instanceof StandardExpr and
         result = cfe and
-        c = selfValid(result)
+        c = getValidSelfCompletion(result)
         or
         // Pre/post order: a child exits abnormally
         result = cfe.(StandardElement).getChildElement(_) and
@@ -883,7 +883,7 @@ module ControlFlow {
         cfe = any(ConditionallyQualifiedExpr cqe |
             // Post-order: element itself
             result = cqe and
-            c = selfValid(result)
+            c = getValidSelfCompletion(result)
             or
             // Qualifier exits with a `null` completion
             result = cqe.getChildExpr(-1) and
@@ -893,7 +893,7 @@ module ControlFlow {
         cfe = any(ThrowExpr te |
             // Post-order: element itself
             result = te and
-            c = selfValid(result)
+            c = getValidSelfCompletion(result)
             or
             // Expression being thrown exits abnormally
             result = te.getExpr() and
@@ -904,7 +904,7 @@ module ControlFlow {
             // Post-order: element itself (when no initializer)
             result = oc and
             not oc.hasInitializer() and
-            c = selfValid(result)
+            c = getValidSelfCompletion(result)
             or
             // Last element of initializer
             result = oc.getInitializer() and
@@ -915,7 +915,7 @@ module ControlFlow {
             // Post-order: element itself (when no initializer)
             result = ac and
             not ac.hasInitializer() and
-            c = selfValid(result)
+            c = getValidSelfCompletion(result)
             or
             // Last element of initializer
             result = ac.getInitializer() and
@@ -1091,7 +1091,7 @@ module ControlFlow {
         cfe = any(JumpStmt js |
             // Post-order: element itself
             result = js and
-            c = selfValid(result)
+            c = getValidSelfCompletion(result)
             or
             // Child exits abnormally
             result = js.getChild(0) and
@@ -1111,7 +1111,7 @@ module ControlFlow {
         cfe = any(AccessorWrite aw |
             // Post-order: element itself
             result = aw and
-            c = selfValid(result)
+            c = getValidSelfCompletion(result)
             or
             // A child exits abnormally
             result = getExprChildElement(aw, _) and
@@ -1233,6 +1233,11 @@ module ControlFlow {
           )
       }
 
+      /**
+       * Gets a potential last element executed within control flow element `cfe`,
+       * as well as its completion, where the last element of `cfe` is recursively
+       * computed as specified by `rec`.
+       */
       pragma[nomagic]
       private ControlFlowElement lastRec(
         ControlFlowElement cfe, Completion c, TLastRecComputation rec
@@ -1244,10 +1249,7 @@ module ControlFlow {
       private ControlFlowElement lastRecSpecific(
         ControlFlowElement cfe, Completion c1, Completion c2
       ) {
-        exists(TLastRecComputation rec |
-          result = lastRec(cfe, c1, rec) and
-          rec = TLastRecSpecificCompletion(c2)
-        )
+        result = lastRec(cfe, c1, TLastRecSpecificCompletion(c2))
       }
 
       pragma[nomagic]
