@@ -41,7 +41,7 @@ public class JSDocParser {
   public JSDocComment parse(Comment comment) {
     source = comment.getText();
     JSDocTagParser p = new JSDocTagParser();
-    Pair<String, List<JSDocTagParser.Tag>> r = p.new TagParser(null).parse(source);
+    Pair<String, List<JSDocTagParser.Tag>> r = p.new TagParser(null).parseComment();
     List<JSDocTag> tags = new ArrayList<>();
     for (JSDocTagParser.Tag tag : r.snd()) {
       String title = tag.title;
@@ -1184,7 +1184,6 @@ public class JSDocParser {
 
   private class JSDocTagParser {
     int index, lineNumber, lineStart, length;
-    String source;
     boolean recoverable = true, sloppy = false;
 
     private int skipStars(int index) {
@@ -1861,12 +1860,10 @@ public class JSDocParser {
         return description.toString().trim();
       }
 
-      public Pair<String, List<Tag>> parse(String comment) {
+      public Pair<String, List<Tag>> parseComment() {
         List<Tag> tags = new ArrayList<>();
         Tag tag;
         String description;
-
-        source = comment;
 
         length = source.length();
         index = 1; // Skip initial "*"
