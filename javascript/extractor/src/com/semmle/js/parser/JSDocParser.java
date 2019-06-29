@@ -1866,7 +1866,7 @@ public class JSDocParser {
         Tag tag;
         String description;
 
-        source = comment.replaceAll("^/?\\*+", "").replaceAll("\\*+/?\\z", "");
+        source = comment;
 
         length = source.length();
         index = 0;
