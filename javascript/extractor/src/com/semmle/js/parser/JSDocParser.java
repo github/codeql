@@ -221,8 +221,8 @@ public class JSDocParser {
   };
 
   private class TypeExpressionParser {
-    String source;
-    int length;
+    int startIndex;
+    int endIndex;
     int previous, index;
     Token token;
     Object value;
@@ -256,13 +256,15 @@ public class JSDocParser {
     }
 
     private Position pos() {
-      return new Position(1, index + 1, index);
+      // TEMPORARY: Produce relative positions as the parser originally did
+      return new Position(1, index + 1 - startIndex, index - startIndex);
     }
 
     private <T extends JSDocTypeExpression> T finishNode(T node) {
       SourceLocation loc = node.getLoc();
       Position end = pos();
-      loc.setSource(inputSubstring(loc.getStart().getOffset(), end.getOffset()));
+      // TEMPORARY: Assume relative positions as the parser originally did
+      loc.setSource(inputSubstring(loc.getStart().getOffset() + startIndex, end.getOffset() + startIndex));
       loc.setEnd(end);
       return node;
     }
@@ -283,7 +285,7 @@ public class JSDocParser {
 
       len = (prefix == 'u') ? 4 : 2;
       for (i = 0; i < len; ++i) {
-        if (index < length && isHexDigit(source.charAt(index))) {
+        if (index < endIndex && isHexDigit(source.charAt(index))) {
           ch = advance();
           code = code * 16 + "0123456789abcdef".indexOf(Character.toLowerCase(ch));
         } else {
@@ -300,7 +302,7 @@ public class JSDocParser {
       quote = source.charAt(index);
       ++index;
 
-      while (index < length) {
+      while (index < endIndex) {
         ch = advance();
 
         if (ch == quote) {
@@ -350,14 +352,14 @@ public class JSDocParser {
                   //    octal = true;
                   // }
 
-                  if (index < length && isOctalDigit(source.charAt(index))) {
+                  if (index < endIndex && isOctalDigit(source.charAt(index))) {
                     // TODO Review Removal octal = true;
                     code = code * 8 + "01234567".indexOf(advance());
 
                     // 3 digits are only allowed when string starts
                     // with 0, 1, 2, 3
                     if ("0123".indexOf(ch) >= 0
-                        && index < length
+                        && index < endIndex
                         && isOctalDigit(source.charAt(index))) {
                       code = code * 8 + "01234567".indexOf(advance());
                     }
@@ -369,7 +371,7 @@ public class JSDocParser {
                 break;
             }
           } else {
-            if (ch == '\r' && index < length && source.charAt(index) == '\n') {
+            if (ch == '\r' && index < endIndex && source.charAt(index) == '\n') {
               ++index;
             }
           }
@@ -396,12 +398,12 @@ public class JSDocParser {
       if (ch != '.') {
         int next = advance();
         number.append((char) next);
-        ch = index < length ? source.charAt(index) : '\0';
+        ch = index < endIndex ? source.charAt(index) : '\0';
 
         if (next == '0') {
           if (ch == 'x' || ch == 'X') {
             number.append((char) advance());
-            while (index < length) {
+            while (index < endIndex) {
               ch = source.charAt(index);
               if (!isHexDigit(ch)) {
                 break;
@@ -414,7 +416,7 @@ public class JSDocParser {
               throwError("unexpected token");
             }
 
-            if (index < length) {
+            if (index < endIndex) {
               ch = source.charAt(index);
               if (isIdentifierStart(ch)) {
                 throwError("unexpected token");
@@ -431,7 +433,7 @@ public class JSDocParser {
 
           if (isOctalDigit(ch)) {
             number.append((char) advance());
-            while (index < length) {
+            while (index < endIndex) {
               ch = source.charAt(index);
               if (!isOctalDigit(ch)) {
                 break;
@@ -439,7 +441,7 @@ public class JSDocParser {
               number.append((char) advance());
             }
 
-            if (index < length) {
+            if (index < endIndex) {
               ch = source.charAt(index);
               if (isIdentifierStart(ch) || isDecimalDigit(ch)) {
                 throwError("unexpected token");
@@ -459,7 +461,7 @@ public class JSDocParser {
           }
         }
 
-        while (index < length) {
+        while (index < endIndex) {
           ch = source.charAt(index);
           if (!isDecimalDigit(ch)) {
             break;
@@ -471,7 +473,7 @@ public class JSDocParser {
       if (ch == '.') {
         isFloat = true;
         number.append((char) advance());
-        while (index < length) {
+        while (index < endIndex) {
           ch = source.charAt(index);
           if (!isDecimalDigit(ch)) {
             break;
@@ -484,15 +486,15 @@ public class JSDocParser {
         isFloat = true;
         number.append((char) advance());
 
-        ch = index < length ? source.charAt(index) : '\0';
+        ch = index < endIndex ? source.charAt(index) : '\0';
         if (ch == '+' || ch == '-') {
           number.append((char) advance());
         }
 
-        ch = index < length ? source.charAt(index) : '\0';
+        ch = index < endIndex ? source.charAt(index) : '\0';
         if (isDecimalDigit(ch)) {
           number.append((char) advance());
-          while (index < length) {
+          while (index < endIndex) {
             ch = source.charAt(index);
             if (!isDecimalDigit(ch)) {
               break;
@@ -504,7 +506,7 @@ public class JSDocParser {
         }
       }
 
-      if (index < length) {
+      if (index < endIndex) {
         ch = source.charAt(index);
         if (isIdentifierStart(ch)) {
           throwError("unexpected token");
@@ -526,10 +528,10 @@ public class JSDocParser {
       char ch, ch2;
 
       value = new String(Character.toChars(advance()));
-      while (index < length && isTypeName(source.charAt(index))) {
+      while (index < endIndex && isTypeName(source.charAt(index))) {
         ch = source.charAt(index);
         if (ch == '.') {
-          if ((index + 1) < length) {
+          if ((index + 1) < endIndex) {
             ch2 = source.charAt(index + 1);
             if (ch2 == '<') {
               break;
@@ -546,10 +548,10 @@ public class JSDocParser {
 
       previous = index;
 
-      while (index < length && isWhiteSpace(source.charAt(index))) {
+      while (index < endIndex && isWhiteSpace(source.charAt(index))) {
         advance();
       }
-      if (index >= length) {
+      if (index >= endIndex) {
         token = Token.EOF;
         return token;
       }
@@ -602,7 +604,7 @@ public class JSDocParser {
 
         case '.':
           advance();
-          if (index < length) {
+          if (index < endIndex) {
             ch = source.charAt(index);
             if (ch == '<') {
               advance();
@@ -610,7 +612,7 @@ public class JSDocParser {
               return token;
             }
 
-            if (ch == '.' && index + 1 < length && source.charAt(index + 1) == '.') {
+            if (ch == '.' && index + 1 < endIndex && source.charAt(index + 1) == '.') {
               advance();
               advance();
               token = Token.REST;
@@ -1143,13 +1145,13 @@ public class JSDocParser {
       return expr;
     }
 
-    private JSDocTypeExpression parseType(String src) throws ParseError {
+    private JSDocTypeExpression parseType(int startIndex, int endIndex) throws ParseError {
       JSDocTypeExpression expr;
 
-      source = src;
-      length = source.length();
-      index = 0;
-      previous = 0;
+      this.startIndex = startIndex;
+      this.endIndex = endIndex;
+      index = startIndex;
+      previous = startIndex;
 
       next();
       expr = parseTop();
@@ -1161,13 +1163,13 @@ public class JSDocParser {
       return expr;
     }
 
-    private JSDocTypeExpression parseParamType(String src) throws ParseError {
+    private JSDocTypeExpression parseParamType(int startIndex, int endIndex) throws ParseError {
       JSDocTypeExpression expr;
 
-      source = src;
-      length = source.length();
-      index = 0;
-      previous = 0;
+      this.startIndex = startIndex;
+      this.endIndex = endIndex;
+      index = startIndex;
+      previous = startIndex;
 
       next();
       expr = parseTopParamType();
@@ -1299,14 +1301,11 @@ public class JSDocParser {
           return throwError("Braces are not balanced");
         }
 
-        // Get the type as a string, ignoring the last '}'
-        String type = source.substring(startIndex, index - 1);
-
         try {
           if (isParamTitle(title)) {
-            return typed.parseParamType(type);
+            return typed.parseParamType(startIndex, index - 1);
           }
-          return typed.parseType(type);
+          return typed.parseType(startIndex, index - 1);
         } catch (ParseError e) {
           // parse failed
           return null;
