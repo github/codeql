@@ -39,7 +39,7 @@ public class JSDocParser {
 
   /** Parse the given string as a JSDoc comment. */
   public JSDocComment parse(Comment comment) {
-    source = comment.getText().substring(1);
+    source = comment.getText();
     JSDocTagParser p = new JSDocTagParser();
     Pair<String, List<JSDocTagParser.Tag>> r = p.new TagParser(null).parse(source);
     List<JSDocTag> tags = new ArrayList<>();
@@ -1869,9 +1869,9 @@ public class JSDocParser {
         source = comment;
 
         length = source.length();
-        index = 0;
+        index = 1; // Skip initial "*"
         lineNumber = 0;
-        lineStart = 0;
+        lineStart = 1;  // Skip initial "*"
         recoverable = true;
         sloppy = true;
 
