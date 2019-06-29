@@ -737,10 +737,10 @@ public class JSDocParser {
       List<JSDocTypeExpression> elements = new ArrayList<>();
       consume(Token.LBRACK, "ArrayType should start with [");
       while (token != Token.RBRACK) {
-        loc = loc();
         if (token == Token.REST) {
+          SourceLocation restLoc = loc();
           consume(Token.REST);
-          elements.add(finishNode(new RestType(loc, parseTypeExpression())));
+          elements.add(finishNode(new RestType(restLoc, parseTypeExpression())));
           break;
         } else {
           elements.add(parseTypeExpression());
@@ -914,7 +914,7 @@ public class JSDocParser {
           consume(Token.COLON);
           expr =
               finishNode(
-                  new ParameterType(loc, ((NameExpression) expr).getName(), parseTypeExpression()));
+                  new ParameterType(new SourceLocation(loc), ((NameExpression) expr).getName(), parseTypeExpression()));
         }
         if (token == Token.EQUAL) {
           consume(Token.EQUAL);
@@ -1089,7 +1089,9 @@ public class JSDocParser {
         consume(Token.RBRACK, "expected an array-style type declaration (' + value + '[])");
         List<JSDocTypeExpression> expressions = new ArrayList<>();
         expressions.add(expr);
-        return finishNode(new TypeApplication(loc, new NameExpression(loc, "Array"), expressions));
+        NameExpression nameExpr =
+            finishNode(new NameExpression(new SourceLocation(loc), "Array"));
+        return finishNode(new TypeApplication(loc, nameExpr, expressions));
       }
 
       return expr;
