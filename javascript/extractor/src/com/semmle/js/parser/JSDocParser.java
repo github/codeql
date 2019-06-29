@@ -36,12 +36,20 @@ import java.util.Set;
 /** A Java port of <a href="https://github.com/Constellation/doctrine">doctrine</a>. */
 public class JSDocParser {
   private String source;
+  private int absoluteOffset;
 
   /** Parse the given string as a JSDoc comment. */
   public JSDocComment parse(Comment comment) {
     source = comment.getText();
     JSDocTagParser p = new JSDocTagParser();
-    Pair<String, List<JSDocTagParser.Tag>> r = p.new TagParser(null).parseComment();
+    Position startPos = comment.getLoc().getStart();
+    // Get the start of the first line relative to the 'source' string.
+    // This occurs before the start of 'source', so the lineStart is negative.
+    int firstLineStart = -(startPos.getColumn() + "/**".length() - 1);
+    this.absoluteOffset = startPos.getOffset();
+    Pair<String, List<JSDocTagParser.Tag>> r = p.new TagParser(null).parseComment(
+        startPos.getLine() - 1,
+        firstLineStart);
     List<JSDocTag> tags = new ArrayList<>();
     for (JSDocTagParser.Tag tag : r.snd()) {
       String title = tag.title;
@@ -52,14 +60,12 @@ public class JSDocParser {
 
       JSDocTypeExpression jsdocType = tag.type;
 
-      int realStartLine = comment.getLoc().getStart().getLine() + startLine;
-      int realStartColumn =
-          (startLine == 0 ? comment.getLoc().getStart().getColumn() + 3 : 0) + startColumn;
+      int lineNumber = startLine + 1; // convert to 1-based
       SourceLocation loc =
           new SourceLocation(
               source,
-              new Position(realStartLine, realStartColumn, -1),
-              new Position(realStartLine, realStartColumn + 1 + title.length(), -1));
+              new Position(lineNumber, startColumn, -1),
+              new Position(lineNumber, startColumn + 1 + title.length(), -1));
       tags.add(new JSDocTag(loc, title, description, name, jsdocType, tag.errors));
     }
     return new JSDocComment(comment, r.fst(), tags);
@@ -223,24 +229,28 @@ public class JSDocParser {
   private class TypeExpressionParser {
     int startIndex;
     int endIndex;
-    int previous, index;
+    int startOfCurToken, endOfPrevToken, index;
     Token token;
     Object value;
+    int lineStart;
+    int lineNumber;
 
     private class Context {
-      int _previous, _index;
+      int _startOfCurToken, _endOfPrevToken, _index;
       Token _token;
       Object _value;
 
-      Context(int previous, int index, Token token, Object value) {
-        this._previous = previous;
+      Context(int startOfCurToken, int endOfPrevToken, int index, Token token, Object value) {
+        this._startOfCurToken = startOfCurToken;
+        this._endOfPrevToken = endOfPrevToken;
         this._index = index;
         this._token = token;
         this._value = value;
       }
 
       void restore() {
-        previous = this._previous;
+        startOfCurToken = this._startOfCurToken;
+        endOfPrevToken = this._endOfPrevToken;
         index = this._index;
         token = this._token;
         value = this._value;
@@ -248,23 +258,36 @@ public class JSDocParser {
     }
 
     Context save() {
-      return new Context(previous, index, token, value);
+      return new Context(startOfCurToken, endOfPrevToken, index, token, value);
     }
 
     private SourceLocation loc() {
       return new SourceLocation(pos());
     }
 
+    /**
+     * Returns the absolute position of the start of the current token.
+     */
     private Position pos() {
-      // TEMPORARY: Produce relative positions as the parser originally did
-      return new Position(1, index + 1 - startIndex, index - startIndex);
+      return new Position(this.lineNumber + 1, startOfCurToken - lineStart, startOfCurToken + absoluteOffset);
+    }
+
+    /**
+     * Returns the absolute position of the end of the previous token.
+     *
+     * This can differ from the start of the current token case the two tokens
+     * are separated by whitespace.
+     */
+    private Position endPos() {
+      return new Position(this.lineNumber + 1, endOfPrevToken - lineStart, endOfPrevToken + absoluteOffset);
     }
 
     private <T extends JSDocTypeExpression> T finishNode(T node) {
       SourceLocation loc = node.getLoc();
-      Position end = pos();
-      // TEMPORARY: Assume relative positions as the parser originally did
-      loc.setSource(inputSubstring(loc.getStart().getOffset() + startIndex, end.getOffset() + startIndex));
+      Position end = endPos();
+      int relativeStartOffset = loc.getStart().getOffset() - absoluteOffset;
+      int relativeEndOffset = end.getOffset() - absoluteOffset;
+      loc.setSource(inputSubstring(relativeStartOffset, relativeEndOffset));
       loc.setEnd(end);
       return node;
     }
@@ -546,7 +569,7 @@ public class JSDocParser {
     private Token next() throws ParseError {
       char ch;
 
-      previous = index;
+      endOfPrevToken = index;
 
       while (index < endIndex && isWhiteSpace(source.charAt(index))) {
         advance();
@@ -555,6 +578,8 @@ public class JSDocParser {
         token = Token.EOF;
         return token;
       }
+
+      startOfCurToken = index;
 
       ch = source.charAt(index);
       switch (ch) {
@@ -918,7 +943,7 @@ public class JSDocParser {
         }
         if (token == Token.EQUAL) {
           consume(Token.EQUAL);
-          expr = finishNode(new OptionalType(loc, expr));
+          expr = finishNode(new OptionalType(new SourceLocation(loc), expr));
           normal = false;
         } else {
           if (!normal) {
@@ -1147,13 +1172,14 @@ public class JSDocParser {
       return expr;
     }
 
-    private JSDocTypeExpression parseType(int startIndex, int endIndex) throws ParseError {
+    private JSDocTypeExpression parseType(int startIndex, int endIndex, int lineStart, int lineNumber) throws ParseError {
       JSDocTypeExpression expr;
 
+      this.lineNumber = lineNumber;
+      this.lineStart = lineStart;
       this.startIndex = startIndex;
       this.endIndex = endIndex;
       index = startIndex;
-      previous = startIndex;
 
       next();
       expr = parseTop();
@@ -1165,13 +1191,14 @@ public class JSDocParser {
       return expr;
     }
 
-    private JSDocTypeExpression parseParamType(int startIndex, int endIndex) throws ParseError {
+    private JSDocTypeExpression parseParamType(int startIndex, int endIndex, int lineStart, int lineNumber) throws ParseError {
       JSDocTypeExpression expr;
 
+      this.lineNumber = lineNumber;
+      this.lineStart = lineStart;
       this.startIndex = startIndex;
       this.endIndex = endIndex;
       index = startIndex;
-      previous = startIndex;
 
       next();
       expr = parseTopParamType();
@@ -1283,6 +1310,8 @@ public class JSDocParser {
       if (!direct) {
         // type expression { is found
         brace = 1;
+        int firstLineStart = this.lineStart;
+        int firstLineNumber = this.lineNumber;
         int startIndex = index;
         while (index < last) {
           ch = source.charAt(index);
@@ -1305,9 +1334,9 @@ public class JSDocParser {
 
         try {
           if (isParamTitle(title)) {
-            return typed.parseParamType(startIndex, index - 1);
+            return typed.parseParamType(startIndex, index - 1, firstLineStart, firstLineNumber);
           }
-          return typed.parseType(startIndex, index - 1);
+          return typed.parseType(startIndex, index - 1, firstLineStart, firstLineNumber);
         } catch (ParseError e) {
           // parse failed
           return null;
@@ -1859,15 +1888,15 @@ public class JSDocParser {
         return description.toString().trim();
       }
 
-      public Pair<String, List<Tag>> parseComment() {
+      public Pair<String, List<Tag>> parseComment(int lineNumber_, int lineStart_) {
         List<Tag> tags = new ArrayList<>();
         Tag tag;
         String description;
 
         length = source.length();
         index = 1; // Skip initial "*"
-        lineNumber = 0;
-        lineStart = 1;  // Skip initial "*"
+        lineNumber = lineNumber_;
+        lineStart = lineStart_;
         recoverable = true;
         sloppy = true;
 
