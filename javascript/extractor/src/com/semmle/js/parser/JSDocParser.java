@@ -1259,7 +1259,6 @@ public class JSDocParser {
     private JSDocTypeExpression parseType(String title, int last) throws ParseError {
       char ch;
       int brace;
-      StringBuilder type;
       boolean direct = false;
 
       // search '{'
@@ -1280,23 +1279,19 @@ public class JSDocParser {
       if (!direct) {
         // type expression { is found
         brace = 1;
-        type = new StringBuilder();
+        int startIndex = index;
         while (index < last) {
           ch = source.charAt(index);
-          if (isLineTerminator(ch)) {
-            advance();
-          } else {
-            if (ch == '}') {
-              brace -= 1;
-              if (brace == 0) {
-                advance();
-                break;
-              }
-            } else if (ch == '{') {
-              brace += 1;
+          if (ch == '}') {
+            brace -= 1;
+            if (brace == 0) {
+              advance();
+              break;
             }
-            type.append(advance());
+          } else if (ch == '{') {
+            brace += 1;
           }
+          advance();
         }
 
         if (brace != 0) {
@@ -1304,11 +1299,14 @@ public class JSDocParser {
           return throwError("Braces are not balanced");
         }
 
+        // Get the type as a string, ignoring the last '}'
+        String type = source.substring(startIndex, index - 1);
+
         try {
           if (isParamTitle(title)) {
-            return typed.parseParamType(type.toString());
+            return typed.parseParamType(type);
           }
-          return typed.parseType(type.toString());
+          return typed.parseType(type);
         } catch (ParseError e) {
           // parse failed
           return null;
