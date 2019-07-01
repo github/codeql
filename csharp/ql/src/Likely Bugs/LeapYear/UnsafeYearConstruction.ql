@@ -4,7 +4,6 @@
  * @kind path-problem
  * @problem.severity error
  * @id cs/unsafe-year-construction
- * @precision high
  * @tags security
  *       date-time
  *       reliability
