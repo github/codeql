@@ -109,6 +109,10 @@ public class JSDocParser {
     return Character.isWhitespace(ch) && !isLineTerminator(ch) || ch == '\u00a0';
   }
 
+  private static boolean isWhiteSpaceOrLineTerminator(char ch) {
+    return Character.isWhitespace(ch) || ch == '\u00a0';
+  }
+
   private static boolean isDecimalDigit(char ch) {
     return "0123456789".indexOf(ch) >= 0;
   }
@@ -300,7 +304,14 @@ public class JSDocParser {
 
     private int advance() {
       if (index >= source.length()) return -1;
-      return source.charAt(index++);
+      int ch = source.charAt(index);
+      ++index;
+      if (isLineTerminator(ch) && !(ch == '\r' && index < endIndex && source.charAt(index) == '\n')) {
+        lineNumber += 1;
+        lineStart = index;
+        index = skipStars(index, endIndex);
+      }
+      return ch;
     }
 
     private String scanHexEscape(char prefix) {
@@ -571,7 +582,7 @@ public class JSDocParser {
 
       endOfPrevToken = index;
 
-      while (index < endIndex && isWhiteSpace(source.charAt(index))) {
+      while (index < endIndex && isWhiteSpaceOrLineTerminator(source.charAt(index))) {
         advance();
       }
       if (index >= endIndex) {
@@ -1211,28 +1222,29 @@ public class JSDocParser {
     }
   }
 
+  /** Skips the leading indentation and '*' at the beginning of a line. */
+  private int skipStars(int index, int end) {
+    while (index < end
+        && isWhiteSpace(source.charAt(index))
+        && !isLineTerminator(source.charAt(index))) {
+      index += 1;
+    }
+    while (index < end && source.charAt(index) == '*') {
+      index += 1;
+    }
+    while (index < end
+        && isWhiteSpace(source.charAt(index))
+        && !isLineTerminator(source.charAt(index))) {
+      index += 1;
+    }
+    return index;
+  }
+
   private TypeExpressionParser typed = new TypeExpressionParser();
 
   private class JSDocTagParser {
     int index, lineNumber, lineStart, length;
     boolean recoverable = true, sloppy = false;
-
-    private int skipStars(int index) {
-      while (index < length
-          && isWhiteSpace(source.charAt(index))
-          && !isLineTerminator(source.charAt(index))) {
-        index += 1;
-      }
-      while (index < length && source.charAt(index) == '*') {
-        index += 1;
-      }
-      while (index < length
-          && isWhiteSpace(source.charAt(index))
-          && !isLineTerminator(source.charAt(index))) {
-        index += 1;
-      }
-      return index;
-    }
 
     private char advance() {
       char ch = source.charAt(index);
@@ -1240,7 +1252,7 @@ public class JSDocParser {
       if (isLineTerminator(ch) && !(ch == '\r' && index < length && source.charAt(index) == '\n')) {
         lineNumber += 1;
         lineStart = index;
-        index = skipStars(index);
+        index = skipStars(index, length);
       }
       return ch;
     }
@@ -1268,7 +1280,7 @@ public class JSDocParser {
             && !(ch == '\r' && last + 1 < length && source.charAt(last + 1) == '\n')) {
           lineNumber += 1;
           lineStart = last + 1;
-          last = skipStars(last + 1) - 1;
+          last = skipStars(last + 1, length) - 1;
           waiting = true;
         } else if (waiting) {
           if (ch == '@') {

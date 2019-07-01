@@ -382,3 +382,9 @@ class C {
    */
   classMethod(p) {}
 }
+
+/**
+ * @param {Array.<
+ *    number>} x
+ */
+function multiline(x) {}

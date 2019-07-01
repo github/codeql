@@ -121,6 +121,7 @@ test_JSDoc
 | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |  | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |
 | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |  | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |
 | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |  | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |
+| tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ |  | tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ |
 test_JSDocTag
 | tst.js:5:5:5:10 | @const | const | tst.js:5:1:5:13 | /** @const */ | 0 | (none) | (none) | (none) |
 | tst.js:9:4:9:9 | @const | const | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ | 0 | (none) | (none) | (none) |
@@ -228,6 +229,7 @@ test_JSDocTag
 | tst.js:369:6:369:11 | @param | param | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T2 |
 | tst.js:376:6:376:11 | @param | param | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T3 |
 | tst.js:381:6:381:11 | @param | param | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ | 0 | (none) | p | T4 |
+| tst.js:387:4:387:9 | @param | param | tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ | 0 | (none) | x | Array.<number> |
 test_ObjectExpr_getDocumentation
 | tst.js:48:25:48:36 | { 'x': 321 } | tst.js:48:12:48:23 | /** @dict */ |
 | tst.js:55:20:59:1 | {\\n  TRU ... BE: 0\\n} | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
@@ -339,6 +341,7 @@ test_next_token
 | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ | tst.js:371:3:371:13 | fancyMethod |
 | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ | tst.js:378:3:378:13 | constructor |
 | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ | tst.js:383:3:383:13 | classMethod |
+| tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ | tst.js:390:1:390:8 | function |
 test_JSDocTypeExpr
 | tst.js:10:11:10:16 | string | tst.js:10:4:10:8 | @type | 0 |
 | tst.js:23:14:23:20 | boolean | tst.js:23:5:23:11 | @define | 0 |
@@ -461,6 +464,9 @@ test_JSDocTypeExpr
 | tst.js:369:14:369:15 | T2 | tst.js:369:6:369:11 | @param | 0 |
 | tst.js:376:14:376:15 | T3 | tst.js:376:6:376:11 | @param | 0 |
 | tst.js:381:14:381:15 | T4 | tst.js:381:6:381:11 | @param | 0 |
+| tst.js:387:12:387:16 | Array | tst.js:387:12:388:13 | Array.<number> | -1 |
+| tst.js:387:12:388:13 | Array.<number> | tst.js:387:4:387:9 | @param | 0 |
+| tst.js:388:7:388:12 | number | tst.js:387:12:388:13 | Array.<number> | 0 |
 test_Function_getDocumentation
 | tst.js:20:1:21:1 | functio ... t() {\\n} | tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ |
 | tst.js:36:34:37:1 | function(node) {\\n} | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ |
@@ -505,6 +511,7 @@ test_Function_getDocumentation
 | tst.js:371:14:371:19 | (p) {} | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |
 | tst.js:378:14:378:19 | (p) {} | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |
 | tst.js:383:14:383:19 | (p) {} | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |
+| tst.js:390:1:390:24 | functio ... e(x) {} | tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ |
 test_JSDocOptionalParameterTypeExpr
 | tst.js:239:12:239:18 | number= | tst.js:239:12:239:17 | number |
 | tst.js:240:21:240:28 | ?string= | tst.js:240:21:240:27 | ?string |
@@ -525,6 +532,7 @@ test_getParameterTag
 | tst.js:371:15:371:15 | p | p | tst.js:369:6:369:11 | @param | p | tst.js:369:14:369:15 | T2 |
 | tst.js:378:15:378:15 | p | p | tst.js:376:6:376:11 | @param | p | tst.js:376:14:376:15 | T3 |
 | tst.js:383:15:383:15 | p | p | tst.js:381:6:381:11 | @param | p | tst.js:381:14:381:15 | T4 |
+| tst.js:390:20:390:20 | x | x | tst.js:387:4:387:9 | @param | x | tst.js:387:12:388:13 | Array.<number> |
 test_VarDeclStmt_getDocumentation
 | tst.js:5:15:5:36 | var MY_ ... stout'; | tst.js:5:1:5:13 | /** @const */ |
 | tst.js:24:1:24:24 | var ENA ... = true; | tst.js:23:1:23:24 | /** @de ... ean} */ |
@@ -557,6 +565,7 @@ test_JSDocAppliedTypeExpr
 | tst.js:333:17:333:28 | Foo.<string> | tst.js:333:17:333:19 | Foo | 0 | tst.js:333:22:333:27 | string |
 | tst.js:334:17:334:28 | Foo.<number> | tst.js:334:17:334:19 | Foo | 0 | tst.js:334:22:334:27 | number |
 | tst.js:357:12:357:25 | Array.<number> | tst.js:357:12:357:16 | Array | 0 | tst.js:357:19:357:24 | number |
+| tst.js:387:12:388:13 | Array.<number> | tst.js:387:12:387:16 | Array | 0 | tst.js:388:7:388:12 | number |
 test_JSDocNonNullableTypeExpr
 | tst.js:229:12:229:18 | !Object | tst.js:229:13:229:18 | Object | prefix |
 | tst.js:258:12:258:24 | !Foo.<string> | tst.js:258:13:258:24 | Foo.<string> | prefix |
