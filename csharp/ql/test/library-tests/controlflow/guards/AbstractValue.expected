@@ -1,0 +1,260 @@
+abstractValue
+| 0 | Collections.cs:12:32:12:32 | 0 |
+| 0 | Collections.cs:14:28:14:28 | 0 |
+| 0 | Collections.cs:16:27:16:27 | 0 |
+| 0 | Collections.cs:17:28:17:28 | 0 |
+| 0 | Collections.cs:23:31:23:31 | 0 |
+| 0 | Collections.cs:25:27:25:27 | 0 |
+| 0 | Collections.cs:27:26:27:26 | 0 |
+| 0 | Collections.cs:28:27:28:27 | 0 |
+| 0 | Collections.cs:34:33:34:33 | 0 |
+| 0 | Collections.cs:36:29:36:29 | 0 |
+| 0 | Collections.cs:38:28:38:28 | 0 |
+| 0 | Collections.cs:39:29:39:29 | 0 |
+| 0 | Collections.cs:50:27:50:27 | 0 |
+| 0 | Collections.cs:57:24:57:24 | 0 |
+| 0 | Collections.cs:65:24:65:24 | 0 |
+| 0 | Guards.cs:12:24:12:24 | 0 |
+| 0 | Guards.cs:78:26:78:26 | 0 |
+| 0 | Guards.cs:80:25:80:25 | 0 |
+| 0 | Guards.cs:82:26:82:26 | 0 |
+| 0 | Guards.cs:92:30:92:30 | 0 |
+| 0 | Guards.cs:241:17:241:17 | 0 |
+| 0 | Guards.cs:255:17:255:19 | access to constant A |
+| 0 | Guards.cs:298:21:298:21 | 0 |
+| 0 | Guards.cs:310:21:310:21 | 0 |
+| 0 | Guards.cs:317:17:317:17 | 0 |
+| 0 | Guards.cs:322:18:322:18 | 0 |
+| 0 | Guards.cs:329:17:329:19 | access to constant A |
+| 0 | Guards.cs:334:20:334:20 | 0 |
+| 0 | Splitting.cs:136:20:136:20 | 0 |
+| 1 | Collections.cs:13:28:13:28 | 1 |
+| 1 | Collections.cs:15:28:15:28 | 1 |
+| 1 | Collections.cs:18:28:18:28 | 1 |
+| 1 | Collections.cs:24:27:24:27 | 1 |
+| 1 | Collections.cs:26:27:26:27 | 1 |
+| 1 | Collections.cs:29:27:29:27 | 1 |
+| 1 | Collections.cs:35:29:35:29 | 1 |
+| 1 | Collections.cs:37:29:37:29 | 1 |
+| 1 | Collections.cs:40:29:40:29 | 1 |
+| 1 | Guards.cs:92:25:92:25 | 1 |
+| 1 | Guards.cs:243:17:243:17 | 1 |
+| 1 | Guards.cs:246:18:246:18 | 1 |
+| 1 | Guards.cs:257:17:257:19 | access to constant B |
+| 1 | Guards.cs:260:18:260:20 | access to constant B |
+| 1 | Guards.cs:299:18:299:18 | 1 |
+| 1 | Guards.cs:311:18:311:18 | 1 |
+| 1 | Guards.cs:319:17:319:17 | 1 |
+| 1 | Guards.cs:322:13:322:13 | 1 |
+| 1 | Guards.cs:323:18:323:18 | 1 |
+| 1 | Guards.cs:331:17:331:19 | access to constant B |
+| 1 | Guards.cs:334:13:334:15 | access to constant B |
+| 1 | Guards.cs:335:18:335:18 | 1 |
+| 3 | Collections.cs:55:13:55:41 | 3 |
+| 3 | Collections.cs:63:17:63:45 | 3 |
+| 10 | Guards.cs:84:25:84:26 | 10 |
+| 10 | Guards.cs:86:26:86:27 | 10 |
+| empty | Collections.cs:54:13:54:16 | access to parameter args |
+| empty | Collections.cs:57:9:57:25 | ... = ... |
+| empty | Collections.cs:57:13:57:25 | array creation of type String[] |
+| empty | Collections.cs:58:9:58:13 | ... = ... |
+| empty | Collections.cs:58:13:58:13 | access to local variable x |
+| empty | Collections.cs:65:13:65:13 | access to local variable x |
+| false | Guards.cs:178:16:178:20 | false |
+| false | Guards.cs:181:52:181:56 | false |
+| false | Guards.cs:217:18:217:22 | false |
+| false | Guards.cs:228:18:228:22 | false |
+| false | Guards.cs:295:18:295:22 | false |
+| false | Guards.cs:305:18:305:22 | false |
+| non-empty | Collections.cs:55:9:55:41 | ... = ... |
+| non-empty | Collections.cs:55:13:55:41 | array creation of type String[] |
+| non-empty | Collections.cs:56:9:56:13 | ... = ... |
+| non-empty | Collections.cs:56:13:56:13 | access to local variable x |
+| non-empty | Collections.cs:63:17:63:45 | array creation of type String[] |
+| non-empty | Collections.cs:68:13:68:13 | access to local variable x |
+| non-null | Assert.cs:9:31:9:32 | "" |
+| non-null | Assert.cs:16:31:16:32 | "" |
+| non-null | Assert.cs:23:31:23:32 | "" |
+| non-null | Assert.cs:30:31:30:32 | "" |
+| non-null | Assert.cs:37:31:37:32 | "" |
+| non-null | Assert.cs:44:31:44:32 | "" |
+| non-null | Assert.cs:51:31:51:32 | "" |
+| non-null | Assert.cs:58:31:58:32 | "" |
+| non-null | Assert.cs:65:31:65:32 | "" |
+| non-null | Assert.cs:72:31:72:32 | "" |
+| non-null | Assert.cs:79:31:79:32 | "" |
+| non-null | Collections.cs:55:9:55:41 | ... = ... |
+| non-null | Collections.cs:55:13:55:41 | array creation of type String[] |
+| non-null | Collections.cs:55:27:55:29 | "a" |
+| non-null | Collections.cs:55:32:55:34 | "b" |
+| non-null | Collections.cs:55:37:55:39 | "c" |
+| non-null | Collections.cs:56:9:56:13 | ... = ... |
+| non-null | Collections.cs:56:13:56:13 | access to local variable x |
+| non-null | Collections.cs:57:9:57:25 | ... = ... |
+| non-null | Collections.cs:57:13:57:25 | array creation of type String[] |
+| non-null | Collections.cs:58:9:58:13 | ... = ... |
+| non-null | Collections.cs:58:13:58:13 | access to local variable x |
+| non-null | Collections.cs:63:17:63:45 | array creation of type String[] |
+| non-null | Collections.cs:63:31:63:33 | "a" |
+| non-null | Collections.cs:63:36:63:38 | "b" |
+| non-null | Collections.cs:63:41:63:43 | "c" |
+| non-null | Collections.cs:67:19:67:21 | "a" |
+| non-null | Collections.cs:68:19:68:21 | "b" |
+| non-null | Guards.cs:18:31:18:46 | "<empty string>" |
+| non-null | Guards.cs:33:31:33:35 | ... + ... |
+| non-null | Guards.cs:36:32:36:36 | ... + ... |
+| non-null | Guards.cs:39:31:39:35 | ... + ... |
+| non-null | Guards.cs:42:32:42:36 | ... + ... |
+| non-null | Guards.cs:44:13:44:17 | this access |
+| non-null | Guards.cs:45:31:45:42 | object creation of type Guards |
+| non-null | Guards.cs:47:13:47:17 | this access |
+| non-null | Guards.cs:48:31:48:34 | this access |
+| non-null | Guards.cs:61:19:61:33 | object creation of type Exception |
+| non-null | Guards.cs:78:26:78:26 | (...) ... |
+| non-null | Guards.cs:80:25:80:25 | (...) ... |
+| non-null | Guards.cs:82:26:82:26 | (...) ... |
+| non-null | Guards.cs:84:25:84:26 | (...) ... |
+| non-null | Guards.cs:86:26:86:27 | (...) ... |
+| non-null | Guards.cs:92:25:92:25 | (...) ... |
+| non-null | Guards.cs:92:30:92:30 | (...) ... |
+| non-null | Guards.cs:96:18:96:19 | "" |
+| non-null | Guards.cs:105:19:105:33 | object creation of type Exception |
+| non-null | Guards.cs:183:37:183:48 | this access |
+| non-null | Guards.cs:189:14:189:25 | this access |
+| non-null | Guards.cs:191:14:191:25 | this access |
+| non-null | Guards.cs:193:14:193:25 | this access |
+| non-null | Guards.cs:195:13:195:27 | this access |
+| non-null | Guards.cs:197:14:197:29 | this access |
+| non-null | Guards.cs:268:30:268:41 | call to method GetType |
+| non-null | Splitting.cs:33:24:33:25 | "" |
+| non-null | Splitting.cs:132:21:132:29 | this access |
+| null | Assert.cs:9:24:9:27 | null |
+| null | Assert.cs:10:27:10:30 | null |
+| null | Assert.cs:16:24:16:27 | null |
+| null | Assert.cs:23:24:23:27 | null |
+| null | Assert.cs:30:24:30:27 | null |
+| null | Assert.cs:31:28:31:31 | null |
+| null | Assert.cs:37:24:37:27 | null |
+| null | Assert.cs:38:28:38:31 | null |
+| null | Assert.cs:44:24:44:27 | null |
+| null | Assert.cs:45:29:45:32 | null |
+| null | Assert.cs:51:24:51:27 | null |
+| null | Assert.cs:52:29:52:32 | null |
+| null | Assert.cs:58:24:58:27 | null |
+| null | Assert.cs:59:28:59:31 | null |
+| null | Assert.cs:65:24:65:27 | null |
+| null | Assert.cs:66:29:66:32 | null |
+| null | Assert.cs:72:24:72:27 | null |
+| null | Assert.cs:73:28:73:31 | null |
+| null | Assert.cs:79:24:79:27 | null |
+| null | Assert.cs:80:29:80:32 | null |
+| null | Guards.cs:10:21:10:24 | null |
+| null | Guards.cs:24:18:24:21 | null |
+| null | Guards.cs:32:47:32:50 | null |
+| null | Guards.cs:35:18:35:21 | null |
+| null | Guards.cs:35:31:35:34 | null |
+| null | Guards.cs:38:20:38:23 | null |
+| null | Guards.cs:38:33:38:36 | null |
+| null | Guards.cs:41:22:41:25 | null |
+| null | Guards.cs:41:35:41:38 | null |
+| null | Guards.cs:44:22:44:25 | null |
+| null | Guards.cs:47:22:47:25 | null |
+| null | Guards.cs:53:24:53:27 | null |
+| null | Guards.cs:60:42:60:45 | null |
+| null | Guards.cs:68:21:68:24 | null |
+| null | Guards.cs:71:13:71:20 | ... = ... |
+| null | Guards.cs:71:17:71:20 | null |
+| null | Guards.cs:72:31:72:31 | access to parameter s |
+| null | Guards.cs:88:26:88:29 | null |
+| null | Guards.cs:104:42:104:45 | null |
+| null | Guards.cs:106:9:106:25 | ... = ... |
+| null | Guards.cs:106:22:106:25 | null |
+| null | Guards.cs:115:52:115:55 | null |
+| null | Guards.cs:117:9:117:25 | ... = ... |
+| null | Guards.cs:117:22:117:25 | null |
+| null | Guards.cs:172:38:172:41 | null |
+| null | Guards.cs:181:38:181:41 | null |
+| null | Guards.cs:185:42:185:45 | null |
+| null | Guards.cs:203:18:203:21 | null |
+| null | Splitting.cs:12:22:12:25 | null |
+| null | Splitting.cs:22:22:22:25 | null |
+| null | Splitting.cs:32:22:32:25 | null |
+| null | Splitting.cs:41:18:41:21 | null |
+| null | Splitting.cs:54:18:54:21 | null |
+| null | Splitting.cs:65:18:65:21 | null |
+| null | Splitting.cs:76:18:76:21 | null |
+| null | Splitting.cs:87:31:87:34 | null |
+| null | Splitting.cs:97:31:97:34 | null |
+| null | Splitting.cs:105:27:105:30 | null |
+| null | Splitting.cs:116:27:116:30 | null |
+| null | Splitting.cs:125:20:125:23 | null |
+| null | Splitting.cs:128:22:128:25 | null |
+| true | Guards.cs:177:20:177:23 | true |
+| true | Guards.cs:181:45:181:48 | true |
+| true | Guards.cs:185:49:185:52 | true |
+| true | Guards.cs:185:56:185:59 | true |
+| true | Guards.cs:215:18:215:21 | true |
+| true | Guards.cs:220:18:220:21 | true |
+| true | Guards.cs:230:18:230:21 | true |
+| true | Guards.cs:233:18:233:21 | true |
+| true | Guards.cs:293:18:293:21 | true |
+| true | Guards.cs:298:13:298:16 | true |
+| true | Guards.cs:307:18:307:21 | true |
+| true | Guards.cs:310:13:310:16 | true |
+dualValue
+| empty | non-empty |
+| false | true |
+| match 1 | non-match 1 |
+| match 1 | non-match 1 |
+| match "" | non-match "" |
+| match "" | non-match "" |
+| match Action<String> a | non-match Action<String> a |
+| match Action<String> a | non-match Action<String> a |
+| match _ | non-match _ |
+| match _ | non-match _ |
+| match _ | non-match _ |
+| match _ | non-match _ |
+| match _ | non-match _ |
+| match access to constant B | non-match access to constant B |
+| match access to constant B | non-match access to constant B |
+| match access to type Action<Object> | non-match access to type Action<Object> |
+| match access to type Action<Object> | non-match access to type Action<Object> |
+| match null | non-match null |
+| match null | non-match null |
+| match true | non-match true |
+| match true | non-match true |
+| match true | non-match true |
+| match true | non-match true |
+| non-empty | empty |
+| non-match 1 | match 1 |
+| non-match 1 | match 1 |
+| non-match "" | match "" |
+| non-match "" | match "" |
+| non-match Action<String> a | match Action<String> a |
+| non-match Action<String> a | match Action<String> a |
+| non-match _ | match _ |
+| non-match _ | match _ |
+| non-match _ | match _ |
+| non-match _ | match _ |
+| non-match _ | match _ |
+| non-match access to constant B | match access to constant B |
+| non-match access to constant B | match access to constant B |
+| non-match access to type Action<Object> | match access to type Action<Object> |
+| non-match access to type Action<Object> | match access to type Action<Object> |
+| non-match null | match null |
+| non-match null | match null |
+| non-match true | match true |
+| non-match true | match true |
+| non-match true | match true |
+| non-match true | match true |
+| non-null | null |
+| null | non-null |
+| true | false |
+singletonValue
+| 0 |
+| 1 |
+| 3 |
+| 10 |
+| false |
+| null |
+| true |

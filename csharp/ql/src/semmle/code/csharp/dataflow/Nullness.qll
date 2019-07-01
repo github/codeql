@@ -143,7 +143,7 @@ private predicate ensureNotNullAt(BasicBlock bb, int i, Ssa::Definition def) {
     G::Internal::asserts(bb.getNode(i).getElement(), e, v)
   |
     exprImpliesSsaDef(e, v, def, nv) and
-    not nv.isNull()
+    nv.isNonNull()
   )
 }
 
@@ -258,7 +258,7 @@ private predicate defNullImpliesStep(
     bb1.getLastNode() = getANullCheck(def1, s, nv).getAControlFlowNode()
   |
     bb2 = bb1.getASuccessorByType(s) and
-    not nv.isNull()
+    nv.isNonNull()
   )
 }
 

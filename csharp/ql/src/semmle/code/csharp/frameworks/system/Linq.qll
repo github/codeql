@@ -18,4 +18,15 @@ module SystemLinq {
   class Class extends csharp::Class {
     Class() { this.getNamespace() instanceof Namespace }
   }
+
+  /** The `System.Linq.Enumerable` class. */
+  class SystemLinqEnumerableClass extends Class {
+    SystemLinqEnumerableClass() { this.hasName("Enumerable") }
+
+    /** Gets the `Count()` method. */
+    csharp::ExtensionMethod getCountMethod() { result = this.getAMethod("Count") }
+
+    /** Gets the `Empty()` method. */
+    csharp::ExtensionMethod getAnyMethod() { result = this.getAMethod("Any") }
+  }
 }

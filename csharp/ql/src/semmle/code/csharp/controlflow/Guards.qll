@@ -12,6 +12,9 @@ private import semmle.code.csharp.commons.StructuralComparison::Internal
 private import semmle.code.csharp.controlflow.BasicBlocks
 private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.frameworks.system.Linq
+private import semmle.code.csharp.frameworks.system.Collections
+private import semmle.code.csharp.frameworks.system.collections.Generic
 
 /** An expression whose value may control the execution of another element. */
 class Guard extends Expr {
@@ -52,6 +55,28 @@ abstract class AbstractValue extends TAbstractValue {
    * this abstract value also have the same concrete value.
    */
   abstract predicate isSingleton();
+
+  /**
+   * Holds if this value describes a referential property. For example, emptiness
+   * of a collection is a referential property.
+   *
+   * Such values only propagate through adjacent reads, for example, in
+   *
+   * ```
+   * int M()
+   * {
+   *     var x = new string[]{ "a", "b", "c" }.ToList();
+   *     x.Clear();
+   *     return x.Count;
+   * }
+   * ```
+   *
+   * the non-emptiness of `new string[]{ "a", "b", "c" }.ToList()` only propagates
+   * to the read of `x` in `x.Clear()` and not in `x.Count`.
+   *
+   * Aliasing is not taken into account in the analyses.
+   */
+  predicate isReferentialProperty() { none() }
 
   /** Gets a textual representation of this abstract value. */
   abstract string toString();
@@ -112,6 +137,9 @@ module AbstractValues {
     /** Holds if this value represents `null`. */
     predicate isNull() { this = TNullValue(true) }
 
+    /** Holds if this value represents non-`null`. */
+    predicate isNonNull() { this = TNullValue(false) }
+
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TNullValue(s.(NullnessSuccessor).getValue()) and
       exists(NullnessCompletion c | s.matchesCompletion(c) |
@@ -121,7 +149,7 @@ module AbstractValues {
     }
 
     override NullValue getDualValue() {
-      if this.isNull() then not result.isNull() else result.isNull()
+      if this.isNull() then result.isNonNull() else result.isNull()
     }
 
     override DereferenceableExpr getAnExpr() {
@@ -174,6 +202,9 @@ module AbstractValues {
     /** Holds if this value represents an empty collection. */
     predicate isEmpty() { this = TEmptyCollectionValue(true) }
 
+    /** Holds if this value represents a non-empty collection. */
+    predicate isNonEmpty() { this = TEmptyCollectionValue(false) }
+
     override predicate branch(ControlFlowElement cfe, ConditionalSuccessor s, Expr e) {
       this = TEmptyCollectionValue(s.(EmptinessSuccessor).getValue()) and
       exists(EmptinessCompletion c, ForeachStmt fs | s.matchesCompletion(c) |
@@ -184,12 +215,20 @@ module AbstractValues {
     }
 
     override EmptyCollectionValue getDualValue() {
-      if this.isEmpty() then not result.isEmpty() else result.isEmpty()
+      if this.isEmpty() then result.isNonEmpty() else result.isEmpty()
     }
 
-    override Expr getAnExpr() { none() }
+    override Expr getAnExpr() {
+      this.isEmpty() and
+      emptyValue(result)
+      or
+      this.isNonEmpty() and
+      nonEmptyValue(result)
+    }
 
     override predicate isSingleton() { none() }
+
+    override predicate isReferentialProperty() { any() }
 
     override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
   }
@@ -253,7 +292,7 @@ class DereferenceableExpr extends Expr {
       exists(ComparisonTest ct, ComparisonKind ck, Expr e | ct.getExpr() = result |
         ct.getAnArgument() = this and
         ct.getAnArgument() = e and
-        e = any(NullValue nv | not nv.isNull()).getAnExpr() and
+        e = any(NullValue nv | nv.isNonNull()).getAnExpr() and
         ck = ct.getComparisonKind() and
         this != e and
         isNull = false and
@@ -362,7 +401,7 @@ class DereferenceableExpr extends Expr {
         v.isNull() and
         isNull = true
       ) else (
-        not v.isNull() and
+        v.isNonNull() and
         isNull = false
       )
     )
@@ -384,6 +423,111 @@ class DereferenceableExpr extends Expr {
     result = this.getAMatchingNullCheck(v, isNull)
     or
     result = this.getANullnessNullCheck(v, isNull)
+  }
+}
+
+/**
+ * An expression that evaluates to a collection. That is, an expression whose
+ * (transitive, reflexive) base type is `IEnumerable`(`<T>`).
+ */
+class CollectionExpr extends Expr {
+  CollectionExpr() {
+    exists(Interface i |
+      i = this.getType().(ValueOrRefType).getABaseType*().getSourceDeclaration()
+    |
+      i instanceof SystemCollectionsIEnumerableInterface or
+      i instanceof SystemCollectionsGenericIEnumerableTInterface
+    )
+  }
+
+  /** Gets an expression that computes the size of this collection. */
+  private Expr getASizeExpr() {
+    result = any(PropertyRead pr |
+        this = pr.getQualifier() and
+        pr.getTarget() = any(SystemArrayClass x).getLengthProperty()
+      )
+    or
+    result = any(PropertyRead pr |
+        this = pr.getQualifier() and
+        pr
+            .getTarget()
+            .overridesOrImplementsOrEquals(any(Property p |
+                p.getSourceDeclaration() = any(SystemCollectionsGenericICollectionInterface x)
+                      .getCountProperty()
+              ))
+      )
+    or
+    result = any(MethodCall mc |
+        mc.getTarget().getSourceDeclaration() = any(SystemLinq::SystemLinqEnumerableClass x)
+              .getCountMethod() and
+        this = mc.getArgument(0)
+      )
+  }
+
+  private Expr getABooleanEmptinessCheck(BooleanValue v, boolean isEmpty) {
+    exists(boolean branch | branch = v.getValue() |
+      exists(Expr sizeOf | sizeOf = this.getASizeExpr() |
+        result = any(ComparisonTest ct |
+            ct.getAnArgument() = sizeOf and
+            (
+              // x.Length == 0
+              ct.getComparisonKind().isEquality() and
+              ct.getAnArgument().getValue().toInt() = 0 and
+              branch = isEmpty
+              or
+              // x.Length == k, k > 0
+              ct.getComparisonKind().isEquality() and
+              ct.getAnArgument().getValue().toInt() > 0 and
+              branch = true and
+              isEmpty = false
+              or
+              // x.Length != 0
+              ct.getComparisonKind().isInequality() and
+              ct.getAnArgument().getValue().toInt() = 0 and
+              branch = isEmpty.booleanNot()
+              or
+              // x.Length != k, k != 0
+              ct.getComparisonKind().isInequality() and
+              ct.getAnArgument().getValue().toInt() != 0 and
+              branch = false and
+              isEmpty = false
+              or
+              // x.Length > k, k >= 0
+              ct.getComparisonKind().isLessThan() and
+              ct.getFirstArgument().getValue().toInt() >= 0 and
+              branch = true and
+              isEmpty = false
+              or
+              // x.Length >= k, k > 0
+              ct.getComparisonKind().isLessThanEquals() and
+              ct.getFirstArgument().getValue().toInt() > 0 and
+              branch = true and
+              isEmpty = false
+            )
+          ).getExpr()
+      )
+      or
+      result = any(MethodCall mc |
+          mc.getTarget().getSourceDeclaration() = any(SystemLinq::SystemLinqEnumerableClass x)
+                .getAnyMethod() and
+          this = mc.getArgument(0) and
+          branch = isEmpty.booleanNot()
+        )
+    )
+  }
+
+  /**
+   * Gets an expression that tests whether this expression is empty.
+   *
+   * If the returned expression has abstract value `v`, then this expression is
+   * guaranteed to be empty if `isEmpty` is true, and non-empty if `isEmpty` is
+   * false.
+   *
+   * For example, if the expression `x.Length != 0` evaluates to `true` then the
+   * expression `x` is guaranteed to be non-empty.
+   */
+  Expr getAnEmptinessCheck(AbstractValue v, boolean isNull) {
+    result = this.getABooleanEmptinessCheck(v, isNull)
   }
 }
 
@@ -635,12 +779,12 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
 
 /** An expression guarded by a `null` check. */
 class NullGuardedExpr extends GuardedExpr {
-  NullGuardedExpr() { this.mustHaveValue(any(NullValue v | not v.isNull())) }
+  NullGuardedExpr() { this.mustHaveValue(any(NullValue v | v.isNonNull())) }
 }
 
 /** A data flow node guarded by a `null` check. */
 class NullGuardedDataFlowNode extends GuardedDataFlowNode {
-  NullGuardedDataFlowNode() { this.mustHaveValue(any(NullValue v | not v.isNull())) }
+  NullGuardedDataFlowNode() { this.mustHaveValue(any(NullValue v | v.isNonNull())) }
 }
 
 /** INTERNAL: Do not use. */
@@ -760,7 +904,7 @@ module Internal {
       bao.getAnOperand() = o and
       // The other operand must be provably non-null in order
       // for `only if` to hold
-      o = any(NullValue nv | not nv.isNull()).getAnExpr() and
+      o = any(NullValue nv | nv.isNonNull()).getAnExpr() and
       e != o
     )
   }
@@ -839,7 +983,7 @@ module Internal {
       v.(NullValue).isNull()
       or
       a.getAssertMethod() instanceof AssertNonNullMethod and
-      v = any(NullValue nv | not nv.isNull())
+      v.(NullValue).isNonNull()
     )
   }
 
@@ -1262,25 +1406,39 @@ module Internal {
       nonNullValueImplied(def.getDefinition().getSource())
     }
 
+    private predicate emptyDef(PreSsa::Definition def) {
+      emptyValue(def.getDefinition().getSource())
+    }
+
+    private predicate nonEmptyDef(PreSsa::Definition def) {
+      nonEmptyValue(def.getDefinition().getSource())
+    }
+
     cached
     private module CachedWithCFG {
       private import semmle.code.csharp.Caching
 
       cached
       predicate isGuard(Expr e, AbstractValue val) {
-        Stages::ControlFlowStage::forceCachingInSameStage() and
-        e.getType() instanceof BoolType and
-        not e instanceof BoolLiteral and
-        not e instanceof SwitchCaseExpr and
-        not e instanceof PatternExpr and
-        val = TBooleanValue(_)
-        or
-        e instanceof DereferenceableExpr and
-        val = TNullValue(_)
-        or
-        val.branch(_, _, e)
-        or
-        asserts(_, e, val)
+        (
+          e.getType() instanceof BoolType and
+          not e instanceof BoolLiteral and
+          not e instanceof SwitchCaseExpr and
+          not e instanceof PatternExpr and
+          val = TBooleanValue(_)
+          or
+          e instanceof DereferenceableExpr and
+          val = TNullValue(_)
+          or
+          val.branch(_, _, e)
+          or
+          asserts(_, e, val)
+          or
+          e instanceof CollectionExpr and
+          val = TEmptyCollectionValue(_)
+        ) and
+        not e = any(ExprStmt es).getExpr() and
+        not e = any(LocalVariableDeclStmt s).getAVariableDeclExpr()
       }
 
       cached
@@ -1289,6 +1447,15 @@ module Internal {
           arg = call.getArgumentForParameter(any(Parameter p0 | p0.getSourceDeclaration() = p)) and
           call.getTarget().getSourceDeclaration() = callable and
           callable = customNullCheck(p, v, isNull)
+        )
+      }
+
+      private predicate firstReadSameVarUniquePredecesssor(
+        PreSsa::Definition def, AssignableRead read
+      ) {
+        PreSsa::firstReadSameVar(def, read) and
+        not exists(AssignableRead other | PreSsa::adjacentReadPairSameVar(other, read) |
+          other != read
         )
       }
 
@@ -1378,6 +1545,13 @@ module Internal {
           (g1 != g2 or v1 != v2)
         )
         or
+        exists(boolean isEmpty | g1 = g2.(CollectionExpr).getAnEmptinessCheck(v1, isEmpty) |
+          v2 = any(EmptyCollectionValue ecv |
+              if ecv.isEmpty() then isEmpty = true else isEmpty = false
+            ) and
+          g1 != g2
+        )
+        or
         g1 instanceof DereferenceableExpr and
         g1 = getNullEquivParent(g2) and
         v1 instanceof NullValue and
@@ -1385,7 +1559,7 @@ module Internal {
         or
         g1 instanceof DereferenceableExpr and
         g2 = getANullImplyingChild(g1) and
-        v1 = any(NullValue nv | not nv.isNull()) and
+        v1.(NullValue).isNonNull() and
         v2 = v1
         or
         g2 = g1.(AssignExpr).getRValue() and
@@ -1400,10 +1574,12 @@ module Internal {
         isGuard(g1, v1) and
         v2 = v1.(NullValue)
         or
-        exists(PreSsa::Definition def | def.getDefinition().getSource() = g2 |
+        exists(PreSsa::Definition def |
+          def.getDefinition().getSource() = g2 and
           g1 = def.getARead() and
           isGuard(g1, v1) and
-          v2 = v1
+          v2 = v1 and
+          if v1.isReferentialProperty() then firstReadSameVarUniquePredecesssor(def, g1) else any()
         )
         or
         exists(PreSsa::Definition def, AbstractValue v |
@@ -1453,6 +1629,59 @@ module Internal {
         e = any(PreSsa::Definition def |
             forex(PreSsa::Definition u | u = def.getAnUltimateDefinition() | nonNullDef(u))
           ).getARead()
+      }
+
+      private predicate adjacentReadPairSameVarUniquePredecessor(
+        AssignableRead read1, AssignableRead read2
+      ) {
+        PreSsa::adjacentReadPairSameVar(read1, read2) and
+        not exists(AssignableRead other |
+          PreSsa::adjacentReadPairSameVar(other, read2) and
+          other != read1 and
+          other != read2
+        )
+      }
+
+      cached
+      predicate emptyValue(Expr e) {
+        e.(ArrayCreation).getALengthArgument().getValue().toInt() = 0
+        or
+        exists(Expr mid | emptyValue(mid) |
+          mid = e.(AssignExpr).getRValue()
+          or
+          mid = e.(Cast).getExpr()
+        )
+        or
+        exists(PreSsa::Definition def | emptyDef(def) | firstReadSameVarUniquePredecesssor(def, e))
+        or
+        exists(MethodCall mc |
+          mc.getTarget().getSourceDeclaration() = any(SystemCollectionsGenericListClass c)
+                .getClearMethod() and
+          adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
+        )
+      }
+
+      cached
+      predicate nonEmptyValue(Expr e) {
+        forex(Expr length | length = e.(ArrayCreation).getALengthArgument() |
+          length.getValue().toInt() != 0
+        )
+        or
+        exists(Expr mid | nonEmptyValue(mid) |
+          mid = e.(AssignExpr).getRValue()
+          or
+          mid = e.(Cast).getExpr()
+        )
+        or
+        exists(PreSsa::Definition def | nonEmptyDef(def) |
+          firstReadSameVarUniquePredecesssor(def, e)
+        )
+        or
+        exists(MethodCall mc |
+          mc.getTarget().getSourceDeclaration() = any(SystemCollectionsGenericListClass c)
+                .getAddMethod() and
+          adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
+        )
       }
     }
     import CachedWithCFG
@@ -1518,14 +1747,29 @@ module Internal {
       exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
     }
 
+    private predicate adjacentReadPairSameVarUniquePredecessor(
+      Ssa::Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
+    ) {
+      Ssa::Internal::adjacentReadPairSameVar(def, cfn1, cfn2) and
+      not exists(ControlFlow::Node other |
+        Ssa::Internal::adjacentReadPairSameVar(def, other, cfn2) and
+        other != cfn1 and
+        other != cfn2
+      )
+    }
+
     cached
     predicate isGuardedByExpr(
       AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
     ) {
       isGuardedByExpr1(guarded, g, sub, v) and
       sub = getAChildExprStar(g) and
-      forall(Ssa::Definition def | def = sub.getAnSsaQualifier(_) |
-        def = guarded.getAnSsaQualifier(_)
+      forall(Ssa::Definition def, ControlFlow::Node subCfn | def = sub.getAnSsaQualifier(subCfn) |
+        exists(ControlFlow::Node defCfn | def = guarded.getAnSsaQualifier(defCfn) |
+          if v.isReferentialProperty()
+          then adjacentReadPairSameVarUniquePredecessor(def, subCfn, defCfn)
+          else any()
+        )
       )
     }
 
@@ -1553,7 +1797,20 @@ module Internal {
     ) {
       isGuardedByNode1(guarded, g, sub, v) and
       sub = getAChildExprStar(g) and
-      forall(Ssa::Definition def | def = sub.getAnSsaQualifier(_) | isGuardedByNode2(guarded, def))
+      forall(Ssa::Definition def, ControlFlow::Node subCfn | def = sub.getAnSsaQualifier(subCfn) |
+        isGuardedByNode2(guarded, def) and
+        if v.isReferentialProperty()
+        then adjacentReadPairSameVarUniquePredecessor(def, subCfn, guarded)
+        else any()
+      )
+    }
+
+    private predicate firstReadUniquePredecessor(Ssa::ExplicitDefinition def, ControlFlow::Node cfn) {
+      exists(def.getAFirstReadAtNode(cfn)) and
+      not exists(ControlFlow::Node other |
+        Ssa::Internal::adjacentReadPairSameVar(def, other, cfn) and
+        other != cfn
+      )
     }
 
     /**
@@ -1567,11 +1824,12 @@ module Internal {
     predicate impliesStep(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
       preImpliesStep(g1, v1, g2, v2)
       or
-      forex(ControlFlow::Node cfn | cfn = g1.getAControlFlowNode() |
+      forex(ControlFlow::Node cfn1 | cfn1 = g1.getAControlFlowNode() |
         exists(Ssa::ExplicitDefinition def | def.getADefinition().getSource() = g2 |
-          g1 = def.getAReadAtNode(cfn) and
+          g1 = def.getAReadAtNode(cfn1) and
           isGuard(g1, v1) and
-          v2 = v1
+          v2 = v1 and
+          if v1.isReferentialProperty() then firstReadUniquePredecessor(def, cfn1) else any()
         )
       )
     }

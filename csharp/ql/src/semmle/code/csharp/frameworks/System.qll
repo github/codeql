@@ -54,6 +54,9 @@ class SystemActionTDelegateType extends SystemUnboundGenericDelegateType {
 /** `System.Array` class. */
 class SystemArrayClass extends SystemClass {
   SystemArrayClass() { this.hasName("Array") }
+
+  /** Gets the `Length` property. */
+  Property getLengthProperty() { result = this.getProperty("Length") }
 }
 
 /** `System.Attribute` class. */
