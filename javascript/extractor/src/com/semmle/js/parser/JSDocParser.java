@@ -279,7 +279,7 @@ public class JSDocParser {
     /**
      * Returns the absolute position of the end of the previous token.
      *
-     * This can differ from the start of the current token case the two tokens
+     * This can differ from the start of the current token in case the two tokens
      * are separated by whitespace.
      */
     private Position endPos() {
