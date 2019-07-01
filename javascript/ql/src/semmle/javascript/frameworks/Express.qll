@@ -657,7 +657,7 @@ module Express {
   /**
    * An Express server application.
    */
-  private class Application extends HTTP::ServerDefinition, DataFlow::TrackedExpr {
+  private class Application extends HTTP::ServerDefinition {
     Application() { this = appCreation().asExpr() }
 
     /**
@@ -671,8 +671,22 @@ module Express {
   /**
    * An Express router.
    */
-  class RouterDefinition extends InvokeExpr, DataFlow::TrackedExpr {
+  class RouterDefinition extends InvokeExpr {
     RouterDefinition() { this = routerCreation().asExpr() }
+
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      t.start() and
+      result = DataFlow::exprNode(this)
+      or
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+    }
+
+    /**
+     * Holds if `sink` may refer to this router.
+     */
+    predicate flowsTo(Expr sink) {
+      ref(DataFlow::TypeTracker::end()).flowsToExpr(sink)
+    }
 
     /**
      * Gets a `RouteSetup` that was used for setting up a route on this router.

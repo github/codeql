@@ -9,8 +9,7 @@ module Restify {
   /**
    * An expression that creates a new Restify server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, CallExpr,
-    DataFlow::TrackedExpr {
+  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, CallExpr {
     ServerDefinition() {
       // `server = restify.createServer()`
       this = DataFlow::moduleMember("restify", "createServer").getACall().asExpr()
