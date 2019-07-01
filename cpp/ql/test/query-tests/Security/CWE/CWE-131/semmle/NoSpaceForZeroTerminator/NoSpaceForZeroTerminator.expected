@@ -1,4 +1,5 @@
 | test.c:15:20:15:25 | call to malloc | This allocation does not include space to null-terminate the string. |
 | test.c:29:20:29:25 | call to malloc | This allocation does not include space to null-terminate the string. |
 | test.c:44:20:44:25 | call to malloc | This allocation does not include space to null-terminate the string. |
+| test.c:72:17:72:22 | call to malloc | This allocation does not include space to null-terminate the string. |
 | test.cpp:18:35:18:40 | call to malloc | This allocation does not include space to null-terminate the string. |
