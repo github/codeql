@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>The <code>printf</code> function, related functions like <code>sprintf</code> and <code>fprintf</code>,
-and other functions built atop <code>vprintf</code> all accept a format string as their first argument.
+and other functions built atop <code>vprintf</code> all accept a format string as one of their arguments.
 When such format strings are literal constants, it is easy for the programmer (and static analysis tools)
 to verify that the format specifiers (such as <code>%s</code> and <code>%02x</code>) in the format string
 are compatible with the trailing arguments of the function call. When such format strings are not literal
