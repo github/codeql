@@ -84,6 +84,9 @@ predicate isExternalLibrary(string name) {
   name = "zlib"
 }
 
+/**
+ * Holds if the global variable `name` is defined externally.
+ */
 predicate isExternalGlobal(string name) {
   exists(ExternalGlobalDecl decl |
     decl.getName() = name
@@ -108,7 +111,7 @@ predicate isExternalGlobal(string name) {
  * and callbacks, so some of these might refer to internal objects.
  *
  * Additionally, we don't recognize when a project imports another file in the
- * same project using it module name (e.g. import "vscode" from inside the vscode project).
+ * same project using its module name (for example import "vscode" from inside the vscode project).
  */
 SourceNode externalNode() {
   exists(string moduleName |
@@ -148,7 +151,7 @@ SourceNode resolvableCallback() {
 }
 
 /**
- * Acall site that can be resolved to a function in the same project.
+ * A call site that can be resolved to a function in the same project.
  */
 class ResolvedCall extends RelevantInvoke {
   ResolvedCall() {
@@ -174,7 +177,7 @@ class ExternalCall extends RelevantInvoke {
       // Resolved to externs file
       exists(this.(InvokeNode).getACallee(1))
       or
-      // Modelled as taint step but isn't from an NPM module. E.g. `substring` or `push`.
+      // Modelled as taint step but isn't from an NPM module, for example, `substring` or `push`.
       exists(TaintTracking::AdditionalTaintStep step |
         step.step(_, this)
         or
@@ -185,7 +188,7 @@ class ExternalCall extends RelevantInvoke {
 }
 
 /**
- * Gets a call site that could not be resolved.
+ * A call site that could not be resolved.
  */
 class UnresolvedCall extends RelevantInvoke {
   UnresolvedCall() {

@@ -1,6 +1,6 @@
 /**
  * @name Resolved call ratio
- * @description The percentage of non-external calls that could be resolved to its target.
+ * @description The percentage of non-external calls that can be resolved to a target.
  * @kind metric
  * @metricType project
  * @metricAggregate sum min max avg
