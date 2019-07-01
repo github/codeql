@@ -157,7 +157,7 @@ private int countStartingHtmlElements(File f, int l) {
 /**
  * Holds if the base name of `f` is a number followed by a single extension.
  */
-predicate isGenerateFileName(File f) {
+predicate isGeneratedFileName(File f) {
   f.getStem().regexpMatch("[0-9]+")
 }
 
@@ -174,7 +174,7 @@ predicate isGenerated(TopLevel tl) {
   isData(tl.getFile()) or
   isJsonLine(tl.getFile()) or
   isGeneratedHtml(tl.getFile()) or
-  isGenerateFileName(tl.getFile())
+  isGeneratedFileName(tl.getFile())
 }
 
 /**
