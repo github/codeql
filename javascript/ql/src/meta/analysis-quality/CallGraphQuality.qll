@@ -153,8 +153,8 @@ SourceNode resolvableCallback() {
 /**
  * A call site that can be resolved to a function in the same project.
  */
-class ResolvedCall extends RelevantInvoke {
-  ResolvedCall() {
+class ResolvableCall extends RelevantInvoke {
+  ResolvableCall() {
     FlowSteps::calls(this, _)
     or
     this = resolvableCallback().getAnInvocation()
@@ -166,7 +166,7 @@ class ResolvedCall extends RelevantInvoke {
  */
 class ExternalCall extends RelevantInvoke {
   ExternalCall() {
-    not this instanceof ResolvedCall and // avoid double counting
+    not this instanceof ResolvableCall and // avoid double counting
     (
       // Call to modelled external library
       this = externalNode()
@@ -190,9 +190,9 @@ class ExternalCall extends RelevantInvoke {
 /**
  * A call site that could not be resolved.
  */
-class UnresolvedCall extends RelevantInvoke {
-  UnresolvedCall() {
-    not this instanceof ResolvedCall and
+class UnresolvableCall extends RelevantInvoke {
+  UnresolvableCall() {
+    not this instanceof ResolvableCall and
     not this instanceof ExternalCall
   }
 }

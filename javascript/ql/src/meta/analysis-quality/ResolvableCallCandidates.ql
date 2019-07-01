@@ -5,7 +5,7 @@
  * @metricType project
  * @metricAggregate sum
  * @tags meta
- * @id js/meta/resolved-call-candidates
+ * @id js/meta/resolvable-call-candidates
  */
 import javascript
 import CallGraphQuality
