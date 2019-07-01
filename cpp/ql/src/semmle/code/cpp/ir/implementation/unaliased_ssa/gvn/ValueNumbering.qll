@@ -86,9 +86,12 @@ class ValueNumber extends TValueNumber {
       instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
     )
   }
-  
+
+  /**
+   * Gets an `Operand` whose definition is exact and has this value number.
+   */
   final Operand getAUse() {
-    this = valueNumber(result.getAnyDef())
+    this = valueNumber(result.getDef())
   }
 }
 
@@ -227,10 +230,11 @@ cached ValueNumber valueNumber(Instruction instr) {
 }
 
 /**
- * Gets the value number assigned to `instr`, if any. Returns at most one result.
+ * Gets the value number assigned to the exact definition of `op`, if any.
+ * Returns at most one result.
  */
 ValueNumber valueNumberOfOperand(Operand op) {
-  result = valueNumber(op.getAnyDef())
+  result = valueNumber(op.getDef())
 }
 
 /**
