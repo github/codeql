@@ -67,7 +67,7 @@ void good3(char *str) {
 void *memcpy(void *s1, const void *s2, size_t n);
 
 void good4(char *str) {
-	// GOOD -- allocating a non zero-terminated string [FALSE POSITIVE]
+	// GOOD -- allocating a non zero-terminated string
 	int len = strlen(str);
 	char *buffer = malloc(len);
 

@@ -14,6 +14,7 @@
  *       external/cwe/cwe-122
  */
 import cpp
+import semmle.code.cpp.dataflow.DataFlow
 
 class MallocCall extends FunctionCall
 {
@@ -34,6 +35,12 @@ class MallocCall extends FunctionCall
 
 predicate terminationProblem(MallocCall malloc, string msg) {
   malloc.getAllocatedSize() instanceof StrlenCall and
+  not exists(DataFlow::Node def, DataFlow::Node use, FunctionCall fc |
+    DataFlow::localFlow(def, use) and
+    def.asExpr() = malloc and
+    use.asExpr() = fc.getArgument(0) and
+    fc.getTarget().hasName("memcpy")
+  ) and
   msg = "This allocation does not include space to null-terminate the string."
 }
 
