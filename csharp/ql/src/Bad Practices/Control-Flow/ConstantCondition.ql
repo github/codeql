@@ -102,9 +102,9 @@ class ConstantMatchingCondition extends ConstantCondition {
   }
 
   override predicate isWhiteListed() {
-    exists(SwitchExpr se |
-      se.getACase().getPattern() = this.(DiscardExpr) and
-      strictcount(se.getACase()) > 1
+    exists(SwitchExpr se, int i |
+      se.getCase(i).getPattern() = this.(DiscardExpr) and
+      i > 0
     )
   }
 
