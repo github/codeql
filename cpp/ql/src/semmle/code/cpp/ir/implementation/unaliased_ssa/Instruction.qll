@@ -480,7 +480,8 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
-   * Gets all direct uses of the result of this instruction.
+   * Gets all direct uses of the result of this instruction. The result can be
+   * an `Operand` for which `isDefinitionInexact` holds.
    */
   final Operand getAUse() {
     result.getAnyDef() = this
@@ -698,7 +699,7 @@ class FieldAddressInstruction extends FieldInstruction {
   }
 
   final Instruction getObjectAddress() {
-    result = getObjectAddressOperand().getAnyDef()
+    result = getObjectAddressOperand().getDef()
   }
 }
 
@@ -747,7 +748,7 @@ class ReturnValueInstruction extends ReturnInstruction {
   }
   
   final Instruction getReturnValue() {
-    result = getReturnValueOperand().getAnyDef()
+    result = getReturnValueOperand().getDef()
   }
 }
 
@@ -761,7 +762,7 @@ class CopyInstruction extends Instruction {
   }
 
   final Instruction getSourceValue() {
-    result = getSourceValueOperand().getAnyDef()
+    result = getSourceValueOperand().getDef()
   }
 }
 
@@ -785,7 +786,7 @@ class LoadInstruction extends CopyInstruction {
   }
   
   final Instruction getSourceAddress() {
-    result = getSourceAddressOperand().getAnyDef()
+    result = getSourceAddressOperand().getDef()
   }
 
   override final LoadOperand getSourceValueOperand() {
@@ -807,7 +808,7 @@ class StoreInstruction extends CopyInstruction {
   }
   
   final Instruction getDestinationAddress() {
-    result = getDestinationAddressOperand().getAnyDef()
+    result = getDestinationAddressOperand().getDef()
   }
 
   override final StoreValueOperand getSourceValueOperand() {
@@ -825,7 +826,7 @@ class ConditionalBranchInstruction extends Instruction {
   }
 
   final Instruction getCondition() {
-    result = getConditionOperand().getAnyDef()
+    result = getConditionOperand().getDef()
   }
 
   final Instruction getTrueSuccessor() {
@@ -891,11 +892,11 @@ class BinaryInstruction extends Instruction {
   }
 
   final Instruction getLeft() {
-    result = getLeftOperand().getAnyDef()
+    result = getLeftOperand().getDef()
   }
 
   final Instruction getRight() {
-    result = getRightOperand().getAnyDef()
+    result = getRightOperand().getDef()
   }
   
   /**
@@ -1045,7 +1046,7 @@ class UnaryInstruction extends Instruction {
   }
   
   final Instruction getUnary() {
-    result = getUnaryOperand().getAnyDef()
+    result = getUnaryOperand().getDef()
   }
 }
 
@@ -1275,7 +1276,7 @@ class SwitchInstruction extends Instruction {
   }
 
   final Instruction getExpression() {
-    result = getExpressionOperand().getAnyDef()
+    result = getExpressionOperand().getDef()
   }
 
   final Instruction getACaseSuccessor() {
@@ -1310,7 +1311,7 @@ class CallInstruction extends Instruction {
    * function pointer.
    */
   final Instruction getCallTarget() {
-    result = getCallTargetOperand().getAnyDef()
+    result = getCallTargetOperand().getDef()
   }
 
   /**
@@ -1331,7 +1332,7 @@ class CallInstruction extends Instruction {
    * Gets all of the arguments of the call, including the `this` pointer, if any.
    */
   final Instruction getAnArgument() {
-    result = getAnArgumentOperand().getAnyDef()
+    result = getAnArgumentOperand().getDef()
   }
 
   /**
@@ -1345,7 +1346,7 @@ class CallInstruction extends Instruction {
    * Gets the `this` pointer argument of the call, if any.
    */
   final Instruction getThisArgument() {
-    result = getThisArgumentOperand().getAnyDef()
+    result = getThisArgumentOperand().getDef()
   }
 
   /**
@@ -1360,7 +1361,7 @@ class CallInstruction extends Instruction {
    * Gets the argument at the specified index.
    */
   final Instruction getPositionalArgument(int index) {
-    result = getPositionalArgumentOperand(index).getAnyDef()
+    result = getPositionalArgumentOperand(index).getDef()
   }
 }
 
@@ -1516,7 +1517,7 @@ class ThrowValueInstruction extends ThrowInstruction {
    * Gets the address of the exception thrown by this instruction.
    */
   final Instruction getExceptionAddress() {
-    result = getExceptionAddressOperand().getAnyDef()
+    result = getExceptionAddressOperand().getDef()
   }
 
   /**
@@ -1530,7 +1531,7 @@ class ThrowValueInstruction extends ThrowInstruction {
    * Gets the exception thrown by this instruction.
    */
   final Instruction getException() {
-    result = getExceptionOperand().getAnyDef()
+    result = getExceptionOperand().getDef()
   }
 }
 
@@ -1660,7 +1661,7 @@ class PhiInstruction extends Instruction {
    */
   pragma[noinline]
   final Instruction getAnInput() {
-    result = this.getAnInputOperand().getAnyDef()
+    result = this.getAnInputOperand().getDef()
   }
 }
 
@@ -1728,7 +1729,7 @@ class ChiInstruction extends Instruction {
    * memory write.
    */
   final Instruction getTotal() {
-    result = getTotalOperand().getAnyDef()
+    result = getTotalOperand().getDef()
   }
 
   /**
@@ -1742,7 +1743,7 @@ class ChiInstruction extends Instruction {
    * Gets the operand that represents the new value written by the memory write.
    */
   final Instruction getPartial() {
-    result = getPartialOperand().getAnyDef()
+    result = getPartialOperand().getDef()
   }
 }
 
