@@ -879,10 +879,10 @@ module ClassNode {
 
     override FunctionNode getAnInstanceMember(MemberKind kind) {
       kind = MemberKind::method() and
-      result = getAPrototypeReference().getAPropertyWrite().getRhs().getALocalSource()
+      result = getAPrototypeReference().getAPropertySource()
       or
       kind = MemberKind::method() and
-      result = getConstructor().getReceiver().getAPropertyWrite().getRhs().getALocalSource()
+      result = getConstructor().getReceiver().getAPropertySource()
       or
       exists(PropertyAccessor accessor |
         accessor = getAnAccessor(kind) and
@@ -893,7 +893,7 @@ module ClassNode {
     override FunctionNode getStaticMethod(string name) { result = getAPropertySource(name) }
 
     override FunctionNode getAStaticMethod() {
-      result = getAPropertyWrite().getRhs().getALocalSource()
+      result = getAPropertySource()
     }
 
     /**

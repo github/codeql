@@ -156,6 +156,13 @@ class SourceNode extends DataFlow::Node {
   }
 
   /**
+   * Gets a source node whose value is stored in a property of this node.
+   */
+  DataFlow::SourceNode getAPropertySource() {
+    result.flowsTo(getAPropertyWrite().getRhs())
+  }
+
+  /**
    * EXPERIMENTAL.
    *
    * Gets a node that this node may flow to using one heap and/or interprocedural step.
