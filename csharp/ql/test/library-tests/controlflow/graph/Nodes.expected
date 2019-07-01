@@ -222,6 +222,26 @@ booleanNode
 | Conditions.cs:137:21:137:37 | [Field1 (line 129): true, Field2 (line 129): true] call to method ToString | Field2 (line 129): true |
 | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; | Field1 (line 129): true |
 | Conditions.cs:137:21:137:38 | [Field1 (line 129): true, Field2 (line 129): true] ...; | Field2 (line 129): true |
+| LoopUnrolling.cs:58:9:64:9 | [b (line 55): false] foreach (... ... in ...) ... | b (line 55): false |
+| LoopUnrolling.cs:58:9:64:9 | [b (line 55): true] foreach (... ... in ...) ... | b (line 55): true |
+| LoopUnrolling.cs:58:21:58:21 | [b (line 55): false] String x | b (line 55): false |
+| LoopUnrolling.cs:58:21:58:21 | [b (line 55): true] String x | b (line 55): true |
+| LoopUnrolling.cs:59:9:64:9 | [b (line 55): false] {...} | b (line 55): false |
+| LoopUnrolling.cs:59:9:64:9 | [b (line 55): true] {...} | b (line 55): true |
+| LoopUnrolling.cs:60:13:61:37 | [b (line 55): false] if (...) ... | b (line 55): false |
+| LoopUnrolling.cs:60:13:61:37 | [b (line 55): true] if (...) ... | b (line 55): true |
+| LoopUnrolling.cs:60:17:60:17 | [b (line 55): false] access to parameter b | b (line 55): false |
+| LoopUnrolling.cs:60:17:60:17 | [b (line 55): true] access to parameter b | b (line 55): true |
+| LoopUnrolling.cs:61:17:61:36 | [b (line 55): true] call to method WriteLine | b (line 55): true |
+| LoopUnrolling.cs:61:17:61:37 | [b (line 55): true] ...; | b (line 55): true |
+| LoopUnrolling.cs:61:35:61:35 | [b (line 55): true] access to local variable x | b (line 55): true |
+| LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | b (line 55): false |
+| LoopUnrolling.cs:62:13:63:37 | [b (line 55): true] if (...) ... | b (line 55): true |
+| LoopUnrolling.cs:62:17:62:17 | [b (line 55): false] access to parameter b | b (line 55): false |
+| LoopUnrolling.cs:62:17:62:17 | [b (line 55): true] access to parameter b | b (line 55): true |
+| LoopUnrolling.cs:63:17:63:36 | [b (line 55): true] call to method WriteLine | b (line 55): true |
+| LoopUnrolling.cs:63:17:63:37 | [b (line 55): true] ...; | b (line 55): true |
+| LoopUnrolling.cs:63:35:63:35 | [b (line 55): true] access to local variable x | b (line 55): true |
 finallyNode
 | BreakInTry.cs:30:13:33:13 | [finally: break] {...} | BreakInTry.cs:24:13:33:13 | try {...} ... |
 | BreakInTry.cs:31:17:32:21 | [finally: break] if (...) ... | BreakInTry.cs:24:13:33:13 | try {...} ... |
@@ -621,6 +641,14 @@ entryPoint
 | Initializers.cs:29:9:29:11 | Sub | Initializers.cs:29:17:29:20 | call to constructor NoConstructor |
 | Initializers.cs:31:9:31:11 | Sub | Initializers.cs:31:22:31:25 | call to constructor Sub |
 | Initializers.cs:33:9:33:11 | Sub | Initializers.cs:20:23:20:23 | this access |
+| LoopUnrolling.cs:7:10:7:11 | M1 | LoopUnrolling.cs:8:5:13:5 | {...} |
+| LoopUnrolling.cs:15:10:15:11 | M2 | LoopUnrolling.cs:16:5:20:5 | {...} |
+| LoopUnrolling.cs:22:10:22:11 | M3 | LoopUnrolling.cs:23:5:27:5 | {...} |
+| LoopUnrolling.cs:29:10:29:11 | M4 | LoopUnrolling.cs:30:5:34:5 | {...} |
+| LoopUnrolling.cs:36:10:36:11 | M5 | LoopUnrolling.cs:37:5:43:5 | {...} |
+| LoopUnrolling.cs:45:10:45:11 | M6 | LoopUnrolling.cs:46:5:53:5 | {...} |
+| LoopUnrolling.cs:55:10:55:11 | M7 | LoopUnrolling.cs:56:5:65:5 | {...} |
+| LoopUnrolling.cs:67:10:67:11 | M7 | LoopUnrolling.cs:68:5:74:5 | {...} |
 | NullCoalescing.cs:3:9:3:10 | M1 | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
 | NullCoalescing.cs:5:9:5:10 | M2 | NullCoalescing.cs:5:24:5:43 | ... ? ... : ... |
 | NullCoalescing.cs:7:12:7:13 | M3 | NullCoalescing.cs:7:40:7:53 | ... ?? ... |
