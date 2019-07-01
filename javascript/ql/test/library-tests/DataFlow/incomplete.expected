@@ -82,6 +82,11 @@
 | tst.js:111:23:111:25 | v2c | heap |
 | tst.js:111:29:111:31 | o2c | global |
 | tst.js:111:36:111:38 | o2d | global |
+| tst.js:115:1:115:5 | Array | global |
+| tst.js:115:1:115:10 | Array.call | global |
+| tst.js:115:1:115:10 | Array.call | heap |
+| tst.js:115:1:115:12 | Array.call() | call |
+| tst.js:115:1:115:12 | exceptional return of Array.call() | call |
 | tst.ts:2:14:2:19 | x | namespace |
 | tst.ts:3:3:3:8 | exceptional return of setX() | call |
 | tst.ts:3:3:3:8 | setX() | call |

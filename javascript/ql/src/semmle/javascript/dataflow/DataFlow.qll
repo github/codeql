@@ -1163,6 +1163,9 @@ module DataFlow {
       pred = TThisNode(thiz.getBindingContainer()) and
       succ = valueNode(thiz)
     )
+    or
+    // `f.call(...)` and `f.apply(...)` evaluate to the result of the reflective call they perform
+    pred = TReflectiveCallNode(succ.asExpr(), _)
   }
 
   /**

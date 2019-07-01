@@ -140,6 +140,7 @@
 | tst.js:111:23:111:25 | v2c | tst.js:111:6:111:38 | v2c |
 | tst.js:111:29:111:31 | o2c | tst.js:111:6:111:38 | v2c |
 | tst.js:111:36:111:38 | o2d | tst.js:111:6:111:32 | [v2a, v ...  = o2c] |
+| tst.js:115:1:115:12 | reflective call | tst.js:115:1:115:12 | Array.call() |
 | tst.ts:1:1:1:1 | A | tst.ts:1:11:1:11 | A |
 | tst.ts:1:1:1:1 | A | tst.ts:7:1:7:0 | A |
 | tst.ts:1:1:5:1 | A | tst.ts:7:1:7:0 | A |
