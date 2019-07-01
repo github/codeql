@@ -32,7 +32,7 @@ class Operand extends TOperand {
   final IRFunction getEnclosingIRFunction() {
     result = getUse().getEnclosingIRFunction()
   }
-  
+
   /**
    * Gets the `Instruction` that consumes this operand.
    */
@@ -41,10 +41,46 @@ class Operand extends TOperand {
   }
 
   /**
-   * Gets the `Instruction` whose result is the value of the operand.
+   * Gets the `Instruction` whose result is the value of the operand. Unlike
+   * `getDef`, this also has a result when `isDefinitionInexact` holds, which
+   * means that the resulting instruction may only _partially_ or _potentially_
+   * be the value of this operand.
    */
   Instruction getAnyDef() {
     none()
+  }
+
+  /**
+   * Gets the `Instruction` whose result is the value of the operand. Unlike
+   * `getAnyDef`, this also has no result when `isDefinitionInexact` holds,
+   * which means that the resulting instruction must always be exactly the be
+   * the value of this operand.
+   */
+  final Instruction getDef() {
+    result = this.getAnyDef() and
+    getDefinitionOverlap() instanceof MustExactlyOverlap
+  }
+
+  /**
+   * DEPRECATED: renamed to `getUse`.
+   *
+   * Gets the `Instruction` that consumes this operand.
+   */
+  deprecated
+  final Instruction getUseInstruction() {
+    result = getUse()
+  }
+
+  /**
+   * DEPRECATED: use `getAnyDef` or `getDef`. The exact replacement for this
+   * predicate is `getAnyDef`, but most uses of this predicate should probably
+   * be replaced with `getDef`.
+   *
+   * Gets the `Instruction` whose result is the value of the operand.
+   */
+  deprecated
+  final Instruction getDefinitionInstruction() {
+    result = getAnyDef()
   }
 
   /**
