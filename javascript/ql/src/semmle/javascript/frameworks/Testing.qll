@@ -44,7 +44,7 @@ class BDDTest extends Test, @callexpr {
  * same directory as `f` which is named `<base>.<ext>`.
  */
 bindingset[stemExt]
-private File getTestFile(File f, string stemExt) {
+File getTestFile(File f, string stemExt) {
   result = f.getParentContainer().getFile(f.getStem() + "." + stemExt + "." + f.getExtension())
 }
 
