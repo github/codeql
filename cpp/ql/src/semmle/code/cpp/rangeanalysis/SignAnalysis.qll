@@ -221,7 +221,7 @@ private predicate unknownSign(Instruction i) {
  */
 private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand bounded, boolean isStrict) {
   exists(int adjustment, Operand compared |
-    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared.getDefinitionInstruction()) and
+    valueNumber(bounded.getAnyDef()) = valueNumber(compared.getAnyDef()) and
     (
       isStrict = true and
       adjustment = 0
@@ -229,7 +229,7 @@ private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand 
       isStrict = false and
       adjustment = 1
     )  and
-    comp.ensuresLt(lowerbound, compared, adjustment, bounded.getUseInstruction().getBlock(), true)
+    comp.ensuresLt(lowerbound, compared, adjustment, bounded.getUse().getBlock(), true)
   )
 }
 
@@ -240,7 +240,7 @@ private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand 
  */
 private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand bounded, boolean isStrict) {
   exists(int adjustment, Operand compared |
-    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared.getDefinitionInstruction()) and
+    valueNumber(bounded.getAnyDef()) = valueNumber(compared.getAnyDef()) and
     (
       isStrict = true and
       adjustment = 0
@@ -248,7 +248,7 @@ private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand 
       isStrict = false and
       adjustment = 1
     ) and
-    comp.ensuresLt(compared, upperbound, adjustment, bounded.getUseInstruction().getBlock(), true)
+    comp.ensuresLt(compared, upperbound, adjustment, bounded.getUse().getBlock(), true)
   )
 }
 
@@ -261,8 +261,8 @@ private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand 
  */
 private predicate eqBound(IRGuardCondition guard, Operand eqbound, Operand bounded, boolean isEq) {
   exists(Operand compared |
-    valueNumber(bounded.getDefinitionInstruction()) = valueNumber(compared.getDefinitionInstruction()) and
-    guard.ensuresEq(compared, eqbound, 0, bounded.getUseInstruction().getBlock(), isEq)
+    valueNumber(bounded.getAnyDef()) = valueNumber(compared.getAnyDef()) and
+    guard.ensuresEq(compared, eqbound, 0, bounded.getUse().getBlock(), isEq)
   )
 }
 
@@ -331,12 +331,12 @@ private predicate binaryOpSigns(BinaryInstruction i, Sign lhs, Sign rhs) {
 }
 
 private Sign unguardedOperandSign(Operand operand) {
-  result = instructionSign(operand.getDefinitionInstruction()) and
+  result = instructionSign(operand.getAnyDef()) and
   not hasGuard(operand, result)
 }
 
 private Sign guardedOperandSign(Operand operand) {
-  result = instructionSign(operand.getDefinitionInstruction()) and
+  result = instructionSign(operand.getAnyDef()) and
   hasGuard(operand, result)
 }
 

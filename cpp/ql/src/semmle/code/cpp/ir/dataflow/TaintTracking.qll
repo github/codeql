@@ -136,7 +136,7 @@ module TaintTracking {
     // Taint can flow through expressions that alter the value but preserve
     // more than one bit of it _or_ expressions that follow data through
     // pointer indirections.
-    nodeTo.getAnOperand().getDefinitionInstruction() = nodeFrom and
+    nodeTo.getAnOperand().getAnyDef() = nodeFrom and
     (
       nodeTo instanceof ArithmeticInstruction
       or

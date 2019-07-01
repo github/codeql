@@ -53,7 +53,7 @@ private predicate operandIsConsumedWithoutEscaping(Operand operand) {
   // loaded/stored value could).
   operand instanceof AddressOperand or
   exists (Instruction instr |
-    instr = operand.getUseInstruction() and
+    instr = operand.getUse() and
     (
       // Neither operand of a Compare escapes.
       instr instanceof CompareInstruction or
@@ -72,7 +72,7 @@ private predicate operandEscapesDomain(Operand operand) {
   not operandIsPropagated(operand, _) and
   not isArgumentForParameter(_, operand, _) and
   not isOnlyEscapesViaReturnArgument(operand) and
-  not operand.getUseInstruction() instanceof ReturnValueInstruction and
+  not operand.getUse() instanceof ReturnValueInstruction and
   not operand instanceof PhiInputOperand
 }
 
@@ -113,7 +113,7 @@ IntValue getPointerBitOffset(PointerOffsetInstruction instr) {
  */
 private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
   exists(Instruction instr |
-    instr = operand.getUseInstruction() and
+    instr = operand.getUse() and
     (
       // Converting to a non-virtual base class adds the offset of the base class.
       exists(ConvertToBaseInstruction convert |
@@ -156,7 +156,7 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
 
 private predicate operandEscapesNonReturn(Operand operand) {
   // The address is propagated to the result of the instruction, and that result itself is returned
-  operandIsPropagated(operand, _) and resultEscapesNonReturn(operand.getUseInstruction())
+  operandIsPropagated(operand, _) and resultEscapesNonReturn(operand.getUse())
   or
   // The operand is used in a function call which returns it, and the return value is then returned
   exists(CallInstruction ci, Instruction init |
@@ -169,10 +169,10 @@ private predicate operandEscapesNonReturn(Operand operand) {
     )
   )
   or
-  isOnlyEscapesViaReturnArgument(operand) and resultEscapesNonReturn(operand.getUseInstruction())
+  isOnlyEscapesViaReturnArgument(operand) and resultEscapesNonReturn(operand.getUse())
   or
   operand instanceof PhiInputOperand and
-  resultEscapesNonReturn(operand.getUseInstruction())
+  resultEscapesNonReturn(operand.getUse())
   or
   operandEscapesDomain(operand)
 }
@@ -180,7 +180,7 @@ private predicate operandEscapesNonReturn(Operand operand) {
 private predicate operandMayReachReturn(Operand operand) {
   // The address is propagated to the result of the instruction, and that result itself is returned
   operandIsPropagated(operand, _) and
-  resultMayReachReturn(operand.getUseInstruction())
+  resultMayReachReturn(operand.getUse())
   or
   // The operand is used in a function call which returns it, and the return value is then returned
   exists(CallInstruction ci, Instruction init |
@@ -190,19 +190,19 @@ private predicate operandMayReachReturn(Operand operand) {
   )
   or
   // The address is returned
-  operand.getUseInstruction() instanceof ReturnValueInstruction
+  operand.getUse() instanceof ReturnValueInstruction
   or
-  isOnlyEscapesViaReturnArgument(operand) and resultMayReachReturn(operand.getUseInstruction())
+  isOnlyEscapesViaReturnArgument(operand) and resultMayReachReturn(operand.getUse())
   or
   operand instanceof PhiInputOperand and
-  resultMayReachReturn(operand.getUseInstruction())
+  resultMayReachReturn(operand.getUse())
 }
 
 private predicate operandReturned(Operand operand, IntValue bitOffset) {
   // The address is propagated to the result of the instruction, and that result itself is returned
   exists(IntValue bitOffset1, IntValue bitOffset2 |
     operandIsPropagated(operand, bitOffset1) and
-    resultReturned(operand.getUseInstruction(), bitOffset2) and
+    resultReturned(operand.getUse(), bitOffset2) and
     bitOffset = Ints::add(bitOffset1, bitOffset2)
   )
   or
@@ -216,16 +216,16 @@ private predicate operandReturned(Operand operand, IntValue bitOffset) {
   )
   or
   // The address is returned
-  operand.getUseInstruction() instanceof ReturnValueInstruction and
+  operand.getUse() instanceof ReturnValueInstruction and
   bitOffset = 0
   or
-  isOnlyEscapesViaReturnArgument(operand) and resultReturned(operand.getUseInstruction(), _) and
+  isOnlyEscapesViaReturnArgument(operand) and resultReturned(operand.getUse(), _) and
   bitOffset = Ints::unknown()
 }
 
 private predicate isArgumentForParameter(CallInstruction ci, Operand operand, Instruction init) {
   exists(Function f |
-    ci = operand.getUseInstruction() and
+    ci = operand.getUse() and
     f = ci.getStaticCallTarget() and
     (
       init.(InitializeParameterInstruction).getParameter() = f.getParameter(operand.(PositionalArgumentOperand).getIndex())
@@ -241,21 +241,21 @@ private predicate isArgumentForParameter(CallInstruction ci, Operand operand, In
 
 private predicate isAlwaysReturnedArgument(Operand operand) {
   exists(AliasFunction f |
-    f = operand.getUseInstruction().(CallInstruction).getStaticCallTarget() and
+    f = operand.getUse().(CallInstruction).getStaticCallTarget() and
     f.parameterIsAlwaysReturned(operand.(PositionalArgumentOperand).getIndex())
   )
 }
 
 private predicate isOnlyEscapesViaReturnArgument(Operand operand) {
   exists(AliasFunction f |
-    f = operand.getUseInstruction().(CallInstruction).getStaticCallTarget() and
+    f = operand.getUse().(CallInstruction).getStaticCallTarget() and
     f.parameterEscapesOnlyViaReturn(operand.(PositionalArgumentOperand).getIndex())
   )
 }
 
 private predicate isNeverEscapesArgument(Operand operand) {
   exists(AliasFunction f |
-    f = operand.getUseInstruction().(CallInstruction).getStaticCallTarget() and
+    f = operand.getUse().(CallInstruction).getStaticCallTarget() and
     f.parameterNeverEscapes(operand.(PositionalArgumentOperand).getIndex())
   )
 }
@@ -315,7 +315,7 @@ predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) 
     operand = instr.getAnOperand() and
     // If an operand is propagated, then the result points to the same variable,
     // offset by the bit offset from the propagation.
-    resultPointsTo(operand.getDefinitionInstruction(), var, originalBitOffset) and
+    resultPointsTo(operand.getAnyDef(), var, originalBitOffset) and
     (
       operandIsPropagated(operand, propagatedBitOffset)
       or

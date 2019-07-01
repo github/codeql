@@ -26,24 +26,24 @@ class Operand extends TOperand {
   }
 
   final Location getLocation() {
-    result = getUseInstruction().getLocation()
+    result = getUse().getLocation()
   }
 
   final IRFunction getEnclosingIRFunction() {
-    result = getUseInstruction().getEnclosingIRFunction()
+    result = getUse().getEnclosingIRFunction()
   }
   
   /**
    * Gets the `Instruction` that consumes this operand.
    */
-  Instruction getUseInstruction() {
+  Instruction getUse() {
     none()
   }
 
   /**
    * Gets the `Instruction` whose result is the value of the operand.
    */
-  Instruction getDefinitionInstruction() {
+  Instruction getAnyDef() {
     none()
   }
 
@@ -76,7 +76,7 @@ class Operand extends TOperand {
    * For example: `this:r3_5`
    */
   final string getDumpString() {
-    result = getDumpLabel() + getInexactSpecifier() + getDefinitionInstruction().getResultId()
+    result = getDumpLabel() + getInexactSpecifier() + getAnyDef().getResultId()
   }
 
   /**
@@ -106,7 +106,7 @@ class Operand extends TOperand {
    * has been cast to a different type.
    */
   Type getType() {
-    result = getDefinitionInstruction().getResultType()
+    result = getAnyDef().getResultType()
   }
 
   /**
@@ -117,7 +117,7 @@ class Operand extends TOperand {
    * given by `getResultType()`.
    */
   predicate isGLValue() {
-    getDefinitionInstruction().isGLValue()
+    getAnyDef().isGLValue()
   }
 
   /**
@@ -157,7 +157,7 @@ class MemoryOperand extends Operand {
    */
   final AddressOperand getAddressOperand() {
     getMemoryAccess().usesAddressOperand() and
-    result.getUseInstruction() = getUseInstruction()
+    result.getUse() = getUse()
   }
 }
 
@@ -174,11 +174,11 @@ class NonPhiOperand extends Operand {
     this = TNonPhiMemoryOperand(useInstr, tag, defInstr, _)
   }
 
-  override final Instruction getUseInstruction() {
+  override final Instruction getUse() {
     result = useInstr
   }
 
-  override final Instruction getDefinitionInstruction() {
+  override final Instruction getAnyDef() {
     result = defInstr
   }
 
@@ -436,11 +436,11 @@ class PhiInputOperand extends MemoryOperand, TPhiOperand {
     result = "Phi"
   }
 
-  override final PhiInstruction getUseInstruction() {
+  override final PhiInstruction getUse() {
     result = useInstr
   }
 
-  override final Instruction getDefinitionInstruction() {
+  override final Instruction getAnyDef() {
     result = defInstr
   }
 

@@ -88,7 +88,7 @@ class ValueNumber extends TValueNumber {
   }
   
   final Operand getAUse() {
-    this = valueNumber(result.getDefinitionInstruction())
+    this = valueNumber(result.getAnyDef())
   }
 }
 
@@ -230,7 +230,7 @@ cached ValueNumber valueNumber(Instruction instr) {
  * Gets the value number assigned to `instr`, if any. Returns at most one result.
  */
 ValueNumber valueNumberOfOperand(Operand op) {
-  result = valueNumber(op.getDefinitionInstruction())
+  result = valueNumber(op.getAnyDef())
 }
 
 /**
