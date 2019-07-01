@@ -145,6 +145,11 @@ module TaintTracking {
       nodeTo instanceof PointerArithmeticInstruction
       or
       nodeTo instanceof FieldAddressInstruction
+      or
+      // The `CopyInstruction` case is also present in non-taint data flow, but
+      // that uses `getDef` rather than `getAnyDef`. For taint, we want flow
+      // from a definition of `myStruct` to a `myStruct.myField` expression.
+      nodeTo instanceof CopyInstruction
     )
     or
     nodeTo.(LoadInstruction).getSourceAddress() = nodeFrom
