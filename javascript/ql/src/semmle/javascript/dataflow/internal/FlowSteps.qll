@@ -136,7 +136,7 @@ private module CachedSteps {
         parm = DataFlow::parameterNode(p)
       )
       or
-      arg = invk.(DataFlow::MethodCallNode).getReceiver() and
+      arg = invk.(DataFlow::CallNode).getReceiver() and
       parm = DataFlow::thisNode(f)
     )
     or
