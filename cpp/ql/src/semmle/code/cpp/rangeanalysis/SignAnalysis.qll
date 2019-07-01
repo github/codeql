@@ -221,7 +221,7 @@ private predicate unknownSign(Instruction i) {
  */
 private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand bounded, boolean isStrict) {
   exists(int adjustment, Operand compared |
-    valueNumber(bounded.getAnyDef()) = valueNumber(compared.getAnyDef()) and
+    valueNumberOfOperand(bounded) = valueNumberOfOperand(compared) and
     (
       isStrict = true and
       adjustment = 0
@@ -240,7 +240,7 @@ private predicate lowerBound(IRGuardCondition comp, Operand lowerbound, Operand 
  */
 private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand bounded, boolean isStrict) {
   exists(int adjustment, Operand compared |
-    valueNumber(bounded.getAnyDef()) = valueNumber(compared.getAnyDef()) and
+    valueNumberOfOperand(bounded) = valueNumberOfOperand(compared) and
     (
       isStrict = true and
       adjustment = 0
@@ -261,7 +261,7 @@ private predicate upperBound(IRGuardCondition comp, Operand upperbound, Operand 
  */
 private predicate eqBound(IRGuardCondition guard, Operand eqbound, Operand bounded, boolean isEq) {
   exists(Operand compared |
-    valueNumber(bounded.getAnyDef()) = valueNumber(compared.getAnyDef()) and
+    valueNumberOfOperand(bounded) = valueNumberOfOperand(compared) and
     guard.ensuresEq(compared, eqbound, 0, bounded.getUse().getBlock(), isEq)
   )
 }
