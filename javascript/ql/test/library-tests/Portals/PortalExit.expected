@@ -1,3 +1,11 @@
+| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/index.js:1:1:1:0 | this | true |
+| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/index.js:12:1:12:12 | NP.prototype | true |
+| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/index.js:12:25:12:24 | this | true |
+| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/index.js:16:1:16:12 | NP.prototype | true |
+| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/index.js:16:24:16:23 | this | true |
+| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/simpleField.js:4:10:4:16 | new i() | true |
+| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/simpleParam.js:4:10:4:16 | new n() | true |
+| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/simpleParam.js:23:35:23:38 | dest | true |
 | (instance (member Promise (root https://www.npmjs.com/package/bluebird))) | src/bluebird/index.js:1:1:1:0 | this | true |
 | (instance (member Promise (root https://www.npmjs.com/package/bluebird))) | src/bluebird/index.js:5:1:5:17 | Promise.prototype | true |
 | (instance (member Promise (root https://www.npmjs.com/package/bluebird))) | src/bluebird/index.js:5:26:5:25 | this | true |
@@ -9,17 +17,13 @@
 | (instance (member default (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:5:1:5:11 | new A("me") | false |
 | (instance (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:4:1:4:11 | new A("me") | false |
 | (instance (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:5:1:5:11 | new A("me") | false |
-| (member broadcast (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io)))))) | src/typeTracking/socketField.js:14:5:14:20 | socket.broadcast | false |
-| (member broadcast (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io)))))) | src/typeTracking/socketField.js:22:5:22:20 | socket.broadcast | false |
-| (member connect (root https://www.npmjs.com/package/net)) | src/typeTracking/prototypeFlow.js:15:20:15:30 | net.connect | false |
-| (member createServer (root https://www.npmjs.com/package/http)) | src/typeTracking/socketField.js:5:14:5:41 | require ... eServer | false |
-| (member createServer (root https://www.npmjs.com/package/net)) | src/typeTracking/prototypeFlow.js:10:18:10:33 | net.createServer | false |
+| (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking)))) | src/typeTracking/simpleField.js:6:1:6:10 | np.argFunc | true |
+| (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking)))) | src/typeTracking/simpleParam.js:10:14:10:24 | np.createNP | true |
 | (member default (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:1:8:1:8 | A | false |
-| (member emit (member broadcast (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io))))))) | src/typeTracking/socketField.js:14:5:14:25 | socket. ... st.emit | false |
-| (member emit (member broadcast (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io))))))) | src/typeTracking/socketField.js:22:5:22:25 | socket. ... st.emit | false |
+| (member emit (parameter 0 (parameter 0 (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking))))))) | src/typeTracking/simpleField.js:9:2:9:11 | input.emit | true |
+| (member f (return (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking)))))) | src/typeTracking/simpleParam.js:12:3:12:6 | cn.f | true |
+| (member field (parameter 0 (parameter 0 (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking))))))) | src/typeTracking/simpleField.js:9:31:9:41 | input.field | true |
 | (member foo (root https://www.npmjs.com/package/m2)) | src/m3/tst2.js:1:10:1:12 | foo | false |
-| (member heresAField (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io)))))) | src/typeTracking/socketField.js:23:17:23:34 | socket.heresAField | false |
-| (member listen (return (member createServer (root https://www.npmjs.com/package/net)))) | src/typeTracking/prototypeFlow.js:14:3:14:15 | server.listen | false |
 | (member m (instance (member default (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:4:1:4:13 | new A("me").m | false |
 | (member m (instance (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:4:1:4:13 | new A("me").m | false |
 | (member m (member default (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:2:1:2:3 | A.m | false |
@@ -27,24 +31,18 @@
 | (member m (return (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:4:1:4:13 | new A("me").m | false |
 | (member m (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:2:1:2:3 | A.m | false |
 | (member name (instance (member default (root https://www.npmjs.com/package/m2)))) | src/m2/main.js:12:27:12:35 | this.name | true |
-| (member on (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io)))))) | src/typeTracking/socketField.js:12:3:12:11 | socket.on | false |
-| (member on (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io)))))) | src/typeTracking/socketField.js:21:3:21:11 | socket.on | false |
-| (member on (return (member connect (root https://www.npmjs.com/package/net)))) | src/typeTracking/prototypeFlow.js:16:5:16:13 | socket.on | false |
-| (member on (return (root https://www.npmjs.com/package/socket.io))) | src/typeTracking/socketField.js:8:1:8:5 | io.on | false |
-| (member pipe (parameter 0 (member pipe (parameter 0 (member pipe (parameter 0 (parameter 0 (member createServer (root https://www.npmjs.com/package/net))))))))) | src/typeTracking/prototypeFlow.js:11:5:11:15 | socket.pipe | false |
-| (member pipe (parameter 0 (member pipe (parameter 0 (parameter 0 (member createServer (root https://www.npmjs.com/package/net))))))) | src/typeTracking/prototypeFlow.js:11:5:11:15 | socket.pipe | false |
-| (member pipe (parameter 0 (parameter 0 (member createServer (root https://www.npmjs.com/package/net))))) | src/typeTracking/prototypeFlow.js:11:5:11:15 | socket.pipe | false |
-| (member pipe (return (member connect (root https://www.npmjs.com/package/net)))) | src/typeTracking/prototypeFlow.js:19:7:19:17 | socket.pipe | false |
+| (member on (parameter 0 (parameter 0 (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking))))))) | src/typeTracking/simpleField.js:8:2:8:9 | input.on | true |
 | (member s (instance (member default (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:5:1:5:13 | new A("me").s | false |
 | (member s (instance (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:5:1:5:13 | new A("me").s | false |
 | (member s (member default (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:3:1:3:3 | A.s | false |
 | (member s (return (member default (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:5:1:5:13 | new A("me").s | false |
 | (member s (return (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:5:1:5:13 | new A("me").s | false |
 | (member s (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:3:1:3:3 | A.s | false |
-| (member username (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io)))))) | src/typeTracking/socketField.js:15:17:15:31 | socket.username | false |
 | (member x (parameter 0 (member foo (root https://www.npmjs.com/package/m2)))) | src/m2/main.js:2:15:2:17 | p.x | true |
 | (member y (member x (parameter 0 (member foo (root https://www.npmjs.com/package/m2))))) | src/m2/main.js:2:15:2:19 | p.x.y | true |
+| (parameter 0 (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/index.js:1:13:1:16 | exec | true |
 | (parameter 0 (member Promise (root https://www.npmjs.com/package/bluebird))) | src/bluebird/index.js:1:18:1:21 | exec | true |
+| (parameter 0 (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking))))) | src/typeTracking/index.js:16:33:16:44 | someCallback | true |
 | (parameter 0 (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
 | (parameter 0 (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
 | (parameter 0 (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (return (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
@@ -339,7 +337,7 @@
 | (parameter 0 (member m (instance (member default (root https://www.npmjs.com/package/m2))))) | src/m2/main.js:11:5:11:5 | x | true |
 | (parameter 0 (member s (member default (root https://www.npmjs.com/package/m2)))) | src/m2/main.js:15:12:15:12 | y | true |
 | (parameter 0 (member then (instance (member Promise (root https://www.npmjs.com/package/bluebird))))) | src/bluebird/index.js:5:35:5:43 | fulfilled | true |
-| (parameter 0 (parameter 0 (member createServer (root https://www.npmjs.com/package/net)))) | src/typeTracking/prototypeFlow.js:10:36:10:41 | socket | false |
+| (parameter 0 (parameter 0 (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking)))))) | src/typeTracking/simpleField.js:6:13:6:17 | input | true |
 | (parameter 0 (parameter 0 (parameter 0 (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
 | (parameter 0 (parameter 0 (parameter 0 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
 | (parameter 0 (parameter 0 (parameter 0 (member f00 (member f00 (member f00 (member f00 (return (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
@@ -459,8 +457,7 @@
 | (parameter 0 (parameter 0 (parameter 0 (return (return (return (return (member f00 (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
 | (parameter 0 (parameter 0 (parameter 0 (return (return (return (return (member foo (root https://www.npmjs.com/package/cyclic))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
 | (parameter 0 (parameter 0 (parameter 0 (return (return (return (return (return (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
-| (parameter 0 (parameter 1 (member on (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io)))))))) | src/typeTracking/socketField.js:12:29:12:32 | data | false |
-| (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io))))) | src/typeTracking/socketField.js:8:22:8:27 | socket | false |
+| (parameter 0 (parameter 1 (member on (parameter 0 (parameter 0 (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking))))))))) | src/typeTracking/simpleField.js:8:18:8:18 | x | true |
 | (parameter 0 (return (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
 | (parameter 0 (return (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
 | (parameter 0 (return (member f00 (member f00 (member f00 (member f00 (member f00 (return (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
@@ -751,36 +748,27 @@
 | (parameter 0 (return (return (return (return (return (return (return (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
 | (parameter 0 (root https://www.npmjs.com/package/m1)) | src/m1/index.js:1:19:1:19 | x | true |
 | (parameter 1 (member then (instance (member Promise (root https://www.npmjs.com/package/bluebird))))) | src/bluebird/index.js:5:46:5:53 | rejected | true |
-| (return (member connect (root https://www.npmjs.com/package/net))) | src/typeTracking/prototypeFlow.js:15:20:15:36 | net.connect(PORT) | false |
-| (return (member connect (root https://www.npmjs.com/package/net))) | src/typeTracking/prototypeFlow.js:39:34:39:37 | dest | false |
-| (return (member createServer (root https://www.npmjs.com/package/http))) | src/typeTracking/socketField.js:5:14:5:46 | require ... er(app) | false |
-| (return (member createServer (root https://www.npmjs.com/package/net))) | src/typeTracking/prototypeFlow.js:10:18:12:4 | net.cre ... );\\n  }) | false |
+| (return (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking))))) | src/typeTracking/simpleField.js:6:1:12:2 | np.argF ... \\n});\\n}) | true |
+| (return (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking))))) | src/typeTracking/simpleParam.js:10:14:10:26 | np.createNP() | true |
 | (return (member default (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:4:1:4:11 | new A("me") | false |
 | (return (member default (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:5:1:5:11 | new A("me") | false |
-| (return (member emit (member broadcast (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io)))))))) | src/typeTracking/socketField.js:14:5:17:6 | socket. ... \\n    }) | false |
-| (return (member emit (member broadcast (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io)))))))) | src/typeTracking/socketField.js:22:5:24:6 | socket. ... \\n    }) | false |
+| (return (member emit (parameter 0 (parameter 0 (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking)))))))) | src/typeTracking/simpleField.js:9:2:9:43 | input.e ... field}) | true |
+| (return (member f (return (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking))))))) | src/typeTracking/simpleParam.js:12:3:14:6 | cn.f( ( ... \\n    }) | true |
 | (return (member foo (root https://www.npmjs.com/package/m2))) | src/m3/tst2.js:5:1:5:13 | foo({ x: o }) | false |
-| (return (member listen (return (member createServer (root https://www.npmjs.com/package/net))))) | src/typeTracking/prototypeFlow.js:14:3:22:4 | server. ... );\\n  }) | false |
 | (return (member m (instance (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:4:1:4:19 | new A("me").m("hi") | false |
 | (return (member m (instance (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:4:1:4:19 | new A("me").m("hi") | false |
 | (return (member m (member default (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:2:1:2:9 | A.m("hi") | false |
 | (return (member m (return (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:4:1:4:19 | new A("me").m("hi") | false |
 | (return (member m (return (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:4:1:4:19 | new A("me").m("hi") | false |
 | (return (member m (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:2:1:2:9 | A.m("hi") | false |
-| (return (member on (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io))))))) | src/typeTracking/socketField.js:12:3:18:4 | socket. ... );\\n  }) | false |
-| (return (member on (parameter 0 (parameter 1 (member on (return (root https://www.npmjs.com/package/socket.io))))))) | src/typeTracking/socketField.js:21:3:25:4 | socket. ... );\\n  }) | false |
-| (return (member on (return (member connect (root https://www.npmjs.com/package/net))))) | src/typeTracking/prototypeFlow.js:16:5:21:6 | socket. ... \\n    }) | false |
-| (return (member on (return (root https://www.npmjs.com/package/socket.io)))) | src/typeTracking/socketField.js:8:1:27:2 | io.on(' ... });\\n\\n}) | false |
-| (return (member pipe (parameter 0 (member pipe (parameter 0 (member pipe (parameter 0 (parameter 0 (member createServer (root https://www.npmjs.com/package/net)))))))))) | src/typeTracking/prototypeFlow.js:11:5:11:23 | socket.pipe(socket) | false |
-| (return (member pipe (parameter 0 (member pipe (parameter 0 (parameter 0 (member createServer (root https://www.npmjs.com/package/net)))))))) | src/typeTracking/prototypeFlow.js:11:5:11:23 | socket.pipe(socket) | false |
-| (return (member pipe (parameter 0 (parameter 0 (member createServer (root https://www.npmjs.com/package/net)))))) | src/typeTracking/prototypeFlow.js:11:5:11:23 | socket.pipe(socket) | false |
-| (return (member pipe (return (member connect (root https://www.npmjs.com/package/net))))) | src/typeTracking/prototypeFlow.js:19:7:19:25 | socket.pipe(writer) | false |
+| (return (member on (parameter 0 (parameter 0 (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking)))))))) | src/typeTracking/simpleField.js:8:2:11:2 | input.o ... rtal\\n}) | true |
 | (return (member s (instance (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:5:1:5:22 | new A(" ... there") | false |
 | (return (member s (instance (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:5:1:5:22 | new A(" ... there") | false |
 | (return (member s (member default (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:3:1:3:12 | A.s("there") | false |
 | (return (member s (return (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:5:1:5:22 | new A(" ... there") | false |
 | (return (member s (return (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:5:1:5:22 | new A(" ... there") | false |
 | (return (member s (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:3:1:3:12 | A.s("there") | false |
+| (return (parameter 0 (member argFunc (instance (member NP (root https://www.npmjs.com/package/typeTracking)))))) | src/typeTracking/index.js:17:2:17:15 | someCallback() | true |
 | (return (parameter 0 (member f00 (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:2:3:2:9 | cb(foo) | true |
 | (return (parameter 0 (member f00 (member f00 (member f00 (member f00 (member f00 (member foo (root https://www.npmjs.com/package/cyclic))))))))) | src/cyclic/index.js:2:3:2:9 | cb(foo) | true |
 | (return (parameter 0 (member f00 (member f00 (member f00 (member f00 (member f00 (return (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:2:3:2:9 | cb(foo) | true |
@@ -1070,16 +1058,10 @@
 | (return (parameter 0 (return (return (return (return (return (member foo (root https://www.npmjs.com/package/cyclic))))))))) | src/cyclic/index.js:2:3:2:9 | cb(foo) | true |
 | (return (parameter 0 (return (return (return (return (return (return (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:2:3:2:9 | cb(foo) | true |
 | (return (parameter 1 (member then (instance (member Promise (root https://www.npmjs.com/package/bluebird)))))) | src/bluebird/index.js:6:3:6:16 | rejected(null) | true |
-| (return (root https://www.npmjs.com/package/express)) | src/typeTracking/socketField.js:4:11:4:19 | express() | false |
 | (return (root https://www.npmjs.com/package/m1)) | src/m3/index.js:3:43:3:61 | m1("Hello, world!") | false |
 | (return (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:4:1:4:11 | new A("me") | false |
 | (return (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:5:1:5:11 | new A("me") | false |
-| (return (root https://www.npmjs.com/package/socket.io)) | src/typeTracking/socketField.js:6:10:6:37 | require ... server) | false |
-| (root https://www.npmjs.com/package/express) | src/typeTracking/socketField.js:3:15:3:32 | require('express') | false |
-| (root https://www.npmjs.com/package/http) | src/typeTracking/socketField.js:5:14:5:28 | require('http') | false |
 | (root https://www.npmjs.com/package/m1) | src/m3/index.js:1:10:1:22 | require("m1") | false |
 | (root https://www.npmjs.com/package/m2) | src/m3/tst2.js:1:1:1:25 | import  ... m "m2"; | false |
 | (root https://www.npmjs.com/package/m2) | src/m3/tst3.js:1:1:1:19 | import A from "m2"; | false |
 | (root https://www.npmjs.com/package/m2) | src/m3/tst3.js:1:8:1:8 | A | false |
-| (root https://www.npmjs.com/package/net) | src/typeTracking/prototypeFlow.js:3:13:3:26 | require('net') | false |
-| (root https://www.npmjs.com/package/socket.io) | src/typeTracking/socketField.js:6:10:6:29 | require('socket.io') | false |
