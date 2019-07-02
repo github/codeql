@@ -61,7 +61,14 @@ private predicate looksLikeExterns(TopLevel tl) {
 predicate classify(File f, string category) {
   isGenerated(f.getATopLevel()) and category = "generated"
   or
-  exists(Test t | t.getFile() = f | category = "test")
+  (
+    exists(Test t | t.getFile() = f)
+    or
+    exists(string stemExt | stemExt = "test" or stemExt = "spec" |
+      f = getTestFile(any(File orig), stemExt)
+    )
+  ) and
+  category = "test"
   or
   (f.getATopLevel().isExterns() or looksLikeExterns(f.getATopLevel())) and
   category = "externs"

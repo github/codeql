@@ -39,6 +39,34 @@ class BDDTest extends Test, @callexpr {
 }
 
 /**
+ * Gets the test file for `f` with stem extension `stemExt`.
+ * That is, a file named file named `<base>.<stemExt>.<ext>` in the
+ * same directory as `f` which is named `<base>.<ext>`.
+ */
+bindingset[stemExt]
+File getTestFile(File f, string stemExt) {
+  result = f.getParentContainer().getFile(f.getStem() + "." + stemExt + "." + f.getExtension())
+}
+
+/**
+ * A Jest test, that is, an invocation of a global function named
+ * `test` where the first argument is a string and the second
+ * argument is a function. Additionally, the invocation happens in a file
+ * named `<base>.test.<ext>` in the same directory as a file named
+ * `<base>.<ext>`.
+ */
+class JestTest extends Test, @callexpr {
+  JestTest() {
+    exists(CallExpr call | call = this |
+      call.getCallee().(GlobalVarAccess).getName() = "test" and
+      exists(call.getArgument(0).getStringValue()) and
+      call.getArgument(1).analyze().getAValue() instanceof AbstractFunction
+    ) and
+    getFile() = getTestFile(any(File f), "test")
+  }
+}
+
+/**
  * A xUnit.js fact, that is, a function annotated with an xUnit.js
  * `Fact` annotation.
  */
