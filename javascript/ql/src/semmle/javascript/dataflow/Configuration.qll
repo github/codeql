@@ -521,7 +521,7 @@ private predicate exploratoryFlowStep(
 ) {
   basicFlowStep(pred, succ, _, cfg) or
   basicStoreStep(pred, succ, _) or
-  loadStep(pred, succ, _) or
+  basicLoadStep(pred, succ, _) or
   // the following two disjuncts taken together over-approximate flow through
   // higher-order calls
   callback(pred, succ) or
@@ -698,10 +698,59 @@ private predicate storeStep(
 }
 
 /**
+ * Holds if `f` may `read` property `prop` of parameter `parm`.
+ */
+private predicate parameterPropRead(
+  Function f, DataFlow::Node invk, DataFlow::Node arg, string prop, DataFlow::PropRead read,
+  DataFlow::Configuration cfg
+) {
+  exists(DataFlow::SourceNode parm |
+    callInputStep(f, invk, arg, parm, cfg) and
+    read = parm.getAPropertyRead(prop)
+  )
+}
+
+/**
+ * Holds if `nd` may flow into a return statement of `f` under configuration `cfg`
+ * (possibly through callees) along a path summarized by `summary`.
+ */
+private predicate reachesReturn(
+  Function f, DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary
+) {
+  isRelevant(nd, cfg) and
+  returnExpr(f, nd, _) and
+  summary = PathSummary::level()
+  or
+  exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+    flowStep(nd, cfg, mid, oldSummary) and
+    reachesReturn(f, mid, cfg, newSummary) and
+    summary = oldSummary.append(newSummary)
+  )
+}
+
+/**
+ * Holds if property `prop` of `pred` may flow into `succ` along a path summarized by
+ * `summary`.
+ */
+private predicate loadStep(
+  DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg,
+  PathSummary summary
+) {
+  basicLoadStep(pred, succ, prop) and
+  summary = PathSummary::level()
+  or
+  exists(Function f, DataFlow::PropRead read |
+    parameterPropRead(f, succ, pred, prop, read, cfg) and
+    reachesReturn(f, read, cfg, summary)
+  )
+}
+
+/**
  * Holds if `rhs` is the right-hand side of a write to property `prop`, and `nd` is reachable
  * from the base of that write under configuration `cfg` (possibly through callees) along a
  * path summarized by `summary`.
  */
+pragma[nomagic]
 private predicate reachableFromStoreBase(
   string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
   PathSummary summary
@@ -723,11 +772,14 @@ private predicate reachableFromStoreBase(
  *
  * In other words, `pred` may flow to `succ` through a property.
  */
+pragma[noinline]
 private predicate flowThroughProperty(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists(string prop, DataFlow::Node base | reachableFromStoreBase(prop, pred, base, cfg, summary) |
-    loadStep(base, succ, prop)
+  exists(string prop, DataFlow::Node base, PathSummary oldSummary, PathSummary newSummary |
+    reachableFromStoreBase(prop, pred, base, cfg, oldSummary) and
+    loadStep(base, succ, prop, cfg, newSummary) and
+    summary = oldSummary.append(newSummary)
   )
 }
 
@@ -743,7 +795,7 @@ private predicate summarizedHigherOrderCall(
 ) {
   exists(
     Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
-    DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary
+    DataFlow::Node innerArg, DataFlow::SourceNode cbParm, PathSummary oldSummary
   |
     reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
     argumentPassing(outer, cb, f, cbParm) and
@@ -786,6 +838,7 @@ private predicate summarizedHigherOrderCall(
  * - The flow label mapping of the summary corresponds to the transformation from `arg` to the
  *   invocation of the callback.
  */
+pragma[nomagic]
 private predicate higherOrderCall(
   DataFlow::Node arg, DataFlow::SourceNode callback, int i, DataFlow::Configuration cfg,
   PathSummary summary

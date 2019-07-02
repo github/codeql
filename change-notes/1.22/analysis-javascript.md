@@ -10,6 +10,8 @@
   - [exec-async](https://www.npmjs.com/package/exec-async)
   - [express](https://www.npmjs.com/package/express)
   - [remote-exec](https://www.npmjs.com/package/remote-exec)
+
+* Support for tracking data flow and taint through getter functions (that is, functions that return a property of one of their arguments) and through the receiver object of method calls has been improved. This may produce more security alerts.
   
 ## New queries
 

@@ -83,7 +83,7 @@ module StepSummary {
       basicStoreStep(pred, succ, prop) and
       summary = StoreStep(prop)
       or
-      loadStep(pred, succ, prop) and
+      basicLoadStep(pred, succ, prop) and
       summary = LoadStep(prop)
     )
   }
