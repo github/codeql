@@ -188,9 +188,12 @@ class MacroInvocation extends MacroAccess {
   }
 
   /**
-   * Gets the top-level expression associated with this macro invocation,
+   * Gets a top-level expression associated with this macro invocation,
    * if any. Note that this predicate will fail if the top-level expanded
    * element is not an expression (for example if it is a statement).
+   *
+   * This macro is intended to be used with macros that expand to a complete
+   * expression. In other cases, it may have multiple results or no results.
    */
   Expr getExpr() {
     result = getAnExpandedElement() and
