@@ -1,0 +1,9 @@
+{
+  "name": "testing",
+  "dependencies": {
+    "socket.io": "*",
+    "net": "*",
+    "express": "*",
+    "http": "*"
+  }
+}
