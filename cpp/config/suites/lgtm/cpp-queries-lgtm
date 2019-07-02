@@ -4,7 +4,5 @@
     @_namespace com.lgtm/cpp-queries
 + semmlecode-cpp-queries/filters/ClassifyFiles.ql
     @_namespace com.lgtm/cpp-queries
-+ semmlecode-cpp-queries/filters/ImportAdditionalLibraries.ql
-    @_namespace com.lgtm/cpp-queries
 
 @import "cpp-alerts-lgtm"
