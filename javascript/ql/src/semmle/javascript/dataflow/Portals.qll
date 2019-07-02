@@ -131,11 +131,6 @@ private class NpmPackagePortal extends Portal, MkNpmPackagePortal {
   /** Gets the name of the npm package. */
   string getName() { result = pkgName }
 
-//  override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-//    NpmPackagePortal::imports(result, pkgName) and
-//    isRemote = false
-//  }
-
   private DataFlow::SourceNode getAnExitNode(boolean isRemote, DataFlow::TypeTracker t) {
     t.start() and
     NpmPackagePortal::imports(result, pkgName) and
@@ -258,10 +253,6 @@ private class MemberPortal extends CompoundPortal, MkMemberPortal {
   /** Gets the name of this member. */
   string getName() { result = prop }
 
-//  override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-//    MemberPortal::reads(base, prop, result, isRemote)
-//  }
-
   private DataFlow::SourceNode getAnExitNode(boolean isRemote, DataFlow::TypeTracker t) {
     t.start() and
     MemberPortal::reads(base, prop, result, isRemote)
@@ -337,10 +328,6 @@ private module MemberPortal {
  */
 private class InstancePortal extends CompoundPortal, MkInstancePortal {
   InstancePortal() { this = MkInstancePortal(base) }
-
-//  override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-//    InstancePortal::instanceUse(base, result, isRemote)
-//  }
 
   private DataFlow::SourceNode getAnExitNode(boolean isRemote, DataFlow::TypeTracker t) {
     t.start() and
@@ -435,10 +422,6 @@ class ParameterPortal extends CompoundPortal, MkParameterPortal {
   /** Gets the index of the parameterb represented by this portal. */
   int getIndex() { result = i }
 
-//  override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-//    ParameterPortal::parameter(base, i, result, isRemote)
-//  }
-
   private DataFlow::SourceNode getAnExitNode(boolean isRemote, DataFlow::TypeTracker t) {
     t.start() and
     ParameterPortal::parameter(base, i, result, isRemote)
@@ -479,10 +462,6 @@ private module ParameterPortal {
  */
 class ReturnPortal extends CompoundPortal, MkReturnPortal {
   ReturnPortal() { this = MkReturnPortal(base) }
-
-//  override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-//    ReturnPortal::calls(result, base, isRemote)
-//  }
 
   private DataFlow::SourceNode getAnExitNode(boolean isRemote, DataFlow::TypeTracker t) {
     t.start() and
