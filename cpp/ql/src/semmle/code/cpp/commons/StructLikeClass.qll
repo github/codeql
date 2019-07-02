@@ -59,7 +59,7 @@ predicate setter(MemberVariable v, MemberFunction f, Class c) {
       v2 != v
     ) and
     f.getNumberOfParameters() = 1 and
-    sameBaseType(f.getParameter(0).getType(), v.getType())
+    f.getParameter(0).getType().stripType() = v.getType().stripType()
 }
 
 /**
@@ -77,25 +77,5 @@ predicate getter(MemberVariable v, MemberFunction f, Class c) {
       v2 != v
     ) and
     f.getNumberOfParameters() = 0 and
-    sameBaseType(f.getType(), v.getType())
-}
-
-/**
- * Holds if `t1` and `t2` are the same type up to typedefs, specifiers,
- * and removing a single layer of pointers or references (but not arrays).
- * Equates, for example, `const int*` with `int`, but not `int**` with `int`
- * or `int[]` with `int`.
- */
-predicate sameBaseType(Type t1, Type t2) {
-  exists (Type base1, Type base2 |
-    base1 = t1.getUnspecifiedType() and
-    base2 = t2.getUnspecifiedType().getUnspecifiedType() and
-    (
-      base1 = base2 or
-      base1.(PointerType).getBaseType() = base2 or
-      base2.(PointerType).getBaseType() = base1 or
-      base1.(ReferenceType).getBaseType() = base2 or
-      base2.(ReferenceType).getBaseType() = base1
-    )
-  )
+    f.getType().stripType() = v.getType().stripType()
 }
