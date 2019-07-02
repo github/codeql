@@ -1202,22 +1202,14 @@ module ControlFlow {
               c instanceof ExitCompletion
             )
             or
-            // If the `finally` block completes normally, it resumes any non-normal
+            result = lastTryStmtFinally(ts, c, any(NormalCompletion nc))
+            or
+            // If the `finally` block completes normally, it inherits any non-normal
             // completion that was current before the `finally` block was entered
-            exists(NormalCompletion c0 |
-              result = lastTryStmtFinally(ts, c0) and
-              (
-                exists(getBlockOrCatchFinallyPred(ts, any(NormalCompletion nc))) and
-                c = c0
-                or
-                exists(AbnormalCompletion ac, InheritedCompletion ic |
-                  c = ic and
-                  exists(getBlockOrCatchFinallyPred(ts, ac)) and
-                  ac.getInheritedCompletion() = ic.getInheritedCompletion() and
-                  ic.getUnderlyingCompletion() = c0
-                )
+            c = any(InheritedCompletion ic |
+                result = lastTryStmtFinally(ts, ic.getUnderlyingCompletion(),
+                    ic.getInheritedCompletion())
               )
-            )
           )
       }
 
@@ -1243,11 +1235,6 @@ module ControlFlow {
       pragma[nomagic]
       private ControlFlowElement lastTryStmtBlock(TryStmt ts, Completion c) {
         result = last(ts.getBlock(), c)
-      }
-
-      pragma[nomagic]
-      private ControlFlowElement lastTryStmtFinally(TryStmt ts, Completion c) {
-        result = last(ts.getFinally(), c)
       }
 
       pragma[nomagic]
@@ -1290,6 +1277,22 @@ module ControlFlow {
         or
         // Last element of last `catch` clause continues to the `finally` block
         result = lastLastCatchClause(ts.getACatchClause(), c)
+      }
+
+      pragma[nomagic]
+      private ControlFlowElement lastTryStmtFinally0(TryStmt ts, Completion c) {
+        result = last(ts.getFinally(), c)
+      }
+
+      pragma[nomagic]
+      ControlFlowElement lastTryStmtFinally(
+        TryStmt ts, NormalCompletion finally, Completion inherited
+      ) {
+        result = lastTryStmtFinally0(ts, finally) and
+        exists(Completion c0 | exists(getBlockOrCatchFinallyPred(ts, c0)) |
+          inherited = c0.(NormalCompletion) or
+          inherited = c0.(AbnormalCompletion).getInheritedCompletion()
+        )
       }
 
       /**
