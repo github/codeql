@@ -53,10 +53,10 @@ predicate setter(MemberVariable v, MemberFunction f, Class c) {
     v.getDeclaringType() = c and
     f.getName().matches("set%") and
     v.getAnAssignedValue().getEnclosingFunction() = f and
-    not exists(MemberVariable v2 |
-      v2.getDeclaringType() = c and
-      v2.getAnAssignedValue().getEnclosingFunction() = f and
-      v2 != v
+    forall(MemberVariable v2 |
+      v2.getAnAssignedValue().getEnclosingFunction() = f
+    |
+      v2 = v
     ) and
     f.getNumberOfParameters() = 1 and
     f.getParameter(0).getType().stripType() = v.getType().stripType()
@@ -71,10 +71,10 @@ predicate getter(MemberVariable v, MemberFunction f, Class c) {
     v.getDeclaringType() = c and
     f.getName().matches("get%") and
     v.getAnAccess().getEnclosingFunction() = f and
-    not exists(MemberVariable v2 |
-      v2.getDeclaringType() = c and
-      v2.getAnAccess().getEnclosingFunction() = f and
-      v2 != v
+    forall(MemberVariable v2 |
+      v2.getAnAccess().getEnclosingFunction() = f
+    |
+      v2 = v
     ) and
     f.getNumberOfParameters() = 0 and
     f.getType().stripType() = v.getType().stripType()
