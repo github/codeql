@@ -193,10 +193,13 @@ module SourceNode {
   /**
    * A data flow node that is considered a source node by default.
    *
-   * Currently, the following nodes are source nodes:
+   * This includes all nodes that evaluate to a new object and all nodes whose
+   * value is computed using non-local data flow (that is, flow between functions,
+   * between modules, or through the heap):
+   *
    *   - import specifiers
    *   - function parameters
-   *   - `this` nodes
+   *   - `this` expressions
    *   - property accesses
    *   - function invocations
    *   - global variable accesses
@@ -206,6 +209,12 @@ module SourceNode {
    *   - array expressions
    *   - JSX literals
    *   - regular expression literals
+   *   - `yield` expressions
+   *   - `await` expressions
+   *   - dynamic `import` expressions
+   *   - function-bind expressions
+   *   - `function.sent` expressions
+   *   - comprehension expressions.
    *
    * This class is for internal use only and should not normally be used directly.
    */
@@ -220,7 +229,13 @@ module SourceNode {
         astNode instanceof JSXNode or
         astNode instanceof GlobalVarAccess or
         astNode instanceof ExternalModuleReference or
-        astNode instanceof RegExpLiteral
+        astNode instanceof RegExpLiteral or
+        astNode instanceof YieldExpr or
+        astNode instanceof ComprehensionExpr or
+        astNode instanceof AwaitExpr or
+        astNode instanceof FunctionSentExpr or
+        astNode instanceof FunctionBindExpr or
+        astNode instanceof DynamicImportExpr
       )
       or
       this = DataFlow::ssaDefinitionNode(SSA::definition(any(ImportSpecifier imp)))
