@@ -69,7 +69,7 @@
 | tst.ts:28:22:28:25 | null | null |
 | tst.ts:29:5:29:13 | neverType | () => never |
 | tst.ts:30:5:30:14 | symbolType | symbol |
-| tst.ts:31:7:31:22 | uniqueSymbolType | unique symbol |
+| tst.ts:31:7:31:22 | uniqueSymbolType | typeof uniqueSymbolType |
 | tst.ts:31:41:31:44 | null | null |
 | tst.ts:32:5:32:14 | objectType | object |
 | tst.ts:33:5:33:16 | intersection | string & { x: string; } |
