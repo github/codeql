@@ -4,8 +4,26 @@
 
 | **Query**                    | **Expected impact**    | **Change**                        |
 |------------------------------|------------------------|-----------------------------------|
+| Added lines (`cs/vcs/added-lines-per-file`) | No results | Query has been removed. |
+| Churned lines (`cs/vcs/churn-per-file`) | No results | Query has been removed. |
 | Constant condition (`cs/constant-condition`) | Fewer false positive results | Results have been removed for default cases (`_`) in switch expressions. |
+| Defect filter | No results | Query has been removed. |
+| Defect from SVN | No results | Query has been removed. |
+| Deleted lines (`cs/vcs/deleted-lines-per-file`) | No results | Query has been removed. |
 | Dispose may not be called if an exception is thrown during execution (`cs/dispose-not-called-on-throw`) | Fewer false positive results | Results have been removed where an object is disposed both by a `using` statement and a `Dispose` call. |
+| Files edited in pairs | No results | Query has been removed. |
+| Filter: only files recently edited | No results | Query has been removed. |
+| Large files currently edited | No results | Query has been removed. |
+| Metric from SVN | No results | Query has been removed. |
+| Number of authors (version control) (`cs/vcs/authors-per-file`) | No results | Query has been removed. |
+| Number of file-level changes (`cs/vcs/commits-per-file`) | No results | Query has been removed. |
+| Number of co-committed files (`cs/vcs/co-commits-per-file`) | No results | Query has been removed. |
+| Number of file re-commits (`cs/vcs/recommits-per-file`) | No results | Query has been removed. |
+| Number of recent file changes (`cs/vcs/recent-commits-per-file`) | No results | Query has been removed. |
+| Number of authors | No results | Query has been removed. |
+| Number of commits | No results | Query has been removed. |
+| Poorly documented files with many authors | No results | Query has been removed. |
+| Recent activity | No results | Query has been removed. |
 
 ## Changes to code extraction
 
