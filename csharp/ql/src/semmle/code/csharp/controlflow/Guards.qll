@@ -1020,7 +1020,7 @@ module Internal {
     }
 
     /** Holds if pre-basic-block `bb` only is reached when guard `g` has abstract value `v`. */
-    private predicate preControls(Guard g, PreBasicBlocks::PreBasicBlock bb, AbstractValue v) {
+    predicate preControls(Guard g, PreBasicBlocks::PreBasicBlock bb, AbstractValue v) {
       exists(AbstractValue v0, Guard g0 | preControlsDirect(g0, bb, v0) |
         preImpliesSteps(g0, v0, g, v)
       )

@@ -232,15 +232,25 @@ booleanNode
 | LoopUnrolling.cs:60:13:61:37 | [b (line 55): true] if (...) ... | b (line 55): true |
 | LoopUnrolling.cs:60:17:60:17 | [b (line 55): false] access to parameter b | b (line 55): false |
 | LoopUnrolling.cs:60:17:60:17 | [b (line 55): true] access to parameter b | b (line 55): true |
+| LoopUnrolling.cs:61:17:61:36 | [b (line 55): true, unroll (line 58)] call to method WriteLine | b (line 55): true |
 | LoopUnrolling.cs:61:17:61:36 | [b (line 55): true] call to method WriteLine | b (line 55): true |
+| LoopUnrolling.cs:61:17:61:37 | [b (line 55): true, unroll (line 58)] ...; | b (line 55): true |
 | LoopUnrolling.cs:61:17:61:37 | [b (line 55): true] ...; | b (line 55): true |
+| LoopUnrolling.cs:61:35:61:35 | [b (line 55): true, unroll (line 58)] access to local variable x | b (line 55): true |
 | LoopUnrolling.cs:61:35:61:35 | [b (line 55): true] access to local variable x | b (line 55): true |
+| LoopUnrolling.cs:62:13:63:37 | [b (line 55): false, unroll (line 58)] if (...) ... | b (line 55): false |
 | LoopUnrolling.cs:62:13:63:37 | [b (line 55): false] if (...) ... | b (line 55): false |
+| LoopUnrolling.cs:62:13:63:37 | [b (line 55): true, unroll (line 58)] if (...) ... | b (line 55): true |
 | LoopUnrolling.cs:62:13:63:37 | [b (line 55): true] if (...) ... | b (line 55): true |
+| LoopUnrolling.cs:62:17:62:17 | [b (line 55): false, unroll (line 58)] access to parameter b | b (line 55): false |
 | LoopUnrolling.cs:62:17:62:17 | [b (line 55): false] access to parameter b | b (line 55): false |
+| LoopUnrolling.cs:62:17:62:17 | [b (line 55): true, unroll (line 58)] access to parameter b | b (line 55): true |
 | LoopUnrolling.cs:62:17:62:17 | [b (line 55): true] access to parameter b | b (line 55): true |
+| LoopUnrolling.cs:63:17:63:36 | [b (line 55): true, unroll (line 58)] call to method WriteLine | b (line 55): true |
 | LoopUnrolling.cs:63:17:63:36 | [b (line 55): true] call to method WriteLine | b (line 55): true |
+| LoopUnrolling.cs:63:17:63:37 | [b (line 55): true, unroll (line 58)] ...; | b (line 55): true |
 | LoopUnrolling.cs:63:17:63:37 | [b (line 55): true] ...; | b (line 55): true |
+| LoopUnrolling.cs:63:35:63:35 | [b (line 55): true, unroll (line 58)] access to local variable x | b (line 55): true |
 | LoopUnrolling.cs:63:35:63:35 | [b (line 55): true] access to local variable x | b (line 55): true |
 finallyNode
 | BreakInTry.cs:30:13:33:13 | [finally: break] {...} | BreakInTry.cs:24:13:33:13 | try {...} ... |
