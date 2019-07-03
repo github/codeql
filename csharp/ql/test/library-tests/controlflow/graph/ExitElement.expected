@@ -1594,10 +1594,10 @@
 | Switch.cs:17:17:17:38 | throw ...; | Switch.cs:17:17:17:38 | throw ...; | throw(Exception) |
 | Switch.cs:17:23:17:37 | object creation of type Exception | Switch.cs:17:23:17:37 | object creation of type Exception | normal |
 | Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:18:18:21 | null | no-match |
-| Switch.cs:18:13:18:22 | case ...: | Switch.cs:19:17:19:29 | goto default; | goto default |
+| Switch.cs:18:13:18:22 | case ...: | Switch.cs:19:17:19:29 | goto default; | goto(default) |
 | Switch.cs:18:18:18:21 | null | Switch.cs:18:18:18:21 | null | match |
 | Switch.cs:18:18:18:21 | null | Switch.cs:18:18:18:21 | null | no-match |
-| Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; | goto default |
+| Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; | goto(default) |
 | Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:18:20:22 | Int32 i | no-match |
 | Switch.cs:20:13:20:23 | case ...: | Switch.cs:21:21:21:29 | ... == ... | false |
 | Switch.cs:20:13:20:23 | case ...: | Switch.cs:22:21:22:27 | return ...; | return |
@@ -1610,7 +1610,7 @@
 | Switch.cs:21:21:21:29 | ... == ... | Switch.cs:21:21:21:29 | ... == ... | true |
 | Switch.cs:21:26:21:29 | null | Switch.cs:21:26:21:29 | null | normal |
 | Switch.cs:22:21:22:27 | return ...; | Switch.cs:22:21:22:27 | return ...; | return |
-| Switch.cs:23:17:23:28 | goto case ...; | Switch.cs:23:17:23:28 | goto case ...; | goto case(0) |
+| Switch.cs:23:17:23:28 | goto case ...; | Switch.cs:23:17:23:28 | goto case ...; | goto(0) |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:27:23:27 | 0 | normal |
 | Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:18:24:25 | String s | no-match |
 | Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:32:24:43 | ... > ... | false |
@@ -2025,7 +2025,7 @@
 | cflow.cs:42:17:42:38 | call to method WriteLine | cflow.cs:42:17:42:38 | call to method WriteLine | normal |
 | cflow.cs:42:17:42:39 | ...; | cflow.cs:42:17:42:38 | call to method WriteLine | normal |
 | cflow.cs:42:35:42:37 | "1" | cflow.cs:42:35:42:37 | "1" | normal |
-| cflow.cs:43:17:43:28 | goto case ...; | cflow.cs:43:17:43:28 | goto case ...; | goto case(2) |
+| cflow.cs:43:17:43:28 | goto case ...; | cflow.cs:43:17:43:28 | goto case ...; | goto(2) |
 | cflow.cs:43:27:43:27 | 2 | cflow.cs:43:27:43:27 | 2 | normal |
 | cflow.cs:44:13:44:19 | case ...: | cflow.cs:44:18:44:18 | 2 | no-match |
 | cflow.cs:44:13:44:19 | case ...: | cflow.cs:45:17:45:38 | call to method WriteLine | normal |
@@ -2034,7 +2034,7 @@
 | cflow.cs:45:17:45:38 | call to method WriteLine | cflow.cs:45:17:45:38 | call to method WriteLine | normal |
 | cflow.cs:45:17:45:39 | ...; | cflow.cs:45:17:45:38 | call to method WriteLine | normal |
 | cflow.cs:45:35:45:37 | "2" | cflow.cs:45:35:45:37 | "2" | normal |
-| cflow.cs:46:17:46:28 | goto case ...; | cflow.cs:46:17:46:28 | goto case ...; | goto case(1) |
+| cflow.cs:46:17:46:28 | goto case ...; | cflow.cs:46:17:46:28 | goto case ...; | goto(1) |
 | cflow.cs:46:27:46:27 | 1 | cflow.cs:46:27:46:27 | 1 | normal |
 | cflow.cs:47:13:47:19 | case ...: | cflow.cs:47:18:47:18 | 3 | no-match |
 | cflow.cs:47:13:47:19 | case ...: | cflow.cs:48:17:48:38 | call to method WriteLine | normal |
@@ -2868,10 +2868,10 @@
 | cflow.cs:357:17:357:32 | ... + ... | cflow.cs:357:17:357:32 | ... + ... | normal |
 | cflow.cs:357:32:357:32 | 3 | cflow.cs:357:32:357:32 | 3 | normal |
 | cflow.cs:359:13:359:19 | case ...: | cflow.cs:359:18:359:18 | 0 | no-match |
-| cflow.cs:359:13:359:19 | case ...: | cflow.cs:360:17:360:29 | goto default; | goto default |
+| cflow.cs:359:13:359:19 | case ...: | cflow.cs:360:17:360:29 | goto default; | goto(default) |
 | cflow.cs:359:18:359:18 | 0 | cflow.cs:359:18:359:18 | 0 | match |
 | cflow.cs:359:18:359:18 | 0 | cflow.cs:359:18:359:18 | 0 | no-match |
-| cflow.cs:360:17:360:29 | goto default; | cflow.cs:360:17:360:29 | goto default; | goto default |
+| cflow.cs:360:17:360:29 | goto default; | cflow.cs:360:17:360:29 | goto default; | goto(default) |
 | cflow.cs:361:13:361:19 | case ...: | cflow.cs:361:18:361:18 | 1 | no-match |
 | cflow.cs:361:13:361:19 | case ...: | cflow.cs:362:17:362:36 | call to method WriteLine | normal |
 | cflow.cs:361:18:361:18 | 1 | cflow.cs:361:18:361:18 | 1 | match |

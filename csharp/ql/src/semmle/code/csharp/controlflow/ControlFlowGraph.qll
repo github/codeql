@@ -1087,6 +1087,12 @@ module ControlFlow {
           )
       }
 
+      pragma[noinline]
+      private LabeledStmt getLabledStmt(string label, Callable c) {
+        result.getEnclosingCallable() = c and
+        label = result.getLabel()
+      }
+
       /**
        * Gets a potential last element executed within control flow element `cfe`,
        * as well as its completion.
@@ -1148,8 +1154,8 @@ module ControlFlow {
           rec = TLastRecSwitchAbnormalCompletion() and
           not c instanceof BreakCompletion and
           not c instanceof NormalCompletion and
-          not c instanceof GotoDefaultCompletion and
-          not c instanceof GotoCaseCompletion and
+          not getLabledStmt(c.(GotoCompletion).getLabel(), cfe.getEnclosingCallable()) instanceof
+            CaseStmt and
           c = c0
           or
           rec = TLastRecInvalidOperationException() and
@@ -1515,24 +1521,6 @@ module ControlFlow {
             c instanceof NormalCompletion and
             result = first(ss.getStmt(i + 1))
           )
-          or
-          exists(GotoCompletion gc |
-            cfe = last(ss.getAStmt(), gc) and
-            gc = c
-          |
-            // Flow from last element of a statement with a `goto default` completion
-            // to first element `default` statement
-            gc instanceof GotoDefaultCompletion and
-            result = first(ss.getDefaultCase())
-            or
-            // Flow from last element of a statement with a `goto case` completion
-            // to first element of relevant case
-            exists(ConstCase cc |
-              cc = ss.getAConstCase() and
-              cc.getLabel() = gc.(GotoCaseCompletion).getLabel() and
-              result = first(cc.getBody())
-            )
-          )
         )
         or
         exists(Case case |
@@ -1766,13 +1754,13 @@ module ControlFlow {
         or
         // Flow from element with `goto` completion to first element of relevant
         // target
-        c = any(GotoLabelCompletion glc |
-            cfe = last(_, glc) and
+        c = any(GotoCompletion gc |
+            cfe = last(_, gc) and
             // Special case: when a `goto` happens inside a `try` statement with a
             // `finally` block, flow does not go directly to the target, but instead
             // to the `finally` block (and from there possibly to the target)
             not cfe = getBlockOrCatchFinallyPred(any(TryStmt ts | ts.hasFinally()), _) and
-            result = first(glc.getGotoStmt().getTarget())
+            result = first(getLabledStmt(gc.getLabel(), cfe.getEnclosingCallable()))
           )
         or
         // Standard left-to-right evaluation
