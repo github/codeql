@@ -27,10 +27,7 @@ private import NonReturning
 // Internal representation of completions
 private newtype TCompletion =
   TNormalCompletion() or
-  TBooleanCompletion(boolean outerValue, boolean innerValue) {
-    (outerValue = true or outerValue = false) and
-    (innerValue = true or innerValue = false)
-  } or
+  TBooleanCompletion(boolean b) { b = true or b = false } or
   TNullnessCompletion(boolean isNull) { isNull = true or isNull = false } or
   TMatchingCompletion(boolean isMatch) { isMatch = true or isMatch = false } or
   TEmptinessCompletion(boolean isEmpty) { isEmpty = true or isEmpty = false } or
@@ -43,7 +40,25 @@ private newtype TCompletion =
   TGotoDefaultCompletion() or
   TThrowCompletion(ExceptionClass ec) or
   TExitCompletion() or
-  TInheritedCompletion(NormalCompletion underlying, InheritableCompletion inherited)
+  TNestedCompletion(NormalCompletion inner, Completion outer) {
+    outer = TReturnCompletion()
+    or
+    outer = TBreakCompletion()
+    or
+    outer = TContinueCompletion()
+    or
+    outer = TGotoLabelCompletion(_)
+    or
+    outer = TGotoCaseCompletion(_)
+    or
+    outer = TGotoDefaultCompletion()
+    or
+    outer = TThrowCompletion(_)
+    or
+    outer = TExitCompletion()
+    or
+    exists(boolean b | inner = TBooleanCompletion(b) and outer = TBooleanCompletion(b.booleanNot()))
+  }
 
 /**
  * A completion of a statement or an expression.
@@ -69,12 +84,10 @@ class Completion extends TCompletion {
       else
         if mustHaveBooleanCompletion(cfe)
         then
-          exists(boolean value | isBooleanConstant(cfe, value) |
-            this = TBooleanCompletion(value, value)
-          )
+          exists(boolean value | isBooleanConstant(cfe, value) | this = TBooleanCompletion(value))
           or
           not isBooleanConstant(cfe, _) and
-          exists(boolean b | this = TBooleanCompletion(b, b))
+          this = TBooleanCompletion(_)
           or
           // Corner case: In `if (x ?? y) { ... }`, `x` must have both a `true`
           // completion, a `false` completion, and a `null` completion (but not a
@@ -138,10 +151,16 @@ class Completion extends TCompletion {
   }
 
   /**
-   * Gets the source of this completion. This is either the underlying completion,
-   * when the completion is inherited, or the completion itself.
+   * Gets the inner completion. This is either the inner completion,
+   * when the completion is nested, or the completion itself.
    */
-  Completion getSourceCompletion() { result = this }
+  Completion getInnerCompletion() { result = this }
+
+  /**
+   * Gets the outer completion. This is either the outer completion,
+   * when the completion is nested, or the completion itself.
+   */
+  Completion getOuterCompletion() { result = this }
 
   /** Gets a textual representation of this completion. */
   string toString() { none() }
@@ -521,24 +540,31 @@ abstract class ConditionalCompletion extends NormalCompletion { }
  * A completion that represents evaluation of an expression
  * with a Boolean value.
  */
-class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
-  /** Gets the value that the last sub expression of this expression completes with. */
-  boolean getInnerValue() { this = TBooleanCompletion(_, result) }
+class BooleanCompletion extends ConditionalCompletion {
+  private boolean value;
 
-  /** Gets the value that this expression completes with. */
-  boolean getOuterValue() { this = TBooleanCompletion(result, _) }
+  BooleanCompletion() {
+    this = TBooleanCompletion(value) or
+    this = TNestedCompletion(_, TBooleanCompletion(value))
+  }
 
-  override string toString() { result = getOuterValue() + "/" + getInnerValue() }
+  /** Gets the Boolean value of this completion. */
+  boolean getValue() { result = value }
+
+  override string toString() {
+    this = TBooleanCompletion(value) and
+    result = this.getValue().toString()
+  }
 }
 
 /** A Boolean `true` completion. */
 class TrueCompletion extends BooleanCompletion {
-  TrueCompletion() { getOuterValue() = true }
+  TrueCompletion() { this.getValue() = true }
 }
 
 /** A Boolean `false` completion. */
 class FalseCompletion extends BooleanCompletion {
-  FalseCompletion() { getOuterValue() = false }
+  FalseCompletion() { this.getValue() = false }
 }
 
 /**
@@ -612,43 +638,7 @@ class BreakNormalCompletion extends NormalCompletion, TBreakNormalCompletion {
 }
 
 /**
- * A completion that represents abnormal evaluation of a statement or an
- * expression, for example exceptional flow.
- */
-abstract class AbnormalCompletion extends Completion {
-  /**
-   * Gets the completion inherited by this completion, or the completion itself
-   * when there is no inheritance.
-   */
-  InheritableCompletion getInheritedCompletion() { result = this }
-}
-
-/**
- * An abnormal completion that can be inherited by another control flow
- * element. For example, in
- *
- * ```
- * void M(bool b)
- * {
- *     try
- *     {
- *         if (b)
- *            throw new Exception();
- *     }
- *     finally
- *     {
- *         System.Console.WriteLine("M called");
- *     }
- * }
- * ```
- *
- * the throw completion for `Exception` can be inherited by the call
- * `System.Console.WriteLine("M called")`.
- */
-abstract private class InheritableCompletion extends AbnormalCompletion { }
-
-/**
- * An inherited completion. For example, in
+ * A nested completion. For example, in
  *
  * ```
  * void M(bool b)
@@ -668,36 +658,31 @@ abstract private class InheritableCompletion extends AbnormalCompletion { }
  * `System.Console.WriteLine("M called")` inherits the throw completion
  * from `throw new Exception` with an underlying simple completion.
  */
-class InheritedCompletion extends AbnormalCompletion, TInheritedCompletion {
-  private NormalCompletion underlying;
+class NestedCompletion extends Completion, TNestedCompletion {
+  private NormalCompletion inner;
 
-  private InheritableCompletion inherited;
+  private Completion outer;
 
-  InheritedCompletion() { this = TInheritedCompletion(underlying, inherited) }
+  NestedCompletion() { this = TNestedCompletion(inner, outer) }
 
-  /** Gets the underlying completion. */
-  NormalCompletion getUnderlyingCompletion() { result = underlying }
+  override NormalCompletion getInnerCompletion() { result = inner }
 
-  override InheritableCompletion getInheritedCompletion() { result = inherited }
+  override Completion getOuterCompletion() { result = outer }
 
-  override Completion getSourceCompletion() { result = underlying }
-
-  override string toString() { result = inherited + " [" + underlying + "]" }
+  override string toString() { result = outer + " [" + inner + "]" }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a return from a callable.
  */
-abstract class ReturnCompletion extends AbnormalCompletion { }
+class ReturnCompletion extends Completion {
+  ReturnCompletion() {
+    this = TReturnCompletion() or
+    this = TNestedCompletion(_, TReturnCompletion())
+  }
 
-private class ReturnCompletionDirect extends ReturnCompletion, InheritableCompletion,
-  TReturnCompletion {
-  override string toString() { result = "return" }
-}
-
-private class ReturnCompletionInherited extends ReturnCompletion, InheritedCompletion {
-  ReturnCompletionInherited() { this = TInheritedCompletion(_, TReturnCompletion()) }
+  override string toString() { this = TReturnCompletion() and result = "return" }
 }
 
 /**
@@ -705,14 +690,13 @@ private class ReturnCompletionInherited extends ReturnCompletion, InheritedCompl
  * expression resulting in a break (in a loop or in a `switch`
  * statement).
  */
-abstract class BreakCompletion extends AbnormalCompletion { }
+class BreakCompletion extends Completion {
+  BreakCompletion() {
+    this = TBreakCompletion() or
+    this = TNestedCompletion(_, TBreakCompletion())
+  }
 
-private class BreakCompletionDirect extends BreakCompletion, InheritableCompletion, TBreakCompletion {
-  override string toString() { result = "break" }
-}
-
-private class BreakCompletionInherited extends BreakCompletion, InheritedCompletion {
-  BreakCompletionInherited() { this = TInheritedCompletion(_, TBreakCompletion()) }
+  override string toString() { this = TBreakCompletion() and result = "break" }
 }
 
 /**
@@ -720,113 +704,96 @@ private class BreakCompletionInherited extends BreakCompletion, InheritedComplet
  * expression resulting in a loop continuation (a `continue`
  * statement).
  */
-abstract class ContinueCompletion extends AbnormalCompletion { }
+class ContinueCompletion extends Completion {
+  ContinueCompletion() {
+    this = TContinueCompletion() or
+    this = TNestedCompletion(_, TContinueCompletion())
+  }
 
-private class ContinueCompletionDirect extends ContinueCompletion, InheritableCompletion,
-  TContinueCompletion {
-  override string toString() { result = "continue" }
-}
-
-private class ContinueCompletionInherited extends ContinueCompletion, InheritedCompletion {
-  ContinueCompletionInherited() { this = TInheritedCompletion(_, TContinueCompletion()) }
+  override string toString() { this = TContinueCompletion() and result = "continue" }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a `goto` jump.
  */
-abstract class GotoCompletion extends AbnormalCompletion { }
+abstract class GotoCompletion extends Completion { }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a `goto label` jump.
  */
-abstract class GotoLabelCompletion extends GotoCompletion {
+class GotoLabelCompletion extends GotoCompletion {
+  private GotoLabelStmt goto;
+
+  GotoLabelCompletion() {
+    this = TGotoLabelCompletion(goto) or
+    this = TNestedCompletion(_, TGotoLabelCompletion(goto))
+  }
+
   /** Gets the target of the `goto label` completion. */
   string getLabel() { result = this.getGotoStmt().getLabel() }
 
   /** Gets the statement that resulted in this `goto label` completion. */
-  abstract GotoLabelStmt getGotoStmt();
-}
+  GotoLabelStmt getGotoStmt() { result = goto }
 
-private class GotoLabelCompletionDirect extends GotoLabelCompletion, InheritableCompletion,
-  TGotoLabelCompletion {
-  override GotoLabelStmt getGotoStmt() { this = TGotoLabelCompletion(result) }
-
-  override string toString() { result = "goto(" + getLabel() + ")" }
-}
-
-private class GotoLabelCompletionInherited extends GotoLabelCompletion, InheritedCompletion {
-  private TGotoLabelCompletion inherited;
-
-  GotoLabelCompletionInherited() { this = TInheritedCompletion(_, inherited) }
-
-  override GotoLabelStmt getGotoStmt() { inherited = TGotoLabelCompletion(result) }
+  override string toString() {
+    this = TGotoLabelCompletion(goto) and result = "goto(" + this.getLabel() + ")"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a `goto case` jump.
  */
-abstract class GotoCaseCompletion extends GotoCompletion {
+class GotoCaseCompletion extends GotoCompletion {
+  private GotoCaseStmt goto;
+
+  GotoCaseCompletion() {
+    this = TGotoCaseCompletion(goto) or
+    this = TNestedCompletion(_, TGotoCaseCompletion(goto))
+  }
+
   /** Gets the target of the `goto case` completion. */
   string getLabel() { result = this.getGotoStmt().getLabel() }
 
   /** Gets the statement that resulted in this `goto case` completion. */
-  abstract GotoCaseStmt getGotoStmt();
-}
+  GotoCaseStmt getGotoStmt() { result = goto }
 
-private class GotoCaseCompletionDirect extends GotoCaseCompletion, InheritableCompletion,
-  TGotoCaseCompletion {
-  override GotoCaseStmt getGotoStmt() { this = TGotoCaseCompletion(result) }
-
-  override string toString() { result = "goto case(" + getGotoStmt().getLabel() + ")" }
-}
-
-private class GotoCaseCompletionInherited extends GotoCaseCompletion, InheritedCompletion {
-  private TGotoCaseCompletion inherited;
-
-  GotoCaseCompletionInherited() { this = TInheritedCompletion(_, inherited) }
-
-  override GotoCaseStmt getGotoStmt() { inherited = TGotoCaseCompletion(result) }
+  override string toString() {
+    this = TGotoCaseCompletion(goto) and result = "goto case(" + this.getLabel() + ")"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a `goto default` jump.
  */
-abstract class GotoDefaultCompletion extends GotoCompletion { }
+class GotoDefaultCompletion extends GotoCompletion {
+  GotoDefaultCompletion() {
+    this = TGotoDefaultCompletion() or
+    this = TNestedCompletion(_, TGotoDefaultCompletion())
+  }
 
-private class GotoDefaultCompletionDirect extends GotoDefaultCompletion, InheritableCompletion,
-  TGotoDefaultCompletion {
-  override string toString() { result = "goto default" }
-}
-
-private class GotoDefaultCompletionInherited extends GotoDefaultCompletion, InheritedCompletion {
-  GotoDefaultCompletionInherited() { this = TInheritedCompletion(_, TGotoDefaultCompletion()) }
+  override string toString() { this = TGotoDefaultCompletion() and result = "goto default" }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a thrown exception.
  */
-abstract class ThrowCompletion extends AbnormalCompletion {
+class ThrowCompletion extends Completion {
+  private ExceptionClass ec;
+
+  ThrowCompletion() {
+    this = TThrowCompletion(ec) or
+    this = TNestedCompletion(_, TThrowCompletion(ec))
+  }
+
   /** Gets the type of the exception being thrown. */
-  abstract ExceptionClass getExceptionClass();
-}
+  ExceptionClass getExceptionClass() { result = ec }
 
-class ThrowCompletionDirect extends ThrowCompletion, InheritableCompletion, TThrowCompletion {
-  override ExceptionClass getExceptionClass() { this = TThrowCompletion(result) }
-
-  override string toString() { result = "throw(" + this.getExceptionClass() + ")" }
-}
-
-private class ThrowCompletionInherited extends ThrowCompletion, InheritedCompletion {
-  private TThrowCompletion inherited;
-
-  ThrowCompletionInherited() { this = TInheritedCompletion(_, inherited) }
-
-  override ExceptionClass getExceptionClass() { inherited = TThrowCompletion(result) }
+  override string toString() { this = TThrowCompletion(ec) and result = "throw(" + ec + ")" }
 }
 
 /**
@@ -838,12 +805,11 @@ private class ThrowCompletionInherited extends ThrowCompletion, InheritedComplet
  * exits the whole application, and exists inside `try` statements skip
  * `finally` blocks.
  */
-abstract class ExitCompletion extends AbnormalCompletion { }
+class ExitCompletion extends Completion {
+  ExitCompletion() {
+    this = TExitCompletion() or
+    this = TNestedCompletion(_, TExitCompletion())
+  }
 
-class ExitCompletionDirect extends ExitCompletion, InheritableCompletion, TExitCompletion {
-  override string toString() { result = "exit" }
-}
-
-private class ExitCompletionInherited extends ExitCompletion, InheritedCompletion {
-  ExitCompletionInherited() { this = TInheritedCompletion(_, TExitCompletion()) }
+  override string toString() { this = TExitCompletion() and result = "exit" }
 }

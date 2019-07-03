@@ -28,28 +28,31 @@ private class ExitingCall extends NonReturningCall {
     )
   }
 
-  override ExitCompletionDirect getACompletion() { any() }
+  override ExitCompletion getACompletion() { not result instanceof NestedCompletion }
 }
 
 private class ThrowingCall extends NonReturningCall {
-  private ThrowCompletionDirect c;
+  private ThrowCompletion c;
 
   ThrowingCall() {
-    c = this.getTarget().(ThrowingCallable).getACallCompletion()
-    or
-    exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
-      c.getExceptionClass() = m.getExceptionClass()
-    )
-    or
-    exists(CIL::Method m, CIL::Type ex |
-      this.getTarget().matchesHandle(m) and
-      alwaysThrowsException(m, ex) and
-      c.getExceptionClass().matchesHandle(ex) and
-      not m.isVirtual()
+    not c instanceof NestedCompletion and
+    (
+      c = this.getTarget().(ThrowingCallable).getACallCompletion()
+      or
+      exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
+        c.getExceptionClass() = m.getExceptionClass()
+      )
+      or
+      exists(CIL::Method m, CIL::Type ex |
+        this.getTarget().matchesHandle(m) and
+        alwaysThrowsException(m, ex) and
+        c.getExceptionClass().matchesHandle(ex) and
+        not m.isVirtual()
+      )
     )
   }
 
-  override ThrowCompletionDirect getACompletion() { result = c }
+  override ThrowCompletion getACompletion() { result = c }
 }
 
 abstract private class NonReturningCallable extends Callable {
@@ -104,17 +107,18 @@ private class ThrowingCallable extends NonReturningCallable {
   }
 
   /** Gets a valid completion for a call to this throwing callable. */
-  ThrowCompletionDirect getACallCompletion() { this.getABody() = getAThrowingElement(result) }
+  ThrowCompletion getACallCompletion() { this.getABody() = getAThrowingElement(result) }
 }
 
 private predicate directlyThrows(ThrowElement te, ThrowCompletion c) {
   c.getExceptionClass() = te.getThrownExceptionType() and
+  not c instanceof NestedCompletion and
   // For stub implementations, there may exist proper implementations that are not seen
   // during compilation, so we conservatively rule those out
   not isStub(te)
 }
 
-private ControlFlowElement getAThrowingElement(ThrowCompletionDirect c) {
+private ControlFlowElement getAThrowingElement(ThrowCompletion c) {
   c = result.(ThrowingCall).getACompletion()
   or
   directlyThrows(result, c)
@@ -122,14 +126,14 @@ private ControlFlowElement getAThrowingElement(ThrowCompletionDirect c) {
   result = getAThrowingStmt(c)
 }
 
-private Stmt getAThrowingStmt(ThrowCompletionDirect c) {
+private Stmt getAThrowingStmt(ThrowCompletion c) {
   directlyThrows(result, c)
   or
   result.(ExprStmt).getExpr() = getAThrowingElement(c)
   or
   result.(BlockStmt).getFirstStmt() = getAThrowingStmt(c)
   or
-  exists(IfStmt ifStmt, ThrowCompletionDirect c1, ThrowCompletionDirect c2 |
+  exists(IfStmt ifStmt, ThrowCompletion c1, ThrowCompletion c2 |
     result = ifStmt and
     ifStmt.getThen() = getAThrowingStmt(c1) and
     ifStmt.getElse() = getAThrowingStmt(c2)

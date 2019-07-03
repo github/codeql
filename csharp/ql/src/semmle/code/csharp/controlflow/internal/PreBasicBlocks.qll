@@ -92,7 +92,7 @@ class PreBasicBlock extends ControlFlowElement {
 class ConditionBlock extends PreBasicBlock {
   ConditionBlock() {
     strictcount(Completion c |
-      c.getSourceCompletion() instanceof ConditionalCompletion and
+      c.getInnerCompletion() instanceof ConditionalCompletion and
       (
         exists(succ(this.getLastElement(), c))
         or
@@ -102,7 +102,7 @@ class ConditionBlock extends PreBasicBlock {
   }
 
   private predicate immediatelyControls(PreBasicBlock succ, ConditionalCompletion cc) {
-    succ = succ(this.getLastElement(), any(Completion c | c.getSourceCompletion() = cc)) and
+    succ = succ(this.getLastElement(), any(Completion c | c.getInnerCompletion() = cc)) and
     forall(PreBasicBlock pred | pred = succ.getAPredecessor() and pred != this |
       succ.dominates(pred)
     )

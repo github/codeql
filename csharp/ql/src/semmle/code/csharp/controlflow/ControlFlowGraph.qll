@@ -1110,16 +1110,28 @@ module ControlFlow {
           c = c0
           or
           rec = TLastRecAbnormalCompletion() and
-          c0 instanceof AbnormalCompletion and
+          not c0 instanceof NormalCompletion and
           c = c0
           or
           rec = TLastRecBooleanNegationCompletion() and
-          c = any(BooleanCompletion bc |
-              c0 = any(BooleanCompletion bc0 |
-                  bc.getOuterValue() = bc0.getOuterValue().booleanNot() and
-                  bc.getInnerValue() = bc0.getInnerValue()
-                )
-            )
+          (
+            c = any(NestedCompletion nc |
+                nc.getInnerCompletion() = c0 and
+                nc.getOuterCompletion().(BooleanCompletion).getValue() = c0
+                      .(BooleanCompletion)
+                      .getValue()
+                      .booleanNot()
+              )
+            or
+            c = any(BooleanCompletion bc |
+                bc.getValue() = c0
+                      .(NestedCompletion)
+                      .getInnerCompletion()
+                      .(BooleanCompletion)
+                      .getValue() and
+                not bc instanceof NestedCompletion
+              )
+          )
           or
           rec = TLastRecNonBooleanCompletion() and
           not c0 instanceof BooleanCompletion and
@@ -1142,11 +1154,11 @@ module ControlFlow {
           or
           rec = TLastRecInvalidOperationException() and
           (c0.(MatchingCompletion).isNonMatch() or c0 instanceof FalseCompletion) and
-          c = any(InheritedCompletion ic |
-              ic.getUnderlyingCompletion() = c0 and
-              ic
-                  .getInheritedCompletion()
-                  .(ThrowCompletionDirect)
+          c = any(NestedCompletion nc |
+              nc.getInnerCompletion() = c0 and
+              nc
+                  .getOuterCompletion()
+                  .(ThrowCompletion)
                   .getExceptionClass()
                   .hasQualifiedName("System.InvalidOperationException")
             )
@@ -1175,18 +1187,18 @@ module ControlFlow {
           exists(MatchingCompletion mc |
             mc.isNonMatch() and
             mc.isValidFor(scc) and
-            c = any(InheritedCompletion ic |
-                ic.getUnderlyingCompletion() = mc and
-                ic.getInheritedCompletion() = tc.getInheritedCompletion()
+            c = any(NestedCompletion nc |
+                nc.getInnerCompletion() = mc and
+                nc.getOuterCompletion() = tc.getOuterCompletion()
               )
           )
           or
           // Incompatible filter
           exists(FalseCompletion fc |
             result = lastSpecificCatchClauseFilterClause(scc, fc) and
-            c = any(InheritedCompletion ic |
-                ic.getUnderlyingCompletion() = fc and
-                ic.getInheritedCompletion() = tc.getInheritedCompletion()
+            c = any(NestedCompletion nc |
+                nc.getInnerCompletion() = fc and
+                nc.getOuterCompletion() = tc.getOuterCompletion()
               )
           )
         )
@@ -1206,9 +1218,8 @@ module ControlFlow {
             or
             // If the `finally` block completes normally, it inherits any non-normal
             // completion that was current before the `finally` block was entered
-            c = any(InheritedCompletion ic |
-                result = lastTryStmtFinally(ts, ic.getUnderlyingCompletion(),
-                    ic.getInheritedCompletion())
+            c = any(NestedCompletion nc |
+                result = lastTryStmtFinally(ts, nc.getInnerCompletion(), nc.getOuterCompletion())
               )
           )
       }
@@ -1285,14 +1296,9 @@ module ControlFlow {
       }
 
       pragma[nomagic]
-      ControlFlowElement lastTryStmtFinally(
-        TryStmt ts, NormalCompletion finally, Completion inherited
-      ) {
+      ControlFlowElement lastTryStmtFinally(TryStmt ts, NormalCompletion finally, Completion outer) {
         result = lastTryStmtFinally0(ts, finally) and
-        exists(Completion c0 | exists(getBlockOrCatchFinallyPred(ts, c0)) |
-          inherited = c0.(NormalCompletion) or
-          inherited = c0.(AbnormalCompletion).getInheritedCompletion()
-        )
+        exists(getBlockOrCatchFinallyPred(ts, any(Completion c0 | outer = c0.getOuterCompletion())))
       }
 
       /**
