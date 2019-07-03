@@ -353,7 +353,7 @@ private predicate boundedNonPhiOperand(NonPhiOperand op, Bound b, int delta, boo
     delta = d1 + d2
   )
   or
-  boundedInstruction(op.getAnyDef(), b, delta, upper, fromBackEdge, origdelta, reason)
+  boundedInstruction(op.getDef(), b, delta, upper, fromBackEdge, origdelta, reason)
   or
   exists(int d, Reason r1, Reason r2 |
     boundedNonPhiOperand(op, b, d, upper, fromBackEdge, origdelta, r2)
@@ -379,7 +379,7 @@ private predicate boundedNonPhiOperand(NonPhiOperand op, Bound b, int delta, boo
 private predicate boundFlowStepPhi(
   PhiInputOperand op2, Operand op1, int delta, boolean upper, Reason reason
 ) {
-  op2.getAnyDef().(CopyInstruction).getSourceValueOperand() = op1 and
+  op2.getDef().(CopyInstruction).getSourceValueOperand() = op1 and
   (upper = true or upper = false) and
   reason = TNoReason() and
   delta = 0
@@ -403,10 +403,10 @@ private predicate boundedPhiOperand(
     (if r1 instanceof NoReason then reason = r2 else reason = r1)
   )
   or
-  boundedInstruction(op.getAnyDef(), b, delta, upper, fromBackEdge, origdelta, reason)
+  boundedInstruction(op.getDef(), b, delta, upper, fromBackEdge, origdelta, reason)
   or
   exists(int d, Reason r1, Reason r2 |
-    boundedInstruction(op.getAnyDef(), b, d, upper, fromBackEdge, origdelta, r2)
+    boundedInstruction(op.getDef(), b, d, upper, fromBackEdge, origdelta, r2)
   |
     unequalOperand(op, b, d, r1) and
     (
@@ -476,7 +476,7 @@ private predicate boundedPhiInp(
   exists(int d, boolean fromBackEdge0 |
     boundedPhiOperand(op, b, d, upper, fromBackEdge0, origdelta, reason)
     or
-    b.(ValueNumberBound).getInstruction() = op.getAnyDef() and
+    b.(ValueNumberBound).getInstruction() = op.getDef() and
     d = 0 and
     (upper = true or upper = false) and
     fromBackEdge0 = false and
