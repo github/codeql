@@ -35,9 +35,7 @@ private newtype TCompletion =
   TBreakCompletion() or
   TBreakNormalCompletion() or
   TContinueCompletion() or
-  TGotoLabelCompletion(GotoLabelStmt goto) or
-  TGotoCaseCompletion(GotoCaseStmt goto) or
-  TGotoDefaultCompletion() or
+  TGotoCompletion(string label) { label = any(GotoStmt gs).getLabel() } or
   TThrowCompletion(ExceptionClass ec) or
   TExitCompletion() or
   TNestedCompletion(NormalCompletion inner, Completion outer) {
@@ -47,11 +45,7 @@ private newtype TCompletion =
     or
     outer = TContinueCompletion()
     or
-    outer = TGotoLabelCompletion(_)
-    or
-    outer = TGotoCaseCompletion(_)
-    or
-    outer = TGotoDefaultCompletion()
+    outer = TGotoCompletion(_)
     or
     outer = TThrowCompletion(_)
     or
@@ -122,22 +116,17 @@ class Completion extends TCompletion {
                   if cfe instanceof ContinueStmt
                   then this = TContinueCompletion()
                   else
-                    if cfe instanceof GotoDefaultStmt
-                    then this = TGotoDefaultCompletion()
+                    if cfe instanceof GotoStmt
+                    then this = TGotoCompletion(cfe.(GotoStmt).getLabel())
                     else
-                      if cfe instanceof GotoStmt
-                      then
-                        this = TGotoLabelCompletion(cfe) or
-                        this = TGotoCaseCompletion(cfe)
+                      if cfe instanceof ReturnStmt
+                      then this = TReturnCompletion()
                       else
-                        if cfe instanceof ReturnStmt
-                        then this = TReturnCompletion()
-                        else
-                          if cfe instanceof YieldBreakStmt
-                          then
-                            // `yield break` behaves like a return statement
-                            this = TReturnCompletion()
-                          else this = TNormalCompletion()
+                        if cfe instanceof YieldBreakStmt
+                        then
+                          // `yield break` behaves like a return statement
+                          this = TReturnCompletion()
+                        else this = TNormalCompletion()
     )
   }
 
@@ -726,69 +715,20 @@ class ContinueCompletion extends Completion {
  * A completion that represents evaluation of a statement or an
  * expression resulting in a `goto` jump.
  */
-abstract class GotoCompletion extends Completion { }
+class GotoCompletion extends Completion {
+  private string label;
 
-/**
- * A completion that represents evaluation of a statement or an
- * expression resulting in a `goto label` jump.
- */
-class GotoLabelCompletion extends GotoCompletion {
-  private GotoLabelStmt goto;
-
-  GotoLabelCompletion() {
-    this = TGotoLabelCompletion(goto) or
-    this = TNestedCompletion(_, TGotoLabelCompletion(goto))
+  GotoCompletion() {
+    this = TGotoCompletion(label) or
+    this = TNestedCompletion(_, TGotoCompletion(label))
   }
 
-  /** Gets the target of the `goto label` completion. */
-  string getLabel() { result = this.getGotoStmt().getLabel() }
-
-  /** Gets the statement that resulted in this `goto label` completion. */
-  GotoLabelStmt getGotoStmt() { result = goto }
+  /** Gets the label of the `goto` completion. */
+  string getLabel() { result = label }
 
   override string toString() {
     // `NestedCompletion` defines `toString()` for the other case
-    this = TGotoLabelCompletion(goto) and result = "goto(" + this.getLabel() + ")"
-  }
-}
-
-/**
- * A completion that represents evaluation of a statement or an
- * expression resulting in a `goto case` jump.
- */
-class GotoCaseCompletion extends GotoCompletion {
-  private GotoCaseStmt goto;
-
-  GotoCaseCompletion() {
-    this = TGotoCaseCompletion(goto) or
-    this = TNestedCompletion(_, TGotoCaseCompletion(goto))
-  }
-
-  /** Gets the target of the `goto case` completion. */
-  string getLabel() { result = this.getGotoStmt().getLabel() }
-
-  /** Gets the statement that resulted in this `goto case` completion. */
-  GotoCaseStmt getGotoStmt() { result = goto }
-
-  override string toString() {
-    // `NestedCompletion` defines `toString()` for the other case
-    this = TGotoCaseCompletion(goto) and result = "goto case(" + this.getLabel() + ")"
-  }
-}
-
-/**
- * A completion that represents evaluation of a statement or an
- * expression resulting in a `goto default` jump.
- */
-class GotoDefaultCompletion extends GotoCompletion {
-  GotoDefaultCompletion() {
-    this = TGotoDefaultCompletion() or
-    this = TNestedCompletion(_, TGotoDefaultCompletion())
-  }
-
-  override string toString() {
-    // `NestedCompletion` defines `toString()` for the other case
-    this = TGotoDefaultCompletion() and result = "goto default"
+    this = TGotoCompletion(label) and result = "goto(" + label + ")"
   }
 }
 

@@ -425,8 +425,9 @@
 | cflow.cs:30:18:33:37 | if (...) ... | cflow.cs:30:22:30:31 | ... == ... | 6 |
 | cflow.cs:31:17:31:42 | ...; | cflow.cs:31:17:31:41 | call to method WriteLine | 3 |
 | cflow.cs:33:17:33:37 | ...; | cflow.cs:33:17:33:36 | call to method WriteLine | 3 |
-| cflow.cs:37:17:37:22 | enter Switch | cflow.cs:41:18:41:18 | 1 | 6 |
+| cflow.cs:37:17:37:22 | enter Switch | cflow.cs:39:17:39:17 | access to parameter a | 4 |
 | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:37:17:37:22 | exit Switch | 1 |
+| cflow.cs:41:13:41:19 | case ...: | cflow.cs:41:18:41:18 | 1 | 2 |
 | cflow.cs:42:17:42:39 | ...; | cflow.cs:43:17:43:28 | goto case ...; | 5 |
 | cflow.cs:44:13:44:19 | case ...: | cflow.cs:44:18:44:18 | 2 | 2 |
 | cflow.cs:45:17:45:39 | ...; | cflow.cs:46:17:46:28 | goto case ...; | 5 |
