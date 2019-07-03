@@ -15,7 +15,7 @@ public class Position implements Comparable<Position> {
     return line;
   }
 
-  /** The column number (1-based) of this position. */
+  /** The column number (0-based) of this position. */
   public int getColumn() {
     return column;
   }

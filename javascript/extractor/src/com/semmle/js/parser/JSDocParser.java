@@ -36,12 +36,20 @@ import java.util.Set;
 /** A Java port of <a href="https://github.com/Constellation/doctrine">doctrine</a>. */
 public class JSDocParser {
   private String source;
+  private int absoluteOffset;
 
   /** Parse the given string as a JSDoc comment. */
   public JSDocComment parse(Comment comment) {
-    source = comment.getText().substring(1);
+    source = comment.getText();
     JSDocTagParser p = new JSDocTagParser();
-    Pair<String, List<JSDocTagParser.Tag>> r = p.new TagParser(null).parse(source);
+    Position startPos = comment.getLoc().getStart();
+    // Get the start of the first line relative to the 'source' string.
+    // This occurs before the start of 'source', so the lineStart is negative.
+    int firstLineStart = -(startPos.getColumn() + "/**".length() - 1);
+    this.absoluteOffset = startPos.getOffset();
+    Pair<String, List<JSDocTagParser.Tag>> r = p.new TagParser(null).parseComment(
+        startPos.getLine() - 1,
+        firstLineStart);
     List<JSDocTag> tags = new ArrayList<>();
     for (JSDocTagParser.Tag tag : r.snd()) {
       String title = tag.title;
@@ -52,14 +60,12 @@ public class JSDocParser {
 
       JSDocTypeExpression jsdocType = tag.type;
 
-      int realStartLine = comment.getLoc().getStart().getLine() + startLine;
-      int realStartColumn =
-          (startLine == 0 ? comment.getLoc().getStart().getColumn() + 3 : 0) + startColumn;
+      int lineNumber = startLine + 1; // convert to 1-based
       SourceLocation loc =
           new SourceLocation(
               source,
-              new Position(realStartLine, realStartColumn, -1),
-              new Position(realStartLine, realStartColumn + 1 + title.length(), -1));
+              new Position(lineNumber, startColumn, -1),
+              new Position(lineNumber, startColumn + 1 + title.length(), -1));
       tags.add(new JSDocTag(loc, title, description, name, jsdocType, tag.errors));
     }
     return new JSDocComment(comment, r.fst(), tags);
@@ -101,6 +107,10 @@ public class JSDocParser {
 
   private static boolean isWhiteSpace(char ch) {
     return Character.isWhitespace(ch) && !isLineTerminator(ch) || ch == '\u00a0';
+  }
+
+  private static boolean isWhiteSpaceOrLineTerminator(char ch) {
+    return Character.isWhitespace(ch) || ch == '\u00a0';
   }
 
   private static boolean isDecimalDigit(char ch) {
@@ -221,26 +231,30 @@ public class JSDocParser {
   };
 
   private class TypeExpressionParser {
-    String source;
-    int length;
-    int previous, index;
+    int startIndex;
+    int endIndex;
+    int startOfCurToken, endOfPrevToken, index;
     Token token;
     Object value;
+    int lineStart;
+    int lineNumber;
 
     private class Context {
-      int _previous, _index;
+      int _startOfCurToken, _endOfPrevToken, _index;
       Token _token;
       Object _value;
 
-      Context(int previous, int index, Token token, Object value) {
-        this._previous = previous;
+      Context(int startOfCurToken, int endOfPrevToken, int index, Token token, Object value) {
+        this._startOfCurToken = startOfCurToken;
+        this._endOfPrevToken = endOfPrevToken;
         this._index = index;
         this._token = token;
         this._value = value;
       }
 
       void restore() {
-        previous = this._previous;
+        startOfCurToken = this._startOfCurToken;
+        endOfPrevToken = this._endOfPrevToken;
         index = this._index;
         token = this._token;
         value = this._value;
@@ -248,21 +262,36 @@ public class JSDocParser {
     }
 
     Context save() {
-      return new Context(previous, index, token, value);
+      return new Context(startOfCurToken, endOfPrevToken, index, token, value);
     }
 
     private SourceLocation loc() {
       return new SourceLocation(pos());
     }
 
+    /**
+     * Returns the absolute position of the start of the current token.
+     */
     private Position pos() {
-      return new Position(1, index + 1, index);
+      return new Position(this.lineNumber + 1, startOfCurToken - lineStart, startOfCurToken + absoluteOffset);
+    }
+
+    /**
+     * Returns the absolute position of the end of the previous token.
+     *
+     * This can differ from the start of the current token in case the two tokens
+     * are separated by whitespace.
+     */
+    private Position endPos() {
+      return new Position(this.lineNumber + 1, endOfPrevToken - lineStart, endOfPrevToken + absoluteOffset);
     }
 
     private <T extends JSDocTypeExpression> T finishNode(T node) {
       SourceLocation loc = node.getLoc();
-      Position end = pos();
-      loc.setSource(inputSubstring(loc.getStart().getOffset(), end.getOffset()));
+      Position end = endPos();
+      int relativeStartOffset = loc.getStart().getOffset() - absoluteOffset;
+      int relativeEndOffset = end.getOffset() - absoluteOffset;
+      loc.setSource(inputSubstring(relativeStartOffset, relativeEndOffset));
       loc.setEnd(end);
       return node;
     }
@@ -275,7 +304,14 @@ public class JSDocParser {
 
     private int advance() {
       if (index >= source.length()) return -1;
-      return source.charAt(index++);
+      int ch = source.charAt(index);
+      ++index;
+      if (isLineTerminator(ch) && !(ch == '\r' && index < endIndex && source.charAt(index) == '\n')) {
+        lineNumber += 1;
+        lineStart = index;
+        index = skipStars(index, endIndex);
+      }
+      return ch;
     }
 
     private String scanHexEscape(char prefix) {
@@ -283,7 +319,7 @@ public class JSDocParser {
 
       len = (prefix == 'u') ? 4 : 2;
       for (i = 0; i < len; ++i) {
-        if (index < length && isHexDigit(source.charAt(index))) {
+        if (index < endIndex && isHexDigit(source.charAt(index))) {
           ch = advance();
           code = code * 16 + "0123456789abcdef".indexOf(Character.toLowerCase(ch));
         } else {
@@ -300,7 +336,7 @@ public class JSDocParser {
       quote = source.charAt(index);
       ++index;
 
-      while (index < length) {
+      while (index < endIndex) {
         ch = advance();
 
         if (ch == quote) {
@@ -350,14 +386,14 @@ public class JSDocParser {
                   //    octal = true;
                   // }
 
-                  if (index < length && isOctalDigit(source.charAt(index))) {
+                  if (index < endIndex && isOctalDigit(source.charAt(index))) {
                     // TODO Review Removal octal = true;
                     code = code * 8 + "01234567".indexOf(advance());
 
                     // 3 digits are only allowed when string starts
                     // with 0, 1, 2, 3
                     if ("0123".indexOf(ch) >= 0
-                        && index < length
+                        && index < endIndex
                         && isOctalDigit(source.charAt(index))) {
                       code = code * 8 + "01234567".indexOf(advance());
                     }
@@ -369,7 +405,7 @@ public class JSDocParser {
                 break;
             }
           } else {
-            if (ch == '\r' && index < length && source.charAt(index) == '\n') {
+            if (ch == '\r' && index < endIndex && source.charAt(index) == '\n') {
               ++index;
             }
           }
@@ -396,12 +432,12 @@ public class JSDocParser {
       if (ch != '.') {
         int next = advance();
         number.append((char) next);
-        ch = index < length ? source.charAt(index) : '\0';
+        ch = index < endIndex ? source.charAt(index) : '\0';
 
         if (next == '0') {
           if (ch == 'x' || ch == 'X') {
             number.append((char) advance());
-            while (index < length) {
+            while (index < endIndex) {
               ch = source.charAt(index);
               if (!isHexDigit(ch)) {
                 break;
@@ -414,7 +450,7 @@ public class JSDocParser {
               throwError("unexpected token");
             }
 
-            if (index < length) {
+            if (index < endIndex) {
               ch = source.charAt(index);
               if (isIdentifierStart(ch)) {
                 throwError("unexpected token");
@@ -431,7 +467,7 @@ public class JSDocParser {
 
           if (isOctalDigit(ch)) {
             number.append((char) advance());
-            while (index < length) {
+            while (index < endIndex) {
               ch = source.charAt(index);
               if (!isOctalDigit(ch)) {
                 break;
@@ -439,7 +475,7 @@ public class JSDocParser {
               number.append((char) advance());
             }
 
-            if (index < length) {
+            if (index < endIndex) {
               ch = source.charAt(index);
               if (isIdentifierStart(ch) || isDecimalDigit(ch)) {
                 throwError("unexpected token");
@@ -459,7 +495,7 @@ public class JSDocParser {
           }
         }
 
-        while (index < length) {
+        while (index < endIndex) {
           ch = source.charAt(index);
           if (!isDecimalDigit(ch)) {
             break;
@@ -471,7 +507,7 @@ public class JSDocParser {
       if (ch == '.') {
         isFloat = true;
         number.append((char) advance());
-        while (index < length) {
+        while (index < endIndex) {
           ch = source.charAt(index);
           if (!isDecimalDigit(ch)) {
             break;
@@ -484,15 +520,15 @@ public class JSDocParser {
         isFloat = true;
         number.append((char) advance());
 
-        ch = index < length ? source.charAt(index) : '\0';
+        ch = index < endIndex ? source.charAt(index) : '\0';
         if (ch == '+' || ch == '-') {
           number.append((char) advance());
         }
 
-        ch = index < length ? source.charAt(index) : '\0';
+        ch = index < endIndex ? source.charAt(index) : '\0';
         if (isDecimalDigit(ch)) {
           number.append((char) advance());
-          while (index < length) {
+          while (index < endIndex) {
             ch = source.charAt(index);
             if (!isDecimalDigit(ch)) {
               break;
@@ -504,7 +540,7 @@ public class JSDocParser {
         }
       }
 
-      if (index < length) {
+      if (index < endIndex) {
         ch = source.charAt(index);
         if (isIdentifierStart(ch)) {
           throwError("unexpected token");
@@ -526,10 +562,10 @@ public class JSDocParser {
       char ch, ch2;
 
       value = new String(Character.toChars(advance()));
-      while (index < length && isTypeName(source.charAt(index))) {
+      while (index < endIndex && isTypeName(source.charAt(index))) {
         ch = source.charAt(index);
         if (ch == '.') {
-          if ((index + 1) < length) {
+          if ((index + 1) < endIndex) {
             ch2 = source.charAt(index + 1);
             if (ch2 == '<') {
               break;
@@ -544,15 +580,17 @@ public class JSDocParser {
     private Token next() throws ParseError {
       char ch;
 
-      previous = index;
+      endOfPrevToken = index;
 
-      while (index < length && isWhiteSpace(source.charAt(index))) {
+      while (index < endIndex && isWhiteSpaceOrLineTerminator(source.charAt(index))) {
         advance();
       }
-      if (index >= length) {
+      if (index >= endIndex) {
         token = Token.EOF;
         return token;
       }
+
+      startOfCurToken = index;
 
       ch = source.charAt(index);
       switch (ch) {
@@ -602,7 +640,7 @@ public class JSDocParser {
 
         case '.':
           advance();
-          if (index < length) {
+          if (index < endIndex) {
             ch = source.charAt(index);
             if (ch == '<') {
               advance();
@@ -610,7 +648,7 @@ public class JSDocParser {
               return token;
             }
 
-            if (ch == '.' && index + 1 < length && source.charAt(index + 1) == '.') {
+            if (ch == '.' && index + 1 < endIndex && source.charAt(index + 1) == '.') {
               advance();
               advance();
               token = Token.REST;
@@ -735,10 +773,10 @@ public class JSDocParser {
       List<JSDocTypeExpression> elements = new ArrayList<>();
       consume(Token.LBRACK, "ArrayType should start with [");
       while (token != Token.RBRACK) {
-        loc = loc();
         if (token == Token.REST) {
+          SourceLocation restLoc = loc();
           consume(Token.REST);
-          elements.add(finishNode(new RestType(loc, parseTypeExpression())));
+          elements.add(finishNode(new RestType(restLoc, parseTypeExpression())));
           break;
         } else {
           elements.add(parseTypeExpression());
@@ -912,11 +950,11 @@ public class JSDocParser {
           consume(Token.COLON);
           expr =
               finishNode(
-                  new ParameterType(loc, ((NameExpression) expr).getName(), parseTypeExpression()));
+                  new ParameterType(new SourceLocation(loc), ((NameExpression) expr).getName(), parseTypeExpression()));
         }
         if (token == Token.EQUAL) {
           consume(Token.EQUAL);
-          expr = finishNode(new OptionalType(loc, expr));
+          expr = finishNode(new OptionalType(new SourceLocation(loc), expr));
           normal = false;
         } else {
           if (!normal) {
@@ -1087,7 +1125,9 @@ public class JSDocParser {
         consume(Token.RBRACK, "expected an array-style type declaration (' + value + '[])");
         List<JSDocTypeExpression> expressions = new ArrayList<>();
         expressions.add(expr);
-        return finishNode(new TypeApplication(loc, new NameExpression(loc, "Array"), expressions));
+        NameExpression nameExpr =
+            finishNode(new NameExpression(new SourceLocation(loc), "Array"));
+        return finishNode(new TypeApplication(loc, nameExpr, expressions));
       }
 
       return expr;
@@ -1143,13 +1183,14 @@ public class JSDocParser {
       return expr;
     }
 
-    private JSDocTypeExpression parseType(String src) throws ParseError {
+    private JSDocTypeExpression parseType(int startIndex, int endIndex, int lineStart, int lineNumber) throws ParseError {
       JSDocTypeExpression expr;
 
-      source = src;
-      length = source.length();
-      index = 0;
-      previous = 0;
+      this.lineNumber = lineNumber;
+      this.lineStart = lineStart;
+      this.startIndex = startIndex;
+      this.endIndex = endIndex;
+      index = startIndex;
 
       next();
       expr = parseTop();
@@ -1161,13 +1202,14 @@ public class JSDocParser {
       return expr;
     }
 
-    private JSDocTypeExpression parseParamType(String src) throws ParseError {
+    private JSDocTypeExpression parseParamType(int startIndex, int endIndex, int lineStart, int lineNumber) throws ParseError {
       JSDocTypeExpression expr;
 
-      source = src;
-      length = source.length();
-      index = 0;
-      previous = 0;
+      this.lineNumber = lineNumber;
+      this.lineStart = lineStart;
+      this.startIndex = startIndex;
+      this.endIndex = endIndex;
+      index = startIndex;
 
       next();
       expr = parseTopParamType();
@@ -1180,29 +1222,29 @@ public class JSDocParser {
     }
   }
 
+  /** Skips the leading indentation and '*' at the beginning of a line. */
+  private int skipStars(int index, int end) {
+    while (index < end
+        && isWhiteSpace(source.charAt(index))
+        && !isLineTerminator(source.charAt(index))) {
+      index += 1;
+    }
+    while (index < end && source.charAt(index) == '*') {
+      index += 1;
+    }
+    while (index < end
+        && isWhiteSpace(source.charAt(index))
+        && !isLineTerminator(source.charAt(index))) {
+      index += 1;
+    }
+    return index;
+  }
+
   private TypeExpressionParser typed = new TypeExpressionParser();
 
   private class JSDocTagParser {
     int index, lineNumber, lineStart, length;
-    String source;
     boolean recoverable = true, sloppy = false;
-
-    private int skipStars(int index) {
-      while (index < length
-          && isWhiteSpace(source.charAt(index))
-          && !isLineTerminator(source.charAt(index))) {
-        index += 1;
-      }
-      while (index < length && source.charAt(index) == '*') {
-        index += 1;
-      }
-      while (index < length
-          && isWhiteSpace(source.charAt(index))
-          && !isLineTerminator(source.charAt(index))) {
-        index += 1;
-      }
-      return index;
-    }
 
     private char advance() {
       char ch = source.charAt(index);
@@ -1210,7 +1252,7 @@ public class JSDocParser {
       if (isLineTerminator(ch) && !(ch == '\r' && index < length && source.charAt(index) == '\n')) {
         lineNumber += 1;
         lineStart = index;
-        index = skipStars(index);
+        index = skipStars(index, length);
       }
       return ch;
     }
@@ -1238,7 +1280,7 @@ public class JSDocParser {
             && !(ch == '\r' && last + 1 < length && source.charAt(last + 1) == '\n')) {
           lineNumber += 1;
           lineStart = last + 1;
-          last = skipStars(last + 1) - 1;
+          last = skipStars(last + 1, length) - 1;
           waiting = true;
         } else if (waiting) {
           if (ch == '@') {
@@ -1260,7 +1302,6 @@ public class JSDocParser {
     private JSDocTypeExpression parseType(String title, int last) throws ParseError {
       char ch;
       int brace;
-      StringBuilder type;
       boolean direct = false;
 
       // search '{'
@@ -1281,23 +1322,21 @@ public class JSDocParser {
       if (!direct) {
         // type expression { is found
         brace = 1;
-        type = new StringBuilder();
+        int firstLineStart = this.lineStart;
+        int firstLineNumber = this.lineNumber;
+        int startIndex = index;
         while (index < last) {
           ch = source.charAt(index);
-          if (isLineTerminator(ch)) {
-            advance();
-          } else {
-            if (ch == '}') {
-              brace -= 1;
-              if (brace == 0) {
-                advance();
-                break;
-              }
-            } else if (ch == '{') {
-              brace += 1;
+          if (ch == '}') {
+            brace -= 1;
+            if (brace == 0) {
+              advance();
+              break;
             }
-            type.append(advance());
+          } else if (ch == '{') {
+            brace += 1;
           }
+          advance();
         }
 
         if (brace != 0) {
@@ -1307,9 +1346,9 @@ public class JSDocParser {
 
         try {
           if (isParamTitle(title)) {
-            return typed.parseParamType(type.toString());
+            return typed.parseParamType(startIndex, index - 1, firstLineStart, firstLineNumber);
           }
-          return typed.parseType(type.toString());
+          return typed.parseType(startIndex, index - 1, firstLineStart, firstLineNumber);
         } catch (ParseError e) {
           // parse failed
           return null;
@@ -1861,17 +1900,15 @@ public class JSDocParser {
         return description.toString().trim();
       }
 
-      public Pair<String, List<Tag>> parse(String comment) {
+      public Pair<String, List<Tag>> parseComment(int lineNumber_, int lineStart_) {
         List<Tag> tags = new ArrayList<>();
         Tag tag;
         String description;
 
-        source = comment.replaceAll("^/?\\*+", "").replaceAll("\\*+/?\\z", "");
-
         length = source.length();
-        index = 0;
-        lineNumber = 0;
-        lineStart = 0;
+        index = 1; // Skip initial "*"
+        lineNumber = lineNumber_;
+        lineStart = lineStart_;
         recoverable = true;
         sloppy = true;
 
