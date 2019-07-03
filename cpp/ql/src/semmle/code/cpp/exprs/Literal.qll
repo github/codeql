@@ -13,6 +13,9 @@ class Literal extends Expr, @literal {
     )
   }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "Literal" }
+  
   override predicate mayBeImpure() {
     none()
   }
@@ -117,6 +120,9 @@ class StringLiteral extends TextLiteral
     // Note that `AggregateLiteral`s can also have an array type, but they derive from
     // @aggregateliteral rather than @literal.
   }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "StringLiteral" }
+  
 }
 
 /**

@@ -6,6 +6,9 @@ import semmle.code.cpp.controlflow.ControlFlowGraph
 class Initializer extends ControlFlowNode, @initialiser {
   override Location getLocation() { initialisers(underlyingElement(this),_,_,result) }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "Initializer" }
+  
   /** Holds if this initializer is explicit in the source. */
   override predicate fromSource() {
     not (this.getLocation() instanceof UnknownLocation)

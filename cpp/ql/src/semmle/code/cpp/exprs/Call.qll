@@ -149,6 +149,9 @@ class FunctionCall extends Call, @funbindexpr {
     iscall(underlyingElement(this),_)
   }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "FunctionCall" }
+  
   /** Gets an explicit template argument for this call. */
   Type getAnExplicitTemplateArgument() {
     result = getExplicitTemplateArgument(_)

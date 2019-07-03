@@ -160,6 +160,11 @@ class PrintASTNode extends TPrintASTNode {
 }
 
 /**
+ * A concatenation of all the leaf QL types of `el`
+ */
+private string qlClass(ElementBase el) { result = "["+ el.getCanonicalQLClass() + "]: " }
+
+/**
  * A node representing an AST node.
  */
 abstract class ASTNode extends PrintASTNode, TASTNode {
@@ -170,7 +175,7 @@ abstract class ASTNode extends PrintASTNode, TASTNode {
   }
 
   override string toString() {
-    result = ast.toString()
+    result = qlClass(ast) + ast.toString()
   }
 
   override final Location getLocation() {
@@ -203,11 +208,11 @@ class ExprNode extends ASTNode {
     result = super.getProperty(key) or
     (
       key = "Value" and
-      result = getValue()
+      result = qlClass(expr) + getValue()
     ) or
     (
       key = "Type" and
-      result = expr.getType().toString()
+      result = qlClass(expr.getType()) + expr.getType().toString()
     ) or
     (
       key = "ValueCategory" and
@@ -294,7 +299,7 @@ class DeclarationEntryNode extends ASTNode {
     result = super.getProperty(key) or
     (
       key = "Type" and
-      result = entry.getType().toString()
+      result = qlClass(entry.getType()) + entry.getType().toString()
     )
   }
 }
@@ -373,7 +378,7 @@ class ParameterNode extends ASTNode {
     result = super.getProperty(key) or
     (
       key = "Type" and
-      result = param.getType().toString()
+      result = qlClass(param.getType()) + param.getType().toString()
     )
   }
 }
@@ -491,7 +496,7 @@ class FunctionNode extends ASTNode {
   }
 
   override string toString() {
-    result = getIdentityString(func)
+    result = qlClass(func) + getIdentityString(func)
   }
 
   override PrintASTNode getChild(int childIndex) {

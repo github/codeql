@@ -485,6 +485,8 @@ class BoolType extends IntegralType {
 
   BoolType() { builtintypes(underlyingElement(this),_,4,_,_,_) }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "BoolType" }
 }
 
 /**
@@ -499,6 +501,8 @@ class PlainCharType extends CharType {
   PlainCharType() {
     builtintypes(underlyingElement(this),_,5,_,_,_)
   }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "PlainCharType" }
 }
 
 /**
@@ -508,6 +512,8 @@ class UnsignedCharType extends CharType {
   UnsignedCharType() {
     builtintypes(underlyingElement(this),_,6,_,_,_)
   }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "UnsignedCharType" }
 }
 
 /**
@@ -517,6 +523,8 @@ class SignedCharType extends CharType {
   SignedCharType() {
     builtintypes(underlyingElement(this),_,7,_,_,_)
   }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "SignedCharType" }
 }
 
 /**
@@ -528,6 +536,8 @@ class ShortType extends IntegralType {
     builtintypes(underlyingElement(this),_,8,_,_,_) or builtintypes(underlyingElement(this),_,9,_,_,_) or builtintypes(underlyingElement(this),_,10,_,_,_)
   }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "ShortType" }
 }
 
 /**
@@ -539,6 +549,8 @@ class IntType extends IntegralType {
     builtintypes(underlyingElement(this),_,11,_,_,_) or builtintypes(underlyingElement(this),_,12,_,_,_) or builtintypes(underlyingElement(this),_,13,_,_,_)
   }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "IntType" }
 }
 
 /**
@@ -550,6 +562,8 @@ class LongType extends IntegralType {
     builtintypes(underlyingElement(this),_,14,_,_,_) or builtintypes(underlyingElement(this),_,15,_,_,_) or builtintypes(underlyingElement(this),_,16,_,_,_)
   }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "LongType" }
 }
 
 /**
@@ -561,6 +575,8 @@ class LongLongType extends IntegralType {
     builtintypes(underlyingElement(this),_,17,_,_,_) or builtintypes(underlyingElement(this),_,18,_,_,_) or builtintypes(underlyingElement(this),_,19,_,_,_)
   }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "LongLongType" }
 }
 
 /**
@@ -592,6 +608,8 @@ class FloatType extends FloatingPointType {
 
   FloatType() { builtintypes(underlyingElement(this),_,24,_,_,_) }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "FloatType" }
 }
 
 /**
@@ -601,6 +619,8 @@ class DoubleType extends FloatingPointType {
 
   DoubleType() { builtintypes(underlyingElement(this),_,25,_,_,_) }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "DoubleType" }
 }
 
 /**
@@ -610,6 +630,8 @@ class LongDoubleType extends FloatingPointType {
 
   LongDoubleType() { builtintypes(underlyingElement(this),_,26,_,_,_) }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "LongDoubleType" }
 }
 
 /**
@@ -655,6 +677,8 @@ class VoidType extends BuiltInType {
 
   VoidType() { builtintypes(underlyingElement(this),_,3,_,_,_) }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "VoidType" }
 }
 
 /**
@@ -967,6 +991,9 @@ class ArrayType extends DerivedType {
 
   ArrayType() { derivedtypes(underlyingElement(this),_,4,_) }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "ArrayType" }
+  
   predicate hasArraySize() { arraysizes(underlyingElement(this),_,_,_) }
 
   /**

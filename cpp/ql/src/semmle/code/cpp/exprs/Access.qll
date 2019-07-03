@@ -24,6 +24,9 @@ abstract class Access extends Expr, NameQualifiableElement {
  * A C/C++ enum constant access expression.
  */
 class EnumConstantAccess extends Access, @varaccess {
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "EnumConstantAccess" }
+
   EnumConstantAccess() {
     exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
   }
@@ -39,6 +42,9 @@ class EnumConstantAccess extends Access, @varaccess {
  * A C/C++ variable access expression.
  */
 class VariableAccess extends Access, @varaccess {
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "VariableAccess" }
+
   VariableAccess() {
     not exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
   }
@@ -133,6 +139,9 @@ class VariableAccess extends Access, @varaccess {
  * A C/C++ field access expression.
  */
 class FieldAccess extends VariableAccess {
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "FieldAccess" }
+
   FieldAccess() { exists(Field f | varbind(underlyingElement(this), unresolveElement(f))) }
 
   /** Gets the accessed field. */
@@ -280,6 +289,9 @@ class TypeName extends Expr, @type_operand {
  * For calls to operator[], which look syntactically identical, see OverloadedArrayExpr.
  */
 class ArrayExpr extends Expr, @subscriptexpr {
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "ArrayExpr" }
+
   /**
    * Gets the array or pointer expression being subscripted.
    *

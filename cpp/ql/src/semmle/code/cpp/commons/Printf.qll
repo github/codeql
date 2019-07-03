@@ -75,6 +75,9 @@ class UserDefinedFormattingFunction extends FormattingFunction {
 class FormattingFunctionCall extends Expr {
   FormattingFunctionCall() { this.(Call).getTarget() instanceof FormattingFunction }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "FormattingFunctionCall" }
+  
   /**
    * Gets the formatting function being called.
    */

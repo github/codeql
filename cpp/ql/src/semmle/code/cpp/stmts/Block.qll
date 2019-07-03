@@ -11,6 +11,9 @@ import semmle.code.cpp.stmts.Stmt
  */
 class Block extends Stmt, @stmt_block {
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "Block" }
+
   /**
    * Gets a child declaration of this block.
    *

@@ -7,6 +7,8 @@ class CharPointerType extends PointerType {
 
   CharPointerType() { this.getBaseType() instanceof CharType }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "CharPointerType" }
 }
 
 /**
@@ -16,6 +18,8 @@ class IntPointerType extends PointerType {
 
   IntPointerType() { this.getBaseType() instanceof IntType }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "IntPointerType" }
 }
 
 
@@ -26,6 +30,8 @@ class VoidPointerType extends PointerType {
 
   VoidPointerType() { this.getBaseType() instanceof VoidType }
 
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "VoidPointerType" }
 }
 
 /**
@@ -36,6 +42,8 @@ class Size_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("size_t")
   }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "Size_t" }
 }
 
 /**
@@ -46,6 +54,8 @@ class Ssize_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("ssize_t")
   }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "Ssize_t" }
 }
 
 /**
@@ -56,6 +66,8 @@ class Ptrdiff_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("ptrdiff_t")
   }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "Ptrdiff_t" }
 }
 
 /**
@@ -90,6 +102,8 @@ class Wchar_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("wchar_t")
   }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "Wchar_t" }
 }
 
 /**
