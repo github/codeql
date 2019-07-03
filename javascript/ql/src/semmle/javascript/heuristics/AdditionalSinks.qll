@@ -6,7 +6,7 @@
 
 import javascript
 private import SyntacticHeuristics
-private import semmle.javascript.security.dataflow.CodeInjection
+private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 private import semmle.javascript.security.dataflow.CommandInjection
 private import semmle.javascript.security.dataflow.DomBasedXss as DomBasedXss
 private import semmle.javascript.security.dataflow.ReflectedXss as ReflectedXss

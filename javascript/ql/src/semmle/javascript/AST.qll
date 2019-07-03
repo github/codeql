@@ -141,6 +141,10 @@ class TopLevel extends @toplevel, StmtContainer {
       // and there are at least ten statements overall
       numstmt >= 10
     )
+    or
+    // many variables, and they all have short names
+    count (VarDecl d | d.getTopLevel() = this) > 100 and
+    forall (VarDecl d | d.getTopLevel() = this | d.getName().length() <= 2)
   }
 
   /** Holds if this toplevel is an externs definitions file. */

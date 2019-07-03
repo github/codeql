@@ -5,7 +5,7 @@ import semmle.code.cpp.models.interfaces.FormattingFunction
  */
 class Printf extends FormattingFunction {
   Printf() {
-    this instanceof TopLevelFunction and 
+    this instanceof TopLevelFunction and
     (
       hasGlobalName("printf") or
       hasGlobalName("printf_s") or
@@ -16,7 +16,8 @@ class Printf extends FormattingFunction {
     not exists(getDefinition().getFile().getRelativePath())
   }
 
-  override int getFormatParameterIndex() { result=0 }
+  override int getFormatParameterIndex() { result = 0 }
+
   override predicate isWideCharDefault() {
     hasGlobalName("wprintf") or
     hasGlobalName("wprintf_s")
@@ -37,9 +38,11 @@ class Fprintf extends FormattingFunction {
     not exists(getDefinition().getFile().getRelativePath())
   }
 
-  override int getFormatParameterIndex() { result=1 }
+  override int getFormatParameterIndex() { result = 1 }
+
   override predicate isWideCharDefault() { hasGlobalName("fwprintf") }
-  override int getOutputParameterIndex() { result=0 }
+
+  override int getOutputParameterIndex() { result = 0 }
 }
 
 /**
@@ -61,7 +64,12 @@ class Sprintf extends FormattingFunction {
   }
 
   override predicate isWideCharDefault() {
-    getParameter(getFormatParameterIndex()).getUnspecifiedType().(PointerType).getBaseType().getSize() > 1
+    getParameter(getFormatParameterIndex())
+        .getType()
+        .getUnspecifiedType()
+        .(PointerType)
+        .getBaseType()
+        .getSize() > 1
   }
 
   override int getFormatParameterIndex() {
@@ -73,12 +81,12 @@ class Sprintf extends FormattingFunction {
     getName() != "__builtin___sprintf_chk" and
     result = 1
   }
-  override int getOutputParameterIndex() {
-    not hasGlobalName("g_strdup_printf") and result = 0
-  }
-  
+
+  override int getOutputParameterIndex() { not hasGlobalName("g_strdup_printf") and result = 0 }
+
   override int getFirstFormatArgumentIndex() {
-    if hasGlobalName("__builtin___sprintf_chk") then result = 4
+    if hasGlobalName("__builtin___sprintf_chk")
+    then result = 4
     else result = getNumberOfParameters()
   }
 }
@@ -89,46 +97,53 @@ class Sprintf extends FormattingFunction {
  */
 class Snprintf extends FormattingFunction {
   Snprintf() {
-    this instanceof TopLevelFunction and (
-      hasGlobalName("snprintf") // C99 defines snprintf
-      or hasGlobalName("swprintf") // The s version of wide-char printf is also always the n version
+    this instanceof TopLevelFunction and
+    (
+      hasGlobalName("snprintf") or // C99 defines snprintf
+      hasGlobalName("swprintf") or // The s version of wide-char printf is also always the n version
       // Microsoft has _snprintf as well as several other variations
-      or hasGlobalName("sprintf_s")
-      or hasGlobalName("snprintf_s")
-      or hasGlobalName("swprintf_s")
-      or hasGlobalName("_snprintf")
-      or hasGlobalName("_snprintf_s")
-      or hasGlobalName("_snprintf_l")
-      or hasGlobalName("_snprintf_s_l")
-      or hasGlobalName("_snwprintf")
-      or hasGlobalName("_snwprintf_s")
-      or hasGlobalName("_snwprintf_l")
-      or hasGlobalName("_snwprintf_s_l")
-      or hasGlobalName("_sprintf_s_l")
-      or hasGlobalName("_swprintf_l")
-      or hasGlobalName("_swprintf_s_l")
-      or hasGlobalName("g_snprintf")
-      or hasGlobalName("wnsprintf")
-      or hasGlobalName("__builtin___snprintf_chk")
+      hasGlobalName("sprintf_s") or
+      hasGlobalName("snprintf_s") or
+      hasGlobalName("swprintf_s") or
+      hasGlobalName("_snprintf") or
+      hasGlobalName("_snprintf_s") or
+      hasGlobalName("_snprintf_l") or
+      hasGlobalName("_snprintf_s_l") or
+      hasGlobalName("_snwprintf") or
+      hasGlobalName("_snwprintf_s") or
+      hasGlobalName("_snwprintf_l") or
+      hasGlobalName("_snwprintf_s_l") or
+      hasGlobalName("_sprintf_s_l") or
+      hasGlobalName("_swprintf_l") or
+      hasGlobalName("_swprintf_s_l") or
+      hasGlobalName("g_snprintf") or
+      hasGlobalName("wnsprintf") or
+      hasGlobalName("__builtin___snprintf_chk")
     ) and
     not exists(getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() {
     if getName().matches("%\\_l")
-      then result = getFirstFormatArgumentIndex() - 2 
-      else result = getFirstFormatArgumentIndex() - 1
+    then result = getFirstFormatArgumentIndex() - 2
+    else result = getFirstFormatArgumentIndex() - 1
   }
 
   override predicate isWideCharDefault() {
-    getParameter(getFormatParameterIndex()).getUnspecifiedType().(PointerType).getBaseType().getSize() > 1
+    getParameter(getFormatParameterIndex())
+        .getType()
+        .getUnspecifiedType()
+        .(PointerType)
+        .getBaseType()
+        .getSize() > 1
   }
-  override int getOutputParameterIndex() { result=0 }
-  
+
+  override int getOutputParameterIndex() { result = 0 }
+
   override int getFirstFormatArgumentIndex() {
     exists(string name |
-      hasGlobalName(name)
-      and (
+      name = getQualifiedName() and
+      (
         name = "__builtin___snprintf_chk" and
         result = 5
         or
@@ -153,9 +168,7 @@ class Snprintf extends FormattingFunction {
     not exists(getDefinition().getFile().getRelativePath())
   }
 
-  override int getSizeParameterIndex() {
-    result = 1
-  }
+  override int getSizeParameterIndex() { result = 1 }
 }
 
 /**
@@ -163,36 +176,36 @@ class Snprintf extends FormattingFunction {
  */
 class StringCchPrintf extends FormattingFunction {
   StringCchPrintf() {
-    this instanceof TopLevelFunction and (
-      hasGlobalName("StringCchPrintf")
-      or hasGlobalName("StringCchPrintfEx")
-      or hasGlobalName("StringCchPrintf_l")
-      or hasGlobalName("StringCchPrintf_lEx")
-      or hasGlobalName("StringCbPrintf")
-      or hasGlobalName("StringCbPrintfEx")
-      or hasGlobalName("StringCbPrintf_l")
-      or hasGlobalName("StringCbPrintf_lEx")
+    this instanceof TopLevelFunction and
+    (
+      hasGlobalName("StringCchPrintf") or
+      hasGlobalName("StringCchPrintfEx") or
+      hasGlobalName("StringCchPrintf_l") or
+      hasGlobalName("StringCchPrintf_lEx") or
+      hasGlobalName("StringCbPrintf") or
+      hasGlobalName("StringCbPrintfEx") or
+      hasGlobalName("StringCbPrintf_l") or
+      hasGlobalName("StringCbPrintf_lEx")
     ) and
     not exists(getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() {
-    if getName().matches("%Ex")
-      then result = 5
-      else result = 2
+    if getName().matches("%Ex") then result = 5 else result = 2
   }
 
   override predicate isWideCharDefault() {
-    getParameter(getFormatParameterIndex()).getUnspecifiedType().(PointerType).getBaseType().getSize() > 1
+    getParameter(getFormatParameterIndex())
+        .getType()
+        .getUnspecifiedType()
+        .(PointerType)
+        .getBaseType()
+        .getSize() > 1
   }
 
-  override int getOutputParameterIndex() {
-    result = 0
-  }
+  override int getOutputParameterIndex() { result = 0 }
 
-  override int getSizeParameterIndex() {
-    result = 1
-  }
+  override int getSizeParameterIndex() { result = 1 }
 }
 
 /**
@@ -200,11 +213,10 @@ class StringCchPrintf extends FormattingFunction {
  */
 class Syslog extends FormattingFunction {
   Syslog() {
-    this instanceof TopLevelFunction and (
-      hasGlobalName("syslog")
-    ) and
+    this instanceof TopLevelFunction and
+    hasGlobalName("syslog") and
     not exists(getDefinition().getFile().getRelativePath())
   }
 
-  override int getFormatParameterIndex() { result=1 }
+  override int getFormatParameterIndex() { result = 1 }
 }
