@@ -1,0 +1,2 @@
+| test.ts:3:1:7:6 | type Di ... \\n    T; | Disjunction<T> |
+| test.ts:9:8:9:65 | type Tr ... n<T>>>; | Disjunction<Disjunction<Disjunction<T>>> |

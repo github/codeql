@@ -40,7 +40,7 @@
 | tst.ts:29:16:29:26 | () => never | () => never |
 | tst.ts:29:22:29:26 | never | never |
 | tst.ts:30:17:30:22 | symbol | symbol |
-| tst.ts:31:25:31:37 | unique symbol | unique symbol |
+| tst.ts:31:25:31:37 | unique symbol | typeof uniqueSymbolType |
 | tst.ts:32:17:32:22 | object | object |
 | tst.ts:33:19:33:24 | string | string |
 | tst.ts:33:19:33:38 | string & {x: string} | string & { x: string; } |
