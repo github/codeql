@@ -73,60 +73,70 @@ class Completion extends TCompletion {
     else (
       this = TThrowCompletion(cfe.(TriedControlFlowElement).getAThrownException())
       or
-      if cfe instanceof ThrowElement
-      then this = TThrowCompletion(cfe.(ThrowElement).getThrownExceptionType())
-      else
-        if mustHaveBooleanCompletion(cfe)
-        then
-          exists(boolean value | isBooleanConstant(cfe, value) | this = TBooleanCompletion(value))
-          or
-          not isBooleanConstant(cfe, _) and
-          this = TBooleanCompletion(_)
-          or
-          // Corner case: In `if (x ?? y) { ... }`, `x` must have both a `true`
-          // completion, a `false` completion, and a `null` completion (but not a
-          // non-`null` completion)
-          mustHaveNullnessCompletion(cfe) and
-          this = TNullnessCompletion(true)
-        else
-          if mustHaveNullnessCompletion(cfe)
-          then
-            exists(boolean value | isNullnessConstant(cfe, value) |
-              this = TNullnessCompletion(value)
-            )
-            or
-            not isNullnessConstant(cfe, _) and
-            this = TNullnessCompletion(_)
-          else
-            if mustHaveMatchingCompletion(cfe)
-            then
-              exists(boolean value | isMatchingConstant(cfe, value) |
-                this = TMatchingCompletion(value)
-              )
-              or
-              not isMatchingConstant(cfe, _) and
-              this = TMatchingCompletion(_)
-            else
-              if mustHaveEmptinessCompletion(cfe)
-              then this = TEmptinessCompletion(_)
-              else
-                if cfe instanceof BreakStmt
-                then this = TBreakCompletion()
-                else
-                  if cfe instanceof ContinueStmt
-                  then this = TContinueCompletion()
-                  else
-                    if cfe instanceof GotoStmt
-                    then this = TGotoCompletion(cfe.(GotoStmt).getLabel())
-                    else
-                      if cfe instanceof ReturnStmt
-                      then this = TReturnCompletion()
-                      else
-                        if cfe instanceof YieldBreakStmt
-                        then
-                          // `yield break` behaves like a return statement
-                          this = TReturnCompletion()
-                        else this = TNormalCompletion()
+      cfe instanceof ThrowElement and
+      this = TThrowCompletion(cfe.(ThrowElement).getThrownExceptionType())
+      or
+      cfe instanceof BreakStmt and
+      this = TBreakCompletion()
+      or
+      cfe instanceof ContinueStmt and
+      this = TContinueCompletion()
+      or
+      cfe instanceof GotoStmt and
+      this = TGotoCompletion(cfe.(GotoStmt).getLabel())
+      or
+      cfe instanceof ReturnStmt and
+      this = TReturnCompletion()
+      or
+      cfe instanceof YieldBreakStmt and
+      // `yield break` behaves like a return statement
+      this = TReturnCompletion()
+      or
+      mustHaveBooleanCompletion(cfe) and
+      (
+        exists(boolean value | isBooleanConstant(cfe, value) | this = TBooleanCompletion(value))
+        or
+        not isBooleanConstant(cfe, _) and
+        this = TBooleanCompletion(_)
+        or
+        // Corner case: In `if (x ?? y) { ... }`, `x` must have both a `true`
+        // completion, a `false` completion, and a `null` completion (but not a
+        // non-`null` completion)
+        mustHaveNullnessCompletion(cfe) and
+        this = TNullnessCompletion(true)
+      )
+      or
+      mustHaveNullnessCompletion(cfe) and
+      not mustHaveBooleanCompletion(cfe) and
+      (
+        exists(boolean value | isNullnessConstant(cfe, value) | this = TNullnessCompletion(value))
+        or
+        not isNullnessConstant(cfe, _) and
+        this = TNullnessCompletion(_)
+      )
+      or
+      mustHaveMatchingCompletion(cfe) and
+      (
+        exists(boolean value | isMatchingConstant(cfe, value) | this = TMatchingCompletion(value))
+        or
+        not isMatchingConstant(cfe, _) and
+        this = TMatchingCompletion(_)
+      )
+      or
+      mustHaveEmptinessCompletion(cfe) and
+      this = TEmptinessCompletion(_)
+      or
+      not cfe instanceof ThrowElement and
+      not cfe instanceof BreakStmt and
+      not cfe instanceof ContinueStmt and
+      not cfe instanceof GotoStmt and
+      not cfe instanceof ReturnStmt and
+      not cfe instanceof YieldBreakStmt and
+      not mustHaveBooleanCompletion(cfe) and
+      not mustHaveNullnessCompletion(cfe) and
+      not mustHaveMatchingCompletion(cfe) and
+      not mustHaveEmptinessCompletion(cfe) and
+      this = TNormalCompletion()
     )
   }
 
