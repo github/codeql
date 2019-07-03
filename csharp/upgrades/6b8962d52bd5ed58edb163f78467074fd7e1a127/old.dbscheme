@@ -205,6 +205,33 @@ tokens(
   int endColumn: int ref);
 
 /*
+ * Version history
+ */
+
+svnentries(
+  int id: @svnentry,
+  varchar(500) revision: string ref,
+  varchar(500) author: string ref,
+  date revisionDate: date ref,
+  int changeSize: int ref);
+
+svnaffectedfiles(
+  int id: @svnentry ref,
+  int file: @file ref,
+  varchar(500) action: string ref);
+
+svnentrymsg(
+  int id: @svnentry ref,
+  varchar(500) message: string ref
+)
+
+svnchurn(
+  int commit: @svnentry ref,
+  int file: @file ref,
+  int addedLines: int ref,
+  int deletedLines: int ref);
+
+/*
  * C# dbscheme
  */
 
