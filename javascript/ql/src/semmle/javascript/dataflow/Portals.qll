@@ -115,28 +115,34 @@ class Portal extends TPortal {
   abstract int depth();
 }
 
-// helper predicate for typetracking of portal exit nodes
-// called in instances where an exit node is computed from another exit node
-// for example, in MemberPortal's portalBaseRef predicate
-private DataFlow::SourceNode getAnExitNodeTypeTracker(
-  Portal base, boolean arg, DataFlow::TypeTracker t
+/**
+ * Gets an exit node for the specified portal, using TypeTracking.
+ * 
+ * Called in instances where an exit node is computed from another exit node 
+ * (for example, in MemberPortal's portalBaseRef predicate).
+ */
+private DataFlow::SourceNode trackExitNode(
+  Portal base, boolean isRemote, DataFlow::TypeTracker t
 ) {
   t.start() and
-  result = base.getAnExitNode(arg)
+  result = base.getAnExitNode(isRemote)
   or
-  exists(DataFlow::TypeTracker t2 | result = getAnExitNodeTypeTracker(base, arg, t2).track(t2, t))
+  exists(DataFlow::TypeTracker t2 | result = trackExitNode(base, isRemote, t2).track(t2, t))
 }
 
-// helper predicate for typebacktracking of portal entry nodes
-// parallel to getAnExitNodeTypeTracker above
-private DataFlow::SourceNode getAnEntryNodeTypeBackTracker(
-  Portal base, boolean arg, DataFlow::TypeBackTracker t
+/**
+ * Gets an entry node for the specified portal, using TypeBackTracking.
+ * 
+ * Parallel to trackExitNode above.
+ */
+private DataFlow::SourceNode trackEntryNode(
+  Portal base, boolean escapes, DataFlow::TypeBackTracker t
 ) {
   t.start() and
-  result = base.getAnEntryNode(arg).getALocalSource()
+  result = base.getAnEntryNode(escapes).getALocalSource()
   or
   exists(DataFlow::TypeBackTracker t2 |
-    result = getAnEntryNodeTypeBackTracker(base, arg, t2).backtrack(t2, t)
+    result = trackEntryNode(base, escapes, t2).backtrack(t2, t)
   )
 }
 
@@ -285,9 +291,9 @@ private class MemberPortal extends CompoundPortal, MkMemberPortal {
 private module MemberPortal {
   /** Gets a node representing a value flowing through `base`, that is, either an entry node or an exit node. */
   private DataFlow::SourceNode portalBaseRef(Portal base, boolean escapes) {
-    result = getAnExitNodeTypeTracker(base, escapes, DataFlow::TypeTracker::end())
+    result = trackExitNode(base, escapes, DataFlow::TypeTracker::end())
     or
-    result = getAnEntryNodeTypeBackTracker(base, escapes, DataFlow::TypeBackTracker::end())
+    result = trackEntryNode(base, escapes, DataFlow::TypeBackTracker::end())
   }
 
   /** Holds if `read` is a read of property `prop` of a value flowing through `base`. */
@@ -367,13 +373,13 @@ private module InstancePortal {
     Portal base, DataFlow::SourceNode ctor, AbstractInstance i, boolean escapes
   ) {
     ctor = DataFlow::valueNode(i.getConstructor().getDefinition()) and
-    ctor.flowsTo(getAnEntryNodeTypeBackTracker(base, escapes, DataFlow::TypeBackTracker::end())) and
+    ctor = trackEntryNode(base, escapes, DataFlow::TypeBackTracker::end()) and
     instantiable(ctor)
   }
 
   /** Holds if `nd` is an expression evaluating to an instance of `base`. */
   predicate instanceUse(Portal base, DataFlow::SourceNode nd, boolean isRemote) {
-    nd = getAnExitNodeTypeTracker(base, isRemote, DataFlow::TypeTracker::end()).getAnInstantiation()
+    nd = trackExitNode(base, isRemote, DataFlow::TypeTracker::end()).getAnInstantiation()
     or
     isInstance(base, _, nd.analyze().getAValue(), isRemote)
   }
@@ -440,15 +446,14 @@ class ParameterPortal extends CompoundPortal, MkParameterPortal {
 private module ParameterPortal {
   /** Holds if `param` is the `i`th parameter of a function flowing through `base`. */
   predicate parameter(Portal base, int i, DataFlow::SourceNode param, boolean isRemote) {
-    param = getAnEntryNodeTypeBackTracker(base, isRemote, DataFlow::TypeBackTracker::end())
-          /*base.getAnEntryNode(isRemote).getALocalSource()*/ .(DataFlow::FunctionNode)
+    param = trackEntryNode(base, isRemote, DataFlow::TypeBackTracker::end()).(DataFlow::FunctionNode)
           .getParameter(i)
   }
 
   /** Holds if `arg` is the `i`th argument passed to an invocation of a function flowing through `base`. */
   predicate argument(Portal base, int i, DataFlow::Node arg, boolean escapes) {
     exists(DataFlow::InvokeNode invk |
-      invk = getAnExitNodeTypeTracker(base, escapes, DataFlow::TypeTracker::end()).getAnInvocation() and
+      invk = trackExitNode(base, escapes, DataFlow::TypeTracker::end()).getAnInvocation() and
       arg = invk.getArgument(i)
     )
   }
@@ -476,13 +481,13 @@ class ReturnPortal extends CompoundPortal, MkReturnPortal {
 private module ReturnPortal {
   /** Holds if `invk` is a call to a function flowing through `callee`. */
   predicate calls(DataFlow::InvokeNode invk, Portal callee, boolean isRemote) {
-    invk = getAnExitNodeTypeTracker(callee, isRemote, DataFlow::TypeTracker::end())
+    invk = trackExitNode(callee, isRemote, DataFlow::TypeTracker::end())
           .getAnInvocation()
   }
 
   /** Holds if `ret` is a return node of a function flowing through `callee`. */
   predicate returns(Portal base, DataFlow::Node ret, boolean escapes) {
-    ret = getAnEntryNodeTypeBackTracker(base, escapes, DataFlow::TypeBackTracker::end())
+    ret = trackEntryNode(base, escapes, DataFlow::TypeBackTracker::end())
           .(DataFlow::FunctionNode)
           .getAReturn()
   }
