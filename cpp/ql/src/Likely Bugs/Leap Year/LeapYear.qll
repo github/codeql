@@ -195,13 +195,20 @@ class StructTmLeapYearFieldAccess extends LeapYearFieldAccess {
 }
 
 /**
+ * `Function` that includes an operation that is checking for leap year.
+ */
+class ChecksForLeapYearFunction extends Function {
+  ChecksForLeapYearFunction() {
+    this = any(CheckForLeapYearOperation clyo).getEnclosingFunction()
+  }
+}
+
+/**
  * `FunctionCall` that includes an operation that is checking for leap year.
  */
 class ChecksForLeapYearFunctionCall extends FunctionCall {
   ChecksForLeapYearFunctionCall() {
-    exists(Function f, CheckForLeapYearOperation clyo | f.getACallToThisFunction() = this |
-      clyo.getEnclosingFunction() = f
-    )
+    this.getTarget() instanceof ChecksForLeapYearFunction
   }
 }
 
