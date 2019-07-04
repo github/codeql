@@ -6,7 +6,7 @@ void test1()
 	long l;
 	void *ptr;
 
-	printf("%l\n", l); // GOOD
+	printf("%ld\n", l); // GOOD
 	printf("%d\n", l); // BAD
 
 	printf("%p\n", ptr); // GOOD
