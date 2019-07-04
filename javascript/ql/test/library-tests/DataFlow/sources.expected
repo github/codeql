@@ -85,6 +85,10 @@
 | tst.js:111:23:111:25 | v2c |
 | tst.js:111:29:111:31 | o2c |
 | tst.js:111:36:111:38 | o2d |
+| tst.js:115:1:115:5 | Array |
+| tst.js:115:1:115:10 | Array.call |
+| tst.js:115:1:115:12 | Array.call() |
+| tst.js:115:1:115:12 | reflective call |
 | tst.ts:1:1:1:0 | this |
 | tst.ts:3:3:3:8 | setX() |
 | tst.ts:7:1:7:0 | this |
