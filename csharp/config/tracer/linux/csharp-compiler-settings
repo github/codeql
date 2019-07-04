@@ -1,3 +1,6 @@
+**/Semmle.Extraction.CSharp.Driver:
+  order compiler
+  trace no
 **/mcs.exe:
 **/csc.exe:
   invoke ${env.SEMMLE_PLATFORM_TOOLS}/csharp/Semmle.Extraction.CSharp.Driver

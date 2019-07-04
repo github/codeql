@@ -1,5 +1,6 @@
 **\fakes*.exe:
 **\moles*.exe:
+**\Semmle.Extraction.CSharp.Driver.exe:
   order compiler
   trace no
 **\csc*.exe:
