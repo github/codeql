@@ -5269,3 +5269,43 @@ ir.cpp:
 # 1149|     v13_0(void) = NoOp       : 
 # 1133|     v13_1(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
+
+perf-regression.cpp:
+#    6| void Big::Big()
+#    6|   Block 0
+#    6|     v0_0(void)                    = EnterFunction        : 
+#    6|     mu0_1(unknown)                = AliasedDefinition    : 
+#    6|     mu0_2(unknown)                = UnmodeledDefinition  : 
+#    6|     r0_3(glval<Big>)              = InitializeThis       : 
+#    6|     r0_4(glval<char[1073741824]>) = FieldAddress[buffer] : r0_3
+#    6|     r0_5(int)                     = Constant[0]          : 
+#    6|     r0_6(glval<char>)             = PointerAdd           : r0_4, r0_5
+#    6|     r0_7(unknown[1073741824])     = Constant[0]          : 
+#    6|     mu0_8(unknown[1073741824])    = Store                : &:r0_6, r0_7
+#    6|     v0_9(void)                    = NoOp                 : 
+#    6|     v0_10(void)                   = ReturnVoid           : 
+#    6|     v0_11(void)                   = UnmodeledUse         : mu*
+#    6|     v0_12(void)                   = ExitFunction         : 
+
+#    9| int main()
+#    9|   Block 0
+#    9|     v0_0(void)           = EnterFunction                 : 
+#    9|     mu0_1(unknown)       = AliasedDefinition             : 
+#    9|     mu0_2(unknown)       = UnmodeledDefinition           : 
+#   10|     r0_3(glval<Big *>)   = VariableAddress[big]          : 
+#   10|     r0_4(glval<unknown>) = FunctionAddress[operator new] : 
+#   10|     r0_5(unsigned long)  = Constant[1073741824]          : 
+#   10|     r0_6(void *)         = Call                          : func:r0_4, 0:r0_5
+#   10|     mu0_7(unknown)       = ^CallSideEffect               : ~mu0_2
+#   10|     r0_8(Big *)          = Convert                       : r0_6
+#   10|     r0_9(glval<unknown>) = FunctionAddress[Big]          : 
+#   10|     v0_10(void)          = Call                          : func:r0_9, this:r0_8
+#   10|     mu0_11(unknown)      = ^CallSideEffect               : ~mu0_2
+#   10|     mu0_12(Big *)        = Store                         : &:r0_3, r0_8
+#   12|     r0_13(glval<int>)    = VariableAddress[#return]      : 
+#   12|     r0_14(int)           = Constant[0]                   : 
+#   12|     mu0_15(int)          = Store                         : &:r0_13, r0_14
+#    9|     r0_16(glval<int>)    = VariableAddress[#return]      : 
+#    9|     v0_17(void)          = ReturnValue                   : &:r0_16, ~mu0_2
+#    9|     v0_18(void)          = UnmodeledUse                  : mu*
+#    9|     v0_19(void)          = ExitFunction                  : 

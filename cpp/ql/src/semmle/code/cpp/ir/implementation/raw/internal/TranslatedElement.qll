@@ -441,7 +441,7 @@ private predicate isFirstValueInitializedElementInRange(
   initList.isValueInitialized(elementIndex) and
   (
     elementIndex = 0 or
-    not initList.isValueInitialized(elementIndex - 1)
+    exists(initList.getElementExpr(elementIndex - 1))
   )
 }
 
