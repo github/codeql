@@ -115,6 +115,15 @@ class Portal extends TPortal {
   abstract int depth();
 }
 
+
+private DataFlow::SourceNode getAnExitNodeTypeTracker(Portal base, boolean arg, DataFlow::TypeTracker t) {
+	t.start() and
+	result = base.getAnExitNode(arg)
+	or
+	exists(DataFlow::TypeTracker t2 | result = getAnExitNodeTypeTracker(base, arg, t2).track(t2, t))
+}
+
+
 /**
  * A portal representing the exports value of the main module of an npm
  * package (that is, a value of `module.exports` for CommonJS modules, or
@@ -131,16 +140,9 @@ private class NpmPackagePortal extends Portal, MkNpmPackagePortal {
   /** Gets the name of the npm package. */
   string getName() { result = pkgName }
 
-  private DataFlow::SourceNode getAnExitNode(boolean isRemote, DataFlow::TypeTracker t) {
-    t.start() and
+  override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
     NpmPackagePortal::imports(result, pkgName) and
     isRemote = false
-    or
-    exists(DataFlow::TypeTracker t2 | result = getAnExitNode(isRemote, t2).track(t2, t))
-  }
-
-  override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-    result = getAnExitNode(isRemote, DataFlow::TypeTracker::end())
   }
 
   override DataFlow::Node getAnEntryNode(boolean escapes) {
@@ -253,15 +255,8 @@ private class MemberPortal extends CompoundPortal, MkMemberPortal {
   /** Gets the name of this member. */
   string getName() { result = prop }
 
-  private DataFlow::SourceNode getAnExitNode(boolean isRemote, DataFlow::TypeTracker t) {
-    t.start() and
-    MemberPortal::reads(base, prop, result, isRemote)
-    or
-    exists(DataFlow::TypeTracker t2 | result = getAnExitNode(isRemote, t2).track(t2, t))
-  }
-
   override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-    result = getAnExitNode(isRemote, DataFlow::TypeTracker::end())
+    MemberPortal::reads(base, prop, result, isRemote)
   }
 
   override DataFlow::Node getAnEntryNode(boolean escapes) {
@@ -274,7 +269,7 @@ private class MemberPortal extends CompoundPortal, MkMemberPortal {
 private module MemberPortal {
   /** Gets a node representing a value flowing through `base`, that is, either an entry node or an exit node. */
   private DataFlow::SourceNode portalBaseRef(Portal base, boolean escapes) {
-    result = base.getAnExitNode(escapes)
+    result = getAnExitNodeTypeTracker(base, escapes, DataFlow::TypeTracker::end())//base.getAnExitNode(escapes)
     or
     result = base.getAnEntryNode(escapes).getALocalSource()
   }
@@ -329,15 +324,8 @@ private module MemberPortal {
 private class InstancePortal extends CompoundPortal, MkInstancePortal {
   InstancePortal() { this = MkInstancePortal(base) }
 
-  private DataFlow::SourceNode getAnExitNode(boolean isRemote, DataFlow::TypeTracker t) {
-    t.start() and
-    InstancePortal::instanceUse(base, result, isRemote)
-    or
-    exists(DataFlow::TypeTracker t2 | result = getAnExitNode(isRemote, t2).track(t2, t))
-  }
-
   override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-    result = getAnExitNode(isRemote, DataFlow::TypeTracker::end())
+    InstancePortal::instanceUse(base, result, isRemote)
   }
 
   override DataFlow::Node getAnEntryNode(boolean escapes) {
@@ -369,7 +357,7 @@ private module InstancePortal {
 
   /** Holds if `nd` is an expression evaluating to an instance of `base`. */
   predicate instanceUse(Portal base, DataFlow::SourceNode nd, boolean isRemote) {
-    nd = base.getAnExitNode(isRemote).getAnInstantiation()
+    nd = getAnExitNodeTypeTracker(base, isRemote, DataFlow::TypeTracker::end()).getAnInstantiation() //base.getAnExitNode(isRemote).getAnInstantiation()
     or
     isInstance(base, _, nd.analyze().getAValue(), isRemote)
   }
@@ -422,15 +410,8 @@ class ParameterPortal extends CompoundPortal, MkParameterPortal {
   /** Gets the index of the parameterb represented by this portal. */
   int getIndex() { result = i }
 
-  private DataFlow::SourceNode getAnExitNode(boolean isRemote, DataFlow::TypeTracker t) {
-    t.start() and
-    ParameterPortal::parameter(base, i, result, isRemote)
-    or
-    exists(DataFlow::TypeTracker t2 | result = getAnExitNode(isRemote, t2).track(t2, t))
-  }
-
   override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-    result = getAnExitNode(isRemote, DataFlow::TypeTracker::end())
+    ParameterPortal::parameter(base, i, result, isRemote)
   }
 
   override DataFlow::Node getAnEntryNode(boolean escapes) {
@@ -449,7 +430,7 @@ private module ParameterPortal {
   /** Holds if `arg` is the `i`th argument passed to an invocation of a function flowing through `base`. */
   predicate argument(Portal base, int i, DataFlow::Node arg, boolean escapes) {
     exists(DataFlow::InvokeNode invk |
-      invk = base.getAnExitNode(escapes).getAnInvocation() and
+      invk = getAnExitNodeTypeTracker(base, escapes, DataFlow::TypeTracker::end()).getAnInvocation() and //base.getAnExitNode(escapes).getAnInvocation() and
       arg = invk.getArgument(i)
     )
   }
@@ -463,15 +444,8 @@ private module ParameterPortal {
 class ReturnPortal extends CompoundPortal, MkReturnPortal {
   ReturnPortal() { this = MkReturnPortal(base) }
 
-  private DataFlow::SourceNode getAnExitNode(boolean isRemote, DataFlow::TypeTracker t) {
-    t.start() and
-    ReturnPortal::calls(result, base, isRemote)
-    or
-    exists(DataFlow::TypeTracker t2 | result = getAnExitNode(isRemote, t2).track(t2, t))
-  }
-
   override DataFlow::SourceNode getAnExitNode(boolean isRemote) {
-    result = getAnExitNode(isRemote, DataFlow::TypeTracker::end())
+    ReturnPortal::calls(result, base, isRemote)
   }
 
   override DataFlow::Node getAnEntryNode(boolean escapes) {
@@ -484,7 +458,7 @@ class ReturnPortal extends CompoundPortal, MkReturnPortal {
 private module ReturnPortal {
   /** Holds if `invk` is a call to a function flowing through `callee`. */
   predicate calls(DataFlow::InvokeNode invk, Portal callee, boolean isRemote) {
-    invk = callee.getAnExitNode(isRemote).getAnInvocation()
+    invk = getAnExitNodeTypeTracker(callee, isRemote, DataFlow::TypeTracker::end())//callee.getAnExitNode(isRemote).getAnInvocation()
   }
 
   /** Holds if `ret` is a return node of a function flowing through `callee`. */
