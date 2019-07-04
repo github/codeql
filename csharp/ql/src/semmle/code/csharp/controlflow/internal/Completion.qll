@@ -655,8 +655,8 @@ class BreakNormalCompletion extends NormalCompletion, TBreakNormalCompletion {
  * }
  * ```
  *
- * `System.Console.WriteLine("M called")` inherits the throw completion
- * from `throw new Exception` with an underlying simple completion.
+ * `System.Console.WriteLine("M called")` has an outer throw completion
+ * from `throw new Exception` and an inner simple completion.
  */
 class NestedCompletion extends Completion, TNestedCompletion {
   private NormalCompletion inner;
@@ -682,7 +682,10 @@ class ReturnCompletion extends Completion {
     this = TNestedCompletion(_, TReturnCompletion())
   }
 
-  override string toString() { this = TReturnCompletion() and result = "return" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TReturnCompletion() and result = "return"
+  }
 }
 
 /**
@@ -696,7 +699,10 @@ class BreakCompletion extends Completion {
     this = TNestedCompletion(_, TBreakCompletion())
   }
 
-  override string toString() { this = TBreakCompletion() and result = "break" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TBreakCompletion() and result = "break"
+  }
 }
 
 /**
@@ -710,7 +716,10 @@ class ContinueCompletion extends Completion {
     this = TNestedCompletion(_, TContinueCompletion())
   }
 
-  override string toString() { this = TContinueCompletion() and result = "continue" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TContinueCompletion() and result = "continue"
+  }
 }
 
 /**
@@ -738,6 +747,7 @@ class GotoLabelCompletion extends GotoCompletion {
   GotoLabelStmt getGotoStmt() { result = goto }
 
   override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
     this = TGotoLabelCompletion(goto) and result = "goto(" + this.getLabel() + ")"
   }
 }
@@ -761,6 +771,7 @@ class GotoCaseCompletion extends GotoCompletion {
   GotoCaseStmt getGotoStmt() { result = goto }
 
   override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
     this = TGotoCaseCompletion(goto) and result = "goto case(" + this.getLabel() + ")"
   }
 }
@@ -775,7 +786,10 @@ class GotoDefaultCompletion extends GotoCompletion {
     this = TNestedCompletion(_, TGotoDefaultCompletion())
   }
 
-  override string toString() { this = TGotoDefaultCompletion() and result = "goto default" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TGotoDefaultCompletion() and result = "goto default"
+  }
 }
 
 /**
@@ -793,7 +807,10 @@ class ThrowCompletion extends Completion {
   /** Gets the type of the exception being thrown. */
   ExceptionClass getExceptionClass() { result = ec }
 
-  override string toString() { this = TThrowCompletion(ec) and result = "throw(" + ec + ")" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TThrowCompletion(ec) and result = "throw(" + ec + ")"
+  }
 }
 
 /**
@@ -811,5 +828,8 @@ class ExitCompletion extends Completion {
     this = TNestedCompletion(_, TExitCompletion())
   }
 
-  override string toString() { this = TExitCompletion() and result = "exit" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TExitCompletion() and result = "exit"
+  }
 }
