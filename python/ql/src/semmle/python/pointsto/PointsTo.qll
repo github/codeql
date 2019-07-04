@@ -667,10 +667,16 @@ private module InterModulePointsTo {
     pragma [noinline]
     private EssaVariable ssa_variable_for_module_attribute(ImportMemberNode f, PointsToContext context) {
         exists(string name, ModuleObjectInternal mod, Module m |
-            mod.getSourceModule() = m and m = f.getEnclosingModule() and m = result.getScope() and
+            mod.getSourceModule() = m and m = result.getScope() and
             PointsToInternal::pointsTo(f.getModule(name), context, mod, _) and
-            result.getSourceVariable().getName() = name and result.getAUse() = f
+            result = ssa_helper(f, name, m)
         )
+    }
+
+    pragma [noinline]
+    private EssaVariable ssa_helper(ImportMemberNode f, string name, Module m) {
+        result.getSourceVariable().getName() = name and result.getAUse() = f
+        and m = f.getEnclosingModule()
     }
 
     /* Helper for implicit_submodule_points_to */

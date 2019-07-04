@@ -142,7 +142,12 @@ class ReModulePointToExtension extends PointsToExtension {
             sre_constants.attribute("SRE_FLAG_" + name, value, orig) and
             origin = orig.asCfgNodeOrHere(this)
         )
-        and context.appliesTo(this)
+        and pointsTo_helper(context)
+    }
+
+    pragma [noinline]
+    predicate pointsTo_helper(Context context) {
+        context.appliesTo(this)
     }
 
 }
