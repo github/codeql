@@ -174,6 +174,17 @@ bad_asts.cpp:
 #   27|                   Type = const Point &
 #   27|                   ValueCategory = prvalue(load)
 #   28|     1: return ...
+clang.cpp:
+#    5| int* globalIntAddress()
+#    5|   params: 
+#    5|   body: { ... }
+#    6|     0: return ...
+#    6|       0: __builtin_addressof ...
+#    6|           Type = int *
+#    6|           ValueCategory = prvalue
+#    6|         0: globalInt
+#    6|             Type = int
+#    6|             ValueCategory = lvalue
 ir.cpp:
 #    1| void Constants()
 #    1|   params: 

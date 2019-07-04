@@ -727,7 +727,8 @@ class TranslatedTransparentUnaryOperation extends TranslatedTransparentExpr {
       expr instanceof PointerDereferenceExpr or
       // &x is the same as x. &x isn't loadable, but is included
       // here to avoid having two nearly identical classes.
-      expr instanceof AddressOfExpr
+      expr instanceof AddressOfExpr or
+      expr instanceof BuiltInOperationBuiltInAddressOf
     )
   }
 
