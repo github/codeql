@@ -743,7 +743,7 @@ module BooleanSplitting {
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       succ = succ(pred, c) and
       this.getSubKind().startsSplit(pred) and
-      c = any(BooleanCompletion bc | bc.getInnerValue() = this.getBranch())
+      this.getBranch() = c.getInnerCompletion().(BooleanCompletion).getValue()
     }
 
     private ConditionBlock getACorrelatedCondition(boolean inverted) {
@@ -760,9 +760,11 @@ module BooleanSplitting {
         (exists(succ(last, c)) or exists(succExit(last, c))) and
         // Respect the value recorded in this split for all correlated conditions
         forall(boolean inverted | bb = this.getACorrelatedCondition(inverted) |
-          c instanceof BooleanCompletion
+          c.getInnerCompletion() instanceof BooleanCompletion
           implies
-          c = any(BooleanCompletion bc | bc.getInnerValue() = this.getBranch().booleanXor(inverted))
+          c.getInnerCompletion().(BooleanCompletion).getValue() = this
+                .getBranch()
+                .booleanXor(inverted)
         )
       )
     }

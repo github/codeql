@@ -91,20 +91,24 @@ class PreBasicBlock extends ControlFlowElement {
 
 class ConditionBlock extends PreBasicBlock {
   ConditionBlock() {
-    strictcount(ConditionalCompletion c |
-      exists(succ(this.getLastElement(), c))
-      or
-      exists(succExit(this.getLastElement(), c))
+    strictcount(Completion c |
+      c.getInnerCompletion() instanceof ConditionalCompletion and
+      (
+        exists(succ(this.getLastElement(), c))
+        or
+        exists(succExit(this.getLastElement(), c))
+      )
     ) > 1
   }
 
-  private predicate immediatelyControls(PreBasicBlock succ, ConditionalCompletion c) {
-    succ = succ(this.getLastElement(), c) and
+  private predicate immediatelyControls(PreBasicBlock succ, ConditionalCompletion cc) {
+    succ = succ(this.getLastElement(), any(Completion c | c.getInnerCompletion() = cc)) and
     forall(PreBasicBlock pred | pred = succ.getAPredecessor() and pred != this |
       succ.dominates(pred)
     )
   }
 
+  pragma[nomagic]
   predicate controls(PreBasicBlock controlled, SuccessorTypes::ConditionalSuccessor s) {
     exists(PreBasicBlock succ, ConditionalCompletion c | immediatelyControls(succ, c) |
       succ.dominates(controlled) and
