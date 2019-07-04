@@ -746,6 +746,10 @@ module ControlFlow {
         result = TSelf(any(Completion c | c.isValidFor(cfe)))
       }
 
+      private TRec specificBoolean(boolean value) {
+        result = TRec(TLastRecSpecificCompletion(any(BooleanCompletion bc | bc.getValue() = value)))
+      }
+
       /**
        * Gets an element from which the last element of `cfe` can be computed
        * (recursively) based on computation specification `c`. The predicate
@@ -788,7 +792,7 @@ module ControlFlow {
         cfe = any(LogicalAndExpr lae |
             // Left operand exits with a false completion
             result = lae.getLeftOperand() and
-            c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+            c = specificBoolean(false)
             or
             // Left operand exits abnormally
             result = lae.getLeftOperand() and
@@ -802,7 +806,7 @@ module ControlFlow {
         cfe = any(LogicalOrExpr loe |
             // Left operand exits with a true completion
             result = loe.getLeftOperand() and
-            c = TRec(TLastRecSpecificCompletion(any(TrueCompletion tc)))
+            c = specificBoolean(true)
             or
             // Left operand exits abnormally
             result = loe.getLeftOperand() and
@@ -887,7 +891,7 @@ module ControlFlow {
         cfe = any(IfStmt is |
             // Condition exits with a false completion and there is no `else` branch
             result = is.getCondition() and
-            c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc))) and
+            c = specificBoolean(false) and
             not exists(is.getElse())
             or
             // Condition exits abnormally
@@ -936,7 +940,7 @@ module ControlFlow {
               c = TRec(TLastRecSpecificNegCompletion(any(MatchingCompletion mc | mc.isMatch())))
               or
               result = cs.getCondition() and
-              c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+              c = specificBoolean(false)
             )
             or
             // Last statement exits with any non-break completion
@@ -966,7 +970,7 @@ module ControlFlow {
         cfe = any(Case case |
             // Condition exists with a `false` completion
             result = case.getCondition() and
-            c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+            c = specificBoolean(false)
             or
             // Condition exists abnormally
             result = case.getCondition() and
@@ -987,7 +991,7 @@ module ControlFlow {
         |
           // Condition exits with a false completion
           result = ls.getCondition() and
-          c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+          c = specificBoolean(false)
           or
           // Condition exits abnormally
           result = ls.getCondition() and
@@ -1046,7 +1050,7 @@ module ControlFlow {
               or
               // Incompatible filter
               result = scc.getFilterClause() and
-              c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+              c = specificBoolean(false)
             )
           )
         or
