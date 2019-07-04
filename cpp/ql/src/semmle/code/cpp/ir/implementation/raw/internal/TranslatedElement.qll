@@ -67,6 +67,12 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // Do not translate input/output variables in GNU asm statements
   getRealParent(expr) instanceof AsmStmt or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
+  // We do not yet translate destructors properly, so for now we ignore any
+  // custom deallocator call, if present.
+  or
+  exists(DeleteExpr deleteExpr | deleteExpr.getAllocatorCall() = expr)
+  or
+  exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getAllocatorCall() = expr)
 }
 
 /**
@@ -80,6 +86,13 @@ private predicate ignoreExprOnly(Expr expr) {
     newExpr.getAllocatorCall() = expr
   ) or
   not translateFunction(expr.getEnclosingFunction())
+  or
+  // We do not yet translate destructors properly, so for now we ignore the
+  // destructor call. We do, however, translate the expression being
+  // destructed, and that expression can be a child of the destructor call.
+  exists(DeleteExpr deleteExpr | deleteExpr.getDestructorCall() = expr)
+  or
+  exists(DeleteArrayExpr deleteArrayExpr | deleteArrayExpr.getDestructorCall() = expr)
 }
 
 /**

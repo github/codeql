@@ -12,12 +12,28 @@
 #-----|         Type = void *
 #-----|     1: p#1
 #-----|         Type = unsigned long
+#-----| void operator delete(void*, unsigned long, std::align_val_t)
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = void *
+#-----|     1: p#1
+#-----|         Type = unsigned long
+#-----|     2: p#2
+#-----|         Type = align_val_t
 #-----| void operator delete[](void*, unsigned long)
 #-----|   params: 
 #-----|     0: p#0
 #-----|         Type = void *
 #-----|     1: p#1
 #-----|         Type = unsigned long
+#-----| void operator delete[](void*, unsigned long, std::align_val_t)
+#-----|   params: 
+#-----|     0: p#0
+#-----|         Type = void *
+#-----|     1: p#1
+#-----|         Type = unsigned long
+#-----|     2: p#2
+#-----|         Type = align_val_t
 #-----| void* operator new(unsigned long)
 #-----|   params: 
 #-----|     0: p#0
@@ -6647,6 +6663,162 @@ ir.cpp:
 # 1002|       0: (statement expression)
 # 1002|           Type = int
 # 1002|           ValueCategory = prvalue
+# 1006| void OperatorDelete()
+# 1006|   params: 
+# 1006|   body: { ... }
+# 1007|     0: ExprStmt
+# 1007|       0: delete
+# 1007|           Type = void
+# 1007|           ValueCategory = prvalue
+# 1007|         3: static_cast<int *>...
+# 1007|             Conversion = pointer conversion
+# 1007|             Type = int *
+# 1007|             Value = 0
+# 1007|             ValueCategory = prvalue
+# 1007|           expr: 0
+# 1007|               Type = decltype(nullptr)
+# 1007|               Value = 0
+# 1007|               ValueCategory = prvalue
+# 1008|     1: ExprStmt
+# 1008|       0: delete
+# 1008|           Type = void
+# 1008|           ValueCategory = prvalue
+# 1008|         1: call to ~String
+# 1008|             Type = void
+# 1008|             ValueCategory = prvalue
+# 1008|           -1: static_cast<String *>...
+# 1008|               Conversion = pointer conversion
+# 1008|               Type = String *
+# 1008|               Value = 0
+# 1008|               ValueCategory = prvalue
+# 1008|             expr: 0
+# 1008|                 Type = decltype(nullptr)
+# 1008|                 Value = 0
+# 1008|                 ValueCategory = prvalue
+# 1009|     2: ExprStmt
+# 1009|       0: delete
+# 1009|           Type = void
+# 1009|           ValueCategory = prvalue
+# 1009|         0: call to operator delete
+# 1009|             Type = void
+# 1009|             ValueCategory = prvalue
+# 1009|         3: static_cast<SizedDealloc *>...
+# 1009|             Conversion = pointer conversion
+# 1009|             Type = SizedDealloc *
+# 1009|             Value = 0
+# 1009|             ValueCategory = prvalue
+# 1009|           expr: 0
+# 1009|               Type = decltype(nullptr)
+# 1009|               Value = 0
+# 1009|               ValueCategory = prvalue
+# 1010|     3: ExprStmt
+# 1010|       0: delete
+# 1010|           Type = void
+# 1010|           ValueCategory = prvalue
+# 1010|         3: static_cast<Overaligned *>...
+# 1010|             Conversion = pointer conversion
+# 1010|             Type = Overaligned *
+# 1010|             Value = 0
+# 1010|             ValueCategory = prvalue
+# 1010|           expr: 0
+# 1010|               Type = decltype(nullptr)
+# 1010|               Value = 0
+# 1010|               ValueCategory = prvalue
+# 1011|     4: ExprStmt
+# 1011|       0: delete
+# 1011|           Type = void
+# 1011|           ValueCategory = prvalue
+# 1011|         1: call to ~PolymorphicBase
+# 1011|             Type = void
+# 1011|             ValueCategory = prvalue
+# 1011|           -1: static_cast<PolymorphicBase *>...
+# 1011|               Conversion = pointer conversion
+# 1011|               Type = PolymorphicBase *
+# 1011|               Value = 0
+# 1011|               ValueCategory = prvalue
+# 1011|             expr: 0
+# 1011|                 Type = decltype(nullptr)
+# 1011|                 Value = 0
+# 1011|                 ValueCategory = prvalue
+# 1012|     5: return ...
+# 1015| void OperatorDeleteArray()
+# 1015|   params: 
+# 1015|   body: { ... }
+# 1016|     0: ExprStmt
+# 1016|       0: delete[]
+# 1016|           Type = void
+# 1016|           ValueCategory = prvalue
+# 1016|         3: static_cast<int *>...
+# 1016|             Conversion = pointer conversion
+# 1016|             Type = int *
+# 1016|             Value = 0
+# 1016|             ValueCategory = prvalue
+# 1016|           expr: 0
+# 1016|               Type = decltype(nullptr)
+# 1016|               Value = 0
+# 1016|               ValueCategory = prvalue
+# 1017|     1: ExprStmt
+# 1017|       0: delete[]
+# 1017|           Type = void
+# 1017|           ValueCategory = prvalue
+# 1017|         1: call to ~String
+# 1017|             Type = void
+# 1017|             ValueCategory = prvalue
+# 1017|           -1: static_cast<String *>...
+# 1017|               Conversion = pointer conversion
+# 1017|               Type = String *
+# 1017|               Value = 0
+# 1017|               ValueCategory = prvalue
+# 1017|             expr: 0
+# 1017|                 Type = decltype(nullptr)
+# 1017|                 Value = 0
+# 1017|                 ValueCategory = prvalue
+# 1018|     2: ExprStmt
+# 1018|       0: delete[]
+# 1018|           Type = void
+# 1018|           ValueCategory = prvalue
+# 1018|         0: call to operator delete[]
+# 1018|             Type = void
+# 1018|             ValueCategory = prvalue
+# 1018|         3: static_cast<SizedDealloc *>...
+# 1018|             Conversion = pointer conversion
+# 1018|             Type = SizedDealloc *
+# 1018|             Value = 0
+# 1018|             ValueCategory = prvalue
+# 1018|           expr: 0
+# 1018|               Type = decltype(nullptr)
+# 1018|               Value = 0
+# 1018|               ValueCategory = prvalue
+# 1019|     3: ExprStmt
+# 1019|       0: delete[]
+# 1019|           Type = void
+# 1019|           ValueCategory = prvalue
+# 1019|         3: static_cast<Overaligned *>...
+# 1019|             Conversion = pointer conversion
+# 1019|             Type = Overaligned *
+# 1019|             Value = 0
+# 1019|             ValueCategory = prvalue
+# 1019|           expr: 0
+# 1019|               Type = decltype(nullptr)
+# 1019|               Value = 0
+# 1019|               ValueCategory = prvalue
+# 1020|     4: ExprStmt
+# 1020|       0: delete[]
+# 1020|           Type = void
+# 1020|           ValueCategory = prvalue
+# 1020|         1: call to ~PolymorphicBase
+# 1020|             Type = void
+# 1020|             ValueCategory = prvalue
+# 1020|           -1: static_cast<PolymorphicBase *>...
+# 1020|               Conversion = pointer conversion
+# 1020|               Type = PolymorphicBase *
+# 1020|               Value = 0
+# 1020|               ValueCategory = prvalue
+# 1020|             expr: 0
+# 1020|                 Type = decltype(nullptr)
+# 1020|                 Value = 0
+# 1020|                 ValueCategory = prvalue
+# 1021|     5: return ...
 # 1023| EmptyStruct& EmptyStruct::operator=(EmptyStruct const&)
 # 1023|   params: 
 #-----|     0: p#0
