@@ -33,6 +33,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case SymbolKind.Parameter:
                     return ExprKind.PARAMETER_ACCESS;
 
+                case SymbolKind.Namespace:
+                    return ExprKind.NAMESPACE_ACCESS;
+
                 default:
                     cx.ModelError(symbol, $"Unhandled access kind '{symbol.Kind}'");
                     return ExprKind.UNKNOWN;

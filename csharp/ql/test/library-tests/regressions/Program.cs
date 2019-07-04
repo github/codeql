@@ -164,4 +164,9 @@ unsafe class ArrayTypesTest
   int*[][] field;
 }
 
+class NameofNamespace
+{
+    string s = nameof(System);
+}
+
 // semmle-extractor-options: /r:System.Dynamic.Runtime.dll
