@@ -3,8 +3,7 @@
 | (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/index.js:12:25:12:24 | this | true |
 | (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/index.js:16:1:16:12 | NP.prototype | true |
 | (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/index.js:16:24:16:23 | this | true |
-| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/simpleParam.js:4:10:4:16 | new n() | true |
-| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/simpleParam.js:23:35:23:38 | dest | true |
+| (instance (member NP (root https://www.npmjs.com/package/typeTracking))) | src/typeTracking/nonlocalDataflowRead.js:4:10:4:16 | new n() | true |
 | (instance (member Promise (root https://www.npmjs.com/package/bluebird))) | src/bluebird/index.js:1:1:1:0 | this | true |
 | (instance (member Promise (root https://www.npmjs.com/package/bluebird))) | src/bluebird/index.js:5:1:5:17 | Promise.prototype | true |
 | (instance (member Promise (root https://www.npmjs.com/package/bluebird))) | src/bluebird/index.js:5:26:5:25 | this | true |
@@ -16,9 +15,9 @@
 | (instance (member default (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:5:1:5:11 | new A("me") | false |
 | (instance (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:4:1:4:11 | new A("me") | false |
 | (instance (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:5:1:5:11 | new A("me") | false |
-| (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking)))) | src/typeTracking/simpleParam.js:10:14:10:24 | np.createNP | true |
+| (member argFunc (return (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking)))))) | src/typeTracking/nonlocalDataflowRead.js:11:3:11:27 | getPort ... argFunc | true |
+| (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking)))) | src/typeTracking/nonlocalDataflowRead.js:7:9:7:19 | np.createNP | true |
 | (member default (root https://www.npmjs.com/package/m2)) | src/m3/tst3.js:1:8:1:8 | A | false |
-| (member f (return (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking)))))) | src/typeTracking/simpleParam.js:12:3:12:6 | cn.f | true |
 | (member foo (root https://www.npmjs.com/package/m2)) | src/m3/tst2.js:1:10:1:12 | foo | false |
 | (member m (instance (member default (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:4:1:4:13 | new A("me").m | false |
 | (member m (instance (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:4:1:4:13 | new A("me").m | false |
@@ -741,10 +740,10 @@
 | (parameter 0 (return (return (return (return (return (return (return (member foo (root https://www.npmjs.com/package/cyclic)))))))))) | src/cyclic/index.js:1:14:1:15 | cb | true |
 | (parameter 0 (root https://www.npmjs.com/package/m1)) | src/m1/index.js:1:19:1:19 | x | true |
 | (parameter 1 (member then (instance (member Promise (root https://www.npmjs.com/package/bluebird))))) | src/bluebird/index.js:5:46:5:53 | rejected | true |
-| (return (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking))))) | src/typeTracking/simpleParam.js:10:14:10:26 | np.createNP() | true |
+| (return (member argFunc (return (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking))))))) | src/typeTracking/nonlocalDataflowRead.js:11:3:11:29 | getPort ... gFunc() | true |
+| (return (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking))))) | src/typeTracking/nonlocalDataflowRead.js:7:9:7:21 | np.createNP() | true |
 | (return (member default (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:4:1:4:11 | new A("me") | false |
 | (return (member default (root https://www.npmjs.com/package/m2))) | src/m3/tst3.js:5:1:5:11 | new A("me") | false |
-| (return (member f (return (member createNP (instance (member NP (root https://www.npmjs.com/package/typeTracking))))))) | src/typeTracking/simpleParam.js:12:3:14:6 | cn.f( ( ... \\n    }) | true |
 | (return (member foo (root https://www.npmjs.com/package/m2))) | src/m3/tst2.js:5:1:5:13 | foo({ x: o }) | false |
 | (return (member m (instance (member default (root https://www.npmjs.com/package/m2))))) | src/m3/tst3.js:4:1:4:19 | new A("me").m("hi") | false |
 | (return (member m (instance (root https://www.npmjs.com/package/m2)))) | src/m3/tst3.js:4:1:4:19 | new A("me").m("hi") | false |
