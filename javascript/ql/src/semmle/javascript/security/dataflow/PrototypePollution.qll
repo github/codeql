@@ -162,7 +162,7 @@ module PrototypePollution {
       version.maybeBefore("4.0.1")
       or
       id = "lodash" + any(string s) and
-      version.maybeBefore("4.17.11")
+      version.maybeBefore("4.17.12")
       or
       id = "merge" and
       version.maybeBefore("1.2.1")
