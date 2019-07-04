@@ -159,4 +159,9 @@ namespace NoPia
     }
 }
 
+unsafe class ArrayTypesTest
+{
+  int*[][] field;
+}
+
 // semmle-extractor-options: /r:System.Dynamic.Runtime.dll

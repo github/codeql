@@ -22,6 +22,18 @@ namespace Semmle.Extraction.CSharp.Entities
             Loc = loc;
         }
 
+        static TypeSyntax GetArrayElementType(ArrayTypeSyntax array)
+        {
+            return array.ElementType is ArrayTypeSyntax a ? 
+                GetArrayElementType(a) :
+                array.ElementType;
+        }
+
+        static Type GetArrayElementType(Type t)
+        {
+            return t is ArrayType a ? GetArrayElementType(a.ElementType.Type) : t;
+        }
+
         void Populate()
         {
             switch (Syntax.Kind())
@@ -30,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     var ats = (ArrayTypeSyntax)Syntax;
                     var at = (ArrayType)Type;
                     Emit(Loc ?? Syntax.GetLocation(), Parent, Type);
-                    Create(cx, ats.ElementType, this, at.ElementType);
+                    Create(cx, GetArrayElementType(ats), this, GetArrayElementType(at));
                     return;
                 case SyntaxKind.NullableType:
                     var nts = (NullableTypeSyntax)Syntax;

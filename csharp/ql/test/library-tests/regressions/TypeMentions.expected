@@ -76,3 +76,6 @@
 | Program.cs:157:31:157:50 | EmbeddedTypesManager<,> |
 | Program.cs:157:52:157:72 | TEmbeddedTypesManager |
 | Program.cs:157:75:157:87 | TEmbeddedType |
+| Program.cs:164:3:164:5 | Int32 |
+| Program.cs:164:3:164:6 | Int32* |
+| Program.cs:164:3:164:10 | Int32*[][] |
