@@ -161,7 +161,7 @@ namespace NoPia
 
 unsafe class ArrayTypesTest
 {
-  int*[][] field;
+    int*[][] field;
 }
 
 class NameofNamespace
@@ -169,4 +169,15 @@ class NameofNamespace
     string s = nameof(System);
 }
 
-// semmle-extractor-options: /r:System.Dynamic.Runtime.dll
+class UsingDiscard
+{
+    void F()
+    {
+        foreach(var _ in new IDisposable[] { })
+            using(_)
+            {
+            }
+    }
+}
+
+// semmle-extractor-options: /r:System.Dynamic.Runtime.dll /langversion:8.0

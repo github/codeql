@@ -22,16 +22,30 @@ namespace Semmle.Extraction.CSharp.Entities
             Loc = loc;
         }
 
-        static TypeSyntax GetArrayElementType(ArrayTypeSyntax array)
+        static TypeSyntax GetElementType(TypeSyntax type)
         {
-            return array.ElementType is ArrayTypeSyntax a ? 
-                GetArrayElementType(a) :
-                array.ElementType;
+            switch(type)
+            {
+                case ArrayTypeSyntax ats:
+                    return GetElementType(ats.ElementType);
+                case NullableTypeSyntax nts:
+                    return GetElementType(nts.ElementType);
+                default:
+                    return type;
+            }
         }
 
-        static Type GetArrayElementType(Type t)
+        static Type GetElementType(Type t)
         {
-            return t is ArrayType a ? GetArrayElementType(a.ElementType.Type) : t;
+            switch(t)
+            {
+                case ArrayType at:
+                    return GetElementType(at.ElementType.Type);
+                case NamedType nt when nt.symbol.IsBoundNullable():
+                    return nt.TypeArguments.Single();
+                default:
+                    return t;
+            }
         }
 
         void Populate()
@@ -39,10 +53,8 @@ namespace Semmle.Extraction.CSharp.Entities
             switch (Syntax.Kind())
             {
                 case SyntaxKind.ArrayType:
-                    var ats = (ArrayTypeSyntax)Syntax;
-                    var at = (ArrayType)Type;
                     Emit(Loc ?? Syntax.GetLocation(), Parent, Type);
-                    Create(cx, GetArrayElementType(ats), this, GetArrayElementType(at));
+                    Create(cx, GetElementType(Syntax), this, GetElementType(Type));
                     return;
                 case SyntaxKind.NullableType:
                     var nts = (NullableTypeSyntax)Syntax;
