@@ -699,11 +699,11 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   abstract int getElementIndex();
 
   final InstructionTag getElementAddressTag() {
-    result = InitializerElementAddressTag(getElementIndex())
+    result = InitializerElementAddressTag()
   }
 
   final InstructionTag getElementIndexTag() {
-    result = InitializerElementIndexTag(getElementIndex())
+    result = InitializerElementIndexTag()
   }
 
   final ArrayAggregateLiteral getInitList() {
@@ -861,11 +861,11 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
   }
   
   private InstructionTag getElementDefaultValueTag() {
-    result = InitializerElementDefaultValueTag(elementIndex)
+    result = InitializerElementDefaultValueTag()
   }
 
   private InstructionTag getElementDefaultValueStoreTag() {
-    result = InitializerElementDefaultValueStoreTag(elementIndex)
+    result = InitializerElementDefaultValueStoreTag()
   }
 
   private Type getDefaultValueType() {

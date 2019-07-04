@@ -9,12 +9,6 @@ private predicate fieldIsInitialized(Field field) {
   )
 }
 
-private predicate elementIsInitialized(int elementIndex) {
-  exists(ArrayAggregateLiteral initList |
-    initList.isInitialized(elementIndex)
-  )
-}
-
 newtype TInstructionTag =
   OnlyInstructionTag() or  // Single instruction (not including implicit Load)
   InitializeThisTag() or
@@ -73,18 +67,10 @@ newtype TInstructionTag =
   InitializerFieldDefaultValueStoreTag(Field field) {
     fieldIsInitialized(field)
   } or
-  InitializerElementIndexTag(int elementIndex) {
-    elementIsInitialized(elementIndex)
-  } or
-  InitializerElementAddressTag(int elementIndex) {
-    elementIsInitialized(elementIndex)
-  } or
-  InitializerElementDefaultValueTag(int elementIndex) {
-    elementIsInitialized(elementIndex)
-  } or
-  InitializerElementDefaultValueStoreTag(int elementIndex) {
-    elementIsInitialized(elementIndex)
-  } or
+  InitializerElementIndexTag() or
+  InitializerElementAddressTag() or
+  InitializerElementDefaultValueTag() or
+  InitializerElementDefaultValueStoreTag() or
   AsmTag() or
   AsmInputTag(int elementIndex) {
     exists(AsmStmt asm |
@@ -159,15 +145,10 @@ string getInstructionTagId(TInstructionTag tag) {
     ) and
     result = tagName + "(" + index + ")"
   ) or
-  exists(int index, string tagName |
-    (
-      tag = InitializerElementIndexTag(index) and tagName = "InitElemIndex" or
-      tag = InitializerElementAddressTag(index) and tagName = "InitElemAddr" or
-      tag = InitializerElementDefaultValueTag(index) and tagName = "InitElemDefVal" or
-      tag = InitializerElementDefaultValueStoreTag(index) and tagName = "InitElemDefValStore"
-    ) and
-    result = tagName + "(" + index + ")"
-  ) or
+  tag = InitializerElementIndexTag() and result = "InitElemIndex" or
+  tag = InitializerElementAddressTag() and result = "InitElemAddr" or
+  tag = InitializerElementDefaultValueTag() and result = "InitElemDefVal" or
+  tag = InitializerElementDefaultValueStoreTag() and result = "InitElemDefValStore" or
   tag = AsmTag() and result = "Asm" or
   exists(int index |
     tag = AsmInputTag(index) and result = "AsmInputTag(" + index + ")"

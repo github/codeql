@@ -255,9 +255,10 @@ class ArrayAggregateLiteral extends AggregateLiteral {
    * list, either explicitly with an expression, or implicitly value
    * initialized.
    */
-  pragma[inline]
+  bindingset[elementIndex]
   predicate isInitialized(int elementIndex) {
-    elementIndex in [0..arrayType.getArraySize() - 1]
+    elementIndex >= 0 and
+    elementIndex < arrayType.getArraySize()
   }
 
   /**
@@ -268,7 +269,7 @@ class ArrayAggregateLiteral extends AggregateLiteral {
    * of an object to `false`, `0`, `nullptr`, or by calling the default
    * constructor, as appropriate to the type.
    */
-  pragma[inline]
+  bindingset[elementIndex]
   predicate isValueInitialized(int elementIndex) {
     isInitialized(elementIndex) and
     not exists(getElementExpr(elementIndex))
