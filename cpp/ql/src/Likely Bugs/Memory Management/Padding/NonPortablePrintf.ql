@@ -84,5 +84,5 @@ where (
       and not arg.isAffectedByMacro()
       and size32 = ilp32.paddedSize(actual) and size64 = lp64.paddedSize(actual)
       and size64 != size32
-select arg, "This argument should be of type "+expected.getName()+" but is of type "+actual.getName() +
-  " (which changes size from " + size32 + " to " + size64 + " on 64-bit systems)."
+select arg, "This argument should be of type '" + expected.getName() + "' but is of type '" + actual.getName() +
+  "' (which changes size from " + size32 + " to " + size64 + " on 64-bit systems)."
