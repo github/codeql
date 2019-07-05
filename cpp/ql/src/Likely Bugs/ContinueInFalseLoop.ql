@@ -12,11 +12,17 @@
 
 import cpp
 
+/**
+ * Gets a `do` ... `while` loop with a constant false condition.
+ */
 DoStmt getAFalseLoop() {
   result.getControllingExpr().getValue() = "0"
   and not result.getControllingExpr().isAffectedByMacro()
 }
 
+/**
+ * Gets a `do` ... `while` loop surrounding a statement.
+ */
 DoStmt enclosingLoop(Stmt s) {
   exists(Stmt parent |
     parent = s.getParent() and
