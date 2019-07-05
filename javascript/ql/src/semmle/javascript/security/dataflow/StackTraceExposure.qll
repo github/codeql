@@ -1,21 +1,21 @@
 /**
- * Provides a taint-tracking configuration for reasoning about stack trace
- * exposure problems.
+ * Provides a taint-tracking configuration for reasoning about stack
+ * trace exposure problems.
+ *
+ * Note, for performance reasons: only import this file if
+ * `StackTraceExposure::Configuration` is needed, otherwise
+ * `StackTraceExposureCustomizations` should be imported instead.
  */
 
 import javascript
 
 module StackTraceExposure {
-  /**
-   * A data flow source for stack trace exposure vulnerabilities.
-   */
-  abstract class Source extends DataFlow::Node { }
+  import StackTraceExposureCustomizations::StackTraceExposure
 
   /**
-   * A data flow sink for stack trace exposure vulnerabilities.
+   * A taint-tracking configuration for reasoning about stack trace
+   * exposure problems.
    */
-  abstract class Sink extends DataFlow::Node { }
-
   class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "StackTraceExposure" }
 
@@ -34,24 +34,5 @@ module StackTraceExposure {
     }
 
     override predicate isSink(DataFlow::Node snk) { snk instanceof Sink }
-  }
-
-  /**
-   * A read of the `stack` property of an exception, viewed as a data flow
-   * sink for stack trace exposure vulnerabilities.
-   */
-  class DefaultSource extends Source, DataFlow::Node {
-    DefaultSource() {
-      // any exception is a source
-      this = DataFlow::parameterNode(any(TryStmt try).getACatchClause().getAParameter())
-    }
-  }
-
-  /**
-   * An expression that can become part of an HTTP response body, viewed
-   * as a data flow sink for stack trace exposure vulnerabilities.
-   */
-  class DefaultSink extends Sink, DataFlow::ValueNode {
-    override HTTP::ResponseBody astNode;
   }
 }
