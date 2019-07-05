@@ -251,6 +251,20 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
     not exists(resolvedName()) and
     globalName = getName()
   }
+
+  override DataFlow::ClassNode getClass() {
+    exists(string name |
+      hasQualifiedName(name) and
+      result.hasQualifiedName(name)
+    )
+    or
+    // Handle case where a local variable has a reference to the class,
+    // but the class doesn't have a globally qualified name.
+    exists(string alias, JSDoc::Environment env |
+      hasNamePartsAndEnv(alias, "", env) and
+      result.getAClassReference().flowsTo(env.getNodeFromAlias(alias))
+    )
+  }
 }
 
 /**
@@ -277,6 +291,10 @@ class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
   override predicate hasQualifiedName(string globalName) {
     getHead().hasQualifiedName(globalName)
   }
+
+  override DataFlow::ClassNode getClass() {
+    result = getHead().getClass()
+  }
 }
 
 /**
@@ -290,6 +308,10 @@ class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
 
   override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
+
+  override DataFlow::ClassNode getClass() {
+    result = getTypeExpr().getClass()
+  }
 }
 
 /**
@@ -303,6 +325,10 @@ class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeE
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
 
   override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
+
+  override DataFlow::ClassNode getClass() {
+    result = getTypeExpr().getClass()
+  }
 }
 
 /**
@@ -373,6 +399,10 @@ class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTyp
   JSDocTypeExpr getUnderlyingType() { result = getChild(0) }
 
   override JSDocTypeExpr getAnUnderlyingType() { result = getUnderlyingType().getAnUnderlyingType() }
+
+  override DataFlow::ClassNode getClass() {
+    result = getUnderlyingType().getClass()
+  }
 }
 
 /**

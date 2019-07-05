@@ -105,4 +105,11 @@ class TypeAnnotation extends @type_annotation, Locatable {
    * Note that this has no result for JSDoc type annotations.
    */
   Type getType() { none() }
+
+  /**
+   * Gets the class referenced by this type annotation, if any.
+   *
+   * This unfolds nullability modifiers and generic type applications.
+   */
+  DataFlow::ClassNode getClass() { none() }
 }
