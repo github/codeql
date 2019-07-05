@@ -163,6 +163,7 @@ class PrintASTNode extends TPrintASTNode {
  * A concatenation of all the leaf QL types of `el`
  */
 private string qlClass(ElementBase el) { result = "["+ el.getCanonicalQLClass() + "]: " }
+//private string qlClass(ElementBase el) { result = "["+ concat(el.getAQlClass(), ",") + "]: " }
 
 /**
  * A node representing an AST node.

@@ -52,8 +52,9 @@ pragma[inline]
 class ElementBase extends @element {
   /** Gets a textual representation of this element. */
   string toString() { none() }
-  /** Retrieves canonical QL class(es) corresponding to this element. */
-  string getCanonicalQLClass() { result = "ElementBase" }
+
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "???" }
 }
 
 /**
@@ -63,9 +64,6 @@ class ElementBase extends @element {
 class Element extends ElementBase {
   /** Gets the primary file where this element occurs. */
   File getFile() { result = this.getLocation().getFile() }
-
-  /** Retrieves canonical QL class(es) corresponding to this element. */
-  string getCanonicalQLClass() { result = "Element" }
 
   /**
    * Holds if this element may be from source.

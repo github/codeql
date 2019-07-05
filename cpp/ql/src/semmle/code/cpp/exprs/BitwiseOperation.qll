@@ -13,6 +13,9 @@ class ComplementExpr extends UnaryBitwiseOperation, @complementexpr {
   override string getOperator() { result = "~" }
 
   override int getPrecedence() { result = 15 }
+
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "ComplementExpr" }
 }
 
 /**
@@ -29,6 +32,9 @@ class LShiftExpr extends BinaryBitwiseOperation, @lshiftexpr {
   override string getOperator() { result = "<<" }
 
   override int getPrecedence() { result = 11 }
+
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "LShiftExpr" }
 }
 
 /**
@@ -38,6 +44,9 @@ class RShiftExpr extends BinaryBitwiseOperation, @rshiftexpr {
   override string getOperator() { result = ">>" }
 
   override int getPrecedence() { result = 11 }
+
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "RShiftExpr" }
 }
 
 /**
@@ -47,6 +56,9 @@ class BitwiseAndExpr extends BinaryBitwiseOperation, @andexpr {
   override string getOperator() { result = "&" }
 
   override int getPrecedence() { result = 8 }
+
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "BitwiseAndExpr" }
 }
 
 /**
@@ -56,13 +68,19 @@ class BitwiseOrExpr extends BinaryBitwiseOperation, @orexpr {
   override string getOperator() { result = "|" }
 
   override int getPrecedence() { result = 6 }
+
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "BitwiseOrExpr" }
 }
 
 /**
- * A C/C++ bitwise or expression.
+ * A C/C++ bitwise xor expression.
  */
 class BitwiseXorExpr extends BinaryBitwiseOperation, @xorexpr {
   override string getOperator() { result = "^" }
 
   override int getPrecedence() { result = 7 }
+  
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "BitwiseXorExpr" }
 }

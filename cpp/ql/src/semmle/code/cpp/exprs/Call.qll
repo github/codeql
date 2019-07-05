@@ -149,7 +149,7 @@ class FunctionCall extends Call, @funbindexpr {
     iscall(underlyingElement(this),_)
   }
 
-  /** Retrieves canonical QL class(es) corresponding to this element. */
+  /** Canonical QL class corresponding to this element. */
   string getCanonicalQLClass() { result = "FunctionCall" }
   
   /** Gets an explicit template argument for this call. */
@@ -350,6 +350,9 @@ class ExprCall extends Call, @callexpr {
    */
   Expr getExpr() { result = this.getChild(0) }
  
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "ExprCall" }
+
   override Expr getAnArgument() {
     exists(int i | result = this.getChild(i) and i >= 1)
   }
@@ -370,6 +373,9 @@ class ExprCall extends Call, @callexpr {
 class VariableCall extends ExprCall {
   VariableCall() { this.getExpr() instanceof VariableAccess }
 
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "VariableCall" }
+
   /**
    * Gets the variable which yields the function pointer to call.
    */
@@ -384,6 +390,9 @@ class VariableCall extends ExprCall {
 class ConstructorCall extends FunctionCall {
   ConstructorCall() { super.getTarget() instanceof Constructor }
  
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "ConstructorCall" }
+
   /** Gets the constructor being called. */
   override Constructor getTarget() { result = super.getTarget() }
 }
@@ -398,6 +407,9 @@ class ThrowExpr extends Expr, @throw_expr {
    */
   Expr getExpr() { result = this.getChild(0) }
 
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "ThrowExpr" }
+
   override string toString() { result = "throw ..." }
 
   override int getPrecedence() { result = 1 }
@@ -409,6 +421,9 @@ class ThrowExpr extends Expr, @throw_expr {
 class ReThrowExpr extends ThrowExpr {
   ReThrowExpr() { this.getType() instanceof VoidType }
 
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "ReThrowExpr" }
+
   override string toString() { result = "re-throw exception " }
 }
 
@@ -418,6 +433,9 @@ class ReThrowExpr extends ThrowExpr {
 class DestructorCall extends FunctionCall {
   DestructorCall() { super.getTarget() instanceof Destructor }
  
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "DestructorCall" }
+
   /** Gets the destructor being called. */
   override Destructor getTarget() { result = super.getTarget() }
 }
@@ -434,6 +452,9 @@ class VacuousDestructorCall extends Expr, @vacuous_destructor_call {
    * Gets the expression for the object whose destructor would be called.
    */
   Expr getQualifier() { result = this.getChild(0) }
+
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "VacuousDestructorCall" }
 
   override string toString() { result = "(vacuous destructor call)" }
 }
@@ -484,6 +505,9 @@ class ConstructorFieldInit extends ConstructorInit, @ctorfieldinit {
   /** Gets the field being initialized. */
   Field getTarget() { varbind(underlyingElement(this),unresolveElement(result)) }
  
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "ConstructorFieldInit" }
+
   /**
    * Gets the expression to which the field is initialized.
    *
@@ -543,6 +567,9 @@ class DestructorFieldDestruction extends DestructorDestruction, @dtorfielddestru
   /** Gets the field being destructed. */
   Field getTarget() { varbind(underlyingElement(this),unresolveElement(result)) }
  
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "DestructorFieldDestruction" }
+
   /** Gets the compiler-generated call to the variable's destructor. */
   DestructorCall getExpr() { result = this.getChild(0) }
  

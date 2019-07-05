@@ -13,7 +13,7 @@ class Literal extends Expr, @literal {
     )
   }
 
-  /** Retrieves canonical QL class(es) corresponding to this element. */
+  /** Canonical QL class corresponding to this element. */
   string getCanonicalQLClass() { result = "Literal" }
   
   override predicate mayBeImpure() {
@@ -102,6 +102,9 @@ class CharLiteral extends TextLiteral {
     this.getValueText().regexpMatch("(?s)\\s*L?'.*")
   }
 
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "CharLiteral" }
+
   /**
    * Gets the character of this literal. For example `L'a'` has character `"a"`.
    */
@@ -120,7 +123,7 @@ class StringLiteral extends TextLiteral
     // Note that `AggregateLiteral`s can also have an array type, but they derive from
     // @aggregateliteral rather than @literal.
   }
-  /** Retrieves canonical QL class(es) corresponding to this element. */
+  /** Canonical QL class corresponding to this element. */
   string getCanonicalQLClass() { result = "StringLiteral" }
   
 }
@@ -132,6 +135,9 @@ class OctalLiteral extends Literal {
   OctalLiteral() {
     super.getValueText().regexpMatch("\\s*0[0-7]+[uUlL]*\\s*")
   }
+  
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "OctalLiteral" }
 }
 
 /**
@@ -141,6 +147,9 @@ class HexLiteral extends Literal {
   HexLiteral() {
     super.getValueText().regexpMatch("\\s*0[xX][0-9a-fA-F]+[uUlL]*\\s*")
   }
+  
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "HexLiteral" }
 }
 
 /**
@@ -172,6 +181,9 @@ class ClassAggregateLiteral extends AggregateLiteral {
   ClassAggregateLiteral() {
     classType = this.getUnspecifiedType()
   }
+
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "ClassAggregateLiteral" }
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize
@@ -231,6 +243,9 @@ class ArrayAggregateLiteral extends AggregateLiteral {
   ArrayAggregateLiteral() {
     arrayType = this.getUnspecifiedType()
   }
+
+  /** Canonical QL class corresponding to this element. */
+  string getCanonicalQLClass() { result = "ArrayAggregateLiteral" }
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize
