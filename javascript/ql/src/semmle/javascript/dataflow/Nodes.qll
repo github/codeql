@@ -724,6 +724,18 @@ class ClassNode extends DataFlow::SourceNode {
   DataFlow::SourceNode getAnInstanceReference() {
     result = getAnInstanceReference(DataFlow::TypeTracker::end())
   }
+
+  /**
+   * Holds if this class is exposed in the global scope through the given qualified name.
+   */
+  pragma[noinline]
+  predicate hasQualifiedName(string name) {
+    exists(DataFlow::Node rhs |
+      getAClassReference().flowsTo(rhs) and
+      name = GlobalAccessPath::fromRhs(rhs) and
+      GlobalAccessPath::isAssignedInUniqueFile(name)
+    )
+  }
 }
 
 module ClassNode {
