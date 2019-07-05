@@ -10,7 +10,11 @@ private import javascript
 private import internal.FlowSteps
 
 private class PropertyName extends string {
-  PropertyName() { this = any(DataFlow::PropRef pr).getPropertyName() }
+  PropertyName() {
+    this = any(DataFlow::PropRef pr).getPropertyName()
+    or
+    GlobalAccessPath::isAssignedInUniqueFile(this)
+  }
 }
 
 private class OptionalPropertyName extends string {
@@ -89,6 +93,18 @@ module StepSummary {
     or
     any(AdditionalTypeTrackingStep st).step(pred, succ) and
     summary = LevelStep()
+    or
+    exists(string name |
+      name = GlobalAccessPath::fromRhs(pred) and
+      succ = DataFlow::globalAccessPathRootPseudoNode() and
+      summary = StoreStep(name)
+    )
+    or
+    exists(string name |
+      name = GlobalAccessPath::fromReference(succ) and
+      pred = DataFlow::globalAccessPathRootPseudoNode() and
+      summary = LoadStep(name)
+    )
   }
 }
 
