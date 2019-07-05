@@ -58,15 +58,9 @@ newtype TInstructionTag =
   ThrowTag() or
   UnwindTag() or
   InitializerUninitializedTag() or
-  InitializerFieldAddressTag(Field field) {
-    fieldIsInitialized(field)
-  } or
-  InitializerFieldDefaultValueTag(Field field) {
-    fieldIsInitialized(field)
-  } or
-  InitializerFieldDefaultValueStoreTag(Field field) {
-    fieldIsInitialized(field)
-  } or
+  InitializerFieldAddressTag() or
+  InitializerFieldDefaultValueTag() or
+  InitializerFieldDefaultValueStoreTag() or
   InitializerElementIndexTag() or
   InitializerElementAddressTag() or
   InitializerElementDefaultValueTag() or
@@ -136,15 +130,9 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = CatchTag() and result = "Catch" or
   tag = ThrowTag() and result = "Throw" or
   tag = UnwindTag() and result = "Unwind" or
-  exists(Field field, Class cls, int index, string tagName |
-    field = cls.getCanonicalMember(index) and
-    (
-      tag = InitializerFieldAddressTag(field) and tagName = "InitFieldAddr" or
-      tag = InitializerFieldDefaultValueTag(field) and tagName = "InitFieldDefVal" or
-      tag = InitializerFieldDefaultValueStoreTag(field) and tagName = "InitFieldDefValStore"
-    ) and
-    result = tagName + "(" + index + ")"
-  ) or
+  tag = InitializerFieldAddressTag() and result = "InitFieldAddr" or
+  tag = InitializerFieldDefaultValueTag() and result = "InitFieldDefVal" or
+  tag = InitializerFieldDefaultValueStoreTag() and result = "InitFieldDefValStore" or
   tag = InitializerElementIndexTag() and result = "InitElemIndex" or
   tag = InitializerElementAddressTag() and result = "InitElemAddr" or
   tag = InitializerElementDefaultValueTag() and result = "InitElemDefVal" or

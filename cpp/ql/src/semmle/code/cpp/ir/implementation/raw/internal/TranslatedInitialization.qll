@@ -497,7 +497,7 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   }
 
   final InstructionTag getFieldAddressTag() {
-    result = InitializerFieldAddressTag(field)
+    result = InitializerFieldAddressTag()
   }
 
   final Field getField() {
@@ -625,11 +625,11 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization, 
   }
 
   private InstructionTag getFieldDefaultValueTag() {
-    result = InitializerFieldDefaultValueTag(field)
+    result = InitializerFieldDefaultValueTag()
   }
 
   private InstructionTag getFieldDefaultValueStoreTag() {
-    result = InitializerFieldDefaultValueStoreTag(field)
+    result = InitializerFieldDefaultValueStoreTag()
   }
 }
 
