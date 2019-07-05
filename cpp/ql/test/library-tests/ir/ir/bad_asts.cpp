@@ -1,4 +1,4 @@
-// semmle-extractor-options: -std=c++17
+// semmle-extractor-options: -std=c++17 --expect_errors
 
 // Test cases that illustrate known bad ASTs that we have to work around in IR generation.
 namespace Bad {
@@ -25,5 +25,11 @@ namespace Bad {
 
   void CallCopyConstructor(const Point& a) {
     Point b = a;  // Copy constructor contains literal expressions with no values.
+  }
+
+  void errorExpr() {
+    0 = 1;
+    int x = 0[0];
+    x = 1[1];
   }
 }

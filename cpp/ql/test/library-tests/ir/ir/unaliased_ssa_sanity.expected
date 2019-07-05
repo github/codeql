@@ -4,6 +4,7 @@ duplicateOperand
 missingPhiOperand
 missingOperandType
 instructionWithoutSuccessor
+| bad_asts.cpp:30:8:30:16 | UnmodeledDefinition: errorExpr |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
