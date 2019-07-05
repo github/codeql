@@ -6,10 +6,56 @@ private import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 
+private newtype TInstanceAccess =
+  TExplicitThisAccess(ThisExpr e) or
+  TImplicitThisForFieldAccess(FieldAccess fa) {
+    not exists(fa.getQualifier()) and not fa.getTarget().isStatic()
+  } or
+  TImplicitThisForCall(FunctionCall fc) {
+    fc.getTarget() instanceof MemberFunction and
+    not exists(fc.getQualifier()) and
+    not fc.getTarget().isStatic()
+  }
+
+private class InstanceAccess extends TInstanceAccess {
+  abstract Expr getBackingExpr();
+
+  Location getLocation() { result = getBackingExpr().getLocation() }
+
+  abstract string toString();
+}
+
+class ExplicitThisAccess extends InstanceAccess, TExplicitThisAccess {
+  override Expr getBackingExpr() { this = TExplicitThisAccess(result) }
+
+  override string toString() { result = getBackingExpr().toString() }
+}
+
+class ImplicitThisForFieldAccess extends InstanceAccess, TImplicitThisForFieldAccess {
+  override FieldAccess getBackingExpr() { this = TImplicitThisForFieldAccess(result) }
+
+  override string toString() { result = "<implicit this> for field access" }
+}
+
+class ImplicitThisForCall extends InstanceAccess, TImplicitThisForCall {
+  override FunctionCall getBackingExpr() { this = TImplicitThisForCall(result) }
+
+  override string toString() { result = "<implicit this> for call" }
+}
+
 cached
 private newtype TNode =
   TExprNode(Expr e) or
   TParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
+  TInstanceParameterNode(MemberFunction f) { exists(f.getBlock()) and not f.isStatic() } or
+  TImplicitInstanceAccessNode(InstanceAccess ia) { not ia instanceof ExplicitThisAccess } or
+  TImplicitInstancePostCallNode(InstanceAccess a) { a instanceof ImplicitThisForCall } or
+  TExplicitArgumentPostCallNode(Expr e) {
+    e = any(Call c).getAnArgument() or
+    e = any(Call c).getQualifier()
+  } or
+  TImplicitInstancePostStoreNode(InstanceAccess a) { a instanceof ImplicitThisForFieldAccess } or
+  TExplicitInstancePostStoreNode(Expr e) { e = any(FieldAccess f).getQualifier() } or
   TDefinitionByReferenceNode(VariableAccess va, Expr argument) {
     definitionByReference(va, argument)
   } or
@@ -109,6 +155,24 @@ class ParameterNode extends Node, TParameterNode {
 }
 
 /**
+ * The value of the implicit instance parameter (in other words, the `this`
+ * pointer) at function entry, viewed as a node in a data flow graph.
+ */
+class InstanceParameterNode extends Node, TInstanceParameterNode {
+  MemberFunction f;
+
+  InstanceParameterNode() { this = TInstanceParameterNode(f) }
+
+  override Function getFunction() { result = f }
+
+  override Type getType() { result.(PointerType).getBaseType() = f.getDeclaringType() }
+
+  override string toString() { result = "<this> param" }
+
+  override Location getLocation() { result = f.getLocation() }
+}
+
+/**
  * A node that represents the value of a variable after a function call that
  * may have changed the variable because it's passed by reference.
  *
@@ -177,13 +241,51 @@ class UninitializedNode extends Node, TUninitializedNode {
  * to the value before the update with the exception of `ClassInstanceExpr`,
  * which represents the value after the constructor has run.
  */
-class PostUpdateNode extends Node {
-  PostUpdateNode() { none() } // stub implementation
-
+abstract class PostUpdateNode extends Node {
   /**
    * Gets the node before the state update.
    */
-  Node getPreUpdateNode() { none() } // stub implementation
+  abstract Node getPreUpdateNode();
+
+  override Location getLocation() { result = getPreUpdateNode().getLocation() }
+
+  override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
+}
+
+class ImplicitInstanceAccess extends Node, TImplicitInstanceAccessNode {
+  InstanceAccess ia;
+
+  ImplicitInstanceAccess() { this = TImplicitInstanceAccessNode(ia) }
+
+  override string toString() { result = ia.toString() }
+
+  override Location getLocation() { result = ia.getLocation() }
+
+  InstanceAccess getInstanceAccess() { result = ia }
+}
+
+class ImplicitInstancePostCall extends PostUpdateNode, TImplicitInstancePostCallNode {
+  ImplicitThisForCall ia;
+
+  ImplicitInstancePostCall() { this = TImplicitInstancePostCallNode(ia) }
+
+  override Node getPreUpdateNode() { ia = result.(ImplicitInstanceAccess).getInstanceAccess() }
+
+  FunctionCall getCall() { result = ia.getBackingExpr() }
+}
+
+class ExplicitArgPostCall extends PostUpdateNode, TExplicitArgumentPostCallNode {
+  override Node getPreUpdateNode() { this = TExplicitArgumentPostCallNode(result.asExpr()) }
+}
+
+class ImplicitStoreTarget extends PostUpdateNode, TImplicitInstancePostStoreNode {
+  override Node getPreUpdateNode() {
+    this = TImplicitInstancePostStoreNode(result.(ImplicitInstanceAccess).getInstanceAccess())
+  }
+}
+
+class ExplicitStoreTarget extends PostUpdateNode, TExplicitInstancePostStoreNode {
+  override Node getPreUpdateNode() { this = TExplicitInstancePostStoreNode(result.asExpr()) }
 }
 
 /**
