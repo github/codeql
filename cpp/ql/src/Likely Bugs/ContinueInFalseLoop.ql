@@ -5,8 +5,8 @@
  *              a bug.
  * @kind problem
  * @id cpp/continue-in-false-loop
- * @problem.severity recommendation
- * @precision medium
+ * @problem.severity warning
+ * @precision high
  * @tags correctness
  */
 
