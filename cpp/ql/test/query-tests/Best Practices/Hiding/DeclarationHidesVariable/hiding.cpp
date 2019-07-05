@@ -27,6 +27,6 @@ namespace foo {
 void nestedRangeBasedFor() {
   int xs[4], ys[4];
   for (auto x : xs)
-    for (auto y : ys) // GOOD [FALSE POSITIVE]
+    for (auto y : ys) // GOOD
       x = y = 0;
 }
