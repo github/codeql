@@ -399,7 +399,7 @@ class FloatLiteral extends Num {
 
     FloatLiteral() {
         not this instanceof ImaginaryLiteral and
-        exists(string n | n = this.getN() | n.charAt(_) = "." or n.charAt(_) = "e" or n.charAt(_) = "E")
+        this.getN().regexpMatch(".*[.eE].*")
     }
 
     float getValue() {
@@ -427,15 +427,15 @@ class FloatLiteral extends Num {
 
 /** An imaginary numeric constant, such as `3j` */
 class ImaginaryLiteral extends Num {
+    private float value;
 
     ImaginaryLiteral() {
-        exists(string n | n = this.getN() | n.charAt(_) = "j")
+        value = this.getN().regexpCapture("(.+)j.*", 1).toFloat()
     }
 
     /** Gets the value of this constant as a floating point value */
     float getValue() {
-        exists(string s, int j | s = this.getN() and s.charAt(j) = "j" |
-                       result = s.prefix(j).toFloat())
+        result = value
     }
 
     override string toString() {

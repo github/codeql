@@ -146,8 +146,13 @@ class NonLocalVariable extends PythonSsaSourceVariable {
         this.(LocalVariable).getScope().getEntryNode() = result
     }
 
+    pragma [noinline]
+    Scope scope_as_local_variable() {
+        result = this.(LocalVariable).getScope()
+    }
+
     override CallNode redefinedAtCallSite() {
-        result.getScope().getScope*() = this.(LocalVariable).getScope()
+        result.getScope().getScope*() = this.scope_as_local_variable()
     }
 
 }
@@ -173,7 +178,7 @@ class ClassLocalVariable extends PythonSsaSourceVariable {
 class BuiltinVariable extends PythonSsaSourceVariable {
 
     BuiltinVariable() {
-        this instanceof GlobalVariable and 
+        this instanceof GlobalVariable and
         not exists(this.(Variable).getAStore()) and
         not this.(Variable).getId() = "__name__" and
         not this.(Variable).getId() = "__package__" and
@@ -207,13 +212,21 @@ class ModuleVariable extends PythonSsaSourceVariable {
         )
     }
 
-    override ControlFlowNode getAnImplicitUse() {
+    pragma [noinline]
+    CallNode global_variable_callnode() {
+        result.getScope() = this.(GlobalVariable).getScope()
+    }
+
+    pragma[noinline]
+    ImportMemberNode global_variable_import() {
         result.getScope() = this.(GlobalVariable).getScope() and
-        (
-            result instanceof CallNode
-            or
-            import_from_dot_in_init(result.(ImportMemberNode).getModule(this.getName()))
-        )
+        import_from_dot_in_init(result.(ImportMemberNode).getModule(this.getName()))
+    }
+
+    override ControlFlowNode getAnImplicitUse() {
+        result = global_variable_callnode()
+        or
+        result = global_variable_import()
         or
         exists(ImportTimeScope scope |
             scope.entryEdge(result, _) |
@@ -292,8 +305,13 @@ class EscapingGlobalVariable extends ModuleVariable {
         result = this.innerScope().getEntryNode()
     }
 
+    pragma [noinline]
+    Scope scope_as_global_variable() {
+        result = this.(GlobalVariable).getScope()
+    }
+
     override CallNode redefinedAtCallSite() {
-        result.(CallNode).getScope().getScope*() = this.(GlobalVariable).getScope()
+        result.(CallNode).getScope().getScope*() = this.scope_as_global_variable()
     }
 
 }
@@ -324,8 +342,13 @@ class SpecialSsaSourceVariable extends PythonSsaSourceVariable {
         this.getScope().getEntryNode() = result
     }
 
+    pragma [noinline]
+    Scope scope_as_global_variable() {
+        result = this.(GlobalVariable).getScope()
+    }
+
     override CallNode redefinedAtCallSite() {
-        result.(CallNode).getScope().getScope*() = this.(GlobalVariable).getScope()
+        result.(CallNode).getScope().getScope*() = this.scope_as_global_variable()
     }
 
 }
