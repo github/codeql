@@ -85,7 +85,7 @@ void test1(int x)
 		default:
 			// do [2]
 
-			continue; // break out of the loop entirely, skipping [3] [FALSE POSITIVE]
+			continue; // GOOD; break out of the loop entirely, skipping [3]
 		};
 
 		// do [3]
