@@ -550,6 +550,10 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
   override StmtContainer getContainer() { result = ExprOrType.super.getContainer() }
 
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
+
+  override DataFlow::ClassNode getClass() {
+    result.getAstNode() = getType().(ClassType).getClass()
+  }
 }
 
 /**
