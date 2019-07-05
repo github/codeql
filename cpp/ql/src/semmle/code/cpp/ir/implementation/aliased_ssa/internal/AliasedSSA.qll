@@ -183,6 +183,14 @@ class UnknownVirtualVariable extends TUnknownVirtualVariable, VirtualVariable {
 Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
   // The def and the use must have the same virtual variable, or no overlap is possible.
   def.getVirtualVariable() = use.getVirtualVariable() and
+  // restrict the result set to be O(defs * uses)
+  // the def must be a def
+  def = getResultMemoryLocation(_) and
+  // the "use" must be a use or an entire virtual variable (used for chi node overlap computations)
+  (
+    use = getOperandMemoryLocation(_) or
+    use instanceof VirtualVariable
+  ) and
   (
     // An UnknownVirtualVariable must totally overlap any location within the same virtual variable.
     def instanceof UnknownVirtualVariable and result instanceof MustTotallyOverlap or
