@@ -1,15 +1,9 @@
 missingOperand
-| bad_asts.cpp:32:12:32:16 | Store: <error expr> | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | bad_asts.cpp:30:8:30:16 | IR: errorExpr | void Bad::errorExpr() |
-| file://:0:0:0:0 | Load: <error expr> | Instruction 'Load' is missing an expected operand with tag 'Address' in function '$@'. | bad_asts.cpp:30:8:30:16 | IR: errorExpr | void Bad::errorExpr() |
-| file://:0:0:0:0 | Load: <error expr> | Instruction 'Load' is missing an expected operand with tag 'Address' in function '$@'. | bad_asts.cpp:30:8:30:16 | IR: errorExpr | void Bad::errorExpr() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
 instructionWithoutSuccessor
-| bad_asts.cpp:30:8:30:16 | UnmodeledDefinition: errorExpr |
-| bad_asts.cpp:32:9:32:9 | VariableAddress: definition of x |
-| bad_asts.cpp:32:12:32:16 | Store: <error expr> |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

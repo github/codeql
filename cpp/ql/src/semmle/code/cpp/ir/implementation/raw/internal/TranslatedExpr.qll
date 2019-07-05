@@ -2862,3 +2862,36 @@ class TranslatedStmtExpr extends TranslatedNonConstantExpr {
     result = getTranslatedStmt(expr.getStmt())
   }
 }
+
+class TranslatedErrorExpr extends TranslatedSingleInstructionExpr {
+  override ErrorExpr expr;
+
+  TranslatedErrorExpr() {
+    // The extractor deliberately emits an `ErrorExpr` as the first argument to
+    // the allocator call, if any, of a `NewOrNewArrayExpr`. That `ErrorExpr`
+    // should not be translated.
+    not exists(NewOrNewArrayExpr new | expr = new.getAllocatorCall().getArgument(0))
+  }
+
+  override final Instruction getFirstInstruction() {
+    result = getInstruction(OnlyInstructionTag())
+  }
+
+  override final TranslatedElement getChild(int id) { none() }
+
+  override final Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  override final Instruction getChildSuccessor(TranslatedElement child) { none() }
+
+  override final Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    none()
+  }
+
+  override final Opcode getOpcode() {
+    result instanceof Opcode::NoOp
+  }
+}
