@@ -1,7 +1,7 @@
 
 bool cond();
 
-void test1()
+void test1(int x)
 {
 	int i;
 
@@ -72,4 +72,23 @@ void test1()
 				break;
 		} while (true);
 	} while (false);
+
+	do
+	{
+		switch (x)
+		{
+		case 1:
+			// do [1]
+
+			break; // break out of the switch
+
+		default:
+			// do [2]
+
+			continue; // break out of the loop entirely, skipping [3] [FALSE POSITIVE]
+		};
+
+		// do [3]
+
+	} while (0);
 }
