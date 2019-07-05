@@ -146,7 +146,7 @@ class ReModulePointToExtension extends PointsToExtension {
     }
 
     pragma [noinline]
-    predicate pointsTo_helper(Context context) {
+    private predicate pointsTo_helper(Context context) {
         context.appliesTo(this)
     }
 
