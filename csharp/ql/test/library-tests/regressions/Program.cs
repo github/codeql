@@ -180,4 +180,4 @@ class UsingDiscard
     }
 }
 
-// semmle-extractor-options: /r:System.Dynamic.Runtime.dll /langversion:8.0
+// semmle-extractor-options: /r:System.Dynamic.Runtime.dll

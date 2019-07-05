@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         static TypeSyntax GetElementType(TypeSyntax type)
         {
-            switch(type)
+            switch (type)
             {
                 case ArrayTypeSyntax ats:
                     return GetElementType(ats.ElementType);
@@ -35,16 +35,16 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        static Type GetElementType(Type t)
+        static Type GetElementType(Type type)
         {
-            switch(t)
+            switch (type)
             {
                 case ArrayType at:
                     return GetElementType(at.ElementType.Type);
                 case NamedType nt when nt.symbol.IsBoundNullable():
                     return nt.TypeArguments.Single();
                 default:
-                    return t;
+                    return type;
             }
         }
 
