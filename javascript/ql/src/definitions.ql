@@ -147,7 +147,15 @@ predicate typedInvokeLookup(ASTNode ref, ASTNode decl, string kind) {
   )
 }
 
-from ASTNode ref, ASTNode decl, string kind
+/**
+ * Holds if `ref` is a JSDoc type annotation referring to a class defined at `decl`.
+ */
+predicate jsdocTypeLookup(JSDocNamedTypeExpr ref, ASTNode decl, string kind) {
+  decl = ref.getClass().getAstNode() and
+  kind = "T"
+}
+
+from Locatable ref, ASTNode decl, string kind
 where
   variableDefLookup(ref, decl, kind)
   or
@@ -161,4 +169,6 @@ where
   typeLookup(ref, decl, kind)
   or
   typedInvokeLookup(ref, decl, kind)
+  or
+  jsdocTypeLookup(ref, decl, kind)
 select ref, decl, kind
