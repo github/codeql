@@ -34,6 +34,7 @@ predicate isCompiledAsC(Function f) {
 from FunctionCall fc, Function f
 where
   f = fc.getTarget() and
+  f.getNumberOfParameters() = 0 and
   not f.isVarargs() and
   hasZeroParamDecl(f) and
   isCompiledAsC(f) and

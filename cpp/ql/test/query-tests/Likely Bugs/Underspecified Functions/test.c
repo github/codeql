@@ -38,7 +38,7 @@ void test(int *argv[]) {
 
   int x;
   declared_empty_defined_with(&x); // BAD
-  declared_empty_defined_with(3, &x); // BAD
+  declared_empty_defined_with(3, &x); // BAD [NOT DETECTED]
 
   not_declared_defined_with(-1, 0, 2U); // GOOD
   not_declared_defined_with(4LL, 0, 2.5e9f); // BAD
@@ -114,3 +114,13 @@ unsigned int defined_with_ptr_arr(unsigned int *ptr[]) {
 void declared_and_defined_empty() {
 	return;
 }
+
+extern int will_be_k_and_r();
+
+int call_k_and_r(int i) {
+	return will_be_k_and_r(i);  // GOOD
+}
+
+int will_be_k_and_r(val)
+  int val;
+{ return val + 1; }
