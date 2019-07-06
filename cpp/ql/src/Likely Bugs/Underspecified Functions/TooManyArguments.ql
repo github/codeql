@@ -5,7 +5,7 @@
  *              that the code does not follow the author's intent.
  * @kind problem
  * @problem.severity warning
- * @precision very-high
+ * @precision low
  * @id cpp/futile-params
  * @tags correctness
  *       maintainability
