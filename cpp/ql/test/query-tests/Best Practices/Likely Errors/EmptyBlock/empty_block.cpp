@@ -76,8 +76,8 @@ int f(int x) {
     if constexpr(1) {
       f();
     } else {
-	  f();
-	}
+      f();
+    }
   }
 
   return 1;
