@@ -1,3 +1,5 @@
+// semmle-extractor-options: -std=c++17
+
 // GOOD:
 void f() {
 }
