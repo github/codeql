@@ -681,6 +681,7 @@
 | Conditions.cs:73:13:73:17 | Int32 x = ... | Conditions.cs:73:17:73:17 | 0 |
 | Conditions.cs:73:17:73:17 | 0 | Conditions.cs:73:17:73:17 | 0 |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:27:74:28 | access to parameter ss |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:74:22:74:22 | String _ |
 | Conditions.cs:74:27:74:28 | access to parameter ss | Conditions.cs:74:27:74:28 | access to parameter ss |
 | Conditions.cs:75:9:80:9 | {...} | Conditions.cs:75:9:80:9 | {...} |
 | Conditions.cs:76:13:77:20 | if (...) ... | Conditions.cs:76:13:77:20 | if (...) ... |
@@ -713,6 +714,7 @@
 | Conditions.cs:89:13:89:17 | Int32 x = ... | Conditions.cs:89:17:89:17 | 0 |
 | Conditions.cs:89:17:89:17 | 0 | Conditions.cs:89:17:89:17 | 0 |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:27:90:28 | access to parameter ss |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:90:22:90:22 | String _ |
 | Conditions.cs:90:27:90:28 | access to parameter ss | Conditions.cs:90:27:90:28 | access to parameter ss |
 | Conditions.cs:91:9:98:9 | {...} | Conditions.cs:91:9:98:9 | {...} |
 | Conditions.cs:92:13:93:20 | if (...) ... | Conditions.cs:92:13:93:20 | if (...) ... |
@@ -973,6 +975,7 @@
 | Foreach.cs:9:13:9:13 | ; | Foreach.cs:9:13:9:13 | ; |
 | Foreach.cs:13:5:16:5 | {...} | Foreach.cs:13:5:16:5 | {...} |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:27:14:30 | access to parameter args |
+| Foreach.cs:14:22:14:22 | String _ | Foreach.cs:14:22:14:22 | String _ |
 | Foreach.cs:14:27:14:30 | access to parameter args | Foreach.cs:14:27:14:30 | access to parameter args |
 | Foreach.cs:15:13:15:13 | ; | Foreach.cs:15:13:15:13 | ; |
 | Foreach.cs:19:5:22:5 | {...} | Foreach.cs:19:5:22:5 | {...} |

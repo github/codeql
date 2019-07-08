@@ -102,6 +102,7 @@
 | Discards.cs:20:17:20:17 | Double y | Discards.cs:20:17:20:17 | Double y |
 | Discards.cs:20:32:20:32 | Boolean z | Discards.cs:20:22:20:33 | call to method f |
 | Discards.cs:23:27:23:30 | args | Discards.cs:23:10:23:16 | enter Foreach |
+| Discards.cs:25:22:25:22 | String _ | Discards.cs:25:22:25:22 | String _ |
 | Discards.cs:30:24:30:24 | o | Discards.cs:30:10:30:15 | enter Switch |
 | Finally.cs:5:16:5:16 | b | Finally.cs:5:9:5:9 | enter M |
 | Finally.cs:7:13:7:17 | Int32 i = ... | Finally.cs:7:13:7:17 | Int32 i = ... |
