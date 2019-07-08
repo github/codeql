@@ -43,16 +43,24 @@
 | tst.js:50:14:53:3 | () {\\n   ... et`\\n  } |
 | tst.js:51:5:51:13 | super(42) |
 | tst.js:58:1:58:3 | tag |
+| tst.js:61:1:61:5 | ::o.m |
 | tst.js:61:3:61:5 | o.m |
+| tst.js:62:1:62:4 | o::g |
 | tst.js:64:1:64:0 | this |
 | tst.js:64:1:67:1 | functio ... lysed\\n} |
+| tst.js:65:3:65:10 | yield 42 |
+| tst.js:66:13:66:25 | function.sent |
 | tst.js:68:12:68:14 | h() |
 | tst.js:69:1:69:9 | iter.next |
 | tst.js:69:1:69:13 | iter.next(23) |
 | tst.js:71:1:71:0 | this |
 | tst.js:71:1:73:1 | async f ... lysed\\n} |
+| tst.js:72:3:72:11 | await p() |
 | tst.js:72:9:72:9 | p |
 | tst.js:72:9:72:11 | p() |
+| tst.js:75:9:75:21 | import('foo') |
+| tst.js:83:11:83:28 | [ for (v of o) v ] |
+| tst.js:85:11:85:28 | ( for (v of o) v ) |
 | tst.js:87:1:96:2 | (functi ... r: 0\\n}) |
 | tst.js:87:2:87:1 | this |
 | tst.js:87:2:92:1 | functio ...  + z;\\n} |
