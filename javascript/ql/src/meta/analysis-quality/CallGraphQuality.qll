@@ -40,6 +40,14 @@ class RelevantInvoke extends InvokeNode {
   RelevantInvoke() { not getFile() instanceof IgnoredFile }
 }
 
+/** An call site that is relevant for analysis quality. */
+class RelevantFunction extends Function {
+  RelevantFunction() {
+    not getFile() instanceof IgnoredFile and
+    hasBody() // ignore abstract or ambient functions
+  }
+}
+
 /**
  * Holds if `name` is a the name of an external module.
  */
@@ -136,7 +144,7 @@ SourceNode externalNode() {
 }
 
 /**
- * Gets a data flow node that can be resolved to a callback.
+ * Gets a data flow node that can be resolved to a function, usually a callback.
  *
  * These are not part of the static call graph, but the data flow analysis can
  * track them, so we consider them resolved.
@@ -147,6 +155,26 @@ SourceNode resolvableCallback() {
   exists(Node arg |
     FlowSteps::argumentPassing(_, arg, _, result) and
     resolvableCallback().flowsTo(arg)
+  )
+}
+
+/**
+ * Gets a data flow node that can be resolved to an invocation of a callback.
+ *
+ * These are not part of the static call graph, but the data flow analysis can
+ * track them, so we consider them resolved.
+ */
+SourceNode nodeLeadingToInvocation() {
+  exists(result.getAnInvocation())
+  or
+  exists(Node arg |
+    FlowSteps::argumentPassing(_, arg, _, nodeLeadingToInvocation()) and
+    result.flowsTo(arg)
+  )
+  or
+  exists(AdditionalPartialInvokeNode invoke, Node arg |
+    invoke.isPartialArgument(arg, _, _) and
+    result.flowsTo(arg)
   )
 }
 
@@ -203,5 +231,25 @@ class UnresolvableCall extends RelevantInvoke {
 class NonExternalCall extends RelevantInvoke {
   NonExternalCall() {
     not this instanceof ExternalCall
+  }
+}
+
+/**
+ * A function with at least one call site.
+ */
+class FunctionWithCallers extends RelevantFunction {
+  FunctionWithCallers() {
+    FlowSteps::calls(_, this)
+    or
+    this = nodeLeadingToInvocation().getAstNode()
+  }
+}
+
+/**
+ * A function without any call sites.
+ */
+class FunctionWithoutCallers extends RelevantFunction {
+  FunctionWithoutCallers() {
+    not this instanceof FunctionWithCallers
   }
 }
