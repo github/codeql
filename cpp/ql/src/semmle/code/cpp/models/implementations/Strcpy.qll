@@ -4,7 +4,7 @@ import semmle.code.cpp.models.interfaces.Taint
 
 
 /**
- * The standard function `stract` and its wide, sized, and Microsoft variants.
+ * The standard function `strcpy` and its wide, sized, and Microsoft variants.
  */
 class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction {
   StrcpyFunction() {
