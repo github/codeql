@@ -38,7 +38,7 @@ void test(int *argv[]) {
 
   int x;
   declared_empty_defined_with(&x); // BAD
-  declared_empty_defined_with(3, &x); // BAD [NOT DETECTED]
+  declared_empty_defined_with(3, &x); // BAD
 
   not_declared_defined_with(-1, 0, 2U); // GOOD
   not_declared_defined_with(4LL, 0, 2.5e9f); // BAD

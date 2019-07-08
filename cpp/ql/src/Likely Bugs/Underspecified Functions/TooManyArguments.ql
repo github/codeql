@@ -5,7 +5,7 @@
  *              that the code does not follow the author's intent.
  * @kind problem
  * @problem.severity warning
- * @precision high
+ * @precision very-high
  * @id cpp/futile-params
  * @tags correctness
  *       maintainability
@@ -34,7 +34,6 @@ predicate isCompiledAsC(Function f) {
 from FunctionCall fc, Function f
 where
   f = fc.getTarget() and
-  f.getNumberOfParameters() = 0 and
   not f.isVarargs() and
   hasZeroParamDecl(f) and
   isCompiledAsC(f) and
