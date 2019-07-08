@@ -12,7 +12,7 @@ class LambdaExpression extends Expr, @lambdaexpr {
   }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "LambdaExpression" }
+  override string getCanonicalQLClass() { result = "LambdaExpression" }
 
   /**
    * Gets an implicitly or explicitly captured value of this lambda expression.
@@ -79,7 +79,7 @@ class Closure extends Class {
   }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "Closure" }
+  override string getCanonicalQLClass() { result = "Closure" }
 
   /** Gets the lambda expression of which this is the type. */
   LambdaExpression getLambdaExpression() {
@@ -106,7 +106,7 @@ class LambdaCapture extends @lambdacapture {
   }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "LambdaCapture" }
+  override string getCanonicalQLClass() { result = "LambdaCapture" }
 
   /**
    * Holds if this capture was made implicitly.

@@ -13,7 +13,7 @@ class NotExpr extends UnaryLogicalOperation, @notexpr {
   override string getOperator() { result = "!" }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "NotExpr" }
+  override string getCanonicalQLClass() { result = "NotExpr" }
   
   override int getPrecedence() { result = 15 }
 }
@@ -42,7 +42,7 @@ class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
   override string getOperator() { result = "&&" }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "LogicalAndExpr" }
+  override string getCanonicalQLClass() { result = "LogicalAndExpr" }
   
   override int getPrecedence() { result = 5 }
 
@@ -60,7 +60,7 @@ class LogicalOrExpr extends BinaryLogicalOperation, @orlogicalexpr {
   override string getOperator() { result = "||" }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "LogicalOrExpr" }
+  override string getCanonicalQLClass() { result = "LogicalOrExpr" }
   
   override int getPrecedence() { result = 4 }
 
@@ -81,7 +81,7 @@ class ConditionalExpr extends Operation, @conditionalexpr {
   }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "ConditionalExpr" }
+  override string getCanonicalQLClass() { result = "ConditionalExpr" }
   
   /** Gets the 'then' expression of this conditional expression. */
   Expr getThen() {

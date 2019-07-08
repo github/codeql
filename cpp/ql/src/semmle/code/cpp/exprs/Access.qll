@@ -25,7 +25,7 @@ abstract class Access extends Expr, NameQualifiableElement {
  */
 class EnumConstantAccess extends Access, @varaccess {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "EnumConstantAccess" }
+  override string getCanonicalQLClass() { result = "EnumConstantAccess" }
 
   EnumConstantAccess() {
     exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
@@ -43,7 +43,7 @@ class EnumConstantAccess extends Access, @varaccess {
  */
 class VariableAccess extends Access, @varaccess {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "VariableAccess" }
+  override string getCanonicalQLClass() { result = "VariableAccess" }
 
   VariableAccess() {
     not exists(EnumConstant c | varbind(underlyingElement(this), unresolveElement(c)))
@@ -140,7 +140,7 @@ class VariableAccess extends Access, @varaccess {
  */
 class FieldAccess extends VariableAccess {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "FieldAccess" }
+  override string getCanonicalQLClass() { result = "FieldAccess" }
 
   FieldAccess() { exists(Field f | varbind(underlyingElement(this), unresolveElement(f))) }
 
@@ -243,7 +243,7 @@ class FunctionAccess extends Access, @routineexpr {
   }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "FunctionAccess" }
+  override string getCanonicalQLClass() { result = "FunctionAccess" }
 
   /** Gets the accessed function. */
   override Function getTarget() { funbind(underlyingElement(this), unresolveElement(result)) }
@@ -293,7 +293,7 @@ class TypeName extends Expr, @type_operand {
  */
 class ArrayExpr extends Expr, @subscriptexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "ArrayExpr" }
+  override string getCanonicalQLClass() { result = "ArrayExpr" }
 
   /**
    * Gets the array or pointer expression being subscripted.

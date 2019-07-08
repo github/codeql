@@ -14,9 +14,9 @@ abstract class NullValue extends Expr
 class Zero extends NullValue
 {
   Zero() { this.(Literal).getValue() = "0" }
-  /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "Zero" }
 
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "Zero" }
 }
 
 /**

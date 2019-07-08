@@ -16,7 +16,7 @@ class Class extends UserType {
   }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "Class" }
+  override string getCanonicalQLClass() { result = "Class" }
   
   /** Gets a child declaration of this class. */
   override Declaration getADeclaration() { result = this.getAMember() }
@@ -824,6 +824,8 @@ class LocalClass extends Class {
   LocalClass() {
     isLocal()
   }
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "LocalClass" }
 
   override Function getEnclosingAccessHolder() {
     result = this.getEnclosingFunction()
@@ -837,6 +839,9 @@ class NestedClass extends Class {
   NestedClass() {
     this.isMember()
   }
+
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "NestedClass" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
@@ -984,7 +989,7 @@ class VirtualBaseClass extends Class {
   }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "VirtualBaseClass" }
+  override string getCanonicalQLClass() { result = "VirtualBaseClass" }
 
   /** A virtual class derivation of which this class is the base. */
   VirtualClassDerivation getAVirtualDerivation() {
@@ -1011,7 +1016,7 @@ class ProxyClass extends UserType {
   }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "ProxyClass" }
+  override string getCanonicalQLClass() { result = "ProxyClass" }
   
   /** Gets the location of the proxy class. */
   override Location getLocation() {

@@ -10,7 +10,7 @@ class Enum extends UserType, IntegralOrEnumType {
   EnumConstant getEnumConstant(int index) { enumconstants(unresolveElement(result),underlyingElement(this),index,_,_,_) }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "Enum" }
+  override string getCanonicalQLClass() { result = "Enum" }
 
   /**
    * Gets a descriptive string for the enum. This method is only intended to
@@ -54,7 +54,7 @@ class LocalEnum extends Enum {
     isLocal()
   }
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "LocalEnum" }
+  override string getCanonicalQLClass() { result = "LocalEnum" }
 }
 
 /**
@@ -67,7 +67,7 @@ class NestedEnum extends Enum {
   }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "NestedEnum" }
+  override string getCanonicalQLClass() { result = "NestedEnum" }
   
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
@@ -90,7 +90,7 @@ class ScopedEnum extends Enum {
     usertypes(underlyingElement(this),_,13)
   }
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "ScopedEnum" }
+  override string getCanonicalQLClass() { result = "ScopedEnum" }
 }
 
 /**
@@ -107,7 +107,7 @@ class EnumConstant extends Declaration, @enumconstant {
   Enum getDeclaringEnum() { enumconstants(underlyingElement(this),unresolveElement(result),_,_,_,_) }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "EnumConstant" }
+  override string getCanonicalQLClass() { result = "EnumConstant" }
   
   override Class getDeclaringType() {
     result = this.getDeclaringEnum().getDeclaringType()

@@ -175,7 +175,7 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
   override Variable getDeclaration() { result = getVariable() }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "VariableDeclarationEntry" }
+  override string getCanonicalQLClass() { result = "VariableDeclarationEntry" }
   
   /**
    * Gets the variable which is being declared or defined.

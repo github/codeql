@@ -9,7 +9,7 @@ class Union extends Struct  {
   Union() { usertypes(underlyingElement(this),_,3)  }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "Union" }
+  override string getCanonicalQLClass() { result = "Union" }
 
   override string explain() { result =  "union " + this.getName() }
 
@@ -24,6 +24,8 @@ class LocalUnion extends Union {
   LocalUnion() {
     isLocal()
   }
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "LocalUnion" }
 }
 
 /**
@@ -33,6 +35,9 @@ class NestedUnion extends Union {
   NestedUnion() {
     this.isMember()
   }
+
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "NestedUnion" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }

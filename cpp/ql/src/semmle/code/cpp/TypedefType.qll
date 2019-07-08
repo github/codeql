@@ -9,7 +9,7 @@ class TypedefType extends UserType {
   TypedefType() { usertypes(underlyingElement(this),_,5) }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "TypedefType" }
+  override string getCanonicalQLClass() { result = "TypedefType" }
   
   /**
    * Gets the base type of this typedef type.
@@ -60,6 +60,8 @@ class LocalTypedefType extends TypedefType {
   LocalTypedefType() {
     isLocal()
   }
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "LocalTypedefType" }
 }
 
 /**
@@ -69,6 +71,9 @@ class NestedTypedefType extends TypedefType {
   NestedTypedefType() {
     this.isMember()
   }
+
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "NestedTypedefType" }
 
   /**
    * DEPRECATED

@@ -7,7 +7,7 @@ class Initializer extends ControlFlowNode, @initialiser {
   override Location getLocation() { initialisers(underlyingElement(this),_,_,result) }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "Initializer" }
+  override string getCanonicalQLClass() { result = "Initializer" }
   
   /** Holds if this initializer is explicit in the source. */
   override predicate fromSource() {

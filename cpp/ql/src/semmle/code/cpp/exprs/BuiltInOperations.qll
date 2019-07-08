@@ -13,7 +13,7 @@ class BuiltInVarArgsStart extends BuiltInOperation, @vastartexpr {
   override string toString() { result = "__builtin_va_start" }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "BuiltInVarArgsStart" }
+  override string getCanonicalQLClass() { result = "BuiltInVarArgsStart" }
 }
 
 /**
@@ -23,7 +23,7 @@ class BuiltInVarArgsEnd extends BuiltInOperation, @vaendexpr {
   override string toString() { result = "__builtin_va_end" }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "BuiltInVarArgsEnd" }
+  override string getCanonicalQLClass() { result = "BuiltInVarArgsEnd" }
 }
 
 /**
@@ -33,7 +33,7 @@ class BuiltInVarArg extends BuiltInOperation, @vaargexpr {
   override string toString() { result = "__builtin_va_arg" }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "BuiltInVarArg" }
+  override string getCanonicalQLClass() { result = "BuiltInVarArg" }
 }
 
 /**
@@ -43,7 +43,7 @@ class BuiltInVarArgCopy extends BuiltInOperation, @vacopyexpr {
   override string toString() { result = "__builtin_va_copy" }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "BuiltInVarArgCopy" }
+  override string getCanonicalQLClass() { result = "BuiltInVarArgCopy" }
 }
 
 /**

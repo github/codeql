@@ -33,7 +33,7 @@ class AssignExpr extends Assignment, @assignexpr {
   override string getOperator() { result = "=" }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignExpr" }
+  override string getCanonicalQLClass() { result = "AssignExpr" }
   
   /** Gets a textual representation of this assignment. */
   override string toString() { result = "... = ..." }
@@ -58,7 +58,7 @@ abstract class AssignArithmeticOperation extends AssignOperation {
  */
 class AssignAddExpr extends AssignArithmeticOperation, @assignaddexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignAddExpr" }
+  override string getCanonicalQLClass() { result = "AssignAddExpr" }
   
   override string getOperator() { result = "+=" }
 }
@@ -68,7 +68,7 @@ class AssignAddExpr extends AssignArithmeticOperation, @assignaddexpr {
  */
 class AssignSubExpr extends AssignArithmeticOperation, @assignsubexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignSubExpr" }
+  override string getCanonicalQLClass() { result = "AssignSubExpr" }
   
   override string getOperator() { result = "-=" }
 }
@@ -78,7 +78,7 @@ class AssignSubExpr extends AssignArithmeticOperation, @assignsubexpr {
  */
 class AssignMulExpr extends AssignArithmeticOperation, @assignmulexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignMulExpr" }
+  override string getCanonicalQLClass() { result = "AssignMulExpr" }
   
   override string getOperator() { result = "*=" }
 }
@@ -88,7 +88,7 @@ class AssignMulExpr extends AssignArithmeticOperation, @assignmulexpr {
  */
 class AssignDivExpr extends AssignArithmeticOperation, @assigndivexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignDivExpr" }
+  override string getCanonicalQLClass() { result = "AssignDivExpr" }
   
   override string getOperator() { result = "/=" }
 }
@@ -98,7 +98,7 @@ class AssignDivExpr extends AssignArithmeticOperation, @assigndivexpr {
  */
 class AssignRemExpr extends AssignArithmeticOperation, @assignremexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignRemExpr" }
+  override string getCanonicalQLClass() { result = "AssignRemExpr" }
   
   override string getOperator() { result = "%=" }
 }
@@ -115,7 +115,7 @@ abstract class AssignBitwiseOperation extends AssignOperation {
  */
 class AssignAndExpr extends AssignBitwiseOperation, @assignandexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignAndExpr" }
+  override string getCanonicalQLClass() { result = "AssignAndExpr" }
   
   override string getOperator() { result = "&=" }
 }
@@ -125,7 +125,7 @@ class AssignAndExpr extends AssignBitwiseOperation, @assignandexpr {
  */
 class AssignOrExpr extends AssignBitwiseOperation, @assignorexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignOrExpr" }
+  override string getCanonicalQLClass() { result = "AssignOrExpr" }
   
   override string getOperator() { result = "|=" }
 }
@@ -135,7 +135,7 @@ class AssignOrExpr extends AssignBitwiseOperation, @assignorexpr {
  */
 class AssignXorExpr extends AssignBitwiseOperation, @assignxorexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignXorExpr" }
+  override string getCanonicalQLClass() { result = "AssignXorExpr" }
   
   override string getOperator() { result = "^=" }
 }
@@ -145,7 +145,7 @@ class AssignXorExpr extends AssignBitwiseOperation, @assignxorexpr {
  */
 class AssignLShiftExpr extends AssignBitwiseOperation, @assignlshiftexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignLShiftExpr" }
+  override string getCanonicalQLClass() { result = "AssignLShiftExpr" }
   
   override string getOperator() { result = "<<=" }
 }
@@ -155,7 +155,7 @@ class AssignLShiftExpr extends AssignBitwiseOperation, @assignlshiftexpr {
  */
 class AssignRShiftExpr extends AssignBitwiseOperation, @assignrshiftexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignRShiftExpr" }
+  override string getCanonicalQLClass() { result = "AssignRShiftExpr" }
   
   override string getOperator() { result = ">>=" }
 }
@@ -165,7 +165,7 @@ class AssignRShiftExpr extends AssignBitwiseOperation, @assignrshiftexpr {
  */
 class AssignPointerAddExpr extends AssignOperation, @assignpaddexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignPointerAddExpr" }
+  override string getCanonicalQLClass() { result = "AssignPointerAddExpr" }
   
   override string getOperator() { result = "+=" }
 }
@@ -175,7 +175,7 @@ class AssignPointerAddExpr extends AssignOperation, @assignpaddexpr {
  */
 class AssignPointerSubExpr extends AssignOperation, @assignpsubexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "AssignPointerSubExpr" }
+  override string getCanonicalQLClass() { result = "AssignPointerSubExpr" }
   
   override string getOperator() { result = "-=" }
 }
@@ -197,7 +197,7 @@ class ConditionDeclExpr extends Expr, @condition_decl {
   Expr getExpr() { result = this.getChild(0) }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "ConditionDeclExpr" }
+  override string getCanonicalQLClass() { result = "ConditionDeclExpr" }
 
   /**
    * Gets the compiler-generated variable access that conceptually occurs after

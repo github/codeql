@@ -12,7 +12,7 @@ import semmle.code.cpp.stmts.Stmt
 class Block extends Stmt, @stmt_block {
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "Block" }
+  override string getCanonicalQLClass() { result = "Block" }
 
   /**
    * Gets a child declaration of this block.

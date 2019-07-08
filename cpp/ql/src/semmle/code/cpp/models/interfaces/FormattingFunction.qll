@@ -46,6 +46,9 @@ abstract class FormattingFunction extends Function {
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
 
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "FormattingFunction" }
+
   /**
    * Holds if this `FormattingFunction` is in a context that supports
    * Microsoft rules and extensions.

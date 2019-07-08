@@ -34,7 +34,7 @@ class Parameter extends LocalScopeVariable, @parameter {
   }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "Parameter" }
+  override string getCanonicalQLClass() { result = "Parameter" }
 
   /**
    * Gets the name of this parameter, including it's type.

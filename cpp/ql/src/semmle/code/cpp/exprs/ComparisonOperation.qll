@@ -18,7 +18,7 @@ abstract class EqualityOperation extends ComparisonOperation {
  */
 class EQExpr extends EqualityOperation, @eqexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "EQExpr" }
+  override string getCanonicalQLClass() { result = "EQExpr" }
 
   override string getOperator() { result = "==" }
 }
@@ -28,7 +28,7 @@ class EQExpr extends EqualityOperation, @eqexpr {
  */
 class NEExpr extends EqualityOperation, @neexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "NEExpr" }
+  override string getCanonicalQLClass() { result = "NEExpr" }
 
   override string getOperator() { result = "!=" }
 }
@@ -77,7 +77,7 @@ abstract class RelationalOperation extends ComparisonOperation {
  */
 class GTExpr extends RelationalOperation, @gtexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "GTExpr" }
+  override string getCanonicalQLClass() { result = "GTExpr" }
 
   override string getOperator() { result = ">" }
  
@@ -90,7 +90,7 @@ class GTExpr extends RelationalOperation, @gtexpr {
  */
 class LTExpr extends RelationalOperation, @ltexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "LTExpr" }
+  override string getCanonicalQLClass() { result = "LTExpr" }
 
   override string getOperator() { result = "<" }
 
@@ -103,7 +103,7 @@ class LTExpr extends RelationalOperation, @ltexpr {
  */
 class GEExpr extends RelationalOperation, @geexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "GEExpr" }
+  override string getCanonicalQLClass() { result = "GEExpr" }
 
   override string getOperator() { result = ">=" }
 
@@ -116,7 +116,7 @@ class GEExpr extends RelationalOperation, @geexpr {
  */
 class LEExpr extends RelationalOperation, @leexpr {
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "LEExpr" }
+  override string getCanonicalQLClass() { result = "LEExpr" }
 
   override string getOperator() { result = "<=" }
 
