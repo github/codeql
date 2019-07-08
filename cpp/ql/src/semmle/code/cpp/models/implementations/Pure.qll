@@ -1,17 +1,17 @@
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.Alias
+import semmle.code.cpp.models.interfaces.SideEffect
 
-class PureFunction extends ArrayFunction, TaintFunction {
-  PureFunction() {
+class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,  SideEffectFunction {
+  PureStrFunction() {
     exists(string name |
       hasName(name) and
       (
-        name = "abs"
-        or name = "atof"
+        name = "atof"
         or name = "atoi"
         or name = "atol"
         or name = "atoll"
-        or name = "labs"
         or name = "strcasestr"
         or name = "strchnul"
         or name = "strchr"
@@ -53,5 +53,52 @@ class PureFunction extends ArrayFunction, TaintFunction {
       ) or
       output.isOutReturnValue()
     )
+  }
+
+  override predicate parameterNeverEscapes(int i) {
+    getParameter(i).getUnspecifiedType() instanceof PointerType
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int i) {
+    none()
+  }
+
+  override predicate parameterIsAlwaysReturned(int i) {
+    none()
+  }
+
+  override predicate neverReadsMemory() {
+    none()
+  }
+  
+  override predicate neverWritesMemory() {
+    any()
+  }
+}
+
+class PureFunction extends TaintFunction, SideEffectFunction {
+  PureFunction() {
+    exists(string name |
+      hasName(name) and
+      (
+        name = "abs" or
+        name = "labs"
+      )
+    )
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    exists (ParameterIndex i |
+      input.isInParameter(i)
+    ) and
+    output.isOutReturnValue()
+  }
+
+  override predicate neverReadsMemory() {
+    any()
+  }
+  
+  override predicate neverWritesMemory() {
+    any()
   }
 }
