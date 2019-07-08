@@ -122,6 +122,9 @@ private module CachedSteps {
     exists(DataFlow::ClassNode cls, string name |
       callResolvesToMember(invk, cls, name) and
       f = cls.getInstanceMethod(name).getFunction()
+      or
+      invk = cls.getAClassReference().getAMethodCall(name) and
+      f = cls.getStaticMethod(name).getFunction()
     )
   }
 
