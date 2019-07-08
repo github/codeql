@@ -14,7 +14,8 @@ private newtype TInstanceAccess =
   TImplicitThisForCall(FunctionCall fc) {
     fc.getTarget() instanceof MemberFunction and
     not exists(fc.getQualifier()) and
-    not fc.getTarget().isStatic()
+    not fc.getTarget().isStatic() and
+    not fc.getTarget() instanceof Constructor
   }
 
 private class InstanceAccess extends TInstanceAccess {
