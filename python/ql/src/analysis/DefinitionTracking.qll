@@ -229,14 +229,18 @@ private predicate method_callsite_defn(MethodCallsiteRefinement def, Definition 
 pragma [noinline]
 private predicate module_and_name_for_import_star(ModuleObject mod, string name, ImportStarRefinement def) {
     exists(ImportStarNode im_star |
-        im_star = def.getDefiningNode() |
-        name = def.getSourceVariable().getName() and
-        im_star.getModule().refersTo(mod) and
+        module_and_name_for_import_star_helper(mod, name, im_star, def) and
         mod.exports(name)
     )
 }
 
-/** Holds if `def` is technically a defn of `var`, but the `from ... import *` does not in fact define `var` */
+pragma [noinline]
+private predicate module_and_name_for_import_star_helper(ModuleObject mod, string name, ImportStarNode im_star, ImportStarRefinement def) {
+    im_star = def.getDefiningNode() and
+    im_star.getModule().refersTo(mod) and
+    name = def.getSourceVariable().getName()
+}
+        /** Holds if `def` is technically a defn of `var`, but the `from ... import *` does not in fact define `var` */
 pragma [noinline]
 private predicate variable_not_redefined_by_import_star(EssaVariable var, ImportStarRefinement def) {
     var = def.getInput() and

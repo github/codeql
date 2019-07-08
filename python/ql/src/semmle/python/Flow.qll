@@ -402,14 +402,14 @@ class ControlFlowNode extends @py_flow_node {
     }
 
     ControlFlowNode getAChild() {
-        result = this.getExprChild() and
-        result.getBasicBlock().dominates(this.getBasicBlock())
+        result = this.getExprChild(this.getBasicBlock())
     }
 
     /* join-ordering helper for `getAChild() */
     pragma [noinline]
-    private ControlFlowNode getExprChild() {
+    private ControlFlowNode getExprChild(BasicBlock dom) {
         this.getNode().(Expr).getAChildNode() = result.getNode() and
+        result.getBasicBlock().dominates(dom) and
         not this instanceof UnaryExprNode
     }
 

@@ -267,6 +267,12 @@ private cached module SsaComputeImpl {
 
     cached module SsaDefinitionsImpl {
 
+        pragma [noinline]
+        private predicate reachesEndOfBlockRec(SsaSourceVariable v, BasicBlock defbb, int defindex, BasicBlock b) {
+            exists(BasicBlock idom | reachesEndOfBlock(v, defbb, defindex, idom) |
+                idom = b.getImmediateDominator()
+            )
+        }
         /**
          * The SSA definition of `v` at `def` reaches the end of a basic block `b`, at
          * which point it is still live, without crossing another SSA definition of `v`.
@@ -277,13 +283,10 @@ private cached module SsaComputeImpl {
           (
             defbb = b and SsaComputeImpl::ssaDefReachesRank(v, defbb, defindex, SsaComputeImpl::lastRank(v, b)) 
             or
-            exists(BasicBlock idom |
-              idom = b.getImmediateDominator() and 
-              // It is sufficient to traverse the dominator graph, cf. discussion above.
-              reachesEndOfBlock(v, defbb, defindex, idom) and
-              not SsaComputeImpl::ssaDef(v, b)
+            // It is sufficient to traverse the dominator graph, cf. discussion above.
+            reachesEndOfBlockRec(v, defbb, defindex, b) and
+            not SsaComputeImpl::ssaDef(v, b)
             )
-          )
         }
 
         /**
