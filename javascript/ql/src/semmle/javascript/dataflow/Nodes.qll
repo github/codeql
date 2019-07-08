@@ -715,12 +715,17 @@ class ClassNode extends DataFlow::SourceNode {
     t.start() and
     result = getAReceiverNode()
     or
+    result = getAnInstanceReferenceAux(t) and
+    // Avoid tracking into the receiver of other classes.
+    // Note that this also blocks flows into a property of the receiver,
+    // but the `localFieldStep` rule will often compensate for this.
+    not result = any(DataFlow::ClassNode cls).getAReceiverNode()
+  }
+
+  pragma[noinline]
+  private DataFlow::SourceNode getAnInstanceReferenceAux(DataFlow::TypeTracker t) {
     exists(DataFlow::TypeTracker t2 |
-      result = getAnInstanceReference(t2).track(t2, t) and
-      // Avoid tracking into the receiver of other classes.
-      // Note that this also blocks flows into a property of the receiver,
-      // but the `localFieldStep` rule will often compensate for this.
-      not result = any(DataFlow::ClassNode cls).getAReceiverNode()
+      result = getAnInstanceReference(t2).track(t2, t)
     )
   }
 
