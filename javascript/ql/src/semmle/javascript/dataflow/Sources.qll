@@ -199,7 +199,7 @@ module SourceNode {
    *
    *   - import specifiers
    *   - function parameters
-   *   - `this` expressions
+   *   - function receivers
    *   - property accesses
    *   - function invocations
    *   - global variable accesses
