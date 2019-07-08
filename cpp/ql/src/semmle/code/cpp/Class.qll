@@ -8,7 +8,22 @@ private import semmle.code.cpp.internal.ResolveClass
  * A class type [N4140 9].
  *
  * While this does include types declared with the `class` keyword, it also
- * includes types declared with the `struct` and `union` keywords.
+ * includes types declared with the `struct` and `union` keywords.  For example:
+ * ```
+ * class MyClass {
+ * public:
+ *   MyClass();
+ * };
+ * 
+ * struct MyStruct {
+ *   int x, y, z;
+ * };
+ *
+ * union MyUnion {
+ *   int i;
+ *   float f;
+ * };
+ * ```
  */
 class Class extends UserType {
   Class() {
@@ -818,7 +833,16 @@ class ClassDerivation extends Locatable, @derivation {
   }
 }
 
-/** A class that is directly enclosed by a function. */
+/**
+ * A class that is directly enclosed by a function.  For example the `struct` in
+ * the following code is a `LocalClass`:
+ * ```
+ * void myFunction()
+ * {
+ *   struct { int x; int y; } vec = { 1, 2 };
+ * };
+ * ```
+ */
 class LocalClass extends Class {
   LocalClass() {
     isLocal()
@@ -833,7 +857,18 @@ class LocalClass extends Class {
 }
 
 /**
- * A nested class [4140 9.7].
+ * A nested class [4140 9.7].  For example the struct `PairT` in the following
+ * code is a nested class:
+ * ```
+ * template<class T>
+ * class MyTemplateClass
+ * {
+ * public:
+ *   struct PairT {
+ *     T first, second;
+ *   };
+ * };
+ * ```
  */
 class NestedClass extends Class {
   NestedClass() {
@@ -867,8 +902,16 @@ class AbstractClass extends Class {
 }
 
 /**
- * A class template. (This class also finds partial specializations
- * of class templates).
+ * A class template (this class also finds partial specializations
+ * of class templates).  For example in the following code there is a
+ * `MyTemplateClass<T>` template:
+ * ```
+ * template<class T>
+ * class MyTemplateClass
+ * {
+ *   ...
+ * };
+ * ```
  */
 class TemplateClass extends Class {
   TemplateClass() { usertypes(underlyingElement(this),_,6) }
@@ -881,7 +924,17 @@ class TemplateClass extends Class {
 }
 
 /**
- * A class that is an instantiation of a template.
+ * A class that is an instantiation of a template.  For example in the following
+ * code there is a `MyTemplateClass<int>` instantiation:
+ * ```
+ * template<class T>
+ * class MyTemplateClass
+ * {
+ *   ...
+ * };
+ * 
+ * MyTemplateClass<int> instance;
+ * ```
  */
 class ClassTemplateInstantiation extends Class {
   TemplateClass tc;
@@ -895,7 +948,7 @@ class ClassTemplateInstantiation extends Class {
   /**
    * Gets the class template from which this instantiation was instantiated.
    *
-   * Example: For `std::vector<float>`, returns `std::vector<T>`.
+   * For example: For `std::vector<float>`, the result is `std::vector<T>`.
    */
   TemplateClass getTemplate() {
     result = tc
@@ -903,7 +956,8 @@ class ClassTemplateInstantiation extends Class {
 }
 
 /**
- * A specialization of a class template.
+ * A specialization of a class template (this may be a full or partial template
+ * specialization).
  */
 abstract class ClassTemplateSpecialization extends Class {
   /**
@@ -928,7 +982,14 @@ abstract class ClassTemplateSpecialization extends Class {
 }
 
 /**
- * A full specialization of a class template.
+ * A full specialization of a class template.  For example:
+ * ```
+ * template<>
+ * class MyTemplateClass<int>
+ * {
+ *   ...
+ * };
+ * ```
  */
 class FullClassTemplateSpecialization extends ClassTemplateSpecialization {
   FullClassTemplateSpecialization() {
@@ -947,7 +1008,14 @@ class FullClassTemplateSpecialization extends ClassTemplateSpecialization {
 }
 
 /**
- * A partial specialization of a class template.
+ * A partial specialization of a class template.  For example:
+ * ```
+ * template<class T>
+ * class MyTemplateClass<int, T>
+ * {
+ *   ...
+ * };
+ * ```
  */
 class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
   PartialClassTemplateSpecialization() {
@@ -973,8 +1041,17 @@ class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
 }
 
 /**
- * An "interface", in other words a class that only contains pure virtual
- * functions.
+ * An "interface" is a class that only contains pure virtual functions (and contains
+ * at least one such function).  For example:
+ * ```
+ * class MyInterfaceClass
+ * {
+ * public:
+ *   virtual void myMethod1() = 0;
+ *   virtual void myMethod2() = 0;
+ * };
+ * ```
+ * 
  */
 class Interface extends Class {
   Interface() {
@@ -985,8 +1062,14 @@ class Interface extends Class {
 }
 
 /**
- * A class derivation that is virtual, for example
- * "class X : --> virtual public Y &lt;--."
+ * A class derivation that is virtual.  For example the derivation in the following
+ * code is a `VirtualClassDerivation`:
+ * ```
+ * class MyClass : public virtual MyBaseClass
+ * {
+ *   ...
+ * };
+ * ```
  */
 class VirtualClassDerivation extends ClassDerivation {
   VirtualClassDerivation() {
@@ -997,7 +1080,19 @@ class VirtualClassDerivation extends ClassDerivation {
 }
 
 /**
- * A class that is the base of some virtual class derivation.
+ * A class that is the base of some virtual class derivation.  For example
+ * `MyBaseClass` in the following code is a `VirtualBaseClass`:
+ * ```
+ * class MyBaseClass
+ * {
+ *  ...
+ * };
+ *
+ * class MyClass : public virtual MyBaseClass
+ * {
+ *   ...
+ * };
+ * ```
  */
 class VirtualBaseClass extends Class {
   VirtualBaseClass() {
@@ -1020,10 +1115,13 @@ class VirtualBaseClass extends Class {
 /**
  * The proxy class (where needed) associated with a template parameter, as
  * in the following code:
- *
- * template &lt;typename T>
+ * ```
+ * template <typename T>
  * struct S : T // the type of this T is a proxy class
- * {};
+ * {
+ *   ...
+ * };
+ * ```
  */
 class ProxyClass extends UserType {
   ProxyClass() {
