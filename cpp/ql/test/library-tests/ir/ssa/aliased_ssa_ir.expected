@@ -758,3 +758,45 @@ ssa.cpp:
 #  184|     v0_22(void)                  = ReturnVoid             : 
 #  184|     v0_23(void)                  = UnmodeledUse           : mu*
 #  184|     v0_24(void)                  = ExitFunction           : 
+
+#  197| int PureFunctions(char*, char*, int)
+#  197|   Block 0
+#  197|     v0_0(void)            = EnterFunction             : 
+#  197|     m0_1(unknown)         = AliasedDefinition         : 
+#  197|     mu0_2(unknown)        = UnmodeledDefinition       : 
+#  197|     r0_3(glval<char *>)   = VariableAddress[str1]     : 
+#  197|     m0_4(char *)          = InitializeParameter[str1] : &:r0_3
+#  197|     r0_5(glval<char *>)   = VariableAddress[str2]     : 
+#  197|     m0_6(char *)          = InitializeParameter[str2] : &:r0_5
+#  197|     r0_7(glval<int>)      = VariableAddress[x]        : 
+#  197|     m0_8(int)             = InitializeParameter[x]    : &:r0_7
+#  198|     r0_9(glval<int>)      = VariableAddress[ret]      : 
+#  198|     r0_10(glval<unknown>) = FunctionAddress[strcmp]   : 
+#  198|     r0_11(glval<char *>)  = VariableAddress[str1]     : 
+#  198|     r0_12(char *)         = Load                      : &:r0_11, m0_4
+#  198|     r0_13(char *)         = Convert                   : r0_12
+#  198|     r0_14(glval<char *>)  = VariableAddress[str2]     : 
+#  198|     r0_15(char *)         = Load                      : &:r0_14, m0_6
+#  198|     r0_16(char *)         = Convert                   : r0_15
+#  198|     r0_17(int)            = Call                      : func:r0_10, 0:r0_13, 1:r0_16
+#  198|     m0_18(unknown)        = ^CallSideEffect           : ~m0_1
+#  198|     m0_19(unknown)        = Chi                       : total:m0_1, partial:m0_18
+#  198|     m0_20(int)            = Store                     : &:r0_9, r0_17
+#  199|     r0_21(glval<unknown>) = FunctionAddress[abs]      : 
+#  199|     r0_22(glval<int>)     = VariableAddress[x]        : 
+#  199|     r0_23(int)            = Load                      : &:r0_22, m0_8
+#  199|     r0_24(int)            = Call                      : func:r0_21, 0:r0_23
+#  199|     m0_25(unknown)        = ^CallSideEffect           : ~m0_19
+#  199|     m0_26(unknown)        = Chi                       : total:m0_19, partial:m0_25
+#  199|     r0_27(glval<int>)     = VariableAddress[ret]      : 
+#  199|     r0_28(int)            = Load                      : &:r0_27, m0_20
+#  199|     r0_29(int)            = Add                       : r0_28, r0_24
+#  199|     m0_30(int)            = Store                     : &:r0_27, r0_29
+#  200|     r0_31(glval<int>)     = VariableAddress[#return]  : 
+#  200|     r0_32(glval<int>)     = VariableAddress[ret]      : 
+#  200|     r0_33(int)            = Load                      : &:r0_32, m0_30
+#  200|     m0_34(int)            = Store                     : &:r0_31, r0_33
+#  197|     r0_35(glval<int>)     = VariableAddress[#return]  : 
+#  197|     v0_36(void)           = ReturnValue               : &:r0_35, m0_34
+#  197|     v0_37(void)           = UnmodeledUse              : mu*
+#  197|     v0_38(void)           = ExitFunction              : 
