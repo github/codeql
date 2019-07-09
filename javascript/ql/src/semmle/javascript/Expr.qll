@@ -355,8 +355,6 @@ class BooleanLiteral extends @booleanliteral, Literal { }
  * 25
  * 0xffff
  * 6.626e-34
- * Infinity
- * NaN
  * ```
  */
 class NumberLiteral extends @numberliteral, Literal {
@@ -741,9 +739,16 @@ class SpreadProperty extends Property {
  *
  * ```
  * var greet =
- *   function() {            // function expression
+ *   function g() {          // function expression with name `g`
  *     console.log("Hi!");
  *   };
+ *
+ * class C {
+ *   m() {                   // methods are (anonymous) function expressions
+ *     return 1;
+ *   }
+ * }
+ * ```
  */
 class FunctionExpr extends @functionexpr, Expr, Function {
   /** Gets the name of this function expression, if any. */
@@ -959,7 +964,6 @@ class InvokeExpr extends @invokeexpr, Expr {
  *
  * ```
  * new Array(16)
- * new 
  * ```
  */
 class NewExpr extends @newexpr, InvokeExpr { }
@@ -990,7 +994,7 @@ class CallExpr extends @callexpr, InvokeExpr {
  *
  * ```
  * Object.create(null)
- * [1, 2, 3].forEach(console.log);
+ * [1, 2, 3].forEach(alert);
  * ```
  */
 class MethodCallExpr extends CallExpr {
@@ -2097,8 +2101,15 @@ class GeneratorExpr extends @generatorexpr, ComprehensionExpr { }
  * Examples:
  *
  * ```
- * for (x of [1, 2 3])
- * for (x in o)
+ * [
+ *   for (x of [1, 2 3])    // comprehension block
+ *     x*x
+ * ]
+ *
+ * [
+ *   for (x in o)           // comprehension block
+ *     "_" + x
+ * ]
  * ```
  */
 class ComprehensionBlock extends @comprehensionblock, Expr {
@@ -2120,7 +2131,10 @@ class ComprehensionBlock extends @comprehensionblock, Expr {
  * Example:
  *
  * ```
- * for (x in o)
+ * [
+ *   for (x in o)           // comprehension block
+ *     "_" + x
+ * ]
  * ```
  */
 class ForInComprehensionBlock extends @forincomprehensionblock, ComprehensionBlock { }
@@ -2131,7 +2145,10 @@ class ForInComprehensionBlock extends @forincomprehensionblock, ComprehensionBlo
  * Example:
  *
  * ```
- * for (x of [1, 2, 3])
+ * [
+ *   for (x of [1, 2 3])    // comprehension block
+ *     x*x
+ * ]
  * ```
  */
 class ForOfComprehensionBlock extends @forofcomprehensionblock, ComprehensionBlock { }
