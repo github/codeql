@@ -6,6 +6,7 @@ import semmle.code.cpp.ir.implementation.MemoryAccessKind
 import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.ir.internal.OperandTag
 
+cached
 private newtype TOperand =
   TRegisterOperand(Instruction useInstr, RegisterOperandTag tag, Instruction defInstr) {
     defInstr = Construction::getRegisterOperandDefinition(useInstr, tag)
