@@ -124,7 +124,7 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof StringConstantInstruction or
   instr instanceof FieldAddressInstruction or
   instr instanceof BinaryInstruction or
-  instr instanceof UnaryInstruction or
+  (instr instanceof UnaryInstruction and not instr instanceof CopyInstruction) or
   instr instanceof PointerArithmeticInstruction or
   instr instanceof CongruentCopyInstruction
 }
@@ -191,6 +191,7 @@ private predicate unaryValueNumber(UnaryInstruction instr, IRFunction irFunc, Op
     Type type, ValueNumber operand) {
   instr.getEnclosingIRFunction() = irFunc and
   (not instr instanceof InheritanceConversionInstruction) and
+  (not instr instanceof CopyInstruction) and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
   valueNumber(instr.getUnary()) = operand
