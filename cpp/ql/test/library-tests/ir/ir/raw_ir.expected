@@ -50,22 +50,23 @@ bad_asts.cpp:
 
 #   30| void Bad::errorExpr()
 #   30|   Block 0
-#   30|     v0_0(void)         = EnterFunction       : 
-#   30|     mu0_1(unknown)     = AliasedDefinition   : 
-#   30|     mu0_2(unknown)     = UnmodeledDefinition : 
-#-----|     r0_3(glval<error>) = Error               : 
-#-----|     r0_4(error)        = Load                : &:r0_3, ~mu0_2
-#   32|     r0_5(glval<int>)   = VariableAddress[x]  : 
-#   32|     r0_6(error)        = Error               : 
-#   32|     mu0_7(int)         = Store               : &:r0_5, r0_6
-#-----|     r0_8(glval<error>) = Error               : 
-#-----|     r0_9(error)        = Load                : &:r0_8, ~mu0_2
-#   33|     r0_10(glval<int>)  = VariableAddress[x]  : 
-#   33|     mu0_11(int)        = Store               : &:r0_10, r0_9
-#   34|     v0_12(void)        = NoOp                : 
-#   30|     v0_13(void)        = ReturnVoid          : 
-#   30|     v0_14(void)        = UnmodeledUse        : mu*
-#   30|     v0_15(void)        = ExitFunction        : 
+#   30|     v0_0(void)         = EnterFunction           : 
+#   30|     mu0_1(unknown)     = AliasedDefinition       : 
+#   30|     mu0_2(unknown)     = UnmodeledDefinition     : 
+#   31|     r0_3(glval<int &>) = VariableAddress[intref] : 
+#   31|     r0_4(error)        = Error                   : 
+#   31|     mu0_5(int &)       = Store                   : &:r0_3, r0_4
+#   32|     r0_6(glval<int>)   = VariableAddress[x]      : 
+#   32|     r0_7(error)        = Error                   : 
+#   32|     mu0_8(int)         = Store                   : &:r0_6, r0_7
+#-----|     r0_9(glval<error>) = Error                   : 
+#-----|     r0_10(error)       = Load                    : &:r0_9, ~mu0_2
+#   33|     r0_11(glval<int>)  = VariableAddress[x]      : 
+#   33|     mu0_12(int)        = Store                   : &:r0_11, r0_10
+#   34|     v0_13(void)        = NoOp                    : 
+#   30|     v0_14(void)        = ReturnVoid              : 
+#   30|     v0_15(void)        = UnmodeledUse            : mu*
+#   30|     v0_16(void)        = ExitFunction            : 
 
 clang.cpp:
 #    5| int* globalIntAddress()

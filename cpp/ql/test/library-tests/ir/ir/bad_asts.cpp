@@ -28,7 +28,7 @@ namespace Bad {
   }
 
   void errorExpr() {
-    0 = 1;
+    int &intref = 0;
     int x = 0[0];
     x = 1[1];
   }

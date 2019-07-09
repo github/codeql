@@ -193,10 +193,13 @@ bad_asts.cpp:
 #   30| void Bad::errorExpr()
 #   30|   params: 
 #   30|   body: { ... }
-#   31|     0: ExprStmt
-#-----|       0: <error expr>
-#-----|           Type = error
-#-----|           ValueCategory = prvalue(load)
+#   31|     0: declaration
+#   31|       0: definition of intref
+#   31|           Type = int &
+#   31|         init: initializer for intref
+#   31|           expr: <error expr>
+#   31|               Type = error
+#   31|               ValueCategory = prvalue
 #   32|     1: declaration
 #   32|       0: definition of x
 #   32|           Type = int
