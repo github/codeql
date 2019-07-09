@@ -48,6 +48,20 @@ bad_asts.cpp:
 #   26|     v0_13(void)          = UnmodeledUse           : mu*
 #   26|     v0_14(void)          = ExitFunction           : 
 
+clang.cpp:
+#    5| int* globalIntAddress()
+#    5|   Block 0
+#    5|     v0_0(void)         = EnterFunction              : 
+#    5|     mu0_1(unknown)     = AliasedDefinition          : 
+#    5|     mu0_2(unknown)     = UnmodeledDefinition        : 
+#    6|     r0_3(glval<int *>) = VariableAddress[#return]   : 
+#    6|     r0_4(glval<int>)   = VariableAddress[globalInt] : 
+#    6|     mu0_5(int *)       = Store                      : &:r0_3, r0_4
+#    5|     r0_6(glval<int *>) = VariableAddress[#return]   : 
+#    5|     v0_7(void)         = ReturnValue                : &:r0_6, ~mu0_2
+#    5|     v0_8(void)         = UnmodeledUse               : mu*
+#    5|     v0_9(void)         = ExitFunction               : 
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0
