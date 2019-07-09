@@ -8,7 +8,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * A class type [N4140 9].
  *
  * While this does include types declared with the `class` keyword, it also
- * includes types declared with the `struct` and `union` keywords.  For example:
+ * includes types declared with the `struct` and `union` keywords.  For example,
+ * the types `MyClass`, `MyStruct` and `MyUnion` in:
  * ```
  * class MyClass {
  * public:
@@ -935,6 +936,7 @@ class TemplateClass extends Class {
  * 
  * MyTemplateClass<int> instance;
  * ```
+ * For the `MyTemplateClass` template itself, see `TemplateClass`.
  */
 class ClassTemplateInstantiation extends Class {
   TemplateClass tc;
@@ -982,8 +984,15 @@ abstract class ClassTemplateSpecialization extends Class {
 }
 
 /**
- * A full specialization of a class template.  For example:
+ * A full specialization of a class template.  For example `MyTemplateClass<int>`
+ * in the following code is a `FullClassTemplateSpecialization`:
  * ```
+ * template<class T>
+ * class MyTemplateClass
+ * {
+ *   ...
+ * };
+ *
  * template<>
  * class MyTemplateClass<int>
  * {
@@ -1008,8 +1017,15 @@ class FullClassTemplateSpecialization extends ClassTemplateSpecialization {
 }
 
 /**
- * A partial specialization of a class template.  For example:
+ * A partial specialization of a class template.  For example `MyTemplateClass<int, T>`
+ * in the following code is a `PartialClassTemplateSpecialization`:
  * ```
+ * template<class S, class T>
+ * class MyTemplateClass
+ * {
+ *   ...
+ * };
+ *
  * template<class T>
  * class MyTemplateClass<int, T>
  * {
@@ -1081,7 +1097,7 @@ class VirtualClassDerivation extends ClassDerivation {
 
 /**
  * A class that is the base of some virtual class derivation.  For example
- * `MyBaseClass` in the following code is a `VirtualBaseClass`:
+ * `MyBaseClass` in the following code is a `VirtualBaseClass` of `MyClass`:
  * ```
  * class MyBaseClass
  * {
