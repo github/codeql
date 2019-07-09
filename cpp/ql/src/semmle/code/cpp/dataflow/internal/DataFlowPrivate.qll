@@ -4,8 +4,7 @@ private import DataFlowDispatch
 
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
-  result.asExpr() = call.getQualifier() or
-  result.(ImplicitInstancePostCall).getCall() = call
+  result.asExpr() = call.getQualifier()
   // This does not include the implicit `this` argument on auto-generated
   // base class destructor calls as those do not have an AST element.
 }
@@ -163,23 +162,6 @@ private class ArrayContent extends Content, TArrayContent {
 }
 
 /**
- * Gets the dataflow node corresponding to the field qualifier of `fa`.
- *
- * Note that this might be an implicit access to the `this` pointer.
- */
-Node getFieldQualifier(FieldAccess fa) {
-  not fa.getTarget().isStatic() and
-  (
-    result.asExpr() = fa.getQualifier() or
-    result
-        .(ImplicitInstanceAccess)
-        .getInstanceAccess()
-        .(ImplicitThisForFieldAccess)
-        .getBackingExpr() = fa
-  )
-}
-
-/**
  * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
@@ -191,7 +173,7 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
       a.getLValue() = fa
     ) and
     not fa.getTarget().isStatic() and
-    node2.getPreUpdateNode() = getFieldQualifier(fa) and
+    node2.getPreUpdateNode().asExpr() = fa.getQualifier() and
     f.(FieldContent).getField() = fa.getTarget()
   )
 }
@@ -203,7 +185,7 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  */
 predicate readStep(Node node1, Content f, Node node2) {
   exists(FieldAccess fr |
-    node1 = getFieldQualifier(fr) and
+    node1.asExpr() = fr.getQualifier() and
     fr.getTarget() = f.(FieldContent).getField() and
     fr = node2.asExpr() and
     not fr = any(AssignExpr a).getLValue()
