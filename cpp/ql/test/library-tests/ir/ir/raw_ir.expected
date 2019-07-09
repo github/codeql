@@ -4418,6 +4418,46 @@ ir.cpp:
 #  991|     v3_11(void)      = UnmodeledUse             : mu*
 #  991|     v3_12(void)      = ExitFunction             : 
 
+# 1006| void OperatorDelete()
+# 1006|   Block 0
+# 1006|     v0_0(void)               = EnterFunction       : 
+# 1006|     mu0_1(unknown)           = AliasedDefinition   : 
+# 1006|     mu0_2(unknown)           = UnmodeledDefinition : 
+# 1007|     r0_3(int *)              = Constant[0]         : 
+# 1007|     v0_4(void)               = NoOp                : 
+# 1008|     r0_5(String *)           = Constant[0]         : 
+# 1008|     v0_6(void)               = NoOp                : 
+# 1009|     r0_7(SizedDealloc *)     = Constant[0]         : 
+# 1009|     v0_8(void)               = NoOp                : 
+# 1010|     r0_9(Overaligned *)      = Constant[0]         : 
+# 1010|     v0_10(void)              = NoOp                : 
+# 1011|     r0_11(PolymorphicBase *) = Constant[0]         : 
+# 1011|     v0_12(void)              = NoOp                : 
+# 1012|     v0_13(void)              = NoOp                : 
+# 1006|     v0_14(void)              = ReturnVoid          : 
+# 1006|     v0_15(void)              = UnmodeledUse        : mu*
+# 1006|     v0_16(void)              = ExitFunction        : 
+
+# 1015| void OperatorDeleteArray()
+# 1015|   Block 0
+# 1015|     v0_0(void)               = EnterFunction       : 
+# 1015|     mu0_1(unknown)           = AliasedDefinition   : 
+# 1015|     mu0_2(unknown)           = UnmodeledDefinition : 
+# 1016|     r0_3(int *)              = Constant[0]         : 
+# 1016|     v0_4(void)               = NoOp                : 
+# 1017|     r0_5(String *)           = Constant[0]         : 
+# 1017|     v0_6(void)               = NoOp                : 
+# 1018|     r0_7(SizedDealloc *)     = Constant[0]         : 
+# 1018|     v0_8(void)               = NoOp                : 
+# 1019|     r0_9(Overaligned *)      = Constant[0]         : 
+# 1019|     v0_10(void)              = NoOp                : 
+# 1020|     r0_11(PolymorphicBase *) = Constant[0]         : 
+# 1020|     v0_12(void)              = NoOp                : 
+# 1021|     v0_13(void)              = NoOp                : 
+# 1015|     v0_14(void)              = ReturnVoid          : 
+# 1015|     v0_15(void)              = UnmodeledUse        : mu*
+# 1015|     v0_16(void)              = ExitFunction        : 
+
 # 1025| void EmptyStructInit()
 # 1025|   Block 0
 # 1025|     v0_0(void)               = EnterFunction       : 

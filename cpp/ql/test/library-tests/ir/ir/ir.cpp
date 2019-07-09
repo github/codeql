@@ -1002,7 +1002,7 @@ int ExprStmt(int b, int y, int z) {
   return ({x;});
 }
 
-#if 0
+// TODO: `delete` gets translated to NoOp
 void OperatorDelete() {
   delete static_cast<int*>(nullptr);  // No destructor
   delete static_cast<String*>(nullptr);  // Non-virtual destructor, with size.
@@ -1011,6 +1011,7 @@ void OperatorDelete() {
   delete static_cast<PolymorphicBase*>(nullptr);  // Virtual destructor
 }
 
+// TODO: `delete[]` gets translated to NoOp
 void OperatorDeleteArray() {
   delete[] static_cast<int*>(nullptr);  // No destructor
   delete[] static_cast<String*>(nullptr);  // Non-virtual destructor, with size.
@@ -1018,7 +1019,6 @@ void OperatorDeleteArray() {
   delete[] static_cast<Overaligned*>(nullptr);  // No destructor, with size and alignment.
   delete[] static_cast<PolymorphicBase*>(nullptr);  // Virtual destructor
 }
-#endif
 
 struct EmptyStruct {};
 
