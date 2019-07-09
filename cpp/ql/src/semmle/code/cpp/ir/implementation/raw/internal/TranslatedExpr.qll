@@ -2892,6 +2892,6 @@ class TranslatedErrorExpr extends TranslatedSingleInstructionExpr {
   }
 
   override final Opcode getOpcode() {
-    result instanceof Opcode::NoOp
+    result instanceof Opcode::Error
   }
 }

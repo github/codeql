@@ -53,12 +53,12 @@ bad_asts.cpp:
 #   30|     v0_0(void)         = EnterFunction       : 
 #   30|     mu0_1(unknown)     = AliasedDefinition   : 
 #   30|     mu0_2(unknown)     = UnmodeledDefinition : 
-#-----|     r0_3(glval<error>) = NoOp                : 
+#-----|     r0_3(glval<error>) = Error               : 
 #-----|     r0_4(error)        = Load                : &:r0_3, ~mu0_2
 #   32|     r0_5(glval<int>)   = VariableAddress[x]  : 
-#   32|     r0_6(error)        = NoOp                : 
+#   32|     r0_6(error)        = Error               : 
 #   32|     mu0_7(int)         = Store               : &:r0_5, r0_6
-#-----|     r0_8(glval<error>) = NoOp                : 
+#-----|     r0_8(glval<error>) = Error               : 
 #-----|     r0_9(error)        = Load                : &:r0_8, ~mu0_2
 #   33|     r0_10(glval<int>)  = VariableAddress[x]  : 
 #   33|     mu0_11(int)        = Store               : &:r0_10, r0_9
