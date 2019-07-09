@@ -23,13 +23,60 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,  Side
         or name = "strnlen"
         or name = "strrchr"
         or name = "strspn"
-        or name = "strstr"
         or name = "strtod"
         or name = "strtof"
         or name = "strtol"
         or name = "strtoll"
         or name = "strtoq"
         or name = "strtoul"
+      )
+    )
+  }
+  
+  override predicate hasArrayInput(int bufParam) {
+    getParameter(bufParam).getUnspecifiedType() instanceof PointerType
+  }
+  
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    exists (ParameterIndex i |
+      input.isInParameter(i) or
+      (
+        input.isInParameterPointer(i) and
+        getParameter(i).getUnspecifiedType() instanceof PointerType
+      )
+    ) and
+    (
+      output.isOutReturnValue()
+    )
+  }
+
+  override predicate parameterNeverEscapes(int i) {
+    getParameter(i).getUnspecifiedType() instanceof PointerType
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int i) {
+    none()
+  }
+
+  override predicate parameterIsAlwaysReturned(int i) {
+    none()
+  }
+
+  override predicate neverReadsMemory() {
+    none()
+  }
+  
+  override predicate neverWritesMemory() {
+    any()
+  }
+}
+class PureReturningStrFunction extends AliasFunction, ArrayFunction, TaintFunction,  SideEffectFunction {
+  PureReturningStrFunction() {
+    exists(string name |
+      hasName(name) and
+      (
+        name = "strstr" or
+        name = "strpbrk"
       )
     )
   }
@@ -56,11 +103,11 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,  Side
   }
 
   override predicate parameterNeverEscapes(int i) {
-    getParameter(i).getUnspecifiedType() instanceof PointerType
+    i = 1
   }
 
   override predicate parameterEscapesOnlyViaReturn(int i) {
-    none()
+    i = 0
   }
 
   override predicate parameterIsAlwaysReturned(int i) {
