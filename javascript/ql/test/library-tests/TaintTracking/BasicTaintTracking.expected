@@ -9,6 +9,9 @@ typeInferenceMismatch
 | addexpr.js:11:15:11:22 | source() | addexpr.js:21:8:21:12 | value |
 | advanced-callgraph.js:2:13:2:20 | source() | advanced-callgraph.js:6:22:6:22 | v |
 | array-callback.js:2:23:2:30 | source() | array-callback.js:4:10:4:10 | x |
+| array-mutation.js:19:18:19:25 | source() | array-mutation.js:20:8:20:8 | e |
+| array-mutation.js:23:13:23:20 | source() | array-mutation.js:24:8:24:8 | f |
+| array-mutation.js:27:16:27:23 | source() | array-mutation.js:28:8:28:8 | g |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:4:8:4:8 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:13:10:13:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:19:10:19:10 | x |
