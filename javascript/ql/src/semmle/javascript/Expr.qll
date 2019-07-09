@@ -4,7 +4,16 @@
 
 import javascript
 
-/** A program element that is either an expression or a type annotation. */
+/**
+ * A program element that is either an expression or a type annotation.
+ *
+ * Examples:
+ *
+ * ```
+ * x + 1
+ * string[]
+ * ```
+ */
 class ExprOrType extends @exprortype, Documentable {
   /** Gets the statement in which this expression or type appears. */
   Stmt getEnclosingStmt() { enclosingStmt(this, result) }
@@ -81,7 +90,15 @@ class ExprOrType extends @exprortype, Documentable {
   Expr getUnderlyingValue() { result = this }
 }
 
-/** An expression. */
+/**
+ * An expression.
+ *
+ * Example:
+ *
+ * ```
+ * Math.sqrt(x*x + y*y)
+ * ```
+ */
 class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   /**
    * Gets the statement container (function or toplevel) in which
@@ -223,7 +240,15 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   }
 }
 
-/** An identifier. */
+/**
+ * An identifier.
+ *
+ * Example:
+ *
+ * ```
+ * x
+ * ```
+ */
 class Identifier extends @identifier, ExprOrType {
   /** Gets the name of this identifier. */
   string getName() { literals(result, _, this) }
@@ -232,12 +257,33 @@ class Identifier extends @identifier, ExprOrType {
 /**
  * A statement or property label, that is, an identifier that
  * does not refer to a variable.
+ *
+ * Examples:
+ *
+ * ```
+ * outer:                       // `outer` is a statement label
+ * for(i=0; i<a.length; ++i) {  // `length` is a property label
+ *   // ...
+ * }
+ * ```
  */
 class Label extends @label, Identifier, Expr {
   override predicate isImpure() { none() }
 }
 
-/** A literal. */
+/**
+ * A literal.
+ *
+ * Examples:
+ *
+ * ```
+ * null      // null literal
+ * true      // Boolean literal
+ * 2         // number literal
+ * 3n        // BigInt literal
+ * "hello"   // string literal
+ * /jsx?/    // regular-expression literal
+ */
 class Literal extends @literal, Expr {
   /** Gets the value of this literal, as a string. */
   string getValue() { literals(result, _, this) }
@@ -251,7 +297,15 @@ class Literal extends @literal, Expr {
   override predicate isImpure() { none() }
 }
 
-/** A parenthesized expression. */
+/**
+ * A parenthesized expression.
+ *
+ * Example:
+ *
+ * ```
+ * (function() { console.log("Hello, world!"); }())
+ * ```
+ */
 class ParExpr extends @parexpr, Expr {
   /** Gets the expression within parentheses. */
   Expr getExpression() { result = this.getChildExpr(0) }
@@ -267,13 +321,44 @@ class ParExpr extends @parexpr, Expr {
   override Expr getUnderlyingReference() { result = getExpression().getUnderlyingReference() }
 }
 
-/** A `null` literal. */
+/**
+ * A `null` literal.
+ *
+ * Example:
+ *
+ * ```
+ * null
+ * ```
+ */
 class NullLiteral extends @nullliteral, Literal { }
 
-/** A Boolean literal, that is, either `true` or `false`. */
+/**
+ * A Boolean literal, that is, either `true` or `false`.
+ *
+ * Examples:
+ *
+ * ```
+ * true
+ * false
+ * ```
+ */
 class BooleanLiteral extends @booleanliteral, Literal { }
 
-/** A numeric literal. */
+/**
+ * A numeric literal.
+ *
+ * Examples:
+ *
+ * ```
+ * 0b101
+ * 0o31
+ * 25
+ * 0xffff
+ * 6.626e-34
+ * Infinity
+ * NaN
+ * ```
+ */
 class NumberLiteral extends @numberliteral, Literal {
   /** Gets the integer value of this literal. */
   override int getIntValue() { result = getValue().toInt() }
@@ -282,7 +367,15 @@ class NumberLiteral extends @numberliteral, Literal {
   float getFloatValue() { result = getValue().toFloat() }
 }
 
-/** A bigint literal. */
+/**
+ * A BigInt literal.
+ *
+ * Example:
+ *
+ * ```
+ * 9007199254740991n
+ * ```
+ */
 class BigIntLiteral extends @bigintliteral, Literal {
   /**
    * Gets the integer value of this literal if it can be represented
@@ -297,12 +390,34 @@ class BigIntLiteral extends @bigintliteral, Literal {
   float getFloatValue() { result = getValue().toFloat() }
 }
 
-/** A string literal. */
+/**
+ * A string literal, either single-quoted or double-quoted.
+ *
+ * Note that template literals are represented by a different class, `TemplateLiteral`.
+ *
+ * Examples:
+ *
+ * ```
+ * "Hello, world!\n"
+ * 'Hello, "world"!'
+ * ```
+ */
 class StringLiteral extends @stringliteral, Literal {
   override string getStringValue() { result = getValue() }
 }
 
-/** A regular expression literal. */
+/**
+ * A regular expression literal.
+ *
+ * Note that this class does not cover regular expressions constructed by calling the built-in
+ * `RegExp` function.
+ *
+ * Example:
+ *
+ * ```
+ * /(?i)ab*c(d|e)$/
+ * ```
+ */
 class RegExpLiteral extends @regexpliteral, Literal, RegExpParent {
   /** Gets the root term of this regular expression literal. */
   RegExpTerm getRoot() { this = result.getParent() }
@@ -323,7 +438,15 @@ class RegExpLiteral extends @regexpliteral, Literal, RegExpParent {
   predicate isDotAll() { getFlags().matches("%s%") }
 }
 
-/** A `this` expression. */
+/**
+ * A `this` expression.
+ *
+ * Example:
+ *
+ * ```
+ * this
+ * ```
+ */
 class ThisExpr extends @thisexpr, Expr {
   override predicate isImpure() { none() }
 
@@ -344,7 +467,15 @@ class ThisExpr extends @thisexpr, Expr {
   }
 }
 
-/** An array literal. */
+/**
+ * An array literal.
+ *
+ * Examples:
+ *
+ * ```
+ * [ 1, , [ 3, 4 ] ]
+ * ```
+ */
 class ArrayExpr extends @arrayexpr, Expr {
   /** Gets the `i`th element of this array literal. */
   Expr getElement(int i) { result = this.getChildExpr(i) }
@@ -373,7 +504,21 @@ class ArrayExpr extends @arrayexpr, Expr {
   override predicate isImpure() { getAnElement().isImpure() }
 }
 
-/** An object literal. */
+/**
+ * An object literal, containing zero or more property definitions.
+ *
+ * Example:
+ *
+ * ```
+ * var p = {  // object literal containing five property definitions
+ *   x: 1,
+ *   y: 1,
+ *   diag: function() { return this.x - this.y; },
+ *   get area() { return this.x * this.y; },
+ *   set area(a) { this.x = Math.sqrt(a); this.y = Math.sqrt(a); }
+ * };
+ * ```
+ */
 class ObjectExpr extends @objexpr, Expr {
   /** Gets the `i`th property in this object literal. */
   Property getProperty(int i) { properties(result, this, i, _, _) }
@@ -402,6 +547,20 @@ class ObjectExpr extends @objexpr, Expr {
 /**
  * A property definition in an object literal, which may be either
  * a value property, a property getter, or a property setter.
+ *
+ * Note that property definitions are not expressions.
+ *
+ * Examples:
+ *
+ * ```
+ * var p = {
+ *   x: 1,                                                          // value property
+ *   y: 1,                                                          // value property
+ *   diag: function() { return this.x - this.y; },                  // value property
+ *   get area() { return this.x * this.y; },                        // property getter
+ *   set area(a) { this.x = Math.sqrt(a); this.y = Math.sqrt(a); }  // property setter
+ * }
+ * ```
  */
 class Property extends @property, Documentable {
   Property() {
@@ -488,30 +647,104 @@ class Property extends @property, Documentable {
   Decorator getADecorator() { result = getDecorator(_) }
 }
 
-/** A value property in an object literal. */
+/**
+ * A value property definition in an object literal.
+
+ * Examples:
+ *
+ * ```
+ * var p = {
+ *   x: 1,                                                          // value property
+ *   y: 1,                                                          // value property
+ *   diag: function() { return this.x - this.y; },                  // value property
+ * }
+ * ```
+ */
 class ValueProperty extends Property, @value_property { }
 
-/** A property getter or setter in an object literal. */
+/**
+ * A property getter or setter in an object literal.
+ *
+ * Examples:
+ *
+ * ```
+ * var p = {
+ *   x: 1,
+ *   y: 1,
+ *   diag: function() { return this.x - this.y; },
+ *   get area() { return this.x * this.y; },                        // property getter
+ *   set area(a) { this.x = Math.sqrt(a); this.y = Math.sqrt(a); }  // property setter
+ * }
+ * ```
+ */
 class PropertyAccessor extends Property, @property_accessor {
   override FunctionExpr getInit() { result = Property.super.getInit() }
 }
 
-/** A property getter in an object literal. */
+/**
+ * A property getter in an object literal.
+ *
+ * Example:
+ *
+ * ```
+ * var p = {
+ *   x: 1,
+ *   y: 1,
+ *   diag: function() { return this.x - this.y; },
+ *   get area() { return this.x * this.y; },                        // property getter
+ *   set area(a) { this.x = Math.sqrt(a); this.y = Math.sqrt(a); }
+ * }
+ * ```
+ */
 class PropertyGetter extends PropertyAccessor, @property_getter { }
 
-/** A property setter in an object literal. */
+/**
+ * A property setter in an object literal.
+ *
+ * Example:
+ *
+ * ```
+ * var p = {
+ *   x: 1,
+ *   y: 1,
+ *   diag: function() { return this.x - this.y; },
+ *   get area() { return this.x * this.y; },
+ *   set area(a) { this.x = Math.sqrt(a); this.y = Math.sqrt(a); }  // property setter
+ * }
+ * ```
+ */
 class PropertySetter extends PropertyAccessor, @property_setter { }
 
 /**
- * A spread property in an object literal, such as `...others` in
- * `{ x: 42, ...others }`. The value of a spread property is always
+ * A spread property in an object literal.
+ *
+ * The initializer of a spread property is always
  * a `SpreadElement`.
+ *
+ * Example:
+ *
+ * ```
+ * var options = {
+ *   ...defaultOptions,  // spread property
+ *   password: pwd
+ * }
+ * ```
  */
 class SpreadProperty extends Property {
   SpreadProperty() { not exists(getNameExpr()) }
 }
 
-/** A function expression. */
+/**
+ * A (non-arrow) function expression.
+ *
+ * Examples:
+ *
+ * ```
+ * var greet =
+ *   function() {            // function expression
+ *     console.log("Hi!");
+ *   };
+ */
 class FunctionExpr extends @functionexpr, Expr, Function {
   /** Gets the name of this function expression, if any. */
   override string getName() { result = getId().getName() }
@@ -533,7 +766,15 @@ class FunctionExpr extends @functionexpr, Expr, Function {
   override predicate isImpure() { none() }
 }
 
-/** An arrow expression. */
+/**
+ * An arrow function expression.
+ *
+ * Examples:
+ *
+ * ```
+ * var greet =
+ *   () => console.log("Hi!");  // arrow function expression
+ */
 class ArrowFunctionExpr extends @arrowfunctionexpr, Expr, Function {
   /** Gets the statement in which this expression appears. */
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
@@ -545,7 +786,15 @@ class ArrowFunctionExpr extends @arrowfunctionexpr, Expr, Function {
   override Function getThisBinder() { result = getEnclosingContainer().(Function).getThisBinder() }
 }
 
-/** A sequence expression (also known as comma expression). */
+/**
+ * A sequence expression (also known as comma expression).
+ *
+ * Example:
+ *
+ * ```
+ * x++, y++
+ * ```
+ */
 class SeqExpr extends @seqexpr, Expr {
   /** Gets the `i`th expression in this sequence. */
   Expr getOperand(int i) { result = getChildExpr(i) }
@@ -566,7 +815,15 @@ class SeqExpr extends @seqexpr, Expr {
   override Expr getUnderlyingValue() { result = getLastOperand().getUnderlyingValue() }
 }
 
-/** A conditional expression. */
+/**
+ * A conditional expression.
+ *
+ * Example:
+ *
+ * ```
+ * x == 0 ? 0 : 1/x
+ * ```
+ */
 class ConditionalExpr extends @conditionalexpr, Expr {
   /** Gets the condition expression of this conditional. */
   Expr getCondition() { result = getChildExpr(0) }
@@ -589,6 +846,15 @@ class ConditionalExpr extends @conditionalexpr, Expr {
 /**
  * An invocation expression, that is, either a function call or
  * a `new` expression.
+ *
+ * Examples:
+ *
+ * ```
+ * f(1)
+ * x.f(1, ...args)
+ * f.call(x, 1)
+ * new Array(16)
+ * ```
  */
 class InvokeExpr extends @invokeexpr, Expr {
   /** Gets the expression specifying the function to be called. */
@@ -686,10 +952,29 @@ class InvokeExpr extends @invokeexpr, Expr {
   Function getResolvedCallee() { result = getResolvedCalleeName().getImplementation() }
 }
 
-/** A `new` expression. */
+/**
+ * A `new` expression.
+ *
+ * Example:
+ *
+ * ```
+ * new Array(16)
+ * new 
+ * ```
+ */
 class NewExpr extends @newexpr, InvokeExpr { }
 
-/** A function call expression. */
+/**
+ * A function call expression.
+ *
+ * Examples:
+ *
+ * ```
+ * f()
+ * require('express')()
+ * x.f()
+ * ```
+ */
 class CallExpr extends @callexpr, InvokeExpr {
   /**
    * Gets the expression specifying the receiver on which the function
@@ -698,7 +983,16 @@ class CallExpr extends @callexpr, InvokeExpr {
   Expr getReceiver() { result = getCallee().(PropAccess).getBase() }
 }
 
-/** A method call expression. */
+/**
+ * A method call expression.
+ *
+ * Examples:
+ *
+ * ```
+ * Object.create(null)
+ * [1, 2, 3].forEach(console.log);
+ * ```
+ */
 class MethodCallExpr extends CallExpr {
   MethodCallExpr() { getCallee().stripParens() instanceof PropAccess }
 
@@ -724,6 +1018,13 @@ class MethodCallExpr extends CallExpr {
 /**
  * A property access, that is, either a dot expression of the form
  * `e.f` or an index expression of the form `e[p]`.
+ *
+ * Examples:
+ *
+ * ```
+ * Math.PI
+ * arguments[i]
+ * ```
  */
 class PropAccess extends @propaccess, Expr {
   /** Gets the base expression on which the property is accessed. */
@@ -762,7 +1063,15 @@ class PropAccess extends @propaccess, Expr {
   override Expr getUnderlyingReference() { result = this }
 }
 
-/** A dot expression. */
+/**
+ * A dot expression.
+ *
+ * Example:
+ *
+ * ```
+ * Math.PI
+ * ```
+ */
 class DotExpr extends @dotexpr, PropAccess {
   override string getPropertyName() { result = getProperty().getName() }
 
@@ -772,7 +1081,15 @@ class DotExpr extends @dotexpr, PropAccess {
   override predicate isImpure() { getBase().isImpure() }
 }
 
-/** An index expression (also known as computed property access). */
+/**
+ * An index expression (also known as computed property access).
+ *
+ * Example:
+ *
+ * ```
+ * arguments[i]
+ * ```
+ */
 class IndexExpr extends @indexexpr, PropAccess {
   /** Gets the expression specifying the name of the accessed property. */
   Expr getIndex() { result = getChildExpr(1) }
@@ -785,7 +1102,16 @@ class IndexExpr extends @indexexpr, PropAccess {
   }
 }
 
-/** An expression with a unary operator. */
+/**
+ * An expression with a unary operator.
+ *
+ * Examples:
+ *
+ * ```
+ * -x
+ * !!done
+ * ```
+ */
 class UnaryExpr extends @unaryexpr, Expr {
   /** Gets the operand of this unary operator. */
   Expr getOperand() { result = getChildExpr(0) }
@@ -800,51 +1126,126 @@ class UnaryExpr extends @unaryexpr, Expr {
   }
 }
 
-/** An arithmetic negation expression (also known as unary minus). */
+/**
+ * An arithmetic negation expression (also known as unary minus).
+ *
+ * Example:
+ *
+ * ```
+ * -x
+ * ```
+ */
 class NegExpr extends @negexpr, UnaryExpr {
   override string getOperator() { result = "-" }
 
   override int getIntValue() { result = -getOperand().getIntValue() }
 }
 
-/** A unary plus expression. */
+/**
+ * A unary plus expression.
+ *
+ * Example:
+ *
+ * ```
+ * +x
+ * ```
+ */
 class PlusExpr extends @plusexpr, UnaryExpr {
   override string getOperator() { result = "+" }
 }
 
-/** A logical negation expression. */
+/**
+ * A logical negation expression.
+ *
+ * Example:
+ *
+ * ```
+ * !done
+ * ```
+ */
 class LogNotExpr extends @lognotexpr, UnaryExpr {
   override string getOperator() { result = "!" }
 }
 
-/** A bitwise negation expression. */
+/**
+ * A bitwise negation expression.
+ *
+ * Example:
+ *
+ * ```
+ * ~bitmask
+ * ```
+ */
 class BitNotExpr extends @bitnotexpr, UnaryExpr {
   override string getOperator() { result = "~" }
 }
 
-/** A `typeof` expression. */
+/**
+ * A `typeof` expression.
+ *
+ * Example:
+ *
+ * ```
+ * typeof A.prototype
+ * ```
+ */
 class TypeofExpr extends @typeofexpr, UnaryExpr {
   override string getOperator() { result = "typeof" }
 }
 
-/** A `void` expression. */
+/**
+ * A `void` expression.
+ *
+ * Example:
+ *
+ * ```
+ * void(0)
+ * ```
+ */
 class VoidExpr extends @voidexpr, UnaryExpr {
   override string getOperator() { result = "void" }
 }
 
-/** A `delete` expression. */
+/**
+ * A `delete` expression.
+ *
+ * Example:
+ *
+ * ```
+ * delete elt[_expando]
+ * ```
+ */
 class DeleteExpr extends @deleteexpr, UnaryExpr {
   override string getOperator() { result = "delete" }
 
   override predicate isImpure() { any() }
 }
 
-/** A spread element. */
+/**
+ * A spread element.
+ *
+ * Example:
+ *
+ * ```
+ * [].concat(
+ *   ...lists  // a spread element
+ * )
+ * ```
+ */
 class SpreadElement extends @spreadelement, UnaryExpr {
   override string getOperator() { result = "..." }
 }
 
-/** An expression with a binary operator. */
+/**
+ * An expression with a binary operator.
+ *
+ * Examples:
+ *
+ * ```
+ * x + 1
+ * a instanceof Array
+ * ```
+ */
 class BinaryExpr extends @binaryexpr, Expr {
   /** Gets the left operand of this binary operator. */
   Expr getLeftOperand() { result = getChildExpr(0) }
@@ -895,10 +1296,28 @@ class BinaryExpr extends @binaryexpr, Expr {
  * A comparison expression, that is, either an equality test
  * (`==`, `!=`, `===`, `!==`) or a relational expression
  * (`<`, `<=`, `>=`, `>`).
+ *
+ * Examples:
+ *
+ * ```
+ * x !== y
+ * y < 0
+ * ```
  */
 class Comparison extends @comparison, BinaryExpr { }
 
-/** An equality test using `==`, `!=`, `===` or `!==`. */
+/**
+ * An equality test using `==`, `!=`, `===` or `!==`.
+ *
+ * Examples:
+ *
+ * ```
+ * "" == arg
+ * x != null
+ * recv === undefined
+ * res !== res
+ * ```
+ */
 class EqualityTest extends @equalitytest, Comparison {
   /** Gets the polarity of this test: `true` for equalities, `false` for inequalities. */
   boolean getPolarity() {
@@ -910,62 +1329,159 @@ class EqualityTest extends @equalitytest, Comparison {
   }
 }
 
-/** An equality test using `==`. */
+/**
+ * An equality test using `==`.
+ *
+ * Example:
+ *
+ * ```
+ * "" == arg
+ * ```
+ */
 class EqExpr extends @eqexpr, EqualityTest {
   override string getOperator() { result = "==" }
 }
 
-/** An inequality test using `!=`. */
+/**
+ * An inequality test using `!=`.
+ *
+ * Example:
+ *
+ * ```
+ * x != null
+ * ```
+ */
 class NEqExpr extends @neqexpr, EqualityTest {
   override string getOperator() { result = "!=" }
 }
 
-/** A strict equality test using `===`. */
+/**
+ * A strict equality test using `===`.
+ *
+ * Example:
+ *
+ * ```
+ * recv === undefined
+ * ```
+ */
 class StrictEqExpr extends @eqqexpr, EqualityTest {
   override string getOperator() { result = "===" }
 }
 
-/** A strict inequality test using `!==`. */
+/**
+ * A strict inequality test using `!==`.
+ *
+ * Example:
+ *
+ * ```
+ * res !== res
+ * ```
+ */
 class StrictNEqExpr extends @neqqexpr, EqualityTest {
   override string getOperator() { result = "!==" }
 }
 
-/** A less-than expression. */
+/**
+ * A less-than expression.
+ *
+ * Example:
+ *
+ * ```
+ * i < 10
+ * ```
+ */
 class LTExpr extends @ltexpr, Comparison {
   override string getOperator() { result = "<" }
 }
 
-/** A less-than-or-equal expression. */
+/**
+ * A less-than-or-equal expression.
+ *
+ * Example:
+ *
+ * ```
+ * x+1 <= a.length
+ * ```
+ */
 class LEExpr extends @leexpr, Comparison {
   override string getOperator() { result = "<=" }
 }
 
-/** A greater-than expression. */
+/**
+ * A greater-than expression.
+ *
+ * Example:
+ *
+ * ```
+ * a[j] > a[k]
+ * ```
+ */
 class GTExpr extends @gtexpr, Comparison {
   override string getOperator() { result = ">" }
 }
 
-/** A greater-than-or-equal expression. */
+/**
+ * A greater-than-or-equal expression.
+ *
+ * Example:
+ *
+ * ```
+ * x >= 0
+ * ```
+ */
 class GEExpr extends @geexpr, Comparison {
   override string getOperator() { result = ">=" }
 }
 
-/** A left-shift expression using `<<`. */
+/**
+ * A left-shift expression using `<<`.
+ *
+ * Example:
+ *
+ * ```
+ * 2 << i
+ * ```
+ */
 class LShiftExpr extends @lshiftexpr, BinaryExpr {
   override string getOperator() { result = "<<" }
 }
 
-/** A right-shift expression using `>>`. */
+/**
+ * A right-shift expression using `>>`.
+ *
+ * Example:
+ *
+ * ```
+ * r >> 8
+ * ```
+ */
 class RShiftExpr extends @rshiftexpr, BinaryExpr {
   override string getOperator() { result = ">>" }
 }
 
-/** An unsigned right-shift expression using `>>>`. */
+/**
+ * An unsigned right-shift expression using `>>>`.
+ *
+ * Example:
+ *
+ * ```
+ * u >>> v
+ * ```
+ */
 class URShiftExpr extends @urshiftexpr, BinaryExpr {
   override string getOperator() { result = ">>>" }
 }
 
-/** An addition expression. */
+/**
+ * An addition or string-concatenation expression.
+ *
+ * Examples:
+ *
+ * ```
+ * a + b
+ * msg + "\n"
+ * ```
+ */
 class AddExpr extends @addexpr, BinaryExpr {
   override string getOperator() { result = "+" }
 
@@ -974,71 +1490,175 @@ class AddExpr extends @addexpr, BinaryExpr {
   }
 }
 
-/** A subtraction expression. */
+/**
+ * A subtraction expression.
+ *
+ * Example:
+ *
+ * ```
+ * w - len
+ * ```
+ */
 class SubExpr extends @subexpr, BinaryExpr {
   override string getOperator() { result = "-" }
 }
 
-/** A multiplication expression. */
+/**
+ * A multiplication expression.
+ *
+ * Example:
+ *
+ * ```
+ * x * y
+ * ```
+ */
 class MulExpr extends @mulexpr, BinaryExpr {
   override string getOperator() { result = "*" }
 }
 
-/** A division expression. */
+/**
+ * A division expression.
+ *
+ * Example:
+ *
+ * ```
+ * gg / ac
+ * ```
+ */
 class DivExpr extends @divexpr, BinaryExpr {
   override string getOperator() { result = "/" }
 }
 
-/** A modulo expression. */
+/**
+ * A modulo expression.
+ *
+ * Example:
+ *
+ * ```
+ * n % 2
+ * ```
+ */
 class ModExpr extends @modexpr, BinaryExpr {
   override string getOperator() { result = "%" }
 }
 
-/** An exponentiation expression. */
+/**
+ * An exponentiation expression.
+ *
+ * Example:
+ *
+ * ```
+ * p ** 10
+ * ```
+ */
 class ExpExpr extends @expexpr, BinaryExpr {
   override string getOperator() { result = "**" }
 }
 
-/** A bitwise 'or' expression. */
+/**
+ * A bitwise 'or' expression.
+ *
+ * Example:
+ *
+ * ```
+ * O_RDWR | O_APPEND
+ * ```
+ */
 class BitOrExpr extends @bitorexpr, BinaryExpr {
   override string getOperator() { result = "|" }
 }
 
-/** An exclusive 'or' expression. */
+/**
+ * An exclusive 'or' expression.
+ *
+ * Example:
+ *
+ * ```
+ * x ^ 1
+ * ```
+ */
 class XOrExpr extends @xorexpr, BinaryExpr {
   override string getOperator() { result = "^" }
 }
 
-/** A bitwise 'and' expression. */
+/**
+ * A bitwise 'and' expression.
+ *
+ * Example:
+ *
+ * ```
+ * flags & O_APPEND
+ * ```
+ */
 class BitAndExpr extends @bitandexpr, BinaryExpr {
   override string getOperator() { result = "&" }
 }
 
-/** An `in` expression. */
+/**
+ * An `in` expression.
+ *
+ * Example:
+ *
+ * ```
+ * "leftpad" in String.prototype
+ * ```
+ */
 class InExpr extends @inexpr, BinaryExpr {
   override string getOperator() { result = "in" }
 }
 
-/** An `instanceof` expression. */
+/**
+ * An `instanceof` expression.
+ *
+ * Example:
+ *
+ * ```
+ * b instanceof Buffer
+ * ```
+ */
 class InstanceofExpr extends @instanceofexpr, BinaryExpr {
   override string getOperator() { result = "instanceof" }
 }
 
-/** A logical 'and' expression. */
+/**
+ * A logical 'and' expression.
+ *
+ * Example:
+ *
+ * ```
+ * x != null && x.f
+ * ```
+ */
 class LogAndExpr extends @logandexpr, BinaryExpr {
   override string getOperator() { result = "&&" }
 
   override ControlFlowNode getFirstControlFlowNode() { result = this }
 }
 
-/** A logical 'or' expression. */
+/**
+ * A logical 'or' expression.
+ *
+ * Example:
+ *
+ * ```
+ * x == null || x.f
+ * ```
+ */
 class LogOrExpr extends @logorexpr, BinaryExpr {
   override string getOperator() { result = "||" }
 
   override ControlFlowNode getFirstControlFlowNode() { result = this }
 }
 
-/** A nullish coalescing '??' expression. */
+/**
+ * A nullish coalescing '??' expression.
+ *
+ * Example:
+ *
+ * ```
+ * x ?? f
+ * ```
+ */
 class NullishCoalescingExpr extends @nullishcoalescingexpr, BinaryExpr {
   override string getOperator() { result = "??" }
 
@@ -1046,8 +1666,16 @@ class NullishCoalescingExpr extends @nullishcoalescingexpr, BinaryExpr {
 }
 
 /**
- * A logical binary expression, that is, either a logical
- * 'or' or a logical 'and' expression.
+ * A short-circuiting logical binary expression, that is, a logical 'or' expression,
+ * a logical 'and' expression, or a nullish-coalescing expression.
+ *
+ * Examples:
+ *
+ * ```
+ * x && x.f
+ * !x || x.f
+ * x ?? f
+ * ```
  */
 class LogicalBinaryExpr extends BinaryExpr {
   LogicalBinaryExpr() {
@@ -1060,6 +1688,14 @@ class LogicalBinaryExpr extends BinaryExpr {
 /**
  * A bitwise binary expression, that is, either a bitwise
  * 'and', a bitwise 'or', or an exclusive 'or' expression.
+ *
+ * Examples:
+ *
+ * ```
+ * qw & 0xffff
+ * O_RDWR | O_APPEND
+ * x ^ 1
+ * ```
  */
 class BitwiseBinaryExpr extends BinaryExpr {
   BitwiseBinaryExpr() {
@@ -1069,7 +1705,17 @@ class BitwiseBinaryExpr extends BinaryExpr {
   }
 }
 
-/** A shift expression. */
+/**
+ * A shift expression.
+ *
+ * Examples:
+ *
+ * ```
+ * 2 << i
+ * r >> 8
+ * u >>> v
+ * ```
+ */
 class ShiftExpr extends BinaryExpr {
   ShiftExpr() {
     this instanceof LShiftExpr or
@@ -1078,7 +1724,16 @@ class ShiftExpr extends BinaryExpr {
   }
 }
 
-/** An assignment expression, either compound or simple. */
+/**
+ * An assignment expression, either compound or simple.
+ *
+ * Examples:
+ *
+ * ```
+ * x = y
+ * sum += element
+ * ```
+ */
 class Assignment extends @assignment, Expr {
   /** Gets the left hand side of this assignment. */
   Expr getLhs() { result = getChildExpr(0) }
@@ -1092,51 +1747,175 @@ class Assignment extends @assignment, Expr {
   override ControlFlowNode getFirstControlFlowNode() { result = getLhs().getFirstControlFlowNode() }
 }
 
-/** A simple assignment expression. */
+/**
+ * A simple assignment expression.
+ *
+ * Example:
+ *
+ * ```
+ * x = y
+ * ```
+ */
 class AssignExpr extends @assignexpr, Assignment {
   override Expr getUnderlyingValue() { result = getRhs().getUnderlyingValue() }
 }
 
-/** A compound assign expression. */
+/**
+ * A compound assign expression.
+ *
+ * Examples:
+ *
+ * ```
+ * sum += element
+ * x /= 2
+ * ```
+ */
 abstract class CompoundAssignExpr extends Assignment { }
 
-/** A compound add-assign expression. */
+/**
+ * A compound add-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * sum += element
+ * ```
+ */
 class AssignAddExpr extends @assignaddexpr, CompoundAssignExpr { }
 
-/** A compound subtract-assign expression. */
+/**
+ * A compound subtract-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * i -= 2
+ * ```
+ */
 class AssignSubExpr extends @assignsubexpr, CompoundAssignExpr { }
 
-/** A compound multiply-assign expression. */
+/**
+ * A compound multiply-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * x *= y
+ * ```
+ */
 class AssignMulExpr extends @assignmulexpr, CompoundAssignExpr { }
 
-/** A compound divide-assign expression. */
+/**
+ * A compound divide-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * n /= 10
+ * ```
+ */
 class AssignDivExpr extends @assigndivexpr, CompoundAssignExpr { }
 
-/** A compound modulo-assign expression. */
+/**
+ * A compound modulo-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * m %= 3
+ * ```
+ */
 class AssignModExpr extends @assignmodexpr, CompoundAssignExpr { }
 
-/** A compound exponentiate-assign expression. */
+/**
+ * A compound exponentiate-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * scale **= 10
+ * ```
+ */
 class AssignExpExpr extends @assignexpexpr, CompoundAssignExpr { }
 
-/** A compound left-shift-assign expression. */
+/**
+ * A compound left-shift-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * exp <<= 2
+ * ```
+ */
 class AssignLShiftExpr extends @assignlshiftexpr, CompoundAssignExpr { }
 
-/** A compound right-shift-assign expression. */
+/**
+ * A compound right-shift-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * qw >>= 8
+ * ```
+ */
 class AssignRShiftExpr extends @assignrshiftexpr, CompoundAssignExpr { }
 
-/** A compound unsigned-right-shift-assign expression. */
+/**
+ * A compound unsigned-right-shift-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * bits >>>= 16
+ * ```
+ */
 class AssignURShiftExpr extends @assignurshiftexpr, CompoundAssignExpr { }
 
-/** A compound bitwise-'or'-assign expression. */
+/**
+ * A compound bitwise-'or'-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * flags |= O_CREAT
+ * ```
+ */
 class AssignOrExpr extends @assignorexpr, CompoundAssignExpr { }
 
-/** A compound exclusive-'or'-assign expression. */
+/**
+ * A compound exclusive-'or'-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * bits ^= mask
+ * ```
+ */
 class AssignXOrExpr extends @assignxorexpr, CompoundAssignExpr { }
 
-/** A compound bitwise-'and'-assign expression. */
+/**
+ * A compound bitwise-'and'-assign expression.
+ *
+ * Example:
+ *
+ * ```
+ * data &= 0xffff
+ * ```
+ */
 class AssignAndExpr extends @assignandexpr, CompoundAssignExpr { }
 
-/** An update expression, that is, an increment or decrement expression. */
+/**
+ * An update expression, that is, an increment or decrement expression.
+ *
+ * Examples:
+ *
+ * ```
+ * ++i
+ * --i
+ * i++
+ * i--
+ * ```
+ */
 class UpdateExpr extends @updateexpr, Expr {
   /** Gets the operand of this update. */
   Expr getOperand() { result = getChildExpr(0) }
@@ -1152,31 +1931,71 @@ class UpdateExpr extends @updateexpr, Expr {
   }
 }
 
-/** A prefix increment expression. */
+/**
+ * A prefix increment expression.
+ *
+ * Example:
+ *
+ * ```
+ * ++i
+ * ```
+ */
 class PreIncExpr extends @preincexpr, UpdateExpr {
   override predicate isPrefix() { any() }
 
   override string getOperator() { result = "++" }
 }
 
-/** A postfix increment expression. */
+/**
+ * A postfix increment expression.
+ *
+ * Example:
+ *
+ * ```
+ * i++
+ * ```
+ */
 class PostIncExpr extends @postincexpr, UpdateExpr {
   override string getOperator() { result = "++" }
 }
 
-/** A prefix decrement expression. */
+/**
+ * A prefix decrement expression.
+ *
+ * Example:
+ *
+ * ```
+ * --i
+ * ```
+ */
 class PreDecExpr extends @predecexpr, UpdateExpr {
   override predicate isPrefix() { any() }
 
   override string getOperator() { result = "--" }
 }
 
-/** A postfix decrement expression. */
+/**
+ * A postfix decrement expression.
+ *
+ * Example:
+ *
+ * ```
+ * i--
+ * ```
+ */
 class PostDecExpr extends @postdecexpr, UpdateExpr {
   override string getOperator() { result = "--" }
 }
 
-/** A `yield` expression. */
+/**
+ * A `yield` expression.
+ *
+ * Example:
+ *
+ * ```
+ * yield next
+ * ```
+ */
 class YieldExpr extends @yieldexpr, Expr {
   /** Gets the operand of this `yield` expression. */
   Expr getOperand() { result = getChildExpr(0) }
@@ -1196,6 +2015,13 @@ class YieldExpr extends @yieldexpr, Expr {
 /**
  * A comprehension expression, that is, either an array comprehension
  * expression or a generator expression.
+ *
+ * Examples:
+ *
+ * ```
+ * [for (x of xs) x*x]
+ * (for (x of xs) x*x)
+ * ```
  */
 class ComprehensionExpr extends @comprehensionexpr, Expr {
   /** Gets the `n`th comprehension block in this comprehension. */
@@ -1243,13 +2069,38 @@ class ComprehensionExpr extends @comprehensionexpr, Expr {
   }
 }
 
-/** An array comprehension expression. */
+/**
+ * An array comprehension expression.
+ *
+ * Example:
+ *
+ * ```
+ * [for (x of xs) x*x]
+ * ```
+ */
 class ArrayComprehensionExpr extends @arraycomprehensionexpr, ComprehensionExpr { }
 
-/** A generator expression. */
+/**
+ * A generator expression.
+ *
+ * Example:
+ *
+ * ```
+ * (for (x of xs) x*x)
+ * ```
+ */
 class GeneratorExpr extends @generatorexpr, ComprehensionExpr { }
 
-/** A comprehension block. */
+/**
+ * A comprehension block in a comprehension expression.
+ *
+ * Examples:
+ *
+ * ```
+ * for (x of [1, 2 3])
+ * for (x in o)
+ * ```
+ */
 class ComprehensionBlock extends @comprehensionblock, Expr {
   /** Gets the iterating variable or pattern of this comprehension block. */
   BindingPattern getIterator() { result = getChildExpr(0) }
@@ -1263,13 +2114,41 @@ class ComprehensionBlock extends @comprehensionblock, Expr {
   }
 }
 
-/** A `for`-`in` comprehension block. */
+/**
+ * A `for`-`in` comprehension block in a comprehension expression.
+ *
+ * Example:
+ *
+ * ```
+ * for (x in o)
+ * ```
+ */
 class ForInComprehensionBlock extends @forincomprehensionblock, ComprehensionBlock { }
 
-/** A `for`-`of` comprehension block. */
+/**
+ * A `for`-`of` comprehension block in a comprehension expression.
+ *
+ * Example:
+ *
+ * ```
+ * for (x of [1, 2, 3])
+ * ```
+ */
 class ForOfComprehensionBlock extends @forofcomprehensionblock, ComprehensionBlock { }
 
-/** A binary arithmetic expression using `+`, `-`, `/`, `%` or `**`. */
+/**
+ * A binary arithmetic expression using `+`, `-`, `/`, `%` or `**`.
+ *
+ * Examples:
+ *
+ * ```
+ * x + y
+ * i - 1
+ * dist / scale
+ * k % 2
+ * p ** 10
+ * ```
+ */
 class ArithmeticExpr extends BinaryExpr {
   ArithmeticExpr() {
     this instanceof AddExpr or
@@ -1281,7 +2160,17 @@ class ArithmeticExpr extends BinaryExpr {
   }
 }
 
-/** A logical expression using `&&`, `||`, or `!`. */
+/**
+ * A logical expression using `&&`, `||`, or `!`.
+ *
+ * Examples:
+ *
+ * ```
+ * x && x.f
+ * x == null || x.f
+ * !x
+ * ```
+ */
 class LogicalExpr extends Expr {
   LogicalExpr() {
     this instanceof LogicalBinaryExpr or
@@ -1289,7 +2178,21 @@ class LogicalExpr extends Expr {
   }
 }
 
-/** A bitwise expression using `&`, `|`, `^`, `~`, `<<`, `>>`, or `>>>`. */
+/**
+ * A bitwise expression using `&`, `|`, `^`, `~`, `<<`, `>>`, or `>>>`.
+ *
+ * Examples:
+ *
+ * ```
+ * qw & 0xffff
+ * O_RDWR | O_APPEND
+ * x ^ 1
+ * ~bitmask
+ * 2 << i
+ * r >> 8
+ * u >>> v
+ * ```
+ */
 class BitwiseExpr extends Expr {
   BitwiseExpr() {
     this instanceof BitwiseBinaryExpr or
@@ -1298,7 +2201,16 @@ class BitwiseExpr extends Expr {
   }
 }
 
-/** A strict equality test using `!==` or `===`. */
+/**
+ * A strict equality test using `!==` or `===`.
+ *
+ * Examples:
+ *
+ * ```
+ * recv === undefined
+ * res !== res
+ * ```
+ */
 class StrictEqualityTest extends EqualityTest {
   StrictEqualityTest() {
     this instanceof StrictEqExpr or
@@ -1306,7 +2218,16 @@ class StrictEqualityTest extends EqualityTest {
   }
 }
 
-/** A non-strict equality test using `!=` or `==`. */
+/**
+ * A non-strict equality test using `!=` or `==`.
+ *
+ * Examples:
+ *
+ * ```
+ * "" == arg
+ * x != null
+ * ```
+ */
 class NonStrictEqualityTest extends EqualityTest {
   NonStrictEqualityTest() {
     this instanceof EqExpr or
@@ -1314,7 +2235,18 @@ class NonStrictEqualityTest extends EqualityTest {
   }
 }
 
-/** A relational comparison using `<`, `<=`, `>=`, or `>`. */
+/**
+ * A relational comparison using `<`, `<=`, `>=`, or `>`.
+ *
+ * Examples:
+ *
+ * ```
+ * i < 10
+ * x+1 <= a.length
+ * x >= 0
+ * a[j] > a[k]
+ * ```
+ */
 class RelationalComparison extends Comparison {
   RelationalComparison() {
     this instanceof LTExpr or
@@ -1350,17 +2282,43 @@ class RelationalComparison extends Comparison {
   }
 }
 
-/** A (pre or post) increment expression. */
+/**
+ * A (pre or post) increment expression.
+ *
+ * Examples:
+ *
+ * ```
+ * ++i
+ * i++
+ * ```
+ */
 class IncExpr extends UpdateExpr {
   IncExpr() { this instanceof PreIncExpr or this instanceof PostIncExpr }
 }
 
-/** A (pre or post) decrement expression. */
+/**
+ * A (pre or post) decrement expression.
+ *
+ * Examples:
+ *
+ * ```
+ * --i
+ * i--
+ * ```
+ */
 class DecExpr extends UpdateExpr {
   DecExpr() { this instanceof PreDecExpr or this instanceof PostDecExpr }
 }
 
-/** An old-style `let` expression of the form `let(vardecls) expr`. */
+/**
+ * An old-style `let` expression of the form `let(vardecls) expr`.
+ *
+ * Example:
+ *
+ * ```
+ * let (x = f()) x*x
+ * ```
+ */
 class LegacyLetExpr extends Expr, @legacy_letexpr {
   /** Gets the `i`th declarator in this `let` expression. */
   VariableDeclarator getDecl(int i) { result = getChildExpr(i) and i >= 0 }
@@ -1372,7 +2330,15 @@ class LegacyLetExpr extends Expr, @legacy_letexpr {
   Expr getBody() { result = getChildExpr(-1) }
 }
 
-/** An immediately invoked function expression (IIFE). */
+/**
+ * An immediately invoked function expression (IIFE).
+ *
+ * Example:
+ *
+ * ```
+ * (function() { return this; })()
+ * ```
+ */
 class ImmediatelyInvokedFunctionExpr extends Function {
   /** The invocation expression of this IIFE. */
   InvokeExpr invk;
@@ -1446,7 +2412,15 @@ class ImmediatelyInvokedFunctionExpr extends Function {
   }
 }
 
-/** An `await` expression. */
+/**
+ * An `await` expression.
+ *
+ * Example:
+ *
+ * ```
+ * await p()
+ * ```
+ */
 class AwaitExpr extends @awaitexpr, Expr {
   /** Gets the operand of this `await` expression. */
   Expr getOperand() { result = getChildExpr(0) }
@@ -1464,6 +2438,12 @@ class AwaitExpr extends @awaitexpr, Expr {
  * Inside a generator function, `function.sent` evaluates to the value passed
  * to the generator by the `next` method that most recently resumed execution
  * of the generator.
+ *
+ * Example:
+ *
+ * ```
+ * function.sent
+ * ```
  */
 class FunctionSentExpr extends @functionsentexpr, Expr {
   override predicate isImpure() { none() }
@@ -1472,8 +2452,15 @@ class FunctionSentExpr extends @functionsentexpr, Expr {
 /**
  * A decorator applied to a class, property or member definition.
  *
- * For example, in the class declaration `@A class C { }`,
- * `@A` is a decorator applied to class `C`.
+ *
+ * Example:
+ *
+ * ```
+ * @A @testable(true) class C { // `@A` and `@testable(true)` are decorators
+ *   @Test test1() {            // `@Test` is a decorator
+ *   }
+ * }
+ * ```
  */
 class Decorator extends @decorator, Expr {
   /**
@@ -1500,6 +2487,15 @@ class Decorator extends @decorator, Expr {
 /**
  * A program element to which decorators can be applied,
  * that is, a class, a property or a member definition.
+ *
+ * Examples:
+ *
+ * ```
+ * @A @testable(true) class C { // class `C` is decoratable
+ *   @Test test1() {            // method `test1` is decoratable
+ *   }
+ * }
+ * ```
  */
 class Decoratable extends ASTNode {
   Decoratable() {
@@ -1528,8 +2524,14 @@ class Decoratable extends ASTNode {
 }
 
 /**
- * A function bind expression either of the form `b::f`, or of the
- * form `::b.f`.
+ * A function-bind expression.
+ *
+ * Examples:
+ *
+ * ```
+ * b::f
+ * ::b.f
+ * ```
  */
 class FunctionBindExpr extends @bindexpr, Expr {
   /**
@@ -1549,7 +2551,13 @@ class FunctionBindExpr extends @bindexpr, Expr {
 }
 
 /**
- * A dynamic import expression of the form `import(source)`.
+ * A dynamic import expression.
+ *
+ * Example:
+ *
+ * ```
+ * import("fs")
+ * ```
  */
 class DynamicImportExpr extends @dynamicimport, Expr, Import {
   /** Gets the expression specifying the path of the imported module. */
@@ -1576,7 +2584,14 @@ private class LiteralDynamicImportPath extends PathExprInModule, ConstantString 
 }
 
 /**
- * A call or member access that evaluates to `undefined` if its base operand evaluates to `undefined` or `null`.
+ * A call or member access that evaluates to `undefined` if its base operand evaluates to
+ * `undefined` or `null`.
+ *
+ * Examples:
+ *
+ * ```
+ * x ?? f
+ * ```
  */
 class OptionalUse extends Expr, @optionalchainable {
   OptionalUse() { isOptionalChaining(this) }
@@ -1593,6 +2608,8 @@ private class ChainElem extends Expr, @optionalchainable {
 }
 
 /**
+ * INTERNAL: This class should not be used by queries.
+ *
  * The root in a chain of calls or property accesses, where at least one call or property access is optional.
  */
 class OptionalChainRoot extends ChainElem {
