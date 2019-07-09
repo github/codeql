@@ -35,7 +35,9 @@ private Instruction getNonPhiOperandDef(Instruction instr) {
  * analyses that assume a cycle-free graph of non-phi operands. Therefore it's
  * better to remove these operands than to leave cycles in the operand graph.
  */
+pragma[noopt]
 private predicate isInCycle(Instruction instr) {
+  instr instanceof Instruction and
   getNonPhiOperandDef+(instr) = instr
 }
 
