@@ -6,57 +6,12 @@ private import cpp
 private import semmle.code.cpp.dataflow.internal.FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 
-private newtype TInstanceAccess =
-  TExplicitThisAccess(ThisExpr e) or
-  TImplicitThisForFieldAccess(FieldAccess fa) {
-    not exists(fa.getQualifier()) and not fa.getTarget().isStatic()
-  } or
-  TImplicitThisForCall(FunctionCall fc) {
-    fc.getTarget() instanceof MemberFunction and
-    not exists(fc.getQualifier()) and
-    not fc.getTarget().isStatic() and
-    not fc.getTarget() instanceof Constructor
-  }
-
-private class InstanceAccess extends TInstanceAccess {
-  abstract Expr getBackingExpr();
-
-  Location getLocation() { result = getBackingExpr().getLocation() }
-
-  abstract string toString();
-}
-
-class ExplicitThisAccess extends InstanceAccess, TExplicitThisAccess {
-  override Expr getBackingExpr() { this = TExplicitThisAccess(result) }
-
-  override string toString() { result = getBackingExpr().toString() }
-}
-
-class ImplicitThisForFieldAccess extends InstanceAccess, TImplicitThisForFieldAccess {
-  override FieldAccess getBackingExpr() { this = TImplicitThisForFieldAccess(result) }
-
-  override string toString() { result = "<implicit this> for field access" }
-}
-
-class ImplicitThisForCall extends InstanceAccess, TImplicitThisForCall {
-  override FunctionCall getBackingExpr() { this = TImplicitThisForCall(result) }
-
-  override string toString() { result = "<implicit this> for call" }
-}
-
 cached
 private newtype TNode =
   TExprNode(Expr e) or
-  TParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
+  TPartialDefNode(PartialDefinition pd) or
+  TExplicitParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
   TInstanceParameterNode(MemberFunction f) { exists(f.getBlock()) and not f.isStatic() } or
-  TImplicitInstanceAccessNode(InstanceAccess ia) { not ia instanceof ExplicitThisAccess } or
-  TImplicitInstancePostCallNode(InstanceAccess a) { a instanceof ImplicitThisForCall } or
-  TExplicitArgumentPostCallNode(Expr e) {
-    e = any(Call c).getAnArgument() or
-    e = any(Call c).getQualifier()
-  } or
-  TImplicitInstancePostStoreNode(InstanceAccess a) { a instanceof ImplicitThisForFieldAccess } or
-  TExplicitInstancePostStoreNode(Expr e) { e = any(FieldAccess f).getQualifier() } or
   TDefinitionByReferenceNode(VariableAccess va, Expr argument) {
     definitionByReference(va, argument)
   } or
@@ -85,10 +40,22 @@ class Node extends TNode {
   Expr asExpr() { result = this.(ExprNode).getExpr() }
 
   /** Gets the parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(ParameterNode).getParameter() }
+  Parameter asParameter() { result = this.(ExplicitParameterNode).getParameter() }
 
   /** Gets the argument that defines this `DefinitionByReferenceNode`, if any. */
   Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
+
+  /**
+   * Gets the expression that is partially defined by this node, if any.
+   *
+   * Partial definitions are created for field stores (`x.y = taint();` is a partial
+   * definition of `x`), and for calls that may change the value of an object (so
+   * `x.set(taint())` is a partial definition of `x`, annd `transfer(&x, taint())` is
+   * a partial definition of `&x`).s
+   */
+  Expr asPartialDefinition() {
+    result = this.(PartialDefNode).getPartialDefinition().getDefinedExpr()
+  }
 
   /**
    * Gets the uninitialized local variable corresponding to this node, if
@@ -128,14 +95,22 @@ class ExprNode extends Node, TExprNode {
   Expr getExpr() { result = expr }
 }
 
+abstract class ParameterNode extends Node, TNode {
+  /**
+   * Holds if this node is the parameter of `c` at the specified (zero-based)
+   * position. The implicit `this` parameter is considered to have index `-1`.
+   */
+  abstract predicate isParameterOf(Function f, int i);
+}
+
 /**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node, TParameterNode {
+class ExplicitParameterNode extends ParameterNode, TExplicitParameterNode {
   Parameter param;
 
-  ParameterNode() { this = TParameterNode(param) }
+  ExplicitParameterNode() { this = TExplicitParameterNode(param) }
 
   override Function getFunction() { result = param.getFunction() }
 
@@ -148,29 +123,23 @@ class ParameterNode extends Node, TParameterNode {
   /** Gets the parameter corresponding to this node. */
   Parameter getParameter() { result = param }
 
-  /**
-   * Holds if this node is the parameter of `c` at the specified (zero-based)
-   * position. The implicit `this` parameter is considered to have index `-1`.
-   */
-  predicate isParameterOf(Function f, int i) { f.getParameter(i) = param }
+  override predicate isParameterOf(Function f, int i) { f.getParameter(i) = param }
 }
 
-/**
- * The value of the implicit instance parameter (in other words, the `this`
- * pointer) at function entry, viewed as a node in a data flow graph.
- */
-class InstanceParameterNode extends Node, TInstanceParameterNode {
+class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
   MemberFunction f;
 
-  InstanceParameterNode() { this = TInstanceParameterNode(f) }
+  ImplicitParameterNode() { this = TInstanceParameterNode(f) }
 
   override Function getFunction() { result = f }
 
-  override Type getType() { result.(PointerType).getBaseType() = f.getDeclaringType() }
+  override Type getType() { result = f.getDeclaringType() }
 
-  override string toString() { result = "<this> param" }
+  override string toString() { result = "`this` parameter in " + f.getName() }
 
   override Location getLocation() { result = f.getLocation() }
+
+  override predicate isParameterOf(Function fun, int i) { f = fun and i = -1 }
 }
 
 /**
@@ -253,40 +222,18 @@ abstract class PostUpdateNode extends Node {
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
-class ImplicitInstanceAccess extends Node, TImplicitInstanceAccessNode {
-  InstanceAccess ia;
+class PartialDefNode extends PostUpdateNode, TPartialDefNode {
+  PartialDefinition pd;
 
-  ImplicitInstanceAccess() { this = TImplicitInstanceAccessNode(ia) }
+  PartialDefNode() { this = TPartialDefNode(pd) }
 
-  override string toString() { result = ia.toString() }
+  override Node getPreUpdateNode() { result.asExpr() = pd.getDefinedExpr() }
 
-  override Location getLocation() { result = ia.getLocation() }
+  override string toString() { result = pd.toString() }
 
-  InstanceAccess getInstanceAccess() { result = ia }
-}
+  override Location getLocation() { result = pd.getLocation() }
 
-class ImplicitInstancePostCall extends PostUpdateNode, TImplicitInstancePostCallNode {
-  ImplicitThisForCall ia;
-
-  ImplicitInstancePostCall() { this = TImplicitInstancePostCallNode(ia) }
-
-  override Node getPreUpdateNode() { ia = result.(ImplicitInstanceAccess).getInstanceAccess() }
-
-  FunctionCall getCall() { result = ia.getBackingExpr() }
-}
-
-class ExplicitArgPostCall extends PostUpdateNode, TExplicitArgumentPostCallNode {
-  override Node getPreUpdateNode() { this = TExplicitArgumentPostCallNode(result.asExpr()) }
-}
-
-class ImplicitStoreTarget extends PostUpdateNode, TImplicitInstancePostStoreNode {
-  override Node getPreUpdateNode() {
-    this = TImplicitInstancePostStoreNode(result.(ImplicitInstanceAccess).getInstanceAccess())
-  }
-}
-
-class ExplicitStoreTarget extends PostUpdateNode, TExplicitInstancePostStoreNode {
-  override Node getPreUpdateNode() { this = TExplicitInstancePostStoreNode(result.asExpr()) }
+  PartialDefinition getPartialDefinition() { result = pd }
 }
 
 /**
@@ -297,7 +244,7 @@ ExprNode exprNode(Expr e) { result.getExpr() = e }
 /**
  * Gets the `Node` corresponding to the value of `p` at function entry.
  */
-ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+ParameterNode parameterNode(Parameter p) { result.(ExplicitParameterNode).getParameter() = p }
 
 /**
  * Gets the `Node` corresponding to a definition by reference of the variable
@@ -312,6 +259,43 @@ DefinitionByReferenceNode definitionByReferenceNodeFromArgument(Expr argument) {
  * variable `v`.
  */
 UninitializedNode uninitializedNode(LocalVariable v) { result.getLocalVariable() = v }
+
+private module ThisFlow {
+  private Node thisAccessNode(ControlFlowNode cfn) {
+    result.(ImplicitParameterNode).getFunction().getBlock() = cfn or
+    result.asExpr().(ThisExpr) = cfn
+  }
+
+  private int basicBlockThisIndex(BasicBlock b, Node thisNode) {
+    thisNode = thisAccessNode(b.getNode(result))
+  }
+
+  private int thisRank(BasicBlock b, Node thisNode) {
+    thisNode = rank[result](thisAccessNode(_) as node order by basicBlockThisIndex(b, node))
+  }
+
+  private int lastThisRank(BasicBlock b) { result = max(thisRank(b, _)) }
+
+  private predicate thisAccessBlockReaches(BasicBlock b1, BasicBlock b2) {
+    exists(basicBlockThisIndex(b1, _)) and b2 = b1.getASuccessor()
+    or
+    exists(BasicBlock mid |
+      thisAccessBlockReaches(b1, mid) and
+      b2 = mid.getASuccessor() and
+      not exists(basicBlockThisIndex(mid, _))
+    )
+  }
+
+  predicate adjacentThisRefs(Node n1, Node n2) {
+    exists(BasicBlock b | thisRank(b, n1) + 1 = thisRank(b, n2))
+    or
+    exists(BasicBlock b1, BasicBlock b2 |
+      lastThisRank(b1) = thisRank(b1, n1) and
+      thisAccessBlockReaches(b1, b2) and
+      thisRank(b2, n2) = 1
+    )
+  }
+}
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -332,12 +316,20 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
       varSourceBaseCase(var, nodeFrom.asUninitialized())
       or
       var.definedByReference(nodeFrom.asDefiningArgument())
+      or
+      var.definedPartiallyAt(nodeFrom.asPartialDefinition())
     ) and
     varToExprStep(var, nodeTo.asExpr())
   )
   or
   // Expr -> DefinitionByReferenceNode
   exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
+  or
+  // `this` -> adjacent-`this`
+  ThisFlow::adjacentThisRefs(nodeFrom, nodeTo)
+  or
+  // post-update-`this` -> following-`this`-ref
+  ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
 }
 
 /**
