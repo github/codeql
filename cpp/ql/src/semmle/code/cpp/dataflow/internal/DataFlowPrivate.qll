@@ -5,6 +5,10 @@ private import DataFlowDispatch
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
   result.asExpr() = call.getQualifier()
+  or
+  // For constructors, there is no qualifier, so we pretend the call itself
+  // is the instance argument.
+  result.asExpr() = call.(ConstructorCall)
   // This does not include the implicit `this` argument on auto-generated
   // base class destructor calls as those do not have an AST element.
 }
