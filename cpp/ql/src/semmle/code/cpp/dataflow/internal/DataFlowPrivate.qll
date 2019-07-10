@@ -173,7 +173,7 @@ private class ArrayContent extends Content, TArrayContent {
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
   exists(FieldAccess fa |
     exists(Assignment a |
-      (a.getRValue() = node1.asExpr() or node1.asExpr() = a) and
+      node1.asExpr() = a and
       a.getLValue() = fa
     ) and
     not fa.getTarget().isStatic() and
