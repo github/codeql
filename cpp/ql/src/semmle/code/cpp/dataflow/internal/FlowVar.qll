@@ -692,7 +692,8 @@ module FlowVar_internal {
         or
         blockVarDefinedByReference(this, v, _)
         or
-        this = any(PartialDefinitions::PartialDefinition p).getSubBasicBlockStart()
+        this = any(PartialDefinitions::PartialDefinition p | p.partiallyDefines(v))
+              .getSubBasicBlockStart()
         // It is not necessary to cut the basic blocks at `Initializer` nodes
         // because the affected variable can have no _other_ value before its
         // initializer. It is not necessary to cut basic blocks at procedure
