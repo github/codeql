@@ -320,7 +320,8 @@ module FlowVar_internal {
     BlockVar() { this = TBlockVar(sbb, v) }
 
     override VariableAccess getAnAccess() {
-      variableAccessInSBB(v, getAReachedBlockVarSBB(this), result)
+      variableAccessInSBB(v, getAReachedBlockVarSBB(this), result) and
+      result != sbb
     }
 
     override predicate definedByInitialValue(LocalScopeVariable lsv) {
