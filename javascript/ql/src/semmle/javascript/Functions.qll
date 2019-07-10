@@ -64,9 +64,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   string getInferredName() {
     result = getName()
     or
-    exists(VarDef vd | this = vd.getSource() |
-      result = vd.getTarget().(VarRef).getName()
-    )
+    exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
     or
     exists(Property p |
       this = p.getInit() and
@@ -79,9 +77,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
       result = prop.getPropertyName()
     )
     or
-    exists(ClassOrInterface c |
-      this = c.getMember(result).getInit()
-    )
+    exists(ClassOrInterface c | this = c.getMember(result).getInit())
   }
 
   /** Gets the variable holding this function. */

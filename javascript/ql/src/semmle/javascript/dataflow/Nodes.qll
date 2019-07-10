@@ -339,7 +339,7 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   int getNumParameter() { result = count(astNode.getAParameter()) }
 
   /** Gets the last parameter of this function. */
-  ParameterNode getLastParameter() { result = getParameter(getNumParameter()-1) }
+  ParameterNode getLastParameter() { result = getParameter(getNumParameter() - 1) }
 
   /** Holds if the last parameter of this function is a rest parameter. */
   predicate hasRestParameter() { astNode.hasRestParameter() }
@@ -650,16 +650,12 @@ class ClassNode extends DataFlow::SourceNode {
   /**
    * Gets a direct super class of this class.
    */
-  ClassNode getADirectSuperClass() {
-    result.getAClassReference().flowsTo(getASuperClassNode())
-  }
+  ClassNode getADirectSuperClass() { result.getAClassReference().flowsTo(getASuperClassNode()) }
 
   /**
    * Gets a direct subclass of this class.
    */
-  final ClassNode getADirectSubClass() {
-    this = result.getADirectSuperClass()
-  }
+  final ClassNode getADirectSubClass() { this = result.getADirectSuperClass() }
 
   /**
    * Gets the receiver of an instance member or constructor of this class.
@@ -673,16 +669,12 @@ class ClassNode extends DataFlow::SourceNode {
   /**
    * Gets the abstract value representing the class itself.
    */
-  AbstractValue getAbstractClassValue() {
-    result = this.(AnalyzedNode).getAValue()
-  }
+  AbstractValue getAbstractClassValue() { result = this.(AnalyzedNode).getAValue() }
 
   /**
    * Gets the abstract value representing an instance of this class.
    */
-  AbstractValue getAbstractInstanceValue() {
-    result = AbstractInstance::of(getAstNode())
-  }
+  AbstractValue getAbstractInstanceValue() { result = AbstractInstance::of(getAstNode()) }
 
   /**
    * Gets a dataflow node that refers to this class object.
@@ -691,9 +683,7 @@ class ClassNode extends DataFlow::SourceNode {
     t.start() and
     result.(AnalyzedNode).getAValue() = getAbstractClassValue()
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = getAClassReference(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = getAClassReference(t2).track(t2, t))
   }
 
   /**
@@ -724,9 +714,7 @@ class ClassNode extends DataFlow::SourceNode {
 
   pragma[noinline]
   private DataFlow::SourceNode getAnInstanceReferenceAux(DataFlow::TypeTracker t) {
-    exists(DataFlow::TypeTracker t2 |
-      result = getAnInstanceReference(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = getAnInstanceReference(t2).track(t2, t))
   }
 
   /**
@@ -845,11 +833,12 @@ module ClassNode {
    */
   class FunctionStyleClass extends Range, DataFlow::ValueNode {
     override Function astNode;
+
     AbstractFunction function;
 
     FunctionStyleClass() {
       function.getFunction() = astNode and
-      exists (DataFlow::PropRef read |
+      exists(DataFlow::PropRef read |
         read.getPropertyName() = "prototype" and
         read.getBase().analyze().getAValue() = function
       )
@@ -901,15 +890,13 @@ module ClassNode {
 
     override FunctionNode getStaticMethod(string name) { result = getAPropertySource(name) }
 
-    override FunctionNode getAStaticMethod() {
-      result = getAPropertySource()
-    }
+    override FunctionNode getAStaticMethod() { result = getAPropertySource() }
 
     /**
      * Gets a reference to the prototype of this class.
      */
     DataFlow::SourceNode getAPrototypeReference() {
-      exists (DataFlow::SourceNode base | base.analyze().getAValue() = function |
+      exists(DataFlow::SourceNode base | base.analyze().getAValue() = function |
         result = base.getAPropertyRead("prototype")
         or
         result = base.getAPropertySource("prototype")

@@ -223,9 +223,7 @@ class ClassExpr extends @classexpr, ClassDefinition, Expr {
   override string getInferredName() {
     result = getName()
     or
-    exists(VarDef vd | this = vd.getSource() |
-      result = vd.getTarget().(VarRef).getName()
-    )
+    exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
     or
     exists(Property p |
       this = p.getInit() and
