@@ -82,3 +82,14 @@
 | Program.cs:169:5:169:10 | String |
 | Program.cs:174:5:174:8 | Void |
 | Program.cs:176:17:176:19 | IDisposable |
+| Program.cs:185:5:185:7 | Int32 |
+| Program.cs:187:5:187:14 | (Int32,Int32) |
+| Program.cs:187:6:187:8 | Int32 |
+| Program.cs:187:11:187:13 | Int32 |
+| Program.cs:187:31:187:39 | (Int32,Int32) |
+| Program.cs:187:32:187:34 | Int32 |
+| Program.cs:187:36:187:38 | Int32 |
+| Program.cs:192:28:192:30 | Int32 |
+| Program.cs:192:28:192:30 | Int32 |
+| Program.cs:194:5:194:8 | Void |
+| Program.cs:194:12:194:19 | Callback |

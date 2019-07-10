@@ -27,10 +27,15 @@
 | expressions.cs:173:27:173:30 | access to method M1 | expressions.cs:173:27:173:27 | access to type C |
 | expressions.cs:174:21:174:24 | access to method M2 | expressions.cs:174:21:174:21 | access to type C |
 | expressions.cs:182:27:182:30 | access to method M3 | expressions.cs:182:27:182:27 | access to local variable c |
+| expressions.cs:185:13:185:20 | delegate call | expressions.cs:185:13:185:15 | access to local variable cd1 |
+| expressions.cs:187:13:187:23 | delegate call | expressions.cs:187:13:187:15 | access to local variable cd7 |
 | expressions.cs:189:52:189:54 | access to method F | expressions.cs:189:52:189:52 | access to type X |
 | expressions.cs:190:36:190:38 | access to method G | expressions.cs:190:36:190:36 | access to type X |
+| expressions.cs:192:22:192:26 | delegate call | expressions.cs:192:22:192:23 | access to local variable pi |
+| expressions.cs:192:30:192:35 | delegate call | expressions.cs:192:30:192:31 | access to local variable ps |
 | expressions.cs:233:17:233:21 | access to event Click | expressions.cs:233:17:233:21 | this access |
 | expressions.cs:234:17:234:21 | access to event Click | expressions.cs:234:17:234:21 | this access |
+| expressions.cs:234:17:234:30 | delegate call | expressions.cs:234:17:234:21 | access to event Click |
 | expressions.cs:239:13:239:17 | access to event Click | expressions.cs:239:13:239:17 | this access |
 | expressions.cs:251:13:251:20 | access to field OkButton | expressions.cs:251:13:251:20 | this access |
 | expressions.cs:252:13:252:20 | access to field OkButton | expressions.cs:252:13:252:20 | this access |

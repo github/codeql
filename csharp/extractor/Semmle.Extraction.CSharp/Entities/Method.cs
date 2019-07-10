@@ -12,6 +12,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
+        public override bool NeedsPopulation => base.NeedsPopulation || symbol.ContainingType.IsTupleType;
+
         protected void PopulateParameters(TextWriter trapFile)
         {
             var originalMethod = OriginalDefinition;
@@ -117,7 +119,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (m.symbol.IsGenericMethod)
             {
-                if (Equals(m.symbol, m.symbol.OriginalDefinition))
+                if (m.symbol.IsUnboundGeneric())
                 {
                     trapFile.Write('`');
                     trapFile.Write(m.symbol.TypeParameters.Length);

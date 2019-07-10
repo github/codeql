@@ -180,4 +180,22 @@ class UsingDiscard
     }
 }
 
+class Tuples
+{
+    int F() => (1,2).GetHashCode();
+
+    (int, int) G() => default((int,int));
+}
+
+class ExplicitInvocation
+{
+    delegate void Callback(int x);
+
+    void F(Callback callback)
+    {
+        callback?.Invoke(5);
+        callback(5);
+    }
+}
+
 // semmle-extractor-options: /r:System.Dynamic.Runtime.dll

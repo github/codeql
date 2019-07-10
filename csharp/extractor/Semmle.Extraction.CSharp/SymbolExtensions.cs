@@ -224,7 +224,7 @@ namespace Semmle.Extraction.CSharp
                 named.BuildAnonymousName(cx, trapFile, subTermAction, true);
             else if (named.TypeParameters.IsEmpty)
                 trapFile.Write(named.Name);
-            else if (IsReallyUnbound(named))
+            else if (named.IsUnboundGeneric())
             {
                 trapFile.Write(named.Name);
                 trapFile.Write("`");
@@ -238,7 +238,7 @@ namespace Semmle.Extraction.CSharp
                 // Type arguments with different nullability can result in 
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
-                trapFile.BuildList(",", named.GetAnnotatedTypeArguments(), (ta, tb0) => { subTermAction(cx, tb0, ta.Symbol); trapFile.Write((int)ta.Nullability); });
+                trapFile.BuildList(",", named.GetAnnotatedTypeArguments(), (ta, tb0) => { subTermAction(cx, tb0, ta.Symbol); });
                 trapFile.Write('>');
             }
         }
@@ -366,10 +366,7 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        public static bool IsReallyUnbound(this INamedTypeSymbol type) =>
-            Equals(type.ConstructedFrom, type) || type.IsUnboundGenericType;
-
-        public static bool IsReallyBound(this INamedTypeSymbol type) => !IsReallyUnbound(type);
+        public static bool IsReallyBound(this INamedTypeSymbol type) => !IsUnboundGeneric(type);
 
         /// <summary>
         /// Holds if this type is of the form <code>int?</code> or
@@ -563,5 +560,44 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static AnnotatedTypeSymbol WithAnnotation(this ITypeSymbol symbol, NullableAnnotation annotation) =>
             new AnnotatedTypeSymbol(symbol, annotation);
+
+        private static bool IsSpecialized(this IMethodSymbol method) =>
+            method.IsGenericMethod &&
+            !ReferenceEquals(method, method.OriginalDefinition) &&
+            method.TypeParameters.Zip(method.TypeArguments, (a, b) => !ReferenceEquals(a, b)).Any(b=>b);
+
+        private static bool IsSpecialized(this INamedTypeSymbol type) =>
+            type.IsGenericType &&
+            !ReferenceEquals(type, type.OriginalDefinition) &&
+            type.TypeParameters.Zip(type.TypeArguments, (a, b) => !ReferenceEquals(a, b)).Any(b => b);
+
+        /// <summary>
+        /// Holds if the type is unbound: either it is unconstructed, or
+        /// it has been constructed with its own type parameters.
+        /// </summary>
+        public static bool IsUnboundGeneric(this INamedTypeSymbol type) =>
+            type.IsGenericType && !type.IsSpecialized();
+
+        /// <summary>
+        /// Holds if the method is unbound: either it is unconstructed, or
+        /// it has been constructed with its own type parameters.
+        /// </summary>
+        public static bool IsUnboundGeneric(this IMethodSymbol method) =>
+            method.IsGenericMethod && !method.IsSpecialized();
+
+        /// <summary>
+        /// Holds if this is a constructed type where all the type arguments
+        /// equal the original type parameters. This type is not particularly useful
+        /// and often gets confused with the unbound generic type.
+        /// </summary>
+        public static bool IsEvilTwin(this INamedTypeSymbol type) =>
+            !Equals(type, type.ConstructedFrom) && type.IsUnboundGeneric();
+
+        /// <summary>
+        /// Holds if this type looks like an "anonymous" type. Names of anonymous types
+        /// sometimes collide so they need to be handled separately.
+        /// </summary>
+        public static bool IsAnonymous(this INamedTypeSymbol type) =>
+            type.IsAnonymousType || type.Name.StartsWith("<>");
     }
 }

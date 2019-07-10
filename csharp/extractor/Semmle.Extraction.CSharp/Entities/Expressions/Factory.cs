@@ -138,6 +138,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.IdentifierName:
                     case SyntaxKind.AliasQualifiedName:
                     case SyntaxKind.GenericName:
+                    case SyntaxKind.TupleType:
                         return Name.Create(info);
 
                     case SyntaxKind.LogicalNotExpression:

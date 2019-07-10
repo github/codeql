@@ -22,6 +22,8 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";property");
         }
 
+        public override bool NeedsPopulation => base.NeedsPopulation || this.symbol.ContainingType.IsTupleType;
+
         public override void Populate(TextWriter trapFile)
         {
             PopulateMetadataHandle(trapFile);

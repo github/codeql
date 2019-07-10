@@ -23,6 +23,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
+            if (symbol.IsEvilTwin()) return;
+
             if (symbol.TypeKind == TypeKind.Error)
             {
                 Context.Extractor.MissingType(symbol.ToString());
@@ -38,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     // An instance of Nullable<T>
                     trapFile.nullable_underlying_type(this, Create(Context, symbol.TypeArguments[0]).TypeRef);
                 }
-                else if (symbol.IsReallyUnbound())
+                else if (symbol.IsUnboundGeneric())
                 {
                     trapFile.is_generic(this);
 
@@ -73,7 +75,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             // Class location
-            if (!symbol.IsGenericType || symbol.IsReallyUnbound())
+            if (!symbol.IsGenericType || symbol.IsUnboundGeneric())
             {
                 foreach (var l in Locations)
                     trapFile.type_location(this, l);

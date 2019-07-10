@@ -1097,7 +1097,8 @@ dynamic_member_name(
 
 @qualifiable_expr = @member_access_expr
                   | @method_invocation_expr
-                  | @element_access_expr;
+                  | @element_access_expr
+                  | @delegate_invocation_expr;
 
 conditional_access(
   unique int id: @qualifiable_expr ref);
