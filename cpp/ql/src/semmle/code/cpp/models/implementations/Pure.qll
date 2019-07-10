@@ -16,6 +16,8 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,  Side
         or name = "strchnul"
         or name = "strchr"
         or name = "strchrnul"
+        or name = "strstr"
+        or name = "strpbrk"
         or name = "strcmp"
         or name = "strcspn"
         or name = "strlen"
@@ -46,68 +48,22 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,  Side
       )
     ) and
     (
-      output.isOutReturnValue()
+      output.isOutReturnValue() or
+      output.isOutReturnPointer()
     )
   }
 
   override predicate parameterNeverEscapes(int i) {
-    getParameter(i).getUnspecifiedType() instanceof PointerType
-  }
-
-  override predicate parameterEscapesOnlyViaReturn(int i) {
-    none()
-  }
-
-  override predicate parameterIsAlwaysReturned(int i) {
-    none()
-  }
-
-  override predicate neverReadsMemory() {
-    none()
-  }
-  
-  override predicate neverWritesMemory() {
-    any()
-  }
-}
-class PureReturningStrFunction extends AliasFunction, ArrayFunction, TaintFunction,  SideEffectFunction {
-  PureReturningStrFunction() {
-    exists(string name |
-      hasName(name) and
-      (
-        name = "strstr" or
-        name = "strpbrk"
-      )
-    )
-  }
-  
-  override predicate hasArrayInput(int bufParam) {
-    getParameter(bufParam).getUnspecifiedType() instanceof PointerType
-  }
-  
-  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    exists (ParameterIndex i |
-      input.isInParameter(i) or
-      (
-        input.isInParameterPointer(i) and
-        getParameter(i).getUnspecifiedType() instanceof PointerType
-      )
-    ) and
-    (
-      (
-        output.isOutReturnPointer() and
-        getUnspecifiedType() instanceof PointerType
-      ) or
-      output.isOutReturnValue()
+    getParameter(i).getUnspecifiedType() instanceof PointerType and
+    not (
+      i = 0 and
+      getType().getUnspecifiedType() instanceof PointerType
     )
   }
 
-  override predicate parameterNeverEscapes(int i) {
-    i = 1
-  }
-
   override predicate parameterEscapesOnlyViaReturn(int i) {
-    i = 0
+    i = 0 and
+    getType().getUnspecifiedType() instanceof PointerType
   }
 
   override predicate parameterIsAlwaysReturned(int i) {
