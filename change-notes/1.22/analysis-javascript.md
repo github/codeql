@@ -27,3 +27,5 @@
 
 ## Changes to QL libraries
 
+- `FunctionNode.getName()` and `ClassNode.getName()` now return a name
+  inferred from the context if the function or class was not declared with a name.
