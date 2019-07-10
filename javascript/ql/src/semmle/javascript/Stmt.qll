@@ -220,8 +220,10 @@ private class MaybeDirective extends ExprStmt {
  * Examples:
  *
  * ```
- * "use strict";
- * "a custom directive";
+ * function f() {
+ *   "use strict";
+ *   "a custom directive";
+ * }
  * ```
  */
 class Directive extends MaybeDirective {
@@ -757,8 +759,9 @@ class ExprOrVarDecl extends ASTNode {
  * Example:
  *
  * ```
- * for(var i=0; i<10; ++i)
+ * for(var i=0; i<10; ++i) {
  *   sample(i);
+ * }
  * ```
  */
 class ForStmt extends @forstmt, LoopStmt {
