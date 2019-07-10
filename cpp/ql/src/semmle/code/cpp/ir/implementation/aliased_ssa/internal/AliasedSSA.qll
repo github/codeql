@@ -21,7 +21,7 @@ private predicate hasResultMemoryAccess(Instruction instr, IRVariable var, Type 
 
 private predicate hasOperandMemoryAccess(MemoryOperand operand, IRVariable var, Type type, IntValue startBitOffset,
     IntValue endBitOffset) {
-  resultPointsTo(operand.getAddress().getAnyDef(), var, startBitOffset) and
+  resultPointsTo(operand.getAddressOperand().getAnyDef(), var, startBitOffset) and
   type = operand.getType() and
   if exists(operand.getSize()) then
     endBitOffset = Ints::add(startBitOffset, Ints::mul(operand.getSize(), 8))

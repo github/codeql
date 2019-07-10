@@ -510,13 +510,22 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
-   * Returns the operand that holds the memory address to which the instruction stores its
+   * Gets the operand that holds the memory address to which this instruction stores its
    * result, if any. For example, in `m3 = Store r1, r2`, the result of `getResultAddressOperand()`
    * is `r1`.
    */
   final AddressOperand getResultAddressOperand() {
     getResultMemoryAccess().usesAddressOperand() and
     result.getUse() = this
+  }
+
+  /**
+   * Gets the instruction that holds the exact memory address to which this instruction stores its
+   * result, if any. For example, in `m3 = Store r1, r2`, the result of `getResultAddressOperand()`
+   * is the instruction that defines `r1`.
+   */
+  final Instruction getResultAddress() {
+    result = getResultAddressOperand().getDef()
   }
 
   /**
