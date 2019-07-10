@@ -2866,13 +2866,6 @@ class TranslatedStmtExpr extends TranslatedNonConstantExpr {
 class TranslatedErrorExpr extends TranslatedSingleInstructionExpr {
   override ErrorExpr expr;
 
-  TranslatedErrorExpr() {
-    // The extractor deliberately emits an `ErrorExpr` as the first argument to
-    // the allocator call, if any, of a `NewOrNewArrayExpr`. That `ErrorExpr`
-    // should not be translated.
-    not exists(NewOrNewArrayExpr new | expr = new.getAllocatorCall().getArgument(0))
-  }
-
   override final Instruction getFirstInstruction() {
     result = getInstruction(OnlyInstructionTag())
   }

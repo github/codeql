@@ -84,7 +84,13 @@ private predicate ignoreExprOnly(Expr expr) {
     // Ignore the allocator call, because we always synthesize it. Don't ignore
     // its arguments, though, because we use them as part of the synthesis.
     newExpr.getAllocatorCall() = expr
-  ) or
+  )
+  or
+  // The extractor deliberately emits an `ErrorExpr` as the first argument to
+  // the allocator call, if any, of a `NewOrNewArrayExpr`. That `ErrorExpr`
+  // should not be translated.
+  exists(NewOrNewArrayExpr new | expr = new.getAllocatorCall().getArgument(0))
+  or
   not translateFunction(expr.getEnclosingFunction())
   or
   // We do not yet translate destructors properly, so for now we ignore the
