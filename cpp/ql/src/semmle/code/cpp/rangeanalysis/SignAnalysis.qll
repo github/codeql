@@ -331,12 +331,12 @@ private predicate binaryOpSigns(BinaryInstruction i, Sign lhs, Sign rhs) {
 }
 
 private Sign unguardedOperandSign(Operand operand) {
-  result = instructionSign(operand.getAnyDef()) and
+  result = instructionSign(operand.getDef()) and
   not hasGuard(operand, result)
 }
 
 private Sign guardedOperandSign(Operand operand) {
-  result = instructionSign(operand.getAnyDef()) and
+  result = instructionSign(operand.getDef()) and
   hasGuard(operand, result)
 }
 

@@ -22,8 +22,8 @@ IntValue getConstantValue(Instruction instr) {
   result = getConstantValue(instr.(CopyInstruction).getSourceValue()) or
   exists(PhiInstruction phi |
     phi = instr and
-    result = max(PhiInputOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getAnyDef())) and
-    result = min(PhiInputOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getAnyDef()))
+    result = max(PhiInputOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getDef())) and
+    result = min(PhiInputOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getDef()))
   )
 }
 
@@ -35,7 +35,7 @@ predicate valueFlowStep(Instruction i, Operand op, int delta) {
     i.(AddInstruction).getAnOperand() = x and
     op  != x
     |
-    delta = getValue(getConstantValue(x.getAnyDef()))
+    delta = getValue(getConstantValue(x.getDef()))
   )
   or
   exists(Operand x |
