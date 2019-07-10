@@ -120,6 +120,14 @@ predicate nullCheckMethod(Method m, boolean branch, boolean isnull) {
   m.hasName("isBlank") and
   branch = false and
   isnull = false
+  or
+  (
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.collections4", "CollectionUtils") or
+    m.getDeclaringType().hasQualifiedName("org.apache.commons.collections", "CollectionUtils")
+  ) and
+  m.hasName("isNotEmpty") and
+  branch = true and
+  isnull = false
 }
 
 /**
