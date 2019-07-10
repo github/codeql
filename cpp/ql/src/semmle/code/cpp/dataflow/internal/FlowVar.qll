@@ -173,6 +173,8 @@ module FlowVar_internal {
     // the call. It's fundamental in SSA that each use is only associated with
     // one def, so we can't easily get this effect with SSA.
     not definitionByReference(v.getAnAccess(), _) and
+    // A partially-defined variable is handled using the partial definitions logic.
+    not any(PartialDefinitions::PartialDefinition p).partiallyDefines(v) and
     // SSA variables do not exist before their first assignment, but one
     // feature of this data flow library is to track where uninitialized data
     // ends up.
