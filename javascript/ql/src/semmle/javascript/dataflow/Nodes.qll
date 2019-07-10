@@ -67,6 +67,19 @@ class InvokeNode extends DataFlow::SourceNode {
   /** Gets the data flow node corresponding to the last argument of this invocation. */
   DataFlow::Node getLastArgument() { result = getArgument(getNumArgument() - 1) }
 
+  /**
+   * Gets a data flow node corresponding to an array of values being passed as
+   * individual arguments to this invocation.
+   *
+   * Example:
+   * ```
+   * x.push(...args);                     // 'args' is a spread argument
+   * x.push(x, ...args, y, ...more);      // 'args' and 'more' are a spread arguments
+   * Array.prototype.push.apply(x, args); // 'args' is a spread argument
+   * ```
+  .*/
+  DataFlow::Node getASpreadArgument() { result = impl.getASpreadArgument() }
+
   /** Gets the number of arguments of this invocation, if it can be determined. */
   int getNumArgument() { result = impl.getNumArgument() }
 

@@ -295,8 +295,10 @@ module TaintTracking {
         name = "push" or
         name = "unshift"
       |
-        pred = call.asExpr().(InvokeExpr).getAnArgument().(SpreadElement).getOperand().flow() and
-        succ.(DataFlow::SourceNode).getAMethodCall(name) = call
+        pred = call.getASpreadArgument() and
+        // Make sure we handle reflective calls
+        succ = call.getReceiver().getALocalSource() and
+        call.getCalleeName() = name
       )
       or
       // `array.splice(i, del, e)`: if `e` is tainted, then so is `array`.

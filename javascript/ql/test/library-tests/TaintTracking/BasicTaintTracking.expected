@@ -12,6 +12,8 @@ typeInferenceMismatch
 | array-mutation.js:19:18:19:25 | source() | array-mutation.js:20:8:20:8 | e |
 | array-mutation.js:23:13:23:20 | source() | array-mutation.js:24:8:24:8 | f |
 | array-mutation.js:27:16:27:23 | source() | array-mutation.js:28:8:28:8 | g |
+| array-mutation.js:31:33:31:40 | source() | array-mutation.js:32:8:32:8 | h |
+| array-mutation.js:35:36:35:43 | source() | array-mutation.js:36:8:36:8 | i |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:4:8:4:8 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:13:10:13:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:19:10:19:10 | x |

@@ -26,4 +26,12 @@ function test(x, y) {
   let g = [];
   g.unshift(...source());
   sink(g); // NOT OK
+
+  let h = [];
+  Array.prototype.push.apply(h, source());
+  sink(h); // NOT OK
+
+  let i = [];
+  Array.prototype.unshift.apply(i, source());
+  sink(i); // NOT OK
 }
