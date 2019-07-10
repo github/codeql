@@ -389,6 +389,8 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   or
   toExpr = any(StmtExpr stmtExpr | fromExpr = stmtExpr.getResultExpr())
   or
+  toExpr.(NewExpr).getInitializer() = fromExpr
+  or
   toExpr = any(Call call |
       exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
         call.getTarget() = f and
