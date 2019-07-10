@@ -242,6 +242,8 @@ class PartialDefNode extends PostUpdateNode, TPartialDefNode {
 
   override Node getPreUpdateNode() { result.asExpr() = pd.getDefinedExpr() }
 
+  override Type getType() { result = pd.getDefinedExpr().getType() }
+
   override string toString() { result = pd.toString() }
 
   override Location getLocation() { result = pd.getLocation() }
