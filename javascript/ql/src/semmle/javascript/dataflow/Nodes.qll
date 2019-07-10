@@ -344,8 +344,8 @@ class FunctionNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   /** Holds if the last parameter of this function is a rest parameter. */
   predicate hasRestParameter() { astNode.hasRestParameter() }
 
-  /** Gets the name of this function, if it has one. */
-  string getName() { result = astNode.getName() }
+  /** Gets the unqualified name of this function, if it has one or one can be determined from the context. */
+  string getName() { result = astNode.getInferredName() }
 
   /** Gets a data flow node corresponding to a return value of this function. */
   DataFlow::Node getAReturn() { result = astNode.getAReturnedExpr().flow() }
@@ -575,7 +575,7 @@ class ClassNode extends DataFlow::SourceNode {
   ClassNode() { this = impl }
 
   /**
-   * Gets the name of the class, if it has one.
+   * Gets the unqualified name of the class, if it has one or one can be determined from the context.
    */
   string getName() { result = impl.getName() }
 
@@ -795,7 +795,7 @@ module ClassNode {
   private class ES6Class extends Range, DataFlow::ValueNode {
     override ClassDefinition astNode;
 
-    override string getName() { result = astNode.getName() }
+    override string getName() { result = astNode.getInferredName() }
 
     override string describe() { result = astNode.describe() }
 
@@ -855,7 +855,7 @@ module ClassNode {
       )
     }
 
-    override string getName() { result = astNode.getName() }
+    override string getName() { result = astNode.getInferredName() }
 
     override string describe() { result = astNode.describe() }
 
