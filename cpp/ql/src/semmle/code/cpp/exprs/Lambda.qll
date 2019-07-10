@@ -106,7 +106,7 @@ class LambdaCapture extends @lambdacapture {
   }
 
   /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "LambdaCapture" }
+  string getCanonicalQLClass() { result = "LambdaCapture" }
 
   /**
    * Holds if this capture was made implicitly.
