@@ -230,6 +230,10 @@ abstract class PostUpdateNode extends Node {
    */
   abstract Node getPreUpdateNode();
 
+  override Function getFunction() { result = getPreUpdateNode().getFunction() }
+
+  override Type getType() { result = getPreUpdateNode().getType() }
+
   override Location getLocation() { result = getPreUpdateNode().getLocation() }
 
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
@@ -241,8 +245,6 @@ class PartialDefNode extends PostUpdateNode, TPartialDefNode {
   PartialDefNode() { this = TPartialDefNode(pd) }
 
   override Node getPreUpdateNode() { result.asExpr() = pd.getDefinedExpr() }
-
-  override Type getType() { result = pd.getDefinedExpr().getType() }
 
   override string toString() { result = pd.toString() }
 
