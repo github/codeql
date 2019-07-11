@@ -10,6 +10,7 @@ cached
 private newtype TNode =
   TExprNode(Expr e) or
   TPartialDefNode(PartialDefinition pd) or
+  TPostConstructorCallNode(ConstructorCall call) or
   TExplicitParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
   TInstanceParameterNode(MemberFunction f) { exists(f.getBlock()) and not f.isStatic() } or
   TDefinitionByReferenceNode(VariableAccess va, Expr argument) {
@@ -233,11 +234,17 @@ class PartialDefNode extends PostUpdateNode, TPartialDefNode {
 
   override Node getPreUpdateNode() { result.asExpr() = pd.getDefinedExpr() }
 
-  override string toString() { result = pd.toString() }
-
   override Location getLocation() { result = pd.getLocation() }
 
   PartialDefinition getPartialDefinition() { result = pd }
+}
+
+class PostConstructorCallNode extends PostUpdateNode, TPostConstructorCallNode {
+  ConstructorCall call;
+
+  PostConstructorCallNode() { this = TPostConstructorCallNode(call) }
+
+  override Node getPreUpdateNode() { result.asExpr() = call }
 }
 
 /**
@@ -309,6 +316,8 @@ cached
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   // Expr -> Expr
   exprToExprStep_nocfg(nodeFrom.asExpr(), nodeTo.asExpr())
+  or
+  exprToExprStep_nocfg(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr(), nodeTo.asExpr())
   or
   // Node -> FlowVar -> VariableAccess
   exists(FlowVar var |
