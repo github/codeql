@@ -368,6 +368,9 @@ cached module SignAnalysisCached {
     or
     result = guardedOperandSign(operand) and
     result = guardedOperandSignOk(operand)
+    or
+    // `result` is unconstrained if the definition is inexact. Then any sign is possible.
+    operand.isDefinitionInexact()
   }
   
   cached
