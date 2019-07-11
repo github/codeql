@@ -868,7 +868,7 @@ VacuousDestructorCall.cpp:
 #    4|               Type = [PointerType]: T *
 #    4|               ValueCategory = prvalue(load)
 #    5|     2: [ReturnStmt]: return ...
-#    2| [FunctionTemplateSpecialization]: void CallDestructor<int>(int, int*)
+#    2| [FunctionTemplateInstantiation]: void CallDestructor<int>(int, int*)
 #    2|   params: 
 #    2|     0: [Parameter]: x
 #    2|         Type = [IntType]: int
