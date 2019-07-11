@@ -30,3 +30,5 @@ const E = class {},       // "class E", "default constructor of class E"
 
 o.foo = function() {};    // "method foo"
 o["Hey"] = function() {}; // "anonymous function"
+
+o.Foo = class {};         // "class Foo"

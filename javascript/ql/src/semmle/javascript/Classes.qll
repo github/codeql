@@ -17,6 +17,16 @@ class ClassOrInterface extends @classorinterface, TypeParameterized {
   /** Gets the name of the defined class or interface, if any. */
   string getName() { result = getIdentifier().getName() }
 
+  /**
+   * Gets the name of the defined class or interface, possibly inferred
+   * from the context if this is an anonymous class expression.
+   *
+   * Has no result if no name could be determined.
+   */
+  string getInferredName() {
+    result = getName() // Overridden in ClassExpr
+  }
+
   /** Gets the nearest enclosing function or toplevel in which this class or interface occurs. */
   StmtContainer getContainer() { result = this.(ExprOrStmt).getContainer() }
 
@@ -210,6 +220,25 @@ class ClassDeclStmt extends @classdeclstmt, ClassDefinition, Stmt {
  * A class expression.
  */
 class ClassExpr extends @classexpr, ClassDefinition, Expr {
+  override string getInferredName() {
+    result = getName()
+    or
+    exists(VarDef vd | this = vd.getSource() |
+      result = vd.getTarget().(VarRef).getName()
+    )
+    or
+    exists(Property p |
+      this = p.getInit() and
+      result = p.getName()
+    )
+    or
+    exists(AssignExpr assign, DotExpr prop |
+      this = assign.getRhs().getUnderlyingValue() and
+      prop = assign.getLhs() and
+      result = prop.getPropertyName()
+    )
+  }
+
   override predicate isImpure() { none() }
 
   /** Gets the nearest enclosing function or toplevel in which this class expression occurs. */

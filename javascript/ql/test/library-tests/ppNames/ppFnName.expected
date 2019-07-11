@@ -18,6 +18,7 @@ getInferredName
 | tst.js:27:8:27:12 | () {} | y |
 | tst.js:28:8:28:13 | (v) {} | y |
 | tst.js:31:9:31:21 | function() {} | foo |
+| tst.js:34:15:34:14 | () {} | constructor |
 #select
 | tst.js:1:1:1:15 | function f() {} | function f |
 | tst.js:2:2:2:16 | function g() {} | function g |
@@ -40,3 +41,4 @@ getInferredName
 | tst.js:28:8:28:13 | (v) {} | setter method for property y of class G |
 | tst.js:31:9:31:21 | function() {} | method foo |
 | tst.js:32:12:32:24 | function() {} | anonymous function |
+| tst.js:34:15:34:14 | () {} | default constructor of class Foo |
