@@ -190,3 +190,14 @@ static void AsmStmtWithOutputs(unsigned int& a, unsigned int& b, unsigned int& c
     : "c" (c), "d" (d)
     );
 }
+
+int strcmp(const char *, const char *);
+int strlen(const char *);
+int abs(int);
+
+int PureFunctions(char *str1, char *str2, int x) {
+  int ret = strcmp(str1, str2);
+  ret += strlen(str1);
+  ret += abs(x);
+  return ret;
+}
