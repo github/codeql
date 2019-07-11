@@ -1116,8 +1116,9 @@ class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
  * };
  * ```
  * 
+ * DEPRECATED: This class is considered to be too specific for general usage.
  */
-class Interface extends Class {
+deprecated class Interface extends Class {
   Interface() {
     forex(Declaration m | m.getDeclaringType() = this.getABaseClass*() and not compgenerated(unresolveElement(m)) | m instanceof PureVirtualFunction)
   }
