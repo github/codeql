@@ -1,0 +1,343 @@
+concatenation
+| closure.js:5:1:5:37 | build(' ... 'four') |
+| closure.js:5:1:5:46 | build(' ...  'five' |
+| closure.js:5:14:5:28 | 'two' + 'three' |
+| tst.js:3:3:3:12 | x |
+| tst.js:3:3:3:12 | x += "two" |
+| tst.js:4:3:4:14 | x |
+| tst.js:4:3:4:14 | x += "three" |
+| tst.js:5:3:5:13 | x |
+| tst.js:5:3:5:13 | x += "four" |
+| tst.js:12:5:12:26 | x |
+| tst.js:12:5:12:26 | x += "o ... + "two" |
+| tst.js:12:10:12:18 | "one" + y |
+| tst.js:12:10:12:26 | "one" + y + "two" |
+| tst.js:14:3:14:13 | x |
+| tst.js:14:3:14:13 | x += "last" |
+| tst.js:19:11:19:23 | "one" + "two" |
+| tst.js:20:3:20:25 | x |
+| tst.js:20:3:20:25 | x += (" ... "four") |
+| tst.js:20:9:20:24 | "three" + "four" |
+| tst.js:21:10:21:19 | x + "five" |
+| tst.js:25:10:25:32 | ["one", ... three"] |
+| tst.js:25:10:25:41 | ["one", ... oin("") |
+| tst.js:29:10:29:37 | Array(" ... three") |
+| tst.js:29:10:29:46 | Array(" ... oin("") |
+| tst.js:33:10:33:41 | new Arr ... three") |
+| tst.js:33:10:33:50 | new Arr ... oin("") |
+| tst.js:37:12:37:18 | ["one"] |
+| tst.js:40:10:40:20 | xs.join("") |
+| tst.js:44:12:44:20 | ["first"] |
+| tst.js:49:10:49:20 | xs.join("") |
+| tst.js:53:10:53:34 | `one ${ ...  three` |
+| tst.js:61:10:61:34 | `first  ... } last` |
+| tst.js:87:5:87:14 | x |
+| tst.js:87:5:87:14 | x += 'two' |
+| tst.js:89:3:89:14 | x |
+| tst.js:89:3:89:14 | x += 'three' |
+concatenationOperand
+| closure.js:5:1:5:37 | build(' ... 'four') |
+| closure.js:5:7:5:11 | 'one' |
+| closure.js:5:14:5:18 | 'two' |
+| closure.js:5:14:5:28 | 'two' + 'three' |
+| closure.js:5:22:5:28 | 'three' |
+| closure.js:5:31:5:36 | 'four' |
+| closure.js:5:41:5:46 | 'five' |
+| tst.js:3:3:3:3 | x |
+| tst.js:3:8:3:12 | "two" |
+| tst.js:4:3:4:3 | x |
+| tst.js:4:8:4:14 | "three" |
+| tst.js:5:3:5:3 | x |
+| tst.js:5:8:5:13 | "four" |
+| tst.js:12:5:12:5 | x |
+| tst.js:12:10:12:14 | "one" |
+| tst.js:12:10:12:18 | "one" + y |
+| tst.js:12:10:12:26 | "one" + y + "two" |
+| tst.js:12:18:12:18 | y |
+| tst.js:12:22:12:26 | "two" |
+| tst.js:14:3:14:3 | x |
+| tst.js:14:8:14:13 | "last" |
+| tst.js:19:11:19:15 | "one" |
+| tst.js:19:19:19:23 | "two" |
+| tst.js:20:3:20:3 | x |
+| tst.js:20:8:20:25 | ("three" + "four") |
+| tst.js:20:9:20:15 | "three" |
+| tst.js:20:19:20:24 | "four" |
+| tst.js:21:10:21:10 | x |
+| tst.js:21:14:21:19 | "five" |
+| tst.js:25:10:25:32 | ["one", ... three"] |
+| tst.js:25:11:25:15 | "one" |
+| tst.js:25:18:25:22 | "two" |
+| tst.js:25:25:25:31 | "three" |
+| tst.js:29:10:29:37 | Array(" ... three") |
+| tst.js:29:16:29:20 | "one" |
+| tst.js:29:23:29:27 | "two" |
+| tst.js:29:30:29:36 | "three" |
+| tst.js:33:10:33:41 | new Arr ... three") |
+| tst.js:33:20:33:24 | "one" |
+| tst.js:33:27:33:31 | "two" |
+| tst.js:33:34:33:40 | "three" |
+| tst.js:37:12:37:18 | ["one"] |
+| tst.js:37:13:37:17 | "one" |
+| tst.js:44:12:44:20 | ["first"] |
+| tst.js:44:13:44:19 | "first" |
+| tst.js:53:11:53:14 | one  |
+| tst.js:53:17:53:17 | x |
+| tst.js:53:19:53:23 |  two  |
+| tst.js:53:26:53:26 | x |
+| tst.js:53:28:53:33 |  three |
+| tst.js:61:11:61:16 | first  |
+| tst.js:61:19:61:19 | x |
+| tst.js:61:23:61:23 | x |
+| tst.js:61:27:61:27 | x |
+| tst.js:61:29:61:33 |  last |
+| tst.js:87:5:87:5 | x |
+| tst.js:87:10:87:14 | 'two' |
+| tst.js:89:3:89:3 | x |
+| tst.js:89:8:89:14 | 'three' |
+concatenationLeaf
+| closure.js:5:7:5:11 | 'one' |
+| closure.js:5:14:5:18 | 'two' |
+| closure.js:5:22:5:28 | 'three' |
+| closure.js:5:31:5:36 | 'four' |
+| closure.js:5:41:5:46 | 'five' |
+| tst.js:3:3:3:3 | x |
+| tst.js:3:8:3:12 | "two" |
+| tst.js:4:3:4:3 | x |
+| tst.js:4:8:4:14 | "three" |
+| tst.js:5:3:5:3 | x |
+| tst.js:5:8:5:13 | "four" |
+| tst.js:12:5:12:5 | x |
+| tst.js:12:10:12:14 | "one" |
+| tst.js:12:18:12:18 | y |
+| tst.js:12:22:12:26 | "two" |
+| tst.js:14:3:14:3 | x |
+| tst.js:14:8:14:13 | "last" |
+| tst.js:19:11:19:15 | "one" |
+| tst.js:19:19:19:23 | "two" |
+| tst.js:20:3:20:3 | x |
+| tst.js:20:8:20:25 | ("three" + "four") |
+| tst.js:20:9:20:15 | "three" |
+| tst.js:20:19:20:24 | "four" |
+| tst.js:21:10:21:10 | x |
+| tst.js:21:14:21:19 | "five" |
+| tst.js:25:11:25:15 | "one" |
+| tst.js:25:18:25:22 | "two" |
+| tst.js:25:25:25:31 | "three" |
+| tst.js:29:16:29:20 | "one" |
+| tst.js:29:23:29:27 | "two" |
+| tst.js:29:30:29:36 | "three" |
+| tst.js:33:20:33:24 | "one" |
+| tst.js:33:27:33:31 | "two" |
+| tst.js:33:34:33:40 | "three" |
+| tst.js:37:13:37:17 | "one" |
+| tst.js:44:13:44:19 | "first" |
+| tst.js:53:11:53:14 | one  |
+| tst.js:53:17:53:17 | x |
+| tst.js:53:19:53:23 |  two  |
+| tst.js:53:26:53:26 | x |
+| tst.js:53:28:53:33 |  three |
+| tst.js:61:11:61:16 | first  |
+| tst.js:61:19:61:19 | x |
+| tst.js:61:23:61:23 | x |
+| tst.js:61:27:61:27 | x |
+| tst.js:61:29:61:33 |  last |
+| tst.js:87:5:87:5 | x |
+| tst.js:87:10:87:14 | 'two' |
+| tst.js:89:3:89:3 | x |
+| tst.js:89:8:89:14 | 'three' |
+concatenationNode
+| closure.js:5:1:5:37 | build(' ... 'four') |
+| closure.js:5:1:5:46 | build(' ...  'five' |
+| closure.js:5:7:5:11 | 'one' |
+| closure.js:5:14:5:18 | 'two' |
+| closure.js:5:14:5:28 | 'two' + 'three' |
+| closure.js:5:22:5:28 | 'three' |
+| closure.js:5:31:5:36 | 'four' |
+| closure.js:5:41:5:46 | 'five' |
+| tst.js:3:3:3:3 | x |
+| tst.js:3:3:3:12 | x |
+| tst.js:3:3:3:12 | x += "two" |
+| tst.js:3:8:3:12 | "two" |
+| tst.js:4:3:4:3 | x |
+| tst.js:4:3:4:14 | x |
+| tst.js:4:3:4:14 | x += "three" |
+| tst.js:4:8:4:14 | "three" |
+| tst.js:5:3:5:3 | x |
+| tst.js:5:3:5:13 | x |
+| tst.js:5:3:5:13 | x += "four" |
+| tst.js:5:8:5:13 | "four" |
+| tst.js:12:5:12:5 | x |
+| tst.js:12:5:12:26 | x |
+| tst.js:12:5:12:26 | x += "o ... + "two" |
+| tst.js:12:10:12:14 | "one" |
+| tst.js:12:10:12:18 | "one" + y |
+| tst.js:12:10:12:26 | "one" + y + "two" |
+| tst.js:12:18:12:18 | y |
+| tst.js:12:22:12:26 | "two" |
+| tst.js:14:3:14:3 | x |
+| tst.js:14:3:14:13 | x |
+| tst.js:14:3:14:13 | x += "last" |
+| tst.js:14:8:14:13 | "last" |
+| tst.js:19:11:19:15 | "one" |
+| tst.js:19:11:19:23 | "one" + "two" |
+| tst.js:19:19:19:23 | "two" |
+| tst.js:20:3:20:3 | x |
+| tst.js:20:3:20:25 | x |
+| tst.js:20:3:20:25 | x += (" ... "four") |
+| tst.js:20:8:20:25 | ("three" + "four") |
+| tst.js:20:9:20:15 | "three" |
+| tst.js:20:9:20:24 | "three" + "four" |
+| tst.js:20:19:20:24 | "four" |
+| tst.js:21:10:21:10 | x |
+| tst.js:21:10:21:19 | x + "five" |
+| tst.js:21:14:21:19 | "five" |
+| tst.js:25:10:25:32 | ["one", ... three"] |
+| tst.js:25:10:25:41 | ["one", ... oin("") |
+| tst.js:25:11:25:15 | "one" |
+| tst.js:25:18:25:22 | "two" |
+| tst.js:25:25:25:31 | "three" |
+| tst.js:29:10:29:37 | Array(" ... three") |
+| tst.js:29:10:29:46 | Array(" ... oin("") |
+| tst.js:29:16:29:20 | "one" |
+| tst.js:29:23:29:27 | "two" |
+| tst.js:29:30:29:36 | "three" |
+| tst.js:33:10:33:41 | new Arr ... three") |
+| tst.js:33:10:33:50 | new Arr ... oin("") |
+| tst.js:33:20:33:24 | "one" |
+| tst.js:33:27:33:31 | "two" |
+| tst.js:33:34:33:40 | "three" |
+| tst.js:37:12:37:18 | ["one"] |
+| tst.js:37:13:37:17 | "one" |
+| tst.js:40:10:40:20 | xs.join("") |
+| tst.js:44:12:44:20 | ["first"] |
+| tst.js:44:13:44:19 | "first" |
+| tst.js:49:10:49:20 | xs.join("") |
+| tst.js:53:10:53:34 | `one ${ ...  three` |
+| tst.js:53:11:53:14 | one  |
+| tst.js:53:17:53:17 | x |
+| tst.js:53:19:53:23 |  two  |
+| tst.js:53:26:53:26 | x |
+| tst.js:53:28:53:33 |  three |
+| tst.js:61:10:61:34 | `first  ... } last` |
+| tst.js:61:11:61:16 | first  |
+| tst.js:61:19:61:19 | x |
+| tst.js:61:23:61:23 | x |
+| tst.js:61:27:61:27 | x |
+| tst.js:61:29:61:33 |  last |
+| tst.js:87:5:87:5 | x |
+| tst.js:87:5:87:14 | x |
+| tst.js:87:5:87:14 | x += 'two' |
+| tst.js:87:10:87:14 | 'two' |
+| tst.js:89:3:89:3 | x |
+| tst.js:89:3:89:14 | x |
+| tst.js:89:3:89:14 | x += 'three' |
+| tst.js:89:8:89:14 | 'three' |
+operand
+| closure.js:5:1:5:37 | build(' ... 'four') | 0 | closure.js:5:7:5:11 | 'one' |
+| closure.js:5:1:5:37 | build(' ... 'four') | 1 | closure.js:5:14:5:28 | 'two' + 'three' |
+| closure.js:5:1:5:37 | build(' ... 'four') | 2 | closure.js:5:31:5:36 | 'four' |
+| closure.js:5:1:5:46 | build(' ...  'five' | 0 | closure.js:5:1:5:37 | build(' ... 'four') |
+| closure.js:5:1:5:46 | build(' ...  'five' | 1 | closure.js:5:41:5:46 | 'five' |
+| closure.js:5:14:5:28 | 'two' + 'three' | 0 | closure.js:5:14:5:18 | 'two' |
+| closure.js:5:14:5:28 | 'two' + 'three' | 1 | closure.js:5:22:5:28 | 'three' |
+| tst.js:3:3:3:12 | x | 0 | tst.js:3:3:3:3 | x |
+| tst.js:3:3:3:12 | x | 1 | tst.js:3:8:3:12 | "two" |
+| tst.js:3:3:3:12 | x += "two" | 0 | tst.js:3:3:3:3 | x |
+| tst.js:3:3:3:12 | x += "two" | 1 | tst.js:3:8:3:12 | "two" |
+| tst.js:4:3:4:14 | x | 0 | tst.js:4:3:4:3 | x |
+| tst.js:4:3:4:14 | x | 1 | tst.js:4:8:4:14 | "three" |
+| tst.js:4:3:4:14 | x += "three" | 0 | tst.js:4:3:4:3 | x |
+| tst.js:4:3:4:14 | x += "three" | 1 | tst.js:4:8:4:14 | "three" |
+| tst.js:5:3:5:13 | x | 0 | tst.js:5:3:5:3 | x |
+| tst.js:5:3:5:13 | x | 1 | tst.js:5:8:5:13 | "four" |
+| tst.js:5:3:5:13 | x += "four" | 0 | tst.js:5:3:5:3 | x |
+| tst.js:5:3:5:13 | x += "four" | 1 | tst.js:5:8:5:13 | "four" |
+| tst.js:12:5:12:26 | x | 0 | tst.js:12:5:12:5 | x |
+| tst.js:12:5:12:26 | x | 1 | tst.js:12:10:12:26 | "one" + y + "two" |
+| tst.js:12:5:12:26 | x += "o ... + "two" | 0 | tst.js:12:5:12:5 | x |
+| tst.js:12:5:12:26 | x += "o ... + "two" | 1 | tst.js:12:10:12:26 | "one" + y + "two" |
+| tst.js:12:10:12:18 | "one" + y | 0 | tst.js:12:10:12:14 | "one" |
+| tst.js:12:10:12:18 | "one" + y | 1 | tst.js:12:18:12:18 | y |
+| tst.js:12:10:12:26 | "one" + y + "two" | 0 | tst.js:12:10:12:18 | "one" + y |
+| tst.js:12:10:12:26 | "one" + y + "two" | 1 | tst.js:12:22:12:26 | "two" |
+| tst.js:14:3:14:13 | x | 0 | tst.js:14:3:14:3 | x |
+| tst.js:14:3:14:13 | x | 1 | tst.js:14:8:14:13 | "last" |
+| tst.js:14:3:14:13 | x += "last" | 0 | tst.js:14:3:14:3 | x |
+| tst.js:14:3:14:13 | x += "last" | 1 | tst.js:14:8:14:13 | "last" |
+| tst.js:19:11:19:23 | "one" + "two" | 0 | tst.js:19:11:19:15 | "one" |
+| tst.js:19:11:19:23 | "one" + "two" | 1 | tst.js:19:19:19:23 | "two" |
+| tst.js:20:3:20:25 | x | 0 | tst.js:20:3:20:3 | x |
+| tst.js:20:3:20:25 | x | 1 | tst.js:20:8:20:25 | ("three" + "four") |
+| tst.js:20:3:20:25 | x += (" ... "four") | 0 | tst.js:20:3:20:3 | x |
+| tst.js:20:3:20:25 | x += (" ... "four") | 1 | tst.js:20:8:20:25 | ("three" + "four") |
+| tst.js:20:9:20:24 | "three" + "four" | 0 | tst.js:20:9:20:15 | "three" |
+| tst.js:20:9:20:24 | "three" + "four" | 1 | tst.js:20:19:20:24 | "four" |
+| tst.js:21:10:21:19 | x + "five" | 0 | tst.js:21:10:21:10 | x |
+| tst.js:21:10:21:19 | x + "five" | 1 | tst.js:21:14:21:19 | "five" |
+| tst.js:25:10:25:32 | ["one", ... three"] | 0 | tst.js:25:11:25:15 | "one" |
+| tst.js:25:10:25:32 | ["one", ... three"] | 1 | tst.js:25:18:25:22 | "two" |
+| tst.js:25:10:25:32 | ["one", ... three"] | 2 | tst.js:25:25:25:31 | "three" |
+| tst.js:25:10:25:41 | ["one", ... oin("") | 0 | tst.js:25:10:25:32 | ["one", ... three"] |
+| tst.js:29:10:29:37 | Array(" ... three") | 0 | tst.js:29:16:29:20 | "one" |
+| tst.js:29:10:29:37 | Array(" ... three") | 1 | tst.js:29:23:29:27 | "two" |
+| tst.js:29:10:29:37 | Array(" ... three") | 2 | tst.js:29:30:29:36 | "three" |
+| tst.js:29:10:29:46 | Array(" ... oin("") | 0 | tst.js:29:10:29:37 | Array(" ... three") |
+| tst.js:33:10:33:41 | new Arr ... three") | 0 | tst.js:33:20:33:24 | "one" |
+| tst.js:33:10:33:41 | new Arr ... three") | 1 | tst.js:33:27:33:31 | "two" |
+| tst.js:33:10:33:41 | new Arr ... three") | 2 | tst.js:33:34:33:40 | "three" |
+| tst.js:33:10:33:50 | new Arr ... oin("") | 0 | tst.js:33:10:33:41 | new Arr ... three") |
+| tst.js:37:12:37:18 | ["one"] | 0 | tst.js:37:13:37:17 | "one" |
+| tst.js:40:10:40:20 | xs.join("") | 0 | tst.js:37:12:37:18 | ["one"] |
+| tst.js:44:12:44:20 | ["first"] | 0 | tst.js:44:13:44:19 | "first" |
+| tst.js:49:10:49:20 | xs.join("") | 0 | tst.js:44:12:44:20 | ["first"] |
+| tst.js:53:10:53:34 | `one ${ ...  three` | 0 | tst.js:53:11:53:14 | one  |
+| tst.js:53:10:53:34 | `one ${ ...  three` | 1 | tst.js:53:17:53:17 | x |
+| tst.js:53:10:53:34 | `one ${ ...  three` | 2 | tst.js:53:19:53:23 |  two  |
+| tst.js:53:10:53:34 | `one ${ ...  three` | 3 | tst.js:53:26:53:26 | x |
+| tst.js:53:10:53:34 | `one ${ ...  three` | 4 | tst.js:53:28:53:33 |  three |
+| tst.js:61:10:61:34 | `first  ... } last` | 0 | tst.js:61:11:61:16 | first  |
+| tst.js:61:10:61:34 | `first  ... } last` | 1 | tst.js:61:19:61:19 | x |
+| tst.js:61:10:61:34 | `first  ... } last` | 2 | tst.js:61:23:61:23 | x |
+| tst.js:61:10:61:34 | `first  ... } last` | 3 | tst.js:61:27:61:27 | x |
+| tst.js:61:10:61:34 | `first  ... } last` | 4 | tst.js:61:29:61:33 |  last |
+| tst.js:87:5:87:14 | x | 0 | tst.js:87:5:87:5 | x |
+| tst.js:87:5:87:14 | x | 1 | tst.js:87:10:87:14 | 'two' |
+| tst.js:87:5:87:14 | x += 'two' | 0 | tst.js:87:5:87:5 | x |
+| tst.js:87:5:87:14 | x += 'two' | 1 | tst.js:87:10:87:14 | 'two' |
+| tst.js:89:3:89:14 | x | 0 | tst.js:89:3:89:3 | x |
+| tst.js:89:3:89:14 | x | 1 | tst.js:89:8:89:14 | 'three' |
+| tst.js:89:3:89:14 | x += 'three' | 0 | tst.js:89:3:89:3 | x |
+| tst.js:89:3:89:14 | x += 'three' | 1 | tst.js:89:8:89:14 | 'three' |
+nextLeaf
+| closure.js:5:7:5:11 | 'one' | closure.js:5:14:5:18 | 'two' |
+| closure.js:5:14:5:18 | 'two' | closure.js:5:22:5:28 | 'three' |
+| closure.js:5:22:5:28 | 'three' | closure.js:5:31:5:36 | 'four' |
+| closure.js:5:31:5:36 | 'four' | closure.js:5:41:5:46 | 'five' |
+| tst.js:3:3:3:3 | x | tst.js:3:8:3:12 | "two" |
+| tst.js:4:3:4:3 | x | tst.js:4:8:4:14 | "three" |
+| tst.js:5:3:5:3 | x | tst.js:5:8:5:13 | "four" |
+| tst.js:12:5:12:5 | x | tst.js:12:10:12:14 | "one" |
+| tst.js:12:10:12:14 | "one" | tst.js:12:18:12:18 | y |
+| tst.js:12:18:12:18 | y | tst.js:12:22:12:26 | "two" |
+| tst.js:14:3:14:3 | x | tst.js:14:8:14:13 | "last" |
+| tst.js:19:11:19:15 | "one" | tst.js:19:19:19:23 | "two" |
+| tst.js:20:3:20:3 | x | tst.js:20:8:20:25 | ("three" + "four") |
+| tst.js:20:9:20:15 | "three" | tst.js:20:19:20:24 | "four" |
+| tst.js:21:10:21:10 | x | tst.js:21:14:21:19 | "five" |
+| tst.js:25:11:25:15 | "one" | tst.js:25:18:25:22 | "two" |
+| tst.js:25:18:25:22 | "two" | tst.js:25:25:25:31 | "three" |
+| tst.js:29:16:29:20 | "one" | tst.js:29:23:29:27 | "two" |
+| tst.js:29:23:29:27 | "two" | tst.js:29:30:29:36 | "three" |
+| tst.js:33:20:33:24 | "one" | tst.js:33:27:33:31 | "two" |
+| tst.js:33:27:33:31 | "two" | tst.js:33:34:33:40 | "three" |
+| tst.js:53:11:53:14 | one  | tst.js:53:17:53:17 | x |
+| tst.js:53:17:53:17 | x | tst.js:53:19:53:23 |  two  |
+| tst.js:53:19:53:23 |  two  | tst.js:53:26:53:26 | x |
+| tst.js:53:26:53:26 | x | tst.js:53:28:53:33 |  three |
+| tst.js:61:11:61:16 | first  | tst.js:61:19:61:19 | x |
+| tst.js:61:19:61:19 | x | tst.js:61:23:61:23 | x |
+| tst.js:61:23:61:23 | x | tst.js:61:27:61:27 | x |
+| tst.js:61:27:61:27 | x | tst.js:61:29:61:33 |  last |
+| tst.js:87:5:87:5 | x | tst.js:87:10:87:14 | 'two' |
+| tst.js:89:3:89:3 | x | tst.js:89:8:89:14 | 'three' |
