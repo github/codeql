@@ -886,8 +886,7 @@ class ClassDerivation extends Locatable, @derivation {
  * A class that is directly enclosed by a function.  For example the `struct` in
  * the following code is a `LocalClass`:
  * ```
- * void myFunction()
- * {
+ * void myFunction() {
  *   struct { int x; int y; } vec = { 1, 2 };
  * };
  * ```
@@ -910,8 +909,7 @@ class LocalClass extends Class {
  * code is a nested class:
  * ```
  * template<class T>
- * class MyTemplateClass
- * {
+ * class MyTemplateClass {
  * public:
  *   struct PairT {
  *     T first, second;
@@ -956,8 +954,7 @@ class AbstractClass extends Class {
  * `MyTemplateClass<T>` template:
  * ```
  * template<class T>
- * class MyTemplateClass
- * {
+ * class MyTemplateClass {
  *   ...
  * };
  * ```
@@ -977,8 +974,7 @@ class TemplateClass extends Class {
  * code there is a `MyTemplateClass<int>` instantiation:
  * ```
  * template<class T>
- * class MyTemplateClass
- * {
+ * class MyTemplateClass {
  *   ...
  * };
  * 
@@ -1036,14 +1032,12 @@ abstract class ClassTemplateSpecialization extends Class {
  * in the following code is a `FullClassTemplateSpecialization`:
  * ```
  * template<class T>
- * class MyTemplateClass
- * {
+ * class MyTemplateClass {
  *   ...
  * };
  *
  * template<>
- * class MyTemplateClass<int>
- * {
+ * class MyTemplateClass<int> {
  *   ...
  * };
  * ```
@@ -1069,14 +1063,12 @@ class FullClassTemplateSpecialization extends ClassTemplateSpecialization {
  * in the following code is a `PartialClassTemplateSpecialization`:
  * ```
  * template<class S, class T>
- * class MyTemplateClass
- * {
+ * class MyTemplateClass {
  *   ...
  * };
  *
  * template<class T>
- * class MyTemplateClass<int, T>
- * {
+ * class MyTemplateClass<int, T> {
  *   ...
  * };
  * ```
@@ -1108,8 +1100,7 @@ class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
  * An "interface" is a class that only contains pure virtual functions (and contains
  * at least one such function).  For example:
  * ```
- * class MyInterfaceClass
- * {
+ * class MyInterfaceClass {
  * public:
  *   virtual void myMethod1() = 0;
  *   virtual void myMethod2() = 0;
@@ -1130,8 +1121,7 @@ deprecated class Interface extends Class {
  * A class derivation that is virtual.  For example the derivation in the following
  * code is a `VirtualClassDerivation`:
  * ```
- * class MyClass : public virtual MyBaseClass
- * {
+ * class MyClass : public virtual MyBaseClass {
  *   ...
  * };
  * ```
@@ -1148,13 +1138,11 @@ class VirtualClassDerivation extends ClassDerivation {
  * A class that is the base of some virtual class derivation.  For example
  * `MyBaseClass` in the following code is a `VirtualBaseClass` of `MyClass`:
  * ```
- * class MyBaseClass
- * {
+ * class MyBaseClass {
  *  ...
  * };
  *
- * class MyClass : public virtual MyBaseClass
- * {
+ * class MyClass : public virtual MyBaseClass {
  *   ...
  * };
  * ```
@@ -1182,8 +1170,7 @@ class VirtualBaseClass extends Class {
  * in the following code:
  * ```
  * template <typename T>
- * struct S : T // the type of this T is a proxy class
- * {
+ * struct S : T { // the type of this T is a proxy class
  *   ...
  * };
  * ```
