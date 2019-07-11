@@ -47,8 +47,42 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   /** Gets the identifier specifying the name of this function, if any. */
   VarDecl getId() { result = getChildExpr(-1) }
 
-  /** Gets the name of this function, if any. */
+  /**
+   * Gets the name of this function, if it is a function declaration
+   * or named function expression.
+   */
   string getName() { result = getId().getName() }
+
+  /**
+   * Gets the name of this function if it has one, or a name inferred from its context.
+   *
+   * For named functions such as `function f() { ... }`, this is just the declared
+   * name. For functions assigned to variables or properties (including class
+   * members), this is the name of the variable or property. If no meaningful name
+   * can be inferred, there is no result.
+   */
+  string getInferredName() {
+    result = getName()
+    or
+    exists(VarDef vd | this = vd.getSource() |
+      result = vd.getTarget().(VarRef).getName()
+    )
+    or
+    exists(Property p |
+      this = p.getInit() and
+      result = p.getName()
+    )
+    or
+    exists(AssignExpr assign, DotExpr prop |
+      this = assign.getRhs().getUnderlyingValue() and
+      prop = assign.getLhs() and
+      result = prop.getPropertyName()
+    )
+    or
+    exists(ClassOrInterface c |
+      this = c.getMember(result).getInit()
+    )
+  }
 
   /** Gets the variable holding this function. */
   Variable getVariable() { result = getId().getVariable() }
