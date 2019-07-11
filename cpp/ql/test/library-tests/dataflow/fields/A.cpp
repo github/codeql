@@ -4,7 +4,7 @@ class A
   class C
   {
   public:
-    virtual void f(void *) {}
+    virtual void insert(void *) {}
   };
   class C1 : public C
   {
@@ -37,8 +37,8 @@ public:
   {
     C cc;
     C ct;
-    cc.f(nullptr);
-    ct.f(new C());
+    cc.insert(nullptr);
+    ct.insert(new C());
     sink(&cc); // no flow
     sink(&ct); // flow
   }
