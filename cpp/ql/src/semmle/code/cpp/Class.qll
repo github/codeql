@@ -41,9 +41,9 @@ class Class extends UserType {
 
   /**
    * Gets a function declared in this class.
-    * For template member functions, results include both the template
-    * and the instantiations of that template. If you only want the
-    * template, then use `getACanonicalMemberFunction()` instead.
+   * For template member functions, results include both the template
+   * and the instantiations of that template. If you only want the
+   * template, then use `getACanonicalMemberFunction()` instead.
    */
   MemberFunction getAMemberFunction() { result = this.getAMember() }
 
