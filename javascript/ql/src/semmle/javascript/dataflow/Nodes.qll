@@ -71,7 +71,7 @@ class InvokeNode extends DataFlow::SourceNode {
    * Gets a data flow node corresponding to an array of values being passed as
    * individual arguments to this invocation.
    *
-   * Example:
+   * Examples:
    * ```
    * x.push(...args);                     // 'args' is a spread argument
    * x.push(x, ...args, y, ...more);      // 'args' and 'more' are a spread arguments
