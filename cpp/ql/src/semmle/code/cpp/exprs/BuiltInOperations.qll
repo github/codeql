@@ -51,6 +51,9 @@ class BuiltInVarArgCopy extends BuiltInOperation, @vacopyexpr {
  */
 class BuiltInNoOp extends BuiltInOperation, @noopexpr {
   override string toString() { result = "__noop" }
+
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "BuiltInNoOp" }
 }
 
 /**
@@ -58,6 +61,9 @@ class BuiltInNoOp extends BuiltInOperation, @noopexpr {
  */
 class BuiltInOperationOffsetOf extends BuiltInOperation, @offsetofexpr {
   override string toString() { result = "__offsetof" }
+
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "BuiltInOperationOffsetOf" }
 }
 
 /**
@@ -65,6 +71,9 @@ class BuiltInOperationOffsetOf extends BuiltInOperation, @offsetofexpr {
  */
 class BuiltInIntAddr extends BuiltInOperation, @intaddrexpr {
   override string toString() { result = "__INTADDR__" }
+
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "BuiltInIntAddr" }
 }
 
 /**
@@ -238,6 +247,9 @@ class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation,
        // this handles the case where we are taking the address of a reference variable
     or result = this.getOperand().(ReferenceDereferenceExpr).getChild(0).(Access).getTarget()
   }
+
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "BuiltInOperationBuiltInAddressOf" }
 
   override string getOperator() { result = "__builtin_addressof" }
 }
