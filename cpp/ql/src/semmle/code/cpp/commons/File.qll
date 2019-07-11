@@ -5,8 +5,8 @@ import cpp
  */
 predicate fopenCall(FunctionCall fc) {
   exists(Function f | f = fc.getTarget() |
-    f.hasGlobalName("fopen") or
-    f.hasGlobalName("open") or
+    f.hasGlobalOrStdName("fopen") or
+    f.hasGlobalOrStdName("open") or
     f.hasGlobalName("_open") or
     f.hasGlobalName("_wopen") or
     f.hasGlobalName("CreateFile") or
@@ -23,16 +23,16 @@ predicate fopenCall(FunctionCall fc) {
  */
 predicate fcloseCall(FunctionCall fc, Expr closed) {
   exists(Function f | f = fc.getTarget() |
-    f.hasGlobalName("fclose") and
+    f.hasGlobalOrStdName("fclose") and
     closed = fc.getArgument(0)
     or
-    f.hasGlobalName("close") and
+    f.hasGlobalOrStdName("close") and
     closed = fc.getArgument(0)
     or
-    f.hasGlobalName("_close") and
+    f.hasGlobalOrStdName("_close") and
     closed = fc.getArgument(0)
     or
-    f.hasGlobalName("CloseHandle") and
+    f.hasGlobalOrStdName("CloseHandle") and
     closed = fc.getArgument(0)
   )
 }

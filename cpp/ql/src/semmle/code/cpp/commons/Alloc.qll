@@ -5,13 +5,17 @@ import cpp
  */
 predicate allocationFunction(Function f) {
   exists(string name |
-    f.hasGlobalName(name) and
+    f.hasGlobalOrStdName(name) and
     (
       name = "malloc" or
       name = "calloc" or
       name = "realloc" or
       name = "strdup" or
-      name = "wcsdup" or
+      name = "wcsdup"
+    )
+    or
+    f.hasGlobalName(name) and
+    (
       name = "_strdup" or
       name = "_wcsdup" or
       name = "_mbsdup" or
@@ -59,7 +63,7 @@ predicate allocationCall(FunctionCall fc) {
   allocationFunction(fc.getTarget()) and
   (
     // realloc(ptr, 0) only frees the pointer
-    fc.getTarget().hasGlobalName("realloc") implies not fc.getArgument(1).getValue() = "0"
+    fc.getTarget().hasGlobalOrStdName("realloc") implies not fc.getArgument(1).getValue() = "0"
   )
 }
 
@@ -73,7 +77,10 @@ predicate freeFunction(Function f, int argNum) {
       name = "free" and argNum = 0
       or
       name = "realloc" and argNum = 0
-      or
+    )
+    or
+    f.hasGlobalOrStdName(name) and
+    (
       name = "ExFreePoolWithTag" and argNum = 0
       or
       name = "ExFreeToLookasideListEx" and argNum = 1
@@ -188,3 +195,4 @@ predicate isDeallocationExpr(Expr e) {
   e instanceof DeleteExpr or
   e instanceof DeleteArrayExpr
 }
+

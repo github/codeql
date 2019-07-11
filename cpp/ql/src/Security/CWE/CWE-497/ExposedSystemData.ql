@@ -190,11 +190,11 @@ private predicate windowsSystemInfo(FunctionCall source, Element use) {
   // void WINAPI GetSystemInfo(_Out_ LPSYSTEM_INFO lpSystemInfo);
   // void WINAPI GetNativeSystemInfo(_Out_ LPSYSTEM_INFO lpSystemInfo);
   (
-    source.getTarget().hasName("GetVersionEx") or
-    source.getTarget().hasName("GetVersionExA") or
-    source.getTarget().hasName("GetVersionExW") or
-    source.getTarget().hasName("GetSystemInfo") or
-    source.getTarget().hasName("GetNativeSystemInfo")
+    source.getTarget().hasGlobalName("GetVersionEx") or
+    source.getTarget().hasGlobalName("GetVersionExA") or
+    source.getTarget().hasGlobalName("GetVersionExW") or
+    source.getTarget().hasGlobalName("GetSystemInfo") or
+    source.getTarget().hasGlobalName("GetNativeSystemInfo")
   ) and
   use = source.getArgument(0)
 }
@@ -216,9 +216,9 @@ private predicate windowsFolderPath(FunctionCall source, Element use) {
   //   _In_  BOOL   fCreate
   // );
   (
-    source.getTarget().hasName("SHGetSpecialFolderPath") or
-    source.getTarget().hasName("SHGetSpecialFolderPathA") or
-    source.getTarget().hasName("SHGetSpecialFolderPathW")
+    source.getTarget().hasGlobalName("SHGetSpecialFolderPath") or
+    source.getTarget().hasGlobalName("SHGetSpecialFolderPathA") or
+    source.getTarget().hasGlobalName("SHGetSpecialFolderPathW")
   ) and
   use = source.getArgument(1)
   or
@@ -228,7 +228,7 @@ private predicate windowsFolderPath(FunctionCall source, Element use) {
   //   _In_opt_ HANDLE           hToken,
   //   _Out_    PWSTR            *ppszPath
   // );
-  source.getTarget().hasName("SHGetKnownFolderPath") and
+  source.getTarget().hasGlobalName("SHGetKnownFolderPath") and
   use = source.getArgument(3)
   or
   // HRESULT SHGetFolderPath(
@@ -239,9 +239,9 @@ private predicate windowsFolderPath(FunctionCall source, Element use) {
   //   _Out_ LPTSTR pszPath
   // );
   (
-    source.getTarget().hasName("SHGetFolderPath") or
-    source.getTarget().hasName("SHGetFolderPathA") or
-    source.getTarget().hasName("SHGetFolderPathW")
+    source.getTarget().hasGlobalName("SHGetFolderPath") or
+    source.getTarget().hasGlobalName("SHGetFolderPathA") or
+    source.getTarget().hasGlobalName("SHGetFolderPathW")
   ) and
   use = source.getArgument(4)
   or
@@ -254,9 +254,9 @@ private predicate windowsFolderPath(FunctionCall source, Element use) {
   //   _Out_ LPTSTR  pszPath
   // );
   (
-    source.getTarget().hasName("SHGetFolderPathAndSubDir") or
-    source.getTarget().hasName("SHGetFolderPathAndSubDirA") or
-    source.getTarget().hasName("SHGetFolderPathAndSubDirW")
+    source.getTarget().hasGlobalName("SHGetFolderPathAndSubDir") or
+    source.getTarget().hasGlobalName("SHGetFolderPathAndSubDirA") or
+    source.getTarget().hasGlobalName("SHGetFolderPathAndSubDirW")
   ) and
   use = source.getArgument(5)
 }
@@ -273,9 +273,9 @@ class WindowsFolderPath extends SystemData {
 
 private predicate logonUser(FunctionCall source, VariableAccess use) {
   (
-    source.getTarget().hasName("LogonUser") or
-    source.getTarget().hasName("LogonUserW") or
-    source.getTarget().hasName("LogonUserA")
+    source.getTarget().hasGlobalName("LogonUser") or
+    source.getTarget().hasGlobalName("LogonUserW") or
+    source.getTarget().hasGlobalName("LogonUserA")
   ) and
   use = source.getAnArgument()
 }
@@ -297,9 +297,9 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Inout_opt_ PLONG   lpcbValue
   // );
   (
-    source.getTarget().hasName("RegQueryValue") or
-    source.getTarget().hasName("RegQueryValueA") or
-    source.getTarget().hasName("RegQueryValueW")
+    source.getTarget().hasGlobalName("RegQueryValue") or
+    source.getTarget().hasGlobalName("RegQueryValueA") or
+    source.getTarget().hasGlobalName("RegQueryValueW")
   ) and
   use = source.getArgument(2)
   or
@@ -311,9 +311,9 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Inout_opt_ LPDWORD ldwTotsize
   // );
   (
-    source.getTarget().hasName("RegQueryMultipleValues") or
-    source.getTarget().hasName("RegQueryMultipleValuesA") or
-    source.getTarget().hasName("RegQueryMultipleValuesW")
+    source.getTarget().hasGlobalName("RegQueryMultipleValues") or
+    source.getTarget().hasGlobalName("RegQueryMultipleValuesA") or
+    source.getTarget().hasGlobalName("RegQueryMultipleValuesW")
   ) and
   use = source.getArgument(3)
   or
@@ -326,9 +326,9 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Inout_opt_ LPDWORD lpcbData
   // );
   (
-    source.getTarget().hasName("RegQueryValueEx") or
-    source.getTarget().hasName("RegQueryValueExA") or
-    source.getTarget().hasName("RegQueryValueExW")
+    source.getTarget().hasGlobalName("RegQueryValueEx") or
+    source.getTarget().hasGlobalName("RegQueryValueExA") or
+    source.getTarget().hasGlobalName("RegQueryValueExW")
   ) and
   use = source.getArgument(4)
   or
@@ -342,9 +342,9 @@ private predicate regQuery(FunctionCall source, VariableAccess use) {
   //   _Inout_opt_ LPDWORD pcbData
   // );
   (
-    source.getTarget().hasName("RegGetValue") or
-    source.getTarget().hasName("RegGetValueA") or
-    source.getTarget().hasName("RegGetValueW")
+    source.getTarget().hasGlobalName("RegGetValue") or
+    source.getTarget().hasGlobalName("RegGetValueA") or
+    source.getTarget().hasGlobalName("RegGetValueW")
   ) and
   use = source.getArgument(5)
 }

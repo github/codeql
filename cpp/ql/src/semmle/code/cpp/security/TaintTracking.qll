@@ -425,35 +425,35 @@ private int maxArgIndex(Function f) {
 
 /** Functions that copy the value of one argument to another */
 private predicate copyValueBetweenArguments(Function f, int sourceArg, int destArg) {
-  f.hasGlobalName("memcpy") and sourceArg = 1 and destArg = 0
+  f.hasGlobalOrStdName("memcpy") and sourceArg = 1 and destArg = 0
   or
   f.hasGlobalName("__builtin___memcpy_chk") and sourceArg = 1 and destArg = 0
   or
-  f.hasGlobalName("memmove") and sourceArg = 1 and destArg = 0
+  f.hasGlobalOrStdName("memmove") and sourceArg = 1 and destArg = 0
   or
-  f.hasGlobalName("strcat") and sourceArg = 1 and destArg = 0
+  f.hasGlobalOrStdName("strcat") and sourceArg = 1 and destArg = 0
   or
   f.hasGlobalName("_mbscat") and sourceArg = 1 and destArg = 0
   or
-  f.hasGlobalName("wcsncat") and sourceArg = 1 and destArg = 0
+  f.hasGlobalOrStdName("wcscat") and sourceArg = 1 and destArg = 0
   or
-  f.hasGlobalName("strncat") and sourceArg = 1 and destArg = 0
+  f.hasGlobalOrStdName("strncat") and sourceArg = 1 and destArg = 0
   or
   f.hasGlobalName("_mbsncat") and sourceArg = 1 and destArg = 0
   or
   f.hasGlobalName("wcsncat") and sourceArg = 1 and destArg = 0
   or
-  f.hasGlobalName("strcpy") and sourceArg = 1 and destArg = 0
+  f.hasGlobalOrStdName("strcpy") and sourceArg = 1 and destArg = 0
   or
   f.hasGlobalName("_mbscpy") and sourceArg = 1 and destArg = 0
   or
-  f.hasGlobalName("wcscpy") and sourceArg = 1 and destArg = 0
+  f.hasGlobalOrStdName("wcscpy") and sourceArg = 1 and destArg = 0
   or
-  f.hasGlobalName("strncpy") and sourceArg = 1 and destArg = 0
+  f.hasGlobalOrStdName("strncpy") and sourceArg = 1 and destArg = 0
   or
   f.hasGlobalName("_mbsncpy") and sourceArg = 1 and destArg = 0
   or
-  f.hasGlobalName("wcsncpy") and sourceArg = 1 and destArg = 0
+  f.hasGlobalOrStdName("wcsncpy") and sourceArg = 1 and destArg = 0
   or
   f.hasGlobalName("inet_aton") and sourceArg = 0 and destArg = 1
   or
@@ -473,31 +473,31 @@ private predicate returnArgument(Function f, int sourceArg) {
   or
   f.hasGlobalName("__builtin___memcpy_chk") and sourceArg = 0
   or
-  f.hasGlobalName("memmove") and sourceArg = 0
+  f.hasGlobalOrStdName("memmove") and sourceArg = 0
   or
-  f.hasGlobalName("strcat") and sourceArg = 0
+  f.hasGlobalOrStdName("strcat") and sourceArg = 0
   or
   f.hasGlobalName("_mbscat") and sourceArg = 0
   or
-  f.hasGlobalName("wcsncat") and sourceArg = 0
+  f.hasGlobalOrStdName("wcsncat") and sourceArg = 0
   or
-  f.hasGlobalName("strncat") and sourceArg = 0
+  f.hasGlobalOrStdName("strncat") and sourceArg = 0
   or
   f.hasGlobalName("_mbsncat") and sourceArg = 0
   or
-  f.hasGlobalName("wcsncat") and sourceArg = 0
+  f.hasGlobalOrStdName("wcsncat") and sourceArg = 0
   or
-  f.hasGlobalName("strcpy") and sourceArg = 0
+  f.hasGlobalOrStdName("strcpy") and sourceArg = 0
   or
   f.hasGlobalName("_mbscpy") and sourceArg = 0
   or
-  f.hasGlobalName("wcscpy") and sourceArg = 0
+  f.hasGlobalOrStdName("wcscpy") and sourceArg = 0
   or
-  f.hasGlobalName("strncpy") and sourceArg = 0
+  f.hasGlobalOrStdName("strncpy") and sourceArg = 0
   or
   f.hasGlobalName("_mbsncpy") and sourceArg = 0
   or
-  f.hasGlobalName("wcsncpy") and sourceArg = 0
+  f.hasGlobalOrStdName("wcsncpy") and sourceArg = 0
   or
   f.hasGlobalName("inet_ntoa") and sourceArg = 0
   or

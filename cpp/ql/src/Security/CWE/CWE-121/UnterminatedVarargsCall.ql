@@ -66,7 +66,7 @@ class VarargsFunction extends Function {
   }
 
   predicate isWhitelisted() {
-    this.hasGlobalName("open") or
+    this.hasGlobalOrStdName("open") or
     this.hasGlobalName("fcntl") or
     this.hasGlobalName("ptrace")
   }
