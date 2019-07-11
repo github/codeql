@@ -12,12 +12,28 @@
 #-----|         Type = [VoidPointerType]: void *
 #-----|     1: [Parameter]: p#1
 #-----|         Type = [LongType]: unsigned long
+#-----| [TopLevelFunction]: void operator delete(void*, unsigned long, std::align_val_t)
+#-----|   params: 
+#-----|     0: [Parameter]: p#0
+#-----|         Type = [VoidPointerType]: void *
+#-----|     1: [Parameter]: p#1
+#-----|         Type = [LongType]: unsigned long
+#-----|     2: [Parameter]: p#2
+#-----|         Type = [ScopedEnum]: align_val_t
 #-----| [TopLevelFunction]: void operator delete[](void*, unsigned long)
 #-----|   params: 
 #-----|     0: [Parameter]: p#0
 #-----|         Type = [VoidPointerType]: void *
 #-----|     1: [Parameter]: p#1
 #-----|         Type = [LongType]: unsigned long
+#-----| [TopLevelFunction]: void operator delete[](void*, unsigned long, std::align_val_t)
+#-----|   params: 
+#-----|     0: [Parameter]: p#0
+#-----|         Type = [VoidPointerType]: void *
+#-----|     1: [Parameter]: p#1
+#-----|         Type = [LongType]: unsigned long
+#-----|     2: [Parameter]: p#2
+#-----|         Type = [ScopedEnum]: align_val_t
 #-----| [TopLevelFunction]: void* operator new(unsigned long)
 #-----|   params: 
 #-----|     0: [Parameter]: p#0
@@ -174,6 +190,17 @@ bad_asts.cpp:
 #   27|                   Type = [LValueReferenceType]: const Point &
 #   27|                   ValueCategory = prvalue(load)
 #   28|     1: [ReturnStmt]: return ...
+clang.cpp:
+#    5| [TopLevelFunction]: int* globalIntAddress()
+#    5|   params: 
+#    5|   body: [Block]: { ... }
+#    6|     0: [ReturnStmt]: return ...
+#    6|       0: [???]: __builtin_addressof ...
+#    6|           Type = [IntPointerType]: int *
+#    6|           ValueCategory = prvalue
+#    6|         0: [VariableAccess]: globalInt
+#    6|             Type = [IntType]: int
+#    6|             ValueCategory = lvalue
 ir.cpp:
 #    1| [TopLevelFunction]: void Constants()
 #    1|   params: 
@@ -4386,7 +4413,7 @@ ir.cpp:
 #  705|         2: [VariableAccess]: y
 #  705|             Type = [TemplateParameter]: T
 #  705|             ValueCategory = lvalue
-#  704| [FunctionTemplateSpecialization]: int min<int>(int, int)
+#  704| [FunctionTemplateInstantiation]: int min<int>(int, int)
 #  704|   params: 
 #  704|     0: [Parameter]: x
 #  704|         Type = [IntType]: int
@@ -4458,7 +4485,7 @@ ir.cpp:
 #  715|         Type = [TemplateParameter]: U
 #  715|     1: [Parameter]: y
 #  715|         Type = [TemplateParameter]: V
-#  715| [FunctionTemplateSpecialization]: long Outer<long>::Func<void*, char>(void*, char)
+#  715| [FunctionTemplateInstantiation]: long Outer<long>::Func<void*, char>(void*, char)
 #  715|   params: 
 #  715|     0: [Parameter]: x
 #  715|         Type = [VoidPointerType]: void *
@@ -6647,6 +6674,162 @@ ir.cpp:
 # 1002|       0: [StmtExpr]: (statement expression)
 # 1002|           Type = [IntType]: int
 # 1002|           ValueCategory = prvalue
+# 1006| [TopLevelFunction]: void OperatorDelete()
+# 1006|   params: 
+# 1006|   body: [Block]: { ... }
+# 1007|     0: [ExprStmt]: ExprStmt
+# 1007|       0: [DeleteExpr]: delete
+# 1007|           Type = [VoidType]: void
+# 1007|           ValueCategory = prvalue
+# 1007|         3: [PointerConversion]: static_cast<int *>...
+# 1007|             Conversion = pointer conversion
+# 1007|             Type = [IntPointerType]: int *
+# 1007|             Value = [PointerConversion]: 0
+# 1007|             ValueCategory = prvalue
+# 1007|           expr: [Zero]: 0
+# 1007|               Type = [NullPointerType]: decltype(nullptr)
+# 1007|               Value = [Zero]: 0
+# 1007|               ValueCategory = prvalue
+# 1008|     1: [ExprStmt]: ExprStmt
+# 1008|       0: [DeleteExpr]: delete
+# 1008|           Type = [VoidType]: void
+# 1008|           ValueCategory = prvalue
+# 1008|         1: [DestructorCall]: call to ~String
+# 1008|             Type = [VoidType]: void
+# 1008|             ValueCategory = prvalue
+# 1008|           -1: [PointerConversion]: static_cast<String *>...
+# 1008|               Conversion = pointer conversion
+# 1008|               Type = [PointerType]: String *
+# 1008|               Value = [PointerConversion]: 0
+# 1008|               ValueCategory = prvalue
+# 1008|             expr: [Zero]: 0
+# 1008|                 Type = [NullPointerType]: decltype(nullptr)
+# 1008|                 Value = [Zero]: 0
+# 1008|                 ValueCategory = prvalue
+# 1009|     2: [ExprStmt]: ExprStmt
+# 1009|       0: [DeleteExpr]: delete
+# 1009|           Type = [VoidType]: void
+# 1009|           ValueCategory = prvalue
+# 1009|         0: [FunctionCall]: call to operator delete
+# 1009|             Type = [VoidType]: void
+# 1009|             ValueCategory = prvalue
+# 1009|         3: [PointerConversion]: static_cast<SizedDealloc *>...
+# 1009|             Conversion = pointer conversion
+# 1009|             Type = [PointerType]: SizedDealloc *
+# 1009|             Value = [PointerConversion]: 0
+# 1009|             ValueCategory = prvalue
+# 1009|           expr: [Zero]: 0
+# 1009|               Type = [NullPointerType]: decltype(nullptr)
+# 1009|               Value = [Zero]: 0
+# 1009|               ValueCategory = prvalue
+# 1010|     3: [ExprStmt]: ExprStmt
+# 1010|       0: [DeleteExpr]: delete
+# 1010|           Type = [VoidType]: void
+# 1010|           ValueCategory = prvalue
+# 1010|         3: [PointerConversion]: static_cast<Overaligned *>...
+# 1010|             Conversion = pointer conversion
+# 1010|             Type = [PointerType]: Overaligned *
+# 1010|             Value = [PointerConversion]: 0
+# 1010|             ValueCategory = prvalue
+# 1010|           expr: [Zero]: 0
+# 1010|               Type = [NullPointerType]: decltype(nullptr)
+# 1010|               Value = [Zero]: 0
+# 1010|               ValueCategory = prvalue
+# 1011|     4: [ExprStmt]: ExprStmt
+# 1011|       0: [DeleteExpr]: delete
+# 1011|           Type = [VoidType]: void
+# 1011|           ValueCategory = prvalue
+# 1011|         1: [DestructorCall]: call to ~PolymorphicBase
+# 1011|             Type = [VoidType]: void
+# 1011|             ValueCategory = prvalue
+# 1011|           -1: [PointerConversion]: static_cast<PolymorphicBase *>...
+# 1011|               Conversion = pointer conversion
+# 1011|               Type = [PointerType]: PolymorphicBase *
+# 1011|               Value = [PointerConversion]: 0
+# 1011|               ValueCategory = prvalue
+# 1011|             expr: [Zero]: 0
+# 1011|                 Type = [NullPointerType]: decltype(nullptr)
+# 1011|                 Value = [Zero]: 0
+# 1011|                 ValueCategory = prvalue
+# 1012|     5: [ReturnStmt]: return ...
+# 1015| [TopLevelFunction]: void OperatorDeleteArray()
+# 1015|   params: 
+# 1015|   body: [Block]: { ... }
+# 1016|     0: [ExprStmt]: ExprStmt
+# 1016|       0: [DeleteArrayExpr]: delete[]
+# 1016|           Type = [VoidType]: void
+# 1016|           ValueCategory = prvalue
+# 1016|         3: [PointerConversion]: static_cast<int *>...
+# 1016|             Conversion = pointer conversion
+# 1016|             Type = [IntPointerType]: int *
+# 1016|             Value = [PointerConversion]: 0
+# 1016|             ValueCategory = prvalue
+# 1016|           expr: [Zero]: 0
+# 1016|               Type = [NullPointerType]: decltype(nullptr)
+# 1016|               Value = [Zero]: 0
+# 1016|               ValueCategory = prvalue
+# 1017|     1: [ExprStmt]: ExprStmt
+# 1017|       0: [DeleteArrayExpr]: delete[]
+# 1017|           Type = [VoidType]: void
+# 1017|           ValueCategory = prvalue
+# 1017|         1: [DestructorCall]: call to ~String
+# 1017|             Type = [VoidType]: void
+# 1017|             ValueCategory = prvalue
+# 1017|           -1: [PointerConversion]: static_cast<String *>...
+# 1017|               Conversion = pointer conversion
+# 1017|               Type = [PointerType]: String *
+# 1017|               Value = [PointerConversion]: 0
+# 1017|               ValueCategory = prvalue
+# 1017|             expr: [Zero]: 0
+# 1017|                 Type = [NullPointerType]: decltype(nullptr)
+# 1017|                 Value = [Zero]: 0
+# 1017|                 ValueCategory = prvalue
+# 1018|     2: [ExprStmt]: ExprStmt
+# 1018|       0: [DeleteArrayExpr]: delete[]
+# 1018|           Type = [VoidType]: void
+# 1018|           ValueCategory = prvalue
+# 1018|         0: [FunctionCall]: call to operator delete[]
+# 1018|             Type = [VoidType]: void
+# 1018|             ValueCategory = prvalue
+# 1018|         3: [PointerConversion]: static_cast<SizedDealloc *>...
+# 1018|             Conversion = pointer conversion
+# 1018|             Type = [PointerType]: SizedDealloc *
+# 1018|             Value = [PointerConversion]: 0
+# 1018|             ValueCategory = prvalue
+# 1018|           expr: [Zero]: 0
+# 1018|               Type = [NullPointerType]: decltype(nullptr)
+# 1018|               Value = [Zero]: 0
+# 1018|               ValueCategory = prvalue
+# 1019|     3: [ExprStmt]: ExprStmt
+# 1019|       0: [DeleteArrayExpr]: delete[]
+# 1019|           Type = [VoidType]: void
+# 1019|           ValueCategory = prvalue
+# 1019|         3: [PointerConversion]: static_cast<Overaligned *>...
+# 1019|             Conversion = pointer conversion
+# 1019|             Type = [PointerType]: Overaligned *
+# 1019|             Value = [PointerConversion]: 0
+# 1019|             ValueCategory = prvalue
+# 1019|           expr: [Zero]: 0
+# 1019|               Type = [NullPointerType]: decltype(nullptr)
+# 1019|               Value = [Zero]: 0
+# 1019|               ValueCategory = prvalue
+# 1020|     4: [ExprStmt]: ExprStmt
+# 1020|       0: [DeleteArrayExpr]: delete[]
+# 1020|           Type = [VoidType]: void
+# 1020|           ValueCategory = prvalue
+# 1020|         1: [DestructorCall]: call to ~PolymorphicBase
+# 1020|             Type = [VoidType]: void
+# 1020|             ValueCategory = prvalue
+# 1020|           -1: [PointerConversion]: static_cast<PolymorphicBase *>...
+# 1020|               Conversion = pointer conversion
+# 1020|               Type = [PointerType]: PolymorphicBase *
+# 1020|               Value = [PointerConversion]: 0
+# 1020|               ValueCategory = prvalue
+# 1020|             expr: [Zero]: 0
+# 1020|                 Type = [NullPointerType]: decltype(nullptr)
+# 1020|                 Value = [Zero]: 0
+# 1020|                 ValueCategory = prvalue
+# 1021|     5: [ReturnStmt]: return ...
 # 1023| [CopyAssignmentOperator]: EmptyStruct& EmptyStruct::operator=(EmptyStruct const&)
 # 1023|   params: 
 #-----|     0: [Parameter]: p#0
@@ -7454,11 +7637,11 @@ ir.cpp:
 # 1056| [ConstMemberFunction]: bool vector<T>::iterator::operator!=(vector<T>::iterator) const
 # 1056|   params: 
 # 1056|     0: [Parameter]: right
-# 1056|         Type = [Class]: iterator
+# 1056|         Type = [NestedClass]: iterator
 # 1056| [ConstMemberFunction]: bool vector<int>::iterator::operator!=(vector<int>::iterator) const
 # 1056|   params: 
 # 1056|     0: [Parameter]: right
-# 1056|         Type = [Struct]: iterator
+# 1056|         Type = [NestedStruct]: iterator
 # 1059| [ConstMemberFunction]: vector<T>::iterator vector<T>::begin() const
 # 1059|   params: 
 # 1059| [ConstMemberFunction]: vector<int>::iterator vector<int>::begin() const
@@ -7495,19 +7678,19 @@ ir.cpp:
 #-----|             Type = [SpecifiedType]: const iterator
 #-----|             ValueCategory = lvalue
 #-----|           expr: [VariableAccess]: (__begin)
-#-----|               Type = [Struct]: iterator
+#-----|               Type = [NestedStruct]: iterator
 #-----|               ValueCategory = lvalue
 #-----|         0: [VariableAccess]: (__end)
-#-----|             Type = [Struct]: iterator
+#-----|             Type = [NestedStruct]: iterator
 #-----|             ValueCategory = prvalue(load)
 # 1069|       3: [ReferenceDereferenceExpr]: (reference dereference)
-# 1069|           Type = [Struct]: iterator
+# 1069|           Type = [NestedStruct]: iterator
 # 1069|           ValueCategory = lvalue
 # 1069|         expr: [FunctionCall]: call to operator++
 # 1069|             Type = [LValueReferenceType]: iterator &
 # 1069|             ValueCategory = prvalue
 #-----|           -1: [VariableAccess]: (__begin)
-#-----|               Type = [Struct]: iterator
+#-----|               Type = [NestedStruct]: iterator
 #-----|               ValueCategory = lvalue
 # 1069|       4: [DeclStmt]: declaration
 # 1069|       5: [Block]: { ... }
@@ -7536,19 +7719,19 @@ ir.cpp:
 #-----|             Type = [SpecifiedType]: const iterator
 #-----|             ValueCategory = lvalue
 #-----|           expr: [VariableAccess]: (__begin)
-#-----|               Type = [Struct]: iterator
+#-----|               Type = [NestedStruct]: iterator
 #-----|               ValueCategory = lvalue
 #-----|         0: [VariableAccess]: (__end)
-#-----|             Type = [Struct]: iterator
+#-----|             Type = [NestedStruct]: iterator
 #-----|             ValueCategory = prvalue(load)
 # 1075|       3: [ReferenceDereferenceExpr]: (reference dereference)
-# 1075|           Type = [Struct]: iterator
+# 1075|           Type = [NestedStruct]: iterator
 # 1075|           ValueCategory = lvalue
 # 1075|         expr: [FunctionCall]: call to operator++
 # 1075|             Type = [LValueReferenceType]: iterator &
 # 1075|             ValueCategory = prvalue
 #-----|           -1: [VariableAccess]: (__begin)
-#-----|               Type = [Struct]: iterator
+#-----|               Type = [NestedStruct]: iterator
 #-----|               ValueCategory = lvalue
 # 1075|       4: [DeclStmt]: declaration
 # 1075|       5: [Block]: { ... }
