@@ -103,7 +103,7 @@ module InstructionSanity {
   query predicate missingOperandType(Operand operand, string message) {
     exists(Function func |
       not exists(operand.getType()) and
-      func = operand.getUseInstruction().getEnclosingFunction() and
+      func = operand.getUse().getEnclosingFunction() and
       message = "Operand missing type in function '" + getIdentityString(func) + "'."
     )
   }
@@ -158,8 +158,8 @@ module InstructionSanity {
    * a different function.
    */
   query predicate operandAcrossFunctions(Operand operand, Instruction instr, Instruction defInstr) {
-    operand.getUseInstruction() = instr and
-    operand.getDefinitionInstruction() = defInstr and
+    operand.getUse() = instr and
+    operand.getAnyDef() = defInstr and
     instr.getEnclosingIRFunction() != defInstr.getEnclosingIRFunction()
   }
 
@@ -480,17 +480,18 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
-   * Gets all direct uses of the result of this instruction.
+   * Gets all direct uses of the result of this instruction. The result can be
+   * an `Operand` for which `isDefinitionInexact` holds.
    */
   final Operand getAUse() {
-    result.getDefinitionInstruction() = this
+    result.getAnyDef() = this
   }
 
   /**
    * Gets all of this instruction's operands.
    */
   final Operand getAnOperand() {
-    result.getUseInstruction() = this
+    result.getUse() = this
   }
 
   /**
@@ -509,13 +510,22 @@ class Instruction extends Construction::TInstruction {
   }
 
   /**
-   * Returns the operand that holds the memory address to which the instruction stores its
+   * Gets the operand that holds the memory address to which this instruction stores its
    * result, if any. For example, in `m3 = Store r1, r2`, the result of `getResultAddressOperand()`
    * is `r1`.
    */
   final AddressOperand getResultAddressOperand() {
     getResultMemoryAccess().usesAddressOperand() and
-    result.getUseInstruction() = this
+    result.getUse() = this
+  }
+
+  /**
+   * Gets the instruction that holds the exact memory address to which this instruction stores its
+   * result, if any. For example, in `m3 = Store r1, r2`, the result of `getResultAddressOperand()`
+   * is the instruction that defines `r1`.
+   */
+  final Instruction getResultAddress() {
+    result = getResultAddressOperand().getDef()
   }
 
   /**
@@ -698,7 +708,7 @@ class FieldAddressInstruction extends FieldInstruction {
   }
 
   final Instruction getObjectAddress() {
-    result = getObjectAddressOperand().getDefinitionInstruction()
+    result = getObjectAddressOperand().getDef()
   }
 }
 
@@ -763,7 +773,7 @@ class ReturnValueInstruction extends ReturnInstruction {
   }
   
   final Instruction getReturnValue() {
-    result = getReturnValueOperand().getDefinitionInstruction()
+    result = getReturnValueOperand().getDef()
   }
 }
 
@@ -777,7 +787,7 @@ class CopyInstruction extends Instruction {
   }
 
   final Instruction getSourceValue() {
-    result = getSourceValueOperand().getDefinitionInstruction()
+    result = getSourceValueOperand().getDef()
   }
 }
 
@@ -801,7 +811,7 @@ class LoadInstruction extends CopyInstruction {
   }
   
   final Instruction getSourceAddress() {
-    result = getSourceAddressOperand().getDefinitionInstruction()
+    result = getSourceAddressOperand().getDef()
   }
 
   override final LoadOperand getSourceValueOperand() {
@@ -823,7 +833,7 @@ class StoreInstruction extends CopyInstruction {
   }
   
   final Instruction getDestinationAddress() {
-    result = getDestinationAddressOperand().getDefinitionInstruction()
+    result = getDestinationAddressOperand().getDef()
   }
 
   override final StoreValueOperand getSourceValueOperand() {
@@ -841,7 +851,7 @@ class ConditionalBranchInstruction extends Instruction {
   }
 
   final Instruction getCondition() {
-    result = getConditionOperand().getDefinitionInstruction()
+    result = getConditionOperand().getDef()
   }
 
   final Instruction getTrueSuccessor() {
@@ -907,11 +917,11 @@ class BinaryInstruction extends Instruction {
   }
 
   final Instruction getLeft() {
-    result = getLeftOperand().getDefinitionInstruction()
+    result = getLeftOperand().getDef()
   }
 
   final Instruction getRight() {
-    result = getRightOperand().getDefinitionInstruction()
+    result = getRightOperand().getDef()
   }
   
   /**
@@ -1061,7 +1071,7 @@ class UnaryInstruction extends Instruction {
   }
   
   final Instruction getUnary() {
-    result = getUnaryOperand().getDefinitionInstruction()
+    result = getUnaryOperand().getDef()
   }
 }
 
@@ -1291,7 +1301,7 @@ class SwitchInstruction extends Instruction {
   }
 
   final Instruction getExpression() {
-    result = getExpressionOperand().getDefinitionInstruction()
+    result = getExpressionOperand().getDef()
   }
 
   final Instruction getACaseSuccessor() {
@@ -1326,7 +1336,7 @@ class CallInstruction extends Instruction {
    * function pointer.
    */
   final Instruction getCallTarget() {
-    result = getCallTargetOperand().getDefinitionInstruction()
+    result = getCallTargetOperand().getDef()
   }
 
   /**
@@ -1347,7 +1357,7 @@ class CallInstruction extends Instruction {
    * Gets all of the arguments of the call, including the `this` pointer, if any.
    */
   final Instruction getAnArgument() {
-    result = getAnArgumentOperand().getDefinitionInstruction()
+    result = getAnArgumentOperand().getDef()
   }
 
   /**
@@ -1361,7 +1371,7 @@ class CallInstruction extends Instruction {
    * Gets the `this` pointer argument of the call, if any.
    */
   final Instruction getThisArgument() {
-    result = getThisArgumentOperand().getDefinitionInstruction()
+    result = getThisArgumentOperand().getDef()
   }
 
   /**
@@ -1376,7 +1386,7 @@ class CallInstruction extends Instruction {
    * Gets the argument at the specified index.
    */
   final Instruction getPositionalArgument(int index) {
-    result = getPositionalArgumentOperand(index).getDefinitionInstruction()
+    result = getPositionalArgumentOperand(index).getDef()
   }
 }
 
@@ -1532,7 +1542,7 @@ class ThrowValueInstruction extends ThrowInstruction {
    * Gets the address of the exception thrown by this instruction.
    */
   final Instruction getExceptionAddress() {
-    result = getExceptionAddressOperand().getDefinitionInstruction()
+    result = getExceptionAddressOperand().getDef()
   }
 
   /**
@@ -1546,7 +1556,7 @@ class ThrowValueInstruction extends ThrowInstruction {
    * Gets the exception thrown by this instruction.
    */
   final Instruction getException() {
-    result = getExceptionOperand().getDefinitionInstruction()
+    result = getExceptionOperand().getDef()
   }
 }
 
@@ -1676,7 +1686,7 @@ class PhiInstruction extends Instruction {
    */
   pragma[noinline]
   final Instruction getAnInput() {
-    result = this.getAnInputOperand().getDefinitionInstruction()
+    result = this.getAnInputOperand().getDef()
   }
 }
 
@@ -1744,7 +1754,7 @@ class ChiInstruction extends Instruction {
    * memory write.
    */
   final Instruction getTotal() {
-    result = getTotalOperand().getDefinitionInstruction()
+    result = getTotalOperand().getDef()
   }
 
   /**
@@ -1758,7 +1768,7 @@ class ChiInstruction extends Instruction {
    * Gets the operand that represents the new value written by the memory write.
    */
   final Instruction getPartial() {
-    result = getPartialOperand().getDefinitionInstruction()
+    result = getPartialOperand().getDef()
   }
 }
 
