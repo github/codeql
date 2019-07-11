@@ -465,8 +465,13 @@ class Class extends UserType {
   }
 
   /**
-   * Gets a class derivation of this class, for example the "public B"
-   * in "class D : public B { ... };".
+   * Gets a class derivation of this class, for example the `public B` in the
+   * following code:
+   * ```
+   * class D : public B {
+   *   ...
+   * };
+   * ```
    */
   ClassDerivation getADerivation() {
     exists(ClassDerivation d | d.getDerivedClass() = this and d = result)
@@ -518,7 +523,12 @@ class Class extends UserType {
 
   /**
    * Holds if this class has a virtual class derivation, for example the
-   * "virtual public B" in "class D : virtual public B { ... };".
+   * `virtual public B` in the following code:
+   * ```
+   * class D : virtual public B {
+   *   ...
+   * };
+   * ```
    */
   predicate hasVirtualBaseClass(Class base) {
       exists(ClassDerivation cd |
@@ -542,7 +552,12 @@ class Class extends UserType {
 
   /**
    * Holds if this class has a private class derivation, for example the
-   * "private B" in "class D : private B { ... };".
+   * `private B` in the following code:
+   * ```
+   * class D : private B {
+   *   ...
+   * };
+   * ```
    */
   predicate hasPrivateBaseClass(Class base) {
       exists(ClassDerivation cd |
@@ -554,7 +569,12 @@ class Class extends UserType {
 
   /**
    * Holds if this class has a public class derivation, for example the
-   * "public B" in "class D : public B { ... };".
+   * `public B` in the following code:
+   * ```
+   * class D : public B {
+   *   ...
+   * };
+   * ```
    */
   predicate hasPublicBaseClass(Class base) {
       exists(ClassDerivation cd |
@@ -566,7 +586,12 @@ class Class extends UserType {
 
   /**
    * Holds if this class has a protected class derivation, for example the
-   * "protected B" in "class D : protected B { ... };".
+   * `protected B` in the following code:
+   * ```
+   * class D : protected B {
+   *   ...
+   * };
+   * ```
    */
   predicate hasProtectedBaseClass(Class base) {
       exists(ClassDerivation cd |
@@ -748,18 +773,27 @@ class Class extends UserType {
 }
 
 /**
- * A class derivation, for example the "public B" in
- * "class D : public B { ... };".
+ * A class derivation, for example the `public B` in the following code:
+ * ```
+ * class D : public B {
+ *   ...
+ * };
+ * ```
  */
 class ClassDerivation extends Locatable, @derivation {
   /**
    * Gets the class/struct from which we are actually deriving, resolving a
-   * typedef if necessary.  For example, the base class in the following
-   * would be B:
+   * typedef if necessary.  For example, the base class in the following code
+   * would be `B`:
+   * ```
+   * struct B {
+   * };
    *
-   * struct B {};
    * typedef B T;
-   * struct D : T {};
+   *
+   * struct D : T {
+   * };
+   * ```
    */
   Class getBaseClass() {
     result = getBaseType().getUnderlyingType()
@@ -767,11 +801,16 @@ class ClassDerivation extends Locatable, @derivation {
 
   /**
    * Gets the type from which we are deriving, without resolving any
-   * typedef. For example, the base type in the following would be T:
+   * typedef. For example, the base type in the following code would be `T`:
+   * ```
+   * struct B {
+   * };
    *
-   * struct B {};
    * typedef B T;
-   * struct D : T {};
+   *
+   * struct D : T {
+   * };
+   * ```
    */
   Type getBaseType() {
     derivations(underlyingElement(this),_,_,unresolveElement(result),_)
@@ -779,10 +818,14 @@ class ClassDerivation extends Locatable, @derivation {
 
   /**
    * Gets the class that is doing the deriving. For example, the derived
-   * class in the following would be D:
+   * class in the following code would be `D`:
+   * ```
+   * struct B {
+   * };
    *
-   * struct B {};
-   * struct D : B {};
+   * struct D : B {
+   * };
+   * ```
    */
   Class getDerivedClass() {
     derivations(underlyingElement(this),unresolveElement(result),_,_,_)
@@ -791,13 +834,18 @@ class ClassDerivation extends Locatable, @derivation {
   /**
    * Gets the index of the derivation in the derivation list for the
    * derived class (indexed from 0).  For example, the index of the
-   * derivation of B2 in "struct D : B1, B2 { ... };" would be 1.
+   * derivation of `B2` in the following code would be `1`:
+   * ```
+   * struct D : B1, B2 {
+   *   ...
+   * };
+   * ```
    */
   int getIndex() {
     derivations(underlyingElement(this),_,result,_,_)
   }
 
-  /** Gets a specifier (for example "public") applied to the derivation. */
+  /** Gets a specifier (for example `public`) applied to the derivation. */
   Specifier getASpecifier() {
     derspecifiers(underlyingElement(this),unresolveElement(result))
   }
@@ -963,8 +1011,8 @@ class ClassTemplateInstantiation extends Class {
  */
 abstract class ClassTemplateSpecialization extends Class {
   /**
-   * Gets the primary template for the specialization, for example
-   * S&lt;T,int> -> S&lt;T,U>.
+   * Gets the primary template for the specialization, for example on
+   * `S<T,int>`, the result is `S<T,U>`.
    */
   TemplateClass getPrimaryTemplate() {
     // Ignoring template arguments, the primary template has the same name
