@@ -98,15 +98,15 @@ class FlowVar extends TFlowVar {
  */
 private module PartialDefinitions {
   private newtype TPartialDefinition =
-    TExplicitFieldStoreQualifier(Expr qualifier, FieldAccess fa, Expr assignment, Expr assigned) {
-      isInstanceFieldWrite(fa, assignment, assigned) and qualifier = fa.getQualifier()
+    TExplicitFieldStoreQualifier(Expr qualifier, FieldAccess fa) {
+      isInstanceFieldWrite(fa) and qualifier = fa.getQualifier()
     } or
     TExplicitCallQualifier(Expr qualifier, Call call) { qualifier = call.getQualifier() } or
     TReferenceArgument(Expr arg, Call call, int i) { isReferenceOrPointerArg(arg, call, i) }
 
-  private predicate isInstanceFieldWrite(FieldAccess fa, Expr assignment, Expr assigned) {
+  private predicate isInstanceFieldWrite(FieldAccess fa) {
     not fa.getTarget().isStatic() and
-    assignmentLikeOperation(assignment, fa.getTarget(), fa, assigned)
+    assignmentLikeOperation(_, fa.getTarget(), fa, _)
   }
 
   private predicate isReferenceOrPointerArg(Expr arg, Call call, int i) {
@@ -120,7 +120,7 @@ private module PartialDefinitions {
     Expr definedExpr;
 
     PartialDefinition() {
-      this = TExplicitFieldStoreQualifier(definedExpr, _, _, _) or
+      this = TExplicitFieldStoreQualifier(definedExpr, _) or
       this = TExplicitCallQualifier(definedExpr, _) or
       this = TReferenceArgument(definedExpr, _, _)
     }
