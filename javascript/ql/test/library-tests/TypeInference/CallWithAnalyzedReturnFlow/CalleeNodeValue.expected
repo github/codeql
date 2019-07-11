@@ -39,7 +39,7 @@
 | tst.js:56:5:56:12 | myModule | file://:0:0:0:0 | indefinite value (call) |
 | tst.js:56:5:56:12 | myModule | file://:0:0:0:0 | undefined |
 | tst.js:56:5:56:12 | myModule | myModule.js:1:1:4:0 | exports object of module myModule |
-| tst.js:56:5:56:12 | myModule | myModule.js:1:18:1:30 | anonymous function |
+| tst.js:56:5:56:12 | myModule | myModule.js:1:18:1:30 | function exports |
 | tst.js:57:5:57:22 | myModule.myMethod1 | file://:0:0:0:0 | indefinite value (call) |
 | tst.js:57:5:57:22 | myModule.myMethod1 | file://:0:0:0:0 | indefinite value (heap) |
 | tst.js:58:5:58:22 | myModule.myMethod2 | file://:0:0:0:0 | indefinite value (call) |

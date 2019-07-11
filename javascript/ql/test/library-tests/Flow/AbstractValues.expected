@@ -104,8 +104,8 @@
 | esLib.js:3:8:3:24 | instance of function foo |
 | f.js:1:1:2:0 | exports object of module f |
 | f.js:1:1:2:0 | module object of module f |
-| f.js:1:13:1:25 | anonymous function |
-| f.js:1:13:1:25 | instance of anonymous function |
+| f.js:1:13:1:25 | function f |
+| f.js:1:13:1:25 | instance of function f |
 | file://:0:0:0:0 | 0 |
 | file://:0:0:0:0 | "" |
 | file://:0:0:0:0 | date |
@@ -174,10 +174,10 @@
 | imports.ts:1:1:8:0 | module object of module imports |
 | instances.js:1:1:4:1 | function A |
 | instances.js:1:1:4:1 | instance of function A |
-| instances.js:3:14:3:26 | anonymous function |
-| instances.js:3:14:3:26 | instance of anonymous function |
-| instances.js:6:19:6:31 | anonymous function |
-| instances.js:6:19:6:31 | instance of anonymous function |
+| instances.js:3:14:3:26 | function foo |
+| instances.js:3:14:3:26 | instance of function foo |
+| instances.js:6:19:6:31 | function bar |
+| instances.js:6:19:6:31 | instance of function bar |
 | instances.js:13:1:13:18 | function SubA |
 | instances.js:13:1:13:18 | instance of function SubA |
 | m.js:1:1:9:0 | exports object of module m |
@@ -211,16 +211,16 @@
 | o.js:1:1:2:0 | exports object of module o |
 | o.js:1:1:2:0 | module object of module o |
 | objlit.js:1:14:1:15 | object literal |
-| objlit.js:2:9:2:21 | anonymous function |
-| objlit.js:2:9:2:21 | instance of anonymous function |
+| objlit.js:2:9:2:21 | function foo |
+| objlit.js:2:9:2:21 | instance of function foo |
 | objlit.js:3:9:5:1 | object literal |
 | objlit.js:4:8:4:20 | instance of method baz |
 | objlit.js:4:8:4:20 | method baz |
 | objlit.js:7:9:7:10 | object literal |
 | objlit.js:10:2:12:1 | anonymous function |
 | objlit.js:10:2:12:1 | instance of anonymous function |
-| objlit.js:11:11:11:23 | anonymous function |
-| objlit.js:11:11:11:23 | instance of anonymous function |
+| objlit.js:11:11:11:23 | function qux |
+| objlit.js:11:11:11:23 | instance of function qux |
 | objlit.js:23:2:48:1 | anonymous function |
 | objlit.js:23:2:48:1 | instance of anonymous function |
 | objlit.js:24:11:28:3 | object literal |
@@ -228,8 +228,8 @@
 | objlit.js:33:12:40:3 | object literal |
 | objlit.js:34:6:34:10 | method f |
 | objlit.js:35:6:39:5 | method g |
-| objlit.js:41:10:41:22 | anonymous function |
-| objlit.js:41:10:41:22 | instance of anonymous function |
+| objlit.js:41:10:41:22 | function h |
+| objlit.js:41:10:41:22 | instance of function h |
 | objlit.js:43:12:45:3 | object literal |
 | reexport-d.js:1:1:2:0 | exports object of module reexport-d |
 | reexport-d.js:1:1:2:0 | module object of module reexport-d |

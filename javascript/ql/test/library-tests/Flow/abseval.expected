@@ -61,7 +61,7 @@
 | b.js:37:5:37:6 | z8 | b.js:37:10:37:16 | amdfoo2 | file://:0:0:0:0 | indefinite value (import) |
 | b.js:37:5:37:6 | z8 | b.js:37:10:37:16 | amdfoo2 | file://:0:0:0:0 | null |
 | b.js:38:5:38:6 | z9 | b.js:38:10:38:20 | amdToString | file://:0:0:0:0 | indefinite value (import) |
-| b.js:41:5:41:7 | z10 | b.js:41:11:41:11 | f | f.js:1:13:1:25 | anonymous function |
+| b.js:41:5:41:7 | z10 | b.js:41:11:41:11 | f | f.js:1:13:1:25 | function f |
 | b.js:41:5:41:7 | z10 | b.js:41:11:41:11 | f | file://:0:0:0:0 | indefinite value (import) |
 | b.js:42:5:42:7 | z11 | b.js:42:11:42:18 | toString | file://:0:0:0:0 | indefinite value (import) |
 | b.js:45:5:45:7 | z12 | b.js:45:11:45:12 | f2 | ts2.ts:1:1:6:0 | exports object of module ts2 |
@@ -110,7 +110,7 @@
 | fundecls.js:7:9:7:10 | g2 | fundecls.js:7:14:7:14 | g | fundecls.js:8:5:8:19 | function g |
 | g.js:1:5:1:5 | f | g.js:1:9:1:22 | require('./f') | f.js:1:1:2:0 | exports object of module f |
 | g.js:1:5:1:5 | f | g.js:1:9:1:22 | require('./f') | file://:0:0:0:0 | indefinite value (call) |
-| g.js:2:5:2:6 | x1 | g.js:2:10:2:12 | f.f | f.js:1:13:1:25 | anonymous function |
+| g.js:2:5:2:6 | x1 | g.js:2:10:2:12 | f.f | f.js:1:13:1:25 | function f |
 | g.js:2:5:2:6 | x1 | g.js:2:10:2:12 | f.f | file://:0:0:0:0 | indefinite value (call) |
 | g.js:2:5:2:6 | x1 | g.js:2:10:2:12 | f.f | file://:0:0:0:0 | indefinite value (heap) |
 | g.js:3:5:3:6 | x2 | g.js:3:10:3:19 | f.toString | file://:0:0:0:0 | indefinite value (call) |
@@ -160,11 +160,11 @@
 | instances.js:10:5:10:6 | x2 | instances.js:10:10:10:14 | a.foo | file://:0:0:0:0 | indefinite value (call) |
 | instances.js:10:5:10:6 | x2 | instances.js:10:10:10:14 | a.foo | file://:0:0:0:0 | indefinite value (global) |
 | instances.js:10:5:10:6 | x2 | instances.js:10:10:10:14 | a.foo | file://:0:0:0:0 | indefinite value (heap) |
-| instances.js:10:5:10:6 | x2 | instances.js:10:10:10:14 | a.foo | instances.js:3:14:3:26 | anonymous function |
+| instances.js:10:5:10:6 | x2 | instances.js:10:10:10:14 | a.foo | instances.js:3:14:3:26 | function foo |
 | instances.js:11:5:11:6 | x3 | instances.js:11:10:11:14 | a.bar | file://:0:0:0:0 | indefinite value (call) |
 | instances.js:11:5:11:6 | x3 | instances.js:11:10:11:14 | a.bar | file://:0:0:0:0 | indefinite value (global) |
 | instances.js:11:5:11:6 | x3 | instances.js:11:10:11:14 | a.bar | file://:0:0:0:0 | indefinite value (heap) |
-| instances.js:11:5:11:6 | x3 | instances.js:11:10:11:14 | a.bar | instances.js:6:19:6:31 | anonymous function |
+| instances.js:11:5:11:6 | x3 | instances.js:11:10:11:14 | a.bar | instances.js:6:19:6:31 | function bar |
 | instances.js:16:5:16:8 | subA | instances.js:16:12:16:21 | new SubA() | file://:0:0:0:0 | indefinite function or class (call) |
 | instances.js:16:5:16:8 | subA | instances.js:16:12:16:21 | new SubA() | file://:0:0:0:0 | indefinite object (call) |
 | instances.js:16:5:16:8 | subA | instances.js:16:12:16:21 | new SubA() | instances.js:13:1:13:18 | instance of function SubA |
@@ -210,7 +210,7 @@
 | objlit.js:14:5:14:6 | x1 | objlit.js:14:10:14:10 | A | objlit.js:1:14:1:15 | object literal |
 | objlit.js:15:5:15:6 | x2 | objlit.js:15:10:15:14 | A.foo | file://:0:0:0:0 | indefinite value (global) |
 | objlit.js:15:5:15:6 | x2 | objlit.js:15:10:15:14 | A.foo | file://:0:0:0:0 | indefinite value (heap) |
-| objlit.js:15:5:15:6 | x2 | objlit.js:15:10:15:14 | A.foo | objlit.js:2:9:2:21 | anonymous function |
+| objlit.js:15:5:15:6 | x2 | objlit.js:15:10:15:14 | A.foo | objlit.js:2:9:2:21 | function foo |
 | objlit.js:16:5:16:6 | x3 | objlit.js:16:10:16:14 | A.bar | file://:0:0:0:0 | indefinite value (global) |
 | objlit.js:16:5:16:6 | x3 | objlit.js:16:10:16:14 | A.bar | file://:0:0:0:0 | indefinite value (heap) |
 | objlit.js:16:5:16:6 | x3 | objlit.js:16:10:16:14 | A.bar | objlit.js:3:9:5:1 | object literal |
@@ -225,7 +225,7 @@
 | objlit.js:20:5:20:6 | x7 | objlit.js:20:10:20:20 | B.a.bar.baz | file://:0:0:0:0 | indefinite value (heap) |
 | objlit.js:21:5:21:6 | x8 | objlit.js:21:10:21:14 | A.qux | file://:0:0:0:0 | indefinite value (global) |
 | objlit.js:21:5:21:6 | x8 | objlit.js:21:10:21:14 | A.qux | file://:0:0:0:0 | indefinite value (heap) |
-| objlit.js:21:5:21:6 | x8 | objlit.js:21:10:21:14 | A.qux | objlit.js:11:11:11:23 | anonymous function |
+| objlit.js:21:5:21:6 | x8 | objlit.js:21:10:21:14 | A.qux | objlit.js:11:11:11:23 | function qux |
 | objlit.js:24:7:24:7 | o | objlit.js:24:11:28:3 | {\\n    q ...   }\\n  } | objlit.js:24:11:28:3 | object literal |
 | objlit.js:29:7:29:8 | x1 | objlit.js:29:12:29:12 | o | objlit.js:24:11:28:3 | object literal |
 | objlit.js:30:7:30:8 | x2 | objlit.js:30:12:30:14 | o.q | file://:0:0:0:0 | indefinite value (heap) |
@@ -240,7 +240,7 @@
 | objlit.js:37:11:37:12 | x5 | objlit.js:37:16:37:21 | this.f | objlit.js:34:6:34:10 | method f |
 | objlit.js:38:11:38:12 | x6 | objlit.js:38:16:38:21 | this.h | file://:0:0:0:0 | indefinite value (call) |
 | objlit.js:38:11:38:12 | x6 | objlit.js:38:16:38:21 | this.h | file://:0:0:0:0 | indefinite value (heap) |
-| objlit.js:38:11:38:12 | x6 | objlit.js:38:16:38:21 | this.h | objlit.js:41:10:41:22 | anonymous function |
+| objlit.js:38:11:38:12 | x6 | objlit.js:38:16:38:21 | this.h | objlit.js:41:10:41:22 | function h |
 | objlit.js:43:7:43:8 | o3 | objlit.js:43:12:45:3 | {\\n    _ ...  o2\\n  } | objlit.js:43:12:45:3 | object literal |
 | reexport/client/src/index.js:2:5:2:8 | test | reexport/client/src/index.js:2:12:2:15 | data | file://:0:0:0:0 | non-empty, non-numeric string |
 | refinements.js:3:7:3:8 | x1 | refinements.js:3:12:3:12 | g | file://:0:0:0:0 | undefined |

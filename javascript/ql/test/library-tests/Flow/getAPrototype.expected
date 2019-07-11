@@ -21,7 +21,7 @@
 | es2015.js:38:2:42:1 | instance of anonymous function | es2015.js:38:2:42:1 | instance of anonymous function |
 | es2015.js:44:2:47:1 | instance of anonymous function | es2015.js:44:2:47:1 | instance of anonymous function |
 | esLib.js:3:8:3:24 | instance of function foo | esLib.js:3:8:3:24 | instance of function foo |
-| f.js:1:13:1:25 | instance of anonymous function | f.js:1:13:1:25 | instance of anonymous function |
+| f.js:1:13:1:25 | instance of function f | f.js:1:13:1:25 | instance of function f |
 | fundecls.js:1:2:10:1 | instance of anonymous function | fundecls.js:1:2:10:1 | instance of anonymous function |
 | fundecls.js:4:3:4:17 | instance of function f | fundecls.js:4:3:4:17 | instance of function f |
 | fundecls.js:8:5:8:19 | instance of function g | fundecls.js:8:5:8:19 | instance of function g |
@@ -31,8 +31,8 @@
 | globals.html:26:23:26:69 | instance of anonymous function | globals.html:26:23:26:69 | instance of anonymous function |
 | h.js:1:8:1:22 | instance of function f | h.js:1:8:1:22 | instance of function f |
 | instances.js:1:1:4:1 | instance of function A | instances.js:1:1:4:1 | instance of function A |
-| instances.js:3:14:3:26 | instance of anonymous function | instances.js:3:14:3:26 | instance of anonymous function |
-| instances.js:6:19:6:31 | instance of anonymous function | instances.js:6:19:6:31 | instance of anonymous function |
+| instances.js:3:14:3:26 | instance of function foo | instances.js:3:14:3:26 | instance of function foo |
+| instances.js:6:19:6:31 | instance of function bar | instances.js:6:19:6:31 | instance of function bar |
 | instances.js:13:1:13:18 | instance of function SubA | instances.js:1:1:4:1 | instance of function A |
 | instances.js:13:1:13:18 | instance of function SubA | instances.js:13:1:13:18 | instance of function SubA |
 | n.js:1:1:1:15 | instance of function f | n.js:1:1:1:15 | instance of function f |
@@ -40,12 +40,12 @@
 | nestedImport.js:9:1:12:1 | instance of function tst | nestedImport.js:9:1:12:1 | instance of function tst |
 | nodeJsLib.js:1:18:1:43 | instance of function nodeJsModule | nodeJsLib.js:1:18:1:43 | instance of function nodeJsModule |
 | nodeJsLib.js:3:15:3:37 | instance of function nodeJsFoo | nodeJsLib.js:3:15:3:37 | instance of function nodeJsFoo |
-| objlit.js:2:9:2:21 | instance of anonymous function | objlit.js:2:9:2:21 | instance of anonymous function |
+| objlit.js:2:9:2:21 | instance of function foo | objlit.js:2:9:2:21 | instance of function foo |
 | objlit.js:4:8:4:20 | instance of method baz | objlit.js:4:8:4:20 | instance of method baz |
 | objlit.js:10:2:12:1 | instance of anonymous function | objlit.js:10:2:12:1 | instance of anonymous function |
-| objlit.js:11:11:11:23 | instance of anonymous function | objlit.js:11:11:11:23 | instance of anonymous function |
+| objlit.js:11:11:11:23 | instance of function qux | objlit.js:11:11:11:23 | instance of function qux |
 | objlit.js:23:2:48:1 | instance of anonymous function | objlit.js:23:2:48:1 | instance of anonymous function |
-| objlit.js:41:10:41:22 | instance of anonymous function | objlit.js:41:10:41:22 | instance of anonymous function |
+| objlit.js:41:10:41:22 | instance of function h | objlit.js:41:10:41:22 | instance of function h |
 | objlit.js:43:12:45:3 | object literal | file://:0:0:0:0 | null |
 | objlit.js:43:12:45:3 | object literal | objlit.js:33:12:40:3 | object literal |
 | refinements.js:1:1:8:1 | instance of function f1 | refinements.js:1:1:8:1 | instance of function f1 |
