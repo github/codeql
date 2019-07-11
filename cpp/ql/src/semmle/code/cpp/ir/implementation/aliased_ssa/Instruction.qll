@@ -702,6 +702,22 @@ class FieldAddressInstruction extends FieldInstruction {
   }
 }
 
+/**
+ * An instruction that produces a well-defined but unknown result and has
+ * unknown side effects, including side effects that are not conservatively
+ * modeled in the SSA graph.
+ *
+ * This type of instruction appears when there is an `ErrorExpr` in the AST,
+ * meaning that the extractor could not understand the expression and therefore
+ * produced a partial AST. Queries that give alerts when some action is _not_
+ * taken may want to ignore any function that contains an `ErrorInstruction`.
+ */
+class ErrorInstruction extends Instruction {
+  ErrorInstruction() {
+    getOpcode() instanceof Opcode::Error
+  }
+}
+
 class UninitializedInstruction extends VariableInstruction {
   UninitializedInstruction() {
     getOpcode() instanceof Opcode::Uninitialized

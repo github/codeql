@@ -2862,3 +2862,29 @@ class TranslatedStmtExpr extends TranslatedNonConstantExpr {
     result = getTranslatedStmt(expr.getStmt())
   }
 }
+
+class TranslatedErrorExpr extends TranslatedSingleInstructionExpr {
+  override ErrorExpr expr;
+
+  override final Instruction getFirstInstruction() {
+    result = getInstruction(OnlyInstructionTag())
+  }
+
+  override final TranslatedElement getChild(int id) { none() }
+
+  override final Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  override final Instruction getChildSuccessor(TranslatedElement child) { none() }
+
+  override final Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    none()
+  }
+
+  override final Opcode getOpcode() {
+    result instanceof Opcode::Error
+  }
+}

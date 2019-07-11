@@ -190,6 +190,34 @@ bad_asts.cpp:
 #   27|                   Type = const Point &
 #   27|                   ValueCategory = prvalue(load)
 #   28|     1: return ...
+#   30| void Bad::errorExpr()
+#   30|   params: 
+#   30|   body: { ... }
+#   31|     0: declaration
+#   31|       0: definition of intref
+#   31|           Type = int &
+#   31|         init: initializer for intref
+#   31|           expr: <error expr>
+#   31|               Type = error
+#   31|               ValueCategory = prvalue
+#   32|     1: declaration
+#   32|       0: definition of x
+#   32|           Type = int
+#   32|         init: initializer for x
+#   32|           expr: <error expr>
+#   32|               Type = error
+#   32|               ValueCategory = prvalue
+#   33|     2: ExprStmt
+#   33|       0: ... = ...
+#   33|           Type = int
+#   33|           ValueCategory = lvalue
+#   33|         0: x
+#   33|             Type = int
+#   33|             ValueCategory = lvalue
+#-----|         1: <error expr>
+#-----|             Type = error
+#-----|             ValueCategory = prvalue(load)
+#   34|     3: return ...
 clang.cpp:
 #    5| int* globalIntAddress()
 #    5|   params: 
