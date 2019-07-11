@@ -6,7 +6,7 @@ import semmle.code.cpp.models.interfaces.SideEffect
 class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,  SideEffectFunction {
   PureStrFunction() {
     exists(string name |
-      hasName(name) and
+      hasGlobalName(name) and
       (
         name = "atof"
         or name = "atoi"
@@ -41,29 +41,28 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,  Side
   
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists (ParameterIndex i |
-      input.isInParameter(i) or
-      (
-        input.isInParameterPointer(i) and
-        getParameter(i).getUnspecifiedType() instanceof PointerType
-      )
+      input.isInParameter(i) and
+      exists(getParameter(i))
+      or
+      input.isInParameterPointer(i) and
+      getParameter(i).getUnspecifiedType() instanceof PointerType
     ) and
     (
-      output.isOutReturnValue() or
-      output.isOutReturnPointer()
+      output.isOutReturnPointer() and
+      getUnspecifiedType() instanceof PointerType
+      or
+      output.isOutReturnValue()
     )
   }
 
   override predicate parameterNeverEscapes(int i) {
     getParameter(i).getUnspecifiedType() instanceof PointerType and
-    not (
-      i = 0 and
-      getType().getUnspecifiedType() instanceof PointerType
-    )
+    not parameterEscapesOnlyViaReturn(i)
   }
 
   override predicate parameterEscapesOnlyViaReturn(int i) {
     i = 0 and
-    getType().getUnspecifiedType() instanceof PointerType
+    getUnspecifiedType() instanceof PointerType
   }
 
   override predicate parameterIsAlwaysReturned(int i) {
@@ -82,7 +81,7 @@ class PureStrFunction extends AliasFunction, ArrayFunction, TaintFunction,  Side
 class PureFunction extends TaintFunction, SideEffectFunction {
   PureFunction() {
     exists(string name |
-      hasName(name) and
+      hasGlobalName(name) and
       (
         name = "abs" or
         name = "labs"
@@ -92,7 +91,8 @@ class PureFunction extends TaintFunction, SideEffectFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     exists (ParameterIndex i |
-      input.isInParameter(i)
+      input.isInParameter(i) and
+      exists(getParameter(i))
     ) and
     output.isOutReturnValue()
   }
