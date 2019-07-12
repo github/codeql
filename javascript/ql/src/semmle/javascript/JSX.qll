@@ -11,6 +11,7 @@ import javascript
  *
  * ```
  * <a href={linkTarget()}>{linkText()}</a>
+ * <Welcome name={user.name}/>
  * <><h1>Title</h1>Some <b>text</b></>
  * ```
  */
@@ -30,10 +31,11 @@ class JSXNode extends Expr, @jsxelement {
 /**
  * A JSX element.
  *
- * Example:
+ * Examples:
  *
  * ```
  * <a href={linkTarget()}>{linkText()}</a>
+ * <Welcome name={user.name}/>
  * ```
  */
 class JSXElement extends JSXNode {
@@ -87,6 +89,7 @@ class JSXFragment extends JSXNode {
  *
  * ```
  * <a href={linkTarget()}>link</a>   // `href={linkTarget()}` is an attribute
+ * <Welcome name={user.name}/>       // `name={user.name}` is an attribute
  * <div {...attrs}></div>            // `{...attrs}` is a (spread) attribute
  * ```
  */
