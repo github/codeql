@@ -6,6 +6,13 @@ import javascript
 
 /**
  * A JSX element or fragment.
+ *
+ * Examples:
+ *
+ * ```
+ * <a href={linkTarget()}>{linkText()}</a>
+ * <><h1>Title</h1>Some <b>text</b></>
+ * ```
  */
 class JSXNode extends Expr, @jsxelement {
   /** Gets the `i`th element in the body of this element or fragment. */
@@ -21,7 +28,13 @@ class JSXNode extends Expr, @jsxelement {
 }
 
 /**
- * A JSX element such as `<a href={linkTarget()}>{linkText()}</a>`.
+ * A JSX element.
+ *
+ * Example:
+ *
+ * ```
+ * <a href={linkTarget()}>{linkText()}</a>
+ * ```
  */
 class JSXElement extends JSXNode {
   JSXName name;
@@ -49,7 +62,13 @@ class JSXElement extends JSXNode {
 }
 
 /**
- * A JSX fragment such as `<><h1>Title</h1>Some <b>text</b></>`.
+ * A JSX fragment.
+ *
+ * Example:
+ *
+ * ```
+ * <><h1>Title</h1>Some <b>text</b></>
+ * ```
  */
 class JSXFragment extends JSXNode {
   JSXFragment() { not exists(getChildExpr(-1)) }
@@ -62,7 +81,14 @@ class JSXFragment extends JSXNode {
 }
 
 /**
- * An attribute of a JSX element such as `href={linkTarget()}` or `{...attrs}`.
+ * An attribute of a JSX element, including spread attributes.
+ *
+ * Examples:
+ *
+ * ```
+ * <a href={linkTarget()}>link</a>   // `href={linkTarget()}` is an attribute
+ * <div {...attrs}></div>            // `{...attrs}` is a (spread) attribute
+ * ```
  */
 class JSXAttribute extends ASTNode, @jsx_attribute {
   /**
@@ -98,7 +124,13 @@ class JSXAttribute extends ASTNode, @jsx_attribute {
 }
 
 /**
- * A spread attribute of a JSX element, such as `{...attrs}`.
+ * A spread attribute of a JSX element.
+ *
+ * Example:
+ *
+ * ```
+ * <div {...attrs}></div>            // `{...attrs}` is a spread attribute
+ * ```
  */
 class JSXSpreadAttribute extends JSXAttribute {
   JSXSpreadAttribute() { not exists(getNameExpr()) }
@@ -111,6 +143,12 @@ class JSXSpreadAttribute extends JSXAttribute {
 
 /**
  * A namespace-qualified name such as `n:a`.
+ *
+ * Example:
+ *
+ * ```
+ * html:href
+ * ```
  */
 class JSXQualifiedName extends Expr, @jsxqualifiedname {
   /** Gets the namespace component of this qualified name. */
@@ -128,6 +166,14 @@ class JSXQualifiedName extends Expr, @jsxqualifiedname {
  * A name of an JSX element or attribute (which is
  * always an identifier, a dot expression, or a qualified
  * namespace name).
+ *
+ * Examples:
+ *
+ * ```
+ * href
+ * html:href
+ * data.path
+ * ```
  */
 class JSXName extends Expr {
   JSXName() {
@@ -154,11 +200,23 @@ class JSXName extends Expr {
 
 /**
  * An interpolating expression that interpolates nothing.
+ *
+ * Example:
+ *
+ * <pre>
+ * { /* TBD *&#47; }
+ * </pre>
  */
 class JSXEmptyExpr extends Expr, @jsxemptyexpr { }
 
 /**
- * A legacy `@jsx` pragma such as `@jsx React.DOM`.
+ * A legacy `@jsx` pragma.
+ *
+ * Example:
+ *
+ * ```
+ * @jsx React.DOM
+ * ```
  */
 class JSXPragma extends JSDocTag {
   JSXPragma() { getTitle() = "jsx" }

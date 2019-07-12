@@ -2,7 +2,15 @@
 
 import javascript
 
-/** A tagged template literal expression. */
+/**
+ * A tagged template literal expression.
+ *
+ * Example:
+ *
+ * ```
+ * highlight `Hello, ${user.name}!`
+ * ```
+ */
 class TaggedTemplateExpr extends Expr, @taggedtemplateexpr {
   /** Gets the tagging expression of this tagged template. */
   Expr getTag() { result = getChildExpr(0) }
@@ -13,7 +21,15 @@ class TaggedTemplateExpr extends Expr, @taggedtemplateexpr {
   override predicate isImpure() { any() }
 }
 
-/** A template literal. */
+/**
+ * A template literal.
+ *
+ * Example:
+ *
+ * ```
+ * `Hello, ${user.name}!`
+ * ```
+ */
 class TemplateLiteral extends Expr, @templateliteral {
   /**
    * Gets the `i`th element of this template literal, which may either
@@ -38,7 +54,15 @@ class TemplateLiteral extends Expr, @templateliteral {
   }
 }
 
-/** A constant template element. */
+/**
+ * A constant template element.
+ *
+ * Example:
+ *
+ * ```
+ * `Hello, ${user.name}!` // "Hello, " and "!" are constant template elements
+ * ```
+ */
 class TemplateElement extends Expr, @templateelement {
   /**
    * Holds if this template element has a "cooked" value.
