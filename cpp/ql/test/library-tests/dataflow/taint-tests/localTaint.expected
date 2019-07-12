@@ -161,3 +161,17 @@
 | taint.cpp:194:10:194:10 | x | taint.cpp:194:9:194:10 | & ... | TAINT |
 | taint.cpp:194:13:194:18 | source | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
 | taint.cpp:194:21:194:31 | sizeof(int) | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
+| taint.cpp:207:6:207:11 | call to source | taint.cpp:207:2:207:13 | ... = ... |  |
+| taint.cpp:207:6:207:11 | call to source | taint.cpp:210:7:210:7 | x |  |
+| taint.cpp:207:6:207:11 | call to source | taint.cpp:213:12:213:12 | x |  |
+| taint.cpp:207:6:207:11 | call to source | taint.cpp:215:7:215:7 | x |  |
+| taint.cpp:208:6:208:6 | 0 | taint.cpp:208:2:208:6 | ... = ... |  |
+| taint.cpp:208:6:208:6 | 0 | taint.cpp:211:7:211:7 | y |  |
+| taint.cpp:208:6:208:6 | 0 | taint.cpp:213:15:213:15 | y |  |
+| taint.cpp:208:6:208:6 | 0 | taint.cpp:216:7:216:7 | y |  |
+| taint.cpp:213:12:213:12 | ref arg x | taint.cpp:213:12:213:12 | x |  |
+| taint.cpp:213:12:213:12 | ref arg x | taint.cpp:215:7:215:7 | x |  |
+| taint.cpp:213:12:213:12 | x | taint.cpp:213:15:213:15 | ref arg y |  |
+| taint.cpp:213:15:213:15 | ref arg y | taint.cpp:213:15:213:15 | y |  |
+| taint.cpp:213:15:213:15 | ref arg y | taint.cpp:216:7:216:7 | y |  |
+| taint.cpp:213:15:213:15 | y | taint.cpp:213:12:213:12 | ref arg x |  |
