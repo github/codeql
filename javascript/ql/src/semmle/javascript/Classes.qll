@@ -8,7 +8,25 @@
 import javascript
 
 /**
- * A class or interface definition.
+ * An ECMAScript 2015/TypeScript class definition or a TypeScript interface definition,
+ * including both declarations and expressions.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   Rectangle(width, height) {
+ *     this.width = width;
+ *     this.height = height;
+ *   }
+ *
+ *   area() { return this.width * this.height; }
+ * }
+ *
+ * interface EventEmitter<T> {
+ *   addListener(listener: (x: T) => void): void;
+ * }
+ * ```
  */
 class ClassOrInterface extends @classorinterface, TypeParameterized {
   /** Gets the identifier naming the declared type, if any. */
@@ -88,8 +106,28 @@ class ClassOrInterface extends @classorinterface, TypeParameterized {
 }
 
 /**
- * A class definition, that is, either a class declaration statement or a
- * class expression.
+ * An ECMAScript 2015 or TypeScript class definition, that is, either a class declaration statement
+ * or a class expression.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle extends Shape {   // class declaration statement
+ *   constructor(width, height) {
+ *     this.width = width;
+ *     this.height = height;
+ *   }
+ *
+ *   area() { return this.width * this.height; }
+ * }
+ *
+ * let C =
+ * class {                           // class expression
+ *   constructor() { this.x = 0; }
+ *
+ *   bump() { return this.x++; }
+ * };
+ * ```
  */
 class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode {
   /** Gets the variable holding this class. */
@@ -196,6 +234,19 @@ class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode
 
 /**
  * A class declaration statement.
+ *
+ * Example:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   constructor(width, height) {
+ *     this.width = width;
+ *     this.height = height;
+ *   }
+ *
+ *   area() { return this.width * this.height; }
+ * }
+ * ```
  */
 class ClassDeclStmt extends @classdeclstmt, ClassDefinition, Stmt {
   /** Gets the nearest enclosing function or toplevel in which this class declaration occurs. */
@@ -208,6 +259,17 @@ class ClassDeclStmt extends @classdeclstmt, ClassDefinition, Stmt {
 
 /**
  * A class expression.
+ *
+ * Example:
+ *
+ * ```
+ * let C =
+ * class {                            // class expression
+ *   constructor() { this.x = 0; }
+ *
+ *   bump() { return this.x++; }
+ * };
+ * ```
  */
 class ClassExpr extends @classexpr, ClassDefinition, Expr {
   override predicate isImpure() { none() }
@@ -236,7 +298,9 @@ class ClassExpr extends @classexpr, ClassDefinition, Expr {
   private ClassInitializedMember getClassInitializedMember() { result = getAMember() }
 }
 
-/** Members that are initialized at class creation time (as opposed to instance creation time). */
+/**
+ * A class member that is initialized at class creation time (as opposed to instance creation time).
+ */
 private class ClassInitializedMember extends MemberDeclaration {
   ClassInitializedMember() { this instanceof MethodDefinition or this.isStatic() }
 
@@ -245,6 +309,12 @@ private class ClassInitializedMember extends MemberDeclaration {
 
 /**
  * A `super` expression.
+ *
+ * Example:
+ *
+ * ```
+ * super
+ * ```
  */
 class SuperExpr extends @superexpr, Expr {
   override predicate isImpure() { none() }
@@ -258,6 +328,12 @@ class SuperExpr extends @superexpr, Expr {
 
 /**
  * A `super(...)` call.
+ *
+ * Example:
+ *
+ * ```
+ * super(...args)
+ * ```
  */
 class SuperCall extends CallExpr {
   SuperCall() { getCallee().getUnderlyingValue() instanceof SuperExpr }
@@ -271,6 +347,12 @@ class SuperCall extends CallExpr {
 
 /**
  * A property access on `super`.
+ *
+ * Example:
+ *
+ * ```
+ * super.f
+ * ```
  */
 class SuperPropAccess extends PropAccess {
   SuperPropAccess() { getBase().getUnderlyingValue() instanceof SuperExpr }
@@ -278,6 +360,12 @@ class SuperPropAccess extends PropAccess {
 
 /**
  * A `new.target` expression.
+ *
+ * Example:
+ *
+ * ```
+ * new.target
+ * ```
  *
  * When a function `f` is invoked as `new f()`, then `new.target` inside
  * `f` evaluates to `f` ; on the other hand, when `f` is invoked without
@@ -305,6 +393,28 @@ class ClassDeclScope extends @classdeclscope, Scope {
 
 /**
  * A member declaration in a class or interface, that is, either a method declaration or a field declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   width;                            // field declaration
+ *   height;                           // field declaration
+ *
+ *   constructor(height, width) {      // constructor declaration, which is also a method declaration
+ *     this.height = height;
+ *     this.width = width;
+ *   }
+ *
+ *   area() {                          // method declaration
+ *     return this.width*this.height;
+ *   }
+ * }
+ *
+ * interface EventEmitter<T> {
+ *   addListener(listener: (x: T) => void): void;  // method declaration
+ * }
+ * ```
  *
  * The subtype `MemberSignature` contains TypeScript members that are abstract, ambient, or
  * overload signatures.
@@ -431,13 +541,40 @@ class MemberDeclaration extends @property, Documentable {
 
 /**
  * A concrete member of a class, that is, a non-abstract, non-ambient field or method with a body.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   width;                            // field declaration
+ *   height;                           // field declaration
+ *
+ *   constructor(height, width) {      // constructor declaration, which is also a method declaration
+ *     this.height = height;
+ *     this.width = width;
+ *   }
+ *
+ *   area() {                          // method declaration
+ *     return this.width*this.height;
+ *   }
+ * }
+ * ```
  */
 class MemberDefinition extends MemberDeclaration {
   MemberDefinition() { isConcrete() }
 }
 
 /**
- * A member signature declared in a class or interface, that is, an abstract or ambient field or method without a function body.
+ * A member signature declared in a class or interface, that is, an abstract or ambient field
+ * or method without a function body.
+ *
+ * Example:
+ *
+ * ```
+ * interface EventEmitter<T> {
+ *   addListener(listener: (x: T) => void): void;  // method signature
+ * }
+ * ```
  */
 class MemberSignature extends MemberDeclaration {
   MemberSignature() { isSignature() }
@@ -445,6 +582,29 @@ class MemberSignature extends MemberDeclaration {
 
 /**
  * A method declaration in a class or interface, either a concrete definition or a signature without a body.
+ *
+ * Examples:
+ *
+ * ```
+ * abstract class Shape {
+ *   abstract area() : number;         // method declaration
+ * }
+ *
+ * class Rectangle extends Shape {
+ *   height: number;
+ *   width: number;
+ *
+ *   constructor(height: number, width: number) {  // constructor declaration, which is also a method declaration
+ *     super();
+ *     this.height = height;
+ *     this.width = width;
+ *   }
+ *
+ *   area() {                          // method declaration
+ *     return this.width*this.height;
+ *   }
+ * }
+ * ```
  *
  * Note that TypeScript call signatures are not considered methods.
  */
@@ -459,11 +619,34 @@ class MethodDeclaration extends MemberDeclaration {
 
 /**
  * A concrete method definition in a class.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   constructor(height, width) {      // constructor definition, which is also a method definition
+ *     this.height = height;
+ *     this.width = width;
+ *   }
+ *
+ *   area() {                          // method definition
+ *     return this.width*this.height;
+ *   }
+ * }
+ * ```
  */
 class MethodDefinition extends MethodDeclaration, MemberDefinition { }
 
 /**
  * A method signature declared in a class or interface, that is, a method without a function body.
+ *
+ * Example:
+ *
+ * ```
+ * interface EventEmitter<T> {
+ *   addListener(listener: (x: T) => void): void;  // method signature
+ * }
+ * ```
  *
  * Note that TypeScript call signatures are not considered method signatures.
  */
@@ -471,6 +654,21 @@ class MethodSignature extends MethodDeclaration, MemberSignature { }
 
 /**
  * A constructor declaration in a class, either a concrete definition or a signature without a body.
+ *
+ * Example:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   constructor(height, width) {      // constructor declaration
+ *     this.height = height;
+ *     this.width = width;
+ *   }
+ *
+ *   area() {
+ *     return this.width*this.height;
+ *   }
+ * }
+ * ```
  */
 class ConstructorDeclaration extends MethodDeclaration {
   ConstructorDeclaration() {
@@ -486,16 +684,50 @@ class ConstructorDeclaration extends MethodDeclaration {
 /**
  * The concrete constructor definition of a class, possibly a synthetic constructor if the class
  * did not declare any constructors.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   constructor(height, width) {      // constructor definition
+ *     this.height = height;
+ *     this.width = width;
+ *   }
+ *
+ *   area() {
+ *     return this.width*this.height;
+ *   }
+ * }
+ * ```
  */
 class ConstructorDefinition extends ConstructorDeclaration, MethodDefinition { }
 
 /**
  * A constructor signature declared in a class, that is, a constructor without a function body.
+ *
+ * ```
+ * declare class Rectangle {
+ *   constructor(width: number, height: number);  // constructor signature
+ * }
+ * ```
  */
 class ConstructorSignature extends ConstructorDeclaration, MethodSignature { }
 
 /**
  * A function generated by the extractor to implement a synthetic default constructor.
+ *
+ * Example:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   // implicitly generated synthetic constructor:
+ *   // constructor() { super(); }
+ *
+ *   area() {
+ *     return this.width*this.height;
+ *   }
+ * }
+ * ```
  */
 class SyntheticConstructor extends Function {
   SyntheticConstructor() { this = any(ConstructorDeclaration cd | cd.isSynthetic() | cd.getBody()) }
@@ -503,51 +735,188 @@ class SyntheticConstructor extends Function {
 
 /**
  * An accessor method declaration in a class or interface, either a concrete definition or a signature without a body.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   constructor(height, width) {
+ *     this.height = height;
+ *     this.width = width;
+ *   }
+ *
+ *   get area() {                          // accessor method declaration
+ *     return this.width*this.height;
+ *   }
+ * }
+ * ```
  */
 abstract class AccessorMethodDeclaration extends MethodDeclaration { }
 
 /**
  * A concrete accessor method definition in a class, that is, an accessor method with a function body.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   constructor(height, width) {
+ *     this.height = height;
+ *     this.width = width;
+ *   }
+ *
+ *   get area() {                          // accessor method declaration
+ *     return this.width*this.height;
+ *   }
+ * }
+ * ```
  */
 abstract class AccessorMethodDefinition extends MethodDefinition, AccessorMethodDeclaration { }
 
 /**
  * An accessor method signature declared in a class or interface, that is, an accessor method without a function body.
+ *
+ * Example:
+ *
+ * ```
+ * abstract class Shape {
+ *  abstract get area() : number;  // accessor method signature
+ * }
+ * ```
  */
 abstract class AccessorMethodSignature extends MethodSignature, AccessorMethodDeclaration { }
 
 /**
  * A getter method declaration in a class or interface, either a concrete definition or a signature without a function body.
+ *
+ * Examples:
+ *
+ * ```
+ * abstract class Shape {
+ *  abstract get area() : number;      // getter method signature
+ * }
+ *
+ * class Rectangle extends Shape {
+ *   height: number;
+ *   width: number;
+ *
+ *   constructor(height: number, width: number) {
+ *     super();
+ *     this.height = height;
+ *     this.width = width;
+ *   }
+ *
+ *   get area() {                      // getter method definition
+ *     return this.width*this.height;
+ *   }
+ * }
+ * ```
  */
 class GetterMethodDeclaration extends AccessorMethodDeclaration, @property_getter { }
 
 /**
  * A concrete getter method definition in a class, that is, a getter method with a function body.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle extends Shape {
+ *   constructor(height, width) {
+ *     this.height = height;
+ *     this.width = width;
+ *   }
+ *
+ *   get area() {                          // getter method definition
+ *     return this.width*this.height;
+ *   }
+ * }
+ * ```
  */
 class GetterMethodDefinition extends GetterMethodDeclaration, AccessorMethodDefinition { }
 
 /**
  * A getter method signature declared in a class or interface, that is, a getter method without a function body.
+ *
+ * Example:
+ *
+ * ```
+ * abstract class Shape {
+ *  abstract get area() : number;  // getter method signature
+ * }
+ * ```
  */
 class GetterMethodSignature extends GetterMethodDeclaration, AccessorMethodSignature { }
 
 /**
  * A setter method declaration in a class or interface, either a concrete definition or a signature without a body.
+ *
+ * Examples:
+ *
+ * ```
+ * abstract class Cell<T> {
+ *  abstract set value(v: any);     // setter method signature
+ * }
+ *
+ * class NumberCell extends Cell<number> {
+ *   constructor(private _value: number) {
+ *     super();
+ *   }
+ *
+ *   set value(v: any) {            // setter method definition
+ *     this._value = +v;
+ *   }
+ * }
+ * ```
  */
 class SetterMethodDeclaration extends AccessorMethodDeclaration, @property_setter { }
 
 /**
  * A concrete setter method definition in a class, that is, a setter method with a function body
+ *
+ * Examples:
+ *
+ * ```
+ * class NumberCell extends Cell<number> {
+ *   constructor(private _value: number) {
+ *     super();
+ *   }
+ *
+ *   set value(v: any) {            // setter method definition
+ *     this._value = +v;
+ *   }
+ * }
+ * ```
  */
 class SetterMethodDefinition extends SetterMethodDeclaration, AccessorMethodDefinition { }
 
 /**
  * A setter method signature declared in a class or interface, that is, a setter method without a function body.
+ *
+ * Example:
+ *
+ * ```
+ * abstract class Cell<T> {
+ *  abstract set value(v: any);     // setter method signature
+ * }
+ * ```
  */
 class SetterMethodSignature extends SetterMethodDeclaration, AccessorMethodSignature { }
 
 /**
  * A field declaration in a class or interface, either a concrete definition or an abstract or ambient field signature.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle {
+ *   height;                   // field declaration
+ *   width;                    // field declaration
+ * }
+ *
+ * abstract class Counter {
+ *  abstract value: number;    // field signature
+ * }
+ * ```
  */
 class FieldDeclaration extends MemberDeclaration, @field {
   /** Gets the type annotation of this field, if any, such as `T` in `{ x: T }`. */
@@ -569,19 +938,39 @@ class FieldDeclaration extends MemberDeclaration, @field {
 
 /**
  * A concrete field definition in a class.
+ *
+ * Examples:
+ *
+ * ```
+ * class Rectangle {
+ *   height;  // field definition
+ *   width;   // field definition
+ * }
+ * ```
  */
 class FieldDefinition extends FieldDeclaration, MemberDefinition { }
 
 /**
  * A field signature declared in a class or interface, that is, an abstract or ambient field declaration.
+ *
+ * Example:
+ *
+ * ```
+ * abstract class Counter {
+ *  abstract value: number;    // field signature
+ * }
+ * ```
  */
 class FieldSignature extends FieldDeclaration, MemberSignature { }
 
 /**
- * A field induced by an initializing constructor parameter, such as the field `x` in:
+ * A field induced by an initializing constructor parameter.
+ *
+ * Example:
+ *
  * ```
  * class C {
- *   constructor(public x: number) {}
+ *   constructor(public x: number) {}  // `x` is a parameter field
  * }
  * ```
  */
@@ -599,11 +988,14 @@ class ParameterField extends FieldDeclaration, @parameter_field {
 }
 
 /**
- * A call signature declared in an interface, such as in:
+ * A call signature declared in an interface.
+ *
+ * Examples:
+ *
  * ```
  * interface I {
- *   (x: number): number;
- *   new (x: string): Object;
+ *   (x: number): number;      // function call signature
+ *   new (x: string): Object;  // constructor call signature
  * }
  * ```
  *
@@ -619,26 +1011,39 @@ class CallSignature extends @call_signature, MemberSignature {
 }
 
 /**
- * A function call signature declared in an interface, such as in:
+ * A function call signature declared in an interface.
+ *
+ * Example:
+ *
  * ```
- * interface I { (x: number): string; }
+ * interface I {
+ *   (x: number): string;  // function call signature
+ * }
  * ```
  */
 class FunctionCallSignature extends @function_call_signature, CallSignature { }
 
 /**
- * A constructor call signature declared in an interface, such as in:
+ * A constructor call signature declared in an interface.
+ *
+ * Example:
+ *
  * ```
- * interface I { new (x: string): Object; }
+ * interface I {
+ *   new (x: string): Object;  // constructor call signature
+ * }
  * ```
  */
 class ConstructorCallSignature extends @constructor_call_signature, CallSignature { }
 
 /**
- * An index signature declared in an interface, such as in:
+ * An index signature declared in an interface.
+ *
+ * Example:
+ *
  * ```
  * interface I {
- *   [x: number]: number;
+ *   [x: number]: number;  // index signature
  * }
  * ```
  */
