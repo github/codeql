@@ -445,11 +445,11 @@ module JSDoc {
      * be resolved.
      */
     DataFlow::Node getNodeFromAlias(string alias) {
-      isPrefixUsedInFile(alias, getFile()) and // Restrict size of predicate
       exists(VarDef def, VarRef ref |
         def.getContainer() = this and
         ref = def.getTarget().(BindingPattern).getABindingVarRef() and
-        ref.getName() = alias
+        ref.getName() = alias and
+        isTypenamePrefix(ref.getName()) // restrict size of predicate
       |
         exists(PropertyPattern p |
           ref = p.getValuePattern() and
@@ -480,13 +480,8 @@ module JSDoc {
     }
   }
 
-  /**
-   * Holds if a JSDoc type in `f` referenced the given local name.
-   */
-  private predicate isPrefixUsedInFile(string name, File f) {
-    exists(JSDocNamedTypeExpr t |
-      t.hasNameParts(name, _) and
-      t.getFile() = f
-    )
+  pragma[noinline]
+  private predicate isTypenamePrefix(string name) {
+    any(JSDocNamedTypeExpr expr).hasNameParts(name, _)
   }
 }
