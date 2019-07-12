@@ -6,3 +6,10 @@ function test() {
    */
   function f(foo) {}
 }
+
+(function(iife) {
+  /**
+   * @param {iife.Foo} foo
+   */
+  function f(foo) {}
+})(IIFE);
