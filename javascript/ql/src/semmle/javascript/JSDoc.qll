@@ -430,6 +430,8 @@ module JSDoc {
         or
         ref = def.getTarget() and
         result = def.getSource().flow()
+        or
+        result = DataFlow::parameterNode(def)
       )
     }
 
