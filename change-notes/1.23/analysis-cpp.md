@@ -42,3 +42,5 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   clarity (e.g. `isOutReturnPointer()` to `isReturnValueDeref()`). The existing member predicates
   have been deprecated, and will be removed in a future release. Code that uses the old member
   predicates should be updated to use the corresponding new member predicate.
+* The predicates `Declaration.hasStdName()` and `Declaration.hasGlobalOrStdName`
+  have been added, simplifying handling of C++ standard library functions.
