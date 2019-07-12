@@ -1,14 +1,5 @@
 private import cpp
 
-private predicate fieldIsInitialized(Field field) {
-  exists(ClassAggregateLiteral initList |
-    initList.isInitialized(field)
-  ) or
-  exists(ConstructorFieldInit init |
-    field = init.getTarget()
-  )
-}
-
 newtype TInstructionTag =
   OnlyInstructionTag() or  // Single instruction (not including implicit Load)
   InitializeThisTag() or
