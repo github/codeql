@@ -6,3 +6,4 @@ private import implementations.Pure
 private import implementations.Strcat
 private import implementations.Strcpy
 private import implementations.Strftime
+private import implementations.Swap

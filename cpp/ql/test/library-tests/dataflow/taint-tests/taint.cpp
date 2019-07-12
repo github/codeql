@@ -213,5 +213,5 @@ void test_swap() {
 	std::swap(x, y);
 
 	sink(x); // [FALSE POSITIVE]
-	sink(y); // tainted [NOT DETECTED]
+	sink(y); // tainted
 }
