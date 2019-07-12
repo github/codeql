@@ -182,35 +182,30 @@ class UnknownVirtualVariable extends TUnknownVirtualVariable, VirtualVariable {
 
 Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
   // The def and the use must have the same virtual variable, or no overlap is possible.
-  def.getVirtualVariable() = use.getVirtualVariable() and
   (
     // An UnknownVirtualVariable must totally overlap any location within the same virtual variable.
-    def instanceof UnknownVirtualVariable and result instanceof MustTotallyOverlap or
+    def.getVirtualVariable() = use.getVirtualVariable() and
+    def instanceof UnknownVirtualVariable and result instanceof MustTotallyOverlap
+    or
     // An UnknownMemoryLocation may partially overlap any Location within the same virtual variable.
-    def instanceof UnknownMemoryLocation and result instanceof MayPartiallyOverlap or
+    def.getVirtualVariable() = use.getVirtualVariable() and
+    def instanceof UnknownMemoryLocation and result instanceof MayPartiallyOverlap
+    or
     exists(VariableMemoryLocation defVariableLocation |
       defVariableLocation = def and
       (
         (
           // A VariableMemoryLocation may partially overlap an unknown location within the same virtual variable.
+          def.getVirtualVariable() = use.getVirtualVariable() and
           ((use instanceof UnknownMemoryLocation) or (use instanceof UnknownVirtualVariable)) and
           result instanceof MayPartiallyOverlap
         ) or
         // A VariableMemoryLocation overlaps another location within the same variable based on the relationship
         // of the two offset intervals.
-        exists(VariableMemoryLocation useVariableLocation, IntValue defStartOffset, IntValue defEndOffset,
-            IntValue useStartOffset, IntValue useEndOffset, Overlap intervalOverlap |
-          useVariableLocation = use and
-          // The def and use must access the same `IRVariable`.
-          defVariableLocation.getVariable() = useVariableLocation.getVariable() and
-          // The def and use intervals must overlap.
-          defStartOffset = defVariableLocation.getStartBitOffset() and
-          defEndOffset = defVariableLocation.getEndBitOffset() and
-          useStartOffset = useVariableLocation.getStartBitOffset() and
-          useEndOffset = useVariableLocation.getEndBitOffset() and
-          intervalOverlap = Interval::getOverlap(defStartOffset, defEndOffset, useStartOffset, useEndOffset) and
+        exists(Overlap intervalOverlap |
+          intervalOverlap = getVariableMemoryLocationOverlap(def, use) and
           if intervalOverlap instanceof MustExactlyOverlap then (
-            if defVariableLocation.getType() = useVariableLocation.getType() then (
+            if def.getType() = use.getType() then (
               // The def and use types match, so it's an exact overlap.
               result instanceof MustExactlyOverlap
             )
@@ -232,6 +227,50 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
       )
     )
   )
+}
+
+predicate isRelevantOffset(VirtualVariable vv, IntValue offset) {
+  exists(VariableMemoryLocation ml |
+    ml.getVirtualVariable() = vv
+    |
+    ml.getStartBitOffset() = offset
+    or
+    ml.getEndBitOffset() = offset
+  )
+}
+
+predicate isRelatableMemoryLocation(VariableMemoryLocation vml) {
+  vml.getEndBitOffset() != Ints::unknown() and
+  vml.getStartBitOffset() != Ints::unknown()
+}
+
+predicate isCoveredOffset(VariableMemoryLocation vml, VirtualVariable vv, IntValue offset) {
+  isRelevantOffset(vv, offset) and
+  vv = vml.getVirtualVariable() and
+  isRelatableMemoryLocation(vml) and
+  vml.getStartBitOffset() <= offset and
+  offset <= vml.getEndBitOffset()
+}
+
+predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable vv) {
+  vml.getVirtualVariable() = vv and
+  (
+    vml.getStartBitOffset() = Ints::unknown() or
+    vml.getEndBitOffset() = Ints::unknown()
+  )
+}
+
+
+
+Overlap getVariableMemoryLocationOverlap(VariableMemoryLocation def, VariableMemoryLocation use) {
+  (
+    exists(VirtualVariable vv, IntValue offset | isCoveredOffset(def, vv, offset) and isCoveredOffset(use, vv, offset))
+    or
+    hasUnknownOffset(def, use.getVirtualVariable())
+    or
+    hasUnknownOffset(use, def.getVirtualVariable())
+  ) and
+  result = Interval::getOverlap(def.getStartBitOffset(), def.getEndBitOffset(), use.getStartBitOffset(), use.getEndBitOffset())
 }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
