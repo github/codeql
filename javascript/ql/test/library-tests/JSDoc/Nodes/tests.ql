@@ -4,7 +4,7 @@ import Parameter_getDocumentation
 import JSDocRestParameterTypeExpr
 import getDocumentation
 import JSDocRecordTypeExpr
-import JSDoc
+import JSDoc_test
 import JSDocTag
 import ObjectExpr_getDocumentation
 import JSDocFunctionTypeExpr

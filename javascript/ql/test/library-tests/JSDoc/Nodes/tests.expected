@@ -1,4 +1,3 @@
-WARNING: Reference to JSDoc references a local library, not the named module. (tests.ql:7,8-13)
 test_JSDocUnionTypeExpr
 | tst.js:143:12:143:29 | (string\|number\|null) | tst.js:143:12:143:17 | string |
 | tst.js:143:12:143:29 | (string\|number\|null) | tst.js:143:19:143:24 | number |
