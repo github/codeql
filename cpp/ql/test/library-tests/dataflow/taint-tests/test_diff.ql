@@ -34,4 +34,4 @@ where
     not astFlow(sourceLocation, sinkLocation) and
     note = "IR only"
   )
-select sourceLocation.toString(), sinkLocation.toString(), note
+select sinkLocation.toString(), sourceLocation.toString(), note
