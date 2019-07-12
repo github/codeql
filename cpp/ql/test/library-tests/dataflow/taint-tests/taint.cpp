@@ -194,3 +194,24 @@ void test_memcpy(int *source) {
 	memcpy(&x, source, sizeof(int));
 	sink(x);
 }
+
+// --- swap ---
+
+namespace std {
+	template<class T> constexpr void swap(T& a, T& b);
+}
+
+void test_swap() {
+	int x, y;
+
+	x = source();
+	y = 0;
+
+	sink(x); // tainted
+	sink(y);
+
+	std::swap(x, y);
+
+	sink(x); // [FALSE POSITIVE]
+	sink(y); // tainted [NOT DETECTED]
+}
