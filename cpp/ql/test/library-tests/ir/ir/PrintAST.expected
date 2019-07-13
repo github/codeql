@@ -190,6 +190,34 @@ bad_asts.cpp:
 #   27|                   Type = [LValueReferenceType]: const Point &
 #   27|                   ValueCategory = prvalue(load)
 #   28|     1: [ReturnStmt]: return ...
+#   30| [TopLevelFunction]: void Bad::errorExpr()
+#   30|   params: 
+#   30|   body: [Block]: { ... }
+#   31|     0: [DeclStmt]: declaration
+#   31|       0: [VariableDeclarationEntry]: definition of intref
+#   31|           Type = [LValueReferenceType]: int &
+#   31|         init: [Initializer]: initializer for intref
+#   31|           expr: [ErrorExpr]: <error expr>
+#   31|               Type = [ErroneousType]: error
+#   31|               ValueCategory = prvalue
+#   32|     1: [DeclStmt]: declaration
+#   32|       0: [VariableDeclarationEntry]: definition of x
+#   32|           Type = [IntType]: int
+#   32|         init: [Initializer]: initializer for x
+#   32|           expr: [ErrorExpr]: <error expr>
+#   32|               Type = [ErroneousType]: error
+#   32|               ValueCategory = prvalue
+#   33|     2: [ExprStmt]: ExprStmt
+#   33|       0: [AssignExpr]: ... = ...
+#   33|           Type = [IntType]: int
+#   33|           ValueCategory = lvalue
+#   33|         0: [VariableAccess]: x
+#   33|             Type = [IntType]: int
+#   33|             ValueCategory = lvalue
+#-----|         1: [ErrorExpr]: <error expr>
+#-----|             Type = [ErroneousType]: error
+#-----|             ValueCategory = prvalue(load)
+#   34|     3: [ReturnStmt]: return ...
 clang.cpp:
 #    5| [TopLevelFunction]: int* globalIntAddress()
 #    5|   params: 

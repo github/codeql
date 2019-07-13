@@ -322,6 +322,8 @@ class ErroneousType extends BuiltInType {
 
   ErroneousType() { builtintypes(underlyingElement(this),_,1,_,_,_) }
 
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "ErroneousType" }
 }
 
 /**
@@ -920,6 +922,9 @@ class PointerType extends DerivedType {
 class ReferenceType extends DerivedType {
 
   ReferenceType() { derivedtypes(underlyingElement(this),_,2,_) or derivedtypes(underlyingElement(this),_,8,_) }
+
+  /** Canonical QL class corresponding to this element. */
+  override string getCanonicalQLClass() { result = "ReferenceType" }
 
   override int getPointerIndirectionLevel() {
     result = getBaseType().getPointerIndirectionLevel()
