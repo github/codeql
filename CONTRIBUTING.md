@@ -1,10 +1,40 @@
 # Contributing to QL
 
-We welcome contributions to our standard library and standard checks, got an idea for a new check, or how to improve an existing query? Then please go ahead an open a Pull Request!
+We welcome contributions to our standard library and standard checks. Got an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request!
 
-Before we accept your pull request, we will require that you have agreed to our Contributor License Agreement, this is not something that you need to do before you submit your pull request, but until you've done so, we will be unable to accept your contribution.
+Before we accept your pull request, we require that you have agreed to our Contributor License Agreement, this is not something that you need to do before you submit your pull request, but until you've done so, we will be unable to accept your contribution.
 
-Please read our [QL Style Guide](docs/ql-style-guide.md) for information on how to format QL code in this repository.
+## Adding a new query
+
+If you have an idea for a query that you would like to share with other Semmle users, please open a pull request to add it to this repository. 
+Follow the steps below to help other users understand what your query does, and to ensure that your query is consistent with the other Semmle queries.
+
+1. Consult the QL documentation for query writers
+
+There is lots of useful documentation to help you write QL, ranging from information about query file structure to language-specific tutorials. For more information on the documentation available, see [Writing QL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on help.semmle.com.
+
+2. Format your QL correctly
+
+All of Semmle's standard QL queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all QL contributions follow the same formatting guidelines. For more information, see the [QL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md).
+
+3. Make sure your query has the correct metadata
+
+Query metadata is used by Semmle's analysis to idenitfy your query and make sure the query results are displayed properly, so it's important that it's lncluded. 
+For more information on writing query metadata, see the [Query metadata style guide](https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md).
+
+4. Save your query in a `.ql` file in correct language directory in the this repository.
+
+There are five language-specific directories in this repository:
+
+* C/C++: `ql/cpp/ql/src`
+* C#: `ql/csharp/ql/src`
+* Java: `ql/java/ql/src`
+* JavaScript: `ql/javascript/ql/src`
+* Python: `ql/python/ql/src`
+
+5. Write a query help file
+
+Query help files explain the purpose of your query to other users. Write your query help in a `.qhelp` file and save it in the same directory as your new query. For more information on writing query help, see the [Query help style guide](https://github.com/Semmle/ql/blob/master/docs/query-help-style-guide.md).
 
 ## Using your personal data
 
