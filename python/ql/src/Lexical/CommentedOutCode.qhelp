@@ -3,5 +3,6 @@
   "qhelp.dtd">
 <qhelp>
   <include src="CommentedOutCodeQuery.qhelp" />
-  <include src="CommentedOutCodeCommon.qhelp" />
+  <include src="CommentedOutCodeExample.qhelp" />
+  <include src="CommentedOutCodeReferences.qhelp" />
 </qhelp>
