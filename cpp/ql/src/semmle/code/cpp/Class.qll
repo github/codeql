@@ -905,8 +905,8 @@ class LocalClass extends Class {
 }
 
 /**
- * A nested class [4140 9.7].  For example the struct `PairT` in the following
- * code is a nested class:
+ * A nested class, that is, a class declared within another class.  For example
+ * the struct `PairT` in the following code is a nested class:
  * ```
  * template<class T>
  * class MyTemplateClass {
@@ -958,6 +958,9 @@ class AbstractClass extends Class {
  *   ...
  * };
  * ```
+ * Note that this does not include template instantiations, and full
+ * specializations.  See `ClassTemplateInstantiation` and
+ * `FullClassTemplateSpecialization`.
  */
 class TemplateClass extends Class {
   TemplateClass() { usertypes(underlyingElement(this),_,6) }
@@ -994,7 +997,16 @@ class ClassTemplateInstantiation extends Class {
   /**
    * Gets the class template from which this instantiation was instantiated.
    *
-   * For example: For `std::vector<float>`, the result is `std::vector<T>`.
+   * For example for `MyTemplateClass<int>` in the following code, the result is
+   * `MyTemplateClass<T>`:
+   * ```
+   * template<class T>
+   * class MyTemplateClass {
+   *   ...
+   * };
+   * 
+   * MyTemplateClass<int> instance;
+   * ```
    */
   TemplateClass getTemplate() {
     result = tc
@@ -1003,7 +1015,8 @@ class ClassTemplateInstantiation extends Class {
 
 /**
  * A specialization of a class template (this may be a full or partial template
- * specialization).
+ * specialization - see `FullClassTemplateSpecialization` and
+ * `PartialClassTemplateSpecialization`).
  */
 abstract class ClassTemplateSpecialization extends Class {
   /**
