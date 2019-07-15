@@ -11,6 +11,7 @@
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
+| Call to alloca in a loop (`cpp/alloca-in-loop`) | Fewer false positive results | Fixed false positives where the stack allocation could not be reached multiple times in the loop, typically due to a `break` or `return` statement. |
 | Continue statement that does not continue (`cpp/continue-in-false-loop`) | Fewer false positive results | Analysis is now restricted to `do`-`while` loops. This query is now run and displayed by default on LGTM. |
 | Expression has no effect (`cpp/useless-expression`) | Fewer false positive results | Calls to functions with the `weak` attribute are no longer considered to be side effect free, because they could be overridden with a different implementation at link time. |
 | No space for zero terminator (`cpp/no-space-for-terminator`) | Fewer false positive results | False positives involving strings that are not null-terminated have been excluded. |
