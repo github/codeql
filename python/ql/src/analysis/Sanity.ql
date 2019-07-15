@@ -25,7 +25,7 @@ predicate ast_sanity(string clsname, string problem, string what) {
         clsname = a.getAQlClass() |
         uniqueness_error(count(a.toString()), "toString", problem) and what = "at " + a.getLocation().toString() or
         uniqueness_error(strictcount(a.getLocation()), "getLocation", problem) and what = a.getLocation().toString() or
-        not exists(a.getLocation()) and problem = "no location" and what = a.toString()
+        not exists(a.getLocation()) and not a.(Module).isPackage() and problem = "no location" and what = a.toString()
     )
 }
 
@@ -54,8 +54,11 @@ predicate location_sanity(string clsname, string problem, string what) {
 predicate cfg_sanity(string clsname, string problem, string what) {
     exists(ControlFlowNode f |
         clsname = f.getAQlClass() |
-        uniqueness_error(count(f.getNode()), "getNode", problem) and what = "at " + f.getLocation().toString() or
-        not exists(f.getLocation()) and problem = "no location" and what = f.toString() or
+        uniqueness_error(count(f.getNode()), "getNode", problem) and what = "at " + f.getLocation().toString()
+        or
+        not exists(f.getLocation()) and not exists(Module p | p.isPackage() | p.getEntryNode() = f or p.getAnExitNode() = f)
+        and problem = "no location" and what = f.toString()
+        or
         uniqueness_error(count(f.(AttrNode).getObject()), "getValue", problem) and what = "at " + f.getLocation().toString()
     )
 }
@@ -66,7 +69,7 @@ predicate scope_sanity(string clsname, string problem, string what) {
         uniqueness_error(count(s.getEntryNode()), "getEntryNode", problem) and what = "at " + s.getLocation().toString() or
         uniqueness_error(count(s.toString()), "toString", problem) and what = "at " + s.getLocation().toString() or
         uniqueness_error(strictcount(s.getLocation()), "getLocation", problem) and what = "at " + s.getLocation().toString() or
-        not exists(s.getLocation()) and problem = "no location" and what = s.toString()
+        not exists(s.getLocation()) and problem = "no location" and what = s.toString() and not s.(Module).isPackage()
     )
 }
 
@@ -213,11 +216,14 @@ predicate file_sanity(string clsname, string problem, string what) {
 }
 
 predicate class_value_sanity(string clsname, string problem, string what) {
-    exists(ClassValue value |
-        exists(value.getASuperType().lookup(what)) and
-        not exists(value.lookup(what)) and
+    exists(ClassValue value, ClassValue sup, string attr |
+        what = value.getName() and
+        sup = value.getASuperType() and
+        exists(sup.lookup(attr)) and
+        not value.failedInference(_) and
+        not exists(value.lookup(attr)) and
         clsname = value.getAQlClass() and
-        problem = "is missing attribute that superclass has"
+        problem = "no attribute '" + attr + "', but super type '" + sup.getName() + "' does."
     )
 }
 
