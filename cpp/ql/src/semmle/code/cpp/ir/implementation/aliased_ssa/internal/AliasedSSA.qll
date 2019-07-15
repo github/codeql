@@ -263,6 +263,7 @@ predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable vv) {
 
 
 Overlap getVariableMemoryLocationOverlap(VariableMemoryLocation def, VariableMemoryLocation use) {
+  def.getVariable() = use.getVariable() and
   (
     exists(VirtualVariable vv, IntValue offset | isCoveredOffset(def, vv, offset) and isCoveredOffset(use, vv, offset))
     or
