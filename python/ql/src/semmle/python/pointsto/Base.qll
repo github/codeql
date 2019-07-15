@@ -275,14 +275,19 @@ class ParameterDefinition extends PyNodeDefinition {
         this.getDefiningNode().getNode().(Parameter).isSelf()
     }
 
+    /** Gets the control flow node for the default value of this parameter */
     ControlFlowNode getDefault() {
-        exists(Function f, int n, int c, int d, Arguments args |
-            args = f.getDefinition().getArgs() |
-            f.getArg(n) = this.getDefiningNode().getNode() and
-            c = count(f.getAnArg()) and
-            d = count(args.getADefault()) and
-            result.getNode() = args.getDefault(d-c+n)
-        )
+        result.getNode() = this.getParameter().getDefault()
+    }
+
+    /** Gets the annotation control flow node of this parameter */
+    ControlFlowNode getAnnotation() {
+        result.getNode() = this.getParameter().getAnnotation()
+    }
+
+    /** Gets the name of this parameter definition */
+    string getName() {
+        result = this.getParameter().asName().getId()
     }
 
     predicate isVarargs() {
