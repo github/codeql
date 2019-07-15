@@ -88,3 +88,40 @@ void baz(const struct vtype* vec, int count) {
 		}
 	} while (0);
 }
+
+// case 4: alloca  contained in an unbounded loop, followed by break.
+void case4() {
+	char *buffer;
+
+	do {
+		buffer = (char*)alloca(1024); // GOOD [FALSE POSITIVE]
+
+		break;
+	} while (1);
+
+	delete [] buffer;
+}
+
+// case 5: alloca  contained in an unbounded loop, followed by continue.
+void case5() {
+	char *buffer;
+
+	do {
+		buffer = (char*)alloca(1024); // BAD
+
+		continue;
+	} while (1);
+
+	delete [] buffer;
+}
+
+// case 6: alloca  contained in an unbounded loop, followed by return.
+char *case6() {
+	char *buffer;
+
+	do {
+		buffer = (char*)alloca(1024); // GOOD [FALSE POSITIVE]
+
+		return buffer;
+	} while (1);
+}
