@@ -680,3 +680,57 @@ void mkDateTest(int year)
 	}
 	// ...
 }
+
+void unmodified1()
+{
+	SYSTEMTIME st;
+	FILETIME ft;
+	WORD w;
+
+	GetSystemTime(&st);
+
+	w = st.wYear;
+
+	SystemTimeToFileTime(&st, &ft); // GOOD - no modification
+}
+
+void unmodified2()
+{
+	SYSTEMTIME st;
+	FILETIME ft;
+	WORD *w_ptr;
+
+	GetSystemTime(&st);
+
+	w_ptr = &(st.wYear);
+
+	SystemTimeToFileTime(&st, &ft); // GOOD - no modification
+}
+
+void modified3()
+{
+	SYSTEMTIME st;
+	FILETIME ft;
+	WORD *w_ptr;
+
+	GetSystemTime(&st);
+
+	st.wYear = st.wYear + 1;
+
+	SystemTimeToFileTime(&st, &ft); // BAD
+}
+
+void modified4()
+{
+	SYSTEMTIME st;
+	FILETIME ft;
+	WORD *w_ptr;
+
+	GetSystemTime(&st);
+
+	st.wYear++;
+	st.wYear++;
+	st.wYear++;
+
+	SystemTimeToFileTime(&st, &ft); // BAD
+}
