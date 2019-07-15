@@ -194,6 +194,13 @@ cached newtype TObject =
         PointsToInternal::pointsTo(call.getArg(0), ctx, getter, _)
     }
     or
+    TPropertySetterOrDeleter(PropertyInternal property, string method) {
+        exists(AttrNode attr |
+            PointsToInternal::pointsTo(attr.getObject(method), _, property, _)
+        ) and
+        ( method = "setter" or method = "deleter" )
+    }
+    or
     /* Represents a dynamically created class */
     TDynamicClass(CallNode instantiation, ClassObjectInternal metacls, PointsToContext context) {
         PointsToInternal::pointsTo(instantiation.getFunction(), context, metacls, _) and
