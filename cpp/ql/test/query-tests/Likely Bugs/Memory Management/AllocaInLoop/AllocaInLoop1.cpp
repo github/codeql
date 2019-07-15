@@ -94,7 +94,7 @@ void case4() {
 	char *buffer;
 
 	do {
-		buffer = (char*)alloca(1024); // GOOD [FALSE POSITIVE]
+		buffer = (char*)alloca(1024); // GOOD
 
 		break;
 	} while (1);
@@ -120,7 +120,7 @@ char *case6() {
 	char *buffer;
 
 	do {
-		buffer = (char*)alloca(1024); // GOOD [FALSE POSITIVE]
+		buffer = (char*)alloca(1024); // GOOD
 
 		return buffer;
 	} while (1);

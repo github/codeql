@@ -322,9 +322,11 @@ class LoopWithAlloca extends Stmt {
   }
 }
 
-from LoopWithAlloca l
+from LoopWithAlloca l, AllocaCall alloc
 where
   not l.(DoStmt).getCondition().getValue() = "0" and
-  not l.isTightlyBounded()
-select l.getAnAllocaCall(), "Stack allocation is inside a $@ loop.", l,
+  not l.isTightlyBounded() and
+  alloc = l.getAnAllocaCall() and
+  alloc.getASuccessor*() = l.(Loop).getStmt()
+select alloc, "Stack allocation is inside a $@ loop.", l,
   l.toString()
