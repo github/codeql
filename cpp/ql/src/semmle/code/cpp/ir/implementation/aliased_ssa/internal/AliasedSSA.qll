@@ -229,7 +229,21 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
   )
 }
 
-predicate isRelevantOffset(VirtualVariable vv, IntValue offset) {
+/*
+ * The following predicates compute the overlap relation between `VariableMemoryLocation`s in the
+ * same `VirtualVariable` as follows:
+ *   1. Compute the set of offsets within each virtual variable in `isRelevantOffset` (linear in
+ *      the number of VMLs)
+ *   2. Compute the set of offsets that each VML with known start and end offsets covers in
+ *      `isCoveredOffset` (this is currently quadratic in the number of VMLs in a VVar, but
+ *      could be optimized further. The quadratic portion is never materialized, and it seems to
+ *      be performant in practice)
+ *   3. In `getVariableMemoryLocationOverlap`, compute the set of overlapping pairs of VMLs using a
+ *      join on `isCoveredOffset` (linear in the size of the overlap set)
+ *   4. In `getVariableMemoryLocationOverlap`, compute the precise overlap relation for each
+ *      overlapping pair of VMLs (linear in the size of the overlap set)
+ */
+private predicate isRelevantOffset(VirtualVariable vv, IntValue offset) {
   exists(VariableMemoryLocation ml |
     ml.getVirtualVariable() = vv
     |
@@ -239,12 +253,12 @@ predicate isRelevantOffset(VirtualVariable vv, IntValue offset) {
   )
 }
 
-predicate isRelatableMemoryLocation(VariableMemoryLocation vml) {
+private predicate isRelatableMemoryLocation(VariableMemoryLocation vml) {
   vml.getEndBitOffset() != Ints::unknown() and
   vml.getStartBitOffset() != Ints::unknown()
 }
 
-predicate isCoveredOffset(VariableMemoryLocation vml, VirtualVariable vv, IntValue offset) {
+private predicate isCoveredOffset(VariableMemoryLocation vml, VirtualVariable vv, IntValue offset) {
   isRelevantOffset(vv, offset) and
   vv = vml.getVirtualVariable() and
   isRelatableMemoryLocation(vml) and
@@ -252,7 +266,7 @@ predicate isCoveredOffset(VariableMemoryLocation vml, VirtualVariable vv, IntVal
   offset <= vml.getEndBitOffset()
 }
 
-predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable vv) {
+private predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable vv) {
   vml.getVirtualVariable() = vv and
   (
     vml.getStartBitOffset() = Ints::unknown() or
@@ -260,9 +274,7 @@ predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable vv) {
   )
 }
 
-
-
-Overlap getVariableMemoryLocationOverlap(VariableMemoryLocation def, VariableMemoryLocation use) {
+private Overlap getVariableMemoryLocationOverlap(VariableMemoryLocation def, VariableMemoryLocation use) {
   def.getVariable() = use.getVariable() and
   (
     exists(VirtualVariable vv, IntValue offset | isCoveredOffset(def, vv, offset) and isCoveredOffset(use, vv, offset))
