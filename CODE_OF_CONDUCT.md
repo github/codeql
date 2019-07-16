@@ -14,7 +14,7 @@ Our community strives to:
   * Posting, or threatening to post, people’s personally identifying information (“doxing”).
   * Insults, especially those using discriminatory terms or slurs.
   * Behavior that could be perceived as sexual attention.
-* Advocating for or encouraging any of the above behaviors.
+  * Advocating for or encouraging any of the above behaviors.
 * Understand disagreements: Disagreements, both social and technical, are useful learning opportunities. Seek to understand others’ viewpoints and resolve differences constructively.
 
 This code is not exhaustive or complete. It serves to capture our common understanding of a productive, collaborative environment. We expect the code to be followed in spirit as much as in the letter.
