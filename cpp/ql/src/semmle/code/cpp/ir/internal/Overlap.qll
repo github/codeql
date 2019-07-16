@@ -1,5 +1,3 @@
-private import cpp
-
 private newtype TOverlap =
   TMayPartiallyOverlap() or
   TMustTotallyOverlap() or
