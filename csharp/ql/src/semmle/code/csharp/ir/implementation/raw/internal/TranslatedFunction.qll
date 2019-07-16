@@ -305,7 +305,7 @@ class TranslatedFunction extends TranslatedElement,
    * Holds only if the function is an instance member function, constructor, or destructor.
    */
   final Type getThisType() {
-	result = callable.getDeclaringType()
+    result = callable.getDeclaringType()
   }
 
   private final Type getReturnType() {
@@ -436,7 +436,7 @@ class TranslatedConstructorInitList extends TranslatedElement,
 
   // TODO: Is this enough?
   override TranslatedElement getChild(int id) {
-  	result = getTranslatedExpr(callable).getChild(id)
+    result = getTranslatedExpr(callable).getChild(id)
 //    exists(MemberInitializer init |
 //      init = callable.(Constructor).getInitializer().getRawArgument(id) and
 //      result = getTranslatedConstructorFieldInitialization(init)

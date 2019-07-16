@@ -1,20 +1,19 @@
 // TODO: Fix the switch
-
 import csharp
 
 private newtype TEdgeKind =
-  TGotoEdge() or  // Single successor (including fall-through)
-  TTrueEdge() or  // 'true' edge of conditional branch
-  TFalseEdge() or  // 'false' edge of conditional branch
-  TExceptionEdge() or  // Thrown exception
-  TDefaultEdge() or  // 'default' label of switch
+  TGotoEdge() or // Single successor (including fall-through)
+  TTrueEdge() or // 'true' edge of conditional branch
+  TFalseEdge() or // 'false' edge of conditional branch
+  TExceptionEdge() or // Thrown exception
+  TDefaultEdge() or // 'default' label of switch
   TCaseEdge()
+
 //  TCaseEdge(Expr expr, string condition) {  // Case label of switch
 //    exists(CaseStmt caseStmt |
 //      hasCaseEdge(caseStmt, minValue, maxValue)
 //    )
 //  }
-
 /**
  * Represents the kind of an edge in the IR control flow graph. Each
  * `Instruction` or `IRBlock` has at most one successor of any single
@@ -29,81 +28,58 @@ abstract class EdgeKind extends TEdgeKind {
  * or `IRBlock`.
  */
 class GotoEdge extends EdgeKind, TGotoEdge {
-  override final string toString() {
-    result = "Goto"
-  }
+  final override string toString() { result = "Goto" }
 }
 
-GotoEdge gotoEdge() {
-  result = TGotoEdge()
-}
+GotoEdge gotoEdge() { result = TGotoEdge() }
 
 /**
  * A "true" edge, representing the successor of a conditional branch when the
  * condition is non-zero.
  */
 class TrueEdge extends EdgeKind, TTrueEdge {
-  override final string toString() {
-    result = "True"
-  }
+  final override string toString() { result = "True" }
 }
 
-TrueEdge trueEdge() {
-  result = TTrueEdge()
-}
+TrueEdge trueEdge() { result = TTrueEdge() }
 
 /**
  * A "false" edge, representing the successor of a conditional branch when the
  * condition is zero.
  */
 class FalseEdge extends EdgeKind, TFalseEdge {
-  override final string toString() {
-    result = "False"
-  }
+  final override string toString() { result = "False" }
 }
 
-FalseEdge falseEdge() {
-  result = TFalseEdge()
-}
+FalseEdge falseEdge() { result = TFalseEdge() }
 
 /**
  * An "exception" edge, representing the successor of an instruction when that
  * instruction's evaluation throws an exception.
  */
 class ExceptionEdge extends EdgeKind, TExceptionEdge {
-  override final string toString() {
-    result = "Exception"
-  }
+  final override string toString() { result = "Exception" }
 }
 
-ExceptionEdge exceptionEdge() {
-  result = TExceptionEdge()
-}
+ExceptionEdge exceptionEdge() { result = TExceptionEdge() }
 
 /**
  * A "default" edge, representing the successor of a `Switch` instruction when
  * none of the case values matches the condition value.
  */
 class DefaultEdge extends EdgeKind, TDefaultEdge {
-  override final string toString() {
-    result = "Default"
-  }
+  final override string toString() { result = "Default" }
 }
 
-DefaultEdge defaultEdge() {
-  result = TDefaultEdge()
-}
+DefaultEdge defaultEdge() { result = TDefaultEdge() }
 
 ///**
 // * A "case" edge, representing the successor of a `Switch` instruction when the
 // * the condition value matches a correponding `case` label.
 // */
 class CaseEdge extends EdgeKind, TCaseEdge {
-	override final string toString() {
-		result = "CASE"
-	}
+  final override string toString() { result = "CASE" }
 }
-
 //class CaseEdge extends EdgeKind, TCaseEdge {
 //  string minValue;
 //  string maxValue;

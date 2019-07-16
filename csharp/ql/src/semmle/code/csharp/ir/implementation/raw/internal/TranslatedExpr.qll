@@ -112,7 +112,7 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
    */
   final boolean isResultGLValue() {
 //    if(
-//    	expr.hasValue()
+//      expr.hasValue()
 ////      expr.Category() or
 ////      // If this TranslatedExpr doesn't produce the result, then it must represent
 ////      // a glvalue that is then loaded by a TranslatedLoad.
@@ -121,7 +121,7 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
 //      result = true
 //    else
 //      result = false
-	result = false
+    result = false
   }
 }
 
@@ -977,7 +977,7 @@ abstract class TranslatedConstantExpr extends TranslatedCoreExpr, TTranslatedVal
 //      isLValue = true
 //    else
 //      isLValue = false
-	isLValue = false
+    isLValue = false
   }
 
   override final Instruction getInstructionSuccessor(InstructionTag tag,
