@@ -175,3 +175,94 @@
 | taint.cpp:213:15:213:15 | ref arg y | taint.cpp:213:15:213:15 | y |  |
 | taint.cpp:213:15:213:15 | ref arg y | taint.cpp:216:7:216:7 | y |  |
 | taint.cpp:213:15:213:15 | y | taint.cpp:213:12:213:12 | ref arg x |  |
+| taint.cpp:221:12:221:12 | x | taint.cpp:223:9:223:9 | x |  |
+| taint.cpp:230:6:230:11 | call to source | taint.cpp:230:2:230:13 | ... = ... |  |
+| taint.cpp:230:6:230:11 | call to source | taint.cpp:235:7:235:7 | t |  |
+| taint.cpp:230:6:230:11 | call to source | taint.cpp:240:9:240:9 | t |  |
+| taint.cpp:230:6:230:11 | call to source | taint.cpp:241:12:241:12 | t |  |
+| taint.cpp:230:6:230:11 | call to source | taint.cpp:244:7:244:7 | t |  |
+| taint.cpp:231:6:231:6 | 0 | taint.cpp:231:2:231:6 | ... = ... |  |
+| taint.cpp:231:6:231:6 | 0 | taint.cpp:236:7:236:7 | x |  |
+| taint.cpp:232:6:232:6 | 0 | taint.cpp:232:2:232:6 | ... = ... |  |
+| taint.cpp:232:6:232:6 | 0 | taint.cpp:237:7:237:7 | y |  |
+| taint.cpp:233:6:233:6 | 0 | taint.cpp:233:2:233:6 | ... = ... |  |
+| taint.cpp:233:6:233:6 | 0 | taint.cpp:238:7:238:7 | z |  |
+| taint.cpp:233:6:233:6 | 0 | taint.cpp:242:9:242:9 | z |  |
+| taint.cpp:240:6:240:7 | call to id | taint.cpp:240:2:240:10 | ... = ... |  |
+| taint.cpp:240:6:240:7 | call to id | taint.cpp:245:7:245:7 | x |  |
+| taint.cpp:241:6:241:7 | call to id | taint.cpp:241:2:241:14 | ... = ... |  |
+| taint.cpp:241:6:241:7 | call to id | taint.cpp:246:7:246:7 | y |  |
+| taint.cpp:242:6:242:7 | call to id | taint.cpp:242:2:242:10 | ... = ... |  |
+| taint.cpp:242:6:242:7 | call to id | taint.cpp:247:7:247:7 | z |  |
+| taint.cpp:252:29:252:29 | b | taint.cpp:254:6:254:6 | b |  |
+| taint.cpp:254:6:254:6 | b | taint.cpp:254:2:254:6 | ... = ... |  |
+| taint.cpp:257:28:257:28 | b | taint.cpp:259:6:259:6 | b |  |
+| taint.cpp:259:6:259:6 | b | taint.cpp:259:2:259:6 | ... = ... |  |
+| taint.cpp:262:21:262:21 | a | taint.cpp:264:3:264:3 | a |  |
+| taint.cpp:262:28:262:28 | b | taint.cpp:264:7:264:7 | b |  |
+| taint.cpp:264:3:264:3 | a | taint.cpp:264:2:264:3 | * ... | TAINT |
+| taint.cpp:264:7:264:7 | b | taint.cpp:264:2:264:7 | ... = ... |  |
+| taint.cpp:267:21:267:21 | a | taint.cpp:272:3:272:3 | a |  |
+| taint.cpp:267:28:267:28 | b | taint.cpp:271:6:271:6 | b |  |
+| taint.cpp:271:6:271:6 | b | taint.cpp:271:6:271:10 | ... + ... | TAINT |
+| taint.cpp:271:6:271:10 | ... + ... | taint.cpp:271:2:271:10 | ... = ... |  |
+| taint.cpp:271:6:271:10 | ... + ... | taint.cpp:272:7:272:7 | c |  |
+| taint.cpp:271:10:271:10 | 1 | taint.cpp:271:6:271:10 | ... + ... | TAINT |
+| taint.cpp:272:3:272:3 | a | taint.cpp:272:2:272:3 | * ... | TAINT |
+| taint.cpp:272:7:272:7 | c | taint.cpp:272:2:272:7 | ... = ... |  |
+| taint.cpp:275:23:275:23 | a | taint.cpp:277:6:277:6 | a |  |
+| taint.cpp:275:31:275:31 | b | taint.cpp:278:6:278:6 | b |  |
+| taint.cpp:277:6:277:6 | a | taint.cpp:277:6:277:10 | ... + ... | TAINT |
+| taint.cpp:277:6:277:10 | ... + ... | taint.cpp:277:2:277:10 | ... = ... |  |
+| taint.cpp:277:10:277:10 | 1 | taint.cpp:277:6:277:10 | ... + ... | TAINT |
+| taint.cpp:278:6:278:6 | b | taint.cpp:278:6:278:10 | ... + ... | TAINT |
+| taint.cpp:278:6:278:10 | ... + ... | taint.cpp:278:2:278:10 | ... = ... |  |
+| taint.cpp:278:10:278:10 | 1 | taint.cpp:278:6:278:10 | ... + ... | TAINT |
+| taint.cpp:285:6:285:11 | call to source | taint.cpp:285:2:285:13 | ... = ... |  |
+| taint.cpp:285:6:285:11 | call to source | taint.cpp:292:7:292:7 | t |  |
+| taint.cpp:285:6:285:11 | call to source | taint.cpp:299:15:299:15 | t |  |
+| taint.cpp:285:6:285:11 | call to source | taint.cpp:300:15:300:15 | t |  |
+| taint.cpp:285:6:285:11 | call to source | taint.cpp:301:16:301:16 | t |  |
+| taint.cpp:285:6:285:11 | call to source | taint.cpp:302:16:302:16 | t |  |
+| taint.cpp:285:6:285:11 | call to source | taint.cpp:303:17:303:17 | t |  |
+| taint.cpp:285:6:285:11 | call to source | taint.cpp:305:7:305:7 | t |  |
+| taint.cpp:286:6:286:6 | 0 | taint.cpp:286:2:286:6 | ... = ... |  |
+| taint.cpp:286:6:286:6 | 0 | taint.cpp:293:7:293:7 | a |  |
+| taint.cpp:286:6:286:6 | 0 | taint.cpp:299:12:299:12 | a |  |
+| taint.cpp:286:6:286:6 | 0 | taint.cpp:306:7:306:7 | a |  |
+| taint.cpp:287:6:287:6 | 0 | taint.cpp:287:2:287:6 | ... = ... |  |
+| taint.cpp:287:6:287:6 | 0 | taint.cpp:294:7:294:7 | b |  |
+| taint.cpp:287:6:287:6 | 0 | taint.cpp:300:12:300:12 | b |  |
+| taint.cpp:287:6:287:6 | 0 | taint.cpp:307:7:307:7 | b |  |
+| taint.cpp:288:6:288:6 | 0 | taint.cpp:288:2:288:6 | ... = ... |  |
+| taint.cpp:288:6:288:6 | 0 | taint.cpp:295:7:295:7 | c |  |
+| taint.cpp:288:6:288:6 | 0 | taint.cpp:301:13:301:13 | c |  |
+| taint.cpp:288:6:288:6 | 0 | taint.cpp:308:7:308:7 | c |  |
+| taint.cpp:289:6:289:6 | 0 | taint.cpp:289:2:289:6 | ... = ... |  |
+| taint.cpp:289:6:289:6 | 0 | taint.cpp:296:7:296:7 | d |  |
+| taint.cpp:289:6:289:6 | 0 | taint.cpp:302:13:302:13 | d |  |
+| taint.cpp:289:6:289:6 | 0 | taint.cpp:309:7:309:7 | d |  |
+| taint.cpp:290:6:290:6 | 0 | taint.cpp:290:2:290:6 | ... = ... |  |
+| taint.cpp:290:6:290:6 | 0 | taint.cpp:297:7:297:7 | e |  |
+| taint.cpp:290:6:290:6 | 0 | taint.cpp:303:14:303:14 | e |  |
+| taint.cpp:290:6:290:6 | 0 | taint.cpp:310:7:310:7 | e |  |
+| taint.cpp:299:12:299:12 | ref arg a | taint.cpp:299:12:299:12 | a |  |
+| taint.cpp:299:12:299:12 | ref arg a | taint.cpp:306:7:306:7 | a |  |
+| taint.cpp:299:15:299:15 | ref arg t | taint.cpp:299:15:299:15 | t |  |
+| taint.cpp:299:15:299:15 | ref arg t | taint.cpp:300:15:300:15 | t |  |
+| taint.cpp:299:15:299:15 | ref arg t | taint.cpp:301:16:301:16 | t |  |
+| taint.cpp:299:15:299:15 | ref arg t | taint.cpp:302:16:302:16 | t |  |
+| taint.cpp:299:15:299:15 | ref arg t | taint.cpp:303:17:303:17 | t |  |
+| taint.cpp:299:15:299:15 | ref arg t | taint.cpp:305:7:305:7 | t |  |
+| taint.cpp:300:12:300:12 | ref arg b | taint.cpp:300:12:300:12 | b |  |
+| taint.cpp:300:12:300:12 | ref arg b | taint.cpp:307:7:307:7 | b |  |
+| taint.cpp:301:12:301:13 | ref arg & ... | taint.cpp:301:13:301:13 | c |  |
+| taint.cpp:301:12:301:13 | ref arg & ... | taint.cpp:308:7:308:7 | c |  |
+| taint.cpp:301:13:301:13 | c | taint.cpp:301:12:301:13 | & ... | TAINT |
+| taint.cpp:302:12:302:13 | ref arg & ... | taint.cpp:302:13:302:13 | d |  |
+| taint.cpp:302:12:302:13 | ref arg & ... | taint.cpp:309:7:309:7 | d |  |
+| taint.cpp:302:13:302:13 | d | taint.cpp:302:12:302:13 | & ... | TAINT |
+| taint.cpp:303:14:303:14 | ref arg e | taint.cpp:303:14:303:14 | e |  |
+| taint.cpp:303:14:303:14 | ref arg e | taint.cpp:310:7:310:7 | e |  |
+| taint.cpp:303:17:303:17 | ref arg t | taint.cpp:303:17:303:17 | t |  |
+| taint.cpp:303:17:303:17 | ref arg t | taint.cpp:305:7:305:7 | t |  |

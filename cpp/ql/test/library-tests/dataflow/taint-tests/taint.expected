@@ -17,3 +17,9 @@
 | taint.cpp:210:7:210:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:215:7:215:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:216:7:216:7 | y | taint.cpp:207:6:207:11 | call to source |
+| taint.cpp:235:7:235:7 | t | taint.cpp:230:6:230:11 | call to source |
+| taint.cpp:244:7:244:7 | t | taint.cpp:230:6:230:11 | call to source |
+| taint.cpp:245:7:245:7 | x | taint.cpp:230:6:230:11 | call to source |
+| taint.cpp:246:7:246:7 | y | taint.cpp:230:6:230:11 | call to source |
+| taint.cpp:292:7:292:7 | t | taint.cpp:285:6:285:11 | call to source |
+| taint.cpp:305:7:305:7 | t | taint.cpp:285:6:285:11 | call to source |

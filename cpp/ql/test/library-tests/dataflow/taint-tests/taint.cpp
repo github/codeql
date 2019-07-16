@@ -215,3 +215,97 @@ void test_swap() {
 	sink(x); // [FALSE POSITIVE]
 	sink(y); // tainted
 }
+
+// --- taint through return value ---
+
+int id(int x)
+{
+	return x;
+}
+
+void test_return()
+{
+	int x, y, z, t;
+
+	t = source();
+	x = 0;
+	y = 0;
+	z = 0;
+
+	sink(t); // tainted
+	sink(x);
+	sink(y);
+	sink(z);
+
+	x = id(t);
+	y = id(id(t));
+	z = id(z);
+
+	sink(t); // tainted
+	sink(x); // tainted
+	sink(y); // tainted
+	sink(z);
+}
+
+// --- taint through parameters ---
+
+void myAssign1(int &a, int &b)
+{
+	a = b;
+}
+
+void myAssign2(int &a, int b)
+{
+	a = b;
+}
+
+void myAssign3(int *a, int b)
+{
+	*a = b;
+}
+
+void myAssign4(int *a, int b)
+{
+	int c;
+
+	c = b + 1;
+	*a = c;
+}
+
+void myNotAssign(int &a, int &b)
+{
+	a = a + 1;
+	b = b + 1;
+}
+
+void test_outparams()
+{
+	int t, a, b, c, d, e;
+
+	t = source();
+	a = 0;
+	b = 0;
+	c = 0;
+	d = 0;
+	e = 0;
+
+	sink(t); // tainted
+	sink(a);
+	sink(b);
+	sink(c);
+	sink(d);
+	sink(e);
+
+	myAssign1(a, t);
+	myAssign2(b, t);
+	myAssign3(&c, t);
+	myAssign4(&d, t);
+	myNotAssign(e, t);
+
+	sink(t); // tainted
+	sink(a); // tainted [NOT DETECTED]
+	sink(b); // tainted [NOT DETECTED]
+	sink(c); // tainted [NOT DETECTED]
+	sink(d); // tainted [NOT DETECTED]
+	sink(e);
+}
