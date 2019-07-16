@@ -9,3 +9,5 @@
 | taint.cpp:195:7:195:7 | taint.cpp:193:6:193:6 | AST only |
 | taint.cpp:215:7:215:7 | taint.cpp:207:6:207:11 | AST only |
 | taint.cpp:216:7:216:7 | taint.cpp:207:6:207:11 | AST only |
+| taint.cpp:306:7:306:7 | taint.cpp:285:6:285:11 | AST only |
+| taint.cpp:307:7:307:7 | taint.cpp:285:6:285:11 | AST only |

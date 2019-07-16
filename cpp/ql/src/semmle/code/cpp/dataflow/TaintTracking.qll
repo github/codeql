@@ -158,6 +158,15 @@ module TaintTracking {
   }
 
   /**
+   * Holds if there is local taint flow from parameter `src` to parameter `dest`
+   * of function `f`.
+   */
+  private predicate parameterTaintFlow(Function f, int src, int dest) {
+    TaintTracking::localTaint(DataFlow::parameterNode(f.getParameter(src)),
+      DataFlow::exprNode(f.getParameter(dest).getAnAssignedValue()))
+  }
+
+  /**
    * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
    * (intra-procedural) step.
    */
@@ -192,6 +201,13 @@ module TaintTracking {
     or
     // Taint can flow through modeled functions
     exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
+    or
+    // Taint can flow between function arguments where there is data flow
+    exists(Call call, int src, int dest |
+      parameterTaintFlow(call.getTarget(), src, dest) and
+      nodeFrom.asExpr() = call.getArgument(src) and
+      nodeTo.asDefiningArgument() = call.getArgument(dest)
+    )
   }
 
   /**
