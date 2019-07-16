@@ -7,8 +7,6 @@ private import TranslatedExpr
 private import TranslatedFunction
 private import semmle.code.csharp.ir.Util
 
-// TODO: LOOK INTO GET ORDER FUNCTION AND SEE EXACTLY IF IT IS NEEDED
-
 /**
  * Gets the `TranslatedInitialization` for the expression `expr`.
  */
@@ -97,7 +95,7 @@ abstract class TranslatedListInitialization extends TranslatedInitialization, In
   }
 
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+    Type resultType, boolean isLValue) {
     none()
   }
 
@@ -127,8 +125,7 @@ class TranslatedClassListInitialization extends TranslatedListInitialization
     exists(TranslatedFieldInitialization fieldInit |
       result = fieldInit and
       fieldInit = getTranslatedFieldInitialization(expr, _) and
-      //fieldInit.getOrder() = id
-      //TODO: DOES C# HAVE ORDERING FOR FIELD MEMBERS? DO WE NEED? YES, THE PRINTIR USES THEM
+      fieldInit.getOrder() = id and
       id = 200
     )
   }
@@ -183,11 +180,11 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
     not expr instanceof StringLiteral
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Store and
     resultType = getContext().getTargetType() and
-    isGLValue = false
+    isLValue = false
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -215,211 +212,10 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
   }
 }
 
-/**
- * Represents the IR translation of an initialization of an array from a string
- * literal.
- */
-//class TranslatedStringLiteralInitialization extends TranslatedDirectInitialization {
-//  override StringLiteral expr;
-//
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
-//    (
-//      // Load the string literal to make it a prvalue of type `char[len]`
-//      tag = InitializerLoadStringTag() and
-//      opcode instanceof Opcode::Load and
-//      resultType = getInitializer().getResultType() and
-//      isGLValue = false
-//    ) or
-//    (
-//      // Store the string into the target.
-//      tag = InitializerStoreTag() and
-//      opcode instanceof Opcode::Store and
-//      resultType = getInitializer().getResultType() and
-//      isGLValue = false
-//    ) or
-//    exists(int startIndex, int elementCount |
-//      // If the initializer string isn't large enough to fill the target, then
-//      // we have to generate another instruction sequence to store a constant
-//      // zero into the remainder of the array.
-//      zeroInitRange(startIndex, elementCount) and
-//      (
-//        (
-//          // Create a constant zero whose size is the size of the remaining
-//          // space in the target array.
-//          tag = ZeroPadStringConstantTag() and
-//          opcode instanceof Opcode::Constant and
-//          resultType instanceof UnknownType and
-//          isGLValue = false
-//        ) or
-//        (
-//          // The index of the first element to be zero initialized.
-//          tag = ZeroPadStringElementIndexTag() and
-//          opcode instanceof Opcode::Constant and
-//          resultType = getIntType() and
-//          isGLValue = false
-//        ) or
-//        (
-//          // Compute the address of the first element to be zero initialized.
-//          tag = ZeroPadStringElementAddressTag() and
-//          opcode instanceof Opcode::PointerAdd and
-//          resultType = getElementType() and
-//          isGLValue = true
-//        ) or
-//        (
-//          // Store the constant zero into the remainder of the string.
-//          tag = ZeroPadStringStoreTag() and
-//          opcode instanceof Opcode::Store and
-//          resultType instanceof UnknownType and
-//          isGLValue = false
-//        )
-//      )
-//    )
-//  }
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-//    kind instanceof GotoEdge and
-//    (
-//      (
-//        tag = InitializerLoadStringTag() and
-//        result = getInstruction(InitializerStoreTag())
-//      ) or
-//      if zeroInitRange(_, _) then (
-//        (
-//          tag = InitializerStoreTag() and
-//          result = getInstruction(ZeroPadStringConstantTag())
-//        ) or
-//        (
-//          tag = ZeroPadStringConstantTag() and
-//          result = getInstruction(ZeroPadStringElementIndexTag())
-//        ) or
-//        (
-//          tag = ZeroPadStringElementIndexTag() and
-//          result = getInstruction(ZeroPadStringElementAddressTag())
-//        ) or
-//        (
-//          tag = ZeroPadStringElementAddressTag() and
-//          result = getInstruction(ZeroPadStringStoreTag())
-//        ) or
-//        (
-//          tag = ZeroPadStringStoreTag() and
-//          result = getParent().getChildSuccessor(this)
-//        )
-//      )
-//      else (
-//        tag = InitializerStoreTag() and
-//        result = getParent().getChildSuccessor(this)
-//      )
-//    )
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getInitializer() and result = getInstruction(InitializerLoadStringTag())
-//  }
-//
-//  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-//    (
-//      tag = InitializerLoadStringTag() and
-//      (
-//        (
-//          operandTag instanceof AddressOperandTag and
-//          result = getInitializer().getResult()
-//        ) or
-//        (
-//          operandTag instanceof LoadOperandTag and
-//          result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
-//        )
-//      )
-//    ) or
-//    (
-//      tag = InitializerStoreTag() and
-//      (
-//        (
-//          operandTag instanceof AddressOperandTag and
-//          result = getContext().getTargetAddress()
-//        ) or
-//        (
-//          operandTag instanceof StoreValueOperandTag and
-//          result = getInstruction(InitializerLoadStringTag())
-//        )
-//      )
-//    ) or
-//    (
-//      tag = ZeroPadStringElementAddressTag() and
-//      (
-//        (
-//          operandTag instanceof LeftOperandTag and
-//          result = getContext().getTargetAddress()
-//        ) or
-//        (
-//          operandTag instanceof RightOperandTag and
-//          result = getInstruction(ZeroPadStringElementIndexTag())
-//        )
-//      )
-//    ) or
-//    (
-//      tag = ZeroPadStringStoreTag() and
-//      (
-//        (
-//          operandTag instanceof AddressOperandTag and
-//          result = getInstruction(ZeroPadStringElementAddressTag())
-//        ) or
-//        (
-//          operandTag instanceof StoreValueOperandTag and
-//          result = getInstruction(ZeroPadStringConstantTag())
-//        )
-//      )
-//    )
-//  }
-//
-//  override string getInstructionConstantValue(InstructionTag tag) {
-//    exists(int startIndex |
-//      zeroInitRange(startIndex, _) and
-//      (
-//        (
-//          tag = ZeroPadStringConstantTag() and
-//          result = "0"
-//        ) or
-//        (
-//          tag = ZeroPadStringElementIndexTag() and
-//          result = startIndex.toString()
-//        )
-//      )
-//    )
-//  }
-//
-//  override int getInstructionResultSize(InstructionTag tag) {
-//    exists(int elementCount |
-//      zeroInitRange(_, elementCount) and
-//      (
-//        tag = ZeroPadStringConstantTag() or
-//        tag = ZeroPadStringStoreTag()
-//      ) and
-//      result = 8 //elementCount * getElementType().getSize() TODO: FIX SIZES
-//    )
-//  }
-//
-//  private Type getElementType() {
-//    result = getContext().getTargetType().(ArrayType).getElementType()
-//  }
-//
-//  /**
-//   * Holds if the `elementCount` array elements starting at `startIndex` must be
-//   * zero initialized.
-//   */
-//  private predicate zeroInitRange(int startIndex, int elementCount) {
-//    exists(int targetCount |
-//      startIndex = expr.getType().(ArrayType).getArraySize() and
-//      targetCount = getContext().getTargetType().(ArrayType).getArraySize() and
-//      elementCount = targetCount - startIndex and
-//      elementCount > 0
-//    )
-//  }
-//}
-
 class TranslatedConstructorInitialization extends TranslatedDirectInitialization, StructorCallContext {
   override ObjectCreation expr;
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
     none()
   }
 
@@ -480,20 +276,22 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
    * Gets the zero-based index describing the order in which this field is to be
    * initialized relative to the other fields in the class.
    */
-//  final int getOrder() {
+  // TODO: Fix getOrder here
+  final int getOrder() {
+  	result = 0
 //    exists(Class cls, int memberIndex | 
 //      this = cls.getCanonicalMember(memberIndex) and
 //      memberIndex = rank[result + 1](int index |
 //        cls.getCanonicalMember(index).(Field).isInitializable()
 //      )
 //    )
-//  }
+  }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
     tag = getFieldAddressTag() and
     opcode instanceof Opcode::FieldAddress and
     resultType = field.getType() and
-    isGLValue = true
+    isLValue = true
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -570,19 +368,19 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization, 
     this = TTranslatedFieldValueInitialization(ast, field)
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
-    TranslatedFieldInitialization.super.hasInstruction(opcode, tag, resultType, isGLValue) or
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
+    TranslatedFieldInitialization.super.hasInstruction(opcode, tag, resultType, isLValue) or
     (
       tag = getFieldDefaultValueTag() and
       opcode instanceof Opcode::Constant and
       resultType = field.getType() and
-      isGLValue = false
+      isLValue = false
     ) or
     (
       tag = getFieldDefaultValueStoreTag() and
       opcode instanceof Opcode::Store and
       resultType = field.getType() and
-      isGLValue = false
+      isLValue = false
     )
   }
 
@@ -666,18 +464,18 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = getInstruction(getElementIndexTag())
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
     (
       tag = getElementIndexTag() and
       opcode instanceof Opcode::Constant and
       resultType = getIntType() and
-      isGLValue = false
+      isLValue = false
     ) or
     (
       tag = getElementAddressTag() and
       opcode instanceof Opcode::PointerAdd and
       resultType = getElementType() and
-      isGLValue = true
+      isLValue = true
     )
   }
 
@@ -786,19 +584,19 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
       elementCount)
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
-    TranslatedElementInitialization.super.hasInstruction(opcode, tag, resultType, isGLValue) or
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
+    TranslatedElementInitialization.super.hasInstruction(opcode, tag, resultType, isLValue) or
     (
       tag = getElementDefaultValueTag() and
       opcode instanceof Opcode::Constant and
       resultType = getDefaultValueType() and
-      isGLValue = false
+      isLValue = false
     ) or
     (
       tag = getElementDefaultValueStoreTag() and
       opcode instanceof Opcode::Store and
       resultType = getDefaultValueType() and
-      isGLValue = false
+      isLValue = false
     )
   }
 
@@ -837,7 +635,8 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
       tag = getElementDefaultValueTag() or
       tag = getElementDefaultValueStoreTag()
     ) and
-    result = 8 //elementCount * getElementType().getSize() TODO: FIX SIZES
+    // TODO: Memory model C#
+    result = 8 //elementCount * getElementType().getSize()
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -920,11 +719,11 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
     result = getInstruction(OnlyInstructionTag())
   }
 
-  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
+  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::ConvertToBase and
     resultType = call.getTarget().getDeclaringType() and
-    isGLValue = true
+    isLValue = true
   }
 
   override final Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -978,7 +777,7 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
 //    result = getStructorCall().getFirstInstruction()
 //  }
 //
-//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
+//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
 //    none()
 //  }
 //

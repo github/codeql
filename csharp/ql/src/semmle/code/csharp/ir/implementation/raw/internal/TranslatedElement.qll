@@ -16,9 +16,8 @@ private import semmle.code.csharp.ir.Util
 /**
  * Gets the built-in `int` type.
  */
-// TODO: NOT SURE ABOUT THIS
-Type getIntType() {
-  result.(IntType).isValueType()
+IntType getIntType() {
+	any()
 }
 
 /**
@@ -28,8 +27,6 @@ Type getIntType() {
  */
 private Element getRealParent(Expr expr) {
   result = expr.getParent()
-//  or
-//  result.(Destructor).getADestruction() = expr
 }
 
 /**
@@ -61,7 +58,8 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // node as its qualifier, but that `FieldAccess` does not have a child of its own.
   // We'll ignore that `FieldAccess`, and supply the receiver as part of the calling
   // context, much like we do with constructor calls.
-  //TODO: SORT OUT THE DESTRUCTOR STUFF
+  
+// TODO: Deal with C# finalizers and Dispose methods at some point
 //  expr.getParent().(DestructorCall).getParent() instanceof DestructorFieldDestruction or
 //  exists(NewArrayExpr newExpr |
 //    // REVIEW: Ignore initializers for `NewArrayExpr` until we determine how to
@@ -75,6 +73,7 @@ private predicate ignoreExprAndDescendants(Expr expr) {
  * Holds if `expr` (not including its descendants) should be ignored for the
  * purposes of IR generation.
  */
+ // TODO: See what exprs should be ignored for C# IR generation
 private predicate ignoreExprOnly(Expr expr) {
 //  exists(NewOrNewArrayExpr newExpr |
 //    // Ignore the allocator call, because we always synthesize it. Don't ignore
@@ -92,11 +91,11 @@ private predicate ignoreExpr(Expr expr) {
   ignoreExprAndDescendants(expr)
 }
 
-/**
- * Holds if `func` contains an AST that cannot be translated into IR. This is mostly used to work
- * around extractor bugs. Once the relevant extractor bugs are fixed, this predicate can be removed.
- */
- // TODO: PROBABLY OK TO COMMENT FOR NOW
+// TODO: Probably ok to ignore for now
+///**
+// * Holds if `func` contains an AST that cannot be translated into IR. This is mostly used to work
+// * around extractor bugs. Once the relevant extractor bugs are fixed, this predicate can be removed.
+// */
 //private predicate isInvalidFunction(Callable callable) {
 //  exists(Literal literal |
 //    // Constructor field inits within a compiler-generated copy constructor have a source expression
@@ -121,11 +120,10 @@ private predicate ignoreExpr(Expr expr) {
  * Holds if `func` should be translated to IR.
  */
 private predicate translateFunction(Callable callable) {
-//  not callable.isFromUninstantiatedTemplate(_) and
-//  callable.hasEntryPoint() and
-  /*not isInvalidFunction(callable) and*/
+  // not isInvalidFunction(callable)
+  exists(callable.getEntryPoint()) and
   exists(IRConfiguration config |
-    config.shouldCreateIRForFunction(callable)
+    config.shouldCreateIRForCallable(callable)
   )
 }
 
@@ -186,25 +184,16 @@ private predicate usedAsCondition(Expr expr) {
   )
 }
 
-/**
- * Holds if `expr` has an lvalue-to-rvalue conversion that should be ignored
- * when generating IR. This occurs for conversion from an lvalue of function type
- * to an rvalue of function pointer type. The conversion is represented in the
- * AST as an lvalue-to-rvalue conversion, but the IR represents both a function
- * lvalue and a function pointer prvalue the same.
- */
- // TODO: probably not needed for C#
+// TODO: Should be enough to translate loads only if they are accesses for now
+///**
+// * Holds if `expr` has an lvalue-to-rvalue conversion that should be ignored
+// * when generating IR. This occurs for conversion from an lvalue of function type
+// * to an rvalue of function pointer type. The conversion is represented in the
+// * AST as an lvalue-to-rvalue conversion, but the IR represents both a function
+// * lvalue and a function pointer prvalue the same.
+// */
 predicate ignoreLoad(Expr expr) {
-//  expr.hasLValueToRValueConversion() and
-//  (
-//    expr instanceof ThisExpr or
-//    expr instanceof FunctionAccess or
-//    expr.(PointerDereferenceExpr).getOperand().getFullyConverted().getType().
-//      getUnspecifiedType() instanceof FunctionPointerType or
-//    expr.(ReferenceDereferenceExpr).getExpr().getType().
-//      getUnspecifiedType() instanceof FunctionReferenceType
-//  )
-	any()
+  not (expr instanceof Access)
 }
 
 newtype TTranslatedElement =
@@ -217,9 +206,9 @@ newtype TTranslatedElement =
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) {
-  	// TODO: THINK THIS SHOULD BE ENOUGH, ONLY OCC (C# 6.0) WHEN WE WANT A CONV. IS A VAR ACCESS
-  	expr instanceof Access and
-    not ignoreExpr(expr) // and
+    not ignoreExpr(expr) and
+  	// TODO: Should be enough to translate loads only if they are accesses for now
+    not ignoreLoad(expr)
 //    not isNativeCondition(expr) and
 //    not isFlexibleCondition(expr) and
 //    expr.hasLValueToRValueConversion() and
@@ -254,7 +243,7 @@ newtype TTranslatedElement =
     not usedAsCondition(expr)
   } or
   // An expression used as an initializer.
-  // TODO: CHECK IF USED INITIALIZERS ARE ACTUALLY RIGHT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // TODO: Make sure the initializers here are right
   TTranslatedInitialization(Expr expr) {
     not ignoreExpr(expr) and
     (
@@ -293,7 +282,6 @@ newtype TTranslatedElement =
     exists(ObjectInitializer initList |
       not ignoreExpr(initList) and
       ast = initList and
-      // TODO: OPTIMIZE
       expr = any(int i |
                  field = initList.getMemberInitializer(i).getInitializedMember() | 
                  initList.getMemberInitializer(i)).getRValue()
@@ -302,7 +290,7 @@ newtype TTranslatedElement =
       not ignoreExpr(init) and
       ast = init and
       field = init.getInitializedMember() and
-      // TODO: WAS GETEXPR, I THINK GETRVALUE DOES THE SAME SINCE IT IS THE RVALUE OF THE ASSIGNMENT
+      // TODO: Was .getExpr, getRValue should be the correspondent for C#
       expr = init.getRValue()
     )
   } or
@@ -331,7 +319,7 @@ newtype TTranslatedElement =
       getEndOfValueInitializedRange(initList, elementIndex) -
       elementIndex
   } or
-  // TODO: NEXT 3 CASES NEED TO BE ADAPTED TO C#
+  // TODO: Convert to C#
   // The initialization of a base class from within a constructor.
 //  TTranslatedConstructorBaseInit(ConstructorBaseInit init) {
 //    not ignoreExpr(init)
@@ -364,8 +352,7 @@ newtype TTranslatedElement =
   TTranslatedParameter(Parameter param) {
     exists(Callable func |
       (
-        func = param.getCallable() // or
-        // func = param.getCatchBlock().getEnclosingFunction() TODO: C# does not support params in catch blocks
+        func = param.getCallable()
       ) and
       translateFunction(func)
     )
@@ -395,13 +382,7 @@ newtype TTranslatedElement =
   // An allocation size for a `new` or `new[]` expression
   TTranslatedAllocationSize(ObjectCreation newExpr) {
     not ignoreExpr(newExpr)
-  } //or
-
-  // The declaration/initialization part of a `ConditionDeclExpr`
-  // TODO: ILLEGAL IN C#
-//  TTranslatedConditionDecl(ConditionDeclExpr expr) {
-//    not ignoreExpr(expr)
-//  }
+  }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
@@ -529,7 +510,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * `VoidType`.
    */
   abstract predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue);
+    Type resultType, boolean isLValue);
 
   /**
    * Gets the `Function` that contains this element.

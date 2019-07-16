@@ -11,14 +11,11 @@ abstract class ValueCategory extends TValueCategory {
 abstract class RValue extends ValueCategory {
 }
 
-class LValue extends ValueCategory {
-  override string toString() {
-    result = "lvalue"
-  }
+abstract class LValue extends ValueCategory {
 }
 
-ValueCategory getExprValueCategory(Expr expr) {
-  (
-     result instanceof LValue
-  )
-}
+//ValueCategory getExprValueCategory(Expr expr) {
+//  (
+//     result instanceof LValue
+//  )
+//}

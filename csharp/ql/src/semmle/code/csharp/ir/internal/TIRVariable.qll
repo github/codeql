@@ -5,11 +5,11 @@ private import semmle.code.csharp.ir.Util
 
 newtype TIRVariable =
   TIRAutomaticUserVariable(LocalScopeVariable var, Callable callable) {
-    Construction::functionHasIR(callable) and
+    Construction::callableHasIR(callable) and
     var.getCallable() = callable
   } or
   TIRStaticUserVariable(Variable var, Callable callable) {
-    Construction::functionHasIR(callable) and
+    Construction::callableHasIR(callable) and
 // TODO: CHECK FOR CORRESPONDENCE HERE
 //    (
 //      var instanceof GlobalOrNamespaceVariable or
@@ -20,7 +20,7 @@ newtype TIRVariable =
       access.getEnclosingCallable() = callable
     )
   } or
-  TIRTempVariable(Callable callable, Locatable ast, TempVariableTag tag, Type type) { // TODO: LOOK AT LOCATABLE FOR C#
+  TIRTempVariable(Callable callable, Locatable ast, TempVariableTag tag, Type type) {
     Construction::hasTempVariable(callable, ast, tag, type)
   }
 

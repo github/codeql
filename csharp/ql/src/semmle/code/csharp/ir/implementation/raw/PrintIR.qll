@@ -22,7 +22,7 @@ class PrintIRConfiguration extends TPrintIRConfiguration {
   }
 }
 
-private predicate shouldPrintFunction(Callable func) {
+private predicate shouldPrintCallable(Callable func) {
   exists(PrintIRConfiguration config |
     config.shouldPrintFunction(func)
   )
@@ -32,8 +32,8 @@ private predicate shouldPrintFunction(Callable func) {
  * Override of `IRConfiguration` to only create IR for the functions that are to be dumped.
  */
 private class FilteredIRConfiguration extends IRConfiguration {
-  override predicate shouldCreateIRForFunction(Callable func) {
-    shouldPrintFunction(func)
+  override predicate shouldCreateIRForCallable(Callable func) {
+    shouldPrintCallable(func)
   }
 }
 
@@ -51,13 +51,13 @@ private string getAdditionalBlockProperty(IRBlock block, string key) {
 
 private newtype TPrintableIRNode =
   TPrintableIRFunction(IRFunction irFunc) {
-    shouldPrintFunction(irFunc.getFunction())
+    shouldPrintCallable(irFunc.getCallable())
   } or
   TPrintableIRBlock(IRBlock block) {
-    shouldPrintFunction(block.getEnclosingFunction())
+    shouldPrintCallable(block.getEnclosingFunction())
   } or
   TPrintableInstruction(Instruction instr) {
-    shouldPrintFunction(instr.getEnclosingCallable())
+    shouldPrintCallable(instr.getEnclosingCallable())
   }
 
 /**
@@ -132,7 +132,7 @@ class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction {
 
   override string getLabel() {
   	// TODO: C++ USED THE PRINT MODULE, NOT SURE TOsTRING DOES THE JOB
-    result = irFunc.getFunction().toString()
+    result = irFunc.getCallable().toString()
   }
 
   override int getOrder() {

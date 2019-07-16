@@ -10,7 +10,7 @@ private import TranslatedExpr
 private import TranslatedInitialization
 private import TranslatedStmt
 
-//TODO: FIX CONSTRUCTORS AND DESTRUCTORS
+//TODO: Reason about constructors and destructors
 
 /**
  * Gets the `TranslatedFunction` that represents function `callable`.
@@ -145,43 +145,43 @@ class TranslatedFunction extends TranslatedElement,
   }
 
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+    Type resultType, boolean isLValue) {
     (
       (
         tag = EnterFunctionTag() and
         opcode instanceof Opcode::EnterFunction and
         resultType instanceof VoidType and
-        isGLValue = false
+        isLValue = false
       ) or
       (
         tag = UnmodeledDefinitionTag() and
         opcode instanceof Opcode::UnmodeledDefinition and
         resultType instanceof VoidType and
-        isGLValue = false
+        isLValue = false
       ) or
       (
         tag = AliasedDefinitionTag() and
         opcode instanceof Opcode::AliasedDefinition and
         resultType instanceof VoidType and
-        isGLValue = false
+        isLValue = false
       ) or
       (
         tag = InitializeThisTag() and
         opcode instanceof Opcode::InitializeThis and
         resultType = getThisType() and
-        isGLValue = true
+        isLValue = true
       ) or
       (
         tag = ReturnValueAddressTag() and
         opcode instanceof Opcode::VariableAddress and
         resultType = getReturnType() and
         not resultType instanceof VoidType and
-        isGLValue = true
+        isLValue = true
       ) or
       (
         tag = ReturnTag() and
         resultType instanceof VoidType and
-        isGLValue = false and
+        isLValue = false and
         if getReturnType() instanceof VoidType then
           opcode instanceof Opcode::ReturnVoid
         else
@@ -191,7 +191,7 @@ class TranslatedFunction extends TranslatedElement,
         tag = UnwindTag() and
         opcode instanceof Opcode::Unwind and
         resultType instanceof VoidType and
-        isGLValue = false and
+        isLValue = false and
         (
           // Only generate the `Unwind` instruction if there is any exception
           // handling present in the function.
@@ -207,13 +207,13 @@ class TranslatedFunction extends TranslatedElement,
         tag = UnmodeledUseTag() and
         opcode instanceof Opcode::UnmodeledUse and
         resultType instanceof VoidType and
-        isGLValue = false
+        isLValue = false
       ) or
       (
         tag = ExitFunctionTag() and
         opcode instanceof Opcode::ExitFunction and
         resultType instanceof VoidType and
-        isGLValue = false
+        isLValue = false
       )
     )
   }
@@ -274,7 +274,6 @@ class TranslatedFunction extends TranslatedElement,
    * Gets the instruction to which control should flow after a `return`
    * statement. In C#, this should be the instruction which generates `VariableAddress[#return]`.
    */
-  // TODO: TIDY
   final Instruction getReturnSuccessorInstruction() {
     result = getInstruction(ReturnValueAddressTag())
   }
@@ -306,12 +305,6 @@ class TranslatedFunction extends TranslatedElement,
    * Holds only if the function is an instance member function, constructor, or destructor.
    */
   final Type getThisType() {
-//    exists(MemberFunction mfunc |
-//      mfunc = callable and
-//      not mfunc.isStatic() and
-//      result = mfunc.getDeclaringType()
-//    )
-	// TODO: ALL ARE MEMBERS
 	result = callable.getDeclaringType()
   }
 
@@ -379,18 +372,18 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
   }
 
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+    Type resultType, boolean isLValue) {
     (
       tag = InitializerVariableAddressTag() and
       opcode instanceof Opcode::VariableAddress and
       resultType = getVariableType(param) and
-      isGLValue = true
+      isLValue = true
     ) or
     (
       tag = InitializerStoreTag() and
       opcode instanceof Opcode::InitializeParameter and
       resultType = getVariableType(param) and
-      isGLValue = false
+      isLValue = false
     )
   }
 
@@ -441,15 +434,13 @@ class TranslatedConstructorInitList extends TranslatedElement,
     result = callable
   }
 
-  // TODO: PROBABLY NOT RIGHT, LOOK INTO CONSTRUCTORS
+  // TODO: Is this enough?
   override TranslatedElement getChild(int id) {
-  	result = getTranslatedExpr(callable.getChild(id))
+  	result = getTranslatedExpr(callable).getChild(id)
 //    exists(MemberInitializer init |
-//      // TODO: NEED TO BIND, WHY DOES CALLABLE GET CONVERTED TO METHOD?
 //      init = callable.(Constructor).getInitializer().getRawArgument(id) and
 //      result = getTranslatedConstructorFieldInitialization(init)
 //    ) // or
-    // TODO: IS THIS PART OF EXPLICIT OR IMPLICIT INIT IN C#?
 //    exists(ConstructorBaseInit baseInit |
 //      baseInit = callable.(Constructor).getInitializer().getRawArgument(id) and
 //      result = getTranslatedConstructorBaseInit(baseInit)
@@ -464,7 +455,7 @@ class TranslatedConstructorInitList extends TranslatedElement,
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+    Type resultType, boolean isLValue) {
     none()
   }
 
@@ -501,6 +492,7 @@ getTranslatedDestructorDestructionList(Callable callable) {
   result.getAST() = callable
 }
 
+// TODO: Should not exist in C#, keep for now (the fix for getReturnSuccessorInstruction replaces it)
 /**
  * Represents the IR translation of a destructor's implicit calls to destructors
  * for fields and base classes. To simplify the implementation of `TranslatedFunction`, 
@@ -508,7 +500,6 @@ getTranslatedDestructorDestructionList(Callable callable) {
  * destructors. Of course, only the instances for destructors can actually contain
  * destructions.
  */
-// TODO: FIX DESTRUCTORS, TIDY
 class TranslatedDestructorDestructionList extends TranslatedElement,
   TTranslatedDestructorDestructionList {
   Callable callable;
@@ -525,9 +516,9 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
     result = callable
   }
 
-  // TODO: PROBABLY NOT RIGHT, LOOK INTO DESTRUCTORS
+  // TODO: Is this enough?
   override TranslatedElement getChild(int id) {
-     result = getTranslatedExpr(callable.getChild(id))
+     result = getTranslatedExpr(callable).getChild(id)
   }
 
   override Instruction getFirstInstruction() {
@@ -538,7 +529,7 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+    Type resultType, boolean isLValue) {
     none()
   }
 

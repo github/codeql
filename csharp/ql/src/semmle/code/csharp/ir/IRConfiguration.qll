@@ -11,9 +11,9 @@ class IRConfiguration extends TIRConfiguration {
   }
 
   /**
-   * Holds if IR should be created for method `method`. By default, holds for all method.
+   * Holds if IR should be created for callable `callable`. By default, holds for all callables.
    */
-  predicate shouldCreateIRForFunction(Callable callable) {
+  predicate shouldCreateIRForCallable(Callable callable) {
     any()
   }
 }

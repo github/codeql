@@ -20,7 +20,7 @@ InstructionTag getInstructionTag(Instruction instruction) {
 
 import Cached
 cached private module Cached {
-  cached predicate functionHasIR(Callable callable) {
+  cached predicate callableHasIR(Callable callable) {
     exists(getTranslatedFunction(callable)) and
     callable.fromSource()
   }
@@ -162,24 +162,6 @@ cached private module Cached {
         instruction = inLoop.getInstruction(tag)
       )
     )
-    //or
-    // TODO: TRANSLATE TO FOREACH
-    // Range-based for loop:
-    // Any edge from within the update of the loop to the condition of
-    // the loop is a back edge.
-//    exists(TranslatedRangeBasedForStmt s, TranslatedCondition condition |
-//      s instanceof TranslatedRangeBasedForStmt and
-//      condition = s.getCondition() and
-//      result = condition.getFirstInstruction() and
-//      exists(TranslatedElement inUpdate, InstructionTag tag |
-//        result = inUpdate.getInstructionSuccessor(tag, kind) and
-//        exists(TranslatedElement update |
-//          update = s.getUpdate() |
-//          inUpdate = update.getAChild*()
-//        ) and
-//        instruction = inUpdate.getInstruction(tag)
-//      )
-//    )
     or
     // Goto statement:
     // As a conservative approximation, any edge out of `goto` is a back edge
@@ -208,9 +190,9 @@ cached private module Cached {
     result = getInstructionTranslatedElement(instruction).getAST()
   }
 
-  cached predicate instructionHasType(Instruction instruction, Type type, boolean isGLValue) {
+  cached predicate instructionHasType(Instruction instruction, Type type, boolean isLValue) {
     getInstructionTranslatedElement(instruction)
-      .hasInstruction(_, getInstructionTag(instruction), type, isGLValue)
+      .hasInstruction(_, getInstructionTag(instruction), type, isLValue)
   }
 
   cached Opcode getInstructionOpcode(Instruction instruction) {
@@ -219,7 +201,7 @@ cached private module Cached {
   }
 
   cached IRFunction getInstructionEnclosingIRFunction(Instruction instruction) {
-    result.getFunction() = getInstructionTranslatedElement(instruction).getCallable()
+    result.getCallable() = getInstructionTranslatedElement(instruction).getCallable()
   }
 
   cached IRVariable getInstructionVariable(Instruction instruction) {

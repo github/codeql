@@ -1,5 +1,5 @@
 private import internal.ConstantAnalysisInternal
-private import semmle.code.sharp.ir.internal.IntegerConstant
+private import semmle.code.csharp.ir.internal.IntegerConstant
 private import ConstantAnalysis
 import IR
 

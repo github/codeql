@@ -59,7 +59,7 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition,
   }
 
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+    Type resultType, boolean isLValue) {
     none()
   }
 
@@ -136,7 +136,7 @@ abstract class TranslatedBinaryLogicalOperation extends
   }
 
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isGLValue) {
+    Type resultType, boolean isLValue) {
     none()
   }
 
@@ -211,11 +211,11 @@ class TranslatedValueCondition extends TranslatedCondition,
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isGLValue) {
+      Type resultType, boolean isLValue) {
     tag = ValueConditionConditionalBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
     resultType instanceof VoidType and
-    isGLValue = false
+    isLValue = false
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {

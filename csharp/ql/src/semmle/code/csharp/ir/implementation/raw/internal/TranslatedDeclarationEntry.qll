@@ -21,6 +21,7 @@ TranslatedDeclarationEntry getTranslatedDeclarationEntry(Declaration entry) {
  * it can also be the declaration of a static local variable, an extern
  * variable, or an extern function.
  */
+// TODO: Make sure local decls are handeld correctly (seem to be)
 abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslatedDeclarationEntry {
   Declaration entry;
 
@@ -30,7 +31,6 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
 
   override final Callable getCallable() {
     exists(LocalVariableDeclStmt stmt |
-    // TODO: NOT SURE HOW SOUNDS THIS IS; DO WE MEAN JUST
       stmt.getAVariableDeclExpr().getVariable() = entry and
       result = stmt.getEnclosingCallable()
     )
@@ -56,11 +56,11 @@ class TranslatedNonVariableDeclarationEntry extends TranslatedDeclarationEntry {
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isGLValue) {
+      Type resultType, boolean isLValue) {
     opcode instanceof Opcode::NoOp and
     tag = OnlyInstructionTag() and
     resultType instanceof VoidType and
-    isGLValue = false
+    isLValue = false
   }
 
   override Instruction getFirstInstruction() {
@@ -102,19 +102,19 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isGLValue) {
+      Type resultType, boolean isLValue) {
     (
       tag = InitializerVariableAddressTag() and
       opcode instanceof Opcode::VariableAddress and
       resultType = getVariableType(getVariable()) and
-      isGLValue = true
+      isLValue = true
     ) or
     (
       hasUninitializedInstruction() and
       tag = InitializerStoreTag() and
       opcode instanceof Opcode::Uninitialized and
       resultType = getVariableType(getVariable()) and
-      isGLValue = false
+      isLValue = false
     )
   }
 

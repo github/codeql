@@ -50,7 +50,7 @@ abstract class IRVariable extends TIRVariable {
    * Gets the IR for the function that references this variable.
    */
   final IRFunction getEnclosingIRFunction() {
-    result.getFunction() = callable
+    result.getCallable() = callable
   }
 
   /**

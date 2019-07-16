@@ -61,7 +61,7 @@ module InstructionSanity {
       message = "Instruction '" + instr.getOpcode().toString() + "' is missing an expected operand with tag '" +
         tag.toString() + "' in function '$@'." and
       func = instr.getEnclosingIRFunction() and
-      funcText = func.getFunction().getName()
+      funcText = func.getCallable().getName()
     )
   }
 
@@ -192,7 +192,7 @@ module InstructionSanity {
    * This check ensures we don't have too _few_ back edges.
    */
   query predicate containsLoopOfForwardEdges(IRFunction f) {
-  	f.getFunction().fromSource() and 
+  	f.getCallable().fromSource() and 
     exists(IRBlock block |
       forwardEdge+(block, block) and
       block.getEnclosingIRFunction() = f
@@ -213,7 +213,7 @@ module InstructionSanity {
       entry = f.getEntryBlock() and
       entry.getASuccessor+() = block and
       not forwardEdge+(entry, block) and
-      not exists(GotoStmt s | s.getEnclosingCallable() = f.getFunction())
+      not exists(GotoStmt s | s.getEnclosingCallable() = f.getCallable())
     )
   }
 
@@ -316,18 +316,19 @@ class Instruction extends Construction::TInstruction {
 
   bindingset[type]
   private string getValueCategoryString(string type) {
-    if isGLValue() then
-      result = "glval<" + type + ">"
+    if isLValue() then
+      result = "lval<" + type + ">"
     else
       result = type
   }
 
+  // TODO: Memory model in C#?
   string getResultTypeString() {
     exists(string valcat |
       valcat = getValueCategoryString(getResultType().toString()) and
       if (getResultType() instanceof UnknownType and
-          not isGLValue())/* and
-          exists(getResultSize()))*/ then ( // TODO: SIZES HERE??
+          not isLValue())/* and
+          exists(getResultSize()))*/ then (
         result = valcat + "[" + /*getResultSize().toString()*/8.toString() + "]"
       )
       else
@@ -393,7 +394,7 @@ class Instruction extends Construction::TInstruction {
    * Gets the function that contains this instruction.
    */
   final Callable getEnclosingCallable() {
-    result = getEnclosingIRFunction().getFunction()
+    result = getEnclosingIRFunction().getCallable()
   }
 
   /**
@@ -460,18 +461,18 @@ class Instruction extends Construction::TInstruction {
    * result of the `Load` instruction is a prvalue of type `int`, representing
    * the integer value loaded from variable `x`.
    */
-  final predicate isGLValue() {
+  final predicate isLValue() {
     Construction::instructionHasType(this, _, true)
   }
 
-  /**
-   * Gets the size of the result produced by this instruction, in bytes. If the
-   * result does not have a known constant size, this predicate does not hold.
-   *
-   * If `this.isGLValue()` holds for this instruction, the value of
-   * `getResultSize()` will always be the size of a pointer.
-   */
-   // TODO: HOW TO DEAL WITH SIZES???
+// TODO: Memory model in C#
+//  /**
+//   * Gets the size of the result produced by this instruction, in bytes. If the
+//   * result does not have a known constant size, this predicate does not hold.
+//   *
+//   * If `this.isGLValue()` holds for this instruction, the value of
+//   * `getResultSize()` will always be the size of a pointer.
+//   */
 //  final int getResultSize() {
 //    if isGLValue() then (
 //      // a glvalue is always pointer-sized.
@@ -1085,12 +1086,12 @@ class InheritanceConversionInstruction extends UnaryInstruction {
     result = derivedClass.toString() + " : " + baseClass.toString()
   }
 
-  /**
-   * Gets the `ClassDerivation` for the inheritance relationship between
-   * the base and derived classes. This predicate does not hold if the
-   * conversion is to an indirect virtual base class.
-   */
-   // TODO: WHAT IS THE EQUIV IN C#
+// TODO: WHAT IS THE EQUIV IN C#
+//  /**
+//   * Gets the `ClassDerivation` for the inheritance relationship between
+//   * the base and derived classes. This predicate does not hold if the
+//   * conversion is to an indirect virtual base class.
+//   */
 //  final ClassDerivation getDerivation() {
 //    result.getBaseClass() = baseClass and result.getDerivedClass() = derivedClass
 //  }

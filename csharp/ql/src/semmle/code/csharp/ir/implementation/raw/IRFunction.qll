@@ -4,35 +4,35 @@ import csharp
 
 private newtype TIRFunction =
   MkIRFunction(Callable callable) {
-    Construction::functionHasIR(callable)
+    Construction::callableHasIR(callable)
   }
 
 /**
  * Represents the IR for a function.
  */
 class IRFunction extends TIRFunction {
-  Callable func;
+  Callable callable;
 
   IRFunction() {
-    this = MkIRFunction(func)
+    this = MkIRFunction(callable)
   }
 
   final string toString() {
-    result = "IR: " + func.toString()
+    result = "IR: " + callable.toString()
   }
 
   /**
    * Gets the function whose IR is represented.
    */
-  final Callable getFunction() {
-    result = func
+  final Callable getCallable() {
+    result = callable
   }
 
   /**
    * Gets the location of the function.
    */
   final Location getLocation() {
-    result = func.getLocation()
+    result = callable.getLocation()
   }
 
   /**

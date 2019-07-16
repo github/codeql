@@ -30,12 +30,12 @@ abstract class TranslatedCall extends TranslatedExpr {
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isGLValue) {
+      Type resultType, boolean isLValue) {
     (
       tag = CallTag() and
       opcode instanceof Opcode::Call and
       resultType = getCallResultType() and
-      isGLValue = false
+      isLValue = false
     ) or
     (
       hasSideEffect() and
@@ -50,7 +50,7 @@ abstract class TranslatedCall extends TranslatedExpr {
           resultType instanceof VoidType
         )
       ) and
-      isGLValue = false
+      isLValue = false
     )
   }
   
@@ -241,8 +241,8 @@ abstract class TranslatedDirectCall extends TranslatedCall {
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isGLValue) {
-    TranslatedCall.super.hasInstruction(opcode, tag, resultType, isGLValue) or
+      Type resultType, boolean isLValue) {
+    TranslatedCall.super.hasInstruction(opcode, tag, resultType, isLValue) or
     (
       tag = CallTargetTag() and
       opcode instanceof Opcode::FunctionAddress and
@@ -250,7 +250,7 @@ abstract class TranslatedDirectCall extends TranslatedCall {
       // its address was taken, so we'll just use glval<Unknown> instead of
       // glval<FunctionType>.
       resultType instanceof UnknownType and
-      isGLValue = true
+      isLValue = true
     )
   }
   
@@ -281,26 +281,15 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr,
   }
 
   override final TranslatedExpr getQualifier() {
-    result = getTranslatedExpr(expr.getChild(-1)) // TODO: CHECK getQUALIFIER() SAME AS THIS
+  	// TODO: Was getQualifier in the C++ implementation, make sure
+  	//       meaning is kept
+    result = getTranslatedExpr(expr.getChild(-1)) 
   }
 
   override final TranslatedExpr getArgument(int index) {
     result = getTranslatedExpr(expr.getArgument(index))
   }
 }
-
-/**
- * Represents the IR translation of a call through a function pointer.
- */
-// TODO: PROB NOT IN C#
-//class TranslatedExprCall extends TranslatedCallExpr {
-//  override ExprCall expr;
-//
-//
-//  override TranslatedExpr getCallTarget() {
-//    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
-//  }
-//}
 
 /**
  * Represents the IR translation of a direct function call.
@@ -322,12 +311,11 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
 }
 
 /**
- * Represents the IR translation of a call to a constructor.
+ * Represents the IR translation of a call to a constructor (can't call destructor explicitly in C#.
  */
 class TranslatedStructorCall extends TranslatedFunctionCall {
   TranslatedStructorCall() {
-    expr instanceof ObjectCreation // or
-    // expr instanceof DestructorCall TODO: ILLEGAL TO EXPLICITILY CALL DESTRUCTOR
+    expr instanceof ObjectCreation
   }
 
   override Instruction getQualifierResult() {

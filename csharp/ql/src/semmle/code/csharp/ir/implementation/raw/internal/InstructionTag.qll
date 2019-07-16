@@ -2,10 +2,10 @@ import csharp
 import semmle.code.csharp.ir.Util
 
 
-// TODO:IN C# DOES IT MAKE SENSE TO HAVE BOTH?
+// TODO: Both exists needed?
 private predicate fieldIsInitialized(Field field) {
   exists(ObjectInitializer initList | 
-  	exists(int i |field = initList.getMemberInitializer(i).getInitializedMember())
+  	exists(int i | field = initList.getMemberInitializer(i).getInitializedMember())
   ) or
   exists(MemberInitializer init |
     field = init.getInitializedMember()
@@ -87,14 +87,7 @@ newtype TInstructionTag =
   } or
   InitializerElementDefaultValueStoreTag(int elementIndex) {
     elementIsInitialized(elementIndex)
-  } // or
-  // TODO: ASM NOT PRESENT IN C#
-//  AsmTag() or
-//  AsmInputTag(int elementIndex) {
-//    exists(AsmStmt asm |
-//      exists(asm.getChild(elementIndex))
-//    )
-//  } 
+  }
 
 class InstructionTag extends TInstructionTag {
   final string toString() {
@@ -154,7 +147,7 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = CatchTag() and result = "Catch" or
   tag = ThrowTag() and result = "Throw" or
   tag = UnwindTag() and result = "Unwind" or
-  // TODO: WHY?
+  // TODO: Reread
 //  exists(Field field, Class cls, int index, string tagName |
 //    field = cls.getCanonicalMember(index) and
 //    (
@@ -172,9 +165,5 @@ string getInstructionTagId(TInstructionTag tag) {
       tag = InitializerElementDefaultValueStoreTag(index) and tagName = "InitElemDefValStore"
     ) and
     result = tagName + "(" + index + ")"
-  ) // or TODO: ASM HERE?
-//  tag = AsmTag() and result = "Asm" or
-//  exists(int index |
-//    tag = AsmInputTag(index) and result = "AsmInputTag(" + index + ")"
-//  )
+  )
 }

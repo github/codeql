@@ -1,3 +1,8 @@
+/*
+ * Temporary file that has stubs for various functionalities in the IR conversion.
+ */
+
+
 import csharp
 
 class Locatable extends Element {
@@ -18,7 +23,7 @@ class ArrayInitWithMod extends ArrayInitializer {
 
 class ObjectInitializerMod extends ObjectInitializer {
 	private predicate isInitialized(Field field) {	
-		not (field.isReadOnly()) and // TODO: Think this is the only instance where a field is not initializable
+		not (field.isReadOnly()) and // TODO: Is this the only instance whena field can not be init?
 		this.getAMemberInitializer().getTargetVariable() = field
 	}
 	
@@ -29,6 +34,7 @@ class ObjectInitializerMod extends ObjectInitializer {
   	}
 }
 
+// TODO: See if we need to adapt this for C#
 abstract class SideEffectCallable extends Callable {
   /**
     * Holds if the function never reads from memory that was defined before entry to the function.

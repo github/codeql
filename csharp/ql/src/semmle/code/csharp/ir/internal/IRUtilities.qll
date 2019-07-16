@@ -8,9 +8,8 @@ import csharp
  * becomes a pointer to the element type of the array. If the specified type
  * is not subject to pointer decay, this predicate does not hold.
  */
+// TODO: Only pointer to array decay in C#?
 private Type getDecayedType(Type type) {
-  // TODO: CHECK WHAT EXACTLY CAN BE DECAYED IN C#
-  // result.(FunctionPointerType).getBaseType() = type.(RoutineType) or
   result.(PointerType).getReferentType() = type.(ArrayType).getElementType()
 }
 
@@ -21,14 +20,14 @@ private Type getDecayedType(Type type) {
  */
 Type getVariableType(Variable v) {
   exists(Type declaredType |
-    declaredType = v.getType() and // TODO: IS getUnspecifiedType RELEVANT HERE?
+    declaredType = v.getType() and
     if v instanceof Parameter then (
       result = getDecayedType(declaredType) or
       not exists(getDecayedType(declaredType)) and result = declaredType
     )
-    else if declaredType instanceof ArrayType /*TODO: DO WE NEED TO CHECK FOR ARRAY SIZES? PROBS NOT, ILLEGAL 
-     * FOR AN ARRAY TO NOT HAVE SIZE
-     *  and not declaredType.(ArrayType).hasArraySize() */ then (
+    else if declaredType instanceof ArrayType then (
+      // TODO: Arrays have a declared dimension in C#, so this should not be needed
+      // and not declaredType.(ArrayType).hasArraySize()
       result = v.getInitializer().getType() or
       not exists(v.getInitializer()) and result = declaredType
     )

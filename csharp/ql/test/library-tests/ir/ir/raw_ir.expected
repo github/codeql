@@ -1,14 +1,14 @@
 ir.cs:
 #    4| bar
 #    4|   Block 0
-#    4|     v0_0(Void)         = EnterFunction            : 
-#    4|     v0_1(Void)         = AliasedDefinition        : 
-#    4|     v0_2(Void)         = UnmodeledDefinition      : 
-#    4|     r0_3(glval<foo>)   = InitializeThis           : 
-#    5|     r0_4(glval<Int32>) = VariableAddress[#return] : 
-#    5|     r0_5(Int32)        = Constant[0]              : 
-#    5|     mu0_6(Int32)       = Store                    : &:r0_4, r0_5
-#    4|     r0_7(glval<Int32>) = VariableAddress[#return] : 
-#    4|     v0_8(Void)         = ReturnValue              : &:r0_7, ~v0_2
-#    4|     v0_9(Void)         = UnmodeledUse             : mu*
-#    4|     v0_10(Void)        = ExitFunction             : 
+#    4|     v0_0(Void)        = EnterFunction            : 
+#    4|     v0_1(Void)        = AliasedDefinition        : 
+#    4|     v0_2(Void)        = UnmodeledDefinition      : 
+#    4|     r0_3(lval<foo>)   = InitializeThis           : 
+#    5|     r0_4(lval<Int32>) = VariableAddress[#return] : 
+#    5|     r0_5(Int32)       = Constant[0]              : 
+#    5|     mu0_6(Int32)      = Store                    : &:r0_4, r0_5
+#    4|     r0_7(lval<Int32>) = VariableAddress[#return] : 
+#    4|     v0_8(Void)        = ReturnValue              : &:r0_7, ~v0_2
+#    4|     v0_9(Void)        = UnmodeledUse             : mu*
+#    4|     v0_10(Void)       = ExitFunction             : 

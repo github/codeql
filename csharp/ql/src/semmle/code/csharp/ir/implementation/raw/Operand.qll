@@ -116,8 +116,8 @@ class Operand extends TOperand {
    * not hold, the value of the operand represents a value whose type is
    * given by `getResultType()`.
    */
-  predicate isGLValue() {
-    getDefinitionInstruction().isGLValue()
+  predicate isLValue() {
+    getDefinitionInstruction().isLValue()
   }
 
   /**
@@ -125,7 +125,7 @@ class Operand extends TOperand {
    * a known constant size, this predicate does not hold.
    */
   int getSize() {
-    result = 8 //getType().getSize() TODO: SIZE IN C#
+    result = 8 //getType().getSize() TODO: C# memory layout
   }
 }
 
@@ -138,7 +138,7 @@ class MemoryOperand extends Operand {
     this = TPhiOperand(_, _, _, _)
   }
 
-  override predicate isGLValue() {
+  override predicate isLValue() {
     // A `MemoryOperand` can never be a glvalue
     none()
   }
@@ -389,7 +389,8 @@ class SideEffectOperand extends TypedOperand {
     if getType() instanceof UnknownType then
       result = Construction::getInstructionOperandSize(useInstr, tag)
     else
-      result = 8 //getType().getSize() TODO; SIZES IN C#??
+      // TODO: Memory layout in C#
+      result = 8 //getType().getSize()
   }
 
   override MemoryAccessKind getMemoryAccess() {

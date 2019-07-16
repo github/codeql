@@ -22,18 +22,10 @@ private newtype TOperandTag =
   TCallTargetOperand() or
   TThisArgumentOperand() or
   TPositionalArgumentOperand(int argIndex) {
-    argIndex in [0..getMaxCallArgIndex()] /* TODO: WHAT IS THE PURPOSE OF BUILTINOPS HERE? or
-    exists(BuiltInOperation op |
-      exists(op.getChild(argIndex))
-    ) */
+    argIndex in [0..getMaxCallArgIndex()] 
   } or
   TChiTotalOperand() or
-  TChiPartialOperand() // or TODO: NO ASM INSTR FOR C#, PROBS SAFE TO COMMENT
-//  TAsmOperand(int index) {
-//    exists(AsmStmt asm |
-//      exists(asm.getChild(index))
-//    )
-//  } 
+  TChiPartialOperand()
 
 /**
  * Identifies the kind of operand on an instruction. Each `Instruction` has at
@@ -367,28 +359,3 @@ class ChiPartialOperandTag extends MemoryOperandTag, TChiPartialOperand {
 ChiPartialOperandTag chiPartialOperand() {
   result = TChiPartialOperand()
 }
-
-// TODO: NO ASM INSTR FOR C#, PROBS SAFE TO COMMENT
-//class AsmOperandTag extends RegisterOperandTag, TAsmOperand {
-//  int index;
-//
-//  AsmOperandTag() {
-//    this = TAsmOperand(index)
-//  }
-//
-//  override final string toString() {
-//    result = "AsmOperand(" + index + ")"
-//  }
-//
-//  override final int getSortOrder() {
-//    result = 15 + index
-//  }
-//
-//  override final string getLabel() {
-//    result = index.toString() + ":"
-//  }
-//}
-//
-//AsmOperandTag asmOperand(int index) {
-//  result = TAsmOperand(index)
-//}
