@@ -224,7 +224,7 @@ class ClassExpr extends @classexpr, ClassDefinition, Expr {
     (
       exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
       or
-      exists(Property p |
+      exists(ValueProperty p |
         this = p.getInit() and
         result = p.getName()
       )
