@@ -229,7 +229,7 @@ class ClassExpr extends @classexpr, ClassDefinition, Expr {
         result = p.getName()
       )
       or
-      exists(AssignExpr assign, DotExpr prop |
+      exists(AssignExpr assign, PropAccess prop |
         this = assign.getRhs().getUnderlyingValue() and
         prop = assign.getLhs() and
         result = prop.getPropertyName()
