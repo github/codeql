@@ -170,7 +170,7 @@ void antipattern2()
 	qwLongTime += 365 * 24 * 60 * 60 * 10000000LLU;
 
 	// copy back to a FILETIME
-	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF);
+	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // BAD
 	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32);
 
 	// convert back to SYSTEMTIME for display or other usage
@@ -196,4 +196,30 @@ time_t mkTime(int days)
 	t = mktime(&tm); // convert tm -> time_t
 
 	return t;
+}
+
+void checkedExample()
+{
+	// get the current time as a FILETIME
+	SYSTEMTIME st; FILETIME ft;
+	GetSystemTime(&st);
+	SystemTimeToFileTime(&st, &ft);
+
+	// convert to a quadword (64-bit integer) to do arithmetic
+	ULONGLONG qwLongTime;
+	qwLongTime = (((ULONGLONG)ft.dwHighDateTime) << 32) + ft.dwLowDateTime;
+
+	// add a year by calculating the ticks in 365 days
+	// (which may be incorrect when crossing a leap day)
+	qwLongTime += 365 * 24 * 60 * 60 * 10000000LLU;
+
+	// copy back to a FILETIME
+	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // GOOD [FALSE POSITIVE]
+	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32);
+
+	// convert back to SYSTEMTIME for display or other usage
+	if (FileTimeToSystemTime(&ft, &st) == 0)
+	{
+		// handle error...
+	}
 }
