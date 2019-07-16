@@ -2,4 +2,5 @@
 | tst.ts | ESNamedExport1 | esNamedExports.ts | ESNamedExport1 |
 | tst.ts | ESNamedExport2 | esNamedExports.ts | ESNamedExport2 |
 | tst.ts | NodeFullExport | nodeFullExport.ts | NodeFullExport |
+| tst.ts | NodeFullExport | nodeFullExport.ts | exports |
 | tst.ts | NodeNamedExport | nodeNamedExport.ts | NodeNamedExport |
