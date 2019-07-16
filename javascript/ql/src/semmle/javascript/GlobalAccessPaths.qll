@@ -112,7 +112,8 @@ module GlobalAccessPath {
     exists(DataFlow::Node rhs |
       fromRhs(rhs) = accessPath and
       not isSelfAssignment(rhs) and
-      rhs.getFile() = file
+      // Note: Avoid unneeded materialization of DataFlow::Node.getFile()
+      rhs.getAstNode().getFile() = file
     )
   }
 
