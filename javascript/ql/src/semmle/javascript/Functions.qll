@@ -58,20 +58,23 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   string getName() {
     result = getId().getName()
     or
-    exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
-    or
-    exists(Property p |
-      this = p.getInit() and
-      result = p.getName()
+    not exists(getId()) and
+    (
+      exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
+      or
+      exists(Property p |
+        this = p.getInit() and
+        result = p.getName()
+      )
+      or
+      exists(AssignExpr assign, DotExpr prop |
+        this = assign.getRhs().getUnderlyingValue() and
+        prop = assign.getLhs() and
+        result = prop.getPropertyName()
+      )
+      or
+      exists(ClassOrInterface c | this = c.getMember(result).getInit())
     )
-    or
-    exists(AssignExpr assign, DotExpr prop |
-      this = assign.getRhs().getUnderlyingValue() and
-      prop = assign.getLhs() and
-      result = prop.getPropertyName()
-    )
-    or
-    exists(ClassOrInterface c | this = c.getMember(result).getInit())
   }
 
   /** Gets the variable holding this function. */

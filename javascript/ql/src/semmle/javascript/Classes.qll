@@ -220,17 +220,20 @@ class ClassExpr extends @classexpr, ClassDefinition, Expr {
   override string getName() {
     result = ClassDefinition.super.getName()
     or
-    exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
-    or
-    exists(Property p |
-      this = p.getInit() and
-      result = p.getName()
-    )
-    or
-    exists(AssignExpr assign, DotExpr prop |
-      this = assign.getRhs().getUnderlyingValue() and
-      prop = assign.getLhs() and
-      result = prop.getPropertyName()
+    not exists(getIdentifier()) and
+    (
+      exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
+      or
+      exists(Property p |
+        this = p.getInit() and
+        result = p.getName()
+      )
+      or
+      exists(AssignExpr assign, DotExpr prop |
+        this = assign.getRhs().getUnderlyingValue() and
+        prop = assign.getLhs() and
+        result = prop.getPropertyName()
+      )
     )
   }
 

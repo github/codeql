@@ -104,7 +104,6 @@ test_getId
 | tst.js:1:1:1:15 | function A() {} | tst.js:1:10:1:10 | A | A |
 | tst.js:2:1:2:16 | function B(x) {} | tst.js:2:10:2:10 | B | B |
 | tst.js:3:1:3:19 | function C(x, y) {} | tst.js:3:10:3:10 | C | C |
-| tst.js:7:9:7:23 | function h() {} | tst.js:7:18:7:18 | h | g |
 | tst.js:7:9:7:23 | function h() {} | tst.js:7:18:7:18 | h | h |
 | tst.js:9:1:9:24 | functio ... nts) {} | tst.js:9:10:9:10 | k | k |
 | tst.js:10:1:10:31 | functio ... ents; } | tst.js:10:10:10:10 | l | l |
