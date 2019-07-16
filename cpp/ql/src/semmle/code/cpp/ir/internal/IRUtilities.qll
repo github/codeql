@@ -1,4 +1,4 @@
-import cpp
+private import cpp
 
 /**
  * Given a type, get the type that would result by applying "pointer decay".

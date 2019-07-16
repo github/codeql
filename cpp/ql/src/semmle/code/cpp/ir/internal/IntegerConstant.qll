@@ -1,4 +1,4 @@
-import cpp
+private import cpp
 
 class IntValue = int;
 

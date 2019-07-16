@@ -1,6 +1,6 @@
 private import internal.IRInternal
 import IRFunction
-import cpp
+private import cpp
 import semmle.code.cpp.ir.implementation.TempVariableTag
 private import semmle.code.cpp.ir.internal.IRUtilities
 private import semmle.code.cpp.ir.internal.TempVariableTag

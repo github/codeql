@@ -1,4 +1,4 @@
-import cpp
+private import cpp
 
 private int getMaxCallArgIndex() {
   result = max(int argIndex |

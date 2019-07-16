@@ -1,6 +1,6 @@
 private import internal.IRInternal
 import Instruction
-import cpp
+private import cpp
 
 private newtype TIRFunction =
   MkIRFunction(Function func) {

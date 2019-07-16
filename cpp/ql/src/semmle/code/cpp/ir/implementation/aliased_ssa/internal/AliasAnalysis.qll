@@ -1,5 +1,5 @@
 private import AliasAnalysisInternal
-import cpp
+private import cpp
 private import InputIR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 

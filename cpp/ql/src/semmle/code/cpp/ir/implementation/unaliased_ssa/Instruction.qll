@@ -3,7 +3,7 @@ import IRFunction
 import IRBlock
 import IRVariable
 import Operand
-import cpp
+private import cpp
 import semmle.code.cpp.ir.implementation.EdgeKind
 import semmle.code.cpp.ir.implementation.MemoryAccessKind
 import semmle.code.cpp.ir.implementation.Opcode

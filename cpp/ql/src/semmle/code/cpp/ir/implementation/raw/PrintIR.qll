@@ -1,5 +1,5 @@
 private import IR
-import cpp
+private import cpp
 import semmle.code.cpp.ir.IRConfiguration
 private import semmle.code.cpp.Print
 

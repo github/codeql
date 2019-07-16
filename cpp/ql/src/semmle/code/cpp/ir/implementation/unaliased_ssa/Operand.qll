@@ -1,7 +1,7 @@
 private import internal.IRInternal
 import Instruction
 import IRBlock
-import cpp
+private import cpp
 import semmle.code.cpp.ir.implementation.MemoryAccessKind
 import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.ir.internal.OperandTag

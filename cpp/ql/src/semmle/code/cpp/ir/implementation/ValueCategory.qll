@@ -1,4 +1,4 @@
-import cpp
+private import cpp
 
 private newtype TValueCategory =
   TLValue() or
