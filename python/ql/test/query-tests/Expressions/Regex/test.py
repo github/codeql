@@ -136,3 +136,6 @@ ODASA_6786 = re.compile(VERBOSE_REGEX, re.VERBOSE)
 
 #Named group with caret and empty choice.
 re.compile(r'(?:(?P<n1>^(?:|x)))')
+
+#Potentially mis-parsed character set
+re.compile(r"\[(?P<txt>[^[]*)\]\((?P<uri>[^)]*)")

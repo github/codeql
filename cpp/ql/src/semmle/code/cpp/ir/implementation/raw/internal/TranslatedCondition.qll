@@ -39,7 +39,7 @@ abstract class TranslatedCondition extends TranslatedElement {
   }
 
   final Type getResultType() {
-    result = expr.getType().getUnspecifiedType()
+    result = expr.getUnspecifiedType()
   }
 }
 

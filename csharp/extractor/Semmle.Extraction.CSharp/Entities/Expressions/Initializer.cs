@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
     class ArrayInitializer : Expression<InitializerExpressionSyntax>
     {
-        ArrayInitializer(ExpressionNodeInfo info) : base(info.SetType(Type.Create(info.Context, null)).SetKind(ExprKind.ARRAY_INIT)) { }
+        ArrayInitializer(ExpressionNodeInfo info) : base(info.SetType(NullType.Create(info.Context)).SetKind(ExprKind.ARRAY_INIT)) { }
 
         public static Expression Create(ExpressionNodeInfo info) => new ArrayInitializer(info).TryPopulate();
 
@@ -105,7 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 var collectionInfo = cx.Model(Syntax).GetCollectionInitializerSymbolInfo(i);
                 var addMethod = Method.Create(cx, collectionInfo.Symbol as IMethodSymbol);
-                var voidType = Type.Create(cx, cx.Compilation.GetSpecialType(SpecialType.System_Void));
+                var voidType = Entities.Type.Create(cx, new AnnotatedTypeSymbol(cx.Compilation.GetSpecialType(SpecialType.System_Void), NullableAnnotation.NotApplicable));
 
                 var invocation = new Expression(new ExpressionInfo(cx, voidType, cx.Create(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
 

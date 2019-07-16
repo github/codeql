@@ -80,6 +80,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.RightShiftAssignmentExpression:
                     case SyntaxKind.DivideAssignmentExpression:
                     case SyntaxKind.ModuloAssignmentExpression:
+                    case SyntaxKind.CoalesceAssignmentExpression:
                         return Assignment.Create(info);
 
                     case SyntaxKind.ObjectCreationExpression:
@@ -231,6 +232,18 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                     case SyntaxKind.IsPatternExpression:
                         return IsPattern.Create(info);
+
+                    case SyntaxKind.RangeExpression:
+                        return RangeExpression.Create(info);
+
+                    case SyntaxKind.IndexExpression:
+                        return Unary.Create(info.SetKind(ExprKind.INDEX));
+
+                    case SyntaxKind.SwitchExpression:
+                        return Switch.Create(info);
+
+                    case SyntaxKind.SuppressNullableWarningExpression:
+                        return PostfixUnary.Create(info.SetKind(ExprKind.SUPPRESS_NULLABLE_WARNING), ((PostfixUnaryExpressionSyntax)info.Node).Operand);
 
                     default:
                         info.Context.ModelError(info.Node, $"Unhandled expression '{info.Node}' of kind '{info.Node.Kind()}'");

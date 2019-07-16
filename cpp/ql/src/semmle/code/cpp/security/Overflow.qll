@@ -66,7 +66,7 @@ predicate missingGuardAgainstOverflow(Operation e, VariableAccess use) {
     // overflow possible if large
     (e instanceof AddExpr and not guardedLesser(e, varUse(v))) or
     (e instanceof AssignAddExpr and not guardedLesser(e, varUse(v))) or
-    (e instanceof IncrementOperation and not guardedLesser(e, varUse(v)) and v.getType().getUnspecifiedType() instanceof IntegralType) or     
+    (e instanceof IncrementOperation and not guardedLesser(e, varUse(v)) and v.getUnspecifiedType() instanceof IntegralType) or     
     // overflow possible if large or small
     (e instanceof MulExpr and
       not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v))))
@@ -81,7 +81,7 @@ predicate missingGuardAgainstUnderflow(Operation e, VariableAccess use) {
     (use = e.(SubExpr).getLeftOperand() and not guardedGreater(e, varUse(v))) or
     (use = e.(AssignSubExpr).getLValue() and not guardedGreater(e, varUse(v))) or
     // underflow possible if small
-    (e instanceof DecrementOperation and not guardedGreater(e, varUse(v)) and v.getType().getUnspecifiedType() instanceof IntegralType) or
+    (e instanceof DecrementOperation and not guardedGreater(e, varUse(v)) and v.getUnspecifiedType() instanceof IntegralType) or
     // underflow possible if large or small
     (e instanceof MulExpr and
       not (guardedLesser(e, varUse(v)) and guardedGreater(e, varUse(v))))

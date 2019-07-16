@@ -1,0 +1,16 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+This is an internal query that finds all messages reported by the extractor. These results may include extraction errors
+that are caused by compilation errors.
+</p>
+<p>
+Extractor errors can lead to inaccurate results.
+</p>
+</overview>
+
+</qhelp>

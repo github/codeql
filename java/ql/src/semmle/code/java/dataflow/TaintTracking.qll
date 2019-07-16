@@ -59,7 +59,7 @@ module TaintTracking {
       isSanitizer(node) or
       // Ignore paths through test code.
       node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
-      exists(ValidatedVariable var | node.asExpr() = var.getAnAccess())
+      node.asExpr() instanceof ValidatedVariableAccess
     }
 
     /** Holds if the edge from `node1` to `node2` is a taint sanitizer. */
@@ -131,7 +131,7 @@ module TaintTracking {
       isSanitizer(node) or
       // Ignore paths through test code.
       node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
-      exists(ValidatedVariable var | node.asExpr() = var.getAnAccess())
+      node.asExpr() instanceof ValidatedVariableAccess
     }
 
     /** Holds if the edge from `node1` to `node2` is a taint sanitizer. */

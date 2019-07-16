@@ -81,6 +81,27 @@
 | CatchInFinally.cs:23:13:26:13 | [finally: exception(ArgumentNullException)] catch {...} | CatchInFinally.cs:25:17:25:37 | [finally: exception(ArgumentNullException)] call to method WriteLine | 5 |
 | CatchInFinally.cs:23:13:26:13 | [finally: exception(Exception)] catch {...} | CatchInFinally.cs:25:17:25:37 | [finally: exception(Exception)] call to method WriteLine | 5 |
 | CatchInFinally.cs:23:13:26:13 | catch {...} | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | 5 |
+| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:38:17:38:18 | access to parameter b1 | 6 |
+| CatchInFinally.cs:34:24:34:25 | exit M2 | CatchInFinally.cs:34:24:34:25 | exit M2 | 1 |
+| CatchInFinally.cs:38:21:38:43 | [b1 (line 34): true] throw ...; | CatchInFinally.cs:44:21:44:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b2 | 6 |
+| CatchInFinally.cs:38:27:38:42 | [b1 (line 34): true] object creation of type ExceptionA | CatchInFinally.cs:38:27:38:42 | [b1 (line 34): true] object creation of type ExceptionA | 1 |
+| CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | CatchInFinally.cs:44:21:44:22 | [b1 (line 34): false] access to parameter b2 | 5 |
+| CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:44:21:44:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b2 | 5 |
+| CatchInFinally.cs:44:25:44:47 | [b1 (line 34): false, b2 (line 34): true] throw ...; | CatchInFinally.cs:46:38:46:39 | [exception: ExceptionB, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | 3 |
+| CatchInFinally.cs:44:25:44:47 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] throw ...; | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | 3 |
+| CatchInFinally.cs:44:25:44:47 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] throw ...; | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | 3 |
+| CatchInFinally.cs:44:31:44:46 | [b1 (line 34): false, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:44:31:44:46 | [b1 (line 34): false, b2 (line 34): true] object creation of type ExceptionB | 1 |
+| CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | 1 |
+| CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | 1 |
+| CatchInFinally.cs:46:13:49:13 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:13:49:13 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | 1 |
+| CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | 1 |
+| CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | 1 |
+| CatchInFinally.cs:46:38:46:39 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:46:38:46:39 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | 1 |
+| CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | 1 |
+| CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | 1 |
+| CatchInFinally.cs:47:13:49:13 | [b1 (line 34): false] {...} | CatchInFinally.cs:48:21:48:22 | [b1 (line 34): false] access to parameter b1 | 3 |
+| CatchInFinally.cs:47:13:49:13 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:48:25:48:47 | [finally: exception(Exception)] throw ...; | 5 |
+| CatchInFinally.cs:47:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | CatchInFinally.cs:48:25:48:47 | [finally: exception(ExceptionA)] throw ...; | 5 |
 | CompileTimeOperators.cs:5:9:5:15 | enter Default | CompileTimeOperators.cs:5:9:5:15 | exit Default | 5 |
 | CompileTimeOperators.cs:10:9:10:14 | enter Sizeof | CompileTimeOperators.cs:10:9:10:14 | exit Sizeof | 5 |
 | CompileTimeOperators.cs:15:10:15:15 | enter Typeof | CompileTimeOperators.cs:15:10:15:15 | exit Typeof | 5 |
@@ -292,15 +313,15 @@
 | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:17:9:18:9 | {...} | 1 |
 | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:22:18:22:22 | "xyz" | 4 |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; | 1 |
-| Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:18:24:20 | access to type Int32 | 2 |
-| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:30:24:35 | ... > ... | 4 |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:18:24:23 | Int32 i2 | 2 |
+| Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:35 | ... > ... | 3 |
 | Patterns.cs:25:17:25:52 | ...; | Patterns.cs:26:17:26:22 | break; | 6 |
-| Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:27:18:27:20 | access to type Int32 | 2 |
-| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:29:17:29:22 | break; | 7 |
-| Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:30:18:30:23 | access to type String | 2 |
-| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:32:17:32:22 | break; | 7 |
-| Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:33:18:33:20 | access to type Object | 2 |
-| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:34:17:34:22 | break; | 2 |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Int32 i3 | 2 |
+| Patterns.cs:28:17:28:47 | ...; | Patterns.cs:29:17:29:22 | break; | 6 |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | String s2 | 2 |
+| Patterns.cs:31:17:31:50 | ...; | Patterns.cs:32:17:32:22 | break; | 6 |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:18:33:23 | Object v2 | 2 |
+| Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; | 1 |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:37:17:37:22 | break; | 5 |
 | Patterns.cs:40:9:42:9 | switch (...) {...} | Patterns.cs:5:10:5:13 | exit Test | 3 |
 | Qualifiers.cs:7:16:7:21 | enter Method | Qualifiers.cs:7:16:7:21 | exit Method | 3 |
@@ -314,22 +335,22 @@
 | Switch.cs:17:23:17:37 | object creation of type Exception | Switch.cs:17:17:17:38 | throw ...; | 2 |
 | Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:18:18:21 | null | 2 |
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; | 1 |
-| Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:20:18:20:20 | access to type Int32 | 2 |
-| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:21:21:21:29 | ... == ... | 5 |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:18:20:22 | Int32 i | 2 |
+| Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:21:21:29 | ... == ... | 4 |
 | Switch.cs:22:21:22:27 | return ...; | Switch.cs:22:21:22:27 | return ...; | 1 |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:17:23:28 | goto case ...; | 2 |
-| Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:18:24:23 | access to type String | 2 |
-| Switch.cs:24:18:24:25 | String s | Switch.cs:24:32:24:43 | ... > ... | 6 |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:18:24:25 | String s | 2 |
+| Switch.cs:24:32:24:55 | ... && ... | Switch.cs:24:32:24:43 | ... > ... | 5 |
 | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:24:48:24:55 | ... != ... | 3 |
 | Switch.cs:25:17:25:37 | ...; | Switch.cs:26:17:26:23 | return ...; | 4 |
-| Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:18:27:23 | access to type Double | 2 |
-| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:32:27:38 | call to method Throw | 2 |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | Double d | 2 |
+| Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw | 1 |
 | Switch.cs:30:13:30:20 | default: | Switch.cs:29:17:29:23 | return ...; | 4 |
 | Switch.cs:35:10:35:11 | enter M3 | Switch.cs:35:10:35:11 | exit M3 | 5 |
 | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:48:18:48:20 | access to type Int32 | 6 |
 | Switch.cs:44:10:44:11 | exit M4 | Switch.cs:44:10:44:11 | exit M4 | 1 |
 | Switch.cs:49:17:49:22 | break; | Switch.cs:49:17:49:22 | break; | 1 |
-| Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:18:50:21 | access to type Boolean | 2 |
+| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:18:50:21 | access to type Boolean | 2 |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:30:50:38 | ... != ... | 3 |
 | Switch.cs:51:17:51:22 | break; | Switch.cs:51:17:51:22 | break; | 1 |
 | Switch.cs:55:10:55:11 | enter M5 | Switch.cs:55:10:55:11 | exit M5 | 12 |
@@ -365,6 +386,16 @@
 | Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:118:25:118:31 | ... == ... | 3 |
 | Switch.cs:118:42:118:42 | 2 | Switch.cs:118:35:118:43 | return ...; | 2 |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:9:120:18 | return ...; | 3 |
+| Switch.cs:123:10:123:12 | enter M11 | Switch.cs:125:24:125:29 | Boolean b | 7 |
+| Switch.cs:123:10:123:12 | exit M11 | Switch.cs:123:10:123:12 | exit M11 | 1 |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b | 1 |
+| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:42:125:46 | false | 3 |
+| Switch.cs:126:13:126:19 | return ...; | Switch.cs:126:13:126:19 | return ...; | 1 |
+| Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:28:131:35 | String s | 6 |
+| Switch.cs:131:9:131:67 | return ...; | Switch.cs:129:12:129:14 | exit M12 | 2 |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s | 1 |
+| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:48:131:51 | null | 3 |
+| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString | 1 |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:7:13:7:22 | ... is ... | 14 |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; | 1 |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:3:10:3:10 | exit M | 4 |

@@ -70,7 +70,7 @@ module DomBasedXss {
           strval = prefix.getStringValue() and
           not strval.regexpMatch("\\s*<.*")
         ) and
-        not isDocumentURL(astNode)
+        not DOM::locationRef().flowsTo(this)
       )
       or
       // call to an Angular method that interprets its argument as HTML
@@ -271,16 +271,19 @@ module ReflectedXss {
    * a content type that does not (case-insensitively) contain the string "html". This
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
-  private class HttpResponseSink extends Sink {
-    HttpResponseSink() {
-      exists(HTTP::ResponseSendArgument sendarg | sendarg = asExpr() |
-        forall(HTTP::HeaderDefinition hd |
-          hd = sendarg.getRouteHandler().getAResponseHeader("content-type")
-        |
-          exists(string tp | hd.defines("content-type", tp) | tp.toLowerCase().matches("%html%"))
-        )
-      )
-    }
+  private class HttpResponseSink extends Sink, DataFlow::ValueNode {
+    override HTTP::ResponseSendArgument astNode;
+
+    HttpResponseSink() { not nonHtmlContentType(astNode.getRouteHandler()) }
+  }
+
+  /**
+   * Holds if `h` may send a response with a content type other than HTML.
+   */
+  private predicate nonHtmlContentType(HTTP::RouteHandler h) {
+    exists(HTTP::HeaderDefinition hd | hd = h.getAResponseHeader("content-type") |
+      not exists(string tp | hd.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+    )
   }
 
   /**

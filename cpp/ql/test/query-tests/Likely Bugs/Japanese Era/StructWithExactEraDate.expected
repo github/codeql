@@ -1,0 +1,2 @@
+| StructWithExactDate.cpp:31:13:31:19 | tm_year | A time struct that is initialized with exact Japanese calendar era start date. |
+| StructWithExactDate.cpp:46:8:46:12 | wYear | A time struct that is initialized with exact Japanese calendar era start date. |

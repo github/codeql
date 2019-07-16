@@ -22,10 +22,10 @@ class Element extends @dotnet_element {
   Location getALocation() { none() }
 
   /** Gets the file containing this element. */
-  File getFile() { result = getLocation().getFile() }
+  final File getFile() { result = this.getLocation().getFile() }
 
   /** Holds if this element is from source code. */
-  predicate fromSource() { none() }
+  predicate fromSource() { this.getFile().fromSource() }
 
   /**
    * Gets the "language" of this program element, as defined by the extension of the filename.

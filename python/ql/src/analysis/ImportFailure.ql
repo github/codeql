@@ -57,15 +57,37 @@ predicate ok_to_fail(ImportExpr ie) {
      os_specific_import(ie) != get_os()
 }
 
+
+class VersionTest extends @py_flow_node {
+
+    VersionTest() { 
+        exists(string name |
+            name.matches("%version%") and
+            this.(CompareNode).getAChild+().pointsTo(Module::named("sys").attr(name))
+        )
+    }
+
+    string toString() {
+        result = "VersionTest"
+    }
+
+}
+
+/** A guard on the version of the Python interpreter */
+class VersionGuard extends ConditionBlock {
+
+    VersionGuard() {
+        this.getLastNode() instanceof VersionTest
+    }
+
+}
+
 from ImportExpr ie
 where not ie.refersTo(_) and
       exists(Context c | c.appliesTo(ie.getAFlowNode())) and
       not ok_to_fail(ie)  and
       not exists(VersionGuard guard |
-          if guard.isTrue() then
-              guard.controls(ie.getAFlowNode().getBasicBlock(), false)
-          else
-              guard.controls(ie.getAFlowNode().getBasicBlock(), true)
+          guard.controls(ie.getAFlowNode().getBasicBlock(), _)
       )
 
 select ie, "Unable to resolve import of '" + ie.getImportedModuleName() + "'."

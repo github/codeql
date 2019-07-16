@@ -362,7 +362,29 @@ class FalseySource  extends TaintSource {
 
 }
 
+class TaintIterable extends TaintKind {
 
+    TaintIterable() {
+        this = "iterable.simple"
+    }
+
+    override TaintKind getTaintForIteration() {
+        result instanceof SimpleTest
+    }
+
+}
+
+class TaintIterableSource extends TaintSource {
+
+    TaintIterableSource() {
+        this.(NameNode).getId() = "ITERABLE_SOURCE"
+    }
+
+    override predicate isSourceOf(TaintKind kind) {
+        kind instanceof TaintIterable
+    }
+
+}
 
 
 

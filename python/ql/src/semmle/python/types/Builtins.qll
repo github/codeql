@@ -51,7 +51,16 @@ class Builtin extends @py_cobject {
     }
 
     string getName() {
-        py_cobjectnames(this, result)
+        if this.isStr() then
+            result = "str"
+        else
+            py_cobjectnames(this, result)
+    }
+
+    private predicate isStr() {
+        major_version() = 2 and this = Builtin::special("bytes")
+        or
+        major_version() = 3 and this = Builtin::special("unicode")
     }
 
     predicate isClass() {
@@ -75,10 +84,28 @@ class Builtin extends @py_cobject {
     predicate isMethod() {
         this.getClass() = Builtin::special("MethodDescriptorType")
         or
-        this.getClass() = Builtin::special("BuiltinFunctionType") and
-        exists(Builtin cls | cls.isClass() and cls.getMember(_) = this)
-        or
         this.getClass().getName() = "wrapper_descriptor"
+    }
+
+    int intValue() {
+        (this.getClass() = Builtin::special("int") or
+        this.getClass() = Builtin::special("long")) and
+        result = this.getName().toInt()
+    }
+
+    float floatValue() {
+        (this.getClass() = Builtin::special("float")) and
+        result = this.getName().toFloat()
+    }
+
+    string strValue() {
+        (this.getClass() = Builtin::special("unicode") or
+        this.getClass() = Builtin::special("bytes")) and
+        exists(string quoted_string |
+            quoted_string = this.getName()
+            and
+            result = quoted_string.regexpCapture("[bu]'([\\s\\S]*)'", 1)
+        )
     }
 
 }

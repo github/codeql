@@ -27,8 +27,8 @@ abstract class StringKind extends TaintKind {
         result = this and copy_call(fromnode, tonode)
     }
 
-    override ClassObject getClass() {
-        result = theStrType() or result = theUnicodeType()
+    override ClassValue getType() {
+        result = Value::named("bytes") or result = Value::named("str") or result = Value::named("unicode")
     }
 
 }
@@ -81,6 +81,7 @@ private predicate str_format(ControlFlowNode fromnode, CallNode tonode) {
 /* tonode = codec.[en|de]code(fromnode)*/
 private predicate encode_decode(ControlFlowNode fromnode, CallNode tonode) {
     exists(FunctionObject func, string name |
+        not func.getFunction().isMethod() and
         func.getACall() = tonode and
         tonode.getAnArg() = fromnode and
         func.getName() = name |

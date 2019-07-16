@@ -13,6 +13,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate()
         {
+            ExtractNullability(symbol.NullableAnnotation);
+
             var type = Type.Create(Context, symbol.Type);
             Context.Emit(Tuples.indexers(this, symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition));
             foreach (var l in Locations)
@@ -43,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 {
                     // The expression may need to reference parameters in the getter.
                     // So we need to arrange that the expression is populated after the getter.
-                    Context.PopulateLater(() => Expression.CreateFromNode(new ExpressionNodeInfo(Context, expressionBody, this, 0) { Type = Type.Create(Context, symbol.Type) }));
+                    Context.PopulateLater(() => Expression.CreateFromNode(new ExpressionNodeInfo(Context, expressionBody, this, 0) { Type = Type.Create(Context, symbol.GetAnnotatedType()) }));
                 }
             }
 

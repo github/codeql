@@ -74,7 +74,7 @@ predicate assignOperatorWithWrongType(Operator op, string msg) {
   and exists(op.getBlock())
   and exists(Class c |
         c = op.getDeclaringType()
-    and op.getType().getUnspecifiedType() = c
+    and op.getUnspecifiedType() = c
     and msg = "Assignment operator in class " + c.getName() + " should have return type " + c.getName() + "&. Otherwise a copy is created at each call."
   )
 }

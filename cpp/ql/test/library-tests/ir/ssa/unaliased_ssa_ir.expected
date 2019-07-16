@@ -683,3 +683,93 @@ ssa.cpp:
 #  171|     v0_28(void)           = ReturnVoid             : 
 #  171|     v0_29(void)           = UnmodeledUse           : mu*
 #  171|     v0_30(void)           = ExitFunction           : 
+
+#  179| int AsmStmt(int*)
+#  179|   Block 0
+#  179|     v0_0(void)         = EnterFunction            : 
+#  179|     mu0_1(unknown)     = AliasedDefinition        : 
+#  179|     mu0_2(unknown)     = UnmodeledDefinition      : 
+#  179|     r0_3(glval<int *>) = VariableAddress[p]       : 
+#  179|     m0_4(int *)        = InitializeParameter[p]   : &:r0_3
+#  180|     mu0_5(unknown)     = InlineAsm                : ~mu0_2
+#  181|     r0_6(glval<int>)   = VariableAddress[#return] : 
+#  181|     r0_7(glval<int *>) = VariableAddress[p]       : 
+#  181|     r0_8(int *)        = Load                     : &:r0_7, m0_4
+#  181|     r0_9(int)          = Load                     : &:r0_8, ~mu0_2
+#  181|     m0_10(int)         = Store                    : &:r0_6, r0_9
+#  179|     r0_11(glval<int>)  = VariableAddress[#return] : 
+#  179|     v0_12(void)        = ReturnValue              : &:r0_11, m0_10
+#  179|     v0_13(void)        = UnmodeledUse             : mu*
+#  179|     v0_14(void)        = ExitFunction             : 
+
+#  184| void AsmStmtWithOutputs(unsigned int&, unsigned int&, unsigned int&, unsigned int&)
+#  184|   Block 0
+#  184|     v0_0(void)                   = EnterFunction          : 
+#  184|     mu0_1(unknown)               = AliasedDefinition      : 
+#  184|     mu0_2(unknown)               = UnmodeledDefinition    : 
+#  184|     r0_3(glval<unsigned int &>)  = VariableAddress[a]     : 
+#  184|     mu0_4(unsigned int &)        = InitializeParameter[a] : &:r0_3
+#  184|     r0_5(glval<unsigned int &>)  = VariableAddress[b]     : 
+#  184|     mu0_6(unsigned int &)        = InitializeParameter[b] : &:r0_5
+#  184|     r0_7(glval<unsigned int &>)  = VariableAddress[c]     : 
+#  184|     mu0_8(unsigned int &)        = InitializeParameter[c] : &:r0_7
+#  184|     r0_9(glval<unsigned int &>)  = VariableAddress[d]     : 
+#  184|     mu0_10(unsigned int &)       = InitializeParameter[d] : &:r0_9
+#  186|     r0_11(glval<unsigned int &>) = VariableAddress[a]     : 
+#  186|     r0_12(glval<unsigned int &>) = VariableAddress[b]     : 
+#  186|     r0_13(glval<unsigned int &>) = VariableAddress[c]     : 
+#  186|     r0_14(glval<unsigned int &>) = VariableAddress[d]     : 
+#  186|     mu0_15(unknown)              = InlineAsm              : ~mu0_2, 0:r0_11, 1:r0_12, 2:r0_13, 3:r0_14
+#  192|     v0_16(void)                  = NoOp                   : 
+#  184|     v0_17(void)                  = ReturnVoid             : 
+#  184|     v0_18(void)                  = UnmodeledUse           : mu*
+#  184|     v0_19(void)                  = ExitFunction           : 
+
+#  198| int PureFunctions(char*, char*, int)
+#  198|   Block 0
+#  198|     v0_0(void)            = EnterFunction             : 
+#  198|     mu0_1(unknown)        = AliasedDefinition         : 
+#  198|     mu0_2(unknown)        = UnmodeledDefinition       : 
+#  198|     r0_3(glval<char *>)   = VariableAddress[str1]     : 
+#  198|     m0_4(char *)          = InitializeParameter[str1] : &:r0_3
+#  198|     r0_5(glval<char *>)   = VariableAddress[str2]     : 
+#  198|     m0_6(char *)          = InitializeParameter[str2] : &:r0_5
+#  198|     r0_7(glval<int>)      = VariableAddress[x]        : 
+#  198|     m0_8(int)             = InitializeParameter[x]    : &:r0_7
+#  199|     r0_9(glval<int>)      = VariableAddress[ret]      : 
+#  199|     r0_10(glval<unknown>) = FunctionAddress[strcmp]   : 
+#  199|     r0_11(glval<char *>)  = VariableAddress[str1]     : 
+#  199|     r0_12(char *)         = Load                      : &:r0_11, m0_4
+#  199|     r0_13(char *)         = Convert                   : r0_12
+#  199|     r0_14(glval<char *>)  = VariableAddress[str2]     : 
+#  199|     r0_15(char *)         = Load                      : &:r0_14, m0_6
+#  199|     r0_16(char *)         = Convert                   : r0_15
+#  199|     r0_17(int)            = Call                      : func:r0_10, 0:r0_13, 1:r0_16
+#  199|     v0_18(void)           = ^CallReadSideEffect       : ~mu0_2
+#  199|     m0_19(int)            = Store                     : &:r0_9, r0_17
+#  200|     r0_20(glval<unknown>) = FunctionAddress[strlen]   : 
+#  200|     r0_21(glval<char *>)  = VariableAddress[str1]     : 
+#  200|     r0_22(char *)         = Load                      : &:r0_21, m0_4
+#  200|     r0_23(char *)         = Convert                   : r0_22
+#  200|     r0_24(int)            = Call                      : func:r0_20, 0:r0_23
+#  200|     v0_25(void)           = ^CallReadSideEffect       : ~mu0_2
+#  200|     r0_26(glval<int>)     = VariableAddress[ret]      : 
+#  200|     r0_27(int)            = Load                      : &:r0_26, m0_19
+#  200|     r0_28(int)            = Add                       : r0_27, r0_24
+#  200|     m0_29(int)            = Store                     : &:r0_26, r0_28
+#  201|     r0_30(glval<unknown>) = FunctionAddress[abs]      : 
+#  201|     r0_31(glval<int>)     = VariableAddress[x]        : 
+#  201|     r0_32(int)            = Load                      : &:r0_31, m0_8
+#  201|     r0_33(int)            = Call                      : func:r0_30, 0:r0_32
+#  201|     r0_34(glval<int>)     = VariableAddress[ret]      : 
+#  201|     r0_35(int)            = Load                      : &:r0_34, m0_29
+#  201|     r0_36(int)            = Add                       : r0_35, r0_33
+#  201|     m0_37(int)            = Store                     : &:r0_34, r0_36
+#  202|     r0_38(glval<int>)     = VariableAddress[#return]  : 
+#  202|     r0_39(glval<int>)     = VariableAddress[ret]      : 
+#  202|     r0_40(int)            = Load                      : &:r0_39, m0_37
+#  202|     m0_41(int)            = Store                     : &:r0_38, r0_40
+#  198|     r0_42(glval<int>)     = VariableAddress[#return]  : 
+#  198|     v0_43(void)           = ReturnValue               : &:r0_42, m0_41
+#  198|     v0_44(void)           = UnmodeledUse              : mu*
+#  198|     v0_45(void)           = ExitFunction              : 

@@ -2,10 +2,10 @@
 import python
 import semmle.python.pointsto.PointsTo
 
-from ClassObject cls, string reason
+from ClassValue cls, string reason
 
 where
-PointsTo::Types::failed_inference(cls, reason)
+Types::failedInference(cls, reason)
 
 select cls, reason
 

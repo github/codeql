@@ -1,7 +1,8 @@
 
 import python
 import semmle.python.pointsto.PointsTo
+import semmle.python.objects.ObjectInternal
 
-from ClassObject cls, string name, PyFunctionObject f
-where PointsTo::Types::class_attribute_lookup(cls, name, f, _, _)
-select cls.toString(), name, f.toString(), f.getFunction().getLocation().getStartLine()
+from ClassObjectInternal cls, string name, PythonFunctionObjectInternal f
+where cls.lookup(name, f, _)
+select cls.toString(), name, f.toString(), f.getScope().getLocation().getStartLine()

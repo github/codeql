@@ -43,24 +43,22 @@
 | test.py | 215 | ControlFlowNode for s | class C2 | 202 |
 | test.py | 220 | ControlFlowNode for s | int 0 | 219 |
 | test.py | 234 | ControlFlowNode for f | int 0 | 233 |
-| test.py | 252 | ControlFlowNode for Attribute | int 1 | 242 |
-| test.py | 254 | ControlFlowNode for Attribute | int 2 | 245 |
 | test.py | 272 | ControlFlowNode for x | int 1 | 271 |
-| test.py | 276 | ControlFlowNode for Attribute | int 1 | 271 |
 | test.py | 286 | ControlFlowNode for y | NoneType None | 281 |
 | test.py | 297 | ControlFlowNode for y | NoneType None | 291 |
 | test.py | 301 | ControlFlowNode for x | NoneType None | 291 |
 | test.py | 308 | ControlFlowNode for z | int 7 | 305 |
 | test.py | 314 | ControlFlowNode for b | NoneType None | 311 |
+| test.py | 332 | ControlFlowNode for Attribute | NoneType None | 322 |
 | test.py | 332 | ControlFlowNode for Attribute | int 4 | 322 |
-| test.py | 339 | ControlFlowNode for Attribute | int 4 | 322 |
+| test.py | 347 | ControlFlowNode for Attribute | NoneType None | 322 |
 | test.py | 347 | ControlFlowNode for Attribute | int 4 | 322 |
+| test.py | 357 | ControlFlowNode for g1 | float 7.0 | 356 |
 | test.py | 369 | ControlFlowNode for g2 | float 2.0 | 366 |
 | test.py | 382 | ControlFlowNode for g3 | bool True | 379 |
 | test.py | 389 | ControlFlowNode for g4 | int 7 | 396 |
 | test.py | 408 | ControlFlowNode for x | int 1 | 404 |
 | test.py | 420 | ControlFlowNode for Attribute | NoneType None | 418 |
-| test.py | 427 | ControlFlowNode for Attribute | NoneType None | 418 |
 | test.py | 435 | ControlFlowNode for y | int 1 | 433 |
 | type_test.py | 5 | ControlFlowNode for d | Dict | 2 |
 | type_test.py | 14 | ControlFlowNode for x | int 0 | 11 |

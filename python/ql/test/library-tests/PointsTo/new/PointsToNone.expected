@@ -37,6 +37,7 @@
 | c_tests.py:5 | ControlFlowNode for x | 5 |
 | c_tests.py:7 | ControlFlowNode for None | 7 |
 | c_tests.py:7 | ControlFlowNode for x | 5 |
+| c_tests.py:8 | ControlFlowNode for x | 5 |
 | c_tests.py:32 | ControlFlowNode for Attribute | 32 |
 | c_tests.py:32 | ControlFlowNode for IfExp | 32 |
 | c_tests.py:32 | ControlFlowNode for None | 32 |
@@ -74,6 +75,7 @@
 | k_getsetattr.py:15 | ControlFlowNode for Attribute() | 6 |
 | l_calls.py:4 | ControlFlowNode for Attribute() | 4 |
 | l_calls.py:9 | ControlFlowNode for foo() | 4 |
+| l_calls.py:48 | ControlFlowNode for None | 48 |
 | m_attributes.py:12 | ControlFlowNode for Attribute() | 8 |
 | m_attributes.py:13 | ControlFlowNode for Attribute() | 8 |
 | o_no_returns.py:7 | ControlFlowNode for fail() | 10 |
@@ -86,9 +88,6 @@
 | r_regressions.py:9 | ControlFlowNode for Attribute() | 11 |
 | r_regressions.py:13 | ControlFlowNode for Attribute | 13 |
 | r_regressions.py:13 | ControlFlowNode for None | 13 |
-| r_regressions.py:20 | ControlFlowNode for Attribute | 13 |
-| r_regressions.py:20 | ControlFlowNode for close | 13 |
-| r_regressions.py:21 | ControlFlowNode for close | 13 |
 | r_regressions.py:22 | ControlFlowNode for Attribute | 22 |
 | r_regressions.py:22 | ControlFlowNode for None | 22 |
 | r_regressions.py:27 | ControlFlowNode for None | 27 |

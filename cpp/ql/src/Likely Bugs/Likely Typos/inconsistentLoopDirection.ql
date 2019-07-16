@@ -23,18 +23,26 @@ predicate candidateForStmt(ForStmt forStmt, Variable v, CrementOperation update,
   rel = forStmt.getCondition()
 }
 
-predicate illDefinedDecrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) {
-  exists(DecrementOperation dec, RelationalOperation rel |
-    // decrementing for loop
-    candidateForStmt(forstmt, v, dec, rel) and
+pragma[noinline]
+predicate candidateDecrForStmt(ForStmt forStmt, Variable v, VariableAccess lesserOperand, Expr terminalCondition) {
+  exists(DecrementOperation update, RelationalOperation rel |
+    candidateForStmt(forStmt, v, update, rel) and
 
     // condition is `v < terminalCondition`
     terminalCondition = rel.getGreaterOperand() and
-    v.getAnAccess() = rel.getLesserOperand() and
+    lesserOperand = rel.getLesserOperand() and
+    v.getAnAccess() = lesserOperand
+  )
+}
+
+predicate illDefinedDecrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) {
+  exists(VariableAccess lesserOperand |
+    // decrementing for loop
+    candidateDecrForStmt(forstmt, v, lesserOperand, terminalCondition) and
 
     // `initialCondition` is a value of `v` in the for loop
     v.getAnAssignedValue() = initialCondition and
-    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(rel.getLesserOperand())) and
+    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(lesserOperand)) and
 
     // `initialCondition` < `terminalCondition`
     (
@@ -45,18 +53,26 @@ predicate illDefinedDecrForStmt( ForStmt forstmt, Variable v, Expr initialCondit
   )
 }
 
-predicate illDefinedIncrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) {
-  exists(IncrementOperation inc, RelationalOperation rel |
-    // incrementing for loop
-    candidateForStmt(forstmt, v, inc, rel) and
+pragma[noinline]
+predicate candidateIncrForStmt(ForStmt forStmt, Variable v, VariableAccess greaterOperand, Expr terminalCondition) {
+  exists(IncrementOperation update, RelationalOperation rel |
+    candidateForStmt(forStmt, v, update, rel) and
 
     // condition is `v > terminalCondition`
     terminalCondition = rel.getLesserOperand() and
-    v.getAnAccess() = rel.getGreaterOperand() and
+    greaterOperand = rel.getGreaterOperand() and
+    v.getAnAccess() = greaterOperand
+  )
+}
+
+predicate illDefinedIncrForStmt( ForStmt forstmt, Variable v, Expr initialCondition, Expr terminalCondition ) {
+  exists(VariableAccess greaterOperand |
+    // incrementing for loop
+    candidateIncrForStmt(forstmt, v, greaterOperand, terminalCondition) and
 
     // `initialCondition` is a value of `v` in the for loop
     v.getAnAssignedValue() = initialCondition and
-    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(rel.getGreaterOperand())) and
+    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(greaterOperand)) and
 
     // `terminalCondition` < `initialCondition`
     (

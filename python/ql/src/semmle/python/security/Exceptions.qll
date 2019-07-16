@@ -7,12 +7,8 @@ import python
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
 
-private ModuleObject theTracebackModule() {
-    result.getName() = "traceback"
-}
-
-private FunctionObject traceback_function(string name) {
-    result = theTracebackModule().attr(name)
+private Value traceback_function(string name) {
+    result = Module::named("traceback").attr(name)
 }
 
 /**

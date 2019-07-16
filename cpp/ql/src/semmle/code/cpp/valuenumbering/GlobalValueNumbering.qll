@@ -285,25 +285,25 @@ class GVN extends GVNBase {
 
 private predicate analyzableIntConst(Expr e) {
   strictcount (e.getValue().toInt()) = 1 and
-  strictcount (e.getType().getUnspecifiedType()) = 1
+  strictcount (e.getUnspecifiedType()) = 1
 }
 
 private predicate mk_IntConst(int val, Type t, Expr e) {
   analyzableIntConst(e) and
   val = e.getValue().toInt() and
-  t = e.getType().getUnspecifiedType()
+  t = e.getUnspecifiedType()
 }
 
 private predicate analyzableFloatConst(Expr e) {
   strictcount (e.getValue().toFloat()) = 1 and
-  strictcount (e.getType().getUnspecifiedType()) = 1 and
+  strictcount (e.getUnspecifiedType()) = 1 and
   not analyzableIntConst(e)
 }
 
 private predicate mk_FloatConst(float val, Type t, Expr e) {
   analyzableFloatConst(e) and
   val = e.getValue().toFloat() and
-  t = e.getType().getUnspecifiedType()
+  t = e.getUnspecifiedType()
 }
 
 
@@ -421,14 +421,14 @@ private predicate mk_OtherVariable(
 }
 
 private predicate analyzableConversion(Conversion conv) {
-  strictcount (conv.getType().getUnspecifiedType()) = 1 and
+  strictcount (conv.getUnspecifiedType()) = 1 and
   strictcount (conv.getExpr()) = 1 and
   not analyzableConst(conv)
 }
 
 private predicate mk_Conversion(Type t, GVN child, Conversion conv) {
   analyzableConversion(conv) and
-  t = conv.getType().getUnspecifiedType() and
+  t = conv.getUnspecifiedType() and
   child = globalValueNumber(conv.getExpr())
 }
 

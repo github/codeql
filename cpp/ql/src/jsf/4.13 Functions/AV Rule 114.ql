@@ -21,7 +21,7 @@ import cpp
 predicate functionsMissingReturnStmt(Function f, ControlFlowNode blame) {
   f.fromSource() and
   exists(Type returnType |
-    returnType = f.getType().getUnderlyingType().getUnspecifiedType() and
+    returnType = f.getUnspecifiedType() and
     not returnType instanceof VoidType and
     not returnType instanceof TemplateParameter
   ) and

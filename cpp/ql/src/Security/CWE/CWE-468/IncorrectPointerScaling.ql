@@ -4,7 +4,7 @@
  *              can cause buffer overflow conditions.
  * @kind problem
  * @problem.severity warning
- * @precision high
+ * @precision medium
  * @id cpp/suspicious-pointer-scaling
  * @tags security
  *       external/cwe/cwe-468
@@ -43,7 +43,7 @@ where exists(pointerArithmeticParent(dest))
   // ```
   and forall(Expr parent |
              parent = pointerArithmeticParent+(dest) |
-             parent.getFullyConverted().getType().getUnspecifiedType() instanceof PointerType)
+             parent.getFullyConverted().getUnspecifiedType() instanceof PointerType)
 select
   dest,
   "This pointer might have type $@ (size " + sourceBase.getSize() +

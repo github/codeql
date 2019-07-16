@@ -28,14 +28,17 @@ private newtype PropertyName =
   }
 
 /**
- * Gets the representation of the property name of `pacc`, if any.
+ * Gets an access to property `name` of access path `base` in basic block `bb`.
  */
-private PropertyName getPropertyName(PropAccess pacc) {
-  result = StaticPropertyName(pacc.getPropertyName())
-  or
-  exists(SsaVariable var |
-    pacc.getPropertyNameExpr() = var.getAUse() and
-    result = DynamicPropertyName(var)
+private PropAccess namedPropAccess(AccessPath base, PropertyName name, BasicBlock bb) {
+  result.getBase() = base.getAnInstanceIn(bb) and
+  (
+    name = StaticPropertyName(result.getPropertyName())
+    or
+    exists(SsaVariable var |
+      result.getPropertyNameExpr() = var.getAUse() and
+      name = DynamicPropertyName(var)
+    )
   )
 }
 
@@ -76,10 +79,7 @@ private newtype TAccessPath =
    * A property access on an access path.
    */
   MkAccessStep(AccessPath base, PropertyName name) {
-    exists(PropAccess pacc |
-      pacc.getBase() = base.getAnInstance() and
-      getPropertyName(pacc) = name
-    )
+    exists(namedPropAccess(base, name, _))
   }
 
 /**
@@ -108,24 +108,9 @@ class AccessPath extends TAccessPath {
       this_.getBasicBlock() = bb
     )
     or
-    exists(PropertyName name |
-      result = getABaseInstanceIn(bb, name) and
-      getPropertyName(result) = name
-    )
-  }
-
-  /**
-   * Gets a property access in `bb` whose base is represented by the
-   * base of this access path, and where `name` is bound to the last
-   * component of this access path.
-   *
-   * This is an auxiliary predicate that's needed to enforce a better
-   * join order in `getAnInstanceIn` above.
-   */
-  pragma[noinline]
-  private PropAccess getABaseInstanceIn(BasicBlock bb, PropertyName name) {
-    exists(AccessPath base | this = MkAccessStep(base, name) |
-      result.getBase() = base.getAnInstanceIn(bb)
+    exists(AccessPath base, PropertyName name |
+      this = MkAccessStep(base, name) and
+      result = namedPropAccess(base, name, bb)
     )
   }
 

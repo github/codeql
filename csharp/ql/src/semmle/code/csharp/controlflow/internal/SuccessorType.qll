@@ -6,10 +6,11 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.internal.Completion
+private import semmle.code.csharp.Caching
 
 cached
 private newtype TSuccessorType =
-  TSuccessorSuccessor() { ControlFlow::Internal::forceCachingInSameStage() } or
+  TSuccessorSuccessor() { Stages::ControlFlowStage::forceCachingInSameStage() } or
   TBooleanSuccessor(boolean b) { b = true or b = false } or
   TNullnessSuccessor(boolean isNull) { isNull = true or isNull = false } or
   TMatchingSuccessor(boolean isMatch) { isMatch = true or isMatch = false } or
@@ -87,7 +88,7 @@ module SuccessorTypes {
     override string toString() { result = getValue().toString() }
 
     override predicate matchesCompletion(Completion c) {
-      c.(BooleanCompletion).getInnerValue() = this.getValue()
+      c.(BooleanCompletion).getInnerCompletion().(BooleanCompletion).getValue() = this.getValue()
     }
   }
 
@@ -126,9 +127,7 @@ module SuccessorTypes {
     override string toString() { if this.isNull() then result = "null" else result = "non-null" }
 
     override predicate matchesCompletion(Completion c) {
-      if this.isNull()
-      then c.(NullnessCompletion).isNull()
-      else c = any(NullnessCompletion nc | not nc.isNull())
+      if this.isNull() then c.(NullnessCompletion).isNull() else c.(NullnessCompletion).isNonNull()
     }
   }
 
@@ -175,7 +174,7 @@ module SuccessorTypes {
     override predicate matchesCompletion(Completion c) {
       if this.isMatch()
       then c.(MatchingCompletion).isMatch()
-      else c = any(MatchingCompletion mc | not mc.isMatch())
+      else c.(MatchingCompletion).isNonMatch()
     }
   }
 

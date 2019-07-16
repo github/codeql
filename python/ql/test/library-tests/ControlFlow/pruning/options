@@ -1,0 +1,2 @@
+semmle-extractor-options: --dont-prune-graph
+optimize: true

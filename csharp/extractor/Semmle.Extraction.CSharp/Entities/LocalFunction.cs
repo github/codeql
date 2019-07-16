@@ -1,4 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -39,6 +41,18 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate()
         {
             PopulateMethod();
+
+            // There is a "bug" in Roslyn whereby the IMethodSymbol associated with the local function symbol
+            // is always static, so we need to go to the syntax reference of the local function to see whether
+            // the "static" modifier is present.
+            if (symbol.DeclaringSyntaxReferences.SingleOrDefault().GetSyntax() is LocalFunctionStatementSyntax fn)
+            {
+                foreach(var modifier in fn.Modifiers)
+                {
+                    Modifier.HasModifier(Context, this, modifier.Text);
+                }
+            }
+
             var originalDefinition = IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
             var returnType = Type.Create(Context, symbol.ReturnType);
             Context.Emit(Tuples.local_functions(this, symbol.Name, returnType, originalDefinition));

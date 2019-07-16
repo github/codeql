@@ -28,6 +28,7 @@
 | Module six | callable | Builtin-function callable |
 | Module six | callable | Function callable |
 | Module six | class_types | Tuple |
+| Module six | create_bound_method | builtin-class method |
 | Module six | get_function_closure | Attribute() |
 | Module six | get_function_code | Attribute() |
 | Module six | get_function_defaults | Attribute() |
@@ -47,6 +48,7 @@
 | Module six | moves | Module six.moves |
 | Module six | next | Builtin-function next |
 | Module six | operator | Module operator |
+| Module six | print_ | Function print_ |
 | Module six | remove_move | Function remove_move |
 | Module six | reraise | Function reraise |
 | Module six | string_types | Tuple |
@@ -86,6 +88,7 @@
 | Module six.__init__ | callable | Builtin-function callable |
 | Module six.__init__ | callable | Function callable |
 | Module six.__init__ | class_types | Tuple |
+| Module six.__init__ | create_bound_method | builtin-class method |
 | Module six.__init__ | get_function_closure | Attribute() |
 | Module six.__init__ | get_function_code | Attribute() |
 | Module six.__init__ | get_function_defaults | Attribute() |
@@ -105,6 +108,7 @@
 | Module six.__init__ | moves | Module six.moves |
 | Module six.__init__ | next | Builtin-function next |
 | Module six.__init__ | operator | Module operator |
+| Module six.__init__ | print_ | Function print_ |
 | Module six.__init__ | remove_move | Function remove_move |
 | Module six.__init__ | reraise | Function reraise |
 | Module six.__init__ | string_types | Tuple |
@@ -120,6 +124,7 @@
 | Module six.moves | PY3 | bool True |
 | Module six.moves | SimpleHTTPServer | Module http.server |
 | Module six.moves | StringIO | builtin-class _io.StringIO |
+| Module six.moves | UserString | class UserString |
 | Module six.moves | __name__ | str u'six.moves' |
 | Module six.moves | _thread | Module _thread |
 | Module six.moves | builtins | Module builtins |
@@ -176,6 +181,7 @@
 | Module six.moves.__init__ | PY3 | bool True |
 | Module six.moves.__init__ | SimpleHTTPServer | Module http.server |
 | Module six.moves.__init__ | StringIO | builtin-class _io.StringIO |
+| Module six.moves.__init__ | UserString | class UserString |
 | Module six.moves.__init__ | __name__ | str u'six.moves' |
 | Module six.moves.__init__ | _thread | Module _thread |
 | Module six.moves.__init__ | builtins | Module builtins |

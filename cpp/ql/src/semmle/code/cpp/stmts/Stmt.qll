@@ -45,6 +45,10 @@ class Stmt extends StmtParent, @stmt {
 
   /**
    * Gets the statement following this statement in the same block, if any.
+   *
+   * Note that this is not widely useful, because this doesn't have a result for
+   * the last statement of a block.  Consider using the `ControlFlowNode` class
+   * to trace the flow of control instead.
    */
   Stmt getFollowingStmt() {
     exists(Block b, int i | this   = b.getStmt(i) and
@@ -53,8 +57,12 @@ class Stmt extends StmtParent, @stmt {
 
   override Location getLocation() { stmts(underlyingElement(this),_,result) }
 
-  /** Gets an int indicating the type of statement that this represents. */
-  int getKind() { stmts(underlyingElement(this),result,_) }
+  /**
+   * Gets an int indicating the type of statement that this represents.
+   *
+   * DEPRECATED: use the subclasses of `Stmt` rather than relying on this predicate.
+   */
+  deprecated int getKind() { stmts(underlyingElement(this),result,_) }
 
   override string toString() { none() }
 
@@ -675,7 +683,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    * ```
    * the result is `int x`.
    */
-  Variable getVariable() { result = getChild(4).(DeclStmt).getADeclaration() }
+  LocalVariable getVariable() { result = getChild(4).(DeclStmt).getADeclaration() }
 
   /**
    * Gets the expression giving the range to iterate over.
@@ -689,7 +697,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   Expr getRange() { result = getRangeVariable().getInitializer().getExpr() }
 
   /** Gets the compiler-generated `__range` variable after desugaring. */
-  Variable getRangeVariable() {
+  LocalVariable getRangeVariable() {
     result = getChild(0).(DeclStmt).getADeclaration()
   }
 
@@ -709,6 +717,16 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
    */
   DeclStmt getBeginEndDeclaration() { result = this.getChild(1) }
 
+  /** Gets the compiler-generated `__begin` variable after desugaring. */
+  LocalVariable getBeginVariable() {
+    result = getBeginEndDeclaration().getDeclaration(0)
+  }
+
+  /** Gets the compiler-generated `__end` variable after desugaring. */
+  LocalVariable getEndVariable() {
+    result = getBeginEndDeclaration().getDeclaration(1)
+  }
+
   /**
    * Gets the compiler-generated `++__begin` which is the update
    * expression of this for statement after desugaring. It will
@@ -718,8 +736,8 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
   Expr getUpdate() { result = this.getChild(3) }
 
   /** Gets the compiler-generated `__begin` variable after desugaring. */
-  Variable getAnIterationVariable() {
-    result = getUpdate().getAChild().(VariableAccess).getTarget()
+  LocalVariable getAnIterationVariable() {
+    result = getBeginVariable()
   }
 }
 

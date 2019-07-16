@@ -132,3 +132,36 @@ static class StaticMethods
    public static void M1(B _) { }
    public static void M2(B _) { }
 }
+
+class Constructors : I2
+{
+    Constructors(I1 i) { }
+    Constructors(I2 i) { }
+    Constructors(Constructors c) : this((I1)c) { } // GOOD
+    Constructors(Sub s) : this((I2)s) { } // GOOD
+
+    void M(Constructors c)
+    {
+        new Constructors((I1)c); // GOOD
+        new Constructors((I2)c); // GOOD
+    }
+
+    public int Foo() => 0;
+
+    float I2.Foo() => 0;
+
+    class Sub : Constructors
+    {
+        public Sub(Sub s) : base((I1)s) { } // GOOD
+    }
+
+    class SubSub : Sub
+    {
+        SubSub(SubSub ss) : base((Sub)ss) { } // BAD
+
+        void M(SubSub ss)
+        {
+            new Sub((Sub)ss); // BAD
+        }
+    }
+}

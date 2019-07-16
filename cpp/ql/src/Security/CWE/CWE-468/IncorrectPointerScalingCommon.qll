@@ -117,7 +117,7 @@ predicate exprSourceType(Expr use, Type sourceType, Location sourceLoc) {
 
   // Source expressions
   else
-    (sourceType = use.getType().getUnspecifiedType() and
+    (sourceType = use.getUnspecifiedType() and
      isPointerType(sourceType) and
      sourceLoc = use.getLocation())
 }
@@ -135,7 +135,7 @@ predicate defSourceType(SsaDefinition def, LocalScopeVariable v,
   exists (Parameter p
   | p = v and
     def.definedByParameter(p) and
-    sourceType = p.getType().getUnspecifiedType() and
+    sourceType = p.getUnspecifiedType() and
     strictcount(p.getType()) = 1 and
     isPointerType(sourceType) and
     sourceLoc = p.getLocation())

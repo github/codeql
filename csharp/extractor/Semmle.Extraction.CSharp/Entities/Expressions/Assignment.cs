@@ -71,6 +71,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     return ExprKind.ASSIGN_LSHIFT;
                 case SyntaxKind.GreaterThanGreaterThanEqualsToken:
                     return ExprKind.ASSIGN_RSHIFT;
+                case SyntaxKind.QuestionQuestionEqualsToken:
+                    return ExprKind.ASSIGN_COALESCE;
                 default:
                     cx.ModelError(syntax, "Unrecognised assignment type " + GetKind(cx, syntax));
                     return ExprKind.UNKNOWN;
@@ -84,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var kind = GetAssignmentOperation(cx, syntax);
             var leftType = cx.GetType(syntax.Left);
 
-            if (leftType != null && leftType.SpecialType != SpecialType.None)
+            if (leftType.Symbol != null && leftType.Symbol.SpecialType != SpecialType.None)
             {
                 // In Mono, the builtin types did not specify their operator invocation
                 // even though EVERY operator has an invocation in C#. (This is a flaw in the dbscheme and should be fixed).
@@ -142,6 +144,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return ExprKind.SUB;
                     case ExprKind.ASSIGN_XOR:
                         return ExprKind.BIT_XOR;
+                    case ExprKind.ASSIGN_COALESCE:
+                        return ExprKind.NULL_COALESCING;
                     default:
                         cx.ModelError(Syntax, "Couldn't unfold assignment of type " + kind);
                         return ExprKind.UNKNOWN;

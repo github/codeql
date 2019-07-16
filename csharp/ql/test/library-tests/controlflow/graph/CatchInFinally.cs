@@ -26,4 +26,27 @@ class CatchInFinally
             }
         }
     }
+
+    class ExceptionA : Exception { }
+    class ExceptionB : Exception { }
+    class ExceptionC : Exception { }
+
+    public static void M2(bool b1, bool b2)
+    {
+        try
+        {
+            if (b1) throw new ExceptionA();
+        }
+        finally
+        {
+            try
+            {
+                if (b2) throw new ExceptionB();
+            }
+            catch (ExceptionB) when (b2)
+            {
+                if (b1) throw new ExceptionC();
+            }
+        }
+    }
 }

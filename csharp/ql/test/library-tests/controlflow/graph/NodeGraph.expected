@@ -598,6 +598,71 @@
 | CatchInFinally.cs:25:35:25:36 | "" | CatchInFinally.cs:25:17:25:37 | call to method WriteLine | semmle.label | successor |
 | CatchInFinally.cs:25:35:25:36 | [finally: exception(ArgumentNullException)] "" | CatchInFinally.cs:25:17:25:37 | [finally: exception(ArgumentNullException)] call to method WriteLine | semmle.label | successor |
 | CatchInFinally.cs:25:35:25:36 | [finally: exception(Exception)] "" | CatchInFinally.cs:25:17:25:37 | [finally: exception(Exception)] call to method WriteLine | semmle.label | successor |
+| CatchInFinally.cs:34:24:34:25 | enter M2 | CatchInFinally.cs:35:5:51:5 | {...} | semmle.label | successor |
+| CatchInFinally.cs:35:5:51:5 | {...} | CatchInFinally.cs:36:9:50:9 | try {...} ... | semmle.label | successor |
+| CatchInFinally.cs:36:9:50:9 | try {...} ... | CatchInFinally.cs:37:9:39:9 | {...} | semmle.label | successor |
+| CatchInFinally.cs:37:9:39:9 | {...} | CatchInFinally.cs:38:13:38:43 | if (...) ... | semmle.label | successor |
+| CatchInFinally.cs:38:13:38:43 | if (...) ... | CatchInFinally.cs:38:17:38:18 | access to parameter b1 | semmle.label | successor |
+| CatchInFinally.cs:38:17:38:18 | access to parameter b1 | CatchInFinally.cs:38:27:38:42 | [b1 (line 34): true] object creation of type ExceptionA | semmle.label | true |
+| CatchInFinally.cs:38:17:38:18 | access to parameter b1 | CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | semmle.label | false |
+| CatchInFinally.cs:38:21:38:43 | [b1 (line 34): true] throw ...; | CatchInFinally.cs:41:9:50:9 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | semmle.label | exception(ExceptionA) |
+| CatchInFinally.cs:38:27:38:42 | [b1 (line 34): true] object creation of type ExceptionA | CatchInFinally.cs:38:21:38:43 | [b1 (line 34): true] throw ...; | semmle.label | successor |
+| CatchInFinally.cs:38:27:38:42 | [b1 (line 34): true] object creation of type ExceptionA | CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} | semmle.label | exception(Exception) |
+| CatchInFinally.cs:41:9:50:9 | [b1 (line 34): false] {...} | CatchInFinally.cs:42:13:49:13 | [b1 (line 34): false] try {...} ... | semmle.label | successor |
+| CatchInFinally.cs:41:9:50:9 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:42:13:49:13 | [finally: exception(Exception), b1 (line 34): true] try {...} ... | semmle.label | successor |
+| CatchInFinally.cs:41:9:50:9 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | CatchInFinally.cs:42:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] try {...} ... | semmle.label | successor |
+| CatchInFinally.cs:42:13:49:13 | [b1 (line 34): false] try {...} ... | CatchInFinally.cs:43:13:45:13 | [b1 (line 34): false] {...} | semmle.label | successor |
+| CatchInFinally.cs:42:13:49:13 | [finally: exception(Exception), b1 (line 34): true] try {...} ... | CatchInFinally.cs:43:13:45:13 | [finally: exception(Exception), b1 (line 34): true] {...} | semmle.label | successor |
+| CatchInFinally.cs:42:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] try {...} ... | CatchInFinally.cs:43:13:45:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | semmle.label | successor |
+| CatchInFinally.cs:43:13:45:13 | [b1 (line 34): false] {...} | CatchInFinally.cs:44:17:44:47 | [b1 (line 34): false] if (...) ... | semmle.label | successor |
+| CatchInFinally.cs:43:13:45:13 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:44:17:44:47 | [finally: exception(Exception), b1 (line 34): true] if (...) ... | semmle.label | successor |
+| CatchInFinally.cs:43:13:45:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | CatchInFinally.cs:44:17:44:47 | [finally: exception(ExceptionA), b1 (line 34): true] if (...) ... | semmle.label | successor |
+| CatchInFinally.cs:44:17:44:47 | [b1 (line 34): false] if (...) ... | CatchInFinally.cs:44:21:44:22 | [b1 (line 34): false] access to parameter b2 | semmle.label | successor |
+| CatchInFinally.cs:44:17:44:47 | [finally: exception(Exception), b1 (line 34): true] if (...) ... | CatchInFinally.cs:44:21:44:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b2 | semmle.label | successor |
+| CatchInFinally.cs:44:17:44:47 | [finally: exception(ExceptionA), b1 (line 34): true] if (...) ... | CatchInFinally.cs:44:21:44:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b2 | semmle.label | successor |
+| CatchInFinally.cs:44:21:44:22 | [b1 (line 34): false] access to parameter b2 | CatchInFinally.cs:34:24:34:25 | exit M2 | semmle.label | false |
+| CatchInFinally.cs:44:21:44:22 | [b1 (line 34): false] access to parameter b2 | CatchInFinally.cs:44:31:44:46 | [b1 (line 34): false, b2 (line 34): true] object creation of type ExceptionB | semmle.label | true |
+| CatchInFinally.cs:44:21:44:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b2 | CatchInFinally.cs:34:24:34:25 | exit M2 | semmle.label | exception(Exception) |
+| CatchInFinally.cs:44:21:44:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b2 | CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | semmle.label | true |
+| CatchInFinally.cs:44:21:44:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b2 | CatchInFinally.cs:34:24:34:25 | exit M2 | semmle.label | exception(ExceptionA) |
+| CatchInFinally.cs:44:21:44:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b2 | CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | semmle.label | true |
+| CatchInFinally.cs:44:25:44:47 | [b1 (line 34): false, b2 (line 34): true] throw ...; | CatchInFinally.cs:46:13:49:13 | [exception: ExceptionB, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | semmle.label | exception(ExceptionB) |
+| CatchInFinally.cs:44:25:44:47 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] throw ...; | CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | semmle.label | exception(ExceptionB) |
+| CatchInFinally.cs:44:25:44:47 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] throw ...; | CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | semmle.label | exception(ExceptionB) |
+| CatchInFinally.cs:44:31:44:46 | [b1 (line 34): false, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:44:25:44:47 | [b1 (line 34): false, b2 (line 34): true] throw ...; | semmle.label | successor |
+| CatchInFinally.cs:44:31:44:46 | [b1 (line 34): false, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:46:13:49:13 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | semmle.label | exception(Exception) |
+| CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:44:25:44:47 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] throw ...; | semmle.label | successor |
+| CatchInFinally.cs:44:31:44:46 | [finally: exception(Exception), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | semmle.label | exception(Exception) |
+| CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:44:25:44:47 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] throw ...; | semmle.label | successor |
+| CatchInFinally.cs:44:31:44:46 | [finally: exception(ExceptionA), b1 (line 34): true, b2 (line 34): true] object creation of type ExceptionB | CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | semmle.label | exception(Exception) |
+| CatchInFinally.cs:46:13:49:13 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:34:24:34:25 | exit M2 | semmle.label | exception(Exception) |
+| CatchInFinally.cs:46:13:49:13 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:38:46:39 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | semmle.label | match |
+| CatchInFinally.cs:46:13:49:13 | [exception: ExceptionB, b1 (line 34): false, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:38:46:39 | [exception: ExceptionB, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | semmle.label | match |
+| CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:34:24:34:25 | exit M2 | semmle.label | exception(Exception) |
+| CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | semmle.label | match |
+| CatchInFinally.cs:46:13:49:13 | [finally: exception(Exception), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | semmle.label | match |
+| CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:34:24:34:25 | exit M2 | semmle.label | exception(Exception) |
+| CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | semmle.label | match |
+| CatchInFinally.cs:46:13:49:13 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] catch (...) {...} | CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | semmle.label | match |
+| CatchInFinally.cs:46:38:46:39 | [exception: Exception, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [b1 (line 34): false] {...} | semmle.label | true |
+| CatchInFinally.cs:46:38:46:39 | [exception: ExceptionB, b1 (line 34): false, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [b1 (line 34): false] {...} | semmle.label | true |
+| CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [finally: exception(Exception), b1 (line 34): true] {...} | semmle.label | true |
+| CatchInFinally.cs:46:38:46:39 | [finally: exception(Exception), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [finally: exception(Exception), b1 (line 34): true] {...} | semmle.label | true |
+| CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: Exception, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | semmle.label | true |
+| CatchInFinally.cs:46:38:46:39 | [finally: exception(ExceptionA), exception: ExceptionB, b1 (line 34): true, b2 (line 34): true] access to parameter b2 | CatchInFinally.cs:47:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | semmle.label | true |
+| CatchInFinally.cs:47:13:49:13 | [b1 (line 34): false] {...} | CatchInFinally.cs:48:17:48:47 | [b1 (line 34): false] if (...) ... | semmle.label | successor |
+| CatchInFinally.cs:47:13:49:13 | [finally: exception(Exception), b1 (line 34): true] {...} | CatchInFinally.cs:48:17:48:47 | [finally: exception(Exception), b1 (line 34): true] if (...) ... | semmle.label | successor |
+| CatchInFinally.cs:47:13:49:13 | [finally: exception(ExceptionA), b1 (line 34): true] {...} | CatchInFinally.cs:48:17:48:47 | [finally: exception(ExceptionA), b1 (line 34): true] if (...) ... | semmle.label | successor |
+| CatchInFinally.cs:48:17:48:47 | [b1 (line 34): false] if (...) ... | CatchInFinally.cs:48:21:48:22 | [b1 (line 34): false] access to parameter b1 | semmle.label | successor |
+| CatchInFinally.cs:48:17:48:47 | [finally: exception(Exception), b1 (line 34): true] if (...) ... | CatchInFinally.cs:48:21:48:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b1 | semmle.label | successor |
+| CatchInFinally.cs:48:17:48:47 | [finally: exception(ExceptionA), b1 (line 34): true] if (...) ... | CatchInFinally.cs:48:21:48:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b1 | semmle.label | successor |
+| CatchInFinally.cs:48:21:48:22 | [b1 (line 34): false] access to parameter b1 | CatchInFinally.cs:34:24:34:25 | exit M2 | semmle.label | false |
+| CatchInFinally.cs:48:21:48:22 | [finally: exception(Exception), b1 (line 34): true] access to parameter b1 | CatchInFinally.cs:48:31:48:46 | [finally: exception(Exception)] object creation of type ExceptionC | semmle.label | true |
+| CatchInFinally.cs:48:21:48:22 | [finally: exception(ExceptionA), b1 (line 34): true] access to parameter b1 | CatchInFinally.cs:48:31:48:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | semmle.label | true |
+| CatchInFinally.cs:48:25:48:47 | [finally: exception(Exception)] throw ...; | CatchInFinally.cs:34:24:34:25 | exit M2 | semmle.label | exception(ExceptionC) |
+| CatchInFinally.cs:48:25:48:47 | [finally: exception(ExceptionA)] throw ...; | CatchInFinally.cs:34:24:34:25 | exit M2 | semmle.label | exception(ExceptionC) |
+| CatchInFinally.cs:48:31:48:46 | [finally: exception(Exception)] object creation of type ExceptionC | CatchInFinally.cs:48:25:48:47 | [finally: exception(Exception)] throw ...; | semmle.label | successor |
+| CatchInFinally.cs:48:31:48:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | CatchInFinally.cs:48:25:48:47 | [finally: exception(ExceptionA)] throw ...; | semmle.label | successor |
 | CompileTimeOperators.cs:5:9:5:15 | enter Default | CompileTimeOperators.cs:6:5:8:5 | {...} | semmle.label | successor |
 | CompileTimeOperators.cs:6:5:8:5 | {...} | CompileTimeOperators.cs:7:16:7:27 | default(...) | semmle.label | successor |
 | CompileTimeOperators.cs:7:9:7:28 | return ...; | CompileTimeOperators.cs:5:9:5:15 | exit Default | semmle.label | return |
@@ -1417,15 +1482,14 @@
 | Patterns.cs:20:17:20:17 | access to local variable o | Patterns.cs:22:13:22:23 | case ...: | semmle.label | successor |
 | Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:22:18:22:22 | "xyz" | semmle.label | successor |
 | Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:23:17:23:22 | break; | semmle.label | match |
-| Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:24:13:24:36 | case Int32 i2: | semmle.label | no-match |
+| Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:24:13:24:36 | case ...: | semmle.label | no-match |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:40:9:42:9 | switch (...) {...} | semmle.label | break |
-| Patterns.cs:24:13:24:36 | case Int32 i2: | Patterns.cs:24:18:24:20 | access to type Int32 | semmle.label | successor |
-| Patterns.cs:24:18:24:20 | access to type Int32 | Patterns.cs:24:18:24:23 | Int32 i2 | semmle.label | match |
-| Patterns.cs:24:18:24:20 | access to type Int32 | Patterns.cs:27:13:27:24 | case Int32 i3: | semmle.label | no-match |
-| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:30:24:31 | access to local variable i2 | semmle.label | successor |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:18:24:23 | Int32 i2 | semmle.label | successor |
+| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:30:24:31 | access to local variable i2 | semmle.label | match |
+| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:27:13:27:24 | case ...: | semmle.label | no-match |
 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:35:24:35 | 0 | semmle.label | successor |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:25:17:25:52 | ...; | semmle.label | true |
-| Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:27:13:27:24 | case Int32 i3: | semmle.label | false |
+| Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:27:13:27:24 | case ...: | semmle.label | false |
 | Patterns.cs:24:35:24:35 | 0 | Patterns.cs:24:30:24:35 | ... > ... | semmle.label | successor |
 | Patterns.cs:25:17:25:51 | call to method WriteLine | Patterns.cs:26:17:26:22 | break; | semmle.label | successor |
 | Patterns.cs:25:17:25:52 | ...; | Patterns.cs:25:37:25:45 | "positive " | semmle.label | successor |
@@ -1433,30 +1497,27 @@
 | Patterns.cs:25:37:25:45 | "positive " | Patterns.cs:25:47:25:48 | access to local variable i2 | semmle.label | successor |
 | Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:25:35:25:50 | $"..." | semmle.label | successor |
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:40:9:42:9 | switch (...) {...} | semmle.label | break |
-| Patterns.cs:27:13:27:24 | case Int32 i3: | Patterns.cs:27:18:27:20 | access to type Int32 | semmle.label | successor |
-| Patterns.cs:27:18:27:20 | access to type Int32 | Patterns.cs:27:18:27:23 | Int32 i3 | semmle.label | match |
-| Patterns.cs:27:18:27:20 | access to type Int32 | Patterns.cs:30:13:30:27 | case String s2: | semmle.label | no-match |
-| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:28:17:28:47 | ...; | semmle.label | successor |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Int32 i3 | semmle.label | successor |
+| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:28:17:28:47 | ...; | semmle.label | match |
+| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:30:13:30:27 | case ...: | semmle.label | no-match |
 | Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:29:17:29:22 | break; | semmle.label | successor |
 | Patterns.cs:28:17:28:47 | ...; | Patterns.cs:28:37:28:40 | "int " | semmle.label | successor |
 | Patterns.cs:28:35:28:45 | $"..." | Patterns.cs:28:17:28:46 | call to method WriteLine | semmle.label | successor |
 | Patterns.cs:28:37:28:40 | "int " | Patterns.cs:28:42:28:43 | access to local variable i3 | semmle.label | successor |
 | Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:28:35:28:45 | $"..." | semmle.label | successor |
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:40:9:42:9 | switch (...) {...} | semmle.label | break |
-| Patterns.cs:30:13:30:27 | case String s2: | Patterns.cs:30:18:30:23 | access to type String | semmle.label | successor |
-| Patterns.cs:30:18:30:23 | access to type String | Patterns.cs:30:18:30:26 | String s2 | semmle.label | match |
-| Patterns.cs:30:18:30:23 | access to type String | Patterns.cs:33:13:33:24 | case Object v2: | semmle.label | no-match |
-| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:31:17:31:50 | ...; | semmle.label | successor |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | String s2 | semmle.label | successor |
+| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:31:17:31:50 | ...; | semmle.label | match |
+| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:33:13:33:24 | case ...: | semmle.label | no-match |
 | Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:32:17:32:22 | break; | semmle.label | successor |
 | Patterns.cs:31:17:31:50 | ...; | Patterns.cs:31:37:31:43 | "string " | semmle.label | successor |
 | Patterns.cs:31:35:31:48 | $"..." | Patterns.cs:31:17:31:49 | call to method WriteLine | semmle.label | successor |
 | Patterns.cs:31:37:31:43 | "string " | Patterns.cs:31:45:31:46 | access to local variable s2 | semmle.label | successor |
 | Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:31:35:31:48 | $"..." | semmle.label | successor |
 | Patterns.cs:32:17:32:22 | break; | Patterns.cs:40:9:42:9 | switch (...) {...} | semmle.label | break |
-| Patterns.cs:33:13:33:24 | case Object v2: | Patterns.cs:33:18:33:20 | access to type Object | semmle.label | successor |
-| Patterns.cs:33:18:33:20 | access to type Object | Patterns.cs:33:18:33:23 | Object v2 | semmle.label | match |
-| Patterns.cs:33:18:33:20 | access to type Object | Patterns.cs:35:13:35:20 | default: | semmle.label | no-match |
-| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:34:17:34:22 | break; | semmle.label | successor |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:18:33:23 | Object v2 | semmle.label | successor |
+| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:34:17:34:22 | break; | semmle.label | match |
+| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:35:13:35:20 | default: | semmle.label | no-match |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:40:9:42:9 | switch (...) {...} | semmle.label | break |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:36:17:36:52 | ...; | semmle.label | successor |
 | Patterns.cs:36:17:36:51 | call to method WriteLine | Patterns.cs:37:17:37:22 | break; | semmle.label | successor |
@@ -1544,12 +1605,11 @@
 | Switch.cs:17:23:17:37 | object creation of type Exception | Switch.cs:17:17:17:38 | throw ...; | semmle.label | successor |
 | Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:18:18:21 | null | semmle.label | successor |
 | Switch.cs:18:18:18:21 | null | Switch.cs:19:17:19:29 | goto default; | semmle.label | match |
-| Switch.cs:18:18:18:21 | null | Switch.cs:20:13:20:23 | case Int32 i: | semmle.label | no-match |
+| Switch.cs:18:18:18:21 | null | Switch.cs:20:13:20:23 | case ...: | semmle.label | no-match |
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:30:13:30:20 | default: | semmle.label | goto default |
-| Switch.cs:20:13:20:23 | case Int32 i: | Switch.cs:20:18:20:20 | access to type Int32 | semmle.label | successor |
-| Switch.cs:20:18:20:20 | access to type Int32 | Switch.cs:20:18:20:22 | Int32 i | semmle.label | match |
-| Switch.cs:20:18:20:20 | access to type Int32 | Switch.cs:24:13:24:56 | case String s: | semmle.label | no-match |
-| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:21:17:22:27 | if (...) ... | semmle.label | successor |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:18:20:22 | Int32 i | semmle.label | successor |
+| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:21:17:22:27 | if (...) ... | semmle.label | match |
+| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:24:13:24:56 | case ...: | semmle.label | no-match |
 | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:21:21:21 | access to parameter o | semmle.label | successor |
 | Switch.cs:21:21:21:21 | access to parameter o | Switch.cs:21:26:21:29 | null | semmle.label | successor |
 | Switch.cs:21:21:21:29 | ... == ... | Switch.cs:22:21:22:27 | return ...; | semmle.label | true |
@@ -1558,28 +1618,26 @@
 | Switch.cs:22:21:22:27 | return ...; | Switch.cs:10:10:10:11 | exit M2 | semmle.label | return |
 | Switch.cs:23:17:23:28 | goto case ...; | Switch.cs:17:23:17:37 | object creation of type Exception | semmle.label | goto(0) |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:17:23:28 | goto case ...; | semmle.label | successor |
-| Switch.cs:24:13:24:56 | case String s: | Switch.cs:24:18:24:23 | access to type String | semmle.label | successor |
-| Switch.cs:24:18:24:23 | access to type String | Switch.cs:24:18:24:25 | String s | semmle.label | match |
-| Switch.cs:24:18:24:23 | access to type String | Switch.cs:27:13:27:39 | case Double d: | semmle.label | no-match |
-| Switch.cs:24:18:24:25 | String s | Switch.cs:24:32:24:55 | ... && ... | semmle.label | successor |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:18:24:25 | String s | semmle.label | successor |
+| Switch.cs:24:18:24:25 | String s | Switch.cs:24:32:24:55 | ... && ... | semmle.label | match |
+| Switch.cs:24:18:24:25 | String s | Switch.cs:27:13:27:39 | case ...: | semmle.label | no-match |
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:24:32:24:39 | access to property Length | semmle.label | successor |
 | Switch.cs:24:32:24:39 | access to property Length | Switch.cs:24:43:24:43 | 0 | semmle.label | successor |
 | Switch.cs:24:32:24:43 | ... > ... | Switch.cs:24:48:24:48 | access to local variable s | semmle.label | true |
-| Switch.cs:24:32:24:43 | ... > ... | Switch.cs:27:13:27:39 | case Double d: | semmle.label | false |
+| Switch.cs:24:32:24:43 | ... > ... | Switch.cs:27:13:27:39 | case ...: | semmle.label | false |
 | Switch.cs:24:32:24:55 | ... && ... | Switch.cs:24:32:24:32 | access to local variable s | semmle.label | successor |
 | Switch.cs:24:43:24:43 | 0 | Switch.cs:24:32:24:43 | ... > ... | semmle.label | successor |
 | Switch.cs:24:48:24:48 | access to local variable s | Switch.cs:24:53:24:55 | "a" | semmle.label | successor |
 | Switch.cs:24:48:24:55 | ... != ... | Switch.cs:25:17:25:37 | ...; | semmle.label | true |
-| Switch.cs:24:48:24:55 | ... != ... | Switch.cs:27:13:27:39 | case Double d: | semmle.label | false |
+| Switch.cs:24:48:24:55 | ... != ... | Switch.cs:27:13:27:39 | case ...: | semmle.label | false |
 | Switch.cs:24:53:24:55 | "a" | Switch.cs:24:48:24:55 | ... != ... | semmle.label | successor |
 | Switch.cs:25:17:25:36 | call to method WriteLine | Switch.cs:26:17:26:23 | return ...; | semmle.label | successor |
 | Switch.cs:25:17:25:37 | ...; | Switch.cs:25:35:25:35 | access to local variable s | semmle.label | successor |
 | Switch.cs:25:35:25:35 | access to local variable s | Switch.cs:25:17:25:36 | call to method WriteLine | semmle.label | successor |
 | Switch.cs:26:17:26:23 | return ...; | Switch.cs:10:10:10:11 | exit M2 | semmle.label | return |
-| Switch.cs:27:13:27:39 | case Double d: | Switch.cs:27:18:27:23 | access to type Double | semmle.label | successor |
-| Switch.cs:27:18:27:23 | access to type Double | Switch.cs:27:18:27:25 | Double d | semmle.label | match |
-| Switch.cs:27:18:27:23 | access to type Double | Switch.cs:30:13:30:20 | default: | semmle.label | no-match |
-| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:32:27:38 | call to method Throw | semmle.label | successor |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | Double d | semmle.label | successor |
+| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:32:27:38 | call to method Throw | semmle.label | match |
+| Switch.cs:27:18:27:25 | Double d | Switch.cs:30:13:30:20 | default: | semmle.label | no-match |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:10:10:10:11 | exit M2 | semmle.label | exception(Exception) |
 | Switch.cs:28:17:28:21 | Label: | Switch.cs:29:17:29:23 | return ...; | semmle.label | successor |
 | Switch.cs:29:17:29:23 | return ...; | Switch.cs:10:10:10:11 | exit M2 | semmle.label | return |
@@ -1592,12 +1650,12 @@
 | Switch.cs:44:10:44:11 | enter M4 | Switch.cs:45:5:53:5 | {...} | semmle.label | successor |
 | Switch.cs:45:5:53:5 | {...} | Switch.cs:46:9:52:9 | switch (...) {...} | semmle.label | successor |
 | Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:46:17:46:17 | access to parameter o | semmle.label | successor |
-| Switch.cs:46:17:46:17 | access to parameter o | Switch.cs:48:13:48:23 | case Int32: | semmle.label | successor |
-| Switch.cs:48:13:48:23 | case Int32: | Switch.cs:48:18:48:20 | access to type Int32 | semmle.label | successor |
+| Switch.cs:46:17:46:17 | access to parameter o | Switch.cs:48:13:48:23 | case ...: | semmle.label | successor |
+| Switch.cs:48:13:48:23 | case ...: | Switch.cs:48:18:48:20 | access to type Int32 | semmle.label | successor |
 | Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:49:17:49:22 | break; | semmle.label | match |
-| Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:50:13:50:39 | case Boolean: | semmle.label | no-match |
+| Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:50:13:50:39 | case ...: | semmle.label | no-match |
 | Switch.cs:49:17:49:22 | break; | Switch.cs:44:10:44:11 | exit M4 | semmle.label | break |
-| Switch.cs:50:13:50:39 | case Boolean: | Switch.cs:50:18:50:21 | access to type Boolean | semmle.label | successor |
+| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:18:50:21 | access to type Boolean | semmle.label | successor |
 | Switch.cs:50:18:50:21 | access to type Boolean | Switch.cs:44:10:44:11 | exit M4 | semmle.label | no-match |
 | Switch.cs:50:18:50:21 | access to type Boolean | Switch.cs:50:30:50:30 | access to parameter o | semmle.label | match |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:35:50:38 | null | semmle.label | successor |
@@ -1619,9 +1677,9 @@
 | Switch.cs:66:10:66:11 | enter M6 | Switch.cs:67:5:75:5 | {...} | semmle.label | successor |
 | Switch.cs:67:5:75:5 | {...} | Switch.cs:68:9:74:9 | switch (...) {...} | semmle.label | successor |
 | Switch.cs:68:9:74:9 | switch (...) {...} | Switch.cs:68:25:68:25 | access to parameter s | semmle.label | successor |
-| Switch.cs:68:17:68:25 | (...) ... | Switch.cs:70:13:70:24 | case Int32: | semmle.label | successor |
+| Switch.cs:68:17:68:25 | (...) ... | Switch.cs:70:13:70:24 | case ...: | semmle.label | successor |
 | Switch.cs:68:25:68:25 | access to parameter s | Switch.cs:68:17:68:25 | (...) ... | semmle.label | successor |
-| Switch.cs:70:13:70:24 | case Int32: | Switch.cs:70:18:70:20 | access to type Int32 | semmle.label | successor |
+| Switch.cs:70:13:70:24 | case ...: | Switch.cs:70:18:70:20 | access to type Int32 | semmle.label | successor |
 | Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:72:13:72:21 | case ...: | semmle.label | no-match |
 | Switch.cs:72:13:72:21 | case ...: | Switch.cs:72:18:72:19 | "" | semmle.label | successor |
 | Switch.cs:72:18:72:19 | "" | Switch.cs:66:10:66:11 | exit M6 | semmle.label | no-match |
@@ -1652,8 +1710,8 @@
 | Switch.cs:91:10:91:11 | enter M8 | Switch.cs:92:5:99:5 | {...} | semmle.label | successor |
 | Switch.cs:92:5:99:5 | {...} | Switch.cs:93:9:97:9 | switch (...) {...} | semmle.label | successor |
 | Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:93:17:93:17 | access to parameter o | semmle.label | successor |
-| Switch.cs:93:17:93:17 | access to parameter o | Switch.cs:95:13:95:24 | case Int32: | semmle.label | successor |
-| Switch.cs:95:13:95:24 | case Int32: | Switch.cs:95:18:95:20 | access to type Int32 | semmle.label | successor |
+| Switch.cs:93:17:93:17 | access to parameter o | Switch.cs:95:13:95:24 | case ...: | semmle.label | successor |
+| Switch.cs:95:13:95:24 | case ...: | Switch.cs:95:18:95:20 | access to type Int32 | semmle.label | successor |
 | Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:96:22:96:25 | true | semmle.label | match |
 | Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:98:16:98:20 | false | semmle.label | no-match |
 | Switch.cs:96:15:96:26 | return ...; | Switch.cs:91:10:91:11 | exit M8 | semmle.label | return |
@@ -1708,6 +1766,34 @@
 | Switch.cs:120:9:120:18 | return ...; | Switch.cs:113:9:113:11 | exit M10 | semmle.label | return |
 | Switch.cs:120:16:120:17 | -... | Switch.cs:120:9:120:18 | return ...; | semmle.label | successor |
 | Switch.cs:120:17:120:17 | 1 | Switch.cs:120:16:120:17 | -... | semmle.label | successor |
+| Switch.cs:123:10:123:12 | enter M11 | Switch.cs:124:5:127:5 | {...} | semmle.label | successor |
+| Switch.cs:124:5:127:5 | {...} | Switch.cs:125:9:126:19 | if (...) ... | semmle.label | successor |
+| Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:125:13:125:48 | ... switch { ... } | semmle.label | successor |
+| Switch.cs:125:13:125:13 | access to parameter o | Switch.cs:125:24:125:34 | ... => ... | semmle.label | successor |
+| Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:13:125:13 | access to parameter o | semmle.label | successor |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:34:125:34 | access to local variable b | semmle.label | match |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:37:125:46 | ... => ... | semmle.label | no-match |
+| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:29 | Boolean b | semmle.label | successor |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:123:10:123:12 | exit M11 | semmle.label | false |
+| Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:126:13:126:19 | return ...; | semmle.label | true |
+| Switch.cs:125:37:125:37 | _ | Switch.cs:125:42:125:46 | false | semmle.label | match |
+| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:37 | _ | semmle.label | successor |
+| Switch.cs:125:42:125:46 | false | Switch.cs:123:10:123:12 | exit M11 | semmle.label | false |
+| Switch.cs:126:13:126:19 | return ...; | Switch.cs:123:10:123:12 | exit M11 | semmle.label | return |
+| Switch.cs:129:12:129:14 | enter M12 | Switch.cs:130:5:132:5 | {...} | semmle.label | successor |
+| Switch.cs:130:5:132:5 | {...} | Switch.cs:131:17:131:53 | ... switch { ... } | semmle.label | successor |
+| Switch.cs:131:9:131:67 | return ...; | Switch.cs:129:12:129:14 | exit M12 | semmle.label | return |
+| Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:131:28:131:40 | ... => ... | semmle.label | successor |
+| Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:17 | access to parameter o | semmle.label | successor |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:40:131:40 | access to local variable s | semmle.label | match |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:43:131:51 | ... => ... | semmle.label | no-match |
+| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:35 | String s | semmle.label | successor |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:9:131:67 | return ...; | semmle.label | null |
+| Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:56:131:66 | call to method ToString | semmle.label | non-null |
+| Switch.cs:131:43:131:43 | _ | Switch.cs:131:48:131:51 | null | semmle.label | match |
+| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:43 | _ | semmle.label | successor |
+| Switch.cs:131:48:131:51 | null | Switch.cs:131:9:131:67 | return ...; | semmle.label | null |
+| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:9:131:67 | return ...; | semmle.label | successor |
 | TypeAccesses.cs:3:10:3:10 | enter M | TypeAccesses.cs:4:5:9:5 | {...} | semmle.label | successor |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:5:9:5:26 | ... ...; | semmle.label | successor |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:5:25:5:25 | access to parameter o | semmle.label | successor |

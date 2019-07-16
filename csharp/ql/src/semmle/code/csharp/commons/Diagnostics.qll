@@ -29,6 +29,17 @@ class Diagnostic extends @diagnostic {
    */
   int getSeverity() { result = severity }
 
+  /** Gets a string representation of the severity of this diagnostic. */
+  string getSeverityText() {
+    severity = 0 and result = "Hidden"
+    or
+    severity = 1 and result = "Info"
+    or
+    severity = 2 and result = "Warning"
+    or
+    severity = 3 and result = "Error"
+  }
+
   /** Gets the identifier of this diagnostic, for example "CS8019". */
   string getTag() { result = tag }
 

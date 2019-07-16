@@ -68,16 +68,11 @@ private predicate transitiveCapturedCallTarget(ControlFlow::Nodes::ElementNode c
 cached
 private module Cached {
   private import CallContext
-
-  cached
-  module DataFlowDispatchCached {
-    cached
-    predicate forceCachingInSameStage() { DataFlowPrivateCached::forceCachingInSameStage() }
-  }
+  private import semmle.code.csharp.Caching
 
   cached
   newtype TReturnKind =
-    TNormalReturnKind() or
+    TNormalReturnKind() { Stages::DataFlowStage::forceCachingInSameStage() } or
     TYieldReturnKind() or
     TOutReturnKind(int i) {
       exists(Parameter p | callableReturnsOutOrRef(_, p, _) and p.isOut() | i = p.getPosition())

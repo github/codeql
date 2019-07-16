@@ -182,3 +182,12 @@
 | test.py:197 | t_2 | test.py:195 | Taint simple.test | SOURCE |
 | test.py:199 | t_3 | test.py:195 | Taint simple.test | SOURCE |
 | test.py:199 | t_4 | test.py:195 | Taint simple.test | SOURCE |
+| test.py:202 | t_0 | test.py:202 | Taint iterable.simple | ITERABLE_SOURCE |
+| test.py:203 | i_1 | test.py:203 | Taint simple.test | For |
+| test.py:203 | i_2 | test.py:203 | Taint simple.test | For |
+| test.py:208 | seq_0 | test.py:208 | Taint [simple.test] | List |
+| test.py:209 | i_1 | test.py:209 | Taint simple.test | For |
+| test.py:209 | i_2 | test.py:209 | Taint simple.test | For |
+| test.py:213 | x_0 | test.py:213 | Taint simple.test | For |
+| test.py:213 | x_1 | test.py:213 | Taint simple.test | For |
+| test.py:214 | x_2 | test.py:213 | Taint simple.test | For |

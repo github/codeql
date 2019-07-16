@@ -7,7 +7,7 @@
  * @id js/source-summary-extraction
  */
 
-import AllConfigurations
+import Configurations
 import PortalEntrySink
 import SourceFromAnnotation
 

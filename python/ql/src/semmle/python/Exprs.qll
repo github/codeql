@@ -78,37 +78,28 @@ class Expr extends Expr_, AstNode {
      * NOTE: For complex dataflow, involving multiple stages of points-to analysis, it may be more precise to use 
      * `ControlFlowNode.refersTo(...)` instead.
      */
-    predicate refersTo(Object value, ClassObject cls, AstNode origin) {
-        not py_special_objects(cls, "_semmle_unknown_type")
-        and
-        not value = unknownValue()
-        and
-        PointsTo::points_to(this.getAFlowNode(), _, value, cls, origin.getAFlowNode())
+    predicate refersTo(Object obj, ClassObject cls, AstNode origin) {
+        this.refersTo(_, obj, cls, origin)
     }
 
     /** Gets what this expression might "refer-to" in the given `context`.
      */
-    predicate refersTo(Context context, Object value, ClassObject cls, AstNode origin) {
-        not py_special_objects(cls, "_semmle_unknown_type")
-        and
-        PointsTo::points_to(this.getAFlowNode(), context, value, cls, origin.getAFlowNode())
+    predicate refersTo(Context context, Object obj, ClassObject cls, AstNode origin) {
+        this.getAFlowNode().refersTo(context, obj, cls, origin.getAFlowNode())
     }
 
     /** Whether this expression might "refer-to" to `value` which is from `origin` 
      * Unlike `this.refersTo(value, _, origin)`, this predicate includes results 
      * where the class cannot be inferred.
      */
-    predicate refersTo(Object value, AstNode origin) {
-        PointsTo::points_to(this.getAFlowNode(), _, value, _, origin.getAFlowNode())
-        and
-        not value = unknownValue()
+    pragma[nomagic]
+    predicate refersTo(Object obj, AstNode origin) {
+        this.getAFlowNode().refersTo(obj, origin.getAFlowNode())
     }
 
     /** Equivalent to `this.refersTo(value, _)` */
-    predicate refersTo(Object value) {
-        PointsTo::points_to(this.getAFlowNode(), _, value, _, _)
-        and
-        not value = unknownValue()
+    predicate refersTo(Object obj) {
+        this.refersTo(obj, _)
     }
 
 }
@@ -177,12 +168,12 @@ class Call extends Call_ {
 
     override CallNode getAFlowNode() { result = super.getAFlowNode() }
 
-    /** Gets a tuple (*) argument of this class definition. */
+    /** Gets a tuple (*) argument of this call. */
     Expr getStarargs() {
         result = this.getAPositionalArg().(Starred).getValue()
     }
 
-    /** Gets a dictionary (**) argument of this class definition. */
+    /** Gets a dictionary (**) argument of this call. */
     Expr getKwargs() {
         result = this.getANamedArg().(DictUnpacking).getValue()
     }
@@ -234,6 +225,18 @@ class Call extends Call_ {
         result = this.getAKeyword().getArg()
         or
         result = this.getKwargs().(Dict).getAKey().(StrConst).getText()
+    }
+
+    /** Gets the positional argument count of this call, provided there is no more than one tuple (*) argument. */
+    int getPositionalArgumentCount() {
+        count(this.getStarargs()) < 2 and
+        result = count(Expr arg | arg = this.getAPositionalArg() and not arg instanceof Starred)
+    }
+
+    /** Gets the tuple (*) argument of this call, provided there is exactly one. */
+    Expr getStarArg() {
+        count(this.getStarargs()) < 2 and
+        result = getStarargs()
     }
 
 }
@@ -339,7 +342,7 @@ class Ellipsis extends Ellipsis_ {
  *  and numeric literals.
  */
 abstract class ImmutableLiteral extends Expr {
- 
+
     abstract Object getLiteralObject();
 
     abstract boolean booleanValue();
@@ -380,7 +383,7 @@ class IntegerLiteral extends Num {
     override Object getLiteralObject() {
         py_cobjecttypes(result, theIntType()) and py_cobjectnames(result, this.getN())
         or
-        py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, this.getN())   
+        py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, this.getN())
     }
 
     override boolean booleanValue() {
@@ -396,7 +399,7 @@ class FloatLiteral extends Num {
 
     FloatLiteral() {
         not this instanceof ImaginaryLiteral and
-        exists(string n | n = this.getN() | n.charAt(_) = "." or n.charAt(_) = "e" or n.charAt(_) = "E")
+        this.getN().regexpMatch(".*[.eE].*")
     }
 
     float getValue() {
@@ -424,15 +427,15 @@ class FloatLiteral extends Num {
 
 /** An imaginary numeric constant, such as `3j` */
 class ImaginaryLiteral extends Num {
+    private float value;
 
     ImaginaryLiteral() {
-        exists(string n | n = this.getN() | n.charAt(_) = "j")
+        value = this.getN().regexpCapture("(.+)j.*", 1).toFloat()
     }
 
     /** Gets the value of this constant as a floating point value */
     float getValue() {
-        exists(string s, int j | s = this.getN() and s.charAt(j) = "j" |
-                       result = s.prefix(j).toFloat())
+        result = value
     }
 
     override string toString() {
@@ -450,6 +453,25 @@ class ImaginaryLiteral extends Num {
         this.getValue() = -0.0 and result = false
         or
         this.getValue() != 0.0 and this.getValue() != -0.0 and result = true
+    }
+
+}
+
+class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
+
+    NegativeIntegerLiteral() {
+        this.getOp() instanceof USub and
+        this.getOperand() instanceof IntegerLiteral
+    }
+
+    override boolean booleanValue() {
+        result = this.getOperand().(IntegerLiteral).booleanValue()
+    }
+
+    override Object getLiteralObject() {
+        (py_cobjecttypes(result, theIntType()) or  py_cobjecttypes(result, theLongType()))
+        and
+        py_cobjectnames(result, "-" + this.getOperand().(IntegerLiteral).getN())
     }
 
 }

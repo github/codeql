@@ -234,6 +234,8 @@ class Require extends CallExpr, Import {
           priority - (prioritiesPerCandidate() * r + numberOfExtensions() + 1))
     )
   }
+
+  override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
 }
 
 /** An argument to `require` or `require.resolve`, considered as a path expression. */

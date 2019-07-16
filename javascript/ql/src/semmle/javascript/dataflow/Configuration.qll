@@ -147,30 +147,42 @@ abstract class Configuration extends string {
    */
   predicate isBarrier(DataFlow::Node node) {
     exists(BarrierGuardNode guard |
-      not guard instanceof LabeledBarrierGuardNode and
       isBarrierGuard(guard) and
-      guard.blocks(node)
+      guard.internalBlocks(node, "")
     )
   }
 
   /**
+   * DEPRECATED: Use `isBarrierEdge` instead.
+   *
    * Holds if flow from `src` to `trg` is prohibited.
    */
   predicate isBarrier(DataFlow::Node src, DataFlow::Node trg) { none() }
 
   /**
+   * DEPRECATED: Use `isBarrierEdge` instead.
+   *
    * Holds if flow with label `lbl` cannot flow from `src` to `trg`.
    */
   predicate isBarrier(DataFlow::Node src, DataFlow::Node trg, FlowLabel lbl) { none() }
 
   /**
+   * Holds if flow from `pred` to `succ` is prohibited.
+   */
+  predicate isBarrierEdge(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+  /**
+   * Holds if flow with label `lbl` cannot flow from `pred` to `succ`.
+   */
+  predicate isBarrierEdge(DataFlow::Node pred, DataFlow::Node succ, FlowLabel lbl) { none() }
+
+  /**
    * Holds if flow with label `lbl` cannot flow into `node`.
    */
   predicate isLabeledBarrier(DataFlow::Node node, FlowLabel lbl) {
-    exists(LabeledBarrierGuardNode guard |
-      lbl = guard.getALabel() and
+    exists(BarrierGuardNode guard |
       isBarrierGuard(guard) and
-      guard.blocks(node)
+      guard.internalBlocks(node, lbl)
     )
     or
     none() // relax type inference to account for overriding
@@ -254,43 +266,81 @@ module FlowLabel {
  */
 abstract class BarrierGuardNode extends DataFlow::Node {
   /**
-   * Holds if data flow node `nd` acts as a barrier for data flow.
+   * Holds if data flow node `nd` acts as a barrier for data flow, possibly due to aliasing
+   * through an access path.
+   *
+   * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
    *
    * INTERNAL: this predicate should only be used from within `blocks(boolean, Expr)`.
    */
-  predicate blocks(DataFlow::Node nd) {
+  predicate internalBlocks(DataFlow::Node nd, string label) {
     // 1) `nd` is a use of a refinement node that blocks its input variable
-    exists(SsaRefinementNode ref |
+    exists(SsaRefinementNode ref, boolean outcome |
       nd = DataFlow::ssaDefinitionNode(ref) and
       forex(SsaVariable input | input = ref.getAnInput() |
         asExpr() = ref.getGuard().getTest() and
-        blocks(ref.getGuard().(ConditionGuardNode).getOutcome(), input.getAUse())
+        outcome = ref.getGuard().(ConditionGuardNode).getOutcome() and
+        internalBlocksExpr(outcome, input.getAUse(), label)
       )
     )
     or
     // 2) `nd` is an instance of an access path `p`, and dominated by a barrier for `p`
-    exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond |
+    exists(AccessPath p, BasicBlock bb, ConditionGuardNode cond, boolean outcome |
       nd = DataFlow::valueNode(p.getAnInstanceIn(bb)) and
       asExpr() = cond.getTest() and
-      blocks(cond.getOutcome(), p.getAnInstance()) and
+      outcome = cond.getOutcome() and
+      internalBlocksAccessPath(outcome, p, label) and
       cond.dominates(bb)
     )
   }
 
   /**
+   * Holds if data flow node `nd` acts as a barrier for data flow.
+   *
+   * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
+   */
+  private predicate internalBlocksExpr(boolean outcome, Expr test, string label) {
+    blocks(outcome, test) and label = ""
+    or
+    blocks(outcome, test, label)
+  }
+
+  /**
+   * Holds if data flow node `nd` acts as a barrier for data flow due to aliasing through
+   * an access path.
+   *
+   * `label` is bound to the blocked label, or the empty string if all labels should be blocked.
+   */
+  pragma[noinline]
+  private predicate internalBlocksAccessPath(boolean outcome, AccessPath ap, string label) {
+    internalBlocksExpr(outcome, ap.getAnInstance(), label)
+  }
+
+  /**
    * Holds if this node blocks expression `e` provided it evaluates to `outcome`.
+   *
+   * This will block all flow labels.
    */
   abstract predicate blocks(boolean outcome, Expr e);
+
+  /**
+   * Holds if this node blocks expression `e` from flow of type `label`, provided it evaluates to `outcome`.
+   */
+  predicate blocks(boolean outcome, Expr e, FlowLabel label) { none() }
 }
 
 /**
  * A guard node that only blocks specific labels.
  */
 abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
+  override predicate blocks(boolean outcome, Expr e) { none() }
+
   /**
-   * Get a flow label blocked by this guard node.
+   * DEPRECATED: Use `blocks(outcome, e, label)` or `sanitizes(outcome, e, label)` instead.
+   *
+   * Overriding this predicate has no effect.
    */
-  abstract FlowLabel getALabel();
+  deprecated FlowLabel getALabel() { none() }
 }
 
 /**
@@ -437,6 +487,7 @@ private predicate basicFlowStep(
     exists(FlowLabel predlbl, FlowLabel succlbl |
       localFlowStep(pred, succ, cfg, predlbl, succlbl) and
       not cfg.isBarrier(pred, succ, predlbl) and
+      not cfg.isBarrierEdge(pred, succ, predlbl) and
       summary = MkPathSummary(false, false, predlbl, succlbl)
     )
     or
@@ -470,7 +521,7 @@ private predicate exploratoryFlowStep(
 ) {
   basicFlowStep(pred, succ, _, cfg) or
   basicStoreStep(pred, succ, _) or
-  loadStep(pred, succ, _) or
+  basicLoadStep(pred, succ, _) or
   // the following two disjuncts taken together over-approximate flow through
   // higher-order calls
   callback(pred, succ) or
@@ -550,7 +601,8 @@ private predicate callInputStep(
     )
   ) and
   not cfg.isBarrier(succ) and
-  not cfg.isBarrier(pred, succ)
+  not cfg.isBarrier(pred, succ) and
+  not cfg.isBarrierEdge(pred, succ)
 }
 
 /**
@@ -605,6 +657,7 @@ private predicate flowThroughCall(
     calls(output, f) and // Do not consider partial calls
     reachableFromInput(f, output, input, ret, cfg, summary) and
     not cfg.isBarrier(ret, output) and
+    not cfg.isBarrierEdge(ret, output) and
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
   or
@@ -614,6 +667,7 @@ private predicate flowThroughCall(
     calls(invk, f) and
     reachableFromInput(f, invk, input, ret, cfg, summary) and
     not cfg.isBarrier(ret, output) and
+    not cfg.isBarrierEdge(ret, output) and
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
 }
@@ -644,10 +698,59 @@ private predicate storeStep(
 }
 
 /**
+ * Holds if `f` may `read` property `prop` of parameter `parm`.
+ */
+private predicate parameterPropRead(
+  Function f, DataFlow::Node invk, DataFlow::Node arg, string prop, DataFlow::PropRead read,
+  DataFlow::Configuration cfg
+) {
+  exists(DataFlow::SourceNode parm |
+    callInputStep(f, invk, arg, parm, cfg) and
+    read = parm.getAPropertyRead(prop)
+  )
+}
+
+/**
+ * Holds if `nd` may flow into a return statement of `f` under configuration `cfg`
+ * (possibly through callees) along a path summarized by `summary`.
+ */
+private predicate reachesReturn(
+  Function f, DataFlow::Node nd, DataFlow::Configuration cfg, PathSummary summary
+) {
+  isRelevant(nd, cfg) and
+  returnExpr(f, nd, _) and
+  summary = PathSummary::level()
+  or
+  exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
+    flowStep(nd, cfg, mid, oldSummary) and
+    reachesReturn(f, mid, cfg, newSummary) and
+    summary = oldSummary.append(newSummary)
+  )
+}
+
+/**
+ * Holds if property `prop` of `pred` may flow into `succ` along a path summarized by
+ * `summary`.
+ */
+private predicate loadStep(
+  DataFlow::Node pred, DataFlow::Node succ, string prop, DataFlow::Configuration cfg,
+  PathSummary summary
+) {
+  basicLoadStep(pred, succ, prop) and
+  summary = PathSummary::level()
+  or
+  exists(Function f, DataFlow::PropRead read |
+    parameterPropRead(f, succ, pred, prop, read, cfg) and
+    reachesReturn(f, read, cfg, summary)
+  )
+}
+
+/**
  * Holds if `rhs` is the right-hand side of a write to property `prop`, and `nd` is reachable
  * from the base of that write under configuration `cfg` (possibly through callees) along a
  * path summarized by `summary`.
  */
+pragma[nomagic]
 private predicate reachableFromStoreBase(
   string prop, DataFlow::Node rhs, DataFlow::Node nd, DataFlow::Configuration cfg,
   PathSummary summary
@@ -669,11 +772,14 @@ private predicate reachableFromStoreBase(
  *
  * In other words, `pred` may flow to `succ` through a property.
  */
+pragma[noinline]
 private predicate flowThroughProperty(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration cfg, PathSummary summary
 ) {
-  exists(string prop, DataFlow::Node base | reachableFromStoreBase(prop, pred, base, cfg, summary) |
-    loadStep(base, succ, prop)
+  exists(string prop, DataFlow::Node base, PathSummary oldSummary, PathSummary newSummary |
+    reachableFromStoreBase(prop, pred, base, cfg, oldSummary) and
+    loadStep(base, succ, prop, cfg, newSummary) and
+    summary = oldSummary.append(newSummary)
   )
 }
 
@@ -689,7 +795,7 @@ private predicate summarizedHigherOrderCall(
 ) {
   exists(
     Function f, DataFlow::InvokeNode outer, DataFlow::InvokeNode inner, int j,
-    DataFlow::Node innerArg, DataFlow::ParameterNode cbParm, PathSummary oldSummary
+    DataFlow::Node innerArg, DataFlow::SourceNode cbParm, PathSummary oldSummary
   |
     reachableFromInput(f, outer, arg, innerArg, cfg, oldSummary) and
     argumentPassing(outer, cb, f, cbParm) and
@@ -732,6 +838,7 @@ private predicate summarizedHigherOrderCall(
  * - The flow label mapping of the summary corresponds to the transformation from `arg` to the
  *   invocation of the callback.
  */
+pragma[nomagic]
 private predicate higherOrderCall(
   DataFlow::Node arg, DataFlow::SourceNode callback, int i, DataFlow::Configuration cfg,
   PathSummary summary
@@ -800,6 +907,7 @@ private predicate flowStep(
   ) and
   not cfg.isBarrier(succ) and
   not cfg.isBarrier(pred, succ) and
+  not cfg.isBarrierEdge(pred, succ) and
   not cfg.isLabeledBarrier(succ, summary.getEndLabel())
 }
 

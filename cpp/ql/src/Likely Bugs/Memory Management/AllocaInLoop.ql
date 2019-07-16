@@ -75,7 +75,7 @@ class LoopWithAlloca extends Stmt {
       conditionRequires(eq, truth) and
       eq.getAnOperand().getValue().toInt() = 1 and
       e = eq.getAnOperand() and
-      e.getType().getUnspecifiedType() instanceof BoolType and
+      e.getUnspecifiedType() instanceof BoolType and
       not exists(e.getValue())
     )
     or
@@ -84,7 +84,7 @@ class LoopWithAlloca extends Stmt {
       conditionRequires(eq, truth.booleanNot()) and
       eq.getAnOperand().getValue().toInt() = 1 and
       e = eq.getAnOperand() and
-      e.getType().getUnspecifiedType() instanceof BoolType and
+      e.getUnspecifiedType() instanceof BoolType and
       not exists(e.getValue())
     )
     or
@@ -322,9 +322,11 @@ class LoopWithAlloca extends Stmt {
   }
 }
 
-from LoopWithAlloca l
+from LoopWithAlloca l, AllocaCall alloc
 where
   not l.(DoStmt).getCondition().getValue() = "0" and
-  not l.isTightlyBounded()
-select l.getAnAllocaCall(), "Stack allocation is inside a $@ loop.", l,
+  not l.isTightlyBounded() and
+  alloc = l.getAnAllocaCall() and
+  alloc.getASuccessor*() = l.(Loop).getStmt()
+select alloc, "Stack allocation is inside a $@ loop.", l,
   l.toString()

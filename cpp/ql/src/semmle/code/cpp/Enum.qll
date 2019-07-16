@@ -101,6 +101,11 @@ class EnumConstant extends Declaration, @enumconstant {
   }
 
   /**
+   * Gets the name of this enumerator.
+   */
+  override string getName() { enumconstants(underlyingElement(this),_,_,_,result,_) }
+
+  /**
    * Gets the value that this enumerator is initialized to, as a
    * string. This can be a value explicitly given to the enumerator, or an
    * automatically assigned value.

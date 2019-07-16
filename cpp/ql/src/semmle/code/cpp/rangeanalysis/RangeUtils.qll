@@ -22,8 +22,8 @@ IntValue getConstantValue(Instruction instr) {
   result = getConstantValue(instr.(CopyInstruction).getSourceValue()) or
   exists(PhiInstruction phi |
     phi = instr and
-    result = max(PhiInputOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getDefinitionInstruction())) and
-    result = min(PhiInputOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getDefinitionInstruction()))
+    result = max(PhiInputOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getDef())) and
+    result = min(PhiInputOperand operand | operand = phi.getAnOperand() | getConstantValue(operand.getDef()))
   )
 }
 
@@ -35,14 +35,14 @@ predicate valueFlowStep(Instruction i, Operand op, int delta) {
     i.(AddInstruction).getAnOperand() = x and
     op  != x
     |
-    delta = getValue(getConstantValue(x.getDefinitionInstruction()))
+    delta = getValue(getConstantValue(x.getDef()))
   )
   or
   exists(Operand x |
     i.(SubInstruction).getLeftOperand() = op and
     i.(SubInstruction).getRightOperand() = x
     |
-    delta = -getValue(getConstantValue(x.getDefinitionInstruction()))
+    delta = -getValue(getConstantValue(x.getDef()))
   )
   or
   exists(Operand x |
@@ -51,7 +51,7 @@ predicate valueFlowStep(Instruction i, Operand op, int delta) {
     op  != x
     |
     delta = i.(PointerAddInstruction).getElementSize() *
-      getValue(getConstantValue(x.getDefinitionInstruction()))
+      getValue(getConstantValue(x.getDef()))
   )
   or
   exists(Operand x |
@@ -59,7 +59,7 @@ predicate valueFlowStep(Instruction i, Operand op, int delta) {
     i.(PointerSubInstruction).getRightOperand() = x
     |
     delta = i.(PointerSubInstruction).getElementSize() * 
-      -getValue(getConstantValue(x.getDefinitionInstruction()))
+      -getValue(getConstantValue(x.getDef()))
   )
 }
 

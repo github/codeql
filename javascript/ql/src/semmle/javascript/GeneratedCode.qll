@@ -113,6 +113,21 @@ private predicate isData(File f) {
 }
 
 /**
+ * Holds if `f` is a single line that looks like a non-trivial amount of JSON data, which is often a sign of generated data code.
+ */
+private predicate isJsonLine(File f) {
+  f.getNumberOfLines() = 1 and
+  count(Expr e | e.getFile() = f) > 100 and
+  forall(Expr e | e.getFile() = f |
+    e instanceof ObjectExpr or
+    e instanceof ArrayExpr or
+    e instanceof NumberLiteral or
+    e instanceof StringLiteral or
+    e instanceof BooleanLiteral
+  )
+}
+
+/**
  * Holds if `f` is a generated HTML file.
  */
 private predicate isGeneratedHtml(File f) {
@@ -132,12 +147,18 @@ private HTML::Element getAStartingElement(File f, int l) {
   result.getFile() = f and result.getLocation().getStartLine() = l
 }
 
-
 /**
  * Gets the number of HTML elements that start at line `l` in file `f`.
  */
 private int countStartingHtmlElements(File f, int l) {
   result = strictcount(getAStartingElement(f, l))
+}
+
+/**
+ * Holds if the base name of `f` is a number followed by a single extension.
+ */
+predicate isGeneratedFileName(File f) {
+  f.getStem().regexpMatch("[0-9]+")
 }
 
 /**
@@ -151,7 +172,9 @@ predicate isGenerated(TopLevel tl) {
   exists(GeneratedCodeMarkerComment gcmc | tl = gcmc.getTopLevel()) or
   hasManyInvocations(tl) or
   isData(tl.getFile()) or
-  isGeneratedHtml(tl.getFile())
+  isJsonLine(tl.getFile()) or
+  isGeneratedHtml(tl.getFile()) or
+  isGeneratedFileName(tl.getFile())
 }
 
 /**

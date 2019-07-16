@@ -212,6 +212,8 @@ class ExternalModuleReference extends Expr, Import, @externalmodulereference {
   override ControlFlowNode getFirstControlFlowNode() {
     result = getExpression().getFirstControlFlowNode()
   }
+
+  override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
 }
 
 /** A literal path expression appearing in an external module reference. */
@@ -540,13 +542,13 @@ class TypeExpr extends ExprOrType, @typeexpr, TypeAnnotation {
    * without type information.
    */
   override Type getType() { ast_node_type(this, result) }
-  
+
   override Stmt getEnclosingStmt() { result = ExprOrType.super.getEnclosingStmt() }
-  
+
   override Function getEnclosingFunction() { result = ExprOrType.super.getEnclosingFunction() }
-  
+
   override StmtContainer getContainer() { result = ExprOrType.super.getContainer() }
-  
+
   override TopLevel getTopLevel() { result = ExprOrType.super.getTopLevel() }
 }
 
@@ -1470,6 +1472,44 @@ class EnumScope extends @enumscope, Scope {
  */
 class ExternalModuleScope extends @externalmodulescope, Scope {
   override string toString() { result = "external module scope" }
+}
+
+/**
+ * A reference to a global variable for which there is a
+ * TypeScript type annotation suggesting that it contains
+ * the namespace object of a module.
+ *
+ * For example:
+ * ```
+ * import * as net_outer from "net"
+ * declare global {
+ * 		var net: typeof net_outer
+ * }
+ *
+ * var s = net.createServer(); // this reference to net is an import
+ * ```
+ */
+class TSGlobalDeclImport extends DataFlow::ModuleImportNode::Range {
+  string path;
+
+  TSGlobalDeclImport() {
+    exists(
+      GlobalVariable gv, VariableDeclarator vd, TypeofTypeExpr tt, LocalVarTypeAccess pkg,
+      BulkImportDeclaration i
+    |
+      // gv is declared with type "typeof pkg"
+      vd.getBindingPattern() = gv.getADeclaration() and
+      tt = vd.getTypeAnnotation() and
+      pkg = tt.getExpressionName() and
+      // then, check pkg is imported as "import * as pkg from path"
+      i.getLocal().getVariable() = pkg.getVariable() and
+      path = i.getImportedPath().getValue() and
+      // finally, "this" needs to be a reference to gv
+      this = DataFlow::exprNode(gv.getAnAccess())
+    )
+  }
+
+  override string getPath() { result = path }
 }
 
 /**

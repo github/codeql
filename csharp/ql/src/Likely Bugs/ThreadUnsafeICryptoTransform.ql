@@ -1,5 +1,5 @@
 /**
- * @name Class defines a field that uses an ICryptoTransform class in a way that would be unsafe for concurrent threads
+ * @name Thread-unsafe use of a static ICryptoTransform field
  * @description The class has a field that directly or indirectly make use of a static System.Security.Cryptography.ICryptoTransform object.
  *              Using this an instance of this class in concurrent threads is dangerous as it may not only result in an error,
  *              but under some circumstances may also result in incorrect results.

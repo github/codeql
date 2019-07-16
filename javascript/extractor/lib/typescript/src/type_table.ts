@@ -436,7 +436,10 @@ export class TypeTable {
     let toStringValue: string;
     // Some types can't be stringified. Just discard the type if we can't stringify it.
     try {
-      toStringValue = this.typeChecker.typeToString(type);
+      toStringValue = this.typeChecker.typeToString(
+            type,
+            undefined,
+            ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope);
     } catch (e) {
       console.warn("Recovered from a compiler crash while stringifying a type. Discarding the type.");
       console.warn(e.stack);
@@ -454,7 +457,11 @@ export class TypeTable {
     // Some types can't be stringified. Just discard the type if we can't stringify it.
     try {
       toStringValue =
-          this.typeChecker.signatureToString(signature, signature.declaration, ts.TypeFormatFlags.None, kind);
+          this.typeChecker.signatureToString(
+              signature,
+              signature.declaration,
+              ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope,
+              kind);
     } catch (e) {
       console.warn("Recovered from a compiler crash while stringifying a signature. Discarding the signature.");
       console.warn(e.stack);

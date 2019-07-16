@@ -92,6 +92,7 @@
 | 64 | ControlFlowNode for dict | int 7 | builtin-class int |
 | 65 | ControlFlowNode for tuple | builtin-class tuple | builtin-class type |
 | 66 | ControlFlowNode for tuple | builtin-class tuple | builtin-class type |
+| 69 | ControlFlowNode for Attribute | Attribute | builtin-class method |
 | 69 | ControlFlowNode for X | class X | builtin-class type |
 | 70 | ControlFlowNode for X | class X | builtin-class type |
 | 72 | ControlFlowNode for ImportExpr | Module abc | builtin-class module |
@@ -110,6 +111,7 @@
 | 79 | ControlFlowNode for Tuple | Tuple | builtin-class tuple |
 | 79 | ControlFlowNode for object | builtin-class object | builtin-class type |
 | 79 | ControlFlowNode for type | builtin-class type | builtin-class type |
+| 79 | ControlFlowNode for type() | type() | builtin-class type |
 | 81 | ControlFlowNode for FunctionExpr | Function k | builtin-class function |
 | 81 | ControlFlowNode for k | Function k | builtin-class function |
 | 82 | ControlFlowNode for C | class C | builtin-class type |
@@ -124,6 +126,7 @@
 | 85 | ControlFlowNode for Tuple | Tuple | builtin-class tuple |
 | 85 | ControlFlowNode for object | builtin-class object | builtin-class type |
 | 85 | ControlFlowNode for type | builtin-class type | builtin-class type |
+| 85 | ControlFlowNode for type() | type() | builtin-class type |
 | 88 | ControlFlowNode for FunctionExpr | Function outer | builtin-class function |
 | 88 | ControlFlowNode for outer | Function outer | builtin-class function |
 | 89 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int |
@@ -250,7 +253,7 @@
 | 180 | ControlFlowNode for Derived4 | class Derived4 | builtin-class type |
 | 182 | ControlFlowNode for FunctionExpr | Function __init__ | builtin-class function |
 | 182 | ControlFlowNode for __init__ | Function __init__ | builtin-class function |
-| 183 | ControlFlowNode for Attribute | super().x | builtin-class method |
+| 183 | ControlFlowNode for Attribute | int 1 | builtin-class int |
 | 183 | ControlFlowNode for Derived4 | class Derived4 | builtin-class type |
 | 183 | ControlFlowNode for self | self | class Derived4 |
 | 183 | ControlFlowNode for super | builtin-class super | builtin-class type |
@@ -352,7 +355,6 @@
 | 273 | ControlFlowNode for self | self | class DiGraph |
 | 275 | ControlFlowNode for FunctionExpr | Function add_node | builtin-class function |
 | 275 | ControlFlowNode for add_node | Function add_node | builtin-class function |
-| 276 | ControlFlowNode for Attribute | Dict | builtin-class dict |
 | 276 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int |
 | 276 | ControlFlowNode for Subscript | int 0 | builtin-class int |
 | 276 | ControlFlowNode for self | self | class DiGraph |

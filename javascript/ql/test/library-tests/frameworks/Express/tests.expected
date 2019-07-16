@@ -12,6 +12,7 @@ test_RouteHandlerExpr_getBody
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
 | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} |
 | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} |
@@ -31,6 +32,7 @@ test_RouteSetup
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:2:11:2:19 | express() | false |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:2:11:2:19 | express() | false |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:2:11:2:19 | express() | false |
+| src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() | false |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:2:11:2:19 | express() | false |
 | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | src/responseExprs.js:2:11:2:19 | express() | false |
 | src/responseExprs.js:10:1:12:2 | app.get ... es3;\\n}) | src/responseExprs.js:2:11:2:19 | express() | false |
@@ -60,6 +62,7 @@ test_RouteSetup_getLastRouteHandlerExpr
 | src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:39:9:39:20 | getHandler() |
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
 | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} |
 | src/responseExprs.js:10:1:12:2 | app.get ... es3;\\n}) | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} |
@@ -192,6 +195,7 @@ test_isRequest
 | src/express.js:48:3:48:5 | req |
 | src/express.js:49:3:49:5 | req |
 | src/express.js:50:3:50:5 | req |
+| src/inheritedFromNode.js:7:2:7:4 | req |
 | src/responseExprs.js:17:5:17:7 | req |
 test_RouteSetup_getRouter
 | src/auth.js:4:1:4:53 | app.use ... d' }})) | src/auth.js:1:13:1:32 | require('express')() |
@@ -217,6 +221,7 @@ test_RouteSetup_getRouter
 | src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:2:11:2:19 | express() |
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:2:11:2:19 | express() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:2:11:2:19 | express() |
+| src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:2:11:2:19 | express() |
 | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | src/responseExprs.js:2:11:2:19 | express() |
 | src/responseExprs.js:10:1:12:2 | app.get ... es3;\\n}) | src/responseExprs.js:2:11:2:19 | express() |
@@ -246,6 +251,7 @@ test_StandardRouteHandler
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:2:11:2:19 | express() | src/express.js:16:28:16:30 | req | src/express.js:16:33:16:35 | res |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:2:11:2:19 | express() | src/express.js:22:39:22:41 | req | src/express.js:22:44:22:46 | res |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:2:11:2:19 | express() | src/express.js:46:31:46:33 | req | src/express.js:46:36:46:38 | res |
+| src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:2:11:2:19 | express() | src/inheritedFromNode.js:4:24:4:26 | req | src/inheritedFromNode.js:4:29:4:31 | res |
 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:4:32:4:34 | req | src/responseExprs.js:4:37:4:40 | res1 |
 | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:7:32:7:34 | req | src/responseExprs.js:7:37:7:40 | res2 |
 | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:10:39:10:41 | req | src/responseExprs.js:10:44:10:47 | res3 |
@@ -270,6 +276,7 @@ test_RequestInputAccess
 | src/express.js:48:3:48:10 | req.host | header | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:49:3:49:14 | req.hostname | header | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:50:3:50:32 | req.hea ... erName] | header | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/inheritedFromNode.js:7:2:7:8 | req.url | url | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 test_SetCookie
 | src/express.js:31:3:31:26 | res.coo ...  'bar') | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/responseExprs.js:23:5:23:16 | res.cookie() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
@@ -336,6 +343,8 @@ test_ResponseExpr
 | src/express.js:17:5:17:24 | res.send("Go away.") | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:31:3:31:5 | res | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:31:3:31:26 | res.coo ...  'bar') | src/express.js:22:30:32:1 | functio ... ar');\\n} |
+| src/inheritedFromNode.js:5:2:5:4 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
+| src/inheritedFromNode.js:6:2:6:4 | res | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/responseExprs.js:5:5:5:8 | res1 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
 | src/responseExprs.js:8:5:8:8 | res2 | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} |
 | src/responseExprs.js:11:5:11:8 | res3 | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} |
@@ -392,6 +401,7 @@ test_RouterDefinition_getARouteHandler
 | src/express.js:2:11:2:19 | express() | src/express.js:16:19:18:3 | functio ... ");\\n  } |
 | src/express.js:2:11:2:19 | express() | src/express.js:22:30:32:1 | functio ... ar');\\n} |
 | src/express.js:2:11:2:19 | express() | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/inheritedFromNode.js:2:11:2:19 | express() | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
 | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} |
 | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} |
@@ -424,6 +434,7 @@ test_HeaderDefinition
 | src/express.js:6:3:6:45 | res.hea ... rget")) | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:7:3:7:42 | res.hea ... plain") | src/express.js:4:23:9:1 | functio ... res);\\n} |
 | src/express.js:12:3:12:54 | arg.hea ... , true) | src/express.js:4:23:9:1 | functio ... res);\\n} |
+| src/inheritedFromNode.js:6:2:6:16 | res.setHeader() | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/responseExprs.js:19:5:19:16 | res.append() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:37:5:37:28 | f(res.a ... ppend() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 | src/responseExprs.js:37:7:37:18 | res.append() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
@@ -446,6 +457,7 @@ test_RouteSetup_getServer
 | src/express.js:16:3:18:4 | router. ... );\\n  }) | src/express.js:2:11:2:19 | express() |
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | src/express.js:2:11:2:19 | express() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:2:11:2:19 | express() |
+| src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:2:11:2:19 | express() |
 | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | src/responseExprs.js:2:11:2:19 | express() |
 | src/responseExprs.js:10:1:12:2 | app.get ... es3;\\n}) | src/responseExprs.js:2:11:2:19 | express() |
@@ -485,6 +497,7 @@ test_RouteHandlerExpr
 | src/express.js:39:9:39:20 | getHandler() | src/express.js:39:1:39:21 | app.use ... dler()) | false |
 | src/express.js:44:9:44:25 | getArrowHandler() | src/express.js:44:1:44:26 | app.use ... dler()) | false |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | true |
+| src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | true |
 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | true |
 | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | true |
 | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} | src/responseExprs.js:10:1:12:2 | app.get ... es3;\\n}) | true |
@@ -528,6 +541,7 @@ test_appCreation
 | src/express3.js:2:11:2:19 | express() |
 | src/express4.js:2:11:2:19 | express() |
 | src/express.js:2:11:2:19 | express() |
+| src/inheritedFromNode.js:2:11:2:19 | express() |
 | src/responseExprs.js:2:11:2:19 | express() |
 | src/routesetups.js:7:11:7:32 | express ... erver() |
 | src/subrouter.js:2:11:2:19 | express() |
@@ -546,6 +560,7 @@ test_RouteSetup_getRequestMethod
 | src/express.js:22:1:32:2 | app.pos ... r');\\n}) | POST |
 | src/express.js:34:1:34:53 | app.get ... andler) | GET |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | POST |
+| src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | POST |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | GET |
 | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | GET |
 | src/responseExprs.js:10:1:12:2 | app.get ... es3;\\n}) | GET |
@@ -580,6 +595,7 @@ test_RouteExpr
 | src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:2:11:2:19 | express() |
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:2:11:2:19 | express() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:2:11:2:19 | express() |
+| src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:2:11:2:19 | express() |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:2:11:2:19 | express() |
 | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | src/responseExprs.js:2:11:2:19 | express() |
 | src/responseExprs.js:10:1:12:2 | app.get ... es3;\\n}) | src/responseExprs.js:2:11:2:19 | express() |
@@ -627,6 +643,8 @@ test_RouteHandler_getAResponseExpr
 | src/express.js:16:19:18:3 | functio ... ");\\n  } | src/express.js:17:5:17:24 | res.send("Go away.") |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:31:3:31:5 | res |
 | src/express.js:22:30:32:1 | functio ... ar');\\n} | src/express.js:31:3:31:26 | res.coo ...  'bar') |
+| src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:5:2:5:4 | res |
+| src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:6:2:6:4 | res |
 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} | src/responseExprs.js:5:5:5:8 | res1 |
 | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} | src/responseExprs.js:8:5:8:8 | res2 |
 | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} | src/responseExprs.js:11:5:11:8 | res3 |
@@ -696,6 +714,8 @@ test_isResponse
 | src/express.js:17:5:17:24 | res.send("Go away.") |
 | src/express.js:31:3:31:5 | res |
 | src/express.js:31:3:31:26 | res.coo ...  'bar') |
+| src/inheritedFromNode.js:5:2:5:4 | res |
+| src/inheritedFromNode.js:6:2:6:4 | res |
 | src/responseExprs.js:5:5:5:8 | res1 |
 | src/responseExprs.js:8:5:8:8 | res2 |
 | src/responseExprs.js:11:5:11:8 | res3 |
@@ -779,6 +799,7 @@ test_RouteSetup_getARouteHandler
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:42:12:42:28 | (req, res) => f() |
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
 | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} |
 | src/responseExprs.js:10:1:12:2 | app.get ... es3;\\n}) | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} |
@@ -825,6 +846,7 @@ test_isRouterCreation
 | src/express3.js:2:11:2:19 | express() |
 | src/express4.js:2:11:2:19 | express() |
 | src/express.js:2:11:2:19 | express() |
+| src/inheritedFromNode.js:2:11:2:19 | express() |
 | src/responseExprs.js:2:11:2:19 | express() |
 | src/route.js:2:14:2:29 | express.Router() |
 | src/routesetups.js:3:1:3:16 | express.Router() |
@@ -856,6 +878,7 @@ test_RouteSetup_getRouteHandlerExpr
 | src/express.js:39:1:39:21 | app.use ... dler()) | 0 | src/express.js:39:9:39:20 | getHandler() |
 | src/express.js:44:1:44:26 | app.use ... dler()) | 0 | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | 0 | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | 0 | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | 0 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
 | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | 0 | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} |
 | src/responseExprs.js:10:1:12:2 | app.get ... es3;\\n}) | 0 | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} |
@@ -880,6 +903,7 @@ test_RouterDefinition_RouterDefinition
 | src/express3.js:2:11:2:19 | express() |
 | src/express4.js:2:11:2:19 | express() |
 | src/express.js:2:11:2:19 | express() |
+| src/inheritedFromNode.js:2:11:2:19 | express() |
 | src/responseExprs.js:2:11:2:19 | express() |
 | src/route.js:2:14:2:29 | express.Router() |
 | src/routesetups.js:3:1:3:16 | express.Router() |
@@ -914,6 +938,7 @@ test_RouteHandler
 | src/express.js:37:12:37:32 | functio ...  res){} | src/express.js:37:22:37:24 | req | src/express.js:37:27:37:29 | res |
 | src/express.js:42:12:42:28 | (req, res) => f() | src/express.js:42:13:42:15 | req | src/express.js:42:18:42:20 | res |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:46:31:46:33 | req | src/express.js:46:36:46:38 | res |
+| src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:4:24:4:26 | req | src/inheritedFromNode.js:4:29:4:31 | res |
 | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} | src/responseExprs.js:4:32:4:34 | req | src/responseExprs.js:4:37:4:40 | res1 |
 | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} | src/responseExprs.js:7:32:7:34 | req | src/responseExprs.js:7:37:7:40 | res2 |
 | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} | src/responseExprs.js:10:39:10:41 | req | src/responseExprs.js:10:44:10:47 | res3 |
@@ -944,6 +969,7 @@ test_RouteSetup_getARouteHandlerExpr
 | src/express.js:39:1:39:21 | app.use ... dler()) | src/express.js:39:9:39:20 | getHandler() |
 | src/express.js:44:1:44:26 | app.use ... dler()) | src/express.js:44:9:44:25 | getArrowHandler() |
 | src/express.js:46:1:51:2 | app.pos ... me];\\n}) | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/inheritedFromNode.js:4:1:8:2 | app.pos ... url;\\n}) | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/responseExprs.js:4:1:6:2 | app.get ... res1\\n}) | src/responseExprs.js:4:23:6:1 | functio ...  res1\\n} |
 | src/responseExprs.js:7:1:9:2 | app.get ... es2;\\n}) | src/responseExprs.js:7:23:9:1 | functio ... res2;\\n} |
 | src/responseExprs.js:10:1:12:2 | app.get ... es3;\\n}) | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} |
@@ -991,6 +1017,7 @@ test_RequestExpr
 | src/express.js:48:3:48:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:49:3:49:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/express.js:50:3:50:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
+| src/inheritedFromNode.js:7:2:7:4 | req | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/responseExprs.js:17:5:17:7 | req | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
 test_RouteHandlerExpr_getAsSubRouter
 | src/csurf-example.js:13:17:13:19 | api | src/csurf-example.js:30:16:30:35 | new express.Router() |
@@ -1020,4 +1047,5 @@ test_RouteHandler_getARequestExpr
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:48:3:48:5 | req |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:49:3:49:5 | req |
 | src/express.js:46:22:51:1 | functio ... ame];\\n} | src/express.js:50:3:50:5 | req |
+| src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} | src/inheritedFromNode.js:7:2:7:4 | req |
 | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} | src/responseExprs.js:17:5:17:7 | req |

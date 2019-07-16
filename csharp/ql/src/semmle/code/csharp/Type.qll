@@ -736,11 +736,14 @@ class DelegateType extends RefType, Parameterizable, @delegate_type {
   /** Gets the return type of this delegate. */
   Type getReturnType() { delegate_return_type(this, getTypeRef(result)) }
 
+  /** Gets the annotated return type of this delegate. */
+  AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
+
   /** Holds if this delegate returns a `ref`. */
-  predicate returnsRef() { ref_returns(this) }
+  deprecated predicate returnsRef() { this.getAnnotatedReturnType().isRef() }
 
   /** Holds if this delegate returns a `ref readonly`. */
-  predicate returnsRefReadonly() { ref_readonly_returns(this) }
+  deprecated predicate returnsRefReadonly() { this.getAnnotatedReturnType().isReadonlyRef() }
 }
 
 /**
@@ -789,6 +792,9 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   /** Gets the element type of this array, for example `int` in `int[]`. */
   override Type getElementType() { array_element_type(this, _, _, getTypeRef(result)) }
 
+  /** Gets the annotated element type of this array, for example `int?` in `int?[]`. */
+  final AnnotatedType getAnnotatedElementType() { result.appliesTo(this) }
+
   /** Holds if this array type has the same shape (dimension and rank) as `that` array type. */
   predicate hasSameShapeAs(ArrayType that) {
     getDimension() = that.getDimension() and
@@ -800,12 +806,12 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     if i = getRank() - 1 then result = "" else result = "," + getRankString(i + 1)
   }
 
-  private string getDimensionString(Type elementType) {
-    exists(Type et, string res |
-      et = getElementType() and
+  private string getDimensionString(AnnotatedType elementType) {
+    exists(AnnotatedType et, string res |
+      et = getAnnotatedElementType() and
       res = "[" + getRankString(0) + "]" and
-      if et instanceof ArrayType
-      then result = res + et.(ArrayType).getDimensionString(elementType)
+      if et.getUnderlyingType() instanceof ArrayType and not et.isNullableRefType()
+      then result = res + et.getUnderlyingType().(ArrayType).getDimensionString(elementType)
       else (
         result = res and elementType = et
       )
@@ -813,8 +819,8 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   }
 
   override string toStringWithTypes() {
-    exists(Type elementType |
-      result = elementType.toStringWithTypes() + getDimensionString(elementType)
+    exists(AnnotatedType elementType |
+      result = elementType.toString() + this.getDimensionString(elementType)
     )
   }
 

@@ -7,7 +7,7 @@
  * @id js/sink-summary-extraction
  */
 
-import AllConfigurations
+import Configurations
 import PortalExitSource
 import SinkFromAnnotation
 

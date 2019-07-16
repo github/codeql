@@ -9,20 +9,27 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
-from Parameter p, Parameter superP, MemberFunction subF, MemberFunction superF, int i, string subValue, string superValue
-where p.hasInitializer()
-  and subF.getParameter(i) = p
-   and superP.hasInitializer()
-   and subF.overrides(superF)
-   and superF.getParameter(i) = superP
-   and subValue = p.getInitializer().getExpr().getValue()
-   and superValue = superP.getInitializer().getExpr().getValue()
-   and subValue != superValue
-select p.getInitializer().getExpr(),
-   "Parameter " + p.getName() +
-   " redefines its default value to " + subValue +
-   " from the inherited default value " + superValue +
-   " (in " + superF.getDeclaringType().getName() +
-   ").\nThe default value will be resolved statically, not by dispatch, so this can cause confusion."
+predicate memberParameterWithDefault(
+  MemberFunction f, int ix, Parameter p, Expr initExpr, string initValue
+) {
+  f.getParameter(ix) = p and
+  initExpr = p.getInitializer().getExpr() and
+  initValue = initExpr.getValue()
+}
+
+from
+  Parameter p, Parameter superP, MemberFunction subF, MemberFunction superF, int i, Expr subExpr,
+  string subValue, string superValue
+where
+  memberParameterWithDefault(subF, i, p, subExpr, subValue) and
+  subF.overrides(superF) and
+  memberParameterWithDefault(superF, i, superP, _, superValue) and
+  subValue != superValue
+select subExpr,
+  "Parameter " + p.getName() + " redefines its default value to " + subValue +
+    " from the inherited default value " + superValue + " (in " +
+    superF.getDeclaringType().getName() +
+    ").\nThe default value will be resolved statically, not by dispatch, so this can cause confusion."

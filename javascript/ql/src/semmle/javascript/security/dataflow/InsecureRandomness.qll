@@ -1,25 +1,17 @@
 /**
- * Provides a taint tracking configuration for reasoning about random values that are not cryptographically secure.
+ * Provides a taint tracking configuration for reasoning about random
+ * values that are not cryptographically secure.
+ *
+ * Note, for performance reasons: only import this file if
+ * `InsecureRandomness::Configuration` is needed, otherwise
+ * `InsecureRandomnessCustomizations` should be imported instead.
  */
 
 import javascript
 private import semmle.javascript.security.SensitiveActions
 
 module InsecureRandomness {
-  /**
-   * A data flow source for random values that are not cryptographically secure.
-   */
-  abstract class Source extends DataFlow::Node { }
-
-  /**
-   * A data flow sink for random values that are not cryptographically secure.
-   */
-  abstract class Sink extends DataFlow::Node { }
-
-  /**
-   * A sanitizer for random values that are not cryptographically secure.
-   */
-  abstract class Sanitizer extends DataFlow::Node { }
+  import InsecureRandomnessCustomizations::InsecureRandomness
 
   /**
    * A taint tracking configuration for random values that are not cryptographically secure.
@@ -36,7 +28,7 @@ module InsecureRandomness {
       node instanceof Sanitizer
     }
 
-    override predicate isSanitizer(DataFlow::Node pred, DataFlow::Node succ) {
+    override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
       // stop propagation at the sinks to avoid double reporting
       pred instanceof Sink and
       // constrain succ
@@ -55,61 +47,5 @@ module InsecureRandomness {
         succ = mc
       )
     }
-  }
-
-  /**
-   * A simple random number generator that is not cryptographically secure.
-   */
-  class DefaultSource extends Source, DataFlow::ValueNode {
-    override InvokeExpr astNode;
-
-    DefaultSource() {
-      exists(DataFlow::ModuleImportNode mod, string name | mod.getPath() = name |
-        // require("random-number")();
-        name = "random-number" and
-        this = mod.getACall()
-        or
-        // require("random-int")();
-        name = "random-int" and
-        this = mod.getACall()
-        or
-        // require("random-float")();
-        name = "random-float" and
-        this = mod.getACall()
-        or
-        // require('random-seed').create()();
-        name = "random-seed" and
-        this = mod.getAMemberCall("create").getACall()
-        or
-        // require('unique-random')()();
-        name = "unique-random" and
-        this = mod.getACall().getACall()
-      )
-      or
-      // Math.random()
-      this = DataFlow::globalVarRef("Math").getAMemberCall("random")
-      or
-      // (new require('chance')).<name>()
-      this = DataFlow::moduleImport("chance").getAnInstantiation().getAMemberInvocation(_)
-      or
-      // require('crypto').pseudoRandomBytes()
-      this = DataFlow::moduleMember("crypto", "pseudoRandomBytes").getAnInvocation()
-    }
-  }
-
-  /**
-   * A sensitive write, considered as a sink for random values that are not cryptographically
-   * secure.
-   */
-  class SensitiveWriteSink extends Sink {
-    SensitiveWriteSink() { this instanceof SensitiveWrite }
-  }
-
-  /**
-   * A cryptographic key, considered as a sink for random values that are not cryptographically
-   * secure.
-   */
-  class CryptoKeySink extends Sink {
-    CryptoKeySink() { this instanceof CryptographicKey }
   }
 }

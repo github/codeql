@@ -178,6 +178,8 @@
 | Object | dynamic |
 | Object[] | Object |
 | Object[] | dynamic |
+| SByte[] | Object |
+| SByte[] | dynamic |
 | T3[] | ICollection<T3> |
 | T3[] | IEnumerable<T3> |
 | T3[] | IList<T3> |
@@ -260,6 +262,7 @@
 | null | Int64[] |
 | null | Object |
 | null | Object[] |
+| null | SByte[] |
 | null | T3[] |
 | null | T4 |
 | null | T4[] |

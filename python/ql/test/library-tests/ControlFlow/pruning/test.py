@@ -3,20 +3,20 @@
 def dead():
     return 0
     count
-    
+
 def conditional_dead(test):
     if test:
         return
     if test:
         count
-        
+
 def made_true(seq):
     if seq:
         return
     seq.append(1)
     if seq:
         count
-        
+
 def boolop(t1, t2, t3, t4, t5, t6):
     if not t1:
         return
@@ -38,7 +38,7 @@ def boolop(t1, t2, t3, t4, t5, t6):
         t5 and count
         t6 or count
         t6 and count
-        
+
 def with_splitting(t1, t2):
     if t1:
         if not t2:
@@ -50,7 +50,7 @@ def with_splitting(t1, t2):
     else:
         t2 or count
         t2 and count
-        
+
 def loops(seq1, seq2, seq3, seq4, seq5):
     if seq1:
         return
@@ -82,7 +82,7 @@ def loops(seq1, seq2, seq3, seq4, seq5):
         count
         print(var)
 
-#Logic does not apply to global variables in calls, 
+#Logic does not apply to global variables in calls,
 #as they may be changed from true to false externally.
 from some_module import x, y
 if not x:
@@ -102,7 +102,7 @@ make_a_call()
 if not another_module:
     count
 
-    
+
 def negated_conditional_live(t1, t2):
     if not t1:
         return
@@ -112,13 +112,13 @@ def negated_conditional_live(t1, t2):
         count
     if not t2:
         count
-    
+
 def negated_conditional_dead(test):
     if not test:
         return
     if not test:
         count
-        
+
 def made_true2(m):
     if m:
         return
@@ -162,3 +162,65 @@ def attribute_lookup_cannot_effect_comparisons_with_immutable_constants(ps):
     else:
         count
 
+def func():
+    global escapes
+    so_something()
+    escapes = True
+
+#Don't prune on `escapes` as it escapes.
+if __name__ == '__main__':
+    escapes = None # global
+    try:
+        func()
+    except Exception as err:
+        count
+        if escapes is None:
+            count
+        else:
+            count
+
+def func2():
+    while 1:
+        count
+        if cond12:
+            count
+            try:
+                true12()
+                count
+            except IOError:
+                true12 = 0
+                count
+
+def inequality1(x):
+    if x < 4:
+        return
+    if x < 4:
+        count
+
+def inequality2(x):
+    if x < 4:
+        return
+    if not x >= 4:
+        count
+
+def reversed_inequality(x):
+    if x < 4:
+        return
+    if 4 > x:
+        count
+
+
+#Splittings with boolean expressions:
+def split_bool1(x=None,y=None):
+    if x and y:
+        raise
+    if not (x or y):
+        raise
+    if x:
+        count
+    else:
+        count
+    if y:
+        count
+    else:
+        count

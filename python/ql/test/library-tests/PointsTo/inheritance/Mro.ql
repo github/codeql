@@ -1,17 +1,16 @@
 
 import python
 
-/** Make unknown type visible */
-class UnknownType extends ClassObject {
+private import semmle.python.objects.ObjectInternal
+private import semmle.python.pointsto.PointsTo
 
-    UnknownType() { this = theUnknownType() }
+/** Make unknown type visible */
+class UnknownType extends UnknownClassInternal {
 
     override string toString() { result = "*UNKNOWN TYPE" }
 
-    override string getName() { result = "UNKNOWN" }
-
 }
 
-from ClassObject c
+from ClassObjectInternal c
 where not c.isBuiltin()
-select c.toString(), c.getMro()
+select c.toString(), Types::getMro(c)

@@ -55,9 +55,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var qualifierType = cx.GetType(qualifier);
 
             // This is a compilation error, so make a guess and continue.
-            if (qualifierType == null) return ExprKind.ARRAY_ACCESS;
+            if (qualifierType.Symbol == null) return ExprKind.ARRAY_ACCESS;
 
-            if (qualifierType.TypeKind == Microsoft.CodeAnalysis.TypeKind.Pointer)
+            if (qualifierType.Symbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Pointer)
             {
                 // Convert expressions of the form a[b] into *(a+b)
                 return ExprKind.POINTER_INDIRECTION;
@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             return IsDynamic(cx, qualifier) ?
                 ExprKind.DYNAMIC_ELEMENT_ACCESS :
-                qualifierType.TypeKind == Microsoft.CodeAnalysis.TypeKind.Array ?
+                qualifierType.Symbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Array ?
                     ExprKind.ARRAY_ACCESS :
                     ExprKind.INDEXER_ACCESS;
         }

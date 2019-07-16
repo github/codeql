@@ -30,6 +30,8 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractAttributes();
             ExtractModifiers();
             BindComments();
+            ExtractNullability(symbol.NullableAnnotation);
+            ExtractRefKind(symbol.RefKind);
 
             var type = Type.Create(Context, symbol.Type);
             Context.Emit(Tuples.properties(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition)));

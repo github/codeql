@@ -221,11 +221,11 @@ module TaintTracking {
 
     cached
     module Cached {
-      cached
-      predicate forceCachingInSameStage() { DataFlowPrivateCached::forceCachingInSameStage() }
+      private import semmle.code.csharp.Caching
 
       cached
       predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+        Stages::DataFlowStage::forceCachingInSameStage() and
         any(LocalTaintExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
         or
         nodeTo = nodeFrom.(TaintedParameterNode).getUnderlyingNode()

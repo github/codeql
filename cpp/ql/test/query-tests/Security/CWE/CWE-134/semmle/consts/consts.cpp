@@ -59,12 +59,12 @@ void a() {
   
  // GOOD: constFunc() always returns a constant string
  // But we still don't track constantness flow from functions to variables
-  char *c5 = constFunc();
+ char *c5 = constFunc();
  printf(c5);
   
  // GOOD: constFunc() always returns a constant string
  // But we still don't track constantness flow from functions to variables
-  char *c6;
+ char *c6;
  c6 = constFunc();
  printf(c6);
   
@@ -81,7 +81,7 @@ void a() {
  printf(c8);
   
  // BAD: v1 value came from the user
- char *v1;
+ char v1[100];
  gets(v1);
  printf(v1);
  
@@ -125,7 +125,7 @@ void a() {
  // BAD: nonConstFuncToArray() always returns a value from gv1, which is started as constant but was changed to a value that came from the user
  printf(nonConstFuncToArray(0));
   
- // BAD: v9 value is copied from v1, which came from the user [NOT DETECTED]
+ // BAD: v9 value is copied from v1, which came from the user
  const char *v9 = v1;
  printf(v9);
   

@@ -23,6 +23,7 @@
 | BreakInTry.cs:38:10:38:11 | M3 | BreakInTry.cs:39:5:54:5 | {...} |
 | BreakInTry.cs:56:10:56:11 | M4 | BreakInTry.cs:57:5:71:5 | {...} |
 | CatchInFinally.cs:5:10:5:11 | M1 | CatchInFinally.cs:6:5:28:5 | {...} |
+| CatchInFinally.cs:34:24:34:25 | M2 | CatchInFinally.cs:35:5:51:5 | {...} |
 | CompileTimeOperators.cs:5:9:5:15 | Default | CompileTimeOperators.cs:6:5:8:5 | {...} |
 | CompileTimeOperators.cs:10:9:10:14 | Sizeof | CompileTimeOperators.cs:11:5:13:5 | {...} |
 | CompileTimeOperators.cs:15:10:15:15 | Typeof | CompileTimeOperators.cs:16:5:18:5 | {...} |
@@ -101,6 +102,8 @@
 | Switch.cs:101:9:101:10 | M9 | Switch.cs:102:5:109:5 | {...} |
 | Switch.cs:111:17:111:21 | Throw | Switch.cs:111:34:111:48 | object creation of type Exception |
 | Switch.cs:113:9:113:11 | M10 | Switch.cs:114:5:121:5 | {...} |
+| Switch.cs:123:10:123:12 | M11 | Switch.cs:124:5:127:5 | {...} |
+| Switch.cs:129:12:129:14 | M12 | Switch.cs:130:5:132:5 | {...} |
 | TypeAccesses.cs:3:10:3:10 | M | TypeAccesses.cs:4:5:9:5 | {...} |
 | VarDecls.cs:5:18:5:19 | M1 | VarDecls.cs:6:5:11:5 | {...} |
 | VarDecls.cs:13:12:13:13 | M2 | VarDecls.cs:14:5:17:5 | {...} |

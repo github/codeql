@@ -234,12 +234,20 @@ class ExceptionCapture  extends PyNodeDefinition {
 class MultiAssignmentDefinition extends PyNodeDefinition {
 
     MultiAssignmentDefinition() {
-        SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode())
+        SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode(), _, _)
     }
 
     override string getRepresentation() {
-        result = "..."
+        exists(ControlFlowNode value, int n |
+            this.indexOf(n, value) and
+            result = value.(DefinitionNode).getValue().getNode().toString() + "[" + n + "]"
+        )
     }
+
+    predicate indexOf(int index, SequenceNode lhs) {
+        SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode(), index, lhs)
+    }
+
 
 }
 
@@ -268,7 +276,24 @@ class ParameterDefinition extends PyNodeDefinition {
     }
 
     ControlFlowNode getDefault() {
-        result.getNode() = this.getParameter().getDefault()
+        exists(Function f, int n, int c, int d, Arguments args |
+            args = f.getDefinition().getArgs() |
+            f.getArg(n) = this.getDefiningNode().getNode() and
+            c = count(f.getAnArg()) and
+            d = count(args.getADefault()) and
+            result.getNode() = args.getDefault(d-c+n)
+        )
+    }
+
+    predicate isVarargs() {
+        exists(Function func | func.getVararg() = this.getDefiningNode().getNode())
+    }
+
+    /** Holds if this parameter is a 'kwargs' parameter.
+     * The `kwargs` in `f(a, b, **kwargs)`.
+     */
+    predicate isKwargs() {
+        exists(Function func | func.getKwarg() = this.getDefiningNode().getNode())
     }
 
     Parameter getParameter() {
@@ -277,20 +302,26 @@ class ParameterDefinition extends PyNodeDefinition {
 
 }
 
-/** A definition of a variable in a for loop `for v in ...:` */
-class IterationDefinition extends PyNodeDefinition {
 
-    ControlFlowNode sequence;
+private newtype TIterationDefinition = 
+    TIterationDefinition_(SsaSourceVariable var, ControlFlowNode def, ControlFlowNode sequence) {
+        SsaSource::iteration_defined_variable(var, def, sequence)
+    }
 
-    IterationDefinition() {
-        SsaSource::iteration_defined_variable(this.getSourceVariable(), this.getDefiningNode(), sequence)
+/** DEPRECATED. For backwards compatibility only.
+ * A definition of a variable in a for loop `for v in ...:` */
+deprecated class IterationDefinition extends TIterationDefinition {
+
+    string toString() {
+        result = "IterationDefinition"
     }
 
     ControlFlowNode getSequence() {
-        result = sequence
+        this = TIterationDefinition_(_, _, result)
     }
 
 }
+
 
 /** A deletion of a variable `del v` */
 class DeletionDefinition extends PyNodeDefinition {
@@ -361,6 +392,7 @@ class ArgumentRefinement extends PyNodeRefinement {
 
     ControlFlowNode getArgument() { result = argument }
 
+    CallNode getCall() { result = this.getDefiningNode() }
 }
 
 /** Deletion of an attribute `del obj.attr`. */
@@ -395,6 +427,16 @@ class SingleSuccessorGuard extends PyNodeRefinement {
         not exists(this.getSense()) and
         result = PyNodeRefinement.super.getRepresentation() + " [??]"
     }
+
+    ControlFlowNode getTest() {
+        result = this.getDefiningNode()
+    }
+
+    predicate useAndTest(ControlFlowNode use, ControlFlowNode test) {
+        test = this.getDefiningNode() and
+        SsaSource::test_refinement(this.getSourceVariable(), use, test)
+    }
+
 }
 
 /** Implicit definition of the names of sub-modules in a package.
@@ -561,8 +603,7 @@ module BaseFlow {
     }
 
     /* Helper for this_scope_entry_value_transfer(...). Transfer of values from earlier scope to later on */
-    pragma [noinline]
-    predicate scope_entry_value_transfer_from_earlier(EssaVariable pred_var, Scope pred_scope, ScopeEntryDefinition succ_def, Scope succ_scope) {
+    cached predicate scope_entry_value_transfer_from_earlier(EssaVariable pred_var, Scope pred_scope, ScopeEntryDefinition succ_def, Scope succ_scope) {
         exists(SsaSourceVariable var |
             reaches_exit(pred_var) and
             pred_var.getScope() = pred_scope and

@@ -189,7 +189,7 @@ private newtype HC_Args =
 private newtype HC_Fields =
   HC_EmptyFields(Class c) {
     exists(ClassAggregateLiteral cal |
-      c = cal.getType().getUnspecifiedType()
+      c = cal.getUnspecifiedType()
     )
   }
   or
@@ -200,7 +200,7 @@ private newtype HC_Fields =
 private newtype HC_Array =
   HC_EmptyArray(Type t) {
     exists(ArrayAggregateLiteral aal |
-      aal.getType().getUnspecifiedType() = t
+      aal.getUnspecifiedType() = t
     )
   }
   or
@@ -305,42 +305,42 @@ private string exampleLocationString(Location l) {
 
 private predicate analyzableIntLiteral(Literal e) {
   strictcount (e.getValue().toInt()) = 1 and
-  strictcount (e.getType().getUnspecifiedType()) = 1 and
-  e.getType().getUnspecifiedType() instanceof IntegralType
+  strictcount (e.getUnspecifiedType()) = 1 and
+  e.getUnspecifiedType() instanceof IntegralType
 }
 
 private predicate mk_IntLiteral(int val, Type t, Expr e) {
   analyzableIntLiteral(e) and
   val = e.getValue().toInt() and
-  t = e.getType().getUnspecifiedType()
+  t = e.getUnspecifiedType()
 }
 
 private predicate analyzableEnumConstantAccess(EnumConstantAccess e) {
   strictcount (e.getValue().toInt()) = 1 and
-  strictcount (e.getType().getUnspecifiedType()) = 1 and
-  e.getType().getUnspecifiedType() instanceof Enum
+  strictcount (e.getUnspecifiedType()) = 1 and
+  e.getUnspecifiedType() instanceof Enum
 }
 
 private predicate mk_EnumConstantAccess(EnumConstant val, Type t, Expr e) {
   analyzableEnumConstantAccess(e) and
   val = e.(EnumConstantAccess).getTarget() and
-  t = e.getType().getUnspecifiedType()
+  t = e.getUnspecifiedType()
 }
 
 private predicate analyzableFloatLiteral(Literal e) {
   strictcount (e.getValue().toFloat()) = 1 and
-  strictcount (e.getType().getUnspecifiedType()) = 1 and
-  e.getType().getUnspecifiedType() instanceof FloatingPointType
+  strictcount (e.getUnspecifiedType()) = 1 and
+  e.getUnspecifiedType() instanceof FloatingPointType
 }
 
 private predicate mk_FloatLiteral(float val, Type t, Expr e) {
   analyzableFloatLiteral(e) and
   val = e.getValue().toFloat() and
-  t = e.getType().getUnspecifiedType()
+  t = e.getUnspecifiedType()
 }
 
 private predicate analyzableNullptr(NullValue e) {
-  strictcount (e.getType().getUnspecifiedType()) = 1 and
+  strictcount (e.getUnspecifiedType()) = 1 and
   e.getType() instanceof NullPointerType
 }
 
@@ -350,14 +350,14 @@ private predicate mk_Nullptr(Expr e) {
 
 private predicate analyzableStringLiteral(Literal e) {
   strictcount(e.getValue()) = 1 and
-  strictcount(e.getType().getUnspecifiedType()) = 1 and
-  e.getType().getUnspecifiedType().(ArrayType).getBaseType() instanceof CharType
+  strictcount(e.getUnspecifiedType()) = 1 and
+  e.getUnspecifiedType().(ArrayType).getBaseType() instanceof CharType
 }
 
 private predicate mk_StringLiteral(string val, Type t, Expr e) {
   analyzableStringLiteral(e) and
   val = e.getValue() and
-  t = e.getType().getUnspecifiedType() and
+  t = e.getUnspecifiedType() and
   t.(ArrayType).getBaseType() instanceof CharType
   
 }
@@ -410,13 +410,13 @@ private predicate mk_Variable(Variable x, VariableAccess access) {
 }
 
 private predicate analyzableConversion(Conversion conv) {
-  strictcount (conv.getType().getUnspecifiedType()) = 1 and
+  strictcount (conv.getUnspecifiedType()) = 1 and
   strictcount (conv.getExpr()) = 1
 }
 
 private predicate mk_Conversion(Type t, HashCons child, Conversion conv) {
   analyzableConversion(conv) and
-  t = conv.getType().getUnspecifiedType() and
+  t = conv.getUnspecifiedType() and
   child = hashCons(conv.getExpr())
 }
 
@@ -586,7 +586,7 @@ private predicate mk_ArgConsInner(HashCons head, HC_Args tail, int i, HC_Args li
 private predicate analyzableAllocatorArgZero(ErrorExpr e) {
   exists(NewOrNewArrayExpr new |
     new.getAllocatorCall().getChild(0) = e and
-    strictcount(new.getType().getUnspecifiedType()) = 1
+    strictcount(new.getUnspecifiedType()) = 1
   )
   and
   strictcount(NewOrNewArrayExpr new | new.getAllocatorCall().getChild(0) = e) = 1
@@ -596,7 +596,7 @@ private predicate mk_AllocatorArgZero(Type t, ErrorExpr e) {
   analyzableAllocatorArgZero(e) and
   exists(NewOrNewArrayExpr new |
     new.getAllocatorCall().getChild(0) = e and
-    t = new.getType().getUnspecifiedType()
+    t = new.getUnspecifiedType()
   )
 }
 
@@ -691,7 +691,7 @@ private predicate mk_DeleteArrayExpr(HashCons hc, DeleteArrayExpr e) {
 }
 
 private predicate analyzableSizeofType(SizeofTypeOperator e) {
-  strictcount(e.getType().getUnspecifiedType()) = 1 and
+  strictcount(e.getUnspecifiedType()) = 1 and
   strictcount(e.getTypeOperand()) = 1
 }
 
@@ -740,7 +740,7 @@ private predicate mk_TypeidExpr(HashCons child, TypeidOperator e) {
 }
 
 private predicate analyzableAlignofType(AlignofTypeOperator e) {
-  strictcount(e.getType().getUnspecifiedType()) = 1 and
+  strictcount(e.getUnspecifiedType()) = 1 and
   strictcount(e.getTypeOperand()) = 1
 }
 
@@ -761,7 +761,7 @@ private predicate mk_AlignofExpr(HashCons child, AlignofExprOperator e) {
 private predicate mk_FieldCons(Class c, int i, Field f, HashCons hc, HC_Fields hcf,
   ClassAggregateLiteral cal) {
   analyzableClassAggregateLiteral(cal) and
-  cal.getType().getUnspecifiedType() = c and
+  cal.getUnspecifiedType() = c and
   exists(Expr e |
     e = cal.getFieldExpr(f).getFullyConverted() and
     f.getInitializationOrder() = i and
@@ -791,7 +791,7 @@ private predicate analyzableClassAggregateLiteral(ClassAggregateLiteral cal) {
 
 private predicate mk_ClassAggregateLiteral(Class c, HC_Fields hcf, ClassAggregateLiteral cal) {
   analyzableClassAggregateLiteral(cal) and
-  c = cal.getType().getUnspecifiedType() and
+  c = cal.getUnspecifiedType() and
   (
     exists(HC_Fields tail, Expr e, Field f |
       f.getInitializationOrder() = cal.getNumChild() - 1 and
@@ -810,12 +810,12 @@ private predicate analyzableArrayAggregateLiteral(ArrayAggregateLiteral aal) {
     exists(aal.getChild(i)) |
     strictcount(aal.getChild(i).getFullyConverted()) = 1
   ) and
-  strictcount(aal.getType().getUnspecifiedType()) = 1
+  strictcount(aal.getUnspecifiedType()) = 1
 }
 
 private predicate mk_ArrayCons(Type t, int i, HashCons hc, HC_Array hca, ArrayAggregateLiteral aal) {
   analyzableArrayAggregateLiteral(aal) and
-  t = aal.getType().getUnspecifiedType() and
+  t = aal.getUnspecifiedType() and
   hc = hashCons(aal.getChild(i)) and
   (
     exists(HC_Array tail, HashCons head |
@@ -829,7 +829,7 @@ private predicate mk_ArrayCons(Type t, int i, HashCons hc, HC_Array hca, ArrayAg
 }
 
 private predicate mk_ArrayAggregateLiteral(Type t, HC_Array hca, ArrayAggregateLiteral aal) {
-  t = aal.getType().getUnspecifiedType() and
+  t = aal.getUnspecifiedType() and
   (
     exists(HashCons head, HC_Array tail |
       hca = HC_ArrayCons(t, aal.getNumChild() - 1, head, tail) and

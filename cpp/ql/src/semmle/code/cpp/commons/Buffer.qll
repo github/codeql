@@ -28,12 +28,12 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
     v = c.getCanonicalMember(i) and
 
     // v is an array of size at most 1
-    v.getType().getUnspecifiedType().(ArrayType).getArraySize() <= 1
+    v.getUnspecifiedType().(ArrayType).getArraySize() <= 1
   ) and (
     exists(SizeofOperator so |
       // `sizeof(c)` is taken
       so.(SizeofTypeOperator).getTypeOperand().getUnspecifiedType() = c or
-      so.(SizeofExprOperator).getExprOperand().getType().getUnspecifiedType() = c |
+      so.(SizeofExprOperator).getExprOperand().getUnspecifiedType() = c |
 
       // arithmetic is performed on the result
       so.getParent*() instanceof AddExpr
@@ -55,7 +55,7 @@ int getBufferSize(Expr bufferExpr, Element why) {
   exists(Variable bufferVar | bufferVar = bufferExpr.(VariableAccess).getTarget() |
     (
       // buffer is a fixed size array
-      result = bufferVar.getType().getUnspecifiedType().(ArrayType).getSize() and
+      result = bufferVar.getUnspecifiedType().(ArrayType).getSize() and
       why = bufferVar and
       not memberMayBeVarSize(_, bufferVar) and
       not result = 0 // zero sized arrays are likely to have special usage, for example
@@ -69,13 +69,13 @@ int getBufferSize(Expr bufferExpr, Element why) {
         why instanceof StringLiteral
       ) and
       result = why.(Expr).getType().(ArrayType).getSize() and
-      not exists(bufferVar.getType().getUnspecifiedType().(ArrayType).getSize())
+      not exists(bufferVar.getUnspecifiedType().(ArrayType).getSize())
     ) or exists(Class parentClass, VariableAccess parentPtr |
       // buffer is the parentPtr->bufferVar of a 'variable size struct'
       memberMayBeVarSize(parentClass, bufferVar) and
       why = bufferVar and
       parentPtr = bufferExpr.(VariableAccess).getQualifier() and
-      parentPtr.getTarget().getType().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
+      parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
       result =
         getBufferSize(parentPtr, _) +
         bufferVar.getType().getSize() -

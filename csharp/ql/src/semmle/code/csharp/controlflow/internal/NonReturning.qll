@@ -28,24 +28,27 @@ private class ExitingCall extends NonReturningCall {
     )
   }
 
-  override ExitCompletion getACompletion() { any() }
+  override ExitCompletion getACompletion() { not result instanceof NestedCompletion }
 }
 
 private class ThrowingCall extends NonReturningCall {
   private ThrowCompletion c;
 
   ThrowingCall() {
-    c = this.getTarget().(ThrowingCallable).getACallCompletion()
-    or
-    exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
-      c.getExceptionClass() = m.getExceptionClass()
-    )
-    or
-    exists(CIL::Method m, CIL::Type ex |
-      this.getTarget().matchesHandle(m) and
-      alwaysThrowsException(m, ex) and
-      c.getExceptionClass().matchesHandle(ex) and
-      not m.isVirtual()
+    not c instanceof NestedCompletion and
+    (
+      c = this.getTarget().(ThrowingCallable).getACallCompletion()
+      or
+      exists(AssertMethod m | m = this.(FailingAssertion).getAssertMethod() |
+        c.getExceptionClass() = m.getExceptionClass()
+      )
+      or
+      exists(CIL::Method m, CIL::Type ex |
+        this.getTarget().matchesHandle(m) and
+        alwaysThrowsException(m, ex) and
+        c.getExceptionClass().matchesHandle(ex) and
+        not m.isVirtual()
+      )
     )
   }
 
@@ -109,6 +112,7 @@ private class ThrowingCallable extends NonReturningCallable {
 
 private predicate directlyThrows(ThrowElement te, ThrowCompletion c) {
   c.getExceptionClass() = te.getThrownExceptionType() and
+  not c instanceof NestedCompletion and
   // For stub implementations, there may exist proper implementations that are not seen
   // during compilation, so we conservatively rule those out
   not isStub(te)

@@ -1,4 +1,4 @@
 import cpp
 
 from Variable v
-select v, v.getType().getUnspecifiedType()
+select v, v.getUnspecifiedType()

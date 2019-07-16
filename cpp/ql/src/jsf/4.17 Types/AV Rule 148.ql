@@ -17,5 +17,5 @@ from SwitchStmt s
 where forex(SwitchCase sc | sc = s.getASwitchCase() and not sc instanceof DefaultCase |
              sc.getExpr().(VariableAccess).getTarget().isConst())
       // Allow switch on character types
-      and not (s.getExpr().getUnderlyingType().getUnspecifiedType() instanceof CharType)
+      and not (s.getExpr().getUnspecifiedType() instanceof CharType)
 select s, "Enumeration types should be used instead of integers to select from a limited series of choices."

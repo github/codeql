@@ -1,8 +1,10 @@
 import python
+private import semmle.python.objects.Classes
+private import semmle.python.objects.Instances
 private import semmle.python.pointsto.PointsTo
-private import semmle.python.pointsto.Base
-private import semmle.python.pointsto.MRO as MRO
+private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
+private import semmle.python.objects.ObjectInternal
 
 
 /** A class whose instances represents Python classes.
@@ -20,38 +22,34 @@ private import semmle.python.types.Builtins
  */
 class ClassObject extends Object {
 
+    private ClassObjectInternal theClass() {
+        result.getOrigin() = this
+        or
+        result.getBuiltin() = this
+    }
+
     ClassObject() {
         this.getOrigin() instanceof ClassExpr or
         this.asBuiltin().isClass()
     }
 
-    private predicate isStr() {
-        this.asBuiltin() = Builtin::special("bytes") and major_version() = 2
-        or
-        this.asBuiltin() = Builtin::special("unicode") and major_version() = 3
-    }
-
     /** Gets the short (unqualified) name of this class */
     string getName() {
-        this.isStr() and result = "str"
-        or
-        not this.isStr() and result = this.asBuiltin().getName() and not this = theUnknownType()
-        or
-        result = this.getPyClass().getName()
+        result = theClass().getName()
     }
 
     /** Gets the qualified name for this class.
      * Should return the same name as the `__qualname__` attribute on classes in Python 3.
      */
     string getQualifiedName() {
-        this.isBuiltin() and result = this.getName()
+        result = theClass().getBuiltin().getName()
         or
-        result = this.getPyClass().getQualifiedName()
+        result = theClass().(PythonClassObjectInternal).getScope().getQualifiedName()
     }
 
     /** Gets the nth base class of this class */
     Object getBaseType(int n) {
-        result = PointsTo::Types::class_base_type(this, n)
+        result = Types::getBase(theClass(), n).getSource()
     }
 
     /** Gets a base class of this class */
@@ -61,25 +59,29 @@ class ClassObject extends Object {
 
     /** Whether this class has a base class */
     predicate hasABase() {
-        exists(ClassExpr cls | this.getOrigin() = cls | exists(cls.getABase()))
-        or
-        exists(this.asBuiltin().getBaseClass())
+        exists(Types::getBase(theClass(), _))
     }
 
     /** Gets a super class of this class (includes transitive super classes) */
     ClassObject getASuperType() {
-        result = PointsTo::Types::get_a_super_type(this)
+        result = Types::getMro(theClass()).getTail().getAnItem().getSource()
     }
 
     /** Gets a super class of this class (includes transitive super classes) or this class */
     ClassObject getAnImproperSuperType() {
-        result = PointsTo::Types::get_an_improper_super_type(this)
+        result = this.getABaseType*()
     }
 
     /** Whether this class is a new style class. 
         A new style class is one that implicitly or explicitly inherits from `object`. */
     predicate isNewStyle() {
-        PointsTo::Types::is_new_style(this)
+        Types::isNewStyle(theClass())
+    }
+
+    /** Whether this class is an old style class. 
+        An old style class is one that does not inherit from `object`. */
+    predicate isOldStyle() {
+        Types::isOldStyle(theClass())
     }
 
     /** Whether this class is a legal exception class. 
@@ -98,52 +100,58 @@ class ClassObject extends Object {
 
     /** Returns an attribute declared on this class (not on a super-class) */
     Object declaredAttribute(string name) {
-        PointsTo::Types::class_declared_attribute(this, name, result, _, _)
+        exists(ObjectInternal val |
+            Types::declaredAttribute(theClass(), name, val, _) and
+            result = val.getSource()
+        )
     }
 
     /** Returns an attribute declared on this class (not on a super-class) */
     predicate declaresAttribute(string name) {
-        class_declares_attribute(this, name)
+        theClass().getClassDeclaration().declaresAttribute(name)
     }
 
     /** Returns an attribute as it would be when looked up at runtime on this class.
       Will include attributes of super-classes */
     Object lookupAttribute(string name) {
-        result = this.getMro().lookup(name)
+        exists(ObjectInternal val |
+            theClass().lookup(name, val, _) and
+            result = val.getSource()
+        )
     }
 
-    MRO::ClassList getMro() {
-        PointsTo::Types::is_new_style_bool(this) = true and
-        result = MRO::new_style_mro(this)
-        or
-        result = MRO::old_style_mro(this)
+    ClassList getMro() {
+        result = Types::getMro(theClass())
     }
 
     /** Looks up an attribute by searching this class' MRO starting at `start` */
     Object lookupMro(ClassObject start, string name) {
-        result = this.getMro().startingAt(start).lookup(name)
+        exists(ClassObjectInternal other, ClassObjectInternal decl, ObjectInternal val |
+            other.getSource() = start and
+            decl = Types::getMro(theClass()).startingAt(other).findDeclaringClass(name) and
+            Types::declaredAttribute(decl, name, val, _) and
+            result = val.getSource()
+        )
     }
 
     /** Whether the named attribute refers to the object and origin */
     predicate attributeRefersTo(string name, Object obj, ControlFlowNode origin) {
-        exists(CfgOrigin orig |
-            origin = orig.toCfgNode() and
-            PointsTo::Types::class_attribute_lookup(this, name, obj, _, orig)
-        )
+        this.attributeRefersTo(name, obj, _, origin)
     }
 
     /** Whether the named attribute refers to the object, class and origin */
     predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
-        not obj = unknownValue() and
-        exists(CfgOrigin orig |
-            origin = orig.toCfgNode() and
-            PointsTo::Types::class_attribute_lookup(this, name, obj, cls, orig)
+        exists(ObjectInternal val, CfgOrigin valorig |
+            theClass().lookup(name, val, valorig) and
+            obj = val.getSource() and
+            cls = val.getClass().getSource() and
+            origin = valorig.toCfgNode()
         )
     }
 
     /** Whether this class has a attribute named `name`, either declared or inherited.*/
     predicate hasAttribute(string name) {
-        PointsTo::Types::class_has_attribute(this, name)
+        Types::getMro(theClass()).getAnItem().getClassDeclaration().declaresAttribute(name)
     }
 
     /** Whether it is impossible to know all the attributes of this class. Usually because it is
@@ -164,7 +172,7 @@ class ClassObject extends Object {
 
     /** Gets the metaclass for this class */
     ClassObject getMetaClass() {
-        result = PointsTo::Types::class_get_meta_class(this)
+        result = theClass().getClass().getSource()
         and
         not this.failedInference()
     }
@@ -187,7 +195,7 @@ class ClassObject extends Object {
 
     /** Has type inference failed to compute the full class hierarchy for this class for the reason given. */ 
     predicate failedInference(string reason) {
-        PointsTo::Types::failed_inference(this, reason)
+        Types::failedInference(theClass(), reason)
     }
 
     /** Has type inference failed to compute the full class hierarchy for this class */ 
@@ -213,8 +221,8 @@ class ClassObject extends Object {
     }
 
     /** This class is only instantiated at one place in the code */
-    private  predicate hasStaticallyUniqueInstance() {
-        strictcount(Object instances | PointsTo::points_to(_, _, instances, this, _)) = 1
+    private predicate hasStaticallyUniqueInstance() {
+        strictcount(SpecificInstanceInternal inst | inst.getClass() = theClass()) = 1
     }
 
     ImportTimeScope getImportTimeScope() {
@@ -231,10 +239,9 @@ class ClassObject extends Object {
 
     /** Returns the next class in the MRO of 'this' after 'sup' */
      ClassObject nextInMro(ClassObject sup) {
-        exists(MRO::ClassList mro, int i |
-            mro = this.getMro() and
-            sup = mro.getItem(i) and
-            result = mro.getItem(i+1)
+         exists(ClassObjectInternal other |
+            other.getSource() = sup and
+            result = Types::getMro(theClass()).startingAt(other).getTail().getHead().getSource()
         ) and
         not this.failedInference()
     }
@@ -243,7 +250,7 @@ class ClassObject extends Object {
      * `this` has an index of `1`, the next class in the MRO has an index of `2`, and so on.
      */
     ClassObject getMroItem(int index) {
-        result = this.getMro().getItem(index)
+        result = this.getMro().getItem(index).getSource()
     }
 
     /** Holds if this class has duplicate base classes */

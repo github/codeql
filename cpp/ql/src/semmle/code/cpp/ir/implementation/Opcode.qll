@@ -1,6 +1,7 @@
 private newtype TOpcode =
   TNoOp() or
   TUninitialized() or
+  TError() or
   TInitializeParameter() or
   TInitializeThis() or
   TEnterFunction() or
@@ -69,6 +70,7 @@ private newtype TOpcode =
   TBufferWriteSideEffect() or
   TBufferMayWriteSideEffect() or
   TChi() or
+  TInlineAsm() or
   TUnreached()
 
 class Opcode extends TOpcode {
@@ -146,6 +148,7 @@ abstract class BufferAccessOpcode extends MemoryAccessOpcode {}
 module Opcode {
   class NoOp extends Opcode, TNoOp { override final string toString() { result = "NoOp" } }
   class Uninitialized extends MemoryAccessOpcode, TUninitialized { override final string toString() { result = "Uninitialized" } }
+  class Error extends Opcode, TError { override final string toString() { result = "Error" } }
   class InitializeParameter extends MemoryAccessOpcode, TInitializeParameter { override final string toString() { result = "InitializeParameter" } }
   class InitializeThis extends Opcode, TInitializeThis { override final string toString() { result = "InitializeThis" } }
   class EnterFunction extends Opcode, TEnterFunction { override final string toString() { result = "EnterFunction" } }
@@ -214,5 +217,6 @@ module Opcode {
   class BufferWriteSideEffect extends WriteSideEffectOpcode, BufferAccessOpcode, TBufferWriteSideEffect { override final string toString() { result = "BufferWriteSideEffect" } }
   class BufferMayWriteSideEffect extends MayWriteSideEffectOpcode, BufferAccessOpcode, TBufferMayWriteSideEffect { override final string toString() { result = "BufferMayWriteSideEffect" } }
   class Chi extends Opcode, TChi { override final string toString() { result = "Chi" } }
+  class InlineAsm extends Opcode, TInlineAsm { override final string toString() { result = "InlineAsm" } }
   class Unreached extends Opcode, TUnreached { override final string toString() { result = "Unreached" } }
 }

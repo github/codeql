@@ -22,13 +22,14 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             Expression.Create(cx, Stmt.Expression, this, 1);
 
             var typeSymbol = cx.Model(Stmt).GetDeclaredSymbol(Stmt);
-            var type = Type.Create(cx, typeSymbol.Type);
+            var type = Type.Create(cx, typeSymbol.GetAnnotatedType());
 
             var location = cx.Create(Stmt.Identifier.GetLocation());
 
             if (typeSymbol.Name != "_")
-                Expressions.VariableDeclaration.Create(cx, typeSymbol, type, location, location, Stmt.Type.IsVar, this, 0);
-            TypeMention.Create(cx, Stmt.Type, this, type);
+                Expressions.VariableDeclaration.Create(cx, typeSymbol, type, Stmt.Type, location, location, Stmt.Type.IsVar, this, 0);
+            else
+                TypeMention.Create(cx, Stmt.Type, this, type);
 
             Statement.Create(cx, Stmt.Statement, this, 2);
         }

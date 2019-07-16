@@ -1,0 +1,9 @@
+| test.py:3:1:3:18 | class Meta1 | new |
+| test.py:6:1:6:18 | class Meta2 | new |
+| test.py:10:1:10:17 | class C1 | new |
+| test.py:14:1:14:17 | class C2 | new |
+| test.py:18:1:18:17 | class C3 | new |
+| test.py:22:1:22:21 | class C4 | new |
+| test.py:26:1:26:17 | class C5 | new |
+| test.py:30:1:30:17 | class C6 | new |
+| test.py:35:1:35:29 | class NewStyleEvenForPython2 | new |

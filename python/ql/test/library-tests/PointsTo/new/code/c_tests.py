@@ -5,17 +5,17 @@ def f(y):
     x = unknown() if cond else None
 
     if x is None:
-        pass
+        x
 
     x = 0 if cond else 1
 
     if x:
-        pass
+        x
 
     x = 0 if cond else 1
 
     if x == 0:
-        pass
+        x
 
 
     x = ((1,2) if cond else (1,2,3)) if unknown() else [1,2]
@@ -58,7 +58,7 @@ def others(x):
     x = bool if cond else type
 
     if issubclass(x, int):
-        pass
+        x
 
     x = 0 if cond else float
 
@@ -79,17 +79,17 @@ def compound(x=1, y=0):
 def h():
     b = unknown() if cond else True
     if b:
-        pass
+        b
     b = unknown() if cond else True
     if not b:
-        pass
+        b
 
     if unknown() == 3:
         pass
 
     x = unknown() if cond else None
     if x:
-        pass
+        x
 
     x = unknown() if cond else None
     if not x:

@@ -1,0 +1,6 @@
+| test.py:18 | Str | externally controlled string |
+| test.py:21 | BinaryExpr | externally controlled string |
+| test.py:24 | BinaryExpr | externally controlled string |
+| test.py:25 | BinaryExpr | externally controlled string |
+| test.py:26 | BinaryExpr | externally controlled string |
+| test.py:34 | BinaryExpr | externally controlled string |

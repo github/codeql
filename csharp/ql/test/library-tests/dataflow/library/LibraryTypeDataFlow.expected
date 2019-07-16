@@ -129,6 +129,9 @@
 | System.Collections.IEnumerator.get_Current() | qualifier -> return | true |
 | System.Collections.IList.Add(object) | argument 0 -> qualifier | false |
 | System.Collections.IList.Insert(int, object) | argument 1 -> qualifier | false |
+| System.Collections.ListDictionaryInternal.Add(object, object) | argument 1 -> qualifier | false |
+| System.Collections.ListDictionaryInternal.GetEnumerator() | qualifier -> return | false |
+| System.Collections.ListDictionaryInternal.get_Values() | qualifier -> return | false |
 | System.Collections.ObjectModel.Collection<>.Add(T) | argument 0 -> qualifier | false |
 | System.Collections.ObjectModel.Collection<>.Add(object) | argument 0 -> qualifier | false |
 | System.Collections.ObjectModel.Collection<>.GetEnumerator() | qualifier -> return | false |
@@ -224,6 +227,7 @@
 | System.Convert.IsDBNull(object) | argument 0 -> return | false |
 | System.Convert.ToBase64CharArray(byte[], int, int, char[], int) | argument 0 -> return | false |
 | System.Convert.ToBase64CharArray(byte[], int, int, char[], int, Base64FormattingOptions) | argument 0 -> return | false |
+| System.Convert.ToBase64String(ReadOnlySpan<byte>, Base64FormattingOptions) | argument 0 -> return | false |
 | System.Convert.ToBase64String(byte[]) | argument 0 -> return | false |
 | System.Convert.ToBase64String(byte[], Base64FormattingOptions) | argument 0 -> return | false |
 | System.Convert.ToBase64String(byte[], int, int) | argument 0 -> return | false |
@@ -524,12 +528,16 @@
 | System.Convert.ToUInt64(uint) | argument 0 -> return | false |
 | System.Convert.ToUInt64(ulong) | argument 0 -> return | false |
 | System.Convert.ToUInt64(ushort) | argument 0 -> return | false |
+| System.Convert.TryFromBase64Chars(ReadOnlySpan<char>, Span<byte>, out int) | argument 0 -> return | false |
+| System.Convert.TryFromBase64String(string, Span<byte>, out int) | argument 0 -> return | false |
+| System.Convert.TryToBase64Chars(ReadOnlySpan<byte>, Span<char>, out int, Base64FormattingOptions) | argument 0 -> return | false |
 | System.Dynamic.ExpandoObject.Add(KeyValuePair<string, object>) | argument 0 -> qualifier | false |
 | System.Dynamic.ExpandoObject.Add(string, object) | argument 1 -> qualifier | false |
 | System.Dynamic.ExpandoObject.GetEnumerator() | qualifier -> return | false |
 | System.ICloneable.Clone() | qualifier -> return | false |
 | System.IO.BufferedStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
 | System.IO.BufferedStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.IO.BufferedStream.CopyTo(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.BufferedStream.CopyToAsync(Stream, int, CancellationToken) | qualifier -> argument 0 | false |
 | System.IO.BufferedStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
 | System.IO.BufferedStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
@@ -548,6 +556,7 @@
 | System.IO.Compression.DeflateStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
 | System.IO.Compression.GZipStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
 | System.IO.Compression.GZipStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
+| System.IO.Compression.GZipStream.CopyTo(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.Compression.GZipStream.CopyToAsync(Stream, int, CancellationToken) | qualifier -> argument 0 | false |
 | System.IO.Compression.GZipStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
 | System.IO.Compression.GZipStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
@@ -580,11 +589,17 @@
 | System.IO.Path.Combine(string, string, string, string) | argument 1 -> return | false |
 | System.IO.Path.Combine(string, string, string, string) | argument 2 -> return | false |
 | System.IO.Path.Combine(string, string, string, string) | argument 3 -> return | false |
+| System.IO.Path.GetDirectoryName(ReadOnlySpan<char>) | argument 0 -> return | false |
 | System.IO.Path.GetDirectoryName(string) | argument 0 -> return | false |
+| System.IO.Path.GetExtension(ReadOnlySpan<char>) | argument 0 -> return | false |
 | System.IO.Path.GetExtension(string) | argument 0 -> return | false |
+| System.IO.Path.GetFileName(ReadOnlySpan<char>) | argument 0 -> return | false |
 | System.IO.Path.GetFileName(string) | argument 0 -> return | false |
+| System.IO.Path.GetFileNameWithoutExtension(ReadOnlySpan<char>) | argument 0 -> return | false |
 | System.IO.Path.GetFileNameWithoutExtension(string) | argument 0 -> return | false |
 | System.IO.Path.GetFullPath(string) | argument 0 -> return | false |
+| System.IO.Path.GetFullPath(string, string) | argument 0 -> return | false |
+| System.IO.Path.GetPathRoot(ReadOnlySpan<char>) | argument 0 -> return | false |
 | System.IO.Path.GetPathRoot(string) | argument 0 -> return | false |
 | System.IO.Path.GetRelativePath(string, string) | argument 1 -> return | false |
 | System.IO.Pipes.PipeStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
@@ -598,6 +613,7 @@
 | System.IO.Stream.CopyTo(Stream) | qualifier -> argument 0 | false |
 | System.IO.Stream.CopyTo(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.Stream.CopyToAsync(Stream) | qualifier -> argument 0 | false |
+| System.IO.Stream.CopyToAsync(Stream, CancellationToken) | qualifier -> argument 0 | false |
 | System.IO.Stream.CopyToAsync(Stream, int) | qualifier -> argument 0 | false |
 | System.IO.Stream.CopyToAsync(Stream, int, CancellationToken) | qualifier -> argument 0 | false |
 | System.IO.Stream.Read(byte[], int, int) | qualifier -> argument 0 | false |
@@ -607,8 +623,12 @@
 | System.IO.Stream.WriteAsync(byte[], int, int) | argument 0 -> qualifier | false |
 | System.IO.Stream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
 | System.IO.StringReader.Read() | qualifier -> return | false |
+| System.IO.StringReader.Read(Span<char>) | qualifier -> return | false |
 | System.IO.StringReader.Read(char[], int, int) | qualifier -> return | false |
+| System.IO.StringReader.ReadAsync(Memory<char>, CancellationToken) | qualifier -> return | false |
 | System.IO.StringReader.ReadAsync(char[], int, int) | qualifier -> return | false |
+| System.IO.StringReader.ReadBlock(Span<char>) | qualifier -> return | false |
+| System.IO.StringReader.ReadBlockAsync(Memory<char>, CancellationToken) | qualifier -> return | false |
 | System.IO.StringReader.ReadBlockAsync(char[], int, int) | qualifier -> return | false |
 | System.IO.StringReader.ReadLine() | qualifier -> return | false |
 | System.IO.StringReader.ReadLineAsync() | qualifier -> return | false |
@@ -616,9 +636,13 @@
 | System.IO.StringReader.ReadToEndAsync() | qualifier -> return | false |
 | System.IO.StringReader.StringReader(string) | argument 0 -> return | false |
 | System.IO.TextReader.Read() | qualifier -> return | false |
+| System.IO.TextReader.Read(Span<char>) | qualifier -> return | false |
 | System.IO.TextReader.Read(char[], int, int) | qualifier -> return | false |
+| System.IO.TextReader.ReadAsync(Memory<char>, CancellationToken) | qualifier -> return | false |
 | System.IO.TextReader.ReadAsync(char[], int, int) | qualifier -> return | false |
+| System.IO.TextReader.ReadBlock(Span<char>) | qualifier -> return | false |
 | System.IO.TextReader.ReadBlock(char[], int, int) | qualifier -> return | false |
+| System.IO.TextReader.ReadBlockAsync(Memory<char>, CancellationToken) | qualifier -> return | false |
 | System.IO.TextReader.ReadBlockAsync(char[], int, int) | qualifier -> return | false |
 | System.IO.TextReader.ReadLine() | qualifier -> return | false |
 | System.IO.TextReader.ReadLineAsync() | qualifier -> return | false |
@@ -1283,7 +1307,9 @@
 | System.Net.Security.SslStream.BeginRead(byte[], int, int, AsyncCallback, object) | qualifier -> argument 0 | false |
 | System.Net.Security.SslStream.BeginWrite(byte[], int, int, AsyncCallback, object) | argument 0 -> qualifier | false |
 | System.Net.Security.SslStream.Read(byte[], int, int) | qualifier -> argument 0 | false |
+| System.Net.Security.SslStream.ReadAsync(byte[], int, int, CancellationToken) | qualifier -> argument 0 | false |
 | System.Net.Security.SslStream.Write(byte[], int, int) | argument 0 -> qualifier | false |
+| System.Net.Security.SslStream.WriteAsync(byte[], int, int, CancellationToken) | argument 0 -> qualifier | false |
 | System.Net.WebUtility.HtmlEncode(string) | argument 0 -> return | false |
 | System.Net.WebUtility.HtmlEncode(string, TextWriter) | argument 0 -> return | false |
 | System.Net.WebUtility.UrlEncode(string) | argument 0 -> return | false |
@@ -1315,11 +1341,6 @@
 | System.String.Concat(object, object, object) | argument 0 -> return | false |
 | System.String.Concat(object, object, object) | argument 1 -> return | false |
 | System.String.Concat(object, object, object) | argument 2 -> return | false |
-| System.String.Concat(object, object, object, object, __arglist) | argument 0 -> return | false |
-| System.String.Concat(object, object, object, object, __arglist) | argument 1 -> return | false |
-| System.String.Concat(object, object, object, object, __arglist) | argument 2 -> return | false |
-| System.String.Concat(object, object, object, object, __arglist) | argument 3 -> return | false |
-| System.String.Concat(object, object, object, object, __arglist) | argument 4 -> return | false |
 | System.String.Concat(string, string) | argument 0 -> return | false |
 | System.String.Concat(string, string) | argument 1 -> return | false |
 | System.String.Concat(string, string, string) | argument 0 -> return | false |
@@ -1406,6 +1427,7 @@
 | System.String.TrimStart() | qualifier -> return | false |
 | System.String.TrimStart(char) | qualifier -> return | false |
 | System.String.TrimStart(params char[]) | qualifier -> return | false |
+| System.Text.Encoding.GetBytes(ReadOnlySpan<char>, Span<byte>) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(char*, int, byte*, int) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(char[]) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(char[], int, int) | argument 0 -> return | false |
@@ -1413,10 +1435,12 @@
 | System.Text.Encoding.GetBytes(string) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(string, int, int) | argument 0 -> return | false |
 | System.Text.Encoding.GetBytes(string, int, int, byte[], int) | argument 0 -> return | false |
+| System.Text.Encoding.GetChars(ReadOnlySpan<byte>, Span<char>) | argument 0 -> return | false |
 | System.Text.Encoding.GetChars(byte*, int, char*, int) | argument 0 -> return | false |
 | System.Text.Encoding.GetChars(byte[]) | argument 0 -> return | false |
 | System.Text.Encoding.GetChars(byte[], int, int) | argument 0 -> return | false |
 | System.Text.Encoding.GetChars(byte[], int, int, char[], int) | argument 0 -> return | false |
+| System.Text.Encoding.GetString(ReadOnlySpan<byte>) | argument 0 -> return | false |
 | System.Text.Encoding.GetString(byte*, int) | argument 0 -> return | false |
 | System.Text.Encoding.GetString(byte[]) | argument 0 -> return | false |
 | System.Text.Encoding.GetString(byte[], int, int) | argument 0 -> return | false |

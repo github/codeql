@@ -38,9 +38,10 @@ module Express {
   private predicate isRouter(Expr e, RouterDefinition router) {
     router.flowsTo(e)
     or
-    exists (DataFlow::MethodCallNode chain, DataFlow::Node base, string name |
+    exists(DataFlow::MethodCallNode chain, DataFlow::Node base, string name |
       name = "route" or
-      name = routeSetupMethodName() |
+      name = routeSetupMethodName()
+    |
       chain.calls(base, name) and
       isRouter(base.asExpr(), router) and
       chain.flowsToExpr(e)
@@ -53,9 +54,7 @@ module Express {
   class RouteExpr extends MethodCallExpr {
     RouterDefinition router;
 
-    RouteExpr() {
-      isRouter(this, router)
-    }
+    RouteExpr() { isRouter(this, router) }
 
     /** Gets the router from which this route was created. */
     RouterDefinition getRouter() { result = router }
@@ -82,7 +81,7 @@ module Express {
 
     RouteSetup() {
       isRouter(getReceiver(), router) and
-      getMethodName() = routeSetupMethodName() 
+      getMethodName() = routeSetupMethodName()
     }
 
     /** Gets the path associated with the route. */
@@ -126,9 +125,7 @@ module Express {
       t.start() and
       result = getARouteHandlerExpr().flow().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 |
-        result = getARouteHandler(t2).backtrack(t2, t)
-      )
+      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
     }
 
     override Expr getServer() { result.(Application).getARouteHandler() = getARouteHandler() }
@@ -380,14 +377,14 @@ module Express {
   /**
    * An Express response expression.
    */
-  class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+  class ResponseExpr extends NodeJSLib::ResponseExpr {
     override ResponseSource src;
   }
 
   /**
    * An Express request expression.
    */
-  class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+  class RequestExpr extends NodeJSLib::RequestExpr {
     override RequestSource src;
   }
 
@@ -415,14 +412,9 @@ module Express {
           )
         )
         or
-        exists(string propName |
-          // `req.url` or `req.originalUrl`
-          kind = "url" and
-          this.(DataFlow::PropRef).accesses(request, propName)
-        |
-          propName = "url" or
-          propName = "originalUrl"
-        )
+        // `req.originalUrl`
+        kind = "url" and
+        this.(DataFlow::PropRef).accesses(request, "originalUrl")
         or
         // `req.cookies`
         kind = "cookie" and
@@ -431,11 +423,6 @@ module Express {
       or
       kind = "body" and
       this.asExpr() = rh.getARequestBodyAccess()
-      or
-      exists(RequestHeaderAccess access | this = access |
-        rh = access.getRouteHandler() and
-        kind = "header"
-      )
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -626,9 +613,8 @@ module Express {
     RouteHandler rh;
 
     ResponseSendArgument() {
-      exists(MethodCallExpr mce, string name |
-        mce.calls(rh.getAResponseExpr(), name) and
-        (name = "send" or name = "end") and
+      exists(MethodCallExpr mce |
+        mce.calls(rh.getAResponseExpr(), "send") and
         this = mce.getArgument(0)
       )
     }
@@ -671,7 +657,7 @@ module Express {
   /**
    * An Express server application.
    */
-  private class Application extends HTTP::ServerDefinition, DataFlow::TrackedExpr {
+  private class Application extends HTTP::ServerDefinition {
     Application() { this = appCreation().asExpr() }
 
     /**
@@ -685,8 +671,22 @@ module Express {
   /**
    * An Express router.
    */
-  class RouterDefinition extends InvokeExpr, DataFlow::TrackedExpr {
+  class RouterDefinition extends InvokeExpr {
     RouterDefinition() { this = routerCreation().asExpr() }
+
+    private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
+      t.start() and
+      result = DataFlow::exprNode(this)
+      or
+      exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
+    }
+
+    /**
+     * Holds if `sink` may refer to this router.
+     */
+    predicate flowsTo(Expr sink) {
+      ref(DataFlow::TypeTracker::end()).flowsToExpr(sink)
+    }
 
     /**
      * Gets a `RouteSetup` that was used for setting up a route on this router.
@@ -786,10 +786,7 @@ module Express {
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
     HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-
-    TrackedRouteHandlerCandidateWithSetup() {
-      this = any(RouteSetup s).getARouteHandler()
-    }
+    TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
 
     override SimpleParameter getRouteHandlerParameter(string kind) {
       result = getRouteHandlerParameter(astNode, kind)

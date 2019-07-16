@@ -9,7 +9,6 @@
 
 import csharp
 private import Conversion
-private import dispatch.Dispatch
 
 /**
  * INTERNAL: Do not use.

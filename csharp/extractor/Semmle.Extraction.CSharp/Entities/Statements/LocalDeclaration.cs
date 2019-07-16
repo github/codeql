@@ -6,8 +6,19 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 {
     class LocalDeclaration : Statement<LocalDeclarationStatementSyntax>
     {
+        static StmtKind GetKind(LocalDeclarationStatementSyntax declStmt)
+        {
+            if (declStmt.UsingKeyword.RawKind != 0)
+                return StmtKind.USING_DECL;
+
+            if (declStmt.IsConst)
+                return StmtKind.CONST_DECL;
+
+            return StmtKind.VAR_DECL;
+        }
+
         LocalDeclaration(Context cx, LocalDeclarationStatementSyntax declStmt, IStatementParentEntity parent, int child)
-            : base(cx, declStmt, declStmt.IsConst ? StmtKind.CONST_DECL : StmtKind.VAR_DECL, parent, child) { }
+            : base(cx, declStmt, GetKind(declStmt), parent, child) { }
 
         public static LocalDeclaration Create(Context cx, LocalDeclarationStatementSyntax node, IStatementParentEntity parent, int child)
         {

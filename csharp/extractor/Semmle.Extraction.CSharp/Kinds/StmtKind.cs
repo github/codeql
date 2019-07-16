@@ -34,6 +34,7 @@ namespace Semmle.Extraction.Kinds  // lgtm[cs/similar-file]
         LABEL = 27,
         CATCH = 28,
         CASE = 29,
-        LOCAL_FUNCTION = 30
+        LOCAL_FUNCTION = 30,
+        USING_DECL = 31
     }
 }

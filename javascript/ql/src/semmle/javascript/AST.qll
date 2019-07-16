@@ -10,6 +10,15 @@ import javascript
  *
  * This class provides generic traversal methods applicable to all AST nodes,
  * such as obtaining the children of an AST node.
+ *
+ * Examples:
+ *
+ * ```
+ * function abs(x) {
+ *   return x < 0 ? -x : x;
+ * }
+ * abs(-42);
+ * ```
  */
 class ASTNode extends @ast_node, Locatable {
   override Location getLocation() { hasLocation(this, result) }
@@ -128,6 +137,14 @@ class ASTNode extends @ast_node, Locatable {
  * A toplevel syntactic unit; that is, a stand-alone script, an inline script
  * embedded in an HTML `<script>` tag, a code snippet assigned to an HTML event
  * handler attribute, or a `javascript:` URL.
+ *
+ * Example:
+ *
+ * ```
+ * <script>
+ * window.done = true;
+ * </script>
+ * ```
  */
 class TopLevel extends @toplevel, StmtContainer {
   /** Holds if this toplevel is minified. */
@@ -141,6 +158,10 @@ class TopLevel extends @toplevel, StmtContainer {
       // and there are at least ten statements overall
       numstmt >= 10
     )
+    or
+    // many variables, and they all have short names
+    count (VarDecl d | d.getTopLevel() = this) > 100 and
+    forall (VarDecl d | d.getTopLevel() = this | d.getName().length() <= 2)
   }
 
   /** Holds if this toplevel is an externs definitions file. */
@@ -181,47 +202,118 @@ class TopLevel extends @toplevel, StmtContainer {
 
 /**
  * A stand-alone file or script originating from an HTML `<script>` element.
+ *
+ * Example:
+ *
+ * ```
+ * <script>
+ * window.done = true;
+ * </script>
+ * ```
  */
-abstract class Script extends TopLevel { }
+class Script extends TopLevel {
+  Script() { this instanceof @script or this instanceof @inline_script }
+}
 
 /**
  * A stand-alone file or an external script originating from an HTML `<script>` element.
+ *
+ * Example:
+ *
+ * ```
+ * #! /usr/bin/node
+ * console.log("Hello, world!");
+ * ```
  */
 class ExternalScript extends @script, Script { }
 
 /**
  * A script embedded inline in an HTML `<script>` element.
+ *
+ * Example:
+ *
+ * ```
+ * <script>
+ * window.done = true;
+ * </script>
+ * ```
  */
 class InlineScript extends @inline_script, Script { }
 
 /**
  * A code snippet originating from an HTML attribute value.
+ *
+ * Examples:
+ *
+ * ```
+ * <div onclick="alert('hi')">Click me</div>
+ * <a href="javascript:alert('hi')">Click me</a>
+ * ```
  */
-abstract class CodeInAttribute extends TopLevel { }
+class CodeInAttribute extends TopLevel {
+  CodeInAttribute() { this instanceof @event_handler or this instanceof @javascript_url }
+}
 
 /**
  * A code snippet originating from an event handler attribute.
+ *
+ * Example:
+ *
+ * ```
+ * <div onclick="alert('hi')">Click me</div>
+ * ```
  */
 class EventHandlerCode extends @event_handler, CodeInAttribute { }
 
 /**
  * A code snippet originating from a URL with the `javascript:` URL scheme.
+ *
+ * Example:
+ *
+ * ```
+ * <a href="javascript:alert('hi')">Click me</a>
+ * ```
  */
 class JavaScriptURL extends @javascript_url, CodeInAttribute { }
 
 /**
  * A toplevel syntactic entity containing Closure-style externs definitions.
+ *
+ * Example:
+ *
+ * <pre>
+ * /** @externs *&#47;
+ * /** @typedef {String} *&#47;
+ * var MyString;
+ * </pre>
  */
 class Externs extends TopLevel {
   Externs() { isExterns() }
 }
 
-/** A program element that is either an expression or a statement. */
+/**
+ * A program element that is either an expression or a statement.
+ *
+ * Examples:
+ *
+ * ```
+ * var i = 0;
+ * i = 9
+ * ```
+ */
 class ExprOrStmt extends @exprorstmt, ControlFlowNode, ASTNode { }
 
 /**
  * A program element that contains statements, but isn't itself
  * a statement, in other words a toplevel or a function.
+ *
+ * Example:
+ *
+ * ```
+ * function f() {
+ *   g();
+ * }
+ * ```
  */
 class StmtContainer extends @stmt_container, ASTNode {
   /** Gets the innermost enclosing container in which this container is nested. */
@@ -308,6 +400,14 @@ module AST {
    * A program element that evaluates to a value at runtime. This includes expressions,
    * but also function and class declaration statements, as well as TypeScript
    * namespace and enum declarations.
+   *
+   * Examples:
+   *
+   * ```
+   * 0                               // expression
+   * (function id(x) { return x; })  // parenthesized function expression
+   * function id(x) { return x; }    // function declaration
+   * ```
    */
   class ValueNode extends ASTNode, @dataflownode {
     /** Gets type inference results for this element. */

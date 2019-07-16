@@ -87,6 +87,7 @@
 | Assignables.cs:132:13:132:13 | x | Assignables.cs:132:13:132:17 | Int32 x = ... | Assignables.cs:132:13:132:13 | access to local variable x | Assignables.cs:132:17:132:17 | 0 | certain |
 | Assignables.cs:132:13:132:13 | x | Assignables.cs:133:15:133:15 | access to local variable x | Assignables.cs:133:15:133:15 | access to local variable x | Assignables.cs:133:15:133:15 | <none> | certain |
 | Assignables.cs:133:29:133:29 | s | Assignables.cs:133:29:133:29 | String s | Assignables.cs:133:29:133:29 | String s | Assignables.cs:133:29:133:29 | <none> | certain |
+| Assignables.cs:138:19:138:19 | x | Assignables.cs:138:19:138:50 | MemoryStream x = ... | Assignables.cs:138:19:138:19 | access to local variable x | Assignables.cs:138:23:138:50 | object creation of type MemoryStream | certain |
 | Discards.cs:5:30:5:30 | x | Discards.cs:5:30:5:30 | x | Discards.cs:5:30:5:30 | <none> | Discards.cs:5:30:5:30 | <none> | certain |
 | Discards.cs:5:30:5:30 | x | Discards.cs:7:9:7:17 | ... = ... | Discards.cs:7:9:7:9 | access to parameter x | Discards.cs:7:13:7:17 | false | certain |
 | Discards.cs:19:14:19:14 | x | Discards.cs:19:9:19:29 | ... = ... | Discards.cs:19:9:19:29 | <none> | Discards.cs:19:9:19:29 | <none> | certain |

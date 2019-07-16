@@ -21,7 +21,7 @@ predicate taintedAllocSize(Expr e, Expr source, string taintCause) {
   ) and
   exists(Expr tainted |
     tainted = e.getAChild() and
-    tainted.getType().getUnspecifiedType() instanceof IntegralType and
+    tainted.getUnspecifiedType() instanceof IntegralType and
     isUserInput(source, taintCause) and
     tainted(source, tainted)
   )

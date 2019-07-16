@@ -86,9 +86,12 @@ class ValueNumber extends TValueNumber {
       instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
     )
   }
-  
+
+  /**
+   * Gets an `Operand` whose definition is exact and has this value number.
+   */
   final Operand getAUse() {
-    this = valueNumber(result.getDefinitionInstruction())
+    this = valueNumber(result.getDef())
   }
 }
 
@@ -105,19 +108,10 @@ class ValueNumber extends TValueNumber {
  * definition because it accesses the exact same memory.
  * The use of `p.x` on line 3 is linked to the definition of `p` on line 1 as well, but is not
  * congruent to that definition because `p.x` accesses only a subset of the memory defined by `p`.
- *
- * This concept should probably be exposed in the public IR API.
  */
 private class CongruentCopyInstruction extends CopyInstruction {
   CongruentCopyInstruction() {
-    exists(Instruction def |
-      def = this.getSourceValue() and
-      (
-        def.getResultMemoryAccess() instanceof IndirectMemoryAccess or
-        def.getResultMemoryAccess() instanceof PhiMemoryAccess or
-        not def.hasMemoryResult()
-      )
-    )
+    this.getSourceValueOperand().getDefinitionOverlap() instanceof MustExactlyOverlap
   }
 }
 
@@ -133,7 +127,7 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof StringConstantInstruction or
   instr instanceof FieldAddressInstruction or
   instr instanceof BinaryInstruction or
-  instr instanceof UnaryInstruction or
+  (instr instanceof UnaryInstruction and not instr instanceof CopyInstruction) or
   instr instanceof PointerArithmeticInstruction or
   instr instanceof CongruentCopyInstruction
 }
@@ -200,6 +194,7 @@ private predicate unaryValueNumber(UnaryInstruction instr, IRFunction irFunc, Op
     Type type, ValueNumber operand) {
   instr.getEnclosingIRFunction() = irFunc and
   (not instr instanceof InheritanceConversionInstruction) and
+  (not instr instanceof CopyInstruction) and
   instr.getOpcode() = opcode and
   instr.getResultType() = type and
   valueNumber(instr.getUnary()) = operand
@@ -236,10 +231,11 @@ cached ValueNumber valueNumber(Instruction instr) {
 }
 
 /**
- * Gets the value number assigned to `instr`, if any. Returns at most one result.
+ * Gets the value number assigned to the exact definition of `op`, if any.
+ * Returns at most one result.
  */
 ValueNumber valueNumberOfOperand(Operand op) {
-  result = valueNumber(op.getDefinitionInstruction())
+  result = valueNumber(op.getDef())
 }
 
 /**

@@ -6,17 +6,17 @@
 
 import javascript
 private import SyntacticHeuristics
-private import semmle.javascript.security.dataflow.CodeInjection
-private import semmle.javascript.security.dataflow.CommandInjection
+private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
+private import semmle.javascript.security.dataflow.CommandInjectionCustomizations
 private import semmle.javascript.security.dataflow.DomBasedXss as DomBasedXss
 private import semmle.javascript.security.dataflow.ReflectedXss as ReflectedXss
-private import semmle.javascript.security.dataflow.SqlInjection
-private import semmle.javascript.security.dataflow.NosqlInjection
-private import semmle.javascript.security.dataflow.TaintedPath
-private import semmle.javascript.security.dataflow.RegExpInjection
-private import semmle.javascript.security.dataflow.ClientSideUrlRedirect
-private import semmle.javascript.security.dataflow.ServerSideUrlRedirect
-private import semmle.javascript.security.dataflow.InsecureRandomness
+private import semmle.javascript.security.dataflow.SqlInjectionCustomizations
+private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
+private import semmle.javascript.security.dataflow.TaintedPathCustomizations
+private import semmle.javascript.security.dataflow.RegExpInjectionCustomizations
+private import semmle.javascript.security.dataflow.ClientSideUrlRedirectCustomizations
+private import semmle.javascript.security.dataflow.ServerSideUrlRedirectCustomizations
+private import semmle.javascript.security.dataflow.InsecureRandomnessCustomizations
 
 /**
  * A heuristic sink for data flow in a security query.

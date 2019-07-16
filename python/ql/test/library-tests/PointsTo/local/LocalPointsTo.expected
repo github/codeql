@@ -1,0 +1,22 @@
+| test.py:7:1:7:1 | ControlFlowNode for n | None | test.py:3:5:3:8 | ControlFlowNode for None |
+| test.py:8:1:8:1 | ControlFlowNode for t | bool True | test.py:4:5:4:8 | ControlFlowNode for True |
+| test.py:9:1:9:1 | ControlFlowNode for f | bool False | test.py:5:5:5:9 | ControlFlowNode for False |
+| test.py:14:5:14:5 | ControlFlowNode for f | bool False | test.py:5:5:5:9 | ControlFlowNode for False |
+| test.py:22:5:22:5 | ControlFlowNode for n | None | test.py:18:9:18:12 | ControlFlowNode for None |
+| test.py:23:5:23:5 | ControlFlowNode for t | bool True | test.py:19:9:19:12 | ControlFlowNode for True |
+| test.py:24:5:24:5 | ControlFlowNode for f | bool False | test.py:20:9:20:13 | ControlFlowNode for False |
+| test.py:29:9:29:9 | ControlFlowNode for f | bool False | test.py:20:9:20:13 | ControlFlowNode for False |
+| test.py:31:5:31:9 | ControlFlowNode for UnaryExpr | bool True | test.py:31:5:31:9 | ControlFlowNode for UnaryExpr |
+| test.py:32:5:32:9 | ControlFlowNode for UnaryExpr | bool False | test.py:32:5:32:9 | ControlFlowNode for UnaryExpr |
+| test.py:33:5:33:9 | ControlFlowNode for UnaryExpr | bool True | test.py:33:5:33:9 | ControlFlowNode for UnaryExpr |
+| test.py:38:9:38:9 | ControlFlowNode for f | bool False | test.py:20:9:20:13 | ControlFlowNode for False |
+| test.py:41:9:41:9 | ControlFlowNode for t | bool True | test.py:19:9:19:12 | ControlFlowNode for True |
+| test.py:49:5:49:6 | ControlFlowNode for IntegerLiteral | int 17 | test.py:49:5:49:6 | ControlFlowNode for IntegerLiteral |
+| test.py:50:5:50:6 | ControlFlowNode for UnaryExpr | int -3 | test.py:50:5:50:6 | ControlFlowNode for UnaryExpr |
+| test.py:52:5:52:9 | ControlFlowNode for Compare | bool True | test.py:52:5:52:9 | ControlFlowNode for Compare |
+| test.py:57:9:57:9 | ControlFlowNode for w | int 2 | test.py:45:9:45:9 | ControlFlowNode for IntegerLiteral |
+| test.py:58:9:58:9 | ControlFlowNode for z | int 5 | test.py:48:9:48:9 | ControlFlowNode for IntegerLiteral |
+| test.py:64:9:64:9 | ControlFlowNode for v | int 20 | test.py:62:13:62:14 | ControlFlowNode for IntegerLiteral |
+| test.py:66:9:66:9 | ControlFlowNode for v | int 10 | test.py:60:13:60:14 | ControlFlowNode for IntegerLiteral |
+| test.py:70:5:70:14 | ControlFlowNode for Str | 'a string' | test.py:70:5:70:14 | ControlFlowNode for Str |
+| test.py:72:9:72:12 | ControlFlowNode for Str | ':)' | test.py:72:9:72:12 | ControlFlowNode for Str |

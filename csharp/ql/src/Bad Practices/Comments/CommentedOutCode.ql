@@ -1,6 +1,6 @@
 /**
  * @name Commented-out code
- * @description Comments that contain commented-out code should be avoided.
+ * @description Commented-out code makes the remaining code more difficult to read.
  * @kind problem
  * @problem.severity recommendation
  * @precision medium

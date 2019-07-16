@@ -18,10 +18,12 @@ private int maxSplits() { result = 7 }
 
 cached
 private module Cached {
+  private import semmle.code.csharp.Caching
+
   cached
   newtype TBooleanSplitSubKind =
     TSsaBooleanSplitSubKind(PreSsa::Definition def) {
-      ControlFlow::Internal::forceCachingInSameStage()
+      Stages::ControlFlowStage::forceCachingInSameStage()
     }
 
   cached
@@ -229,7 +231,7 @@ module FinallySplitting {
      */
     predicate isExitNode(TryStmt try, Completion c) {
       this = getAFinallyDescendant(try) and
-      this = lastTryStmtFinally(try, c)
+      this = last(try.getFinally(), c)
     }
   }
 
@@ -503,7 +505,7 @@ module ExceptionHandlerSplitting {
     private predicate hasLastExit(ControlFlowElement pred, ThrowCompletion c) {
       this.appliesToPredecessor(pred, c) and
       exists(TryStmt ts, SpecificCatchClause scc, int last |
-        pred = lastTryStmtCatchClause(ts, last, c)
+        pred = last(ts.getCatchClause(last), c)
       |
         ts.getCatchClause(last) = scc and
         scc.isLast() and
@@ -538,7 +540,7 @@ module ExceptionHandlerSplitting {
       not succ = first(any(SpecificCatchClause scc).getBlock()) and
       not succ instanceof GeneralCatchClause and
       not exists(TryStmt ts, SpecificCatchClause scc, int last |
-        pred = lastTryStmtCatchClause(ts, last, c)
+        pred = last(ts.getCatchClause(last), c)
       |
         ts.getCatchClause(last) = scc and
         scc.isLast()
@@ -741,7 +743,7 @@ module BooleanSplitting {
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       succ = succ(pred, c) and
       this.getSubKind().startsSplit(pred) and
-      c = any(BooleanCompletion bc | bc.getInnerValue() = this.getBranch())
+      this.getBranch() = c.getInnerCompletion().(BooleanCompletion).getValue()
     }
 
     private ConditionBlock getACorrelatedCondition(boolean inverted) {
@@ -758,9 +760,11 @@ module BooleanSplitting {
         (exists(succ(last, c)) or exists(succExit(last, c))) and
         // Respect the value recorded in this split for all correlated conditions
         forall(boolean inverted | bb = this.getACorrelatedCondition(inverted) |
-          c instanceof BooleanCompletion
+          c.getInnerCompletion() instanceof BooleanCompletion
           implies
-          c = any(BooleanCompletion bc | bc.getInnerValue() = this.getBranch().booleanXor(inverted))
+          c.getInnerCompletion().(BooleanCompletion).getValue() = this
+                .getBranch()
+                .booleanXor(inverted)
         )
       )
     }

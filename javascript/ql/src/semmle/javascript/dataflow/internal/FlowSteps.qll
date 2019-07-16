@@ -98,10 +98,35 @@ private module CachedSteps {
   }
 
   /**
+   * Holds if the method invoked by `invoke` resolved to a member named `name` in `cls`
+   * or one of its super classes.
+   */
+  cached
+  predicate callResolvesToMember(DataFlow::InvokeNode invoke, DataFlow::ClassNode cls, string name) {
+    invoke = cls.getAnInstanceReference().getAMethodCall(name)
+    or
+    exists(DataFlow::ClassNode subclass |
+      callResolvesToMember(invoke, subclass, name) and
+      not exists(subclass.getAnInstanceMember(name)) and
+      cls = subclass.getADirectSuperClass()
+    )
+  }
+
+  /**
    * Holds if `invk` may invoke `f`.
    */
   cached
-  predicate calls(DataFlow::InvokeNode invk, Function f) { f = invk.getACallee(0) }
+  predicate calls(DataFlow::InvokeNode invk, Function f) {
+    f = invk.getACallee(0)
+    or
+    exists(DataFlow::ClassNode cls, string name |
+      callResolvesToMember(invk, cls, name) and
+      f = cls.getInstanceMethod(name).getFunction()
+      or
+      invk = cls.getAClassReference().getAMethodCall(name) and
+      f = cls.getStaticMethod(name).getFunction()
+    )
+  }
 
   /**
    * Holds if `invk` may invoke `f` indirectly through the given `callback` argument.
@@ -125,20 +150,27 @@ private module CachedSteps {
    */
   cached
   predicate argumentPassing(
-    DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, DataFlow::ParameterNode parm
+    DataFlow::InvokeNode invk, DataFlow::ValueNode arg, Function f, DataFlow::SourceNode parm
   ) {
     calls(invk, f) and
-    exists(int i |
-      f.getParameter(i) = parm.getParameter() and
-      not parm.isRestParameter() and
-      arg = invk.getArgument(i)
+    (
+      exists(int i, Parameter p |
+        f.getParameter(i) = p and
+        not p.isRestParameter() and
+        arg = invk.getArgument(i) and
+        parm = DataFlow::parameterNode(p)
+      )
+      or
+      arg = invk.(DataFlow::CallNode).getReceiver() and
+      parm = DataFlow::thisNode(f)
     )
     or
-    exists(DataFlow::Node callback, int i |
+    exists(DataFlow::Node callback, int i, Parameter p |
       invk.(DataFlow::AdditionalPartialInvokeNode).isPartialArgument(callback, arg, i) and
       partiallyCalls(invk, callback, f) and
-      parm.getParameter() = f.getParameter(i) and
-      not parm.isRestParameter()
+      f.getParameter(i) = p and
+      not p.isRestParameter() and
+      parm = DataFlow::parameterNode(p)
     )
   }
 
@@ -296,7 +328,7 @@ private module CachedSteps {
    * that is, `succ` is a read of property `prop` from `pred`.
    */
   cached
-  predicate loadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
+  predicate basicLoadStep(DataFlow::Node pred, DataFlow::PropRead succ, string prop) {
     succ.accesses(pred, prop)
   }
 

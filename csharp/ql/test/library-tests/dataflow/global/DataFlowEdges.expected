@@ -1,3 +1,4 @@
+| Capture.cs:7:10:7:11 | this | Capture.cs:7:10:7:11 | this |
 | Capture.cs:7:20:7:26 | tainted | Capture.cs:7:20:7:26 | tainted |
 | Capture.cs:7:20:7:26 | tainted | Capture.cs:7:20:7:26 | tainted |
 | Capture.cs:7:20:7:26 | tainted | Capture.cs:14:9:14:20 | [implicit argument] tainted |
@@ -174,6 +175,7 @@
 | Capture.cs:46:23:46:30 | access to local variable nonSink0 | Capture.cs:46:23:46:30 | access to local variable nonSink0 |
 | Capture.cs:49:9:49:27 | access to local function CaptureIn2NotCalled | Capture.cs:49:9:49:27 | access to local function CaptureIn2NotCalled |
 | Capture.cs:49:9:49:29 | call to local function CaptureIn2NotCalled | Capture.cs:49:9:49:29 | call to local function CaptureIn2NotCalled |
+| Capture.cs:52:10:52:12 | this | Capture.cs:52:10:52:12 | this |
 | Capture.cs:54:16:54:26 | SSA def(sink30) | Capture.cs:54:16:54:26 | SSA def(sink30) |
 | Capture.cs:54:16:54:26 | String sink30 = ... | Capture.cs:54:16:54:26 | String sink30 = ... |
 | Capture.cs:54:25:54:26 | "" | Capture.cs:54:16:54:26 | SSA def(sink30) |
@@ -281,6 +283,7 @@
 | Capture.cs:97:9:97:30 | call to local function CaptureOut2NotCalled | Capture.cs:97:9:97:30 | call to local function CaptureOut2NotCalled |
 | Capture.cs:98:9:98:23 | call to method Check | Capture.cs:98:9:98:23 | call to method Check |
 | Capture.cs:98:15:98:22 | access to local variable nonSink0 | Capture.cs:98:15:98:22 | access to local variable nonSink0 |
+| Capture.cs:101:10:101:16 | this | Capture.cs:101:10:101:16 | this |
 | Capture.cs:101:25:101:31 | tainted | Capture.cs:101:25:101:31 | tainted |
 | Capture.cs:101:25:101:31 | tainted | Capture.cs:101:25:101:31 | tainted |
 | Capture.cs:101:25:101:31 | tainted | Capture.cs:108:9:108:25 | [implicit argument] tainted |
@@ -582,6 +585,35 @@
 | Capture.cs:172:23:172:24 | "" | Capture.cs:172:23:172:24 | "" |
 | Capture.cs:173:9:173:23 | call to method Check | Capture.cs:173:9:173:23 | call to method Check |
 | Capture.cs:173:15:173:22 | access to local variable nonSink0 | Capture.cs:173:15:173:22 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:14:17:14:17 | this |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:64:9:64:18 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:64:9:64:18 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:67:9:67:21 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:67:9:67:21 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:149:21:149:25 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:149:21:149:25 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:152:9:152:25 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:152:9:152:25 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:14:17:14:17 | this | GlobalDataFlow.cs:197:20:197:33 | this access |
 | GlobalDataFlow.cs:17:9:17:40 | ... = ... | GlobalDataFlow.cs:17:9:17:40 | ... = ... |
 | GlobalDataFlow.cs:17:9:17:40 | SSA def(DataFlow.Test.SinkField0) | GlobalDataFlow.cs:17:9:17:40 | SSA def(DataFlow.Test.SinkField0) |
 | GlobalDataFlow.cs:17:9:17:40 | SSA def(DataFlow.Test.SinkField0) | GlobalDataFlow.cs:18:15:18:29 | access to field SinkField0 |
@@ -1071,6 +1103,34 @@
 | GlobalDataFlow.cs:61:78:61:90 | "not tainted" | GlobalDataFlow.cs:368:52:368:52 | x |
 | GlobalDataFlow.cs:64:9:64:18 | access to property InProperty | GlobalDataFlow.cs:64:9:64:18 | access to property InProperty |
 | GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:64:9:64:18 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:67:9:67:21 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:67:9:67:21 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:149:21:149:25 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:149:21:149:25 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:152:9:152:25 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:152:9:152:25 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:399:9:399:11 | this |
+| GlobalDataFlow.cs:64:9:64:18 | this access | GlobalDataFlow.cs:399:9:399:11 | this |
 | GlobalDataFlow.cs:64:9:64:39 | ... = ... | GlobalDataFlow.cs:64:9:64:39 | ... = ... |
 | GlobalDataFlow.cs:64:22:64:39 | access to property SinkProperty0 | GlobalDataFlow.cs:64:22:64:39 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:64:22:64:39 | access to property SinkProperty0 | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 |
@@ -1079,6 +1139,32 @@
 | GlobalDataFlow.cs:64:22:64:39 | access to property SinkProperty0 | GlobalDataFlow.cs:399:9:399:11 | value |
 | GlobalDataFlow.cs:67:9:67:21 | access to property NonInProperty | GlobalDataFlow.cs:67:9:67:21 | access to property NonInProperty |
 | GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:67:9:67:21 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:149:21:149:25 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:149:21:149:25 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:152:9:152:25 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:152:9:152:25 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:405:9:405:11 | this |
+| GlobalDataFlow.cs:67:9:67:21 | this access | GlobalDataFlow.cs:405:9:405:11 | this |
 | GlobalDataFlow.cs:67:9:67:37 | ... = ... | GlobalDataFlow.cs:67:9:67:37 | ... = ... |
 | GlobalDataFlow.cs:67:25:67:37 | "not tainted" | GlobalDataFlow.cs:67:25:67:37 | "not tainted" |
 | GlobalDataFlow.cs:67:25:67:37 | "not tainted" | GlobalDataFlow.cs:405:9:405:11 | value |
@@ -2050,11 +2136,57 @@
 | GlobalDataFlow.cs:149:21:149:25 | call to method Out | GlobalDataFlow.cs:150:15:150:19 | access to local variable sink6 |
 | GlobalDataFlow.cs:149:21:149:25 | call to method Out | GlobalDataFlow.cs:150:15:150:19 | access to local variable sink6 |
 | GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:149:21:149:25 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:152:9:152:25 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:152:9:152:25 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:311:12:311:14 | this |
+| GlobalDataFlow.cs:149:21:149:25 | this access | GlobalDataFlow.cs:311:12:311:14 | this |
 | GlobalDataFlow.cs:150:9:150:20 | call to method Check | GlobalDataFlow.cs:150:9:150:20 | call to method Check |
 | GlobalDataFlow.cs:150:15:150:19 | access to local variable sink6 | GlobalDataFlow.cs:150:15:150:19 | access to local variable sink6 |
 | GlobalDataFlow.cs:151:16:151:20 | String sink7 | GlobalDataFlow.cs:151:16:151:20 | String sink7 |
 | GlobalDataFlow.cs:152:9:152:25 | call to method OutOut | GlobalDataFlow.cs:152:9:152:25 | call to method OutOut |
 | GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:152:9:152:25 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:316:10:316:15 | this |
+| GlobalDataFlow.cs:152:9:152:25 | this access | GlobalDataFlow.cs:316:10:316:15 | this |
 | GlobalDataFlow.cs:152:20:152:24 | SSA def(sink7) | GlobalDataFlow.cs:152:20:152:24 | SSA def(sink7) |
 | GlobalDataFlow.cs:152:20:152:24 | SSA def(sink7) | GlobalDataFlow.cs:153:15:153:19 | access to local variable sink7 |
 | GlobalDataFlow.cs:152:20:152:24 | SSA def(sink7) | GlobalDataFlow.cs:153:15:153:19 | access to local variable sink7 |
@@ -2071,6 +2203,26 @@
 | GlobalDataFlow.cs:154:21:154:22 | "" | GlobalDataFlow.cs:155:20:155:24 | access to local variable sink8 |
 | GlobalDataFlow.cs:155:9:155:25 | call to method OutRef | GlobalDataFlow.cs:155:9:155:25 | call to method OutRef |
 | GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:155:9:155:25 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:321:10:321:15 | this |
+| GlobalDataFlow.cs:155:9:155:25 | this access | GlobalDataFlow.cs:321:10:321:15 | this |
 | GlobalDataFlow.cs:155:20:155:24 | SSA def(sink8) | GlobalDataFlow.cs:155:20:155:24 | SSA def(sink8) |
 | GlobalDataFlow.cs:155:20:155:24 | SSA def(sink8) | GlobalDataFlow.cs:156:15:156:19 | access to local variable sink8 |
 | GlobalDataFlow.cs:155:20:155:24 | SSA def(sink8) | GlobalDataFlow.cs:156:15:156:19 | access to local variable sink8 |
@@ -2087,6 +2239,24 @@
 | GlobalDataFlow.cs:157:22:157:31 | call to method OutYield | GlobalDataFlow.cs:158:15:158:20 | access to local variable sink12 |
 | GlobalDataFlow.cs:157:22:157:31 | call to method OutYield | GlobalDataFlow.cs:158:15:158:20 | access to local variable sink12 |
 | GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:157:22:157:31 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:326:25:326:32 | this |
+| GlobalDataFlow.cs:157:22:157:31 | this access | GlobalDataFlow.cs:326:25:326:32 | this |
 | GlobalDataFlow.cs:158:9:158:21 | call to method Check | GlobalDataFlow.cs:158:9:158:21 | call to method Check |
 | GlobalDataFlow.cs:158:15:158:20 | access to local variable sink12 | GlobalDataFlow.cs:158:15:158:20 | access to local variable sink12 |
 | GlobalDataFlow.cs:159:13:159:43 | SSA def(sink23) | GlobalDataFlow.cs:159:13:159:43 | SSA def(sink23) |
@@ -2115,10 +2285,40 @@
 | GlobalDataFlow.cs:163:20:163:27 | call to method NonOut | GlobalDataFlow.cs:164:15:164:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:163:20:163:27 | call to method NonOut | GlobalDataFlow.cs:164:15:164:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:163:20:163:27 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:333:12:333:17 | this |
+| GlobalDataFlow.cs:163:20:163:27 | this access | GlobalDataFlow.cs:333:12:333:17 | this |
 | GlobalDataFlow.cs:164:9:164:23 | call to method Check | GlobalDataFlow.cs:164:9:164:23 | call to method Check |
 | GlobalDataFlow.cs:164:15:164:22 | access to local variable nonSink0 | GlobalDataFlow.cs:164:15:164:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:165:9:165:31 | call to method NonOutOut | GlobalDataFlow.cs:165:9:165:31 | call to method NonOutOut |
 | GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:165:9:165:31 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:338:10:338:18 | this |
+| GlobalDataFlow.cs:165:9:165:31 | this access | GlobalDataFlow.cs:338:10:338:18 | this |
 | GlobalDataFlow.cs:165:23:165:30 | SSA def(nonSink0) | GlobalDataFlow.cs:165:23:165:30 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:165:23:165:30 | SSA def(nonSink0) | GlobalDataFlow.cs:166:15:166:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:165:23:165:30 | SSA def(nonSink0) | GlobalDataFlow.cs:166:15:166:22 | access to local variable nonSink0 |
@@ -2130,6 +2330,18 @@
 | GlobalDataFlow.cs:166:15:166:22 | access to local variable nonSink0 | GlobalDataFlow.cs:167:23:167:30 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:167:9:167:31 | call to method NonOutRef | GlobalDataFlow.cs:167:9:167:31 | call to method NonOutRef |
 | GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:167:9:167:31 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:343:10:343:18 | this |
+| GlobalDataFlow.cs:167:9:167:31 | this access | GlobalDataFlow.cs:343:10:343:18 | this |
 | GlobalDataFlow.cs:167:23:167:30 | SSA def(nonSink0) | GlobalDataFlow.cs:167:23:167:30 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:167:23:167:30 | SSA def(nonSink0) | GlobalDataFlow.cs:168:15:168:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:167:23:167:30 | SSA def(nonSink0) | GlobalDataFlow.cs:168:15:168:22 | access to local variable nonSink0 |
@@ -2144,6 +2356,16 @@
 | GlobalDataFlow.cs:169:9:169:40 | SSA def(nonSink0) | GlobalDataFlow.cs:171:36:171:43 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:169:20:169:32 | call to method NonOutYield | GlobalDataFlow.cs:169:20:169:32 | call to method NonOutYield |
 | GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:169:20:169:32 | this access |
+| GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:348:25:348:35 | this |
+| GlobalDataFlow.cs:169:20:169:32 | this access | GlobalDataFlow.cs:348:25:348:35 | this |
 | GlobalDataFlow.cs:169:20:169:40 | call to method First | GlobalDataFlow.cs:169:9:169:40 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:169:20:169:40 | call to method First | GlobalDataFlow.cs:169:9:169:40 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:169:20:169:40 | call to method First | GlobalDataFlow.cs:169:20:169:40 | call to method First |
@@ -2223,6 +2445,7 @@
 | GlobalDataFlow.cs:185:13:185:48 | SSA def(sink10) | GlobalDataFlow.cs:186:15:186:20 | access to local variable sink10 |
 | GlobalDataFlow.cs:185:13:185:48 | SSA def(sink10) | GlobalDataFlow.cs:186:15:186:20 | access to local variable sink10 |
 | GlobalDataFlow.cs:185:13:185:48 | String sink10 = ... | GlobalDataFlow.cs:185:13:185:48 | String sink10 = ... |
+| GlobalDataFlow.cs:185:22:185:42 | malloc | GlobalDataFlow.cs:185:22:185:42 | malloc |
 | GlobalDataFlow.cs:185:22:185:42 | object creation of type Lazy<String> | GlobalDataFlow.cs:185:13:185:48 | SSA def(sink10) |
 | GlobalDataFlow.cs:185:22:185:42 | object creation of type Lazy<String> | GlobalDataFlow.cs:185:13:185:48 | SSA def(sink10) |
 | GlobalDataFlow.cs:185:22:185:42 | object creation of type Lazy<String> | GlobalDataFlow.cs:185:22:185:42 | object creation of type Lazy<String> |
@@ -2247,12 +2470,19 @@
 | GlobalDataFlow.cs:185:39:185:41 | access to method Out | GlobalDataFlow.cs:185:39:185:41 | access to method Out |
 | GlobalDataFlow.cs:185:39:185:41 | delegate creation of type Func<String> | GlobalDataFlow.cs:185:39:185:41 | delegate creation of type Func<String> |
 | GlobalDataFlow.cs:185:39:185:41 | this access | GlobalDataFlow.cs:185:39:185:41 | this access |
+| GlobalDataFlow.cs:185:39:185:41 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:185:39:185:41 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:185:39:185:41 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:185:39:185:41 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:185:39:185:41 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:185:39:185:41 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
 | GlobalDataFlow.cs:186:9:186:21 | call to method Check | GlobalDataFlow.cs:186:9:186:21 | call to method Check |
 | GlobalDataFlow.cs:186:15:186:20 | access to local variable sink10 | GlobalDataFlow.cs:186:15:186:20 | access to local variable sink10 |
 | GlobalDataFlow.cs:189:9:189:49 | ... = ... | GlobalDataFlow.cs:189:9:189:49 | ... = ... |
 | GlobalDataFlow.cs:189:9:189:49 | SSA def(nonSink0) | GlobalDataFlow.cs:189:9:189:49 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:189:9:189:49 | SSA def(nonSink0) | GlobalDataFlow.cs:190:15:190:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:189:9:189:49 | SSA def(nonSink0) | GlobalDataFlow.cs:190:15:190:22 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:189:20:189:43 | malloc | GlobalDataFlow.cs:189:20:189:43 | malloc |
 | GlobalDataFlow.cs:189:20:189:43 | object creation of type Lazy<String> | GlobalDataFlow.cs:189:9:189:49 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:189:20:189:43 | object creation of type Lazy<String> | GlobalDataFlow.cs:189:9:189:49 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:189:20:189:43 | object creation of type Lazy<String> | GlobalDataFlow.cs:189:20:189:43 | object creation of type Lazy<String> |
@@ -2277,6 +2507,10 @@
 | GlobalDataFlow.cs:189:37:189:42 | access to method NonOut | GlobalDataFlow.cs:189:37:189:42 | access to method NonOut |
 | GlobalDataFlow.cs:189:37:189:42 | delegate creation of type Func<String> | GlobalDataFlow.cs:189:37:189:42 | delegate creation of type Func<String> |
 | GlobalDataFlow.cs:189:37:189:42 | this access | GlobalDataFlow.cs:189:37:189:42 | this access |
+| GlobalDataFlow.cs:189:37:189:42 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:189:37:189:42 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:189:37:189:42 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:189:37:189:42 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
 | GlobalDataFlow.cs:190:9:190:23 | call to method Check | GlobalDataFlow.cs:190:9:190:23 | call to method Check |
 | GlobalDataFlow.cs:190:15:190:22 | access to local variable nonSink0 | GlobalDataFlow.cs:190:15:190:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:193:13:193:32 | SSA def(sink19) | GlobalDataFlow.cs:193:13:193:32 | SSA def(sink19) |
@@ -2290,6 +2524,10 @@
 | GlobalDataFlow.cs:193:22:193:32 | access to property OutProperty | GlobalDataFlow.cs:194:15:194:20 | access to local variable sink19 |
 | GlobalDataFlow.cs:193:22:193:32 | access to property OutProperty | GlobalDataFlow.cs:194:15:194:20 | access to local variable sink19 |
 | GlobalDataFlow.cs:193:22:193:32 | this access | GlobalDataFlow.cs:193:22:193:32 | this access |
+| GlobalDataFlow.cs:193:22:193:32 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:193:22:193:32 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:193:22:193:32 | this access | GlobalDataFlow.cs:410:9:410:11 | this |
+| GlobalDataFlow.cs:193:22:193:32 | this access | GlobalDataFlow.cs:410:9:410:11 | this |
 | GlobalDataFlow.cs:194:9:194:21 | call to method Check | GlobalDataFlow.cs:194:9:194:21 | call to method Check |
 | GlobalDataFlow.cs:194:15:194:20 | access to local variable sink19 | GlobalDataFlow.cs:194:15:194:20 | access to local variable sink19 |
 | GlobalDataFlow.cs:197:9:197:33 | ... = ... | GlobalDataFlow.cs:197:9:197:33 | ... = ... |
@@ -2303,8 +2541,11 @@
 | GlobalDataFlow.cs:197:20:197:33 | access to property NonOutProperty | GlobalDataFlow.cs:198:15:198:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:197:20:197:33 | access to property NonOutProperty | GlobalDataFlow.cs:198:15:198:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:197:20:197:33 | this access | GlobalDataFlow.cs:197:20:197:33 | this access |
+| GlobalDataFlow.cs:197:20:197:33 | this access | GlobalDataFlow.cs:415:9:415:11 | this |
+| GlobalDataFlow.cs:197:20:197:33 | this access | GlobalDataFlow.cs:415:9:415:11 | this |
 | GlobalDataFlow.cs:198:9:198:23 | call to method Check | GlobalDataFlow.cs:198:9:198:23 | call to method Check |
 | GlobalDataFlow.cs:198:15:198:22 | access to local variable nonSink0 | GlobalDataFlow.cs:198:15:198:22 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:201:17:201:18 | this | GlobalDataFlow.cs:201:17:201:18 | this |
 | GlobalDataFlow.cs:201:39:201:45 | tainted | GlobalDataFlow.cs:201:39:201:45 | tainted |
 | GlobalDataFlow.cs:201:39:201:45 | tainted | GlobalDataFlow.cs:201:39:201:45 | tainted |
 | GlobalDataFlow.cs:201:39:201:45 | tainted | GlobalDataFlow.cs:206:22:206:28 | access to parameter tainted |
@@ -2870,11 +3111,13 @@
 | GlobalDataFlow.cs:308:16:308:27 | access to parameter nonSinkParam | GlobalDataFlow.cs:215:76:215:92 | call to method NonReturnCheck |
 | GlobalDataFlow.cs:308:16:308:27 | access to parameter nonSinkParam | GlobalDataFlow.cs:215:76:215:92 | call to method NonReturnCheck |
 | GlobalDataFlow.cs:308:16:308:27 | access to parameter nonSinkParam | GlobalDataFlow.cs:308:16:308:27 | access to parameter nonSinkParam |
+| GlobalDataFlow.cs:311:12:311:14 | this | GlobalDataFlow.cs:311:12:311:14 | this |
 | GlobalDataFlow.cs:313:16:313:29 | "taint source" | GlobalDataFlow.cs:149:21:149:25 | call to method Out |
 | GlobalDataFlow.cs:313:16:313:29 | "taint source" | GlobalDataFlow.cs:149:21:149:25 | call to method Out |
 | GlobalDataFlow.cs:313:16:313:29 | "taint source" | GlobalDataFlow.cs:185:39:185:41 | [output] delegate creation of type Func<String> |
 | GlobalDataFlow.cs:313:16:313:29 | "taint source" | GlobalDataFlow.cs:185:39:185:41 | [output] delegate creation of type Func<String> |
 | GlobalDataFlow.cs:313:16:313:29 | "taint source" | GlobalDataFlow.cs:313:16:313:29 | "taint source" |
+| GlobalDataFlow.cs:316:10:316:15 | this | GlobalDataFlow.cs:316:10:316:15 | this |
 | GlobalDataFlow.cs:318:9:318:26 | ... = ... | GlobalDataFlow.cs:318:9:318:26 | ... = ... |
 | GlobalDataFlow.cs:318:9:318:26 | SSA def(x) | GlobalDataFlow.cs:152:20:152:24 | SSA def(sink7) |
 | GlobalDataFlow.cs:318:9:318:26 | SSA def(x) | GlobalDataFlow.cs:152:20:152:24 | SSA def(sink7) |
@@ -2882,6 +3125,7 @@
 | GlobalDataFlow.cs:318:13:318:26 | "taint source" | GlobalDataFlow.cs:318:9:318:26 | SSA def(x) |
 | GlobalDataFlow.cs:318:13:318:26 | "taint source" | GlobalDataFlow.cs:318:9:318:26 | SSA def(x) |
 | GlobalDataFlow.cs:318:13:318:26 | "taint source" | GlobalDataFlow.cs:318:13:318:26 | "taint source" |
+| GlobalDataFlow.cs:321:10:321:15 | this | GlobalDataFlow.cs:321:10:321:15 | this |
 | GlobalDataFlow.cs:323:9:323:26 | ... = ... | GlobalDataFlow.cs:323:9:323:26 | ... = ... |
 | GlobalDataFlow.cs:323:9:323:26 | SSA def(x) | GlobalDataFlow.cs:155:20:155:24 | SSA def(sink8) |
 | GlobalDataFlow.cs:323:9:323:26 | SSA def(x) | GlobalDataFlow.cs:155:20:155:24 | SSA def(sink8) |
@@ -2889,6 +3133,7 @@
 | GlobalDataFlow.cs:323:13:323:26 | "taint source" | GlobalDataFlow.cs:323:9:323:26 | SSA def(x) |
 | GlobalDataFlow.cs:323:13:323:26 | "taint source" | GlobalDataFlow.cs:323:9:323:26 | SSA def(x) |
 | GlobalDataFlow.cs:323:13:323:26 | "taint source" | GlobalDataFlow.cs:323:13:323:26 | "taint source" |
+| GlobalDataFlow.cs:326:25:326:32 | this | GlobalDataFlow.cs:326:25:326:32 | this |
 | GlobalDataFlow.cs:328:22:328:23 | "" | GlobalDataFlow.cs:157:22:157:31 | call to method OutYield |
 | GlobalDataFlow.cs:328:22:328:23 | "" | GlobalDataFlow.cs:157:22:157:31 | call to method OutYield |
 | GlobalDataFlow.cs:328:22:328:23 | "" | GlobalDataFlow.cs:328:22:328:23 | "" |
@@ -2901,11 +3146,13 @@
 | GlobalDataFlow.cs:330:22:330:23 | "" | GlobalDataFlow.cs:157:22:157:31 | call to method OutYield |
 | GlobalDataFlow.cs:330:22:330:23 | "" | GlobalDataFlow.cs:330:22:330:23 | "" |
 | GlobalDataFlow.cs:330:22:330:23 | "" | GlobalDataFlow.cs:330:22:330:23 | "" |
+| GlobalDataFlow.cs:333:12:333:17 | this | GlobalDataFlow.cs:333:12:333:17 | this |
 | GlobalDataFlow.cs:335:16:335:17 | "" | GlobalDataFlow.cs:163:20:163:27 | call to method NonOut |
 | GlobalDataFlow.cs:335:16:335:17 | "" | GlobalDataFlow.cs:163:20:163:27 | call to method NonOut |
 | GlobalDataFlow.cs:335:16:335:17 | "" | GlobalDataFlow.cs:189:37:189:42 | [output] delegate creation of type Func<String> |
 | GlobalDataFlow.cs:335:16:335:17 | "" | GlobalDataFlow.cs:189:37:189:42 | [output] delegate creation of type Func<String> |
 | GlobalDataFlow.cs:335:16:335:17 | "" | GlobalDataFlow.cs:335:16:335:17 | "" |
+| GlobalDataFlow.cs:338:10:338:18 | this | GlobalDataFlow.cs:338:10:338:18 | this |
 | GlobalDataFlow.cs:340:9:340:14 | ... = ... | GlobalDataFlow.cs:340:9:340:14 | ... = ... |
 | GlobalDataFlow.cs:340:9:340:14 | SSA def(x) | GlobalDataFlow.cs:165:23:165:30 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:340:9:340:14 | SSA def(x) | GlobalDataFlow.cs:165:23:165:30 | SSA def(nonSink0) |
@@ -2913,6 +3160,7 @@
 | GlobalDataFlow.cs:340:13:340:14 | "" | GlobalDataFlow.cs:340:9:340:14 | SSA def(x) |
 | GlobalDataFlow.cs:340:13:340:14 | "" | GlobalDataFlow.cs:340:9:340:14 | SSA def(x) |
 | GlobalDataFlow.cs:340:13:340:14 | "" | GlobalDataFlow.cs:340:13:340:14 | "" |
+| GlobalDataFlow.cs:343:10:343:18 | this | GlobalDataFlow.cs:343:10:343:18 | this |
 | GlobalDataFlow.cs:345:9:345:14 | ... = ... | GlobalDataFlow.cs:345:9:345:14 | ... = ... |
 | GlobalDataFlow.cs:345:9:345:14 | SSA def(x) | GlobalDataFlow.cs:167:23:167:30 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:345:9:345:14 | SSA def(x) | GlobalDataFlow.cs:167:23:167:30 | SSA def(nonSink0) |
@@ -2920,6 +3168,7 @@
 | GlobalDataFlow.cs:345:13:345:14 | "" | GlobalDataFlow.cs:345:9:345:14 | SSA def(x) |
 | GlobalDataFlow.cs:345:13:345:14 | "" | GlobalDataFlow.cs:345:9:345:14 | SSA def(x) |
 | GlobalDataFlow.cs:345:13:345:14 | "" | GlobalDataFlow.cs:345:13:345:14 | "" |
+| GlobalDataFlow.cs:348:25:348:35 | this | GlobalDataFlow.cs:348:25:348:35 | this |
 | GlobalDataFlow.cs:350:22:350:23 | "" | GlobalDataFlow.cs:169:20:169:32 | call to method NonOutYield |
 | GlobalDataFlow.cs:350:22:350:23 | "" | GlobalDataFlow.cs:169:20:169:32 | call to method NonOutYield |
 | GlobalDataFlow.cs:350:22:350:23 | "" | GlobalDataFlow.cs:350:22:350:23 | "" |
@@ -3182,7 +3431,9 @@
 | GlobalDataFlow.cs:393:62:393:63 | "" | GlobalDataFlow.cs:32:15:32:35 | access to property NonSinkProperty1 |
 | GlobalDataFlow.cs:393:62:393:63 | "" | GlobalDataFlow.cs:32:15:32:35 | access to property NonSinkProperty1 |
 | GlobalDataFlow.cs:393:62:393:63 | "" | GlobalDataFlow.cs:393:62:393:63 | "" |
+| GlobalDataFlow.cs:398:9:398:11 | this | GlobalDataFlow.cs:398:9:398:11 | this |
 | GlobalDataFlow.cs:398:22:398:23 | "" | GlobalDataFlow.cs:398:22:398:23 | "" |
+| GlobalDataFlow.cs:399:9:399:11 | this | GlobalDataFlow.cs:399:9:399:11 | this |
 | GlobalDataFlow.cs:399:9:399:11 | value | GlobalDataFlow.cs:399:9:399:11 | value |
 | GlobalDataFlow.cs:399:9:399:11 | value | GlobalDataFlow.cs:399:9:399:11 | value |
 | GlobalDataFlow.cs:399:9:399:11 | value | GlobalDataFlow.cs:399:19:399:32 | SSA def(sink20) |
@@ -3214,7 +3465,9 @@
 | GlobalDataFlow.cs:399:28:399:32 | access to parameter value | GlobalDataFlow.cs:399:41:399:46 | access to local variable sink20 |
 | GlobalDataFlow.cs:399:35:399:47 | call to method Check | GlobalDataFlow.cs:399:35:399:47 | call to method Check |
 | GlobalDataFlow.cs:399:41:399:46 | access to local variable sink20 | GlobalDataFlow.cs:399:41:399:46 | access to local variable sink20 |
+| GlobalDataFlow.cs:404:9:404:11 | this | GlobalDataFlow.cs:404:9:404:11 | this |
 | GlobalDataFlow.cs:404:22:404:23 | "" | GlobalDataFlow.cs:404:22:404:23 | "" |
+| GlobalDataFlow.cs:405:9:405:11 | this | GlobalDataFlow.cs:405:9:405:11 | this |
 | GlobalDataFlow.cs:405:9:405:11 | value | GlobalDataFlow.cs:405:9:405:11 | value |
 | GlobalDataFlow.cs:405:9:405:11 | value | GlobalDataFlow.cs:405:9:405:11 | value |
 | GlobalDataFlow.cs:405:9:405:11 | value | GlobalDataFlow.cs:405:19:405:34 | SSA def(nonSink0) |
@@ -3246,9 +3499,11 @@
 | GlobalDataFlow.cs:405:30:405:34 | access to parameter value | GlobalDataFlow.cs:405:43:405:50 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:405:37:405:51 | call to method Check | GlobalDataFlow.cs:405:37:405:51 | call to method Check |
 | GlobalDataFlow.cs:405:43:405:50 | access to local variable nonSink0 | GlobalDataFlow.cs:405:43:405:50 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:410:9:410:11 | this | GlobalDataFlow.cs:410:9:410:11 | this |
 | GlobalDataFlow.cs:410:22:410:35 | "taint source" | GlobalDataFlow.cs:193:22:193:32 | access to property OutProperty |
 | GlobalDataFlow.cs:410:22:410:35 | "taint source" | GlobalDataFlow.cs:193:22:193:32 | access to property OutProperty |
 | GlobalDataFlow.cs:410:22:410:35 | "taint source" | GlobalDataFlow.cs:410:22:410:35 | "taint source" |
+| GlobalDataFlow.cs:415:9:415:11 | this | GlobalDataFlow.cs:415:9:415:11 | this |
 | GlobalDataFlow.cs:415:22:415:23 | "" | GlobalDataFlow.cs:197:20:197:33 | access to property NonOutProperty |
 | GlobalDataFlow.cs:415:22:415:23 | "" | GlobalDataFlow.cs:197:20:197:33 | access to property NonOutProperty |
 | GlobalDataFlow.cs:415:22:415:23 | "" | GlobalDataFlow.cs:415:22:415:23 | "" |
@@ -3314,6 +3569,7 @@
 | GlobalDataFlow.cs:426:46:426:46 | access to local variable x | GlobalDataFlow.cs:426:44:426:47 | delegate call |
 | GlobalDataFlow.cs:426:46:426:46 | access to local variable x | GlobalDataFlow.cs:426:44:426:47 | delegate call |
 | GlobalDataFlow.cs:426:46:426:46 | access to local variable x | GlobalDataFlow.cs:426:46:426:46 | access to local variable x |
+| Splitting.cs:3:10:3:11 | this | Splitting.cs:3:10:3:11 | this |
 | Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | b |
 | Splitting.cs:3:18:3:18 | b | Splitting.cs:3:18:3:18 | b |
 | Splitting.cs:3:18:3:18 | b | Splitting.cs:5:13:5:13 | access to parameter b |
@@ -3403,6 +3659,7 @@
 | Splitting.cs:18:24:18:24 | s | Splitting.cs:20:29:20:29 | access to parameter s |
 | Splitting.cs:18:24:18:24 | s | Splitting.cs:20:29:20:29 | access to parameter s |
 | Splitting.cs:18:24:18:24 | s | Splitting.cs:20:29:20:29 | access to parameter s |
+| Splitting.cs:20:9:20:11 | this | Splitting.cs:20:9:20:11 | this |
 | Splitting.cs:20:22:20:30 | call to method Return | Splitting.cs:20:22:20:30 | call to method Return |
 | Splitting.cs:20:22:20:30 | call to method Return | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element |
 | Splitting.cs:20:22:20:30 | call to method Return | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element |
@@ -3417,6 +3674,7 @@
 | Splitting.cs:20:29:20:29 | access to parameter s | Splitting.cs:20:22:20:30 | call to method Return |
 | Splitting.cs:20:29:20:29 | access to parameter s | Splitting.cs:20:22:20:30 | call to method Return |
 | Splitting.cs:20:29:20:29 | access to parameter s | Splitting.cs:20:29:20:29 | access to parameter s |
+| Splitting.cs:21:9:21:11 | this | Splitting.cs:21:9:21:11 | this |
 | Splitting.cs:21:9:21:11 | value | Splitting.cs:21:9:21:11 | value |
 | Splitting.cs:21:9:21:11 | value | Splitting.cs:21:9:21:11 | value |
 | Splitting.cs:21:9:21:11 | value | Splitting.cs:21:28:21:32 | access to parameter value |
@@ -3434,6 +3692,23 @@
 | Splitting.cs:21:28:21:32 | access to parameter value | Splitting.cs:21:21:21:33 | call to method Return |
 | Splitting.cs:21:28:21:32 | access to parameter value | Splitting.cs:21:21:21:33 | call to method Return |
 | Splitting.cs:21:28:21:32 | access to parameter value | Splitting.cs:21:28:21:32 | access to parameter value |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:24:10:24:11 | this |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:29:17:29:24 | [b (line 24): false] SSA def(d) |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:29:17:29:24 | [b (line 24): false] SSA def(d) |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:29:17:29:24 | [b (line 24): true] SSA def(d) |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:29:17:29:24 | [b (line 24): true] SSA def(d) |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:29:21:29:24 | [b (line 24): false] this access |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:29:21:29:24 | [b (line 24): false] this access |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:29:21:29:24 | [b (line 24): true] this access |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:29:21:29:24 | [b (line 24): true] this access |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:30:9:30:9 | [b (line 24): false] access to local variable d |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:30:9:30:9 | [b (line 24): false] access to local variable d |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:30:9:30:9 | [b (line 24): true] access to local variable d |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:30:9:30:9 | [b (line 24): true] access to local variable d |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:31:17:31:17 | [b (line 24): false] access to local variable d |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:31:17:31:17 | [b (line 24): false] access to local variable d |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:31:17:31:17 | [b (line 24): true] access to local variable d |
+| Splitting.cs:24:10:24:11 | this | Splitting.cs:31:17:31:17 | [b (line 24): true] access to local variable d |
 | Splitting.cs:24:18:24:18 | b | Splitting.cs:24:18:24:18 | b |
 | Splitting.cs:24:18:24:18 | b | Splitting.cs:24:18:24:18 | b |
 | Splitting.cs:24:18:24:18 | b | Splitting.cs:26:13:26:13 | access to parameter b |
@@ -3492,9 +3767,13 @@
 | Splitting.cs:29:21:29:24 | [b (line 24): true] this access | Splitting.cs:30:9:30:9 | [b (line 24): true] access to local variable d |
 | Splitting.cs:29:21:29:24 | [b (line 24): true] this access | Splitting.cs:31:17:31:17 | [b (line 24): true] access to local variable d |
 | Splitting.cs:29:21:29:24 | [b (line 24): true] this access | Splitting.cs:31:17:31:17 | [b (line 24): true] access to local variable d |
+| Splitting.cs:30:9:30:9 | [b (line 24): false] access to local variable d | Splitting.cs:21:9:21:11 | this |
+| Splitting.cs:30:9:30:9 | [b (line 24): false] access to local variable d | Splitting.cs:21:9:21:11 | this |
 | Splitting.cs:30:9:30:9 | [b (line 24): false] access to local variable d | Splitting.cs:30:9:30:9 | [b (line 24): false] access to local variable d |
 | Splitting.cs:30:9:30:9 | [b (line 24): false] access to local variable d | Splitting.cs:31:17:31:17 | [b (line 24): false] access to local variable d |
 | Splitting.cs:30:9:30:9 | [b (line 24): false] access to local variable d | Splitting.cs:31:17:31:17 | [b (line 24): false] access to local variable d |
+| Splitting.cs:30:9:30:9 | [b (line 24): true] access to local variable d | Splitting.cs:21:9:21:11 | this |
+| Splitting.cs:30:9:30:9 | [b (line 24): true] access to local variable d | Splitting.cs:21:9:21:11 | this |
 | Splitting.cs:30:9:30:9 | [b (line 24): true] access to local variable d | Splitting.cs:30:9:30:9 | [b (line 24): true] access to local variable d |
 | Splitting.cs:30:9:30:9 | [b (line 24): true] access to local variable d | Splitting.cs:31:17:31:17 | [b (line 24): true] access to local variable d |
 | Splitting.cs:30:9:30:9 | [b (line 24): true] access to local variable d | Splitting.cs:31:17:31:17 | [b (line 24): true] access to local variable d |
@@ -3524,7 +3803,11 @@
 | Splitting.cs:31:13:31:26 | [b (line 24): true] SSA def(x) | Splitting.cs:34:19:34:19 | access to local variable x |
 | Splitting.cs:31:13:31:26 | [b (line 24): true] SSA def(x) | Splitting.cs:34:19:34:19 | access to local variable x |
 | Splitting.cs:31:13:31:26 | [b (line 24): true] dynamic x = ... | Splitting.cs:31:13:31:26 | [b (line 24): true] dynamic x = ... |
+| Splitting.cs:31:17:31:17 | [b (line 24): false] access to local variable d | Splitting.cs:20:9:20:11 | this |
+| Splitting.cs:31:17:31:17 | [b (line 24): false] access to local variable d | Splitting.cs:20:9:20:11 | this |
 | Splitting.cs:31:17:31:17 | [b (line 24): false] access to local variable d | Splitting.cs:31:17:31:17 | [b (line 24): false] access to local variable d |
+| Splitting.cs:31:17:31:17 | [b (line 24): true] access to local variable d | Splitting.cs:20:9:20:11 | this |
+| Splitting.cs:31:17:31:17 | [b (line 24): true] access to local variable d | Splitting.cs:20:9:20:11 | this |
 | Splitting.cs:31:17:31:17 | [b (line 24): true] access to local variable d | Splitting.cs:31:17:31:17 | [b (line 24): true] access to local variable d |
 | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element | Splitting.cs:31:13:31:26 | [b (line 24): false] SSA def(x) |
 | Splitting.cs:31:17:31:26 | [b (line 24): false] dynamic access to element | Splitting.cs:31:13:31:26 | [b (line 24): false] SSA def(x) |
@@ -3558,3 +3841,235 @@
 | Splitting.cs:33:13:33:13 | [b (line 24): true] access to parameter b | Splitting.cs:33:13:33:13 | [b (line 24): true] access to parameter b |
 | Splitting.cs:34:13:34:20 | dynamic call to method Check | Splitting.cs:34:13:34:20 | dynamic call to method Check |
 | Splitting.cs:34:19:34:19 | access to local variable x | Splitting.cs:34:19:34:19 | access to local variable x |
+| This.cs:7:5:7:8 | this | This.cs:7:5:7:8 | this |
+| This.cs:9:20:9:20 | this | This.cs:9:20:9:20 | this |
+| This.cs:9:20:9:20 | this | This.cs:11:13:11:16 | this access |
+| This.cs:9:20:9:20 | this | This.cs:11:13:11:16 | this access |
+| This.cs:9:20:9:20 | this | This.cs:11:13:11:16 | this access |
+| This.cs:9:20:9:20 | this | This.cs:11:13:11:16 | this access |
+| This.cs:9:20:9:20 | this | This.cs:12:9:12:12 | this access |
+| This.cs:9:20:9:20 | this | This.cs:12:9:12:12 | this access |
+| This.cs:9:20:9:20 | this | This.cs:12:9:12:12 | this access |
+| This.cs:9:20:9:20 | this | This.cs:12:9:12:12 | this access |
+| This.cs:9:20:9:20 | this | This.cs:12:16:12:19 | this access |
+| This.cs:9:20:9:20 | this | This.cs:12:16:12:19 | this access |
+| This.cs:9:20:9:20 | this | This.cs:12:16:12:19 | this access |
+| This.cs:9:20:9:20 | this | This.cs:12:16:12:19 | this access |
+| This.cs:9:20:9:20 | this | This.cs:13:9:13:15 | this access |
+| This.cs:9:20:9:20 | this | This.cs:13:9:13:15 | this access |
+| This.cs:9:20:9:20 | this | This.cs:13:9:13:15 | this access |
+| This.cs:9:20:9:20 | this | This.cs:13:9:13:15 | this access |
+| This.cs:9:20:9:20 | this | This.cs:13:11:13:14 | this access |
+| This.cs:9:20:9:20 | this | This.cs:13:11:13:14 | this access |
+| This.cs:9:20:9:20 | this | This.cs:13:11:13:14 | this access |
+| This.cs:9:20:9:20 | this | This.cs:13:11:13:14 | this access |
+| This.cs:9:20:9:20 | this | This.cs:15:9:15:12 | this access |
+| This.cs:9:20:9:20 | this | This.cs:15:9:15:12 | this access |
+| This.cs:9:20:9:20 | this | This.cs:15:9:15:12 | this access |
+| This.cs:9:20:9:20 | this | This.cs:15:9:15:12 | this access |
+| This.cs:9:20:9:20 | this | This.cs:16:9:16:16 | this access |
+| This.cs:9:20:9:20 | this | This.cs:16:9:16:16 | this access |
+| This.cs:9:20:9:20 | this | This.cs:16:9:16:16 | this access |
+| This.cs:9:20:9:20 | this | This.cs:16:9:16:16 | this access |
+| This.cs:9:27:9:31 | other | This.cs:9:27:9:31 | other |
+| This.cs:9:27:9:31 | other | This.cs:9:27:9:31 | other |
+| This.cs:9:27:9:31 | other | This.cs:14:13:14:17 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:14:13:14:17 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:14:13:14:17 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:14:13:14:17 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:15:16:15:20 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:15:16:15:20 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:15:16:15:20 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:15:16:15:20 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:9:27:9:31 | other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:11:9:11:17 | call to method Use | This.cs:11:9:11:17 | call to method Use |
+| This.cs:11:13:11:16 | this access | This.cs:11:13:11:16 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:12:9:12:12 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:12:9:12:12 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:12:9:12:12 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:12:9:12:12 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:12:16:12:19 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:12:16:12:19 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:12:16:12:19 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:12:16:12:19 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:11:13:11:16 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:9:20:9:20 | this |
+| This.cs:12:9:12:12 | this access | This.cs:9:20:9:20 | this |
+| This.cs:12:9:12:12 | this access | This.cs:9:20:9:20 | this |
+| This.cs:12:9:12:12 | this access | This.cs:9:20:9:20 | this |
+| This.cs:12:9:12:12 | this access | This.cs:12:9:12:12 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:12:16:12:19 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:12:16:12:19 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:12:16:12:19 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:12:16:12:19 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:12:9:12:12 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:12:9:12:20 | call to method M | This.cs:12:9:12:20 | call to method M |
+| This.cs:12:16:12:19 | this access | This.cs:9:27:9:31 | other |
+| This.cs:12:16:12:19 | this access | This.cs:9:27:9:31 | other |
+| This.cs:12:16:12:19 | this access | This.cs:9:27:9:31 | other |
+| This.cs:12:16:12:19 | this access | This.cs:9:27:9:31 | other |
+| This.cs:12:16:12:19 | this access | This.cs:12:16:12:19 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:12:16:12:19 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:13:9:13:15 | call to method M | This.cs:13:9:13:15 | call to method M |
+| This.cs:13:9:13:15 | this access | This.cs:9:20:9:20 | this |
+| This.cs:13:9:13:15 | this access | This.cs:9:20:9:20 | this |
+| This.cs:13:9:13:15 | this access | This.cs:9:20:9:20 | this |
+| This.cs:13:9:13:15 | this access | This.cs:9:20:9:20 | this |
+| This.cs:13:9:13:15 | this access | This.cs:13:9:13:15 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:13:9:13:15 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:13:11:13:14 | this access | This.cs:9:27:9:31 | other |
+| This.cs:13:11:13:14 | this access | This.cs:9:27:9:31 | other |
+| This.cs:13:11:13:14 | this access | This.cs:9:27:9:31 | other |
+| This.cs:13:11:13:14 | this access | This.cs:9:27:9:31 | other |
+| This.cs:13:11:13:14 | this access | This.cs:13:11:13:14 | this access |
+| This.cs:13:11:13:14 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:13:11:13:14 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:13:11:13:14 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:13:11:13:14 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:13:11:13:14 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:13:11:13:14 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:13:11:13:14 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:13:11:13:14 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:14:9:14:18 | call to method Use | This.cs:14:9:14:18 | call to method Use |
+| This.cs:14:13:14:17 | access to parameter other | This.cs:14:13:14:17 | access to parameter other |
+| This.cs:14:13:14:17 | access to parameter other | This.cs:15:16:15:20 | access to parameter other |
+| This.cs:14:13:14:17 | access to parameter other | This.cs:15:16:15:20 | access to parameter other |
+| This.cs:14:13:14:17 | access to parameter other | This.cs:15:16:15:20 | access to parameter other |
+| This.cs:14:13:14:17 | access to parameter other | This.cs:15:16:15:20 | access to parameter other |
+| This.cs:14:13:14:17 | access to parameter other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:14:13:14:17 | access to parameter other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:14:13:14:17 | access to parameter other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:14:13:14:17 | access to parameter other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:15:9:15:12 | this access | This.cs:9:20:9:20 | this |
+| This.cs:15:9:15:12 | this access | This.cs:9:20:9:20 | this |
+| This.cs:15:9:15:12 | this access | This.cs:9:20:9:20 | this |
+| This.cs:15:9:15:12 | this access | This.cs:9:20:9:20 | this |
+| This.cs:15:9:15:12 | this access | This.cs:15:9:15:12 | this access |
+| This.cs:15:9:15:12 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:15:9:15:12 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:15:9:15:12 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:15:9:15:12 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:15:9:15:21 | call to method M | This.cs:15:9:15:21 | call to method M |
+| This.cs:15:16:15:20 | access to parameter other | This.cs:9:27:9:31 | other |
+| This.cs:15:16:15:20 | access to parameter other | This.cs:9:27:9:31 | other |
+| This.cs:15:16:15:20 | access to parameter other | This.cs:9:27:9:31 | other |
+| This.cs:15:16:15:20 | access to parameter other | This.cs:9:27:9:31 | other |
+| This.cs:15:16:15:20 | access to parameter other | This.cs:15:16:15:20 | access to parameter other |
+| This.cs:15:16:15:20 | access to parameter other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:15:16:15:20 | access to parameter other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:15:16:15:20 | access to parameter other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:15:16:15:20 | access to parameter other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:16:9:16:16 | call to method M | This.cs:16:9:16:16 | call to method M |
+| This.cs:16:9:16:16 | this access | This.cs:9:20:9:20 | this |
+| This.cs:16:9:16:16 | this access | This.cs:9:20:9:20 | this |
+| This.cs:16:9:16:16 | this access | This.cs:9:20:9:20 | this |
+| This.cs:16:9:16:16 | this access | This.cs:9:20:9:20 | this |
+| This.cs:16:9:16:16 | this access | This.cs:16:9:16:16 | this access |
+| This.cs:16:11:16:15 | access to parameter other | This.cs:9:27:9:31 | other |
+| This.cs:16:11:16:15 | access to parameter other | This.cs:9:27:9:31 | other |
+| This.cs:16:11:16:15 | access to parameter other | This.cs:9:27:9:31 | other |
+| This.cs:16:11:16:15 | access to parameter other | This.cs:9:27:9:31 | other |
+| This.cs:16:11:16:15 | access to parameter other | This.cs:16:11:16:15 | access to parameter other |
+| This.cs:17:9:17:18 | malloc | This.cs:7:5:7:8 | this |
+| This.cs:17:9:17:18 | malloc | This.cs:7:5:7:8 | this |
+| This.cs:17:9:17:18 | malloc | This.cs:17:9:17:18 | malloc |
+| This.cs:17:9:17:18 | object creation of type This | This.cs:17:9:17:18 | object creation of type This |
+| This.cs:22:9:22:11 | this | This.cs:22:9:22:11 | this |
+| This.cs:24:14:24:15 | this | This.cs:24:14:24:15 | this |
+| This.cs:24:14:24:15 | this | This.cs:26:13:26:16 | this access |
+| This.cs:24:14:24:15 | this | This.cs:26:13:26:16 | this access |
+| This.cs:24:14:24:15 | this | This.cs:26:20:26:23 | this access |
+| This.cs:24:14:24:15 | this | This.cs:26:20:26:23 | this access |
+| This.cs:24:14:24:15 | this | This.cs:27:13:27:16 | base access |
+| This.cs:24:14:24:15 | this | This.cs:27:13:27:16 | base access |
+| This.cs:24:14:24:15 | this | This.cs:27:20:27:23 | this access |
+| This.cs:24:14:24:15 | this | This.cs:27:20:27:23 | this access |
+| This.cs:26:13:26:16 | this access | This.cs:9:20:9:20 | this |
+| This.cs:26:13:26:16 | this access | This.cs:9:20:9:20 | this |
+| This.cs:26:13:26:16 | this access | This.cs:26:13:26:16 | this access |
+| This.cs:26:13:26:16 | this access | This.cs:26:20:26:23 | this access |
+| This.cs:26:13:26:16 | this access | This.cs:26:20:26:23 | this access |
+| This.cs:26:13:26:16 | this access | This.cs:27:13:27:16 | base access |
+| This.cs:26:13:26:16 | this access | This.cs:27:13:27:16 | base access |
+| This.cs:26:13:26:16 | this access | This.cs:27:20:27:23 | this access |
+| This.cs:26:13:26:16 | this access | This.cs:27:20:27:23 | this access |
+| This.cs:26:13:26:24 | call to method M | This.cs:26:13:26:24 | call to method M |
+| This.cs:26:20:26:23 | this access | This.cs:9:27:9:31 | other |
+| This.cs:26:20:26:23 | this access | This.cs:9:27:9:31 | other |
+| This.cs:26:20:26:23 | this access | This.cs:26:20:26:23 | this access |
+| This.cs:26:20:26:23 | this access | This.cs:27:13:27:16 | base access |
+| This.cs:26:20:26:23 | this access | This.cs:27:13:27:16 | base access |
+| This.cs:26:20:26:23 | this access | This.cs:27:20:27:23 | this access |
+| This.cs:26:20:26:23 | this access | This.cs:27:20:27:23 | this access |
+| This.cs:27:13:27:16 | base access | This.cs:9:20:9:20 | this |
+| This.cs:27:13:27:16 | base access | This.cs:9:20:9:20 | this |
+| This.cs:27:13:27:16 | base access | This.cs:27:13:27:16 | base access |
+| This.cs:27:13:27:16 | base access | This.cs:27:20:27:23 | this access |
+| This.cs:27:13:27:16 | base access | This.cs:27:20:27:23 | this access |
+| This.cs:27:13:27:24 | call to method M | This.cs:27:13:27:24 | call to method M |
+| This.cs:27:20:27:23 | this access | This.cs:9:27:9:31 | other |
+| This.cs:27:20:27:23 | this access | This.cs:9:27:9:31 | other |
+| This.cs:27:20:27:23 | this access | This.cs:27:20:27:23 | this access |
+| This.cs:28:13:28:21 | malloc | This.cs:22:9:22:11 | this |
+| This.cs:28:13:28:21 | malloc | This.cs:22:9:22:11 | this |
+| This.cs:28:13:28:21 | malloc | This.cs:28:13:28:21 | malloc |
+| This.cs:28:13:28:21 | object creation of type Sub | This.cs:28:13:28:21 | object creation of type Sub |

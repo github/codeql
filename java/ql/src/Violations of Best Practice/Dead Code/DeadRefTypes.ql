@@ -38,6 +38,8 @@ predicate dead(RefType dead) {
   not dead.getASupertype*().hasName("TestCase") and
   // Exclude enum types.
   not dead instanceof EnumType and
+  // Exclude anonymous classes
+  not dead instanceof AnonymousClass and
   // Exclude classes that look like they may be reflectively constructed.
   not dead.getAnAnnotation() instanceof ReflectiveAccessAnnotation and
   // Insist all source ancestors are dead as well.

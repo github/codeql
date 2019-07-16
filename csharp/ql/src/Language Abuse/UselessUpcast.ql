@@ -65,6 +65,13 @@ int getMaximumArguments(Callable c) {
   result = c.getNumberOfParameters()
 }
 
+private class ConstructorCall extends Call {
+  ConstructorCall() {
+    this instanceof ObjectCreation or
+    this instanceof ConstructorInitializer
+  }
+}
+
 /** An explicit upcast. */
 class ExplicitUpcast extends ExplicitCast {
   ValueOrRefType src;
@@ -140,6 +147,17 @@ class ExplicitUpcast extends ExplicitCast {
     )
   }
 
+  /** Holds if this upcast may be used to disambiguate the target of a constructor call. */
+  pragma[nomagic]
+  private predicate isDisambiguatingConstructorCall(Constructor other, int args) {
+    exists(ConstructorCall cc, Constructor target, ValueOrRefType t | this.isArgument(cc, target) |
+      t = target.getDeclaringType() and
+      t.hasMember(other) and
+      args = cc.getNumberOfArguments() and
+      other != target
+    )
+  }
+
   /** Holds if this upcast may be used to disambiguate the target of a call. */
   private predicate isDisambiguatingCall() {
     exists(Callable other, int args |
@@ -148,6 +166,8 @@ class ExplicitUpcast extends ExplicitCast {
       this.isDisambiguatingExtensionCall(other, args)
       or
       this.isDisambiguatingStaticCall(other, args)
+      or
+      this.isDisambiguatingConstructorCall(other, args)
     |
       args >= getMinimumArguments(other) and
       not args > getMaximumArguments(other)

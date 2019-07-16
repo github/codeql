@@ -55,6 +55,7 @@ predicate memberDirectlyInitialisesVariable(MemberFunction mf, Class c, MemberVa
 predicate memberInitialisesVariable(MemberFunction mf, Class c, MemberVariable mv) {
   memberDirectlyInitialisesVariable(mf, c, mv) or
   exists(MemberFunction mf2 |
+    memberDirectlyInitialisesVariable(_, c, mv) and // (optimizer hint)
     memberInitialisesVariable(mf2, c, mv) and
     mf.getDeclaringType() = c and
     mf.calls(mf2)

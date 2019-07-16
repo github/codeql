@@ -38,17 +38,7 @@ predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
 
 /** Holds if `e` could refer to the document URL. */
 predicate isDocumentURL(Expr e) {
-  exists(string propName | e = DOM::documentRef().getAPropertyRead(propName).asExpr() |
-    propName = "documentURI" or
-    propName = "documentURIObject" or
-    propName = "location" or
-    propName = "referrer" or
-    propName = "URL"
-  )
-  or
-  e = DOM::domValueRef().getAPropertyRead("baseUri").asExpr()
-  or
-  e.accessesGlobal("location")
+  e.flow() = DOM::locationSource()
 }
 
 /**

@@ -23,7 +23,7 @@ predicate possibleValue(Variable v, Expr value) {
 }
 
 predicate constantValue(Expr e, int value) {
-  e.getType().getUnderlyingType().getUnspecifiedType() instanceof IntegralType and
+  e.getUnspecifiedType() instanceof IntegralType and
   (
     // Either the expr has a constant value
     value = e.getValue().toInt() or

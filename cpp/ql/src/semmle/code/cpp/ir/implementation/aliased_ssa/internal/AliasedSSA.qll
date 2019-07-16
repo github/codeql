@@ -11,7 +11,7 @@ private class IntValue = Ints::IntValue;
 
 private predicate hasResultMemoryAccess(Instruction instr, IRVariable var, Type type, IntValue startBitOffset,
     IntValue endBitOffset) {
-  resultPointsTo(instr.getResultAddressOperand().getDefinitionInstruction(), var, startBitOffset) and
+  resultPointsTo(instr.getResultAddress(), var, startBitOffset) and
   type = instr.getResultType() and
   if exists(instr.getResultSize()) then
     endBitOffset = Ints::add(startBitOffset, Ints::mul(instr.getResultSize(), 8))
@@ -21,7 +21,7 @@ private predicate hasResultMemoryAccess(Instruction instr, IRVariable var, Type 
 
 private predicate hasOperandMemoryAccess(MemoryOperand operand, IRVariable var, Type type, IntValue startBitOffset,
     IntValue endBitOffset) {
-  resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, startBitOffset) and
+  resultPointsTo(operand.getAddressOperand().getAnyDef(), var, startBitOffset) and
   type = operand.getType() and
   if exists(operand.getSize()) then
     endBitOffset = Ints::add(startBitOffset, Ints::mul(operand.getSize(), 8))

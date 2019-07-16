@@ -8,12 +8,12 @@ private import semmle.code.cpp.ir.internal.Overlap
 private class IntValue = Ints::IntValue;
 
 private predicate hasResultMemoryAccess(Instruction instr, IRVariable var, Type type, IntValue bitOffset) {
-  resultPointsTo(instr.getResultAddressOperand().getDefinitionInstruction(), var, bitOffset) and
+  resultPointsTo(instr.getResultAddressOperand().getAnyDef(), var, bitOffset) and
   type = instr.getResultType()
 }
 
 private predicate hasOperandMemoryAccess(MemoryOperand operand, IRVariable var, Type type, IntValue bitOffset) {
-  resultPointsTo(operand.getAddressOperand().getDefinitionInstruction(), var, bitOffset) and
+  resultPointsTo(operand.getAddressOperand().getAnyDef(), var, bitOffset) and
   type = operand.getType()
 }
 

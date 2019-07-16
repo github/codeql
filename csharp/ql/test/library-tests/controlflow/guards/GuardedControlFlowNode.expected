@@ -129,25 +129,25 @@
 | Guards.cs:132:16:132:16 | access to parameter s | Guards.cs:130:13:130:13 | access to parameter s | Guards.cs:130:13:130:13 | access to parameter s | non-null |
 | Guards.cs:132:16:132:16 | access to parameter s | Guards.cs:130:13:130:21 | ... is ... | Guards.cs:130:13:130:13 | access to parameter s | false |
 | Guards.cs:138:20:138:20 | access to parameter s | Guards.cs:137:13:137:13 | access to parameter s | Guards.cs:137:13:137:13 | access to parameter s | non-null |
-| Guards.cs:138:20:138:20 | access to parameter s | Guards.cs:137:13:137:23 | ... is ... | Guards.cs:137:13:137:13 | access to parameter s | true |
+| Guards.cs:138:20:138:20 | access to parameter s | Guards.cs:137:13:137:25 | ... is ... | Guards.cs:137:13:137:13 | access to parameter s | true |
 | Guards.cs:139:16:139:16 | access to parameter s | Guards.cs:137:13:137:13 | access to parameter s | Guards.cs:137:13:137:13 | access to parameter s | null |
-| Guards.cs:139:16:139:16 | access to parameter s | Guards.cs:137:13:137:23 | ... is ... | Guards.cs:137:13:137:13 | access to parameter s | false |
+| Guards.cs:139:16:139:16 | access to parameter s | Guards.cs:137:13:137:25 | ... is ... | Guards.cs:137:13:137:13 | access to parameter s | false |
 | Guards.cs:146:16:146:16 | access to parameter o | Guards.cs:144:13:144:25 | ... is ... | Guards.cs:144:13:144:13 | access to parameter o | false |
-| Guards.cs:154:24:154:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | match case Action<Object>: |
+| Guards.cs:154:24:154:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | match access to type Action<Object> |
 | Guards.cs:154:24:154:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-null |
-| Guards.cs:158:24:158:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | match case ...: |
-| Guards.cs:158:24:158:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match case Action<Object>: |
-| Guards.cs:158:24:158:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match case Action<String> a: |
+| Guards.cs:158:24:158:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | match "" |
+| Guards.cs:158:24:158:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match Action<String> a |
+| Guards.cs:158:24:158:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match access to type Action<Object> |
 | Guards.cs:158:24:158:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-null |
-| Guards.cs:160:24:160:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | match case ...: |
-| Guards.cs:160:24:160:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match case ...: |
-| Guards.cs:160:24:160:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match case Action<Object>: |
-| Guards.cs:160:24:160:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match case Action<String> a: |
+| Guards.cs:160:24:160:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | match null |
+| Guards.cs:160:24:160:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match "" |
+| Guards.cs:160:24:160:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match Action<String> a |
+| Guards.cs:160:24:160:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match access to type Action<Object> |
 | Guards.cs:160:24:160:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | null |
-| Guards.cs:162:24:162:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match case ...: |
-| Guards.cs:162:24:162:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match case ...: |
-| Guards.cs:162:24:162:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match case Action<Object>: |
-| Guards.cs:162:24:162:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match case Action<String> a: |
+| Guards.cs:162:24:162:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match "" |
+| Guards.cs:162:24:162:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match Action<String> a |
+| Guards.cs:162:24:162:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match access to type Action<Object> |
+| Guards.cs:162:24:162:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-match null |
 | Guards.cs:162:24:162:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | non-null |
 | Guards.cs:169:31:169:31 | access to parameter x | Guards.cs:168:14:168:41 | call to method IsNullOrWhiteSpace | Guards.cs:168:40:168:40 | access to parameter x | false |
 | Guards.cs:169:31:169:31 | access to parameter x | Guards.cs:168:40:168:40 | access to parameter x | Guards.cs:168:40:168:40 | access to parameter x | non-null |
@@ -168,6 +168,22 @@
 | Guards.cs:269:11:269:12 | access to parameter o1 | Guards.cs:268:13:268:41 | call to operator == | Guards.cs:268:13:268:14 | access to parameter o1 | true |
 | Guards.cs:269:11:269:12 | access to parameter o1 | Guards.cs:268:16:268:25 | call to method GetType | Guards.cs:268:13:268:14 | access to parameter o1 | non-null |
 | Guards.cs:271:11:271:12 | access to parameter o1 | Guards.cs:270:13:270:42 | call to operator == | Guards.cs:270:13:270:14 | access to parameter o1 | true |
+| Guards.cs:279:17:279:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | match access to type Action<Object> |
+| Guards.cs:279:17:279:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:283:17:283:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | match "" |
+| Guards.cs:283:17:283:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match Action<String> a |
+| Guards.cs:283:17:283:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match access to type Action<Object> |
+| Guards.cs:283:17:283:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-null |
+| Guards.cs:285:17:285:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | match null |
+| Guards.cs:285:17:285:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match "" |
+| Guards.cs:285:17:285:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match Action<String> a |
+| Guards.cs:285:17:285:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match access to type Action<Object> |
+| Guards.cs:285:17:285:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | null |
+| Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match "" |
+| Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match Action<String> a |
+| Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match access to type Action<Object> |
+| Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-match null |
+| Guards.cs:287:17:287:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | non-null |
 | Splitting.cs:13:17:13:17 | [b (line 9): true] access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | Splitting.cs:12:17:12:17 | access to parameter o | non-null |
 | Splitting.cs:13:17:13:17 | [b (line 9): true] access to parameter o | Splitting.cs:12:17:12:25 | ... != ... | Splitting.cs:12:17:12:17 | access to parameter o | true |
 | Splitting.cs:14:13:14:13 | [b (line 9): false] access to parameter b | Splitting.cs:11:13:11:13 | access to parameter b | Splitting.cs:11:13:11:13 | access to parameter b | false |

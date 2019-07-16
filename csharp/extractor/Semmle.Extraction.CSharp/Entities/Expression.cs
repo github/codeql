@@ -18,7 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
     class Expression : FreshEntity, IExpressionParentEntity
     {
-        public readonly Type Type;
+        public readonly AnnotatedType Type;
         public readonly Extraction.Entities.Location Location;
         public readonly ExprKind Kind;
 
@@ -27,9 +27,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             Location = info.Location;
             Kind = info.Kind;
-            Type = info.Type ?? NullType.Create(cx);
+            Type = info.Type;
 
-            cx.Emit(Tuples.expressions(this, Kind, Type.TypeRef));
+            if (Type.Type is null)
+                Type = NullType.Create(cx);
+
+            cx.Emit(Tuples.expressions(this, Kind, Type.Type.TypeRef));
             if (info.Parent.IsTopLevelParent)
                 cx.Emit(Tuples.expr_parent_top_level(this, info.Child, info.Parent));
             else
@@ -42,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (info.ExprValue is string value)
                 cx.Emit(Tuples.expr_value(this, value));
 
-            Type.ExtractGenerics();
+            Type.Type.ExtractGenerics();
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.symbol;
@@ -163,6 +166,10 @@ namespace Semmle.Extraction.CSharp.Entities
                         if (method.ContainingType != null && method.ContainingType.TypeKind == Microsoft.CodeAnalysis.TypeKind.Delegate)
                             return CallType.UserOperator;
                         return CallType.BuiltInOperator;
+                    case MethodKind.Constructor:
+                        // The index operator ^... generates a constructor call to System.Index.
+                        // Instead, treat this as a regular operator.
+                        return CallType.None;
                     default:
                         return CallType.UserOperator;
                 }
@@ -297,7 +304,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// The type of the expression.
         /// </summary>
-        Type Type { get; }
+        AnnotatedType Type { get; }
 
         /// <summary>
         /// The location of the expression.
@@ -339,7 +346,7 @@ namespace Semmle.Extraction.CSharp.Entities
     class ExpressionInfo : IExpressionInfo
     {
         public Context Context { get; }
-        public Type Type { get; }
+        public AnnotatedType Type { get; }
         public Extraction.Entities.Location Location { get; }
         public ExprKind Kind { get; }
         public IExpressionParentEntity Parent { get; }
@@ -347,7 +354,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public bool IsCompilerGenerated { get; }
         public string ExprValue { get; }
 
-        public ExpressionInfo(Context cx, Type type, Extraction.Entities.Location location, ExprKind kind, IExpressionParentEntity parent, int child, bool isCompilerGenerated, string value)
+        public ExpressionInfo(Context cx, AnnotatedType type, Extraction.Entities.Location location, ExprKind kind, IExpressionParentEntity parent, int child, bool isCompilerGenerated, string value)
         {
             Context = cx;
             Type = type;
@@ -380,12 +387,6 @@ namespace Semmle.Extraction.CSharp.Entities
             Conversion = cx.Model(node).GetConversion(node);
         }
 
-        public ExpressionNodeInfo(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child, ITypeSymbol type) :
-            this(cx, node, parent, child)
-        {
-            Type = Type.Create(cx, type);
-        }
-
         public Context Context { get; }
         public ExpressionSyntax Node { get; private set; }
         public IExpressionParentEntity Parent { get; set; }
@@ -393,29 +394,30 @@ namespace Semmle.Extraction.CSharp.Entities
         public TypeInfo TypeInfo { get; }
         public Microsoft.CodeAnalysis.CSharp.Conversion Conversion { get; }
 
-        public ITypeSymbol ResolvedType => Context.DisambiguateType(TypeInfo.Type);
-        public ITypeSymbol ConvertedType => Context.DisambiguateType(TypeInfo.ConvertedType);
+        public AnnotatedTypeSymbol ResolvedType => new AnnotatedTypeSymbol(TypeInfo.Type.DisambiguateType(), TypeInfo.Nullability.Annotation);
+        public AnnotatedTypeSymbol ConvertedType => new AnnotatedTypeSymbol(TypeInfo.ConvertedType.DisambiguateType(), TypeInfo.ConvertedNullability.Annotation);
 
-        public ITypeSymbol ExpressionType
+        public AnnotatedTypeSymbol ExpressionType
         {
             get
             {
                 var type = ResolvedType;
 
-                if (type == null)
-                    type = Context.DisambiguateType(TypeInfo.Type ?? TypeInfo.ConvertedType);
+                if (type.Symbol == null)
+                    type.Symbol = (TypeInfo.Type ?? TypeInfo.ConvertedType).DisambiguateType();
 
                 // Roslyn workaround: It can't work out the type of "new object[0]"
                 // Clearly a bug.
-                if (type != null && type.TypeKind == Microsoft.CodeAnalysis.TypeKind.Error)
+                if (type.Symbol?.TypeKind == Microsoft.CodeAnalysis.TypeKind.Error)
                 {
                     var arrayCreation = Node as ArrayCreationExpressionSyntax;
                     if (arrayCreation != null)
                     {
                         var elementType = Context.GetType(arrayCreation.Type.ElementType);
 
-                        if (elementType != null)
-                            return Context.Compilation.CreateArrayTypeSymbol(elementType, arrayCreation.Type.RankSpecifiers.Count);
+                        if (elementType.Symbol != null)
+                            // There seems to be no way to create an array with a nullable element at present.
+                            return new AnnotatedTypeSymbol(Context.Compilation.CreateArrayTypeSymbol(elementType.Symbol, arrayCreation.Type.RankSpecifiers.Count), NullableAnnotation.NotAnnotated);
                     }
 
                     Context.ModelError(Node, "Failed to determine type");
@@ -452,14 +454,14 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        Type cachedType;
+        AnnotatedType cachedType;
 
-        public Type Type
+        public AnnotatedType Type
         {
             get
             {
-                if (cachedType == null)
-                    cachedType = Type.Create(Context, ExpressionType);
+                if (cachedType.Type == null)
+                    cachedType = Entities.Type.Create(Context, ExpressionType);
                 return cachedType;
             }
             set
@@ -502,7 +504,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return this;
         }
 
-        public ExpressionNodeInfo SetType(Type type)
+        public ExpressionNodeInfo SetType(AnnotatedType type)
         {
             Type = type;
             return this;

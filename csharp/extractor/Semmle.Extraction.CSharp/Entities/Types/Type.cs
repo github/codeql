@@ -8,12 +8,27 @@ using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
+    /// <summary>
+    /// Represents an annotated type consisting of a type entity and nullability information.
+    /// </summary>
+    public struct AnnotatedType
+    {
+        public AnnotatedType(Type t, Kinds.TypeAnnotation a)
+        {
+            Type = t;
+            Annotation = a;
+        }
+
+        public Type Type;
+        public Kinds.TypeAnnotation Annotation;
+    }
+
     public abstract class Type : CachedSymbol<ITypeSymbol>
     {
         public Type(Context cx, ITypeSymbol init)
             : base(cx, init) { }
 
-        public virtual Type ElementType => null;
+        public virtual AnnotatedType ElementType => default(AnnotatedType);
 
         public override bool NeedsPopulation =>
             base.NeedsPopulation || symbol.TypeKind == TypeKind.Dynamic || symbol.TypeKind == TypeKind.TypeParameter;
@@ -165,9 +180,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 var returnKey = Create(Context, invokeMethod.ReturnType);
                 Context.Emit(Tuples.delegate_return_type(this, returnKey.TypeRef));
                 if (invokeMethod.ReturnsByRef)
-                    Context.Emit(Tuples.ref_returns(this));
+                    Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
                 if (invokeMethod.ReturnsByRefReadonly)
-                    Context.Emit(Tuples.ref_readonly_returns(this));
+                    Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef));
             }
 
             Modifier.ExtractModifiers(Context, this, symbol);
@@ -269,11 +284,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Type Create(Context cx, ITypeSymbol type)
         {
-            type = cx.DisambiguateType(type);
+            type = type.DisambiguateType();
             const bool errorTypeIsNull = false;
             return type == null || (errorTypeIsNull && type.TypeKind == TypeKind.Error) ?
-                NullType.Create(cx) : (Type)cx.CreateEntity(type);
+                NullType.Create(cx).Type : (Type)cx.CreateEntity(type);
         }
+
+        public static AnnotatedType Create(Context cx, AnnotatedTypeSymbol type) =>
+            new AnnotatedType(Create(cx, type.Symbol), type.Nullability.GetTypeAnnotation());
 
         public virtual int Dimension => 0;
 

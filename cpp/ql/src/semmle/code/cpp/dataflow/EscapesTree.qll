@@ -68,7 +68,7 @@ private predicate pointerToPointerStep(Expr pointerIn, Expr pointerOut) {
     pointerOut instanceof PointerSubExpr
   ) and
   pointerIn = pointerOut.getAChild().getFullyConverted() and
-  pointerIn.getType().getUnspecifiedType() instanceof PointerType
+  pointerIn.getUnspecifiedType() instanceof PointerType
   or
   pointerIn = pointerOut.(UnaryPlusExpr).getOperand().getFullyConverted()
   or

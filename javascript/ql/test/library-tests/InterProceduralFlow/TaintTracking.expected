@@ -36,6 +36,7 @@
 | promises.js:12:22:12:31 | "rejected" | promises.js:27:16:27:16 | v |
 | promises.js:32:24:32:37 | "also tainted" | promises.js:38:32:38:32 | v |
 | properties2.js:7:14:7:21 | "source" | properties2.js:8:12:8:24 | foo(source).p |
+| properties2.js:7:14:7:21 | "source" | properties2.js:33:13:33:20 | getP(o3) |
 | properties.js:2:16:2:24 | "tainted" | properties.js:5:14:5:23 | a.someProp |
 | properties.js:2:16:2:24 | "tainted" | properties.js:12:15:12:24 | x.someProp |
 | properties.js:2:16:2:24 | "tainted" | properties.js:14:15:14:27 | tmp1.someProp |
@@ -47,6 +48,8 @@
 | tst4.js:2:16:2:24 | "tainted" | tst4.js:15:15:15:31 | id(still_tainted) |
 | tst4.js:2:16:2:24 | "tainted" | tst4.js:16:15:16:28 | p.also_tainted |
 | tst4.js:2:16:2:24 | "tainted" | tst4.js:17:15:17:28 | substr(source) |
+| tst6.mjs:12:14:12:21 | "source" | tst6.mjs:14:12:14:16 | a.m() |
+| tst6.mjs:16:15:16:23 | "source2" | tst6.mjs:18:13:18:24 | a.m.call(a2) |
 | tst.js:2:17:2:22 | "src1" | tst.js:3:15:3:29 | String(source1) |
 | tst.js:2:17:2:22 | "src1" | tst.js:4:15:4:29 | RegExp(source1) |
 | tst.js:2:17:2:22 | "src1" | tst.js:5:15:5:33 | new String(source1) |

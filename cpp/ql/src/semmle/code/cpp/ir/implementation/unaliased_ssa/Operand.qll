@@ -6,16 +6,41 @@ import semmle.code.cpp.ir.implementation.MemoryAccessKind
 import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.ir.internal.OperandTag
 
+cached
 private newtype TOperand =
   TRegisterOperand(Instruction useInstr, RegisterOperandTag tag, Instruction defInstr) {
-    defInstr = Construction::getRegisterOperandDefinition(useInstr, tag)
+    defInstr = Construction::getRegisterOperandDefinition(useInstr, tag) and
+    not isInCycle(useInstr)
   } or
   TNonPhiMemoryOperand(Instruction useInstr, MemoryOperandTag tag, Instruction defInstr, Overlap overlap) {
-    defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap)
+    defInstr = Construction::getMemoryOperandDefinition(useInstr, tag, overlap) and
+    not isInCycle(useInstr)
   } or
   TPhiOperand(PhiInstruction useInstr, Instruction defInstr, IRBlock predecessorBlock, Overlap overlap) {
     defInstr = Construction::getPhiOperandDefinition(useInstr, predecessorBlock, overlap)
   }
+
+/** Gets a non-phi instruction that defines an operand of `instr`. */
+private Instruction getNonPhiOperandDef(Instruction instr) {
+  result = Construction::getRegisterOperandDefinition(instr, _)
+  or
+  result = Construction::getMemoryOperandDefinition(instr, _, _)
+}
+
+/**
+ * Holds if `instr` is part of a cycle in the operand graph that doesn't go
+ * through a phi instruction and therefore should be impossible.
+ *
+ * If such cycles are present, either due to a programming error in the IR
+ * generation or due to a malformed database, it can cause infinite loops in
+ * analyses that assume a cycle-free graph of non-phi operands. Therefore it's
+ * better to remove these operands than to leave cycles in the operand graph.
+ */
+pragma[noopt]
+private predicate isInCycle(Instruction instr) {
+  instr instanceof Instruction and
+  getNonPhiOperandDef+(instr) = instr
+}
 
 /**
  * A source operand of an `Instruction`. The operand represents a value consumed by the instruction.
@@ -26,25 +51,61 @@ class Operand extends TOperand {
   }
 
   final Location getLocation() {
-    result = getUseInstruction().getLocation()
+    result = getUse().getLocation()
   }
 
   final IRFunction getEnclosingIRFunction() {
-    result = getUseInstruction().getEnclosingIRFunction()
+    result = getUse().getEnclosingIRFunction()
   }
-  
+
   /**
    * Gets the `Instruction` that consumes this operand.
    */
-  Instruction getUseInstruction() {
+  Instruction getUse() {
     none()
   }
 
   /**
+   * Gets the `Instruction` whose result is the value of the operand. Unlike
+   * `getDef`, this also has a result when `isDefinitionInexact` holds, which
+   * means that the resulting instruction may only _partially_ or _potentially_
+   * be the value of this operand.
+   */
+  Instruction getAnyDef() {
+    none()
+  }
+
+  /**
+   * Gets the `Instruction` whose result is the value of the operand. Unlike
+   * `getAnyDef`, this also has no result when `isDefinitionInexact` holds,
+   * which means that the resulting instruction must always be exactly the be
+   * the value of this operand.
+   */
+  final Instruction getDef() {
+    result = this.getAnyDef() and
+    getDefinitionOverlap() instanceof MustExactlyOverlap
+  }
+
+  /**
+   * DEPRECATED: renamed to `getUse`.
+   *
+   * Gets the `Instruction` that consumes this operand.
+   */
+  deprecated
+  final Instruction getUseInstruction() {
+    result = getUse()
+  }
+
+  /**
+   * DEPRECATED: use `getAnyDef` or `getDef`. The exact replacement for this
+   * predicate is `getAnyDef`, but most uses of this predicate should probably
+   * be replaced with `getDef`.
+   *
    * Gets the `Instruction` whose result is the value of the operand.
    */
-  Instruction getDefinitionInstruction() {
-    none()
+  deprecated
+  final Instruction getDefinitionInstruction() {
+    result = getAnyDef()
   }
 
   /**
@@ -76,7 +137,7 @@ class Operand extends TOperand {
    * For example: `this:r3_5`
    */
   final string getDumpString() {
-    result = getDumpLabel() + getInexactSpecifier() + getDefinitionInstruction().getResultId()
+    result = getDumpLabel() + getInexactSpecifier() + getAnyDef().getResultId()
   }
 
   /**
@@ -106,7 +167,7 @@ class Operand extends TOperand {
    * has been cast to a different type.
    */
   Type getType() {
-    result = getDefinitionInstruction().getResultType()
+    result = getAnyDef().getResultType()
   }
 
   /**
@@ -117,7 +178,7 @@ class Operand extends TOperand {
    * given by `getResultType()`.
    */
   predicate isGLValue() {
-    getDefinitionInstruction().isGLValue()
+    getAnyDef().isGLValue()
   }
 
   /**
@@ -157,7 +218,7 @@ class MemoryOperand extends Operand {
    */
   final AddressOperand getAddressOperand() {
     getMemoryAccess().usesAddressOperand() and
-    result.getUseInstruction() = getUseInstruction()
+    result.getUse() = getUse()
   }
 }
 
@@ -174,11 +235,11 @@ class NonPhiOperand extends Operand {
     this = TNonPhiMemoryOperand(useInstr, tag, defInstr, _)
   }
 
-  override final Instruction getUseInstruction() {
+  override final Instruction getUse() {
     result = useInstr
   }
 
-  override final Instruction getDefinitionInstruction() {
+  override final Instruction getAnyDef() {
     result = defInstr
   }
 
@@ -436,11 +497,11 @@ class PhiInputOperand extends MemoryOperand, TPhiOperand {
     result = "Phi"
   }
 
-  override final PhiInstruction getUseInstruction() {
+  override final PhiInstruction getUse() {
     result = useInstr
   }
 
-  override final Instruction getDefinitionInstruction() {
+  override final Instruction getAnyDef() {
     result = defInstr
   }
 

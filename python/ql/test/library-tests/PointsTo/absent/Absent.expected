@@ -1,0 +1,7 @@
+| absent.py:3:8:3:11 | ControlFlowNode for ImportExpr | file://:0:0:0:0 | Missing module xxxx |
+| absent.py:4:1:4:4 | ControlFlowNode for xxxx | file://:0:0:0:0 | Missing module xxxx |
+| absent.py:6:6:6:9 | ControlFlowNode for ImportExpr | file://:0:0:0:0 | Missing module xxxx |
+| absent.py:6:18:6:21 | ControlFlowNode for ImportMember | file://:0:0:0:0 | Missing module attribute xxxx.open |
+| absent.py:8:1:8:4 | ControlFlowNode for open | file://:0:0:0:0 | Missing module attribute xxxx.open |
+| absent.py:12:8:12:13 | ControlFlowNode for ImportExpr | module.py:0:0:0:0 | Module module |
+| absent.py:14:1:14:6 | ControlFlowNode for module | module.py:0:0:0:0 | Module module |

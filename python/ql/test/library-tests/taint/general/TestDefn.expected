@@ -180,3 +180,12 @@
 | test.py:197 | Pi(t_0) [true] | test.py:195 | Taint simple.test | SOURCE |
 | test.py:199 | ArgumentRefinement(t_3) | test.py:195 | Taint simple.test | SOURCE |
 | test.py:199 | Pi(t_0) [false] | test.py:195 | Taint simple.test | SOURCE |
+| test.py:202 | ITERABLE_SOURCE | test.py:202 | Taint iterable.simple | ITERABLE_SOURCE |
+| test.py:203 | For | test.py:203 | Taint simple.test | For |
+| test.py:203 | phi(i_0, i_2) | test.py:203 | Taint simple.test | For |
+| test.py:208 | List | test.py:208 | Taint [simple.test] | List |
+| test.py:209 | For | test.py:209 | Taint simple.test | For |
+| test.py:209 | phi(i_0, i_2) | test.py:209 | Taint simple.test | For |
+| test.py:213 | For | test.py:213 | Taint simple.test | For |
+| test.py:213 | phi(x_2, x_3) | test.py:213 | Taint simple.test | For |
+| test.py:214 | ArgumentRefinement(x_1) | test.py:213 | Taint simple.test | For |

@@ -22,14 +22,12 @@
 import csharp
 private import semmle.code.csharp.commons.Constants
 private import semmle.code.csharp.frameworks.System
+private import NonReturning
 
 // Internal representation of completions
 private newtype TCompletion =
   TNormalCompletion() or
-  TBooleanCompletion(boolean outerValue, boolean innerValue) {
-    (outerValue = true or outerValue = false) and
-    (innerValue = true or innerValue = false)
-  } or
+  TBooleanCompletion(boolean b) { b = true or b = false } or
   TNullnessCompletion(boolean isNull) { isNull = true or isNull = false } or
   TMatchingCompletion(boolean isMatch) { isMatch = true or isMatch = false } or
   TEmptinessCompletion(boolean isEmpty) { isEmpty = true or isEmpty = false } or
@@ -41,15 +39,31 @@ private newtype TCompletion =
   TGotoCaseCompletion(GotoCaseStmt goto) or
   TGotoDefaultCompletion() or
   TThrowCompletion(ExceptionClass ec) or
-  TExitCompletion()
+  TExitCompletion() or
+  TNestedCompletion(NormalCompletion inner, Completion outer) {
+    outer = TReturnCompletion()
+    or
+    outer = TBreakCompletion()
+    or
+    outer = TContinueCompletion()
+    or
+    outer = TGotoLabelCompletion(_)
+    or
+    outer = TGotoCaseCompletion(_)
+    or
+    outer = TGotoDefaultCompletion()
+    or
+    outer = TThrowCompletion(_)
+    or
+    outer = TExitCompletion()
+    or
+    exists(boolean b | inner = TBooleanCompletion(b) and outer = TBooleanCompletion(b.booleanNot()))
+  }
 
 /**
  * A completion of a statement or an expression.
  */
 class Completion extends TCompletion {
-  /** Gets a textual representation of this completion. */
-  string toString() { none() }
-
   /**
    * Holds if this completion is valid for control flow element `cfe`.
    *
@@ -60,40 +74,71 @@ class Completion extends TCompletion {
    * otherwise it is a normal non-Boolean completion.
    */
   predicate isValidFor(ControlFlowElement cfe) {
-    this.(ThrowCompletion).getExceptionClass() = cfe.(TriedControlFlowElement).getAThrownException()
-    or
-    if mustHaveBooleanCompletion(cfe)
-    then
-      exists(boolean value | isBooleanConstant(cfe, value) |
-        this = TBooleanCompletion(value, value)
-      )
+    if cfe instanceof NonReturningCall
+    then this = cfe.(NonReturningCall).getACompletion()
+    else (
+      this = TThrowCompletion(cfe.(TriedControlFlowElement).getAThrownException())
       or
-      not isBooleanConstant(cfe, _) and
-      exists(boolean b | this = TBooleanCompletion(b, b))
-      or
-      // Corner case: In `if (x ?? y) { ... }`, `x` must have both a `true`
-      // completion, a `false` completion, and a `null` completion (but not a
-      // non-`null` completion)
-      mustHaveNullnessCompletion(cfe) and
-      this = TNullnessCompletion(true)
-    else
-      if mustHaveNullnessCompletion(cfe)
-      then
-        exists(boolean value | isNullnessConstant(cfe, value) | this = TNullnessCompletion(value))
-        or
-        not isNullnessConstant(cfe, _) and
-        this = TNullnessCompletion(_)
+      if cfe instanceof ThrowElement
+      then this = TThrowCompletion(cfe.(ThrowElement).getThrownExceptionType())
       else
-        if mustHaveMatchingCompletion(cfe)
+        if mustHaveBooleanCompletion(cfe)
         then
-          exists(boolean value | isMatchingConstant(cfe, value) | this = TMatchingCompletion(value))
+          exists(boolean value | isBooleanConstant(cfe, value) | this = TBooleanCompletion(value))
           or
-          not isMatchingConstant(cfe, _) and
-          this = TMatchingCompletion(_)
+          not isBooleanConstant(cfe, _) and
+          this = TBooleanCompletion(_)
+          or
+          // Corner case: In `if (x ?? y) { ... }`, `x` must have both a `true`
+          // completion, a `false` completion, and a `null` completion (but not a
+          // non-`null` completion)
+          mustHaveNullnessCompletion(cfe) and
+          this = TNullnessCompletion(true)
         else
-          if mustHaveEmptinessCompletion(cfe)
-          then this = TEmptinessCompletion(_)
-          else this = TNormalCompletion()
+          if mustHaveNullnessCompletion(cfe)
+          then
+            exists(boolean value | isNullnessConstant(cfe, value) |
+              this = TNullnessCompletion(value)
+            )
+            or
+            not isNullnessConstant(cfe, _) and
+            this = TNullnessCompletion(_)
+          else
+            if mustHaveMatchingCompletion(cfe)
+            then
+              exists(boolean value | isMatchingConstant(cfe, value) |
+                this = TMatchingCompletion(value)
+              )
+              or
+              not isMatchingConstant(cfe, _) and
+              this = TMatchingCompletion(_)
+            else
+              if mustHaveEmptinessCompletion(cfe)
+              then this = TEmptinessCompletion(_)
+              else
+                if cfe instanceof BreakStmt
+                then this = TBreakCompletion()
+                else
+                  if cfe instanceof ContinueStmt
+                  then this = TContinueCompletion()
+                  else
+                    if cfe instanceof GotoDefaultStmt
+                    then this = TGotoDefaultCompletion()
+                    else
+                      if cfe instanceof GotoStmt
+                      then
+                        this = TGotoLabelCompletion(cfe) or
+                        this = TGotoCaseCompletion(cfe)
+                      else
+                        if cfe instanceof ReturnStmt
+                        then this = TReturnCompletion()
+                        else
+                          if cfe instanceof YieldBreakStmt
+                          then
+                            // `yield break` behaves like a return statement
+                            this = TReturnCompletion()
+                          else this = TNormalCompletion()
+    )
   }
 
   /**
@@ -104,6 +149,21 @@ class Completion extends TCompletion {
     this instanceof NormalCompletion or
     this instanceof ContinueCompletion
   }
+
+  /**
+   * Gets the inner completion. This is either the inner completion,
+   * when the completion is nested, or the completion itself.
+   */
+  Completion getInnerCompletion() { result = this }
+
+  /**
+   * Gets the outer completion. This is either the outer completion,
+   * when the completion is nested, or the completion itself.
+   */
+  Completion getOuterCompletion() { result = this }
+
+  /** Gets a textual representation of this completion. */
+  string toString() { none() }
 }
 
 /** Holds if expression `e` has the Boolean constant value `value`. */
@@ -154,19 +214,20 @@ private Expr getQualifier(QualifiableExpr e) {
  * non-matches (`value = false`).
  */
 private predicate isMatchingConstant(Expr e, boolean value) {
-  exists(SwitchStmt ss | mustHaveMatchingCompletion(ss, e) |
-    exists(Expr stripped | stripped = ss.getCondition().stripCasts() |
-      exists(ConstCase cc, string strippedValue |
-        cc = ss.getAConstCase() and
-        e = cc.getExpr() and
+  exists(Switch s | mustHaveMatchingCompletion(s, e) |
+    exists(Expr stripped | stripped = s.getExpr().stripCasts() |
+      exists(Case c, string strippedValue |
+        c = s.getACase() and
+        e = c.getPattern() and
         strippedValue = stripped.getValue()
       |
         if strippedValue = e.getValue() then value = true else value = false
       )
       or
-      exists(TypeCase tc, Type t, Type strippedType | tc = ss.getATypeCase() |
-        e = tc.getTypeAccess() and
-        t = e.getType() and
+      exists(Case c, TypePatternExpr tpe, Type t, Type strippedType | c = s.getACase() |
+        tpe = c.getPattern() and
+        e = tpe and
+        t = tpe.getCheckedType() and
         strippedType = stripped.getType() and
         not t.isImplicitlyConvertibleTo(strippedType) and
         not t instanceof Interface and
@@ -175,6 +236,9 @@ private predicate isMatchingConstant(Expr e, boolean value) {
         value = false
       )
     )
+    or
+    e instanceof DiscardPatternExpr and
+    value = true
   )
 }
 
@@ -326,7 +390,7 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
   or
   exists(LoopStmt ls | ls.getCondition() = e | isBooleanCompletionForParent = false)
   or
-  exists(CaseStmt cs | cs.getCondition() = e | isBooleanCompletionForParent = false)
+  exists(Case c | c.getCondition() = e | isBooleanCompletionForParent = false)
   or
   exists(SpecificCatchClause scc | scc.getFilterClause() = e | isBooleanCompletionForParent = false)
   or
@@ -366,6 +430,12 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
     inBooleanContext(nce, _) and
     isBooleanCompletionForParent = true
   )
+  or
+  exists(SwitchExpr se |
+    inBooleanContext(se, _) and
+    e = se.getACase().getBody() and
+    isBooleanCompletionForParent = true
+  )
 }
 
 /**
@@ -402,24 +472,24 @@ private predicate inNullnessContext(Expr e, boolean isNullnessCompletionForParen
     e = nce.getRightOperand() and
     isNullnessCompletionForParent = true
   )
-}
-
-/**
- * Holds if `cfe` is the element inside case statement `cs`, belonging to `switch`
- * statement `ss`, that has the matching completion.
- */
-predicate switchMatching(SwitchStmt ss, CaseStmt cs, ControlFlowElement cfe) {
-  ss.getACase() = cs and
-  (
-    cfe = cs.(ConstCase).getExpr()
-    or
-    cfe = cs.(TypeCase).getTypeAccess() // use type access to represent the type test
+  or
+  exists(SwitchExpr se |
+    inNullnessContext(se, _) and
+    e = se.getACase().getBody() and
+    isNullnessCompletionForParent = true
   )
 }
 
-private predicate mustHaveMatchingCompletion(SwitchStmt ss, ControlFlowElement cfe) {
-  switchMatching(ss, _, cfe)
+/**
+ * Holds if `pe` is the pattern inside case `c`, belonging to `switch` `s`, that
+ * has the matching completion.
+ */
+predicate switchMatching(Switch s, Case c, PatternExpr pe) {
+  s.getACase() = c and
+  pe = c.getPattern()
 }
+
+private predicate mustHaveMatchingCompletion(Switch s, PatternExpr pe) { switchMatching(s, _, pe) }
 
 /**
  * Holds if a normal completion of `cfe` must be a matching completion. Thats is,
@@ -470,24 +540,31 @@ abstract class ConditionalCompletion extends NormalCompletion { }
  * A completion that represents evaluation of an expression
  * with a Boolean value.
  */
-class BooleanCompletion extends ConditionalCompletion, TBooleanCompletion {
-  /** Gets the value that the last sub expression of this expression completes with. */
-  boolean getInnerValue() { this = TBooleanCompletion(_, result) }
+class BooleanCompletion extends ConditionalCompletion {
+  private boolean value;
 
-  /** Gets the value that this expression completes with. */
-  boolean getOuterValue() { this = TBooleanCompletion(result, _) }
+  BooleanCompletion() {
+    this = TBooleanCompletion(value) or
+    this = TNestedCompletion(_, TBooleanCompletion(value))
+  }
 
-  override string toString() { result = getOuterValue() + "/" + getInnerValue() }
+  /** Gets the Boolean value of this completion. */
+  boolean getValue() { result = value }
+
+  override string toString() {
+    this = TBooleanCompletion(value) and
+    result = this.getValue().toString()
+  }
 }
 
 /** A Boolean `true` completion. */
 class TrueCompletion extends BooleanCompletion {
-  TrueCompletion() { getOuterValue() = true }
+  TrueCompletion() { this.getValue() = true }
 }
 
 /** A Boolean `false` completion. */
 class FalseCompletion extends BooleanCompletion {
-  FalseCompletion() { getOuterValue() = false }
+  FalseCompletion() { this.getValue() = false }
 }
 
 /**
@@ -497,6 +574,9 @@ class FalseCompletion extends BooleanCompletion {
 class NullnessCompletion extends ConditionalCompletion, TNullnessCompletion {
   /** Holds if the last sub expression of this expression evaluates to `null`. */
   predicate isNull() { this = TNullnessCompletion(true) }
+
+  /** Holds if the last sub expression of this expression evaluates to a non-`null` value. */
+  predicate isNonNull() { this = TNullnessCompletion(false) }
 
   override string toString() { if this.isNull() then result = "null" else result = "non-null" }
 }
@@ -508,6 +588,9 @@ class NullnessCompletion extends ConditionalCompletion, TNullnessCompletion {
 class MatchingCompletion extends ConditionalCompletion, TMatchingCompletion {
   /** Holds if there is a match. */
   predicate isMatch() { this = TMatchingCompletion(true) }
+
+  /** Holds if there is not a match. */
+  predicate isNonMatch() { this = TMatchingCompletion(false) }
 
   override string toString() { if this.isMatch() then result = "match" else result = "no-match" }
 }
@@ -555,11 +638,54 @@ class BreakNormalCompletion extends NormalCompletion, TBreakNormalCompletion {
 }
 
 /**
+ * A nested completion. For example, in
+ *
+ * ```
+ * void M(bool b)
+ * {
+ *     try
+ *     {
+ *         if (b)
+ *            throw new Exception();
+ *     }
+ *     finally
+ *     {
+ *         System.Console.WriteLine("M called");
+ *     }
+ * }
+ * ```
+ *
+ * `System.Console.WriteLine("M called")` has an outer throw completion
+ * from `throw new Exception` and an inner simple completion.
+ */
+class NestedCompletion extends Completion, TNestedCompletion {
+  private NormalCompletion inner;
+
+  private Completion outer;
+
+  NestedCompletion() { this = TNestedCompletion(inner, outer) }
+
+  override NormalCompletion getInnerCompletion() { result = inner }
+
+  override Completion getOuterCompletion() { result = outer }
+
+  override string toString() { result = outer + " [" + inner + "]" }
+}
+
+/**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a return from a callable.
  */
-class ReturnCompletion extends Completion, TReturnCompletion {
-  override string toString() { result = "return" }
+class ReturnCompletion extends Completion {
+  ReturnCompletion() {
+    this = TReturnCompletion() or
+    this = TNestedCompletion(_, TReturnCompletion())
+  }
+
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TReturnCompletion() and result = "return"
+  }
 }
 
 /**
@@ -567,8 +693,16 @@ class ReturnCompletion extends Completion, TReturnCompletion {
  * expression resulting in a break (in a loop or in a `switch`
  * statement).
  */
-class BreakCompletion extends Completion, TBreakCompletion {
-  override string toString() { result = "break" }
+class BreakCompletion extends Completion {
+  BreakCompletion() {
+    this = TBreakCompletion() or
+    this = TNestedCompletion(_, TBreakCompletion())
+  }
+
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TBreakCompletion() and result = "break"
+  }
 }
 
 /**
@@ -576,8 +710,16 @@ class BreakCompletion extends Completion, TBreakCompletion {
  * expression resulting in a loop continuation (a `continue`
  * statement).
  */
-class ContinueCompletion extends Completion, TContinueCompletion {
-  override string toString() { result = "continue" }
+class ContinueCompletion extends Completion {
+  ContinueCompletion() {
+    this = TContinueCompletion() or
+    this = TNestedCompletion(_, TContinueCompletion())
+  }
+
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TContinueCompletion() and result = "continue"
+  }
 }
 
 /**
@@ -590,47 +732,85 @@ abstract class GotoCompletion extends Completion { }
  * A completion that represents evaluation of a statement or an
  * expression resulting in a `goto label` jump.
  */
-class GotoLabelCompletion extends GotoCompletion, TGotoLabelCompletion {
+class GotoLabelCompletion extends GotoCompletion {
+  private GotoLabelStmt goto;
+
+  GotoLabelCompletion() {
+    this = TGotoLabelCompletion(goto) or
+    this = TNestedCompletion(_, TGotoLabelCompletion(goto))
+  }
+
   /** Gets the target of the `goto label` completion. */
-  string getLabel() { result = getGotoStmt().getLabel() }
+  string getLabel() { result = this.getGotoStmt().getLabel() }
 
   /** Gets the statement that resulted in this `goto label` completion. */
-  GotoLabelStmt getGotoStmt() { this = TGotoLabelCompletion(result) }
+  GotoLabelStmt getGotoStmt() { result = goto }
 
-  override string toString() { result = "goto(" + getLabel() + ")" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TGotoLabelCompletion(goto) and result = "goto(" + this.getLabel() + ")"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a `goto case` jump.
  */
-class GotoCaseCompletion extends GotoCompletion, TGotoCaseCompletion {
+class GotoCaseCompletion extends GotoCompletion {
+  private GotoCaseStmt goto;
+
+  GotoCaseCompletion() {
+    this = TGotoCaseCompletion(goto) or
+    this = TNestedCompletion(_, TGotoCaseCompletion(goto))
+  }
+
   /** Gets the target of the `goto case` completion. */
-  string getLabel() { result = getGotoStmt().getLabel() }
+  string getLabel() { result = this.getGotoStmt().getLabel() }
 
   /** Gets the statement that resulted in this `goto case` completion. */
-  GotoCaseStmt getGotoStmt() { this = TGotoCaseCompletion(result) }
+  GotoCaseStmt getGotoStmt() { result = goto }
 
-  override string toString() { result = "goto case(" + getGotoStmt().getLabel() + ")" }
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TGotoCaseCompletion(goto) and result = "goto case(" + this.getLabel() + ")"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a `goto default` jump.
  */
-class GotoDefaultCompletion extends GotoCompletion, TGotoDefaultCompletion {
-  override string toString() { result = "goto default" }
+class GotoDefaultCompletion extends GotoCompletion {
+  GotoDefaultCompletion() {
+    this = TGotoDefaultCompletion() or
+    this = TNestedCompletion(_, TGotoDefaultCompletion())
+  }
+
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TGotoDefaultCompletion() and result = "goto default"
+  }
 }
 
 /**
  * A completion that represents evaluation of a statement or an
  * expression resulting in a thrown exception.
  */
-class ThrowCompletion extends Completion, TThrowCompletion {
-  /** Gets the type of the exception being thrown. */
-  ExceptionClass getExceptionClass() { this = TThrowCompletion(result) }
+class ThrowCompletion extends Completion {
+  private ExceptionClass ec;
 
-  override string toString() { result = "throw(" + getExceptionClass() + ")" }
+  ThrowCompletion() {
+    this = TThrowCompletion(ec) or
+    this = TNestedCompletion(_, TThrowCompletion(ec))
+  }
+
+  /** Gets the type of the exception being thrown. */
+  ExceptionClass getExceptionClass() { result = ec }
+
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TThrowCompletion(ec) and result = "throw(" + ec + ")"
+  }
 }
 
 /**
@@ -642,6 +822,14 @@ class ThrowCompletion extends Completion, TThrowCompletion {
  * exits the whole application, and exists inside `try` statements skip
  * `finally` blocks.
  */
-class ExitCompletion extends Completion, TExitCompletion {
-  override string toString() { result = "exit" }
+class ExitCompletion extends Completion {
+  ExitCompletion() {
+    this = TExitCompletion() or
+    this = TNestedCompletion(_, TExitCompletion())
+  }
+
+  override string toString() {
+    // `NestedCompletion` defines `toString()` for the other case
+    this = TExitCompletion() and result = "exit"
+  }
 }

@@ -1,13 +1,13 @@
 /**
  * @name Use of potentially dangerous function
- * @description Certain standard library functions are dangerous to call.
+ * @description Use of a standard library function that is not thread-safe.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
  * @id cpp/potentially-dangerous-function
  * @tags reliability
  *       security
- *       external/cwe/cwe-242
+ *       external/cwe/cwe-676
  */
 import cpp
 
@@ -20,9 +20,6 @@ predicate potentiallyDangerousFunction(Function f, string message) {
       name = "asctime"
     ) and
     message = "Call to " + name + " is potentially dangerous"
-  ) or (
-    f.hasGlobalName("gets") and
-    message = "gets does not guard against buffer overflow"
   )
 }
 

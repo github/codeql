@@ -1,14 +1,16 @@
 import python
 private import semmle.python.pointsto.PointsTo
-private import semmle.python.pointsto.Base
+private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.ModuleKind
 
 abstract class ModuleObject extends Object {
 
-    ModuleObject () {
-        exists(Module m | m.getEntryNode() = this)
+    ModuleValue theModule() {
+        result.(PythonModuleObjectInternal).getSourceModule() = this.getModule()
         or
-        this.asBuiltin().getClass() = theModuleType().asBuiltin()
+        result.(PackageObjectInternal).getFolder() = this.(PackageObject).getPath()
+        or
+        result.(BuiltinModuleObjectInternal).getBuiltin() = this
     }
 
     /** Gets the scope corresponding to this module, if this is a Python module */
@@ -30,13 +32,17 @@ abstract class ModuleObject extends Object {
 
     override string toString() {
         result = "Module " + this.getName()
+        or
+        not exists(this.getName()) and
+        result = this.getModule().toString()
     }
 
     /** Gets the named attribute of this module. Using attributeRefersTo() instead
      * may provide better results for presentation.
      * */
-    pragma [noinline]
-    abstract Object getAttribute(string name);
+    Object getAttribute(string name) {
+        this.attributeRefersTo(name, result, _)
+    }
 
     /** Gets the named attribute of this module.
      * Synonym for `getAttribute(name)` */
@@ -45,13 +51,27 @@ abstract class ModuleObject extends Object {
         result = this.getAttribute(name)
     }
 
-    /** Whether the named attribute of this module "refers-to" value, with a known origin.
-     */
-    abstract predicate attributeRefersTo(string name, Object value, ControlFlowNode origin);
 
-    /** Whether the named attribute of this module "refers-to" value, with known class and a known origin.
-     */
-    abstract predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin);
+    predicate hasAttribute(string name) {
+        exists(theModule().attr(name))
+    }
+
+    predicate attributeRefersTo(string name, Object obj, ControlFlowNode origin) {
+        exists(ObjectInternal val, CfgOrigin valorig |
+            theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
+            obj = val.getSource() and
+            origin = valorig.toCfgNode()
+        )
+    }
+
+    predicate attributeRefersTo(string name, Object obj, ClassObject cls, ControlFlowNode origin) {
+        exists(ObjectInternal val, CfgOrigin valorig |
+            theModule().(ModuleObjectInternal).attribute(name, val, valorig) and
+            obj = val.getSource() and
+            cls = val.getClass().getSource() and
+            origin = valorig.toCfgNode()
+        )
+    }
 
     /** Gets the package for this module. */
     PackageObject getPackage() {
@@ -62,7 +82,7 @@ abstract class ModuleObject extends Object {
     /** Whether this module "exports" `name`. That is, whether using `import *` on this module
      will result in `name` being added to the namespace. */
     predicate exports(string name) {
-        PointsTo::module_exports(this, name)
+        theModule().exports(name)
     }
  
     /** Whether the complete set of names "exported" by this module can be accurately determined */
@@ -78,10 +98,8 @@ abstract class ModuleObject extends Object {
     /** Whether this module is imported by 'import name'. For example on a linux system,
       * the module 'posixpath' is imported as 'os.path' or as 'posixpath' */
     predicate importedAs(string name) {
-        PointsTo::module_imported_as(this, name)
+        PointsToInternal::module_imported_as(theModule(), name)
     }
-
-    abstract predicate hasAttribute(string name);
 
     ModuleObject getAnImportedModule() {
         result.importedAs(this.getModule().getAnImportedModuleName())
@@ -118,14 +136,6 @@ class BuiltinModuleObject extends ModuleObject {
         exists(this.asBuiltin().getMember(name))
     }
 
-    override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
-        none() 
-    }
-
-    override predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
-        none() 
-    }
-
     override predicate exportsComplete() {
         any()
     }
@@ -157,10 +167,6 @@ class PythonModuleObject extends ModuleObject {
         result = this.getModule().getFile()
     }
 
-    override Object getAttribute(string name) {
-        this.attributeRefersTo(name, result, _, _)
-    }
-
     override predicate exportsComplete() {
         exists(Module m |
             m = this.getModule() |
@@ -169,29 +175,6 @@ class PythonModuleObject extends ModuleObject {
                 all.getId() = "__all__" |
                 attr.getObject().(Name).uses(all)
             )
-        )
-    }
-
-    override predicate hasAttribute(string name) {
-        PointsTo::module_defines_name(this.getModule(), name)
-        or
-        this.attributeRefersTo(name, _, _, _)
-        or
-        /* The interpreter always adds the __name__ and __package__ attributes */
-        name = "__name__" or name = "__package__"
-    }
-
-    override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
-        exists(CfgOrigin orig |
-            origin = orig.toCfgNode() and
-            PointsTo::py_module_attributes(this.getModule(), name, value, _, orig)
-        )
-    }
-
-    override predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
-        exists(CfgOrigin orig |
-            origin = orig.toCfgNode() and
-            PointsTo::py_module_attributes(this.getModule(), name, value, cls, orig)
         )
     }
 
@@ -243,7 +226,10 @@ class PackageObject extends ModuleObject {
     }
 
     override Object getAttribute(string name) {
-        PointsTo::package_attribute_points_to(this, name, result, _, _)
+        exists(ObjectInternal val |
+            theModule().(PackageObjectInternal).attribute(name, val, _) and
+            result = val.getSource()
+        )
     }
 
     PythonModuleObject getInitModule() {
@@ -268,20 +254,6 @@ class PackageObject extends ModuleObject {
         exists(this.submodule(name))
         or
         this.getInitModule().hasAttribute(name)
-    }
-
-    override predicate attributeRefersTo(string name, Object value, ControlFlowNode origin) {
-        exists(CfgOrigin orig |
-            origin = orig.toCfgNode() and
-            PointsTo::package_attribute_points_to(this, name, value, _, orig)
-        )
-    }
-
-    override predicate attributeRefersTo(string name, Object value, ClassObject cls, ControlFlowNode origin) {
-        exists(CfgOrigin orig |
-            origin = orig.toCfgNode() and
-            PointsTo::package_attribute_points_to(this, name, value, cls, orig)
-        )
     }
 
     Location getLocation() {

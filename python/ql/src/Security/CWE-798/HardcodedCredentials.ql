@@ -53,6 +53,10 @@ predicate capitalized_word(StrConst str) {
     str.getText().regexpMatch("[A-Z][a-z]+")
 }
 
+predicate format_string(StrConst str) {
+    str.getText().matches("%{%}%")
+}
+
 predicate maybeCredential(ControlFlowNode f) {
     /* A string that is not too short and unlikely to be text or an identifier. */
     exists(StrConst str |
@@ -66,20 +70,21 @@ predicate maybeCredential(ControlFlowNode f) {
         /* Not too repetitive */
         exists(int chars |
             chars = char_count(str) |
-            chars > 20 or
-            chars > str.getText().length()/2
+            chars > 15 or
+            chars*3 > str.getText().length()*2
         ) and
         not possible_reflective_name(str.getText()) and
-        not capitalized_word(str)
+        not capitalized_word(str) and
+        not format_string(str)
     )
     or
-    /* Or, an integer with at least 8 digits */
+    /* Or, an integer with over 32 bits */
     exists(IntegerLiteral lit |
         f.getNode() = lit
         |
-        not exists(lit.getValue())
-        or
-        lit.getValue() > 10000000
+        not exists(lit.getValue()) and
+        /* Not a set of flags or round number */
+        not lit.getN().matches("%00%")
     )
 }
 

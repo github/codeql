@@ -10,8 +10,7 @@
  *       correctness
  */
 
-import semmle.code.java.Member
-import semmle.code.java.JDK
+import java
 
 /** A cast inside a try-catch block that catches `ClassCastException`. */
 class CheckedCast extends CastExpr {
@@ -22,8 +21,19 @@ class CheckedCast extends CastExpr {
       cce.getQualifiedName() = "java.lang.ClassCastException"
     )
   }
+}
 
-  Variable castVariable() { result.getAnAccess() = this.getExpr() }
+predicate hasTypeTest(Variable v) {
+  any(InstanceOfExpr ioe).getExpr() = v.getAnAccess()
+  or
+  exists(MethodAccess ma |
+    ma.getMethod().getName() = "getClass" and
+    ma.getQualifier() = v.getAnAccess()
+  )
+  or
+  any(CheckedCast cc).getExpr() = v.getAnAccess()
+  or
+  exists(Parameter p | hasTypeTest(p) and p.getAnArgument() = v.getAnAccess())
 }
 
 /**
@@ -35,53 +45,32 @@ class ReferenceEquals extends EqualsMethod {
     exists(Block b, ReturnStmt ret, EQExpr eq |
       this.getBody() = b and
       b.getStmt(0) = ret and
-      (
-        ret.getResult() = eq
-        or
-        exists(ParExpr pe | ret.getResult() = pe and pe.getExpr() = eq)
-      ) and
+      ret.getResult().getProperExpr() = eq and
       eq.getAnOperand() = this.getAParameter().getAnAccess() and
       (eq.getAnOperand() instanceof ThisAccess or eq.getAnOperand() instanceof FieldAccess)
     )
   }
 }
 
+class UnimplementedEquals extends EqualsMethod {
+  UnimplementedEquals() { this.getBody().getStmt(0) instanceof ThrowStmt }
+}
+
 from EqualsMethod m
 where
-  // The parameter is accessed at least once ...
-  exists(VarAccess va | va.getVariable() = m.getParameter()) and
-  // ... but its type is not checked using `instanceof`.
-  not exists(InstanceOfExpr e |
-    e.getEnclosingCallable() = m and
-    e.getExpr().(VarAccess).getVariable() = m.getParameter()
-  ) and
-  // Exclude cases that are probably OK.
-  not exists(MethodAccess ma, Method c | ma.getEnclosingCallable() = m and ma.getMethod() = c |
-    c.hasName("getClass")
-    or
-    c.hasName("compareTo")
-    or
-    c.hasName("equals")
-    or
-    c.hasName("isInstance")
-    or
-    c.hasName("reflectionEquals")
-    or
-    // If both `this` and the argument are passed to another method,
-    // or if the argument is passed to a method declared or inherited by `this` type,
-    // that method may do the right thing.
-    ma.getAnArgument() = m.getParameter().getAnAccess() and
-    (
-      ma.getAnArgument() instanceof ThisAccess
-      or
-      exists(Method delegate | delegate.getSourceDeclaration() = ma.getMethod() |
-        m.getDeclaringType().inherits(delegate)
-      )
+  exists(m.getBody()) and
+  exists(Parameter p | p = m.getAParameter() |
+    // The parameter has no type test
+    not hasTypeTest(p) and
+    // If the parameter is passed to a method for which we don't have the source
+    // we assume it's ok
+    not exists(MethodAccess ma |
+      not exists(ma.getMethod().getBody()) and
+      ma.getAnArgument() = p.getAnAccess()
     )
   ) and
   not m.getDeclaringType() instanceof Interface and
-  // Exclude checked casts (casts inside `try`-blocks).
-  not exists(CheckedCast cast | cast.castVariable() = m.getAParameter()) and
   // Exclude `equals` methods that implement reference-equality.
-  not m instanceof ReferenceEquals
+  not m instanceof ReferenceEquals and
+  not m instanceof UnimplementedEquals
 select m, "equals() method does not seem to check argument type."

@@ -111,4 +111,7 @@ x ?? y;                           // flow through short-circuiting operator
 	var [v2a, v2b = o2b, v2c = o2c] = o2d;
 	v2a + v2b + v2c;
 });
+
+Array.call()  // flow from implicit call to `Array` to `Array.call`
+
 // semmle-extractor-options: --experimental

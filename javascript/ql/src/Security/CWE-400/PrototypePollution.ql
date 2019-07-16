@@ -14,7 +14,15 @@
 import javascript
 import semmle.javascript.security.dataflow.PrototypePollution::PrototypePollution
 import DataFlow::PathGraph
+import semmle.javascript.dependencies.Dependencies
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Prototype pollution caused by merging a user-controlled value from $@.", source, "here"
+from
+  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Dependency dependency,
+  string dependencyId
+where
+  cfg.hasFlowPath(source, sink) and
+  dependency = sink.getNode().(Sink).getDependency() and
+  dependency.info(dependencyId, _)
+select sink.getNode(), source, sink,
+  "Prototype pollution caused by merging a user-controlled value from $@ using a vulnerable version of $@.",
+  source, "here", dependency, dependencyId

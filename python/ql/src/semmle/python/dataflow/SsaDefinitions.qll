@@ -58,11 +58,9 @@ abstract class PythonSsaSourceVariable extends SsaSourceVariable {
         or
         SsaSource::assignment_definition(this, def, _)
         or
-        SsaSource::multi_assignment_definition(this, def)
+        SsaSource::multi_assignment_definition(this, def, _, _)
         or
         SsaSource::deletion_definition(this, def)
-        or
-        SsaSource::iteration_defined_variable(this, def, _)
         or
         SsaSource::init_module_submodule_defn(this, def)
         or
@@ -148,8 +146,13 @@ class NonLocalVariable extends PythonSsaSourceVariable {
         this.(LocalVariable).getScope().getEntryNode() = result
     }
 
+    pragma [noinline]
+    Scope scope_as_local_variable() {
+        result = this.(LocalVariable).getScope()
+    }
+
     override CallNode redefinedAtCallSite() {
-        result.getScope().getScope*() = this.(LocalVariable).getScope()
+        result.getScope().getScope*() = this.scope_as_local_variable()
     }
 
 }
@@ -175,7 +178,7 @@ class ClassLocalVariable extends PythonSsaSourceVariable {
 class BuiltinVariable extends PythonSsaSourceVariable {
 
     BuiltinVariable() {
-        this instanceof GlobalVariable and 
+        this instanceof GlobalVariable and
         not exists(this.(Variable).getAStore()) and
         not this.(Variable).getId() = "__name__" and
         not this.(Variable).getId() = "__package__" and
@@ -209,13 +212,21 @@ class ModuleVariable extends PythonSsaSourceVariable {
         )
     }
 
-    override ControlFlowNode getAnImplicitUse() {
+    pragma [noinline]
+    CallNode global_variable_callnode() {
+        result.getScope() = this.(GlobalVariable).getScope()
+    }
+
+    pragma[noinline]
+    ImportMemberNode global_variable_import() {
         result.getScope() = this.(GlobalVariable).getScope() and
-        (
-            result instanceof CallNode
-            or
-            import_from_dot_in_init(result.(ImportMemberNode).getModule(this.getName()))
-        )
+        import_from_dot_in_init(result.(ImportMemberNode).getModule(this.getName()))
+    }
+
+    override ControlFlowNode getAnImplicitUse() {
+        result = global_variable_callnode()
+        or
+        result = global_variable_import()
         or
         exists(ImportTimeScope scope |
             scope.entryEdge(result, _) |
@@ -294,8 +305,13 @@ class EscapingGlobalVariable extends ModuleVariable {
         result = this.innerScope().getEntryNode()
     }
 
+    pragma [noinline]
+    Scope scope_as_global_variable() {
+        result = this.(GlobalVariable).getScope()
+    }
+
     override CallNode redefinedAtCallSite() {
-        result.(CallNode).getScope().getScope*() = this.(GlobalVariable).getScope()
+        result.(CallNode).getScope().getScope*() = this.scope_as_global_variable()
     }
 
 }
@@ -326,8 +342,13 @@ class SpecialSsaSourceVariable extends PythonSsaSourceVariable {
         this.getScope().getEntryNode() = result
     }
 
+    pragma [noinline]
+    Scope scope_as_global_variable() {
+        result = this.(GlobalVariable).getScope()
+    }
+
     override CallNode redefinedAtCallSite() {
-        result.(CallNode).getScope().getScope*() = this.(GlobalVariable).getScope()
+        result.(CallNode).getScope().getScope*() = this.scope_as_global_variable()
     }
 
 }
@@ -356,7 +377,8 @@ cached module SsaSource {
     /** Holds if `v` is used as the receiver in a method call. */
     cached predicate method_call_refinement(Variable v, ControlFlowNode use, CallNode call) {
         use = v.getAUse() and
-        call.getFunction().(AttrNode).getObject() = use
+        call.getFunction().(AttrNode).getObject() = use and
+        not test_contains(_, call)
     }
 
     /** Holds if `v` is defined by assignment at `defn` and given `value`. */
@@ -380,10 +402,11 @@ cached module SsaSource {
     }
 
     /** Holds if `v` is defined by multiple assignment at `defn`. */
-    cached predicate multi_assignment_definition(Variable v, ControlFlowNode defn) {
+    cached predicate multi_assignment_definition(Variable v, ControlFlowNode defn, int n, SequenceNode lhs) {
         defn.(NameNode).defines(v) and 
         not exists(defn.(DefinitionNode).getValue()) and
-        exists(SequenceNode s | s.getAnElement() = defn)
+        lhs.getElement(n) = defn and
+        lhs.getBasicBlock().dominates(defn.getBasicBlock())
     }
 
     /** Holds if `v` is defined by a `for` statement, the definition being `defn` */

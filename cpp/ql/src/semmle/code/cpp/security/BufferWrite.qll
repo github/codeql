@@ -157,7 +157,7 @@ class StrCopyBW extends BufferWriteCall
 
   override Type getBufferType()
   {
-    result = this.getTarget().getParameter(getParamSrc()).getType().getUnspecifiedType()
+    result = this.getTarget().getParameter(getParamSrc()).getUnspecifiedType()
   }
 
   override Expr getASource()
@@ -212,7 +212,7 @@ class StrCatBW extends BufferWriteCall
 
   override Type getBufferType()
   {
-    result = this.getTarget().getParameter(getParamSrc()).getType().getUnspecifiedType()
+    result = this.getTarget().getParameter(getParamSrc()).getUnspecifiedType()
   }
 
   override Expr getASource()
@@ -267,7 +267,7 @@ class SprintfBW extends BufferWriteCall
   {
     exists(FormattingFunction f |
       f = this.getTarget() and
-      result = f.getParameter(f.getFormatParameterIndex()).getType().getUnspecifiedType()
+      result = f.getParameter(f.getFormatParameterIndex()).getUnspecifiedType()
     )
   }
 
@@ -355,7 +355,7 @@ class SnprintfBW extends BufferWriteCall
   {
     exists(FormattingFunction f |
       f = this.getTarget() and
-      result = f.getParameter(f.getFormatParameterIndex()).getType().getUnspecifiedType()
+      result = f.getParameter(f.getFormatParameterIndex()).getUnspecifiedType()
     )
   }
 
@@ -423,7 +423,7 @@ class GetsBW extends BufferWriteCall
 
   override Type getBufferType()
   {
-    result = this.getTarget().getParameter(0).getType().getUnspecifiedType()
+    result = this.getTarget().getParameter(0).getUnspecifiedType()
   }
 
   override Expr getASource()
@@ -479,7 +479,7 @@ class ScanfBW extends BufferWrite
     exists(ScanfFunction f, ScanfFunctionCall fc |
       this = fc.getArgument(_) and
       f = fc.getTarget() and
-      result = f.getParameter(f.getFormatParameterIndex()).getType().getUnspecifiedType()
+      result = f.getParameter(f.getFormatParameterIndex()).getUnspecifiedType()
     )
   }
 
@@ -537,7 +537,7 @@ class RealpathBW extends BufferWriteCall {
 
   override Type getBufferType()
   {
-    result = this.getTarget().getParameter(0).getType().getUnspecifiedType()
+    result = this.getTarget().getParameter(0).getUnspecifiedType()
   }
   
   override Expr getDest() { result = getArgument(1) }

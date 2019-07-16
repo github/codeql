@@ -142,8 +142,10 @@ class IfStmt extends SelectionStmt, @if_stmt {
  * }
  * ```
  */
-class SwitchStmt extends SelectionStmt, @switch_stmt {
-  override Expr getCondition() { result = this.getChild(0) }
+class SwitchStmt extends SelectionStmt, Switch, @switch_stmt {
+  override Expr getExpr() { result = this.getChild(0) }
+
+  override Expr getCondition() { result = this.getExpr() }
 
   /**
    * Gets the `i`th `case` statement in the body of this `switch` statement.
@@ -164,10 +166,10 @@ class SwitchStmt extends SelectionStmt, @switch_stmt {
    * }
    * ```
    */
-  CaseStmt getCase(int i) { result = SwithStmtInternal::getCase(this, i) }
+  override CaseStmt getCase(int i) { result = SwithStmtInternal::getCase(this, i) }
 
   /** Gets a case of this `switch` statement. */
-  CaseStmt getACase() { result = this.getCase(_) }
+  override CaseStmt getACase() { result = this.getCase(_) }
 
   /** Gets a constant value case of this `switch` statement, if any. */
   ConstCase getAConstCase() { result = this.getACase() }
@@ -176,7 +178,7 @@ class SwitchStmt extends SelectionStmt, @switch_stmt {
   DefaultCase getDefaultCase() { result = this.getACase() }
 
   /** Gets a type case of this `switch` statement, if any. */
-  TypeCase getATypeCase() { result = this.getACase() }
+  deprecated TypeCase getATypeCase() { result = this.getACase() }
 
   override string toString() { result = "switch (...) {...}" }
 
@@ -237,16 +239,23 @@ private module SwithStmtInternal {
 
   private Stmt getLabeledStmt(SwitchStmt ss, int i) {
     result = ss.getChildStmt(i) and
-    not result = any(ConstCase cc).getStmt() and
-    not result = any(TypeCase tc).getStmt()
+    not result = any(CaseStmt cs).getBody()
   }
 }
 
-/**
- * A `case` statement. Either a constant case (`ConstCase`), a type matching
- * case (`TypeCase`), or a `default` case (`DefaultCase`).
- */
-class CaseStmt extends Stmt, @case {
+/** A `case` statement. */
+class CaseStmt extends Case, @case_stmt {
+  override Expr getExpr() { result = any(SwitchStmt ss | ss.getACase() = this).getExpr() }
+
+  override PatternExpr getPattern() { result = this.getChild(0) }
+
+  override Stmt getBody() {
+    exists(int i |
+      this = this.getParent().getChild(i) and
+      result = this.getParent().getChild(i + 1)
+    )
+  }
+
   /**
    * Gets the condition on this case, if any. For example, the type case on line 3
    * has no condition, and the type case on line 4 has condition `s.Length > 0`, in
@@ -261,10 +270,12 @@ class CaseStmt extends Stmt, @case {
    * }
    * ```
    */
-  Expr getCondition() { result = this.getChild(2) }
+  override Expr getCondition() { result = this.getChild(1) }
 
   /** Gets the `switch` statement that this `case` statement belongs to. */
   SwitchStmt getSwitchStmt() { result.getACase() = this }
+
+  override string toString() { result = "case ...:" }
 }
 
 /**
@@ -278,20 +289,14 @@ class CaseStmt extends Stmt, @case {
  * }
  * ```
  */
-class ConstCase extends LabeledStmt, CaseStmt {
-  Expr expr;
+class ConstCase extends CaseStmt, LabeledStmt {
+  private ConstantPatternExpr p;
 
-  ConstCase() {
-    expr = this.getChild(0) and
-    not expr instanceof LocalVariableDeclExpr
-  }
+  ConstCase() { p = this.getPattern() }
 
-  /** Gets the case expression. */
-  Expr getExpr() { result = expr }
+  override string getLabel() { result = p.getValue() }
 
-  override string getLabel() { result = getExpr().getValue() }
-
-  override string toString() { result = "case ...:" }
+  override string toString() { result = CaseStmt.super.toString() }
 }
 
 /**
@@ -308,8 +313,10 @@ class ConstCase extends LabeledStmt, CaseStmt {
  * }
  * ```
  */
-class TypeCase extends LabeledStmt, CaseStmt {
-  TypeCase() { this.getChild(1) instanceof TypeAccess }
+deprecated class TypeCase extends CaseStmt {
+  private TypeAccess ta;
+
+  TypeCase() { expr_parent(ta, 1, this) }
 
   /**
    * Gets the local variable declaration of this type case, if any. For example,
@@ -326,7 +333,7 @@ class TypeCase extends LabeledStmt, CaseStmt {
    * }
    * ```
    */
-  LocalVariableDeclExpr getVariableDeclExpr() { result = getChild(0) }
+  LocalVariableDeclExpr getVariableDeclExpr() { result = this.getPattern() }
 
   /**
    * Gets the type access of this case, for example access to `string` or
@@ -341,7 +348,7 @@ class TypeCase extends LabeledStmt, CaseStmt {
    * }
    * ```
    */
-  TypeAccess getTypeAccess() { result = getChild(1) }
+  TypeAccess getTypeAccess() { result = ta }
 
   /**
    * Gets the type being checked by this case. For example, the type being checked
@@ -356,17 +363,7 @@ class TypeCase extends LabeledStmt, CaseStmt {
    * }
    * ```
    */
-  Type getCheckedType() { result = getTypeAccess().getType() }
-
-  override string toString() {
-    exists(string var |
-      if exists(this.getVariableDeclExpr())
-      then var = " " + this.getVariableDeclExpr().getName()
-      else var = ""
-    |
-      result = "case " + this.getTypeAccess().getType().getName() + var + ":"
-    )
-  }
+  Type getCheckedType() { result = this.getTypeAccess().getType() }
 }
 
 /**
@@ -380,8 +377,10 @@ class TypeCase extends LabeledStmt, CaseStmt {
  * }
  * ```
  */
-class DefaultCase extends CaseStmt {
+class DefaultCase extends CaseStmt, LabeledStmt {
   DefaultCase() { not exists(Expr e | e.getParent() = this) }
+
+  override string getLabel() { result = "default" }
 
   override string toString() { result = "default:" }
 }
@@ -1116,39 +1115,15 @@ class LockStmt extends Stmt, @lock_stmt {
 }
 
 /**
- * A `using` statement, for example
- *
- * ```
- * using (FileStream f = File.Open("settings.xml")) {
- *   ...
- * }
- * ```
+ * A using block or declaration. Either a using declaration (`UsingDeclStmt`) or
+ * a using block (`UsingBlockStmt`).
  */
 class UsingStmt extends Stmt, @using_stmt {
-  /** Gets the `i`th local variable of this `using` statement. */
-  LocalVariable getVariable(int i) { result = this.getVariableDeclExpr(i).getVariable() }
-
-  /** Gets a local variable of this `using` statement. */
-  LocalVariable getAVariable() { result = this.getVariable(_) }
-
   /** Gets the `i`th local variable declaration of this `using` statement. */
-  LocalVariableDeclExpr getVariableDeclExpr(int i) { result = this.getChild(-i - 1) }
+  LocalVariableDeclExpr getVariableDeclExpr(int i) { none() }
 
   /** Gets a local variable declaration of this `using` statement. */
   LocalVariableDeclExpr getAVariableDeclExpr() { result = this.getVariableDeclExpr(_) }
-
-  /**
-   * Gets the expression directly used by this `using` statement, if any. For
-   * example, `f` on line 2 in
-   *
-   * ```
-   * var f = File.Open("settings.xml");
-   * using (f) {
-   *   ...
-   * }
-   * ```
-   */
-  Expr getExpr() { result = this.getChild(0) }
 
   /**
    * Gets an expression that is used in this `using` statement. Either an
@@ -1170,14 +1145,69 @@ class UsingStmt extends Stmt, @using_stmt {
    * }
    * ```
    */
-  Expr getAnExpr() {
+  Expr getAnExpr() { none() }
+
+  /**
+   * DEPRECATED: Use UsingBlockStmt.getExpr() instead.
+   * Gets the expression directly used by this `using` statement, if any. For
+   * example, `f` on line 2 in
+   *
+   * ```
+   * var f = File.Open("settings.xml");
+   * using (f) {
+   *   ...
+   * }
+   * ```
+   */
+  deprecated Expr getExpr() { none() }
+
+  /**
+   * DEPRECATED: Use UsingBlockStmt.getBody() instead.
+   * Gets the body of this `using` statement.
+   */
+  deprecated Stmt getBody() { none() }
+}
+
+/**
+ * A `using` block statement, for example
+ *
+ * ```
+ * using (FileStream f = File.Open("settings.xml")) {
+ *   ...
+ * }
+ * ```
+ */
+class UsingBlockStmt extends UsingStmt, @using_block_stmt {
+  /** Gets the `i`th local variable of this `using` statement. */
+  LocalVariable getVariable(int i) { result = this.getVariableDeclExpr(i).getVariable() }
+
+  /** Gets a local variable of this `using` statement. */
+  LocalVariable getAVariable() { result = this.getVariable(_) }
+
+  /** Gets the `i`th local variable declaration of this `using` statement. */
+  override LocalVariableDeclExpr getVariableDeclExpr(int i) { result = this.getChild(-i - 1) }
+
+  /**
+   * Gets the expression directly used by this `using` statement, if any. For
+   * example, `f` on line 2 in
+   *
+   * ```
+   * var f = File.Open("settings.xml");
+   * using (f) {
+   *   ...
+   * }
+   * ```
+   */
+  override Expr getExpr() { result = this.getChild(0) }
+
+  override Expr getAnExpr() {
     result = this.getAVariableDeclExpr().getInitializer()
     or
     result = this.getExpr()
   }
 
   /** Gets the body of this `using` statement. */
-  Stmt getBody() { result.getParent() = this }
+  override Stmt getBody() { result.getParent() = this }
 
   override string toString() { result = "using (...) {...}" }
 }
@@ -1253,6 +1283,27 @@ class LocalConstantDeclStmt extends LocalVariableDeclStmt, @const_decl_stmt {
   override LocalConstantDeclExpr getVariableDeclExpr(int n) { result = this.getChild(n) }
 
   override string toString() { result = "const ... ...;" }
+}
+
+/**
+ * A `using` declaration statement, for example
+ *
+ * ```
+ * using FileStream f = File.Open("settings.xml");
+ * ```
+ */
+class UsingDeclStmt extends LocalVariableDeclStmt, UsingStmt, @using_decl_stmt {
+  override string toString() { result = "using ... ...;" }
+
+  override LocalVariableDeclExpr getAVariableDeclExpr() {
+    result = LocalVariableDeclStmt.super.getAVariableDeclExpr()
+  }
+
+  override LocalVariableDeclExpr getVariableDeclExpr(int n) {
+    result = LocalVariableDeclStmt.super.getVariableDeclExpr(n)
+  }
+
+  override Expr getAnExpr() { result = this.getAVariableDeclExpr().getInitializer() }
 }
 
 /**

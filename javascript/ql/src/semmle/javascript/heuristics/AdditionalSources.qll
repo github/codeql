@@ -6,7 +6,7 @@
 
 import javascript
 import SyntacticHeuristics
-private import semmle.javascript.security.dataflow.CommandInjection
+private import semmle.javascript.security.dataflow.CommandInjectionCustomizations
 
 /**
  * A heuristic source of data flow in a security query.

@@ -114,3 +114,13 @@ unsigned int defined_with_ptr_arr(unsigned int *ptr[]) {
 void declared_and_defined_empty() {
 	return;
 }
+
+extern int will_be_k_and_r();
+
+int call_k_and_r(int i) {
+	return will_be_k_and_r(i);  // GOOD
+}
+
+int will_be_k_and_r(val)
+  int val;
+{ return val + 1; }

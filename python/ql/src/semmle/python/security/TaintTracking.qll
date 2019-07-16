@@ -88,6 +88,7 @@
 
 import python
 private import semmle.python.pointsto.Filters as Filters
+private import semmle.python.objects.ObjectInternal
 
 /** A 'kind' of taint. This may be almost anything,
  * but it is typically something like a "user-defined string".
@@ -133,12 +134,17 @@ abstract class TaintKind extends string {
         )
     }
 
+    /** DEPRECATED -- Use getType() instead */
+    ClassObject getClass() {
+        none()
+    }
+
     /** Gets the class of this kind of taint.
      * For example, if this were a kind of string taint
      * the `result` would be `theStrType()`.
      */
-    ClassObject getClass() {
-        none()
+    ClassValue getType() {
+        result.(ClassObjectInternal).getSource() = this.getClass()
     }
 
     /** Gets the boolean values (may be one, neither, or both) that
@@ -152,6 +158,12 @@ abstract class TaintKind extends string {
     }
 
     string repr() { result = this }
+
+    /** Gets the taint resulting from iterating over this kind of taint.
+     * For example iterating over a text file produces lines. So iterating
+     * over a tainted file would result in tainted strings
+     */
+    TaintKind getTaintForIteration() { none() }
 
 }
 
@@ -194,7 +206,7 @@ class SequenceKind extends CollectionKind {
             mod.getOp() instanceof Mod and
             mod.getAnOperand() = fromnode and
             result = this.getItem() and
-            result.getClass() = theStrType()
+            result.getType() = ObjectInternal::builtin("str")
         )
     }
 
@@ -204,6 +216,10 @@ class SequenceKind extends CollectionKind {
 
     override string repr() {
         result = "sequence of " + itemKind
+    }
+
+    override TaintKind getTaintForIteration() {
+        result = itemKind
     }
 
 }
@@ -279,7 +295,7 @@ module DictKind {
     predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
         TaintFlowImplementation::copyCall(fromnode, tonode)
         or
-        tonode.(CallNode).getFunction().refersTo(theDictType()) and
+        tonode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
         tonode.(CallNode).getArg(0) = fromnode
     }
 
@@ -687,13 +703,20 @@ class TaintedNode extends TTaintedNode {
     /** Holds if the underlying CFG node for this node is a vulnerable node
      * and is vulnerable to this node's taint.
      */
-    predicate isVulnerableSink() {
+    predicate isSink() {
         exists(TaintedNode src, TaintSink vuln |
             src.isSource() and
             src.getASuccessor*() = this and
             vuln = this.getNode() and
             vuln.sinks(this.getTaintKind())
         )
+    }
+
+    /** DEPRECATED -- Use `TaintedNode.isSink()` instead
+     * Sinks are not necessarily vulnerable
+     * For removal 2020-07-01 */
+    deprecated predicate isVulnerableSink() {
+        this.isSink()
     }
 
     TaintFlowImplementation::TrackedTaint fromAttribute(string name) {
@@ -857,6 +880,10 @@ library module TaintFlowImplementation {
         or
         call_taint_step(fromnode, totaint, tocontext, tonode)
         or
+        iteration_step(fromnode, totaint, tocontext, tonode)
+        or
+        yield_step(fromnode, totaint, tocontext, tonode)
+        or
         exists(DataFlowNode fromnodenode |
             fromnodenode = fromnode.getNode() and
             (
@@ -947,8 +974,8 @@ library module TaintFlowImplementation {
 
     pragma [noinline]
     private predicate import_flow(TaintedNode fromnode, ImportExprNode tonode, CallContext tocontext, string name) {
-        exists(ModuleObject mod |
-            tonode.refersTo(mod) and
+        exists(ModuleValue mod |
+            tonode.pointsTo(mod) and
             module_attribute_tainted(mod, name, fromnode) and
             tocontext.appliesTo(tonode)
         )
@@ -965,9 +992,9 @@ library module TaintFlowImplementation {
 
     pragma [noinline]
     predicate from_import_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, ControlFlowNode tonode) {
-        exists(string name, ImportExprNode fmod, ModuleObject mod |
+        exists(string name, ImportExprNode fmod, ModuleValue mod |
             fmod = tonode.(ImportMemberNode).getModule(name) and
-            fmod.refersTo(mod) and
+            fmod.pointsTo(mod) and
             tocontext.appliesTo(tonode) and
             module_attribute_tainted(mod, name, fromnode) and
             totaint = fromnode.getTrackedValue()
@@ -977,7 +1004,7 @@ library module TaintFlowImplementation {
     pragma [noinline]
     predicate getattr_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, CallNode tonode) {
         exists(ControlFlowNode arg, string name |
-            tonode.getFunction().refersTo(Object::builtin("getattr")) and
+            tonode.getFunction().pointsTo(ObjectInternal::builtin("getattr")) and
             arg = tonode.getArg(0) and
             name = tonode.getArg(1).getNode().(StrConst).getText() and
             arg = fromnode.getNode() and
@@ -1017,11 +1044,11 @@ library module TaintFlowImplementation {
         )
     }
 
-    predicate module_attribute_tainted(ModuleObject m, string name, TaintedNode origin) {
+    predicate module_attribute_tainted(ModuleValue m, string name, TaintedNode origin) {
         exists(EssaVariable var, CallContext c |
             var.getName() = name and
             BaseFlow::reaches_exit(var) and
-            var.getScope() = m.getModule() and
+            var.getScope() = m.getScope() and
             tainted_var(var, c, origin) and
             c = TTop()
         )
@@ -1047,6 +1074,26 @@ library module TaintFlowImplementation {
         )
     }
 
+    predicate yield_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, CallNode call) {
+        exists(PyFunctionObject func |
+            func.getFunction().isGenerator() and
+            func.getACall() = call and
+            (
+                fromnode.getContext() = tocontext.getCallee(call)
+                or
+                fromnode.getContext() = tocontext and tocontext = TTop()
+            ) and
+            exists(Yield yield |
+                yield.getScope() = func.getFunction() and
+                yield.getValue() = fromnode.getNode().getNode()
+            ) and
+            exists(SequenceKind seq |
+                seq.getItem() = fromnode.getTaintKind() and
+                totaint = fromnode.getTrackedValue().toKind(seq)
+            )
+        )
+    }
+
     predicate call_taint_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, CallNode call) {
         exists(string name |
             call.getFunction().(AttrNode).getObject(name) = fromnode.getNode() and
@@ -1061,10 +1108,17 @@ library module TaintFlowImplementation {
         )
     }
 
+    /** Holds if `v` is defined by a `for` statement, the definition being `defn` */
+    cached predicate iteration_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, ForNode for) {
+        for.iterates(_, fromnode.getNode()) and
+        totaint = TTrackedTaint(fromnode.getTaintKind().getTaintForIteration()) and
+        tocontext = fromnode.getContext()
+    }
+
     predicate self_init_end_transfer(EssaVariable self, CallContext callee, CallNode call, CallContext caller) {
-        exists(ClassObject cls, Function init |
-            PointsTo::instantiation(call, _, cls) and
-            init = cls.lookupAttribute("__init__").(FunctionObject).getFunction() and
+        exists(ClassValue cls, Function init |
+            call.getFunction().pointsTo(cls) and
+            init = cls.lookup("__init__").(CallableValue).getScope() and
             self.getSourceVariable().(Variable).isSelf() and self.getScope() = init
             |
             callee = caller.getCallee(call)
@@ -1198,24 +1252,28 @@ library module TaintFlowImplementation {
     predicate parameter_step(CallContext caller, ControlFlowNode argument, CallContext callee, NameNode param) {
         exists(ParameterDefinition def |
             def.getDefiningNode() = param and
-            exists(FunctionObject func, CallNode call |
-                exists(int n | argument = func.getArgumentForCall(call, n) and param.getNode() = func.getFunction().getArg(n))
+            exists(CallableValue func, CallNode call |
+                callee = caller.getCallee(call) |
+                exists(int n | param = func.getParameter(n) and argument = func.getArgumentForCall(call, n))
                 or
-                exists(string name | argument = func.getNamedArgumentForCall(call, name) and param.getNode() = func.getFunction().getArgByName(name))
+                exists(string name | param = func.getParameterByName(name) and argument = func.getNamedArgumentForCall(call, name))
                 or
-                class_initializer_argument(_, _, call, func, argument, param)
-                |
-                callee = caller.getCallee(call)
+                class_initializer_argument(call, func, argument, param)
             )
         )
     }
 
+    /* Helper for parameter_step */
     pragma [noinline]
-    predicate class_initializer_argument(ClassObject cls, int n, CallNode call, FunctionObject func, ControlFlowNode argument, NameNode param) {
-        PointsTo::instantiation(call, _, cls) and
-        cls.lookupAttribute("__init__") = func and
-        call.getArg(n) = argument and
-        param.getNode() = func.getFunction().getArg(n+1)
+    private predicate class_initializer_argument(CallNode call, CallableValue func, ControlFlowNode argument, NameNode param) {
+        exists(ClassValue cls |
+            cls.getACall() = call and
+            cls.lookup("__init__") = func
+        ) and
+        exists(int n |
+            call.getArg(n) = argument and
+            param.getNode() = func.getScope().getArg(n+1)
+        )
     }
 
     pragma [noinline]
@@ -1257,15 +1315,15 @@ library module TaintFlowImplementation {
             not Filters::isinstance(test.getTest(), _, var.getSourceVariable().getAUse()) and
             not boolean_filter(test.getTest(), var.getSourceVariable().getAUse())
             or
-            exists(ControlFlowNode c, ClassObject cls |
+            exists(ControlFlowNode c, ClassValue cls |
                 Filters::isinstance(test.getTest(), c, var.getSourceVariable().getAUse())
-                and c.refersTo(cls)
+                and c.pointsTo(cls)
                 |
                 test.getSense() = true and not exists(kind.getClass())
                 or
-                test.getSense() = true and kind.getClass().getAnImproperSuperType() = cls
+                test.getSense() = true and kind.getType().getASuperType() = cls
                 or
-                test.getSense() = false and not kind.getClass().getAnImproperSuperType() = cls
+                test.getSense() = false and not kind.getType().getASuperType() = cls
             )
             or
             test.getSense() = test_evaluates(test.getTest(), var.getSourceVariable().getAUse(), kind)
@@ -1311,8 +1369,9 @@ library module TaintFlowImplementation {
 
     pragma [noinline]
     predicate tainted_import_star(ImportStarRefinement def, CallContext context, TaintedNode origin) {
-        exists(ModuleObject mod, string name |
-            PointsTo::Flow::module_and_name_for_import_star(mod, name, def, _) |
+        exists(ModuleValue mod, string name |
+            PointsTo::pointsTo(def.getDefiningNode().(ImportStarNode).getModule(), _, mod, _) and
+            name = def.getSourceVariable().getName() |
             if mod.exports(name) then (
                 /* Attribute from imported module */
                 module_attribute_tainted(mod, name, origin) and
@@ -1352,6 +1411,7 @@ library module TaintFlowImplementation {
         context = fromnode.getContext()
     }
 
+
     /* A call that returns a copy (or similar) of the argument */
     predicate copyCall(ControlFlowNode fromnode, CallNode tonode) {
         tonode.getFunction().(AttrNode).getObject("copy") = fromnode
@@ -1362,7 +1422,7 @@ library module TaintFlowImplementation {
             tonode.getArg(0) = fromnode
         )
         or
-        tonode.getFunction().refersTo(Object::builtin("reversed")) and
+        tonode.getFunction().pointsTo(ObjectInternal::builtin("reversed")) and
         tonode.getArg(0) = fromnode
     }
 
@@ -1501,11 +1561,11 @@ class CallContext extends TCallContext {
             f.getFunction() = s and f.getACall() = call
         )
         or
-        exists(ClassObject cls,CallNode call |
+        exists(ClassValue cls, CallNode call |
             this = TCalleeContext(call, _, _) and
-            PointsTo::instantiation(call, _, cls) and
-            s = cls.lookupAttribute("__init__").(FunctionObject).getFunction() and
-            call.getFunction().refersTo(cls)
+            call.getFunction().pointsTo(cls) and
+            s = cls.lookup("__init__").(CallableValue).getScope() and
+            call.getFunction().pointsTo(cls)
         )
     }
 
@@ -1625,7 +1685,7 @@ pragma [noinline]
 private predicate dict_construct(ControlFlowNode itemnode, ControlFlowNode dictnode) {
     dictnode.(DictNode).getAValue() = itemnode
     or
-    dictnode.(CallNode).getFunction().refersTo(theDictType()) and
+    dictnode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
     dictnode.(CallNode).getArgByName(_) = itemnode
 }
 
@@ -1648,11 +1708,11 @@ private predicate sequence_call(ControlFlowNode fromnode, CallNode tonode) {
     tonode.getArg(0) = fromnode and
     exists(ControlFlowNode cls |
         cls = tonode.getFunction() |
-        cls.refersTo(theListType())
+        cls.pointsTo(ObjectInternal::builtin("list"))
         or
-        cls.refersTo(theTupleType())
+        cls.pointsTo(ObjectInternal::builtin("tuple"))
         or
-        cls.refersTo(theSetType())
+        cls.pointsTo(ObjectInternal::builtin("set"))
     )
 }
 

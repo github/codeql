@@ -3,7 +3,7 @@ import semmle.python.security.TaintTest
 import TaintLib
 
 
-from ModuleObject m, string name, TaintedNode origin
+from ModuleValue m, string name, TaintedNode origin
 
 where TaintFlowTest::module_attribute_tainted(m, name, origin)
 

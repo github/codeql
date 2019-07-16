@@ -1,12 +1,18 @@
 import python
 import semmle.python.types.Exceptions
 private import semmle.python.pointsto.PointsTo
+private import semmle.python.objects.Callables
 private import semmle.python.libraries.Zope
 private import semmle.python.pointsto.Base
+private import semmle.python.objects.ObjectInternal
 private import semmle.python.types.Builtins
 
 /** A function object, whether written in Python or builtin */
 abstract class FunctionObject extends Object {
+
+    CallableValue theCallable() {
+        result.(ObjectInternal).getSource() = this
+    }
 
     predicate isOverridingMethod() {
         exists(Object f | this.overrides(f))
@@ -42,42 +48,45 @@ abstract class FunctionObject extends Object {
 
     /** Gets a call-site from where this function is called as a function */
     CallNode getAFunctionCall() {
-        PointsTo::function_call(this, _, result)
+        result.getFunction().inferredValue() = theCallable()
     }
 
     /** Gets a call-site from where this function is called as a method */
     CallNode getAMethodCall() {
-        PointsTo::method_call(this, _, result)
+        exists(BoundMethodObjectInternal bm |
+            result.getFunction().inferredValue() = bm and
+            bm.getFunction() = theCallable()
+        )
     }
 
     /** Gets a call-site from where this function is called */
     ControlFlowNode getACall() {
-        result = PointsTo::get_a_call(this, _)
+        result = theCallable().getACall()
     }
 
     /** Gets a call-site from where this function is called, given the `context` */
     ControlFlowNode getACall(Context caller_context) {
-        result = PointsTo::get_a_call(this, caller_context)
+        result = theCallable().getACall(caller_context)
     }
 
     /** Gets the `ControlFlowNode` that will be passed as the nth argument to `this` when called at `call`.
         This predicate will correctly handle `x.y()`, treating `x` as the zeroth argument.
     */
     ControlFlowNode getArgumentForCall(CallNode call, int n) {
-        result = PointsTo::get_positional_argument_for_call(this, _, call, n)
+        result = theCallable().getArgumentForCall(call, n)
     }
 
     /** Gets the `ControlFlowNode` that will be passed as the named argument to `this` when called at `call`.
         This predicate will correctly handle `x.y()`, treating `x` as the self argument.
     */
     ControlFlowNode getNamedArgumentForCall(CallNode call, string name) {
-        result = PointsTo::get_named_argument_for_call(this, _, call, name)
+        result = theCallable().getNamedArgumentForCall(call, name)
     }
 
     /** Whether this function never returns. This is an approximation.
      */
     predicate neverReturns() {
-         PointsTo::function_never_returns(this)
+        theCallable().neverReturns()
     }
 
     /** Whether this is a "normal" method, that is, it is exists as a class attribute 
@@ -133,7 +142,7 @@ abstract class FunctionObject extends Object {
 class PyFunctionObject extends FunctionObject {
 
     PyFunctionObject() {
-        this.getOrigin() instanceof CallableExpr
+        any(PythonFunctionObjectInternal f).getOrigin() = this
     }
 
     override string toString() {
@@ -250,17 +259,16 @@ abstract class BuiltinCallable extends FunctionObject {
 
     abstract override string getQualifiedName();
 
+    override ControlFlowNode getArgumentForCall(CallNode call, int n) {
+        call = this.getACall() and result = call.getArg(n)
+    }
+
 }
 
 class BuiltinMethodObject extends BuiltinCallable {
 
     BuiltinMethodObject() {
-        this.asBuiltin().getClass() = theMethodDescriptorType().asBuiltin()
-        or
-        this.asBuiltin().getClass() = theBuiltinFunctionType().asBuiltin() and 
-        exists(Builtin cls | cls.isClass() and cls.getMember(_) = this.asBuiltin())
-        or
-        this.asBuiltin().getClass().getName() = "wrapper_descriptor"
+        any(BuiltinMethodObjectInternal m).getBuiltin() = this
     }
 
     override string getQualifiedName() {
@@ -312,8 +320,7 @@ class BuiltinMethodObject extends BuiltinCallable {
 class BuiltinFunctionObject extends BuiltinCallable {
 
     BuiltinFunctionObject() {
-        this.asBuiltin().getClass() = theBuiltinFunctionType().asBuiltin() and
-        exists(ModuleObject m | m.asBuiltin().getMember(_) = this.asBuiltin())
+        any(BuiltinFunctionObjectInternal f).getBuiltin() = this
     }
 
     override string getName() {

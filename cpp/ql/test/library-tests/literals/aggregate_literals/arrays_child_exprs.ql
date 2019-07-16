@@ -7,5 +7,5 @@ import cpp
 
 from ArrayAggregateLiteral aal, int childIndex, int elementIndex
 where aal.getElementExpr(elementIndex) = aal.getChild(childIndex)
-select aal, aal.getType().getUnspecifiedType(), childIndex,
+select aal, aal.getUnspecifiedType(), childIndex,
   aal.getChild(childIndex), elementIndex

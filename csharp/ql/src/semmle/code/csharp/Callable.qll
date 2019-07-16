@@ -22,11 +22,18 @@ private import semmle.code.csharp.metrics.Complexity
 class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @callable {
   override Type getReturnType() { none() }
 
-  /** Holds if this callable returns a `ref`. */
-  predicate returnsRef() { ref_returns(this) }
+  /** Gets the annotated return type of this callable. */
+  final AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
-  /** Holds if this callable returns a `ref readonly`. */
-  predicate returnsRefReadonly() { ref_readonly_returns(this) }
+  /** DEPRECATED: Use `getAnnotatedReturnType().isRef()` instead. */
+  deprecated predicate returnsRef() {
+    this.getAnnotatedReturnType().isRef()
+  }
+
+  /** DEPRECATED: Use `getAnnotatedReturnType().isReadonlyRef()` instead. */
+  deprecated predicate returnsRefReadonly() {
+    this.getAnnotatedReturnType().isReadonlyRef()
+  }
 
   override Callable getSourceDeclaration() { result = Parameterizable.super.getSourceDeclaration() }
 
@@ -903,7 +910,7 @@ class ExplicitConversionOperator extends ConversionOperator {
  * }
  * ```
  */
-class LocalFunction extends Callable, @local_function {
+class LocalFunction extends Callable, Modifiable, @local_function {
   override string getName() { local_functions(this, result, _, _) }
 
   override LocalFunction getSourceDeclaration() { local_functions(this, _, _, result) }

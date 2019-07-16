@@ -1002,7 +1002,7 @@ int ExprStmt(int b, int y, int z) {
   return ({x;});
 }
 
-#if 0
+// TODO: `delete` gets translated to NoOp
 void OperatorDelete() {
   delete static_cast<int*>(nullptr);  // No destructor
   delete static_cast<String*>(nullptr);  // Non-virtual destructor, with size.
@@ -1011,6 +1011,7 @@ void OperatorDelete() {
   delete static_cast<PolymorphicBase*>(nullptr);  // Virtual destructor
 }
 
+// TODO: `delete[]` gets translated to NoOp
 void OperatorDeleteArray() {
   delete[] static_cast<int*>(nullptr);  // No destructor
   delete[] static_cast<String*>(nullptr);  // Non-virtual destructor, with size.
@@ -1018,7 +1019,6 @@ void OperatorDeleteArray() {
   delete[] static_cast<Overaligned*>(nullptr);  // No destructor, with size and alignment.
   delete[] static_cast<PolymorphicBase*>(nullptr);  // Virtual destructor
 }
-#endif
 
 struct EmptyStruct {};
 
@@ -1046,6 +1046,39 @@ void Lambda(int x, const String& s) {
   lambda_inits(6);
 }
 
+template<typename T>
+struct vector {
+    struct iterator {
+        T* p;
+        iterator& operator++();
+        T& operator*() const;
+
+        bool operator!=(iterator right) const;
+    };
+
+    iterator begin() const;
+    iterator end() const;
+};
+
+template<typename T>
+bool operator==(typename vector<T>::iterator left, typename vector<T>::iterator right);
+template<typename T>
+bool operator!=(typename vector<T>::iterator left, typename vector<T>::iterator right);
+
+void RangeBasedFor(const vector<int>& v) {
+    for (int e : v) {
+        if (e > 0) {
+            continue;
+        }
+    }
+
+    for (const int& e : v) {
+        if (e < 5) {
+            break;
+        }
+    }
+}
+
 #if 0  // Explicit capture of `this` requires possible extractor fixes.
 
 struct LambdaContainer {
@@ -1062,5 +1095,19 @@ struct LambdaContainer {
 };
 
 #endif
+
+int AsmStmt(int x) {
+  __asm__("");
+  return x;
+}
+
+static void AsmStmtWithOutputs(unsigned int& a, unsigned int& b, unsigned int& c, unsigned int& d)
+{
+  __asm__ __volatile__
+    (
+  "cpuid\n\t"
+    : "+a" (a), "+b" (b), "+c" (c), "+d" (d)
+    );
+}
 
 // semmle-extractor-options: -std=c++17

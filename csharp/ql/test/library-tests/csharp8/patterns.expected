@@ -1,0 +1,189 @@
+switchExprs
+| patterns.cs:100:20:103:9 | ... switch { ... } | patterns.cs:100:20:100:20 | access to parameter x |
+| patterns.cs:108:24:112:9 | ... switch { ... } | patterns.cs:108:24:108:31 | (..., ...) |
+| patterns.cs:115:20:120:9 | ... switch { ... } | patterns.cs:115:20:115:27 | (..., ...) |
+| patterns.cs:126:17:132:9 | ... switch { ... } | patterns.cs:126:17:126:17 | access to local variable s |
+| patterns.cs:136:17:143:13 | ... switch { ... } | patterns.cs:136:17:136:17 | access to parameter o |
+switchExprCases
+| patterns.cs:101:13:101:40 | ... => ... | patterns.cs:101:13:101:17 | Int32 y | patterns.cs:101:34:101:40 | "large" |
+| patterns.cs:102:13:102:24 | ... => ... | patterns.cs:102:13:102:13 | _ | patterns.cs:102:18:102:24 | "small" |
+| patterns.cs:110:13:110:26 | ... => ... | patterns.cs:110:13:110:17 | { ... } | patterns.cs:110:22:110:26 | (..., ...) |
+| patterns.cs:111:13:111:26 | ... => ... | patterns.cs:111:13:111:17 | { ... } | patterns.cs:111:22:111:26 | (..., ...) |
+| patterns.cs:117:13:117:33 | ... => ... | patterns.cs:117:13:117:22 | { ... } | patterns.cs:117:27:117:33 | (..., ...) |
+| patterns.cs:118:13:118:34 | ... => ... | patterns.cs:118:13:118:23 | { ... } | patterns.cs:118:28:118:34 | (..., ...) |
+| patterns.cs:119:13:119:38 | ... => ... | patterns.cs:119:13:119:28 | { ... } | patterns.cs:119:33:119:38 | (..., ...) |
+| patterns.cs:128:13:128:49 | ... => ... | patterns.cs:128:13:128:33 | { ... } | patterns.cs:128:49:128:49 | 0 |
+| patterns.cs:129:13:129:38 | ... => ... | patterns.cs:129:13:129:33 | { ... } | patterns.cs:129:38:129:38 | 1 |
+| patterns.cs:130:13:130:23 | ... => ... | patterns.cs:130:13:130:18 | { ... } | patterns.cs:130:23:130:23 | 2 |
+| patterns.cs:131:13:131:27 | ... => ... | patterns.cs:131:13:131:22 | (..., ...) | patterns.cs:131:27:131:27 | 3 |
+| patterns.cs:138:17:138:50 | ... => ... | patterns.cs:138:17:138:17 | 1 | patterns.cs:138:22:138:50 | throw ... |
+| patterns.cs:139:17:139:22 | ... => ... | patterns.cs:139:17:139:17 | 2 | patterns.cs:139:22:139:22 | 3 |
+| patterns.cs:140:17:140:42 | ... => ... | patterns.cs:140:17:140:24 | Object y | patterns.cs:140:42:140:42 | 4 |
+| patterns.cs:141:17:141:29 | ... => ... | patterns.cs:141:17:141:22 | access to type String | patterns.cs:141:29:141:29 | 5 |
+| patterns.cs:142:17:142:41 | ... => ... | patterns.cs:142:17:142:36 | { ... } | patterns.cs:142:41:142:41 | 6 |
+switchFilters
+| patterns.cs:101:13:101:40 | ... => ... | patterns.cs:101:24:101:29 | ... > ... |
+| patterns.cs:128:13:128:49 | ... => ... | patterns.cs:128:40:128:44 | ... > ... |
+| patterns.cs:140:17:140:42 | ... => ... | patterns.cs:140:31:140:37 | ... is ... |
+propertyPatterns
+| patterns.cs:13:27:13:38 | { ... } |
+| patterns.cs:17:18:17:19 | { ... } |
+| patterns.cs:22:27:22:53 | { ... } |
+| patterns.cs:22:38:22:51 | { ... } |
+| patterns.cs:27:27:27:58 | { ... } |
+| patterns.cs:27:47:27:53 | { ... } |
+| patterns.cs:48:27:48:38 | { ... } |
+| patterns.cs:51:27:51:35 | { ... } |
+| patterns.cs:54:18:54:30 | { ... } |
+| patterns.cs:67:27:67:38 | { ... } |
+| patterns.cs:70:27:70:35 | { ... } |
+| patterns.cs:82:18:82:19 | { ... } |
+| patterns.cs:128:22:128:33 | { ... } |
+| patterns.cs:129:22:129:30 | { ... } |
+| patterns.cs:140:36:140:37 | { ... } |
+| patterns.cs:142:26:142:34 | { ... } |
+propertyPatternChild
+| patterns.cs:13:27:13:38 | { ... } | 0 | patterns.cs:13:32:13:36 | Int32 x |
+| patterns.cs:22:27:22:53 | { ... } | 0 | patterns.cs:22:31:22:32 | 12 |
+| patterns.cs:22:27:22:53 | { ... } | 1 | patterns.cs:22:38:22:51 | { ... } |
+| patterns.cs:22:38:22:51 | { ... } | 0 | patterns.cs:22:42:22:49 | Int32 subX |
+| patterns.cs:27:27:27:58 | { ... } | 0 | patterns.cs:27:31:27:32 | 12 |
+| patterns.cs:27:27:27:58 | { ... } | 1 | patterns.cs:27:38:27:56 | { ... } |
+| patterns.cs:27:47:27:53 | { ... } | 0 | patterns.cs:27:51:27:51 | _ |
+| patterns.cs:48:27:48:38 | { ... } | 0 | patterns.cs:48:32:48:36 | Int32 x |
+| patterns.cs:51:27:51:35 | { ... } | 0 | patterns.cs:51:32:51:33 | 10 |
+| patterns.cs:54:18:54:30 | { ... } | 0 | patterns.cs:54:23:54:28 | Int32 x2 |
+| patterns.cs:67:27:67:38 | { ... } | 0 | patterns.cs:67:32:67:36 | Int32 x |
+| patterns.cs:70:27:70:35 | { ... } | 0 | patterns.cs:70:32:70:33 | 10 |
+| patterns.cs:128:22:128:33 | { ... } | 0 | patterns.cs:128:27:128:31 | Int32 x |
+| patterns.cs:129:22:129:30 | { ... } | 0 | patterns.cs:129:27:129:28 | 10 |
+| patterns.cs:142:26:142:34 | { ... } | 0 | patterns.cs:142:31:142:32 | 10 |
+positionalPatterns
+| patterns.cs:57:18:57:23 | ( ... ) | patterns.cs:57:18:57:23 | { ... } | 0 | patterns.cs:57:19:57:19 | 1 |
+| patterns.cs:57:18:57:23 | ( ... ) | patterns.cs:57:18:57:23 | { ... } | 1 | patterns.cs:57:22:57:22 | 2 |
+| patterns.cs:78:18:78:33 | ( ... ) | patterns.cs:78:18:78:33 | { ... } | 0 | patterns.cs:78:19:78:23 | Int32 x |
+| patterns.cs:78:18:78:33 | ( ... ) | patterns.cs:78:18:78:33 | { ... } | 1 | patterns.cs:78:26:78:32 | Single y |
+| patterns.cs:88:18:88:23 | ( ... ) | patterns.cs:88:18:88:23 | { ... } | 0 | patterns.cs:88:19:88:19 | 1 |
+| patterns.cs:88:18:88:23 | ( ... ) | patterns.cs:88:18:88:23 | { ... } | 1 | patterns.cs:88:22:88:22 | 2 |
+| patterns.cs:93:18:93:27 | ( ... ) | patterns.cs:93:18:93:27 | { ... } | 0 | patterns.cs:93:19:93:19 | 1 |
+| patterns.cs:93:18:93:27 | ( ... ) | patterns.cs:93:18:93:27 | { ... } | 1 | patterns.cs:93:22:93:26 | Int32 x |
+| patterns.cs:94:18:94:23 | ( ... ) | patterns.cs:94:18:94:23 | { ... } | 0 | patterns.cs:94:19:94:19 | 2 |
+| patterns.cs:94:18:94:23 | ( ... ) | patterns.cs:94:18:94:23 | { ... } | 1 | patterns.cs:94:22:94:22 | _ |
+| patterns.cs:110:13:110:17 | ( ... ) | patterns.cs:110:13:110:17 | { ... } | 0 | patterns.cs:110:14:110:14 | 0 |
+| patterns.cs:110:13:110:17 | ( ... ) | patterns.cs:110:13:110:17 | { ... } | 1 | patterns.cs:110:16:110:16 | 1 |
+| patterns.cs:111:13:111:17 | ( ... ) | patterns.cs:111:13:111:17 | { ... } | 0 | patterns.cs:111:14:111:14 | 1 |
+| patterns.cs:111:13:111:17 | ( ... ) | patterns.cs:111:13:111:17 | { ... } | 1 | patterns.cs:111:16:111:16 | 0 |
+| patterns.cs:117:13:117:22 | ( ... ) | patterns.cs:117:13:117:22 | { ... } | 0 | patterns.cs:117:14:117:14 | 0 |
+| patterns.cs:117:13:117:22 | ( ... ) | patterns.cs:117:13:117:22 | { ... } | 1 | patterns.cs:117:16:117:21 | Int32 y2 |
+| patterns.cs:118:13:118:23 | ( ... ) | patterns.cs:118:13:118:23 | { ... } | 0 | patterns.cs:118:14:118:19 | Int32 x2 |
+| patterns.cs:118:13:118:23 | ( ... ) | patterns.cs:118:13:118:23 | { ... } | 1 | patterns.cs:118:22:118:22 | 0 |
+| patterns.cs:119:13:119:28 | ( ... ) | patterns.cs:119:13:119:28 | { ... } | 0 | patterns.cs:119:14:119:19 | Int32 x2 |
+| patterns.cs:119:13:119:28 | ( ... ) | patterns.cs:119:13:119:28 | { ... } | 1 | patterns.cs:119:22:119:27 | Int32 y2 |
+| patterns.cs:130:13:130:18 | ( ... ) | patterns.cs:130:13:130:18 | { ... } | 0 | patterns.cs:130:14:130:14 | 1 |
+| patterns.cs:130:13:130:18 | ( ... ) | patterns.cs:130:13:130:18 | { ... } | 1 | patterns.cs:130:17:130:17 | 2 |
+caseStatements
+| patterns.cs:38:13:38:47 | case ...: |
+| patterns.cs:41:13:41:46 | case ...: |
+| patterns.cs:48:13:48:50 | case ...: |
+| patterns.cs:51:13:51:39 | case ...: |
+| patterns.cs:54:13:54:43 | case ...: |
+| patterns.cs:57:13:57:24 | case ...: |
+| patterns.cs:59:13:59:28 | case ...: |
+| patterns.cs:61:13:61:20 | default: |
+| patterns.cs:67:13:67:50 | case ...: |
+| patterns.cs:70:13:70:51 | case ...: |
+| patterns.cs:78:13:78:43 | case ...: |
+| patterns.cs:80:13:80:20 | case ...: |
+| patterns.cs:82:13:82:20 | case ...: |
+| patterns.cs:88:13:88:24 | case ...: |
+| patterns.cs:93:13:93:28 | case ...: |
+| patterns.cs:94:13:94:24 | case ...: |
+recursivePatternCases
+| patterns.cs:48:13:48:50 | case ...: | patterns.cs:48:18:48:38 | { ... } |
+| patterns.cs:51:13:51:39 | case ...: | patterns.cs:51:18:51:38 | { ... } |
+| patterns.cs:54:13:54:43 | case ...: | patterns.cs:54:18:54:30 | { ... } |
+| patterns.cs:57:13:57:24 | case ...: | patterns.cs:57:18:57:23 | { ... } |
+| patterns.cs:67:13:67:50 | case ...: | patterns.cs:67:18:67:38 | { ... } |
+| patterns.cs:70:13:70:51 | case ...: | patterns.cs:70:18:70:38 | { ... } |
+| patterns.cs:78:13:78:43 | case ...: | patterns.cs:78:18:78:33 | { ... } |
+| patterns.cs:80:13:80:20 | case ...: | patterns.cs:80:18:80:19 | { ... } |
+| patterns.cs:82:13:82:20 | case ...: | patterns.cs:82:18:82:19 | { ... } |
+| patterns.cs:88:13:88:24 | case ...: | patterns.cs:88:18:88:23 | { ... } |
+| patterns.cs:93:13:93:28 | case ...: | patterns.cs:93:18:93:27 | { ... } |
+| patterns.cs:94:13:94:24 | case ...: | patterns.cs:94:18:94:23 | { ... } |
+recursiveCasePatternDecl
+| patterns.cs:51:13:51:39 | case ...: | patterns.cs:51:18:51:25 | access to type MyStruct | patterns.cs:51:18:51:38 | MyStruct ms |
+| patterns.cs:70:13:70:51 | case ...: | patterns.cs:70:18:70:25 | access to type MyStruct | patterns.cs:70:18:70:38 | MyStruct ms |
+recursivePatternDecl
+| patterns.cs:13:18:13:40 | { ... } | patterns.cs:13:18:13:40 | MyStruct s |
+| patterns.cs:17:18:17:21 | { ... } | patterns.cs:17:18:17:21 | Object p |
+| patterns.cs:27:38:27:56 | { ... } | patterns.cs:27:38:27:56 | MyStruct ms |
+| patterns.cs:51:18:51:38 | { ... } | patterns.cs:51:18:51:38 | MyStruct ms |
+| patterns.cs:70:18:70:38 | { ... } | patterns.cs:70:18:70:38 | MyStruct ms |
+| patterns.cs:129:13:129:33 | { ... } | patterns.cs:129:13:129:33 | MyStruct ms |
+recursivePatterns
+| patterns.cs:13:18:13:40 | { ... } |
+| patterns.cs:17:18:17:21 | { ... } |
+| patterns.cs:22:18:22:53 | { ... } |
+| patterns.cs:22:38:22:51 | { ... } |
+| patterns.cs:27:18:27:58 | { ... } |
+| patterns.cs:27:38:27:56 | { ... } |
+| patterns.cs:48:18:48:38 | { ... } |
+| patterns.cs:51:18:51:38 | { ... } |
+| patterns.cs:54:18:54:30 | { ... } |
+| patterns.cs:57:18:57:23 | { ... } |
+| patterns.cs:67:18:67:38 | { ... } |
+| patterns.cs:70:18:70:38 | { ... } |
+| patterns.cs:78:18:78:33 | { ... } |
+| patterns.cs:80:18:80:19 | { ... } |
+| patterns.cs:82:18:82:19 | { ... } |
+| patterns.cs:88:18:88:23 | { ... } |
+| patterns.cs:93:18:93:27 | { ... } |
+| patterns.cs:94:18:94:23 | { ... } |
+| patterns.cs:110:13:110:17 | { ... } |
+| patterns.cs:111:13:111:17 | { ... } |
+| patterns.cs:117:13:117:22 | { ... } |
+| patterns.cs:118:13:118:23 | { ... } |
+| patterns.cs:119:13:119:28 | { ... } |
+| patterns.cs:128:13:128:33 | { ... } |
+| patterns.cs:129:13:129:33 | { ... } |
+| patterns.cs:130:13:130:18 | { ... } |
+| patterns.cs:140:36:140:37 | { ... } |
+| patterns.cs:142:17:142:36 | { ... } |
+discards
+| patterns.cs:27:51:27:51 | _ |
+| patterns.cs:94:22:94:22 | _ |
+| patterns.cs:102:13:102:13 | _ |
+| patterns.cs:131:21:131:21 | _ |
+isExprs
+| patterns.cs:9:13:9:29 | ... is ... |
+| patterns.cs:13:13:13:40 | ... is ... |
+| patterns.cs:17:13:17:21 | ... is ... |
+| patterns.cs:22:13:22:53 | ... is ... |
+| patterns.cs:27:13:27:58 | ... is ... |
+| patterns.cs:140:31:140:37 | ... is ... |
+isRecursivePatternExpr
+| patterns.cs:13:13:13:40 | ... is ... |
+| patterns.cs:17:13:17:21 | ... is ... |
+| patterns.cs:22:13:22:53 | ... is ... |
+| patterns.cs:27:13:27:58 | ... is ... |
+| patterns.cs:140:31:140:37 | ... is ... |
+isRecursivePatternExprWithDecl
+| patterns.cs:13:13:13:40 | ... is ... | patterns.cs:13:18:13:40 | MyStruct s |
+| patterns.cs:17:13:17:21 | ... is ... | patterns.cs:17:18:17:21 | Object p |
+labeledPatternExpr
+| patterns.cs:13:32:13:36 | Int32 x | X |
+| patterns.cs:22:31:22:32 | 12 | X |
+| patterns.cs:22:38:22:51 | { ... } | S |
+| patterns.cs:22:42:22:49 | Int32 subX | X |
+| patterns.cs:27:31:27:32 | 12 | X |
+| patterns.cs:27:38:27:56 | { ... } | S |
+| patterns.cs:27:51:27:51 | _ | X |
+| patterns.cs:48:32:48:36 | Int32 x | X |
+| patterns.cs:51:32:51:33 | 10 | X |
+| patterns.cs:54:23:54:28 | Int32 x2 | X |
+| patterns.cs:67:32:67:36 | Int32 x | X |
+| patterns.cs:70:32:70:33 | 10 | X |
+| patterns.cs:128:27:128:31 | Int32 x | X |
+| patterns.cs:129:27:129:28 | 10 | X |
+| patterns.cs:142:31:142:32 | 10 | X |

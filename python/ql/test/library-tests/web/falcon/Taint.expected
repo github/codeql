@@ -3,16 +3,12 @@
 | test.py:10 | Attribute | file[externally controlled string] |
 | test.py:10 | Attribute() | externally controlled string |
 | test.py:10 | req | falcon.request |
-| test.py:11 | Attribute() | externally controlled string |
 | test.py:11 | Attribute() | json[externally controlled string] |
 | test.py:11 | raw_json | externally controlled string |
 | test.py:12 | resp | falcon.response |
-| test.py:13 | Dict | {externally controlled string} |
 | test.py:13 | Dict | {json[externally controlled string]} |
-| test.py:15 | result | externally controlled string |
 | test.py:15 | result | json[externally controlled string] |
 | test.py:17 | resp | falcon.response |
-| test.py:17 | result | {externally controlled string} |
 | test.py:17 | result | {json[externally controlled string]} |
 | test.py:19 | req | falcon.request |
 | test.py:19 | resp | falcon.response |

@@ -83,3 +83,43 @@ void test_negatives() {
   sc5 = -1;
   sc5 += CHAR_MIN; // BAD [NOT DETECTED]
 }
+
+void test_guards1(int cond) {
+	int x = cond ? INT_MAX : 0;
+
+	// ...
+
+	if (x > 128) return;
+
+	return x + 1; // GOOD
+}
+
+void test_guards2(int cond) {
+	int x = cond ? INT_MAX : 0;
+
+	// ...
+
+	if (x < 128) return;
+
+	return x + 1; // BAD [NOT DETECTED]
+}
+
+void test_guards3(int cond) {
+	int x = cond ? INT_MAX : 0;
+
+	// ...
+
+	if (x != 0) return;
+
+	return x + 1; // GOOD [FALSE POSITIVE]
+}
+
+void test_guards4(int cond) {
+	int x = cond ? INT_MAX : 0;
+
+	// ...
+
+	if (x == 0) return;
+
+	return x + 1; // BAD
+}

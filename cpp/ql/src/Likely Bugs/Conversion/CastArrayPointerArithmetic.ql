@@ -43,11 +43,15 @@ class CastToPointerArithFlow extends DataFlow::Configuration {
   }
 }
 
+/**
+ * `derived` has a (possibly indirect) base class of `base`, and at least one new
+ * field has been introduced in the inheritance chain after `base`.
+ */
 predicate introducesNewField(Class derived, Class base) {
-  derived.getABaseClass+() = base and
   (
     exists(Field f |
-      f.getDeclaringType() = derived
+      f.getDeclaringType() = derived and
+      derived.getABaseClass+() = base
     ) or
     introducesNewField(derived.getABaseClass(), base)
   )
@@ -55,5 +59,5 @@ predicate introducesNewField(Class derived, Class base) {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, CastToPointerArithFlow cfg
 where cfg.hasFlowPath(source, sink)
-  and source.getNode().asExpr().getFullyConverted().getType().getUnspecifiedType() = sink.getNode().asExpr().getFullyConverted().getType().getUnspecifiedType()
+  and source.getNode().asExpr().getFullyConverted().getUnspecifiedType() = sink.getNode().asExpr().getFullyConverted().getUnspecifiedType()
 select sink, source, sink, "Pointer arithmetic here may be done with the wrong type because of the cast $@.", source, "here"

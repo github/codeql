@@ -415,12 +415,6 @@ module Ssa {
      * Gets an SSA definition that has this variable as its underlying
      * source variable.
      */
-    deprecated Definition getAnDefinition() { result.getSourceVariable() = this }
-
-    /**
-     * Gets an SSA definition that has this variable as its underlying
-     * source variable.
-     */
     Definition getAnSsaDefinition() { result.getSourceVariable() = this }
   }
 

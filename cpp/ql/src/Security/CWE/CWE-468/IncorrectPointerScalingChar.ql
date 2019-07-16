@@ -47,7 +47,7 @@ where exists(pointerArithmeticParent(dest))
   // ```
   and forall(Expr parent |
              parent = pointerArithmeticParent+(dest) |
-             parent.getFullyConverted().getType().getUnspecifiedType() instanceof PointerType)
+             parent.getFullyConverted().getUnspecifiedType() instanceof PointerType)
 
   // Only produce alerts that are not produced by `IncorrectPointerScaling.ql`.
   and (destBase instanceof CharType)

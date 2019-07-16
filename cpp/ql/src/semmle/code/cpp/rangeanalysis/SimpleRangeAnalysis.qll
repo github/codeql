@@ -106,6 +106,9 @@ predicate analyzableExpr(Expr e) {
    (e instanceof ConditionalExpr) or
    (e instanceof AddExpr) or
    (e instanceof SubExpr) or
+   (e instanceof AssignExpr) or
+   (e instanceof AssignAddExpr) or
+   (e instanceof AssignSubExpr) or
    (e instanceof CrementOperation) or
    (e instanceof RemExpr) or
    (e instanceof CommaExpr) or
@@ -203,6 +206,18 @@ predicate exprDependsOnDef(
   | e = subExpr
   | exprDependsOnDef(subExpr.getAnOperand(), srcDef, srcVar))
   or
+  exists (AssignExpr addExpr
+  | e = addExpr
+  | exprDependsOnDef(addExpr.getRValue(), srcDef, srcVar))
+  or
+  exists (AssignAddExpr addExpr
+  | e = addExpr
+  | exprDependsOnDef(addExpr.getAnOperand(), srcDef, srcVar))
+  or
+  exists (AssignSubExpr subExpr
+  | e = subExpr
+  | exprDependsOnDef(subExpr.getAnOperand(), srcDef, srcVar))
+  or
   exists (CrementOperation crementExpr
   | e = crementExpr
   | exprDependsOnDef(crementExpr.getOperand(), srcDef, srcVar))
@@ -278,7 +293,7 @@ predicate isRecursiveDef(RangeSsaDefinition def, LocalScopeVariable v) {
  */
 private
 predicate assignmentDef(RangeSsaDefinition def, LocalScopeVariable v, Expr expr) {
-  v.getType().getUnspecifiedType() instanceof ArithmeticType
+  v.getUnspecifiedType() instanceof ArithmeticType
   and
   ((def = v.getInitializer().getExpr() and def = expr)
    or
@@ -534,6 +549,22 @@ float getLowerBoundsImpl(Expr expr) {
     yHigh = getFullyConvertedUpperBounds(subExpr.getRightOperand()) and
     result = addRoundingDown(xLow, -yHigh))
   or
+  exists (AssignExpr assign
+  | expr = assign and
+    result = getFullyConvertedLowerBounds(assign.getRValue()))
+  or
+  exists (AssignAddExpr addExpr, float xLow, float yLow
+  | expr = addExpr and
+    xLow = getFullyConvertedLowerBounds(addExpr.getLValue()) and
+    yLow = getFullyConvertedLowerBounds(addExpr.getRValue()) and
+    result = addRoundingDown(xLow, yLow))
+  or
+  exists (AssignSubExpr subExpr, float xLow, float yHigh
+  | expr = subExpr and
+    xLow = getFullyConvertedLowerBounds(subExpr.getLValue()) and
+    yHigh = getFullyConvertedUpperBounds(subExpr.getRValue()) and
+    result = addRoundingDown(xLow, -yHigh))
+  or
   exists (PrefixIncrExpr incrExpr, float xLow
   | expr = incrExpr and
     xLow = getFullyConvertedLowerBounds(incrExpr.getOperand()) and
@@ -587,7 +618,7 @@ float getLowerBoundsImpl(Expr expr) {
   // whether the value of the expression is equal to 0.
   exists (Conversion convExpr
   | expr = convExpr
-  | if convExpr.getType().getUnspecifiedType() instanceof BoolType
+  | if convExpr.getUnspecifiedType() instanceof BoolType
       then result = boolConversionLowerBound(convExpr.getExpr())
       else result = getTruncatedLowerBounds(convExpr.getExpr()))
   or
@@ -656,6 +687,22 @@ float getUpperBoundsImpl(Expr expr) {
     yLow = getFullyConvertedLowerBounds(subExpr.getRightOperand()) and
     result = addRoundingUp(xHigh, -yLow))
   or
+  exists (AssignExpr assign
+  | expr = assign and
+    result = getFullyConvertedUpperBounds(assign.getRValue()))
+  or
+  exists (AssignAddExpr addExpr, float xHigh, float yHigh
+  | expr = addExpr and
+    xHigh = getFullyConvertedUpperBounds(addExpr.getLValue()) and
+    yHigh = getFullyConvertedUpperBounds(addExpr.getRValue()) and
+    result = addRoundingUp(xHigh, yHigh))
+  or
+  exists (AssignSubExpr subExpr, float xHigh, float yLow
+  | expr = subExpr and
+    xHigh = getFullyConvertedUpperBounds(subExpr.getLValue()) and
+    yLow = getFullyConvertedLowerBounds(subExpr.getRValue()) and
+    result = addRoundingUp(xHigh, -yLow))
+  or
   exists (PrefixIncrExpr incrExpr, float xHigh
   | expr = incrExpr and
     xHigh = getFullyConvertedUpperBounds(incrExpr.getOperand()) and
@@ -705,7 +752,7 @@ float getUpperBoundsImpl(Expr expr) {
   // whether the value of the expression is equal to 0.
   exists (Conversion convExpr
   | expr = convExpr
-  | if convExpr.getType().getUnspecifiedType() instanceof BoolType
+  | if convExpr.getUnspecifiedType() instanceof BoolType
       then result = boolConversionUpperBound(convExpr.getExpr())
       else result = getTruncatedUpperBounds(convExpr.getExpr()))
   or
@@ -730,7 +777,7 @@ private predicate exprIsUsedAsBool(Expr expr) {
   expr = any(UnaryLogicalOperation op).getOperand().getFullyConverted() or
   expr = any(ConditionalExpr c).getCondition().getFullyConverted() or
   exists (Conversion cast
-  | cast.getType().getUnspecifiedType() instanceof BoolType
+  | cast.getUnspecifiedType() instanceof BoolType
   | expr = cast.getExpr())
 }
 
@@ -944,7 +991,7 @@ float getDefLowerBounds(RangeSsaDefinition def, LocalScopeVariable v) {
            // recursion from exploding.
            result =
              max (float widenLB
-             | widenLB = wideningLowerBounds(v.getType().getUnspecifiedType()) and
+             | widenLB = wideningLowerBounds(v.getUnspecifiedType()) and
                not (widenLB > truncatedLB)
              | widenLB)
       else result = truncatedLB)
@@ -970,7 +1017,7 @@ float getDefUpperBounds(RangeSsaDefinition def, LocalScopeVariable v) {
            // from exploding.
            result =
              min (float widenUB
-             | widenUB = wideningUpperBounds(v.getType().getUnspecifiedType()) and
+             | widenUB = wideningUpperBounds(v.getUnspecifiedType()) and
                not (widenUB < truncatedUB)
              | widenUB)
       else result = truncatedUB)
@@ -1001,9 +1048,9 @@ predicate unanalyzableDefBounds(
  */
 bindingset[guard, v, branch]
 predicate nonNanGuardedVariable(ComparisonOperation guard, VariableAccess v, boolean branch) {
-  v.getType().getUnspecifiedType() instanceof IntegralType
+  v.getUnspecifiedType() instanceof IntegralType
   or
-  v.getType().getUnspecifiedType() instanceof FloatingPointType and v instanceof NonNanVariableAccess
+  v.getUnspecifiedType() instanceof FloatingPointType and v instanceof NonNanVariableAccess
   or
   // The reason the following case is here is to ensure that when we say
   // `if (x > 5) { ...then... } else { ...else... }`
@@ -1026,7 +1073,7 @@ predicate lowerBoundFromGuard(
   | boundFromGuard(guard, v, childLB, true, strictness, branch)
   | if nonNanGuardedVariable(guard, v, branch)
     then (if (strictness = Nonstrict() or
-            not (v.getType().getUnspecifiedType() instanceof IntegralType))
+            not (v.getUnspecifiedType() instanceof IntegralType))
           then lb = childLB
           else lb = childLB+1)
     else lb = varMinVal(v.getTarget()))
@@ -1045,7 +1092,7 @@ predicate upperBoundFromGuard(
   | boundFromGuard(guard, v, childUB, false, strictness, branch)
   | if nonNanGuardedVariable(guard, v, branch)
     then (if (strictness = Nonstrict() or
-            not (v.getType().getUnspecifiedType() instanceof IntegralType))
+            not (v.getUnspecifiedType() instanceof IntegralType))
           then ub = childUB
           else ub = childUB-1)
     else ub = varMaxVal(v.getTarget()))
@@ -1088,7 +1135,7 @@ predicate linearBoundFromGuard(
   // For the comparison x < RHS, we create two bounds:
   //
   //   1. x < upperbound(RHS)
-  //   2. x >= typeLowerBound(RHS.getType().getUnspecifiedType())
+  //   2. x >= typeLowerBound(RHS.getUnspecifiedType())
   //
   exists (Expr lhs, Expr rhs, RelationDirection dir, RelationStrictness st
   | linearAccess(lhs, v, p, q) and
@@ -1108,8 +1155,8 @@ predicate linearBoundFromGuard(
   //
   // For x != RHS, we create trivial bounds:
   //
-  //   1. x <= typeUpperBound(RHS.getType().getUnspecifiedType())
-  //   2. x >= typeLowerBound(RHS.getType().getUnspecifiedType())
+  //   1. x <= typeUpperBound(RHS.getUnspecifiedType())
+  //   2. x >= typeLowerBound(RHS.getUnspecifiedType())
   //
   or
   exists (Expr lhs, Expr rhs, boolean isEQ
@@ -1156,7 +1203,7 @@ private cached module SimpleRangeAnalysisCached {
     // single minimum value.
     result = min(float lb | lb = getTruncatedLowerBounds(expr) | lb)
   }
-  
+
   /**
    * Gets the upper bound of the expression.
    *
@@ -1175,7 +1222,7 @@ private cached module SimpleRangeAnalysisCached {
     // single maximum value.
     result = max(float ub | ub = getTruncatedUpperBounds(expr) | ub)
   }
-  
+
   /**
    * Holds if `expr` has a provably empty range. For example:
    *
@@ -1204,13 +1251,13 @@ private cached module SimpleRangeAnalysisCached {
   predicate defMightOverflowNegatively(RangeSsaDefinition def, LocalScopeVariable v) {
     getDefLowerBoundsImpl(def, v) < varMinVal(v)
   }
-  
+
   /** Holds if the definition might overflow positively. */
   cached
   predicate defMightOverflowPositively(RangeSsaDefinition def, LocalScopeVariable v) {
     getDefUpperBoundsImpl(def, v) > varMaxVal(v)
   }
-  
+
   /**
    * Holds if the definition might overflow (either positively or
    * negatively).
@@ -1220,7 +1267,7 @@ private cached module SimpleRangeAnalysisCached {
     defMightOverflowNegatively(def, v) or
     defMightOverflowPositively(def, v)
   }
-  
+
   /**
    * Holds if the expression might overflow negatively. This predicate
    * does not consider the possibility that the expression might overflow
@@ -1228,9 +1275,14 @@ private cached module SimpleRangeAnalysisCached {
    */
   cached
   predicate exprMightOverflowNegatively(Expr expr) {
-    getLowerBoundsImpl(expr) < exprMinVal(expr)
+    getLowerBoundsImpl(expr) < exprMinVal(expr) or
+
+    // The lower bound of the expression `x--` is the same as the lower
+    // bound of `x`, so the standard logic (above) does not work for
+    // detecting whether it might overflow.
+    getLowerBoundsImpl(expr.(PostfixDecrExpr)) = exprMinVal(expr)
   }
-  
+
   /**
    * Holds if the expression might overflow negatively. Conversions
    * are also taken into account. For example the expression
@@ -1242,7 +1294,7 @@ private cached module SimpleRangeAnalysisCached {
     exprMightOverflowNegatively(expr) or
     convertedExprMightOverflowNegatively(expr.getConversion())
   }
-  
+
     /**
    * Holds if the expression might overflow positively. This predicate
    * does not consider the possibility that the expression might overflow
@@ -1250,9 +1302,14 @@ private cached module SimpleRangeAnalysisCached {
    */
   cached
   predicate exprMightOverflowPositively(Expr expr) {
-    getUpperBoundsImpl(expr) > exprMaxVal(expr)
+    getUpperBoundsImpl(expr) > exprMaxVal(expr) or
+
+    // The upper bound of the expression `x++` is the same as the upper
+    // bound of `x`, so the standard logic (above) does not work for
+    // detecting whether it might overflow.
+    getUpperBoundsImpl(expr.(PostfixIncrExpr)) = exprMaxVal(expr)
   }
-  
+
   /**
    * Holds if the expression might overflow positively. Conversions
    * are also taken into account. For example the expression
@@ -1264,7 +1321,7 @@ private cached module SimpleRangeAnalysisCached {
     exprMightOverflowPositively(expr) or
     convertedExprMightOverflowPositively(expr.getConversion())
   }
-  
+
   /**
    * Holds if the expression might overflow (either positively or
    * negatively). The possibility that the expression might overflow

@@ -51,11 +51,27 @@ module TaintTracking {
     /** Holds if the intermediate node `node` is a taint sanitizer. */
     predicate isSanitizer(DataFlow::Node node) { none() }
 
-    /** Holds if the edge from `source` to `sink` is a taint sanitizer. */
+    /**
+     * DEPRECATED: Use `isSanitizerEdge` instead.
+     *
+     * Holds if the edge from `source` to `sink` is a taint sanitizer.
+     */
     predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) { none() }
 
-    /** Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`. */
+    /**
+     * DEPRECATED: Use `isSanitizerEdge` instead.
+     *
+     * Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`.
+     */
     predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl) {
+      none()
+    }
+
+    /** Holds if the edge from `pred` to `succ` is a taint sanitizer. */
+    predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) { none() }
+
+    /** Holds if the edge from `pred` to `succ` is a taint sanitizer for data labelled with `lbl`. */
+    predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel lbl) {
       none()
     }
 
@@ -74,16 +90,18 @@ module TaintTracking {
       isSanitizer(node)
     }
 
-    final override predicate isBarrier(DataFlow::Node source, DataFlow::Node sink) {
-      super.isBarrier(source, sink) or
-      isSanitizer(source, sink)
+    final override predicate isBarrierEdge(DataFlow::Node source, DataFlow::Node sink) {
+      super.isBarrierEdge(source, sink) or
+      isSanitizer(source, sink) or
+      isSanitizerEdge(source, sink)
     }
 
-    final override predicate isBarrier(
+    final override predicate isBarrierEdge(
       DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
     ) {
-      super.isBarrier(source, sink, lbl) or
-      isSanitizer(source, sink, lbl)
+      super.isBarrierEdge(source, sink, lbl) or
+      isSanitizer(source, sink, lbl) or
+      isSanitizerEdge(source, sink, lbl)
     }
 
     final override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
@@ -129,20 +147,35 @@ module TaintTracking {
    * A node that can act as a sanitizer when appearing in a condition.
    */
   abstract class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
-    final override predicate blocks(boolean outcome, Expr e) { sanitizes(outcome, e) }
+    override predicate blocks(boolean outcome, Expr e) { sanitizes(outcome, e) }
 
     /**
      * Holds if this node sanitizes expression `e`, provided it evaluates
      * to `outcome`.
      */
     abstract predicate sanitizes(boolean outcome, Expr e);
+
+    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      sanitizes(outcome, e, label)
+    }
+
+    /**
+     * Holds if this node sanitizes expression `e`, provided it evaluates
+     * to `outcome`.
+     */
+    predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
   }
 
   /**
    * A sanitizer guard node that only blocks specific flow labels.
    */
-  abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode,
-    DataFlow::LabeledBarrierGuardNode { }
+  abstract class LabeledSanitizerGuardNode extends SanitizerGuardNode, DataFlow::BarrierGuardNode {
+    final override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      sanitizes(outcome, e, label)
+    }
+
+    override predicate sanitizes(boolean outcome, Expr e) { none() }
+  }
 
   /**
    * A taint-propagating data flow edge that should be added to all taint tracking
@@ -209,10 +242,10 @@ module TaintTracking {
   /**
    * A taint propagating data flow edge through persistent storage.
    */
-  private class StorageTaintStep extends AdditionalTaintStep {
+  class PersistentStorageTaintStep extends AdditionalTaintStep {
     PersistentReadAccess read;
 
-    StorageTaintStep() { this = read }
+    PersistentStorageTaintStep() { this = read }
 
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       pred = read.getAWrite().getValue() and
@@ -235,7 +268,8 @@ module TaintTracking {
         (name = "map" or name = "forEach") and
         (i = 0 or i = 2) and
         call.getArgument(0).analyze().getAValue().(AbstractFunction).getFunction() = f and
-        pred.(DataFlow::SourceNode).getAMethodCall(name) = call and
+        call.(DataFlow::MethodCallNode).getMethodName() = name and
+        pred = call.getReceiver() and
         succ = DataFlow::parameterNode(f.getParameter(i))
       )
       or
@@ -253,6 +287,25 @@ module TaintTracking {
         name = "unshift"
       |
         pred = call.getAnArgument() and
+        succ.(DataFlow::SourceNode).getAMethodCall(name) = call
+      )
+      or
+      // `array.push(...e)`, `array.unshift(...e)`: if `e` is tainted, then so is `array`.
+      exists(string name |
+        name = "push" or
+        name = "unshift"
+      |
+        pred = call.getASpreadArgument() and
+        // Make sure we handle reflective calls
+        succ = call.getReceiver().getALocalSource() and
+        call.getCalleeName() = name
+      )
+      or
+      // `array.splice(i, del, e)`: if `e` is tainted, then so is `array`.
+      exists(string name |
+        name = "splice"
+      |
+        pred = call.getArgument(2) and
         succ.(DataFlow::SourceNode).getAMethodCall(name) = call
       )
       or

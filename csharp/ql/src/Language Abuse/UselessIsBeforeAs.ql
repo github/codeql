@@ -17,9 +17,10 @@ class StructuralComparisonConfig extends StructuralComparisonConfiguration {
   StructuralComparisonConfig() { this = "UselessIsBeforeAs" }
 
   override predicate candidate(ControlFlowElement x, ControlFlowElement y) {
-    exists(IfStmt is, AsExpr ae, IsTypeExpr ie |
+    exists(IfStmt is, AsExpr ae, IsExpr ie, TypeAccessPatternExpr tape |
       ie = is.getCondition().getAChild*() and
-      ae.getTargetType() = ie.getCheckedType() and
+      tape = ie.getPattern() and
+      ae.getTargetType() = tape.getTarget() and
       x = ie.getExpr() and
       y = ae.getExpr()
     |
