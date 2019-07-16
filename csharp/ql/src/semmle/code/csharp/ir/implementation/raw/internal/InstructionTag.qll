@@ -1,21 +1,22 @@
 import csharp
+import semmle.code.csharp.ir.Util
 
 
-// TODO: ARE THOSE INITS VALID?
-//private predicate fieldIsInitialized(Field field) {
-//  exists(ClassAggregateLiteral initList |
-//    initList.isInitialized(field)
-//  ) or
-//  exists(ConstructorFieldInit init |
-//    field = init.getTarget()
-//  )
-//}
-//
-//private predicate elementIsInitialized(int elementIndex) {
-//  exists(ArrayAggregateLiteral initList |
-//    initList.isInitialized(elementIndex)
-//  )
-//}
+// TODO:IN C# DOES IT MAKE SENSE TO HAVE BOTH?
+private predicate fieldIsInitialized(Field field) {
+  exists(ObjectInitializer initList | 
+  	exists(int i |field = initList.getMemberInitializer(i).getInitializedMember())
+  ) or
+  exists(MemberInitializer init |
+    field = init.getInitializedMember()
+  )
+}
+
+private predicate elementIsInitialized(int elementIndex) {
+  exists(ArrayInitWithMod initList |
+    initList.isInitialized(elementIndex)
+  )
+}
 
 newtype TInstructionTag =
   OnlyInstructionTag() or  // Single instruction (not including implicit Load)
@@ -87,7 +88,7 @@ newtype TInstructionTag =
   InitializerElementDefaultValueStoreTag(int elementIndex) {
     elementIsInitialized(elementIndex)
   } // or
-  // TODO: ASM SHOULD NOT BE HERE?
+  // TODO: ASM NOT PRESENT IN C#
 //  AsmTag() or
 //  AsmInputTag(int elementIndex) {
 //    exists(AsmStmt asm |

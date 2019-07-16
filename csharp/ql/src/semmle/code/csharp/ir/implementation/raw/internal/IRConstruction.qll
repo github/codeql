@@ -21,7 +21,8 @@ InstructionTag getInstructionTag(Instruction instruction) {
 import Cached
 cached private module Cached {
   cached predicate functionHasIR(Callable callable) {
-    exists(getTranslatedFunction(callable))
+    exists(getTranslatedFunction(callable)) and
+    callable.fromSource()
   }
 
   cached newtype TInstruction =
@@ -48,14 +49,15 @@ cached private module Cached {
       instruction = translatedExpr.getResult()
     )
   }
-
+  
+  // TODO: Conversion? Cast?
   cached Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
     exists(Expr converted, TranslatedExpr translatedExpr |
-      result = converted.(Conversion).getExpr+()
+      result = converted.(Cast).getExpr+()
       or
       result = converted
       |
-      not result instanceof Conversion and
+      not result instanceof Cast and
       translatedExpr = getTranslatedExpr(converted) and
       instruction = translatedExpr.getResult()
     )
@@ -160,23 +162,24 @@ cached private module Cached {
         instruction = inLoop.getInstruction(tag)
       )
     )
-    or
+    //or
+    // TODO: TRANSLATE TO FOREACH
     // Range-based for loop:
     // Any edge from within the update of the loop to the condition of
     // the loop is a back edge.
-    exists(TranslatedRangeBasedForStmt s, TranslatedCondition condition |
-      s instanceof TranslatedRangeBasedForStmt and
-      condition = s.getCondition() and
-      result = condition.getFirstInstruction() and
-      exists(TranslatedElement inUpdate, InstructionTag tag |
-        result = inUpdate.getInstructionSuccessor(tag, kind) and
-        exists(TranslatedElement update |
-          update = s.getUpdate() |
-          inUpdate = update.getAChild*()
-        ) and
-        instruction = inUpdate.getInstruction(tag)
-      )
-    )
+//    exists(TranslatedRangeBasedForStmt s, TranslatedCondition condition |
+//      s instanceof TranslatedRangeBasedForStmt and
+//      condition = s.getCondition() and
+//      result = condition.getFirstInstruction() and
+//      exists(TranslatedElement inUpdate, InstructionTag tag |
+//        result = inUpdate.getInstructionSuccessor(tag, kind) and
+//        exists(TranslatedElement update |
+//          update = s.getUpdate() |
+//          inUpdate = update.getAChild*()
+//        ) and
+//        instruction = inUpdate.getInstruction(tag)
+//      )
+//    )
     or
     // Goto statement:
     // As a conservative approximation, any edge out of `goto` is a back edge

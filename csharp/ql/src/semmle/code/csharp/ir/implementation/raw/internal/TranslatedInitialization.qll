@@ -7,6 +7,8 @@ private import TranslatedExpr
 private import TranslatedFunction
 private import semmle.code.csharp.ir.Util
 
+// TODO: LOOK INTO GET ORDER FUNCTION AND SEE EXACTLY IF IT IS NEEDED
+
 /**
  * Gets the `TranslatedInitialization` for the expression `expr`.
  */
@@ -119,13 +121,15 @@ abstract class TranslatedListInitialization extends TranslatedInitialization, In
  */
 class TranslatedClassListInitialization extends TranslatedListInitialization
 {
-  override ClassAggregateLiteral expr;
+  override ObjectInitializer expr;
 
   override TranslatedElement getChild(int id) {
     exists(TranslatedFieldInitialization fieldInit |
       result = fieldInit and
       fieldInit = getTranslatedFieldInitialization(expr, _) and
-      fieldInit.getOrder() = id
+      //fieldInit.getOrder() = id
+      //TODO: DOES C# HAVE ORDERING FOR FIELD MEMBERS? DO WE NEED? YES, THE PRINTIR USES THEM
+      id = 200
     )
   }
 }
@@ -135,7 +139,7 @@ class TranslatedClassListInitialization extends TranslatedListInitialization
  * initializer list.
  */
 class TranslatedArrayListInitialization extends TranslatedListInitialization {
-  override ArrayAggregateLiteral expr;
+  override ArrayInitializer expr;
 
   override TranslatedElement getChild(int id) {
     // The children are in initialization order
@@ -152,7 +156,7 @@ class TranslatedArrayListInitialization extends TranslatedListInitialization {
  */
 abstract class TranslatedDirectInitialization extends TranslatedInitialization {
   TranslatedDirectInitialization() {
-    not expr instanceof AggregateLiteral
+    not expr instanceof CollectionInitializer
   }
 
   override TranslatedElement getChild(int id) {
@@ -175,7 +179,7 @@ abstract class TranslatedDirectInitialization extends TranslatedInitialization {
  */
 class TranslatedSimpleDirectInitialization extends TranslatedDirectInitialization {
   TranslatedSimpleDirectInitialization() {
-    not expr instanceof ConstructorCall and
+    not expr instanceof ObjectCreation and
     not expr instanceof StringLiteral
   }
 
@@ -215,205 +219,205 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
  * Represents the IR translation of an initialization of an array from a string
  * literal.
  */
-class TranslatedStringLiteralInitialization extends TranslatedDirectInitialization {
-  override StringLiteral expr;
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
-    (
-      // Load the string literal to make it a prvalue of type `char[len]`
-      tag = InitializerLoadStringTag() and
-      opcode instanceof Opcode::Load and
-      resultType = getInitializer().getResultType() and
-      isGLValue = false
-    ) or
-    (
-      // Store the string into the target.
-      tag = InitializerStoreTag() and
-      opcode instanceof Opcode::Store and
-      resultType = getInitializer().getResultType() and
-      isGLValue = false
-    ) or
-    exists(int startIndex, int elementCount |
-      // If the initializer string isn't large enough to fill the target, then
-      // we have to generate another instruction sequence to store a constant
-      // zero into the remainder of the array.
-      zeroInitRange(startIndex, elementCount) and
-      (
-        (
-          // Create a constant zero whose size is the size of the remaining
-          // space in the target array.
-          tag = ZeroPadStringConstantTag() and
-          opcode instanceof Opcode::Constant and
-          resultType instanceof UnknownType and
-          isGLValue = false
-        ) or
-        (
-          // The index of the first element to be zero initialized.
-          tag = ZeroPadStringElementIndexTag() and
-          opcode instanceof Opcode::Constant and
-          resultType = getIntType() and
-          isGLValue = false
-        ) or
-        (
-          // Compute the address of the first element to be zero initialized.
-          tag = ZeroPadStringElementAddressTag() and
-          opcode instanceof Opcode::PointerAdd and
-          resultType = getElementType() and
-          isGLValue = true
-        ) or
-        (
-          // Store the constant zero into the remainder of the string.
-          tag = ZeroPadStringStoreTag() and
-          opcode instanceof Opcode::Store and
-          resultType instanceof UnknownType and
-          isGLValue = false
-        )
-      )
-    )
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    kind instanceof GotoEdge and
-    (
-      (
-        tag = InitializerLoadStringTag() and
-        result = getInstruction(InitializerStoreTag())
-      ) or
-      if zeroInitRange(_, _) then (
-        (
-          tag = InitializerStoreTag() and
-          result = getInstruction(ZeroPadStringConstantTag())
-        ) or
-        (
-          tag = ZeroPadStringConstantTag() and
-          result = getInstruction(ZeroPadStringElementIndexTag())
-        ) or
-        (
-          tag = ZeroPadStringElementIndexTag() and
-          result = getInstruction(ZeroPadStringElementAddressTag())
-        ) or
-        (
-          tag = ZeroPadStringElementAddressTag() and
-          result = getInstruction(ZeroPadStringStoreTag())
-        ) or
-        (
-          tag = ZeroPadStringStoreTag() and
-          result = getParent().getChildSuccessor(this)
-        )
-      )
-      else (
-        tag = InitializerStoreTag() and
-        result = getParent().getChildSuccessor(this)
-      )
-    )
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitializer() and result = getInstruction(InitializerLoadStringTag())
-  }
-
-  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    (
-      tag = InitializerLoadStringTag() and
-      (
-        (
-          operandTag instanceof AddressOperandTag and
-          result = getInitializer().getResult()
-        ) or
-        (
-          operandTag instanceof LoadOperandTag and
-          result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
-        )
-      )
-    ) or
-    (
-      tag = InitializerStoreTag() and
-      (
-        (
-          operandTag instanceof AddressOperandTag and
-          result = getContext().getTargetAddress()
-        ) or
-        (
-          operandTag instanceof StoreValueOperandTag and
-          result = getInstruction(InitializerLoadStringTag())
-        )
-      )
-    ) or
-    (
-      tag = ZeroPadStringElementAddressTag() and
-      (
-        (
-          operandTag instanceof LeftOperandTag and
-          result = getContext().getTargetAddress()
-        ) or
-        (
-          operandTag instanceof RightOperandTag and
-          result = getInstruction(ZeroPadStringElementIndexTag())
-        )
-      )
-    ) or
-    (
-      tag = ZeroPadStringStoreTag() and
-      (
-        (
-          operandTag instanceof AddressOperandTag and
-          result = getInstruction(ZeroPadStringElementAddressTag())
-        ) or
-        (
-          operandTag instanceof StoreValueOperandTag and
-          result = getInstruction(ZeroPadStringConstantTag())
-        )
-      )
-    )
-  }
-
-  override string getInstructionConstantValue(InstructionTag tag) {
-    exists(int startIndex |
-      zeroInitRange(startIndex, _) and
-      (
-        (
-          tag = ZeroPadStringConstantTag() and
-          result = "0"
-        ) or
-        (
-          tag = ZeroPadStringElementIndexTag() and
-          result = startIndex.toString()
-        )
-      )
-    )
-  }
-
-  override int getInstructionResultSize(InstructionTag tag) {
-    exists(int elementCount |
-      zeroInitRange(_, elementCount) and
-      (
-        tag = ZeroPadStringConstantTag() or
-        tag = ZeroPadStringStoreTag()
-      ) and
-      result = elementCount * getElementType().getSize()
-    )
-  }
-
-  private Type getElementType() {
-    result = getContext().getTargetType().(ArrayType).getBaseType().getUnspecifiedType()
-  }
-
-  /**
-   * Holds if the `elementCount` array elements starting at `startIndex` must be
-   * zero initialized.
-   */
-  private predicate zeroInitRange(int startIndex, int elementCount) {
-    exists(int targetCount |
-      startIndex = expr.getUnspecifiedType().(ArrayType).getArraySize() and
-      targetCount = getContext().getTargetType().(ArrayType).getArraySize() and
-      elementCount = targetCount - startIndex and
-      elementCount > 0
-    )
-  }
-}
+//class TranslatedStringLiteralInitialization extends TranslatedDirectInitialization {
+//  override StringLiteral expr;
+//
+//  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
+//    (
+//      // Load the string literal to make it a prvalue of type `char[len]`
+//      tag = InitializerLoadStringTag() and
+//      opcode instanceof Opcode::Load and
+//      resultType = getInitializer().getResultType() and
+//      isGLValue = false
+//    ) or
+//    (
+//      // Store the string into the target.
+//      tag = InitializerStoreTag() and
+//      opcode instanceof Opcode::Store and
+//      resultType = getInitializer().getResultType() and
+//      isGLValue = false
+//    ) or
+//    exists(int startIndex, int elementCount |
+//      // If the initializer string isn't large enough to fill the target, then
+//      // we have to generate another instruction sequence to store a constant
+//      // zero into the remainder of the array.
+//      zeroInitRange(startIndex, elementCount) and
+//      (
+//        (
+//          // Create a constant zero whose size is the size of the remaining
+//          // space in the target array.
+//          tag = ZeroPadStringConstantTag() and
+//          opcode instanceof Opcode::Constant and
+//          resultType instanceof UnknownType and
+//          isGLValue = false
+//        ) or
+//        (
+//          // The index of the first element to be zero initialized.
+//          tag = ZeroPadStringElementIndexTag() and
+//          opcode instanceof Opcode::Constant and
+//          resultType = getIntType() and
+//          isGLValue = false
+//        ) or
+//        (
+//          // Compute the address of the first element to be zero initialized.
+//          tag = ZeroPadStringElementAddressTag() and
+//          opcode instanceof Opcode::PointerAdd and
+//          resultType = getElementType() and
+//          isGLValue = true
+//        ) or
+//        (
+//          // Store the constant zero into the remainder of the string.
+//          tag = ZeroPadStringStoreTag() and
+//          opcode instanceof Opcode::Store and
+//          resultType instanceof UnknownType and
+//          isGLValue = false
+//        )
+//      )
+//    )
+//  }
+//
+//  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+//    kind instanceof GotoEdge and
+//    (
+//      (
+//        tag = InitializerLoadStringTag() and
+//        result = getInstruction(InitializerStoreTag())
+//      ) or
+//      if zeroInitRange(_, _) then (
+//        (
+//          tag = InitializerStoreTag() and
+//          result = getInstruction(ZeroPadStringConstantTag())
+//        ) or
+//        (
+//          tag = ZeroPadStringConstantTag() and
+//          result = getInstruction(ZeroPadStringElementIndexTag())
+//        ) or
+//        (
+//          tag = ZeroPadStringElementIndexTag() and
+//          result = getInstruction(ZeroPadStringElementAddressTag())
+//        ) or
+//        (
+//          tag = ZeroPadStringElementAddressTag() and
+//          result = getInstruction(ZeroPadStringStoreTag())
+//        ) or
+//        (
+//          tag = ZeroPadStringStoreTag() and
+//          result = getParent().getChildSuccessor(this)
+//        )
+//      )
+//      else (
+//        tag = InitializerStoreTag() and
+//        result = getParent().getChildSuccessor(this)
+//      )
+//    )
+//  }
+//
+//  override Instruction getChildSuccessor(TranslatedElement child) {
+//    child = getInitializer() and result = getInstruction(InitializerLoadStringTag())
+//  }
+//
+//  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+//    (
+//      tag = InitializerLoadStringTag() and
+//      (
+//        (
+//          operandTag instanceof AddressOperandTag and
+//          result = getInitializer().getResult()
+//        ) or
+//        (
+//          operandTag instanceof LoadOperandTag and
+//          result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+//        )
+//      )
+//    ) or
+//    (
+//      tag = InitializerStoreTag() and
+//      (
+//        (
+//          operandTag instanceof AddressOperandTag and
+//          result = getContext().getTargetAddress()
+//        ) or
+//        (
+//          operandTag instanceof StoreValueOperandTag and
+//          result = getInstruction(InitializerLoadStringTag())
+//        )
+//      )
+//    ) or
+//    (
+//      tag = ZeroPadStringElementAddressTag() and
+//      (
+//        (
+//          operandTag instanceof LeftOperandTag and
+//          result = getContext().getTargetAddress()
+//        ) or
+//        (
+//          operandTag instanceof RightOperandTag and
+//          result = getInstruction(ZeroPadStringElementIndexTag())
+//        )
+//      )
+//    ) or
+//    (
+//      tag = ZeroPadStringStoreTag() and
+//      (
+//        (
+//          operandTag instanceof AddressOperandTag and
+//          result = getInstruction(ZeroPadStringElementAddressTag())
+//        ) or
+//        (
+//          operandTag instanceof StoreValueOperandTag and
+//          result = getInstruction(ZeroPadStringConstantTag())
+//        )
+//      )
+//    )
+//  }
+//
+//  override string getInstructionConstantValue(InstructionTag tag) {
+//    exists(int startIndex |
+//      zeroInitRange(startIndex, _) and
+//      (
+//        (
+//          tag = ZeroPadStringConstantTag() and
+//          result = "0"
+//        ) or
+//        (
+//          tag = ZeroPadStringElementIndexTag() and
+//          result = startIndex.toString()
+//        )
+//      )
+//    )
+//  }
+//
+//  override int getInstructionResultSize(InstructionTag tag) {
+//    exists(int elementCount |
+//      zeroInitRange(_, elementCount) and
+//      (
+//        tag = ZeroPadStringConstantTag() or
+//        tag = ZeroPadStringStoreTag()
+//      ) and
+//      result = 8 //elementCount * getElementType().getSize() TODO: FIX SIZES
+//    )
+//  }
+//
+//  private Type getElementType() {
+//    result = getContext().getTargetType().(ArrayType).getElementType()
+//  }
+//
+//  /**
+//   * Holds if the `elementCount` array elements starting at `startIndex` must be
+//   * zero initialized.
+//   */
+//  private predicate zeroInitRange(int startIndex, int elementCount) {
+//    exists(int targetCount |
+//      startIndex = expr.getType().(ArrayType).getArraySize() and
+//      targetCount = getContext().getTargetType().(ArrayType).getArraySize() and
+//      elementCount = targetCount - startIndex and
+//      elementCount > 0
+//    )
+//  }
+//}
 
 class TranslatedConstructorInitialization extends TranslatedDirectInitialization, StructorCallContext {
-  override ConstructorCall expr;
+  override ObjectCreation expr;
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     none()
@@ -440,11 +444,11 @@ class TranslatedConstructorInitialization extends TranslatedDirectInitialization
  * Gets the `TranslatedFieldInitialization` for field `field` within initializer
  * list `initList`.
  */
-TranslatedFieldInitialization getTranslatedFieldInitialization(ClassAggregateLiteral initList, Field field) {
+TranslatedFieldInitialization getTranslatedFieldInitialization(ObjectInitializer initList, Field field) {
   result.getAST() = initList and result.getField() = field
 }
 
-TranslatedFieldInitialization getTranslatedConstructorFieldInitialization(ConstructorFieldInit init) {
+TranslatedFieldInitialization getTranslatedConstructorFieldInitialization(MemberInitializer init) {
   result.getAST() = init
 }
 
@@ -476,14 +480,19 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
    * Gets the zero-based index describing the order in which this field is to be
    * initialized relative to the other fields in the class.
    */
-  final int getOrder() {
-    result = field.getInitializationOrder()
-  }
+//  final int getOrder() {
+//    exists(Class cls, int memberIndex | 
+//      this = cls.getCanonicalMember(memberIndex) and
+//      memberIndex = rank[result + 1](int index |
+//        cls.getCanonicalMember(index).(Field).isInitializable()
+//      )
+//    )
+//  }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     tag = getFieldAddressTag() and
     opcode instanceof Opcode::FieldAddress and
-    resultType = field.getUnspecifiedType() and
+    resultType = field.getType() and
     isGLValue = true
   }
 
@@ -523,7 +532,7 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
   }
 
   override Type getTargetType() {
-    result = field.getUnspecifiedType()
+    result = field.getType()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -566,13 +575,13 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization, 
     (
       tag = getFieldDefaultValueTag() and
       opcode instanceof Opcode::Constant and
-      resultType = field.getUnspecifiedType() and
+      resultType = field.getType() and
       isGLValue = false
     ) or
     (
       tag = getFieldDefaultValueStoreTag() and
       opcode instanceof Opcode::Store and
-      resultType = field.getUnspecifiedType() and
+      resultType = field.getType() and
       isGLValue = false
     )
   }
@@ -597,7 +606,7 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization, 
 
   override string getInstructionConstantValue(InstructionTag tag) {
     tag = getFieldDefaultValueTag() and
-    result = getZeroValue(field.getUnspecifiedType())
+    result = getZeroValue(field.getType())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -639,7 +648,7 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization, 
  * an element of an initializer list.
  */
 abstract class TranslatedElementInitialization extends TranslatedElement {
-  ArrayAggregateLiteral initList;
+  ArrayInitializer initList;
 
   override final string toString() {
     result = initList.toString() + "[" + getElementIndex().toString() + "]"
@@ -649,8 +658,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = initList
   }
 
-  override final Function getFunction() {
-    result = initList.getEnclosingFunction()
+  override final Callable getCallable() {
+    result = initList.getEnclosingCallable()
   }
 
   override final Instruction getFirstInstruction() {
@@ -707,13 +716,12 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = InitializerElementIndexTag(getElementIndex())
   }
 
-  final ArrayAggregateLiteral getInitList() {
+  final ArrayInitializer getInitList() {
     result = initList
   }
 
   final Type getElementType() {
-    result = initList.getUnspecifiedType().(ArrayType).
-      getBaseType().getUnspecifiedType()
+    result = initList.getType().(ArrayType).getElementType()
   }
 }
 
@@ -760,7 +768,7 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
 
   TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(
-      initList.getElementExpr(elementIndex).getFullyConverted())
+      initList.getElement(elementIndex))
   }
 }
 
@@ -829,7 +837,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
       tag = getElementDefaultValueTag() or
       tag = getElementDefaultValueStoreTag()
     ) and
-    result = elementCount * getElementType().getSize()
+    result = 8 //elementCount * getElementType().getSize() TODO: FIX SIZES
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -878,7 +886,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
 }
 
 abstract class TranslatedStructorCallFromStructor extends TranslatedElement, StructorCallContext {
-  FunctionCall call;
+  Call call;
 
   override final Locatable getAST() {
     result = call
@@ -889,8 +897,8 @@ abstract class TranslatedStructorCallFromStructor extends TranslatedElement, Str
     result = getStructorCall()
   }
 
-  override final Function getFunction() {
-    result = call.getEnclosingFunction()
+  override final Callable getCallable() {
+    result = call.getEnclosingCallable()
   }
 
   override final Instruction getChildSuccessor(TranslatedElement child) {
@@ -915,7 +923,7 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::ConvertToBase and
-    resultType = call.getTarget().getDeclaringType().getUnspecifiedType() and
+    resultType = call.getTarget().getDeclaringType() and
     isGLValue = true
   }
 
@@ -932,85 +940,85 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
   override final Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
-    result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
+    result = getTranslatedFunction(getCallable()).getInitializeThisInstruction()
   }
 
   override final predicate getInstructionInheritance(InstructionTag tag, Class baseClass, Class derivedClass) {
     tag = OnlyInstructionTag() and
-    baseClass = call.getTarget().getDeclaringType().getUnspecifiedType() and
-    derivedClass = getFunction().getDeclaringType().getUnspecifiedType()
+    baseClass = call.getTarget().getDeclaringType() and
+    derivedClass = getCallable().getDeclaringType()
   }
 }
 
 /**
  * Represents a call to a delegating or base class constructor from within a constructor.
  */
-abstract class TranslatedConstructorCallFromConstructor extends TranslatedStructorCallFromStructor,
-    TTranslatedConstructorBaseInit {
-  TranslatedConstructorCallFromConstructor() {
-    this = TTranslatedConstructorBaseInit(call)
-  }
-}
-
-TranslatedConstructorCallFromConstructor getTranslatedConstructorBaseInit(ConstructorBaseInit init) {
-  result.getAST() = init
-}
-
-/**
- * Represents the IR translation of a delegating constructor call from within a constructor.
- */
-class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromConstructor {
-  override ConstructorDelegationInit call;
-
-  override final string toString() {
-    result = "delegation construct: " + call.toString()
-  }
-
-  override final Instruction getFirstInstruction() {
-    result = getStructorCall().getFirstInstruction()
-  }
-
-  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
-    none()
-  }
-
-  override final Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    none()
-  }
-
-  override final Instruction getReceiver() {
-    result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
-  }
-}
-
-/**
- * Represents the IR translation of a call to a base class constructor from within a
- * derived class constructor
- */
-class TranslatedConstructorBaseInit extends TranslatedConstructorCallFromConstructor, TranslatedBaseStructorCall {
-  TranslatedConstructorBaseInit() {
-    not call instanceof ConstructorDelegationInit
-  }
-
-  override final string toString() {
-    result = "construct base: " + call.toString()
-  }
-}
-
-TranslatedDestructorBaseDestruction getTranslatedDestructorBaseDestruction(DestructorBaseDestruction destruction) {
-  result.getAST() = destruction
-}
-
-/**
- * Represents the IR translation of a call to a base class destructor from within a
- * derived class destructor.
- */
-class TranslatedDestructorBaseDestruction extends TranslatedBaseStructorCall, TTranslatedDestructorBaseDestruction {
-  TranslatedDestructorBaseDestruction() {
-    this = TTranslatedDestructorBaseDestruction(call)
-  }
-
-  override final string toString() {
-    result = "destroy base: " + call.toString()
-  }
-}
+//abstract class TranslatedConstructorCallFromConstructor extends TranslatedStructorCallFromStructor,
+//    TTranslatedConstructorBaseInit {
+//  TranslatedConstructorCallFromConstructor() {
+//    this = TTranslatedConstructorBaseInit(call)
+//  }
+//}
+//
+//TranslatedConstructorCallFromConstructor getTranslatedConstructorBaseInit(ConstructorBaseInit init) {
+//  result.getAST() = init
+//}
+//
+///**
+// * Represents the IR translation of a delegating constructor call from within a constructor.
+// */
+//class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromConstructor {
+//  override ConstructorDelegationInit call;
+//
+//  override final string toString() {
+//    result = "delegation construct: " + call.toString()
+//  }
+//
+//  override final Instruction getFirstInstruction() {
+//    result = getStructorCall().getFirstInstruction()
+//  }
+//
+//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue) {
+//    none()
+//  }
+//
+//  override final Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+//    none()
+//  }
+//
+//  override final Instruction getReceiver() {
+//    result = getTranslatedFunction(getCallable()).getInitializeThisInstruction()
+//  }
+//}
+//
+///**
+// * Represents the IR translation of a call to a base class constructor from within a
+// * derived class constructor
+// */
+//class TranslatedConstructorBaseInit extends TranslatedConstructorCallFromConstructor, TranslatedBaseStructorCall {
+//  TranslatedConstructorBaseInit() {
+//    not call instanceof ConstructorDelegationInit
+//  }
+//
+//  override final string toString() {
+//    result = "construct base: " + call.toString()
+//  }
+//}
+//
+//TranslatedDestructorBaseDestruction getTranslatedDestructorBaseDestruction(DestructorBaseDestruction destruction) {
+//  result.getAST() = destruction
+//}
+//
+///**
+// * Represents the IR translation of a call to a base class destructor from within a
+// * derived class destructor.
+// */
+//class TranslatedDestructorBaseDestruction extends TranslatedBaseStructorCall, TTranslatedDestructorBaseDestruction {
+//  TranslatedDestructorBaseDestruction() {
+//    this = TTranslatedDestructorBaseDestruction(call)
+//  }
+//
+//  override final string toString() {
+//    result = "destroy base: " + call.toString()
+//  }
+//}

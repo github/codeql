@@ -16,10 +16,10 @@ private import semmle.code.csharp.ir.Util
 /**
  * Gets the built-in `int` type.
  */
-
-//Type getIntType() {
-//  result.(IntType).isImplicitlySigned()
-//}
+// TODO: NOT SURE ABOUT THIS
+Type getIntType() {
+  result.(IntType).isValueType()
+}
 
 /**
  * Gets the "real" parent of `expr`. This predicate treats conversions as if
@@ -96,25 +96,26 @@ private predicate ignoreExpr(Expr expr) {
  * Holds if `func` contains an AST that cannot be translated into IR. This is mostly used to work
  * around extractor bugs. Once the relevant extractor bugs are fixed, this predicate can be removed.
  */
-private predicate isInvalidFunction(Callable callable) {
-  exists(Literal literal |
-    // Constructor field inits within a compiler-generated copy constructor have a source expression
-    // that is a `Literal` with no value.
-    literal = callable.(Constructor).getInitializer().(ConstructorFieldInit).getExpr() and
-    not exists(literal.getValue())
-  ) or
-  exists(ThisExpr thisExpr |
-    // An instantiation of a member function template is not treated as a `MemberFunction` if it has
-    // only non-type template arguments.
-    thisExpr.getEnclosingFunction() = callable and
-    not callable instanceof Member
-  ) or
-  exists(Expr expr |
-    // Expression missing a type.
-    expr.getEnclosingCallable() = callable and
-    not exists(expr.getType())
-  )
-}
+ // TODO: PROBABLY OK TO COMMENT FOR NOW
+//private predicate isInvalidFunction(Callable callable) {
+//  exists(Literal literal |
+//    // Constructor field inits within a compiler-generated copy constructor have a source expression
+//    // that is a `Literal` with no value.
+//    literal = callable.(Constructor).getInitializer().(ConstructorFieldInit).getExpr() and
+//    not exists(literal.getValue())
+//  ) or
+//  exists(ThisExpr thisExpr |
+//    // An instantiation of a member function template is not treated as a `MemberFunction` if it has
+//    // only non-type template arguments.
+//    thisExpr.getEnclosingFunction() = callable and
+//    not callable instanceof Member
+//  ) or
+//  exists(Expr expr |
+//    // Expression missing a type.
+//    expr.getEnclosingCallable() = callable and
+//    not exists(expr.getType())
+//  )
+//}
 
 /**
  * Holds if `func` should be translated to IR.
@@ -122,7 +123,7 @@ private predicate isInvalidFunction(Callable callable) {
 private predicate translateFunction(Callable callable) {
 //  not callable.isFromUninstantiatedTemplate(_) and
 //  callable.hasEntryPoint() and
-  not isInvalidFunction(callable) and
+  /*not isInvalidFunction(callable) and*/
   exists(IRConfiguration config |
     config.shouldCreateIRForFunction(callable)
   )
@@ -193,7 +194,7 @@ private predicate usedAsCondition(Expr expr) {
  * lvalue and a function pointer prvalue the same.
  */
  // TODO: probably not needed for C#
-//predicate ignoreLoad(Expr expr) {
+predicate ignoreLoad(Expr expr) {
 //  expr.hasLValueToRValueConversion() and
 //  (
 //    expr instanceof ThisExpr or
@@ -203,7 +204,8 @@ private predicate usedAsCondition(Expr expr) {
 //    expr.(ReferenceDereferenceExpr).getExpr().getType().
 //      getUnspecifiedType() instanceof FunctionReferenceType
 //  )
-//}
+	any()
+}
 
 newtype TTranslatedElement =
   // An expression that is not being consumed as a condition
@@ -215,9 +217,11 @@ newtype TTranslatedElement =
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) {
-    not ignoreExpr(expr) and
-    not isNativeCondition(expr) and
-    not isFlexibleCondition(expr) // and
+  	// TODO: THINK THIS SHOULD BE ENOUGH, ONLY OCC (C# 6.0) WHEN WE WANT A CONV. IS A VAR ACCESS
+  	expr instanceof Access and
+    not ignoreExpr(expr) // and
+//    not isNativeCondition(expr) and
+//    not isFlexibleCondition(expr) and
 //    expr.hasLValueToRValueConversion() and
 //    not ignoreLoad(expr)
   } or
@@ -284,31 +288,33 @@ newtype TTranslatedElement =
     )
   } or
   // The initialization of a field via a member of an initializer list.
-  // TODO: NOT SURE IF THE ABOVE COVERS, BUT I THINK IT DOES
-//  TTranslatedExplicitFieldInitialization(Expr ast, Field field,
-//      Expr expr) {
-//    exists(ClassAggregateLiteral initList |
-//      not ignoreExpr(initList) and
-//      ast = initList and
-//      expr = initList.getFieldExpr(field).getFullyConverted()
-//    ) or
-//    exists(ConstructorFieldInit init |
-//      not ignoreExpr(init) and
-//      ast = init and
-//      field = init.getTarget() and
-//      expr = init.getExpr().getFullyConverted()
-//    )
-//  } or
+  TTranslatedExplicitFieldInitialization(Expr ast, Field field,
+      Expr expr) {
+    exists(ObjectInitializer initList |
+      not ignoreExpr(initList) and
+      ast = initList and
+      // TODO: OPTIMIZE
+      expr = any(int i |
+                 field = initList.getMemberInitializer(i).getInitializedMember() | 
+                 initList.getMemberInitializer(i)).getRValue()
+    ) or
+    exists(MemberInitializer init |
+      not ignoreExpr(init) and
+      ast = init and
+      field = init.getInitializedMember() and
+      // TODO: WAS GETEXPR, I THINK GETRVALUE DOES THE SAME SINCE IT IS THE RVALUE OF THE ASSIGNMENT
+      expr = init.getRValue()
+    )
+  } or
   // The value initialization of a field due to an omitted member of an
   // initializer list.
-  // TODO: SAME AS ABOVE
-//  TTranslatedFieldValueInitialization(Expr ast, Field field) {
-//    exists(ClassAggregateLiteral initList |
-//      not ignoreExpr(initList) and
-//      ast = initList and
-//      initList.isValueInitialized(field)
-//    )
-//  } or
+  TTranslatedFieldValueInitialization(Expr ast, Field field) {
+    exists(ObjectInitializerMod initList |
+      not ignoreExpr(initList) and
+      ast = initList and
+      initList.isValueInitialized(field)
+    )
+  } or
   // The initialization of an array element via a member of an initializer list.
   TTranslatedExplicitElementInitialization(
       ArrayInitializer initList, int elementIndex) {
@@ -325,7 +331,7 @@ newtype TTranslatedElement =
       getEndOfValueInitializedRange(initList, elementIndex) -
       elementIndex
   } or
-  // TODO: NEXT 3 CASES ARE PROBABLY C++ SPECIFIC
+  // TODO: NEXT 3 CASES NEED TO BE ADAPTED TO C#
   // The initialization of a base class from within a constructor.
 //  TTranslatedConstructorBaseInit(ConstructorBaseInit init) {
 //    not ignoreExpr(init)
@@ -363,15 +369,15 @@ newtype TTranslatedElement =
       ) and
       translateFunction(func)
     )
-  } //or
+  } or
   // TODO: Following translation entries commented, must see what to add / remove / modify !!!!!!!!!!!!!!!!!!!!!!!
   // A local declaration
-//  TTranslatedDeclarationEntry(DeclarationEntry entry) {
-//    exists(DeclStmt declStmt |
-//      translateStmt(declStmt) and
-//      declStmt.getADeclarationEntry() = entry
-//    )
-//  } or
+  TTranslatedDeclarationEntry(Declaration entry) {
+    exists(LocalVariableDeclStmt declStmt |
+      translateStmt(declStmt) and
+      declStmt.getAVariableDeclExpr().getVariable() = entry
+    )
+  } or
   // A compiler-generated variable to implement a range-based for loop. These don't have a
   // `DeclarationEntry` in the database, so we have to go by the `Variable` itself.
 //  TTranslatedRangeBasedForVariableDeclaration(RangeBasedForStmt forStmt, LocalVariable var) {
@@ -382,16 +388,17 @@ newtype TTranslatedElement =
 //      var = forStmt.getVariable()
 //    )
 //  } or
-//  // An allocator call in a `new` or `new[]` expression
-//  TTranslatedAllocatorCall(NewOrNewArrayExpr newExpr) {
-//    not ignoreExpr(newExpr)
-//  } or
-//  // An allocation size for a `new` or `new[]` expression
-//  TTranslatedAllocationSize(NewOrNewArrayExpr newExpr) {
-//    not ignoreExpr(newExpr)
-//  } or
+  // An allocator call in a `new` or `new[]` expression
+  TTranslatedAllocatorCall(ObjectCreation newExpr) {
+    not ignoreExpr(newExpr)
+  } or
+  // An allocation size for a `new` or `new[]` expression
+  TTranslatedAllocationSize(ObjectCreation newExpr) {
+    not ignoreExpr(newExpr)
+  } //or
 
   // The declaration/initialization part of a `ConditionDeclExpr`
+  // TODO: ILLEGAL IN C#
 //  TTranslatedConditionDecl(ConditionDeclExpr expr) {
 //    not ignoreExpr(expr)
 //  }
@@ -429,7 +436,7 @@ private int getNextExplicitlyInitializedElementAfter(
  * range of one or more consecutive value-initialized elements in `initList`.
  */
 private predicate isFirstValueInitializedElementInRange(
-  ArrayInitializer initList, int elementIndex) {
+  ArrayInitWithMod initList, int elementIndex) {
   initList.isValueInitialized(elementIndex) and
   (
     elementIndex = 0 or

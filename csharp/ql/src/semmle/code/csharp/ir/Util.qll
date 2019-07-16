@@ -9,8 +9,38 @@ class ArrayInitWithMod extends ArrayInitializer {
 		entry in [0..this.getNumberOfElements() - 1]
 	}
 	
-	predicate isValueInitialized(int entry) {
-		isInitialized(entry) and
-		not exists()
+	pragma[inline]
+  	predicate isValueInitialized(int elementIndex) {
+    	  isInitialized(elementIndex) and
+    	  not exists(this.getElement(elementIndex))
+  	}
+}
+
+class ObjectInitializerMod extends ObjectInitializer {
+	private predicate isInitialized(Field field) {	
+		not (field.isReadOnly()) and // TODO: Think this is the only instance where a field is not initializable
+		this.getAMemberInitializer().getTargetVariable() = field
 	}
+	
+	pragma[inline]
+  	predicate isValueInitialized(Field field) {
+    	  this.isInitialized(field) and
+    	  not field = this.getAMemberInitializer().getInitializedMember()
+  	}
+}
+
+abstract class SideEffectCallable extends Callable {
+  /**
+    * Holds if the function never reads from memory that was defined before entry to the function.
+    * This memory could be from global variables, or from other memory that was reachable from a
+    * pointer that was passed into the function.
+    */
+  abstract predicate neverReadsMemory();
+
+  /**
+    * Holds if the function never writes to memory that remains allocated after the function
+    * returns. This memory could be from global variables, or from other memory that was reachable
+    * from a pointer that was passed into the function.
+    */
+  abstract predicate neverWritesMemory();
 }

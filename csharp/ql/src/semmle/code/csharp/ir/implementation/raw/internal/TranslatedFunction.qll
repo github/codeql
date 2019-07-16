@@ -1,20 +1,22 @@
-import cpp
-import semmle.code.cpp.ir.implementation.raw.IR
-private import semmle.code.cpp.ir.implementation.Opcode
-private import semmle.code.cpp.ir.internal.IRUtilities
-private import semmle.code.cpp.ir.internal.OperandTag
-private import semmle.code.cpp.ir.internal.TempVariableTag
+import csharp
+import semmle.code.csharp.ir.implementation.raw.IR
+private import semmle.code.csharp.ir.implementation.Opcode
+private import semmle.code.csharp.ir.internal.IRUtilities
+private import semmle.code.csharp.ir.internal.OperandTag
+private import semmle.code.csharp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
 private import TranslatedStmt
 
+//TODO: FIX CONSTRUCTORS AND DESTRUCTORS
+
 /**
- * Gets the `TranslatedFunction` that represents function `func`.
+ * Gets the `TranslatedFunction` that represents function `callable`.
  */
-TranslatedFunction getTranslatedFunction(Function func) {
-  result.getAST() = func
+TranslatedFunction getTranslatedFunction(Callable callable) {
+  result.getAST() = callable
 }
 
 /**
@@ -23,25 +25,25 @@ TranslatedFunction getTranslatedFunction(Function func) {
  */
 class TranslatedFunction extends TranslatedElement,
   TTranslatedFunction {
-  Function func;
+  Callable callable;
 
   TranslatedFunction() {
-    this = TTranslatedFunction(func)
+    this = TTranslatedFunction(callable)
   }
 
   override final string toString() {
-    result = func.toString()
+    result = callable.toString()
   }
 
   override final Locatable getAST() {
-    result = func
+    result = callable
   }
 
   /**
    * Gets the function being translated.
    */
-  override final Function getFunction() {
-    result = func
+  override final Callable getCallable() {
+    result = callable
   }
 
   override final TranslatedElement getChild(int id) {
@@ -52,19 +54,19 @@ class TranslatedFunction extends TranslatedElement,
   }
 
   private final TranslatedConstructorInitList getConstructorInitList() {
-    result = getTranslatedConstructorInitList(func)
+    result = getTranslatedConstructorInitList(callable)
   }
-
+  
   private final TranslatedDestructorDestructionList getDestructorDestructionList() {
-    result = getTranslatedDestructorDestructionList(func)
+    result = getTranslatedDestructorDestructionList(callable)
   }
 
   private final TranslatedStmt getBody() {
-    result = getTranslatedStmt(func.getEntryPoint())
+    result = getTranslatedStmt(callable.getBody())
   }
 
   private final TranslatedParameter getParameter(int index) {
-    result = getTranslatedParameter(func.getParameter(index))
+    result = getTranslatedParameter(callable.getParameter(index))
   }
 
   override final Instruction getFirstInstruction() {
@@ -120,7 +122,7 @@ class TranslatedFunction extends TranslatedElement,
   override final Instruction getChildSuccessor(TranslatedElement child) {
     exists(int paramIndex |
       child = getParameter(paramIndex) and
-      if exists(func.getParameter(paramIndex + 1)) then
+      if exists(callable.getParameter(paramIndex + 1)) then
         result = getParameter(paramIndex + 1).getFirstInstruction()
       else
         result = getConstructorInitList().getFirstInstruction()
@@ -154,13 +156,13 @@ class TranslatedFunction extends TranslatedElement,
       (
         tag = UnmodeledDefinitionTag() and
         opcode instanceof Opcode::UnmodeledDefinition and
-        resultType instanceof UnknownType and
+        resultType instanceof VoidType and
         isGLValue = false
       ) or
       (
         tag = AliasedDefinitionTag() and
         opcode instanceof Opcode::AliasedDefinition and
-        resultType instanceof UnknownType and
+        resultType instanceof VoidType and
         isGLValue = false
       ) or
       (
@@ -194,10 +196,10 @@ class TranslatedFunction extends TranslatedElement,
           // Only generate the `Unwind` instruction if there is any exception
           // handling present in the function.
           exists(TryStmt try |
-            try.getEnclosingFunction() = func
+            try.getEnclosingCallable() = callable
           ) or
           exists(ThrowExpr throw |
-            throw.getEnclosingFunction() = func
+            throw.getEnclosingCallable() = callable
           )
         )
       ) or
@@ -225,7 +227,7 @@ class TranslatedFunction extends TranslatedElement,
     (
       tag = UnmodeledUseTag() and
       operandTag instanceof UnmodeledUseOperandTag and
-      result.getEnclosingFunction() = func and
+      result.getEnclosingCallable() = callable and
       result.hasMemoryResult()
     ) or
     (
@@ -270,17 +272,18 @@ class TranslatedFunction extends TranslatedElement,
 
   /**
    * Gets the instruction to which control should flow after a `return`
-   * statement.
+   * statement. In C#, this should be the instruction which generates `VariableAddress[#return]`.
    */
+  // TODO: TIDY
   final Instruction getReturnSuccessorInstruction() {
-    result = getDestructorDestructionList().getFirstInstruction()
+    result = getInstruction(ReturnValueAddressTag())
   }
 
   /**
    * Gets the variable that represents the return value of this function.
    */
   final IRReturnVariable getReturnVariable() {
-    result = getIRTempVariable(func, ReturnValueTempVar())
+    result = getIRTempVariable(callable, ReturnValueTempVar())
   }
 
   /**
@@ -303,15 +306,17 @@ class TranslatedFunction extends TranslatedElement,
    * Holds only if the function is an instance member function, constructor, or destructor.
    */
   final Type getThisType() {
-    exists(MemberFunction mfunc |
-      mfunc = func and
-      not mfunc.isStatic() and
-      result = mfunc.getDeclaringType()
-    )
+//    exists(MemberFunction mfunc |
+//      mfunc = callable and
+//      not mfunc.isStatic() and
+//      result = mfunc.getDeclaringType()
+//    )
+	// TODO: ALL ARE MEMBERS
+	result = callable.getDeclaringType()
   }
 
   private final Type getReturnType() {
-    result = func.getUnspecifiedType()
+    result = callable.getReturnType()
   }
 }
 
@@ -341,9 +346,9 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     result = param
   }
 
-  override final Function getFunction() {
-    result = param.getFunction() or
-    result = param.getCatchBlock().getEnclosingFunction()
+  override final Callable getCallable() {
+    result = param.getCallable() // or
+    // result = param.getCatchBlock().getEnclosingFunction()
   }
 
   override final Instruction getFirstInstruction() {
@@ -394,7 +399,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
       tag = InitializerStoreTag() or
       tag = InitializerVariableAddressTag()
     ) and
-    result = getIRUserVariable(getFunction(), param)
+    result = getIRUserVariable(getCallable(), param)
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
@@ -410,8 +415,8 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
 }
 
 private TranslatedConstructorInitList 
-getTranslatedConstructorInitList(Function func) {
-  result.getAST() = func
+getTranslatedConstructorInitList(Callable callable) {
+  result.getAST() = callable
 }
 
 /**
@@ -422,29 +427,33 @@ getTranslatedConstructorInitList(Function func) {
  */
 class TranslatedConstructorInitList extends TranslatedElement,
   InitializationContext, TTranslatedConstructorInitList {
-  Function func;
+  Callable callable;
 
   TranslatedConstructorInitList() {
-    this = TTranslatedConstructorInitList(func)
+    this = TTranslatedConstructorInitList(callable)
   }
 
   override string toString() {
-    result = "ctor init: " + func.toString()
+    result = "ctor init: " + callable.toString()
   }
 
   override Locatable getAST() {
-    result = func
+    result = callable
   }
 
+  // TODO: PROBABLY NOT RIGHT, LOOK INTO CONSTRUCTORS
   override TranslatedElement getChild(int id) {
-    exists(ConstructorFieldInit fieldInit |
-      fieldInit = func.(Constructor).getInitializer(id) and
-      result = getTranslatedConstructorFieldInitialization(fieldInit)
-    ) or
-    exists(ConstructorBaseInit baseInit |
-      baseInit = func.(Constructor).getInitializer(id) and
-      result = getTranslatedConstructorBaseInit(baseInit)
-    )
+  	result = getTranslatedExpr(callable.getChild(id))
+//    exists(MemberInitializer init |
+//      // TODO: NEED TO BIND, WHY DOES CALLABLE GET CONVERTED TO METHOD?
+//      init = callable.(Constructor).getInitializer().getRawArgument(id) and
+//      result = getTranslatedConstructorFieldInitialization(init)
+//    ) // or
+    // TODO: IS THIS PART OF EXPLICIT OR IMPLICIT INIT IN C#?
+//    exists(ConstructorBaseInit baseInit |
+//      baseInit = callable.(Constructor).getInitializer().getRawArgument(id) and
+//      result = getTranslatedConstructorBaseInit(baseInit)
+//    )
   }
 
   override Instruction getFirstInstruction() {
@@ -459,8 +468,8 @@ class TranslatedConstructorInitList extends TranslatedElement,
     none()
   }
 
-  override Function getFunction() {
-    result = func
+  override Callable getCallable() {
+    result = callable
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -479,17 +488,17 @@ class TranslatedConstructorInitList extends TranslatedElement,
   }
 
   override Instruction getTargetAddress() {
-    result = getTranslatedFunction(func).getInitializeThisInstruction()
+    result = getTranslatedFunction(callable).getInitializeThisInstruction()
   }
 
   override Type getTargetType() {
-    result = getTranslatedFunction(func).getThisType()
+    result = getTranslatedFunction(callable).getThisType()
   }
 }
 
 private TranslatedDestructorDestructionList 
-getTranslatedDestructorDestructionList(Function func) {
-  result.getAST() = func
+getTranslatedDestructorDestructionList(Callable callable) {
+  result.getAST() = callable
 }
 
 /**
@@ -499,31 +508,26 @@ getTranslatedDestructorDestructionList(Function func) {
  * destructors. Of course, only the instances for destructors can actually contain
  * destructions.
  */
+// TODO: FIX DESTRUCTORS, TIDY
 class TranslatedDestructorDestructionList extends TranslatedElement,
   TTranslatedDestructorDestructionList {
-  Function func;
+  Callable callable;
 
   TranslatedDestructorDestructionList() {
-    this = TTranslatedDestructorDestructionList(func)
+    this = TTranslatedDestructorDestructionList(callable)
   }
 
   override string toString() {
-    result = "dtor destruction: " + func.toString()
+    result = "dtor destruction: " + callable.toString()
   }
 
   override Locatable getAST() {
-    result = func
+    result = callable
   }
 
+  // TODO: PROBABLY NOT RIGHT, LOOK INTO DESTRUCTORS
   override TranslatedElement getChild(int id) {
-    exists(DestructorFieldDestruction fieldDestruction |
-      fieldDestruction = func.(Destructor).getDestruction(id) and
-      result = getTranslatedExpr(fieldDestruction)
-    ) or
-    exists(DestructorBaseDestruction baseDestruction |
-      baseDestruction = func.(Destructor).getDestruction(id) and
-      result = getTranslatedDestructorBaseDestruction(baseDestruction)
-    )
+     result = getTranslatedExpr(callable.getChild(id))
   }
 
   override Instruction getFirstInstruction() {
@@ -538,8 +542,8 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
     none()
   }
 
-  override Function getFunction() {
-    result = func
+  override Callable getCallable() {
+    result = callable
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,

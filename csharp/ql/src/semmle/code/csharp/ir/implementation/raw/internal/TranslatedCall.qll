@@ -1,10 +1,10 @@
 import csharp
 private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.internal.OperandTag
-private import semmle.code.csharp.models.interfaces.SideEffect
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
+private import semmle.code.csharp.ir.Util
 
 /**
  * The IR translation of a call to a function. The call may be from an actual
@@ -281,42 +281,43 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr,
   }
 
   override final TranslatedExpr getQualifier() {
-    result = getTranslatedExpr(expr.getQualifier().getFullyConverted())
+    result = getTranslatedExpr(expr.getChild(-1)) // TODO: CHECK getQUALIFIER() SAME AS THIS
   }
 
   override final TranslatedExpr getArgument(int index) {
-    result = getTranslatedExpr(expr.getArgument(index).getFullyConverted())
+    result = getTranslatedExpr(expr.getArgument(index))
   }
 }
 
 /**
  * Represents the IR translation of a call through a function pointer.
  */
-class TranslatedExprCall extends TranslatedCallExpr {
-  override ExprCall expr;
-
-
-  override TranslatedExpr getCallTarget() {
-    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
-  }
-}
+// TODO: PROB NOT IN C#
+//class TranslatedExprCall extends TranslatedCallExpr {
+//  override ExprCall expr;
+//
+//
+//  override TranslatedExpr getCallTarget() {
+//    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
+//  }
+//}
 
 /**
  * Represents the IR translation of a direct function call.
  */
 class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
-  override FunctionCall expr;
+  override Call expr;
 
-  override Function getInstructionFunction(InstructionTag tag) {
+  override Callable getInstructionCallable(InstructionTag tag) {
     tag = CallTargetTag() and result = expr.getTarget()
   }
 
   override predicate hasReadSideEffect() {
-    not expr.getTarget().(SideEffectFunction).neverReadsMemory()
+    not expr.getTarget().(SideEffectCallable).neverReadsMemory()
   }
 
   override predicate hasWriteSideEffect() {
-    not expr.getTarget().(SideEffectFunction).neverWritesMemory()
+    not expr.getTarget().(SideEffectCallable).neverWritesMemory()
   }
 }
 
@@ -325,8 +326,8 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
  */
 class TranslatedStructorCall extends TranslatedFunctionCall {
   TranslatedStructorCall() {
-    expr instanceof ConstructorCall or
-    expr instanceof DestructorCall
+    expr instanceof ObjectCreation // or
+    // expr instanceof DestructorCall TODO: ILLEGAL TO EXPLICITILY CALL DESTRUCTOR
   }
 
   override Instruction getQualifierResult() {

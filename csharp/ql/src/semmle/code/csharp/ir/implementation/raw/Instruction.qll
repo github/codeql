@@ -51,6 +51,7 @@ module InstructionSanity {
    * Holds if instruction `instr` is missing an expected operand with tag `tag`.
    */
   query predicate missingOperand(Instruction instr, string message, IRFunction func, string funcText) {
+  	instr.getAST().fromSource() and
     exists(OperandTag tag |
       expectsOperand(instr, tag) and
       not exists(NonPhiOperand operand |
@@ -68,6 +69,7 @@ module InstructionSanity {
    * Holds if instruction `instr` has an unexpected operand with tag `tag`.
    */
   query predicate unexpectedOperand(Instruction instr, OperandTag tag) {
+  	instr.getAST().fromSource() and
     exists(NonPhiOperand operand |
       operand = instr.getAnOperand() and
       operand.getOperandTag() = tag) and
@@ -80,6 +82,7 @@ module InstructionSanity {
    * Holds if instruction `instr` has multiple operands with tag `tag`.
    */
   query predicate duplicateOperand(Instruction instr, OperandTag tag) {
+  	instr.getAST().fromSource() and
     strictcount(NonPhiOperand operand |
       operand = instr.getAnOperand() and
       operand.getOperandTag() = tag
@@ -92,6 +95,7 @@ module InstructionSanity {
    * the predecessor block `pred`.
    */
   query predicate missingPhiOperand(PhiInstruction instr, IRBlock pred) {
+  	instr.getAST().fromSource() and pred.getEnclosingFunction().fromSource() and 
     pred = instr.getBlock().getAPredecessor() and
     not exists(PhiInputOperand operand |
       operand = instr.getAnOperand() and
@@ -111,6 +115,7 @@ module InstructionSanity {
    * Holds if an instruction, other than `ExitFunction`, has no successors.
    */
   query predicate instructionWithoutSuccessor(Instruction instr) {
+  	instr.getAST().fromSource() and
     not exists(instr.getASuccessor()) and
     not instr instanceof ExitFunctionInstruction and
     // Phi instructions aren't linked into the instruction-level flow graph.
@@ -125,6 +130,7 @@ module InstructionSanity {
   query predicate ambiguousSuccessors(
     Instruction source, EdgeKind kind, int n, Instruction target
   ) {
+  	source.getAST().fromSource() and target.getAST().fromSource() and
     n = strictcount(Instruction t | source.getSuccessor(kind) = t) and
     n > 1 and
     source.getSuccessor(kind) = target
@@ -135,6 +141,7 @@ module InstructionSanity {
    * contains no element that can cause loops.
    */
   query predicate unexplainedLoop(Callable f, Instruction instr) {
+  	instr.getAST().fromSource() and f.fromSource() and
     exists(IRBlock block |
       instr.getBlock() = block and
       block.getEnclosingFunction() = f and
@@ -149,6 +156,7 @@ module InstructionSanity {
    * predecessors.
    */
   query predicate unnecessaryPhiInstruction(PhiInstruction instr) {
+  	instr.getAST().fromSource() and
     count(instr.getBlock().getAPredecessor()) < 2
   }
 
@@ -157,6 +165,7 @@ module InstructionSanity {
    * a different function.
    */
   query predicate operandAcrossFunctions(Operand operand, Instruction instr, Instruction defInstr) {
+  	instr.getAST().fromSource() and defInstr.getAST().fromSource() and
     operand.getUseInstruction() = instr and
     operand.getDefinitionInstruction() = defInstr and
     instr.getEnclosingIRFunction() != defInstr.getEnclosingIRFunction()
@@ -166,11 +175,13 @@ module InstructionSanity {
    * Holds if instruction `instr` is not in exactly one block.
    */
   query predicate instructionWithoutUniqueBlock(Instruction instr, int blockCount) {
+  	instr.getAST().fromSource() and
     blockCount = count(instr.getBlock()) and
     blockCount != 1
   }
 
   private predicate forwardEdge(IRBlock b1, IRBlock b2) {
+  	b1.getEnclosingFunction().fromSource() and b2.getEnclosingFunction().fromSource() and
     b1.getASuccessor() = b2 and
     not b1.getBackEdgeSuccessor(_) = b2
   }
@@ -181,6 +192,7 @@ module InstructionSanity {
    * This check ensures we don't have too _few_ back edges.
    */
   query predicate containsLoopOfForwardEdges(IRFunction f) {
+  	f.getFunction().fromSource() and 
     exists(IRBlock block |
       forwardEdge+(block, block) and
       block.getEnclosingIRFunction() = f
@@ -196,6 +208,7 @@ module InstructionSanity {
    * This check ensures we don't have too _many_ back edges.
    */
   query predicate lostReachability(IRBlock block) {
+  	block.getEnclosingFunction().fromSource() and 
     exists(IRFunction f, IRBlock entry |
       entry = f.getEntryBlock() and
       entry.getASuccessor+() = block and
@@ -209,6 +222,7 @@ module InstructionSanity {
    * and the `IRBlock` graph.
    */
   query predicate backEdgeCountMismatch(Callable f, int fromInstr, int fromBlock) {
+  	f.fromSource() and
     fromInstr = count(Instruction i1, Instruction i2 |
         i1.getEnclosingCallable() = f and i1.getBackEdgeSuccessor(_) = i2
       ) and
@@ -625,7 +639,7 @@ class FunctionInstruction extends Instruction {
   Callable callableSymbol;
 
   FunctionInstruction() {
-    callableSymbol = Construction::getInstructionFunction(this)
+    callableSymbol = Construction::getInstructionCallable(this)
   }
 
   override final string getImmediateString() {

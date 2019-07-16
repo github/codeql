@@ -1,7 +1,7 @@
 private import IR
-import cpp
-import semmle.code.cpp.ir.IRConfiguration
-private import semmle.code.cpp.Print
+import csharp
+import semmle.code.csharp.ir.IRConfiguration
+//private import semmle.code.csharp.Print
 
 private newtype TPrintIRConfiguration = MkPrintIRConfiguration()
 
@@ -17,12 +17,12 @@ class PrintIRConfiguration extends TPrintIRConfiguration {
    * Holds if the IR for `func` should be printed. By default, holds for all
    * functions.
    */
-  predicate shouldPrintFunction(Function func) {
+  predicate shouldPrintFunction(Callable func) {
     any()
   }
 }
 
-private predicate shouldPrintFunction(Function func) {
+private predicate shouldPrintFunction(Callable func) {
   exists(PrintIRConfiguration config |
     config.shouldPrintFunction(func)
   )
@@ -32,7 +32,7 @@ private predicate shouldPrintFunction(Function func) {
  * Override of `IRConfiguration` to only create IR for the functions that are to be dumped.
  */
 private class FilteredIRConfiguration extends IRConfiguration {
-  override predicate shouldCreateIRForFunction(Function func) {
+  override predicate shouldCreateIRForFunction(Callable func) {
     shouldPrintFunction(func)
   }
 }
@@ -57,7 +57,7 @@ private newtype TPrintableIRNode =
     shouldPrintFunction(block.getEnclosingFunction())
   } or
   TPrintableInstruction(Instruction instr) {
-    shouldPrintFunction(instr.getEnclosingFunction())
+    shouldPrintFunction(instr.getEnclosingCallable())
   }
 
 /**
@@ -131,7 +131,8 @@ class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction {
   }
 
   override string getLabel() {
-    result = getIdentityString(irFunc.getFunction())
+  	// TODO: C++ USED THE PRINT MODULE, NOT SURE TOsTRING DOES THE JOB
+    result = irFunc.getFunction().toString()
   }
 
   override int getOrder() {
