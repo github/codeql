@@ -1,7 +1,7 @@
 | tst.js:1:18:1:38 | require ... odule') | file://:0:0:0:0 | indefinite value (call) |
 | tst.js:2:16:2:36 | require ... odule') | file://:0:0:0:0 | indefinite value (call) |
 | tst.js:2:16:2:36 | require ... odule') | myModule.js:1:1:4:0 | exports object of module myModule |
-| tst.js:2:16:2:36 | require ... odule') | myModule.js:1:18:1:30 | function exports |
+| tst.js:2:16:2:36 | require ... odule') | myModule.js:1:18:1:30 | anonymous function |
 | tst.js:4:1:4:16 | (function(){})() | file://:0:0:0:0 | undefined |
 | tst.js:5:1:5:25 | (functi ... n; })() | file://:0:0:0:0 | undefined |
 | tst.js:6:1:6:30 | (functi ... e; })() | file://:0:0:0:0 | true |

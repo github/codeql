@@ -751,9 +751,6 @@ class SpreadProperty extends Property {
  * ```
  */
 class FunctionExpr extends @functionexpr, Expr, Function {
-  /** Gets the name of this function expression, if any. */
-  override string getName() { result = getId().getName() }
-
   /** Holds if this function expression is a property setter. */
   predicate isSetter() { exists(PropertySetter s | s.getInit() = this) }
 

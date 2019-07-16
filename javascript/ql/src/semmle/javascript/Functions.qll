@@ -48,12 +48,6 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
   VarDecl getId() { result = getChildExpr(-1) }
 
   /**
-   * Gets the name of this function, if it is a function declaration
-   * or named function expression.
-   */
-  string getName() { result = getId().getName() }
-
-  /**
    * Gets the name of this function if it has one, or a name inferred from its context.
    *
    * For named functions such as `function f() { ... }`, this is just the declared
@@ -61,8 +55,8 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    * members), this is the name of the variable or property. If no meaningful name
    * can be inferred, there is no result.
    */
-  string getInferredName() {
-    result = getName()
+  string getName() {
+    result = getId().getName()
     or
     exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
     or
@@ -271,8 +265,8 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    */
   private string inferNameFromVarDef() {
     // in ambiguous cases like `var f = function g() {}`, prefer `g` to `f`
-    if exists(getName())
-    then result = "function " + getName()
+    if exists(getId())
+    then result = "function " + getId().getName()
     else
       exists(VarDef vd | this = vd.getSource() |
         result = "function " + vd.getTarget().(VarRef).getName()

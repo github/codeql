@@ -14,17 +14,14 @@ class ClassOrInterface extends @classorinterface, TypeParameterized {
   /** Gets the identifier naming the declared type, if any. */
   Identifier getIdentifier() { none() } // Overridden in subtypes.
 
-  /** Gets the name of the defined class or interface, if any. */
-  string getName() { result = getIdentifier().getName() }
-
   /**
    * Gets the name of the defined class or interface, possibly inferred
    * from the context if this is an anonymous class expression.
    *
    * Has no result if no name could be determined.
    */
-  string getInferredName() {
-    result = getName() // Overridden in ClassExpr
+  string getName() {
+    result = getIdentifier().getName() // Overridden in ClassExpr
   }
 
   /** Gets the nearest enclosing function or toplevel in which this class or interface occurs. */
@@ -175,8 +172,8 @@ class ClassDefinition extends @classdefinition, ClassOrInterface, AST::ValueNode
    */
   private string inferNameFromVarDef() {
     // in ambiguous cases like `let C = class D {}`, prefer `D` to `C`
-    if exists(getName())
-    then result = "class " + getName()
+    if exists(getIdentifier())
+    then result = "class " + getIdentifier().getName()
     else
       exists(VarDef vd | this = vd.getSource() |
         result = "class " + vd.getTarget().(VarRef).getName()
@@ -220,8 +217,8 @@ class ClassDeclStmt extends @classdeclstmt, ClassDefinition, Stmt {
  * A class expression.
  */
 class ClassExpr extends @classexpr, ClassDefinition, Expr {
-  override string getInferredName() {
-    result = getName()
+  override string getName() {
+    result = ClassDefinition.super.getName()
     or
     exists(VarDef vd | this = vd.getSource() | result = vd.getTarget().(VarRef).getName())
     or

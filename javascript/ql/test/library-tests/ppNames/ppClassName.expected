@@ -1,4 +1,4 @@
-getInferredName
+getName
 | tst.js:16:1:19:1 | class C ... ss C"\\n} | C |
 | tst.js:21:2:23:1 | class D ... lass"\\n} | D |
 | tst.js:25:11:25:18 | class {} | E |

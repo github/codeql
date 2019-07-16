@@ -1,4 +1,4 @@
-getInferredName
+getName
 | tst.js:1:1:1:15 | function f() {} | f |
 | tst.js:2:2:2:16 | function g() {} | g |
 | tst.js:4:9:4:22 | function () {} | h |
