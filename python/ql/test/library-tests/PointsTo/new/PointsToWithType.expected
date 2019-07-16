@@ -585,6 +585,12 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | j_convoluted_imports.py:16 | ControlFlowNode for moduleX | Module code.package.moduleX | builtin-class module | 0 |
 | j_convoluted_imports.py:17 | ControlFlowNode for Attribute | class Y | builtin-class type | 1 |
 | j_convoluted_imports.py:17 | ControlFlowNode for moduleX | Module code.package.moduleX | builtin-class module | 0 |
+| j_convoluted_imports.py:20 | ControlFlowNode for ImportExpr | Module code.test_package.module1 | builtin-class module | 20 |
+| j_convoluted_imports.py:22 | ControlFlowNode for ImportExpr | Module code.test_package.module2 | builtin-class module | 22 |
+| j_convoluted_imports.py:23 | ControlFlowNode for p | int 1 | builtin-class int | 3 |
+| j_convoluted_imports.py:24 | ControlFlowNode for q | int 2 | builtin-class int | 4 |
+| j_convoluted_imports.py:25 | ControlFlowNode for r | Dict | builtin-class dict | 5 |
+| j_convoluted_imports.py:25 | ControlFlowNode for r | int 3 | builtin-class int | 5 |
 | k_getsetattr.py:4 | ControlFlowNode for C | class C | builtin-class type | 4 |
 | k_getsetattr.py:4 | ControlFlowNode for ClassExpr | class C | builtin-class type | 4 |
 | k_getsetattr.py:4 | ControlFlowNode for object | builtin-class object | builtin-class type | 4 |

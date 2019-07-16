@@ -107,6 +107,11 @@
 | j_convoluted_imports.py:0 | Module code.j_convoluted_imports | C | class C |
 | j_convoluted_imports.py:0 | Module code.j_convoluted_imports | module | Function module |
 | j_convoluted_imports.py:0 | Module code.j_convoluted_imports | moduleX | Module code.package.moduleX |
+| j_convoluted_imports.py:0 | Module code.j_convoluted_imports | p | int 1 |
+| j_convoluted_imports.py:0 | Module code.j_convoluted_imports | q | int 2 |
+| j_convoluted_imports.py:0 | Module code.j_convoluted_imports | r | Dict |
+| j_convoluted_imports.py:0 | Module code.j_convoluted_imports | r | int 3 |
+| j_convoluted_imports.py:0 | Module code.j_convoluted_imports | s | NoneType None |
 | j_convoluted_imports.py:0 | Module code.j_convoluted_imports | x | Module code.package.x |
 | j_convoluted_imports.py:9 | Class C | f | Function f |
 | j_convoluted_imports.py:9 | Class C | module2 | int 7 |
