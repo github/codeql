@@ -1,6 +1,6 @@
 /**
- * @name Commented out code
- * @description Commented out code causes visual clutter as it is neither code nor comment.
+ * @name Commented-out code
+ * @description Commented-out code makes the remaining code more difficult to read.
  * @kind problem
  * @tags maintainability
  *       readability
