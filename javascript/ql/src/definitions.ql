@@ -68,7 +68,7 @@ predicate variableDeclLookup(VarAccess va, VarDecl decl, string kind) {
  * For example, in the statement `var a = require("./a")`, the path expression
  * `"./a"` imports a module `a` in the same folder.
  */
-predicate importLookup(PathExpr path, Module target, string kind) {
+predicate importLookup(ASTNode path, Module target, string kind) {
   kind = "I" and
   (
     exists(Import i |
