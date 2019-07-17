@@ -34,7 +34,8 @@ class NestedStruct extends Struct {
     this.isMember()
   }
 
-  override string getCanonicalQLClass() { result = "NestedStruct" }
+  override string getCanonicalQLClass() 
+    { not this instanceof NestedUnion and result = "NestedStruct" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }

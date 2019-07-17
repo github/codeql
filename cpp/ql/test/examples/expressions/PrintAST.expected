@@ -1,8 +1,8 @@
-#-----| [CopyAssignmentOperator,MemberFunction] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
+#-----| [CopyAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
 #-----|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const __va_list_tag &
-#-----| [MemberFunction,MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
+#-----| [MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
 #-----|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] __va_list_tag &&
@@ -112,11 +112,11 @@ ConditionDecl.cpp:
 #    3|       1: [Block] { ... }
 #    5|     2: [ReturnStmt] return ...
 ConstructorCall.cpp:
-#    1| [CopyAssignmentOperator,MemberFunction] C& C::operator=(C const&)
+#    1| [CopyAssignmentOperator] C& C::operator=(C const&)
 #    1|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const C &
-#    1| [MemberFunction,MoveAssignmentOperator] C& C::operator=(C&&)
+#    1| [MoveAssignmentOperator] C& C::operator=(C&&)
 #    1|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] C &&
@@ -135,11 +135,11 @@ ConstructorCall.cpp:
 #    3|   initializations: 
 #    3|   body: [Block] { ... }
 #    4|     0: [ReturnStmt] return ...
-#    7| [CopyAssignmentOperator,MemberFunction] D& D::operator=(D const&)
+#    7| [CopyAssignmentOperator] D& D::operator=(D const&)
 #    7|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const D &
-#    7| [MemberFunction,MoveAssignmentOperator] D& D::operator=(D&&)
+#    7| [MoveAssignmentOperator] D& D::operator=(D&&)
 #    7|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] D &&
@@ -156,11 +156,11 @@ ConstructorCall.cpp:
 #    9|   initializations: 
 #    9|   body: [Block] { ... }
 #   10|     0: [ReturnStmt] return ...
-#   13| [CopyAssignmentOperator,MemberFunction] E& E::operator=(E const&)
+#   13| [CopyAssignmentOperator] E& E::operator=(E const&)
 #   13|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const E &
-#   13| [MemberFunction,MoveAssignmentOperator] E& E::operator=(E&&)
+#   13| [MoveAssignmentOperator] E& E::operator=(E&&)
 #   13|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] E &&
@@ -381,7 +381,7 @@ DestructorCall.cpp:
 #   13|             ValueCategory = prvalue(load)
 #   14|     2: [ReturnStmt] return ...
 DynamicCast.cpp:
-#    1| [CopyAssignmentOperator,MemberFunction] Base& Base::operator=(Base const&)
+#    1| [CopyAssignmentOperator] Base& Base::operator=(Base const&)
 #    1|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Base &
@@ -396,7 +396,7 @@ DynamicCast.cpp:
 #-----|           0: [ThisExpr] this
 #-----|               Type = [PointerType] Base *
 #-----|               ValueCategory = prvalue(load)
-#    1| [MemberFunction,MoveAssignmentOperator] Base& Base::operator=(Base&&)
+#    1| [MoveAssignmentOperator] Base& Base::operator=(Base&&)
 #    1|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] Base &&
@@ -414,7 +414,7 @@ DynamicCast.cpp:
 #    2|   params: 
 #    2|   body: [Block] { ... }
 #    2|     0: [ReturnStmt] return ...
-#    4| [CopyAssignmentOperator,MemberFunction] Derived& Derived::operator=(Derived const&)
+#    4| [CopyAssignmentOperator] Derived& Derived::operator=(Derived const&)
 #    4|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Derived &
@@ -462,7 +462,7 @@ DynamicCast.cpp:
 #-----|           0: [ThisExpr] this
 #-----|               Type = [PointerType] Derived *
 #-----|               ValueCategory = prvalue(load)
-#    4| [MemberFunction,MoveAssignmentOperator] Derived& Derived::operator=(Derived&&)
+#    4| [MoveAssignmentOperator] Derived& Derived::operator=(Derived&&)
 #    4|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] Derived &&
@@ -686,11 +686,11 @@ StatementExpr.c:
 #    2|               ValueCategory = prvalue
 #    3|     1: [ReturnStmt] return ...
 StaticMemberAccess.cpp:
-#    1| [CopyAssignmentOperator,MemberFunction] X& X::operator=(X const&)
+#    1| [CopyAssignmentOperator] X& X::operator=(X const&)
 #    1|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const X &
-#    1| [MemberFunction,MoveAssignmentOperator] X& X::operator=(X&&)
+#    1| [MoveAssignmentOperator] X& X::operator=(X&&)
 #    1|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] X &&
@@ -745,11 +745,11 @@ Subscript.c:
 #    2|               ValueCategory = prvalue
 #    3|     1: [ReturnStmt] return ...
 Throw.cpp:
-#    2| [CopyAssignmentOperator,MemberFunction] F& F::operator=(F const&)
+#    2| [CopyAssignmentOperator] F& F::operator=(F const&)
 #    2|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const F &
-#    2| [MemberFunction,MoveAssignmentOperator] F& F::operator=(F&&)
+#    2| [MoveAssignmentOperator] F& F::operator=(F&&)
 #    2|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] F &&
@@ -806,11 +806,11 @@ Throw.cpp:
 #   13|                 Type = [VoidType] void
 #   13|                 ValueCategory = prvalue
 Typeid.cpp:
-#    4| [CopyAssignmentOperator,MemberFunction] std::type_info& std::type_info::operator=(std::type_info const&)
+#    4| [CopyAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info const&)
 #    4|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const type_info &
-#    4| [MemberFunction,MoveAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info&&)
+#    4| [MoveAssignmentOperator] std::type_info& std::type_info::operator=(std::type_info&&)
 #    4|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] type_info &&
@@ -942,3 +942,170 @@ Varargs.c:
 #   11|               Type = [TypedefType] va_list
 #   11|               ValueCategory = lvalue
 #   12|     3: [ReturnStmt] return ...
+union_etc.cpp:
+#    2| [CopyAssignmentOperator] S& S::operator=(S const&)
+#    2|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const S &
+#    2| [MoveAssignmentOperator] S& S::operator=(S&&)
+#    2|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] S &&
+#    3| [CopyAssignmentOperator] S::U& S::U::operator=(S::U const public&)
+#    3|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const U &
+#    3| [MoveAssignmentOperator] S::U& S::U::operator=(S::U&&)
+#    3|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] U &&
+#    4| [CopyAssignmentOperator] S::C& S::C::operator=(S::C const public&)
+#    4|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const C &
+#    4| [MoveAssignmentOperator] S::C& S::C::operator=(S::C&&)
+#    4|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] C &&
+#    8| [CopyAssignmentOperator] C& C::operator=(C const&)
+#    8|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const C &
+#    8| [MoveAssignmentOperator] C& C::operator=(C&&)
+#    8|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] C &&
+#   10| [CopyAssignmentOperator] C::S& C::S::operator=(C::S const public&)
+#   10|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const S &
+#   10| [MoveAssignmentOperator] C::S& C::S::operator=(C::S&&)
+#   10|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] S &&
+#   11| [CopyAssignmentOperator] C::U& C::U::operator=(C::U const public&)
+#   11|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const U &
+#   11| [MoveAssignmentOperator] C::U& C::U::operator=(C::U&&)
+#   11|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] U &&
+#   15| [CopyAssignmentOperator] U& U::operator=(U const&)
+#   15|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const U &
+#   15| [MoveAssignmentOperator] U& U::operator=(U&&)
+#   15|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] U &&
+#   16| [CopyAssignmentOperator] U::S& U::S::operator=(U::S const public&)
+#   16|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const S &
+#   16| [MoveAssignmentOperator] U::S& U::S::operator=(U::S&&)
+#   16|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] S &&
+#   17| [CopyAssignmentOperator] U::C& U::C::operator=(U::C const public&)
+#   17|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const C &
+#   17| [MoveAssignmentOperator] U::C& U::C::operator=(U::C&&)
+#   17|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] C &&
+#   21| [TopLevelFunction] int foo()
+#   21|   params: 
+#   21|   body: [Block] { ... }
+#   22|     0: [DeclStmt] declaration
+#   22|       0: [VariableDeclarationEntry] definition of s
+#   22|           Type = [Struct] S
+#   23|     1: [DeclStmt] declaration
+#   23|       0: [VariableDeclarationEntry] definition of c
+#   23|           Type = [Class] C
+#   24|     2: [DeclStmt] declaration
+#   24|       0: [VariableDeclarationEntry] definition of u
+#   24|           Type = [Union] U
+#   25|     3: [ExprStmt] ExprStmt
+#   25|       0: [AssignExpr] ... = ...
+#   25|           Type = [IntType] int
+#   25|           ValueCategory = lvalue
+#   25|         0: [FieldAccess] a
+#   25|             Type = [IntType] int
+#   25|             ValueCategory = lvalue
+#   25|           -1: [FieldAccess] u
+#   25|               Type = [NestedUnion] U
+#   25|               ValueCategory = lvalue
+#   25|             -1: [VariableAccess] s
+#   25|                 Type = [Struct] S
+#   25|                 ValueCategory = lvalue
+#   25|         1: [AssignExpr] ... = ...
+#   25|             Type = [IntType] int
+#   25|             ValueCategory = prvalue
+#   25|           0: [FieldAccess] e
+#   25|               Type = [IntType] int
+#   25|               ValueCategory = lvalue
+#   25|             -1: [FieldAccess] s
+#   25|                 Type = [NestedStruct] S
+#   25|                 ValueCategory = lvalue
+#   25|               -1: [VariableAccess] c
+#   25|                   Type = [Class] C
+#   25|                   ValueCategory = lvalue
+#   25|           1: [AssignExpr] ... = ...
+#   25|               Type = [IntType] int
+#   25|               ValueCategory = prvalue
+#   25|             0: [FieldAccess] i
+#   25|                 Type = [IntType] int
+#   25|                 ValueCategory = lvalue
+#   25|               -1: [FieldAccess] c
+#   25|                   Type = [NestedClass] C
+#   25|                   ValueCategory = lvalue
+#   25|                 -1: [VariableAccess] u
+#   25|                     Type = [Union] U
+#   25|                     ValueCategory = lvalue
+#   25|             1: [Literal] 43
+#   25|                 Type = [IntType] int
+#   25|                 Value = [Literal] 43
+#   25|                 ValueCategory = prvalue
+#   26|     4: [ExprStmt] ExprStmt
+#   26|       0: [AssignAddExpr] ... += ...
+#   26|           Type = [IntType] int
+#   26|           ValueCategory = lvalue
+#   26|         0: [FieldAccess] b
+#   26|             Type = [IntType] int
+#   26|             ValueCategory = lvalue
+#   26|           -1: [FieldAccess] u
+#   26|               Type = [NestedUnion] U
+#   26|               ValueCategory = lvalue
+#   26|             -1: [VariableAccess] s
+#   26|                 Type = [Struct] S
+#   26|                 ValueCategory = lvalue
+#   26|         1: [ParenthesisExpr] (...)
+#   26|             Type = [IntType] int
+#   26|             ValueCategory = prvalue
+#   26|           expr: [AddExpr] ... + ...
+#   26|               Type = [IntType] int
+#   26|               ValueCategory = prvalue
+#   26|             0: [FieldAccess] i
+#   26|                 Type = [IntType] int
+#   26|                 ValueCategory = prvalue(load)
+#   26|               -1: [FieldAccess] c
+#   26|                   Type = [NestedClass] C
+#   26|                   ValueCategory = lvalue
+#   26|                 -1: [VariableAccess] u
+#   26|                     Type = [Union] U
+#   26|                     ValueCategory = lvalue
+#   26|             1: [FieldAccess] j
+#   26|                 Type = [IntType] int
+#   26|                 ValueCategory = prvalue(load)
+#   26|               -1: [VariableAccess] u
+#   26|                   Type = [Union] U
+#   26|                   ValueCategory = lvalue
+#   27|     5: [ReturnStmt] return ...
+#   27|       0: [FieldAccess] g
+#   27|           Type = [IntType] int
+#   27|           ValueCategory = prvalue(load)
+#   27|         -1: [VariableAccess] c
+#   27|             Type = [Class] C
+#   27|             ValueCategory = lvalue

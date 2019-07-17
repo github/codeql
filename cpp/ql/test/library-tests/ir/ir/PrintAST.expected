@@ -1,8 +1,8 @@
-#-----| [CopyAssignmentOperator,MemberFunction] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
+#-----| [CopyAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
 #-----|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const __va_list_tag &
-#-----| [MemberFunction,MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
+#-----| [MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
 #-----|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] __va_list_tag &&
@@ -55,11 +55,11 @@
 #-----|     1: [Parameter] p#1
 #-----|         Type = [ScopedEnum] align_val_t
 bad_asts.cpp:
-#    5| [CopyAssignmentOperator,MemberFunction] Bad::S& Bad::S::operator=(Bad::S const&)
+#    5| [CopyAssignmentOperator] Bad::S& Bad::S::operator=(Bad::S const&)
 #    5|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const S &
-#    5| [MemberFunction,MoveAssignmentOperator] Bad::S& Bad::S::operator=(Bad::S&&)
+#    5| [MoveAssignmentOperator] Bad::S& Bad::S::operator=(Bad::S&&)
 #    5|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] S &&
@@ -134,11 +134,11 @@ bad_asts.cpp:
 #   16|             Value = [Literal] 1
 #   16|             ValueCategory = prvalue
 #   17|     2: [ReturnStmt] return ...
-#   19| [CopyAssignmentOperator,MemberFunction] Bad::Point& Bad::Point::operator=(Bad::Point const&)
+#   19| [CopyAssignmentOperator] Bad::Point& Bad::Point::operator=(Bad::Point const&)
 #   19|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Point &
-#   19| [MemberFunction,MoveAssignmentOperator] Bad::Point& Bad::Point::operator=(Bad::Point&&)
+#   19| [MoveAssignmentOperator] Bad::Point& Bad::Point::operator=(Bad::Point&&)
 #   19|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] Point &&
@@ -2880,19 +2880,19 @@ ir.cpp:
 #  408|                 ValueCategory = prvalue
 #  409|     2: [LabelStmt] label ...:
 #  410|     3: [ReturnStmt] return ...
-#  412| [CopyAssignmentOperator,MemberFunction] Point& Point::operator=(Point const&)
+#  412| [CopyAssignmentOperator] Point& Point::operator=(Point const&)
 #  412|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Point &
-#  412| [MemberFunction,MoveAssignmentOperator] Point& Point::operator=(Point&&)
+#  412| [MoveAssignmentOperator] Point& Point::operator=(Point&&)
 #  412|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] Point &&
-#  417| [CopyAssignmentOperator,MemberFunction] Rect& Rect::operator=(Rect const&)
+#  417| [CopyAssignmentOperator] Rect& Rect::operator=(Rect const&)
 #  417|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Rect &
-#  417| [MemberFunction,MoveAssignmentOperator] Rect& Rect::operator=(Rect&&)
+#  417| [MoveAssignmentOperator] Rect& Rect::operator=(Rect&&)
 #  417|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] Rect &&
@@ -3557,11 +3557,11 @@ ir.cpp:
 #  522|                 Type = [IntType] int
 #  522|                 ValueCategory = prvalue(load)
 #  523|     3: [ReturnStmt] return ...
-#  525| [CopyAssignmentOperator,MemberFunction] U& U::operator=(U const&)
+#  525| [CopyAssignmentOperator] U& U::operator=(U const&)
 #  525|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const U &
-#  525| [MemberFunction,MoveAssignmentOperator] U& U::operator=(U&&)
+#  525| [MoveAssignmentOperator] U& U::operator=(U&&)
 #  525|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] U &&
@@ -3921,11 +3921,11 @@ ir.cpp:
 #  601|         Type = [PointerType] const char *
 #  602| [Destructor] void String::~String()
 #  602|   params: 
-#  604| [CopyAssignmentOperator,MemberFunction] String& String::operator=(String const&)
+#  604| [CopyAssignmentOperator] String& String::operator=(String const&)
 #  604|   params: 
 #  604|     0: [Parameter] p#0
 #  604|         Type = [LValueReferenceType] const String &
-#  605| [MemberFunction,MoveAssignmentOperator] String& String::operator=(String&&)
+#  605| [MoveAssignmentOperator] String& String::operator=(String&&)
 #  605|   params: 
 #  605|     0: [Parameter] p#0
 #  605|         Type = [RValueReferenceType] String &&
@@ -4025,11 +4025,11 @@ ir.cpp:
 #  625|               Type = [Struct] String
 #  625|               ValueCategory = lvalue
 #  626|     3: [ReturnStmt] return ...
-#  628| [CopyAssignmentOperator,MemberFunction] C& C::operator=(C const&)
+#  628| [CopyAssignmentOperator] C& C::operator=(C const&)
 #  628|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const C &
-#  628| [MemberFunction,MoveAssignmentOperator] C& C::operator=(C&&)
+#  628| [MoveAssignmentOperator] C& C::operator=(C&&)
 #  628|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] C &&
@@ -4487,11 +4487,11 @@ ir.cpp:
 #  709|         1: [VariableAccess] y
 #  709|             Type = [IntType] int
 #  709|             ValueCategory = prvalue(load)
-#  713| [CopyAssignmentOperator,MemberFunction] Outer<long>& Outer<long>::operator=(Outer<long> const&)
+#  713| [CopyAssignmentOperator] Outer<long>& Outer<long>::operator=(Outer<long> const&)
 #  713|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Outer<long> &
-#  713| [MemberFunction,MoveAssignmentOperator] Outer<long>& Outer<long>::operator=(Outer<long>&&)
+#  713| [MoveAssignmentOperator] Outer<long>& Outer<long>::operator=(Outer<long>&&)
 #  713|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] Outer<long> &&
@@ -4654,7 +4654,7 @@ ir.cpp:
 #  741|                 Type = [VoidType] void
 #  741|                 ValueCategory = prvalue
 #  743|     1: [ReturnStmt] return ...
-#  745| [CopyAssignmentOperator,MemberFunction] Base& Base::operator=(Base const&)
+#  745| [CopyAssignmentOperator] Base& Base::operator=(Base const&)
 #  745|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Base &
@@ -4735,7 +4735,7 @@ ir.cpp:
 #  751|         -1: [FieldAccess] base_s
 #  751|             Type = [Struct] String
 #  751|             ValueCategory = lvalue
-#  754| [CopyAssignmentOperator,MemberFunction] Middle& Middle::operator=(Middle const&)
+#  754| [CopyAssignmentOperator] Middle& Middle::operator=(Middle const&)
 #  754|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Middle &
@@ -4846,7 +4846,7 @@ ir.cpp:
 #  760|     1: [DestructorCall] call to ~Base
 #  760|         Type = [VoidType] void
 #  760|         ValueCategory = prvalue
-#  763| [CopyAssignmentOperator,MemberFunction] Derived& Derived::operator=(Derived const&)
+#  763| [CopyAssignmentOperator] Derived& Derived::operator=(Derived const&)
 #  763|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Derived &
@@ -4957,7 +4957,7 @@ ir.cpp:
 #  769|     1: [DestructorCall] call to ~Middle
 #  769|         Type = [VoidType] void
 #  769|         ValueCategory = prvalue
-#  772| [CopyAssignmentOperator,MemberFunction] MiddleVB1& MiddleVB1::operator=(MiddleVB1 const&)
+#  772| [CopyAssignmentOperator] MiddleVB1& MiddleVB1::operator=(MiddleVB1 const&)
 #  772|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const MiddleVB1 &
@@ -4996,7 +4996,7 @@ ir.cpp:
 #  778|     1: [DestructorCall] call to ~Base
 #  778|         Type = [VoidType] void
 #  778|         ValueCategory = prvalue
-#  781| [CopyAssignmentOperator,MemberFunction] MiddleVB2& MiddleVB2::operator=(MiddleVB2 const&)
+#  781| [CopyAssignmentOperator] MiddleVB2& MiddleVB2::operator=(MiddleVB2 const&)
 #  781|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const MiddleVB2 &
@@ -5035,7 +5035,7 @@ ir.cpp:
 #  787|     1: [DestructorCall] call to ~Base
 #  787|         Type = [VoidType] void
 #  787|         ValueCategory = prvalue
-#  790| [CopyAssignmentOperator,MemberFunction] DerivedVB& DerivedVB::operator=(DerivedVB const&)
+#  790| [CopyAssignmentOperator] DerivedVB& DerivedVB::operator=(DerivedVB const&)
 #  790|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const DerivedVB &
@@ -5687,7 +5687,7 @@ ir.cpp:
 #  839|               Type = [PointerType] DerivedVB *
 #  839|               ValueCategory = prvalue(load)
 #  840|     34: [ReturnStmt] return ...
-#  842| [CopyAssignmentOperator,MemberFunction] PolymorphicBase& PolymorphicBase::operator=(PolymorphicBase const&)
+#  842| [CopyAssignmentOperator] PolymorphicBase& PolymorphicBase::operator=(PolymorphicBase const&)
 #  842|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const PolymorphicBase &
@@ -5702,11 +5702,11 @@ ir.cpp:
 #-----|         Type = [LValueReferenceType] const PolymorphicBase &
 #  843| [Destructor,VirtualFunction] void PolymorphicBase::~PolymorphicBase()
 #  843|   params: 
-#  846| [CopyAssignmentOperator,MemberFunction] PolymorphicDerived& PolymorphicDerived::operator=(PolymorphicDerived const&)
+#  846| [CopyAssignmentOperator] PolymorphicDerived& PolymorphicDerived::operator=(PolymorphicDerived const&)
 #  846|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const PolymorphicDerived &
-#  846| [MemberFunction,MoveAssignmentOperator] PolymorphicDerived& PolymorphicDerived::operator=(PolymorphicDerived&&)
+#  846| [MoveAssignmentOperator] PolymorphicDerived& PolymorphicDerived::operator=(PolymorphicDerived&&)
 #  846|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] PolymorphicDerived &&
@@ -6240,47 +6240,47 @@ ir.cpp:
 #  922|         Type = [ScopedEnum] align_val_t
 #  922|     2: [Parameter] p#2
 #  922|         Type = [FloatType] float
-#  924| [CopyAssignmentOperator,MemberFunction] SizedDealloc& SizedDealloc::operator=(SizedDealloc const&)
+#  924| [CopyAssignmentOperator] SizedDealloc& SizedDealloc::operator=(SizedDealloc const&)
 #  924|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const SizedDealloc &
-#  924| [MemberFunction,MoveAssignmentOperator] SizedDealloc& SizedDealloc::operator=(SizedDealloc&&)
+#  924| [MoveAssignmentOperator] SizedDealloc& SizedDealloc::operator=(SizedDealloc&&)
 #  924|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] SizedDealloc &&
-#  926| [MemberFunction,Operator] void* SizedDealloc::operator new(size_t)
+#  926| [Operator] void* SizedDealloc::operator new(size_t)
 #  926|   params: 
 #  926|     0: [Parameter] p#0
 #  926|         Type = [Size_t,TypedefType] size_t
-#  927| [MemberFunction,Operator] void* SizedDealloc::operator new[](size_t)
+#  927| [Operator] void* SizedDealloc::operator new[](size_t)
 #  927|   params: 
 #  927|     0: [Parameter] p#0
 #  927|         Type = [Size_t,TypedefType] size_t
-#  928| [MemberFunction,Operator] void SizedDealloc::operator delete(void*, size_t)
+#  928| [Operator] void SizedDealloc::operator delete(void*, size_t)
 #  928|   params: 
 #  928|     0: [Parameter] p#0
 #  928|         Type = [VoidPointerType] void *
 #  928|     1: [Parameter] p#1
 #  928|         Type = [Size_t,TypedefType] size_t
-#  929| [MemberFunction,Operator] void SizedDealloc::operator delete[](void*, size_t)
+#  929| [Operator] void SizedDealloc::operator delete[](void*, size_t)
 #  929|   params: 
 #  929|     0: [Parameter] p#0
 #  929|         Type = [VoidPointerType] void *
 #  929|     1: [Parameter] p#1
 #  929|         Type = [Size_t,TypedefType] size_t
-#  932| [CopyAssignmentOperator,MemberFunction] Overaligned& Overaligned::operator=(Overaligned const&)
+#  932| [CopyAssignmentOperator] Overaligned& Overaligned::operator=(Overaligned const&)
 #  932|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Overaligned &
-#  932| [MemberFunction,MoveAssignmentOperator] Overaligned& Overaligned::operator=(Overaligned&&)
+#  932| [MoveAssignmentOperator] Overaligned& Overaligned::operator=(Overaligned&&)
 #  932|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] Overaligned &&
-#  936| [CopyAssignmentOperator,MemberFunction] DefaultCtorWithDefaultParam& DefaultCtorWithDefaultParam::operator=(DefaultCtorWithDefaultParam const&)
+#  936| [CopyAssignmentOperator] DefaultCtorWithDefaultParam& DefaultCtorWithDefaultParam::operator=(DefaultCtorWithDefaultParam const&)
 #  936|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const DefaultCtorWithDefaultParam &
-#  936| [MemberFunction,MoveAssignmentOperator] DefaultCtorWithDefaultParam& DefaultCtorWithDefaultParam::operator=(DefaultCtorWithDefaultParam&&)
+#  936| [MoveAssignmentOperator] DefaultCtorWithDefaultParam& DefaultCtorWithDefaultParam::operator=(DefaultCtorWithDefaultParam&&)
 #  936|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] DefaultCtorWithDefaultParam &&
@@ -6858,11 +6858,11 @@ ir.cpp:
 # 1020|                 Value = [Literal,Zero] 0
 # 1020|                 ValueCategory = prvalue
 # 1021|     5: [ReturnStmt] return ...
-# 1023| [CopyAssignmentOperator,MemberFunction] EmptyStruct& EmptyStruct::operator=(EmptyStruct const&)
+# 1023| [CopyAssignmentOperator] EmptyStruct& EmptyStruct::operator=(EmptyStruct const&)
 # 1023|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const EmptyStruct &
-# 1023| [MemberFunction,MoveAssignmentOperator] EmptyStruct& EmptyStruct::operator=(EmptyStruct&&)
+# 1023| [MoveAssignmentOperator] EmptyStruct& EmptyStruct::operator=(EmptyStruct&&)
 # 1023|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] EmptyStruct &&
@@ -6877,7 +6877,7 @@ ir.cpp:
 # 1026|               Type = [Struct] EmptyStruct
 # 1026|               ValueCategory = prvalue
 # 1027|     1: [ReturnStmt] return ...
-# 1029| [CopyAssignmentOperator,MemberFunction] (lambda [] type at line 1029, col. 12)& (lambda [] type at line 1029, col. 12)::operator=((lambda [] type at line 1029, col. 12) const&)
+# 1029| [CopyAssignmentOperator] (lambda [] type at line 1029, col. 12)& (lambda [] type at line 1029, col. 12)::operator=((lambda [] type at line 1029, col. 12) const&)
 # 1029|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1029, col. 12 &
@@ -7222,7 +7222,7 @@ ir.cpp:
 # 1046|               Value = [Literal] 6
 # 1046|               ValueCategory = prvalue
 # 1047|     15: [ReturnStmt] return ...
-# 1032| [CopyAssignmentOperator,MemberFunction] (void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)& (void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23) const&)
+# 1032| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)& (void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23) const&)
 # 1032|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1032, col. 23 &
@@ -7260,7 +7260,7 @@ ir.cpp:
 # 1032|       0: [FunctionAccess] _FUN
 # 1032|           Type = [FunctionPointerType] ..(*)(..)
 # 1032|           ValueCategory = prvalue(load)
-# 1034| [CopyAssignmentOperator,MemberFunction] (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)& (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21) const&)
+# 1034| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)& (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21) const&)
 # 1034|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1034, col. 21 &
@@ -7319,7 +7319,7 @@ ir.cpp:
 #-----|             -1: [ThisExpr] this
 #-----|                 Type = [PointerType] const lambda [] type at line 1034, col. 21 *
 #-----|                 ValueCategory = prvalue(load)
-# 1036| [CopyAssignmentOperator,MemberFunction] (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)& (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21) const&)
+# 1036| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)& (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21) const&)
 # 1036|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1036, col. 21 &
@@ -7386,7 +7386,7 @@ ir.cpp:
 #-----|           -1: [ThisExpr] this
 #-----|               Type = [PointerType] const lambda [] type at line 1036, col. 21 *
 #-----|               ValueCategory = prvalue(load)
-# 1038| [CopyAssignmentOperator,MemberFunction] (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)& (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30) const&)
+# 1038| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)& (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30) const&)
 # 1038|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1038, col. 30 &
@@ -7434,7 +7434,7 @@ ir.cpp:
 # 1038|             Type = [IntType] int
 # 1038|             Value = [Literal,Zero] 0
 # 1038|             ValueCategory = prvalue
-# 1040| [CopyAssignmentOperator,MemberFunction] (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)& (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30) const&)
+# 1040| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)& (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30) const&)
 # 1040|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1040, col. 30 &
@@ -7493,7 +7493,7 @@ ir.cpp:
 # 1040|             Type = [IntType] int
 # 1040|             Value = [Literal,Zero] 0
 # 1040|             ValueCategory = prvalue
-# 1042| [CopyAssignmentOperator,MemberFunction] (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)& (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32) const&)
+# 1042| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)& (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32) const&)
 # 1042|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1042, col. 32 &
@@ -7549,7 +7549,7 @@ ir.cpp:
 #-----|           -1: [ThisExpr] this
 #-----|               Type = [PointerType] const lambda [] type at line 1042, col. 32 *
 #-----|               ValueCategory = prvalue(load)
-# 1045| [CopyAssignmentOperator,MemberFunction] (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)& (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23) const&)
+# 1045| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)& (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23) const&)
 # 1045|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1045, col. 23 &
@@ -7638,25 +7638,25 @@ ir.cpp:
 #-----|               -1: [ThisExpr] this
 #-----|                   Type = [PointerType] const lambda [] type at line 1045, col. 23 *
 #-----|                   ValueCategory = prvalue(load)
-# 1050| [CopyAssignmentOperator,MemberFunction] vector<int>& vector<int>::operator=(vector<int> const&)
+# 1050| [CopyAssignmentOperator] vector<int>& vector<int>::operator=(vector<int> const&)
 # 1050|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const vector<int> &
-# 1050| [MemberFunction,MoveAssignmentOperator] vector<int>& vector<int>::operator=(vector<int>&&)
+# 1050| [MoveAssignmentOperator] vector<int>& vector<int>::operator=(vector<int>&&)
 # 1050|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] vector<int> &&
-# 1051| [CopyAssignmentOperator,MemberFunction] vector<int>::iterator& vector<int>::iterator::operator=(vector<int>::iterator const public&)
+# 1051| [CopyAssignmentOperator] vector<int>::iterator& vector<int>::iterator::operator=(vector<int>::iterator const public&)
 # 1051|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const iterator &
-# 1051| [MemberFunction,MoveAssignmentOperator] vector<int>::iterator& vector<int>::iterator::operator=(vector<int>::iterator&&)
+# 1051| [MoveAssignmentOperator] vector<int>::iterator& vector<int>::iterator::operator=(vector<int>::iterator&&)
 # 1051|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] iterator &&
-# 1053| [MemberFunction,Operator] vector<T>::iterator& vector<T>::iterator::operator++()
+# 1053| [Operator] vector<T>::iterator& vector<T>::iterator::operator++()
 # 1053|   params: 
-# 1053| [MemberFunction,Operator] vector<int>::iterator& vector<int>::iterator::operator++()
+# 1053| [Operator] vector<int>::iterator& vector<int>::iterator::operator++()
 # 1053|   params: 
 # 1054| [ConstMemberFunction,Operator] T& vector<T>::iterator::operator*() const
 # 1054|   params: 
@@ -7669,7 +7669,7 @@ ir.cpp:
 # 1056| [ConstMemberFunction,Operator] bool vector<int>::iterator::operator!=(vector<int>::iterator) const
 # 1056|   params: 
 # 1056|     0: [Parameter] right
-# 1056|         Type = [NestedClass,NestedStruct] iterator
+# 1056|         Type = [NestedStruct] iterator
 # 1059| [ConstMemberFunction] vector<T>::iterator vector<T>::begin() const
 # 1059|   params: 
 # 1059| [ConstMemberFunction] vector<int>::iterator vector<int>::begin() const
@@ -7706,19 +7706,19 @@ ir.cpp:
 #-----|             Type = [SpecifiedType] const iterator
 #-----|             ValueCategory = lvalue
 #-----|           expr: [VariableAccess] (__begin)
-#-----|               Type = [NestedClass,NestedStruct] iterator
+#-----|               Type = [NestedStruct] iterator
 #-----|               ValueCategory = lvalue
 #-----|         0: [VariableAccess] (__end)
-#-----|             Type = [NestedClass,NestedStruct] iterator
+#-----|             Type = [NestedStruct] iterator
 #-----|             ValueCategory = prvalue(load)
 # 1069|       3: [ReferenceDereferenceExpr] (reference dereference)
-# 1069|           Type = [NestedClass,NestedStruct] iterator
+# 1069|           Type = [NestedStruct] iterator
 # 1069|           ValueCategory = lvalue
 # 1069|         expr: [FunctionCall] call to operator++
 # 1069|             Type = [LValueReferenceType] iterator &
 # 1069|             ValueCategory = prvalue
 #-----|           -1: [VariableAccess] (__begin)
-#-----|               Type = [NestedClass,NestedStruct] iterator
+#-----|               Type = [NestedStruct] iterator
 #-----|               ValueCategory = lvalue
 # 1069|       4: [DeclStmt] declaration
 # 1069|       5: [Block] { ... }
@@ -7747,19 +7747,19 @@ ir.cpp:
 #-----|             Type = [SpecifiedType] const iterator
 #-----|             ValueCategory = lvalue
 #-----|           expr: [VariableAccess] (__begin)
-#-----|               Type = [NestedClass,NestedStruct] iterator
+#-----|               Type = [NestedStruct] iterator
 #-----|               ValueCategory = lvalue
 #-----|         0: [VariableAccess] (__end)
-#-----|             Type = [NestedClass,NestedStruct] iterator
+#-----|             Type = [NestedStruct] iterator
 #-----|             ValueCategory = prvalue(load)
 # 1075|       3: [ReferenceDereferenceExpr] (reference dereference)
-# 1075|           Type = [NestedClass,NestedStruct] iterator
+# 1075|           Type = [NestedStruct] iterator
 # 1075|           ValueCategory = lvalue
 # 1075|         expr: [FunctionCall] call to operator++
 # 1075|             Type = [LValueReferenceType] iterator &
 # 1075|             ValueCategory = prvalue
 #-----|           -1: [VariableAccess] (__begin)
-#-----|               Type = [NestedClass,NestedStruct] iterator
+#-----|               Type = [NestedStruct] iterator
 #-----|               ValueCategory = lvalue
 # 1075|       4: [DeclStmt] declaration
 # 1075|       5: [Block] { ... }

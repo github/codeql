@@ -722,7 +722,8 @@ class MemberFunction extends Function {
     this.isMember()
   }
 
-  override string getCanonicalQLClass() { result = "MemberFunction" }
+  override string getCanonicalQLClass() 
+    { not this instanceof Operator and result = "MemberFunction" }
 
   /**
    * Gets the number of parameters of this function, including any implicit
