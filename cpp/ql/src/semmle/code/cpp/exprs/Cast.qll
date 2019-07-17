@@ -80,6 +80,8 @@ module CastSanity {
 class CStyleCast extends Cast, @c_style_cast {
   override string toString() { result = "(" + this.getType().getName() + ")..." }
 
+  override string getCanonicalQLClass() { result = "CStyleCast" }
+
   override int getPrecedence() { result = 15 }
 }
 
@@ -88,6 +90,8 @@ class CStyleCast extends Cast, @c_style_cast {
  */
 class StaticCast extends Cast, @static_cast {
   override string toString() { result = "static_cast<" + this.getType().getName() + ">..." }
+
+  override string getCanonicalQLClass() { result = "StaticCast" }
 
   override int getPrecedence() { result = 16 }
 }
@@ -98,6 +102,8 @@ class StaticCast extends Cast, @static_cast {
 class ConstCast extends Cast, @const_cast {
   override string toString() { result = "const_cast<" + this.getType().getName() + ">..." }
 
+  override string getCanonicalQLClass() { result = "ConstCast" }
+
   override int getPrecedence() { result = 16 }
 }
 
@@ -106,6 +112,8 @@ class ConstCast extends Cast, @const_cast {
  */
 class ReinterpretCast extends Cast, @reinterpret_cast {
   override string toString() { result = "reinterpret_cast<" + this.getType().getName() + ">..." }
+
+  override string getCanonicalQLClass() { result = "ReinterpretCast" }
 
   override int getPrecedence() { result = 16 }
 }
@@ -155,7 +163,6 @@ class IntegralConversion extends ArithmeticConversion {
     isIntegralOrEnum(getExpr().getUnspecifiedType())
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "IntegralConversion" }
 
   override string getSemanticConversionString() {
@@ -172,7 +179,6 @@ class FloatingPointConversion extends ArithmeticConversion {
     getExpr().getUnspecifiedType() instanceof FloatingPointType
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "FloatingPointConversion" }
   
   override string getSemanticConversionString() {
@@ -189,7 +195,6 @@ class FloatingPointToIntegralConversion extends ArithmeticConversion {
     getExpr().getUnspecifiedType() instanceof FloatingPointType
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "FloatingPointToIntegralConversion" }
 
   override string getSemanticConversionString() {
@@ -206,7 +211,6 @@ class IntegralToFloatingPointConversion extends ArithmeticConversion {
     isIntegralOrEnum(getExpr().getUnspecifiedType())
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "IntegralToFloatingPointConversion" }
 
   override string getSemanticConversionString() {
@@ -227,7 +231,6 @@ class PointerConversion extends Cast {
     isPointerOrNullPointer(getExpr().getUnspecifiedType())
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "PointerConversion" }
   
   override string getSemanticConversionString() {
@@ -258,7 +261,6 @@ class PointerToMemberConversion extends Cast {
     )
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "PointerToMemberConversion" }
   
   override string getSemanticConversionString() {
@@ -276,7 +278,6 @@ class PointerToIntegralConversion extends Cast {
     isPointerOrNullPointer(getExpr().getUnspecifiedType())
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "PointerToIntegralConversion" }
   
   override string getSemanticConversionString() {
@@ -294,7 +295,6 @@ class IntegralToPointerConversion extends Cast {
     isIntegralOrEnum(getExpr().getUnspecifiedType())
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "IntegralToPointerConversion" }
   
   override string getSemanticConversionString() {
@@ -311,7 +311,6 @@ class BoolConversion extends Cast {
     conversionkinds(underlyingElement(this), 1)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "BoolConversion" }
   
   override string getSemanticConversionString() {
@@ -328,7 +327,6 @@ class VoidConversion extends Cast {
     getUnspecifiedType() instanceof VoidType
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "VoidConversion" }
   
   override string getSemanticConversionString() {
@@ -400,7 +398,6 @@ class BaseClassConversion extends InheritanceConversion {
     conversionkinds(underlyingElement(this), 2)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "BaseClassConversion" }
   
   override string getSemanticConversionString() {
@@ -432,7 +429,6 @@ class DerivedClassConversion extends InheritanceConversion {
     conversionkinds(underlyingElement(this), 3)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "DerivedClassConversion" }
 
   override string getSemanticConversionString() {
@@ -457,7 +453,6 @@ class PointerToMemberBaseClassConversion extends Cast {
     conversionkinds(underlyingElement(this), 4)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "PointerToMemberBaseClassConversion" }
   
   override string getSemanticConversionString() {
@@ -474,7 +469,6 @@ class PointerToMemberDerivedClassConversion extends Cast {
     conversionkinds(underlyingElement(this), 5)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "PointerToMemberDerivedClassConversion" }
 
   override string getSemanticConversionString() {
@@ -492,7 +486,6 @@ class GlvalueConversion extends Cast {
     conversionkinds(underlyingElement(this), 6)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "GlvalueConversion" }
 
   override string getSemanticConversionString() {
@@ -519,7 +512,6 @@ class PrvalueAdjustmentConversion extends Cast {
     conversionkinds(underlyingElement(this), 7)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "PrvalueAdjustmentConversion" }
 
   override string getSemanticConversionString() {
@@ -535,7 +527,6 @@ class DynamicCast extends Cast, @dynamic_cast {
 
   override int getPrecedence() { result = 16 }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "DynamicCast" }
 
   override string getSemanticConversionString() {
@@ -589,7 +580,6 @@ class TypeidOperator extends Expr, @type_id {
    */
   deprecated Type getSpecifiedType() { result = this.getResultType() }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "TypeidOperator" }
 
   /**
@@ -619,7 +609,6 @@ class TypeidOperator extends Expr, @type_id {
 class SizeofPackOperator extends Expr, @sizeof_pack {
   override string toString() { result = "sizeof...(...)" }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "SizeofPackOperator" }
 
   override predicate mayBeImpure() {
@@ -643,7 +632,6 @@ abstract class SizeofOperator extends Expr, @runtime_sizeof {
 class SizeofExprOperator extends SizeofOperator {
   SizeofExprOperator() { exists(Expr e | this.getChild(0) = e) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "SizeofExprOperator" }
   
   /** Gets the contained expression. */
@@ -672,7 +660,6 @@ class SizeofExprOperator extends SizeofOperator {
 class SizeofTypeOperator extends SizeofOperator {
   SizeofTypeOperator() { sizeof_bind(underlyingElement(this),_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "SizeofTypeOperator" }
 
   /** Gets the contained type. */
@@ -745,7 +732,6 @@ class ArrayToPointerConversion extends Conversion, @array_to_pointer {
   /** Gets a textual representation of this conversion. */
   override string toString() { result = "array to pointer conversion" }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ArrayToPointerConversion" }
   
   override predicate mayBeImpure() {

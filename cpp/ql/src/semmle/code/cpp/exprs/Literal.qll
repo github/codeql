@@ -13,7 +13,6 @@ class Literal extends Expr, @literal {
     )
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "Literal" }
   
   override predicate mayBeImpure() {
@@ -102,7 +101,6 @@ class CharLiteral extends TextLiteral {
     this.getValueText().regexpMatch("(?s)\\s*L?'.*")
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "CharLiteral" }
 
   /**
@@ -123,7 +121,7 @@ class StringLiteral extends TextLiteral
     // Note that `AggregateLiteral`s can also have an array type, but they derive from
     // @aggregateliteral rather than @literal.
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "StringLiteral" }
   
 }
@@ -136,7 +134,6 @@ class OctalLiteral extends Literal {
     super.getValueText().regexpMatch("\\s*0[0-7]+[uUlL]*\\s*")
   }
   
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "OctalLiteral" }
 }
 
@@ -148,7 +145,6 @@ class HexLiteral extends Literal {
     super.getValueText().regexpMatch("\\s*0[xX][0-9a-fA-F]+[uUlL]*\\s*")
   }
   
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "HexLiteral" }
 }
 
@@ -182,7 +178,6 @@ class ClassAggregateLiteral extends AggregateLiteral {
     classType = this.getUnspecifiedType()
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ClassAggregateLiteral" }
 
   /**
@@ -244,7 +239,6 @@ class ArrayAggregateLiteral extends AggregateLiteral {
     arrayType = this.getUnspecifiedType()
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ArrayAggregateLiteral" }
 
   /**

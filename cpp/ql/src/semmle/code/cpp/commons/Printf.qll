@@ -15,7 +15,6 @@ import semmle.code.cpp.models.implementations.Printf
 class AttributeFormattingFunction extends FormattingFunction {
   FormatAttribute printf_attrib;
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "AttributeFormattingFunction" }
 
   AttributeFormattingFunction() {
@@ -67,7 +66,6 @@ predicate variadicFormatter(Function f, int formatParamIndex) {
  * string and a variable number of arguments.
  */
 class UserDefinedFormattingFunction extends FormattingFunction {
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "UserDefinedFormattingFunction" }
   
   UserDefinedFormattingFunction() { isVarargs() and callsVariadicFormatter(this, _) }
@@ -81,7 +79,6 @@ class UserDefinedFormattingFunction extends FormattingFunction {
 class FormattingFunctionCall extends Expr {
   FormattingFunctionCall() { this.(Call).getTarget() instanceof FormattingFunction }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "FormattingFunctionCall" }
   
   /**

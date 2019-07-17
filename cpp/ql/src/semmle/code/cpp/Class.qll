@@ -15,7 +15,6 @@ class Class extends UserType {
     isClass(underlyingElement(this))
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "Class" }
   
   /** Gets a child declaration of this class. */
@@ -824,7 +823,7 @@ class LocalClass extends Class {
   LocalClass() {
     isLocal()
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "LocalClass" }
 
   override Function getEnclosingAccessHolder() {
@@ -840,7 +839,6 @@ class NestedClass extends Class {
     this.isMember()
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "NestedClass" }
 
   /** Holds if this member is private. */
@@ -988,7 +986,6 @@ class VirtualBaseClass extends Class {
     exists(VirtualClassDerivation cd | cd.getBaseClass() = this)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "VirtualBaseClass" }
 
   /** A virtual class derivation of which this class is the base. */
@@ -1015,7 +1012,6 @@ class ProxyClass extends UserType {
     usertypes(underlyingElement(this),_,9)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ProxyClass" }
   
   /** Gets the location of the proxy class. */

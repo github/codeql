@@ -11,7 +11,6 @@ class LambdaExpression extends Expr, @lambdaexpr {
     result = "[...](...){...}"
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "LambdaExpression" }
 
   /**
@@ -78,7 +77,6 @@ class Closure extends Class {
     exists(LambdaExpression e | this = e.getType())
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "Closure" }
 
   /** Gets the lambda expression of which this is the type. */
@@ -105,7 +103,6 @@ class LambdaCapture extends @lambdacapture {
     result = getField().toString()
   }
 
-  /** Canonical QL class corresponding to this element. */
   string getCanonicalQLClass() { result = "LambdaCapture" }
 
   /**

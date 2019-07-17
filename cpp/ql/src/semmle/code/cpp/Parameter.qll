@@ -33,7 +33,6 @@ class Parameter extends LocalScopeVariable, @parameter {
      result = "p#" + this.getIndex().toString())
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "Parameter" }
 
   /**

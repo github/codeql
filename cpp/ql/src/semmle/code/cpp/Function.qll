@@ -503,6 +503,8 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /** Gets the function which is being declared or defined. */
   override Function getDeclaration() { result = getFunction() }
 
+  override string getCanonicalQLClass() { result = "FunctionDeclarationEntry" }
+
   /** Gets the function which is being declared or defined. */
   Function getFunction() { fun_decls(underlyingElement(this),unresolveElement(result),_,_,_) }
 
@@ -707,7 +709,7 @@ class TopLevelFunction extends Function {
   TopLevelFunction() {
     not this.isMember()
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "TopLevelFunction" }
 }
 
@@ -720,7 +722,6 @@ class MemberFunction extends Function {
     this.isMember()
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "MemberFunction" }
 
   /**
@@ -774,7 +775,6 @@ class VirtualFunction extends MemberFunction {
     this.hasSpecifier("virtual") or purefunctions(underlyingElement(this))
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "VirtualFunction" }
   
   /** Holds if this virtual function is pure. */
@@ -794,7 +794,6 @@ class PureVirtualFunction extends VirtualFunction {
 
   PureVirtualFunction() { purefunctions(underlyingElement(this)) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "PureVirtualFunction" }
 }
 
@@ -807,7 +806,6 @@ class ConstMemberFunction extends MemberFunction {
 
   ConstMemberFunction() { this.hasSpecifier("const") }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ConstMemberFunction" }
 }
 
@@ -818,7 +816,6 @@ class Constructor extends MemberFunction {
 
   Constructor() { functions(underlyingElement(this),_,2) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "Constructor" }
   
   /**
@@ -866,7 +863,6 @@ class ConversionConstructor extends Constructor, ImplicitConversionFunction {
     and not(this instanceof CopyConstructor)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ConversionConstructor" }
   
   /** Gets the type this `ConversionConstructor` takes as input. */
@@ -924,7 +920,6 @@ class CopyConstructor extends Constructor {
     not exists(getATemplateArgument())
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "CopyConstructor" }
   
   /**
@@ -975,7 +970,6 @@ class MoveConstructor extends Constructor {
     not exists(getATemplateArgument())
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "MoveConstructor" }
   
   /**
@@ -1010,7 +1004,6 @@ class NoArgConstructor extends Constructor {
 class Destructor extends MemberFunction {
   Destructor() { functions(underlyingElement(this),_,3) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "Destructor" }
   
   /**
@@ -1038,6 +1031,8 @@ class ConversionOperator extends MemberFunction, ImplicitConversionFunction {
 
   ConversionOperator() { functions(underlyingElement(this),_,4) }
 
+  override string getCanonicalQLClass() { result = "ConversionOperator" }
+
   override Type getSourceType() { result = this.getDeclaringType() }
   override Type getDestType() { result = this.getType() }
 
@@ -1050,6 +1045,7 @@ class Operator extends Function {
 
   Operator() { functions(underlyingElement(this),_,5) }
 
+  override string getCanonicalQLClass() { result = "Operator" }
 }
 
 /**
@@ -1072,7 +1068,7 @@ class CopyAssignmentOperator extends Operator {
     not exists(this.getParameter(1)) and
     not exists(getATemplateArgument())
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "CopyAssignmentOperator" }
 }
 
@@ -1093,7 +1089,7 @@ class MoveAssignmentOperator extends Operator {
     not exists(this.getParameter(1)) and
     not exists(getATemplateArgument())
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "MoveAssignmentOperator" }
 }
 
@@ -1115,7 +1111,6 @@ class MoveAssignmentOperator extends Operator {
 class TemplateFunction extends Function {
   TemplateFunction() { is_function_template(underlyingElement(this)) and exists(getATemplateArgument()) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "TemplateFunction" }
   /**
    * Gets a compiler-generated instantiation of this function template.
@@ -1148,7 +1143,6 @@ class FunctionTemplateInstantiation extends Function {
     tf.getAnInstantiation() = this
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "FunctionTemplateInstantiation" }
 
   /**
@@ -1187,7 +1181,6 @@ class FunctionTemplateSpecialization extends Function {
     this.isSpecialization()
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "FunctionTemplateSpecialization" }
   
   /**

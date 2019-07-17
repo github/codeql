@@ -322,7 +322,6 @@ class ErroneousType extends BuiltInType {
 
   ErroneousType() { builtintypes(underlyingElement(this),_,1,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ErroneousType" }
 }
 
@@ -333,7 +332,6 @@ class UnknownType extends BuiltInType {
 
   UnknownType() { builtintypes(underlyingElement(this),_,2,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "UnknownType" }
 }
 
@@ -350,6 +348,8 @@ class ArithmeticType extends BuiltInType {
   ArithmeticType() {
     isArithmeticType(underlyingElement(this), _)
   }
+
+  override string getCanonicalQLClass() { result = "ArithmeticType" }
 }
 
 private predicate isIntegralType(@builtintype type, int kind) {
@@ -489,7 +489,6 @@ class BoolType extends IntegralType {
 
   BoolType() { builtintypes(underlyingElement(this),_,4,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "BoolType" }
 }
 
@@ -505,7 +504,7 @@ class PlainCharType extends CharType {
   PlainCharType() {
     builtintypes(underlyingElement(this),_,5,_,_,_)
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "PlainCharType" }
 }
 
@@ -516,7 +515,7 @@ class UnsignedCharType extends CharType {
   UnsignedCharType() {
     builtintypes(underlyingElement(this),_,6,_,_,_)
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "UnsignedCharType" }
 }
 
@@ -527,7 +526,7 @@ class SignedCharType extends CharType {
   SignedCharType() {
     builtintypes(underlyingElement(this),_,7,_,_,_)
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "SignedCharType" }
 }
 
@@ -540,7 +539,6 @@ class ShortType extends IntegralType {
     builtintypes(underlyingElement(this),_,8,_,_,_) or builtintypes(underlyingElement(this),_,9,_,_,_) or builtintypes(underlyingElement(this),_,10,_,_,_)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ShortType" }
 }
 
@@ -553,7 +551,6 @@ class IntType extends IntegralType {
     builtintypes(underlyingElement(this),_,11,_,_,_) or builtintypes(underlyingElement(this),_,12,_,_,_) or builtintypes(underlyingElement(this),_,13,_,_,_)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "IntType" }
 }
 
@@ -566,7 +563,6 @@ class LongType extends IntegralType {
     builtintypes(underlyingElement(this),_,14,_,_,_) or builtintypes(underlyingElement(this),_,15,_,_,_) or builtintypes(underlyingElement(this),_,16,_,_,_)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "LongType" }
 }
 
@@ -579,7 +575,6 @@ class LongLongType extends IntegralType {
     builtintypes(underlyingElement(this),_,17,_,_,_) or builtintypes(underlyingElement(this),_,18,_,_,_) or builtintypes(underlyingElement(this),_,19,_,_,_)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "LongLongType" }
 }
 
@@ -612,7 +607,6 @@ class FloatType extends FloatingPointType {
 
   FloatType() { builtintypes(underlyingElement(this),_,24,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "FloatType" }
 }
 
@@ -623,7 +617,6 @@ class DoubleType extends FloatingPointType {
 
   DoubleType() { builtintypes(underlyingElement(this),_,25,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "DoubleType" }
 }
 
@@ -634,7 +627,6 @@ class LongDoubleType extends FloatingPointType {
 
   LongDoubleType() { builtintypes(underlyingElement(this),_,26,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "LongDoubleType" }
 }
 
@@ -681,7 +673,6 @@ class VoidType extends BuiltInType {
 
   VoidType() { builtintypes(underlyingElement(this),_,3,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "VoidType" }
 }
 
@@ -696,7 +687,6 @@ class WideCharType extends IntegralType {
 
   WideCharType() { builtintypes(underlyingElement(this),_,33,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "WideCharType" }
 }
 
@@ -707,7 +697,6 @@ class Char16Type extends IntegralType {
 
   Char16Type() { builtintypes(underlyingElement(this),_,43,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "Char16Type" }
 }
 
@@ -718,7 +707,6 @@ class Char32Type extends IntegralType {
 
   Char32Type() { builtintypes(underlyingElement(this),_,44,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "Char32Type" }
 }
 
@@ -734,7 +722,6 @@ class Char32Type extends IntegralType {
 class NullPointerType extends BuiltInType {
   NullPointerType() { builtintypes(underlyingElement(this),_,34,_,_,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "NullPointerType" }
 }
 
@@ -897,7 +884,6 @@ class PointerType extends DerivedType {
 
   PointerType() { derivedtypes(underlyingElement(this),_,1,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "PointerType" }
 
   override int getPointerIndirectionLevel() {
@@ -923,7 +909,6 @@ class ReferenceType extends DerivedType {
 
   ReferenceType() { derivedtypes(underlyingElement(this),_,2,_) or derivedtypes(underlyingElement(this),_,8,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ReferenceType" }
 
   override int getPointerIndirectionLevel() {
@@ -951,7 +936,6 @@ class ReferenceType extends DerivedType {
 class LValueReferenceType extends ReferenceType {
   LValueReferenceType() { derivedtypes(underlyingElement(this),_,2,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "LValueReferenceType" }
 }
 
@@ -961,7 +945,6 @@ class LValueReferenceType extends ReferenceType {
 class RValueReferenceType extends ReferenceType {
   RValueReferenceType() { derivedtypes(underlyingElement(this),_,8,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "RValueReferenceType" }
 
   override string explain() { result = "rvalue " + super.explain() }
@@ -974,7 +957,6 @@ class SpecifiedType extends DerivedType {
 
   SpecifiedType() { derivedtypes(underlyingElement(this),_,3,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "SpecifiedType" }
 
   override int getSize() { result = this.getBaseType().getSize() }
@@ -1019,7 +1001,6 @@ class ArrayType extends DerivedType {
 
   ArrayType() { derivedtypes(underlyingElement(this),_,4,_) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ArrayType" }
   
   predicate hasArraySize() { arraysizes(underlyingElement(this),_,_,_) }
@@ -1110,7 +1091,6 @@ class FunctionPointerType extends FunctionPointerIshType {
     derivedtypes(underlyingElement(this),_,6,_)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "FunctionPointerType" }
 
   override int getPointerIndirectionLevel() {
@@ -1128,7 +1108,6 @@ class FunctionReferenceType extends FunctionPointerIshType {
     derivedtypes(underlyingElement(this),_,7,_)
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "FunctionReferenceType" }
   
   override int getPointerIndirectionLevel() {
@@ -1201,7 +1180,6 @@ class PointerToMemberType extends Type, @ptrtomember {
   /** a printable representation of this named element */
   override string toString() { result = this.getName() }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "PointerToMemberType" }
   
   /** the name of this type */
@@ -1238,7 +1216,6 @@ class RoutineType extends Type, @routinetype {
   /** a printable representation of this named element */
   override string toString() { result = this.getName() }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "RoutineType" }
 
   override string getName() { result = "..()(..)" }
@@ -1296,7 +1273,6 @@ class TemplateParameter extends UserType
 {
   TemplateParameter() { usertypes(underlyingElement(this), _, 7) or usertypes(underlyingElement(this), _, 8) }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "TemplateParameter" }
 
   override predicate involvesTemplateParameter() {
@@ -1311,7 +1287,6 @@ class TemplateTemplateParameter extends TemplateParameter
     usertypes(underlyingElement(this), _, 8)
   }
   
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "TemplateTemplateParameter" }
 }
 
@@ -1321,6 +1296,8 @@ class TemplateTemplateParameter extends TemplateParameter
 class AutoType extends TemplateParameter
 {
   AutoType() { usertypes(underlyingElement(this), "auto", 7) }
+  
+  override string getCanonicalQLClass() { result = "AutoType" }
 
   override Location getLocation() {
     suppressUnusedThis(this) and
@@ -1350,6 +1327,8 @@ private predicate suppressUnusedThis(Type t) { any() }
 /** A source code location referring to a type */
 class TypeMention extends Locatable, @type_mention {
   override string toString() {result = "type mention"}
+  
+  override string getCanonicalQLClass() { result = "TypeMention" }
   
   /**
    * Gets the type being referenced by this type mention.

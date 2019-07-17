@@ -11,7 +11,6 @@ import semmle.code.cpp.stmts.Stmt
  */
 class Block extends Stmt, @stmt_block {
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "Block" }
 
   /**

@@ -14,7 +14,6 @@ class ComplementExpr extends UnaryBitwiseOperation, @complementexpr {
 
   override int getPrecedence() { result = 15 }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ComplementExpr" }
 }
 
@@ -33,7 +32,6 @@ class LShiftExpr extends BinaryBitwiseOperation, @lshiftexpr {
 
   override int getPrecedence() { result = 11 }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "LShiftExpr" }
 }
 
@@ -45,7 +43,6 @@ class RShiftExpr extends BinaryBitwiseOperation, @rshiftexpr {
 
   override int getPrecedence() { result = 11 }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "RShiftExpr" }
 }
 
@@ -57,7 +54,6 @@ class BitwiseAndExpr extends BinaryBitwiseOperation, @andexpr {
 
   override int getPrecedence() { result = 8 }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "BitwiseAndExpr" }
 }
 
@@ -69,7 +65,6 @@ class BitwiseOrExpr extends BinaryBitwiseOperation, @orexpr {
 
   override int getPrecedence() { result = 6 }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "BitwiseOrExpr" }
 }
 
@@ -81,6 +76,5 @@ class BitwiseXorExpr extends BinaryBitwiseOperation, @xorexpr {
 
   override int getPrecedence() { result = 7 }
   
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "BitwiseXorExpr" }
 }

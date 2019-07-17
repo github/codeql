@@ -7,7 +7,6 @@ class CharPointerType extends PointerType {
 
   CharPointerType() { this.getBaseType() instanceof CharType }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "CharPointerType" }
 }
 
@@ -18,7 +17,6 @@ class IntPointerType extends PointerType {
 
   IntPointerType() { this.getBaseType() instanceof IntType }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "IntPointerType" }
 }
 
@@ -30,7 +28,6 @@ class VoidPointerType extends PointerType {
 
   VoidPointerType() { this.getBaseType() instanceof VoidType }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "VoidPointerType" }
 }
 
@@ -42,7 +39,7 @@ class Size_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("size_t")
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "Size_t" }
 }
 
@@ -54,7 +51,7 @@ class Ssize_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("ssize_t")
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "Ssize_t" }
 }
 
@@ -66,7 +63,7 @@ class Ptrdiff_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("ptrdiff_t")
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "Ptrdiff_t" }
 }
 
@@ -78,7 +75,7 @@ class Intmax_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("intmax_t")
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "Intmax_t" }
 }
 
@@ -90,7 +87,7 @@ class Uintmax_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("uintmax_t")
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "Uintmax_t" }
 }
 
@@ -106,7 +103,7 @@ class Wchar_t extends Type {
     this.getUnderlyingType() instanceof IntegralType and
     this.hasName("wchar_t")
   }
-  /** Canonical QL class corresponding to this element. */
+
   override string getCanonicalQLClass() { result = "Wchar_t" }
 }
 

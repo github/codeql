@@ -12,7 +12,6 @@ abstract class UnaryLogicalOperation extends UnaryOperation {
 class NotExpr extends UnaryLogicalOperation, @notexpr {
   override string getOperator() { result = "!" }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "NotExpr" }
   
   override int getPrecedence() { result = 15 }
@@ -41,7 +40,6 @@ abstract class BinaryLogicalOperation extends BinaryOperation {
 class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
   override string getOperator() { result = "&&" }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "LogicalAndExpr" }
   
   override int getPrecedence() { result = 5 }
@@ -59,7 +57,6 @@ class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
 class LogicalOrExpr extends BinaryLogicalOperation, @orlogicalexpr {
   override string getOperator() { result = "||" }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "LogicalOrExpr" }
   
   override int getPrecedence() { result = 4 }
@@ -80,7 +77,6 @@ class ConditionalExpr extends Operation, @conditionalexpr {
     expr_cond_guard(underlyingElement(this), unresolveElement(result))
   }
 
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "ConditionalExpr" }
   
   /** Gets the 'then' expression of this conditional expression. */

@@ -17,7 +17,6 @@ abstract class EqualityOperation extends ComparisonOperation {
  * A C/C++ equal expression.
  */
 class EQExpr extends EqualityOperation, @eqexpr {
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "EQExpr" }
 
   override string getOperator() { result = "==" }
@@ -27,7 +26,6 @@ class EQExpr extends EqualityOperation, @eqexpr {
  * A C/C++ not equal expression.
  */
 class NEExpr extends EqualityOperation, @neexpr {
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "NEExpr" }
 
   override string getOperator() { result = "!=" }
@@ -76,7 +74,6 @@ abstract class RelationalOperation extends ComparisonOperation {
  * A C/C++ greater than expression.
  */
 class GTExpr extends RelationalOperation, @gtexpr {
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "GTExpr" }
 
   override string getOperator() { result = ">" }
@@ -89,7 +86,6 @@ class GTExpr extends RelationalOperation, @gtexpr {
  * A C/C++ lesser than expression.
  */
 class LTExpr extends RelationalOperation, @ltexpr {
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "LTExpr" }
 
   override string getOperator() { result = "<" }
@@ -102,7 +98,6 @@ class LTExpr extends RelationalOperation, @ltexpr {
  * A C/C++ greater than or equal expression.
  */
 class GEExpr extends RelationalOperation, @geexpr {
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "GEExpr" }
 
   override string getOperator() { result = ">=" }
@@ -115,7 +110,6 @@ class GEExpr extends RelationalOperation, @geexpr {
  * A C/C++ lesser than or equal expression.
  */
 class LEExpr extends RelationalOperation, @leexpr {
-  /** Canonical QL class corresponding to this element. */
   override string getCanonicalQLClass() { result = "LEExpr" }
 
   override string getOperator() { result = "<=" }
