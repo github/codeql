@@ -11,7 +11,13 @@ module HTML {
   }
 
   /**
-   * An HTML element like `<a href="semmle.com">Semmle</a>`.
+   * An HTML element.
+   *
+   * Example:
+   *
+   * ```
+   * <a href="semmle.com">Semmle</a>
+   * ```
    */
   class Element extends Locatable, @xmlelement {
     Element() { exists(HtmlFile f | xmlElements(this, _, _, _, f)) }
@@ -79,8 +85,14 @@ module HTML {
   /**
    * An attribute of an HTML element.
    *
-   * For example, the element `<a href ="semmle.com" target=_blank>Semmle</a>`
-   * has two attributes: `href ="semmle.com"` and `target=_blank`.
+   * Examples:
+   *
+   * ```
+   * <a
+   *   href ="semmle.com"  <!-- an attribute -->
+   *   target=_blank       <!-- also an attribute -->
+   * >Semmle</a>
+   * ```
    */
   class Attribute extends Locatable, @xmlattribute {
     Attribute() { exists(HtmlFile f | xmlAttrs(this, _, _, _, _, f)) }
@@ -116,6 +128,16 @@ module HTML {
 
   /**
    * An HTML `<html>` element.
+   *
+   * Example:
+   *
+   * ```
+   * <html>
+   * <body>
+   * This is a test.
+   * </body>
+   * </html>
+   * ```
    */
   class DocumentElement extends Element {
     DocumentElement() { getName() = "html" }
@@ -123,6 +145,12 @@ module HTML {
 
   /**
    * An HTML `<script>` element.
+   *
+   * Example:
+   *
+   * ```
+   * <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+   * ```
    */
   class ScriptElement extends Element {
     ScriptElement() { getName() = "script" }
@@ -222,7 +250,15 @@ module HTML {
   }
 
   /**
-   * An HTML text node like `<div>this-is-the-node</div>`.
+   * An HTML text node.
+   *
+   * Example:
+   *
+   * ```
+   * <div>
+   *   This text is represented as a text node.
+   * </div>
+   * ```
    *
    * Note that instances of this class are only available if extraction is done with `--html all` or `--experimental`.
    */
@@ -257,7 +293,13 @@ module HTML {
   }
 
   /**
-   * An HTML comment like <code>&lt;!&hyphen;&hyphen; this &hyphen;&hyphen;&gt;</code>.
+   * An HTML comment.
+   *
+   * Example:
+   *
+   * ```
+   * <!-- this is a comment -->
+   * ```
    */
   class CommentNode extends Locatable, @xmlcomment {
     CommentNode() { exists(HtmlFile f | xmlComments(this, _, _, f)) }

@@ -5,6 +5,14 @@ private import NodeModuleResolutionImpl
 
 /**
  * A Node.js module.
+ *
+ * Example:
+ *
+ * ```
+ * const fs = require('fs');
+ * for (var i=2;i<process.argv.length; ++i)
+ *   process.stdout.write(fs.readFileSync(process.argv[i], 'utf8'));
+ * ```
  */
 class NodeModule extends Module {
   NodeModule() {
@@ -146,6 +154,12 @@ private predicate moduleInFile(Module m, File f) { m.getFile() = f }
 
 /**
  * A `require` import.
+ *
+ * Example:
+ *
+ * ```
+ * require('fs')
+ * ```
  */
 class Require extends CallExpr, Import {
   Require() {
@@ -304,7 +318,15 @@ private class JoinedPath extends PathExprInModule, @callexpr {
   }
 }
 
-/** A reference to the special `module` variable. */
+/**
+ * A reference to the special `module` variable.
+ *
+ * Example:
+ *
+ * ```
+ * module
+ * ```
+ */
 class ModuleAccess extends VarAccess {
   ModuleAccess() { exists(ModuleScope ms | this = ms.getVariable("module").getAnAccess()) }
 }

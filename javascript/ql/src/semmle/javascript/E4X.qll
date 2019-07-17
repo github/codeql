@@ -7,12 +7,25 @@ import javascript
 module E4X {
   /**
    * An E4X wildcard pseudo-identifier.
+   *
+   * Example:
+   *
+   * ```
+   * *
+   * ```
    */
   class XMLAnyName extends Expr, @e4x_xml_anyname {
   }
 
   /**
-   * An E4X qualified identifier of the form `q::n` or `q::[expr]`.
+   * An E4X qualified identifier.
+   *
+   * Examples:
+   *
+   * ```
+   * soap::encodingStyle
+   * soap::["encodingStyle"]
+   * ```
    *
    * Note that qualified identifiers are not currently supported by the parser, so snapshots
    * will not usually contain any.
@@ -43,7 +56,14 @@ module E4X {
   }
 
   /**
-   * An E4X attribute selector of the form `@name` or `@[expr]`.
+   * An E4X attribute selector.
+   *
+   * Examples:
+   *
+   * ```
+   * @border
+   * @[p]
+   * ```
    */
   class XMLAttributeSelector extends Expr, @e4x_xml_attribute_selector {
     /**
@@ -65,7 +85,13 @@ module E4X {
   }
 
   /**
-   * An E4X filter expression of the form `left.(right)`.
+   * An E4X filter expression.
+   *
+   * Example:
+   *
+   * ```
+   * employees.(@id == 0 || @id == 1)
+   * ```
    */
   class XMLFilterExpression extends Expr, @e4x_xml_filter_expression {
     /**
@@ -84,7 +110,13 @@ module E4X {
   }
 
   /**
-   * An E4X "dot-dot" expression of the form `e..id`.
+   * An E4X "dot-dot" expression.
+   *
+   * Example:
+   *
+   * ```
+   * e..name
+   * ```
    */
   class XMLDotDotExpression extends Expr, @e4x_xml_dotdotexpr {
     /**
