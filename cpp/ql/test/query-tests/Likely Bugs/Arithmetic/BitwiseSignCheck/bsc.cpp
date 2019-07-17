@@ -19,7 +19,7 @@ bool is_bit31_set_bad_v1(int x) {
 }
 
 bool is_bit31_set_bad_v2(int x) {
-  return 0 < (x & (1 << 31)); // BAD [NOT DETECTED]
+  return 0 < (x & (1 << 31)); // BAD
 }
 
 bool is_bit31_set_good(int x) {
@@ -27,5 +27,5 @@ bool is_bit31_set_good(int x) {
 }
 
 bool deliberately_checking_sign(int x, int y) {
-  return (x & y) < 0; // GOOD (use of `<` implies the sign check is intended) [FALSE POSITIVE]
+  return (x & y) < 0; // GOOD (use of `<` implies the sign check is intended)
 }
