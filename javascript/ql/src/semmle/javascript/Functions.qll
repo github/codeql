@@ -2,7 +2,40 @@
 
 import javascript
 
-/** A function as defined either by a function declaration or a function expression. */
+/**
+ * A function as defined either by a function declaration or a function expression.
+ *
+ * Examples:
+ *
+ * ```
+ * function greet() {         // function declaration
+ *   console.log("Hi");
+ * }
+ *
+ * var greet =
+ *   function() {             // function expression
+ *     console.log("Hi");
+ *   };
+ *
+ * var greet2 =
+ *   () => console.log("Hi")  // arrow function expression
+ *
+ * var o = {
+ *   m() {                    // function expression in a method definition in an object literal
+ *     return 0;
+ *   },
+ *   get x() {                // function expression in a getter method definition in an object literal
+ *     return 1
+ *   }
+ * };
+ *
+ * class C {
+ *   m() {                    // function expression in a method definition in a class
+ *     return 0;
+ *   }
+ * }
+ * ```
+ */
 class Function extends @function, Parameterized, TypeParameterized, StmtContainer, Documentable,
   AST::ValueNode {
   /** Gets the `i`th parameter of this function. */
@@ -472,6 +505,22 @@ private module LinesOfComments {
 
 /**
  * A method defined in a class or object expression.
+ *
+ * Examples:
+ *
+ * ```
+ * var o = {
+ *   m() {          // method defined in an object expression
+ *     return 0;
+ *   }
+ * };
+ *
+ * class C {
+ *   m() {          // method defined in a class
+ *     return 0;
+ *   }
+ * }
+ * ```
  */
 class Method extends FunctionExpr {
   Method() {
@@ -483,6 +532,16 @@ class Method extends FunctionExpr {
 
 /**
  * A constructor defined in a class.
+ *
+ * Example:
+ *
+ * ```
+ * class Point {
+ *   constructor(x, y) {  // constructor
+ *     this.x = x;
+ *     this.y = y;
+ *   }
+ * }
  */
 class Constructor extends FunctionExpr {
   Constructor() { exists(ConstructorDeclaration cd | this = cd.getBody()) }
