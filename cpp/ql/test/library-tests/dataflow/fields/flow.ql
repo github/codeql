@@ -6,10 +6,15 @@ import semmle.code.cpp.dataflow.DataFlow
 import DataFlow::PathGraph
 import DataFlow
 import cpp
+
 class Conf extends Configuration {
   Conf() { this = "FieldFlowConf" }
 
-  override predicate isSource(Node src) { src.asExpr() instanceof NewExpr }
+  override predicate isSource(Node src) {
+    src.asExpr() instanceof NewExpr
+    or
+    src.asExpr().(Call).getTarget().hasName("user_input")
+  }
 
   override predicate isSink(Node sink) {
     exists(Call c |
