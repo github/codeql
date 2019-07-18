@@ -8,7 +8,8 @@
 
 import csharp
 
-private module Annotations {
+// private
+module Annotations {
   newtype TAnnotation =
     TNotNullableRefType() or
     TNullableRefType() or
@@ -77,24 +78,28 @@ private module Annotations {
   }
 
   newtype TAnnotations =
-    TAnnotationFlags(int flags) {
-      flags = getElementTypeFlags(_) or
-      flags = getTypeArgumentFlags(_, _) or
-      flags = getTypeParameterFlags(_, _)
+    TAnnotationFlags(int flags, Nullability n) {
+      exists(Element e | flags = getElementTypeFlags(e) and n = getElementNullability(e))
+      or
+      flags = getTypeParameterFlags(_, _) and n instanceof DefaultOblivious
+      or
+      flags = 0 // n is unbound
     }
 
-  /** A set of annotations on a type. */
   class TypeAnnotations extends TAnnotations {
     int flags;
 
-    TypeAnnotations() { this = TAnnotationFlags(flags) }
+    Nullability nullability;
 
-    /** Gets an annotation in this set of annotations. */
-    TypeAnnotation getAnAnnotation() { isSet(result.getBit()) }
+    TypeAnnotations() { this = TAnnotationFlags(flags, nullability) }
 
-    private predicate isSet(int bit) {
-      isBit(bit) and
-      exists(int mask | mask = getBitMask(bit) | flags.bitAnd(mask) = mask)
+    int getFlags() { result = flags }
+
+    Nullability getNullability() { result = nullability }
+
+    bindingset[i]
+    TypeAnnotations getChild(int i) {
+      result.getFlags() = 0 and result.getNullability() = this.getNullability().getMember(i)
     }
 
     /** Gets text to be displayed before the type. */
@@ -117,13 +122,53 @@ private module Annotations {
 
     /** Gets a textual representation of this type annotation. */
     string toString() { result = getTypePrefix() + getTypeSuffix() }
+
+    private predicate isSet(int bit) {
+      isBit(bit) and
+      exists(int mask | mask = getBitMask(bit) | flags.bitAnd(mask) = mask)
+    }
+
+    /** Gets an annotation in this set of annotations. */
+    TypeAnnotation getAnAnnotation() {
+      isSet(result.getBit())
+      or
+      nullability instanceof AnnotatedNullability and result instanceof NullableRefType
+      or
+      nullability instanceof NotAnnotatedNullability and result instanceof NonNullableRefType
+    }
+  }
+
+  // A structure to encode the nullability of various types. For example
+  class Nullability extends @nullability {
+    abstract string toString();
+
+    bindingset[i]
+    Nullability getMember(int i) {
+      if nullability_member(this, i, _) then nullability_member(this, i, result) else result = this
+    }
+  }
+
+  class ObliviousNullability extends Nullability, @oblivious {
+    override string toString() { result = "oblivious" }
+  }
+
+  class DefaultOblivious extends ObliviousNullability {
+    DefaultOblivious() { not nullability_member(this, _, _) }
+  }
+
+  class AnnotatedNullability extends Nullability, @annotated {
+    override string toString() { result = "annotated" }
+  }
+
+  class NotAnnotatedNullability extends Nullability, @not_annotated {
+    override string toString() { result = "not annotated" }
   }
 
   /** Holds if the type annotations `annotations` apply to type `type` on element `element`. */
   predicate elementTypeAnnotations(
     @has_type_annotation element, Type type, TypeAnnotations annotations
   ) {
-    annotations = TAnnotationFlags(getElementTypeFlags(element)) and
+    annotations = TAnnotationFlags(getElementTypeFlags(element), getElementNullability(element)) and
     (
       type = element.(Assignable).getType()
       or
@@ -131,8 +176,8 @@ private module Annotations {
       or
       type = element.(Expr).getType()
       or
-      type = element.(ArrayType).getElementType()
-      or
+      // or
+      // type = element.(ArrayType).getElementType()
       type = element.(DelegateType).getReturnType()
     )
   }
@@ -150,26 +195,37 @@ private int getElementTypeFlags(@has_type_annotation element) {
   result = sum(int b | type_annotation(element, b) | b)
 }
 
-private int getTypeArgumentFlags(ConstructedGeneric generic, int argument) {
-  exists(generic.getTypeArgument(argument)) and
-  result = sum(int b | type_argument_annotation(generic, argument, b) | b)
-}
-
 private int getTypeParameterFlags(TypeParameterConstraints constraints, Type type) {
   specific_type_parameter_annotation(constraints, getTypeRef(type), _) and
   result = sum(int b | specific_type_parameter_annotation(constraints, getTypeRef(type), b) | b)
+}
+
+private Annotations::Nullability getElementNullability(@has_type_annotation element) {
+  if type_nullability(element, _)
+  then type_nullability(element, result)
+  else result instanceof Annotations::DefaultOblivious
 }
 
 private newtype TAnnotatedType =
   TAnnotatedTypeNullability(Type type, Annotations::TypeAnnotations annotations) {
     Annotations::elementTypeAnnotations(_, type, annotations)
     or
-    exists(ConstructedGeneric c, int i |
-      type = c.getTypeArgument(i) and
-      annotations = Annotations::TAnnotationFlags(getTypeArgumentFlags(c, i))
+    exists(AnnotatedConstructedType c, int i |
+      type = c.getType().(ConstructedType).getTypeArgument(i) and
+      annotations = c.getAnnotations().getChild(i)
     )
     or
-    annotations = Annotations::TAnnotationFlags(getTypeParameterFlags(_, type))
+    annotations.getFlags() = getTypeParameterFlags(_, type) and
+    annotations.getNullability() instanceof Annotations::DefaultOblivious
+    or
+    // All types
+    annotations.getFlags() = 0 and
+    annotations.getNullability() instanceof Annotations::DefaultOblivious
+    or
+    exists(AnnotatedArrayType at |
+      type = at.getType().(ArrayType).getElementType() and
+      annotations = at.getAnnotations().getChild(0)
+    )
   }
 
 /** A type with additional information. */
@@ -192,7 +248,7 @@ class AnnotatedType extends TAnnotatedType {
    * Gets the unannotated type, for example `string` in `string?`.
    * Note that this might be a nullable value type (`System.Nullable`).
    */
-  final Type getType() { result = type }
+  Type getType() { result = type }
 
   /**
    * Gets the underlying type, for example `string` in `string?`
@@ -206,7 +262,7 @@ class AnnotatedType extends TAnnotatedType {
   }
 
   /** Gets the type annotation set of this annotated type. */
-  private Annotations::TypeAnnotations getAnnotations() { result = annotations }
+  Annotations::TypeAnnotations getAnnotations() { result = annotations }
 
   /** Gets a type annotation of this annotated type. */
   private Annotations::TypeAnnotation getAnAnnotation() {
@@ -233,14 +289,70 @@ class AnnotatedType extends TAnnotatedType {
   /** Holds if this annotated type applies to element `e`. */
   predicate appliesTo(Element e) { Annotations::elementTypeAnnotations(e, type, annotations) }
 
-  /** Holds if this annotated type applies to type parameter constraints `constraints`. */
-  predicate appliesToTypeConstraint(TypeParameterConstraints constraints) {
-    annotations = Annotations::TAnnotationFlags(getTypeParameterFlags(constraints, type))
+  /** Holds if this annotated type is the type argument 'i' of constructed generic 'g'. */
+  predicate appliesToTypeArgument(ConstructedGeneric g, int i) {
+    this.getAnnotations().getFlags() = 0 and
+    this.getAnnotations().getNullability() = getElementNullability(g).getMember(i) and
+    this.getType() = g.getTypeArgument(i)
   }
 
-  /** Holds if this annotated type applies to the `i`th type argument of constructed generic `g`. */
-  predicate appliesToTypeArgument(ConstructedGeneric g, int i) {
-    type = g.getTypeArgument(i) and
-    this.getAnnotations() = Annotations::TAnnotationFlags(getTypeArgumentFlags(g, i))
+  /** Holds if this annotated type applies to type parameter constraints `constraints`. */
+  predicate appliesToTypeConstraint(TypeParameterConstraints constraints) {
+    annotations.getFlags() = getTypeParameterFlags(constraints, type)
+  }
+}
+
+/** An array type with additional information. */
+class AnnotatedArrayType extends AnnotatedType {
+  override ArrayType type;
+
+  /** Gets the annotated element type of this array, for example `int?` in `int?[]`. */
+  final AnnotatedType getElementType() {
+    result.getType() = type.getElementType() and
+    result.getAnnotations() = this.getAnnotations().getChild(0)
+  }
+
+  private string getDimensionString(AnnotatedType elementType) {
+    exists(AnnotatedType et, string res |
+      et = getElementType() and
+      res = "[" + type.getRankString(0) + "]" and
+      if et.getUnderlyingType() instanceof ArrayType and not et.isNullableRefType()
+      then result = res + et.(AnnotatedArrayType).getDimensionString(elementType)
+      else (
+        result = res and elementType = et
+      )
+    )
+  }
+
+  override string toString() {
+    exists(AnnotatedType elementType |
+      result = annotations.getTypePrefix() + elementType.toString() +
+          this.getDimensionString(elementType) + annotations.getTypeSuffix()
+    )
+  }
+}
+
+/** A constructed type with additional information. */
+class AnnotatedConstructedType extends AnnotatedType {
+  override ConstructedType type;
+
+  /** Gets the `i`th type argument of this constructed type. */
+  AnnotatedType getTypeArgument(int i) {
+    result.getType() = type.getTypeArgument(i) and
+    result.getAnnotations() = this.getAnnotations().getChild(i)
+  }
+
+  override string toString() {
+    result = annotations.getTypePrefix() + type.getUnboundGeneric().getNameWithoutBrackets() + "<" +
+        this.getTypeArgumentsString() + ">" + annotations.getTypeSuffix()
+  }
+
+  language[monotonicAggregates]
+  private string getTypeArgumentsString() {
+    result = concat(int i |
+        exists(this.getTypeArgument(i))
+      |
+        this.getTypeArgument(i).toString(), ", " order by i
+      )
   }
 }

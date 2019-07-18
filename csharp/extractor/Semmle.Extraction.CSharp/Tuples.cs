@@ -381,6 +381,16 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("nullable_underlying_type", nullableType, underlyingType);
         }
 
+        internal static void nullability(this TextWriter trapFile, NullabilityEntity nullability, int annotation)
+        {
+            trapFile.WriteTuple("nullability", nullability, annotation);
+        }
+
+        internal static void nullability_member(this TextWriter trapFile, NullabilityEntity nullability, int index, NullabilityEntity child)
+        {
+            trapFile.WriteTuple(nameof(nullability_member), nullability, index, child);
+        }
+
         internal static void numlines(this TextWriter trapFile, IEntity label, LineCounts lineCounts)
         {
             trapFile.WriteTuple("numlines", label, lineCounts.Total, lineCounts.Code, lineCounts.Comment);
@@ -471,7 +481,7 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("tuple_element", type, index, field);
         }
 
-        internal static void tuple_underlying_type(this TextWriter trapFile, TupleType type, NamedType underlying)
+        internal static void tuple_underlying_type(this TextWriter trapFile, TupleType type, Type underlying)
         {
             trapFile.WriteTuple("tuple_underlying_type", type, underlying);
         }
@@ -481,9 +491,14 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("type_annotation", element, (int)annotation);
         }
 
-        internal static void type_argument_annotation(this TextWriter trapFile, IEntity element, int index, Kinds.TypeAnnotation annotation)
+        internal static void type_arguments(this TextWriter trapFile, Type arg, int n, IEntity typeOrMethod)
         {
-            trapFile.WriteTuple("type_argument_annotation", element, index, (int)annotation);
+            trapFile.WriteTuple("type_arguments", arg, n, typeOrMethod);
+        }
+
+        internal static void type_location(this TextWriter trapFile, Type type, Location location)
+        {
+            trapFile.WriteTuple("type_location", type, location);
         }
 
         internal static void type_mention(this TextWriter trapFile, TypeMention ta, Type type, IEntity parent)
@@ -496,14 +511,9 @@ namespace Semmle.Extraction.CSharp
             trapFile.WriteTuple("type_mention_location", ta, loc);
         }
 
-        internal static void type_arguments(this TextWriter trapFile, Type arg, int n, IEntity typeOrMethod)
+        internal static void type_nullability(this TextWriter trapFile, IEntity element, NullabilityEntity nullability)
         {
-            trapFile.WriteTuple("type_arguments", arg, n, typeOrMethod);
-        }
-
-        internal static void type_location(this TextWriter trapFile, Type type, Location location)
-        {
-            trapFile.WriteTuple("type_location", type, location);
+            trapFile.WriteTuple("type_nullability", element, nullability);
         }
 
         internal static void type_parameter_constraints(this TextWriter trapFile, TypeParameterConstraints constraints, TypeParameter typeParam)

@@ -120,7 +120,8 @@ namespace Semmle.Extraction.CSharp
                     var syntaxTrees = new List<SyntaxTree>();
                     var syntaxTreeTasks = ReadSyntaxTrees(
                         compilerArguments.SourceFiles.
-                        Select(src => canonicalPathCache.GetCanonicalPath(src.Path)),
+                        Select(src => canonicalPathCache.GetCanonicalPath(src.Path)).
+                        Where(f => !f.EndsWith(".dll")),
                         analyser,
                         compilerArguments.ParseOptions,
                         compilerArguments.Encoding,

@@ -86,7 +86,8 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";parameter");
         }
 
-        public override bool NeedsPopulation => true;
+        // If we don't have the type of the parameter, do not populate it.
+        public override bool NeedsPopulation => symbol.Type.TypeKind != TypeKind.Error;
 
         string Name
         {
@@ -103,7 +104,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateAttributes();
-            PopulateNullability(trapFile, symbol.NullableAnnotation);
+            PopulateNullability(trapFile, symbol.GetAnnotatedType());
             PopulateRefKind(trapFile, symbol.RefKind);
 
             if (symbol.Name != Original.symbol.Name)

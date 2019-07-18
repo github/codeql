@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub) => tb0.WriteSubId(Create(cx0, sub)));
+            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub, _) => tb0.WriteSubId(Create(cx0, sub)), TypeNameContext.TypeName, symbol);
             trapFile.Write(";tuple");
         }
 
@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateGenerics();
 
             var underlyingType = NamedType.Create(Context, symbol.TupleUnderlyingType);
-            trapFile.tuple_underlying_type(this, underlyingType);
+            trapFile.tuple_underlying_type(this, underlyingType.TypeRef);
 
             int index = 0;
             foreach (var element in TupleElements)

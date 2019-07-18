@@ -19,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (symbol.IsGenericMethod && !IsSourceDeclaration)
             {
                 trapFile.Write('<');
-                trapFile.BuildList(",", symbol.TypeArguments, (ta, tb0) => AddSignatureTypeToId(Context, tb0, symbol, ta));
+                trapFile.BuildList(",", symbol.TypeArguments, (ta, tb0) => AddSignatureTypeToId(Context, tb0, symbol, ta, TypeNameContext.MethodName));
                 trapFile.Write('>');
             }
             trapFile.Write(";localfunction");

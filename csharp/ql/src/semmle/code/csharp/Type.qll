@@ -821,26 +821,23 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   /** Gets the element type of this array, for example `int` in `int[]`. */
   override Type getElementType() { array_element_type(this, _, _, getTypeRef(result)) }
 
-  /** Gets the annotated element type of this array, for example `int?` in `int?[]`. */
-  final AnnotatedType getAnnotatedElementType() { result.appliesTo(this) }
-
   /** Holds if this array type has the same shape (dimension and rank) as `that` array type. */
   predicate hasSameShapeAs(ArrayType that) {
     getDimension() = that.getDimension() and
     getRank() = that.getRank()
   }
 
-  private string getRankString(int i) {
+  string getRankString(int i) {
     i in [0 .. getRank() - 1] and
     if i = getRank() - 1 then result = "" else result = "," + getRankString(i + 1)
   }
 
-  private string getDimensionString(AnnotatedType elementType) {
-    exists(AnnotatedType et, string res |
-      et = getAnnotatedElementType() and
+  private string getDimensionString(Type elementType) {
+    exists(Type et, string res |
+      et = this.getElementType() and
       res = "[" + getRankString(0) + "]" and
-      if et.getUnderlyingType() instanceof ArrayType and not et.isNullableRefType()
-      then result = res + et.getUnderlyingType().(ArrayType).getDimensionString(elementType)
+      if et instanceof ArrayType
+      then result = res + et.(ArrayType).getDimensionString(elementType)
       else (
         result = res and elementType = et
       )
@@ -848,7 +845,7 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   }
 
   override string toStringWithTypes() {
-    exists(AnnotatedType elementType |
+    exists(Type elementType |
       result = elementType.toString() + this.getDimensionString(elementType)
     )
   }
@@ -905,7 +902,7 @@ class UnknownType extends Type, @unknown_type { }
  */
 class TupleType extends ValueType, @tuple_type {
   /** Gets the underlying type of this tuple, which is of type `System.ValueTuple`. */
-  ConstructedStruct getUnderlyingType() { tuple_underlying_type(this, result) }
+  ConstructedStruct getUnderlyingType() { tuple_underlying_type(this, getTypeRef(result)) }
 
   /**
    * Gets the `n`th element of this tuple, indexed from 0.

@@ -920,7 +920,8 @@ namespace Semmle.Extraction.CIL.Entities
         {
             elementType.GetId(trapFile, inContext);
             trapFile.Write('[');
-            trapFile.Write(rank);
+            for (int i = 1; i < rank; ++i)
+                trapFile.Write(',');
             trapFile.Write(']');
         }
 
@@ -1206,7 +1207,10 @@ namespace Semmle.Extraction.CIL.Entities
             public void WriteId(TextWriter trapFile, GenericContext gc)
             {
                 elementType.WriteId(trapFile, gc);
-                trapFile.Write("[]");
+                trapFile.Write('[');
+                for(int i=1; i<shape.Rank; ++i)
+                    trapFile.Write(',');
+                trapFile.Write(']');
             }
         }
 
