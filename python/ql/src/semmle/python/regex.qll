@@ -1,4 +1,5 @@
 import python
+import semmle.python.objects.ObjectInternal
 
 private predicate re_module_function(string name, int flags) {
     name = "compile" and flags = 1 or
@@ -14,44 +15,42 @@ private predicate re_module_function(string name, int flags) {
 predicate used_as_regex(Expr s, string mode) {
     (s instanceof Bytes or s instanceof Unicode)
     and
-    exists(ModuleObject re | re.getName() = "re" |
+    exists(ModuleValue re | re.getName() = "re" |
         /* Call to re.xxx(regex, ... [mode]) */
         exists(CallNode call, string name |
             call.getArg(0).refersTo(_, _, s.getAFlowNode()) and
-            call.getFunction().refersTo(re.attr(name)) |
+            call.getFunction().pointsTo(re.attr(name)) |
             mode = "None"
             or
-            exists(Object obj |
+            exists(Value obj |
                 mode = mode_from_mode_object(obj) |
                 exists(int flags_arg |
                     re_module_function(name, flags_arg) and
-                    call.getArg(flags_arg).refersTo(obj)
+                    call.getArg(flags_arg).pointsTo(obj)
                 )
                 or
-                call.getArgByName("flags").refersTo(obj)
+                call.getArgByName("flags").pointsTo(obj)
             )
         )
     )
 }
 
-string mode_from_mode_object(Object obj) {
+string mode_from_mode_object(Value obj) {
     (
         result = "DEBUG" or result = "IGNORECASE" or result = "LOCALE" or
         result = "MULTILINE" or result = "DOTALL" or result = "UNICODE" or
         result = "VERBOSE"
     ) and
-    obj = ModuleObject::named("sre_constants").attr("SRE_FLAG_" + result)
-    or
-    exists(BinaryExpr be, Object sub | obj.getOrigin() = be |
-        be.getOp() instanceof BitOr and
-        be.getASubExpression().refersTo(sub) and
-        result = mode_from_mode_object(sub)
+    exists(int flag |
+        flag = Value::named("sre_constants.SRE_FLAG_" + result).(ObjectInternal).intValue()
+        and
+        obj.(ObjectInternal).intValue().bitAnd(flag) = flag
     )
 }
 
 /** A StrConst used as a regular expression */
 abstract class RegexString extends Expr {
-  
+
     RegexString() {
         (this instanceof Bytes or this instanceof Unicode)
     }
