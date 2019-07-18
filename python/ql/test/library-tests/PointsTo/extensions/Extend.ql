@@ -2,6 +2,7 @@
 
 import python
 
+import semmle.python.pointsto.PointsTo
 private import semmle.python.types.Extensions
 
 
@@ -48,6 +49,18 @@ class NoClassExtension extends CustomPointsToObjectFact {
         this.(NameNode).getId() = "six" and value.(NumericObject).intValue() = 6
     }
 
+}
+
+/* Check that we can use old API without causing non-monotonic recursion */
+class RecurseIntoOldPointsTo extends CustomPointsToOriginFact {
+
+    RecurseIntoOldPointsTo() {
+        PointsTo::points_to(this, _, unknownValue(), _, _)
+    }
+
+    override predicate pointsTo(Object value, ClassObject cls) {
+        value = unknownValue() and cls = theUnknownType()
+    }
 }
 
 

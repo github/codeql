@@ -161,6 +161,8 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
 
     override predicate contextSensitiveCallee() { any() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 
@@ -284,6 +286,8 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 /** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`.
@@ -376,6 +380,8 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 /** Class representing bound-methods.
@@ -460,6 +466,8 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     override predicate functionAndOffset(CallableObjectInternal function, int offset) {
         function = this.getFunction() and offset = 1
     }
+
+    override predicate useOriginAsLegacyObject() { any() }
 
     override predicate contextSensitiveCallee() {
         this.getFunction().contextSensitiveCallee()

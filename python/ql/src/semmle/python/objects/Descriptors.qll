@@ -93,6 +93,8 @@ class PropertyInternal extends ObjectInternal, TProperty {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
     /* Properties aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
@@ -183,6 +185,8 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
     /* Classmethods aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
@@ -258,6 +262,8 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
     }
 
     override predicate contextSensitiveCallee() { none() }
+
+    override predicate useOriginAsLegacyObject() { none() }
 
     /* Staticmethods aren't iterable */
     override ObjectInternal getIterNext() { none() }
