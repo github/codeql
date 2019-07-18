@@ -788,6 +788,10 @@ module DataFlow {
       function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
+    override BasicBlock getBasicBlock() {
+      result = function.(ExprOrStmt).getBasicBlock()
+    }
+
     /**
      * Gets the function corresponding to this exceptional return node.
      */
@@ -808,6 +812,10 @@ module DataFlow {
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       invoke.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    override BasicBlock getBasicBlock() {
+      result = invoke.getBasicBlock()
     }
 
     /**
@@ -989,6 +997,30 @@ module DataFlow {
     override Node getBase() { result = valueNode(arr) }
 
     override ControlFlowNode getWriteNode() { result = arr }
+  }
+
+  /**
+   * A data flow node representing `this` in a function or top-level.
+   */
+  private class ThisNodeInternal extends Node, TThisNode {
+    override string toString() { result = "this" }
+
+    override BasicBlock getBasicBlock() {
+      exists(StmtContainer container | this = TThisNode(container) |
+        result = container.getEntry()
+      )
+    }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      // Use the function entry as the location
+      exists(StmtContainer container | this = TThisNode(container) |
+        container.getEntry()
+            .getLocation()
+            .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      )
+    }
   }
 
   /**
