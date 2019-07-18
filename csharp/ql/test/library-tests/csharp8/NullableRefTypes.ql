@@ -28,10 +28,10 @@ query predicate assignableTypes(Assignable a, AnnotatedType t) {
   t = a.getAnnotatedType()
 }
 
-query predicate arrayElements(Variable v, ArrayType array, AnnotatedType elementType) {
+query predicate arrayElements(Variable v, AnnotatedArrayType array, AnnotatedType elementType) {
   v.getFile().getBaseName() = "NullableRefTypes.cs" and
-  array = v.getType() and
-  elementType = array.getAnnotatedElementType()
+  array = v.getAnnotatedType() and
+  elementType = array.getElementType()
 }
 
 query predicate returnTypes(Callable c, string t) {
@@ -39,13 +39,13 @@ query predicate returnTypes(Callable c, string t) {
   t = c.getAnnotatedReturnType().toString()
 }
 
-query predicate typeArguments(ConstructedGeneric generic, int arg, string argument) {
+query predicate typeArguments(AnnotatedConstructedType generic, int arg, string argument) {
   (
-    generic = any(Variable v | v.fromSource()).getType()
-    or
-    generic = any(MethodCall mc).getTarget()
+    generic.getType() = any(Variable v | v.fromSource()).getType()
+    //or
+    // generic.getType() = any(MethodCall mc).getTarget()
   ) and
-  argument = generic.getAnnotatedTypeArgument(arg).toString()
+  argument = generic.getTypeArgument(arg).toString()
 }
 
 query predicate nullableTypeParameters(TypeParameter p) {
@@ -56,3 +56,5 @@ query predicate annotatedTypeConstraints(TypeParameter p, AnnotatedType t) {
   t = p.getConstraints().getAnAnnotatedTypeConstraint() and
   t.getLocation() instanceof SourceLocation
 }
+
+query predicate typeNotAnnotated(Type type) { not exists(AnnotatedType at | at.getType() = type) }

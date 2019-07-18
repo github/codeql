@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            PopulateNullability(trapFile, symbol.NullableAnnotation);
+            PopulateNullability(trapFile, symbol.GetAnnotatedType());
 
             var type = Type.Create(Context, symbol.Type);
             trapFile.indexers(this, symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition);

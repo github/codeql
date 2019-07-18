@@ -244,7 +244,7 @@ locations_default(
 @sourceline = @file | @callable | @xmllocatable;
 
 numlines(
-  unique int element_id: @sourceline ref,
+  int element_id: @sourceline ref,
   int num_lines: int ref,
   int num_code: int ref,
   int num_comment: int ref);
@@ -381,7 +381,7 @@ typerefs(
   varchar(900) name: string ref);
 
 typeref_type(
-  unique int id: @typeref ref,
+  int id: @typeref ref,
   unique int typeId: @type ref);
 
 @type_or_ref = @type | @typeref;
@@ -424,7 +424,7 @@ type_location(
 
 tuple_underlying_type(
   unique int tuple: @tuple_type ref,
-  int struct: @struct_type ref);
+  int struct: @type_or_ref ref);
 
 #keyset[tuple, index]
 tuple_element(
@@ -452,7 +452,7 @@ type_mention_location(
   unique int id: @type_mention ref,
   int loc: @location ref);
 
-@has_type_annotation = @assignable | @type_parameter | @callable | @array_type | @expr | @delegate_type;
+@has_type_annotation = @assignable | @type_parameter | @callable | @expr | @delegate_type | @generic;
 
 /**
  * A direct annotation on an entity, for example `string? x;`.
@@ -472,8 +472,18 @@ type_mention_location(
  */
 type_annotation(int id: @has_type_annotation ref, int annotation: int ref);
 
-/** The annotation of type arguments of a constructed type or method. */ 
-type_argument_annotation(int constructedgeneric: @generic ref, int position: int ref, int annotation: int ref);
+nullability(unique int nullability: @nullability, int kind: int ref);
+
+case @nullability.kind of
+  0 = @oblivious
+| 1 = @not_annotated
+| 2 = @annotated
+;
+
+#keyset[nullability, index]
+nullability_member(int nullability: @nullability ref, int index: int ref, int child: @nullability ref)
+
+type_nullability(int id: @has_type_annotation ref, int nullability: @nullability ref)
 
 /** GENERICS **/
 
@@ -633,8 +643,8 @@ operator_location(
   int loc: @location ref);
 
 constant_value(
-  unique int id: @variable ref,
-  varchar(900) value: string ref);
+  int id: @variable ref,
+  string value: string ref);
 
 /** CALLABLES **/
 
@@ -674,7 +684,7 @@ destructor_location(
   int loc: @location ref);
 
 overrides(
-  unique int id: @callable ref,
+  int id: @callable ref,
   int base_id: @callable ref);
 
 explicitly_implements(

@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -24,6 +26,16 @@ namespace Semmle.Extraction.CSharp
             Nullability = nullability;
         }
     }
+
+    public enum TypeNameContext
+    {
+        TypeName,
+        TypeRef,
+        AnonymousType,
+        MethodName,
+        MethodParam
+    }
+
 
     static class SymbolExtensions
     {
@@ -131,17 +143,36 @@ namespace Semmle.Extraction.CSharp
         /// <param name="cx">The extraction context.</param>
         /// <param name="trapFile">The trap builder used to store the result.</param>
         /// <param name="subTermAction">The action to apply to syntactic sub terms of this type.</param>
-        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
+        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol, ISymbol> subTermAction, TypeNameContext assemblyPrefix, ISymbol genericContext)
         {
-            if (type.SpecialType != SpecialType.None)
+            switch(type.SpecialType)
             {
-                /*
-                 * Use the keyword ("int" etc) for the built-in types.
-                 * This makes the IDs shorter and means that all built-in types map to
-                 * the same entities (even when using multiple versions of mscorlib).
-                 */
-                trapFile.Write(type.ToDisplayString());
-                return;
+                case SpecialType.System_Object:
+                case SpecialType.System_Void:
+                case SpecialType.System_Boolean:
+                case SpecialType.System_Char:
+                case SpecialType.System_SByte:
+                case SpecialType.System_Byte:
+                case SpecialType.System_Int16:
+                case SpecialType.System_UInt16:
+                case SpecialType.System_Int32:
+                case SpecialType.System_UInt32:
+                case SpecialType.System_Int64:
+                case SpecialType.System_UInt64:
+                case SpecialType.System_Decimal:
+                case SpecialType.System_Single:
+                case SpecialType.System_Double:
+                case SpecialType.System_String:
+                case SpecialType.System_IntPtr:
+                case SpecialType.System_UIntPtr:
+
+                    /*
+                     * Use the keyword ("int" etc) for the built-in types.
+                     * This makes the IDs shorter and means that all built-in types map to
+                     * the same entities (even when using multiple versions of mscorlib).
+                     */
+                    trapFile.Write(type.ToDisplayString());
+                    return;
             }
 
             using (cx.StackGuard)
@@ -150,7 +181,9 @@ namespace Semmle.Extraction.CSharp
                 {
                     case TypeKind.Array:
                         var array = (IArrayTypeSymbol)type;
-                        subTermAction(cx, trapFile, array.ElementType);
+                        subTermAction(cx, trapFile, array.ElementType, genericContext);
+                        if(assemblyPrefix == TypeNameContext.TypeName)
+                            trapFile.Write((int)array.ElementNullableAnnotation);
                         array.BuildArraySuffix(trapFile);
                         return;
                     case TypeKind.Class:
@@ -160,16 +193,29 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeId(cx, trapFile, subTermAction);
+                        named.BuildNamedTypeId(cx, trapFile, subTermAction, assemblyPrefix, genericContext);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
-                        subTermAction(cx, trapFile, ptr.PointedAtType);
-                        trapFile.Write('*');
+                        subTermAction(cx, trapFile, ptr.PointedAtType, genericContext);
+                        trapFile.Write("*");
                         return;
                     case TypeKind.TypeParameter:
                         var tp = (ITypeParameterSymbol)type;
-                        trapFile.Write(tp.Name);
+                        switch(tp.TypeParameterKind)
+                        {
+                            case TypeParameterKind.Method:
+                                if(!Equals(genericContext, tp.DeclaringMethod))
+                                    trapFile.WriteSubId(Method.Create(cx, tp.DeclaringMethod));
+                                trapFile.Write("!!");
+                                break;
+                            case TypeParameterKind.Type:
+                                if(!Equals(genericContext,tp.DeclaringType))
+                                    subTermAction(cx, trapFile, tp.DeclaringType, genericContext);
+                                trapFile.Write("!");
+                                break;
+                        }
+                        trapFile.Write(tp.Ordinal);
                         return;
                     case TypeKind.Dynamic:
                         trapFile.Write("dynamic");
@@ -193,8 +239,34 @@ namespace Semmle.Extraction.CSharp
             trapFile.Write(']');
         }
 
-        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction)
+        private static void BuildAssembly(IAssemblySymbol asm, TextWriter trapFile, bool extraPrecise = false)
         {
+            var assembly = asm.Identity;
+            trapFile.Write(assembly.Name);
+            trapFile.Write('_');
+            trapFile.Write(assembly.Version.Major);
+            trapFile.Write('.');
+            trapFile.Write(assembly.Version.Minor);
+            trapFile.Write('.');
+            trapFile.Write(assembly.Version.Build);
+            if (extraPrecise)
+            {
+                trapFile.Write('.');
+                trapFile.Write(assembly.Version.Revision);
+            }
+            trapFile.Write("::");
+        }
+
+        public static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol, ISymbol> subTermAction, TypeNameContext assemblyPrefix, ISymbol genericContext)
+        {
+            bool prefixAssembly = false;
+            if (named.IsAnonymous()) prefixAssembly = true;
+            else if(assemblyPrefix == TypeNameContext.TypeName && cx.Extractor.Identifiers != IdentifierMode.Imprecise) prefixAssembly = true;
+            if (named.ContainingAssembly is null) prefixAssembly = false;
+
+            if (prefixAssembly)
+                BuildAssembly(named.ContainingAssembly, trapFile);
+
             if (named.IsTupleType)
             {
                 trapFile.Write('(');
@@ -203,7 +275,7 @@ namespace Semmle.Extraction.CSharp
                     {
                         trapFile.Write(f.Name);
                         trapFile.Write(":");
-                        subTermAction(cx, tb0, f.Type);
+                        subTermAction(cx, tb0, f.Type, genericContext);
                     }
                     );
                 trapFile.Write(")");
@@ -212,16 +284,16 @@ namespace Semmle.Extraction.CSharp
 
             if (named.ContainingType != null)
             {
-                subTermAction(cx, trapFile, named.ContainingType);
+                subTermAction(cx, trapFile, named.ContainingType, genericContext);
                 trapFile.Write('.');
             }
-            else if (named.ContainingNamespace != null)
+            else if (named.ContainingNamespace != null && !named.IsConstructedGeneric())
             {
                 named.ContainingNamespace.BuildNamespace(cx, trapFile);
             }
 
             if (named.IsAnonymousType)
-                named.BuildAnonymousName(cx, trapFile, subTermAction, true);
+                named.BuildAnonymousName(cx, trapFile, subTermAction, true, genericContext);
             else if (named.TypeParameters.IsEmpty)
                 trapFile.Write(named.Name);
             else if (named.IsUnboundGeneric())
@@ -232,53 +304,36 @@ namespace Semmle.Extraction.CSharp
             }
             else
             {
-                subTermAction(cx, trapFile, named.ConstructedFrom);
+                subTermAction(cx, trapFile, named.ConstructedFrom, genericContext);
                 trapFile.Write('<');
                 // Encode the nullability of the type arguments in the label.
                 // Type arguments with different nullability can result in 
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
-                trapFile.BuildList(",", named.GetAnnotatedTypeArguments(), (ta, tb0) => { subTermAction(cx, tb0, ta.Symbol); });
+                trapFile.BuildList(",", named.GetAnnotatedTypeArguments(), (ta, tb0) => {
+                    subTermAction(cx, tb0, ta.Symbol, genericContext);
+                    tb0.Write((int)ta.Nullability);
+                });
                 trapFile.Write('>');
             }
         }
 
         static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter trapFile)
         {
-            // Only include the assembly information in each type ID
-            // for normal extractions. This is because standalone extractions
-            // lack assembly information or may be ambiguous.
-            bool prependAssemblyToTypeId = !cx.Extractor.Standalone && ns.ContainingAssembly != null;
-
-            if (prependAssemblyToTypeId)
-            {
-                // Note that we exclude the revision number as this has
-                // been observed to be unstable.
-                var assembly = ns.ContainingAssembly.Identity;
-                trapFile.Write(assembly.Name);
-                trapFile.Write('_');
-                trapFile.Write(assembly.Version.Major);
-                trapFile.Write('.');
-                trapFile.Write(assembly.Version.Minor);
-                trapFile.Write('.');
-                trapFile.Write(assembly.Version.Build);
-                trapFile.Write("::");
-            }
-
             trapFile.WriteSubId(Namespace.Create(cx, ns));
             trapFile.Write('.');
         }
 
-        static void BuildAnonymousName(this ITypeSymbol type, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol> subTermAction, bool includeParamName)
+        static void BuildAnonymousName(this ITypeSymbol type, Context cx, TextWriter trapFile, Action<Context, TextWriter, ITypeSymbol, ISymbol> subTermAction, bool includeParamName, ISymbol genericContext)
         {
             var buildParam = includeParamName
                 ? (prop, tb0) =>
                 {
                     tb0.Write(prop.Name);
-                    trapFile.Write(' ');
-                    subTermAction(cx, tb0, prop.Type);
+                    tb0.Write(' ');
+                    subTermAction(cx, tb0, prop.Type, genericContext);
                 }
-            : (Action<IPropertySymbol, TextWriter>)((prop, tb0) => subTermAction(cx, tb0, prop.Type));
+            : (Action<IPropertySymbol, TextWriter>)((prop, tb0) => subTermAction(cx, tb0, prop.Type, genericContext));
             int memberCount = type.GetMembers().OfType<IPropertySymbol>().Count();
             int hackTypeNumber = memberCount == 1 ? 1 : 0;
             trapFile.Write("<>__AnonType");
@@ -350,15 +405,16 @@ namespace Semmle.Extraction.CSharp
 
             if (namedType.IsAnonymousType)
             {
-                namedType.BuildAnonymousName(cx, trapFile, (cx0, tb0, sub) => sub.BuildDisplayName(cx0, tb0), false);
+                namedType.BuildAnonymousName(cx, trapFile, (cx0, tb0, sub, _) => sub.BuildDisplayName(cx0, tb0), false, namedType);
             }
 
             trapFile.Write(namedType.Name);
-            if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
+            if (namedType.IsGenericType && /* namedType.TypeKind != TypeKind.Error && */ namedType.TypeArguments.Any())
             {
                 trapFile.Write('<');
                 trapFile.BuildList(",", namedType.TypeArguments, (p, tb0) =>
                 {
+                    // tb0.Write(p.Name);
                     if (IsReallyBound(namedType))
                         p.BuildDisplayName(cx, tb0);
                 });
@@ -487,79 +543,7 @@ namespace Semmle.Extraction.CSharp
             return new AnnotatedTypeSymbol(info.Type.DisambiguateType(), info.Nullability.Annotation);
         }
 
-        /// <summary>
-        /// Gets the annotated type of an ILocalSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static AnnotatedTypeSymbol GetAnnotatedType(this ILocalSymbol symbol) => new AnnotatedTypeSymbol(symbol.Type, symbol.NullableAnnotation);
-
-        /// <summary>
-        /// Gets the annotated type of an IPropertySymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static AnnotatedTypeSymbol GetAnnotatedType(this IPropertySymbol symbol) => new AnnotatedTypeSymbol(symbol.Type, symbol.NullableAnnotation);
-
-        /// <summary>
-        /// Gets the annotated type of an IFieldSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static AnnotatedTypeSymbol GetAnnotatedType(this IFieldSymbol symbol) => new AnnotatedTypeSymbol(symbol.Type, symbol.NullableAnnotation);
-
-        /// <summary>
-        /// Gets the annotated return type of an IMethodSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static AnnotatedTypeSymbol GetAnnotatedReturnType(this IMethodSymbol symbol) => new AnnotatedTypeSymbol(symbol.ReturnType, symbol.ReturnNullableAnnotation);
-
-        /// <summary>
-        /// Gets the type annotation for a NullableAnnotation.
-        /// </summary>
-        public static Kinds.TypeAnnotation GetTypeAnnotation(this NullableAnnotation na)
-        {
-            switch(na)
-            {
-                case NullableAnnotation.Annotated:
-                    return Kinds.TypeAnnotation.Annotated;
-                case NullableAnnotation.NotAnnotated:
-                    return Kinds.TypeAnnotation.NotAnnotated;
-                default:
-                    return Kinds.TypeAnnotation.None;
-            }
-        }
-
-        /// <summary>
-        /// Gets the annotated element type of an IArrayTypeSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static AnnotatedTypeSymbol GetAnnotatedElementType(this IArrayTypeSymbol symbol) =>
-            new AnnotatedTypeSymbol(symbol.ElementType, symbol.ElementNullableAnnotation);
-
-        /// <summary>
-        /// Gets the annotated type arguments of an INamedTypeSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this INamedTypeSymbol symbol) =>
-            symbol.TypeArguments.Zip(symbol.TypeArgumentsNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
-
-        /// <summary>
-        /// Gets the annotated type arguments of an IMethodSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeArguments(this IMethodSymbol symbol) =>
-            symbol.TypeArguments.Zip(symbol.TypeArgumentsNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
-
-        /// <summary>
-        /// Gets the annotated type constraints of an ITypeParameterSymbol.
-        /// This has not yet been exposed on the public API.
-        /// </summary>
-        public static IEnumerable<AnnotatedTypeSymbol> GetAnnotatedTypeConstraints(this ITypeParameterSymbol symbol) =>
-            symbol.ConstraintTypes.Zip(symbol.ConstraintNullableAnnotations, (t, a) => new AnnotatedTypeSymbol(t, a));
-
-        /// <summary>
-        /// Creates an AnnotatedTypeSymbol from an ITypeSymbol.
-        /// </summary>
-        public static AnnotatedTypeSymbol WithAnnotation(this ITypeSymbol symbol, NullableAnnotation annotation) =>
-            new AnnotatedTypeSymbol(symbol, annotation);
+ 
 
         private static bool IsSpecialized(this IMethodSymbol method) =>
             method.IsGenericMethod &&
@@ -577,6 +561,12 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public static bool IsUnboundGeneric(this INamedTypeSymbol type) =>
             type.IsGenericType && !type.IsSpecialized();
+
+        /// <summary>
+        /// Holds if the type is a constructed generic.
+        /// </summary>
+        public static bool IsConstructedGeneric(this INamedTypeSymbol type) =>
+            type.IsGenericType && type.IsSpecialized();
 
         /// <summary>
         /// Holds if the method is unbound: either it is unconstructed, or
@@ -598,6 +588,33 @@ namespace Semmle.Extraction.CSharp
         /// sometimes collide so they need to be handled separately.
         /// </summary>
         public static bool IsAnonymous(this INamedTypeSymbol type) =>
-            type.IsAnonymousType || type.Name.StartsWith("<>");
+            type.IsAnonymousType || type.Name.StartsWith("<");
+
+        /// <summary>
+        /// Computes a hash of the dependencies of an assembly.
+        /// The contents of the trap file is dependent upon which dependencies
+        /// were resolved. Therefore, we need to compute this in order to determine
+        /// whether we need to re-extract an assembly.
+        /// </summary>
+        /// <param name="asm">The assembly to compute</param>
+        /// <returns>A hash string.</returns>
+        public static string HashDependencies(this IAssemblySymbol asm)
+        {
+            using (var shaAlg = new SHA256Managed())
+            {
+                var imports = asm.Modules.
+                    SelectMany(m => m.ReferencedAssemblySymbols).
+                    Select(r => r.Locations.IsEmpty ? "" : r.Identity.ToString()).
+                    Aggregate("", (a, b) => a + b);
+                var sha = shaAlg.ComputeHash(Encoding.ASCII.GetBytes(imports));
+
+                var hex = new StringBuilder(sha.Length * 2);
+                foreach (var b in sha)
+                    hex.AppendFormat("{0:x2}", b);
+                hex.Append('-');
+                hex.Append(asm.Modules.SelectMany(m => m.ReferencedAssemblySymbols).Count(r => r.Locations.IsEmpty));
+                return hex.ToString();
+            }
+        }
     }
 }

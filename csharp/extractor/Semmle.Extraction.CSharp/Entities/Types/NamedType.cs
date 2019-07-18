@@ -59,9 +59,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
                     for (int i = 0; i < symbol.TypeArguments.Length; ++i)
                     {
-                        var ta = symbol.TypeArgumentsNullableAnnotations[i].GetTypeAnnotation();
-                        if (ta != Kinds.TypeAnnotation.None)
-                            trapFile.type_argument_annotation(this, i, ta);
                         trapFile.type_arguments(TypeArguments[i].TypeRef, i, this);
                     }
                 }
@@ -116,7 +113,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(TextWriter trapFile)
         {
-            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub) => tb0.WriteSubId(Create(cx0, sub)));
+            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub, _) => tb0.WriteSubId(Create(cx0, sub)), TypeNameContext.TypeName, symbol);
             trapFile.Write(";type");
         }
 
@@ -156,33 +153,40 @@ namespace Semmle.Extraction.CSharp.Entities
             public NamedType Create(Context cx, INamedTypeSymbol init) => new NamedType(cx, init);
         }
 
-        public override Type TypeRef => NamedTypeRef.Create(Context, symbol);
+        public override Type TypeRef => NamedTypeRef.Create(Context, this, symbol);
     }
 
-    class NamedTypeRef : Type<INamedTypeSymbol>
+    class NamedTypeRef : Type<ITypeSymbol>
     {
         readonly Type referencedType;
 
-        public NamedTypeRef(Context cx, INamedTypeSymbol symbol) : base(cx, symbol)
+        public NamedTypeRef(Context cx, Type type, ITypeSymbol symbol) : base(cx, symbol)
         {
-            referencedType = Type.Create(cx, symbol);
+            referencedType = type;
         }
 
-        public static NamedTypeRef Create(Context cx, INamedTypeSymbol type) => NamedTypeRefFactory.Instance.CreateEntity2(cx, type);
+        public static NamedTypeRef Create(Context cx, Type referencedType, ITypeSymbol type) =>
+            NamedTypeRefFactory.Instance.CreateEntity2(cx, (referencedType, type));
 
-        class NamedTypeRefFactory : ICachedEntityFactory<INamedTypeSymbol, NamedTypeRef>
+        class NamedTypeRefFactory : ICachedEntityFactory<(Type, ITypeSymbol), NamedTypeRef>
         {
             public static readonly NamedTypeRefFactory Instance = new NamedTypeRefFactory();
 
-            public NamedTypeRef Create(Context cx, INamedTypeSymbol init) => new NamedTypeRef(cx, init);
+            public NamedTypeRef Create(Context cx, (Type, ITypeSymbol) init) => new NamedTypeRef(cx, init.Item1, init.Item2);
         }
 
         public override bool NeedsPopulation => true;
 
         public override void WriteId(TextWriter trapFile)
         {
-            trapFile.WriteSubId(referencedType);
-            trapFile.Write(";typeRef");
+            void ExpandType(Context cx0, TextWriter tb0, ITypeSymbol sub, ISymbol gc)
+            {
+                sub.BuildTypeId(cx0, tb0, ExpandType, TypeNameContext.TypeRef, gc);
+            }
+
+            // Prefix anonymous types because they shouldn't be visible outside of the current assembly.
+            symbol.BuildTypeId(Context, trapFile, ExpandType, TypeNameContext.TypeRef, symbol);
+            trapFile.Write(";typeref");
         }
 
         public override void Populate(TextWriter trapFile)

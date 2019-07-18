@@ -87,6 +87,16 @@ namespace Semmle.Extraction
         /// <param name="scope">The extraction scope (what to include in this trap file).</param>
         /// <returns></returns>
         Context CreateContext(Compilation c, TrapWriter trapWriter, IExtractionScope scope);
+
+        IdentifierMode Identifiers { get; }
+    }
+
+    public enum IdentifierMode
+    {
+        Imprecise,
+        Flexible,
+        Precise,
+        ExtraPrecise
     }
 
     /// <summary>
@@ -112,6 +122,7 @@ namespace Semmle.Extraction
         public Extractor(bool standalone, string outputPath, ILogger logger)
         {
             Standalone = standalone;
+            if (Standalone) Identifiers = IdentifierMode.Imprecise;
             OutputPath = outputPath;
             Logger = logger;
         }
@@ -197,5 +208,7 @@ namespace Semmle.Extraction
         public ILogger Logger { get; private set; }
 
         public static string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
+
+        public IdentifierMode Identifiers { get; } = IdentifierMode.Imprecise;
     }
 }
