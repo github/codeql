@@ -27,7 +27,7 @@ test_AssignExpr_getDocumentation
 | tst.js:104:1:105:1 | project ... n() {\\n} | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
 | tst.js:137:1:138:1 | goog.ne ... n() {\\n} | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
 | tst.js:146:1:147:1 | goog.Ba ... rm) {\\n} | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
-| tst.js:158:1:158:19 | this.handlers_ = [] | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
+| tst.js:158:1:158:24 | this.ha ... [1,2,3] | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
 | tst.js:166:1:167:1 | goog.ui ... nt) {\\n} | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
 | tst.js:173:1:175:1 | goog.Ba ... n id;\\n} | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
 | tst.js:208:1:208:56 | DOMAppl ... n() { } | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |
@@ -193,7 +193,10 @@ test_OtherExpr_getDocumentation
 | tst.js:158:1:158:4 | this | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
 | tst.js:158:1:158:14 | this.handlers_ | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
 | tst.js:158:6:158:14 | handlers_ | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
-| tst.js:158:18:158:19 | [] | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
+| tst.js:158:18:158:24 | [1,2,3] | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
+| tst.js:158:19:158:19 | 1 | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
+| tst.js:158:21:158:21 | 2 | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
+| tst.js:158:23:158:23 | 3 | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
 | tst.js:166:1:166:4 | goog | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
 | tst.js:166:1:166:7 | goog.ui | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
 | tst.js:166:1:166:17 | goog.ui.Component | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |

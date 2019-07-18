@@ -155,7 +155,7 @@ function foo(/** number */ a, /** number */ b) {
  * @type {Function[]}
  * @private
  */
-this.handlers_ = [];
+this.handlers_ = [1,2,3];
 
 /**
  * Sets the component's root element to the given element.
