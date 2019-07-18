@@ -34,11 +34,11 @@ private class HeuristicCodeInjectionSink extends HeuristicSink, CodeInjection::S
       srcPattern = "(?s).*function\\s*\\(.*\\).*" or
       srcPattern = "(?s).*(\\(.*\\)|[A-Za-z_]+)\\s?=>.*"
     |
-      isContatenatedWithString(this, srcPattern)
+      isConcatenatedWithString(this, srcPattern)
     )
     or
     // dynamic property name
-    isContatenatedWithStrings("(?is)[a-z]+\\[", this, "(?s)\\].*")
+    isConcatenatedWithStrings("(?is)[a-z]+\\[", this, "(?s)\\].*")
   }
 }
 
@@ -53,8 +53,8 @@ private class HeuristicDomBasedXssSink extends HeuristicSink, DomBasedXss::DomBa
   HeuristicDomBasedXssSink() {
     isAssignedToOrConcatenatedWith(this, "(?i)(html|innerhtml)") or
     isArgTo(this, "(?i)(html|render)") or
-    isContatenatedWithString(this, "(?is).*<.*>.*") or
-    isContatenatedWithStrings("(?is).*<[a-z ]+.*", this, "(?s).*>.*")
+    this instanceof StringOps::HtmlConcatenationLeaf or
+    isConcatenatedWithStrings("(?is).*<[a-z ]+.*", this, "(?s).*>.*")
   }
 }
 
@@ -62,8 +62,8 @@ private class HeuristicReflectedXssSink extends HeuristicSink, ReflectedXss::Ref
   HeuristicReflectedXssSink() {
     isAssignedToOrConcatenatedWith(this, "(?i)(html|innerhtml)") or
     isArgTo(this, "(?i)(html|render)") or
-    isContatenatedWithString(this, "(?is).*<.*>.*") or
-    isContatenatedWithStrings("(?is).*<[a-z ]+.*", this, "(?s).*>.*")
+    this instanceof StringOps::HtmlConcatenationLeaf or
+    isConcatenatedWithStrings("(?is).*<[a-z ]+.*", this, "(?s).*>.*")
   }
 }
 
@@ -71,7 +71,7 @@ private class HeuristicSqlInjectionSink extends HeuristicSink, SqlInjection::Sin
   HeuristicSqlInjectionSink() {
     isAssignedToOrConcatenatedWith(this, "(?i)(sql|query)") or
     isArgTo(this, "(?i)(query)") or
-    isContatenatedWithString(this,
+    isConcatenatedWithString(this,
       "(?s).*(ALTER|COUNT|CREATE|DATABASE|DELETE|DISTINCT|DROP|FROM|GROUP|INSERT|INTO|LIMIT|ORDER|SELECT|TABLE|UPDATE|WHERE).*")
   }
 }
@@ -94,10 +94,10 @@ private class HeuristicTaintedPathSink extends HeuristicSink, TaintedPath::Sink 
       pathPattern = "(?i)([a-z0-9_.-]+/){2,}" or
       pathPattern = "(?i)(/[a-z0-9_.-]+){2,}"
     |
-      isContatenatedWithString(this, pathPattern)
+      isConcatenatedWithString(this, pathPattern)
     )
     or
-    isContatenatedWithStrings(".*/", this, "/.*")
+    isConcatenatedWithStrings(".*/", this, "/.*")
   }
 }
 
