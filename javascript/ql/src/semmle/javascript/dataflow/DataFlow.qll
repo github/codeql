@@ -992,6 +992,30 @@ module DataFlow {
   }
 
   /**
+   * A data flow node representing `this` in a function or top-level.
+   */
+  private class ThisNodeInternal extends Node, TThisNode {
+    override string toString() { result = "this" }
+
+    override BasicBlock getBasicBlock() {
+      exists(StmtContainer container | this = TThisNode(container) |
+        result = container.getEntry()
+      )
+    }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      // Use the function entry as the location
+      exists(StmtContainer container | this = TThisNode(container) |
+        container.getEntry()
+            .getLocation()
+            .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      )
+    }
+  }
+
+  /**
    * Gets the data flow node corresponding to `nd`.
    *
    * This predicate is only defined for expressions, properties, and for statements that declare

@@ -276,18 +276,6 @@ class ThisNode extends DataFlow::Node, DataFlow::SourceNode {
    * which is the nearest enclosing non-arrow function or top-level.
    */
   StmtContainer getBindingContainer() { DataFlow::thisNode(this, result) }
-
-  override string toString() { result = "this" }
-
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    // Use the function entry as the location
-    getBindingContainer()
-        .getEntry()
-        .getLocation()
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
 }
 
 /** A data flow node corresponding to a global variable access. */
