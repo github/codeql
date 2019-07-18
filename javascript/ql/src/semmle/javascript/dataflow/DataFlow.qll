@@ -788,6 +788,10 @@ module DataFlow {
       function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
+    override BasicBlock getBasicBlock() {
+      result = function.(ExprOrStmt).getBasicBlock()
+    }
+
     /**
      * Gets the function corresponding to this exceptional return node.
      */
@@ -808,6 +812,10 @@ module DataFlow {
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       invoke.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    override BasicBlock getBasicBlock() {
+      result = invoke.getBasicBlock()
     }
 
     /**
