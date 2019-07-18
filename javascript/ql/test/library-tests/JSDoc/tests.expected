@@ -109,6 +109,210 @@ test_VarDeclStmt_getDocumentation
 | tst.js:346:23:346:58 | var sum ... ity(2); | tst.js:346:1:346:21 | /** @ty ... ber} */ |
 | tst.js:347:23:347:60 | var sum ... y("2"); | tst.js:347:1:347:21 | /** @ty ... ber} */ |
 | tst.js:349:33:349:52 | var string_or_undef; | tst.js:349:1:349:31 | /** @ty ... ned} */ |
+test_OtherExpr_getDocumentation
+| tst.js:5:19:5:25 | MY_BEER | tst.js:5:1:5:13 | /** @const */ |
+| tst.js:5:19:5:35 | MY_BEER = 'stout' | tst.js:5:1:5:13 | /** @const */ |
+| tst.js:5:29:5:35 | 'stout' | tst.js:5:1:5:13 | /** @const */ |
+| tst.js:12:1:12:11 | mynamespace | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ |
+| tst.js:12:1:12:19 | mynamespace.MY_BEER | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ |
+| tst.js:12:13:12:19 | MY_BEER | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ |
+| tst.js:12:23:12:29 | 'stout' | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ |
+| tst.js:14:15:14:21 | MyClass | tst.js:14:1:14:13 | /** @const */ |
+| tst.js:14:15:14:29 | MyClass.MY_BEER | tst.js:14:1:14:13 | /** @const */ |
+| tst.js:14:23:14:29 | MY_BEER | tst.js:14:1:14:13 | /** @const */ |
+| tst.js:14:33:14:39 | 'stout' | tst.js:14:1:14:13 | /** @const */ |
+| tst.js:24:5:24:16 | ENABLE_DEBUG | tst.js:23:1:23:24 | /** @de ... ean} */ |
+| tst.js:24:5:24:23 | ENABLE_DEBUG = true | tst.js:23:1:23:24 | /** @de ... ean} */ |
+| tst.js:24:20:24:23 | true | tst.js:23:1:23:24 | /** @de ... ean} */ |
+| tst.js:27:1:27:4 | goog | tst.js:26:1:26:24 | /** @de ... ean} */ |
+| tst.js:27:1:27:14 | goog.userAgent | tst.js:26:1:26:24 | /** @de ... ean} */ |
+| tst.js:27:1:27:24 | goog.us ... SUME_IE | tst.js:26:1:26:24 | /** @de ... ean} */ |
+| tst.js:27:6:27:14 | userAgent | tst.js:26:1:26:24 | /** @de ... ean} */ |
+| tst.js:27:16:27:24 | ASSUME_IE | tst.js:26:1:26:24 | /** @de ... ean} */ |
+| tst.js:27:28:27:32 | false | tst.js:26:1:26:24 | /** @de ... ean} */ |
+| tst.js:36:1:36:11 | BN_EditUtil | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ |
+| tst.js:36:1:36:30 | BN_Edit ... leField | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ |
+| tst.js:36:13:36:30 | isTopEditableField | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ |
+| tst.js:48:25:48:36 | { 'x': 321 } | tst.js:48:12:48:23 | /** @dict */ |
+| tst.js:55:1:55:7 | project | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
+| tst.js:55:1:55:16 | project.TriState | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
+| tst.js:55:9:55:16 | TriState | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
+| tst.js:55:20:59:1 | {\\n  TRU ... BE: 0\\n} | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
+| tst.js:57:11:57:11 | 1 | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
+| tst.js:62:1:62:3 | foo | tst.js:61:1:61:14 | /** @export */ |
+| tst.js:62:1:62:17 | foo.MyPublicClass | tst.js:61:1:61:14 | /** @export */ |
+| tst.js:62:1:62:27 | foo.MyP ... ototype | tst.js:61:1:61:14 | /** @export */ |
+| tst.js:62:1:62:42 | foo.MyP ... cMethod | tst.js:61:1:61:14 | /** @export */ |
+| tst.js:62:5:62:17 | MyPublicClass | tst.js:61:1:61:14 | /** @export */ |
+| tst.js:62:19:62:27 | prototype | tst.js:61:1:61:14 | /** @export */ |
+| tst.js:62:29:62:42 | myPublicMethod | tst.js:61:1:61:14 | /** @export */ |
+| tst.js:70:1:70:4 | goog | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ |
+| tst.js:70:1:70:7 | goog.ds | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ |
+| tst.js:70:1:70:21 | goog.ds ... odeList | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ |
+| tst.js:70:6:70:7 | ds | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ |
+| tst.js:70:9:70:21 | EmptyNodeList | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ |
+| tst.js:78:1:78:5 | sloth | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ |
+| tst.js:78:1:78:18 | sloth.MyFinalClass | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ |
+| tst.js:78:7:78:18 | MyFinalClass | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ |
+| tst.js:84:1:84:5 | sloth | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
+| tst.js:84:1:84:18 | sloth.MyFinalClass | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
+| tst.js:84:1:84:28 | sloth.M ... ototype | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
+| tst.js:84:1:84:35 | sloth.M ... .method | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
+| tst.js:84:7:84:18 | MyFinalClass | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
+| tst.js:84:20:84:28 | prototype | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
+| tst.js:84:30:84:35 | method | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
+| tst.js:104:1:104:7 | project | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
+| tst.js:104:1:104:16 | project.SubClass | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
+| tst.js:104:1:104:26 | project ... ototype | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
+| tst.js:104:1:104:35 | project ... oString | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
+| tst.js:104:9:104:16 | SubClass | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
+| tst.js:104:18:104:26 | prototype | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
+| tst.js:104:28:104:35 | toString | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
+| tst.js:117:42:119:10 | ({\\n     ...      }) | tst.js:117:9:117:40 | /** @le ... ype} */ |
+| tst.js:117:43:119:9 | {\\n      ...       } | tst.js:117:9:117:40 | /** @le ... ype} */ |
+| tst.js:137:1:137:4 | goog | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:137:1:137:8 | goog.net | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:137:1:137:12 | goog.net.xpc | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:137:1:137:29 | goog.ne ... Channel | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:137:1:137:39 | goog.ne ... ototype | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:137:1:137:59 | goog.ne ... wObject | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:137:6:137:8 | net | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:137:10:137:12 | xpc | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:137:14:137:29 | CrossPageChannel | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:137:31:137:39 | prototype | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:137:41:137:59 | getPeerWindowObject | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:146:1:146:4 | goog | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
+| tst.js:146:1:146:8 | goog.Baz | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
+| tst.js:146:1:146:18 | goog.Baz.prototype | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
+| tst.js:146:1:146:24 | goog.Ba ... e.query | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
+| tst.js:146:6:146:8 | Baz | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
+| tst.js:146:10:146:18 | prototype | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
+| tst.js:146:20:146:24 | query | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
+| tst.js:149:28:149:28 | a | tst.js:149:14:149:26 | /** number */ |
+| tst.js:149:45:149:45 | b | tst.js:149:31:149:43 | /** number */ |
+| tst.js:158:1:158:4 | this | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
+| tst.js:158:1:158:14 | this.handlers_ | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
+| tst.js:158:6:158:14 | handlers_ | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
+| tst.js:158:18:158:19 | [] | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
+| tst.js:166:1:166:4 | goog | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:166:1:166:7 | goog.ui | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:166:1:166:17 | goog.ui.Component | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:166:1:166:27 | goog.ui ... ototype | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:166:1:166:46 | goog.ui ... nternal | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:166:6:166:7 | ui | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:166:9:166:17 | Component | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:166:19:166:27 | prototype | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:166:29:166:46 | setElementInternal | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:173:1:173:4 | goog | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
+| tst.js:173:1:173:8 | goog.Baz | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
+| tst.js:173:1:173:18 | goog.Baz.prototype | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
+| tst.js:173:1:173:28 | goog.Ba ... tLastId | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
+| tst.js:173:6:173:8 | Baz | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
+| tst.js:173:10:173:18 | prototype | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
+| tst.js:173:20:173:28 | getLastId | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
+| tst.js:177:24:177:26 | foo | tst.js:177:10:177:22 | /** number */ |
+| tst.js:192:27:192:36 | { x: 321 } | tst.js:192:12:192:25 | /** @struct */ |
+| tst.js:208:1:208:19 | DOMApplicationCache | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |
+| tst.js:208:1:208:29 | DOMAppl ... ototype | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |
+| tst.js:208:1:208:39 | DOMAppl ... apCache | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |
+| tst.js:208:21:208:29 | prototype | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |
+| tst.js:208:31:208:39 | swapCache | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |
+| tst.js:214:5:214:9 | hexId | tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ |
+| tst.js:214:5:214:17 | hexId = hexId | tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ |
+| tst.js:214:13:214:17 | hexId | tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ |
+| tst.js:217:1:217:4 | goog | tst.js:216:1:216:33 | /** @ty ... er)} */ |
+| tst.js:217:1:217:15 | goog.NumberLike | tst.js:216:1:216:33 | /** @ty ... er)} */ |
+| tst.js:217:6:217:15 | NumberLike | tst.js:216:1:216:33 | /** @ty ... er)} */ |
+| tst.js:220:1:220:4 | goog | tst.js:219:1:219:55 | /** @pa ... ing. */ |
+| tst.js:220:1:220:15 | goog.readNumber | tst.js:219:1:219:55 | /** @pa ... ing. */ |
+| tst.js:220:6:220:15 | readNumber | tst.js:219:1:219:55 | /** @pa ... ing. */ |
+| tst.js:224:5:224:5 | o | tst.js:223:1:223:40 | /** @ty ... ct}} */ |
+| tst.js:224:5:224:5 | o | tst.js:223:1:223:40 | /** @ty ... ct}} */ |
+| tst.js:227:5:227:5 | x | tst.js:226:1:226:22 | /** @ty ... er?} */ |
+| tst.js:227:5:227:5 | x | tst.js:226:1:226:22 | /** @ty ... er?} */ |
+| tst.js:230:5:230:5 | y | tst.js:229:1:229:22 | /** @ty ... ect} */ |
+| tst.js:230:5:230:5 | y | tst.js:229:1:229:22 | /** @ty ... ect} */ |
+| tst.js:244:5:244:5 | f | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ |
+| tst.js:244:5:244:5 | f | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ |
+| tst.js:250:5:250:7 | Foo | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ |
+| tst.js:250:5:250:43 | Foo = f ... null; } | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ |
+| tst.js:253:1:253:3 | Foo | tst.js:252:1:252:18 | /** @return {T} */ |
+| tst.js:253:1:253:13 | Foo.prototype | tst.js:252:1:252:18 | /** @return {T} */ |
+| tst.js:253:1:253:17 | Foo.prototype.get | tst.js:252:1:252:18 | /** @return {T} */ |
+| tst.js:253:5:253:13 | prototype | tst.js:252:1:252:18 | /** @return {T} */ |
+| tst.js:253:15:253:17 | get | tst.js:252:1:252:18 | /** @return {T} */ |
+| tst.js:256:1:256:3 | Foo | tst.js:255:1:255:19 | /** @param {T} t */ |
+| tst.js:256:1:256:13 | Foo.prototype | tst.js:255:1:255:19 | /** @param {T} t */ |
+| tst.js:256:1:256:17 | Foo.prototype.set | tst.js:255:1:255:19 | /** @param {T} t */ |
+| tst.js:256:5:256:13 | prototype | tst.js:255:1:255:19 | /** @param {T} t */ |
+| tst.js:256:15:256:17 | set | tst.js:255:1:255:19 | /** @param {T} t */ |
+| tst.js:258:34:258:36 | foo | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
+| tst.js:258:34:258:48 | foo = new Foo() | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
+| tst.js:258:40:258:48 | new Foo() | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
+| tst.js:258:44:258:46 | Foo | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
+| tst.js:259:40:259:50 | (new Foo()) | tst.js:259:11:259:38 | /** @ty ... ng>} */ |
+| tst.js:259:41:259:49 | new Foo() | tst.js:259:11:259:38 | /** @ty ... ng>} */ |
+| tst.js:266:1:266:3 | Bar | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ |
+| tst.js:273:5:273:9 | MyMap | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |
+| tst.js:273:5:273:26 | MyMap = ... n() { } | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |
+| tst.js:275:43:275:45 | map | tst.js:275:1:275:37 | /** @ty ... er>} */ |
+| tst.js:275:43:275:45 | map | tst.js:275:1:275:37 | /** @ty ... er>} */ |
+| tst.js:280:1:280:1 | X | tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ |
+| tst.js:286:1:286:1 | Y | tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ |
+| tst.js:288:28:288:31 | fooX | tst.js:288:1:288:22 | /** @ty ... <X>} */ |
+| tst.js:288:28:288:31 | fooX | tst.js:288:1:288:22 | /** @ty ... <X>} */ |
+| tst.js:289:28:289:31 | fooY | tst.js:289:1:289:22 | /** @ty ... <Y>} */ |
+| tst.js:289:28:289:31 | fooY | tst.js:289:1:289:22 | /** @ty ... <Y>} */ |
+| tst.js:295:1:295:9 | takesFooY | tst.js:294:1:294:28 | /** @pa ... fooY */ |
+| tst.js:304:1:304:1 | A | tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ |
+| tst.js:307:1:307:1 | A | tst.js:306:1:306:19 | /** @param {T} t */ |
+| tst.js:307:1:307:11 | A.prototype | tst.js:306:1:306:19 | /** @param {T} t */ |
+| tst.js:307:1:307:18 | A.prototype.method | tst.js:306:1:306:19 | /** @param {T} t */ |
+| tst.js:307:3:307:11 | prototype | tst.js:306:1:306:19 | /** @param {T} t */ |
+| tst.js:307:13:307:18 | method | tst.js:306:1:306:19 | /** @param {T} t */ |
+| tst.js:313:1:313:1 | B | tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ |
+| tst.js:320:1:320:1 | C | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ |
+| tst.js:326:1:326:3 | Foo | tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ |
+| tst.js:329:1:329:3 | Foo | tst.js:328:1:328:18 | /** @return {T} */ |
+| tst.js:329:1:329:13 | Foo.prototype | tst.js:328:1:328:18 | /** @return {T} */ |
+| tst.js:329:1:329:17 | Foo.prototype.get | tst.js:328:1:328:18 | /** @return {T} */ |
+| tst.js:329:5:329:13 | prototype | tst.js:328:1:328:18 | /** @return {T} */ |
+| tst.js:329:15:329:17 | get | tst.js:328:1:328:18 | /** @return {T} */ |
+| tst.js:336:1:336:7 | FooImpl | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ |
+| tst.js:343:1:343:8 | identity | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ |
+| tst.js:345:27:345:29 | msg | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:345:27:345:69 | msg = i ... world") | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:345:33:345:40 | identity | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:345:33:345:49 | identity("hello") | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:345:33:345:69 | identit ... world") | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:345:42:345:48 | "hello" | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:345:53:345:60 | identity | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:345:53:345:69 | identity("world") | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:345:62:345:68 | "world" | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:346:27:346:29 | sum | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:346:27:346:57 | sum = i ... tity(2) | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:346:33:346:40 | identity | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:346:33:346:43 | identity(2) | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:346:33:346:57 | identit ... tity(2) | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:346:42:346:42 | 2 | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:346:47:346:54 | identity | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:346:47:346:57 | identity(2) | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:346:56:346:56 | 2 | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:347:27:347:29 | sum | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:347:27:347:59 | sum = i ... ty("2") | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:347:33:347:40 | identity | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:347:33:347:43 | identity(2) | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:347:33:347:59 | identit ... ty("2") | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:347:42:347:42 | 2 | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:347:47:347:54 | identity | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:347:47:347:59 | identity("2") | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:347:56:347:58 | "2" | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:349:37:349:51 | string_or_undef | tst.js:349:1:349:31 | /** @ty ... ned} */ |
+| tst.js:349:37:349:51 | string_or_undef | tst.js:349:1:349:31 | /** @ty ... ned} */ |
+| tst.js:366:3:366:15 | classicMethod | tst.js:363:3:365:5 | /**\\n    ... p\\n   */ |
+| tst.js:371:3:371:13 | fancyMethod | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |
+| tst.js:378:3:378:13 | constructor | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |
+| tst.js:383:3:383:13 | classMethod | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |
 test_JSDocRecordTypeExpr
 | tst.js:223:12:223:36 | {myNum: number, myObject} | myNum | number |
 | tst.js:223:12:223:36 | {myNum: number, myObject} | myObject | (none) |
