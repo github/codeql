@@ -138,7 +138,6 @@ test_OtherExpr_getDocumentation
 | tst.js:55:1:55:16 | project.TriState | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
 | tst.js:55:9:55:16 | TriState | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
 | tst.js:55:20:59:1 | {\\n  TRU ... BE: 0\\n} | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
-| tst.js:57:11:57:11 | 1 | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
 | tst.js:62:1:62:3 | foo | tst.js:61:1:61:14 | /** @export */ |
 | tst.js:62:1:62:17 | foo.MyPublicClass | tst.js:61:1:61:14 | /** @export */ |
 | tst.js:62:1:62:27 | foo.MyP ... ototype | tst.js:61:1:61:14 | /** @export */ |
@@ -194,9 +193,6 @@ test_OtherExpr_getDocumentation
 | tst.js:158:1:158:14 | this.handlers_ | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
 | tst.js:158:6:158:14 | handlers_ | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
 | tst.js:158:18:158:24 | [1,2,3] | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
-| tst.js:158:19:158:19 | 1 | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
-| tst.js:158:21:158:21 | 2 | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
-| tst.js:158:23:158:23 | 3 | tst.js:153:1:157:3 | /**\\n *  ... ate\\n */ |
 | tst.js:166:1:166:4 | goog | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
 | tst.js:166:1:166:7 | goog.ui | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
 | tst.js:166:1:166:17 | goog.ui.Component | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
@@ -252,7 +248,6 @@ test_OtherExpr_getDocumentation
 | tst.js:258:34:258:36 | foo | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
 | tst.js:258:34:258:48 | foo = new Foo() | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
 | tst.js:258:40:258:48 | new Foo() | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
-| tst.js:258:44:258:46 | Foo | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
 | tst.js:259:40:259:50 | (new Foo()) | tst.js:259:11:259:38 | /** @ty ... ng>} */ |
 | tst.js:259:41:259:49 | new Foo() | tst.js:259:11:259:38 | /** @ty ... ng>} */ |
 | tst.js:266:1:266:3 | Bar | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ |
@@ -285,31 +280,13 @@ test_OtherExpr_getDocumentation
 | tst.js:343:1:343:8 | identity | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ |
 | tst.js:345:27:345:29 | msg | tst.js:345:1:345:21 | /** @ty ... ing} */ |
 | tst.js:345:27:345:69 | msg = i ... world") | tst.js:345:1:345:21 | /** @ty ... ing} */ |
-| tst.js:345:33:345:40 | identity | tst.js:345:1:345:21 | /** @ty ... ing} */ |
-| tst.js:345:33:345:49 | identity("hello") | tst.js:345:1:345:21 | /** @ty ... ing} */ |
 | tst.js:345:33:345:69 | identit ... world") | tst.js:345:1:345:21 | /** @ty ... ing} */ |
-| tst.js:345:42:345:48 | "hello" | tst.js:345:1:345:21 | /** @ty ... ing} */ |
-| tst.js:345:53:345:60 | identity | tst.js:345:1:345:21 | /** @ty ... ing} */ |
-| tst.js:345:53:345:69 | identity("world") | tst.js:345:1:345:21 | /** @ty ... ing} */ |
-| tst.js:345:62:345:68 | "world" | tst.js:345:1:345:21 | /** @ty ... ing} */ |
 | tst.js:346:27:346:29 | sum | tst.js:346:1:346:21 | /** @ty ... ber} */ |
 | tst.js:346:27:346:57 | sum = i ... tity(2) | tst.js:346:1:346:21 | /** @ty ... ber} */ |
-| tst.js:346:33:346:40 | identity | tst.js:346:1:346:21 | /** @ty ... ber} */ |
-| tst.js:346:33:346:43 | identity(2) | tst.js:346:1:346:21 | /** @ty ... ber} */ |
 | tst.js:346:33:346:57 | identit ... tity(2) | tst.js:346:1:346:21 | /** @ty ... ber} */ |
-| tst.js:346:42:346:42 | 2 | tst.js:346:1:346:21 | /** @ty ... ber} */ |
-| tst.js:346:47:346:54 | identity | tst.js:346:1:346:21 | /** @ty ... ber} */ |
-| tst.js:346:47:346:57 | identity(2) | tst.js:346:1:346:21 | /** @ty ... ber} */ |
-| tst.js:346:56:346:56 | 2 | tst.js:346:1:346:21 | /** @ty ... ber} */ |
 | tst.js:347:27:347:29 | sum | tst.js:347:1:347:21 | /** @ty ... ber} */ |
 | tst.js:347:27:347:59 | sum = i ... ty("2") | tst.js:347:1:347:21 | /** @ty ... ber} */ |
-| tst.js:347:33:347:40 | identity | tst.js:347:1:347:21 | /** @ty ... ber} */ |
-| tst.js:347:33:347:43 | identity(2) | tst.js:347:1:347:21 | /** @ty ... ber} */ |
 | tst.js:347:33:347:59 | identit ... ty("2") | tst.js:347:1:347:21 | /** @ty ... ber} */ |
-| tst.js:347:42:347:42 | 2 | tst.js:347:1:347:21 | /** @ty ... ber} */ |
-| tst.js:347:47:347:54 | identity | tst.js:347:1:347:21 | /** @ty ... ber} */ |
-| tst.js:347:47:347:59 | identity("2") | tst.js:347:1:347:21 | /** @ty ... ber} */ |
-| tst.js:347:56:347:58 | "2" | tst.js:347:1:347:21 | /** @ty ... ber} */ |
 | tst.js:349:37:349:51 | string_or_undef | tst.js:349:1:349:31 | /** @ty ... ned} */ |
 | tst.js:349:37:349:51 | string_or_undef | tst.js:349:1:349:31 | /** @ty ... ned} */ |
 | tst.js:366:3:366:15 | classicMethod | tst.js:363:3:365:5 | /**\\n    ... p\\n   */ |
