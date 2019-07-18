@@ -173,16 +173,6 @@ private predicate usedAsCondition(Expr expr) {
   )
 }
 
-// TODO: Should be enough to translate loads only if they are accesses for now
-///**
-// * Holds if `expr` has an lvalue-to-rvalue conversion that should be ignored
-// * when generating IR. This occurs for conversion from an lvalue of function type
-// * to an rvalue of function pointer type. The conversion is represented in the
-// * AST as an lvalue-to-rvalue conversion, but the IR represents both a function
-// * lvalue and a function pointer prvalue the same.
-// */
-predicate ignoreLoad(Expr expr) { not expr instanceof Access }
-
 newtype TTranslatedElement =
   // An expression that is not being consumed as a condition
   TTranslatedValueExpr(Expr expr) {
@@ -193,13 +183,7 @@ newtype TTranslatedElement =
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) {
-    not ignoreExpr(expr) and
-    // TODO: Should be enough to translate loads only if they are accesses for now
-    not ignoreLoad(expr)
-    //    not isNativeCondition(expr) and
-    //    not isFlexibleCondition(expr) and
-    //    expr.hasLValueToRValueConversion() and
-    //    not ignoreLoad(expr)
+    expr instanceof AssignableRead
   } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {

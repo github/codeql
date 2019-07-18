@@ -16,3 +16,7 @@ import semmle.code.csharp.ir.PrintIR
 //from Instruction i1, Instruction i2
 //where i1 = i2.getASuccessor() and i1.getAST().fromSource()
 //select "Instruction '" + i1 + "' successor to '" + i2 + "'"
+
+//from IRBlock bl, Instruction instr
+//where instr.getBlock() = bl
+//select bl, instr

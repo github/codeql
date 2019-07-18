@@ -93,13 +93,12 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
     result = expr.toString()
   }
 
+  /**
+   * All exprs produce a final value, apart from reads. They first need an access,
+   * then a load.
+   */
   override final predicate producesExprResult() {
-    // If there's no load, then this is the only TranslatedExpr for this
-    // expression.
-    // not expr.hasLValueToRValueConversion() or
-    // If we're supposed to ignore the load on this expression, then this
-    // is the only TranslatedExpr.
-    ignoreLoad(expr)
+    not (expr instanceof AssignableRead)
   }
 
   /**
@@ -110,18 +109,11 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
    * predicate because all of the subclass predicates that call it require a
    * `boolean` value.
    */
-  final boolean isResultGLValue() {
-//    if(
-//      expr.hasValue()
-////      expr.Category() or
-////      // If this TranslatedExpr doesn't produce the result, then it must represent
-////      // a glvalue that is then loaded by a TranslatedLoad.
-////      not producesExprResult()
-//    ) then
-//      result = true
-//    else
-//      result = false
-    result = false
+  final boolean isResultLValue() {
+    if(not producesExprResult()) then
+      result = true
+    else
+      result = false
   }
 }
 
@@ -158,7 +150,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       ) and
       opcode instanceof Opcode::Constant and
       resultType = getResultType() and
-      isLValue = isResultGLValue()
+      isLValue = isResultLValue()
     ) or
     (
       (
@@ -167,13 +159,13 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       ) and
       opcode instanceof Opcode::Store and
       resultType = getResultType() and
-      isLValue = isResultGLValue()
+      isLValue = isResultLValue()
     ) or
     (
       tag = ConditionValueResultLoadTag() and
       opcode instanceof Opcode::Load and
       resultType = getResultType() and
-      isLValue = isResultGLValue()
+      isLValue = isResultLValue()
     )
   }
 
@@ -327,8 +319,7 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     tag = LoadTag() and
     opcode instanceof Opcode::Load and
     resultType = expr.getType() and
-    // TODO: FIX LVALUE RVALUE STUFF
-    if expr.hasValue() then
+    if not producesExprResult() then
       isLValue = true
     else
       isLValue = false
@@ -1038,7 +1029,7 @@ abstract class TranslatedSingleInstructionExpr extends
     opcode = getOpcode() and
     tag = OnlyInstructionTag() and
     resultType = getResultType() and
-    isLValue = isResultGLValue()
+    isLValue = isResultLValue()
   }
 
   override final Instruction getResult() {
@@ -1131,7 +1122,7 @@ abstract class TranslatedSingleInstructionConversion extends TranslatedConversio
     tag = OnlyInstructionTag() and
     opcode = getOpcode() and
     resultType = getResultType() and
-    isLValue = isResultGLValue()
+    isLValue = isResultLValue()
   }
 
   override Instruction getResult() {
@@ -2023,7 +2014,7 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
         tag = ConditionValueResultLoadTag() and
         opcode instanceof Opcode::Load and
         resultType = getResultType() and
-        isLValue = isResultGLValue()
+        isLValue = isResultLValue()
       )
     )
   }
@@ -2389,7 +2380,7 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr,
 //    tag = OnlyInstructionTag() and
 //    opcode = getOpcode() and
 //    resultType = getResultType() and
-//    isLValue = isResultGLValue()
+//    isLValue = isResultLValue()
 //  }
 //
 //  override final Instruction getInstructionOperand(InstructionTag tag,

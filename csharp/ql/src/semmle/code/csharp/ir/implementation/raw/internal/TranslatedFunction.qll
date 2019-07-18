@@ -156,13 +156,17 @@ class TranslatedFunction extends TranslatedElement,
       (
         tag = UnmodeledDefinitionTag() and
         opcode instanceof Opcode::UnmodeledDefinition and
-        resultType instanceof VoidType and
+        // TODO: UnknownType seems to break it.
+        //       For now, in the context of C#, ObjectType seems sensible.
+        resultType instanceof ObjectType and
         isLValue = false
       ) or
       (
         tag = AliasedDefinitionTag() and
         opcode instanceof Opcode::AliasedDefinition and
-        resultType instanceof VoidType and
+        // TODO: UnknownType seems to break it.
+        //       For now, in the context of C#, ObjectType seems sensible.
+        resultType instanceof ObjectType and
         isLValue = false
       ) or
       (
@@ -275,7 +279,10 @@ class TranslatedFunction extends TranslatedElement,
    * statement. In C#, this should be the instruction which generates `VariableAddress[#return]`.
    */
   final Instruction getReturnSuccessorInstruction() {
-    result = getInstruction(ReturnValueAddressTag())
+      if getReturnType() instanceof VoidType then
+        result = getInstruction(ReturnTag())
+      else
+        result = getInstruction(ReturnValueAddressTag())
   }
 
   /**
