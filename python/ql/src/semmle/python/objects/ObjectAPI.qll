@@ -78,14 +78,6 @@ class Value extends TObject {
         this.(ObjectInternal).isBuiltin()
     }
 
-    /** Holds if this value represents an entity that is inferred to exist,
-     * but missing from the database.
-     * Most commonly, this is a module that is imported, but wasn't present during extraction.
-     */
-    predicate isMissing() {
-        this.(ObjectInternal).isMissing()
-    }
-
     predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
         this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
         or
