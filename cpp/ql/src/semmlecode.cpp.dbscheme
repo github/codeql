@@ -1579,6 +1579,7 @@ lambda_capture(
     unique int id: @lambdacapture,
     int lambda: @lambdaexpr ref,
     int index: int ref,
+    int field: @membervariable ref,
     boolean captured_by_reference: boolean ref,
     boolean is_implicit: boolean ref,
     int location: @location_default ref
