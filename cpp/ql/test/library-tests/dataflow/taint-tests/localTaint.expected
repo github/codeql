@@ -1,3 +1,29 @@
+| stl.cpp:63:12:63:17 | call to source | stl.cpp:67:7:67:7 | a |  |
+| stl.cpp:64:16:64:21 | call to basic_string | stl.cpp:68:7:68:7 | b |  |
+| stl.cpp:64:16:64:21 | call to basic_string | stl.cpp:70:7:70:7 | b |  |
+| stl.cpp:65:16:65:24 | call to basic_string | stl.cpp:69:7:69:7 | c |  |
+| stl.cpp:65:16:65:24 | call to basic_string | stl.cpp:71:7:71:7 | c |  |
+| stl.cpp:76:20:76:22 | call to basic_stringstream | stl.cpp:79:2:79:4 | ss1 |  |
+| stl.cpp:76:20:76:22 | call to basic_stringstream | stl.cpp:84:7:84:9 | ss1 |  |
+| stl.cpp:76:20:76:22 | call to basic_stringstream | stl.cpp:88:7:88:9 | ss1 |  |
+| stl.cpp:76:25:76:27 | call to basic_stringstream | stl.cpp:80:2:80:4 | ss2 |  |
+| stl.cpp:76:25:76:27 | call to basic_stringstream | stl.cpp:85:7:85:9 | ss2 |  |
+| stl.cpp:76:25:76:27 | call to basic_stringstream | stl.cpp:89:7:89:9 | ss2 |  |
+| stl.cpp:76:30:76:32 | call to basic_stringstream | stl.cpp:81:2:81:4 | ss3 |  |
+| stl.cpp:76:30:76:32 | call to basic_stringstream | stl.cpp:86:7:86:9 | ss3 |  |
+| stl.cpp:76:30:76:32 | call to basic_stringstream | stl.cpp:90:7:90:9 | ss3 |  |
+| stl.cpp:76:35:76:37 | call to basic_stringstream | stl.cpp:82:2:82:4 | ss4 |  |
+| stl.cpp:76:35:76:37 | call to basic_stringstream | stl.cpp:87:7:87:9 | ss4 |  |
+| stl.cpp:76:35:76:37 | call to basic_stringstream | stl.cpp:91:7:91:9 | ss4 |  |
+| stl.cpp:77:16:77:24 | call to basic_string | stl.cpp:82:9:82:9 | t |  |
+| stl.cpp:79:2:79:4 | ref arg ss1 | stl.cpp:84:7:84:9 | ss1 |  |
+| stl.cpp:79:2:79:4 | ref arg ss1 | stl.cpp:88:7:88:9 | ss1 |  |
+| stl.cpp:80:2:80:4 | ref arg ss2 | stl.cpp:85:7:85:9 | ss2 |  |
+| stl.cpp:80:2:80:4 | ref arg ss2 | stl.cpp:89:7:89:9 | ss2 |  |
+| stl.cpp:81:2:81:4 | ref arg ss3 | stl.cpp:86:7:86:9 | ss3 |  |
+| stl.cpp:81:2:81:4 | ref arg ss3 | stl.cpp:90:7:90:9 | ss3 |  |
+| stl.cpp:82:2:82:4 | ref arg ss4 | stl.cpp:87:7:87:9 | ss4 |  |
+| stl.cpp:82:2:82:4 | ref arg ss4 | stl.cpp:91:7:91:9 | ss4 |  |
 | taint.cpp:4:27:4:33 | source1 | taint.cpp:6:13:6:19 | source1 |  |
 | taint.cpp:4:40:4:45 | clean1 | taint.cpp:5:8:5:13 | clean1 |  |
 | taint.cpp:4:40:4:45 | clean1 | taint.cpp:6:3:6:8 | clean1 |  |
