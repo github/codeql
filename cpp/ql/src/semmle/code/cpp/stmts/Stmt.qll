@@ -1924,7 +1924,7 @@ class VlaDimensionStmt extends Stmt, @stmt_set_vla_size {
 class VlaDeclStmt extends Stmt, @stmt_vla_decl {
   override string toString() { result = "VLA declaration" }
   
-  override string getCanonicalQLClass() { result = "VlaDeclStmtlll;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;" }
+  override string getCanonicalQLClass() { result = "VlaDeclStmt" }
 
   /**
    * Gets the number of VLA dimension statements in this VLA

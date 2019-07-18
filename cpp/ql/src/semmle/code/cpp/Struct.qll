@@ -23,7 +23,8 @@ class LocalStruct extends Struct {
     isLocal()
   }
 
-  override string getCanonicalQLClass() { result = "LocalStruct" }
+  override string getCanonicalQLClass() 
+    { not this instanceof LocalUnion and result = "LocalStruct" }
 }
 
 /**

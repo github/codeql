@@ -11,6 +11,8 @@ class Macro extends PreprocessorDirective, @ppd_define {
    */
   override string getHead() { preproctext(underlyingElement(this),result,_) }
 
+  override string getCanonicalQLClass() { result = "Macro" }
+
   /**
    * Gets the body of this macro. For example, `(((x)>(y))?(x):(y))` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.
@@ -275,6 +277,8 @@ deprecated class MacroInvocationExpr extends Expr {
     exists(MacroInvocation i | this = i.getExpr())
   }
 
+  override string getCanonicalQLClass() { result = "MacroInvocationExpr" }
+
   /**
    * Gets the macro invocation of which this is the top-level expression.
    */
@@ -300,6 +304,8 @@ deprecated class MacroInvocationStmt extends Stmt {
   MacroInvocationStmt() {
     exists(MacroInvocation i | this = i.getStmt())
   }
+
+  override string getCanonicalQLClass() { result = "MacroInvocationStmt" }
 
   /**
    * Gets the macro invocation of which this is the top-level statement.

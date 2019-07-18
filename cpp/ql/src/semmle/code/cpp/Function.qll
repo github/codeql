@@ -723,7 +723,9 @@ class MemberFunction extends Function {
   }
 
   override string getCanonicalQLClass() 
-    { not this instanceof Operator and result = "MemberFunction" }
+    { not this instanceof CopyAssignmentOperator and 
+      not this instanceof MoveAssignmentOperator and 
+      result = "MemberFunction" }
 
   /**
    * Gets the number of parameters of this function, including any implicit
@@ -864,7 +866,8 @@ class ConversionConstructor extends Constructor, ImplicitConversionFunction {
     and not(this instanceof CopyConstructor)
   }
 
-  override string getCanonicalQLClass() { result = "ConversionConstructor" }
+  override string getCanonicalQLClass() 
+    { not this instanceof MoveConstructor and result = "ConversionConstructor" }
   
   /** Gets the type this `ConversionConstructor` takes as input. */
   override Type getSourceType() { result = this.getParameter(0).getType() }
@@ -1046,7 +1049,8 @@ class Operator extends Function {
 
   Operator() { functions(underlyingElement(this),_,5) }
 
-  override string getCanonicalQLClass() { result = "Operator" }
+  override string getCanonicalQLClass() 
+    { not this instanceof MemberFunction and result = "Operator" }
 }
 
 /**

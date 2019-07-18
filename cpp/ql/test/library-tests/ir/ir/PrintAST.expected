@@ -161,7 +161,7 @@ bad_asts.cpp:
 #   19|           ValueCategory = prvalue
 #   19|   body: [Block] { ... }
 #   19|     0: [ReturnStmt] return ...
-#   19| [ConversionConstructor,MoveConstructor] void Bad::Point::Point(Bad::Point&&)
+#   19| [MoveConstructor] void Bad::Point::Point(Bad::Point&&)
 #   19|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] Point &&
@@ -3911,7 +3911,7 @@ ir.cpp:
 #  599|   params: 
 #  599|     0: [Parameter] p#0
 #  599|         Type = [LValueReferenceType] const String &
-#  600| [ConversionConstructor,MoveConstructor] void String::String(String&&)
+#  600| [MoveConstructor] void String::String(String&&)
 #  600|   params: 
 #  600|     0: [Parameter] p#0
 #  600|         Type = [RValueReferenceType] String &&
@@ -4037,7 +4037,7 @@ ir.cpp:
 #  628|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const C &
-#  628| [ConversionConstructor,MoveConstructor] void C::C(C&&)
+#  628| [MoveConstructor] void C::C(C&&)
 #  628|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] C &&
@@ -5722,7 +5722,7 @@ ir.cpp:
 #  846|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const PolymorphicDerived &
-#  846| [ConversionConstructor,MoveConstructor] void PolymorphicDerived::PolymorphicDerived(PolymorphicDerived&&)
+#  846| [MoveConstructor] void PolymorphicDerived::PolymorphicDerived(PolymorphicDerived&&)
 #  846|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] PolymorphicDerived &&
@@ -6248,21 +6248,21 @@ ir.cpp:
 #  924|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] SizedDealloc &&
-#  926| [Operator] void* SizedDealloc::operator new(size_t)
+#  926| [MemberFunction] void* SizedDealloc::operator new(size_t)
 #  926|   params: 
 #  926|     0: [Parameter] p#0
 #  926|         Type = [Size_t,TypedefType] size_t
-#  927| [Operator] void* SizedDealloc::operator new[](size_t)
+#  927| [MemberFunction] void* SizedDealloc::operator new[](size_t)
 #  927|   params: 
 #  927|     0: [Parameter] p#0
 #  927|         Type = [Size_t,TypedefType] size_t
-#  928| [Operator] void SizedDealloc::operator delete(void*, size_t)
+#  928| [MemberFunction] void SizedDealloc::operator delete(void*, size_t)
 #  928|   params: 
 #  928|     0: [Parameter] p#0
 #  928|         Type = [VoidPointerType] void *
 #  928|     1: [Parameter] p#1
 #  928|         Type = [Size_t,TypedefType] size_t
-#  929| [Operator] void SizedDealloc::operator delete[](void*, size_t)
+#  929| [MemberFunction] void SizedDealloc::operator delete[](void*, size_t)
 #  929|   params: 
 #  929|     0: [Parameter] p#0
 #  929|         Type = [VoidPointerType] void *
@@ -6288,7 +6288,7 @@ ir.cpp:
 #  936|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const DefaultCtorWithDefaultParam &
-#  936| [ConversionConstructor,MoveConstructor] void DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(DefaultCtorWithDefaultParam&&)
+#  936| [MoveConstructor] void DefaultCtorWithDefaultParam::DefaultCtorWithDefaultParam(DefaultCtorWithDefaultParam&&)
 #  936|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] DefaultCtorWithDefaultParam &&
@@ -6885,7 +6885,7 @@ ir.cpp:
 # 1029|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1029, col. 12 &
-# 1029| [ConversionConstructor,MoveConstructor] void (lambda [] type at line 1029, col. 12)::(constructor)((lambda [] type at line 1029, col. 12)&&)
+# 1029| [MoveConstructor] void (lambda [] type at line 1029, col. 12)::(constructor)((lambda [] type at line 1029, col. 12)&&)
 # 1029|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1029, col. 12 &&
@@ -6896,7 +6896,7 @@ ir.cpp:
 # 1029|   params: 
 # 1029| [MemberFunction] void (lambda [] type at line 1029, col. 12)::_FUN()
 # 1029|   params: 
-# 1029| [ConstMemberFunction,Operator] void (lambda [] type at line 1029, col. 12)::operator()() const
+# 1029| [ConstMemberFunction] void (lambda [] type at line 1029, col. 12)::operator()() const
 # 1029|   params: 
 # 1029|   body: [Block] { ... }
 # 1029|     0: [ReturnStmt] return ...
@@ -7230,7 +7230,7 @@ ir.cpp:
 # 1032|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1032, col. 23 &
-# 1032| [ConversionConstructor,MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)&&)
+# 1032| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)&&)
 # 1032|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1032, col. 23 &&
@@ -7243,7 +7243,7 @@ ir.cpp:
 # 1032|   params: 
 # 1032|     0: [Parameter] f
 # 1032|         Type = [FloatType] float
-# 1032| [ConstMemberFunction,Operator] char (void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)::operator()(float) const
+# 1032| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1032, col. 23)::operator()(float) const
 # 1032|   params: 
 # 1032|     0: [Parameter] f
 # 1032|         Type = [FloatType] float
@@ -7268,7 +7268,7 @@ ir.cpp:
 # 1034|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1034, col. 21 &
-# 1034| [ConversionConstructor,MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)&&)
+# 1034| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)&&)
 # 1034|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1034, col. 21 &&
@@ -7289,7 +7289,7 @@ ir.cpp:
 # 1034|     0: [ReturnStmt] return ...
 # 1034| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)::(constructor)()
 # 1034|   params: 
-# 1034| [ConstMemberFunction,Operator] char (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)::operator()(float) const
+# 1034| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1034, col. 21)::operator()(float) const
 # 1034|   params: 
 # 1034|     0: [Parameter] f
 # 1034|         Type = [FloatType] float
@@ -7327,7 +7327,7 @@ ir.cpp:
 # 1036|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1036, col. 21 &
-# 1036| [ConversionConstructor,MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)&&)
+# 1036| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)&&)
 # 1036|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1036, col. 21 &&
@@ -7362,7 +7362,7 @@ ir.cpp:
 # 1036|         -1: [FieldAccess] s
 # 1036|             Type = [SpecifiedType] const String
 # 1036|             ValueCategory = lvalue
-# 1036| [ConstMemberFunction,Operator] char (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)::operator()(float) const
+# 1036| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)::operator()(float) const
 # 1036|   params: 
 # 1036|     0: [Parameter] f
 # 1036|         Type = [FloatType] float
@@ -7394,7 +7394,7 @@ ir.cpp:
 # 1038|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1038, col. 30 &
-# 1038| [ConversionConstructor,MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)&&)
+# 1038| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)&&)
 # 1038|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1038, col. 30 &&
@@ -7409,7 +7409,7 @@ ir.cpp:
 # 1038|     0: [ReturnStmt] return ...
 # 1038| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)::(constructor)()
 # 1038|   params: 
-# 1038| [ConstMemberFunction,Operator] char (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)::operator()(float) const
+# 1038| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1038, col. 30)::operator()(float) const
 # 1038|   params: 
 # 1038|     0: [Parameter] f
 # 1038|         Type = [FloatType] float
@@ -7442,7 +7442,7 @@ ir.cpp:
 # 1040|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1040, col. 30 &
-# 1040| [ConversionConstructor,MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)&&)
+# 1040| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)&&)
 # 1040|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1040, col. 30 &&
@@ -7471,7 +7471,7 @@ ir.cpp:
 # 1040|         -1: [FieldAccess] s
 # 1040|             Type = [SpecifiedType] const String
 # 1040|             ValueCategory = lvalue
-# 1040| [ConstMemberFunction,Operator] char (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::operator()(float) const
+# 1040| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::operator()(float) const
 # 1040|   params: 
 # 1040|     0: [Parameter] f
 # 1040|         Type = [FloatType] float
@@ -7501,7 +7501,7 @@ ir.cpp:
 # 1042|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1042, col. 32 &
-# 1042| [ConversionConstructor,MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)&&)
+# 1042| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)&&)
 # 1042|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1042, col. 32 &&
@@ -7522,7 +7522,7 @@ ir.cpp:
 # 1042|     0: [ReturnStmt] return ...
 # 1042| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)::(constructor)()
 # 1042|   params: 
-# 1042| [ConstMemberFunction,Operator] char (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)::operator()(float) const
+# 1042| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)::operator()(float) const
 # 1042|   params: 
 # 1042|     0: [Parameter] f
 # 1042|         Type = [FloatType] float
@@ -7557,7 +7557,7 @@ ir.cpp:
 # 1045|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const lambda [] type at line 1045, col. 23 &
-# 1045| [ConversionConstructor,MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)&&)
+# 1045| [MoveConstructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)::(constructor)((void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)&&)
 # 1045|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] lambda [] type at line 1045, col. 23 &&
@@ -7590,7 +7590,7 @@ ir.cpp:
 # 1045|     0: [ReturnStmt] return ...
 # 1045| [Constructor] void (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)::(constructor)()
 # 1045|   params: 
-# 1045| [ConstMemberFunction,Operator] char (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)::operator()(float) const
+# 1045| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1045, col. 23)::operator()(float) const
 # 1045|   params: 
 # 1045|     0: [Parameter] f
 # 1045|         Type = [FloatType] float
@@ -7654,19 +7654,19 @@ ir.cpp:
 # 1051|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] iterator &&
-# 1053| [Operator] vector<T>::iterator& vector<T>::iterator::operator++()
+# 1053| [MemberFunction] vector<T>::iterator& vector<T>::iterator::operator++()
 # 1053|   params: 
-# 1053| [Operator] vector<int>::iterator& vector<int>::iterator::operator++()
+# 1053| [MemberFunction] vector<int>::iterator& vector<int>::iterator::operator++()
 # 1053|   params: 
-# 1054| [ConstMemberFunction,Operator] T& vector<T>::iterator::operator*() const
+# 1054| [ConstMemberFunction] T& vector<T>::iterator::operator*() const
 # 1054|   params: 
-# 1054| [ConstMemberFunction,Operator] int& vector<int>::iterator::operator*() const
+# 1054| [ConstMemberFunction] int& vector<int>::iterator::operator*() const
 # 1054|   params: 
-# 1056| [ConstMemberFunction,Operator] bool vector<T>::iterator::operator!=(vector<T>::iterator) const
+# 1056| [ConstMemberFunction] bool vector<T>::iterator::operator!=(vector<T>::iterator) const
 # 1056|   params: 
 # 1056|     0: [Parameter] right
-# 1056|         Type = [NestedClass] iterator
-# 1056| [ConstMemberFunction,Operator] bool vector<int>::iterator::operator!=(vector<int>::iterator) const
+# 1056|         Type = [NestedClass,TemplateClass] iterator
+# 1056| [ConstMemberFunction] bool vector<int>::iterator::operator!=(vector<int>::iterator) const
 # 1056|   params: 
 # 1056|     0: [Parameter] right
 # 1056|         Type = [NestedStruct] iterator

@@ -824,7 +824,8 @@ class LocalClass extends Class {
     isLocal()
   }
 
-  override string getCanonicalQLClass() { result = "LocalClass" }
+  override string getCanonicalQLClass()
+    { not this instanceof LocalStruct and result = "LocalClass" }
 
   override Function getEnclosingAccessHolder() {
     result = this.getEnclosingFunction()
@@ -861,6 +862,8 @@ class AbstractClass extends Class {
   AbstractClass() {
     exists(PureVirtualFunction f| this.getAMemberFunction() = f)
   }
+
+  override string getCanonicalQLClass() { result = "AbstractClass" }
 }
 
 /**
@@ -873,6 +876,8 @@ class TemplateClass extends Class {
     result.isConstructedFrom(this) and
     exists(result.getATemplateArgument())
   }
+
+  override string getCanonicalQLClass() { result = "TemplateClass" }
 }
 
 /**
@@ -884,6 +889,8 @@ class ClassTemplateInstantiation extends Class {
   ClassTemplateInstantiation() {
     tc.getAnInstantiation() = this
   }
+
+  override string getCanonicalQLClass() { result = "ClassTemplateInstantiation" }
 
   /**
    * Gets the class template from which this instantiation was instantiated.
@@ -916,6 +923,8 @@ abstract class ClassTemplateSpecialization extends Class {
     and count(TemplateParameter tp | tp = result.getATemplateArgument()) =
         count(int i | exists(result.getTemplateArgument(i)))
   }
+
+  override string getCanonicalQLClass() { result = "ClassTemplateSpecialization" }
 }
 
 /**
@@ -933,6 +942,8 @@ class FullClassTemplateSpecialization extends ClassTemplateSpecialization {
     // This class is not an instantiation of a class template.
     and not this instanceof ClassTemplateInstantiation
   }
+
+  override string getCanonicalQLClass() { result = "FullClassTemplateSpecialization" }
 }
 
 /**
@@ -957,6 +968,8 @@ class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
     and count(TemplateParameter tp | tp = getATemplateArgument()) !=
         count(int i | exists(getTemplateArgument(i)))
   }
+
+  override string getCanonicalQLClass() { result = "PartialClassTemplateSpecialization" }
 }
 
 /**
@@ -967,6 +980,8 @@ class Interface extends Class {
   Interface() {
     forex(Declaration m | m.getDeclaringType() = this.getABaseClass*() and not compgenerated(unresolveElement(m)) | m instanceof PureVirtualFunction)
   }
+
+  override string getCanonicalQLClass() { result = "Interface" }
 }
 
 /**
@@ -977,6 +992,8 @@ class VirtualClassDerivation extends ClassDerivation {
   VirtualClassDerivation() {
     hasSpecifier("virtual")
   }
+
+  override string getCanonicalQLClass() { result = "VirtualClassDerivation" }
 }
 
 /**

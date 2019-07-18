@@ -124,7 +124,7 @@ ConstructorCall.cpp:
 #    1|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const C &
-#    1| [ConversionConstructor,MoveConstructor] void C::C(C&&)
+#    1| [MoveConstructor] void C::C(C&&)
 #    1|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] C &&
@@ -147,7 +147,7 @@ ConstructorCall.cpp:
 #    7|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const D &
-#    7| [ConversionConstructor,MoveConstructor] void D::D(D&&)
+#    7| [MoveConstructor] void D::D(D&&)
 #    7|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] D &&
@@ -406,7 +406,7 @@ DynamicCast.cpp:
 #    1|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Base &
-#    1| [ConversionConstructor,MoveConstructor] void Base::Base(Base&&)
+#    1| [MoveConstructor] void Base::Base(Base&&)
 #    1|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] Base &&
@@ -472,7 +472,7 @@ DynamicCast.cpp:
 #    4|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const Derived &
-#    4| [ConversionConstructor,MoveConstructor] void Derived::Derived(Derived&&)
+#    4| [MoveConstructor] void Derived::Derived(Derived&&)
 #    4|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] Derived &&
@@ -757,7 +757,7 @@ Throw.cpp:
 #    2|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const F &
-#    2| [ConversionConstructor,MoveConstructor] void F::F(F&&)
+#    2| [MoveConstructor] void F::F(F&&)
 #    2|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] F &&
@@ -919,7 +919,7 @@ Varargs.c:
 #    9|       0: [VariableDeclarationEntry] definition of args
 #    9|           Type = [TypedefType] va_list
 #   10|     1: [ExprStmt] ExprStmt
-#   10|       0: [BuiltInVarArgsStart] __builtin_va_start
+#   10|       0: [BuiltInVarArgsStart,MacroInvocationExpr] __builtin_va_start
 #   10|           Type = [VoidType] void
 #   10|           ValueCategory = prvalue
 #   10|         0: [ArrayToPointerConversion] array to pointer conversion
@@ -932,7 +932,7 @@ Varargs.c:
 #   10|             Type = [PointerType] const char *
 #   10|             ValueCategory = lvalue
 #   11|     2: [ExprStmt] ExprStmt
-#   11|       0: [BuiltInVarArgsEnd] __builtin_va_end
+#   11|       0: [BuiltInVarArgsEnd,MacroInvocationExpr] __builtin_va_end
 #   11|           Type = [VoidType] void
 #   11|           ValueCategory = prvalue
 #   11|         0: [ArrayToPointerConversion] array to pointer conversion
@@ -942,6 +942,262 @@ Varargs.c:
 #   11|               Type = [TypedefType] va_list
 #   11|               ValueCategory = lvalue
 #   12|     3: [ReturnStmt] return ...
+macro_etc.c:
+#    3| [TopLevelFunction] int bar(int)
+#    3|   params: 
+#    3|     0: [Parameter] i
+#    3|         Type = [IntType] int
+#    3|   body: [Block] { ... }
+#    4|     0: [DeclStmt] declaration
+#    4|       0: [TypeDeclarationEntry] definition of u
+#    4|           Type = [LocalUnion] u
+#    8|       1: [VariableDeclarationEntry] definition of uu
+#    8|           Type = [LocalUnion] u
+#    9|     1: [ExprStmt] ExprStmt
+#    9|       0: [AssignExpr] ... = ...
+#    9|           Type = [IntType] int
+#    9|           ValueCategory = prvalue
+#    9|         0: [FieldAccess] b
+#    9|             Type = [IntType] int
+#    9|             ValueCategory = lvalue
+#    9|           -1: [VariableAccess] uu
+#    9|               Type = [LocalUnion] u
+#    9|               ValueCategory = lvalue
+#    9|         1: [AddExpr] ... + ...
+#    9|             Type = [IntType] int
+#    9|             ValueCategory = prvalue
+#    9|           0: [VariableAccess] i
+#    9|               Type = [IntType] int
+#    9|               ValueCategory = prvalue(load)
+#    9|           1: [FieldAccess] a
+#    9|               Type = [IntType] int
+#    9|               ValueCategory = prvalue(load)
+#    9|             -1: [VariableAccess] uu
+#    9|                 Type = [LocalUnion] u
+#    9|                 ValueCategory = lvalue
+#   10|     2: [ReturnStmt] return ...
+#   10|       0: [AddExpr] ... + ...
+#   10|           Type = [IntType] int
+#   10|           ValueCategory = prvalue
+#   10|         0: [AddExpr] ... + ...
+#   10|             Type = [IntType] int
+#   10|             ValueCategory = prvalue
+#   10|           0: [FieldAccess] b
+#   10|               Type = [IntType] int
+#   10|               ValueCategory = prvalue(load)
+#   10|             -1: [VariableAccess] uu
+#   10|                 Type = [LocalUnion] u
+#   10|                 ValueCategory = lvalue
+#   10|           1: [VariableAccess] i
+#   10|               Type = [IntType] int
+#   10|               ValueCategory = prvalue(load)
+#   10|         1: [Literal] 2
+#   10|             Type = [IntType] int
+#   10|             Value = [Literal] 2
+#   10|             ValueCategory = prvalue
+#   22| [TopLevelFunction] int foo()
+#   22|   params: 
+#   22|   body: [Block] { ... }
+#   23|     0: [DeclStmt] declaration
+#   23|       0: [VariableDeclarationEntry] definition of t
+#   23|           Type = [IntType] int
+#   23|         init: [Initializer] initializer for t
+#   23|           expr: [Literal] 4
+#   23|               Type = [IntType] int
+#   23|               Value = [Literal] 4
+#   23|               ValueCategory = prvalue
+#   24|     1: [DeclStmt] declaration
+#   24|       0: [VariableDeclarationEntry] definition of bp
+#   24|           Type = [FunctionPointerType] ..(*)(..)
+#   25|     2: [DeclStmt] declaration
+#   25|       0: [VariableDeclarationEntry] definition of bt
+#   25|           Type = [CharPointerType] char *
+#   25|       1: [VariableDeclarationEntry] definition of i
+#   25|           Type = [PlainCharType] char
+#   26|     3: [DeclStmt] declaration
+#   26|       0: [VariableDeclarationEntry] definition of arr
+#   26|           Type = [ArrayType] char[]
+#   26|     4: [VlaDimensionStmt] VLA dimension size
+#   26|       0: [VariableAccess] t
+#   26|           Type = [IntType] int
+#   26|           ValueCategory = prvalue(load)
+#   26|     5: [VlaDeclStmt] VLA declaration
+#   27|     6: [ForStmt,MacroInvocationStmt] for(...;...;...) ...
+#   27|       0: [ExprStmt] ExprStmt
+#   27|         0: [AssignExpr] ... = ...
+#   27|             Type = [PlainCharType] char
+#   27|             ValueCategory = prvalue
+#   27|           0: [VariableAccess] i
+#   27|               Type = [PlainCharType] char
+#   27|               ValueCategory = lvalue
+#   27|           1: [CStyleCast,IntegralConversion] (char)...
+#   27|               Conversion = integral conversion
+#   27|               Type = [PlainCharType] char
+#   27|               Value = [CStyleCast,IntegralConversion] 0
+#   27|               ValueCategory = prvalue
+#   27|             expr: [Literal,Zero] 0
+#   27|                 Type = [IntType] int
+#   27|                 Value = [Literal,Zero] 0
+#   27|                 ValueCategory = prvalue
+#   27|       1: [LTExpr] ... < ...
+#   27|           Type = [IntType] int
+#   27|           ValueCategory = prvalue
+#   27|         0: [CStyleCast,IntegralConversion] (int)...
+#   27|             Conversion = integral conversion
+#   27|             Type = [IntType] int
+#   27|             ValueCategory = prvalue
+#   27|           expr: [VariableAccess] i
+#   27|               Type = [PlainCharType] char
+#   27|               ValueCategory = prvalue(load)
+#   27|         1: [Literal] 6
+#   27|             Type = [IntType] int
+#   27|             Value = [Literal] 6
+#   27|             ValueCategory = prvalue
+#   27|       2: [PrefixIncrExpr] ++ ...
+#   27|           Type = [PlainCharType] char
+#   27|           ValueCategory = prvalue
+#   27|         0: [VariableAccess] i
+#   27|             Type = [PlainCharType] char
+#   27|             ValueCategory = lvalue
+#   27|       3: [Block] { ... }
+#   27|         0: [ExprStmt] ExprStmt
+#   27|           0: [AssignAddExpr] ... += ...
+#   27|               Type = [IntType] int
+#   27|               ValueCategory = prvalue
+#   27|             0: [VariableAccess] t
+#   27|                 Type = [IntType] int
+#   27|                 ValueCategory = lvalue
+#   27|             1: [CStyleCast,IntegralConversion] (int)...
+#   27|                 Conversion = integral conversion
+#   27|                 Type = [IntType] int
+#   27|                 ValueCategory = prvalue
+#   27|               expr: [VariableAccess] i
+#   27|                   Type = [PlainCharType] char
+#   27|                   ValueCategory = prvalue(load)
+#   28|     7: [ForStmt,MacroInvocationStmt] for(...;...;...) ...
+#   28|       0: [ExprStmt] ExprStmt
+#   28|         0: [AssignExpr] ... = ...
+#   28|             Type = [PlainCharType] char
+#   28|             ValueCategory = prvalue
+#   28|           0: [VariableAccess] i
+#   28|               Type = [PlainCharType] char
+#   28|               ValueCategory = lvalue
+#   28|           1: [CStyleCast,IntegralConversion] (char)...
+#   28|               Conversion = integral conversion
+#   28|               Type = [PlainCharType] char
+#   28|               Value = [CStyleCast,IntegralConversion] 0
+#   28|               ValueCategory = prvalue
+#   28|             expr: [Literal,Zero] 0
+#   28|                 Type = [IntType] int
+#   28|                 Value = [Literal,Zero] 0
+#   28|                 ValueCategory = prvalue
+#   28|       1: [LTExpr] ... < ...
+#   28|           Type = [IntType] int
+#   28|           ValueCategory = prvalue
+#   28|         0: [CStyleCast,IntegralConversion] (int)...
+#   28|             Conversion = integral conversion
+#   28|             Type = [IntType] int
+#   28|             ValueCategory = prvalue
+#   28|           expr: [VariableAccess] i
+#   28|               Type = [PlainCharType] char
+#   28|               ValueCategory = prvalue(load)
+#   28|         1: [Literal] 6
+#   28|             Type = [IntType] int
+#   28|             Value = [Literal] 6
+#   28|             ValueCategory = prvalue
+#   28|       2: [PrefixIncrExpr] ++ ...
+#   28|           Type = [PlainCharType] char
+#   28|           ValueCategory = prvalue
+#   28|         0: [VariableAccess] i
+#   28|             Type = [PlainCharType] char
+#   28|             ValueCategory = lvalue
+#   28|       3: [Block] { ... }
+#   28|         0: [ExprStmt] ExprStmt
+#   28|           0: [AssignAddExpr] ... += ...
+#   28|               Type = [IntType] int
+#   28|               ValueCategory = prvalue
+#   28|             0: [VariableAccess] t
+#   28|                 Type = [IntType] int
+#   28|                 ValueCategory = lvalue
+#   28|             1: [CStyleCast,IntegralConversion] (int)...
+#   28|                 Conversion = integral conversion
+#   28|                 Type = [IntType] int
+#   28|                 ValueCategory = prvalue
+#   28|               expr: [VariableAccess] i
+#   28|                   Type = [PlainCharType] char
+#   28|                   ValueCategory = prvalue(load)
+#   29|     8: [ExprStmt] ExprStmt
+#   29|       0: [AssignExpr,MacroInvocationExpr] ... = ...
+#   29|           Type = [CharPointerType] char *
+#   29|           ValueCategory = prvalue
+#   29|         0: [VariableAccess] bt
+#   29|             Type = [CharPointerType] char *
+#   29|             ValueCategory = lvalue
+#   29|         1: [ArrayToPointerConversion] array to pointer conversion
+#   29|             Type = [CharPointerType] char *
+#   29|             ValueCategory = prvalue
+#   29|           expr: b
+#   29|               Type = [ArrayType] char[2]
+#   29|               Value = [StringLiteral] "b"
+#   29|               ValueCategory = lvalue
+#   30|     9: [ExprStmt] ExprStmt
+#   30|       0: [AssignExpr] ... = ...
+#   30|           Type = [PlainCharType] char
+#   30|           ValueCategory = prvalue
+#   30|         0: [ArrayExpr] access to array
+#   30|             Type = [PlainCharType] char
+#   30|             ValueCategory = lvalue
+#   30|           0: [ArrayToPointerConversion] array to pointer conversion
+#   30|               Type = [CharPointerType] char *
+#   30|               ValueCategory = prvalue
+#   30|             expr: [VariableAccess] arr
+#   30|                 Type = [ArrayType] char[]
+#   30|                 ValueCategory = lvalue
+#   30|           1: [Literal,Zero] 0
+#   30|               Type = [IntType] int
+#   30|               Value = [Literal,Zero] 0
+#   30|               ValueCategory = prvalue
+#   30|         1: [CStyleCast,IntegralConversion] (char)...
+#   30|             Conversion = integral conversion
+#   30|             Type = [PlainCharType] char
+#   30|             ValueCategory = prvalue
+#   30|           expr: [VariableAccess] t
+#   30|               Type = [IntType] int
+#   30|               ValueCategory = prvalue(load)
+#   31|     10: [ExprStmt] ExprStmt
+#   31|       0: [AssignExpr] ... = ...
+#   31|           Type = [FunctionPointerType] ..(*)(..)
+#   31|           ValueCategory = prvalue
+#   31|         0: [VariableAccess] bp
+#   31|             Type = [FunctionPointerType] ..(*)(..)
+#   31|             ValueCategory = lvalue
+#   31|         1: [FunctionAccess] bar
+#   31|             Type = [FunctionPointerType] ..(*)(..)
+#   31|             ValueCategory = prvalue(load)
+#   32|     11: [ReturnStmt] return ...
+#   32|       0: [AddExpr] ... + ...
+#   32|           Type = [IntType] int
+#   32|           ValueCategory = prvalue
+#   32|         0: [VariableAccess] t
+#   32|             Type = [IntType] int
+#   32|             ValueCategory = prvalue(load)
+#   32|         1: [CStyleCast,IntegralConversion] (int)...
+#   32|             Conversion = integral conversion
+#   32|             Type = [IntType] int
+#   32|             ValueCategory = prvalue
+#   32|           expr: [ArrayExpr] access to array
+#   32|               Type = [PlainCharType] char
+#   32|               ValueCategory = prvalue(load)
+#   32|             0: [ArrayToPointerConversion] array to pointer conversion
+#   32|                 Type = [CharPointerType] char *
+#   32|                 ValueCategory = prvalue
+#   32|               expr: [VariableAccess] arr
+#   32|                   Type = [ArrayType] char[]
+#   32|                   ValueCategory = lvalue
+#   32|             1: [Literal] 1
+#   32|                 Type = [IntType] int
+#   32|                 Value = [Literal] 1
+#   32|                 ValueCategory = prvalue
 union_etc.cpp:
 #    2| [CopyAssignmentOperator] S& S::operator=(S const&)
 #    2|   params: 
