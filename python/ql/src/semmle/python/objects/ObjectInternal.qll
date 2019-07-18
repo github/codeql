@@ -156,7 +156,7 @@ class ObjectInternal extends TObject {
     predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }
 
     /** Holds if this 'object' represents an entity that should be exposed to the legacy points_to API
-     * This should hold for almost objects that do not have an underlying DB object representing their source,
+     * This should hold for almost all objects that do not have an underlying DB object representing their source,
      * for example `super` objects and bound-method. This should not hold for objects that are inferred to exists by
      * an import statements or the like, but which aren't in the database. */
      /* This predicate can be removed when the legacy points_to API is removed. */
