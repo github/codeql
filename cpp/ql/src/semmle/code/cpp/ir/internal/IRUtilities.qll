@@ -32,3 +32,11 @@ Type getVariableType(Variable v) {
     )
   )
 }
+
+predicate hasCaseEdge(SwitchCase switchCase, string minValue, string maxValue) {
+  minValue = switchCase.getExpr().getFullyConverted().getValue() and
+  if exists(switchCase.getEndExpr()) then
+    maxValue = switchCase.getEndExpr().getFullyConverted().getValue()
+  else
+    maxValue = minValue
+}

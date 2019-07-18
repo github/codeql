@@ -1,9 +1,8 @@
 private import internal.IRInternal
 import Instruction
-private import cpp
 
 private newtype TIRFunction =
-  MkIRFunction(Function func) {
+  MkIRFunction(Language::Function func) {
     Construction::functionHasIR(func)
   }
 
@@ -11,7 +10,7 @@ private newtype TIRFunction =
  * Represents the IR for a function.
  */
 class IRFunction extends TIRFunction {
-  Function func;
+  Language::Function func;
 
   IRFunction() {
     this = MkIRFunction(func)
@@ -24,14 +23,14 @@ class IRFunction extends TIRFunction {
   /**
    * Gets the function whose IR is represented.
    */
-  final Function getFunction() {
+  final Language::Function getFunction() {
     result = func
   }
 
   /**
    * Gets the location of the function.
    */
-  final Location getLocation() {
+  final Language::Location getLocation() {
     result = func.getLocation()
   }
 

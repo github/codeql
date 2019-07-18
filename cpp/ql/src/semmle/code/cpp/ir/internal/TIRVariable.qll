@@ -1,25 +1,13 @@
-private import cpp
+private import IRLanguageInternal
 private import semmle.code.cpp.ir.implementation.TempVariableTag
 private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction as Construction
 
 newtype TIRVariable =
-  TIRAutomaticUserVariable(LocalScopeVariable var, Function func) {
-    Construction::functionHasIR(func) and
-    var.getFunction() = func or
-    var.(Parameter).getCatchBlock().getEnclosingFunction() = func
+  TIRUserVariable(Language::Variable var, Language::Type type,
+      Language::Function func) {
+    Construction::hasUserVariable(func, var, type)
   } or
-  TIRStaticUserVariable(Variable var, Function func) {
-    Construction::functionHasIR(func) and
-    (
-      var instanceof GlobalOrNamespaceVariable or
-      var instanceof MemberVariable and not var instanceof Field
-    ) and
-    exists(VariableAccess access |
-      access.getTarget() = var and
-      access.getEnclosingFunction() = func
-    )
-  } or
-  TIRTempVariable(Function func, Locatable ast, TempVariableTag tag, Type type) {
+  TIRTempVariable(Language::Function func, Language::AST ast, TempVariableTag tag,
+      Language::Type type) {
     Construction::hasTempVariable(func, ast, tag, type)
   }
-

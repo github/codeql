@@ -1,4 +1,4 @@
-import cpp
+private import cpp
 import AliasAnalysis
 import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.Print

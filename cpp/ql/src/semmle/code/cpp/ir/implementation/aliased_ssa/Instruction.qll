@@ -3,11 +3,9 @@ import IRFunction
 import IRBlock
 import IRVariable
 import Operand
-private import cpp
 import semmle.code.cpp.ir.implementation.EdgeKind
 import semmle.code.cpp.ir.implementation.MemoryAccessKind
 import semmle.code.cpp.ir.implementation.Opcode
-private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.OperandTag
 
@@ -60,7 +58,7 @@ module InstructionSanity {
       message = "Instruction '" + instr.getOpcode().toString() + "' is missing an expected operand with tag '" +
         tag.toString() + "' in function '$@'." and
       func = instr.getEnclosingIRFunction() and
-      funcText = getIdentityString(func.getFunction())
+      funcText = Language::getIdentityString(func.getFunction())
     )
   }
 
@@ -101,10 +99,10 @@ module InstructionSanity {
   }
 
   query predicate missingOperandType(Operand operand, string message) {
-    exists(Function func |
+    exists(Language::Function func |
       not exists(operand.getType()) and
       func = operand.getUse().getEnclosingFunction() and
-      message = "Operand missing type in function '" + getIdentityString(func) + "'."
+      message = "Operand missing type in function '" + Language::getIdentityString(func) + "'."
     )
   }
 
@@ -135,14 +133,13 @@ module InstructionSanity {
    * Holds if `instr` in `f` is part of a loop even though the AST of `f`
    * contains no element that can cause loops.
    */
-  query predicate unexplainedLoop(Function f, Instruction instr) {
+  query predicate unexplainedLoop(Language::Function f, Instruction instr) {
     exists(IRBlock block |
       instr.getBlock() = block and
       block.getEnclosingFunction() = f and
       block.getASuccessor+() = block
     ) and
-    not exists(Loop l | l.getEnclosingFunction() = f) and
-    not exists(GotoStmt s | s.getEnclosingFunction() = f)
+    not Language::hasPotentialLoop(f)
   }
 
   /**
@@ -201,7 +198,7 @@ module InstructionSanity {
       entry = f.getEntryBlock() and
       entry.getASuccessor+() = block and
       not forwardEdge+(entry, block) and
-      not exists(GotoStmt s | s.getEnclosingFunction() = f.getFunction())
+      not Language::hasGoto(f.getFunction())
     )
   }
 
@@ -209,7 +206,7 @@ module InstructionSanity {
    * Holds if the number of back edges differs between the `Instruction` graph
    * and the `IRBlock` graph.
    */
-  query predicate backEdgeCountMismatch(Function f, int fromInstr, int fromBlock) {
+  query predicate backEdgeCountMismatch(Language::Function f, int fromInstr, int fromBlock) {
     fromInstr = count(Instruction i1, Instruction i2 |
         i1.getEnclosingFunction() = f and i1.getBackEdgeSuccessor(_) = i2
       ) and
@@ -266,7 +263,7 @@ class Instruction extends Construction::TInstruction {
   }
 
   private string getResultPrefix() {
-    if getResultType() instanceof VoidType then
+    if getResultType() instanceof Language::VoidType then
       result = "v"
     else if hasMemoryResult() then
       if isResultModeled() then
@@ -312,7 +309,7 @@ class Instruction extends Construction::TInstruction {
   string getResultTypeString() {
     exists(string valcat |
       valcat = getValueCategoryString(getResultType().toString()) and
-      if (getResultType() instanceof UnknownType and
+      if (getResultType() instanceof Language::UnknownType and
           not isGLValue() and
           exists(getResultSize())) then (
         result = valcat + "[" + getResultSize().toString() + "]"
@@ -379,7 +376,7 @@ class Instruction extends Construction::TInstruction {
   /**
    * Gets the function that contains this instruction.
    */
-  final Function getEnclosingFunction() {
+  final Language::Function getEnclosingFunction() {
     result = getEnclosingIRFunction().getFunction()
   }
 
@@ -393,28 +390,28 @@ class Instruction extends Construction::TInstruction {
   /**
    * Gets the AST that caused this instruction to be generated.
    */
-  final Locatable getAST() {
+  final Language::AST getAST() {
     result = Construction::getInstructionAST(this)
   }
 
   /**
    * Gets the location of the source code for this instruction.
    */
-  final Location getLocation() {
+  final Language::Location getLocation() {
     result = getAST().getLocation()
   }
 
   /**
    * Gets the `Expr` whose result is computed by this instruction, if any.
    */
-  final Expr getConvertedResultExpression() {
+  final Language::Expr getConvertedResultExpression() {
     result = Construction::getInstructionConvertedResultExpression(this) 
   }
   
   /**
    * Gets the unconverted `Expr` whose result is computed by this instruction, if any.
    */
-  final Expr getUnconvertedResultExpression() {
+  final Language::Expr getUnconvertedResultExpression() {
     result = Construction::getInstructionUnconvertedResultExpression(this) 
   }
   
@@ -425,7 +422,7 @@ class Instruction extends Construction::TInstruction {
    * If `isGLValue()` holds, then the result type of this instruction should be
    * thought of as "pointer to `getResultType()`".
    */
-  final Type getResultType() {
+  final Language::Type getResultType() {
     Construction::instructionHasType(this, result, _)
   }
 
@@ -461,11 +458,9 @@ class Instruction extends Construction::TInstruction {
   final int getResultSize() {
     if isGLValue() then (
       // a glvalue is always pointer-sized.
-      exists(NullPointerType nullptr |
-        result = nullptr.getSize()
-      )
+      result = Language::getPointerSize()
     )
-    else if getResultType() instanceof UnknownType then
+    else if getResultType() instanceof Language::UnknownType then
       result = Construction::getInstructionResultSize(this)
     else (
       result = getResultType().getSize()
@@ -616,7 +611,7 @@ class VariableInstruction extends Instruction {
 }
 
 class FieldInstruction extends Instruction {
-  Field field;
+  Language::Field field;
 
   FieldInstruction() {
     field = Construction::getInstructionField(this)
@@ -626,13 +621,13 @@ class FieldInstruction extends Instruction {
     result = field.toString()
   }
 
-  final Field getField() {
+  final Language::Field getField() {
     result = field
   }
 }
 
 class FunctionInstruction extends Instruction {
-  Function funcSymbol;
+  Language::Function funcSymbol;
 
   FunctionInstruction() {
     funcSymbol = Construction::getInstructionFunction(this)
@@ -642,7 +637,7 @@ class FunctionInstruction extends Instruction {
     result = funcSymbol.toString()
   }
 
-  final Function getFunctionSymbol() {
+  final Language::Function getFunctionSymbol() {
     result = funcSymbol
   }
 }
@@ -680,7 +675,7 @@ class InitializeParameterInstruction extends VariableInstruction {
     getOpcode() instanceof Opcode::InitializeParameter
   }
 
-  final Parameter getParameter() {
+  final Language::Parameter getParameter() {
     result = var.(IRUserVariable).getVariable()
   }
 
@@ -738,9 +733,9 @@ class UninitializedInstruction extends VariableInstruction {
   }
 
   /**
-   * Gets the `LocalVariable` that is uninitialized.
+   * Gets the variable that is uninitialized.
    */
-  final LocalVariable getLocalVariable() {
+  final Language::Variable getLocalVariable() {
     result = var.(IRUserVariable).getVariable()
   }
 }
@@ -877,28 +872,28 @@ class ConstantInstruction extends ConstantValueInstruction {
 
 class IntegerConstantInstruction extends ConstantInstruction {
   IntegerConstantInstruction() {
-    getResultType() instanceof IntegralType
+    getResultType() instanceof Language::IntegralType
   }
 }
 
 class FloatConstantInstruction extends ConstantInstruction {
   FloatConstantInstruction() {
-    getResultType() instanceof FloatingPointType
+    getResultType() instanceof Language::FloatingPointType
   }
 }
 
 class StringConstantInstruction extends Instruction {
-  StringLiteral value;
+  Language::StringLiteral value;
 
   StringConstantInstruction() {
     value = Construction::getInstructionStringLiteral(this)
   }
 
   override final string getImmediateString() {
-    result = value.getValueText().replaceAll("\n", " ").replaceAll("\r", "").replaceAll("\t", " ")
+    result = Language::getStringLiteralText(value)
   }
 
-  final StringLiteral getValue() {
+  final Language::StringLiteral getValue() {
     result = value
   }
 }
@@ -1086,8 +1081,8 @@ class ConvertInstruction extends UnaryInstruction {
  * related by inheritance.
  */
 class InheritanceConversionInstruction extends UnaryInstruction {
-  Class baseClass;
-  Class derivedClass;
+  Language::Class baseClass;
+  Language::Class derivedClass;
 
   InheritanceConversionInstruction() {
     Construction::getInstructionInheritance(this, baseClass, derivedClass)
@@ -1102,7 +1097,7 @@ class InheritanceConversionInstruction extends UnaryInstruction {
    * the base and derived classes. This predicate does not hold if the
    * conversion is to an indirect virtual base class.
    */
-  final ClassDerivation getDerivation() {
+  final Language::ClassDerivation getDerivation() {
     result.getBaseClass() = baseClass and result.getDerivedClass() = derivedClass
   }
 
@@ -1111,14 +1106,14 @@ class InheritanceConversionInstruction extends UnaryInstruction {
    * base class of the derived class, or a virtual base class of the
    * derived class.
    */
-  final Class getBaseClass() {
+  final Language::Class getBaseClass() {
     result = baseClass
   }
 
   /**
    * Gets the derived class of the conversion.
    */
-  final Class getDerivedClass() {
+  final Language::Class getDerivedClass() {
     result = derivedClass
   }
 }
@@ -1349,7 +1344,7 @@ class CallInstruction extends Instruction {
   /**
    * Gets the `Function` that the call targets, if this is statically known.
    */
-  final Function getStaticCallTarget() {
+  final Language::Function getStaticCallTarget() {
     result = getCallTarget().(FunctionInstruction).getFunctionSymbol()
   }
 
@@ -1591,7 +1586,7 @@ class CatchInstruction extends Instruction {
  * An instruction that catches an exception of a specific type.
  */
 class CatchByTypeInstruction extends CatchInstruction {
-  Type exceptionType;
+  Language::Type exceptionType;
 
   CatchByTypeInstruction() {
     getOpcode() instanceof Opcode::CatchByType and
@@ -1605,7 +1600,7 @@ class CatchByTypeInstruction extends CatchInstruction {
   /**
    * Gets the type of exception to be caught.
    */
-  final Type getExceptionType() {
+  final Language::Type getExceptionType() {
     result = exceptionType
   }
 }

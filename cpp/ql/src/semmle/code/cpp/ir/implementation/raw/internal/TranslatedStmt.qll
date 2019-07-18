@@ -1,6 +1,7 @@
-import cpp
-private import semmle.code.cpp.ir.internal.TempVariableTag
+private import cpp
+private import semmle.code.cpp.ir.internal.IRUtilities
 private import semmle.code.cpp.ir.internal.OperandTag
+private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
 private import TranslatedDeclarationEntry
@@ -758,6 +759,14 @@ class TranslatedJumpStmt extends TranslatedStmt {
   override Instruction getChildSuccessor(TranslatedElement child) {
     none()
   }
+}
+
+private EdgeKind getCaseEdge(SwitchCase switchCase) {
+  exists(CaseEdge edge |
+    result = edge and
+    hasCaseEdge(switchCase, edge.getMinValue(), edge.getMaxValue())
+  ) or
+  (switchCase instanceof DefaultCase and result instanceof DefaultEdge)
 }
 
 class TranslatedSwitchStmt extends TranslatedStmt {

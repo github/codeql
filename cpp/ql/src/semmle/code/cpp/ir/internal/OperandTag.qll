@@ -1,12 +1,4 @@
-private import cpp
-
-private int getMaxCallArgIndex() {
-  result = max(int argIndex |
-    exists(FunctionCall call |
-      exists(call.getArgument(argIndex))
-    )
-  )
-}
+private import IRLanguageInternal
 
 private newtype TOperandTag =
   TAddressOperand() or
@@ -22,17 +14,12 @@ private newtype TOperandTag =
   TCallTargetOperand() or
   TThisArgumentOperand() or
   TPositionalArgumentOperand(int argIndex) {
-    argIndex in [0..getMaxCallArgIndex()] or
-    exists(BuiltInOperation op |
-      exists(op.getChild(argIndex))
-    )
+    Language::hasPositionalArgIndex(argIndex)
   } or
   TChiTotalOperand() or
   TChiPartialOperand() or
   TAsmOperand(int index) {
-    exists(AsmStmt asm |
-      exists(asm.getChild(index))
-    )
+    Language::hasAsmOperandIndex(index)
   } 
 
 /**

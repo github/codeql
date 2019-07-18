@@ -1,4 +1,4 @@
-private import cpp
+private import internal.IRLanguageInternal
 
 private newtype TIRConfiguration = MkIRConfiguration()
 
@@ -13,7 +13,7 @@ class IRConfiguration extends TIRConfiguration {
   /**
    * Holds if IR should be created for function `func`. By default, holds for all functions.
    */
-  predicate shouldCreateIRForFunction(Function func) {
+  predicate shouldCreateIRForFunction(Language::Function func) {
     any()
   }
 }
