@@ -46,6 +46,69 @@ test_AssignExpr_getDocumentation
 | tst.js:329:1:329:33 | Foo.pro ... on() {} | tst.js:328:1:328:18 | /** @return {T} */ |
 | tst.js:336:1:336:24 | FooImpl ... n() { } | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ |
 | tst.js:343:1:343:36 | identit ... rn a; } | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ |
+test_Function_getDocumentation
+| tst.js:20:1:21:1 | functio ... t() {\\n} | tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ |
+| tst.js:36:34:37:1 | function(node) {\\n} | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ |
+| tst.js:43:1:43:17 | function Foo() {} | tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ |
+| tst.js:62:46:63:1 | function() {\\n} | tst.js:61:1:61:14 | /** @export */ |
+| tst.js:70:25:71:1 | function() {\\n} | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ |
+| tst.js:78:22:78:35 | function() { } | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ |
+| tst.js:84:39:84:52 | function() { } | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
+| tst.js:90:1:90:19 | function Shape() {} | tst.js:86:1:89:3 | /**\\n *  ... ace\\n */ |
+| tst.js:97:1:97:20 | function Square() {} | tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ |
+| tst.js:104:39:105:1 | function() {\\n} | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
+| tst.js:112:1:112:21 | functio ... on() {} | tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ |
+| tst.js:129:1:129:42 | functio ... n 42; } | tst.js:121:1:126:3 | /**\\n *  ... sh:\\n */ |
+| tst.js:129:1:129:42 | functio ... n 42; } | tst.js:128:1:128:21 | /** @no ... ects */ |
+| tst.js:137:63:138:1 | function() {\\n} | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
+| tst.js:146:28:147:1 | functio ... rm) {\\n} | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
+| tst.js:166:50:167:1 | functio ... nt) {\\n} | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
+| tst.js:173:32:175:1 | functio ... n id;\\n} | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
+| tst.js:183:1:185:1 | functio ...  = x;\\n} | tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ |
+| tst.js:201:9:203:9 | functio ...       } | tst.js:196:9:200:11 | /**\\n    ...      */ |
+| tst.js:208:43:208:56 | function() { } | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |
+| tst.js:220:19:221:1 | function(x) {\\n} | tst.js:219:1:219:55 | /** @pa ... ing. */ |
+| tst.js:250:11:250:43 | functio ... null; } | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ |
+| tst.js:253:21:253:53 | functio ... alue; } | tst.js:252:1:252:18 | /** @return {T} */ |
+| tst.js:256:21:256:51 | functio ...  = t; } | tst.js:255:1:255:19 | /** @param {T} t */ |
+| tst.js:266:7:266:21 | function(t) { } | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ |
+| tst.js:273:13:273:26 | function() { } | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |
+| tst.js:280:5:280:18 | function() { } | tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ |
+| tst.js:286:5:286:18 | function() { } | tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ |
+| tst.js:295:13:295:30 | function(fooY) { } | tst.js:294:1:294:28 | /** @pa ... fooY */ |
+| tst.js:304:5:304:18 | function() { } | tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ |
+| tst.js:307:22:307:36 | function(t) { } | tst.js:306:1:306:19 | /** @param {T} t */ |
+| tst.js:313:5:313:18 | function() { } | tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ |
+| tst.js:320:5:320:18 | function() { } | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ |
+| tst.js:326:7:326:19 | function() {} | tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ |
+| tst.js:329:21:329:33 | function() {} | tst.js:328:1:328:18 | /** @return {T} */ |
+| tst.js:336:11:336:24 | function() { } | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ |
+| tst.js:343:12:343:36 | functio ... rn a; } | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ |
+| tst.js:354:1:354:16 | function f(x) {} | tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ |
+| tst.js:360:1:360:27 | functio ...  fn) {} | tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ |
+| tst.js:366:18:366:31 | function(p) {} | tst.js:363:3:365:5 | /**\\n    ... p\\n   */ |
+| tst.js:371:14:371:19 | (p) {} | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |
+| tst.js:378:14:378:19 | (p) {} | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |
+| tst.js:383:14:383:19 | (p) {} | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |
+| tst.js:390:1:390:24 | functio ... e(x) {} | tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ |
+test_VarDeclStmt_getDocumentation
+| tst.js:5:15:5:36 | var MY_ ... stout'; | tst.js:5:1:5:13 | /** @const */ |
+| tst.js:24:1:24:24 | var ENA ... = true; | tst.js:23:1:23:24 | /** @de ... ean} */ |
+| tst.js:214:1:214:18 | var hexId = hexId; | tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ |
+| tst.js:224:1:224:6 | var o; | tst.js:223:1:223:40 | /** @ty ... ct}} */ |
+| tst.js:227:1:227:6 | var x; | tst.js:226:1:226:22 | /** @ty ... er?} */ |
+| tst.js:230:1:230:6 | var y; | tst.js:229:1:229:22 | /** @ty ... ect} */ |
+| tst.js:244:1:244:6 | var f; | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ |
+| tst.js:250:1:250:44 | var Foo ... ull; }; | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ |
+| tst.js:258:30:258:49 | var foo = new Foo(); | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
+| tst.js:273:1:273:27 | var MyM ... () { }; | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |
+| tst.js:275:39:275:46 | var map; | tst.js:275:1:275:37 | /** @ty ... er>} */ |
+| tst.js:288:24:288:32 | var fooX; | tst.js:288:1:288:22 | /** @ty ... <X>} */ |
+| tst.js:289:24:289:32 | var fooY; | tst.js:289:1:289:22 | /** @ty ... <Y>} */ |
+| tst.js:345:23:345:70 | var msg ... orld"); | tst.js:345:1:345:21 | /** @ty ... ing} */ |
+| tst.js:346:23:346:58 | var sum ... ity(2); | tst.js:346:1:346:21 | /** @ty ... ber} */ |
+| tst.js:347:23:347:60 | var sum ... y("2"); | tst.js:347:1:347:21 | /** @ty ... ber} */ |
+| tst.js:349:33:349:52 | var string_or_undef; | tst.js:349:1:349:31 | /** @ty ... ned} */ |
 test_JSDocRecordTypeExpr
 | tst.js:223:12:223:36 | {myNum: number, myObject} | myNum | number |
 | tst.js:223:12:223:36 | {myNum: number, myObject} | myObject | (none) |
@@ -467,51 +530,6 @@ test_JSDocTypeExpr
 | tst.js:387:12:387:16 | Array | tst.js:387:12:388:13 | Array.<number> | -1 |
 | tst.js:387:12:388:13 | Array.<number> | tst.js:387:4:387:9 | @param | 0 |
 | tst.js:388:7:388:12 | number | tst.js:387:12:388:13 | Array.<number> | 0 |
-test_Function_getDocumentation
-| tst.js:20:1:21:1 | functio ... t() {\\n} | tst.js:16:1:19:3 | /**\\n *  ... tor\\n */ |
-| tst.js:36:34:37:1 | function(node) {\\n} | tst.js:29:1:35:3 | /**\\n *  ... ().\\n */ |
-| tst.js:43:1:43:17 | function Foo() {} | tst.js:39:1:42:3 | /**\\n *  ... ict\\n */ |
-| tst.js:62:46:63:1 | function() {\\n} | tst.js:61:1:61:14 | /** @export */ |
-| tst.js:70:25:71:1 | function() {\\n} | tst.js:65:1:69:3 | /**\\n *  ... st}\\n */ |
-| tst.js:78:22:78:35 | function() { } | tst.js:73:1:77:3 | /**\\n *  ... tor\\n */ |
-| tst.js:84:39:84:52 | function() { } | tst.js:80:1:83:3 | /**\\n *  ... nal\\n */ |
-| tst.js:90:1:90:19 | function Shape() {} | tst.js:86:1:89:3 | /**\\n *  ... ace\\n */ |
-| tst.js:97:1:97:20 | function Square() {} | tst.js:93:1:96:3 | /**\\n *  ... pe}\\n */ |
-| tst.js:104:39:105:1 | function() {\\n} | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
-| tst.js:112:1:112:21 | functio ... on() {} | tst.js:107:1:111:3 | /**\\n *  ... pe}\\n */ |
-| tst.js:129:1:129:42 | functio ... n 42; } | tst.js:121:1:126:3 | /**\\n *  ... sh:\\n */ |
-| tst.js:129:1:129:42 | functio ... n 42; } | tst.js:128:1:128:21 | /** @no ... ects */ |
-| tst.js:137:63:138:1 | function() {\\n} | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
-| tst.js:146:28:147:1 | functio ... rm) {\\n} | tst.js:140:1:145:3 | /**\\n *  ... ng.\\n */ |
-| tst.js:166:50:167:1 | functio ... nt) {\\n} | tst.js:160:1:165:3 | /**\\n *  ... ted\\n */ |
-| tst.js:173:32:175:1 | functio ... n id;\\n} | tst.js:169:1:172:3 | /**\\n *  ... ID.\\n */ |
-| tst.js:183:1:185:1 | functio ...  = x;\\n} | tst.js:179:1:182:3 | /**\\n *  ... uct\\n */ |
-| tst.js:201:9:203:9 | functio ...       } | tst.js:196:9:200:11 | /**\\n    ...      */ |
-| tst.js:208:43:208:56 | function() { } | tst.js:205:1:207:3 | /**\\n *  ... on}\\n */ |
-| tst.js:220:19:221:1 | function(x) {\\n} | tst.js:219:1:219:55 | /** @pa ... ing. */ |
-| tst.js:250:11:250:43 | functio ... null; } | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ |
-| tst.js:253:21:253:53 | functio ... alue; } | tst.js:252:1:252:18 | /** @return {T} */ |
-| tst.js:256:21:256:51 | functio ...  = t; } | tst.js:255:1:255:19 | /** @param {T} t */ |
-| tst.js:266:7:266:21 | function(t) { } | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ |
-| tst.js:273:13:273:26 | function() { } | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |
-| tst.js:280:5:280:18 | function() { } | tst.js:277:1:279:3 | /**\\n *  ... tor\\n */ |
-| tst.js:286:5:286:18 | function() { } | tst.js:282:1:285:3 | /**\\n *  ... tor\\n */ |
-| tst.js:295:13:295:30 | function(fooY) { } | tst.js:294:1:294:28 | /** @pa ... fooY */ |
-| tst.js:304:5:304:18 | function() { } | tst.js:300:1:303:3 | /**\\n *  ... e T\\n */ |
-| tst.js:307:22:307:36 | function(t) { } | tst.js:306:1:306:19 | /** @param {T} t */ |
-| tst.js:313:5:313:18 | function() { } | tst.js:309:1:312:3 | /**\\n *  ... g>}\\n */ |
-| tst.js:320:5:320:18 | function() { } | tst.js:315:1:319:3 | /**\\n *  ... U>}\\n */ |
-| tst.js:326:7:326:19 | function() {} | tst.js:322:1:325:3 | /**\\n *  ... e T\\n */ |
-| tst.js:329:21:329:33 | function() {} | tst.js:328:1:328:18 | /** @return {T} */ |
-| tst.js:336:11:336:24 | function() { } | tst.js:331:1:335:3 | /**\\n *  ... r>}\\n */ |
-| tst.js:343:12:343:36 | functio ... rn a; } | tst.js:338:1:342:3 | /**\\n *  ... e T\\n */ |
-| tst.js:354:1:354:16 | function f(x) {} | tst.js:351:1:353:3 | /**\\n *  ... ger\\n */ |
-| tst.js:360:1:360:27 | functio ...  fn) {} | tst.js:356:1:359:3 | /**\\n *  ... ion\\n */ |
-| tst.js:366:18:366:31 | function(p) {} | tst.js:363:3:365:5 | /**\\n    ... p\\n   */ |
-| tst.js:371:14:371:19 | (p) {} | tst.js:368:3:370:5 | /**\\n    ... p\\n   */ |
-| tst.js:378:14:378:19 | (p) {} | tst.js:375:3:377:5 | /**\\n    ... p\\n   */ |
-| tst.js:383:14:383:19 | (p) {} | tst.js:380:3:382:5 | /**\\n    ... p\\n   */ |
-| tst.js:390:1:390:24 | functio ... e(x) {} | tst.js:386:1:389:3 | /**\\n *  ... } x\\n */ |
 test_JSDocOptionalParameterTypeExpr
 | tst.js:239:12:239:18 | number= | tst.js:239:12:239:17 | number |
 | tst.js:240:21:240:28 | ?string= | tst.js:240:21:240:27 | ?string |
@@ -533,24 +551,6 @@ test_getParameterTag
 | tst.js:378:15:378:15 | p | p | tst.js:376:6:376:11 | @param | p | tst.js:376:14:376:15 | T3 |
 | tst.js:383:15:383:15 | p | p | tst.js:381:6:381:11 | @param | p | tst.js:381:14:381:15 | T4 |
 | tst.js:390:20:390:20 | x | x | tst.js:387:4:387:9 | @param | x | tst.js:387:12:388:13 | Array.<number> |
-test_VarDeclStmt_getDocumentation
-| tst.js:5:15:5:36 | var MY_ ... stout'; | tst.js:5:1:5:13 | /** @const */ |
-| tst.js:24:1:24:24 | var ENA ... = true; | tst.js:23:1:23:24 | /** @de ... ean} */ |
-| tst.js:214:1:214:18 | var hexId = hexId; | tst.js:210:1:213:3 | /**\\n *  ... ng}\\n */ |
-| tst.js:224:1:224:6 | var o; | tst.js:223:1:223:40 | /** @ty ... ct}} */ |
-| tst.js:227:1:227:6 | var x; | tst.js:226:1:226:22 | /** @ty ... er?} */ |
-| tst.js:230:1:230:6 | var y; | tst.js:229:1:229:22 | /** @ty ... ect} */ |
-| tst.js:244:1:244:6 | var f; | tst.js:232:1:243:3 | /**\\n *  ... p10\\n */ |
-| tst.js:250:1:250:44 | var Foo ... ull; }; | tst.js:246:1:249:3 | /**\\n *  ... e T\\n */ |
-| tst.js:258:30:258:49 | var foo = new Foo(); | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
-| tst.js:273:1:273:27 | var MyM ... () { }; | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |
-| tst.js:275:39:275:46 | var map; | tst.js:275:1:275:37 | /** @ty ... er>} */ |
-| tst.js:288:24:288:32 | var fooX; | tst.js:288:1:288:22 | /** @ty ... <X>} */ |
-| tst.js:289:24:289:32 | var fooY; | tst.js:289:1:289:22 | /** @ty ... <Y>} */ |
-| tst.js:345:23:345:70 | var msg ... orld"); | tst.js:345:1:345:21 | /** @ty ... ing} */ |
-| tst.js:346:23:346:58 | var sum ... ity(2); | tst.js:346:1:346:21 | /** @ty ... ber} */ |
-| tst.js:347:23:347:60 | var sum ... y("2"); | tst.js:347:1:347:21 | /** @ty ... ber} */ |
-| tst.js:349:33:349:52 | var string_or_undef; | tst.js:349:1:349:31 | /** @ty ... ned} */ |
 test_JSDocAppliedTypeExpr
 | tst.js:155:11:155:20 | Array.<Function> | tst.js:155:11:155:20 | Array | 0 | tst.js:155:11:155:18 | Function |
 | tst.js:258:13:258:24 | Foo.<string> | tst.js:258:13:258:15 | Foo | 0 | tst.js:258:18:258:23 | string |
