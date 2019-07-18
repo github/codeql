@@ -155,11 +155,12 @@ class ObjectInternal extends TObject {
      */
     predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }
 
-    /** Holds if this 'object' represents an entity that is inferred to exist
-     * but is missing from the database */
-    predicate isMissing() {
-        none()
-    }
+    /** Holds if this 'object' represents an entity that should be exposed to the legacy points_to API
+     * This should hold for almost objects that do not have an underlying DB object representing their source,
+     * for example `super` objects and bound-method. This should not hold for objects that are inferred to exists by
+     * an import statements or the like, but which aren't in the database. */
+     /* This predicate can be removed when the legacy points_to API is removed. */
+    abstract predicate useOriginAsLegacyObject();
 
     /** Gets the name of this of this object if it has a meaningful name.
      * Note that the name of an object is not necessarily the name by which it is called
@@ -249,6 +250,9 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
     override string getName() {
         result = this.getBuiltin().getName()
     }
+
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 
@@ -325,6 +329,8 @@ class UnknownInternal extends ObjectInternal, TUnknown {
     override int length() { result = -1 }
 
     override string getName() { none() }
+
+    override predicate useOriginAsLegacyObject() { none() }
 
 }
 
@@ -403,6 +409,8 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     override int length() { none() }
 
     override string getName() { none() }
+
+    override predicate useOriginAsLegacyObject() { none() }
 
 }
 
@@ -497,6 +505,7 @@ module ObjectInternal {
     ObjectInternal emptyTuple() {
         result.(BuiltinTupleObjectInternal).length() = 0
     }
+
 
 }
 

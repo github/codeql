@@ -69,6 +69,8 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
     override string getName() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 private abstract class BooleanObjectInternal extends ConstantObjectInternal {

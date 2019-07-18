@@ -160,6 +160,8 @@ class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
         )
     }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 /** A class representing context-free instances represented by `self` in the source code
@@ -261,6 +263,8 @@ class SelfInstanceInternal extends TSelfInstance, InstanceObject {
         init.getScope() != this.getParameter().getScope() and
         this.getClass().attribute("__init__", init, _)
     }
+
+    override predicate useOriginAsLegacyObject() { none() }
 
 }
 
@@ -365,6 +369,8 @@ class UnknownInstanceInternal extends TUnknownInstance, ObjectInternal {
     }
 
     override string getName() { none() }
+
+    override predicate useOriginAsLegacyObject() { any() }
 
 }
 
@@ -471,6 +477,8 @@ class SuperInstance extends TSuperInstance, ObjectInternal {
     }
 
     override string getName() { none() }
+
+    override predicate useOriginAsLegacyObject() { any() }
 
 }
 

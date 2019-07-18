@@ -52,6 +52,8 @@ abstract class ModuleObjectInternal extends ObjectInternal {
         any(PackageObjectInternal package).getInitModule() = this
     }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 /** A class representing built-in modules */
@@ -308,10 +310,6 @@ class AbsentModuleObjectInternal extends ModuleObjectInternal, TAbsentModule {
         none()
     }
 
-    override predicate isMissing() {
-        any()
-    }
-
 }
 
 /** A class representing an attribute of a missing module. */
@@ -397,12 +395,10 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
 
     override predicate subscriptUnknown() { any() }
 
-    override predicate isMissing() {
-        any()
-    }
-
     /* We know what this is called, but not its innate name */
     override string getName() { none() }
+
+    override predicate useOriginAsLegacyObject() { none() }
 
 }
 

@@ -156,6 +156,8 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
         function = this and offset = 0
     }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 
@@ -277,6 +279,8 @@ class BuiltinFunctionObjectInternal extends CallableObjectInternal, TBuiltinFunc
         function = this and offset = 0
     }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 /** Class representing methods of built-in classes (otherwise known as method-descriptors) such as `list.append`.
@@ -367,6 +371,8 @@ class BuiltinMethodObjectInternal extends CallableObjectInternal, TBuiltinMethod
         function = this and offset = 0
     }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 /** Class representing bound-methods.
@@ -452,6 +458,8 @@ class BoundMethodObjectInternal extends CallableObjectInternal, TBoundMethod {
     override predicate functionAndOffset(CallableObjectInternal function, int offset) {
         function = this.getFunction() and offset = 1
     }
+
+    override predicate useOriginAsLegacyObject() { any() }
 
 }
 
