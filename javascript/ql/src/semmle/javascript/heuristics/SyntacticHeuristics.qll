@@ -66,42 +66,28 @@ predicate isArgTo(DataFlow::Node arg, string regexp) {
 }
 
 /**
- * Holds if `n` is concatenated with something with a name that matches `regexp`.
+ * Holds if `n` is concatenation containing something with a name that matches `regexp`.
  */
 bindingset[regexp]
-predicate isConcatenatedWith(DataFlow::Node n, string regexp) {
-  exists(Expr other |
-    other = n.asExpr().(AddExpr).getAnOperand() or
-    other = n.asExpr().(AssignAddExpr).getRhs()
-  |
-    isReadFrom(DataFlow::valueNode(other), regexp)
-  )
+predicate isConcatenatedWith(StringOps::Concatenation n, string regexp) {
+  isReadFrom(n.getAnOperand(), regexp)
 }
 
 /**
- * Holds if `n` is concatenated with a string constant that matches `regexp`.
+ * Holds if `n` is a concatenation containing something with a name that matches `regexp`.
  */
 bindingset[regexp]
-predicate isContatenatedWithString(DataFlow::Node n, string regexp) {
-  exists(Expr other |
-    other = n.asExpr().(AddExpr).getAnOperand() or
-    other = n.asExpr().(AssignAddExpr).getRhs()
-  |
-    other.getStringValue().regexpMatch(regexp)
-  )
+predicate isConcatenatedWithString(StringOps::Concatenation n, string regexp) {
+  n.getAnOperand().getStringValue().regexpMatch(regexp)
 }
 
 /**
  * Holds if `n` is concatenated between two string constants that match `lRegexp` and `rRegexp` respectively.
  */
 bindingset[lRegexp, rRegexp]
-predicate isContatenatedWithStrings(string lRegexp, DataFlow::Node n, string rRegexp) {
-  exists(AddExpr concat1, AddExpr concat2 |
-    concat1.getLeftOperand().getStringValue().regexpMatch(lRegexp) and
-    concat1.getRightOperand() = n.asExpr() and
-    concat2.getLeftOperand() = concat1 and
-    concat2.getRightOperand().getStringValue().regexpMatch(rRegexp)
-  )
+predicate isConcatenatedWithStrings(string lRegexp, StringOps::ConcatenationLeaf n, string rRegexp) {
+  n.getPreviousLeaf().getStringValue().regexpMatch(lRegexp) and
+  n.getNextLeaf().getStringValue().regexpMatch(rRegexp)
 }
 
 /**
