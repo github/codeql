@@ -9,62 +9,7 @@ private import semmle.python.types.Builtins
 private import semmle.python.types.Extensions
 
 /* Use this version for speed */
-//library class CfgOrigin extends @py_object {
-//
-//    string toString() {
-//        /* Not to be displayed */
-//        none()
-//    }
-//
-//    /** Get a `ControlFlowNode` from `this` or `here`.
-//     * If `this` is a ControlFlowNode then use that, otherwise fall back on `here`
-//     */
-//    pragma[inline]
-//    ControlFlowNode asCfgNodeOrHere(ControlFlowNode here) {
-//        result = this
-//        or
-//        not this instanceof ControlFlowNode and result = here
-//    }
-//
-//    ControlFlowNode toCfgNode() {
-//        result = this
-//    }
-//
-//    pragma[inline]
-//    CfgOrigin fix(ControlFlowNode here) {
-//        if this = Builtin::unknown() then
-//            result = here
-//        else
-//            result = this
-//    }
-//
-//}
-//
-//module CfgOrigin {
-//
-//    CfgOrigin fromCfgNode(ControlFlowNode f) {
-//        result = f
-//    }
-//
-//    CfgOrigin unknown() {
-//        result = Builtin::unknown()
-//    }
-//
-//    CfgOrigin fromObject(ObjectInternal obj) {
-//        obj.isBuiltin() and result = unknown()
-//        or
-//        result = obj.getOrigin()
-//    }
-//
-//}
-
-/* Use this version for stronger type-checking */
-private newtype TCfgOrigin =
-    TUnknownOrigin()
-    or
-    TFlowNodeOrigin(ControlFlowNode f)
-
-library class CfgOrigin extends TCfgOrigin {
+library class CfgOrigin extends @py_object {
 
     string toString() {
         /* Not to be displayed */
@@ -76,20 +21,21 @@ library class CfgOrigin extends TCfgOrigin {
      */
     pragma[inline]
     ControlFlowNode asCfgNodeOrHere(ControlFlowNode here) {
-        this = TUnknownOrigin() and result = here
+        result = this
         or
-        this = TFlowNodeOrigin(result)
+        not this instanceof ControlFlowNode and result = here
     }
 
     ControlFlowNode toCfgNode() {
-        this = TFlowNodeOrigin(result)
+        result = this
     }
 
     pragma[inline]
     CfgOrigin fix(ControlFlowNode here) {
-        this = TUnknownOrigin() and result = TFlowNodeOrigin(here)
-        or
-        not this = TUnknownOrigin() and result = this
+        if this = Builtin::unknown() then
+            result = here
+        else
+            result = this
     }
 
 }
@@ -97,20 +43,74 @@ library class CfgOrigin extends TCfgOrigin {
 module CfgOrigin {
 
     CfgOrigin fromCfgNode(ControlFlowNode f) {
-        result = TFlowNodeOrigin(f)
+        result = f
     }
 
     CfgOrigin unknown() {
-        result = TUnknownOrigin()
+        result = Builtin::unknown()
     }
 
     CfgOrigin fromObject(ObjectInternal obj) {
         obj.isBuiltin() and result = unknown()
         or
-        result = fromCfgNode(obj.getOrigin())
+        result = obj.getOrigin()
     }
 
 }
+
+/* Use this version for stronger type-checking */
+//private newtype TCfgOrigin =
+//    TUnknownOrigin()
+//    or
+//    TFlowNodeOrigin(ControlFlowNode f)
+//
+//library class CfgOrigin extends TCfgOrigin {
+//
+//    string toString() {
+//        /* Not to be displayed */
+//        none()
+//    }
+//
+//    /** Get a `ControlFlowNode` from `this` or `here`.
+//     * If `this` is a ControlFlowNode then use that, otherwise fall back on `here`
+//     */
+//    pragma[inline]
+//    ControlFlowNode asCfgNodeOrHere(ControlFlowNode here) {
+//        this = TUnknownOrigin() and result = here
+//        or
+//        this = TFlowNodeOrigin(result)
+//    }
+//
+//    ControlFlowNode toCfgNode() {
+//        this = TFlowNodeOrigin(result)
+//    }
+//
+//    pragma[inline]
+//    CfgOrigin fix(ControlFlowNode here) {
+//        this = TUnknownOrigin() and result = TFlowNodeOrigin(here)
+//        or
+//        not this = TUnknownOrigin() and result = this
+//    }
+//
+//}
+//
+//module CfgOrigin {
+//
+//    CfgOrigin fromCfgNode(ControlFlowNode f) {
+//        result = TFlowNodeOrigin(f)
+//    }
+//
+//    CfgOrigin unknown() {
+//        result = TUnknownOrigin()
+//    }
+//
+//    CfgOrigin fromObject(ObjectInternal obj) {
+//        obj.isBuiltin() and result = unknown()
+//        or
+//        result = fromCfgNode(obj.getOrigin())
+//    }
+//
+//}
 
 /* The API */
 module PointsTo {
@@ -2091,18 +2091,23 @@ cached module Types {
 
 module AttributePointsTo {
 
+    pragma [noinline]
     predicate pointsTo(ControlFlowNode f, Context context, ObjectInternal value, ControlFlowNode origin) {
         exists(EssaVariable var, string name, CfgOrigin orig |
-            f.isLoad() and
-            var.getASourceUse() = f.(AttrNode).getObject(name)
-            or
-            Expressions::getattr_call(f, var.getASourceUse(), context, _, name)
-            |
+            getsVariableAttribute(f, var, name) and
             variableAttributePointsTo(var, context, name, value, orig) and
             origin = orig.asCfgNodeOrHere(f)
         )
     }
 
+    pragma [noinline]
+    private predicate getsVariableAttribute(ControlFlowNode f, EssaVariable var, string name) {
+        Expressions::getattr_call(f, var.getASourceUse(), _, _, name)
+        or
+        f.isLoad() and var.getASourceUse() = f.(AttrNode).getObject(name)
+    }
+
+    pragma [nomagic]
     predicate variableAttributePointsTo(EssaVariable var, Context context, string name, ObjectInternal value, CfgOrigin origin) {
         definitionAttributePointsTo(var.getDefinition(), context, name, value, origin)
         or
