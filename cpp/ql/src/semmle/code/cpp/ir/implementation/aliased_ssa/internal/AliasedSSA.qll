@@ -232,15 +232,17 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
 /*
  * The following predicates compute the overlap relation between `VariableMemoryLocation`s in the
  * same `VirtualVariable` as follows:
- *   1. Compute the set of offsets within each virtual variable in `isRelevantOffset` (linear in
+ *   1. In `isRelevantOffset`, compute the set of offsets within each virtual variable (linear in
  *      the number of VMLs)
- *   2. Compute the set of offsets that each VML with known start and end offsets covers in
- *      `isCoveredOffset` (this is currently quadratic in the number of VMLs in a VVar, but
- *      could be optimized further. The quadratic portion is never materialized, and it seems to
- *      be performant in practice)
- *   3. In `getVariableMemoryLocationOverlap`, compute the set of overlapping pairs of VMLs using a
+ *   2. In `isCoveredOffset`, rank the offsets within each virtual variable (linear in the number
+ *      of VMLs)
+ *   3. In `isCoveredOffset`, compute the set of ranks that each VML with known start and end
+ *      offsets covers (linear in the size of the overlap set)
+ *   4. In `overlappingVariableMemoryLocations`, compute the set of overlapping pairs of VMLs using a
  *      join on `isCoveredOffset` (linear in the size of the overlap set)
- *   4. In `getVariableMemoryLocationOverlap`, compute the precise overlap relation for each
+ *   5. In `overlappingIRVariableMemoryLocations`, restrict to only the pairs that share an
+ *      `IRVariable` (linear in the size of the overlap set)
+ *   5. In `getVariableMemoryLocationOverlap`, compute the precise overlap relation for each
  *      overlapping pair of VMLs (linear in the size of the overlap set)
  */
 private predicate isRelevantOffset(VirtualVariable vv, IntValue offset) {
@@ -258,12 +260,14 @@ private predicate isRelatableMemoryLocation(VariableMemoryLocation vml) {
   vml.getStartBitOffset() != Ints::unknown()
 }
 
-private predicate isCoveredOffset(VariableMemoryLocation vml, VirtualVariable vv, IntValue offset) {
-  isRelevantOffset(vv, offset) and
-  vv = vml.getVirtualVariable() and
-  isRelatableMemoryLocation(vml) and
-  vml.getStartBitOffset() <= offset and
-  offset <= vml.getEndBitOffset()
+private predicate isCoveredOffset(VariableMemoryLocation vml, VirtualVariable vv, int offsetRank) {
+  exists(int startRank, int endRank |
+    vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vv, offset_)) and
+    vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(vv, offset_)) and
+    vv = vml.getVirtualVariable() and
+    isRelatableMemoryLocation(vml) and
+    offsetRank in [startRank .. endRank]
+  )
 }
 
 private predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable vv) {
@@ -274,17 +278,25 @@ private predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable v
   )
 }
 
-private Overlap getVariableMemoryLocationOverlap(VariableMemoryLocation def, VariableMemoryLocation use) {
-  def.getVariable() = use.getVariable() and
-  (
-    exists(VirtualVariable vv, IntValue offset | isCoveredOffset(def, vv, offset) and isCoveredOffset(use, vv, offset))
+private predicate overlappingVariableMemoryLocations(VariableMemoryLocation def, VariableMemoryLocation use) {
+    exists(VirtualVariable vv, int offsetRank | isCoveredOffset(def, vv, offsetRank) and isCoveredOffset(use, vv, offsetRank))
     or
     hasUnknownOffset(def, use.getVirtualVariable())
     or
     hasUnknownOffset(use, def.getVirtualVariable())
-  ) and
+}
+
+pragma[noopt] // Internal ticket: QL-937
+private predicate overlappingIRVariableMemoryLocations(VariableMemoryLocation def, VariableMemoryLocation use) {
+  overlappingVariableMemoryLocations(def, use) and
+  def.getVariable() = use.getVariable()
+}
+
+private Overlap getVariableMemoryLocationOverlap(VariableMemoryLocation def, VariableMemoryLocation use) {
+  overlappingIRVariableMemoryLocations(def, use) and
   result = Interval::getOverlap(def.getStartBitOffset(), def.getEndBitOffset(), use.getStartBitOffset(), use.getEndBitOffset())
 }
+
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
   exists(MemoryAccessKind kind |
