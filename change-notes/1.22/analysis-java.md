@@ -8,3 +8,8 @@
 
 ## Changes to QL libraries
 
+* The virtual dispatch library has been updated to give more precise dispatch
+  targets for `Object.toString()` calls. This affects all security queries and
+  removes false positives that arose from paths through impossible `toString()`
+  calls.
+

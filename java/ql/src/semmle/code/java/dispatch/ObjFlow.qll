@@ -1,3 +1,11 @@
+/**
+ * Provides a dispatch relation `viableImpl_out` that reduces the set of
+ * dispatch targets for `Object.toString()` calls relative to the input
+ * dispatch relation `viableImpl_inp`.
+ *
+ * The set of dispatch targets for `Object.toString()` calls are reduced based
+ * on possible data flow from objects of more specific types to the qualifier.
+ */
 import java
 private import VirtualDispatch
 private import semmle.code.java.controlflow.Guards
@@ -251,7 +259,7 @@ private Method viableImplObjectToString(MethodAccess ma) {
  * Gets a viable dispatch target for `ma`. This is the output dispatch relation.
  *
  * The set of dispatch targets for `Object.toString()` calls are reduced based
- * on possibly data flow from objects of more specific types to the qualifier.
+ * on possible data flow from objects of more specific types to the qualifier.
  */
 Method viableImpl_out(MethodAccess ma) {
   result = viableImpl_inp(ma) and
