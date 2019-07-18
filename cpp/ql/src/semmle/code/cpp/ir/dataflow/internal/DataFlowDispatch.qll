@@ -1,3 +1,4 @@
+private import cpp
 private import semmle.code.cpp.ir.IR
 
 Function viableImpl(CallInstruction call) { result = viableCallable(call) }

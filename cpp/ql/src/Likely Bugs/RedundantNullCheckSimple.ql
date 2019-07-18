@@ -16,6 +16,7 @@
  * LGTM until its performance is well understood.
  */
 
+import cpp
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.ValueNumbering
 
