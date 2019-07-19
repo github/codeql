@@ -28,3 +28,8 @@ Conflict = {}; // assigned in multiple files
 class GlobalClass {}
 
 function globalFunction() {}
+
+function destruct() {
+  let { bar = {} } = foo;
+  let v = bar.baz; // 'foo.bar.baz'
+}

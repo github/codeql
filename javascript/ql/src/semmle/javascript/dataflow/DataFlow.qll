@@ -1318,10 +1318,12 @@ module DataFlow {
   }
 
   /**
+   * INTERNAL. DO NOT USE.
+   *
    * Gets the data flow node representing the source of the definition of `v` at `def`,
    * if any.
    */
-  private Node defSourceNode(VarDef def, SsaSourceVariable v) {
+  Node defSourceNode(VarDef def, SsaSourceVariable v) {
     exists(BindingPattern lhs, VarRef r |
       lhs = def.getTarget() and r = lhs.getABindingVarRef() and r.getVariable() = v
     |
