@@ -1,6 +1,7 @@
 private import internal.IRInternal
 import Instruction
-import semmle.code.cpp.ir.implementation.EdgeKind
+private import internal.IRBlockImports as Imports
+import Imports::EdgeKind
 private import Cached
 
 /**

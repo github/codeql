@@ -1,9 +1,10 @@
 private import internal.IRInternal
 import Instruction
 import IRBlock
-import semmle.code.cpp.ir.implementation.MemoryAccessKind
-import semmle.code.cpp.ir.internal.Overlap
-private import semmle.code.cpp.ir.internal.OperandTag
+private import internal.OperandImports as Imports
+import Imports::MemoryAccessKind
+import Imports::Overlap
+private import Imports::OperandTag
 
 cached
 private newtype TOperand =

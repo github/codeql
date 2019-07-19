@@ -1,7 +1,7 @@
-private import semmle.code.cpp.ir.internal.IRLanguageInternal
+private import internal.IRInternal
 private import IR
-import semmle.code.cpp.ir.IRConfiguration
-private import semmle.code.cpp.Print
+private import internal.PrintIRImports as Imports
+import Imports::IRConfiguration
 
 private newtype TPrintIRConfiguration = MkPrintIRConfiguration()
 
@@ -131,7 +131,7 @@ class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction {
   }
 
   override string getLabel() {
-    result = getIdentityString(irFunc.getFunction())
+    result = Language::getIdentityString(irFunc.getFunction())
   }
 
   override int getOrder() {
@@ -213,7 +213,7 @@ class PrintableInstruction extends PrintableIRNode, TPrintableInstruction {
     result = instr.toString()
   }
 
-  override Location getLocation() {
+  override Language::Location getLocation() {
     result = instr.getLocation()
   }
 

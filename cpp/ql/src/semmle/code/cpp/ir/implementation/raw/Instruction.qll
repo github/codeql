@@ -3,11 +3,11 @@ import IRFunction
 import IRBlock
 import IRVariable
 import Operand
-import semmle.code.cpp.ir.implementation.EdgeKind
-import semmle.code.cpp.ir.implementation.MemoryAccessKind
-import semmle.code.cpp.ir.implementation.Opcode
-private import semmle.code.cpp.ir.implementation.Opcode
-private import semmle.code.cpp.ir.internal.OperandTag
+private import internal.InstructionImports as Imports
+import Imports::EdgeKind
+import Imports::MemoryAccessKind
+import Imports::Opcode
+private import Imports::OperandTag
 
 module InstructionSanity {
   /**

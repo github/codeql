@@ -1,9 +1,10 @@
 private import internal.IRInternal
 import IRFunction
-import semmle.code.cpp.ir.implementation.TempVariableTag
-private import semmle.code.cpp.ir.internal.IRUtilities
-private import semmle.code.cpp.ir.internal.TempVariableTag
-private import semmle.code.cpp.ir.internal.TIRVariable
+private import internal.IRVariableImports as Imports
+import Imports::TempVariableTag
+private import Imports::IRUtilities
+private import Imports::TTempVariableTag
+private import Imports::TIRVariable
 
 IRUserVariable getIRUserVariable(Language::Function func, Language::Variable var) {
   result.getVariable() = var and
