@@ -106,7 +106,6 @@
 | 76 | ControlFlowNode for sys | Module sys |
 | 76 | ControlFlowNode for type | builtin-class type |
 | 76 | ControlFlowNode for type() | builtin-class module |
-| 77 | ControlFlowNode for unknown | ImportMember |
 | 78 | ControlFlowNode for type | builtin-class type |
 | 79 | ControlFlowNode for Dict | Dict |
 | 79 | ControlFlowNode for Tuple | Tuple |

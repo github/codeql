@@ -71,6 +71,8 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
 }
 
 private abstract class BooleanObjectInternal extends ConstantObjectInternal {

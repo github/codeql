@@ -13,8 +13,10 @@ import python
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.objects.TObject
-private import semmle.python.objects.ObjectInternal
 private import semmle.python.web.HttpConstants
+
+/* Make ObjectInternal visible to save extra imports in user code */
+import semmle.python.objects.ObjectInternal
 
 abstract class PointsToExtension extends @py_flow_node {
 

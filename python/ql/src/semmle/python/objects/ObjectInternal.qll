@@ -155,11 +155,12 @@ class ObjectInternal extends TObject {
      */
     predicate functionAndOffset(CallableObjectInternal function, int offset) { none() }
 
-    /** Holds if this 'object' represents an entity that is inferred to exist
-     * but is missing from the database */
-    predicate isMissing() {
-        none()
-    }
+    /** Holds if this 'object' represents an entity that should be exposed to the legacy points_to API
+     * This should hold for almost all objects that do not have an underlying DB object representing their source,
+     * for example `super` objects and bound-method. This should not hold for objects that are inferred to exists by
+     * an import statements or the like, but which aren't in the database. */
+     /* This predicate can be removed when the legacy points_to API is removed. */
+    abstract predicate useOriginAsLegacyObject();
 
     /** Gets the name of this of this object if it has a meaningful name.
      * Note that the name of an object is not necessarily the name by which it is called
@@ -260,6 +261,8 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
 }
@@ -341,6 +344,8 @@ class UnknownInternal extends ObjectInternal, TUnknown {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
 }
@@ -420,6 +425,8 @@ class UndefinedInternal extends ObjectInternal, TUndefined {
     override int length() { none() }
 
     override string getName() { none() }
+
+    override predicate useOriginAsLegacyObject() { none() }
 
     /** Holds if this object requires context to determine the object resulting from a call to it.
      * True for most callables. */
@@ -607,6 +614,8 @@ class DecoratedFunction extends ObjectInternal, TDecoratedFunction {
     override ObjectInternal getIterNext() { none() }
 
     override predicate contextSensitiveCallee() { none() }
+
+    override predicate useOriginAsLegacyObject() { none() }
 
 }
 

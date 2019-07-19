@@ -54,6 +54,8 @@ abstract class ModuleObjectInternal extends ObjectInternal {
 
     override predicate contextSensitiveCallee() { none() }
 
+    override predicate useOriginAsLegacyObject() { none() }
+
     /* Modules aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
@@ -313,10 +315,6 @@ class AbsentModuleObjectInternal extends ModuleObjectInternal, TAbsentModule {
         none()
     }
 
-    override predicate isMissing() {
-        any()
-    }
-
 }
 
 /** A class representing an attribute of a missing module. */
@@ -402,14 +400,12 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
 
     override predicate subscriptUnknown() { any() }
 
-    override predicate isMissing() {
-        any()
-    }
-
     /* We know what this is called, but not its innate name */
     override string getName() { none() }
 
     override predicate contextSensitiveCallee() { none() }
+
+    override predicate useOriginAsLegacyObject() { none() }
 
     /* Modules aren't iterable */
     override ObjectInternal getIterNext() { none() }

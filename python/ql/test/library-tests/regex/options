@@ -1,1 +1,2 @@
 semmle-extractor-options: --max-import-depth=3
+optimize: true
