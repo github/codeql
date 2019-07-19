@@ -42,7 +42,7 @@ class TranslatedFunction extends TranslatedElement,
   /**
    * Gets the function being translated.
    */
-  override final Callable getCallable() {
+  override final Callable getFunction() {
     result = callable
   }
 
@@ -231,7 +231,7 @@ class TranslatedFunction extends TranslatedElement,
     (
       tag = UnmodeledUseTag() and
       operandTag instanceof UnmodeledUseOperandTag and
-      result.getEnclosingCallable() = callable and
+      result.getEnclosingFunction() = callable and
       result.hasMemoryResult()
     ) or
     (
@@ -346,7 +346,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     result = param
   }
 
-  override final Callable getCallable() {
+  override final Callable getFunction() {
     result = param.getCallable() // or
     // result = param.getCatchBlock().getEnclosingFunction()
   }
@@ -399,7 +399,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
       tag = InitializerStoreTag() or
       tag = InitializerVariableAddressTag()
     ) and
-    result = getIRUserVariable(getCallable(), param)
+    result = getIRUserVariable(getFunction(), param)
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
@@ -466,7 +466,7 @@ class TranslatedConstructorInitList extends TranslatedElement,
     none()
   }
 
-  override Callable getCallable() {
+  override Callable getFunction() {
     result = callable
   }
 
@@ -540,7 +540,7 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
     none()
   }
 
-  override Callable getCallable() {
+  override Callable getFunction() {
     result = callable
   }
 

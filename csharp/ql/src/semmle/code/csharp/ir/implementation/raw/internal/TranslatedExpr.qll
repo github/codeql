@@ -63,7 +63,7 @@ abstract class TranslatedExpr extends TranslatedElement {
     result = expr
   }
 
-  override final Callable getCallable() {
+  override final Callable getFunction() {
     result = expr.getEnclosingCallable()
   }
 
@@ -910,7 +910,7 @@ class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
     isLValue = true
   }
 
-  override Callable getInstructionCallable(InstructionTag tag) {
+  override Callable getInstructionFunction(InstructionTag tag) {
     tag = OnlyInstructionTag() and
     result = expr.getTarget()
   }

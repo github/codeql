@@ -29,7 +29,7 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
     this = TTranslatedDeclarationEntry(entry)
   }
 
-  override final Callable getCallable() {
+  override final Callable getFunction() {
     exists(LocalVariableDeclStmt stmt |
       stmt.getAVariableDeclExpr().getVariable() = entry and
       result = stmt.getEnclosingCallable()
@@ -148,7 +148,7 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
       tag = InitializerVariableAddressTag() or
       hasUninitializedInstruction() and tag = InitializerStoreTag()
     ) and
-    result = getIRUserVariable(getCallable(), getVariable())
+    result = getIRUserVariable(getFunction(), getVariable())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {

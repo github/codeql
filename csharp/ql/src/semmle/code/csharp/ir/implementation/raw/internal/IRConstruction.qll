@@ -20,7 +20,7 @@ InstructionTag getInstructionTag(Instruction instruction) {
 
 import Cached
 cached private module Cached {
-  cached predicate callableHasIR(Callable callable) {
+  cached predicate functionHasIR(Callable callable) {
     exists(getTranslatedFunction(callable)) and
     callable.fromSource()
   }
@@ -34,7 +34,7 @@ cached private module Cached {
     Type type) {
     exists(TranslatedElement element |
       element.getAST() = ast and
-      callable = element.getCallable() and
+      callable = element.getFunction() and
       element.hasTempVariable(tag, type)
     )
   }
@@ -201,7 +201,7 @@ cached private module Cached {
   }
 
   cached IRFunction getInstructionEnclosingIRFunction(Instruction instruction) {
-    result.getCallable() = getInstructionTranslatedElement(instruction).getCallable()
+    result.getFunction() = getInstructionTranslatedElement(instruction).getFunction()
   }
 
   cached IRVariable getInstructionVariable(Instruction instruction) {
@@ -216,9 +216,9 @@ cached private module Cached {
     )
   }
 
-  cached Callable getInstructionCallable(Instruction instruction) {
+  cached Callable getInstructionFunction(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction)
-            .getInstructionCallable(getInstructionTag(instruction))
+            .getInstructionFunction(getInstructionTag(instruction))
   }
 
   cached string getInstructionConstantValue(Instruction instruction) {

@@ -9,7 +9,7 @@ private import semmle.code.csharp.ir.Util
 
 IRUserVariable getIRUserVariable(Callable callable, Variable var) {
   result.getVariable() = var and
-  result.getEnclosingCallable() = callable
+  result.getEnclosingFunction() = callable
 }
 
 /**
@@ -50,13 +50,13 @@ abstract class IRVariable extends TIRVariable {
    * Gets the IR for the function that references this variable.
    */
   final IRFunction getEnclosingIRFunction() {
-    result.getCallable() = callable
+    result.getFunction() = callable
   }
 
   /**
    * Gets the function that references this variable.
    */
-  final Callable getEnclosingCallable() {
+  final Callable getEnclosingFunction() {
     result = callable
   }
 }

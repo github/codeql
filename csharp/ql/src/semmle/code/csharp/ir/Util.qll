@@ -30,7 +30,7 @@ class ObjectInitializerMod extends ObjectInitializer {
 }
 
 // TODO: See if we need to adapt this for C#
-abstract class SideEffectCallable extends Callable {
+abstract class SideEffectFunction extends Callable {
   /**
    * Holds if the function never reads from memory that was defined before entry to the function.
    * This memory could be from global variables, or from other memory that was reachable from a

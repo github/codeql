@@ -297,16 +297,16 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr,
 class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   override Call expr;
 
-  override Callable getInstructionCallable(InstructionTag tag) {
+  override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and result = expr.getTarget()
   }
 
   override predicate hasReadSideEffect() {
-    not expr.getTarget().(SideEffectCallable).neverReadsMemory()
+    not expr.getTarget().(SideEffectFunction).neverReadsMemory()
   }
 
   override predicate hasWriteSideEffect() {
-    not expr.getTarget().(SideEffectCallable).neverWritesMemory()
+    not expr.getTarget().(SideEffectFunction).neverWritesMemory()
   }
 }
 

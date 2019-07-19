@@ -28,7 +28,7 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
     result = stmt
   }
 
-  override final Callable getCallable() {
+  override final Callable getFunction() {
     result = stmt.getEnclosingCallable()
   }
 }

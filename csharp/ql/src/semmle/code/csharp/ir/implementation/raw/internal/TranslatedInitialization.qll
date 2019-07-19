@@ -47,7 +47,7 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
     result = "init: " + expr.toString()
   }
 
-  override final Callable getCallable() {
+  override final Callable getFunction() {
     result = expr.getEnclosingCallable()
   }
 
@@ -264,7 +264,7 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
     result = ast
   }
 
-  override final Callable getCallable() {
+  override final Callable getFunction() {
     result = ast.getEnclosingCallable()
   }
 
@@ -456,7 +456,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = initList
   }
 
-  override final Callable getCallable() {
+  override final Callable getFunction() {
     result = initList.getEnclosingCallable()
   }
 
@@ -696,7 +696,7 @@ abstract class TranslatedStructorCallFromStructor extends TranslatedElement, Str
     result = getStructorCall()
   }
 
-  override final Callable getCallable() {
+  override final Callable getFunction() {
     result = call.getEnclosingCallable()
   }
 
@@ -739,13 +739,13 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
   override final Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
-    result = getTranslatedFunction(getCallable()).getInitializeThisInstruction()
+    result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
   }
 
   override final predicate getInstructionInheritance(InstructionTag tag, Class baseClass, Class derivedClass) {
     tag = OnlyInstructionTag() and
     baseClass = call.getTarget().getDeclaringType() and
-    derivedClass = getCallable().getDeclaringType()
+    derivedClass = getFunction().getDeclaringType()
   }
 }
 
@@ -786,7 +786,7 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
 //  }
 //
 //  override final Instruction getReceiver() {
-//    result = getTranslatedFunction(getCallable()).getInitializeThisInstruction()
+//    result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
 //  }
 //}
 //

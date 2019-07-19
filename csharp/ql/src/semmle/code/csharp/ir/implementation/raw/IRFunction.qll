@@ -4,7 +4,7 @@ import csharp
 
 private newtype TIRFunction =
   MkIRFunction(Callable callable) {
-    Construction::callableHasIR(callable)
+    Construction::functionHasIR(callable)
   }
 
 /**
@@ -24,7 +24,7 @@ class IRFunction extends TIRFunction {
   /**
    * Gets the function whose IR is represented.
    */
-  final Callable getCallable() {
+  final Callable getFunction() {
     result = callable
   }
 

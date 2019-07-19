@@ -5,11 +5,11 @@ private import semmle.code.csharp.ir.Util
 
 newtype TIRVariable =
   TIRAutomaticUserVariable(LocalScopeVariable var, Callable callable) {
-    Construction::callableHasIR(callable) and
+    Construction::functionHasIR(callable) and
     var.getCallable() = callable
   } or
   TIRStaticUserVariable(Variable var, Callable callable) {
-    Construction::callableHasIR(callable) and
+    Construction::functionHasIR(callable) and
 // TODO: CHECK FOR CORRESPONDENCE HERE
 //    (
 //      var instanceof GlobalOrNamespaceVariable or

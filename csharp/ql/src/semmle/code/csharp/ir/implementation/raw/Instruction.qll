@@ -61,7 +61,7 @@ module InstructionSanity {
       message = "Instruction '" + instr.getOpcode().toString() + "' is missing an expected operand with tag '" +
         tag.toString() + "' in function '$@'." and
       func = instr.getEnclosingIRFunction() and
-      funcText = func.getCallable().getName()
+      funcText = func.getFunction().getName()
     )
   }
 
@@ -106,7 +106,7 @@ module InstructionSanity {
   query predicate missingOperandType(Operand operand, string message) {
     exists(Callable callable |
       not exists(operand.getType()) and
-      callable = operand.getUseInstruction().getEnclosingCallable() and
+      callable = operand.getUseInstruction().getEnclosingFunction() and
       message = "Operand missing type in function '" + callable.getName() + "'."
     )
   }
@@ -192,7 +192,7 @@ module InstructionSanity {
    * This check ensures we don't have too _few_ back edges.
    */
   query predicate containsLoopOfForwardEdges(IRFunction f) {
-  	f.getCallable().fromSource() and 
+  	f.getFunction().fromSource() and 
     exists(IRBlock block |
       forwardEdge+(block, block) and
       block.getEnclosingIRFunction() = f
@@ -213,7 +213,7 @@ module InstructionSanity {
       entry = f.getEntryBlock() and
       entry.getASuccessor+() = block and
       not forwardEdge+(entry, block) and
-      not exists(GotoStmt s | s.getEnclosingCallable() = f.getCallable())
+      not exists(GotoStmt s | s.getEnclosingCallable() = f.getFunction())
     )
   }
 
@@ -224,7 +224,7 @@ module InstructionSanity {
   query predicate backEdgeCountMismatch(Callable f, int fromInstr, int fromBlock) {
   	f.fromSource() and
     fromInstr = count(Instruction i1, Instruction i2 |
-        i1.getEnclosingCallable() = f and i1.getBackEdgeSuccessor(_) = i2
+        i1.getEnclosingFunction() = f and i1.getBackEdgeSuccessor(_) = i2
       ) and
     fromBlock = count(IRBlock b1, IRBlock b2 |
         b1.getEnclosingFunction() = f and b1.getBackEdgeSuccessor(_) = b2
@@ -393,8 +393,8 @@ class Instruction extends Construction::TInstruction {
   /**
    * Gets the function that contains this instruction.
    */
-  final Callable getEnclosingCallable() {
-    result = getEnclosingIRFunction().getCallable()
+  final Callable getEnclosingFunction() {
+    result = getEnclosingIRFunction().getFunction()
   }
 
   /**
@@ -637,18 +637,18 @@ class FieldInstruction extends Instruction {
 }
 
 class FunctionInstruction extends Instruction {
-  Callable callableSymbol;
+  Callable funcSymbol;
 
   FunctionInstruction() {
-    callableSymbol = Construction::getInstructionCallable(this)
+    funcSymbol = Construction::getInstructionFunction(this)
   }
 
   override final string getImmediateString() {
-    result = callableSymbol.toString()
+    result = funcSymbol.toString()
   }
 
   final Callable getFunctionSymbol() {
-    result = callableSymbol
+    result = funcSymbol
   }
 }
 

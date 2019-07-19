@@ -35,7 +35,7 @@ abstract class TranslatedCondition extends TranslatedElement {
     result = expr
   }
 
-  override final Callable getCallable() {
+  override final Callable getFunction() {
     result = expr.getEnclosingCallable()
   }
 

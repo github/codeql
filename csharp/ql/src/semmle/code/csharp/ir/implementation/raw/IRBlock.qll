@@ -68,7 +68,7 @@ class IRBlockBase extends TIRBlock {
   }
 
   final Callable getEnclosingFunction() {
-    result = getFirstInstruction(this).getEnclosingCallable()
+    result = getFirstInstruction(this).getEnclosingFunction()
   }
 }
 
