@@ -527,20 +527,7 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
    * if any.
    */
   DataFlow::Node getRhsNode() {
-    exists(VarDef def | def = getDef() |
-      result = def.getSource().flow()
-      or
-      exists(VarRef ref |
-        ref = getSourceVariable().getAReference() and
-        def.getTarget().(BindingPattern).getABindingVarRef() = ref and
-        result = DataFlow::patternPropRead(ref)
-      )
-      or
-      result = DataFlow::parameterNode(def)
-      or
-      // Handle class, function, namespace, and enum declaration statement
-      result.getAstNode() = def.(Stmt)
-    )
+    result = DataFlow::defSourceNode(getDef(), getSourceVariable())
   }
 }
 
