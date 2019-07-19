@@ -78,8 +78,8 @@ Cast.c:
 #    2|         0: [VariableAccess] c
 #    2|             Type = [CharPointerType] char *
 #    2|             ValueCategory = lvalue
-#    2|         1: [CStyleCast,PointerConversion] (char *)...
-#    2|             Conversion = pointer conversion
+#    2|         1: [CStyleCast] (char *)...
+#    2|             Conversion = [PointerConversion] pointer conversion
 #    2|             Type = [CharPointerType] char *
 #    2|             ValueCategory = prvalue
 #    2|           expr: [VariableAccess] v
@@ -102,8 +102,8 @@ ConditionDecl.cpp:
 #    3|       0: [ConditionDeclExpr] (condition decl)
 #    3|           Type = [BoolType] bool
 #    3|           ValueCategory = prvalue
-#    3|         0: [BoolConversion,CStyleCast] (bool)...
-#    3|             Conversion = conversion to bool
+#    3|         0: [CStyleCast] (bool)...
+#    3|             Conversion = [BoolConversion] conversion to bool
 #    3|             Type = [BoolType] bool
 #    3|             ValueCategory = prvalue
 #    3|           expr: [VariableAccess] k
@@ -226,10 +226,10 @@ Conversion1.c:
 #    2|       0: [VariableDeclarationEntry] definition of i
 #    2|           Type = [IntType] int
 #    2|         init: [Initializer] initializer for i
-#    2|           expr: [CStyleCast,IntegralConversion] (int)...
-#    2|               Conversion = integral conversion
+#    2|           expr: [CStyleCast] (int)...
+#    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
-#    2|               Value = [CStyleCast,IntegralConversion] 1
+#    2|               Value = [CStyleCast] 1
 #    2|               ValueCategory = prvalue
 #    2|             expr: [Literal] 1
 #    2|                 Type = [IntType] int
@@ -253,19 +253,19 @@ Conversion2.c:
 #    2|             Type = [IntType] int
 #    2|             Value = [AddExpr] 12
 #    2|             ValueCategory = prvalue
-#    2|           0: [CStyleCast,IntegralConversion] (int)...
-#    2|               Conversion = integral conversion
+#    2|           0: [CStyleCast] (int)...
+#    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
-#    2|               Value = [CStyleCast,IntegralConversion] 5
+#    2|               Value = [CStyleCast] 5
 #    2|               ValueCategory = prvalue
 #    2|             expr: [Literal] 5
 #    2|                 Type = [IntType] int
 #    2|                 Value = [Literal] 5
 #    2|                 ValueCategory = prvalue
-#    2|           1: [CStyleCast,IntegralConversion] (int)...
-#    2|               Conversion = integral conversion
+#    2|           1: [CStyleCast] (int)...
+#    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
-#    2|               Value = [CStyleCast,IntegralConversion] 7
+#    2|               Value = [CStyleCast] 7
 #    2|               ValueCategory = prvalue
 #    2|             expr: [Literal] 7
 #    2|                 Type = [IntType] int
@@ -289,20 +289,20 @@ Conversion3.cpp:
 #    2|             Type = [IntType] int
 #    2|             Value = [AddExpr] 8
 #    2|             ValueCategory = prvalue
-#    2|           0: [CStyleCast,IntegralConversion] (int)...
-#    2|               Conversion = integral conversion
+#    2|           0: [CStyleCast] (int)...
+#    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
-#    2|               Value = [CStyleCast,IntegralConversion] 1
+#    2|               Value = [CStyleCast] 1
 #    2|               ValueCategory = prvalue
-#    2|             expr: [BoolConversion,CStyleCast] (bool)...
-#    2|                 Conversion = conversion to bool
+#    2|             expr: [CStyleCast] (bool)...
+#    2|                 Conversion = [BoolConversion] conversion to bool
 #    2|                 Type = [BoolType] bool
-#    2|                 Value = [BoolConversion,CStyleCast] 1
+#    2|                 Value = [CStyleCast] 1
 #    2|                 ValueCategory = prvalue
-#    2|               expr: [CStyleCast,IntegralConversion] (int)...
-#    2|                   Conversion = integral conversion
+#    2|               expr: [CStyleCast] (int)...
+#    2|                   Conversion = [IntegralConversion] integral conversion
 #    2|                   Type = [IntType] int
-#    2|                   Value = [CStyleCast,IntegralConversion] 1
+#    2|                   Value = [CStyleCast] 1
 #    2|                   ValueCategory = prvalue
 #    2|                 expr: [Literal] 5
 #    2|                     Type = [IntType] int
@@ -312,10 +312,10 @@ Conversion3.cpp:
 #    2|               Type = [IntType] int
 #    2|               Value = [ParenthesisExpr] 7
 #    2|               ValueCategory = prvalue
-#    2|             expr: [CStyleCast,IntegralConversion] (int)...
-#    2|                 Conversion = integral conversion
+#    2|             expr: [CStyleCast] (int)...
+#    2|                 Conversion = [IntegralConversion] integral conversion
 #    2|                 Type = [IntType] int
-#    2|                 Value = [CStyleCast,IntegralConversion] 7
+#    2|                 Value = [CStyleCast] 7
 #    2|                 ValueCategory = prvalue
 #    2|               expr: [Literal] 7
 #    2|                   Type = [IntType] int
@@ -339,10 +339,10 @@ Conversion4.c:
 #    2|             Type = [IntType] int
 #    2|             Value = [ParenthesisExpr] 7
 #    2|             ValueCategory = prvalue
-#    2|           expr: [CStyleCast,IntegralConversion] (int)...
-#    2|               Conversion = integral conversion
+#    2|           expr: [CStyleCast] (int)...
+#    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
-#    2|               Value = [CStyleCast,IntegralConversion] 7
+#    2|               Value = [CStyleCast] 7
 #    2|               ValueCategory = prvalue
 #    2|             expr: [Literal] 7
 #    2|                 Type = [IntType] int
@@ -426,8 +426,8 @@ DynamicCast.cpp:
 #    4|         expr: [FunctionCall] call to operator=
 #    4|             Type = [LValueReferenceType] Base &
 #    4|             ValueCategory = prvalue
-#-----|           -1: [BaseClassConversion,CStyleCast] (Base *)...
-#-----|               Conversion = base class conversion
+#-----|           -1: [CStyleCast] (Base *)...
+#-----|               Conversion = [BaseClassConversion] base class conversion
 #-----|               Type = [PointerType] Base *
 #-----|               ValueCategory = prvalue
 #-----|             expr: [ThisExpr] this
@@ -439,8 +439,8 @@ DynamicCast.cpp:
 #-----|             expr: [PointerDereferenceExpr] * ...
 #-----|                 Type = [SpecifiedType] const Base
 #-----|                 ValueCategory = lvalue
-#-----|               0: [BaseClassConversion,CStyleCast] (const Base *)...
-#-----|                   Conversion = base class conversion
+#-----|               0: [CStyleCast] (const Base *)...
+#-----|                   Conversion = [BaseClassConversion] base class conversion
 #-----|                   Type = [PointerType] const Base *
 #-----|                   ValueCategory = prvalue
 #-----|                 expr: [AddressOfExpr] & ...
@@ -495,7 +495,7 @@ DynamicCast.cpp:
 #    9|             Type = [PointerType] Derived *
 #    9|             ValueCategory = lvalue
 #    9|         1: [DynamicCast] dynamic_cast<Derived *>...
-#    9|             Conversion = dynamic_cast
+#    9|             Conversion = [DynamicCast] dynamic_cast
 #    9|             Type = [PointerType] Derived *
 #    9|             ValueCategory = prvalue
 #    9|           expr: [VariableAccess] bp
@@ -525,12 +525,12 @@ DynamicCast.cpp:
 #   13|           0: [ReferenceToExpr] (reference to)
 #   13|               Type = [LValueReferenceType] const Derived &
 #   13|               ValueCategory = prvalue
-#   13|             expr: [CStyleCast,GlvalueConversion] (const Derived)...
-#   13|                 Conversion = glvalue conversion
+#   13|             expr: [CStyleCast] (const Derived)...
+#   13|                 Conversion = [GlvalueConversion] glvalue conversion
 #   13|                 Type = [SpecifiedType] const Derived
 #   13|                 ValueCategory = lvalue
 #   13|               expr: [DynamicCast] dynamic_cast<Derived>...
-#   13|                   Conversion = dynamic_cast
+#   13|                   Conversion = [DynamicCast] dynamic_cast
 #   13|                   Type = [Class] Derived
 #   13|                   ValueCategory = lvalue
 #   13|                 expr: [ReferenceDereferenceExpr] (reference dereference)
@@ -644,10 +644,10 @@ Sizeof.c:
 #    2|       0: [VariableDeclarationEntry] definition of i
 #    2|           Type = [IntType] int
 #    2|         init: [Initializer] initializer for i
-#    2|           expr: [CStyleCast,IntegralConversion] (int)...
-#    2|               Conversion = integral conversion
+#    2|           expr: [CStyleCast] (int)...
+#    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [IntType] int
-#    2|               Value = [CStyleCast,IntegralConversion] 4
+#    2|               Value = [CStyleCast] 4
 #    2|               ValueCategory = prvalue
 #    2|             expr: [SizeofTypeOperator] sizeof(int)
 #    2|                 Type = [LongType] unsigned long
@@ -657,10 +657,10 @@ Sizeof.c:
 #    3|       0: [VariableDeclarationEntry] definition of j
 #    3|           Type = [IntType] int
 #    3|         init: [Initializer] initializer for j
-#    3|           expr: [CStyleCast,IntegralConversion] (int)...
-#    3|               Conversion = integral conversion
+#    3|           expr: [CStyleCast] (int)...
+#    3|               Conversion = [IntegralConversion] integral conversion
 #    3|               Type = [IntType] int
-#    3|               Value = [CStyleCast,IntegralConversion] 8
+#    3|               Value = [CStyleCast] 8
 #    3|               ValueCategory = prvalue
 #    3|             expr: [SizeofExprOperator] sizeof(<expr>)
 #    3|                 Type = [LongType] unsigned long
@@ -777,8 +777,8 @@ Throw.cpp:
 #    7|     0: [TryStmt] try { ... }
 #    7|       0: [Block] { ... }
 #    8|         0: [IfStmt] if (...) ... 
-#    8|           0: [BoolConversion,CStyleCast] (bool)...
-#    8|               Conversion = conversion to bool
+#    8|           0: [CStyleCast] (bool)...
+#    8|               Conversion = [BoolConversion] conversion to bool
 #    8|               Type = [BoolType] bool
 #    8|               ValueCategory = prvalue
 #    8|             expr: [VariableAccess] i
@@ -1030,10 +1030,10 @@ macro_etc.c:
 #   27|           0: [VariableAccess] i
 #   27|               Type = [PlainCharType] char
 #   27|               ValueCategory = lvalue
-#   27|           1: [CStyleCast,IntegralConversion] (char)...
-#   27|               Conversion = integral conversion
+#   27|           1: [CStyleCast] (char)...
+#   27|               Conversion = [IntegralConversion] integral conversion
 #   27|               Type = [PlainCharType] char
-#   27|               Value = [CStyleCast,IntegralConversion] 0
+#   27|               Value = [CStyleCast] 0
 #   27|               ValueCategory = prvalue
 #   27|             expr: [Literal,Zero] 0
 #   27|                 Type = [IntType] int
@@ -1042,8 +1042,8 @@ macro_etc.c:
 #   27|       1: [LTExpr] ... < ...
 #   27|           Type = [IntType] int
 #   27|           ValueCategory = prvalue
-#   27|         0: [CStyleCast,IntegralConversion] (int)...
-#   27|             Conversion = integral conversion
+#   27|         0: [CStyleCast] (int)...
+#   27|             Conversion = [IntegralConversion] integral conversion
 #   27|             Type = [IntType] int
 #   27|             ValueCategory = prvalue
 #   27|           expr: [VariableAccess] i
@@ -1067,8 +1067,8 @@ macro_etc.c:
 #   27|             0: [VariableAccess] t
 #   27|                 Type = [IntType] int
 #   27|                 ValueCategory = lvalue
-#   27|             1: [CStyleCast,IntegralConversion] (int)...
-#   27|                 Conversion = integral conversion
+#   27|             1: [CStyleCast] (int)...
+#   27|                 Conversion = [IntegralConversion] integral conversion
 #   27|                 Type = [IntType] int
 #   27|                 ValueCategory = prvalue
 #   27|               expr: [VariableAccess] i
@@ -1082,10 +1082,10 @@ macro_etc.c:
 #   28|           0: [VariableAccess] i
 #   28|               Type = [PlainCharType] char
 #   28|               ValueCategory = lvalue
-#   28|           1: [CStyleCast,IntegralConversion] (char)...
-#   28|               Conversion = integral conversion
+#   28|           1: [CStyleCast] (char)...
+#   28|               Conversion = [IntegralConversion] integral conversion
 #   28|               Type = [PlainCharType] char
-#   28|               Value = [CStyleCast,IntegralConversion] 0
+#   28|               Value = [CStyleCast] 0
 #   28|               ValueCategory = prvalue
 #   28|             expr: [Literal,Zero] 0
 #   28|                 Type = [IntType] int
@@ -1094,8 +1094,8 @@ macro_etc.c:
 #   28|       1: [LTExpr] ... < ...
 #   28|           Type = [IntType] int
 #   28|           ValueCategory = prvalue
-#   28|         0: [CStyleCast,IntegralConversion] (int)...
-#   28|             Conversion = integral conversion
+#   28|         0: [CStyleCast] (int)...
+#   28|             Conversion = [IntegralConversion] integral conversion
 #   28|             Type = [IntType] int
 #   28|             ValueCategory = prvalue
 #   28|           expr: [VariableAccess] i
@@ -1119,8 +1119,8 @@ macro_etc.c:
 #   28|             0: [VariableAccess] t
 #   28|                 Type = [IntType] int
 #   28|                 ValueCategory = lvalue
-#   28|             1: [CStyleCast,IntegralConversion] (int)...
-#   28|                 Conversion = integral conversion
+#   28|             1: [CStyleCast] (int)...
+#   28|                 Conversion = [IntegralConversion] integral conversion
 #   28|                 Type = [IntType] int
 #   28|                 ValueCategory = prvalue
 #   28|               expr: [VariableAccess] i
@@ -1157,8 +1157,8 @@ macro_etc.c:
 #   30|               Type = [IntType] int
 #   30|               Value = [Literal,Zero] 0
 #   30|               ValueCategory = prvalue
-#   30|         1: [CStyleCast,IntegralConversion] (char)...
-#   30|             Conversion = integral conversion
+#   30|         1: [CStyleCast] (char)...
+#   30|             Conversion = [IntegralConversion] integral conversion
 #   30|             Type = [PlainCharType] char
 #   30|             ValueCategory = prvalue
 #   30|           expr: [VariableAccess] t
@@ -1181,8 +1181,8 @@ macro_etc.c:
 #   32|         0: [VariableAccess] t
 #   32|             Type = [IntType] int
 #   32|             ValueCategory = prvalue(load)
-#   32|         1: [CStyleCast,IntegralConversion] (int)...
-#   32|             Conversion = integral conversion
+#   32|         1: [CStyleCast] (int)...
+#   32|             Conversion = [IntegralConversion] integral conversion
 #   32|             Type = [IntType] int
 #   32|             ValueCategory = prvalue
 #   32|           expr: [ArrayExpr] access to array
@@ -1207,6 +1207,19 @@ union_etc.cpp:
 #    2|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] S &&
+#    2| [Constructor] void S::S()
+#    2|   params: 
+#    2|   initializations: 
+#    2|   body: [Block] { ... }
+#    2|     0: [ReturnStmt] return ...
+#    2| [CopyConstructor] void S::S(S const&)
+#    2|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const S &
+#    2| [MoveConstructor] void S::S(S&&)
+#    2|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] S &&
 #    3| [CopyAssignmentOperator] S::U& S::U::operator=(S::U const public&)
 #    3|   params: 
 #-----|     0: [Parameter] p#0
@@ -1223,112 +1236,94 @@ union_etc.cpp:
 #    4|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] C &&
-#    8| [CopyAssignmentOperator] C& C::operator=(C const&)
-#    8|   params: 
+#    6| [VirtualFunction] void S::set_q(int)
+#    6|   params: 
+#    6|     0: [Parameter] val
+#    6|         Type = [IntType] int
+#    6|   body: [Block] { ... }
+#    6|     0: [ExprStmt] ExprStmt
+#    6|       0: [AssignExpr] ... = ...
+#    6|           Type = [IntType] int
+#    6|           ValueCategory = lvalue
+#    6|         0: [FieldAccess] x
+#    6|             Type = [IntType] int
+#    6|             ValueCategory = lvalue
+#-----|           -1: [ThisExpr] this
+#-----|               Type = [PointerType] S *
+#-----|               ValueCategory = prvalue(load)
+#    6|         1: [VariableAccess] val
+#    6|             Type = [IntType] int
+#    6|             ValueCategory = prvalue(load)
+#    6|     1: [ReturnStmt] return ...
+#    9| [CopyAssignmentOperator] C& C::operator=(C const&)
+#    9|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const C &
-#    8| [MoveAssignmentOperator] C& C::operator=(C&&)
-#    8|   params: 
+#    9| [MoveAssignmentOperator] C& C::operator=(C&&)
+#    9|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] C &&
-#   10| [CopyAssignmentOperator] C::S& C::S::operator=(C::S const public&)
-#   10|   params: 
-#-----|     0: [Parameter] p#0
-#-----|         Type = [LValueReferenceType] const S &
-#   10| [MoveAssignmentOperator] C::S& C::S::operator=(C::S&&)
-#   10|   params: 
-#-----|     0: [Parameter] p#0
-#-----|         Type = [RValueReferenceType] S &&
-#   11| [CopyAssignmentOperator] C::U& C::U::operator=(C::U const public&)
+#   11| [CopyAssignmentOperator] C::S& C::S::operator=(C::S const public&)
 #   11|   params: 
 #-----|     0: [Parameter] p#0
-#-----|         Type = [LValueReferenceType] const U &
-#   11| [MoveAssignmentOperator] C::U& C::U::operator=(C::U&&)
+#-----|         Type = [LValueReferenceType] const S &
+#   11| [MoveAssignmentOperator] C::S& C::S::operator=(C::S&&)
 #   11|   params: 
 #-----|     0: [Parameter] p#0
-#-----|         Type = [RValueReferenceType] U &&
-#   15| [CopyAssignmentOperator] U& U::operator=(U const&)
-#   15|   params: 
+#-----|         Type = [RValueReferenceType] S &&
+#   12| [CopyAssignmentOperator] C::U& C::U::operator=(C::U const public&)
+#   12|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const U &
-#   15| [MoveAssignmentOperator] U& U::operator=(U&&)
-#   15|   params: 
+#   12| [MoveAssignmentOperator] C::U& C::U::operator=(C::U&&)
+#   12|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] U &&
-#   16| [CopyAssignmentOperator] U::S& U::S::operator=(U::S const public&)
+#   16| [CopyAssignmentOperator] U& U::operator=(U const&)
 #   16|   params: 
 #-----|     0: [Parameter] p#0
-#-----|         Type = [LValueReferenceType] const S &
-#   16| [MoveAssignmentOperator] U::S& U::S::operator=(U::S&&)
+#-----|         Type = [LValueReferenceType] const U &
+#   16| [MoveAssignmentOperator] U& U::operator=(U&&)
 #   16|   params: 
 #-----|     0: [Parameter] p#0
-#-----|         Type = [RValueReferenceType] S &&
-#   17| [CopyAssignmentOperator] U::C& U::C::operator=(U::C const public&)
+#-----|         Type = [RValueReferenceType] U &&
+#   17| [CopyAssignmentOperator] U::S& U::S::operator=(U::S const public&)
 #   17|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const S &
+#   17| [MoveAssignmentOperator] U::S& U::S::operator=(U::S&&)
+#   17|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] S &&
+#   18| [CopyAssignmentOperator] U::C& U::C::operator=(U::C const public&)
+#   18|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [LValueReferenceType] const C &
-#   17| [MoveAssignmentOperator] U::C& U::C::operator=(U::C&&)
-#   17|   params: 
+#   18| [MoveAssignmentOperator] U::C& U::C::operator=(U::C&&)
+#   18|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] C &&
-#   21| [TopLevelFunction] int foo()
-#   21|   params: 
-#   21|   body: [Block] { ... }
-#   22|     0: [DeclStmt] declaration
-#   22|       0: [VariableDeclarationEntry] definition of s
-#   22|           Type = [Struct] S
-#   23|     1: [DeclStmt] declaration
-#   23|       0: [VariableDeclarationEntry] definition of c
-#   23|           Type = [Class] C
-#   24|     2: [DeclStmt] declaration
-#   24|       0: [VariableDeclarationEntry] definition of u
-#   24|           Type = [Union] U
-#   25|     3: [ExprStmt] ExprStmt
-#   25|       0: [AssignExpr] ... = ...
-#   25|           Type = [IntType] int
-#   25|           ValueCategory = lvalue
-#   25|         0: [FieldAccess] a
-#   25|             Type = [IntType] int
-#   25|             ValueCategory = lvalue
-#   25|           -1: [FieldAccess] u
-#   25|               Type = [NestedUnion] U
-#   25|               ValueCategory = lvalue
-#   25|             -1: [VariableAccess] s
-#   25|                 Type = [Struct] S
-#   25|                 ValueCategory = lvalue
-#   25|         1: [AssignExpr] ... = ...
-#   25|             Type = [IntType] int
-#   25|             ValueCategory = prvalue
-#   25|           0: [FieldAccess] e
-#   25|               Type = [IntType] int
-#   25|               ValueCategory = lvalue
-#   25|             -1: [FieldAccess] s
-#   25|                 Type = [NestedStruct] S
-#   25|                 ValueCategory = lvalue
-#   25|               -1: [VariableAccess] c
-#   25|                   Type = [Class] C
-#   25|                   ValueCategory = lvalue
-#   25|           1: [AssignExpr] ... = ...
-#   25|               Type = [IntType] int
-#   25|               ValueCategory = prvalue
-#   25|             0: [FieldAccess] i
-#   25|                 Type = [IntType] int
-#   25|                 ValueCategory = lvalue
-#   25|               -1: [FieldAccess] c
-#   25|                   Type = [NestedClass] C
-#   25|                   ValueCategory = lvalue
-#   25|                 -1: [VariableAccess] u
-#   25|                     Type = [Union] U
-#   25|                     ValueCategory = lvalue
-#   25|             1: [Literal] 43
-#   25|                 Type = [IntType] int
-#   25|                 Value = [Literal] 43
-#   25|                 ValueCategory = prvalue
-#   26|     4: [ExprStmt] ExprStmt
-#   26|       0: [AssignAddExpr] ... += ...
+#   22| [TopLevelFunction] int foo()
+#   22|   params: 
+#   22|   body: [Block] { ... }
+#   23|     0: [DeclStmt] declaration
+#   23|       0: [VariableDeclarationEntry] definition of s
+#   23|           Type = [Struct] S
+#   23|         init: [Initializer] initializer for s
+#   23|           expr: [ConstructorCall] call to S
+#   23|               Type = [VoidType] void
+#   23|               ValueCategory = prvalue
+#   24|     1: [DeclStmt] declaration
+#   24|       0: [VariableDeclarationEntry] definition of c
+#   24|           Type = [Class] C
+#   25|     2: [DeclStmt] declaration
+#   25|       0: [VariableDeclarationEntry] definition of u
+#   25|           Type = [Union] U
+#   26|     3: [ExprStmt] ExprStmt
+#   26|       0: [AssignExpr] ... = ...
 #   26|           Type = [IntType] int
 #   26|           ValueCategory = lvalue
-#   26|         0: [FieldAccess] b
+#   26|         0: [FieldAccess] a
 #   26|             Type = [IntType] int
 #   26|             ValueCategory = lvalue
 #   26|           -1: [FieldAccess] u
@@ -1337,31 +1332,187 @@ union_etc.cpp:
 #   26|             -1: [VariableAccess] s
 #   26|                 Type = [Struct] S
 #   26|                 ValueCategory = lvalue
-#   26|         1: [ParenthesisExpr] (...)
+#   26|         1: [AssignExpr] ... = ...
 #   26|             Type = [IntType] int
 #   26|             ValueCategory = prvalue
-#   26|           expr: [AddExpr] ... + ...
+#   26|           0: [FieldAccess] e
+#   26|               Type = [IntType] int
+#   26|               ValueCategory = lvalue
+#   26|             -1: [FieldAccess] s
+#   26|                 Type = [NestedStruct] S
+#   26|                 ValueCategory = lvalue
+#   26|               -1: [VariableAccess] c
+#   26|                   Type = [Class] C
+#   26|                   ValueCategory = lvalue
+#   26|           1: [AssignExpr] ... = ...
 #   26|               Type = [IntType] int
 #   26|               ValueCategory = prvalue
 #   26|             0: [FieldAccess] i
 #   26|                 Type = [IntType] int
-#   26|                 ValueCategory = prvalue(load)
+#   26|                 ValueCategory = lvalue
 #   26|               -1: [FieldAccess] c
 #   26|                   Type = [NestedClass] C
 #   26|                   ValueCategory = lvalue
 #   26|                 -1: [VariableAccess] u
 #   26|                     Type = [Union] U
 #   26|                     ValueCategory = lvalue
-#   26|             1: [FieldAccess] j
+#   26|             1: [Literal] 43
 #   26|                 Type = [IntType] int
-#   26|                 ValueCategory = prvalue(load)
-#   26|               -1: [VariableAccess] u
-#   26|                   Type = [Union] U
-#   26|                   ValueCategory = lvalue
-#   27|     5: [ReturnStmt] return ...
-#   27|       0: [FieldAccess] g
+#   26|                 Value = [Literal] 43
+#   26|                 ValueCategory = prvalue
+#   27|     4: [ExprStmt] ExprStmt
+#   27|       0: [AssignAddExpr] ... += ...
 #   27|           Type = [IntType] int
-#   27|           ValueCategory = prvalue(load)
-#   27|         -1: [VariableAccess] c
-#   27|             Type = [Class] C
+#   27|           ValueCategory = lvalue
+#   27|         0: [FieldAccess] b
+#   27|             Type = [IntType] int
 #   27|             ValueCategory = lvalue
+#   27|           -1: [FieldAccess] u
+#   27|               Type = [NestedUnion] U
+#   27|               ValueCategory = lvalue
+#   27|             -1: [VariableAccess] s
+#   27|                 Type = [Struct] S
+#   27|                 ValueCategory = lvalue
+#   27|         1: [ParenthesisExpr] (...)
+#   27|             Type = [IntType] int
+#   27|             ValueCategory = prvalue
+#   27|           expr: [AddExpr] ... + ...
+#   27|               Type = [IntType] int
+#   27|               ValueCategory = prvalue
+#   27|             0: [FieldAccess] i
+#   27|                 Type = [IntType] int
+#   27|                 ValueCategory = prvalue(load)
+#   27|               -1: [FieldAccess] c
+#   27|                   Type = [NestedClass] C
+#   27|                   ValueCategory = lvalue
+#   27|                 -1: [VariableAccess] u
+#   27|                     Type = [Union] U
+#   27|                     ValueCategory = lvalue
+#   27|             1: [FieldAccess] j
+#   27|                 Type = [IntType] int
+#   27|                 ValueCategory = prvalue(load)
+#   27|               -1: [VariableAccess] u
+#   27|                   Type = [Union] U
+#   27|                   ValueCategory = lvalue
+#   28|     5: [ReturnStmt] return ...
+#   28|       0: [FieldAccess] g
+#   28|           Type = [IntType] int
+#   28|           ValueCategory = prvalue(load)
+#   28|         -1: [VariableAccess] c
+#   28|             Type = [Class] C
+#   28|             ValueCategory = lvalue
+#   31| [CopyAssignmentOperator] T& T::operator=(T const&)
+#   31|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const T &
+#   31| [MoveAssignmentOperator] T& T::operator=(T&&)
+#   31|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] T &&
+#   31| [Constructor] void T::T()
+#   31|   params: 
+#   31| [CopyConstructor] void T::T(T const&)
+#   31|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const T &
+#   31| [MoveConstructor] void T::T(T&&)
+#   31|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] T &&
+#   33| [VirtualFunction] void T::set_q(int)
+#   33|   params: 
+#   33|     0: [Parameter] val
+#   33|         Type = [IntType] int
+#   33|   body: [Block] { ... }
+#   33|     0: [ExprStmt] ExprStmt
+#   33|       0: [AssignExpr] ... = ...
+#   33|           Type = [IntType] int
+#   33|           ValueCategory = lvalue
+#   33|         0: [FieldAccess] q
+#   33|             Type = [IntType] int
+#   33|             ValueCategory = lvalue
+#-----|           -1: [ThisExpr] this
+#-----|               Type = [PointerType] T *
+#-----|               ValueCategory = prvalue(load)
+#   33|         1: [VariableAccess] val
+#   33|             Type = [IntType] int
+#   33|             ValueCategory = prvalue(load)
+#   33|     1: [ReturnStmt] return ...
+#   36| [TopLevelFunction] int bar()
+#   36|   params: 
+#   36|   body: [Block] { ... }
+#   37|     0: [DeclStmt] declaration
+#   37|       0: [VariableDeclarationEntry] definition of s
+#   37|           Type = [PointerType] const T *
+#   37|         init: [Initializer] initializer for s
+#   37|           expr: [CStyleCast] (const T *)...
+#   37|               Conversion = [PointerConversion] pointer conversion
+#   37|               Type = [PointerType] const T *
+#   37|               ValueCategory = prvalue
+#   37|             expr: [AddressOfExpr] & ...
+#   37|                 Type = [PointerType] C *
+#   37|                 ValueCategory = prvalue
+#   37|               0: [VariableAccess] c
+#   37|                   Type = [Class] C
+#   37|                   ValueCategory = lvalue
+#   38|     1: [DeclStmt] declaration
+#   38|       0: [VariableDeclarationEntry] definition of t
+#   38|           Type = [PointerType] const S *
+#   38|         init: [Initializer] initializer for t
+#   38|           expr: [StaticCast] static_cast<const S *>...
+#   38|               Conversion = [BaseClassConversion] base class conversion
+#   38|               Type = [PointerType] const S *
+#   38|               ValueCategory = prvalue
+#   38|             expr: [VariableAccess] s
+#   38|                 Type = [PointerType] const T *
+#   38|                 ValueCategory = prvalue(load)
+#   39|     2: [DeclStmt] declaration
+#   39|       0: [VariableDeclarationEntry] definition of x
+#   39|           Type = [PointerType] T *
+#   39|         init: [Initializer] initializer for x
+#   39|           expr: [ConstCast] const_cast<T *>...
+#   39|               Conversion = [PointerConversion] pointer conversion
+#   39|               Type = [PointerType] T *
+#   39|               ValueCategory = prvalue
+#   39|             expr: [VariableAccess] s
+#   39|                 Type = [PointerType] const T *
+#   39|                 ValueCategory = prvalue(load)
+#   40|     3: [DeclStmt] declaration
+#   40|       0: [VariableDeclarationEntry] definition of v
+#   40|           Type = [PointerType] const T *
+#   40|         init: [Initializer] initializer for v
+#   40|           expr: [DynamicCast] dynamic_cast<const T *>...
+#   40|               Conversion = [DynamicCast] dynamic_cast
+#   40|               Type = [PointerType] const T *
+#   40|               ValueCategory = prvalue
+#   40|             expr: [VariableAccess] t
+#   40|                 Type = [PointerType] const S *
+#   40|                 ValueCategory = prvalue(load)
+#   41|     4: [DeclStmt] declaration
+#   41|       0: [VariableDeclarationEntry] definition of w
+#   41|           Type = [PointerType] S *
+#   41|         init: [Initializer] initializer for w
+#   41|           expr: [ReinterpretCast] reinterpret_cast<S *>...
+#   41|               Conversion = [PointerConversion] pointer conversion
+#   41|               Type = [PointerType] S *
+#   41|               ValueCategory = prvalue
+#   41|             expr: [AddressOfExpr] & ...
+#   41|                 Type = [PointerType] C *
+#   41|                 ValueCategory = prvalue
+#   41|               0: [VariableAccess] c
+#   41|                   Type = [Class] C
+#   41|                   ValueCategory = lvalue
+#   42|     5: [ReturnStmt] return ...
+#   42|       0: [FieldAccess] b
+#   42|           Type = [IntType] int
+#   42|           ValueCategory = prvalue(load)
+#   42|         -1: [FieldAccess] c
+#   42|             Type = [NestedClass] C
+#   42|             ValueCategory = lvalue
+#   42|           -1: [CStyleCast] (S *)...
+#   42|               Conversion = [BaseClassConversion] base class conversion
+#   42|               Type = [PointerType] S *
+#   42|               ValueCategory = prvalue
+#   42|             expr: [VariableAccess] x
+#   42|                 Type = [PointerType] T *
+#   42|                 ValueCategory = prvalue(load)

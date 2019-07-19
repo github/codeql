@@ -151,12 +151,13 @@ class PrintASTNode extends TPrintASTNode {
 }
 
 /**
- * Retrieves the canonical QL class for entity `el`
+ * Retrieves the canonical QL class(es) for entity `el`
  */
 private string qlClass(ElementBase el) { result = "[" + concat(el.getCanonicalQLClass(), ",") + "] " }
 
 // Do not delete this - it is useful for QL class discovery
 //private string qlClass(ElementBase el) { result = "["+ concat(el.getAQlClass(), ",") + "] " }
+
 /**
  * A node representing an AST node.
  */
@@ -242,7 +243,7 @@ class CastNode extends ConversionNode {
     result = super.getProperty(key)
     or
     key = "Conversion" and
-    result = cast.getSemanticConversionString()
+    result = "[" + qlConversion(cast) + "] " + cast.getSemanticConversionString()
   }
 }
 

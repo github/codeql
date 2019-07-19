@@ -179,8 +179,8 @@ bad_asts.cpp:
 #   27|       0: [VariableDeclarationEntry] definition of b
 #   27|           Type = [Struct] Point
 #   27|         init: [Initializer] initializer for b
-#   27|           expr: [CStyleCast,GlvalueConversion] (Point)...
-#   27|               Conversion = glvalue conversion
+#   27|           expr: [CStyleCast] (Point)...
+#   27|               Conversion = [GlvalueConversion] glvalue conversion
 #   27|               Type = [Struct] Point
 #   27|               ValueCategory = prvalue(load)
 #   27|             expr: [ReferenceDereferenceExpr] (reference dereference)
@@ -237,10 +237,10 @@ ir.cpp:
 #    2|       0: [VariableDeclarationEntry] definition of c_i
 #    2|           Type = [PlainCharType] char
 #    2|         init: [Initializer] initializer for c_i
-#    2|           expr: [CStyleCast,IntegralConversion] (char)...
-#    2|               Conversion = integral conversion
+#    2|           expr: [CStyleCast] (char)...
+#    2|               Conversion = [IntegralConversion] integral conversion
 #    2|               Type = [PlainCharType] char
-#    2|               Value = [CStyleCast,IntegralConversion] 1
+#    2|               Value = [CStyleCast] 1
 #    2|               ValueCategory = prvalue
 #    2|             expr: [Literal] 1
 #    2|                 Type = [IntType] int
@@ -258,10 +258,10 @@ ir.cpp:
 #    5|       0: [VariableDeclarationEntry] definition of sc_i
 #    5|           Type = [SignedCharType] signed char
 #    5|         init: [Initializer] initializer for sc_i
-#    5|           expr: [CStyleCast,IntegralConversion] (signed char)...
-#    5|               Conversion = integral conversion
+#    5|           expr: [CStyleCast] (signed char)...
+#    5|               Conversion = [IntegralConversion] integral conversion
 #    5|               Type = [SignedCharType] signed char
-#    5|               Value = [CStyleCast,IntegralConversion] -1
+#    5|               Value = [CStyleCast] -1
 #    5|               ValueCategory = prvalue
 #    5|             expr: [UnaryMinusExpr] - ...
 #    5|                 Type = [IntType] int
@@ -275,10 +275,10 @@ ir.cpp:
 #    6|       0: [VariableDeclarationEntry] definition of sc_c
 #    6|           Type = [SignedCharType] signed char
 #    6|         init: [Initializer] initializer for sc_c
-#    6|           expr: [CStyleCast,IntegralConversion] (signed char)...
-#    6|               Conversion = integral conversion
+#    6|           expr: [CStyleCast] (signed char)...
+#    6|               Conversion = [IntegralConversion] integral conversion
 #    6|               Type = [SignedCharType] signed char
-#    6|               Value = [CStyleCast,IntegralConversion] 65
+#    6|               Value = [CStyleCast] 65
 #    6|               ValueCategory = prvalue
 #    6|             expr: [CharLiteral] 65
 #    6|                 Type = [PlainCharType] char
@@ -288,10 +288,10 @@ ir.cpp:
 #    8|       0: [VariableDeclarationEntry] definition of uc_i
 #    8|           Type = [UnsignedCharType] unsigned char
 #    8|         init: [Initializer] initializer for uc_i
-#    8|           expr: [CStyleCast,IntegralConversion] (unsigned char)...
-#    8|               Conversion = integral conversion
+#    8|           expr: [CStyleCast] (unsigned char)...
+#    8|               Conversion = [IntegralConversion] integral conversion
 #    8|               Type = [UnsignedCharType] unsigned char
-#    8|               Value = [CStyleCast,IntegralConversion] 5
+#    8|               Value = [CStyleCast] 5
 #    8|               ValueCategory = prvalue
 #    8|             expr: [Literal] 5
 #    8|                 Type = [IntType] int
@@ -301,10 +301,10 @@ ir.cpp:
 #    9|       0: [VariableDeclarationEntry] definition of uc_c
 #    9|           Type = [UnsignedCharType] unsigned char
 #    9|         init: [Initializer] initializer for uc_c
-#    9|           expr: [CStyleCast,IntegralConversion] (unsigned char)...
-#    9|               Conversion = integral conversion
+#    9|           expr: [CStyleCast] (unsigned char)...
+#    9|               Conversion = [IntegralConversion] integral conversion
 #    9|               Type = [UnsignedCharType] unsigned char
-#    9|               Value = [CStyleCast,IntegralConversion] 65
+#    9|               Value = [CStyleCast] 65
 #    9|               ValueCategory = prvalue
 #    9|             expr: [CharLiteral] 65
 #    9|                 Type = [PlainCharType] char
@@ -314,10 +314,10 @@ ir.cpp:
 #   11|       0: [VariableDeclarationEntry] definition of s
 #   11|           Type = [ShortType] short
 #   11|         init: [Initializer] initializer for s
-#   11|           expr: [CStyleCast,IntegralConversion] (short)...
-#   11|               Conversion = integral conversion
+#   11|           expr: [CStyleCast] (short)...
+#   11|               Conversion = [IntegralConversion] integral conversion
 #   11|               Type = [ShortType] short
-#   11|               Value = [CStyleCast,IntegralConversion] 5
+#   11|               Value = [CStyleCast] 5
 #   11|               ValueCategory = prvalue
 #   11|             expr: [Literal] 5
 #   11|                 Type = [IntType] int
@@ -327,10 +327,10 @@ ir.cpp:
 #   12|       0: [VariableDeclarationEntry] definition of us
 #   12|           Type = [ShortType] unsigned short
 #   12|         init: [Initializer] initializer for us
-#   12|           expr: [CStyleCast,IntegralConversion] (unsigned short)...
-#   12|               Conversion = integral conversion
+#   12|           expr: [CStyleCast] (unsigned short)...
+#   12|               Conversion = [IntegralConversion] integral conversion
 #   12|               Type = [ShortType] unsigned short
-#   12|               Value = [CStyleCast,IntegralConversion] 5
+#   12|               Value = [CStyleCast] 5
 #   12|               ValueCategory = prvalue
 #   12|             expr: [Literal] 5
 #   12|                 Type = [IntType] int
@@ -348,10 +348,10 @@ ir.cpp:
 #   15|       0: [VariableDeclarationEntry] definition of ui
 #   15|           Type = [IntType] unsigned int
 #   15|         init: [Initializer] initializer for ui
-#   15|           expr: [CStyleCast,IntegralConversion] (unsigned int)...
-#   15|               Conversion = integral conversion
+#   15|           expr: [CStyleCast] (unsigned int)...
+#   15|               Conversion = [IntegralConversion] integral conversion
 #   15|               Type = [IntType] unsigned int
-#   15|               Value = [CStyleCast,IntegralConversion] 5
+#   15|               Value = [CStyleCast] 5
 #   15|               ValueCategory = prvalue
 #   15|             expr: [Literal] 5
 #   15|                 Type = [IntType] int
@@ -361,10 +361,10 @@ ir.cpp:
 #   17|       0: [VariableDeclarationEntry] definition of l
 #   17|           Type = [LongType] long
 #   17|         init: [Initializer] initializer for l
-#   17|           expr: [CStyleCast,IntegralConversion] (long)...
-#   17|               Conversion = integral conversion
+#   17|           expr: [CStyleCast] (long)...
+#   17|               Conversion = [IntegralConversion] integral conversion
 #   17|               Type = [LongType] long
-#   17|               Value = [CStyleCast,IntegralConversion] 5
+#   17|               Value = [CStyleCast] 5
 #   17|               ValueCategory = prvalue
 #   17|             expr: [Literal] 5
 #   17|                 Type = [IntType] int
@@ -374,10 +374,10 @@ ir.cpp:
 #   18|       0: [VariableDeclarationEntry] definition of ul
 #   18|           Type = [LongType] unsigned long
 #   18|         init: [Initializer] initializer for ul
-#   18|           expr: [CStyleCast,IntegralConversion] (unsigned long)...
-#   18|               Conversion = integral conversion
+#   18|           expr: [CStyleCast] (unsigned long)...
+#   18|               Conversion = [IntegralConversion] integral conversion
 #   18|               Type = [LongType] unsigned long
-#   18|               Value = [CStyleCast,IntegralConversion] 5
+#   18|               Value = [CStyleCast] 5
 #   18|               ValueCategory = prvalue
 #   18|             expr: [Literal] 5
 #   18|                 Type = [IntType] int
@@ -387,10 +387,10 @@ ir.cpp:
 #   20|       0: [VariableDeclarationEntry] definition of ll_i
 #   20|           Type = [LongLongType] long long
 #   20|         init: [Initializer] initializer for ll_i
-#   20|           expr: [CStyleCast,IntegralConversion] (long long)...
-#   20|               Conversion = integral conversion
+#   20|           expr: [CStyleCast] (long long)...
+#   20|               Conversion = [IntegralConversion] integral conversion
 #   20|               Type = [LongLongType] long long
-#   20|               Value = [CStyleCast,IntegralConversion] 5
+#   20|               Value = [CStyleCast] 5
 #   20|               ValueCategory = prvalue
 #   20|             expr: [Literal] 5
 #   20|                 Type = [IntType] int
@@ -408,10 +408,10 @@ ir.cpp:
 #   22|       0: [VariableDeclarationEntry] definition of ull_i
 #   22|           Type = [LongLongType] unsigned long long
 #   22|         init: [Initializer] initializer for ull_i
-#   22|           expr: [CStyleCast,IntegralConversion] (unsigned long long)...
-#   22|               Conversion = integral conversion
+#   22|           expr: [CStyleCast] (unsigned long long)...
+#   22|               Conversion = [IntegralConversion] integral conversion
 #   22|               Type = [LongLongType] unsigned long long
-#   22|               Value = [CStyleCast,IntegralConversion] 5
+#   22|               Value = [CStyleCast] 5
 #   22|               ValueCategory = prvalue
 #   22|             expr: [Literal] 5
 #   22|                 Type = [IntType] int
@@ -445,10 +445,10 @@ ir.cpp:
 #   28|       0: [VariableDeclarationEntry] definition of wc_i
 #   28|           Type = [Wchar_t,WideCharType] wchar_t
 #   28|         init: [Initializer] initializer for wc_i
-#   28|           expr: [CStyleCast,IntegralConversion] (wchar_t)...
-#   28|               Conversion = integral conversion
+#   28|           expr: [CStyleCast] (wchar_t)...
+#   28|               Conversion = [IntegralConversion] integral conversion
 #   28|               Type = [Wchar_t,WideCharType] wchar_t
-#   28|               Value = [CStyleCast,IntegralConversion] 5
+#   28|               Value = [CStyleCast] 5
 #   28|               ValueCategory = prvalue
 #   28|             expr: [Literal] 5
 #   28|                 Type = [IntType] int
@@ -482,10 +482,10 @@ ir.cpp:
 #   34|       0: [VariableDeclarationEntry] definition of f_i
 #   34|           Type = [FloatType] float
 #   34|         init: [Initializer] initializer for f_i
-#   34|           expr: [CStyleCast,IntegralToFloatingPointConversion] (float)...
-#   34|               Conversion = integral to floating point conversion
+#   34|           expr: [CStyleCast] (float)...
+#   34|               Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 #   34|               Type = [FloatType] float
-#   34|               Value = [CStyleCast,IntegralToFloatingPointConversion] 1.0
+#   34|               Value = [CStyleCast] 1.0
 #   34|               ValueCategory = prvalue
 #   34|             expr: [Literal] 1
 #   34|                 Type = [IntType] int
@@ -503,10 +503,10 @@ ir.cpp:
 #   36|       0: [VariableDeclarationEntry] definition of f_d
 #   36|           Type = [FloatType] float
 #   36|         init: [Initializer] initializer for f_d
-#   36|           expr: [CStyleCast,FloatingPointConversion] (float)...
-#   36|               Conversion = floating point conversion
+#   36|           expr: [CStyleCast] (float)...
+#   36|               Conversion = [FloatingPointConversion] floating point conversion
 #   36|               Type = [FloatType] float
-#   36|               Value = [CStyleCast,FloatingPointConversion] 1.0
+#   36|               Value = [CStyleCast] 1.0
 #   36|               ValueCategory = prvalue
 #   36|             expr: [Literal] 1.0
 #   36|                 Type = [DoubleType] double
@@ -516,10 +516,10 @@ ir.cpp:
 #   38|       0: [VariableDeclarationEntry] definition of d_i
 #   38|           Type = [DoubleType] double
 #   38|         init: [Initializer] initializer for d_i
-#   38|           expr: [CStyleCast,IntegralToFloatingPointConversion] (double)...
-#   38|               Conversion = integral to floating point conversion
+#   38|           expr: [CStyleCast] (double)...
+#   38|               Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 #   38|               Type = [DoubleType] double
-#   38|               Value = [CStyleCast,IntegralToFloatingPointConversion] 1.0
+#   38|               Value = [CStyleCast] 1.0
 #   38|               ValueCategory = prvalue
 #   38|             expr: [Literal] 1
 #   38|                 Type = [IntType] int
@@ -529,10 +529,10 @@ ir.cpp:
 #   39|       0: [VariableDeclarationEntry] definition of d_f
 #   39|           Type = [DoubleType] double
 #   39|         init: [Initializer] initializer for d_f
-#   39|           expr: [CStyleCast,FloatingPointConversion] (double)...
-#   39|               Conversion = floating point conversion
+#   39|           expr: [CStyleCast] (double)...
+#   39|               Conversion = [FloatingPointConversion] floating point conversion
 #   39|               Type = [DoubleType] double
-#   39|               Value = [CStyleCast,FloatingPointConversion] 1.0
+#   39|               Value = [CStyleCast] 1.0
 #   39|               ValueCategory = prvalue
 #   39|             expr: [Literal] 1.0
 #   39|                 Type = [FloatType] float
@@ -570,10 +570,10 @@ ir.cpp:
 #   45|       0: [VariableDeclarationEntry] definition of y
 #   45|           Type = [ShortType] short
 #   45|         init: [Initializer] initializer for y
-#   45|           expr: [CStyleCast,IntegralConversion] (short)...
-#   45|               Conversion = integral conversion
+#   45|           expr: [CStyleCast] (short)...
+#   45|               Conversion = [IntegralConversion] integral conversion
 #   45|               Type = [ShortType] short
-#   45|               Value = [CStyleCast,IntegralConversion] 7
+#   45|               Value = [CStyleCast] 7
 #   45|               ValueCategory = prvalue
 #   45|             expr: [Literal] 7
 #   45|                 Type = [IntType] int
@@ -586,8 +586,8 @@ ir.cpp:
 #   46|         0: [VariableAccess] y
 #   46|             Type = [ShortType] short
 #   46|             ValueCategory = lvalue
-#   46|         1: [CStyleCast,IntegralConversion] (short)...
-#   46|             Conversion = integral conversion
+#   46|         1: [CStyleCast] (short)...
+#   46|             Conversion = [IntegralConversion] integral conversion
 #   46|             Type = [ShortType] short
 #   46|             ValueCategory = prvalue
 #   46|           expr: [AddExpr] ... + ...
@@ -596,8 +596,8 @@ ir.cpp:
 #   46|             0: [VariableAccess] x
 #   46|                 Type = [IntType] int
 #   46|                 ValueCategory = prvalue(load)
-#   46|             1: [CStyleCast,IntegralConversion] (int)...
-#   46|                 Conversion = integral conversion
+#   46|             1: [CStyleCast] (int)...
+#   46|                 Conversion = [IntegralConversion] integral conversion
 #   46|                 Type = [IntType] int
 #   46|                 ValueCategory = prvalue
 #   46|               expr: [VariableAccess] y
@@ -616,8 +616,8 @@ ir.cpp:
 #   47|           0: [VariableAccess] x
 #   47|               Type = [IntType] int
 #   47|               ValueCategory = prvalue(load)
-#   47|           1: [CStyleCast,IntegralConversion] (int)...
-#   47|               Conversion = integral conversion
+#   47|           1: [CStyleCast] (int)...
+#   47|               Conversion = [IntegralConversion] integral conversion
 #   47|               Type = [IntType] int
 #   47|               ValueCategory = prvalue
 #   47|             expr: [VariableAccess] y
@@ -950,15 +950,15 @@ ir.cpp:
 #   84|         0: [VariableAccess] z
 #   84|             Type = [IntType] int
 #   84|             ValueCategory = lvalue
-#   84|         1: [CStyleCast,IntegralConversion] (int)...
-#   84|             Conversion = integral conversion
+#   84|         1: [CStyleCast] (int)...
+#   84|             Conversion = [IntegralConversion] integral conversion
 #   84|             Type = [IntType] int
 #   84|             ValueCategory = prvalue
 #   84|           expr: [NotExpr] ! ...
 #   84|               Type = [BoolType] bool
 #   84|               ValueCategory = prvalue
-#   84|             0: [BoolConversion,CStyleCast] (bool)...
-#   84|                 Conversion = conversion to bool
+#   84|             0: [CStyleCast] (bool)...
+#   84|                 Conversion = [BoolConversion] conversion to bool
 #   84|                 Type = [BoolType] bool
 #   84|                 ValueCategory = prvalue
 #   84|               expr: [VariableAccess] x
@@ -1567,8 +1567,8 @@ ir.cpp:
 #  160|         0: [VariableAccess] i
 #  160|             Type = [IntType] int
 #  160|             ValueCategory = lvalue
-#  160|         1: [CStyleCast,IntegralConversion] (int)...
-#  160|             Conversion = integral conversion
+#  160|         1: [CStyleCast] (int)...
+#  160|             Conversion = [IntegralConversion] integral conversion
 #  160|             Type = [IntType] int
 #  160|             ValueCategory = prvalue
 #  160|           expr: [PointerDiffExpr] ... - ...
@@ -1617,8 +1617,8 @@ ir.cpp:
 #  167|         0: [VariableAccess] b
 #  167|             Type = [BoolType] bool
 #  167|             ValueCategory = lvalue
-#  167|         1: [BoolConversion,CStyleCast] (bool)...
-#  167|             Conversion = conversion to bool
+#  167|         1: [CStyleCast] (bool)...
+#  167|             Conversion = [BoolConversion] conversion to bool
 #  167|             Type = [BoolType] bool
 #  167|             ValueCategory = prvalue
 #  167|           expr: [VariableAccess] p
@@ -1634,8 +1634,8 @@ ir.cpp:
 #  168|         1: [NotExpr] ! ...
 #  168|             Type = [BoolType] bool
 #  168|             ValueCategory = prvalue
-#  168|           0: [BoolConversion,CStyleCast] (bool)...
-#  168|               Conversion = conversion to bool
+#  168|           0: [CStyleCast] (bool)...
+#  168|               Conversion = [BoolConversion] conversion to bool
 #  168|               Type = [BoolType] bool
 #  168|               ValueCategory = prvalue
 #  168|             expr: [VariableAccess] p
@@ -1822,8 +1822,8 @@ ir.cpp:
 #  189|       0: [VariableDeclarationEntry] definition of pwc
 #  189|           Type = [PointerType] wchar_t *
 #  189|         init: [Initializer] initializer for pwc
-#  189|           expr: [CStyleCast,PointerConversion] (wchar_t *)...
-#  189|               Conversion = pointer conversion
+#  189|           expr: [CStyleCast] (wchar_t *)...
+#  189|               Conversion = [PointerConversion] pointer conversion
 #  189|               Type = [PointerType] wchar_t *
 #  189|               ValueCategory = prvalue
 #  189|             expr: [ArrayToPointerConversion] array to pointer conversion
@@ -2041,10 +2041,10 @@ ir.cpp:
 #  219|       0: [VariableDeclarationEntry] definition of y
 #  219|           Type = [ShortType] short
 #  219|         init: [Initializer] initializer for y
-#  219|           expr: [CStyleCast,IntegralConversion] (short)...
-#  219|               Conversion = integral conversion
+#  219|           expr: [CStyleCast] (short)...
+#  219|               Conversion = [IntegralConversion] integral conversion
 #  219|               Type = [ShortType] short
-#  219|               Value = [CStyleCast,IntegralConversion] 5
+#  219|               Value = [CStyleCast] 5
 #  219|               ValueCategory = prvalue
 #  219|             expr: [Literal] 5
 #  219|                 Type = [IntType] int
@@ -2075,10 +2075,10 @@ ir.cpp:
 #  226|       0: [VariableDeclarationEntry] definition of z
 #  226|           Type = [LongType] long
 #  226|         init: [Initializer] initializer for z
-#  226|           expr: [CStyleCast,IntegralConversion] (long)...
-#  226|               Conversion = integral conversion
+#  226|           expr: [CStyleCast] (long)...
+#  226|               Conversion = [IntegralConversion] integral conversion
 #  226|               Type = [LongType] long
-#  226|               Value = [CStyleCast,IntegralConversion] 7
+#  226|               Value = [CStyleCast] 7
 #  226|               ValueCategory = prvalue
 #  226|             expr: [Literal] 7
 #  226|                 Type = [IntType] int
@@ -3311,10 +3311,10 @@ ir.cpp:
 #  497|       0: [VariableDeclarationEntry] definition of p
 #  497|           Type = [IntPointerType] int *
 #  497|         init: [Initializer] initializer for p
-#  497|           expr: [CStyleCast,PointerConversion] (int *)...
-#  497|               Conversion = pointer conversion
+#  497|           expr: [CStyleCast] (int *)...
+#  497|               Conversion = [PointerConversion] pointer conversion
 #  497|               Type = [IntPointerType] int *
-#  497|               Value = [CStyleCast,PointerConversion] 0
+#  497|               Value = [CStyleCast] 0
 #  497|               ValueCategory = prvalue
 #  497|             expr: [Literal,Zero] 0
 #  497|                 Type = [NullPointerType] decltype(nullptr)
@@ -3324,10 +3324,10 @@ ir.cpp:
 #  498|       0: [VariableDeclarationEntry] definition of q
 #  498|           Type = [IntPointerType] int *
 #  498|         init: [Initializer] initializer for q
-#  498|           expr: [CStyleCast,IntegralToPointerConversion] (int *)...
-#  498|               Conversion = integral to pointer conversion
+#  498|           expr: [CStyleCast] (int *)...
+#  498|               Conversion = [IntegralToPointerConversion] integral to pointer conversion
 #  498|               Type = [IntPointerType] int *
-#  498|               Value = [CStyleCast,IntegralToPointerConversion] 0
+#  498|               Value = [CStyleCast] 0
 #  498|               ValueCategory = prvalue
 #  498|             expr: [Literal,Zero] 0
 #  498|                 Type = [IntType] int
@@ -3340,10 +3340,10 @@ ir.cpp:
 #  499|         0: [VariableAccess] p
 #  499|             Type = [IntPointerType] int *
 #  499|             ValueCategory = lvalue
-#  499|         1: [CStyleCast,PointerConversion] (int *)...
-#  499|             Conversion = pointer conversion
+#  499|         1: [CStyleCast] (int *)...
+#  499|             Conversion = [PointerConversion] pointer conversion
 #  499|             Type = [IntPointerType] int *
-#  499|             Value = [CStyleCast,PointerConversion] 0
+#  499|             Value = [CStyleCast] 0
 #  499|             ValueCategory = prvalue
 #  499|           expr: [Literal,Zero] 0
 #  499|               Type = [NullPointerType] decltype(nullptr)
@@ -3356,10 +3356,10 @@ ir.cpp:
 #  500|         0: [VariableAccess] q
 #  500|             Type = [IntPointerType] int *
 #  500|             ValueCategory = lvalue
-#  500|         1: [CStyleCast,IntegralToPointerConversion] (int *)...
-#  500|             Conversion = integral to pointer conversion
+#  500|         1: [CStyleCast] (int *)...
+#  500|             Conversion = [IntegralToPointerConversion] integral to pointer conversion
 #  500|             Type = [IntPointerType] int *
-#  500|             Value = [CStyleCast,IntegralToPointerConversion] 0
+#  500|             Value = [CStyleCast] 0
 #  500|             ValueCategory = prvalue
 #  500|           expr: [Literal,Zero] 0
 #  500|               Type = [IntType] int
@@ -3383,8 +3383,8 @@ ir.cpp:
 #  504|             .x: [VariableAccess] x
 #  504|                 Type = [IntType] int
 #  504|                 ValueCategory = prvalue(load)
-#  504|             .y: [CStyleCast,FloatingPointToIntegralConversion] (int)...
-#  504|                 Conversion = floating point to integral conversion
+#  504|             .y: [CStyleCast] (int)...
+#  504|                 Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 #  504|                 Type = [IntType] int
 #  504|                 ValueCategory = prvalue
 #  504|               expr: [VariableAccess] f
@@ -3451,8 +3451,8 @@ ir.cpp:
 #  514|               .x: [VariableAccess] x
 #  514|                   Type = [IntType] int
 #  514|                   ValueCategory = prvalue(load)
-#  514|               .y: [CStyleCast,FloatingPointToIntegralConversion] (int)...
-#  514|                   Conversion = floating point to integral conversion
+#  514|               .y: [CStyleCast] (int)...
+#  514|                   Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 #  514|                   Type = [IntType] int
 #  514|                   ValueCategory = prvalue
 #  514|                 expr: [VariableAccess] f
@@ -3471,8 +3471,8 @@ ir.cpp:
 #  515|               .x: [VariableAccess] x
 #  515|                   Type = [IntType] int
 #  515|                   ValueCategory = prvalue(load)
-#  515|               .y: [CStyleCast,FloatingPointToIntegralConversion] (int)...
-#  515|                   Conversion = floating point to integral conversion
+#  515|               .y: [CStyleCast] (int)...
+#  515|                   Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 #  515|                   Type = [IntType] int
 #  515|                   ValueCategory = prvalue
 #  515|                 expr: [VariableAccess] f
@@ -3484,8 +3484,8 @@ ir.cpp:
 #  515|               .x: [VariableAccess] x
 #  515|                   Type = [IntType] int
 #  515|                   ValueCategory = prvalue(load)
-#  515|               .y: [CStyleCast,FloatingPointToIntegralConversion] (int)...
-#  515|                   Conversion = floating point to integral conversion
+#  515|               .y: [CStyleCast] (int)...
+#  515|                   Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 #  515|                   Type = [IntType] int
 #  515|                   ValueCategory = prvalue
 #  515|                 expr: [VariableAccess] f
@@ -3535,8 +3535,8 @@ ir.cpp:
 #  521|             [0]: [VariableAccess] x
 #  521|                 Type = [IntType] int
 #  521|                 ValueCategory = prvalue(load)
-#  521|             [1]: [CStyleCast,FloatingPointToIntegralConversion] (int)...
-#  521|                 Conversion = floating point to integral conversion
+#  521|             [1]: [CStyleCast] (int)...
+#  521|                 Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
 #  521|                 Type = [IntType] int
 #  521|                 ValueCategory = prvalue
 #  521|               expr: [VariableAccess] f
@@ -3579,8 +3579,8 @@ ir.cpp:
 #  531|           expr: [ClassAggregateLiteral] {...}
 #  531|               Type = [Union] U
 #  531|               ValueCategory = prvalue
-#  531|             .d: [CStyleCast,FloatingPointConversion] (double)...
-#  531|                 Conversion = floating point conversion
+#  531|             .d: [CStyleCast] (double)...
+#  531|                 Conversion = [FloatingPointConversion] floating point conversion
 #  531|                 Type = [DoubleType] double
 #  531|                 ValueCategory = prvalue
 #  531|               expr: [VariableAccess] f
@@ -3671,8 +3671,8 @@ ir.cpp:
 #  560|         Type = [TypedefType] E
 #  560|   body: [Block] { ... }
 #  561|     0: [SwitchStmt] switch (...) ... 
-#  561|       0: [CStyleCast,IntegralConversion] (int)...
-#  561|           Conversion = integral conversion
+#  561|       0: [CStyleCast] (int)...
+#  561|           Conversion = [IntegralConversion] integral conversion
 #  561|           Type = [IntType] int
 #  561|           ValueCategory = prvalue
 #  561|         expr: [VariableAccess] e
@@ -3680,10 +3680,10 @@ ir.cpp:
 #  561|             ValueCategory = prvalue(load)
 #  561|       1: [Block] { ... }
 #  562|         0: [SwitchCase] case ...:
-#  562|           0: [CStyleCast,IntegralConversion] (int)...
-#  562|               Conversion = integral conversion
+#  562|           0: [CStyleCast] (int)...
+#  562|               Conversion = [IntegralConversion] integral conversion
 #  562|               Type = [IntType] int
-#  562|               Value = [CStyleCast,IntegralConversion] 0
+#  562|               Value = [CStyleCast] 0
 #  562|               ValueCategory = prvalue
 #  562|             expr: [EnumConstantAccess] E_0
 #  562|                 Type = [Enum] E
@@ -3695,10 +3695,10 @@ ir.cpp:
 #  563|               Value = [Literal,Zero] 0
 #  563|               ValueCategory = prvalue
 #  564|         2: [SwitchCase] case ...:
-#  564|           0: [CStyleCast,IntegralConversion] (int)...
-#  564|               Conversion = integral conversion
+#  564|           0: [CStyleCast] (int)...
+#  564|               Conversion = [IntegralConversion] integral conversion
 #  564|               Type = [IntType] int
-#  564|               Value = [CStyleCast,IntegralConversion] 1
+#  564|               Value = [CStyleCast] 1
 #  564|               ValueCategory = prvalue
 #  564|             expr: [EnumConstantAccess] E_1
 #  564|                 Type = [Enum] E
@@ -3763,10 +3763,10 @@ ir.cpp:
 #  577|           expr: [ArrayAggregateLiteral] {...}
 #  577|               Type = [ArrayType] char[2]
 #  577|               ValueCategory = prvalue
-#  577|             [0]: [CStyleCast,IntegralConversion] (char)...
-#  577|                 Conversion = integral conversion
+#  577|             [0]: [CStyleCast] (char)...
+#  577|                 Conversion = [IntegralConversion] integral conversion
 #  577|                 Type = [PlainCharType] char
-#  577|                 Value = [CStyleCast,IntegralConversion] 0
+#  577|                 Value = [CStyleCast] 0
 #  577|                 ValueCategory = prvalue
 #  577|               expr: [Literal,Zero] 0
 #  577|                   Type = [IntType] int
@@ -3779,19 +3779,19 @@ ir.cpp:
 #  578|           expr: [ArrayAggregateLiteral] {...}
 #  578|               Type = [ArrayType] char[2]
 #  578|               ValueCategory = prvalue
-#  578|             [0]: [CStyleCast,IntegralConversion] (char)...
-#  578|                 Conversion = integral conversion
+#  578|             [0]: [CStyleCast] (char)...
+#  578|                 Conversion = [IntegralConversion] integral conversion
 #  578|                 Type = [PlainCharType] char
-#  578|                 Value = [CStyleCast,IntegralConversion] 0
+#  578|                 Value = [CStyleCast] 0
 #  578|                 ValueCategory = prvalue
 #  578|               expr: [Literal,Zero] 0
 #  578|                   Type = [IntType] int
 #  578|                   Value = [Literal,Zero] 0
 #  578|                   ValueCategory = prvalue
-#  578|             [1]: [CStyleCast,IntegralConversion] (char)...
-#  578|                 Conversion = integral conversion
+#  578|             [1]: [CStyleCast] (char)...
+#  578|                 Conversion = [IntegralConversion] integral conversion
 #  578|                 Type = [PlainCharType] char
-#  578|                 Value = [CStyleCast,IntegralConversion] 1
+#  578|                 Value = [CStyleCast] 1
 #  578|                 ValueCategory = prvalue
 #  578|               expr: [Literal] 1
 #  578|                   Type = [IntType] int
@@ -3804,10 +3804,10 @@ ir.cpp:
 #  579|           expr: [ArrayAggregateLiteral] {...}
 #  579|               Type = [ArrayType] char[3]
 #  579|               ValueCategory = prvalue
-#  579|             [0]: [CStyleCast,IntegralConversion] (char)...
-#  579|                 Conversion = integral conversion
+#  579|             [0]: [CStyleCast] (char)...
+#  579|                 Conversion = [IntegralConversion] integral conversion
 #  579|                 Type = [PlainCharType] char
-#  579|                 Value = [CStyleCast,IntegralConversion] 0
+#  579|                 Value = [CStyleCast] 0
 #  579|                 ValueCategory = prvalue
 #  579|               expr: [Literal,Zero] 0
 #  579|                   Type = [IntType] int
@@ -3992,8 +3992,8 @@ ir.cpp:
 #  623|       0: [FunctionCall] call to c_str
 #  623|           Type = [PointerType] const char *
 #  623|           ValueCategory = prvalue
-#  623|         -1: [CStyleCast,GlvalueConversion] (const String)...
-#  623|             Conversion = glvalue conversion
+#  623|         -1: [CStyleCast] (const String)...
+#  623|             Conversion = [GlvalueConversion] glvalue conversion
 #  623|             Type = [SpecifiedType] const String
 #  623|             ValueCategory = lvalue
 #  623|           expr: [ReferenceDereferenceExpr] (reference dereference)
@@ -4006,8 +4006,8 @@ ir.cpp:
 #  624|       0: [FunctionCall] call to c_str
 #  624|           Type = [PointerType] const char *
 #  624|           ValueCategory = prvalue
-#  624|         -1: [CStyleCast,PointerConversion] (const String *)...
-#  624|             Conversion = pointer conversion
+#  624|         -1: [CStyleCast] (const String *)...
+#  624|             Conversion = [PointerConversion] pointer conversion
 #  624|             Type = [PointerType] const String *
 #  624|             ValueCategory = prvalue
 #  624|           expr: [VariableAccess] p
@@ -4017,8 +4017,8 @@ ir.cpp:
 #  625|       0: [FunctionCall] call to c_str
 #  625|           Type = [PointerType] const char *
 #  625|           ValueCategory = prvalue
-#  625|         -1: [CStyleCast,GlvalueConversion] (const String)...
-#  625|             Conversion = glvalue conversion
+#  625|         -1: [CStyleCast] (const String)...
+#  625|             Conversion = [GlvalueConversion] glvalue conversion
 #  625|             Type = [SpecifiedType] const String
 #  625|             ValueCategory = lvalue
 #  625|           expr: [VariableAccess] s
@@ -4232,10 +4232,10 @@ ir.cpp:
 #  660|     2: [ConstructorFieldInit] constructor init of field m_c
 #  660|         Type = [PlainCharType] char
 #  660|         ValueCategory = prvalue
-#  660|       0: [CStyleCast,IntegralConversion] (char)...
-#  660|           Conversion = integral conversion
+#  660|       0: [CStyleCast] (char)...
+#  660|           Conversion = [IntegralConversion] integral conversion
 #  660|           Type = [PlainCharType] char
-#  660|           Value = [CStyleCast,IntegralConversion] 3
+#  660|           Value = [CStyleCast] 3
 #  660|           ValueCategory = prvalue
 #  660|         expr: [Literal] 3
 #  660|             Type = [IntType] int
@@ -4322,8 +4322,8 @@ ir.cpp:
 #  688|           expr: [ReferenceToExpr] (reference to)
 #  688|               Type = [LValueReferenceType] const String &
 #  688|               ValueCategory = prvalue
-#  688|             expr: [CStyleCast,GlvalueConversion] (const String)...
-#  688|                 Conversion = glvalue conversion
+#  688|             expr: [CStyleCast] (const String)...
+#  688|                 Conversion = [GlvalueConversion] glvalue conversion
 #  688|                 Type = [SpecifiedType] const String
 #  688|                 ValueCategory = lvalue
 #  688|               expr: [ReferenceDereferenceExpr] (reference dereference)
@@ -4419,8 +4419,8 @@ ir.cpp:
 #  705|       0: [ConditionalExpr] ... ? ... : ...
 #  705|           Type = [UnknownType] unknown
 #  705|           ValueCategory = prvalue
-#  705|         0: [BoolConversion,CStyleCast] (bool)...
-#  705|             Conversion = conversion to bool
+#  705|         0: [CStyleCast] (bool)...
+#  705|             Conversion = [BoolConversion] conversion to bool
 #  705|             Type = [BoolType] bool
 #  705|             ValueCategory = prvalue
 #  705|           expr: [ParenthesisExpr] (...)
@@ -4529,17 +4529,17 @@ ir.cpp:
 #  720|   params: 
 #  720|   body: [Block] { ... }
 #  721|     0: [ReturnStmt] return ...
-#  721|       0: [CStyleCast,IntegralToFloatingPointConversion] (double)...
-#  721|           Conversion = integral to floating point conversion
+#  721|       0: [CStyleCast] (double)...
+#  721|           Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 #  721|           Type = [DoubleType] double
 #  721|           ValueCategory = prvalue
 #  721|         expr: [FunctionCall] call to Func
 #  721|             Type = [LongType] long
 #  721|             ValueCategory = prvalue
-#  721|           0: [CStyleCast,PointerConversion] (void *)...
-#  721|               Conversion = pointer conversion
+#  721|           0: [CStyleCast] (void *)...
+#  721|               Conversion = [PointerConversion] pointer conversion
 #  721|               Type = [VoidPointerType] void *
-#  721|               Value = [CStyleCast,PointerConversion] 0
+#  721|               Value = [CStyleCast] 0
 #  721|               ValueCategory = prvalue
 #  721|             expr: [Literal,Zero] 0
 #  721|                 Type = [NullPointerType] decltype(nullptr)
@@ -4747,8 +4747,8 @@ ir.cpp:
 #  754|         expr: [FunctionCall] call to operator=
 #  754|             Type = [LValueReferenceType] Base &
 #  754|             ValueCategory = prvalue
-#-----|           -1: [BaseClassConversion,CStyleCast] (Base *)...
-#-----|               Conversion = base class conversion
+#-----|           -1: [CStyleCast] (Base *)...
+#-----|               Conversion = [BaseClassConversion] base class conversion
 #-----|               Type = [PointerType] Base *
 #-----|               ValueCategory = prvalue
 #-----|             expr: [ThisExpr] this
@@ -4760,8 +4760,8 @@ ir.cpp:
 #-----|             expr: [PointerDereferenceExpr] * ...
 #-----|                 Type = [SpecifiedType] const Base
 #-----|                 ValueCategory = lvalue
-#-----|               0: [BaseClassConversion,CStyleCast] (const Base *)...
-#-----|                   Conversion = base class conversion
+#-----|               0: [CStyleCast] (const Base *)...
+#-----|                   Conversion = [BaseClassConversion] base class conversion
 #-----|                   Type = [PointerType] const Base *
 #-----|                   ValueCategory = prvalue
 #-----|                 expr: [AddressOfExpr] & ...
@@ -4858,8 +4858,8 @@ ir.cpp:
 #  763|         expr: [FunctionCall] call to operator=
 #  763|             Type = [LValueReferenceType] Middle &
 #  763|             ValueCategory = prvalue
-#-----|           -1: [BaseClassConversion,CStyleCast] (Middle *)...
-#-----|               Conversion = base class conversion
+#-----|           -1: [CStyleCast] (Middle *)...
+#-----|               Conversion = [BaseClassConversion] base class conversion
 #-----|               Type = [PointerType] Middle *
 #-----|               ValueCategory = prvalue
 #-----|             expr: [ThisExpr] this
@@ -4871,8 +4871,8 @@ ir.cpp:
 #-----|             expr: [PointerDereferenceExpr] * ...
 #-----|                 Type = [SpecifiedType] const Middle
 #-----|                 ValueCategory = lvalue
-#-----|               0: [BaseClassConversion,CStyleCast] (const Middle *)...
-#-----|                   Conversion = base class conversion
+#-----|               0: [CStyleCast] (const Middle *)...
+#-----|                   Conversion = [BaseClassConversion] base class conversion
 #-----|                   Type = [PointerType] const Middle *
 #-----|                   ValueCategory = prvalue
 #-----|                 expr: [AddressOfExpr] & ...
@@ -5153,8 +5153,8 @@ ir.cpp:
 #  808|           0: [ReferenceToExpr] (reference to)
 #  808|               Type = [LValueReferenceType] const Base &
 #  808|               ValueCategory = prvalue
-#  808|             expr: [BaseClassConversion,CStyleCast] (const Base)...
-#  808|                 Conversion = base class conversion
+#  808|             expr: [CStyleCast] (const Base)...
+#  808|                 Conversion = [BaseClassConversion] base class conversion
 #  808|                 Type = [SpecifiedType] const Base
 #  808|                 ValueCategory = lvalue
 #  808|               expr: [VariableAccess] m
@@ -5173,8 +5173,8 @@ ir.cpp:
 #  809|           0: [ReferenceToExpr] (reference to)
 #  809|               Type = [LValueReferenceType] const Base &
 #  809|               ValueCategory = prvalue
-#  809|             expr: [CStyleCast,GlvalueConversion] (const Base)...
-#  809|                 Conversion = glvalue conversion
+#  809|             expr: [CStyleCast] (const Base)...
+#  809|                 Conversion = [GlvalueConversion] glvalue conversion
 #  809|                 Type = [SpecifiedType] const Base
 #  809|                 ValueCategory = lvalue
 #  809|               expr: [ConstructorCall] call to Base
@@ -5183,8 +5183,8 @@ ir.cpp:
 #  809|                 0: [ReferenceToExpr] (reference to)
 #  809|                     Type = [LValueReferenceType] const Base &
 #  809|                     ValueCategory = prvalue
-#  809|                   expr: [BaseClassConversion,CStyleCast] (const Base)...
-#  809|                       Conversion = base class conversion
+#  809|                   expr: [CStyleCast] (const Base)...
+#  809|                       Conversion = [BaseClassConversion] base class conversion
 #  809|                       Type = [SpecifiedType] const Base
 #  809|                       ValueCategory = lvalue
 #  809|                     expr: [VariableAccess] m
@@ -5203,8 +5203,8 @@ ir.cpp:
 #  810|           0: [ReferenceToExpr] (reference to)
 #  810|               Type = [LValueReferenceType] const Base &
 #  810|               ValueCategory = prvalue
-#  810|             expr: [CStyleCast,GlvalueConversion] (const Base)...
-#  810|                 Conversion = glvalue conversion
+#  810|             expr: [CStyleCast] (const Base)...
+#  810|                 Conversion = [GlvalueConversion] glvalue conversion
 #  810|                 Type = [SpecifiedType] const Base
 #  810|                 ValueCategory = lvalue
 #  810|               expr: [ConstructorCall] call to Base
@@ -5213,8 +5213,8 @@ ir.cpp:
 #  810|                 0: [ReferenceToExpr] (reference to)
 #  810|                     Type = [LValueReferenceType] const Base &
 #  810|                     ValueCategory = prvalue
-#  810|                   expr: [BaseClassConversion,CStyleCast] (const Base)...
-#  810|                       Conversion = base class conversion
+#  810|                   expr: [CStyleCast] (const Base)...
+#  810|                       Conversion = [BaseClassConversion] base class conversion
 #  810|                       Type = [SpecifiedType] const Base
 #  810|                       ValueCategory = lvalue
 #  810|                     expr: [VariableAccess] m
@@ -5227,8 +5227,8 @@ ir.cpp:
 #  811|         0: [VariableAccess] pb
 #  811|             Type = [PointerType] Base *
 #  811|             ValueCategory = lvalue
-#  811|         1: [BaseClassConversion,CStyleCast] (Base *)...
-#  811|             Conversion = base class conversion
+#  811|         1: [CStyleCast] (Base *)...
+#  811|             Conversion = [BaseClassConversion] base class conversion
 #  811|             Type = [PointerType] Base *
 #  811|             ValueCategory = prvalue
 #  811|           expr: [VariableAccess] pm
@@ -5241,8 +5241,8 @@ ir.cpp:
 #  812|         0: [VariableAccess] pb
 #  812|             Type = [PointerType] Base *
 #  812|             ValueCategory = lvalue
-#  812|         1: [BaseClassConversion,CStyleCast] (Base *)...
-#  812|             Conversion = base class conversion
+#  812|         1: [CStyleCast] (Base *)...
+#  812|             Conversion = [BaseClassConversion] base class conversion
 #  812|             Type = [PointerType] Base *
 #  812|             ValueCategory = prvalue
 #  812|           expr: [VariableAccess] pm
@@ -5255,8 +5255,8 @@ ir.cpp:
 #  813|         0: [VariableAccess] pb
 #  813|             Type = [PointerType] Base *
 #  813|             ValueCategory = lvalue
-#  813|         1: [BaseClassConversion,StaticCast] static_cast<Base *>...
-#  813|             Conversion = base class conversion
+#  813|         1: [StaticCast] static_cast<Base *>...
+#  813|             Conversion = [BaseClassConversion] base class conversion
 #  813|             Type = [PointerType] Base *
 #  813|             ValueCategory = prvalue
 #  813|           expr: [VariableAccess] pm
@@ -5269,8 +5269,8 @@ ir.cpp:
 #  814|         0: [VariableAccess] pb
 #  814|             Type = [PointerType] Base *
 #  814|             ValueCategory = lvalue
-#  814|         1: [PointerConversion,ReinterpretCast] reinterpret_cast<Base *>...
-#  814|             Conversion = pointer conversion
+#  814|         1: [ReinterpretCast] reinterpret_cast<Base *>...
+#  814|             Conversion = [PointerConversion] pointer conversion
 #  814|             Type = [PointerType] Base *
 #  814|             ValueCategory = prvalue
 #  814|           expr: [VariableAccess] pm
@@ -5289,12 +5289,12 @@ ir.cpp:
 #  816|           0: [ReferenceToExpr] (reference to)
 #  816|               Type = [LValueReferenceType] const Middle &
 #  816|               ValueCategory = prvalue
-#  816|             expr: [CStyleCast,GlvalueConversion] (const Middle)...
-#  816|                 Conversion = glvalue conversion
+#  816|             expr: [CStyleCast] (const Middle)...
+#  816|                 Conversion = [GlvalueConversion] glvalue conversion
 #  816|                 Type = [SpecifiedType] const Middle
 #  816|                 ValueCategory = lvalue
-#  816|               expr: [CStyleCast,DerivedClassConversion] (Middle)...
-#  816|                   Conversion = derived class conversion
+#  816|               expr: [CStyleCast] (Middle)...
+#  816|                   Conversion = [DerivedClassConversion] derived class conversion
 #  816|                   Type = [Struct] Middle
 #  816|                   ValueCategory = lvalue
 #  816|                 expr: [VariableAccess] b
@@ -5313,12 +5313,12 @@ ir.cpp:
 #  817|           0: [ReferenceToExpr] (reference to)
 #  817|               Type = [LValueReferenceType] const Middle &
 #  817|               ValueCategory = prvalue
-#  817|             expr: [CStyleCast,GlvalueConversion] (const Middle)...
-#  817|                 Conversion = glvalue conversion
+#  817|             expr: [CStyleCast] (const Middle)...
+#  817|                 Conversion = [GlvalueConversion] glvalue conversion
 #  817|                 Type = [SpecifiedType] const Middle
 #  817|                 ValueCategory = lvalue
-#  817|               expr: [DerivedClassConversion,StaticCast] static_cast<Middle>...
-#  817|                   Conversion = derived class conversion
+#  817|               expr: [StaticCast] static_cast<Middle>...
+#  817|                   Conversion = [DerivedClassConversion] derived class conversion
 #  817|                   Type = [Struct] Middle
 #  817|                   ValueCategory = lvalue
 #  817|                 expr: [VariableAccess] b
@@ -5331,8 +5331,8 @@ ir.cpp:
 #  818|         0: [VariableAccess] pm
 #  818|             Type = [PointerType] Middle *
 #  818|             ValueCategory = lvalue
-#  818|         1: [CStyleCast,DerivedClassConversion] (Middle *)...
-#  818|             Conversion = derived class conversion
+#  818|         1: [CStyleCast] (Middle *)...
+#  818|             Conversion = [DerivedClassConversion] derived class conversion
 #  818|             Type = [PointerType] Middle *
 #  818|             ValueCategory = prvalue
 #  818|           expr: [VariableAccess] pb
@@ -5345,8 +5345,8 @@ ir.cpp:
 #  819|         0: [VariableAccess] pm
 #  819|             Type = [PointerType] Middle *
 #  819|             ValueCategory = lvalue
-#  819|         1: [DerivedClassConversion,StaticCast] static_cast<Middle *>...
-#  819|             Conversion = derived class conversion
+#  819|         1: [StaticCast] static_cast<Middle *>...
+#  819|             Conversion = [DerivedClassConversion] derived class conversion
 #  819|             Type = [PointerType] Middle *
 #  819|             ValueCategory = prvalue
 #  819|           expr: [VariableAccess] pb
@@ -5359,8 +5359,8 @@ ir.cpp:
 #  820|         0: [VariableAccess] pm
 #  820|             Type = [PointerType] Middle *
 #  820|             ValueCategory = lvalue
-#  820|         1: [PointerConversion,ReinterpretCast] reinterpret_cast<Middle *>...
-#  820|             Conversion = pointer conversion
+#  820|         1: [ReinterpretCast] reinterpret_cast<Middle *>...
+#  820|             Conversion = [PointerConversion] pointer conversion
 #  820|             Type = [PointerType] Middle *
 #  820|             ValueCategory = prvalue
 #  820|           expr: [VariableAccess] pb
@@ -5379,12 +5379,12 @@ ir.cpp:
 #  822|           0: [ReferenceToExpr] (reference to)
 #  822|               Type = [LValueReferenceType] const Base &
 #  822|               ValueCategory = prvalue
-#  822|             expr: [BaseClassConversion,CStyleCast] (const Base)...
-#  822|                 Conversion = base class conversion
+#  822|             expr: [CStyleCast] (const Base)...
+#  822|                 Conversion = [BaseClassConversion] base class conversion
 #  822|                 Type = [SpecifiedType] const Base
 #  822|                 ValueCategory = lvalue
-#  822|               expr: [BaseClassConversion,CStyleCast] (const Middle)...
-#  822|                   Conversion = base class conversion
+#  822|               expr: [CStyleCast] (const Middle)...
+#  822|                   Conversion = [BaseClassConversion] base class conversion
 #  822|                   Type = [SpecifiedType] const Middle
 #  822|                   ValueCategory = lvalue
 #  822|                 expr: [VariableAccess] d
@@ -5403,8 +5403,8 @@ ir.cpp:
 #  823|           0: [ReferenceToExpr] (reference to)
 #  823|               Type = [LValueReferenceType] const Base &
 #  823|               ValueCategory = prvalue
-#  823|             expr: [CStyleCast,GlvalueConversion] (const Base)...
-#  823|                 Conversion = glvalue conversion
+#  823|             expr: [CStyleCast] (const Base)...
+#  823|                 Conversion = [GlvalueConversion] glvalue conversion
 #  823|                 Type = [SpecifiedType] const Base
 #  823|                 ValueCategory = lvalue
 #  823|               expr: [ConstructorCall] call to Base
@@ -5413,12 +5413,12 @@ ir.cpp:
 #  823|                 0: [ReferenceToExpr] (reference to)
 #  823|                     Type = [LValueReferenceType] const Base &
 #  823|                     ValueCategory = prvalue
-#  823|                   expr: [BaseClassConversion,CStyleCast] (const Base)...
-#  823|                       Conversion = base class conversion
+#  823|                   expr: [CStyleCast] (const Base)...
+#  823|                       Conversion = [BaseClassConversion] base class conversion
 #  823|                       Type = [SpecifiedType] const Base
 #  823|                       ValueCategory = lvalue
-#  823|                     expr: [BaseClassConversion,CStyleCast] (const Middle)...
-#  823|                         Conversion = base class conversion
+#  823|                     expr: [CStyleCast] (const Middle)...
+#  823|                         Conversion = [BaseClassConversion] base class conversion
 #  823|                         Type = [SpecifiedType] const Middle
 #  823|                         ValueCategory = lvalue
 #  823|                       expr: [VariableAccess] d
@@ -5437,8 +5437,8 @@ ir.cpp:
 #  824|           0: [ReferenceToExpr] (reference to)
 #  824|               Type = [LValueReferenceType] const Base &
 #  824|               ValueCategory = prvalue
-#  824|             expr: [CStyleCast,GlvalueConversion] (const Base)...
-#  824|                 Conversion = glvalue conversion
+#  824|             expr: [CStyleCast] (const Base)...
+#  824|                 Conversion = [GlvalueConversion] glvalue conversion
 #  824|                 Type = [SpecifiedType] const Base
 #  824|                 ValueCategory = lvalue
 #  824|               expr: [ConstructorCall] call to Base
@@ -5447,12 +5447,12 @@ ir.cpp:
 #  824|                 0: [ReferenceToExpr] (reference to)
 #  824|                     Type = [LValueReferenceType] const Base &
 #  824|                     ValueCategory = prvalue
-#  824|                   expr: [BaseClassConversion,CStyleCast] (const Base)...
-#  824|                       Conversion = base class conversion
+#  824|                   expr: [CStyleCast] (const Base)...
+#  824|                       Conversion = [BaseClassConversion] base class conversion
 #  824|                       Type = [SpecifiedType] const Base
 #  824|                       ValueCategory = lvalue
-#  824|                     expr: [BaseClassConversion,CStyleCast] (const Middle)...
-#  824|                         Conversion = base class conversion
+#  824|                     expr: [CStyleCast] (const Middle)...
+#  824|                         Conversion = [BaseClassConversion] base class conversion
 #  824|                         Type = [SpecifiedType] const Middle
 #  824|                         ValueCategory = lvalue
 #  824|                       expr: [VariableAccess] d
@@ -5465,12 +5465,12 @@ ir.cpp:
 #  825|         0: [VariableAccess] pb
 #  825|             Type = [PointerType] Base *
 #  825|             ValueCategory = lvalue
-#  825|         1: [BaseClassConversion,CStyleCast] (Base *)...
-#  825|             Conversion = base class conversion
+#  825|         1: [CStyleCast] (Base *)...
+#  825|             Conversion = [BaseClassConversion] base class conversion
 #  825|             Type = [PointerType] Base *
 #  825|             ValueCategory = prvalue
-#  825|           expr: [BaseClassConversion,CStyleCast] (Middle *)...
-#  825|               Conversion = base class conversion
+#  825|           expr: [CStyleCast] (Middle *)...
+#  825|               Conversion = [BaseClassConversion] base class conversion
 #  825|               Type = [PointerType] Middle *
 #  825|               ValueCategory = prvalue
 #  825|             expr: [VariableAccess] pd
@@ -5483,12 +5483,12 @@ ir.cpp:
 #  826|         0: [VariableAccess] pb
 #  826|             Type = [PointerType] Base *
 #  826|             ValueCategory = lvalue
-#  826|         1: [BaseClassConversion,CStyleCast] (Base *)...
-#  826|             Conversion = base class conversion
+#  826|         1: [CStyleCast] (Base *)...
+#  826|             Conversion = [BaseClassConversion] base class conversion
 #  826|             Type = [PointerType] Base *
 #  826|             ValueCategory = prvalue
-#  826|           expr: [BaseClassConversion,CStyleCast] (Middle *)...
-#  826|               Conversion = base class conversion
+#  826|           expr: [CStyleCast] (Middle *)...
+#  826|               Conversion = [BaseClassConversion] base class conversion
 #  826|               Type = [PointerType] Middle *
 #  826|               ValueCategory = prvalue
 #  826|             expr: [VariableAccess] pd
@@ -5501,12 +5501,12 @@ ir.cpp:
 #  827|         0: [VariableAccess] pb
 #  827|             Type = [PointerType] Base *
 #  827|             ValueCategory = lvalue
-#  827|         1: [BaseClassConversion,StaticCast] static_cast<Base *>...
-#  827|             Conversion = base class conversion
+#  827|         1: [StaticCast] static_cast<Base *>...
+#  827|             Conversion = [BaseClassConversion] base class conversion
 #  827|             Type = [PointerType] Base *
 #  827|             ValueCategory = prvalue
-#  827|           expr: [BaseClassConversion,CStyleCast] (Middle *)...
-#  827|               Conversion = base class conversion
+#  827|           expr: [CStyleCast] (Middle *)...
+#  827|               Conversion = [BaseClassConversion] base class conversion
 #  827|               Type = [PointerType] Middle *
 #  827|               ValueCategory = prvalue
 #  827|             expr: [VariableAccess] pd
@@ -5519,8 +5519,8 @@ ir.cpp:
 #  828|         0: [VariableAccess] pb
 #  828|             Type = [PointerType] Base *
 #  828|             ValueCategory = lvalue
-#  828|         1: [PointerConversion,ReinterpretCast] reinterpret_cast<Base *>...
-#  828|             Conversion = pointer conversion
+#  828|         1: [ReinterpretCast] reinterpret_cast<Base *>...
+#  828|             Conversion = [PointerConversion] pointer conversion
 #  828|             Type = [PointerType] Base *
 #  828|             ValueCategory = prvalue
 #  828|           expr: [VariableAccess] pd
@@ -5539,16 +5539,16 @@ ir.cpp:
 #  830|           0: [ReferenceToExpr] (reference to)
 #  830|               Type = [LValueReferenceType] const Derived &
 #  830|               ValueCategory = prvalue
-#  830|             expr: [CStyleCast,GlvalueConversion] (const Derived)...
-#  830|                 Conversion = glvalue conversion
+#  830|             expr: [CStyleCast] (const Derived)...
+#  830|                 Conversion = [GlvalueConversion] glvalue conversion
 #  830|                 Type = [SpecifiedType] const Derived
 #  830|                 ValueCategory = lvalue
-#  830|               expr: [CStyleCast,DerivedClassConversion] (Derived)...
-#  830|                   Conversion = derived class conversion
+#  830|               expr: [CStyleCast] (Derived)...
+#  830|                   Conversion = [DerivedClassConversion] derived class conversion
 #  830|                   Type = [Struct] Derived
 #  830|                   ValueCategory = lvalue
-#  830|                 expr: [CStyleCast,DerivedClassConversion] (Middle)...
-#  830|                     Conversion = derived class conversion
+#  830|                 expr: [CStyleCast] (Middle)...
+#  830|                     Conversion = [DerivedClassConversion] derived class conversion
 #  830|                     Type = [Struct] Middle
 #  830|                     ValueCategory = lvalue
 #  830|                   expr: [VariableAccess] b
@@ -5567,16 +5567,16 @@ ir.cpp:
 #  831|           0: [ReferenceToExpr] (reference to)
 #  831|               Type = [LValueReferenceType] const Derived &
 #  831|               ValueCategory = prvalue
-#  831|             expr: [CStyleCast,GlvalueConversion] (const Derived)...
-#  831|                 Conversion = glvalue conversion
+#  831|             expr: [CStyleCast] (const Derived)...
+#  831|                 Conversion = [GlvalueConversion] glvalue conversion
 #  831|                 Type = [SpecifiedType] const Derived
 #  831|                 ValueCategory = lvalue
-#  831|               expr: [DerivedClassConversion,StaticCast] static_cast<Derived>...
-#  831|                   Conversion = derived class conversion
+#  831|               expr: [StaticCast] static_cast<Derived>...
+#  831|                   Conversion = [DerivedClassConversion] derived class conversion
 #  831|                   Type = [Struct] Derived
 #  831|                   ValueCategory = lvalue
-#  831|                 expr: [CStyleCast,DerivedClassConversion] (Middle)...
-#  831|                     Conversion = derived class conversion
+#  831|                 expr: [CStyleCast] (Middle)...
+#  831|                     Conversion = [DerivedClassConversion] derived class conversion
 #  831|                     Type = [Struct] Middle
 #  831|                     ValueCategory = lvalue
 #  831|                   expr: [VariableAccess] b
@@ -5589,12 +5589,12 @@ ir.cpp:
 #  832|         0: [VariableAccess] pd
 #  832|             Type = [PointerType] Derived *
 #  832|             ValueCategory = lvalue
-#  832|         1: [CStyleCast,DerivedClassConversion] (Derived *)...
-#  832|             Conversion = derived class conversion
+#  832|         1: [CStyleCast] (Derived *)...
+#  832|             Conversion = [DerivedClassConversion] derived class conversion
 #  832|             Type = [PointerType] Derived *
 #  832|             ValueCategory = prvalue
-#  832|           expr: [CStyleCast,DerivedClassConversion] (Middle *)...
-#  832|               Conversion = derived class conversion
+#  832|           expr: [CStyleCast] (Middle *)...
+#  832|               Conversion = [DerivedClassConversion] derived class conversion
 #  832|               Type = [PointerType] Middle *
 #  832|               ValueCategory = prvalue
 #  832|             expr: [VariableAccess] pb
@@ -5607,12 +5607,12 @@ ir.cpp:
 #  833|         0: [VariableAccess] pd
 #  833|             Type = [PointerType] Derived *
 #  833|             ValueCategory = lvalue
-#  833|         1: [DerivedClassConversion,StaticCast] static_cast<Derived *>...
-#  833|             Conversion = derived class conversion
+#  833|         1: [StaticCast] static_cast<Derived *>...
+#  833|             Conversion = [DerivedClassConversion] derived class conversion
 #  833|             Type = [PointerType] Derived *
 #  833|             ValueCategory = prvalue
-#  833|           expr: [CStyleCast,DerivedClassConversion] (Middle *)...
-#  833|               Conversion = derived class conversion
+#  833|           expr: [CStyleCast] (Middle *)...
+#  833|               Conversion = [DerivedClassConversion] derived class conversion
 #  833|               Type = [PointerType] Middle *
 #  833|               ValueCategory = prvalue
 #  833|             expr: [VariableAccess] pb
@@ -5625,8 +5625,8 @@ ir.cpp:
 #  834|         0: [VariableAccess] pd
 #  834|             Type = [PointerType] Derived *
 #  834|             ValueCategory = lvalue
-#  834|         1: [PointerConversion,ReinterpretCast] reinterpret_cast<Derived *>...
-#  834|             Conversion = pointer conversion
+#  834|         1: [ReinterpretCast] reinterpret_cast<Derived *>...
+#  834|             Conversion = [PointerConversion] pointer conversion
 #  834|             Type = [PointerType] Derived *
 #  834|             ValueCategory = prvalue
 #  834|           expr: [VariableAccess] pb
@@ -5636,10 +5636,10 @@ ir.cpp:
 #  836|       0: [VariableDeclarationEntry] definition of pmv
 #  836|           Type = [PointerType] MiddleVB1 *
 #  836|         init: [Initializer] initializer for pmv
-#  836|           expr: [CStyleCast,PointerConversion] (MiddleVB1 *)...
-#  836|               Conversion = pointer conversion
+#  836|           expr: [CStyleCast] (MiddleVB1 *)...
+#  836|               Conversion = [PointerConversion] pointer conversion
 #  836|               Type = [PointerType] MiddleVB1 *
-#  836|               Value = [CStyleCast,PointerConversion] 0
+#  836|               Value = [CStyleCast] 0
 #  836|               ValueCategory = prvalue
 #  836|             expr: [Literal,Zero] 0
 #  836|                 Type = [NullPointerType] decltype(nullptr)
@@ -5649,10 +5649,10 @@ ir.cpp:
 #  837|       0: [VariableDeclarationEntry] definition of pdv
 #  837|           Type = [PointerType] DerivedVB *
 #  837|         init: [Initializer] initializer for pdv
-#  837|           expr: [CStyleCast,PointerConversion] (DerivedVB *)...
-#  837|               Conversion = pointer conversion
+#  837|           expr: [CStyleCast] (DerivedVB *)...
+#  837|               Conversion = [PointerConversion] pointer conversion
 #  837|               Type = [PointerType] DerivedVB *
-#  837|               Value = [CStyleCast,PointerConversion] 0
+#  837|               Value = [CStyleCast] 0
 #  837|               ValueCategory = prvalue
 #  837|             expr: [Literal,Zero] 0
 #  837|                 Type = [NullPointerType] decltype(nullptr)
@@ -5665,8 +5665,8 @@ ir.cpp:
 #  838|         0: [VariableAccess] pb
 #  838|             Type = [PointerType] Base *
 #  838|             ValueCategory = lvalue
-#  838|         1: [BaseClassConversion,CStyleCast] (Base *)...
-#  838|             Conversion = base class conversion
+#  838|         1: [CStyleCast] (Base *)...
+#  838|             Conversion = [BaseClassConversion] base class conversion
 #  838|             Type = [PointerType] Base *
 #  838|             ValueCategory = prvalue
 #  838|           expr: [VariableAccess] pmv
@@ -5679,8 +5679,8 @@ ir.cpp:
 #  839|         0: [VariableAccess] pb
 #  839|             Type = [PointerType] Base *
 #  839|             ValueCategory = lvalue
-#  839|         1: [BaseClassConversion,CStyleCast] (Base *)...
-#  839|             Conversion = base class conversion
+#  839|         1: [CStyleCast] (Base *)...
+#  839|             Conversion = [BaseClassConversion] base class conversion
 #  839|             Type = [PointerType] Base *
 #  839|             ValueCategory = prvalue
 #  839|           expr: [VariableAccess] pdv
@@ -5779,7 +5779,7 @@ ir.cpp:
 #  857|             Type = [PointerType] PolymorphicBase *
 #  857|             ValueCategory = lvalue
 #  857|         1: [DynamicCast] dynamic_cast<PolymorphicBase *>...
-#  857|             Conversion = dynamic_cast
+#  857|             Conversion = [DynamicCast] dynamic_cast
 #  857|             Type = [PointerType] PolymorphicBase *
 #  857|             ValueCategory = prvalue
 #  857|           expr: [VariableAccess] pd
@@ -5793,7 +5793,7 @@ ir.cpp:
 #  858|               Type = [LValueReferenceType] PolymorphicBase &
 #  858|               ValueCategory = prvalue
 #  858|             expr: [DynamicCast] dynamic_cast<PolymorphicBase>...
-#  858|                 Conversion = dynamic_cast
+#  858|                 Conversion = [DynamicCast] dynamic_cast
 #  858|                 Type = [Struct] PolymorphicBase
 #  858|                 ValueCategory = lvalue
 #  858|               expr: [VariableAccess] d
@@ -5807,7 +5807,7 @@ ir.cpp:
 #  860|             Type = [PointerType] PolymorphicDerived *
 #  860|             ValueCategory = lvalue
 #  860|         1: [DynamicCast] dynamic_cast<PolymorphicDerived *>...
-#  860|             Conversion = dynamic_cast
+#  860|             Conversion = [DynamicCast] dynamic_cast
 #  860|             Type = [PointerType] PolymorphicDerived *
 #  860|             ValueCategory = prvalue
 #  860|           expr: [VariableAccess] pb
@@ -5821,7 +5821,7 @@ ir.cpp:
 #  861|               Type = [LValueReferenceType] PolymorphicDerived &
 #  861|               ValueCategory = prvalue
 #  861|             expr: [DynamicCast] dynamic_cast<PolymorphicDerived>...
-#  861|                 Conversion = dynamic_cast
+#  861|                 Conversion = [DynamicCast] dynamic_cast
 #  861|                 Type = [Struct] PolymorphicDerived
 #  861|                 ValueCategory = lvalue
 #  861|               expr: [VariableAccess] b
@@ -5832,7 +5832,7 @@ ir.cpp:
 #  863|           Type = [VoidPointerType] void *
 #  863|         init: [Initializer] initializer for pv
 #  863|           expr: [DynamicCast] dynamic_cast<void *>...
-#  863|               Conversion = dynamic_cast
+#  863|               Conversion = [DynamicCast] dynamic_cast
 #  863|               Type = [VoidPointerType] void *
 #  863|               ValueCategory = prvalue
 #  863|             expr: [VariableAccess] pb
@@ -5843,7 +5843,7 @@ ir.cpp:
 #  864|           Type = [PointerType] const void *
 #  864|         init: [Initializer] initializer for pcv
 #  864|           expr: [DynamicCast] dynamic_cast<const void *>...
-#  864|               Conversion = dynamic_cast
+#  864|               Conversion = [DynamicCast] dynamic_cast
 #  864|               Type = [PointerType] const void *
 #  864|               ValueCategory = prvalue
 #  864|             expr: [VariableAccess] pd
@@ -5875,8 +5875,8 @@ ir.cpp:
 #  873|       0: [VariableDeclarationEntry] definition of p
 #  873|           Type = [PointerType] const char *
 #  873|         init: [Initializer] initializer for p
-#  873|           expr: [CStyleCast,PointerConversion] (const char *)...
-#  873|               Conversion = pointer conversion
+#  873|           expr: [CStyleCast] (const char *)...
+#  873|               Conversion = [PointerConversion] pointer conversion
 #  873|               Type = [PointerType] const char *
 #  873|               ValueCategory = prvalue
 #  873|             expr: [ArrayToPointerConversion] array to pointer conversion
@@ -5906,8 +5906,8 @@ ir.cpp:
 #  875|         0: [VariableAccess] p
 #  875|             Type = [PointerType] const char *
 #  875|             ValueCategory = lvalue
-#  875|         1: [CStyleCast,PointerConversion] (const char *)...
-#  875|             Conversion = pointer conversion
+#  875|         1: [CStyleCast] (const char *)...
+#  875|             Conversion = [PointerConversion] pointer conversion
 #  875|             Type = [PointerType] const char *
 #  875|             ValueCategory = prvalue
 #  875|           expr: [AddressOfExpr] & ...
@@ -5975,8 +5975,8 @@ ir.cpp:
 #  879|       0: [VariableDeclarationEntry] definition of pa
 #  879|           Type = [PointerType] const char(*)[5]
 #  879|         init: [Initializer] initializer for pa
-#  879|           expr: [CStyleCast,PointerConversion] (const char(*)[5])...
-#  879|               Conversion = pointer conversion
+#  879|           expr: [CStyleCast] (const char(*)[5])...
+#  879|               Conversion = [PointerConversion] pointer conversion
 #  879|               Type = [PointerType] const char(*)[5]
 #  879|               ValueCategory = prvalue
 #  879|             expr: [AddressOfExpr] & ...
@@ -6014,8 +6014,8 @@ ir.cpp:
 #  884|         0: [VariableAccess] p
 #  884|             Type = [VoidPointerType] void *
 #  884|             ValueCategory = lvalue
-#  884|         1: [CStyleCast,PointerConversion] (void *)...
-#  884|             Conversion = pointer conversion
+#  884|         1: [CStyleCast] (void *)...
+#  884|             Conversion = [PointerConversion] pointer conversion
 #  884|             Type = [VoidPointerType] void *
 #  884|             ValueCategory = prvalue
 #  884|           expr: [VariableAccess] pfn
@@ -6028,8 +6028,8 @@ ir.cpp:
 #  885|         0: [VariableAccess] pfn
 #  885|             Type = [FunctionPointerType] ..(*)(..)
 #  885|             ValueCategory = lvalue
-#  885|         1: [CStyleCast,PointerConversion] (..(*)(..))...
-#  885|             Conversion = pointer conversion
+#  885|         1: [CStyleCast] (..(*)(..))...
+#  885|             Conversion = [PointerConversion] pointer conversion
 #  885|             Type = [FunctionPointerType] ..(*)(..)
 #  885|             ValueCategory = prvalue
 #  885|           expr: [VariableAccess] p
@@ -6093,8 +6093,8 @@ ir.cpp:
 #  895|       0: [VariableDeclarationEntry] definition of f
 #  895|           Type = [FloatType] float
 #  895|         init: [Initializer] initializer for f
-#  895|           expr: [CStyleCast,FloatingPointConversion] (float)...
-#  895|               Conversion = floating point conversion
+#  895|           expr: [CStyleCast] (float)...
+#  895|               Conversion = [FloatingPointConversion] floating point conversion
 #  895|               Type = [FloatType] float
 #  895|               ValueCategory = prvalue
 #  895|             expr: [BuiltInVarArg] __builtin_va_arg
@@ -6133,8 +6133,8 @@ ir.cpp:
 #  900|         Type = [IntType] int
 #  900|   body: [Block] { ... }
 #  901|     0: [ExprStmt] ExprStmt
-#  901|       0: [CStyleCast,VoidConversion] (void)...
-#  901|           Conversion = conversion to void
+#  901|       0: [CStyleCast] (void)...
+#  901|           Conversion = [VoidConversion] conversion to void
 #  901|           Type = [VoidType] void
 #  901|           ValueCategory = prvalue
 #  901|         expr: [VariableAccess] x
@@ -6560,8 +6560,8 @@ ir.cpp:
 #  970|         0: [ConditionDeclExpr] (condition decl)
 #  970|             Type = [BoolType] bool
 #  970|             ValueCategory = prvalue
-#  970|           0: [BoolConversion,CStyleCast] (bool)...
-#  970|               Conversion = conversion to bool
+#  970|           0: [CStyleCast] (bool)...
+#  970|               Conversion = [BoolConversion] conversion to bool
 #  970|               Type = [BoolType] bool
 #  970|               ValueCategory = prvalue
 #  970|             expr: [VariableAccess] z
@@ -6583,8 +6583,8 @@ ir.cpp:
 #  973|           0: [ConditionDeclExpr] (condition decl)
 #  973|               Type = [BoolType] bool
 #  973|               ValueCategory = prvalue
-#  973|             0: [BoolConversion,CStyleCast] (bool)...
-#  973|                 Conversion = conversion to bool
+#  973|             0: [CStyleCast] (bool)...
+#  973|                 Conversion = [BoolConversion] conversion to bool
 #  973|                 Type = [BoolType] bool
 #  973|                 ValueCategory = prvalue
 #  973|               expr: [VariableAccess] p
@@ -6625,8 +6625,8 @@ ir.cpp:
 #  981|       0: [ConditionDeclExpr] (condition decl)
 #  981|           Type = [BoolType] bool
 #  981|           ValueCategory = prvalue
-#  981|         0: [BoolConversion,CStyleCast] (bool)...
-#  981|             Conversion = conversion to bool
+#  981|         0: [CStyleCast] (bool)...
+#  981|             Conversion = [BoolConversion] conversion to bool
 #  981|             Type = [BoolType] bool
 #  981|             ValueCategory = prvalue
 #  981|           expr: [VariableAccess] z
@@ -6637,8 +6637,8 @@ ir.cpp:
 #  983|       0: [ConditionDeclExpr] (condition decl)
 #  983|           Type = [BoolType] bool
 #  983|           ValueCategory = prvalue
-#  983|         0: [BoolConversion,CStyleCast] (bool)...
-#  983|             Conversion = conversion to bool
+#  983|         0: [CStyleCast] (bool)...
+#  983|             Conversion = [BoolConversion] conversion to bool
 #  983|             Type = [BoolType] bool
 #  983|             ValueCategory = prvalue
 #  983|           expr: [VariableAccess] p
@@ -6673,10 +6673,10 @@ ir.cpp:
 #  988|           0: [VariableAccess] fn
 #  988|               Type = [FunctionPointerType] ..(*)(..)
 #  988|               ValueCategory = prvalue(load)
-#  988|           1: [CStyleCast,FloatingPointConversion] (float)...
-#  988|               Conversion = floating point conversion
+#  988|           1: [CStyleCast] (float)...
+#  988|               Conversion = [FloatingPointConversion] floating point conversion
 #  988|               Type = [FloatType] float
-#  988|               Value = [CStyleCast,FloatingPointConversion] 1.0
+#  988|               Value = [CStyleCast] 1.0
 #  988|               ValueCategory = prvalue
 #  988|             expr: [Literal] 1.0
 #  988|                 Type = [DoubleType] double
@@ -6709,10 +6709,10 @@ ir.cpp:
 # 1007|       0: [DeleteExpr] delete
 # 1007|           Type = [VoidType] void
 # 1007|           ValueCategory = prvalue
-# 1007|         3: [PointerConversion,StaticCast] static_cast<int *>...
-# 1007|             Conversion = pointer conversion
+# 1007|         3: [StaticCast] static_cast<int *>...
+# 1007|             Conversion = [PointerConversion] pointer conversion
 # 1007|             Type = [IntPointerType] int *
-# 1007|             Value = [PointerConversion,StaticCast] 0
+# 1007|             Value = [StaticCast] 0
 # 1007|             ValueCategory = prvalue
 # 1007|           expr: [Literal,Zero] 0
 # 1007|               Type = [NullPointerType] decltype(nullptr)
@@ -6725,10 +6725,10 @@ ir.cpp:
 # 1008|         1: [DestructorCall] call to ~String
 # 1008|             Type = [VoidType] void
 # 1008|             ValueCategory = prvalue
-# 1008|           -1: [PointerConversion,StaticCast] static_cast<String *>...
-# 1008|               Conversion = pointer conversion
+# 1008|           -1: [StaticCast] static_cast<String *>...
+# 1008|               Conversion = [PointerConversion] pointer conversion
 # 1008|               Type = [PointerType] String *
-# 1008|               Value = [PointerConversion,StaticCast] 0
+# 1008|               Value = [StaticCast] 0
 # 1008|               ValueCategory = prvalue
 # 1008|             expr: [Literal,Zero] 0
 # 1008|                 Type = [NullPointerType] decltype(nullptr)
@@ -6741,10 +6741,10 @@ ir.cpp:
 # 1009|         0: [FunctionCall] call to operator delete
 # 1009|             Type = [VoidType] void
 # 1009|             ValueCategory = prvalue
-# 1009|         3: [PointerConversion,StaticCast] static_cast<SizedDealloc *>...
-# 1009|             Conversion = pointer conversion
+# 1009|         3: [StaticCast] static_cast<SizedDealloc *>...
+# 1009|             Conversion = [PointerConversion] pointer conversion
 # 1009|             Type = [PointerType] SizedDealloc *
-# 1009|             Value = [PointerConversion,StaticCast] 0
+# 1009|             Value = [StaticCast] 0
 # 1009|             ValueCategory = prvalue
 # 1009|           expr: [Literal,Zero] 0
 # 1009|               Type = [NullPointerType] decltype(nullptr)
@@ -6754,10 +6754,10 @@ ir.cpp:
 # 1010|       0: [DeleteExpr] delete
 # 1010|           Type = [VoidType] void
 # 1010|           ValueCategory = prvalue
-# 1010|         3: [PointerConversion,StaticCast] static_cast<Overaligned *>...
-# 1010|             Conversion = pointer conversion
+# 1010|         3: [StaticCast] static_cast<Overaligned *>...
+# 1010|             Conversion = [PointerConversion] pointer conversion
 # 1010|             Type = [PointerType] Overaligned *
-# 1010|             Value = [PointerConversion,StaticCast] 0
+# 1010|             Value = [StaticCast] 0
 # 1010|             ValueCategory = prvalue
 # 1010|           expr: [Literal,Zero] 0
 # 1010|               Type = [NullPointerType] decltype(nullptr)
@@ -6770,10 +6770,10 @@ ir.cpp:
 # 1011|         1: [DestructorCall] call to ~PolymorphicBase
 # 1011|             Type = [VoidType] void
 # 1011|             ValueCategory = prvalue
-# 1011|           -1: [PointerConversion,StaticCast] static_cast<PolymorphicBase *>...
-# 1011|               Conversion = pointer conversion
+# 1011|           -1: [StaticCast] static_cast<PolymorphicBase *>...
+# 1011|               Conversion = [PointerConversion] pointer conversion
 # 1011|               Type = [PointerType] PolymorphicBase *
-# 1011|               Value = [PointerConversion,StaticCast] 0
+# 1011|               Value = [StaticCast] 0
 # 1011|               ValueCategory = prvalue
 # 1011|             expr: [Literal,Zero] 0
 # 1011|                 Type = [NullPointerType] decltype(nullptr)
@@ -6787,10 +6787,10 @@ ir.cpp:
 # 1016|       0: [DeleteArrayExpr] delete[]
 # 1016|           Type = [VoidType] void
 # 1016|           ValueCategory = prvalue
-# 1016|         3: [PointerConversion,StaticCast] static_cast<int *>...
-# 1016|             Conversion = pointer conversion
+# 1016|         3: [StaticCast] static_cast<int *>...
+# 1016|             Conversion = [PointerConversion] pointer conversion
 # 1016|             Type = [IntPointerType] int *
-# 1016|             Value = [PointerConversion,StaticCast] 0
+# 1016|             Value = [StaticCast] 0
 # 1016|             ValueCategory = prvalue
 # 1016|           expr: [Literal,Zero] 0
 # 1016|               Type = [NullPointerType] decltype(nullptr)
@@ -6803,10 +6803,10 @@ ir.cpp:
 # 1017|         1: [DestructorCall] call to ~String
 # 1017|             Type = [VoidType] void
 # 1017|             ValueCategory = prvalue
-# 1017|           -1: [PointerConversion,StaticCast] static_cast<String *>...
-# 1017|               Conversion = pointer conversion
+# 1017|           -1: [StaticCast] static_cast<String *>...
+# 1017|               Conversion = [PointerConversion] pointer conversion
 # 1017|               Type = [PointerType] String *
-# 1017|               Value = [PointerConversion,StaticCast] 0
+# 1017|               Value = [StaticCast] 0
 # 1017|               ValueCategory = prvalue
 # 1017|             expr: [Literal,Zero] 0
 # 1017|                 Type = [NullPointerType] decltype(nullptr)
@@ -6819,10 +6819,10 @@ ir.cpp:
 # 1018|         0: [FunctionCall] call to operator delete[]
 # 1018|             Type = [VoidType] void
 # 1018|             ValueCategory = prvalue
-# 1018|         3: [PointerConversion,StaticCast] static_cast<SizedDealloc *>...
-# 1018|             Conversion = pointer conversion
+# 1018|         3: [StaticCast] static_cast<SizedDealloc *>...
+# 1018|             Conversion = [PointerConversion] pointer conversion
 # 1018|             Type = [PointerType] SizedDealloc *
-# 1018|             Value = [PointerConversion,StaticCast] 0
+# 1018|             Value = [StaticCast] 0
 # 1018|             ValueCategory = prvalue
 # 1018|           expr: [Literal,Zero] 0
 # 1018|               Type = [NullPointerType] decltype(nullptr)
@@ -6832,10 +6832,10 @@ ir.cpp:
 # 1019|       0: [DeleteArrayExpr] delete[]
 # 1019|           Type = [VoidType] void
 # 1019|           ValueCategory = prvalue
-# 1019|         3: [PointerConversion,StaticCast] static_cast<Overaligned *>...
-# 1019|             Conversion = pointer conversion
+# 1019|         3: [StaticCast] static_cast<Overaligned *>...
+# 1019|             Conversion = [PointerConversion] pointer conversion
 # 1019|             Type = [PointerType] Overaligned *
-# 1019|             Value = [PointerConversion,StaticCast] 0
+# 1019|             Value = [StaticCast] 0
 # 1019|             ValueCategory = prvalue
 # 1019|           expr: [Literal,Zero] 0
 # 1019|               Type = [NullPointerType] decltype(nullptr)
@@ -6848,10 +6848,10 @@ ir.cpp:
 # 1020|         1: [DestructorCall] call to ~PolymorphicBase
 # 1020|             Type = [VoidType] void
 # 1020|             ValueCategory = prvalue
-# 1020|           -1: [PointerConversion,StaticCast] static_cast<PolymorphicBase *>...
-# 1020|               Conversion = pointer conversion
+# 1020|           -1: [StaticCast] static_cast<PolymorphicBase *>...
+# 1020|               Conversion = [PointerConversion] pointer conversion
 # 1020|               Type = [PointerType] PolymorphicBase *
-# 1020|               Value = [PointerConversion,StaticCast] 0
+# 1020|               Value = [StaticCast] 0
 # 1020|               ValueCategory = prvalue
 # 1020|             expr: [Literal,Zero] 0
 # 1020|                 Type = [NullPointerType] decltype(nullptr)
@@ -6926,17 +6926,17 @@ ir.cpp:
 # 1033|           Type = [PlainCharType] char
 # 1033|           Value = [FunctionCall] 65
 # 1033|           ValueCategory = prvalue
-# 1033|         -1: [CStyleCast,GlvalueConversion] (const lambda [] type at line 1032, col. 23)...
-# 1033|             Conversion = glvalue conversion
+# 1033|         -1: [CStyleCast] (const lambda [] type at line 1032, col. 23)...
+# 1033|             Conversion = [GlvalueConversion] glvalue conversion
 # 1033|             Type = [SpecifiedType] const lambda [] type at line 1032, col. 23
 # 1033|             ValueCategory = lvalue
 # 1033|           expr: [VariableAccess] lambda_empty
 # 1033|               Type = [Closure,LocalClass] decltype([...](...){...})
 # 1033|               ValueCategory = lvalue
-# 1033|         0: [CStyleCast,IntegralToFloatingPointConversion] (float)...
-# 1033|             Conversion = integral to floating point conversion
+# 1033|         0: [CStyleCast] (float)...
+# 1033|             Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 # 1033|             Type = [FloatType] float
-# 1033|             Value = [CStyleCast,IntegralToFloatingPointConversion] 0.0
+# 1033|             Value = [CStyleCast] 0.0
 # 1033|             ValueCategory = prvalue
 # 1033|           expr: [Literal,Zero] 0
 # 1033|               Type = [IntType] int
@@ -6971,17 +6971,17 @@ ir.cpp:
 # 1035|       0: [FunctionCall] call to operator()
 # 1035|           Type = [PlainCharType] char
 # 1035|           ValueCategory = prvalue
-# 1035|         -1: [CStyleCast,GlvalueConversion] (const lambda [] type at line 1034, col. 21)...
-# 1035|             Conversion = glvalue conversion
+# 1035|         -1: [CStyleCast] (const lambda [] type at line 1034, col. 21)...
+# 1035|             Conversion = [GlvalueConversion] glvalue conversion
 # 1035|             Type = [SpecifiedType] const lambda [] type at line 1034, col. 21
 # 1035|             ValueCategory = lvalue
 # 1035|           expr: [VariableAccess] lambda_ref
 # 1035|               Type = [Closure,LocalClass] decltype([...](...){...})
 # 1035|               ValueCategory = lvalue
-# 1035|         0: [CStyleCast,IntegralToFloatingPointConversion] (float)...
-# 1035|             Conversion = integral to floating point conversion
+# 1035|         0: [CStyleCast] (float)...
+# 1035|             Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 # 1035|             Type = [FloatType] float
-# 1035|             Value = [CStyleCast,IntegralToFloatingPointConversion] 1.0
+# 1035|             Value = [CStyleCast] 1.0
 # 1035|             ValueCategory = prvalue
 # 1035|           expr: [Literal] 1
 # 1035|               Type = [IntType] int
@@ -7013,17 +7013,17 @@ ir.cpp:
 # 1037|       0: [FunctionCall] call to operator()
 # 1037|           Type = [PlainCharType] char
 # 1037|           ValueCategory = prvalue
-# 1037|         -1: [CStyleCast,GlvalueConversion] (const lambda [] type at line 1036, col. 21)...
-# 1037|             Conversion = glvalue conversion
+# 1037|         -1: [CStyleCast] (const lambda [] type at line 1036, col. 21)...
+# 1037|             Conversion = [GlvalueConversion] glvalue conversion
 # 1037|             Type = [SpecifiedType] const lambda [] type at line 1036, col. 21
 # 1037|             ValueCategory = lvalue
 # 1037|           expr: [VariableAccess] lambda_val
 # 1037|               Type = [Closure,LocalClass] decltype([...](...){...})
 # 1037|               ValueCategory = lvalue
-# 1037|         0: [CStyleCast,IntegralToFloatingPointConversion] (float)...
-# 1037|             Conversion = integral to floating point conversion
+# 1037|         0: [CStyleCast] (float)...
+# 1037|             Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 # 1037|             Type = [FloatType] float
-# 1037|             Value = [CStyleCast,IntegralToFloatingPointConversion] 2.0
+# 1037|             Value = [CStyleCast] 2.0
 # 1037|             ValueCategory = prvalue
 # 1037|           expr: [Literal] 2
 # 1037|               Type = [IntType] int
@@ -7052,17 +7052,17 @@ ir.cpp:
 # 1039|       0: [FunctionCall] call to operator()
 # 1039|           Type = [PlainCharType] char
 # 1039|           ValueCategory = prvalue
-# 1039|         -1: [CStyleCast,GlvalueConversion] (const lambda [] type at line 1038, col. 30)...
-# 1039|             Conversion = glvalue conversion
+# 1039|         -1: [CStyleCast] (const lambda [] type at line 1038, col. 30)...
+# 1039|             Conversion = [GlvalueConversion] glvalue conversion
 # 1039|             Type = [SpecifiedType] const lambda [] type at line 1038, col. 30
 # 1039|             ValueCategory = lvalue
 # 1039|           expr: [VariableAccess] lambda_ref_explicit
 # 1039|               Type = [Closure,LocalClass] decltype([...](...){...})
 # 1039|               ValueCategory = lvalue
-# 1039|         0: [CStyleCast,IntegralToFloatingPointConversion] (float)...
-# 1039|             Conversion = integral to floating point conversion
+# 1039|         0: [CStyleCast] (float)...
+# 1039|             Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 # 1039|             Type = [FloatType] float
-# 1039|             Value = [CStyleCast,IntegralToFloatingPointConversion] 3.0
+# 1039|             Value = [CStyleCast] 3.0
 # 1039|             ValueCategory = prvalue
 # 1039|           expr: [Literal] 3
 # 1039|               Type = [IntType] int
@@ -7091,17 +7091,17 @@ ir.cpp:
 # 1041|       0: [FunctionCall] call to operator()
 # 1041|           Type = [PlainCharType] char
 # 1041|           ValueCategory = prvalue
-# 1041|         -1: [CStyleCast,GlvalueConversion] (const lambda [] type at line 1040, col. 30)...
-# 1041|             Conversion = glvalue conversion
+# 1041|         -1: [CStyleCast] (const lambda [] type at line 1040, col. 30)...
+# 1041|             Conversion = [GlvalueConversion] glvalue conversion
 # 1041|             Type = [SpecifiedType] const lambda [] type at line 1040, col. 30
 # 1041|             ValueCategory = lvalue
 # 1041|           expr: [VariableAccess] lambda_val_explicit
 # 1041|               Type = [Closure,LocalClass] decltype([...](...){...})
 # 1041|               ValueCategory = lvalue
-# 1041|         0: [CStyleCast,IntegralToFloatingPointConversion] (float)...
-# 1041|             Conversion = integral to floating point conversion
+# 1041|         0: [CStyleCast] (float)...
+# 1041|             Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 # 1041|             Type = [FloatType] float
-# 1041|             Value = [CStyleCast,IntegralToFloatingPointConversion] 4.0
+# 1041|             Value = [CStyleCast] 4.0
 # 1041|             ValueCategory = prvalue
 # 1041|           expr: [Literal] 4
 # 1041|               Type = [IntType] int
@@ -7133,17 +7133,17 @@ ir.cpp:
 # 1043|       0: [FunctionCall] call to operator()
 # 1043|           Type = [PlainCharType] char
 # 1043|           ValueCategory = prvalue
-# 1043|         -1: [CStyleCast,GlvalueConversion] (const lambda [] type at line 1042, col. 32)...
-# 1043|             Conversion = glvalue conversion
+# 1043|         -1: [CStyleCast] (const lambda [] type at line 1042, col. 32)...
+# 1043|             Conversion = [GlvalueConversion] glvalue conversion
 # 1043|             Type = [SpecifiedType] const lambda [] type at line 1042, col. 32
 # 1043|             ValueCategory = lvalue
 # 1043|           expr: [VariableAccess] lambda_mixed_explicit
 # 1043|               Type = [Closure,LocalClass] decltype([...](...){...})
 # 1043|               ValueCategory = lvalue
-# 1043|         0: [CStyleCast,IntegralToFloatingPointConversion] (float)...
-# 1043|             Conversion = integral to floating point conversion
+# 1043|         0: [CStyleCast] (float)...
+# 1043|             Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 # 1043|             Type = [FloatType] float
-# 1043|             Value = [CStyleCast,IntegralToFloatingPointConversion] 5.0
+# 1043|             Value = [CStyleCast] 5.0
 # 1043|             ValueCategory = prvalue
 # 1043|           expr: [Literal] 5
 # 1043|               Type = [IntType] int
@@ -7205,17 +7205,17 @@ ir.cpp:
 # 1046|       0: [FunctionCall] call to operator()
 # 1046|           Type = [PlainCharType] char
 # 1046|           ValueCategory = prvalue
-# 1046|         -1: [CStyleCast,GlvalueConversion] (const lambda [] type at line 1045, col. 23)...
-# 1046|             Conversion = glvalue conversion
+# 1046|         -1: [CStyleCast] (const lambda [] type at line 1045, col. 23)...
+# 1046|             Conversion = [GlvalueConversion] glvalue conversion
 # 1046|             Type = [SpecifiedType] const lambda [] type at line 1045, col. 23
 # 1046|             ValueCategory = lvalue
 # 1046|           expr: [VariableAccess] lambda_inits
 # 1046|               Type = [Closure,LocalClass] decltype([...](...){...})
 # 1046|               ValueCategory = lvalue
-# 1046|         0: [CStyleCast,IntegralToFloatingPointConversion] (float)...
-# 1046|             Conversion = integral to floating point conversion
+# 1046|         0: [CStyleCast] (float)...
+# 1046|             Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
 # 1046|             Type = [FloatType] float
-# 1046|             Value = [CStyleCast,IntegralToFloatingPointConversion] 6.0
+# 1046|             Value = [CStyleCast] 6.0
 # 1046|             ValueCategory = prvalue
 # 1046|           expr: [Literal] 6
 # 1046|               Type = [IntType] int
@@ -7701,8 +7701,8 @@ ir.cpp:
 # 1069|       2: [FunctionCall] call to operator!=
 # 1069|           Type = [BoolType] bool
 # 1069|           ValueCategory = prvalue
-#-----|         -1: [CStyleCast,GlvalueConversion] (const iterator)...
-#-----|             Conversion = glvalue conversion
+#-----|         -1: [CStyleCast] (const iterator)...
+#-----|             Conversion = [GlvalueConversion] glvalue conversion
 #-----|             Type = [SpecifiedType] const iterator
 #-----|             ValueCategory = lvalue
 #-----|           expr: [VariableAccess] (__begin)
@@ -7742,8 +7742,8 @@ ir.cpp:
 # 1075|       2: [FunctionCall] call to operator!=
 # 1075|           Type = [BoolType] bool
 # 1075|           ValueCategory = prvalue
-#-----|         -1: [CStyleCast,GlvalueConversion] (const iterator)...
-#-----|             Conversion = glvalue conversion
+#-----|         -1: [CStyleCast] (const iterator)...
+#-----|             Conversion = [GlvalueConversion] glvalue conversion
 #-----|             Type = [SpecifiedType] const iterator
 #-----|             ValueCategory = lvalue
 #-----|           expr: [VariableAccess] (__begin)
