@@ -4,6 +4,14 @@ import javascript
 
 /**
  * An ECMAScript 2015 module.
+ *
+ * Example:
+ *
+ * ```
+ * import console from 'console';
+ *
+ * console.log("Hello, world!");
+ * ```
  */
 class ES2015Module extends Module {
   ES2015Module() { isES2015Module(this) }
@@ -32,7 +40,16 @@ class ES2015Module extends Module {
   }
 }
 
-/** An import declaration. */
+/**
+ * An import declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * import console, { log, error as fatal } from 'console';
+ * import * as console from 'console';
+ * ```
+ */
 class ImportDeclaration extends Stmt, Import, @importdeclaration {
   override ES2015Module getEnclosingModule() { result = getTopLevel() }
 
@@ -71,19 +88,20 @@ private class LiteralImportPath extends PathExprInModule, ConstantString {
 /**
  * An import specifier in an import declaration.
  *
- * There are four kinds of import specifiers:
+ * Examples:
  *
- *   - default import specifiers, which import the default export of a module
- *     and make it available under a local name, as in `import` <u>`f`</u> `from 'a'`;
- *   - namespace import specifiers, which import all exports of a module and
- *     make them available through a local namespace object, as in
- *     `import` <u>`* as ns`</u> `from 'a'`;
- *   - named import specifiers, which import a named export of a module and
- *     make it available in the importing module under the same name, as in
- *     `import {` <u>`x`</u> `} from 'a'`;
- *   - renaming import specifiers, which import a named export of a module and
- *     make it available in the importing module under a different name, as in
- *     `import {` <u>`x as y`</u> `} from 'a'`.
+ * ```
+ * import
+ *   console,            // default import specifier
+ *   {
+ *     log,              // named import specifier
+ *     error as fatal    // renaming import specifier
+ *   } from 'console';
+ *
+ * import
+ *   * as console        // namespace import specifier
+ *   from 'console';
+ * ```
  */
 class ImportSpecifier extends Expr, @importspecifier {
   /** Gets the imported symbol; undefined for default and namespace import specifiers. */
@@ -110,18 +128,58 @@ class ImportSpecifier extends Expr, @importspecifier {
   VarDecl getLocal() { result = getChildExpr(1) }
 }
 
-/** A named import specifier. */
+/**
+ * A named import specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * import
+ *   {
+ *     log,              // named import specifier
+ *     error as fatal    // renaming import specifier
+ *   } from 'console';
+ * ```
+ */
 class NamedImportSpecifier extends ImportSpecifier, @namedimportspecifier { }
 
-/** A default import specifier. */
+/**
+ * A default import specifier.
+ *
+ * Example:
+ *
+ * ```
+ * import
+ *   console             // default import specifier
+ *   from 'console';
+ * ```
+ */
 class ImportDefaultSpecifier extends ImportSpecifier, @importdefaultspecifier {
   override string getImportedName() { result = "default" }
 }
 
-/** A namespace import specifier. */
+/**
+ * A namespace import specifier.
+ *
+ * Example:
+ *
+ * ```
+ * import
+ *   * as console        // namespace import specifier
+ *   from 'console';
+ * ```
+ */
 class ImportNamespaceSpecifier extends ImportSpecifier, @importnamespacespecifier { }
 
-/** A bulk import that imports an entire module as a namespace. */
+/**
+ * A bulk import that imports an entire module as a namespace.
+ *
+ * Example:
+ *
+ * ```
+ * import * as console from 'console';
+ * ```
+ */
 class BulkImportDeclaration extends ImportDeclaration {
   BulkImportDeclaration() { getASpecifier() instanceof ImportNamespaceSpecifier }
 
@@ -129,7 +187,15 @@ class BulkImportDeclaration extends ImportDeclaration {
   VarDecl getLocal() { result = getASpecifier().getLocal() }
 }
 
-/** A selective import that imports zero or more declarations. */
+/**
+ * A selective import that imports zero or more declarations.
+ *
+ * Example:
+ *
+ * ```
+ * import console, { log } from 'console';
+ * ```
+ */
 class SelectiveImportDeclaration extends ImportDeclaration {
   SelectiveImportDeclaration() { not this instanceof BulkImportDeclaration }
 
@@ -147,16 +213,20 @@ class SelectiveImportDeclaration extends ImportDeclaration {
 /**
  * An export declaration.
  *
- * There are three kinds of export declarations:
+ * Examples:
  *
- *   - a bulk re-export declaration of the form `export * from 'a'`, which re-exports
- *     all exports of another module;
- *   - a default export declaration of the form `export default var x = 42`, which exports
- *     a local value or declaration as the default export;
- *   - a named export declaration such as `export { x, y as z }`, which exports local
- *     values or declarations under specific names; a named export declaration
- *     may also export symbols itself imported from another module, as in
- *     `export { x } from 'a'`.
+ * ```
+ * export * from 'a';               // bulk re-export declaration
+ *
+ * export default var x = 42;       // default export declaration
+ * export default function f() {};  // default export declaration
+ * export default 42;               // default export declaration
+ *
+ * export { x, y as z };            // named export declaration
+ * export var x = 42;               // named export declaration
+ * export { x } from 'a';           // named re-export declaration
+ * export x from 'a';               // default re-export declaration
+ * ```
  */
 abstract class ExportDeclaration extends Stmt, @exportdeclaration {
   /** Gets the module to which this export declaration belongs. */
@@ -192,6 +262,12 @@ abstract class ExportDeclaration extends Stmt, @exportdeclaration {
 /**
  * A bulk re-export declaration of the form `export * from 'a'`, which re-exports
  * all exports of another module.
+ *
+ * Examples:
+ *
+ * ```
+ * export * from 'a';          // bulk re-export declaration
+ * ```
  */
 class BulkReExportDeclaration extends ReExportDeclaration, @exportalldeclaration {
   /** Gets the name of the module from which this declaration re-exports. */
@@ -229,8 +305,15 @@ private predicate isShadowedFromBulkExport(BulkReExportDeclaration reExport, str
 }
 
 /**
- * A default export declaration such as `export default function f{}`
- * or `export default { x: 42 }`.
+ * A default export declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * export default var x = 42;
+ * export default function f() {};
+ * export default 42;
+ * ```
  */
 class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclaration {
   /** Gets the operand statement or expression that is exported by this declaration. */
@@ -253,7 +336,16 @@ class ExportDefaultDeclaration extends ExportDeclaration, @exportdefaultdeclarat
   }
 }
 
-/** A named export declaration such as `export { x, y }` or `export var x = 42`. */
+/** A named export declaration.
+ *  *
+ * Examples:
+ *
+ * ```
+ * export { x, y as z };
+ * export var x = 42;
+ * export { x } from 'a';
+ * ```
+ * */
 class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration {
   /** Gets the operand statement or expression that is exported by this declaration. */
   ExprOrStmt getOperand() { result = getChild(-1) }
@@ -322,7 +414,30 @@ class ExportNamedDeclaration extends ExportDeclaration, @exportnameddeclaration 
   }
 }
 
-/** An export specifier in a named export declaration. */
+/**
+ * An export specifier in an export declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * export
+ *   *              // namespace export specifier
+ *   from 'a';
+ *
+ * export
+ *   default        // default export specifier
+ *   var x = 42;
+ *
+ * export {
+ *   x,             // named export specifier
+ *   y as z         // named export specifier
+ * };
+ *
+ * export
+ *   x              // default re-export specifier
+ *   from 'a';
+ * ```
+ */
 class ExportSpecifier extends Expr, @exportspecifier {
   /** Gets the declaration to which this specifier belongs. */
   ExportDeclaration getExportDeclaration() { result = getParent() }
@@ -380,21 +495,47 @@ class ExportSpecifier extends Expr, @exportspecifier {
 }
 
 /**
- * A named export specifier, for example `v` in `export { v }`.
+ * A named export specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * export {
+ *   x,       // named export specifier
+ *   y as z   // named export specifier
+ * };
+ * ```
  */
 class NamedExportSpecifier extends ExportSpecifier, @namedexportspecifier { }
 
 /**
- * A default export specifier, for example `default` in `export default 42`,
- * or `v` in `export v from "mod"`.
+ * A default export specifier.
+ *
+ * Examples:
+ *
+ * ```
+ * export
+ *   default    // default export specifier
+ *   42;
+ * export
+ *   x          // default re-export specifier
+ *   from 'a';
+ * ```
  */
 class ExportDefaultSpecifier extends ExportSpecifier, @exportdefaultspecifier {
   override string getExportedName() { result = "default" }
 }
 
 /**
- * A default export specifier in a re-export declaration, for example `v` in
- * `export v from "mod"`.
+ * A default export specifier in a re-export declaration.
+ *
+ * Example:
+ *
+ * ```
+ * export
+ *   x          // default re-export specifier
+ *   from 'a';
+ * ```
  */
 class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
   ReExportDefaultSpecifier() { getExportDeclaration() instanceof ReExportDeclaration }
@@ -405,11 +546,29 @@ class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
 }
 
 /**
- * A namespace export specifier, for example `*` in `export * from "mod"`.
+ * A namespace export specifier.
+ *
+ * Example:
+ *
+ * ```
+ * export
+ *   *          // namespace export specifier
+ *   from 'a';
+ * ```
  */
 class ExportNamespaceSpecifier extends ExportSpecifier, @exportnamespacespecifier { }
 
-/** An export declaration that re-exports declarations from another module. */
+/**
+ * An export declaration that re-exports declarations from another module.
+ *
+ * Examples:
+ *
+ * ```
+ * export * from 'a';               // bulk re-export declaration
+ * export { x } from 'a';           // named re-export declaration
+ * export x from 'a';               // default re-export declaration
+ * ```
+ */
 abstract class ReExportDeclaration extends ExportDeclaration {
   /** Gets the path of the module from which this declaration re-exports. */
   abstract ConstantString getImportedPath();
@@ -441,7 +600,15 @@ private class LiteralReExportPath extends PathExprInModule, ConstantString {
   override string getValue() { result = this.(ConstantString).getStringValue() }
 }
 
-/** A named export declaration that re-exports symbols imported from another module. */
+/**
+ * A named export declaration that re-exports symbols imported from another module.
+ *
+ * Example:
+ *
+ * ```
+ * export { x } from 'a';
+ * ```
+ */
 class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDeclaration {
   SelectiveReExportDeclaration() { exists(ExportNamedDeclaration.super.getImportedPath()) }
 
@@ -451,7 +618,19 @@ class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDecla
   }
 }
 
-/** An export declaration that exports zero or more declarations from the module it appears in. */
+/**
+ * An export declaration that exports zero or more declarations from the module it appears in.
+ *
+ * Examples:
+ *
+ * ```
+ * export default var x = 42;
+ * export default function f() {};
+ * export default 42;
+ * export { x, y as z };
+ * export var x = 42;
+ * ```
+ */
 class OriginalExportDeclaration extends ExportDeclaration {
   OriginalExportDeclaration() { not this instanceof ReExportDeclaration }
 
