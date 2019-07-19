@@ -13,3 +13,6 @@
 | Main.java:90:13:90:42 | ... >= ... | This expression is always true, since a string can never have negative size. |
 | Main.java:97:13:97:26 | ... >= ... | This expression is always true, since a map can never have negative size. |
 | Main.java:100:13:100:26 | ... <= ... | This expression is always true, since a map can never have negative size. |
+| Main.java:113:13:113:25 | ... >= ... | This expression is always true, since a collection can never have negative size. |
+| Main.java:114:13:114:25 | ... >= ... | This expression is always true, since a collection can never have negative size. |
+| Main.java:115:13:115:25 | ... <= ... | This expression is always true, since a map can never have negative size. |
