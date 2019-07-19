@@ -1,6 +1,5 @@
-private import IRLanguageInternal
-private import semmle.code.cpp.ir.implementation.TempVariableTag
-private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction as Construction
+private import TIRVariableInternal
+private import Imports::TempVariableTag
 
 newtype TIRVariable =
   TIRUserVariable(Language::Variable var, Language::Type type,

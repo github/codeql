@@ -1,4 +1,4 @@
-private import semmle.code.cpp.ir.internal.IRLanguageInternal
+private import internal.EdgeKindInternal
 
 private newtype TEdgeKind =
   TGotoEdge() or  // Single successor (including fall-through)

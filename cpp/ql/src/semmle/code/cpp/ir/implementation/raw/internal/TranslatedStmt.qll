@@ -1,6 +1,6 @@
 private import cpp
 private import semmle.code.cpp.ir.internal.IRUtilities
-private import semmle.code.cpp.ir.internal.OperandTag
+private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition

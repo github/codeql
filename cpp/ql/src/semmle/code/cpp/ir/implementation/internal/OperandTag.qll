@@ -1,4 +1,4 @@
-private import IRLanguageInternal
+private import OperandTagInternal
 
 private newtype TOperandTag =
   TAddressOperand() or
