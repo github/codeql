@@ -746,35 +746,35 @@ class ArrayToPointerConversion extends Conversion, @array_to_pointer {
  * A node representing the Cast sub-class of entity `cast`.
  */
 string qlCast(Cast cast) {
-	// NB: Take care and include only leaf QL classes
-	cast instanceof CStyleCast and result = "CStyleCast" or
-	cast instanceof StaticCast and result = "StaticCast" or
-	cast instanceof DynamicCast and result = "DynamicCast" or
-	cast instanceof ConstCast and result = "ConstCast" or
-	cast instanceof ReinterpretCast and result = "ReinterpretCast"
+  // NB: Take care and include only leaf QL classes
+  cast instanceof CStyleCast and result = "CStyleCast" or
+  cast instanceof StaticCast and result = "StaticCast" or
+  cast instanceof DynamicCast and result = "DynamicCast" or
+  cast instanceof ConstCast and result = "ConstCast" or
+  cast instanceof ReinterpretCast and result = "ReinterpretCast"
 }
 
 /**
  * A node representing the Conversion sub-class of entity `cast`.
  */
 string qlConversion(Cast cast) {
-	// NB: Take care and include only leaf QL classes
-	cast instanceof IntegralConversion and result = "IntegralConversion" or
-	cast instanceof FloatingPointConversion and result = "FloatingPointConversion" or
-	cast instanceof FloatingPointToIntegralConversion and result = "FloatingPointToIntegralConversion" or
-	cast instanceof IntegralToFloatingPointConversion and result = "IntegralToFloatingPointConversion" or
-	cast instanceof PointerConversion and result = "PointerConversion" or
-	cast instanceof PointerToMemberConversion and result = "PointerToMemberConversion" or
-	cast instanceof PointerToIntegralConversion and result = "PointerToIntegralConversion" or
-	cast instanceof IntegralToPointerConversion and result = "IntegralToPointerConversion" or
-	cast instanceof BoolConversion and result = "BoolConversion" or
-	cast instanceof VoidConversion and result = "VoidConversion" or
-	cast instanceof BaseClassConversion and result = "BaseClassConversion" or
-	cast instanceof DerivedClassConversion and result = "DerivedClassConversion" or
-	cast instanceof PointerToMemberBaseClassConversion and result = "PointerToMemberBaseClassConversion" or
-	cast instanceof PointerToMemberDerivedClassConversion and result = "PointerToMemberDerivedClassConversion" or
-	cast instanceof GlvalueConversion and result = "GlvalueConversion" or
-	cast instanceof PrvalueAdjustmentConversion and result = "PrvalueAdjustmentConversion" or
-	// treat dynamic_cast<...>(...) as a conversion
-	cast instanceof DynamicCast and result = "DynamicCast"
+  // NB: Take care and include only leaf QL classes
+  cast instanceof IntegralConversion and result = "IntegralConversion" or
+  cast instanceof FloatingPointConversion and result = "FloatingPointConversion" or
+  cast instanceof FloatingPointToIntegralConversion and result = "FloatingPointToIntegralConversion" or
+  cast instanceof IntegralToFloatingPointConversion and result = "IntegralToFloatingPointConversion" or
+  cast instanceof PointerConversion and result = "PointerConversion" or
+  cast instanceof PointerToMemberConversion and result = "PointerToMemberConversion" or
+  cast instanceof PointerToIntegralConversion and result = "PointerToIntegralConversion" or
+  cast instanceof IntegralToPointerConversion and result = "IntegralToPointerConversion" or
+  cast instanceof BoolConversion and result = "BoolConversion" or
+  cast instanceof VoidConversion and result = "VoidConversion" or
+  cast instanceof BaseClassConversion and result = "BaseClassConversion" or
+  cast instanceof DerivedClassConversion and result = "DerivedClassConversion" or
+  cast instanceof PointerToMemberBaseClassConversion and result = "PointerToMemberBaseClassConversion" or
+  cast instanceof PointerToMemberDerivedClassConversion and result = "PointerToMemberDerivedClassConversion" or
+  cast instanceof GlvalueConversion and result = "GlvalueConversion" or
+  cast instanceof PrvalueAdjustmentConversion and result = "PrvalueAdjustmentConversion" or
+  // treat dynamic_cast<...>(...) as a conversion
+  cast instanceof DynamicCast and result = "DynamicCast"
 }
