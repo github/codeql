@@ -2,7 +2,3 @@
 | test.cpp:8:10:8:10 | x | x is used in its own initializer. |
 | test.cpp:57:10:57:10 | x | x is used in its own initializer. |
 | test.cpp:61:24:61:24 | x | x is used in its own initializer. |
-| test.cpp:80:17:80:23 | v2 | v2 is used in its own initializer. |
-| test.cpp:84:16:84:22 | v4 | v4 is used in its own initializer. |
-| test.cpp:89:17:89:23 | v6 | v6 is used in its own initializer. |
-| test.cpp:90:17:90:23 | v7 | v7 is used in its own initializer. |

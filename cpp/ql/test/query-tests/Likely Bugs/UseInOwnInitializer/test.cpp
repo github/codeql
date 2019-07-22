@@ -77,15 +77,15 @@ namespace ns1
 namespace ns2
 {
 	const int v1 = ns1::v2; // GOOD
-	const int v2 = ns1::v2; // GOOD [FALSE POSITIVE; produces INVALID_KEY trap warning]
+	const int v2 = ns1::v2; // GOOD [produces INVALID_KEY trap warning]
 };
 
 const int v3 = ns1::v4; // GOOD
-const int v4 = ns1::v4; // GOOD [FALSE POSITIVE]
+const int v4 = ns1::v4; // GOOD
 
 namespace ns3
 {
 	const int v5 = ns1::v6 + 1; // GOOD
-	const int v6 = ns1::v6 + 1; // GOOD  [FALSE POSITIVE; produces INVALID_KEY trap warning]
-	const int v7 = ns3::v7; // BAD
+	const int v6 = ns1::v6 + 1; // GOOD  [produces INVALID_KEY trap warning]
+	const int v7 = ns3::v7; // BAD [NOT DETECTED]
 };
