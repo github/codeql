@@ -25,7 +25,7 @@
  * read are marked as indefinite.
  */
 
-import javascript
+private import javascript
 import AbstractValues
 import AbstractProperties
 private import InferredTypes

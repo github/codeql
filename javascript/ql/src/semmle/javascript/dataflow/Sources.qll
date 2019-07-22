@@ -6,7 +6,7 @@
  * local tracking within a function.
  */
 
-import javascript
+private import javascript
 private import semmle.javascript.dataflow.TypeTracking
 
 /**

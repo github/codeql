@@ -4,7 +4,7 @@
  * Provides classes implementing type inference for variables.
  */
 
-import javascript
+private import javascript
 private import AbstractValuesImpl
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.dataflow.Refinements

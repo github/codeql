@@ -3,7 +3,7 @@
  * set of data flow nodes.
  */
 
-import javascript
+private import javascript
 private import internal.FlowSteps as FlowSteps
 
 /**

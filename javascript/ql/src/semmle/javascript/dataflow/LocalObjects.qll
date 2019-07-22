@@ -14,7 +14,7 @@ private predicate isEscape(DataFlow::Node escape, string cause) {
   or
   escape = any(ThrowStmt t).getExpr().flow() and cause = "throw"
   or
-  escape = any(DataFlow::GlobalVariable v).getAnAssignedExpr().flow() and cause = "global"
+  escape = any(GlobalVariable v).getAnAssignedExpr().flow() and cause = "global"
   or
   escape = any(DataFlow::PropWrite write).getRhs() and cause = "heap"
   or
