@@ -1055,9 +1055,8 @@ class PathNode extends TPathNode {
    * in cases where it is the source or sink.
    */
   predicate isHidden() {
-    // Skip phi, refinement, and capture nodes
-    nd.(DataFlow::SsaDefinitionNode).getSsaVariable().getDefinition() instanceof
-      SsaImplicitDefinition
+    // Skip SSA definitions
+    nd instanceof DataFlow::SsaDefinitionNode
     or
     // Skip to the top of big left-leaning string concatenation trees.
     nd = any(AddExpr add).flow() and
