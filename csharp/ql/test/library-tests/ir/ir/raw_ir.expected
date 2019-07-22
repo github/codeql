@@ -1,3 +1,29 @@
+array_acc.cs:
+#    4| f
+#    4|   Block 0
+#    4|     v0_0(Void)                        = EnterFunction         : 
+#    4|     mu0_1(Object)                     = AliasedDefinition     : 
+#    4|     mu0_2(Object)                     = UnmodeledDefinition   : 
+#    4|     r0_3(lval<array_init_and_access>) = InitializeThis        : 
+#    5|     r0_4(lval<Int32[]>)               = VariableAddress[arr]  : 
+#    5|     mu0_5(Int32[])                    = Uninitialized[arr]    : &:r0_4
+#    5|     r0_6(Int32)                       = Constant[0]           : 
+#    5|     r0_7(lval<Int32>)                 = IndexedElementAddress : r0_4, r0_6
+#    5|     r0_8(Int32)                       = Constant[101]         : 
+#    5|     mu0_9(Int32)                      = Store                 : &:r0_7, r0_8
+#    5|     r0_10(Int32)                      = Constant[1]           : 
+#    5|     r0_11(lval<Int32>)                = IndexedElementAddress : r0_4, r0_10
+#    5|     r0_12(Int32)                      = Constant[102]         : 
+#    5|     mu0_13(Int32)                     = Store                 : &:r0_11, r0_12
+#    6|     r0_14(Int32)                      = Constant[5]           : 
+#    6|     r0_15(lval<Int32[]>)              = VariableAddress[arr]  : 
+#    6|     r0_16(Int32)                      = Constant[1]           : 
+#    6|     r0_17(lval<Int32>)                = IndexedElementAddress : r0_15, r0_16
+#    6|     mu0_18(Int32)                     = Store                 : &:r0_17, r0_14
+#    4|     v0_19(Void)                       = ReturnVoid            : 
+#    4|     v0_20(Void)                       = UnmodeledUse          : mu*
+#    4|     v0_21(Void)                       = ExitFunction          : 
+
 simple_function.cs:
 #    4| f
 #    4|   Block 0
@@ -16,26 +42,22 @@ simple_function.cs:
 variables.cs:
 #    4| f
 #    4|   Block 0
-#    4|     v0_0(Void)                 = EnterFunction            : 
-#    4|     mu0_1(Object)              = AliasedDefinition        : 
-#    4|     mu0_2(Object)              = UnmodeledDefinition      : 
-#    4|     r0_3(lval<test_variables>) = InitializeThis           : 
-#    5|     r0_4(lval<Int32>)          = VariableAddress[x]       : 
-#    5|     mu0_5(Int32)               = Uninitialized[x]         : &:r0_4
-#    5|     r0_6(lval<Int32>)          = VariableAddress[y]       : 
-#    5|     mu0_7(Int32)               = Uninitialized[y]         : &:r0_6
-#    6|     r0_8(Int32)                = Constant[0]              : 
-#    6|     r0_9(lval<Int32>)          = VariableAddress[y]       : 
-#    6|     mu0_10(Int32)              = Store                    : &:r0_9, r0_8
-#    7|     r0_11(lval<Int32>)         = VariableAddress[y]       : 
-#    7|     r0_12(Int32)               = Load                     : &:r0_11, ~mu0_2
-#    7|     r0_13(lval<Int32>)         = VariableAddress[x]       : 
-#    7|     mu0_14(Int32)              = Store                    : &:r0_13, r0_12
-#    8|     r0_15(lval<Int32>)         = VariableAddress[#return] : 
-#    8|     r0_16(lval<Int32>)         = VariableAddress[x]       : 
-#    8|     r0_17(Int32)               = Load                     : &:r0_16, ~mu0_2
-#    8|     mu0_18(Int32)              = Store                    : &:r0_15, r0_17
-#    4|     r0_19(lval<Int32>)         = VariableAddress[#return] : 
-#    4|     v0_20(Void)                = ReturnValue              : &:r0_19, ~mu0_2
-#    4|     v0_21(Void)                = UnmodeledUse             : mu*
-#    4|     v0_22(Void)                = ExitFunction             : 
+#    4|     v0_0(Void)                 = EnterFunction       : 
+#    4|     mu0_1(Object)              = AliasedDefinition   : 
+#    4|     mu0_2(Object)              = UnmodeledDefinition : 
+#    4|     r0_3(lval<test_variables>) = InitializeThis      : 
+#    5|     r0_4(lval<Int32>)          = VariableAddress[x]  : 
+#    5|     mu0_5(Int32)               = Uninitialized[x]    : &:r0_4
+#    5|     r0_6(lval<Int32>)          = VariableAddress[y]  : 
+#    5|     r0_7(Int32)                = Constant[5]         : 
+#    5|     mu0_8(Int32)               = Store               : &:r0_6, r0_7
+#    6|     r0_9(Int32)                = Constant[4]         : 
+#    6|     r0_10(lval<Int32>)         = VariableAddress[x]  : 
+#    6|     mu0_11(Int32)              = Store               : &:r0_10, r0_9
+#    7|     r0_12(lval<Int32>)         = VariableAddress[y]  : 
+#    7|     r0_13(Int32)               = Load                : &:r0_12, ~mu0_2
+#    7|     r0_14(lval<Int32>)         = VariableAddress[x]  : 
+#    7|     mu0_15(Int32)              = Store               : &:r0_14, r0_13
+#    4|     v0_16(Void)                = ReturnVoid          : 
+#    4|     v0_17(Void)                = UnmodeledUse        : mu*
+#    4|     v0_18(Void)                = ExitFunction        : 

@@ -1782,3 +1782,25 @@ class BuiltInInstruction extends Instruction {
     getOpcode() instanceof BuiltInOpcode
   }
 }
+
+class IndexedElementInstruction extends Instruction {
+  ArrayAccess arrAccess;
+
+  IndexedElementInstruction() {
+    arrAccess = Construction::getInstructionArrayAccess(this)
+  }
+
+  override final string getImmediateString() {
+    result = arrAccess.toString()
+  }
+
+  final ArrayAccess getArrayAccess() {
+    result = arrAccess
+  }
+}
+
+class IndexedElementAddressInstruction extends VariableInstruction {
+  IndexedElementAddressInstruction() {
+    getOpcode() instanceof Opcode::IndexedElementAddress
+  }
+}

@@ -166,8 +166,15 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
     result = getVariableType(getVariable())
   }
 
+  // TODO: All declarations which use an initializer will need a special case here
   private TranslatedInitialization getInitialization() {
-    result = getTranslatedInitialization(getVariable().getInitializer())
+    // First complex initializations
+    if (getVariable().getInitializer() instanceof ArrayCreation) then
+        result = getTranslatedInitialization(getVariable().getInitializer().(ArrayCreation).getInitializer())
+    else if (getVariable().getInitializer() instanceof ObjectCreation) then
+        result = getTranslatedInitialization(getVariable().getInitializer().(ObjectCreation).getInitializer())
+    else // then the simple variable initialization
+        result = getTranslatedInitialization(getVariable().getInitializer())
   }
 
   private predicate hasUninitializedInstruction() {

@@ -98,7 +98,10 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
    * then a load.
    */
   override final predicate producesExprResult() {
-    not (expr instanceof AssignableRead)
+  	// TODO: When the compatibility layer is in place, 
+  	//       create a special class for the following cases
+    not (expr instanceof AssignableRead) or
+    expr.getParent() instanceof ArrayAccess
   }
 
   /**
@@ -644,9 +647,9 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
     tag = OnlyInstructionTag() and
-    opcode instanceof Opcode::PointerAdd and
-    resultType = getBaseOperand().getResultType() and
-    isLValue = false
+    opcode instanceof Opcode::IndexedElementAddress and
+    resultType = getResultType() and
+    isLValue = true
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
@@ -670,11 +673,14 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
   }
 
   private TranslatedExpr getBaseOperand() {
-    result = getTranslatedExpr(expr.getChild(0))
+  	exists (Element el |
+  	        expr = el.getParent() and 
+  	        el instanceof VariableAccess and
+  	        result = getTranslatedExpr(el))
   }
 
   private TranslatedExpr getOffsetOperand() {
-    result = getTranslatedExpr(expr.getChild(1))
+    result = getTranslatedExpr(expr.getChild(0))
   }
 }
 
@@ -822,7 +828,10 @@ abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {
 
 class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
   TranslatedNonFieldVariableAccess() {
-    not expr instanceof FieldAccess
+  	// TODO: Make sure those are enough and correct
+    not expr instanceof FieldAccess and
+    // Init should take care of this access (check with cpp)
+    (not expr.getParent() instanceof LocalVariableDeclAndInitExpr)
   }
 
   override Instruction getFirstInstruction() {

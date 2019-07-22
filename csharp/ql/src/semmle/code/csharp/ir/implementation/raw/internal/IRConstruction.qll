@@ -215,6 +215,11 @@ cached private module Cached {
       result = element.getInstructionField(tag)
     )
   }
+  
+  cached ArrayAccess getInstructionArrayAccess(Instruction instruction) {
+    result = getInstructionTranslatedElement(instruction).getInstructionArrayAccess(
+      getInstructionTag(instruction))
+  }
 
   cached Callable getInstructionFunction(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction)

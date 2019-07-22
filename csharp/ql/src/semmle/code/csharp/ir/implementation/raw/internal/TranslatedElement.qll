@@ -183,7 +183,9 @@ newtype TTranslatedElement =
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) {
-    expr instanceof AssignableRead
+  	// TODO: Revisit and make sure Loads are only used when needed
+    expr instanceof AssignableRead and
+    not (expr.getParent() instanceof ArrayAccess)
   } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {
@@ -218,13 +220,25 @@ newtype TTranslatedElement =
   TTranslatedInitialization(Expr expr) {
     not ignoreExpr(expr) and
     (
-      exists(ObjectInitializer objInit | objInit = expr) or
-      exists(MemberInitializer memInit | memInit = expr) or
-      exists(CollectionInitializer colInit | colInit = expr) or
-      exists(ReturnStmt returnStmt | returnStmt.getExpr() = expr) or
-      exists(ElementInitializer elInit | elInit = expr) or
-      exists(ThrowExpr throw | throw.getExpr() = expr) or
+      // Because of the implementation of initializations in C#,
+      // we deal with all the types of initialization separately. 
+      // First only simple local variable initialization (ie. `int x = 0`)
+      exists(LocalVariableDeclAndInitExpr lvInit | 
+        lvInit.getInitializer() = expr and 
+        not expr instanceof ArrayCreation and
+        not expr instanceof ObjectCreation) or
+        
+      // Then treat complex ones
       exists(ArrayInitializer arrInit | arrInit = expr) or
+      exists(ObjectInitializer objInit | objInit = expr) or
+      
+      // Then treat the inner expressions of initializers
+      exists(ObjectInitializer objInit | objInit.getAChildExpr() = expr) or
+      exists(MemberInitializer memInit | memInit.getAChildExpr() = expr) or
+      exists(CollectionInitializer colInit | colInit.getAChildExpr() = expr) or
+      exists(ReturnStmt returnStmt | returnStmt.getExpr() = expr) or
+      exists(ThrowExpr throw | throw.getExpr() = expr) or
+      exists(ArrayInitializer arrInit | arrInit.getAChildExpr() = expr) or
       exists(LambdaExpr lambda | lambda.getSourceDeclaration() = expr) or
       exists(AnonymousMethodExpr anonMethExpr | anonMethExpr.getSourceDeclaration() = expr)
     )
@@ -492,6 +506,12 @@ abstract class TranslatedElement extends TTranslatedElement {
    * `Field` for that instruction.
    */
   Field getInstructionField(InstructionTag tag) { none() }
+  
+  /**
+   * If the instruction specified by `tag` is an `IndexedElementInstruction`,
+   * gets the `ArrayAccess` of that instruction.
+   */
+   ArrayAccess getInstructionArrayAccess(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is a `ConstantValueInstruction`, gets

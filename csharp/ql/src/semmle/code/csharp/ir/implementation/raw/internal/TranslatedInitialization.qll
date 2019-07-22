@@ -153,6 +153,9 @@ class TranslatedArrayListInitialization extends TranslatedListInitialization {
  */
 abstract class TranslatedDirectInitialization extends TranslatedInitialization {
   TranslatedDirectInitialization() {
+    // TODO: Make sure this is complete and correct
+    not expr instanceof ArrayInitializer and
+    not expr instanceof ObjectInitializer and
     not expr instanceof CollectionInitializer
   }
 
@@ -473,7 +476,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     ) or
     (
       tag = getElementAddressTag() and
-      opcode instanceof Opcode::PointerAdd and
+      opcode instanceof Opcode::IndexedElementAddress and
       resultType = getElementType() and
       isLValue = true
     )
@@ -519,7 +522,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   }
 
   final Type getElementType() {
-    result = initList.getType().(ArrayType).getElementType()
+    result = initList.getAnElement().getType()
   }
 }
 
