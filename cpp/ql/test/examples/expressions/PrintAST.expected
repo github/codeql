@@ -919,7 +919,7 @@ Varargs.c:
 #    9|       0: [VariableDeclarationEntry] definition of args
 #    9|           Type = [TypedefType] va_list
 #   10|     1: [ExprStmt] ExprStmt
-#   10|       0: [BuiltInVarArgsStart,MacroInvocationExpr] __builtin_va_start
+#   10|       0: [BuiltInVarArgsStart] __builtin_va_start
 #   10|           Type = [VoidType] void
 #   10|           ValueCategory = prvalue
 #   10|         0: [ArrayToPointerConversion] array to pointer conversion
@@ -932,7 +932,7 @@ Varargs.c:
 #   10|             Type = [PointerType] const char *
 #   10|             ValueCategory = lvalue
 #   11|     2: [ExprStmt] ExprStmt
-#   11|       0: [BuiltInVarArgsEnd,MacroInvocationExpr] __builtin_va_end
+#   11|       0: [BuiltInVarArgsEnd] __builtin_va_end
 #   11|           Type = [VoidType] void
 #   11|           ValueCategory = prvalue
 #   11|         0: [ArrayToPointerConversion] array to pointer conversion
@@ -1022,7 +1022,7 @@ macro_etc.c:
 #   26|           Type = [IntType] int
 #   26|           ValueCategory = prvalue(load)
 #   26|     5: [VlaDeclStmt] VLA declaration
-#   27|     6: [ForStmt,MacroInvocationStmt] for(...;...;...) ...
+#   27|     6: [ForStmt] for(...;...;...) ...
 #   27|       0: [ExprStmt] ExprStmt
 #   27|         0: [AssignExpr] ... = ...
 #   27|             Type = [PlainCharType] char
@@ -1074,7 +1074,7 @@ macro_etc.c:
 #   27|               expr: [VariableAccess] i
 #   27|                   Type = [PlainCharType] char
 #   27|                   ValueCategory = prvalue(load)
-#   28|     7: [ForStmt,MacroInvocationStmt] for(...;...;...) ...
+#   28|     7: [ForStmt] for(...;...;...) ...
 #   28|       0: [ExprStmt] ExprStmt
 #   28|         0: [AssignExpr] ... = ...
 #   28|             Type = [PlainCharType] char
@@ -1127,7 +1127,7 @@ macro_etc.c:
 #   28|                   Type = [PlainCharType] char
 #   28|                   ValueCategory = prvalue(load)
 #   29|     8: [ExprStmt] ExprStmt
-#   29|       0: [AssignExpr,MacroInvocationExpr] ... = ...
+#   29|       0: [AssignExpr] ... = ...
 #   29|           Type = [CharPointerType] char *
 #   29|           ValueCategory = prvalue
 #   29|         0: [VariableAccess] bt
