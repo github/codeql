@@ -27,3 +27,5 @@
 
 ## Changes to QL libraries
 
+- The `getName()` predicate on functions and classes now gets a name
+  inferred from the context if the function or class was not declared with a name.
