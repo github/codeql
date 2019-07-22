@@ -1,6 +1,6 @@
 import csharp
 import semmle.code.csharp.ir.implementation.raw.IR
-private import semmle.code.csharp.ir.internal.OperandTag
+private import semmle.code.csharp.ir.implementation.internal.OperandTag
 private import semmle.code.csharp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
@@ -30,6 +30,10 @@ cached private module Cached {
       element.hasInstruction(_, tag, _, _)
     }
 
+  cached predicate hasUserVariable(Callable callable, Variable var, Type type) {
+    getTranslatedFunction(callable).hasUserVariable(var, type)
+  }
+  
   cached predicate hasTempVariable(Callable callable, Locatable ast, TempVariableTag tag,
     Type type) {
     exists(TranslatedElement element |

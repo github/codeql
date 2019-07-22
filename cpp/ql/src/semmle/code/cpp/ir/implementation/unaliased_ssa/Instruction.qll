@@ -512,7 +512,7 @@ class Instruction extends Construction::TInstruction {
     else if getResultType() instanceof Language::UnknownType then
       result = Construction::getInstructionResultSize(this)
     else (
-      result = getResultType().getSize()
+      result = Language::getTypeSize(getResultType())
     )
   }
 

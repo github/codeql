@@ -1,5 +1,3 @@
-import csharp
-
 private newtype TOverlap =
   TMayPartiallyOverlap() or
   TMustTotallyOverlap() or

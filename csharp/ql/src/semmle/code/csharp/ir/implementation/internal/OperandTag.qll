@@ -1,12 +1,4 @@
-import csharp
-
-private int getMaxCallArgIndex() {
-  result = max(int argIndex |
-    exists(MethodCall call |
-      exists(call.getArgument(argIndex))
-    )
-  )
-}
+private import OperandTagInternal
 
 private newtype TOperandTag =
   TAddressOperand() or
@@ -22,10 +14,13 @@ private newtype TOperandTag =
   TCallTargetOperand() or
   TThisArgumentOperand() or
   TPositionalArgumentOperand(int argIndex) {
-    argIndex in [0..getMaxCallArgIndex()] 
+    Language::hasPositionalArgIndex(argIndex)
   } or
   TChiTotalOperand() or
-  TChiPartialOperand()
+  TChiPartialOperand() or
+  TAsmOperand(int index) {
+    Language::hasAsmOperandIndex(index)
+  } 
 
 /**
  * Identifies the kind of operand on an instruction. Each `Instruction` has at
@@ -358,4 +353,28 @@ class ChiPartialOperandTag extends MemoryOperandTag, TChiPartialOperand {
 
 ChiPartialOperandTag chiPartialOperand() {
   result = TChiPartialOperand()
+}
+
+class AsmOperandTag extends RegisterOperandTag, TAsmOperand {
+  int index;
+
+  AsmOperandTag() {
+    this = TAsmOperand(index)
+  }
+
+  override final string toString() {
+    result = "AsmOperand(" + index + ")"
+  }
+
+  override final int getSortOrder() {
+    result = 15 + index
+  }
+
+  override final string getLabel() {
+    result = index.toString() + ":"
+  }
+}
+
+AsmOperandTag asmOperand(int index) {
+  result = TAsmOperand(index)
 }

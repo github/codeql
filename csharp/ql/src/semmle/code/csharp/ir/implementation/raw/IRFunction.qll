@@ -1,38 +1,37 @@
 private import internal.IRInternal
 import Instruction
-import csharp
 
 private newtype TIRFunction =
-  MkIRFunction(Callable callable) {
-    Construction::functionHasIR(callable)
+  MkIRFunction(Language::Function func) {
+    Construction::functionHasIR(func)
   }
 
 /**
  * Represents the IR for a function.
  */
 class IRFunction extends TIRFunction {
-  Callable callable;
+  Language::Function func;
 
   IRFunction() {
-    this = MkIRFunction(callable)
+    this = MkIRFunction(func)
   }
 
   final string toString() {
-    result = "IR: " + callable.toString()
+    result = "IR: " + func.toString()
   }
 
   /**
    * Gets the function whose IR is represented.
    */
-  final Callable getFunction() {
-    result = callable
+  final Language::Function getFunction() {
+    result = func
   }
 
   /**
    * Gets the location of the function.
    */
-  final Location getLocation() {
-    result = callable.getLocation()
+  final Language::Location getLocation() {
+    result = func.getLocation()
   }
 
   /**

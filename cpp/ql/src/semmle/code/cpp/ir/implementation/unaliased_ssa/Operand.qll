@@ -186,7 +186,7 @@ class Operand extends TOperand {
    * a known constant size, this predicate does not hold.
    */
   int getSize() {
-    result = getType().getSize()
+    result = Language::getTypeSize(getType())
   }
 }
 
@@ -450,7 +450,7 @@ class SideEffectOperand extends TypedOperand {
     if getType() instanceof Language::UnknownType then
       result = Construction::getInstructionOperandSize(useInstr, tag)
     else
-      result = getType().getSize()
+      result = Language::getTypeSize(getType())
   }
 
   override MemoryAccessKind getMemoryAccess() {

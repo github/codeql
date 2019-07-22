@@ -3,8 +3,9 @@ import Instruction
 import IRBlock
 import IRVariable
 import Operand
-import semmle.code.csharp.ir.implementation.EdgeKind
-import semmle.code.csharp.ir.implementation.MemoryAccessKind
+private import internal.IRImports as Imports
+import Imports::EdgeKind
+import Imports::MemoryAccessKind
 
 private newtype TIRPropertyProvider = MkIRPropertyProvider()
 

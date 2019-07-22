@@ -1,5 +1,3 @@
-import csharp
-
 class IntValue = int;
 
 /**

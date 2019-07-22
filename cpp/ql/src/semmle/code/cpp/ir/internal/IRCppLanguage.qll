@@ -52,6 +52,10 @@ predicate hasAsmOperandIndex(int operandIndex) {
   )
 }
 
+int getTypeSize(Type type) {
+  result = type.getSize()
+}
+
 int getPointerSize() {
   exists(Cpp::NullPointerType nullptr |
     result = nullptr.getSize()

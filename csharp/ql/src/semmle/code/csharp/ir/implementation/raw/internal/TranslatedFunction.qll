@@ -2,7 +2,7 @@ import csharp
 import semmle.code.csharp.ir.implementation.raw.IR
 private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.internal.IRUtilities
-private import semmle.code.csharp.ir.internal.OperandTag
+private import semmle.code.csharp.ir.implementation.internal.OperandTag
 private import semmle.code.csharp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedElement
@@ -313,6 +313,25 @@ class TranslatedFunction extends TranslatedElement,
    */
   final Type getThisType() {
     result = callable.getDeclaringType()
+  }
+
+  /**
+   * Holds if this function defines or accesses variable `var` with type `type`. This includes all
+   * parameters and local variables, plus any static fields that are directly accessed by the
+   * function.
+   */
+  final predicate hasUserVariable(Variable var, Type type) {
+    (
+      (
+        var.(Member).isStatic() and
+        exists(VariableAccess access |
+          access.getTarget() = var and
+          access.getEnclosingCallable() = callable
+        )
+      ) or
+      var.(LocalScopeVariable).getCallable() = callable
+    ) and
+    type = getVariableType(var)
   }
 
   private final Type getReturnType() {

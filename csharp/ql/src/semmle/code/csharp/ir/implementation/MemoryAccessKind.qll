@@ -1,5 +1,3 @@
-import csharp
-
 private newtype TMemoryAccessKind =
   TIndirectMemoryAccess() or
   TIndirectMayMemoryAccess() or
