@@ -19,7 +19,7 @@ module GlobalAccessPath {
 
     /** Gets the data flow node representing the value of this variable, if one exists. */
     DataFlow::Node getValue() {
-      result = getSsaDefinition().getRhsNode()
+      result = getADeclaration().flow()
     }
   }
 

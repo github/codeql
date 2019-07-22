@@ -2,3 +2,7 @@
 | method-calls.js:30:11:30:16 | o2.m() | method-calls.js:31:2:31:3 | v2 | method-calls.js:28:23:28:24 | object literal |
 | method-calls.js:34:11:34:23 | ({m: f3}).m() | method-calls.js:35:2:35:3 | v3 | method-calls.js:33:23:33:24 | object literal |
 | method-calls.js:41:11:41:16 | o4.m() | method-calls.js:42:2:42:3 | v4 | file://:0:0:0:0 | indefinite value (call) |
+| method-calls.js:47:12:47:16 | o.m() | method-calls.js:47:7:47:8 | v1 | file://:0:0:0:0 | indefinite value (call) |
+| method-calls.js:51:12:51:16 | o.m() | method-calls.js:51:7:51:8 | v2 | file://:0:0:0:0 | indefinite value (call) |
+| method-calls.js:55:12:55:16 | o.m() | method-calls.js:55:7:55:8 | v3 | file://:0:0:0:0 | indefinite value (call) |
+| method-calls.js:60:12:60:16 | o.m() | method-calls.js:60:7:60:8 | v4 | file://:0:0:0:0 | indefinite value (call) |

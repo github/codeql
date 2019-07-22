@@ -34,9 +34,6 @@ module DataFlow {
       (kind = "call" or kind = "apply")
     } or
     TThisNode(StmtContainer f) { f.(Function).getThisBinder() = f or f instanceof TopLevel } or
-    TUnusedParameterNode(SimpleParameter p) {
-      not exists(SSA::definition(p))
-    } or
     TDestructuredModuleImportNode(ImportDeclaration decl) {
       exists(decl.getASpecifier().getImportedName())
     } or
@@ -176,22 +173,30 @@ module DataFlow {
      */
     cached
     DataFlow::Node getImmediatePredecessor() {
-      // Use of variable -> definition of variable
+      // Use of variable -> definition of SSA variable
       exists(SsaVariable var |
         this = DataFlow::valueNode(var.getAUse()) and
         result.(DataFlow::SsaDefinitionNode).getSsaVariable() = var
+      )
+      or
+      // Definition of SSA variable -> LHS of definition
+      exists(SsaExplicitDefinition def, LValue lhs |
+        this = TSsaDefNode(def) and
+        lhs = def.getVarRef() and
+        not lhs.isReadWriteLValue() and
+        result = TValueNode(lhs)
+      )
+      or
+      // LHS of definition -> RHS of definition
+      exists(LValue lvalue |
+        this = TValueNode(lvalue) and
+        result = lvalue.getRhs().flow()
       )
       or
       // Refinement of variable -> original definition of variable
       exists(SsaRefinementNode refinement |
         this.(DataFlow::SsaDefinitionNode).getSsaVariable() = refinement.getVariable() and
         result.(DataFlow::SsaDefinitionNode).getSsaVariable() = refinement.getAnInput()
-      )
-      or
-      // Definition of variable -> RHS of definition
-      exists(SsaExplicitDefinition def |
-        this = TSsaDefNode(def) and
-        result = def.getRhsNode()
       )
       or
       // IIFE call -> return value of IIFE
@@ -202,21 +207,12 @@ module DataFlow {
         strictcount(fun.getAReturnedExpr()) = 1
       )
       or
-      // IIFE parameter -> IIFE call
-      exists(Parameter param |
-        this = DataFlow::parameterNode(param) and
-        localArgumentPassing(result.asExpr(), param)
-      )
+      // IIFE parameter -> argument
+      localArgumentPassing(result.asExpr(), this.asExpr())
       or
       // `{ x } -> e` in `let { x } = e`
-      exists(DestructuringPattern pattern |
-        this = TValueNode(pattern)
-      |
-        exists(VarDef def |
-          pattern = def.getTarget() and
-          result = DataFlow::valueNode(def.getDestructuringSource())
-        )
-        or
+      exists(BindingPattern pattern |
+        this = TValueNode(pattern) and
         result = patternPropRead(pattern)
       )
     }
@@ -629,10 +625,6 @@ module DataFlow {
         parameterNode(paramNode, param)
         |
         result = paramNode
-        or
-        // special case: there is no SSA flow step for unused parameters
-        paramNode instanceof UnusedParameterNode and
-        result = param.getDefault().flow()
       )
     }
 
@@ -763,30 +755,6 @@ module DataFlow {
     override Expr getPropertyNameExpr() { result = spec.getImported() }
 
     override string getPropertyName() { result = spec.getImportedName() }
-  }
-
-  /**
-   * A data flow node representing an unused parameter.
-   *
-   * This case exists to ensure all parameters have a corresponding data-flow node.
-   * In most cases, parameters are represented by SSA definitions or destructuring pattern nodes.
-   */
-  private class UnusedParameterNode extends DataFlow::Node, TUnusedParameterNode {
-    SimpleParameter p;
-
-    UnusedParameterNode() { this = TUnusedParameterNode(p) }
-
-    override string toString() { result = p.toString() }
-
-    override ASTNode getAstNode() { result = p }
-
-    override BasicBlock getBasicBlock() { result = p.getBasicBlock() }
-
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      p.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
   }
 
   /**
@@ -1083,11 +1051,7 @@ module DataFlow {
    * INTERNAL: Use `parameterNode(Parameter)` instead.
    */
   predicate parameterNode(DataFlow::Node nd, Parameter p) {
-    nd = ssaDefinitionNode(SSA::definition((SimpleParameter)p))
-    or
-    nd = TValueNode(p.(DestructuringPattern))
-    or
-    nd = TUnusedParameterNode(p)
+    nd = TValueNode(p)
   }
 
   /**
@@ -1196,9 +1160,11 @@ module DataFlow {
   predicate localFlowStep(Node pred, Node succ) {
     // flow into local variables
     exists(SsaDefinition ssa | succ = TSsaDefNode(ssa) |
-      // from the rhs of an explicit definition into the variable
-      exists(SsaExplicitDefinition def | def = ssa |
-        pred = defSourceNode(def.getDef(), def.getSourceVariable())
+      // from the VarRef on the LHS of an explicit definition into the SSA variable
+      exists(SsaExplicitDefinition def, LValue lhs | def = ssa |
+        lhs = def.getVarRef() and
+        not lhs.isReadWriteLValue() and
+        pred = TValueNode(lhs)
       )
       or
       // from any explicit definition or implicit init of a captured variable into
@@ -1245,29 +1211,33 @@ module DataFlow {
         predExpr = f.getAReturnedExpr() and
         localCall(succExpr, f)
       )
+      or
+      localArgumentPassing(predExpr, succExpr)
     )
     or
-    exists(VarDef def |
+    exists(LValue lvalue |
+      // from `e` to `v` in `v = e`
       // from `e` to `{ p: x }` in `{ p: x } = e`
-      pred = valueNode(defSourceNode(def)) and
-      succ = TValueNode(def.getTarget().(DestructuringPattern))
+      pred = lvalue.getRhs().flow() and
+      succ = TValueNode(lvalue)
     )
     or
     // flow from the value read from a property pattern to the value being
     // destructured in the child pattern. For example, for
     //
-    //   let { p: { q: x } } = obj
+    //   let { p: v = q } = obj
     //
-    // add edge from the 'p:' pattern to '{ q:x }'.
+    // add edge from the 'p:' pattern to 'v' and from the default value 'q' to 'v'.
     exists(PropertyPattern pattern |
-      pred = TPropNode(pattern) and
-      succ = TValueNode(pattern.getValuePattern().(DestructuringPattern))
+      (pred = TPropNode(pattern) or pred = pattern.getDefault().flow()) and
+      succ = TValueNode(pattern.getValuePattern())
     )
     or
     // Like the step above, but for array destructuring patterns.
+    // TODO: Add edge for default value, as above
     exists(Expr elm |
       pred = TElementPatternNode(_, elm) and
-      succ = TValueNode(elm.(DestructuringPattern))
+      succ = TValueNode(elm)
     )
     or
     // flow from 'this' parameter into 'this' expressions
@@ -1291,41 +1261,6 @@ module DataFlow {
   }
 
   /**
-   * Gets the data flow node representing the source of definition `def`, taking
-   * flow through IIFE calls into account.
-   */
-  private AST::ValueNode defSourceNode(VarDef def) {
-    result = def.getSource() or
-    result = def.getDestructuringSource() or
-    localArgumentPassing(result, def)
-  }
-
-  /**
-   * INTERNAL. DO NOT USE.
-   *
-   * Gets the data flow node representing the source of the definition of `v` at `def`,
-   * if any.
-   */
-  Node defSourceNode(VarDef def, SsaSourceVariable v) {
-    exists(BindingPattern lhs, VarRef r |
-      lhs = def.getTarget() and r = lhs.getABindingVarRef() and r.getVariable() = v
-    |
-      // follow one step of the def-use chain if the lhs is a simple variable reference
-      lhs = r and
-      result = TValueNode(defSourceNode(def))
-      or
-      // handle destructuring assignments
-      exists(PropertyPattern pp | r = pp.getValuePattern() |
-        result = TPropNode(pp) or result = pp.getDefault().flow()
-      )
-      or
-      result = TElementPatternNode(_, r)
-      or
-      exists(ArrayPattern ap, int i | ap.getElement(i) = r and result = ap.getDefault(i).flow())
-    )
-  }
-
-  /**
    * Holds if the flow information for this node is incomplete.
    *
    * This predicate holds if there may be a source flow node from which data flows into
@@ -1339,8 +1274,6 @@ module DataFlow {
    */
   predicate isIncomplete(Node nd, Incompleteness cause) {
     exists(SsaVariable ssa | nd = TSsaDefNode(ssa.getDefinition()) |
-      defIsIncomplete(ssa.(SsaExplicitDefinition).getDef(), cause)
-      or
       exists(Variable v | v = ssa.getSourceVariable() |
         v.isNamespaceExport() and cause = "namespace"
         or
@@ -1352,6 +1285,8 @@ module DataFlow {
       nd = valueNode(va.(VarUse)) and
       if Closure::isClosureNamespace(va.getName()) then cause = "heap" else cause = "global"
     )
+    or
+    varRefIsIncomplete(nd.asExpr(), cause)
     or
     exists(Expr e | e = nd.asExpr() and cause = "call" |
       e instanceof InvokeExpr and
@@ -1395,25 +1330,27 @@ module DataFlow {
     exists(PropertyPattern p | nd = TPropNode(p)) and cause = "heap"
     or
     nd instanceof TElementPatternNode and cause = "heap"
-    or
-    nd instanceof UnusedParameterNode and cause = "call"
   }
 
   /**
-   * Holds if definition `def` cannot be completely analyzed due to `cause`.
+   * Holds if definition `ref` cannot be completely analyzed due to `cause`.
    */
-  private predicate defIsIncomplete(VarDef def, Incompleteness cause) {
-    def instanceof Parameter and
-    not localArgumentPassing(_, def) and
+  private predicate varRefIsIncomplete(VarRef ref, Incompleteness cause) {
+    ref instanceof Parameter and
+    not localArgumentPassing(_, ref) and
     cause = "call"
     or
-    def instanceof ImportSpecifier and
+    exists(ImportSpecifier imp | ref = imp.getLocal()) and
     cause = "import"
     or
-    exists(EnhancedForLoop efl | def = efl.getIteratorExpr()) and
+    exists(EnhancedForLoop efl |
+      ref = efl.getIterator()
+      or
+      ref = efl.getIterator().(DeclStmt).getADecl().getBindingPattern()
+    ) and
     cause = "heap"
     or
-    exists(ComprehensionBlock cb | def = cb.getIterator()) and
+    exists(ComprehensionBlock cb | ref = cb.getIterator()) and
     cause = "yield"
   }
   import Nodes

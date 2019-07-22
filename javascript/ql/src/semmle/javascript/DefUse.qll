@@ -119,20 +119,42 @@ class RefExpr extends Expr {
 }
 
 /**
- * A variable reference or property access that is written to.
+ * A variable reference or property access that is written to,
+ * or a destructuring pattern or parameter.
  *
  * For instance, in the assignment `x.p = x.q`, `x.p` is written to
  * and `x.q` is not; in the expression `++i`, `i` is written to
  * (and also read from).
  */
-class LValue extends RefExpr {
+class LValue extends Expr {
   LValue() { lvalAux(this, _) }
 
   /** Gets the definition in which this lvalue occurs. */
   ControlFlowNode getDefNode() { lvalAux(this, result) }
 
-  /** Gets the source of the assignment. */
+  /**
+   * Gets the source of the assignment.
+   *
+   * For parameters, the RHS is the default value, if it has one.
+   */
   AST::ValueNode getRhs() { defn(_, this, result) }
+
+  /**
+   * Holds if this LValue is both read from and written to.
+   *
+   * Specifically, this is true for the left-hand side of compound assignments
+   * and update expressions.
+   *
+   * Examples:
+   * ```
+   * x.f += 3
+   * ++x
+   * ```
+   */
+  predicate isReadWriteLValue() {
+    this = any(CompoundAssignExpr e).getTarget() or
+    this = any(UpdateExpr e).getOperand()
+  }
 }
 
 /**

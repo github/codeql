@@ -57,7 +57,11 @@ class AmdModuleDefinition extends CallExpr {
   pragma[nomagic]
   DataFlow::SourceNode getFactoryNode() {
     result.flowsToExpr(getLastArgument()) and
-    result instanceof DataFlow::ValueNode
+    // Filter out IIFE parameters
+    exists(ASTNode astNode |
+      astNode = result.(DataFlow::ValueNode).getAstNode() and
+      not any(ImmediatelyInvokedFunctionExpr iife).argumentPassing(astNode, _)
+    )
   }
 
   /** Gets the expression defining this module. */
