@@ -1,5 +1,5 @@
 nodes
-| tst.js:14:9:14:52 | tainted |
+| tst.js:14:9:14:15 | tainted |
 | tst.js:14:19:14:42 | url.par ... , true) |
 | tst.js:14:19:14:48 | url.par ... ).query |
 | tst.js:14:19:14:52 | url.par ... ery.url |
@@ -25,6 +25,19 @@ nodes
 | tst.js:45:13:45:56 | 'http:/ ... tainted |
 | tst.js:45:50:45:56 | tainted |
 edges
+| tst.js:14:9:14:15 | tainted | tst.js:14:9:14:52 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:18:13:18:19 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:20:17:20:23 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:23:19:23:25 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:26:25:26:31 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:28:36:28:42 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:30:37:30:43 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:34:34:34:40 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:36:24:36:30 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:37:30:37:36 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:41:43:41:49 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:43:46:43:52 | tainted |
+| tst.js:14:9:14:15 | tainted | tst.js:45:50:45:56 | tainted |
 | tst.js:14:9:14:52 | tainted | tst.js:18:13:18:19 | tainted |
 | tst.js:14:9:14:52 | tainted | tst.js:20:17:20:23 | tainted |
 | tst.js:14:9:14:52 | tainted | tst.js:23:19:23:25 | tainted |
@@ -39,7 +52,7 @@ edges
 | tst.js:14:9:14:52 | tainted | tst.js:45:50:45:56 | tainted |
 | tst.js:14:19:14:42 | url.par ... , true) | tst.js:14:19:14:48 | url.par ... ).query |
 | tst.js:14:19:14:48 | url.par ... ).query | tst.js:14:19:14:52 | url.par ... ery.url |
-| tst.js:14:19:14:52 | url.par ... ery.url | tst.js:14:9:14:52 | tainted |
+| tst.js:14:19:14:52 | url.par ... ery.url | tst.js:14:9:14:15 | tainted |
 | tst.js:14:29:14:35 | req.url | tst.js:14:19:14:42 | url.par ... , true) |
 | tst.js:26:25:26:31 | tainted | tst.js:26:13:26:31 | "http://" + tainted |
 | tst.js:28:36:28:42 | tainted | tst.js:28:13:28:42 | "http:/ ... tainted |

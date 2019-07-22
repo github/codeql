@@ -35,7 +35,7 @@ nodes
 | express.js:9:54:9:72 | req.param("wobble") |
 | express.js:12:8:12:53 | "return ...  + "];" |
 | express.js:12:28:12:46 | req.param("wobble") |
-| react-native.js:7:7:7:33 | tainted |
+| react-native.js:7:7:7:13 | tainted |
 | react-native.js:7:17:7:33 | req.param("code") |
 | react-native.js:8:32:8:38 | tainted |
 | react-native.js:10:23:10:29 | tainted |
@@ -70,6 +70,8 @@ edges
 | angularjs.js:47:16:47:23 | location | angularjs.js:47:16:47:30 | location.search |
 | angularjs.js:50:22:50:29 | location | angularjs.js:50:22:50:36 | location.search |
 | angularjs.js:53:32:53:39 | location | angularjs.js:53:32:53:46 | location.search |
+| eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:20:22:20:22 | c |
+| eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
 | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c |
 | express.js:7:24:7:62 | "return ... obble") | express.js:7:24:7:69 | "return ...  + "];" |
 | express.js:7:44:7:62 | req.param("wobble") | express.js:7:24:7:62 | "return ... obble") |
@@ -80,9 +82,12 @@ edges
 | express.js:12:8:12:46 | "return ... obble") | express.js:12:8:12:53 | "return ...  + "];" |
 | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:46 | "return ... obble") |
 | express.js:12:28:12:46 | req.param("wobble") | express.js:12:8:12:53 | "return ...  + "];" |
+| react-native.js:7:7:7:13 | tainted | react-native.js:7:7:7:33 | tainted |
+| react-native.js:7:7:7:13 | tainted | react-native.js:8:32:8:38 | tainted |
+| react-native.js:7:7:7:13 | tainted | react-native.js:10:23:10:29 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:8:32:8:38 | tainted |
 | react-native.js:7:7:7:33 | tainted | react-native.js:10:23:10:29 | tainted |
-| react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
+| react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:13 | tainted |
 | tst.js:2:6:2:22 | document.location | tst.js:2:6:2:27 | documen ... on.href |
 | tst.js:2:6:2:27 | documen ... on.href | tst.js:2:6:2:83 | documen ... t=")+8) |
 | tst.js:5:12:5:28 | document.location | tst.js:5:12:5:33 | documen ... on.hash |

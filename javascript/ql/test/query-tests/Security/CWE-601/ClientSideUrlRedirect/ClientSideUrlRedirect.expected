@@ -1,6 +1,6 @@
 nodes
-| tst2.js:2:7:2:33 | href |
-| tst2.js:2:7:2:33 | href |
+| tst2.js:2:7:2:10 | href |
+| tst2.js:2:7:2:10 | href |
 | tst2.js:2:14:2:28 | window.location |
 | tst2.js:2:14:2:28 | window.location |
 | tst2.js:2:14:2:33 | window.location.href |
@@ -8,7 +8,7 @@ nodes
 | tst2.js:4:21:4:24 | href |
 | tst2.js:4:21:4:24 | href |
 | tst2.js:4:21:4:55 | href.su ... '?')+1) |
-| tst6.js:2:7:2:45 | redirect |
+| tst6.js:2:7:2:14 | redirect |
 | tst6.js:2:18:2:45 | $locati ... irect') |
 | tst6.js:4:21:4:28 | redirect |
 | tst6.js:6:17:6:24 | redirect |
@@ -43,18 +43,25 @@ nodes
 | tst.js:6:34:6:50 | document.location |
 | tst.js:6:34:6:55 | documen ... on.href |
 edges
+| tst2.js:2:7:2:10 | href | tst2.js:2:7:2:33 | href |
+| tst2.js:2:7:2:10 | href | tst2.js:2:7:2:33 | href |
+| tst2.js:2:7:2:10 | href | tst2.js:4:21:4:24 | href |
+| tst2.js:2:7:2:10 | href | tst2.js:4:21:4:24 | href |
 | tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href |
 | tst2.js:2:7:2:33 | href | tst2.js:4:21:4:24 | href |
 | tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
 | tst2.js:2:14:2:28 | window.location | tst2.js:2:14:2:33 | window.location.href |
-| tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:33 | href |
-| tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:33 | href |
+| tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:10 | href |
+| tst2.js:2:14:2:33 | window.location.href | tst2.js:2:7:2:10 | href |
 | tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) |
 | tst2.js:4:21:4:24 | href | tst2.js:4:21:4:55 | href.su ... '?')+1) |
 | tst2.js:4:21:4:55 | href.su ... '?')+1) | tst2.js:2:14:2:28 | window.location |
+| tst6.js:2:7:2:14 | redirect | tst6.js:2:7:2:45 | redirect |
+| tst6.js:2:7:2:14 | redirect | tst6.js:4:21:4:28 | redirect |
+| tst6.js:2:7:2:14 | redirect | tst6.js:6:17:6:24 | redirect |
 | tst6.js:2:7:2:45 | redirect | tst6.js:4:21:4:28 | redirect |
 | tst6.js:2:7:2:45 | redirect | tst6.js:6:17:6:24 | redirect |
-| tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:2:7:2:45 | redirect |
+| tst6.js:2:18:2:45 | $locati ... irect') | tst6.js:2:7:2:14 | redirect |
 | tst6.js:8:21:8:48 | $locati ... irect') | tst6.js:8:21:8:56 | $locati ... + "foo" |
 | tst7.js:2:12:2:28 | document.location | tst7.js:2:12:2:35 | documen ... .search |
 | tst7.js:5:27:5:43 | document.location | tst7.js:5:27:5:50 | documen ... .search |

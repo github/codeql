@@ -1,9 +1,9 @@
 nodes
-| CleartextStorage2.js:5:7:5:58 | pw |
+| CleartextStorage2.js:5:7:5:8 | pw |
 | CleartextStorage2.js:5:12:5:58 | url.par ... assword |
 | CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
 | CleartextStorage2.js:7:33:7:34 | pw |
-| CleartextStorage.js:5:7:5:40 | pw |
+| CleartextStorage.js:5:7:5:8 | pw |
 | CleartextStorage.js:5:12:5:40 | req.par ... sword") |
 | CleartextStorage.js:7:26:7:27 | pw |
 | tst-angularjs.js:3:32:3:45 | data1.password |
@@ -15,11 +15,15 @@ nodes
 | tst-webstorage.js:3:20:3:32 | data.password |
 | tst-webstorage.js:4:29:4:41 | data.password |
 edges
+| CleartextStorage2.js:5:7:5:8 | pw | CleartextStorage2.js:5:7:5:58 | pw |
+| CleartextStorage2.js:5:7:5:8 | pw | CleartextStorage2.js:7:33:7:34 | pw |
 | CleartextStorage2.js:5:7:5:58 | pw | CleartextStorage2.js:7:33:7:34 | pw |
-| CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:5:7:5:58 | pw |
+| CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:5:7:5:8 | pw |
 | CleartextStorage2.js:7:33:7:34 | pw | CleartextStorage2.js:7:19:7:34 | 'password=' + pw |
+| CleartextStorage.js:5:7:5:8 | pw | CleartextStorage.js:5:7:5:40 | pw |
+| CleartextStorage.js:5:7:5:8 | pw | CleartextStorage.js:7:26:7:27 | pw |
 | CleartextStorage.js:5:7:5:40 | pw | CleartextStorage.js:7:26:7:27 | pw |
-| CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:5:7:5:40 | pw |
+| CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:5:7:5:8 | pw |
 #select
 | CleartextStorage2.js:7:19:7:34 | 'password=' + pw | CleartextStorage2.js:5:12:5:58 | url.par ... assword | CleartextStorage2.js:7:19:7:34 | 'password=' + pw | Sensitive data returned by $@ is stored here. | CleartextStorage2.js:5:12:5:58 | url.par ... assword | an access to current_password |
 | CleartextStorage.js:7:26:7:27 | pw | CleartextStorage.js:5:12:5:40 | req.par ... sword") | CleartextStorage.js:7:26:7:27 | pw | Sensitive data returned by $@ is stored here. | CleartextStorage.js:5:12:5:40 | req.par ... sword") | a call to param |
