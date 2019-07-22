@@ -37,13 +37,16 @@ abstract class TranslatedCall extends TranslatedExpr {
       resultType = getCallResultType() and
       isLValue = false
     ) or
+    // TODO: Fix side effects, 
+    //       understand why CallSideEffect breaks things if it is not present
     (
       hasSideEffect() and
       tag = CallSideEffectTag() and
       (
         if hasWriteSideEffect() then (
           opcode instanceof Opcode::CallSideEffect and
-          resultType instanceof UnknownType
+          // Was UnknownType, fix after comp layer
+          resultType instanceof VoidType
         )
         else (
           opcode instanceof Opcode::CallReadSideEffect and
@@ -123,7 +126,8 @@ abstract class TranslatedCall extends TranslatedExpr {
     tag = CallSideEffectTag() and
     hasSideEffect() and
     operandTag instanceof SideEffectOperandTag and
-    result instanceof UnknownType
+    // TODO: Was UnknownType, fix after comp layer
+    result instanceof VoidType
   }
 
   override final Instruction getResult() {
@@ -207,6 +211,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    */
   abstract predicate hasArguments();
 
+  // TODO: Fix side effects
   predicate hasReadSideEffect() {
     any()
   }
@@ -246,10 +251,7 @@ abstract class TranslatedDirectCall extends TranslatedCall {
     (
       tag = CallTargetTag() and
       opcode instanceof Opcode::FunctionAddress and
-      // The database does not contain a `FunctionType` for a function unless
-      // its address was taken, so we'll just use glval<Unknown> instead of
-      // glval<FunctionType>.
-      resultType instanceof UnknownType and
+      resultType = expr.getType() and
       isLValue = true
     )
   }

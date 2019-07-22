@@ -24,6 +24,78 @@ array_acc.cs:
 #    4|     v0_20(Void)                       = UnmodeledUse          : mu*
 #    4|     v0_21(Void)                       = ExitFunction          : 
 
+func_with_param_call.cs:
+#    4| f
+#    4|   Block 0
+#    4|     v0_0(Void)                       = EnterFunction            : 
+#    4|     mu0_1(Object)                    = AliasedDefinition        : 
+#    4|     mu0_2(Object)                    = UnmodeledDefinition      : 
+#    4|     r0_3(lval<test_call_with_param>) = InitializeThis           : 
+#    4|     r0_4(lval<Int32>)                = VariableAddress[x]       : 
+#    4|     mu0_5(Int32)                     = InitializeParameter[x]   : &:r0_4
+#    4|     r0_6(lval<Int32>)                = VariableAddress[y]       : 
+#    4|     mu0_7(Int32)                     = InitializeParameter[y]   : &:r0_6
+#    5|     r0_8(lval<Int32>)                = VariableAddress[#return] : 
+#    5|     r0_9(lval<Int32>)                = VariableAddress[x]       : 
+#    5|     r0_10(Int32)                     = Load                     : &:r0_9, ~mu0_2
+#    5|     r0_11(lval<Int32>)               = VariableAddress[y]       : 
+#    5|     r0_12(Int32)                     = Load                     : &:r0_11, ~mu0_2
+#    5|     r0_13(Int32)                     = Add                      : r0_10, r0_12
+#    5|     mu0_14(Int32)                    = Store                    : &:r0_8, r0_13
+#    4|     r0_15(lval<Int32>)               = VariableAddress[#return] : 
+#    4|     v0_16(Void)                      = ReturnValue              : &:r0_15, ~mu0_2
+#    4|     v0_17(Void)                      = UnmodeledUse             : mu*
+#    4|     v0_18(Void)                      = ExitFunction             : 
+
+#    8| g
+#    8|   Block 0
+#    8|     v0_0(Void)                       = EnterFunction            : 
+#    8|     mu0_1(Object)                    = AliasedDefinition        : 
+#    8|     mu0_2(Object)                    = UnmodeledDefinition      : 
+#    8|     r0_3(lval<test_call_with_param>) = InitializeThis           : 
+#    9|     r0_4(lval<Int32>)                = VariableAddress[#return] : 
+#    9|     r0_5(lval<Int32>)                = FunctionAddress[f]       : 
+#    9|     r0_6(Int32)                      = Constant[2]              : 
+#    9|     r0_7(Int32)                      = Constant[3]              : 
+#    9|     r0_8(Int32)                      = Call                     : func:r0_5, 0:r0_6, 1:r0_7
+#    9|     v0_9(Void)                       = ^CallSideEffect          : ~mu0_2
+#    9|     mu0_10(Int32)                    = Store                    : &:r0_4, r0_8
+#    8|     r0_11(lval<Int32>)               = VariableAddress[#return] : 
+#    8|     v0_12(Void)                      = ReturnValue              : &:r0_11, ~mu0_2
+#    8|     v0_13(Void)                      = UnmodeledUse             : mu*
+#    8|     v0_14(Void)                      = ExitFunction             : 
+
+simple_call.cs:
+#    4| f
+#    4|   Block 0
+#    4|     v0_0(Void)                   = EnterFunction            : 
+#    4|     mu0_1(Object)                = AliasedDefinition        : 
+#    4|     mu0_2(Object)                = UnmodeledDefinition      : 
+#    4|     r0_3(lval<test_simple_call>) = InitializeThis           : 
+#    5|     r0_4(lval<Int32>)            = VariableAddress[#return] : 
+#    5|     r0_5(Int32)                  = Constant[0]              : 
+#    5|     mu0_6(Int32)                 = Store                    : &:r0_4, r0_5
+#    4|     r0_7(lval<Int32>)            = VariableAddress[#return] : 
+#    4|     v0_8(Void)                   = ReturnValue              : &:r0_7, ~mu0_2
+#    4|     v0_9(Void)                   = UnmodeledUse             : mu*
+#    4|     v0_10(Void)                  = ExitFunction             : 
+
+#    8| g
+#    8|   Block 0
+#    8|     v0_0(Void)                   = EnterFunction            : 
+#    8|     mu0_1(Object)                = AliasedDefinition        : 
+#    8|     mu0_2(Object)                = UnmodeledDefinition      : 
+#    8|     r0_3(lval<test_simple_call>) = InitializeThis           : 
+#    9|     r0_4(lval<Int32>)            = VariableAddress[#return] : 
+#    9|     r0_5(lval<Int32>)            = FunctionAddress[f]       : 
+#    9|     r0_6(Int32)                  = Call                     : func:r0_5
+#    9|     v0_7(Void)                   = ^CallSideEffect          : ~mu0_2
+#    9|     mu0_8(Int32)                 = Store                    : &:r0_4, r0_6
+#    8|     r0_9(lval<Int32>)            = VariableAddress[#return] : 
+#    8|     v0_10(Void)                  = ReturnValue              : &:r0_9, ~mu0_2
+#    8|     v0_11(Void)                  = UnmodeledUse             : mu*
+#    8|     v0_12(Void)                  = ExitFunction             : 
+
 simple_function.cs:
 #    4| f
 #    4|   Block 0
