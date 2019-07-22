@@ -165,9 +165,15 @@ module DataFlow {
     /**
      * Gets the immediate predecessor of this node, if any.
      *
-     * A node with an immediate predecessor can only ever have the value that flows
-     * into its from its immediate predecessor. It can be treated as an alias for
-     * the immediate predecessor.
+     * A node with an immediate predecessor can usually only have the value that flows
+     * into its from its immediate predecessor, currently with two exceptions:
+     *
+     * - An immediately-invoked function expression with a single return expression `e`
+     *   has `e` as its immediate predecessor, even if the function can fall over the
+     *   end and return `undefined`.
+     *
+     * - A destructuring property pattern with a default value has both the `PropRead`
+     *   and its default value as immediate predecessors.
      */
     cached
     DataFlow::Node getImmediatePredecessor() {
