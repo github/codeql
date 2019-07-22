@@ -277,8 +277,6 @@ deprecated class MacroInvocationExpr extends Expr {
     exists(MacroInvocation i | this = i.getExpr())
   }
 
-  override string getCanonicalQLClass() { result = "MacroInvocationExpr" }
-
   /**
    * Gets the macro invocation of which this is the top-level expression.
    */
@@ -304,8 +302,6 @@ deprecated class MacroInvocationStmt extends Stmt {
   MacroInvocationStmt() {
     exists(MacroInvocation i | this = i.getStmt())
   }
-
-  override string getCanonicalQLClass() { result = "MacroInvocationStmt" }
 
   /**
    * Gets the macro invocation of which this is the top-level statement.
