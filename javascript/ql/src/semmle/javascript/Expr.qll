@@ -34,14 +34,27 @@ class ExprOrType extends @exprortype, Documentable {
     result = getOwnDocumentation()
     or
     // if there is no JSDoc for the expression itself, check the enclosing property or statement
+    not exists(getOwnDocumentation()) and
     (
-      not exists(getOwnDocumentation()) and
-      if getParent() instanceof Property
-      then result = getParent().(Property).getDocumentation()
-      else
-        if getParent() instanceof MethodDeclaration
-        then result = getParent().(MethodDeclaration).getDocumentation()
-        else result = getEnclosingStmt().getDocumentation()
+      exists(Property prop | prop = getParent() |
+        result = prop.getDocumentation()
+      )
+      or
+      exists(MethodDeclaration decl | decl = getParent() |
+        result = decl.getDocumentation()
+      )
+      or
+      exists(VariableDeclarator decl | decl = getParent() |
+        result = decl.getDocumentation()
+      )
+      or
+      exists(DeclStmt stmt | this = stmt.getDecl(0) |
+        result = stmt.getDocumentation()
+      )
+      or
+      exists(DotExpr dot | this = dot.getProperty() |
+        result = dot.getDocumentation()
+      )
     )
   }
 
@@ -50,7 +63,7 @@ class ExprOrType extends @exprortype, Documentable {
     exists(Token tk | tk = result.getComment().getNextToken() |
       tk = this.getFirstToken()
       or
-      exists(Expr p | p.stripParens() = this | tk = p.getFirstToken())
+      exists(Expr p | p.getUnderlyingValue() = this | tk = p.getFirstToken())
     )
   }
 
