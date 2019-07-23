@@ -346,7 +346,6 @@ abstract class ImmutableLiteral extends Expr {
     abstract Object getLiteralObject();
 
     abstract boolean booleanValue();
-
 }
 
 /** A numerical constant expression, such as `7` or `4.2` */
@@ -422,7 +421,6 @@ class FloatLiteral extends Num {
         or
         this.getValue() != 0.0 and this.getValue() != -0.0 and result = true
     }
-
 }
 
 /** An imaginary numeric constant, such as `3j` */
@@ -472,6 +470,10 @@ class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
         (py_cobjecttypes(result, theIntType()) or  py_cobjecttypes(result, theLongType()))
         and
         py_cobjectnames(result, "-" + this.getOperand().(IntegerLiteral).getN())
+    }
+
+    int getValue() {
+        result = -this.getOperand().(IntegerLiteral).getValue()
     }
 
 }
@@ -802,7 +804,6 @@ class None extends NameConstant {
     override boolean booleanValue() {
         result = false
     }
-
 }
 
 /** An await expression such as `await coro`. */

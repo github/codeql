@@ -224,3 +224,46 @@ def split_bool1(x=None,y=None):
         count
     else:
         count
+
+def prune_on_constant1():
+    k = False
+    if k:
+        count
+    else:
+        count
+    pass
+
+def prune_on_constant2():
+    k = 3
+    if k:
+        count
+    else:
+        count
+    pass
+
+def prune_on_constant3():
+    k = None
+    if k:
+        count
+    else:
+        count
+    pass
+
+def prune_on_constant_in_test(a, b):
+    if a:
+        k = True
+    else:
+        k = False
+    if k:
+        count
+    pass
+
+def prune_on_constant_in_try():
+    try:
+        import foo
+        var = True
+    except:
+        var = False
+    if var:
+        count
+    pass

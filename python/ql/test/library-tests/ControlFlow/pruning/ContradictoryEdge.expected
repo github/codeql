@@ -31,3 +31,10 @@
 | 219 | x | 222 | count |
 | 223 | y | 224 | count |
 | 223 | y | 226 | count |
+| 230 | k | 231 | count |
+| 238 | k | 241 | count |
+| 246 | k | 247 | count |
+| 257 | k | 258 | count |
+| 257 | k | 259 | Pass |
+| 267 | var | 268 | count |
+| 267 | var | 269 | Pass |

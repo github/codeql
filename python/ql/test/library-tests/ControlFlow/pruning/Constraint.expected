@@ -1,114 +1,130 @@
-| 8 | test | test | Truthy |
-| 10 | test | test | Truthy |
-| 14 | seq | seq | Truthy |
-| 16 | seq | seq | Truthy |
-| 17 | seq | seq | Truthy |
-| 21 | UnaryExpr | t1 | Falsey |
-| 21 | t1 | t1 | Truthy |
-| 24 | t1 | t1 | Truthy |
-| 25 | t1 | t1 | Truthy |
-| 26 | t2 | t2 | Truthy |
-| 29 | t2 | t2 | Truthy |
-| 30 | t2 | t2 | Truthy |
-| 31 | t3 | t3 | Truthy |
-| 31 | t4 | t4 | Truthy |
-| 32 | t3 | t3 | Truthy |
-| 33 | t3 | t3 | Truthy |
-| 34 | t3 | t3 | Truthy |
-| 35 | t4 | t4 | Truthy |
-| 36 | t5 | t5 | Truthy |
-| 36 | t6 | t6 | Truthy |
-| 37 | t5 | t5 | Truthy |
-| 38 | t5 | t5 | Truthy |
-| 39 | t6 | t6 | Truthy |
-| 40 | t6 | t6 | Truthy |
-| 43 | t1 | t1 | Truthy |
-| 44 | UnaryExpr | t2 | Falsey |
-| 44 | t2 | t2 | Truthy |
-| 47 | t1 | t1 | Truthy |
-| 48 | t2 | t2 | Truthy |
-| 49 | t2 | t2 | Truthy |
-| 51 | t2 | t2 | Truthy |
-| 52 | t2 | t2 | Truthy |
-| 55 | seq1 | seq1 | Truthy |
-| 57 | UnaryExpr | seq2 | Falsey |
-| 57 | seq2 | seq2 | Truthy |
-| 60 | seq1 | seq1 | Truthy |
-| 62 | seq1 | seq1 | Truthy |
-| 63 | seq2 | seq2 | Truthy |
-| 65 | seq2 | seq2 | Truthy |
-| 66 | seq3 | seq3 | Truthy |
-| 68 | UnaryExpr | seq4 | Falsey |
-| 68 | seq4 | seq4 | Truthy |
-| 71 | seq3 | seq3 | Truthy |
-| 73 | var | var | Truthy |
-| 74 | seq4 | seq4 | Truthy |
-| 76 | var | var | Truthy |
-| 78 | seq5 | seq5 | Truthy |
-| 80 | seq5 | seq5 | Truthy |
-| 81 | seq5 | seq5 | Truthy |
-| 83 | var | var | Truthy |
-| 88 | UnaryExpr | x | Falsey |
-| 88 | x | x | Truthy |
-| 89 | Exception | Exception | Truthy |
-| 90 | y | y | Truthy |
-| 91 | Exception | Exception | Truthy |
-| 92 | make_a_call | make_a_call | Truthy |
-| 93 | UnaryExpr | x | Falsey |
-| 93 | x | x | Truthy |
-| 94 | count | count | Truthy |
-| 95 | y | y | Truthy |
-| 96 | count | count | Truthy |
-| 101 | make_a_call | make_a_call | Truthy |
-| 102 | UnaryExpr | another_module | Falsey |
-| 102 | another_module | another_module | Truthy |
-| 103 | count | count | Truthy |
-| 107 | UnaryExpr | t1 | Falsey |
-| 107 | t1 | t1 | Truthy |
-| 109 | t2 | t2 | Truthy |
-| 111 | t1 | t1 | Truthy |
-| 113 | UnaryExpr | t2 | Falsey |
-| 113 | t2 | t2 | Truthy |
-| 117 | UnaryExpr | test | Falsey |
-| 117 | test | test | Truthy |
-| 119 | UnaryExpr | test | Falsey |
-| 119 | test | test | Truthy |
-| 123 | m | m | Truthy |
-| 125 | m | m | Truthy |
-| 126 | m | m | Truthy |
-| 158 | Compare | ps | Is not None |
-| 158 | ps | ps | Truthy |
-| 159 | ps | ps | Truthy |
-| 160 | Compare | ps | Is None |
-| 160 | ps | ps | Truthy |
-| 171 | __name__ | __name__ | Truthy |
-| 172 | None | None | Truthy |
-| 174 | func | func | Truthy |
-| 175 | Exception | Exception | Truthy |
-| 176 | count | count | Truthy |
-| 177 | Compare | escapes | Is None |
-| 177 | None | None | Truthy |
-| 177 | escapes | escapes | Truthy |
-| 178 | count | count | Truthy |
-| 180 | count | count | Truthy |
-| 188 | true12 | true12 | Truthy |
-| 195 | Compare | x | < 4 |
-| 195 | x | x | Truthy |
-| 197 | Compare | x | < 4 |
-| 197 | x | x | Truthy |
-| 201 | Compare | x | < 4 |
-| 201 | x | x | Truthy |
-| 203 | Compare | x | >= 4 |
-| 203 | UnaryExpr | x | < 4 |
-| 203 | x | x | Truthy |
-| 207 | Compare | x | < 4 |
-| 207 | x | x | Truthy |
-| 209 | Compare | x | < 4 |
-| 209 | x | x | Truthy |
-| 214 | None | None | Truthy |
-| 215 | x | x | Truthy |
-| 215 | y | y | Truthy |
-| 217 | x | x | Truthy |
-| 217 | y | y | Truthy |
-| 219 | x | x | Truthy |
-| 223 | y | y | Truthy |
+| 8 | test | test | Truthy | test |
+| 10 | test | test | Truthy | test |
+| 14 | seq | seq | Truthy | test |
+| 16 | seq | seq | Truthy | test |
+| 17 | seq | seq | Truthy | test |
+| 21 | UnaryExpr | t1 | Falsey | test |
+| 21 | t1 | t1 | Truthy | test |
+| 24 | t1 | t1 | Truthy | test |
+| 25 | t1 | t1 | Truthy | test |
+| 26 | t2 | t2 | Truthy | test |
+| 29 | t2 | t2 | Truthy | test |
+| 30 | t2 | t2 | Truthy | test |
+| 31 | t3 | t3 | Truthy | test |
+| 31 | t4 | t4 | Truthy | test |
+| 32 | t3 | t3 | Truthy | test |
+| 33 | t3 | t3 | Truthy | test |
+| 34 | t3 | t3 | Truthy | test |
+| 35 | t4 | t4 | Truthy | test |
+| 36 | t5 | t5 | Truthy | test |
+| 36 | t6 | t6 | Truthy | test |
+| 37 | t5 | t5 | Truthy | test |
+| 38 | t5 | t5 | Truthy | test |
+| 39 | t6 | t6 | Truthy | test |
+| 40 | t6 | t6 | Truthy | test |
+| 43 | t1 | t1 | Truthy | test |
+| 44 | UnaryExpr | t2 | Falsey | test |
+| 44 | t2 | t2 | Truthy | test |
+| 47 | t1 | t1 | Truthy | test |
+| 48 | t2 | t2 | Truthy | test |
+| 49 | t2 | t2 | Truthy | test |
+| 51 | t2 | t2 | Truthy | test |
+| 52 | t2 | t2 | Truthy | test |
+| 55 | seq1 | seq1 | Truthy | test |
+| 57 | UnaryExpr | seq2 | Falsey | test |
+| 57 | seq2 | seq2 | Truthy | test |
+| 60 | seq1 | seq1 | Truthy | test |
+| 62 | seq1 | seq1 | Truthy | test |
+| 63 | seq2 | seq2 | Truthy | test |
+| 65 | seq2 | seq2 | Truthy | test |
+| 66 | seq3 | seq3 | Truthy | test |
+| 68 | UnaryExpr | seq4 | Falsey | test |
+| 68 | seq4 | seq4 | Truthy | test |
+| 71 | seq3 | seq3 | Truthy | test |
+| 73 | var | var | Truthy | test |
+| 74 | seq4 | seq4 | Truthy | test |
+| 76 | var | var | Truthy | test |
+| 78 | seq5 | seq5 | Truthy | test |
+| 80 | seq5 | seq5 | Truthy | test |
+| 81 | seq5 | seq5 | Truthy | test |
+| 83 | var | var | Truthy | test |
+| 88 | UnaryExpr | x | Falsey | test |
+| 88 | x | x | Truthy | test |
+| 89 | Exception | Exception | Truthy | test |
+| 90 | y | y | Truthy | test |
+| 91 | Exception | Exception | Truthy | test |
+| 92 | make_a_call | make_a_call | Truthy | test |
+| 93 | UnaryExpr | x | Falsey | test |
+| 93 | x | x | Truthy | test |
+| 94 | count | count | Truthy | test |
+| 95 | y | y | Truthy | test |
+| 96 | count | count | Truthy | test |
+| 99 | another_module | another_module | Truthy | assign |
+| 101 | make_a_call | make_a_call | Truthy | test |
+| 102 | UnaryExpr | another_module | Falsey | test |
+| 102 | another_module | another_module | Truthy | test |
+| 103 | count | count | Truthy | test |
+| 107 | UnaryExpr | t1 | Falsey | test |
+| 107 | t1 | t1 | Truthy | test |
+| 109 | t2 | t2 | Truthy | test |
+| 111 | t1 | t1 | Truthy | test |
+| 113 | UnaryExpr | t2 | Falsey | test |
+| 113 | t2 | t2 | Truthy | test |
+| 117 | UnaryExpr | test | Falsey | test |
+| 117 | test | test | Truthy | test |
+| 119 | UnaryExpr | test | Falsey | test |
+| 119 | test | test | Truthy | test |
+| 123 | m | m | Truthy | test |
+| 125 | m | m | Truthy | test |
+| 126 | m | m | Truthy | test |
+| 158 | Compare | ps | Is not None | test |
+| 158 | ps | ps | Truthy | test |
+| 159 | ps | ps | Truthy | test |
+| 160 | Compare | ps | Is None | test |
+| 160 | ps | ps | Truthy | test |
+| 171 | __name__ | __name__ | Truthy | test |
+| 172 | None | None | Truthy | test |
+| 172 | escapes | escapes | Is None | assign |
+| 174 | func | func | Truthy | test |
+| 175 | Exception | Exception | Truthy | test |
+| 176 | count | count | Truthy | test |
+| 177 | Compare | escapes | Is None | test |
+| 177 | None | None | Truthy | test |
+| 177 | escapes | escapes | Truthy | test |
+| 178 | count | count | Truthy | test |
+| 180 | count | count | Truthy | test |
+| 188 | true12 | true12 | Truthy | test |
+| 191 | true12 | true12 | == 0 | assign |
+| 195 | Compare | x | < 4 | test |
+| 195 | x | x | Truthy | test |
+| 197 | Compare | x | < 4 | test |
+| 197 | x | x | Truthy | test |
+| 201 | Compare | x | < 4 | test |
+| 201 | x | x | Truthy | test |
+| 203 | Compare | x | >= 4 | test |
+| 203 | UnaryExpr | x | < 4 | test |
+| 203 | x | x | Truthy | test |
+| 207 | Compare | x | < 4 | test |
+| 207 | x | x | Truthy | test |
+| 209 | Compare | x | < 4 | test |
+| 209 | x | x | Truthy | test |
+| 214 | None | None | Truthy | test |
+| 215 | x | x | Truthy | test |
+| 215 | y | y | Truthy | test |
+| 217 | x | x | Truthy | test |
+| 217 | y | y | Truthy | test |
+| 219 | x | x | Truthy | test |
+| 223 | y | y | Truthy | test |
+| 229 | k | k | Falsey | assign |
+| 230 | k | k | Truthy | test |
+| 237 | k | k | == 3 | assign |
+| 238 | k | k | Truthy | test |
+| 245 | k | k | Is None | assign |
+| 246 | k | k | Truthy | test |
+| 253 | a | a | Truthy | test |
+| 254 | k | k | Truthy | assign |
+| 256 | k | k | Falsey | assign |
+| 257 | k | k | Truthy | test |
+| 264 | var | var | Truthy | assign |
+| 266 | var | var | Falsey | assign |
+| 267 | var | var | Truthy | test |
