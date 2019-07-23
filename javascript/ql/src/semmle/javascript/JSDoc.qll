@@ -466,7 +466,7 @@ module JSDoc {
     }
 
     /**
-     * Holds if the alises declared in this environment should be in scope
+     * Holds if the aliases declared in this environment should be in scope
      * within the given container.
      *
      * Specifically, this holds if this environment declares at least one

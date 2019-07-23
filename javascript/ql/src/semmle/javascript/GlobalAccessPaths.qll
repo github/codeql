@@ -100,7 +100,7 @@ module GlobalAccessPath {
    * foo = foo || {};
    * ```
    */
-  predicate isSelfAssignment(DataFlow::Node rhs) {
+  private predicate isSelfAssignment(DataFlow::Node rhs) {
     fromRhs(rhs) = fromReference(rhs)
   }
 
@@ -108,7 +108,7 @@ module GlobalAccessPath {
    * Holds if there is an assignment to `accessPath` in `file`, not counting
    * self-assignments.
    */
-  predicate isAssignedInFile(string accessPath, File file) {
+  private predicate isAssignedInFile(string accessPath, File file) {
     exists(DataFlow::Node rhs |
       fromRhs(rhs) = accessPath and
       not isSelfAssignment(rhs) and

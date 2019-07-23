@@ -172,8 +172,8 @@ module DataFlow {
      *   has `e` as its immediate predecessor, even if the function can fall over the
      *   end and return `undefined`.
      *
-     * - A destructuring property pattern with a default value has both the `PropRead`
-     *   and its default value as immediate predecessors.
+     * - A destructuring property pattern or element pattern with a default value has
+     *   both the `PropRead` and its default value as immediate predecessors.
      */
     cached
     DataFlow::Node getImmediatePredecessor() {
@@ -1158,7 +1158,7 @@ module DataFlow {
    * For example, in `let { p: value } = f()`, the `value` pattern maps to a `PropRead`
    * extracting the `p` property.
    */
-  DataFlow::PropRead patternPropRead(BindingPattern value) {
+  private DataFlow::PropRead patternPropRead(BindingPattern value) {
     exists(PropertyPattern prop |
       value = prop.getValuePattern() and
       result = TPropNode(prop)
