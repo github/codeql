@@ -1,4 +1,5 @@
 | stl.cpp:67:7:67:7 | a | stl.cpp:63:12:63:17 | call to source |
+| stl.cpp:69:7:69:7 | c | stl.cpp:65:16:65:21 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |

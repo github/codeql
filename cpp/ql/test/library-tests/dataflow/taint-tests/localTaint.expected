@@ -1,6 +1,8 @@
 | stl.cpp:63:12:63:17 | call to source | stl.cpp:67:7:67:7 | a |  |
+| stl.cpp:64:16:64:20 | 123 | stl.cpp:64:16:64:21 | call to basic_string |  |
 | stl.cpp:64:16:64:21 | call to basic_string | stl.cpp:68:7:68:7 | b |  |
 | stl.cpp:64:16:64:21 | call to basic_string | stl.cpp:70:7:70:7 | b |  |
+| stl.cpp:65:16:65:21 | call to source | stl.cpp:65:16:65:24 | call to basic_string |  |
 | stl.cpp:65:16:65:24 | call to basic_string | stl.cpp:69:7:69:7 | c |  |
 | stl.cpp:65:16:65:24 | call to basic_string | stl.cpp:71:7:71:7 | c |  |
 | stl.cpp:76:20:76:22 | call to basic_stringstream | stl.cpp:79:2:79:4 | ss1 |  |
@@ -15,6 +17,7 @@
 | stl.cpp:76:35:76:37 | call to basic_stringstream | stl.cpp:82:2:82:4 | ss4 |  |
 | stl.cpp:76:35:76:37 | call to basic_stringstream | stl.cpp:87:7:87:9 | ss4 |  |
 | stl.cpp:76:35:76:37 | call to basic_stringstream | stl.cpp:91:7:91:9 | ss4 |  |
+| stl.cpp:77:16:77:21 | call to source | stl.cpp:77:16:77:24 | call to basic_string |  |
 | stl.cpp:77:16:77:24 | call to basic_string | stl.cpp:82:9:82:9 | t |  |
 | stl.cpp:79:2:79:4 | ref arg ss1 | stl.cpp:84:7:84:9 | ss1 |  |
 | stl.cpp:79:2:79:4 | ref arg ss1 | stl.cpp:88:7:88:9 | ss1 |  |

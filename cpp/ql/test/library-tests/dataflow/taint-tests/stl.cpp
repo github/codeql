@@ -66,7 +66,7 @@ void test_string()
 
 	sink(a); // tainted
 	sink(b);
-	sink(c); // tainted [NOT DETECTED]
+	sink(c); // tainted
 	sink(b.c_str());
 	sink(c.c_str()); // tainted [NOT DETECTED]
 }
