@@ -70,7 +70,7 @@ class Scope extends Scope_ {
 
     /** Gets an exit from this Scope's control flow graph */
     ControlFlowNode getAnExitNode() {
-	      exists (int i | py_scope_flow(result, this, i) and i >= 0)
+        exists (int i | py_scope_flow(result, this, i) and i >= 0)
     }
 
     /** Gets an exit from this Scope's control flow graph,
