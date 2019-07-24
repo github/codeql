@@ -5,7 +5,7 @@
  */
 
 import javascript
-private import semmle.javascript.security.dataflow.CodeInjection
+private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
 
 module HardcodedDataInterpretedAsCode {
   /**
