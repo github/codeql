@@ -132,7 +132,13 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotatio
   }
 
   override Stmt getEnclosingStmt() {
-    result.getDocumentation() = getJSDocComment()
+    exists(Documentable astNode | astNode.getDocumentation() = getJSDocComment() |
+      result = astNode
+      or
+      result = astNode.(ExprOrType).getEnclosingStmt()
+      or
+      result = astNode.(Property).getObjectExpr().getEnclosingStmt()
+    )
   }
 
   override StmtContainer getContainer() { result = getEnclosingStmt().getContainer() }
@@ -205,8 +211,59 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
 
   override predicate isRawFunction() { getName() = "Function" }
 
+  /**
+   * Holds if this name consists of the unqualified name `prefix`
+   * followed by a (possibly empty) `suffix`.
+   *
+   * For example:
+   * - `foo.bar.Baz` has prefix `foo` and suffix `.bar.Baz`.
+   * - `Baz` has prefix `Baz` and an empty suffix.
+   */
+  predicate hasNameParts(string prefix, string suffix) {
+    exists(string regex, string name | regex = "([^.]+)(.*)" |
+      name = getName() and
+      prefix = name.regexpCapture(regex, 1) and
+      suffix = name.regexpCapture(regex, 2)
+    )
+  }
+
+  pragma[noinline]
+  pragma[nomagic]
+  private predicate hasNamePartsAndEnv(string prefix, string suffix, JSDoc::Environment env) {
+    // Force join ordering
+    hasNameParts(prefix, suffix) and
+    env.isContainerInScope(getContainer())
+  }
+
+  /**
+   * Gets the qualified name of this name by resolving its prefix, if any.
+   */
+  private string resolvedName() {
+    exists(string prefix, string suffix, JSDoc::Environment env |
+      hasNamePartsAndEnv(prefix, suffix, env) and
+      result = env.resolveAlias(prefix) + suffix
+    )
+  }
+
   override predicate hasQualifiedName(string globalName) {
+    globalName = resolvedName()
+    or
+    not exists(resolvedName()) and
     globalName = getName()
+  }
+
+  override DataFlow::ClassNode getClass() {
+    exists(string name |
+      hasQualifiedName(name) and
+      result.hasQualifiedName(name)
+    )
+    or
+    // Handle case where a local variable has a reference to the class,
+    // but the class doesn't have a globally qualified name.
+    exists(string alias, JSDoc::Environment env |
+      hasNamePartsAndEnv(alias, "", env) and
+      result.getAClassReference().flowsTo(env.getNodeFromAlias(alias))
+    )
   }
 }
 
@@ -234,6 +291,10 @@ class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
   override predicate hasQualifiedName(string globalName) {
     getHead().hasQualifiedName(globalName)
   }
+
+  override DataFlow::ClassNode getClass() {
+    result = getHead().getClass()
+  }
 }
 
 /**
@@ -247,6 +308,10 @@ class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
 
   override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
+
+  override DataFlow::ClassNode getClass() {
+    result = getTypeExpr().getClass()
+  }
 }
 
 /**
@@ -260,6 +325,10 @@ class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeE
   predicate isPrefix() { jsdoc_prefix_qualifier(this) }
 
   override JSDocTypeExpr getAnUnderlyingType() { result = getTypeExpr().getAnUnderlyingType() }
+
+  override DataFlow::ClassNode getClass() {
+    result = getTypeExpr().getClass()
+  }
 }
 
 /**
@@ -330,6 +399,10 @@ class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTyp
   JSDocTypeExpr getUnderlyingType() { result = getChild(0) }
 
   override JSDocTypeExpr getAnUnderlyingType() { result = getUnderlyingType().getAnUnderlyingType() }
+
+  override DataFlow::ClassNode getClass() {
+    result = getUnderlyingType().getClass()
+  }
 }
 
 /**
@@ -352,4 +425,63 @@ class JSDocError extends @jsdoc_error {
 
   /** Gets a textual representation of this element. */
   string toString() { jsdoc_errors(this, _, _, result) }
+}
+
+module JSDoc {
+  /**
+   * A statement container which may declare JSDoc name aliases.
+   */
+  class Environment extends StmtContainer {
+    /**
+     * Gets the fully qualified name aliased by the given unqualified name
+     * within this container.
+     */
+    string resolveAlias(string alias) {
+      result = GlobalAccessPath::getAccessPath(getNodeFromAlias(alias))
+    }
+
+    /**
+     * Gets a data flow node from which the type name `alias` should
+     * be resolved.
+     */
+    DataFlow::Node getNodeFromAlias(string alias) {
+      exists(VarDef def, VarRef ref |
+        def.getContainer() = this and
+        ref = def.getTarget().(BindingPattern).getABindingVarRef() and
+        ref.getName() = alias and
+        isTypenamePrefix(ref.getName()) // restrict size of predicate
+      |
+        exists(PropertyPattern p |
+          ref = p.getValuePattern() and
+          result.getAstNode() = p
+        )
+        or
+        result = DataFlow::valueNode(def.(Stmt))
+        or
+        ref = def.getTarget() and
+        result = def.getSource().flow()
+        or
+        result = DataFlow::parameterNode(def)
+      )
+    }
+
+    /**
+     * Holds if the aliases declared in this environment should be in scope
+     * within the given container.
+     *
+     * Specifically, this holds if this environment declares at least one
+     * alias and is an ancestor of `container`.
+     */
+    final predicate isContainerInScope(StmtContainer container) {
+      exists(resolveAlias(_)) and // restrict size of predicate
+      container = this
+      or
+      isContainerInScope(container.getEnclosingContainer())
+    }
+  }
+
+  pragma[noinline]
+  private predicate isTypenamePrefix(string name) {
+    any(JSDocNamedTypeExpr expr).hasNameParts(name, _)
+  }
 }

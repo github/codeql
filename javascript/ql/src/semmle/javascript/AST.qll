@@ -317,6 +317,7 @@ class ExprOrStmt extends @exprorstmt, ControlFlowNode, ASTNode { }
  */
 class StmtContainer extends @stmt_container, ASTNode {
   /** Gets the innermost enclosing container in which this container is nested. */
+  cached
   StmtContainer getEnclosingContainer() { none() }
 
   /**
