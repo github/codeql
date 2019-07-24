@@ -43,6 +43,7 @@ public class JSONExtractor implements IExtractor {
         throw recoverableErrors.get(0).asUserError();
 
       Label fileLabel = locationManager.getFileLabel();
+      locationManager.setHasLocationTable("json_locations");
       v.accept(
           new Visitor<Context, Label>() {
             private Label emit(JSONValue nd, int kind, Context c) {

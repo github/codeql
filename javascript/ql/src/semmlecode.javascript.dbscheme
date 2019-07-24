@@ -905,6 +905,9 @@ json_properties (int obj: @json_object ref,
 json_errors (unique int id: @json_parse_error,
       varchar(900) message: string ref);
 
+json_locations(unique int locatable: @json_locatable ref,
+      int location: @location_default ref);
+
 case @json_value.kind of
   0 = @json_null
 | 1 = @json_boolean
@@ -915,6 +918,8 @@ case @json_value.kind of
 
 @json_parent = @json_object | @json_array | @file;
 
+@json_locatable = @json_value | @json_parse_error;
+
 // locations
 @ast_node = @toplevel | @stmt | @expr | @property | @typeexpr;
 
@@ -922,9 +927,9 @@ case @json_value.kind of
     | @ast_node
     | @comment
     | @line
-    | @js_parse_error | @regexp_parse_error | @json_parse_error
+    | @js_parse_error | @regexp_parse_error
     | @regexpterm
-    | @json_value
+    | @json_locatable
     | @token
     | @cfg_node
     | @jsdoc | @jsdoc_type_expr | @jsdoc_tag
