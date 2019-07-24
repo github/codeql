@@ -1,6 +1,6 @@
-| captures.cpp:3:6:3:6 | x | explicit | 1 |
-| captures.cpp:3:9:3:12 | (captured this) | explicit | 2 |
-| captures.cpp:10:7:10:7 | (captured this) | implicit | 1 |
-| captures.cpp:10:9:10:9 | x | implicit | 2 |
-| captures.cpp:15:6:15:6 | x | explicit | 1 |
-| end_pos.cpp:9:17:9:18 | ii | explicit | 1 |
+| captures.cpp:3:6:3:6 | x | explicit | 0 |
+| captures.cpp:3:9:3:12 | (captured this) | explicit | 1 |
+| captures.cpp:10:7:10:7 | (captured this) | implicit | 0 |
+| captures.cpp:10:9:10:9 | x | implicit | 1 |
+| captures.cpp:15:6:15:6 | x | explicit | 0 |
+| end_pos.cpp:9:17:9:18 | ii | explicit | 0 |
