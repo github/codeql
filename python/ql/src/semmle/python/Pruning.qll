@@ -423,7 +423,7 @@ module Pruner {
         reachableEdge(_, bb)
     }
 
-    Constraint constraintFromTest(SsaVariable var, UnprunedCfgNode node) {
+    Constraint constraintFromExpr(SsaVariable var, UnprunedCfgNode node) {
         py_ssa_use(node, var) and result = TTruthy(true)
         or
         exists(boolean b |
@@ -435,7 +435,11 @@ module Pruner {
             result = TConstrainedByConstant(op, k)
         )
         or
-        result = constraintFromTest(var, node.(UnprunedNot).getOperand()).invert()
+        result = constraintFromExpr(var, node.(UnprunedNot).getOperand()).invert()
+    }
+
+    Constraint constraintFromTest(SsaVariable var, UnprunedCfgNode node) {
+        result = constraintFromExpr(var, node) and node.isBranch()
     }
 
     predicate none_test(UnprunedCompareNode test, SsaVariable var, boolean is) {
@@ -462,8 +466,6 @@ module Pruner {
             py_ssa_use(right, var) and
             intValue(left.getNode()) = k
         )
-        or
-        int_test(test.(UnprunedNot).getOperand(), var, op.invert(), k)
     }
 
     private predicate constrainingValue(Expr e) {
