@@ -295,6 +295,84 @@ class IfStmt extends ConditionalStmt, @stmt_if {
 }
 
 /**
+ * A C/C++ 'constexpr if' statement.
+ */
+class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
+
+  /**
+   * Gets the condition expression of this 'constexpr if' statement.
+   *
+   * For example, for
+   * ```
+   * if constexpr (b) { x = 1; }
+   * ```
+   * the result is `b`.
+   */
+  Expr getCondition() { result = this.getChild(0) }
+
+  override Expr getControllingExpr() { result = this.getCondition() }
+
+  /**
+   * Gets the 'then' statement of this 'constexpr if' statement.
+   *
+   * For example, for
+   * ```
+   * if constexpr (b) { x = 1; }
+   * ```
+   * the result is the `Block` `{ x = 1; }`.
+   */
+  Stmt getThen() { constexpr_if_then(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * Gets the 'else' statement of this 'constexpr if' statement, if any.
+   *
+   * For example, for
+   * ```
+   * if constexpr (b) { x = 1; } else { x = 2; }
+   * ```
+   * the result is the `Block` `{ x = 2; }`, and for
+   * ```
+   * if constexpr (b) { x = 1; }
+   * ```
+   * there is no result.
+   */
+  Stmt getElse() { constexpr_if_else(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * Holds if this 'constexpr if' statement has an 'else' statement.
+   *
+   * For example, this holds for
+   * ```
+   * if constexpr (b) { x = 1; } else { x = 2; }
+   * ```
+   * but not for
+   * ```
+   * if constexpr (b) { x = 1; }
+   * ```
+   */
+  predicate hasElse() { exists(Stmt s | this.getElse() = s) }
+
+  override string toString() { result = "if constexpr (...) ... " }
+
+  override predicate mayBeImpure() {
+    this.getCondition().mayBeImpure() or
+    this.getThen().mayBeImpure() or
+    this.getElse().mayBeImpure()
+  }
+  override predicate mayBeGloballyImpure() {
+    this.getCondition().mayBeGloballyImpure() or
+    this.getThen().mayBeGloballyImpure() or
+    this.getElse().mayBeGloballyImpure()
+  }
+
+  override MacroInvocation getGeneratingMacro() {
+    result.getAnExpandedElement() = this.getCondition() and
+    this.getThen().getGeneratingMacro() = result and
+    (this.hasElse() implies this.getElse().getGeneratingMacro() = result)
+  }
+}
+
+/**
  * A C/C++ loop, that is, either a 'while' loop, a 'for' loop, or a
  * 'do' loop.
  */
