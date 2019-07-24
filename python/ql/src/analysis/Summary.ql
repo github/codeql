@@ -5,16 +5,11 @@ import python
 
 from string key, string value
 where
-key = "Extractor version" and py_flags_versioned("extractor.version", value, _)
+key = "Extractor version" and value = Extractor::version()
 or
 key = "Snapshot build time" and exists(date d | snapshotDate(d) and value = d.toString())
 or
-key = "Interpreter version" and 
-exists(string major, string minor |
-    py_flags_versioned("version.major", major, _) and
-    py_flags_versioned("version.minor", minor, _) and
-    value = major + "." + minor
-)
+key = "Interpreter version" and value = Interpreter::majorVersion() + "." + Interpreter::minorVersion()
 or
 key = "Build platform" and 
 exists(string raw |

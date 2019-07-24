@@ -383,12 +383,12 @@ class ListObject extends SequenceObject {
 }
 
 /** The `builtin` module */
-BuiltinModuleObject theBuiltinModuleObject() {
+deprecated BuiltinModuleObject theBuiltinModuleObject() {
     result.asBuiltin() = Builtin::builtinModule()
 }
 
 /** The `sys` module */
-BuiltinModuleObject theSysModuleObject() {
+deprecated BuiltinModuleObject theSysModuleObject() {
     result.asBuiltin() = Builtin::special("sys")
 }
 
@@ -398,38 +398,52 @@ Object builtin_object(string name) {
     result = Object::builtin(name)
 }
 
-/** The built-in object None */
-Object theNoneObject() {
+/** DEPRECATED -- Use the new Value API.
+ * `Value::named("None")`
+ * The built-in object None */
+deprecated Object theNoneObject() {
     result.asBuiltin() = Builtin::special("None")
 }
 
-/** The built-in object True */
-Object theTrueObject() {
+/** DEPRECATED -- Use the new Value API.
+ * `Value::named("True")`
+ * The built-in object True */
+deprecated Object theTrueObject() {
     result.asBuiltin() = Builtin::special("True")
 }
 
-/** The built-in object False */
-Object theFalseObject() {
+/**  DEPRECATED -- Use the new Value API.
+ * `Value::named("False")`
+ * The built-in object False */
+deprecated Object theFalseObject() {
     result.asBuiltin() = Builtin::special("False")
 }
 
-/** The NameError class */
-Object theNameErrorType() {
+/** DEPRECATED -- Use the new Value API.
+ * `Value::named("NameError")`
+ * The NameError class */
+deprecated Object theNameErrorType() {
     result = Object::builtin("NameError")
 }
 
-/** The StandardError class */
-Object theStandardErrorType() {
+/** DEPRECATED -- Use the new Value API.
+ * `Value::named("StandardError")`
+ * The StandardError class */
+deprecated Object theStandardErrorType() {
     result = Object::builtin("StandardError")
 }
 
-/** The IndexError class */
-Object theIndexErrorType() {
+/** DEPRECATED -- Use the new Value API.
+ * `Value::named("IndexError")`
+ *  The IndexError class */
+deprecated Object theIndexErrorType() {
     result = Object::builtin("IndexError")
 }
 
-/** The LookupError class */
-Object theLookupErrorType() {
+/** DEPRECATED -- Use the new Value API.
+ * `Value::named("LookupError")`
+ * The LookupError class */
+deprecated Object theLookupErrorType() {
     result = Object::builtin("LookupError")
 }
 
@@ -497,13 +511,13 @@ private ClassObject string_literal(Expr e) {
     e instanceof Unicode and result = theUnicodeType()
 }
 
-Object theUnknownType() {
+deprecated Object theUnknownType() {
     result.asBuiltin() = Builtin::unknownType()
 }
 
 /* For backwards compatibility */
 
-class SuperBoundMethod extends Object {
+library class SuperBoundMethod extends Object {
 
     string name;
 

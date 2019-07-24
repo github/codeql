@@ -441,38 +441,6 @@ class Location extends @location {
 
 }
 
-/** A non-empty line in the source code */
-class Line extends @py_line {
-
-    predicate hasLocationInfo(string filepath, int bl, int bc, int el, int ec) {
-        exists(Module m | m.getFile().getName() = filepath and
-            el = bl and bc = 1 and
-            py_line_lengths(this, m, bl, ec))
-    }
-
-    string toString() {
-        exists(Module m | py_line_lengths(this, m, _, _) |
-            result = m.getFile().getShortName() + ":" + this.getLineNumber().toString()
-        )
-    }
-
-    /** Gets the line number of this line */
-    int getLineNumber() {
-        py_line_lengths(this, _, result, _)
-    }
-
-    /** Gets the length of this line */
-    int getLength() {
-        py_line_lengths(this, _, _, result)
-    }
-
-    /** Gets the file for this line */
-    Module getModule() {
-        py_line_lengths(this, result, _, _)
-    }
-
-}
-
 /** A syntax error. Note that if there is a syntax error in a module,
    much information about that module will be lost */
 class SyntaxError extends Location {

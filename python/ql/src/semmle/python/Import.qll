@@ -258,7 +258,7 @@ class ImportStar extends ImportStar_ {
 /** A statement that imports a module. This can be any statement that includes the `import` keyword,
  * such as `import sys`, `from sys import version` or `from sys import *`. */
 class ImportingStmt extends Stmt {
- 
+
     ImportingStmt() {
         this instanceof Import
         or

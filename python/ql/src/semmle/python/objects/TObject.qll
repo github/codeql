@@ -3,6 +3,7 @@ private import semmle.python.types.Builtins
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
+private import semmle.python.ModuleUtil
 
 /** Internal type backing `ObjectInternal` and `Value`
  * See `ObjectInternal.qll` for an explanation of the API.

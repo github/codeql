@@ -16,7 +16,7 @@ import python
 predicate is_a_string_type(ClassObject seqtype) {
     seqtype = theBytesType() and major_version() = 2
     or 
-    seqtype = theUnicodeType() 
+    seqtype = theUnicodeType()
 }
 
 from For loop, ControlFlowNode iter, Object str, Object seq, ControlFlowNode seq_origin, ClassObject strtype, ClassObject seqtype, ControlFlowNode str_origin

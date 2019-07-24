@@ -404,7 +404,7 @@ Module theAbcModule() {
     result.getName() = "abc"
 }
 
-ClassObject theAbcMetaClassObject() {
+deprecated ClassObject theAbcMetaClassObject() {
     /* Avoid using points-to and thus negative recursion */
     exists(Class abcmeta |
         result.getPyClass() = abcmeta |

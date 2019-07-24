@@ -180,22 +180,6 @@ class PythonModuleObject extends ModuleObject {
 
 }
 
-/**  Primarily for internal use.
- *
- * Gets the object for the string text. 
- * The extractor will have populated a str object 
- * for each module name, with the name b'text' or u'text' (including the quotes).
- */
-Object object_for_string(string text) {
-    result.asBuiltin().getClass() = theStrType().asBuiltin() and
-    exists(string repr |
-        repr = result.asBuiltin().getName() and
-        repr.charAt(1) = "'" |
-        /* Strip quotes off repr */
-        text = repr.substring(2, repr.length()-1)
-    )
-}
-
 class PackageObject extends ModuleObject {
 
     PackageObject() {
