@@ -32,6 +32,7 @@ where va.initializesItself(v, init)
     exists (CrementOperation crement | crement.getAnOperand() = va)
   )
   and not va.isUnevaluated()
+  and not v.isConst()
   and not (
     va.getParent() = init and
     exists(MacroInvocation mi |

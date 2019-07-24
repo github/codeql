@@ -17,6 +17,7 @@
 | No space for zero terminator (`cpp/no-space-for-terminator`) | Fewer false positive results | False positives involving strings that are not null-terminated have been excluded. |
 | Suspicious pointer scaling (`cpp/suspicious-pointer-scaling`) | Lower precision | The precision of this query has been reduced to "medium". This coding pattern is used intentionally and safely in a number of real-world projects. Results are no longer displayed on LGTM unless you choose to display them. |
 | Non-constant format string (`cpp/non-constant-format`) | Fewer false positive results | Rewritten using the taint-tracking library. |
+| Variable used in its own initializer (`cpp/use-in-own-initializer`) | Fewer false positive results | False positives for constant variables with the same name in different namespaces have been removed. |
 
 ## Changes to QL libraries
 
