@@ -1,4 +1,5 @@
 private import csharp as CSharp
+private import IRUtilities
 
 class Function = CSharp::Callable;
 class Location = CSharp::Location;
@@ -62,8 +63,10 @@ string getIdentityString(Function func) {
 }
 
 predicate hasCaseEdge(string minValue, string maxValue) {
-  // TODO: Need to handle `switch` statements that switch on an integer.
-  none()
+  // TODO: Need to handle pattern matching
+  exists(CSharp :: CaseStmt cst |
+    hasCaseEdge(cst, minValue, maxValue)
+  )
 }
 
 predicate hasPositionalArgIndex(int argIndex) {

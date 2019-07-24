@@ -1,6 +1,4 @@
-import csharp
-
-// TODO: CHECK IF TALKING ABOUT POINTERS HERE MAKES SENSE
+private import csharp
 
 /**
  * Given a type, get the type that would result by applying "pointer decay".
@@ -35,4 +33,9 @@ Type getVariableType(Variable v) {
       result = declaredType
     )
   )
+}
+
+predicate hasCaseEdge(CaseStmt caseStmt, string minValue, string maxValue) {
+  minValue = caseStmt.getPattern().getValue() and
+  maxValue = minValue
 }

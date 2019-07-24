@@ -9,6 +9,7 @@ private import TranslatedExpr
 private import TranslatedFunction
 private import TranslatedInitialization
 private import IRInternal
+private import semmle.code.csharp.ir.internal.IRUtilities
 
 TranslatedStmt getTranslatedStmt(Stmt stmt) {
   result.getAST() = stmt
@@ -663,8 +664,11 @@ class TranslatedJumpStmt extends TranslatedStmt {
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
     kind instanceof GotoEdge and
-    // TODO: FIX THE SUCCESSOR INSTRUCTION
-    result = getTranslatedStmt(stmt).getInstructionSuccessor(tag, kind)
+    // Get the target of the jump
+    // TODO: Make sure this is the best way to do it.
+    // TODO: Does not work if the switch is the last instruction in a void function. 
+    //       Maybe insert a dummy label after the switch like in C++?
+    result = getTranslatedStmt(stmt.getAControlFlowNode().getASuccessor().getElement()).getFirstInstruction()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -672,54 +676,70 @@ class TranslatedJumpStmt extends TranslatedStmt {
   }
 }
 
-// TODO: Fix Switch stmts
-//class TranslatedSwitchStmt extends TranslatedStmt {
-//  override SwitchStmt stmt;
-//
-//  private TranslatedExpr getExpr() {
-//    result = getTranslatedExpr(stmt.getExpr())
-//  }
-//
-//  private TranslatedStmt getBody() {
-//    result = getTranslatedStmt(stmt.getBody())
-//  }
-//
-//  override Instruction getFirstInstruction() {
-//    result = getExpr().getFirstInstruction()
-//  }
-//
-//  override TranslatedElement getChild(int id) {
-//    id = 0 and result = getExpr() or
-//    id = 1 and result = getBody()
-//  }
-//
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//    Type resultType, boolean isLValue) {
-//    tag = SwitchBranchTag() and
-//    opcode instanceof Opcode::Switch and
-//    resultType instanceof VoidType and
-//    isLValue = false
-//  }
-//
-//  override Instruction getInstructionOperand(InstructionTag tag,
-//      OperandTag operandTag) {
-//    tag = SwitchBranchTag() and
-//    operandTag instanceof ConditionOperandTag and
-//    result = getExpr().getResult()
-//  }
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag,
-//    EdgeKind kind) {
-//    tag = SwitchBranchTag() and
-//    exists(CaseStmt caseStmt |
-//      caseStmt = stmt.getACase() and
-//      kind = getCaseEdge(caseStmt) and
-//      result = getTranslatedStmt(caseStmt).getFirstInstruction()
-//    )
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getExpr() and result = getInstruction(SwitchBranchTag()) or
-//    child = getBody() and result = getParent().getChildSuccessor(this)
-//  }
-//}
+class TranslatedSwitchStmt extends TranslatedStmt {
+  override SwitchStmt stmt;
+
+  private TranslatedExpr getSwitchExpr() {
+    result = getTranslatedExpr(stmt.getExpr())
+  }
+
+  override Instruction getFirstInstruction() {
+    result = getSwitchExpr().getFirstInstruction()
+  }
+
+  override TranslatedElement getChild(int id) {
+    if (id = -1) then
+        result = getTranslatedExpr(stmt.getChild(0))
+    else if (id = 0) then
+        result = getTranslatedStmt(stmt.getChild(0))
+    else
+        result = getTranslatedStmt(stmt.getChild(id))
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+    Type resultType, boolean isLValue) {
+    tag = SwitchBranchTag() and
+    opcode instanceof Opcode::Switch and
+    resultType instanceof VoidType and
+    isLValue = false
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    tag = SwitchBranchTag() and
+    operandTag instanceof ConditionOperandTag and
+    result = getSwitchExpr().getResult()
+  }
+
+  private EdgeKind getCaseEdge(CaseStmt caseStmt) {
+    if caseStmt instanceof DefaultCase then 
+      result instanceof DefaultEdge
+    else
+      exists(CaseEdge edge |
+        result = edge and
+        hasCaseEdge(caseStmt, edge.getMinValue(), edge.getMinValue())
+      ) 
+  }
+  
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    tag = SwitchBranchTag() and
+    exists(CaseStmt caseStmt |
+      caseStmt = stmt.getACase() and
+      kind = getCaseEdge(caseStmt) and
+      result = getTranslatedStmt(caseStmt).getFirstInstruction()
+    )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getSwitchExpr() and result = getInstruction(SwitchBranchTag()) or
+    exists(int index, int numStmts |
+      numStmts = count(stmt.getAChild()) and
+      child = getTranslatedStmt(stmt.getChild(index)) and
+      if index = (numStmts - 1) then
+        result = getParent().getChildSuccessor(this)
+      else
+        result = getTranslatedStmt(stmt.getChild(index + 1)).getFirstInstruction()
+    )
+  }
+}
