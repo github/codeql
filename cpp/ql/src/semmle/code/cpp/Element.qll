@@ -52,6 +52,13 @@ pragma[inline]
 class ElementBase extends @element {
   /** Gets a textual representation of this element. */
   string toString() { none() }
+
+  /** 
+   * Canonical QL class corresponding to this element.
+   *  
+   * ElementBase is the root class for this predicate.
+   */
+  string getCanonicalQLClass() { result = "???" }
 }
 
 /**

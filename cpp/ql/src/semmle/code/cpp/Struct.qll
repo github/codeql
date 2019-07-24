@@ -8,6 +8,8 @@ class Struct extends Class {
 
   Struct() { usertypes(underlyingElement(this),_,1) or usertypes(underlyingElement(this),_,3) }
 
+  override string getCanonicalQLClass() { result = "Struct" }
+  
   override string explain() { result =  "struct " + this.getName() }
 
   override predicate isDeeplyConstBelow() { any() } // No subparts
@@ -20,6 +22,9 @@ class LocalStruct extends Struct {
   LocalStruct() {
     isLocal()
   }
+
+  override string getCanonicalQLClass() 
+    { not this instanceof LocalUnion and result = "LocalStruct" }
 }
 
 /**
@@ -29,6 +34,9 @@ class NestedStruct extends Struct {
   NestedStruct() {
     this.isMember()
   }
+
+  override string getCanonicalQLClass() 
+    { not this instanceof NestedUnion and result = "NestedStruct" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }

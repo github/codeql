@@ -14,6 +14,8 @@ abstract class NullValue extends Expr
 class Zero extends NullValue
 {
   Zero() { this.(Literal).getValue() = "0" }
+
+  override string getCanonicalQLClass() { result = "Zero" }
 }
 
 /**

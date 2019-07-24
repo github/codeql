@@ -11,6 +11,8 @@ class LambdaExpression extends Expr, @lambdaexpr {
     result = "[...](...){...}"
   }
 
+  override string getCanonicalQLClass() { result = "LambdaExpression" }
+
   /**
    * Gets an implicitly or explicitly captured value of this lambda expression.
    */
@@ -75,6 +77,8 @@ class Closure extends Class {
     exists(LambdaExpression e | this = e.getType())
   }
 
+  override string getCanonicalQLClass() { result = "Closure" }
+
   /** Gets the lambda expression of which this is the type. */
   LambdaExpression getLambdaExpression() {
     result.getType() = this
@@ -98,6 +102,8 @@ class LambdaCapture extends @lambdacapture {
   string toString() {
     result = getField().toString()
   }
+
+  string getCanonicalQLClass() { result = "LambdaCapture" }
 
   /**
    * Holds if this capture was made implicitly.

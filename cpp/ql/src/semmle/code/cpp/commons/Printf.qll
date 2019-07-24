@@ -10,10 +10,12 @@ import semmle.code.cpp.models.implementations.Printf
 
 /**
  * A function that can be identified as a `printf` style formatting
- * function by it's use of the GNU `format` attribute.
+ * function by its use of the GNU `format` attribute.
  */
 class AttributeFormattingFunction extends FormattingFunction {
   FormatAttribute printf_attrib;
+
+  override string getCanonicalQLClass() { result = "AttributeFormattingFunction" }
 
   AttributeFormattingFunction() {
     printf_attrib = getAnAttribute() and
@@ -64,6 +66,8 @@ predicate variadicFormatter(Function f, int formatParamIndex) {
  * string and a variable number of arguments.
  */
 class UserDefinedFormattingFunction extends FormattingFunction {
+  override string getCanonicalQLClass() { result = "UserDefinedFormattingFunction" }
+  
   UserDefinedFormattingFunction() { isVarargs() and callsVariadicFormatter(this, _) }
 
   override int getFormatParameterIndex() { callsVariadicFormatter(this, result) }
@@ -75,6 +79,8 @@ class UserDefinedFormattingFunction extends FormattingFunction {
 class FormattingFunctionCall extends Expr {
   FormattingFunctionCall() { this.(Call).getTarget() instanceof FormattingFunction }
 
+  override string getCanonicalQLClass() { result = "FormattingFunctionCall" }
+  
   /**
    * Gets the formatting function being called.
    */

@@ -166,7 +166,8 @@ abstract class StmtParent extends ControlFlowNode {
  * is an assignment expression inside an 'expression' statement.
  */
 class ExprStmt extends Stmt, @stmt_expr {
-
+  override string getCanonicalQLClass() { result = "ExprStmt" }
+  
   /**
    * Gets the expression of this 'expression' statement.
    *
@@ -218,6 +219,7 @@ abstract class ConditionalStmt extends ControlStructure {
  * A C/C++ 'if' statement.
  */
 class IfStmt extends ConditionalStmt, @stmt_if {
+  override string getCanonicalQLClass() { result = "IfStmt" }
 
   /**
    * Gets the condition expression of this 'if' statement.
@@ -312,6 +314,8 @@ abstract class Loop extends ControlStructure {
  * ```
  */
 class WhileStmt extends Loop, @stmt_while {
+  override string getCanonicalQLClass() { result = "WhileStmt" }
+
   override Expr getCondition() { result = this.getChild(0) }
   override Expr getControllingExpr() { result = this.getCondition() }
   override Stmt getStmt() { while_body(underlyingElement(this), unresolveElement(result)) }
@@ -377,7 +381,8 @@ class WhileStmt extends Loop, @stmt_while {
  * A C/C++ jump statement.
  */
 abstract class JumpStmt extends Stmt, @jump {
-
+  override string getCanonicalQLClass() { result = "JumpStmt" }
+  
   /** Gets the target of this jump statement. */
   Stmt getTarget() { jumpinfo(underlyingElement(this),_,unresolveElement(result)) }
 }
@@ -391,6 +396,7 @@ abstract class JumpStmt extends Stmt, @jump {
  * ```
  */
 class GotoStmt extends JumpStmt, @stmt_goto {
+  override string getCanonicalQLClass() { result = "GotoStmt" }
 
   /**
    * Gets the name of the label this 'goto' statement refers to.
@@ -482,6 +488,7 @@ class ComputedGotoStmt extends Stmt, @stmt_assigned_goto {
  * ```
  */
 class ContinueStmt extends JumpStmt, @stmt_continue {
+  override string getCanonicalQLClass() { result = "ContinueStmt" }
 
   override string toString() { result = "continue;" }
 
@@ -511,6 +518,7 @@ private Stmt getEnclosingContinuable(Stmt s) {
  * ```
  */
 class BreakStmt extends JumpStmt, @stmt_break {
+  override string getCanonicalQLClass() { result = "BreakStmt" }
 
   override string toString() { result = "break;" }
 
@@ -540,7 +548,8 @@ private Stmt getEnclosingBreakable(Stmt s) {
  * ```
  */
 class LabelStmt extends Stmt, @stmt_label {
-
+  override string getCanonicalQLClass() { result = "LabelStmt" }
+  
   /** Gets the name of this 'label' statement. */
   string getName() { jumpinfo(underlyingElement(this),result,_) and result != "" }
 
@@ -566,6 +575,7 @@ class LabelStmt extends Stmt, @stmt_label {
  * ```
  */
 class ReturnStmt extends Stmt, @stmt_return {
+  override string getCanonicalQLClass() { result = "ReturnStmt" }
 
   /**
    * Gets the expression of this 'return' statement.
@@ -616,6 +626,7 @@ class ReturnStmt extends Stmt, @stmt_return {
  * ```
  */
 class DoStmt extends Loop, @stmt_end_test_while {
+  override string getCanonicalQLClass() { result = "DoStmt" }
 
   override Expr getCondition() { result = this.getChild(0) }
   override Expr getControllingExpr() { result = this.getCondition() }
@@ -661,6 +672,8 @@ class DoStmt extends Loop, @stmt_end_test_while {
  * where `begin_expr` and `end_expr` depend on the type of `xs`.
  */
 class RangeBasedForStmt extends Loop, @stmt_range_based_for {
+  override string getCanonicalQLClass() { result = "RangeBasedForStmt" }
+
   /**
    * Gets the 'body' statement of this range-based 'for' statement.
    *
@@ -753,6 +766,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
  * ```
  */
 class ForStmt extends Loop, @stmt_for {
+  override string getCanonicalQLClass() { result = "ForStmt" }
 
   /**
    * Gets the initialization statement of this 'for' statement.
@@ -979,6 +993,7 @@ private predicate inForUpdate(Expr forUpdate, Expr child) {
  * ```
  */
 class SwitchCase extends Stmt, @stmt_switch_case {
+  override string getCanonicalQLClass() { result = "SwitchCase" }
 
   /**
    * Gets the expression of this 'switch case' statement (or the start of
@@ -1340,6 +1355,8 @@ class DefaultCase extends SwitchCase {
  * ```
  */
 class SwitchStmt extends ConditionalStmt, @stmt_switch {
+  override string getCanonicalQLClass() { result = "SwitchStmt" }
+
   /**
    * Gets the expression that this 'switch' statement switches on.
    *
@@ -1550,6 +1567,8 @@ class Handler extends Stmt, @stmt_handler {
 
   override string toString() { result = "<handler>" }
 
+  override string getCanonicalQLClass() { result = "Handler" }
+
   /**
    * Gets the block containing the implementation of this handler.
    */
@@ -1603,6 +1622,7 @@ deprecated class FinallyEnd extends Stmt {
  * ```
  */
 class TryStmt extends Stmt, @stmt_try_block {
+  override string getCanonicalQLClass() { result = "TryStmt" }
 
   override string toString() { result = "try { ... }" }
 
@@ -1681,12 +1701,17 @@ class FunctionTryStmt extends TryStmt {
   FunctionTryStmt() {
     not exists(this.getEnclosingBlock())
   }
+
+  override string getCanonicalQLClass() { result = "FunctionTryStmt" }
 }
 
 /**
  * A 'catch block', from either C++'s `catch` or Objective C's `@catch`.
  */
 class CatchBlock extends Block {
+
+  override string getCanonicalQLClass() { result = "CatchBlock" }
+
   CatchBlock() { ishandler(underlyingElement(this)) }
 
   /**
@@ -1710,6 +1735,8 @@ class CatchAnyBlock extends CatchBlock {
   CatchAnyBlock() {
     not exists(this.getParameter())
   }
+
+  override string getCanonicalQLClass() { result = "CatchAnyBlock" }
 }
 
 /**
@@ -1766,6 +1793,8 @@ class MicrosoftTryFinallyStmt extends MicrosoftTryStmt {
  * ```
  */
 class DeclStmt extends Stmt, @stmt_decl {
+
+  override string getCanonicalQLClass() { result = "DeclStmt" }
 
   /**
    * Gets the `i`th declaration entry declared by this 'declaration' statement.
@@ -1846,6 +1875,8 @@ class DeclStmt extends Stmt, @stmt_decl {
  */
 class EmptyStmt extends Stmt, @stmt_empty {
 
+  override string getCanonicalQLClass() { result = "EmptyStmt" }
+
   override string toString() { result = ";" }
 
   override predicate mayBeImpure() { none() }
@@ -1864,6 +1895,8 @@ class AsmStmt extends Stmt, @stmt_asm {
   override string toString() {
     result = "asm statement"
   }
+  
+  override string getCanonicalQLClass() { result = "AsmStmt" }
 }
 
 /**
@@ -1875,6 +1908,8 @@ class AsmStmt extends Stmt, @stmt_asm {
  */
 class VlaDimensionStmt extends Stmt, @stmt_set_vla_size {
   override string toString() { result = "VLA dimension size" }
+  
+  override string getCanonicalQLClass() { result = "VlaDimensionStmt" }
 
   /** Gets the expression which gives the size. */
   Expr getDimensionExpr() { result = this.getChild(0) }
@@ -1888,6 +1923,8 @@ class VlaDimensionStmt extends Stmt, @stmt_set_vla_size {
  */
 class VlaDeclStmt extends Stmt, @stmt_vla_decl {
   override string toString() { result = "VLA declaration" }
+  
+  override string getCanonicalQLClass() { result = "VlaDeclStmt" }
 
   /**
    * Gets the number of VLA dimension statements in this VLA

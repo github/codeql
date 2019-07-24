@@ -465,6 +465,8 @@ abstract class BinaryOperation extends Operation {
  */
 class ParenthesizedBracedInitializerList extends Expr, @braced_init_list {
   override string toString() { result = "({...})" }
+
+  override string getCanonicalQLClass() { result = "ParenthesizedBracedInitializerList" }
 }
 
 /**
@@ -472,6 +474,8 @@ class ParenthesizedBracedInitializerList extends Expr, @braced_init_list {
 */
 class ParenthesisExpr extends Conversion, @parexpr {
   override string toString() { result = "(...)" }
+
+  override string getCanonicalQLClass() { result = "ParenthesisExpr" }
 }
 
 /**
@@ -479,6 +483,8 @@ class ParenthesisExpr extends Conversion, @parexpr {
  */
 class ErrorExpr extends Expr, @errorexpr {
   override string toString() { result = "<error expr>" }
+
+  override string getCanonicalQLClass() { result = "ErrorExpr" }
 }
 
 /**
@@ -492,6 +498,8 @@ class AssumeExpr extends Expr, @assume {
  * A C/C++ comma expression.
  */
 class CommaExpr extends Expr, @commaexpr {
+  override string getCanonicalQLClass() { result = "CommaExpr" }
+  
   /**
    * Gets the left operand, which is the one whose value is discarded.
    */
@@ -521,6 +529,8 @@ class CommaExpr extends Expr, @commaexpr {
  * A C/C++ address-of expression.
  */
 class AddressOfExpr extends UnaryOperation, @address_of {
+  override string getCanonicalQLClass() { result = "AddressOfExpr" }
+  
   /** Gets the function or variable whose address is taken. */
   Declaration getAddressable() {
        result = this.getOperand().(Access).getTarget()
@@ -550,6 +560,8 @@ class AddressOfExpr extends UnaryOperation, @address_of {
 class ReferenceToExpr extends Conversion, @reference_to {
   override string toString() { result = "(reference to)" }
 
+  override string getCanonicalQLClass() { result = "ReferenceToExpr" }
+  
   override int getPrecedence() { result = 15 }
 }
 
@@ -559,6 +571,8 @@ class ReferenceToExpr extends Conversion, @reference_to {
  * For user-defined types, see OverloadedPointerDereferenceExpr.
  */
 class PointerDereferenceExpr extends UnaryOperation, @indirect {
+  override string getCanonicalQLClass() { result = "PointerDereferenceExpr" }
+  
   /**
    * DEPRECATED: Use getOperand() instead.
    *
@@ -591,6 +605,8 @@ class PointerDereferenceExpr extends UnaryOperation, @indirect {
  */
 class ReferenceDereferenceExpr extends Conversion, @ref_indirect {
   override string toString() { result = "(reference dereference)" }
+
+  override string getCanonicalQLClass() { result = "ReferenceDereferenceExpr" }
 }
 
 /**
@@ -694,6 +710,8 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
 class NewExpr extends NewOrNewArrayExpr, @new_expr {
   override string toString() { result = "new" }
 
+  override string getCanonicalQLClass() { result = "NewExpr" }
+  
   /**
    * Gets the type that is being allocated.
    *
@@ -718,6 +736,8 @@ class NewExpr extends NewOrNewArrayExpr, @new_expr {
 class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
   override string toString() { result = "new[]" }
 
+  override string getCanonicalQLClass() { result = "NewArrayExpr" }
+  
   /**
    * Gets the type that is being allocated.
    *
@@ -761,6 +781,8 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
 class DeleteExpr extends Expr, @delete_expr {
   override string toString() { result = "delete" }
 
+  override string getCanonicalQLClass() { result = "DeleteExpr" }
+  
   override int getPrecedence() { result = 15 }
 
   /**
@@ -829,6 +851,8 @@ class DeleteExpr extends Expr, @delete_expr {
 class DeleteArrayExpr extends Expr, @delete_array_expr {
   override string toString() { result = "delete[]" }
 
+  override string getCanonicalQLClass() { result = "DeleteArrayExpr" }
+  
   override int getPrecedence() { result = 15 }
 
   /**
@@ -902,6 +926,8 @@ class StmtExpr extends Expr, @expr_stmt {
    */
   Stmt getStmt() { result.getParent() = this }
 
+  override string getCanonicalQLClass() { result = "StmtExpr" }
+
   /**
    * Gets the result expression of the enclosed statement. For example,
    * `a+b` is the result expression in this example:
@@ -927,6 +953,8 @@ private Expr getStmtResultExpr(Stmt stmt) {
 class ThisExpr extends Expr, @thisaccess {
   override string toString() { result = "this" }
 
+  override string getCanonicalQLClass() { result = "ThisExpr" }
+  
   override predicate mayBeImpure() {
     none()
   }
@@ -962,6 +990,8 @@ class BlockExpr extends Literal {
 class NoExceptExpr extends Expr, @noexceptexpr {
   override string toString() { result = "noexcept(...)" }
 
+  override string getCanonicalQLClass() { result = "NoExceptExpr" }
+  
   /**
    * Gets the expression inside this noexcept expression.
    */
@@ -989,6 +1019,8 @@ class FoldExpr extends Expr, @foldexpr {
         else result = "( pack " + op + " ... " + op + " init )"
     )
   }
+
+  override string getCanonicalQLClass() { result = "FoldExpr" }
 
   /** Gets the binary operator used in this fold expression, as a string. */
   string getOperatorString() { fold(underlyingElement(this), result, _) }

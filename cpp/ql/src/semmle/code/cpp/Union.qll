@@ -8,6 +8,8 @@ class Union extends Struct  {
 
   Union() { usertypes(underlyingElement(this),_,3)  }
 
+  override string getCanonicalQLClass() { result = "Union" }
+
   override string explain() { result =  "union " + this.getName() }
 
   override predicate isDeeplyConstBelow() { any() } // No subparts
@@ -21,6 +23,8 @@ class LocalUnion extends Union {
   LocalUnion() {
     isLocal()
   }
+
+  override string getCanonicalQLClass() { result = "LocalUnion" }
 }
 
 /**
@@ -30,6 +34,8 @@ class NestedUnion extends Union {
   NestedUnion() {
     this.isMember()
   }
+
+  override string getCanonicalQLClass() { result = "NestedUnion" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }

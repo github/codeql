@@ -12,6 +12,8 @@ abstract class UnaryLogicalOperation extends UnaryOperation {
 class NotExpr extends UnaryLogicalOperation, @notexpr {
   override string getOperator() { result = "!" }
 
+  override string getCanonicalQLClass() { result = "NotExpr" }
+  
   override int getPrecedence() { result = 15 }
 }
 
@@ -38,6 +40,8 @@ abstract class BinaryLogicalOperation extends BinaryOperation {
 class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
   override string getOperator() { result = "&&" }
 
+  override string getCanonicalQLClass() { result = "LogicalAndExpr" }
+  
   override int getPrecedence() { result = 5 }
 
   override predicate impliesValue(Expr part, boolean partIsTrue, boolean wholeIsTrue) {
@@ -53,6 +57,8 @@ class LogicalAndExpr extends BinaryLogicalOperation, @andlogicalexpr {
 class LogicalOrExpr extends BinaryLogicalOperation, @orlogicalexpr {
   override string getOperator() { result = "||" }
 
+  override string getCanonicalQLClass() { result = "LogicalOrExpr" }
+  
   override int getPrecedence() { result = 4 }
 
   override predicate impliesValue(Expr part, boolean partIsTrue, boolean wholeIsTrue) {
@@ -71,6 +77,8 @@ class ConditionalExpr extends Operation, @conditionalexpr {
     expr_cond_guard(underlyingElement(this), unresolveElement(result))
   }
 
+  override string getCanonicalQLClass() { result = "ConditionalExpr" }
+  
   /** Gets the 'then' expression of this conditional expression. */
   Expr getThen() {
     if this.isTwoOperand()

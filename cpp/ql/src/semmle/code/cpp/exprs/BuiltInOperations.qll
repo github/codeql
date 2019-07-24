@@ -11,6 +11,8 @@ abstract class BuiltInOperation extends Expr {
  */
 class BuiltInVarArgsStart extends BuiltInOperation, @vastartexpr {
   override string toString() { result = "__builtin_va_start" }
+
+  override string getCanonicalQLClass() { result = "BuiltInVarArgsStart" }
 }
 
 /**
@@ -18,6 +20,8 @@ class BuiltInVarArgsStart extends BuiltInOperation, @vastartexpr {
  */
 class BuiltInVarArgsEnd extends BuiltInOperation, @vaendexpr {
   override string toString() { result = "__builtin_va_end" }
+
+  override string getCanonicalQLClass() { result = "BuiltInVarArgsEnd" }
 }
 
 /**
@@ -25,6 +29,8 @@ class BuiltInVarArgsEnd extends BuiltInOperation, @vaendexpr {
  */
 class BuiltInVarArg extends BuiltInOperation, @vaargexpr {
   override string toString() { result = "__builtin_va_arg" }
+
+  override string getCanonicalQLClass() { result = "BuiltInVarArg" }
 }
 
 /**
@@ -32,6 +38,8 @@ class BuiltInVarArg extends BuiltInOperation, @vaargexpr {
  */
 class BuiltInVarArgCopy extends BuiltInOperation, @vacopyexpr {
   override string toString() { result = "__builtin_va_copy" }
+
+  override string getCanonicalQLClass() { result = "BuiltInVarArgCopy" }
 }
 
 /**
@@ -39,6 +47,8 @@ class BuiltInVarArgCopy extends BuiltInOperation, @vacopyexpr {
  */
 class BuiltInNoOp extends BuiltInOperation, @noopexpr {
   override string toString() { result = "__noop" }
+
+  override string getCanonicalQLClass() { result = "BuiltInNoOp" }
 }
 
 /**
@@ -46,6 +56,8 @@ class BuiltInNoOp extends BuiltInOperation, @noopexpr {
  */
 class BuiltInOperationOffsetOf extends BuiltInOperation, @offsetofexpr {
   override string toString() { result = "__offsetof" }
+
+  override string getCanonicalQLClass() { result = "BuiltInOperationOffsetOf" }
 }
 
 /**
@@ -53,6 +65,8 @@ class BuiltInOperationOffsetOf extends BuiltInOperation, @offsetofexpr {
  */
 class BuiltInIntAddr extends BuiltInOperation, @intaddrexpr {
   override string toString() { result = "__INTADDR__" }
+
+  override string getCanonicalQLClass() { result = "BuiltInIntAddr" }
 }
 
 /**
@@ -226,6 +240,8 @@ class BuiltInOperationBuiltInAddressOf extends UnaryOperation, BuiltInOperation,
        // this handles the case where we are taking the address of a reference variable
     or result = this.getOperand().(ReferenceDereferenceExpr).getChild(0).(Access).getTarget()
   }
+
+  override string getCanonicalQLClass() { result = "BuiltInOperationBuiltInAddressOf" }
 
   override string getOperator() { result = "__builtin_addressof" }
 }

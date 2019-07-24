@@ -174,6 +174,8 @@ class Variable extends Declaration, @variable {
 class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
   override Variable getDeclaration() { result = getVariable() }
 
+  override string getCanonicalQLClass() { result = "VariableDeclarationEntry" }
+  
   /**
    * Gets the variable which is being declared or defined.
    */
@@ -224,6 +226,8 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
  */
 class ParameterDeclarationEntry extends VariableDeclarationEntry {
   ParameterDeclarationEntry() { param_decl_bind(underlyingElement(this),_,_) }
+  
+  override string getCanonicalQLClass() { result = "ParameterDeclarationEntry" }
 
   /**
    * Gets the function declaration or definition which this parameter

@@ -15,6 +15,8 @@ class Class extends UserType {
     isClass(underlyingElement(this))
   }
 
+  override string getCanonicalQLClass() { result = "Class" }
+  
   /** Gets a child declaration of this class. */
   override Declaration getADeclaration() { result = this.getAMember() }
 
@@ -822,6 +824,9 @@ class LocalClass extends Class {
     isLocal()
   }
 
+  override string getCanonicalQLClass()
+    { not this instanceof LocalStruct and result = "LocalClass" }
+
   override Function getEnclosingAccessHolder() {
     result = this.getEnclosingFunction()
   }
@@ -834,6 +839,9 @@ class NestedClass extends Class {
   NestedClass() {
     this.isMember()
   }
+
+  override string getCanonicalQLClass() 
+    { not this instanceof NestedStruct and result = "NestedClass" }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
@@ -854,6 +862,8 @@ class AbstractClass extends Class {
   AbstractClass() {
     exists(PureVirtualFunction f| this.getAMemberFunction() = f)
   }
+
+  override string getCanonicalQLClass() { result = "AbstractClass" }
 }
 
 /**
@@ -866,6 +876,8 @@ class TemplateClass extends Class {
     result.isConstructedFrom(this) and
     exists(result.getATemplateArgument())
   }
+
+  override string getCanonicalQLClass() { result = "TemplateClass" }
 }
 
 /**
@@ -877,6 +889,8 @@ class ClassTemplateInstantiation extends Class {
   ClassTemplateInstantiation() {
     tc.getAnInstantiation() = this
   }
+
+  override string getCanonicalQLClass() { result = "ClassTemplateInstantiation" }
 
   /**
    * Gets the class template from which this instantiation was instantiated.
@@ -909,6 +923,8 @@ abstract class ClassTemplateSpecialization extends Class {
     and count(TemplateParameter tp | tp = result.getATemplateArgument()) =
         count(int i | exists(result.getTemplateArgument(i)))
   }
+
+  override string getCanonicalQLClass() { result = "ClassTemplateSpecialization" }
 }
 
 /**
@@ -926,6 +942,8 @@ class FullClassTemplateSpecialization extends ClassTemplateSpecialization {
     // This class is not an instantiation of a class template.
     and not this instanceof ClassTemplateInstantiation
   }
+
+  override string getCanonicalQLClass() { result = "FullClassTemplateSpecialization" }
 }
 
 /**
@@ -950,6 +968,8 @@ class PartialClassTemplateSpecialization extends ClassTemplateSpecialization {
     and count(TemplateParameter tp | tp = getATemplateArgument()) !=
         count(int i | exists(getTemplateArgument(i)))
   }
+
+  override string getCanonicalQLClass() { result = "PartialClassTemplateSpecialization" }
 }
 
 /**
@@ -960,6 +980,8 @@ class Interface extends Class {
   Interface() {
     forex(Declaration m | m.getDeclaringType() = this.getABaseClass*() and not compgenerated(unresolveElement(m)) | m instanceof PureVirtualFunction)
   }
+
+  override string getCanonicalQLClass() { result = "Interface" }
 }
 
 /**
@@ -970,6 +992,8 @@ class VirtualClassDerivation extends ClassDerivation {
   VirtualClassDerivation() {
     hasSpecifier("virtual")
   }
+
+  override string getCanonicalQLClass() { result = "VirtualClassDerivation" }
 }
 
 /**
@@ -979,6 +1003,8 @@ class VirtualBaseClass extends Class {
   VirtualBaseClass() {
     exists(VirtualClassDerivation cd | cd.getBaseClass() = this)
   }
+
+  override string getCanonicalQLClass() { result = "VirtualBaseClass" }
 
   /** A virtual class derivation of which this class is the base. */
   VirtualClassDerivation getAVirtualDerivation() {
@@ -1004,6 +1030,8 @@ class ProxyClass extends UserType {
     usertypes(underlyingElement(this),_,9)
   }
 
+  override string getCanonicalQLClass() { result = "ProxyClass" }
+  
   /** Gets the location of the proxy class. */
   override Location getLocation() {
     result = getTemplateParameter().getDefinitionLocation()

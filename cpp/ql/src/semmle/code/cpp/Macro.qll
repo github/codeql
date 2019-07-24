@@ -11,6 +11,8 @@ class Macro extends PreprocessorDirective, @ppd_define {
    */
   override string getHead() { preproctext(underlyingElement(this),result,_) }
 
+  override string getCanonicalQLClass() { result = "Macro" }
+
   /**
    * Gets the body of this macro. For example, `(((x)>(y))?(x):(y))` in
    * `#define MAX(x,y) (((x)>(y))?(x):(y))`.

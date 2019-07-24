@@ -503,6 +503,8 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /** Gets the function which is being declared or defined. */
   override Function getDeclaration() { result = getFunction() }
 
+  override string getCanonicalQLClass() { result = "FunctionDeclarationEntry" }
+
   /** Gets the function which is being declared or defined. */
   Function getFunction() { fun_decls(underlyingElement(this),unresolveElement(result),_,_,_) }
 
@@ -707,6 +709,8 @@ class TopLevelFunction extends Function {
   TopLevelFunction() {
     not this.isMember()
   }
+
+  override string getCanonicalQLClass() { result = "TopLevelFunction" }
 }
 
 /**
@@ -717,6 +721,11 @@ class MemberFunction extends Function {
   MemberFunction() {
     this.isMember()
   }
+
+  override string getCanonicalQLClass() 
+    { not this instanceof CopyAssignmentOperator and 
+      not this instanceof MoveAssignmentOperator and 
+      result = "MemberFunction" }
 
   /**
    * Gets the number of parameters of this function, including any implicit
@@ -769,6 +778,8 @@ class VirtualFunction extends MemberFunction {
     this.hasSpecifier("virtual") or purefunctions(underlyingElement(this))
   }
 
+  override string getCanonicalQLClass() { result = "VirtualFunction" }
+  
   /** Holds if this virtual function is pure. */
   predicate isPure() { this instanceof PureVirtualFunction }
 
@@ -786,6 +797,7 @@ class PureVirtualFunction extends VirtualFunction {
 
   PureVirtualFunction() { purefunctions(underlyingElement(this)) }
 
+  override string getCanonicalQLClass() { result = "PureVirtualFunction" }
 }
 
 /**
@@ -797,6 +809,7 @@ class ConstMemberFunction extends MemberFunction {
 
   ConstMemberFunction() { this.hasSpecifier("const") }
 
+  override string getCanonicalQLClass() { result = "ConstMemberFunction" }
 }
 
 /**
@@ -806,6 +819,8 @@ class Constructor extends MemberFunction {
 
   Constructor() { functions(underlyingElement(this),_,2) }
 
+  override string getCanonicalQLClass() { result = "Constructor" }
+  
   /**
    * Holds if this constructor serves as a default constructor.
    *
@@ -851,6 +866,9 @@ class ConversionConstructor extends Constructor, ImplicitConversionFunction {
     and not(this instanceof CopyConstructor)
   }
 
+  override string getCanonicalQLClass() 
+    { not this instanceof MoveConstructor and result = "ConversionConstructor" }
+  
   /** Gets the type this `ConversionConstructor` takes as input. */
   override Type getSourceType() { result = this.getParameter(0).getType() }
 
@@ -906,6 +924,8 @@ class CopyConstructor extends Constructor {
     not exists(getATemplateArgument())
   }
 
+  override string getCanonicalQLClass() { result = "CopyConstructor" }
+  
   /**
    * Holds if we cannot determine that this constructor will become a copy
    * constructor in all instantiations. Depending on template parameters of the
@@ -954,6 +974,8 @@ class MoveConstructor extends Constructor {
     not exists(getATemplateArgument())
   }
 
+  override string getCanonicalQLClass() { result = "MoveConstructor" }
+  
   /**
    * Holds if we cannot determine that this constructor will become a move
    * constructor in all instantiations. Depending on template parameters of the
@@ -986,6 +1008,8 @@ class NoArgConstructor extends Constructor {
 class Destructor extends MemberFunction {
   Destructor() { functions(underlyingElement(this),_,3) }
 
+  override string getCanonicalQLClass() { result = "Destructor" }
+  
   /**
    * Gets a compiler-generated action which destructs a base class or member
    * variable.
@@ -1011,6 +1035,8 @@ class ConversionOperator extends MemberFunction, ImplicitConversionFunction {
 
   ConversionOperator() { functions(underlyingElement(this),_,4) }
 
+  override string getCanonicalQLClass() { result = "ConversionOperator" }
+
   override Type getSourceType() { result = this.getDeclaringType() }
   override Type getDestType() { result = this.getType() }
 
@@ -1023,6 +1049,8 @@ class Operator extends Function {
 
   Operator() { functions(underlyingElement(this),_,5) }
 
+  override string getCanonicalQLClass() 
+    { not this instanceof MemberFunction and result = "Operator" }
 }
 
 /**
@@ -1045,6 +1073,8 @@ class CopyAssignmentOperator extends Operator {
     not exists(this.getParameter(1)) and
     not exists(getATemplateArgument())
   }
+
+  override string getCanonicalQLClass() { result = "CopyAssignmentOperator" }
 }
 
 
@@ -1064,6 +1094,8 @@ class MoveAssignmentOperator extends Operator {
     not exists(this.getParameter(1)) and
     not exists(getATemplateArgument())
   }
+
+  override string getCanonicalQLClass() { result = "MoveAssignmentOperator" }
 }
 
 
@@ -1084,6 +1116,7 @@ class MoveAssignmentOperator extends Operator {
 class TemplateFunction extends Function {
   TemplateFunction() { is_function_template(underlyingElement(this)) and exists(getATemplateArgument()) }
 
+  override string getCanonicalQLClass() { result = "TemplateFunction" }
   /**
    * Gets a compiler-generated instantiation of this function template.
    */
@@ -1114,6 +1147,8 @@ class FunctionTemplateInstantiation extends Function {
   FunctionTemplateInstantiation() {
     tf.getAnInstantiation() = this
   }
+
+  override string getCanonicalQLClass() { result = "FunctionTemplateInstantiation" }
 
   /**
    * Gets the function template from which this instantiation was instantiated.
@@ -1151,6 +1186,8 @@ class FunctionTemplateSpecialization extends Function {
     this.isSpecialization()
   }
 
+  override string getCanonicalQLClass() { result = "FunctionTemplateSpecialization" }
+  
   /**
    * Gets the primary template for the specialization (the function template
    * this specializes).
