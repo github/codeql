@@ -232,7 +232,7 @@ module TaintTracking {
       exists(ForOfStmt fos |
         this = DataFlow::valueNode(fos.getIterationDomain()) and
         pred = this and
-        succ = DataFlow::ssaDefinitionNode(SSA::definition(fos.getIteratorExpr()))
+        succ = DataFlow::lvalueNode(fos.getLValue())
       )
     }
   }
