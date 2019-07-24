@@ -5,6 +5,10 @@
 | stl.cpp:65:16:65:21 | call to source | stl.cpp:65:16:65:24 | call to basic_string |  |
 | stl.cpp:65:16:65:24 | call to basic_string | stl.cpp:69:7:69:7 | c |  |
 | stl.cpp:65:16:65:24 | call to basic_string | stl.cpp:71:7:71:7 | c |  |
+| stl.cpp:70:7:70:7 | b | stl.cpp:70:9:70:13 | call to c_str |  |
+| stl.cpp:70:7:70:7 | b [post update] | stl.cpp:70:9:70:13 | call to c_str |  |
+| stl.cpp:71:7:71:7 | c | stl.cpp:71:9:71:13 | call to c_str |  |
+| stl.cpp:71:7:71:7 | c [post update] | stl.cpp:71:9:71:13 | call to c_str |  |
 | stl.cpp:76:20:76:22 | call to basic_stringstream | stl.cpp:79:2:79:4 | ss1 |  |
 | stl.cpp:76:20:76:22 | call to basic_stringstream | stl.cpp:84:7:84:9 | ss1 |  |
 | stl.cpp:76:20:76:22 | call to basic_stringstream | stl.cpp:88:7:88:9 | ss1 |  |
