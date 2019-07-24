@@ -9,6 +9,11 @@ function test() {
     
     let { x: [ { y: q } ] } = obj;
     sink(q); // NOT OK
+
+    for (let [a, b] of obj) {
+      sink(a); // NOT OK
+      sink(b); // NOT OK
+    }
   }
   
   function g() {
