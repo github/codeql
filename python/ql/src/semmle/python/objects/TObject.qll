@@ -253,6 +253,12 @@ predicate literal_instantiation(ControlFlowNode n, ClassObjectInternal cls, Poin
         n instanceof SetNode and cls = ObjectInternal::builtin("set")
         or
         n.getNode() instanceof ImaginaryLiteral and cls = ObjectInternal::builtin("complex")
+        or
+        n.getNode() instanceof ListComp and cls = ObjectInternal::builtin("list")
+        or
+        n.getNode() instanceof SetComp and cls = ObjectInternal::builtin("set")
+        or
+        n.getNode() instanceof DictComp and cls = ObjectInternal::builtin("dict")
     )
 }
 
