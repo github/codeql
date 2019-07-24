@@ -13,10 +13,10 @@ By subclassing an abstract class used by the JavaScript analysis and implementin
 member predicates we can teach the analysis to handle further instances of abstract concepts it
 already understands. For example, the standard library defines an abstract class
 ``SystemCommandExecution`` that covers various APIs for executing operating-system commands. This
-class is used by the command-injection analysis to identify potentially problematic flows where
-input from a potentially malicious user is interpreted as the name of a system command to execute.
-By defining additional subclasses of ``SystemCommandExecution``, we can make this analysis more
-powerful without touching its implementation.
+class is used by the command-injection analysis to identify problematic flows where input from a
+potentially malicious user is interpreted as the name of a system command to execute. By defining
+additional subclasses of ``SystemCommandExecution``, we can make this analysis more powerful without
+touching its implementation.
 
 By overriding a member predicate defined in the library, we can change its behavior either for all
 its receivers or only a subset. For example, the standard library predicate
@@ -28,20 +28,25 @@ analysis queries pick it up. This can be done by adding the customizing definiti
 ``Customizations.qll``, an initially empty library file that is imported by the default library
 ``javascript.qll``.
 
-Sometimes you may want to apply the two customization mechanisms of subclassing to provide new
-implementations of an API and of overriding to selectively change the implementation of the API to
-the same base class. This is not always easy to do, since the former requires the base class to be
-abstract, while the latter requires it to be concrete.
+Sometimes you may want to perform both kinds of customizations at the same time: subclass a base
+class to provide new implementations of an API, and override some member predicates of the same base
+class to selectively change the implementation of the API. This is not always easy to do, since the
+former requires the base class to be abstract, while the latter requires it to be concrete.
 
 To work around this, the JavaScript library uses the so-called `range pattern`: the base class
-``Base`` itself is concrete, but it has an abstract companion class called ``Base::Range`` with the
-same member predicates and covering the same set of values. The default implementation of all
-predicates in ``Base`` simply delegates to their implementations in ``Base::Range``. To extend
-``Base`` with new implementations, we subclass ``Base::Range`` and implement its API. To customize
-``Base``, on the other hand, we subclass ``Base`` itself and override the predicates we want to
-adjust.
+``Base`` itself is concrete, but it has an abstract companion class called ``Base::Range`` covering
+the same set of values. To change the implementation of the API, subclass ``Base`` and override its
+member predicates. To provide new implementations of the API, subclass ``Base::Range`` and implement
+its abstract member predicates.
 
-Note that currently the range pattern is not yet used everywhere, so you will find some abstract
+For example, the class ``Base64::Encode`` in the standard library models base64-encoding libraries
+using the range pattern. To add support for a new library, subclass ``Base64::Encode::Range`` and
+implement the member predicates ``getInput`` and ``getOutput``. (Subclasses for many popular base64
+encoders are included in the standard library.) To customize the definition of ``getInput`` or
+``getOutput`` for a library that is already supported, extend ``Base64::Encode`` itself and override
+the predicate you want to customize.
+
+Note that currently the range pattern is not used everywhere yet, so you will find some abstract
 classes without a concrete companion. We are planning on eventually migrating most abstract classes
 to use the range pattern.
 
@@ -130,7 +135,8 @@ Framework models
 ~~~~~~~~~~~~~~~~
 
 The libraries under ``semmle/javascript/frameworks`` model a broad range of popular JavaScript
-libraries and frameworks, such as Express or Vue.js.
+libraries and frameworks, such as Express or Vue.js. Some framework modeling libraries are located
+under ``semmle/javascript`` directly, for instance ``Base64``, ``EmailClients`` and ``JsonParsers``.
 
 Global data flow and taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -163,7 +169,7 @@ It is not normally necessary to customize this layer.
 Local data flow
 ~~~~~~~~~~~~~~~
 
-The ``DataFlow::SourceNode`` class implements the range pattern, so new kinds of source nodes can be
+The ``DataFlow::SourceNode`` class uses the range pattern, so new kinds of source nodes can be
 added by extending ``Dataflow::SourceNode::Range``. Some of its subclasses can similarly be
 extended: ``DataFlow::ModuleImportNode`` models module imports, and ``DataFlow::ClassNode`` models
 class definitions. The former provides default implementations covering CommonJS, AMD and ECMAScript
@@ -178,13 +184,13 @@ You can override ``AnalyzedNode::getAValue`` to customize the type inference. No
 
 You can also extend the set of abstract values in one of two ways:
 
-  1. To add individual abstract values that are independent of the program being analyzed, define a
-     subclass of ``CustomAbstractValueTag`` describing the new abstract value. There will then be a
-     corresponding value of class ``CustomAbstractValue`` that you can use in overriding
-     definitions of the ``getAValue`` predicate.
-  2. To add abstract values that are induced by a program element, define a subclass of 
-     ``CustomAbstractValueDefinition``, and use its corresponding
-     ``CustomAbstractValueFromDefinition``.
+1. To add individual abstract values that are independent of the program being analyzed, define a
+   subclass of ``CustomAbstractValueTag`` describing the new abstract value. There will then be a
+   corresponding value of class ``CustomAbstractValue`` that you can use in overriding
+   definitions of the ``getAValue`` predicate.
+2. To add abstract values that are induced by a program element, define a subclass of
+   ``CustomAbstractValueDefinition``, and use its corresponding
+   ``CustomAbstractValueFromDefinition``.
 
 Call graph
 ~~~~~~~~~~
