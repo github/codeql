@@ -26,7 +26,7 @@ Follow the steps below to help other users understand what your query does, and 
 
 4. **Make sure the `select` statement is compatible with the query type**
 
-   The query type (determined by the `@kind` metadata property) must have the correct format for query results to be displayed correctly in LGTM or QL for Eclipse.
+   The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in LGTM and QL for Eclipse.
    For more information on `select` statement format, see [Introduction to query files](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
 
 5. **Save your query in a `.ql` file in correct language directory in the this repository**
