@@ -851,8 +851,6 @@ private class AccessPathFrontNilNode extends Node {
       localFlowBigStep(_, this, false, _)
       or
       additionalJumpStep(_, this, _)
-      or
-      simpleArgumentFlowsThrough(_, this, _, _)
     )
   }
 
@@ -914,10 +912,10 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
       argumentValueFlowsThrough(mid, node, _)
     )
     or
-    exists(Node mid, AccessPathFrontNil nil |
+    exists(Node mid, AccessPathFrontNil nil, DataFlowType t |
       flowCandFwd(mid, fromArg, nil, config) and
-      simpleArgumentFlowsThrough(mid, node, _, config) and
-      apf = node.(AccessPathFrontNilNode).getApf()
+      simpleArgumentFlowsThrough(mid, node, t, config) and
+      apf = TFrontNil(t)
     )
   )
   or
@@ -1187,10 +1185,10 @@ private predicate flowFwd0(
       argumentValueFlowsThrough(mid, node, _)
     )
     or
-    exists(Node mid, AccessPathNil nil |
+    exists(Node mid, AccessPathNil nil, DataFlowType t |
       flowFwd(mid, fromArg, _, nil, config) and
-      simpleArgumentFlowsThrough(mid, node, _, config) and
-      ap = node.(AccessPathNilNode).getAp() and
+      simpleArgumentFlowsThrough(mid, node, t, config) and
+      ap = TNil(t) and
       apf = ap.(AccessPathNil).getFront()
     )
   )
@@ -1539,7 +1537,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, AccessPat
   or
   pathOutOfCallable(mid, node, cc) and ap = mid.getAp()
   or
-  pathThroughCallable(mid, node, cc) and ap = node.(AccessPathNilNode).getAp()
+  pathThroughCallable(mid, node, cc, ap)
   or
   valuePathThroughCallable(mid, node, cc) and ap = mid.getAp()
 }
@@ -1670,14 +1668,14 @@ private predicate pathIntoCallable(
 /** Holds if data may flow from `p` to a return of kind `kind`. */
 pragma[nomagic]
 private predicate paramFlowsThrough(
-  ParameterNode p, ReturnKind kind, CallContextCall cc, Configuration config
+  ParameterNode p, ReturnKind kind, CallContextCall cc, AccessPathNil apnil, Configuration config
 ) {
   exists(PathNodeMid mid, ReturnNode ret |
     mid.getNode() = ret and
     kind = ret.getKind() and
     cc = mid.getCallContext() and
     config = mid.getConfiguration() and
-    mid.getAp() instanceof AccessPathNil
+    apnil = mid.getAp()
   |
     cc = TSomeCall(p, true)
     or
@@ -1689,11 +1687,11 @@ private predicate paramFlowsThrough(
 
 pragma[noinline]
 private predicate pathThroughCallable0(
-  DataFlowCall call, PathNodeMid mid, ReturnKind kind, CallContext cc
+  DataFlowCall call, PathNodeMid mid, ReturnKind kind, CallContext cc, AccessPathNil apnil
 ) {
   exists(ParameterNode p, CallContext innercc |
     pathIntoCallable(mid, p, cc, innercc, call) and
-    paramFlowsThrough(p, kind, innercc, unbind(mid.getConfiguration())) and
+    paramFlowsThrough(p, kind, innercc, apnil, unbind(mid.getConfiguration())) and
     not parameterValueFlowsThrough(p, kind, innercc) and
     mid.getAp() instanceof AccessPathNil
   )
@@ -1704,9 +1702,11 @@ private predicate pathThroughCallable0(
  * The context `cc` is restored to its value prior to entering the callable.
  */
 pragma[noinline]
-private predicate pathThroughCallable(PathNodeMid mid, OutNode out, CallContext cc) {
+private predicate pathThroughCallable(
+  PathNodeMid mid, OutNode out, CallContext cc, AccessPathNil apnil
+) {
   exists(DataFlowCall call, ReturnKind kind |
-    pathThroughCallable0(call, mid, kind, cc) and
+    pathThroughCallable0(call, mid, kind, cc, apnil) and
     out = getAnOutNode(call, kind)
   )
 }
