@@ -13,7 +13,7 @@ import javascript
  * referring to some other YAML value.
  */
 class YAMLNode extends @yaml_node, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
+  override Location getLocation() { yaml_locations(this, result) }
 
   /**
    * Gets the parent node of this node, which is always a collection.
@@ -300,6 +300,8 @@ class YAMLDocument extends YAMLNode {
  * An error message produced by the YAML parser while processing a YAML file.
  */
 class YAMLParseError extends @yaml_error, Error {
+  override Location getLocation() { yaml_locations(this, result) }
+
   override string getMessage() { yaml_errors(this, result) }
 
   override string toString() { result = getMessage() }

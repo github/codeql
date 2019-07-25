@@ -933,7 +933,7 @@ case @json_value.kind of
     | @token
     | @cfg_node
     | @jsdoc | @jsdoc_type_expr | @jsdoc_tag
-    | @yaml_node | @yaml_error
+    | @yaml_locatable
     | @xmllocatable;
 
 hasLocation (unique int locatable: @locatable ref,
@@ -1026,6 +1026,11 @@ yaml_scalars (unique int scalar: @yaml_scalar_node ref,
 
 yaml_errors (unique int id: @yaml_error,
              varchar(900) message: string ref);
+
+yaml_locations(unique int locatable: @yaml_locatable ref,
+             int location: @location_default ref);
+
+@yaml_locatable = @yaml_node | @yaml_error;
 
 /* XML Files */
 

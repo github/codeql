@@ -99,6 +99,7 @@ public class YAMLExtractor implements IExtractor {
     trapWriter = textualExtractor.getTrapwriter();
 
     Label fileLabel = locationManager.getFileLabel();
+    locationManager.setHasLocationTable("yaml_locations");
     try {
       parser = new ParserImpl(new StreamReader(textualExtractor.getSource()));
       resolver = new Resolver();
