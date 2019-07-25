@@ -12,6 +12,7 @@ private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
+private import semmle.python.types.Builtins
 
 /* Use the term `ObjectSource` to refer to DB entity. Either a CFG node
  * for Python objects, or `@py_cobject` entity for built-in objects.
@@ -85,7 +86,7 @@ class Value extends TObject {
         filepath = "" and bl = 0 and bc = 0 and el = 0 and ec = 0
     }
 
-    /** Gets the name of this value, if it has one. 
+    /** Gets the name of this value, if it has one.
      * Note this is the innate name of the
      * object, not necessarily all the names by which it can be called.
      */
@@ -228,7 +229,7 @@ class CallableValue extends Value {
     cached ControlFlowNode getArgumentForCall(CallNode call, int n) {
         exists(ObjectInternal called, int offset |
             PointsToInternal::pointsTo(call.getFunction(), _, called, _) and
-            called.functionAndOffset(this, offset) 
+            called.functionAndOffset(this, offset)
             |
             call.getArg(n-offset) = result
             or
@@ -316,13 +317,13 @@ class ClassValue extends Value {
         result = Types::getBase(this, n)
     }
 
-    /** Holds if this class is a new style class. 
+    /** Holds if this class is a new style class.
         A new style class is one that implicitly or explicitly inherits from `object`. */
     predicate isNewStyle() {
         Types::isNewStyle(this)
     }
 
-    /** Holds if this class is an old style class. 
+    /** Holds if this class is an old style class.
         An old style class is one that does not inherit from `object`. */
     predicate isOldStyle() {
         Types::isOldStyle(this)
@@ -331,6 +332,20 @@ class ClassValue extends Value {
     /** Gets the scope associated with this class, if it is not a builtin class */
     ClassScope getScope() {
         result = this.(PythonClassObjectInternal).getScope()
+    }
+
+    /** Holds if this class has the attribute `name`, including
+     * attributes declared by super classes.
+     */
+    predicate hasAttribute(string name) {
+        this.getMro().declares(name)
+    }
+
+    /** Holds if this class declares the attribute `name`,
+     * *not* including attributes declared by super classes.
+     */
+    predicate declaresAttribute(string name) {
+        this.(ClassObjectInternal).getClassDeclaration().declaresAttribute(name)
     }
 
 }
@@ -347,5 +362,87 @@ class MRO extends TClassList {
         result = this.(ClassList).getItem(n)
     }
 
+    /** Holds if any class in this MRO declares the attribute `name` */
+    predicate declares(string name) {
+        this.(ClassList).declares(name)
+    }
+
+    /** Gets the length of this MRO */
+    int length() {
+        result = this.(ClassList).length()
+    }
+
+    /** Holds if this MRO contains `cls` */
+    predicate contains(ClassValue cls) {
+        this.(ClassList).contains(cls)
+    }
+
+    /** Gets the value from scanning for the attribute `name` in this MRO. */
+    Value lookup(string name) {
+        this.(ClassList).lookup(name, result, _)
+    }
+
+    /** Gets the MRO formed by removing all classes before `cls`
+     * from this MRO.
+     */
+    MRO startingAt(ClassValue cls) {
+        result = this.(ClassList).startingAt(cls)
+    }
+
 }
 
+
+module ClassValue {
+
+    /** Get the `ClassValue` for the `bool` class. */
+    ClassValue bool() {
+        result = TBuiltinClassObject(Builtin::special("bool"))
+    }
+
+    /** Get the `ClassValue` for the class of Python functions. */
+    ClassValue function() {
+        result = TBuiltinClassObject(Builtin::special("FunctionType"))
+    }
+
+    /** Get the `ClassValue` for the class of builtin functions. */
+    ClassValue builtinFunction() {
+        result = Value::named("len").getClass()
+    }
+
+    /** Get the `ClassValue` for the `int` class. */
+    ClassValue int_() {
+        result = TBuiltinClassObject(Builtin::special("int"))
+    }
+
+    /** Get the `ClassValue` for the `float` class. */
+    ClassValue float_() {
+        result = TBuiltinClassObject(Builtin::builtin("float"))
+    }
+
+    /** Get the `ClassValue` for the `bytes` class (also called `str` in Python 2). */
+    ClassValue bytes() {
+        result = TBuiltinClassObject(Builtin::special("bytes"))
+    }
+
+    /** Get the `ClassValue` for the class of unicode strings.
+     * `str` in Python 3 and `unicode` in Python 2. */
+    ClassValue unicode() {
+        result = TBuiltinClassObject(Builtin::special("unicode"))
+    }
+
+    /** Get the `ClassValue` for the `classmethod` class. */
+    ClassValue classmethod() {
+        result = TBuiltinClassObject(Builtin::special("ClassMethod"))
+    }
+
+    /** Get the `ClassValue` for the `staticmethod` class. */
+    ClassValue staticmethod() {
+        result = TBuiltinClassObject(Builtin::special("StaticMethod"))
+    }
+
+    /** Get the `ClassValue` for the class of modules. */
+    ClassValue module_() {
+        result = TBuiltinClassObject(Builtin::special("ModuleType"))
+    }
+
+}
