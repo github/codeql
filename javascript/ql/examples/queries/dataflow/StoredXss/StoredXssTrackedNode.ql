@@ -4,7 +4,7 @@
  *              using TrackedNode to track MySQL connections globally.
  * @kind path-problem
  * @tags security
- * @id js/cookbook/stored-xss-trackednode
+ * @id js/examples/stored-xss-trackednode
  */
 
 import javascript::DataFlow

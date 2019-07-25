@@ -3,7 +3,7 @@
  * @description Tracks user-controlled values into 'eval' calls (special case of js/code-injection).
  * @kind problem
  * @tags security
- * @id js/cookbook/eval-taint
+ * @id js/examples/eval-taint
  */
 
 import javascript::DataFlow

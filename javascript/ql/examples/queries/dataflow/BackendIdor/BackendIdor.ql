@@ -4,7 +4,7 @@
  *              is an arbitrary user-controlled value, indicating lack of authentication.
  * @kind path-problem
  * @tags security
- * @id js/cookbook/backend-idor
+ * @id js/examples/backend-idor
  */
 
 import javascript::DataFlow
