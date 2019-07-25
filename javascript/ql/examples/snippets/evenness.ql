@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/evenness
  * @name Tests for even numbers
  * @description Finds expressions of the form `e % 2 === 0`
  * @tags arithmetic

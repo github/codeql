@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/raw-string
  * @name Raw string literals
  * @description Finds string literals with an 'r' prefix 
  * @tags string

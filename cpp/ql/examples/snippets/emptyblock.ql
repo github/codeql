@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/emptyblock
  * @name Empty blocks
  * @description Finds empty block statements
  * @tags empty

@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/returnstatement
  * @name Return statements
  * @description Finds return statements that return 'null'
  * @tags return

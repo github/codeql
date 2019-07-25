@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/private-access
  * @name Private access
  * @description Find accesses to "private" attributes (those starting with an underscore) 
  * @tags access

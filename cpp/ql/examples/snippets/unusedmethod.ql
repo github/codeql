@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/unusedmethod
  * @name Unused private method
  * @description Finds private non-virtual methods that are not accessed
  * @tags method

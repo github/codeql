@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/unusedparam
  * @name Unused parameter
  * @description Finds parameters that are not accessed
  * @tags parameter

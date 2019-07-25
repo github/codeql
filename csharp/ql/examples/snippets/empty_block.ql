@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/empty-block
  * @name Empty blocks
  * @description Finds empty block statements.
  * @tags empty

@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/voidreturntype
  * @name Methods without return type
  * @description Finds methods whose return type is 'void'
  * @tags method

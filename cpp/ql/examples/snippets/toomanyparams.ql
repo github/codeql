@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/toomanyparams
  * @name Functions with many parameters
  * @description Finds functions or methods with more than 10 parameters
  * @tags function

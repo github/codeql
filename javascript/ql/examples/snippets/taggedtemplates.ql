@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/taggedtemplates
  * @name Tagged templates
  * @description Finds tagged template expressions
  * @tags template

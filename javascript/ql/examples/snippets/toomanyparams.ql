@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/toomanyparams
  * @name Functions with many parameters
  * @description Finds functions with more than ten parameters
  * @tags function

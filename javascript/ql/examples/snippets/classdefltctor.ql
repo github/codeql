@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/classdefltctor
  * @name Classes with a default constructor
  * @description Finds classes that do not declare an explicit constructor
  * @tags class

@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/override-method
  * @name Override of method
  * @description Finds methods that override `std::exception::what()`
  * @tags function

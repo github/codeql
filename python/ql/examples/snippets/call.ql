@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/call
  * @name Calls to function
  * @description Finds calls to any function named "len"
  * @tags call

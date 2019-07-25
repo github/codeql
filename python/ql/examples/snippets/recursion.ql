@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/recursion
  * @name Recursion
  * @description Finds functions that call themselves
  * @tags method

@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/print
  * @name Find prints
  * @description Find print statements or calls to the builtin function 'print'
  * @tags print

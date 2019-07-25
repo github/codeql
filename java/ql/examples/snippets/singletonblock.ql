@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/singletonblock
  * @name Singleton blocks
  * @description Finds block statements containing a single statement
  * @tags block

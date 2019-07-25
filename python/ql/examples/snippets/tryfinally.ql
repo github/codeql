@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/tryfinally
  * @name Try-finally statements
  * @description Finds try-finally statements without an exception handler
  * @tags try

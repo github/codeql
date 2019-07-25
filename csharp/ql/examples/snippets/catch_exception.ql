@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/catch-exception
  * @name Catch exception
  * @description Finds places where we catch exceptions of type 'System.IO.IOException'.
  * @tags catch

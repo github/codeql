@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/returnstatement
  * @name Return statements
  * @description Finds return statements that return `0`
  * @tags return

@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/nativemethod
  * @name Native methods
  * @description Finds methods that are native
  * @tags method

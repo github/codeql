@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/equalitystmt
  * @name Equalities as expression statements
  * @description Finds `==` equality expressions that form a statement
  * @tags comparison

@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/varref
  * @name Reference to variable
  * @description Finds places where we reference a variable called `undefined`
  * @tags variable

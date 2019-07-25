@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/function-call
  * @name Call to function
  * @description Finds calls to `std::map<...>::find()`
  * @tags call

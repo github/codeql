@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/catch-exception
  * @name Catch exception
  * @description Finds places where we catch exceptions of type `parse_error`
  * @tags catch

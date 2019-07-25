@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/filename
  * @name File with given name
  * @description Finds files called `spam.py`
  * @tags file

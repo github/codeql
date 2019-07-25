@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/throw-exception
  * @name Throw exception of given type
  * @description Finds places where we throw 'System.IO.IOException' or one of its subtypes.
  * @tags throw

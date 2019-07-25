@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/singlequotestring
  * @name Single-quoted string literals
  * @description Finds string literals using single quotes
  * @tags string

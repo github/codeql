@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/castexpr
  * @name Cast expressions
  * @description Finds casts from a floating point type to an integer type
  * @tags cast

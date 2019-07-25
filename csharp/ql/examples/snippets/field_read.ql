@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/field-read
  * @name Read of field
  * @description Finds reads of 'VirtualAddress' (defined on 'Mono.Cecil.PE.Section').
  * @tags field

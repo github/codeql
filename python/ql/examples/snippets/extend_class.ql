@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/extend-class
  * @name Class subclasses
  * @description Finds classes that subclass MyClass
  * @tags class

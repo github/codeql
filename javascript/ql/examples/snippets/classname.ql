@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/classname
  * @name Classes called 'File'
  * @description Finds classes called 'File'
  * @tags class

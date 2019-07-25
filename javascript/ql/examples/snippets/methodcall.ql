@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/methodcall
  * @name Method calls
  * @description Finds calls of the form `this.isMounted(...)`
  * @tags call

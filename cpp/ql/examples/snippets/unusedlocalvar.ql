@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/unusedlocalvar
  * @name Unused local variable
  * @description Finds local variables that are not accessed
  * @tags variable

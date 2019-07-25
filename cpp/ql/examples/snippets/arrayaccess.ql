@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/arrayaccess
  * @name Array access
  * @description Finds array access expressions with an index expression
  *              consisting of a postfix increment (`++`) expression.

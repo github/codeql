@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/emptythen
  * @name If statements with empty then branch
  * @description Finds `if` statements where the `then` branch is
  *              an empty block statement

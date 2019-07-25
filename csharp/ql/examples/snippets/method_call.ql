@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/method-call
  * @name Call to method
  * @description Finds calls to method 'Company.Class.MethodName'.
  * @tags call

@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/emptythen
  * @name If statements with empty then branch
  * @description Finds 'if' statements where the "then" branch 
  *              consists entirely of Pass statements

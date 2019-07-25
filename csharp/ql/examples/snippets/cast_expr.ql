@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/cast-expr
  * @name Cast expressions
  * @description Finds casts from a floating point type to an integer type.
  * @tags cast

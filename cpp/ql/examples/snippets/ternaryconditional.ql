@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/ternaryconditional
  * @name Conditional expressions
  * @description Finds conditional expressions of the form `... ? ... : ...`
  *              where the types of the resulting expressions differ
