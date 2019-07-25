@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/override-method
  * @name Override of method
  * @description Finds methods that directly override 'Object.ToString'.
  * @tags method

@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/exportfn
  * @name Default exports exporting a function
  * @description Finds 'default' exports that export a function
  * @tags module

@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/mutualrecursion
  * @name Mutual recursion
  * @description Finds pairs of functions that call each other
  * @tags method

@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/store-none
  * @name Store None to collection
  * @description Finds places where `None` is used as an index when storing to a collection
  * @tags None

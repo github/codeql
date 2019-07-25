@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/return-statement
  * @name Return statements
  * @description Finds return statements that return 'null'.
  * @tags return

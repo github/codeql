@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/too-many-params
  * @name Functions with many parameters
  * @description Finds functions with more than 7 parameters
  * @tags function

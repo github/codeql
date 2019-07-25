@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/field-access
  * @name Access of field
  * @description Finds reads of `aDate` (defined on class `Order`)
  * @tags access

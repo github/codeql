@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/catch-exception
  * @name Catch exception
  * @description Finds places where we catch exceptions of type com.example.AnException
  * @tags catch

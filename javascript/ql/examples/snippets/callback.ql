@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/callback
  * @name Callbacks
  * @description Finds functions that are passed as arguments to other functions
  * @tags function

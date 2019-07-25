@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/iife
  * @name Immediately invoked function expressions
  * @description Finds calls of the form `(function(...) { ... })(...)`
  * @tags call

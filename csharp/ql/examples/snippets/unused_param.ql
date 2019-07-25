@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/unused-param
  * @name Unused parameter
  * @description Finds parameters that are not accessed.
  * @tags parameter

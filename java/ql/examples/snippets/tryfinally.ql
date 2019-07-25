@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/tryfinally
  * @name Try-finally statements
  * @description Finds try-finally statements without a catch clause
  * @tags try

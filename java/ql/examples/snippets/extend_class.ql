@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/extend-class
  * @name Class extends/implements
  * @description Finds classes/interfaces that extend/implement com.example.Class
  * @tags class

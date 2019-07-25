@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/throw-exception
  * @name Throw exception of type
  * @description Finds places where we throw com.example.AnException or one of its subtypes
  * @tags throw

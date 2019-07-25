@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/generator
  * @name Generator functions
  * @description Finds generator functions
  * @tags generator

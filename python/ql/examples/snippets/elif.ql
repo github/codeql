@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/elif
  * @name Elif statement
  * @description Finds `elif` sub-statements within `if` statements
  * @tags if

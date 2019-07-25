@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/voidreturntype
  * @name Const method without return type
  * @description Finds const methods whose return type is `void`
  * @tags const

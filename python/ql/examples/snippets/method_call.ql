@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/method-call
  * @name Call to method
  * @description Finds calls to MyClass.methodName
  * @tags call

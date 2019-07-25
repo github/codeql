@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/too-many-params
  * @name Methods with many parameters
  * @description Finds methods with more than ten parameters.
  * @tags method

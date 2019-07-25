@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/integer-literal
  * @name Integer literal
  * @description Finds places where we use the integer literal `2`
  * @tags integer

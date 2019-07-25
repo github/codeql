@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/singleton-block
  * @name Singleton blocks
  * @description Finds block statements containing a single statement.
  * @tags block

@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/method-call
  * @name Call to method
  * @description Finds calls to com.example.Class.methodName
  * @tags call

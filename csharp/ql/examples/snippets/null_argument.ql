@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/null-argument
  * @name Add null to collection
  * @description Finds places where we add 'null' to a collection.
  * @tags null

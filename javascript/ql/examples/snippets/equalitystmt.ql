@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/equalitystmt
  * @name Equalities as expression statements
  * @description Finds `==` equality expressions that form an expression statement
  * @tags comparison

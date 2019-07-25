@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/new-instance
  * @name Create new object
  * @description Finds places where we create a new instanceof `MyClass`
  * @tags call

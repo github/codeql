@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/synchronizedmethod
  * @name Synchronized methods
  * @description Finds methods that are synchronized
  * @tags method

@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/volatilevariable
  * @name Variable declared volatile
  * @description Finds variables with a `volatile` modifier
  * @tags variable

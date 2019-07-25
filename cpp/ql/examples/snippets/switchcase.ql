@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/switchcase
  * @name Switch statement case missing
  * @description Finds switch statements with a missing enum constant case
  *              and no default case

@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/mutual-recursion
  * @name Mutual recursion
  * @description Finds pairs of methods that call each other.
  * @tags method

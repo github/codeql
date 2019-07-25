@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/todo-comment
  * @name TODO comments
  * @description Finds comments containing the word "TODO".
  * @tags comment

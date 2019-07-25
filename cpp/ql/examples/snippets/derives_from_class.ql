@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/derives-from-class
  * @name Class derives from
  * @description Finds classes that derive from `std::exception`
  * @tags base

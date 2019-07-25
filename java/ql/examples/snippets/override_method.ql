@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/override-method
  * @name Override of method
  * @description Finds methods that override com.example.Class.baseMethod
  * @tags method

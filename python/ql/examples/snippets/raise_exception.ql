@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/raise-exception
  * @name Raise exception of a class
  * @description Finds places where we raise AnException or one of its subclasses
  * @tags throw

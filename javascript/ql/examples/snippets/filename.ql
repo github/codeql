@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/filename
  * @name File with given name
  * @description Finds files called `index.js`
  * @tags file

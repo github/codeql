@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/extern-method
  * @name Extern methods
  * @description Finds methods that are 'extern'.
  * @tags method

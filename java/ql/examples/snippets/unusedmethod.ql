@@ -1,4 +1,5 @@
 /**
+ * @id java/examples/unusedmethod
  * @name Unused private method
  * @description Finds private methods that are not accessed
  * @tags method

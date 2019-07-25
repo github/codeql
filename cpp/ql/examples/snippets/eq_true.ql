@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/eq-true
  * @name Equality test on boolean
  * @description Finds tests like `==true`, `!=true`
  * @tags equal

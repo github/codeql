@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/constructor-call
  * @name Call to constructor
  * @description Finds places where we call 'new System.Exception(...)'.
  * @tags call

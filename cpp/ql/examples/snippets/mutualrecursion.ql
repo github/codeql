@@ -1,4 +1,5 @@
 /**
+ * @id cpp/examples/mutualrecursion
  * @name Mutual recursion
  * @description Finds pairs of functions that call each other
  * @tags function

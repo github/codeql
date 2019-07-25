@@ -1,4 +1,5 @@
 /**
+ * @id cs/examples/array-access
  * @name Array access
  * @description Finds array access expressions with an index expression
  *              consisting of a unary increment or decrement, e.g. 'a[i++]'.

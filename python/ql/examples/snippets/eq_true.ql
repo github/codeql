@@ -1,4 +1,5 @@
 /**
+ * @id py/examples/eq-true
  * @name Equality test on boolean
  * @description Finds tests like `==true`, `==false`, `"!=true`, `is false`
  * @tags equals

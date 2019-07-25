@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/importfrom
  * @name Imports from 'react'
  * @description Finds import statements that import from module 'react'
  * @tags module

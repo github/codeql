@@ -1,4 +1,5 @@
 /**
+ * @id js/examples/yieldundefined
  * @name Empty yield
  * @description Finds yield expressions without an operand
  * @tags generator
