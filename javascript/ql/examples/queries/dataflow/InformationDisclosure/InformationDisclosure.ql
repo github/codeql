@@ -7,7 +7,8 @@
  * @id js/examples/information-disclosure
  */
 
-import javascript::DataFlow
+import javascript
+import DataFlow
 import DataFlow::PathGraph
 
 /**

@@ -6,7 +6,8 @@
  * @id js/examples/stored-xss
  */
 
-import javascript::DataFlow
+import javascript
+import DataFlow
 import semmle.javascript.security.dataflow.StoredXss
 import DataFlow::PathGraph
 

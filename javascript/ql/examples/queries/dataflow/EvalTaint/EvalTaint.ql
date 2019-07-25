@@ -6,7 +6,8 @@
  * @id js/examples/eval-taint
  */
 
-import javascript::DataFlow
+import javascript
+import DataFlow
 
 class EvalTaint extends TaintTracking::Configuration {
   EvalTaint() { this = "EvalTaint" }

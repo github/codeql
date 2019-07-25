@@ -7,7 +7,8 @@
  * @id js/examples/eval-taint-path
  */
 
-import javascript::DataFlow
+import javascript
+import DataFlow
 import DataFlow::PathGraph
 
 class EvalTaint extends TaintTracking::Configuration {
