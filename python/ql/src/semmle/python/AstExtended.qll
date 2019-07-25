@@ -81,7 +81,7 @@ class Comprehension extends Comprehension_, AstNode {
 
 }
 
-class BytesOrStr extends BytesOrStr_ { 
+class BytesOrStr extends BytesOrStr_ {
 
 }
 

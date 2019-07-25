@@ -1,0 +1,4 @@
+| args | test.py:5:13:5:22 | Subscript |
+| b | test.py:2:12:2:14 | str |
+| d | test.py:2:27:2:29 | int |
+| kwargs | test.py:5:34:5:47 | Subscript |
