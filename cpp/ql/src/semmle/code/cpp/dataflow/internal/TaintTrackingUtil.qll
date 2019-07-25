@@ -129,12 +129,20 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
         inModel.isInParameter(argInIndex) and
         exprIn = call.getArgument(argInIndex)
       ) or (
-         inModel.isInQualifier() and
+        inModel.isInQualifier() and
         exprIn = call.getQualifier()
+      ) or (
+        inModel.isInReturnValue() and
+        exprIn = call
       )
     ) and (
-      outModel.isOutReturnValue() and
-      exprOut = call
+      (
+        outModel.isOutReturnValue() and
+        exprOut = call
+      ) or exists(int argOutIndex |
+        outModel.isOutParameterPointer(argOutIndex) and
+        exprOut = call.getArgument(argOutIndex)
+      )
     )
   )
 }
@@ -170,6 +178,9 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
       ) or (
         inModel.isInQualifier() and
         exprIn = call.getQualifier()
+      ) or (
+        inModel.isInReturnValue() and
+        exprIn = call
       )
     ) and exists(int argOutIndex |
       outModel.isOutParameterPointer(argOutIndex) and

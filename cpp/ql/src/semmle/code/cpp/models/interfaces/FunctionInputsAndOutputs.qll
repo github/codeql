@@ -19,6 +19,8 @@ newtype TFunctionInput =
   TInParameterPointer(ParameterIndex i)
   or
   TInQualifier()
+  or
+  TInReturnValue()
 
 class FunctionInput extends TFunctionInput {
   abstract string toString();
@@ -32,6 +34,10 @@ class FunctionInput extends TFunctionInput {
   }
   
   predicate isInQualifier() {
+    none()
+  }
+  
+  predicate isInReturnValue() {
     none()
   }
 }
@@ -82,6 +88,16 @@ class InQualifier extends FunctionInput, TInQualifier {
   }
   
   override predicate isInQualifier() {
+    any()
+  }
+}
+
+class InReturnValue extends FunctionInput, TInReturnValue {
+  override string toString() {
+    result = "InReturnValue"
+  }
+  
+  override predicate isInReturnValue() {
     any()
   }
 }

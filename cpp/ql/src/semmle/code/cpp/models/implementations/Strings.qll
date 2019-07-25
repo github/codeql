@@ -41,13 +41,15 @@ class InsertionOperator extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     (
-      // flow from second argument to first
+      // flow from second argument to return value
       input.isInParameterPointer(1) and
-      output.isOutParameterPointer(0)
-    ) or (
-      // flow from first argument to return value
-      input.isInParameterPointer(0) and
       output.isOutReturnValue()
+    ) or (
+      // flow from return value to first argument
+      // (this is a bit odd; another way to think of it is the sink effectively
+      //  flowing from the first argument to the return value)
+      input.isInReturnValue() and
+      output.isOutParameterPointer(0)
     )
   }
 }

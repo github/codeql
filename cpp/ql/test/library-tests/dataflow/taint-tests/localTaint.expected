@@ -25,21 +25,26 @@
 | stl.cpp:77:16:77:24 | call to basic_string | stl.cpp:82:9:82:9 | t |  |
 | stl.cpp:79:2:79:4 | ref arg ss1 | stl.cpp:84:7:84:9 | ss1 |  |
 | stl.cpp:79:2:79:4 | ref arg ss1 | stl.cpp:88:7:88:9 | ss1 |  |
-| stl.cpp:79:2:79:4 | ss1 | stl.cpp:79:6:79:6 | call to operator<< | TAINT |
-| stl.cpp:79:9:79:14 | 1234 | stl.cpp:79:2:79:4 | ref arg ss1 | TAINT |
+| stl.cpp:79:6:79:6 | call to operator<< | stl.cpp:79:2:79:4 | ref arg ss1 | TAINT |
+| stl.cpp:79:6:79:6 | call to operator<< | stl.cpp:79:2:79:4 | ss1 | TAINT |
+| stl.cpp:79:9:79:14 | 1234 | stl.cpp:79:6:79:6 | call to operator<< | TAINT |
 | stl.cpp:80:2:80:4 | ref arg ss2 | stl.cpp:85:7:85:9 | ss2 |  |
 | stl.cpp:80:2:80:4 | ref arg ss2 | stl.cpp:89:7:89:9 | ss2 |  |
-| stl.cpp:80:2:80:4 | ss2 | stl.cpp:80:6:80:6 | call to operator<< | TAINT |
-| stl.cpp:80:9:80:14 | call to source | stl.cpp:80:2:80:4 | ref arg ss2 | TAINT |
+| stl.cpp:80:6:80:6 | call to operator<< | stl.cpp:80:2:80:4 | ref arg ss2 | TAINT |
+| stl.cpp:80:6:80:6 | call to operator<< | stl.cpp:80:2:80:4 | ss2 | TAINT |
+| stl.cpp:80:9:80:14 | call to source | stl.cpp:80:6:80:6 | call to operator<< | TAINT |
 | stl.cpp:81:2:81:4 | ref arg ss3 | stl.cpp:86:7:86:9 | ss3 |  |
 | stl.cpp:81:2:81:4 | ref arg ss3 | stl.cpp:90:7:90:9 | ss3 |  |
-| stl.cpp:81:2:81:4 | ss3 | stl.cpp:81:6:81:6 | call to operator<< | TAINT |
-| stl.cpp:81:6:81:6 | call to operator<< | stl.cpp:81:15:81:15 | call to operator<< | TAINT |
-| stl.cpp:81:9:81:13 | 123 | stl.cpp:81:2:81:4 | ref arg ss3 | TAINT |
+| stl.cpp:81:6:81:6 | call to operator<< | stl.cpp:81:2:81:4 | ref arg ss3 | TAINT |
+| stl.cpp:81:6:81:6 | call to operator<< | stl.cpp:81:2:81:4 | ss3 | TAINT |
+| stl.cpp:81:9:81:13 | 123 | stl.cpp:81:6:81:6 | call to operator<< | TAINT |
+| stl.cpp:81:15:81:15 | call to operator<< | stl.cpp:81:6:81:6 | call to operator<< | TAINT |
+| stl.cpp:81:18:81:23 | call to source | stl.cpp:81:15:81:15 | call to operator<< | TAINT |
 | stl.cpp:82:2:82:4 | ref arg ss4 | stl.cpp:87:7:87:9 | ss4 |  |
 | stl.cpp:82:2:82:4 | ref arg ss4 | stl.cpp:91:7:91:9 | ss4 |  |
-| stl.cpp:82:2:82:4 | ss4 | stl.cpp:82:6:82:6 | call to operator<< | TAINT |
-| stl.cpp:82:9:82:9 | t | stl.cpp:82:2:82:4 | ref arg ss4 | TAINT |
+| stl.cpp:82:6:82:6 | call to operator<< | stl.cpp:82:2:82:4 | ref arg ss4 | TAINT |
+| stl.cpp:82:6:82:6 | call to operator<< | stl.cpp:82:2:82:4 | ss4 | TAINT |
+| stl.cpp:82:9:82:9 | t | stl.cpp:82:6:82:6 | call to operator<< | TAINT |
 | stl.cpp:88:7:88:9 | ss1 | stl.cpp:88:11:88:13 | call to str | TAINT |
 | stl.cpp:89:7:89:9 | ss2 | stl.cpp:89:11:89:13 | call to str | TAINT |
 | stl.cpp:90:7:90:9 | ss3 | stl.cpp:90:11:90:13 | call to str | TAINT |
@@ -188,9 +193,11 @@
 | taint.cpp:171:8:171:13 | ref arg buffer | taint.cpp:172:10:172:15 | buffer |  |
 | taint.cpp:171:8:171:13 | ref arg buffer | taint.cpp:173:8:173:13 | buffer |  |
 | taint.cpp:172:10:172:15 | buffer | taint.cpp:172:3:172:8 | call to strcat |  |
+| taint.cpp:172:10:172:15 | buffer | taint.cpp:172:10:172:15 | buffer | TAINT |
 | taint.cpp:172:10:172:15 | buffer | taint.cpp:172:10:172:15 | ref arg buffer | TAINT |
 | taint.cpp:172:10:172:15 | ref arg buffer | taint.cpp:172:3:172:8 | call to strcat |  |
 | taint.cpp:172:10:172:15 | ref arg buffer | taint.cpp:173:8:173:13 | buffer |  |
+| taint.cpp:172:18:172:24 | tainted | taint.cpp:172:10:172:15 | buffer | TAINT |
 | taint.cpp:172:18:172:24 | tainted | taint.cpp:172:10:172:15 | ref arg buffer | TAINT |
 | taint.cpp:180:19:180:19 | p | taint.cpp:181:9:181:9 | p |  |
 | taint.cpp:181:9:181:9 | p | taint.cpp:181:8:181:9 | * ... | TAINT |
@@ -204,6 +211,7 @@
 | taint.cpp:194:9:194:10 | ref arg & ... | taint.cpp:195:7:195:7 | x |  |
 | taint.cpp:194:10:194:10 | x | taint.cpp:194:9:194:10 | & ... | TAINT |
 | taint.cpp:194:13:194:18 | source | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
+| taint.cpp:194:21:194:31 | sizeof(int) | taint.cpp:194:9:194:10 | & ... | TAINT |
 | taint.cpp:194:21:194:31 | sizeof(int) | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:207:2:207:13 | ... = ... |  |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:210:7:210:7 | x |  |
