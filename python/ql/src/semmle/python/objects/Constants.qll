@@ -73,12 +73,15 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
     override predicate useOriginAsLegacyObject() { none() }
 
+    /** Gets an AST literal with the same value as this object */
+    abstract ImmutableLiteral getLiteral();
+
 }
 
 private abstract class BooleanObjectInternal extends ConstantObjectInternal {
 
     override ObjectInternal getClass() {
-        result = TBuiltinClassObject(Builtin::special("bool"))
+        result = ClassValue::bool()
     }
 
     override int length() { none() }
@@ -89,6 +92,10 @@ private abstract class BooleanObjectInternal extends ConstantObjectInternal {
 
     /* Booleans aren't iterable */
     override ObjectInternal getIterNext() { none() }
+
+    override ImmutableLiteral getLiteral() {
+        result.(BooleanLiteral).booleanValue() = this.booleanValue()
+    }
 
 }
 
@@ -175,6 +182,10 @@ private class NoneObjectInternal extends ConstantObjectInternal, TNone {
     /* None isn't iterable */
     override ObjectInternal getIterNext() { none() }
 
+    override ImmutableLiteral getLiteral() {
+        result instanceof None
+    }
+
 }
 
 
@@ -215,6 +226,12 @@ private class IntObjectInternal extends ConstantObjectInternal, TInt {
 
     /* ints aren't iterable */
     override ObjectInternal getIterNext() { none() }
+
+    override ImmutableLiteral getLiteral() {
+        result.(IntegerLiteral).getValue() = this.intValue()
+        or
+        result.(NegativeIntegerLiteral).getOperand().(IntegerLiteral).getValue() = -this.intValue()
+    }
 
 }
 
@@ -264,6 +281,10 @@ private class FloatObjectInternal extends ConstantObjectInternal, TFloat {
     /* floats aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
+    override ImmutableLiteral getLiteral() {
+        result.(FloatLiteral).getValue() = this.floatValue()
+    }
+
 }
 
 
@@ -310,6 +331,10 @@ private class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
         result = TUnknownInstance(this.getClass())
     }
 
+    override ImmutableLiteral getLiteral() {
+        result.(Unicode).getText() = this.strValue()
+    }
+
 }
 
 private class BytesObjectInternal extends ConstantObjectInternal, TBytes {
@@ -353,6 +378,10 @@ private class BytesObjectInternal extends ConstantObjectInternal, TBytes {
 
     override ObjectInternal getIterNext() {
         result = TUnknownInstance(this.getClass())
+    }
+
+    override ImmutableLiteral getLiteral() {
+        result.(Bytes).getText() = this.strValue()
     }
 
 }
