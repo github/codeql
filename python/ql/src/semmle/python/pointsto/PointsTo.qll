@@ -555,8 +555,8 @@ cached module PointsToInternal {
     }
 
     /* Helper for ssa_phi_points_to */
-    pragma [noinline]
-    private predicate ssa_phi_reachable_from_input(PhiFunction phi, PointsToContext context, EssaVariable input) {
+    cached
+    predicate ssa_phi_reachable_from_input(PhiFunction phi, PointsToContext context, EssaVariable input) {
         exists(BasicBlock pred |
             input = phi.getInput(pred) and
             reachableEdge(pred, phi.getBasicBlock(), context)
@@ -2238,6 +2238,17 @@ cached module ModuleAttributes {
         callsitePointsTo(var.getDefinition(), name, value, origin)
         or
         scopeEntryPointsTo(var.getDefinition(), name, value, origin)
+        or
+        phiPointsTo(var.getDefinition(), name, value, origin)
+    }
+
+    /** Holds if the phi-function `phi` refers to `(value, origin)` given the context `context`. */
+    pragma [nomagic]
+    private predicate phiPointsTo(PhiFunction phi, string name, ObjectInternal value, CfgOrigin origin) {
+        exists(EssaVariable input |
+            PointsToInternal::ssa_phi_reachable_from_input(phi, any(Context c | c.isImport()), input) and
+            attributePointsTo(input, name, value, origin)
+        )
     }
 
     pragma [nomagic]

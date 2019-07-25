@@ -372,6 +372,12 @@
 | j_convoluted_imports.py:16 | ControlFlowNode for ImportMember | import | Module code.package.moduleX | builtin-class module |
 | j_convoluted_imports.py:17 | ControlFlowNode for Attribute | import | class Y | builtin-class type |
 | j_convoluted_imports.py:17 | ControlFlowNode for moduleX | import | Module code.package.moduleX | builtin-class module |
+| j_convoluted_imports.py:20 | ControlFlowNode for ImportExpr | import | Module code.test_package.module1 | builtin-class module |
+| j_convoluted_imports.py:22 | ControlFlowNode for ImportExpr | import | Module code.test_package.module2 | builtin-class module |
+| j_convoluted_imports.py:23 | ControlFlowNode for p | import | int 1 | builtin-class int |
+| j_convoluted_imports.py:24 | ControlFlowNode for q | import | int 2 | builtin-class int |
+| j_convoluted_imports.py:25 | ControlFlowNode for r | import | Dict | builtin-class dict |
+| j_convoluted_imports.py:25 | ControlFlowNode for r | import | int 3 | builtin-class int |
 | k_getsetattr.py:4 | ControlFlowNode for ClassExpr | import | class C | builtin-class type |
 | k_getsetattr.py:4 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | k_getsetattr.py:6 | ControlFlowNode for FunctionExpr | import | Function C.meth1 | builtin-class function |
