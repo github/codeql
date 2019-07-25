@@ -469,7 +469,7 @@ library class ClassDecl extends @py_object {
         result = this.getClass().getName()
     }
 
-    /** Whether this is a class whose instances we treat specially, rather than as a generic instance.
+    /** Whether this is a class whose instances must be treated specially, rather than as generic instances.
      */
     predicate isSpecial() {
         exists(string name |
@@ -478,11 +478,6 @@ library class ClassDecl extends @py_object {
             name = "super" or
             name = "bool" or
             name = "NoneType" or
-            name = "int" or
-            name = "long" or
-            name = "str" or
-            name = "bytes" or
-            name = "unicode" or
             name = "tuple" or
             name = "property" or
             name = "ClassMethod" or
@@ -490,8 +485,6 @@ library class ClassDecl extends @py_object {
             name = "MethodType" or
             name = "ModuleType"
         )
-        or
-        this = Builtin::builtin("float")
     }
 
     /** Holds if for class `C`, `C()` returns an instance of `C` */

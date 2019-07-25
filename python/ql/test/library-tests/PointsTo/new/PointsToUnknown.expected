@@ -167,12 +167,10 @@
 | c_tests.py:63 | ControlFlowNode for cond | 63 |
 | c_tests.py:73 | ControlFlowNode for x | 71 |
 | c_tests.py:73 | ControlFlowNode for y | 71 |
-| c_tests.py:74 | ControlFlowNode for BinaryExpr | 74 |
 | c_tests.py:74 | ControlFlowNode for x | 71 |
 | c_tests.py:74 | ControlFlowNode for y | 71 |
 | c_tests.py:76 | ControlFlowNode for x | 71 |
 | c_tests.py:76 | ControlFlowNode for y | 71 |
-| c_tests.py:77 | ControlFlowNode for BinaryExpr | 77 |
 | c_tests.py:77 | ControlFlowNode for x | 71 |
 | c_tests.py:77 | ControlFlowNode for y | 71 |
 | c_tests.py:80 | ControlFlowNode for IfExp | 80 |
