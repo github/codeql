@@ -377,6 +377,7 @@ module TaintTracking {
   private predicate taintPreservingQualifierToMethod(Method m) {
     m.getDeclaringType() instanceof TypeString and
     (
+      m.getName() = "concat" or
       m.getName() = "endsWith" or
       m.getName() = "getBytes" or
       m.getName() = "split" or
@@ -480,6 +481,10 @@ module TaintTracking {
       or
       method.getName().matches("to%String") and arg = 0
     )
+    or
+    method.getDeclaringType() instanceof TypeString and
+    method.getName() = "concat" and
+    arg = 0
     or
     (
       method.getDeclaringType().hasQualifiedName("java.lang", "StringBuilder") or
