@@ -4,7 +4,7 @@
                 indicating a leak of sensitive information.
  * @kind path-problem
  * @tags security
- * @id js/cookbook/information-disclosure
+ * @id js/examples/information-disclosure
  */
 
 import javascript::DataFlow

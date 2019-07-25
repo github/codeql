@@ -3,7 +3,7 @@
  * @description Extends the standard Stored XSS query with an additional source.
  * @kind path-problem
  * @tags security
- * @id js/cookbook/stored-xss
+ * @id js/examples/stored-xss
  */
 
 import javascript::DataFlow

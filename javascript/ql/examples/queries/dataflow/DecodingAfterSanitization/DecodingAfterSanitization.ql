@@ -4,7 +4,7 @@
                 an ineffective sanitization attempt.
  * @kind path-problem
  * @tags security
- * @id js/cookbook/decoding-after-sanitization
+ * @id js/examples/decoding-after-sanitization
  */
 
 import javascript::DataFlow

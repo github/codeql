@@ -3,7 +3,7 @@
  * @description Tracks user-controlled values to an unescaped lodash template placeholder.
  * @kind path-problem
  * @tags security
- * @id js/cookbook/template-injection
+ * @id js/examples/template-injection
  */
 
 import javascript::DataFlow

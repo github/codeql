@@ -4,7 +4,7 @@
  *              and generates a visualizable path from the source to the sink.
  * @kind path-problem
  * @tags security
- * @id js/cookbook/eval-taint-path
+ * @id js/examples/eval-taint-path
  */
 
 import javascript::DataFlow
