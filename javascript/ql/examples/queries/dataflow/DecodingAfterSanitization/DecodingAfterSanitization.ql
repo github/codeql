@@ -7,7 +7,8 @@
  * @id js/examples/decoding-after-sanitization
  */
 
-import javascript::DataFlow
+import javascript
+import DataFlow
 import DataFlow::PathGraph
 
 class DecodingAfterSanitization extends TaintTracking::Configuration {

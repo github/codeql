@@ -7,7 +7,8 @@
  * @id js/examples/stored-xss-trackednode
  */
 
-import javascript::DataFlow
+import javascript
+import DataFlow
 import semmle.javascript.security.dataflow.StoredXss
 import DataFlow::PathGraph
 

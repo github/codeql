@@ -6,7 +6,8 @@
  * @id js/examples/template-injection
  */
 
-import javascript::DataFlow
+import javascript
+import DataFlow
 import DataFlow::PathGraph
 
 /**
