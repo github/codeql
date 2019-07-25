@@ -25,16 +25,25 @@
 | stl.cpp:77:16:77:24 | call to basic_string | stl.cpp:82:9:82:9 | t |  |
 | stl.cpp:79:2:79:4 | ref arg ss1 | stl.cpp:84:7:84:9 | ss1 |  |
 | stl.cpp:79:2:79:4 | ref arg ss1 | stl.cpp:88:7:88:9 | ss1 |  |
+| stl.cpp:79:2:79:4 | ss1 | stl.cpp:79:6:79:6 | call to operator<< | TAINT |
 | stl.cpp:79:9:79:14 | 1234 | stl.cpp:79:2:79:4 | ref arg ss1 | TAINT |
 | stl.cpp:80:2:80:4 | ref arg ss2 | stl.cpp:85:7:85:9 | ss2 |  |
 | stl.cpp:80:2:80:4 | ref arg ss2 | stl.cpp:89:7:89:9 | ss2 |  |
+| stl.cpp:80:2:80:4 | ss2 | stl.cpp:80:6:80:6 | call to operator<< | TAINT |
 | stl.cpp:80:9:80:14 | call to source | stl.cpp:80:2:80:4 | ref arg ss2 | TAINT |
 | stl.cpp:81:2:81:4 | ref arg ss3 | stl.cpp:86:7:86:9 | ss3 |  |
 | stl.cpp:81:2:81:4 | ref arg ss3 | stl.cpp:90:7:90:9 | ss3 |  |
+| stl.cpp:81:2:81:4 | ss3 | stl.cpp:81:6:81:6 | call to operator<< | TAINT |
+| stl.cpp:81:6:81:6 | call to operator<< | stl.cpp:81:15:81:15 | call to operator<< | TAINT |
 | stl.cpp:81:9:81:13 | 123 | stl.cpp:81:2:81:4 | ref arg ss3 | TAINT |
 | stl.cpp:82:2:82:4 | ref arg ss4 | stl.cpp:87:7:87:9 | ss4 |  |
 | stl.cpp:82:2:82:4 | ref arg ss4 | stl.cpp:91:7:91:9 | ss4 |  |
+| stl.cpp:82:2:82:4 | ss4 | stl.cpp:82:6:82:6 | call to operator<< | TAINT |
 | stl.cpp:82:9:82:9 | t | stl.cpp:82:2:82:4 | ref arg ss4 | TAINT |
+| stl.cpp:88:7:88:9 | ss1 | stl.cpp:88:11:88:13 | call to str | TAINT |
+| stl.cpp:89:7:89:9 | ss2 | stl.cpp:89:11:89:13 | call to str | TAINT |
+| stl.cpp:90:7:90:9 | ss3 | stl.cpp:90:11:90:13 | call to str | TAINT |
+| stl.cpp:91:7:91:9 | ss4 | stl.cpp:91:11:91:13 | call to str | TAINT |
 | taint.cpp:4:27:4:33 | source1 | taint.cpp:6:13:6:19 | source1 |  |
 | taint.cpp:4:40:4:45 | clean1 | taint.cpp:5:8:5:13 | clean1 |  |
 | taint.cpp:4:40:4:45 | clean1 | taint.cpp:6:3:6:8 | clean1 |  |

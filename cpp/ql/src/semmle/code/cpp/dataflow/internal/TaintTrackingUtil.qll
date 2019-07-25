@@ -69,6 +69,7 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   )
   or
   // Taint can flow through modeled functions
+  exprToExprStep(nodeFrom.asExpr(), nodeTo.asExpr()) or
   exprToDefinitionByReferenceStep(nodeFrom.asExpr(), nodeTo.asDefiningArgument())
 }
 
@@ -113,6 +114,31 @@ private predicate noFlowFromChildExpr(Expr e) {
   e instanceof FieldAccess
 }
 
+private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
+  exists(Call call, TaintFunction f, FunctionInput inModel, FunctionOutput outModel |
+    call.getTarget() = f and
+    f.hasTaintFlow(inModel, outModel) and
+    (
+      exists(int argInIndex |
+        inModel.isInParameterPointer(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+      ) or exists(int argInIndex |
+        inModel.isInParameterPointer(argInIndex) and
+        call.passesByReference(argInIndex, exprIn)
+      ) or exists(int argInIndex |
+        inModel.isInParameter(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+      ) or (
+         inModel.isInQualifier() and
+        exprIn = call.getQualifier()
+      )
+    ) and (
+      outModel.isOutReturnValue() and
+      exprOut = call
+    )
+  )
+}
+
 private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel, int argOutIndex |
     call.getTarget() = f and
@@ -128,21 +154,26 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
     )
   )
   or
-  exists(TaintFunction f, Call call, FunctionOutput outModel, int argOutIndex |
+  exists(Call call, TaintFunction f, FunctionInput inModel, FunctionOutput outModel |
     call.getTarget() = f and
-    argOut = call.getArgument(argOutIndex) and
-    outModel.isOutParameterPointer(argOutIndex) and
-    exists(int argInIndex, FunctionInput inModel |
-      f.hasTaintFlow(inModel, outModel)
-    |
-      inModel.isInParameterPointer(argInIndex) and
-      exprIn = call.getArgument(argInIndex)
-      or
-      inModel.isInParameterPointer(argInIndex) and
-      call.passesByReference(argInIndex, exprIn)
-      or
-      inModel.isInParameter(argInIndex) and
-      exprIn = call.getArgument(argInIndex)
+    f.hasTaintFlow(inModel, outModel) and
+    (
+      exists(int argInIndex |
+        inModel.isInParameterPointer(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+      ) or exists(int argInIndex |
+        inModel.isInParameterPointer(argInIndex) and
+        call.passesByReference(argInIndex, exprIn)
+      ) or exists(int argInIndex |
+        inModel.isInParameter(argInIndex) and
+        exprIn = call.getArgument(argInIndex)
+      ) or (
+        inModel.isInQualifier() and
+        exprIn = call.getQualifier()
+      )
+    ) and exists(int argOutIndex |
+      outModel.isOutParameterPointer(argOutIndex) and
+      argOut = call.getArgument(argOutIndex)
     )
   )
 }

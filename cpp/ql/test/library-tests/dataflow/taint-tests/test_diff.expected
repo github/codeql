@@ -2,6 +2,8 @@
 | stl.cpp:71:9:71:13 | stl.cpp:65:16:65:21 | AST only |
 | stl.cpp:85:7:85:9 | stl.cpp:80:9:80:14 | AST only |
 | stl.cpp:87:7:87:9 | stl.cpp:77:16:77:21 | AST only |
+| stl.cpp:89:11:89:13 | stl.cpp:80:9:80:14 | AST only |
+| stl.cpp:91:11:91:13 | stl.cpp:77:16:77:21 | AST only |
 | taint.cpp:41:7:41:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:42:7:42:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:43:7:43:13 | taint.cpp:37:22:37:27 | AST only |
