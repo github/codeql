@@ -1249,7 +1249,13 @@ module Expressions {
             not op instanceof BitOr and
             (operand = left or operand = right) and
             PointsToInternal::pointsTo(operand, context, opvalue, _) and
-            value = ObjectInternal::unknown()
+            (
+                op instanceof Add and
+                value = TUnknownInstance(opvalue.getClass())
+                or
+                not op instanceof Add and
+                value = ObjectInternal::unknown()
+            )
             or
             op instanceof BitOr and
             exists(ObjectInternal lobj, ObjectInternal robj |

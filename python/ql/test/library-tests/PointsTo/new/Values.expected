@@ -321,6 +321,22 @@
 | h_classes.py:48 | ControlFlowNode for object | import | builtin-class object | builtin-class type |
 | h_classes.py:50 | ControlFlowNode for f | import | Function f | builtin-class function |
 | h_classes.py:52 | ControlFlowNode for FunctionExpr | import | Function D.n | builtin-class function |
+| h_classes.py:55 | ControlFlowNode for int | import | builtin-class int | builtin-class type |
+| h_classes.py:55 | ControlFlowNode for int() | import | int() | builtin-class int |
+| h_classes.py:56 | ControlFlowNode for Str | import | '' | builtin-class str |
+| h_classes.py:56 | ControlFlowNode for type | import | builtin-class type | builtin-class type |
+| h_classes.py:56 | ControlFlowNode for type() | import | builtin-class str | builtin-class type |
+| h_classes.py:56 | ControlFlowNode for type()() | import | type()() | builtin-class str |
+| h_classes.py:57 | ControlFlowNode for list | import | builtin-class list | builtin-class type |
+| h_classes.py:57 | ControlFlowNode for list() | import | list() | builtin-class list |
+| h_classes.py:58 | ControlFlowNode for dict | import | builtin-class dict | builtin-class type |
+| h_classes.py:58 | ControlFlowNode for dict() | import | dict() | builtin-class dict |
+| h_classes.py:59 | ControlFlowNode for Str | import | 'hi' | builtin-class str |
+| h_classes.py:59 | ControlFlowNode for bool | import | builtin-class bool | builtin-class type |
+| h_classes.py:59 | ControlFlowNode for bool() | import | bool True | builtin-class bool |
+| h_classes.py:60 | ControlFlowNode for IntegerLiteral | import | int 0 | builtin-class int |
+| h_classes.py:60 | ControlFlowNode for bool | import | builtin-class bool | builtin-class type |
+| h_classes.py:60 | ControlFlowNode for bool() | import | bool False | builtin-class bool |
 | i_imports.py:3 | ControlFlowNode for IntegerLiteral | import | int 1 | builtin-class int |
 | i_imports.py:4 | ControlFlowNode for IntegerLiteral | import | int 2 | builtin-class int |
 | i_imports.py:5 | ControlFlowNode for IntegerLiteral | import | int 3 | builtin-class int |

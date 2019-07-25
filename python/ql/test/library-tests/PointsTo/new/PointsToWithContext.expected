@@ -416,6 +416,22 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | h_classes.py:50 | ControlFlowNode for m | Function f | builtin-class function | 45 | import |
 | h_classes.py:52 | ControlFlowNode for FunctionExpr | Function n | builtin-class function | 52 | import |
 | h_classes.py:52 | ControlFlowNode for n | Function n | builtin-class function | 52 | import |
+| h_classes.py:55 | ControlFlowNode for int | builtin-class int | builtin-class type | 55 | import |
+| h_classes.py:55 | ControlFlowNode for int() | int() | builtin-class int | 55 | import |
+| h_classes.py:56 | ControlFlowNode for Str | '' | builtin-class str | 56 | import |
+| h_classes.py:56 | ControlFlowNode for type | builtin-class type | builtin-class type | 56 | import |
+| h_classes.py:56 | ControlFlowNode for type() | builtin-class str | builtin-class type | 56 | import |
+| h_classes.py:56 | ControlFlowNode for type()() | type()() | builtin-class str | 56 | import |
+| h_classes.py:57 | ControlFlowNode for list | builtin-class list | builtin-class type | 57 | import |
+| h_classes.py:57 | ControlFlowNode for list() | list() | builtin-class list | 57 | import |
+| h_classes.py:58 | ControlFlowNode for dict | builtin-class dict | builtin-class type | 58 | import |
+| h_classes.py:58 | ControlFlowNode for dict() | dict() | builtin-class dict | 58 | import |
+| h_classes.py:59 | ControlFlowNode for Str | 'hi' | builtin-class str | 59 | import |
+| h_classes.py:59 | ControlFlowNode for bool | builtin-class bool | builtin-class type | 59 | import |
+| h_classes.py:59 | ControlFlowNode for bool() | bool True | builtin-class bool | 59 | import |
+| h_classes.py:60 | ControlFlowNode for IntegerLiteral | int 0 | builtin-class int | 60 | import |
+| h_classes.py:60 | ControlFlowNode for bool | builtin-class bool | builtin-class type | 60 | import |
+| h_classes.py:60 | ControlFlowNode for bool() | bool False | builtin-class bool | 60 | import |
 | i_imports.py:3 | ControlFlowNode for IntegerLiteral | int 1 | builtin-class int | 3 | import |
 | i_imports.py:3 | ControlFlowNode for a | int 1 | builtin-class int | 3 | import |
 | i_imports.py:4 | ControlFlowNode for IntegerLiteral | int 2 | builtin-class int | 4 | import |

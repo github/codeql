@@ -52,3 +52,9 @@ class D(object):
     def n(self, arg1):
         pass
 
+int()
+type("")()
+list()
+dict()
+bool("hi")
+bool(0)
