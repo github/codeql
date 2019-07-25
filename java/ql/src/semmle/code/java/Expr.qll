@@ -1121,6 +1121,9 @@ class SwitchExpr extends Expr, @switchexpr {
       break.(JumpStmt).getTarget() = this and result = break.getValue()
     )
   }
+
+  /** Gets a printable representation of this expression. */
+  override string toString() { result = "switch (...)" }
 }
 
 /** A parenthesised expression. */
