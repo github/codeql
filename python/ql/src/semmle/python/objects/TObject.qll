@@ -194,6 +194,7 @@ cached newtype TObject =
         PointsToInternal::pointsTo(call.getArg(0), ctx, getter, _)
     }
     or
+    /* Represents the `setter` or `deleter` method of a property object. */
     TPropertySetterOrDeleter(PropertyInternal property, string method) {
         exists(AttrNode attr |
             PointsToInternal::pointsTo(attr.getObject(method), _, property, _)
