@@ -285,3 +285,10 @@ function testCreateContextualFragment() {
     var documentFragment = range.createContextualFragment(tainted); // NOT OK
     document.body.appendChild(documentFragment);
 }
+
+function flowThroughPropertyNames() {
+    var obj = {};
+    obj[Math.random()] = window.name;
+    for (var p in obj)
+      $(p); // OK
+}

@@ -12,6 +12,8 @@
   - [remote-exec](https://www.npmjs.com/package/remote-exec)
 
 * Support for tracking data flow and taint through getter functions (that is, functions that return a property of one of their arguments) and through the receiver object of method calls has been improved. This may produce more security alerts.
+
+* Taint tracking through object property names has been made more precise, resulting in fewer false positive results.
   
 ## New queries
 
