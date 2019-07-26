@@ -11,12 +11,28 @@ private import semmle.javascript.dataflow.InferredTypes
 /**
  * An element containing a regular expression term, that is, either
  * a regular expression literal or another regular expression term.
+ *
+ * Examples:
+ *
+ * ```
+ * // the regular expression literal and all terms it contains are regexp parents
+ * /((ECMA|Java)[sS]cript)*$/
+ * ```
  */
 class RegExpParent extends Locatable, @regexpparent { }
 
 /**
  * A regular expression term, that is, a syntactic part of a regular
  * expression literal.
+ *
+ * Examples:
+ *
+ * ```
+ * ((ECMA|Java)[sS]cript)*$
+ * ((ECMA|Java)[sS]cript)*
+ * (ECMA|Java)
+ * $
+ * ```
  */
 abstract class RegExpTerm extends Locatable, @regexpterm {
   override Location getLocation() { hasLocation(this, result) }
@@ -91,7 +107,15 @@ abstract class RegExpTerm extends Locatable, @regexpterm {
   predicate isInBackwardMatchingContext() { this = any(RegExpLookbehind lbh).getAChild+() }
 }
 
-/** A quantified regular expression term. */
+/**
+ * A quantified regular expression term.
+ *
+ * Example:
+ *
+ * ```
+ * ((ECMA|Java)[sS]cript)*
+ * ```
+ */
 abstract class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
   /** Holds if the quantifier of this term is a greedy quantifier. */
   predicate isGreedy() { isGreedy(this) }
@@ -100,12 +124,25 @@ abstract class RegExpQuantifier extends RegExpTerm, @regexp_quantifier {
 /**
  * An escaped regular expression term, that is, a regular expression
  * term starting with a backslash.
+ *
+ * Example:
+ *
+ * ```
+ * \.
+ * \w
+ * ```
  */
 abstract class RegExpEscape extends RegExpTerm, @regexp_escape { }
 
 /**
  * A constant regular expression term, that is, a regular expression
  * term matching a single string.
+ *
+ * Example:
+ *
+ * ```
+ * a
+ * ```
  */
 class RegExpConstant extends RegExpTerm, @regexp_constant {
   /** Gets the string matched by this constant term. */
@@ -120,7 +157,15 @@ class RegExpConstant extends RegExpTerm, @regexp_constant {
   override predicate isNullable() { none() }
 }
 
-/** A character escape in a regular expression. */
+/**
+ * A character escape in a regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * \.
+ * ```
+ */
 class RegExpCharEscape extends RegExpEscape, RegExpConstant, @regexp_char_escape {
   override predicate isCharacter() {
     not (
@@ -136,7 +181,15 @@ class RegExpCharEscape extends RegExpEscape, RegExpConstant, @regexp_char_escape
   }
 }
 
-/** An alternative term, that is, a term of the form `a|b`. */
+/**
+ * An alternative term, that is, a term of the form `a|b`.
+ *
+ * Example:
+ *
+ * ```
+ * ECMA|Java
+ * ```
+ */
 class RegExpAlt extends RegExpTerm, @regexp_alt {
   /** Gets an alternative of this term. */
   RegExpTerm getAlternative() { result = getAChild() }
@@ -147,7 +200,17 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
   override predicate isNullable() { getAlternative().isNullable() }
 }
 
-/** A sequence term, that is, a term of the form `ab`. */
+/**
+ * A sequence term.
+ *
+ * Example:
+ *
+ * ```
+ * (ECMA|Java)Script
+ * ```
+ *
+ * This is a sequence with elements `(ECMA|Java)`, `S`, `c`, `r`, `i`, `p` and `t`.
+ */
 class RegExpSequence extends RegExpTerm, @regexp_seq {
   /** Gets an element of this sequence. */
   RegExpTerm getElement() { result = getAChild() }
@@ -160,27 +223,70 @@ class RegExpSequence extends RegExpTerm, @regexp_seq {
   }
 }
 
-/** A caret assertion `^` matching the beginning of a line. */
+/**
+ * A caret assertion `^` matching the beginning of a line.
+ *
+ * Example:
+ *
+ * ```
+ * ^
+ * ```
+ */
 class RegExpCaret extends RegExpTerm, @regexp_caret {
   override predicate isNullable() { any() }
 }
 
-/** A dollar assertion `$` matching the end of a line. */
+/**
+ * A dollar assertion `$` matching the end of a line.
+ *
+ * Example:
+ *
+ * ```
+ * $
+ * ```
+ */
 class RegExpDollar extends RegExpTerm, @regexp_dollar {
   override predicate isNullable() { any() }
 }
 
-/** A word boundary assertion `\b`. */
+/**
+ * A word boundary assertion.
+ *
+ * Example:
+ *
+ * ```
+ * \b
+ * ```
+ */
 class RegExpWordBoundary extends RegExpTerm, @regexp_wordboundary {
   override predicate isNullable() { any() }
 }
 
-/** A non-word boundary assertion `\B`. */
+/**
+ * A non-word boundary assertion.
+ *
+ * Example:
+ *
+ * ```
+ * \B
+ * ```
+ */
 class RegExpNonWordBoundary extends RegExpTerm, @regexp_nonwordboundary {
   override predicate isNullable() { any() }
 }
 
-/** A zero-width lookahead or lookbehind assertion. */
+/**
+ * A zero-width lookahead or lookbehind assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?=\w)
+ * (?!\n)
+ * (?<=\.)
+ * (?<!\\)
+ * ```
+ */
 class RegExpSubPattern extends RegExpTerm, @regexp_subpattern {
   /** Gets the lookahead term. */
   RegExpTerm getOperand() { result = getAChild() }
@@ -188,40 +294,122 @@ class RegExpSubPattern extends RegExpTerm, @regexp_subpattern {
   override predicate isNullable() { any() }
 }
 
-/** A zero-width lookahead assertion. */
+/**
+ * A zero-width lookahead assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?=\w)
+ * (?!\n)
+ * ```
+ */
 class RegExpLookahead extends RegExpSubPattern, @regexp_lookahead { }
 
-/** A zero-width lookbehind assertion. */
+/**
+ * A zero-width lookbehind assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?<=\.)
+ * (?<!\\)
+ * ```
+ */
 class RegExpLookbehind extends RegExpSubPattern, @regexp_lookbehind { }
 
-/** A positive-lookahead assertion, that is, a term of the form `(?=...)`. */
+/**
+ * A positive-lookahead assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?=\w)
+ * ```
+ */
 class RegExpPositiveLookahead extends RegExpLookahead, @regexp_positive_lookahead { }
 
-/** A negative-lookahead assertion, that is, a term of the form `(?!...)`. */
+/**
+ * A negative-lookahead assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?!\n)
+ * ```
+ */
 class RegExpNegativeLookahead extends RegExpLookahead, @regexp_negative_lookahead { }
 
-/** A positive-lookbehind assertion, that is, a term of the form `(?<=...)`. */
+/**
+ * A positive-lookbehind assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?<=\.)
+ * ```
+ */
 class RegExpPositiveLookbehind extends RegExpLookbehind, @regexp_positive_lookbehind { }
 
-/** A negative-lookbehind assertion, that is, a term of the form `(?<!...)`. */
+/**
+ * A negative-lookbehind assertion.
+ *
+ * Examples:
+ *
+ * ```
+ * (?<!\\)
+ * ```
+ */
 class RegExpNegativeLookbehind extends RegExpLookbehind, @regexp_negative_lookbehind { }
 
-/** A star-quantified term, that is, a term of the form `...*`. */
+/**
+ * A star-quantified term.
+ *
+ * Example:
+ *
+ * ```
+ * \w*
+ * ```
+ */
 class RegExpStar extends RegExpQuantifier, @regexp_star {
   override predicate isNullable() { any() }
 }
 
-/** A plus-quantified term, that is, a term of the form `...+`. */
+/**
+ * A plus-quantified term.
+ *
+ * Example:
+ *
+ * ```
+ * \w+
+ * ```
+ */
 class RegExpPlus extends RegExpQuantifier, @regexp_plus {
   override predicate isNullable() { getAChild().isNullable() }
 }
 
-/** An optional term, that is, a term of the form `...?`. */
+/**
+ * An optional term.
+ *
+ * Example:
+ *
+ * ```
+ * ;?
+ * ```
+ */
 class RegExpOpt extends RegExpQuantifier, @regexp_opt {
   override predicate isNullable() { any() }
 }
 
-/** A range-quantified term, that is, a term of the form `...{m,n}`. */
+/**
+ * A range-quantified term
+ *
+ * Example:
+ *
+ * ```
+ * \w{2,4}
+ * ```
+ */
 class RegExpRange extends RegExpQuantifier, @regexp_range {
   /** Gets the lower bound of the range, if any. */
   int getLowerBound() { rangeQuantifierLowerBound(this, result) }
@@ -235,12 +423,30 @@ class RegExpRange extends RegExpQuantifier, @regexp_range {
   }
 }
 
-/** A dot regular expression `.`. */
+/**
+ * A dot regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * .
+ * ```
+ */
 class RegExpDot extends RegExpTerm, @regexp_dot {
   override predicate isNullable() { none() }
 }
 
-/** A grouped regular expression, that is, a term of the form `(...)` or `(?:...)` */
+/**
+ * A grouped regular expression.
+ *
+ * Examples:
+ *
+ * ```
+ * (ECMA|Java)
+ * (?:ECMA|Java)
+ * (?<quote>['"])
+ * ```
+ */
 class RegExpGroup extends RegExpTerm, @regexp_group {
   /** Holds if this is a capture group. */
   predicate isCapture() { isCapture(this, _) }
@@ -265,25 +471,82 @@ class RegExpGroup extends RegExpTerm, @regexp_group {
   override predicate isNullable() { getAChild().isNullable() }
 }
 
-/** A normal character without special meaning in a regular expression. */
+/**
+ * A normal character without special meaning in a regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * ;
+ * ```
+ */
 class RegExpNormalChar extends RegExpConstant, @regexp_normal_char { }
 
-/** A hexadecimal character escape such as `\x0a` in a regular expression. */
+/**
+ * A hexadecimal character escape in a regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * \x0a
+ * ```
+ */
 class RegExpHexEscape extends RegExpCharEscape, @regexp_hex_escape { }
 
-/** A unicode character escape such as `\u000a` in a regular expression. */
+/**
+ * A unicode character escape in a regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * \u000a
+ * ```
+ */
 class RegExpUnicodeEscape extends RegExpCharEscape, @regexp_unicode_escape { }
 
-/** A decimal character escape such as `\0` in a regular expression. */
+/**
+ * A decimal character escape in a regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * \0
+ * ```
+ */
 class RegExpDecimalEscape extends RegExpCharEscape, @regexp_dec_escape { }
 
-/** An octal character escape such as `\0177` in a regular expression. */
+/**
+ * An octal character escape in a regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * \0177
+ * ```
+ */
 class RegExpOctalEscape extends RegExpCharEscape, @regexp_oct_escape { }
 
-/** A control character escape such as `\ca` in a regular expression. */
+/**
+ * A control character escape in a regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * \ca
+ * ```
+ */
 class RegExpControlEscape extends RegExpCharEscape, @regexp_ctrl_escape { }
 
-/** A character class escape such as `\w` or `\S` in a regular expression. */
+/**
+ * A character class escape in a regular expression.
+ *
+ * Examples:
+ *
+ * ```
+ * \w
+ * \S
+ * ```
+ */
 class RegExpCharacterClassEscape extends RegExpEscape, @regexp_char_class_escape {
   /** Gets the name of the character class; for example, `w` for `\w`. */
   string getValue() { charClassEscape(this, result) }
@@ -291,7 +554,16 @@ class RegExpCharacterClassEscape extends RegExpEscape, @regexp_char_class_escape
   override predicate isNullable() { none() }
 }
 
-/** A Unicode property escape such as `\p{Number}` or `\p{Script=Greek}`. */
+/**
+ * A Unicode property escape in a regular expression.
+ *
+ * Examples:
+ *
+ * ```
+ * \p{Number}
+ * \p{Script=Greek}
+ * ```
+ */
 class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property_escape {
   /**
    * Gets the name of this Unicode property; for example, `Number` for `\p{Number}` and
@@ -310,12 +582,29 @@ class RegExpUnicodePropertyEscape extends RegExpEscape, @regexp_unicode_property
   override predicate isNullable() { none() }
 }
 
-/** An identity escape such as `\\` or `\/` in a regular expression. */
+/**
+ * An identity escape, that is, an escaped character in a regular expression that just
+ * represents itself.
+ *
+ * Examples:
+ *
+ * ```
+ * \\
+ * \/
+ * ```
+ */
 class RegExpIdentityEscape extends RegExpCharEscape, @regexp_id_escape { }
 
 /**
  * A back reference, that is, a term of the form `\i` or `\k<name>`
  * in a regular expression.
+ *
+ * Examples:
+ *
+ * ```
+ * \1
+ * \k<quote>
+ * ```
  */
 class RegExpBackRef extends RegExpTerm, @regexp_backref {
   /**
@@ -340,7 +629,16 @@ class RegExpBackRef extends RegExpTerm, @regexp_backref {
   override predicate isNullable() { getGroup().isNullable() }
 }
 
-/** A character class, that is, a term of the form `[...]`. */
+/**
+ * A character class in a regular expression.
+ *
+ * Examples:
+ *
+ * ```
+ * [a-z_]
+ * [^<>&]
+ * ```
+ */
 class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
   /** Holds if this is an inverted character class, that is, a term of the form `[^...]`. */
   predicate isInverted() { isInverted(this) }
@@ -348,7 +646,15 @@ class RegExpCharacterClass extends RegExpTerm, @regexp_char_class {
   override predicate isNullable() { none() }
 }
 
-/** A character range in a character class in a regular expression. */
+/**
+ * A character range in a character class in a regular expression.
+ *
+ * Example:
+ *
+ * ```
+ * a-z
+ * ```
+ */
 class RegExpCharacterRange extends RegExpTerm, @regexp_char_range {
   override predicate isNullable() { none() }
 

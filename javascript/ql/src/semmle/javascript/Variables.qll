@@ -214,7 +214,18 @@ class ArgumentsVariable extends Variable {
   Function getFunction() { result = getScope().getFunction() }
 }
 
-/** An identifier that refers to a variable, either in a declaration or in a variable access. */
+/**
+ * An identifier that refers to a variable, either in a declaration or in a variable access.
+ *
+ * Examples:
+ *
+ * ```
+ * function f(o) {                 // `f` and `o` are variable references
+ *   var w = 0, { x : y, z } = o;  // `w`, `y`, `z` and `o` are variable references; `x` is not
+ *   o = null;                     // `o` is a variable reference; `null` is not
+ * }
+ * ```
+ */
 class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
   /** Gets the variable this identifier refers to. */
   override Variable getVariable() { none() } // Overriden in VarAccess and VarDecl
@@ -228,7 +239,18 @@ class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
   override Expr getUnderlyingReference() { result = this }
 }
 
-/** An identifier that refers to a variable in a non-declaring position. */
+/**
+ * An identifier that refers to a variable in a non-declaring position.
+ *
+ * Examples:
+ *
+ * ```
+ * function f(o) {
+ *   var w = 0, { x : y, z } = o;  // `o` is a variable access
+ *   o = null;                     // `o` is a variable access
+ * }
+ * ```
+ */
 class VarAccess extends @varaccess, VarRef, LexicalAccess {
   /**
    * Gets the variable this identifier refers to.
@@ -252,7 +274,13 @@ class VarAccess extends @varaccess, VarRef, LexicalAccess {
 }
 
 /**
- * An identifier that occurs in a named export declaration, such as in `export { A }`.
+ * An identifier that occurs in a named export declaration.
+ *
+ * Example:
+ *
+ * ```
+ * export { A };
+ * ```
  *
  * Such an identifier may refer to a variable, type, or namespace, or a combination of these.
  */
@@ -298,19 +326,34 @@ class PurelyLocalVariable extends LocalVariable {
   PurelyLocalVariable() { not isCaptured() }
 }
 
-/** An identifier that refers to a global variable. */
+/**
+ * An identifier that refers to a global variable.
+ *
+ * Examples:
+ *
+ * ```
+ * NaN
+ * undefined
+ * ```
+ */
 class GlobalVarAccess extends VarAccess {
   GlobalVarAccess() { getVariable().isGlobal() }
 }
 
 /**
- * A binding pattern, i.e., either an identifier or a destructuring pattern.
+ * A binding pattern, that is, either an identifier or a destructuring pattern.
+ *
+ * Examples:
+ *
+ * ```
+ * function f(x, { y: z }, ...rest) {  // `x`, `{ y: z }`, `z` and `rest` are binding patterns
+ *   var [ a, b ] = rest;              // `[ a, b ]`, `a` and `b` are binding patterns
+ *   var c;                            // `c` is a binding pattern
+ * }
+ * ```
  *
  * Binding patterns can appear on the left hand side of assignments or in
- * variable or parameter declarations. They bind one or more variables to
- * values, either by means of a regular assignment as in `x = 42`, or
- * through a destructuring assignment as in `[x, y] = a`; see Chapter 12 of
- * the ECMAScript standard for more details.
+ * variable or parameter declarations.
  */
 class BindingPattern extends @pattern, Expr {
   /** Gets the name of this binding pattern if it is an identifier. */
@@ -347,13 +390,34 @@ class BindingPattern extends @pattern, Expr {
   }
 }
 
-/** A destructuring pattern, that is, either an array pattern or an object pattern. */
+/**
+ * A destructuring pattern, that is, either an array pattern or an object pattern.
+ *
+ * Examples:
+ *
+ * ```
+ * function f(x, { y: z }, ...rest) {  // `{ y: z }` is a destructuring pattern
+ *   var [ a, b ] = rest;              // `[ a, b ]` is a destructuring pattern
+ *   var c;
+ * }
+ * ```
+ */
 abstract class DestructuringPattern extends BindingPattern {
   /** Gets the rest pattern of this destructuring pattern, if any. */
   abstract Expr getRest();
 }
 
-/** An identifier that declares a variable. */
+/**
+ * An identifier that declares a variable.
+ *
+ * Examples:
+ *
+ * ```
+ * function f(o) {                 // `f` and `o` are variable declarations
+ *   var w = 0, { x : y, z } = o;  // `w`, `y` and `z` are variable declarations
+ *   o = null;
+ * }
+ */
 class VarDecl extends @vardecl, VarRef, LexicalDecl {
   override Variable getVariable() { decl(this, result) }
 
@@ -367,12 +431,32 @@ class VarDecl extends @vardecl, VarRef, LexicalDecl {
   }
 }
 
-/** An identifier that declares a global variable. */
+/**
+ * An identifier that declares a global variable.
+ *
+ * Example:
+ *
+ * ```
+ * var m;  // `m` is a global variable declaration if this is a top-level statement
+ *         // (and not in a module)
+ * ```
+ */
 class GlobalVarDecl extends VarDecl {
   GlobalVarDecl() { getVariable() instanceof GlobalVariable }
 }
 
-/** An array pattern. */
+/**
+ * An array pattern.
+  *
+ * Example:
+ *
+ * ```
+ * function f(x, { y: z }, ...rest) {
+ *   var [ a, b ] = rest;              // `[ a, b ]` is an array pattern
+ *   var c;
+ * }
+ * ```
+*/
 class ArrayPattern extends DestructuringPattern, @arraypattern {
   /** Gets the `i`th element of this array pattern. */
   Expr getElement(int i) {
@@ -417,7 +501,18 @@ class ArrayPattern extends DestructuringPattern, @arraypattern {
   }
 }
 
-/** An object pattern. */
+/**
+ * An object pattern.
+ *
+ * Example:
+ *
+ * ```
+ * function f(x, { y: z }, ...rest) {  // `{ y: z }` is an object pattern
+ *   var [ a, b ] = rest;
+ *   var c;
+ * }
+ * ```
+ */
 class ObjectPattern extends DestructuringPattern, @objectpattern {
   /** Gets the `i`th property pattern in this object pattern. */
   PropertyPattern getPropertyPattern(int i) { properties(result, this, i, _, _) }
@@ -445,7 +540,18 @@ class ObjectPattern extends DestructuringPattern, @objectpattern {
   }
 }
 
-/** A property pattern in an object pattern. */
+/**
+ * A property pattern in an object pattern.
+  *
+ * Examples:
+ *
+ * ```
+ * function f(x, { y: z }, ...rest) {  // `y: z` is a property pattern
+ *   var [ a, b ] = rest;
+ *   var c;
+ * }
+ * ```
+*/
 class PropertyPattern extends @property, ASTNode {
   PropertyPattern() {
     // filter out ordinary properties
@@ -495,7 +601,17 @@ class PropertyPattern extends @property, ASTNode {
   }
 }
 
-/** A variable declarator declaring a local or global variable. */
+/**
+ * A variable declarator declaring a local or global variable.
+ *
+ * Examples:
+ *
+ * ```
+ * var
+ *   x,      // variable declarator
+ *   y = z;  // variable declarator
+ * ```
+ */
 class VariableDeclarator extends Expr, @vardeclarator {
   /** Gets the pattern specifying the declared variable(s). */
   BindingPattern getBindingPattern() { result = this.getChildExpr(0) }
@@ -537,6 +653,17 @@ private class DecoratorList extends Expr, @decorator_list {
 /**
  * A program element that declares parameters, that is, either a function or
  * a catch clause.
+ *
+ * Examples:
+ *
+ * ```
+ * function f(x, y) {  // a parameterized element
+ *   try {
+ *     g();
+ *   } catch(e) {      // a parameterized element
+ *   }
+ * }
+ * ```
  */
 class Parameterized extends @parameterized, Documentable {
   /** Gets a parameter declared by this element. */
@@ -552,7 +679,18 @@ class Parameterized extends @parameterized, Documentable {
   }
 }
 
-/** A parameter declaration. */
+/**
+ * A parameter declaration.
+ *
+ * Examples:
+ *
+ * ```
+ * function f(x, { y: z }, ...rest) {  // `x`, `{ y: z }` and `rest` are parameter declarations
+ *   var [ a, b ] = rest;
+ *   var c;
+ * }
+ * ```
+ */
 class Parameter extends BindingPattern {
   Parameter() {
     exists(Parameterized p, int n |
@@ -613,7 +751,18 @@ class Parameter extends BindingPattern {
   }
 }
 
-/** A parameter declaration that is not an object or array pattern. */
+/**
+ * A parameter declaration that is not an object or array pattern.
+ *
+ * Examples:
+ *
+ * ```
+ * function f(x, { y: z }, ...rest) {  // `x` and `rest` are simple parameter declarations
+ *   var [ a, b ] = rest;
+ *   var c;
+ * }
+ * ```
+ */
 class SimpleParameter extends Parameter, VarDecl {
   override predicate isLValue() { Parameter.super.isLValue() }
 
@@ -644,10 +793,15 @@ class SimpleParameter extends Parameter, VarDecl {
 }
 
 /**
- * A constructor parameter that induces a field in its class, such as the parameter `x` in:
+ * A constructor parameter that induces a field in its class.
+ *
+ * Example:
+ *
  * ```
  * class C {
- *   constructor(public x: number) {}
+ *   constructor(
+ *     public x: number  // constructor parameter
+ *   ) {}
  * }
  * ```
  */
@@ -669,6 +823,15 @@ class DeclarationSpace extends string {
  * A name that is declared in a particular scope.
  *
  * This can be a variable or a local name for a TypeScript type or namespace.
+ *
+ * Examples:
+ *
+ * ```
+ * // `id`, `x` and `String` are lexical names
+ * function id(x: String) : any {
+ *   return x;
+ * }
+ * ``` 
  */
 class LexicalName extends @lexical_name {
   /** Gets the scope in which this name was declared. */
@@ -690,6 +853,14 @@ class LexicalName extends @lexical_name {
 
 /**
  * An identifier that refers to a variable, type, or namespace, or a combination of these.
+ *
+ * Example:
+ *
+ * ```
+ * function id(x: String) : any {  // `id`, `x` and `String` are lexical references
+ *   return x;                     // `x` is a lexical reference
+ * }
+ * ```
  */
 class LexicalRef extends Identifier, @lexical_ref {
   /**
@@ -710,11 +881,27 @@ class LexicalRef extends Identifier, @lexical_ref {
 
 /**
  * An identifier that declares a variable, type, or namespace, or a combination of these.
+ *
+ * Example:
+ *
+ * ```
+ * function id(x: number) : any {  // `id` and `x` are lexical declarations
+ *   return x;
+ * }
+ * ```
  */
 class LexicalDecl extends LexicalRef, @lexical_decl { }
 
 /**
  * An identifier that refers to a variable, type, or namespace, or a combination of these,
  * in a non-declaring position.
+ *
+ * Example:
+ *
+ * ```
+ * function id(x: String) : any {  // `String` is a lexical access
+ *   return x;                     // `x` is a lexical access
+ * }
+ * ```
  */
 class LexicalAccess extends LexicalRef, @lexical_access { }
