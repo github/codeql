@@ -28,7 +28,19 @@ class UntrustedPrefixStringKind extends UntrustedStringKind {
 
 }
 
-from TaintedPathSource src, TaintedPathSink sink
-where src.flowsTo(sink)
+class UrlRedirectConfiguration extends TaintTracking::Configuration {
+
+    UrlRedirectConfiguration() { this = "URL redirect configuration" }
+
+    override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
+
+    override predicate isSink(TaintTracking::Sink sink) {
+        sink instanceof HttpRedirectTaintSink
+    }
+
+}
+
+from UrlRedirectConfiguration config, TaintedPathSource src, TaintedPathSink sink
+where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "Untrusted URL redirection due to $@.", src.getSource(), "a user-provided value"
 
