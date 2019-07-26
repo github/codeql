@@ -63,10 +63,10 @@ module TaintTracking {
       node.asExpr() instanceof ValidatedVariableAccess
     }
 
-    /** Holds if the edge from `node1` to `node2` is a taint sanitizer. */
-    predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
+    /** DEPRECATED: override `isSanitizer` instead. */
+    deprecated predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
-    final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
+    deprecated final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
       isSanitizerEdge(node1, node2)
     }
 
@@ -135,10 +135,10 @@ module TaintTracking {
       node.asExpr() instanceof ValidatedVariableAccess
     }
 
-    /** Holds if the edge from `node1` to `node2` is a taint sanitizer. */
-    predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
+    /** DEPRECATED: override `isSanitizer` instead. */
+    deprecated predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
-    final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
+    deprecated final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
       isSanitizerEdge(node1, node2)
     }
 
