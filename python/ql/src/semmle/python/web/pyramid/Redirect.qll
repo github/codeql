@@ -6,6 +6,7 @@ import python
 
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
+import semmle.python.web.Http
 
 private ClassObject redirectClass() {
     exists(ModuleObject ex |
@@ -19,7 +20,7 @@ private ClassObject redirectClass() {
 /**
  * Represents an argument to the `tornado.redirect` function.
  */
-class PyramidRedirect extends TaintSink {
+class PyramidRedirect extends HttpRedirectTaintSink {
 
     override string toString() {
         result = "pyramid.redirect"
@@ -33,10 +34,6 @@ class PyramidRedirect extends TaintSink {
             or
             call.getArgByName("location") = this
         )
-    }
-
-    override predicate sinks(TaintKind kind) {
-        kind instanceof StringKind
     }
 
 }

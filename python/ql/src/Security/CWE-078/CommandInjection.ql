@@ -23,6 +23,23 @@ import semmle.python.web.HttpRequest
 /* Sinks */
 import semmle.python.security.injection.Command
 
-from TaintedPathSource src, TaintedPathSink sink
-where src.flowsTo(sink)
+class CommandInjectionConfiguration extends TaintTracking::Configuration {
+
+    CommandInjectionConfiguration() { this = "Command injection configuration" }
+
+    override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
+
+    override predicate isSink(TaintTracking::Sink sink) {
+        sink instanceof OsCommandFirstArgument or
+        sink instanceof ShellCommand
+    }
+
+    override predicate isExtension(TaintTracking::Extension extension) {
+        extension instanceof FirstElementFlow
+    }
+
+}
+
+from CommandInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
+where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "This command depends on $@.", src.getSource(), "a user-provided value"

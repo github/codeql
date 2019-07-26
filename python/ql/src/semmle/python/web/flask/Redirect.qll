@@ -15,7 +15,7 @@ FunctionObject flask_redirect() {
 /**
  * Represents an argument to the `flask.redirect` function.
  */
-class FlaskRedirect extends TaintSink {
+class FlaskRedirect extends HttpRedirectTaintSink {
 
     override string toString() {
         result = "flask.redirect"
@@ -26,10 +26,6 @@ class FlaskRedirect extends TaintSink {
             flask_redirect().getACall() = call and
             this = call.getAnArg()
         )
-    }
-
-    override predicate sinks(TaintKind kind) {
-        kind instanceof StringKind
     }
 
 }

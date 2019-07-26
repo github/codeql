@@ -6,13 +6,14 @@ import python
 
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
+import semmle.python.web.Http
 import Tornado
 
 
 /**
  * Represents an argument to the `tornado.redirect` function.
  */
-class TornadoRedirect extends TaintSink {
+class TornadoRedirect extends HttpRedirectTaintSink {
 
     override string toString() {
         result = "tornado.redirect"
@@ -24,10 +25,6 @@ class TornadoRedirect extends TaintSink {
             isTornadoRequestHandlerInstance(node) and
             this = call.getAnArg()
         )
-    }
-
-    override predicate sinks(TaintKind kind) {
-        kind instanceof StringKind
     }
 
 }
