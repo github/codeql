@@ -57,8 +57,8 @@ abstract class Configuration extends string {
   /** Holds if data flow through `node` is prohibited. */
   predicate isBarrier(Node node) { none() }
 
-  /** Holds if data flow from `node1` to `node2` is prohibited. */
-  predicate isBarrierEdge(Node node1, Node node2) { none() }
+  /** DEPRECATED: override `isBarrier` instead. */
+  deprecated predicate isBarrierEdge(Node node1, Node node2) { none() }
 
   /**
    * Holds if the additional flow step from `node1` to `node2` must be taken
@@ -136,7 +136,6 @@ private predicate isAdditionalFlowStep(
  */
 private predicate localFlowStep(Node node1, Node node2, Configuration config) {
   localFlowStep(node1, node2) and
-  not config.isBarrierEdge(node1, node2) and
   not outBarrier(node1, config) and
   not inBarrier(node2, config) and
   not fullBarrier(node1, config) and
