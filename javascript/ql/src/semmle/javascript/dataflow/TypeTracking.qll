@@ -159,6 +159,12 @@ class TypeTracker extends TTypeTracker {
   predicate start() { hasCall = false and prop = "" }
 
   /**
+   * Holds if this is the starting point of type tracking
+   * when tracking a parameter into a call, but not out of it.
+   */
+  predicate call() { hasCall = true and prop = "" }
+
+  /**
    * Holds if this is the end point of type tracking.
    */
   predicate end() { prop = "" }

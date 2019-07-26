@@ -709,6 +709,12 @@ class ClassNode extends DataFlow::SourceNode {
     t.start() and
     result = getAReceiverNode()
     or
+    t.call() and
+    exists(Parameter param |
+      this = param.getTypeAnnotation().getClass() and
+      result = DataFlow::parameterNode(param)
+    )
+    or
     result = getAnInstanceReferenceAux(t) and
     // Avoid tracking into the receiver of other classes.
     // Note that this also blocks flows into a property of the receiver,
