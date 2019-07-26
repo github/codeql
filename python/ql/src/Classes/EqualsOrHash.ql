@@ -13,19 +13,19 @@
 
 import python
 
-FunctionObject defines_equality(ClassObject c, string name) {
+CallableValue defines_equality(ClassValue c, string name) {
     (name = "__eq__" or major_version() = 2 and name = "__cmp__")
     and
     result = c.declaredAttribute(name)
 }
 
-FunctionObject implemented_method(ClassObject c, string name) {
+CallableValue implemented_method(ClassValue c, string name) {
     result = defines_equality(c, name)
     or
     result = c.declaredAttribute("__hash__") and name = "__hash__"
 }
 
-string unimplemented_method(ClassObject c) {
+string unimplemented_method(ClassValue c) {
     not exists(defines_equality(c, _)) and 
     (result = "__eq__" and major_version() = 3 or major_version() = 2 and result = "__eq__ or __cmp__")
     or
@@ -33,14 +33,21 @@ string unimplemented_method(ClassObject c) {
     not c.declaresAttribute(result) and result = "__hash__" and major_version() = 2
 }
 
-predicate violates_hash_contract(ClassObject c, string present, string missing, Object method) {
-   not c.unhashable() and
-   missing = unimplemented_method(c) and
-   method = implemented_method(c, present) and
-   not c.unknowableAttributes()
+/** Holds if this class is unhashable */
+predicate unhashable(ClassValue cls) {
+    cls.lookup("__hash__") = Value::named("None")
+    or
+    cls.lookup("__hash__").(CallableValue).neverReturns()
 }
 
-from ClassObject c, string present, string missing, FunctionObject method
+predicate violates_hash_contract(ClassValue c, string present, string missing, Value method) {
+   not unhashable(c) and
+   missing = unimplemented_method(c) and
+   method = implemented_method(c, present) and
+   not c.failedInference(_)
+}
+
+from ClassValue c, string present, string missing, CallableValue method
 where violates_hash_contract(c, present, missing, method) and
-exists(c.getPyClass()) // Suppress results that aren't from source
+exists(c.getScope()) // Suppress results that aren't from source
 select method, "Class $@ implements " + present + " but does not define " + missing + ".", c, c.getName()
