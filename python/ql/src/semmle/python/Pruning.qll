@@ -156,6 +156,12 @@ module Pruner {
     private import Comparisons
     private import SSA
 
+    private int intValue(ImmutableLiteral lit) {
+        result = lit.(IntegerLiteral).getValue()
+        or
+        result = lit.(NegativeIntegerLiteral).getValue()
+    }
+
     newtype TConstraint =
         TTruthy(boolean b) { b = true or b = false }
         or
@@ -164,7 +170,7 @@ module Pruner {
         TConstrainedByConstant(CompareOp op, int k) {
             int_test(_, _, op, k)
             or
-            exists(Assign a | a.getValue().(IntegerLiteral).getValue() = k) and op = eq()
+            exists(Assign a | intValue(a.getValue()) = k) and op = eq()
         }
 
     /** A constraint that may be applied to an SSA variable.
@@ -417,7 +423,7 @@ module Pruner {
         reachableEdge(_, bb)
     }
 
-    Constraint constraintFromTest(SsaVariable var, UnprunedCfgNode node) {
+    Constraint constraintFromExpr(SsaVariable var, UnprunedCfgNode node) {
         py_ssa_use(node, var) and result = TTruthy(true)
         or
         exists(boolean b |
@@ -429,7 +435,11 @@ module Pruner {
             result = TConstrainedByConstant(op, k)
         )
         or
-        result = constraintFromTest(var, node.(UnprunedNot).getOperand()).invert()
+        result = constraintFromExpr(var, node.(UnprunedNot).getOperand()).invert()
+    }
+
+    Constraint constraintFromTest(SsaVariable var, UnprunedCfgNode node) {
+        result = constraintFromExpr(var, node) and node.isBranch()
     }
 
     predicate none_test(UnprunedCompareNode test, SsaVariable var, boolean is) {
@@ -450,56 +460,46 @@ module Pruner {
             |
             op.forOp(cop) and
             py_ssa_use(left, var) and
-            right.getNode().(IntegerLiteral).getValue() = k
+            intValue(right.getNode()) = k
             or
             op.reverse().forOp(cop) and
             py_ssa_use(right, var) and
-            left.getNode().(IntegerLiteral).getValue() = k
+            intValue(left.getNode()) = k
+        )
+    }
+
+    private predicate constrainingValue(Expr e) {
+        exists(Assign a, UnprunedCfgNode asgn |
+            a.getValue() = e and a.getATarget() = asgn.getNode() and py_ssa_defn(_, asgn)
         )
         or
-        int_test(test.(UnprunedNot).getOperand(), var, op.invert(), k)
+        exists(UnaryExpr n | constrainingValue(n) and n.getOp() instanceof Not and e = n.getOperand())
     }
 
-    predicate int_assignment(UnprunedCfgNode asgn, SsaVariable var, CompareOp op, int k) {
-        exists(Assign a |
-            a.getATarget() = asgn.getNode() and
-            py_ssa_use(asgn, var) and
-            k = a.getValue().(IntegerLiteral).getValue() and
-            op = eq()
-        )
-    }
-
-    predicate none_assignment(UnprunedCfgNode asgn, SsaVariable var) {
-        exists(Assign a |
-            a.getATarget() = asgn.getNode() and
-            py_ssa_use(asgn, var) and
-            a.getValue() instanceof None
-        )
-    }
-
-    boolean truthy_assignment(UnprunedCfgNode asgn, SsaVariable var) {
-        exists(Assign a |
-            a.getATarget() = asgn.getNode() and
-            py_ssa_use(asgn, var)
-            |
-            a.getValue() instanceof True and result = true
+    private Constraint constraintFromValue(Expr e) {
+        constrainingValue(e) and
+        (
+            result = TConstrainedByConstant(eq(), intValue(e))
             or
-            a.getValue() instanceof False and result = false
+            e instanceof True and result = TTruthy(true)
+            or
+            e instanceof False and result = TTruthy(false)
+            or
+            e instanceof None and result = TIsNone(true)
+            or
+            result = constraintFromValue(e.(UnaryExpr).getOperand()).invert()
         )
-        or
-        module_import(asgn, var) and result = true
     }
 
     /** Gets the constraint on `var` resulting from the assignment in `asgn` */
-    Constraint constraintFromAssignment(SsaVariable var, UnprunedBasicBlock asgn) {
-        exists(CompareOp op, int k |
-            int_assignment(asgn.getANode(), var, op, k) and
-            result = TConstrainedByConstant(op, k)
+    Constraint constraintFromAssignment(SsaVariable var, UnprunedCfgNode asgn) {
+        exists(Assign a |
+            a.getATarget() = asgn.getNode() and
+            py_ssa_defn(var, asgn) and
+            result = constraintFromValue(a.getValue())
         )
         or
-        none_assignment(asgn.getANode(), var) and result = TIsNone(true)
-        or
-        result = TTruthy(truthy_assignment(asgn.getANode(), var))
+        module_import(asgn, var) and result = TTruthy(true)
     }
 
     /** Holds if the constraint `preval` holds for `var` on edge `pred` -> `succ` as a result of a prior test or assignment */
@@ -518,7 +518,7 @@ module Pruner {
             first.(UnprunedConditionBlock).controlsEdge(pred, succ, false) and
             preval = constraintFromTest(var, first.last()).invert()
             or
-            preval = constraintFromAssignment(var, first) and
+            preval = constraintFromAssignment(var, first.getANode()) and
             first.dominates(pred) and
             (succ = pred.getAFalseSuccessor() or succ = pred.getATrueSuccessor())
         )

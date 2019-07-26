@@ -81,3 +81,15 @@
 | 223 | y | 226 | count |
 | 224 | count | 214 | Function split_bool1 |
 | 226 | count | 214 | Function split_bool1 |
+| 230 | k | 231 | count |
+| 231 | count | 234 | Pass |
+| 238 | k | 241 | count |
+| 241 | count | 242 | Pass |
+| 246 | k | 247 | count |
+| 247 | count | 250 | Pass |
+| 257 | k | 258 | count |
+| 257 | k | 259 | Pass |
+| 258 | count | 259 | Pass |
+| 267 | var | 268 | count |
+| 267 | var | 269 | Pass |
+| 268 | count | 269 | Pass |
