@@ -57,3 +57,14 @@ function getFromConfigFramework() {
   let conn = config.getConfigValue('connection');
   conn.getData(x => {});
 }
+
+function initConnection() {
+  MyApplication.namespace.connection = api.chain1().chain2().createConnection();
+}
+
+function useConnection() {
+  let conn = MyApplication.namespace.connection;
+  conn.getData(data => {
+    useData(data);
+  });
+}
