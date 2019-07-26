@@ -1,0 +1,18 @@
+Publishing this project for a new version
+#########################################
+
+To update this project for a new version:
+
+#. Check with the language teams that all information in the ``ql/change-notes/support/`` directory is ready.
+
+#. Check that the versions of these files in the ``code`` repository match those in the ``ql`` repository.
+That is, there has been a "ql submodule bump" in the ``code`` repository since the last change to those files.
+
+#. Open the ``global-conf.py`` file in the ``global-sphinx-files`` directory and change the following variables 
+to the correct value(s) if necessary:
+
+    * ``version =``
+    * ``release = ``
+    * If it's the first release of the year, ``copyright =``
+
+#. Commit your changes. The output of the ``doc/sphinx`` PR check should be correct for the new version and ready to publish.
