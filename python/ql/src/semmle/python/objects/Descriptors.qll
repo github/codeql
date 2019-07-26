@@ -67,14 +67,15 @@ class PropertyInternal extends ObjectInternal, TProperty {
         value = TPropertySetterOrDeleter(this, name) and origin = CfgOrigin::unknown()
     }
 
-    pragma [noinline] override predicate attributesUnknown() { none() }
+    override predicate attributesUnknown() { none() }
 
     override predicate subscriptUnknown() { none() }
 
     override boolean isDescriptor() { result = true }
 
     override int length() { none() }
-    pragma [noinline] override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) { none() }
+
+    override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) { none() }
 
     pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) {
         any(ObjectInternal obj).binds(cls, _, this) and
@@ -151,11 +152,9 @@ private class PropertySetterOrDeleter extends ObjectInternal, TPropertySetterOrD
 
     override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
-    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) {
-        none()
-    }
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
-    pragma [noinline] override predicate attributesUnknown() { none() }
+    override predicate attributesUnknown() { none() }
 
     override predicate subscriptUnknown() { none() }
 
@@ -163,15 +162,15 @@ private class PropertySetterOrDeleter extends ObjectInternal, TPropertySetterOrD
 
     override int length() { none() }
 
-    pragma [noinline] override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) { none() }
+    override predicate binds(ObjectInternal cls, string name, ObjectInternal descriptor) { none() }
 
     override predicate contextSensitiveCallee() { none() }
 
     override ObjectInternal getIterNext() { none() }
 
-    pragma [noinline] override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
+    override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
 
-    pragma [noinline] override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+    override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
     override predicate useOriginAsLegacyObject() { none() }
 
@@ -221,9 +220,9 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
 
     override predicate calleeAndOffset(Function scope, int paramOffset) { none() }
 
-    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
-    pragma [noinline] override predicate attributesUnknown() { none() }
+    override predicate attributesUnknown() { none() }
 
     override predicate subscriptUnknown() { none() }
 
@@ -313,9 +312,9 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
         this.getFunction().calleeAndOffset(scope, paramOffset)
     }
 
-    pragma [noinline] override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
 
-    pragma [noinline] override predicate attributesUnknown() { none() }
+    override predicate attributesUnknown() { none() }
 
     override predicate subscriptUnknown() { none() }
 
@@ -331,7 +330,7 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
         value = this.getFunction() and origin = CfgOrigin::unknown()
     }
 
-    pragma [noinline] override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
 
     override int length() { none() }
 
