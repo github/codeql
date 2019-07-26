@@ -59,6 +59,7 @@ newtype TInstructionTag =
   LoadTag() or  // Implicit load due to lvalue-to-rvalue conversion
   CatchTag() or
   ThrowTag() or
+  NewObjTag() or
   UnwindTag() or
   InitializerUninitializedTag() or
   InitializerFieldAddressTag(Field field) {
@@ -141,6 +142,7 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = CatchTag() and result = "Catch" or
   tag = ThrowTag() and result = "Throw" or
   tag = UnwindTag() and result = "Unwind" or
+  tag = NewObjTag() and result = "NewObj" or
   // TODO: Reread
 //  exists(Field field, Class cls, int index, string tagName |
 //    field = cls.getCanonicalMember(index) and

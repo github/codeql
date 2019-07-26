@@ -42,8 +42,8 @@ private newtype TOpcode =
   TDynamicCastToVoid() or
   TVariableAddress() or
   TFieldAddress() or
-  TIndexedElementAddress() or
   TFunctionAddress() or
+  TIndexedElementAddress() or
   TConstant() or
   TStringConstant() or
   TConditionalBranch() or
@@ -72,7 +72,8 @@ private newtype TOpcode =
   TBufferMayWriteSideEffect() or
   TChi() or
   TInlineAsm() or
-  TUnreached()
+  TUnreached() or
+  TNewObj()
 
 class Opcode extends TOpcode {
   string toString() {
@@ -221,4 +222,5 @@ module Opcode {
   class Chi extends Opcode, TChi { override final string toString() { result = "Chi" } }
   class InlineAsm extends Opcode, TInlineAsm { override final string toString() { result = "InlineAsm" } }
   class Unreached extends Opcode, TUnreached { override final string toString() { result = "Unreached" } }
+  class NewObj extends Opcode, TNewObj { override final string toString() { result = "NewObj" } }
 }

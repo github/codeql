@@ -243,7 +243,8 @@ class TranslatedTryStmt extends TranslatedStmt {
 
   override TranslatedElement getChild(int id) {
     id = 0 and result = getBody() or
-    result = getHandler(id - 1)
+    id = 1 and result = getFinally() or
+    result = getHandler(id - 2)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -262,7 +263,9 @@ class TranslatedTryStmt extends TranslatedStmt {
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     // All children go to the successor of the `try`.
-    child = getAChild() and result = getParent().getChildSuccessor(this)
+    child = getHandler(_) and result = getFinally().getFirstInstruction() or
+    child = getBody() and result = getParent().getChildSuccessor(this) or
+    child = getFinally() and result = getParent().getChildSuccessor(this)
   }
 
   final Instruction getNextHandler(TranslatedHandler handler) {
@@ -284,12 +287,15 @@ class TranslatedTryStmt extends TranslatedStmt {
   }
 
   private TranslatedHandler getHandler(int index) {
-    result = getTranslatedStmt(stmt.getChild(index + 1))
+    result = getTranslatedStmt(stmt.getCatchClause(index))
+  }
+  
+  private TranslatedStmt getFinally() {
+    result = getTranslatedStmt(stmt.getFinally())
   }
 
   private TranslatedStmt getBody() {
-  	// body stmt of try is 0th child
-    result = getTranslatedStmt(stmt.getChild(0))
+    result = getTranslatedStmt(stmt.getBlock())
   }
 }
 
@@ -375,59 +381,57 @@ abstract class TranslatedHandler extends TranslatedStmt {
   }
 }
 
-// TODO: Fix specific catch
-///**
-// * The IR translation of a C++ `catch` block that catches an exception with a
-// * specific type (e.g. `catch (const std::exception&)`).
-// */
-//class TranslatedCatchByTypeHandler extends TranslatedHandler {
-//  TranslatedCatchByTypeHandler() {
-//    stmt instanceof SpecificCatchClause
-//  }
-//
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//    Type resultType, boolean isLValue) {
-//    tag = CatchTag() and
-//    opcode instanceof Opcode::CatchByType and
-//    resultType instanceof VoidType and
-//    isLValue = false
-//  }
-//
-//  override TranslatedElement getChild(int id) {
-//    result = super.getChild(id) or
-//    id = 0 and result = getParameter()
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    result = super.getChildSuccessor(child) or
-//    child = getParameter() and result = getBlock().getFirstInstruction()
-//  }
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag,
-//    EdgeKind kind) {
-//    tag = CatchTag() and
-//    (
-//      (
-//        kind instanceof GotoEdge and
-//        result = getParameter().getFirstInstruction()
-//      ) or
-//      (
-//        kind instanceof ExceptionEdge and
-//        result = getParent().(TranslatedTryStmt).getNextHandler(this)
-//      )
-//    )
-//  }
-//
-//  override Type getInstructionExceptionType(InstructionTag tag) {
-//    tag = CatchTag() and
-//    result = stmt.(SpecificCatchClause).getVariable().getType()
-//  }
-//
-//// TODO: Fix the getParameter() method (C++ sees the catch var as a parameter, C# sees it as a var)
-////  private TranslatedParameter getParameter() {
-////    result = getTranslatedParameter(stmt.(SpecificCatchClause).getVariable())
-////  }
-//}
+/**
+ * The IR translation of a C++ `catch` block that catches an exception with a
+ * specific type (e.g. `catch (const std::exception&)`).
+ */
+class TranslatedCatchByTypeHandler extends TranslatedHandler {
+  TranslatedCatchByTypeHandler() {
+    stmt instanceof SpecificCatchClause
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+    Type resultType, boolean isLValue) {
+    tag = CatchTag() and
+    opcode instanceof Opcode::CatchByType and
+    resultType instanceof VoidType and
+    isLValue = false
+  }
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and result = getParameter() or 
+    id = 1 and result = getBlock()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getBlock() and result = getParent().getChildSuccessor(this) or
+    child = getParameter() and result = getBlock().getFirstInstruction()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    tag = CatchTag() and
+    (
+      (
+        kind instanceof GotoEdge and
+        result = getParameter().getFirstInstruction()
+      ) or
+      (
+        kind instanceof ExceptionEdge and
+        result = getParent().(TranslatedTryStmt).getNextHandler(this)
+      )
+    )
+  }
+
+  override Type getInstructionExceptionType(InstructionTag tag) {
+    tag = CatchTag() and
+    result = stmt.(SpecificCatchClause).getVariable().getType()
+  }
+
+  private TranslatedDeclarationEntry getParameter() {
+    result = getTranslatedDeclarationEntry(stmt.(SpecificCatchClause).getVariable())
+  }
+}
 
 /**
  * The IR translation of a C++ `catch (...)` block.

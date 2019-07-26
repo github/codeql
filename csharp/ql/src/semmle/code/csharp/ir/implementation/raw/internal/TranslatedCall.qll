@@ -314,8 +314,8 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
 /**
  * Represents the IR translation of a call to a constructor (can't call destructor explicitly in C#.
  */
-class TranslatedStructorCall extends TranslatedFunctionCall {
-  TranslatedStructorCall() {
+class TranslatedConstructorCall extends TranslatedFunctionCall {
+  TranslatedConstructorCall() {
     expr instanceof ObjectCreation
   }
 

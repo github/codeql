@@ -173,7 +173,7 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
     if (getVariable().getInitializer() instanceof ArrayCreation) then
         result = getTranslatedInitialization(getVariable().getInitializer().(ArrayCreation).getInitializer())
     else if (getVariable().getInitializer() instanceof ObjectCreation) then
-        result = getTranslatedInitialization(getVariable().getInitializer().(ObjectCreation).getInitializer())
+        result = getTranslatedInitialization(getVariable().getInitializer())
     else // then the simple variable initialization
         result = getTranslatedInitialization(getVariable().getInitializer())
   }

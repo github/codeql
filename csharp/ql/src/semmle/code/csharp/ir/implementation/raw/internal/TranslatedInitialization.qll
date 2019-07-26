@@ -216,27 +216,63 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
   }
 }
 
-class TranslatedConstructorInitialization extends TranslatedDirectInitialization, StructorCallContext {
+class TranslatedObjectCreationInitialization extends TranslatedDirectInitialization, StructorCallContext {
   override ObjectCreation expr;
-
+  
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
-    none()
+    (
+     tag = InitializerStoreTag() and
+     opcode instanceof Opcode::Store and
+     resultType = getContext().getTargetType() and
+     isLValue = false
+    )
+    or
+    (
+     tag = NewObjTag() and
+     opcode instanceof Opcode::NewObj and 
+     resultType = expr.getType() and
+     isLValue = false
+    )
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    none()
+    (
+     tag = NewObjTag() and
+     kind instanceof GotoEdge and
+     result = getInitializer().getFirstInstruction()
+    )
+    or
+    (
+     tag = InitializerStoreTag() and
+     result = getParent().getChildSuccessor(this) and
+     kind instanceof GotoEdge
+    )
   }
 
+  override Instruction getFirstInstruction() {
+    result = getInstruction(NewObjTag())   
+  }
+  
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitializer() and result = getParent().getChildSuccessor(this)
+    child = getInitializer() and result = getInstruction(InitializerStoreTag())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    none()
+    tag = InitializerStoreTag() and
+    (
+      (
+        operandTag instanceof AddressOperandTag and
+        result = getContext().getTargetAddress()
+      ) or
+      (
+        operandTag instanceof StoreValueOperandTag and
+        result = getInstruction(NewObjTag())
+      )
+    )
   }
 
   override Instruction getReceiver() {
-    result = getContext().getTargetAddress()
+    result = getInstruction(NewObjTag())
   }
 }
 
