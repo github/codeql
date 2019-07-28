@@ -1,7 +1,18 @@
-| Test.cs:20:13:20:129 | ... += ... | Certificate validation disabled. |
-| Test.cs:21:13:21:103 | ... += ... | Certificate validation disabled. |
-| Test.cs:22:13:22:91 | ... += ... | Certificate validation disabled. |
-| Test.cs:23:13:23:96 | ... += ... | Certificate validation disabled. |
-| Test.cs:26:13:26:134 | ... = ... | Certificate validation disabled. |
-| Test.cs:29:13:29:145 | ... = ... | Certificate validation disabled. |
-| Test.cs:69:13:69:148 | ... = ... | Certificate validation disabled. |
+edges
+| CertificateValidationDisabled.cs:28:72:28:129 | (...) => ... | CertificateValidationDisabled.cs:28:72:28:129 | (...) => ... |
+| CertificateValidationDisabled.cs:29:72:29:103 | (...) => ... | CertificateValidationDisabled.cs:29:72:29:103 | (...) => ... |
+| CertificateValidationDisabled.cs:30:72:30:91 | (...) => ... | CertificateValidationDisabled.cs:30:72:30:91 | (...) => ... |
+| CertificateValidationDisabled.cs:31:72:31:96 | delegate(...) { ... } | CertificateValidationDisabled.cs:31:72:31:96 | delegate(...) { ... } |
+| CertificateValidationDisabled.cs:34:111:34:133 | access to method AcceptAllCertifications | CertificateValidationDisabled.cs:34:71:34:134 | delegate creation of type RemoteCertificateValidationCallback |
+| CertificateValidationDisabled.cs:38:111:38:144 | access to method AcceptAllCertificationsNonStatic | CertificateValidationDisabled.cs:38:71:38:145 | delegate creation of type RemoteCertificateValidationCallback |
+| CertificateValidationDisabled.cs:42:72:53:13 | (...) => ... | CertificateValidationDisabled.cs:42:72:53:13 | (...) => ... |
+| CertificateValidationDisabled.cs:56:72:73:13 | delegate(...) { ... } | CertificateValidationDisabled.cs:56:72:73:13 | delegate(...) { ... } |
+| CertificateValidationDisabled.cs:79:111:79:147 | access to method AcceptAllCertificationsNonStatic | CertificateValidationDisabled.cs:79:71:79:148 | delegate creation of type RemoteCertificateValidationCallback |
+#select
+| CertificateValidationDisabled.cs:28:72:28:129 | (...) => ... | CertificateValidationDisabled.cs:28:72:28:129 | (...) => ... | CertificateValidationDisabled.cs:28:72:28:129 | (...) => ... | Certificate validation disabled for $@ callback. | CertificateValidationDisabled.cs:28:72:28:129 | (...) => ... | this |
+| CertificateValidationDisabled.cs:29:72:29:103 | (...) => ... | CertificateValidationDisabled.cs:29:72:29:103 | (...) => ... | CertificateValidationDisabled.cs:29:72:29:103 | (...) => ... | Certificate validation disabled for $@ callback. | CertificateValidationDisabled.cs:29:72:29:103 | (...) => ... | this |
+| CertificateValidationDisabled.cs:30:72:30:91 | (...) => ... | CertificateValidationDisabled.cs:30:72:30:91 | (...) => ... | CertificateValidationDisabled.cs:30:72:30:91 | (...) => ... | Certificate validation disabled for $@ callback. | CertificateValidationDisabled.cs:30:72:30:91 | (...) => ... | this |
+| CertificateValidationDisabled.cs:31:72:31:96 | delegate(...) { ... } | CertificateValidationDisabled.cs:31:72:31:96 | delegate(...) { ... } | CertificateValidationDisabled.cs:31:72:31:96 | delegate(...) { ... } | Certificate validation disabled for $@ callback. | CertificateValidationDisabled.cs:31:72:31:96 | delegate(...) { ... } | this |
+| CertificateValidationDisabled.cs:34:71:34:134 | delegate creation of type RemoteCertificateValidationCallback | CertificateValidationDisabled.cs:34:111:34:133 | access to method AcceptAllCertifications | CertificateValidationDisabled.cs:34:71:34:134 | delegate creation of type RemoteCertificateValidationCallback | Certificate validation disabled for $@ callback. | CertificateValidationDisabled.cs:82:28:82:50 | AcceptAllCertifications | this |
+| CertificateValidationDisabled.cs:38:71:38:145 | delegate creation of type RemoteCertificateValidationCallback | CertificateValidationDisabled.cs:38:111:38:144 | access to method AcceptAllCertificationsNonStatic | CertificateValidationDisabled.cs:38:71:38:145 | delegate creation of type RemoteCertificateValidationCallback | Certificate validation disabled for $@ callback. | CertificateValidationDisabled.cs:87:21:87:52 | AcceptAllCertificationsNonStatic | this |
+| CertificateValidationDisabled.cs:79:71:79:148 | delegate creation of type RemoteCertificateValidationCallback | CertificateValidationDisabled.cs:79:111:79:147 | access to method AcceptAllCertificationsNonStatic | CertificateValidationDisabled.cs:79:71:79:148 | delegate creation of type RemoteCertificateValidationCallback | Certificate validation disabled for $@ callback. | CertificateValidationDisabled.cs:87:21:87:52 | AcceptAllCertificationsNonStatic | this |

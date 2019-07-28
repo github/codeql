@@ -1,50 +1,87 @@
 /**
- * @name Do not disable certificate validation
- * @description Do not force ServerCertificateValidationCallback to always return 'true'.
- * @kind problem
- * @id cs/do-not-disable-cert-validation
+ * @name Certificate validation disabled
+ * @description Disabling certificate validation may impose a security risk,
+ *              for example allowing for man-in-the-middle attacks.
+ * @kind path-problem
+ * @id cs/certificate-validation-disabled
  * @problem.severity error
- * @precision high
  * @tags security
  *       external/cwe/cwe-295
  */
+
 import csharp
-/*
- * Lambda examples:
- *  ServicePointManager.ServerCertificateValidationCallback += (a, b, c, d) => { return true; };
- *  ServicePointManager.ServerCertificateValidationCallback += (a, b, c, d) => true;
- * Anonymous method example:
- *  ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
- * Delegate creation example:
- *  ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(AcceptAllCertifications);
- */
-from Assignment a, PropertyWrite leftExpr, Callable targetCallable, Property p
-where leftExpr = a.getLValue()  // Hook up the basic fields
-    and leftExpr.getTarget() = p
-    and p.getDeclaringType().hasQualifiedName("System.Net", "ServicePointManager")
-    and p.getName() = "ServerCertificateValidationCallback"
-    // Find the target callable being assigned to the ServerCertificateValidationCallback
-    and exists(Expr assignedValue |
-        assignedValue = a.getRValue() |
-        // Either the assigned value is an AnonymousFunctionExpr, such as a lambda or anonymous method expr
-        targetCallable = assignedValue or
-        // Or the assigned value is a DelegateCreation
-        exists(Expr delegateCreationArg |
-            delegateCreationArg = assignedValue.(DelegateCreation).getArgument() |
-            // And the argument is an AnonymousFunctionExpr
-            targetCallable = delegateCreationArg or
-            // Or the argument is an access to a callable
-            targetCallable = delegateCreationArg.(CallableAccess).getTarget()
-        )
+import DataFlow
+import PathGraph
+
+/** An expression assigned to `ServicePointManager.ServerCertificateValidationCallback`. */
+class CallBackExpr extends Expr {
+  CallBackExpr() {
+    exists(AssignableDefinition def, Property p, Expr source |
+      p = def.getTargetAccess().getTarget() and
+      p.hasQualifiedName("System.Net.ServicePointManager", "ServerCertificateValidationCallback") and
+      source = def.getSource()
+    |
+      // ServicePointManager.ServerCertificateValidationCallback = ...
+      this = source and
+      not source instanceof OperatorCall
+      or
+      // ServicePointManager.ServerCertificateValidationCallback += ...
+      this = source.(OperatorCall).getArgument(1)
     )
-    // If the target callable returns true, validation is disabled
-    and(
-        exists(ReturnStmt rs, BlockStmt bs |
-            bs = targetCallable.getBody() and
-            bs.getNumberOfChildren() = 1 and
-            bs.getChild(0) = rs and
-            rs.getExpr().(BoolLiteral).getBoolValue() = true
-        ) or
-        targetCallable.getBody().(BoolLiteral).getBoolValue() = true
-    )
-select a, "Certificate validation disabled."
+  }
+}
+
+/** A source of flow for a delegate expression. */
+class DelegateFlowSource extends ExprNode {
+  private Callable c;
+
+  DelegateFlowSource() {
+    this.getExpr() = any(Expr e |
+        c = e.(AnonymousFunctionExpr) or
+        c = e.(CallableAccess).getTarget().getSourceDeclaration()
+      )
+  }
+
+  /** Gets the callable that is referenced in this delegate flow source. */
+  Callable getCallable() { result = c }
+}
+
+class DelegateFlowConfiguration extends Configuration {
+  DelegateFlowConfiguration() { this = "DelegateFlowConfiguration" }
+
+  override predicate isSource(Node source) { source instanceof DelegateFlowSource }
+
+  override predicate isSink(Node sink) { sink.asExpr() instanceof CallBackExpr }
+
+  override predicate isAdditionalFlowStep(Node node1, Node node2) {
+    node1.asExpr() = node2.asExpr().(DelegateCreation).getArgument()
+  }
+}
+
+/** A certificate validation callback. */
+class CallBack extends Callable {
+  private DelegateFlowSource source;
+
+  CallBack() {
+    any(DelegateFlowConfiguration c).hasFlow(source, _) and
+    this = source.getCallable()
+  }
+
+  /** Gets a source that references this callback. */
+  DelegateFlowSource getASource() { result = source }
+
+  /** Holds if this callback disables certificate validation. */
+  predicate disablesValidation() {
+    forex(Expr e | this.canReturn(e) and e.isLive() | e.(BoolLiteral).getBoolValue() = true)
+  }
+}
+
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, CallBackExpr cbe, CallBack c,
+  DelegateFlowConfiguration conf
+where
+  conf.hasFlowPath(source, sink) and
+  source.getNode() = c.getASource() and
+  sink.getNode().asExpr() = cbe and
+  c.disablesValidation()
+select cbe, source, sink, "Certificate validation disabled for $@ callback.", c, "this"

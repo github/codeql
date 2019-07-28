@@ -1,4 +1,4 @@
-// semmle-extractor-options: /nostdlib /noconfig /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\mscorlib.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.Net.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.Net.Http.dll /r:${env.windir}\Microsoft.NET\Framework64\v4.0.30319\System.Linq.dll
+// semmle-extractor-options: /r:System.Security.Cryptography.X509Certificates.dll /r:System.Net.dll /r:System.Net.Http.dll /r:System.Net.Security.dll /r:System.Linq.dll /r:System.Net.Primitives.dll
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,27 +10,37 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SemmleTestCertValidation
+namespace System.Net
+{
+    static class ServicePointManager
+    {
+        public static RemoteCertificateValidationCallback ServerCertificateValidationCallback { get; set; }
+    }
+}
+
+namespace CertificateValidationDisabled
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // Bad (Simple)
+            // BAD
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => { return true; };
             ServicePointManager.ServerCertificateValidationCallback += (a, b, c, d) => { return true; };
             ServicePointManager.ServerCertificateValidationCallback += (a, b, c, d) => true;
             ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
 
-            // Bad (Simple Function)
+            // BAD
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(AcceptAllCertifications);
 
             var m = new Program();
+            // BAD
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(m.AcceptAllCertificationsNonStatic);
             m.Test();
 
-            // Don't know
-            ServicePointManager.ServerCertificateValidationCallback += (a, b, c, d) => {
+            // GOOD
+            ServicePointManager.ServerCertificateValidationCallback += (a, b, c, d) =>
+            {
                 int x = 20;
                 if (x < 100)
                 {
@@ -42,7 +52,7 @@ namespace SemmleTestCertValidation
                 }
             };
 
-            // Good
+            // GOOD
             ServicePointManager.ServerCertificateValidationCallback += delegate (
                 object sender,
                 X509Certificate cert,
