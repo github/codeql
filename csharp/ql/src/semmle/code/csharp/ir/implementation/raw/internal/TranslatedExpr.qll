@@ -98,11 +98,15 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
    * All exprs produce a final value, apart from reads. They first need an access,
    * then a load.
    */
+  // TODO: When the compatibility layer is in place, 
+  //       create a special class for the following cases
   override final predicate producesExprResult() {
-  	// TODO: When the compatibility layer is in place, 
-  	//       create a special class for the following cases
     not (expr instanceof AssignableRead) or
-    expr.getParent() instanceof ArrayAccess
+    expr.getParent() instanceof ArrayAccess or
+    // TODO: Make sure this is enough
+    // Ref types need no loads
+    // Eg. `Object obj = oldObj`;
+    expr.getType() instanceof RefType
   }
 
   /**
@@ -976,10 +980,13 @@ abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {
 
 class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
   TranslatedNonFieldVariableAccess() {
-  	// TODO: Make sure those are enough and correct
     not expr instanceof FieldAccess and
-    // Init should take care of this access (check with cpp)
-    (not expr.getParent() instanceof LocalVariableDeclAndInitExpr)
+    // If the parent expression is a declaration + initialization
+    // expr, then translate only the variables that are initializers (on the RHS)
+    // and not the LHS (the address of the LHS is generated during 
+    // the translation of the initialization
+    (expr.getParent() instanceof LocalVariableDeclAndInitExpr implies
+     expr = expr.getParent().(LocalVariableDeclAndInitExpr).getInitializer())
   }
 
   override Instruction getFirstInstruction() {
