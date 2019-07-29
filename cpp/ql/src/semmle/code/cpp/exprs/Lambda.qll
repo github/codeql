@@ -24,7 +24,7 @@ class LambdaExpression extends Expr, @lambdaexpr {
    * Gets the nth implicitly or explicitly captured value of this lambda expression.
    */
   LambdaCapture getCapture(int index) {
-    lambda_capture(result, underlyingElement(this), index, _, _, _)
+    lambda_capture(result, underlyingElement(this), index, _, _, _, _)
   }
 
   /**
@@ -64,7 +64,7 @@ class LambdaExpression extends Expr, @lambdaexpr {
    * Gets the initializer that initializes the captured variables in the closure, if any.
    * A lambda that does not capture any variables will not have an initializer.
    */
-  Expr getInitializer() {
+  ClassAggregateLiteral getInitializer() {
     result = getChild(0)
   }
 }
@@ -109,7 +109,7 @@ class LambdaCapture extends @lambdacapture {
    * Holds if this capture was made implicitly.
    */
   predicate isImplicit() {
-    lambda_capture(this, _, _, _, true, _)
+    lambda_capture(this, _, _, _, _, true, _)
   }
 
   /**
@@ -122,7 +122,7 @@ class LambdaCapture extends @lambdacapture {
    *                                is actually "*this" being captured rather than "this".]
    */
   predicate isCapturedByReference() {
-    lambda_capture(this, _, _, true, _, _)
+    lambda_capture(this, _, _, _, true, _, _)
   }
 
   /**
@@ -134,16 +134,14 @@ class LambdaCapture extends @lambdacapture {
    * expression which accesses the captured variable.
    */
   Location getLocation() {
-    lambda_capture(this, _, _, _, _, result)
+    lambda_capture(this, _, _, _, _, _, result)
   }
 
   /**
    * Gets the field of the lambda expression's closure type which is used to store this capture.
    */
   MemberVariable getField() {
-    exists(LambdaExpression lambda, int index | this = lambda.getCapture(index) |
-      result = lambda.getType().(Closure).getCanonicalMember(index)
-    )
+    lambda_capture(this, _, _, result, _, _, _)
   }
 
   /**
@@ -154,9 +152,8 @@ class LambdaCapture extends @lambdacapture {
    * For by-value captures of non-primitive types, this will be a call to a copy constructor.
    */
   Expr getInitializer() {
-    exists(LambdaExpression lambda, int index | this = lambda.getCapture(index) |
-      result = lambda.getChild(0)     // Call to the constructor of the closure type.
-                     .getChild(index) // The appropriate argument to the constructor.
+    exists(LambdaExpression lambda | this = lambda.getCapture(_) |
+      result = lambda.getInitializer().getFieldExpr(this.getField())
     )
   }
 }
