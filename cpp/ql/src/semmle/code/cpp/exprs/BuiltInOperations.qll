@@ -210,10 +210,10 @@ class BuiltInOperationIsUnion extends BuiltInOperation, @isunionexpr {
 }
 
 /**
- * A C++ `__builtin_types` expression (used by some implementations of the type_traits header).
+ * A C++ `__builtin_types_compatible_p` expression (used by some implementations of the type_traits header).
  */
-class BuiltInOperationBuiltInTypes extends BuiltInOperation, @typescompexpr {
-  override string toString() { result = "__builtin_types" }
+class BuiltInOperationBuiltInTypesCompatibleP extends BuiltInOperation, @typescompexpr {
+  override string toString() { result = "__builtin_types_compatible_p" }
 }
 
 /**
