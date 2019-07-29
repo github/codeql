@@ -96,12 +96,14 @@ module StepSummary {
     or
     exists(string name |
       name = GlobalAccessPath::fromRhs(pred) and
+      GlobalAccessPath::isAssignedInUniqueFile(name) and
       succ = DataFlow::globalAccessPathRootPseudoNode() and
       summary = StoreStep(name)
     )
     or
     exists(string name |
       name = GlobalAccessPath::fromReference(succ) and
+      GlobalAccessPath::isAssignedInUniqueFile(name) and
       pred = DataFlow::globalAccessPathRootPseudoNode() and
       summary = LoadStep(name)
     )

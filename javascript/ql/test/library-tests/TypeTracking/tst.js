@@ -60,10 +60,16 @@ function getFromConfigFramework() {
 
 function initConnection() {
   MyApplication.namespace.connection = api.chain1().chain2().createConnection();
+  MyApplication.namespace.conflict = api.chain1().chain2().createConnection();
 }
 
 function useConnection() {
   let conn = MyApplication.namespace.connection;
+  conn.getData(data => {
+    useData(data);
+  });
+
+  let conflict = MyApplication.namespace.conflict;
   conn.getData(data => {
     useData(data);
   });
