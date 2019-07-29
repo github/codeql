@@ -350,6 +350,46 @@ class ClassValue extends Value {
 
 }
 
+class PythonFunctionValue extends CallableValue {
+
+    PythonFunctionValue() {
+        this instanceof PythonFunctionObjectInternal
+    }
+
+}
+
+class BuiltinFunctionValue extends CallableValue {
+
+    BuiltinFunctionValue() {
+        this instanceof BuiltinFunctionObjectInternal
+    }
+
+}
+
+class SequenceValue extends Value {
+
+    SequenceValue() {
+        this instanceof SequenceObjectInternal
+    }
+
+    Value getItem(int n) {
+        result = this.(SequenceObjectInternal).getItem(n)
+    }
+
+    int length() {
+        result = this.(SequenceObjectInternal).length()
+    }
+
+}
+
+class TupleValue extends SequenceValue {
+
+    TupleValue() {
+        this instanceof TupleObjectInternal
+    }
+
+}
+
 /** A method-resolution-order sequence of classes */
 class MRO extends TClassList {
 
