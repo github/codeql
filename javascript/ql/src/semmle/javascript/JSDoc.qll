@@ -4,6 +4,17 @@ import javascript
 
 /**
  * A JSDoc comment.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * An example JSDoc comment documenting a constructor function.
+ *  *
+ *  * @constructor
+ *  * @param {Object=} options An object literal with options.
+ *  *&#47;
+ * </pre>
  */
 class JSDoc extends @jsdoc, Locatable {
   override Location getLocation() { hasLocation(this, result) }
@@ -28,6 +39,20 @@ class JSDoc extends @jsdoc, Locatable {
 
 /**
  * A program element that can have a JSDoc comment.
+ *
+ * Example:
+ *
+ * <pre>
+ * /**
+ *  * An example JSDoc comment documenting a constructor function.
+ *  *
+ *  * @constructor
+ *  * @param {Object=} options An object literal with options.
+ *  *&#47;
+ * function MyConstructor(options) {  // documentable
+ *   this.options = options || {};
+ * }
+ * </pre>
  */
 abstract class Documentable extends ASTNode {
   /** Gets the JSDoc comment for this element, if any. */
@@ -38,6 +63,13 @@ abstract class Documentable extends ASTNode {
 /**
  * A syntactic element that a JSDoc type expression may be nested in, that is,
  * either a JSDoc tag or another JSDoc type expression.
+ *
+ * Examples:
+ *
+ * ```
+ * // the `@param` tag and the `...=` type expressions are JSDoc type expression parents
+ * @param {Object=} options An object literal with options.
+ * ```
  */
 class JSDocTypeExprParent extends @jsdoc_type_expr_parent, Locatable {
   override Location getLocation() { hasLocation(this, result) }
@@ -46,7 +78,14 @@ class JSDocTypeExprParent extends @jsdoc_type_expr_parent, Locatable {
 }
 
 /**
- * A JSDoc tag such as `@param Object options An object literal with options.`
+ * A JSDoc tag.
+ *
+ * Examples:
+ *
+ * ```
+ * @param {Object=} options An object literal with options.
+ * @return {!Server}
+ * ```
  */
 class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent {
   /** Gets the tag title; for instance, the title of a `@param` tag is `"param"`. */
@@ -90,6 +129,12 @@ class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent {
 
 /**
  * A `@param` tag.
+ *
+ * Example:
+ *
+ * ```
+ * @param {Object=} options An object literal with options.
+ * ```
  */
 class JSDocParamTag extends JSDocTag {
   JSDocParamTag() { getTitle().regexpMatch("param|arg(ument)?") }
@@ -104,6 +149,14 @@ class JSDocParamTag extends JSDocTag {
 
 /**
  * A JSDoc type expression.
+ *
+ * Examples:
+ *
+ * ```
+ * *
+ * Array<string>
+ * !Object
+ * ```
  */
 class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotation {
   /**
@@ -148,32 +201,81 @@ class JSDocTypeExpr extends @jsdoc_type_expr, JSDocTypeExprParent, TypeAnnotatio
   override TopLevel getTopLevel() { result = getEnclosingStmt().getTopLevel() }
 }
 
-/** An `any` type expression `*`. */
+/**
+ * An `any` type expression.
+ *
+ * Example:
+ *
+ * ```
+ * *
+ * ```
+ */
 class JSDocAnyTypeExpr extends @jsdoc_any_type_expr, JSDocTypeExpr {
   override predicate isAny() { any() }
 }
 
-/** A null type expression. */
+/**
+ * A null type expression.
+ *
+ * Example:
+ *
+ * ```
+ * null
+ * ```
+ */
 class JSDocNullTypeExpr extends @jsdoc_null_type_expr, JSDocTypeExpr {
   override predicate isNull() { any() }
 }
 
-/** A type expression representing the type of `undefined`. */
+/**
+ * A type expression representing the type of `undefined`.
+ *
+ * Example:
+ *
+ * ```
+ * undefined
+ * ```
+ */
 class JSDocUndefinedTypeExpr extends @jsdoc_undefined_type_expr, JSDocTypeExpr {
   override predicate isUndefined() { any() }
 }
 
-/** A type expression representing an unknown type `?`. */
+/**
+ * A type expression representing an unknown type.
+ *
+ * Example:
+ *
+ * ```
+ * ?
+ * ```
+ */
 class JSDocUnknownTypeExpr extends @jsdoc_unknown_type_expr, JSDocTypeExpr {
   override predicate isUnknownKeyword() { any() }
 }
 
-/** A type expression representing the void type. */
+/**
+ * A type expression representing the void type.
+ *
+ * Example:
+ *
+ * ```
+ * void
+ * ```
+ */
 class JSDocVoidTypeExpr extends @jsdoc_void_type_expr, JSDocTypeExpr {
   override predicate isVoid() { any() }
 }
 
-/** A type expression referring to a named type. */
+/**
+ * A type expression referring to a named type.
+ *
+ * Example:
+ *
+ * ```
+ * string
+ * Object
+ * ```
+ */
 class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
   /** Gets the name of the type the expression refers to. */
   string getName() { result = toString() }
@@ -268,7 +370,13 @@ class JSDocNamedTypeExpr extends @jsdoc_named_type_expr, JSDocTypeExpr {
 }
 
 /**
- * An applied type expression such as `Array<string>`.
+ * An applied type expression.
+ *
+ * Example:
+ *
+ * ```
+ * Array<string>
+ * ```
  */
 class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
   /** Gets the head type expression, such as `Array` in `Array<string>`. */
@@ -298,7 +406,13 @@ class JSDocAppliedTypeExpr extends @jsdoc_applied_type_expr, JSDocTypeExpr {
 }
 
 /**
- * A nullable type expression such as `?number`.
+ * A nullable type expression.
+ *
+ * Example:
+ *
+ * ```
+ * ?Array
+ * ```
  */
 class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
   /** Gets the argument type expression. */
@@ -315,7 +429,13 @@ class JSDocNullableTypeExpr extends @jsdoc_nullable_type_expr, JSDocTypeExpr {
 }
 
 /**
- * A non-nullable type expression such as `!number`.
+ * A non-nullable type expression.
+ *
+ * Example:
+ *
+ * ```
+ * !Array
+ * ```
  */
 class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeExpr {
   /** Gets the argument type expression. */
@@ -332,7 +452,13 @@ class JSDocNonNullableTypeExpr extends @jsdoc_non_nullable_type_expr, JSDocTypeE
 }
 
 /**
- * A record type expression such as `{ x: number, y: string }`.
+ * A record type expression.
+ *
+ * Example:
+ *
+ * ```
+ * { x: number, y: string }
+ * ```
  */
 class JSDocRecordTypeExpr extends @jsdoc_record_type_expr, JSDocTypeExpr {
   /** Gets the name of the `i`th field of the record type. */
@@ -351,7 +477,13 @@ class JSDocRecordTypeExpr extends @jsdoc_record_type_expr, JSDocTypeExpr {
 }
 
 /**
- * An array type expression such as `[string]`.
+ * An array type expression.
+ *
+ * Example:
+ *
+ * ```
+ * [string]
+ * ```
  */
 class JSDocArrayTypeExpr extends @jsdoc_array_type_expr, JSDocTypeExpr {
   /** Gets the type of the `i`th element of this array type. */
@@ -362,7 +494,13 @@ class JSDocArrayTypeExpr extends @jsdoc_array_type_expr, JSDocTypeExpr {
 }
 
 /**
- * A union type expression such as `number|string`.
+ * A union type expression.
+ *
+ * Example:
+ *
+ * ```
+ * number|string
+ * ```
  */
 class JSDocUnionTypeExpr extends @jsdoc_union_type_expr, JSDocTypeExpr {
   /** Gets one of the type alternatives of this union type. */
@@ -372,7 +510,13 @@ class JSDocUnionTypeExpr extends @jsdoc_union_type_expr, JSDocTypeExpr {
 }
 
 /**
- * A function type expression such as `function(string): number`.
+ * A function type expression.
+ *
+ * Example:
+ *
+ * ```
+ * function(string): number
+ * ```
  */
 class JSDocFunctionTypeExpr extends @jsdoc_function_type_expr, JSDocTypeExpr {
   /** Gets the result type of this function type. */
@@ -392,7 +536,13 @@ class JSDocFunctionTypeExpr extends @jsdoc_function_type_expr, JSDocTypeExpr {
 }
 
 /**
- * An optional parameter type such as `number=`.
+ * An optional parameter type.
+ *
+ * Example:
+ *
+ * ```
+ * number=
+ * ```
  */
 class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTypeExpr {
   /** Gets the underlying type of this optional type. */
@@ -406,7 +556,13 @@ class JSDocOptionalParameterTypeExpr extends @jsdoc_optional_type_expr, JSDocTyp
 }
 
 /**
- * A rest parameter type such as `string...`.
+ * A rest parameter type.
+ *
+ * Example:
+ *
+ * ```
+ * string...
+ * ```
  */
 class JSDocRestParameterTypeExpr extends @jsdoc_rest_type_expr, JSDocTypeExpr {
   /** Gets the underlying type of this rest parameter type. */
