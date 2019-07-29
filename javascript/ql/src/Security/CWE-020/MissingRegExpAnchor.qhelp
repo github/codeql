@@ -62,9 +62,9 @@
 			A related mistake is to write a regular expression with
 			multiple alternatives, but to only include an anchor for one of the
 			alternatives. As an example, the regular expression
-			<code>/^www\\.example\\.com|beta\\.example\\.com/</code> will match the host
+			<code>/^www\.example\.com|beta\.example\.com/</code> will match the host
 			<code>evil.beta.example.com</code> because the regular expression is parsed
-			as <code>/(^www\\.example\\.com)|(beta\\.example\\.com)/</code>
+			as <code>/(^www\.example\.com)|(beta\.example\.com)/</code>
 
 		</p>
 	</example>
