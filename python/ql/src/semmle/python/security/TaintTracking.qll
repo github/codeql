@@ -89,6 +89,7 @@
 import python
 private import semmle.python.pointsto.Filters as Filters
 private import semmle.python.objects.ObjectInternal
+import semmle.python.dataflow.Configuration
 
 /** A 'kind' of taint. This may be almost anything,
  * but it is typically something like a "user-defined string".
@@ -166,6 +167,11 @@ abstract class TaintKind extends string {
     TaintKind getTaintForIteration() { none() }
 
 }
+
+/**
+ * Alias of `TaintKind`, so the two types can be used interchangeably.
+ */
+class FlowLabel = TaintKind;
 
 /** Taint kinds representing collections of other taint kind.
  * We use `{kind}` to represent a mapping of string to `kind` and
@@ -668,6 +674,11 @@ class TaintedNode extends TTaintedNode {
     /** Get the AST node for this node. */
     AstNode getAstNode() {
         result = this.getNode().getNode()
+    }
+
+    /** Gets the CFG node for this node. */
+    ControlFlowNode getCfgNode() {
+        this = TTaintedNode_(_, _, result)
     }
 
     /** Gets the data-flow context for this node. */
@@ -1640,47 +1651,6 @@ private class DataFlowType extends TaintKind {
     DataFlowType() {
         this = "Data flow"  and
         exists(DataFlow::Configuration c)
-    }
-
-}
-
-module TaintTracking {
-
-    class Source = TaintSource;
-
-    class Sink = TaintSink;
-
-    class PathSource = TaintedPathSource;
-
-    class PathSink = TaintedPathSink;
-
-    class Extension = DataFlowExtension::DataFlowNode;
-
-    abstract class Configuration extends string {
-
-        bindingset[this]
-        Configuration() { this = this }
-
-        abstract predicate isSource(Source source);
-
-        abstract predicate isSink(Sink sink);
-
-        predicate isSanitizer(Sanitizer sanitizer) { none() }
-
-        predicate isExtension(Extension extension) { none() }
-
-        predicate hasFlowPath(PathSource source, PathSink sink) {
-            this.isSource(source.getNode()) and
-            this.isSink(sink.getNode()) and
-            source.flowsTo(sink)
-        }
-
-        predicate hasFlow(Source source, Sink sink) {
-            this.isSource(source) and
-            this.isSink(sink) and
-            source.flowsToSink(sink)
-        }
-
     }
 
 }
