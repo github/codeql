@@ -1,5 +1,7 @@
 import python
 import semmle.python.security.TaintTracking
+private import semmle.python.objects.ObjectInternal
+private import semmle.python.dataflow.Implementation
 
 module TaintTracking {
 
@@ -7,11 +9,11 @@ module TaintTracking {
 
     class Sink = TaintSink;
 
-    class PathSource = TaintedPathSource;
-
-    class PathSink = TaintedPathSink;
-
     class Extension = DataFlowExtension::DataFlowNode;
+
+    class PathSource = TaintTrackingNode;
+
+    class PathSink = TaintTrackingNode;
 
     abstract class Configuration extends string {
 
@@ -52,7 +54,7 @@ module TaintTracking {
         /**
          * Holds if `src -> dest` is a flow edge converting taint from `srckind` to `destkind`.
          */
-        predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg, TaintKind srckind, TaintKind destkind) {
+        predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dest, TaintKind srckind, TaintKind destkind) {
             none()
         }
 
@@ -66,6 +68,11 @@ module TaintTracking {
         predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node trg) { none() }
 
         /**
+         * Holds if control flow from `test` along the `isTrue` edge is prohibited.
+         */
+        predicate isBarrierTest(ControlFlowNode test, boolean isTrue) { none() }
+
+        /**
          * Holds if flow from `src` to `dest` is prohibited when the incoming taint is `srckind` and the outgoing taint is `destkind`.
          * Note that `srckind` and `destkind` can be the same.
          */
@@ -74,9 +81,7 @@ module TaintTracking {
         /* Common query API */
 
         predicate hasFlowPath(PathSource source, PathSink sink) {
-            this.isSource(source.getNode()) and
-            this.isSink(sink.getNode()) and
-            source.flowsTo(sink)
+            this.(TaintTrackingImplementation).hasFlowPath(source, sink)
         }
 
         /* Old query API */
@@ -84,8 +89,8 @@ module TaintTracking {
         deprecated predicate hasFlow(Source source, Sink sink) {
             exists(PathSource psource, PathSink psink |
                 this.hasFlowPath(psource, psink) and
-                source = psource.getCfgNode() and
-                sink = psink.getCfgNode()
+                source = psource.getNode().asCfgNode() and
+                sink = psink.getNode().asCfgNode()
             )
         }
 
@@ -103,4 +108,3 @@ module TaintTracking {
     }
 
 }
-

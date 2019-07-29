@@ -89,6 +89,7 @@
 import python
 private import semmle.python.pointsto.Filters as Filters
 private import semmle.python.objects.ObjectInternal
+private import semmle.python.dataflow.Implementation
 import semmle.python.dataflow.Configuration
 
 /** A 'kind' of taint. This may be almost anything,
@@ -681,6 +682,15 @@ class TaintedNode extends TTaintedNode {
         this = TTaintedNode_(_, _, result)
     }
 
+    /** Gets the Dataflow node for this node. */
+    DataFlow::Node getDataFlowNode() {
+        /* FIX ME! -- Needs to handle ESSA nodes as well */
+        exists(ControlFlowNode cfgnode |
+            this = TTaintedNode_(_, _, cfgnode) and
+            result.asCfgNode() = cfgnode
+        )
+    }
+
     /** Gets the data-flow context for this node. */
     CallContext getContext() {
         this = TTaintedNode_(_, result, _)
@@ -741,10 +751,10 @@ class TaintedNode extends TTaintedNode {
 
 }
 
-class TaintedPathSource extends TaintedNode {
+class TaintedPathSource extends TaintTrackingNode {
 
     TaintedPathSource() {
-        this.getNode().(TaintSource).isSourceOf(this.getTaintKind(), this.getContext())
+        this.isSource()
     }
 
     /** Holds if taint can flow from this source to sink `sink` */
@@ -752,22 +762,18 @@ class TaintedPathSource extends TaintedNode {
         this.getASuccessor*() = sink
     }
 
-    TaintSource getSource() {
-        result = this.getNode()
-    }
 
 }
 
-class TaintedPathSink extends TaintedNode {
+class TaintedPathSink extends TaintTrackingNode {
 
     TaintedPathSink() {
-        this.getNode().(TaintSink).sinks(this.getTaintKind())
+        this.isSink()
     }
 
-    TaintSink getSink() {
+    DataFlow::Node getSink() {
         result = this.getNode()
     }
-
 }
 
 /** This module contains the implementation of taint-flow.
@@ -1613,26 +1619,24 @@ module DataFlow {
      * compatibility with other language libraries
      */
 
-    class Node = ControlFlowNode;
-
     class Extension = DataFlowExtension::DataFlowNode;
 
-    abstract class Configuration extends string {
+    deprecated abstract class Configuration extends string {
 
         bindingset[this]
         Configuration() { this = this }
 
-        abstract predicate isSource(Node source);
+        abstract predicate isSource(ControlFlowNode source);
 
-        abstract predicate isSink(Node sink);
+        abstract predicate isSink(ControlFlowNode sink);
 
         private predicate hasFlowPath(TaintedNode source, TaintedNode sink) {
-            this.isSource(source.getNode()) and
-            this.isSink(sink.getNode()) and
+            this.isSource(source.getCfgNode()) and
+            this.isSink(sink.getCfgNode()) and
             source.getASuccessor*() = sink
         }
 
-        predicate hasFlow(Node source, Node sink) {
+        predicate hasFlow(ControlFlowNode source, ControlFlowNode sink) {
             exists(TaintedNode psource, TaintedNode psink |
                 psource.getNode() = source and
                 psink.getNode() = sink and
@@ -1640,6 +1644,83 @@ module DataFlow {
                 this.isSink(sink) and
                 this.hasFlowPath(psource, psink)
             )
+        }
+
+    }
+
+    private newtype TDataFlowNode =
+        TEssaNode(EssaVariable var)
+        or
+        TCfgNode(ControlFlowNode node)
+
+    abstract class Node extends TDataFlowNode {
+
+        abstract ControlFlowNode asCfgNode();
+
+        abstract EssaVariable asVariable();
+
+        abstract string toString();
+
+        abstract Scope getScope();
+
+        abstract BasicBlock getBasicBlock();
+
+        abstract Location getLocation();
+
+    }
+
+    class CfgNode extends Node, TCfgNode {
+
+        override ControlFlowNode asCfgNode() {
+            this = TCfgNode(result)
+        }
+
+        override EssaVariable asVariable() {
+            none()
+        }
+
+        override string toString() {
+            result = this.asCfgNode().toString()
+        }
+
+        override Scope getScope() {
+            result = this.asCfgNode().getScope()
+        }
+
+        override BasicBlock getBasicBlock() {
+            result = this.asCfgNode().getBasicBlock()
+        }
+
+        override Location getLocation() {
+            result = this.asCfgNode().getLocation()
+        }
+
+    }
+
+    class EssaNode extends Node, TEssaNode {
+
+        override ControlFlowNode asCfgNode() {
+            none()
+        }
+
+        override EssaVariable asVariable() {
+            this = TEssaNode(result)
+        }
+
+        override string toString() {
+            result = this.asVariable().toString()
+        }
+
+        override Scope getScope() {
+            result = this.asVariable().getScope()
+        }
+
+        override BasicBlock getBasicBlock() {
+            result = this.asVariable().getDefinition().getBasicBlock()
+        }
+
+        override Location getLocation() {
+            result = this.asVariable().getDefinition().getLocation()
         }
 
     }
