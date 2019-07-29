@@ -1,5 +1,3 @@
-import cpp
-
 newtype TTempVariableTag =
   ConditionValueTempVar() or
   ReturnValueTempVar() or

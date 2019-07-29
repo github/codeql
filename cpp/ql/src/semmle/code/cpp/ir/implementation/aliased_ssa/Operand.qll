@@ -1,10 +1,10 @@
 private import internal.IRInternal
 import Instruction
 import IRBlock
-import cpp
-import semmle.code.cpp.ir.implementation.MemoryAccessKind
-import semmle.code.cpp.ir.internal.Overlap
-private import semmle.code.cpp.ir.internal.OperandTag
+private import internal.OperandImports as Imports
+import Imports::MemoryAccessKind
+import Imports::Overlap
+private import Imports::OperandTag
 
 cached
 private newtype TOperand =
@@ -50,7 +50,7 @@ class Operand extends TOperand {
     result = "Operand"
   }
 
-  final Location getLocation() {
+  final Language::Location getLocation() {
     result = getUse().getLocation()
   }
 
@@ -166,7 +166,7 @@ class Operand extends TOperand {
    * the definition type, such as in the case of a partial read or a read from a pointer that
    * has been cast to a different type.
    */
-  Type getType() {
+  Language::Type getType() {
     result = getAnyDef().getResultType()
   }
 
@@ -284,7 +284,7 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOpe
 class TypedOperand extends NonPhiMemoryOperand {
   override TypedOperandTag tag;
 
-  override final Type getType() {
+  override final Language::Type getType() {
     result = Construction::getInstructionOperandType(useInstr, tag)
   }
 }
@@ -447,7 +447,7 @@ class SideEffectOperand extends TypedOperand {
   override SideEffectOperandTag tag;
 
   override final int getSize() {
-    if getType() instanceof UnknownType then
+    if getType() instanceof Language::UnknownType then
       result = Construction::getInstructionOperandSize(useInstr, tag)
     else
       result = getType().getSize()

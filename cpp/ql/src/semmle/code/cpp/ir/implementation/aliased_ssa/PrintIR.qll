@@ -1,7 +1,7 @@
+private import internal.IRInternal
 private import IR
-import cpp
-import semmle.code.cpp.ir.IRConfiguration
-private import semmle.code.cpp.Print
+private import internal.PrintIRImports as Imports
+import Imports::IRConfiguration
 
 private newtype TPrintIRConfiguration = MkPrintIRConfiguration()
 
@@ -17,12 +17,12 @@ class PrintIRConfiguration extends TPrintIRConfiguration {
    * Holds if the IR for `func` should be printed. By default, holds for all
    * functions.
    */
-  predicate shouldPrintFunction(Function func) {
+  predicate shouldPrintFunction(Language::Function func) {
     any()
   }
 }
 
-private predicate shouldPrintFunction(Function func) {
+private predicate shouldPrintFunction(Language::Function func) {
   exists(PrintIRConfiguration config |
     config.shouldPrintFunction(func)
   )
@@ -32,7 +32,7 @@ private predicate shouldPrintFunction(Function func) {
  * Override of `IRConfiguration` to only create IR for the functions that are to be dumped.
  */
 private class FilteredIRConfiguration extends IRConfiguration {
-  override predicate shouldCreateIRForFunction(Function func) {
+  override predicate shouldCreateIRForFunction(Language::Function func) {
     shouldPrintFunction(func)
   }
 }
@@ -69,7 +69,7 @@ abstract class PrintableIRNode extends TPrintableIRNode {
   /**
    * Gets the location to be emitted for the node.
    */
-  abstract Location getLocation();
+  abstract Language::Location getLocation();
 
   /**
    * Gets the label to be emitted for the node.
@@ -126,16 +126,16 @@ class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction {
     result = irFunc.toString()
   }
 
-  override Location getLocation() {
+  override Language::Location getLocation() {
     result = irFunc.getLocation()
   }
 
   override string getLabel() {
-    result = getIdentityString(irFunc.getFunction())
+    result = Language::getIdentityString(irFunc.getFunction())
   }
 
   override int getOrder() {
-    this = rank[result + 1](PrintableIRFunction orderedFunc, Location location |
+    this = rank[result + 1](PrintableIRFunction orderedFunc, Language::Location location |
       location = orderedFunc.getIRFunction().getLocation() |
       orderedFunc order by location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), orderedFunc.getLabel()
@@ -165,7 +165,7 @@ class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
     result = getLabel()
   }
 
-  override Location getLocation() {
+  override Language::Location getLocation() {
     result = block.getLocation()
   }
 
@@ -213,7 +213,7 @@ class PrintableInstruction extends PrintableIRNode, TPrintableInstruction {
     result = instr.toString()
   }
 
-  override Location getLocation() {
+  override Language::Location getLocation() {
     result = instr.getLocation()
   }
 

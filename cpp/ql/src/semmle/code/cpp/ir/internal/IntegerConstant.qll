@@ -1,5 +1,3 @@
-import cpp
-
 class IntValue = int;
 
 /**

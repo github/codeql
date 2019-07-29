@@ -1,8 +1,8 @@
 import AliasAnalysis
-import cpp
+private import cpp
 private import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
-private import semmle.code.cpp.ir.internal.OperandTag
+private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.Overlap
 
 private class IntValue = Ints::IntValue;

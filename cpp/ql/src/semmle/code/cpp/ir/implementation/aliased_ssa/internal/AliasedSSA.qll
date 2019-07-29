@@ -1,11 +1,11 @@
-import cpp
+private import cpp
 import AliasAnalysis
 import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 private import semmle.code.cpp.ir.internal.IntegerInterval as Interval
-private import semmle.code.cpp.ir.internal.OperandTag
+private import semmle.code.cpp.ir.implementation.internal.OperandTag
 
 private class IntValue = Ints::IntValue;
 

@@ -1,4 +1,4 @@
-import cpp
+private import cpp
 
 /**
  * Given a type, get the type that would result by applying "pointer decay".
@@ -31,4 +31,12 @@ Type getVariableType(Variable v) {
       result = declaredType
     )
   )
+}
+
+predicate hasCaseEdge(SwitchCase switchCase, string minValue, string maxValue) {
+  minValue = switchCase.getExpr().getFullyConverted().getValue() and
+  if exists(switchCase.getEndExpr()) then
+    maxValue = switchCase.getEndExpr().getFullyConverted().getValue()
+  else
+    maxValue = minValue
 }

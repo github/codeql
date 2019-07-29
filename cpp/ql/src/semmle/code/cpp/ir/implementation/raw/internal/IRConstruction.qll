@@ -1,6 +1,6 @@
-import cpp
+private import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
-private import semmle.code.cpp.ir.internal.OperandTag
+private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedCondition
@@ -28,6 +28,10 @@ cached private module Cached {
       element.hasInstruction(_, tag, _, _)
     }
 
+  cached predicate hasUserVariable(Function func, Variable var, Type type) {
+    getTranslatedFunction(func).hasUserVariable(var, type)
+  }
+  
   cached predicate hasTempVariable(Function func, Locatable ast, TempVariableTag tag,
     Type type) {
     exists(TranslatedElement element |

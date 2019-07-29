@@ -1,6 +1,7 @@
 private import internal.IRInternal
 import Instruction
-import semmle.code.cpp.ir.implementation.EdgeKind
+private import internal.IRBlockImports as Imports
+import Imports::EdgeKind
 private import Cached
 
 /**
@@ -19,7 +20,7 @@ class IRBlockBase extends TIRBlock {
     result = getFirstInstruction(this).toString()
   }
 
-  final Location getLocation() {
+  final Language::Location getLocation() {
     result = getFirstInstruction().getLocation()
   }
   
@@ -67,7 +68,7 @@ class IRBlockBase extends TIRBlock {
     result = getFirstInstruction(this).getEnclosingIRFunction()
   }
 
-  final Function getEnclosingFunction() {
+  final Language::Function getEnclosingFunction() {
     result = getFirstInstruction(this).getEnclosingFunction()
   }
 }

@@ -1,8 +1,8 @@
-import cpp
+private import cpp
 import semmle.code.cpp.ir.implementation.raw.IR
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.internal.IRUtilities
-private import semmle.code.cpp.ir.internal.OperandTag
+private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.TempVariableTag
 private import InstructionTag
 private import TranslatedElement
@@ -308,6 +308,29 @@ class TranslatedFunction extends TranslatedElement,
       not mfunc.isStatic() and
       result = mfunc.getDeclaringType()
     )
+  }
+
+  /**
+   * Holds if this function defines or accesses variable `var` with type `type`. This includes all
+   * parameters and local variables, plus any global variables or static data members that are
+   * directly accessed by the function.
+   */
+  final predicate hasUserVariable(Variable var, Type type) {
+    (
+      (
+        (
+          var instanceof GlobalOrNamespaceVariable or
+          var instanceof MemberVariable and not var instanceof Field
+        ) and
+        exists(VariableAccess access |
+          access.getTarget() = var and
+          access.getEnclosingFunction() = func
+        )
+      ) or
+      var.(LocalScopeVariable).getFunction() = func or
+      var.(Parameter).getCatchBlock().getEnclosingFunction() = func
+    ) and
+    type = getVariableType(var)
   }
 
   private final Type getReturnType() {

@@ -1,4 +1,4 @@
-import cpp
+private import internal.EdgeKindInternal
 
 private newtype TEdgeKind =
   TGotoEdge() or  // Single successor (including fall-through)
@@ -7,9 +7,7 @@ private newtype TEdgeKind =
   TExceptionEdge() or  // Thrown exception
   TDefaultEdge() or  // 'default' label of switch
   TCaseEdge(string minValue, string maxValue) {  // Case label of switch
-    exists(SwitchCase switchCase |
-      hasCaseEdge(switchCase, minValue, maxValue)
-    )
+    Language::hasCaseEdge(minValue, maxValue)
   }
 
 /**
@@ -121,21 +119,4 @@ class CaseEdge extends EdgeKind, TCaseEdge {
 
 CaseEdge caseEdge(string minValue, string maxValue) {
   result = TCaseEdge(minValue, maxValue)
-}
-
-private predicate hasCaseEdge(SwitchCase switchCase, string minValue,
-  string maxValue) {
-  minValue = switchCase.getExpr().getFullyConverted().getValue() and
-  if exists(switchCase.getEndExpr()) then
-    maxValue = switchCase.getEndExpr().getFullyConverted().getValue()
-  else
-    maxValue = minValue
-}
-
-EdgeKind getCaseEdge(SwitchCase switchCase) {
-  exists(CaseEdge edge |
-    result = edge and
-    hasCaseEdge(switchCase, edge.getMinValue(), edge.getMaxValue())
-  ) or
-  (switchCase instanceof DefaultCase and result instanceof DefaultEdge)
 }

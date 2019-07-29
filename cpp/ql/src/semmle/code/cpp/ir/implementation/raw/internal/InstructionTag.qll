@@ -1,4 +1,4 @@
-import cpp
+private import cpp
 
 private predicate fieldIsInitialized(Field field) {
   exists(ClassAggregateLiteral initList |
