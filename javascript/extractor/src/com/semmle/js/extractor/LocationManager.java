@@ -20,6 +20,7 @@ public class LocationManager {
   private int startColumn;
   private int startLine;
   private final Set<String> locationDefaultEmitted = new LinkedHashSet<String>();
+  private String hasLocation = "hasLocation";
 
   public LocationManager(File sourceFile, TrapWriter trapWriter, Label fileLabel) {
     this.sourceFile = sourceFile;
@@ -58,6 +59,10 @@ public class LocationManager {
     startColumn = column;
   }
 
+  public void setHasLocationTable(String hasLocation) {
+    this.hasLocation = hasLocation;
+  }
+
   /**
    * Emit location information for an AST node. The node's location is translated from the parser's
    * 0-based column numbering scheme into our 1-based scheme and then emitted as a snippet location.
@@ -91,7 +96,7 @@ public class LocationManager {
   /** Emit an absolute location in the current file. No line or column adjustment is performed. */
   public void emitFileLocation(Label lbl, int sl, int sc, int el, int ec) {
     Label locLabel = emitLocationsDefault(sl, sc, el, ec);
-    trapWriter.addTuple("hasLocation", lbl, locLabel);
+    trapWriter.addTuple(hasLocation, lbl, locLabel);
   }
 
   /**

@@ -20,7 +20,7 @@ import javascript
  * ```
  */
 class JSONValue extends @json_value, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
+  override Location getLocation() { json_locations(this, result) }
 
   /** Gets the parent value to which this value belongs, if any. */
   JSONValue getParent() { json(this, _, result, _, _) }
@@ -139,5 +139,7 @@ class JSONObject extends @json_object, JSONValue {
  * An error reported by the JSON parser.
  */
 class JSONParseError extends @json_parse_error, Error {
+  override Location getLocation() { json_locations(this, result) }
+
   override string getMessage() { json_errors(this, result) }
 }

@@ -11,6 +11,6 @@ yaml_scalars(#20000,0,"x:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 yaml(#20000,0,#10000,0,"tag:yaml.org,2002:str","x:xxxxx ... xxxxxxx")
 #20001=@"loc,{#10000},1,1,1,1024"
 locations_default(#20001,#10000,1,1,1,1024)
-hasLocation(#20000,#20001)
+yaml_locations(#20000,#20001)
 numlines(#10000,1,0,0)
 filetype(#10000,"yaml")

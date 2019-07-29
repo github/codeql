@@ -905,9 +905,6 @@ json_properties (int obj: @json_object ref,
 json_errors (unique int id: @json_parse_error,
       varchar(900) message: string ref);
 
-json_locations(unique int locatable: @json_locatable ref,
-      int location: @location_default ref);
-
 case @json_value.kind of
   0 = @json_null
 | 1 = @json_boolean
@@ -918,8 +915,6 @@ case @json_value.kind of
 
 @json_parent = @json_object | @json_array | @file;
 
-@json_locatable = @json_value | @json_parse_error;
-
 // locations
 @ast_node = @toplevel | @stmt | @expr | @property | @typeexpr;
 
@@ -927,15 +922,14 @@ case @json_value.kind of
     | @ast_node
     | @comment
     | @line
-    | @js_parse_error | @regexp_parse_error
+    | @js_parse_error | @regexp_parse_error | @json_parse_error
     | @regexpterm
-    | @json_locatable
+    | @json_value
     | @token
     | @cfg_node
     | @jsdoc | @jsdoc_type_expr | @jsdoc_tag
-    | @yaml_locatable
-    | @xmllocatable
-    | @configLocatable;
+    | @yaml_node | @yaml_error
+    | @xmllocatable;
 
 hasLocation (unique int locatable: @locatable ref,
     int location: @location ref);
@@ -1028,11 +1022,6 @@ yaml_scalars (unique int scalar: @yaml_scalar_node ref,
 yaml_errors (unique int id: @yaml_error,
              varchar(900) message: string ref);
 
-yaml_locations(unique int locatable: @yaml_locatable ref,
-             int location: @location_default ref);
-
-@yaml_locatable = @yaml_node | @yaml_error;
-
 /* XML Files */
 
 xmlEncoding(
@@ -1110,29 +1099,4 @@ xmllocations(
 
 isOptionalChaining(int id: @optionalchainable ref);
 
-/*
- * configuration files with key value pairs
- */
-
-configs(
-  unique int id: @config
-);
-
-configNames(
-  unique int id: @configName,
-  int config: @config ref,
-  string name: string ref
-);
-
-configValues(
-  unique int id: @configValue,
-  int config: @config ref,
-  string value: string ref
-);
-
-configLocations(
-  int locatable: @configLocatable ref,
-  int location: @location_default ref
-);
-
-@configLocatable = @config | @configName | @configValue;
+/* Last updated 2018/10/23. */
