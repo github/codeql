@@ -1252,7 +1252,11 @@ module DataFlow {
       or
       predExpr = succExpr.(SeqExpr).getLastOperand()
       or
-      predExpr = succExpr.(LogicalBinaryExpr).getAnOperand()
+      predExpr = succExpr.(LogOrExpr).getAnOperand()
+      or
+      predExpr = succExpr.(LogAndExpr).getRightOperand()
+      or
+      predExpr = succExpr.(NullishCoalescingExpr).getAnOperand()
       or
       predExpr = succExpr.(AssignExpr).getRhs()
       or

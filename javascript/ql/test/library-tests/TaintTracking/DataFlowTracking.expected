@@ -37,8 +37,6 @@
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:13:10:13:10 | x |
 | logical-operator.js:2:15:2:22 | source() | logical-operator.js:4:8:4:17 | x && taint |
-| logical-operator.js:2:15:2:22 | source() | logical-operator.js:6:8:6:17 | taint && x |
-| logical-operator.js:2:15:2:22 | source() | logical-operator.js:7:8:7:26 | taint && taint.prop |
 | logical-operator.js:2:15:2:22 | source() | logical-operator.js:9:8:9:17 | x \|\| taint |
 | logical-operator.js:2:15:2:22 | source() | logical-operator.js:11:8:11:17 | taint \|\| x |
 | logical-operator.js:2:15:2:22 | source() | logical-operator.js:12:8:12:26 | taint \|\| taint.prop |

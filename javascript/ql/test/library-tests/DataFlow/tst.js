@@ -114,4 +114,8 @@ x ?? y;                           // flow through short-circuiting operator
 
 Array.call()  // flow from implicit call to `Array` to `Array.call`
 
+o || 5; // 'o' is a local source
+o ?? 5; // 'o' is a local source
+o && 5; // 'o' is not a local source
+
 // semmle-extractor-options: --experimental

@@ -416,3 +416,27 @@ private class AnalyzedOptionalChainExpr extends DataFlow::AnalyzedValueNode {
     result = TAbstractUndefined()
   }
 }
+
+/**
+ * Flow analysis for `&&` expressions
+ *
+ * Unlike the other short-cutting operators, the left operand of `&&`
+ * is not propagated by a local data flow step, so we account for it here.
+ */
+private class AnalyzedLogAndExpr extends DataFlow::AnalyzedValueNode {
+  override LogAndExpr astNode;
+
+  override AbstractValue getALocalValue() {
+    exists(AbstractValue lhs |
+      lhs = astNode.getLeftOperand().analyze().getALocalValue()
+    |
+      lhs.getBooleanValue() = false and
+      not lhs instanceof IndefiniteAbstractValue and
+      result = lhs
+      or
+      // If the LHS is indefinite, expand all falsy values
+      lhs instanceof IndefiniteAbstractValue and
+      result.getBooleanValue() = false
+    )
+  }
+}

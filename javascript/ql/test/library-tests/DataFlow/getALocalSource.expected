@@ -1,0 +1,198 @@
+| eval.js:1:1:1:0 | this | eval.js:1:1:1:0 | this |
+| eval.js:1:1:1:0 | this | eval.js:1:1:1:0 | this |
+| eval.js:1:1:5:1 | functio ... eval`\\n} | eval.js:1:1:5:1 | functio ... eval`\\n} |
+| eval.js:3:3:3:6 | eval | eval.js:3:3:3:6 | eval |
+| eval.js:3:3:3:16 | eval("x = 23") | eval.js:3:3:3:16 | eval("x = 23") |
+| sources.js:1:1:1:0 | this | sources.js:1:1:1:0 | this |
+| sources.js:1:1:1:12 | new (x => x) | sources.js:1:1:1:12 | new (x => x) |
+| sources.js:1:1:1:12 | new (x => x) | sources.js:1:6:1:6 | x |
+| sources.js:1:5:1:12 | (x => x) | sources.js:1:6:1:11 | x => x |
+| sources.js:1:6:1:6 | x | sources.js:1:6:1:6 | x |
+| sources.js:1:6:1:11 | x => x | sources.js:1:6:1:11 | x => x |
+| sources.js:1:11:1:11 | x | sources.js:1:6:1:6 | x |
+| sources.js:3:1:5:2 | (functi ... +19;\\n}) | sources.js:3:2:5:1 | functio ... x+19;\\n} |
+| sources.js:3:1:5:6 | (functi ... \\n})(23) | sources.js:3:1:5:6 | (functi ... \\n})(23) |
+| sources.js:3:2:3:1 | this | sources.js:3:2:3:1 | this |
+| sources.js:3:2:5:1 | functio ... x+19;\\n} | sources.js:3:2:5:1 | functio ... x+19;\\n} |
+| sources.js:3:11:3:11 | x | sources.js:3:11:3:11 | x |
+| sources.js:4:10:4:10 | x | sources.js:3:11:3:11 | x |
+| sources.js:7:1:7:3 | /x/ | sources.js:7:1:7:3 | /x/ |
+| tst.js:1:1:1:0 | this | tst.js:1:1:1:0 | this |
+| tst.js:1:1:1:24 | import  ... m 'fs'; | tst.js:1:1:1:24 | import  ... m 'fs'; |
+| tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
+| tst.js:7:1:7:2 | fs | tst.js:1:10:1:11 | fs |
+| tst.js:16:1:20:2 | (functi ...  "";\\n}) | tst.js:16:2:20:1 | functio ... n "";\\n} |
+| tst.js:16:1:20:9 | (functi ... ("arg") | tst.js:16:1:20:9 | (functi ... ("arg") |
+| tst.js:16:1:20:9 | (functi ... ("arg") | tst.js:16:13:16:13 | a |
+| tst.js:16:2:16:1 | this | tst.js:16:2:16:1 | this |
+| tst.js:16:2:20:1 | functio ... n "";\\n} | tst.js:16:2:20:1 | functio ... n "";\\n} |
+| tst.js:16:13:16:13 | a | tst.js:16:13:16:13 | a |
+| tst.js:17:7:17:10 | Math | tst.js:17:7:17:10 | Math |
+| tst.js:17:7:17:17 | Math.random | tst.js:17:7:17:17 | Math.random |
+| tst.js:17:7:17:19 | Math.random() | tst.js:17:7:17:19 | Math.random() |
+| tst.js:18:12:18:12 | a | tst.js:16:13:16:13 | a |
+| tst.js:22:5:22:20 | { readFileSync } | tst.js:1:10:1:11 | fs |
+| tst.js:22:5:22:25 | readFileSync | tst.js:22:7:22:18 | readFileSync |
+| tst.js:22:7:22:18 | readFileSync | tst.js:22:7:22:18 | readFileSync |
+| tst.js:22:24:22:25 | fs | tst.js:1:10:1:11 | fs |
+| tst.js:23:1:23:12 | readFileSync | tst.js:22:7:22:18 | readFileSync |
+| tst.js:28:1:30:1 | (() =>\\n ... ables\\n) | tst.js:28:2:29:3 | () =>\\n  x |
+| tst.js:28:1:30:3 | (() =>\\n ... les\\n)() | tst.js:28:1:30:3 | (() =>\\n ... les\\n)() |
+| tst.js:28:2:29:3 | () =>\\n  x | tst.js:28:2:29:3 | () =>\\n  x |
+| tst.js:32:1:32:0 | this | tst.js:32:1:32:0 | this |
+| tst.js:32:1:34:1 | functio ... ables\\n} | tst.js:32:1:34:1 | functio ... ables\\n} |
+| tst.js:32:10:32:10 | g | tst.js:32:1:34:1 | functio ... ables\\n} |
+| tst.js:32:12:32:12 | b | tst.js:32:12:32:12 | b |
+| tst.js:35:1:35:1 | g | tst.js:32:1:34:1 | functio ... ables\\n} |
+| tst.js:35:1:35:7 | g(true) | tst.js:35:1:35:7 | g(true) |
+| tst.js:37:5:42:1 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:39:4:39:3 | this | tst.js:39:4:39:3 | this |
+| tst.js:39:4:41:3 | () {\\n    this;\\n  } | tst.js:39:4:41:3 | () {\\n    this;\\n  } |
+| tst.js:40:5:40:8 | this | tst.js:39:4:39:3 | this |
+| tst.js:43:1:43:1 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:43:1:43:3 | o.x | tst.js:43:1:43:3 | o.x |
+| tst.js:44:1:44:1 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:44:1:44:3 | o.m | tst.js:44:1:44:3 | o.m |
+| tst.js:44:1:44:5 | o.m() | tst.js:44:1:44:5 | o.m() |
+| tst.js:46:1:46:6 | global | tst.js:46:1:46:6 | global |
+| tst.js:47:1:47:6 | global | tst.js:47:1:47:6 | global |
+| tst.js:49:1:54:1 | A | tst.js:49:1:54:1 | class A ... `\\n  }\\n} |
+| tst.js:49:1:54:1 | class A ... `\\n  }\\n} | tst.js:49:1:54:1 | class A ... `\\n  }\\n} |
+| tst.js:49:17:49:17 | B | tst.js:49:17:49:17 | B |
+| tst.js:50:14:50:13 | this | tst.js:50:14:50:13 | this |
+| tst.js:50:14:53:3 | () {\\n   ... et`\\n  } | tst.js:50:14:53:3 | () {\\n   ... et`\\n  } |
+| tst.js:51:5:51:13 | super(42) | tst.js:51:5:51:13 | super(42) |
+| tst.js:55:1:55:1 | A | tst.js:49:1:54:1 | class A ... `\\n  }\\n} |
+| tst.js:58:1:58:3 | tag | tst.js:58:1:58:3 | tag |
+| tst.js:60:1:60:1 | g | tst.js:32:1:34:1 | functio ... ables\\n} |
+| tst.js:61:1:61:5 | ::o.m | tst.js:61:1:61:5 | ::o.m |
+| tst.js:61:3:61:3 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:61:3:61:5 | o.m | tst.js:61:3:61:5 | o.m |
+| tst.js:62:1:62:1 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:62:1:62:4 | o::g | tst.js:62:1:62:4 | o::g |
+| tst.js:62:4:62:4 | g | tst.js:32:1:34:1 | functio ... ables\\n} |
+| tst.js:64:1:64:0 | this | tst.js:64:1:64:0 | this |
+| tst.js:64:1:67:1 | functio ... lysed\\n} | tst.js:64:1:67:1 | functio ... lysed\\n} |
+| tst.js:64:11:64:11 | h | tst.js:64:1:67:1 | functio ... lysed\\n} |
+| tst.js:65:3:65:10 | yield 42 | tst.js:65:3:65:10 | yield 42 |
+| tst.js:66:13:66:25 | function.sent | tst.js:66:13:66:25 | function.sent |
+| tst.js:68:5:68:14 | iter | tst.js:68:12:68:14 | h() |
+| tst.js:68:12:68:12 | h | tst.js:64:1:67:1 | functio ... lysed\\n} |
+| tst.js:68:12:68:14 | h() | tst.js:68:12:68:14 | h() |
+| tst.js:69:1:69:4 | iter | tst.js:68:12:68:14 | h() |
+| tst.js:69:1:69:9 | iter.next | tst.js:69:1:69:9 | iter.next |
+| tst.js:69:1:69:13 | iter.next(23) | tst.js:69:1:69:13 | iter.next(23) |
+| tst.js:71:1:71:0 | this | tst.js:71:1:71:0 | this |
+| tst.js:71:1:73:1 | async f ... lysed\\n} | tst.js:71:1:73:1 | async f ... lysed\\n} |
+| tst.js:72:3:72:11 | await p() | tst.js:72:3:72:11 | await p() |
+| tst.js:72:9:72:9 | p | tst.js:72:9:72:9 | p |
+| tst.js:72:9:72:11 | p() | tst.js:72:9:72:11 | p() |
+| tst.js:75:9:75:21 | import('foo') | tst.js:75:9:75:21 | import('foo') |
+| tst.js:77:15:77:15 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:80:15:80:15 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:83:11:83:28 | [ for (v of o) v ] | tst.js:83:11:83:28 | [ for (v of o) v ] |
+| tst.js:83:23:83:23 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:85:11:85:28 | ( for (v of o) v ) | tst.js:85:11:85:28 | ( for (v of o) v ) |
+| tst.js:85:23:85:23 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:87:1:92:2 | (functi ... + z;\\n}) | tst.js:87:2:92:1 | functio ...  + z;\\n} |
+| tst.js:87:1:96:2 | (functi ... r: 0\\n}) | tst.js:87:1:96:2 | (functi ... r: 0\\n}) |
+| tst.js:87:2:87:1 | this | tst.js:87:2:87:1 | this |
+| tst.js:87:2:92:1 | functio ...  + z;\\n} | tst.js:87:2:92:1 | functio ...  + z;\\n} |
+| tst.js:87:11:87:24 | x | tst.js:87:13:87:16 | p: x |
+| tst.js:87:11:87:24 | { p: x, ...o } | tst.js:87:11:87:24 | { p: x, ...o } |
+| tst.js:87:11:87:24 | { p: x, ...o } | tst.js:92:4:96:1 | {\\n  p:  ...  r: 0\\n} |
+| tst.js:87:13:87:16 | p: x | tst.js:87:13:87:16 | p: x |
+| tst.js:87:22:87:22 | ...o | tst.js:87:22:87:22 | ...o |
+| tst.js:88:7:88:18 | y | tst.js:88:9:88:12 | q: y |
+| tst.js:88:9:88:12 | q: y | tst.js:88:9:88:12 | q: y |
+| tst.js:90:4:90:15 | z | tst.js:90:6:90:9 | r: z |
+| tst.js:90:6:90:9 | r: z | tst.js:90:6:90:9 | r: z |
+| tst.js:91:10:91:10 | x | tst.js:87:13:87:16 | p: x |
+| tst.js:91:14:91:14 | y | tst.js:88:9:88:12 | q: y |
+| tst.js:91:18:91:18 | z | tst.js:90:6:90:9 | r: z |
+| tst.js:92:4:96:1 | {\\n  p:  ...  r: 0\\n} | tst.js:92:4:96:1 | {\\n  p:  ...  r: 0\\n} |
+| tst.js:98:1:103:2 | (functi ... + z;\\n}) | tst.js:98:2:103:1 | functio ...  + z;\\n} |
+| tst.js:98:1:103:17 | (functi ... 3, 0 ]) | tst.js:98:1:103:17 | (functi ... 3, 0 ]) |
+| tst.js:98:2:98:1 | this | tst.js:98:2:98:1 | this |
+| tst.js:98:2:103:1 | functio ...  + z;\\n} | tst.js:98:2:103:1 | functio ...  + z;\\n} |
+| tst.js:98:11:98:24 | [ x, ...rest ] | tst.js:98:11:98:24 | [ x, ...rest ] |
+| tst.js:98:11:98:24 | [ x, ...rest ] | tst.js:103:4:103:16 | [ 19, 23, 0 ] |
+| tst.js:98:11:98:24 | x | tst.js:98:13:98:13 | x |
+| tst.js:98:13:98:13 | x | tst.js:98:13:98:13 | x |
+| tst.js:98:19:98:22 | ...rest | tst.js:98:19:98:22 | ...rest |
+| tst.js:99:7:99:18 | y | tst.js:99:9:99:9 | y |
+| tst.js:99:9:99:9 | y | tst.js:99:9:99:9 | y |
+| tst.js:101:3:101:16 | z | tst.js:101:7:101:7 | z |
+| tst.js:101:7:101:7 | z | tst.js:101:7:101:7 | z |
+| tst.js:102:10:102:10 | x | tst.js:98:13:98:13 | x |
+| tst.js:102:14:102:14 | y | tst.js:99:9:99:9 | y |
+| tst.js:102:18:102:18 | z | tst.js:101:7:101:7 | z |
+| tst.js:103:4:103:16 | [ 19, 23, 0 ] | tst.js:103:4:103:16 | [ 19, 23, 0 ] |
+| tst.js:107:1:113:2 | (functi ... v2c;\\n}) | tst.js:107:2:113:1 | functio ...  v2c;\\n} |
+| tst.js:107:2:107:1 | this | tst.js:107:2:107:1 | this |
+| tst.js:107:2:113:1 | functio ...  v2c;\\n} | tst.js:107:2:113:1 | functio ...  v2c;\\n} |
+| tst.js:108:6:108:32 | {v1a, v ...  = o1c} | tst.js:108:36:108:38 | o1d |
+| tst.js:108:6:108:38 | v1a | tst.js:108:7:108:9 | v1a |
+| tst.js:108:6:108:38 | v1b | tst.js:108:12:108:20 | v1b = o1b |
+| tst.js:108:6:108:38 | v1b | tst.js:108:18:108:20 | o1b |
+| tst.js:108:6:108:38 | v1c | tst.js:108:23:108:31 | v1c = o1c |
+| tst.js:108:6:108:38 | v1c | tst.js:108:29:108:31 | o1c |
+| tst.js:108:7:108:9 | v1a | tst.js:108:7:108:9 | v1a |
+| tst.js:108:12:108:20 | v1b = o1b | tst.js:108:12:108:20 | v1b = o1b |
+| tst.js:108:18:108:20 | o1b | tst.js:108:18:108:20 | o1b |
+| tst.js:108:23:108:31 | v1c = o1c | tst.js:108:23:108:31 | v1c = o1c |
+| tst.js:108:29:108:31 | o1c | tst.js:108:29:108:31 | o1c |
+| tst.js:108:36:108:38 | o1d | tst.js:108:36:108:38 | o1d |
+| tst.js:109:2:109:4 | v1a | tst.js:108:7:108:9 | v1a |
+| tst.js:109:8:109:10 | v1b | tst.js:108:12:108:20 | v1b = o1b |
+| tst.js:109:8:109:10 | v1b | tst.js:108:18:108:20 | o1b |
+| tst.js:109:14:109:16 | v1c | tst.js:108:23:108:31 | v1c = o1c |
+| tst.js:109:14:109:16 | v1c | tst.js:108:29:108:31 | o1c |
+| tst.js:111:6:111:32 | [v2a, v ...  = o2c] | tst.js:111:36:111:38 | o2d |
+| tst.js:111:6:111:38 | v2a | tst.js:111:7:111:9 | v2a |
+| tst.js:111:6:111:38 | v2b | tst.js:111:12:111:14 | v2b |
+| tst.js:111:6:111:38 | v2b | tst.js:111:18:111:20 | o2b |
+| tst.js:111:6:111:38 | v2c | tst.js:111:23:111:25 | v2c |
+| tst.js:111:6:111:38 | v2c | tst.js:111:29:111:31 | o2c |
+| tst.js:111:7:111:9 | v2a | tst.js:111:7:111:9 | v2a |
+| tst.js:111:12:111:14 | v2b | tst.js:111:12:111:14 | v2b |
+| tst.js:111:18:111:20 | o2b | tst.js:111:18:111:20 | o2b |
+| tst.js:111:23:111:25 | v2c | tst.js:111:23:111:25 | v2c |
+| tst.js:111:29:111:31 | o2c | tst.js:111:29:111:31 | o2c |
+| tst.js:111:36:111:38 | o2d | tst.js:111:36:111:38 | o2d |
+| tst.js:112:2:112:4 | v2a | tst.js:111:7:111:9 | v2a |
+| tst.js:112:8:112:10 | v2b | tst.js:111:12:111:14 | v2b |
+| tst.js:112:8:112:10 | v2b | tst.js:111:18:111:20 | o2b |
+| tst.js:112:14:112:16 | v2c | tst.js:111:23:111:25 | v2c |
+| tst.js:112:14:112:16 | v2c | tst.js:111:29:111:31 | o2c |
+| tst.js:115:1:115:5 | Array | tst.js:115:1:115:5 | Array |
+| tst.js:115:1:115:10 | Array.call | tst.js:115:1:115:10 | Array.call |
+| tst.js:115:1:115:12 | Array.call() | tst.js:115:1:115:12 | Array.call() |
+| tst.js:115:1:115:12 | Array.call() | tst.js:115:1:115:12 | reflective call |
+| tst.js:115:1:115:12 | reflective call | tst.js:115:1:115:12 | reflective call |
+| tst.js:117:1:117:1 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:117:1:117:1 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:117:1:117:1 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:117:1:117:6 | o \|\| 5 | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:118:1:118:1 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:118:1:118:1 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:118:1:118:6 | o ?? 5 | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.js:119:1:119:1 | o | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} |
+| tst.ts:1:1:1:0 | this | tst.ts:1:1:1:0 | this |
+| tst.ts:3:3:3:6 | setX | tst.ts:7:1:9:1 | functio ... = 23;\\n} |
+| tst.ts:3:3:3:8 | setX() | tst.ts:3:3:3:8 | setX() |
+| tst.ts:7:1:7:0 | this | tst.ts:7:1:7:0 | this |
+| tst.ts:7:1:9:1 | functio ... = 23;\\n} | tst.ts:7:1:9:1 | functio ... = 23;\\n} |
+| tst.ts:7:10:7:13 | setX | tst.ts:7:1:9:1 | functio ... = 23;\\n} |
+| tst.ts:8:3:8:5 | A.x | tst.ts:8:3:8:5 | A.x |
+| tst.ts:11:11:11:13 | A.x | tst.ts:11:11:11:13 | A.x |
+| tst.ts:11:11:11:23 | A.x as number | tst.ts:11:11:11:13 | A.x |
+| tst.ts:13:1:13:40 | class S ... ing> {} | tst.ts:13:1:13:40 | class S ... ing> {} |
+| tst.ts:13:26:13:29 | List | tst.ts:13:26:13:29 | List |
+| tst.ts:13:26:13:37 | List<string> | tst.ts:13:26:13:29 | List |
+| tst.ts:13:39:13:38 | (...arg ... rgs); } | tst.ts:13:39:13:38 | (...arg ... rgs); } |
+| tst.ts:13:39:13:38 | args | tst.ts:13:39:13:38 | args |
+| tst.ts:13:39:13:38 | args | tst.ts:13:39:13:38 | args |
+| tst.ts:13:39:13:38 | super(...args) | tst.ts:13:39:13:38 | super(...args) |
+| tst.ts:13:39:13:38 | this | tst.ts:13:39:13:38 | this |

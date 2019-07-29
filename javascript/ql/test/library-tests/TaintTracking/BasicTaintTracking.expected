@@ -63,7 +63,6 @@ typeInferenceMismatch
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | logical-operator.js:2:15:2:22 | source() | logical-operator.js:4:8:4:17 | x && taint |
 | logical-operator.js:2:15:2:22 | source() | logical-operator.js:5:8:5:22 | x && taint.prop |
-| logical-operator.js:2:15:2:22 | source() | logical-operator.js:6:8:6:17 | taint && x |
 | logical-operator.js:2:15:2:22 | source() | logical-operator.js:7:8:7:26 | taint && taint.prop |
 | logical-operator.js:2:15:2:22 | source() | logical-operator.js:9:8:9:17 | x \|\| taint |
 | logical-operator.js:2:15:2:22 | source() | logical-operator.js:10:8:10:22 | x \|\| taint.prop |
