@@ -43,7 +43,7 @@ private newtype TOpcode =
   TVariableAddress() or
   TFieldAddress() or
   TFunctionAddress() or
-  TIndexedElementAddress() or
+  TElementsAddress() or
   TConstant() or
   TStringConstant() or
   TConditionalBranch() or
@@ -191,7 +191,7 @@ module Opcode {
   class DynamicCastToVoid extends UnaryOpcode, TDynamicCastToVoid { override final string toString() { result = "DynamicCastToVoid" } }
   class VariableAddress extends Opcode, TVariableAddress { override final string toString() { result = "VariableAddress" } }
   class FieldAddress extends UnaryOpcode, TFieldAddress { override final string toString() { result = "FieldAddress" } }
-  class IndexedElementAddress extends BinaryOpcode, TIndexedElementAddress { override final string toString() { result = "IndexedElementAddress" } }
+  class ElementsAddress extends BinaryOpcode, TElementsAddress { override final string toString() { result = "ElementsAddress" } }
   class FunctionAddress extends Opcode, TFunctionAddress { override final string toString() { result = "FunctionAddress" } }
   class Constant extends Opcode, TConstant { override final string toString() { result = "Constant" } }
   class StringConstant extends Opcode, TStringConstant { override final string toString() { result = "StringConstant" } }

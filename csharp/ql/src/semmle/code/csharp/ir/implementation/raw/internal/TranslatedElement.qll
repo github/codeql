@@ -17,6 +17,11 @@ private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
  */
 IntType getIntType() { any() }
 
+ArrayType getArrayOfDim(int dim, Type type) { 
+	result.getRank() = dim and
+	result.getElementType() = type
+}
+
 /**
  * Gets the "real" parent of `expr`. This predicate treats conversions as if
  * they were explicit nodes in the expression tree, rather than as implicit
@@ -68,14 +73,15 @@ private predicate ignoreExprAndDescendants(Expr expr) {
  * Holds if `expr` (not including its descendants) should be ignored for the
  * purposes of IR generation.
  */
-// TODO: See what exprs should be ignored for C# IR generation
 private predicate ignoreExprOnly(Expr expr) {
   //  exists(NewOrNewArrayExpr newExpr |
   //    // Ignore the allocator call, because we always synthesize it. Don't ignore
   //    // its arguments, though, because we use them as part of the synthesis.
   //    newExpr.getAllocatorCall() = expr
   //  ) or
-  not translateFunction(expr.getEnclosingCallable())
+  not translateFunction(expr.getEnclosingCallable()) or
+  // Ignore size of arrays when translating
+  (expr.getParent() instanceof ArrayCreation and expr.hasValue())
 }
 
 /**
@@ -185,7 +191,8 @@ newtype TTranslatedElement =
   TTranslatedLoad(Expr expr) {
   	// TODO: Revisit and make sure Loads are only used when needed
     expr instanceof AssignableRead and
-    not (expr.getParent() instanceof ArrayAccess)
+    not (expr.getParent() instanceof ArrayAccess) and
+    not (expr.getType() instanceof RefType)
   } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {

@@ -59,7 +59,6 @@ newtype TInstructionTag =
   LoadTag() or  // Implicit load due to lvalue-to-rvalue conversion
   CatchTag() or
   ThrowTag() or
-  NewObjTag() or
   UnwindTag() or
   InitializerUninitializedTag() or
   InitializerFieldAddressTag(Field field) {
@@ -82,6 +81,15 @@ newtype TInstructionTag =
   } or
   InitializerElementDefaultValueStoreTag(int elementIndex) {
     elementIsInitialized(elementIndex)
+  } or
+  // Added for C#  
+  NewObjTag() or
+  // TODO: 255 provisory 9max dim of array)
+  PointerAddTag(int index) {
+  	index in [0 .. 255]
+  } or
+  ElementsAddressTag(int index) {
+  	index in [0 .. 255]
   }
 
 class InstructionTag extends TInstructionTag {
@@ -142,7 +150,12 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = CatchTag() and result = "Catch" or
   tag = ThrowTag() and result = "Throw" or
   tag = UnwindTag() and result = "Unwind" or
+  
+  // Added for C#
   tag = NewObjTag() and result = "NewObj" or
+  tag = ElementsAddressTag(_) and result = "ElementsAddress" or
+  tag = PointerAddTag(_) and result = "PointerAdd" or
+  
   // TODO: Reread
 //  exists(Field field, Class cls, int index, string tagName |
 //    field = cls.getCanonicalMember(index) and

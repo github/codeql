@@ -611,6 +611,96 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
 //  }
 //}
 
+//class TranslatedArrayOffset extends TranslatedCoreExpr {
+//   override ArrayAccess expr;
+//   
+//   override Instruction getFirstInstruction() {
+//    result = getBaseOperand().getFirstInstruction()
+//  }
+//
+//  override final TranslatedElement getChild(int id) {
+//    id = 0 and result = getBaseOperand() or
+//    id = 1 and result = getOffsetOperand()
+//  }
+//
+//  override Instruction getInstructionSuccessor(InstructionTag tag,
+//    EdgeKind kind) {
+//    (
+//      tag = OnlyInstructionTag() and
+//      result = getParent().getChildSuccessor(this) and
+//      kind instanceof GotoEdge
+//    )
+//    or
+//    (
+//      tag = ElementsAddressTag() and
+//      result = getOffsetOperand().getFirstInstruction() and
+//      kind instanceof GotoEdge
+//    )
+//  }
+//
+//  override Instruction getChildSuccessor(TranslatedElement child) {
+//    (
+//      child = getBaseOperand() and
+//      result = getInstruction(ElementsAddressTag())
+//    ) or
+//    (
+//      child = getOffsetOperand() and
+//      result = getInstruction(OnlyInstructionTag())
+//    )
+//  }
+//
+//  override Instruction getResult() {
+//    result = getInstruction(OnlyInstructionTag())
+//  }
+//
+//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+//    Type resultType, boolean isLValue) {
+//    (
+//      tag = OnlyInstructionTag() and
+//      opcode instanceof Opcode::PointerAdd and
+//      resultType = getBaseOperand().getResultType() and
+//      isLValue = false
+//    ) 
+//    or
+//    (
+//      // Instruction that converts an array object pointer to
+//      // a managed pointer
+//      tag = ElementsAddressTag() and
+//      opcode instanceof Opcode::ElementsAddress and
+//      // TODO: Will need to be a pointer (managed?)
+//      resultType = getBaseOperand().getResultType() and
+//      isLValue = false
+//    )
+//  }
+//
+//  override Instruction getInstructionOperand(InstructionTag tag,
+//    OperandTag operandTag) {
+//    tag = OnlyInstructionTag() and
+//    (
+//      (
+//        operandTag instanceof LeftOperandTag and
+//        result = getInstruction(ElementsAddressTag())
+//      ) or
+//      (
+//        operandTag instanceof RightOperandTag and
+//        result = getOffsetOperand().getResult()
+//      )
+//    )
+//    or
+//    tag = ElementsAddressTag() and 
+//    (
+//      operandTag instanceof AddressOperandTag and
+//      result = getBaseOperand().getResult()
+//    )
+//  }
+//
+//  override int getInstructionElementSize(InstructionTag tag) {
+//    tag = OnlyInstructionTag() and
+//    // TODO: Fix sizes once we have the unified type system
+//    result = 4
+//  }
+//}
+
 class TranslatedArrayExpr extends TranslatedNonConstantExpr {
   override ArrayAccess expr;
 
@@ -619,69 +709,126 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
   }
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getBaseOperand() or
-    id = 1 and result = getOffsetOperand()
+    id = -1 and result = getBaseOperand() or
+    result = getOffsetOperand(id)
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
-    kind instanceof GotoEdge
+      exists (int index | 
+        inBounds(index) and
+        kind instanceof GotoEdge and 
+      	(
+      	 (
+      	   index < getRank() - 1 and
+      	   tag = PointerAddTag(index) and
+      	   result = getInstruction(ElementsAddressTag(index + 1))
+      	 )
+      	 or
+      	 (
+      	   tag = PointerAddTag(getRank() - 1) and
+      	   result = getParent().getChildSuccessor(this)
+      	 )
+      	 or
+      	 (
+      	   tag = ElementsAddressTag(index) and
+      	   result = getOffsetOperand(index).getFirstInstruction()
+      	 )
+      )
+    )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     (
       child = getBaseOperand() and
-      result = getOffsetOperand().getFirstInstruction()
+      result = getInstruction(ElementsAddressTag(0))
     ) or
     (
-      child = getOffsetOperand() and
-      result = getInstruction(OnlyInstructionTag())
+      child = getOffsetOperand(child.getAST().getIndex()) and
+      child.getAST().getIndex() >= 0 and
+      result = getInstruction(PointerAddTag(child.getAST().getIndex()))
     )
   }
 
   override Instruction getResult() {
-    result = getInstruction(OnlyInstructionTag())
+    result = getInstruction(PointerAddTag(getRank() - 1)) and
+    result.getResultType() = expr.getType()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
-    tag = OnlyInstructionTag() and
-    opcode instanceof Opcode::IndexedElementAddress and
-    resultType = getResultType() and
-    isLValue = true
+    exists(int index |
+      inBounds(index) and
+      tag = PointerAddTag(index) and
+      opcode instanceof Opcode::PointerAdd and
+      resultType = getBaseOperand().getResultType() and
+      isLValue = false
+	  )
+    or
+    exists(int index |
+      inBounds(index) and
+      tag = ElementsAddressTag(index) and
+      opcode instanceof Opcode::ElementsAddress and
+      resultType = getArrayOfDim(getRank() - index, expr.getType()) and
+      isLValue = false
+    ) 
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
     OperandTag operandTag) {
-    tag = OnlyInstructionTag() and
+    exists(int index |
+      inBounds(index) and
+	    tag = PointerAddTag(index) and
+	    (
+	      (
+	        operandTag instanceof LeftOperandTag and
+	        result = getInstruction(ElementsAddressTag(index))
+	      ) or
+	      (
+	        operandTag instanceof RightOperandTag and
+	        result = getOffsetOperand(index).getResult()
+	      )    
+      )
+    )
+    or
+    tag = ElementsAddressTag(0) and 
     (
-      (
-        operandTag instanceof LeftOperandTag and
-        result = getBaseOperand().getResult()
-      ) or
-      (
-        operandTag instanceof RightOperandTag and
-        result = getOffsetOperand().getResult()
+      operandTag instanceof AddressOperandTag and
+      result = getBaseOperand().getResult()
+    )
+    or
+    exists(int index |
+      inBounds(index) and index > 0 and
+	    tag = ElementsAddressTag(index) and
+	    (
+	      operandTag instanceof RightOperandTag and
+	      result = getInstruction(PointerAddTag(index - 1))
       )
     )
   }
 
   override int getInstructionElementSize(InstructionTag tag) {
-    tag = OnlyInstructionTag() and
-    result = 8 //max(getBaseOperand().getResultType().(PointerType).getReferentType().getSize())
+    tag = PointerAddTag(_) and
+    // TODO: Fix sizes once we have the unified type system
+    //       Make sure multi dim arrays have correct multiplication factor
+    result = 4
   }
 
   private TranslatedExpr getBaseOperand() {
-  	exists (Element el |
-  	        expr = el.getParent() and 
-  	        el instanceof VariableAccess and
-  	        result = getTranslatedExpr(el))
+  	result = getTranslatedExpr(expr.getChild(-1))
   }
 
-  private TranslatedExpr getOffsetOperand() {
-    result = getTranslatedExpr(expr.getChild(0))
+  private TranslatedExpr getOffsetOperand(int index) {
+    inBounds(index) and
+    result = getTranslatedExpr(expr.getChild(index))
+  }
+  
+  private predicate inBounds(int index) {
+  	index in [0 .. getRank() - 1]
+  }
+  
+  private int getRank() {
+  	result = count(expr.getIndex(_))
   }
 }
 
@@ -1111,46 +1258,46 @@ abstract class TranslatedConversion extends TranslatedNonConstantExpr {
   }
 }
 
-/**
- * Represents the translation of a conversion expression that generates a
- * single instruction.
- */
-abstract class TranslatedSingleInstructionConversion extends TranslatedConversion {
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
-    kind instanceof GotoEdge
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getOperand() and result = getInstruction(OnlyInstructionTag())
-  }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isLValue) {
-    tag = OnlyInstructionTag() and
-    opcode = getOpcode() and
-    resultType = getResultType() and
-    isLValue = isResultLValue()
-  }
-
-  override Instruction getResult() {
-    result = getInstruction(OnlyInstructionTag())
-  }
-
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
-    tag = OnlyInstructionTag() and
-    operandTag instanceof UnaryOperandTag and
-    result = getOperand().getResult()
-  }
-
-  /**
-   * Gets the opcode of the generated instruction.
-   */
-  abstract Opcode getOpcode();
-}
+///**
+// * Represents the translation of a conversion expression that generates a
+// * single instruction.
+// */
+//abstract class TranslatedSingleInstructionConversion extends TranslatedConversion {
+//  override Instruction getInstructionSuccessor(InstructionTag tag,
+//    EdgeKind kind) {
+//    tag = OnlyInstructionTag() and
+//    result = getParent().getChildSuccessor(this) and
+//    kind instanceof GotoEdge
+//  }
+//
+//  override Instruction getChildSuccessor(TranslatedElement child) {
+//    child = getOperand() and result = getInstruction(OnlyInstructionTag())
+//  }
+//
+//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+//    Type resultType, boolean isLValue) {
+//    tag = OnlyInstructionTag() and
+//    opcode = getOpcode() and
+//    resultType = getResultType() and
+//    isLValue = isResultLValue()
+//  }
+//
+//  override Instruction getResult() {
+//    result = getInstruction(OnlyInstructionTag())
+//  }
+//
+//  override Instruction getInstructionOperand(InstructionTag tag,
+//      OperandTag operandTag) {
+//    tag = OnlyInstructionTag() and
+//    operandTag instanceof UnaryOperandTag and
+//    result = getOperand().getResult()
+//  }
+//
+//  /**
+//   * Gets the opcode of the generated instruction.
+//   */
+//  abstract Opcode getOpcode();
+//}
 
 // TODO: Deal with conversions
 ///**
