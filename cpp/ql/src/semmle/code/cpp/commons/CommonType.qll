@@ -170,3 +170,17 @@ class MicrosoftInt64Type extends IntegralType {
     not isExplicitlySigned()
   }
 }
+
+/**
+ * The `__builtin_va_list` type, used to provide variadic functionality.
+ *
+ * This is a complement to the `__builtin_va_start`, `__builtin_va_end`,
+ * `__builtin_va_copy` and `__builtin_va_arg` expressions.
+ */
+class BuiltInVarList extends Type {
+  BuiltInVarList() {
+    this.hasName("__builtin_va_list")
+  }
+
+  override string getCanonicalQLClass() { result = "BuiltInVarList" }
+}
