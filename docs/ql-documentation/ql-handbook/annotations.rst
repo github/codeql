@@ -45,8 +45,8 @@ You can also find a summary table in the Annotations section of the
 .. index:: abstract
 .. _abstract:
 
-abstract
-========
+``abstract``
+============
 
 **Available for**: |classes|, |member predicates|
 
@@ -89,8 +89,8 @@ own body, or they must inherit from another class that overrides ``isSource``::
 .. index:: cached
 .. _cached:
 
-cached
-======
+``cached``
+==========
 
 **Available for**: |classes|, |algebraic datatypes|, |characteristic predicates|, |member predicates|, |non-member predicates|, |modules|
 
@@ -112,8 +112,8 @@ body must also be annotated with ``cached``, otherwise a compiler error is repor
 .. index:: deprecated
 .. _deprecated:
 
-deprecated
-==========
+``deprecated``
+==============
 
 **Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |fields|, |modules|, |aliases|
 
@@ -141,8 +141,8 @@ This QLDoc comment appears when you use the name ``DataFlowNode`` in a QL editor
 .. index:: external
 .. _external:
 
-external
-========
+``external``
+============
 
 **Available for**: |non-member predicates|
 
@@ -152,8 +152,8 @@ predicate. This is similar to a :ref:`database predicate <database-predicates>`.
 .. index:: transient
 .. _transient:
 
-transient
-=========
+``transient``
+=============
 **Available for**: |non-member predicates|
 
 The ``transient`` annotation is applied to non-member predicates that are also annotated with ``external``,
@@ -163,8 +163,8 @@ without ``external``, the compiler will report an error.
 .. index:: final
 .. _final:
 
-final
-=====
+``final``
+=========
 
 **Available for**: |classes|, |member predicates|, |fields|
 
@@ -185,8 +185,8 @@ change this definition. In this case, ``hasName`` should be final::
 
 .. _library:
 
-library
-=======
+``library``
+===========
 
 **Available for**: |classes|
 
@@ -202,8 +202,8 @@ compiler returns an error.
 .. index:: override
 .. _override:
 
-override
-========
+``override``
+============
 
 **Available for**: |member predicates|, |fields|
 
@@ -216,8 +216,8 @@ warning.
 .. index:: private
 .. _private:
 
-private
-=======
+``private``
+===========
 
 **Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|
 
@@ -229,8 +229,8 @@ module's :ref:`namespace <namespaces>`.
 
 .. _query:
 
-query
-=====
+``query``
+=========
 
 **Available for**: |non-member predicates|, |aliases|
 
@@ -265,16 +265,16 @@ and a call to that predicate ``... one(y) ...``. The QL optimizer may inline the
 You can use the following compiler pragma annotations to control the way the QL optimizer inlines 
 predicates.
 
-pragma[inline]
---------------
+``pragma[inline]``
+------------------
 
 The ``pragma[inline]`` annotation tells the QL optimizer to always inline the annotated predicate
 into the places where it is called. This can be useful when a predicate body is very expensive to 
 compute entirely, as it ensures that the predicate is evaluated with the other contextual information
 at the places where it is called.
 
-pragma[noinline]
-----------------
+``pragma[noinline]``
+--------------------
 
 The ``pragma[noinline]`` annotation is used to prevent a predicate from being inlined into the
 place where it is called. In practice, this annotation is useful when you've already grouped 
@@ -282,8 +282,8 @@ certain variables together in a "helper" predicate, to ensure that the relation 
 in one piece. This can help to improve performance. The QL optimizer's inlining may undo the 
 work of the helper predicate, so it's a good idea to annotate it with ``pragma[noinline]``.
 
-pragma[nomagic]
----------------
+``pragma[nomagic]``
+-------------------
 
 The ``pragma[nomagic]`` annotation is used to prevent the QL optimizer from performing the "magic sets"
 optimization on a predicate. 
@@ -295,8 +295,8 @@ by Semmle.
 
 Note that ``nomagic`` implies ``noinline``.
 
-pragma[noopt]
--------------
+``pragma[noopt]``
+-----------------
 
 The ``pragma[noopt]`` annotation is used to prevent the QL optimizer from optimizing a
 predicate, except when it's absolutely necessary for compilation and evaluation to work.
@@ -352,8 +352,8 @@ Language pragmas
 
 **Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|
 
-language[monotonicAggregates]
------------------------------
+``language[monotonicAggregates]``
+---------------------------------
 
 This annotation allows you to use **monotonic aggregates** instead of the standard QL
 :ref:`aggregates <aggregations>`.
@@ -367,8 +367,8 @@ Binding sets
 
 **Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
-bindingset[...]
----------------
+``bindingset[...]``
+-------------------
 
 You can use this annotation to explicitly state the binding sets for a predicate. A binding set
 is a subset of the predicate's arguments such that, if those arguments are constrained to a
