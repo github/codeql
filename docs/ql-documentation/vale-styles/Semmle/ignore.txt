@@ -14,12 +14,16 @@ callee
 callees
 cyclomatic
 Datalog
+datatype
+datatypes
 declarator
 declarators
 dereferenced
 destructor
 destructors
 destructuring
+disjunct
+disjuncts
 downcasting
 downcasts
 enum
@@ -35,6 +39,8 @@ Gradle
 initializer
 initializers
 inline
+inlined
+inlines
 inlining
 interprocedural
 interprocedurally
