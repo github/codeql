@@ -210,6 +210,11 @@ class BuiltInOperationIsUnion extends BuiltInOperation, @isunionexpr {
 }
 
 /**
+ * DEPRECATED: Use `BuiltInOperationBuiltInTypesCompatibleP instead.
+ */
+deprecated class BuiltInOperationBuiltInTypes = BuiltInOperationBuiltInTypesCompatibleP;
+
+/**
  * A C++ `__builtin_types_compatible_p` expression (used by some implementations of the type_traits header).
  */
 class BuiltInOperationBuiltInTypesCompatibleP extends BuiltInOperation, @typescompexpr {
