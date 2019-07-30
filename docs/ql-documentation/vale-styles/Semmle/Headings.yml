@@ -32,4 +32,10 @@ exceptions:
   - Windows
 
 # Semmle exceptions:
+  - AngularJS
+  - Java
+  - JavaScript
+  - JSDoc
+  - Node.js
+  - Python
   - QLDoc
