@@ -210,7 +210,7 @@ class BuiltInOperationIsUnion extends BuiltInOperation, @isunionexpr {
 }
 
 /**
- * DEPRECATED: Use `BuiltInOperationBuiltInTypesCompatibleP instead.
+ * DEPRECATED: Use `BuiltInOperationBuiltInTypesCompatibleP` instead.
  */
 deprecated class BuiltInOperationBuiltInTypes = BuiltInOperationBuiltInTypesCompatibleP;
 
