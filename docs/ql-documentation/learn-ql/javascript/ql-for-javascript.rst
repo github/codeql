@@ -10,6 +10,7 @@ QL for JavaScript
    dataflow
    flow-labels
    ast-class-reference
+   dataflow-cheat-sheet
 
 These documents provide an overview of the QL JavaScript and TypeScript standard libraries and show examples of how to use them.
 
@@ -24,6 +25,8 @@ These documents provide an overview of the QL JavaScript and TypeScript standard
 -  :doc:`Advanced data-flow analysis using flow labels <flow-labels>`: shows a more advanced example of data flow analysis using flow labels.
 
 -  :doc:`AST class reference <ast-class-reference>`: an overview of all AST classes in the QL standard library for JavaScript.
+
+-  :doc:`Data flow cheat sheet <dataflow-cheat-sheet>`: bits of QL commonly used for variant analysis and in data flow queries.
 
 Other resources
 ---------------
