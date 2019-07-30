@@ -1110,4 +1110,13 @@ static void AsmStmtWithOutputs(unsigned int& a, unsigned int& b, unsigned int& c
     );
 }
 
+void ExternDeclarations()
+{
+    extern int g;
+    int x;
+    int y, f(float);
+    int z(float), w(float), h;
+    typedef double d;
+}
+
 // semmle-extractor-options: -std=c++17

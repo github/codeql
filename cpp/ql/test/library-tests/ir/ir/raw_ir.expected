@@ -5112,3 +5112,19 @@ ir.cpp:
 # 1104|     v0_17(void)                  = ReturnVoid             : 
 # 1104|     v0_18(void)                  = UnmodeledUse           : mu*
 # 1104|     v0_19(void)                  = ExitFunction           : 
+
+# 1113| void ExternDeclarations()
+# 1113|   Block 0
+# 1113|     v0_0(void)       = EnterFunction       : 
+# 1113|     mu0_1(unknown)   = AliasedDefinition   : 
+# 1113|     mu0_2(unknown)   = UnmodeledDefinition : 
+# 1116|     r0_3(glval<int>) = VariableAddress[x]  : 
+# 1116|     mu0_4(int)       = Uninitialized[x]    : &:r0_3
+# 1117|     r0_5(glval<int>) = VariableAddress[y]  : 
+# 1117|     mu0_6(int)       = Uninitialized[y]    : &:r0_5
+# 1118|     r0_7(glval<int>) = VariableAddress[h]  : 
+# 1118|     mu0_8(int)       = Uninitialized[h]    : &:r0_7
+# 1120|     v0_9(void)       = NoOp                : 
+# 1113|     v0_10(void)      = ReturnVoid          : 
+# 1113|     v0_11(void)      = UnmodeledUse        : mu*
+# 1113|     v0_12(void)      = ExitFunction        : 
