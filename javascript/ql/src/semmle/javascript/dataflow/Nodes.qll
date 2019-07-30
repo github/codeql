@@ -304,6 +304,9 @@ DataFlow::SourceNode globalObjectRef() {
   // Node.js
   result = globalVarRef("global")
   or
+  // DOM and service workers
+  result = globalVarRef("self")
+  or
   // `require("global")`
   result = moduleImport("global")
   or
