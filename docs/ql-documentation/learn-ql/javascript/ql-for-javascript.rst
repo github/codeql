@@ -9,6 +9,7 @@ QL for JavaScript
    introduce-libraries-ts
    dataflow
    ast-class-reference
+   dataflow-cheat-sheet
 
 These documents provide an overview of the QL JavaScript and TypeScript standard libraries and show examples of how to use them.
 
@@ -21,6 +22,8 @@ These documents provide an overview of the QL JavaScript and TypeScript standard
 -  :doc:`Analyzing data flow in JavaScript/TypeScript <dataflow>`: demonstrates how to write queries using the standard QL for JavaScript/TypeScript data flow and taint tracking libraries.
 
 -  :doc:`AST class reference <ast-class-reference>`: an overview of all AST classes in the QL standard library for JavaScript.
+
+-  :doc:`Data flow cheat sheet <dataflow-cheat-sheet>`: bits of QL commonly used for variant analysis and in data flow queries.
 
 Other resources
 ---------------
