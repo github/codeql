@@ -62,7 +62,7 @@ module GlobalAccessPath {
       result = acc.getClosureNamespace()
     )
     or
-    exists(DataFlow::PropertyProjection proj | node = proj |
+    exists(PropertyProjection proj | node = proj |
       proj.isSingletonProjection() and
       result = fromReference(proj.getObject()) + "." + proj.getASelector()
     )
