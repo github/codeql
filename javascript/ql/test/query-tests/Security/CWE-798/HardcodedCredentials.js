@@ -144,3 +144,14 @@
         }
     });
 })();
+
+(function(){
+    var request = require('request');
+    let pass = getPassword() || '';
+    request.get(url, { // OK
+        'auth': {
+            'user': process.env.USER || '',
+            'pass': pass,
+        }
+    });
+})();
