@@ -4,7 +4,7 @@ Expressions
 ###########
 
 An expression evaluates to a set of values in QL. For example, the expression ``1 + 2`` 
-evaluates to the integer ``3`` and the expression ``"QL"`` evaluates to the string "QL".
+evaluates to the integer ``3`` and the expression ``"QL"`` evaluates to the string ``"QL"``.
 
 A valid expression also has a :ref:`type <types>`. 
 In the above examples, ``1 + 2`` has type ``int`` and ``"QL"`` has type ``string``.
@@ -61,7 +61,7 @@ You can express certain values directly in QL, such as numbers, booleans, and st
     
   Note: there is no "date literal" in QL. Instead, to specify a :ref:`date <date>`, you should
   convert a string to the date that it represents using the ``toDate()`` predicate. For example,
-  ``"2016-04-03".toDate()`` is the date 03/04/2016, and ``"2000-01-01 00:00:01".toDate()`` is the
+  ``"2016-04-03".toDate()`` is the date April 3, 2016, and ``"2000-01-01 00:00:01".toDate()`` is the
   point in time one second after New Year 2000.
   
   The following string formats are recognized as dates:
@@ -274,7 +274,7 @@ The following aggregates are available in QL:
 .. index:: strictconcat, strictcount, strictsum
 
 - ``strictconcat``, ``strictcount``, and ``strictsum``: These aggregates work like ``concat``,
-  ``count``, and ``sum`` respectively, except that they are "strict". That is, if there are no
+  ``count``, and ``sum`` respectively, except that they are *strict*. That is, if there are no
   possible assignments to the aggregation variables that satisfy the formula, then the entire aggregation fails and
   evaluates to the empty set (instead of defaulting to ``0`` or the empty string).
   This is useful if you're only interested in results where the aggregation body is non-trivial.
