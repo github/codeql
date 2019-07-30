@@ -1639,7 +1639,6 @@ case @stmt.kind of
 // ...  32 @stmt_at_synchronized deprecated
 |  33 = @stmt_handler
 // ...  34 @stmt_finally_end deprecated
-|  35 = @stmt_constexpr_if
 ;
 
 type_vla(
@@ -1659,16 +1658,6 @@ if_then(
 
 if_else(
     unique int if_stmt: @stmt_if ref,
-    int else_id: @stmt ref
-);
-
-constexpr_if_then(
-    unique int constexpr_if_stmt: @stmt_constexpr_if ref,
-    int then_id: @stmt ref
-);
-
-constexpr_if_else(
-    unique int constexpr_if_stmt: @stmt_constexpr_if ref,
     int else_id: @stmt ref
 );
 
