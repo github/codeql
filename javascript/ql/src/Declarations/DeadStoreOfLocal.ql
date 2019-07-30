@@ -26,7 +26,7 @@ predicate deadStoreOfLocal(VarDef vd, PurelyLocalVariable v) {
   not exists(SsaExplicitDefinition ssa | ssa.defines(vd, v))
 }
 
-from VarDef dead, PurelyLocalVariable v // captured variables may be read by closures, so don't flag them
+from VarDef dead, PurelyLocalVariable v, string msg // captured variables may be read by closures, so don't flag them
 where
   deadStoreOfLocal(dead, v) and
   // the variable should be accessed somewhere; otherwise it will be flagged by UnusedVariable
@@ -51,5 +51,13 @@ where
   // don't flag exported variables
   not any(ES2015Module m).exportsAs(v, _) and
   // don't flag 'exports' assignments in closure modules
-  not any(Closure::ClosureModule mod).getExportsVariable() = v
-select dead, "This definition of " + v.getName() + " is useless, since its value is never read."
+  not any(Closure::ClosureModule mod).getExportsVariable() = v and
+  (
+    // To avoid confusion about the meaning of "definition" and "declaration" we avoid
+    // the term "definition" when the alert location is a variable declaration.
+    if dead instanceof VariableDeclarator then
+      msg = "The initial value of " + v.getName() + " is unused, since it is always overwritten."
+    else
+      msg = "This definition of " + v.getName() + " is useless, since its value is never read."
+  )
+select dead, msg
