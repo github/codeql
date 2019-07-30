@@ -66,8 +66,8 @@ As another example, this query finds all annotation types that only have a singl
 
 ➤ `See the full query in the query console <https://lgtm.com/query/669220001>`__.
 
-Example: Finding missing @Override annotations
-----------------------------------------------
+Example: Finding missing ``@Override`` annotations
+--------------------------------------------------
 
 In newer versions of Java, it is recommended (though not required) to annotate methods that override another method with an ``@Override`` annotation. These annotations, which are checked by the compiler, serve as documentation, and also help you avoid accidental overloading where overriding was intended.
 

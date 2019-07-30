@@ -250,12 +250,12 @@ The condition:
 
    attr.getObject() = self and self.getId() = "self"
 
-checks that the value of the attribute (the expression to the left of the dot in ``value.attr``) is an access to a variable called "self".
+checks that the value of the attribute (the expression to the left of the dot in ``value.attr``) is an access to a variable called ``"self"``.
 
 Class and function definitions
 ------------------------------
 
-As Python is a dynamically typed language, class and function definitions are executable statements. This means that a class statement is both a statement and a scope containing statements. To represent this cleanly the class definition is broken into a number of parts. At runtime, when a class definition is executed a class object is created and then assigned to a variable of the same name in the scope enclosing the class. This class is created from a code-object representing the source code for the body of the class. To represent this the ``ClassDef`` class (which represents a ``class`` statement) subclasses ``Assign``. The right hand side of the ``ClassDef`` is a ``ClassExpr`` representing the creation of the class. The ``Class`` class, which represents the body of the class, can be accessed via the ``ClassExpr.getInnerScope()``
+As Python is a dynamically typed language, class, and function definitions are executable statements. This means that a class statement is both a statement and a scope containing statements. To represent this cleanly the class definition is broken into a number of parts. At runtime, when a class definition is executed a class object is created and then assigned to a variable of the same name in the scope enclosing the class. This class is created from a code-object representing the source code for the body of the class. To represent this the ``ClassDef`` class (which represents a ``class`` statement) subclasses ``Assign``. The right hand side of the ``ClassDef`` is a ``ClassExpr`` representing the creation of the class. The ``Class`` class, which represents the body of the class, can be accessed via the ``ClassExpr.getInnerScope()``
 
 ``FunctionDef``, ``FunctionExpr`` and ``Function`` are handled similarly.
 

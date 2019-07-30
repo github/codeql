@@ -12,7 +12,7 @@ For a more general introduction to modeling data flow in QL, see :doc:`Introduct
 Local data flow
 ---------------
 
-Local data flow is data flow within a single method or callable. Local data flow is easier, faster and more precise than global data flow, and is sufficient for many queries.
+Local data flow is data flow within a single method or callable. Local data flow is easier, faster, and more precise than global data flow, and is sufficient for many queries.
 
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
@@ -330,7 +330,7 @@ Class hierarchy
    -  ``CallableFlowSinkQualifier`` - the output is to the object itself
    -  ``CallableFlowSinkReturn`` - the output is returned from the call
    -  ``CallableFlowSinkArg`` - the output is an argument
-   -  ``CallableFlowSinkDelegateArg`` - the output flows through a delegate argument (e.g. LINQ)
+   -  ``CallableFlowSinkDelegateArg`` - the output flows through a delegate argument (for example, LINQ)
 
 Example
 ~~~~~~~

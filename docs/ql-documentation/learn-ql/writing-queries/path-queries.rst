@@ -45,7 +45,7 @@ Constructing a path query
 Path queries require certain metadata, query predicates, and ``select`` statement structures. 
 Many of the built-in path queries included in the Semmle tools follow a simple structure, which depends on how the language you are analyzing is modeled in QL. 
 
-For C/C++, C#, Java and JavaScript you should use the following template::
+For C/C++, C#, Java, and JavaScript you should use the following template::
 
     /**
      * ... 

@@ -22,7 +22,7 @@ Once you have selected a language, the query console is populated with the query
 
    select "hello world"
 
-This query simply returns the string "hello world".
+This query simply returns the string ``"hello world"``.
 
 More complicated queries typically look like this:
 
@@ -50,7 +50,7 @@ You can try to write simple queries using the some of the basic functions that a
 Exercise 1
 ~~~~~~~~~~
 
-Write a query which returns the length of the string "lgtm". (Hint: `here <https://help.semmle.com/QL/ql-spec/language.html#built-ins-for-string>`__ is the list of the functions that can be applied to strings.)
+Write a query which returns the length of the string ``"lgtm"``. (Hint: `here <https://help.semmle.com/QL/ql-spec/language.html#built-ins-for-string>`__ is the list of the functions that can be applied to strings.)
 
 ➤ `Answer <https://lgtm.com/query/2103060623/>`__
 
@@ -77,7 +77,7 @@ Write a query which returns the opposite of the boolean ``false``.
 Exercise 4
 ~~~~~~~~~~
 
-Write a query which computes the number of days between 10 June 2017 and 28 September 2017.
+Write a query which computes the number of days between June 10 and September 28, 2017.
 
 ➤ `Answer <https://lgtm.com/query/2100260596/>`__
 
@@ -138,7 +138,7 @@ JavaScript
    where c.getText().regexpMatch("(?si).*\\bTODO\\b.*")
    select c
 
-➤ `See this in the query console <https://lgtm.com/query/2101530483/>`__. The ``from`` clause defines a variable ``c`` representing a comment. The ``where`` part limits the comments ``c`` to those containing the word "TODO". The ``select`` clause lists these comments.
+➤ `See this in the query console <https://lgtm.com/query/2101530483/>`__. The ``from`` clause defines a variable ``c`` representing a comment. The ``where`` part limits the comments ``c`` to those containing the word ``"TODO"``. The ``select`` clause lists these comments.
 
 Java
 ~~~~

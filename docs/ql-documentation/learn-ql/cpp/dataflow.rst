@@ -12,7 +12,7 @@ For a more general introduction to modeling data flow in QL, see :doc:`Introduct
 Local data flow
 ---------------
 
-Local data flow is data flow within a single function. Local data flow is usually easier, faster and more precise than global data flow, and is sufficient for many queries.
+Local data flow is data flow within a single function. Local data flow is usually easier, faster, and more precise than global data flow, and is sufficient for many queries.
 
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~

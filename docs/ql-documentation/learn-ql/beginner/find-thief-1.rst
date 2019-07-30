@@ -45,7 +45,7 @@ There is too much information to search through by hand, so you decide to use yo
 #. Select a language and a demo project. For this tutorial, any language and project will do.
 #. Delete the default code ``import <language> select "hello world"``.
 
-QL Libraries
+QL libraries
 ------------
 
 We've defined a number of QL `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ to help you extract data from your table. A QL predicate is a mini-query that expresses a relation between various pieces of data and describes some of their properties. In this case, the predicates give you information about a person, for example their height or age.

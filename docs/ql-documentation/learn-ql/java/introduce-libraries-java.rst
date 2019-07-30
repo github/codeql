@@ -201,7 +201,7 @@ Class ``Variable`` represents a variable `in the Java sense <http://docs.oracle.
 -  ``LocalVariableDecl`` represents a local variable.
 -  ``Parameter`` represents a parameter of a method or constructor.
 
-Abstract Syntax Tree
+Abstract syntax tree
 --------------------
 
 Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). See the :doc:`AST class reference <ast-class-reference>` for an exhaustive list of all expression and statement types available in the standard QL library.
@@ -339,7 +339,7 @@ For example, the following query finds methods with a `cyclomatic complexity <ht
 
 ➤ `See this in the query console <https://lgtm.com/query/670720174/>`__. Most large projects include some methods with a very high cyclomatic complexity. These methods are likely to be difficult to understand and test.
 
-Call Graph
+Call graph
 ----------
 
 Snapshots databases generated from Java code bases include precomputed information about the program's call graph, that is, which methods or constructors a given call may dispatch to at runtime.

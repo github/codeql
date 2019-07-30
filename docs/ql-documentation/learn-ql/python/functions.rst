@@ -37,7 +37,7 @@ You can modify the query above to return more interesting results. As we are onl
    where f.getName().matches("get%") and f.isMethod()
    select f, "This is a method called get..."
 
-➤ `See this in the query console <https://lgtm.com/query/690010035/>`__. This finds methods whose name starts with "get", but many of those are not the sort of simple getters we are interested in.
+➤ `See this in the query console <https://lgtm.com/query/690010035/>`__. This finds methods whose name starts with ``"get"``, but many of those are not the sort of simple getters we are interested in.
 
 Finding one line methods called "get..."
 ----------------------------------------

@@ -46,7 +46,7 @@ For example, assume the following Java class is defined in compilation unit ``Sa
 
 Invoking ``getFile`` on the expression statement in the body of ``main`` will return a ``File`` object representing the file ``SayHello.java``. The statement spans four lines in total ``(getTotalNumberOfLines``), of which one is a comment line (``getNumberOfCommentLines``), while three lines contain code (``getNumberOfLinesOfCode``).
 
-Class ``Location`` defines member predicates ``getStartLine``, ``getEndLine``, ``getStartColumn`` and ``getEndColumn`` to retrieve the line and column number an entity starts and ends at, respectively. Both lines and columns are counted starting from 1 (not 0), and the end position is inclusive, i.e., it is the position of the last character belonging to the source code of the entity.
+Class ``Location`` defines member predicates ``getStartLine``, ``getEndLine``, ``getStartColumn`` and ``getEndColumn`` to retrieve the line and column number an entity starts and ends at, respectively. Both lines and columns are counted starting from 1 (not 0), and the end position is inclusive, that is, it is the position of the last character belonging to the source code of the entity.
 
 In our example, the expression statement starts at line 5, column 3 (the first two characters on the line are tabs, which each count as one character), and it ends at line 8, column 4.
 

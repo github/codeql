@@ -4,7 +4,7 @@ Tutorial: Expressions, types and statements
 Overview
 --------
 
-This topic contains worked examples of how to write queries using the standard QL library classes for C/C++ expressions, types and statements.
+This topic contains worked examples of how to write queries using the standard QL library classes for C/C++ expressions, types, and statements.
 
 Expressions and types
 ---------------------

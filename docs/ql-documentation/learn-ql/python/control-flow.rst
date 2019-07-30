@@ -3,8 +3,8 @@ Tutorial: Control flow analysis
 
 In order to analyze the `Control-flow graph <http://en.wikipedia.org/wiki/Control_flow_graph>`__ of a ``Scope`` we can use the two QL classes ``ControlFlowNode`` and ``BasicBlock``. These classes allow you to ask such questions as "can you reach point A from point B?" or "Is it possible to reach point B *without* going through point A?". To report results we use the class ``AstNode``, which represents a syntactic element and corresponds to the source code - allowing the results of the query to be more easily understood.
 
-The 'ControlFlowNode' class
----------------------------
+The ``ControlFlowNode`` class
+-----------------------------
 
 The ``ControlFlowNode`` class represents nodes in the control flow graph. There is a one-to-many relation between AST nodes and control flow nodes. Each syntactic element, the ``AstNode,`` maps to zero, one or many ``ControlFlowNode`` classes, but each ControlFlowNode maps to exactly one ``AstNode``.
 
@@ -47,8 +47,8 @@ The simplest use of the ``ControlFlowNode`` and ``AstNode`` classes is to find u
 
 ➤ `See this in the query console <https://lgtm.com/query/670720181/>`__. This query gives fewer results, but most of the projects have some unreachable nodes. These are also highlighted by the standard query: `Unreachable code <https://lgtm.com/rules/3980095>`__.
 
-The 'BasicBlock' class
-----------------------
+The ``BasicBlock`` class
+------------------------
 
 The ``BasicBlock`` class represents a `basic block <http://en.wikipedia.org/wiki/Basic_block>`__ of control flow nodes. The ``BasicBlock`` class is not that useful for writing queries directly, but is very useful for building complex analyses, such as data flow. The reason it is useful is that it shares many of the interesting properties of control flow nodes, such as what can reach what and what `dominates <http://en.wikipedia.org/wiki/Dominator_%28graph_theory%29>`__ what, but there are fewer basic blocks than control flow nodes - resulting in queries that are faster and use less memory.
 

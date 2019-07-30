@@ -14,7 +14,7 @@ The core library is imported at the top of each query using:
 
 Since this is required for all C# queries, it is omitted from QL snippets below.
 
-The core library contains all the program elements, including `files <#files>`__, `types <#types>`__, methods, `variables <#variables>`__, `statements <#statements>`__ and `expressions <#expressions>`__. This is sufficient for most queries, however additional libraries can be imported for bespoke functionality such as control flow and data flow. See :doc:`QL for C# <ql-for-csharp>` for information about these additional libraries.
+The core library contains all the program elements, including `files <#files>`__, `types <#types>`__, methods, `variables <#variables>`__, `statements <#statements>`__, and `expressions <#expressions>`__. This is sufficient for most queries, however additional libraries can be imported for bespoke functionality such as control flow and data flow. See :doc:`QL for C# <ql-for-csharp>` for information about these additional libraries.
 
 Class hierarchies
 ~~~~~~~~~~~~~~~~~
@@ -50,7 +50,7 @@ QL classes can also be considered to be *sets*, and the ``extends`` relation bet
 
 This overview omits some of the less important or intermediate classes from the class hierarchy.
 
-Each class has "predicates", which are logical propositions about that class. They also define navigable relationships between classes. Predicates are inherited, so for example the ``AddExpr`` class inherits the predicates ``getLeftOperand()`` and ``getRightOperand()`` from ``BinaryArithmeticOperation``, and ``getType()`` from class ``Expr``. This is similar to how methods are inherited in object-oriented programming languages.
+Each class has predicates, which are logical propositions about that class. They also define navigable relationships between classes. Predicates are inherited, so for example the ``AddExpr`` class inherits the predicates ``getLeftOperand()`` and ``getRightOperand()`` from ``BinaryArithmeticOperation``, and ``getType()`` from class ``Expr``. This is similar to how methods are inherited in object-oriented programming languages.
 
 In this overview, we present the most common and useful predicates. Consult the reference, QL source code, and autocomplete in the editor for the complete list of predicates available on each class.
 
@@ -118,7 +118,7 @@ Exercise 2: Write a query to find the source file with the largest number of lin
 Elements
 --------
 
-The class `Element <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Element.qll/type.Element$Element.html>`__ is the base class for all parts of a C# program, and it is the root of the element class hierarchy. All program elements (such as types, methods, statements and expressions) ultimately derive from this common base class.
+The class `Element <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Element.qll/type.Element$Element.html>`__ is the base class for all parts of a C# program, and it is the root of the element class hierarchy. All program elements (such as types, methods, statements, and expressions) ultimately derive from this common base class.
 
 ``Element`` forms a hierarchical structure of the program, which can be navigated using the ``getParent()`` and ``getChild()`` predicates. This is much like an abstract syntax tree, and also applies to elements in assemblies.
 
@@ -247,7 +247,7 @@ Class hierarchy
 
          -  ``Field`` - a field in a ``class``/``struct``
 
-            -  ``MemberConstant`` - a const field
+            -  ``MemberConstant`` - a ``const`` field
 
                -  ``EnumConstant`` - a field in an ``enum``
 
@@ -283,7 +283,7 @@ Find all unused local variables:
 Types
 -----
 
-Types are represented by the QL class `Type <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Type.qll/type.Type$Type.html>`__ and consist of builtin types, interfaces, classes, structs, enums and type parameters. The database contains types from the program and all referenced assemblies including mscorlib and the .NET framework.
+Types are represented by the QL class `Type <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Type.qll/type.Type$Type.html>`__ and consist of builtin types, interfaces, classes, structs, enums, and type parameters. The database contains types from the program and all referenced assemblies including mscorlib and the .NET framework.
 
 The builtin types (``object``, ``int``, ``double`` etc.) have corresponding types (``System.Object``, ``System.Int32`` etc.) in mscorlib.
 
@@ -374,7 +374,7 @@ Useful members of ``ValueOrRefType`` include:
 -  ``getQualifiedName()/hasQualifiedName(string)`` - gets the qualified name of the type (for example, ``"System.String"``)
 -  ``getABaseInterface()`` - gets an immediate interface of this type, if any
 -  ``getABaseType()`` - gets an immediate base class or interface of this type, if any
--  ``getBaseClass()`` - gets the immmediate base class of this type, if any
+-  ``getBaseClass()`` - gets the immediate base class of this type, if any
 -  ``getASubType()`` - gets an immediate subtype, a type which directly inherits from this type, if any
 -  ``getAMember()`` - gets any member (field/method/property etc), if any
 -  ``getAMethod()`` - gets a method, if any
@@ -438,7 +438,7 @@ Exercise 5: Write a query to find all classes starting with the letter ``A``. (`
 Callables
 ---------
 
-Callables are represented by the QL class `Callable <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/Callable.qll/type.Callable$Callable.html>`__ and are anything that can be called independently, such as methods, constructors, destructors, operators, anonymous functions, indexers and property accessors.
+Callables are represented by the QL class `Callable <https://help.semmle.com/qldoc/csharp/semmle/code/csharp/Callable.qll/type.Callable$Callable.html>`__ and are anything that can be called independently, such as methods, constructors, destructors, operators, anonymous functions, indexers, and property accessors.
 
 The database contains all of the callables in your program and in all referenced assemblies.
 
@@ -695,7 +695,7 @@ The ``Access`` class represents any use or cross-reference of another ``Declarat
 
 The ``Call`` class represents a call to a ``Callable``, for example to a ``Method`` or an ``Accessor``, and the ``getTarget()`` method gets the ``Callable`` being called. The ``Operation`` class consists of arithmetic, bitwise operations and logical operations.
 
-Some expressions use a "qualifier", which is the object on which the expression operates. A typical example is a ``MethodCall``. In this case, the ``getQualifier()`` predicate is used to get the expression on the left of the ``.``, and ``getArgument(int)`` is used to get the arguments of the call.
+Some expressions use a qualifier, which is the object on which the expression operates. A typical example is a ``MethodCall``. In this case, the ``getQualifier()`` predicate is used to get the expression on the left of the ``.``, and ``getArgument(int)`` is used to get the arguments of the call.
 
 Class hierarchy
 ~~~~~~~~~~~~~~~
@@ -922,7 +922,7 @@ Exercise 9: Limit the previous query to string types. Exclude empty passwords or
 Attributes
 ----------
 
-C# attributes are represented by the QL class `Attribute <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Attribute.qll/type.Attribute$Attribute.html>`__. They can be present on many C# elements, such as classes, methods, fields and parameters. The database contains attributes from the source code and all assembly references.
+C# attributes are represented by the QL class `Attribute <https://help.semmle.com/qldoc/csharp/semmle/code/cil/Attribute.qll/type.Attribute$Attribute.html>`__. They can be present on many C# elements, such as classes, methods, fields, and parameters. The database contains attributes from the source code and all assembly references.
 
 The attribute of any ``Element`` can be obtained via ``getAnAttribute()``, whereas if you have an attribute, you can find its element via ``getTarget()``. The following two query fragments are identical:
 
@@ -943,7 +943,7 @@ Predicates
 
 -  ``getTarget()`` - gets the ``Element`` to which this attribute applies
 -  ``getArgument(int)`` - gets the given argument of the attribute
--  ``getType()`` - gets the type of this attribute. Note that the class name must end in "Attribute".
+-  ``getType()`` - gets the type of this attribute. Note that the class name must end in ``"Attribute"``.
 
 Examples
 ~~~~~~~~
