@@ -24,6 +24,7 @@
 | Number of commits | No results | Query has been removed. |
 | Poorly documented files with many authors | No results | Query has been removed. |
 | Recent activity | No results | Query has been removed. |
+| Unchecked return value (`cs/unchecked-return-value`) | Fewer false positive results | Method calls that are expression bodies of `void` callables (for example, the call to `Foo` in `void Bar() => Foo()`) are no longer considered to use the return value. |
 
 ## Changes to code extraction
 

@@ -209,7 +209,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
   override predicate canReturn(DotNet::Expr e) {
     exists(ReturnStmt ret | ret.getEnclosingCallable() = this | e = ret.getExpr())
     or
-    e = getExpressionBody()
+    e = this.getExpressionBody() and
+    not this.getReturnType() instanceof VoidType
   }
 
   /** Holds if this callable can yield return the expression `e`. */

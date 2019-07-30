@@ -89,7 +89,14 @@ predicate whitelist(Method m) {
 }
 
 class DiscardedMethodCall extends MethodCall {
-  DiscardedMethodCall() { this.getParent() instanceof ExprStmt }
+  DiscardedMethodCall() {
+    this.getParent() instanceof ExprStmt
+    or
+    exists(Callable c |
+      this = c.getExpressionBody() and
+      not c.canReturn(this)
+    )
+  }
 
   string query() {
     exists(Method m |
