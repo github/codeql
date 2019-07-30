@@ -2,7 +2,7 @@ Writing QL queries
 ##################
 
 
-If you are familiar with QL, you can modify the existing Semmle queries or write custom queries to analyze, improve and secure your own projects. Get started by reading the information for query writers and viewing the examples provided below. 
+If you are familiar with QL, you can modify the existing Semmle queries or write custom queries to analyze, improve, and secure your own projects. Get started by reading the information for query writers and viewing the examples provided below. 
 
 Information for query writers
 *****************************

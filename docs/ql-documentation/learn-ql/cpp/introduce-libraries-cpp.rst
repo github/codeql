@@ -49,7 +49,7 @@ Symbol table
    -  ``TypedefType`` — typedefs
    -  ``ArrayType`` — arrays
    -  ``PointerType`` — pointers
-   -  ``SpecifiedType`` — qualifiers such as const, volatile, or restrict
+   -  ``SpecifiedType`` — qualifiers such as ``const``, ``volatile``, or ``restrict``
 
 -  ``Namespace`` — namespaces (defined in the `Namespace.qll <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/Namespace.qll/module.Namespace.html>`__ library)
 

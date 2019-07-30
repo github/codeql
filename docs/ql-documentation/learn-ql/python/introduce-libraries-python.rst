@@ -127,7 +127,7 @@ For our first example, we can find all ``finally`` blocks by using the ``Try`` c
 ➤ `See this in the query console <https://lgtm.com/query/659662193/>`__. Many projects include examples of this pattern.
 
 2. Finding 'except' blocks that do nothing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+''''''''''''''''''''''''''''''''''''''''''
 
 For our second example, we can use a simplified version of a query from the standard query set. We look for all ``except`` blocks that do nothing.
 
@@ -137,7 +137,7 @@ A block that does nothing is one that contains no statements except ``pass`` sta
 
    not exists(Stmt s | s = ex.getAStmt() | not s instanceof Pass)
 
-where ``ex`` is an ``ExceptStmt`` and ``Pass`` is the class representing ``pass`` statements. Instead of using the double negative, **"no**\ *statements that are*\ **not**\ *pass statements"*, this can also be expressed positively, "all statements must be pass statements". The positive form is expressed in QL using the ``forall`` quantifier:
+where ``ex`` is an ``ExceptStmt`` and ``Pass`` is the class representing ``pass`` statements. Instead of using the double negative, **"no**\ *statements that are*\ **not**\ *pass statements"*, this can also be expressed positively, "all statements must be pass statements." The positive form is expressed in QL using the ``forall`` quantifier:
 
 .. code-block:: ql
 
@@ -164,7 +164,7 @@ The most commonly used standard QL library classes in the syntactic part of the 
 
 ``Module``, ``Class``, ``Function``, ``Stmt`` and ``Expr`` - they are all subclasses of `AstNode <https://help.semmle.com/qldoc/python/semmle/python/AST.qll/type.AST$AstNode.html>`__.
 
-Abstract Syntax Tree
+Abstract syntax tree
 ''''''''''''''''''''
 
 -  ``AstNode``
@@ -243,7 +243,7 @@ Other
 Control flow classes
 ~~~~~~~~~~~~~~~~~~~~
 
-This part of the library represents the control flow graph of each ``Scope`` (classes, functions and modules). Each ``Scope`` contains a graph of ``ControlFlowNode`` elements. Each scope has a single entry point and at least one (potentially many) exit points. To speed up control and data flow analysis, control flow nodes are grouped into `basic blocks <http://en.wikipedia.org/wiki/Basic_block>`__.
+This part of the library represents the control flow graph of each ``Scope`` (classes, functions, and modules). Each ``Scope`` contains a graph of ``ControlFlowNode`` elements. Each scope has a single entry point and at least one (potentially many) exit points. To speed up control and data flow analysis, control flow nodes are grouped into `basic blocks <http://en.wikipedia.org/wiki/Basic_block>`__.
 
 As an example, we might want to find the longest sequence of code without any branches. A ``BasicBlock`` is, by definition, a sequence of code without any branches, so we just need to find the longest ``BasicBlock``.
 
@@ -273,7 +273,7 @@ Using this predicate we can select the longest ``BasicBlock`` by selecting the `
    where bb_length(b) = max(bb_length(_))
    select b
 
-➤ `See this in the query console <https://lgtm.com/query/666730036/>`__. When we ran it on the LGTM.com demo projects, the *openstack/nova* and *rg3/youtube-dl* projects both contained source code results for this query.
+➤ `See this in the query console <https://lgtm.com/query/666730036/>`__. When we ran it on the LGTM.com demo projects, the *openstack/nova* and *ytdl-org/youtube-dl* projects both contained source code results for this query.
 
 .. pull-quote::
 

@@ -10,7 +10,7 @@ A classic example where this approach is useful is when modeling ASTs (Abstract 
 
 Each value in a concrete class satisfies a particular logical property - the *characteristic predicate* (or *character* for short) of that class. This characteristic predicate consists of the conjunction (``and``) of its own body (if any) and the characteristic predicates of its superclasses.
 
-For example, we could derive a subclass ``MainMethod`` from the standard QL class ``Method`` that contains precisely those Java functions called "main":
+For example, we could derive a subclass ``MainMethod`` from the standard QL class ``Method`` that contains precisely those Java functions called ``"main"``:
 
 .. code-block:: ql
 
@@ -33,7 +33,7 @@ Letting ``cp(C)`` denote the characteristic predicate of class ``C``, it is clea
 
    cp(MainMethod) = cp(Method) and hasName("main")
 
-That is, entities are "main" methods if and only if they are methods that are also called "main".
+That is, entities are *main* methods if and only if they are methods that are also called ``"main"``.
 
 Abstract classes
 ----------------

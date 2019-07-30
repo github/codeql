@@ -12,7 +12,7 @@ For a more general introduction to modeling data flow in QL, see :doc:`Introduct
 Local data flow
 ---------------
 
-Local data flow is data flow within a single method or callable. Local data flow is usually easier, faster and more precise than global data flow, and is sufficient for many queries.
+Local data flow is data flow within a single method or callable. Local data flow is usually easier, faster, and more precise than global data flow, and is sufficient for many queries.
 
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
@@ -173,7 +173,7 @@ The following predicates are defined in the configuration:
 -  ``isBarrier``—optional, restricts the data flow
 -  ``isAdditionalFlowStep``—optional, adds additional flow steps
 
-The characteristic predicate ``MyDataFlowConfiguration()`` defines the name of the configuration, so ``"MyDataFlowConfiguration"`` should be a unique name, e.g. the name of your class.
+The characteristic predicate ``MyDataFlowConfiguration()`` defines the name of the configuration, so ``"MyDataFlowConfiguration"`` should be a unique name, for example, the name of your class.
 
 The data flow analysis is performed using the predicate ``hasFlow(DataFlow::Node source, DataFlow::Node sink)``:
 

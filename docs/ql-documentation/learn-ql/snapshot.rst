@@ -1,5 +1,5 @@
 What's in a snapshot database?
-==============================
+===============================
 
 A snapshot database contains a variety of data related to a particular code base at a particular point in time. For details of how the database is generated see `Database generation <https://lgtm.com/help/lgtm/generate-database>`__.
 

@@ -1,5 +1,5 @@
-Example: Checking for allocations equal to 'strlen(string)' without space for a null terminator
-===============================================================================================
+Example: Checking for allocations equal to ``strlen(string)`` without space for a null terminator
+=================================================================================================
 
 Overview
 --------
@@ -49,8 +49,8 @@ Calls to ``strlen`` can be identified using the library `StrlenCall <https://hel
 
    You could easily extend this class to include similar functions such as ``realloc``, or your own custom allocator. With a little effort they could even include C++ ``new`` expressions (to do this, ``MallocCall`` would need to extend a common superclass of both ``FunctionCall`` and ``NewExpr``, such as ``Expr``).
 
-Finding the 'strlen(string)' pattern
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Finding the ``strlen(string)`` pattern
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before we start to write our query, there's one remaining task. We need to modify our new ``MallocCall`` class, so it returns an expression for the size of the allocation. Currently this will be the first argument to the ``malloc`` call, ``FunctionCall.getArgument(0)``, but converting this into a QL predicate makes it more flexible for future refinements.
 

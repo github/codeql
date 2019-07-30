@@ -42,7 +42,7 @@ For most usages, aggregates have very straightforward behavior. They can be thou
 
    For every combination of values for the declared **variables**, for which the **range** holds, take one value of the **expression** and apply the **aggregation function** to the resulting values.
 
-How does this work? Let us take the simple example given above of calculating the sum of your employees' salaries. Suppose that your employees are Alice, Ben and Charles, whose salaries are $30k, $40k, and $50k respectively. Then to calculate ``result``, we follow our recipe:
+How does this work? Let us take the simple example given above of calculating the sum of your employees' salaries. Suppose that your employees are Alice, Ben, and Charles, whose salaries are $30k, $40k, and $50k respectively. Then to calculate ``result``, we follow our recipe:
 
 +----------------------------------------------------------------+-------------------------------------+
 | For every combination of values for the declared **variables** | Alice, Ben, Charles, Denis, Edna... |
@@ -192,7 +192,7 @@ Rank is a slightly unusual aggregate. It takes the possible values of the expres
    where salary = rank[salaryRank](Employee e | managedByMe(e) | e.getSalary())
    select salary, salaryRank
 
-assigns, for each of my managees, their salary to ``salary``, and the rank of their salary to ``salaryRank``. In our running example, the results would be:
+assigns, for each person I manage, their salary to ``salary``, and the rank of their salary to ``salaryRank``. In our running example, the results would be:
 
 +------------+----------------+
 | ``salary`` | ``salaryRank`` |

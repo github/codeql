@@ -79,8 +79,8 @@ A simple taint tracking query has the basic form:
     where config.hasFlow(src, sink)
     select sink, "Alert message, including reference to $@.", src, "string describing the source"
 
-As a contrived example, here is a query that looks for flow from a HTTP request to a function called "unsafe".
-The sources are pre-defined and accessed by importing library ``semmle.python.web.HttpRequest``.
+As a contrived example, here is a query that looks for flow from a HTTP request to a function called ``"unsafe"``.
+The sources are predefined and accessed by importing library ``semmle.python.web.HttpRequest``.
 The sink is defined by using a custom ``TaintTracking::Sink`` class.
 
 .. code-block:: ql
@@ -226,7 +226,7 @@ The ``TaintKind`` itself is just a string (a QL string, not a QL entity represen
 which provides methods to extend flow and allow the kind of taint to change along the path.
 The ``TaintKind`` class has many predicates allowing flow to be modified.
 This simplest ``TaintKind`` does not override any predicates, meaning that it only flows as opaque data.
-An example of this is the `Hardcoded credentials query <https://lgtm.com/query/rule:1506421276400/lang:python/>`_,
+An example of this is the `Hard-coded credentials query <https://lgtm.com/query/rule:1506421276400/lang:python/>`_,
 which defines the simplest possible taint kind class, ``HardcodedValue``, and custom source and sink classes.
 
 .. code-block:: ql

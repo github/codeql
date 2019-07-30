@@ -1,7 +1,7 @@
 Find the thief: Start the search
 ================================
 
-The villagers answered "yes" to the question "Is the thief taller than 150cm?". To use this information, you can write the following query to list all villagers taller than 150cm. These are all possible suspects.
+The villagers answered "yes" to the question "Is the thief taller than 150cm?" To use this information, you can write the following query to list all villagers taller than 150cm. These are all possible suspects.
 
 .. code-block:: ql
 

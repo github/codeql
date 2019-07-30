@@ -1,5 +1,5 @@
-Analyzing data flow in JavaScript/TypeScript
-============================================
+Analyzing data flow in JavaScript and TypeScript
+================================================
 
 Overview
 --------
@@ -19,11 +19,11 @@ Both local and global data flow, as well as taint tracking, work on a representa
 Nodes on the data flow flow graph may also correspond to nodes on the abstract syntax tree, but they are not the same.
 While AST nodes belong to class ``ASTNode`` and its subclasses, data flow nodes belong to class ``DataFlow::Node`` and its subclasses:
 
-  - ``DataFlow::ValueNode``: a "value node", that is, a data flow node that corresponds either to an expression, or to a declaration of a function, class, TypeScript namespace,
+  - ``DataFlow::ValueNode``: a *value node*, that is, a data flow node that corresponds either to an expression, or to a declaration of a function, class, TypeScript namespace,
     or TypeScript enum.
   - ``DataFlow::SsaDefinitionNode``: a data flow node that corresponds to an SSA variable, that is, a local variable with additional information to reason more precisely
     about different assignments to the same variable. This kind of data flow node does not correspond to an AST node.
-  - ``DataFlow::PropRef``: a data flow node that corresponds to a read or a write of an object property, for example in an assignment, in an object literal, or in a
+  - ``DataFlow::PropRef``: a data flow node that corresponds to a read or a write of an object property, for example, in an assignment, in an object literal, or in a
     destructuring assignment.
   - ``DataFlow::PropRead``, ``DataFlow::PropWrite``: subclasses of ``DataFlow::PropRef`` that correspond to reads and writes, respectively.
 
@@ -33,7 +33,7 @@ Apart from these fairly general classes, there are some more specialized classes
   - ``DataFlow::InvokeNode``: a data flow node that corresponds to a function call; its subclasses ``DataFlow::NewNode`` and ``DataFlow::CallNode`` represent calls with
     and without ``new`` respectively, while ``DataFlow::MethodCallNode`` represents method calls. Note that these classes also model reflective calls using ``.call`` and
     ``.apply``, which do not correspond to any AST nodes.
-  - ``DataFlow::ThisNode``: a data flow node that corresponds to the value of ``this`` in a function or toplevel. This kind of data flow node also does not correspond to an AST node.
+  - ``DataFlow::ThisNode``: a data flow node that corresponds to the value of ``this`` in a function or top level. This kind of data flow node also does not correspond to an AST node.
   - ``DataFlow::GlobalVarRefNode``: a data flow node that corresponds to a direct reference to a global variable. This class is rarely used directly, instead you would normally
     use the predicate ``globalVarRef`` (introduced below), which also considers indirect references through ``window`` or global ``this``.
   - ``DataFlow::FunctionNode``, ``DataFlow::ObjectLiteralNode``, ``DataFlow::ArrayLiteralNode``: a data flow node that corresponds to a function (expression or declaration),
@@ -47,7 +47,7 @@ The following predicates are available for mapping from AST nodes and other elem
   - ``DataFlow::valueNode(x)``: maps ``x``, which must be an expression or a declaration of a function, class, namespace or enum, to its corresponding ``DataFlow::ValueNode``.
   - ``DataFlow::ssaDefinitionNode(ssa)``: maps an SSA definition ``ssa`` to its corresponding ``DataFlow::SsaDefinitionNode``.
   - ``DataFlow::parameterNode(p)``: maps a function parameter ``p`` to its corresponding ``DataFlow::ParameterNode``.
-  - ``DataFlow::thisNode(s)``: maps a function or toplevel ``s`` to the ``DataFlow::ThisNode`` representing the value of ``this`` in ``s``.
+  - ``DataFlow::thisNode(s)``: maps a function or top-level ``s`` to the ``DataFlow::ThisNode`` representing the value of ``this`` in ``s``.
 
 Class ``DataFlow::Node`` also has a member predicate ``asExpr()`` that you can use to map from a ``DataFlow::ValueNode`` to the expression it corresponds to. Note that
 this predicate is undefined for other kinds of nodes, and for value nodes that do not correspond to expressions.

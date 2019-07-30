@@ -7,7 +7,7 @@ Overview
 Data flow analysis computes the possible values that a variable can hold at various points in a program, determining how those values propagate through the program and where they are used. 
 Many of Semmle's built-in security queries implement data flow analysis, which can highlight the fate of potentially malicious or insecure data that can cause vulnerabilities in your code base.
 These queries help you understand if data is used in an insecure way, whether dangerous arguments are passed to functions, or whether sensitive data can leak.
-As well as highlighting potential security issues, you can also use data flow analysis to understand other aspects of how a program behaves, by finding, for example, uses of unititialised variables and resource leaks.
+As well as highlighting potential security issues, you can also use data flow analysis to understand other aspects of how a program behaves, by finding, for example, uses of unititialized variables and resource leaks.
 
 The following sections provide a brief introduction to data flow analysis in QL.
 

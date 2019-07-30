@@ -3,8 +3,8 @@ Tutorial: Points-to analysis and type inference
 
 This topic contains worked examples of how to write queries using the standard QL library classes for Python type inference.
 
-The Object class
-----------------
+The ``Object`` class
+--------------------
 
 The ``Object`` class and its subclasses ``FunctionObject``, ``ClassObject`` and ``ModuleObject`` represent the values an expression may hold at runtime.
 
@@ -119,7 +119,7 @@ Combining the parts of the query we get this:
    )
    select t, ex1, ex2
 
-➤ `See this in the query console <https://lgtm.com/query/669950027/>`__. This query finds only one result in the demo projects on LGTM.com (`rg3/youtub-dl <https://lgtm.com/projects/g/rg3/youtube-dl/rev/39e9d524e5fe289936160d4c599a77f10f6e9061/files/devscripts/buildserver.py#L413>`__). The result is also highlighted by the standard query: `Unreachable 'except' block <https://lgtm.com/rules/7900089>`__.
+➤ `See this in the query console <https://lgtm.com/query/669950027/>`__. This query finds only one result in the demo projects on LGTM.com (`youtube-dl <https://lgtm.com/projects/g/ytdl-org/youtube-dl/rev/39e9d524e5fe289936160d4c599a77f10f6e9061/files/devscripts/buildserver.py?sort=name&dir=ASC&mode=heatmap#L413>`__). The result is also highlighted by the standard query: `Unreachable 'except' block <https://lgtm.com/rules/7900089>`__.
 
 .. pull-quote::
 
@@ -130,7 +130,7 @@ Combining the parts of the query we get this:
 Using type inference
 --------------------
 
-In this example we use type inference to determine when an object is used as a sequence in a ``for`` statement, but that object might not be an iterable.
+In this example we use type inference to determine when an object is used as a sequence in a ``for`` statement, but that object might not be an ``"iterable"``.
 
 First of all find what object is used in the ``for`` loop:
 
@@ -142,7 +142,7 @@ First of all find what object is used in the ``for`` loop:
 
 Then we need to determine if a ``ClassObject`` is iterable. ``ClassObject`` provides the predicate ``isIterable()`` which we can combine with the longer form of ``ControlFlowNode.refersTo()`` to get the class of the loop iterator, giving us this:
 
-**Find non-iterable used as a loop iterator**
+**Find non-iterable object used as a loop iterator**
 
 .. code-block:: ql
 
@@ -157,7 +157,7 @@ Then we need to determine if a ``ClassObject`` is iterable. ``ClassObject`` prov
 
 Many of the results shown will have ``cls`` as ``NoneType``. It is more informative to show where these ``None`` values may come from. To do this we use the final field of ``refersTo``, as follows:
 
-**Find non-iterable used as a loop iterator 2**
+**Find non-iterable object used as a loop iterator 2**
 
 .. code-block:: ql
 

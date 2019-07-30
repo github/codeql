@@ -55,7 +55,7 @@ The expression ``southern(this)`` defines the logical property represented by th
 
    Note
 
-   If you are familiar with object-oriented programming languages, you might be tempted to think of the characteristic predicate as a "constructor". However, this is **not** the case - it is a logical property which does not create any objects.
+   If you are familiar with object-oriented programming languages, you might be tempted to think of the characteristic predicate as a *constructor*. However, this is **not** the case - it is a logical property which does not create any objects.
 
 You always need to define a class in QL in terms of an existing (larger) class. In our example, a ``Southerner`` is a special kind of ``Person``, so we say that ``Southerner`` *extends* ("is a subset of") ``Person``.
 

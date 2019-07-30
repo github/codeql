@@ -32,7 +32,7 @@ The QL JavaScript library presents information about JavaScript source code at d
 
 Note that representations above the textual level (for example the lexical representation or the flow graphs) are only available for JavaScript code that does not contain fatal syntax errors. For code with such errors, the only information available is at the textual level, as well as information about the errors themselves.
 
-Additionally, there is library support for working with HTML documents, JSON and YAML data, JSDoc comments, and regular expressions.
+Additionally, there is library support for working with HTML documents, JSON, and YAML data, JSDoc comments, and regular expressions.
 
 Textual level
 ~~~~~~~~~~~~~
@@ -194,10 +194,10 @@ The QL class `ASTNode <https://help.semmle.com/qldoc/javascript/semmle/javascrip
    
    These predicates should only be used to perform generic AST traversal. To access children of specific AST node types, the specialized predicates introduced below should be used instead. In particular, queries should not rely on the numeric indices of child nodes relative to their parent nodes: these are considered an implementation detail that may change between versions of the library.
 
-Toplevels
-^^^^^^^^^
+Top-levels
+^^^^^^^^^^
 
-From a syntactic point of view, each JavaScript program is composed of one or more top-level code blocks (or *toplevels* for short), which are blocks of JavaScript code that do not belong to a larger code block. Toplevels are represented by the class `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__ and its subclasses:
+From a syntactic point of view, each JavaScript program is composed of one or more top-level code blocks (or *top-levels* for short), which are blocks of JavaScript code that do not belong to a larger code block. Top-levels are represented by the class `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__ and its subclasses:
 
 -  `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__
 
@@ -213,20 +213,20 @@ From a syntactic point of view, each JavaScript program is composed of one or mo
 
    -  `Externs <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$Externs.html>`__: a JavaScript file containing `externs <https://developers.google.com/closure/compiler/docs/api-tutorial3#externs>`__ definitions
 
-Every `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__ class is contained in a `File <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__ class, but a single `File <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__ may contain more than one `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__. To go from a ``TopLevel tl`` to its `File <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__, use ``tl.getFile()``; conversely, for a ``File f``, predicate ``f.getATopLevel()`` returns a toplevel contained in ``f``. For every AST node, predicate ``ASTNode.getTopLevel()`` can be used to find the toplevel it belongs to.
+Every `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__ class is contained in a `File <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__ class, but a single `File <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__ may contain more than one `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__. To go from a ``TopLevel tl`` to its `File <https://help.semmle.com/qldoc/javascript/semmle/javascript/Files.qll/type.Files$File.html>`__, use ``tl.getFile()``; conversely, for a ``File f``, predicate ``f.getATopLevel()`` returns a top-level contained in ``f``. For every AST node, predicate ``ASTNode.getTopLevel()`` can be used to find the top-level it belongs to.
 
 The `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__ class additionally provides the following member predicates:
 
--  ``TopLevel.getNumberOfLines()`` returns the total number of lines (including code, comments and whitespace) in the toplevel.
+-  ``TopLevel.getNumberOfLines()`` returns the total number of lines (including code, comments and whitespace) in the top-level.
 -  ``TopLevel.getNumberOfLinesOfCode()`` returns the number of lines of code, that is, lines that contain at least one token.
 -  ``TopLevel.getNumberOfLinesOfComments()`` returns the number of lines containing or belonging to a comment.
--  ``TopLevel.isMinified()`` determines whether the toplevel contains minified code, using a heuristic based on the average number of statements per line.
+-  ``TopLevel.isMinified()`` determines whether the top-level contains minified code, using a heuristic based on the average number of statements per line.
 
 .. pull-quote::
 
     Note
 
-   By default, LGTM filters out alerts in minified toplevels, since they are often hard to interpret. When writing your own queries in the LGTM query console, this filtering is *not* done automatically, so you may want to explicitly add a condition of the form ``and not e.getTopLevel().isMinified()`` or similar to your query to exclude results in minified code.
+   By default, LGTM filters out alerts in minified top-levels, since they are often hard to interpret. When writing your own queries in the LGTM query console, this filtering is *not* done automatically, so you may want to explicitly add a condition of the form ``and not e.getTopLevel().isMinified()`` or similar to your query to exclude results in minified code.
 
 Statements and expressions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -234,7 +234,7 @@ Statements and expressions
 The most important subclasses of `ASTNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$ASTNode.html>`__ besides `TopLevel <https://help.semmle.com/qldoc/javascript/semmle/javascript/AST.qll/type.AST$TopLevel.html>`__ are `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__ and `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__, which, together with their subclasses, represent statements and expressions, respectively. This section briefly discusses some of the more important classes and predicates. For a full reference of all the subclasses of `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__ and `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ and their API, see
 `Stmt.qll <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/module.Stmt.html>`__ and `Expr.qll <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/module.Expr.html>`__.
 
--  `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__: use ``Stmt.getContainer()`` to access the innermost function or toplevel in which the statement is contained.
+-  `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__: use ``Stmt.getContainer()`` to access the innermost function or top-level in which the statement is contained.
 
    -  `ControlStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$ControlStmt.html>`__: a statement that controls the execution of other statements, that is, a conditional, loop, ``try`` or ``with`` statement; use ``ControlStmt.getAControlledStmt()`` to access the statements that it controls.
 
@@ -264,7 +264,7 @@ The most important subclasses of `ASTNode <https://help.semmle.com/qldoc/javascr
    -  `ClassDeclStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Classes.qll/type.Classes$ClassDeclStmt.html>`__: a class declaration statement; see below for available member predicates.
    -  `DeclStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$DeclStmt.html>`__: a declaration statement containing one or more declarators which can be accessed by predicate ``DeclStmt.getDeclarator(int)``.
 
-      -  `VarDeclStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$VarDeclStmt.html>`__, `ConstDeclStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$ConstDeclStmt.html>`__, `LetStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$LetStmt.html>`__: a "var", "const" or "let" declaration statement.
+      -  `VarDeclStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$VarDeclStmt.html>`__, `ConstDeclStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$ConstDeclStmt.html>`__, `LetStmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$LetStmt.html>`__: a ``var``, ``const`` or ``let`` declaration statement.
 
 -  `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__: use ``Expr.getEnclosingStmt()`` to obtain the innermost statement to which this expression belongs; ``Expr.isPure()`` determines whether the expression is side-effect-free.
 
@@ -420,10 +420,10 @@ Often, the binding pattern is a simple identifier, as in ``var x = 42``. In ECMA
 
 The various kinds of binding patterns are represented by class `BindingPattern <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$BindingPattern.html>`__ and its subclasses:
 
--  `VarRef <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarRef.html>`__: a simple identifier in an lvalue position, for example the ``x`` in ``var x`` or in ``x = 42``
+-  `VarRef <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$VarRef.html>`__: a simple identifier in an l-value position, for example the ``x`` in ``var x`` or in ``x = 42``
 -  `Parameter <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$Parameter.html>`__: a function or catch clause parameter
--  `ArrayPattern <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$ArrayPattern.html>`__: an array pattern, for example the left hand side of ``[x, y] = arr``
--  `ObjectPattern <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$ObjectPattern.html>`__: an object pattern, for example the left hand side of ``{x, y: z} = o``
+-  `ArrayPattern <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$ArrayPattern.html>`__: an array pattern, for example, the left-hand side of ``[x, y] = arr``
+-  `ObjectPattern <https://help.semmle.com/qldoc/javascript/semmle/javascript/Variables.qll/type.Variables$ObjectPattern.html>`__: an object pattern, for example, the left-hand side of ``{x, y: z} = o``
 
 Here is an example of a query to find declaration statements that declare the same variable more than once, excluding results in minified code:
 
@@ -476,7 +476,7 @@ The JavaScript library has support for working with ECMAScript 2015 modules, as 
 
 The most important member predicates defined by `Module <https://help.semmle.com/qldoc/javascript/semmle/javascript/Modules.qll/type.Modules$Module.html>`__ are:
 
--  ``Module.getName()``: gets the name of the module, which is just the stem (that is, basename without extension) of the enclosing file.
+-  ``Module.getName()``: gets the name of the module, which is just the stem (that is, the basename without extension) of the enclosing file.
 -  ``Module.getAnImportedModule()``: gets another module that is imported (through ``import`` or ``require``) by this module.
 -  ``Module.getAnExportedSymbol()``: gets the name of a symbol that this module exports.
 
@@ -538,13 +538,13 @@ As an example, consider the following query which finds distinct function declar
 Control flow
 ~~~~~~~~~~~~
 
-A different program representation in terms of intra-procedural control flow graphs (CFGs) is provided by the QL classes in library `CFG.qll <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/module.CFG.html>`__.
+A different program representation in terms of intraprocedural control flow graphs (CFGs) is provided by the QL classes in library `CFG.qll <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/module.CFG.html>`__.
 
 Class `ControlFlowNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowNode.html>`__ represents a single node in the control flow graph, which is either an expression, a statement, or a synthetic control flow node. Note that `Expr <https://help.semmle.com/qldoc/javascript/semmle/javascript/Expr.qll/type.Expr$Expr.html>`__ and `Stmt <https://help.semmle.com/qldoc/javascript/semmle/javascript/Stmt.qll/type.Stmt$Stmt.html>`__ do not inherit from `ControlFlowNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowNode.html>`__ at the QL level, although their entity types are compatible, so you can explicitly cast from one to the other if you need to map between the AST-based and the CFG-based program representations.
 
-There are two kinds of synthetic control flow nodes: entry nodes (class `ControlFlowEntryNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowEntryNode.html>`__), which represent the beginning of a toplevel or function, and exit nodes (class `ControlFlowExitNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowExitNode.html>`__), which represent their end. They do not correspond to any AST nodes, but simply serve as the unique entry point and exit point of a control flow graph. Entry and exit nodes can be accessed through the predicates ``StmtContainer.getEntry()`` and ``StmtContainer.getExit()``.
+There are two kinds of synthetic control flow nodes: entry nodes (class `ControlFlowEntryNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowEntryNode.html>`__), which represent the beginning of a top-level or function, and exit nodes (class `ControlFlowExitNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/CFG.qll/type.CFG$ControlFlowExitNode.html>`__), which represent their end. They do not correspond to any AST nodes, but simply serve as the unique entry point and exit point of a control flow graph. Entry and exit nodes can be accessed through the predicates ``StmtContainer.getEntry()`` and ``StmtContainer.getExit()``.
 
-Most, but not all, toplevels and functions have another distinguished CFG node, the *start node*. This is the CFG node at which execution begins. Unlike the entry node, which is a synthetic construct, the start node corresponds to an actual program element: for toplevels, it is the first CFG node of the first statement; for functions, it is the CFG node corresponding to their first parameter or, if there are no parameters, the first CFG node of the body. Empty toplevels do not have a start node.
+Most, but not all, top-levels and functions have another distinguished CFG node, the *start node*. This is the CFG node at which execution begins. Unlike the entry node, which is a synthetic construct, the start node corresponds to an actual program element: for top-levels, it is the first CFG node of the first statement; for functions, it is the CFG node corresponding to their first parameter or, if there are no parameters, the first CFG node of the body. Empty top-levels do not have a start node.
 
 For most purposes, using start nodes is preferable to using entry nodes.
 
@@ -607,10 +607,10 @@ In SSA form, each use of a local variable has exactly one (SSA) definition that 
 Altogether, there are five kinds of SSA definitions:
 
 #. Explicit definitions (`SsaExplicitDefinition <https://help.semmle.com/qldoc/javascript/semmle/javascript/SSA.qll/type.SSA$SsaExplicitDefinition.html>`__): these simply wrap a `VarDef <https://help.semmle.com/qldoc/javascript/semmle/javascript/DefUse.qll/type.DefUse$VarDef.html>`__, that is, a definition like ``x = 1`` appearing explicitly in the source code.
-#. Implicit inits (`SsaImplicitInit <https://help.semmle.com/qldoc/javascript/semmle/javascript/SSA.qll/type.SSA$SsaImplicitInit.html>`__): these represent the implicit initialization of local variables with ``undefined`` at the beginning of their scope.
+#. Implicit initializations (`SsaImplicitInit <https://help.semmle.com/qldoc/javascript/semmle/javascript/SSA.qll/type.SSA$SsaImplicitInit.html>`__): these represent the implicit initialization of local variables with ``undefined`` at the beginning of their scope.
 #. Phi nodes (`SsaPhiNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/SSA.qll/type.SSA$SsaPhiNode.html>`__): these are pseudo-definitions that merge two or more SSA definitions where necessary; see the Wikipedia page linked to above for an explanation.
 #. Variable captures (`SsaVariableCapture <https://help.semmle.com/qldoc/javascript/semmle/javascript/SSA.qll/type.SSA$SsaVariableCapture.html>`__): these are pseudo-definitions appearing at places in the code where the value of a captured variable may change without there being an explicit assignment, for example due to a function call.
-#. Refinement nodes (`SsaRefinementNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/SSA.qll/type.SSA$SsaRefinementNode.html>`__): these are pseudo-definitions appearing at places in the code where something becomes known about a variable; for example, a conditional ``if (x === null)`` induces a refinement node at the beginning of its "then" branch recording the fact that ``x`` is known to be ``null`` there. (In the literature, these are sometimes known as "pi nodes".)
+#. Refinement nodes (`SsaRefinementNode <https://help.semmle.com/qldoc/javascript/semmle/javascript/SSA.qll/type.SSA$SsaRefinementNode.html>`__): these are pseudo-definitions appearing at places in the code where something becomes known about a variable; for example, a conditional ``if (x === null)`` induces a refinement node at the beginning of its "then" branch recording the fact that ``x`` is known to be ``null`` there. (In the literature, these are sometimes known as "pi nodes.")
 
 Data flow nodes
 ^^^^^^^^^^^^^^^
@@ -638,20 +638,20 @@ For example, here is a query that finds all invocations of a method called ``sen
          send.getMethodName() = "send"
    select send
 
-➤ `See this in the query console <https://lgtm.com/query/1506058347056/>`__. The query finds HTTP response sends in the `amphtml <https://lgtm.com/projects/g/ampproject/amphtml>`__ project.
+➤ `See this in the query console <https://lgtm.com/query/1506058347056/>`__. The query finds HTTP response sends in the `AMP HTML <https://lgtm.com/projects/g/ampproject/amphtml>`__ project.
 
-Note that the data flow modeling in this library is intra-procedural, that is, flow across function calls and returns is *not* modeled. Likewise, flow through object properties and global variables is not modeled.
+Note that the data flow modeling in this library is intraprocedural, that is, flow across function calls and returns is *not* modeled. Likewise, flow through object properties and global variables is not modeled.
 
 Type inference
 ~~~~~~~~~~~~~~
 
-The library ``semmle.javascript.dataflow.TypeInference`` implements a simple type inference for JavaScript based on intra-procedural, heap-insensitive flow analysis. Basically, the inference algorithm approximates the possible concrete runtime values of variables and expressions as sets of abstract values (represented by QL class `AbstractValue <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/AbstractValues.qll/type.AbstractValues$AbstractValue.html>`__), each of which stands for a set of concrete values.
+The library ``semmle.javascript.dataflow.TypeInference`` implements a simple type inference for JavaScript based on intraprocedural, heap-insensitive flow analysis. Basically, the inference algorithm approximates the possible concrete runtime values of variables and expressions as sets of abstract values (represented by QL class `AbstractValue <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/AbstractValues.qll/type.AbstractValues$AbstractValue.html>`__), each of which stands for a set of concrete values.
 
 For example, there is an abstract value representing all non-zero numbers, and another representing all non-empty strings except for those that can be converted to a number. Both of these abstract values are fairly coarse approximations that represent very large sets of concrete values.
 
 Other abstract values are more precise, to the point where they represent single concrete values: for example, there is an abstract value representing the concrete ``null`` value, and another representing the number zero.
 
-There is a special group of abstract values called *indefinite* abstract values that represent all concrete values. The analysis uses these to handle expressions for which it cannot infer a more precise value, such as function parameters (as mentioned above, the analysis is intra-procedural and hence does not model argument passing) or property reads (the analysis does not model property values either).
+There is a special group of abstract values called *indefinite* abstract values that represent all concrete values. The analysis uses these to handle expressions for which it cannot infer a more precise value, such as function parameters (as mentioned above, the analysis is intraprocedural and hence does not model argument passing) or property reads (the analysis does not model property values either).
 
 Each indefinite abstract value is associated with a string value describing the cause of imprecision. In the above examples, the indefinite value for the parameter would have cause ``"call"``, while the indefinite value for the property would have cause ``"heap"``.
 
@@ -708,13 +708,13 @@ As an example of a call-graph-based query, here is a query to find call sites fo
 Inter-procedural data flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The data flow graph-based analyses described so far are all intra-procedural: they do not take flow from function arguments to parameters or from a ``return`` to the function's caller into account. The data flow library also provides a framework for constructing custom inter-procedural analyses.
+The data flow graph-based analyses described so far are all intraprocedural: they do not take flow from function arguments to parameters or from a ``return`` to the function's caller into account. The data flow library also provides a framework for constructing custom inter-procedural analyses.
 
 We distinguish here between data flow proper, and *taint tracking*: the latter not only considers value-preserving flow (such as from variable definitions to uses), but also cases where one value influences ("taints") another without determining it entirely. For example, in the assignment ``s2 = s1.substring(i)``, the value of ``s1`` influences the value of ``s2``, because ``s2`` is assigned a substring of ``s1``. In general, ``s2`` will not be assigned ``s1`` itself, so there is no data flow from ``s1`` to ``s2``, but ``s1`` still taints ``s2``.
 
-The simplest way of implementing an inter-procedural data flow analysis is to extend either class ``DataFlow::TrackedNode`` or ``DataFlow::TrackedExpr``. The former is a subclass of ``DataFlow::Node``, the latter of ``Expr``, and extending them ensures that the newly added values are tracked inter-procedurally. You can use the predicate ``flowsTo`` to find out which nodes/expressions the tracked value flows to.
+The simplest way of implementing an interprocedural data flow analysis is to extend either class ``DataFlow::TrackedNode`` or ``DataFlow::TrackedExpr``. The former is a subclass of ``DataFlow::Node``, the latter of ``Expr``, and extending them ensures that the newly added values are tracked interprocedurally. You can use the predicate ``flowsTo`` to find out which nodes/expressions the tracked value flows to.
 
-For example, suppose that we are developing an analysis to find hard-coded passwords. We might start by writing a simple query that looks for string constants flowing into variables named "password". To do this, we can extend ``TrackedExpr`` to track all constant strings, ``flowsTo`` to find cases where such a string flows into a (SSA) definition of a password variable:
+For example, suppose that we are developing an analysis to find hard-coded passwords. We might start by writing a simple query that looks for string constants flowing into variables named ``"password"``. To do this, we can extend ``TrackedExpr`` to track all constant strings, ``flowsTo`` to find cases where such a string flows into a (SSA) definition of a password variable:
 
 .. code-block:: ql
 
@@ -789,7 +789,7 @@ Syntax errors
 
 JavaScript code that contains syntax errors cannot usually be analyzed. For such code, the lexical and syntactic representations are not available, and hence no name binding information, call graph or control and data flow. All that is available in this case is a value of class `JSParseError <https://help.semmle.com/qldoc/javascript/semmle/javascript/Errors.qll/type.Errors$JSParseError.html>`__ representing the syntax error. It provides information about the syntax error location (`JSParseError <https://help.semmle.com/qldoc/javascript/semmle/javascript/Errors.qll/type.Errors$JSParseError.html>`__ is a subclass of `Locatable <https://help.semmle.com/qldoc/javascript/semmle/javascript/Locations.qll/type.Locations$Locatable.html>`__) and the error message through predicate ``JSParseError.getMessage``.
 
-Note that for some very simple syntax errors the parser can recover and continue parsing. In this case, lexical and syntactic information is available in addition to the `JSParseError <https://help.semmle.com/qldoc/javascript/semmle/javascript/Errors.qll/type.Errors$JSParseError.html>`__ values representing the (recoverable) syntax errors encountered during parsing.
+Note that for some very simple syntax errors the parser can recover and continue parsing. If this happens, lexical and syntactic information is available in addition to the `JSParseError <https://help.semmle.com/qldoc/javascript/semmle/javascript/Errors.qll/type.Errors$JSParseError.html>`__ values representing the (recoverable) syntax errors encountered during parsing.
 
 Frameworks
 ~~~~~~~~~~
@@ -806,7 +806,9 @@ The ``semmle.javascript.frameworks.AngularJS`` library provides support for work
 HTTP framework libraries
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The library ``semmle.javacript.frameworks.HTTP`` provides classes modeling common concepts from various HTTP frameworks. Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapijs.com/>`__ and `Restify <https://restify.com/>`__.
+The library ``semmle.javacript.frameworks.HTTP`` provides classes modeling common concepts from various HTTP frameworks. 
+
+Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapijs.com/>`__ and `Restify <https://restify.com/>`__.
 
 The most important classes include (all in module ``HTTP``):
 
@@ -825,7 +827,7 @@ Node.js
 
 The ``semmle.javascript.NodeJS`` library provides support for working with `Node.js <http://nodejs.org/>`__ modules through the following QL classes:
 
--  `NodeModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$NodeModule.html>`__: a toplevel that defines a Node.js module; see the section on `Modules <#modules>`__ for more information.
+-  `NodeModule <https://help.semmle.com/qldoc/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$NodeModule.html>`__: a top-level that defines a Node.js module; see the section on `Modules <#modules>`__ for more information.
 -  `Require <https://help.semmle.com/qldoc/javascript/semmle/javascript/NodeJS.qll/type.NodeJS$Require.html>`__: a call to the special ``require`` function that imports a module.
 
 As an example of the use of these classes, here is a query that counts for every module how many other modules it imports:
@@ -876,7 +878,8 @@ The ``semmle.javascript.frameworks.React`` library provides support for working 
 Databases
 ^^^^^^^^^
 
-The class ``SQL::SqlString`` represents an expression that is interpreted as a SQL command. Currently, we model SQL commands issued through the following npm packages: `mysql <https://www.npmjs.com/package/mysql>`__, `pg <https://www.npmjs.com/package/pg>`__, ```pg-pool`` <https://www.npmjs.com/package/pg-pool>`__, `sqlite3 <https://www.npmjs.com/package/sqlite3>`__, `mssql <https://www.npmjs.com/package/mssql>`__ and `sequelize <https://www.npmjs.com/package/sequelize>`__.
+The class ``SQL::SqlString`` represents an expression that is interpreted as a SQL command. Currently, we model SQL commands issued through the following npm packages:
+`mysql <https://www.npmjs.com/package/mysql>`__, `pg <https://www.npmjs.com/package/pg>`__, `pg-pool <https://www.npmjs.com/package/pg-pool>`__, `sqlite3 <https://www.npmjs.com/package/sqlite3>`__, `mssql <https://www.npmjs.com/package/mssql>`__ and `sequelize <https://www.npmjs.com/package/sequelize>`__.
 
 Similarly, the class ``NoSQL::Query`` represents an expression that is interpreted as a NoSQL query by the ``mongodb`` or ``mongoose`` package.
 

@@ -89,7 +89,7 @@ This is getting complicated. Ideally, you want to define a predicate ``relativeO
 
 How could you do that?
 
-It helps to think of a precise definition of "relative". A possible definition is that two people are related if they have a common ancestor.
+It helps to think of a precise definition of *relative*. A possible definition is that two people are related if they have a common ancestor.
 
 You can introduce a predicate ``ancestorOf(Person p)`` that lists all ancestors of ``p``. An ancestor of ``p`` is just a parent of ``p``, or a parent of a parent of ``p``, or a parent of a parent of a parent of ``p``, and so on. Unfortunately, this leads to an endless list of parents. You can't write an infinite QL query, so there must be an easier approach.
 

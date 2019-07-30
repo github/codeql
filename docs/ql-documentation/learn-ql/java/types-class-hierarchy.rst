@@ -36,7 +36,7 @@ To determine ancestor types (including immediate super types, and also *their* s
 
    If you want to see the location of ``B`` as well as ``A``, you can replace ``B.getASupertype+()`` with ``B.getASupertype*()`` and re-run the query.
 
-Besides class hierarchy modeling, ``RefType`` also provides member predicate ``getAMember`` for accessing members (that is, fields, constructors and methods) declared in the type, and predicate ``inherits(Method m)`` for checking whether the type either declares or inherits a method ``m``.
+Besides class hierarchy modeling, ``RefType`` also provides member predicate ``getAMember`` for accessing members (that is, fields, constructors, and methods) declared in the type, and predicate ``inherits(Method m)`` for checking whether the type either declares or inherits a method ``m``.
 
 Example: Finding problematic array casts
 ----------------------------------------
@@ -81,7 +81,7 @@ Note that by casting ``target.getElementType()`` to a ``RefType``, we eliminate 
 Improvements
 ~~~~~~~~~~~~
 
-Running this query on pre-Java 5 code often returns many false positive results arising from uses of the method ``Collection.toArray(T[])``, which converts a collection into an array of type ``T[]``.
+Running this query on old Java code, before version 5, often returns many false positive results arising from uses of the method ``Collection.toArray(T[])``, which converts a collection into an array of type ``T[]``.
 
 In code that does not use generics, this method is often used in the following way:
 
