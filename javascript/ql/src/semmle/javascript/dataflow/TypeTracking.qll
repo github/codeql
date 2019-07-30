@@ -6,7 +6,7 @@
  * a given value came from.
  */
 
-import javascript
+private import javascript
 private import internal.FlowSteps
 
 private class PropertyName extends string {

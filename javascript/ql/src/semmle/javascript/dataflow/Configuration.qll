@@ -68,7 +68,7 @@
  * computed by `onPath`.
  */
 
-import javascript
+private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
 

@@ -4,7 +4,7 @@
  * Provides classes implementing type inference for properties.
  */
 
-import javascript
+private import javascript
 import semmle.javascript.dataflow.AbstractProperties
 private import AbstractPropertiesImpl
 private import AbstractValuesImpl

@@ -4,9 +4,9 @@
  * Provides classes implementing type inference across function calls.
  */
 
-import javascript
+private import javascript
 import AbstractValuesImpl
-import semmle.javascript.dataflow.LocalObjects
+private import semmle.javascript.dataflow.LocalObjects
 
 /**
  * Flow analysis for `this` expressions inside functions.

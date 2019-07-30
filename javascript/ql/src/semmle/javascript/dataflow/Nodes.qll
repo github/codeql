@@ -4,8 +4,8 @@
  * parameters.
  */
 
-import javascript
-import semmle.javascript.dependencies.Dependencies
+private import javascript
+private import semmle.javascript.dependencies.Dependencies
 
 /** A data flow node corresponding to an expression. */
 class ExprNode extends DataFlow::ValueNode {
