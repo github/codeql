@@ -1,0 +1,24 @@
+# Ignore these words during spellchecking
+
+arity
+arities
+bitwise
+boolean
+booleans
+Datalog
+interprocedural
+intraprocedural
+LGTM
+multiline
+multimap
+multimaps
+Naur
+orderable
+pragma
+pragmas
+Semmle
+supertype
+supertypes
+syntaxes
+tokenization
+unary
