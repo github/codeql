@@ -5,10 +5,8 @@ private import semmle.python.objects.ObjectInternal
 newtype TTaintTrackingContext =
     TNoParam()
     or
-    TParamContext(TaintKind param, int n) {
-        exists(CallNode call |
-            param.taints(call.getArg(n))
-        )
+    TParamContext(TaintKind param, AttributePath path, int n) {
+        any(TaintTrackingImplementation impl).callWithTaintedArgument(_, _, _, _, n, path, param)
     }
 
 class TaintTrackingContext extends TTaintTrackingContext {
@@ -16,21 +14,25 @@ class TaintTrackingContext extends TTaintTrackingContext {
     string toString()  { 
         this = TNoParam() and result = "No context"
         or
-        exists(TaintKind param, int n |
-            this = TParamContext(param, n) and
-            result = "Parameter " + n.toString() + " is " + param
+        exists(TaintKind param, AttributePath path, int n |
+            this = TParamContext(param, path, n) and
+            result = "Parameter " + n.toString() + "(" + path.toString() + ") is " + param
         )
     }
 
     TaintKind getParameterTaint(int n) {
-        this = TParamContext(result, n)
+        this = TParamContext(result, _, n)
+    }
+
+    AttributePath getAttributePath() {
+        this = TParamContext(_, result, _)
     }
 
     TaintTrackingContext getCaller() {
-        exists(TaintKind param, int n |
-            this = TParamContext(param, n) and
+        exists(TaintKind param, AttributePath path, int n |
+            this = TParamContext(param, path, n) and
             exists(TaintTrackingImplementation impl |
-                impl.callWithTaintedArgument(_, _, result, _, n, TNoAttribute(), param)
+                impl.callWithTaintedArgument(_, _, result, _, n, path, param)
             )
         )
     }
@@ -158,7 +160,7 @@ class TaintTrackingImplementation extends string {
 
     predicate isPathSink(TaintTrackingNode sink) {
         exists(DataFlow::Node sinknode, TaintKind kind |
-            sink = TTaintTrackingNode_(sinknode, TNoParam(), TNoAttribute(), kind, this) and
+            sink = TTaintTrackingNode_(sinknode, _, TNoAttribute(), kind, this) and
             this.(TaintTracking::Configuration).isSink(sinknode, kind)
         )
     }
@@ -181,20 +183,26 @@ class TaintTrackingImplementation extends string {
         this.importStep(src, node, context, path, kind)
         or
         this.fromImportStep(src, node, context, path, kind)
-        or
-        this.attributeLoadStep(src, node, context, path, kind)
-        or
-        this.getattrStep(src, node, context, path, kind)
+        //or
+        //this.attributeLoadStep(src, node, context, path, kind)
+        //or
+        //this.getattrStep(src, node, context, path, kind)
         or
         this.useStep(src, node, context, path, kind)
         or
         this.callTaintStep(src, node, context, path, kind)
         or
-        this.callFlowStep(src, node, context, path, kind)
+        this.returnFlowStep(src, node, context, path, kind)
+        //or
+        //this.iterationStep(src, node, context, path, kind)
+        //or
+        //this.yieldStep(src, node, context, path, kind)
+        //or
+        //this.subscriptStep(src, node, context, path, kind)
+        //or
+        //this.ifExprStep(src, node, context, path, kind)
         or
-        this.iterationStep(src, node, context, path, kind)
-        or
-        this.yieldStep(src, node, context, path, kind)
+        this.essaFlowStep(src, node, context, path, kind)
         or
         exists(DataFlow::Node srcnode, TaintKind srckind |
             this.(TaintTracking::Configuration).isAdditionalFlowStep(srcnode, node, srckind, kind) and
@@ -259,35 +267,40 @@ class TaintTrackingImplementation extends string {
         )
     }
 
+    //pragma [noinline]
+    //predicate argumentFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    //    exists(CallNode call, PythonFunctionObjectInternal pyfunc, int arg |
+    //        this.callWithTaintedArgument(src, call, _, pyfunc, arg, path, kind) and
+    //        node.asCfgNode() = pyfunc.getParameter(arg) and
+    //        context = TParamContext(kind, arg)
+    //    )
+    //    // TO DO... named parameters
+    //}
+
     pragma [noinline]
-    predicate callFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        exists(CallNode call, PythonFunctionObjectInternal pyfunc, int arg |
-            this.callWithTaintedArgument(src, call, _, pyfunc, arg, path, kind) and
-            node.asCfgNode() = pyfunc.getParameter(arg) and
-            context = TParamContext(kind, arg)
+    predicate returnFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+        exists(CallNode call, PythonFunctionObjectInternal pyfunc, int arg, TaintKind callerKind, DataFlow::Node srcNode, AttributePath callerPath, TaintTrackingContext srcContext |
+            src = TTaintTrackingNode_(srcNode, srcContext, path, kind, this) and
+            this.callWithTaintedArgument(_, call, context, pyfunc, arg, callerPath, callerKind) and
+            srcContext = TParamContext(callerKind, callerPath, arg) and
+            node.asCfgNode() = call and
+            srcNode.asCfgNode() = any(Return ret | ret.getScope() = pyfunc.getScope()).getValue().getAFlowNode()
         )
-        or
-        exists(CallNode call, PythonFunctionObjectInternal pyfunc, int arg |
-            this.callWithTaintedArgument(src, call, context, pyfunc, arg, path, kind) and
-            src.getContext() = TParamContext(kind, arg)
-        )
-        // TO DO... named parameters
     }
 
-   predicate callWithTaintedArgument(TaintTrackingNode src, CallNode call, TaintTrackingContext caller, PythonFunctionObjectInternal pyfunc, int arg, AttributePath path, TaintKind kind) {
+    predicate callWithTaintedArgument(TaintTrackingNode src, CallNode call, TaintTrackingContext caller, CallableValue pyfunc, int arg, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, caller, path, kind, this) and
-            srcnode.asCfgNode() = call.getArg(arg) and
-            pyfunc.getACall() = call
+            srcnode.asCfgNode() = pyfunc.getArgumentForCall(call, arg)
         )
     }
 
     pragma [noinline]
     predicate callTaintStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        exists(DataFlow::Node srcnode, CallNode call, string name |
-            src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
+        exists(DataFlow::Node srcnode, CallNode call, TaintKind srckind, string name |
+            src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
             call.getFunction().(AttrNode).getObject(name) = src.getNode().asCfgNode() and
-            kind = src.getTaintKind().getTaintOfMethodResult(name) and
+            kind = srckind.getTaintOfMethodResult(name) and
             node.asCfgNode() = call
         )
     }
@@ -366,7 +379,8 @@ class TaintTrackingImplementation extends string {
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             predvar = defn.getInput(pred) and
             not pred.unlikelySuccessor(defn.getBasicBlock()) and
-            not predvar.(DataFlowExtension::DataFlowVariable).prunedSuccessor(defn.getVariable())
+            not predvar.(DataFlowExtension::DataFlowVariable).prunedSuccessor(defn.getVariable()) and
+            srcnode.asVariable() = predvar
         )
     }
 
@@ -390,11 +404,11 @@ class TaintTrackingImplementation extends string {
 
     pragma [noinline]
     predicate taintedParameterDefinition(TaintTrackingNode src, ParameterDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        exists(DataFlow::Node srcnode |
-            src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
-            defn.getDefiningNode() = srcnode.asCfgNode()
+        exists(CallNode call, PythonFunctionObjectInternal pyfunc, int arg |
+            this.callWithTaintedArgument(src, call, _, pyfunc, arg, path, kind) and
+            defn.getDefiningNode() = pyfunc.getParameter(arg) and
+            context = TParamContext(kind, path, arg)
         )
-        // TO DO... class intializers
     }
 
     pragma [noinline]
