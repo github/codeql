@@ -56,14 +56,14 @@ module TaintTracking {
      *
      * Holds if the edge from `source` to `sink` is a taint sanitizer.
      */
-    predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) { none() }
+    deprecated predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink) { none() }
 
     /**
      * DEPRECATED: Use `isSanitizerEdge` instead.
      *
      * Holds if the edge from `source` to `sink` is a taint sanitizer for data labelled with `lbl`.
      */
-    predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl) {
+    deprecated predicate isSanitizer(DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl) {
       none()
     }
 
@@ -92,7 +92,6 @@ module TaintTracking {
 
     final override predicate isBarrierEdge(DataFlow::Node source, DataFlow::Node sink) {
       super.isBarrierEdge(source, sink) or
-      isSanitizer(source, sink) or
       isSanitizerEdge(source, sink)
     }
 
@@ -100,7 +99,6 @@ module TaintTracking {
       DataFlow::Node source, DataFlow::Node sink, DataFlow::FlowLabel lbl
     ) {
       super.isBarrierEdge(source, sink, lbl) or
-      isSanitizer(source, sink, lbl) or
       isSanitizerEdge(source, sink, lbl)
     }
 

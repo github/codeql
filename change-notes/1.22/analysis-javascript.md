@@ -31,3 +31,6 @@
 
 - The `getName()` predicate on functions and classes now gets a name
   inferred from the context if the function or class was not declared with a name.
+- The two-argument and three-argument variants of `DataFlow::Configuration::isBarrier` and
+  `TaintTracking::Configuration::isSanitizer` have been deprecated. Overriding them no
+  longer has any effect. Use `isBarrierEdge` and `isSanitizerEdge` instead.

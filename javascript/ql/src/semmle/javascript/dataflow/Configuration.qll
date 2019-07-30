@@ -157,14 +157,14 @@ abstract class Configuration extends string {
    *
    * Holds if flow from `src` to `trg` is prohibited.
    */
-  predicate isBarrier(DataFlow::Node src, DataFlow::Node trg) { none() }
+  deprecated predicate isBarrier(DataFlow::Node src, DataFlow::Node trg) { none() }
 
   /**
    * DEPRECATED: Use `isBarrierEdge` instead.
    *
    * Holds if flow with label `lbl` cannot flow from `src` to `trg`.
    */
-  predicate isBarrier(DataFlow::Node src, DataFlow::Node trg, FlowLabel lbl) { none() }
+  deprecated predicate isBarrier(DataFlow::Node src, DataFlow::Node trg, FlowLabel lbl) { none() }
 
   /**
    * Holds if flow from `pred` to `succ` is prohibited.
@@ -486,7 +486,6 @@ private predicate basicFlowStep(
     // Local flow
     exists(FlowLabel predlbl, FlowLabel succlbl |
       localFlowStep(pred, succ, cfg, predlbl, succlbl) and
-      not cfg.isBarrier(pred, succ, predlbl) and
       not cfg.isBarrierEdge(pred, succ, predlbl) and
       summary = MkPathSummary(false, false, predlbl, succlbl)
     )
@@ -601,7 +600,6 @@ private predicate callInputStep(
     )
   ) and
   not cfg.isBarrier(succ) and
-  not cfg.isBarrier(pred, succ) and
   not cfg.isBarrierEdge(pred, succ)
 }
 
@@ -656,7 +654,6 @@ private predicate flowThroughCall(
     ret.asExpr() = f.getAReturnedExpr() and
     calls(output, f) and // Do not consider partial calls
     reachableFromInput(f, output, input, ret, cfg, summary) and
-    not cfg.isBarrier(ret, output) and
     not cfg.isBarrierEdge(ret, output) and
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
@@ -666,7 +663,6 @@ private predicate flowThroughCall(
     DataFlow::exceptionalInvocationReturnNode(output, invk.asExpr()) and
     calls(invk, f) and
     reachableFromInput(f, invk, input, ret, cfg, summary) and
-    not cfg.isBarrier(ret, output) and
     not cfg.isBarrierEdge(ret, output) and
     not cfg.isLabeledBarrier(output, summary.getEndLabel())
   )
@@ -906,7 +902,6 @@ private predicate flowStep(
     flowIntoHigherOrderCall(pred, succ, cfg, summary)
   ) and
   not cfg.isBarrier(succ) and
-  not cfg.isBarrier(pred, succ) and
   not cfg.isBarrierEdge(pred, succ) and
   not cfg.isLabeledBarrier(succ, summary.getEndLabel())
 }
