@@ -55,7 +55,7 @@ Analysis layers
 
 The JavaScript analysis libraries have a layered structure with higher-level analyses based on
 lower-level ones. Usually, classes and predicates in a lower layer should not depend on a higher
-layer to avoid performance problems and negative recursion issues.
+layer to avoid performance problems and non-monotonic recursion.
 
 We briefly survey the most important analysis layers here, starting from the lowest layer. Below we
 will discuss the extension points offered by the individual layers.
@@ -147,7 +147,8 @@ information-flow analyses. Most of our security queries are based on this approa
 Extension points
 ----------------
 
-Below we discuss the most important extension points for the individual analysis layers introduced above.
+Below we discuss the most important extension points for the individual analysis layers introduced
+above.
 
 AST
 ~~~
@@ -159,7 +160,9 @@ avoided in the interest of keeping a close correspondence between AST and concre
 CFG
 ~~~
 
-You can override ``ControlFlowNode.getASuccessor`` to customize the control-flow graph. Note that overriding ``ControlFlowNode.getAPredecessor`` is not normally useful, since it is rarely used in higher-level libraries.
+You can override ``ControlFlowNode.getASuccessor`` to customize the control-flow graph. Note that
+overriding ``ControlFlowNode.getAPredecessor`` is not normally useful, since it is rarely used in
+higher-level libraries.
 
 SSA
 ~~~
@@ -180,22 +183,21 @@ class systems.
 Type inference
 ~~~~~~~~~~~~~~
 
-You can override ``AnalyzedNode::getAValue`` to customize the type inference. Note that the type inference is expected to be sound, that is (as far as practical) the abstract values inferred for a data-flow nodes should cover all possible concrete values this node may take on at runtime.
+You can override ``AnalyzedNode::getAValue`` to customize the type inference. Note that the type
+inference is expected to be sound, that is (as far as practical) the abstract values inferred for a
+data-flow nodes should cover all possible concrete values this node may take on at runtime.
 
-You can also extend the set of abstract values in one of two ways:
-
-1. To add individual abstract values that are independent of the program being analyzed, define a
-   subclass of ``CustomAbstractValueTag`` describing the new abstract value. There will then be a
-   corresponding value of class ``CustomAbstractValue`` that you can use in overriding
-   definitions of the ``getAValue`` predicate.
-2. To add abstract values that are induced by a program element, define a subclass of
-   ``CustomAbstractValueDefinition``, and use its corresponding
-   ``CustomAbstractValueFromDefinition``.
+You can also extend the set of abstract values: to add individual abstract values that are
+independent of the program being analyzed, define a subclass of ``CustomAbstractValueTag``
+describing the new abstract value. There will then be a corresponding value of class
+``CustomAbstractValue`` that you can use in overriding definitions of the ``getAValue`` predicate.
 
 Call graph
 ~~~~~~~~~~
 
-You can override ``DataFlow::InvokeNode::getACallee(int)`` to customize the call graph. Note that overriding the zero-argument version ``getACallee()`` is not enough since higher layers use the one-argument version. 
+You can override ``DataFlow::InvokeNode::getACallee(int)`` to customize the call graph. Note that
+overriding the zero-argument version ``getACallee()`` is not enough since higher layers use the
+one-argument version.
 
 Type tracking
 ~~~~~~~~~~~~~
@@ -206,11 +208,15 @@ Framework models
 ~~~~~~~~~~~~~~~~
 
 The ``semmle.javascript.frameworks.HTTP`` module defines many abstract classes that can be extended
-to implement support for new web frameworks. These classes, in turn, are used by some of the
-security queries (such as the cross-site scripting queries) to define sources and sinks, so these
-queries will automatically benefit from the additional modeling.
+to implement support for new web server frameworks. These classes, in turn, are used by some of the
+security queries (such as the reflected cross-site scripting query) to define sources and sinks, so
+these queries will automatically benefit from the additional modeling.
 
-Similarly, the ``semmle.javascript.frameworks.SQL`` module defines abstract classes for modeling SQL
+Similarly, the ``semmle.javascript.frameworks.ClientRequests`` module defines an abstract class for
+modeling client-side HTTP requests. It comes with built-in support for a number of popular
+frameworks, and you can add support for new frameworks by extending the abstract class.
+
+The ``semmle.javascript.frameworks.SQL`` module defines abstract classes for modeling SQL
 connector libraries, and the ``semmle.javascript.JsonParsers`` and
 ``semmle.javascript.frameworks.XML`` modules for modeling JSON and XML parsers, respectively.
 
@@ -233,17 +239,13 @@ and sanitizers by means of three abstract classes ``CommandInjection::Source``,
 To define additional sources, sinks or sanitizers for this or any other security query, import the
 customization module and extend these abstract classes with additional subclasses.
 
-Note that you should normally only import the configuration module from a QL file. Importing it into
-the standard library (for example by importing it in ``Customizations.qll``) will slow down all the
-other security queries, since the configuration class will now be always in scope and flow from its
-sources to sinks will be tracked in addition to all the other configuration classes.
+Note that for performance reasons you should normally only import the configuration module from a QL
+file. Importing it into the standard library (for example by importing it in ``Customizations.qll``)
+will slow down all the other security queries, since the configuration class will now be always in
+scope and flow from its sources to sinks will be tracked in addition to all the other configuration
+classes.
 
 Another useful extension point is the class ``RemoteFlowSource``, which is used as a source by most
 queries looking for injection vulnerabilities (such as SQL injection or cross-site scripting). By
 extending it with new subclasses modelling other sources of user-controlled input you can
 simultaneously improve all of these queries.
-
-Finally, you can extend the classes ``Dataflow::AdditionalSource``, ``DataFlow::AdditionalSink``,
-``DataFlow::AdditionalFlowStep`` and ``DataFlow::AdditionalBarrierGuardNode`` (and its subclasses)
-to define new sources, sinks, flow steps and sanitizers for all configurations, or only for specific
-configurations.
