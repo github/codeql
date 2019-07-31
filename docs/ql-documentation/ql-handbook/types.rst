@@ -375,7 +375,7 @@ An algebraic datatype is another form of user-defined type, declared with the ke
 Algebraic datatypes are used for creating new values that are neither primitive values nor entities from
 the database. One example is to model flow nodes when analyzing data flow through a program.
 
-An algebraic datatype consists of a number of mutually disjoint "branches", that each define
+An algebraic datatype consists of a number of mutually disjoint *branches*, that each define
 a branch type. The algebraic datatype itself is the union of all the branch types.
 A branch can have arguments and a body. A new value of the branch type is produced for each set
 of values that satisfy the argument types and the body.

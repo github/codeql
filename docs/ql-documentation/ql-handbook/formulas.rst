@@ -7,7 +7,7 @@ Formulas define logical relations between the :ref:`free variables <free-variabl
 :ref:`expressions <expressions>`.
 
 Depending on the values assigned to those free variables, a formula can be true or false.
-When a formula is true, we often say that the formula "holds".
+When a formula is true, we often say that the formula *holds*.
 For example, the formula ``x = 4 + 5`` holds if the value ``9`` is assigned to ``x``, but it
 doesn't hold for other assignments to ``x``. 
 Some formulas don't have any free variables. For example ``1 < 2`` always holds, and ``1 > 2`` 
@@ -185,8 +185,8 @@ mathematical logic.
 
 .. index:: exists
 
-exists
-------
+``exists``
+----------
 
 This quantifier has the following syntax::
 
@@ -203,8 +203,8 @@ type ``int`` and holds if any value of that variable has type ``OneTwoThree``.
 
 .. index:: forall 
 
-forall
-------
+``forall``
+----------
 
 This quantifier has the following syntax::
 
@@ -223,8 +223,8 @@ logically the same as ``not exists(<vars> | <formula 1> | not <formula 2>)``.
 
 .. index:: forex
 
-forex
------
+``forex``
+---------
 
 This quantifier has the following syntax::
 
@@ -250,7 +250,7 @@ useful shorthand.
 Implicit quantifiers
 ====================
 
-Implicity quantified variables can be introduced using "don't care expressions". These are used 
+Implicitly quantified variables can be introduced using "don't care expressions." These are used 
 when you need to introduce a variable to use as an argument to a predicate call, but don't care 
 about its value. For further information, see :ref:`Don't-care expressions <dont-care>`.
 
@@ -287,8 +287,8 @@ languages. Here is a brief overview:
 .. index:: not, negation
 .. _negation:
 
-not
-===
+``not``
+=======
 
 You can use the keyword ``not`` before a formula. The resulting formula is called a negation.
 
@@ -311,8 +311,8 @@ The following query selects files that are not HTML files.
 .. index:: if, then, else
 .. _conditional:
 
-if ... then ... else
-====================
+``if ... then ... else``
+========================
 
 You can use these keywords to write a conditional formula. This is another way to simplify
 notation: ``if A then B else C`` is the same as writing ``(A and B) or ((not A) and C)``.
@@ -331,8 +331,8 @@ a public class and returns ``"private"`` otherwise::
 .. index:: and, conjunction
 .. _conjunction:
 
-and
-===
+``and``
+=======
 
 You can use the keyword ``and`` between two formulas. The resulting formula is called a 
 conjunction. 
@@ -352,8 +352,8 @@ than 200 lines of code::
 .. index:: or, disjunction
 .. _disjunction:
 
-or
-==
+``or``
+======
 
 You can use the keyword ``or`` between two formulas. The resulting formula is called a 
 disjunction. 
@@ -375,8 +375,8 @@ With the following definition, an integer is in the class ``OneTwoThree`` if it 
 .. index:: implies
 .. _implication:
 
-implies
-=======
+``implies``
+===========
 
 You can use the keyword ``implies`` between two formulas. The resulting formula is called an 
 implication. This is just a simplified notation: ``A implies B`` is the same as writing ``(not A) or B``.

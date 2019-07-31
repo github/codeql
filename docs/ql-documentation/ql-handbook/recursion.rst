@@ -127,7 +127,7 @@ The following examples illustrate common mistakes that lead to invalid recursion
 Empty recursion
 ===============
 
-Firstly, a valid recursive definition must have a starting point or "base case".
+Firstly, a valid recursive definition must have a starting point or *base case*.
 If a recursive predicate evaluates to the empty set of values, there is usually something
 wrong.
 

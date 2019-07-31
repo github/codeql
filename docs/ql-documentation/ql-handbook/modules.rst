@@ -3,7 +3,7 @@
 Modules
 #######
    
-Modules provide a way of organizing QL code by grouping together related types, predicates and other modules. 
+Modules provide a way of organizing QL code by grouping together related types, predicates, and other modules. 
 
 You can import modules into other files, which avoids duplication, and helps 
 structure your code into more manageable pieces.

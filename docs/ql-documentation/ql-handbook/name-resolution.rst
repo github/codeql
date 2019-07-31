@@ -193,7 +193,7 @@ In addition to the global module, type, and predicate namespaces, each module de
 module, type, and predicate namespaces.
 
 For a module ``M``, it's useful to distinguish between its **declared**, **exported**, and **imported** namespaces. 
-(These are described generically, but remember that there is always one for each of modules, types and predicates.)
+(These are described generically, but remember that there is always one for each of modules, types, and predicates.)
 
     - The **declared** namespaces contain any names that are declared—that is, defined—in ``M``.
     - The **imported** namespaces contain any names exported by the modules that are imported into ``M`` using an 
