@@ -380,7 +380,7 @@ the specified flow labels.
 Standard queries using flow labels
 ----------------------------------
 
-A few of our standard security queries already use flow labels. You can look at their implementation
+Some of our standard security queries use flow labels. You can look at their implementation
 to get a feeling for how to use flow labels in practice.
 
 In particular, both of the examples mentioned in the section on limitations of basic data flow above
