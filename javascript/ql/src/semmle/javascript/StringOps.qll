@@ -675,6 +675,36 @@ module StringOps {
     ConcatenationLeaf getALeaf() {
       this = StringConcatenation::getRoot(result)
     }
+
+    /**
+     * Returns the concatenation of all constant operands in this concatenation,
+     * ignoring the non-constant parts entirely.
+     *
+     * For example, for the following concatenation
+     * ```
+     * `Hello ${person}, how are you?`
+     * ```
+     * the result is `"Hello , how are you?"`
+     */
+    string getConstantStringParts() {
+      result = getStringValue()
+      or
+      not exists(getStringValue()) and
+      result = strictconcat(StringLiteralLike leaf |
+        leaf = getALeaf().asExpr()
+      |
+        leaf.getStringValue()
+        order by leaf.getFirstToken().getIndex() asc
+      )
+    }
+  }
+
+  /** A string literal or template literal without any substitutions. */
+  private class StringLiteralLike extends Expr {
+    StringLiteralLike() {
+      this instanceof StringLiteral or
+      this instanceof TemplateElement
+    }
   }
 
   /**
@@ -692,6 +722,35 @@ module StringOps {
     pragma[inline]
     ConcatenationLeaf() {
       isLeaf()
+    }
+  }
+
+  /**
+   * The root node in a concatenation of one or more strings contain HTML fragments.
+   */
+  class HtmlConcatenationRoot extends ConcatenationRoot {
+    pragma[noinline]
+    HtmlConcatenationRoot() {
+      getConstantStringParts().regexpMatch("(?s).*</?[a-zA-Z][^\\r\\n<>/]*/?>.*")
+    }
+  }
+
+  /**
+   * A data flow node that is part of an HTML string concatenation.
+   */
+  class HtmlConcatenationNode extends ConcatenationNode {
+    HtmlConcatenationNode() {
+      getRoot() instanceof HtmlConcatenationRoot
+    }
+  }
+
+  /**
+   * A data flow node that is part of an HTML string concatenation,
+   * and is not itself a concatenation operator.
+   */
+  class HtmlConcatenationLeaf extends ConcatenationLeaf {
+    HtmlConcatenationLeaf() {
+      getRoot() instanceof HtmlConcatenationRoot
     }
   }
 }

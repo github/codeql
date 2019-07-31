@@ -12,3 +12,6 @@ query predicate operand(StringOps::ConcatenationNode node, int i, DataFlow::Node
 query predicate nextLeaf(StringOps::ConcatenationNode node, DataFlow::Node next) {
   next = node.getNextLeaf()
 }
+
+query StringOps::HtmlConcatenationRoot htmlRoot() { any() }
+query StringOps::HtmlConcatenationLeaf htmlLeaf() { any() }

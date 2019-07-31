@@ -2,6 +2,16 @@ concatenation
 | closure.js:5:1:5:37 | build(' ... 'four') |
 | closure.js:5:1:5:46 | build(' ...  'five' |
 | closure.js:5:14:5:28 | 'two' + 'three' |
+| html-concat.js:2:14:2:26 | `<b>${x}</b>` |
+| html-concat.js:3:14:3:26 | `<B>${x}</B>` |
+| html-concat.js:5:21:5:47 | `Hey <s ... trong>` |
+| html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` |
+| html-concat.js:13:3:13:18 | buffer |
+| html-concat.js:13:3:13:18 | buffer += '<li>' |
+| html-concat.js:14:3:14:13 | buffer |
+| html-concat.js:14:3:14:13 | buffer += x |
+| html-concat.js:15:3:15:15 | buffer |
+| html-concat.js:15:3:15:15 | buffer += '!' |
 | tst.js:3:3:3:12 | x |
 | tst.js:3:3:3:12 | x += "two" |
 | tst.js:4:3:4:14 | x |
@@ -43,6 +53,24 @@ concatenationOperand
 | closure.js:5:22:5:28 | 'three' |
 | closure.js:5:31:5:36 | 'four' |
 | closure.js:5:41:5:46 | 'five' |
+| html-concat.js:2:15:2:17 | <b> |
+| html-concat.js:2:20:2:20 | x |
+| html-concat.js:2:22:2:25 | </b> |
+| html-concat.js:3:15:3:17 | <B> |
+| html-concat.js:3:20:3:20 | x |
+| html-concat.js:3:22:3:25 | </B> |
+| html-concat.js:5:22:5:33 | Hey <strong> |
+| html-concat.js:5:36:5:36 | x |
+| html-concat.js:5:38:5:46 | </strong> |
+| html-concat.js:7:19:8:10 | \\n    Hello  |
+| html-concat.js:8:13:8:13 | x |
+| html-concat.js:8:15:10:23 | .\\n    \\n ... um!</i> |
+| html-concat.js:13:3:13:8 | buffer |
+| html-concat.js:13:13:13:18 | '<li>' |
+| html-concat.js:14:3:14:8 | buffer |
+| html-concat.js:14:13:14:13 | x |
+| html-concat.js:15:3:15:8 | buffer |
+| html-concat.js:15:13:15:15 | '!' |
 | tst.js:3:3:3:3 | x |
 | tst.js:3:8:3:12 | "two" |
 | tst.js:4:3:4:3 | x |
@@ -101,6 +129,24 @@ concatenationLeaf
 | closure.js:5:22:5:28 | 'three' |
 | closure.js:5:31:5:36 | 'four' |
 | closure.js:5:41:5:46 | 'five' |
+| html-concat.js:2:15:2:17 | <b> |
+| html-concat.js:2:20:2:20 | x |
+| html-concat.js:2:22:2:25 | </b> |
+| html-concat.js:3:15:3:17 | <B> |
+| html-concat.js:3:20:3:20 | x |
+| html-concat.js:3:22:3:25 | </B> |
+| html-concat.js:5:22:5:33 | Hey <strong> |
+| html-concat.js:5:36:5:36 | x |
+| html-concat.js:5:38:5:46 | </strong> |
+| html-concat.js:7:19:8:10 | \\n    Hello  |
+| html-concat.js:8:13:8:13 | x |
+| html-concat.js:8:15:10:23 | .\\n    \\n ... um!</i> |
+| html-concat.js:13:3:13:8 | buffer |
+| html-concat.js:13:13:13:18 | '<li>' |
+| html-concat.js:14:3:14:8 | buffer |
+| html-concat.js:14:13:14:13 | x |
+| html-concat.js:15:3:15:8 | buffer |
+| html-concat.js:15:13:15:15 | '!' |
 | tst.js:3:3:3:3 | x |
 | tst.js:3:8:3:12 | "two" |
 | tst.js:4:3:4:3 | x |
@@ -155,6 +201,34 @@ concatenationNode
 | closure.js:5:22:5:28 | 'three' |
 | closure.js:5:31:5:36 | 'four' |
 | closure.js:5:41:5:46 | 'five' |
+| html-concat.js:2:14:2:26 | `<b>${x}</b>` |
+| html-concat.js:2:15:2:17 | <b> |
+| html-concat.js:2:20:2:20 | x |
+| html-concat.js:2:22:2:25 | </b> |
+| html-concat.js:3:14:3:26 | `<B>${x}</B>` |
+| html-concat.js:3:15:3:17 | <B> |
+| html-concat.js:3:20:3:20 | x |
+| html-concat.js:3:22:3:25 | </B> |
+| html-concat.js:5:21:5:47 | `Hey <s ... trong>` |
+| html-concat.js:5:22:5:33 | Hey <strong> |
+| html-concat.js:5:36:5:36 | x |
+| html-concat.js:5:38:5:46 | </strong> |
+| html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` |
+| html-concat.js:7:19:8:10 | \\n    Hello  |
+| html-concat.js:8:13:8:13 | x |
+| html-concat.js:8:15:10:23 | .\\n    \\n ... um!</i> |
+| html-concat.js:13:3:13:8 | buffer |
+| html-concat.js:13:3:13:18 | buffer |
+| html-concat.js:13:3:13:18 | buffer += '<li>' |
+| html-concat.js:13:13:13:18 | '<li>' |
+| html-concat.js:14:3:14:8 | buffer |
+| html-concat.js:14:3:14:13 | buffer |
+| html-concat.js:14:3:14:13 | buffer += x |
+| html-concat.js:14:13:14:13 | x |
+| html-concat.js:15:3:15:8 | buffer |
+| html-concat.js:15:3:15:15 | buffer |
+| html-concat.js:15:3:15:15 | buffer += '!' |
+| html-concat.js:15:13:15:15 | '!' |
 | tst.js:3:3:3:3 | x |
 | tst.js:3:3:3:12 | x |
 | tst.js:3:3:3:12 | x += "two" |
@@ -241,6 +315,30 @@ operand
 | closure.js:5:1:5:46 | build(' ...  'five' | 1 | closure.js:5:41:5:46 | 'five' |
 | closure.js:5:14:5:28 | 'two' + 'three' | 0 | closure.js:5:14:5:18 | 'two' |
 | closure.js:5:14:5:28 | 'two' + 'three' | 1 | closure.js:5:22:5:28 | 'three' |
+| html-concat.js:2:14:2:26 | `<b>${x}</b>` | 0 | html-concat.js:2:15:2:17 | <b> |
+| html-concat.js:2:14:2:26 | `<b>${x}</b>` | 1 | html-concat.js:2:20:2:20 | x |
+| html-concat.js:2:14:2:26 | `<b>${x}</b>` | 2 | html-concat.js:2:22:2:25 | </b> |
+| html-concat.js:3:14:3:26 | `<B>${x}</B>` | 0 | html-concat.js:3:15:3:17 | <B> |
+| html-concat.js:3:14:3:26 | `<B>${x}</B>` | 1 | html-concat.js:3:20:3:20 | x |
+| html-concat.js:3:14:3:26 | `<B>${x}</B>` | 2 | html-concat.js:3:22:3:25 | </B> |
+| html-concat.js:5:21:5:47 | `Hey <s ... trong>` | 0 | html-concat.js:5:22:5:33 | Hey <strong> |
+| html-concat.js:5:21:5:47 | `Hey <s ... trong>` | 1 | html-concat.js:5:36:5:36 | x |
+| html-concat.js:5:21:5:47 | `Hey <s ... trong>` | 2 | html-concat.js:5:38:5:46 | </strong> |
+| html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` | 0 | html-concat.js:7:19:8:10 | \\n    Hello  |
+| html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` | 1 | html-concat.js:8:13:8:13 | x |
+| html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` | 2 | html-concat.js:8:15:10:23 | .\\n    \\n ... um!</i> |
+| html-concat.js:13:3:13:18 | buffer | 0 | html-concat.js:13:3:13:8 | buffer |
+| html-concat.js:13:3:13:18 | buffer | 1 | html-concat.js:13:13:13:18 | '<li>' |
+| html-concat.js:13:3:13:18 | buffer += '<li>' | 0 | html-concat.js:13:3:13:8 | buffer |
+| html-concat.js:13:3:13:18 | buffer += '<li>' | 1 | html-concat.js:13:13:13:18 | '<li>' |
+| html-concat.js:14:3:14:13 | buffer | 0 | html-concat.js:14:3:14:8 | buffer |
+| html-concat.js:14:3:14:13 | buffer | 1 | html-concat.js:14:13:14:13 | x |
+| html-concat.js:14:3:14:13 | buffer += x | 0 | html-concat.js:14:3:14:8 | buffer |
+| html-concat.js:14:3:14:13 | buffer += x | 1 | html-concat.js:14:13:14:13 | x |
+| html-concat.js:15:3:15:15 | buffer | 0 | html-concat.js:15:3:15:8 | buffer |
+| html-concat.js:15:3:15:15 | buffer | 1 | html-concat.js:15:13:15:15 | '!' |
+| html-concat.js:15:3:15:15 | buffer += '!' | 0 | html-concat.js:15:3:15:8 | buffer |
+| html-concat.js:15:3:15:15 | buffer += '!' | 1 | html-concat.js:15:13:15:15 | '!' |
 | tst.js:3:3:3:12 | x | 0 | tst.js:3:3:3:3 | x |
 | tst.js:3:3:3:12 | x | 1 | tst.js:3:8:3:12 | "two" |
 | tst.js:3:3:3:12 | x += "two" | 0 | tst.js:3:3:3:3 | x |
@@ -314,6 +412,17 @@ nextLeaf
 | closure.js:5:14:5:18 | 'two' | closure.js:5:22:5:28 | 'three' |
 | closure.js:5:22:5:28 | 'three' | closure.js:5:31:5:36 | 'four' |
 | closure.js:5:31:5:36 | 'four' | closure.js:5:41:5:46 | 'five' |
+| html-concat.js:2:15:2:17 | <b> | html-concat.js:2:20:2:20 | x |
+| html-concat.js:2:20:2:20 | x | html-concat.js:2:22:2:25 | </b> |
+| html-concat.js:3:15:3:17 | <B> | html-concat.js:3:20:3:20 | x |
+| html-concat.js:3:20:3:20 | x | html-concat.js:3:22:3:25 | </B> |
+| html-concat.js:5:22:5:33 | Hey <strong> | html-concat.js:5:36:5:36 | x |
+| html-concat.js:5:36:5:36 | x | html-concat.js:5:38:5:46 | </strong> |
+| html-concat.js:7:19:8:10 | \\n    Hello  | html-concat.js:8:13:8:13 | x |
+| html-concat.js:8:13:8:13 | x | html-concat.js:8:15:10:23 | .\\n    \\n ... um!</i> |
+| html-concat.js:13:3:13:8 | buffer | html-concat.js:13:13:13:18 | '<li>' |
+| html-concat.js:14:3:14:8 | buffer | html-concat.js:14:13:14:13 | x |
+| html-concat.js:15:3:15:8 | buffer | html-concat.js:15:13:15:15 | '!' |
 | tst.js:3:3:3:3 | x | tst.js:3:8:3:12 | "two" |
 | tst.js:4:3:4:3 | x | tst.js:4:8:4:14 | "three" |
 | tst.js:5:3:5:3 | x | tst.js:5:8:5:13 | "four" |
@@ -341,3 +450,25 @@ nextLeaf
 | tst.js:61:27:61:27 | x | tst.js:61:29:61:33 |  last |
 | tst.js:87:5:87:5 | x | tst.js:87:10:87:14 | 'two' |
 | tst.js:89:3:89:3 | x | tst.js:89:8:89:14 | 'three' |
+htmlRoot
+| html-concat.js:2:14:2:26 | `<b>${x}</b>` |
+| html-concat.js:3:14:3:26 | `<B>${x}</B>` |
+| html-concat.js:5:21:5:47 | `Hey <s ... trong>` |
+| html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` |
+| html-concat.js:13:3:13:18 | buffer |
+| html-concat.js:13:3:13:18 | buffer += '<li>' |
+htmlLeaf
+| html-concat.js:2:15:2:17 | <b> |
+| html-concat.js:2:20:2:20 | x |
+| html-concat.js:2:22:2:25 | </b> |
+| html-concat.js:3:15:3:17 | <B> |
+| html-concat.js:3:20:3:20 | x |
+| html-concat.js:3:22:3:25 | </B> |
+| html-concat.js:5:22:5:33 | Hey <strong> |
+| html-concat.js:5:36:5:36 | x |
+| html-concat.js:5:38:5:46 | </strong> |
+| html-concat.js:7:19:8:10 | \\n    Hello  |
+| html-concat.js:8:13:8:13 | x |
+| html-concat.js:8:15:10:23 | .\\n    \\n ... um!</i> |
+| html-concat.js:13:3:13:8 | buffer |
+| html-concat.js:13:13:13:18 | '<li>' |

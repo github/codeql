@@ -42,6 +42,11 @@ class TemplateLiteral extends Expr, @templateliteral {
    */
   Expr getAnElement() { result = getElement(_) }
 
+  /**
+   * Gets the number of elements of this template literal.
+   */
+  int getNumElement() { result = count(getAnElement()) }
+
   override predicate isImpure() { getAnElement().isImpure() }
 
   override string getStringValue() {
