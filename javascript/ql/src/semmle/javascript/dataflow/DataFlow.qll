@@ -166,33 +166,27 @@ module DataFlow {
      * Gets the immediate predecessor of this node, if any.
      *
      * A node with an immediate predecessor can usually only have the value that flows
-     * into its from its immediate predecessor, currently with two exceptions:
+     * into its from its immediate predecessor, currently with one exception:
      *
      * - An immediately-invoked function expression with a single return expression `e`
      *   has `e` as its immediate predecessor, even if the function can fall over the
      *   end and return `undefined`.
-     *
-     * - A destructuring property pattern or element pattern with a default value has
-     *   both the `PropRead` and its default value as immediate predecessors.
      */
     cached
     DataFlow::Node getImmediatePredecessor() {
+      lvalueFlowStep(result, this) and
+      not lvalueDefaultFlowStep(_, this)
+      or
       // Use of variable -> definition of variable
       exists(SsaVariable var |
-        this = DataFlow::valueNode(var.getAUse()) and
-        result.(DataFlow::SsaDefinitionNode).getSsaVariable() = var
+        this = valueNode(var.getAUse()) and
+        result = TSsaDefNode(var)
       )
       or
       // Refinement of variable -> original definition of variable
       exists(SsaRefinementNode refinement |
-        this.(DataFlow::SsaDefinitionNode).getSsaVariable() = refinement.getVariable() and
-        result.(DataFlow::SsaDefinitionNode).getSsaVariable() = refinement.getAnInput()
-      )
-      or
-      // Definition of variable -> RHS of definition
-      exists(SsaExplicitDefinition def |
-        this = TSsaDefNode(def) and
-        result = def.getRhsNode()
+        this = TSsaDefNode(refinement) and
+        result = TSsaDefNode(refinement.getAnInput())
       )
       or
       // IIFE call -> return value of IIFE
@@ -201,24 +195,6 @@ module DataFlow {
         localCall(this.asExpr(), fun) and
         result = fun.getAReturnedExpr().flow() and
         strictcount(fun.getAReturnedExpr()) = 1
-      )
-      or
-      // IIFE parameter -> IIFE call
-      exists(Parameter param |
-        this = DataFlow::parameterNode(param) and
-        localArgumentPassing(result.asExpr(), param)
-      )
-      or
-      // `{ x } -> e` in `let { x } = e`
-      exists(DestructuringPattern pattern |
-        this = TDestructuringPatternNode(pattern)
-      |
-        exists(VarDef def |
-          pattern = def.getTarget() and
-          result = DataFlow::valueNode(def.getDestructuringSource())
-        )
-        or
-        result = patternPropRead(pattern)
       )
     }
   }
@@ -1106,11 +1082,7 @@ module DataFlow {
    * INTERNAL: Use `parameterNode(Parameter)` instead.
    */
   predicate parameterNode(DataFlow::Node nd, Parameter p) {
-    nd = ssaDefinitionNode(SSA::definition((SimpleParameter)p))
-    or
-    nd = TDestructuringPatternNode(p)
-    or
-    nd = TUnusedParameterNode(p)
+    nd = lvalueNode(p)
   }
 
   /**
@@ -1150,24 +1122,21 @@ module DataFlow {
   }
 
   /**
-   * INTERNAL. DO NOT USE.
+   * Gets the data flow node corresponding the given l-value expression.
    *
-   * Gets the `PropRead` node corresponding to the value stored in the given
-   * binding pattern due to destructuring.
-   *
-   * For example, in `let { p: value } = f()`, the `value` pattern maps to a `PropRead`
-   * extracting the `p` property.
+   * This differs from `DataFlow::valueNode()`, which represents the value
+   * _before_ the l-value is assigned to, whereas `DataFlow::lvalueNode()`
+   * represents the value _after_ the assignment.
    */
-  private DataFlow::PropRead patternPropRead(BindingPattern value) {
-    exists(PropertyPattern prop |
-      value = prop.getValuePattern() and
-      result = TPropNode(prop)
+  Node lvalueNode(BindingPattern lvalue) {
+    exists(SsaExplicitDefinition ssa |
+      ssa.defines(lvalue.(LValue).getDefNode(), lvalue.(VarRef).getVariable()) and
+      result = TSsaDefNode(ssa)
     )
     or
-    exists(ArrayPattern array |
-      value = array.getAnElement() and
-      result = TElementPatternNode(array, value)
-    )
+    result = TDestructuringPatternNode(lvalue)
+    or
+    result = TUnusedParameterNode(lvalue)
   }
 
   /**
@@ -1213,17 +1182,59 @@ module DataFlow {
   }
 
   /**
+   * Holds if there is a step from `pred -> succ` due to an assignment
+   * to an expression in l-value position.
+   */
+  private predicate lvalueFlowStep(Node pred, Node succ) {
+    exists(VarDef def |
+      pred = valueNode(defSourceNode(def)) and
+      succ = lvalueNode(def.getTarget())
+    )
+    or
+    exists(PropertyPattern pattern |
+      pred = TPropNode(pattern) and
+      succ = lvalueNode(pattern.getValuePattern())
+    )
+    or
+    exists(Expr element |
+      pred = TElementPatternNode(_, element) and
+      succ = lvalueNode(element)
+    )
+  }
+
+  /**
+   * Holds if there is a step from `pred -> succ` from the default
+   * value of a destructuring pattern or parameter.
+   */
+  private predicate lvalueDefaultFlowStep(Node pred, Node succ) {
+    exists(PropertyPattern pattern |
+      pred = valueNode(pattern.getDefault()) and
+      succ = lvalueNode(pattern.getValuePattern())
+    )
+    or
+    exists(ArrayPattern array, int i |
+      pred = valueNode(array.getDefault(i)) and
+      succ = lvalueNode(array.getElement(i))
+    )
+    or
+    exists(Parameter param |
+      pred = valueNode(param.getDefault()) and
+      succ = parameterNode(param)
+    )
+  }
+
+  /**
    * Holds if data can flow from `pred` to `succ` in one local step.
    */
   cached
   predicate localFlowStep(Node pred, Node succ) {
-    // flow into local variables
-    exists(SsaDefinition ssa | succ = TSsaDefNode(ssa) |
-      // from the rhs of an explicit definition into the variable
-      exists(SsaExplicitDefinition def | def = ssa |
-        pred = defSourceNode(def.getDef(), def.getSourceVariable())
-      )
-      or
+    // flow from RHS into LHS
+    lvalueFlowStep(pred, succ)
+    or
+    lvalueDefaultFlowStep(pred, succ)
+    or
+    // Flow through implicit SSA nodes
+    exists(SsaImplicitDefinition ssa | succ = TSsaDefNode(ssa) |
       // from any explicit definition or implicit init of a captured variable into
       // the capturing definition
       exists(SsaSourceVariable v, SsaDefinition predDef |
@@ -1270,29 +1281,6 @@ module DataFlow {
       )
     )
     or
-    exists(VarDef def |
-      // from `e` to `{ p: x }` in `{ p: x } = e`
-      pred = valueNode(defSourceNode(def)) and
-      succ = TDestructuringPatternNode(def.getTarget())
-    )
-    or
-    // flow from the value read from a property pattern to the value being
-    // destructured in the child pattern. For example, for
-    //
-    //   let { p: { q: x } } = obj
-    //
-    // add edge from the 'p:' pattern to '{ q:x }'.
-    exists(PropertyPattern pattern |
-      pred = TPropNode(pattern) and
-      succ = TDestructuringPatternNode(pattern.getValuePattern())
-    )
-    or
-    // Like the step above, but for array destructuring patterns.
-    exists(Expr elm |
-      pred = TElementPatternNode(_, elm) and
-      succ = TDestructuringPatternNode(elm)
-    )
-    or
     // flow from 'this' parameter into 'this' expressions
     exists(ThisExpr thiz |
       pred = TThisNode(thiz.getBindingContainer()) and
@@ -1321,31 +1309,6 @@ module DataFlow {
     result = def.getSource() or
     result = def.getDestructuringSource() or
     localArgumentPassing(result, def)
-  }
-
-  /**
-   * INTERNAL. DO NOT USE.
-   *
-   * Gets the data flow node representing the source of the definition of `v` at `def`,
-   * if any.
-   */
-  Node defSourceNode(VarDef def, SsaSourceVariable v) {
-    exists(BindingPattern lhs, VarRef r |
-      lhs = def.getTarget() and r = lhs.getABindingVarRef() and r.getVariable() = v
-    |
-      // follow one step of the def-use chain if the lhs is a simple variable reference
-      lhs = r and
-      result = TValueNode(defSourceNode(def))
-      or
-      // handle destructuring assignments
-      exists(PropertyPattern pp | r = pp.getValuePattern() |
-        result = TPropNode(pp) or result = pp.getDefault().flow()
-      )
-      or
-      result = TElementPatternNode(_, r)
-      or
-      exists(ArrayPattern ap, int i | ap.getElement(i) = r and result = ap.getDefault(i).flow())
-    )
   }
 
   /**

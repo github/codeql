@@ -33,3 +33,9 @@ function destruct() {
   let { bar = {} } = foo;
   let v = bar.baz; // 'foo.bar.baz'
 }
+
+function lazy() {
+  var lazyInit;
+  lazyInit = foo.bar; // 'foo.bar'
+  lazyInit;
+}
