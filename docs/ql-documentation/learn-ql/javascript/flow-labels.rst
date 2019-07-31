@@ -8,6 +8,11 @@ nodes. Another way of thinking about this is that it statically models the flow 
 program, and associates a flag with every data value telling us whether it might have come from a
 source node.
 
+In some cases, you may want to track more detailed information about data values. This can be done
+by associating flow labels with data values, as shown in this tutorial. We will first discuss the
+general idea behind flow labels and then show how to use them in practice. Finally, we will give an
+overview of the API involved and provide some pointers to standard queries that use flow labels.
+
 Limitations of basic data-flow analysis
 ---------------------------------------
 
@@ -24,16 +29,16 @@ of a partially tainted object does not. On the other hand, JSON-encoding even a 
 object and including it in an HTML document is not safe.
 
 Another example where more fine-grained information about tainted values is needed is for tracking
-partial sanitization. For example, before interpreting a user-controlled string as a file-system path, we
-generally want to make sure that it is neither an absolute path (which could refer to any file on
-the file system) nor a relative path containing ``..`` components (which still could refer to any file).
-Usually, checking both of these properties would involve two separate checks. Both checks taken
-together should count as a sanitizer, but each individual check is not by itself enough to make the
-string safe for use as a path. To handle this case precisely, we want to associate two bits of
-information with each tainted value, namely whether it may be absolute, and whether it may contain
-``..`` components. Untrusted user input has both bits set initially, individual checks turn off
-individual bits, and if a value that has at least one bit set is interpreted as a path, a potential
-vulnerability is flagged.
+partial sanitization. For example, before interpreting a user-controlled string as a file-system
+path, we generally want to make sure that it is neither an absolute path (which could refer to any
+file on the file system) nor a relative path containing ``..`` components (which still could refer
+to any file). Usually, checking both of these properties would involve two separate checks. Both
+checks taken together should count as a sanitizer, but each individual check is not by itself enough
+to make the string safe for use as a path. To handle this case precisely, we want to associate two
+bits of information with each tainted value, namely whether it may be absolute, and whether it may
+contain ``..`` components. Untrusted user input has both bits set initially, individual checks turn
+off individual bits, and if a value that has at least one bit set is interpreted as a path, a
+potential vulnerability is flagged.
 
 Using flow labels
 -----------------
@@ -357,13 +362,30 @@ For ``isSink``, the additional argument specifies which flow label(s) a value th
 source may be associated with. If multiple flow labels are specified, then any value that is
 associated with `at least one` of them will be considered by the configuration.
 
-Finally, for ``isAdditionalFlowStep`` there are two additional arguments ``predlbl`` and
-``succlbl``, which allow flow steps to act as flow label transformers. If a value associated with
-``predlbl`` arrives at the start node of the additional step, it is propagated to the end node and
-associated with ``succlbl``. Of course, ``predlbl`` and ``succlbl`` may be the same, indicating that
-the flow step preserves this label. There can also be multiple values of ``succlbl`` for a single
-``predlbl`` or vice versa.
+For ``isAdditionalFlowStep`` there are two additional arguments ``predlbl`` and ``succlbl``, which
+allow flow steps to act as flow label transformers. If a value associated with ``predlbl`` arrives
+at the start node of the additional step, it is propagated to the end node and associated with
+``succlbl``. Of course, ``predlbl`` and ``succlbl`` may be the same, indicating that the flow step
+preserves this label. There can also be multiple values of ``succlbl`` for a single ``predlbl`` or
+vice versa.
+
+Note that if you do not restrict ``succlbl`` then it will be allowed to range over all flow labels.
+This may cause labels that were previously blocked on a path to reappear, which is not usually what
+you want.
 
 The flow label-aware version of ``isBarrier`` is called ``isLabeledBarrier``: unlike ``isBarrier``,
 which prevents any flow past the given node, it only blocks flow of values associated with one of
 the specified flow labels.
+
+Standard queries using flow labels
+----------------------------------
+
+A few of our standard security queries already use flow labels. You can look at their implementation
+to get a feeling for how to use flow labels in practice.
+
+In particular, both of the examples mentioned in the section on limitations of basic data flow above
+are from standard security queries that use flow labels. The `Prototype pollution
+<https://lgtm.com/rules/1508857356317>`_ query uses two flow labels to distinguish completely
+tainted objects from partially tainted objects. The `Uncontrolled data used in path expression
+<https://lgtm.com/rules/1971530250>`_ query uses four flow labels to track whether a user-controlled
+string may be an absolute path and whether it may contain ``..`` components.
