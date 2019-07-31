@@ -1,5 +1,5 @@
 array.cs:
-#    2| one_dim_init_acc
+#    2| ArrayTest.one_dim_init_acc()
 #    2|   Block 0
 #    2|     v0_0(Void)            = EnterFunction            : 
 #    2|     mu0_1(Object)         = AliasedDefinition        : 
@@ -45,7 +45,7 @@ array.cs:
 #    2|     v0_41(Void)           = UnmodeledUse             : mu*
 #    2|     v0_42(Void)           = ExitFunction             : 
 
-#    9| twod_and_init_acc
+#    9| ArrayTest.twod_and_init_acc()
 #    9|   Block 0
 #    9|     v0_0(Void)            = EnterFunction       : 
 #    9|     mu0_1(Object)         = AliasedDefinition   : 
@@ -136,7 +136,7 @@ array.cs:
 #    9|     v0_86(Void)           = ExitFunction        : 
 
 func_with_param_call.cs:
-#    4| f
+#    4| test_call_with_param.f(int, int)
 #    4|   Block 0
 #    4|     v0_0(Void)                        = EnterFunction            : 
 #    4|     mu0_1(null)                       = AliasedDefinition        : 
@@ -158,7 +158,7 @@ func_with_param_call.cs:
 #    4|     v0_17(Void)                       = UnmodeledUse             : mu*
 #    4|     v0_18(Void)                       = ExitFunction             : 
 
-#    8| g
+#    8| test_call_with_param.g()
 #    8|   Block 0
 #    8|     v0_0(Void)                        = EnterFunction            : 
 #    8|     mu0_1(null)                       = AliasedDefinition        : 
@@ -176,8 +176,68 @@ func_with_param_call.cs:
 #    8|     v0_13(Void)                       = UnmodeledUse             : mu*
 #    8|     v0_14(Void)                       = ExitFunction             : 
 
+obj_creation.cs:
+#    5| ObjCreation.MyClass.MyClass()
+#    5|   Block 0
+#    5|     v0_0(Void)          = EnterFunction       : 
+#    5|     mu0_1(Object)       = AliasedDefinition   : 
+#    5|     mu0_2(Object)       = UnmodeledDefinition : 
+#    5|     r0_3(lval<MyClass>) = InitializeThis      : 
+#    5|     v0_4(Void)          = NoOp                : 
+#    5|     v0_5(Void)          = ReturnVoid          : 
+#    5|     v0_6(Void)          = UnmodeledUse        : mu*
+#    5|     v0_7(Void)          = ExitFunction        : 
+
+#    8| ObjCreation.MyClass.MyClass(int)
+#    8|   Block 0
+#    8|     v0_0(Void)          = EnterFunction           : 
+#    8|     mu0_1(Object)       = AliasedDefinition       : 
+#    8|     mu0_2(Object)       = UnmodeledDefinition     : 
+#    8|     r0_3(lval<MyClass>) = InitializeThis          : 
+#    8|     r0_4(lval<Int32>)   = VariableAddress[_x]     : 
+#    8|     mu0_5(Int32)        = InitializeParameter[_x] : &:r0_4
+#    9|     r0_6(lval<Int32>)   = VariableAddress[_x]     : 
+#    9|     r0_7(Int32)         = Load                    : &:r0_6, ~mu0_2
+#    9|     r0_8(MyClass)       = CopyValue               : r0_3
+#    9|     r0_9(lval<Int32>)   = FieldAddress[x]         : r0_8
+#    9|     mu0_10(Int32)       = Store                   : &:r0_9, r0_7
+#    8|     v0_11(Void)         = ReturnVoid              : 
+#    8|     v0_12(Void)         = UnmodeledUse            : mu*
+#    8|     v0_13(Void)         = ExitFunction            : 
+
+#   13| ObjCreation.Main()
+#   13|   Block 0
+#   13|     v0_0(Void)              = EnterFunction                 : 
+#   13|     mu0_1(Object)           = AliasedDefinition             : 
+#   13|     mu0_2(Object)           = UnmodeledDefinition           : 
+#   13|     r0_3(lval<ObjCreation>) = InitializeThis                : 
+#   14|     r0_4(lval<MyClass>)     = VariableAddress[obj]          : 
+#   14|     r0_5(MyClass)           = NewObj                        : 
+#   14|     r0_6(lval<MyClass>)     = FunctionAddress[MyClass]      : 
+#   14|     r0_7(Int32)             = Constant[100]                 : 
+#   14|     r0_8(MyClass)           = Call                          : func:r0_6, this:r0_5, 0:r0_7
+#   14|     v0_9(Void)              = ^CallSideEffect               : ~mu0_2
+#   14|     mu0_10(MyClass)         = Store                         : &:r0_4, r0_5
+#   15|     r0_11(lval<MyClass>)    = VariableAddress[obj_initlist] : 
+#   15|     r0_12(MyClass)          = NewObj                        : 
+#   15|     r0_13(lval<MyClass>)    = FunctionAddress[MyClass]      : 
+#   15|     r0_14(MyClass)          = Call                          : func:r0_13, this:r0_12
+#   15|     v0_15(Void)             = ^CallSideEffect               : ~mu0_2
+#   15|     r0_16(Int32)            = Constant[101]                 : 
+#   15|     r0_17(lval<Int32>)      = FieldAddress[x]               : r0_12
+#   15|     mu0_18(Int32)           = Store                         : &:r0_17, r0_16
+#   15|     mu0_19(MyClass)         = Store                         : &:r0_11, r0_12
+#   16|     r0_20(lval<Int32>)      = VariableAddress[a]            : 
+#   16|     r0_21(lval<MyClass>)    = VariableAddress[obj]          : 
+#   16|     r0_22(lval<Int32>)      = FieldAddress[x]               : r0_21
+#   16|     r0_23(Int32)            = Load                          : &:r0_22, ~mu0_2
+#   16|     mu0_24(Int32)           = Store                         : &:r0_20, r0_23
+#   13|     v0_25(Void)             = ReturnVoid                    : 
+#   13|     v0_26(Void)             = UnmodeledUse                  : mu*
+#   13|     v0_27(Void)             = ExitFunction                  : 
+
 simple_call.cs:
-#    4| f
+#    4| test_simple_call.f()
 #    4|   Block 0
 #    4|     v0_0(Void)                    = EnterFunction            : 
 #    4|     mu0_1(null)                   = AliasedDefinition        : 
@@ -191,7 +251,7 @@ simple_call.cs:
 #    4|     v0_9(Void)                    = UnmodeledUse             : mu*
 #    4|     v0_10(Void)                   = ExitFunction             : 
 
-#    8| g
+#    8| test_simple_call.g()
 #    8|   Block 0
 #    8|     v0_0(Void)                    = EnterFunction            : 
 #    8|     mu0_1(null)                   = AliasedDefinition        : 
@@ -208,7 +268,7 @@ simple_call.cs:
 #    8|     v0_12(Void)                   = ExitFunction             : 
 
 simple_function.cs:
-#    4| f
+#    4| test_simple_function.f()
 #    4|   Block 0
 #    4|     v0_0(Void)                        = EnterFunction            : 
 #    4|     mu0_1(null)                       = AliasedDefinition        : 
@@ -223,7 +283,7 @@ simple_function.cs:
 #    4|     v0_10(Void)                       = ExitFunction             : 
 
 stmts.cs:
-#    4| test_if
+#    4| test_stmts.test_if(int)
 #    4|   Block 0
 #    4|     v0_0(Void)             = EnterFunction          : 
 #    4|     mu0_1(Object)          = AliasedDefinition      : 
@@ -257,7 +317,7 @@ stmts.cs:
 #    6|     mu3_2(Int32)      = Store                    : &:r3_0, r3_1
 #-----|   Goto -> Block 1
 
-#   11| test_while
+#   11| test_stmts.test_while(int)
 #   11|   Block 0
 #   11|     v0_0(Void)             = EnterFunction          : 
 #   11|     mu0_1(Object)          = AliasedDefinition      : 
@@ -293,7 +353,7 @@ stmts.cs:
 #   14|     mu3_5(Int32)      = Store              : &:r3_4, r3_3
 #-----|   Goto (back edge) -> Block 2
 
-#   18| test_switch
+#   18| test_stmts.test_switch(int)
 #   18|   Block 0
 #   18|     v0_0(Void)             = EnterFunction               : 
 #   18|     mu0_1(Object)          = AliasedDefinition           : 
@@ -307,71 +367,64 @@ stmts.cs:
 #   20|     r0_9(lval<Int32>)      = VariableAddress[select]     : 
 #   20|     r0_10(Int32)           = Constant[0]                 : 
 #   20|     mu0_11(Int32)          = Store                       : &:r0_9, r0_10
+#   22|     r0_12(lval<Int32>)     = VariableAddress[caseSwitch] : 
+#   22|     r0_13(Int32)           = Load                        : &:r0_12, ~mu0_2
+#   22|     v0_14(Void)            = Switch                      : r0_13
+#-----|   Case[-...] -> Block 2
+#-----|   Case[0] -> Block 3
+#-----|   Case[1] -> Block 4
+#-----|   Case[2] -> Block 5
+#-----|   Default -> Block 6
 
-#   34|   Block 1
-#   34|     r1_0(lval<Int32>) = VariableAddress[#return] : 
-#   34|     r1_1(lval<Int32>) = VariableAddress[select]  : 
-#   34|     r1_2(Int32)       = Load                     : &:r1_1, ~mu0_2
-#   34|     mu1_3(Int32)      = Store                    : &:r1_0, r1_2
-#-----|   Goto -> Block 10
+#   18|   Block 1
+#   18|     r1_0(lval<Int32>) = VariableAddress[#return] : 
+#   18|     v1_1(Void)        = ReturnValue              : &:r1_0, ~mu0_2
+#   18|     v1_2(Void)        = UnmodeledUse             : mu*
+#   18|     v1_3(Void)        = ExitFunction             : 
 
 #   24|   Block 2
 #   24|     v2_0(Void) = NoOp : 
+#-----|   Goto -> Block 3
 
-#   25|   Block 2
-#   25|     v2_0(Void) = NoOp : 
+#   25|   Block 3
+#   25|     v3_0(Void) = NoOp : 
+#   26|     v3_1(Void) = NoOp : 
+#-----|   Goto -> Block 7
 
-#   26|   Block 2
-#   26|     v2_0(Void) = NoOp : 
-#-----|   Goto -> Block 11
+#   27|   Block 4
+#   27|     v4_0(Void)        = NoOp                    : 
+#   28|     r4_1(Int32)       = Constant[100]           : 
+#   28|     r4_2(lval<Int32>) = VariableAddress[select] : 
+#   28|     mu4_3(Int32)      = Store                   : &:r4_2, r4_1
+#   29|     v4_4(Void)        = NoOp                    : 
+#-----|   Goto -> Block 7
 
-#   27|   Block 2
-#   27|     v2_0(Void) = NoOp : 
+#   30|   Block 5
+#   30|     v5_0(Void)        = NoOp                    : 
+#   31|     r5_1(Int32)       = Constant[101]           : 
+#   31|     r5_2(lval<Int32>) = VariableAddress[select] : 
+#   31|     mu5_3(Int32)      = Store                   : &:r5_2, r5_1
+#   32|     v5_4(Void)        = NoOp                    : 
+#-----|   Goto (back edge) -> Block 6
 
-#   29|   Block 2
-#   29|     v2_0(Void) = NoOp : 
-#-----|   Goto -> Block 11
+#   33|   Block 6
+#   33|     v6_0(Void)        = NoOp                     : 
+#   34|     r6_1(lval<Int32>) = VariableAddress[#return] : 
+#   34|     r6_2(lval<Int32>) = VariableAddress[select]  : 
+#   34|     r6_3(Int32)       = Load                     : &:r6_2, ~mu0_2
+#   34|     mu6_4(Int32)      = Store                    : &:r6_1, r6_3
+#-----|   Goto -> Block 1
 
-#   30|   Block 2
-#   30|     v2_0(Void) = NoOp : 
+#   36|   Block 7
+#   36|     r7_0(Int32)       = Constant[1000]           : 
+#   36|     r7_1(lval<Int32>) = VariableAddress[select]  : 
+#   36|     mu7_2(Int32)      = Store                    : &:r7_1, r7_0
+#   37|     r7_3(lval<Int32>) = VariableAddress[#return] : 
+#   37|     r7_4(Int32)       = Constant[0]              : 
+#   37|     mu7_5(Int32)      = Store                    : &:r7_3, r7_4
+#-----|   Goto -> Block 1
 
-#   32|   Block 2
-#   32|     v2_0(Void) = NoOp : 
-#-----|   Goto (back edge) -> Block 2
-
-#   33|   Block 2
-#   33|     v2_0(Void) = NoOp : 
-
-#   18|   Block 10
-#   18|     r10_0(lval<Int32>) = VariableAddress[#return] : 
-#   18|     v10_1(Void)        = ReturnValue              : &:r10_0, ~mu0_2
-#   18|     v10_2(Void)        = UnmodeledUse             : mu*
-#   18|     v10_3(Void)        = ExitFunction             : 
-
-#   36|   Block 11
-#   36|     r11_0(Int32)       = Constant[1000]           : 
-#   36|     r11_1(lval<Int32>) = VariableAddress[select]  : 
-#   36|     mu11_2(Int32)      = Store                    : &:r11_1, r11_0
-#   37|     r11_3(lval<Int32>) = VariableAddress[#return] : 
-#   37|     r11_4(Int32)       = Constant[0]              : 
-#   37|     mu11_5(Int32)      = Store                    : &:r11_3, r11_4
-#-----|   Goto -> Block 10
-
-#   22|   Block 12
-#   22|     r12_0(lval<Int32>) = VariableAddress[caseSwitch] : 
-#   22|     r12_1(Int32)       = Load                        : &:r12_0, ~mu0_2
-
-#   28|   Block 13
-#   28|     r13_0(Int32)       = Constant[100]           : 
-#   28|     r13_1(lval<Int32>) = VariableAddress[select] : 
-#   28|     mu13_2(Int32)      = Store                   : &:r13_1, r13_0
-
-#   31|   Block 13
-#   31|     r13_0(Int32)       = Constant[101]           : 
-#   31|     r13_1(lval<Int32>) = VariableAddress[select] : 
-#   31|     mu13_2(Int32)      = Store                   : &:r13_1, r13_0
-
-#   40| test_trycatchfinally
+#   40| test_stmts.test_trycatchfinally()
 #   40|   Block 0
 #   40|     v0_0(Void)             = EnterFunction       : 
 #   40|     mu0_1(Object)          = AliasedDefinition   : 
@@ -393,6 +446,7 @@ stmts.cs:
 #   45|     r1_1(lval<Exception>) = FunctionAddress[Exception] : 
 #   45|     r1_2(Exception)       = Call                       : func:r1_1, this:r1_0
 #   45|     v1_3(Void)            = ^CallSideEffect            : ~mu0_2
+#   45|     mu1_4(Exception)      = Store                      : r1_0
 
 #   40|   Block 2
 #   40|     v2_0(Void) = ReturnVoid : 
@@ -424,7 +478,7 @@ stmts.cs:
 #-----|   Goto -> Block 2
 
 variables.cs:
-#    4| f
+#    4| test_variables.f()
 #    4|   Block 0
 #    4|     v0_0(Void)                 = EnterFunction       : 
 #    4|     mu0_1(Object)              = AliasedDefinition   : 
