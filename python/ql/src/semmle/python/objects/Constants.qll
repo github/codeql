@@ -189,7 +189,7 @@ private class NoneObjectInternal extends ConstantObjectInternal, TNone {
 }
 
 
-private class IntObjectInternal extends ConstantObjectInternal, TInt {
+class IntObjectInternal extends ConstantObjectInternal, TInt {
 
     override string toString() {
         result = "int " + this.intValue().toString()
@@ -235,7 +235,7 @@ private class IntObjectInternal extends ConstantObjectInternal, TInt {
 
 }
 
-private class FloatObjectInternal extends ConstantObjectInternal, TFloat {
+class FloatObjectInternal extends ConstantObjectInternal, TFloat {
 
     override string toString() {
         if this.floatValue() = this.floatValue().floor() then (
@@ -258,7 +258,7 @@ private class FloatObjectInternal extends ConstantObjectInternal, TFloat {
         result.floatValue() = this.floatValue()
     }
 
-    private float floatValue() {
+    float floatValue() {
         this = TFloat(result)
     }
 
@@ -288,7 +288,7 @@ private class FloatObjectInternal extends ConstantObjectInternal, TFloat {
 }
 
 
-private class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
+class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
 
     override string toString() {
         result =  "'" + this.strValue() + "'"
@@ -337,7 +337,7 @@ private class UnicodeObjectInternal extends ConstantObjectInternal, TUnicode {
 
 }
 
-private class BytesObjectInternal extends ConstantObjectInternal, TBytes {
+class BytesObjectInternal extends ConstantObjectInternal, TBytes {
 
     override string toString() {
         result =  "'" + this.strValue() + "'"

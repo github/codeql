@@ -370,6 +370,7 @@ abstract class ImmutableLiteral extends Expr {
     abstract Object getLiteralObject();
 
     abstract boolean booleanValue();
+
     final Value getLiteralValue() {
         result.(ConstantObjectInternal).getLiteral() = this
     }

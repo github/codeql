@@ -191,6 +191,45 @@ module Value {
         name = "False" and result = TFalse()
     }
 
+    /** Gets the `Value` for the integer constant `i`, if it exists.
+     * There will be no `Value` for most integers, but the following are 
+     * guaranteed to exist:
+     * * From zero to 511 inclusive.
+     * * All powers of 2 (up to 2**30)
+     * * Any integer explicitly mentioned in the source program.
+     */
+    Value forInt(int i) {
+        result.(IntObjectInternal).intValue() = i
+    }
+
+    /** Gets the `Value` for the bytes constant `bytes`, if it exists.
+     * There will be no `Value` for most byte strings, unless it is explicitly
+     * declared in the source program.
+     */
+    Value forBytes(string bytes) {
+        result.(BytesObjectInternal).strValue() = bytes
+    }
+
+    /** Gets the `Value` for the unicode constant `text`, if it exists.
+     * There will be no `Value` for most text strings, unless it is explicitly
+     * declared in the source program.
+     */
+    Value forUnicode(string text) {
+        result.(UnicodeObjectInternal).strValue() = text
+    }
+
+    /** Gets the `Value` for the bool constant `b`. */
+    Value forBool(boolean b) {
+        b = true and result = TTrue()
+        or
+        b = false and result = TFalse()
+    }
+
+    /** Gets the `Value` for `None`. */
+    Value none_() {
+        result = ObjectInternal::none_()
+    }
+
 }
 
 /** Class representing callables in the Python program
