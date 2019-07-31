@@ -693,6 +693,7 @@ class ClassNode extends DataFlow::SourceNode {
   /**
    * Gets a dataflow node that refers to this class object.
    */
+  cached
   DataFlow::SourceNode getAClassReference() {
     result = getAClassReference(DataFlow::TypeTracker::end())
   }
@@ -730,6 +731,7 @@ class ClassNode extends DataFlow::SourceNode {
   /**
    * Gets a dataflow node that refers to an instance of this class.
    */
+  cached
   DataFlow::SourceNode getAnInstanceReference() {
     result = getAnInstanceReference(DataFlow::TypeTracker::end())
   }

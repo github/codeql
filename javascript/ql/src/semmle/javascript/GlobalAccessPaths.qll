@@ -41,6 +41,7 @@ module GlobalAccessPath {
    * })(NS = NS || {});
    * ``` 
    */
+  cached
   string fromReference(DataFlow::Node node) {
     result = fromReference(node.getImmediatePredecessor())
     or
@@ -142,6 +143,7 @@ module GlobalAccessPath {
    *  })(foo = foo || {});
    * ```
    */
+  cached
   string fromRhs(DataFlow::Node node) {
     exists(DataFlow::SourceNode base, string baseName, string name |
       node = base.getAPropertyWrite(name).getRhs() and
