@@ -120,6 +120,8 @@ abstract class TaintKind extends string {
      */
     TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) { none() }
 
+    predicate isResultOfStep(TaintKind fromkind, ControlFlowNode fromnode, ControlFlowNode tonode) { none() }
+
     /** DEPRECATED -- Use `TaintFlow.additionalFlowStepVar(EssaVariable fromvar, EssaVariable tovar, TaintKind kind)` instead.
      *
      * Holds if this kind of taint passes from variable `fromvar` to  variable `tovar`
@@ -215,6 +217,8 @@ class SequenceKind extends CollectionKind {
             result = this.getItem() and
             result.getType() = ObjectInternal::builtin("str")
         )
+        or
+        result = this.getItem() and SequenceKind::itemFlowStep(fromnode, tonode)
     }
 
     override TaintKind getTaintOfMethodResult(string name) {
@@ -227,6 +231,12 @@ class SequenceKind extends CollectionKind {
 
     override TaintKind getTaintForIteration() {
         result = itemKind
+    }
+
+    override predicate isResultOfStep(TaintKind fromkind, ControlFlowNode fromnode, ControlFlowNode tonode) {
+        SequenceKind::flowStep(fromnode, tonode) and this = fromkind
+        or
+        sequence_construct(fromnode, tonode) and this.getItem() = fromkind
     }
 
 }
@@ -292,6 +302,12 @@ class DictKind extends CollectionKind {
 
     override string repr() {
         result = "dict of " + valueKind
+    }
+
+    override predicate isResultOfStep(TaintKind fromkind, ControlFlowNode fromnode, ControlFlowNode tonode) {
+        DictKind::flowStep(fromnode, tonode) and this = fromkind
+        or
+        dict_construct(fromnode, tonode) and this.getValue() = fromkind
     }
 
 }
@@ -762,6 +778,9 @@ class TaintedPathSource extends TaintTrackingNode {
         this.getASuccessor*() = sink
     }
 
+    DataFlow::Node getSource() {
+        result = this.getNode()
+    }
 
 }
 
@@ -774,6 +793,7 @@ class TaintedPathSink extends TaintTrackingNode {
     DataFlow::Node getSink() {
         result = this.getNode()
     }
+
 }
 
 /** This module contains the implementation of taint-flow.
@@ -1680,7 +1700,17 @@ module DataFlow {
         }
 
         override string toString() {
-            result = this.asCfgNode().toString()
+            exists(ControlFlowNode n |
+                n = this.asCfgNode()
+                |
+                result = n.(TaintSource).toString()
+                or
+                result = n.(TaintSink).toString()
+                or
+                not n instanceof TaintSource and
+                not n instanceof TaintSink and
+                result = n.toString()
+            )
         }
 
         override Scope getScope() {
