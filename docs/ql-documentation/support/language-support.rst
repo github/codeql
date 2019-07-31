@@ -1,3 +1,3 @@
 .. This includes the file maintained in the QL repository
 
-.. include:: ../../../ql/change-notes/support/language-support.rst
+.. include:: ../../../change-notes/support/language-support.rst
