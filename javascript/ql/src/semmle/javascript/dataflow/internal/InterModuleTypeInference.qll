@@ -394,13 +394,6 @@ private class AnalyzedClosureGlobalAccessPath extends AnalyzedNode, AnalyzedProp
     accessPath = Closure::getClosureNamespaceFromSourceNode(this)
   }
 
-  override AnalyzedNode globalFlowPred() {
-    exists(DataFlow::PropWrite write |
-      Closure::getWrittenClosureNamespace(write) = accessPath and
-      result = write.getRhs()
-    )
-  }
-
   override predicate reads(AbstractValue base, string propName) {
     exists(Closure::ClosureModule mod |
       mod.getClosureNamespace() = accessPath and

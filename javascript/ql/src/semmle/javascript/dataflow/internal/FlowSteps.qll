@@ -119,6 +119,7 @@ private module CachedSteps {
   predicate calls(DataFlow::InvokeNode invk, Function f) {
     f = invk.getACallee(0)
     or
+    not f.getTopLevel().isExterns() and
     exists(DataFlow::ClassNode cls, string name |
       callResolvesToMember(invk, cls, name) and
       f = cls.getInstanceMethod(name).getFunction()

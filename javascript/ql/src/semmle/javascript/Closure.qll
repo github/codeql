@@ -259,4 +259,18 @@ module Closure {
   DataFlow::SourceNode moduleImport(string moduleName) {
     getClosureNamespaceFromSourceNode(result) = moduleName
   }
+
+  private class ClosureNamespaceCall extends DataFlow::InvokeNode {
+    override Function getACallee(int imprecision) {
+      result = super.getACallee(imprecision)
+      or
+      imprecision = 0 and
+      exists(string name |
+        GlobalAccessPath::isAssignedInUniqueFile(name) and
+        GlobalAccessPath::fromRhs(result.flow()) = name and
+        GlobalAccessPath::fromReference(getCalleeNode()) = name and
+        not result.getTopLevel().isExterns()
+      )
+    }
+  }
 }
