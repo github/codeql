@@ -16,6 +16,9 @@ import DeadStore
 /**
  * Holds if `vd` is a definition of variable `v` that is dead, that is,
  * the value it assigns to `v` is not read.
+ *
+ * Captured variables may be read by closures, so we restrict this to
+ * purely local variables.
  */
 predicate deadStoreOfLocal(VarDef vd, PurelyLocalVariable v) {
   v = vd.getAVariable() and
@@ -26,7 +29,7 @@ predicate deadStoreOfLocal(VarDef vd, PurelyLocalVariable v) {
   not exists(SsaExplicitDefinition ssa | ssa.defines(vd, v))
 }
 
-from VarDef dead, PurelyLocalVariable v, string msg // captured variables may be read by closures, so don't flag them
+from VarDef dead, PurelyLocalVariable v, string msg
 where
   deadStoreOfLocal(dead, v) and
   // the variable should be accessed somewhere; otherwise it will be flagged by UnusedVariable
