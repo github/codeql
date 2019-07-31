@@ -705,6 +705,53 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
 //  }
 //}
 
+class TranslatedObjectInitializerExpr extends TranslatedNonConstantExpr, InitializationContext {
+  override ObjectInitializer expr;
+
+  override Instruction getResult() {
+    none()
+  }
+  
+  override Instruction getFirstInstruction() {
+    result = getChild(0).getFirstInstruction()
+  }
+  
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+    Type resultType, boolean isLValue) {
+    none()  
+  }
+  
+  override TranslatedElement getChild(int id) {
+    exists(AssignExpr assign |
+      result = getTranslatedExpr(expr.getChild(id)) and
+      expr.getAChild() = assign and
+      assign.getIndex() = id
+    )
+  }
+  
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    none()
+  }
+  
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    exists(int index |
+      child = getChild(index) and
+      if exists(getChild(index + 1))
+      then result = getChild(index + 1).getFirstInstruction()
+      else result = getParent().getChildSuccessor(this)
+    )
+  }
+  
+  override Instruction getTargetAddress() {
+    result = getParent().getInstruction(NewObjTag())
+  }
+  
+  override Type getTargetType() {
+    none()
+  }
+}
+
 class TranslatedArrayExpr extends TranslatedNonConstantExpr {
   override ArrayAccess expr;
 
@@ -959,7 +1006,8 @@ abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {
   }
 
   final TranslatedExpr getQualifier() {
-    result = getTranslatedExpr(expr.getChild(-1))
+    expr instanceof QualifiableExpr and
+    result = getTranslatedExpr(expr.(QualifiableExpr).getQualifier())
   }
 
   override Instruction getResult() {
@@ -1018,16 +1066,30 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
 
 class TranslatedFieldAccess extends TranslatedVariableAccess {
   override FieldAccess expr;
-
+  
   override Instruction getFirstInstruction() {
-    result = getQualifier().getFirstInstruction()
+    // If there is a qualifier
+    if (exists(getQualifier())) then
+      result = getQualifier().getFirstInstruction()
+    else
+      // it means that the access is part of an `ObjectInitializer` expression
+      // so the code for the qualifier has been generated previously
+      result = getInstruction(OnlyInstructionTag())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
     OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
-    result = getQualifier().getResult()
+    // A normal field access always has a qualifier
+    if (exists(getQualifier())) then
+      result = getQualifier().getResult()
+    else
+      // This field access is part of an `ObjectInitializer`
+      // so the translated element of the initializer
+      // (which is the parent of the parent of the translated field access),
+      // being an `InitializationContext`, knows the target address of this field access.
+      result = getParent().getParent().(InitializationContext).getTargetAddress()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -1591,15 +1653,11 @@ abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
   abstract Instruction getStoredValue();
 
   final TranslatedExpr getLeftOperand() {
-    result = getTranslatedExpr(
-      expr.getLValue()
-    )
+    result = getTranslatedExpr(expr.getLValue())
   }
 
   final TranslatedExpr getRightOperand() {
-    result = getTranslatedExpr(
-      expr.getRValue()
-    )
+    result = getTranslatedExpr(expr.getRValue())
   }
 }
 
@@ -1845,7 +1903,9 @@ class TranslatedAssignOperation extends TranslatedAssignment {
   }
 }
 
-// TODO: Fix allocations
+// TODO: Do we need to care about object sizes / how much we allocate
+//       Revisit after compatibility layer is done and we have a type system
+
 ///**
 // * The IR translation of the allocation size argument passed to `operator new`
 // * in a `new` expression.
@@ -2007,67 +2067,17 @@ class TranslatedAssignOperation extends TranslatedAssignment {
 //  }
 //}
 
-/**
- * The IR translation of a call to `operator new` as part of a `new` expression.
- */
-//class TranslatedAllocatorCall extends TTranslatedAllocatorCall,
-//    TranslatedExpr {
-//  override ObjectCreation expr;
-//
-//  TranslatedAllocatorCall() {
-//    this = TTranslatedAllocatorCall(expr)
-//  }
-//    
-//  override final string toString() {
-//    result = "Allocator call for " + expr.toString()
-//  }
-//
-//  override final predicate producesExprResult() {
-//    none()
-//  }
-//
-//  override final TranslatedElement getChild(int id) {
-//      none()
-//  }
-//    
-//  // TODO: Will probably need a side effect instruction
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//      Type resultType, boolean isLValue) {
-//      tag = NewObjTag() and
-//      opcode instanceof Opcode::NewObj and 
-//      resultType = expr.getType() and
-//      isLValue = false
-//  }
-//  
-//  override final Instruction getFirstInstruction() {
-//    result = getInstruction(NewObjTag())
-//  }
-//  
-//  override final Instruction getChildSuccessor(TranslatedElement element) {
-//    none()  
-//  }
-//    
-//  override final Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-//    tag = NewObjTag() and
-//    kind instanceof GotoEdge and
-//    result = getParent().getChildSuccessor(this)
-//  }
-//  
-//  override final Instruction getResult() {
-//    none()
-//  }
-//}
-
-//TranslatedAllocatorCall getTranslatedAllocatorCall(ObjectCreation newExpr) {
-//  result.getAST() = newExpr
-//}
-
-//class TranslatedObjectCreation extends TranslatedNonConstantExpr,
+///**
+// * The IR translation of an object creation expression.
+// * Eg. Point a = new Point(1, 2);
+// */
+//class TranslatedObjectCreationExpr extends TranslatedNonConstantExpr,
 //    InitializationContext {
 //  override ObjectCreation expr;
 //
 //  override final TranslatedElement getChild(int id) {
-//    id = 0 and result = getInitialization()
+//    id = 0 and result = getTranslatedExpr(expr) and
+//    getTranslatedExpr(expr) instanceof TranslatedConstructorCall
 //  }
 //
 //  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -2725,14 +2735,14 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr,
 //}
 
 
-/**
- * The IR translation of a `ConditionDeclExpr`, which represents the value of the declared variable
- * after conversion to `bool` in code such as:
- * ```
- * if (int* p = &x) {
- * }
- * ```
- */
+///**
+// * The IR translation of a `ConditionDeclExpr`, which represents the value of the declared variable
+// * after conversion to `bool` in code such as:
+// * ```
+// * if (int* p = &x) {
+// * }
+// * ```
+// */
  // TODO: DOESNT EXIST IN C#
 //class TranslatedConditionDeclExpr extends TranslatedNonConstantExpr {
 //  override ConditionDeclExpr expr;

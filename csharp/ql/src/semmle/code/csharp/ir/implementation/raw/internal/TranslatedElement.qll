@@ -17,9 +17,9 @@ private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
  */
 IntType getIntType() { any() }
 
-ArrayType getArrayOfDim(int dim, Type type) { 
-	result.getRank() = dim and
-	result.getElementType() = type
+ArrayType getArrayOfDim(int dim, Type type) {
+  result.getRank() = dim and
+  result.getElementType() = type
 }
 
 /**
@@ -79,7 +79,8 @@ private predicate ignoreExprOnly(Expr expr) {
   //    // its arguments, though, because we use them as part of the synthesis.
   //    newExpr.getAllocatorCall() = expr
   //  ) or
-  not translateFunction(expr.getEnclosingCallable()) or
+  not translateFunction(expr.getEnclosingCallable())
+  or
   // Ignore size of arrays when translating
   (expr.getParent() instanceof ArrayCreation and expr.hasValue())
 }
@@ -189,10 +190,10 @@ newtype TTranslatedElement =
   // A separate element to handle the lvalue-to-rvalue conversion step of an
   // expression.
   TTranslatedLoad(Expr expr) {
-  	// TODO: Revisit and make sure Loads are only used when needed
+    // TODO: Revisit and make sure Loads are only used when needed
     expr instanceof AssignableRead and
-    not (expr.getParent() instanceof ArrayAccess) and
-    not (expr.getType() instanceof RefType)
+    not expr.getParent() instanceof ArrayAccess and
+    not expr.getType() instanceof RefType
   } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {
@@ -228,58 +229,65 @@ newtype TTranslatedElement =
     not ignoreExpr(expr) and
     (
       // Because of the implementation of initializations in C#,
-      // we deal with all the types of initialization separately. 
+      // we deal with all the types of initialization separately.
       // First only simple local variable initialization (ie. `int x = 0`)
-      exists(LocalVariableDeclAndInitExpr lvInit | 
-        lvInit.getInitializer() = expr and 
+      exists(LocalVariableDeclAndInitExpr lvInit |
+        lvInit.getInitializer() = expr and
         not expr instanceof ArrayCreation and
-        not expr instanceof ObjectCreation) or
-        
+        not expr instanceof ObjectCreation
+      )
+      or
       // Then treat complex ones
-      exists(ObjectCreation objCreation | objCreation = expr) or
-      exists(ArrayInitializer arrInit | arrInit = expr) or
-      exists(ObjectInitializer objInit | objInit = expr) or
-      
+      exists(ObjectCreation objCreation | objCreation = expr)
+      or
+      exists(ArrayInitializer arrInit | arrInit = expr)
+      or
+      exists(ObjectInitializer objInit | objInit = expr)
+      or
       // Then treat the inner expressions of initializers
-      exists(ObjectInitializer objInit | objInit.getAChildExpr() = expr) or
-      exists(MemberInitializer memInit | memInit.getAChildExpr() = expr) or
-      exists(CollectionInitializer colInit | colInit.getAChildExpr() = expr) or
-      exists(ReturnStmt returnStmt | returnStmt.getExpr() = expr) or
-      exists(ThrowExpr throw | throw.getExpr() = expr) or
-      exists(ArrayInitializer arrInit | arrInit.getAChildExpr() = expr) or
-      exists(LambdaExpr lambda | lambda.getSourceDeclaration() = expr) or
+//      exists(ObjectInitializer objInit | objInit.getAMemberInitializer().getRValue() = expr)
+//      or
+//      exists(MemberInitializer memInit | memInit.getRValue() = expr)
+//      or
+      exists(CollectionInitializer colInit | colInit.getAnElementInitializer() = expr)
+      or
+      exists(ReturnStmt returnStmt | returnStmt.getExpr() = expr)
+      or
+      exists(ThrowExpr throw | throw.getExpr() = expr)
+      or
+      exists(ArrayInitializer arrInit | arrInit.getAnElement() = expr)
+      or
+      exists(LambdaExpr lambda | lambda.getSourceDeclaration() = expr)
+      or
       exists(AnonymousMethodExpr anonMethExpr | anonMethExpr.getSourceDeclaration() = expr)
     )
   } or
   // The initialization of a field via a member of an initializer list.
-  TTranslatedExplicitFieldInitialization(Expr ast, Field field, Expr expr) {
-    exists(ObjectInitializer initList |
-      not ignoreExpr(initList) and
-      ast = initList and
-      expr = any(int i |
-          field = initList.getMemberInitializer(i).getInitializedMember()
-        |
-          initList.getMemberInitializer(i)
-        ).getRValue()
-    )
-    or
-    exists(MemberInitializer init |
-      not ignoreExpr(init) and
-      ast = init and
-      field = init.getInitializedMember() and
-      // TODO: Was .getExpr, getRValue should be the correspondent for C#
-      expr = init.getRValue()
-    )
-  } or
-  // The value initialization of a field due to an omitted member of an
-  // initializer list.
-  TTranslatedFieldValueInitialization(Expr ast, Field field) {
-    exists(ObjectInitializerMod initList |
-      not ignoreExpr(initList) and
-      ast = initList and
-      initList.isValueInitialized(field)
-    )
-  } or
+//  TTranslatedExplicitFieldInitialization(Expr ast, Field field, Expr expr) {
+//    exists(ObjectInitializer initList |
+//      not ignoreExpr(initList) and
+//      ast = initList and
+//      field = initList.getAMemberInitializer().getInitializedMember() and
+//      expr = field.getInitializer()
+//    )
+//    or
+//    exists(MemberInitializer init |
+//      not ignoreExpr(init) and
+//      ast = init and
+//      field = init.getInitializedMember() and
+//      expr = init
+//    )
+//  } or
+//  // The value initialization of a field due to an omitted member of an
+//  // initializer list.
+//  TTranslatedFieldValueInitialization(Expr ast, Field field) {
+//    exists(ObjectInitializer initList |
+//      not ignoreExpr(initList) and
+//      ast = initList and
+//      not field = initList.getAMemberInitializer().getInitializedMember() and
+//      none() // TODO: Fix def value init
+//    )
+//  } or
   // The initialization of an array element via a member of an initializer list.
   TTranslatedExplicitElementInitialization(ArrayInitializer initList, int elementIndex) {
     not ignoreExpr(initList) and
@@ -324,12 +332,8 @@ newtype TTranslatedElement =
   } or
   // A local declaration
   TTranslatedDeclarationEntry(Declaration entry) {
-    exists(LocalVariableDeclExpr declExpr |
-      declExpr.getVariable() = entry
-    )
-  } or
-  // An allocator call generated by an ObjectCreation expression
-  TTranslatedAllocatorCall(ObjectCreation newExpr) { not ignoreExpr(newExpr) }
+    exists(LocalVariableDeclExpr declExpr | declExpr.getVariable() = entry)
+  }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
@@ -511,12 +515,12 @@ abstract class TranslatedElement extends TTranslatedElement {
    * `Field` for that instruction.
    */
   Field getInstructionField(InstructionTag tag) { none() }
-  
+
   /**
    * If the instruction specified by `tag` is an `IndexedElementInstruction`,
    * gets the `ArrayAccess` of that instruction.
    */
-   ArrayAccess getInstructionArrayAccess(InstructionTag tag) { none() }
+  ArrayAccess getInstructionArrayAccess(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is a `ConstantValueInstruction`, gets
