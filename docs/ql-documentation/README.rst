@@ -51,6 +51,9 @@ Building and previewing the QL language documentation
 To build and preview the QL documentation locally, you need to install Sphinx. 
 For installation options, see https://github.com/sphinx-doc/sphinx.
 
+Using ``sphinx-build``
+----------------------
+
 After installing Sphinx, you can build the HTML files for a project by running 
 `sphinx-build <https://www.sphinx-doc.org/en/master/man/sphinx-build.html>`__
 from the project's 
@@ -61,6 +64,22 @@ For example, to generate the HTML output for a project in the
 .. code::
 
   sphinx-build -b html . <docs-output>
+
+..
+ 
+  Add the ``-W`` flag to turn *warnings* into *errors* during the build process. 
+  You can use errors reported during the build to debug problems in your source 
+  code, such as broken internal links and malformed tables.
+
+  Add the ``-a`` flag to regenerate all output files. By default, only files that 
+  have changed are rebuilt.
+
+Using the reStructuredText Extension for Visual Studio Code
+-----------------------------------------------------------
+
+Visual Studio Code has an extension that can be used to preview Sphinx-generated 
+output alongside ``.rst`` source code in your IDE. For more information, see the 
+`Visual Studio Marketplace <https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext>`__.
 
 Building and previewing the QL training presentations
 *****************************************************
