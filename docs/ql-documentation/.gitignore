@@ -1,2 +1,5 @@
 # VSCode rst extension build directory
 **/_build/
+
+# QLlexer .pyc files
+**/*.pyc
