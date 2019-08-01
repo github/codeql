@@ -141,7 +141,7 @@ Implementing this additional condition is easy. We implement a subclass of ``Dat
 
     override predicate blocks(boolean outcome, Expr e) {
       outcome = true and
-      e = v.getAUse()
+      e = astNode
     }
   }
 
@@ -257,7 +257,7 @@ sanitized value:
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
       outcome = true and
-      e = v.getAUse() and
+      e = astNode and
       lbl instanceof MaybeNullLabel
     }
   }
@@ -293,7 +293,7 @@ stey by step in the UI:
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
       outcome = true and
-      e = v.getAUse() and
+      e = astNode and
       lbl instanceof MaybeNullLabel
     }
   }
@@ -331,7 +331,7 @@ stey by step in the UI:
   where cfg.hasFlowPath(source, sink)
   select sink, source, sink, "Property access on JSON value originating $@.", source, "here"
 
-`Here <https://lgtm.com/query/4778385888925293806>`_ is a run of this query on the `plexus-interop
+`Here <https://lgtm.com/query/5347702611074820306>`_ is a run of this query on the `plexus-interop
 <https://lgtm.com/projects/g/finos-plexus/plexus-interop/>`_ project on LGTM.com. Many of the 19
 results are false positives since we currently do not model many ways in which a value can be
 checked for nullness. In particular, after a property reference ``x.p`` we implicitly know that
