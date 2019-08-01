@@ -267,7 +267,7 @@ private class JQueryChainedElement extends DOM::Element {
 /**
  * A model of a URL request made using the `jQuery.ajax` or `jQuery.getJSON`.
  */
-private class JQueryClientRequest extends CustomClientRequest {
+private class JQueryClientRequest extends ClientRequest::Range {
   JQueryClientRequest() {
     exists(string name |
       name = "ajax" or

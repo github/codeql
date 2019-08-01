@@ -685,21 +685,29 @@ module NodeJSLib {
   }
 
   /**
-   * A data flow node that is an HTTP or HTTPS client request made by a Node.js application, for example `http.request(url)`.
-   */
-  abstract class CustomNodeJSClientRequest extends CustomClientRequest { }
-
-  /**
-   * A data flow node that is an HTTP or HTTPS client request made by a Node.js application, for example `http.request(url)`.
+   * A data flow node that is an HTTP or HTTPS client request made by a Node.js application,
+   * for example `http.request(url)`.
    */
   class NodeJSClientRequest extends ClientRequest {
-    NodeJSClientRequest() { this instanceof CustomNodeJSClientRequest }
+    override NodeJSClientRequest::Range self;
   }
+
+  module NodeJSClientRequest {
+    /**
+     * A data flow node that is an HTTP or HTTPS client request made by a Node.js application,
+     * for example `http.request(url)`.
+     *
+     * Extend this class to add support for new Node.js client request APIs.
+     */
+    abstract class Range extends ClientRequest::Range { }
+  }
+
+  deprecated class CustomNodeJSClientRequest = NodeJSClientRequest::Range;
 
   /**
    * A model of a URL request in the Node.js `http` library.
    */
-  private class NodeHttpUrlRequest extends CustomNodeJSClientRequest {
+  private class NodeHttpUrlRequest extends NodeJSClientRequest::Range {
     DataFlow::Node url;
 
     NodeHttpUrlRequest() {

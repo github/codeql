@@ -10,54 +10,62 @@ import javascript
 /**
  * A call that performs a request to a URL.
  *
- * Example: An HTTP POST request is a client request that sends some
- * `data` to a `url`, where both the headers and the body of the request
- * contribute to the `data`.
- */
-abstract class CustomClientRequest extends DataFlow::InvokeNode {
-  /**
-   * Gets the URL of the request.
-   */
-  abstract DataFlow::Node getUrl();
-
-  /**
-   * Gets the host of the request.
-   */
-  abstract DataFlow::Node getHost();
-
-  /**
-   * Gets a node that contributes to the data-part this request.
-   */
-  abstract DataFlow::Node getADataNode();
-}
-
-/**
- * A call that performs a request to a URL.
- *
  * Example: An HTTP POST request is client request that sends some
  * `data` to a `url`, where both the headers and the body of the request
  * contribute to the `data`.
+ *
+ * Extend this class to work with client request APIs for which there is already a model.
+ * To model additional APIs, extend `ClientRequest::Range` and implement its abstract member
+ * predicates.
  */
 class ClientRequest extends DataFlow::InvokeNode {
-  CustomClientRequest custom;
+  ClientRequest::Range self;
 
-  ClientRequest() { this = custom }
+  ClientRequest() { this = self }
 
   /**
    * Gets the URL of the request.
    */
-  DataFlow::Node getUrl() { result = custom.getUrl() }
+  DataFlow::Node getUrl() { result = self.getUrl() }
 
   /**
    * Gets the host of the request.
    */
-  DataFlow::Node getHost() { result = custom.getHost() }
+  DataFlow::Node getHost() { result = self.getHost() }
 
   /**
    * Gets a node that contributes to the data-part this request.
    */
-  DataFlow::Node getADataNode() { result = custom.getADataNode() }
+  DataFlow::Node getADataNode() { result = self.getADataNode() }
 }
+
+module ClientRequest {
+  /**
+   * A call that performs a request to a URL.
+   *
+   * Extend this class and implement its abstract member predicates to model additional
+   * client request APIs. To work with APIs for which there is already a model, extend
+   * `ClientRequest` instead.
+   */
+  abstract class Range extends DataFlow::InvokeNode {
+    /**
+     * Gets the URL of the request.
+     */
+    abstract DataFlow::Node getUrl();
+
+    /**
+     * Gets the host of the request.
+     */
+    abstract DataFlow::Node getHost();
+
+    /**
+     * Gets a node that contributes to the data-part this request.
+     */
+    abstract DataFlow::Node getADataNode();
+  }
+}
+
+deprecated class CustomClientRequest = ClientRequest::Range;
 
 /**
  * Gets name of an HTTP request method, in all-lowercase.
@@ -75,7 +83,7 @@ private string urlPropertyName() {
 /**
  * A model of a URL request made using the `request` library.
  */
-private class RequestUrlRequest extends CustomClientRequest {
+private class RequestUrlRequest extends ClientRequest::Range {
   DataFlow::Node url;
 
   RequestUrlRequest() {
@@ -106,7 +114,7 @@ private class RequestUrlRequest extends CustomClientRequest {
 /**
  * A model of a URL request made using the `axios` library.
  */
-private class AxiosUrlRequest extends CustomClientRequest {
+private class AxiosUrlRequest extends ClientRequest::Range {
   string method;
 
   AxiosUrlRequest() {
@@ -149,7 +157,7 @@ private class AxiosUrlRequest extends CustomClientRequest {
 /**
  * A model of a URL request made using an implementation of the `fetch` API.
  */
-private class FetchUrlRequest extends CustomClientRequest {
+private class FetchUrlRequest extends ClientRequest::Range {
   DataFlow::Node url;
 
   FetchUrlRequest() {
@@ -179,7 +187,7 @@ private class FetchUrlRequest extends CustomClientRequest {
 /**
  * A model of a URL request made using the `got` library.
  */
-private class GotUrlRequest extends CustomClientRequest {
+private class GotUrlRequest extends ClientRequest::Range {
   GotUrlRequest() {
     exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
       moduleName = "got" and
@@ -214,7 +222,7 @@ private class GotUrlRequest extends CustomClientRequest {
 /**
  * A model of a URL request made using the `superagent` library.
  */
-private class SuperAgentUrlRequest extends CustomClientRequest {
+private class SuperAgentUrlRequest extends ClientRequest::Range {
   DataFlow::Node url;
 
   SuperAgentUrlRequest() {
@@ -239,7 +247,7 @@ private class SuperAgentUrlRequest extends CustomClientRequest {
 /**
  * A model of a URL request made using the `XMLHttpRequest` browser class.
  */
-private class XMLHttpRequest extends CustomClientRequest {
+private class XMLHttpRequest extends ClientRequest::Range {
   XMLHttpRequest() {
     this = DataFlow::globalVarRef("XMLHttpRequest").getAnInstantiation()
     or
@@ -257,7 +265,7 @@ private class XMLHttpRequest extends CustomClientRequest {
 /**
  * A model of a URL request made using the `XhrIo` class from the closure library.
  */
-private class ClosureXhrIoRequest extends CustomClientRequest {
+private class ClosureXhrIoRequest extends ClientRequest::Range {
   ClosureXhrIoRequest() {
     exists(DataFlow::SourceNode xhrIo | xhrIo = Closure::moduleImport("goog.net.XhrIo") |
       this = xhrIo.getAMethodCall("send")
