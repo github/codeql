@@ -8,3 +8,5 @@ query predicate edges(TaintTrackingNode fromnode, TaintTrackingNode tonode) {
     /* Don't record flow past sinks */
     not fromnode.isSink()
 }
+
+
