@@ -1,15 +1,15 @@
-private import csharp as Cpp
+private import csharp as CSharp
 
-class Function = Cpp::Callable;
-class Location = Cpp::Location;
-class AST = Cpp::Element;
+class Function = CSharp::Callable;
+class Location = CSharp::Location;
+class AST = CSharp::Element;
 
-class Type = Cpp::Type;
+class Type = CSharp::Type;
 //REVIEW: This might not exist in the database. 
-class UnknownType = Cpp::UnknownType;
-class VoidType = Cpp::VoidType;
-class IntegralType = Cpp::IntegralType;
-class FloatingPointType = Cpp::FloatingPointType;
+class UnknownType = CSharp::UnknownType;
+class VoidType = CSharp::VoidType;
+class IntegralType = CSharp::IntegralType;
+class FloatingPointType = CSharp::FloatingPointType;
 
 private newtype TClassDerivation = 
   // Note that this is the `Class` type exported from this module, not CSharp::Class.
@@ -43,17 +43,17 @@ class ClassDerivation extends MkClassDerivation {
   }
 }
 
-class StringLiteral = Cpp::StringLiteral;
+class StringLiteral = CSharp::StringLiteral;
 
-class Variable = Cpp::Variable;
-class AutomaticVariable = Cpp::LocalScopeVariable;
-class StaticVariable = Cpp::Variable;
-class Parameter = Cpp::Parameter;
-class Field = Cpp::Field;
+class Variable = CSharp::Variable;
+class AutomaticVariable = CSharp::LocalScopeVariable;
+class StaticVariable = CSharp::Variable;
+class Parameter = CSharp::Parameter;
+class Field = CSharp::Field;
 
 // TODO: Remove necessity for these.
-class Expr = Cpp::Expr;
-class Class = Cpp::RefType;  // Used for inheritance conversions
+class Expr = CSharp::Expr;
+class Class = CSharp::RefType;  // Used for inheritance conversions
 
 string getIdentityString(Function func) {
   // REVIEW: Is this enough to make it unique?
@@ -67,7 +67,7 @@ predicate hasCaseEdge(string minValue, string maxValue) {
 }
 
 predicate hasPositionalArgIndex(int argIndex) {
-  exists(Cpp::MethodCall call |
+  exists(CSharp::MethodCall call |
     exists(call.getArgument(argIndex))
   )
 }
@@ -78,16 +78,16 @@ predicate hasAsmOperandIndex(int operandIndex) {
 
 int getTypeSize(Type type) {
   // REVIEW: Is this complete?
-  result = type.(Cpp::SimpleType).getSize() or
-  result = getTypeSize(type.(Cpp::Enum).getUnderlyingType()) or
+  result = type.(CSharp::SimpleType).getSize() or
+  result = getTypeSize(type.(CSharp::Enum).getUnderlyingType()) or
   // TODO: Generate a reasonable size
-  type instanceof Cpp::Struct and result = 16 or
-  type instanceof Cpp::RefType and result = getPointerSize() or
-  type instanceof Cpp::PointerType and result = getPointerSize() or
-  result = getTypeSize(type.(Cpp::TupleType).getUnderlyingType()) or
+  type instanceof CSharp::Struct and result = 16 or
+  type instanceof CSharp::RefType and result = getPointerSize() or
+  type instanceof CSharp::PointerType and result = getPointerSize() or
+  result = getTypeSize(type.(CSharp::TupleType).getUnderlyingType()) or
   // TODO: Add room for extra field
-  result = getTypeSize(type.(Cpp::NullableType).getUnderlyingType()) or
-  type instanceof Cpp::VoidType and result = 0
+  result = getTypeSize(type.(CSharp::NullableType).getUnderlyingType()) or
+  type instanceof CSharp::VoidType and result = 0
 }
 
 int getPointerSize() {
@@ -96,7 +96,7 @@ int getPointerSize() {
 }
 
 predicate isVariableAutomatic(Variable var) {
-  var instanceof Cpp::LocalScopeVariable
+  var instanceof CSharp::LocalScopeVariable
 }
 
 string getStringLiteralText(StringLiteral s) {
@@ -105,10 +105,10 @@ string getStringLiteralText(StringLiteral s) {
 }
 
 predicate hasPotentialLoop(Function f) {
-  exists(Cpp::LoopStmt l | l.getEnclosingCallable() = f) or
-  exists(Cpp::GotoStmt s | s.getEnclosingCallable() = f)
+  exists(CSharp::LoopStmt l | l.getEnclosingCallable() = f) or
+  exists(CSharp::GotoStmt s | s.getEnclosingCallable() = f)
 }
 
 predicate hasGoto(Function f) {
-  exists(Cpp::GotoStmt s | s.getEnclosingCallable() = f)
+  exists(CSharp::GotoStmt s | s.getEnclosingCallable() = f)
 }
