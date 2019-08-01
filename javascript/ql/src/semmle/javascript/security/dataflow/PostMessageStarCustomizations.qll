@@ -34,7 +34,7 @@ module PostMessageStar {
    * Gets either a standard flow label or the partial-taint label.
    */
   DataFlow::FlowLabel anyLabel() {
-    result instanceof DataFlow::StandardFlowLabel or result instanceof PartiallyTaintedObject
+    result.isDataOrTaint() or result instanceof PartiallyTaintedObject
   }
 
   /**

@@ -36,7 +36,7 @@ module TaintedObject {
    */
   predicate step(Node src, Node trg, FlowLabel inlbl, FlowLabel outlbl) {
     // JSON parsers map tainted inputs to tainted JSON
-    (inlbl = FlowLabel::data() or inlbl = FlowLabel::taint()) and
+    inlbl.isDataOrTaint() and
     outlbl = label() and
     exists(JsonParserCall parse |
       src = parse.getInput() and
