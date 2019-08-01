@@ -18,3 +18,6 @@ def make_response(rv):
         return rv
     else:
         pass
+
+def escape(txt):
+    return Markup.escape(txt)
