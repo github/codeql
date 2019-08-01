@@ -12,3 +12,4 @@ instructionWithoutUniqueBlock
 containsLoopOfForwardEdges
 lostReachability
 backEdgeCountMismatch
+useNotDominatedByDefinition
