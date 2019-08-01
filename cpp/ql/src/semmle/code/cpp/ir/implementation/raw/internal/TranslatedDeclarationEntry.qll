@@ -47,7 +47,7 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
 /**
  * Represents the IR translation of a declaration within the body of a function,
  * for declarations other than local variables. Since these have no semantic
- * effect, they are translated as `NoOp`.
+ * effect, they do not generate any instructions.
  */
 class TranslatedNonVariableDeclarationEntry extends TranslatedDeclarationEntry {
   TranslatedNonVariableDeclarationEntry() {
@@ -56,14 +56,11 @@ class TranslatedNonVariableDeclarationEntry extends TranslatedDeclarationEntry {
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
       Type resultType, boolean isGLValue) {
-    opcode instanceof Opcode::NoOp and
-    tag = OnlyInstructionTag() and
-    resultType instanceof VoidType and
-    isGLValue = false
+    none()
   }
 
   override Instruction getFirstInstruction() {
-    result = getInstruction(OnlyInstructionTag())
+    result = getParent().getChildSuccessor(this)
   }
 
   override TranslatedElement getChild(int id) {
@@ -71,10 +68,8 @@ class TranslatedNonVariableDeclarationEntry extends TranslatedDeclarationEntry {
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
-    kind instanceof GotoEdge
+      EdgeKind kind) {
+    none()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {

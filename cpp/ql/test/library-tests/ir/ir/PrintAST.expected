@@ -7828,3 +7828,40 @@ ir.cpp:
 # 1109|             Type = [LValueReferenceType] unsigned int &
 # 1109|             ValueCategory = prvalue(load)
 # 1111|     1: [ReturnStmt] return ...
+# 1113| [TopLevelFunction] void ExternDeclarations()
+# 1113|   params: 
+# 1114|   body: [Block] { ... }
+# 1115|     0: [DeclStmt] declaration
+# 1115|       0: [VariableDeclarationEntry] declaration of g
+# 1115|           Type = [IntType] int
+# 1116|     1: [DeclStmt] declaration
+# 1116|       0: [VariableDeclarationEntry] definition of x
+# 1116|           Type = [IntType] int
+# 1117|     2: [DeclStmt] declaration
+# 1117|       0: [VariableDeclarationEntry] definition of y
+# 1117|           Type = [IntType] int
+# 1117|       1: [FunctionDeclarationEntry] declaration of f
+# 1117|           Type = [IntType] int
+# 1118|     3: [DeclStmt] declaration
+# 1118|       0: [FunctionDeclarationEntry] declaration of z
+# 1118|           Type = [IntType] int
+# 1118|       1: [FunctionDeclarationEntry] declaration of w
+# 1118|           Type = [IntType] int
+# 1118|       2: [VariableDeclarationEntry] definition of h
+# 1118|           Type = [IntType] int
+# 1119|     4: [DeclStmt] declaration
+# 1119|       0: [TypeDeclarationEntry] declaration of d
+# 1119|           Type = [LocalTypedefType] d
+# 1120|     5: [ReturnStmt] return ...
+# 1117| [TopLevelFunction] int f(float)
+# 1117|   params: 
+# 1117|     0: [Parameter] p#0
+# 1117|         Type = [FloatType] float
+# 1118| [TopLevelFunction] int z(float)
+# 1118|   params: 
+# 1118|     0: [Parameter] p#0
+# 1118|         Type = [FloatType] float
+# 1118| [TopLevelFunction] int w(float)
+# 1118|   params: 
+# 1118|     0: [Parameter] p#0
+# 1118|         Type = [FloatType] float
