@@ -215,6 +215,55 @@ module InstructionSanity {
       ) and
     fromInstr != fromBlock
   }
+
+  /**
+   * Gets the point in the function at which the specified operand is evaluated. For most operands,
+   * this is at the instruction that consumes the use. For a `PhiInputOperand`, the effective point
+   * of evaluation is at the end of the corresponding predecessor block.
+   */
+  private predicate pointOfEvaluation(Operand operand, IRBlock block, int index) {
+    (
+      block = operand.(PhiInputOperand).getPredecessorBlock() and
+      index = block.getInstructionCount()
+    ) or
+    exists (Instruction use |
+      use = operand.(NonPhiOperand).getUse() and
+      block.getInstruction(index) = use
+    )
+  }
+
+  /**
+   * Holds if `useOperand` has a definition that does not dominate the use.
+   */
+  query predicate useNotDominatedByDefinition(Operand useOperand, string message, IRFunction func,
+    string funcText) {
+
+    exists (IRBlock useBlock, int useIndex, Instruction defInstr, IRBlock defBlock, int defIndex |
+      not useOperand.getUse() instanceof UnmodeledUseInstruction and
+      pointOfEvaluation(useOperand, useBlock, useIndex) and
+      defInstr = useOperand.getAnyDef() and
+      (
+        (
+          defInstr instanceof PhiInstruction and
+          defBlock = defInstr.getBlock() and
+          defIndex = -1
+        )
+        or
+          defBlock.getInstruction(defIndex) = defInstr
+      ) and
+      not (
+        defBlock.strictlyDominates(useBlock) or
+        (
+          defBlock = useBlock and
+          defIndex < useIndex
+        )
+      ) and
+      message = "Operand '" + useOperand.toString() +
+        "' is not dominated by its definition in function '$@'." and
+      func = useOperand.getEnclosingIRFunction() and
+      funcText = Language::getIdentityString(func.getFunction())
+    )
+  }
 }
 
 /**
