@@ -67,11 +67,6 @@ private Function getEnclosingFunction(Locatable ast) {
   or
   result = ast.(Parameter).getFunction()
   or
-  exists(DeclStmt stmt |
-    stmt.getADeclarationEntry() = ast and
-    result = stmt.getEnclosingFunction()
-  )
-  or
   result = ast
 }
 
@@ -80,7 +75,14 @@ private Function getEnclosingFunction(Locatable ast) {
  * nodes for things like parameter lists and constructor init lists.
  */
 private newtype TPrintASTNode =
-  TASTNode(Locatable ast) { shouldPrintFunction(getEnclosingFunction(ast)) } or
+  TASTNode(Locatable ast) {
+    shouldPrintFunction(getEnclosingFunction(ast))
+  } or
+  TDeclarationEntryNode(DeclStmt stmt, DeclarationEntry entry) {
+    // We create a unique node for each pair of (stmt, entry), to avoid having one node with
+    // multiple parents due to extractor bug CPP-413.
+    stmt.getADeclarationEntry() = entry
+  } or
   TParametersNode(Function func) { shouldPrintFunction(func) } or
   TConstructorInitializersNode(Constructor ctor) {
     ctor.hasEntryPoint() and
@@ -161,10 +163,8 @@ private string qlClass(ElementBase el) { result = "[" + concat(el.getCanonicalQL
 /**
  * A node representing an AST node.
  */
-abstract class ASTNode extends PrintASTNode, TASTNode {
+abstract class BaseASTNode extends PrintASTNode {
   Locatable ast;
-
-  ASTNode() { this = TASTNode(ast) }
 
   override string toString() { result = qlClass(ast) + ast.toString() }
 
@@ -174,6 +174,13 @@ abstract class ASTNode extends PrintASTNode, TASTNode {
    * Gets the AST represented by this node.
    */
   final Locatable getAST() { result = ast }
+}
+
+/**
+ * A node representing an AST node other than a `DeclarationEntry`.
+ */
+abstract class ASTNode extends BaseASTNode, TASTNode {
+  ASTNode() { this = TASTNode(ast) }
 }
 
 /**
@@ -250,18 +257,21 @@ class CastNode extends ConversionNode {
 /**
  * A node representing a `DeclarationEntry`.
  */
-class DeclarationEntryNode extends ASTNode {
-  DeclarationEntry entry;
+class DeclarationEntryNode extends BaseASTNode, TDeclarationEntryNode {
+  override DeclarationEntry ast;
+  DeclStmt declStmt;
 
-  DeclarationEntryNode() { entry = ast }
+  DeclarationEntryNode() {
+    this = TDeclarationEntryNode(declStmt, ast)
+  }
 
   override PrintASTNode getChild(int childIndex) { none() }
 
   override string getProperty(string key) {
-    result = super.getProperty(key)
+    result = BaseASTNode.super.getProperty(key)
     or
     key = "Type" and
-    result = qlClass(entry.getType()) + entry.getType().toString()
+    result = qlClass(ast.getType()) + ast.getType().toString()
   }
 }
 
@@ -269,13 +279,11 @@ class DeclarationEntryNode extends ASTNode {
  * A node representing a `VariableDeclarationEntry`.
  */
 class VariableDeclarationEntryNode extends DeclarationEntryNode {
-  VariableDeclarationEntry varEntry;
-
-  VariableDeclarationEntryNode() { varEntry = entry }
+  override VariableDeclarationEntry ast;
 
   override ASTNode getChild(int childIndex) {
     childIndex = 0 and
-    result.getAST() = varEntry.getVariable().getInitializer()
+    result.getAST() = ast.getVariable().getInitializer()
   }
 
   override string getChildEdgeLabel(int childIndex) { childIndex = 0 and result = "init" }
@@ -289,7 +297,7 @@ class StmtNode extends ASTNode {
 
   StmtNode() { stmt = ast }
 
-  override ASTNode getChild(int childIndex) {
+  override BaseASTNode getChild(int childIndex) {
     exists(Locatable child |
       child = stmt.getChild(childIndex) and
       (
@@ -308,8 +316,11 @@ class DeclStmtNode extends StmtNode {
 
   DeclStmtNode() { declStmt = stmt }
 
-  override ASTNode getChild(int childIndex) {
-    result.getAST() = declStmt.getDeclarationEntry(childIndex)
+  override DeclarationEntryNode getChild(int childIndex) {
+    exists (DeclarationEntry entry |
+      declStmt.getDeclarationEntry(childIndex) = entry and
+      result = TDeclarationEntryNode(declStmt, entry)
+    )
   }
 }
 

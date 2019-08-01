@@ -18,8 +18,8 @@ TranslatedDeclarationEntry getTranslatedDeclarationEntry(DeclarationEntry entry)
 /**
  * Represents the IR translation of a declaration within the body of a function.
  * Most often, this is the declaration of an automatic local variable, although
- * it can also be the declaration of a static local variable, an extern
- * variable, or an extern function.
+ * it can also be the declaration of a static local variable. Declarations of extern variables and
+ * functions do not have a `TranslatedDeclarationEntry`.
  */
 abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslatedDeclarationEntry {
   DeclarationEntry entry;
@@ -41,39 +41,6 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
 
   override final Locatable getAST() {
     result = entry
-  }
-}
-
-/**
- * Represents the IR translation of a declaration within the body of a function,
- * for declarations other than local variables. Since these have no semantic
- * effect, they do not generate any instructions.
- */
-class TranslatedNonVariableDeclarationEntry extends TranslatedDeclarationEntry {
-  TranslatedNonVariableDeclarationEntry() {
-    not entry.getDeclaration() instanceof LocalVariable
-  }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isGLValue) {
-    none()
-  }
-
-  override Instruction getFirstInstruction() {
-    result = getParent().getChildSuccessor(this)
-  }
-
-  override TranslatedElement getChild(int id) {
-    none()
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
-    none()
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    none()
   }
 }
 
