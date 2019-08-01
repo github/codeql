@@ -166,11 +166,7 @@ module DataFlow {
      * Gets the immediate predecessor of this node, if any.
      *
      * A node with an immediate predecessor can usually only have the value that flows
-     * into its from its immediate predecessor, currently with one exception:
-     *
-     * - An immediately-invoked function expression with a single return expression `e`
-     *   has `e` as its immediate predecessor, even if the function can fall over the
-     *   end and return `undefined`.
+     * into its from its immediate predecessor.
      */
     cached
     DataFlow::Node getImmediatePredecessor() {
@@ -190,11 +186,11 @@ module DataFlow {
       )
       or
       // IIFE call -> return value of IIFE
-      // Note: not sound in case function falls over end and returns 'undefined'
       exists(Function fun |
         localCall(this.asExpr(), fun) and
         result = fun.getAReturnedExpr().flow() and
-        strictcount(fun.getAReturnedExpr()) = 1
+        strictcount(fun.getAReturnedExpr()) = 1 and
+        not fun.getExit().isJoin() // can only reach exit by the return statement
       )
     }
   }
