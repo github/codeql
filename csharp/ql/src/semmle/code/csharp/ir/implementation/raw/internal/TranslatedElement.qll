@@ -193,7 +193,10 @@ newtype TTranslatedElement =
     // TODO: Revisit and make sure Loads are only used when needed
     expr instanceof AssignableRead and
     not expr.getParent() instanceof ArrayAccess and
-    not expr.getType() instanceof RefType
+    not expr.getType() instanceof RefType and 
+    // Ignore loads for reads in `++` and `--` since their
+    // translated elements handle them
+    not expr.getParent() instanceof MutatorOperation
   } or
   // An expression most naturally translated as control flow.
   TTranslatedNativeCondition(Expr expr) {

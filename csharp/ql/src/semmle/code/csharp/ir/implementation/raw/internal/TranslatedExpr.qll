@@ -106,7 +106,10 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
     // TODO: Make sure this is enough
     // Ref types need no loads
     // Eg. `Object obj = oldObj`;
-    expr.getType() instanceof RefType
+    expr.getType() instanceof RefType or
+    // The access inside a `++` or `--` expr will produce the final value, 
+    // since the load is handled by them 
+    expr.getParent() instanceof MutatorOperation
   }
 
   /**
@@ -373,337 +376,205 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
   }
 }
 
-//class TranslatedCommaExpr extends TranslatedNonConstantExpr {
-//  override CommaExpr expr;
-//
-//  override Instruction getFirstInstruction() {
-//    result = getLeftOperand().getFirstInstruction()
-//  }
-//
-//  override TranslatedElement getChild(int id) {
-//    id = 0 and result = getLeftOperand() or
-//    id = 1 and result = getRightOperand()
-//  }
-//
-//  override Instruction getResult() {
-//    result = getRightOperand().getResult()
-//  }
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag,
-//    EdgeKind kind) {
-//    none()
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    (
-//      child = getLeftOperand() and
-//      result = getRightOperand().getFirstInstruction()
-//    ) or
-//    child = getRightOperand() and result = getParent().getChildSuccessor(this)
-//  }
-//
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//    Type resultType, boolean ) {
-//    none()
-//  }
-//
-//  override Instruction getInstructionOperand(InstructionTag tag,
-//      OperandTag operandTag) {
-//    none()
-//  }
-//
-//  private TranslatedExpr getLeftOperand() {
-//    result = getTranslatedExpr(expr.getLeftOperand().getFullyConverted())
-//  }
-//
-//  private TranslatedExpr getRightOperand() {
-//    result = getTranslatedExpr(expr.getRightOperand().getFullyConverted())
-//  }
-//}
+abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
+  override MutatorOperation expr;
 
-//abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
-//  override CrementOperation expr;
-//
-//  override final TranslatedElement getChild(int id) {
-//    id = 0 and result = getOperand()
-//  }
-//
-//  override final string getInstructionConstantValue(InstructionTag tag) {
-//    tag = CrementConstantTag() and
-//    exists(Type resultType |
-//      resultType = getResultType() and
-//      (
-//        resultType instanceof IntegralType and result = "1" or
-//        resultType instanceof FloatingPointType and result = "1.0" or
-//        resultType instanceof PointerType and result = "1"
-//      )
-//    )
-//  }
-//
-//  private Type getConstantType() {
-//    exists(Type resultType |
-//      resultType = getResultType() and
-//      (
-//        resultType instanceof ArithmeticType and result = resultType or
-//        resultType instanceof PointerType and result = getIntType()
-//      )
-//    )
-//  }
-//
-//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//    Type resultType, boolean ) {
-//     = false and
-//    (
-//      (
-//        tag = CrementLoadTag() and
-//        opcode instanceof Opcode::Load and
-//        resultType = getResultType()
-//      ) or
-//      (
-//        tag = CrementConstantTag() and
-//        opcode instanceof Opcode::Constant and
-//        resultType = getConstantType()
-//      ) or
-//      (
-//        tag = CrementOpTag() and
-//        opcode = getOpcode() and
-//        resultType = getResultType()
-//      ) or
-//      (
-//        tag = CrementStoreTag() and
-//        opcode instanceof Opcode::Store and
-//        resultType = getResultType()
-//      )
-//    )
-//  }
-//
-//  override final Instruction getInstructionOperand(InstructionTag tag,
-//      OperandTag operandTag) {
-//    (
-//      tag = CrementLoadTag() and
-//      (
-//        (
-//          operandTag instanceof AddressOperandTag and
-//          result = getOperand().getResult()
-//        ) or
-//        (
-//          operandTag instanceof LoadOperandTag and
-//          result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
-//        )
-//      )
-//    ) or
-//    (
-//      tag = CrementOpTag() and
-//      (
-//        (
-//          operandTag instanceof LeftOperandTag and
-//          result = getInstruction(CrementLoadTag())
-//        ) or
-//        (
-//          operandTag instanceof RightOperandTag and
-//          result = getInstruction(CrementConstantTag())
-//        )
-//      )
-//    ) or
-//    (
-//      tag = CrementStoreTag() and
-//      (
-//        (
-//          operandTag instanceof AddressOperandTag and
-//          result = getOperand().getResult()
-//        ) or
-//        (
-//          operandTag instanceof StoreValueOperandTag and
-//          result = getInstruction(CrementOpTag())
-//        )
-//      )
-//    )
-//  }
-//
-//  override final Instruction getFirstInstruction() {
-//    result = getOperand().getFirstInstruction()
-//  }
-//
-//  override final Instruction getInstructionSuccessor(InstructionTag tag,
-//    EdgeKind kind) {
-//    kind instanceof GotoEdge and
-//    (
-//      (
-//        tag = CrementLoadTag() and
-//        result = getInstruction(CrementConstantTag())
-//      ) or
-//      (
-//        tag = CrementConstantTag() and
-//        result = getInstruction(CrementOpTag())
-//      ) or
-//      (
-//        tag = CrementOpTag() and
-//        result = getInstruction(CrementStoreTag())
-//      ) or
-//      (
-//        tag = CrementStoreTag() and
-//        result = getParent().getChildSuccessor(this)
-//      )
-//    )
-//  }
-//
-//  override final Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getOperand() and result = getInstruction(CrementLoadTag())
-//  }
-//
-//  override final int getInstructionElementSize(InstructionTag tag) {
-//    tag = CrementOpTag() and
-//    (
-//      getOpcode() instanceof Opcode::PointerAdd or
-//      getOpcode() instanceof Opcode::PointerSub
-//    ) and
-//    result = max(getResultType().(PointerType).getBaseType().getSize())
-//  }
-//
-//  final TranslatedExpr getOperand() {
-//    result = getTranslatedExpr(expr.getOperand().getFullyConverted())
-//  }
-//
-//  final Opcode getOpcode() {
-//    exists(Type resultType |
-//      resultType = getResultType() and
-//      (
-//        (
-//          expr instanceof IncrementOperation and
-//          if resultType instanceof PointerType then
-//            result instanceof Opcode::PointerAdd
-//          else
-//            result instanceof Opcode::Add
-//        ) or
-//        (
-//          expr instanceof DecrementOperation and
-//          if resultType instanceof PointerType then
-//            result instanceof Opcode::PointerSub
-//          else
-//            result instanceof Opcode::Sub
-//        )
-//      )
-//    )
-//  }
-//}
-//
-//class TranslatedPrefixCrementOperation extends TranslatedCrementOperation {
-//  override PrefixCrementOperation expr;
-//
-//  override Instruction getResult() {
+  override final TranslatedElement getChild(int id) {
+    id = 0 and result = getOperand()
+  }
+
+  override final string getInstructionConstantValue(InstructionTag tag) {
+    tag = CrementConstantTag() and
+    exists(Type resultType |
+      resultType = getResultType() and
+      (
+        resultType instanceof IntegralType and result = "1" or
+        resultType instanceof FloatingPointType and result = "1.0" or
+        resultType instanceof PointerType and result = "1"
+      )
+    )
+  }
+
+  private Type getConstantType() {
+    exists(Type resultType |
+      resultType = getResultType() and
+      (
+        resultType instanceof IntegralType and result = getResultType() or
+        resultType instanceof FloatingPointType and result = getResultType() or
+        resultType instanceof PointerType and result = getIntType()
+      )
+    )
+  }
+
+  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
+    Type resultType, boolean isLValue) {
+    isLValue = false and
+    (
+      (
+        tag = CrementLoadTag() and
+        opcode instanceof Opcode::Load and
+        resultType = getResultType()
+      ) or
+      (
+        tag = CrementConstantTag() and
+        opcode instanceof Opcode::Constant and
+        resultType = getConstantType()
+      ) or
+      (
+        tag = CrementOpTag() and
+        opcode = getOpcode() and
+        resultType = getResultType()
+      ) or
+      (
+        tag = CrementStoreTag() and
+        opcode instanceof Opcode::Store and
+        resultType = getResultType()
+      )
+    )
+  }
+
+  override final Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    (
+      tag = CrementLoadTag() and
+      (
+        (
+          operandTag instanceof AddressOperandTag and
+          result = getOperand().getResult()
+        ) or
+        (
+          operandTag instanceof LoadOperandTag and
+          result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+        )
+      )
+    ) or
+    (
+      tag = CrementOpTag() and
+      (
+        (
+          operandTag instanceof LeftOperandTag and
+          result = getInstruction(CrementLoadTag())
+        ) or
+        (
+          operandTag instanceof RightOperandTag and
+          result = getInstruction(CrementConstantTag())
+        )
+      )
+    ) or
+    (
+      tag = CrementStoreTag() and
+      (
+        (
+          operandTag instanceof AddressOperandTag and
+          result = getOperand().getResult()
+        ) or
+        (
+          operandTag instanceof StoreValueOperandTag and
+          result = getInstruction(CrementOpTag())
+        )
+      )
+    )
+  }
+
+  override final Instruction getFirstInstruction() {
+    result = getOperand().getFirstInstruction()
+  }
+
+  override final Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    kind instanceof GotoEdge and
+    (
+      (
+        tag = CrementLoadTag() and
+        result = getInstruction(CrementConstantTag())
+      ) or
+      (
+        tag = CrementConstantTag() and
+        result = getInstruction(CrementOpTag())
+      ) or
+      (
+        tag = CrementOpTag() and
+        result = getInstruction(CrementStoreTag())
+      ) or
+      (
+        tag = CrementStoreTag() and
+        result = getParent().getChildSuccessor(this)
+      )
+    )
+  }
+
+  override final Instruction getChildSuccessor(TranslatedElement child) {
+    child = getOperand() and result = getInstruction(CrementLoadTag())
+  }
+
+  override final int getInstructionElementSize(InstructionTag tag) {
+    tag = CrementOpTag() and
+    (
+      getOpcode() instanceof Opcode::PointerAdd or
+      getOpcode() instanceof Opcode::PointerSub
+    ) and
+    result = 4 //max(getResultType().(PointerType).getSize())
+  }
+
+  final TranslatedExpr getOperand() {
+    result = getTranslatedExpr(expr.getOperand())
+  }
+
+  final Opcode getOpcode() {
+    exists(Type resultType |
+      resultType = getResultType() and
+      (
+        (
+          expr instanceof IncrementOperation and
+          if resultType instanceof PointerType then
+            result instanceof Opcode::PointerAdd
+          else
+            result instanceof Opcode::Add
+        ) or
+        (
+          expr instanceof DecrementOperation and
+          if resultType instanceof PointerType then
+            result instanceof Opcode::PointerSub
+          else
+            result instanceof Opcode::Sub
+        )
+      )
+    )
+  }
+}
+
+class TranslatedPrefixCrementOperation extends TranslatedCrementOperation {
+  TranslatedPrefixCrementOperation() {
+    expr instanceof PreIncrExpr or
+    expr instanceof PreDecrExpr
+  }
+
+  override Instruction getResult() {
 //    if expr.isPRValueCategory() then (
 //      // If this is C, then the result of a prefix crement is a prvalue for the
 //      // new value assigned to the operand. If this is C++, then the result is
 //      // an lvalue, but that lvalue is being loaded as part of this expression.
 //      // EDG doesn't mark this as a load.
-//      result = getInstruction(CrementOpTag())
+      result = getInstruction(CrementOpTag())
 //    )
 //    else (
 //      // This is C++, where the result is an lvalue for the operand, and that
 //      // lvalue is not being loaded as part of this expression.
 //      result = getOperand().getResult()
 //    )
-//  }
-//}
-//
-//class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
-//  override PostfixCrementOperation expr;
-//
-//  override Instruction getResult() {
-//    // The result is a prvalue copy of the original value
-//    result = getInstruction(CrementLoadTag())
-//  }
-//}
+  }
+}
 
-//class TranslatedArrayOffset extends TranslatedCoreExpr {
-//   override ArrayAccess expr;
-//   
-//   override Instruction getFirstInstruction() {
-//    result = getBaseOperand().getFirstInstruction()
-//  }
-//
-//  override final TranslatedElement getChild(int id) {
-//    id = 0 and result = getBaseOperand() or
-//    id = 1 and result = getOffsetOperand()
-//  }
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag,
-//    EdgeKind kind) {
-//    (
-//      tag = OnlyInstructionTag() and
-//      result = getParent().getChildSuccessor(this) and
-//      kind instanceof GotoEdge
-//    )
-//    or
-//    (
-//      tag = ElementsAddressTag() and
-//      result = getOffsetOperand().getFirstInstruction() and
-//      kind instanceof GotoEdge
-//    )
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    (
-//      child = getBaseOperand() and
-//      result = getInstruction(ElementsAddressTag())
-//    ) or
-//    (
-//      child = getOffsetOperand() and
-//      result = getInstruction(OnlyInstructionTag())
-//    )
-//  }
-//
-//  override Instruction getResult() {
-//    result = getInstruction(OnlyInstructionTag())
-//  }
-//
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//    Type resultType, boolean isLValue) {
-//    (
-//      tag = OnlyInstructionTag() and
-//      opcode instanceof Opcode::PointerAdd and
-//      resultType = getBaseOperand().getResultType() and
-//      isLValue = false
-//    ) 
-//    or
-//    (
-//      // Instruction that converts an array object pointer to
-//      // a managed pointer
-//      tag = ElementsAddressTag() and
-//      opcode instanceof Opcode::ElementsAddress and
-//      // TODO: Will need to be a pointer (managed?)
-//      resultType = getBaseOperand().getResultType() and
-//      isLValue = false
-//    )
-//  }
-//
-//  override Instruction getInstructionOperand(InstructionTag tag,
-//    OperandTag operandTag) {
-//    tag = OnlyInstructionTag() and
-//    (
-//      (
-//        operandTag instanceof LeftOperandTag and
-//        result = getInstruction(ElementsAddressTag())
-//      ) or
-//      (
-//        operandTag instanceof RightOperandTag and
-//        result = getOffsetOperand().getResult()
-//      )
-//    )
-//    or
-//    tag = ElementsAddressTag() and 
-//    (
-//      operandTag instanceof AddressOperandTag and
-//      result = getBaseOperand().getResult()
-//    )
-//  }
-//
-//  override int getInstructionElementSize(InstructionTag tag) {
-//    tag = OnlyInstructionTag() and
-//    // TODO: Fix sizes once we have the unified type system
-//    result = 4
-//  }
-//}
+class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
+  TranslatedPostfixCrementOperation() {
+    expr instanceof PostIncrExpr or
+    expr instanceof PostDecrExpr
+  }
+
+  override Instruction getResult() {
+    result = getInstruction(CrementLoadTag())
+  }
+}
 
 class TranslatedObjectInitializerExpr extends TranslatedNonConstantExpr, InitializationContext {
   override ObjectInitializer expr;
