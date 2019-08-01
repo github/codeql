@@ -127,6 +127,14 @@ private module CachedSteps {
       invk = cls.getAClassReference().getAMethodCall(name) and
       f = cls.getStaticMethod(name).getFunction()
     )
+    or
+    // Call from `foo.bar.baz()` to `foo.bar.baz = function()`
+    not f.getTopLevel().isExterns() and
+    exists(string name |
+      GlobalAccessPath::isAssignedInUniqueFile(name) and
+      GlobalAccessPath::fromRhs(f.flow()) = name and
+      GlobalAccessPath::fromReference(invk.getCalleeNode()) = name
+    )
   }
 
   /**
