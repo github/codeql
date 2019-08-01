@@ -69,6 +69,11 @@ class TranslatedEmptyStmt extends TranslatedStmt {
   }
 }
 
+/**
+ * The IR translation of a declaration statement. This consists of the IR for each of the individual
+ * local variables declared by the statement. Declarations for extern variables and functions
+ * do not generate any instructions.
+ */
 class TranslatedDeclStmt extends TranslatedStmt {
   override DeclStmt stmt;
 
@@ -82,15 +87,25 @@ class TranslatedDeclStmt extends TranslatedStmt {
   }
 
   override Instruction getFirstInstruction() {
-    result = getDeclarationEntry(0).getFirstInstruction() //REVIEW: Empty?
+    result = getDeclarationEntry(0).getFirstInstruction() or
+    not exists(getDeclarationEntry(0)) and result = getParent().getChildSuccessor(this)
   }
 
   private int getChildCount() {
-    result = stmt.getNumDeclarations()
+    result = count(getDeclarationEntry(_))
   }
 
+  /**
+   * Gets the `TranslatedDeclarationEntry` child at zero-based index `index`. Since not all
+   * `DeclarationEntry` objects have a `TranslatedDeclarationEntry` (e.g. extern functions), we map
+   * the original children into a contiguous range containing only those with an actual
+   * `TranslatedDeclarationEntry`.
+   */
   private TranslatedDeclarationEntry getDeclarationEntry(int index) {
-    result = getTranslatedDeclarationEntry(stmt.getDeclarationEntry(index))
+    result = rank[index + 1](TranslatedDeclarationEntry entry, int originalIndex |
+      entry = getTranslatedDeclarationEntry(stmt.getDeclarationEntry(originalIndex)) |
+      entry order by originalIndex
+    )
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -273,7 +288,7 @@ class TranslatedTryStmt extends TranslatedStmt {
       // The last catch clause flows to the exception successor of the parent
       // of the `try`, because the exception successor of the `try` itself is
       // the first catch clause.
-      handler = getHandler(stmt.getNumberOfCatchClauses()) and
+      handler = getHandler(stmt.getNumberOfCatchClauses() - 1) and
       result = getParent().getExceptionSuccessorInstruction()
     )
   }

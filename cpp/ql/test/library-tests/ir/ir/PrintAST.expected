@@ -7865,3 +7865,139 @@ ir.cpp:
 # 1118|   params: 
 # 1118|     0: [Parameter] p#0
 # 1118|         Type = [FloatType] float
+# 1128| [TopLevelFunction] void ExternDeclarationsInMacro()
+# 1128|   params: 
+# 1129|   body: [Block] { ... }
+# 1130|     0: [DeclStmt] declaration
+# 1130|       0: [VariableDeclarationEntry] declaration of g
+# 1130|           Type = [IntType] int
+# 1130|     1: [ForStmt] for(...;...;...) ...
+# 1130|       0: [DeclStmt] declaration
+# 1130|         0: [VariableDeclarationEntry] definition of i
+# 1130|             Type = [IntType] int
+# 1130|           init: [Initializer] initializer for i
+# 1130|             expr: [Literal,Zero] 0
+# 1130|                 Type = [IntType] int
+# 1130|                 Value = [Literal,Zero] 0
+# 1130|                 ValueCategory = prvalue
+# 1130|       1: [LTExpr] ... < ...
+# 1130|           Type = [BoolType] bool
+# 1130|           ValueCategory = prvalue
+# 1130|         0: [VariableAccess] i
+# 1130|             Type = [IntType] int
+# 1130|             ValueCategory = prvalue(load)
+# 1130|         1: [Literal] 10
+# 1130|             Type = [IntType] int
+# 1130|             Value = [Literal] 10
+# 1130|             ValueCategory = prvalue
+# 1130|       2: [PrefixIncrExpr] ++ ...
+# 1130|           Type = [IntType] int
+# 1130|           ValueCategory = lvalue
+# 1130|         0: [VariableAccess] i
+# 1130|             Type = [IntType] int
+# 1130|             ValueCategory = lvalue
+# 1130|       3: [Block] { ... }
+# 1130|         0: [DeclStmt] declaration
+# 1130|           0: [VariableDeclarationEntry] declaration of g
+# 1130|               Type = [IntType] int
+# 1130|     2: [EmptyStmt] ;
+# 1131|     3: [ReturnStmt] return ...
+# 1133| [TopLevelFunction] void TryCatchNoCatchAny(bool)
+# 1133|   params: 
+# 1133|     0: [Parameter] b
+# 1133|         Type = [BoolType] bool
+# 1133|   body: [Block] { ... }
+# 1134|     0: [TryStmt] try { ... }
+# 1134|       0: [Block] { ... }
+# 1135|         0: [DeclStmt] declaration
+# 1135|           0: [VariableDeclarationEntry] definition of x
+# 1135|               Type = [IntType] int
+# 1135|             init: [Initializer] initializer for x
+# 1135|               expr: [Literal] 5
+# 1135|                   Type = [IntType] int
+# 1135|                   Value = [Literal] 5
+# 1135|                   ValueCategory = prvalue
+# 1136|         1: [IfStmt] if (...) ... 
+# 1136|           0: [VariableAccess] b
+# 1136|               Type = [BoolType] bool
+# 1136|               ValueCategory = prvalue(load)
+# 1136|           1: [Block] { ... }
+# 1137|             0: [ExprStmt] ExprStmt
+# 1137|               0: [ThrowExpr] throw ...
+# 1137|                   Type = [PointerType] const char *
+# 1137|                   ValueCategory = prvalue
+# 1137|                 0: [ArrayToPointerConversion] array to pointer conversion
+# 1137|                     Type = [PointerType] const char *
+# 1137|                     ValueCategory = prvalue
+# 1137|                   expr: string literal
+# 1137|                       Type = [ArrayType] const char[15]
+# 1137|                       Value = [StringLiteral] "string literal"
+# 1137|                       ValueCategory = lvalue
+# 1139|           2: [IfStmt] if (...) ... 
+# 1139|             0: [LTExpr] ... < ...
+# 1139|                 Type = [BoolType] bool
+# 1139|                 ValueCategory = prvalue
+# 1139|               0: [VariableAccess] x
+# 1139|                   Type = [IntType] int
+# 1139|                   ValueCategory = prvalue(load)
+# 1139|               1: [Literal] 2
+# 1139|                   Type = [IntType] int
+# 1139|                   Value = [Literal] 2
+# 1139|                   ValueCategory = prvalue
+# 1139|             1: [Block] { ... }
+# 1140|               0: [ExprStmt] ExprStmt
+# 1140|                 0: [AssignExpr] ... = ...
+# 1140|                     Type = [IntType] int
+# 1140|                     ValueCategory = lvalue
+# 1140|                   0: [VariableAccess] x
+# 1140|                       Type = [IntType] int
+# 1140|                       ValueCategory = lvalue
+# 1140|                   1: [ConditionalExpr] ... ? ... : ...
+# 1140|                       Type = [IntType] int
+# 1140|                       ValueCategory = prvalue
+# 1140|                     0: [VariableAccess] b
+# 1140|                         Type = [BoolType] bool
+# 1140|                         ValueCategory = prvalue(load)
+# 1140|                     1: [Literal] 7
+# 1140|                         Type = [IntType] int
+# 1140|                         Value = [Literal] 7
+# 1140|                         ValueCategory = prvalue
+# 1140|                     2: [ThrowExpr] throw ...
+# 1140|                         Type = [Struct] String
+# 1140|                         ValueCategory = prvalue
+# 1140|                       0: [ConstructorCall] call to String
+# 1140|                           Type = [VoidType] void
+# 1140|                           ValueCategory = prvalue
+# 1140|                         0: [ArrayToPointerConversion] array to pointer conversion
+# 1140|                             Type = [PointerType] const char *
+# 1140|                             ValueCategory = prvalue
+# 1140|                           expr: String object
+# 1140|                               Type = [ArrayType] const char[14]
+# 1140|                               Value = [StringLiteral] "String object"
+# 1140|                               ValueCategory = lvalue
+# 1142|         2: [ExprStmt] ExprStmt
+# 1142|           0: [AssignExpr] ... = ...
+# 1142|               Type = [IntType] int
+# 1142|               ValueCategory = lvalue
+# 1142|             0: [VariableAccess] x
+# 1142|                 Type = [IntType] int
+# 1142|                 ValueCategory = lvalue
+# 1142|             1: [Literal] 7
+# 1142|                 Type = [IntType] int
+# 1142|                 Value = [Literal] 7
+# 1142|                 ValueCategory = prvalue
+# 1144|       1: [Handler] <handler>
+# 1144|         0: [CatchBlock] { ... }
+# 1145|           0: [ExprStmt] ExprStmt
+# 1145|             0: [ThrowExpr] throw ...
+# 1145|                 Type = [Struct] String
+# 1145|                 ValueCategory = prvalue
+# 1145|               0: [ConstructorCall] call to String
+# 1145|                   Type = [VoidType] void
+# 1145|                   ValueCategory = prvalue
+# 1145|                 0: [VariableAccess] s
+# 1145|                     Type = [PointerType] const char *
+# 1145|                     ValueCategory = prvalue(load)
+# 1147|       2: [Handler] <handler>
+# 1147|         0: [CatchBlock] { ... }
+# 1149|     1: [ReturnStmt] return ...
