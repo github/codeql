@@ -31,9 +31,9 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
   }
 
   override final Callable getFunction() {
-    exists(LocalVariableDeclStmt stmt |
-      stmt.getAVariableDeclExpr().getVariable() = entry and
-      result = stmt.getEnclosingCallable()
+    exists(LocalVariableDeclExpr expr |
+      expr.getVariable() = entry and
+      result = expr.getEnclosingCallable()
     )
   }
 
@@ -200,18 +200,18 @@ class TranslatedVariableDeclarationEntry extends TranslatedVariableDeclaration,
   }
 }
 
-/**
- * Gets the `TranslatedRangeBasedForVariableDeclaration` that represents the declaration of
- * `var`.
- */
+///**
+// * Gets the `TranslatedRangeBasedForVariableDeclaration` that represents the declaration of
+// * `var`.
+// */
 //TranslatedRangeBasedForVariableDeclaration getTranslatedRangeBasedForVariableDeclaration(
 //    LocalVariable var) {
 //  result.getVariable() = var
 //}
 
-/**
- * Represents the IR translation of a compiler-generated variable in a range-based `for` loop.
- */
+///**
+// * Represents the IR translation of a compiler-generated variable in a range-based `for` loop.
+// */
 //class TranslatedRangeBasedForVariableDeclaration extends TranslatedVariableDeclaration,
 //    TTranslatedRangeBasedForVariableDeclaration {
 //  RangeBasedForStmt forStmt;
@@ -242,14 +242,14 @@ class TranslatedVariableDeclarationEntry extends TranslatedVariableDeclaration,
 //  result.getAST() = expr
 //}
 
-/**
- * Represents the IR translation of the declaration portion of a `ConditionDeclExpr`, which
- * represents the variable declared in code such as:
- * ```
- * if (int* p = &x) {
- * }
- * ```
- */
+///**
+// * Represents the IR translation of the declaration portion of a `ConditionDeclExpr`, which
+// * represents the variable declared in code such as:
+// * ```
+// * if (int* p = &x) {
+// * }
+// * ```
+// */
 //class TranslatedConditionDecl extends TranslatedVariableDeclaration, TTranslatedConditionDecl {
 //  ConditionDeclExpr conditionDeclExpr;
 //

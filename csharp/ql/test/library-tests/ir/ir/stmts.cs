@@ -1,21 +1,21 @@
 using System;
 
 public class test_stmts {
-    public static int test_if(int x) {
+    public static int ifStmt(int x) {
         if (x == 5)
             return 0;
         else
             return 1;
     }
 
-    public static void test_while(int x) {
+    public static void whileStmt(int x) {
         int i = 0;
         while (i < 10) {
             x = x + 1;
         }
     }
 
-    public static int test_switch(int y) {
+    public static int switchStmt(int y) {
         int caseSwitch = 1;
         int select = 0;
       
@@ -36,8 +36,8 @@ public class test_stmts {
         select = 1000;
         return 0;
     }
-    
-    public static void test_trycatchfinally() {
+
+    public static void tryCatchFinally() {
         int x = 5;
         try
         {
@@ -49,9 +49,13 @@ public class test_stmts {
         {
             x = 1;
         }
+        catch {
+            throw;
+        }
         finally
         {
             x = 2;
         }
     }
+    
 }

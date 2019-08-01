@@ -238,13 +238,15 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
 /**
  * The IR translation of a C++ `try` statement.
  */
+// TODO: Make sure that if the exception is uncaught or rethrown
+//       finally is still executed.
 class TranslatedTryStmt extends TranslatedStmt {
   override TryStmt stmt;
 
   override TranslatedElement getChild(int id) {
     id = 0 and result = getBody() or
     id = 1 and result = getFinally() or
-    result = getHandler(id - 2)
+    result = getCatchClause(id - 2)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -254,7 +256,7 @@ class TranslatedTryStmt extends TranslatedStmt {
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
-    none()  
+    none()
   }
 
   override Instruction getFirstInstruction() {
@@ -262,31 +264,30 @@ class TranslatedTryStmt extends TranslatedStmt {
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    // All children go to the successor of the `try`.
-    child = getHandler(_) and result = getFinally().getFirstInstruction() or
-    child = getBody() and result = getParent().getChildSuccessor(this) or
+    child = getCatchClause(_) and result = getFinally().getFirstInstruction() or
+    child = getBody() and result = getFinally().getFirstInstruction() or
     child = getFinally() and result = getParent().getChildSuccessor(this)
   }
 
-  final Instruction getNextHandler(TranslatedHandler handler) {
+  final Instruction getNextHandler(TranslatedClause clause) {
     exists(int index |
-      handler = getHandler(index) and
-      result = getHandler(index + 1).getFirstInstruction()
+      clause = getCatchClause(index) and
+      result = getCatchClause(index + 1).getFirstInstruction()
     ) or
     (
       // The last catch clause flows to the exception successor of the parent
       // of the `try`, because the exception successor of the `try` itself is
       // the first catch clause.
-      handler = getHandler(count(stmt.getACatchClause())) and
+      clause = getCatchClause(count(stmt.getACatchClause()) - 1) and
       result = getParent().getExceptionSuccessorInstruction()
     )
   }
 
   override final Instruction getExceptionSuccessorInstruction() {
-    result = getHandler(0).getFirstInstruction()
+    result = getCatchClause(0).getFirstInstruction()
   }
 
-  private TranslatedHandler getHandler(int index) {
+  private TranslatedClause getCatchClause(int index) {
     result = getTranslatedStmt(stmt.getCatchClause(index))
   }
   
@@ -353,9 +354,9 @@ class TranslatedBlock extends TranslatedStmt {
 }
 
 /**
- * The IR translation of a C++ `catch` handler.
+ * The IR translation of a C# `catch` clause.
  */
-abstract class TranslatedHandler extends TranslatedStmt {
+abstract class TranslatedClause extends TranslatedStmt {
   override CatchClause stmt;
 
   override TranslatedElement getChild(int id) {
@@ -382,11 +383,11 @@ abstract class TranslatedHandler extends TranslatedStmt {
 }
 
 /**
- * The IR translation of a C++ `catch` block that catches an exception with a
- * specific type (e.g. `catch (const std::exception&)`).
+ * The IR translation of a C# `catch` block that catches an exception with a
+ * specific type (e.g. `catch (Exception ex) { ... }`).
  */
-class TranslatedCatchByTypeHandler extends TranslatedHandler {
-  TranslatedCatchByTypeHandler() {
+class TranslatedCatchByTypeClause extends TranslatedClause {
+  TranslatedCatchByTypeClause() {
     stmt instanceof SpecificCatchClause
   }
 
@@ -399,12 +400,12 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
   }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getParameter() or 
-    id = 1 and result = getBlock()
+    id = 0 and result = getParameter() or
+    result = super.getChild(id)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getBlock() and result = getParent().getChildSuccessor(this) or
+    result = super.getChildSuccessor(child) or
     child = getParameter() and result = getBlock().getFirstInstruction()
   }
 
@@ -434,10 +435,10 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
 }
 
 /**
- * The IR translation of a C++ `catch (...)` block.
+ * The IR translation of catch block with no parameters.
  */
-class TranslatedCatchAnyHandler extends TranslatedHandler {
-  TranslatedCatchAnyHandler() {
+class TranslatedGeneralCatchClause extends TranslatedClause {
+  TranslatedGeneralCatchClause() {
     stmt instanceof GeneralCatchClause
   }
 
@@ -454,6 +455,152 @@ class TranslatedCatchAnyHandler extends TranslatedHandler {
     tag = CatchTag() and
     kind instanceof GotoEdge and
     result = getBlock().getFirstInstruction()
+  }
+}
+
+/**
+ * The IR translation of a throw statement that throws an exception,
+ * as oposed to just rethrowing one.
+ */
+class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext {
+  override ThrowStmt stmt;
+  
+  TranslatedThrowExceptionStmt() {
+    // Must throw an exception
+    exists(stmt.getExpr())
+  }
+  
+  override TranslatedElement getChild(int id) {
+    id = 0 and result = getInitialization()
+  }
+
+  override Instruction getFirstInstruction() {
+    result = getInstruction(InitializerVariableAddressTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+      Type resultType, boolean isLValue) {
+    (
+      tag = ThrowTag() and
+      opcode instanceof Opcode::ThrowValue and
+      resultType instanceof VoidType and
+      isLValue = false
+    )
+    or
+    (
+      tag = InitializerVariableAddressTag() and
+      opcode instanceof Opcode::VariableAddress and
+      resultType = getExceptionType() and
+      isLValue = true
+    )
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+      EdgeKind kind) {
+    (
+      tag = ThrowTag() and
+      kind instanceof ExceptionEdge and
+      result = getParent().getExceptionSuccessorInstruction()
+    )
+    or
+    (
+      tag = InitializerVariableAddressTag() and
+      result = getInitialization().getFirstInstruction() and
+      kind instanceof GotoEdge
+    )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getInitialization() and
+    result = getInstruction(ThrowTag())
+  }
+
+  override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = InitializerVariableAddressTag() and
+    result = getIRTempVariable(stmt, ThrowTempVar())
+  }
+
+  
+  override final predicate hasTempVariable(TempVariableTag tag, Type type) {
+    tag = ThrowTempVar() and
+    type = getExceptionType()
+  }
+
+  override final Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    tag = ThrowTag() and
+    (
+      (
+        operandTag instanceof AddressOperandTag and
+        result = getInstruction(InitializerVariableAddressTag())
+      ) or
+      (
+        operandTag instanceof LoadOperandTag and
+        result = getTranslatedFunction(stmt.getEnclosingCallable()).getUnmodeledDefinitionInstruction()
+      )
+    )
+  }
+
+  override final Type getInstructionOperandType(InstructionTag tag,
+      TypedOperandTag operandTag) {
+    tag = ThrowTag() and
+    operandTag instanceof LoadOperandTag and
+    result = getExceptionType()
+  }
+
+  override Instruction getTargetAddress() {
+    result = getInstruction(InitializerVariableAddressTag())
+  }
+
+  override Type getTargetType() {
+    result = getExceptionType()
+  }
+
+  TranslatedInitialization getInitialization() {
+    result = getTranslatedInitialization(stmt.getExpr())
+  }
+
+  private Type getExceptionType() {
+    result = stmt.getExpr().getType()
+  }
+}
+
+/**
+ * The IR translation of a simple throw statement, ie. one that just
+ * rethrows an exception.
+ */
+class TranslatedEmptyThrowStmt extends TranslatedStmt {
+  override ThrowStmt stmt;
+  
+  TranslatedEmptyThrowStmt() {
+    not exists(stmt.getExpr())
+  }
+  
+  override TranslatedElement getChild(int id) {
+    none()
+  }
+
+  override Instruction getFirstInstruction() {
+    result = getInstruction(ThrowTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+      Type resultType, boolean isLValue) {
+    tag = ThrowTag() and
+    opcode instanceof Opcode::ReThrow and
+    resultType instanceof VoidType and
+    isLValue = false
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+      EdgeKind kind) {
+    tag = ThrowTag() and
+    kind instanceof ExceptionEdge and
+    result = getParent().getExceptionSuccessorInstruction()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    none()
   }
 }
 
@@ -642,10 +789,13 @@ class TranslatedForStmt extends TranslatedLoop {
 class TranslatedJumpStmt extends TranslatedStmt {
   override JumpStmt stmt;
 
-  // In the C++ implementation ReturnStmt and JumpStmt have no relationship
-  // In C# the ReturnStmt is a subclass of JumpStmt, so we will discard it for now
+  // Discard jump stmts that are not jump stmts in C++ for now.
   TranslatedJumpStmt() {
-  	not (stmt instanceof ReturnStmt)
+  	not (
+  	  stmt instanceof ReturnStmt
+  	  or
+  	  stmt instanceof ThrowStmt
+  	)
   }
   
   override Instruction getFirstInstruction() {

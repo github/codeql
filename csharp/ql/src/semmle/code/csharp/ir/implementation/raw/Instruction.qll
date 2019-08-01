@@ -618,7 +618,7 @@ class FieldInstruction extends Instruction {
   }
 
   override final string getImmediateString() {
-    result = field.toString()
+    result = field.getQualifiedNameWithTypes()
   }
 
   final Language::Field getField() {
@@ -634,7 +634,7 @@ class FunctionInstruction extends Instruction {
   }
 
   override final string getImmediateString() {
-    result = funcSymbol.toString()
+    result = funcSymbol.getQualifiedNameWithTypes()
   }
 
   final Language::Function getFunctionSymbol() {
@@ -1594,7 +1594,7 @@ class CatchByTypeInstruction extends CatchInstruction {
   }
 
   final override string getImmediateString() {
-    result = exceptionType.toString()
+    result = exceptionType.getQualifiedNameWithTypes()
   }
 
   /**

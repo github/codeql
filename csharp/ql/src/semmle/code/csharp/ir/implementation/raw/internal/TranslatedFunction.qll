@@ -197,7 +197,7 @@ class TranslatedFunction extends TranslatedElement,
           exists(TryStmt try |
             try.getEnclosingCallable() = callable
           ) or
-          exists(ThrowExpr throw |
+          exists(ThrowStmt throw |
             throw.getEnclosingCallable() = callable
           )
         )

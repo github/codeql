@@ -2417,130 +2417,129 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
   }
 }
 
-/**
- * IR translation of a `throw` expression.
- */
-abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
-  override ThrowExpr expr;
-
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isLValue) {
-    tag = ThrowTag() and
-    opcode = getThrowOpcode() and
-    resultType instanceof VoidType and
-    isLValue = false
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
-    tag = ThrowTag() and
-    kind instanceof ExceptionEdge and
-    result = getParent().getExceptionSuccessorInstruction()
-  }
-
-  override Instruction getResult() {
-    none()
-  }
-
-  abstract Opcode getThrowOpcode();
-}
-
-/**
- * IR translation of a `throw` expression with an argument
- * (e.g. `throw std::bad_alloc()`).
- */
-class TranslatedThrowValueExpr extends TranslatedThrowExpr,
-    InitializationContext {
-  TranslatedThrowValueExpr() {
-    not expr instanceof ThrowExpr
-  }
-
-  override TranslatedElement getChild(int id) {
-    id = 0 and result = getInitialization()
-  }
-
-  override Instruction getFirstInstruction() {
-    result = getInstruction(InitializerVariableAddressTag())
-  }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isLValue) {
-    TranslatedThrowExpr.super.hasInstruction(opcode, tag, resultType, isLValue) or
-    tag = InitializerVariableAddressTag() and
-    opcode instanceof Opcode::VariableAddress and
-    resultType = getExceptionType() and
-    isLValue = true
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
-    result = TranslatedThrowExpr.super.getInstructionSuccessor(tag, kind) or
-    (
-      tag = InitializerVariableAddressTag() and
-      result = getInitialization().getFirstInstruction() and
-      kind instanceof GotoEdge
-    )
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitialization() and
-    result = getInstruction(ThrowTag())
-  }
-
-  override IRVariable getInstructionVariable(InstructionTag tag) {
-    tag = InitializerVariableAddressTag() and
-    result = getIRTempVariable(expr, ThrowTempVar())
-  }
-
-  override final predicate hasTempVariable(TempVariableTag tag, Type type) {
-    tag = ThrowTempVar() and
-    type = getExceptionType()
-  }
-
-  override final Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
-    tag = ThrowTag() and
-    (
-      (
-        operandTag instanceof AddressOperandTag and
-        result = getInstruction(InitializerVariableAddressTag())
-      ) or
-      (
-        operandTag instanceof LoadOperandTag and
-        result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
-      )
-    )
-  }
-
-  override final Type getInstructionOperandType(InstructionTag tag,
-      TypedOperandTag operandTag) {
-    tag = ThrowTag() and
-    operandTag instanceof LoadOperandTag and
-    result = getExceptionType()
-  }
-
-  override Instruction getTargetAddress() {
-    result = getInstruction(InitializerVariableAddressTag())
-  }
-
-  override Type getTargetType() {
-    result = getExceptionType()
-  }
-
-  TranslatedInitialization getInitialization() {
-    result = getTranslatedInitialization(
-      expr.getExpr())
-  }
-
-  override final Opcode getThrowOpcode() {
-    result instanceof Opcode::ThrowValue
-  }
-
-  private Type getExceptionType() {
-    result = expr.getType()
-  }
-}
+///**
+// * IR translation of a `throw` expression.
+// */
+//abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
+//  override ThrowExpr expr;
+//
+//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+//      Type resultType, boolean isLValue) {
+//    tag = ThrowTag() and
+//    opcode = getThrowOpcode() and
+//    resultType instanceof VoidType and
+//    isLValue = false
+//  }
+//
+//  override Instruction getInstructionSuccessor(InstructionTag tag,
+//      EdgeKind kind) {
+//    tag = ThrowTag() and
+//    kind instanceof ExceptionEdge and
+//    result = getParent().getExceptionSuccessorInstruction()
+//  }
+//
+//  override Instruction getResult() {
+//    none()
+//  }
+//
+//  abstract Opcode getThrowOpcode();
+//}
+//
+///**
+// * IR translation of a `throw` expression with an argument
+// * (e.g. `throw std::bad_alloc()`).
+// */
+//class TranslatedThrowValueExpr extends TranslatedThrowExpr,
+//    InitializationContext {
+//  TranslatedThrowValueExpr() {
+//    not expr instanceof ThrowExpr
+//  }
+//
+//  override TranslatedElement getChild(int id) {
+//    id = 0 and result = getInitialization()
+//  }
+//
+//  override Instruction getFirstInstruction() {
+//    result = getInstruction(InitializerVariableAddressTag())
+//  }
+//
+//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+//      Type resultType, boolean isLValue) {
+//    TranslatedThrowExpr.super.hasInstruction(opcode, tag, resultType, isLValue) or
+//    tag = InitializerVariableAddressTag() and
+//    opcode instanceof Opcode::VariableAddress and
+//    resultType = getExceptionType() and
+//    isLValue = true
+//  }
+//
+//  override Instruction getInstructionSuccessor(InstructionTag tag,
+//      EdgeKind kind) {
+//    result = TranslatedThrowExpr.super.getInstructionSuccessor(tag, kind) or
+//    (
+//      tag = InitializerVariableAddressTag() and
+//      result = getInitialization().getFirstInstruction() and
+//      kind instanceof GotoEdge
+//    )
+//  }
+//
+//  override Instruction getChildSuccessor(TranslatedElement child) {
+//    child = getInitialization() and
+//    result = getInstruction(ThrowTag())
+//  }
+//
+//  override IRVariable getInstructionVariable(InstructionTag tag) {
+//    tag = InitializerVariableAddressTag() and
+//    result = getIRTempVariable(expr, ThrowTempVar())
+//  }
+//
+//  override final predicate hasTempVariable(TempVariableTag tag, Type type) {
+//    tag = ThrowTempVar() and
+//    type = getExceptionType()
+//  }
+//
+//  override final Instruction getInstructionOperand(InstructionTag tag,
+//      OperandTag operandTag) {
+//    tag = ThrowTag() and
+//    (
+//      (
+//        operandTag instanceof AddressOperandTag and
+//        result = getInstruction(InitializerVariableAddressTag())
+//      ) or
+//      (
+//        operandTag instanceof LoadOperandTag and
+//        result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+//      )
+//    )
+//  }
+//
+//  override final Type getInstructionOperandType(InstructionTag tag,
+//      TypedOperandTag operandTag) {
+//    tag = ThrowTag() and
+//    operandTag instanceof LoadOperandTag and
+//    result = getExceptionType()
+//  }
+//
+//  override Instruction getTargetAddress() {
+//    result = getInstruction(InitializerVariableAddressTag())
+//  }
+//
+//  override Type getTargetType() {
+//    result = getExceptionType()
+//  }
+//
+//  TranslatedInitialization getInitialization() {
+//    result = getTranslatedInitialization(
+//      expr.getExpr())
+//  }
+//
+//  override final Opcode getThrowOpcode() {
+//    result instanceof Opcode::ThrowValue
+//  }
+//
+//  private Type getExceptionType() {
+//    result = expr.getType()
+//  }
+//}
 
 // TODO: Should be handeled by the normal throw in C#
 ///**

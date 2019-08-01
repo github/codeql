@@ -1,16 +1,4 @@
-<<<<<<< HEAD:csharp/ql/src/semmle/code/csharp/ir/implementation/internal/OperandTag.qll
 private import OperandTagInternal
-=======
-import csharp
-
-private int getMaxCallArgIndex() {
-  result = max(int argIndex |
-    exists(Call call |
-      exists(call.getArgument(argIndex))
-    )
-  )
-}
->>>>>>> 7c94037e5... Object creation and initialization + refactoring:csharp/ql/src/semmle/code/csharp/ir/internal/OperandTag.qll
 
 private newtype TOperandTag =
   TAddressOperand() or
