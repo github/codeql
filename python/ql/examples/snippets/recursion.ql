@@ -8,6 +8,6 @@
 
 import python
 
-from FunctionObject f
-where f.getACallee() = f
+from PythonFunctionValue f
+where f.getACall().getScope() = f.getScope()
 select f
