@@ -163,8 +163,6 @@ class SourceNode extends DataFlow::Node {
   }
 
   /**
-   * EXPERIMENTAL.
-   *
    * Gets a node that this node may flow to using one heap and/or interprocedural step.
    *
    * See `TypeTracker` for more details about how to use this.
@@ -175,8 +173,6 @@ class SourceNode extends DataFlow::Node {
   }
 
   /**
-   * EXPERIMENTAL.
-   *
    * Gets a node that may flow into this one using one heap and/or interprocedural step.
    *
    * See `TypeBackTracker` for more details about how to use this.

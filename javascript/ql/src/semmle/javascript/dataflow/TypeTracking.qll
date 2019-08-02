@@ -92,12 +92,10 @@ module StepSummary {
 private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalPropertyName prop)
 
 /**
- * EXPERIMENTAL.
- *
  * Summary of the steps needed to track a value to a given dataflow node.
  *
  * This can be used to track objects that implement a certain API in order to
- * recognize calls to that API. Note that type-tracking does not provide a
+ * recognize calls to that API. Note that type-tracking does not by itself provide a
  * source/sink relation, that is, it may determine that a node has a given type,
  * but it won't determine where that type came from.
  *
@@ -210,14 +208,15 @@ class TypeTracker extends TTypeTracker {
 }
 
 module TypeTracker {
+  /**
+   * Gets a valid end point of type tracking.
+   */
   TypeTracker end() { result.end() }
 }
 
 private newtype TTypeBackTracker = MkTypeBackTracker(Boolean hasReturn, OptionalPropertyName prop)
 
 /**
- * EXPERIMENTAL.
- *
  * Summary of the steps needed to back-track a use of a value to a given dataflow node.
  *
  * This can be used to track callbacks that are passed to a certian API call, and are
@@ -334,5 +333,8 @@ class TypeBackTracker extends TTypeBackTracker {
 }
 
 module TypeBackTracker {
+  /**
+   * Gets a valid end point of type back-tracking.
+   */
   TypeBackTracker end() { result.end() }
 }
