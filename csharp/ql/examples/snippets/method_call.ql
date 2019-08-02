@@ -5,11 +5,12 @@
  * @tags call
  *       method
  */
- 
+
 import csharp
 
 from MethodCall call, Method method
-where call.getTarget() = method
-  and method.hasName("MethodName")
-  and method.getDeclaringType().hasQualifiedName("Company.Class")
+where
+  call.getTarget() = method and
+  method.hasName("MethodName") and
+  method.getDeclaringType().hasQualifiedName("Company.Class")
 select call

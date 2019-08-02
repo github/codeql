@@ -11,6 +11,7 @@
 import csharp
 
 from CastExpr c
-where c.getExpr().getType() instanceof FloatingPointType
-  and c.getType() instanceof IntegralType
+where
+  c.getExpr().getType() instanceof FloatingPointType and
+  c.getType() instanceof IntegralType
 select c

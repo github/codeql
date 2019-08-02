@@ -5,7 +5,7 @@
  * @tags throw
  *       exception
  */
- 
+
 import csharp
 
 from ThrowStmt throw

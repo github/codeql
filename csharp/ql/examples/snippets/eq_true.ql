@@ -6,7 +6,7 @@
  *       test
  *       boolean
  */
- 
+
 import csharp
 
 from EqualityOperation eq
