@@ -9,5 +9,5 @@
 import java
 
 from IntegerLiteral literal
-where literal.getLiteral().toInt() = 0
+where literal.getIntValue() = 0
 select literal
