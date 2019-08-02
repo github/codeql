@@ -2,7 +2,7 @@
  * Provides classes for modelling the client-side of a URL request.
  *
  * Subclass `ClientRequest` to refine the behavior of the analysis on existing client requests.
- * Subclass `CustomClientRequest` to introduce new kinds of client requests.
+ * Subclass `ClientRequest::Range` to introduce new kinds of client requests.
  */
 
 import javascript
