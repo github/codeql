@@ -9,7 +9,7 @@
  *       index
  *       constant
  */
- 
+
 import javascript
 
 from IndexExpr idx

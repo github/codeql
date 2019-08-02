@@ -4,7 +4,7 @@
  * @description Finds files called `index.js`
  * @tags file
  */
- 
+
 import javascript
 
 from File f

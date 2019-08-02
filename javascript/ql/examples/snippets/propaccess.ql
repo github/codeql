@@ -9,7 +9,7 @@
  *       write
  *       reference
  */
- 
+
 import javascript
 
 from PropAccess p
