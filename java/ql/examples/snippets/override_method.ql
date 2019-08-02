@@ -5,11 +5,12 @@
  * @tags method
  *       override
  */
- 
+
 import java
 
 from Method override, Method base
-where base.hasName("baseMethod")
-  and base.getDeclaringType().hasQualifiedName("com.example", "Class")
-  and override.overrides+(base)
+where
+  base.hasName("baseMethod") and
+  base.getDeclaringType().hasQualifiedName("com.example", "Class") and
+  override.overrides+(base)
 select override

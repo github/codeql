@@ -9,7 +9,7 @@
  *       subtype
  *       supertype
  */
- 
+
 import java
 
 from RefType type

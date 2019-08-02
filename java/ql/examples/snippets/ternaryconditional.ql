@@ -10,7 +10,8 @@
 import java
 
 from ConditionalExpr e
-where e.getTrueExpr().getType() != e.getFalseExpr().getType()
-  and not e.getTrueExpr().getType() instanceof NullType
-  and not e.getFalseExpr().getType() instanceof NullType
+where
+  e.getTrueExpr().getType() != e.getFalseExpr().getType() and
+  not e.getTrueExpr().getType() instanceof NullType and
+  not e.getFalseExpr().getType() instanceof NullType
 select e

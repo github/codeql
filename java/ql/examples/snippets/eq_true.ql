@@ -6,7 +6,7 @@
  *       test
  *       boolean
  */
- 
+
 import java
 
 from EqualityTest eq
