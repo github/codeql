@@ -67,6 +67,8 @@ predicate classify(File f, string category) {
     exists(string stemExt | stemExt = "test" or stemExt = "spec" |
       f = getTestFile(any(File orig), stemExt)
     )
+    or
+    f.getAbsolutePath().regexpMatch(".*/__(mocks|tests)__/.*")
   ) and
   category = "test"
   or
