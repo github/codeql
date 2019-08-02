@@ -11,8 +11,7 @@ class PortalExitSource extends DataFlow::AdditionalSource {
   PortalExitSource() { this = p.getAnExitNode(true) }
 
   override predicate isSourceFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) {
-    cfg instanceof TaintTracking::Configuration and
-    lbl = any(DataFlow::FlowLabel l)
+    any()
   }
 
   /** Gets the portal of which this is an exit node. */
