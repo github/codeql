@@ -11,6 +11,7 @@ import javascript
 
 module CommandInjection {
   import CommandInjectionCustomizations::CommandInjection
+  import IndirectCommandArgument
 
   /**
    * A taint-tracking configuration for reasoning about command-injection vulnerabilities.
@@ -27,7 +28,7 @@ module CommandInjection {
     predicate isSinkWithHighlight(DataFlow::Node sink, DataFlow::Node highlight) {
       sink instanceof Sink and highlight = sink
       or
-      indirectCommandInjection(sink, highlight)
+      isIndirectCommandArgument(sink, highlight)
     }
 
     override predicate isSink(DataFlow::Node sink) { isSinkWithHighlight(sink, _) }
@@ -72,32 +73,6 @@ module CommandInjection {
     exists(string s | s = shell.getStringValue().toLowerCase() |
       (s = "cmd" or s = "cmd.exe") and
       (arg = "/c" or arg = "/C")
-    )
-  }
-
-  /**
-   * An indirect command execution through `sh -c` or `cmd.exe /c`.
-   *
-   * For example, we may have a call to `childProcess.spawn` like this:
-   *
-   * ```
-   * let sh = "sh";
-   * let args = ["-c", cmd];
-   * childProcess.spawn(sh, args, cb);
-   * ```
-   *
-   * Here, the indirect sink is `cmd`. For reporting purposes, however,
-   * we want to report the `spawn` call as the sink, so we bind it to `sys`.
-   */
-  private predicate indirectCommandInjection(DataFlow::Node sink, SystemCommandExecution sys) {
-    exists(
-      ArgumentListTracking cfg, DataFlow::ArrayCreationNode args, ConstantString shell, string dashC
-    |
-      shellCmd(shell, dashC) and
-      cfg.hasFlow(DataFlow::valueNode(shell), sys.getACommandArgument()) and
-      cfg.hasFlow(args, sys.getArgumentList()) and
-      args.getAPropertyWrite().getRhs().mayHaveStringValue(dashC) and
-      sink = args.getAPropertyWrite().getRhs()
     )
   }
 }
