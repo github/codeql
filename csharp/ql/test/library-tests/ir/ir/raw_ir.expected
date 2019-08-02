@@ -532,6 +532,79 @@ stmts.cs:
 #   53|     v8_1(Void) = ReThrow  : 
 #-----|   Exception -> Block 2
 
+#   61| test_stmts.forStmt()
+#   61|   Block 0
+#   61|     v0_0(Void)             = EnterFunction       : 
+#   61|     mu0_1(Object)          = AliasedDefinition   : 
+#   61|     mu0_2(Object)          = UnmodeledDefinition : 
+#   61|     r0_3(lval<test_stmts>) = InitializeThis      : 
+#   62|     r0_4(lval<Int32>)      = VariableAddress[x]  : 
+#   62|     r0_5(Int32)            = Constant[0]         : 
+#   62|     mu0_6(Int32)           = Store               : &:r0_4, r0_5
+#   63|     r0_7(lval<Int32>)      = VariableAddress[i]  : 
+#   63|     r0_8(Int32)            = Constant[0]         : 
+#   63|     mu0_9(Int32)           = Store               : &:r0_7, r0_8
+#-----|   Goto -> Block 2
+
+#   61|   Block 1
+#   61|     v1_0(Void) = ReturnVoid   : 
+#   61|     v1_1(Void) = UnmodeledUse : mu*
+#   61|     v1_2(Void) = ExitFunction : 
+
+#   63|   Block 2
+#   63|     r2_0(lval<Int32>) = VariableAddress[i] : 
+#   63|     r2_1(Int32)       = Load               : &:r2_0, ~mu0_2
+#   63|     r2_2(Int32)       = Constant[10]       : 
+#   63|     r2_3(Boolean)     = CompareLE          : r2_1, r2_2
+#   63|     v2_4(Void)        = ConditionalBranch  : r2_3
+#-----|   False -> Block 1
+#-----|   True -> Block 3
+
+#   64|   Block 3
+#   64|     r3_0(lval<Int32>) = VariableAddress[x] : 
+#   64|     r3_1(Int32)       = Load               : &:r3_0, ~mu0_2
+#   64|     r3_2(Int32)       = Constant[1]        : 
+#   64|     r3_3(Int32)       = Sub                : r3_1, r3_2
+#   64|     r3_4(lval<Int32>) = VariableAddress[x] : 
+#   64|     mu3_5(Int32)      = Store              : &:r3_4, r3_3
+#   63|     r3_6(lval<Int32>) = VariableAddress[i] : 
+#   63|     r3_7(Int32)       = Load               : &:r3_6, ~mu0_2
+#   63|     r3_8(Int32)       = Constant[1]        : 
+#   63|     r3_9(Int32)       = Add                : r3_7, r3_8
+#   63|     mu3_10(Int32)     = Store              : &:r3_6, r3_9
+#-----|   Goto (back edge) -> Block 2
+
+#   68| test_stmts.doWhile()
+#   68|   Block 0
+#   68|     v0_0(Void)             = EnterFunction       : 
+#   68|     mu0_1(Object)          = AliasedDefinition   : 
+#   68|     mu0_2(Object)          = UnmodeledDefinition : 
+#   68|     r0_3(lval<test_stmts>) = InitializeThis      : 
+#   69|     r0_4(lval<Int32>)      = VariableAddress[x]  : 
+#   69|     r0_5(Int32)            = Constant[0]         : 
+#   69|     mu0_6(Int32)           = Store               : &:r0_4, r0_5
+#-----|   Goto -> Block 2
+
+#   68|   Block 1
+#   68|     v1_0(Void) = ReturnVoid   : 
+#   68|     v1_1(Void) = UnmodeledUse : mu*
+#   68|     v1_2(Void) = ExitFunction : 
+
+#   71|   Block 2
+#   71|     r2_0(lval<Int32>) = VariableAddress[x] : 
+#   71|     r2_1(Int32)       = Load               : &:r2_0, ~mu0_2
+#   71|     r2_2(Int32)       = Constant[1]        : 
+#   71|     r2_3(Int32)       = Add                : r2_1, r2_2
+#   71|     r2_4(lval<Int32>) = VariableAddress[x] : 
+#   71|     mu2_5(Int32)      = Store              : &:r2_4, r2_3
+#   73|     r2_6(lval<Int32>) = VariableAddress[x] : 
+#   73|     r2_7(Int32)       = Load               : &:r2_6, ~mu0_2
+#   73|     r2_8(Int32)       = Constant[10]       : 
+#   73|     r2_9(Boolean)     = CompareLT          : r2_7, r2_8
+#   73|     v2_10(Void)       = ConditionalBranch  : r2_9
+#-----|   False -> Block 1
+#-----|   True (back edge) -> Block 2
+
 variables.cs:
 #    4| f
 #    4|   Block 0

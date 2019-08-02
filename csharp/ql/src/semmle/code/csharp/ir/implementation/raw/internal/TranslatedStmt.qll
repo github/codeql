@@ -741,14 +741,14 @@ class TranslatedForStmt extends TranslatedLoop {
   override ForStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getInitialization() or
+    id = 0 and result = getDeclAndInit() or
     id = 1 and result = getCondition() or
     id = 2 and result = getUpdate() or
     id = 3 and result = getBody()
   }
 
-  private TranslatedStmt getInitialization() {
-    result = getTranslatedStmt(stmt.getAnInitializer().getEnclosingStmt())
+  private TranslatedLocalDeclaration getDeclAndInit() {
+    result = getTranslatedLocalDeclaration(stmt.getAnInitializer())
   }
 
   private predicate hasInitialization() {
@@ -765,14 +765,14 @@ class TranslatedForStmt extends TranslatedLoop {
 
   override Instruction getFirstInstruction() {
     if hasInitialization() then
-      result = getInitialization().getFirstInstruction()
+      result = getDeclAndInit().getFirstInstruction()
     else
       result = getFirstConditionInstruction()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     (
-      child = getInitialization() and
+      child = getDeclAndInit() and
       result = getFirstConditionInstruction()
     ) or
     (

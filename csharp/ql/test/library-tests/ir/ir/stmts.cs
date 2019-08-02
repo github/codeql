@@ -58,4 +58,19 @@ public class test_stmts {
         }
     }
     
+    public static void forStmt() {
+        int x = 0;
+        for (int i = 0; i <= 10; i++) {
+            x = x - 1;
+        }
+    }    
+    
+    public static void doWhile() {
+        int x = 0;
+        do {
+            x = x + 1;
+        }
+        while (x < 10);
+    }
+
 }
