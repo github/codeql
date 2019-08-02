@@ -6,7 +6,7 @@
  *       constructor
  *       new
  */
- 
+
 import cpp
 
 from NewExpr new, Constructor c

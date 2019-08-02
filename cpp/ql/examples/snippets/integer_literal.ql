@@ -5,7 +5,7 @@
  * @tags integer
  *       literal
  */
- 
+
 import cpp
 
 from Literal literal
