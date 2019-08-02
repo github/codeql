@@ -6,7 +6,7 @@
  *       constructor
  *       new
  */
- 
+
 import java
 
 from ClassInstanceExpr new

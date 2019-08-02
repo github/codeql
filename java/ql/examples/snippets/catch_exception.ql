@@ -6,7 +6,7 @@
  *       try
  *       exception
  */
- 
+
 import java
 
 from CatchClause catch

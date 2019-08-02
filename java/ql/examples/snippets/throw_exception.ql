@@ -5,7 +5,7 @@
  * @tags throw
  *       exception
  */
- 
+
 import java
 
 from ThrowStmt throw

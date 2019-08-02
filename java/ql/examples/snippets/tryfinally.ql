@@ -11,6 +11,7 @@
 import java
 
 from TryStmt t
-where exists(t.getFinally())
-  and not exists(t.getACatchClause())
+where
+  exists(t.getFinally()) and
+  not exists(t.getACatchClause())
 select t
