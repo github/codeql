@@ -39,25 +39,25 @@ class ClientRequest extends DataFlow::InvokeNode {
   DataFlow::Node getADataNode() { result = self.getADataNode() }
 
   /**
-    * Gets a data flow node that refers to some representation of the response, possibly
-    * wrapped in a promise object.
-    *
-    * The `responseType` describes how the response is represented as a JavaScript value
-    * (after resolving promises).
-    *
-    * The response type may be any of the values supported by
-    * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType),
-    * namely `arraybuffer`, `blob`, `document`, `json`, or `text`.
-    *
-    * Additionally, the `responseType` may have one of the following values:
-    * - `fetch.response`: The result is a `Response` object as defined by the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Response).
-    * - `stream`: The result is a Node.js stream
-    * - `error`: The result is an error in an unspecified format, possibly containing information from the response
-    *
-    *
-    * Custom implementations of `ClientRequest` may use other formats.
-    * If the responseType is not known the convention is to use an empty string.
-    */
+   * Gets a data flow node that refers to some representation of the response, possibly
+   * wrapped in a promise object.
+   *
+   * The `responseType` describes how the response is represented as a JavaScript value
+   * (after resolving promises).
+   *
+   * The response type may be any of the values supported by
+   * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType),
+   * namely `arraybuffer`, `blob`, `document`, `json`, or `text`.
+   *
+   * Additionally, the `responseType` may have one of the following values:
+   * - `fetch.response`: The result is a `Response` object as defined by the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Response).
+   * - `stream`: The result is a Node.js stream
+   * - `error`: The result is an error in an unspecified format, possibly containing information from the response
+   *
+   *
+   * Custom implementations of `ClientRequest` may use other formats.
+   * If the responseType is not known the convention is to use an empty string.
+   */
   DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
     result = self.getAResponseDataNode(responseType, promise)
   }
