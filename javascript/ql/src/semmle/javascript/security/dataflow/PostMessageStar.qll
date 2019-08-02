@@ -53,7 +53,7 @@ module PostMessageStar {
         src = toString.getArgument(0)
       ) and
       inlbl instanceof PartiallyTaintedObject and
-      outlbl = DataFlow::FlowLabel::taint()
+      outlbl.isTaint()
       or
       // `valueOf` preserves partial taint
       trg.(DataFlow::MethodCallNode).calls(src, "valueOf") and

@@ -229,6 +229,25 @@ abstract class Configuration extends string {
 abstract class FlowLabel extends string {
   bindingset[this]
   FlowLabel() { any() }
+
+  /**
+   * Holds if this is the standard `FlowLabel::data()` flow label,
+   * describing values that directly originate from a flow source.
+   */
+  final predicate isData() { this = FlowLabel::data() }
+
+  /**
+   * Holds if this is the standard `FlowLabel::taint()` flow label,
+   * describing values that are influenced ("tainted") by a flow
+   * source, but not necessarily directly derived from it.
+   */
+  final predicate isTaint() { this = FlowLabel::taint() }
+
+  /**
+   * Holds if this is one of the standard flow labels `FlowLabel::data()`
+   * or `FlowLabel::taint()`.
+   */
+  final predicate isDataOrTaint() { isData() or isTaint() }
 }
 
 /**
