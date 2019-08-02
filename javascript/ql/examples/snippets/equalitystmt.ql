@@ -7,7 +7,7 @@
  *       non-strict
  *       expression statement
  */
- 
+
 import javascript
 
 from ExprStmt e

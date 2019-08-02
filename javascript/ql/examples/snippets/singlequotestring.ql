@@ -6,7 +6,7 @@
  *       single quote
  *       quote
  */
- 
+
 import javascript
 
 from StringLiteral s

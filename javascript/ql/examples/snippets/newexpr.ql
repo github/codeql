@@ -6,7 +6,7 @@
  *       constructor
  *       instantiation
  */
- 
+
 import javascript
 
 from NewExpr new

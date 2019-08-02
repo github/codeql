@@ -6,7 +6,7 @@
  *       block
  *       statement
  */
- 
+
 import javascript
 
 from BlockStmt blk

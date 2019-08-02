@@ -1,7 +1,7 @@
 /**
  * @name Decoding after sanitization (generalized)
  * @description Tracks the return value of an HTML sanitizer into an escape-sequence decoder,
-                indicating an ineffective sanitization attempt.
+ *              indicating an ineffective sanitization attempt.
  * @kind path-problem
  * @tags security
  * @id js/examples/decoding-after-sanitization-generalized

@@ -5,7 +5,7 @@
  * @tags JSX
  *       attribute
  */
- 
+
 import javascript
 
 from JSXAttribute a

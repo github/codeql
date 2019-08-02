@@ -6,7 +6,7 @@
  *       function
  *       immediately invoked
  */
- 
+
 import javascript
 
 from CallExpr c

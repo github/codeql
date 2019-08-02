@@ -5,7 +5,7 @@
  * @tags comment
  *       TODO
  */
- 
+
 import javascript
 
 from Comment c
