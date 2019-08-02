@@ -376,6 +376,8 @@ module ClientRequest {
 
   /**
    * A model of a URL request made using the `XMLHttpRequest` browser class.
+   *
+   * Note: Prefer to use the `ClientRequest` class as it is more general.
    */
   class XMLHttpRequest extends ClientRequest::Range {
     XMLHttpRequest() {
