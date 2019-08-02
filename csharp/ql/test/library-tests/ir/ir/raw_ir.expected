@@ -136,46 +136,46 @@ array.cs:
 #    9|     v0_86(Void)            = ExitFunction        : 
 
 crement.cs:
-#    2| CrementOpsTest.Main()
+#    2| Main
 #    2|   Block 0
-#    2|     v0_0(Void)                 = EnterFunction       : 
-#    2|     mu0_1(Object)              = AliasedDefinition   : 
-#    2|     mu0_2(Object)              = UnmodeledDefinition : 
-#    2|     r0_3(lval<CrementOpsTest>) = InitializeThis      : 
-#    3|     r0_4(lval<Int32>)          = VariableAddress[x]  : 
-#    3|     r0_5(Int32)                = Constant[10]        : 
-#    3|     mu0_6(Int32)               = Store               : &:r0_4, r0_5
-#    4|     r0_7(lval<Int32>)          = VariableAddress[a]  : 
-#    4|     r0_8(lval<Int32>)          = VariableAddress[x]  : 
-#    4|     r0_9(Int32)                = Load                : &:r0_8, ~mu0_2
-#    4|     r0_10(Int32)               = Constant[1]         : 
-#    4|     r0_11(Int32)               = Add                 : r0_9, r0_10
-#    4|     mu0_12(Int32)              = Store               : &:r0_8, r0_11
-#    4|     mu0_13(Int32)              = Store               : &:r0_7, r0_9
-#    5|     r0_14(lval<Int32>)         = VariableAddress[b]  : 
-#    5|     r0_15(lval<Int32>)         = VariableAddress[x]  : 
-#    5|     r0_16(Int32)               = Load                : &:r0_15, ~mu0_2
-#    5|     r0_17(Int32)               = Constant[1]         : 
-#    5|     r0_18(Int32)               = Sub                 : r0_16, r0_17
-#    5|     mu0_19(Int32)              = Store               : &:r0_15, r0_18
-#    5|     mu0_20(Int32)              = Store               : &:r0_14, r0_18
-#    6|     r0_21(lval<Int32>)         = VariableAddress[c]  : 
-#    6|     r0_22(lval<Int32>)         = VariableAddress[x]  : 
-#    6|     r0_23(Int32)               = Load                : &:r0_22, ~mu0_2
-#    6|     r0_24(Int32)               = Constant[1]         : 
-#    6|     r0_25(Int32)               = Add                 : r0_23, r0_24
-#    6|     mu0_26(Int32)              = Store               : &:r0_22, r0_25
-#    6|     mu0_27(Int32)              = Store               : &:r0_21, r0_25
-#    7|     r0_28(lval<Int32>)         = VariableAddress[x]  : 
-#    7|     r0_29(Int32)               = Load                : &:r0_28, ~mu0_2
-#    7|     r0_30(Int32)               = Constant[1]         : 
-#    7|     r0_31(Int32)               = Sub                 : r0_29, r0_30
-#    7|     mu0_32(Int32)              = Store               : &:r0_28, r0_31
-#    7|     r0_33(lval<Int32>)         = VariableAddress[x]  : 
-#    7|     mu0_34(Int32)              = Store               : &:r0_33, r0_29
-#    2|     v0_35(Void)                = ReturnVoid          : 
-#    2|     v0_36(Void)                = UnmodeledUse        : mu*
-#    2|     v0_37(Void)                = ExitFunction        : 
+#    2|     v0_0(Void)                  = EnterFunction       : 
+#    2|     mu0_1(null)                 = AliasedDefinition   : 
+#    2|     mu0_2(null)                 = UnmodeledDefinition : 
+#    2|     r0_3(glval<CrementOpsTest>) = InitializeThis      : 
+#    3|     r0_4(glval<Int32>)          = VariableAddress[x]  : 
+#    3|     r0_5(Int32)                 = Constant[10]        : 
+#    3|     mu0_6(Int32)                = Store               : &:r0_4, r0_5
+#    4|     r0_7(glval<Int32>)          = VariableAddress[a]  : 
+#    4|     r0_8(glval<Int32>)          = VariableAddress[x]  : 
+#    4|     r0_9(Int32)                 = Load                : &:r0_8, ~mu0_2
+#    4|     r0_10(Int32)                = Constant[1]         : 
+#    4|     r0_11(Int32)                = Add                 : r0_9, r0_10
+#    4|     mu0_12(Int32)               = Store               : &:r0_8, r0_11
+#    4|     mu0_13(Int32)               = Store               : &:r0_7, r0_9
+#    5|     r0_14(glval<Int32>)         = VariableAddress[b]  : 
+#    5|     r0_15(glval<Int32>)         = VariableAddress[x]  : 
+#    5|     r0_16(Int32)                = Load                : &:r0_15, ~mu0_2
+#    5|     r0_17(Int32)                = Constant[1]         : 
+#    5|     r0_18(Int32)                = Sub                 : r0_16, r0_17
+#    5|     mu0_19(Int32)               = Store               : &:r0_15, r0_18
+#    5|     mu0_20(Int32)               = Store               : &:r0_14, r0_18
+#    6|     r0_21(glval<Int32>)         = VariableAddress[c]  : 
+#    6|     r0_22(glval<Int32>)         = VariableAddress[x]  : 
+#    6|     r0_23(Int32)                = Load                : &:r0_22, ~mu0_2
+#    6|     r0_24(Int32)                = Constant[1]         : 
+#    6|     r0_25(Int32)                = Add                 : r0_23, r0_24
+#    6|     mu0_26(Int32)               = Store               : &:r0_22, r0_25
+#    6|     mu0_27(Int32)               = Store               : &:r0_21, r0_25
+#    7|     r0_28(glval<Int32>)         = VariableAddress[x]  : 
+#    7|     r0_29(Int32)                = Load                : &:r0_28, ~mu0_2
+#    7|     r0_30(Int32)                = Constant[1]         : 
+#    7|     r0_31(Int32)                = Sub                 : r0_29, r0_30
+#    7|     mu0_32(Int32)               = Store               : &:r0_28, r0_31
+#    7|     r0_33(glval<Int32>)         = VariableAddress[x]  : 
+#    7|     mu0_34(Int32)               = Store               : &:r0_33, r0_29
+#    2|     v0_35(Void)                 = ReturnVoid          : 
+#    2|     v0_36(Void)                 = UnmodeledUse        : mu*
+#    2|     v0_37(Void)                 = ExitFunction        : 
 
 func_with_param_call.cs:
 #    4| f

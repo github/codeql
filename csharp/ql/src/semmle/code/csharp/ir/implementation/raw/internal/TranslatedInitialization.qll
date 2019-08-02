@@ -1,3 +1,8 @@
+/**
+ * Class that deals with variable initializations.
+ * Separated from `TranslatedExpr` for clarity. 
+ */
+
 import csharp
 private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.implementation.internal.OperandTag

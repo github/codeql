@@ -2,6 +2,7 @@ import csharp
 private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
 private import semmle.code.csharp.ir.internal.TempVariableTag
+private import semmle.code.csharp.ir.internal.IRUtilities
 private import InstructionTag
 private import TranslatedCondition
 private import TranslatedDeclarationEntry

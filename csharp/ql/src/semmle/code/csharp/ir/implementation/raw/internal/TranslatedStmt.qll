@@ -74,7 +74,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
   override LocalVariableDeclStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    result = getDeclarationEntry(id)
+    result = getLocalDeclaration(id)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -83,15 +83,15 @@ class TranslatedDeclStmt extends TranslatedStmt {
   }
 
   override Instruction getFirstInstruction() {
-    result = getDeclarationEntry(0).getFirstInstruction() //REVIEW: Empty?
+    result = getLocalDeclaration(0).getFirstInstruction() //REVIEW: Empty?
   }
 
   private int getChildCount() {
     result = count(stmt.getAVariableDeclExpr())
   }
 
-  private TranslatedDeclarationEntry getDeclarationEntry(int index) {
-    result = getTranslatedDeclarationEntry(stmt.getVariableDeclExpr(index).getVariable())
+  private TranslatedLocalDeclaration getLocalDeclaration(int index) {
+    result = getTranslatedLocalDeclaration(stmt.getVariableDeclExpr(index))
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -101,11 +101,11 @@ class TranslatedDeclStmt extends TranslatedStmt {
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int index |
-      child = getDeclarationEntry(index) and
+      child = getLocalDeclaration(index) and
       if index = (getChildCount() - 1) then
         result = getParent().getChildSuccessor(this)
       else
-        result = getDeclarationEntry(index + 1).getFirstInstruction()
+        result = getLocalDeclaration(index + 1).getFirstInstruction()
     )
   }
 }
@@ -429,8 +429,8 @@ class TranslatedCatchByTypeClause extends TranslatedClause {
     result = stmt.(SpecificCatchClause).getVariable().getType()
   }
 
-  private TranslatedDeclarationEntry getParameter() {
-    result = getTranslatedDeclarationEntry(stmt.(SpecificCatchClause).getVariable())
+  private TranslatedLocalDeclaration getParameter() {
+    result = getTranslatedLocalDeclaration(stmt.(SpecificCatchClause).getVariableDeclExpr())
   }
 }
 

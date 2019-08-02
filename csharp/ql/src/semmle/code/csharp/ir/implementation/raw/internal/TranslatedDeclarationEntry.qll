@@ -12,75 +12,30 @@ private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
  * Gets the `TranslatedDeclarationEntry` that represents the declaration
  * `entry`.
  */
-TranslatedDeclarationEntry getTranslatedDeclarationEntry(Declaration entry) {
-  result.getAST() = entry
+TranslatedLocalDeclaration getTranslatedLocalDeclaration(LocalVariableDeclExpr declExpr) {
+  result.getAST() = declExpr
 }
 
 /**
  * Represents the IR translation of a declaration within the body of a function.
- * Most often, this is the declaration of an automatic local variable, although
- * it can also be the declaration of a static local variable, an extern
- * variable, or an extern function.
  */
-// TODO: Make sure local decls are handeld correctly (seem to be)
-abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslatedDeclarationEntry {
-  Declaration entry;
+abstract class TranslatedLocalDeclaration extends TranslatedElement, TTranslatedDeclarationEntry {
+  LocalVariableDeclExpr expr;
 
-  TranslatedDeclarationEntry() {
-    this = TTranslatedDeclarationEntry(entry)
+  TranslatedLocalDeclaration() {
+    this = TTranslatedDeclarationEntry(expr)
   }
 
   override final Callable getFunction() {
-    exists(LocalVariableDeclExpr expr |
-      expr.getVariable() = entry and
-      result = expr.getEnclosingCallable()
-    )
+    result = expr.getEnclosingCallable()
   }
 
   override final string toString() {
-    result = entry.toString()
+    result = expr.toString()
   }
 
   override final Language::AST getAST() {
-    result = entry
-  }
-}
-
-/**
- * Represents the IR translation of a declaration within the body of a function,
- * for declarations other than local variables. Since these have no semantic
- * effect, they are translated as `NoOp`.
- */
-class TranslatedNonVariableDeclarationEntry extends TranslatedDeclarationEntry {
-  TranslatedNonVariableDeclarationEntry() {
-    not entry instanceof LocalVariable
-  }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isLValue) {
-    opcode instanceof Opcode::NoOp and
-    tag = OnlyInstructionTag() and
-    resultType instanceof Language::UnknownType and
-    isLValue = false
-  }
-
-  override Instruction getFirstInstruction() {
-    result = getInstruction(OnlyInstructionTag())
-  }
-
-  override TranslatedElement getChild(int id) {
-    none()
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
-    kind instanceof GotoEdge
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    none()
+    result = expr
   }
 }
 
@@ -88,11 +43,13 @@ class TranslatedNonVariableDeclarationEntry extends TranslatedDeclarationEntry {
  * Represents the IR translation of the declaration of a local variable,
  * including its initialization, if any.
  */
-abstract class TranslatedVariableDeclaration extends TranslatedElement, InitializationContext {
-  /**
-   * Gets the local variable being declared.
-   */
-  abstract LocalVariable getVariable();
+class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration, 
+    InitializationContext {
+  LocalVariable var;
+  
+  TranslatedLocalVariableDeclaration() {
+    var = expr.getVariable() 
+  }
 
   override TranslatedElement getChild(int id) {
     id = 0 and result = getInitialization()
@@ -107,14 +64,14 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
     (
       tag = InitializerVariableAddressTag() and
       opcode instanceof Opcode::VariableAddress and
-      resultType = getVariableType(getVariable()) and
+      resultType = getVariableType(var) and
       isLValue = true
     ) or
     (
       hasUninitializedInstruction() and
       tag = InitializerStoreTag() and
       opcode instanceof Opcode::Uninitialized and
-      resultType = getVariableType(getVariable()) and
+      resultType = getVariableType(var) and
       isLValue = false
     )
   }
@@ -149,7 +106,7 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
       tag = InitializerVariableAddressTag() or
       hasUninitializedInstruction() and tag = InitializerStoreTag()
     ) and
-    result = getIRUserVariable(getFunction(), getVariable())
+    result = getIRUserVariable(getFunction(), var)
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
@@ -164,39 +121,23 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
   }
 
   override Type getTargetType() {
-    result = getVariableType(getVariable())
+    result = getVariableType(var)
   }
 
   // TODO: All declarations which use an initializer will need a special case here
   private TranslatedInitialization getInitialization() {
     // First complex initializations
-    if (getVariable().getInitializer() instanceof ArrayCreation) then
-        result = getTranslatedInitialization(getVariable().getInitializer().(ArrayCreation).getInitializer())
-    else if (getVariable().getInitializer() instanceof ObjectCreation) then
-        result = getTranslatedInitialization(getVariable().getInitializer())
+    if (var.getInitializer() instanceof ArrayCreation) then
+        result = getTranslatedInitialization(var.getInitializer().(ArrayCreation).getInitializer())
+    else if (var.getInitializer() instanceof ObjectCreation) then
+        result = getTranslatedInitialization(var.getInitializer())
     else // then the simple variable initialization
-        result = getTranslatedInitialization(getVariable().getInitializer())
+        result = getTranslatedInitialization(var.getInitializer())
   }
 
   private predicate hasUninitializedInstruction() {
     not exists(getInitialization()) or
     getInitialization() instanceof TranslatedListInitialization
-  }
-}
-
-/**
- * Represents the IR translation of a local variable declaration within a declaration statement.
- */
-class TranslatedVariableDeclarationEntry extends TranslatedVariableDeclaration,
-    TranslatedDeclarationEntry {
-  LocalVariable var;
-
-  TranslatedVariableDeclarationEntry() {
-    var = entry
-  }
-
-  override LocalVariable getVariable() {
-    result = var
   }
 }
 

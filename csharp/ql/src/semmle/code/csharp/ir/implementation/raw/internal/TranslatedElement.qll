@@ -334,9 +334,7 @@ newtype TTranslatedElement =
     )
   } or
   // A local declaration
-  TTranslatedDeclarationEntry(Declaration entry) {
-    exists(LocalVariableDeclExpr declExpr | declExpr.getVariable() = entry)
-  }
+  TTranslatedDeclarationEntry(LocalVariableDeclExpr entry)
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
