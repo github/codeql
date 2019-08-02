@@ -6,7 +6,7 @@ import SystemCommandExecution
 import ResponseExpr
 import HeaderDefinition
 import RouteSetup_getServer
-import ClientRequest
+import TestClientRequest
 import HeaderDefinition_getAHeaderName
 import ServerDefinition
 import HeaderAccess

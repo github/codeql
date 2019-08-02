@@ -60,9 +60,7 @@ module Electron {
     t.start() and
     result instanceof NewBrowserObject
     or
-    exists(DataFlow::TypeTracker t2 |
-      result = browserObject(t2).track(t2, t)
-    )
+    exists(DataFlow::TypeTracker t2 | result = browserObject(t2).track(t2, t))
   }
 
   /**
@@ -122,9 +120,7 @@ module Electron {
       string getChannelName() { result = channel.asExpr().getStringValue() }
 
       /** Gets the data flow node containing the message received by the callback. */
-      DataFlow::Node getMessage() {
-        result = getParameter(1)
-      }
+      DataFlow::Node getMessage() { result = getParameter(1) }
     }
 
     /**
@@ -174,9 +170,7 @@ module Electron {
       SyncDirectMessage() { isSync = true }
 
       /** Gets the data flow node holding the reply to the message. */
-      DataFlow::Node getReply() {
-        result = mc
-      }
+      DataFlow::Node getReply() { result = mc }
     }
 
     /**
@@ -262,28 +256,32 @@ module Electron {
     private class IPCAdditionalFlowStep extends DataFlow::AdditionalFlowStep {
       IPCAdditionalFlowStep() { ipcFlowStep(this, _) }
 
-      override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-        ipcFlowStep(pred, succ)
-      }
+      override predicate step(DataFlow::Node pred, DataFlow::Node succ) { ipcFlowStep(pred, succ) }
     }
   }
 
   /**
    * A Node.js-style HTTP or HTTPS request made using an Electron module.
    */
-  abstract class CustomElectronClientRequest extends NodeJSLib::CustomNodeJSClientRequest { }
-
-  /**
-   * A Node.js-style HTTP or HTTPS request made using an Electron module.
-   */
   class ElectronClientRequest extends NodeJSLib::NodeJSClientRequest {
-    ElectronClientRequest() { this instanceof CustomElectronClientRequest }
+    override ElectronClientRequest::Range self;
   }
+
+  module ElectronClientRequest {
+    /**
+     * A Node.js-style HTTP or HTTPS request made using an Electron module.
+     *
+     * Extends this class to add support for new Electron client-request APIs.
+     */
+    abstract class Range extends NodeJSLib::NodeJSClientRequest::Range { }
+  }
+
+  deprecated class CustomElectronClientRequest = ElectronClientRequest::Range;
 
   /**
    * A Node.js-style HTTP or HTTPS request made using `electron.ClientRequest`.
    */
-  private class NewClientRequest extends CustomElectronClientRequest {
+  private class NewClientRequest extends ElectronClientRequest::Range {
     NewClientRequest() {
       this = DataFlow::moduleMember("electron", "ClientRequest").getAnInstantiation() or
       this = DataFlow::moduleMember("electron", "net").getAMemberCall("request") // alias
