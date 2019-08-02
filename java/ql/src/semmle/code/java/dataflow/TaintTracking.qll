@@ -363,6 +363,10 @@ module TaintTracking {
     m.getDeclaringType().hasQualifiedName("java.io", "InputStream") and
     m.hasName("read") and
     arg = 0
+    or
+    m.getDeclaringType().getASupertype*().hasQualifiedName("java.io", "Reader") and
+    m.hasName("read") and
+    arg = 0
   }
 
   /** Access to a method that passes taint from the qualifier. */
@@ -398,8 +402,12 @@ module TaintTracking {
       m.getName().matches("%Value")
     )
     or
-    m.getDeclaringType().getQualifiedName().matches("%Reader") and
-    m.getName().matches("read%")
+    m.getDeclaringType().getASupertype*().hasQualifiedName("java.io", "Reader") and
+    (
+      m.getName() = "read" and m.getNumberOfParameters() = 0
+      or
+      m.getName() = "readLine"
+    )
     or
     m.getDeclaringType().getQualifiedName().matches("%StringWriter") and
     m.getName() = "toString"
