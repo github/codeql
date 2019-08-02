@@ -9,8 +9,8 @@
  
 import python
 
-from Call new, ClassObject cls
+from Call new, ClassValue cls
 where
     cls.getName() = "MyClass" and
-    new.getFunc().refersTo(cls)
+    new.getFunc().pointsTo(cls)
 select new

@@ -13,5 +13,5 @@ where
     print instanceof Print
     or
     /* Python 3 or with `from __future__ import print_function` */
-    print.(Call).getFunc().refersTo(thePrintFunction())
+    print.(Call).getFunc().pointsTo(Value::named("print"))
 select print

@@ -14,5 +14,5 @@ import python
 from SubscriptNode store
 where 
     store.isStore() and
-    store.getIndex().refersTo(theNoneObject())
+    store.getIndex().pointsTo(Value::named("None"))
 select store
