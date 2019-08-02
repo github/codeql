@@ -116,6 +116,11 @@ module GlobalAccessPath {
       // Note: Avoid unneeded materialization of DataFlow::Node.getFile()
       rhs.getAstNode().getFile() = file
     )
+    or
+    // Hard-code JSON methods from the externs file, since they aren't explicitly assigned.
+    (accessPath = "JSON.parse" or accessPath = "JSON.stringify") and
+    file.getBaseName() = "es5.js" and
+    any(TopLevel tl | tl.getFile() = file).isExterns()
   }
 
   /**
