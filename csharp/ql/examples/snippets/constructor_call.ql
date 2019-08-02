@@ -6,7 +6,7 @@
  *       constructor
  *       new
  */
- 
+
 import csharp
 
 from ObjectCreation new

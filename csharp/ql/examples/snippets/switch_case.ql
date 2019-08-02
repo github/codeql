@@ -10,8 +10,9 @@
 import csharp
 
 from SwitchStmt switch, Enum enum, EnumConstant missing
-where switch.getCondition().getType() = enum
-  and missing.getDeclaringType() = enum
-  and not switch.getAConstCase().getExpr() = missing.getAnAccess()
-  and not exists(switch.getDefaultCase())
+where
+  switch.getCondition().getType() = enum and
+  missing.getDeclaringType() = enum and
+  not switch.getAConstCase().getExpr() = missing.getAnAccess() and
+  not exists(switch.getDefaultCase())
 select switch

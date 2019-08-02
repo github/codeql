@@ -9,7 +9,7 @@
  *       subtype
  *       supertype
  */
- 
+
 import csharp
 
 from RefType type

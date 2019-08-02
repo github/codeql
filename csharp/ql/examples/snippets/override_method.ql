@@ -5,11 +5,12 @@
  * @tags method
  *       override
  */
- 
+
 import csharp
 
 from Method override, Method base
-where base.hasName("ToString")
-  and base.getDeclaringType().hasQualifiedName("System.Object")
-  and base.getAnOverrider() = override
+where
+  base.hasName("ToString") and
+  base.getDeclaringType().hasQualifiedName("System.Object") and
+  base.getAnOverrider() = override
 select override

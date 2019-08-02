@@ -10,7 +10,8 @@
 import csharp
 
 from ConditionalExpr e
-where e.getThen().stripImplicitCasts() != e.getElse().stripImplicitCasts()
-  and not e.getThen().getType() instanceof NullType
-  and not e.getElse().getType() instanceof NullType
+where
+  e.getThen().stripImplicitCasts() != e.getElse().stripImplicitCasts() and
+  not e.getThen().getType() instanceof NullType and
+  not e.getElse().getType() instanceof NullType
 select e
