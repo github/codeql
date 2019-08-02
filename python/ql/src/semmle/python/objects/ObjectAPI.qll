@@ -218,6 +218,17 @@ module Value {
         result.(UnicodeObjectInternal).strValue() = text
     }
 
+    /** Gets a `Value` for the string `text`. May be a bytes or unicode string for Python 2.
+     * There will be no `Value` for most strings, unless it is explicitly
+     * declared in the source program.
+     */
+    Value forString(string text) {
+        result.(UnicodeObjectInternal).strValue() = text
+        or
+        major_version() = 2 and
+        result.(BytesObjectInternal).strValue() = text
+    }
+
     /** Gets the `Value` for the bool constant `b`. */
     Value forBool(boolean b) {
         b = true and result = TTrue()
@@ -389,18 +400,52 @@ class ClassValue extends Value {
 
 }
 
-class PythonFunctionValue extends CallableValue {
+
+/** Class representing functions in the Python program, both Python and built-in.
+ * Note that this does not include other callables such as bound-methods.
+ */
+abstract class FunctionValue extends CallableValue {
+
+    abstract string getQualifiedName();
+
+}
+
+class PythonFunctionValue extends FunctionValue {
 
     PythonFunctionValue() {
         this instanceof PythonFunctionObjectInternal
     }
 
+    override string getQualifiedName() {
+        result = this.(PythonFunctionObjectInternal).getScope().getQualifiedName()
+    }
+
 }
 
-class BuiltinFunctionValue extends CallableValue {
+class BuiltinFunctionValue extends FunctionValue {
 
     BuiltinFunctionValue() {
         this instanceof BuiltinFunctionObjectInternal
+    }
+
+    override string getQualifiedName() {
+        result = this.(BuiltinFunctionObjectInternal).getName()
+    }
+
+}
+
+class BuiltinMethodValue extends FunctionValue {
+
+    BuiltinMethodValue() {
+        this instanceof BuiltinMethodObjectInternal
+    }
+
+    override string getQualifiedName() {
+        exists(Builtin cls |
+            cls.isClass() and
+            cls.getMember(_) = this.(BuiltinMethodObjectInternal).getBuiltin() and
+            result = cls.getName() + "." + this.getName()
+        )
     }
 
 }
