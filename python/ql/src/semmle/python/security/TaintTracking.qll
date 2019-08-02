@@ -134,7 +134,7 @@ abstract class TaintKind extends string {
      */
     final predicate taints(ControlFlowNode expr) {
         exists(TaintedNode n |
-            n.getTaintKind() = this and n.getNode() = expr
+            n.getTaintKind() = this and n.getCfgNode() = expr
         )
     }
 
@@ -247,15 +247,15 @@ module SequenceKind {
     predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
         tonode.(BinaryExprNode).getAnOperand() = fromnode
         or
-        TaintFlowImplementation::copyCall(fromnode, tonode)
+        Implementation::copyCall(fromnode, tonode)
         or
         sequence_call(fromnode, tonode)
         or
-        sequence_subscript_slice(fromnode, tonode)
+        subscript_slice(fromnode, tonode)
     }
 
     predicate itemFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        sequence_subscript_index(fromnode, tonode)
+        subscript_index(fromnode, tonode)
     }
 
 }
@@ -263,14 +263,14 @@ module SequenceKind {
 
 /* Helper for sequence flow steps */
 pragma [noinline]
-private predicate sequence_subscript_index(ControlFlowNode obj, SubscriptNode sub) {
+private predicate subscript_index(ControlFlowNode obj, SubscriptNode sub) {
     sub.isLoad() and
     sub.getValue() = obj and
     not sub.getNode().getIndex() instanceof Slice
 }
 
 pragma [noinline]
-private predicate sequence_subscript_slice(ControlFlowNode obj, SubscriptNode sub) {
+private predicate subscript_slice(ControlFlowNode obj, SubscriptNode sub) {
     sub.isLoad() and
     sub.getValue() = obj and
     sub.getNode().getIndex() instanceof Slice
@@ -305,27 +305,18 @@ class DictKind extends CollectionKind {
     }
 
     override predicate isResultOfStep(TaintKind fromkind, ControlFlowNode fromnode, ControlFlowNode tonode) {
-        DictKind::flowStep(fromnode, tonode) and this = fromkind
+        Implementation::copyCall(fromnode, tonode) and this = fromkind
+        or
+        tonode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
+        tonode.(CallNode).getArg(0) = fromnode
         or
         dict_construct(fromnode, tonode) and this.getValue() = fromkind
     }
 
-}
-
-
-module DictKind {
-
-    predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        TaintFlowImplementation::copyCall(fromnode, tonode)
+    override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
+        subscript_index(fromnode, tonode) and result = this.getValue()
         or
-        tonode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
-        tonode.(CallNode).getArg(0) = fromnode
-    }
-
-    predicate valueFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        tonode.(SubscriptNode).getValue() = fromnode and tonode.isLoad()
-        or
-        tonode.(CallNode).getFunction().(AttrNode).getObject("get") = fromnode
+        subscript_slice(fromnode, tonode) and result = this
     }
 
 }
@@ -356,16 +347,6 @@ abstract class Sanitizer extends string {
     /** Holds if `def` shows value to be untainted with `taint` */
     predicate sanitizingDefinition(TaintKind taint, EssaDefinition def) { none() }
 
-}
-
-/** Hold if `sanitizer` is valid. A sanitizer is valid if there is
- * a `TaintTracking::Configuration` that declares `sanitizer` or
- * there are no `TaintTracking::Configuration`s.
- */
-private predicate valid_sanitizer(Sanitizer sanitizer) {
-    not exists(TaintTracking::Configuration c)
-    or
-    exists(TaintTracking::Configuration c | c.isSanitizer(sanitizer))
 }
 
 /** DEPRECATED -- Use DataFlowExtension instead.
@@ -418,8 +399,8 @@ abstract class TaintSource extends @py_flow_node {
      *
      * The smaller this predicate is, the faster `Taint.flowsTo()` will converge.
      */
-    predicate isSourceOf(TaintKind kind, CallContext context) {
-        context.appliesTo(this) and this.isSourceOf(kind)
+    predicate isSourceOf(TaintKind kind, TaintTrackingContext context) {
+        context.isTop() and this.isSourceOf(kind)
     }
 
     Location getLocation() {
@@ -432,28 +413,26 @@ abstract class TaintSource extends @py_flow_node {
 
     /** Gets a TaintedNode for this taint source */
     TaintedNode getATaintNode() {
-        exists(TaintFlowImplementation::TrackedTaint taint, CallContext context |
-            this.isSourceOf(taint.getKind(), context) and
-            result = TTaintedNode_(taint, context, this)
-        )
+        result.getCfgNode() = this and
+        this.isSourceOf(result.getTaintKind(), result.getContext()) and
+        result.getPath().noAttribute()
     }
 
     /** Holds if taint can flow from this source to sink `sink` */
     final predicate flowsToSink(TaintKind srckind, TaintSink sink) {
-        exists(TaintedNode t |
-            t = this.getATaintNode() and
-            t.getTaintKind() = srckind and
-            t.flowsToSink(sink)
+        exists(TaintedNode src, TaintedNode tsink |
+            src = this.getATaintNode() and
+            src.getASuccessor*() = tsink and
+            this.isSourceOf(srckind, _) and
+            sink = tsink.getCfgNode() and
+            sink.sinks(tsink.getTaintKind()) and
+            tsink.getPath().noAttribute()
         )
     }
 
     /** Holds if taint can flow from this source to taint sink `sink` */
     final predicate flowsToSink(TaintSink sink) {
         this.flowsToSink(_, sink)
-        or
-        this instanceof ValidatingTaintSource and
-        sink instanceof ValidatingTaintSink and
-        exists(error())
     }
 }
 
@@ -480,8 +459,8 @@ abstract class TaintedDefinition extends EssaNodeDefinition {
      *
      * The smaller this predicate is, the faster `Taint.flowsTo()` will converge.
      */
-    predicate isSourceOf(TaintKind kind, CallContext context) {
-        context.appliesToScope(this.getScope()) and this.isSourceOf(kind)
+    predicate isSourceOf(TaintKind kind, TaintTrackingContext context) {
+        context.isTop() and this.isSourceOf(kind)
     }
 
 }
@@ -627,146 +606,6 @@ module DataFlowExtension {
     }
 }
 
-private newtype TTaintedNode =
-    TTaintedNode_(TaintFlowImplementation::TrackedValue taint, CallContext context, ControlFlowNode n) {
-        exists(TaintKind kind |
-            taint = TaintFlowImplementation::TTrackedTaint(kind) |
-            n.(TaintSource).isSourceOf(kind, context)
-        )
-        or
-        exists(DataFlow::Configuration config, TaintKind kind |
-            taint = TaintFlowImplementation::TTrackedTaint(kind) and
-            config.isSource(n) and context.getDepth() = 0 and
-            kind instanceof DataFlowType
-        )
-        or
-        TaintFlowImplementation::step(_, taint, context, n) and
-        exists(TaintKind kind |
-            kind = taint.(TaintFlowImplementation::TrackedTaint).getKind()
-            or
-            kind = taint.(TaintFlowImplementation::TrackedAttribute).getKind(_) |
-            not exists(Sanitizer sanitizer |
-                valid_sanitizer(sanitizer) and
-                sanitizer.sanitizingNode(kind, n)
-            )
-        )
-        or
-        user_tainted_def(_, taint, context, n)
-    }
-
-private predicate user_tainted_def(TaintedDefinition def, TaintFlowImplementation::TTrackedTaint taint, CallContext context, ControlFlowNode n) {
-    exists(TaintKind kind |
-        taint = TaintFlowImplementation::TTrackedTaint(kind) and
-        def.isSourceOf(kind, context) and
-        n = def.getDefiningNode()
-    )
-}
-
-/** A tainted data flow graph node.
- * This is a triple of `(CFG node, data-flow context, taint)`
- */
-class TaintedNode extends TTaintedNode {
-
-    string toString() { result = this.getTrackedValue().repr() }
-
-    string debug() { result = this.getTrackedValue().toString() + " at " + this.getNode().getLocation() }
-
-    TaintedNode getASuccessor() {
-        exists(TaintFlowImplementation::TrackedValue tokind, CallContext tocontext, ControlFlowNode tonode |
-            result = TTaintedNode_(tokind, tocontext, tonode) and
-            TaintFlowImplementation::step(this, tokind, tocontext, tonode)
-        )
-    }
-
-    /** Gets the taint for this node. */
-    TaintFlowImplementation::TrackedValue getTrackedValue() {
-      this = TTaintedNode_(result, _, _)
-    }
-
-    /** Gets the CFG node for this node. */
-    ControlFlowNode getNode() {
-        this = TTaintedNode_(_, _, result)
-    }
-
-    /** Get the AST node for this node. */
-    AstNode getAstNode() {
-        result = this.getNode().getNode()
-    }
-
-    /** Gets the CFG node for this node. */
-    ControlFlowNode getCfgNode() {
-        this = TTaintedNode_(_, _, result)
-    }
-
-    /** Gets the Dataflow node for this node. */
-    DataFlow::Node getDataFlowNode() {
-        /* FIX ME! -- Needs to handle ESSA nodes as well */
-        exists(ControlFlowNode cfgnode |
-            this = TTaintedNode_(_, _, cfgnode) and
-            result.asCfgNode() = cfgnode
-        )
-    }
-
-    /** Gets the data-flow context for this node. */
-    CallContext getContext() {
-        this = TTaintedNode_(_, result, _)
-    }
-
-    Location getLocation() {
-        result = this.getNode().getLocation()
-    }
-
-    /** Holds if this node is a source of taint */
-    predicate isSource() {
-        exists(TaintFlowImplementation::TrackedTaint taint, CallContext context, TaintSource node |
-            this = TTaintedNode_(taint, context, node) and
-            node.isSourceOf(taint.getKind(), context)
-        )
-    }
-
-    /** Gets the kind of taint that node is tainted with.
-     * Doesn't apply if an attribute or item is tainted, only if this node directly tainted
-     * */
-    TaintKind getTaintKind() {
-        this.getTrackedValue().(TaintFlowImplementation::TrackedTaint).getKind() = result
-    }
-
-    /** Holds if taint flows from this node to the sink `sink` and
-     * reaches with a taint that `sink` is a sink of.
-     */
-    predicate flowsToSink(TaintSink sink) {
-        exists(TaintedNode node |
-            this.getASuccessor*() = node and
-            node.getNode() = sink and
-            sink.sinks(node.getTaintKind())
-        )
-    }
-
-    /** Holds if the underlying CFG node for this node is a vulnerable node
-     * and is vulnerable to this node's taint.
-     */
-    predicate isSink() {
-        exists(TaintedNode src, TaintSink vuln |
-            src.isSource() and
-            src.getASuccessor*() = this and
-            vuln = this.getNode() and
-            vuln.sinks(this.getTaintKind())
-        )
-    }
-
-    /** DEPRECATED -- Use `TaintedNode.isSink()` instead
-     * Sinks are not necessarily vulnerable
-     * For removal 2020-07-01 */
-    deprecated predicate isVulnerableSink() {
-        this.isSink()
-    }
-
-    TaintFlowImplementation::TrackedTaint fromAttribute(string name) {
-        result = this.getTrackedValue().(TaintFlowImplementation::TrackedAttribute).fromAttribute(name)
-    }
-
-}
-
 class TaintedPathSource extends TaintTrackingNode {
 
     TaintedPathSource() {
@@ -796,838 +635,12 @@ class TaintedPathSink extends TaintTrackingNode {
 
 }
 
-/** This module contains the implementation of taint-flow.
- * It is recommended that users use the `TaintedNode` class, rather than using this module directly
- * as the interface of this module may change without warning.
- */
-library module TaintFlowImplementation {
-
-    import semmle.python.pointsto.PointsTo
-    import DataFlowExtension
-
-    newtype TTrackedValue =
-        TTrackedTaint(TaintKind kind)
-        or
-        TTrackedAttribute(string name, TaintKind kind) {
-            exists(AttributeAssignment def, TaintedNode origin |
-                def.getName() = name and
-                def.getValue() = origin.getNode() and
-                origin.getTaintKind() = kind
-            )
-            or
-            exists(TaintedNode origin |
-                import_flow(origin, _, _, name) and
-                origin.getTaintKind() = kind
-            )
-            or
-            exists(TaintKind src |
-                kind = src.getTaintOfAttribute(name)
-            )
-            or
-            exists(TaintedNode origin, AttrNode lhs, ControlFlowNode rhs |
-                lhs.getName() = name and rhs = lhs.(DefinitionNode).getValue() |
-                origin.getNode() = rhs and
-                kind = origin.getTaintKind()
-            )
-        }
-
-    /** The "taint" tracked internal by the TaintFlow module.
-     *  This is not the taint kind specified by the user, but describes both the kind of taint
-     *  and how that taint relates to any object referred to by a data-flow graph node or edge.
-     */
-    class TrackedValue extends TTrackedValue {
-
-        abstract string toString();
-
-        abstract string repr();
-
-        abstract TrackedValue toKind(TaintKind kind);
-
-    }
-
-    class TrackedTaint extends TrackedValue, TTrackedTaint {
-
-        override string repr() {
-            result = this.getKind().repr()
-        }
-
-        override string toString() {
-            result = "Taint " + this.getKind()
-        }
-
-        TaintKind getKind() {
-            this = TTrackedTaint(result)
-        }
-
-        override TrackedValue toKind(TaintKind kind) {
-            result = TTrackedTaint(kind)
-        }
-
-    }
-
-    class TrackedAttribute extends TrackedValue, TTrackedAttribute {
-
-        override string repr() {
-            exists(string name, TaintKind kind |
-                this = TTrackedAttribute(name, kind) and
-                result = "." + name + "=" + kind.repr()
-            )
-        }
-
-        override string toString() {
-            exists(string name, TaintKind kind |
-                this = TTrackedAttribute(name, kind) and
-                result = "Attribute '" + name + "' taint " + kind
-            )
-        }
-
-        TaintKind getKind(string name) {
-            this = TTrackedAttribute(name, result)
-        }
-
-        TrackedValue fromAttribute(string name) {
-            exists(TaintKind kind |
-                this = TTrackedAttribute(name, kind) and
-                result = TTrackedTaint(kind)
-            )
-        }
-
-        string getName() {
-            this = TTrackedAttribute(result, _)
-        }
-
-        override TrackedValue toKind(TaintKind kind) {
-            result = TTrackedAttribute(this.getName(), kind)
-        }
-
-    }
-
-    predicate step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, ControlFlowNode tonode) {
-        unpruned_step(fromnode, totaint, tocontext, tonode) and
-        tonode.getBasicBlock().likelyReachable()
-    }
-
-    predicate unpruned_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, ControlFlowNode tonode) {
-        import_step(fromnode, totaint, tocontext, tonode)
-        or
-        from_import_step(fromnode, totaint, tocontext, tonode)
-        or
-        attribute_load_step(fromnode, totaint, tocontext, tonode)
-        or
-        attribute_store_step(fromnode, totaint, tocontext, tonode)
-        or
-        getattr_step(fromnode, totaint, tocontext, tonode)
-        or
-        use_step(fromnode, totaint, tocontext, tonode)
-        or
-        call_taint_step(fromnode, totaint, tocontext, tonode)
-        or
-        iteration_step(fromnode, totaint, tocontext, tonode)
-        or
-        yield_step(fromnode, totaint, tocontext, tonode)
-        or
-        exists(DataFlowNode fromnodenode |
-            fromnodenode = fromnode.getNode() and
-            (
-                not exists(TaintTracking::Configuration c)
-                or
-                exists(TaintTracking::Configuration c | c.isExtension(fromnodenode))
-            )
-            |
-            fromnodenode.getASuccessorNode() = tonode and
-            fromnode.getContext() = tocontext and
-            totaint = fromnode.getTrackedValue()
-            or
-            exists(CallNode call |
-                fromnodenode.getAReturnSuccessorNode(call) = tonode and
-                fromnode.getContext() = tocontext.getCallee(call) and
-                totaint = fromnode.getTrackedValue()
-            )
-            or
-            exists(CallNode call |
-                fromnodenode.getACalleeSuccessorNode(call) = tonode and
-                fromnode.getContext().getCallee(call) = tocontext and
-                totaint = fromnode.getTrackedValue()
-            )
-            or
-            exists(TaintKind tokind |
-                fromnodenode.getASuccessorNode(fromnode.getTaintKind(), tokind) = tonode and
-                totaint = fromnode.getTrackedValue().toKind(tokind) and
-                tocontext = fromnode.getContext()
-            )
-        )
-        or
-        exists(TaintKind tokind |
-            tokind = fromnode.getTaintKind().getTaintForFlowStep(fromnode.getNode(), tonode) and
-            totaint = fromnode.getTrackedValue().toKind(tokind) and
-            tocontext = fromnode.getContext()
-        )
-        or
-        exists(SequenceKind fromkind |
-            fromkind = fromnode.getTaintKind() and
-            tocontext = fromnode.getContext() |
-            totaint = fromnode.getTrackedValue() and SequenceKind::flowStep(fromnode.getNode(), tonode)
-            or
-            totaint = fromnode.getTrackedValue().toKind(fromkind.getItem()) and SequenceKind::itemFlowStep(fromnode.getNode(), tonode)
-        )
-        or
-        exists(DictKind fromkind |
-            fromkind = fromnode.getTaintKind() and
-            tocontext = fromnode.getContext() |
-            totaint = fromnode.getTrackedValue() and DictKind::flowStep(fromnode.getNode(), tonode)
-            or
-            totaint = fromnode.getTrackedValue().toKind(fromkind.getValue()) and DictKind::valueFlowStep(fromnode.getNode(), tonode)
-        )
-        or
-        exists(TaintFlow flow, TaintKind tokind |
-            flow.additionalFlowStep(fromnode.getNode(), fromnode.getTaintKind(), tonode, tokind) and
-            totaint = fromnode.getTrackedValue().toKind(tokind) and
-            tocontext = fromnode.getContext()
-        )
-        or
-        data_flow_step(fromnode.getContext(), fromnode.getNode(), tocontext, tonode) and
-        totaint = fromnode.getTrackedValue()
-        or
-        exists(DataFlowVariable var |
-            tainted_var(var, tocontext, fromnode) and
-            var.getASuccessorNode() = tonode and
-            totaint = fromnode.getTrackedValue()
-        )
-        or
-        exists(TaintKind tokind |
-            totaint = fromnode.getTrackedValue().toKind(tokind) and
-            tocontext = fromnode.getContext()
-            |
-            tokind.(DictKind).getValue() = fromnode.getTaintKind() and
-            dict_construct(fromnode.getNode(), tonode)
-            or
-            tokind.(SequenceKind).getItem() = fromnode.getTaintKind() and
-            sequence_construct(fromnode.getNode(), tonode)
-        )
-    }
-
-    pragma [noinline]
-    predicate import_step(TaintedNode fromnode, TrackedAttribute totaint, CallContext tocontext, ImportExprNode tonode) {
-        exists(string name |
-            import_flow(fromnode, tonode, tocontext, name) and
-            totaint.fromAttribute(name) = fromnode.getTrackedValue()
-        )
-    }
-
-    pragma [noinline]
-    private predicate import_flow(TaintedNode fromnode, ImportExprNode tonode, CallContext tocontext, string name) {
-        exists(ModuleValue mod |
-            tonode.pointsTo(mod) and
-            module_attribute_tainted(mod, name, fromnode) and
-            tocontext.appliesTo(tonode)
-        )
-    }
-
-    pragma [noinline]
-    predicate data_flow_step(CallContext fromcontext, ControlFlowNode fromnode, CallContext tocontext, ControlFlowNode tonode) {
-        if_exp_step(fromcontext, fromnode, tocontext, tonode)
-        or
-        call_flow_step(fromcontext, fromnode, tocontext, tonode)
-        or
-        parameter_step(fromcontext, fromnode, tocontext, tonode)
-    }
-
-    pragma [noinline]
-    predicate from_import_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, ControlFlowNode tonode) {
-        exists(string name, ImportExprNode fmod, ModuleValue mod |
-            fmod = tonode.(ImportMemberNode).getModule(name) and
-            fmod.pointsTo(mod) and
-            tocontext.appliesTo(tonode) and
-            module_attribute_tainted(mod, name, fromnode) and
-            totaint = fromnode.getTrackedValue()
-        )
-    }
-
-    pragma [noinline]
-    predicate getattr_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, CallNode tonode) {
-        exists(ControlFlowNode arg, string name |
-            tonode.getFunction().pointsTo(ObjectInternal::builtin("getattr")) and
-            arg = tonode.getArg(0) and
-            name = tonode.getArg(1).getNode().(StrConst).getText() and
-            arg = fromnode.getNode() and
-            totaint = fromnode.fromAttribute(name) and
-            tocontext = fromnode.getContext()
-        )
-    }
-
-    pragma [noinline]
-    predicate attribute_load_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, AttrNode tonode) {
-        tonode.isLoad() and
-        exists(string name, ControlFlowNode f |
-            f = tonode.getObject(name) and
-            tocontext = fromnode.getContext() and
-            f = fromnode.getNode() and
-            (
-                totaint = TTrackedTaint(fromnode.getTaintKind().getTaintOfAttribute(name))
-                or
-                totaint = fromnode.fromAttribute(name)
-            )
-        )
-    }
-
-    pragma [noinline]
-    predicate attribute_store_step(TaintedNode fromnode, TrackedAttribute totaint, CallContext tocontext, ControlFlowNode tonode) {
-        exists(string name |
-            attribute_store_flow(fromnode.getNode(), tonode, name) and
-            totaint.fromAttribute(name) = fromnode.getTrackedValue()
-        ) and
-        tocontext = fromnode.getContext()
-    }
-
-    pragma [noinline]
-    private predicate attribute_store_flow(ControlFlowNode fromnode, ControlFlowNode tonode, string name) {
-        exists(AttrNode lhs |
-            tonode = lhs.getObject(name) and fromnode = lhs.(DefinitionNode).getValue()
-        )
-    }
-
-    predicate module_attribute_tainted(ModuleValue m, string name, TaintedNode origin) {
-        exists(EssaVariable var, CallContext c |
-            var.getName() = name and
-            BaseFlow::reaches_exit(var) and
-            var.getScope() = m.getScope() and
-            tainted_var(var, c, origin) and
-            c = TTop()
-        )
-    }
-
-    predicate use_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, ControlFlowNode tonode) {
-        exists(EssaVariable var |
-            var.getASourceUse() = tonode and
-            tainted_var(var, tocontext, fromnode) and
-            totaint = fromnode.getTrackedValue()
-        )
-    }
-
-    pragma [noinline]
-    predicate call_flow_step(CallContext callee, ControlFlowNode fromnode, CallContext caller, ControlFlowNode call) {
-        exists(PyFunctionObject func |
-            callee.appliesToScope(func.getFunction()) and
-            func.getACall() = call and
-            func.getAReturnedNode() = fromnode |
-            callee = caller.getCallee(call)
-            or
-            caller = callee and caller = TTop()
-        )
-    }
-
-    predicate yield_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, CallNode call) {
-        exists(PyFunctionObject func |
-            func.getFunction().isGenerator() and
-            func.getACall() = call and
-            (
-                fromnode.getContext() = tocontext.getCallee(call)
-                or
-                fromnode.getContext() = tocontext and tocontext = TTop()
-            ) and
-            exists(Yield yield |
-                yield.getScope() = func.getFunction() and
-                yield.getValue() = fromnode.getNode().getNode()
-            ) and
-            exists(SequenceKind seq |
-                seq.getItem() = fromnode.getTaintKind() and
-                totaint = fromnode.getTrackedValue().toKind(seq)
-            )
-        )
-    }
-
-    predicate call_taint_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, CallNode call) {
-        exists(string name |
-            call.getFunction().(AttrNode).getObject(name) = fromnode.getNode() and
-            totaint = TTrackedTaint(fromnode.getTaintKind().getTaintOfMethodResult(name)) and
-            tocontext = fromnode.getContext()
-        )
-        or
-        exists(EssaVariable self, CallContext callee |
-            self_init_end_transfer(self, callee, call, tocontext) and
-            tainted_var(self, callee, fromnode) and
-            totaint = fromnode.getTrackedValue()
-        )
-    }
-
-    /** Holds if `v` is defined by a `for` statement, the definition being `defn` */
-    cached predicate iteration_step(TaintedNode fromnode, TrackedValue totaint, CallContext tocontext, ForNode for) {
-        for.iterates(_, fromnode.getNode()) and
-        totaint = TTrackedTaint(fromnode.getTaintKind().getTaintForIteration()) and
-        tocontext = fromnode.getContext()
-    }
-
-    predicate self_init_end_transfer(EssaVariable self, CallContext callee, CallNode call, CallContext caller) {
-        exists(ClassValue cls, Function init |
-            call.getFunction().pointsTo(cls) and
-            init = cls.lookup("__init__").(CallableValue).getScope() and
-            self.getSourceVariable().(Variable).isSelf() and self.getScope() = init
-            |
-            callee = caller.getCallee(call)
-            or
-            caller = callee and caller = TTop()
-        )
-    }
-
-    predicate tainted_var(EssaVariable var, CallContext context, TaintedNode origin) {
-        tainted_def(var.getDefinition(), context, origin)
-        or
-        exists(EssaVariable prev |
-            tainted_var(prev, context, origin) and
-            prev.(DataFlowVariable).getASuccessorVariable() = var
-        )
-        or
-        exists(DataFlowNode originnode |
-            originnode = origin.getNode() and
-            (
-                not exists(TaintTracking::Configuration c)
-                or
-                exists(TaintTracking::Configuration c | c.isExtension(originnode))
-            ) and
-            originnode.getASuccessorVariable() = var and
-            context = origin.getContext()
-        )
-        or
-        exists(TrackedTaint taint, EssaVariable prev |
-            tainted_var(prev, context, origin) and
-            origin.getTrackedValue() = taint and
-            taint.getKind().additionalFlowStepVar(prev, var)
-        )
-        or
-        exists(TaintFlow flow, TrackedTaint taint, EssaVariable prev |
-            tainted_var(prev, context, origin) and
-            origin.getTrackedValue() = taint and
-            flow.additionalFlowStepVar(prev, var, taint.getKind())
-        )
-    }
-
-    predicate tainted_def(EssaDefinition def, CallContext context, TaintedNode origin) {
-        unsanitized_tainted_def(def, context, origin) and
-        (
-            origin.getTrackedValue() instanceof TrackedAttribute
-            or
-            exists(TaintKind kind |
-                kind = origin.getTaintKind() and
-                not exists(Sanitizer san |
-                    valid_sanitizer(san) |
-                    san.sanitizingDefinition(kind, def)
-                    or
-                    san.sanitizingNode(kind, def.(EssaNodeDefinition).getDefiningNode())
-                    or
-                    san.sanitizingNode(kind, def.(EssaNodeRefinement).getDefiningNode())
-                )
-            )
-        )
-    }
-
-    predicate unsanitized_tainted_def(EssaDefinition def, CallContext context, TaintedNode origin) {
-        exists(TrackedValue val, ControlFlowNode node |
-            user_tainted_def(def, val, context, node) and
-            origin = TTaintedNode_(val, context, node)
-        )
-        or
-        tainted_phi(def, context, origin)
-        or
-        tainted_assignment(def, context, origin)
-        or
-        tainted_attribute_assignment(def, context, origin)
-        or
-        tainted_parameter_def(def, context, origin)
-        or
-        tainted_callsite(def, context, origin)
-        or
-        tainted_method_callsite(def, context, origin)
-        or
-        tainted_edge(def, context, origin)
-        or
-        tainted_argument(def, context, origin)
-        or
-        tainted_import_star(def, context, origin)
-        or
-        tainted_uni_edge(def, context, origin)
-        or
-        tainted_scope_entry(def, context, origin)
-        or
-        tainted_with(def, context, origin)
-        or
-        tainted_exception_capture(def, context, origin)
-    }
-
-    predicate tainted_scope_entry(ScopeEntryDefinition def, CallContext context, TaintedNode origin) {
-        exists(EssaVariable var |
-            BaseFlow::scope_entry_value_transfer_from_earlier(var, _, def, _) and
-            tainted_var(var, context, origin)
-        )
-    }
-
-    pragma [noinline]
-    predicate tainted_phi(PhiFunction phi, CallContext context, TaintedNode origin) {
-        exists(BasicBlock pred, EssaVariable predvar |
-            predvar = phi.getInput(pred) and
-            tainted_var(predvar, context, origin) and
-            not pred.unlikelySuccessor(phi.getBasicBlock()) and
-            not predvar.(DataFlowExtension::DataFlowVariable).prunedSuccessor(phi.getVariable())
-        )
-    }
-
-    pragma [noinline]
-    predicate tainted_assignment(AssignmentDefinition def, CallContext context, TaintedNode origin) {
-        origin.getNode() = def.getValue() and
-        context = origin.getContext()
-    }
-
-    pragma [noinline]
-    predicate tainted_attribute_assignment(AttributeAssignment def, CallContext context, TaintedNode origin) {
-        context = origin.getContext() and
-        origin.getNode() = def.getDefiningNode().(AttrNode).getObject()
-    }
-
-    pragma [noinline]
-    predicate tainted_callsite(CallsiteRefinement call, CallContext context, TaintedNode origin) {
-        /* In the interest of simplicity and performance we assume that tainted escaping variables remain tainted across calls.
-         * In the cases were this assumption is false, it is easy enough to add an additional sanitizer.
-         */
-        tainted_var(call.getInput(), context, origin)
-    }
-
-    pragma [noinline]
-    predicate parameter_step(CallContext caller, ControlFlowNode argument, CallContext callee, NameNode param) {
-        exists(ParameterDefinition def |
-            def.getDefiningNode() = param and
-            exists(CallableValue func, CallNode call |
-                callee = caller.getCallee(call) |
-                exists(int n | param = func.getParameter(n) and argument = func.getArgumentForCall(call, n))
-                or
-                exists(string name | param = func.getParameterByName(name) and argument = func.getNamedArgumentForCall(call, name))
-                or
-                class_initializer_argument(call, func, argument, param)
-            )
-        )
-    }
-
-    /* Helper for parameter_step */
-    pragma [noinline]
-    private predicate class_initializer_argument(CallNode call, CallableValue func, ControlFlowNode argument, NameNode param) {
-        exists(ClassValue cls |
-            cls.getACall() = call and
-            cls.lookup("__init__") = func
-        ) and
-        exists(int n |
-            call.getArg(n) = argument and
-            param.getNode() = func.getScope().getArg(n+1)
-        )
-    }
-
-    pragma [noinline]
-    predicate tainted_parameter_def(ParameterDefinition def, CallContext context, TaintedNode fromnode) {
-        fromnode.getNode() = def.getDefiningNode() and
-        context = fromnode.getContext()
-    }
-
-    pragma [noinline]
-    predicate if_exp_step(CallContext fromcontext, ControlFlowNode operand, CallContext tocontext, IfExprNode ifexp) {
-        fromcontext = tocontext and fromcontext.appliesTo(operand) and
-        ifexp.getAnOperand() = operand
-    }
-
-    pragma [noinline]
-    predicate tainted_method_callsite(MethodCallsiteRefinement call, CallContext context, TaintedNode origin) {
-        tainted_var(call.getInput(), context, origin) and
-        exists(TaintKind kind |
-            kind = origin.getTaintKind() |
-            not exists(FunctionObject callee, Sanitizer sanitizer |
-                valid_sanitizer(sanitizer) and
-                callee.getACall() = call.getCall() and
-                sanitizer.sanitizingCall(kind, callee)
-            )
-        )
-    }
-
-    pragma [noinline]
-    predicate tainted_edge(PyEdgeRefinement test, CallContext context, TaintedNode origin) {
-        exists(EssaVariable var, TaintKind kind |
-            kind = origin.getTaintKind() and
-            var = test.getInput() and
-            tainted_var(var, context, origin) and
-            not exists(Sanitizer sanitizer |
-                valid_sanitizer(sanitizer) and
-                sanitizer.sanitizingEdge(kind, test)
-            )
-            |
-            not Filters::isinstance(test.getTest(), _, var.getSourceVariable().getAUse()) and
-            not boolean_filter(test.getTest(), var.getSourceVariable().getAUse())
-            or
-            exists(ControlFlowNode c, ClassValue cls |
-                Filters::isinstance(test.getTest(), c, var.getSourceVariable().getAUse())
-                and c.pointsTo(cls)
-                |
-                test.getSense() = true and not exists(kind.getClass())
-                or
-                test.getSense() = true and kind.getType().getASuperType() = cls
-                or
-                test.getSense() = false and not kind.getType().getASuperType() = cls
-            )
-            or
-            test.getSense() = test_evaluates(test.getTest(), var.getSourceVariable().getAUse(), kind)
-        )
-    }
-
-    /** Gets the operand of a unary `not` expression. */
-    private ControlFlowNode not_operand(ControlFlowNode expr) {
-        expr.(UnaryExprNode).getNode().getOp() instanceof Not and
-        result = expr.(UnaryExprNode).getOperand()
-    }
-
-    /** Holds if `test` is the test in a branch and `use` is that test
-     * with all the `not` prefixes removed.
-     */
-    private predicate boolean_filter(ControlFlowNode test, ControlFlowNode use) {
-        any(PyEdgeRefinement ref).getTest() = test and
-        (
-            use = test
-            or
-            exists(ControlFlowNode notuse |
-                boolean_filter(test, notuse) and
-                use = not_operand(notuse)
-            )
-        )
-    }
-
-    /** Gets the boolean value that `test` evaluates to when `use` is tainted with `kind`
-     * and `test` and `use` are part of a test in a branch.
-     */
-    private boolean test_evaluates(ControlFlowNode test, ControlFlowNode use, TaintKind kind) {
-        boolean_filter(_, use) and
-        kind.taints(use) and
-        test = use and result = kind.booleanValue()
-        or
-        result = test_evaluates(not_operand(test), use, kind).booleanNot()
-    }
-
-    pragma [noinline]
-    predicate tainted_argument(ArgumentRefinement def, CallContext context, TaintedNode origin) {
-        tainted_var(def.getInput(), context, origin)
-    }
-
-    pragma [noinline]
-    predicate tainted_import_star(ImportStarRefinement def, CallContext context, TaintedNode origin) {
-        exists(ModuleValue mod, string name |
-            PointsTo::pointsTo(def.getDefiningNode().(ImportStarNode).getModule(), _, mod, _) and
-            name = def.getSourceVariable().getName() |
-            if mod.exports(name) then (
-                /* Attribute from imported module */
-                module_attribute_tainted(mod, name, origin) and
-                context.appliesTo(def.getDefiningNode())
-            ) else (
-                /* Retain value held before import */
-                exists(EssaVariable var |
-                    var = def.getInput() and
-                    tainted_var(var, context, origin)
-                )
-            )
-        )
-    }
-
-    pragma [noinline]
-    predicate tainted_uni_edge(SingleSuccessorGuard uniphi, CallContext context, TaintedNode origin) {
-        exists(EssaVariable var, TaintKind kind |
-            kind = origin.getTaintKind() and
-            var = uniphi.getInput() and
-            tainted_var(var, context, origin) and
-            not exists(Sanitizer sanitizer |
-                valid_sanitizer(sanitizer) and
-                sanitizer.sanitizingSingleEdge(kind, uniphi)
-            )
-        )
-    }
-
-    pragma [noinline]
-    predicate tainted_with(WithDefinition def, CallContext context, TaintedNode origin) {
-        with_flow(_, origin.getNode(),def.getDefiningNode()) and
-        context = origin.getContext()
-    }
-
-    pragma [noinline]
-    predicate tainted_exception_capture(ExceptionCapture def, CallContext context, TaintedNode fromnode) {
-        fromnode.getNode() = def.getDefiningNode() and
-        context = fromnode.getContext()
-    }
-
-
-    /* A call that returns a copy (or similar) of the argument */
-    predicate copyCall(ControlFlowNode fromnode, CallNode tonode) {
-        tonode.getFunction().(AttrNode).getObject("copy") = fromnode
-        or
-        exists(ModuleObject copy, string name |
-            name = "copy" or name = "deepcopy" |
-            copy.attr(name).(FunctionObject).getACall() = tonode and
-            tonode.getArg(0) = fromnode
-        )
-        or
-        tonode.getFunction().pointsTo(ObjectInternal::builtin("reversed")) and
-        tonode.getArg(0) = fromnode
-    }
-
-}
-
-/* Helper predicate for tainted_with */
-private predicate with_flow(With with, ControlFlowNode contextManager, ControlFlowNode var) {
-    with.getContextExpr() = contextManager.getNode() and
-    with.getOptionalVars() = var.getNode() and
-    contextManager.strictlyDominates(var)
-}
-
-/* "Magic" sources and sinks which only have `toString()`s when
- * no sources are defined or no sinks are defined or no kinds are present.
- * In those cases, these classes make sure that an informative error
- * message is presented to the user.
- */
-
-library class ValidatingTaintSource extends TaintSource {
-
-    override string toString() {
-        result = error()
-    }
-
-    ValidatingTaintSource() {
-        this = uniqueCfgNode()
-    }
-
-    override predicate isSourceOf(TaintKind kind) { none() }
-
-    override predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
-        fp = error() and bl = 0 and bc = 0 and el = 0 and ec = 0
-    }
-
-
-}
-
-library class ValidatingTaintSink extends TaintSink {
-
-    override string toString() {
-        result = error()
-    }
-
-    ValidatingTaintSink() {
-        this = uniqueCfgNode()
-    }
-
-    override predicate sinks(TaintKind kind) { none() }
-
-    override predicate hasLocationInfo(string fp, int bl, int bc, int el, int ec) {
-        fp = error() and bl = 0 and bc = 0 and el = 0 and ec = 0
-    }
-
-}
-
+/* Backwards compatible name */
+class TaintedNode = TaintTrackingNode;
 
 /* Helpers for Validating classes */
 
-private string locatable_module_name() {
-    exists(Module m |
-        exists(m.getLocation()) and
-        result = m.getName()
-    )
-}
-
-private ControlFlowNode uniqueCfgNode() {
-    exists(Module m |
-        result = m.getEntryNode() and
-        m.getName() = min(string name | name = locatable_module_name())
-    )
-}
-
-private string error() {
-    forall(TaintSource s | s instanceof ValidatingTaintSource) and
-    result = "No sources defined"
-    or
-    forall(TaintSink s | s instanceof ValidatingTaintSink) and
-    result = "No sinks defined"
-}
-
-
-private newtype TCallContext =
-    TTop()
-    or
-    TCalleeContext(CallNode call, CallContext caller, int depth) {
-        caller.appliesToScope(call.getScope()) and
-        depth = caller.getDepth() + 1 and depth < 7 and
-        exists(TaintedNode n |
-            n = TTaintedNode_(_, caller, call.getAnArg())
-        )
-    }
-
 private import semmle.python.pointsto.PointsTo
-
-pragma [inline]
-private string shortLocation(Location l) {
-    result = l.getFile().getShortName() + ":" + l.getStartLine()
-}
-
-/** Call context for use in taint-tracking.
- * Using call contexts prevents "cross talk" between different calls
- * to the same function. For example, if a function f is defined as
- * ```python
- * def f(arg):
- *     return arg
- * ```
- * Then `f("tainted")` is "tainted", but `f("ok") is "ok".
- */
-class CallContext extends TCallContext {
-
-    string toString() {
-        this = TTop() and result = ""
-        or
-        exists(CallNode callsite, CallContext caller |
-            this = TCalleeContext(callsite, caller, _) |
-            result = shortLocation(callsite.getLocation()) + " from " + caller.toString() and caller = TCalleeContext(_, _, _)
-            or
-            result = shortLocation(callsite.getLocation()) and caller = TTop()
-        )
-    }
-
-    /** Holds if this context can apply to `n`.
-     */
-    pragma[inline]
-    predicate appliesTo(ControlFlowNode n) {
-        this.appliesToScope(n.getScope())
-    }
-
-    /** Holds if this context can apply to `s`
-     */
-    predicate appliesToScope(Scope s) {
-        this = TTop()
-        or
-        exists(FunctionObject f, CallNode call |
-            this = TCalleeContext(call, _, _) and
-            f.getFunction() = s and f.getACall() = call
-        )
-        or
-        exists(ClassValue cls, CallNode call |
-            this = TCalleeContext(call, _, _) and
-            call.getFunction().pointsTo(cls) and
-            s = cls.lookup("__init__").(CallableValue).getScope() and
-            call.getFunction().pointsTo(cls)
-        )
-    }
-
-    /** Gets the call depth of this context.
-     */
-    int getDepth() {
-        this = TTop() and result = 0
-        or
-        this = TCalleeContext(_, _, result)
-    }
-
-    CallContext getCallee(CallNode call) {
-        result = TCalleeContext(call, this, _)
-    }
-
-    CallContext getCaller() {
-        this = TCalleeContext(_, result, _)
-    }
-
-}
 
 
 /** Data flow module providing an interface compatible with
@@ -1658,8 +671,8 @@ module DataFlow {
 
         predicate hasFlow(ControlFlowNode source, ControlFlowNode sink) {
             exists(TaintedNode psource, TaintedNode psink |
-                psource.getNode() = source and
-                psink.getNode() = sink and
+                psource.getCfgNode() = source and
+                psink.getCfgNode() = sink and
                 this.isSource(source) and
                 this.isSink(sink) and
                 this.hasFlowPath(psource, psink)
@@ -1800,5 +813,26 @@ private predicate sequence_call(ControlFlowNode fromnode, CallNode tonode) {
         or
         cls.pointsTo(ObjectInternal::builtin("set"))
     )
+}
+
+
+class LegacyConfiguration extends TaintTracking::Configuration {
+
+    LegacyConfiguration() { this = "Legacy configuration" }
+
+    override predicate isSource(DataFlow::Node source, TaintKind kind) {
+        exists(TaintSource src |
+            source.asCfgNode() = src and
+            src.isSourceOf(kind)
+        )
+    }
+
+    override predicate isSink(DataFlow::Node sink, TaintKind kind) {
+        exists(TaintSink snk |
+            sink.asCfgNode() = snk and
+            snk.sinks(kind)
+        )
+    }
+
 }
 

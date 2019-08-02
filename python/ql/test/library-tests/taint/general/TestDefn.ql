@@ -4,6 +4,6 @@ import TaintLib
 
 
 from EssaDefinition defn, TaintedNode n
-where TaintFlowTest::tainted_def(defn, _, n)
+where n.getNode().asVariable() = defn.getVariable()
 select 
-    defn.getLocation().toString(), defn.getRepresentation(), n.getLocation().toString(), n.getTrackedValue(), n.getNode().getNode().toString()
+    defn.getLocation().toString(), defn.getRepresentation(), n.getLocation().toString(), "Taint " + n.getTaintKind(), n.getCfgNode().getNode().toString()

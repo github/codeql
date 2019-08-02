@@ -1,3 +1,7 @@
+| Basic custom config | test.py:122 | 122 | ControlFlowNode for t | simple.test |
+| Basic custom config | test.py:130 | 130 | ControlFlowNode for t | simple.test |
+| Basic custom config | test.py:140 | 140 | ControlFlowNode for t | simple.test |
+| Basic custom config | test.py:151 | 151 | ControlFlowNode for t | simple.test |
 | Rock-paper-scissors config | rockpaperscissors.py:13 | 13 | ControlFlowNode for SCISSORS | scissors |
 | Rock-paper-scissors config | rockpaperscissors.py:16 | 16 | ControlFlowNode for ROCK | rock |
 | Rock-paper-scissors config | rockpaperscissors.py:21 | 21 | ControlFlowNode for y | paper |
@@ -9,6 +13,7 @@
 | Simple config | carrier.py:26 | 26 | ControlFlowNode for Attribute() | simple.test |
 | Simple config | carrier.py:30 | 30 | ControlFlowNode for Attribute() | simple.test |
 | Simple config | carrier.py:35 | 35 | ControlFlowNode for Attribute() | simple.test |
+| Simple config | deep.py:22 | 22 | ControlFlowNode for x | simple.test |
 | Simple config | test.py:3 | 3 | ControlFlowNode for SOURCE | simple.test |
 | Simple config | test.py:7 | 7 | ControlFlowNode for s | simple.test |
 | Simple config | test.py:13 | 13 | ControlFlowNode for arg | simple.test |
@@ -43,6 +48,7 @@
 | Taint carrier config | carrier.py:26 | 26 | ControlFlowNode for Attribute() | simple.test |
 | Taint carrier config | carrier.py:30 | 30 | ControlFlowNode for Attribute() | simple.test |
 | Taint carrier config | carrier.py:35 | 35 | ControlFlowNode for Attribute() | simple.test |
+| Taint carrier config | deep.py:22 | 22 | ControlFlowNode for x | simple.test |
 | Taint carrier config | test.py:3 | 3 | ControlFlowNode for SOURCE | simple.test |
 | Taint carrier config | test.py:7 | 7 | ControlFlowNode for s | simple.test |
 | Taint carrier config | test.py:13 | 13 | ControlFlowNode for arg | simple.test |
@@ -72,7 +78,3 @@
 | Taint carrier config | test.py:197 | 197 | ControlFlowNode for t | simple.test |
 | Taint carrier config | test.py:199 | 199 | ControlFlowNode for t | simple.test |
 | Taint carrier config | test.py:214 | 214 | ControlFlowNode for x | simple.test |
-| Basic custom config | test.py:122 | 122 | ControlFlowNode for t | simple.test |
-| Basic custom config | test.py:130 | 130 | ControlFlowNode for t | simple.test |
-| Basic custom config | test.py:140 | 140 | ControlFlowNode for t | simple.test |
-| Basic custom config | test.py:151 | 151 | ControlFlowNode for t | simple.test |

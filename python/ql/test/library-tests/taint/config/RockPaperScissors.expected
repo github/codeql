@@ -1,37 +1,234 @@
 edges
-| carrier.py:21:5:21:5 | explicit.carrier at carrier.py:21 | carrier.py:22:10:22:10 | explicit.carrier at carrier.py:22 |
-| carrier.py:21:9:21:28 | explicit.carrier at carrier.py:21 | carrier.py:21:5:21:5 | explicit.carrier at carrier.py:21 |
-| carrier.py:22:10:22:10 | explicit.carrier at carrier.py:22 | carrier.py:22:10:22:22 | simple.test at carrier.py:22 |
-| rockpaperscissors.py:24:5:24:5 | rock at rockpaperscissors.py:24 | rockpaperscissors.py:25:9:25:9 | rock at rockpaperscissors.py:25 |
-| rockpaperscissors.py:24:9:24:12 | rock at rockpaperscissors.py:24 | rockpaperscissors.py:24:5:24:5 | rock at rockpaperscissors.py:24 |
-| rockpaperscissors.py:25:5:25:5 | paper at rockpaperscissors.py:25 | rockpaperscissors.py:26:14:26:14 | paper at rockpaperscissors.py:26 |
-| rockpaperscissors.py:25:9:25:9 | rock at rockpaperscissors.py:25 | rockpaperscissors.py:25:9:25:16 | scissors at rockpaperscissors.py:25 |
-| rockpaperscissors.py:25:9:25:16 | scissors at rockpaperscissors.py:25 | rockpaperscissors.py:25:9:25:23 | paper at rockpaperscissors.py:25 |
-| rockpaperscissors.py:25:9:25:23 | paper at rockpaperscissors.py:25 | rockpaperscissors.py:25:5:25:5 | paper at rockpaperscissors.py:25 |
-| test.py:6:5:6:5 | simple.test at test.py:6 | test.py:7:10:7:10 | simple.test at test.py:7 |
-| test.py:6:9:6:14 | simple.test at test.py:6 | test.py:6:5:6:5 | simple.test at test.py:6 |
-| test.py:12:10:12:12 | simple.test at test.py:12 | test.py:13:10:13:12 | simple.test at test.py:13 |
-| test.py:20:5:20:5 | simple.test at test.py:20 | test.py:21:10:21:10 | simple.test at test.py:21 |
-| test.py:20:9:20:14 | simple.test at test.py:20 | test.py:20:5:20:5 | simple.test at test.py:20 |
-| test.py:21:10:21:10 | simple.test at test.py:21 | test.py:12:10:12:12 | simple.test at test.py:12 |
-| test.py:37:9:37:9 | simple.test at test.py:37 | test.py:41:14:41:14 | simple.test at test.py:41 |
-| test.py:37:13:37:18 | simple.test at test.py:37 | test.py:37:9:37:9 | simple.test at test.py:37 |
-| test.py:49:17:49:19 | simple.test at test.py:49 | test.py:51:14:51:16 | simple.test at test.py:51 |
-| test.py:51:14:51:16 | simple.test at test.py:51 | test.py:12:10:12:12 | simple.test at test.py:12 |
-| test.py:62:9:62:9 | simple.test at test.py:62 | test.py:63:5:63:9 | simple.test at test.py:63 |
-| test.py:62:13:62:18 | simple.test at test.py:62 | test.py:62:9:62:9 | simple.test at test.py:62 |
-| test.py:63:5:63:9 | simple.test at test.py:63 | test.py:63:17:63:17 | simple.test at test.py:63 |
-| test.py:63:17:63:17 | simple.test at test.py:63 | test.py:49:17:49:19 | simple.test at test.py:49 |
-| test.py:67:9:67:9 | simple.test at test.py:67 | test.py:70:5:70:9 | simple.test at test.py:70 |
-| test.py:67:13:67:18 | simple.test at test.py:67 | test.py:67:9:67:9 | simple.test at test.py:67 |
-| test.py:70:5:70:9 | simple.test at test.py:70 | test.py:70:17:70:17 | simple.test at test.py:70 |
-| test.py:70:17:70:17 | simple.test at test.py:70 | test.py:49:17:49:19 | simple.test at test.py:49 |
-| test.py:126:9:126:9 | simple.test at test.py:126 | test.py:130:21:130:21 | simple.test at test.py:130 |
-| test.py:126:13:126:25 | simple.test at test.py:126 | test.py:126:9:126:9 | simple.test at test.py:126 |
-| test.py:128:9:128:9 | simple.test at test.py:128 | test.py:132:14:132:14 | simple.test at test.py:132 |
-| test.py:128:13:128:18 | simple.test at test.py:128 | test.py:128:9:128:9 | simple.test at test.py:128 |
+| carrier.py:13:9:13:11 | explicit.carrier | carrier.py:14:12:14:14 | explicit.carrier |
+| carrier.py:14:12:14:14 | explicit.carrier | carrier.py:29:9:29:33 | explicit.carrier |
+| carrier.py:21:9:21:28 | explicit.carrier | carrier.py:22:10:22:10 | explicit.carrier |
+| carrier.py:22:10:22:10 | explicit.carrier | carrier.py:22:10:22:22 | simple.test |
+| carrier.py:29:9:29:33 | explicit.carrier | carrier.py:30:10:30:10 | explicit.carrier |
+| carrier.py:29:13:29:32 | explicit.carrier | carrier.py:13:9:13:11 | explicit.carrier |
+| carrier.py:30:10:30:10 | explicit.carrier | carrier.py:30:10:30:22 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:3:12:3:14 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:6:12:6:18 | simple.test |
+| deep.py:5:8:5:10 | simple.test | deep.py:6:15:6:17 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:9:12:9:18 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:2:8:2:10 | simple.test |
+| deep.py:8:8:8:10 | simple.test | deep.py:9:15:9:17 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:12:12:12:18 | simple.test |
+| deep.py:9:15:9:17 | simple.test | deep.py:5:8:5:10 | simple.test |
+| deep.py:11:8:11:10 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:15:12:15:18 | simple.test |
+| deep.py:12:15:12:17 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:14:8:14:10 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:18:12:18:18 | simple.test |
+| deep.py:15:15:15:17 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:17:8:17:10 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:20:5:20:14 | simple.test |
+| deep.py:18:15:18:17 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:20:5:20:14 | simple.test | deep.py:22:6:22:6 | simple.test |
+| deep.py:20:8:20:13 | simple.test | deep.py:17:8:17:10 | simple.test |
+| rockpaperscissors.py:24:9:24:12 | rock | rockpaperscissors.py:25:9:25:9 | rock |
+| rockpaperscissors.py:25:9:25:9 | rock | rockpaperscissors.py:25:9:25:16 | scissors |
+| rockpaperscissors.py:25:9:25:16 | scissors | rockpaperscissors.py:25:9:25:23 | paper |
+| rockpaperscissors.py:25:9:25:23 | paper | rockpaperscissors.py:26:14:26:14 | paper |
+| test.py:6:9:6:14 | simple.test | test.py:7:10:7:10 | simple.test |
+| test.py:12:10:12:12 | simple.test | test.py:13:10:13:12 | simple.test |
+| test.py:20:9:20:14 | simple.test | test.py:21:10:21:10 | simple.test |
+| test.py:21:10:21:10 | simple.test | test.py:12:10:12:12 | simple.test |
+| test.py:37:13:37:18 | simple.test | test.py:41:14:41:14 | simple.test |
+| test.py:49:17:49:19 | simple.test | test.py:51:14:51:16 | simple.test |
+| test.py:51:14:51:16 | simple.test | test.py:12:10:12:12 | simple.test |
+| test.py:62:13:62:18 | simple.test | test.py:63:17:63:17 | simple.test |
+| test.py:63:17:63:17 | simple.test | test.py:49:17:49:19 | simple.test |
+| test.py:67:13:67:18 | simple.test | test.py:70:17:70:17 | simple.test |
+| test.py:70:17:70:17 | simple.test | test.py:49:17:49:19 | simple.test |
+| test.py:72:9:72:11 | simple.test | test.py:73:12:73:14 | simple.test |
+| test.py:73:12:73:14 | simple.test | test.py:77:9:77:14 | simple.test |
+| test.py:76:9:76:14 | simple.test | test.py:77:13:77:13 | simple.test |
+| test.py:77:9:77:14 | simple.test | test.py:78:10:78:10 | simple.test |
+| test.py:77:13:77:13 | simple.test | test.py:72:9:72:11 | simple.test |
+| test.py:126:13:126:25 | simple.test | test.py:130:21:130:21 | simple.test |
+| test.py:128:13:128:18 | simple.test | test.py:132:14:132:14 | simple.test |
+| test.py:163:9:163:14 | simple.test | test.py:165:10:165:10 | simple.test |
+| test.py:178:9:178:14 | simple.test | test.py:180:14:180:14 | simple.test |
+| test.py:178:9:178:14 | simple.test | test.py:186:14:186:14 | simple.test |
+| test.py:195:9:195:14 | simple.test | test.py:199:14:199:14 | simple.test |
+| test.py:208:11:208:18 | sequence of simple.test | test.py:209:14:209:16 | sequence of simple.test |
+| test.py:208:12:208:17 | simple.test | test.py:208:11:208:18 | sequence of simple.test |
+| test.py:209:5:209:17 | simple.test | test.py:210:15:210:15 | simple.test |
+| test.py:209:14:209:16 | sequence of simple.test | test.py:209:5:209:17 | simple.test |
+| test.py:210:15:210:15 | simple.test | test.py:213:14:213:32 | iterable.simple |
+| test.py:210:15:210:15 | simple.test | test.py:213:14:213:32 | sequence of simple.test |
+| test.py:213:5:213:33 | simple.test | test.py:214:14:214:14 | simple.test |
+| test.py:213:14:213:32 | iterable.simple | test.py:213:5:213:33 | simple.test |
+| test.py:213:14:213:32 | sequence of simple.test | test.py:213:5:213:33 | simple.test |
 parents
+| carrier.py:13:9:13:11 | explicit.carrier | carrier.py:29:13:29:32 | explicit.carrier |
+| carrier.py:14:12:14:14 | explicit.carrier | carrier.py:29:13:29:32 | explicit.carrier |
+| deep.py:2:8:2:10 | simple.test | deep.py:5:8:5:10 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:6:15:6:17 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:9:15:9:17 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:2:8:2:10 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:2:8:2:10 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:5:8:5:10 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:6:15:6:17 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:9:15:9:17 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:3:12:3:14 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:5:8:5:10 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:5:8:5:10 | simple.test | deep.py:9:15:9:17 | simple.test |
+| deep.py:5:8:5:10 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:5:8:5:10 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:5:8:5:10 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:5:8:5:10 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:5:8:5:10 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:5:8:5:10 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:5:8:5:10 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:2:8:2:10 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:3:12:3:14 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:5:8:5:10 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:6:15:6:17 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:9:15:9:17 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:6:12:6:18 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:5:8:5:10 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:9:15:9:17 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:6:15:6:17 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:8:8:8:10 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:8:8:8:10 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:8:8:8:10 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:8:8:8:10 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:8:8:8:10 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:8:8:8:10 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:8:8:8:10 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:2:8:2:10 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:3:12:3:14 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:5:8:5:10 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:6:12:6:18 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:6:15:6:17 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:9:15:9:17 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:9:12:9:18 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:9:15:9:17 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:9:15:9:17 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:9:15:9:17 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:9:15:9:17 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:9:15:9:17 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:9:15:9:17 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:9:15:9:17 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:9:15:9:17 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:11:8:11:10 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:11:8:11:10 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:11:8:11:10 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:11:8:11:10 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:11:8:11:10 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:2:8:2:10 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:3:12:3:14 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:5:8:5:10 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:6:12:6:18 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:6:15:6:17 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:9:12:9:18 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:9:15:9:17 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:12:12:12:18 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:12:15:12:17 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:12:15:12:17 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:12:15:12:17 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:12:15:12:17 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:12:15:12:17 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:12:15:12:17 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:14:8:14:10 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:14:8:14:10 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:14:8:14:10 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:2:8:2:10 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:3:12:3:14 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:5:8:5:10 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:6:12:6:18 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:6:15:6:17 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:9:12:9:18 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:9:15:9:17 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:12:12:12:18 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:15:12:15:18 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:15:15:15:17 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:15:15:15:17 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:15:15:15:17 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:15:15:15:17 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:17:8:17:10 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:2:8:2:10 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:3:12:3:14 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:5:8:5:10 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:6:12:6:18 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:6:15:6:17 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:8:8:8:10 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:9:12:9:18 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:9:15:9:17 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:11:8:11:10 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:12:12:12:18 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:12:15:12:17 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:14:8:14:10 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:15:12:15:18 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:15:15:15:17 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:18:15:18:17 | simple.test |
+| deep.py:18:12:18:18 | simple.test | deep.py:20:8:20:13 | simple.test |
+| deep.py:18:15:18:17 | simple.test | deep.py:17:8:17:10 | simple.test |
+| deep.py:18:15:18:17 | simple.test | deep.py:20:8:20:13 | simple.test |
+| test.py:12:10:12:12 | simple.test | test.py:21:10:21:10 | simple.test |
+| test.py:12:10:12:12 | simple.test | test.py:51:14:51:16 | simple.test |
+| test.py:13:10:13:12 | simple.test | test.py:12:10:12:12 | simple.test |
+| test.py:13:10:13:12 | simple.test | test.py:21:10:21:10 | simple.test |
+| test.py:13:10:13:12 | simple.test | test.py:51:14:51:16 | simple.test |
+| test.py:49:17:49:19 | simple.test | test.py:63:17:63:17 | simple.test |
+| test.py:49:17:49:19 | simple.test | test.py:70:17:70:17 | simple.test |
+| test.py:51:14:51:16 | simple.test | test.py:63:17:63:17 | simple.test |
+| test.py:51:14:51:16 | simple.test | test.py:70:17:70:17 | simple.test |
+| test.py:72:9:72:11 | simple.test | test.py:77:13:77:13 | simple.test |
+| test.py:73:12:73:14 | simple.test | test.py:72:9:72:11 | simple.test |
+| test.py:73:12:73:14 | simple.test | test.py:77:13:77:13 | simple.test |
 #select
-| rockpaperscissors.py:13:10:13:17 | ControlFlowNode for SCISSORS | rockpaperscissors.py:13:10:13:17 | scissors at rockpaperscissors.py:13 | rockpaperscissors.py:13:10:13:17 | scissors at rockpaperscissors.py:13 | $@ looses to $@. | rockpaperscissors.py:13:10:13:17 | ControlFlowNode for SCISSORS | scissors | rockpaperscissors.py:13:10:13:17 | ControlFlowNode for SCISSORS | scissors |
-| rockpaperscissors.py:16:11:16:14 | ControlFlowNode for ROCK | rockpaperscissors.py:16:11:16:14 | rock at rockpaperscissors.py:16 | rockpaperscissors.py:16:11:16:14 | rock at rockpaperscissors.py:16 | $@ looses to $@. | rockpaperscissors.py:16:11:16:14 | ControlFlowNode for ROCK | rock | rockpaperscissors.py:16:11:16:14 | ControlFlowNode for ROCK | rock |
-| rockpaperscissors.py:26:14:26:14 | ControlFlowNode for y | rockpaperscissors.py:24:9:24:12 | rock at rockpaperscissors.py:24 | rockpaperscissors.py:26:14:26:14 | paper at rockpaperscissors.py:26 | $@ looses to $@. | rockpaperscissors.py:24:9:24:12 | ControlFlowNode for ROCK | rock | rockpaperscissors.py:26:14:26:14 | ControlFlowNode for y | paper |
+| rockpaperscissors.py:13:10:13:17 | ControlFlowNode for SCISSORS | rockpaperscissors.py:13:10:13:17 | scissors | rockpaperscissors.py:13:10:13:17 | scissors | $@ looses to $@. | rockpaperscissors.py:13:10:13:17 | ControlFlowNode for SCISSORS | scissors | rockpaperscissors.py:13:10:13:17 | ControlFlowNode for SCISSORS | scissors |
+| rockpaperscissors.py:16:11:16:14 | ControlFlowNode for ROCK | rockpaperscissors.py:16:11:16:14 | rock | rockpaperscissors.py:16:11:16:14 | rock | $@ looses to $@. | rockpaperscissors.py:16:11:16:14 | ControlFlowNode for ROCK | rock | rockpaperscissors.py:16:11:16:14 | ControlFlowNode for ROCK | rock |
+| rockpaperscissors.py:26:14:26:14 | ControlFlowNode for y | rockpaperscissors.py:24:9:24:12 | rock | rockpaperscissors.py:26:14:26:14 | paper | $@ looses to $@. | rockpaperscissors.py:24:9:24:12 | ControlFlowNode for ROCK | rock | rockpaperscissors.py:26:14:26:14 | ControlFlowNode for y | paper |

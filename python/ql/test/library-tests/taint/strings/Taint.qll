@@ -11,7 +11,7 @@ class SimpleSource extends TaintSource {
         kind instanceof ExternalStringKind
     }
 
-    string toString() {
+    override string toString() {
         result = "taint source"
     }
 
@@ -25,7 +25,7 @@ class ListSource extends TaintSource {
         kind instanceof ExternalStringSequenceKind
     }
 
-    string toString() {
+    override string toString() {
         result = "list taint source"
     }
 
@@ -39,9 +39,8 @@ class DictSource extends TaintSource {
         kind instanceof ExternalStringDictKind
     }
 
-    string toString() {
+    override string toString() {
         result = "dict taint source"
     }
 
 }
-

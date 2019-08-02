@@ -1,0 +1,278 @@
+| [simple.test] | test.py:168 | ControlFlowNode for List | no attribute |  |
+| [simple.test] | test.py:168 | SSA variable l | no attribute |  |
+| [simple.test] | test.py:170 | ControlFlowNode for l | no attribute |  |
+| [simple.test] | test.py:170 | SSA variable l | no attribute |  |
+| [simple.test] | test.py:174 | ControlFlowNode for l | no attribute |  |
+| [simple.test] | test.py:174 | ControlFlowNode for list() | no attribute |  |
+| [simple.test] | test.py:174 | SSA variable l | no attribute |  |
+| [simple.test] | test.py:174 | SSA variable l2 | no attribute |  |
+| [simple.test] | test.py:208 | ControlFlowNode for List | no attribute |  |
+| [simple.test] | test.py:208 | SSA variable seq | no attribute |  |
+| [simple.test] | test.py:209 | ControlFlowNode for seq | no attribute |  |
+| [simple.test] | test.py:213 | ControlFlowNode for flow_in_generator() | no attribute |  |
+| explicit.carrier | carrier.py:4 | ControlFlowNode for arg | no attribute | Parameter 1(no attribute) is explicit.carrier |
+| explicit.carrier | carrier.py:4 | SSA variable arg | no attribute | Parameter 1(no attribute) is explicit.carrier |
+| explicit.carrier | carrier.py:5 | ControlFlowNode for arg | no attribute | Parameter 1(no attribute) is explicit.carrier |
+| explicit.carrier | carrier.py:13 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is explicit.carrier |
+| explicit.carrier | carrier.py:13 | SSA variable arg | no attribute | Parameter 0(no attribute) is explicit.carrier |
+| explicit.carrier | carrier.py:14 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is explicit.carrier |
+| explicit.carrier | carrier.py:21 | ControlFlowNode for TAINT_CARRIER_SOURCE | no attribute |  |
+| explicit.carrier | carrier.py:21 | SSA variable c | no attribute |  |
+| explicit.carrier | carrier.py:22 | ControlFlowNode for c | no attribute |  |
+| explicit.carrier | carrier.py:22 | SSA variable c | no attribute |  |
+| explicit.carrier | carrier.py:29 | ControlFlowNode for TAINT_CARRIER_SOURCE | no attribute |  |
+| explicit.carrier | carrier.py:29 | ControlFlowNode for hub() | no attribute |  |
+| explicit.carrier | carrier.py:29 | SSA variable c | no attribute |  |
+| explicit.carrier | carrier.py:30 | ControlFlowNode for c | no attribute |  |
+| explicit.carrier | carrier.py:30 | SSA variable c | no attribute |  |
+| explicit.carrier | carrier.py:33 | ControlFlowNode for TAINT_CARRIER_SOURCE | no attribute |  |
+| iterable.simple | test.py:213 | ControlFlowNode for flow_in_generator() | no attribute |  |
+| paper | rockpaperscissors.py:6 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is paper |
+| paper | rockpaperscissors.py:6 | SSA variable arg | no attribute | Parameter 0(no attribute) is paper |
+| paper | rockpaperscissors.py:9 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is paper |
+| paper | rockpaperscissors.py:9 | SSA variable arg | no attribute | Parameter 0(no attribute) is paper |
+| paper | rockpaperscissors.py:25 | ControlFlowNode for Attribute() | no attribute |  |
+| paper | rockpaperscissors.py:25 | SSA variable y | no attribute |  |
+| paper | rockpaperscissors.py:26 | ControlFlowNode for y | no attribute |  |
+| paper | rockpaperscissors.py:26 | SSA variable y | no attribute |  |
+| paper | rockpaperscissors.py:30 | ControlFlowNode for Attribute() | no attribute |  |
+| paper | rockpaperscissors.py:30 | SSA variable y | no attribute |  |
+| paper | rockpaperscissors.py:32 | ControlFlowNode for y | no attribute |  |
+| paper | rockpaperscissors.py:32 | SSA variable y | no attribute |  |
+| rock | rockpaperscissors.py:6 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is rock |
+| rock | rockpaperscissors.py:6 | SSA variable arg | no attribute | Parameter 0(no attribute) is rock |
+| rock | rockpaperscissors.py:16 | ControlFlowNode for ROCK | no attribute |  |
+| rock | rockpaperscissors.py:19 | ControlFlowNode for ROCK | no attribute |  |
+| rock | rockpaperscissors.py:19 | SSA variable x | no attribute |  |
+| rock | rockpaperscissors.py:20 | ControlFlowNode for x | no attribute |  |
+| rock | rockpaperscissors.py:20 | SSA variable x | no attribute |  |
+| rock | rockpaperscissors.py:24 | ControlFlowNode for ROCK | no attribute |  |
+| rock | rockpaperscissors.py:24 | SSA variable x | no attribute |  |
+| rock | rockpaperscissors.py:25 | ControlFlowNode for x | no attribute |  |
+| rock | rockpaperscissors.py:25 | SSA variable x | no attribute |  |
+| scissors | rockpaperscissors.py:3 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is scissors |
+| scissors | rockpaperscissors.py:3 | SSA variable arg | no attribute | Parameter 0(no attribute) is scissors |
+| scissors | rockpaperscissors.py:6 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is scissors |
+| scissors | rockpaperscissors.py:6 | SSA variable arg | no attribute | Parameter 0(no attribute) is scissors |
+| scissors | rockpaperscissors.py:9 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is scissors |
+| scissors | rockpaperscissors.py:9 | SSA variable arg | no attribute | Parameter 0(no attribute) is scissors |
+| scissors | rockpaperscissors.py:13 | ControlFlowNode for SCISSORS | no attribute |  |
+| scissors | rockpaperscissors.py:20 | ControlFlowNode for Attribute() | no attribute |  |
+| scissors | rockpaperscissors.py:20 | SSA variable y | no attribute |  |
+| scissors | rockpaperscissors.py:21 | ControlFlowNode for y | no attribute |  |
+| scissors | rockpaperscissors.py:21 | SSA variable y | no attribute |  |
+| scissors | rockpaperscissors.py:25 | ControlFlowNode for Attribute() | no attribute |  |
+| scissors | rockpaperscissors.py:29 | ControlFlowNode for SCISSORS | no attribute |  |
+| scissors | rockpaperscissors.py:29 | SSA variable x | no attribute |  |
+| scissors | rockpaperscissors.py:30 | ControlFlowNode for x | no attribute |  |
+| scissors | rockpaperscissors.py:30 | SSA variable x | no attribute |  |
+| scissors | rockpaperscissors.py:31 | ControlFlowNode for x | no attribute |  |
+| scissors | rockpaperscissors.py:31 | SSA variable x | no attribute |  |
+| simple.test | carrier.py:4 | ControlFlowNode for arg | no attribute | Parameter 1(no attribute) is simple.test |
+| simple.test | carrier.py:4 | SSA variable arg | no attribute | Parameter 1(no attribute) is simple.test |
+| simple.test | carrier.py:5 | ControlFlowNode for arg | no attribute | Parameter 1(no attribute) is simple.test |
+| simple.test | carrier.py:17 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | carrier.py:22 | ControlFlowNode for Attribute() | no attribute |  |
+| simple.test | carrier.py:25 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | carrier.py:30 | ControlFlowNode for Attribute() | no attribute |  |
+| simple.test | deep.py:2 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:2 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:3 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:5 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:5 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:6 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:6 | ControlFlowNode for f1() | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:6 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:8 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:8 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:9 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:9 | ControlFlowNode for f2() | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:9 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:11 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:11 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:12 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:12 | ControlFlowNode for f3() | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:12 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:14 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:14 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:15 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:15 | ControlFlowNode for f4() | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:15 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:17 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:17 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:18 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:18 | ControlFlowNode for f5() | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:18 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | deep.py:20 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | deep.py:20 | ControlFlowNode for f6() | no attribute |  |
+| simple.test | deep.py:20 | GSSA Variable x | no attribute |  |
+| simple.test | deep.py:22 | ControlFlowNode for x | no attribute |  |
+| simple.test | deep.py:22 | GSSA Variable x | no attribute |  |
+| simple.test | module.py:3 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | module.py:3 | GSSA Variable dangerous | no attribute |  |
+| simple.test | module.py:7 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | module.py:10 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:3 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:6 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:6 | SSA variable s | no attribute |  |
+| simple.test | test.py:7 | ControlFlowNode for s | no attribute |  |
+| simple.test | test.py:7 | SSA variable s | no attribute |  |
+| simple.test | test.py:10 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:12 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | test.py:12 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | test.py:13 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | test.py:13 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | test.py:20 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:20 | SSA variable t | no attribute |  |
+| simple.test | test.py:21 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:21 | SSA variable t | no attribute |  |
+| simple.test | test.py:31 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:31 | SSA variable t | no attribute |  |
+| simple.test | test.py:37 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:37 | SSA variable t | no attribute |  |
+| simple.test | test.py:41 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:41 | SSA variable t | no attribute |  |
+| simple.test | test.py:49 | ControlFlowNode for arg | no attribute | Parameter 1(no attribute) is simple.test |
+| simple.test | test.py:49 | SSA variable arg | no attribute | Parameter 1(no attribute) is simple.test |
+| simple.test | test.py:51 | ControlFlowNode for arg | no attribute | Parameter 1(no attribute) is simple.test |
+| simple.test | test.py:51 | SSA variable arg | no attribute | Parameter 1(no attribute) is simple.test |
+| simple.test | test.py:62 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:62 | SSA variable t | no attribute |  |
+| simple.test | test.py:63 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:63 | SSA variable t | no attribute |  |
+| simple.test | test.py:67 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:67 | SSA variable t | no attribute |  |
+| simple.test | test.py:70 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:70 | SSA variable t | no attribute |  |
+| simple.test | test.py:72 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | test.py:72 | SSA variable arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | test.py:73 | ControlFlowNode for arg | no attribute | Parameter 0(no attribute) is simple.test |
+| simple.test | test.py:76 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:76 | SSA variable t | no attribute |  |
+| simple.test | test.py:77 | ControlFlowNode for hub() | no attribute |  |
+| simple.test | test.py:77 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:77 | SSA variable t | no attribute |  |
+| simple.test | test.py:78 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:78 | SSA variable t | no attribute |  |
+| simple.test | test.py:120 | ControlFlowNode for CUSTOM_SOURCE | no attribute |  |
+| simple.test | test.py:120 | SSA variable t | no attribute |  |
+| simple.test | test.py:121 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:126 | ControlFlowNode for CUSTOM_SOURCE | no attribute |  |
+| simple.test | test.py:126 | SSA variable t | no attribute |  |
+| simple.test | test.py:128 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:128 | SSA variable t | no attribute |  |
+| simple.test | test.py:130 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:130 | SSA variable t | no attribute |  |
+| simple.test | test.py:132 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:132 | SSA variable t | no attribute |  |
+| simple.test | test.py:136 | ControlFlowNode for CUSTOM_SOURCE | no attribute |  |
+| simple.test | test.py:136 | SSA variable t | no attribute |  |
+| simple.test | test.py:138 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:138 | SSA variable t | no attribute |  |
+| simple.test | test.py:140 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:140 | SSA variable t | no attribute |  |
+| simple.test | test.py:142 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:142 | SSA variable t | no attribute |  |
+| simple.test | test.py:146 | ControlFlowNode for CUSTOM_SOURCE | no attribute |  |
+| simple.test | test.py:146 | SSA variable t | no attribute |  |
+| simple.test | test.py:148 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:148 | SSA variable t | no attribute |  |
+| simple.test | test.py:149 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:159 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:163 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:163 | SSA variable s | no attribute |  |
+| simple.test | test.py:164 | ControlFlowNode for s | no attribute |  |
+| simple.test | test.py:164 | SSA variable s | no attribute |  |
+| simple.test | test.py:165 | ControlFlowNode for s | no attribute |  |
+| simple.test | test.py:165 | SSA variable s | no attribute |  |
+| simple.test | test.py:168 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:169 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:178 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:178 | SSA variable t | no attribute |  |
+| simple.test | test.py:179 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:180 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:180 | SSA variable t | no attribute |  |
+| simple.test | test.py:183 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:183 | SSA variable t | no attribute |  |
+| simple.test | test.py:186 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:186 | SSA variable t | no attribute |  |
+| simple.test | test.py:194 | SSA variable t | no attribute |  |
+| simple.test | test.py:195 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:195 | SSA variable t | no attribute |  |
+| simple.test | test.py:196 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:199 | ControlFlowNode for t | no attribute |  |
+| simple.test | test.py:199 | SSA variable t | no attribute |  |
+| simple.test | test.py:208 | ControlFlowNode for SOURCE | no attribute |  |
+| simple.test | test.py:209 | ControlFlowNode for For | no attribute |  |
+| simple.test | test.py:209 | SSA variable i | no attribute |  |
+| simple.test | test.py:210 | ControlFlowNode for i | no attribute |  |
+| simple.test | test.py:213 | ControlFlowNode for For | no attribute |  |
+| simple.test | test.py:213 | SSA variable x | no attribute |  |
+| simple.test | test.py:214 | ControlFlowNode for x | no attribute |  |
+| simple.test | test.py:214 | SSA variable x | no attribute |  |
+| {Command injection} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {Command injection} | test.py:175 | SSA variable d2 | no attribute |  |
+| {SQL injection} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {SQL injection} | test.py:175 | SSA variable d2 | no attribute |  |
+| {[Command injection]} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {[Command injection]} | test.py:175 | SSA variable d2 | no attribute |  |
+| {[SQL injection]} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {[SQL injection]} | test.py:175 | SSA variable d2 | no attribute |  |
+| {[basic.custom]} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {[basic.custom]} | test.py:175 | SSA variable d2 | no attribute |  |
+| {[explicit.carrier]} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {[explicit.carrier]} | test.py:175 | SSA variable d2 | no attribute |  |
+| {[falsey]} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {[falsey]} | test.py:175 | SSA variable d2 | no attribute |  |
+| {[iterable.simple]} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {[iterable.simple]} | test.py:175 | SSA variable d2 | no attribute |  |
+| {[paper]} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {[paper]} | test.py:175 | SSA variable d2 | no attribute |  |
+| {[rock]} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {[rock]} | test.py:175 | SSA variable d2 | no attribute |  |
+| {[scissors]} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {[scissors]} | test.py:175 | SSA variable d2 | no attribute |  |
+| {[simple.test]} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {[simple.test]} | test.py:175 | SSA variable d2 | no attribute |  |
+| {basic.custom} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {basic.custom} | test.py:175 | SSA variable d2 | no attribute |  |
+| {explicit.carrier} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {explicit.carrier} | test.py:175 | SSA variable d2 | no attribute |  |
+| {falsey} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {falsey} | test.py:175 | SSA variable d2 | no attribute |  |
+| {iterable.simple} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {iterable.simple} | test.py:175 | SSA variable d2 | no attribute |  |
+| {paper} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {paper} | test.py:175 | SSA variable d2 | no attribute |  |
+| {rock} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {rock} | test.py:175 | SSA variable d2 | no attribute |  |
+| {scissors} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {scissors} | test.py:175 | SSA variable d2 | no attribute |  |
+| {simple.test} | test.py:169 | ControlFlowNode for Dict | no attribute |  |
+| {simple.test} | test.py:169 | SSA variable d | no attribute |  |
+| {simple.test} | test.py:171 | ControlFlowNode for d | no attribute |  |
+| {simple.test} | test.py:171 | SSA variable d | no attribute |  |
+| {simple.test} | test.py:175 | ControlFlowNode for d | no attribute |  |
+| {simple.test} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {simple.test} | test.py:175 | SSA variable d | no attribute |  |
+| {simple.test} | test.py:175 | SSA variable d2 | no attribute |  |
+| {{Command injection}} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {{Command injection}} | test.py:175 | SSA variable d2 | no attribute |  |
+| {{SQL injection}} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {{SQL injection}} | test.py:175 | SSA variable d2 | no attribute |  |
+| {{basic.custom}} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {{basic.custom}} | test.py:175 | SSA variable d2 | no attribute |  |
+| {{explicit.carrier}} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {{explicit.carrier}} | test.py:175 | SSA variable d2 | no attribute |  |
+| {{falsey}} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {{falsey}} | test.py:175 | SSA variable d2 | no attribute |  |
+| {{iterable.simple}} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {{iterable.simple}} | test.py:175 | SSA variable d2 | no attribute |  |
+| {{paper}} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {{paper}} | test.py:175 | SSA variable d2 | no attribute |  |
+| {{rock}} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {{rock}} | test.py:175 | SSA variable d2 | no attribute |  |
+| {{scissors}} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {{scissors}} | test.py:175 | SSA variable d2 | no attribute |  |
+| {{simple.test}} | test.py:175 | ControlFlowNode for dict() | no attribute |  |
+| {{simple.test}} | test.py:175 | SSA variable d2 | no attribute |  |

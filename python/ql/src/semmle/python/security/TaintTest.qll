@@ -4,4 +4,4 @@
 
 
 import python
-import TaintTracking::TaintFlowImplementation as TaintFlowTest
+import semmle.python.dataflow.Implementation as TaintFlowTest

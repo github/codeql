@@ -1,3 +1,7 @@
+| Basic custom config | test.py:120 | 120 | ControlFlowNode for CUSTOM_SOURCE | simple.test |
+| Basic custom config | test.py:126 | 126 | ControlFlowNode for CUSTOM_SOURCE | simple.test |
+| Basic custom config | test.py:136 | 136 | ControlFlowNode for CUSTOM_SOURCE | simple.test |
+| Basic custom config | test.py:146 | 146 | ControlFlowNode for CUSTOM_SOURCE | simple.test |
 | Rock-paper-scissors config | rockpaperscissors.py:13 | 13 | ControlFlowNode for SCISSORS | scissors |
 | Rock-paper-scissors config | rockpaperscissors.py:16 | 16 | ControlFlowNode for ROCK | rock |
 | Rock-paper-scissors config | rockpaperscissors.py:19 | 19 | ControlFlowNode for ROCK | rock |
@@ -31,7 +35,3 @@
 | Taint carrier config | carrier.py:21 | 21 | ControlFlowNode for TAINT_CARRIER_SOURCE | explicit.carrier |
 | Taint carrier config | carrier.py:29 | 29 | ControlFlowNode for TAINT_CARRIER_SOURCE | explicit.carrier |
 | Taint carrier config | carrier.py:33 | 33 | ControlFlowNode for TAINT_CARRIER_SOURCE | explicit.carrier |
-| Basic custom config | test.py:120 | 120 | ControlFlowNode for CUSTOM_SOURCE | simple.test |
-| Basic custom config | test.py:126 | 126 | ControlFlowNode for CUSTOM_SOURCE | simple.test |
-| Basic custom config | test.py:136 | 136 | ControlFlowNode for CUSTOM_SOURCE | simple.test |
-| Basic custom config | test.py:146 | 146 | ControlFlowNode for CUSTOM_SOURCE | simple.test |
