@@ -17,9 +17,6 @@
 | GlobalDataFlow.cs:73:15:73:19 | access to local variable sink1 |
 | GlobalDataFlow.cs:76:15:76:19 | access to local variable sink2 |
 | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 |
-| GlobalDataFlow.cs:107:15:107:22 | access to local variable nonSink0 |
-| GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 |
-| GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:136:15:136:19 | access to local variable sink4 |
 | GlobalDataFlow.cs:144:15:144:19 | access to local variable sink5 |
 | GlobalDataFlow.cs:154:15:154:19 | access to local variable sink6 |
