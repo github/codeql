@@ -1467,8 +1467,6 @@
 | GlobalDataFlow.cs:78:30:78:34 | access to local variable sink3 | GlobalDataFlow.cs:78:30:78:34 | access to local variable sink3 |
 | GlobalDataFlow.cs:78:30:78:34 | access to local variable sink3 | GlobalDataFlow.cs:78:41:78:45 | access to local variable sink3 |
 | GlobalDataFlow.cs:78:30:78:34 | access to local variable sink3 | GlobalDataFlow.cs:78:41:78:45 | access to local variable sink3 |
-| GlobalDataFlow.cs:78:41:78:45 | access to local variable sink3 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) |
-| GlobalDataFlow.cs:78:41:78:45 | access to local variable sink3 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) |
 | GlobalDataFlow.cs:78:41:78:45 | access to local variable sink3 | GlobalDataFlow.cs:78:41:78:45 | access to local variable sink3 |
 | GlobalDataFlow.cs:78:41:78:45 | access to local variable sink3 | GlobalDataFlow.cs:287:50:287:50 | z |
 | GlobalDataFlow.cs:78:41:78:45 | access to local variable sink3 | GlobalDataFlow.cs:287:50:287:50 | z |
@@ -2344,8 +2342,6 @@
 | GlobalDataFlow.cs:105:15:105:22 | access to local variable nonSink0 | GlobalDataFlow.cs:105:15:105:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:106:9:106:49 | call to method ReturnOut | GlobalDataFlow.cs:106:9:106:49 | call to method ReturnOut |
 | GlobalDataFlow.cs:106:19:106:23 | access to local variable sink1 | GlobalDataFlow.cs:106:19:106:23 | access to local variable sink1 |
-| GlobalDataFlow.cs:106:19:106:23 | access to local variable sink1 | GlobalDataFlow.cs:106:41:106:48 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:106:19:106:23 | access to local variable sink1 | GlobalDataFlow.cs:106:41:106:48 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:106:19:106:23 | access to local variable sink1 | GlobalDataFlow.cs:110:19:110:23 | access to local variable sink1 |
 | GlobalDataFlow.cs:106:19:106:23 | access to local variable sink1 | GlobalDataFlow.cs:110:19:110:23 | access to local variable sink1 |
 | GlobalDataFlow.cs:106:19:106:23 | access to local variable sink1 | GlobalDataFlow.cs:110:30:110:34 | access to local variable sink1 |
@@ -2393,8 +2389,6 @@
 | GlobalDataFlow.cs:108:27:108:34 | access to local variable nonSink0 | GlobalDataFlow.cs:108:27:108:34 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:108:27:108:34 | access to local variable nonSink0 | GlobalDataFlow.cs:108:41:108:48 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:108:27:108:34 | access to local variable nonSink0 | GlobalDataFlow.cs:108:41:108:48 | access to local variable nonSink0 |
-| GlobalDataFlow.cs:108:41:108:48 | access to local variable nonSink0 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:108:41:108:48 | access to local variable nonSink0 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:108:41:108:48 | access to local variable nonSink0 | GlobalDataFlow.cs:108:41:108:48 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:108:41:108:48 | access to local variable nonSink0 | GlobalDataFlow.cs:287:50:287:50 | z |
 | GlobalDataFlow.cs:108:41:108:48 | access to local variable nonSink0 | GlobalDataFlow.cs:287:50:287:50 | z |
@@ -2428,8 +2422,6 @@
 | GlobalDataFlow.cs:110:30:110:34 | SSA def(sink1) | GlobalDataFlow.cs:124:39:124:43 | access to local variable sink1 |
 | GlobalDataFlow.cs:110:30:110:34 | SSA def(sink1) | GlobalDataFlow.cs:124:39:124:43 | access to local variable sink1 |
 | GlobalDataFlow.cs:110:30:110:34 | access to local variable sink1 | GlobalDataFlow.cs:110:30:110:34 | access to local variable sink1 |
-| GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 | GlobalDataFlow.cs:110:30:110:34 | SSA def(sink1) |
-| GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 | GlobalDataFlow.cs:110:30:110:34 | SSA def(sink1) |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 |
@@ -4302,8 +4294,6 @@
 | GlobalDataFlow.cs:283:9:283:13 | SSA def(y) | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) |
 | GlobalDataFlow.cs:283:9:283:13 | SSA def(y) | GlobalDataFlow.cs:104:27:104:34 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:283:9:283:13 | SSA def(y) | GlobalDataFlow.cs:104:27:104:34 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:283:9:283:13 | SSA def(y) | GlobalDataFlow.cs:106:41:106:48 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:283:9:283:13 | SSA def(y) | GlobalDataFlow.cs:106:41:106:48 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:283:9:283:13 | SSA def(y) | GlobalDataFlow.cs:283:9:283:13 | SSA def(y) |
 | GlobalDataFlow.cs:283:13:283:13 | access to parameter x | GlobalDataFlow.cs:283:9:283:13 | SSA def(y) |
 | GlobalDataFlow.cs:283:13:283:13 | access to parameter x | GlobalDataFlow.cs:283:9:283:13 | SSA def(y) |
@@ -4311,10 +4301,6 @@
 | GlobalDataFlow.cs:283:13:283:13 | access to parameter x | GlobalDataFlow.cs:283:9:283:13 | SSA def(y) |
 | GlobalDataFlow.cs:283:13:283:13 | access to parameter x | GlobalDataFlow.cs:283:13:283:13 | access to parameter x |
 | GlobalDataFlow.cs:284:9:284:22 | ... = ... | GlobalDataFlow.cs:284:9:284:22 | ... = ... |
-| GlobalDataFlow.cs:284:9:284:22 | SSA def(z) | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) |
-| GlobalDataFlow.cs:284:9:284:22 | SSA def(z) | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) |
-| GlobalDataFlow.cs:284:9:284:22 | SSA def(z) | GlobalDataFlow.cs:104:27:104:34 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:284:9:284:22 | SSA def(z) | GlobalDataFlow.cs:104:27:104:34 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:284:9:284:22 | SSA def(z) | GlobalDataFlow.cs:106:41:106:48 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:284:9:284:22 | SSA def(z) | GlobalDataFlow.cs:106:41:106:48 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:284:9:284:22 | SSA def(z) | GlobalDataFlow.cs:284:9:284:22 | SSA def(z) |
@@ -4337,12 +4323,6 @@
 | GlobalDataFlow.cs:287:32:287:32 | x | GlobalDataFlow.cs:289:13:289:13 | access to parameter x |
 | GlobalDataFlow.cs:287:32:287:32 | x | GlobalDataFlow.cs:289:13:289:13 | access to parameter x |
 | GlobalDataFlow.cs:287:32:287:32 | x | GlobalDataFlow.cs:289:13:289:13 | access to parameter x |
-| GlobalDataFlow.cs:287:50:287:50 | z | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) |
-| GlobalDataFlow.cs:287:50:287:50 | z | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) |
-| GlobalDataFlow.cs:287:50:287:50 | z | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:287:50:287:50 | z | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:287:50:287:50 | z | GlobalDataFlow.cs:110:30:110:34 | SSA def(sink1) |
-| GlobalDataFlow.cs:287:50:287:50 | z | GlobalDataFlow.cs:110:30:110:34 | SSA def(sink1) |
 | GlobalDataFlow.cs:287:50:287:50 | z | GlobalDataFlow.cs:287:50:287:50 | z |
 | GlobalDataFlow.cs:287:50:287:50 | z | GlobalDataFlow.cs:287:50:287:50 | z |
 | GlobalDataFlow.cs:287:50:287:50 | z | GlobalDataFlow.cs:287:50:287:50 | z |

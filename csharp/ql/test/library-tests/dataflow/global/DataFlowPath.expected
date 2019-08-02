@@ -122,7 +122,6 @@ edges
 | GlobalDataFlow.cs:70:28:70:45 | access to property SinkProperty0 | GlobalDataFlow.cs:70:21:70:46 | call to method Return |
 | GlobalDataFlow.cs:72:21:72:101 | (...) ... | GlobalDataFlow.cs:73:15:73:19 | access to local variable sink1 |
 | GlobalDataFlow.cs:72:21:72:101 | (...) ... | GlobalDataFlow.cs:75:19:75:23 | access to local variable sink1 |
-| GlobalDataFlow.cs:72:21:72:101 | (...) ... | GlobalDataFlow.cs:106:19:106:23 | access to local variable sink1 |
 | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke | GlobalDataFlow.cs:72:21:72:101 | (...) ... |
 | GlobalDataFlow.cs:72:94:72:98 | access to local variable sink0 | GlobalDataFlow.cs:72:29:72:101 | call to method Invoke |
 | GlobalDataFlow.cs:75:19:75:23 | access to local variable sink1 | GlobalDataFlow.cs:75:30:75:34 | SSA def(sink2) |
@@ -131,12 +130,6 @@ edges
 | GlobalDataFlow.cs:78:19:78:23 | access to local variable sink2 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) | GlobalDataFlow.cs:79:15:79:19 | access to local variable sink3 |
 | GlobalDataFlow.cs:78:30:78:34 | SSA def(sink3) | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 |
-| GlobalDataFlow.cs:106:19:106:23 | access to local variable sink1 | GlobalDataFlow.cs:106:41:106:48 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:106:41:106:48 | SSA def(nonSink0) | GlobalDataFlow.cs:107:15:107:22 | access to local variable nonSink0 |
-| GlobalDataFlow.cs:106:41:106:48 | SSA def(nonSink0) | GlobalDataFlow.cs:108:41:108:48 | access to local variable nonSink0 |
-| GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 |
-| GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 |
-| GlobalDataFlow.cs:108:41:108:48 | access to local variable nonSink0 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) |
 | GlobalDataFlow.cs:135:21:135:34 | delegate call | GlobalDataFlow.cs:136:15:136:19 | access to local variable sink4 |
 | GlobalDataFlow.cs:135:21:135:34 | delegate call | GlobalDataFlow.cs:143:39:143:43 | access to local variable sink4 |
 | GlobalDataFlow.cs:135:29:135:33 | access to local variable sink3 | GlobalDataFlow.cs:135:21:135:34 | delegate call |
@@ -205,9 +198,6 @@ edges
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | Splitting.cs:3:28:3:34 | tainted | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | [b (line 3): true] access to local variable x |
 | GlobalDataFlow.cs:18:15:18:29 | access to field SinkField0 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:18:15:18:29 | access to field SinkField0 | access to field SinkField0 |
-| GlobalDataFlow.cs:107:15:107:22 | access to local variable nonSink0 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:107:15:107:22 | access to local variable nonSink0 | access to local variable nonSink0 |
-| GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:109:15:109:22 | access to local variable nonSink0 | access to local variable nonSink0 |
-| GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:111:15:111:22 | access to local variable nonSink0 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:71:15:71:19 | access to local variable sink0 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:71:15:71:19 | access to local variable sink0 | access to local variable sink0 |
 | GlobalDataFlow.cs:73:15:73:19 | access to local variable sink1 | GlobalDataFlow.cs:17:27:17:40 | "taint source" | GlobalDataFlow.cs:73:15:73:19 | access to local variable sink1 | access to local variable sink1 |
 | GlobalDataFlow.cs:190:15:190:20 | access to local variable sink10 | GlobalDataFlow.cs:318:16:318:29 | "taint source" | GlobalDataFlow.cs:190:15:190:20 | access to local variable sink10 | access to local variable sink10 |
