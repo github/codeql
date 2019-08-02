@@ -6,7 +6,7 @@
  *       try
  *       exception
  */
- 
+
 import cpp
 
 from CatchBlock catch
