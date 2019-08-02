@@ -26,14 +26,16 @@ module XSS {
    */
   predicate xssFlow(XssNode source, XssNode sink, string message) {
     // standard taint-tracking
-    exists(TaintTrackingConfiguration c, DataFlow::Node sourceNode, DataFlow::Node sinkNode |
+    exists(
+      TaintTrackingConfiguration c, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
+    |
       sourceNode = source.asDataFlowNode() and
       sinkNode = sink.asDataFlowNode() and
-      c.hasFlow(sourceNode, sinkNode) and
+      c.hasFlowPath(sourceNode, sinkNode) and
       message = "is written to HTML or JavaScript" +
           any(string explanation |
-            if exists(sinkNode.(Sink).explanation())
-            then explanation = ": " + sinkNode.(Sink).explanation() + "."
+            if exists(sinkNode.getNode().(Sink).explanation())
+            then explanation = ": " + sinkNode.getNode().(Sink).explanation() + "."
             else explanation = "."
           )
     )
@@ -44,8 +46,20 @@ module XSS {
     message = "is a remote source accessed inline in an ASPX page."
   }
 
+  module PathGraph {
+    query predicate edges(XssNode pred, XssNode succ) {
+      exists(DataFlow::PathNode a, DataFlow::PathNode b | DataFlow::PathGraph::edges(a, b) |
+        pred.asDataFlowNode() = a and
+        succ.asDataFlowNode() = b
+      )
+      or
+      xssFlow(pred, succ, _) and
+      pred instanceof XssAspNode
+    }
+  }
+
   private newtype TXssNode =
-    TXssDataFlowNode(DataFlow::Node node) or
+    TXssDataFlowNode(DataFlow::PathNode node) or
     TXssAspNode(AspInlineMember m)
 
   /**
@@ -61,7 +75,7 @@ module XSS {
     Location getLocation() { none() }
 
     /** Gets the data flow node corresponding to this node, if any. */
-    DataFlow::Node asDataFlowNode() { result = this.(XssDataFlowNode).getDataFlowNode() }
+    DataFlow::PathNode asDataFlowNode() { result = this.(XssDataFlowNode).getDataFlowNode() }
 
     /** Gets the ASP inline code element corresponding to this node, if any. */
     AspInlineMember asAspInlineMember() { result = this.(XssAspNode).getAspInlineMember() }
@@ -69,12 +83,12 @@ module XSS {
 
   /** A data flow node, viewed as an XSS flow node. */
   class XssDataFlowNode extends TXssDataFlowNode, XssNode {
-    DataFlow::Node node;
+    DataFlow::PathNode node;
 
     XssDataFlowNode() { this = TXssDataFlowNode(node) }
 
     /** Gets the data flow node corresponding to this node. */
-    DataFlow::Node getDataFlowNode() { result = node }
+    DataFlow::PathNode getDataFlowNode() { result = node }
 
     override string toString() { result = node.toString() }
 
