@@ -11,8 +11,7 @@ class PortalEntrySink extends DataFlow::AdditionalSink {
   PortalEntrySink() { this = p.getAnEntryNode(true) }
 
   override predicate isSinkFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) {
-    cfg instanceof TaintTracking::Configuration and
-    lbl = any(DataFlow::FlowLabel l)
+    any()
   }
 
   /** Gets the portal of which this is an entry node. */
