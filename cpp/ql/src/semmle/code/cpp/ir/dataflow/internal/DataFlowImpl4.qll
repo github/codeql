@@ -372,7 +372,9 @@ private predicate readCand1(Content f, Configuration config) {
 
 private predicate throughFlowNodeCand(Node node, Configuration config) {
   nodeCand1(node, false, config) and
-  not config.isBarrier(node)
+  not fullBarrier(node, config) and
+  not inBarrier(node, config) and
+  not outBarrier(node, config)
 }
 
 /**
