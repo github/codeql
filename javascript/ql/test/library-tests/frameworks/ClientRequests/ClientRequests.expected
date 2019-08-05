@@ -37,6 +37,8 @@ test_ClientRequest
 | tst.js:89:5:89:23 | axios({host: host}) |
 | tst.js:91:5:91:34 | got(rel ...  host}) |
 | tst.js:93:5:93:35 | net.req ... host }) |
+| tst.js:98:15:98:34 | new XMLHttpRequest() |
+| tst.js:106:16:106:35 | new XMLHttpRequest() |
 test_getADataNode
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
@@ -58,6 +60,8 @@ test_getADataNode
 | tst.js:74:5:74:29 | $.ajax( ...  data}) | tst.js:74:24:74:27 | data |
 | tst.js:77:5:77:32 | $.getJS ...  data}) | tst.js:77:27:77:30 | data |
 | tst.js:80:15:80:34 | new XMLHttpRequest() | tst.js:82:14:82:17 | data |
+| tst.js:98:15:98:34 | new XMLHttpRequest() | tst.js:101:14:101:17 | data |
+| tst.js:106:16:106:35 | new XMLHttpRequest() | tst.js:108:15:108:18 | data |
 test_getHost
 | tst.js:87:5:87:39 | http.ge ...  host}) | tst.js:87:34:87:37 | host |
 | tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:18:89:21 | host |
@@ -108,6 +112,8 @@ test_getUrl
 | tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:11:89:22 | {host: host} |
 | tst.js:91:5:91:34 | got(rel ...  host}) | tst.js:91:9:91:19 | relativeUrl |
 | tst.js:93:5:93:35 | net.req ... host }) | tst.js:93:17:93:34 | { hostname: host } |
+| tst.js:98:15:98:34 | new XMLHttpRequest() | tst.js:100:17:100:19 | url |
+| tst.js:106:16:106:35 | new XMLHttpRequest() | tst.js:107:18:107:20 | url |
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | text | true |
@@ -131,3 +137,7 @@ test_getAResponseDataNode
 | tst.js:69:5:69:23 | superagent.get(url) | tst.js:69:5:69:23 | superagent.get(url) | text | true |
 | tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:5:89:23 | axios({host: host}) | json | true |
 | tst.js:91:5:91:34 | got(rel ...  host}) | tst.js:91:5:91:34 | got(rel ...  host}) | text | true |
+| tst.js:98:15:98:34 | new XMLHttpRequest() | tst.js:103:9:103:21 | this.response | json | false |
+| tst.js:106:16:106:35 | new XMLHttpRequest() | tst.js:110:9:110:25 | this.responseText | text | false |
+| tst.js:106:16:106:35 | new XMLHttpRequest() | tst.js:111:9:111:24 | this.responseXML | document | false |
+| tst.js:106:16:106:35 | new XMLHttpRequest() | tst.js:112:9:112:23 | this.statusText | text | false |

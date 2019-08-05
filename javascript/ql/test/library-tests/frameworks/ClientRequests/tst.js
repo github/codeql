@@ -93,3 +93,22 @@ import {ClientRequest, net} from 'electron';
     net.request({ hostname: host });
 
 });
+
+(function() {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.open(_, url);
+    xhr.send(data);
+    xhr.onreadystatechange = function() {
+        this.response;
+    };
+
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open(_, url);
+    xhr2.send(data);
+    xhr2.addEventListener("readystatechange", function() {
+        this.responseText;
+        this.responseXML;
+        this.statusText;
+    });
+})
