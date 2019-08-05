@@ -9,6 +9,7 @@ private import TranslatedExpr
 private import TranslatedStmt
 private import TranslatedFunction
 private import semmle.code.csharp.ir.Util
+private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
   instruction = MkInstruction(result, _)
@@ -34,7 +35,7 @@ cached private module Cached {
     getTranslatedFunction(callable).hasUserVariable(var, type)
   }
   
-  cached predicate hasTempVariable(Callable callable, Locatable ast, TempVariableTag tag,
+  cached predicate hasTempVariable(Callable callable, Language::AST ast, TempVariableTag tag,
     Type type) {
     exists(TranslatedElement element |
       element.getAST() = ast and
@@ -190,7 +191,7 @@ cached private module Cached {
     goto.getLocation().getEndLine() < goto.getTarget().getLocation().getStartLine()
   }
 
-  cached Locatable getInstructionAST(Instruction instruction) {
+  cached Language::AST getInstructionAST(Instruction instruction) {
     result = getInstructionTranslatedElement(instruction).getAST()
   }
 

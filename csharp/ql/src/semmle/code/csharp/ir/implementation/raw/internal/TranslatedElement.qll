@@ -10,6 +10,7 @@ private import TranslatedFunction
 private import TranslatedStmt
 private import IRConstruction
 private import semmle.code.csharp.ir.Util
+private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 /**
  * Gets the built-in `int` type.
@@ -380,7 +381,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Gets the AST node being translated.
    */
-  abstract Locatable getAST();
+  abstract Language::AST getAST();
 
   /**
    * Get the first instruction to be executed in the evaluation of this element.

@@ -9,6 +9,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
 private import TranslatedStmt
+private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 //TODO: Reason about constructors and destructors
 
@@ -35,7 +36,7 @@ class TranslatedFunction extends TranslatedElement,
     result = callable.toString()
   }
 
-  override final Locatable getAST() {
+  override final Language::AST getAST() {
     result = callable
   }
 
@@ -361,7 +362,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     result = param.toString()
   }
 
-  override final Locatable getAST() {
+  override final Language::AST getAST() {
     result = param
   }
 
@@ -456,7 +457,7 @@ class TranslatedConstructorInitList extends TranslatedElement,
     result = "ctor init: " + callable.toString()
   }
 
-  override Locatable getAST() {
+  override Language::AST getAST() {
     result = callable
   }
 
@@ -538,7 +539,7 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
     result = "dtor destruction: " + callable.toString()
   }
 
-  override Locatable getAST() {
+  override Language::AST getAST() {
     result = callable
   }
 

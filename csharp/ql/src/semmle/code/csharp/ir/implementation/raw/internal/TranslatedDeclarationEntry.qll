@@ -6,6 +6,7 @@ private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
+private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 /**
  * Gets the `TranslatedDeclarationEntry` that represents the declaration
@@ -40,7 +41,7 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
     result = entry.toString()
   }
 
-  override final Locatable getAST() {
+  override final Language::AST getAST() {
     result = entry
   }
 }

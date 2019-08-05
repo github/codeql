@@ -6,6 +6,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
 private import semmle.code.csharp.ir.Util
+private import IRInternal
 
 /**
  * Gets the `TranslatedInitialization` for the expression `expr`.
@@ -51,7 +52,7 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
     result = expr.getEnclosingCallable()
   }
 
-  override final Locatable getAST() {
+  override final Language::AST getAST() {
     result = expr
   }
 
@@ -263,7 +264,7 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
     result = ast.toString() + "." + field.toString()
   }
 
-  override final Locatable getAST() {
+  override final Language::AST getAST() {
     result = ast
   }
 
@@ -455,7 +456,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = initList.toString() + "[" + getElementIndex().toString() + "]"
   }
 
-  override final Locatable getAST() {
+  override final Language::AST getAST() {
     result = initList
   }
 
@@ -690,7 +691,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
 abstract class TranslatedStructorCallFromStructor extends TranslatedElement, StructorCallContext {
   Call call;
 
-  override final Locatable getAST() {
+  override final Language::AST getAST() {
     result = call
   }
 

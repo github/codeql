@@ -4,7 +4,7 @@ private import semmle.code.csharp.ir.implementation.internal.OperandTag
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
-private import semmle.code.csharp.ir.Util
+private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 abstract class ConditionContext extends TranslatedElement {
   abstract Instruction getChildTrueSuccessor(TranslatedCondition child);
@@ -23,7 +23,7 @@ abstract class TranslatedCondition extends TranslatedElement {
     result = expr.toString()
   }
 
-  override final Locatable getAST() {
+  override final Language::AST getAST() {
     result = expr
   }
 

@@ -8,6 +8,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
 private import TranslatedInitialization
+private import IRInternal
 
 TranslatedStmt getTranslatedStmt(Stmt stmt) {
   result.getAST() = stmt
@@ -24,7 +25,7 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
     result = stmt.toString()
   }
 
-  override final Locatable getAST() {
+  override final Language::AST getAST() {
     result = stmt
   }
 

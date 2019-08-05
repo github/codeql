@@ -12,6 +12,7 @@ private import TranslatedFunction
 private import TranslatedStmt
 import TranslatedCall
 private import semmle.code.csharp.ir.Util
+private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 /**
  * Gets the TranslatedExpr for the specified expression. If `expr` is a load,
@@ -59,7 +60,7 @@ abstract class TranslatedExpr extends TranslatedElement {
     result = expr.getType()
   }
 
-  override final Locatable getAST() {
+  override final Language::AST getAST() {
     result = expr
   }
 
