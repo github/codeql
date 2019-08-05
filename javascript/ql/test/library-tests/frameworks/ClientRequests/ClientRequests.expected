@@ -108,3 +108,26 @@ test_getUrl
 | tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:11:89:22 | {host: host} |
 | tst.js:91:5:91:34 | got(rel ...  host}) | tst.js:91:9:91:19 | relativeUrl |
 | tst.js:93:5:93:35 | net.req ... host }) | tst.js:93:17:93:34 | { hostname: host } |
+test_getAResponseDataNode
+| tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
+| tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | text | true |
+| tst.js:25:5:25:14 | axios(url) | tst.js:25:5:25:14 | axios(url) | json | true |
+| tst.js:27:5:27:18 | axios.get(url) | tst.js:27:5:27:18 | axios.get(url) | json | true |
+| tst.js:29:5:29:23 | axios({ url: url }) | tst.js:29:5:29:23 | axios({ url: url }) | json | true |
+| tst.js:31:5:31:12 | got(url) | tst.js:31:5:31:12 | got(url) | text | true |
+| tst.js:33:5:33:19 | got.stream(url) | tst.js:33:5:33:19 | got.stream(url) | stream | false |
+| tst.js:35:5:35:21 | window.fetch(url) | tst.js:35:5:35:21 | window.fetch(url) | fetch.response | true |
+| tst.js:37:5:37:18 | nodeFetch(url) | tst.js:37:5:37:18 | nodeFetch(url) | fetch.response | true |
+| tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:5:53:23 | axios({data: data}) | json | true |
+| tst.js:55:5:55:34 | axios.g ... _data}) | tst.js:55:5:55:34 | axios.g ... _data}) | json | true |
+| tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:5:57:39 | axios.p ... data2}) | json | true |
+| tst.js:59:5:59:52 | axios({ ... sData}) | tst.js:59:5:59:52 | axios({ ... sData}) | json | true |
+| tst.js:61:5:61:60 | window. ... yData}) | tst.js:61:5:61:60 | window. ... yData}) | fetch.response | true |
+| tst.js:63:5:63:68 | got(url ... yData}) | tst.js:63:5:63:68 | got(url ... yData}) | text | true |
+| tst.js:65:5:65:23 | superagent.get(url) | tst.js:65:5:65:23 | superagent.get(url) | text | true |
+| tst.js:66:5:66:23 | superagent.get(url) | tst.js:66:5:66:23 | superagent.get(url) | text | true |
+| tst.js:67:5:67:24 | superagent.post(url) | tst.js:67:5:67:24 | superagent.post(url) | text | true |
+| tst.js:68:5:68:23 | superagent.get(url) | tst.js:68:5:68:23 | superagent.get(url) | text | true |
+| tst.js:69:5:69:23 | superagent.get(url) | tst.js:69:5:69:23 | superagent.get(url) | text | true |
+| tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:5:89:23 | axios({host: host}) | json | true |
+| tst.js:91:5:91:34 | got(rel ...  host}) | tst.js:91:5:91:34 | got(rel ...  host}) | text | true |

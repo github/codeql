@@ -13,3 +13,7 @@ query predicate test_getHost(ClientRequest r, DataFlow::Node node) {
 query predicate test_getUrl(ClientRequest r, DataFlow::Node node) {
   node = r.getUrl()
 }
+
+query predicate test_getAResponseDataNode(ClientRequest r, DataFlow::Node node, string responseType, boolean promise) {
+  node = r.getAResponseDataNode(responseType, promise)
+}
