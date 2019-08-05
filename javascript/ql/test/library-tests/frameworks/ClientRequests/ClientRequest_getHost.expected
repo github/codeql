@@ -1,4 +1,0 @@
-| tst.js:87:5:87:39 | http.ge ...  host}) | tst.js:87:34:87:37 | host |
-| tst.js:89:5:89:23 | axios({host: host}) | tst.js:89:18:89:21 | host |
-| tst.js:91:5:91:34 | got(rel ...  host}) | tst.js:91:29:91:32 | host |
-| tst.js:93:5:93:35 | net.req ... host }) | tst.js:93:29:93:32 | host |
