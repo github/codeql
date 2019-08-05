@@ -98,12 +98,12 @@ class Closure extends Class {
 /**
  * Information about a value captured as part of a lambda expression.
  */
-class LambdaCapture extends @lambdacapture {
-  string toString() {
+class LambdaCapture extends Locatable, @lambdacapture {
+  override string toString() {
     result = getField().toString()
   }
 
-  string getCanonicalQLClass() { result = "LambdaCapture" }
+  override string getCanonicalQLClass() { result = "LambdaCapture" }
 
   /**
    * Holds if this capture was made implicitly.
@@ -133,7 +133,7 @@ class LambdaCapture extends @lambdacapture {
    * For implicit captures, this is the first location within the "{...}" part of the lambda
    * expression which accesses the captured variable.
    */
-  Location getLocation() {
+  override Location getLocation() {
     lambda_capture(this, _, _, _, _, _, result)
   }
 

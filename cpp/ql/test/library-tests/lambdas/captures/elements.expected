@@ -24,8 +24,10 @@
 | captures.cpp:3:6:3:6 | definition of x |
 | captures.cpp:3:6:3:6 | x |
 | captures.cpp:3:6:3:6 | x |
+| captures.cpp:3:6:3:6 | x |
 | captures.cpp:3:9:3:9 | (captured this) |
 | captures.cpp:3:9:3:9 | definition of (captured this) |
+| captures.cpp:3:9:3:12 | (captured this) |
 | captures.cpp:3:9:3:12 | this |
 | captures.cpp:3:15:3:15 | definition of operator() |
 | captures.cpp:3:15:3:15 | operator() |
@@ -56,10 +58,12 @@
 | captures.cpp:9:9:9:9 | operator() |
 | captures.cpp:9:9:11:5 | { ... } |
 | captures.cpp:10:7:10:7 | (captured this) |
+| captures.cpp:10:7:10:7 | (captured this) |
 | captures.cpp:10:7:10:7 | call to b |
 | captures.cpp:10:7:10:7 | definition of (captured this) |
 | captures.cpp:10:7:10:15 | ExprStmt |
 | captures.cpp:10:9:10:9 | definition of x |
+| captures.cpp:10:9:10:9 | x |
 | captures.cpp:10:9:10:9 | x |
 | captures.cpp:10:9:10:13 | ... + ... |
 | captures.cpp:10:13:10:13 | 1 |
@@ -82,6 +86,7 @@
 | captures.cpp:15:5:17:5 | {...} |
 | captures.cpp:15:5:17:6 | ExprStmt |
 | captures.cpp:15:6:15:6 | definition of x |
+| captures.cpp:15:6:15:6 | x |
 | captures.cpp:15:6:15:6 | x |
 | captures.cpp:15:6:15:6 | x |
 | captures.cpp:15:9:15:9 | definition of operator() |
@@ -123,6 +128,7 @@
 | captures.cpp:22:23:22:23 | definition of x |
 | captures.cpp:22:23:22:23 | x |
 | captures.cpp:22:23:22:23 | x |
+| captures.cpp:22:23:22:23 | x |
 | captures.cpp:22:25:22:25 | definition of operator() |
 | captures.cpp:22:25:22:25 | operator() |
 | captures.cpp:22:30:22:30 | definition of z |
@@ -133,6 +139,7 @@
 | captures.cpp:23:12:23:20 | ... + ... |
 | captures.cpp:23:16:23:16 | (reference dereference) |
 | captures.cpp:23:16:23:16 | definition of y |
+| captures.cpp:23:16:23:16 | y |
 | captures.cpp:23:16:23:16 | y |
 | captures.cpp:23:20:23:20 | z |
 | captures.cpp:26:3:26:24 | return ... |
@@ -175,6 +182,7 @@
 | end_pos.cpp:9:17:9:17 | definition of ii |
 | end_pos.cpp:9:17:9:17 | ii |
 | end_pos.cpp:9:17:9:18 | (reference to) |
+| end_pos.cpp:9:17:9:18 | ii |
 | end_pos.cpp:9:17:9:18 | ii |
 | end_pos.cpp:9:20:9:20 | definition of operator() |
 | end_pos.cpp:9:20:9:20 | operator() |
