@@ -714,30 +714,31 @@ private class AngularMethodCall extends AngularJSCall {
  * A call to a builtin service or one of its methods.
  */
 private class BuiltinServiceCall extends AngularJSCall {
-  MethodCallExpr mce;
+  CallExpr call;
 
   BuiltinServiceCall() {
     exists(BuiltinServiceReference service |
-      service.getAMethodCall(_) = this and
-      mce = this
+      service.getAMethodCall(_) = this or
+      service.getACall() = this |
+      call = this
     )
   }
 
   override predicate interpretsArgumentAsHtml(Expr e) {
     exists(ServiceReference service, string methodName |
       service.getName() = "$sce" and
-      mce = service.getAMethodCall(methodName)
+      call = service.getAMethodCall(methodName)
     |
       // specialized call
       (methodName = "trustAsHtml" or methodName = "trustAsCss") and
-      e = mce.getArgument(0)
+      e = call.getArgument(0)
       or
       // generic call with enum argument
       methodName = "trustAs" and
       exists(DataFlow::PropRead prn |
-        prn.asExpr() = mce.getArgument(0) and
+        prn.asExpr() = call.getArgument(0) and
         (prn = service.getAPropertyAccess("HTML") or prn = service.getAPropertyAccess("CSS")) and
-        e = mce.getArgument(1)
+        e = call.getArgument(1)
       )
     )
   }
@@ -745,16 +746,16 @@ private class BuiltinServiceCall extends AngularJSCall {
   override predicate storesArgumentGlobally(Expr e) {
     exists(ServiceReference service, string serviceName, string methodName |
       service.getName() = serviceName and
-      mce = service.getAMethodCall(methodName)
+      call = service.getAMethodCall(methodName)
     |
       // AngularJS caches (only available during runtime, so similar to sessionStorage)
       (serviceName = "$cacheFactory" or serviceName = "$templateCache") and
       methodName = "put" and
-      e = mce.getArgument(1)
+      e = call.getArgument(1)
       or
       serviceName = "$cookies" and
       (methodName = "put" or methodName = "putObject") and
-      e = mce.getArgument(1)
+      e = call.getArgument(1)
     )
   }
 
