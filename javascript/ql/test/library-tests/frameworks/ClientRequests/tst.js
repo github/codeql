@@ -133,3 +133,8 @@ import {ClientRequest, net} from 'electron';
     axios.get(url).then(response => response.data);
     axios.get({ url: url, responseType: 'json'}).then(response => response.data);
 })
+
+
+(function() {
+    fetch(url).then(r => r.json()).then(json => json);
+})
