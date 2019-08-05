@@ -6,6 +6,7 @@
 import csharp
 
 module ReDoS {
+  private import semmle.code.csharp.dataflow.DataFlow2
   import semmle.code.csharp.dataflow.flowsources.Remote
   import semmle.code.csharp.frameworks.system.text.RegularExpressions
   import semmle.code.csharp.security.Sanitizers
@@ -33,23 +34,9 @@ module ReDoS {
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) {
-      sink instanceof Sink
-      or
-      // Unfortunately, we cannot add `ExponentialRegexSink` as
-      // a sub class of `Sink`, as that results in bad aggregate
-      // recursion. Therefore, we overestimate the sinks here
-      // and make the restriction later by overriding
-      // `hasFlowPath()` below.
-      sink.asExpr() = any(RegexOperation ro).getInput()
-    }
+    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-    override predicate hasFlowPath(DataFlow::PathNode source, DataFlow::PathNode sink) {
-      super.hasFlowPath(source, sink) and
-      (sink.getNode() instanceof Sink or sink.getNode() instanceof ExponentialRegexSink)
-    }
   }
 
   /** A source of remote user input. */
@@ -81,7 +68,7 @@ module ReDoS {
    * A data flow configuration for tracking exponential worst case time regular expression string
    * literals to the pattern argument of a regex.
    */
-  class ExponentialRegexDataflow extends DataFlow::Configuration {
+  class ExponentialRegexDataflow extends DataFlow2::Configuration {
     ExponentialRegexDataflow() { this = "ExponentialRegex" }
 
     override predicate isSource(DataFlow::Node s) { isExponentialRegex(s.asExpr()) }
@@ -93,7 +80,7 @@ module ReDoS {
    * An expression passed as the `input` to a call to a `Regex` method, where the regex appears to
    * have exponential behaviour.
    */
-  class ExponentialRegexSink extends DataFlow::ExprNode {
+  class ExponentialRegexSink extends DataFlow::ExprNode, Sink {
     ExponentialRegexSink() {
       exists(ExponentialRegexDataflow regexDataflow, RegexOperation regexOperation |
         // Exponential regex flows to the pattern argument
