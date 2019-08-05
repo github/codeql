@@ -29,7 +29,7 @@ class Conf2 extends Configuration {
 
   override predicate isSink(Node n) { sink0(n) }
 
-  override predicate isBarrier(Node n) { src0(n) }
+  override predicate isBarrierIn(Node n) { src0(n) }
 }
 
 class Conf3 extends Configuration {
@@ -39,7 +39,7 @@ class Conf3 extends Configuration {
 
   override predicate isSink(Node n) { sink0(n) }
 
-  override predicate isBarrier(Node n) { sink0(n) }
+  override predicate isBarrierOut(Node n) { sink0(n) }
 }
 
 class Conf4 extends Configuration {
@@ -49,7 +49,9 @@ class Conf4 extends Configuration {
 
   override predicate isSink(Node n) { sink0(n) }
 
-  override predicate isBarrier(Node n) { src0(n) or sink0(n) }
+  override predicate isBarrierIn(Node n) { src0(n) }
+
+  override predicate isBarrierOut(Node n) { sink0(n) }
 }
 
 predicate flow(Node src, Node sink, string s) {
