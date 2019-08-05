@@ -243,7 +243,10 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
 
   final override predicate hasArguments() { exists(expr.getArgument(0)) }
 
-  final override TranslatedExpr getQualifier() { none() }
+  final override TranslatedExpr getQualifier() {
+    expr instanceof QualifiableExpr and
+    result = getTranslatedExpr(expr.(QualifiableExpr).getQualifier()) 
+  }
 
   final override TranslatedExpr getArgument(int index) {
     result = getTranslatedExpr(expr.getArgument(index))

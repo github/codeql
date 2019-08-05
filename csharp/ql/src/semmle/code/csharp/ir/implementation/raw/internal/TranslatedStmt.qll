@@ -141,6 +141,44 @@ class TranslatedExprStmt extends TranslatedStmt {
   }
 }
 
+/**
+ * Class that deals with an `ExprStmt` whose child is an `AssignExpr` whose
+ * lvalue is an accessor call.
+ * Since we desugar such an expression to function call,
+ * we ignore the assignment and make the only child of the translated statement 
+ * the accessor call.
+ */
+class TranslatedExprStmtAccessorSet extends TranslatedExprStmt {
+  override ExprStmt stmt;
+
+  TranslatedExprStmtAccessorSet() {
+    stmt.getExpr() instanceof AssignExpr and
+    stmt.getExpr().(AssignExpr).getLValue() instanceof AccessorCall
+  }
+  
+  override TranslatedExpr getExpr() {
+    result = getTranslatedExpr(stmt.(ExprStmt).getExpr().(AssignExpr).getLValue())
+  }
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and result = getExpr()
+  }
+
+  override Instruction getFirstInstruction() {
+    result = getExpr().getFirstInstruction()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    none()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getExpr() and
+    result = getParent().getChildSuccessor(this)
+  }
+}
+
 abstract class TranslatedReturnStmt extends TranslatedStmt {
   override ReturnStmt stmt;
 

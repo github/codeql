@@ -1535,7 +1535,10 @@ abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
 
 class TranslatedAssignExpr extends TranslatedAssignment {
   TranslatedAssignExpr() {
-    expr instanceof AssignExpr
+    expr instanceof AssignExpr and
+    // if the lvalue is an accessor call, ignore assignment
+    // since the assignment expr is desugared into a function call
+    not expr.getLValue() instanceof AccessorCall
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
