@@ -15,27 +15,28 @@ public class test_stmts {
         }
     }
 
-    public static int switchStmt(int y) {
-        int caseSwitch = 1;
+    public static int switchStmt() {
+        object caseSwitch = new object();
         int select = 0;
-      
+
         switch (caseSwitch)
         {
             case -1:
-            case 0:
-                break;
-            case 1:
+                goto case true;
+            case 0: 
+                goto case "123";
+            case "123":
                 select = 100;
                 break;
-            case 2:
+            case true:
                 select = 101;
                 goto default;
             default:
                 return select;
         }
-        select = 1000;
         return 0;
     }
+
 
     public static void tryCatchFinally() {
         int x = 5;

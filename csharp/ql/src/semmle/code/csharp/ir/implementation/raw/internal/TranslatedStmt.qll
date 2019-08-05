@@ -786,18 +786,10 @@ class TranslatedForStmt extends TranslatedLoop {
   }
 }
 
-class TranslatedJumpStmt extends TranslatedStmt {
-  override JumpStmt stmt;
-
-  // Discard jump stmts that are not jump stmts in C++ for now.
-  TranslatedJumpStmt() {
-  	not (
-  	  stmt instanceof ReturnStmt
-  	  or
-  	  stmt instanceof ThrowStmt
-  	)
-  }
-  
+/**
+ * Base class for the translation of `BreakStmt` and `GotoStmt`
+ */
+abstract class TranslatedSpecificJump extends TranslatedStmt {
   override Instruction getFirstInstruction() {
     result = getInstruction(OnlyInstructionTag())
   }
@@ -816,17 +808,85 @@ class TranslatedJumpStmt extends TranslatedStmt {
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge and
-    // Get the target of the jump
-    // TODO: Make sure this is the best way to do it.
-    // TODO: Does not work if the switch is the last instruction in a void function. 
-    //       Maybe insert a dummy label after the switch like in C++?
-    result = getTranslatedStmt(stmt.getAControlFlowNode().getASuccessor().getElement()).getFirstInstruction()
+    none()
   }
-
+  
   override Instruction getChildSuccessor(TranslatedElement child) {
     none()
+  }
+}
+
+class TranslatedBreakStmt extends TranslatedSpecificJump {
+  override BreakStmt stmt;
+
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge and
+    result = getEnclosingLoopOrSwitchNextInstr(stmt)
+  }
+  
+  private Instruction getEnclosingLoopOrSwitchNextInstr(Stmt crtStmt) {
+    if (crtStmt instanceof LoopStmt or crtStmt instanceof SwitchStmt) then
+      result = getTranslatedStmt(crtStmt).getParent().getChildSuccessor(getTranslatedStmt(crtStmt))
+    else
+      result = getEnclosingLoopOrSwitchNextInstr(crtStmt.getParent())
+  }
+}
+
+class TranslatedGotoLabelStmt extends TranslatedSpecificJump {
+  override GotoLabelStmt stmt;
+
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge and
+    result = getTranslatedStmt(stmt.getTarget()).getFirstInstruction()
+  }
+}
+
+class TranslatedGotoCaseStmt extends TranslatedSpecificJump {
+  override GotoCaseStmt stmt;
+
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge and
+    result = getCase(stmt, stmt.getExpr()).getFirstInstruction()
+  }
+  
+  private TranslatedStmt getCase(Stmt crtStmt, Expr expr) {
+    if (crtStmt instanceof SwitchStmt) then
+      exists (CaseStmt caseStmt |
+        caseStmt = crtStmt.(SwitchStmt).getACase() and
+        // We check for the constant value of the expression
+        // since we can't check for equality between `PatternExpr` and `Expr`
+        caseStmt.getPattern().getValue() = expr.getValue() and 
+        result = getTranslatedStmt(caseStmt)
+      )
+    else
+      result = getCase(crtStmt.getParent(), expr)
+  }
+}
+
+class TranslatedGotoDefaultStmt extends TranslatedSpecificJump {
+  override GotoDefaultStmt stmt;
+
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge and
+    result = getDefaultCase(stmt).getFirstInstruction()
+  }
+  
+  private TranslatedStmt getDefaultCase(Stmt crtStmt) {
+    if (crtStmt instanceof SwitchStmt) then
+      exists (CaseStmt caseStmt |
+        caseStmt = crtStmt.(SwitchStmt).getDefaultCase() and
+        result = getTranslatedStmt(caseStmt)
+      )
+    else
+      result = getDefaultCase(crtStmt.getParent())
   }
 }
 

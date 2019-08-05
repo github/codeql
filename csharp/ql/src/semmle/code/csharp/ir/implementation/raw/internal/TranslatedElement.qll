@@ -82,7 +82,9 @@ private predicate ignoreExprOnly(Expr expr) {
   not translateFunction(expr.getEnclosingCallable())
   or
   // Ignore size of arrays when translating
-  (expr.getParent() instanceof ArrayCreation and expr.hasValue())
+  (expr.getParent() instanceof ArrayCreation and expr.hasValue()) or
+  // Ignore the child expression of a goto case stmt
+  (expr.getParent() instanceof GotoCaseStmt)
 }
 
 /**
