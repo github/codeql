@@ -112,3 +112,19 @@ import {ClientRequest, net} from 'electron';
         this.statusText;
     });
 })
+
+(function() {
+    request(url, function (error, response, body) {
+        error;
+        response.body;
+        body;
+    });
+
+    request(url, {json: true}, function (error, response, body) {
+        error;
+        response.body;
+        body;
+    });
+
+    requestPromise(url, {json: true});
+});
