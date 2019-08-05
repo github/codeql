@@ -138,3 +138,9 @@ import {ClientRequest, net} from 'electron';
 (function() {
     fetch(url).then(r => r.json()).then(json => json);
 })
+
+(function() {
+    got(url).then(response => response.body);
+    got(url, { json: true }).then(response => response.body);
+    got.stream(url).pipe(process.stdout);
+})
