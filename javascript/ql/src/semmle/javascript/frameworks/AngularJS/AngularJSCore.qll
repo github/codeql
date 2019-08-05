@@ -711,12 +711,12 @@ private class AngularMethodCall extends AngularJSCall {
 }
 
 /**
- * A call to a method on a builtin service.
+ * A call to a builtin service or one of its methods.
  */
-private class ServiceMethodCall extends AngularJSCall {
+private class BuiltinServiceCall extends AngularJSCall {
   MethodCallExpr mce;
 
-  ServiceMethodCall() {
+  BuiltinServiceCall() {
     exists(BuiltinServiceReference service |
       service.getAMethodCall(_) = this and
       mce = this
