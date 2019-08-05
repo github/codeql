@@ -256,7 +256,10 @@ module Electron {
     private class IPCAdditionalFlowStep extends DataFlow::AdditionalFlowStep {
       IPCAdditionalFlowStep() { ipcFlowStep(this, _) }
 
-      override predicate step(DataFlow::Node pred, DataFlow::Node succ) { ipcFlowStep(pred, succ) }
+      override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+        pred = this and
+        ipcFlowStep(pred, succ)
+      }
     }
   }
 
