@@ -1,3 +1,4 @@
+WARNING: Predicate getNode has been deprecated and may be removed in future (Taint.ql:12,54-61)
 | test.py:9 | req | falcon.request |
 | test.py:9 | resp | falcon.response |
 | test.py:10 | Attribute | file[externally controlled string] |
@@ -8,7 +9,6 @@
 | test.py:12 | resp | falcon.response |
 | test.py:13 | Dict | {json[externally controlled string]} |
 | test.py:15 | result | json[externally controlled string] |
-| test.py:17 | resp | falcon.response |
 | test.py:17 | result | {json[externally controlled string]} |
 | test.py:19 | req | falcon.request |
 | test.py:19 | resp | falcon.response |

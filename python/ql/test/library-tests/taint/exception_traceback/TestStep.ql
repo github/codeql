@@ -9,6 +9,6 @@ where
     not n.getLocation().getFile().inStdlib() and
     not s.getLocation().getFile().inStdlib()
 select 
-    n.getTrackedValue(), n.getLocation().toString(), n.getNode().getNode().toString(), n.getContext(),
+    "Taint " + n.getTaintKind(), n.getLocation().toString(), n.getNode().getNode().toString(), n.getContext(),
     " --> ",
-    s.getTrackedValue(), s.getLocation().toString(), s.getNode().getNode().toString(), s.getContext()
+    "Taint " + n.getTaintKind(), s.getLocation().toString(), s.getNode().getNode().toString(), s.getContext()

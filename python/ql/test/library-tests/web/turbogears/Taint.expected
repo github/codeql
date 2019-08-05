@@ -1,3 +1,4 @@
+WARNING: Predicate getNode has been deprecated and may be removed in future (Taint.ql:12,54-61)
 | test.py:18 | b | externally controlled string |
 | test.py:19 | BinaryExpr | [externally controlled string] |
 | test.py:19 | BinaryExpr | externally controlled string |

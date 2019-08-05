@@ -1,3 +1,4 @@
+WARNING: Predicate getNode has been deprecated and may be removed in future (/home/mark/repos/ql/python/ql/test/library-tests/web/turbogears/Taint.ql:12,54-61)
 | ../../../query-tests/Security/lib/bottle.py:64 | LocalRequest() | bottle.request |
 | ../../../query-tests/Security/lib/bottle.py:64 | request | bottle.request |
 | ../../../query-tests/Security/lib/bottle.py:68 | url | externally controlled string |

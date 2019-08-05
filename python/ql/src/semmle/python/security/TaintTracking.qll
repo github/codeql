@@ -700,6 +700,15 @@ module DataFlow {
 
         abstract Location getLocation();
 
+        AstNode asAstNode() {
+            result = this.asCfgNode().getNode()
+        }
+
+        /** For backwards compatibility -- Use asAstNode() instead */
+        deprecated AstNode getNode() {
+            result = this.asAstNode()
+        }
+
     }
 
     class CfgNode extends Node, TCfgNode {

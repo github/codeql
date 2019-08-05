@@ -4,7 +4,7 @@ import TaintLib
 import semmle.python.dataflow.Implementation
 
 
-from TaintTrackingNode n, TaintTrackingNode s, TaintTracking::Configuration config
+from TaintTrackingNode n, TaintTrackingNode s, TestConfig config
 where s = n.getASuccessor() and config = n.getConfiguration()
 select 
     config + ":", 

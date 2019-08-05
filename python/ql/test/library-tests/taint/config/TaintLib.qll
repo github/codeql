@@ -10,7 +10,14 @@ class SimpleTest extends TaintKind {
 
 }
 
-class SimpleConfig extends TaintTracking::Configuration {
+abstract class TestConfig extends TaintTracking::Configuration {
+
+    bindingset[this]
+    TestConfig() { any() }
+
+}
+
+class SimpleConfig extends TestConfig {
 
     SimpleConfig() { this = "Simple config" }
 
@@ -49,7 +56,7 @@ class BasicCustomTaint extends TaintKind {
 }
 
 
-class BasicCustomConfig extends TaintTracking::Configuration {
+class BasicCustomConfig extends TestConfig {
 
     BasicCustomConfig() { this = "Basic custom config" }
 
@@ -99,7 +106,7 @@ class Scissors extends TaintKind {
 
 }
 
-class RockPaperScissorConfig extends TaintTracking::Configuration {
+class RockPaperScissorConfig extends TestConfig {
 
     RockPaperScissorConfig() { this = "Rock-paper-scissors config" }
 
@@ -145,7 +152,7 @@ class TaintCarrier extends TaintKind {
 
 }
 
-class TaintCarrierConfig extends  TaintTracking::Configuration {
+class TaintCarrierConfig extends TestConfig {
 
     TaintCarrierConfig() { this = "Taint carrier config" }
 
@@ -326,6 +333,4 @@ class TaintIterableSource extends TaintSource {
     }
 
 }
-
-
 

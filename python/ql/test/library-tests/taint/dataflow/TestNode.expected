@@ -1,2 +1,1 @@
-ERROR: getNode() cannot be resolved for type Node (TestNode.ql:5,69-76)
-ERROR: getTrackedValue() cannot be resolved for type TaintedNode (TestNode.ql:5,10-25)
+WARNING: Predicate getNode has been deprecated and may be removed in future (TestNode.ql:5,77-84)
