@@ -66,11 +66,17 @@ class ObjectInternal extends TObject {
 
     /** Holds if `obj` is the result of calling `this` and `origin` is
      * the origin of `obj`.
+     *
+     * This is the context-insensitive version.
+     * Generally, if this holds for any object `obj` then `callResult/3` should never hold for that object.
      */
     abstract predicate callResult(ObjectInternal obj, CfgOrigin origin);
 
     /** Holds if `obj` is the result of calling `this` and `origin` is
      * the origin of `obj` with callee context `callee`.
+     *
+     * This is the context-sensitive version.
+     * Generally, if this holds for any object `obj` then `callResult/2` should never hold for that object.
      */
     abstract predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin);
 

@@ -367,12 +367,10 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
     }
 
     override predicate callResult(ObjectInternal obj, CfgOrigin origin) {
-        // Don't know, assume not callable.
-        none()
+        obj = ObjectInternal::unknown() and origin = CfgOrigin::unknown()
     }
 
     override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-        // Don't know, assume not callable.
         none()
     }
 
