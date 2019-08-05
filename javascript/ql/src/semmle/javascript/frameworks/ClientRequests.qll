@@ -142,7 +142,7 @@ module ClientRequest {
 
     override DataFlow::Node getHost() { none() }
 
-    string getResponseFormat() {
+    string getResponseType() {
       if getOptionArgument(1, "json").mayHaveBooleanValue(true) then
         result = "json"
       else
@@ -150,12 +150,12 @@ module ClientRequest {
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean pr) {
-      responseType = getResponseFormat() and
+      responseType = getResponseType() and
       promise = true and
       pr = true and
       result = this
       or
-      responseType = getResponseFormat() and
+      responseType = getResponseType() and
       promise = false and
       pr = false and
       (
@@ -215,7 +215,7 @@ module ClientRequest {
       )
     }
 
-    string getResponseFormat() {
+    string getResponseType() {
       exists(DataFlow::Node option | option = getOptionArgument([0 .. 2], "responseType") |
         result = option.getStringValue()
         or
@@ -228,7 +228,7 @@ module ClientRequest {
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
-      responseType = getResponseFormat() and
+      responseType = getResponseType() and
       promise = true and
       result = this
     }
