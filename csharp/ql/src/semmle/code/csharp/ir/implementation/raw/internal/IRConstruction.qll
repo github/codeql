@@ -55,14 +55,10 @@ cached private module Cached {
     )
   }
   
-  // TODO: Conversion? Cast?
   cached Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
     exists(Expr converted, TranslatedExpr translatedExpr |
-      result = converted.(Cast).getExpr+()
-      or
-      result = converted
+      result = converted.stripCasts()
       |
-      not result instanceof Cast and
       translatedExpr = getTranslatedExpr(converted) and
       instruction = translatedExpr.getResult()
     )
@@ -73,21 +69,19 @@ cached private module Cached {
       getInstructionTag(instruction), tag)
   }
 
-  cached Instruction getMemoryOperandDefinition(Instruction instruction, MemoryOperandTag tag, Overlap overlap) {
+  cached Instruction getMemoryOperandDefinition(Instruction instruction, MemoryOperandTag tag, MustTotallyOverlap overlap) {
     result = getInstructionTranslatedElement(instruction).getInstructionOperand(
-      getInstructionTag(instruction), tag) and
-    overlap instanceof MustTotallyOverlap
+      getInstructionTag(instruction), tag)
   }
 
   cached Type getInstructionOperandType(Instruction instruction, TypedOperandTag tag) {
     // For all `LoadInstruction`s, the operand type of the `LoadOperand` is the same as
     // the result type of the load.
-    result = instruction.(LoadInstruction).getResultType() or
-    (
-      not instruction instanceof LoadInstruction and 
+    if instruction instanceof LoadInstruction then
+      result = instruction.(LoadInstruction).getResultType()
+    else
       result = getInstructionTranslatedElement(instruction).getInstructionOperandType(
         getInstructionTag(instruction), tag)
-    )
   }
 
   cached int getInstructionOperandSize(Instruction instruction, SideEffectOperandTag tag) {

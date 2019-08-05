@@ -1,3 +1,7 @@
+/**
+ * Module used to configure the IR generation process.
+ */
+
 private import internal.IRConfigurationInternal
 
 private newtype TIRConfiguration = MkIRConfiguration()

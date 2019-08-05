@@ -2,14 +2,8 @@ import csharp
 import semmle.code.csharp.ir.Util
 
 
-// TODO: Both exists needed?
 private predicate fieldIsInitialized(Field field) {
-  exists(ObjectInitializer initList | 
-  	exists(int i | field = initList.getMemberInitializer(i).getInitializedMember())
-  ) or
-  exists(MemberInitializer init |
-    field = init.getInitializedMember()
-  )
+  exists(field.getInitializer())
 }
 
 private predicate elementIsInitialized(int elementIndex) {

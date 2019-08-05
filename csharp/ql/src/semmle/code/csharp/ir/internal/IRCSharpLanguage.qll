@@ -6,7 +6,7 @@ class AST = CSharp::Element;
 
 class Type = CSharp::Type;
 //REVIEW: This might not exist in the database. 
-class UnknownType = CSharp::UnknownType;
+class UnknownType = CSharp::NullType;
 class VoidType = CSharp::VoidType;
 class IntegralType = CSharp::IntegralType;
 class FloatingPointType = CSharp::FloatingPointType;

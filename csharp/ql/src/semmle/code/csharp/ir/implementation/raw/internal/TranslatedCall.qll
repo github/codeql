@@ -5,6 +5,7 @@ private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
 private import semmle.code.csharp.ir.Util
+private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 /**
  * The IR translation of a call to a function. The call may be from an actual
@@ -45,12 +46,11 @@ abstract class TranslatedCall extends TranslatedExpr {
       (
         if hasWriteSideEffect() then (
           opcode instanceof Opcode::CallSideEffect and
-          // Was UnknownType, fix after comp layer
-          resultType instanceof VoidType
+          resultType instanceof Language::UnknownType
         )
         else (
           opcode instanceof Opcode::CallReadSideEffect and
-          resultType instanceof VoidType
+          resultType instanceof Language::UnknownType
         )
       ) and
       isLValue = false
@@ -126,8 +126,7 @@ abstract class TranslatedCall extends TranslatedExpr {
     tag = CallSideEffectTag() and
     hasSideEffect() and
     operandTag instanceof SideEffectOperandTag and
-    // TODO: Was UnknownType, fix after comp layer
-    result instanceof VoidType
+    result instanceof Language::UnknownType
   }
 
   override final Instruction getResult() {

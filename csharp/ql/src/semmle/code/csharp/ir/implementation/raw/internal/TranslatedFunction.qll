@@ -11,8 +11,6 @@ private import TranslatedInitialization
 private import TranslatedStmt
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
-//TODO: Reason about constructors and destructors
-
 /**
  * Gets the `TranslatedFunction` that represents function `callable`.
  */
@@ -157,17 +155,13 @@ class TranslatedFunction extends TranslatedElement,
       (
         tag = UnmodeledDefinitionTag() and
         opcode instanceof Opcode::UnmodeledDefinition and
-        // TODO: UnknownType seems to break it.
-        //       For now, in the context of C#, ObjectType seems sensible.
-        resultType instanceof ObjectType and
+        resultType instanceof Language::UnknownType and
         isLValue = false
       ) or
       (
         tag = AliasedDefinitionTag() and
         opcode instanceof Opcode::AliasedDefinition and
-        // TODO: UnknownType seems to break it.
-        //       For now, in the context of C#, ObjectType seems sensible.
-        resultType instanceof ObjectType and
+        resultType instanceof Language::UnknownType and
         isLValue = false
       ) or
       (

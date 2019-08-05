@@ -60,7 +60,7 @@ class TranslatedNonVariableDeclarationEntry extends TranslatedDeclarationEntry {
       Type resultType, boolean isLValue) {
     opcode instanceof Opcode::NoOp and
     tag = OnlyInstructionTag() and
-    resultType instanceof VoidType and
+    resultType instanceof Language::UnknownType and
     isLValue = false
   }
 

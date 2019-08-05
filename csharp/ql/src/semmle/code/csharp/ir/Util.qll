@@ -7,7 +7,6 @@ import csharp
 class ArrayInitWithMod extends ArrayInitializer {
   predicate isInitialized(int entry) { entry in [0 .. this.getNumberOfElements() - 1] }
 
-  pragma[inline]
   predicate isValueInitialized(int elementIndex) {
     isInitialized(elementIndex) and
     not exists(this.getElement(elementIndex))
@@ -20,7 +19,6 @@ class ObjectInitializerMod extends ObjectInitializer {
     this.getAMemberInitializer().getTargetVariable() = field
   }
 
-  pragma[inline]
   predicate isValueInitialized(Field field) {
     this.isInitialized(field) and
     not field = this.getAMemberInitializer().getInitializedMember()

@@ -1,3 +1,7 @@
+/**
+ * Module used to configure the IR generation process.
+ */
+
 import csharp
 
 private newtype TIRConfiguration = MkIRConfiguration()

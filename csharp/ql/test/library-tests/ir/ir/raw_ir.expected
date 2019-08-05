@@ -2,8 +2,8 @@ array_acc.cs:
 #    4| f
 #    4|   Block 0
 #    4|     v0_0(Void)                         = EnterFunction         : 
-#    4|     mu0_1(Object)                      = AliasedDefinition     : 
-#    4|     mu0_2(Object)                      = UnmodeledDefinition   : 
+#    4|     mu0_1(null)                        = AliasedDefinition     : 
+#    4|     mu0_2(null)                        = UnmodeledDefinition   : 
 #    4|     r0_3(glval<array_init_and_access>) = InitializeThis        : 
 #    5|     r0_4(glval<Int32[]>)               = VariableAddress[arr]  : 
 #    5|     mu0_5(Int32[])                     = Uninitialized[arr]    : &:r0_4
@@ -28,8 +28,8 @@ func_with_param_call.cs:
 #    4| f
 #    4|   Block 0
 #    4|     v0_0(Void)                        = EnterFunction            : 
-#    4|     mu0_1(Object)                     = AliasedDefinition        : 
-#    4|     mu0_2(Object)                     = UnmodeledDefinition      : 
+#    4|     mu0_1(null)                       = AliasedDefinition        : 
+#    4|     mu0_2(null)                       = UnmodeledDefinition      : 
 #    4|     r0_3(glval<test_call_with_param>) = InitializeThis           : 
 #    4|     r0_4(glval<Int32>)                = VariableAddress[x]       : 
 #    4|     mu0_5(Int32)                      = InitializeParameter[x]   : &:r0_4
@@ -50,15 +50,15 @@ func_with_param_call.cs:
 #    8| g
 #    8|   Block 0
 #    8|     v0_0(Void)                        = EnterFunction            : 
-#    8|     mu0_1(Object)                     = AliasedDefinition        : 
-#    8|     mu0_2(Object)                     = UnmodeledDefinition      : 
+#    8|     mu0_1(null)                       = AliasedDefinition        : 
+#    8|     mu0_2(null)                       = UnmodeledDefinition      : 
 #    8|     r0_3(glval<test_call_with_param>) = InitializeThis           : 
 #    9|     r0_4(glval<Int32>)                = VariableAddress[#return] : 
 #    9|     r0_5(glval<Int32>)                = FunctionAddress[f]       : 
 #    9|     r0_6(Int32)                       = Constant[2]              : 
 #    9|     r0_7(Int32)                       = Constant[3]              : 
 #    9|     r0_8(Int32)                       = Call                     : func:r0_5, 0:r0_6, 1:r0_7
-#    9|     v0_9(Void)                        = ^CallSideEffect          : ~mu0_2
+#    9|     mu0_9(null)                       = ^CallSideEffect          : ~mu0_2
 #    9|     mu0_10(Int32)                     = Store                    : &:r0_4, r0_8
 #    8|     r0_11(glval<Int32>)               = VariableAddress[#return] : 
 #    8|     v0_12(Void)                       = ReturnValue              : &:r0_11, ~mu0_2
@@ -69,8 +69,8 @@ simple_call.cs:
 #    4| f
 #    4|   Block 0
 #    4|     v0_0(Void)                    = EnterFunction            : 
-#    4|     mu0_1(Object)                 = AliasedDefinition        : 
-#    4|     mu0_2(Object)                 = UnmodeledDefinition      : 
+#    4|     mu0_1(null)                   = AliasedDefinition        : 
+#    4|     mu0_2(null)                   = UnmodeledDefinition      : 
 #    4|     r0_3(glval<test_simple_call>) = InitializeThis           : 
 #    5|     r0_4(glval<Int32>)            = VariableAddress[#return] : 
 #    5|     r0_5(Int32)                   = Constant[0]              : 
@@ -83,13 +83,13 @@ simple_call.cs:
 #    8| g
 #    8|   Block 0
 #    8|     v0_0(Void)                    = EnterFunction            : 
-#    8|     mu0_1(Object)                 = AliasedDefinition        : 
-#    8|     mu0_2(Object)                 = UnmodeledDefinition      : 
+#    8|     mu0_1(null)                   = AliasedDefinition        : 
+#    8|     mu0_2(null)                   = UnmodeledDefinition      : 
 #    8|     r0_3(glval<test_simple_call>) = InitializeThis           : 
 #    9|     r0_4(glval<Int32>)            = VariableAddress[#return] : 
 #    9|     r0_5(glval<Int32>)            = FunctionAddress[f]       : 
 #    9|     r0_6(Int32)                   = Call                     : func:r0_5
-#    9|     v0_7(Void)                    = ^CallSideEffect          : ~mu0_2
+#    9|     mu0_7(null)                   = ^CallSideEffect          : ~mu0_2
 #    9|     mu0_8(Int32)                  = Store                    : &:r0_4, r0_6
 #    8|     r0_9(glval<Int32>)            = VariableAddress[#return] : 
 #    8|     v0_10(Void)                   = ReturnValue              : &:r0_9, ~mu0_2
@@ -100,8 +100,8 @@ simple_function.cs:
 #    4| f
 #    4|   Block 0
 #    4|     v0_0(Void)                        = EnterFunction            : 
-#    4|     mu0_1(Object)                     = AliasedDefinition        : 
-#    4|     mu0_2(Object)                     = UnmodeledDefinition      : 
+#    4|     mu0_1(null)                       = AliasedDefinition        : 
+#    4|     mu0_2(null)                       = UnmodeledDefinition      : 
 #    4|     r0_3(glval<test_simple_function>) = InitializeThis           : 
 #    5|     r0_4(glval<Int32>)                = VariableAddress[#return] : 
 #    5|     r0_5(Int32)                       = Constant[0]              : 
@@ -115,8 +115,8 @@ variables.cs:
 #    4| f
 #    4|   Block 0
 #    4|     v0_0(Void)                  = EnterFunction       : 
-#    4|     mu0_1(Object)               = AliasedDefinition   : 
-#    4|     mu0_2(Object)               = UnmodeledDefinition : 
+#    4|     mu0_1(null)                 = AliasedDefinition   : 
+#    4|     mu0_2(null)                 = UnmodeledDefinition : 
 #    4|     r0_3(glval<test_variables>) = InitializeThis      : 
 #    5|     r0_4(glval<Int32>)          = VariableAddress[x]  : 
 #    5|     mu0_5(Int32)                = Uninitialized[x]    : &:r0_4

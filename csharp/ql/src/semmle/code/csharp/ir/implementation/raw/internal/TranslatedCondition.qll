@@ -152,6 +152,11 @@ abstract class TranslatedBinaryLogicalOperation extends
   final TranslatedCondition getRightOperand() {
     result = getTranslatedCondition(expr.getRightOperand())
   }
+  
+  final TranslatedCondition getAnOperand() {
+    result = getLeftOperand() or 
+    result = getRightOperand()
+  }
 }
 
 class TranslatedLogicalAndExpr extends TranslatedBinaryLogicalOperation {
@@ -171,7 +176,7 @@ class TranslatedLogicalAndExpr extends TranslatedBinaryLogicalOperation {
   }
 
   override Instruction getChildFalseSuccessor(TranslatedCondition child) {
-    (child = getLeftOperand() or child = getRightOperand()) and
+    child = getAnOperand() and
     result = getConditionContext().getChildFalseSuccessor(this)
   }
 }
@@ -180,7 +185,7 @@ class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
   override LogicalOrExpr expr;
 
   override Instruction getChildTrueSuccessor(TranslatedCondition child) {
-    (child = getLeftOperand() or child = getRightOperand()) and
+    child = getAnOperand() and
     result = getConditionContext().getChildTrueSuccessor(this)
   }
 
