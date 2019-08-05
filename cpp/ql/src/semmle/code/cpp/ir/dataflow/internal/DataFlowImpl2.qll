@@ -27,6 +27,12 @@ import DataFlowImplSpecific::Public
  *   // Optionally override `isAdditionalFlowStep`.
  * }
  * ```
+ * Conceptually, this defines a graph where the nodes are `DataFlow::Node`s and
+ * the edges are those data-flow steps that preserve the value of the node
+ * along with any additional edges defined by `isAdditionalFlowStep`.
+ * Specifying nodes in `isBarrier` will remove those nodes from the graph, and
+ * specifying nodes in `isBarrierIn` and/or `isBarrierOut` will remove in-going
+ * and/or out-going edges from those nodes, respectively.
  *
  * Then, to query whether there is flow between some `source` and `sink`,
  * write
@@ -54,7 +60,10 @@ abstract class Configuration extends string {
    */
   abstract predicate isSink(Node sink);
 
-  /** Holds if data flow through `node` is prohibited. */
+  /**
+   * Holds if data flow through `node` is prohibited. This completely removes
+   * `node` from the data flow graph.
+   */
   predicate isBarrier(Node node) { none() }
 
   /** DEPRECATED: override `isBarrierIn` and `isBarrierOut` instead. */
