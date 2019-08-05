@@ -142,6 +142,7 @@ module ClientRequest {
 
     override DataFlow::Node getHost() { none() }
 
+    /** Gets the response type from the options passed in. */
     string getResponseType() {
       if getOptionArgument(1, "json").mayHaveBooleanValue(true) then
         result = "json"
@@ -215,6 +216,7 @@ module ClientRequest {
       )
     }
 
+    /** Gets the response type from the options passed in. */
     string getResponseType() {
       exists(DataFlow::Node option | option = getOptionArgument([0 .. 2], "responseType") |
         result = option.getStringValue()
@@ -304,12 +306,14 @@ module ClientRequest {
       )
     }
 
+    /** Holds if the result is a stream. */
     predicate isStream() {
       getOptionArgument(1, "stream").mayHaveBooleanValue(true)
       or
       this = DataFlow::moduleMember("got", "stream").getACall()
     }
 
+    /** Holds if the result is a JSON object. */
     predicate isJson() {
       getOptionArgument(1, "json").mayHaveBooleanValue(true)
     }
@@ -397,19 +401,29 @@ module ClientRequest {
       getAPropertyWrite("responseType").getRhs().mayHaveStringValue(result)
     }
 
-    private string getAssignedResponseType() {
+    /**
+     * Gets the response type corresponding to the `response` property,
+     * but not the explicitly typed properties, `reponseText` and `responseXML`.
+     */
+    string getAssignedResponseType() {
       result = getExplicitResponseType()
       or
       not exists(getExplicitResponseType()) and
       result = "text"
     }
 
+    /** Gets an event listener registered on this XHR object. */
     DataFlow::FunctionNode getAnEventListener() {
       result = getAPropertyWrite("on" + any(string s)).getRhs().getAFunctionValue()
       or
       result = getAMethodCall("addEventListener").getArgument(1).getAFunctionValue()
     }
 
+    /**
+     * Gets a node that refers to this XHR object.
+     *
+     * In particular, this can be the receiver of an event handler.
+     */
     DataFlow::SourceNode getAnAlias() {
       result = this
       or
@@ -481,6 +495,11 @@ module ClientRequest {
       )
     }
 
+    /**
+     * Gets a node that refers to this XHR object.
+     *
+     * In particular, this can be the receiver of an event handler.
+     */
     DataFlow::SourceNode getAnAlias() {
       static = false and
       result = base
@@ -488,7 +507,11 @@ module ClientRequest {
       result = getAnEventListener().getReceiver()
     }
 
-    private string getAssignedResponseType() {
+    /**
+     * Gets the response type corresponding `getReponse()` but not
+     * for explicitly typed calls like `getResponseJson()`.
+     */
+    string getAssignedResponseType() {
       getAMethodCall("setResponseType").getArgument(0).mayHaveStringValue(result)
       or
       not exists(getAMethodCall("setResponseType")) and
