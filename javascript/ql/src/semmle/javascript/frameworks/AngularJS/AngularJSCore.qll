@@ -719,7 +719,8 @@ private class BuiltinServiceCall extends AngularJSCall {
   BuiltinServiceCall() {
     exists(BuiltinServiceReference service |
       service.getAMethodCall(_) = this or
-      service.getACall() = this |
+      service.getACall() = this
+    |
       call = this
     )
   }
@@ -769,7 +770,8 @@ private class BuiltinServiceCall extends AngularJSCall {
       methodName = "$watchCollection" or
       methodName = "$watchGroup"
     |
-      e = scope.getAMethodCall(methodName).getArgument(0)
+      call = scope.getAMethodCall(methodName) and
+      e = call.getArgument(0)
     )
     or
     exists(ServiceReference service |
@@ -777,15 +779,16 @@ private class BuiltinServiceCall extends AngularJSCall {
       service.getName() = "$parse" or
       service.getName() = "$interpolate"
     |
-      e = service.getACall().getArgument(0)
+      call = service.getACall() and
+      e = call.getArgument(0)
     )
     or
-    exists(ServiceReference service, CallExpr filter, CallExpr filterInvocation |
+    exists(ServiceReference service, CallExpr filterInvocation |
       // `$filter('orderBy')(collection, expression)`
       service.getName() = "$filter" and
-      filter = service.getACall() and
-      filter.getArgument(0).mayHaveStringValue("orderBy") and
-      filterInvocation.getCallee() = filter and
+      call = service.getACall() and
+      call.getArgument(0).mayHaveStringValue("orderBy") and
+      filterInvocation.getCallee() = call and
       e = filterInvocation.getArgument(1)
     )
   }
