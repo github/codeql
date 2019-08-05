@@ -128,3 +128,8 @@ import {ClientRequest, net} from 'electron';
 
     requestPromise(url, {json: true});
 });
+
+(function() {
+    axios.get(url).then(response => response.data);
+    axios.get({ url: url, responseType: 'json'}).then(response => response.data);
+})
