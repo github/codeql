@@ -144,3 +144,10 @@ import {ClientRequest, net} from 'electron';
     got(url, { json: true }).then(response => response.body);
     got.stream(url).pipe(process.stdout);
 })
+
+(function() {
+    superagent.get(url).end((err, res) => {
+        err;
+        res;
+    });
+});
