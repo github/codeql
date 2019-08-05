@@ -31,31 +31,15 @@ module XMLEntityInjection {
   }
 
   class InsecureXMLSink extends Sink {
-    InsecureXMLSink() {
-      // Unfortunately, we cannot use
-      // ```
-      // exists(InsecureXML::InsecureXmlProcessing r | r.isUnsafe(reason) | this = r.getAnArgument())
-      // ```
-      // in the charpred, as that results in bad aggregate
-      // recursion. Therefore, we overestimate the sinks here
-      // and make the restriction later by overriding
-      // `hasFlowPath()` below.
-      this.getExpr() = any(MethodCall mc |
-          mc.getTarget().hasQualifiedName("System.Xml.XmlReader.Create") or
-          mc.getTarget().hasQualifiedName("System.Xml.XmlDocument.Load") or
-          mc.getTarget().hasQualifiedName("System.Xml.XmlDocument.LoadXml")
-        ).getAnArgument()
-      or
-      this.getExpr() = any(ObjectCreation oc |
-          oc.getObjectType().(ValueOrRefType).hasQualifiedName("System.Xml.XmlTextReader")
-        ).getAnArgument()
-    }
+    private string reason;
 
-    override string getReason() {
-      exists(InsecureXML::InsecureXmlProcessing r | r.isUnsafe(result) |
+    InsecureXMLSink() {
+      exists(InsecureXML::InsecureXmlProcessing r | r.isUnsafe(reason) |
         this.getExpr() = r.getAnArgument()
       )
     }
+
+    override string getReason() { result = reason }
   }
 
   /**

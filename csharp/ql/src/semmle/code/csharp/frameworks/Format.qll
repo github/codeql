@@ -5,6 +5,7 @@
 import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Text
+private import semmle.code.csharp.dataflow.DataFlow2
 
 /** A method that formats a string, for example `string.Format()`. */
 class FormatMethod extends Method {
@@ -175,7 +176,7 @@ class InvalidFormatString extends StringLiteral {
 private module FormatFlow {
   private import semmle.code.csharp.dataflow.DataFlow
 
-  private class FormatConfiguration extends DataFlow::Configuration {
+  private class FormatConfiguration extends DataFlow2::Configuration {
     FormatConfiguration() { this = "format" }
 
     override predicate isSource(DataFlow::Node n) { n.asExpr() instanceof StringLiteral }
