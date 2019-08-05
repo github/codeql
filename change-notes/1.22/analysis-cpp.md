@@ -27,3 +27,4 @@
 - The `semmle.code.cpp.security.TaintTracking` library now considers a pointer difference calculation as blocking taint flow.
 - Fixed the `LocalScopeVariableReachability.qll` library's handling of loops with an entry condition is both always true upon first entry, and where there is more than one control flow path through the loop condition.  This change increases the accuracy of the `LocalScopeVariableReachability.qll` library and queries which depend on it.
 - The `semmle.code.cpp.models` library now models data flow through `std::swap`.
+- There is a new `Variable.isThreadLocal()` predicate. It can be used to tell whether a variable is `thread_local`.
