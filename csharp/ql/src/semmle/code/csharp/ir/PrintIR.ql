@@ -1,7 +1,7 @@
 /**
  * @name Print IR
  * @description Outputs a representation of the IR graph
- * @id cpp/print-ir
+ * @id charp/print-ir
  * @kind graph
  */
 
