@@ -329,8 +329,6 @@ private module NodeJSCrypto {
   }
 
   private class Apply extends CryptographicOperation, MethodCallExpr {
-    Expr input;
-
     InstantiatedAlgorithm instantiation;
 
     Apply() {
