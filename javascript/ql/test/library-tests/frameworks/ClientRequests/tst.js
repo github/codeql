@@ -151,3 +151,12 @@ import {ClientRequest, net} from 'electron';
         res;
     });
 });
+
+(function() {
+    let XhrIo = goog.require('goog.net.XhrIo');
+    let xhr = new XhrIo();
+    xhr.send(url);
+    xhr.addEventListener('readystatechange', function() {
+        xhr.getResponseJson();
+    });
+})
