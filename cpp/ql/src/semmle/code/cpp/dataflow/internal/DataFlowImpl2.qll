@@ -57,8 +57,14 @@ abstract class Configuration extends string {
   /** Holds if data flow through `node` is prohibited. */
   predicate isBarrier(Node node) { none() }
 
-  /** DEPRECATED: override `isBarrier` instead. */
+  /** DEPRECATED: override `isBarrierIn` and `isBarrierOut` instead. */
   deprecated predicate isBarrierEdge(Node node1, Node node2) { none() }
+
+  /** Holds if data flow into `node` is prohibited. */
+  predicate isBarrierIn(Node node) { none() }
+
+  /** Holds if data flow out of `node` is prohibited. */
+  predicate isBarrierOut(Node node) { none() }
 
   /**
    * Holds if the additional flow step from `node1` to `node2` must be taken
@@ -104,18 +110,22 @@ abstract class Configuration extends string {
 }
 
 private predicate inBarrier(Node node, Configuration config) {
-  config.isBarrier(node) and
+  config.isBarrierIn(node) and
   config.isSource(node)
 }
 
 private predicate outBarrier(Node node, Configuration config) {
-  config.isBarrier(node) and
+  config.isBarrierOut(node) and
   config.isSink(node)
 }
 
 private predicate fullBarrier(Node node, Configuration config) {
-  config.isBarrier(node) and
-  not config.isSource(node) and
+  config.isBarrier(node)
+  or
+  config.isBarrierIn(node) and
+  not config.isSource(node)
+  or
+  config.isBarrierOut(node) and
   not config.isSink(node)
 }
 
