@@ -823,7 +823,9 @@ abstract class EnhancedForLoop extends LoopStmt {
    * expression in this `for`-`in` or `for`-`of` loop.
    */
   Expr getLValue() {
-    result = getIteratorExpr() or
+    result = getIterator() and
+    (result instanceof BindingPattern or result instanceof PropAccess)
+    or
     result = getIterator().(DeclStmt).getADecl().getBindingPattern()
   }
 

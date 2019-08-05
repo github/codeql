@@ -1118,7 +1118,8 @@ module DataFlow {
   }
 
   /**
-   * Gets the data flow node corresponding the given l-value expression.
+   * Gets the data flow node corresponding the given l-value expression, if
+   * such a node exists.
    *
    * This differs from `DataFlow::valueNode()`, which represents the value
    * _before_ the l-value is assigned to, whereas `DataFlow::lvalueNode()`
