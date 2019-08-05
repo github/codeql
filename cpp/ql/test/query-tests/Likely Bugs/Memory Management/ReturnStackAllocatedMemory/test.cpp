@@ -146,7 +146,7 @@ char *testArray5()
 
 int *returnThreadLocal() {
   thread_local int threadLocal;
-  return &threadLocal; // GOOD [FALSE POSITIVE]
+  return &threadLocal; // GOOD
 }
 
 int returnDereferenced() {
