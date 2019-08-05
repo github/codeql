@@ -143,7 +143,7 @@ module ClientRequest {
     override DataFlow::Node getHost() { none() }
 
     string getResponseFormat() {
-      if getOptionArgument(0, "json").mayHaveBooleanValue(true) then
+      if getOptionArgument(1, "json").mayHaveBooleanValue(true) then
         result = "json"
       else
         result = "text"
@@ -163,6 +163,11 @@ module ClientRequest {
         or
         result = getCallback([1..2]).getParameter(1).getAPropertyRead("body")
       )
+      or
+      responseType = "error" and
+      promise = false and
+      pr = false and
+      result = getCallback([1..2]).getParameter(0)
     }
 
     override DataFlow::Node getADataNode() { result = getArgument(1) }
@@ -353,7 +358,7 @@ module ClientRequest {
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
-      responseType = "text" and
+      responseType = "stream" and
       promise = true and
       result = this
       or
@@ -363,7 +368,7 @@ module ClientRequest {
         (
           responseType = "error" and result = callback.getParameter(0)
           or
-          responseType = "text" and result = callback.getParameter(1)
+          responseType = "stream" and result = callback.getParameter(1)
         )
       )
     }
@@ -386,13 +391,14 @@ module ClientRequest {
 
     override DataFlow::Node getADataNode() { result = getAMethodCall("send").getArgument(0) }
 
+    private string getExplicitResponseType() {
+      getAPropertyWrite("responseType").getRhs().mayHaveStringValue(result)
+    }
+
     private string getAssignedResponseType() {
-      getAPropertyWrite("responseType").mayHaveStringValue(result)
+      result = getExplicitResponseType()
       or
-      getAPropertyWrite("responseType").mayHaveStringValue("") and
-      result = "text"
-      or
-      not exists(getAPropertyWrite("responseType")) and
+      not exists(getExplicitResponseType()) and
       result = "text"
     }
 
@@ -435,15 +441,18 @@ module ClientRequest {
   * A model of a URL request made using the `XhrIo` class from the closure library.
   */
   class ClosureXhrIoRequest extends ClientRequest::Range {
-    DataFlow::SourceNode xhrIo;
+    DataFlow::SourceNode base;
     boolean static;
 
     ClosureXhrIoRequest() {
-      xhrIo = Closure::moduleImport("goog.net.XhrIo") and
-      (
-        this = xhrIo.getAMethodCall("send") and static = true
+      exists (DataFlow::SourceNode xhrIo | xhrIo = Closure::moduleImport("goog.net.XhrIo") |
+        static = true and
+        base = xhrIo and
+        this = xhrIo.getAMethodCall("send")
         or
-        this = xhrIo.getAnInstantiation().getAMethodCall("send") and static = false
+        static = false and
+        base = xhrIo.getAnInstantiation() and
+        this = base.getAMethodCall("send")
       )
     }
 
@@ -458,20 +467,21 @@ module ClientRequest {
 
     /** Gets an event listener with `this` bound to this object. */
     DataFlow::FunctionNode getAnEventListener() {
+      static = true and
       result = getAnArgument().getAFunctionValue()
       or
       static = false and
       exists(DataFlow::MethodCallNode listen, string name |
-        listen = getAMethodCall(name) and
+        listen = base.getAMethodCall(name) and
         (name = "listen" or name = "listenOnce") and
-        xhrIo.flowsTo(listen.getArgument(3)) and
+        base.flowsTo(listen.getArgument(3)) and
         result = listen
       )
     }
 
     DataFlow::SourceNode getAnAlias() {
       static = false and
-      result = xhrIo
+      result = base
       or
       result = getAnEventListener().getReceiver()
     }
