@@ -11,11 +11,11 @@ Follow the steps below to help other users understand what your query does, and 
 
 1. **Consult the QL documentation for query writers**
 
-   There is lots of useful documentation to help you write QL, ranging from information about query file structure to language-specific tutorials. For more information on the documentation available, see [Writing QL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on help.semmle.com.
+   There is lots of useful documentation to help you write QL, ranging from information about query file structure to language-specific tutorials. For more information on the documentation available, see [Writing QL queries](https://help.semmle.com/QL/learn-ql/writing-queries/writing-queries.html) on [help.semmle.com](https://help.semmle.com).
 
 2. **Format your QL correctly**
 
-   All of Semmle's standard QL queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all QL contributions follow the same formatting guidelines. If you use QL for Eclipse, you can auto-format your query in the [QL editor](https://help.semmle.com/ql-for-eclipse/Content/WebHelp/ql-editor.html)]. For more information, see the [QL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md).
+   All of Semmle's standard QL queries and libraries are uniformly formatted for clarity and consistency, so we strongly recommend that all QL contributions follow the same formatting guidelines. If you use QL for Eclipse, you can auto-format your query in the [QL editor](https://help.semmle.com/ql-for-eclipse/Content/WebHelp/ql-editor.html). For more information, see the [QL style guide](https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md).
 
 3. **Make sure your query has the correct metadata**
 
@@ -39,6 +39,7 @@ Follow the steps below to help other users understand what your query does, and 
      * JavaScript: `ql/javascript/ql/src`
      * Python: `ql/python/ql/src`
 
+   Each language-specific directory contains further subdirectories that group queries based on their `@tags` properties or purpose. Make sure that you select the appropriate subdirectory for your new query, or create a new one if necessary. 
 
 6. **Write a query help file**
 
