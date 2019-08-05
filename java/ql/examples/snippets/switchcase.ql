@@ -10,8 +10,9 @@
 import java
 
 from SwitchStmt switch, EnumType enum, EnumConstant missing
-where switch.getExpr().getType() = enum
-  and missing.getDeclaringType() = enum
-  and not switch.getAConstCase().getValue() = missing.getAnAccess()
-  and not exists(switch.getDefaultCase())
+where
+  switch.getExpr().getType() = enum and
+  missing.getDeclaringType() = enum and
+  not switch.getAConstCase().getValue() = missing.getAnAccess() and
+  not exists(switch.getDefaultCase())
 select switch

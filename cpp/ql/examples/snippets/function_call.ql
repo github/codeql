@@ -6,7 +6,7 @@
  *       function
  *       method
  */
- 
+
 import cpp
 
 from FunctionCall call, Function fcn

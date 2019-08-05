@@ -4,7 +4,7 @@
  * @description Finds function expressions that have a name
  * @tags function expression
  */
- 
+
 import javascript
 
 from FunctionExpr fn

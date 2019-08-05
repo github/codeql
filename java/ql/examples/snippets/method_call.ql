@@ -5,11 +5,12 @@
  * @tags call
  *       method
  */
- 
+
 import java
 
 from MethodAccess call, Method method
-where call.getMethod() = method
-  and method.hasName("methodName")
-  and method.getDeclaringType().hasQualifiedName("com.example", "Class")
+where
+  call.getMethod() = method and
+  method.hasName("methodName") and
+  method.getDeclaringType().hasQualifiedName("com.example", "Class")
 select call

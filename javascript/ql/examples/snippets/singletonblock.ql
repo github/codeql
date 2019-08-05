@@ -5,7 +5,7 @@
  * @tags block
  *       statement
  */
- 
+
 import javascript
 
 from BlockStmt b

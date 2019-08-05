@@ -9,8 +9,8 @@
 import csharp
 
 from Method m, Method n
-where m.calls(n)
-  and n.calls(m)
-  and m != n
+where
+  m.calls(n) and
+  n.calls(m) and
+  m != n
 select m, n
- 

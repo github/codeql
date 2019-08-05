@@ -10,7 +10,7 @@
  *       subtype
  *       supertype
  */
- 
+
 import cpp
 
 from Class type

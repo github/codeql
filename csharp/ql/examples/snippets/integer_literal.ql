@@ -5,7 +5,7 @@
  * @tags integer
  *       literal
  */
- 
+
 import csharp
 
 from IntegerLiteral literal

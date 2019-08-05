@@ -6,11 +6,12 @@
  *       field
  *       read
  */
- 
+
 import cpp
 
 from Field f, FieldAccess access
-where f.hasName("aDate")
-  and f.getDeclaringType().hasName("Order")
-  and f = access.getTarget()
+where
+  f.hasName("aDate") and
+  f.getDeclaringType().hasName("Order") and
+  f = access.getTarget()
 select access

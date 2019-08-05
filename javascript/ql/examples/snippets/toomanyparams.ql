@@ -6,7 +6,7 @@
  *       parameter
  *       argument
  */
- 
+
 import javascript
 
 from Function f

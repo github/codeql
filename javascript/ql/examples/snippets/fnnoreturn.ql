@@ -9,6 +9,7 @@
 import javascript
 
 from Function f
-where exists(f.getABodyStmt()) and
-      not exists (ReturnStmt r | r.getContainer() = f)
+where
+  exists(f.getABodyStmt()) and
+  not exists(ReturnStmt r | r.getContainer() = f)
 select f

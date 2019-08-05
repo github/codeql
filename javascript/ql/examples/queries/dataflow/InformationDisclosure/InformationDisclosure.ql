@@ -1,7 +1,7 @@
 /**
  * @name Information disclosure through postMessage
  * @description Tracks values from an 'authKey' property into a postMessage call with unrestricted origin,
-                indicating a leak of sensitive information.
+ *              indicating a leak of sensitive information.
  * @kind path-problem
  * @tags security
  * @id js/examples/information-disclosure

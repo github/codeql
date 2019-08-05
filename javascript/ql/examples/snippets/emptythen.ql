@@ -9,7 +9,7 @@
  *       conditional
  *       branch
  */
- 
+
 import javascript
 
 from IfStmt i

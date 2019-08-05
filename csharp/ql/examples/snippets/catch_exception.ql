@@ -6,7 +6,7 @@
  *       try
  *       exception
  */
- 
+
 import csharp
 
 from CatchClause catch

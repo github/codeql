@@ -5,7 +5,7 @@
  * @tags integer
  *       literal
  */
- 
+
 import java
 
 from IntegerLiteral literal

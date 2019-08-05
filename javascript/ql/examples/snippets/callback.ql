@@ -6,7 +6,7 @@
  *       callback
  *       higher-order
  */
- 
+
 import javascript
 
 from InvokeExpr invk, DataFlow::FunctionNode f

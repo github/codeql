@@ -5,7 +5,7 @@
  * @tags variable
  *       reference
  */
- 
+
 import javascript
 
 from VarRef ref

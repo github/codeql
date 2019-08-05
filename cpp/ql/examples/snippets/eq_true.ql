@@ -7,7 +7,7 @@
  *       test
  *       boolean
  */
- 
+
 import cpp
 
 from EqualityOperation eq, Expr trueExpr

@@ -7,7 +7,7 @@
  *       throw
  *       exception
  */
- 
+
 import cpp
 
 from ThrowExpr throw

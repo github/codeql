@@ -5,7 +5,7 @@
  * @tags variable
  *       declaration
  */
- 
+
 import javascript
 
 from VarDecl d

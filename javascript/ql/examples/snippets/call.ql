@@ -6,7 +6,7 @@
  *       function
  *       eval
  */
- 
+
 import javascript
 
 from CallExpr c

@@ -5,10 +5,11 @@
  * @tags call
  *       method
  */
- 
+
 import javascript
 
 from MethodCallExpr c
-where c.getReceiver() instanceof ThisExpr and
-      c.getMethodName() = "isMounted"
+where
+  c.getReceiver() instanceof ThisExpr and
+  c.getMethodName() = "isMounted"
 select c
