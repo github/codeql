@@ -1,0 +1,101 @@
+Exercise: ``snprintf`` overflow
+===============================
+
+Getting started and setting up
+==============================
+
+To try the examples in this presentation you should download:
+
+- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- Snapshot: `rsyslog <https://downloads.lgtm.com/snapshots/cpp/rsyslog/rsyslog/rsyslog-all-revision-2018-April-27--14-12-31.zip>`__
+
+More resources:
+
+- To learn more about the main features of QL, try looking at the `QL language handbook <https://help.semmle.com/QL/ql-handbook/>`__.
+- For further information about writing queries in QL, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html>`__.
+
+.. note::
+
+  To run the queries featured in this training presentation, we recommend you download the free-to-use `QL for Eclipse plugin <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/getting-started.html>`__.
+
+  This plugin allows you to locally access the latest features of QL, including the standard QL libraries and queries. It also provides standard IDE features such as syntax highlighting, jump-to-definition, and tab completion.
+
+  A good project to start analyzing is `ChakraCore <https://github.com/rsyslog/rsyslog>`__–a suitable snapshot to query is available by visiting the link on the slide.
+
+  Alternatively, you can query any project (including ChakraCore) in the  `query console on LGTM.com <https://lgtm.com/query/project:1506087977050/lang:cpp/>`__. 
+
+  Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+
+``snprintf``
+============
+
+.. rst-class:: build
+
+- ``printf``: Returns number of characters printed.
+
+  .. code-block:: cpp
+  
+    printf("Hello %s!", name)
+
+- ``sprintf``: Returns number of characters written to ``buf``.
+
+  .. code-block:: cpp
+  
+    sprintf(buf, "Hello %s!", name)
+  
+- ``snprintf``: Returns number of characters it **would have written** to ``buf`` had ``n`` been sufficiently large, **not** the number of characters actually written.
+
+  .. code-block:: cpp
+  
+    snprintf(buf, n, "Hello %s!", name)
+
+- In pre-C99 versions of glibc ``snprintf`` would return -1 if ``n`` was too small!
+
+RCE in rsyslog
+==============
+
+- Vulnerable code looked similar to this (`original <https://github.com/rsyslog/librelp/blob/532aa362f0f7a8d037505b0a27a1df452f9bac9e/src/tcp.c#L1195-L1211>`__):
+
+.. code-block:: cpp
+
+  char buf[1024];
+  int pos = 0;
+  for (int i = 0; i < n; i++) {
+    pos += snprintf(buf + pos, sizeof(buf) - pos, "%s", strs[i]);
+  }
+
+- Disclosed as `CVE-2018-1000140 <https://nvd.nist.gov/vuln/detail/CVE-2018-1000140>`__.
+- Blog post: `https://blog.semmle.com/librelp-buffer-overflow-cve-2018-1000140/ <https://blog.semmle.com/librelp-buffer-overflow-cve-2018-1000140/>`__.
+
+Finding the RCE yourself
+========================
+
+#. Write a query to find calls to ``snprintf``
+
+   **Hint**: Use class ``FunctionCall``
+
+#. Restrict to calls whose result is used
+
+   **Hint**: Use class ``ExprInVoidContext``
+
+#. Restrict to calls where the format string contains “%s”
+
+   **Hint**: Use predicates ``Expr.getValue`` and ``string.regexpMatch``
+
+#. Restrict to calls where the result flows back to the size argument
+
+   **Hint**: Import library ``semmle.code.cpp.dataflow.TaintTracking`` and use predicate ``TaintTracking::localTaint``
+
+Model answer
+============
+
+.. literalinclude:: ../query-examples/cpp/snprintf-1.ql
+   :language: ql
+
+.. rst-class:: build
+
+- More full-featured version: `https://lgtm.com/rules/1505913226124 <https://lgtm.com/rules/1505913226124>`__.
+
+.. note::
+
+  The regular expression for matching the format string uses the “(?s)” directive to ensure that “.” also matches any newline characters embedded in the string.

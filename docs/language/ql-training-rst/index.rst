@@ -2,6 +2,5 @@
    :glob:
    :hidden:
 
-   ./intro-to-ql/*
+   ./**/*
    ./*
-  
