@@ -81,3 +81,12 @@ abstract class HttpResponseTaintSink extends TaintSink {
     }
 
 }
+
+abstract class HttpRedirectTaintSink extends TaintSink {
+
+    override predicate sinks(TaintKind kind) { 
+        kind instanceof ExternalStringKind
+    }
+
+}
+
