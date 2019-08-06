@@ -5,7 +5,6 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 | cpp11.cpp:141:7:141:7 | Phi: g | cpp11.cpp:161:16:161:16 | NoOp: label ...: |
-| statements.cpp:49:1:49:4 | Phi: label ...: | statements.cpp:46:5:46:13 | NoOp: goto ... |
 missingOperandType
 instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
@@ -22,17 +21,9 @@ instructionWithoutSuccessor
 | ms_try_mix.cpp:11:12:11:15 | Chi: call to C |
 | ms_try_mix.cpp:28:12:28:15 | Chi: call to C |
 | ms_try_mix.cpp:48:10:48:13 | Chi: call to C |
-| static_init_templates.cpp:77:28:77:28 | UnmodeledDefinition: instantiatedTemplateFunction |
-| static_init_templates.cpp:77:28:77:28 | UnmodeledDefinition: instantiatedTemplateFunction |
-| static_init_templates.cpp:86:28:86:28 | UnmodeledDefinition: instantiatedTemplateFunction2 |
-| static_init_templates.cpp:86:28:86:28 | UnmodeledDefinition: instantiatedTemplateFunction2 |
-| static_init_templates.cpp:94:28:94:28 | UnmodeledDefinition: instantiatedTemplateFunction3 |
-| static_init_templates.cpp:94:28:94:28 | UnmodeledDefinition: instantiatedTemplateFunction3 |
-| static_init_templates.cpp:102:28:102:28 | UnmodeledDefinition: instantiatedTemplateFunction4 |
-| static_init_templates.cpp:102:28:102:28 | UnmodeledDefinition: instantiatedTemplateFunction4 |
 | stmt_expr.cpp:27:5:27:15 | Store: ... = ... |
 | vla.c:5:9:5:14 | Uninitialized: definition of matrix |
-| vla.c:12:18:12:23 | NoOp: declaration of myType |
+| vla.c:11:6:11:16 | UnmodeledDefinition: vla_typedef |
 ambiguousSuccessors
 | allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | allocators.cpp:16:8:16:10 | VariableAddress: definition of foo |
 | allocators.cpp:14:5:14:8 | UnmodeledDefinition: main | Goto | 4 | no_dynamic_init.cpp:10:16:10:16 | VariableAddress: definition of m |
@@ -549,3 +540,4 @@ lostReachability
 | range_analysis.c:370:36:370:38 | Constant: 500 |
 | range_analysis.c:371:37:371:39 | Constant: 500 |
 backEdgeCountMismatch
+useNotDominatedByDefinition
