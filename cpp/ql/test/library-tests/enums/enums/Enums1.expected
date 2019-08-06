@@ -11,6 +11,8 @@
 | enums.cpp:5:13:5:13 | b | b | 1 | Flag | 1 | 1 | 1 |
 | enums.cpp:5:22:5:22 | c | c | 1 | Flag | 1 | 1 | 1 |
 | enums.cpp:5:31:5:31 | d | d | 1 | Flag | 1 | 1 | 1 |
+| enums.cpp:21:3:21:21 | myLocalEnumConstant | myLocalEnumConstant | 1 | myLocalEnum | 1 | 1 | 1 |
+| enums.cpp:29:5:29:24 | MyNestedEnumConstant | MyNestedEnumConstant | 1 | MyNestedEnum | 1 | 1 | 1 |
 | enums.ms.c:2:3:2:6 | zero | zero | 1 | numbers | 1 | 1 | 1 |
 | enums.ms.c:2:9:2:11 | one | one | 1 | numbers | 1 | 1 | 1 |
 | scoped.cpp:3:5:3:5 | X | X | 1 | E1 | 1 | 1 | 1 |
