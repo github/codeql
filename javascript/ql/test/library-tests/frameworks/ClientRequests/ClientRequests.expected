@@ -43,7 +43,7 @@ test_ClientRequest
 | tst.js:123:5:127:6 | request ... \\n    }) |
 | tst.js:129:5:129:37 | request ...  true}) |
 | tst.js:133:5:133:18 | axios.get(url) |
-| tst.js:134:5:134:48 | axios.g ... json'}) |
+| tst.js:134:5:134:44 | axios({ ... json'}) |
 | tst.js:139:5:139:14 | fetch(url) |
 | tst.js:143:5:143:12 | got(url) |
 | tst.js:144:5:144:28 | got(url ... true }) |
@@ -132,8 +132,8 @@ test_getUrl
 | tst.js:123:5:127:6 | request ... \\n    }) | tst.js:123:13:123:15 | url |
 | tst.js:129:5:129:37 | request ...  true}) | tst.js:129:20:129:22 | url |
 | tst.js:133:5:133:18 | axios.get(url) | tst.js:133:15:133:17 | url |
-| tst.js:134:5:134:48 | axios.g ... json'}) | tst.js:134:15:134:47 | { url:  ... 'json'} |
-| tst.js:134:5:134:48 | axios.g ... json'}) | tst.js:134:22:134:24 | url |
+| tst.js:134:5:134:44 | axios({ ... json'}) | tst.js:134:11:134:43 | { url:  ... 'json'} |
+| tst.js:134:5:134:44 | axios({ ... json'}) | tst.js:134:18:134:20 | url |
 | tst.js:139:5:139:14 | fetch(url) | tst.js:139:11:139:13 | url |
 | tst.js:143:5:143:12 | got(url) | tst.js:143:9:143:11 | url |
 | tst.js:144:5:144:28 | got(url ... true }) | tst.js:144:9:144:11 | url |
@@ -143,6 +143,7 @@ test_getUrl
 test_getAResponseDataNode
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
+| tst.js:25:5:25:14 | axios(url) | tst.js:25:5:25:14 | axios(url) |  | true |
 | tst.js:25:5:25:14 | axios(url) | tst.js:25:5:25:14 | axios(url) | json | true |
 | tst.js:27:5:27:18 | axios.get(url) | tst.js:27:5:27:18 | axios.get(url) | json | true |
 | tst.js:29:5:29:23 | axios({ url: url }) | tst.js:29:5:29:23 | axios({ url: url }) | json | true |
@@ -175,7 +176,7 @@ test_getAResponseDataNode
 | tst.js:123:5:127:6 | request ... \\n    }) | tst.js:125:9:125:21 | response.body | json | false |
 | tst.js:129:5:129:37 | request ...  true}) | tst.js:129:5:129:37 | request ...  true}) | json | true |
 | tst.js:133:5:133:18 | axios.get(url) | tst.js:133:5:133:18 | axios.get(url) | json | true |
-| tst.js:134:5:134:48 | axios.g ... json'}) | tst.js:134:5:134:48 | axios.g ... json'}) | json | true |
+| tst.js:134:5:134:44 | axios({ ... json'}) | tst.js:134:5:134:44 | axios({ ... json'}) | json | true |
 | tst.js:139:5:139:14 | fetch(url) | tst.js:139:5:139:14 | fetch(url) | fetch.response | true |
 | tst.js:143:5:143:12 | got(url) | tst.js:143:5:143:12 | got(url) | text | true |
 | tst.js:144:5:144:28 | got(url ... true }) | tst.js:144:5:144:28 | got(url ... true }) | json | true |
