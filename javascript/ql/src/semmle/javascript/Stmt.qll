@@ -819,6 +819,17 @@ abstract class EnhancedForLoop extends LoopStmt {
   }
 
   /**
+   * Gets the property, variable, or destructuring pattern occurring as the iterator
+   * expression in this `for`-`in` or `for`-`of` loop.
+   */
+  Expr getLValue() {
+    result = getIterator() and
+    (result instanceof BindingPattern or result instanceof PropAccess)
+    or
+    result = getIterator().(DeclStmt).getADecl().getBindingPattern()
+  }
+
+  /**
    * Gets an iterator variable of this `for`-`in` or `for`-`of` loop.
    */
   Variable getAnIterationVariable() {

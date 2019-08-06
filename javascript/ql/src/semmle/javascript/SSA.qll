@@ -527,7 +527,7 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
    * if any.
    */
   DataFlow::Node getRhsNode() {
-    result = DataFlow::defSourceNode(getDef(), getSourceVariable())
+    result = DataFlow::ssaDefinitionNode(this).getImmediatePredecessor()
   }
 }
 
