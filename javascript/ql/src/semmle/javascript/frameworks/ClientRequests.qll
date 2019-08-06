@@ -173,6 +173,11 @@ module ClientRequest {
     override DataFlow::Node getADataNode() { result = getArgument(1) }
   }
 
+  /** Gets the string `url` or `uri`. */
+  private string urlPropertyName() {
+    result = "url" or result = "uri"
+  }
+
   /**
   * A model of a URL request made using the `axios` library.
   */
