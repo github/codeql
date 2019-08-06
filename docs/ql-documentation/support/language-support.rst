@@ -4,6 +4,10 @@ Languages and compilers
 QL and LGTM version |version| support analysis of the following languages compiled by the following compilers.
 
 Note that where there are several versions or dialects of a language, the supported variants are listed.
+If your code requires a particular version of a compiler, check that this version is included below. 
+Customers with any questions should contact their usual Semmle contact with any questions. 
+If you're not a customer yet, `contact us <info@semmle.com>`_ 
+with any questions you have about language and compiler support.
 
 .. csv-table::
      :file: versions-compilers.csv
