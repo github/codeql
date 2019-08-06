@@ -140,7 +140,7 @@ class Variable extends Declaration, @variable {
   }
 
   /**
-   * Holds if this vairable is `thread_local`.
+   * Holds if this variable is `thread_local`.
    */
   predicate isThreadLocal() {
     this.hasSpecifier("is_thread_local")
