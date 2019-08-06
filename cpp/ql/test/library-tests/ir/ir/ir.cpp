@@ -1119,4 +1119,33 @@ void ExternDeclarations()
     typedef double d;
 }
 
+#define EXTERNS_IN_MACRO \
+    extern int g; \
+    for (int i = 0; i < 10; ++i) { \
+        extern int g; \
+    }
+
+void ExternDeclarationsInMacro()
+{
+    EXTERNS_IN_MACRO;
+}
+
+void TryCatchNoCatchAny(bool b) {
+  try {
+    int x = 5;
+    if (b) {
+      throw "string literal";
+    }
+    else if (x < 2) {
+      x = b ? 7 : throw String("String object");
+    }
+    x = 7;
+  }
+  catch (const char* s) {
+    throw String(s);
+  }
+  catch (const String& e) {
+  }
+}
+
 // semmle-extractor-options: -std=c++17

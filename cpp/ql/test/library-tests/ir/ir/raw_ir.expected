@@ -5128,3 +5128,144 @@ ir.cpp:
 # 1113|     v0_10(void)      = ReturnVoid          : 
 # 1113|     v0_11(void)      = UnmodeledUse        : mu*
 # 1113|     v0_12(void)      = ExitFunction        : 
+
+# 1128| void ExternDeclarationsInMacro()
+# 1128|   Block 0
+# 1128|     v0_0(void)       = EnterFunction       : 
+# 1128|     mu0_1(unknown)   = AliasedDefinition   : 
+# 1128|     mu0_2(unknown)   = UnmodeledDefinition : 
+# 1130|     r0_3(glval<int>) = VariableAddress[i]  : 
+# 1130|     r0_4(int)        = Constant[0]         : 
+# 1130|     mu0_5(int)       = Store               : &:r0_3, r0_4
+#-----|   Goto -> Block 1
+
+# 1130|   Block 1
+# 1130|     r1_0(glval<int>) = VariableAddress[i] : 
+# 1130|     r1_1(int)        = Load               : &:r1_0, ~mu0_2
+# 1130|     r1_2(int)        = Constant[10]       : 
+# 1130|     r1_3(bool)       = CompareLT          : r1_1, r1_2
+# 1130|     v1_4(void)       = ConditionalBranch  : r1_3
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+# 1130|   Block 2
+# 1130|     r2_0(glval<int>) = VariableAddress[i] : 
+# 1130|     r2_1(int)        = Load               : &:r2_0, ~mu0_2
+# 1130|     r2_2(int)        = Constant[1]        : 
+# 1130|     r2_3(int)        = Add                : r2_1, r2_2
+# 1130|     mu2_4(int)       = Store              : &:r2_0, r2_3
+#-----|   Goto (back edge) -> Block 1
+
+# 1130|   Block 3
+# 1130|     v3_0(void) = NoOp         : 
+# 1131|     v3_1(void) = NoOp         : 
+# 1128|     v3_2(void) = ReturnVoid   : 
+# 1128|     v3_3(void) = UnmodeledUse : mu*
+# 1128|     v3_4(void) = ExitFunction : 
+
+# 1133| void TryCatchNoCatchAny(bool)
+# 1133|   Block 0
+# 1133|     v0_0(void)        = EnterFunction          : 
+# 1133|     mu0_1(unknown)    = AliasedDefinition      : 
+# 1133|     mu0_2(unknown)    = UnmodeledDefinition    : 
+# 1133|     r0_3(glval<bool>) = VariableAddress[b]     : 
+# 1133|     mu0_4(bool)       = InitializeParameter[b] : &:r0_3
+# 1135|     r0_5(glval<int>)  = VariableAddress[x]     : 
+# 1135|     r0_6(int)         = Constant[5]            : 
+# 1135|     mu0_7(int)        = Store                  : &:r0_5, r0_6
+# 1136|     r0_8(glval<bool>) = VariableAddress[b]     : 
+# 1136|     r0_9(bool)        = Load                   : &:r0_8, ~mu0_2
+# 1136|     v0_10(void)       = ConditionalBranch      : r0_9
+#-----|   False -> Block 4
+#-----|   True -> Block 3
+
+# 1133|   Block 1
+# 1133|     v1_0(void) = UnmodeledUse : mu*
+# 1133|     v1_1(void) = ExitFunction : 
+
+# 1133|   Block 2
+# 1133|     v2_0(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+# 1137|   Block 3
+# 1137|     r3_0(glval<char *>)   = VariableAddress[#throw1137:7]    : 
+# 1137|     r3_1(glval<char[15]>) = StringConstant["string literal"] : 
+# 1137|     r3_2(char *)          = Convert                          : r3_1
+# 1137|     mu3_3(char *)         = Store                            : &:r3_0, r3_2
+# 1137|     v3_4(void)            = ThrowValue                       : &:r3_0, ~mu0_2
+#-----|   Exception -> Block 9
+
+# 1139|   Block 4
+# 1139|     r4_0(glval<int>) = VariableAddress[x] : 
+# 1139|     r4_1(int)        = Load               : &:r4_0, ~mu0_2
+# 1139|     r4_2(int)        = Constant[2]        : 
+# 1139|     r4_3(bool)       = CompareLT          : r4_1, r4_2
+# 1139|     v4_4(void)       = ConditionalBranch  : r4_3
+#-----|   False -> Block 8
+#-----|   True -> Block 5
+
+# 1140|   Block 5
+# 1140|     r5_0(glval<bool>) = VariableAddress[b] : 
+# 1140|     r5_1(bool)        = Load               : &:r5_0, ~mu0_2
+# 1140|     v5_2(void)        = ConditionalBranch  : r5_1
+#-----|   False -> Block 7
+#-----|   True -> Block 6
+
+# 1140|   Block 6
+# 1140|     r6_0(int)        = Constant[7]                   : 
+# 1140|     r6_1(glval<int>) = VariableAddress[#temp1140:11] : 
+# 1140|     mu6_2(int)       = Store                         : &:r6_1, r6_0
+# 1140|     r6_3(glval<int>) = VariableAddress[#temp1140:11] : 
+# 1140|     r6_4(int)        = Load                          : &:r6_3, ~mu0_2
+# 1140|     r6_5(glval<int>) = VariableAddress[x]            : 
+# 1140|     mu6_6(int)       = Store                         : &:r6_5, r6_4
+#-----|   Goto -> Block 8
+
+# 1140|   Block 7
+# 1140|     r7_0(glval<String>)   = VariableAddress[#throw1140:19]  : 
+# 1140|     r7_1(glval<unknown>)  = FunctionAddress[String]         : 
+# 1140|     r7_2(glval<char[14]>) = StringConstant["String object"] : 
+# 1140|     r7_3(char *)          = Convert                         : r7_2
+# 1140|     v7_4(void)            = Call                            : func:r7_1, this:r7_0, 0:r7_3
+# 1140|     mu7_5(unknown)        = ^CallSideEffect                 : ~mu0_2
+# 1140|     v7_6(void)            = ThrowValue                      : &:r7_0, ~mu0_2
+#-----|   Exception -> Block 9
+
+# 1142|   Block 8
+# 1142|     r8_0(int)        = Constant[7]        : 
+# 1142|     r8_1(glval<int>) = VariableAddress[x] : 
+# 1142|     mu8_2(int)       = Store              : &:r8_1, r8_0
+#-----|   Goto -> Block 13
+
+# 1144|   Block 9
+# 1144|     v9_0(void) = CatchByType[const char *] : 
+#-----|   Exception -> Block 11
+#-----|   Goto -> Block 10
+
+# 1144|   Block 10
+# 1144|     r10_0(glval<char *>)  = VariableAddress[s]            : 
+# 1144|     mu10_1(char *)        = InitializeParameter[s]        : &:r10_0
+# 1145|     r10_2(glval<String>)  = VariableAddress[#throw1145:5] : 
+# 1145|     r10_3(glval<unknown>) = FunctionAddress[String]       : 
+# 1145|     r10_4(glval<char *>)  = VariableAddress[s]            : 
+# 1145|     r10_5(char *)         = Load                          : &:r10_4, ~mu0_2
+# 1145|     v10_6(void)           = Call                          : func:r10_3, this:r10_2, 0:r10_5
+# 1145|     mu10_7(unknown)       = ^CallSideEffect               : ~mu0_2
+# 1145|     v10_8(void)           = ThrowValue                    : &:r10_2, ~mu0_2
+#-----|   Exception -> Block 2
+
+# 1147|   Block 11
+# 1147|     v11_0(void) = CatchByType[const String &] : 
+#-----|   Exception -> Block 2
+#-----|   Goto -> Block 12
+
+# 1147|   Block 12
+# 1147|     r12_0(glval<String &>) = VariableAddress[e]     : 
+# 1147|     mu12_1(String &)       = InitializeParameter[e] : &:r12_0
+# 1147|     v12_2(void)            = NoOp                   : 
+#-----|   Goto -> Block 13
+
+# 1149|   Block 13
+# 1149|     v13_0(void) = NoOp       : 
+# 1133|     v13_1(void) = ReturnVoid : 
+#-----|   Goto -> Block 1

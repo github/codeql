@@ -376,7 +376,9 @@ newtype TTranslatedElement =
   TTranslatedDeclarationEntry(DeclarationEntry entry) {
     exists(DeclStmt declStmt |
       translateStmt(declStmt) and
-      declStmt.getADeclarationEntry() = entry
+      declStmt.getADeclarationEntry() = entry and
+      // Only declarations of local variables need to be translated to IR.
+      entry.getDeclaration() instanceof LocalVariable
     )
   } or
   // A compiler-generated variable to implement a range-based for loop. These don't have a
