@@ -160,5 +160,6 @@ import {ClientRequest, net} from 'electron';
     xhr.send(url);
     xhr.addEventListener('readystatechange', function() {
         xhr.getResponseJson();
+        xhr.getResponseHeaders();
     });
 })
