@@ -2,7 +2,13 @@ import semmle.code.cpp.Type
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C/C++ enum [N4140 7.2].
+ * A C/C++ enum [N4140 7.2]. For example, the type `MyEnum` in:
+ * ```
+ * enum MyEnum
+ * {
+ *   MyEnumConstant
+ * };
+ * ```
  */
 class Enum extends UserType, IntegralOrEnumType {
   /** Gets an enumerator of this enumeration. */
@@ -46,7 +52,17 @@ class Enum extends UserType, IntegralOrEnumType {
 }
 
 /**
- * A C++ enum that is directly enclosed by a function.
+ * A C++ enum that is directly enclosed by a function. For example, the type
+ * `MyLocalEnum` in:
+ * ```
+ * void myFunction()
+ * {
+ *   enum MyLocalEnum
+ *   {
+ *     MyLocalEnumConstant
+ *   };
+ * }
+ * ```
  */
 class LocalEnum extends Enum {
   LocalEnum() {
@@ -57,7 +73,18 @@ class LocalEnum extends Enum {
 }
 
 /**
- * A C++ enum that is declared within a class.
+ * A C++ enum that is declared within a class. For example, the type
+ * `MyNestedEnum` in:
+ * ```
+ * class MyClass
+ * {
+ * public:
+ *   enum MyNestedEnum
+ *   {
+ *     MyNestedEnumConstant
+ *   };
+ * };
+ * ```
  */
 class NestedEnum extends Enum {
 
@@ -79,9 +106,14 @@ class NestedEnum extends Enum {
 }
 
 /**
- * A C++ scoped enum.
- *
- * For example, `enum class Color { red, blue }`.
+ * A C++ scoped enum, that is, an enum whose constants must be qualified with
+ * the name of the enum. For example, the type `Color` in:
+ * ```
+ * enum class Color {
+ *   red,
+ *   blue
+ * }
+ * ```
  */
 class ScopedEnum extends Enum {
   ScopedEnum() {
@@ -92,11 +124,16 @@ class ScopedEnum extends Enum {
 }
 
 /**
- * A C/C++ enumerator [N4140 7.2].
+ * A C/C++ enumerator [N4140 7.2], also known as an enumeration constant.
  *
- * For example: `green` in `enum { red, green, blue }`.
- *
- * Enumerators are also knowns as enumeration constants.
+ * For example the enumeration constant `green` in:
+ * ```
+ * enum {
+ *   red,
+ *   green,
+ *   blue
+ * }
+ * ```
  */
 class EnumConstant extends Declaration, @enumconstant {
   /**
