@@ -94,9 +94,9 @@ ConditionDecl.cpp:
 #    2|       0: [VariableDeclarationEntry] definition of j
 #    2|           Type = [IntType] int
 #    2|         init: [Initializer] initializer for j
-#    2|           expr: [Literal,Zero] 0
+#    2|           expr: [Literal] 0
 #    2|               Type = [IntType] int
-#    2|               Value = [Literal,Zero] 0
+#    2|               Value = [Literal] 0
 #    2|               ValueCategory = prvalue
 #    3|     1: [WhileStmt] while (...) ...
 #    3|       0: [ConditionDeclExpr] (condition decl)
@@ -213,9 +213,9 @@ ConstructorCall.cpp:
 #   20|         1: [NewExpr] new
 #   20|             Type = [PointerType] E *
 #   20|             ValueCategory = prvalue
-#   20|           1: [Literal,Zero] 0
+#   20|           1: [Literal] 0
 #   20|               Type = [Class] E
-#   20|               Value = [Literal,Zero] 0
+#   20|               Value = [Literal] 0
 #   20|               ValueCategory = prvalue
 #   21|     3: [ReturnStmt] return ...
 Conversion1.c:
@@ -788,9 +788,9 @@ Throw.cpp:
 #    9|             0: [ThrowExpr] throw ...
 #    9|                 Type = [Class] E
 #    9|                 ValueCategory = prvalue
-#    9|               0: [Literal,Zero] 0
+#    9|               0: [Literal] 0
 #    9|                   Type = [Class] E
-#    9|                   Value = [Literal,Zero] 0
+#    9|                   Value = [Literal] 0
 #    9|                   ValueCategory = prvalue
 #   11|           2: [ExprStmt] ExprStmt
 #   11|             0: [ThrowExpr] throw ...
@@ -1035,9 +1035,9 @@ macro_etc.c:
 #   27|               Type = [PlainCharType] char
 #   27|               Value = [CStyleCast] 0
 #   27|               ValueCategory = prvalue
-#   27|             expr: [Literal,Zero] 0
+#   27|             expr: [Literal] 0
 #   27|                 Type = [IntType] int
-#   27|                 Value = [Literal,Zero] 0
+#   27|                 Value = [Literal] 0
 #   27|                 ValueCategory = prvalue
 #   27|       1: [LTExpr] ... < ...
 #   27|           Type = [IntType] int
@@ -1087,9 +1087,9 @@ macro_etc.c:
 #   28|               Type = [PlainCharType] char
 #   28|               Value = [CStyleCast] 0
 #   28|               ValueCategory = prvalue
-#   28|             expr: [Literal,Zero] 0
+#   28|             expr: [Literal] 0
 #   28|                 Type = [IntType] int
-#   28|                 Value = [Literal,Zero] 0
+#   28|                 Value = [Literal] 0
 #   28|                 ValueCategory = prvalue
 #   28|       1: [LTExpr] ... < ...
 #   28|           Type = [IntType] int
@@ -1153,9 +1153,9 @@ macro_etc.c:
 #   30|             expr: [VariableAccess] arr
 #   30|                 Type = [ArrayType] char[]
 #   30|                 ValueCategory = lvalue
-#   30|           1: [Literal,Zero] 0
+#   30|           1: [Literal] 0
 #   30|               Type = [IntType] int
-#   30|               Value = [Literal,Zero] 0
+#   30|               Value = [Literal] 0
 #   30|               ValueCategory = prvalue
 #   30|         1: [CStyleCast] (char)...
 #   30|             Conversion = [IntegralConversion] integral conversion
