@@ -140,6 +140,13 @@ class Variable extends Declaration, @variable {
   }
 
   /**
+   * Holds if this variable is `thread_local`.
+   */
+  predicate isThreadLocal() {
+    this.hasSpecifier("is_thread_local")
+  }
+
+  /**
    * Holds if this variable is constructed from `v` as a result
    * of template instantiation. If so, it originates either from a template
    * variable or from a variable nested in a template class.
