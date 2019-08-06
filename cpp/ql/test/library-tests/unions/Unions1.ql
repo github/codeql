@@ -20,4 +20,6 @@ string describe(Class c)
 from Class c
 select
   c,
-  concat(describe(c), ", ")
+  concat(describe(c), ", "),
+  concat(c.getABaseClass().toString(), ", "),
+  concat(c.getAMemberFunction().toString(), ", ")
