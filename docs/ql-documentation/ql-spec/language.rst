@@ -25,7 +25,7 @@ The syntactic forms of QL constructs are specified using a modified Backus-Naur 
 
 BNF derivation rules are written as an identifier naming the syntactic element, followed by ``::=``, followed by the syntax itself.
 
-In the syntax itself, juxtaposition indicates sequencing. The vertical bar (``|``, U+007R) indicates alternate syntax. Parentheses indicate grouping. An asterisk (``*``, U+002A) indicates repetition zero or more times, and a plus sign (``+``, U+002B) indicates repetition one or more times. Syntax followed by a question mark (``?``, U+003F) indicates zero or one occurrences of that syntax.
+In the syntax itself, juxtaposition indicates sequencing. The vertical bar (``|``, U+007C) indicates alternate syntax. Parentheses indicate grouping. An asterisk (``*``, U+002A) indicates repetition zero or more times, and a plus sign (``+``, U+002B) indicates repetition one or more times. Syntax followed by a question mark (``?``, U+003F) indicates zero or one occurrences of that syntax.
 
 Architecture
 ------------
