@@ -84,8 +84,6 @@ private string urlPropertyName() {
  * A model of a URL request made using the `request` library.
  */
 private class RequestUrlRequest extends ClientRequest::Range {
-  DataFlow::Node url;
-
   RequestUrlRequest() {
     exists(string moduleName, DataFlow::SourceNode callee | this = callee.getACall() |
       (
