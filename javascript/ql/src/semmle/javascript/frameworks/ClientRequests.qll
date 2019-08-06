@@ -53,6 +53,8 @@ class ClientRequest extends DataFlow::InvokeNode {
    * - Any of the following additional response types defined by this library:
    *  - `fetch.response`: The result is a `Response` object from [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Response).
    *  - `stream`: The result is a Node.js stream and `http.IncomingMessage` object
+   *  - `header`: The result the value of a header, as a string
+   *  - `headers`: The result is a mapping from header names to their values.
    *  - `error`: The result is an error in an unspecified format, possibly containing information from the response
    *  - An empty string, indicating an unknown response type.
    * - Any value provided by custom implementations of `ClientRequest::Range`.
@@ -461,10 +463,9 @@ module ClientRequest {
           prop = "responseXML" and responseType = "document"
         )
         or
-        responseType = "text" and
         exists(string method | result = getAnAlias().getAMethodCall(method) |
-          method = "getAllResponseHeaders" or
-          method = "getResponseHeader"
+          method = "getAllResponseHeaders" and responseType = "headers" or
+          method = "getResponseHeader" and responseType = "header"
         )
       )
     }
@@ -540,7 +541,9 @@ module ClientRequest {
       exists(string method | result = getAnAlias().getAMethodCall(method) |
         method = "getResponse" and responseType = getAssignedResponseType()
         or
-        method = "getResponseHeader" and responseType = "text"
+        method = "getResponseHeader" and responseType = "header"
+        or
+        method = "getResponseHeaders" and responseType = "headers"
         or
         method = "getResponseJson" and responseType = "json"
         or
