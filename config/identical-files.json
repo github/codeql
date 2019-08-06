@@ -66,6 +66,32 @@
     "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/Operand.qll",
     "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/Operand.qll"
   ],
+  "IR Operand Tag": [
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/OperandTag.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/internal/OperandTag.qll"
+  ],
+  "IR TIRVariable":[
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/internal/TIRVariable.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/internal/TIRVariable.qll"
+  ],
+  "IR ConstantAnalysis":[
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/constant/ConstantAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/ConstantAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/constant/ConstantAnalysis.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/constant/ConstantAnalysis.qll"
+  ],
+  "IR PrintConstantAnalysis":[
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/constant/PrintConstantAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/PrintConstantAnalysis.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/constant/PrintConstantAnalysis.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/constant/PrintConstantAnalysis.qll"
+  ],
+  "IR ValueNumbering":[
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/gvn/ValueNumbering.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll",
+    "cpp/ql/src/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/ValueNumbering.qll",
+    "csharp/ql/src/semmle/code/csharp/ir/implementation/raw/gvn/ValueNumbering.qll"
+  ],
   "IR IR": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/IR.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/IR.qll",
