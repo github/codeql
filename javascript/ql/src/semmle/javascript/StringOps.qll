@@ -449,7 +449,7 @@ module StringOps {
   }
 
   /**
-   * A data flow node performs a string concatenation or occurs as an operand
+   * A data flow node that performs a string concatenation or occurs as an operand
    * in a string concatenation.
    *
    * For example, the expression `x + y + z` contains the following concatenation
@@ -570,7 +570,7 @@ module StringOps {
     /**
      * Gets the last leaf in this concatenation tree.
      *
-     * For example, `x` is the first leaf in `x + y + z`.
+     * For example, `z` is the last leaf in `x + y + z`.
      */
     pragma[inline]
     ConcatenationLeaf getLastLeaf() {
@@ -580,7 +580,7 @@ module StringOps {
     /**
      * Gets the first leaf in this concatenation tree.
      *
-     * For example, `z` is the last leaf in `x + y + z`.
+     * For example, `x` is the first leaf in `x + y + z`.
      */
     pragma[inline]
     ConcatenationLeaf getFirstLeaf() {
@@ -726,7 +726,7 @@ module StringOps {
   }
 
   /**
-   * The root node in a concatenation of one or more strings contain HTML fragments.
+   * The root node in a concatenation of one or more strings containing HTML fragments.
    */
   class HtmlConcatenationRoot extends ConcatenationRoot {
     pragma[noinline]

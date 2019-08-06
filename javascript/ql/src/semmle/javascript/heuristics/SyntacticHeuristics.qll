@@ -66,7 +66,7 @@ predicate isArgTo(DataFlow::Node arg, string regexp) {
 }
 
 /**
- * Holds if `n` is concatenation containing something with a name that matches `regexp`.
+ * Holds if `n` is a concatenation containing something with a name that matches `regexp`.
  */
 bindingset[regexp]
 predicate isConcatenatedWith(StringOps::Concatenation n, string regexp) {
