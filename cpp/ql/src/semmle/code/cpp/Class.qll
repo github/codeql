@@ -616,7 +616,7 @@ class Class extends UserType {
   override predicate isDeeplyConstBelow() { any() } // No subparts
 
   /**
-   * The alignment of this type in bytes (on the machine where facts were
+   * Gets the alignment of this type in bytes (on the machine where facts were
    * extracted).
    */
   override int getAlignment() { usertypesize(underlyingElement(this),_,result) }
@@ -640,8 +640,8 @@ class Class extends UserType {
   }
 
   /**
-   * Holds if or not this class/struct is polymorphic (has a virtual
-   * function, or inherits one).
+   * Holds if this class/struct is polymorphic (has a virtual function, or
+   * inherits one).
    */
   predicate isPolymorphic() {
     exists(MemberFunction f | f.getDeclaringType() = getABaseClass*() and f.isVirtual())
