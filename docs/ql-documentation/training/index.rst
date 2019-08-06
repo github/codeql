@@ -20,12 +20,12 @@ Each topic below contains a short presentation on the QL language. Examples feat
 QL for C/C++
 ------------
 
-- `Introduction to QL for C/C++ <http://docteam.internal.semmle.com/james/ql-training/rst-slides-preview/intro-to-ql/intro-ql-cpp.html>`__–an introduction to the QL language for C/C++ programmers.
+- `Introduction to QL for C/C++ <https://docs.google.com/presentation/d/e/2PACX-1vR1-TRNlyhQhm3TB6WO1DgURmwuNtcXMlgrwPQ8SflN0ywBhjePxZi6K7DLexXqOP4xkIKS9ar3d-kL/pub?start=false&loop=false&delayms=3000>`__–an introduction to the QL language for C/C++ programmers.
 
 QL for Java
 ------------
 
-- `Introduction to QL for Java <http://docteam.internal.semmle.com/james/ql-training/rst-slides-preview/intro-to-ql/intro-ql-java.html>`__–an introduction to the QL language for Java programmers.
+- `Introduction to QL for Java <https://docs.google.com/presentation/d/e/2PACX-1vSuPW87dRWsIHwbH2VvfWEmodFXTwbQVlP71rSAA-IpYBbBGEoOJFbVRbhtwoqObmBMrzKxgB2D1zkb/pub?start=false&loop=false&delayms=3000>`__–an introduction to the QL language for Java programmers.
 
 Other resources
 ===============
