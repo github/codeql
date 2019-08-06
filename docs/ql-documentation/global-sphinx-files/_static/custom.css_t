@@ -236,7 +236,64 @@ div.navBox {
 
 }
     
+/* -- PRINT VIEW ----------------------------------------------------------------------------*/
 
+@media print {
+    div.navBox {
+        display: none;
+    }
+
+    #siteBanner {
+        display: none;
+    }
+
+    div.wrapper {
+        /*margin-top:-100px;*/
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        padding-top: 0px;
+    }  
+    div.mainBox {
+        margin: 0 10px 0 10px;
+        position: relative;
+        height: 100%;
+        width: 100%;
+    } 
+    div.documentwrapper {
+        padding-left: 20px;
+        width:100%;
+        box-shadow: none;
+        margin: 0;
+        padding-left:0;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: inherit;
+        width:95%;
+    }
+
+    div.body {
+        min-width: unset;
+    }
+    div.linkbar {
+        display: none;
+    
+    } 
+    .small-bar {
+        display: inherit;
+    }
+    
+    ul {
+    margin: 10px 20px 10px 20px;
+    }
+
+    div.privacy {
+        display: none;
+    }
+}
 
 /* -- MAIN BODY ---------------------------------------------------------------------------- */
 
