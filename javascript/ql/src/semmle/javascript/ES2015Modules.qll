@@ -218,7 +218,6 @@ class SelectiveImportDeclaration extends ImportDeclaration {
  * ```
  * export * from 'a';               // bulk re-export declaration
  *
- * export default var x = 42;       // default export declaration
  * export default function f() {};  // default export declaration
  * export default 42;               // default export declaration
  *
@@ -310,7 +309,6 @@ private predicate isShadowedFromBulkExport(BulkReExportDeclaration reExport, str
  * Examples:
  *
  * ```
- * export default var x = 42;
  * export default function f() {};
  * export default 42;
  * ```
@@ -624,7 +622,6 @@ class SelectiveReExportDeclaration extends ReExportDeclaration, ExportNamedDecla
  * Examples:
  *
  * ```
- * export default var x = 42;
  * export default function f() {};
  * export default 42;
  * export { x, y as z };
