@@ -13,7 +13,7 @@ module DataFlow {
    * member predicates of `Configuration` and the rest of the data-flow library.
    * Good performance cannot be guaranteed in the presence of such recursion, so
    * it should be replaced by using more than one copy of the data flow library.
-   * Four copies are available: `DataFlow` through `DataFlow4`.
+   * Five copies are available: `DataFlow` through `DataFlow5`.
    */
   abstract private class ConfigurationRecursionPrevention extends Configuration {
     bindingset[this]

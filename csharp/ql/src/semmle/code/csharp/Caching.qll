@@ -51,13 +51,14 @@ module Stages {
   module DataFlowStage {
     private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
     private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
+    private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 
     cached
     predicate forceCachingInSameStage() { any() }
 
     cached
     private predicate forceCachingInSameStageRev() {
-      TaintTracking::localTaintStep(_, _)
+      localAdditionalTaintStep(_, _)
       or
       any(ArgumentNode n).argumentOf(_, _)
       or
