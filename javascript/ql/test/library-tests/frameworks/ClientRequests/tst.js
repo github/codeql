@@ -131,7 +131,7 @@ import {ClientRequest, net} from 'electron';
 
 (function() {
     axios.get(url).then(response => response.data);
-    axios.get({ url: url, responseType: 'json'}).then(response => response.data);
+    axios({ url: url, responseType: 'json'}).then(response => response.data);
 })
 
 

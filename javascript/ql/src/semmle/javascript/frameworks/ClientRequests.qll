@@ -43,20 +43,19 @@ class ClientRequest extends DataFlow::InvokeNode {
    * wrapped in a promise object.
    *
    * The `responseType` describes how the response is represented as a JavaScript value
-   * (after resolving promises).
-   *
-   * The response type may be any of the values supported by
-   * [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType),
-   * namely `arraybuffer`, `blob`, `document`, `json`, or `text`.
-   *
-   * Additionally, the `responseType` may have one of the following values:
-   * - `fetch.response`: The result is a `Response` object as defined by the [fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Response).
-   * - `stream`: The result is a Node.js stream
-   * - `error`: The result is an error in an unspecified format, possibly containing information from the response
-   *
-   *
-   * Custom implementations of `ClientRequest` may use other formats.
-   * If the responseType is not known the convention is to use an empty string.
+   * (after resolving promises), and may assume the following values:
+   * - Any response type defined by [XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType):
+   *    - `text`: The result is a string
+   *    - `json`: The result is a deserialized JSON object
+   *    - `arraybuffer`: The result is an `ArrayBuffer` object
+   *    - `blob`: The result is a `Blob` object
+   *    - `document`: The result is a deserialized HTML or XML document
+   * - Any of the following additional response types defined by this library:
+   *  - `fetch.response`: The result is a `Response` object from [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Response).
+   *  - `stream`: The result is a Node.js stream and `http.IncomingMessage` object
+   *  - `error`: The result is an error in an unspecified format, possibly containing information from the response
+   *  - An empty string, indicating an unknown response type.
+   * - Any value provided by custom implementations of `ClientRequest::Range`.
    */
   DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
     result = self.getAResponseDataNode(responseType, promise)
@@ -99,7 +98,7 @@ module ClientRequest {
      * Gets a data flow node that refers to some representation of the response, possibly
      * wrapped in a promise object.
      *
-     * See the decription of `responseType` in the corresponding predicate in `ClientRequest`.
+     * See the decription of `responseType` in `ClientRequest::getAResponseDataNode`.
      */
     DataFlow::Node getAResponseDataNode(string responseType, boolean promise) { none() }
   }
@@ -192,9 +191,19 @@ module ClientRequest {
       )
     }
 
+    private int getOptionsArgIndex() {
+      method = "request" and
+      result = 0
+      or
+      (method = "get" or method = "delete" or method = "head") and
+      result = 1
+      or
+      (method = "post" or method = "put" or method = "patch") and
+      result = 2
+    }
+
     private DataFlow::Node getOptionArgument(string name) {
-      // depends on the method name and the call arity, over-approximating slightly in the name of simplicity
-      result = getOptionArgument([0 .. 2], name)
+      result = getOptionArgument(getOptionsArgIndex(), name)
     }
 
     override DataFlow::Node getUrl() {
@@ -218,15 +227,18 @@ module ClientRequest {
 
     /** Gets the response type from the options passed in. */
     string getResponseType() {
-      exists(DataFlow::Node option | option = getOptionArgument([0 .. 2], "responseType") |
-        result = option.getStringValue()
+      exists(DataFlow::Node option | option = getOptionArgument("responseType") |
+        option.mayHaveStringValue(result)
         or
-        not exists(option.getStringValue()) and
+        option.analyze().getAValue().isIndefinite(_) and
         result = ""
       )
       or
-      not exists(getOptionArgument([0 .. 2], "responseType")) and
+      not exists(getOptionArgument("responseType")) and
       result = "json"
+      or
+      getArgument(getOptionsArgIndex()).analyze().getAValue().isIndefinite(_) and
+      result = ""
     }
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
