@@ -192,3 +192,4 @@ test_getAResponseDataNode
 | tst.js:151:5:151:23 | superagent.get(url) | tst.js:151:30:151:32 | err | error | false |
 | tst.js:151:5:151:23 | superagent.get(url) | tst.js:151:35:151:37 | res | stream | false |
 | tst.js:160:5:160:17 | xhr.send(url) | tst.js:162:9:162:29 | xhr.get ... eJson() | json | false |
+| tst.js:160:5:160:17 | xhr.send(url) | tst.js:163:9:163:32 | xhr.get ... aders() | headers | false |
