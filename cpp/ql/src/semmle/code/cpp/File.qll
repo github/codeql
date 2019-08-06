@@ -187,6 +187,8 @@ class Folder extends Container, @folder {
     result.hasLocationInfo(_, 0, 0, 0, 0)
   }
 
+  override string getCanonicalQLClass() { result = "Folder" }
+
   /**
    * DEPRECATED: Use `getLocation` instead.
    * Gets the URL of this folder.
@@ -458,6 +460,8 @@ class HeaderFile extends File {
     exists(Include i | i.getIncludedFile() = this)
   }
 
+  override string getCanonicalQLClass() { result = "HeaderFile" }
+
   /**
    * Holds if this header file does not contain any declaration entries or top level
    * declarations.  For example it might be:
@@ -488,6 +492,7 @@ class CFile extends File {
     )
   }
 
+  override string getCanonicalQLClass() { result = "CFile" }
 }
 
 /**
@@ -507,6 +512,7 @@ class CppFile extends File {
     )
   }
 
+  override string getCanonicalQLClass() { result = "CppFile" }
 }
 
 /**
