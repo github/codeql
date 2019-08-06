@@ -2,13 +2,12 @@ using Semmle.Extraction.CommentProcessing;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Entities;
-using System;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
     class CommentLine : CachedEntity<(Microsoft.CodeAnalysis.Location, string)>, ICommentLine
     {
-        CommentLine(Context cx, Microsoft.CodeAnalysis.Location loc, CommentType type, string text, string raw)
+        CommentLine(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw)
             : base(cx, (loc, text))
         {
             Type = type;
@@ -16,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         public Microsoft.CodeAnalysis.Location Location => symbol.Item1;
-        public CommentType Type { get; private set; }
+        public CommentLineType Type { get; private set; }
 
         public string Text { get { return symbol.Item2; } }
         public string RawText { get; private set; }
@@ -53,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                             var span = Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(currentLocation, currentLocation + fullLine.Length);
                             var location = Microsoft.CodeAnalysis.Location.Create(trivia.SyntaxTree, span);
-                            var commentType = CommentType.XmlDoc;
+                            var commentType = CommentLineType.XmlDoc;
                             cx.CommentGenerator.AddComment(Create(cx, location, commentType, trimmedLine, fullLine));
                         }
                         else
@@ -67,10 +66,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 case SyntaxKind.SingleLineCommentTrivia:
                     {
                         string contents = trivia.ToString().Substring(2);
-                        var commentType = CommentType.Singleline;
+                        var commentType = CommentLineType.Singleline;
                         if (contents.Length > 0 && contents[0] == '/')
                         {
-                            commentType = CommentType.XmlDoc;
+                            commentType = CommentLineType.XmlDoc;
                             contents = contents.Substring(1);       // An XML comment.
                         }
                         cx.CommentGenerator.AddComment(Create(cx, trivia.GetLocation(), commentType, contents.Trim(), trivia.ToFullString()));
@@ -98,7 +97,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
                         var span = Microsoft.CodeAnalysis.Text.TextSpan.FromBounds(currentLocation, currentLocation + fullLine.Length);
                         var location = Microsoft.CodeAnalysis.Location.Create(trivia.SyntaxTree, span);
-                        var commentType = line == 0 ? CommentType.Multiline : CommentType.MultilineContinuation;
+                        var commentType = line == 0 ? CommentLineType.Multiline : CommentLineType.MultilineContinuation;
                         cx.CommentGenerator.AddComment(Create(cx, location, commentType, trimmedLine, fullLine));
                         currentLocation = nextLineLocation;
                     }
@@ -115,7 +114,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate()
         {
             location = Context.Create(Location);
-            Context.Emit(Tuples.commentline(this, Type == CommentType.MultilineContinuation ? CommentType.Multiline : Type, Text, RawText));
+            Context.Emit(Tuples.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText));
             Context.Emit(Tuples.commentline_location(this, location));
         }
 
@@ -132,13 +131,13 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        static CommentLine Create(Context cx, Microsoft.CodeAnalysis.Location loc, CommentType type, string text, string raw) => CommentLineFactory.Instance.CreateEntity(cx, loc, type, text, raw);
+        static CommentLine Create(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw) => CommentLineFactory.Instance.CreateEntity(cx, loc, type, text, raw);
 
-        class CommentLineFactory : ICachedEntityFactory<(Microsoft.CodeAnalysis.Location, CommentType, string, string), CommentLine>
+        class CommentLineFactory : ICachedEntityFactory<(Microsoft.CodeAnalysis.Location, CommentLineType, string, string), CommentLine>
         {
             public static readonly CommentLineFactory Instance = new CommentLineFactory();
 
-            public CommentLine Create(Context cx, (Microsoft.CodeAnalysis.Location, CommentType, string, string) init) =>
+            public CommentLine Create(Context cx, (Microsoft.CodeAnalysis.Location, CommentLineType, string, string) init) =>
                 new CommentLine(cx, init.Item1, init.Item2, init.Item3, init.Item4);
         }
 

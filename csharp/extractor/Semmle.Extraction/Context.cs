@@ -1,16 +1,16 @@
 using Microsoft.CodeAnalysis;
-using System.Linq;
 using Semmle.Extraction.CommentProcessing;
-using System.Collections.Generic;
-using System;
-using Semmle.Util.Logging;
 using Semmle.Extraction.Entities;
+using Semmle.Util.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Semmle.Extraction
 {
     /// <summary>
-    /// State which needs needs to be available throughout the extraction process.
-    ///     There is one Context object per trap output file.
+    /// State that needs to be available throughout the extraction process.
+    /// There is one Context object per trap output file.
     /// </summary>
     public class Context
     {
@@ -33,10 +33,10 @@ namespace Semmle.Extraction
             return cachedModel;
         }
 
-        SemanticModel cachedModel;
+        private SemanticModel cachedModel;
 
         /// <summary>
-        ///     Access to the trap file.
+        /// Access to the trap file.
         /// </summary>
         public readonly TrapWriter TrapWriter;
 
@@ -448,7 +448,7 @@ namespace Semmle.Extraction
         public void BindComments(IEntity entity, Microsoft.CodeAnalysis.Location l)
         {
             var duplicationGuardKey = tagStack.Count > 0 ? tagStack.Peek() : null;
-            CommentGenerator.RegisterElementLocation(entity.Label, duplicationGuardKey, l);
+            CommentGenerator.AddElement(entity.Label, duplicationGuardKey, l);
         }
 
         /// <summary>

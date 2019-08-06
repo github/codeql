@@ -31,13 +31,13 @@ namespace Semmle.Extraction.CSharp
 
         internal static Tuple commentblock(CommentBlock k) => new Tuple("commentblock", k);
 
-        internal static Tuple commentblock_binding(CommentBlock commentBlock, Label entity, Binding binding) => new Tuple("commentblock_binding", commentBlock, entity, binding);
+        internal static Tuple commentblock_binding(CommentBlock commentBlock, Label entity, CommentBinding binding) => new Tuple("commentblock_binding", commentBlock, entity, binding);
 
         internal static Tuple commentblock_child(CommentBlock commentBlock, CommentLine commentLine, int child) => new Tuple("commentblock_child", commentBlock, commentLine, child);
 
         internal static Tuple commentblock_location(CommentBlock k, Location l) => new Tuple("commentblock_location", k, l);
 
-        internal static Tuple commentline(CommentLine commentLine, CommentType type, string text, string rawtext) => new Tuple("commentline", commentLine, type, text, rawtext);
+        internal static Tuple commentline(CommentLine commentLine, CommentLineType type, string text, string rawtext) => new Tuple("commentline", commentLine, type, text, rawtext);
 
         internal static Tuple commentline_location(CommentLine commentLine, Location location) => new Tuple("commentline_location", commentLine, location);
 

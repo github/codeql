@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol.Location;
 
-        public void BindTo(Label entity, Binding binding)
+        public void BindTo(Label entity, CommentBinding binding)
         {
             Context.Emit(Tuples.commentblock_binding(this, entity, binding));
         }
