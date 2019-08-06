@@ -802,6 +802,8 @@ class ClassDerivation extends Locatable, @derivation {
   Class getBaseClass() {
     result = getBaseType().getUnderlyingType()
   }
+  
+  override string getCanonicalQLClass() { result = "ClassDerivation" }
 
   /**
    * Gets the type from which we are deriving, without resolving any

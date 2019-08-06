@@ -2919,7 +2919,7 @@ ir.cpp:
 #  428|       0: [AssignExpr] ... = ...
 #  428|           Type = [IntType] int
 #  428|           ValueCategory = lvalue
-#  428|         0: [FieldAccess] x
+#  428|         0: [ValueFieldAccess] x
 #  428|             Type = [IntType] int
 #  428|             ValueCategory = lvalue
 #  428|           -1: [VariableAccess] pt
@@ -2933,13 +2933,13 @@ ir.cpp:
 #  429|       0: [AssignExpr] ... = ...
 #  429|           Type = [IntType] int
 #  429|           ValueCategory = lvalue
-#  429|         0: [FieldAccess] y
+#  429|         0: [ValueFieldAccess] y
 #  429|             Type = [IntType] int
 #  429|             ValueCategory = lvalue
 #  429|           -1: [VariableAccess] pt
 #  429|               Type = [Struct] Point
 #  429|               ValueCategory = lvalue
-#  429|         1: [FieldAccess] x
+#  429|         1: [ValueFieldAccess] x
 #  429|             Type = [IntType] int
 #  429|             ValueCategory = prvalue(load)
 #  429|           -1: [VariableAccess] pt
@@ -2952,7 +2952,7 @@ ir.cpp:
 #  430|           expr: [AddressOfExpr] & ...
 #  430|               Type = [IntPointerType] int *
 #  430|               ValueCategory = prvalue
-#  430|             0: [FieldAccess] y
+#  430|             0: [ValueFieldAccess] y
 #  430|                 Type = [IntType] int
 #  430|                 ValueCategory = lvalue
 #  430|               -1: [VariableAccess] pt
@@ -4095,7 +4095,7 @@ ir.cpp:
 #  644|       0: [AssignExpr] ... = ...
 #  644|           Type = [IntType] int
 #  644|           ValueCategory = lvalue
-#  644|         0: [FieldAccess] m_a
+#  644|         0: [ValueFieldAccess] m_a
 #  644|             Type = [IntType] int
 #  644|             ValueCategory = lvalue
 #  644|           -1: [ParenthesisExpr] (...)
@@ -4148,7 +4148,7 @@ ir.cpp:
 #  648|         0: [VariableAccess] x
 #  648|             Type = [IntType] int
 #  648|             ValueCategory = lvalue
-#  648|         1: [FieldAccess] m_a
+#  648|         1: [ValueFieldAccess] m_a
 #  648|             Type = [IntType] int
 #  648|             ValueCategory = prvalue(load)
 #  648|           -1: [ParenthesisExpr] (...)
@@ -4682,7 +4682,7 @@ ir.cpp:
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const String &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [FieldAccess] base_s
+#-----|             expr: [ReferenceFieldAccess] base_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ReferenceDereferenceExpr] (reference dereference)
@@ -4736,7 +4736,7 @@ ir.cpp:
 #  751|       0: [DestructorCall] call to ~String
 #  751|           Type = [VoidType] void
 #  751|           ValueCategory = prvalue
-#  751|         -1: [FieldAccess] base_s
+#  751|         -1: [ImplicitThisFieldAccess] base_s
 #  751|             Type = [Struct] String
 #  751|             ValueCategory = lvalue
 #  754| [CopyAssignmentOperator] Middle& Middle::operator=(Middle const&)
@@ -4796,7 +4796,7 @@ ir.cpp:
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const String &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [FieldAccess] middle_s
+#-----|             expr: [ReferenceFieldAccess] middle_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ReferenceDereferenceExpr] (reference dereference)
@@ -4844,7 +4844,7 @@ ir.cpp:
 #  760|       0: [DestructorCall] call to ~String
 #  760|           Type = [VoidType] void
 #  760|           ValueCategory = prvalue
-#  760|         -1: [FieldAccess] middle_s
+#  760|         -1: [ImplicitThisFieldAccess] middle_s
 #  760|             Type = [Struct] String
 #  760|             ValueCategory = lvalue
 #  760|     1: [DestructorCall] call to ~Base
@@ -4907,7 +4907,7 @@ ir.cpp:
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const String &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [FieldAccess] derived_s
+#-----|             expr: [ReferenceFieldAccess] derived_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ReferenceDereferenceExpr] (reference dereference)
@@ -4955,7 +4955,7 @@ ir.cpp:
 #  769|       0: [DestructorCall] call to ~String
 #  769|           Type = [VoidType] void
 #  769|           ValueCategory = prvalue
-#  769|         -1: [FieldAccess] derived_s
+#  769|         -1: [ImplicitThisFieldAccess] derived_s
 #  769|             Type = [Struct] String
 #  769|             ValueCategory = lvalue
 #  769|     1: [DestructorCall] call to ~Middle
@@ -4994,7 +4994,7 @@ ir.cpp:
 #  778|       0: [DestructorCall] call to ~String
 #  778|           Type = [VoidType] void
 #  778|           ValueCategory = prvalue
-#  778|         -1: [FieldAccess] middlevb1_s
+#  778|         -1: [ImplicitThisFieldAccess] middlevb1_s
 #  778|             Type = [Struct] String
 #  778|             ValueCategory = lvalue
 #  778|     1: [DestructorCall] call to ~Base
@@ -5033,7 +5033,7 @@ ir.cpp:
 #  787|       0: [DestructorCall] call to ~String
 #  787|           Type = [VoidType] void
 #  787|           ValueCategory = prvalue
-#  787|         -1: [FieldAccess] middlevb2_s
+#  787|         -1: [ImplicitThisFieldAccess] middlevb2_s
 #  787|             Type = [Struct] String
 #  787|             ValueCategory = lvalue
 #  787|     1: [DestructorCall] call to ~Base
@@ -5078,7 +5078,7 @@ ir.cpp:
 #  796|       0: [DestructorCall] call to ~String
 #  796|           Type = [VoidType] void
 #  796|           ValueCategory = prvalue
-#  796|         -1: [FieldAccess] derivedvb_s
+#  796|         -1: [ImplicitThisFieldAccess] derivedvb_s
 #  796|             Type = [Struct] String
 #  796|             ValueCategory = lvalue
 #  796|     1: [DestructorCall] call to ~MiddleVB2
@@ -7363,7 +7363,7 @@ ir.cpp:
 # 1036|       0: [DestructorCall] call to ~String
 # 1036|           Type = [VoidType] void
 # 1036|           ValueCategory = prvalue
-# 1036|         -1: [FieldAccess] s
+# 1036|         -1: [ImplicitThisFieldAccess] s
 # 1036|             Type = [SpecifiedType] const String
 # 1036|             ValueCategory = lvalue
 # 1036| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)::operator()(float) const
@@ -7472,7 +7472,7 @@ ir.cpp:
 # 1040|       0: [DestructorCall] call to ~String
 # 1040|           Type = [VoidType] void
 # 1040|           ValueCategory = prvalue
-# 1040|         -1: [FieldAccess] s
+# 1040|         -1: [ImplicitThisFieldAccess] s
 # 1040|             Type = [SpecifiedType] const String
 # 1040|             ValueCategory = lvalue
 # 1040| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::operator()(float) const
