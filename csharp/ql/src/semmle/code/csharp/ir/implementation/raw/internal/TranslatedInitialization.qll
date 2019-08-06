@@ -220,6 +220,17 @@ class TranslatedObjectInitialization extends TranslatedInitialization,
         resultType = expr.getType() and
         isLValue = false
       )
+      or
+      (
+        needsConversion() and
+        tag = AssignmentConvertRightTag() and
+        // For now only use `Opcode::Convert` to
+        // crudely represent conversions. Could
+        // be useful to represent the whole chain of conversions
+        opcode instanceof Opcode::Convert and
+        resultType = getContext().getTargetType() and
+        isLValue = false
+      )
   }
 
   override final Instruction getFirstInstruction() {
@@ -238,6 +249,11 @@ class TranslatedObjectInitialization extends TranslatedInitialization,
         tag = InitializerStoreTag() and
         result = getParent().getChildSuccessor(this)
       )
+      or
+      (
+        tag = AssignmentConvertRightTag() and
+        result = getInstruction(InitializerStoreTag())
+      )
     )
   }
 
@@ -247,21 +263,40 @@ class TranslatedObjectInitialization extends TranslatedInitialization,
       if (exists(getInitializerExpr())) then
         result = getInitializerExpr().getFirstInstruction()
       else
-        result = getInstruction(InitializerStoreTag())
+        if needsConversion() then
+          result = getInstruction(AssignmentConvertRightTag())
+        else
+          result = getInstruction(InitializerStoreTag())
     ) or
     (
       child = getInitializerExpr() and
-      result = getInstruction(InitializerStoreTag())
+      if (needsConversion()) then
+        result = getInstruction(AssignmentConvertRightTag())
+      else
+        result = getInstruction(InitializerStoreTag())
     )
   }
   
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = InitializerStoreTag() and
     (
-      operandTag instanceof AddressOperandTag and
-      result = getParent().(InitializationContext).getTargetAddress()
-      or
-      operandTag instanceof StoreValueOperandTag and
+      tag = InitializerStoreTag() and
+      (
+        ( 
+          operandTag instanceof AddressOperandTag and
+          result = getParent().(InitializationContext).getTargetAddress()
+        ) or
+        ( 
+          operandTag instanceof StoreValueOperandTag and
+          if (needsConversion()) then
+            result = getInstruction(AssignmentConvertRightTag())
+          else
+            result = getInstruction(NewObjTag())
+        )
+      )
+    ) or
+    (
+      tag = AssignmentConvertRightTag() and
+      operandTag instanceof UnaryOperandTag and
       result = getInstruction(NewObjTag())
     )
   }
@@ -277,6 +312,10 @@ class TranslatedObjectInitialization extends TranslatedInitialization,
   override Instruction getReceiver() { 
     // The newly allocated object will be the target of the constructor call
     result = getInstruction(NewObjTag())
+  }
+  
+  private predicate needsConversion() {
+     expr.getType() != getContext().getTargetType()
   }
 }
 
@@ -652,7 +691,8 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
   }
 }
 
-abstract class TranslatedStructorCallFromStructor extends TranslatedElement, StructorCallContext {
+// TODO: Possibly refactor into something simpler
+abstract class TranslatedConstructorCallFromConstructor extends TranslatedElement, StructorCallContext {
   Call call;
 
   override final Language::AST getAST() {
@@ -660,8 +700,7 @@ abstract class TranslatedStructorCallFromStructor extends TranslatedElement, Str
   }
 
   final override TranslatedElement getChild(int id) {
-    id = 0 and
-    result = getStructorCall()
+    id = 0 and result = getStructorCall()
   }
 
   final override Callable getFunction() { result = call.getEnclosingCallable() }
@@ -674,37 +713,66 @@ abstract class TranslatedStructorCallFromStructor extends TranslatedElement, Str
   final TranslatedExpr getStructorCall() { result = getTranslatedExpr(call) }
 }
 
-/**
- * Represents the IR translation of a call to a base class constructor or
- * destructor from within a derived class constructor or destructor.
- */
-abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStructor {
-  final override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
 
-  final override predicate hasInstruction(
+TranslatedConstructorInitializer getTranslatedConstructorInitializer(ConstructorInitializer ci) {
+  result.getAST() = ci 
+}
+
+/**
+ * Represents the IR translation of a call to a base class constructor
+ * or another constructor in same class from a class constructor.
+ */
+class TranslatedConstructorInitializer extends TranslatedConstructorCallFromConstructor, 
+  TTranslatedConstructorInitializer { 
+  TranslatedConstructorInitializer() {
+     this = TTranslatedConstructorInitializer(call)
+  }
+  
+  override string toString() {
+    result = "constuructor init: " + call.toString()
+  }
+  
+  override Instruction getFirstInstruction() { 
+    if (needsConversion()) then
+      result = getInstruction(OnlyInstructionTag()) 
+    else
+      result = getStructorCall().getFirstInstruction()
+  }
+
+  override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
   ) {
+    needsConversion() and 
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::ConvertToBase and
     resultType = call.getTarget().getDeclaringType() and
     isLValue = true
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
     kind instanceof GotoEdge and
     result = getStructorCall().getFirstInstruction()
   }
 
-  final override Instruction getReceiver() { result = getInstruction(OnlyInstructionTag()) }
+  override Instruction getReceiver() { 
+    if (needsConversion()) then
+      result = getInstruction(OnlyInstructionTag()) 
+    else
+      result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
+  }
 
-  final override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
     result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
   }
 
-  final override predicate getInstructionInheritance(
+  predicate needsConversion() {
+     call.getTarget().getDeclaringType() != getFunction().getDeclaringType()
+  }
+  
+  override predicate getInstructionInheritance(
     InstructionTag tag, Class baseClass, Class derivedClass
   ) {
     tag = OnlyInstructionTag() and
@@ -712,72 +780,3 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
     derivedClass = getFunction().getDeclaringType()
   }
 }
-//abstract class TranslatedConstructorCallFromConstructor extends TranslatedStructorCallFromStructor,
-//    TTranslatedConstructorBaseInit {
-//  TranslatedConstructorCallFromConstructor() {
-//    this = TTranslatedConstructorBaseInit(call)
-//  }
-//}
-//
-//TranslatedConstructorCallFromConstructor getTranslatedConstructorBaseInit(ConstructorBaseInit init) {
-//  result.getAST() = init
-//}
-//
-///**
-// * Represents the IR translation of a delegating constructor call from within a constructor.
-// */
-//class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromConstructor {
-//  override ConstructorDelegationInit call;
-//
-//  override final string toString() {
-//    result = "delegation construct: " + call.toString()
-//  }
-//
-//  override final Instruction getFirstInstruction() {
-//    result = getStructorCall().getFirstInstruction()
-//  }
-//
-//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
-//    none()
-//  }
-//
-//  override final Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-//    none()
-//  }
-//
-//  override final Instruction getReceiver() {
-//    result = getTranslatedFunction(getFunction()).getInitializeThisInstruction()
-//  }
-//}
-//
-///**
-// * Represents the IR translation of a call to a base class constructor from within a
-// * derived class constructor
-// */
-//class TranslatedConstructorBaseInit extends TranslatedConstructorCallFromConstructor, TranslatedBaseStructorCall {
-//  TranslatedConstructorBaseInit() {
-//    not call instanceof ConstructorDelegationInit
-//  }
-//
-//  override final string toString() {
-//    result = "construct base: " + call.toString()
-//  }
-//}
-//
-//TranslatedDestructorBaseDestruction getTranslatedDestructorBaseDestruction(DestructorBaseDestruction destruction) {
-//  result.getAST() = destruction
-//}
-//
-///**
-// * Represents the IR translation of a call to a base class destructor from within a
-// * derived class destructor.
-// */
-//class TranslatedDestructorBaseDestruction extends TranslatedBaseStructorCall, TTranslatedDestructorBaseDestruction {
-//  TranslatedDestructorBaseDestruction() {
-//    this = TTranslatedDestructorBaseDestruction(call)
-//  }
-//
-//  override final string toString() {
-//    result = "destroy base: " + call.toString()
-//  }
-//}

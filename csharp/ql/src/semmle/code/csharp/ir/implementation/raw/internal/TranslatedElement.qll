@@ -307,19 +307,10 @@ newtype TTranslatedElement =
     isFirstValueInitializedElementInRange(initList, elementIndex) and
     elementCount = getEndOfValueInitializedRange(initList, elementIndex) - elementIndex
   } or
-  // TODO: Convert to C#
-  // The initialization of a base class from within a constructor.
-  //  TTranslatedConstructorBaseInit(ConstructorBaseInit init) {
-  //    not ignoreExpr(init)
-  //  } or
-  //  // The destruction of a base class from within a destructor.
-  //  TTranslatedDestructorBaseDestruction(DestructorBaseDestruction destruction) {
-  //    not ignoreExpr(destruction)
-  //  } or
-  //  // The destruction of a field from within a destructor.
-  //  TTranslatedDestructorFieldDestruction(DestructorFieldDestruction destruction) {
-  //    not ignoreExpr(destruction)
-  //  } or
+   // The initialization of a base class from within a constructor.
+  TTranslatedConstructorInitializer(ConstructorInitializer init) {
+    not ignoreExpr(init)
+  } or
   // A statement
   TTranslatedStmt(Stmt stmt) { translateStmt(stmt) } or
   // A function

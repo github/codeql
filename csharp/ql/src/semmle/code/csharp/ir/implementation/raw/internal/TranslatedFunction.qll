@@ -46,18 +46,15 @@ class TranslatedFunction extends TranslatedElement,
   }
 
   override final TranslatedElement getChild(int id) {
-    id = -3 and result = getConstructorInitList() or
-    id = -2 and result = getBody() or
-    id = -1 and result = getDestructorDestructionList() or
+    id = -2 and result = getConstructorInitializer() or
+    id = -1 and result = getBody() or
     id >= 0 and result = getParameter(id)
   }
 
-  private final TranslatedConstructorInitList getConstructorInitList() {
-    result = getTranslatedConstructorInitList(callable)
-  }
-  
-  private final TranslatedDestructorDestructionList getDestructorDestructionList() {
-    result = getTranslatedDestructorDestructionList(callable)
+  private final TranslatedConstructorInitializer getConstructorInitializer() {
+    exists(ConstructorInitializer ci |
+           ci = callable.getAChild() and
+           result = getTranslatedConstructorInitializer(ci)) 
   }
 
   private final TranslatedStmt getBody() {
@@ -97,7 +94,10 @@ class TranslatedFunction extends TranslatedElement,
         if exists(getParameter(0)) then
           result = getParameter(0).getFirstInstruction()
         else
-          result = getConstructorInitList().getFirstInstruction()
+          if (exists(getConstructorInitializer())) then
+            result = getConstructorInitializer().getFirstInstruction()
+          else
+            result = getBody().getFirstInstruction()
       ) or
       (
         tag = ReturnValueAddressTag() and
@@ -124,22 +124,18 @@ class TranslatedFunction extends TranslatedElement,
       if exists(callable.getParameter(paramIndex + 1)) then
         result = getParameter(paramIndex + 1).getFirstInstruction()
       else
-        result = getConstructorInitList().getFirstInstruction()
+        if (exists(getConstructorInitializer())) then
+          result = getConstructorInitializer().getFirstInstruction()
+        else
+          result = getBody().getFirstInstruction()
     ) or
     (
-      child = getConstructorInitList() and
+      child = getConstructorInitializer() and
       result = getBody().getFirstInstruction()
     ) or 
     (
       child = getBody() and
       result = getReturnSuccessorInstruction()
-    ) or
-    (
-      child = getDestructorDestructionList() and
-      if getReturnType() instanceof VoidType then
-        result = getInstruction(ReturnTag())
-      else
-        result = getInstruction(ReturnValueAddressTag())
     )
   }
 
@@ -361,8 +357,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
   }
 
   override final Callable getFunction() {
-    result = param.getCallable() // or
-    // result = param.getCatchBlock().getEnclosingFunction()
+    result = param.getCallable()
   }
 
   override final Instruction getFirstInstruction() {
@@ -424,152 +419,6 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
         operandTag instanceof AddressOperandTag and
         result = getInstruction(InitializerVariableAddressTag())
       )
-    )
-  }
-}
-
-private TranslatedConstructorInitList 
-getTranslatedConstructorInitList(Callable callable) {
-  result.getAST() = callable
-}
-
-/**
- * Represents the IR translation of a constructor initializer list. To simplify
- * the implementation of `TranslatedFunction`, a `TranslatedConstructorInitList`
- * exists for every function, not just for constructors. Of course, only the
- * instances for constructors can actually contain initializers.
- */
-class TranslatedConstructorInitList extends TranslatedElement,
-  InitializationContext, TTranslatedConstructorInitList {
-  Callable callable;
-
-  TranslatedConstructorInitList() {
-    this = TTranslatedConstructorInitList(callable)
-  }
-
-  override string toString() {
-    result = "ctor init: " + callable.toString()
-  }
-
-  override Language::AST getAST() {
-    result = callable
-  }
-
-  // TODO: Is this enough?
-  override TranslatedElement getChild(int id) {
-    result = getTranslatedExpr(callable).getChild(id)
-//    exists(MemberInitializer init |
-//      init = callable.(Constructor).getInitializer().getRawArgument(id) and
-//      result = getTranslatedConstructorFieldInitialization(init)
-//    ) // or
-//    exists(ConstructorBaseInit baseInit |
-//      baseInit = callable.(Constructor).getInitializer().getRawArgument(id) and
-//      result = getTranslatedConstructorBaseInit(baseInit)
-//    )
-  }
-
-  override Instruction getFirstInstruction() {
-    if exists(getChild(0)) then
-      result = getChild(0).getFirstInstruction()
-    else
-      result = getParent().getChildSuccessor(this)
-  }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isLValue) {
-    none()
-  }
-
-  override Callable getFunction() {
-    result = callable
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
-    none()
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    exists(int id |
-      child = getChild(id) and
-      if exists(getChild(id + 1)) then
-        result = getChild(id + 1).getFirstInstruction()
-      else
-        result = getParent().getChildSuccessor(this)
-    )
-  }
-
-  override Instruction getTargetAddress() {
-    result = getTranslatedFunction(callable).getInitializeThisInstruction()
-  }
-
-  override Type getTargetType() {
-    result = getTranslatedFunction(callable).getThisType()
-  }
-}
-
-private TranslatedDestructorDestructionList 
-getTranslatedDestructorDestructionList(Callable callable) {
-  result.getAST() = callable
-}
-
-// TODO: Should not exist in C#, keep for now (the fix for getReturnSuccessorInstruction replaces it)
-/**
- * Represents the IR translation of a destructor's implicit calls to destructors
- * for fields and base classes. To simplify the implementation of `TranslatedFunction`, 
- * a `TranslatedDestructorDestructionList` exists for every function, not just for
- * destructors. Of course, only the instances for destructors can actually contain
- * destructions.
- */
-class TranslatedDestructorDestructionList extends TranslatedElement,
-  TTranslatedDestructorDestructionList {
-  Callable callable;
-
-  TranslatedDestructorDestructionList() {
-    this = TTranslatedDestructorDestructionList(callable)
-  }
-
-  override string toString() {
-    result = "dtor destruction: " + callable.toString()
-  }
-
-  override Language::AST getAST() {
-    result = callable
-  }
-
-  // TODO: Is this enough?
-  override TranslatedElement getChild(int id) {
-     result = getTranslatedExpr(callable).getChild(id)
-  }
-
-  override Instruction getFirstInstruction() {
-    if exists(getChild(0)) then
-      result = getChild(0).getFirstInstruction()
-    else
-      result = getParent().getChildSuccessor(this)
-  }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isLValue) {
-    none()
-  }
-
-  override Callable getFunction() {
-    result = callable
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
-    none()
-  }
-
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    exists(int id |
-      child = getChild(id) and
-      if exists(getChild(id + 1)) then
-        result = getChild(id + 1).getFirstInstruction()
-      else
-        result = getParent().getChildSuccessor(this)
     )
   }
 }

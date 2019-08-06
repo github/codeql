@@ -278,7 +278,10 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
  * the constructor call, address will be passed to a variable declaration.
  */
 class TranslatedConstructorCall extends TranslatedFunctionCall {
-  TranslatedConstructorCall() { expr instanceof ObjectCreation }
+  TranslatedConstructorCall() { 
+    expr instanceof ObjectCreation or
+    expr instanceof ConstructorInitializer
+  }
 
   override Instruction getQualifierResult() {
     exists(StructorCallContext context |

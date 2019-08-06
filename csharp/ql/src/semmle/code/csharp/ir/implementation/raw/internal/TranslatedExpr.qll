@@ -1507,19 +1507,22 @@ abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
     result = getRightOperand().getFirstInstruction()
   }
 
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+    Type resultType, boolean isLValue) {
+    (
+      needsConversion() and
+      tag = AssignmentConvertRightTag() and
+      // For now only use `Opcode::Convert` to
+      // crudely represent conversions. Could
+      // be useful to represent the whole chain of conversions
+      opcode instanceof Opcode::Convert and
+      resultType = expr.getLValue().getType() and
+      isLValue = false
+    )
+  }
+  
   override final Instruction getResult() {
-    //if expr.isPRValueCategory() then (
-      // If this is C, then the result of an assignment is a prvalue for the new
-      // value assigned to the left operand. If this is C++, then the result is
-      // an lvalue, but that lvalue is being loaded as part of this expression.
-      // EDG doesn't mark this as a load.
       result = getStoredValue()
-    //)
-    //else (
-      // This is C++, where the result is an lvalue for the left operand,
-      // and that lvalue is not being loaded as part of this expression.
-      //result = getLeftOperand().getResult()
-    //)
   }
 
   abstract Instruction getStoredValue();
@@ -1530,6 +1533,10 @@ abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
 
   final TranslatedExpr getRightOperand() {
     result = getTranslatedExpr(expr.getRValue())
+  }
+  
+  final predicate needsConversion() {
+    expr.getLValue().getType() != expr.getRValue().getType()
   }
 }
 
@@ -1543,16 +1550,27 @@ class TranslatedAssignExpr extends TranslatedAssignment {
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
-    tag = AssignmentStoreTag() and
-    result = getParent().getChildSuccessor(this) and
-    kind instanceof GotoEdge
+    (
+      tag = AssignmentStoreTag() and
+      result = getParent().getChildSuccessor(this) and
+      kind instanceof GotoEdge
+    ) or 
+    (
+      needsConversion() and
+      tag = AssignmentConvertRightTag() and
+      result = getLeftOperand().getFirstInstruction() and
+      kind instanceof GotoEdge
+    )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     // Operands are evaluated right-to-left.
     (
       child = getRightOperand() and
-      result = getLeftOperand().getFirstInstruction()
+      if (needsConversion()) then
+        result = getInstruction(AssignmentConvertRightTag())
+      else
+        result = getLeftOperand().getFirstInstruction()
     ) or
     (
       child = getLeftOperand() and
@@ -1562,24 +1580,37 @@ class TranslatedAssignExpr extends TranslatedAssignment {
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
-    tag = AssignmentStoreTag() and
-    opcode instanceof Opcode::Store and
-    resultType = getResultType() and
-    isLValue = false
+    TranslatedAssignment.super.hasInstruction(opcode, tag, resultType, isLValue) or
+    (
+      tag = AssignmentStoreTag() and
+      opcode instanceof Opcode::Store and
+      resultType = getResultType() and
+      isLValue = false
+    )
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
     OperandTag operandTag) {
-    tag = AssignmentStoreTag() and
+    ( 
+      tag = AssignmentStoreTag() and
+      (
+        (
+          operandTag instanceof AddressOperandTag and
+          result = getLeftOperand().getResult()
+        ) or
+        (
+          operandTag instanceof StoreValueOperandTag and
+          if (needsConversion()) then
+            result = getInstruction(AssignmentConvertRightTag())
+          else
+            result = getRightOperand().getResult()
+        )
+      ) 
+    ) or
     (
-      (
-        operandTag instanceof AddressOperandTag and
-        result = getLeftOperand().getResult()
-      ) or
-      (
-        operandTag instanceof StoreValueOperandTag and
-        result = getRightOperand().getResult()
-      )
+      tag = AssignmentConvertRightTag() and
+      operandTag instanceof UnaryOperandTag and
+      result = getRightOperand().getResult()
     )
   }
 
@@ -2016,67 +2047,6 @@ abstract class StructorCallContext extends TranslatedElement {
   abstract Instruction getReceiver();
 }
 
-// TODO: Reason about how to translate destructors in C# (finalizers + dispose)
-///**
-// * Represents the IR translation of the destruction of a field from within
-// * the destructor of the field's declaring class.
-// */
-//class TranslatedDestructorFieldDestruction extends TranslatedNonConstantExpr,
-//    StructorCallContext {
-//  override DestructorFieldDestruction expr;
-//
-//  override final TranslatedElement getChild(int id) {
-//    id = 0 and result = getDestructorCall()
-//  }
-//
-//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//    Type resultType, boolean ) {
-//    tag = OnlyInstructionTag() and
-//    opcode instanceof Opcode::FieldAddress and
-//    resultType = expr.getTarget().getUnspecifiedType() and
-//     = true
-//  }
-//
-//  override final Instruction getInstructionSuccessor(InstructionTag tag,
-//    EdgeKind kind) {
-//    tag = OnlyInstructionTag() and
-//    kind instanceof GotoEdge and
-//    result = getDestructorCall().getFirstInstruction()
-//  }
-//
-//  override final Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getDestructorCall() and
-//    result = getParent().getChildSuccessor(this)
-//  }
-//
-//  override final Instruction getResult() {
-//    none()
-//  }
-//
-//  override final Instruction getFirstInstruction() {
-//    result = getInstruction(OnlyInstructionTag())
-//  }
-//
-//  override final Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-//    tag = OnlyInstructionTag() and
-//    operandTag instanceof UnaryOperandTag and
-//    result = getTranslatedFunction(expr.getEnclosingFunction()).getInitializeThisInstruction()
-//  }
-//
-//  override final Field getInstructionField(InstructionTag tag) {
-//    tag = OnlyInstructionTag() and
-//    result = expr.getTarget()
-//  }
-//
-//  override final Instruction getReceiver() {
-//    result = getInstruction(OnlyInstructionTag())
-//  }
-//
-//  private TranslatedExpr getDestructorCall() {
-//    result = getTranslatedExpr(expr.getExpr())
-//  }
-// }
-
 class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
   ConditionContext {
   override ConditionalExpr expr;
@@ -2291,374 +2261,6 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
     getResultType() instanceof VoidType
   }
 }
-
-///**
-// * IR translation of a `throw` expression.
-// */
-//abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
-//  override ThrowExpr expr;
-//
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//      Type resultType, boolean isLValue) {
-//    tag = ThrowTag() and
-//    opcode = getThrowOpcode() and
-//    resultType instanceof VoidType and
-//    isLValue = false
-//  }
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag,
-//      EdgeKind kind) {
-//    tag = ThrowTag() and
-//    kind instanceof ExceptionEdge and
-//    result = getParent().getExceptionSuccessorInstruction()
-//  }
-//
-//  override Instruction getResult() {
-//    none()
-//  }
-//
-//  abstract Opcode getThrowOpcode();
-//}
-//
-///**
-// * IR translation of a `throw` expression with an argument
-// * (e.g. `throw std::bad_alloc()`).
-// */
-//class TranslatedThrowValueExpr extends TranslatedThrowExpr,
-//    InitializationContext {
-//  TranslatedThrowValueExpr() {
-//    not expr instanceof ThrowExpr
-//  }
-//
-//  override TranslatedElement getChild(int id) {
-//    id = 0 and result = getInitialization()
-//  }
-//
-//  override Instruction getFirstInstruction() {
-//    result = getInstruction(InitializerVariableAddressTag())
-//  }
-//
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//      Type resultType, boolean isLValue) {
-//    TranslatedThrowExpr.super.hasInstruction(opcode, tag, resultType, isLValue) or
-//    tag = InitializerVariableAddressTag() and
-//    opcode instanceof Opcode::VariableAddress and
-//    resultType = getExceptionType() and
-//    isLValue = true
-//  }
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag,
-//      EdgeKind kind) {
-//    result = TranslatedThrowExpr.super.getInstructionSuccessor(tag, kind) or
-//    (
-//      tag = InitializerVariableAddressTag() and
-//      result = getInitialization().getFirstInstruction() and
-//      kind instanceof GotoEdge
-//    )
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getInitialization() and
-//    result = getInstruction(ThrowTag())
-//  }
-//
-//  override IRVariable getInstructionVariable(InstructionTag tag) {
-//    tag = InitializerVariableAddressTag() and
-//    result = getIRTempVariable(expr, ThrowTempVar())
-//  }
-//
-//  override final predicate hasTempVariable(TempVariableTag tag, Type type) {
-//    tag = ThrowTempVar() and
-//    type = getExceptionType()
-//  }
-//
-//  override final Instruction getInstructionOperand(InstructionTag tag,
-//      OperandTag operandTag) {
-//    tag = ThrowTag() and
-//    (
-//      (
-//        operandTag instanceof AddressOperandTag and
-//        result = getInstruction(InitializerVariableAddressTag())
-//      ) or
-//      (
-//        operandTag instanceof LoadOperandTag and
-//        result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
-//      )
-//    )
-//  }
-//
-//  override final Type getInstructionOperandType(InstructionTag tag,
-//      TypedOperandTag operandTag) {
-//    tag = ThrowTag() and
-//    operandTag instanceof LoadOperandTag and
-//    result = getExceptionType()
-//  }
-//
-//  override Instruction getTargetAddress() {
-//    result = getInstruction(InitializerVariableAddressTag())
-//  }
-//
-//  override Type getTargetType() {
-//    result = getExceptionType()
-//  }
-//
-//  TranslatedInitialization getInitialization() {
-//    result = getTranslatedInitialization(
-//      expr.getExpr())
-//  }
-//
-//  override final Opcode getThrowOpcode() {
-//    result instanceof Opcode::ThrowValue
-//  }
-//
-//  private Type getExceptionType() {
-//    result = expr.getType()
-//  }
-//}
-
-// TODO: Should be handeled by the normal throw in C#
-///**
-// * IR translation of a `throw` expression with no argument (e.g. `throw;`).
-// */
-//class TranslatedReThrowExpr extends TranslatedThrowExpr {
-//  override ReThrowExpr expr;
-//
-//  override TranslatedElement getChild(int id) {
-//    none()
-//  }
-//
-//  override Instruction getFirstInstruction() {
-//    result = getInstruction(ThrowTag())
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    none()
-//  }
-//
-//  override final Opcode getThrowOpcode() {
-//    result instanceof Opcode::ReThrow
-//  }
-//}
-
-// TODO: Probably does not have a translation in C#
-///**
-// * The IR translation of a built-in operation (i.e. anything that extends
-// * `BuiltInOperation`).
-// */
-//abstract class TranslatedBuiltInOperation extends TranslatedNonConstantExpr {
-//  override final Instruction getResult() {
-//    result = getInstruction(OnlyInstructionTag())
-//  }
-//
-//  override final Instruction getFirstInstruction() {
-//    if exists(getChild(0)) then 
-//      result = getChild(0).getFirstInstruction()
-//    else
-//      result = getInstruction(OnlyInstructionTag())
-//  }
-//
-//  override final TranslatedElement getChild(int id) {
-//    result = getTranslatedExpr(expr.getChild(id))
-//  }
-//
-//  override final Instruction getInstructionSuccessor(InstructionTag tag,
-//      EdgeKind kind) {
-//    tag = OnlyInstructionTag() and
-//    kind instanceof GotoEdge and
-//    result = getParent().getChildSuccessor(this)
-//  }
-//
-//  override final Instruction getChildSuccessor(TranslatedElement child) {
-//    exists(int id |
-//      child = getChild(id) and
-//      (
-//        result = getChild(id + 1).getFirstInstruction() or
-//        not exists(getChild(id + 1)) and result = getInstruction(OnlyInstructionTag())
-//      )
-//    )
-//  }
-//
-//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//      Type resultType, boolean isLValue) {
-//    tag = OnlyInstructionTag() and
-//    opcode = getOpcode() and
-//    resultType = getResultType() and
-//    isLValue = isResultLValue()
-//  }
-//
-//  override final Instruction getInstructionOperand(InstructionTag tag,
-//      OperandTag operandTag) {
-//    tag = OnlyInstructionTag() and
-//    exists(int index |
-//      operandTag = positionalArgumentOperand(index) and
-//      result = getChild(index).(TranslatedExpr).getResult()
-//    )
-//  }
-//
-//  abstract Opcode getOpcode();
-//}
-
-
-// TODO: See how and if we would adapt those to C#
-///**
-// * The IR translation of a `BuiltInVarArgsStart` expression.
-// */
-//class TranslatedVarArgsStart extends TranslatedBuiltInOperation {
-//  override BuiltInVarArgsStart expr;
-//
-//  override final Opcode getOpcode() {
-//    result instanceof Opcode::VarArgsStart
-//  }
-//}
-//
-///**
-// * The IR translation of a `BuiltInVarArgsEnd` expression.
-// */
-//class TranslatedVarArgsEnd extends TranslatedBuiltInOperation {
-//  override BuiltInVarArgsEnd expr;
-//
-//  override final Opcode getOpcode() {
-//    result instanceof Opcode::VarArgsEnd
-//  }
-//}
-//
-///**
-// * The IR translation of a `BuiltInVarArg` expression.
-// */
-//class TranslatedVarArg extends TranslatedBuiltInOperation {
-//  override BuiltInVarArg expr;
-//
-//  override final Opcode getOpcode() {
-//    result instanceof Opcode::VarArg
-//  }
-//}
-//
-///**
-// * The IR translation of a `BuiltInVarArgCopy` expression.
-// */
-//class TranslatedVarArgCopy extends TranslatedBuiltInOperation {
-//  override BuiltInVarArgCopy expr;
-//
-//  override final Opcode getOpcode() {
-//    result instanceof Opcode::VarArgCopy
-//  }
-//}
-//
-///**
-// * The IR translation of a `new` or `new[]` expression.
-// */
-//abstract class TranslatedNewExpr extends TranslatedNonConstantExpr,
-//    InitializationContext {
-//  override ObjectCreation expr;
-//
-//  override final TranslatedElement getChild(int id) {
-//    id = 0 and result = getAllocatorCall() or
-//    id = 1 and result = getInitialization()
-//  }
-//
-//  final TranslatedInitialization getInitialization() {
-//    result = getTranslatedInitialization(expr.getInitializer())
-//  }
-//
-//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//      Type resultType, boolean isLValue) {
-//    none()
-//  }
-//
-//  override final Instruction getFirstInstruction() {
-//    result = getAllocatorCall().getFirstInstruction()
-//  }
-//
-//  override final Instruction getResult() {
-//    result = getInstruction(OnlyInstructionTag())
-//  }
-//
-//  override final Instruction getInstructionSuccessor(InstructionTag tag,
-//      EdgeKind kind) {
-//    kind instanceof GotoEdge and
-//    tag = OnlyInstructionTag() and
-//    if exists(getInitialization()) then
-//      result = getInitialization().getFirstInstruction()
-//    else
-//      result = getParent().getChildSuccessor(this)
-//  }
-//
-//  override final Type getTargetType() {
-//    result = expr.getType()
-//  }
-//
-//  override final Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getAllocatorCall() and result = getInstruction(OnlyInstructionTag()) or
-//    child = getInitialization() and result = getParent().getChildSuccessor(this)
-//  }
-//
-//  override final Instruction getInstructionOperand(InstructionTag tag,
-//      OperandTag operandTag) {
-//    tag = OnlyInstructionTag() and
-//    operandTag instanceof UnaryOperandTag and
-//    result = getAllocatorCall().getResult()
-//  }
-//  
-//  override final Instruction getTargetAddress() {
-//    result = getInstruction(OnlyInstructionTag())
-//  }
-//
-//  private TranslatedAllocatorCall getAllocatorCall() {
-//    result = getTranslatedAllocatorCall(expr)
-//  }
-//}
-
-
-///**
-// * The IR translation of a `ConditionDeclExpr`, which represents the value of the declared variable
-// * after conversion to `bool` in code such as:
-// * ```
-// * if (int* p = &x) {
-// * }
-// * ```
-// */
- // TODO: DOESNT EXIST IN C#
-//class TranslatedConditionDeclExpr extends TranslatedNonConstantExpr {
-//  override ConditionDeclExpr expr;
-//
-//  override final Instruction getFirstInstruction() {
-//    result = getDecl().getFirstInstruction()
-//  }
-//
-//  override final TranslatedElement getChild(int id) {
-//    id = 0 and result = getDecl() or
-//    id = 1 and result = getConditionExpr()
-//  }
-//
-//  override Instruction getResult() {
-//    result = getConditionExpr().getResult()
-//  }
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-//    none()
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    (
-//      child = getDecl() and
-//      result = getConditionExpr().getFirstInstruction()
-//    ) or
-//    child = getConditionExpr() and result = getParent().getChildSuccessor(this)
-//  }
-//
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType,
-//      boolean ) {
-//    none()
-//  }
-//
-//  private TranslatedConditionDecl getDecl() {
-//    result = getTranslatedConditionDecl(expr)
-//  }
-//
-//  private TranslatedExpr getConditionExpr() {
-//    result = getTranslatedExpr(expr.getVariableAccess().getFullyConverted())
-//  }
-//}
 
 /**
  * The IR translation of a lambda expression. This initializes a temporary variable whose type is that of the lambda,

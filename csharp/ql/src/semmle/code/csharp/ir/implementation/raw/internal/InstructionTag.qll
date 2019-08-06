@@ -25,6 +25,7 @@ newtype TInstructionTag =
   AssignOperationLoadTag() or
   AssignOperationConvertLeftTag() or
   AssignOperationOpTag() or
+  AssignmentConvertRightTag() or
   AssignOperationConvertResultTag() or
   AssignmentStoreTag() or
   CrementLoadTag() or
@@ -114,6 +115,7 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = ZeroPadStringStoreTag() and result = "ZeroPadStore" or
   tag = AssignOperationLoadTag() and result = "AssignOpLoad" or
   tag = AssignOperationConvertLeftTag() and result = "AssignOpConvLeft" or
+  tag = AssignmentConvertRightTag() and result = "AssignConvRight" or
   tag = AssignOperationOpTag() and result = "AssignOpOp" or
   tag = AssignOperationConvertResultTag() and result = "AssignOpConvRes" or
   tag = AssignmentStoreTag() and result = "AssignStore" or
