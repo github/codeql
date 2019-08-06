@@ -1,6 +1,23 @@
 import cpp
 
-from Class t, string struct, string union
-where if t instanceof Struct then struct = "struct" else struct = ""
-  and if t instanceof Union  then union  = "union"  else union  = ""
-select t, struct, union
+string describe(Class c)
+{
+  (
+    c instanceof Struct and
+    result = "Struct"
+  ) or (
+    c instanceof Union and
+    result = "Union"
+  ) or (
+    c instanceof LocalUnion and
+    result = "LocalUnion"
+  ) or (
+    c instanceof NestedUnion and
+    result = "NestedUnion"
+  )
+}
+
+from Class c
+select
+  c,
+  concat(describe(c), ", ")
