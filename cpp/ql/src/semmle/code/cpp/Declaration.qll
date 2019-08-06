@@ -11,9 +11,9 @@ private import semmle.code.cpp.internal.QualifiedName as Q
  * `DeclarationEntry`. Some declarations do not correspond to a unique
  * location in the source code. For example, a global variable might
  * be declared in multiple source files:
- *
+ * ```
  *   extern int myglobal;
- *
+ * ```
  * Each of these declarations is given its own distinct `DeclarationEntry`,
  * but they all share the same `Declaration`.
  *
@@ -25,7 +25,7 @@ abstract class Declaration extends Locatable, @declaration {
   /**
    * Gets the innermost namespace which contains this declaration.
    *
-   * The result will either be GlobalNamespace, or the tightest lexically
+   * The result will either be `GlobalNamespace`, or the tightest lexically
    * enclosing namespace block. In particular, note that for declarations
    * within structures, the namespace of the declaration is the same as the
    * namespace of the structure.
@@ -231,7 +231,7 @@ abstract class Declaration extends Locatable, @declaration {
  * `DeclarationEntry`.
  */
 abstract class DeclarationEntry extends Locatable {
-  /** a specifier associated with this declaration entry */
+  /** Gets a specifier associated with this declaration entry. */
   abstract string getASpecifier();
 
   /**
@@ -249,12 +249,12 @@ abstract class DeclarationEntry extends Locatable {
    * Gets the declaration for which this is a declaration entry.
    *
    * Note that this is *not* always the inverse of
-   * Declaration.getADeclarationEntry(), for example if C is a
-   * TemplateClass, I is an instantiation of C, and D is a Declaration of
-   * C, then:
-   *  C.getADeclarationEntry() returns D
-   *  I.getADeclarationEntry() returns D
-   *  but D.getDeclaration() only returns C
+   * `Declaration.getADeclarationEntry()`, for example if `C` is a
+   * `TemplateClass`, `I` is an instantiation of `C`, and `D` is a
+   * `Declaration` of `C`, then:
+   *  `C.getADeclarationEntry()` returns `D`
+   *  `I.getADeclarationEntry()` returns `D`
+   *  but `D.getDeclaration()` only returns `C`
    */
   abstract Declaration getDeclaration();
 
@@ -329,7 +329,7 @@ abstract class AccessHolder extends Declaration {
   }
 
   /**
-   * Gets the nearest enclosing AccessHolder.
+   * Gets the nearest enclosing `AccessHolder`.
    */
   abstract AccessHolder getEnclosingAccessHolder();
 
@@ -505,7 +505,7 @@ private class DirectAccessHolder extends Element {
       exists(Class p | p = derived.getADerivedClass*() |
         this.isFriendOfOrEqualTo(p) and
         // Note: it's crucial that this is `!=` rather than `not =` since
-        // accessOfBaseMember does not have a result when the member would be
+        // `accessOfBaseMember` does not have a result when the member would be
         // inaccessible.
         p.accessOfBaseMember(base, public) != public
       )
