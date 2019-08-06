@@ -5,8 +5,8 @@
 
 import csharp
 
-module TaintTracking {
-  private import semmle.code.csharp.dataflow.DataFlow
+module TaintTracking2 {
+  private import semmle.code.csharp.dataflow.DataFlow2
   private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
   import semmle.code.csharp.dataflow.internal.TaintTrackingPublic
 
@@ -25,7 +25,7 @@ module TaintTracking {
    * nodes as "sanitizers" (`isSanitizer`) as well as add custom taint flow steps
    * (`isAdditionalTaintStep()`).
    */
-  abstract class Configuration extends DataFlow::Configuration {
+  abstract class Configuration extends DataFlow2::Configuration {
     bindingset[this]
     Configuration() { any() }
 
