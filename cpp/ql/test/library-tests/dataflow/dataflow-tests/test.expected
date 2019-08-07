@@ -15,6 +15,7 @@
 | test.cpp:103:10:103:12 | ref | test.cpp:100:13:100:18 | call to source |
 | test.cpp:126:8:126:19 | sourceArray1 | test.cpp:120:9:120:20 | sourceArray1 |
 | test.cpp:137:27:137:28 | m1 | test.cpp:136:27:136:32 | call to source |
+| test.cpp:138:27:138:34 | call to getFirst | test.cpp:136:27:136:32 | call to source |
 | test.cpp:140:22:140:23 | m1 | test.cpp:136:27:136:32 | call to source |
 | test.cpp:188:8:188:8 | y | test.cpp:186:27:186:32 | call to source |
 | test.cpp:192:8:192:8 | s | test.cpp:199:33:199:38 | call to source |
@@ -27,6 +28,8 @@
 | test.cpp:337:14:337:14 | x | test.cpp:353:17:353:22 | call to source |
 | test.cpp:366:7:366:7 | x | test.cpp:362:4:362:9 | call to source |
 | test.cpp:397:10:397:18 | globalVar | test.cpp:395:17:395:22 | call to source |
+| test.cpp:413:10:413:14 | field | test.cpp:407:13:407:18 | call to source |
+| test.cpp:417:10:417:14 | field | test.cpp:421:13:421:18 | call to source |
 | test.cpp:423:10:423:14 | field | test.cpp:421:13:421:18 | call to source |
 | test.cpp:433:8:433:10 | tmp | test.cpp:430:48:430:54 | source1 |
 | test.cpp:440:8:440:10 | tmp | test.cpp:436:53:436:59 | source1 |

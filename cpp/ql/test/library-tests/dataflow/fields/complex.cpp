@@ -33,8 +33,8 @@ void sink(int x)
 
 void bar(Bar &b)
 {
-  sink(b.f.a());
-  sink(b.f.b());
+  sink(b.f.a()); // flow (through `b1.f.setA` and `b3.f.setA`) [NOT DETECTED]
+  sink(b.f.b()); // flow (through `b2.f.setB` and `b3.f.setB`) [NOT DETECTED]
 }
 
 void foo()
