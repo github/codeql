@@ -53,7 +53,7 @@ class ClientRequest extends DataFlow::InvokeNode {
    * - Any of the following additional response types defined by this library:
    *    - `fetch.response`: The result is a `Response` object from [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Response).
    *    - `stream`: The result is a Node.js stream and `http.IncomingMessage` object
-   *    - `header`: The result the value of a header, as a string
+   *    - `header`: The result is the value of a header, as a string
    *    - `headers`: The result is a mapping from header names to their values.
    *    - `error`: The result is an error in an unspecified format, possibly containing information from the response
    *    - An empty string, indicating an unknown response type.
@@ -106,7 +106,7 @@ module ClientRequest {
   }
 
   /**
-  * Gets name of an HTTP request method, in all-lowercase.
+  * Gets the name of an HTTP request method, in all-lowercase.
   */
   private string httpMethodName() { result = any(HTTP::RequestMethodName m).toLowerCase() }
 
@@ -339,17 +339,13 @@ module ClientRequest {
 
     override DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
       result = this and
-      (
-        isStream() and
+      if isStream() then (
         responseType = "stream" and
         promise = false
-        or
-        isJson() and
+      ) else if isJson() then (
         responseType = "json" and
         promise = true
-        or
-        not isStream() and
-        not isJson() and
+      ) else (
         responseType = "text" and
         promise = true
       )
@@ -495,8 +491,7 @@ module ClientRequest {
     override DataFlow::Node getHost() { none() }
 
     override DataFlow::Node getADataNode() {
-      result = getArgument(2) or
-      result = getArgument(3)
+      result = getArgument([2 .. 3])
     }
 
     /** Gets an event listener with `this` bound to this object. */
@@ -526,7 +521,7 @@ module ClientRequest {
     }
 
     /**
-     * Gets the response type corresponding `getReponse()` but not
+     * Gets the response type corresponding to `getReponse()` but not
      * for explicitly typed calls like `getResponseJson()`.
      */
     string getAssignedResponseType() {
