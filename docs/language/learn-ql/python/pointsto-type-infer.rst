@@ -36,14 +36,14 @@ The predicate ``ControlFlowNode.pointsTo(...)`` shows which object a control flo
    predicate pointsTo(Value object, ControlFlowNode origin)
    predicate pointsTo(Context context, Value object, ControlFlowNode origin)
 
-``object`` is an object that the control flow node refers to, ``origin`` is where the object comes from, which is useful for displaying meaningful results.
- The third form includes the ``context`` in which the control flow node refers to ``object``. This form can usually be ignored.
+``object`` is an object that the control flow node refers to, and ``origin`` is where the object comes from, which is useful for displaying meaningful results.
+ The third form includes the ``context`` in which the control flow node refers to the ``object``. This form can usually be ignored.
 
 .. pull-quote::
 
    Note
 
-   ``ControlFlowNode.pointsTo()`` cannot find all objects that a control flow node might point to as it impossible to be accurate and find all possible values. We prefer precision (no incorrect values) over recall (finding as many values as possible). We do this because queries based on points-to analysis have fewer false positives and are thus more useful.
+   ``ControlFlowNode.pointsTo()`` cannot find all objects that a control flow node might point to as it is impossible to be accurate *and* to find all possible values. We prefer precision (no incorrect values) over recall (finding as many values as possible). We do this so that queries based on points-to analysis have fewer false positive results and are thus more useful.
 
 For complex data flow analyses, involving multiple stages, the ``ControlFlowNode`` version is more precise, but for simple use cases the ``Expr`` based version is easier to use. For convenience, the ``Expr`` class also has the same three predicates. ``Expr.pointsTo(...)`` also has three variants:
 
@@ -149,15 +149,15 @@ Then we need to determine if the object ``iter`` is iterable. We can test ``Clas
 
 .. code-block:: ql
 
-   import python
+    import python
 
-   from For loop, Value iter, ClassValue cls
-   where loop.getIter().pointsTo(iter) and
-     cls = iter.getClass() and
-     not cls.hasAttribute("__iter__")
-   select loop, cls
-
-➤ `See this in the query console <https://lgtm.com/query/670720182/>`__. Many projects use a non-iterable as a loop iterator.
+    from For loop, Value iter, ClassValue cls
+    where loop.getIter().getAFlowNode().pointsTo(iter) and
+      cls = iter.getClass() and
+      not exists(cls.lookup("__iter__"))
+    select loop, cls
+    
+➤ `See this in the query console <https://lgtm.com/query/5636475906111506420/>`__. Many projects use a non-iterable as a loop iterator.
 
 Many of the results shown will have ``cls`` as ``NoneType``. It is more informative to show where these ``None`` values may come from. To do this we use the final field of ``pointsTo``, as follows:
 
@@ -194,7 +194,7 @@ The original query looked this:
    where call.getFunc() = name and name.getId() = "eval"
    select call, "call to 'eval'."
 
-➤ `See this in the query console <https://lgtm.com/query/6718356557331218618/>`__. Two of the demo projects on LGTM.com have calls that match this pattern.
+➤ `See this in the query console <https://lgtm.com/query/6718356557331218618/>`__. Some of the demo projects on LGTM.com have calls that match this pattern.
 
 There are two problems with this query:
 
@@ -222,7 +222,7 @@ Then we can use ``Value.getACall()`` to identify calls to the ``eval`` function,
          call = eval.getACall()
    select call, "call to 'eval'."
 
-➤ `See this in the query console <https://lgtm.com/query/535131812579637425/>`__. This accurately identifies calls to the builtin ``eval`` function even when they are referred to using an alternative name. Any false positive results with calls to other ``eval`` functions, reported by the original query, have been eliminated. It finds one result in files referenced by the *saltstack/salt* project.
+➤ `See this in the query console <https://lgtm.com/query/535131812579637425/>`__. This accurately identifies calls to the builtin ``eval`` function even when they are referred to using an alternative name. Any false positive results with calls to other ``eval`` functions, reported by the original query, have been eliminated.
 
 What next?
 ----------
