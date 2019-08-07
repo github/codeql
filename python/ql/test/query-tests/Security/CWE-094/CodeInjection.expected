@@ -6,7 +6,5 @@ edges
 | code_injection.py:6:22:6:55 | externally controlled string | code_injection.py:7:34:7:43 | externally controlled string |
 | code_injection.py:7:34:7:43 | externally controlled string | ../lib/base64.py:1:18:1:18 | externally controlled string |
 | code_injection.py:7:34:7:43 | externally controlled string | code_injection.py:7:14:7:44 | externally controlled string |
-parents
-| ../lib/base64.py:1:18:1:18 | externally controlled string | code_injection.py:7:34:7:43 | externally controlled string |
 #select
 | code_injection.py:7:14:7:44 | exec or eval | code_injection.py:4:20:4:26 | django.request.HttpRequest | code_injection.py:7:14:7:44 | externally controlled string | $@ flows to here and is interpreted as code. | code_injection.py:4:20:4:26 | Django request source | User-provided value |
