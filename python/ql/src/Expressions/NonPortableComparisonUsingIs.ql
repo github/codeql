@@ -13,7 +13,7 @@
 import python
 import IsComparisons
 
-from Compare comp, Cmpop op, ClassObject c
+from Compare comp, Cmpop op, ClassValue c
 where invalid_portable_is_comparison(comp, op, c) and
 exists(Expr sub | 
     sub = comp.getASubExpression() |
