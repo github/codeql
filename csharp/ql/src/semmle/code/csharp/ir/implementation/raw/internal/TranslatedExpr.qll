@@ -674,8 +674,8 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
   }
 
   override Instruction getResult() {
-    result = getInstruction(PointerAddTag(getRank() - 1)) and
-    result.getResultType() = expr.getType()
+    result = getInstruction(PointerAddTag(getRank() - 1)) //and
+    //result.getResultType() = expr.getType()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -684,7 +684,7 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
       inBounds(index) and
       tag = PointerAddTag(index) and
       opcode instanceof Opcode::PointerAdd and
-      resultType = getBaseOperand().getResultType() and
+      resultType = getInstruction(ElementsAddressTag(index)).getResultType() and
       isLValue = false
 	  )
     or
@@ -716,7 +716,7 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
     or
     tag = ElementsAddressTag(0) and 
     (
-      operandTag instanceof AddressOperandTag and
+      operandTag instanceof UnaryOperandTag and
       result = getBaseOperand().getResult()
     )
     or
@@ -724,7 +724,7 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
       inBounds(index) and index > 0 and
 	    tag = ElementsAddressTag(index) and
 	    (
-	      operandTag instanceof RightOperandTag and
+	      operandTag instanceof UnaryOperandTag and
 	      result = getInstruction(PointerAddTag(index - 1))
       )
     )

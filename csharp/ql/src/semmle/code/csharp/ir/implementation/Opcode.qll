@@ -191,7 +191,7 @@ module Opcode {
   class DynamicCastToVoid extends UnaryOpcode, TDynamicCastToVoid { override final string toString() { result = "DynamicCastToVoid" } }
   class VariableAddress extends Opcode, TVariableAddress { override final string toString() { result = "VariableAddress" } }
   class FieldAddress extends UnaryOpcode, TFieldAddress { override final string toString() { result = "FieldAddress" } }
-  class ElementsAddress extends BinaryOpcode, TElementsAddress { override final string toString() { result = "ElementsAddress" } }
+  class ElementsAddress extends UnaryOpcode, TElementsAddress { override final string toString() { result = "ElementsAddress" } }
   class FunctionAddress extends Opcode, TFunctionAddress { override final string toString() { result = "FunctionAddress" } }
   class Constant extends Opcode, TConstant { override final string toString() { result = "Constant" } }
   class StringConstant extends Opcode, TStringConstant { override final string toString() { result = "StringConstant" } }
