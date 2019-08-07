@@ -89,6 +89,22 @@ edges
 | C.cpp:24:16:24:25 | new [void] | C.cpp:24:5:24:25 | ... = ... [void] |
 | C.cpp:27:8:27:11 | `this` parameter in func [s3, ... (1)] | file://:0:0:0:0 | this [s3, ... (1)] |
 | file://:0:0:0:0 | this [s3, ... (1)] | C.cpp:31:10:31:11 | s3 |
+| simple.cpp:26:15:26:15 | f [a_, ... (1)] | simple.cpp:28:10:28:10 | f [a_, ... (1)] |
+| simple.cpp:26:15:26:15 | f [b_, ... (1)] | simple.cpp:29:10:29:10 | f [b_, ... (1)] |
+| simple.cpp:28:10:28:10 | f [a_, ... (1)] | simple.cpp:28:12:28:12 | call to a |
+| simple.cpp:29:10:29:10 | f [b_, ... (1)] | simple.cpp:29:12:29:12 | call to b |
+| simple.cpp:39:5:39:5 | f [post update] [a_, ... (1)] | simple.cpp:45:9:45:9 | f [a_, ... (1)] |
+| simple.cpp:39:12:39:21 | call to user_input [void] | simple.cpp:39:5:39:5 | f [post update] [a_, ... (1)] |
+| simple.cpp:40:5:40:5 | g [post update] [b_, ... (1)] | simple.cpp:48:9:48:9 | g [b_, ... (1)] |
+| simple.cpp:40:12:40:21 | call to user_input [void] | simple.cpp:40:5:40:5 | g [post update] [b_, ... (1)] |
+| simple.cpp:41:5:41:5 | h [post update] [a_, ... (1)] | simple.cpp:51:9:51:9 | h [a_, ... (1)] |
+| simple.cpp:41:12:41:21 | call to user_input [void] | simple.cpp:41:5:41:5 | h [post update] [a_, ... (1)] |
+| simple.cpp:42:5:42:5 | h [post update] [b_, ... (1)] | simple.cpp:51:9:51:9 | h [b_, ... (1)] |
+| simple.cpp:42:12:42:21 | call to user_input [void] | simple.cpp:42:5:42:5 | h [post update] [b_, ... (1)] |
+| simple.cpp:45:9:45:9 | f [a_, ... (1)] | simple.cpp:26:15:26:15 | f [a_, ... (1)] |
+| simple.cpp:48:9:48:9 | g [b_, ... (1)] | simple.cpp:26:15:26:15 | f [b_, ... (1)] |
+| simple.cpp:51:9:51:9 | h [a_, ... (1)] | simple.cpp:26:15:26:15 | f [a_, ... (1)] |
+| simple.cpp:51:9:51:9 | h [b_, ... (1)] | simple.cpp:26:15:26:15 | f [b_, ... (1)] |
 #select
 | A.cpp:43:10:43:12 | & ... | A.cpp:41:15:41:21 | new [void] | A.cpp:43:10:43:12 | & ... | & ... flows from $@ | A.cpp:41:15:41:21 | new [void] | new [void] |
 | A.cpp:49:13:49:13 | c | A.cpp:47:12:47:18 | new [void] | A.cpp:49:13:49:13 | c | c flows from $@ | A.cpp:47:12:47:18 | new [void] | new [void] |
@@ -110,3 +126,7 @@ edges
 | B.cpp:18:20:18:24 | elem1 | B.cpp:15:15:15:27 | new [void] | B.cpp:18:20:18:24 | elem1 | elem1 flows from $@ | B.cpp:15:15:15:27 | new [void] | new [void] |
 | B.cpp:19:20:19:24 | elem2 | B.cpp:15:15:15:27 | new [void] | B.cpp:19:20:19:24 | elem2 | elem2 flows from $@ | B.cpp:15:15:15:27 | new [void] | new [void] |
 | C.cpp:31:10:31:11 | s3 | C.cpp:24:16:24:25 | new [void] | C.cpp:31:10:31:11 | s3 | s3 flows from $@ | C.cpp:24:16:24:25 | new [void] | new [void] |
+| simple.cpp:28:12:28:12 | call to a | simple.cpp:39:12:39:21 | call to user_input [void] | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:39:12:39:21 | call to user_input [void] | call to user_input [void] |
+| simple.cpp:28:12:28:12 | call to a | simple.cpp:41:12:41:21 | call to user_input [void] | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:41:12:41:21 | call to user_input [void] | call to user_input [void] |
+| simple.cpp:29:12:29:12 | call to b | simple.cpp:40:12:40:21 | call to user_input [void] | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:40:12:40:21 | call to user_input [void] | call to user_input [void] |
+| simple.cpp:29:12:29:12 | call to b | simple.cpp:42:12:42:21 | call to user_input [void] | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:42:12:42:21 | call to user_input [void] | call to user_input [void] |

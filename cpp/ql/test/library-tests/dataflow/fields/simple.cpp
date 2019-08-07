@@ -25,8 +25,8 @@ public:
 
 void bar(Foo &f)
 {
-    sink(f.a());
-    sink(f.b());
+    sink(f.a()); // flow (through `f.setA` and `h.setA`)
+    sink(f.b()); // flow (through `g.setB` and `h.setB`)
 }
 
 void foo()

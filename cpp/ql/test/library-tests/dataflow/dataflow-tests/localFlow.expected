@@ -5,12 +5,15 @@
 | example.c:17:19:17:22 | {...} | example.c:24:13:24:18 | coords |
 | example.c:17:19:17:22 | {...} | example.c:26:2:26:7 | coords |
 | example.c:17:19:17:22 | {...} | example.c:26:19:26:24 | coords |
+| example.c:24:2:24:7 | coords [post update] | example.c:26:2:26:7 | coords |
+| example.c:24:2:24:7 | coords [post update] | example.c:26:19:26:24 | coords |
+| example.c:24:13:24:18 | coords [post update] | example.c:24:2:24:7 | coords |
+| example.c:24:13:24:18 | coords [post update] | example.c:26:2:26:7 | coords |
+| example.c:24:13:24:18 | coords [post update] | example.c:26:19:26:24 | coords |
 | example.c:24:13:24:30 | ... = ... | example.c:24:2:24:30 | ... = ... |
 | example.c:24:24:24:30 | ... + ... | example.c:24:13:24:30 | ... = ... |
 | example.c:26:13:26:16 | call to getX | example.c:26:2:26:25 | ... = ... |
 | example.c:26:18:26:24 | ref arg & ... | example.c:26:2:26:7 | coords |
-| example.c:26:18:26:24 | ref arg & ... | example.c:26:19:26:24 | coords |
-| example.c:28:22:28:25 | ref arg & ... | example.c:28:23:28:25 | pos |
 | test.cpp:6:12:6:17 | call to source | test.cpp:7:8:7:9 | t1 |
 | test.cpp:6:12:6:17 | call to source | test.cpp:8:8:8:9 | t1 |
 | test.cpp:6:12:6:17 | call to source | test.cpp:9:8:9:9 | t1 |
@@ -39,7 +42,7 @@
 | test.cpp:431:12:431:13 | 0 | test.cpp:432:33:432:35 | tmp |
 | test.cpp:431:12:431:13 | 0 | test.cpp:433:8:433:10 | tmp |
 | test.cpp:432:10:432:13 | & ... | test.cpp:432:3:432:8 | call to memcpy |
-| test.cpp:432:10:432:13 | ref arg & ... | test.cpp:432:11:432:13 | tmp |
+| test.cpp:432:10:432:13 | & ... [post update] | test.cpp:432:3:432:8 | call to memcpy |
 | test.cpp:432:10:432:13 | ref arg & ... | test.cpp:432:33:432:35 | tmp |
 | test.cpp:432:10:432:13 | ref arg & ... | test.cpp:433:8:433:10 | tmp |
 | test.cpp:432:17:432:23 | source1 | test.cpp:432:10:432:13 | ref arg & ... |
@@ -51,7 +54,7 @@
 | test.cpp:437:12:437:13 | 0 | test.cpp:440:8:440:10 | tmp |
 | test.cpp:437:12:437:13 | 0 | test.cpp:442:10:442:12 | tmp |
 | test.cpp:439:10:439:13 | & ... | test.cpp:439:3:439:8 | call to memcpy |
-| test.cpp:439:10:439:13 | ref arg & ... | test.cpp:439:11:439:13 | tmp |
+| test.cpp:439:10:439:13 | & ... [post update] | test.cpp:439:3:439:8 | call to memcpy |
 | test.cpp:439:10:439:13 | ref arg & ... | test.cpp:439:33:439:35 | tmp |
 | test.cpp:439:10:439:13 | ref arg & ... | test.cpp:440:8:440:10 | tmp |
 | test.cpp:439:10:439:13 | ref arg & ... | test.cpp:442:10:442:12 | tmp |
