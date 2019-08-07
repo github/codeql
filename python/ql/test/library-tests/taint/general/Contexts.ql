@@ -1,9 +1,10 @@
 
 import python
-import semmle.python.security.TaintTest
+import semmle.python.dataflow.Implementation
 import TaintLib
 
 from CallContext context, Scope s
-where exists(CallContext caller | caller.getCallee(_) = context) and context.appliesToScope(s)
+where exists(CallContext caller | caller.getCallee(_) = context) and
+context.appliesToScope(s)
 select context, s.toString()
 

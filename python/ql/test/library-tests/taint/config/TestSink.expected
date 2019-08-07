@@ -1,80 +1,80 @@
-| Basic custom config | test.py:122 | 122 | ControlFlowNode for t | simple.test |
-| Basic custom config | test.py:130 | 130 | ControlFlowNode for t | simple.test |
-| Basic custom config | test.py:140 | 140 | ControlFlowNode for t | simple.test |
-| Basic custom config | test.py:151 | 151 | ControlFlowNode for t | simple.test |
-| Rock-paper-scissors config | rockpaperscissors.py:13 | 13 | ControlFlowNode for SCISSORS | scissors |
-| Rock-paper-scissors config | rockpaperscissors.py:16 | 16 | ControlFlowNode for ROCK | rock |
-| Rock-paper-scissors config | rockpaperscissors.py:21 | 21 | ControlFlowNode for y | paper |
-| Rock-paper-scissors config | rockpaperscissors.py:26 | 26 | ControlFlowNode for y | paper |
-| Rock-paper-scissors config | rockpaperscissors.py:31 | 31 | ControlFlowNode for x | rock |
-| Rock-paper-scissors config | rockpaperscissors.py:32 | 32 | ControlFlowNode for y | rock |
-| Simple config | carrier.py:18 | 18 | ControlFlowNode for Attribute | simple.test |
-| Simple config | carrier.py:22 | 22 | ControlFlowNode for Attribute() | simple.test |
-| Simple config | carrier.py:26 | 26 | ControlFlowNode for Attribute() | simple.test |
-| Simple config | carrier.py:30 | 30 | ControlFlowNode for Attribute() | simple.test |
-| Simple config | carrier.py:35 | 35 | ControlFlowNode for Attribute() | simple.test |
-| Simple config | deep.py:22 | 22 | ControlFlowNode for x | simple.test |
-| Simple config | test.py:3 | 3 | ControlFlowNode for SOURCE | simple.test |
-| Simple config | test.py:7 | 7 | ControlFlowNode for s | simple.test |
-| Simple config | test.py:13 | 13 | ControlFlowNode for arg | simple.test |
-| Simple config | test.py:17 | 17 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:33 | 33 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:41 | 41 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:78 | 78 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:83 | 83 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:89 | 89 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:93 | 93 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:97 | 97 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:101 | 101 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:106 | 106 | ControlFlowNode for Attribute | simple.test |
-| Simple config | test.py:111 | 111 | ControlFlowNode for Attribute | simple.test |
-| Simple config | test.py:132 | 132 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:142 | 142 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:153 | 153 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:156 | 156 | ControlFlowNode for unsafe | simple.test |
-| Simple config | test.py:160 | 160 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:165 | 165 | ControlFlowNode for s | simple.test |
-| Simple config | test.py:172 | 172 | ControlFlowNode for Subscript | simple.test |
-| Simple config | test.py:173 | 173 | ControlFlowNode for Subscript | simple.test |
-| Simple config | test.py:180 | 180 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:182 | 182 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:184 | 184 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:186 | 186 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:197 | 197 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:199 | 199 | ControlFlowNode for t | simple.test |
-| Simple config | test.py:214 | 214 | ControlFlowNode for x | simple.test |
-| Taint carrier config | carrier.py:18 | 18 | ControlFlowNode for Attribute | simple.test |
-| Taint carrier config | carrier.py:22 | 22 | ControlFlowNode for Attribute() | simple.test |
-| Taint carrier config | carrier.py:26 | 26 | ControlFlowNode for Attribute() | simple.test |
-| Taint carrier config | carrier.py:30 | 30 | ControlFlowNode for Attribute() | simple.test |
-| Taint carrier config | carrier.py:35 | 35 | ControlFlowNode for Attribute() | simple.test |
-| Taint carrier config | deep.py:22 | 22 | ControlFlowNode for x | simple.test |
-| Taint carrier config | test.py:3 | 3 | ControlFlowNode for SOURCE | simple.test |
-| Taint carrier config | test.py:7 | 7 | ControlFlowNode for s | simple.test |
-| Taint carrier config | test.py:13 | 13 | ControlFlowNode for arg | simple.test |
-| Taint carrier config | test.py:17 | 17 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:33 | 33 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:41 | 41 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:78 | 78 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:83 | 83 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:89 | 89 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:93 | 93 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:97 | 97 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:101 | 101 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:106 | 106 | ControlFlowNode for Attribute | simple.test |
-| Taint carrier config | test.py:111 | 111 | ControlFlowNode for Attribute | simple.test |
-| Taint carrier config | test.py:132 | 132 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:142 | 142 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:153 | 153 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:156 | 156 | ControlFlowNode for unsafe | simple.test |
-| Taint carrier config | test.py:160 | 160 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:165 | 165 | ControlFlowNode for s | simple.test |
-| Taint carrier config | test.py:172 | 172 | ControlFlowNode for Subscript | simple.test |
-| Taint carrier config | test.py:173 | 173 | ControlFlowNode for Subscript | simple.test |
-| Taint carrier config | test.py:180 | 180 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:182 | 182 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:184 | 184 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:186 | 186 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:197 | 197 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:199 | 199 | ControlFlowNode for t | simple.test |
-| Taint carrier config | test.py:214 | 214 | ControlFlowNode for x | simple.test |
+| Basic custom config | test.py:122 | 122 | t | simple.test |
+| Basic custom config | test.py:130 | 130 | t | simple.test |
+| Basic custom config | test.py:140 | 140 | t | simple.test |
+| Basic custom config | test.py:151 | 151 | t | simple.test |
+| Rock-paper-scissors config | rockpaperscissors.py:13 | 13 | SCISSORS | scissors |
+| Rock-paper-scissors config | rockpaperscissors.py:16 | 16 | ROCK | rock |
+| Rock-paper-scissors config | rockpaperscissors.py:21 | 21 | y | paper |
+| Rock-paper-scissors config | rockpaperscissors.py:26 | 26 | y | paper |
+| Rock-paper-scissors config | rockpaperscissors.py:31 | 31 | x | rock |
+| Rock-paper-scissors config | rockpaperscissors.py:32 | 32 | y | rock |
+| Simple config | carrier.py:18 | 18 | Attribute | simple.test |
+| Simple config | carrier.py:22 | 22 | Attribute() | simple.test |
+| Simple config | carrier.py:26 | 26 | Attribute() | simple.test |
+| Simple config | carrier.py:30 | 30 | Attribute() | simple.test |
+| Simple config | carrier.py:35 | 35 | Attribute() | simple.test |
+| Simple config | deep.py:22 | 22 | x | simple.test |
+| Simple config | test.py:3 | 3 | SOURCE | simple.test |
+| Simple config | test.py:7 | 7 | s | simple.test |
+| Simple config | test.py:13 | 13 | arg | simple.test |
+| Simple config | test.py:17 | 17 | t | simple.test |
+| Simple config | test.py:33 | 33 | t | simple.test |
+| Simple config | test.py:41 | 41 | t | simple.test |
+| Simple config | test.py:78 | 78 | t | simple.test |
+| Simple config | test.py:83 | 83 | t | simple.test |
+| Simple config | test.py:89 | 89 | t | simple.test |
+| Simple config | test.py:93 | 93 | t | simple.test |
+| Simple config | test.py:97 | 97 | t | simple.test |
+| Simple config | test.py:101 | 101 | t | simple.test |
+| Simple config | test.py:106 | 106 | Attribute | simple.test |
+| Simple config | test.py:111 | 111 | Attribute | simple.test |
+| Simple config | test.py:132 | 132 | t | simple.test |
+| Simple config | test.py:142 | 142 | t | simple.test |
+| Simple config | test.py:153 | 153 | t | simple.test |
+| Simple config | test.py:156 | 156 | unsafe | simple.test |
+| Simple config | test.py:160 | 160 | t | simple.test |
+| Simple config | test.py:165 | 165 | s | simple.test |
+| Simple config | test.py:172 | 172 | Subscript | simple.test |
+| Simple config | test.py:173 | 173 | Subscript | simple.test |
+| Simple config | test.py:180 | 180 | t | simple.test |
+| Simple config | test.py:182 | 182 | t | simple.test |
+| Simple config | test.py:184 | 184 | t | simple.test |
+| Simple config | test.py:186 | 186 | t | simple.test |
+| Simple config | test.py:197 | 197 | t | simple.test |
+| Simple config | test.py:199 | 199 | t | simple.test |
+| Simple config | test.py:214 | 214 | x | simple.test |
+| Taint carrier config | carrier.py:18 | 18 | Attribute | simple.test |
+| Taint carrier config | carrier.py:22 | 22 | Attribute() | simple.test |
+| Taint carrier config | carrier.py:26 | 26 | Attribute() | simple.test |
+| Taint carrier config | carrier.py:30 | 30 | Attribute() | simple.test |
+| Taint carrier config | carrier.py:35 | 35 | Attribute() | simple.test |
+| Taint carrier config | deep.py:22 | 22 | x | simple.test |
+| Taint carrier config | test.py:3 | 3 | SOURCE | simple.test |
+| Taint carrier config | test.py:7 | 7 | s | simple.test |
+| Taint carrier config | test.py:13 | 13 | arg | simple.test |
+| Taint carrier config | test.py:17 | 17 | t | simple.test |
+| Taint carrier config | test.py:33 | 33 | t | simple.test |
+| Taint carrier config | test.py:41 | 41 | t | simple.test |
+| Taint carrier config | test.py:78 | 78 | t | simple.test |
+| Taint carrier config | test.py:83 | 83 | t | simple.test |
+| Taint carrier config | test.py:89 | 89 | t | simple.test |
+| Taint carrier config | test.py:93 | 93 | t | simple.test |
+| Taint carrier config | test.py:97 | 97 | t | simple.test |
+| Taint carrier config | test.py:101 | 101 | t | simple.test |
+| Taint carrier config | test.py:106 | 106 | Attribute | simple.test |
+| Taint carrier config | test.py:111 | 111 | Attribute | simple.test |
+| Taint carrier config | test.py:132 | 132 | t | simple.test |
+| Taint carrier config | test.py:142 | 142 | t | simple.test |
+| Taint carrier config | test.py:153 | 153 | t | simple.test |
+| Taint carrier config | test.py:156 | 156 | unsafe | simple.test |
+| Taint carrier config | test.py:160 | 160 | t | simple.test |
+| Taint carrier config | test.py:165 | 165 | s | simple.test |
+| Taint carrier config | test.py:172 | 172 | Subscript | simple.test |
+| Taint carrier config | test.py:173 | 173 | Subscript | simple.test |
+| Taint carrier config | test.py:180 | 180 | t | simple.test |
+| Taint carrier config | test.py:182 | 182 | t | simple.test |
+| Taint carrier config | test.py:184 | 184 | t | simple.test |
+| Taint carrier config | test.py:186 | 186 | t | simple.test |
+| Taint carrier config | test.py:197 | 197 | t | simple.test |
+| Taint carrier config | test.py:199 | 199 | t | simple.test |
+| Taint carrier config | test.py:214 | 214 | x | simple.test |

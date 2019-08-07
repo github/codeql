@@ -30,10 +30,14 @@ class TaintTrackingContext extends TTaintTrackingContext {
     }
 
     TaintTrackingContext getCaller() {
+        result = this.getCaller(_)
+    }
+
+    TaintTrackingContext getCaller(CallNode call) {
         exists(TaintKind param, AttributePath path, int n |
             this = TParamContext(param, path, n) and
             exists(TaintTrackingImplementation impl |
-                impl.callWithTaintedArgument(_, _, result, _, n, path, param)
+                impl.callWithTaintedArgument(_, call, result, _, n, path, param)
             )
         )
     }
@@ -44,6 +48,27 @@ class TaintTrackingContext extends TTaintTrackingContext {
 
 }
 
+/* For backwards compatibility -- Use `TaintTrackingContext` instead. */
+deprecated
+class CallContext extends TaintTrackingContext {
+
+    TaintTrackingContext getCallee(CallNode call) {
+        result.getCaller(call) = this
+    }
+
+    predicate appliesToScope(Scope s) {
+        exists(PythonFunctionObjectInternal func, TaintKind param, AttributePath path, int n |
+            this = TParamContext(param, path, n) and
+            exists(TaintTrackingImplementation impl |
+                impl.callWithTaintedArgument(_, _, _, func, n, path, param) and
+                s = func.getScope()
+            )
+        )
+        or
+        this.isTop()
+    }
+
+}
 
 private newtype TAttributePath =
     TNoAttribute()
@@ -87,12 +112,30 @@ class NoAttribute extends TNoAttribute, AttributePath {
 
 }
 
+class NamedAttributePath extends TAttribute, AttributePath {
+
+    override string toString() { 
+        exists(string attr |
+            this = TAttribute(attr) and
+            result = "attribute " + attr
+        )
+    }
+
+    override string extension() { 
+        this = TAttribute(result)
+    }
+
+    override AttributePath fromAttribute(string name) {
+        this = TAttribute(name) and result = TNoAttribute()
+    }
+
+}
 
 newtype TTaintTrackingNode =
     TTaintTrackingNode_(DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, TaintTracking::Configuration config) {
         config.(TaintTrackingImplementation).flowSource(node, context, path, kind)
         or
-        config.(TaintTrackingImplementation).flowStep(_, node, context, path, kind)
+        config.(TaintTrackingImplementation).flowStep(_, node, context, path, kind, _)
     }
 
 class TaintTrackingNode extends TTaintTrackingNode {
@@ -124,16 +167,21 @@ class TaintTrackingNode extends TTaintTrackingNode {
     }
 
     TaintTrackingNode getASuccessor() {
-        result.isVisible() and
-        result = this.getAnInvisibleSuccessor*().getAShortStepSuccessor()
+        result = this.getASuccessor(_)
     }
 
-    TaintTrackingNode getAnInvisibleSuccessor() {
-        result = this.getAShortStepSuccessor() and not result.isVisible()
+    TaintTrackingNode getASuccessor(string edgeLabel) {
+        this.isVisible() and
+        result = this.getAnUnlabeledSuccessor*().getALabeledSuccessor(edgeLabel)
     }
 
-    private TaintTrackingNode getAShortStepSuccessor() {
-        this.getConfiguration().(TaintTrackingImplementation).flowStep(this, result)
+    private TaintTrackingNode getAnUnlabeledSuccessor() {
+        this.getConfiguration().(TaintTrackingImplementation).flowStep(this, result, "")
+    }
+
+    private TaintTrackingNode getALabeledSuccessor(string label) {
+        not label = "" and
+        this.getConfiguration().(TaintTrackingImplementation).flowStep(this, result, label)
     }
 
     predicate isSource() {
@@ -144,11 +192,6 @@ class TaintTrackingNode extends TTaintTrackingNode {
         this.getConfiguration().(TaintTrackingImplementation).isPathSink(this)
     }
 
-    /** Holds if this node should be presented to the user as part of a path */
-    predicate isVisible() {
-        exists(this.getCfgNode())
-    }
-
     ControlFlowNode getCfgNode() {
         result = this.getNode().asCfgNode()
     }
@@ -156,6 +199,15 @@ class TaintTrackingNode extends TTaintTrackingNode {
     /** Get the AST node for this node. */
     AstNode getAstNode() {
         result = this.getCfgNode().getNode()
+    }
+
+    /** Holds if this node should be presented to the user as part of a path */
+    predicate isVisible() {
+        this.isSource() or
+        exists(string label |
+            not label = "" |
+            this.getConfiguration().(TaintTrackingImplementation).flowStep(_, this, label)
+        )
     }
 
 }
@@ -204,10 +256,10 @@ class TaintTrackingImplementation extends string {
         )
     }
 
-    predicate flowStep(TaintTrackingNode src, TaintTrackingNode dest) {
+    predicate flowStep(TaintTrackingNode src, TaintTrackingNode dest, string edgeLabel) {
         exists(DataFlow::Node node, TaintTrackingContext ctx, AttributePath path, TaintKind kind |
             dest = TTaintTrackingNode_(node, ctx, path, kind, this) and
-            this.flowStep(src, node, ctx, path, kind)
+            this.flowStep(src, node, ctx, path, kind, edgeLabel)
         )
     }
 
@@ -272,91 +324,100 @@ class TaintTrackingImplementation extends string {
 
     TaintTrackingImplementation() { this instanceof TaintTracking::Configuration }
 
-    predicate flowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        this.unprunedStep(src, node, context, path, kind) and
+    predicate flowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
+        this.unprunedStep(src, node, context, path, kind, edgeLabel) and
         node.getBasicBlock().likelyReachable() and
         not this.(TaintTracking::Configuration).isBarrier(node) and
         not this.flowBarrier(node, kind) and path = TNoAttribute()
     }
 
-    predicate unprunedStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        this.importStep(src, node, context, path, kind)
+    predicate unprunedStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
+        this.importStep(src, node, context, path, kind, edgeLabel)
         or
-        this.fromImportStep(src, node, context, path, kind)
+        this.fromImportStep(src, node, context, path, kind, edgeLabel)
         or
-        this.attributeLoadStep(src, node, context, path, kind)
+        this.attributeLoadStep(src, node, context, path, kind, edgeLabel)
         or
-        this.getattrStep(src, node, context, path, kind)
+        this.getattrStep(src, node, context, path, kind, edgeLabel)
         or
-        this.useStep(src, node, context, path, kind)
+        this.useStep(src, node, context, path, kind, edgeLabel)
         or
-        this.callTaintStep(src, node, context, path, kind)
+        this.callTaintStep(src, node, context, path, kind, edgeLabel)
         or
-        this.returnFlowStep(src, node, context, path, kind)
+        this.returnFlowStep(src, node, context, path, kind, edgeLabel)
         or
-        this.iterationStep(src, node, context, path, kind)
+        this.iterationStep(src, node, context, path, kind, edgeLabel)
         or
-        this.yieldStep(src, node, context, path, kind)
+        this.yieldStep(src, node, context, path, kind, edgeLabel)
         or
-        this.parameterStep(src, node, context, path, kind)
+        this.parameterStep(src, node, context, path, kind, edgeLabel)
         or
-        this.ifExpStep(src, node, context, path, kind)
+        this.ifExpStep(src, node, context, path, kind, edgeLabel)
         or
-        this.essaFlowStep(src, node, context, path, kind)
+        this.essaFlowStep(src, node, context, path, kind) and edgeLabel = ""
         or
-        this.legacyExtensionStep(src, node, context, path, kind)
+        this.legacyExtensionStep(src, node, context, path, kind, edgeLabel)
         or
         exists(DataFlow::Node srcnode, TaintKind srckind |
             this.(TaintTracking::Configuration).isAdditionalFlowStep(srcnode, node, srckind, kind) and
             src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
-            path.noAttribute()
+            path.noAttribute() and edgeLabel = "additional with kind"
         )
         or
         exists(DataFlow::Node srcnode |
             this.(TaintTracking::Configuration).isAdditionalFlowStep(srcnode, node) and
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
-            path.noAttribute()
+            path.noAttribute() and edgeLabel = "additional"
         )
         or
         exists(DataFlow::Node srcnode, TaintKind srckind |
             src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
             path.noAttribute()
             |
-            kind = srckind.getTaintForFlowStep(srcnode.asCfgNode(), node.asCfgNode())
+            kind = srckind.getTaintForFlowStep(srcnode.asCfgNode(), node.asCfgNode(), edgeLabel)
             or
-            kind.isResultOfStep(srckind, srcnode.asCfgNode(), node.asCfgNode())
+            kind.isResultOfStep(srckind, srcnode.asCfgNode(), node.asCfgNode(), edgeLabel)
         )
     }
 
     pragma [noinline]
-    predicate importStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        // TO DO
-        none()
+    predicate importStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
+        edgeLabel = "import" and
+        exists(ModuleValue m, string name |
+            src = TTaintTrackingNode_(_, context, TNoAttribute(), kind, this) and
+            this.moduleAttributeTainted(m, name, src) and
+            node.asCfgNode().(ImportExprNode).pointsTo(m) and
+            path = TAttribute(name)
+        )
     }
 
     pragma [noinline]
-    predicate fromImportStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        // TO DO
-        none()
+    predicate fromImportStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
+        edgeLabel = "from import" and
+        exists(ModuleValue m, string name |
+            src = TTaintTrackingNode_(_, context, path, kind, this) and
+            this.moduleAttributeTainted(m, name, src) and
+            node.asCfgNode().(ImportMemberNode).getModule(name).pointsTo(m)
+        )
     }
 
     pragma [noinline]
-    predicate attributeLoadStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    predicate attributeLoadStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(DataFlow::Node srcnode, AttributePath srcpath, string attrname |
             src = TTaintTrackingNode_(srcnode, context, srcpath, kind, this) and
             srcnode.asCfgNode() = node.asCfgNode().(AttrNode).getObject(attrname) and
-            path = srcpath.fromAttribute(attrname)
+            path = srcpath.fromAttribute(attrname) and edgeLabel = "from path attribute"
         )
         or
         exists(DataFlow::Node srcnode, TaintKind srckind, string attrname |
             src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
             srcnode.asCfgNode() = node.asCfgNode().(AttrNode).getObject(attrname) and
-            kind = srckind.getTaintOfAttribute(attrname)
+            kind = srckind.getTaintOfAttribute(attrname) and edgeLabel = "from taint attribute"
         )
     }
 
     pragma [noinline]
-    predicate getattrStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    predicate getattrStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(DataFlow::Node srcnode, AttributePath srcpath, TaintKind srckind, string attrname |
             src = TTaintTrackingNode_(srcnode, context, srcpath, srckind, this) and
             exists(CallNode call, ControlFlowNode arg |
@@ -372,19 +433,19 @@ class TaintTrackingImplementation extends string {
                 path = srcpath and
                 kind = srckind.getTaintOfAttribute(attrname)
             )
-        )
+        ) and edgeLabel = "getattr"
     }
 
     pragma [noinline]
-    predicate useStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    predicate useStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             node.asCfgNode() = srcnode.asVariable().getASourceUse()
-        )
+        ) and edgeLabel = "use"
     }
 
     //pragma [noinline]
-    //predicate argumentFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    //predicate argumentFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
     //    exists(CallNode call, PythonFunctionObjectInternal pyfunc, int arg |
     //        this.callWithTaintedArgument(src, call, _, pyfunc, arg, path, kind) and
     //        node.asCfgNode() = pyfunc.getParameter(arg) and
@@ -394,14 +455,15 @@ class TaintTrackingImplementation extends string {
     //}
 
     pragma [noinline]
-    predicate returnFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    predicate returnFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(CallNode call, PythonFunctionObjectInternal pyfunc, int arg, TaintKind callerKind, DataFlow::Node srcNode, AttributePath callerPath, TaintTrackingContext srcContext |
             src = TTaintTrackingNode_(srcNode, srcContext, path, kind, this) and
             this.callWithTaintedArgument(_, call, context, pyfunc, arg, callerPath, callerKind) and
             srcContext = TParamContext(callerKind, callerPath, arg) and
             node.asCfgNode() = call and
             srcNode.asCfgNode() = any(Return ret | ret.getScope() = pyfunc.getScope()).getValue().getAFlowNode()
-        )
+        ) and
+        edgeLabel = "return"
     }
 
     predicate callWithTaintedArgument(TaintTrackingNode src, CallNode call, TaintTrackingContext caller, CallableValue pyfunc, int arg, AttributePath path, TaintKind kind) {
@@ -412,37 +474,37 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate callTaintStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    predicate callTaintStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(DataFlow::Node srcnode, CallNode call, TaintKind srckind, string name |
             src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
             call.getFunction().(AttrNode).getObject(name) = src.getNode().asCfgNode() and
             kind = srckind.getTaintOfMethodResult(name) and
             node.asCfgNode() = call
-        )
+        ) and edgeLabel = "call"
     }
 
     pragma [noinline]
-    predicate iterationStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    predicate iterationStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(ForNode for, DataFlow::Node sequence, TaintKind seqkind |
             src = TTaintTrackingNode_(sequence, context, path, seqkind, this) and
             for.iterates(_, sequence.asCfgNode()) and
             node.asCfgNode() = for and
             path.noAttribute() and
             kind = seqkind.getTaintForIteration()
-        )
+        ) and edgeLabel = "iteration"
     }
 
     pragma [noinline]
-    predicate parameterStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    predicate parameterStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(CallNode call, PythonFunctionObjectInternal pyfunc, int arg |
             this.callWithTaintedArgument(src, call, _, pyfunc, arg, path, kind) and
             node.asCfgNode() = pyfunc.getParameter(arg) and
             context = TParamContext(kind, path, arg)
-        )
+        ) and edgeLabel = "parameter"
     }
 
     pragma [noinline]
-    predicate yieldStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    predicate yieldStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(DataFlow::Node srcnode, TaintKind itemkind |
             src = TTaintTrackingNode_(srcnode, context, path, itemkind, this) and
             itemkind = kind.getTaintForIteration() and
@@ -454,15 +516,15 @@ class TaintTrackingImplementation extends string {
                     yield.getValue() = srcnode.asCfgNode().getNode()
                 )
             )
-        )
+        ) and edgeLabel = "yield"
     }
 
     pragma [noinline]
-    predicate ifExpStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    predicate ifExpStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             srcnode.asCfgNode() = node.asCfgNode().(IfExprNode).getAnOperand()
-        )
+        ) and edgeLabel = "if exp"
     }
 
     pragma [noinline]
@@ -471,7 +533,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate legacyExtensionStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    predicate legacyExtensionStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(TaintTracking::Extension extension, DataFlow::Node srcnode, TaintKind srckind |
             this.(TaintTracking::Configuration).isExtension(extension) and
             src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
@@ -482,7 +544,7 @@ class TaintTrackingImplementation extends string {
             extension.getASuccessorNode(srckind, kind) = node.asCfgNode()
             or
             extension.getASuccessorVariable() = node.asVariable() and kind = srckind
-        )
+        ) and edgeLabel = "legacy extension"
     }
 
     pragma [noinline]
@@ -504,6 +566,8 @@ class TaintTrackingImplementation extends string {
         this.taintedPiNode(src, defn, context, path, kind)
         or
         this.taintedArgument(src, defn, context, path, kind)
+        or
+        this.taintedExceptionCapture(src, defn, context, path, kind)
     }
 
     pragma [noinline]
@@ -532,7 +596,7 @@ class TaintTrackingImplementation extends string {
             defn.getValue() = srcnode.asCfgNode() and
             defn.getName() = attrname and
             path = srcpath.getAttribute(attrname)
-        )
+        ) 
     }
 
     pragma [noinline]
@@ -599,6 +663,25 @@ class TaintTrackingImplementation extends string {
         )
     }
 
+
+    pragma [noinline]
+    predicate taintedExceptionCapture(TaintTrackingNode src, ExceptionCapture defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+        exists(DataFlow::Node srcnode |
+            src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
+            srcnode.asCfgNode() = defn.getDefiningNode()
+        )
+    }
+
+    predicate moduleAttributeTainted(ModuleValue m, string name, TaintTrackingNode taint) {
+        exists(DataFlow::Node srcnode, EssaVariable var |
+            taint = TTaintTrackingNode_(srcnode, TNoParam(), _, _, this) and
+            var = srcnode.asVariable() and
+            var.getName() = name and
+            BaseFlow::reaches_exit(var) and
+            var.getScope() = m.getScope()
+        )
+    }
+
 }
 
 module Implementation {
@@ -618,3 +701,4 @@ module Implementation {
     }
 
 }
+

@@ -120,7 +120,17 @@ abstract class TaintKind extends string {
      */
     TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) { none() }
 
+    /** Gets the taint resulting from the flow step `fromnode` -> `tonode`, with `edgeLabel`
+     */
+    TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode, string edgeLabel) {
+        result = this.getTaintForFlowStep(fromnode, tonode) and edgeLabel = "custom taint flow step for " + this
+    }
+
     predicate isResultOfStep(TaintKind fromkind, ControlFlowNode fromnode, ControlFlowNode tonode) { none() }
+
+    predicate isResultOfStep(TaintKind fromkind, ControlFlowNode fromnode, ControlFlowNode tonode, string edgeLabel) {
+        this.isResultOfStep(fromkind, fromnode, tonode) and edgeLabel = "custom taint reverse flow step for " + this
+    }
 
     /** DEPRECATED -- Use `TaintFlow.additionalFlowStepVar(EssaVariable fromvar, EssaVariable tovar, TaintKind kind)` instead.
      *
@@ -315,8 +325,6 @@ class DictKind extends CollectionKind {
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
         subscript_index(fromnode, tonode) and result = this.getValue()
-        or
-        subscript_slice(fromnode, tonode) and result = this
     }
 
 }
@@ -722,17 +730,7 @@ module DataFlow {
         }
 
         override string toString() {
-            exists(ControlFlowNode n |
-                n = this.asCfgNode()
-                |
-                result = n.(TaintSource).toString()
-                or
-                result = n.(TaintSink).toString()
-                or
-                not n instanceof TaintSource and
-                not n instanceof TaintSink and
-                result = n.toString()
-            )
+            result = this.asAstNode().toString()
         }
 
         override Scope getScope() {

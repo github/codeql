@@ -229,6 +229,6 @@ parents
 | test.py:73:12:73:14 | simple.test | test.py:72:9:72:11 | simple.test |
 | test.py:73:12:73:14 | simple.test | test.py:77:13:77:13 | simple.test |
 #select
-| rockpaperscissors.py:13:10:13:17 | ControlFlowNode for SCISSORS | rockpaperscissors.py:13:10:13:17 | scissors | rockpaperscissors.py:13:10:13:17 | scissors | $@ looses to $@. | rockpaperscissors.py:13:10:13:17 | ControlFlowNode for SCISSORS | scissors | rockpaperscissors.py:13:10:13:17 | ControlFlowNode for SCISSORS | scissors |
-| rockpaperscissors.py:16:11:16:14 | ControlFlowNode for ROCK | rockpaperscissors.py:16:11:16:14 | rock | rockpaperscissors.py:16:11:16:14 | rock | $@ looses to $@. | rockpaperscissors.py:16:11:16:14 | ControlFlowNode for ROCK | rock | rockpaperscissors.py:16:11:16:14 | ControlFlowNode for ROCK | rock |
-| rockpaperscissors.py:26:14:26:14 | ControlFlowNode for y | rockpaperscissors.py:24:9:24:12 | rock | rockpaperscissors.py:26:14:26:14 | paper | $@ looses to $@. | rockpaperscissors.py:24:9:24:12 | ControlFlowNode for ROCK | rock | rockpaperscissors.py:26:14:26:14 | ControlFlowNode for y | paper |
+| rockpaperscissors.py:13:10:13:17 | SCISSORS | rockpaperscissors.py:13:10:13:17 | scissors | rockpaperscissors.py:13:10:13:17 | scissors | $@ looses to $@. | rockpaperscissors.py:13:10:13:17 | SCISSORS | scissors | rockpaperscissors.py:13:10:13:17 | SCISSORS | scissors |
+| rockpaperscissors.py:16:11:16:14 | ROCK | rockpaperscissors.py:16:11:16:14 | rock | rockpaperscissors.py:16:11:16:14 | rock | $@ looses to $@. | rockpaperscissors.py:16:11:16:14 | ROCK | rock | rockpaperscissors.py:16:11:16:14 | ROCK | rock |
+| rockpaperscissors.py:26:14:26:14 | y | rockpaperscissors.py:24:9:24:12 | rock | rockpaperscissors.py:26:14:26:14 | paper | $@ looses to $@. | rockpaperscissors.py:24:9:24:12 | ROCK | rock | rockpaperscissors.py:26:14:26:14 | y | paper |

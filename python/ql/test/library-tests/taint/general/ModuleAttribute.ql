@@ -1,10 +1,9 @@
 import python
-import semmle.python.security.TaintTest
+import semmle.python.dataflow.Implementation
 import TaintLib
 
 
-from ModuleValue m, string name, TaintedNode origin
+from ModuleValue m, string name, TaintedNode origin, TaintTrackingImplementation impl
+where impl.moduleAttributeTainted(m, name, origin)
 
-where TaintFlowTest::module_attribute_tainted(m, name, origin)
-
-select m.toString(), name, origin.getTrackedValue(), origin.getContext(), origin.getLocation().toString()
+select m.toString(), name, "Taint " + origin.getTaintKind(), origin.getContext(), origin.getLocation().toString()

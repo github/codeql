@@ -1,31 +1,25 @@
-| carrier.py:17 | Function __init__ |
-| carrier.py:25 | Function __init__ |
-| carrier.py:25 | Function hub |
-| carrier.py:29 | Function hub |
-| carrier.py:33 | Function __init__ |
-| deep.py:6 from deep.py:9 from deep.py:12 from deep.py:15 from deep.py:18 from deep.py:20 | Function f1 |
-| deep.py:9 from deep.py:12 from deep.py:15 from deep.py:18 from deep.py:20 | Function f2 |
-| deep.py:12 from deep.py:15 from deep.py:18 from deep.py:20 | Function f3 |
-| deep.py:15 from deep.py:18 from deep.py:20 | Function f4 |
-| deep.py:18 from deep.py:20 | Function f5 |
-| deep.py:20 | Function f6 |
-| rockpaperscissors.py:13 | Function rock |
-| rockpaperscissors.py:16 | Function paper |
-| rockpaperscissors.py:21 | Function scissors |
-| rockpaperscissors.py:26 | Function scissors |
-| rockpaperscissors.py:31 | Function paper |
-| rockpaperscissors.py:32 | Function paper |
-| sanitizer.py:10 | Function isEscapedSql |
-| sanitizer.py:17 | Function isValidCommand |
-| test.py:21 | Function sink |
-| test.py:25 | Function sink |
-| test.py:47 from test.py:55 | Function sink |
-| test.py:51 from test.py:63 | Function sink |
-| test.py:51 from test.py:70 | Function sink |
-| test.py:55 | Function sink2 |
-| test.py:63 | Function sink3 |
-| test.py:70 | Function sink3 |
-| test.py:77 | Function hub |
-| test.py:116 | Function hub |
-| test.py:117 | Function x_sink |
-| test.py:121 | Function hub |
+WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:6,6-17)
+WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:7,14-25)
+| Parameter 0(no attribute) is Command injection | Function isEscapedSql |
+| Parameter 0(no attribute) is Command injection | Function isValidCommand |
+| Parameter 0(no attribute) is SQL injection | Function isEscapedSql |
+| Parameter 0(no attribute) is SQL injection | Function isValidCommand |
+| Parameter 0(no attribute) is basic.custom | Function hub |
+| Parameter 0(no attribute) is explicit.carrier | Function hub |
+| Parameter 0(no attribute) is paper | Function paper |
+| Parameter 0(no attribute) is paper | Function scissors |
+| Parameter 0(no attribute) is rock | Function paper |
+| Parameter 0(no attribute) is scissors | Function paper |
+| Parameter 0(no attribute) is scissors | Function rock |
+| Parameter 0(no attribute) is scissors | Function scissors |
+| Parameter 0(no attribute) is simple.test | Function f1 |
+| Parameter 0(no attribute) is simple.test | Function f2 |
+| Parameter 0(no attribute) is simple.test | Function f3 |
+| Parameter 0(no attribute) is simple.test | Function f4 |
+| Parameter 0(no attribute) is simple.test | Function f5 |
+| Parameter 0(no attribute) is simple.test | Function f6 |
+| Parameter 0(no attribute) is simple.test | Function hub |
+| Parameter 0(no attribute) is simple.test | Function sink |
+| Parameter 1(no attribute) is explicit.carrier | Function __init__ |
+| Parameter 1(no attribute) is simple.test | Function __init__ |
+| Parameter 1(no attribute) is simple.test | Function sink3 |
