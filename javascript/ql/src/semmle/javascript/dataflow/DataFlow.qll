@@ -121,6 +121,12 @@ module DataFlow {
     /** Gets a function value that may reach this node. */
     FunctionNode getAFunctionValue() {
       result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction()
+      or
+      exists(string name |
+        GlobalAccessPath::isAssignedInUniqueFile(name) and
+        GlobalAccessPath::fromRhs(result) = name and
+        GlobalAccessPath::fromReference(this) = name
+      )
     }
 
     /**
