@@ -51,12 +51,12 @@ class ClientRequest extends DataFlow::InvokeNode {
    *    - `blob`: The result is a `Blob` object
    *    - `document`: The result is a deserialized HTML or XML document
    * - Any of the following additional response types defined by this library:
-   *  - `fetch.response`: The result is a `Response` object from [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Response).
-   *  - `stream`: The result is a Node.js stream and `http.IncomingMessage` object
-   *  - `header`: The result the value of a header, as a string
-   *  - `headers`: The result is a mapping from header names to their values.
-   *  - `error`: The result is an error in an unspecified format, possibly containing information from the response
-   *  - An empty string, indicating an unknown response type.
+   *    - `fetch.response`: The result is a `Response` object from [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Response).
+   *    - `stream`: The result is a Node.js stream and `http.IncomingMessage` object
+   *    - `header`: The result the value of a header, as a string
+   *    - `headers`: The result is a mapping from header names to their values.
+   *    - `error`: The result is an error in an unspecified format, possibly containing information from the response
+   *    - An empty string, indicating an unknown response type.
    * - Any value provided by custom implementations of `ClientRequest::Range`.
    */
   DataFlow::Node getAResponseDataNode(string responseType, boolean promise) {
