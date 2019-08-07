@@ -27,6 +27,12 @@ import DataFlowImplSpecific::Public
  *   // Optionally override `isAdditionalFlowStep`.
  * }
  * ```
+ * Conceptually, this defines a graph where the nodes are `DataFlow::Node`s and
+ * the edges are those data-flow steps that preserve the value of the node
+ * along with any additional edges defined by `isAdditionalFlowStep`.
+ * Specifying nodes in `isBarrier` will remove those nodes from the graph, and
+ * specifying nodes in `isBarrierIn` and/or `isBarrierOut` will remove in-going
+ * and/or out-going edges from those nodes, respectively.
  *
  * Then, to query whether there is flow between some `source` and `sink`,
  * write
@@ -54,11 +60,20 @@ abstract class Configuration extends string {
    */
   abstract predicate isSink(Node sink);
 
-  /** Holds if data flow through `node` is prohibited. */
+  /**
+   * Holds if data flow through `node` is prohibited. This completely removes
+   * `node` from the data flow graph.
+   */
   predicate isBarrier(Node node) { none() }
 
-  /** Holds if data flow from `node1` to `node2` is prohibited. */
-  predicate isBarrierEdge(Node node1, Node node2) { none() }
+  /** DEPRECATED: override `isBarrierIn` and `isBarrierOut` instead. */
+  deprecated predicate isBarrierEdge(Node node1, Node node2) { none() }
+
+  /** Holds if data flow into `node` is prohibited. */
+  predicate isBarrierIn(Node node) { none() }
+
+  /** Holds if data flow out of `node` is prohibited. */
+  predicate isBarrierOut(Node node) { none() }
 
   /**
    * Holds if the additional flow step from `node1` to `node2` must be taken
@@ -103,6 +118,26 @@ abstract class Configuration extends string {
   deprecated predicate hasFlowBackward(Node source, Node sink) { hasFlow(source, sink) }
 }
 
+private predicate inBarrier(Node node, Configuration config) {
+  config.isBarrierIn(node) and
+  config.isSource(node)
+}
+
+private predicate outBarrier(Node node, Configuration config) {
+  config.isBarrierOut(node) and
+  config.isSink(node)
+}
+
+private predicate fullBarrier(Node node, Configuration config) {
+  config.isBarrier(node)
+  or
+  config.isBarrierIn(node) and
+  not config.isSource(node)
+  or
+  config.isBarrierOut(node) and
+  not config.isSink(node)
+}
+
 private class AdditionalFlowStepSource extends Node {
   AdditionalFlowStepSource() { any(Configuration c).isAdditionalFlowStep(this, _) }
 }
@@ -119,22 +154,46 @@ private predicate isAdditionalFlowStep(
  * Holds if data can flow in one local step from `node1` to `node2`.
  */
 private predicate localFlowStep(Node node1, Node node2, Configuration config) {
-  localFlowStep(node1, node2) and not config.isBarrierEdge(node1, node2)
+  localFlowStep(node1, node2) and
+  not outBarrier(node1, config) and
+  not inBarrier(node2, config) and
+  not fullBarrier(node1, config) and
+  not fullBarrier(node2, config)
 }
 
 /**
  * Holds if the additional step from `node1` to `node2` does not jump between callables.
  */
 private predicate additionalLocalFlowStep(Node node1, Node node2, Configuration config) {
-  isAdditionalFlowStep(node1, node2, node2.getEnclosingCallable(), config)
+  isAdditionalFlowStep(node1, node2, node2.getEnclosingCallable(), config) and
+  not outBarrier(node1, config) and
+  not inBarrier(node2, config) and
+  not fullBarrier(node1, config) and
+  not fullBarrier(node2, config)
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` in a way that discards call contexts.
+ */
+private predicate jumpStep(Node node1, Node node2, Configuration config) {
+  jumpStep(node1, node2) and
+  not outBarrier(node1, config) and
+  not inBarrier(node2, config) and
+  not fullBarrier(node1, config) and
+  not fullBarrier(node2, config)
 }
 
 /**
  * Holds if the additional step from `node1` to `node2` jumps between callables.
  */
 private predicate additionalJumpStep(Node node1, Node node2, Configuration config) {
-  exists(DataFlowCallable callable1 | isAdditionalFlowStep(node1, node2, callable1, config) |
-    node2.getEnclosingCallable() != callable1
+  exists(DataFlowCallable callable1 |
+    isAdditionalFlowStep(node1, node2, callable1, config) and
+    node2.getEnclosingCallable() != callable1 and
+    not outBarrier(node1, config) and
+    not inBarrier(node2, config) and
+    not fullBarrier(node1, config) and
+    not fullBarrier(node2, config)
   )
 }
 
@@ -154,7 +213,7 @@ private ReturnPosition viableReturnPos(DataFlowCall call, ReturnKind kind) {
  * ignoring call contexts.
  */
 private predicate nodeCandFwd1(Node node, boolean stored, Configuration config) {
-  not config.isBarrier(node) and
+  not fullBarrier(node, config) and
   (
     config.isSource(node) and stored = false
     or
@@ -171,7 +230,7 @@ private predicate nodeCandFwd1(Node node, boolean stored, Configuration config) 
     or
     exists(Node mid |
       nodeCandFwd1(mid, stored, config) and
-      jumpStep(mid, node)
+      jumpStep(mid, node, config)
     )
     or
     exists(Node mid |
@@ -185,7 +244,8 @@ private predicate nodeCandFwd1(Node node, boolean stored, Configuration config) 
       useFieldFlow(config) and
       nodeCandFwd1(mid, _, config) and
       store(mid, _, node) and
-      stored = true
+      stored = true and
+      not outBarrier(mid, config)
     )
     or
     // read
@@ -193,7 +253,8 @@ private predicate nodeCandFwd1(Node node, boolean stored, Configuration config) 
       nodeCandFwd1(mid, true, config) and
       read(mid, f, node) and
       storeCandFwd1(f, unbind(config)) and
-      (stored = false or stored = true)
+      (stored = false or stored = true) and
+      not inBarrier(node, config)
     )
     or
     // flow into a callable
@@ -223,7 +284,7 @@ private predicate nodeCandFwd1(Node node, boolean stored, Configuration config) 
  */
 private predicate storeCandFwd1(Content f, Configuration config) {
   exists(Node mid, Node node |
-    not config.isBarrier(node) and
+    not fullBarrier(node, config) and
     useFieldFlow(config) and
     nodeCandFwd1(mid, _, config) and
     store(mid, f, node)
@@ -257,7 +318,7 @@ private predicate nodeCand1(Node node, boolean stored, Configuration config) {
     )
     or
     exists(Node mid |
-      jumpStep(node, mid) and
+      jumpStep(node, mid, config) and
       nodeCand1(mid, stored, config)
     )
     or
@@ -318,6 +379,13 @@ private predicate readCand1(Content f, Configuration config) {
   )
 }
 
+private predicate throughFlowNodeCand(Node node, Configuration config) {
+  nodeCand1(node, false, config) and
+  not fullBarrier(node, config) and
+  not inBarrier(node, config) and
+  not outBarrier(node, config)
+}
+
 /**
  * Holds if there is a path from `p` to `node` in the same callable that is
  * part of a path from a source to a sink taking simple call contexts into
@@ -329,7 +397,7 @@ pragma[nomagic]
 private predicate simpleParameterFlow(
   ParameterNode p, Node node, DataFlowType t, Configuration config
 ) {
-  nodeCand1(node, false, config) and
+  throughFlowNodeCand(node, config) and
   p = node and
   t = getErasedRepr(node.getType()) and
   exists(ReturnNode ret, ReturnKind kind |
@@ -338,21 +406,21 @@ private predicate simpleParameterFlow(
     not parameterValueFlowsThrough(p, kind, _)
   )
   or
-  nodeCand1(node, false, unbind(config)) and
+  throughFlowNodeCand(node, unbind(config)) and
   exists(Node mid |
     simpleParameterFlow(p, mid, t, config) and
     localFlowStep(mid, node, config) and
     compatibleTypes(t, node.getType())
   )
   or
-  nodeCand1(node, false, unbind(config)) and
+  throughFlowNodeCand(node, unbind(config)) and
   exists(Node mid |
     simpleParameterFlow(p, mid, _, config) and
     additionalLocalFlowStep(mid, node, config) and
     t = getErasedRepr(node.getType())
   )
   or
-  nodeCand1(node, false, unbind(config)) and
+  throughFlowNodeCand(node, unbind(config)) and
   exists(Node mid |
     simpleParameterFlow(p, mid, t, config) and
     localStoreReadStep(mid, node) and
@@ -360,7 +428,7 @@ private predicate simpleParameterFlow(
   )
   or
   // value flow through a callable
-  nodeCand1(node, false, unbind(config)) and
+  throughFlowNodeCand(node, unbind(config)) and
   exists(Node arg |
     simpleParameterFlow(p, arg, t, config) and
     argumentValueFlowsThrough(arg, node, _) and
@@ -368,7 +436,7 @@ private predicate simpleParameterFlow(
   )
   or
   // flow through a callable
-  nodeCand1(node, false, unbind(config)) and
+  throughFlowNodeCand(node, unbind(config)) and
   exists(Node arg |
     simpleParameterFlow(p, arg, _, config) and
     simpleArgumentFlowsThrough(arg, node, t, config)
@@ -380,6 +448,7 @@ private predicate simpleArgumentFlowsThrough0(
   DataFlowCall call, ArgumentNode arg, ReturnKind kind, DataFlowType t, Configuration config
 ) {
   nodeCand1(arg, false, unbind(config)) and
+  not outBarrier(arg, config) and
   exists(ParameterNode p, ReturnNode ret |
     simpleParameterFlow(p, ret, t, config) and
     kind = ret.getKind() and
@@ -399,6 +468,7 @@ private predicate simpleArgumentFlowsThrough(
 ) {
   exists(DataFlowCall call, ReturnKind kind |
     nodeCand1(out, false, unbind(config)) and
+    not inBarrier(out, config) and
     simpleArgumentFlowsThrough0(call, arg, kind, t, config) and
     out = getAnOutNode(call, kind)
   )
@@ -440,6 +510,8 @@ private predicate additionalLocalFlowStepOrFlowThroughCallable(
 private predicate flowOutOfCallable(Node node1, Node node2, Configuration config) {
   nodeCand1(node1, _, unbind(config)) and
   nodeCand1(node2, _, config) and
+  not outBarrier(node1, config) and
+  not inBarrier(node2, config) and
   (
     // flow out of an argument
     exists(ParameterNode p |
@@ -462,7 +534,9 @@ private predicate flowOutOfCallable(Node node1, Node node2, Configuration config
 private predicate flowIntoCallable(Node node1, Node node2, Configuration config) {
   viableParamArg(_, node2, node1) and
   nodeCand1(node1, _, unbind(config)) and
-  nodeCand1(node2, _, config)
+  nodeCand1(node2, _, config) and
+  not outBarrier(node1, config) and
+  not inBarrier(node2, config)
 }
 
 /**
@@ -546,7 +620,7 @@ private predicate nodeCandFwd2(Node node, boolean fromArg, boolean stored, Confi
     or
     exists(Node mid |
       nodeCandFwd2(mid, _, stored, config) and
-      jumpStep(mid, node) and
+      jumpStep(mid, node, config) and
       fromArg = false
     )
     or
@@ -626,7 +700,7 @@ private predicate nodeCand2(Node node, boolean toReturn, boolean stored, Configu
     )
     or
     exists(Node mid |
-      jumpStep(node, mid) and
+      jumpStep(node, mid, config) and
       nodeCand2(mid, _, stored, config) and
       toReturn = false
     )
@@ -714,7 +788,7 @@ private predicate localFlowEntry(Node node, Configuration config) {
   nodeCand(node, config) and
   (
     config.isSource(node) or
-    jumpStep(_, node) or
+    jumpStep(_, node, config) or
     additionalJumpStep(_, node, config) or
     node instanceof ParameterNode or
     node instanceof OutNode or
@@ -730,7 +804,7 @@ private predicate localFlowEntry(Node node, Configuration config) {
  */
 private predicate localFlowExit(Node node, Configuration config) {
   exists(Node next | nodeCand(next, config) |
-    jumpStep(node, next) or
+    jumpStep(node, next, config) or
     additionalJumpStep(node, next, config) or
     flowIntoCallable(node, next, config) or
     flowOutOfCallable(node, next, config) or
@@ -882,7 +956,7 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
     or
     exists(Node mid |
       flowCandFwd(mid, _, apf, config) and
-      jumpStep(mid, node) and
+      jumpStep(mid, node, config) and
       fromArg = false
     )
     or
@@ -973,7 +1047,7 @@ private predicate flowCand0(Node node, boolean toReturn, AccessPathFront apf, Co
   )
   or
   exists(Node mid |
-    jumpStep(node, mid) and
+    jumpStep(node, mid, config) and
     flowCand(mid, _, apf, config) and
     toReturn = false
   )
@@ -1154,7 +1228,7 @@ private predicate flowFwd0(
     or
     exists(Node mid |
       flowFwd(mid, _, apf, ap, config) and
-      jumpStep(mid, node) and
+      jumpStep(mid, node, config) and
       fromArg = false
     )
     or
@@ -1263,7 +1337,7 @@ private predicate flow0(Node node, boolean toReturn, AccessPath ap, Configuratio
   )
   or
   exists(Node mid |
-    jumpStep(node, mid) and
+    jumpStep(node, mid, config) and
     flow(mid, _, ap, config) and
     toReturn = false
   )
@@ -1518,7 +1592,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, AccessPat
   mid.getAp() instanceof AccessPathNil and
   ap = node.(AccessPathNilNode).getAp()
   or
-  jumpStep(mid.getNode(), node) and
+  jumpStep(mid.getNode(), node, mid.getConfiguration()) and
   cc instanceof CallContextAny and
   ap = mid.getAp()
   or

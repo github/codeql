@@ -63,12 +63,22 @@ module TaintTracking {
       node.asExpr() instanceof ValidatedVariableAccess
     }
 
-    /** Holds if the edge from `node1` to `node2` is a taint sanitizer. */
-    predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
+    /** DEPRECATED: override `isSanitizerIn` and `isSanitizerOut` instead. */
+    deprecated predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
-    final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
+    deprecated final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
       isSanitizerEdge(node1, node2)
     }
+
+    /** Holds if data flow into `node` is prohibited. */
+    predicate isSanitizerIn(DataFlow::Node node) { none() }
+
+    final override predicate isBarrierIn(DataFlow::Node node) { isSanitizerIn(node) }
+
+    /** Holds if data flow out of `node` is prohibited. */
+    predicate isSanitizerOut(DataFlow::Node node) { none() }
+
+    final override predicate isBarrierOut(DataFlow::Node node) { isSanitizerOut(node) }
 
     /**
      * Holds if the additional taint propagation step from `node1` to `node2`
@@ -135,12 +145,22 @@ module TaintTracking {
       node.asExpr() instanceof ValidatedVariableAccess
     }
 
-    /** Holds if the edge from `node1` to `node2` is a taint sanitizer. */
-    predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
+    /** DEPRECATED: override `isSanitizerIn` and `isSanitizerOut` instead. */
+    deprecated predicate isSanitizerEdge(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
-    final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
+    deprecated final override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
       isSanitizerEdge(node1, node2)
     }
+
+    /** Holds if data flow into `node` is prohibited. */
+    predicate isSanitizerIn(DataFlow::Node node) { none() }
+
+    final override predicate isBarrierIn(DataFlow::Node node) { isSanitizerIn(node) }
+
+    /** Holds if data flow out of `node` is prohibited. */
+    predicate isSanitizerOut(DataFlow::Node node) { none() }
+
+    final override predicate isBarrierOut(DataFlow::Node node) { isSanitizerOut(node) }
 
     /**
      * Holds if the additional taint propagation step from `node1` to `node2`

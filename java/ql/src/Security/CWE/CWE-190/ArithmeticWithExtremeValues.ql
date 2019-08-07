@@ -40,9 +40,7 @@ class ExtremeSourceFlowConfig extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink(_, sink.asExpr()) }
 
-  override predicate isBarrierEdge(DataFlow::Node node1, DataFlow::Node node2) {
-    isSource(node1) and isSource(node2)
-  }
+  override predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
 
   override predicate isBarrier(DataFlow::Node n) { n.getType() instanceof BooleanType }
 }
