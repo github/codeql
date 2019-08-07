@@ -212,6 +212,8 @@ module Closure {
       or
       name = namespace
     )
+    or
+    name = "goog" // The closure libraries themselves use the "goog" namespace
   }
 
   /**
@@ -220,6 +222,8 @@ module Closure {
   bindingset[name]
   private predicate hasClosureNamespacePrefix(string name) {
     isClosureNamespace(name.substring(0, name.indexOf(".")))
+    or
+    isClosureNamespace(name)
   }
 
   /**

@@ -1,4 +1,6 @@
 import javascript
+import semmle.javascript.dataflow.internal.FlowSteps
 
-from DataFlow::InvokeNode node, int imprecision
-select node, node.getACallee(imprecision), imprecision
+from DataFlow::InvokeNode node, Function callee
+where calls(node, callee)
+select node, callee, 0
