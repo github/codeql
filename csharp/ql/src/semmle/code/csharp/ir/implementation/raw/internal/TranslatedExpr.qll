@@ -790,40 +790,6 @@ abstract class TranslatedTransparentExpr extends TranslatedNonConstantExpr {
   abstract TranslatedExpr getOperand();
 }
 
-//class TranslatedTransparentUnaryOperation extends TranslatedTransparentExpr {
-//  override UnaryOperation expr;
-//
-//  TranslatedTransparentUnaryOperation() {
-//    (
-//      // *p is the same as p until the result is loaded.
-//      expr instanceof PointerDereferenceExpr or
-//      // &x is the same as x. &x isn't loadable, but is included
-//      // here to avoid having two nearly identical classes.
-//      expr instanceof AddressOfExpr
-//    )
-//  }
-//
-//  override TranslatedExpr getOperand() {
-//    result = getTranslatedExpr(expr.getOperand().getFullyConverted())
-//  }
-//}
-
-//class TranslatedTransparentConversion extends TranslatedTransparentExpr {
-//  override Conversion expr;
-//
-//  TranslatedTransparentConversion() {
-//    (
-//      expr instanceof ParenthesizedExpr or
-//      expr instanceof ReferenceDereferenceExpr or
-//      expr instanceof ReferenceToExpr
-//    )
-//  }
-//
-//  override TranslatedExpr getOperand() {
-//    result = getTranslatedExpr(expr.getExpr())
-//  }
-//}
-
 class TranslatedThisExpr extends TranslatedNonConstantExpr {
   override ThisAccess expr;
 
@@ -1183,181 +1149,59 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
   }
 }
 
-abstract class TranslatedConversion extends TranslatedNonConstantExpr {
+/**
+ * Represents the translation of a conversion expression that generates a
+ * single instruction.
+ */
+// Review: Should we model the two cast exprs so that the way they work
+//         is reflected in the CFG? `AsExpr` doesn't throw errors but returns null,
+//         `CastExpr` throws an error if the cast fails.
+class TranslatedCast extends TranslatedNonConstantExpr {
   override Cast expr;
-
+  
   override Instruction getFirstInstruction() {
     result = getOperand().getFirstInstruction()
-  }
+  } 
 
   override final TranslatedElement getChild(int id) {
     id = 0 and result = getOperand()
   }
+  
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
 
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getOperand() and result = getInstruction(OnlyInstructionTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+    Type resultType, boolean isLValue) {
+    tag = OnlyInstructionTag() and
+    opcode instanceof Opcode::Convert and
+    resultType = getResultType() and
+    isLValue = isResultLValue()
+  }
+
+  override Instruction getResult() {
+    result = getInstruction(OnlyInstructionTag())
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag instanceof UnaryOperandTag and
+    result = getOperand().getResult()
+  }
+  
   final TranslatedExpr getOperand() {
     result = getTranslatedExpr(expr.(Cast).getExpr())
   }
 }
 
-///**
-// * Represents the translation of a conversion expression that generates a
-// * single instruction.
-// */
-//abstract class TranslatedSingleInstructionConversion extends TranslatedConversion {
-//  override Instruction getInstructionSuccessor(InstructionTag tag,
-//    EdgeKind kind) {
-//    tag = OnlyInstructionTag() and
-//    result = getParent().getChildSuccessor(this) and
-//    kind instanceof GotoEdge
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getOperand() and result = getInstruction(OnlyInstructionTag())
-//  }
-//
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//    Type resultType, boolean isLValue) {
-//    tag = OnlyInstructionTag() and
-//    opcode = getOpcode() and
-//    resultType = getResultType() and
-//    isLValue = isResultLValue()
-//  }
-//
-//  override Instruction getResult() {
-//    result = getInstruction(OnlyInstructionTag())
-//  }
-//
-//  override Instruction getInstructionOperand(InstructionTag tag,
-//      OperandTag operandTag) {
-//    tag = OnlyInstructionTag() and
-//    operandTag instanceof UnaryOperandTag and
-//    result = getOperand().getResult()
-//  }
-//
-//  /**
-//   * Gets the opcode of the generated instruction.
-//   */
-//  abstract Opcode getOpcode();
-//}
-
-// TODO: Deal with conversions
-///**
-// * Represents the translation of a conversion expression that generates a
-// * `Convert` instruction.
-// */
-//class TranslatedSimpleConversion extends TranslatedSingleInstructionConversion {
-//  TranslatedSimpleConversion() {
-//    expr instanceof ArithmeticConversion or
-//    expr instanceof PointerConversion or
-//    expr instanceof PointerToMemberConversion or
-//    expr instanceof PointerToIntegralConversion or
-//    expr instanceof IntegralToPointerConversion or
-//    expr instanceof GlvalueConversion or
-//    expr instanceof ArrayToPointerConversion or
-//    expr instanceof PrvalueAdjustmentConversion or
-//    expr instanceof VoidConversion
-//  }
-//
-//  override Opcode getOpcode() {
-//    result instanceof Opcode::Convert
-//  }
-//}
-
-// TODO: Deal with conversions
-///**
-// * Represents the translation of a `BaseClassConversion` or `DerivedClassConversion`
-// * expression.
-// */
-//class TranslatedInheritanceConversion extends TranslatedSingleInstructionConversion {
-//  override InheritanceConversion expr;
-//
-//
-//  override predicate getInstructionInheritance(InstructionTag tag, Class baseClass,
-//    Class derivedClass) {
-//    tag = OnlyInstructionTag() and
-//    baseClass = expr.getBaseClass() and
-//    derivedClass = expr.getDerivedClass()
-//  }
-//
-//  override Opcode getOpcode() {
-//    if expr instanceof BaseClassConversion then (
-//      if expr.(BaseClassConversion).isVirtual() then
-//        result instanceof Opcode::ConvertToVirtualBase
-//      else
-//        result instanceof Opcode::ConvertToBase
-//    )
-//    else
-//      result instanceof Opcode::ConvertToDerived
-//  }
-//}
-//
-///**
-// * Represents the translation of a `BoolConversion` expression, which generates
-// * a comparison with zero.
-// */
-//class TranslatedBoolConversion extends TranslatedConversion {
-//  override BoolConversion expr;
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag,
-//    EdgeKind kind) {
-//    kind instanceof GotoEdge and
-//    (
-//      (
-//        tag = BoolConversionConstantTag() and
-//        result = getInstruction(BoolConversionCompareTag())
-//      ) or
-//      (
-//        tag = BoolConversionCompareTag() and
-//        result = getParent().getChildSuccessor(this)
-//      )
-//    )
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getOperand() and result = getInstruction(BoolConversionConstantTag())
-//  }
-//
-//  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//    Type resultType, boolean ) {
-//     = false and
-//    (
-//      (
-//        tag = BoolConversionConstantTag() and
-//        opcode instanceof Opcode::Constant and
-//        resultType = getOperand().getResultType()
-//      ) or
-//      (
-//        tag = BoolConversionCompareTag() and
-//        opcode instanceof Opcode::CompareNE and
-//        resultType instanceof BoolType
-//      )
-//    )
-//  }
-//
-//  override Instruction getResult() {
-//    result = getInstruction(BoolConversionCompareTag())
-//  }
-//
-//  override Instruction getInstructionOperand(InstructionTag tag,
-//    OperandTag operandTag) {
-//    tag = BoolConversionCompareTag() and
-//    (
-//      (
-//        operandTag instanceof LeftOperandTag and
-//        result = getOperand().getResult()
-//      ) or
-//      (
-//        operandTag instanceof RightOperandTag and
-//        result = getInstruction(BoolConversionConstantTag())
-//      )
-//    )
-//  }
-//
-//  override string getInstructionConstantValue(InstructionTag tag) {
-//    tag = BoolConversionConstantTag() and
-//    result = "0"
-//  }
-//}
 
 private Opcode binaryBitwiseOpcode(BinaryBitwiseOperation expr) {
   expr instanceof LShiftExpr and result instanceof Opcode::ShiftLeft or

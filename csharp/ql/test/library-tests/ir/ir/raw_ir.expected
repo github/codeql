@@ -21,26 +21,26 @@ array.cs:
 #    3|     mu0_17(Int32)          = Store                    : &:r0_15, r0_16
 #    4|     r0_18(Int32)           = Constant[1000]           : 
 #    4|     r0_19(glval<Int32[]>)  = VariableAddress[one_dim] : 
-#    4|     r0_20(Int32[])         = ElementsAddress          : &:r0_19
+#    4|     r0_20(Int32[])         = ElementsAddress          : r0_19
 #    4|     r0_21(Int32)           = Constant[0]              : 
 #    4|     r0_22(Int32[])         = PointerAdd[4]            : r0_20, r0_21
-#    4|     mu0_23(Int32)          = Store                    : r0_18
+#    4|     mu0_23(Int32)          = Store                    : &:r0_22, r0_18
 #    5|     r0_24(glval<Int32[]>)  = VariableAddress[one_dim] : 
-#    5|     r0_25(Int32[])         = ElementsAddress          : &:r0_24
+#    5|     r0_25(Int32[])         = ElementsAddress          : r0_24
 #    5|     r0_26(Int32)           = Constant[0]              : 
 #    5|     r0_27(Int32[])         = PointerAdd[4]            : r0_25, r0_26
-#    5|     r0_28(Int32)           = Load                     : ~mu0_2
+#    5|     r0_28(Int32)           = Load                     : &:r0_27, ~mu0_2
 #    5|     r0_29(glval<Int32[]>)  = VariableAddress[one_dim] : 
-#    5|     r0_30(Int32[])         = ElementsAddress          : &:r0_29
+#    5|     r0_30(Int32[])         = ElementsAddress          : r0_29
 #    5|     r0_31(Int32)           = Constant[1]              : 
 #    5|     r0_32(Int32[])         = PointerAdd[4]            : r0_30, r0_31
-#    5|     mu0_33(Int32)          = Store                    : r0_28
+#    5|     mu0_33(Int32)          = Store                    : &:r0_32, r0_28
 #    6|     r0_34(Int32)           = Constant[1003]           : 
 #    6|     r0_35(glval<Int32[]>)  = VariableAddress[one_dim] : 
-#    6|     r0_36(Int32[])         = ElementsAddress          : &:r0_35
+#    6|     r0_36(Int32[])         = ElementsAddress          : r0_35
 #    6|     r0_37(Int32)           = Constant[1]              : 
 #    6|     r0_38(Int32[])         = PointerAdd[4]            : r0_36, r0_37
-#    6|     mu0_39(Int32)          = Store                    : r0_34
+#    6|     mu0_39(Int32)          = Store                    : &:r0_38, r0_34
 #    2|     v0_40(Void)            = ReturnVoid               : 
 #    2|     v0_41(Void)            = UnmodeledUse             : mu*
 #    2|     v0_42(Void)            = ExitFunction             : 
@@ -124,16 +124,41 @@ array.cs:
 #   14|     mu0_74(Int32[,])       = Store               : &:r0_72, r0_73
 #   15|     r0_75(Int32)           = Constant[-1]        : 
 #   15|     r0_76(glval<Int32[,]>) = VariableAddress[e]  : 
-#   15|     r0_77(Int32[,])        = ElementsAddress     : &:r0_76
+#   15|     r0_77(Int32[,])        = ElementsAddress     : r0_76
 #   15|     r0_78(Int32)           = Constant[1]         : 
 #   15|     r0_79(Int32[,])        = PointerAdd[4]       : r0_77, r0_78
 #   15|     r0_80(Int32[])         = ElementsAddress     : r0_79
 #   15|     r0_81(Int32)           = Constant[1]         : 
-#   15|     r0_82(Int32[,])        = PointerAdd[4]       : r0_80, r0_81
-#   15|     mu0_83(Int32)          = Store               : r0_75
+#   15|     r0_82(Int32[])         = PointerAdd[4]       : r0_80, r0_81
+#   15|     mu0_83(Int32)          = Store               : &:r0_82, r0_75
 #    9|     v0_84(Void)            = ReturnVoid          : 
 #    9|     v0_85(Void)            = UnmodeledUse        : mu*
 #    9|     v0_86(Void)            = ExitFunction        : 
+
+casts.cs:
+#   10| Main
+#   10|   Block 0
+#   10|     v0_0(Void)            = EnterFunction                      : 
+#   10|     mu0_1(null)           = AliasedDefinition                  : 
+#   10|     mu0_2(null)           = UnmodeledDefinition                : 
+#   10|     r0_3(glval<Casts>)    = InitializeThis                     : 
+#   11|     r0_4(glval<Casts_A>)  = VariableAddress[Aobj]              : 
+#   11|     r0_5(Casts_A)         = NewObj                             : 
+#   11|     r0_6(glval<Casts_A>)  = FunctionAddress[Casts_A.Casts_A()] : 
+#   11|     r0_7(Casts_A)         = Call                               : func:r0_6, this:r0_5
+#   11|     mu0_8(null)           = ^CallSideEffect                    : ~mu0_2
+#   11|     mu0_9(Casts_A)        = Store                              : &:r0_4, r0_5
+#   12|     r0_10(glval<Casts_B>) = VariableAddress[bobjCE]            : 
+#   12|     r0_11(glval<Casts_A>) = VariableAddress[Aobj]              : 
+#   12|     r0_12(Casts_B)        = Convert                            : r0_11
+#   12|     mu0_13(Casts_B)       = Store                              : &:r0_10, r0_12
+#   13|     r0_14(glval<Casts_B>) = VariableAddress[bobjAS]            : 
+#   13|     r0_15(glval<Casts_A>) = VariableAddress[Aobj]              : 
+#   13|     r0_16(Casts_B)        = Convert                            : r0_15
+#   13|     mu0_17(Casts_B)       = Store                              : &:r0_14, r0_16
+#   10|     v0_18(Void)           = ReturnVoid                         : 
+#   10|     v0_19(Void)           = UnmodeledUse                       : mu*
+#   10|     v0_20(Void)           = ExitFunction                       : 
 
 constructor_init.cs:
 #    5| BaseClass
