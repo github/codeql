@@ -16,33 +16,35 @@ import semmle.code.java.dataflow.FlowSources
 import ArithmeticCommon
 import DataFlow::PathGraph
 
-predicate sink(ArithExpr exp, VarAccess tainted, string effect) {
-  exp.getAnOperand() = tainted and
-  (
-    not guardedAgainstUnderflow(exp, tainted) and effect = "underflow"
-    or
-    not guardedAgainstOverflow(exp, tainted) and effect = "overflow"
-  ) and
-  // Exclude widening conversions of tainted values due to binary numeric promotion (JLS 5.6.2)
-  // unless there is an enclosing cast down to a narrower type.
-  narrowerThanOrEqualTo(exp, tainted.getType()) and
-  not overflowIrrelevant(exp)
+class ArithmeticTaintedLocalOverflowConfig extends TaintTracking::Configuration {
+  ArithmeticTaintedLocalOverflowConfig() { this = "ArithmeticTaintedLocalOverflowConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
+
+  override predicate isSanitizer(DataFlow::Node n) { overflowBarrier(n) }
 }
 
-class ArithmeticTaintedLocalFlowConfig extends TaintTracking::Configuration {
-  ArithmeticTaintedLocalFlowConfig() { this = "ArithmeticTaintedLocalFlowConfig" }
+class ArithmeticTaintedLocalUnderflowConfig extends TaintTracking::Configuration {
+  ArithmeticTaintedLocalUnderflowConfig() { this = "ArithmeticTaintedLocalUnderflowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink(_, sink.asExpr(), _) }
+  override predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
-  override predicate isSanitizer(DataFlow::Node n) { n.getType() instanceof BooleanType }
+  override predicate isSanitizer(DataFlow::Node n) { underflowBarrier(n) }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect
 where
-  any(ArithmeticTaintedLocalFlowConfig conf).hasFlowPath(source, sink) and
-  sink(exp, sink.getNode().asExpr(), effect)
+  any(ArithmeticTaintedLocalOverflowConfig c).hasFlowPath(source, sink) and
+  overflowSink(exp, sink.getNode().asExpr()) and
+  effect = "overflow"
+  or
+  any(ArithmeticTaintedLocalUnderflowConfig c).hasFlowPath(source, sink) and
+  underflowSink(exp, sink.getNode().asExpr()) and
+  effect = "underflow"
 select exp, source, sink,
   "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
   source.getNode(), "User-provided value"
