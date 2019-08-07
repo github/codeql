@@ -1,5 +1,6 @@
 import python
 private import semmle.python.pointsto.PointsTo
+private import semmle.python.objects.ObjectInternal
 
 /** An expression */
 class Expr extends Expr_, AstNode {
@@ -71,7 +72,8 @@ class Expr extends Expr_, AstNode {
         result = this.getASubExpression()
     }
 
-    /** Gets what this expression might "refer-to". Performs a combination of localized (intra-procedural) points-to
+    /** NOTE: `refersTo` will be deprecated in 2019. Use `pointsTo` instead.
+     * Gets what this expression might "refer-to". Performs a combination of localized (intra-procedural) points-to
      *  analysis and global module-level analysis. This points-to analysis favours precision over recall. It is highly
      *  precise, but may not provide information for a significant number of flow-nodes. 
      *  If the class is unimportant then use `refersTo(value)` or `refersTo(value, origin)` instead.
@@ -82,13 +84,15 @@ class Expr extends Expr_, AstNode {
         this.refersTo(_, obj, cls, origin)
     }
 
-    /** Gets what this expression might "refer-to" in the given `context`.
+    /** NOTE: `refersTo` will be deprecated in 2019. Use `pointsTo` instead.
+     * Gets what this expression might "refer-to" in the given `context`.
      */
     predicate refersTo(Context context, Object obj, ClassObject cls, AstNode origin) {
         this.getAFlowNode().refersTo(context, obj, cls, origin.getAFlowNode())
     }
 
-    /** Whether this expression might "refer-to" to `value` which is from `origin` 
+    /** NOTE: `refersTo` will be deprecated in 2019. Use `pointsTo` instead.
+     * Holds if this expression might "refer-to" to `value` which is from `origin` 
      * Unlike `this.refersTo(value, _, origin)`, this predicate includes results 
      * where the class cannot be inferred.
      */
@@ -97,9 +101,29 @@ class Expr extends Expr_, AstNode {
         this.getAFlowNode().refersTo(obj, origin.getAFlowNode())
     }
 
-    /** Equivalent to `this.refersTo(value, _)` */
+    /** NOTE: `refersTo` will be deprecated in 2019. Use `pointsTo` instead.
+     * Equivalent to `this.refersTo(value, _)` */
     predicate refersTo(Object obj) {
         this.refersTo(obj, _)
+    }
+
+    /** Holds if this expression might "point-to" to `value` which is from `origin`
+     * in the given `context`.
+     */
+    predicate pointsTo(Context context, Value value, AstNode origin) {
+        this.getAFlowNode().pointsTo(context, value, origin.getAFlowNode())
+    }
+
+    /** Holds if this expression might "point-to" to `value` which is from `origin`.
+     */
+    predicate pointsTo(Value value, AstNode origin) {
+        this.getAFlowNode().pointsTo(value, origin.getAFlowNode())
+    }
+
+    /** Holds if this expression might "point-to" to `value`.
+     */
+    predicate pointsTo(Value value) {
+        this.pointsTo(value, _)
     }
 
 }
@@ -346,6 +370,11 @@ abstract class ImmutableLiteral extends Expr {
     abstract Object getLiteralObject();
 
     abstract boolean booleanValue();
+
+    final Value getLiteralValue() {
+        result.(ConstantObjectInternal).getLiteral() = this
+    }
+
 }
 
 /** A numerical constant expression, such as `7` or `4.2` */
@@ -472,8 +501,10 @@ class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
         py_cobjectnames(result, "-" + this.getOperand().(IntegerLiteral).getN())
     }
 
+    /** Gets the (integer) value of this constant. Will not return a result if the value does not fit into
+        a 32 bit signed value */
     int getValue() {
-        result = -this.getOperand().(IntegerLiteral).getValue()
+        result = -(this.getOperand().(IntegerLiteral).getValue())
     }
 
 }
