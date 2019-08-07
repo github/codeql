@@ -119,7 +119,6 @@ private module CachedSteps {
   predicate calls(DataFlow::InvokeNode invk, Function f) {
     f = invk.getACallee(0)
     or
-    not f.getTopLevel().isExterns() and
     exists(DataFlow::ClassNode cls, string name |
       callResolvesToMember(invk, cls, name) and
       f = cls.getInstanceMethod(name).getFunction()
@@ -129,7 +128,6 @@ private module CachedSteps {
     )
     or
     // Call from `foo.bar.baz()` to `foo.bar.baz = function()`
-    not f.getTopLevel().isExterns() and
     exists(string name |
       GlobalAccessPath::isAssignedInUniqueFile(name) and
       GlobalAccessPath::fromRhs(f.flow()) = name and
