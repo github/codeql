@@ -220,11 +220,6 @@ module FlowVar_internal {
         or
         blockVarDefinedByVariable(sbb, v)
       )
-    } or
-    TThisVar(SubBasicBlock sbb, ThisExpr t) {
-      reachable(sbb) and
-      sbb = any(PartialDefinitions::PartialDefinition p | p.partiallyDefinesThis(t))
-            .getSubBasicBlockStart()
     }
 
   /**
@@ -372,34 +367,6 @@ module FlowVar_internal {
     }
 
     override Location getLocation() { result = sbb.getStart().getLocation() }
-  }
-
-  class ThisVar extends TThisVar, FlowVar {
-    SubBasicBlock sbb;
-
-    ThisExpr t;
-
-    PartialDefinitions::PartialDefinition pd;
-
-    ThisVar() { this = TThisVar(sbb, t) and pd.partiallyDefinesThis(t) }
-
-    override VariableAccess getAnAccess() {
-      none() // TODO: Widen type to `Expr`.
-    }
-
-    override predicate definedByExpr(Expr e, ControlFlowNode node) { none() }
-
-    override predicate definedByReference(Expr arg) { none() }
-
-    override predicate definedPartiallyAt(Expr arg) {
-      none() // TODO
-    }
-
-    override predicate definedByInitialValue(LocalScopeVariable param) { none() }
-
-    override string toString() { result = pd.toString() }
-
-    override Location getLocation() { result = pd.getLocation() }
   }
 
   /** Type-specialized version of `getEnclosingElement`. */
