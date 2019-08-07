@@ -261,6 +261,8 @@ class File extends Container, @file {
     result = Container.super.toString()
   }
 
+  override string getCanonicalQLClass() { result = "File" }
+
   override Location getLocation() {
     result.getContainer() = this and
     result.hasLocationInfo(_, 0, 0, 0, 0)
