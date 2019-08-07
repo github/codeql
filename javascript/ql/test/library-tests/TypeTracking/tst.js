@@ -70,7 +70,7 @@ function useConnection() {
   });
 
   let conflict = MyApplication.namespace.conflict;
-  conn.getData(data => {
+  conflict.getData(data => {
     useData(data);
   });
 }
