@@ -410,6 +410,7 @@ abstract class FunctionValue extends CallableValue {
 
 }
 
+/** Class representing Python functions */
 class PythonFunctionValue extends FunctionValue {
 
     PythonFunctionValue() {
@@ -422,6 +423,7 @@ class PythonFunctionValue extends FunctionValue {
 
 }
 
+/** Class representing builtin functions, such as `len` or `print` */
 class BuiltinFunctionValue extends FunctionValue {
 
     BuiltinFunctionValue() {
@@ -434,6 +436,7 @@ class BuiltinFunctionValue extends FunctionValue {
 
 }
 
+/** Class representing builtin methods, such as `list.append` or `set.add` */
 class BuiltinMethodValue extends FunctionValue {
 
     BuiltinMethodValue() {
@@ -450,6 +453,8 @@ class BuiltinMethodValue extends FunctionValue {
 
 }
 
+/** A class representing sequence objects with a length and tracked items.
+ */
 class SequenceValue extends Value {
 
     SequenceValue() {
@@ -466,6 +471,7 @@ class SequenceValue extends Value {
 
 }
 
+/** A class representing tuple objects */
 class TupleValue extends SequenceValue {
 
     TupleValue() {
