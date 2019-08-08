@@ -93,3 +93,73 @@ import {ClientRequest, net} from 'electron';
     net.request({ hostname: host });
 
 });
+
+(function() {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.open(_, url);
+    xhr.send(data);
+    xhr.onreadystatechange = function() {
+        this.response;
+    };
+
+    var xhr2 = new XMLHttpRequest();
+    xhr2.open(_, url);
+    xhr2.send(data);
+    xhr2.addEventListener("readystatechange", function() {
+        this.responseText;
+        this.responseXML;
+        this.statusText;
+    });
+})
+
+(function() {
+    request(url, function (error, response, body) {
+        error;
+        response.body;
+        body;
+    });
+
+    request(url, {json: true}, function (error, response, body) {
+        error;
+        response.body;
+        body;
+    });
+
+    requestPromise(url, {json: true});
+});
+
+(function() {
+    axios.get(url).then(response => response.data);
+    axios({ url: url, responseType: 'json'}).then(response => response.data);
+    axios(unknown).then(response => response.data);
+    axios({ responseType: unknown }).then(response => response.data);
+})
+
+
+(function() {
+    fetch(url).then(r => r.json()).then(json => json);
+})
+
+(function() {
+    got(url).then(response => response.body);
+    got(url, { json: true }).then(response => response.body);
+    got.stream(url).pipe(process.stdout);
+})
+
+(function() {
+    superagent.get(url).end((err, res) => {
+        err;
+        res;
+    });
+});
+
+(function() {
+    let XhrIo = goog.require('goog.net.XhrIo');
+    let xhr = new XhrIo();
+    xhr.send(url);
+    xhr.addEventListener('readystatechange', function() {
+        xhr.getResponseJson();
+        xhr.getResponseHeaders();
+    });
+})
