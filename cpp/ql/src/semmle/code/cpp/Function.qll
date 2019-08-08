@@ -892,7 +892,8 @@ class PureVirtualFunction extends VirtualFunction {
  * {
  *   ...
  * 
- *   int day() const {
+ *   int day() const
+ *   {
  *     return d;
  *   }
  *
@@ -1292,7 +1293,8 @@ class MoveAssignmentOperator extends Operator {
  * the function `myTemplateFunction` in the following code:
  * ```
  * template<class T>
- * void myTemplateFunction(T t) {
+ * void myTemplateFunction(T t)
+ * {
  *   ...
  * }
  * ```
@@ -1337,11 +1339,13 @@ class TemplateFunction extends Function {
  * the instantiation `myTemplateFunction<int>` in the following code:
  * ```
  * template<class T>
- * void myTemplateFunction(T t) {
+ * void myTemplateFunction(T t)
+ * {
  *   ...
  * }
  *
- * void caller(int i) {
+ * void caller(int i)
+ * {
  *   myTemplateFunction<int>(i);
  * }
  * ```
@@ -1370,7 +1374,8 @@ class FunctionTemplateInstantiation extends Function {
  * function `myTemplateFunction<int>` in the following code:
  * ```
  * template<class T>
- * void myTemplateFunction(T t) {
+ * void myTemplateFunction(T t)
+ * {
  *   ...
  * }
  *
