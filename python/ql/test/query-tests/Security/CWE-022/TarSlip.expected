@@ -24,11 +24,6 @@ edges
 | tarslip.py:51:7:51:39 | tarfile.open | tarslip.py:52:1:52:3 | tarfile.open |
 | tarslip.py:51:7:51:39 | tarfile.open | tarslip.py:52:36:52:38 | tarfile.open |
 | tarslip.py:52:36:52:38 | tarfile.open | tarslip.py:45:17:45:23 | tarfile.open |
-parents
-| tarslip.py:45:17:45:23 | tarfile.open | tarslip.py:52:36:52:38 | tarfile.open |
-| tarslip.py:46:5:46:24 | tarfile.entry | tarslip.py:52:36:52:38 | tarfile.open |
-| tarslip.py:46:17:46:23 | tarfile.open | tarslip.py:52:36:52:38 | tarfile.open |
-| tarslip.py:47:20:47:23 | tarfile.entry | tarslip.py:52:36:52:38 | tarfile.open |
 #select
 | tarslip.py:13:1:13:3 | Taint sink | tarslip.py:12:7:12:39 | tarfile.open | tarslip.py:13:1:13:3 | tarfile.open | Extraction of tarfile from $@ | tarslip.py:12:7:12:39 | Taint source | a potentially untrusted source |
 | tarslip.py:18:17:18:21 | Taint sink | tarslip.py:16:7:16:39 | tarfile.open | tarslip.py:18:17:18:21 | tarfile.entry | Extraction of tarfile from $@ | tarslip.py:16:7:16:39 | Taint source | a potentially untrusted source |
