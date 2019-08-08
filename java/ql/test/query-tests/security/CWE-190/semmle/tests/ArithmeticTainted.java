@@ -95,10 +95,10 @@ public class ArithmeticTainted {
 			int widenedThenNarrowed = (int) (data + 10L);
 		}
 
-		// The following test case needs to be located after other test cases
-		// for that use 'data',
-		// because the return statement causes 'data' to be guarded.
-		{
+		// The following test case has an arbitrary guard on hashcode
+		// because otherwise the return statement causes 'data' to be guarded
+		// in the subsequent test cases.
+		if (this.hashCode() > 0) {
 			// GOOD: guard and return if bad
 			if (data < Integer.MAX_VALUE) {
 				System.out.println("I'm guarded");
