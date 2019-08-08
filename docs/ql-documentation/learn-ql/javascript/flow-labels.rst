@@ -186,7 +186,7 @@ altogether, it should simply record the fact that ``root`` itself is known to be
 Any property read from ``root``, on the other hand, may well be null and needs to be checked
 separately.
 
-We can achieve this by introducing two different flow labels ``json`` and ``maybe-null``. The former
+We can achieve this by introducing two different flow labels, ``json`` and ``maybe-null``. The former
 means that the value we are dealing with comes from a JSON object, the latter that it may be
 ``null``. The result of any call to ``JSON.parse`` has both labels. A property read from a value
 with label ``json`` also has both labels. Checking truthiness removes the ``maybe-null`` label.
@@ -263,7 +263,7 @@ sanitized value:
   }
 
 Here is the final query, expressed as a :doc:`path query <../writing-queries/path-queries>` so we can examine paths from sources to sinks
-stey by step in the UI:
+step by step in the UI:
 
 .. code-block:: ql
 
@@ -389,3 +389,10 @@ are from standard security queries that use flow labels. The `Prototype pollutio
 tainted objects from partially tainted objects. The `Uncontrolled data used in path expression
 <https://lgtm.com/rules/1971530250>`_ query uses four flow labels to track whether a user-controlled
 string may be an absolute path and whether it may contain ``..`` components.
+
+What next?
+----------
+
+-  Learn about the QL standard libraries used to write queries for JavaScript in :doc:`Introducing the Javacript libraries <introduce-libraries-js>`.
+-  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
+-  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
