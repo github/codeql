@@ -39,7 +39,7 @@ Follow the steps below to help other users understand what your query does, and 
      * JavaScript: `ql/javascript/ql/src`
      * Python: `ql/python/ql/src`
 
-   Each language-specific directory contains further subdirectories that group queries based on their `@tags` properties or purpose. Make sure that you select the appropriate subdirectory for your new query, or create a new one if necessary. 
+   Each language-specific directory contains further subdirectories that group queries based on their `@tags` properties or purpose. Select the appropriate subdirectory for your new query, or create a new one if necessary. 
 
 6. **Write a query help file**
 
