@@ -109,7 +109,8 @@ class NestedEnum extends Enum {
  * A C++ scoped enum, that is, an enum whose constants must be qualified with
  * the name of the enum. For example, the type `Color` in:
  * ```
- * enum class Color {
+ * enum class Color
+ * {
  *   red,
  *   blue
  * }
@@ -128,7 +129,8 @@ class ScopedEnum extends Enum {
  *
  * For example the enumeration constant `green` in:
  * ```
- * enum {
+ * enum
+ * {
  *   red,
  *   green,
  *   blue
