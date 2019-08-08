@@ -9,6 +9,7 @@ private import semmle.code.cpp.internal.ResolveClass
  *   MyEnumConstant
  * };
  * ```
+ * This includes C++ scoped enums, see the `ScopedEnum` QL class.
  */
 class Enum extends UserType, IntegralOrEnumType {
   /** Gets an enumerator of this enumeration. */
@@ -52,7 +53,7 @@ class Enum extends UserType, IntegralOrEnumType {
 }
 
 /**
- * A C++ enum that is directly enclosed by a function. For example, the type
+ * A C/C++ enum that is directly enclosed by a function. For example, the type
  * `MyLocalEnum` in:
  * ```
  * void myFunction()
@@ -73,7 +74,7 @@ class LocalEnum extends Enum {
 }
 
 /**
- * A C++ enum that is declared within a class. For example, the type
+ * A C/C++ enum that is declared within a class/struct. For example, the type
  * `MyNestedEnum` in:
  * ```
  * class MyClass
