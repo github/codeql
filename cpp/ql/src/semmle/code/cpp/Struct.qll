@@ -27,7 +27,7 @@ class Struct extends Class {
 }
 
 /**
- * A C++ struct that is directly enclosed by a function. For example, the type
+ * A C/C++ struct that is directly enclosed by a function. For example, the type
  * `MyLocalStruct` in:
  * ```
  * void myFunction()
