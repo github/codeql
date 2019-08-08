@@ -5,8 +5,8 @@
 
 import csharp
 
-module DataFlow {
-  import semmle.code.csharp.dataflow.internal.DataFlowImpl
+module DataFlow2 {
+  import semmle.code.csharp.dataflow.internal.DataFlowImpl2
 
   /**
    * This class exists to prevent mutual recursion between the user-overridden
