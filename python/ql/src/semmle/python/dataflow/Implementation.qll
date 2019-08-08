@@ -328,7 +328,21 @@ class TaintTrackingImplementation extends string {
         this.unprunedStep(src, node, context, path, kind, edgeLabel) and
         node.getBasicBlock().likelyReachable() and
         not this.(TaintTracking::Configuration).isBarrier(node) and
-        not this.flowBarrier(node, kind) and path = TNoAttribute()
+        (
+            not path = TNoAttribute()
+            or
+            not this.flowBarrier(node, kind) and
+            exists(DataFlow::Node srcnode, TaintKind srckind |
+                src = TTaintTrackingNode_(srcnode, _, _, srckind, this) and
+                not this.prunedEdge(srcnode, node, srckind, kind)
+            )
+        )
+    }
+
+    predicate prunedEdge(DataFlow::Node srcnode, DataFlow::Node destnode, TaintKind srckind, TaintKind destkind) {
+        this.(TaintTracking::Configuration).isBarrierEdge(srcnode, destnode, srckind, destkind)
+        or
+        srckind = destkind and this.(TaintTracking::Configuration).isBarrierEdge(srcnode, destnode)
     }
 
     predicate unprunedStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
