@@ -78,6 +78,14 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
 }
 
+private boolean callToBool(CallNode call, PointsToContext context) {
+    PointsToInternal::pointsTo(call.getFunction(), context, ClassValue::bool(), _) and
+    exists(ObjectInternal arg |
+        PointsToInternal::pointsTo(call.getArg(0),context, arg, _) and
+        arg.booleanValue() = result
+    )
+}
+
 private abstract class BooleanObjectInternal extends ConstantObjectInternal {
 
     override ObjectInternal getClass() {
@@ -111,6 +119,8 @@ private class TrueObjectInternal extends BooleanObjectInternal, TTrue {
 
     override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         node.(NameNode).getId() = "True" and context.appliesTo(node)
+        or
+        callToBool(node, context) = true
     }
 
     override int intValue() {
@@ -135,6 +145,8 @@ private class FalseObjectInternal extends BooleanObjectInternal, TFalse {
 
     override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
         node.(NameNode).getId() = "False" and context.appliesTo(node)
+        or
+        callToBool(node, context) = false
     }
 
     override int intValue() {
