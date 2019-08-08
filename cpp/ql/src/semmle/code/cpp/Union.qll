@@ -23,7 +23,7 @@ class Union extends Struct  {
 }
 
 /**
- * A C++ union that is directly enclosed by a function. For example, the type
+ * A C/C++ union that is directly enclosed by a function. For example, the type
  * `MyLocalUnion` in:
  * ```
  * void myFunction()
