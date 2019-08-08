@@ -456,7 +456,7 @@ class VacuousDestructorCall extends Expr, @vacuous_destructor_call {
  * of a constructor's explicit initializer list or implicit actions.
  */
 class ConstructorInit extends Expr, @ctorinit {
-  override string getCanonicalQLClass() { result = "FunctionInit" }
+  override string getCanonicalQLClass() { result = "ConstructorInit" }
 }
 
 /**
