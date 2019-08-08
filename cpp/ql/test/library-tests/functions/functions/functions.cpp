@@ -30,4 +30,12 @@ public:
   bool insert(Name*);
 };
 
-
+class MyClass
+{
+public:
+	MyClass();
+	MyClass(int from);
+	MyClass(const MyClass &from);
+	MyClass(const MyClass &&from);
+	operator int();
+};
