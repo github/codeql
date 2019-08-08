@@ -5,9 +5,10 @@ Crashing bug found in Curiosity’s landing module through routine testing.
 
 Patching is still possible mid-flight, but what if there are more such issues?
 
-.. image:: ../_static-training/curiosity.png
-   :scale: 100 % 
+.. container:: image-box
 
+   .. image:: ../_static-training/curiosity.png
+   
 .. note::
 
    When the Curiosity Rover was on its way to Mars in 2012, a flight software developer at NASA JPL discovered a mission-critical bug through manual code review. The problem occurred in Curiosity’s Entry, Descent, and Landing software–the software responsible for the Rover’s descent through the Martian atmosphere and landing it safely on the surface. of Mars.
@@ -79,8 +80,10 @@ Find all instances!
 
 - All were fixed with a mid-flight patch.
 
-.. image:: ../_static-training/curiosity2.png
-   :scale: 75% 
+.. container:: image-box
+
+   .. image:: ../_static-training/curiosity2.png
+    
 
 .. note::
 
@@ -101,8 +104,10 @@ Analysis overview
 - The database schema is (source) language specific, as are queries and libraries.
 - Multi-language code bases are analyzed one language at a time.
 
-.. image:: ../_static-training/analysis-overview.png
-   :scale: 75 % 
+.. container:: image-box
+
+   .. image:: ../_static-training/analysis-overview.png
+       
 
 .. note::
 
