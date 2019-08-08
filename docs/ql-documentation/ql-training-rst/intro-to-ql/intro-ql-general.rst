@@ -10,7 +10,7 @@ Patching is still possible mid-flight, but what if there are more such issues?
 
 .. note::
 
-   When the Curiosity Rover was on its way to Mars in 2012, a flight software developer at NASA JPL discovered a mission-critical bug through manual code review. The problem occurred in Curiosity’s Entry, Descent and Landing software–the software responsible for the Rover’s descent through the Martian atmosphere and landing it safely on the surface. of Mars.
+   When the Curiosity Rover was on its way to Mars in 2012, a flight software developer at NASA JPL discovered a mission-critical bug through manual code review. The problem occurred in Curiosity’s Entry, Descent, and Landing software–the software responsible for the Rover’s descent through the Martian atmosphere and landing it safely on the surface. of Mars.
 
    The bug, which had gone undetected by traditional solutions, was likely to prevent the capsule’s parachutes from opening, resulting in the Rover crashing onto the red planet’s rocky surface.
    

@@ -7,11 +7,9 @@ Introduction to variant analysis for Java
 Information
 ===========
 
-- Pressing 'h' highlights code snippets
-- Pressing 'p' toggles speaker notes (if they're on the current slide)
-- Pressing 'f' toggles fullscreen viewing
-- Pressing 'w' toggles widescreen
-- Pressing 'o' toggles overview mode
+- Pressing ``p`` toggles extra notes (if they're on the current slide)
+- Pressing ``f`` toggles full screen viewing
+- Pressing ``o`` toggles overview mode
 
 Getting started and setting up
 ==============================
@@ -23,7 +21,7 @@ To try the examples in this presentation you should download:
 
 More resources:
 
-- If you are a completely new to QL, try the `QL detective tutorials <https://help.semmle.com/QL/learn-ql/ql/beginner/ql-tutorials.html>`__.
+- If you are completely new to QL, try the `QL detective tutorials <https://help.semmle.com/QL/learn-ql/ql/beginner/ql-tutorials.html>`__.
 - To learn more about the main features of QL, try looking at the `QL language handbook <https://help.semmle.com/QL/ql-handbook/>`__.
 - For further information about writing queries in QL, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html>`__.
 
@@ -149,7 +147,7 @@ A QL class allows you to name a set of values and define (member) predicates on 
 
 A class has at least one supertype and optionally a **characteristic predicate**; it contains the values that belong to *all* supertypes *and* satisfy the characteristic predicate, if provided.
 
-Memember predicates are inherited and can be overidden.
+Member predicates are inherited and can be overidden.
 
 .. code-block:: ql
 
@@ -214,4 +212,4 @@ Model answer
 What next?
 ==========
 
-Try working through the next QL training topic: **Introduction to dataflow**.
+Try working through the next QL training topic: **Introduction to data flow**.
