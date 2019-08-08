@@ -93,18 +93,11 @@ private module PartialDefinitions {
       isInstanceFieldWrite(fa) and qualifier = fa.getQualifier()
     } or
     TExplicitCallQualifier(Expr qualifier, Call call) { qualifier = call.getQualifier() } or
-    TReferenceArgument(Expr arg, Call call, int i) { isReferenceOrPointerArg(arg, call, i) }
+    TReferenceArgument(Expr arg, VariableAccess va) { definitionByReference(va, arg) }
 
   private predicate isInstanceFieldWrite(FieldAccess fa) {
     not fa.getTarget().isStatic() and
     assignmentLikeOperation(_, fa.getTarget(), fa, _)
-  }
-
-  private predicate isReferenceOrPointerArg(Expr arg, Call call, int i) {
-    arg = call.getArgument(i) and
-    exists(Type t | t = arg.getFullyConverted().getType().getUnspecifiedType() |
-      t instanceof ReferenceType or t instanceof PointerType
-    )
   }
 
   class PartialDefinition extends TPartialDefinition {
@@ -113,7 +106,7 @@ private module PartialDefinitions {
     PartialDefinition() {
       this = TExplicitFieldStoreQualifier(definedExpr, _) or
       this = TExplicitCallQualifier(definedExpr, _) or
-      this = TReferenceArgument(definedExpr, _, _)
+      this = TReferenceArgument(definedExpr, _)
     }
 
     predicate partiallyDefines(Variable v) { definedExpr = v.getAnAccess() }
@@ -134,6 +127,22 @@ private module PartialDefinitions {
     }
 
     string toString() { result = "partial def of " + definedExpr }
+  }
+
+  /**
+   * A partial definition that's a definition by reference (in the sense of the
+   * `definitionByReference` predicate).
+   */
+  class DefinitionByReference extends PartialDefinition, TReferenceArgument {
+    VariableAccess va;
+
+    DefinitionByReference() { definitionByReference(va, definedExpr) }
+
+    VariableAccess getVariableAccess() { result = va }
+
+    override predicate partiallyDefines(Variable v) { va = v.getAnAccess() }
+
+    override ControlFlowNode getSubBasicBlockStart() { result = va }
   }
 }
 import PartialDefinitions
@@ -159,13 +168,8 @@ module FlowVar_internal {
    */
   predicate fullySupportedSsaVariable(Variable v) {
     v = any(SsaDefinition def).getAVariable() and
-    // After `foo(&x.field)` we need for there to be two definitions of `x`:
-    // the one that existed before the call to `foo` and the def-by-ref from
-    // the call. It's fundamental in SSA that each use is only associated with
-    // one def, so we can't easily get this effect with SSA.
-    not definitionByReference(v.getAnAccess(), _) and
     // A partially-defined variable is handled using the partial definitions logic.
-    not any(PartialDefinitions::PartialDefinition p).partiallyDefines(v) and
+    not any(PartialDefinition p).partiallyDefines(v) and
     // SSA variables do not exist before their first assignment, but one
     // feature of this data flow library is to track where uninitialized data
     // ends up.
@@ -213,10 +217,7 @@ module FlowVar_internal {
         or
         assignmentLikeOperation(sbb, v, _, _)
         or
-        blockVarDefinedByReference(sbb, v, _)
-        or
-        sbb = any(PartialDefinitions::PartialDefinition p | p.partiallyDefines(v))
-              .getSubBasicBlockStart()
+        sbb = any(PartialDefinition p | p.partiallyDefines(v)).getSubBasicBlockStart()
         or
         blockVarDefinedByVariable(sbb, v)
       )
@@ -328,11 +329,15 @@ module FlowVar_internal {
     }
 
     override predicate definedByReference(Expr arg) {
-      blockVarDefinedByReference(sbb, v, arg)
+      exists(DefinitionByReference def |
+        def.partiallyDefines(v) and
+        sbb = def.getSubBasicBlockStart() and
+        arg = def.getDefinedExpr()
+      )
     }
 
     override predicate definedPartiallyAt(Expr e) {
-      exists(PartialDefinitions::PartialDefinition p |
+      exists(PartialDefinition p |
         p.partiallyDefines(v) and
         sbb = p.getSubBasicBlockStart() and
         e = p.getDefinedExpr()
@@ -632,11 +637,6 @@ module FlowVar_internal {
     )
   }
 
-  predicate blockVarDefinedByReference(ControlFlowNode node, Variable v, Expr argument) {
-    node = v.getAnAccess() and
-    definitionByReference(node, argument)
-  }
-
   /**
    * Holds if `v` is initialized by `init` to have value `assignedExpr`.
    */
@@ -660,10 +660,7 @@ module FlowVar_internal {
       |
         assignmentLikeOperation(this, v, _, _)
         or
-        blockVarDefinedByReference(this, v, _)
-        or
-        this = any(PartialDefinitions::PartialDefinition p | p.partiallyDefines(v))
-              .getSubBasicBlockStart()
+        this = any(PartialDefinition p | p.partiallyDefines(v)).getSubBasicBlockStart()
         // It is not necessary to cut the basic blocks at `Initializer` nodes
         // because the affected variable can have no _other_ value before its
         // initializer. It is not necessary to cut basic blocks at procedure
