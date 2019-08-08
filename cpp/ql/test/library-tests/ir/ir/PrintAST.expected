@@ -7883,6 +7883,9 @@ ir.cpp:
 # 1130|             expr: [Literal,Zero] 0
 # 1130|                 Type = [IntType] int
 # 1130|                 Value = [Literal,Zero] 0
+# 1130|             expr: [Literal] 0
+# 1130|                 Type = [IntType] int
+# 1130|                 Value = [Literal] 0
 # 1130|                 ValueCategory = prvalue
 # 1130|       1: [LTExpr] ... < ...
 # 1130|           Type = [BoolType] bool
