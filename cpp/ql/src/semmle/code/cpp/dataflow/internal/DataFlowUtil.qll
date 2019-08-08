@@ -9,7 +9,7 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 cached
 private newtype TNode =
   TExprNode(Expr e) or
-  TPartialDefNode(PartialDefinition pd) or
+  TPartialDefinitionNode(PartialDefinition pd) or
   TPostConstructorCallNode(ConstructorCall call) or
   TExplicitParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
   TInstanceParameterNode(MemberFunction f) { exists(f.getBlock()) and not f.isStatic() } or
@@ -52,7 +52,7 @@ class Node extends TNode {
    * a partial definition of `&x`).s
    */
   Expr asPartialDefinition() {
-    result = this.(PartialDefNode).getPartialDefinition().getDefinedExpr()
+    result = this.(PartialDefinitionNode).getPartialDefinition().getDefinedExpr()
   }
 
   /**
@@ -162,7 +162,7 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
  * `DefinitionByReferenceNode` to represent the value of `x` after the call has
  * returned. This node will have its `getArgument()` equal to `&x`.
  */
-class DefinitionByReferenceNode extends PartialDefNode {
+class DefinitionByReferenceNode extends PartialDefinitionNode {
   VariableAccess va;
 
   Expr argument;
@@ -243,10 +243,10 @@ abstract class PostUpdateNode extends Node {
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
-class PartialDefNode extends PostUpdateNode, TPartialDefNode {
+class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
   PartialDefinition pd;
 
-  PartialDefNode() { this = TPartialDefNode(pd) }
+  PartialDefinitionNode() { this = TPartialDefinitionNode(pd) }
 
   override Node getPreUpdateNode() { result.asExpr() = pd.getDefinedExpr() }
 
