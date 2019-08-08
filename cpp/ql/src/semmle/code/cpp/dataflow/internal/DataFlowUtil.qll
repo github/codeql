@@ -13,9 +13,6 @@ private newtype TNode =
   TPostConstructorCallNode(ConstructorCall call) or
   TExplicitParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
   TInstanceParameterNode(MemberFunction f) { exists(f.getBlock()) and not f.isStatic() } or
-  TDefinitionByReferenceNode(VariableAccess va, Expr argument) {
-    definitionByReference(va, argument)
-  } or
   TUninitializedNode(LocalVariable v) { not v.hasInitializer() }
 
 /**
@@ -152,12 +149,18 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
  * `DefinitionByReferenceNode` to represent the value of `x` after the call has
  * returned. This node will have its `getArgument()` equal to `&x`.
  */
-class DefinitionByReferenceNode extends Node, TDefinitionByReferenceNode {
+class DefinitionByReferenceNode extends PartialDefNode {
   VariableAccess va;
 
   Expr argument;
 
-  DefinitionByReferenceNode() { this = TDefinitionByReferenceNode(va, argument) }
+  DefinitionByReferenceNode() {
+    exists(DefinitionByReference def |
+      def = this.getPartialDefinition() and
+      argument = def.getDefinedExpr() and
+      va = def.getVariableAccess()
+    )
+  }
 
   override Function getFunction() { result = va.getEnclosingFunction() }
 

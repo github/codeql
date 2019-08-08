@@ -140,24 +140,17 @@
 | taint.cpp:165:22:165:25 | {...} | taint.cpp:172:10:172:15 | buffer |  |
 | taint.cpp:165:22:165:25 | {...} | taint.cpp:173:8:173:13 | buffer |  |
 | taint.cpp:165:24:165:24 | 0 | taint.cpp:165:22:165:25 | {...} | TAINT |
-| taint.cpp:168:8:168:14 | tainted [post update] | taint.cpp:172:18:172:24 | tainted |  |
 | taint.cpp:170:10:170:15 | buffer | taint.cpp:170:3:170:8 | call to strcpy |  |
-| taint.cpp:170:10:170:15 | buffer [post update] | taint.cpp:170:3:170:8 | call to strcpy |  |
-| taint.cpp:170:10:170:15 | buffer [post update] | taint.cpp:171:8:171:13 | buffer |  |
-| taint.cpp:170:10:170:15 | buffer [post update] | taint.cpp:172:10:172:15 | buffer |  |
-| taint.cpp:170:10:170:15 | buffer [post update] | taint.cpp:173:8:173:13 | buffer |  |
+| taint.cpp:170:10:170:15 | ref arg buffer | taint.cpp:170:3:170:8 | call to strcpy |  |
 | taint.cpp:170:10:170:15 | ref arg buffer | taint.cpp:171:8:171:13 | buffer |  |
 | taint.cpp:170:10:170:15 | ref arg buffer | taint.cpp:172:10:172:15 | buffer |  |
 | taint.cpp:170:10:170:15 | ref arg buffer | taint.cpp:173:8:173:13 | buffer |  |
 | taint.cpp:170:18:170:26 | Hello,  | taint.cpp:170:10:170:15 | ref arg buffer | TAINT |
-| taint.cpp:171:8:171:13 | buffer [post update] | taint.cpp:172:10:172:15 | buffer |  |
-| taint.cpp:171:8:171:13 | buffer [post update] | taint.cpp:173:8:173:13 | buffer |  |
 | taint.cpp:171:8:171:13 | ref arg buffer | taint.cpp:172:10:172:15 | buffer |  |
 | taint.cpp:171:8:171:13 | ref arg buffer | taint.cpp:173:8:173:13 | buffer |  |
 | taint.cpp:172:10:172:15 | buffer | taint.cpp:172:3:172:8 | call to strcat |  |
 | taint.cpp:172:10:172:15 | buffer | taint.cpp:172:10:172:15 | ref arg buffer | TAINT |
-| taint.cpp:172:10:172:15 | buffer [post update] | taint.cpp:172:3:172:8 | call to strcat |  |
-| taint.cpp:172:10:172:15 | buffer [post update] | taint.cpp:173:8:173:13 | buffer |  |
+| taint.cpp:172:10:172:15 | ref arg buffer | taint.cpp:172:3:172:8 | call to strcat |  |
 | taint.cpp:172:10:172:15 | ref arg buffer | taint.cpp:173:8:173:13 | buffer |  |
 | taint.cpp:172:18:172:24 | tainted | taint.cpp:172:10:172:15 | ref arg buffer | TAINT |
 | taint.cpp:180:19:180:19 | p | taint.cpp:181:9:181:9 | p |  |
@@ -168,7 +161,7 @@
 | taint.cpp:193:6:193:6 | x | taint.cpp:194:10:194:10 | x |  |
 | taint.cpp:193:6:193:6 | x | taint.cpp:195:7:195:7 | x |  |
 | taint.cpp:194:9:194:10 | & ... | taint.cpp:194:2:194:7 | call to memcpy |  |
-| taint.cpp:194:9:194:10 | & ... [post update] | taint.cpp:194:2:194:7 | call to memcpy |  |
+| taint.cpp:194:9:194:10 | ref arg & ... | taint.cpp:194:2:194:7 | call to memcpy |  |
 | taint.cpp:194:9:194:10 | ref arg & ... | taint.cpp:195:7:195:7 | x |  |
 | taint.cpp:194:10:194:10 | x | taint.cpp:194:9:194:10 | & ... | TAINT |
 | taint.cpp:194:13:194:18 | source | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
@@ -183,7 +176,5 @@
 | taint.cpp:208:6:208:6 | 0 | taint.cpp:216:7:216:7 | y |  |
 | taint.cpp:213:12:213:12 | ref arg x | taint.cpp:215:7:215:7 | x |  |
 | taint.cpp:213:12:213:12 | x | taint.cpp:213:15:213:15 | ref arg y |  |
-| taint.cpp:213:12:213:12 | x [post update] | taint.cpp:215:7:215:7 | x |  |
 | taint.cpp:213:15:213:15 | ref arg y | taint.cpp:216:7:216:7 | y |  |
 | taint.cpp:213:15:213:15 | y | taint.cpp:213:12:213:12 | ref arg x |  |
-| taint.cpp:213:15:213:15 | y [post update] | taint.cpp:216:7:216:7 | y |  |
