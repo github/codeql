@@ -352,6 +352,6 @@ Exercise 4
      }
    }
 
-   from DataFlow::Node src, DataFlow::Node sink, Configuration config
+   from DataFlow::Node src, DataFlow::Node sink, GetenvToURLConfiguration config
    where config.hasFlow(src, sink)
    select src, "This environment variable constructs a URL $@.", sink, "here"
