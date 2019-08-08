@@ -438,30 +438,72 @@ module StringOps {
   }
 
   /**
-   * A data flow node that concatenates strings and returns the result.
+   * Holds if `first` and `second` are adjacent leaves in a concatenation tree.
    */
-  class Concatenation extends DataFlow::Node {
-    Concatenation() {
+  pragma[nomagic]
+  private predicate adjacentLeaves(ConcatenationLeaf first, ConcatenationLeaf second) {
+    exists(Concatenation parent, int i |
+      first = parent.getOperand(i).getLastLeaf() and
+      second = parent.getOperand(i + 1).getFirstLeaf()
+    )
+  }
+
+  /**
+   * A data flow node that performs a string concatenation or occurs as an operand
+   * in a string concatenation.
+   *
+   * For example, the expression `x + y + z` contains the following concatenation
+   * nodes:
+   * - The leaf nodes `x`, `y`, and `z`
+   * - The intermediate node `x + y`, which is both a concatenation and an operand
+   * - The root node `x + y + z`
+   *
+   *
+   * Note that the following are not recognized a string concatenations:
+   * - Array `join()` calls with a non-empty separator
+   * - Tagged template literals
+   *
+   *
+   * Also note that all `+` operators are seen as string concatenations,
+   * even in cases where it is used for arithmetic.
+   *
+   * Examples of string concatenations:
+   * ```
+   * x + y
+   * x += y
+   * [x, y].join('')
+   * Array(x, y).join('')
+   * `Hello, ${message}`
+   * ```
+   */
+  class ConcatenationNode extends DataFlow::Node {
+    pragma[inline]
+    ConcatenationNode() {
       exists(StringConcatenation::getAnOperand(this))
+      or
+      this = StringConcatenation::getAnOperand(_)
     }
 
     /**
      * Gets the `n`th operand of this string concatenation.
      */
-    DataFlow::Node getOperand(int n) {
+    pragma[inline]
+    ConcatenationOperand getOperand(int n) {
       result = StringConcatenation::getOperand(this, n)
     }
 
     /**
      * Gets an operand of this string concatenation.
      */
-    DataFlow::Node getAnOperand() {
+    pragma[inline]
+    ConcatenationOperand getAnOperand() {
       result = StringConcatenation::getAnOperand(this)
     }
 
     /**
      * Gets the number of operands of this string concatenation.
      */
+    pragma[inline]
     int getNumOperand() {
       result = StringConcatenation::getNumOperand(this)
     }
@@ -469,20 +511,23 @@ module StringOps {
     /**
      * Gets the first operand of this string concatenation.
      */
-    DataFlow::Node getFirstOperand() {
+    pragma[inline]
+    ConcatenationOperand getFirstOperand() {
       result = StringConcatenation::getFirstOperand(this)
     }
 
     /**
      * Gets the last operand of this string concatenation
      */
-    DataFlow::Node getLastOperand() {
+    pragma[inline]
+    ConcatenationOperand getLastOperand() {
       result = StringConcatenation::getLastOperand(this)
     }
 
     /**
      * Holds if this only acts as a string coercion, such as `"" + x`.
      */
+    pragma[inline]
     predicate isCoercion() {
       StringConcatenation::isCoercion(this)
     }
@@ -492,15 +537,220 @@ module StringOps {
      * it is a concatenation operator that is not itself the immediate operand to
      * another concatenation operator.
      */
+    pragma[inline]
     predicate isRoot() {
       StringConcatenation::isRoot(this)
     }
 
     /**
+     * Holds if this is a leaf in the concatenation tree, that is, it is not
+     * itself a concatenation.
+     */
+    pragma[inline]
+    predicate isLeaf() {
+      not exists(StringConcatenation::getAnOperand(this))
+    }
+
+    /**
      * Gets the root of the concatenation tree in which this is an operator.
      */
-    Concatenation getRoot() {
+    pragma[inline]
+    ConcatenationRoot getRoot() {
       result = StringConcatenation::getRoot(this)
+    }
+
+    /**
+     * Gets the enclosing concatenation in which this is an operand, if any.
+     */
+    pragma[inline]
+    Concatenation getParentConcatenation() {
+      this = StringConcatenation::getAnOperand(result)
+    }
+
+    /**
+     * Gets the last leaf in this concatenation tree.
+     *
+     * For example, `z` is the last leaf in `x + y + z`.
+     */
+    pragma[inline]
+    ConcatenationLeaf getLastLeaf() {
+      result = StringConcatenation::getLastOperand*(this)
+    }
+
+    /**
+     * Gets the first leaf in this concatenation tree.
+     *
+     * For example, `x` is the first leaf in `x + y + z`.
+     */
+    pragma[inline]
+    ConcatenationLeaf getFirstLeaf() {
+      result = StringConcatenation::getFirstOperand*(this)
+    }
+
+    /**
+     * Gets the leaf that is occurs immediately before this leaf in the
+     * concatenation tree, if any.
+     *
+     * For example, `y` is the previous leaf from `z` in `x + y + z`.
+     */
+    pragma[inline]
+    ConcatenationLeaf getPreviousLeaf() {
+      adjacentLeaves(result, this)
+    }
+
+    /**
+     * Gets the leaf that is occurs immediately after this leaf in the
+     * concatenation tree, if any.
+     *
+     * For example, `y` is the next leaf from `x` in `x + y + z`.
+     */
+    pragma[inline]
+    ConcatenationLeaf getNextLeaf() {
+      adjacentLeaves(this, result)
+    }
+  }
+
+  /**
+   * A data flow node that performs a string concatenation and returns the result.
+   *
+   * Examples:
+   * ```
+   * x + y
+   * x += y
+   * [x, y].join('')
+   * Array(x, y).join('')
+   * `Hello ${message}`
+   * ```
+   *
+   * See `ConcatenationNode` for more information.
+   */
+  class Concatenation extends ConcatenationNode {
+    pragma[inline]
+    Concatenation() {
+      exists(StringConcatenation::getAnOperand(this))
+    }
+  }
+
+  /**
+   * One of the operands in a string concatenation.
+   *
+   * Examples:
+   * ```
+   * x + y              // x and y are operands
+   * [x, y].join('')    // x and y are operands
+   * `Hello ${message}` // `Hello ` and message are operands
+   * ```
+   *
+   * See `ConcatenationNode` for more information.
+   */
+  class ConcatenationOperand extends ConcatenationNode {
+    pragma[inline]
+    ConcatenationOperand() {
+      this = StringConcatenation::getAnOperand(_)
+    }
+  }
+
+  /**
+   * A data flow node that performs a string concatenation, and is not an
+   * immediate operand in a larger string concatenation.
+   *
+   * Examples:
+   * ```
+   * // x + y + z is a root, but the inner x + y is not
+   * return x + y + z;
+   * ```
+   *
+   * See `ConcatenationNode` for more information.
+   */
+  class ConcatenationRoot extends Concatenation {
+    pragma[inline]
+    ConcatenationRoot() {
+      isRoot()
+    }
+
+    /**
+     * Gets a leaf in this concatenation tree that this node is the root of.
+     */
+    pragma[inline]
+    ConcatenationLeaf getALeaf() {
+      this = StringConcatenation::getRoot(result)
+    }
+
+    /**
+     * Returns the concatenation of all constant operands in this concatenation,
+     * ignoring the non-constant parts entirely.
+     *
+     * For example, for the following concatenation
+     * ```
+     * `Hello ${person}, how are you?`
+     * ```
+     * the result is `"Hello , how are you?"`
+     */
+    string getConstantStringParts() {
+      result = getStringValue()
+      or
+      not exists(getStringValue()) and
+      result = strictconcat(StringLiteralLike leaf |
+        leaf = getALeaf().asExpr()
+      |
+        leaf.getStringValue()
+        order by leaf.getFirstToken().getIndex() asc
+      )
+    }
+  }
+
+  /** A string literal or template literal without any substitutions. */
+  private class StringLiteralLike extends Expr {
+    StringLiteralLike() {
+      this instanceof StringLiteral or
+      this instanceof TemplateElement
+    }
+  }
+
+  /**
+   * An operand to a concatenation that is not itself a concatenation.
+   *
+   * Example:
+   * ```
+   * x + y + z            // x, y, and z are leaves
+   * [x, y + z].join('')  // x, y, and z are leaves
+   * ```
+   *
+   * See `ConcatenationNode` for more information.
+   */
+  class ConcatenationLeaf extends ConcatenationOperand {
+    pragma[inline]
+    ConcatenationLeaf() {
+      isLeaf()
+    }
+  }
+
+  /**
+   * The root node in a concatenation of one or more strings containing HTML fragments.
+   */
+  class HtmlConcatenationRoot extends ConcatenationRoot {
+    pragma[noinline]
+    HtmlConcatenationRoot() {
+      getConstantStringParts().regexpMatch("(?s).*</?[a-zA-Z][^\\r\\n<>/]*/?>.*")
+    }
+  }
+
+  /**
+   * A data flow node that is part of an HTML string concatenation.
+   */
+  class HtmlConcatenationNode extends ConcatenationNode {
+    HtmlConcatenationNode() {
+      getRoot() instanceof HtmlConcatenationRoot
+    }
+  }
+
+  /**
+   * A data flow node that is part of an HTML string concatenation,
+   * and is not itself a concatenation operator.
+   */
+  class HtmlConcatenationLeaf extends ConcatenationLeaf {
+    HtmlConcatenationLeaf() {
+      getRoot() instanceof HtmlConcatenationRoot
     }
   }
 }
