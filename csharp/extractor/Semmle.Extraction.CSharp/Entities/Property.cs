@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -12,19 +13,13 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Property(Context cx, IPropertySymbol init)
             : base(cx, init) { }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    tb.Append(ContainingType);
-                    tb.Append(".");
-                    Method.AddExplicitInterfaceQualifierToId(Context, tb, symbol.ExplicitInterfaceImplementations);
-                    tb.Append(symbol.Name);
-                    tb.Append(";property");
-                });
-            }
+            trapFile.WriteSubId(ContainingType);
+            trapFile.Write('.');
+            Method.AddExplicitInterfaceQualifierToId(Context, trapFile, symbol.ExplicitInterfaceImplementations);
+            trapFile.Write(symbol.Name);
+            trapFile.Write(";property");
         }
 
         public override void Populate()

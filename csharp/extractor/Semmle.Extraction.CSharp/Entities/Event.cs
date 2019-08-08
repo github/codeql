@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -9,19 +10,13 @@ namespace Semmle.Extraction.CSharp.Entities
         Event(Context cx, IEventSymbol init)
             : base(cx, init) { }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    tb.Append(ContainingType);
-                    tb.Append(".");
-                    Method.AddExplicitInterfaceQualifierToId(Context, tb, symbol.ExplicitInterfaceImplementations);
-                    tb.Append(symbol.Name);
-                    tb.Append(";event");
-                });
-            }
+            trapFile.WriteSubId(ContainingType);
+            trapFile.Write('.');
+            Method.AddExplicitInterfaceQualifierToId(Context, trapFile, symbol.ExplicitInterfaceImplementations);
+            trapFile.Write(symbol.Name);
+            trapFile.Write(";event");
         }
 
         public override void Populate()

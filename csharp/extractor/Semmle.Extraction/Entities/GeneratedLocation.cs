@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Semmle.Extraction.Entities
 {
     public class GeneratedLocation : SourceLocation
@@ -15,7 +17,12 @@ namespace Semmle.Extraction.Entities
             Context.TrapWriter.locations_default(this, GeneratedFile, 0, 0, 0, 0);
         }
 
-        public override IId Id => new Key("loc,", GeneratedFile, ",0,0,0,0");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.Write("loc,");
+            trapFile.WriteSubId(GeneratedFile);
+            trapFile.Write(",0,0,0,0");
+        }
 
         public override int GetHashCode() => 98732567;
 

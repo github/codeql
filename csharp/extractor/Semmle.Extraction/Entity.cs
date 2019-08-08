@@ -1,5 +1,5 @@
 using Microsoft.CodeAnalysis;
-using System;
+using System.IO;
 
 namespace Semmle.Extraction
 {
@@ -26,10 +26,17 @@ namespace Semmle.Extraction
         Label Label { set; get; }
 
         /// <summary>
-        /// The ID used for the entity, as it is in the trap file.
-        /// Could be '*'.
+        /// Writes the unique identifier of this entitiy to a trap file.
         /// </summary>
-        IId Id { get; }
+        /// <param name="writer"></param>
+        void WriteId(TextWriter writer);
+
+        /// <summary>
+        /// Writes the quoted identifier of this entity,
+        /// which could be @"..." or *
+        /// </summary>
+        /// <param name="writer"></param>
+        void WriteQuotedId(TextWriter writer);
 
         /// <summary>
         /// The location for reporting purposes.
@@ -133,5 +140,34 @@ namespace Semmle.Extraction
         /// <returns>The entity.</returns>
         public static Entity CreateEntity2<Type, Entity>(this ICachedEntityFactory<Type, Entity> factory, Context cx, Type init)
             where Entity : ICachedEntity => cx.CreateEntity2(factory, init);
+
+        public static void DefineLabel(this IEntity entity, TextWriter trapFile)
+        {
+            trapFile.WriteLabel(entity);
+            trapFile.Write("=");
+            entity.WriteQuotedId(trapFile);
+            trapFile.WriteLine();
+        }
+
+        public static void DefineFreshLabel(this IEntity entity, TextWriter trapFile)
+        {
+            trapFile.WriteLabel(entity);
+            trapFile.WriteLine("=*");
+        }
+
+        /// <summary>
+        /// Generates a debug string for this entity.
+        /// </summary>
+        /// <param name="entity">The entity to view.</param>
+        /// <returns>The debug string.</returns>
+        public static string GetDebugLabel(this IEntity entity)
+        {
+            var writer = new StringWriter();
+            writer.WriteLabel(entity.Label.Value);
+            writer.Write('=');
+            entity.WriteQuotedId(writer);
+            return writer.ToString();
+        }
+
     }
 }

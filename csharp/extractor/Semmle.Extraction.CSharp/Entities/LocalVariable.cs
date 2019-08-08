@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.Entities;
 
@@ -18,7 +19,13 @@ namespace Semmle.Extraction.CSharp.Entities
         readonly bool IsVar;
         readonly Extraction.Entities.Location DeclLocation;
 
-        public override IId Id => new Key(Parent, "_", symbol.Name, ";localvar");
+        public override void WriteId(TextWriter tw)
+        {
+            tw.WriteSubId(Parent);
+            tw.Write('_');
+            tw.Write(symbol.Name);
+            tw.Write(";localvar");
+        }
 
         public override void Populate()
         {

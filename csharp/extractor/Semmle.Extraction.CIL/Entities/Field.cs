@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using System.Reflection.Metadata;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
+using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -37,6 +38,16 @@ namespace Semmle.Extraction.CIL.Entities
         public Label Label { get; set; }
 
         public IId Id => ShortId + IdSuffix;
+
+        public void WriteId(TextWriter trapFile)
+        {
+            trapFile.WriteIId(Id);
+        }
+
+        public void WriteQuotedId(TextWriter trapFile)
+        {
+            WriteId(trapFile);
+        }
 
         public Id IdSuffix => fieldSuffix;
 

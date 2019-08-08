@@ -10,7 +10,7 @@ namespace Semmle.Extraction
 {
     public interface ITrapEmitter
     {
-        void EmitToTrapBuilder(ITrapBuilder tb);
+        void EmitToTrapBuilder(TextWriter tw);
     }
 
     public sealed class TrapWriter : IDisposable
@@ -34,9 +34,6 @@ namespace Semmle.Extraction
         readonly Lazy<StreamWriter> WriterLazy;
 
         public StreamWriter Writer => WriterLazy.Value;
-
-        readonly Lazy<TrapBuilder> BuilderLazy;
-        TrapBuilder Builder => BuilderLazy.Value;
 
         readonly ILogger Logger;
 
@@ -68,7 +65,6 @@ namespace Semmle.Extraction
                 var compressionStream = new GZipStream(fileStream, CompressionMode.Compress);
                 return new StreamWriter(compressionStream, UTF8, 2000000);
             });
-            BuilderLazy = new Lazy<TrapBuilder>(() => new TrapBuilder(WriterLazy.Value));
             this.archive = archive;
             this.discardDuplicates = discardDuplicates;
         }
@@ -177,7 +173,7 @@ namespace Semmle.Extraction
 
         public void Emit(ITrapEmitter emitter)
         {
-            emitter.EmitToTrapBuilder(Builder);
+            emitter.EmitToTrapBuilder(Writer);
         }
 
         /// <summary>
@@ -193,34 +189,6 @@ namespace Semmle.Extraction
                 foreach (var b in sha)
                     hex.AppendFormat("{0:x2}", b);
                 return hex.ToString();
-            }
-        }
-
-        class TrapBuilder : ITrapBuilder
-        {
-            readonly StreamWriter StreamWriter;
-
-            public TrapBuilder(StreamWriter sw)
-            {
-                StreamWriter = sw;
-            }
-
-            public ITrapBuilder Append(object arg)
-            {
-                StreamWriter.Write(arg);
-                return this;
-            }
-
-            public ITrapBuilder Append(string arg)
-            {
-                StreamWriter.Write(arg);
-                return this;
-            }
-
-            public ITrapBuilder AppendLine()
-            {
-                StreamWriter.WriteLine();
-                return this;
             }
         }
 

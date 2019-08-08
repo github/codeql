@@ -4,6 +4,7 @@ using Semmle.Extraction.CSharp.Populators;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -75,16 +76,14 @@ namespace Semmle.Extraction.CSharp.Entities
         public static Parameter GetAlreadyCreated(Context cx, IParameterSymbol param) =>
             ParameterFactory.Instance.CreateEntity(cx, param, null, null);
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                // This is due to a bug in Roslyn when ValueTuple.cs is extracted.
-                // The parameter symbols don't match up properly so we don't have a parent.
-                if (Parent == null)
-                    Parent = Method.Create(Context, symbol.ContainingSymbol as IMethodSymbol);
-                return new Key(Parent, "_", Ordinal, ";parameter");
-            }
+            if (Parent == null)
+                Parent = Method.Create(Context, symbol.ContainingSymbol as IMethodSymbol);
+            trapFile.WriteSubId(Parent);
+            trapFile.Write('_');
+            trapFile.Write(Ordinal);
+            trapFile.Write(";parameter");
         }
 
         public override bool NeedsPopulation => true;
@@ -193,7 +192,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public sealed override IId Id => new Key("__arglist;type");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.Write("__arglist;type");
+        }
 
         public override int GetHashCode()
         {

@@ -65,14 +65,15 @@ namespace Semmle.Extraction.Entities
             return AssemblyConstructorFactory.Instance.CreateEntity(cx, null);
         }
 
-        public override IId Id
+        public override void WriteId(System.IO.TextWriter trapFile)
         {
-            get
+            trapFile.Write(assembly.ToString());
+            if (assemblyPath is null)
             {
-                return assemblyPath == null
-                    ? new Key(assembly, ";assembly")
-                    : new Key(assembly, "#file:///", assemblyPath.Replace("\\", "/"), ";assembly");
+                trapFile.Write("#file:///");
+                trapFile.Write(assemblyPath.Replace("\\", "/"));
             }
+            trapFile.Write(";assembly");
         }
     }
 }

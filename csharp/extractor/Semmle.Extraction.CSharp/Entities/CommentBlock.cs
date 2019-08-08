@@ -1,5 +1,6 @@
 using Semmle.Extraction.CommentProcessing;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -21,13 +22,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override IId Id
+        public override void WriteId(TextWriter tw)
         {
-            get
-            {
-                var loc = Context.Create(symbol.Location);
-                return new Key(loc, ";commentblock");
-            }
+            tw.WriteSubId(Context.Create(symbol.Location));
+            tw.Write(";commentblock");
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol.Location;

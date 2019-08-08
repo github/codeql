@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.Entities
@@ -31,15 +32,20 @@ namespace Semmle.Extraction.Entities
             private set;
         }
 
-        public override IId Id
+        public override void WriteId(System.IO.TextWriter trapFile)
         {
-            get
-            {
-                FileLinePositionSpan l = symbol.GetLineSpan();
-                FileEntity = Entities.File.Create(Context, l.Path);
-                return new Key("loc,", FileEntity, ",", l.Span.Start.Line + 1, ",",
-                    l.Span.Start.Character + 1, ",", l.Span.End.Line + 1, ",", l.Span.End.Character);
-            }
+            FileLinePositionSpan l = symbol.GetLineSpan();
+            FileEntity = Entities.File.Create(Context, l.Path);
+            trapFile.Write("loc,");
+            trapFile.WriteSubId(FileEntity);
+            trapFile.Write(',');
+            trapFile.Write(l.Span.Start.Line + 1);
+            trapFile.Write(',');
+            trapFile.Write(l.Span.Start.Character + 1);
+            trapFile.Write(',');
+            trapFile.Write(l.Span.End.Line + 1);
+            trapFile.Write(',');
+            trapFile.Write(l.Span.End.Character);
         }
 
         class SourceLocationFactory : ICachedEntityFactory<Microsoft.CodeAnalysis.Location, SourceLocation>

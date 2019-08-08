@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -22,13 +23,15 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
+            if (!symbol.IsGlobalNamespace)
             {
-                return symbol.IsGlobalNamespace ? new Key(";namespace") :
-                    new Key(Create(Context, symbol.ContainingNamespace), ".", symbol.Name, ";namespace");
+                trapFile.WriteSubId(Create(Context, symbol.ContainingNamespace));
+                trapFile.Write('.');
+                trapFile.Write(symbol.Name);
             }
+            trapFile.Write(";namespace");
         }
 
         public static Namespace Create(Context cx, INamespaceSymbol ns) => NamespaceFactory.Instance.CreateEntity2(cx, ns);

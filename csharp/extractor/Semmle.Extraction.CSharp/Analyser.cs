@@ -375,6 +375,7 @@ namespace Semmle.Extraction.CSharp
                             Populators.CompilationUnit.Extract(cx, tree.GetRoot());
                             cx.PopulateAll();
                             cx.ExtractComments(cx.CommentGenerator);
+                            cx.PopulateAll();
                         }
                     }
                 }

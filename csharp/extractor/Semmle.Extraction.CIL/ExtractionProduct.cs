@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Semmle.Extraction.CIL
 {
@@ -45,6 +46,16 @@ namespace Semmle.Extraction.CIL
         public abstract IEnumerable<IExtractionProduct> Contents { get; }
         public Label Label { get; set; }
 
+        public void WriteId(System.IO.TextWriter trapFile)
+        {
+            trapFile.Write('*');
+        }
+
+        public void WriteQuotedId(TextWriter trapFile)
+        {
+            WriteId(trapFile);
+        }
+
         public Microsoft.CodeAnalysis.Location ReportingLocation => throw new NotImplementedException();
 
         public virtual IId Id => FreshId.Instance;
@@ -78,6 +89,16 @@ namespace Semmle.Extraction.CIL
         public Id ShortId { get; set; }
         public abstract Id IdSuffix { get; }
         public IId Id => ShortId + IdSuffix;
+
+        public void WriteId(System.IO.TextWriter trapFile)
+        {
+            trapFile.WriteIId(Id);
+        }
+
+        public void WriteQuotedId(TextWriter trapFile)
+        {
+            WriteId(trapFile);
+        }
 
         public void Extract(Context cx2)
         {

@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -105,57 +106,62 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         ///  Factored out to share logic between `Method` and `UserOperator`.
         /// </summary>
-        protected static void BuildMethodId(Method m, ITrapBuilder tb)
+        protected static void BuildMethodId(Method m, TextWriter tw)
         {
-            tb.Append(m.ContainingType);
+            tw.WriteSubId(m.ContainingType);
 
-            AddExplicitInterfaceQualifierToId(m.Context, tb, m.symbol.ExplicitInterfaceImplementations);
+            AddExplicitInterfaceQualifierToId(m.Context, tw, m.symbol.ExplicitInterfaceImplementations);
 
-            tb.Append(".").Append(m.symbol.Name);
+            tw.Write(".");
+            tw.Write(m.symbol.Name);
 
             if (m.symbol.IsGenericMethod)
             {
                 if (Equals(m.symbol, m.symbol.OriginalDefinition))
                 {
-                    tb.Append("`").Append(m.symbol.TypeParameters.Length);
+                    tw.Write('`');
+                    tw.Write(m.symbol.TypeParameters.Length);
                 }
                 else
                 {
-                    tb.Append("<");
+                    tw.Write('<');
                     // Encode the nullability of the type arguments in the label.
                     // Type arguments with different nullability can result in 
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    tb.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); tb.Append((int)ta.Nullability); });
-                    tb.Append(">");
+                    tw.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); tw.Write((int)ta.Nullability); });
+                    tw.Write('>');
                 }
             }
 
-            AddParametersToId(m.Context, tb, m.symbol);
+            AddParametersToId(m.Context, tw, m.symbol);
             switch (m.symbol.MethodKind)
             {
                 case MethodKind.PropertyGet:
-                    tb.Append(";getter");
+                    tw.Write(";getter");
                     break;
                 case MethodKind.PropertySet:
-                    tb.Append(";setter");
+                    tw.Write(";setter");
                     break;
                 case MethodKind.EventAdd:
-                    tb.Append(";adder");
+                    tw.Write(";adder");
                     break;
                 case MethodKind.EventRaise:
-                    tb.Append(";raiser");
+                    tw.Write(";raiser");
                     break;
                 case MethodKind.EventRemove:
-                    tb.Append(";remover");
+                    tw.Write(";remover");
                     break;
                 default:
-                    tb.Append(";method");
+                    tw.Write(";method");
                     break;
             }
         }
 
-        public override IId Id => new Key(tb => BuildMethodId(this, tb));
+        public override void WriteId(TextWriter trapFile)
+        {
+            BuildMethodId(this, trapFile);
+        }
 
         /// <summary>
         /// Adds an appropriate label ID to the trap builder <paramref name="tb"/>
@@ -193,58 +199,54 @@ namespace Semmle.Extraction.CSharp.Entities
         /// to make the reference to <code>#3</code> in the label definition <code>#4</code> for
         /// <code>T</code> valid.
         /// </summary>
-        protected static void AddSignatureTypeToId(Context cx, ITrapBuilder tb, IMethodSymbol method, ITypeSymbol type)
+        protected static void AddSignatureTypeToId(Context cx, TextWriter tb, IMethodSymbol method, ITypeSymbol type)
         {
             if (type.ContainsTypeParameters(cx, method))
                 type.BuildTypeId(cx, tb, (cx0, tb0, type0) => AddSignatureTypeToId(cx, tb0, method, type0));
             else
-                tb.Append(Type.Create(cx, type));
+                tb.WriteSubId(Type.Create(cx, type));
         }
 
-        protected static void AddParametersToId(Context cx, ITrapBuilder tb, IMethodSymbol method)
+        protected static void AddParametersToId(Context cx, TextWriter tb, IMethodSymbol method)
         {
-            tb.Append("(");
-            tb.AppendList(",", AddParameterPartsToId(cx, tb, method));
-            tb.Append(")");
-        }
+            tb.Write('(');
+            int index = 0;
 
-        // This is a slight abuse of ITrapBuilder.AppendList().
-        // yield return "" is used to insert a list separator
-        // at the desired location.
-        static IEnumerable<object> AddParameterPartsToId(Context cx, ITrapBuilder tb, IMethodSymbol method)
-        {
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
+                tb.WriteSeparator(",", index++);
                 AddSignatureTypeToId(cx, tb, method, method.ReceiverType);
-                yield return "";    // The next yield return outputs a ","
             }
 
             foreach (var param in method.Parameters)
             {
-                yield return "";    // Maybe print ","
+                tb.WriteSeparator(",", index++);
                 AddSignatureTypeToId(cx, tb, method, param.Type);
                 switch (param.RefKind)
                 {
                     case RefKind.Out:
-                        yield return " out";
+                        tb.Write(" out");
                         break;
                     case RefKind.Ref:
-                        yield return " ref";
+                        tb.Write(" ref");
                         break;
                 }
             }
 
             if (method.IsVararg)
             {
-                yield return "__arglist";
+                tb.WriteSeparator(",", index++);
+                tb.Write("__arglist");
             }
+
+            tb.Write(')');
         }
 
-        public static void AddExplicitInterfaceQualifierToId(Context cx, ITrapBuilder tb, IEnumerable<ISymbol> explicitInterfaceImplementations)
+        public static void AddExplicitInterfaceQualifierToId(Context cx, System.IO.TextWriter tw, IEnumerable<ISymbol> explicitInterfaceImplementations)
         {
             if (explicitInterfaceImplementations.Any())
             {
-                tb.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
+                tw.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
             }
         }
 

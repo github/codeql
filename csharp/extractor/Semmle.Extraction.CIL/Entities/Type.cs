@@ -6,6 +6,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using Semmle.Util;
+using System.IO;
+using System.Text;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -54,6 +56,22 @@ namespace Semmle.Extraction.CIL.Entities
         public virtual Label Label { get; set; }
 
         public virtual IId Id { get { return ShortId + IdSuffix; } }
+
+        public void WriteId(System.IO.TextWriter trapFile)
+        {
+            // TODO: Specialise this 
+            trapFile.WriteIId(Id);
+        }
+
+        /// <summary>
+        /// For debugging purposes.
+        /// </summary>
+        string DebugId => this.GetDebugLabel();
+
+        public void WriteQuotedId(TextWriter trapFile)
+        {
+            WriteId(trapFile);
+        }
 
         public Id ShortId { get; set; }
         public abstract Id IdSuffix { get; }

@@ -5,6 +5,7 @@ using Semmle.Util;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -109,18 +110,12 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    if (symbol.IsStatic) tb.Append("static");
-                    tb.Append(ContainingType);
-                    AddParametersToId(Context, tb, symbol);
-                    tb.Append(";constructor");
-                });
-            }
+            if (symbol.IsStatic) trapFile.Write("static");
+            trapFile.WriteSubId(ContainingType);
+            AddParametersToId(Context, trapFile, symbol);
+            trapFile.Write(";constructor");
         }
 
         ConstructorDeclarationSyntax GetSyntax() =>

@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -21,9 +22,10 @@ namespace Semmle.Extraction.CSharp.Entities
             Context.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace)));
         }
 
-        static readonly Key id = new Key("dynamic;type");
-
-        public override IId Id => id;
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.Write("dynamic;type");
+        }
 
         class DynamicTypeFactory : ICachedEntityFactory<IDynamicTypeSymbol, DynamicType>
         {

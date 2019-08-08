@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Semmle.Extraction.CSharp.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp
@@ -128,9 +129,9 @@ namespace Semmle.Extraction.CSharp
         /// syntactic sub terms of this type (if any).
         /// </summary>
         /// <param name="cx">The extraction context.</param>
-        /// <param name="tb">The trap builder used to store the result.</param>
+        /// <param name="tw">The trap builder used to store the result.</param>
         /// <param name="subTermAction">The action to apply to syntactic sub terms of this type.</param>
-        public static void BuildTypeId(this ITypeSymbol type, Context cx, ITrapBuilder tb, Action<Context, ITrapBuilder, ITypeSymbol> subTermAction)
+        public static void BuildTypeId(this ITypeSymbol type, Context cx, TextWriter tw, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
             if (type.SpecialType != SpecialType.None)
             {
@@ -139,7 +140,7 @@ namespace Semmle.Extraction.CSharp
                  * This makes the IDs shorter and means that all built-in types map to
                  * the same entities (even when using multiple versions of mscorlib).
                  */
-                tb.Append(type.ToDisplayString());
+                tw.Write(type.ToDisplayString());
                 return;
             }
 
@@ -149,8 +150,8 @@ namespace Semmle.Extraction.CSharp
                 {
                     case TypeKind.Array:
                         var array = (IArrayTypeSymbol)type;
-                        subTermAction(cx, tb, array.ElementType);
-                        array.BuildArraySuffix(tb);
+                        subTermAction(cx, tw, array.ElementType);
+                        array.BuildArraySuffix(tw);
                         return;
                     case TypeKind.Class:
                     case TypeKind.Interface:
@@ -159,19 +160,19 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeId(cx, tb, subTermAction);
+                        named.BuildNamedTypeId(cx, tw, subTermAction);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
-                        subTermAction(cx, tb, ptr.PointedAtType);
-                        tb.Append("*");
+                        subTermAction(cx, tw, ptr.PointedAtType);
+                        tw.Write('*');
                         return;
                     case TypeKind.TypeParameter:
                         var tp = (ITypeParameterSymbol)type;
-                        tb.Append(tp.Name);
+                        tw.Write(tp.Name);
                         return;
                     case TypeKind.Dynamic:
-                        tb.Append("dynamic");
+                        tw.Write("dynamic");
                         return;
                     default:
                         throw new InternalError(type, $"Unhandled type kind '{type.TypeKind}'");
@@ -179,64 +180,70 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
+
         /// <summary>
         /// Constructs an array suffix string for this array type symbol.
         /// </summary>
         /// <param name="tb">The trap builder used to store the result.</param>
-        public static void BuildArraySuffix(this IArrayTypeSymbol array, ITrapBuilder tb)
+        public static void BuildArraySuffix(this IArrayTypeSymbol array, TextWriter tb)
         {
-            tb.Append("[");
+            tb.Write('[');
             for (int i = 0; i < array.Rank - 1; i++)
-                tb.Append(",");
-            tb.Append("]");
+                tb.Write(',');
+            tb.Write(']');
         }
 
-        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, ITrapBuilder tb, Action<Context, ITrapBuilder, ITypeSymbol> subTermAction)
+        static void BuildNamedTypeId(this INamedTypeSymbol named, Context cx, TextWriter tw, Action<Context, TextWriter, ITypeSymbol> subTermAction)
         {
             if (named.IsTupleType)
             {
-                tb.Append("(");
-                tb.BuildList(",", named.TupleElements,
+                tw.Write('(');
+                tw.BuildList(",", named.TupleElements,
                     (f, tb0) =>
                     {
-                        tb.Append(f.Name).Append(":");
+                        tw.Write(f.Name);
+                        tw.Write(":");
                         subTermAction(cx, tb0, f.Type);
                     }
                     );
-                tb.Append(")");
+                tw.Write(")");
                 return;
             }
 
             if (named.ContainingType != null)
             {
-                subTermAction(cx, tb, named.ContainingType);
-                tb.Append(".");
+                subTermAction(cx, tw, named.ContainingType);
+                tw.Write('.');
             }
             else if (named.ContainingNamespace != null)
             {
-                named.ContainingNamespace.BuildNamespace(cx, tb);
+                named.ContainingNamespace.BuildNamespace(cx, tw);
             }
 
             if (named.IsAnonymousType)
-                named.BuildAnonymousName(cx, tb, subTermAction, true);
+                named.BuildAnonymousName(cx, tw, subTermAction, true);
             else if (named.TypeParameters.IsEmpty)
-                tb.Append(named.Name);
+                tw.Write(named.Name);
             else if (IsReallyUnbound(named))
-                tb.Append(named.Name).Append("`").Append(named.TypeParameters.Length);
+            {
+                tw.Write(named.Name);
+                tw.Write("`");
+                tw.Write(named.TypeParameters.Length);
+            }
             else
             {
-                subTermAction(cx, tb, named.ConstructedFrom);
-                tb.Append("<");
+                subTermAction(cx, tw, named.ConstructedFrom);
+                tw.Write('<');
                 // Encode the nullability of the type arguments in the label.
                 // Type arguments with different nullability can result in 
                 // a constructed type with different nullability of its members and methods,
                 // so we need to create a distinct database entity for it.
-                tb.BuildList(",", named.GetAnnotatedTypeArguments(), (ta, tb0) => { subTermAction(cx, tb0, ta.Symbol); tb.Append((int)ta.Nullability); });
-                tb.Append(">");
+                tw.BuildList(",", named.GetAnnotatedTypeArguments(), (ta, tb0) => { subTermAction(cx, tb0, ta.Symbol); tw.Write((int)ta.Nullability); });
+                tw.Write('>');
             }
         }
 
-        static void BuildNamespace(this INamespaceSymbol ns, Context cx, ITrapBuilder tb)
+        static void BuildNamespace(this INamespaceSymbol ns, Context cx, TextWriter tw)
         {
             // Only include the assembly information in each type ID
             // for normal extractions. This is because standalone extractions
@@ -248,38 +255,44 @@ namespace Semmle.Extraction.CSharp
                 // Note that we exclude the revision number as this has
                 // been observed to be unstable.
                 var assembly = ns.ContainingAssembly.Identity;
-                tb.Append(assembly.Name).Append("_").
-                    Append(assembly.Version.Major).Append(".").
-                    Append(assembly.Version.Minor).Append(".").
-                    Append(assembly.Version.Build).Append("::");
+                tw.Write(assembly.Name);
+                tw.Write('_');
+                tw.Write(assembly.Version.Major);
+                tw.Write('.');
+                tw.Write(assembly.Version.Minor);
+                tw.Write('.');
+                tw.Write(assembly.Version.Build);
+                tw.Write("::");
             }
 
-            tb.Append(Namespace.Create(cx, ns)).Append(".");
+            tw.WriteSubId(Namespace.Create(cx, ns));
+            tw.Write('.');
         }
 
-        static void BuildAnonymousName(this ITypeSymbol type, Context cx, ITrapBuilder tb, Action<Context, ITrapBuilder, ITypeSymbol> subTermAction, bool includeParamName)
+        static void BuildAnonymousName(this ITypeSymbol type, Context cx, TextWriter tw, Action<Context, TextWriter, ITypeSymbol> subTermAction, bool includeParamName)
         {
             var buildParam = includeParamName
                 ? (prop, tb0) =>
                 {
-                    tb0.Append(prop.Name).Append(" ");
+                    tb0.Write(prop.Name);
+                    tw.Write(' ');
                     subTermAction(cx, tb0, prop.Type);
                 }
-            : (Action<IPropertySymbol, ITrapBuilder>)((prop, tb0) => subTermAction(cx, tb0, prop.Type));
+            : (Action<IPropertySymbol, TextWriter>)((prop, tb0) => subTermAction(cx, tb0, prop.Type));
             int memberCount = type.GetMembers().OfType<IPropertySymbol>().Count();
             int hackTypeNumber = memberCount == 1 ? 1 : 0;
-            tb.Append("<>__AnonType");
-            tb.Append(hackTypeNumber);
-            tb.Append("<");
-            tb.BuildList(",", type.GetMembers().OfType<IPropertySymbol>(), buildParam);
-            tb.Append(">");
+            tw.Write("<>__AnonType");
+            tw.Write(hackTypeNumber);
+            tw.Write('<');
+            tw.BuildList(",", type.GetMembers().OfType<IPropertySymbol>(), buildParam);
+            tw.Write('>');
         }
 
         /// <summary>
         /// Constructs a display name string for this type symbol.
         /// </summary>
-        /// <param name="tb">The trap builder used to store the result.</param>
-        public static void BuildDisplayName(this ITypeSymbol type, Context cx, ITrapBuilder tb)
+        /// <param name="tw">The trap builder used to store the result.</param>
+        public static void BuildDisplayName(this ITypeSymbol type, Context cx, TextWriter tw)
         {
             using (cx.StackGuard)
             {
@@ -290,11 +303,11 @@ namespace Semmle.Extraction.CSharp
                         var elementType = array.ElementType;
                         if (elementType.MetadataName.IndexOf("`") >= 0)
                         {
-                            tb.Append(elementType.Name);
+                            tw.Write(elementType.Name);
                             return;
                         }
-                        elementType.BuildDisplayName(cx, tb);
-                        array.BuildArraySuffix(tb);
+                        elementType.BuildDisplayName(cx, tw);
+                        array.BuildArraySuffix(tw);
                         return;
                     case TypeKind.Class:
                     case TypeKind.Interface:
@@ -303,18 +316,18 @@ namespace Semmle.Extraction.CSharp
                     case TypeKind.Delegate:
                     case TypeKind.Error:
                         var named = (INamedTypeSymbol)type;
-                        named.BuildNamedTypeDisplayName(cx, tb);
+                        named.BuildNamedTypeDisplayName(cx, tw);
                         return;
                     case TypeKind.Pointer:
                         var ptr = (IPointerTypeSymbol)type;
-                        ptr.PointedAtType.BuildDisplayName(cx, tb);
-                        tb.Append("*");
+                        ptr.PointedAtType.BuildDisplayName(cx, tw);
+                        tw.Write('*');
                         return;
                     case TypeKind.TypeParameter:
-                        tb.Append(type.Name);
+                        tw.Write(type.Name);
                         return;
                     case TypeKind.Dynamic:
-                        tb.Append("dynamic");
+                        tw.Write("dynamic");
                         return;
                     default:
                         throw new InternalError(type, $"Unhandled type kind '{type.TypeKind}'");
@@ -322,34 +335,34 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        public static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, ITrapBuilder tb)
+        public static void BuildNamedTypeDisplayName(this INamedTypeSymbol namedType, Context cx, TextWriter tw)
         {
             if (namedType.IsTupleType)
             {
-                tb.Append("(");
-                tb.BuildList(",", namedType.TupleElements.Select(f => f.Type),
+                tw.Write('(');
+                tw.BuildList(",", namedType.TupleElements.Select(f => f.Type),
                     (t, tb0) => t.BuildDisplayName(cx, tb0)
                     );
 
-                tb.Append(")");
+                tw.Write(")");
                 return;
             }
 
             if (namedType.IsAnonymousType)
             {
-                namedType.BuildAnonymousName(cx, tb, (cx0, tb0, sub) => sub.BuildDisplayName(cx0, tb0), false);
+                namedType.BuildAnonymousName(cx, tw, (cx0, tb0, sub) => sub.BuildDisplayName(cx0, tb0), false);
             }
 
-            tb.Append(namedType.Name);
+            tw.Write(namedType.Name);
             if (namedType.IsGenericType && namedType.TypeKind != TypeKind.Error && namedType.TypeArguments.Any())
             {
-                tb.Append("<");
-                tb.BuildList(",", namedType.TypeArguments, (p, tb0) =>
+                tw.Write('<');
+                tw.BuildList(",", namedType.TypeArguments, (p, tb0) =>
                 {
                     if (IsReallyBound(namedType))
                         p.BuildDisplayName(cx, tb0);
                 });
-                tb.Append(">");
+                tw.Write('>');
             }
         }
 

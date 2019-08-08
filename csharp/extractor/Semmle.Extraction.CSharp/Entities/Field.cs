@@ -6,6 +6,7 @@ using System;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 using Semmle.Extraction.CSharp.Entities.Expressions;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -98,7 +99,13 @@ namespace Semmle.Extraction.CSharp.Entities
         readonly Lazy<AnnotatedType> type;
         public AnnotatedType Type => type.Value;
 
-        public override IId Id => new Key(ContainingType, ".", symbol.Name, ";field");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.WriteSubId(ContainingType);
+            trapFile.Write('.');
+            trapFile.Write(symbol.Name);
+            trapFile.Write(";field");
+        }
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 

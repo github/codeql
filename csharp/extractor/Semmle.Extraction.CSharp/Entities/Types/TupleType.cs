@@ -2,6 +2,7 @@
 using Semmle.Extraction.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -29,16 +30,10 @@ namespace Semmle.Extraction.CSharp.Entities
         // All tuple types are "local types"
         public override bool NeedsPopulation => true;
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    symbol.BuildTypeId(Context, tb, (cx0, tb0, sub) => tb0.Append(Create(cx0, sub)));
-                    tb.Append(";tuple");
-                });
-            }
+            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub) => tb0.WriteSubId(Create(cx0, sub)));
+            trapFile.Write(";tuple");
         }
 
         public override void Populate()

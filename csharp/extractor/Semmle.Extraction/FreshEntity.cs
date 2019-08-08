@@ -1,4 +1,5 @@
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction
 {
@@ -18,6 +19,16 @@ namespace Semmle.Extraction
         public Label Label
         {
             get; set;
+        }
+
+        public void WriteId(TextWriter writer)
+        {
+            writer.Write('*');
+        }
+
+        public void WriteQuotedId(TextWriter writer)
+        {
+            WriteId(writer);
         }
 
         public override string ToString() => Label.ToString();

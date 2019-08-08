@@ -2,6 +2,7 @@ using Semmle.Extraction.CommentProcessing;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -122,13 +123,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override IId Id
+        public override void WriteId(TextWriter tw)
         {
-            get
-            {
-                var loc = Context.Create(Location);
-                return new Key(loc, ";commentline");
-            }
+            tw.WriteSubId(Context.Create(Location));
+            tw.Write(";commentline");
         }
 
         static CommentLine Create(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw) => CommentLineFactory.Instance.CreateEntity(cx, loc, type, text, raw);

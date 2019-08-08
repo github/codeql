@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -10,7 +11,11 @@ namespace Semmle.Extraction.CSharp.Entities
             PointedAtType = Create(cx, symbol.PointedAtType);
         }
 
-        public override IId Id => new Key(PointedAtType, "*;type");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.WriteSubId(PointedAtType);
+            trapFile.Write("*;type");
+        }
 
         // All pointer types are extracted because they won't
         // be extracted in their defining assembly.

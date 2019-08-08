@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Entities;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -107,27 +108,28 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
+            string kind;
+            IEntity containingEntity;
+            switch (symbol.TypeParameterKind)
             {
-                string kind;
-                IEntity containingEntity;
-                switch (symbol.TypeParameterKind)
-                {
-                    case TypeParameterKind.Method:
-                        kind = "methodtypeparameter";
-                        containingEntity = Method.Create(Context, (IMethodSymbol)symbol.ContainingSymbol);
-                        break;
-                    case TypeParameterKind.Type:
-                        kind = "typeparameter";
-                        containingEntity = Create(Context, symbol.ContainingType);
-                        break;
-                    default:
-                        throw new InternalError(symbol, $"Unhandled type parameter kind {symbol.TypeParameterKind}");
-                }
-                return new Key(containingEntity, "_", symbol.Ordinal, ";", kind);
+                case TypeParameterKind.Method:
+                    kind = "methodtypeparameter";
+                    containingEntity = Method.Create(Context, (IMethodSymbol)symbol.ContainingSymbol);
+                    break;
+                case TypeParameterKind.Type:
+                    kind = "typeparameter";
+                    containingEntity = Create(Context, symbol.ContainingType);
+                    break;
+                default:
+                    throw new InternalError(symbol, $"Unhandled type parameter kind {symbol.TypeParameterKind}");
             }
+            trapFile.WriteSubId(containingEntity);
+            trapFile.Write('_');
+            trapFile.Write(symbol.Ordinal);
+            trapFile.Write(';');
+            trapFile.Write(kind);
         }
 
         class TypeParameterFactory : ICachedEntityFactory<ITypeParameterSymbol, TypeParameter>

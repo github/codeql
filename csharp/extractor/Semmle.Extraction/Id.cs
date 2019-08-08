@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction
@@ -16,7 +17,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Appends this ID to the supplied trap builder.
         /// </summary>
-        void AppendTo(ITrapBuilder tb);
+        void AppendTo(TextWriter tw);
     }
 
     /// <summary>
@@ -37,9 +38,9 @@ namespace Semmle.Extraction
 
         public override int GetHashCode() => 0;
 
-        public void AppendTo(ITrapBuilder tb)
+        public void AppendTo(System.IO.TextWriter tw)
         {
-            tb.Append("*");
+            tw.Write('*');
         }
     }
 
@@ -49,34 +50,41 @@ namespace Semmle.Extraction
     /// </summary>
     public class Key : IId
     {
-        readonly IdTrapBuilder TrapBuilder;
+        readonly StringWriter TrapBuilder = new StringWriter();
 
         /// <summary>
         /// Creates a new key by concatenating the contents of the supplied arguments.
         /// </summary>
         public Key(params object[] args)
         {
-            TrapBuilder = new IdTrapBuilder();
+            TrapBuilder = new StringWriter();
             foreach (var arg in args)
-                TrapBuilder.Append(arg);
+            {
+                if (arg is IEntity)
+                {
+                    var key = ((IEntity)arg).Label;
+                    TrapBuilder.Write("{#");
+                    TrapBuilder.Write(key.Value.ToString());
+                    TrapBuilder.Write("}");
+                }
+                else
+                    TrapBuilder.Write(arg.ToString());
+
+            }
         }
 
         /// <summary>
         /// Creates a new key by applying the supplied action to an empty
         /// trap builder.
         /// </summary>
-        public Key(Action<ITrapBuilder> action)
+        public Key(Action<TextWriter> action)
         {
-            TrapBuilder = new IdTrapBuilder();
             action(TrapBuilder);
         }
 
         public override string ToString()
         {
-            // Only implemented for debugging purposes
-            var tsb = new TrapStringBuilder();
-            AppendTo(tsb);
-            return tsb.ToString();
+            return TrapBuilder.ToString();
         }
 
         public override bool Equals(object obj)
@@ -84,37 +92,23 @@ namespace Semmle.Extraction
             if (obj.GetType() != GetType())
                 return false;
             var id = (Key)obj;
-            return id.TrapBuilder.Fragments.SequenceEqual(TrapBuilder.Fragments);
+            return TrapBuilder.ToString() == id.TrapBuilder.ToString();
         }
 
-        public override int GetHashCode()
+        public override int GetHashCode() => TrapBuilder.ToString().GetHashCode();
+
+        public void AppendTo(TextWriter tb)
         {
-            unchecked
-            {
-                int hash = 17;
-
-                foreach (var fragment in TrapBuilder.Fragments)
-                {
-                    hash = hash * 23 + fragment.GetHashCode();
-                }
-
-                return hash;
-            }
+            tb.Write("@\"");
+            tb.Write(TrapBuilder.ToString());
+            tb.Write("\"");
         }
 
-        public void AppendTo(ITrapBuilder tb)
-        {
-            tb.Append("@\"");
-            foreach (var fragment in TrapBuilder.Fragments)
-                tb.Append(fragment);
-            tb.Append("\"");
-        }
-
-        class IdTrapBuilder : ITrapBuilder
+        class IdTrapBuilder
         {
             readonly public List<string> Fragments = new List<string>();
 
-            public ITrapBuilder Append(object arg)
+            public void Append(object arg)
             {
                 if (arg is IEntity)
                 {
@@ -125,17 +119,14 @@ namespace Semmle.Extraction
                 }
                 else
                     Fragments.Add(arg.ToString());
-
-                return this;
             }
 
-            public ITrapBuilder Append(string arg)
+            public void Append(string arg)
             {
                 Fragments.Add(arg);
-                return this;
             }
 
-            public ITrapBuilder AppendLine()
+            public void AppendLine()
             {
                 throw new NotImplementedException();
             }
@@ -145,7 +136,7 @@ namespace Semmle.Extraction
     /// <summary>
     /// A label referencing an entity, of the form "#123".
     /// </summary>
-    public struct Label : IId
+    public struct Label
     {
         public Label(int value) : this()
         {
@@ -181,12 +172,13 @@ namespace Semmle.Extraction
         /// Constructs a unique string for this label.
         /// </summary>
         /// <param name="tb">The trap builder used to store the result.</param>
-        public void AppendTo(ITrapBuilder tb)
+        public void AppendTo(System.IO.TextWriter tw)
         {
             if (!Valid)
                 throw new NullReferenceException("Attempt to use an invalid label");
 
-            tb.Append("#").Append(Value);
+            tw.Write('#');
+            tw.Write(Value);
         }
     }
 }

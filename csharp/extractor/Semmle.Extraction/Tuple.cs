@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction
@@ -35,7 +36,7 @@ namespace Semmle.Extraction
                 array.Sum(encoding.GetByteCount) > maxStringBytes;
         }
 
-        private static void WriteString(ITrapBuilder tb, string s) => tb.Append(EncodeString(s));
+        private static void WriteString(TextWriter tb, string s) => tb.Write(EncodeString(s));
 
         /// <summary>
         /// Truncates a string such that the output UTF8 does not exceed <paramref name="bytesRemaining"/> bytes.
@@ -73,7 +74,7 @@ namespace Semmle.Extraction
         /// <param name="tb">The trapbuilder</param>
         /// <param name="s">The string to output.</param>
         /// <param name="bytesRemaining">The remaining bytes available to output.</param>
-        private static void WriteTruncatedString(ITrapBuilder tb, string s, ref int bytesRemaining)
+        private static void WriteTruncatedString(TextWriter tb, string s, ref int bytesRemaining)
         {
             WriteString(tb, TruncateString(s, ref bytesRemaining));
         }
@@ -81,63 +82,64 @@ namespace Semmle.Extraction
         /// <summary>
         /// Constructs a unique string for this tuple.
         /// </summary>
-        /// <param name="tb">The trap builder used to store the result.</param>
-        public void EmitToTrapBuilder(ITrapBuilder tb)
+        /// <param name="tw">The trap builder used to store the result.</param>
+        public void EmitToTrapBuilder(TextWriter tw)
         {
-            tb.Append(Name).Append("(");
+            tw.Write(Name);
+            tw.Write("(");
 
             int column = 0;
             foreach (var a in Args)
             {
-                if (column > 0) tb.Append(", ");
+                tw.WriteSeparator(", ", column++);
                 switch(a)
                 {
                     case Label l:
-                        l.AppendTo(tb);
+                        l.AppendTo(tw);
                         break;
                     case IEntity e:
-                        e.Label.AppendTo(tb);
+                        e.Label.AppendTo(tw);
                         break;
                     case string s:
-                        tb.Append("\"");
+                        tw.Write("\"");
                         if (NeedsTruncation(s))
                         {
                             // Slow path
                             int remaining = maxStringBytes;
-                            WriteTruncatedString(tb, s, ref remaining);
+                            WriteTruncatedString(tw, s, ref remaining);
                         }
                         else
                         {
                             // Fast path
-                            WriteString(tb, s);
+                            WriteString(tw, s);
                         }
-                        tb.Append("\"");
+                        tw.Write("\"");
                         break;
                     case System.Enum _:
-                        tb.Append((int)a);
+                        tw.Write((int)a);
                         break;
                     case int i:
-                        tb.Append(i);
+                        tw.Write(i);
                         break;
                     case float f:
-                        tb.Append(f.ToString("0.#####e0"));  // Trap importer won't accept ints
+                        tw.Write(f.ToString("0.#####e0"));  // Trap importer won't accept ints
                         break;
                     case string[] array:
-                        tb.Append("\"");
+                        tw.Write('\"');
                         if (NeedsTruncation(array))
                         {
                             // Slow path
                             int remaining = maxStringBytes;
                             foreach (var element in array)
-                                WriteTruncatedString(tb, element, ref remaining);
+                                WriteTruncatedString(tw, element, ref remaining);
                         }
                         else
                         {
                             // Fast path
                             foreach (var element in array)
-                                WriteString(tb, element);
+                                WriteString(tw, element);
                         }
-                        tb.Append("\"");
+                        tw.Write('\"');
                         break;
                     case null:
                         throw new InternalError($"Attempt to write a null argument tuple {Name} at column {column}");
@@ -147,14 +149,13 @@ namespace Semmle.Extraction
 
                 ++column;
             }
-            tb.Append(")");
-            tb.AppendLine();
+            tw.WriteLine(")");
         }
 
         public override string ToString()
         {
             // Only implemented for debugging purposes
-            var tsb = new TrapStringBuilder();
+            var tsb = new StringWriter();
             EmitToTrapBuilder(tsb);
             return tsb.ToString();
         }

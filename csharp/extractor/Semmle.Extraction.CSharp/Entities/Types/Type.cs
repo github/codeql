@@ -4,6 +4,7 @@ using Semmle.Extraction.CSharp.Populators;
 using Semmle.Util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -77,36 +78,14 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        class DisplayNameTrapBuilder : ITrapBuilder
-        {
-            public readonly List<string> Fragments = new List<string>();
-
-            public ITrapBuilder Append(object arg)
-            {
-                Fragments.Add(arg.ToString());
-                return this;
-            }
-
-            public ITrapBuilder Append(string arg)
-            {
-                Fragments.Add(arg);
-                return this;
-            }
-
-            public ITrapBuilder AppendLine()
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         protected void ExtractType()
         {
             ExtractMetadataHandle();
             ExtractAttributes();
 
-            var tb = new DisplayNameTrapBuilder();
+            var tb = new StringWriter();
             symbol.BuildDisplayName(Context, tb);
-            Context.Emit(Tuples.types(this, GetClassType(Context, symbol), tb.Fragments.ToArray()));
+            Context.Emit(Tuples.types(this, GetClassType(Context, symbol), tb.ToString()));
 
             // Visit base types
             var baseTypes = new List<Type>();

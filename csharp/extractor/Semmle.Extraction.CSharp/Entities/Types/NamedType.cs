@@ -4,6 +4,7 @@ using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -111,17 +112,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => GetLocations(symbol).FirstOrDefault();
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                    {
-                        // All syntactic sub terms (types) are referenced by key in the ID
-                        symbol.BuildTypeId(Context, tb, (cx0, tb0, sub) => tb0.Append(Create(cx0, sub)));
-                        tb.Append(";type");
-                    });
-            }
+            symbol.BuildTypeId(Context, trapFile, (cx0, tb0, sub) => tb0.WriteSubId(Create(cx0, sub)));
+            trapFile.Write(";type");
         }
 
         /// <summary>
@@ -183,15 +177,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    tb.Append(referencedType).Append(";typeref");
-                });
-            }
+            trapFile.WriteSubId(referencedType);
+            trapFile.Write(";typeRef");
         }
 
         public override void Populate()

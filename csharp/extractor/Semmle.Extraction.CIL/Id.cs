@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection.Metadata;
 
 namespace Semmle.Extraction.CIL
@@ -9,14 +10,14 @@ namespace Semmle.Extraction.CIL
     /// </summary>
     public abstract class Id : IId
     {
-        public void AppendTo(ITrapBuilder tb)
+        public void AppendTo(System.IO.TextWriter tb)
         {
-            tb.Append("@\"");
+            tb.Write("@\"");
             BuildParts(tb);
-            tb.Append("\"");
+            tb.Write("\"");
         }
 
-        public abstract void BuildParts(ITrapBuilder tb);
+        public abstract void BuildParts(System.IO.TextWriter tb);
 
         public static Id operator +(Id l1, Id l2) => Create(l1, l2);
 
@@ -76,7 +77,7 @@ namespace Semmle.Extraction.CIL
             hash = unchecked(12 + 3 * (left.GetHashCode() + 51 * right.GetHashCode()));
         }
 
-        public override void BuildParts(ITrapBuilder tb)
+        public override void BuildParts(System.IO.TextWriter tb)
         {
             left.BuildParts(tb);
             right.BuildParts(tb);
@@ -112,9 +113,9 @@ namespace Semmle.Extraction.CIL
             value = s;
         }
 
-        public override void BuildParts(ITrapBuilder tb)
+        public override void BuildParts(System.IO.TextWriter tw)
         {
-            tb.Append(value);
+            tw.Write(value);
         }
 
         public override bool Equals(object obj)
@@ -138,9 +139,9 @@ namespace Semmle.Extraction.CIL
             value = i;
         }
 
-        public override void BuildParts(ITrapBuilder tb)
+        public override void BuildParts(System.IO.TextWriter tw)
         {
-            tb.Append(value);
+            tw.Write(value);
         }
 
         public override bool Equals(object obj)

@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -12,7 +13,10 @@ namespace Semmle.Extraction.CSharp.Entities
             Context.Emit(Tuples.types(this, Kinds.TypeKind.NULL, "null"));
         }
 
-        public override IId Id => new Key("<null>;type");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.Write("<null>;type");
+        }
 
         public override bool NeedsPopulation => true;
 

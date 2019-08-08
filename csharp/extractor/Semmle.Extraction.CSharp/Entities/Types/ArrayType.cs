@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -29,18 +30,12 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractNullability(symbol.ElementNullableAnnotation);
         }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    tb.Append(element.Type);
-                    tb.Append((int)symbol.ElementNullableAnnotation);
-                    symbol.BuildArraySuffix(tb);
-                    tb.Append(";type");
-                });
-            }
+            trapFile.WriteSubId(element.Type);
+            trapFile.Write((int)symbol.ElementNullableAnnotation);
+            symbol.BuildArraySuffix(trapFile);
+            trapFile.Write(";type");
         }
 
         public static ArrayType Create(Context cx, IArrayTypeSymbol symbol) => ArrayTypeFactory.Instance.CreateEntity(cx, symbol);

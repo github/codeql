@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -10,23 +11,16 @@ namespace Semmle.Extraction.CSharp.Entities
         {
         }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
+            trapFile.WriteSubId(Location);
+            if (symbol.IsGenericMethod && !IsSourceDeclaration)
             {
-                return new Key(tb =>
-                {
-                    tb.Append(Location);
-                    if (symbol.IsGenericMethod && !IsSourceDeclaration)
-                    {
-                        tb.Append("<");
-                        tb.BuildList(",", symbol.TypeArguments, (ta, tb0) => AddSignatureTypeToId(Context, tb0, symbol, ta));
-                        tb.Append(">");
-                    }
-
-                    tb.Append(";localfunction");
-                });
+                trapFile.Write('<');
+                trapFile.BuildList(",", symbol.TypeArguments, (ta, tb0) => AddSignatureTypeToId(Context, tb0, symbol, ta));
+                trapFile.Write('>');
             }
+            trapFile.Write(";localfunction");
         }
 
         public static new LocalFunction Create(Context cx, IMethodSymbol field) => LocalFunctionFactory.Instance.CreateEntity(cx, field);

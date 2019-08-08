@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -73,20 +74,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static new Indexer Create(Context cx, IPropertySymbol prop) => IndexerFactory.Instance.CreateEntity(cx, prop);
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    tb.Append(ContainingType);
-                    tb.Append(".");
-                    tb.Append(symbol.MetadataName);
-                    tb.Append("(");
-                    tb.BuildList(",", symbol.Parameters, (p, tb0) => tb0.Append(Type.Create(Context, p.Type)));
-                    tb.Append(");indexer");
-                });
-            }
+            trapFile.WriteSubId(ContainingType);
+            trapFile.Write('.');
+            trapFile.Write(symbol.MetadataName);
+            trapFile.Write('(');
+            trapFile.BuildList(",", symbol.Parameters, (p, tb0) => tb0.WriteSubId(Type.Create(Context, p.Type)));
+            trapFile.Write(");indexer");
         }
 
         public override Microsoft.CodeAnalysis.Location FullLocation

@@ -63,13 +63,14 @@ namespace Semmle.Extraction.Entities
             }
         }
 
-        public override IId Id
+        public override void WriteId(System.IO.TextWriter trapFile)
         {
-            get
+            if (Path is null)
+                trapFile.Write("GENERATED;sourcefile");
+            else
             {
-                return Path == null ?
-                    new Key("GENERATED;sourcefile") :
-                    new Key(DatabasePath, ";sourcefile");
+                trapFile.Write(DatabasePath);
+                trapFile.Write(";sourcefile");
             }
         }
 
@@ -104,7 +105,10 @@ namespace Semmle.Extraction.Entities
                 Context.TrapWriter.files(this, "", "", "");
             }
 
-            public override IId Id => new Key("GENERATED;sourcefile");
+            public override void WriteId(TextWriter trapFile)
+            {
+                trapFile.Write("GENERATED;sourcefile");
+            }
 
             public static GeneratedFile Create(Context cx) =>
                 GeneratedFileFactory.Instance.CreateEntity(cx, null);

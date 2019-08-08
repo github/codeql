@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Semmle.Extraction
 {
     /// <summary>
@@ -34,9 +36,13 @@ namespace Semmle.Extraction
 
         public Initializer UnderlyingObject => symbol;
 
-        public abstract IId Id
+        public abstract void WriteId(System.IO.TextWriter trapFile);
+
+        public void WriteQuotedId(TextWriter trapFile)
         {
-            get;
+            trapFile.Write("@\"");
+            WriteId(trapFile);
+            trapFile.Write('\"');
         }
 
         public abstract bool NeedsPopulation

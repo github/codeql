@@ -23,7 +23,8 @@ namespace Semmle.Extraction.CIL
             }
             else
             {
-                cx.DefineLabel(e);
+                e.Label = cx.GetNewLabel();
+                cx.DefineLabel(e, cx.TrapWriter.Writer);
                 ids.Add(id, (e.Label, id));
                 cx.PopulateLater(() =>
                 {

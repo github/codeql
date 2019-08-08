@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -48,17 +49,11 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    AddSignatureTypeToId(Context, tb, symbol, symbol.ReturnType); // Needed for op_explicit(), which differs only by return type.
-                    tb.Append(" ");
-                    BuildMethodId(this, tb);
-                });
-            }
+            AddSignatureTypeToId(Context, trapFile, symbol, symbol.ReturnType); // Needed for op_explicit(), which differs only by return type.
+            trapFile.Write(' ');
+            BuildMethodId(this, trapFile);
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using System;
+using System.IO;
 using System.Reflection;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -32,7 +33,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
 
-        public override IId Id => new Key(symbol.name, ";modifier");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.Write(symbol.name);
+            trapFile.Write(";modifier");
+        }
 
         public override bool NeedsPopulation => true;
 

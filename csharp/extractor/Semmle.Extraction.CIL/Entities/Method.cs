@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
