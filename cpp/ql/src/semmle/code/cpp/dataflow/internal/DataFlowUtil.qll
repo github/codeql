@@ -344,8 +344,6 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
       or
       varSourceBaseCase(var, nodeFrom.asUninitialized())
       or
-      var.definedByReference(nodeFrom.asDefiningArgument())
-      or
       var.definedPartiallyAt(nodeFrom.asPartialDefinition())
     ) and
     varToExprStep(var, nodeTo.asExpr())
@@ -405,6 +403,16 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   or
   toExpr = any(StmtExpr stmtExpr | fromExpr = stmtExpr.getResultExpr())
   or
+  // The following case is needed to track the qualifier object for flow
+  // through fields. It gives flow from `T(x)` to `new T(x)`. That's not
+  // strictly _data_ flow but _taint_ flow because the type of `fromExpr` is
+  // `T` while the type of `toExpr` is `T*`.
+  //
+  // This discrepancy is an artifact of how `new`-expressions are represented
+  // in the database in a way that slightly varies from what the standard
+  // specifies. In the C++ standard, there is no constructor call expression
+  // `T(x)` after `new`. Instead there is a type `T` and an optional
+  // initializer `(x)`.
   toExpr.(NewExpr).getInitializer() = fromExpr
   or
   toExpr = any(Call call |
