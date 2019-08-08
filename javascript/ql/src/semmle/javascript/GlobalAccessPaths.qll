@@ -154,9 +154,9 @@ module GlobalAccessPath {
       baseName = fromRhs(base)
     )
     or
-    exists(AssignExpr assign |
-      node = assign.getRhs().flow() and
-      result = assign.getLhs().(GlobalVarAccess).getName()
+    exists(GlobalVariable var |
+      node = var.getAnAssignedExpr().flow() and
+      result = var.getName()
     )
     or
     exists(FunctionDeclStmt fun |
@@ -167,6 +167,16 @@ module GlobalAccessPath {
     exists(ClassDeclStmt cls |
       node = DataFlow::valueNode(cls) and
       result = cls.getIdentifier().(GlobalVarDecl).getName()
+    )
+    or
+    exists(EnumDeclaration decl |
+      node = DataFlow::valueNode(decl) and
+      result = decl.getIdentifier().(GlobalVarDecl).getName()
+    )
+    or
+    exists(NamespaceDeclaration decl |
+      node = DataFlow::valueNode(decl) and
+      result = decl.getId().(GlobalVarDecl).getName()
     )
   }
 
