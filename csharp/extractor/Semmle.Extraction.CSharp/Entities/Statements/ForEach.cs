@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             Expression.Create(cx, Stmt.Expression, this, 1);
 
-            var typeSymbol = cx.Model(Stmt).GetDeclaredSymbol(Stmt);
+            var typeSymbol = cx.GetModel(Stmt).GetDeclaredSymbol(Stmt);
             var type = Type.Create(cx, typeSymbol.GetAnnotatedType());
 
             var location = cx.Create(Stmt.Identifier.GetLocation());

@@ -25,27 +25,27 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitDelegateDeclaration(DelegateDeclarationSyntax node)
         {
-            Entities.NamedType.Create(cx, cx.Model(node).GetDeclaredSymbol(node)).ExtractRecursive(parent);
+            Entities.NamedType.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(parent);
         }
 
         public override void VisitClassDeclaration(ClassDeclarationSyntax classDecl)
         {
-            Entities.Type.Create(cx, cx.Model(classDecl).GetDeclaredSymbol(classDecl)).ExtractRecursive(parent);
+            Entities.Type.Create(cx, cx.GetModel(classDecl).GetDeclaredSymbol(classDecl)).ExtractRecursive(parent);
         }
 
         public override void VisitStructDeclaration(StructDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.Model(node).GetDeclaredSymbol(node)).ExtractRecursive(parent);
+            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(parent);
         }
 
         public override void VisitEnumDeclaration(EnumDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.Model(node).GetDeclaredSymbol(node)).ExtractRecursive(parent);
+            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(parent);
         }
 
         public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
         {
-            Entities.Type.Create(cx, cx.Model(node).GetDeclaredSymbol(node)).ExtractRecursive(parent);
+            Entities.Type.Create(cx, cx.GetModel(node).GetDeclaredSymbol(node)).ExtractRecursive(parent);
         }
 
         public override void VisitAttributeList(AttributeListSyntax node)

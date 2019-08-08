@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
                     break;
                 case StmtKind.GOTO_CASE:
                     Expr = Expression.Create(cx, Stmt.Expression, this, 0);
-                    ConstantValue = Switch.LabelForValue(cx.Model(Stmt).GetConstantValue(Stmt.Expression).Value);
+                    ConstantValue = Switch.LabelForValue(cx.GetModel(Stmt).GetConstantValue(Stmt.Expression).Value);
                     break;
                 case StmtKind.GOTO_DEFAULT:
                     ConstantValue = Switch.DefaultLabel;

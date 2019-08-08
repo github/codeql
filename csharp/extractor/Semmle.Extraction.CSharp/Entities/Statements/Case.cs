@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         {
             var value = Stmt.Value;
             Expression.Create(cx, value, this, 0);
-            Switch.LabelForValue(cx.Model(Stmt).GetConstantValue(value).Value);
+            Switch.LabelForValue(cx.GetModel(Stmt).GetConstantValue(value).Value);
         }
 
         public static CaseLabel Create(Context cx, CaseSwitchLabelSyntax node, Switch parent, int child)
@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             switch (designation)
             {
                 case SingleVariableDesignationSyntax _:
-                    if (cx.Model(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+                    if (cx.GetModel(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
                     {
                         var type = Type.Create(cx, symbol.GetAnnotatedType());
                         Expressions.VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 0);

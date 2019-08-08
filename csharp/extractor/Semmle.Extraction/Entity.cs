@@ -21,6 +21,7 @@ namespace Semmle.Extraction
     {
         /// <summary>
         /// The label of the entity, as it is in the trap file.
+        /// For example, "#123".
         /// </summary>
         Label Label { set; get; }
 
@@ -35,6 +36,9 @@ namespace Semmle.Extraction
         /// </summary>
         Location ReportingLocation { get; }
 
+        /// <summary>
+        /// How the entity handles .push and .pop.
+        /// </summary>
         TrapStackBehaviour TrapStackBehaviour { get; }
     }
 

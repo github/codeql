@@ -435,10 +435,10 @@ namespace Semmle.Extraction.CSharp
         }
 
         public static TypeInfo GetTypeInfo(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node) =>
-            cx.Model(node).GetTypeInfo(node);
+            cx.GetModel(node).GetTypeInfo(node);
 
         public static SymbolInfo GetSymbolInfo(this Context cx, Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode node) =>
-            cx.Model(node).GetSymbolInfo(node);
+            cx.GetModel(node).GetSymbolInfo(node);
 
         /// <summary>
         /// Gets the symbol for a particular syntax node.

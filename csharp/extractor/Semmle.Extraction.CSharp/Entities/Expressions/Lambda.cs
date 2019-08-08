@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         void VisitParameter(ParameterSyntax p)
         {
-            var symbol = cx.Model(p).GetDeclaredSymbol(p);
+            var symbol = cx.GetModel(p).GetDeclaredSymbol(p);
             Parameter.Create(cx, symbol, this);
         }
 

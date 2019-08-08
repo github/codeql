@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     if (target != null && !target.IsStatic)
                     {
                         // Implicit `this` qualifier; add explicitly
-                        var callingMethod = cx.Model(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) as IMethodSymbol;
+                        var callingMethod = cx.GetModel(Syntax).GetEnclosingSymbol(Location.symbol.SourceSpan.Start) as IMethodSymbol;
 
                         if (callingMethod == null)
                             cx.ModelError(Syntax, "Couldn't determine implicit this type");

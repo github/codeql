@@ -52,8 +52,7 @@ namespace Semmle.Extraction
         readonly IdTrapBuilder TrapBuilder;
 
         /// <summary>
-        /// Creates a new key by concatenating the contents of the supplied
-        /// arguments.
+        /// Creates a new key by concatenating the contents of the supplied arguments.
         /// </summary>
         public Key(params object[] args)
         {

@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CSharp.Entities
             : base(cx)
         {
             node = usingDirective;
-            var info = cx.Model(node).GetSymbolInfo(usingDirective.Name);
+            var info = cx.GetModel(node).GetSymbolInfo(usingDirective.Name);
 
             if (usingDirective.StaticKeyword.Kind() == SyntaxKind.None)
             {

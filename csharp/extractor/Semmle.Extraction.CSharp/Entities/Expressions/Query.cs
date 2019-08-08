@@ -197,14 +197,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// <returns>A "syntax tree" of the query.</returns>
         static Clause ConstructQueryExpression(Context cx, QueryExpressionSyntax node)
         {
-            var info = cx.Model(node).GetQueryClauseInfo(node.FromClause);
+            var info = cx.GetModel(node).GetQueryClauseInfo(node.FromClause);
             var method = info.OperationInfo.Symbol as IMethodSymbol;
 
-            Clause clauseExpr = new RangeClause(method, node.FromClause, cx.Model(node).GetDeclaredSymbol(node.FromClause), node.FromClause.Identifier).AddArgument(node.FromClause.Expression);
+            Clause clauseExpr = new RangeClause(method, node.FromClause, cx.GetModel(node).GetDeclaredSymbol(node.FromClause), node.FromClause.Identifier).AddArgument(node.FromClause.Expression);
 
             foreach (var qc in node.Body.Clauses)
             {
-                info = cx.Model(node).GetQueryClauseInfo(qc);
+                info = cx.GetModel(node).GetQueryClauseInfo(qc);
 
                 method = info.OperationInfo.Symbol as IMethodSymbol;
 
@@ -214,7 +214,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         var orderByClause = (OrderByClauseSyntax)qc;
                         foreach (var ordering in orderByClause.Orderings)
                         {
-                            method = cx.Model(node).GetSymbolInfo(ordering).Symbol as IMethodSymbol;
+                            method = cx.GetModel(node).GetSymbolInfo(ordering).Symbol as IMethodSymbol;
 
                             clauseExpr = clauseExpr.WithCallClause(method, orderByClause).AddArgument(ordering.Expression);
 
@@ -229,25 +229,25 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.FromClause:
                         var fromClause = (FromClauseSyntax)qc;
                         clauseExpr = clauseExpr.
-                            WithLetClause(method, fromClause, cx.Model(node).GetDeclaredSymbol(fromClause), fromClause.Identifier).
+                            WithLetClause(method, fromClause, cx.GetModel(node).GetDeclaredSymbol(fromClause), fromClause.Identifier).
                             AddArgument(fromClause.Expression);
                         break;
                     case SyntaxKind.LetClause:
                         var letClause = (LetClauseSyntax)qc;
-                        clauseExpr = clauseExpr.WithLetClause(method, letClause, cx.Model(node).GetDeclaredSymbol(letClause), letClause.Identifier).
+                        clauseExpr = clauseExpr.WithLetClause(method, letClause, cx.GetModel(node).GetDeclaredSymbol(letClause), letClause.Identifier).
                             AddArgument(letClause.Expression);
                         break;
                     case SyntaxKind.JoinClause:
                         var joinClause = (JoinClauseSyntax)qc;
 
-                        clauseExpr = clauseExpr.WithLetClause(method, joinClause, cx.Model(node).GetDeclaredSymbol(joinClause), joinClause.Identifier).
+                        clauseExpr = clauseExpr.WithLetClause(method, joinClause, cx.GetModel(node).GetDeclaredSymbol(joinClause), joinClause.Identifier).
                             AddArgument(joinClause.InExpression).
                             AddArgument(joinClause.LeftExpression).
                             AddArgument(joinClause.RightExpression);
 
                         if (joinClause.Into != null)
                         {
-                            var into = cx.Model(node).GetDeclaredSymbol(joinClause.Into);
+                            var into = cx.GetModel(node).GetDeclaredSymbol(joinClause.Into);
                             ((LetClause)clauseExpr).WithInto(into);
                         }
 
@@ -257,7 +257,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 }
             }
 
-            method = cx.Model(node).GetSymbolInfo(node.Body.SelectOrGroup).Symbol as IMethodSymbol;
+            method = cx.GetModel(node).GetSymbolInfo(node.Body.SelectOrGroup).Symbol as IMethodSymbol;
 
             clauseExpr = new CallClause(clauseExpr, method, node.Body.SelectOrGroup);
 

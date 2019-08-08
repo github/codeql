@@ -384,7 +384,7 @@ namespace Semmle.Extraction.CSharp.Entities
             Parent = parent;
             Child = child;
             TypeInfo = typeInfo;
-            Conversion = cx.Model(node).GetConversion(node);
+            Conversion = cx.GetModel(node).GetConversion(node);
         }
 
         public Context Context { get; }
@@ -443,7 +443,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public SemanticModel Model => Context.Model(Node);
+        public SemanticModel Model => Context.GetModel(Node);
 
         public string ExprValue
         {

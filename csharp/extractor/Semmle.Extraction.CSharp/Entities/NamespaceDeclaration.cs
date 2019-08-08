@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public NamespaceDeclaration(Context cx, NamespaceDeclarationSyntax node, NamespaceDeclaration parent)
             : base(cx)
         {
-            var ns = Namespace.Create(cx, (INamespaceSymbol)cx.Model(node).GetSymbolInfo(node.Name).Symbol);
+            var ns = Namespace.Create(cx, (INamespaceSymbol)cx.GetModel(node).GetSymbolInfo(node.Name).Symbol);
             cx.Emit(Tuples.namespace_declarations(this, ns));
             cx.Emit(Tuples.namespace_declaration_location(this, cx.Create(node.Name.GetLocation())));
 

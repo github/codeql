@@ -15,7 +15,7 @@ namespace Semmle.Extraction
     public class Context
     {
         /// <summary>
-        /// Interface to various extraction functions, e.g. logger, trap writer.
+        /// Access various extraction functions, e.g. logger, trap writer.
         /// </summary>
         public readonly IExtractor Extractor;
 
@@ -23,7 +23,7 @@ namespace Semmle.Extraction
         /// The program database provided by Roslyn.
         /// There's one per syntax tree, which makes things awkward.
         /// </summary>
-        public SemanticModel Model(SyntaxNode node)
+        public SemanticModel GetModel(SyntaxNode node)
         {
             if (cachedModel == null || node.SyntaxTree != cachedModel.SyntaxTree)
             {
@@ -40,7 +40,7 @@ namespace Semmle.Extraction
         /// </summary>
         public readonly TrapWriter TrapWriter;
 
-        int NewId() => TrapWriter.IdCounter++;
+        int GetNewId() => TrapWriter.IdCounter++;
 
         /// <summary>
         /// Creates a new entity using the factory.
@@ -77,7 +77,7 @@ namespace Semmle.Extraction
 #if DEBUG_LABELS
                     CheckEntityHasUniqueLabel(id, entity);
 #endif
-                    label = new Label(NewId());
+                    label = new Label(GetNewId());
                     entity.Label = label;
                     entityLabelCache[entity] = label;
                     DefineLabel(label, id);
@@ -109,7 +109,7 @@ namespace Semmle.Extraction
 
             using (StackGuard)
             {
-                var label = new Label(NewId());
+                var label = new Label(GetNewId());
                 var entity = factory.Create(this, init);
                 entity.Label = label;
 
@@ -158,7 +158,7 @@ namespace Semmle.Extraction
         /// </summary>
         public void AddFreshLabel(IEntity entity)
         {
-            var label = new Label(NewId());
+            var label = new Label(GetNewId());
             TrapWriter.Emit(new DefineFreshLabelEmitter(label));
             entity.Label = label;
         }
@@ -172,7 +172,7 @@ namespace Semmle.Extraction
 
         public void DefineLabel(IEntity entity)
         {
-            entity.Label = new Label(NewId());
+            entity.Label = new Label(GetNewId());
             DefineLabel(entity.Label, entity.Id);
         }
 

@@ -3,8 +3,7 @@ using System.Linq;
 namespace Semmle.Extraction
 {
     /// <summary>
-    /// A tuple represents a string of the form "a(b,c,d)"
-    /// Its purpose is mainly to make various method calls typesafe.
+    /// A tuple represents a string of the form "a(b,c,d)".
     /// </summary>
     public struct Tuple : ITrapEmitter
     {

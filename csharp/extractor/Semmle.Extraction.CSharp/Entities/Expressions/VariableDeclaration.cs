@@ -27,7 +27,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             bool isVar = node.Type.IsVar;
 
-            var variableSymbol = cx.Model(designation).GetDeclaredSymbol(designation) as ILocalSymbol;
+            var variableSymbol = cx.GetModel(designation).GetDeclaredSymbol(designation) as ILocalSymbol;
             if (variableSymbol == null)
             {
                 cx.ModelError(node, "Failed to determine local variable");
@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             CreateParenthesized(cx, varPattern, paren, tuple, child0++);
                             break;
                         case SingleVariableDesignationSyntax single:
-                            if (cx.Model(variable).GetDeclaredSymbol(single) is ILocalSymbol local)
+                            if (cx.GetModel(variable).GetDeclaredSymbol(single) is ILocalSymbol local)
                             {
                                 var decl = Create(cx, variable, Entities.Type.Create(cx, local.GetAnnotatedType()), true, tuple, child0++);
                                 var id = single.Identifier;
@@ -126,13 +126,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static VariableDeclaration Create(Context cx, CatchDeclarationSyntax d, bool isVar, IExpressionParentEntity parent, int child)
         {
-            var symbol = cx.Model(d).GetDeclaredSymbol(d);
+            var symbol = cx.GetModel(d).GetDeclaredSymbol(d);
             var type = Entities.Type.Create(cx, symbol.GetAnnotatedType());
             var ret = Create(cx, d, type, isVar, parent, child);
             cx.Try(d, null, () =>
             {
                 var id = d.Identifier;
-                var declSymbol = cx.Model(d).GetDeclaredSymbol(d);
+                var declSymbol = cx.GetModel(d).GetDeclaredSymbol(d);
                 var location = cx.Create(id.GetLocation());
                 LocalVariable.Create(cx, declSymbol, ret, isVar, location);
                 TypeMention.Create(cx, d.Type, ret, type);
@@ -146,7 +146,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             cx.Try(d, null, () =>
             {
                 var id = d.Identifier;
-                var declSymbol = cx.Model(d).GetDeclaredSymbol(d);
+                var declSymbol = cx.GetModel(d).GetDeclaredSymbol(d);
                 var location = cx.Create(id.GetLocation());
                 var localVar = LocalVariable.Create(cx, declSymbol, ret, isVar, location);
 

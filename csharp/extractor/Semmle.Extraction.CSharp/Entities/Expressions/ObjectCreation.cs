@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         static ExprKind GetKind(Context cx, ObjectCreationExpressionSyntax node)
         {
-            var si = cx.Model(node).GetSymbolInfo(node.Type);
+            var si = cx.GetModel(node).GetSymbolInfo(node.Type);
             return Entities.Type.IsDelegate(si.Symbol as INamedTypeSymbol) ? ExprKind.EXPLICIT_DELEGATE_CREATION : ExprKind.OBJECT_CREATION;
         }
 
@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 PopulateArguments(Syntax.ArgumentList, 0);
             }
 
-            var target = cx.Model(Syntax).GetSymbolInfo(Syntax);
+            var target = cx.GetModel(Syntax).GetSymbolInfo(Syntax);
             var method = (IMethodSymbol)target.Symbol;
 
             if (method != null)
@@ -119,7 +119,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             foreach (var init in Syntax.Initializers)
             {
                 // Create an "assignment"
-                var property = cx.Model(init).GetDeclaredSymbol(init);
+                var property = cx.GetModel(init).GetDeclaredSymbol(init);
                 var propEntity = Property.Create(cx, property);
                 var type = Entities.Type.Create(cx, property.GetAnnotatedType());
                 var loc = cx.Create(init.GetLocation());

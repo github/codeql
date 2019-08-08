@@ -78,7 +78,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     TypeMention.Create(Context, clause.Name, this, this);
                     foreach (var constraint in clause.Constraints.OfType<TypeConstraintSyntax>())
                     {
-                        var ti = Context.Model(constraint).GetTypeInfo(constraint.Type);
+                        var ti = Context.GetModel(constraint).GetTypeInfo(constraint.Type);
                         var target = Type.Create(Context, ti.Type);
                         TypeMention.Create(Context, constraint.Type, this, target);
                     }

@@ -103,7 +103,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             var child = 0;
             foreach (var i in Syntax.Expressions)
             {
-                var collectionInfo = cx.Model(Syntax).GetCollectionInitializerSymbolInfo(i);
+                var collectionInfo = cx.GetModel(Syntax).GetCollectionInitializerSymbolInfo(i);
                 var addMethod = Method.Create(cx, collectionInfo.Symbol as IMethodSymbol);
                 var voidType = Entities.Type.Create(cx, new AnnotatedTypeSymbol(cx.Compilation.GetSpecialType(SpecialType.System_Void), NullableAnnotation.NotApplicable));
 
