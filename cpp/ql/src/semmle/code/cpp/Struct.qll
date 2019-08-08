@@ -48,7 +48,7 @@ class LocalStruct extends Struct {
 }
 
 /**
- * A C++ nested struct. See 11.12. For example, the type `MyNestedStruct` in:
+ * A C/C++ nested struct. See 11.12. For example, the type `MyNestedStruct` in:
  * ```
  * class MyClass
  * {
