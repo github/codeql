@@ -19,7 +19,7 @@ import DataFlow::PathGraph
 class ArithmeticTaintedLocalOverflowConfig extends TaintTracking::Configuration {
   ArithmeticTaintedLocalOverflowConfig() { this = "ArithmeticTaintedLocalOverflowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   override predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
@@ -29,7 +29,7 @@ class ArithmeticTaintedLocalOverflowConfig extends TaintTracking::Configuration 
 class ArithmeticTaintedLocalUnderflowConfig extends TaintTracking::Configuration {
   ArithmeticTaintedLocalUnderflowConfig() { this = "ArithmeticTaintedLocalUnderflowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   override predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
