@@ -13,8 +13,8 @@ namespace Semmle.Extraction.Entities
         {
             Position = symbol.GetLineSpan();
             FileEntity = File.Create(Context, Position.Path);
-            Context.Emit(Tuples.locations_default(this, FileEntity, Position.Span.Start.Line + 1, Position.Span.Start.Character + 1,
-                    Position.Span.End.Line + 1, Position.Span.End.Character));
+            Context.TrapWriter.locations_default(this, FileEntity, Position.Span.Start.Line + 1, Position.Span.Start.Character + 1,
+                    Position.Span.End.Line + 1, Position.Span.End.Character);
         }
 
         public override bool NeedsPopulation => true;

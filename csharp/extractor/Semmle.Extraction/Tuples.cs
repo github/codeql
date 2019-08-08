@@ -8,28 +8,44 @@ namespace Semmle.Extraction
     /// </summary>
     static class Tuples
     {
-        internal static Tuple assemblies(Assembly assembly, File file, string identifier, string name, string version) =>
-            new Tuple("assemblies", assembly, file, identifier, name, version);
+        public static void assemblies(this TrapWriter writer, Assembly assembly, File file, string identifier, string name, string version)
+        {
+            writer.Writer.BeginTuple("assemblies").Param(assembly).Param(file).Param(identifier).Param(name).Param(version).EndTuple();
+        }
 
-        internal static Tuple containerparent(Folder parent, IEntity child) =>
-            new Tuple("containerparent", parent, child);
+        public static void containerparent(this TrapWriter writer, Folder parent, IEntity child)
+        {
+            writer.Writer.BeginTuple("containerparent").Param(parent).Param(child).EndTuple();
+        }
 
-        internal static Tuple extractor_messages(ExtractionMessage error, Semmle.Util.Logging.Severity severity, string origin, string errorMessage, string entityText, Location location, string stackTrace) =>
-            new Tuple("extractor_messages", error, severity, origin, errorMessage, entityText, location, stackTrace);
+        public static void extractor_messages(this TrapWriter writer, ExtractionMessage error, Semmle.Util.Logging.Severity severity, string origin, string errorMessage, string entityText, Location location, string stackTrace)
+        {
+            writer.Writer.BeginTuple("extractor_messages").Param(error).Param((int)severity).Param(origin).Param(errorMessage).Param(entityText).Param(location).Param(stackTrace).EndTuple();
+        }
 
-        internal static Tuple file_extraction_mode(File file, int mode) =>
-            new Tuple("file_extraction_mode", file, mode);
+        internal static void file_extraction_mode(this TrapWriter writer, Entities.File file, int mode)
+        {
+            writer.Writer.BeginTuple("file_extraction_mode").Param(file).Param(mode).EndTuple();
+        }
 
-        internal static Tuple files(File file, string fullName, string name, string extension) =>
-            new Tuple("files", file, fullName, name, extension, 0);
+        public static void files(this TrapWriter writer, Entities.File file, string fullName, string name, string extension)
+        {
+            writer.Writer.BeginTuple("files").Param(file).Param(fullName).Param(name).Param(extension).Param(0).EndTuple();
+        }
 
-        internal static Tuple folders(Folder folder, string path, string name) =>
-            new Tuple("folders", folder, path, name);
+        public static void folders(this TrapWriter writer, Folder folder, string path, string name)
+        {
+            writer.Writer.BeginTuple("folders").Param(folder).Param(path).Param(name).EndTuple();
+        }
 
-        internal static Tuple locations_default(SourceLocation label, File file, int startLine, int startCol, int endLine, int endCol) =>
-            new Tuple("locations_default", label, file, startLine, startCol, endLine, endCol);
+        public static void locations_default(this TrapWriter writer, SourceLocation label, Entities.File file, int startLine, int startCol, int endLine, int endCol)
+        {
+            writer.Writer.BeginTuple("locations_default").Param(label).Param(file).Param(startLine).Param(startCol).Param(endLine).Param(endCol).EndTuple();
+        }
 
-        internal static Tuple numlines(IEntity label, LineCounts lineCounts) =>
-            new Tuple("numlines", label, lineCounts.Total, lineCounts.Code, lineCounts.Comment);
+        public static void numlines(this TrapWriter writer, IEntity label, LineCounts lineCounts)
+        {
+            writer.Writer.BeginTuple("numlines").Param(label).Param(lineCounts.Total).Param(lineCounts.Code).Param(lineCounts.Comment).EndTuple();
+        }
     }
 }

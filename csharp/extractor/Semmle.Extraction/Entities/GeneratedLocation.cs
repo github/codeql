@@ -12,7 +12,7 @@ namespace Semmle.Extraction.Entities
 
         public override void Populate()
         {
-            Context.Emit(Tuples.locations_default(this, GeneratedFile, 0, 0, 0, 0));
+            Context.TrapWriter.locations_default(this, GeneratedFile, 0, 0, 0, 0);
         }
 
         public override IId Id => new Key("loc,", GeneratedFile, ",0,0,0,0");

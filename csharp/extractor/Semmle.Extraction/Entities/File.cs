@@ -27,7 +27,7 @@ namespace Semmle.Extraction.Entities
         {
             if (Path == null)
             {
-                Context.Emit(Tuples.files(this, "", "", ""));
+                Context.TrapWriter.files(this, "", "", "");
             }
             else
             {
@@ -41,9 +41,9 @@ namespace Semmle.Extraction.Entities
                 // remove the dot from the extension
                 if (extension.Length > 0)
                     extension = extension.Substring(1);
-                Context.Emit(Tuples.files(this, PathAsDatabaseString(Path), name, extension));
+                Context.TrapWriter.files(this, PathAsDatabaseString(Path), name, extension);
 
-                Context.Emit(Tuples.containerparent(Entities.Folder.Create(Context, fi.Directory), this));
+                Context.TrapWriter.containerparent(Folder.Create(Context, fi.Directory), this);
                 if (fromSource == 1)
                 {
                     foreach (var text in Context.Compilation.SyntaxTrees.
@@ -54,12 +54,12 @@ namespace Semmle.Extraction.Entities
                         var lineCounts = LineCounter.ComputeLineCounts(rawText);
                         if (rawText.Length > 0 && rawText[rawText.Length - 1] != '\n') lineCounts.Total++;
 
-                        Context.Emit(Tuples.numlines(this, lineCounts));
+                        Context.TrapWriter.numlines(this, lineCounts);
                         Context.TrapWriter.Archive(fi.FullName, text.Encoding);
                     }
                 }
 
-                Context.Emit(Tuples.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0));
+                Context.TrapWriter.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0);
             }
         }
 
@@ -101,7 +101,7 @@ namespace Semmle.Extraction.Entities
 
             public override void Populate()
             {
-                Context.Emit(Tuples.files(this, "", "", ""));
+                Context.TrapWriter.files(this, "", "", "");
             }
 
             public override IId Id => new Key("GENERATED;sourcefile");

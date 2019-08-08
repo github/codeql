@@ -1,10 +1,10 @@
+using Semmle.Util;
+using Semmle.Util.Logging;
 using System;
 using System.IO;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
-using Semmle.Util;
-using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
 {
@@ -15,19 +15,11 @@ namespace Semmle.Extraction
 
     public sealed class TrapWriter : IDisposable
     {
-        //#################### ENUMERATIONS ####################
-        #region
-
         public enum InnerPathComputation
         {
             ABSOLUTE,
             RELATIVE
         }
-
-        #endregion
-
-        //#################### PRIVATE VARIABLES ####################
-        #region
 
         /// <summary>
         /// The location of the src_archive directory.
@@ -37,24 +29,16 @@ namespace Semmle.Extraction
 
         private readonly bool discardDuplicates;
 
-        #endregion
-
-        //#################### PROPERTIES ####################
-        #region
-
         public int IdCounter { get; set; } = 1;
 
         readonly Lazy<StreamWriter> WriterLazy;
+
+        public StreamWriter Writer => WriterLazy.Value;
 
         readonly Lazy<TrapBuilder> BuilderLazy;
         TrapBuilder Builder => BuilderLazy.Value;
 
         readonly ILogger Logger;
-
-        #endregion
-
-        //#################### CONSTRUCTORS ####################
-        #region
 
         public TrapWriter(ILogger logger, string outputfile, string trap, string archive, bool discardDuplicates)
         {
@@ -94,11 +78,6 @@ namespace Semmle.Extraction
         /// </summary>
         public readonly string TrapFile;
         string tmpFile;     // The temporary file which is moved to trapFile once written.
-
-        #endregion
-
-        //#################### PUBLIC METHODS ####################
-        #region
 
         /// <summary>
         /// Adds the specified input file to the source archive. It may end up in either the normal or long path area
@@ -200,11 +179,6 @@ namespace Semmle.Extraction
         {
             emitter.EmitToTrapBuilder(Builder);
         }
-
-        #endregion
-
-        //#################### PRIVATE METHODS ####################
-        #region
 
         /// <summary>
         /// Computes the hash of <paramref name="filePath"/>.
@@ -319,7 +293,5 @@ namespace Semmle.Extraction
 
             return NestPaths(logger, folder, filename, InnerPathComputation.ABSOLUTE); ;
         }
-
-        #endregion
     }
 }

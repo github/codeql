@@ -29,8 +29,8 @@ namespace Semmle.Extraction.Entities
         {
             if (assemblyPath != null)
             {
-                Context.Emit(Tuples.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString(),
-                    assembly.Identity.Name, assembly.Identity.Version.ToString()));
+                Context.TrapWriter.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString(),
+                    assembly.Identity.Name, assembly.Identity.Version.ToString());
             }
         }
 
