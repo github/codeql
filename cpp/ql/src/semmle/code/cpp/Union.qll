@@ -44,7 +44,7 @@ class LocalUnion extends Union {
 }
 
 /**
- * A C++ nested union. For example, the type `MyNestedUnion` in:
+ * A C/C++ nested union. For example, the type `MyNestedUnion` in:
  * ```
  * class MyClass
  * {
