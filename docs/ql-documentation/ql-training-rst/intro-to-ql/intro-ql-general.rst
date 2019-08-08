@@ -1,63 +1,24 @@
-Information
-===========
-
-- Pressing 'h' highlights code snippets
-- Pressing 'p' toggles speaker notes (if they're on the current slide)
-- Pressing 'f' toggles fullscreen viewing
-- Pressing 'w' toggles widescreen
-- Pressing 'o' toggles overview mode
-
-Getting started
-===============
-
-- If you are a completely new to QL, try the `QL detective tutorials <https://help.semmle.com/QL/learn-ql/ql/beginner/ql-tutorials.html>`__.
-- To learn more about the main features of QL, try looking at the `QL language handbook <https://help.semmle.com/QL/ql-handbook/>`__.
-- For further information about writing queries in QL, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html>`__.
-
-.. rst-class:: agenda-slide
-
-Setup
-=====
-
-.. container:: set-up
-
-   Download:
-
-   - `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-   - Snapshot: `exiv2 <https://www.google.com/url?q=http://downloads.lgtm.com/snapshots/cpp/exiv2/Exiv2_exiv2_b090f4d.zip&sa=D&ust=1558103276046000&   usg=AFQjCNFOJMgAMNChZHpMO9QEY62W-mYI1Q>`__
-
-.. note::
-
-   To run the queries featured in this training presentation, we recommend you download the free-to-use `QL for Eclipse plugin <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/getting-started.html>`__.
-   This plugin allows you to locally access the latest features of QL, including the standard QL libraries and queries. It also provides standard IDE features such as syntax highlighting, jump-to-definition, and tab completion.
-   A good project to start analyzing is `exiv2 <https://github.com/Exiv2/exiv2>`__–a suitable snapshot to query is available by visiting the link on the slide.
-   Alternatively, you can query any project (including exiv2) in `the query console <https://lgtm.com/query/project:1506532406873/lang:cpp/>`__ on LGTM.com.
-   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
-
 A few years ago, somewhere between Earth and Mars...
 ====================================================
-
-.. image:: ../_static-training/curiosity.png
-   :scale: 50 % 
-
-Start with a problem...
-=======================
 
 Crashing bug found in Curiosity’s landing module through routine testing.
 
 Patching is still possible mid-flight, but what if there are more such issues?
 
-.. image:: ../_static-training/curiosity2.png
-   :scale: 50 % 
+.. container:: image-box
 
+   .. image:: ../_static-training/curiosity.png
+   
 .. note::
 
-   When the Curiosity Rover was on its way to Mars in 2012, a flight software developer at NASA JPL discovered a mission-critical bug through manual code review. The problem occurred in Curiosity’s Entry, Descent and Landing software–the software responsible for the Rover’s descent through the Martian atmosphere and landing it safely on the surface. of Mars.
+   When the Curiosity Rover was on its way to Mars in 2012, a flight software developer at NASA JPL discovered a mission-critical bug through manual code review. The problem occurred in Curiosity’s Entry, Descent, and Landing software–the software responsible for the Rover’s descent through the Martian atmosphere and landing it safely on the surface. of Mars.
 
    The bug, which had gone undetected by traditional solutions, was likely to prevent the capsule’s parachutes from opening, resulting in the Rover crashing onto the red planet’s rocky surface.
    
 Zoom in on the code
 ===================
+
+(For illustration only, not actually NASA code!)
 
 .. code-block:: cpp
 
@@ -83,9 +44,12 @@ Zoom in on the code
   However, there’s no sanity checking, and a developer might call it with an array that’s too short, holding direction information for only one of the thrusters. 
   The function will then read past the end of the array, and unpredictable results occur.
 
-
 Write a query...
 ================
+
+...to find all instances of the problem.
+
+Complete text of the analysis (nothing left out!):
 
 .. code-block:: ql
 
@@ -110,15 +74,16 @@ Write a query...
 Find all instances!
 ===================
 
-.. image:: ../_static-training/curiosity2.png
-   :scale: 50 % 
+- When applied to the code, the query found the original bug and around 30 others.
 
+- Three of those were in the same entry, descent and landing module.
 
-When applied to the code, the query found the original bug and around 30 others.
+- All were fixed with a mid-flight patch.
 
-Three of those were in the same entry, descent and landing module.
+.. container:: image-box
 
-All were fixed with a mid-flight patch.
+   .. image:: ../_static-training/curiosity2.png
+    
 
 .. note::
 
@@ -130,23 +95,19 @@ All were fixed with a mid-flight patch.
 
 .. rst-class:: background2
 
-.. rst-class:: myclass
-
 How it all works
 ================
-
-
 
 Analysis overview
 =================
 
-.. image:: ../_static-training/analysis-overview.png
-   :scale: 75 % 
-
-
 - The database schema is (source) language specific, as are queries and libraries.
 - Multi-language code bases are analyzed one language at a time.
 
+.. container:: image-box
+
+   .. image:: ../_static-training/analysis-overview.png
+       
 
 .. note::
 
