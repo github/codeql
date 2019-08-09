@@ -48,7 +48,7 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
   LocalVariable var;
   
   TranslatedLocalVariableDeclaration() {
-    var = expr.getVariable() 
+    var = expr.getVariable()
   }
 
   override TranslatedElement getChild(int id) {
@@ -81,10 +81,15 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
     (
       tag = InitializerVariableAddressTag() and
       kind instanceof GotoEdge and
+      
       if hasUninitializedInstruction() then
         result = getInstruction(InitializerStoreTag())
       else
-        result = getInitialization().getFirstInstruction()
+        if isInitializedByExpr() then
+          // initialization is done by the expression
+          result = getParent().getChildSuccessor(this)
+        else
+          result = getInitialization().getFirstInstruction()
     ) or
     (
       hasUninitializedInstruction() and
@@ -128,16 +133,27 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
   private TranslatedInitialization getInitialization() {
     // First complex initializations
     if (var.getInitializer() instanceof ArrayCreation) then
-        result = getTranslatedInitialization(var.getInitializer().(ArrayCreation).getInitializer())
+      result = getTranslatedInitialization(var.getInitializer().(ArrayCreation).getInitializer())
     else if (var.getInitializer() instanceof ObjectCreation) then
-        result = getTranslatedInitialization(var.getInitializer())
+      result = getTranslatedInitialization(var.getInitializer())   
     else // then the simple variable initialization
-        result = getTranslatedInitialization(var.getInitializer())
+      result = getTranslatedInitialization(var.getInitializer())
   }
 
   private predicate hasUninitializedInstruction() {
-    not exists(getInitialization()) or
-    getInitialization() instanceof TranslatedListInitialization
+    (
+      not exists(getInitialization()) or
+      getInitialization() instanceof TranslatedListInitialization
+    ) and
+    not isInitializedByExpr()
+  }
+  
+  /**
+   * Predicate that holds if a declaration is not explicitly initialized,
+   * but will be initialized as part of an expression.
+   */
+  private predicate isInitializedByExpr() {
+    expr.getParent() instanceof IsExpr
   }
 }
 

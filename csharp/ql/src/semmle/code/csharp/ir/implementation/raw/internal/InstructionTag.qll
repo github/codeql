@@ -85,13 +85,18 @@ newtype TInstructionTag =
   } or
   // Added for C#  
   NewObjTag() or
-  // TODO: 255 provisory 9max dim of array)
+  // TODO: remove the need for index
   PointerAddTag(int index) {
   	index in [0 .. 255]
   } or
   ElementsAddressTag(int index) {
   	index in [0 .. 255]
-  }
+  } or
+  ConvertTag() or
+  GeneratedNEQTag() or
+  GeneratedConstantTag() or
+  GeneratedBranchTag()
+  
 
 class InstructionTag extends TInstructionTag {
   final string toString() {
@@ -157,6 +162,10 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = NewObjTag() and result = "NewObj" or
   tag = ElementsAddressTag(_) and result = "ElementsAddress" or
   tag = PointerAddTag(_) and result = "PointerAdd" or
+  tag = ConvertTag() and result = "Convert" or
+  tag = GeneratedNEQTag() and result = "GeneratedNEQTag" or
+  tag = GeneratedConstantTag() and result = "GeneratedConstantTag" or
+  tag = GeneratedBranchTag() and result = "GeneratedBranchTag" or
   
   // TODO: Reread
 //  exists(Field field, Class cls, int index, string tagName |

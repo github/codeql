@@ -195,7 +195,10 @@ newtype TTranslatedElement =
     // TODO: Revisit and make sure Loads are only used when needed
     expr instanceof AssignableRead and
     not expr.getParent() instanceof ArrayAccess and
-    not expr.getType() instanceof RefType and 
+    not (
+      expr.getParent() instanceof Assignment and 
+      expr.getType() instanceof RefType
+    ) and
     // Ignore loads for reads in `++` and `--` since their
     // translated elements handle them
     not expr.getParent() instanceof MutatorOperation

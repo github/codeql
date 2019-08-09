@@ -107,7 +107,10 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
     // TODO: Make sure this is enough
     // Ref types need no loads
     // Eg. `Object obj = oldObj`;
-    expr.getType() instanceof RefType or
+    (
+      expr.getParent() instanceof Assignment and 
+      expr.getType() instanceof RefType
+    ) or
     // The access inside a `++` or `--` expr will produce the final value, 
     // since the load is handled by them 
     expr.getParent() instanceof MutatorOperation
@@ -1150,12 +1153,9 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
 }
 
 /**
- * Represents the translation of a conversion expression that generates a
- * single instruction.
+ * Represents the translation of a cast expression that generates a
+ * single `Convert` instruction.
  */
-// Review: Should we model the two cast exprs so that the way they work
-//         is reflected in the CFG? `AsExpr` doesn't throw errors but returns null,
-//         `CastExpr` throws an error if the cast fails.
 class TranslatedCast extends TranslatedNonConstantExpr {
   override Cast expr;
   
@@ -1169,38 +1169,47 @@ class TranslatedCast extends TranslatedNonConstantExpr {
   
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
-    tag = OnlyInstructionTag() and
+    tag = ConvertTag() and
     result = getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getOperand() and result = getInstruction(OnlyInstructionTag())
+    child = getOperand() and result = getInstruction(ConvertTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
-    tag = OnlyInstructionTag() and
-    opcode instanceof Opcode::Convert and
-    resultType = getResultType() and
-    isLValue = isResultLValue()
+    (
+      tag = ConvertTag() and
+      opcode = getOpcode() and
+      resultType = getResultType() and
+      isLValue = false
+    )
   }
 
   override Instruction getResult() {
-    result = getInstruction(OnlyInstructionTag())
+    result = getInstruction(ConvertTag())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
       OperandTag operandTag) {
-    tag = OnlyInstructionTag() and
-    operandTag instanceof UnaryOperandTag and
-    result = getOperand().getResult()
+    (
+      tag = ConvertTag() and
+      operandTag instanceof UnaryOperandTag and
+      result = getOperand().getResult()
+    )
   }
   
-  final TranslatedExpr getOperand() {
+  private TranslatedExpr getOperand() {
     result = getTranslatedExpr(expr.(Cast).getExpr())
   }
-}
+  
+  private Opcode getOpcode() {
+    expr instanceof CastExpr and result instanceof Opcode::CheckedConvertOrThrow or
+    expr instanceof AsExpr and result instanceof Opcode::CheckedConvertOrNull
+  }
+ }
 
 
 private Opcode binaryBitwiseOpcode(BinaryBitwiseOperation expr) {
@@ -2106,6 +2115,182 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
   }
 }
 
+/**
+ * The IR translation of an `IsExpr`. 
+ */
+// TODO: Once `TranslatedInitialization.qll` is refactored,
+//       get rid of the initialization here.
+// TODO: Maybe refactor the generated instructions since it's pretty cluttered 
+class TranslatedIsExpr extends TranslatedNonConstantExpr {
+  override IsExpr expr;
+  
+  override Instruction getFirstInstruction() {
+      result = getIsExpr().getFirstInstruction()
+  }
+
+  override final TranslatedElement getChild(int id) {
+    id = 0 and result = getIsExpr() or
+    id = 1 and result = getPatternVarDecl()
+  }
+  
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    (
+      tag = ConvertTag() and
+      kind instanceof GotoEdge and
+      result = getInstruction(GeneratedConstantTag())
+    ) or
+    (
+      hasVar() and
+      tag = InitializerStoreTag() and
+      kind instanceof GotoEdge and
+      result = getParent().getChildSuccessor(this)
+    ) or
+    (
+      tag = GeneratedNEQTag() and
+      kind instanceof GotoEdge and
+      if hasVar() then
+        result = getInstruction(GeneratedBranchTag())
+      else
+        result = getParent().getChildSuccessor(this)
+    ) or
+    (
+      // if a var is declared, we do the initialization only
+      // if the `IsExpr` was evaluated to `true`
+      hasVar() and 
+      tag = GeneratedBranchTag() and (
+        (
+          tag = GeneratedBranchTag() and
+          kind instanceof TrueEdge and
+          result = getPatternVarDecl().getFirstInstruction()
+        ) or
+        (
+          tag = GeneratedBranchTag() and
+          kind instanceof FalseEdge and
+          result = getParent().getChildSuccessor(this)
+        )
+      )
+    ) or
+    (
+      tag = GeneratedConstantTag() and
+      kind instanceof GotoEdge and
+      result = getInstruction(GeneratedNEQTag())
+    )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    (
+      child = getIsExpr() and
+      result = getInstruction(ConvertTag())
+    ) or
+    (
+      hasVar() and 
+      child = getPatternVarDecl() and
+      result = getInstruction(InitializerStoreTag())
+    )
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+    Type resultType, boolean isLValue) {
+    (
+      hasVar() and
+      tag = InitializerStoreTag() and
+      opcode instanceof Opcode::Store and
+      resultType = expr.getPattern().getType() and
+      isLValue = false
+    ) or
+    (
+      tag = ConvertTag() and
+      opcode instanceof Opcode::CheckedConvertOrNull and
+      resultType = expr.getPattern().getType() and
+      isLValue = false
+    ) or
+    (
+      tag = GeneratedNEQTag() and
+      opcode instanceof Opcode::CompareNE and
+      resultType = expr.getType() and
+      isLValue = false
+    ) or
+    (
+      tag = GeneratedConstantTag() and
+      opcode instanceof Opcode::Constant and
+      resultType = expr.getPattern().getType() and
+      isLValue = false
+    ) or
+    (
+      hasVar() and 
+      tag = GeneratedBranchTag() and
+      opcode instanceof Opcode::ConditionalBranch and
+      resultType = expr.getType() and
+      isLValue = false
+    )
+  }
+
+  override string getInstructionConstantValue(InstructionTag tag) {
+    tag = GeneratedConstantTag() and
+    // Review: "0" or "null"?
+    result = "0"
+  }
+  
+  override Instruction getResult() {
+    result = getInstruction(GeneratedNEQTag())
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    (
+      tag = ConvertTag() and
+      operandTag instanceof UnaryOperandTag and
+      result = getIsExpr().getResult()
+    ) or
+    (
+      hasVar() and
+      tag = InitializerStoreTag() and
+      (
+        (
+          operandTag instanceof StoreValueOperandTag and
+          result = getInstruction(ConvertTag())
+        ) or
+        (
+          operandTag instanceof AddressOperandTag and
+          result = getPatternVarDecl().getTargetAddress()
+        )
+      )
+    ) or
+    (
+      tag = GeneratedNEQTag() and
+      (
+        (
+          operandTag instanceof LeftOperandTag and
+          result = getInstruction(ConvertTag())
+        ) or
+        (
+          operandTag instanceof RightOperandTag and
+          result = getInstruction(GeneratedConstantTag())
+        )
+      )
+    ) or
+    (
+      hasVar() and
+      tag = GeneratedBranchTag() and
+      operandTag instanceof UnaryOperandTag and
+      result = getInstruction(GeneratedNEQTag())
+    )
+  }
+  
+  private TranslatedExpr getIsExpr() {
+    result = getTranslatedExpr(expr.getExpr()) 
+  }
+  
+  private predicate hasVar() {
+    exists(getPatternVarDecl()) 
+  }
+  
+  private TranslatedLocalVariableDeclaration getPatternVarDecl() {
+    result = getTranslatedLocalDeclaration(expr.getPattern())
+  }
+}
+ 
 /**
  * The IR translation of a lambda expression. This initializes a temporary variable whose type is that of the lambda,
  * using the initializer list that represents the captures of the lambda.
