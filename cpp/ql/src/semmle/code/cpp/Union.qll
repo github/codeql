@@ -26,8 +26,7 @@ class Union extends Struct  {
  * A C/C++ union that is directly enclosed by a function. For example, the type
  * `MyLocalUnion` in:
  * ```
- * void myFunction()
- * {
+ * void myFunction() {
  *   union MyLocalUnion {
  *     int i;
  *     float f;
@@ -46,8 +45,7 @@ class LocalUnion extends Union {
 /**
  * A C/C++ nested union. For example, the type `MyNestedUnion` in:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
  *   union MyNestedUnion {
  *     int i;
