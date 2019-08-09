@@ -80,6 +80,11 @@ module TaintTracking {
 
     final override predicate isBarrierOut(DataFlow::Node node) { isSanitizerOut(node) }
 
+    /** Holds if data flow through nodes guarded by `guard` is prohibited. */
+    predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
+
+    final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) { isSanitizerGuard(guard) }
+
     /**
      * Holds if the additional taint propagation step from `node1` to `node2`
      * must be taken into account in the analysis.
@@ -161,6 +166,11 @@ module TaintTracking {
     predicate isSanitizerOut(DataFlow::Node node) { none() }
 
     final override predicate isBarrierOut(DataFlow::Node node) { isSanitizerOut(node) }
+
+    /** Holds if data flow through nodes guarded by `guard` is prohibited. */
+    predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
+
+    final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) { isSanitizerGuard(guard) }
 
     /**
      * Holds if the additional taint propagation step from `node1` to `node2`

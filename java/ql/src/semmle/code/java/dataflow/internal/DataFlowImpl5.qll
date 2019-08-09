@@ -75,6 +75,9 @@ abstract class Configuration extends string {
   /** Holds if data flow out of `node` is prohibited. */
   predicate isBarrierOut(Node node) { none() }
 
+  /** Holds if data flow through nodes guarded by `guard` is prohibited. */
+  predicate isBarrierGuard(BarrierGuard guard) { none() }
+
   /**
    * Holds if the additional flow step from `node1` to `node2` must be taken
    * into account in the analysis.
@@ -136,6 +139,11 @@ private predicate fullBarrier(Node node, Configuration config) {
   or
   config.isBarrierOut(node) and
   not config.isSink(node)
+  or
+  exists(BarrierGuard g |
+    config.isBarrierGuard(g) and
+    node = g.getAGuardedNode()
+  )
 }
 
 private class AdditionalFlowStepSource extends Node {

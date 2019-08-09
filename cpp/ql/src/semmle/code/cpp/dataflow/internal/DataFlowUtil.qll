@@ -331,3 +331,14 @@ VariableAccess getAnAccessToAssignedVariable(Expr assign) {
     result = var.getAnAccess()
   )
 }
+
+/** A guard that validates some expression. */
+class BarrierGuard extends Expr {
+  /** Holds if this guard validates `e` upon evaluating to `branch`. */
+  abstract predicate checks(Expr e, boolean branch);
+
+  /** Gets a node guarded by this. */
+  final Node getAGuardedNode() {
+    none() // stub
+  }
+}
