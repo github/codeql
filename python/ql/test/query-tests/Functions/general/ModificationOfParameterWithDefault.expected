@@ -12,7 +12,7 @@ edges
 | functions_test.py:300:26:300:26 | empty mutable value | functions_test.py:303:12:303:12 | empty mutable value |
 | functions_test.py:305:21:305:25 | empty mutable value | functions_test.py:306:12:306:16 | empty mutable value |
 #select
-| functions_test.py:40:5:40:5 | Taint sink | functions_test.py:39:9:39:9 | empty mutable value | functions_test.py:40:5:40:5 | empty mutable value | $@ flows to here and is mutated. | functions_test.py:39:9:39:9 | mutable default value | Default value |
-| functions_test.py:239:5:239:5 | Taint sink | functions_test.py:238:15:238:15 | empty mutable value | functions_test.py:239:5:239:5 | empty mutable value | $@ flows to here and is mutated. | functions_test.py:238:15:238:15 | mutable default value | Default value |
-| functions_test.py:291:5:291:5 | Taint sink | functions_test.py:296:27:296:27 | empty mutable value | functions_test.py:291:5:291:5 | empty mutable value | $@ flows to here and is mutated. | functions_test.py:296:27:296:27 | mutable default value | Default value |
-| functions_test.py:294:5:294:5 | Taint sink | functions_test.py:296:27:296:27 | empty mutable value | functions_test.py:294:5:294:5 | empty mutable value | $@ flows to here and is mutated. | functions_test.py:296:27:296:27 | mutable default value | Default value |
+| functions_test.py:40:5:40:5 | x | functions_test.py:39:9:39:9 | empty mutable value | functions_test.py:40:5:40:5 | empty mutable value | $@ flows to here and is mutated. | functions_test.py:39:9:39:9 | x | Default value |
+| functions_test.py:239:5:239:5 | x | functions_test.py:238:15:238:15 | empty mutable value | functions_test.py:239:5:239:5 | empty mutable value | $@ flows to here and is mutated. | functions_test.py:238:15:238:15 | x | Default value |
+| functions_test.py:291:5:291:5 | x | functions_test.py:296:27:296:27 | empty mutable value | functions_test.py:291:5:291:5 | empty mutable value | $@ flows to here and is mutated. | functions_test.py:296:27:296:27 | y | Default value |
+| functions_test.py:294:5:294:5 | x | functions_test.py:296:27:296:27 | empty mutable value | functions_test.py:294:5:294:5 | empty mutable value | $@ flows to here and is mutated. | functions_test.py:296:27:296:27 | y | Default value |

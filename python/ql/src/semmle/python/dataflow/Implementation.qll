@@ -288,17 +288,36 @@ class TaintTrackingImplementation extends string {
     /** Gets the boolean value that `test` evaluates to when `use` is tainted with `kind`
      * and `test` and `use` are part of a test in a branch.
      */
-    private boolean test_evaluates(ControlFlowNode test, ControlFlowNode use, TaintKind kind) {
+    boolean testEvaluates(ControlFlowNode test, ControlFlowNode use, TaintKind kind) {
         boolean_filter(_, use) and
         kind.taints(use) and
         test = use and result = kind.booleanValue()
         or
-        result = test_evaluates(not_operand(test), use, kind).booleanNot()
+        result = testEvaluates(not_operand(test), use, kind).booleanNot()
         or
         exists(ControlFlowNode const |
             Filters::equality_test(test, use, result.booleanNot(), const) and
             const.getNode() instanceof ImmutableLiteral
         )
+        or
+        exists(ControlFlowNode c, ClassValue cls |
+            Filters::isinstance(test, c, use) and
+            c.pointsTo(cls)
+            |
+            kind.getType().getASuperType() = cls and result = true
+            or
+            not kind.getType().getASuperType() = cls and result = false
+        )
+    }
+
+    predicate testEvaluatesMaybe(ControlFlowNode test, ControlFlowNode use) {
+        any(PyEdgeRefinement ref).getTest().getAChild*() = test and
+        test.getAChild*() = use and
+        not test.(UnaryExprNode).getNode().getOp() instanceof Not and
+        not Filters::equality_test(test, use, _, _) and
+        not Filters::isinstance(test, _, use)
+        or
+        testEvaluatesMaybe(not_operand(test), use)
     }
 
     /** Gets the operand of a unary `not` expression. */
@@ -656,16 +675,9 @@ class TaintTrackingImplementation extends string {
             srcnode.asVariable() = defn.getInput() and
             not this.(TaintTracking::Configuration).isBarrierTest(defn.getTest(), defn.getSense())
             |
-            exists(ControlFlowNode c, ClassValue cls |
-                Filters::isinstance(defn.getTest(), c, defn.getInput().getSourceVariable().getAUse()) and
-                c.pointsTo(cls)
-                |
-                defn.getSense() = true and kind.getType().getASuperType() = cls
-                or
-                defn.getSense() = false and not kind.getType().getASuperType() = cls
-            )
+            defn.getSense() = testEvaluates(defn.getTest(), defn.getInput().getSourceVariable().getAUse(), kind)
             or
-            defn.getSense() = test_evaluates(defn.getTest(), defn.getInput().getSourceVariable().getAUse(), kind)
+            testEvaluatesMaybe(defn.getTest(), defn.getInput().getSourceVariable().getAUse())
         )
     }
 
