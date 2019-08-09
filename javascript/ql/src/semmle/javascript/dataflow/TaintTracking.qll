@@ -143,6 +143,15 @@ module TaintTracking {
 
   /**
    * A node that can act as a sanitizer when appearing in a condition.
+   *
+   * To add a sanitizer guard to a configuration, define a subclass of this class overriding the
+   * `sanitizes` predicate, and then extend the configuration's `isSanitizerGuard` predicate to
+   * include the new class.
+   *
+   * Note that it is generally a good idea to make the characteristic predicate of sanitizer guard
+   * classes as precise as possible: if two subclasses of `SanitizerGuardNode` overlap, their
+   * implementations of `sanitizes` will _both_ apply to any configuration that includes either of
+   * them.
    */
   abstract class SanitizerGuardNode extends DataFlow::BarrierGuardNode {
     override predicate blocks(boolean outcome, Expr e) { sanitizes(outcome, e) }
