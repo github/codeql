@@ -25,15 +25,15 @@ namespace Semmle.Extraction.CSharp.Entities
         public override bool NeedsPopulation =>
             (base.NeedsPopulation && !symbol.IsImplicitlyDeclared) || symbol.ContainingType.IsTupleType;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            ExtractMetadataHandle();
+            ExtractMetadataHandle(trapFile);
             ExtractAttributes();
             ContainingType.ExtractGenerics();
-            ExtractNullability(symbol.NullableAnnotation);
+            ExtractNullability(trapFile, symbol.NullableAnnotation);
 
             Field unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
-            Context.Emit(Tuples.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey));
+            trapFile.Emit(Tuples.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey));
 
             ExtractModifiers();
 
@@ -46,12 +46,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (symbol.HasConstantValue)
                 {
-                    Context.Emit(Tuples.constant_value(this, Expression.ValueAsString(symbol.ConstantValue)));
+                    trapFile.Emit(Tuples.constant_value(this, Expression.ValueAsString(symbol.ConstantValue)));
                 }
             }
 
             foreach (var l in Locations)
-                Context.Emit(Tuples.field_location(this, l));
+                trapFile.Emit(Tuples.field_location(this, l));
 
             if (!IsSourceDeclaration || !symbol.FromSource())
                 return;
@@ -86,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 // Mark fields that have explicit initializers.
                 var expr = new Expression(new ExpressionInfo(Context, Type, Context.Create(initializer.EqualsValue.Value.FixedLocation()), Kinds.ExprKind.FIELD_ACCESS, this, child++, false, null));
-                Context.Emit(Tuples.expr_access(expr, this));
+                trapFile.Emit(Tuples.expr_access(expr, this));
             }
 
             if (IsSourceDeclaration)

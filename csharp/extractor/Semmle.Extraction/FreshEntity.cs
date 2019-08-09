@@ -1,4 +1,5 @@
 using Semmle.Extraction.Entities;
+using System;
 using System.IO;
 
 namespace Semmle.Extraction
@@ -31,9 +32,24 @@ namespace Semmle.Extraction
             WriteId(writer);
         }
 
-        public override string ToString() => Label.ToString();
+        protected abstract void Populate(TextWriter trapFile);
 
-        public IId Id => FreshId.Instance;
+        protected void TryPopulate()
+        {
+            cx.Try(null, null, () => Populate(cx.TrapWriter.Writer));
+        }
+
+        public string DebugTuples
+        {
+            get
+            {
+                var writer = new StringWriter();
+                Populate(writer);
+                return writer.ToString();
+            }
+        }
+
+        public override string ToString() => Label.ToString();
 
         public virtual Microsoft.CodeAnalysis.Location ReportingLocation => null;
 

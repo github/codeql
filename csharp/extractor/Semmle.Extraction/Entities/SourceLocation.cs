@@ -10,11 +10,11 @@ namespace Semmle.Extraction.Entities
 
         public new static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => SourceLocationFactory.Instance.CreateEntity(cx, loc);
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             Position = symbol.GetLineSpan();
             FileEntity = File.Create(Context, Position.Path);
-            Context.TrapWriter.locations_default(this, FileEntity, Position.Span.Start.Line + 1, Position.Span.Start.Character + 1,
+            trapFile.locations_default(this, FileEntity, Position.Span.Start.Line + 1, Position.Span.Start.Character + 1,
                     Position.Span.End.Line + 1, Position.Span.End.Character);
         }
 

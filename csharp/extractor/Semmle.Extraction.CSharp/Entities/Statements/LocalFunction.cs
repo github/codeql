@@ -3,6 +3,7 @@ using Semmle.Extraction.Kinds;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
@@ -40,9 +41,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         /// </summary>
         Entities.LocalFunction Function => Entities.LocalFunction.Create(cx, Symbol);
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
-            cx.Emit(Tuples.local_function_stmts(this, Function));
+            trapFile.Emit(Tuples.local_function_stmts(this, Function));
         }
     }
 }

@@ -30,9 +30,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public new Accessor OriginalDefinition => Create(Context, symbol.OriginalDefinition);
 
-        public override void Populate()
+        public override void Populate(System.IO.TextWriter trapFile)
         {
-            PopulateMethod();
+            PopulateMethod(trapFile);
             ExtractModifiers();
             ContainingType.ExtractGenerics();
 
@@ -62,16 +62,16 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            Context.Emit(Tuples.accessors(this, kind, symbol.Name, parent, unboundAccessor));
+            trapFile.Emit(Tuples.accessors(this, kind, symbol.Name, parent, unboundAccessor));
 
             foreach (var l in Locations)
-                Context.Emit(Tuples.accessor_location(this, l));
+                trapFile.Emit(Tuples.accessor_location(this, l));
 
-            Overrides();
+            Overrides(trapFile);
 
             if (symbol.FromSource() && Block == null)
             {
-                Context.Emit(Tuples.compiler_generated(this));
+                trapFile.Emit(Tuples.compiler_generated(this));
             }
         }
 

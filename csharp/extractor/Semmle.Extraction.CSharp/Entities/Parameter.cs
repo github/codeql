@@ -100,17 +100,17 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             ExtractAttributes();
-            ExtractNullability(symbol.NullableAnnotation);
-            ExtractRefKind(symbol.RefKind);
+            ExtractNullability(trapFile, symbol.NullableAnnotation);
+            ExtractRefKind(trapFile, symbol.RefKind);
 
             if (symbol.Name != Original.symbol.Name)
                 Context.ModelError(symbol, "Inconsistent parameter declaration");
 
             var type = Type.Create(Context, symbol.Type);
-            Context.Emit(Tuples.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent, Original));
+            trapFile.Emit(Tuples.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent, Original));
 
             foreach (var l in symbol.Locations)
                 Context.Emit(Tuples.param_location(this, Context.Create(l)));
@@ -183,10 +183,10 @@ namespace Semmle.Extraction.CSharp.Entities
         VarargsType(Context cx)
             : base(cx, null) { }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.types(this, Kinds.TypeKind.ARGLIST, "__arglist"));
-            Context.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace)));
+            trapFile.Emit(Tuples.types(this, Kinds.TypeKind.ARGLIST, "__arglist"));
+            trapFile.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace)));
             Modifier.HasModifier(Context, this, "public");
         }
 
@@ -222,12 +222,12 @@ namespace Semmle.Extraction.CSharp.Entities
         VarargsParam(Context cx, Method methodKey)
             : base(cx, null, methodKey, null) { }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             var typeKey = VarargsType.Create(Context);
             // !! Maybe originaldefinition is wrong
-            Context.Emit(Tuples.@params(this, "", typeKey, Ordinal, Kind.None, Parent, this));
-            Context.Emit(Tuples.param_location(this, GeneratedLocation.Create(Context)));
+            trapFile.Emit(Tuples.@params(this, "", typeKey, Ordinal, Kind.None, Parent, this));
+            trapFile.Emit(Tuples.param_location(this, GeneratedLocation.Create(Context)));
         }
 
         protected override int Ordinal => ((Method)Parent).OriginalDefinition.symbol.Parameters.Length;
@@ -262,11 +262,11 @@ namespace Semmle.Extraction.CSharp.Entities
             ConstructedType = method.symbol.ReceiverType;
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             var typeKey = Type.Create(Context, ConstructedType);
-            Context.Emit(Tuples.@params(this, Original.symbol.Name, typeKey.TypeRef, 0, Kind.This, Parent, Original));
-            Context.Emit(Tuples.param_location(this, Original.Location));
+            trapFile.Emit(Tuples.@params(this, Original.symbol.Name, typeKey.TypeRef, 0, Kind.This, Parent, Original));
+            trapFile.Emit(Tuples.param_location(this, Original.Location));
         }
 
         public override int GetHashCode() => symbol.GetHashCode() + 31 * ConstructedType.GetHashCode();

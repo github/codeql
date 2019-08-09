@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -8,7 +9,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         TypeAccess(ExpressionNodeInfo info) : base(info.SetKind(ExprKind.TYPE_ACCESS)) { }
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             switch (Syntax.Kind())
             {

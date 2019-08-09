@@ -13,13 +13,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Context.Compilation.ObjectType.Locations.FirstOrDefault();
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.types(this, Kinds.TypeKind.DYNAMIC, "dynamic"));
-            Context.Emit(Tuples.type_location(this, Location));
+            trapFile.Emit(Tuples.types(this, Kinds.TypeKind.DYNAMIC, "dynamic"));
+            trapFile.Emit(Tuples.type_location(this, Location));
 
-            Context.Emit(Tuples.has_modifiers(this, Modifier.Create(Context, "public")));
-            Context.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace)));
+            trapFile.Emit(Tuples.has_modifiers(this, Modifier.Create(Context, "public")));
+            trapFile.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace)));
         }
 
         public override void WriteId(TextWriter trapFile)

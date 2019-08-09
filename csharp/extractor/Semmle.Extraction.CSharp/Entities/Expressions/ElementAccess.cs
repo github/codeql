@@ -4,6 +4,7 @@ using Semmle.Extraction.Kinds;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -19,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         readonly ExpressionSyntax Qualifier;
         readonly BracketedArgumentListSyntax ArgumentList;
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             if (Kind == ExprKind.POINTER_INDIRECTION)
             {
@@ -27,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var add = new Expression(new ExpressionInfo(cx, qualifierInfo.Type, Location, ExprKind.ADD, this, 0, false, null));
                 qualifierInfo.SetParent(add, 0);
                 CreateFromNode(qualifierInfo);
-                PopulateArguments(ArgumentList, 1);
+                PopulateArguments(trapFile, ArgumentList, 1);
             }
             else
             {
@@ -43,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var indexer = symbolInfo.Symbol as IPropertySymbol;
                 if (indexer != null)
                 {
-                    cx.Emit(Tuples.expr_access(this, Indexer.Create(cx, indexer)));
+                    trapFile.Emit(Tuples.expr_access(this, Indexer.Create(cx, indexer)));
                 }
             }
         }
@@ -86,10 +87,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new BindingElementAccess(info).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
-            base.Populate();
-            MakeConditional();
+            base.PopulateExpression(trapFile);
+            MakeConditional(trapFile);
         }
     }
 }

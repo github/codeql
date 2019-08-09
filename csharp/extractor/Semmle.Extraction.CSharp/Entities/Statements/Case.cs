@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
@@ -32,7 +33,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         CaseLabel(Context cx, CaseSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
             var value = Stmt.Value;
             Expression.Create(cx, value, this, 0);
@@ -52,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         CaseDefault(Context cx, DefaultSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
 
-        protected override void Populate() { }
+        protected override void PopulateStatement(TextWriter trapFile) { }
 
         public static CaseDefault Create(Context cx, DefaultSwitchLabelSyntax node, Switch parent, int child)
         {
@@ -95,7 +96,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             }
         }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
             switch (Stmt.Pattern)
             {

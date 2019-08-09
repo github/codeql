@@ -20,7 +20,17 @@ namespace Semmle.Extraction
 
         public override string ToString() => Label.ToString();
 
-        public abstract void Populate();
+        public abstract void Populate(TextWriter trapFile);
+
+        public string DebugTrapContents
+        {
+            get
+            {
+                var trap = new StringWriter();
+                Populate(trap);
+                return trap.ToString();
+            }
+        }
 
         public Context Context
         {

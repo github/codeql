@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -12,9 +13,9 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         IEventSymbol EventSymbol => symbol.AssociatedSymbol as IEventSymbol;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            PopulateMethod();
+            PopulateMethod(trapFile);
             ContainingType.ExtractGenerics();
 
             var @event = EventSymbol;
@@ -43,12 +44,12 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            Context.Emit(Tuples.event_accessors(this, kind, symbol.Name, parent, unboundAccessor));
+            trapFile.Emit(Tuples.event_accessors(this, kind, symbol.Name, parent, unboundAccessor));
 
             foreach (var l in Locations)
-                Context.Emit(Tuples.event_accessor_location(this, l));
+                trapFile.Emit(Tuples.event_accessor_location(this, l));
 
-            Overrides();
+            Overrides(trapFile);
         }
 
         public new static EventAccessor Create(Context cx, IMethodSymbol symbol) =>

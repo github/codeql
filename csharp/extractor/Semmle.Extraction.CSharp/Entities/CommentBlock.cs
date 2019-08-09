@@ -9,14 +9,14 @@ namespace Semmle.Extraction.CSharp.Entities
         CommentBlock(Context cx, ICommentBlock init)
             : base(cx, init) { }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.commentblock(this));
+            trapFile.Emit(Tuples.commentblock(this));
             int child = 0;
-            Context.Emit(Tuples.commentblock_location(this, Context.Create(symbol.Location)));
+            trapFile.Emit(Tuples.commentblock_location(this, Context.Create(symbol.Location)));
             foreach (var l in symbol.CommentLines)
             {
-                Context.Emit(Tuples.commentblock_child(this, (CommentLine)l, child++));
+                trapFile.Emit(Tuples.commentblock_child(this, (CommentLine)l, child++));
             }
         }
 
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public void BindTo(Label entity, CommentBinding binding)
         {
-            Context.Emit(Tuples.commentblock_binding(this, entity, binding));
+            Context.TrapWriter.Writer.Emit(Tuples.commentblock_binding(this, entity, binding));
         }
 
         public static CommentBlock Create(Context cx, ICommentBlock block) => CommentBlockFactory.Instance.CreateEntity(cx, block);

@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -18,6 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
     class Expression : FreshEntity, IExpressionParentEntity
     {
+        private readonly IExpressionInfo Info;
         public readonly AnnotatedType Type;
         public readonly Extraction.Entities.Location Location;
         public readonly ExprKind Kind;
@@ -25,24 +27,29 @@ namespace Semmle.Extraction.CSharp.Entities
         internal Expression(IExpressionInfo info)
             : base(info.Context)
         {
+            Info = info;
             Location = info.Location;
             Kind = info.Kind;
             Type = info.Type;
-
             if (Type.Type is null)
                 Type = NullType.Create(cx);
 
-            cx.Emit(Tuples.expressions(this, Kind, Type.Type.TypeRef));
-            if (info.Parent.IsTopLevelParent)
-                cx.Emit(Tuples.expr_parent_top_level(this, info.Child, info.Parent));
+            TryPopulate();
+        }
+
+        protected sealed override void Populate(TextWriter trapFile)
+        {
+            trapFile.Emit(Tuples.expressions(this, Kind, Type.Type.TypeRef));
+            if (Info.Parent.IsTopLevelParent)
+                trapFile.Emit(Tuples.expr_parent_top_level(this, Info.Child, Info.Parent));
             else
-                cx.Emit(Tuples.expr_parent(this, info.Child, info.Parent));
-            cx.Emit(Tuples.expr_location(this, Location));
+                trapFile.Emit(Tuples.expr_parent(this, Info.Child, Info.Parent));
+            trapFile.Emit(Tuples.expr_location(this, Location));
 
-            if (info.IsCompilerGenerated)
-                cx.Emit(Tuples.expr_compiler_generated(this));
+            if (Info.IsCompilerGenerated)
+                trapFile.Emit(Tuples.expr_compiler_generated(this));
 
-            if (info.ExprValue is string value)
+            if (Info.ExprValue is string value)
                 cx.Emit(Tuples.expr_value(this, value));
 
             Type.Type.ExtractGenerics();
@@ -117,21 +124,20 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         /// <param name="cx">Context</param>
         /// <param name="node">The expression.</param>
-        public void OperatorCall(ExpressionSyntax node)
+        public void OperatorCall(TextWriter trapFile, ExpressionSyntax node)
         {
             var @operator = cx.GetSymbolInfo(node);
             if (@operator.Symbol is IMethodSymbol method)
             {
-
                 var callType = GetCallType(cx, node);
                 if (callType == CallType.Dynamic)
                 {
                     UserOperator.OperatorSymbol(method.Name, out string operatorName);
-                    cx.Emit(Tuples.dynamic_member_name(this, operatorName));
+                    trapFile.Emit(Tuples.dynamic_member_name(this, operatorName));
                     return;
                 }
 
-                cx.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
+                trapFile.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
             }
         }
 
@@ -203,18 +209,18 @@ namespace Semmle.Extraction.CSharp.Entities
             throw new InternalError(node, "Unable to locate a ConditionalAccessExpression");
         }
 
-        public void MakeConditional()
+        public void MakeConditional(TextWriter trapFile)
         {
-            cx.Emit(Tuples.conditional_access(this));
+            trapFile.Emit(Tuples.conditional_access(this));
         }
 
-        public void PopulateArguments(BaseArgumentListSyntax args, int child)
+        public void PopulateArguments(TextWriter trapFile, BaseArgumentListSyntax args, int child)
         {
             foreach (var arg in args.Arguments)
-                PopulateArgument(arg, child++);
+                PopulateArgument(trapFile, arg, child++);
         }
 
-        private void PopulateArgument(ArgumentSyntax arg, int child)
+        private void PopulateArgument(TextWriter trapFile, ArgumentSyntax arg, int child)
         {
             var expr = Create(cx, arg.Expression, this, child);
             int mode;
@@ -235,11 +241,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 default:
                     throw new InternalError(arg, "Unknown argument type");
             }
-            cx.Emit(Tuples.expr_argument(expr, mode));
+            trapFile.Emit(Tuples.expr_argument(expr, mode));
 
             if (arg.NameColon != null)
             {
-                cx.Emit(Tuples.expr_argument_name(expr, arg.NameColon.Name.Identifier.Text));
+                trapFile.Emit(Tuples.expr_argument_name(expr, arg.NameColon.Name.Identifier.Text));
             }
         }
 
@@ -285,11 +291,11 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <see cref="Expression.Create(Context, ExpressionSyntax, IEntity, int, ITypeSymbol)"/> will
         /// still be valid.
         /// </summary>
-        protected abstract void Populate();
+        protected abstract void PopulateExpression(TextWriter trapFile);
 
-        protected Expression TryPopulate()
+        protected new Expression TryPopulate()
         {
-            cx.Try(Syntax, null, Populate);
+            cx.Try(Syntax, null, ()=>PopulateExpression(cx.TrapWriter.Writer));
             return this;
         }
     }

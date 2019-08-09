@@ -10,14 +10,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => null;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.namespaces(this, symbol.Name));
+            trapFile.Emit(Tuples.namespaces(this, symbol.Name));
 
             if (symbol.ContainingNamespace != null)
             {
                 Namespace parent = Create(Context, symbol.ContainingNamespace);
-                Context.Emit(Tuples.parent_namespace(this, parent));
+                trapFile.Emit(Tuples.parent_namespace(this, parent));
             }
         }
 

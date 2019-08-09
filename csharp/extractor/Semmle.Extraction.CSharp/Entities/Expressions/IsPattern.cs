@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Kinds;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -148,7 +149,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Expressions.TypeAccess.Create(cx, optionalType, this, 1);
         }
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             Create(cx, Syntax.Expression, this, 0);
             switch (Syntax.Pattern)

@@ -27,16 +27,16 @@ namespace Semmle.Extraction.CSharp.Entities
             tw.Write(";localvar");
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             if (symbol is ILocalSymbol local)
             {
-                ExtractNullability(local.NullableAnnotation);
+                ExtractNullability(trapFile, local.NullableAnnotation);
                 if (local.IsRef)
-                    Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
+                    trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
             }
 
-            Context.Emit(Tuples.localvars(
+            trapFile.Emit(Tuples.localvars(
                 this,
                 IsRef ? 3 : IsConst ? 2 : 1,
                 symbol.Name,
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Type.Type.TypeRef,
                 Parent));
 
-            Context.Emit(Tuples.localvar_location(this, DeclLocation));
+            trapFile.Emit(Tuples.localvar_location(this, DeclLocation));
 
             DefineConstantValue();
         }

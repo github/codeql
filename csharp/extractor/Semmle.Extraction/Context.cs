@@ -387,8 +387,8 @@ namespace Semmle.Extraction
             }
 
             var a = duplicationGuard ?
-                (Action)(() => WithDuplicationGuard(new Key(entity, this.Create(entity.ReportingLocation)), entity.Populate)) :
-                (Action)(() => this.Try(null, optionalSymbol, entity.Populate));
+                (Action)(() => WithDuplicationGuard(new Key(entity, this.Create(entity.ReportingLocation)), () => entity.Populate(TrapWriter.Writer))) :
+                (Action)(() => this.Try(null, optionalSymbol, () => entity.Populate(TrapWriter.Writer)));
 
             if (deferred)
                 populateQueue.Enqueue(a);

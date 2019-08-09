@@ -10,13 +10,13 @@ namespace Semmle.Extraction.CSharp.Entities
         protected UserOperator(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            PopulateMethod();
+            PopulateMethod(trapFile);
             ExtractModifiers();
 
             var returnType = Type.Create(Context, symbol.ReturnType);
-            Context.Emit(Tuples.operators(this,
+            trapFile.Emit(Tuples.operators(this,
                 symbol.Name,
                 OperatorSymbol(Context, symbol.Name),
                 ContainingType,
@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 (UserOperator)OriginalDefinition));
 
             foreach (var l in Locations)
-                Context.Emit(Tuples.operator_location(this, l));
+                trapFile.Emit(Tuples.operator_location(this, l));
 
             if (IsSourceDeclaration)
             {

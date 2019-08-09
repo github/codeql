@@ -23,11 +23,11 @@ namespace Semmle.Extraction.CSharp.Entities
         // be extracted in their defining assembly.
         public override bool NeedsPopulation => true;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.array_element_type(this, Dimension, Rank, element.Type.TypeRef));
-            ExtractType();
-            ExtractNullability(symbol.ElementNullableAnnotation);
+            trapFile.Emit(Tuples.array_element_type(this, Dimension, Rank, element.Type.TypeRef));
+            ExtractType(trapFile);
+            ExtractNullability(trapFile, symbol.ElementNullableAnnotation);
         }
 
         public override void WriteId(TextWriter trapFile)

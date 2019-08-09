@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
@@ -22,9 +23,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             return ret;
         }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
-            cx.Emit(Tuples.exprorstmt_name(this, Stmt.Identifier.ToString()));
+            trapFile.Emit(Tuples.exprorstmt_name(this, Stmt.Identifier.ToString()));
 
             // For compatilibty with the Mono extractor, make insert the labelled statement into the same block
             // as this one. The parent MUST be a block statement.

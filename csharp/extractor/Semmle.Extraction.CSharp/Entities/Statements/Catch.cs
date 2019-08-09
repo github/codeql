@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
 using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
@@ -12,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         Catch(Context cx, CatchClauseSyntax node, Try parent, int child)
             : base(cx, node, StmtKind.CATCH, parent, child, cx.Create(node.GetLocation())) { }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
             bool isSpecificCatchClause = Stmt.Declaration != null;
             bool hasVariableDeclaration = isSpecificCatchClause && Stmt.Declaration.Identifier.RawKind != 0;
@@ -20,16 +21,16 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             if (hasVariableDeclaration) // A catch clause of the form 'catch(Ex ex) { ... }'
             {
                 var decl = Expressions.VariableDeclaration.Create(cx, Stmt.Declaration, false, this, 0);
-                cx.Emit(Tuples.catch_type(this, decl.Type.Type.TypeRef, true));
+                trapFile.Emit(Tuples.catch_type(this, decl.Type.Type.TypeRef, true));
             }
             else if (isSpecificCatchClause) // A catch clause of the form 'catch(Ex) { ... }'
             {
-                cx.Emit(Tuples.catch_type(this, Type.Create(cx, cx.GetType(Stmt.Declaration.Type)).Type.TypeRef, true));
+                trapFile.Emit(Tuples.catch_type(this, Type.Create(cx, cx.GetType(Stmt.Declaration.Type)).Type.TypeRef, true));
             }
             else // A catch clause of the form 'catch { ... }'
             {
                 var exception = Type.Create(cx, cx.Compilation.GetTypeByMetadataName(SystemExceptionName));
-                cx.Emit(Tuples.catch_type(this, exception, false));
+                trapFile.Emit(Tuples.catch_type(this, exception, false));
             }
 
             if (Stmt.Filter != null)

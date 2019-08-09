@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
@@ -18,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public abstract InitializerExpressionSyntax  Initializer { get;  }
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             var child = 0;
             var explicitlySized = false;
@@ -98,7 +99,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new ImplicitArrayCreation(info).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             if (Syntax.Initializer != null)
             {

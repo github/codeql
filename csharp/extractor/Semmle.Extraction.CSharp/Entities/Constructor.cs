@@ -14,24 +14,24 @@ namespace Semmle.Extraction.CSharp.Entities
         Constructor(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            PopulateMethod();
+            PopulateMethod(trapFile);
             ExtractModifiers();
             ContainingType.ExtractGenerics();
 
-            Context.Emit(Tuples.constructors(this, symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition));
-            Context.Emit(Tuples.constructor_location(this, Location));
+            trapFile.Emit(Tuples.constructors(this, symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition));
+            trapFile.Emit(Tuples.constructor_location(this, Location));
 
             if (symbol.IsImplicitlyDeclared)
             {
                 var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };
-                Context.Emit(Tuples.numlines(this, lineCounts));
+                trapFile.Emit(Tuples.numlines(this, lineCounts));
             }
-            ExtractCompilerGenerated();
+            ExtractCompilerGenerated(trapFile);
         }
 
-        protected override void ExtractInitializers()
+        protected override void ExtractInitializers(TextWriter trapFile)
         {
             // Do not extract initializers for constructed types.
             if (!IsSourceDeclaration) return;
@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            Context.Emit(Tuples.expr_call(init, target));
+            trapFile.Emit(Tuples.expr_call(init, target));
 
             int child = 0;
             foreach (var arg in initializer.ArgumentList.Arguments)

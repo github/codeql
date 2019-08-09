@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression Create(ExpressionNodeInfo info, MemberBindingExpressionSyntax node)
         {
             var expr = Create(info, FindConditionalQualifier(node), node.Name);
-            expr.MakeConditional();
+            expr.MakeConditional(info.Context.TrapWriter.Writer);
             return expr;
         }
 

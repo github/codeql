@@ -87,7 +87,7 @@ namespace Semmle.Extraction
         /// as required. Is only called when <see cref="NeedsPopulation"/> returns
         /// <code>true</code> and the entity has not already been populated.
         /// </summary>
-        void Populate();
+        void Populate(TextWriter trapFile);
 
         bool NeedsPopulation { get; }
 

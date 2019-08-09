@@ -19,9 +19,9 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";event");
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            ExtractNullability(symbol.NullableAnnotation);
+            ExtractNullability(trapFile, symbol.NullableAnnotation);
 
             var type = Type.Create(Context, symbol.Type);
             Context.Emit(Tuples.events(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition)));
@@ -44,14 +44,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
-                Context.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
+                trapFile.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
 
                 foreach (var syntax in declSyntaxReferences.OfType<EventDeclarationSyntax>())
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
             }
 
             foreach (var l in Locations)
-                Context.Emit(Tuples.event_location(this, l));
+                trapFile.Emit(Tuples.event_location(this, l));
 
             foreach (var syntaxType in declSyntaxReferences.OfType<VariableDeclaratorSyntax>().
                 Select(d => d.Parent).

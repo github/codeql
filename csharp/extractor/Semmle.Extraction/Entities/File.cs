@@ -23,11 +23,11 @@ namespace Semmle.Extraction.Entities
 
         public override bool NeedsPopulation => Context.DefinesFile(Path) || Path == Context.Extractor.OutputPath;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             if (Path == null)
             {
-                Context.TrapWriter.files(this, "", "", "");
+                trapFile.files(this, "", "", "");
             }
             else
             {
@@ -41,9 +41,9 @@ namespace Semmle.Extraction.Entities
                 // remove the dot from the extension
                 if (extension.Length > 0)
                     extension = extension.Substring(1);
-                Context.TrapWriter.files(this, PathAsDatabaseString(Path), name, extension);
+                trapFile.files(this, PathAsDatabaseString(Path), name, extension);
 
-                Context.TrapWriter.containerparent(Folder.Create(Context, fi.Directory), this);
+                trapFile.containerparent(Folder.Create(Context, fi.Directory), this);
                 if (fromSource == 1)
                 {
                     foreach (var text in Context.Compilation.SyntaxTrees.
@@ -54,12 +54,12 @@ namespace Semmle.Extraction.Entities
                         var lineCounts = LineCounter.ComputeLineCounts(rawText);
                         if (rawText.Length > 0 && rawText[rawText.Length - 1] != '\n') lineCounts.Total++;
 
-                        Context.TrapWriter.numlines(this, lineCounts);
+                        trapFile.numlines(this, lineCounts);
                         Context.TrapWriter.Archive(fi.FullName, text.Encoding);
                     }
                 }
 
-                Context.TrapWriter.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0);
+                trapFile.file_extraction_mode(this, Context.Extractor.Standalone ? 1 : 0);
             }
         }
 
@@ -100,9 +100,9 @@ namespace Semmle.Extraction.Entities
 
             public override bool NeedsPopulation => true;
 
-            public override void Populate()
+            public override void Populate(TextWriter trapFile)
             {
-                Context.TrapWriter.files(this, "", "", "");
+                trapFile.files(this, "", "", "");
             }
 
             public override void WriteId(TextWriter trapFile)

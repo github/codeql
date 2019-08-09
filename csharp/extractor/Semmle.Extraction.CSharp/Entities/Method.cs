@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        protected void ExtractParameters()
+        protected void ExtractParameters(TextWriter trapFile)
         {
             var originalMethod = OriginalDefinition;
             IEnumerable<IParameterSymbol> parameters = symbol.Parameters;
@@ -56,13 +56,13 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Extracts constructor initializers.
         /// </summary>
-        protected virtual void ExtractInitializers()
+        protected virtual void ExtractInitializers(TextWriter trapFile)
         {
             // Normal methods don't have initializers,
             // so there's nothing to extract.
         }
 
-        void ExtractMethodBody()
+        void ExtractMethodBody(TextWriter trapFile)
         {
             if (!IsSourceDeclaration)
                 return;
@@ -74,17 +74,17 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.PopulateLater(
                     () =>
                     {
-                        ExtractInitializers();
+                        ExtractInitializers(trapFile);
                         if (block != null)
                             Statements.Block.Create(Context, block, this, 0);
                         else
                             Expression.Create(Context, expr, this, 0);
 
-                        Context.NumberOfLines(symbol, this);
+                        Context.NumberOfLines(trapFile, symbol, this);
                     });
         }
 
-        public void Overrides()
+        public void Overrides(TextWriter trapFile)
         {
             foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.
                 Where(sym => sym.MethodKind == MethodKind.Ordinary).
@@ -99,7 +99,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (symbol.OverriddenMethod != null)
             {
-                Context.Emit(Tuples.overrides(this, Method.Create(Context, symbol.OverriddenMethod)));
+                trapFile.Emit(Tuples.overrides(this, Method.Create(Context, symbol.OverriddenMethod)));
             }
         }
 
@@ -330,7 +330,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IStatementParentEntity.IsTopLevelParent => true;
 
-        protected void ExtractGenerics()
+        protected void ExtractGenerics(TextWriter trapFile)
         {
             var isFullyConstructed = IsBoundGeneric;
 
@@ -340,47 +340,47 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (isFullyConstructed)
                 {
-                    Context.Emit(Tuples.is_constructed(this));
-                    Context.Emit(Tuples.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol)));
+                    trapFile.Emit(Tuples.is_constructed(this));
+                    trapFile.Emit(Tuples.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol)));
                     foreach (var tp in symbol.GetAnnotatedTypeArguments())
                     {
-                        Context.Emit(Tuples.type_arguments(Type.Create(Context, tp.Symbol), child, this));
+                        trapFile.Emit(Tuples.type_arguments(Type.Create(Context, tp.Symbol), child, this));
                         var ta = tp.Nullability.GetTypeAnnotation();
                         if (ta != Kinds.TypeAnnotation.None)
-                            Context.Emit(Tuples.type_argument_annotation(this, child, ta));
+                            trapFile.Emit(Tuples.type_argument_annotation(this, child, ta));
                         child++;
                     }
                 }
                 else
                 {
-                    Context.Emit(Tuples.is_generic(this));
+                    trapFile.Emit(Tuples.is_generic(this));
                     foreach (var typeParam in symbol.TypeParameters.Select(tp => TypeParameter.Create(Context, tp)))
                     {
-                        Context.Emit(Tuples.type_parameters(typeParam, child, this));
+                        trapFile.Emit(Tuples.type_parameters(typeParam, child, this));
                         child++;
                     }
                 }
             }
         }
 
-        protected void ExtractRefReturn()
+        protected void ExtractRefReturn(TextWriter trapFile)
         {
             if (symbol.ReturnsByRef)
-                Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
+                trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
             if (symbol.ReturnsByRefReadonly)
-                Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef));
+                trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef));
         }
 
-        protected void PopulateMethod()
+        protected void PopulateMethod(TextWriter trapFile)
         {
             // Common population code for all callables
             BindComments();
             ExtractAttributes();
-            ExtractParameters();
-            ExtractMethodBody();
-            ExtractGenerics();
-            ExtractMetadataHandle();
-            ExtractNullability(symbol.ReturnNullableAnnotation);
+            ExtractParameters(trapFile);
+            ExtractMethodBody(trapFile);
+            ExtractGenerics(trapFile);
+            ExtractMetadataHandle(trapFile);
+            ExtractNullability(trapFile, symbol.ReturnNullableAnnotation);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

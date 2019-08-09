@@ -12,9 +12,9 @@ namespace Semmle.Extraction.Entities
             GeneratedFile = File.CreateGenerated(cx);
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.TrapWriter.locations_default(this, GeneratedFile, 0, 0, 0, 0);
+            trapFile.locations_default(this, GeneratedFile, 0, 0, 0, 0);
         }
 
         public override void WriteId(TextWriter trapFile)

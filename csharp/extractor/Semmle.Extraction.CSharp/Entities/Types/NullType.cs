@@ -8,9 +8,9 @@ namespace Semmle.Extraction.CSharp.Entities
         NullType(Context cx)
             : base(cx, null) { }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.types(this, Kinds.TypeKind.NULL, "null"));
+            trapFile.Emit(Tuples.types(this, Kinds.TypeKind.NULL, "null"));
         }
 
         public override void WriteId(TextWriter trapFile)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
@@ -12,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
         }
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             int child = 0;
             foreach (var argument in Syntax.Arguments.Select(a => a.Expression))

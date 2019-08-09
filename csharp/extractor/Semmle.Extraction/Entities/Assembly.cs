@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System.IO;
 
 namespace Semmle.Extraction.Entities
 {
@@ -25,11 +26,11 @@ namespace Semmle.Extraction.Entities
             }
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             if (assemblyPath != null)
             {
-                Context.TrapWriter.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString(),
+                trapFile.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString(),
                     assembly.Identity.Name, assembly.Identity.Version.ToString());
             }
         }

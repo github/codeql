@@ -78,35 +78,35 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        protected void ExtractType()
+        protected void ExtractType(TextWriter trapFile)
         {
-            ExtractMetadataHandle();
+            ExtractMetadataHandle(trapFile);
             ExtractAttributes();
 
             var tb = new StringWriter();
             symbol.BuildDisplayName(Context, tb);
-            Context.Emit(Tuples.types(this, GetClassType(Context, symbol), tb.ToString()));
+            trapFile.Emit(Tuples.types(this, GetClassType(Context, symbol), tb.ToString()));
 
             // Visit base types
             var baseTypes = new List<Type>();
             if (symbol.BaseType != null)
             {
                 Type baseKey = Create(Context, symbol.BaseType);
-                Context.Emit(Tuples.extend(this, baseKey.TypeRef));
+                trapFile.Emit(Tuples.extend(this, baseKey.TypeRef));
                 if (symbol.TypeKind != TypeKind.Struct)
                     baseTypes.Add(baseKey);
             }
 
-            if (base.symbol.TypeKind == TypeKind.Interface)
+            if (symbol.TypeKind == TypeKind.Interface)
             {
-                Context.Emit(Tuples.extend(this, Create(Context, Context.Compilation.ObjectType)));
+                trapFile.Emit(Tuples.extend(this, Create(Context, Context.Compilation.ObjectType)));
             }
 
             if (!(base.symbol is IArrayTypeSymbol))
             {
                 foreach (var t in base.symbol.Interfaces.Select(i=>Create(Context, i)))
                 {
-                    Context.Emit(Tuples.implement(this, t.TypeRef));
+                    trapFile.Emit(Tuples.implement(this, t.TypeRef));
                     baseTypes.Add(t);
                 }
             }
@@ -115,11 +115,11 @@ namespace Semmle.Extraction.CSharp.Entities
             if (containingType != null && symbol.Kind != SymbolKind.TypeParameter)
             {
                 Type originalDefinition = symbol.TypeKind == TypeKind.Error ? this : Create(Context, symbol.OriginalDefinition);
-                Context.Emit(Tuples.nested_types(this, containingType, originalDefinition));
+                trapFile.Emit(Tuples.nested_types(this, containingType, originalDefinition));
             }
             else if (symbol.ContainingNamespace != null)
             {
-                Context.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, symbol.ContainingNamespace)));
+                trapFile.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, symbol.ContainingNamespace)));
             }
 
             if (symbol is IArrayTypeSymbol)
@@ -128,7 +128,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 ITypeSymbol elementType = ((IArrayTypeSymbol)symbol).ElementType;
                 INamespaceSymbol ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
                 if (ns != null)
-                    Context.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, ns)));
+                    trapFile.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, ns)));
             }
 
             if (symbol is IPointerTypeSymbol)
@@ -137,7 +137,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 INamespaceSymbol ns = elementType.TypeKind == TypeKind.TypeParameter ? Context.Compilation.GlobalNamespace : elementType.ContainingNamespace;
 
                 if (ns != null)
-                    Context.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, ns)));
+                    trapFile.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, ns)));
             }
 
             if (symbol.BaseType != null && symbol.BaseType.SpecialType == SpecialType.System_MulticastDelegate)
@@ -157,11 +157,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
 
                 var returnKey = Create(Context, invokeMethod.ReturnType);
-                Context.Emit(Tuples.delegate_return_type(this, returnKey.TypeRef));
+                trapFile.Emit(Tuples.delegate_return_type(this, returnKey.TypeRef));
                 if (invokeMethod.ReturnsByRef)
-                    Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
+                    trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
                 if (invokeMethod.ReturnsByRefReadonly)
-                    Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef));
+                    trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef));
             }
 
             Modifier.ExtractModifiers(Context, this, symbol);
@@ -251,11 +251,11 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public void ExtractRecursive(IEntity parent)
+        public void ExtractRecursive(TextWriter trapFile, IEntity parent)
         {
             if (symbol.ContainingSymbol.Kind == SymbolKind.Namespace && !symbol.ContainingNamespace.IsGlobalNamespace)
             {
-                Context.Emit(Tuples.parent_namespace_declaration(this, (NamespaceDeclaration)parent));
+                trapFile.Emit(Tuples.parent_namespace_declaration(this, (NamespaceDeclaration)parent));
             }
 
             ExtractRecursive();

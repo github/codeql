@@ -32,9 +32,9 @@ namespace Semmle.Extraction.CSharp.Entities
             public LocalFunction Create(Context cx, IMethodSymbol init) => new LocalFunction(cx, init);
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            PopulateMethod();
+            PopulateMethod(trapFile);
 
             // There is a "bug" in Roslyn whereby the IMethodSymbol associated with the local function symbol
             // is always static, so we need to go to the syntax reference of the local function to see whether
@@ -49,8 +49,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
             var originalDefinition = IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
             var returnType = Type.Create(Context, symbol.ReturnType);
-            Context.Emit(Tuples.local_functions(this, symbol.Name, returnType, originalDefinition));
-            ExtractRefReturn();
+            trapFile.Emit(Tuples.local_functions(this, symbol.Name, returnType, originalDefinition));
+            ExtractRefReturn(trapFile);
         }
     }
 }

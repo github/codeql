@@ -112,11 +112,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         Extraction.Entities.Location location;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             location = Context.Create(Location);
-            Context.Emit(Tuples.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText));
-            Context.Emit(Tuples.commentline_location(this, location));
+            trapFile.Emit(Tuples.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText));
+            trapFile.Emit(Tuples.commentline_location(this, location));
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => location.symbol;

@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -17,15 +18,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info, ExpressionSyntax operand) => new PostfixUnary(info, info.Kind, operand).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             Create(cx, Operand, this, 0);
-            OperatorCall(Syntax);
+            OperatorCall(trapFile, Syntax);
 
             if ((OperatorKind == ExprKind.POST_INCR || OperatorKind == ExprKind.POST_DECR) &&
                 Kind == ExprKind.OPERATOR_INVOCATION)
             {
-                cx.Emit(Tuples.mutator_invocation_mode(this, 2));
+                trapFile.Emit(Tuples.mutator_invocation_mode(this, 2));
             }
         }
     }

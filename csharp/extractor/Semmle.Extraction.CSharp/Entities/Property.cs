@@ -22,17 +22,17 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";property");
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            ExtractMetadataHandle();
+            ExtractMetadataHandle(trapFile);
             ExtractAttributes();
             ExtractModifiers();
             BindComments();
-            ExtractNullability(symbol.NullableAnnotation);
-            ExtractRefKind(symbol.RefKind);
+            ExtractNullability(trapFile, symbol.NullableAnnotation);
+            ExtractRefKind(trapFile, symbol.RefKind);
 
             var type = Type.Create(Context, symbol.Type);
-            Context.Emit(Tuples.properties(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition)));
+            trapFile.Emit(Tuples.properties(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition)));
 
             var getter = symbol.GetMethod;
             var setter = symbol.SetMethod;
@@ -50,7 +50,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
-                Context.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
+                trapFile.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
 
                 foreach (var syntax in declSyntaxReferences)
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);

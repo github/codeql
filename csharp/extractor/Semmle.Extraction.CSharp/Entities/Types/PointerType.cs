@@ -21,10 +21,10 @@ namespace Semmle.Extraction.CSharp.Entities
         // be extracted in their defining assembly.
         public override bool NeedsPopulation => true;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(Tuples.pointer_referent_type(this, PointedAtType.TypeRef));
-            ExtractType();
+            trapFile.Emit(Tuples.pointer_referent_type(this, PointedAtType.TypeRef));
+            ExtractType(trapFile);
         }
 
         public Type PointedAtType { get; private set; }

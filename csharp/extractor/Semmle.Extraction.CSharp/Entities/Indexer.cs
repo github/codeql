@@ -12,14 +12,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         Indexer OriginalDefinition => IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            ExtractNullability(symbol.NullableAnnotation);
+            ExtractNullability(trapFile, symbol.NullableAnnotation);
 
             var type = Type.Create(Context, symbol.Type);
-            Context.Emit(Tuples.indexers(this, symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition));
+            trapFile.Emit(Tuples.indexers(this, symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition));
             foreach (var l in Locations)
-                Context.Emit(Tuples.indexer_location(this, l));
+                trapFile.Emit(Tuples.indexer_location(this, l));
 
             var getter = symbol.GetMethod;
             var setter = symbol.SetMethod;
@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
-                Context.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
+                trapFile.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
 
                 foreach (var syntax in declSyntaxReferences)
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
@@ -70,7 +70,6 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var syntax in declSyntaxReferences)
                 TypeMention.Create(Context, syntax.Type, this, type);
         }
-
 
         public static new Indexer Create(Context cx, IPropertySymbol prop) => IndexerFactory.Instance.CreateEntity(cx, prop);
 

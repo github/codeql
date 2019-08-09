@@ -41,9 +41,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            Context.Emit(new Tuple("modifiers", Label, symbol.name));
+            trapFile.Emit(new Tuple("modifiers", Label, symbol.name));
         }
 
         public static string AccessbilityModifier(Accessibility access)
