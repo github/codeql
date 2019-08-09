@@ -168,10 +168,18 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  */
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
-/** A guard that validates some expression. */
+/**
+ * A guard that validates some expression.
+ *
+ * To use this in a configuration, extend the class and provide a
+ * characteristic predicate precisely specifying the guard, and override
+ * `checks` to specify what is being validated and in which branch.
+ *
+ * It is important that all extending classes in scope are disjoint.
+ */
 class BarrierGuard extends IRGuardCondition {
-  /** Holds if this guard validates `e` upon evaluating to `b`. */
-  abstract predicate checks(Instruction e, boolean b);
+  /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `b`. */
+  abstract deprecated predicate checks(Instruction e, boolean b);
 
   /** Gets a node guarded by this. */
   final Node getAGuardedNode() {
