@@ -5,13 +5,11 @@ import semmle.code.cpp.Class
  * A C/C++ structure or union. For example, the types `MyStruct` and `MyUnion`
  * in:
  * ``` 
- * struct MyStruct
- * {
+ * struct MyStruct {
  *   int x, y, z;
  * };
  *
- * union MyUnion
- * {
+ * union MyUnion {
  *   int i;
  *   float f;
  * };
@@ -32,10 +30,8 @@ class Struct extends Class {
  * A C/C++ struct that is directly enclosed by a function. For example, the type
  * `MyLocalStruct` in:
  * ```
- * void myFunction()
- * { 
- *   struct MyLocalStruct
- *   {
+ * void myFunction() { 
+ *   struct MyLocalStruct {
  *     int x, y, z;
  *   };
  * }
@@ -53,11 +49,9 @@ class LocalStruct extends Struct {
 /**
  * A C/C++ nested struct. See 11.12. For example, the type `MyNestedStruct` in:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
- *   struct MyNestedStruct
- *   {
+ *   struct MyNestedStruct {
  *     int x, y, z;
  *   };
  * };
