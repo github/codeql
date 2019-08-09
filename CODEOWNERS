@@ -7,3 +7,4 @@
 /java/**/*.qhelp @felicity-semmle
 /javascript/**/*.qhelp @mc-semmle
 /python/**/*.qhelp @felicity-semmle
+/docs/language/ @felicity-semmle @jf205
