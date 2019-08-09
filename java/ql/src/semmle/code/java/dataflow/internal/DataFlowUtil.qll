@@ -6,6 +6,7 @@ private import java
 private import DataFlowPrivate
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TypeFlow
+private import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.InstanceAccess
 
 cached
@@ -415,4 +416,20 @@ Node getInstanceArgument(Call call) {
   result.(MallocNode).getClassInstanceExpr() = call or
   explicitInstanceArgument(call, result.asExpr()) or
   implicitInstanceArgument(call, result.(ImplicitInstanceAccess).getInstanceAccess())
+}
+
+/** A guard that validates some expression. */
+class BarrierGuard extends Guard {
+  /** Holds if this guard validates `e` upon evaluating to `branch`. */
+  abstract predicate checks(Expr e, boolean branch);
+
+  /** Gets a node guarded by this. */
+  final Node getAGuardedNode() {
+    exists(SsaVariable v, boolean branch, RValue use |
+      this.checks(v.getAUse(), branch) and
+      use = v.getAUse() and
+      this.controls(use.getBasicBlock(), branch) and
+      result.asExpr() = use
+    )
+  }
 }
