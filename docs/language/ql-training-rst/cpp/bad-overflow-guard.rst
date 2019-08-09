@@ -29,7 +29,7 @@ More resources:
 
   Alternatively, you can query any project (including ChakraCore) in the  `query console on LGTM.com <https://lgtm.com/query/project:2034240708/lang:cpp/>`__. 
 
-  Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+  Note that results generated in the query console are likely to differ to those generated in the QL plugin. LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
 
 Checking for overflow in C
@@ -53,7 +53,7 @@ Where might this go wrong?
   - In C/C++ we often need to check for whether an operation `overflows <https://en.wikipedia.org/wiki/Integer_overflow>`__.
   - An overflow is when an arithmetic operation, such as an addition, results in a number which is too large to be stored in the type.
   - When an operation overflows, the value “wraps” around.
-  - A typical way to check for overflow of an addition, therefore, is whether the result is less than one of the arguments - i.e. the result has “wrapped”.
+  - A typical way to check for overflow of an addition, therefore, is whether the result is less than one of the arguments - that is the result has **wrapped**.
 
 Integer promotion
 =================
@@ -174,7 +174,7 @@ We can get the size (in bytes) of a type using the ``getSize()`` method.
 
   - An important part of the query is to determine whether a given expression has a “small” type that is going to trigger integer promotion.
   - We therefore write a helper predicate for small expressions.
-  - This predicate effectively represents the set of all expressions in the database where the size of the type of the expression is less than 4 bytes, i.e. less than 32 bits.
+  - This predicate effectively represents the set of all expressions in the database where the size of the type of the expression is less than 4 bytes, that is less than 32 bits.
 
 QL query: bad overflow guards
 =============================
@@ -191,7 +191,7 @@ Now our query becomes:
 .. note::
 
   - Recall from earlier that what makes an overflow check a “bad” check is that all the arguments to the addition are integers smaller than 32 bits.
-  - We could write this by using our helper predicate ``isSmall`` to specify that each individual operand to the addition ``isSmall`` (i.e. under 32 bits):
+  - We could write this by using our helper predicate ``isSmall`` to specify that each individual operand to the addition ``isSmall`` (that is under 32 bits):
 
   .. code-block:: ql
 
@@ -206,12 +206,12 @@ Now our query becomes:
   - In our case:
     - The declaration introduces a variable for Expressions, called ``op``. At this stage, this variable represents all the expressions in the program.
     - The “range” part, ``op = a.getAnOperand()``,  restricts ``op`` to being one of the two operands to the addition.
-    - The “condition” part, ``isSmall(op)``, says that the ``forall`` holds only if the condition - that the ``op`` is small - holds for everything in the range - i.e. both the arguments to the addition
+    - The “condition” part, ``isSmall(op)``, says that the ``forall`` holds only if the condition - that the ``op`` is small - holds for everything in the range - that is both the arguments to the addition
 
 QL query: bad overflow guards
 =============================
 
-In some cases the result of the addition is cast to a small type of size less than 4 bytes, preventing automatic widening. We don’t want our query to flag these instances.
+Sometimes the result of the addition is cast to a small type of size less than 4 bytes, preventing automatic widening. We don’t want our query to flag these instances.
 
 We can use predicate ``Expr.getExplicitlyConverted()`` to reason about casts that are applied to an expression, adding  this restriction to our query:
 

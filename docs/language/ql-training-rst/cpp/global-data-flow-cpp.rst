@@ -59,20 +59,20 @@ Global data flow and taint tracking
   - Global (“inter-procedural”) data flow models flow across function calls; not feasible to compute for all functions in a snapshot
 
 - For global data flow (and taint tracking), we must therefore provided restrictions to ensure the problem is tractable.
-- Typically, this involves specifying the “source” and “sink”.
+- Typically, this involves specifying the *source* and *sink*.
 
 .. note::
 
-  As we mentioned in the previous slide deck, while local dataflow is feasible to compute for all functions in a snapshot, global dataflow is not. This is because the number of paths becomes exponentially larger for global dataflow.
+  As we mentioned in the previous slide deck, while local data flow is feasible to compute for all functions in a snapshot, global data flow is not. This is because the number of paths becomes exponentially larger for global data flow.
 
-  The global dataflow (and taint tracking) avoids this problem by requiring that the query author specifies which ``sources`` and ``sinks`` are applicable. This allows the implementation to compute paths between the restricted set of nodes, rather than the full graph.
+  The global data flow (and taint tracking) avoids this problem by requiring that the query author specifies which ``sources`` and ``sinks`` are applicable. This allows the implementation to compute paths between the restricted set of nodes, rather than the full graph.
 
 Global taint tracking library
 =============================
 
-The semmle.code.cpp.dataflow.TaintTracking library provides a framework for implementing solvers for global taint tracking problems:
+The ``semmle.code.cpp.dataflow.TaintTracking`` library provides a framework for implementing solvers for global taint tracking problems:
 
-  #. Subclass TaintTracking::Configuration following this template:
+  #. Subclass ``TaintTracking::Configuration`` following this template:
 
      .. code-block:: ql
     
@@ -82,7 +82,7 @@ The semmle.code.cpp.dataflow.TaintTracking library provides a framework for impl
          override predicate isSink(DataFlow::Node nd) { … }
        }
 
-  #. Use Config.hasFlow(source, sink) to find inter-procedural paths.
+  #. Use ``Config.hasFlow(source, sink)`` to find inter-procedural paths.
 
 .. note::
 
@@ -96,7 +96,7 @@ Finding tainted format strings (outline)
 
 .. note::
 
-  Here’s the outline for a inter-procedural (i.e. “global”) version of the tainted formatting strings query we saw in the previous slide deck. The same template will be applicable for most taint tracking problems.
+  Here’s the outline for a inter-procedural (that is “global”) version of the tainted formatting strings query we saw in the previous slide deck. The same template will be applicable for most taint tracking problems.
 
 Defining sources
 ================
@@ -118,7 +118,7 @@ The library class ``SecurityOptions`` provides a (configurable) model of what co
 
 .. note::
 
-  We first define what it means to be a ``source`` of tainted data for this particular problem. In this case, what we care about is whether the format string can be provided by an external user to our application or service. As there are many such ways external data could be introduced into the system, the standard QL libraries for C/C++ include an extensible API for modelling user input. In this case, we will simply use the pre-defined set of “user inputs”, which includes arguments provided to command line applications.
+  We first define what it means to be a *source* of tainted data for this particular problem. In this case, what we care about is whether the format string can be provided by an external user to our application or service. As there are many such ways external data could be introduced into the system, the standard QL libraries for C/C++ include an extensible API for modelling user input. In this case, we will simply use the predefined set of *user inputs*, which includes arguments provided to command line applications.
 
 
 Defining sinks (exercise)
@@ -167,7 +167,8 @@ Use the ``FormattingFunction`` class to fill in the definition of “isSink”
 Path queries
 ============
 
-Provide information about the identified paths from sources to sinks; can be examined in Path Explorer view. 
+Path queries provide information about the identified paths from sources to sinks. Paths can be examined in Path Explorer view.
+
 Use this template:
 
 .. code-block:: ql
@@ -186,7 +187,7 @@ Use this template:
 
 .. note::
 
-  In order to see the paths between the source and the sinks, we can convert the query to a path problem query. There are a few minor changes that need to be made for this to work - we need an additional import, to specify ``PathNode`` rather than ``Node``, and to add the source/sink to the query output (so that we can automatically determine the paths).
+  To see the paths between the source and the sinks, we can convert the query to a path problem query. There are a few minor changes that need to be made for this to work - we need an additional import, to specify ``PathNode`` rather than ``Node``, and to add the source/sink to the query output (so that we can automatically determine the paths).
 
 Defining additional taint steps
 ===============================

@@ -34,10 +34,10 @@ The basic representation of an analyzed program is an *abstract syntax tree (AST
 
   The “Introducing the C/C++ libraries” help topic contains a more complete overview of important AST classes and the rest of the C++ QL libraries: https://help.semmle.com/QL/learn-ql/ql/cpp/introduce-libraries-cpp.html 
 
-Database representaions of ASTs
-===============================
+Database representations of ASTs
+================================
 
-AST nodes and other program elements are encoded in the database as *entity values*. Entities are implemented as integers, but in QL they are opaque; all one can do with them is to check their equality.
+AST nodes and other program elements are encoded in the database as *entity values*. Entities are implemented as integers, but in QL they are opaque - all one can do with them is to check their equality.
 
 Each entity belongs to an entity type. Entity types have names starting with “@” and are defined in the database schema (not in QL).
 
@@ -47,7 +47,7 @@ Entity types are rarely used directly, the usual pattern is to define a QL class
 
 .. note::
 
-  ASTs are a typical example of the kind of data representation one finds in object-oriented programming, with data-carrying nodes that reference each other. At first glance, QL, which can only work with atomic values, does not seem to be well suited for working with this kind of data. However, ultimately all that we require of the nodes in an AST is that they have an identity. The relationships among nodes, usually implemented by reference-valued object fields in other languages, can just as well (and arguably more naturally) be represented as relations over nodes. Attaching data (such as strings or numbers) to nodes can also be represented with relations over nodes and primitive values. All we need is a way for relations to reference nodes. This is achieved in QL (as in other database languages) by means of entity values (or “entities”, for short), which are opaque atomic values, implemented as integers under the hood.
+  ASTs are a typical example of the kind of data representation one finds in object-oriented programming, with data-carrying nodes that reference each other. At first glance, QL, which can only work with atomic values, does not seem to be well suited for working with this kind of data. However, ultimately all that we require of the nodes in an AST is that they have an identity. The relationships among nodes, usually implemented by reference-valued object fields in other languages, can just as well (and arguably more naturally) be represented as relations over nodes. Attaching data (such as strings or numbers) to nodes can also be represented with relations over nodes and primitive values. All we need is a way for relations to reference nodes. This is achieved in QL (as in other database languages) by means of entity values (or entities, for short), which are opaque atomic values, implemented as integers under the hood.
 
   It is the job of the extractor to create entity values for all AST nodes and populate database relations that encode the relationship between AST nodes and any values associated with them. These relations are extensional, that is, explicitly stored in the database, unlike the relations described by QL predicates, which we also refer to as intensional relations. Entity values belong to entity types, whose name starts with “@” to set them apart from primitive types and classes.
 
@@ -137,7 +137,7 @@ there are no AST nodes corresponding to ``square(y0)`` or ``square(z0)``, but th
 
   The C preprocessor poses a dilemma: un-preprocessed code cannot, in general, be parsed and analyzed meaningfully, but showing results in preprocessed code is not useful to developers. Our solution is to base the AST representation on preprocessed source (in the same way as compilers do), but associate AST nodes with locations in the original source text.
 
-Working with Macros
+Working with macros
 ===================
 
   .. code-block:: cpp

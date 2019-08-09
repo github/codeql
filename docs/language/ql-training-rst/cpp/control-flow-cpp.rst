@@ -28,7 +28,7 @@ More resources:
 
   Alternatively, you can query any project (including ChakraCore) in the  `query console on LGTM.com <https://lgtm.com/query/project:2034240708/lang:cpp/>`__. 
 
-  Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+  Note that results generated in the query console are likely to differ to those generated in the QL plugin. LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
 Agenda
 ======
@@ -79,7 +79,10 @@ Control flow graphs
 
 .. note::
 
-   The control flow graph is a static over-approximation of possible control flow at runtime. Its nodes are program elements such as expressions and statements. If there is an edge from one node to another, then it means that the semantic operation corresponding to the first node may be immediately followed by the operation corresponding to the second node. Some nodes (such as conditions of “if” statements or loop conditions) have more than one successor, representing conditional control flow at runtime.
+   The control flow graph is a static over-approximation of possible control flow at runtime. 
+   Its nodes are program elements such as expressions and statements. 
+   If there is an edge from one node to another, then it means that the semantic operation corresponding to the first node may be immediately followed by the operation corresponding to the second node. 
+   Some nodes (such as conditions of “if” statements or loop conditions) have more than one successor, representing conditional control flow at runtime.
 
 Modeling control flow
 =====================
@@ -101,7 +104,7 @@ The control-flow graph is *intra-procedural* - in other words, only models paths
 
    The control flow graph is similar in concept to data flow graphs. In contrast to data flow, however, the AST nodes are directly control flow graph nodes.
 
-   The predecessor/successor predicates are prime examples of member predicates with results that are used in functional syntax, but that are not actually functions, since a control flow node may have any number of predecessors and successors (including zero or more than one).
+   The predecessor/successor predicates are prime examples of member predicates with results that are used in functional syntax, but that are not actually functions. This is because a control flow node may have any number of predecessors and successors (including zero or more than one).
 
 Example: malloc/free pairs
 ==========================

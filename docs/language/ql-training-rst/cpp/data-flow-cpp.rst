@@ -44,7 +44,7 @@ Agenda
 Motivation
 ==========
 
-Let’s write a query to identify instances of `CWE-134 <https://cwe.mitre.org/data/definitions/134.html>`__ “Use of externally controlled format string”.
+Let’s write a query to identify instances of `CWE-134 <https://cwe.mitre.org/data/definitions/134.html>`__ **Use of externally controlled format string**.
 
 .. code-block:: cpp
 
@@ -60,7 +60,7 @@ Let’s write a query to identify instances of `CWE-134 <https://cwe.mitre.org/d
 
     printf("Name: %s, Age: %d", "Freddie", 2);
 
-  would produce the output “Name: Freddie, Age: 2”. So far, so good. However, problems arise if there is a mismatch between the number of formatting specifiers, and the number of arguments. For example:
+  would produce the output ``"Name: Freddie, Age: 2”``. So far, so good. However, problems arise if there is a mismatch between the number of formatting specifiers, and the number of arguments. For example:
 
   .. code-block:: cpp
 
@@ -123,14 +123,14 @@ Data flow analysis
 
 - Models flow of data through the program.
 - Implemented in the module ``semmle.code.cpp.dataflow.DataFlow``.
-- Class ``DataFlow::Node`` represents program elements that have a value, such as expressions and fucntion parameters.
+- Class ``DataFlow::Node`` represents program elements that have a value, such as expressions and function parameters.
   - Nodes of the data flow graph.
 - Various predicated represent flow between these nodes.
   Edges of the data flow graph.
 
 .. note::
 
-  The solution here is to use *data flow*. Data flow is, as the name suggests, about tracking the flow of data through the program. It helps answers questions like “does this expression ever hold a value that originates from a particular other place in the program”.
+  The solution here is to use *data flow*. Data flow is, as the name suggests, about tracking the flow of data through the program. It helps answers questions like: *does this expression ever hold a value that originates from a particular other place in the program*?
 
   We can visualize the data flow problem as one of finding paths through a directed graph, where the nodes of the graph are elements in program, and the edges represent the flow of data between those elements. If a path exists, then the data flows between those two edges.
 
@@ -225,7 +225,7 @@ So all references will need to be qualified (that is ``DataFlow::Node``)
 
   A **query library** is file with the extension ``.qll``. Query libraries do not contain a query clause, but may contain modules, classes, and predicates. For example, the `C/C++ data flow library <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/dataflow/DataFlow.qll/module.DataFlow.html>`__ is contained in the ``semmle/code/cpp/dataflow/DataFlow.qll`` QLL file, and can be imported as shown above.
 
-  A **module** is a way of organizing QL code by grouping together related predicates, classes and (sub-)modules; either explicitly declared or implicit. A query library implicitly declares a module with the same name as the QLL file.
+  A **module** is a way of organizing QL code by grouping together related predicates, classes, and (sub-)modules. They can be either explicitly declared or implicit. A query library implicitly declares a module with the same name as the QLL file.
 
   For further information on libraries and modules in QL, see the chapter on `Modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__ in the QL language handbook.
 
@@ -250,7 +250,7 @@ Data flow graph
 
   ``localFlowStep`` is the “single step” flow relation–that is it describes single edges in the local data flow graph. ``localFlow`` represents the `transitive <https://help.semmle.com/QL/ql-handbook/recursion.html#transitive-closures>`__ closure of this relation–in other words, it contains every pair of nodes where the second node is reachable from the first in the data flow graph.
 
-  The data flow graph is completely separate from the `AST <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`__, to allow for flexibility in how data flow is modeled. There are a small number of data flow node types–expression nodes, parameter nodes, uninitialized variable nodes, and definition by reference nodes. Each node provides mapping functions to and from the relevant AST (for example ``Expr``, ``Parameter`` etc.) or symbol table (e.g. ``Variable``) classes.
+  The data flow graph is separate from the `AST <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`__, to allow for flexibility in how data flow is modeled. There are a small number of data flow node types–expression nodes, parameter nodes, uninitialized variable nodes, and definition by reference nodes. Each node provides mapping functions to and from the relevant AST (for example ``Expr``, ``Parameter`` etc.) or symbol table (for example ``Variable``) classes.
 
 Taint-tracking
 ==============
@@ -270,9 +270,9 @@ Taint-tracking
 
   Taint tracking can be thought of as another type of data flow graph. It usually extends the standard data flow graph for a problem by adding edges between nodes where one one node influences or *taints* another.
 
-  The `API <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ is almost identical to that of the local data flow; all we need to do to switch to taint tracking is ``import semmle.code.cpp.dataflow.TaintTracking`` instead of ``semmle.code.cpp.dataflow.DataFlow``, and instead of using ``localFlow``, we use ``localTaint``.
+  The `API <https://help.semmle.com/qldoc/cpp/semmle/code/cpp/dataflow/TaintTracking.qll/module.TaintTracking.html>`__ is almost identical to that of the local data flow. All we need to do to switch to taint tracking is ``import semmle.code.cpp.dataflow.TaintTracking`` instead of ``semmle.code.cpp.dataflow.DataFlow``, and instead of using ``localFlow``, we use ``localTaint``.
 
-Exercise: Source Nodes
+Exercise: source nodes
 ======================
 
 Define a subclass of ``DataFlow::Node`` representing “source” nodes, that is, nodes without a (local) data flow predecessor.
@@ -329,5 +329,5 @@ Beyond local data flow
 
 - Results are still underwhelming.
 - Dealing with parameter passing becomes cumbersome.
-- Instead, let’s turn the problem around and find user-controlled data that flows into a printf format argument, potentially through calls.
-- This needs global data flow.
+- Instead, let’s turn the problem around and find user-controlled data that flows into a ``printf`` format argument, potentially through calls.
+- This needs **global data flow**.
