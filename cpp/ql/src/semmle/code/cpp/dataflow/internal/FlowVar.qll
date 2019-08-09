@@ -483,17 +483,46 @@ module FlowVar_internal {
     )
   }
 
-  pragma[nomagic]
+  // The noopt is needed to avoid getting `variableLiveInSBB` joined in before
+  // `getASuccessor`.
+  pragma[noopt]
   private SubBasicBlock getAReachedBlockVarSBB(TBlockVar start) {
-    start = TBlockVar(result, _)
+    exists(Variable v |
+      start = TBlockVar(result, v) and
+      variableLiveInSBB(result, v)
+    )
     or
     exists(SubBasicBlock mid, SubBasicBlock sbbDef, Variable v |
-      start = TBlockVar(sbbDef, v) and
       mid = getAReachedBlockVarSBB(start) and
+      start = TBlockVar(sbbDef, v) and
       result = mid.getASuccessor() and
+      variableLiveInSBB(result, v) and
       not skipLoop(mid, result, sbbDef, v) and
       not assignmentLikeOperation(result, v, _, _)
     )
+  }
+
+  /**
+   * Holds if a value held in `v` at the start of `sbb` (or after the first
+   * assignment, if that assignment is to `v`) might later be read.
+   */
+  private predicate variableLiveInSBB(SubBasicBlock sbb, Variable v) {
+    variableAccessInSBB(v, sbb, _)
+    or
+    exists(SubBasicBlock succ | succ = sbb.getASuccessor() |
+      variableLiveInSBB(succ, v) and
+      not variableNotLiveBefore(succ, v)
+    )
+  }
+
+  /**
+   * Holds if liveness of `v` should stop propagating backwards from `sbb`.
+   */
+  private predicate variableNotLiveBefore(SubBasicBlock sbb, Variable v) {
+    assignmentLikeOperation(sbb, v, _, _)
+    or
+    // Liveness of `v` is killed when going backwards from a block that declares it
+    exists(DeclStmt ds | ds.getADeclaration().(LocalVariable) = v and sbb.contains(ds))
   }
 
   /** Holds if `va` is a read access to `v` in `sbb`, where `v` is modeled by `BlockVar`. */
