@@ -91,7 +91,14 @@ class SpecificInstanceInternal extends TSpecificInstance, InstanceObject {
     override predicate notTestableForEquality() { none() }
 
     override ObjectInternal getClass() {
-        this = TSpecificInstance(_, result, _)
+        exists(ClassObjectInternal cls, ClassDecl decl |
+            this = TSpecificInstance(_, cls, _) and
+            decl = cls.getClassDeclaration() |
+            if decl.callReturnsInstance() then
+                result = cls
+            else
+               result = TUnknownClass()
+        )
     }
 
     /** Gets the `Builtin` for this object, if any.

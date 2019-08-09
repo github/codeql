@@ -403,6 +403,8 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | h_classes.py:39 | ControlFlowNode for ClassExpr | class Derived3 | builtin-class type | 39 | import |
 | h_classes.py:39 | ControlFlowNode for Derived3 | class Derived3 | builtin-class type | 39 | import |
 | h_classes.py:42 | ControlFlowNode for Base | class Base | builtin-class type | 23 | import |
+| h_classes.py:42 | ControlFlowNode for Base() | Base() | *UNKNOWN TYPE* | 42 | import |
+| h_classes.py:42 | ControlFlowNode for thing | Base() | *UNKNOWN TYPE* | 42 | import |
 | h_classes.py:45 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 45 | import |
 | h_classes.py:45 | ControlFlowNode for f | Function f | builtin-class function | 45 | import |
 | h_classes.py:48 | ControlFlowNode for ClassExpr | class D | builtin-class type | 48 | import |

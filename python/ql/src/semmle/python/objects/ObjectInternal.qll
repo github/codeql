@@ -557,6 +557,8 @@ class DecoratedFunction extends ObjectInternal, TDecoratedFunction {
 
     override string toString() {
         result = "Decorated " + this.decoratedObject().toString()
+        or
+        not exists(this.decoratedObject()) and result = "Decorated function"
     }
 
     override boolean booleanValue() { result = true }
