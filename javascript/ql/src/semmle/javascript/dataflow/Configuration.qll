@@ -280,8 +280,13 @@ module FlowLabel {
 /**
  * A node that can act as a barrier when appearing in a condition.
  *
- * To use this barrier in `Configuration` `cfg`, add this barrier to the
- * extent of `cfg.isBarrierGuard`.
+ * To add a barrier guard to a configuration, define a subclass of this class overriding the
+ * `blocks` predicate, and then extend the configuration's `isBarrierGuard` predicate to include
+ * the new class.
+ *
+ * Note that it is generally a good idea to make the characteristic predicate of barrier guard
+ * classes as precise as possible: if two subclasses of `BarrierGuardNode` overlap, their
+ * implementations of `blocks` will _both_ apply to any configuration that includes either of them.
  */
 abstract class BarrierGuardNode extends DataFlow::Node {
   /**
