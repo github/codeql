@@ -108,8 +108,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         void Emit(TextWriter trapFile, Microsoft.CodeAnalysis.Location loc, IEntity parent, Type type)
         {
-            trapFile.Emit(Tuples.type_mention(this, type.TypeRef, parent));
-            trapFile.Emit(Tuples.type_mention_location(this, cx.Create(loc)));
+            trapFile.type_mention(this, type.TypeRef, parent);
+            trapFile.type_mention_location(this, cx.Create(loc));
         }
 
         public static TypeMention Create(Context cx, TypeSyntax syntax, IEntity parent, Type type, Microsoft.CodeAnalysis.Location loc = null)

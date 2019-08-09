@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if ((OperatorKind == ExprKind.PRE_INCR || OperatorKind == ExprKind.PRE_DECR) &&
                 Kind == ExprKind.OPERATOR_INVOCATION)
             {
-                trapFile.Emit(Tuples.mutator_invocation_mode(this, 1));
+                trapFile.mutator_invocation_mode(this, 1);
             }
         }
     }

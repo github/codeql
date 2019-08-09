@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.local_function_stmts(this, Function));
+            trapFile.local_function_stmts(this, Function);
         }
     }
 }

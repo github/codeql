@@ -17,9 +17,9 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractNullability(trapFile, symbol.NullableAnnotation);
 
             var type = Type.Create(Context, symbol.Type);
-            trapFile.Emit(Tuples.indexers(this, symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition));
+            trapFile.indexers(this, symbol.GetName(useMetadataName: true), ContainingType, type.TypeRef, OriginalDefinition);
             foreach (var l in Locations)
-                trapFile.Emit(Tuples.indexer_location(this, l));
+                trapFile.indexer_location(this, l);
 
             var getter = symbol.GetMethod;
             var setter = symbol.SetMethod;
@@ -50,7 +50,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            ExtractModifiers();
+            ExtractModifiers(trapFile);
             BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration
@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
-                trapFile.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
+                trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 foreach (var syntax in declSyntaxReferences)
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);

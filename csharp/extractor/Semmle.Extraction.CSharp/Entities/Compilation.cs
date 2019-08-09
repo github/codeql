@@ -22,34 +22,34 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             Extraction.Entities.Assembly.CreateOutputAssembly(cx);
 
-            trapFile.Emit(Tuples.compilations(this, Extraction.Entities.File.PathAsDatabaseString(cwd)));
+            trapFile.compilations(this, Extraction.Entities.File.PathAsDatabaseString(cwd));
 
             // Arguments
             int index = 0;
             foreach(var arg in args)
             {
-                trapFile.Emit(Tuples.compilation_args(this, index++, arg));
+                trapFile.compilation_args(this, index++, arg);
             }
 
             // Files
             index = 0;
             foreach(var file in cx.Compilation.SyntaxTrees.Select(tree => Extraction.Entities.File.Create(cx, tree.FilePath)))
             {
-                trapFile.Emit(Tuples.compilation_compiling_files(this, index++, file));
+                trapFile.compilation_compiling_files(this, index++, file);
             }
 
             // References
             index = 0;
             foreach(var file in cx.Compilation.References.OfType<PortableExecutableReference>().Select(r => Extraction.Entities.File.Create(cx, r.FilePath)))
             {
-                trapFile.Emit(Tuples.compilation_referencing_files(this, index++, file));
+                trapFile.compilation_referencing_files(this, index++, file);
             }
 
             // Diagnostics
             index = 0;
             foreach(var diag in cx.Compilation.GetDiagnostics().Select(d => new Diagnostic(cx, d)))
             {
-                trapFile.Emit(Tuples.diagnostic_for(diag, this, 0, index++));
+                trapFile.diagnostic_for(diag, this, 0, index++);
             }
         }
 
@@ -59,9 +59,9 @@ namespace Semmle.Extraction.CSharp.Entities
             int index = 0;
             foreach(float metric in p.Metrics)
             {
-                trapFile.Emit(Tuples.compilation_time(this, -1, index++, metric));
+                trapFile.compilation_time(this, -1, index++, metric);
             }
-            trapFile.Emit(Tuples.compilation_finished(this, (float)p.Total.Cpu.TotalSeconds, (float)p.Total.Elapsed.TotalSeconds));
+            trapFile.compilation_finished(this, (float)p.Total.Cpu.TotalSeconds, (float)p.Total.Elapsed.TotalSeconds);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.NoLabel;
@@ -81,8 +81,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.diagnostics(this, (int)diagnostic.Severity, diagnostic.Id, diagnostic.Descriptor.Title.ToString(),
-                diagnostic.GetMessage(), Extraction.Entities.Location.Create(cx, diagnostic.Location)));
+            trapFile.diagnostics(this, (int)diagnostic.Severity, diagnostic.Id, diagnostic.Descriptor.Title.ToString(),
+                diagnostic.GetMessage(), Extraction.Entities.Location.Create(cx, diagnostic.Location));
         }
     }
 

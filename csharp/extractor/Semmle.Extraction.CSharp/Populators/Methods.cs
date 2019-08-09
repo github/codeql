@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Populators
         public static void NumberOfLines(this Context cx, TextWriter trapFile, CSharpSyntaxNode node, IEntity callable)
         {
             var lineCounts = node.Accept(new AstLineCounter());
-            trapFile.Emit(Tuples.numlines(callable, lineCounts));
+            trapFile.numlines(callable, lineCounts);
         }
     }
 }

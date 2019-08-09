@@ -13,18 +13,18 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-            ExtractModifiers();
+            ExtractModifiers(trapFile);
 
             var returnType = Type.Create(Context, symbol.ReturnType);
-            trapFile.Emit(Tuples.operators(this,
+            trapFile.operators(this,
                 symbol.Name,
                 OperatorSymbol(Context, symbol.Name),
                 ContainingType,
                 returnType.TypeRef,
-                (UserOperator)OriginalDefinition));
+                (UserOperator)OriginalDefinition);
 
             foreach (var l in Locations)
-                trapFile.Emit(Tuples.operator_location(this, l));
+                trapFile.operator_location(this, l);
 
             if (IsSourceDeclaration)
             {

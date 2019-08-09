@@ -42,17 +42,17 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractGenerics();
 
             var underlyingType = NamedType.Create(Context, symbol.TupleUnderlyingType);
-            trapFile.Emit(Tuples.tuple_underlying_type(this, underlyingType));
+            trapFile.tuple_underlying_type(this, underlyingType);
 
             int index = 0;
             foreach (var element in TupleElements)
-                trapFile.Emit(Tuples.tuple_element(this, index++, element));
+                trapFile.tuple_element(this, index++, element);
 
             // Note: symbol.Locations seems to be very inconsistent
             // about what locations are available for a tuple type.
             // Sometimes it's the source code, and sometimes it's empty.
             foreach (var l in symbol.Locations)
-                trapFile.Emit(Tuples.type_location(this, Context.Create(l)));
+                trapFile.type_location(this, Context.Create(l));
         }
 
         readonly Lazy<Field[]> tupleElementsLazy;

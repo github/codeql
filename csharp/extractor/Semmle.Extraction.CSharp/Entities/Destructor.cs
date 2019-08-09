@@ -11,11 +11,11 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-            ExtractModifiers();
+            ExtractModifiers(trapFile);
             ContainingType.ExtractGenerics();
 
-            trapFile.Emit(Tuples.destructors(this, string.Format("~{0}", symbol.ContainingType.Name), ContainingType, OriginalDefinition(Context, this, symbol)));
-            trapFile.Emit(Tuples.destructor_location(this, Location));
+            trapFile.destructors(this, string.Format("~{0}", symbol.ContainingType.Name), ContainingType, OriginalDefinition(Context, this, symbol));
+            trapFile.destructor_location(this, Location);
         }
 
         static new Destructor OriginalDefinition(Context cx, Destructor original, IMethodSymbol symbol)

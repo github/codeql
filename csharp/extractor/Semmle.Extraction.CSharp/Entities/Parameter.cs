@@ -110,10 +110,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.ModelError(symbol, "Inconsistent parameter declaration");
 
             var type = Type.Create(Context, symbol.Type);
-            trapFile.Emit(Tuples.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent, Original));
+            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent, Original);
 
             foreach (var l in symbol.Locations)
-                Context.Emit(Tuples.param_location(this, Context.Create(l)));
+                trapFile.param_location(this, Context.Create(l));
 
             if (!IsSourceDeclaration || !symbol.FromSource())
                 return;
@@ -185,9 +185,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.types(this, Kinds.TypeKind.ARGLIST, "__arglist"));
-            trapFile.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace)));
-            Modifier.HasModifier(Context, this, "public");
+            trapFile.types(this, Kinds.TypeKind.ARGLIST, "__arglist");
+            trapFile.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace));
+            Modifier.HasModifier(Context, trapFile, this, "public");
         }
 
         public override bool NeedsPopulation => true;
@@ -226,8 +226,8 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var typeKey = VarargsType.Create(Context);
             // !! Maybe originaldefinition is wrong
-            trapFile.Emit(Tuples.@params(this, "", typeKey, Ordinal, Kind.None, Parent, this));
-            trapFile.Emit(Tuples.param_location(this, GeneratedLocation.Create(Context)));
+            trapFile.@params(this, "", typeKey, Ordinal, Kind.None, Parent, this);
+            trapFile.param_location(this, GeneratedLocation.Create(Context));
         }
 
         protected override int Ordinal => ((Method)Parent).OriginalDefinition.symbol.Parameters.Length;
@@ -265,8 +265,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             var typeKey = Type.Create(Context, ConstructedType);
-            trapFile.Emit(Tuples.@params(this, Original.symbol.Name, typeKey.TypeRef, 0, Kind.This, Parent, Original));
-            trapFile.Emit(Tuples.param_location(this, Original.Location));
+            trapFile.@params(this, Original.symbol.Name, typeKey.TypeRef, 0, Kind.This, Parent, Original);
+            trapFile.param_location(this, Original.Location);
         }
 
         public override int GetHashCode() => symbol.GetHashCode() + 31 * ConstructedType.GetHashCode();

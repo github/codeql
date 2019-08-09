@@ -21,16 +21,16 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             if (hasVariableDeclaration) // A catch clause of the form 'catch(Ex ex) { ... }'
             {
                 var decl = Expressions.VariableDeclaration.Create(cx, Stmt.Declaration, false, this, 0);
-                trapFile.Emit(Tuples.catch_type(this, decl.Type.Type.TypeRef, true));
+                trapFile.catch_type(this, decl.Type.Type.TypeRef, true);
             }
             else if (isSpecificCatchClause) // A catch clause of the form 'catch(Ex) { ... }'
             {
-                trapFile.Emit(Tuples.catch_type(this, Type.Create(cx, cx.GetType(Stmt.Declaration.Type)).Type.TypeRef, true));
+                trapFile.catch_type(this, Type.Create(cx, cx.GetType(Stmt.Declaration.Type)).Type.TypeRef, true);
             }
             else // A catch clause of the form 'catch { ... }'
             {
                 var exception = Type.Create(cx, cx.Compilation.GetTypeByMetadataName(SystemExceptionName));
-                trapFile.Emit(Tuples.catch_type(this, exception, false));
+                trapFile.catch_type(this, exception, false);
             }
 
             if (Stmt.Filter != null)

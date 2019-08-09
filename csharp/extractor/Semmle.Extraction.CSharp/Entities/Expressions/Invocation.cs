@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (isDynamicCall)
             {
                 if (memberName != null)
-                    trapFile.Emit(Tuples.dynamic_member_name(this, memberName));
+                    trapFile.dynamic_member_name(this, memberName);
                 else
                     cx.ModelError(Syntax, "Unable to get name for dynamic call.");
             }
@@ -91,7 +91,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
 
             var targetKey = Method.Create(cx, target);
-            cx.Emit(Tuples.expr_call(this, targetKey));
+            trapFile.expr_call(this, targetKey);
         }
 
         static bool IsDynamicCall(ExpressionNodeInfo info)

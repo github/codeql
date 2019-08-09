@@ -33,20 +33,20 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 ExtractNullability(trapFile, local.NullableAnnotation);
                 if (local.IsRef)
-                    trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
+                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
             }
 
-            trapFile.Emit(Tuples.localvars(
+            trapFile.localvars(
                 this,
                 IsRef ? 3 : IsConst ? 2 : 1,
                 symbol.Name,
                 IsVar ? 1 : 0,
                 Type.Type.TypeRef,
-                Parent));
+                Parent);
 
-            trapFile.Emit(Tuples.localvar_location(this, DeclLocation));
+            trapFile.localvar_location(this, DeclLocation);
 
-            DefineConstantValue();
+            DefineConstantValue(trapFile);
         }
 
         public static LocalVariable Create(Context cx, ISymbol local, Expression parent, bool isVar, Extraction.Entities.Location declLocation)
@@ -87,12 +87,12 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        void DefineConstantValue()
+        void DefineConstantValue(TextWriter trapFile)
         {
             var local = symbol as ILocalSymbol;
             if (local != null && local.HasConstantValue)
             {
-                Context.Emit(Tuples.constant_value(this, Expression.ValueAsString(local.ConstantValue)));
+                trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue));
             }
         }
 

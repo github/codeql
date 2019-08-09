@@ -16,9 +16,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public virtual Type ContainingType => symbol.ContainingType != null ? Type.Create(Context, symbol.ContainingType) : null;
 
-        public void ExtractModifiers()
+        public void ExtractModifiers(TextWriter trapFile)
         {
-            Modifier.ExtractModifiers(Context, this, symbol);
+            Modifier.ExtractModifiers(Context, trapFile, this, symbol);
         }
 
         protected void ExtractAttributes()
@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var ta = annotation.GetTypeAnnotation();
             if (ta != Kinds.TypeAnnotation.None)
-                trapFile.Emit(Tuples.type_annotation(this, ta));
+                trapFile.type_annotation(this, ta);
         }
 
         protected void ExtractRefKind(TextWriter trapFile, RefKind kind)
@@ -40,13 +40,13 @@ namespace Semmle.Extraction.CSharp.Entities
             switch (kind)
             {
                 case RefKind.Out:
-                    trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Out));
+                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Out);
                     break;
                 case RefKind.Ref:
-                    trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
+                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
                     break;
                 case RefKind.RefReadOnly:
-                    trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef));
+                    trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
                     break;
             }
         }
@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CSharp.Entities
         protected void ExtractCompilerGenerated(TextWriter trapFile)
         {
             if (symbol.IsImplicitlyDeclared)
-                trapFile.Emit(Tuples.compiler_generated(this));
+                trapFile.compiler_generated(this);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Semmle.Extraction.CSharp.Entities
             var handle = MetadataHandle;
 
             if (handle.HasValue)
-                trapFile.Emit(Tuples.metadata_handle(this, Location, MetadataTokens.GetToken(handle.Value)));
+                trapFile.metadata_handle(this, Location, MetadataTokens.GetToken(handle.Value));
         }
 
         public Handle? MetadataHandle

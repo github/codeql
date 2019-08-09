@@ -28,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         ExprKind.METHOD_INVOCATION, parent, child, false, null))
             {
                 if (method != null)
-                    cx.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
+                    cx.TrapWriter.Writer.expr_call(this, Method.Create(cx, method));
             }
         }
 
@@ -99,7 +99,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Expression.Create(cx, Expr, decl, 0);
 
                 var access = new Expression(new ExpressionInfo(cx, type, nameLoc, ExprKind.LOCAL_VARIABLE_ACCESS, decl, 1, false, null));
-                cx.Emit(Tuples.expr_access(access, LocalVariable.GetAlreadyCreated(cx, variableSymbol)));
+                cx.TrapWriter.Writer.expr_access(access, LocalVariable.GetAlreadyCreated(cx, variableSymbol));
 
                 return decl;
             }

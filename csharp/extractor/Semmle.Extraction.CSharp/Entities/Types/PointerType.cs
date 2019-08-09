@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.pointer_referent_type(this, PointedAtType.TypeRef));
+            trapFile.pointer_referent_type(this, PointedAtType.TypeRef);
             ExtractType(trapFile);
         }
 

@@ -39,18 +39,18 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected sealed override void Populate(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.expressions(this, Kind, Type.Type.TypeRef));
+            trapFile.expressions(this, Kind, Type.Type.TypeRef);
             if (Info.Parent.IsTopLevelParent)
-                trapFile.Emit(Tuples.expr_parent_top_level(this, Info.Child, Info.Parent));
+                trapFile.expr_parent_top_level(this, Info.Child, Info.Parent);
             else
-                trapFile.Emit(Tuples.expr_parent(this, Info.Child, Info.Parent));
-            trapFile.Emit(Tuples.expr_location(this, Location));
+                trapFile.expr_parent(this, Info.Child, Info.Parent);
+            trapFile.expr_location(this, Location);
 
             if (Info.IsCompilerGenerated)
-                trapFile.Emit(Tuples.expr_compiler_generated(this));
+                trapFile.expr_compiler_generated(this);
 
             if (Info.ExprValue is string value)
-                cx.Emit(Tuples.expr_value(this, value));
+                trapFile.expr_value(this, value);
 
             Type.Type.ExtractGenerics();
         }
@@ -133,11 +133,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (callType == CallType.Dynamic)
                 {
                     UserOperator.OperatorSymbol(method.Name, out string operatorName);
-                    trapFile.Emit(Tuples.dynamic_member_name(this, operatorName));
+                    trapFile.dynamic_member_name(this, operatorName);
                     return;
                 }
 
-                trapFile.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
+                trapFile.expr_call(this, Method.Create(cx, method));
             }
         }
 
@@ -211,7 +211,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public void MakeConditional(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.conditional_access(this));
+            trapFile.conditional_access(this);
         }
 
         public void PopulateArguments(TextWriter trapFile, BaseArgumentListSyntax args, int child)
@@ -241,11 +241,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 default:
                     throw new InternalError(arg, "Unknown argument type");
             }
-            trapFile.Emit(Tuples.expr_argument(expr, mode));
+            trapFile.expr_argument(expr, mode);
 
             if (arg.NameColon != null)
             {
-                trapFile.Emit(Tuples.expr_argument_name(expr, arg.NameColon.Name.Identifier.Text));
+                trapFile.expr_argument_name(expr, arg.NameColon.Name.Identifier.Text);
             }
         }
 

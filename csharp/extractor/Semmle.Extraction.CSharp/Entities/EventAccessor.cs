@@ -44,10 +44,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            trapFile.Emit(Tuples.event_accessors(this, kind, symbol.Name, parent, unboundAccessor));
+            trapFile.event_accessors(this, kind, symbol.Name, parent, unboundAccessor);
 
             foreach (var l in Locations)
-                trapFile.Emit(Tuples.event_accessor_location(this, l));
+                trapFile.event_accessor_location(this, l);
 
             Overrides(trapFile);
         }

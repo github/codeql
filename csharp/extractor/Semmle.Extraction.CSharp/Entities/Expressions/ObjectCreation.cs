@@ -46,14 +46,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (method != null)
             {
-                trapFile.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
+                trapFile.expr_call(this, Method.Create(cx, method));
             }
 
             if (IsDynamicObjectCreation(cx, Syntax))
             {
                 var name = GetDynamicName(Syntax.Type);
                 if (name.HasValue)
-                    trapFile.Emit(Tuples.dynamic_member_name(this, name.Value.Text));
+                    trapFile.dynamic_member_name(this, name.Value.Text);
                 else
                     cx.ModelError(Syntax, "Unable to get name for dynamic object creation.");
             }
@@ -109,7 +109,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             if (method != null)
             {
-                trapFile.Emit(Tuples.expr_call(this, Method.Create(cx, method)));
+                trapFile.expr_call(this, Method.Create(cx, method));
             }
             var child = 0;
 
@@ -130,7 +130,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Property.Create(cx, property);
 
                 var access = new Expression(new ExpressionInfo(cx, type, loc, ExprKind.PROPERTY_ACCESS, assignment, 1, false, null));
-                trapFile.Emit(Tuples.expr_access(access, propEntity));
+                trapFile.expr_access(access, propEntity);
             }
         }
     }

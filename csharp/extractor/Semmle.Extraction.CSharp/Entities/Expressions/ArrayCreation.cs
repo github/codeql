@@ -67,7 +67,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
 
             if (explicitlySized)
-                cx.Emit(Tuples.explicitly_sized_array_creation(this));
+                trapFile.explicitly_sized_array_creation(this);
         }
     }
 
@@ -106,7 +106,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax.Initializer, this, -1));
             }
 
-            cx.Emit(Tuples.implicitly_typed_array_creation(this));
+            trapFile.implicitly_typed_array_creation(this);
         }
     }
 }

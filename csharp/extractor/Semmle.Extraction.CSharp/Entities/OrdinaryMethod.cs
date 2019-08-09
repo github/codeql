@@ -27,11 +27,11 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-            ExtractModifiers();
+            ExtractModifiers(trapFile);
             ContainingType.ExtractGenerics();
 
             var returnType = Type.Create(Context, symbol.ReturnType);
-            trapFile.Emit(Tuples.methods(this, Name, ContainingType, returnType.TypeRef, OriginalDefinition));
+            trapFile.methods(this, Name, ContainingType, returnType.TypeRef, OriginalDefinition);
 
             if (IsSourceDeclaration)
                 foreach (var declaration in symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).OfType<MethodDeclarationSyntax>())
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
 
             foreach (var l in Locations)
-                Context.Emit(Tuples.method_location(this, l));
+                trapFile.method_location(this, l);
 
             ExtractGenerics(trapFile);
             Overrides(trapFile);

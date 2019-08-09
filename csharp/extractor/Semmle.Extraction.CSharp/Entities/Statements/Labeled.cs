@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
 
         protected override void PopulateStatement(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.exprorstmt_name(this, Stmt.Identifier.ToString()));
+            trapFile.exprorstmt_name(this, Stmt.Identifier.ToString());
 
             // For compatilibty with the Mono extractor, make insert the labelled statement into the same block
             // as this one. The parent MUST be a block statement.

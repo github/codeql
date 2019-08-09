@@ -61,12 +61,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.statements(this, Kind));
+            trapFile.statements(this, Kind);
             if (Parent.IsTopLevelParent)
-                trapFile.Emit(Tuples.stmt_parent_top_level(this, Child, Parent));
+                trapFile.stmt_parent_top_level(this, Child, Parent);
             else
-                trapFile.Emit(Tuples.stmt_parent(this, Child, Parent));
-            cx.Emit(Tuples.stmt_location(this, Location));
+                trapFile.stmt_parent(this, Child, Parent);
+            trapFile.stmt_location(this, Location);
             PopulateStatement(trapFile);
         }
 

@@ -17,16 +17,16 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-            ExtractModifiers();
+            ExtractModifiers(trapFile);
             ContainingType.ExtractGenerics();
 
-            trapFile.Emit(Tuples.constructors(this, symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition));
-            trapFile.Emit(Tuples.constructor_location(this, Location));
+            trapFile.constructors(this, symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
+            trapFile.constructor_location(this, Location);
 
             if (symbol.IsImplicitlyDeclared)
             {
                 var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };
-                trapFile.Emit(Tuples.numlines(this, lineCounts));
+                trapFile.numlines(this, lineCounts);
             }
             ExtractCompilerGenerated(trapFile);
         }
@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            trapFile.Emit(Tuples.expr_call(init, target));
+            trapFile.expr_call(init, target);
 
             int child = 0;
             foreach (var arg in initializer.ArgumentList.Arguments)

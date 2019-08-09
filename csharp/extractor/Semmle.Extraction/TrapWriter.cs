@@ -62,7 +62,7 @@ namespace Semmle.Extraction
                 while (File.Exists(tmpFile));
 
                 var fileStream = new FileStream(tmpFile, FileMode.CreateNew, FileAccess.Write);
-                var compressionStream = new GZipStream(fileStream, CompressionMode.Compress);
+                var compressionStream = new BrotliStream(fileStream, CompressionLevel.Fastest);
                 return new StreamWriter(compressionStream, UTF8, 2000000);
             });
             this.archive = archive;
@@ -158,7 +158,7 @@ namespace Semmle.Extraction
                     if (existingHash != hash)
                     {
                         var root = TrapFile.Substring(0, TrapFile.Length - 8); // Remove trailing ".trap.gz"
-                        if (TryMove(tmpFile, $"{root}-{hash}.trap.gz"))
+                        if (TryMove(tmpFile, $"{root}-{hash}.trap.br"))
                             return;
                     }
                     Logger.Log(Severity.Info, "Identical trap file for {0} already exists", TrapFile);
@@ -255,7 +255,7 @@ namespace Semmle.Extraction
 
         public static string TrapPath(ILogger logger, string folder, string filename)
         {
-            filename = Path.GetFullPath(filename) + ".trap.gz";
+            filename = Path.GetFullPath(filename) + ".trap.br";
             if (string.IsNullOrEmpty(folder))
                 folder = Directory.GetCurrentDirectory();
 

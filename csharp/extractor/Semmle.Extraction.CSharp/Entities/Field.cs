@@ -33,25 +33,25 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractNullability(trapFile, symbol.NullableAnnotation);
 
             Field unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
-            trapFile.Emit(Tuples.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey));
+            trapFile.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey);
 
-            ExtractModifiers();
+            ExtractModifiers(trapFile);
 
             if (symbol.IsVolatile)
-                Modifier.HasModifier(Context, this, "volatile");
+                Modifier.HasModifier(Context, trapFile, this, "volatile");
 
             if (symbol.IsConst)
             {
-                Modifier.HasModifier(Context, this, "const");
+                Modifier.HasModifier(Context, trapFile, this, "const");
 
                 if (symbol.HasConstantValue)
                 {
-                    trapFile.Emit(Tuples.constant_value(this, Expression.ValueAsString(symbol.ConstantValue)));
+                    trapFile.constant_value(this, Expression.ValueAsString(symbol.ConstantValue));
                 }
             }
 
             foreach (var l in Locations)
-                trapFile.Emit(Tuples.field_location(this, l));
+                trapFile.field_location(this, l);
 
             if (!IsSourceDeclaration || !symbol.FromSource())
                 return;
@@ -86,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 // Mark fields that have explicit initializers.
                 var expr = new Expression(new ExpressionInfo(Context, Type, Context.Create(initializer.EqualsValue.Value.FixedLocation()), Kinds.ExprKind.FIELD_ACCESS, this, child++, false, null));
-                trapFile.Emit(Tuples.expr_access(expr, this));
+                trapFile.expr_access(expr, this);
             }
 
             if (IsSourceDeclaration)

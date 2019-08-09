@@ -29,38 +29,38 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            trapFile.Emit(Tuples.typeref_type((NamedTypeRef)TypeRef, this));
+            trapFile.typeref_type((NamedTypeRef)TypeRef, this);
 
             if (symbol.IsGenericType)
             {
                 if (symbol.IsBoundNullable())
                 {
                     // An instance of Nullable<T>
-                    trapFile.Emit(Tuples.nullable_underlying_type(this, Create(Context, symbol.TypeArguments[0]).TypeRef));
+                    trapFile.nullable_underlying_type(this, Create(Context, symbol.TypeArguments[0]).TypeRef);
                 }
                 else if (symbol.IsReallyUnbound())
                 {
-                    trapFile.Emit(Tuples.is_generic(this));
+                    trapFile.is_generic(this);
 
                     for (int i = 0; i < symbol.TypeParameters.Length; ++i)
                     {
                         TypeParameter.Create(Context, symbol.TypeParameters[i]);
                         var param = symbol.TypeParameters[i];
                         var typeParameter = TypeParameter.Create(Context, param);
-                        trapFile.Emit(Tuples.type_parameters(typeParameter, i, this));
+                        trapFile.type_parameters(typeParameter, i, this);
                     }
                 }
                 else
                 {
-                    trapFile.Emit(Tuples.is_constructed(this));
-                    trapFile.Emit(Tuples.constructed_generic(this, Type.Create(Context, symbol.ConstructedFrom).TypeRef));
+                    trapFile.is_constructed(this);
+                    trapFile.constructed_generic(this, Type.Create(Context, symbol.ConstructedFrom).TypeRef);
 
                     for (int i = 0; i < symbol.TypeArguments.Length; ++i)
                     {
                         var ta = symbol.TypeArgumentsNullableAnnotations[i].GetTypeAnnotation();
                         if (ta != Kinds.TypeAnnotation.None)
-                            trapFile.Emit(Tuples.type_argument_annotation(this, i, ta));
-                        trapFile.Emit(Tuples.type_arguments(TypeArguments[i].TypeRef, i, this));
+                            trapFile.type_argument_annotation(this, i, ta);
+                        trapFile.type_arguments(TypeArguments[i].TypeRef, i, this);
                     }
                 }
             }
@@ -69,14 +69,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (symbol.EnumUnderlyingType != null)
             {
-                trapFile.Emit(Tuples.enum_underlying_type(this, Type.Create(Context, symbol.EnumUnderlyingType).TypeRef));
+                trapFile.enum_underlying_type(this, Type.Create(Context, symbol.EnumUnderlyingType).TypeRef);
             }
 
             // Class location
             if (!symbol.IsGenericType || symbol.IsReallyUnbound())
             {
                 foreach (var l in Locations)
-                    trapFile.Emit(Tuples.type_location(this, l));
+                    trapFile.type_location(this, l);
             }
         }
 
@@ -185,7 +185,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.typerefs(this, symbol.Name));
+            trapFile.typerefs(this, symbol.Name);
         }
     };
 }

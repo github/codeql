@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.types(this, Kinds.TypeKind.NULL, "null"));
+            trapFile.types(this, Kinds.TypeKind.NULL, "null");
         }
 
         public override void WriteId(TextWriter trapFile)

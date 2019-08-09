@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static void HasAccessibility(Context cx, IEntity type, Accessibility access)
+        public static void HasAccessibility(Context cx, TextWriter trapFile, IEntity type, Accessibility access)
         {
             switch (access)
             {
@@ -71,70 +71,70 @@ namespace Semmle.Extraction.CSharp.Entities
                 case Accessibility.Public:
                 case Accessibility.Protected:
                 case Accessibility.Internal:
-                    HasModifier(cx, type, Modifier.AccessbilityModifier(access));
+                    HasModifier(cx, trapFile, type, Modifier.AccessbilityModifier(access));
                     break;
                 case Accessibility.NotApplicable:
                     break;
                 case Accessibility.ProtectedOrInternal:
-                    HasModifier(cx, type, "protected");
-                    HasModifier(cx, type, "internal");
+                    HasModifier(cx, trapFile, type, "protected");
+                    HasModifier(cx, trapFile, type, "internal");
                     break;
                 case Accessibility.ProtectedAndInternal:
-                    HasModifier(cx, type, "protected");
-                    HasModifier(cx, type, "private");
+                    HasModifier(cx, trapFile, type, "protected");
+                    HasModifier(cx, trapFile, type, "private");
                     break;
                 default:
                     throw new InternalError($"Unhandled Microsoft.CodeAnalysis.Accessibility value: {access}");
             }
         }
 
-        public static void HasModifier(Context cx, IEntity target, string modifier)
+        public static void HasModifier(Context cx, TextWriter trapFile, IEntity target, string modifier)
         {
-            cx.Emit(Tuples.has_modifiers(target, Modifier.Create(cx, modifier)));
+            trapFile.has_modifiers(target, Modifier.Create(cx, modifier));
         }
 
-        public static void ExtractModifiers(Context cx, IEntity key, ISymbol symbol)
+        public static void ExtractModifiers(Context cx, TextWriter trapFile, IEntity key, ISymbol symbol)
         {
             bool interfaceDefinition = symbol.ContainingType != null
                 && symbol.ContainingType.Kind == SymbolKind.NamedType
                 && symbol.ContainingType.TypeKind == TypeKind.Interface;
 
-            Modifier.HasAccessibility(cx, key, symbol.DeclaredAccessibility);
+            HasAccessibility(cx, trapFile, key, symbol.DeclaredAccessibility);
             if (symbol.Kind == SymbolKind.ErrorType)
-                cx.Emit(Tuples.has_modifiers(key, Modifier.Create(cx, Accessibility.Public)));
+                trapFile.has_modifiers(key, Modifier.Create(cx, Accessibility.Public));
 
             if (symbol.IsAbstract && (symbol.Kind != SymbolKind.NamedType || ((INamedTypeSymbol)symbol).TypeKind != TypeKind.Interface) && !interfaceDefinition)
-                Modifier.HasModifier(cx, key, "abstract");
+                HasModifier(cx, trapFile, key, "abstract");
 
             if (symbol.IsSealed)
-                HasModifier(cx, key, "sealed");
+                HasModifier(cx, trapFile, key, "sealed");
 
             bool fromSource = symbol.DeclaringSyntaxReferences.Length > 0;
 
             if (symbol.IsStatic && !(symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsConst && !fromSource))
-                HasModifier(cx, key, "static");
+                HasModifier(cx, trapFile, key, "static");
 
             if (symbol.IsVirtual)
-                HasModifier(cx, key, "virtual");
+                HasModifier(cx, trapFile, key, "virtual");
 
             // For some reason, method in interfaces are "virtual", not "abstract"
             if (symbol.IsAbstract && interfaceDefinition)
-                HasModifier(cx, key, "virtual");
+                HasModifier(cx, trapFile, key, "virtual");
 
             if (symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsReadOnly)
-                HasModifier(cx, key, "readonly");
+                HasModifier(cx, trapFile, key, "readonly");
 
             if (symbol.IsOverride)
-                HasModifier(cx, key, "override");
+                HasModifier(cx, trapFile, key, "override");
 
             if (symbol.Kind == SymbolKind.Method && ((IMethodSymbol)symbol).IsAsync)
-                HasModifier(cx, key, "async");
+                HasModifier(cx, trapFile, key, "async");
 
             if (symbol.IsExtern)
-                HasModifier(cx, key, "extern");
+                HasModifier(cx, trapFile, key, "extern");
 
             foreach (var modifier in symbol.GetSourceLevelModifiers())
-                HasModifier(cx, key, modifier);
+                HasModifier(cx, trapFile, key, modifier);
 
             if (symbol.Kind == SymbolKind.NamedType)
             {
@@ -145,9 +145,9 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (nt.TypeKind == TypeKind.Struct)
                 {
                     if (nt.IsReadOnly)
-                        HasModifier(cx, key, "readonly");
+                        HasModifier(cx, trapFile, key, "readonly");
                     if (nt.IsRefLikeType)
-                        HasModifier(cx, key, "ref");
+                        HasModifier(cx, trapFile, key, "ref");
                 }
             }
         }

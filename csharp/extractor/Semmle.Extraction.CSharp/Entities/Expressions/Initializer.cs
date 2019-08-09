@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected override void PopulateExpression(TextWriter trapFile)
         {
             ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax, this, -1));
-            trapFile.Emit(Tuples.implicitly_typed_array_creation(this));
+            trapFile.implicitly_typed_array_creation(this);
         }
     }
 
@@ -111,7 +111,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var invocation = new Expression(new ExpressionInfo(cx, voidType, cx.Create(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
 
                 if (addMethod != null)
-                    trapFile.Emit(Tuples.expr_call(invocation, addMethod));
+                    trapFile.expr_call(invocation, addMethod);
                 else
                     cx.ModelError(Syntax, "Unable to find an Add() method for collection initializer");
 

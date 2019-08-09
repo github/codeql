@@ -12,12 +12,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.namespaces(this, symbol.Name));
+            trapFile.namespaces(this, symbol.Name);
 
             if (symbol.ContainingNamespace != null)
             {
                 Namespace parent = Create(Context, symbol.ContainingNamespace);
-                trapFile.Emit(Tuples.parent_namespace(this, parent));
+                trapFile.parent_namespace(this, parent);
             }
         }
 

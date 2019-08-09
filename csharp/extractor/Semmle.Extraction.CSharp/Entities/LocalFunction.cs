@@ -43,13 +43,13 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 foreach(var modifier in fn.Modifiers)
                 {
-                    Modifier.HasModifier(Context, this, modifier.Text);
+                    Modifier.HasModifier(Context, trapFile, this, modifier.Text);
                 }
             }
 
             var originalDefinition = IsSourceDeclaration ? this : Create(Context, symbol.OriginalDefinition);
             var returnType = Type.Create(Context, symbol.ReturnType);
-            trapFile.Emit(Tuples.local_functions(this, symbol.Name, returnType, originalDefinition));
+            trapFile.local_functions(this, symbol.Name, returnType, originalDefinition);
             ExtractRefReturn(trapFile);
         }
     }

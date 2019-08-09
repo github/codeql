@@ -90,7 +90,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Where(sym => sym.MethodKind == MethodKind.Ordinary).
                 Select(impl => Type.Create(Context, impl.ContainingType)))
             {
-                Context.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
+                trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 if (IsSourceDeclaration)
                     foreach (var syntax in symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
@@ -99,7 +99,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (symbol.OverriddenMethod != null)
             {
-                trapFile.Emit(Tuples.overrides(this, Method.Create(Context, symbol.OverriddenMethod)));
+                trapFile.overrides(this, Method.Create(Context, symbol.OverriddenMethod));
             }
         }
 
@@ -340,23 +340,23 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (isFullyConstructed)
                 {
-                    trapFile.Emit(Tuples.is_constructed(this));
-                    trapFile.Emit(Tuples.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol)));
+                    trapFile.is_constructed(this);
+                    trapFile.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol));
                     foreach (var tp in symbol.GetAnnotatedTypeArguments())
                     {
-                        trapFile.Emit(Tuples.type_arguments(Type.Create(Context, tp.Symbol), child, this));
+                        trapFile.type_arguments(Type.Create(Context, tp.Symbol), child, this);
                         var ta = tp.Nullability.GetTypeAnnotation();
                         if (ta != Kinds.TypeAnnotation.None)
-                            trapFile.Emit(Tuples.type_argument_annotation(this, child, ta));
+                            trapFile.type_argument_annotation(this, child, ta);
                         child++;
                     }
                 }
                 else
                 {
-                    trapFile.Emit(Tuples.is_generic(this));
+                    trapFile.is_generic(this);
                     foreach (var typeParam in symbol.TypeParameters.Select(tp => TypeParameter.Create(Context, tp)))
                     {
-                        trapFile.Emit(Tuples.type_parameters(typeParam, child, this));
+                        trapFile.type_parameters(typeParam, child, this);
                         child++;
                     }
                 }
@@ -366,9 +366,9 @@ namespace Semmle.Extraction.CSharp.Entities
         protected void ExtractRefReturn(TextWriter trapFile)
         {
             if (symbol.ReturnsByRef)
-                trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
+                trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
             if (symbol.ReturnsByRefReadonly)
-                trapFile.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef));
+                trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
         }
 
         protected void PopulateMethod(TextWriter trapFile)

@@ -37,7 +37,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             {
                 case StmtKind.GOTO:
                     var target = ((IdentifierNameSyntax)Stmt.Expression).Identifier.Text;
-                    cx.Emit(Tuples.exprorstmt_name(this, target));
+                    trapFile.exprorstmt_name(this, target);
                     break;
                 case StmtKind.GOTO_CASE:
                     Expr = Expression.Create(cx, Stmt.Expression, this, 0);

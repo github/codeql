@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractNullability(trapFile, symbol.NullableAnnotation);
 
             var type = Type.Create(Context, symbol.Type);
-            Context.Emit(Tuples.events(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition)));
+            trapFile.events(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition));
 
             var adder = symbol.AddMethod;
             var remover = symbol.RemoveMethod;
@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (!(remover is null))
                 Method.Create(Context, remover);
 
-            ExtractModifiers();
+            ExtractModifiers(trapFile);
             BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration
@@ -44,14 +44,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
-                trapFile.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
+                trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 foreach (var syntax in declSyntaxReferences.OfType<EventDeclarationSyntax>())
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
             }
 
             foreach (var l in Locations)
-                trapFile.Emit(Tuples.event_location(this, l));
+                trapFile.event_location(this, l);
 
             foreach (var syntaxType in declSyntaxReferences.OfType<VariableDeclaratorSyntax>().
                 Select(d => d.Parent).

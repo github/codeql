@@ -115,8 +115,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             location = Context.Create(Location);
-            trapFile.Emit(Tuples.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText));
-            trapFile.Emit(Tuples.commentline_location(this, location));
+            trapFile.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText);
+            trapFile.commentline_location(this, location);
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => location.symbol;

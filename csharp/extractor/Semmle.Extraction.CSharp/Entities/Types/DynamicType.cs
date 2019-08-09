@@ -15,11 +15,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.Emit(Tuples.types(this, Kinds.TypeKind.DYNAMIC, "dynamic"));
-            trapFile.Emit(Tuples.type_location(this, Location));
+            trapFile.types(this, Kinds.TypeKind.DYNAMIC, "dynamic");
+            trapFile.type_location(this, Location);
 
-            trapFile.Emit(Tuples.has_modifiers(this, Modifier.Create(Context, "public")));
-            trapFile.Emit(Tuples.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace)));
+            trapFile.has_modifiers(this, Modifier.Create(Context, "public"));
+            trapFile.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace));
         }
 
         public override void WriteId(TextWriter trapFile)

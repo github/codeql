@@ -46,12 +46,12 @@ namespace Semmle.Extraction.CSharp.Entities
         void ExtractAttribute(System.IO.TextWriter trapFile, AttributeSyntax syntax, ITypeSymbol attributeClass, IEntity entity)
         {
             var type = Type.Create(cx, attributeClass);
-            trapFile.Emit(Tuples.attributes(this, type.TypeRef, entity));
+            trapFile.attributes(this, type.TypeRef, entity);
 
-            trapFile.Emit(Tuples.attribute_location(this, cx.Create(syntax.Name.GetLocation())));
+            trapFile.attribute_location(this, cx.Create(syntax.Name.GetLocation()));
 
             if (cx.Extractor.OutputPath != null)
-                trapFile.Emit(Tuples.attribute_location(this, Assembly.CreateOutputAssembly(cx)));
+                trapFile.attribute_location(this, Assembly.CreateOutputAssembly(cx));
 
             TypeMention.Create(cx, syntax.Name, this, type);
 
@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         var expr = Expression.Create(cx, arg.Expression, this, child++);
                         if (!(arg.NameEquals is null))
                         {
-                            trapFile.Emit(Tuples.expr_argument_name(expr, arg.NameEquals.Name.Identifier.Text));
+                            trapFile.expr_argument_name(expr, arg.NameEquals.Name.Identifier.Text);
                         }
                     }
                 });

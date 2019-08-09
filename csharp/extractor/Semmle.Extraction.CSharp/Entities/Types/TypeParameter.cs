@@ -24,46 +24,46 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             var constraints = new TypeParameterConstraints(Context);
-            trapFile.Emit(Tuples.type_parameter_constraints(constraints, this));
+            trapFile.type_parameter_constraints(constraints, this);
 
             if (symbol.HasReferenceTypeConstraint)
-                trapFile.Emit(Tuples.general_type_parameter_constraints(constraints, 1));
+                trapFile.general_type_parameter_constraints(constraints, 1);
 
             if (symbol.HasValueTypeConstraint)
-                trapFile.Emit(Tuples.general_type_parameter_constraints(constraints, 2));
+                trapFile.general_type_parameter_constraints(constraints, 2);
 
             if (symbol.HasConstructorConstraint)
-                trapFile.Emit(Tuples.general_type_parameter_constraints(constraints, 3));
+                trapFile.general_type_parameter_constraints(constraints, 3);
 
             if(symbol.HasUnmanagedTypeConstraint)
-                trapFile.Emit(Tuples.general_type_parameter_constraints(constraints, 4));
+                trapFile.general_type_parameter_constraints(constraints, 4);
 
             ITypeSymbol baseType = symbol.HasValueTypeConstraint ?
                     Context.Compilation.GetTypeByMetadataName(valueTypeName) :
                     Context.Compilation.ObjectType;
 
             if(symbol.ReferenceTypeConstraintNullableAnnotation == NullableAnnotation.Annotated)
-                trapFile.Emit(Tuples.general_type_parameter_constraints(constraints, 5));
+                trapFile.general_type_parameter_constraints(constraints, 5);
 
             foreach (var abase in symbol.GetAnnotatedTypeConstraints())
             {
                 if (abase.Symbol.TypeKind != TypeKind.Interface)
                     baseType = abase.Symbol;
                 var t = Create(Context, abase.Symbol);
-                trapFile.Emit(Tuples.specific_type_parameter_constraints(constraints, t.TypeRef));
+                trapFile.specific_type_parameter_constraints(constraints, t.TypeRef);
                 if (abase.Nullability.GetTypeAnnotation() != Kinds.TypeAnnotation.None)
-                    trapFile.Emit(Tuples.specific_type_parameter_annotation(constraints, t.TypeRef, abase.Nullability.GetTypeAnnotation()));
+                    trapFile.specific_type_parameter_annotation(constraints, t.TypeRef, abase.Nullability.GetTypeAnnotation());
             }
 
-            trapFile.Emit(Tuples.types(this, Semmle.Extraction.Kinds.TypeKind.TYPE_PARAMETER, symbol.Name));
-            trapFile.Emit(Tuples.extend(this, Create(Context, baseType).TypeRef));
+            trapFile.types(this, Semmle.Extraction.Kinds.TypeKind.TYPE_PARAMETER, symbol.Name);
+            trapFile.extend(this, Create(Context, baseType).TypeRef);
 
             Namespace parentNs = Namespace.Create(Context, symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : symbol.ContainingNamespace);
-            trapFile.Emit(Tuples.parent_namespace(this, parentNs));
+            trapFile.parent_namespace(this, parentNs);
 
             foreach (var l in symbol.Locations)
             {
-                trapFile.Emit(Tuples.type_location(this, Context.Create(l)));
+                trapFile.type_location(this, Context.Create(l));
             }
 
             if (this.IsSourceDeclaration)

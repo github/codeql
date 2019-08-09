@@ -26,7 +26,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if ((OperatorKind == ExprKind.POST_INCR || OperatorKind == ExprKind.POST_DECR) &&
                 Kind == ExprKind.OPERATOR_INVOCATION)
             {
-                trapFile.Emit(Tuples.mutator_invocation_mode(this, 2));
+                trapFile.mutator_invocation_mode(this, 2);
             }
         }
     }

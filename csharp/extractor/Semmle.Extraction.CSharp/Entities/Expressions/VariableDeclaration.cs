@@ -156,7 +156,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                     // Create an access
                     var access = new Expression(new ExpressionInfo(cx, type, location, ExprKind.LOCAL_VARIABLE_ACCESS, ret, 1, false, null));
-                    cx.Emit(Tuples.expr_access(access, localVar));
+                    cx.TrapWriter.Writer.expr_access(access, localVar);
                 }
 
                 var decl = d.Parent as VariableDeclarationSyntax;

@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var indexer = symbolInfo.Symbol as IPropertySymbol;
                 if (indexer != null)
                 {
-                    trapFile.Emit(Tuples.expr_access(this, Indexer.Create(cx, indexer)));
+                    trapFile.expr_access(this, Indexer.Create(cx, indexer));
                 }
             }
         }

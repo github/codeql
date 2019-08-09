@@ -24,8 +24,8 @@ namespace Semmle.Extraction.CSharp.Entities
         protected override void Populate(TextWriter trapFile)
         {
             var ns = Namespace.Create(cx, (INamespaceSymbol)cx.GetModel(Node).GetSymbolInfo(Node.Name).Symbol);
-            trapFile.Emit(Tuples.namespace_declarations(this, ns));
-            trapFile.Emit(Tuples.namespace_declaration_location(this, cx.Create(Node.Name.GetLocation())));
+            trapFile.namespace_declarations(this, ns);
+            trapFile.namespace_declaration_location(this, cx.Create(Node.Name.GetLocation()));
 
             var visitor = new Populators.TypeOrNamespaceVisitor(cx, trapFile, this);
 
@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (Parent != null)
             {
-                trapFile.Emit(Tuples.parent_namespace_declaration(this, Parent));
+                trapFile.parent_namespace_declaration(this, Parent);
             }
         }
 

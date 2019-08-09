@@ -40,21 +40,21 @@ namespace Semmle.Extraction.CSharp.Entities
                 else
                 {
                     var ns = Namespace.Create(cx, namespaceSymbol);
-                    trapFile.Emit(Tuples.using_namespace_directives(this, ns));
-                    trapFile.Emit(Tuples.using_directive_location(this, cx.Create(ReportingLocation)));
+                    trapFile.using_namespace_directives(this, ns);
+                    trapFile.using_directive_location(this, cx.Create(ReportingLocation));
                 }
             }
             else
             {
                 // A "using static"
                 Type m = Type.Create(cx, (ITypeSymbol)info.Symbol);
-                trapFile.Emit(Tuples.using_static_directives(this, m.TypeRef));
-                trapFile.Emit(Tuples.using_directive_location(this, cx.Create(ReportingLocation)));
+                trapFile.using_static_directives(this, m.TypeRef);
+                trapFile.using_directive_location(this, cx.Create(ReportingLocation));
             }
 
             if (Parent != null)
             {
-                trapFile.Emit(Tuples.parent_namespace_declaration(this, Parent));
+                trapFile.parent_namespace_declaration(this, Parent);
             }
         }
 
