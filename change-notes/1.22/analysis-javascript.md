@@ -2,7 +2,7 @@
 
 ## General improvements
 
-* Automatic classification of test files has been improved, in particular `__tests__` and `__mocks__` folders (as used by [Jest](https://jestjs.io)) are now recognized.
+* Automatic classification of test files has been improved, in particular `__tests__` and `__mocks__` folders (as used, for example, by [Jest](https://jestjs.io)) are now recognized.
 
 * Support for the following frameworks and libraries has been improved:
   - [cross-spawn](https://www.npmjs.com/package/cross-spawn)
