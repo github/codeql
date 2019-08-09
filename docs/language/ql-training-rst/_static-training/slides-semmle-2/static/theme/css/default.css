@@ -1386,7 +1386,7 @@ em {
 /* James slide backgrounds */
 
 .title-slide {
-  background-image: url("../../semmle-template.svg");
+  background-image: url("../../title-slide.svg");
   background-size: cover;
 }
 
@@ -1405,7 +1405,7 @@ slide {
 } 
 
 .background2 {  
-  background-image: url("../../not-normal-slide.svg");
+  background-image: url("../../alternative-slide.svg");
   background-size: cover;
 }
 
