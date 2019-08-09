@@ -365,3 +365,81 @@ class DynamicallyCreatedClass extends ClassObjectInternal, TDynamicClass {
 
 }
 
+class SubscriptedTypeInternal extends ObjectInternal, TSubscriptedType {
+
+    ObjectInternal getGeneric() {
+        this = TSubscriptedType(result, _)
+    }
+
+    ObjectInternal getSpecializer() {
+        this = TSubscriptedType(_, result)
+    }
+
+    override string getName() { result = this.getGeneric().getName() }
+
+    override string toString() { result = this.getGeneric().toString() + "[" + this.getSpecializer().toString() + "]" }
+
+    override predicate introducedAt(ControlFlowNode node, PointsToContext context) {
+        exists(ObjectInternal generic, ObjectInternal index |
+            this = TSubscriptedType(generic, index) and
+            Expressions::subscriptPartsPointsTo(node, context, generic, index)
+        )
+    }
+
+    /** Gets the class declaration for this object, if it is a class with a declaration. */
+    override ClassDecl getClassDeclaration() {
+        result = this.getGeneric().getClassDeclaration()
+    }
+
+    /** True if this "object" is a class. That is, its class inherits from `type` */
+    override boolean isClass() { result = true }
+
+    override ObjectInternal getClass() {
+        result = this.getGeneric().getClass()
+    }
+
+    override predicate notTestableForEquality() { none() }
+
+    override Builtin getBuiltin() { none() }
+
+    override ControlFlowNode getOrigin() { none() }
+
+    override predicate callResult(ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) { none() }
+
+    override predicate calleeAndOffset(Function scope, int paramOffset){ none() }
+
+    override predicate attribute(string name, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate attributesUnknown() { none() }
+
+    override boolean isDescriptor() { result = false }
+
+    override predicate descriptorGetClass(ObjectInternal cls, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
+
+    override predicate binds(ObjectInternal instance, string name, ObjectInternal descriptor) { none() }
+
+    override int length() { none() }
+
+    override boolean booleanValue() { result = true }
+
+    override int intValue() { none()}
+
+    override string strValue() { none() }
+
+    override predicate subscriptUnknown() { none() }
+
+    override predicate contextSensitiveCallee() { none() }
+
+    override predicate useOriginAsLegacyObject() { none() }
+
+    /* Classes aren't usually iterable, but can e.g. Enums */
+    override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
+
+}
+
+
+

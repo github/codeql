@@ -322,7 +322,11 @@ class ClassValue extends Value {
 
     /** Gets an improper super type of this class. */
     ClassValue getASuperType() {
-        result = Types::getMro(this).getAnItem()
+        result = this.getBaseType(_)
+        or
+        result = this.getASuperType().getBaseType(_)
+        or
+        result = this
     }
 
     /** Looks up the attribute `name` on this class.
