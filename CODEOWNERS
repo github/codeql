@@ -3,3 +3,8 @@
 /javascript/ @Semmle/js
 /cpp/ @Semmle/cpp-analysis
 /cpp/**/*.qhelp @semmledocs-ac
+/csharp/**/*.qhelp @jf205
+/java/**/*.qhelp @felicity-semmle
+/javascript/**/*.qhelp @mc-semmle
+/python/**/*.qhelp @felicity-semmle
+/docs/language/ @felicity-semmle @jf205
