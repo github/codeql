@@ -164,10 +164,18 @@ abstract class NonLocalJumpNode extends Node {
   abstract Node getAJumpSuccessor(boolean preservesValue);
 }
 
-/** A guard that validates some expression. */
+/**
+ * A guard that validates some expression.
+ *
+ * To use this in a configuration, extend the class and provide a
+ * characteristic predicate precisely specifying the guard, and override
+ * `checks` to specify what is being validated and in which branch.
+ *
+ * It is important that all extending classes in scope are disjoint.
+ */
 class BarrierGuard extends Internal::Guard {
-  /** Holds if this guard validates `e` upon evaluating to `v`. */
-  abstract predicate checks(Expr e, AbstractValue v);
+  /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `v`. */
+  abstract deprecated predicate checks(Expr e, AbstractValue v);
 
   /** Gets a node guarded by this. */
   final Node getAGuardedNode() {
