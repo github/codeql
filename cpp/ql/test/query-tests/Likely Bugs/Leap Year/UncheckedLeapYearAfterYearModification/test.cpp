@@ -445,7 +445,7 @@ void CorrectPattern_check4()
 	if (fixDate(st.wDay, st.wMonth, st.wYear))
 	{
 		// move back a day when landing on Feb 29 in an non-leap year
-		st.wDay = 28;
+		st.wDay = 28; // GOOD [FALSE POSITIVE]
 	}
 
 	// Safe to use
@@ -715,9 +715,9 @@ void modified3()
 
 	GetSystemTime(&st);
 
-	st.wYear = st.wYear + 1;
+	st.wYear = st.wYear + 1; // BAD
 
-	SystemTimeToFileTime(&st, &ft); // BAD
+	SystemTimeToFileTime(&st, &ft);
 }
 
 void modified4()
@@ -728,9 +728,9 @@ void modified4()
 
 	GetSystemTime(&st);
 
-	st.wYear++;
-	st.wYear++;
-	st.wYear++;
+	st.wYear++; // BAD
+	st.wYear++; // BAD
+	st.wYear++; // BAD
 
-	SystemTimeToFileTime(&st, &ft); // BAD
+	SystemTimeToFileTime(&st, &ft);
 }
