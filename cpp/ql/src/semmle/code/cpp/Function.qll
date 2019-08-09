@@ -11,8 +11,7 @@ private import semmle.code.cpp.internal.ResolveClass
  * A C/C++ function [N4140 8.3.5]. Both member functions and non-member
  * functions are included. For example the function `MyFunction` in:
  * ```
- * void MyFunction()
- * {
+ * void MyFunction() {
  *   DoSomething();
  * }
  * ```
@@ -509,8 +508,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
  * ```
  * void MyFunction();
  *
- * void MyFunction()
- * {
+ * void MyFunction() {
  *   DoSomething();
  * }
  * ```
@@ -722,16 +720,13 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
  * class). For example the in the following code, `MyFunction` is a
  * `TopLevelFunction` but `MyMemberFunction` is not:
  * ```
- * void MyFunction()
- * {
+ * void MyFunction() {
  *   DoSomething();
  * }
  *
- * class MyClass
- * {
+ * class MyClass {
  * public:
- *   void MyMemberFunction()
- *   {
+ *   void MyMemberFunction() {
  *     DoSomething();
  *   }
  * };
@@ -750,16 +745,13 @@ class TopLevelFunction extends Function {
  * static member functions. For example the functions `MyStaticMemberFunction`
  * and `MyMemberFunction` in:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
- *   void MyMemberFunction()
- *   {
+ *   void MyMemberFunction() {
  *     DoSomething();
  *   }
  *
- *   static void MyStaticMemberFunction()
- *   {
+ *   static void MyStaticMemberFunction() {
  *     DoSomething();
  *   }
  * };
@@ -822,17 +814,14 @@ class MemberFunction extends Function {
  * `myVirtualFunction` in the following code are each a
  * `VirtualFunction`:
  * ```
- * class A
- * {
+ * class A {
  * public:
  *   virtual void myVirtualFunction() = 0;
  * };
  *
- * class B: public A
- * {
+ * class B: public A {
  * public:
- *   virtual void myVirtualFunction()
- *   {
+ *   virtual void myVirtualFunction() {
  *     doSomething();
  *   }
  * };
@@ -860,17 +849,14 @@ class VirtualFunction extends MemberFunction {
  * A C++ pure virtual function [N4140 10.4]. For example the first function
  * called `myVirtualFunction` in the following code:
  * ```
- * class A
- * {
+ * class A {
  * public:
  *   virtual void myVirtualFunction() = 0;
  * };
  *
- * class B: public A
- * {
+ * class B: public A {
  * public:
- *   virtual void myVirtualFunction()
- *   {
+ *   virtual void myVirtualFunction() {
  *     doSomething();
  *   }
  * };
@@ -888,12 +874,10 @@ class PureVirtualFunction extends VirtualFunction {
  * `const` specifier and does not modify the state of its class. For example
  * the member function `day` in the following code:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  *   ...
  * 
- *   int day() const
- *   {
+ *   int day() const {
  *     return d;
  *   }
  *
@@ -912,11 +896,9 @@ class ConstMemberFunction extends MemberFunction {
  * A C++ constructor [N4140 12.1]. For example the function `MyClass` in the
  * following code is a constructor:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
- *   MyClass()
- *   {
+ *   MyClass() {
  *     ...
  *   }
  * };
@@ -971,11 +953,9 @@ abstract class ImplicitConversionFunction extends MemberFunction {
  * A C++ constructor that also defines an implicit conversion. For example the
  * function `MyClass` in the following code is a `ConversionConstructor`:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
- *   MyClass(const MyOtherClass &from)
- *   {
+ *   MyClass(const MyOtherClass &from) {
  *     ...
  *   }
  * };
@@ -1018,11 +998,9 @@ private predicate hasMoveSignature(MemberFunction f) {
  * A C++ copy constructor [N4140 12.8]. For example the function `MyClass` in
  * the following code is a `CopyConstructor`:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
- *   MyClass(const MyClass &from)
- *   {
+ *   MyClass(const MyClass &from) {
  *     ...
  *   }
  * };
@@ -1079,11 +1057,9 @@ class CopyConstructor extends Constructor {
  * A C++ move constructor [N4140 12.8]. For example the function `MyClass` in
  * the following code is a `MoveConstructor`:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
- *   MyClass(const MyClass &&from)
- *   {
+ *   MyClass(const MyClass &&from) {
  *     ...
  *   }
  * };
@@ -1142,11 +1118,9 @@ class MoveConstructor extends Constructor {
  * example the function `MyClass` in the following code is a
  * `NoArgConstructor`:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
- *   MyClass()
- *   {
+ *   MyClass() {
  *     ...
  *   }
  * };
@@ -1162,11 +1136,9 @@ class NoArgConstructor extends Constructor {
  * A C++ destructor [N4140 12.4]. For example the function `~MyClass` in the
  * following code is a destructor:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
- *   ~MyClass()
- *   {
+ *   ~MyClass() {
  *     ...
  *   }
  * };
@@ -1199,8 +1171,7 @@ class Destructor extends MemberFunction {
  * A C++ conversion operator [N4140 12.3.2]. For example the function
  * `operator int` in the following code is a `ConversionOperator`:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
  *   operator int();
  * };
@@ -1232,8 +1203,7 @@ class Operator extends Function {
  * A C++ copy assignment operator [N4140 12.8]. For example the function
  * `operator=` in the following code is a `CopyAssignmentOperator`:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
  *   MyClass &operator=(const MyClass &other);
  * };
@@ -1264,8 +1234,7 @@ class CopyAssignmentOperator extends Operator {
  * A C++ move assignment operator [N4140 12.8]. For example the function
  * `operator=` in the following code is a `MoveAssignmentOperator`:
  * ```
- * class MyClass
- * {
+ * class MyClass {
  * public:
  *   MyClass &operator=(const MyClass &&other);
  * };
@@ -1293,8 +1262,7 @@ class MoveAssignmentOperator extends Operator {
  * the function `myTemplateFunction` in the following code:
  * ```
  * template<class T>
- * void myTemplateFunction(T t)
- * {
+ * void myTemplateFunction(T t) {
  *   ...
  * }
  * ```
@@ -1339,13 +1307,11 @@ class TemplateFunction extends Function {
  * the instantiation `myTemplateFunction<int>` in the following code:
  * ```
  * template<class T>
- * void myTemplateFunction(T t)
- * {
+ * void myTemplateFunction(T t) {
  *   ...
  * }
  *
- * void caller(int i)
- * {
+ * void caller(int i) {
  *   myTemplateFunction<int>(i);
  * }
  * ```
@@ -1374,14 +1340,12 @@ class FunctionTemplateInstantiation extends Function {
  * function `myTemplateFunction<int>` in the following code:
  * ```
  * template<class T>
- * void myTemplateFunction(T t)
- * {
+ * void myTemplateFunction(T t) {
  *   ...
  * }
  *
  * template<>
- * void myTemplateFunction<int>(int i)
- * {
+ * void myTemplateFunction<int>(int i) {
  *   ...
  * }
  * ```
