@@ -19,7 +19,7 @@ Follow the steps below to help other users understand what your query does, and 
 
 3. **Make sure your query has the correct metadata**
 
-   Query metadata is used by Semmle's analysis to idenitfy your query and make sure the query results are displayed properly. 
+   Query metadata is used by Semmle's analysis to identify your query and make sure the query results are displayed properly. 
    The most important metadata to include are the `@name`, `@description`, and the `@kind`.
    Other metadata properties (`@precision`, `@severity`, and `@tags`) are usually added after the query has been reviewed by Semmle staff.
    For more information on writing query metadata, see the [Query metadata style guide](https://github.com/Semmle/ql/blob/master/docs/query-metadata-style-guide.md).
@@ -29,7 +29,7 @@ Follow the steps below to help other users understand what your query does, and 
    The `select` statement of your query must be compatible with the query type (determined by the `@kind` metadata property) for alert or path results to be displayed correctly in LGTM and QL for Eclipse.
    For more information on `select` statement format, see [Introduction to query files](https://help.semmle.com/QL/learn-ql/writing-queries/introduction-to-queries.html#select-clause) on help.semmle.com.
 
-5. **Save your query in a `.ql` file in correct language directory in the this repository**
+5. **Save your query in a `.ql` file in correct language directory in this repository**
 
    There are five language-specific directories in this repository:
    
