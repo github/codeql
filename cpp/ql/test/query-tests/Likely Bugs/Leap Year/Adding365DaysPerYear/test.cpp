@@ -171,7 +171,7 @@ void antipattern2()
 
 	// copy back to a FILETIME
 	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // BAD
-	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32);
+	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // BAD
 
 	// convert back to SYSTEMTIME for display or other usage
 	FileTimeToSystemTime(&ft, &st);
@@ -215,7 +215,7 @@ void checkedExample()
 
 	// copy back to a FILETIME
 	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // GOOD [FALSE POSITIVE]
-	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32);
+	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // GOOD [FALSE POSITIVE]
 
 	// convert back to SYSTEMTIME for display or other usage
 	if (FileTimeToSystemTime(&ft, &st) == 0)
