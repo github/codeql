@@ -4,6 +4,10 @@
 Introduction to variant analysis for C/C++
 ==========================================
 
+.. container:: semmle-logo
+
+   Semmle :sup:`TM`
+
 Information
 ===========
 

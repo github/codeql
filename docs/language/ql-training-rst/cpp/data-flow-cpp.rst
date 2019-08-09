@@ -1,6 +1,10 @@
 Introduction to data flow
 =========================
 
+.. container:: semmle-logo
+
+   Semmle :sup:`TM`
+
 Finding string formatting vulnerabilities in C/C++
 
 Getting started and setting up

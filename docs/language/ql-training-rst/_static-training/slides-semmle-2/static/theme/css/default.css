@@ -1412,6 +1412,25 @@ slide {
 .agenda-slide h1 {
   padding:0;
 }
+
+/* Title slide styles */
+
+.semmle-logo sup {
+  vertical-align: super;
+  font-size: 0.4em;
+}
+
+.title-slide .semmle-logo {
+  color: white;
+  font-size: 1.2em;
+  position: absolute;
+  top: 125px;
+}
+
+.title-slide p {
+  color: white;
+  font-size: 1.2em;
+}
 /* James column experiments */
 
 .column-left {
@@ -1426,12 +1445,10 @@ slide {
   padding: 0px;
   width: 45%;
   line-height: 1.2em;
-  height: 500px;
 }
 
 .column-right img,  .column-left img {
-  max-height: -webkit-fill-available;
-  padding-bottom: 15%;
+  max-height: 60vh;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -1479,11 +1496,15 @@ p.first.admonition-title {
   margin-bottom: 10px;
 }
 
-.admonition.note .highlight-ql.notranslate {
+.admonition.note .notranslate {
   width: 100%;
 }
 
 .admonition.note > p {
+  width: inherit;
+}
+
+.admonition.note  ul {
   width: inherit;
 }
 
@@ -1578,9 +1599,29 @@ img {
   pre, code {
     font-family: monospace !important;
   }
+
+  /* make notes appear on slides for print view*/
+
+  .note {
+    position: unset;
+  }
+  
+  /* make fonts smaller */
+
+  html {
+    font-size: 45%;
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* don't display slide number */
+  slides > slide:not(.nobackground):after {
+    display: none;
+  }
+  
 }
 
-@media (max-width: 480px) { 
+@media screen and (max-width: 480px) { 
   html {
     height: 100%;
     overflow: auto;
@@ -1599,10 +1640,6 @@ img {
     height: auto;
   }
 
-  /*img {
-    transform: scale(0.6) translate(-20%, 0);
-  }*/
-
   article {
     top: 20%;
     left: 10%;
@@ -1610,7 +1647,8 @@ img {
   }
 }
 
-@media (min-width: 481px) and (max-width: 1024px) { 
+
+@media screen and (min-width: 481px) and (max-width: 1024px) { 
   html {
     height: 100%;
     overflow: auto;
@@ -1629,12 +1667,9 @@ img {
     height: auto;
   }
 
-  img {
-    transform: scale(0.75)
-  }
 }
 
-@media (min-width: 1025px) and (max-width: 1800px) { 
+@media screen and (min-width: 1025px) and (max-width: 1800px) { 
   html {
     height: 100%;
     overflow: auto;

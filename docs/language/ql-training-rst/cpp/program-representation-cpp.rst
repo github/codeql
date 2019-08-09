@@ -3,6 +3,10 @@ QL for C/C++
 
 Program representation
 
+.. container:: semmle-logo
+
+   Semmle :sup:`TM`
+
 Agenda
 ======
 

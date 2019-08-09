@@ -1,6 +1,10 @@
 Introduction to global data flow
 ================================
 
+.. container:: semmle-logo
+
+   Semmle :sup:`TM`
+   
 Getting started and setting up
 ==============================
 

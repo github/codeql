@@ -4,6 +4,10 @@
 Introduction to variant analysis for Java
 =========================================
 
+.. container:: semmle-logo
+
+   Semmle :sup:`TM`
+
 Information
 ===========
 

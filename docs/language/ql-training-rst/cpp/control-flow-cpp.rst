@@ -1,6 +1,10 @@
 Analyzing control flow for C/C++
 ================================
 
+.. container:: semmle-logo
+
+   Semmle :sup:`TM`
+   
 Getting started and setting up
 ==============================
 

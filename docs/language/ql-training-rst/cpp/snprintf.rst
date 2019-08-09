@@ -1,6 +1,10 @@
 Exercise: ``snprintf`` overflow
 ===============================
 
+.. container:: semmle-logo
+
+   Semmle :sup:`TM`
+
 Getting started and setting up
 ==============================
 
