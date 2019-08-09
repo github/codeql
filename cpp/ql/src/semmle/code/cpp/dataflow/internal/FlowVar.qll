@@ -603,10 +603,14 @@ module FlowVar_internal {
   }
 
   /**
-   * Holds if `v` is modified as a side effect of evaluating `node`, receiving a
-   * value best described by `e`. This corresponds to `FlowVar::definedByExpr`,
-   * except that the case where `node instanceof Initializer` is covered by
-   * `initializer` instead of this predicate.
+   * Holds if `v` is modified through `va` as a side effect of evaluating
+   * `node`, receiving a value best described by `assignedExpr`.
+   * Assignment-like operations are those that desugar to a non-overloaded `=`
+   * assignment: `=`, `+=`, `++`, `--`, etc.
+   *
+   * This corresponds to `FlowVar::definedByExpr`, except that the case where
+   * `node instanceof Initializer` is covered by `initializer` instead of this
+   * predicate.
    */
   predicate assignmentLikeOperation(
     ControlFlowNode node, Variable v, VariableAccess va, Expr assignedExpr
