@@ -125,7 +125,7 @@ class Definition extends TPreSsaDef {
 
   Definition getAnUltimateDefinition() {
     result = this.getAPhiInput*() and
-    not this = TPhiPreSsaDef(_, _)
+    not result = TPhiPreSsaDef(_, _)
   }
 }
 
