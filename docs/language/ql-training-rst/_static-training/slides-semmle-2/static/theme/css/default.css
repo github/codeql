@@ -480,6 +480,7 @@ ul {
 ul li {
   margin-bottom: 0.5em;
   color: #2c2a8a;
+   line-height: 1.3em;
 }
 /* line 303, ../scss/default.scss */
 ul li ul {
@@ -494,9 +495,10 @@ ul li ul li:before {
 /* line 314, ../scss/default.scss */
 ul > li:before {
   content: '\00B7';
-  margin-left: -1em;
+  margin-left: -0.5em;
   position: absolute;
   font-weight: 600;
+  font-size: 2em;
 }
 /* line 321, ../scss/default.scss */
 ul ul {
@@ -1415,16 +1417,8 @@ slide {
   background-size: cover;
 }
 
-.agenda-slide h1 {
-  padding:0;
-}
 
-.background2 h1, .background2 p {
-  color: white;
-}
-
-
-/* Title slide styles */
+/* Custom slide styles */
 
 .semmle-logo sup {
   vertical-align: super;
@@ -1442,6 +1436,23 @@ slide {
   color: white;
   font-size: 1.2em;
 }
+
+.agenda-slide h1 {
+  padding:0;
+}
+
+.background2 h1, .background2 p {
+  color: white;
+}
+
+hgroup .pre {
+  color: #5c31ff;
+}
+
+.title-slide hgroup .pre {
+  color: white;
+}
+
 /* James column experiments */
 
 .column-left {

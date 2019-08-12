@@ -7,30 +7,22 @@ Introduction to data flow
 
 Finding string formatting vulnerabilities in C/C++
 
-Getting started and setting up
-==============================
+.. Include information slides here
 
-To try the examples in this presentation you should download:
+.. include:: ../slide-snippets/info.rst
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-- Snapshot: `dotnet/coreclr <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__
+QL snapshot
+===========
 
-More resources:
+For the examples in this presentation, we will be analyzing `dotnet/coreclr <https://github.com/dotnet/coreclr>`__.
 
-- To learn more about the main features of QL, try looking at the `QL language handbook <https://help.semmle.com/QL/ql-handbook/>`__.
-- For further information about writing queries in QL, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html>`__.
+We recommend you download `this historic snapshot <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__ to analyze in QL for Eclipse.
+
+Alternatively, you can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
 
 .. note::
 
-  To run the queries featured in this training presentation, we recommend you download the free-to-use `QL for Eclipse plugin <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/getting-started.html>`__.
-
-  This plugin allows you to locally access the latest features of QL, including the standard QL libraries and queries. It also provides standard IDE features such as syntax highlighting, jump-to-definition, and tab completion.
-
-  A good project to start analyzing is `ChakraCore <https://github.com/dotnet/coreclr>`__–a suitable snapshot to query is available by visiting the link on the slide.
-
-  Alternatively, you can query any project (including ChakraCore) in the  `query console on LGTM.com <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__. 
-
-  Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
 Agenda
 ======
@@ -68,7 +60,7 @@ Let’s write a query to identify instances of `CWE-134 <https://cwe.mitre.org/d
 
   In this case, we have one more format specifier than we have arguments. In a managed language such as Java or C#, this simply leads to a runtime exception. However, in C/C++, the formatting functions are typically implemented by reading values from the stack without any validation of the number of arguments. This means a mismatch in the number of format specifiers and format arguments can lead to information disclosure.
 
-  Of course, in practice this happens rarely with *constant* formatting strings. Instead, it’s most problematic when the formatting string can be specified by the user, allowing an attacker to provide a formatting string with the wrong number of format specifiers. Furthermore, if an attacker can control the format string, they may be able to provide the %n format specifier, which causes ``printf`` to write the number characters in the generated output string to a specified location.
+  Of course, in practice this happens rarely with *constant* formatting strings. Instead, it’s most problematic when the formatting string can be specified by the user, allowing an attacker to provide a formatting string with the wrong number of format specifiers. Furthermore, if an attacker can control the format string, they may be able to provide the ``%n`` format specifier, which causes ``printf`` to write the number characters in the generated output string to a specified location.
 
   See https://en.wikipedia.org/wiki/Uncontrolled_format_string for more background.
 
@@ -107,16 +99,16 @@ We need something better.
 
   .. code-block:: cpp
 
-    const char *format = align == AlignLeft ? "%-*.*s" : "%*.*s";
-
-     if (IsDMLEnabled())
-         DMLOut(format, width, precision, mValue);
-     else
-         ExtOut(format, width, precision, mValue);
+          const char *format = align == AlignLeft ? "%-*.*s" : "%*.*s";
+      
+                if (IsDMLEnabled())
+                    DMLOut(format, width, precision, mValue);
+                else
+                    ExtOut(format, width, precision, mValue);
 
   Here, ``DMLOut`` and ``ExtOut`` are macros that expand to formatting calls. The format specifier is not constant, in the sense that the format argument is not a string literal. However, it is clearly one of two possible constants, both with the same number of format specifiers.
 
-  What we need is a way to determine whether the format argument is ever set to something that is not constant.
+  What we need is a way to determine whether the format argument is ever set to something that is, not constant.
 
 Data flow analysis
 ==================
@@ -124,9 +116,12 @@ Data flow analysis
 - Models flow of data through the program.
 - Implemented in the module ``semmle.code.cpp.dataflow.DataFlow``.
 - Class ``DataFlow::Node`` represents program elements that have a value, such as expressions and function parameters.
+
   - Nodes of the data flow graph.
+
 - Various predicated represent flow between these nodes.
-  Edges of the data flow graph.
+  
+  - Edges of the data flow graph.
 
 .. note::
 
@@ -183,8 +178,7 @@ Local vs global data flow
 - Local (“intra-procedural”) data flow models flow within one function; feasible to compute for all functions in a snapshot
 - Global (“inter-procedural”) data flow models flow across function calls; not feasible to compute for all functions in a snapshot
 - Different APIs, so discussed separately
-
-This slide deck focuses on the former.
+- This slide deck focuses on the former.
 
 .. note::
 
@@ -212,14 +206,14 @@ To use the data flow library, add the following import:
 .. code-block:: ql
 
    module DataFlow {
-     class Node extends … { … }
+     class Node extends ... { ... }
      predicate localFlow(Node source, Node sink) {
                localFlowStep*(source, sink)
             }
-     … 
+     ... 
    }
 
-So all references will need to be qualified (that is ``DataFlow::Node``)
+So all references will need to be qualified (that is, ``DataFlow::Node``)
 
 .. note::
 
@@ -248,7 +242,7 @@ Data flow graph
 
   The ``DataFlow::Node`` class is shared between both the local and global data flow graphs–the primary difference is the edges, which in the “global” case can link different functions.
 
-  ``localFlowStep`` is the “single step” flow relation–that is it describes single edges in the local data flow graph. ``localFlow`` represents the `transitive <https://help.semmle.com/QL/ql-handbook/recursion.html#transitive-closures>`__ closure of this relation–in other words, it contains every pair of nodes where the second node is reachable from the first in the data flow graph.
+  ``localFlowStep`` is the “single step” flow relation–that is, it describes single edges in the local data flow graph. ``localFlow`` represents the `transitive <https://help.semmle.com/QL/ql-handbook/recursion.html#transitive-closures>`__ closure of this relation–in other words, it contains every pair of nodes where the second node is reachable from the first in the data flow graph.
 
   The data flow graph is separate from the `AST <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`__, to allow for flexibility in how data flow is modeled. There are a small number of data flow node types–expression nodes, parameter nodes, uninitialized variable nodes, and definition by reference nodes. Each node provides mapping functions to and from the relevant AST (for example ``Expr``, ``Parameter`` etc.) or symbol table (for example ``Variable``) classes.
 
@@ -306,7 +300,7 @@ Define a subclass of ``DataFlow::Node`` representing “source” nodes, that is
 Revisiting non-constant format strings
 ======================================
 
-Refine the query to find calls to ``printf``-like functions where the format argument derives from a local source that is not a constant string.
+Refine the query to find calls to ``printf``-like functions where the format argument derives from a local source that is, not a constant string.
 
 .. rst-class:: build
 
@@ -320,6 +314,7 @@ Audit the results and apply any refinements you deem necessary.
 Suggestions:
 
 - Replace ``DataFlow::localFlowStep`` with a custom predicate that includes steps through global variable definitions.
+
   **Hint**: Use class ``GlobalVariable`` and its member predicates ``getAnAssignedValue()`` and ``getAnAccess()``.
 
 - Exclude calls in wrapper functions that just forward their format argument to another ``printf``-like function; instead, flag calls to those functions.

@@ -4,30 +4,24 @@ Introduction to global data flow
 .. container:: semmle-logo
 
    Semmle :sup:`TM`
+
+.. Include information slides here
+
+.. include:: ../slide-snippets/info.rst
    
-Getting started and setting up
-==============================
+QL snapshot
+===========
 
-To try the examples in this presentation you should download:
+For the examples in this presentation, we will be analyzing `dotnet/coreclr <https://github.com/dotnet/coreclr>`__.
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-- Snapshot: `dotnet/coreclr <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__
+We recommend you download `this historic snapshot <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__ to analyze in QL for Eclipse.
 
-More resources:
-- To learn more about the main features of QL, try looking at the `QL language handbook <https://help.semmle.com/QL/ql-handbook/>`__.
-- For further information about writing queries in QL, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html>`__.
+Alternatively, you can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
 
 .. note::
 
-  To run the queries featured in this training presentation, we recommend you download the free-to-use `QL for Eclipse plugin <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/getting-started.html>`__.
+   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
-  This plugin allows you to locally access the latest features of QL, including the standard QL libraries and queries. It also provides standard IDE features such as syntax highlighting, jump-to-definition, and tab completion.
-
-  A good project to start analyzing is `ChakraCore <https://github.com/dotnet/coreclr>`__–a suitable snapshot to query is available by visiting the link on the slide.
-
-  Alternatively, you can query any project (including ChakraCore) in the  `query console on LGTM.com <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__. 
-
-  Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
 Agenda
 ======
@@ -41,7 +35,8 @@ Information flow
 ================
 
 - Many security problems can be phrased as an information flow problem:
-  “Given a (problem-specific) set of sources and sinks, is there a path in the data flow graph from some source to some sink?”
+
+  Given a (problem-specific) set of sources and sinks, is there a path in the data flow graph from some source to some sink?
 
 - Some examples:
 
@@ -78,8 +73,8 @@ The ``semmle.code.cpp.dataflow.TaintTracking`` library provides a framework for 
     
        class Config extends TaintTracking::Configuration {
          Config() { this = "<some unique identifier>" }
-         override predicate isSource(DataFlow::Node nd) { … }
-         override predicate isSink(DataFlow::Node nd) { … }
+         override predicate isSource(DataFlow::Node nd) { ... }
+         override predicate isSink(DataFlow::Node nd) { ... }
        }
 
   #. Use ``Config.hasFlow(source, sink)`` to find inter-procedural paths.
@@ -96,7 +91,7 @@ Finding tainted format strings (outline)
 
 .. note::
 
-  Here’s the outline for a inter-procedural (that is “global”) version of the tainted formatting strings query we saw in the previous slide deck. The same template will be applicable for most taint tracking problems.
+  Here’s the outline for a inter-procedural (that is, “global”) version of the tainted formatting strings query we saw in the previous slide deck. The same template will be applicable for most taint tracking problems.
 
 Defining sources
 ================
@@ -113,7 +108,7 @@ The library class ``SecurityOptions`` provides a (configurable) model of what co
         opts.isUserInput(source.asExpr(), _)
       )
     }
-    …
+    ...
   }
 
 .. note::
@@ -124,7 +119,7 @@ The library class ``SecurityOptions`` provides a (configurable) model of what co
 Defining sinks (exercise)
 =========================
 
-Use the ``FormattingFunction`` class to fill in the definition of “isSink”
+Use the ``FormattingFunction`` class to fill in the definition of ``isSink``.
 
 .. code-block:: ql
 
@@ -134,7 +129,7 @@ Use the ``FormattingFunction`` class to fill in the definition of “isSink”
     override predicate isSink(DataFlow::Node sink) {
       /* Fill me in */
     }
-    …
+    ...
   }
 
 .. note::
@@ -151,13 +146,13 @@ Use the ``FormattingFunction`` class to fill in the definition of “isSink”
   import semmle.code.cpp.security.Security
 
   class TaintedFormatConfig extends TaintTracking::Configuration {
-    override predicate isSink(DataFlow:::Node sink) {
+    override predicate isSink(DataFlow::Node sink) {
       exists (FormattingFunction ff, Call c |
         c.getTarget() = ff and
         c.getArgument(ff.getFormatParameterIndex()) = sink.asExpr()
       )
     }
-    …
+    ...
   }
 
 .. note::
@@ -174,13 +169,13 @@ Use this template:
 .. code-block:: ql
 
    /**
-    * … 
+    * ... 
     * @kind path-problem
     */
    
    import semmle.code.cpp.dataflow.TaintTracking
    import DataFlow::PathGraph
-   …
+   ...
    from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
    where cfg.hasFlowPath(source, sink)
    select sink, source, sink, "<message>"
@@ -207,7 +202,7 @@ Add an additional taint step that (heuristically) taints a local variable if it 
         succ.asUninitialized() = lv
       )
     }
-    …
+    ...
   }
 
 Defining sanitizers
@@ -224,7 +219,7 @@ Add a sanitizer, stopping propagation at parameters of formatting functions, to 
         nd = DataFlow::parameterNode(ff.getParameter(idx))
       )
     }
-    …
+    ...
   }
 
 Data flow models
@@ -234,14 +229,18 @@ Data flow models
 
 - Example: model of taint flow from third to first parameter of ``memcpy``
 
-.. code-block:: ql
+   .. code-block:: ql
+   
+     class MemcpyFunction extends TaintFunction {
+           MemcpyFunction() { this.hasName("memcpy") }
+           override predicate hasTaintFlow(FunctionInput i,    FunctionOutput o) 
+               i.isInParameter(2) and o.isOutParameterPointer(0)
+           }
+       }
+   
+.. note::
 
-  class MemcpyFunction extends TaintFunction {
-        MemcpyFunction() { this.hasName("memcpy") }
-        override predicate hasTaintFlow(FunctionInput i, FunctionOutput o) 
-            i.isInParameter(2) and o.isOutParameterPointer(0)
-        }
-    }
+  See the API documentation for more details about ``FunctionInput`` and ``FunctionOutput``.
 
 .. rst-class:: end-slide
 

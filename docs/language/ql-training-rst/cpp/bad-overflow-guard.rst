@@ -5,32 +5,22 @@ Example: Bad overflow guard
 
    Semmle :sup:`TM`
 
+.. Include information slides here
 
-Getting started and setting up
-==============================
+.. include:: ../slide-snippets/info.rst
 
-To try the examples in this presentation you should download:
+QL snapshot
+===========
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-- Snapshot: `ChakraCore <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__
+For the examples in this presentation, we will be analyzing `ChakraCore <https://github.com/microsoft/ChakraCore>`__.
 
-More resources:
+We recommend you download `this historic snapshot <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__ to analyze in QL for Eclipse.
 
-- To learn more about the main features of QL, try looking at the `QL language handbook <https://help.semmle.com/QL/ql-handbook/>`__.
-- For further information about writing queries in QL, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html>`__.
+Alternatively, you can query the project in `the query console <https://lgtm.com/query/project:2034240708/lang:cpp/>`__ on LGTM.com.
 
 .. note::
 
-  To run the queries featured in this training presentation, we recommend you download the free-to-use `QL for Eclipse plugin <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/getting-started.html>`__.
-
-  This plugin allows you to locally access the latest features of QL, including the standard QL libraries and queries. It also provides standard IDE features such as syntax highlighting, jump-to-definition, and tab completion.
-
-  A good project to start analyzing is `ChakraCore <https://github.com/microsoft/ChakraCore>`__–a suitable snapshot to query is available by visiting the link on the slide.
-
-  Alternatively, you can query any project (including ChakraCore) in the  `query console on LGTM.com <https://lgtm.com/query/project:2034240708/lang:cpp/>`__. 
-
-  Note that results generated in the query console are likely to differ to those generated in the QL plugin. LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is for an historical version of the code base.
-
+   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
 Checking for overflow in C
 ==========================

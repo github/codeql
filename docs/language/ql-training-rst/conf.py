@@ -120,5 +120,7 @@ html_theme_options = {'font_size': '16px',
                       'nosidebar':True,
                       }
 
+# Exclude the slide snippets from the build
+exclude_patterns = ['slide-snippets']
 
 ##############################################################################

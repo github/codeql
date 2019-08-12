@@ -4,31 +4,23 @@ Analyzing control flow for C/C++
 .. container:: semmle-logo
 
    Semmle :sup:`TM`
-   
-Getting started and setting up
-==============================
 
-To try the examples in this presentation you should download:
+.. Include information slides here
 
-- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
-- Snapshot: `ChakraCore <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__
+.. include:: ../slide-snippets/info.rst
 
-More resources:
+QL snapshot
+===========
 
-- To learn more about the main features of QL, try looking at the `QL language handbook <https://help.semmle.com/QL/ql-handbook/>`__.
-- For further information about writing queries in QL, see `Writing QL queries <https://help.semmle.com/QL/learn-ql/ql/writing-queries/writing-queries.html>`__.
+For the examples in this presentation, we will be analyzing `ChakraCore <https://github.com/microsoft/ChakraCore>`__.
+
+We recommend you download `this historic snapshot <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__ to analyze in QL for Eclipse.
+
+Alternatively, you can query the project in `the query console <https://lgtm.com/query/project:2034240708/lang:cpp/>`__ on LGTM.com.
 
 .. note::
 
-  To run the queries featured in this training presentation, we recommend you download the free-to-use `QL for Eclipse plugin <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/getting-started.html>`__.
-
-  This plugin allows you to locally access the latest features of QL, including the standard QL libraries and queries. It also provides standard IDE features such as syntax highlighting, jump-to-definition, and tab completion.
-
-  A good project to start analyzing is `ChakraCore <https://github.com/microsoft/ChakraCore>`__–a suitable snapshot to query is available by visiting the link on the slide.
-
-  Alternatively, you can query any project (including ChakraCore) in the  `query console on LGTM.com <https://lgtm.com/query/project:2034240708/lang:cpp/>`__. 
-
-  Note that results generated in the query console are likely to differ to those generated in the QL plugin. LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
 Agenda
 ======
@@ -116,7 +108,7 @@ Find calls to free that are reachable from an allocation on the same variable:
 
 .. note::
 
-   Predicates allocationCall and freeCall are defined in the standard library and model a number of standard alloc/free-like functions.
+   Predicates ``allocationCall`` and ``freeCall`` are defined in the standard library and model a number of standard alloc/free-like functions.
 
 Exercise: use after free
 ========================
@@ -125,12 +117,12 @@ Based on this query, write a query that finds accesses to the variable that occu
 
 .. rst-class:: build
   
-- What do you find? What problems occur with this approach to detecting  use-after-free vulnerabilities?
+- What do you find? What problems occur with this approach to detecting use-after-free vulnerabilities?
 
 .. rst-class:: build
 
    .. literalinclude:: ../query-examples/cpp/control-flow-cpp-2.ql 
-         :language: ql
+      :language: ql
 
 Utilizing recursion
 ===================
@@ -300,7 +292,7 @@ Write a query that finds all calls to a field called ``error_exit``.
 
 .. code-block:: ql
 
-   class CallThroughVariable extends ExprCall { … }
+   class CallThroughVariable extends ExprCall { ... }
    
    class ErrorExitCall extends CallThroughVariable {
      override Field v;
@@ -322,7 +314,7 @@ Override ``ControlFlowNode`` to mark calls to ``error_exit`` as non-returning.
 
 .. code-block:: ql
 
-   class CallThroughVariable extends ExprCall { … }
+   class CallThroughVariable extends ExprCall { ... }
    
    class ErrorExitCall extends CallThroughVariable {
      override Field v;

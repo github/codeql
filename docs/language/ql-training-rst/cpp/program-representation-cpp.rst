@@ -7,6 +7,10 @@ Program representation
 
    Semmle :sup:`TM`
 
+.. Include information slides here
+
+.. include:: ../slide-snippets/info.rst
+
 Agenda
 ======
 
@@ -21,12 +25,38 @@ Abstract syntax trees
 
 The basic representation of an analyzed program is an *abstract syntax tree (AST)*.
 
-.. code-block:: cpp
+.. container:: column-left
 
-  try {
-      ...
-  } catch (AnException e) {
-  }
+   .. code-block:: cpp
+   
+     try {
+         ...
+     } catch (AnException e) {
+     }
+
+.. container:: column-right
+  
+   .. container:: image-box
+   
+      .. graphviz::
+         
+            digraph {
+            graph [ dpi = 1000 ]
+            node [shape=polygon,sides=4,color=blue4,style="filled,rounded",   fontname=consolas,fontcolor=white]
+            a [label=<TryStmt>]
+            b [label=<CatchBlock>]
+            c [label=<...>,color=white,fontcolor=black]
+            d [label=<Parameter>]
+            e [label=<...>,color=white,fontcolor=black]
+            f [label=<...>,color=white,fontcolor=black]
+            g [label=<...>,color=white,fontcolor=black]
+   
+            a -> {b, c}
+            b -> {d, e}
+            d -> {f, g}
+         }
+
+
 
 .. note::
 
@@ -47,11 +77,11 @@ Entity types are rarely used directly, the usual pattern is to define a QL class
 
 .. note::
 
-  ASTs are a typical example of the kind of data representation one finds in object-oriented programming, with data-carrying nodes that reference each other. At first glance, QL, which can only work with atomic values, does not seem to be well suited for working with this kind of data. However, ultimately all that we require of the nodes in an AST is that they have an identity. The relationships among nodes, usually implemented by reference-valued object fields in other languages, can just as well (and arguably more naturally) be represented as relations over nodes. Attaching data (such as strings or numbers) to nodes can also be represented with relations over nodes and primitive values. All we need is a way for relations to reference nodes. This is achieved in QL (as in other database languages) by means of entity values (or entities, for short), which are opaque atomic values, implemented as integers under the hood.
+  ASTs are a typical example of the kind of data representation one finds in object-oriented programming, with data-carrying nodes that reference each other. At first glance, QL, which can only work with atomic values, does not seem to be well suited for working with this kind of data. However, ultimately all that we require of the nodes in an AST is that they have an identity. The relationships among nodes, usually implemented by reference-valued object fields in other languages, can just as well (and arguably more naturally) be represented as relations over nodes. Attaching data (such as strings or numbers) to nodes can also be represented with relations over nodes and primitive values. All we need is a way for relations to reference nodes. This is achieved in QL (as in other database languages) by means of *entity values* (or entities, for short), which are opaque atomic values, implemented as integers under the hood.
 
-  It is the job of the extractor to create entity values for all AST nodes and populate database relations that encode the relationship between AST nodes and any values associated with them. These relations are extensional, that is, explicitly stored in the database, unlike the relations described by QL predicates, which we also refer to as intensional relations. Entity values belong to entity types, whose name starts with “@” to set them apart from primitive types and classes.
+  It is the job of the extractor to create entity values for all AST nodes and populate database relations that encode the relationship between AST nodes and any values associated with them. These relations are *extensional*, that is, explicitly stored in the database, unlike the relations described by QL predicates, which we also refer to as *intensional* relations. Entity values belong to *entity types*, whose name starts with “@” to set them apart from primitive types and classes.
 
-  The interface between entity types and extensional relations on the one hand and QL predicates and classes on the other hand is provided by the database schema, which defines the available entity types and the schema of each extensional relation, that is, how many columns the relation has, and which entity type or primitive type the values in each column come from. QL programs can refer to entity types and extensional relations just as they would refer to QL classes and predicates, with the restriction that entity types cannot be directly selected in a “select” clause, since they do not have a well-defined string representation.
+  The interface between entity types and extensional relations on the one hand and QL predicates and classes on the other hand is provided by the *database schema*, which defines the available entity types and the schema of each extensional relation, that is, how many columns the relation has, and which entity type or primitive type the values in each column come from. QL programs can refer to entity types and extensional relations just as they would refer to QL classes and predicates, with the restriction that entity types cannot be directly selected in a “select” clause, since they do not have a well-defined string representation.
 
   For example, the database schema for C++ snapshot databases is here: https://github.com/Semmle/ql/blob/master/cpp/ql/src/semmlecode.cpp.dbscheme 
 
@@ -60,11 +90,11 @@ AST QL classes
 
 Important AST classes include:
 
-- ``Expr``: expressions such as assignments, variable references, function calls, …
-- ``Stmt``: statements such as conditionals, loops, try statements, … 
+- ``Expr``: expressions such as assignments, variable references, function calls, ...
+- ``Stmt``: statements such as conditionals, loops, try statements, ... 
 - ``DeclarationEntry``: places where functions, variables or types are declared and/or defined
 
-These three (and all other AST classes) are subclasses of Element.
+These three (and all other AST classes) are subclasses of ``Element``.
 
 .. note::
 
@@ -155,4 +185,8 @@ is represented in the snapshot database as:
 
 - A ``MacroAccess`` entity, which associates the Macro with the ``MulExprs``
 
-Useful predicates on ``Element: isInMacroExpansion()``, ``isAffectedByMacro()``
+Useful predicates on ``Element``: ``isInMacroExpansion()``, ``isAffectedByMacro()``
+
+.. note::
+
+  The snapshot also contains information about macro definitions, which are represented by class ``Macro``. These macro definitions are related to the AST nodes resulting from their uses by the class ``MacroAccess``.
