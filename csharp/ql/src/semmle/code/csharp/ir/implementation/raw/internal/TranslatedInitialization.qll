@@ -319,175 +319,9 @@ class TranslatedObjectInitialization extends TranslatedInitialization,
   }
 }
 
-///**
-// * Gets the `TranslatedFieldInitialization` for field `field` within initializer
-// * list `initList`.
-// */
-//TranslatedFieldInitialization getTranslatedFieldInitialization(
-//  ObjectInitializer initList, Field field
-//) {
-//  result.getAST() = initList and result.getField() = field
-//}
-//
-//TranslatedFieldInitialization getTranslatedConstructorFieldInitialization(MemberInitializer init) {
-//  result.getAST() = init
-//}
-
-///**
-// * Represents the IR translation of the initialization of a field from an
-// * element of an initializer list.
-// */
-//abstract class TranslatedFieldInitialization extends TranslatedElement {
-//  Expr ast;
-//
-//  Field field;
-//
-//  final override string toString() { result = ast.toString() + "." + field.toString() }
-//
-//  final override Locatable getAST() { result = ast }
-//
-//  final override Callable getFunction() { result = ast.getEnclosingCallable() }
-//
-//  final override Instruction getFirstInstruction() { result = getInstruction(getFieldAddressTag()) }
-//
-//  /**
-//   * Gets the zero-based index describing the order in which this field is to be
-//   * initialized relative to the other fields in the class.
-//   */
-//  // TODO: Fix getOrder here
-//  final int getOrder() {
-//    result = field.getIndex()
-//  }
-//
-//  override predicate hasInstruction(
-//    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-//  ) {
-//    tag = getFieldAddressTag() and
-//    opcode instanceof Opcode::FieldAddress and
-//    resultType = field.getType() and
-//    isLValue = true
-//  }
-//
-//  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-//    tag = getFieldAddressTag() and
-//    operandTag instanceof UnaryOperandTag and
-//    result = getParent().(InitializationContext).getTargetAddress()
-//  }
-//
-//  override Field getInstructionField(InstructionTag tag) {
-//    tag = getFieldAddressTag() and result = field
-//  }
-//
-//  final InstructionTag getFieldAddressTag() { result = InitializerFieldAddressTag(field) }
-//
-//  final Field getField() { result = field }
-//}
-//
-///**
-// * Represents the IR translation of the initialization of a field from an
-// * explicit element in an initializer list.
-// */
-//class TranslatedExplicitFieldInitialization extends TranslatedFieldInitialization,
-//  InitializationContext, TTranslatedExplicitFieldInitialization {
-//  Expr expr;
-//
-//  TranslatedExplicitFieldInitialization() {
-//    this = TTranslatedExplicitFieldInitialization(ast, field, expr)
-//  }
-//
-//  override Instruction getTargetAddress() { result = getInstruction(getFieldAddressTag()) }
-//
-//  override Type getTargetType() { result = field.getType() }
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-//    tag = getFieldAddressTag() and
-//    result = getAssignment().getFirstInstruction() and
-//    kind instanceof GotoEdge
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getAssignment() and result = getParent().getChildSuccessor(this)
-//  }
-//
-//  override TranslatedElement getChild(int id) { id = 0 and result = getAssignment() }
-//
-//  private TranslatedExpr getAssignment() {
-//    result = getTranslatedExpr(expr)
-//  }
-//}
-
 private string getZeroValue(Type type) {
   if type instanceof FloatingPointType then result = "0.0" else result = "0"
 }
-
-/**
- * Represents the IR translation of the initialization of a field without a
- * corresponding element in the initializer list.
- */
-//class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
-//  TTranslatedFieldValueInitialization {
-//  TranslatedFieldValueInitialization() { this = TTranslatedFieldValueInitialization(ast, field) }
-//
-//  override predicate hasInstruction(
-//    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
-//  ) {
-//    TranslatedFieldInitialization.super.hasInstruction(opcode, tag, resultType, isLValue)
-//    or
-//    tag = getFieldDefaultValueTag() and
-//    opcode instanceof Opcode::Constant and
-//    resultType = field.getType() and
-//    isLValue = false
-//    or
-//    tag = getFieldDefaultValueStoreTag() and
-//    opcode instanceof Opcode::Store and
-//    resultType = field.getType() and
-//    isLValue = false
-//  }
-//
-//  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-//    kind instanceof GotoEdge and
-//    (
-//      tag = getFieldAddressTag() and
-//      result = getInstruction(getFieldDefaultValueTag())
-//      or
-//      tag = getFieldDefaultValueTag() and
-//      result = getInstruction(getFieldDefaultValueStoreTag())
-//      or
-//      tag = getFieldDefaultValueStoreTag() and
-//      result = getParent().getChildSuccessor(this)
-//    )
-//  }
-//
-//  override string getInstructionConstantValue(InstructionTag tag) {
-//    tag = getFieldDefaultValueTag() and
-//    result = getZeroValue(field.getType())
-//  }
-//
-//  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-//    result = TranslatedFieldInitialization.super.getInstructionOperand(tag, operandTag)
-//    or
-//    tag = getFieldDefaultValueStoreTag() and
-//    (
-//      operandTag instanceof AddressOperandTag and
-//      result = getInstruction(getFieldAddressTag())
-//      or
-//      operandTag instanceof StoreValueOperandTag and
-//      result = getInstruction(getFieldDefaultValueTag())
-//    )
-//  }
-//
-//  override Instruction getChildSuccessor(TranslatedElement child) { none() }
-//
-//  override TranslatedElement getChild(int id) { none() }
-//
-//  private InstructionTag getFieldDefaultValueTag() {
-//    result = InitializerFieldDefaultValueTag(field)
-//  }
-//
-//  private InstructionTag getFieldDefaultValueStoreTag() {
-//    result = InitializerFieldDefaultValueStoreTag(field)
-//  }
-//}
 
 /**
  * Represents the IR translation of the initialization of an array element from
@@ -719,9 +553,10 @@ TranslatedConstructorInitializer getTranslatedConstructorInitializer(Constructor
 }
 
 /**
- * Represents the IR translation of a call to a base class constructor
- * or another constructor in same class from a class constructor.
+ * Represents the IR translation of a call from a constructor to a base class 
+ * constructor or another constructor in same class .
  */
+// Review: do we need the conversion instructions in C#?
 class TranslatedConstructorInitializer extends TranslatedConstructorCallFromConstructor, 
   TTranslatedConstructorInitializer { 
   TranslatedConstructorInitializer() {
@@ -744,7 +579,7 @@ class TranslatedConstructorInitializer extends TranslatedConstructorCallFromCons
   ) {
     needsConversion() and 
     tag = OnlyInstructionTag() and
-    opcode instanceof Opcode::ConvertToBase and
+    opcode instanceof Opcode::Convert and
     resultType = call.getTarget().getDeclaringType() and
     isLValue = true
   }

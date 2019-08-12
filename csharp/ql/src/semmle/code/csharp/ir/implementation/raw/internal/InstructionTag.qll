@@ -62,15 +62,6 @@ newtype TInstructionTag =
   ThrowTag() or
   UnwindTag() or
   InitializerUninitializedTag() or
-  InitializerFieldAddressTag(Field field) {
-    fieldIsInitialized(field)
-  } or
-  InitializerFieldDefaultValueTag(Field field) {
-    fieldIsInitialized(field)
-  } or
-  InitializerFieldDefaultValueStoreTag(Field field) {
-    fieldIsInitialized(field)
-  } or
   InitializerElementIndexTag(int elementIndex) {
     elementIsInitialized(elementIndex)
   } or
@@ -85,7 +76,7 @@ newtype TInstructionTag =
   } or
   // Added for C#  
   NewObjTag() or
-  // TODO: remove the need for index
+  // TODO: remove the need for indexing
   PointerAddTag(int index) {
   	index in [0 .. 255]
   } or

@@ -232,11 +232,10 @@ newtype TTranslatedElement =
     not usedAsCondition(expr)
   } or
   // An expression used as an initializer.
-  // TODO: Make sure the initializers here are right
   TTranslatedInitialization(Expr expr) {
     not ignoreExpr(expr) and
     (
-      // Because of the implementation of initializations in C#,
+      // Because of their implementation in C#,
       // we deal with all the types of initialization separately.
       // First only simple local variable initialization (ie. `int x = 0`)
       exists(LocalVariableDeclAndInitExpr lvInit |
@@ -245,18 +244,13 @@ newtype TTranslatedElement =
         not expr instanceof ObjectCreation
       )
       or
-      // Then treat complex ones
+      // Then treat more complex ones
       exists(ObjectCreation objCreation | objCreation = expr)
       or
       exists(ArrayInitializer arrInit | arrInit = expr)
       or
       exists(ObjectInitializer objInit | objInit = expr)
       or
-      // Then treat the inner expressions of initializers
-//      exists(ObjectInitializer objInit | objInit.getAMemberInitializer().getRValue() = expr)
-//      or
-//      exists(MemberInitializer memInit | memInit.getRValue() = expr)
-//      or
       exists(CollectionInitializer colInit | colInit.getAnElementInitializer() = expr)
       or
       exists(ReturnStmt returnStmt | returnStmt.getExpr() = expr)
@@ -270,32 +264,6 @@ newtype TTranslatedElement =
       exists(AnonymousMethodExpr anonMethExpr | anonMethExpr.getSourceDeclaration() = expr)
     )
   } or
-  // The initialization of a field via a member of an initializer list.
-//  TTranslatedExplicitFieldInitialization(Expr ast, Field field, Expr expr) {
-//    exists(ObjectInitializer initList |
-//      not ignoreExpr(initList) and
-//      ast = initList and
-//      field = initList.getAMemberInitializer().getInitializedMember() and
-//      expr = field.getInitializer()
-//    )
-//    or
-//    exists(MemberInitializer init |
-//      not ignoreExpr(init) and
-//      ast = init and
-//      field = init.getInitializedMember() and
-//      expr = init
-//    )
-//  } or
-//  // The value initialization of a field due to an omitted member of an
-//  // initializer list.
-//  TTranslatedFieldValueInitialization(Expr ast, Field field) {
-//    exists(ObjectInitializer initList |
-//      not ignoreExpr(initList) and
-//      ast = initList and
-//      not field = initList.getAMemberInitializer().getInitializedMember() and
-//      none() // TODO: Fix def value init
-//    )
-//  } or
   // The initialization of an array element via a member of an initializer list.
   TTranslatedExplicitElementInitialization(ArrayInitializer initList, int elementIndex) {
     not ignoreExpr(initList) and
@@ -318,10 +286,6 @@ newtype TTranslatedElement =
   TTranslatedStmt(Stmt stmt) { translateStmt(stmt) } or
   // A function
   TTranslatedFunction(Callable callable) { translateFunction(callable) } or
-  // A constructor init list
-  TTranslatedConstructorInitList(Callable callable) { translateFunction(callable) } or
-  // A destructor destruction list
-  TTranslatedDestructorDestructionList(Callable callable) { translateFunction(callable) } or
   // A function parameter
   TTranslatedParameter(Parameter param) {
     exists(Callable func |

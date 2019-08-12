@@ -825,7 +825,7 @@ class TranslatedForStmt extends TranslatedLoop {
 }
 
 /**
- * Base class for the translation of `BreakStmt` and `GotoStmt`
+ * Base class for the translation of `BreakStmt`s and `GotoStmt`s.
  */
 abstract class TranslatedSpecificJump extends TranslatedStmt {
   override Instruction getFirstInstruction() {
@@ -941,11 +941,14 @@ class TranslatedSwitchStmt extends TranslatedStmt {
 
   override TranslatedElement getChild(int id) {
     if (id = -1) then
-        result = getTranslatedExpr(stmt.getChild(0))
+      // The switch expression.
+      result = getTranslatedExpr(stmt.getChild(0))
     else if (id = 0) then
-        result = getTranslatedStmt(stmt.getChild(0))
+      // The first case's body.
+      result = getTranslatedStmt(stmt.getChild(0))
     else
-        result = getTranslatedStmt(stmt.getChild(id))
+      // The subsequent case's bodies.
+      result = getTranslatedStmt(stmt.getChild(id))
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,

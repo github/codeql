@@ -99,26 +99,25 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
    * All exprs produce a final value, apart from reads. They first need an access,
    * then a load.
    */
-  // TODO: When the compatibility layer is in place, 
-  //       create a special class for the following cases
   override final predicate producesExprResult() {
+    // Reads need loads
     not (expr instanceof AssignableRead) or
+    // No load needed for an array access
     expr.getParent() instanceof ArrayAccess or
-    // TODO: Make sure this is enough
-    // Ref types need no loads
+    // No load is needed for `RefTypes` in assignments
     // Eg. `Object obj = oldObj`;
     (
       expr.getParent() instanceof Assignment and 
       expr.getType() instanceof RefType
     ) or
-    // The access inside a `++` or `--` expr will produce the final value, 
-    // since the load is handled by them 
+    // Since the loads for a crement operation is handled by the 
+    // expression itself, we ignore the default load 
     expr.getParent() instanceof MutatorOperation
   }
 
   /**
-   * Returns `true` if the result of this `TranslatedExpr` is a glvalue, or
-   * `false` if the result is a prvalue.
+   * Returns `true` if the result of this `TranslatedExpr` is a lvalue, or
+   * `false` if the result is a rvalue.
    *
    * This predicate returns a `boolean` value instead of just a being a plain
    * predicate because all of the subclass predicates that call it require a
@@ -627,7 +626,25 @@ class TranslatedObjectInitializerExpr extends TranslatedNonConstantExpr, Initial
   }
 }
 
-class TranslatedArrayExpr extends TranslatedNonConstantExpr {
+/**
+ * The translation of an array access expression. The `ElementsAddress`
+ * instruction, given the address of an array, return the address
+ * of the element at index 0 of that array. To correctly treat the 
+ * multidimensional case, we generate the address incrementally. For example,
+ * the address of a[1][1] will produce the instructions:
+ *    r0_1(Int32[,])       = VariableAddress[a]  : 
+ *    r0_2(Int32[,])       = ElementsAddress     : r0_1
+ *    r0_3(Int32)          = Constant[1]         : 
+ *    r0_4(Int32[,])       = PointerAdd[4]       : r0_2, r0_3
+ *    r0_5(Int32[])        = ElementsAddress     : r0_4
+ *    r0_6(Int32)          = Constant[1]         : 
+ *    r0_7(Int32[])        = PointerAdd[4]       : r0_5, r0_6
+ * 
+ * To support this incremental address calculation,
+ * the `ElementsAddress` and `PointerAdd` instructions are indexed (so that
+ * we correctly find the successor of instructions).
+ */
+class TranslatedArrayAccess extends TranslatedNonConstantExpr {
   override ArrayAccess expr;
 
   override Instruction getFirstInstruction() {
@@ -645,17 +662,23 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
         inBounds(index) and
         kind instanceof GotoEdge and 
       	(
+      	 // The successor of a `PointerAdd` is an `ElementsAddress` if
+      	 // that `PointerAdd` is not the last `PointerAdd` instruction.
       	 (
       	   index < getRank() - 1 and
       	   tag = PointerAddTag(index) and
       	   result = getInstruction(ElementsAddressTag(index + 1))
       	 )
+      	 // The successor of the last `PointerAdd` instruction is
+      	 // the successor of the `TranslatedArrayAccess`.
       	 or
       	 (
       	   tag = PointerAddTag(getRank() - 1) and
       	   result = getParent().getChildSuccessor(this)
       	 )
       	 or
+         // The successor of an `ElementsAddress` instruction is
+         // an offset expression.
       	 (
       	   tag = ElementsAddressTag(index) and
       	   result = getOffsetOperand(index).getFirstInstruction()
@@ -665,10 +688,13 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
+    // The base address of the array is followed by the first
+    // `ElementsAddress` instruction.
     (
       child = getBaseOperand() and
       result = getInstruction(ElementsAddressTag(0))
     ) or
+    // The successor of an offset expression is a `PointerAdd` expression.
     (
       child = getOffsetOperand(child.getAST().getIndex()) and
       child.getAST().getIndex() >= 0 and
@@ -735,8 +761,7 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
 
   override int getInstructionElementSize(InstructionTag tag) {
     tag = PointerAddTag(_) and
-    // TODO: Fix sizes once we have the unified type system
-    //       Make sure multi dim arrays have correct multiplication factor
+    // TODO: Fix sizes once we have type sizes
     result = 4
   }
 
@@ -870,10 +895,10 @@ abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {
 class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
   TranslatedNonFieldVariableAccess() {
     not expr instanceof FieldAccess and
-    // If the parent expression is a declaration + initialization
-    // expr, then translate only the variables that are initializers (on the RHS)
+    // If the parent expression is a `LocalVariableDeclAndInitExpr`, 
+    // then translate only the variables that are initializers (on the RHS)
     // and not the LHS (the address of the LHS is generated during 
-    // the translation of the initialization
+    // the translation of the initialization).
     (expr.getParent() instanceof LocalVariableDeclAndInitExpr implies
      expr = expr.getParent().(LocalVariableDeclAndInitExpr).getInitializer())
   }
@@ -914,7 +939,7 @@ class TranslatedFieldAccess extends TranslatedVariableAccess {
       result = getQualifier().getFirstInstruction()
     else
       // it means that the access is part of an `ObjectInitializer` expression
-      // so the code for the qualifier has been generated previously
+      // so the instructions for the qualifier have been generated previously.
       result = getInstruction(OnlyInstructionTag())
   }
 
@@ -2120,7 +2145,7 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
  */
 // TODO: Once `TranslatedInitialization.qll` is refactored,
 //       get rid of the initialization here.
-// TODO: Maybe refactor the generated instructions since it's pretty cluttered 
+// TODO: Refactor the generated instructions since it's pretty cluttered.
 class TranslatedIsExpr extends TranslatedNonConstantExpr {
   override IsExpr expr;
   
@@ -2155,8 +2180,8 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
         result = getParent().getChildSuccessor(this)
     ) or
     (
-      // if a var is declared, we do the initialization only
-      // if the `IsExpr` was evaluated to `true`
+      // If a var is declared, we only do the initialization
+      // if the `IsExpr` is evaluated to `true`.
       hasVar() and 
       tag = GeneratedBranchTag() and (
         (

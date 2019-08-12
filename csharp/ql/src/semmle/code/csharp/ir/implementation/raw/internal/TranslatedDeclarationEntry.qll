@@ -129,7 +129,6 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
     result = getVariableType(var)
   }
 
-  // TODO: All declarations which use an initializer will need a special case here
   private TranslatedInitialization getInitialization() {
     // First complex initializations
     if (var.getInitializer() instanceof ArrayCreation) then
@@ -156,77 +155,3 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
     expr.getParent() instanceof IsExpr
   }
 }
-
-///**
-// * Gets the `TranslatedRangeBasedForVariableDeclaration` that represents the declaration of
-// * `var`.
-// */
-//TranslatedRangeBasedForVariableDeclaration getTranslatedRangeBasedForVariableDeclaration(
-//    LocalVariable var) {
-//  result.getVariable() = var
-//}
-
-///**
-// * Represents the IR translation of a compiler-generated variable in a range-based `for` loop.
-// */
-//class TranslatedRangeBasedForVariableDeclaration extends TranslatedVariableDeclaration,
-//    TTranslatedRangeBasedForVariableDeclaration {
-//  RangeBasedForStmt forStmt;
-//  LocalVariable var;
-//
-//  TranslatedRangeBasedForVariableDeclaration() {
-//    this = TTranslatedRangeBasedForVariableDeclaration(forStmt, var)
-//  }
-//
-//  override string toString() {
-//    result = var.toString()
-//  }
-//
-//  override Locatable getAST() {
-//    result = var
-//  }
-//
-//  override Function getFunction() {
-//    result = forStmt.getEnclosingFunction()
-//  }
-//
-//  override LocalVariable getVariable() {
-//    result = var
-//  }
-//}
-
-//TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
-//  result.getAST() = expr
-//}
-
-///**
-// * Represents the IR translation of the declaration portion of a `ConditionDeclExpr`, which
-// * represents the variable declared in code such as:
-// * ```
-// * if (int* p = &x) {
-// * }
-// * ```
-// */
-//class TranslatedConditionDecl extends TranslatedVariableDeclaration, TTranslatedConditionDecl {
-//  ConditionDeclExpr conditionDeclExpr;
-//
-//  TranslatedConditionDecl() {
-//    this = TTranslatedConditionDecl(conditionDeclExpr)
-//  }
-//
-//  override string toString() {
-//    result = "decl: " + conditionDeclExpr.toString()
-//  }
-//
-//  override Locatable getAST() {
-//    result = conditionDeclExpr
-//  }
-//
-//  override Function getFunction() {
-//    result = conditionDeclExpr.getEnclosingFunction()
-//  }
-//
-//  override LocalVariable getVariable() {
-//    result = conditionDeclExpr.getVariable()
-//  }
-//}

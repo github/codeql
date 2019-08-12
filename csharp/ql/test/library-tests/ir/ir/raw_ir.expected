@@ -145,7 +145,7 @@ casts.cs:
 #   11|     r0_4(glval<Casts_A>)  = VariableAddress[Aobj]              : 
 #   11|     r0_5(Casts_A)         = NewObj                             : 
 #   11|     r0_6(glval<Casts_A>)  = FunctionAddress[Casts_A.Casts_A()] : 
-#   11|     r0_7(Casts_A)         = Call                               : func:r0_6, this:r0_5
+#   11|     v0_7(Void)            = Call                               : func:r0_6, this:r0_5
 #   11|     mu0_8(null)           = ^CallSideEffect                    : ~mu0_2
 #   11|     mu0_9(Casts_A)        = Store                              : &:r0_4, r0_5
 #   12|     r0_10(glval<Casts_B>) = VariableAddress[bobjCE]            : 
@@ -193,18 +193,18 @@ constructor_init.cs:
 
 #   17| DerivedClass
 #   17|   Block 0
-#   17|     v0_0(Void)                = EnterFunction                           : 
-#   17|     mu0_1(null)               = AliasedDefinition                       : 
-#   17|     mu0_2(null)               = UnmodeledDefinition                     : 
-#   17|     r0_3(glval<DerivedClass>) = InitializeThis                          : 
-#   17|     r0_4(glval<BaseClass>)    = ConvertToBase[DerivedClass : BaseClass] : r0_3
-#   17|     r0_5(glval<BaseClass>)    = FunctionAddress[BaseClass.BaseClass()]  : 
-#   17|     r0_6(BaseClass)           = Call                                    : func:r0_5, this:r0_4
-#   17|     mu0_7(null)               = ^CallSideEffect                         : ~mu0_2
-#   18|     v0_8(Void)                = NoOp                                    : 
-#   17|     v0_9(Void)                = ReturnVoid                              : 
-#   17|     v0_10(Void)               = UnmodeledUse                            : mu*
-#   17|     v0_11(Void)               = ExitFunction                            : 
+#   17|     v0_0(Void)                = EnterFunction                          : 
+#   17|     mu0_1(null)               = AliasedDefinition                      : 
+#   17|     mu0_2(null)               = UnmodeledDefinition                    : 
+#   17|     r0_3(glval<DerivedClass>) = InitializeThis                         : 
+#   17|     r0_4(glval<BaseClass>)    = Convert[DerivedClass : BaseClass]      : r0_3
+#   17|     r0_5(glval<BaseClass>)    = FunctionAddress[BaseClass.BaseClass()] : 
+#   17|     v0_6(Void)                = Call                                   : func:r0_5, this:r0_4
+#   17|     mu0_7(null)               = ^CallSideEffect                        : ~mu0_2
+#   18|     v0_8(Void)                = NoOp                                   : 
+#   17|     v0_9(Void)                = ReturnVoid                             : 
+#   17|     v0_10(Void)               = UnmodeledUse                           : mu*
+#   17|     v0_11(Void)               = ExitFunction                           : 
 
 #   21| DerivedClass
 #   21|   Block 0
@@ -214,11 +214,11 @@ constructor_init.cs:
 #   21|     r0_3(glval<DerivedClass>) = InitializeThis                            : 
 #   21|     r0_4(glval<Int32>)        = VariableAddress[i]                        : 
 #   21|     mu0_5(Int32)              = InitializeParameter[i]                    : &:r0_4
-#   21|     r0_6(glval<BaseClass>)    = ConvertToBase[DerivedClass : BaseClass]   : r0_3
+#   21|     r0_6(glval<BaseClass>)    = Convert[DerivedClass : BaseClass]         : r0_3
 #   21|     r0_7(glval<BaseClass>)    = FunctionAddress[BaseClass.BaseClass(int)] : 
 #   21|     r0_8(glval<Int32>)        = VariableAddress[i]                        : 
 #   21|     r0_9(Int32)               = Load                                      : &:r0_8, ~mu0_2
-#   21|     r0_10(BaseClass)          = Call                                      : func:r0_7, this:r0_6, 0:r0_9
+#   21|     v0_10(Void)               = Call                                      : func:r0_7, this:r0_6, 0:r0_9
 #   21|     mu0_11(null)              = ^CallSideEffect                           : ~mu0_2
 #   22|     v0_12(Void)               = NoOp                                      : 
 #   21|     v0_13(Void)               = ReturnVoid                                : 
@@ -238,7 +238,7 @@ constructor_init.cs:
 #   25|     r0_8(glval<DerivedClass>) = FunctionAddress[DerivedClass.DerivedClass(int)] : 
 #   25|     r0_9(glval<Int32>)        = VariableAddress[i]                              : 
 #   25|     r0_10(Int32)              = Load                                            : &:r0_9, ~mu0_2
-#   25|     r0_11(DerivedClass)       = Call                                            : func:r0_8, this:r0_3, 0:r0_10
+#   25|     v0_11(Void)               = Call                                            : func:r0_8, this:r0_3, 0:r0_10
 #   25|     mu0_12(null)              = ^CallSideEffect                                 : ~mu0_2
 #   26|     v0_13(Void)               = NoOp                                            : 
 #   25|     v0_14(Void)               = ReturnVoid                                      : 
@@ -254,14 +254,14 @@ constructor_init.cs:
 #   31|     r0_4(glval<DerivedClass>)  = VariableAddress[obj1]                                : 
 #   31|     r0_5(DerivedClass)         = NewObj                                               : 
 #   31|     r0_6(glval<DerivedClass>)  = FunctionAddress[DerivedClass.DerivedClass()]         : 
-#   31|     r0_7(DerivedClass)         = Call                                                 : func:r0_6, this:r0_5
+#   31|     v0_7(Void)                 = Call                                                 : func:r0_6, this:r0_5
 #   31|     mu0_8(null)                = ^CallSideEffect                                      : ~mu0_2
 #   31|     mu0_9(DerivedClass)        = Store                                                : &:r0_4, r0_5
 #   32|     r0_10(glval<DerivedClass>) = VariableAddress[obj2]                                : 
 #   32|     r0_11(DerivedClass)        = NewObj                                               : 
 #   32|     r0_12(glval<DerivedClass>) = FunctionAddress[DerivedClass.DerivedClass(int)]      : 
 #   32|     r0_13(Int32)               = Constant[1]                                          : 
-#   32|     r0_14(DerivedClass)        = Call                                                 : func:r0_12, this:r0_11, 0:r0_13
+#   32|     v0_14(Void)                = Call                                                 : func:r0_12, this:r0_11, 0:r0_13
 #   32|     mu0_15(null)               = ^CallSideEffect                                      : ~mu0_2
 #   32|     mu0_16(DerivedClass)       = Store                                                : &:r0_10, r0_11
 #   33|     r0_17(glval<DerivedClass>) = VariableAddress[obj3]                                : 
@@ -269,7 +269,7 @@ constructor_init.cs:
 #   33|     r0_19(glval<DerivedClass>) = FunctionAddress[DerivedClass.DerivedClass(int, int)] : 
 #   33|     r0_20(Int32)               = Constant[1]                                          : 
 #   33|     r0_21(Int32)               = Constant[2]                                          : 
-#   33|     r0_22(DerivedClass)        = Call                                                 : func:r0_19, this:r0_18, 0:r0_20, 1:r0_21
+#   33|     v0_22(Void)                = Call                                                 : func:r0_19, this:r0_18, 0:r0_20, 1:r0_21
 #   33|     mu0_23(null)               = ^CallSideEffect                                      : ~mu0_2
 #   33|     mu0_24(DerivedClass)       = Store                                                : &:r0_17, r0_18
 #   29|     v0_25(Void)                = ReturnVoid                                           : 
@@ -397,7 +397,7 @@ inheritance_polymorphism.cs:
 #   25|     r0_4(glval<B>)       = VariableAddress[objB]         : 
 #   25|     r0_5(B)              = NewObj                        : 
 #   25|     r0_6(glval<B>)       = FunctionAddress[B.B()]        : 
-#   25|     r0_7(B)              = Call                          : func:r0_6, this:r0_5
+#   25|     v0_7(Void)           = Call                          : func:r0_6, this:r0_5
 #   25|     mu0_8(null)          = ^CallSideEffect               : ~mu0_2
 #   25|     mu0_9(B)             = Store                         : &:r0_4, r0_5
 #   26|     r0_10(glval<B>)      = VariableAddress[objB]         : 
@@ -419,7 +419,7 @@ inheritance_polymorphism.cs:
 #   33|     r0_26(glval<A>)      = VariableAddress[objC]         : 
 #   33|     r0_27(C)             = NewObj                        : 
 #   33|     r0_28(glval<C>)      = FunctionAddress[C.C()]        : 
-#   33|     r0_29(C)             = Call                          : func:r0_28, this:r0_27
+#   33|     v0_29(Void)          = Call                          : func:r0_28, this:r0_27
 #   33|     mu0_30(null)         = ^CallSideEffect               : ~mu0_2
 #   33|     r0_31(A)             = Convert                       : r0_27
 #   33|     mu0_32(C)            = Store                         : &:r0_26, r0_31
@@ -517,13 +517,13 @@ obj_creation.cs:
 #   14|     r0_5(MyClass)            = NewObj                                            : 
 #   14|     r0_6(glval<MyClass>)     = FunctionAddress[ObjCreation.MyClass.MyClass(int)] : 
 #   14|     r0_7(Int32)              = Constant[100]                                     : 
-#   14|     r0_8(MyClass)            = Call                                              : func:r0_6, this:r0_5, 0:r0_7
+#   14|     v0_8(Void)               = Call                                              : func:r0_6, this:r0_5, 0:r0_7
 #   14|     mu0_9(null)              = ^CallSideEffect                                   : ~mu0_2
 #   14|     mu0_10(MyClass)          = Store                                             : &:r0_4, r0_5
 #   15|     r0_11(glval<MyClass>)    = VariableAddress[obj_initlist]                     : 
 #   15|     r0_12(MyClass)           = NewObj                                            : 
 #   15|     r0_13(glval<MyClass>)    = FunctionAddress[ObjCreation.MyClass.MyClass()]    : 
-#   15|     r0_14(MyClass)           = Call                                              : func:r0_13, this:r0_12
+#   15|     v0_14(Void)              = Call                                              : func:r0_13, this:r0_12
 #   15|     mu0_15(null)             = ^CallSideEffect                                   : ~mu0_2
 #   15|     r0_16(Int32)             = Constant[101]                                     : 
 #   15|     r0_17(glval<Int32>)      = FieldAddress[ObjCreation.MyClass.x]               : r0_12
@@ -582,7 +582,7 @@ prop.cs:
 #   20|     r0_4(glval<Geeks>)  = VariableAddress[obj]                    : 
 #   20|     r0_5(Geeks)         = NewObj                                  : 
 #   20|     r0_6(glval<Geeks>)  = FunctionAddress[Geeks.Geeks()]          : 
-#   20|     r0_7(Geeks)         = Call                                    : func:r0_6, this:r0_5
+#   20|     v0_7(Void)          = Call                                    : func:r0_6, this:r0_5
 #   20|     mu0_8(null)         = ^CallSideEffect                         : ~mu0_2
 #   20|     mu0_9(Geeks)        = Store                                   : &:r0_4, r0_5
 #   21|     r0_10(glval<Geeks>) = VariableAddress[obj]                    : 
@@ -729,7 +729,7 @@ stmts.cs:
 #   19|     r0_4(glval<Object>)     = VariableAddress[caseSwitch]             : 
 #   19|     r0_5(Object)            = NewObj                                  : 
 #   19|     r0_6(glval<Object>)     = FunctionAddress[System.Object.Object()] : 
-#   19|     r0_7(Object)            = Call                                    : func:r0_6, this:r0_5
+#   19|     v0_7(Void)              = Call                                    : func:r0_6, this:r0_5
 #   19|     mu0_8(null)             = ^CallSideEffect                         : ~mu0_2
 #   19|     mu0_9(Object)           = Store                                   : &:r0_4, r0_5
 #   20|     r0_10(glval<Int32>)     = VariableAddress[select]                 : 
@@ -816,7 +816,7 @@ stmts.cs:
 #   46|     r3_0(glval<Exception>) = VariableAddress[#throw46:17]                  : 
 #   46|     r3_1(Exception)        = NewObj                                        : 
 #   46|     r3_2(glval<Exception>) = FunctionAddress[System.Exception.Exception()] : 
-#   46|     r3_3(Exception)        = Call                                          : func:r3_2, this:r3_1
+#   46|     v3_3(Void)             = Call                                          : func:r3_2, this:r3_1
 #   46|     mu3_4(null)            = ^CallSideEffect                               : ~mu0_2
 #   46|     mu3_5(Exception)       = Store                                         : &:r3_0, r3_1
 #   46|     v3_6(Void)             = ThrowValue                                    : &:r3_0, ~mu0_2

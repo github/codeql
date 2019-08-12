@@ -34,15 +34,13 @@ abstract class TranslatedCall extends TranslatedExpr {
   override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
   ) {
-    tag = CallTag() and
-    opcode instanceof Opcode::Call and
-    resultType = getCallResultType() and
-    isLValue = false
+    (
+      tag = CallTag() and
+      opcode instanceof Opcode::Call and
+      resultType = getCallResultType() and
+      isLValue = false
+    )
     or
-    // TODO: Fix side effects,
-    //       understand why CallSideEffect breaks things if it is not present
-    hasSideEffect() and
-    tag = CallSideEffectTag() and
     (
       hasSideEffect() and
       tag = CallSideEffectTag() and
@@ -61,11 +59,15 @@ abstract class TranslatedCall extends TranslatedExpr {
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getQualifier() and
-    result = getFirstCallTargetInstruction()
+    (
+      child = getQualifier() and
+      result = getFirstCallTargetInstruction()
+    )
     or
-    child = getCallTarget() and
-    result = getFirstArgumentOrCallInstruction()
+    (
+      child = getCallTarget() and
+      result = getFirstArgumentOrCallInstruction()
+    )
     or
     exists(int argIndex |
       child = getArgument(argIndex) and
@@ -85,9 +87,11 @@ abstract class TranslatedCall extends TranslatedExpr {
         else result = getParent().getChildSuccessor(this)
       )
       or
-      hasSideEffect() and
-      tag = CallSideEffectTag() and
-      result = getParent().getChildSuccessor(this)
+      (
+        hasSideEffect() and
+        tag = CallSideEffectTag() and
+        result = getParent().getChildSuccessor(this)
+      )
     )
   }
 
@@ -203,8 +207,7 @@ abstract class TranslatedCall extends TranslatedExpr {
 
 /**
  * IR translation of a direct call to a specific function. Used for both
- * explicit calls (`TranslatedFunctionCall`) and implicit calls
- * (`TranslatedAllocatorCall`).
+ * explicit calls and implicit calls.
  */
 abstract class TranslatedDirectCall extends TranslatedCall {
   final override Instruction getFirstCallTargetInstruction() {
@@ -239,7 +242,7 @@ abstract class TranslatedDirectCall extends TranslatedCall {
 abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedCall {
   override Call expr;
 
-  final override Type getCallResultType() { result = getResultType() }
+  override Type getCallResultType() { result = getResultType() }
 
   final override predicate hasArguments() { exists(expr.getArgument(0)) }
 
@@ -284,11 +287,15 @@ class TranslatedConstructorCall extends TranslatedFunctionCall {
   }
 
   override Instruction getQualifierResult() {
+    // We must retrieve the qualifier from the context the
+    // constructor call happened
     exists(StructorCallContext context |
       context = getParent() and
       result = context.getReceiver()
     )
   }
+  
+  override Type getCallResultType() { result instanceof VoidType }
 
   override predicate hasQualifier() { any() }
 }
