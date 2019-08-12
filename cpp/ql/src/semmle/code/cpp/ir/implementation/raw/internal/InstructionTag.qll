@@ -1,20 +1,5 @@
 private import cpp
 
-private predicate fieldIsInitialized(Field field) {
-  exists(ClassAggregateLiteral initList |
-    initList.isInitialized(field)
-  ) or
-  exists(ConstructorFieldInit init |
-    field = init.getTarget()
-  )
-}
-
-private predicate elementIsInitialized(int elementIndex) {
-  exists(ArrayAggregateLiteral initList |
-    initList.isInitialized(elementIndex)
-  )
-}
-
 newtype TInstructionTag =
   OnlyInstructionTag() or  // Single instruction (not including implicit Load)
   InitializeThisTag() or
@@ -64,27 +49,13 @@ newtype TInstructionTag =
   ThrowTag() or
   UnwindTag() or
   InitializerUninitializedTag() or
-  InitializerFieldAddressTag(Field field) {
-    fieldIsInitialized(field)
-  } or
-  InitializerFieldDefaultValueTag(Field field) {
-    fieldIsInitialized(field)
-  } or
-  InitializerFieldDefaultValueStoreTag(Field field) {
-    fieldIsInitialized(field)
-  } or
-  InitializerElementIndexTag(int elementIndex) {
-    elementIsInitialized(elementIndex)
-  } or
-  InitializerElementAddressTag(int elementIndex) {
-    elementIsInitialized(elementIndex)
-  } or
-  InitializerElementDefaultValueTag(int elementIndex) {
-    elementIsInitialized(elementIndex)
-  } or
-  InitializerElementDefaultValueStoreTag(int elementIndex) {
-    elementIsInitialized(elementIndex)
-  } or
+  InitializerFieldAddressTag() or
+  InitializerFieldDefaultValueTag() or
+  InitializerFieldDefaultValueStoreTag() or
+  InitializerElementIndexTag() or
+  InitializerElementAddressTag() or
+  InitializerElementDefaultValueTag() or
+  InitializerElementDefaultValueStoreTag() or
   AsmTag() or
   AsmInputTag(int elementIndex) {
     exists(AsmStmt asm |
@@ -150,24 +121,13 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = CatchTag() and result = "Catch" or
   tag = ThrowTag() and result = "Throw" or
   tag = UnwindTag() and result = "Unwind" or
-  exists(Field field, Class cls, int index, string tagName |
-    field = cls.getCanonicalMember(index) and
-    (
-      tag = InitializerFieldAddressTag(field) and tagName = "InitFieldAddr" or
-      tag = InitializerFieldDefaultValueTag(field) and tagName = "InitFieldDefVal" or
-      tag = InitializerFieldDefaultValueStoreTag(field) and tagName = "InitFieldDefValStore"
-    ) and
-    result = tagName + "(" + index + ")"
-  ) or
-  exists(int index, string tagName |
-    (
-      tag = InitializerElementIndexTag(index) and tagName = "InitElemIndex" or
-      tag = InitializerElementAddressTag(index) and tagName = "InitElemAddr" or
-      tag = InitializerElementDefaultValueTag(index) and tagName = "InitElemDefVal" or
-      tag = InitializerElementDefaultValueStoreTag(index) and tagName = "InitElemDefValStore"
-    ) and
-    result = tagName + "(" + index + ")"
-  ) or
+  tag = InitializerFieldAddressTag() and result = "InitFieldAddr" or
+  tag = InitializerFieldDefaultValueTag() and result = "InitFieldDefVal" or
+  tag = InitializerFieldDefaultValueStoreTag() and result = "InitFieldDefValStore" or
+  tag = InitializerElementIndexTag() and result = "InitElemIndex" or
+  tag = InitializerElementAddressTag() and result = "InitElemAddr" or
+  tag = InitializerElementDefaultValueTag() and result = "InitElemDefVal" or
+  tag = InitializerElementDefaultValueStoreTag() and result = "InitElemDefValStore" or
   tag = AsmTag() and result = "Asm" or
   exists(int index |
     tag = AsmInputTag(index) and result = "AsmInputTag(" + index + ")"

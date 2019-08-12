@@ -6,6 +6,10 @@
 #-----|   params: 
 #-----|     0: [Parameter] p#0
 #-----|         Type = [RValueReferenceType] __va_list_tag &&
+#-----| [Operator,TopLevelFunction] void operator delete(void*)
+#-----|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [VoidPointerType] void *
 #-----| [Operator,TopLevelFunction] void operator delete(void*, unsigned long)
 #-----|   params: 
 #-----|     0: [Parameter] p#0
@@ -8001,3 +8005,49 @@ ir.cpp:
 # 1147|       2: [Handler] <handler>
 # 1147|         0: [CatchBlock] { ... }
 # 1149|     1: [ReturnStmt] return ...
+perf-regression.cpp:
+#    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
+#    4|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const Big &
+#    4| [MoveAssignmentOperator] Big& Big::operator=(Big&&)
+#    4|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] Big &&
+#    4| [CopyConstructor] void Big::Big(Big const&)
+#    4|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [LValueReferenceType] const Big &
+#    4| [MoveConstructor] void Big::Big(Big&&)
+#    4|   params: 
+#-----|     0: [Parameter] p#0
+#-----|         Type = [RValueReferenceType] Big &&
+#    6| [Constructor] void Big::Big()
+#    6|   params: 
+#    6|   initializations: 
+#    6|     0: [ConstructorFieldInit] constructor init of field buffer
+#    6|         Type = [ArrayType] char[1073741824]
+#    6|         ValueCategory = prvalue
+#    6|       0: [ArrayAggregateLiteral] {...}
+#    6|           Type = [ArrayType] char[1073741824]
+#    6|           ValueCategory = prvalue
+#    6|   body: [Block] { ... }
+#    6|     0: [ReturnStmt] return ...
+#    9| [TopLevelFunction] int main()
+#    9|   params: 
+#    9|   body: [Block] { ... }
+#   10|     0: [DeclStmt] declaration
+#   10|       0: [VariableDeclarationEntry] definition of big
+#   10|           Type = [PointerType] Big *
+#   10|         init: [Initializer] initializer for big
+#   10|           expr: [NewExpr] new
+#   10|               Type = [PointerType] Big *
+#   10|               ValueCategory = prvalue
+#   10|             1: [ConstructorCall] call to Big
+#   10|                 Type = [VoidType] void
+#   10|                 ValueCategory = prvalue
+#   12|     1: [ReturnStmt] return ...
+#   12|       0: [Literal,Zero] 0
+#   12|           Type = [IntType] int
+#   12|           Value = [Literal,Zero] 0
+#   12|           ValueCategory = prvalue
