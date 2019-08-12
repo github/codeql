@@ -47,9 +47,8 @@
 		<p>
 
 			The check with the regular expression match is, however, easy to bypass. For example
-			by embedding <code>example.com</code> in the path component:
-			<code>http://evil-example.net/example.com</code>, or in the query
-			string component: <code>http://evil-example.net/?x=example.com</code>.
+			by embedding <code>http://example.com/</code> in the query
+			string component: <code>http://evil-example.net/?x=http://example.com/</code>.
 
 			Address these shortcomings by using anchors in the regular expression instead:
 
