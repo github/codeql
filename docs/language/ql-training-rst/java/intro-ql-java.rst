@@ -47,7 +47,7 @@ Oops
   }
 
 - The return statement has been commented out (during debugging?)
-- The if statement is now dead code
+- The ``if`` statement is now dead code
 - No explicit bounds checking, will throw ``ArrayIndexOutOfbounds``
 
 .. note::
@@ -182,7 +182,7 @@ Iterative query refinement
 
 - **Common workflow**: Start with a simple query, inspect a few results, refine, repeat.
 
-- For example, empty then branches are not a problem if there is an else.
+- For example, empty ``then`` branches are not a problem if there is an ``else``.
 
 - **Exercise**: How can we refine the query to take this into account?
 
