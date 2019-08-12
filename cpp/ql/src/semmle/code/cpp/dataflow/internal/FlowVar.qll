@@ -89,31 +89,34 @@ cached class FlowVar extends TFlowVar {
  */
 private module PartialDefinitions {
   private newtype TPartialDefinition =
-    TExplicitFieldStoreQualifier(Expr qualifier, FieldAccess fa) {
-      isInstanceFieldWrite(fa) and qualifier = fa.getQualifier()
+    TExplicitFieldStoreQualifier(Expr qualifier, ControlFlowNode node) {
+      exists(FieldAccess fa |
+        isInstanceFieldWrite(fa, node) and qualifier = fa.getQualifier()
+      )
     } or
     TExplicitCallQualifier(Expr qualifier, Call call) { qualifier = call.getQualifier() } or
     TReferenceArgument(Expr arg, VariableAccess va) { definitionByReference(va, arg) }
 
-  private predicate isInstanceFieldWrite(FieldAccess fa) {
+  private predicate isInstanceFieldWrite(FieldAccess fa, ControlFlowNode node) {
     not fa.getTarget().isStatic() and
-    assignmentLikeOperation(_, fa.getTarget(), fa, _)
+    assignmentLikeOperation(node, fa.getTarget(), fa, _)
   }
 
   class PartialDefinition extends TPartialDefinition {
     Expr definedExpr;
+    ControlFlowNode node;
 
     PartialDefinition() {
-      this = TExplicitFieldStoreQualifier(definedExpr, _) or
-      this = TExplicitCallQualifier(definedExpr, _) or
-      this = TReferenceArgument(definedExpr, _)
+      this = TExplicitFieldStoreQualifier(definedExpr, node) or
+      this = TExplicitCallQualifier(definedExpr, _) and node = definedExpr or
+      this = TReferenceArgument(definedExpr, node)
     }
 
     predicate partiallyDefines(Variable v) { definedExpr = v.getAnAccess() }
 
     predicate partiallyDefinesThis(ThisExpr e) { definedExpr = e }
 
-    ControlFlowNode getSubBasicBlockStart() { result = definedExpr }
+    ControlFlowNode getSubBasicBlockStart() { result = node }
 
     Expr getDefinedExpr() { result = definedExpr }
 
@@ -141,8 +144,6 @@ private module PartialDefinitions {
     VariableAccess getVariableAccess() { result = va }
 
     override predicate partiallyDefines(Variable v) { va = v.getAnAccess() }
-
-    override ControlFlowNode getSubBasicBlockStart() { result = va }
   }
 }
 import PartialDefinitions
