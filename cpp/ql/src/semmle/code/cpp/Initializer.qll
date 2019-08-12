@@ -1,7 +1,19 @@
 import semmle.code.cpp.controlflow.ControlFlowGraph
 
 /**
- * A C/C++ declaration initializer.
+ * A C/C++ declaration initializer. For example the initializers `1`, `2` and
+ * `3` in the following code:
+ * ```
+ * int myVariable = 1;
+ *
+ * enum myEnum {
+ *   MYENUMCONST = 2
+ * };
+ *
+ * void myFunction(int param = 3) {
+ *   ...
+ * }
+ * ```
  */
 class Initializer extends ControlFlowNode, @initialiser {
   override Location getLocation() { initialisers(underlyingElement(this),_,_,result) }
