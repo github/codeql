@@ -181,7 +181,7 @@ class BarrierGuard extends IRGuardCondition {
   /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `b`. */
   abstract deprecated predicate checks(Instruction e, boolean b);
 
-  /** Gets a node guarded by this. */
+  /** Gets a node guarded by this guard. */
   final Node getAGuardedNode() {
     none() // stub
   }

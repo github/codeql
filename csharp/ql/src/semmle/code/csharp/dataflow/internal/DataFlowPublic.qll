@@ -177,7 +177,7 @@ class BarrierGuard extends Internal::Guard {
   /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `v`. */
   abstract deprecated predicate checks(Expr e, AbstractValue v);
 
-  /** Gets a node guarded by this. */
+  /** Gets a node guarded by this guard. */
   final Node getAGuardedNode() {
     none() // stub
   }
