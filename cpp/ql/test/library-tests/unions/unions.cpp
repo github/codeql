@@ -21,3 +21,20 @@ struct EntryWithMethod: Entry {
 	  return i;
   }
 };
+
+void myFunction()
+{
+  union MyLocalUnion {
+    int i;
+    float f;
+  };
+}
+
+class MyClass
+{
+public:
+  union MyNestedUnion {
+    int i;
+    float f;
+  };
+};

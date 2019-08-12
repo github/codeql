@@ -1,3 +1,0 @@
-| unions.cpp:19:8:19:22 | EntryWithMethod | unions.cpp:4:8:4:12 | Entry | unions.cpp:19:8:19:8 | operator= |
-| unions.cpp:19:8:19:22 | EntryWithMethod | unions.cpp:4:8:4:12 | Entry | unions.cpp:19:8:19:8 | operator= |
-| unions.cpp:19:8:19:22 | EntryWithMethod | unions.cpp:4:8:4:12 | Entry | unions.cpp:20:7:20:14 | getAsInt |

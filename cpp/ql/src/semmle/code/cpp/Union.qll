@@ -2,7 +2,13 @@ import semmle.code.cpp.Type
 import semmle.code.cpp.Struct
 
 /**
- * A C/C++ union. See C.8.2.
+ * A C/C++ union. See C.8.2. For example, the type `MyUnion` in:
+ * ```
+ * union MyUnion {
+ *   int i;
+ *   float f;
+ * };
+ * ```
  */
 class Union extends Struct  {
 
@@ -17,7 +23,16 @@ class Union extends Struct  {
 }
 
 /**
- * A C++ union that is directly enclosed by a function.
+ * A C/C++ union that is directly enclosed by a function. For example, the type
+ * `MyLocalUnion` in:
+ * ```
+ * void myFunction() {
+ *   union MyLocalUnion {
+ *     int i;
+ *     float f;
+ *   };
+ * }
+ * ```
  */
 class LocalUnion extends Union {
   LocalUnion() {
@@ -28,7 +43,16 @@ class LocalUnion extends Union {
 }
 
 /**
- * A C++ nested union.
+ * A C/C++ nested union. For example, the type `MyNestedUnion` in:
+ * ```
+ * class MyClass {
+ * public:
+ *   union MyNestedUnion {
+ *     int i;
+ *     float f;
+ *   };
+ * };
+ * ```
  */
 class NestedUnion extends Union {
   NestedUnion() {
