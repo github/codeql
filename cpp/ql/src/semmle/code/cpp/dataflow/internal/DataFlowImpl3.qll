@@ -114,6 +114,32 @@ abstract class Configuration extends string {
    */
   predicate hasFlowToExpr(DataFlowExpr sink) { hasFlowTo(exprNode(sink)) }
 
+  /**
+   * Gets the exploration limit for `hasPartialFlow` measured in approximate
+   * number of interprocedural steps.
+   */
+  int explorationLimit() { none() }
+
+  /**
+   * Holds if there is a partial data flow path from `source` to `node`. The
+   * approximate distance between `node` and the closest source is `dist` and
+   * is restricted to be less than or equal to `explorationLimit()`. This
+   * predicate completely disregards sink definitions.
+   *
+   * This predicate is intended for dataflow exploration and debugging and may
+   * perform poorly if the number of sources is too big and/or the exploration
+   * limit is set too high without using barriers.
+   *
+   * This predicate is disabled (has no results) by default. Override
+   * `explorationLimit()` with a suitable number to enable this predicate.
+   *
+   * To use this in a `path-problem` query, import the module `PartialPathGraph`.
+   */
+  final predicate hasPartialFlow(PartialPathNode source, PartialPathNode node, int dist) {
+    partialFlow(source, node, this) and
+    dist = node.getSourceDistance()
+  }
+
   /** DEPRECATED: use `hasFlow` instead. */
   deprecated predicate hasFlowForward(Node source, Node sink) { hasFlow(source, sink) }
 
@@ -1915,4 +1941,429 @@ private predicate flowsTo(
  */
 predicate flowsTo(Node source, Node sink, Configuration configuration) {
   flowsTo(_, _, source, sink, configuration)
+}
+
+private module FlowExploration {
+  private predicate callableStep(DataFlowCallable c1, DataFlowCallable c2, Configuration config) {
+    exists(Node node1, Node node2 |
+      jumpStep(node1, node2, config)
+      or
+      additionalJumpStep(node1, node2, config)
+      or
+      // flow into callable
+      viableParamArg(_, node2, node1)
+      or
+      // flow out of an argument
+      exists(ParameterNode p |
+        parameterValueFlowsToUpdate(p, node1) and
+        viableParamArg(_, p, node2.(PostUpdateNode).getPreUpdateNode())
+      )
+      or
+      // flow out of a callable
+      exists(DataFlowCall call, ReturnKind kind |
+        getReturnPosition(node1) = viableReturnPos(call, kind) and
+        node2 = getAnOutNode(call, kind)
+      )
+    |
+      c1 = node1.getEnclosingCallable() and
+      c2 = node2.getEnclosingCallable() and
+      c1 != c2
+    )
+  }
+
+  private predicate interestingCallableSrc(DataFlowCallable c, Configuration config) {
+    exists(Node n | config.isSource(n) and c = n.getEnclosingCallable())
+    or
+    exists(DataFlowCallable mid |
+      interestingCallableSrc(mid, config) and callableStep(mid, c, config)
+    )
+  }
+
+  private newtype TCallableExt =
+    TCallable(DataFlowCallable c, Configuration config) { interestingCallableSrc(c, config) } or
+    TCallableSrc()
+
+  private predicate callableExtSrc(TCallableSrc src) { any() }
+
+  private predicate callableExtStepFwd(TCallableExt ce1, TCallableExt ce2) {
+    exists(DataFlowCallable c1, DataFlowCallable c2, Configuration config |
+      callableStep(c1, c2, config) and
+      ce1 = TCallable(c1, config) and
+      ce2 = TCallable(c2, unbind(config))
+    )
+    or
+    exists(Node n, Configuration config |
+      ce1 = TCallableSrc() and
+      config.isSource(n) and
+      ce2 = TCallable(n.getEnclosingCallable(), config)
+    )
+  }
+
+  private int distSrcExt(TCallableExt c) =
+    shortestDistances(callableExtSrc/1, callableExtStepFwd/2)(_, c, result)
+
+  private int distSrc(DataFlowCallable c, Configuration config) {
+    result = distSrcExt(TCallable(c, config)) - 1
+  }
+
+  private newtype TPartialPathNode =
+    TPartialPathNodeMk(Node node, CallContext cc, AccessPath ap, Configuration config) {
+      config.isSource(node) and
+      cc instanceof CallContextAny and
+      ap = TNil(getErasedRepr(node.getType())) and
+      not fullBarrier(node, config) and
+      exists(config.explorationLimit())
+      or
+      partialPathNodeMk0(node, cc, ap, config) and
+      distSrc(node.getEnclosingCallable(), config) <= config.explorationLimit()
+    }
+
+  pragma[nomagic]
+  private predicate partialPathNodeMk0(
+    Node node, CallContext cc, AccessPath ap, Configuration config
+  ) {
+    exists(PartialPathNode mid |
+      partialPathStep(mid, node, cc, ap, config) and
+      not fullBarrier(node, config) and
+      if node instanceof CastingNode then compatibleTypes(node.getType(), ap.getType()) else any()
+    )
+  }
+
+  /**
+   * A `Node` augmented with a call context, an access path, and a configuration.
+   */
+  class PartialPathNode extends TPartialPathNode {
+    /** Gets a textual representation of this element. */
+    string toString() { result = getNode().toString() + ppAp() }
+
+    /**
+     * Gets a textual representation of this element, including a textual
+     * representation of the call context.
+     */
+    string toStringWithContext() { result = getNode().toString() + ppAp() + ppCtx() }
+
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+     */
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      getNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets the underlying `Node`. */
+    abstract Node getNode();
+
+    /** Gets the associated configuration. */
+    abstract Configuration getConfiguration();
+
+    /** Gets a successor of this node, if any. */
+    abstract PartialPathNode getASuccessor();
+
+    /**
+     * Gets the approximate distance to the nearest source measured in number
+     * of interprocedural steps.
+     */
+    int getSourceDistance() {
+      result = distSrc(this.getNode().getEnclosingCallable(), this.getConfiguration())
+    }
+
+    private string ppAp() {
+      exists(string s | s = this.(PartialPathNodePriv).getAp().toString() |
+        if s = "" then result = "" else result = " [" + s + "]"
+      )
+    }
+
+    private string ppCtx() {
+      result = " <" + this.(PartialPathNodePriv).getCallContext().toString() + ">"
+    }
+  }
+
+  /**
+   * Provides the query predicates needed to include a graph in a path-problem query.
+   */
+  module PartialPathGraph {
+    /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
+    query predicate edges(PartialPathNode a, PartialPathNode b) { a.getASuccessor() = b }
+  }
+
+  private class PartialPathNodePriv extends PartialPathNode {
+    Node node;
+
+    CallContext cc;
+
+    AccessPath ap;
+
+    Configuration config;
+
+    PartialPathNodePriv() { this = TPartialPathNodeMk(node, cc, ap, config) }
+
+    override Node getNode() { result = node }
+
+    CallContext getCallContext() { result = cc }
+
+    AccessPath getAp() { result = ap }
+
+    override Configuration getConfiguration() { result = config }
+
+    private PartialPathNodePriv getSuccMid() {
+      partialPathStep(this, result.getNode(), result.getCallContext(), result.getAp(),
+        result.getConfiguration())
+    }
+
+    override PartialPathNode getASuccessor() { result = getSuccMid() }
+  }
+
+  private predicate partialPathStep(
+    PartialPathNodePriv mid, Node node, CallContext cc, AccessPath ap, Configuration config
+  ) {
+    localFlowStep(mid.getNode(), node, config) and
+    cc = mid.getCallContext() and
+    ap = mid.getAp() and
+    config = mid.getConfiguration()
+    or
+    additionalLocalFlowStep(mid.getNode(), node, config) and
+    cc = mid.getCallContext() and
+    mid.getAp() instanceof AccessPathNil and
+    ap = TNil(getErasedRepr(node.getType())) and
+    config = mid.getConfiguration()
+    or
+    jumpStep(mid.getNode(), node, config) and
+    cc instanceof CallContextAny and
+    ap = mid.getAp() and
+    config = mid.getConfiguration()
+    or
+    additionalJumpStep(mid.getNode(), node, config) and
+    cc instanceof CallContextAny and
+    mid.getAp() instanceof AccessPathNil and
+    ap = TNil(getErasedRepr(node.getType())) and
+    config = mid.getConfiguration()
+    or
+    partialPathStoreStep(mid, _, _, node, ap) and
+    cc = mid.getCallContext() and
+    config = mid.getConfiguration()
+    or
+    exists(AccessPath ap0, Content f |
+      partialPathReadStep(mid, ap0, f, node, cc, config) and
+      apConsFwd(ap, f, ap0, config)
+    )
+    or
+    partialPathOutOfArgument(mid, node, cc, ap, config)
+    or
+    partialPathIntoCallable(mid, node, _, cc, _, ap, config)
+    or
+    partialPathOutOfCallable(mid, node, cc, ap, config)
+    or
+    partialPathThroughCallable(mid, node, cc, ap, config)
+    or
+    valuePartialPathThroughCallable(mid, node, cc, ap, config)
+  }
+
+  bindingset[result, i]
+  private int unbindInt(int i) { i <= result and i >= result }
+
+  pragma[inline]
+  private predicate partialPathStoreStep(
+    PartialPathNodePriv mid, AccessPath ap1, Content f, Node node, AccessPath ap2
+  ) {
+    ap1 = mid.getAp() and
+    store(mid.getNode(), f, node) and
+    ap2.getHead() = f and
+    ap2.len() = unbindInt(ap1.len() + 1) and
+    compatibleTypes(ap1.getType(), f.getType())
+  }
+
+  pragma[nomagic]
+  private predicate apConsFwd(AccessPath ap1, Content f, AccessPath ap2, Configuration config) {
+    exists(PartialPathNodePriv mid |
+      partialPathStoreStep(mid, ap1, f, _, ap2) and
+      config = mid.getConfiguration()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate partialPathReadStep(
+    PartialPathNodePriv mid, AccessPath ap, Content f, Node node, CallContext cc,
+    Configuration config
+  ) {
+    ap = mid.getAp() and
+    read(mid.getNode(), f, node) and
+    ap.getHead() = f and
+    config = mid.getConfiguration() and
+    cc = mid.getCallContext()
+  }
+
+  private predicate partialPathOutOfCallable0(
+    PartialPathNodePriv mid, ReturnPosition pos, CallContext innercc, AccessPath ap,
+    Configuration config
+  ) {
+    pos = getReturnPosition(mid.getNode()) and
+    innercc = mid.getCallContext() and
+    not innercc instanceof CallContextCall and
+    ap = mid.getAp() and
+    config = mid.getConfiguration()
+  }
+
+  pragma[noinline]
+  private predicate partialPathOutOfCallable1(
+    PartialPathNodePriv mid, DataFlowCall call, ReturnKind kind, CallContext cc, AccessPath ap,
+    Configuration config
+  ) {
+    exists(ReturnPosition pos, DataFlowCallable c, CallContext innercc |
+      partialPathOutOfCallable0(mid, pos, innercc, ap, config) and
+      c = pos.getCallable() and
+      kind = pos.getKind() and
+      resolveReturn(innercc, c, call)
+    |
+      if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
+    )
+  }
+
+  private predicate partialPathOutOfCallable(
+    PartialPathNodePriv mid, OutNode out, CallContext cc, AccessPath ap, Configuration config
+  ) {
+    exists(ReturnKind kind, DataFlowCall call |
+      partialPathOutOfCallable1(mid, call, kind, cc, ap, config)
+    |
+      out = getAnOutNode(call, kind)
+    )
+  }
+
+  private predicate partialPathOutOfArgument(
+    PartialPathNodePriv mid, PostUpdateNode node, CallContext cc, AccessPath ap,
+    Configuration config
+  ) {
+    exists(
+      PostUpdateNode n, ParameterNode p, DataFlowCallable callable, CallContext innercc, int i,
+      DataFlowCall call, ArgumentNode arg
+    |
+      mid.getNode() = n and
+      parameterValueFlowsToUpdate(p, n) and
+      innercc = mid.getCallContext() and
+      p.isParameterOf(callable, i) and
+      resolveReturn(innercc, callable, call) and
+      node.getPreUpdateNode() = arg and
+      arg.argumentOf(call, i) and
+      ap = mid.getAp() and
+      config = mid.getConfiguration()
+    |
+      if reducedViableImplInReturn(callable, call)
+      then cc = TReturn(callable, call)
+      else cc = TAnyCallContext()
+    )
+  }
+
+  pragma[noinline]
+  private predicate partialPathIntoArg(
+    PartialPathNodePriv mid, int i, CallContext cc, DataFlowCall call, boolean emptyAp,
+    AccessPath ap, Configuration config
+  ) {
+    exists(ArgumentNode arg |
+      arg = mid.getNode() and
+      cc = mid.getCallContext() and
+      arg.argumentOf(call, i) and
+      ap = mid.getAp() and
+      config = mid.getConfiguration()
+    |
+      ap instanceof AccessPathNil and emptyAp = true
+      or
+      ap instanceof AccessPathCons and emptyAp = false
+    )
+  }
+
+  pragma[nomagic]
+  private predicate partialPathIntoCallable0(
+    PartialPathNodePriv mid, DataFlowCallable callable, int i, CallContext outercc,
+    DataFlowCall call, boolean emptyAp, AccessPath ap, Configuration config
+  ) {
+    partialPathIntoArg(mid, i, outercc, call, emptyAp, ap, config) and
+    callable = resolveCall(call, outercc)
+  }
+
+  private predicate partialPathIntoCallable(
+    PartialPathNodePriv mid, ParameterNode p, CallContext outercc, CallContextCall innercc,
+    DataFlowCall call, AccessPath ap, Configuration config
+  ) {
+    exists(int i, DataFlowCallable callable, boolean emptyAp |
+      partialPathIntoCallable0(mid, callable, i, outercc, call, emptyAp, ap, config) and
+      p.isParameterOf(callable, i)
+    |
+      if reducedViableImplInCallContext(_, callable, call)
+      then innercc = TSpecificCall(call, i, emptyAp)
+      else innercc = TSomeCall(p, emptyAp)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate paramFlowsThroughInPartialPath(
+    ParameterNode p, ReturnKind kind, CallContextCall cc, AccessPathNil apnil, Configuration config
+  ) {
+    exists(PartialPathNodePriv mid, ReturnNode ret |
+      mid.getNode() = ret and
+      kind = ret.getKind() and
+      cc = mid.getCallContext() and
+      config = mid.getConfiguration() and
+      apnil = mid.getAp()
+    |
+      cc = TSomeCall(p, true)
+      or
+      exists(int i | cc = TSpecificCall(_, i, true) |
+        p.isParameterOf(returnNodeGetEnclosingCallable(ret), i)
+      )
+    )
+  }
+
+  pragma[noinline]
+  private predicate partialPathThroughCallable0(
+    DataFlowCall call, PartialPathNodePriv mid, ReturnKind kind, CallContext cc,
+    AccessPathNil apnil, Configuration config
+  ) {
+    exists(ParameterNode p, CallContext innercc, AccessPathNil midapnil |
+      partialPathIntoCallable(mid, p, cc, innercc, call, midapnil, config) and
+      paramFlowsThroughInPartialPath(p, kind, innercc, apnil, config) and
+      not parameterValueFlowsThrough(p, kind, innercc)
+    )
+  }
+
+  private predicate partialPathThroughCallable(
+    PartialPathNodePriv mid, OutNode out, CallContext cc, AccessPathNil apnil, Configuration config
+  ) {
+    exists(DataFlowCall call, ReturnKind kind |
+      partialPathThroughCallable0(call, mid, kind, cc, apnil, config) and
+      out = getAnOutNode(call, kind)
+    )
+  }
+
+  pragma[noinline]
+  private predicate valuePartialPathThroughCallable0(
+    DataFlowCall call, PartialPathNodePriv mid, ReturnKind kind, CallContext cc, AccessPath ap,
+    Configuration config
+  ) {
+    exists(ParameterNode p, CallContext innercc |
+      partialPathIntoCallable(mid, p, cc, innercc, call, ap, config) and
+      parameterValueFlowsThrough(p, kind, innercc)
+    )
+  }
+
+  private predicate valuePartialPathThroughCallable(
+    PartialPathNodePriv mid, OutNode out, CallContext cc, AccessPath ap, Configuration config
+  ) {
+    exists(DataFlowCall call, ReturnKind kind |
+      valuePartialPathThroughCallable0(call, mid, kind, cc, ap, config) and
+      out = getAnOutNode(call, kind)
+    )
+  }
+}
+import FlowExploration
+
+private predicate partialFlow(
+  PartialPathNode source, PartialPathNode node, Configuration configuration
+) {
+  source.getConfiguration() = configuration and
+  configuration.isSource(source.getNode()) and
+  node = source.getASuccessor+()
 }
