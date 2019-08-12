@@ -431,7 +431,7 @@ class BarrierGuard extends Guard {
   /** Holds if this guard validates `e` upon evaluating to `branch`. */
   abstract predicate checks(Expr e, boolean branch);
 
-  /** Gets a node guarded by this. */
+  /** Gets a node guarded by this guard. */
   final Node getAGuardedNode() {
     exists(SsaVariable v, boolean branch, RValue use |
       this.checks(v.getAUse(), branch) and

@@ -345,7 +345,7 @@ class BarrierGuard extends Expr {
   /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `branch`. */
   abstract deprecated predicate checks(Expr e, boolean branch);
 
-  /** Gets a node guarded by this. */
+  /** Gets a node guarded by this guard. */
   final Node getAGuardedNode() {
     none() // stub
   }
