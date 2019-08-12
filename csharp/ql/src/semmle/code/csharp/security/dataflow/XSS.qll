@@ -92,7 +92,7 @@ module XSS {
 
     override string toString() { result = node.toString() }
 
-    override Location getLocation() { result = node.getLocation() }
+    override Location getLocation() { result = node.getNode().getLocation() }
   }
 
   /** An ASP inline code element, viewed as an XSS flow node. */
