@@ -42,8 +42,8 @@ private newtype TOpcode =
   TDynamicCastToVoid() or
   TVariableAddress() or
   TFieldAddress() or
-  TIndexedElementAddress() or
   TFunctionAddress() or
+  TElementsAddress() or
   TConstant() or
   TStringConstant() or
   TConditionalBranch() or
@@ -73,7 +73,8 @@ private newtype TOpcode =
   TBufferMayWriteSideEffect() or
   TChi() or
   TInlineAsm() or
-  TUnreached()
+  TUnreached() or
+  TNewObj()
 
 class Opcode extends TOpcode {
   string toString() {
@@ -191,7 +192,7 @@ module Opcode {
   class DynamicCastToVoid extends UnaryOpcode, TDynamicCastToVoid { override final string toString() { result = "DynamicCastToVoid" } }
   class VariableAddress extends Opcode, TVariableAddress { override final string toString() { result = "VariableAddress" } }
   class FieldAddress extends UnaryOpcode, TFieldAddress { override final string toString() { result = "FieldAddress" } }
-  class IndexedElementAddress extends BinaryOpcode, TIndexedElementAddress { override final string toString() { result = "IndexedElementAddress" } }
+  class ElementsAddress extends UnaryOpcode, TElementsAddress { override final string toString() { result = "ElementsAddress" } }
   class FunctionAddress extends Opcode, TFunctionAddress { override final string toString() { result = "FunctionAddress" } }
   class Constant extends Opcode, TConstant { override final string toString() { result = "Constant" } }
   class StringConstant extends Opcode, TStringConstant { override final string toString() { result = "StringConstant" } }
@@ -223,4 +224,5 @@ module Opcode {
   class Chi extends Opcode, TChi { override final string toString() { result = "Chi" } }
   class InlineAsm extends Opcode, TInlineAsm { override final string toString() { result = "InlineAsm" } }
   class Unreached extends Opcode, TUnreached { override final string toString() { result = "Unreached" } }
+  class NewObj extends Opcode, TNewObj { override final string toString() { result = "NewObj" } }
 }
