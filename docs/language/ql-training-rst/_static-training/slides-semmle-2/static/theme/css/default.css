@@ -1316,7 +1316,9 @@ aside.gdbar img {
 
 /* line 913, ../scss/default.scss */
 .quote {
-  color: #e6e6e6;
+  color: black;
+  font-style: italic;
+  font-size: 1.2em;
 }
 /* line 916, ../scss/default.scss */
 .quote .author {
@@ -1381,6 +1383,10 @@ em {
   font-style: italic;
 }
 
+sup {
+  vertical-align: super;
+  font-size: 0.5em;
+}
 
 
 /* James slide backgrounds */
@@ -1412,6 +1418,11 @@ slide {
 .agenda-slide h1 {
   padding:0;
 }
+
+.background2 h1, .background2 p {
+  color: white;
+}
+
 
 /* Title slide styles */
 
@@ -1502,6 +1513,7 @@ p.first.admonition-title {
 
 .admonition.note > p {
   width: inherit;
+  font-size: 1em;
 }
 
 .admonition.note  ul {

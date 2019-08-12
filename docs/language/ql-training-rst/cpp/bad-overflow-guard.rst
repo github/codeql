@@ -29,7 +29,7 @@ More resources:
 
   Alternatively, you can query any project (including ChakraCore) in the  `query console on LGTM.com <https://lgtm.com/query/project:2034240708/lang:cpp/>`__. 
 
-  Note that results generated in the query console are likely to differ to those generated in the QL plugin. LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+  Note that results generated in the query console are likely to differ to those generated in the QL plugin. LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is for an historical version of the code base.
 
 
 Checking for overflow in C
@@ -60,20 +60,22 @@ Integer promotion
 
 From `https://en.cppreference.com/w/c/language/conversion <https://en.cppreference.com/w/c/language/conversion>`__:
 
-*Integer promotion is the implicit conversion of a value of any integer type with rank less or equal to rank of* ``int`` *... to the value of type* ``int`` *or* ``unsigned int``.
+.. rst-class:: quote
+
+  Integer promotion is the implicit conversion of a value of any integer type with rank less or equal to rank of ``int`` ... to the value of type ``int`` or ``unsigned int``.
 
 The arguments of the following arithmetic operators undergo implicit conversions:
 
-- binary arithmetic (* / % + - )
-- relational operators (< > <= >= == !=)
-- binary bitwise operators (& ^ \|)
-- the conditional operator (?:)
+- binary arithmetic: ``* / % + -``
+- relational operators: ``< > <= >= == !=``
+- binary bitwise operators: ``& ^ |``
+- the conditional operator: ``?:``
 
 .. note::
 
   - Most of the time integer conversion works fine. However, the rules governing addition in C/C++ are complex, and it easy to get bitten.
-  - CPUs generally prefer to perform arithmetic operations on 32 bit or larger integers, as the architectures are optimised to perform those efficiently.
-  - The compiler therefore performs “integer promotion” for arguments to arithmetic operations that are smaller than 32 bit.
+  - CPUs generally prefer to perform arithmetic operations on 32-bit or larger integers, as the architectures are optimized to perform those efficiently.
+  - The compiler therefore performs “integer promotion” for arguments to arithmetic operations that are smaller than 32-bit.
 
 Checking for overflow in C revisited
 ====================================
@@ -101,6 +103,7 @@ Checking for overflow in C revisited
 Here is the example again, with the conversions made explicit:
 
 .. code-block:: cpp
+  :emphasize-lines: 4,7
 
   uint16_t v = 65535;
   uint16_t b = 1;
@@ -116,10 +119,11 @@ Here is the example again, with the conversions made explicit:
   In this example the second branch is executed, even though there is a 16-bit overflow, and result is set to zero.
 
   Explanation:
-  - The two integer arguments to the addition, v and b, are promoted to 32 bit integers.
-  - The comparison (<) is also an arithmetic operation, therefore it will also be completed on 32 bit integers.
-  - This means that v + b < v will never be true, because v and b can hold at most 216.
-  - Therefore, the second branch is executed, but the result of the addition is stored into the result variable. Overflow will still occur as result is a 16 bit integer.
+
+  - The two integer arguments to the addition, ``v`` and ``b``, are promoted to 32-bit integers.
+  - The comparison (``<``) is also an arithmetic operation, therefore it will also be completed on 32-bit integers.
+  - This means that ``v + b < v`` will never be true, because v and b can hold at most 2 :sup:`16`.
+  - Therefore, the second branch is executed, but the result of the addition is stored into the result variable. Overflow will still occur as result is a 16-bit integer.
 
 This happens even though the overflow check passed!
 
@@ -146,9 +150,11 @@ Let’s look for overflow guards of the form ``v + b < v``, using the classes
   - When performing `variant analysis <https://semmle.com/variant-analysis>`__, it is usually helpful to write a simple query that finds the simple syntactic pattern, before trying to go on to describe the cases where it goes wrong.
   - In this case, we start by looking for all the *overflow* checks, before trying to refine the query to find all *bad overflow* checks.
   - The select clause defines what this query is looking for:
+
     - an ``AddExpr``: the expression that is being checked for overflow.
     - a ``RelationalOperation``: the overflow comparison check.
     - a ``Variable``: used as an argument to both the addition and comparison.
+
   - The where part of the query ties these three QL variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard QL for C/C++ library <https://help.semmle.com/qldoc/cpp/>`__.
 
 QL query: bad overflow guards
@@ -174,7 +180,7 @@ We can get the size (in bytes) of a type using the ``getSize()`` method.
 
   - An important part of the query is to determine whether a given expression has a “small” type that is going to trigger integer promotion.
   - We therefore write a helper predicate for small expressions.
-  - This predicate effectively represents the set of all expressions in the database where the size of the type of the expression is less than 4 bytes, that is less than 32 bits.
+  - This predicate effectively represents the set of all expressions in the database where the size of the type of the expression is less than 4 bytes, that is, less than 32-bits.
 
 QL query: bad overflow guards
 =============================
@@ -190,23 +196,25 @@ Now our query becomes:
 
 .. note::
 
-  - Recall from earlier that what makes an overflow check a “bad” check is that all the arguments to the addition are integers smaller than 32 bits.
-  - We could write this by using our helper predicate ``isSmall`` to specify that each individual operand to the addition ``isSmall`` (that is under 32 bits):
+  - Recall from earlier that what makes an overflow check a “bad” check is that all the arguments to the addition are integers smaller than 32-bits.
+  - We could write this by using our helper predicate ``isSmall`` to specify that each individual operand to the addition ``isSmall`` (that is under 32-bits):
 
-  .. code-block:: ql
-
-    isSmall(a.getLeftOperand()) and
-    isSmall(a.getRightOperand())
+    .. code-block:: ql
+  
+      isSmall(a.getLeftOperand()) and
+      isSmall(a.getRightOperand())
 
   - However, this is a little bit repetitive. What we really want to say is that: all the operands of the addition are small. Fortunately, QL provides a ``forall`` formula that we can use in these circumstances.
   - A ``forall`` has three parts:
+
     - A declaration part, where we can introduce variables.
     - A “range” part, which allows us to restrict those variables.
-    - A “condition” part. The ``foral`` as a whole holds if the condition holds for each of the values in the range.
+    - A “condition” part. The ``forall`` as a whole holds if the condition holds for each of the values in the range.
   - In our case:
-    - The declaration introduces a variable for Expressions, called ``op``. At this stage, this variable represents all the expressions in the program.
+
+    - The declaration introduces a variable for expressions, called ``op``. At this stage, this variable represents all the expressions in the program.
     - The “range” part, ``op = a.getAnOperand()``,  restricts ``op`` to being one of the two operands to the addition.
-    - The “condition” part, ``isSmall(op)``, says that the ``forall`` holds only if the condition - that the ``op`` is small - holds for everything in the range - that is both the arguments to the addition
+    - The “condition” part, ``isSmall(op)``, says that the ``forall`` holds only if the condition - that the ``op`` is small - holds for everything in the range - that is both the arguments to the addition.
 
 QL query: bad overflow guards
 =============================
@@ -225,4 +233,4 @@ The final query
 .. literalinclude:: ../query-examples/cpp/bad-overflow-guard-3.ql
    :language: ql
 
-This query finds a single result, which is `a genuine bug in ChakraCore <https://github.com/Microsoft/ChakraCore/commit/2500e1cdc12cb35af73d5c8c9b85656aba6bab4d>`__.
+This query finds a single result in our historic snapshot, which was `a genuine bug in ChakraCore <https://github.com/Microsoft/ChakraCore/commit/2500e1cdc12cb35af73d5c8c9b85656aba6bab4d>`__.
