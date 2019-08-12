@@ -490,7 +490,8 @@ module FlowVar_internal {
   private SubBasicBlock getAReachedBlockVarSBB(TBlockVar start) {
     exists(Variable v |
       start = TBlockVar(result, v) and
-      variableLiveInSBB(result, v)
+      variableLiveInSBB(result, v) and
+      not largeVariable(v, _, _)
     )
     or
     exists(SubBasicBlock mid, SubBasicBlock sbbDef, Variable v |
@@ -501,6 +502,16 @@ module FlowVar_internal {
       not skipLoop(mid, result, sbbDef, v) and
       not assignmentLikeOperation(result, v, _, _)
     )
+  }
+
+  /**
+   * Holds if `v` may have too many combinations of definitions and reached
+   * blocks for us the feasibly compute its def-use relation.
+   */
+  private predicate largeVariable(Variable v, int liveBlocks, int defs) {
+    liveBlocks = strictcount(SubBasicBlock sbb | variableLiveInSBB(sbb, v)) and
+    defs = strictcount(SubBasicBlock sbb | exists(TBlockVar(sbb, v))) and
+    liveBlocks * defs > 1000000
   }
 
   /**
