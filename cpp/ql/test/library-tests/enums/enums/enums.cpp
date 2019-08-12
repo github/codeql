@@ -13,3 +13,19 @@ Day& operator++(Day& d)
 	Day2 d2 = (Day2)d;
 	return d = (sat==d) ? sun: Day(d+1);
 }
+
+void myFunction()
+{
+	enum myLocalEnum
+	{
+		myLocalEnumConstant
+	};
+};
+
+class MyClass
+{
+  enum MyNestedEnum
+  {
+    MyNestedEnumConstant
+  };
+};
