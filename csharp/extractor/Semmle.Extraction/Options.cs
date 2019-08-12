@@ -44,6 +44,11 @@ namespace Semmle.Extraction
         /// </summary>
         public bool Fast = false;
 
+        /// <summary>
+        /// The compression algorithm used for trap files.
+        /// </summary>
+        public TrapWriter.CompressionMode TrapCompression = TrapWriter.CompressionMode.Gzip;
+
         public virtual bool handleOption(string key, string value)
         {
             switch (key)

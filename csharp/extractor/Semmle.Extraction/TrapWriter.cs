@@ -21,6 +21,13 @@ namespace Semmle.Extraction
             RELATIVE
         }
 
+        public enum CompressionMode
+        {
+            None,
+            Gzip,
+            Brotli
+        }
+
         /// <summary>
         /// The location of the src_archive directory.
         /// </summary>
@@ -37,10 +44,14 @@ namespace Semmle.Extraction
 
         readonly ILogger Logger;
 
-        public TrapWriter(ILogger logger, string outputfile, string trap, string archive, bool discardDuplicates)
+        readonly CompressionMode TrapCompression;
+
+        public TrapWriter(ILogger logger, string outputfile, string trap, string archive, bool discardDuplicates, CompressionMode trapCompression)
         {
             Logger = logger;
-            TrapFile = TrapPath(Logger, trap, outputfile);
+            TrapCompression = trapCompression;
+
+            TrapFile = TrapPath(Logger, trap, outputfile, trapCompression);
 
             WriterLazy = new Lazy<StreamWriter>(() =>
             {
@@ -62,7 +73,26 @@ namespace Semmle.Extraction
                 while (File.Exists(tmpFile));
 
                 var fileStream = new FileStream(tmpFile, FileMode.CreateNew, FileAccess.Write);
-                var compressionStream = new BrotliStream(fileStream, CompressionLevel.Fastest);
+
+                Stream compressionStream;
+
+                switch (trapCompression)
+                {
+                    case CompressionMode.Brotli:
+                        compressionStream = new BrotliStream(fileStream, CompressionLevel.Fastest);
+                        break;
+                    case CompressionMode.Gzip:
+                        compressionStream = new GZipStream(fileStream, CompressionLevel.Fastest);
+                        break;
+                    case CompressionMode.None:
+                        compressionStream = fileStream;
+                        break;
+                    default:
+                        // Dead code
+                        throw new ArgumentException(nameof(trapCompression));
+                }
+
+
                 return new StreamWriter(compressionStream, UTF8, 2000000);
             });
             this.archive = archive;
@@ -158,7 +188,7 @@ namespace Semmle.Extraction
                     if (existingHash != hash)
                     {
                         var root = TrapFile.Substring(0, TrapFile.Length - 8); // Remove trailing ".trap.gz"
-                        if (TryMove(tmpFile, $"{root}-{hash}.trap.br"))
+                        if (TryMove(tmpFile, $"{root}-{hash}.trap{TrapExtension(TrapCompression)}"))
                             return;
                     }
                     Logger.Log(Severity.Info, "Identical trap file for {0} already exists", TrapFile);
@@ -253,9 +283,20 @@ namespace Semmle.Extraction
             return nested;
         }
 
-        public static string TrapPath(ILogger logger, string folder, string filename)
+        static string TrapExtension(CompressionMode compression)
         {
-            filename = Path.GetFullPath(filename) + ".trap.br";
+            switch (compression)
+            {
+                case CompressionMode.None: return "";
+                case CompressionMode.Gzip: return ".gz";
+                case CompressionMode.Brotli: return ".br";
+                default: throw new ArgumentException(nameof(compression));
+            }
+        }
+
+        public static string TrapPath(ILogger logger, string folder, string filename, TrapWriter.CompressionMode trapCompression)
+        {
+            filename = $"{Path.GetFullPath(filename)}.trap{TrapExtension(trapCompression)}";
             if (string.IsNullOrEmpty(folder))
                 folder = Directory.GetCurrentDirectory();
 

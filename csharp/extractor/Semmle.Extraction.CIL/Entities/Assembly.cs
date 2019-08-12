@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CIL.Entities
         /// <param name="extractPdbs">Whether to extract PDBs.</param>
         /// <param name="trapFile">The path of the trap file.</param>
         /// <param name="extracted">Whether the file was extracted (false=cached).</param>
-        public static void ExtractCIL(Layout layout, string assemblyPath, ILogger logger, bool nocache, bool extractPdbs, out string trapFile, out bool extracted)
+        public static void ExtractCIL(Layout layout, string assemblyPath, ILogger logger, bool nocache, bool extractPdbs, TrapWriter.CompressionMode trapCompression, out string trapFile, out bool extracted)
         {
             trapFile = "";
             extracted = false;
@@ -125,7 +125,7 @@ namespace Semmle.Extraction.CIL.Entities
             {
                 var extractor = new Extractor(false, assemblyPath, logger);
                 var project = layout.LookupProjectOrDefault(assemblyPath);
-                using (var trapWriter = project.CreateTrapWriter(logger, assemblyPath + ".cil", true))
+                using (var trapWriter = project.CreateTrapWriter(logger, assemblyPath + ".cil", true, trapCompression))
                 {
                     trapFile = trapWriter.TrapFile;
                     if (nocache || !System.IO.File.Exists(trapFile))

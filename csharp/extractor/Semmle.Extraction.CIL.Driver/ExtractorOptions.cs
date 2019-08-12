@@ -184,6 +184,7 @@ namespace Semmle.Extraction.CIL.Driver
         public bool NoCache { get; private set; }
         public int Threads { get; private set; }
         public bool PDB { get; private set; }
+        public TrapWriter.CompressionMode TrapCompression { get; private set; }
 
         void AddFileOrDirectory(string path)
         {
@@ -220,6 +221,7 @@ namespace Semmle.Extraction.CIL.Driver
             options.Verbosity = Verbosity.Info;
             options.Threads = System.Environment.ProcessorCount;
             options.PDB = true;
+            options.TrapCompression = TrapWriter.CompressionMode.Gzip;
 
             foreach (var arg in args)
             {

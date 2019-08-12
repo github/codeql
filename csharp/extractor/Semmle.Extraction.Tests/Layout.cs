@@ -28,13 +28,13 @@ namespace Semmle.Extraction.Tests
                 Assert.NotEqual(Directory.GetCurrentDirectory(), tmpDir);
                 return;
             }
-            var f1 = project.GetTrapPath(Logger, "foo.cs");
+            var f1 = project.GetTrapPath(Logger, "foo.cs", TrapWriter.CompressionMode.Gzip);
             var g1 = TrapWriter.NestPaths(Logger, tmpDir, "foo.cs.trap.gz", TrapWriter.InnerPathComputation.ABSOLUTE);
             Assert.Equal(f1, g1);
 
             // Test trap file generation
-            var trapwriterFilename = project.GetTrapPath(Logger, "foo.cs");
-            using (var trapwriter = project.CreateTrapWriter(Logger, "foo.cs", false))
+            var trapwriterFilename = project.GetTrapPath(Logger, "foo.cs", TrapWriter.CompressionMode.Gzip);
+            using (var trapwriter = project.CreateTrapWriter(Logger, "foo.cs", false, TrapWriter.CompressionMode.Gzip))
             {
                 trapwriter.Emit("1=*");
                 Assert.False(File.Exists(trapwriterFilename));
@@ -72,12 +72,12 @@ namespace Semmle.Extraction.Tests
 
             // Test the trap file
             var project = layout.LookupProjectOrNull("bar.cs");
-            var trapwriterFilename = project.GetTrapPath(Logger, "bar.cs");
+            var trapwriterFilename = project.GetTrapPath(Logger, "bar.cs", TrapWriter.CompressionMode.Gzip);
             Assert.Equal(TrapWriter.NestPaths(Logger, Path.GetFullPath("snapshot\\trap"), "bar.cs.trap.gz", TrapWriter.InnerPathComputation.ABSOLUTE),
                 trapwriterFilename);
 
             // Test the source archive
-            var trapWriter = project.CreateTrapWriter(Logger, "bar.cs", false);
+            var trapWriter = project.CreateTrapWriter(Logger, "bar.cs", false, TrapWriter.CompressionMode.Gzip);
             trapWriter.Archive("layout.txt", System.Text.Encoding.ASCII);
             var writtenFile = TrapWriter.NestPaths(Logger, Path.GetFullPath("snapshot\\archive"), "layout.txt", TrapWriter.InnerPathComputation.ABSOLUTE);
             Assert.True(File.Exists(writtenFile));
@@ -90,7 +90,7 @@ namespace Semmle.Extraction.Tests
             // When you specify both a trap file and a layout, use the trap file.
             var layout = new Semmle.Extraction.Layout(Path.GetFullPath("snapshot\\trap"), null, "something.txt");
             Assert.True(layout.FileInLayout("bar.cs"));
-            var f1 = layout.LookupProjectOrNull("foo.cs").GetTrapPath(Logger, "foo.cs");
+            var f1 = layout.LookupProjectOrNull("foo.cs").GetTrapPath(Logger, "foo.cs", TrapWriter.CompressionMode.Gzip);
             var g1 = TrapWriter.NestPaths(Logger, Path.GetFullPath("snapshot\\trap"), "foo.cs.trap.gz", TrapWriter.InnerPathComputation.ABSOLUTE);
             Assert.Equal(f1, g1);
         }
@@ -118,19 +118,19 @@ namespace Semmle.Extraction.Tests
 
             // Use Section 2
             Assert.True(layout.FileInLayout("bar.cs"));
-            var f1 = layout.LookupProjectOrNull("bar.cs").GetTrapPath(Logger, "bar.cs");
+            var f1 = layout.LookupProjectOrNull("bar.cs").GetTrapPath(Logger, "bar.cs", TrapWriter.CompressionMode.Gzip);
             var g1 = TrapWriter.NestPaths(Logger, Path.GetFullPath("snapshot\\trap2"), "bar.cs.trap.gz", TrapWriter.InnerPathComputation.ABSOLUTE);
             Assert.Equal(f1, g1);
 
             // Use Section 1
             Assert.True(layout.FileInLayout("foo.cs"));
-            var f2 = layout.LookupProjectOrNull("foo.cs").GetTrapPath(Logger, "foo.cs");
+            var f2 = layout.LookupProjectOrNull("foo.cs").GetTrapPath(Logger, "foo.cs", TrapWriter.CompressionMode.Gzip);
             var g2 = TrapWriter.NestPaths(Logger, Path.GetFullPath("snapshot\\trap1"), "foo.cs.trap.gz", TrapWriter.InnerPathComputation.ABSOLUTE);
             Assert.Equal(f2, g2);
 
             // boo.dll is not in the layout, so use layout from first section.
             Assert.False(layout.FileInLayout("boo.dll"));
-            var f3 = layout.LookupProjectOrDefault("boo.dll").GetTrapPath(Logger, "boo.dll");
+            var f3 = layout.LookupProjectOrDefault("boo.dll").GetTrapPath(Logger, "boo.dll", TrapWriter.CompressionMode.Gzip);
             var g3 = TrapWriter.NestPaths(Logger, Path.GetFullPath("snapshot\\trap1"), "boo.dll.trap.gz", TrapWriter.InnerPathComputation.ABSOLUTE);
             Assert.Equal(f3, g3);
 
