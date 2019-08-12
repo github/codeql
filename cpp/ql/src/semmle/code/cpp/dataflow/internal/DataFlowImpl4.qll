@@ -1447,8 +1447,18 @@ abstract class PathNode extends TPathNode {
    */
   string toStringWithContext() { result = getNode().toString() + ppAp() + ppCtx() }
 
-  /** Gets the source location for this element. */
-  DataFlowLocation getLocation() { result = getNode().getLocation() }
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    getNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /** Gets the underlying `Node`. */
   abstract Node getNode();
