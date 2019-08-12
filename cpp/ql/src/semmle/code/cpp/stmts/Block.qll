@@ -4,9 +4,13 @@ import semmle.code.cpp.stmts.Stmt
 /**
  * A C/C++ block statement. 
  *
- * For example,
+ * For example, the block from `{` to `}` in the following code:
  * ```
- * { int a; int b = 1; a = b; }
+ * {
+ *   int a;
+ *   int b = 1;
+ *   a = b;
+ * }
  * ```
  */
 class Block extends Stmt, @stmt_block {
