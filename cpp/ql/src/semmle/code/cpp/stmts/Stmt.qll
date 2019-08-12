@@ -216,7 +216,13 @@ abstract class ConditionalStmt extends ControlStructure {
 }
 
 /**
- * A C/C++ 'if' statement.
+ * A C/C++ 'if' statement. For example, the `if` statement in the following
+ * code:
+ * ```
+ * if (x == 1) {
+ *   ...
+ * }
+ * ```
  */
 class IfStmt extends ConditionalStmt, @stmt_if {
   override string getCanonicalQLClass() { result = "IfStmt" }
@@ -295,7 +301,13 @@ class IfStmt extends ConditionalStmt, @stmt_if {
 }
 
 /**
- * A C/C++ 'constexpr if' statement.
+ * A C/C++ 'constexpr if' statement. For example, the `if constexpr` statement
+ * in the following code:
+ * ```
+ * if constexpr (x) {
+ *   ...
+ * }
+ * ```
  */
 class ConstexprIfStmt extends ConditionalStmt, @stmt_constexpr_if {
 
@@ -386,9 +398,11 @@ abstract class Loop extends ControlStructure {
 /**
  * A C/C++ 'while' statement.
  *
- * For example,
+ * For example, the `while` statement in the following code:
  * ```
- * while (b) { f(); }
+ * while (b) {
+ *   f();
+ * }
  * ```
  */
 class WhileStmt extends Loop, @stmt_while {
@@ -468,9 +482,11 @@ abstract class JumpStmt extends Stmt, @jump {
 /**
  * A C/C++ 'goto' statement which jumps to a label.
  *
- * For example,
+ * For example, the `goto` statement in the following code:
  * ```
  * goto someLabel;
+ * ...
+ * somelabel:
  * ```
  */
 class GotoStmt extends JumpStmt, @stmt_goto {
@@ -525,7 +541,7 @@ class GotoStmt extends JumpStmt, @stmt_goto {
  * A 'goto' statement whose target is computed by a non-constant
  * expression (a non-standard extension to C/C++).
  *
- * For example,
+ * For example, the `goto` statement in the following code:
  * ```
  * goto *ptr;
  * ```
@@ -560,9 +576,12 @@ class ComputedGotoStmt extends Stmt, @stmt_assigned_goto {
 /**
  * A C/C++ 'continue' statement.
  *
- * For example,
+ * For example, the `continue` statement in the following code:
  * ```
- * continue;
+ * while (x) {
+ *   if (arr[x] < 0) continue;
+ *   ...
+ * }
  * ```
  */
 class ContinueStmt extends JumpStmt, @stmt_continue {
@@ -590,9 +609,12 @@ private Stmt getEnclosingContinuable(Stmt s) {
 /**
  * A C/C++ 'break' statement.
  *
- * For example,
+ * For example, the `break` statement in the following code:
  * ```
- * break;
+ * while (x) {
+ *   if (arr[x] == 0) break;
+ *   ...
+ * }
  * ```
  */
 class BreakStmt extends JumpStmt, @stmt_break {
@@ -620,9 +642,11 @@ private Stmt getEnclosingBreakable(Stmt s) {
 /**
  * A C/C++ 'label' statement.
  *
- * For example,
+ * For example, the `somelabel:` statement in the following code:
  * ```
- * someLabel:
+ * goto someLabel;
+ * ...
+ * somelabel:
  * ```
  */
 class LabelStmt extends Stmt, @stmt_label {
@@ -643,7 +667,7 @@ class LabelStmt extends Stmt, @stmt_label {
 /**
  * A C/C++ 'return' statement.
  *
- * For example,
+ * For example:
  * ```
  * return 1+2;
  * ```
@@ -696,7 +720,7 @@ class ReturnStmt extends Stmt, @stmt_return {
 /**
  * A C/C++ 'do' statement.
  *
- * For example,
+ * For example, the `do` ... `while` in the following code:
  * ```
  * do {
  *     x = x + 1;
@@ -838,7 +862,7 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
  * This only represents "traditional" 'for' statements and not C++11
  * range-based 'for' statements or Objective C 'for-in' statements.
  *
- * For example,
+ * For example, the `for` statement in:
  * ```
  * for (i = 0; i < 10; i++) { j++; }
  * ```
@@ -1061,13 +1085,15 @@ private predicate inForUpdate(Expr forUpdate, Expr child) {
 /**
  * A C/C++ 'switch case' statement.
  *
- * For example,
+ * For example, the `case` and `default` statements in:
  * ```
+ * switch (i)
+ * {
  * case 5:
- * ```
- * or
- * ```
+ *   ...
  * default:
+ *   ...
+ * }
  * ```
  */
 class SwitchCase extends Stmt, @stmt_switch_case {
@@ -1399,9 +1425,15 @@ class SwitchCase extends Stmt, @stmt_switch_case {
 /**
  * A C/C++ 'default case' statement.
  *
- * For example,
+ * For example, the `default` statement in:
  * ```
+ * switch (i)
+ * {
+ * case 5:
+ *   ...
  * default:
+ *   ...
+ * }
  * ```
  */
 class DefaultCase extends SwitchCase {
@@ -1421,14 +1453,14 @@ class DefaultCase extends SwitchCase {
 /**
  * A C/C++ 'switch' statement.
  *
- * For example,
+ * For example, the `switch` statement in:
  * ```
- * switch(i) {
- *     case 1:
- *     case 2:
- *     break;
- *     default:
- *     break;
+ * switch (i)
+ * {
+ * case 5:
+ *   ...
+ * default:
+ *   ...
  * }
  * ```
  */
@@ -1575,7 +1607,7 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
  * enum color { RED, GREEN, BLUE };
  * enum color c;
  * ```
- * the 'switch' statement
+ * the `switch` statement in:
  * ```
  * switch (c) {
  * case RED:
@@ -1639,7 +1671,16 @@ class EnumSwitch extends SwitchStmt {
  * execution continues with the next `Handler`.
  *
  * This has no concrete representation in the source, but makes the
- * control flow graph easier to use.
+ * control flow graph easier to use.  For example in the following code:
+ * ```
+ * try
+ * {
+ *   f();
+ * } catch (std::exception &e) {
+ *   g();
+ * }
+ * there is a handler that's associated with the `catch` block and controls
+ * entry to it.
  */
 class Handler extends Stmt, @stmt_handler {
 
@@ -1694,9 +1735,13 @@ deprecated class FinallyEnd extends Stmt {
 /**
  * A C/C++ 'try' statement.
  *
- * For example,
+ * For example, the `try` statement in the following code:
  * ```
- * try { f(); } catch (...) { g(); }
+ * try {
+ *   f();
+ * } catch(std::exception &e) {
+ *   g();
+ * }
  * ```
  */
 class TryStmt extends Stmt, @stmt_try_block {
@@ -1766,7 +1811,7 @@ class TryStmt extends Stmt, @stmt_try_block {
  * A C++ 'function try' statement.
  *
  * This is a 'try' statement wrapped around an entire function body,
- * for example:
+ * for example the `try` statement in the following code:
  * ```
  * void foo() try {
  *   f();
@@ -1784,7 +1829,17 @@ class FunctionTryStmt extends TryStmt {
 }
 
 /**
- * A 'catch block', from either C++'s `catch` or Objective C's `@catch`.
+ * A 'catch block', for example the second and third blocks in the following
+ * code:
+ * ```
+ * try {
+ *   f();
+ * } catch(std::exception &e) {
+ *   g();
+ * } catch(...) {
+ *   h();
+ * }
+ * ```
  */
 class CatchBlock extends Block {
 
@@ -1807,7 +1862,16 @@ class CatchBlock extends Block {
 }
 
 /**
- * A C++ 'catch-any block', that is, `catch(...) {stmts}`.
+ * A C++ 'catch-any block', for example the third block in the following code:
+ * ```
+ * try {
+ *   f();
+ * } catch(std::exception &e) {
+ *   g();
+ * } catch(...) {
+ *   h();
+ * }
+ * ```
  */
 class CatchAnyBlock extends CatchBlock {
   CatchAnyBlock() {
@@ -1828,8 +1892,17 @@ class MicrosoftTryStmt extends Stmt, @stmt_microsoft_try {
 }
 
 /**
- * A structured exception handling 'try except' statement, that is,
- * a `__try __except` statement. This is a Microsoft C/C++ extension.
+ * A structured exception handling 'try except' statement, for example the
+ * `__try` statement in the following code:
+ * ```
+ * __try
+ * {
+ *   f();
+ * } __except(myExceptionFilter()) {
+ *   g()
+ * }
+ * ```
+ * This is a Microsoft C/C++ extension.
  */
 class MicrosoftTryExceptStmt extends MicrosoftTryStmt {
   MicrosoftTryExceptStmt() {
@@ -1848,8 +1921,17 @@ class MicrosoftTryExceptStmt extends MicrosoftTryStmt {
 }
 
 /**
- * A structured exception handling 'try finally' statement, that is,
- * a `__try __finally` statement. This is a Microsoft C/C++ extension.
+ * A structured exception handling 'try finally' statement, for example the
+ * `__try` statement in the following code:
+ * ```
+ * __try
+ * {
+ *   f();
+ * } __finally {
+ *   g()
+ * }
+ * ```
+ * This is a Microsoft C/C++ extension.
  */
 class MicrosoftTryFinallyStmt extends MicrosoftTryStmt {
   MicrosoftTryFinallyStmt() {
@@ -1865,7 +1947,7 @@ class MicrosoftTryFinallyStmt extends MicrosoftTryStmt {
 /**
  * A C/C++ 'declaration' statement.
  *
- * For example,
+ * For example, the following statement is a declaration statement:
  * ```
  * int i, j;
  * ```
@@ -1946,7 +2028,7 @@ class DeclStmt extends Stmt, @stmt_decl {
 /**
  * A C/C++ 'empty' statement.
  *
- * For example,
+ * For example, the following statement is an empty statement:
  * ```
  * ;
  * ```
@@ -1964,7 +2046,7 @@ class EmptyStmt extends Stmt, @stmt_empty {
 /**
  * A C/C++ 'asm' statement.
  *
- * For example,
+ * For example, the `__asm__` statement in the following code:
  * ```
  * __asm__("movb %bh (%eax)");
  * ```
@@ -1978,8 +2060,12 @@ class AsmStmt extends Stmt, @stmt_asm {
 }
 
 /**
- * A C99 statement which computes the size of a single dimension of
- * a variable length array.
+ * A C99 statement which computes the size of a single dimension of a
+ * variable length array. For example the variable length array dimension
+ * (`x`) in the following code:
+ * ```
+ * int myArray[x];
+ * ```
  *
  * Each `VlaDeclStmt` is preceded by one `VlaDimensionStmt` for each
  * variable length dimension of the array.
@@ -1994,7 +2080,11 @@ class VlaDimensionStmt extends Stmt, @stmt_set_vla_size {
 }
 
 /**
- * A C99 statement which declares a variable length array.
+ * A C99 statement which declares a variable length array. For example
+ * the variable length array declaration in the following code:
+ * ```
+ * int myArray[x];
+ * ```
  *
  * Each `VlaDeclStmt` is preceded by one `VlaDimensionStmt` for each
  * variable length dimension of the array.
