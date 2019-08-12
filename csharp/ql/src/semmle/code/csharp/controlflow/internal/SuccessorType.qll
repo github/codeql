@@ -18,9 +18,7 @@ private newtype TSuccessorType =
   TReturnSuccessor() or
   TBreakSuccessor() or
   TContinueSuccessor() or
-  TGotoLabelSuccessor(GotoLabelStmt goto) or
-  TGotoCaseSuccessor(GotoCaseStmt goto) or
-  TGotoDefaultSuccessor() or
+  TGotoSuccessor(string label) { label = any(GotoStmt gs).getLabel() } or
   TExceptionSuccessor(ExceptionClass ec) { exists(ThrowCompletion c | c.getExceptionClass() = ec) } or
   TExitSuccessor()
 
@@ -300,7 +298,7 @@ module SuccessorTypes {
   }
 
   /**
-   * A `goto label` control flow successor.
+   * A `goto` control flow successor.
    *
    * Example:
    *
@@ -319,66 +317,15 @@ module SuccessorTypes {
    * The node `Return: return x` is a `goto label` successor of the node
    * `goto Return;`.
    */
-  class GotoLabelSuccessor extends SuccessorType, TGotoLabelSuccessor {
-    /** Gets the statement that resulted in this `goto` successor. */
-    GotoLabelStmt getGotoStmt() { this = TGotoLabelSuccessor(result) }
+  class GotoSuccessor extends SuccessorType, TGotoSuccessor {
+    /** Gets the `goto` label. */
+    string getLabel() { this = TGotoSuccessor(result) }
 
-    override string toString() { result = "goto(" + getGotoStmt().getLabel() + ")" }
-
-    override predicate matchesCompletion(Completion c) {
-      c.(GotoLabelCompletion).getGotoStmt() = getGotoStmt()
-    }
-  }
-
-  /**
-   * A `goto case` control flow successor.
-   *
-   * Example:
-   *
-   * ```
-   * switch (x)
-   * {
-   *     case 0  : return 1;
-   *     case 1  : goto case 0;
-   *     default : return -1;
-   * }
-   * ```
-   *
-   * The node `case 0  : return 1;` is a  `goto case` successor of the node
-   * `goto case 0;`.
-   */
-  class GotoCaseSuccessor extends SuccessorType, TGotoCaseSuccessor {
-    /** Gets the statement that resulted in this `goto case` successor. */
-    GotoCaseStmt getGotoStmt() { this = TGotoCaseSuccessor(result) }
-
-    override string toString() { result = "goto(" + getGotoStmt().getLabel() + ")" }
+    override string toString() { result = "goto(" + this.getLabel() + ")" }
 
     override predicate matchesCompletion(Completion c) {
-      c.(GotoCaseCompletion).getGotoStmt() = getGotoStmt()
+      c.(GotoCompletion).getLabel() = this.getLabel()
     }
-  }
-
-  /**
-   * A `goto default` control flow successor.
-   *
-   * Example:
-   *
-   * ```
-   * switch (x)
-   * {
-   *     case 0  : return 1;
-   *     case 1  : goto default;
-   *     default : return -1;
-   * }
-   * ```
-   *
-   * The node `default : return -1;` is a `goto default` successor of the node
-   * `goto default;`.
-   */
-  class GotoDefaultSuccessor extends SuccessorType, TGotoDefaultSuccessor {
-    override string toString() { result = "goto default" }
-
-    override predicate matchesCompletion(Completion c) { c instanceof GotoDefaultCompletion }
   }
 
   /**

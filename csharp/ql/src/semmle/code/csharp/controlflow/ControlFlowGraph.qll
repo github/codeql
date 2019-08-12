@@ -746,6 +746,10 @@ module ControlFlow {
         result = TSelf(any(Completion c | c.isValidFor(cfe)))
       }
 
+      private TRec specificBoolean(boolean value) {
+        result = TRec(TLastRecSpecificCompletion(any(BooleanCompletion bc | bc.getValue() = value)))
+      }
+
       /**
        * Gets an element from which the last element of `cfe` can be computed
        * (recursively) based on computation specification `c`. The predicate
@@ -788,7 +792,7 @@ module ControlFlow {
         cfe = any(LogicalAndExpr lae |
             // Left operand exits with a false completion
             result = lae.getLeftOperand() and
-            c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+            c = specificBoolean(false)
             or
             // Left operand exits abnormally
             result = lae.getLeftOperand() and
@@ -802,7 +806,7 @@ module ControlFlow {
         cfe = any(LogicalOrExpr loe |
             // Left operand exits with a true completion
             result = loe.getLeftOperand() and
-            c = TRec(TLastRecSpecificCompletion(any(TrueCompletion tc)))
+            c = specificBoolean(true)
             or
             // Left operand exits abnormally
             result = loe.getLeftOperand() and
@@ -887,7 +891,7 @@ module ControlFlow {
         cfe = any(IfStmt is |
             // Condition exits with a false completion and there is no `else` branch
             result = is.getCondition() and
-            c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc))) and
+            c = specificBoolean(false) and
             not exists(is.getElse())
             or
             // Condition exits abnormally
@@ -936,7 +940,7 @@ module ControlFlow {
               c = TRec(TLastRecSpecificNegCompletion(any(MatchingCompletion mc | mc.isMatch())))
               or
               result = cs.getCondition() and
-              c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+              c = specificBoolean(false)
             )
             or
             // Last statement exits with any non-break completion
@@ -966,7 +970,7 @@ module ControlFlow {
         cfe = any(Case case |
             // Condition exists with a `false` completion
             result = case.getCondition() and
-            c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+            c = specificBoolean(false)
             or
             // Condition exists abnormally
             result = case.getCondition() and
@@ -987,7 +991,7 @@ module ControlFlow {
         |
           // Condition exits with a false completion
           result = ls.getCondition() and
-          c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+          c = specificBoolean(false)
           or
           // Condition exits abnormally
           result = ls.getCondition() and
@@ -1046,7 +1050,7 @@ module ControlFlow {
               or
               // Incompatible filter
               result = scc.getFilterClause() and
-              c = TRec(TLastRecSpecificCompletion(any(FalseCompletion fc)))
+              c = specificBoolean(false)
             )
           )
         or
@@ -1085,6 +1089,12 @@ module ControlFlow {
                   comp.isValidFor(result) and not comp instanceof NormalCompletion
                 ))
           )
+      }
+
+      pragma[noinline]
+      private LabeledStmt getLabledStmt(string label, Callable c) {
+        result.getEnclosingCallable() = c and
+        label = result.getLabel()
       }
 
       /**
@@ -1148,8 +1158,8 @@ module ControlFlow {
           rec = TLastRecSwitchAbnormalCompletion() and
           not c instanceof BreakCompletion and
           not c instanceof NormalCompletion and
-          not c instanceof GotoDefaultCompletion and
-          not c instanceof GotoCaseCompletion and
+          not getLabledStmt(c.(GotoCompletion).getLabel(), cfe.getEnclosingCallable()) instanceof
+            CaseStmt and
           c = c0
           or
           rec = TLastRecInvalidOperationException() and
@@ -1515,24 +1525,6 @@ module ControlFlow {
             c instanceof NormalCompletion and
             result = first(ss.getStmt(i + 1))
           )
-          or
-          exists(GotoCompletion gc |
-            cfe = last(ss.getAStmt(), gc) and
-            gc = c
-          |
-            // Flow from last element of a statement with a `goto default` completion
-            // to first element `default` statement
-            gc instanceof GotoDefaultCompletion and
-            result = first(ss.getDefaultCase())
-            or
-            // Flow from last element of a statement with a `goto case` completion
-            // to first element of relevant case
-            exists(ConstCase cc |
-              cc = ss.getAConstCase() and
-              cc.getLabel() = gc.(GotoCaseCompletion).getLabel() and
-              result = first(cc.getBody())
-            )
-          )
         )
         or
         exists(Case case |
@@ -1766,13 +1758,13 @@ module ControlFlow {
         or
         // Flow from element with `goto` completion to first element of relevant
         // target
-        c = any(GotoLabelCompletion glc |
-            cfe = last(_, glc) and
+        c = any(GotoCompletion gc |
+            cfe = last(_, gc) and
             // Special case: when a `goto` happens inside a `try` statement with a
             // `finally` block, flow does not go directly to the target, but instead
             // to the `finally` block (and from there possibly to the target)
             not cfe = getBlockOrCatchFinallyPred(any(TryStmt ts | ts.hasFinally()), _) and
-            result = first(glc.getGotoStmt().getTarget())
+            result = first(getLabledStmt(gc.getLabel(), cfe.getEnclosingCallable()))
           )
         or
         // Standard left-to-right evaluation

@@ -679,8 +679,8 @@
 | post | Switch.cs:10:10:10:11 | exit M2 | Switch.cs:30:13:30:20 | default: |
 | post | Switch.cs:15:17:15:23 | return ...; | Switch.cs:15:17:15:23 | return ...; |
 | post | Switch.cs:16:13:16:19 | case ...: | Switch.cs:16:13:16:19 | case ...: |
+| post | Switch.cs:16:13:16:19 | case ...: | Switch.cs:23:27:23:27 | 0 |
 | post | Switch.cs:17:23:17:37 | object creation of type Exception | Switch.cs:17:23:17:37 | object creation of type Exception |
-| post | Switch.cs:17:23:17:37 | object creation of type Exception | Switch.cs:23:27:23:27 | 0 |
 | post | Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:13:18:22 | case ...: |
 | post | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; |
 | post | Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:13:20:23 | case ...: |
@@ -891,7 +891,10 @@
 | post | cflow.cs:37:17:37:22 | enter Switch | cflow.cs:37:17:37:22 | enter Switch |
 | post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:37:17:37:22 | enter Switch |
 | post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:37:17:37:22 | exit Switch |
+| post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:41:13:41:19 | case ...: |
+| post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:42:17:42:39 | ...; |
 | post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:44:13:44:19 | case ...: |
+| post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:45:17:45:39 | ...; |
 | post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:47:13:47:19 | case ...: |
 | post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:48:17:48:39 | ...; |
 | post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:51:9:59:9 | switch (...) {...} |
@@ -902,23 +905,38 @@
 | post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:64:27:64:54 | object creation of type NullReferenceException |
 | post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:65:17:65:22 | break; |
 | post | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:67:16:67:16 | access to parameter a |
+| post | cflow.cs:41:13:41:19 | case ...: | cflow.cs:37:17:37:22 | enter Switch |
+| post | cflow.cs:41:13:41:19 | case ...: | cflow.cs:41:13:41:19 | case ...: |
+| post | cflow.cs:41:13:41:19 | case ...: | cflow.cs:45:17:45:39 | ...; |
 | post | cflow.cs:42:17:42:39 | ...; | cflow.cs:42:17:42:39 | ...; |
 | post | cflow.cs:44:13:44:19 | case ...: | cflow.cs:37:17:37:22 | enter Switch |
+| post | cflow.cs:44:13:44:19 | case ...: | cflow.cs:41:13:41:19 | case ...: |
+| post | cflow.cs:44:13:44:19 | case ...: | cflow.cs:42:17:42:39 | ...; |
 | post | cflow.cs:44:13:44:19 | case ...: | cflow.cs:44:13:44:19 | case ...: |
+| post | cflow.cs:44:13:44:19 | case ...: | cflow.cs:45:17:45:39 | ...; |
 | post | cflow.cs:45:17:45:39 | ...; | cflow.cs:45:17:45:39 | ...; |
 | post | cflow.cs:47:13:47:19 | case ...: | cflow.cs:37:17:37:22 | enter Switch |
+| post | cflow.cs:47:13:47:19 | case ...: | cflow.cs:41:13:41:19 | case ...: |
+| post | cflow.cs:47:13:47:19 | case ...: | cflow.cs:42:17:42:39 | ...; |
 | post | cflow.cs:47:13:47:19 | case ...: | cflow.cs:44:13:44:19 | case ...: |
+| post | cflow.cs:47:13:47:19 | case ...: | cflow.cs:45:17:45:39 | ...; |
 | post | cflow.cs:47:13:47:19 | case ...: | cflow.cs:47:13:47:19 | case ...: |
 | post | cflow.cs:48:17:48:39 | ...; | cflow.cs:48:17:48:39 | ...; |
 | post | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:37:17:37:22 | enter Switch |
+| post | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:41:13:41:19 | case ...: |
+| post | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:42:17:42:39 | ...; |
 | post | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:44:13:44:19 | case ...: |
+| post | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:45:17:45:39 | ...; |
 | post | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:47:13:47:19 | case ...: |
 | post | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:48:17:48:39 | ...; |
 | post | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:51:9:59:9 | switch (...) {...} |
 | post | cflow.cs:54:17:54:48 | ...; | cflow.cs:54:17:54:48 | ...; |
 | post | cflow.cs:56:13:56:20 | default: | cflow.cs:56:13:56:20 | default: |
 | post | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:37:17:37:22 | enter Switch |
+| post | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:41:13:41:19 | case ...: |
+| post | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:42:17:42:39 | ...; |
 | post | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:44:13:44:19 | case ...: |
+| post | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:45:17:45:39 | ...; |
 | post | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:47:13:47:19 | case ...: |
 | post | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:48:17:48:39 | ...; |
 | post | cflow.cs:60:9:66:9 | switch (...) {...} | cflow.cs:51:9:59:9 | switch (...) {...} |
@@ -2558,6 +2576,7 @@
 | pre | cflow.cs:33:17:33:37 | ...; | cflow.cs:33:17:33:37 | ...; |
 | pre | cflow.cs:37:17:37:22 | enter Switch | cflow.cs:37:17:37:22 | enter Switch |
 | pre | cflow.cs:37:17:37:22 | enter Switch | cflow.cs:37:17:37:22 | exit Switch |
+| pre | cflow.cs:37:17:37:22 | enter Switch | cflow.cs:41:13:41:19 | case ...: |
 | pre | cflow.cs:37:17:37:22 | enter Switch | cflow.cs:42:17:42:39 | ...; |
 | pre | cflow.cs:37:17:37:22 | enter Switch | cflow.cs:44:13:44:19 | case ...: |
 | pre | cflow.cs:37:17:37:22 | enter Switch | cflow.cs:45:17:45:39 | ...; |
@@ -2572,9 +2591,25 @@
 | pre | cflow.cs:37:17:37:22 | enter Switch | cflow.cs:65:17:65:22 | break; |
 | pre | cflow.cs:37:17:37:22 | enter Switch | cflow.cs:67:16:67:16 | access to parameter a |
 | pre | cflow.cs:37:17:37:22 | exit Switch | cflow.cs:37:17:37:22 | exit Switch |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:37:17:37:22 | exit Switch |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:41:13:41:19 | case ...: |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:42:17:42:39 | ...; |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:44:13:44:19 | case ...: |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:45:17:45:39 | ...; |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:47:13:47:19 | case ...: |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:48:17:48:39 | ...; |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:51:9:59:9 | switch (...) {...} |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:54:17:54:48 | ...; |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:56:13:56:20 | default: |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:60:9:66:9 | switch (...) {...} |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:63:17:64:55 | if (...) ... |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:64:27:64:54 | object creation of type NullReferenceException |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:65:17:65:22 | break; |
+| pre | cflow.cs:41:13:41:19 | case ...: | cflow.cs:67:16:67:16 | access to parameter a |
 | pre | cflow.cs:42:17:42:39 | ...; | cflow.cs:42:17:42:39 | ...; |
 | pre | cflow.cs:44:13:44:19 | case ...: | cflow.cs:37:17:37:22 | exit Switch |
 | pre | cflow.cs:44:13:44:19 | case ...: | cflow.cs:44:13:44:19 | case ...: |
+| pre | cflow.cs:44:13:44:19 | case ...: | cflow.cs:45:17:45:39 | ...; |
 | pre | cflow.cs:44:13:44:19 | case ...: | cflow.cs:47:13:47:19 | case ...: |
 | pre | cflow.cs:44:13:44:19 | case ...: | cflow.cs:48:17:48:39 | ...; |
 | pre | cflow.cs:44:13:44:19 | case ...: | cflow.cs:51:9:59:9 | switch (...) {...} |

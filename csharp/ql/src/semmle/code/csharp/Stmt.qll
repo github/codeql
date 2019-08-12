@@ -669,7 +669,10 @@ class ContinueStmt extends JumpStmt, @continue_stmt {
  * Either a `goto` label (`GotoLabelStmt`), a `goto case` (`GotoCaseStmt`), or
  * a `goto default` (`GotoDefaultStmt`).
  */
-class GotoStmt extends JumpStmt, @goto_any_stmt { }
+class GotoStmt extends JumpStmt, @goto_any_stmt {
+  /** Gets the label that this `goto` statement jumps to. */
+  string getLabel() { none() }
+}
 
 /**
  * A `goto` statement that jumps to a labeled statement, for example line 4 in
@@ -684,8 +687,7 @@ class GotoStmt extends JumpStmt, @goto_any_stmt { }
  * ```
  */
 class GotoLabelStmt extends GotoStmt, @goto_stmt {
-  /** Gets the label that this `goto` statement jumps to. */
-  string getLabel() { exprorstmt_name(this, result) }
+  override string getLabel() { exprorstmt_name(this, result) }
 
   override string toString() { result = "goto ...;" }
 
@@ -716,8 +718,7 @@ class GotoCaseStmt extends GotoStmt, @goto_case_stmt {
   /** Gets the constant expression that this `goto case` statement jumps to. */
   Expr getExpr() { result = this.getChild(0) }
 
-  /** Gets the label that this `goto case` statement jumps to. */
-  string getLabel() { result = getExpr().getValue() }
+  override string getLabel() { result = getExpr().getValue() }
 
   override string toString() { result = "goto case ...;" }
 }
@@ -740,6 +741,8 @@ class GotoCaseStmt extends GotoStmt, @goto_case_stmt {
  */
 class GotoDefaultStmt extends GotoStmt, @goto_default_stmt {
   override string toString() { result = "goto default;" }
+
+  override string getLabel() { result = "default" }
 }
 
 /**
