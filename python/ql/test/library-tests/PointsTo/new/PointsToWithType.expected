@@ -22,12 +22,10 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | a_simple.py:18 | ControlFlowNode for multi_loop | Function multi_loop | builtin-class function | 18 |
 | a_simple.py:19 | ControlFlowNode for None | NoneType None | builtin-class NoneType | 19 |
 | a_simple.py:19 | ControlFlowNode for x | NoneType None | builtin-class NoneType | 19 |
-| a_simple.py:20 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 20 |
 | a_simple.py:23 | ControlFlowNode for FunctionExpr | Function with_definition | builtin-class function | 23 |
 | a_simple.py:23 | ControlFlowNode for with_definition | Function with_definition | builtin-class function | 23 |
 | a_simple.py:27 | ControlFlowNode for FunctionExpr | Function multi_loop_in_try | builtin-class function | 27 |
 | a_simple.py:27 | ControlFlowNode for multi_loop_in_try | Function multi_loop_in_try | builtin-class function | 27 |
-| a_simple.py:29 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 29 |
 | a_simple.py:31 | ControlFlowNode for KeyError | builtin-class KeyError | builtin-class type | 31 |
 | a_simple.py:34 | ControlFlowNode for FunctionExpr | Function f | builtin-class function | 34 |
 | a_simple.py:34 | ControlFlowNode for args | args | builtin-class tuple | 34 |
@@ -55,10 +53,8 @@ WARNING: Predicate points_to has been deprecated and may be removed in future (P
 | a_simple.py:40 | ControlFlowNode for c | 'c' | builtin-class str | 38 |
 | a_simple.py:40 | ControlFlowNode for w | Tuple | builtin-class tuple | 40 |
 | a_simple.py:41 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 39 |
-| a_simple.py:41 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 41 |
 | a_simple.py:41 | ControlFlowNode for t | Tuple | builtin-class tuple | 39 |
 | a_simple.py:42 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 40 |
-| a_simple.py:42 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 42 |
 | a_simple.py:42 | ControlFlowNode for w | Tuple | builtin-class tuple | 40 |
 | a_simple.py:49 | ControlFlowNode for Tuple | Tuple | builtin-class tuple | 49 |
 | a_simple.py:49 | ControlFlowNode for b | 'b' | builtin-class str | 38 |

@@ -177,6 +177,7 @@ cached newtype TObject =
     or
     /* Represents a tuple in the Python source */
     TPythonTuple(TupleNode origin, PointsToContext context) {
+        origin.isLoad() and
         context.appliesTo(origin)
     }
     or
