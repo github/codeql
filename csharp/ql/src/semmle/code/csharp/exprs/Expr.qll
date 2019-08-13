@@ -45,9 +45,7 @@ class Expr extends DotNet::Expr, ControlFlowElement, @expr {
   override Type getType() { expressions(this, _, getTypeRef(result)) }
 
   /** Gets the annotated type of this expression. */
-  final AnnotatedType getAnnotatedType() {
-    result.appliesTo(this)
-  }
+  final AnnotatedType getAnnotatedType() { result.appliesTo(this) }
 
   /** Gets the value of this expression, if any */
   override string getValue() { expr_value(this, result) }

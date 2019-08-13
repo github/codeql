@@ -3,6 +3,7 @@ private import cil
 private import dotnet
 private import DataFlowPrivate
 private import DelegateDataFlow
+private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
@@ -87,6 +88,14 @@ private module Cached {
     }
 
   cached
+  newtype TDataFlowCallable =
+    TDotNetCallable(DotNet::Callable c) or
+    TSynthesizedCallable(ControlFlowEntryElement cfee) {
+      not cfee instanceof Callable and
+      expr_parent_top_level_adjusted(_, _, cfee)
+    }
+
+  cached
   newtype TDataFlowCall =
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
       cfn.getElement() = dc.getCall()
@@ -103,11 +112,20 @@ private module Cached {
     TCilCall(CIL::Call call) {
       // No need to include calls that are compiled from source
       not call.getImplementation().getMethod().compiledFromSource()
+    } or
+    TSynthesizedCall(Constructor c) {
+      not c.hasInitializer() and
+      not c.isStatic() and
+      exists(SynthesizedCallable sc, ControlFlowEntryElement cfee |
+        cfee = sc.getElement() and
+        not cfee.(Modifiable).isStatic() and
+        c.getDeclaringType().hasMember(cfee)
+      )
     }
 
   /** Gets a viable run-time target for the call `call`. */
   cached
-  DotNet::Callable viableImpl(DataFlowCall call) { result = call.getARuntimeTarget() }
+  DataFlowCallable viableImpl(DataFlowCall call) { result = call.getARuntimeTarget() }
 
   /**
    * Gets a viable run-time target for the delegate call `call`, requiring
@@ -122,7 +140,7 @@ private module Cached {
    * targets of call `call` in `c`.
    */
   cached
-  predicate reducedViableImplInCallContext(DataFlowCall call, DotNet::Callable c, DataFlowCall ctx) {
+  predicate reducedViableImplInCallContext(DataFlowCall call, DataFlowCallable c, DataFlowCall ctx) {
     c = viableImpl(ctx) and
     c = call.getEnclosingCallable() and
     exists(CallContext cc | exists(viableDelegateCallable(call, cc)) |
@@ -130,8 +148,8 @@ private module Cached {
     )
   }
 
-  private DotNet::Callable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-    exists(ArgumentCallContext cc | result = viableDelegateCallable(call, cc) |
+  private DotNetCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+    exists(ArgumentCallContext cc | result = TDotNetCallable(viableDelegateCallable(call, cc)) |
       cc.isArgument(ctx.getExpr(), _)
     )
   }
@@ -142,7 +160,7 @@ private module Cached {
    * might make a difference.
    */
   cached
-  DotNet::Callable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+  DotNetCallable prunedViableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
     result = viableImplInCallContext(call, ctx) and
     reducedViableImplInCallContext(call, _, ctx)
   }
@@ -153,7 +171,7 @@ private module Cached {
    * returned to.
    */
   cached
-  predicate reducedViableImplInReturn(DotNet::Callable c, DataFlowCall call) {
+  predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
     exists(int tgts, int ctxtgts |
       c = viableImpl(call) and
       ctxtgts = strictcount(DataFlowCall ctx | c = viableImplInCallContext(call, ctx)) and
@@ -168,7 +186,7 @@ private module Cached {
    * flow from the result to `call` restricts the possible context `ctx`.
    */
   cached
-  DotNet::Callable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
+  DataFlowCallable prunedViableImplInCallContextReverse(DataFlowCall call, DataFlowCall ctx) {
     result = viableImplInCallContext(call, ctx) and
     reducedViableImplInReturn(result, call)
   }
@@ -285,6 +303,69 @@ class ImplicitCapturedReturnKind extends ReturnKind, TImplicitCapturedReturnKind
   override string toString() { result = "captured " + v }
 }
 
+/** A callable relevant for data flow. */
+abstract class DataFlowCallable extends TDataFlowCallable {
+  /** Gets the underlying callable, if any. */
+  DotNet::Callable getCallable() { none() }
+
+  /** Gets the entry element that this callable represents, if any. */
+  abstract ControlFlowEntryElement getElement();
+
+  /** Gets the type in which this callable is declared. */
+  abstract DotNet::Type getDeclaringType();
+
+  /** Gets a textual representation of this callable. */
+  abstract string toString();
+
+  /** Gets the location of this callable. */
+  abstract Location getLocation();
+}
+
+/** An "actual" callable. */
+class DotNetCallable extends DataFlowCallable, TDotNetCallable {
+  private DotNet::Callable c;
+
+  DotNetCallable() { this = TDotNetCallable(c) }
+
+  override Callable getElement() { result = c }
+
+  override DotNet::Callable getCallable() { result = c }
+
+  override DotNet::Type getDeclaringType() { result = c.getDeclaringType() }
+
+  override string toString() { result = c.toString() }
+
+  override Location getLocation() { result = c.getLocation() }
+}
+
+/**
+ * A synthesized callable. For example, in
+ *
+ * ```
+ * class C
+ * {
+ *     int Field = 0;
+ *     C() { }
+ * }
+ * ```
+ *
+ * we synthesize a callable for the initializer expression `Field = 0` (with an
+ * implicit `this` parameter), as well as a synthesized call from the constructor.
+ */
+class SynthesizedCallable extends DataFlowCallable, TSynthesizedCallable {
+  private ControlFlowEntryElement cfee;
+
+  SynthesizedCallable() { this = TSynthesizedCallable(cfee) }
+
+  override ControlFlowEntryElement getElement() { result = cfee }
+
+  override Type getDeclaringType() { result = cfee.(Declaration).getDeclaringType() }
+
+  override string toString() { result = "[synthesized] " + cfee.toString() }
+
+  override Location getLocation() { result = cfee.getLocation() }
+}
+
 /** A call relevant for data flow. */
 abstract class DataFlowCall extends TDataFlowCall {
   /**
@@ -292,7 +373,7 @@ abstract class DataFlowCall extends TDataFlowCall {
    * declaration, and if the callable has both CIL and source code, only
    * the source code version is returned.
    */
-  abstract DotNet::Callable getARuntimeTarget();
+  abstract DataFlowCallable getARuntimeTarget();
 
   /** Gets the control flow node where this call happens, if any. */
   abstract ControlFlow::Nodes::ElementNode getControlFlowNode();
@@ -301,7 +382,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlow::Node getNode();
 
   /** Gets the enclosing callable of this call. */
-  abstract DotNet::Callable getEnclosingCallable();
+  abstract DataFlowCallable getEnclosingCallable();
 
   /** Gets the underlying expression, if any. */
   final DotNet::Expr getExpr() { result = this.getNode().asExpr() }
@@ -324,15 +405,17 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 
   NonDelegateDataFlowCall() { this = TNonDelegateCall(cfn, dc) }
 
-  override DotNet::Callable getARuntimeTarget() {
-    result = getCallableForDataFlow(dc.getADynamicTarget())
+  override DotNetCallable getARuntimeTarget() {
+    result = TDotNetCallable(getCallableForDataFlow(dc.getADynamicTarget()))
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DotNetCallable getEnclosingCallable() {
+    result.getCallable() = cfn.getEnclosingCallable()
+  }
 
   override string toString() { result = cfn.toString() }
 
@@ -344,7 +427,9 @@ abstract class DelegateDataFlowCall extends DataFlowCall {
   /** Gets a viable run-time target of this call requiring call context `cc`. */
   abstract DotNet::Callable getARuntimeTarget(CallContext::CallContext cc);
 
-  override DotNet::Callable getARuntimeTarget() { result = this.getARuntimeTarget(_) }
+  override DotNetCallable getARuntimeTarget() {
+    result = TDotNetCallable(this.getARuntimeTarget(_))
+  }
 }
 
 /** An explicit delegate call relevant for data flow. */
@@ -363,7 +448,9 @@ class ExplicitDelegateDataFlowCall extends DelegateDataFlowCall, TExplicitDelega
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DotNetCallable getEnclosingCallable() {
+    result.getCallable() = cfn.getEnclosingCallable()
+  }
 
   override string toString() { result = cfn.toString() }
 
@@ -387,7 +474,7 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
    * call `c` targeting a library callable. For example, `M` is the `0`th
    * argument of `new Lazy<int>(M)`.
    */
-  predicate isArgumentOf(DataFlowCall c, int i) {
+  predicate isArgumentOf(NonDelegateDataFlowCall c, int i) {
     exists(ImplicitDelegateOutNode out | out.getControlFlowNode() = cfn | out.isArgumentOf(c, i))
   }
 
@@ -402,7 +489,9 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
 
   override ImplicitDelegateOutNode getNode() { result.getControlFlowNode() = cfn }
 
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DotNetCallable getEnclosingCallable() {
+    result.getCallable() = cfn.getEnclosingCallable()
+  }
 
   override string toString() { result = "[implicit call] " + cfn.toString() }
 
@@ -415,17 +504,21 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
  * a single call for performance reasons.
  */
 class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCall {
-  ControlFlow::Nodes::ElementNode cfn;
+  private ControlFlow::Nodes::ElementNode cfn;
 
   TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn) }
 
-  override Callable getARuntimeTarget() { transitiveCapturedCallTarget(cfn, result) }
+  override DotNetCallable getARuntimeTarget() {
+    transitiveCapturedCallTarget(cfn, result.getCallable())
+  }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
   override DataFlow::ExprNode getNode() { none() }
 
-  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override DotNetCallable getEnclosingCallable() {
+    result.getCallable() = cfn.getEnclosingCallable()
+  }
 
   override string toString() { result = "[transitive] " + cfn.toString() }
 
@@ -438,18 +531,58 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
 
   CilDataFlowCall() { this = TCilCall(call) }
 
-  override DotNet::Callable getARuntimeTarget() {
+  override DotNetCallable getARuntimeTarget() {
     // There is no dispatch library for CIL, so do not consider overrides for now
-    result = getCallableForDataFlow(call.getTarget())
+    result = TDotNetCallable(getCallableForDataFlow(call.getTarget()))
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { none() }
 
   override DataFlow::ExprNode getNode() { result.getExpr() = call }
 
-  override CIL::Callable getEnclosingCallable() { result = call.getEnclosingCallable() }
+  override DotNetCallable getEnclosingCallable() {
+    result.getCallable() = call.getEnclosingCallable()
+  }
 
   override string toString() { result = call.toString() }
 
   override Location getLocation() { result = call.getLocation() }
+}
+
+/**
+ * A synthesized call. For example, in
+ *
+ * ```
+ * class C
+ * {
+ *     int Field = 0;
+ *     C() { }
+ * }
+ * ```
+ *
+ * we synthesize a call from the constructor `C` to the (synthesized) callable
+ * for the initializer expression `Field = 0`.
+ */
+class SynthesizedCall extends DataFlowCall, TSynthesizedCall {
+  private Constructor c;
+
+  SynthesizedCall() { this = TSynthesizedCall(c) }
+
+  /** Gets the constructor in which this call is synthesized. */
+  Constructor getConstructor() { result = c }
+
+  override SynthesizedCallable getARuntimeTarget() {
+    // "abuse" virtual dispatch to generate a call edge to each of the members
+    c.getDeclaringType().hasMember(result.getElement())
+  }
+
+  override ControlFlow::Nodes::ElementNode getControlFlowNode() { none() }
+
+  override DataFlow::Node getNode() { none() }
+
+  override DotNetCallable getEnclosingCallable() { result.getCallable() = c }
+
+  override string toString() { result = "[synthesized call] " + c }
+
+  override Location getLocation() { result = c.getLocation() }
 }
