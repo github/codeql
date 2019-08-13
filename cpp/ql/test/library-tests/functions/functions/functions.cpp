@@ -36,6 +36,6 @@ public:
 	MyClass();
 	MyClass(int from);
 	MyClass(const MyClass &from);
-	MyClass(const MyClass &&from);
+	MyClass(MyClass &&from);
 	operator int();
 };
