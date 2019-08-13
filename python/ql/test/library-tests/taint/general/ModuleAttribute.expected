@@ -1,4 +1,3 @@
 | Module deep | x | Taint simple.test |  | deep.py:20 |
 | Module module | dangerous | Taint simple.test |  | module.py:3 |
-| Module test | module | Attribute 'dangerous' taint simple.test |  | test.py:85 |
-| Module test | unsafe | Taint simple.test |  | test.py:155 |
+| Module test | unsafe | Taint simple.test |  | test.py:156 |

@@ -318,7 +318,7 @@ class DictKind extends CollectionKind {
         Implementation::copyCall(fromnode, tonode) and this = fromkind
         or
         tonode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
-        tonode.(CallNode).getArg(0) = fromnode
+        tonode.(CallNode).getArg(0) = fromnode and this = fromkind
         or
         dict_construct(fromnode, tonode) and this.getValue() = fromkind
     }
@@ -430,11 +430,13 @@ abstract class TaintSource extends @py_flow_node {
     final predicate flowsToSink(TaintKind srckind, TaintSink sink) {
         exists(TaintedNode src, TaintedNode tsink |
             src = this.getATaintNode() and
+            src.getTaintKind() = srckind and
             src.getASuccessor*() = tsink and
             this.isSourceOf(srckind, _) and
             sink = tsink.getCfgNode() and
             sink.sinks(tsink.getTaintKind()) and
-            tsink.getPath().noAttribute()
+            tsink.getPath().noAttribute() and
+            tsink.isSink()
         )
     }
 
