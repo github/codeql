@@ -10,7 +10,7 @@ private import semmle.code.csharp.Caching
 /**
  * An element that contains a top-level statement or expression. Either a callable
  * (`Callable`), an attribute (`Attribute`), a field (`Field`), a property
- *  (`Property`), an indexer (`Indexer`), or a parameter (`Parameter`).
+ * (`Property`), an indexer (`Indexer`), or a parameter (`Parameter`).
  */
 class ControlFlowEntryElement extends Element, @top_level_exprorstmt_parent { }
 
