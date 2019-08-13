@@ -235,7 +235,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (method.IsVararg)
             {
-                tb.WriteSeparator(",", index++);
+                tb.WriteSeparator(",", index);
                 tb.Write("__arglist");
             }
 

@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.Emit(new Tuple("modifiers", Label, symbol.name));
+            trapFile.modifiers(Label, symbol.name);
         }
 
         public static string AccessbilityModifier(Accessibility access)

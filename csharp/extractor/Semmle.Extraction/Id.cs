@@ -106,7 +106,7 @@ namespace Semmle.Extraction
 
         class IdTrapBuilder
         {
-            readonly public List<string> Fragments = new List<string>();
+            public readonly List<string> Fragments = new List<string>();
 
             public void Append(object arg)
             {

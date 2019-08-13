@@ -8,8 +8,8 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     class Compilation : FreshEntity
     {
-        string cwd;
-        string[] args;
+        private readonly string cwd;
+        private readonly string[] args;
 
         public Compilation(Context cx, string cwd, string[] args) : base(cx)
         {

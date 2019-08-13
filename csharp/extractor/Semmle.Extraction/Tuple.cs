@@ -155,9 +155,11 @@ namespace Semmle.Extraction
         public override string ToString()
         {
             // Only implemented for debugging purposes
-            var tsb = new StringWriter();
-            EmitToTrapBuilder(tsb);
-            return tsb.ToString();
+            using (var writer = new StringWriter())
+            {
+                EmitToTrapBuilder(writer);
+                return writer.ToString();
+            }
         }
     }
 }

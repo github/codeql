@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -17,12 +18,16 @@ namespace Semmle.Extraction.CIL.Entities
             method = m;
             index = i;
             type = t;
-            ShortId = CIL.Id.Create(method.Label) + underscore + index;
         }
 
-        static readonly Id underscore = CIL.Id.Create("_");
-        static readonly Id suffix = CIL.Id.Create(";cil-local");
-        public override Id IdSuffix => suffix;
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.WriteSubId(method);
+            trapFile.Write('_');
+            trapFile.Write(index);
+        }
+
+        public override string IdSuffix => ";cil-local";
 
         public override IEnumerable<IExtractionProduct> Contents
         {

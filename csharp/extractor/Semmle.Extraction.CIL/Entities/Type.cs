@@ -55,13 +55,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public virtual Label Label { get; set; }
 
-        public virtual IId Id { get { return ShortId + IdSuffix; } }
-
-        public void WriteId(System.IO.TextWriter trapFile)
-        {
-            // TODO: Specialise this 
-            trapFile.WriteIId(Id);
-        }
+        public abstract void WriteId(TextWriter trapFile);
 
         /// <summary>
         /// For debugging purposes.
@@ -70,11 +64,13 @@ namespace Semmle.Extraction.CIL.Entities
 
         public void WriteQuotedId(TextWriter trapFile)
         {
+            trapFile.Write("@\"");
             WriteId(trapFile);
+            trapFile.Write(IdSuffix);
+            trapFile.Write('\"');
         }
 
-        public Id ShortId { get; set; }
-        public abstract Id IdSuffix { get; }
+        public abstract string IdSuffix { get; }
 
         Location IEntity.ReportingLocation => throw new NotImplementedException();
 
@@ -84,7 +80,11 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override string ToString()
         {
-            return Id.ToString();
+            using (var writer = new StringWriter())
+            {
+                WriteQuotedId(writer);
+                return writer.ToString();
+            }
         }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
@@ -95,8 +95,9 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public abstract class Type : TypeContainer, IMember, IType
     {
-        static readonly Id suffix = CIL.Id.Create(";cil-type");
-        public override Id IdSuffix => suffix;
+        public override string IdSuffix => ";cil-type";
+
+        public sealed override void WriteId(TextWriter trapFile) => WriteId(trapFile, false);
 
         /// <summary>
         /// Find the method in this type matching the name and signature.
@@ -137,7 +138,7 @@ namespace Semmle.Extraction.CIL.Entities
         /// <summary>
         /// Gets the assembly identifier of this type.
         /// </summary>
-        public abstract Id AssemblyPrefix { get; }
+        public abstract void WriteAssemblyPrefix(TextWriter trapFile);
 
         /// <summary>
         /// Gets the ID part to be used in a method.
@@ -147,11 +148,14 @@ namespace Semmle.Extraction.CIL.Entities
         /// (This is to avoid infinite recursion generating a method ID that returns a
         /// type parameter.)
         /// </param>
-        public abstract Id MakeId(bool inContext);
+        public abstract void WriteId(TextWriter trapFile, bool inContext);
 
-        public Id GetId(bool inContext)
+        public void GetId(TextWriter trapFile, bool inContext)
         {
-            return inContext ? MakeId(true) : ShortId;
+            if (inContext)
+                WriteId(trapFile, true);
+            else
+                WriteId(trapFile);
         }
 
         protected Type(Context cx) : base(cx) { }
@@ -167,7 +171,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.cil_type(this, Name.Value, Kind, Parent, SourceDeclaration);
+                yield return Tuples.cil_type(this, Name, Kind, Parent, SourceDeclaration);
             }
         }
 
@@ -176,7 +180,7 @@ namespace Semmle.Extraction.CIL.Entities
         /// </summary>
         public virtual bool IsVisible => true;
 
-        public abstract Id Name { get; }
+        public abstract string Name { get; }
 
         public abstract Namespace Namespace { get; }
 
@@ -223,42 +227,103 @@ namespace Semmle.Extraction.CIL.Entities
 
         public virtual Type SourceDeclaration => this;
 
-        protected static readonly Id builtin = CIL.Id.Create("builtin:");
-
-        public Id PrimitiveTypeId => builtin + Name;
-
-        public bool IsPrimitiveType
+        public void PrimitiveTypeId(TextWriter trapFile)
         {
-            get
+            trapFile.Write("builtin:");
+            trapFile.Write(Name);
+        }
+
+        /// <summary>
+        /// Gets the primitive type corresponding to this type, if possible.
+        /// </summary>
+        /// <param name="cx">Extraction context.</param>
+        /// <param name="t">The resulting primitive type.</param>
+        /// <returns>True if this type is a primitive type.</returns>
+        public bool TryGetPrimitiveType(Context cx, out PrimitiveType t)
+        {
+            if (TryGetPrimitiveTypeCode(out var code))
             {
-                if (ContainingType == null && Namespace.ShortId == cx.SystemNamespace.ShortId)
-                {
-                    switch (Name.Value)
-                    {
-                        case "Boolean":
-                        case "Object":
-                        case "Byte":
-                        case "SByte":
-                        case "Int16":
-                        case "UInt16":
-                        case "Int32":
-                        case "UInt32":
-                        case "Int64":
-                        case "UInt64":
-                        case "Single":
-                        case "Double":
-                        case "String":
-                        case "Void":
-                        case "IntPtr":
-                        case "UIntPtr":
-                        case "Char":
-                        case "TypedReference":
-                            return true;
-                    }
-                }
+                t = cx.Create(code);
+                return true;
+            }
+            else
+            {
+                t = null;
                 return false;
             }
         }
+
+        public bool TryGetPrimitiveTypeCode(out PrimitiveTypeCode code)
+        {
+            if (ContainingType == null && Namespace.Name == cx.SystemNamespace.Name)
+            {
+                switch (Name)
+                {
+                    case "Boolean":
+                        code = PrimitiveTypeCode.Boolean;
+                        return true;
+                    case "Object":
+                        code = PrimitiveTypeCode.Object;
+                        return true;
+                    case "Byte":
+                        code = PrimitiveTypeCode.Byte;
+                        return true;
+                    case "SByte":
+                        code = PrimitiveTypeCode.SByte;
+                        return true;
+                    case "Int16":
+                        code = PrimitiveTypeCode.Int16;
+                        return true;
+                    case "UInt16":
+                        code = PrimitiveTypeCode.UInt16;
+                        return true;
+                    case "Int32":
+                        code = PrimitiveTypeCode.Int32;
+                        return true;
+                    case "UInt32":
+                        code = PrimitiveTypeCode.UInt32;
+                        return true;
+                    case "Int64":
+                        code = PrimitiveTypeCode.Int64;
+                        return true;
+                    case "UInt64":
+                        code = PrimitiveTypeCode.UInt64;
+                        return true;
+                    case "Single":
+                        code = PrimitiveTypeCode.Single;
+                        return true;
+                    case "Double":
+                        code = PrimitiveTypeCode.Double;
+                        return true;
+                    case "String":
+                        code = PrimitiveTypeCode.String;
+                        return true;
+                    case "Void":
+                        code = PrimitiveTypeCode.Void;
+                        return true;
+                    case "IntPtr":
+                        code = PrimitiveTypeCode.IntPtr;
+                        return true;
+                    case "UIntPtr":
+                        code = PrimitiveTypeCode.UIntPtr;
+                        return true;
+                    case "Char":
+                        code = PrimitiveTypeCode.Char;
+                        return true;
+                    case "TypedReference":
+                        code = PrimitiveTypeCode.TypedReference;
+                        return true;
+                }
+            }
+
+            code = default(PrimitiveTypeCode);
+            return false;
+        }
+
+        public bool IsPrimitiveType => TryGetPrimitiveTypeCode(out _);
+
+        public static Type DecodeType(GenericContext gc, TypeSpecificationHandle handle) =>
+            gc.cx.mdReader.GetTypeSpecification(handle).DecodeSignature(gc.cx.TypeSignatureDecoder, gc);
     }
 
     /// <summary>
@@ -278,44 +343,54 @@ namespace Semmle.Extraction.CIL.Entities
                 td.GetDeclaringType().IsNil ? null :
                 (Type)cx.Create(td.GetDeclaringType());
 
-            ShortId = MakeId(false);
-
             // Lazy because should happen during population.
             typeParams = new Lazy<IEnumerable<TypeTypeParameter>>(MakeTypeParameters);
         }
 
-        public override Id MakeId(bool inContext)
+        public override bool Equals(object obj)
         {
-            if (IsPrimitiveType) return PrimitiveTypeId;
+            return obj is TypeDefinitionType t && handle.Equals(t.handle);
+        }
 
-            var name = cx.GetId(td.Name);
+        public override int GetHashCode() => handle.GetHashCode();
 
-            Id l;
+        public override void WriteId(TextWriter trapFile, bool inContext)
+        {
+            if (IsPrimitiveType)
+            {
+                PrimitiveTypeId(trapFile);
+                return;
+            }
+
+            var name = cx.GetString(td.Name);
+
             if (ContainingType != null)
             {
-                l = ContainingType.GetId(inContext) + cx.Dot;
+                ContainingType.GetId(trapFile, inContext);
+                trapFile.Write('.');
             }
             else
             {
-                l = AssemblyPrefix;
+                WriteAssemblyPrefix(trapFile);
 
                 var ns = Namespace;
                 if (!ns.IsGlobalNamespace)
                 {
-                    l = l + ns.ShortId + cx.Dot;
+                    ns.WriteId(trapFile);
+                    trapFile.Write('.');
                 }
             }
 
-            return l + name;
+            trapFile.Write(name);
         }
 
-        public override Id Name
+        public override string Name
         {
             get
             {
-                var name = cx.GetId(td.Name);
-                var tick = name.Value.IndexOf('`');
-                return tick == -1 ? name : cx.GetId(name.Value.Substring(0, tick));
+                var name = cx.GetString(td.Name);
+                var tick = name.IndexOf('`');
+                return tick == -1 ? name : name.Substring(0, tick);
             }
         }
 
@@ -344,13 +419,15 @@ namespace Semmle.Extraction.CIL.Entities
             return cx.Populate(new ConstructedType(cx, this, typeArguments));
         }
 
-        public override Id AssemblyPrefix
+        public override void WriteAssemblyPrefix(TextWriter trapFile)
         {
-            get
-            {
-                var ct = ContainingType;
-                return ct != null ? ct.AssemblyPrefix : IsPrimitiveType ? builtin : cx.AssemblyPrefix;
-            }
+            var ct = ContainingType;
+            if (ct is null)
+                cx.WriteAssemblyPrefix(trapFile);
+            else if (IsPrimitiveType)
+                trapFile.Write("builtin:");
+            else
+                ct.WriteAssemblyPrefix(trapFile);
         }
 
         IEnumerable<TypeTypeParameter> MakeTypeParameters()
@@ -488,18 +565,29 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public sealed class TypeReferenceType : Type
     {
+        readonly TypeReferenceHandle handle;
         readonly TypeReference tr;
         readonly Lazy<TypeTypeParameter[]> typeParams;
 
-        public TypeReferenceType(Context cx, TypeReferenceHandle handle) : this(cx, cx.mdReader.GetTypeReference(handle))
+        public TypeReferenceType(Context cx, TypeReferenceHandle handle) : this(cx, handle, cx.mdReader.GetTypeReference(handle))
         {
-            ShortId = MakeId(false);
             typeParams = new Lazy<TypeTypeParameter[]>(MakeTypeParameters);
         }
 
-        public TypeReferenceType(Context cx, TypeReference tr) : base(cx)
+        public TypeReferenceType(Context cx, TypeReferenceHandle handle, TypeReference tr) : base(cx)
         {
+            this.handle = handle;
             this.tr = tr;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is TypeReferenceType t && handle.Equals(t.handle);
+        }
+
+        public override int GetHashCode()
+        {
+            return handle.GetHashCode();
         }
 
         TypeTypeParameter[] MakeTypeParameters()
@@ -524,13 +612,13 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override Id Name
+        public override string Name
         {
             get
             {
-                var name = cx.GetId(tr.Name);
-                var tick = name.Value.IndexOf('`');
-                return tick == -1 ? name : cx.GetId(name.Value.Substring(0, tick));
+                var name = cx.GetString(tr.Name);
+                var tick = name.IndexOf('`');
+                return tick == -1 ? name : name.Substring(0, tick);
             }
         }
 
@@ -541,9 +629,9 @@ namespace Semmle.Extraction.CIL.Entities
             get
             {
                 // Parse the name
-                var name = cx.GetId(tr.Name);
-                var tick = name.Value.IndexOf('`');
-                return tick == -1 ? 0 : int.Parse(name.Value.Substring(tick + 1));
+                var name = cx.GetString(tr.Name);
+                var tick = name.IndexOf('`');
+                return tick == -1 ? 0 : int.Parse(name.Substring(tick + 1));
             }
         }
 
@@ -568,20 +656,23 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override CilTypeKind Kind => CilTypeKind.ValueOrRefType;
 
-        public override Id AssemblyPrefix
+        public override void WriteAssemblyPrefix(TextWriter trapFile)
         {
-            get
+            switch (tr.ResolutionScope.Kind)
             {
-                switch (tr.ResolutionScope.Kind)
-                {
-                    case HandleKind.TypeReference:
-                        return ContainingType.AssemblyPrefix;
-                    case HandleKind.AssemblyReference:
-                        var assemblyDef = cx.mdReader.GetAssemblyReference((AssemblyReferenceHandle)tr.ResolutionScope);
-                        return cx.GetId(assemblyDef.Name) + "_" + cx.GetId(assemblyDef.Version.ToString()) + "::";
-                    default:
-                        return cx.AssemblyPrefix;
-                }
+                case HandleKind.TypeReference:
+                    ContainingType.WriteAssemblyPrefix(trapFile);
+                    break;
+                case HandleKind.AssemblyReference:
+                    var assemblyDef = cx.mdReader.GetAssemblyReference((AssemblyReferenceHandle)tr.ResolutionScope);
+                    trapFile.Write(cx.GetString(assemblyDef.Name));
+                    trapFile.Write('_');
+                    trapFile.Write(assemblyDef.Version.ToString());
+                    trapFile.Write("::");
+                    break;
+                default:
+                    cx.WriteAssemblyPrefix(trapFile);
+                    break;
             }
         }
 
@@ -589,30 +680,34 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override IEnumerable<Type> MethodParameters => throw new InternalError("This type does not have method parameters");
 
-        public override Id MakeId(bool inContext)
+        public override void WriteId(TextWriter trapFile, bool inContext)
         {
-            if (IsPrimitiveType) return PrimitiveTypeId;
+            if (IsPrimitiveType)
+            {
+                PrimitiveTypeId(trapFile);
+                return;
+            }
 
             var ct = ContainingType;
-            Id l = null;
             if (ct != null)
             {
-                l = ContainingType.GetId(inContext);
+                ContainingType.GetId(trapFile, inContext);
             }
             else
             {
                 if (tr.ResolutionScope.Kind == HandleKind.AssemblyReference)
                 {
-                    l = AssemblyPrefix;
+                    WriteAssemblyPrefix(trapFile);
                 }
 
                 if (!Namespace.IsGlobalNamespace)
                 {
-                    l += Namespace.ShortId;
+                    Namespace.WriteId(trapFile);
                 }
             }
 
-            return l + cx.Dot + cx.GetId(tr.Name);
+            trapFile.Write('.');
+            trapFile.Write(cx.GetString(tr.Name));
         }
 
         public override Type Construct(IEnumerable<Type> typeArguments)
@@ -679,14 +774,31 @@ namespace Semmle.Extraction.CIL.Entities
                 containingType = unboundType.ContainingType.Construct(typeArguments.Take(parentParams));
                 thisTypeArguments = typeArguments.Skip(parentParams).ToArray();
             }
+        }
 
-            ShortId = MakeId(false);
+        public override bool Equals(object obj)
+        {
+            if(obj is ConstructedType t && Equals(unboundGenericType, t.unboundGenericType) && Equals(containingType, t.containingType))
+            {
+                if (thisTypeArguments is null) return t.thisTypeArguments is null;
+                if (!(t.thisTypeArguments is null)) return thisTypeArguments.SequenceEqual(t.thisTypeArguments);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            int h = unboundGenericType.GetHashCode();
+            h = 13 * h + (containingType is null ? 0 : containingType.GetHashCode());
+            if (!(thisTypeArguments is null))
+                h = h * 13 + thisTypeArguments.SequenceHash();
+            return h;
         }
 
         readonly Type containingType;
         public override Type ContainingType => containingType;
 
-        public override Id Name => unboundGenericType.Name;
+        public override string Name => unboundGenericType.Name;
 
         public override Namespace Namespace => unboundGenericType.Namespace;
 
@@ -699,43 +811,39 @@ namespace Semmle.Extraction.CIL.Entities
             throw new NotImplementedException();
         }
 
-        public override Id MakeId(bool inContext)
+        public override void WriteId(TextWriter trapFile, bool inContext)
         {
-            Id l;
             if (ContainingType != null)
             {
-                l = ContainingType.GetId(inContext) + cx.Dot;
+                ContainingType.GetId(trapFile, inContext);
+                trapFile.Write('.');
             }
             else
             {
-                l = AssemblyPrefix;
+                WriteAssemblyPrefix(trapFile);
 
                 if (!Namespace.IsGlobalNamespace)
                 {
-                    l += Namespace.ShortId + cx.Dot;
+                    Namespace.WriteId(trapFile);
+                    trapFile.Write('.');
                 }
             }
-            l += unboundGenericType.Name;
+            trapFile.Write(unboundGenericType.Name);
 
             if (thisTypeArguments != null && thisTypeArguments.Any())
             {
-                l += open;
-                bool first = true;
+                trapFile.Write('<');
+                int index = 0;
                 foreach (var t in thisTypeArguments)
                 {
-                    if (first) first = false; else l += comma;
-                    l += t.ShortId;
+                    trapFile.WriteSeparator(",", index++);
+                    t.WriteId(trapFile);
                 }
-                l += close;
+                trapFile.Write('>');
             }
-            return l;
         }
 
-        static readonly StringId open = new StringId("<");
-        static readonly StringId close = new StringId(">");
-        static readonly StringId comma = new StringId(",");
-
-        public override Id AssemblyPrefix => unboundGenericType.AssemblyPrefix;
+        public override void WriteAssemblyPrefix(TextWriter trapFile) => unboundGenericType.WriteAssemblyPrefix(trapFile);
 
         public override IEnumerable<Type> TypeParameters => GenericArguments;
 
@@ -748,15 +856,25 @@ namespace Semmle.Extraction.CIL.Entities
         public PrimitiveType(Context cx, PrimitiveTypeCode tc) : base(cx)
         {
             typeCode = tc;
-            ShortId = MakeId(false);
         }
 
-        public override Id MakeId(bool inContext)
+        public override bool Equals(object obj)
         {
-            return builtin + Name;
+            return obj is PrimitiveType pt && typeCode == pt.typeCode;
         }
 
-        public override Id Name => typeCode.Id();
+        public override int GetHashCode()
+        {
+            return 1337 * (int)typeCode;
+        }
+
+        public override void WriteId(TextWriter trapFile, bool inContext)
+        {
+            trapFile.Write("builtin:");
+            trapFile.Write(Name);
+        }
+
+        public override string Name => typeCode.Id();
 
         public override Namespace Namespace => cx.SystemNamespace;
 
@@ -766,9 +884,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override CilTypeKind Kind => CilTypeKind.ValueOrRefType;
 
-        static readonly Id empty = new StringId("");
-
-        public override Id AssemblyPrefix => empty;
+        public override void WriteAssemblyPrefix(TextWriter trapFile) { }
 
         public override IEnumerable<Type> TypeParameters => throw new NotImplementedException();
 
@@ -789,22 +905,33 @@ namespace Semmle.Extraction.CIL.Entities
         {
             rank = shape.Rank;
             elementType = element;
-            ShortId = MakeId(false);
         }
 
         public ArrayType(Context cx, Type element) : base(cx)
         {
             rank = 1;
             elementType = element;
-            ShortId = MakeId(false);
         }
 
-        public override Id MakeId(bool inContext) => elementType.GetId(inContext) + openBracket + rank + closeBracket;
+        public override bool Equals(object obj)
+        {
+            return obj is ArrayType array && elementType.Equals(array.elementType) && rank == array.rank;
+        }
 
-        static readonly StringId openBracket = new StringId("[");
-        static readonly StringId closeBracket = new StringId("]");
+        public override int GetHashCode()
+        {
+            return elementType.GetHashCode() * 5 + rank;
+        }
 
-        public override Id Name => elementType.Name + openBracket + closeBracket;
+        public override void WriteId(TextWriter trapFile, bool inContext)
+        {
+            elementType.GetId(trapFile, inContext);
+            trapFile.Write('[');
+            trapFile.Write(rank);
+            trapFile.Write(']');
+        }
+
+        public override string Name => elementType.Name + "[]";
 
         public override Namespace Namespace => cx.SystemNamespace;
 
@@ -829,13 +956,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override Id AssemblyPrefix
-        {
-            get
-            {
-                return elementType.AssemblyPrefix;
-            }
-        }
+        public override void WriteAssemblyPrefix(TextWriter trapFile) => elementType.WriteAssemblyPrefix(trapFile);
 
         public override IEnumerable<Type> GenericArguments => elementType.GenericArguments;
 
@@ -865,7 +986,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override CilTypeKind Kind => CilTypeKind.TypeParameter;
 
-        public override Id AssemblyPrefix => throw new NotImplementedException();
+        public override void WriteAssemblyPrefix(TextWriter trapFile) => throw new NotImplementedException();
 
         public override Type Construct(IEnumerable<Type> typeArguments) => throw new InternalError("Attempt to construct a type parameter");
 
@@ -901,17 +1022,32 @@ namespace Semmle.Extraction.CIL.Entities
         readonly Method method;
         readonly int index;
 
-        public override Id MakeId(bool inContext) => inContext && method == gc ? Name : method.ShortId + Name;
+        public override void WriteId(TextWriter trapFile, bool inContext)
+        {
+            if (!(inContext && method == gc))
+            {
+                trapFile.WriteSubId(method);
+            }
+            trapFile.Write("!");
+            trapFile.Write(index);
+        }
 
-        static readonly Id excl = new StringId("!");
-
-        public override Id Name => excl + index.ToString();
+        public override string Name => "!" + index;
 
         public MethodTypeParameter(GenericContext gc, Method m, int index) : base(gc)
         {
             method = m;
             this.index = index;
-            ShortId = MakeId(false);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is MethodTypeParameter tp && method.Equals(tp.method) && index == tp.index;
+        }
+
+        public override int GetHashCode()
+        {
+            return method.GetHashCode() * 29 + index;
         }
 
         public override TypeContainer Parent => method;
@@ -924,7 +1060,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.cil_type(this, Name.Value, Kind, method, SourceDeclaration);
+                yield return Tuples.cil_type(this, Name, Kind, method, SourceDeclaration);
                 yield return Tuples.cil_type_parameter(method, index, this);
             }
         }
@@ -940,15 +1076,27 @@ namespace Semmle.Extraction.CIL.Entities
         {
             index = i;
             type = t;
-            ShortId = t.ShortId + Name;
         }
 
-        public override Id MakeId(bool inContext) => type.MakeId(inContext) + Name;
+        public override bool Equals(object obj)
+        {
+            return obj is TypeTypeParameter tp && type.Equals(tp.type) && index == tp.index;
+        }
+
+        public override int GetHashCode()
+        {
+            return type.GetHashCode() * 13 + index;
+        }
+
+        public override void WriteId(TextWriter trapFile, bool inContext)
+        {
+            type.WriteId(trapFile, inContext);
+            trapFile.Write('!');
+            trapFile.Write(index);
+        }
 
         public override TypeContainer Parent => type ?? gc as TypeContainer;
-
-        static readonly Id excl = new StringId("!");
-        public override Id Name => excl + index.ToString();
+        public override string Name => "!" + index;
 
         public override IEnumerable<Type> TypeParameters => Enumerable.Empty<Type>();
 
@@ -958,7 +1106,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.cil_type(this, Name.Value, Kind, type, SourceDeclaration);
+                yield return Tuples.cil_type(this, Name, Kind, type, SourceDeclaration);
                 yield return Tuples.cil_type_parameter(type, index, this);
             }
         }
@@ -975,14 +1123,26 @@ namespace Semmle.Extraction.CIL.Entities
         public PointerType(Context cx, Type pointee) : base(cx)
         {
             this.pointee = pointee;
-            ShortId = MakeId(false);
         }
 
-        public override Id MakeId(bool inContext) => pointee.MakeId(inContext) + star;
+        public override bool Equals(object obj)
+        {
+            return obj is PointerType pt && pointee.Equals(pt.pointee);
+        }
 
-        static readonly StringId star = new StringId("*");
 
-        public override Id Name => pointee.Name + star;
+        public override int GetHashCode()
+        {
+            return pointee.GetHashCode() * 29;
+        }
+
+        public override void WriteId(TextWriter trapFile, bool inContext)
+        {
+            pointee.WriteId(trapFile, inContext);
+            trapFile.Write('*');
+        }
+
+        public override string Name => pointee.Name + "*";
 
         public override Namespace Namespace => pointee.Namespace;
 
@@ -994,7 +1154,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override CilTypeKind Kind => CilTypeKind.Pointer;
 
-        public override Id AssemblyPrefix => pointee.AssemblyPrefix;
+        public override void WriteAssemblyPrefix(TextWriter trapFile) => pointee.WriteAssemblyPrefix(trapFile);
 
         public override IEnumerable<Type> TypeParameters => throw new NotImplementedException();
 
@@ -1016,14 +1176,13 @@ namespace Semmle.Extraction.CIL.Entities
     {
         public ErrorType(Context cx) : base(cx)
         {
-            ShortId = MakeId(false);
         }
 
-        public override Id MakeId(bool inContext) => CIL.Id.Create("<ErrorType>");
+        public override void WriteId(TextWriter trapFile, bool inContext) => trapFile.Write("<ErrorType>");
 
         public override CilTypeKind Kind => CilTypeKind.ValueOrRefType;
 
-        public override Id Name => new StringId("!error");
+        public override string Name => "!error";
 
         public override Namespace Namespace => cx.GlobalNamespace;
 
@@ -1031,7 +1190,7 @@ namespace Semmle.Extraction.CIL.Entities
 
         public override int ThisTypeParameters => 0;
 
-        public override Id AssemblyPrefix => throw new NotImplementedException();
+        public override void WriteAssemblyPrefix(TextWriter trapFile) => throw new NotImplementedException();
 
         public override IEnumerable<Type> TypeParameters => throw new NotImplementedException();
 
@@ -1040,52 +1199,9 @@ namespace Semmle.Extraction.CIL.Entities
         public override Type Construct(IEnumerable<Type> typeArguments) => throw new NotImplementedException();
     }
 
-    public sealed class TypeSpecificationType : Type
-    {
-        readonly TypeSpecification ts;
-        readonly Type decodedType;
-
-        public TypeSpecificationType(GenericContext gc, TypeSpecificationHandle handle) : base(gc.cx)
-        {
-            ts = cx.mdReader.GetTypeSpecification(handle);
-            decodedType = ts.DecodeSignature(cx.TypeSignatureDecoder, gc);
-            ShortId = decodedType.ShortId;
-        }
-
-        public override Id MakeId(bool inContext) => decodedType.MakeId(inContext);
-
-        public override IEnumerable<IExtractionProduct> Contents
-        {
-            get
-            {
-                yield return decodedType;
-            }
-        }
-
-        public override Id AssemblyPrefix => throw new NotImplementedException();
-
-        public override CilTypeKind Kind => throw new NotImplementedException();
-
-        public override Id Name => decodedType.Name;
-
-        public override Namespace Namespace => throw new NotImplementedException();
-
-        public override Type ContainingType => decodedType.ContainingType;
-
-        public override int ThisTypeParameters => throw new NotImplementedException();
-
-        public override IEnumerable<Type> TypeParameters => decodedType.TypeParameters;
-
-        public override IEnumerable<Type> MethodParameters => throw new NotImplementedException();
-
-        public override Type Construct(IEnumerable<Type> typeArguments) => throw new NotImplementedException();
-
-        public override Type SourceDeclaration => decodedType.SourceDeclaration;
-    }
-
     interface ITypeSignature
     {
-        Id MakeId(GenericContext gc);
+        void WriteId(TextWriter trapFile, GenericContext gc);
     }
 
     public class SignatureDecoder : ISignatureTypeProvider<ITypeSignature, object>
@@ -1094,19 +1210,32 @@ namespace Semmle.Extraction.CIL.Entities
         {
             public ITypeSignature elementType;
             public ArrayShape shape;
-            public Id MakeId(GenericContext gc) => elementType.MakeId(gc) + "[]";   // Make these static
+            public void WriteId(TextWriter trapFile, GenericContext gc)
+            {
+                elementType.WriteId(trapFile, gc);
+                trapFile.Write("[]");
+            }
         }
 
         struct ByRef : ITypeSignature
         {
             public ITypeSignature elementType;
-            public Id MakeId(GenericContext gc) => "ref " + elementType.MakeId(gc);
+
+            public void WriteId(TextWriter trapFile, GenericContext gc)
+            {
+                trapFile.Write("ref ");
+                elementType.WriteId(trapFile, gc);
+            }
         }
 
         struct FnPtr : ITypeSignature
         {
             public MethodSignature<ITypeSignature> signature;
-            public Id MakeId(GenericContext gc) => Id.Create("<method signature>");     // !!
+
+            public void WriteId(TextWriter trapFile, GenericContext gc)
+            {
+                trapFile.Write("<method signature>");
+            }
         }
 
         ITypeSignature IConstructedTypeProvider<ITypeSignature>.GetArrayType(ITypeSignature elementType, ArrayShape shape) =>
@@ -1122,34 +1251,49 @@ namespace Semmle.Extraction.CIL.Entities
         {
             public ITypeSignature genericType;
             public ImmutableArray<ITypeSignature> typeArguments;
-            public Id MakeId(GenericContext gc) =>
-                genericType.MakeId(gc) + "<" + Id.CommaSeparatedList(typeArguments.Select(arg => arg.MakeId(gc))) + ">";
+
+            public void WriteId(TextWriter trapFile, GenericContext gc)
+            {
+                genericType.WriteId(trapFile, gc);
+                trapFile.Write('<');
+                int index = 0;
+                foreach(var arg in typeArguments)
+                {
+                    trapFile.WriteSeparator(",", index++);
+                    arg.WriteId(trapFile, gc);
+                }
+                trapFile.Write('>');
+            }
         }
 
         ITypeSignature IConstructedTypeProvider<ITypeSignature>.GetGenericInstantiation(ITypeSignature genericType, ImmutableArray<ITypeSignature> typeArguments) =>
             new Instantiation { genericType = genericType, typeArguments = typeArguments };
 
-        static readonly Id open = Id.Create("{");
-        static readonly Id close = Id.Create("}");
-
         class GenericMethodParameter : ITypeSignature
         {
             public object innerGc;
             public int index;
-            static readonly Id excl = Id.Create("M!");
-            public Id MakeId(GenericContext outerGc)
+
+            public void WriteId(TextWriter trapFile, GenericContext outerGc)
             {
                 if (!ReferenceEquals(innerGc, outerGc) && innerGc is Method method)
-                    return open + method.Label.Value + close + excl + index;
-                return excl + index;
+                {
+                    trapFile.WriteSubId(method);
+                }
+                trapFile.Write("M!");
+                trapFile.Write(index);
             }
         }
 
         class GenericTypeParameter : ITypeSignature
         {
             public int index;
-            static readonly Id excl = Id.Create("T!");
-            public Id MakeId(GenericContext gc) => excl + index;
+
+            public void WriteId(TextWriter trapFile, GenericContext gc)
+            {
+                trapFile.Write("T!");
+                trapFile.Write(index);
+            }
         }
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetGenericMethodParameter(object genericContext, int index) =>
@@ -1164,7 +1308,10 @@ namespace Semmle.Extraction.CIL.Entities
             public ITypeSignature unmodifiedType;
             public bool isRequired;
 
-            public Id MakeId(GenericContext gc) => unmodifiedType.MakeId(gc);
+            public void WriteId(TextWriter trapFile, GenericContext gc)
+            {
+                unmodifiedType.WriteId(trapFile, gc);
+            }
         }
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetModifiedType(ITypeSignature modifier, ITypeSignature unmodifiedType, bool isRequired)
@@ -1175,7 +1322,12 @@ namespace Semmle.Extraction.CIL.Entities
         class Pinned : ITypeSignature
         {
             public ITypeSignature elementType;
-            public Id MakeId(GenericContext gc) => "pinned " + elementType.MakeId(gc);
+
+            public void WriteId(TextWriter trapFile, GenericContext gc)
+            {
+                trapFile.Write("pinned ");
+                elementType.WriteId(trapFile, gc);
+            }
         }
 
         ITypeSignature ISignatureTypeProvider<ITypeSignature, object>.GetPinnedType(ITypeSignature elementType)
@@ -1186,7 +1338,12 @@ namespace Semmle.Extraction.CIL.Entities
         class PointerType : ITypeSignature
         {
             public ITypeSignature elementType;
-            public Id MakeId(GenericContext gc) => elementType.MakeId(gc) + "*";
+
+            public void WriteId(TextWriter trapFile, GenericContext gc)
+            {
+                elementType.WriteId(trapFile, gc);
+                trapFile.Write('*');
+            }
         }
 
         ITypeSignature IConstructedTypeProvider<ITypeSignature>.GetPointerType(ITypeSignature elementType)
@@ -1197,7 +1354,11 @@ namespace Semmle.Extraction.CIL.Entities
         class Primitive : ITypeSignature
         {
             public PrimitiveTypeCode typeCode;
-            public Id MakeId(GenericContext gc) => typeCode.Id();
+
+            public void WriteId(TextWriter trapFile, GenericContext gc)
+            {
+                trapFile.Write(typeCode.Id());
+            }
         }
 
         ITypeSignature ISimpleTypeProvider<ITypeSignature>.GetPrimitiveType(PrimitiveTypeCode typeCode)
@@ -1208,7 +1369,11 @@ namespace Semmle.Extraction.CIL.Entities
         class SzArrayType : ITypeSignature
         {
             public ITypeSignature elementType;
-            public Id MakeId(GenericContext gc) => elementType.MakeId(gc) + "[]";
+            public void WriteId(TextWriter trapFile, GenericContext gc)
+            {
+                elementType.WriteId(trapFile, gc);
+                trapFile.Write("[]");
+            }
         }
 
         ITypeSignature ISZArrayTypeProvider<ITypeSignature>.GetSZArrayType(ITypeSignature elementType)
@@ -1221,10 +1386,10 @@ namespace Semmle.Extraction.CIL.Entities
             public TypeDefinitionHandle handle;
             public byte rawTypeKind;
             Type type;
-            public Id MakeId(GenericContext gc)
+            public void WriteId(TextWriter trapFile, GenericContext gc)
             {
                 type = (Type)gc.cx.Create(handle);
-                return type.ShortId;
+                type.WriteId(trapFile);
             }
         }
 
@@ -1238,10 +1403,10 @@ namespace Semmle.Extraction.CIL.Entities
             public TypeReferenceHandle handle;
             public byte rawTypeKind; // struct/class (not used)
             Type type;
-            public Id MakeId(GenericContext gc)
+            public void WriteId(TextWriter trapFile, GenericContext gc)
             {
                 type = (Type)gc.cx.Create(handle);
-                return type.ShortId;
+                type.WriteId(trapFile);
             }
         }
 
@@ -1298,8 +1463,7 @@ namespace Semmle.Extraction.CIL.Entities
         Type IConstructedTypeProvider<Type>.GetPointerType(Type elementType) =>
             cx.Populate(new PointerType(cx, elementType));
 
-        Type ISimpleTypeProvider<Type>.GetPrimitiveType(PrimitiveTypeCode typeCode) =>
-            cx.Populate(new PrimitiveType(cx, typeCode));
+        Type ISimpleTypeProvider<Type>.GetPrimitiveType(PrimitiveTypeCode typeCode) => cx.Create(typeCode);
 
         Type ISZArrayTypeProvider<Type>.GetSZArrayType(Type elementType) =>
             cx.Populate(new ArrayType(cx, elementType));

@@ -332,7 +332,7 @@ namespace Semmle.Extraction.CommentProcessing
 
     class CommentBlock : ICommentBlock
     {
-        private List<ICommentLine> lines = new List<ICommentLine>();
+        private readonly List<ICommentLine> lines = new List<ICommentLine>();
 
         public IEnumerable<ICommentLine> CommentLines => lines;
 

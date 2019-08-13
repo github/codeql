@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Semmle.Extraction.CIL.Entities;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection.Metadata;
 
 namespace Semmle.Extraction.CIL
@@ -9,36 +11,76 @@ namespace Semmle.Extraction.CIL
     /// </summary>
     public partial class Context
     {
-        readonly Dictionary<Id, (Label, Id)> ids = new Dictionary<Id, (Label, Id)>();
+        readonly Dictionary<object, Label> ids = new Dictionary<object, Label>();
 
         public T Populate<T>(T e) where T : ILabelledEntity
         {
-            Id id = e.ShortId;
+            if(e.Label.Valid)
+            {
+                return e;   // Already populated
+            }
 
-            if (ids.TryGetValue(id, out var existing))
+            if (ids.TryGetValue(e, out var existing))
             {
                 // It exists already
-                e.Label = existing.Item1;
-                e.ShortId = existing.Item2;   // Reuse ID for efficiency
+                e.Label = existing;
             }
             else
             {
                 e.Label = cx.GetNewLabel();
                 cx.DefineLabel(e, cx.TrapWriter.Writer);
-                ids.Add(id, (e.Label, id));
+                ids.Add(e, e.Label);
                 cx.PopulateLater(() =>
                 {
                     foreach (var c in e.Contents)
                         c.Extract(this);
                 });
+#if DEBUG_LABELS
+                using (var writer = new StringWriter())
+                {
+                    e.WriteId(writer);
+                    var id = writer.ToString();
+
+                    if (debugLabels.TryGetValue(id, out ILabelledEntity previousEntity))
+                    {
+                        cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
+                    }
+                    else
+                    {
+                        debugLabels.Add(id, e);
+                    }
+                }
+#endif
             }
             return e;
         }
+
+#if DEBUG_LABELS
+        Dictionary<string, ILabelledEntity> debugLabels = new Dictionary<string, ILabelledEntity>();
+#endif
 
         public IExtractedEntity Create(Handle h)
         {
             var entity = CreateGeneric(defaultGenericContext, h);
             return entity;
+        }
+
+        // Lazily cache primitive types.
+        PrimitiveType[] primitiveTypes = new PrimitiveType[(int)PrimitiveTypeCode.Object + 1];
+
+        public PrimitiveType Create(PrimitiveTypeCode code)
+        {
+            PrimitiveType e = primitiveTypes[(int)code];
+
+            if(e is null)
+            {
+                e = new PrimitiveType(this, code);
+                e.Label = cx.GetNewLabel();
+                cx.DefineLabel(e, cx.TrapWriter.Writer);
+                primitiveTypes[(int)code] = e;
+            }
+
+            return e;
         }
 
         /// <summary>
@@ -63,25 +105,27 @@ namespace Semmle.Extraction.CIL
             switch (handle.Kind)
             {
                 case HandleKind.MethodDefinition:
-                    entity = new Entities.DefinitionMethod(gc, (MethodDefinitionHandle)handle);
+                    entity = new DefinitionMethod(gc, (MethodDefinitionHandle)handle);
                     break;
                 case HandleKind.MemberReference:
                     entity = Create(gc, (MemberReferenceHandle)handle);
                     break;
                 case HandleKind.MethodSpecification:
-                    entity = new Entities.MethodSpecificationMethod(gc, (MethodSpecificationHandle)handle);
+                    entity = new MethodSpecificationMethod(gc, (MethodSpecificationHandle)handle);
                     break;
                 case HandleKind.FieldDefinition:
-                    entity = new Entities.DefinitionField(gc, (FieldDefinitionHandle)handle);
+                    entity = new DefinitionField(gc, (FieldDefinitionHandle)handle);
                     break;
                 case HandleKind.TypeReference:
-                    entity = new Entities.TypeReferenceType(this, (TypeReferenceHandle)handle);
+                    var tr = new TypeReferenceType(this, (TypeReferenceHandle)handle);
+                    if (tr.TryGetPrimitiveType(gc.cx, out var pt))
+                        return pt;
+                    entity = tr;
                     break;
                 case HandleKind.TypeSpecification:
-                    entity = new Entities.TypeSpecificationType(gc, (TypeSpecificationHandle)handle);
-                    break;
+                    return Entities.Type.DecodeType(gc, (TypeSpecificationHandle)handle);
                 case HandleKind.TypeDefinition:
-                    entity = new Entities.TypeDefinitionType(this, (TypeDefinitionHandle)handle);
+                    entity = new TypeDefinitionType(this, (TypeDefinitionHandle)handle);
                     break;
                 default:
                     throw new InternalError("Unhandled handle kind " + handle.Kind);
@@ -97,123 +141,90 @@ namespace Semmle.Extraction.CIL
             switch (mr.GetKind())
             {
                 case MemberReferenceKind.Method:
-                    return new Entities.MemberReferenceMethod(gc, handle);
+                    return new MemberReferenceMethod(gc, handle);
                 case MemberReferenceKind.Field:
-                    return new Entities.MemberReferenceField(gc, handle);
+                    return new MemberReferenceField(gc, handle);
                 default:
                     throw new InternalError("Unhandled member reference handle");
             }
         }
 
-        #region Strings
-        readonly Dictionary<StringHandle, StringId> stringHandleIds = new Dictionary<StringHandle, StringId>();
-        readonly Dictionary<string, StringId> stringIds = new Dictionary<string, StringId>();
-
         /// <summary>
-        /// Return an ID containing the given string.
+        /// Gets the string for a string handle.
         /// </summary>
         /// <param name="h">The string handle.</param>
-        /// <returns>An ID.</returns>
-        public StringId GetId(StringHandle h)
-        {
-            StringId result;
-            if (!stringHandleIds.TryGetValue(h, out result))
-            {
-                result = new StringId(mdReader.GetString(h));
-                stringHandleIds.Add(h, result);
-            }
-            return result;
-        }
+        /// <returns>The string.</returns>
+        public string GetString(StringHandle h) => mdReader.GetString(h);
 
-        public readonly StringId Dot = new StringId(".");
+#region Namespaces
 
-        /// <summary>
-        /// Gets an ID containing the given string.
-        /// Caches existing IDs for more compact storage.
-        /// </summary>
-        /// <param name="str">The string.</param>
-        /// <returns>An ID containing the string.</returns>
-        public StringId GetId(string str)
-        {
-            StringId result;
-            if (!stringIds.TryGetValue(str, out result))
-            {
-                result = new StringId(str);
-                stringIds.Add(str, result);
-            }
-            return result;
-        }
-        #endregion
+        readonly CachedFunction<StringHandle, Namespace> namespaceFactory;
 
-        #region Namespaces
+        public Namespace CreateNamespace(StringHandle fqn) => namespaceFactory[fqn];
 
-        readonly CachedFunction<StringHandle, Entities.Namespace> namespaceFactory;
-
-        public Entities.Namespace CreateNamespace(StringHandle fqn) => namespaceFactory[fqn];
-
-        readonly Lazy<Entities.Namespace> globalNamespace, systemNamespace;
+        readonly Lazy<Namespace> globalNamespace, systemNamespace;
 
         /// <summary>
         /// The entity representing the global namespace.
         /// </summary>
-        public Entities.Namespace GlobalNamespace => globalNamespace.Value;
+        public Namespace GlobalNamespace => globalNamespace.Value;
 
         /// <summary>
         /// The entity representing the System namespace.
         /// </summary>
-        public Entities.Namespace SystemNamespace => systemNamespace.Value;
+        public Namespace SystemNamespace => systemNamespace.Value;
 
         /// <summary>
         /// Creates a namespace from a fully-qualified name.
         /// </summary>
         /// <param name="fqn">The fully-qualified namespace name.</param>
         /// <returns>The namespace entity.</returns>
-        Entities.Namespace CreateNamespace(string fqn) => Populate(new Entities.Namespace(this, fqn));
+        Namespace CreateNamespace(string fqn) => Populate(new Namespace(this, fqn));
 
-        readonly CachedFunction<NamespaceDefinitionHandle, Entities.Namespace> namespaceDefinitionFactory;
+        readonly CachedFunction<NamespaceDefinitionHandle, Namespace> namespaceDefinitionFactory;
 
         /// <summary>
         /// Creates a namespace from a namespace handle.
         /// </summary>
         /// <param name="handle">The handle of the namespace.</param>
         /// <returns>The namespace entity.</returns>
-        public Entities.Namespace Create(NamespaceDefinitionHandle handle) => namespaceDefinitionFactory[handle];
+        public Namespace Create(NamespaceDefinitionHandle handle) => namespaceDefinitionFactory[handle];
 
-        Entities.Namespace CreateNamespace(NamespaceDefinitionHandle handle)
+        Namespace CreateNamespace(NamespaceDefinitionHandle handle)
         {
             if (handle.IsNil) return GlobalNamespace;
             NamespaceDefinition nd = mdReader.GetNamespaceDefinition(handle);
-            return Populate(new Entities.Namespace(this, GetId(nd.Name), Create(nd.Parent)));
+            return Populate(new Namespace(this, GetString(nd.Name), Create(nd.Parent)));
         }
-        #endregion
+#endregion
 
-        #region Locations
-        readonly CachedFunction<PDB.ISourceFile, Entities.PdbSourceFile> sourceFiles;
-        readonly CachedFunction<string, Entities.Folder> folders;
-        readonly CachedFunction<PDB.Location, Entities.PdbSourceLocation> sourceLocations;
+#region Locations
+        readonly CachedFunction<PDB.ISourceFile, PdbSourceFile> sourceFiles;
+        readonly CachedFunction<string, Folder> folders;
+        readonly CachedFunction<PDB.Location, PdbSourceLocation> sourceLocations;
 
         /// <summary>
         /// Creates a source file entity from a PDB source file.
         /// </summary>
         /// <param name="file">The PDB source file.</param>
         /// <returns>A source file entity.</returns>
-        public Entities.PdbSourceFile CreateSourceFile(PDB.ISourceFile file) => sourceFiles[file];
+        public PdbSourceFile CreateSourceFile(PDB.ISourceFile file) => sourceFiles[file];
 
         /// <summary>
         /// Creates a folder entitiy with the given path.
         /// </summary>
         /// <param name="path">The path of the folder.</param>
         /// <returns>A folder entity.</returns>
-        public Entities.Folder CreateFolder(string path) => folders[path];
+        public Folder CreateFolder(string path) => folders[path];
 
         /// <summary>
         /// Creates a source location.
         /// </summary>
         /// <param name="loc">The source location from PDB.</param>
         /// <returns>A source location entity.</returns>
-        public Entities.PdbSourceLocation CreateSourceLocation(PDB.Location loc) => sourceLocations[loc];
+        public PdbSourceLocation CreateSourceLocation(PDB.Location loc) => sourceLocations[loc];
 
-        #endregion
+#endregion
 
         readonly CachedFunction<GenericContext, Handle, ILabelledEntity> genericHandleFactory;
 

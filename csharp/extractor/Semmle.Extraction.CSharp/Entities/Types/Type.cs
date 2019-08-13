@@ -83,9 +83,11 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractMetadataHandle(trapFile);
             ExtractAttributes();
 
-            var tb = new StringWriter();
-            symbol.BuildDisplayName(Context, tb);
-            trapFile.types(this, GetClassType(Context, symbol), tb.ToString());
+            using (var tb = new StringWriter())
+            {
+                symbol.BuildDisplayName(Context, tb);
+                trapFile.types(this, GetClassType(Context, symbol), tb.ToString());
+            }
 
             // Visit base types
             var baseTypes = new List<Type>();

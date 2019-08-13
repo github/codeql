@@ -90,6 +90,9 @@ namespace Semmle.Extraction
                     CIL = !value;
                     Fast = value;
                     return true;
+                case "brotli":
+                    TrapCompression = value ? TrapWriter.CompressionMode.Brotli : TrapWriter.CompressionMode.Gzip;
+                    return true;
                 default:
                     return false;
             }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Semmle.Util.Logging;
 using System;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -20,8 +21,6 @@ namespace Semmle.Extraction.CIL.Entities
     /// </summary>
     public class Assembly : LabelledEntity, IAssembly
     {
-        public override Id IdSuffix => suffix;
-
         readonly File file;
         readonly AssemblyName assemblyName;
 
@@ -38,12 +37,24 @@ namespace Semmle.Extraction.CIL.Entities
             if (!def.PublicKey.IsNil)
                 assemblyName.SetPublicKey(cx.mdReader.GetBlobBytes(def.PublicKey));
 
-            ShortId = cx.GetId(FullName) + "#file:///" + cx.assemblyPath.Replace("\\", "/");
-
             file = new File(cx, cx.assemblyPath);
         }
 
-        static readonly Id suffix = new StringId(";assembly");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.Write(FullName);
+            trapFile.Write("#file:///");
+            trapFile.Write(cx.assemblyPath.Replace("\\", "/"));
+        }
+
+        public override bool Equals(object obj)
+        {
+            return GetType() == obj.GetType() && Equals(file, ((Assembly)obj).file);
+        }
+
+        public override int GetHashCode() => 7 * file.GetHashCode();
+
+        public override string IdSuffix => ";assembly";
 
         string FullName => assemblyName.GetPublicKey() is null ? assemblyName.FullName + ", PublicKeyToken=null" : assemblyName.FullName;
 

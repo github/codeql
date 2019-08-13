@@ -308,6 +308,12 @@ namespace Semmle.Extraction.CSharp
         {
             trapFile.WriteTuple("methods", method, name, declType, retType, originalDefinition);
         }
+
+        internal static void modifiers(this TextWriter trapFile, Label entity, string modifier)
+        {
+            trapFile.BeginTuple("modifiers").Param(entity).Param(modifier).EndTuple();
+        }
+
         internal static void mutator_invocation_mode(this TextWriter trapFile, Expression expr, int mode)
         {
             trapFile.WriteTuple("mutator_invocation_mode", expr, mode);

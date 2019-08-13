@@ -69,7 +69,7 @@ namespace Semmle.Extraction.Entities
         public override void WriteId(System.IO.TextWriter trapFile)
         {
             trapFile.Write(assembly.ToString());
-            if (assemblyPath is null)
+            if (!(assemblyPath is null))
             {
                 trapFile.Write("#file:///");
                 trapFile.Write(assemblyPath.Replace("\\", "/"));

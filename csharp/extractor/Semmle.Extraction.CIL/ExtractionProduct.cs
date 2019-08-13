@@ -58,8 +58,6 @@ namespace Semmle.Extraction.CIL
 
         public Microsoft.CodeAnalysis.Location ReportingLocation => throw new NotImplementedException();
 
-        public virtual IId Id => FreshId.Instance;
-
         public virtual void Extract(Context cx2)
         {
             cx2.Extract(this);
@@ -86,18 +84,16 @@ namespace Semmle.Extraction.CIL
         public Label Label { get; set; }
         public Microsoft.CodeAnalysis.Location ReportingLocation => throw new NotImplementedException();
 
-        public Id ShortId { get; set; }
-        public abstract Id IdSuffix { get; }
-        public IId Id => ShortId + IdSuffix;
+        public abstract void WriteId(System.IO.TextWriter trapFile);
 
-        public void WriteId(System.IO.TextWriter trapFile)
-        {
-            trapFile.WriteIId(Id);
-        }
+        public abstract string IdSuffix { get; }
 
         public void WriteQuotedId(TextWriter trapFile)
         {
+            trapFile.Write("@\"");
             WriteId(trapFile);
+            trapFile.Write(IdSuffix);
+            trapFile.Write('\"');
         }
 
         public void Extract(Context cx2)
@@ -112,7 +108,14 @@ namespace Semmle.Extraction.CIL
             this.cx = cx;
         }
 
-        public override string ToString() => Id.ToString();
+        public override string ToString()
+        {
+            using (var writer = new StringWriter())
+            {
+                WriteQuotedId(writer);
+                return writer.ToString();
+            }
+        }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
     }
@@ -122,8 +125,6 @@ namespace Semmle.Extraction.CIL
     /// </summary>
     public interface ILabelledEntity : IExtractedEntity
     {
-        Id ShortId { get; set; }
-        Id IdSuffix { get; }
     }
 
     /// <summary>

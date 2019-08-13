@@ -26,9 +26,11 @@ namespace Semmle.Extraction
         {
             get
             {
-                var trap = new StringWriter();
-                Populate(trap);
-                return trap.ToString();
+                using (var trap = new StringWriter())
+                {
+                    Populate(trap);
+                    return trap.ToString();
+                }
             }
         }
 

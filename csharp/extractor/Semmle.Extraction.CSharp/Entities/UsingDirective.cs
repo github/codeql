@@ -16,7 +16,6 @@ namespace Semmle.Extraction.CSharp.Entities
         public UsingDirective(Context cx, UsingDirectiveSyntax usingDirective, NamespaceDeclaration parent)
             : base(cx)
         {
-            var trapFile = cx.TrapWriter.Writer;
             Node = usingDirective;
             Parent = parent;
             TryPopulate();

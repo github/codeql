@@ -48,6 +48,12 @@ namespace Semmle.Extraction
                 return new NextParam(Writer);
             }
 
+            public NextParam Param(Label label)
+            {
+                Writer.WriteLabel(label.Value);
+                return new NextParam(Writer);
+            }
+
             public void EndTuple()
             {
                 Writer.WriteLine(')');
