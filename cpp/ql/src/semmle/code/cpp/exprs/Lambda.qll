@@ -2,7 +2,13 @@ import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.Class
 
 /**
- * A C++11 lambda expression, such as `[&amp;, =y](int x) mutable -> double {return z = (y += x);}`.
+ * A C++11 lambda expression, for example the expression initializing `a` in
+ * the following code:
+ * ```
+ * auto a = [x, y](int z) -> int {
+ *   return x + y + z;
+ * };
+ * ```
  *
  * The type given by `getType()` will be an instance of `Closure`.
  */
@@ -71,6 +77,12 @@ class LambdaExpression extends Expr, @lambdaexpr {
 
 /**
  * A class written by the compiler to be the type of a C++11 lambda expression.
+ * For example the variable `a` in the following code has a closure type:
+ * ```
+ * auto a = [x, y](int z) -> int {
+ *   return x + y + z;
+ * };
+ * ```
  */
 class Closure extends Class {
   Closure() {
@@ -96,7 +108,13 @@ class Closure extends Class {
 }
 
 /**
- * Information about a value captured as part of a lambda expression.
+ * Information about a value captured as part of a lambda expression.  For
+ * example in the following code, information about `x` and `y` is captured:
+ * ```
+ * auto a = [x, y](int z) -> int {
+ *   return x + y + z;
+ * };
+ * ```
  */
 class LambdaCapture extends @lambdacapture {
   string toString() {
