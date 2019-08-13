@@ -964,7 +964,7 @@ class SsaVariable extends TSsaVariable {
    * includes inputs to phi nodes, the prior definition of uncertain updates,
    * and the captured ssa variable for a closure variable.
    */
-  private SsaVariable getAPhiInputOrPriorDef() {
+  SsaVariable getAPhiInputOrPriorDef() {
     result = this.(SsaPhiNode).getAPhiInput() or
     result = this.(SsaUncertainImplicitUpdate).getPriorDef() or
     this.(SsaImplicitInit).captures(result)
