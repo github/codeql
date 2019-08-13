@@ -9,7 +9,12 @@ private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ function [N4140 8.3.5]. Both member functions and non-member
- * functions are included.
+ * functions are included. For example the function `MyFunction` in:
+ * ```
+ * void MyFunction() {
+ *   DoSomething();
+ * }
+ * ```
  *
  * Function has a one-to-many relationship with FunctionDeclarationEntry,
  * because the same function can be declared in multiple locations. This
@@ -497,7 +502,16 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
 }
 
 /**
- * A particular declaration or definition of a C/C++ function.
+ * A particular declaration or definition of a C/C++ function. For example the
+ * declaration and definition of `MyFunction` in the following code are each a
+ * `FunctionDeclarationEntry`:
+ * ```
+ * void MyFunction();
+ *
+ * void MyFunction() {
+ *   DoSomething();
+ * }
+ * ```
  */
 class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
   /** Gets the function which is being declared or defined. */
@@ -703,7 +717,20 @@ class FunctionDeclarationEntry extends DeclarationEntry, @fun_decl {
 
 /**
  * A C/C++ non-member function (a function that is not a member of any
- * class).
+ * class). For example the in the following code, `MyFunction` is a
+ * `TopLevelFunction` but `MyMemberFunction` is not:
+ * ```
+ * void MyFunction() {
+ *   DoSomething();
+ * }
+ *
+ * class MyClass {
+ * public:
+ *   void MyMemberFunction() {
+ *     DoSomething();
+ *   }
+ * };
+ * ```
  */
 class TopLevelFunction extends Function {
   TopLevelFunction() {
@@ -715,7 +742,20 @@ class TopLevelFunction extends Function {
 
 /**
  * A C++ function declared as a member of a class [N4140 9.3]. This includes
- * static member functions.
+ * static member functions. For example the functions `MyStaticMemberFunction`
+ * and `MyMemberFunction` in:
+ * ```
+ * class MyClass {
+ * public:
+ *   void MyMemberFunction() {
+ *     DoSomething();
+ *   }
+ *
+ *   static void MyStaticMemberFunction() {
+ *     DoSomething();
+ *   }
+ * };
+ * ```
  */
 class MemberFunction extends Function {
   MemberFunction() {
@@ -770,7 +810,22 @@ class MemberFunction extends Function {
 }
 
 /**
- * A C++ virtual function.
+ * A C++ virtual function. For example the two functions called
+ * `myVirtualFunction` in the following code are each a
+ * `VirtualFunction`:
+ * ```
+ * class A {
+ * public:
+ *   virtual void myVirtualFunction() = 0;
+ * };
+ *
+ * class B: public A {
+ * public:
+ *   virtual void myVirtualFunction() {
+ *     doSomething();
+ *   }
+ * };
+ * ```
  */
 class VirtualFunction extends MemberFunction {
 
@@ -791,7 +846,21 @@ class VirtualFunction extends MemberFunction {
 }
 
 /**
- * A C++ pure virtual function [N4140 10.4].
+ * A C++ pure virtual function [N4140 10.4]. For example the first function
+ * called `myVirtualFunction` in the following code:
+ * ```
+ * class A {
+ * public:
+ *   virtual void myVirtualFunction() = 0;
+ * };
+ *
+ * class B: public A {
+ * public:
+ *   virtual void myVirtualFunction() {
+ *     doSomething();
+ *   }
+ * };
+ * ```
  */
 class PureVirtualFunction extends VirtualFunction {
 
@@ -801,9 +870,20 @@ class PureVirtualFunction extends VirtualFunction {
 }
 
 /**
- * A const C++ member function [N4140 9.3.1/4]. A const function does not
- * modify the state of its class.
- * For example: `int day() const { return d; }`
+ * A const C++ member function [N4140 9.3.1/4]. A const function has the
+ * `const` specifier and does not modify the state of its class. For example
+ * the member function `day` in the following code:
+ * ```
+ * class MyClass {
+ *   ...
+ * 
+ *   int day() const {
+ *     return d;
+ *   }
+ *
+ *   ...
+ * };
+ * ```
  */
 class ConstMemberFunction extends MemberFunction {
 
@@ -813,7 +893,16 @@ class ConstMemberFunction extends MemberFunction {
 }
 
 /**
- * A C++ constructor [N4140 12.1].
+ * A C++ constructor [N4140 12.1]. For example the function `MyClass` in the
+ * following code is a constructor:
+ * ```
+ * class MyClass {
+ * public:
+ *   MyClass() {
+ *     ...
+ *   }
+ * };
+ * ```
  */
 class Constructor extends MemberFunction {
 
@@ -852,13 +941,26 @@ class Constructor extends MemberFunction {
   }
 }
 
-/** A function that defines an implicit conversion. */
+/**
+ * A function that defines an implicit conversion.
+ */
 abstract class ImplicitConversionFunction extends MemberFunction {
   abstract Type getSourceType();
   abstract Type getDestType();
 }
 
-/** A C++ constructor that also defines an implicit conversion. */
+/**
+ * A C++ constructor that also defines an implicit conversion. For example the
+ * function `MyClass` in the following code is a `ConversionConstructor`:
+ * ```
+ * class MyClass {
+ * public:
+ *   MyClass(const MyOtherClass &from) {
+ *     ...
+ *   }
+ * };
+ * ```
+ */
 class ConversionConstructor extends Constructor, ImplicitConversionFunction {
   ConversionConstructor() {
     strictcount(Parameter p | p = getAParameter() and not p.hasInitializer()) = 1
@@ -893,9 +995,18 @@ private predicate hasMoveSignature(MemberFunction f) {
 }
 
 /**
- * A C++ copy constructor, such as `T::T(const T&)` [N4140 12.8].
+ * A C++ copy constructor [N4140 12.8]. For example the function `MyClass` in
+ * the following code is a `CopyConstructor`:
+ * ```
+ * class MyClass {
+ * public:
+ *   MyClass(const MyClass &from) {
+ *     ...
+ *   }
+ * };
+ * ```
  *
- * As per the standard, a copy constructor of class T is a non-template
+ * As per the standard, a copy constructor of class `T` is a non-template
  * constructor whose first parameter has type `T&`, `const T&`, `volatile
  * T&`, or `const volatile T&`, and either there are no other parameters,
  * or the rest of the parameters all have default values.
@@ -943,9 +1054,18 @@ class CopyConstructor extends Constructor {
 }
 
 /**
- * A C++ move constructor, such as `T::T(T&&)` [N4140 12.8].
+ * A C++ move constructor [N4140 12.8]. For example the function `MyClass` in
+ * the following code is a `MoveConstructor`:
+ * ```
+ * class MyClass {
+ * public:
+ *   MyClass(MyClass &&from) {
+ *     ...
+ *   }
+ * };
+ * ```
  *
- * As per the standard, a move constructor of class T is a non-template
+ * As per the standard, a move constructor of class `T` is a non-template
  * constructor whose first parameter is `T&&`, `const T&&`, `volatile T&&`,
  * or `const volatile T&&`, and either there are no other parameters, or
  * the rest of the parameters all have default values.
@@ -994,7 +1114,17 @@ class MoveConstructor extends Constructor {
 
 /**
  * A C++ constructor that takes no arguments ('default' constructor). This
- * is the constructor that is invoked when no initializer is given.
+ * is the constructor that is invoked when no initializer is given. For
+ * example the function `MyClass` in the following code is a
+ * `NoArgConstructor`:
+ * ```
+ * class MyClass {
+ * public:
+ *   MyClass() {
+ *     ...
+ *   }
+ * };
+ * ```
  */
 class NoArgConstructor extends Constructor {
   NoArgConstructor() {
@@ -1003,7 +1133,16 @@ class NoArgConstructor extends Constructor {
 }
 
 /**
- * A C++ destructor [N4140 12.4].
+ * A C++ destructor [N4140 12.4]. For example the function `~MyClass` in the
+ * following code is a destructor:
+ * ```
+ * class MyClass {
+ * public:
+ *   ~MyClass() {
+ *     ...
+ *   }
+ * };
+ * ```
  */
 class Destructor extends MemberFunction {
   Destructor() { functions(underlyingElement(this),_,3) }
@@ -1029,7 +1168,14 @@ class Destructor extends MemberFunction {
 }
 
 /**
- * A C++ conversion operator [N4140 12.3.2].
+ * A C++ conversion operator [N4140 12.3.2]. For example the function
+ * `operator int` in the following code is a `ConversionOperator`:
+ * ```
+ * class MyClass {
+ * public:
+ *   operator int();
+ * };
+ * ```
  */
 class ConversionOperator extends MemberFunction, ImplicitConversionFunction {
 
@@ -1054,8 +1200,14 @@ class Operator extends Function {
 }
 
 /**
- * A C++ copy assignment operator, such as `T& T::operator=(const T&)`
- * [N4140 12.8].
+ * A C++ copy assignment operator [N4140 12.8]. For example the function
+ * `operator=` in the following code is a `CopyAssignmentOperator`:
+ * ```
+ * class MyClass {
+ * public:
+ *   MyClass &operator=(const MyClass &other);
+ * };
+ * ```
  *
  * As per the standard, a copy assignment operator of class `T` is a
  * non-template non-static member function with the name `operator=` that
@@ -1079,8 +1231,14 @@ class CopyAssignmentOperator extends Operator {
 
 
 /**
- * A C++ move assignment operator, such as `T& T::operator=(T&&)` [N4140
- * 12.8].
+ * A C++ move assignment operator [N4140 12.8]. For example the function
+ * `operator=` in the following code is a `MoveAssignmentOperator`:
+ * ```
+ * class MyClass {
+ * public:
+ *   MyClass &operator=(MyClass &&other);
+ * };
+ * ```
  *
  * As per the standard, a move assignment operator of class `T` is a
  * non-template non-static member function with the name `operator=` that
@@ -1100,11 +1258,18 @@ class MoveAssignmentOperator extends Operator {
 
 
 /**
- * A C++ function which has a non-empty template argument list.
+ * A C++ function which has a non-empty template argument list. For example
+ * the function `myTemplateFunction` in the following code:
+ * ```
+ * template<class T>
+ * void myTemplateFunction(T t) {
+ *   ...
+ * }
+ * ```
  *
- * This includes function declarations which are immediately preceded by
- * `template <...>`, where the "..." part is not empty, and therefore it
- * does not include:
+ * This comprises function declarations which are immediately preceded by
+ * `template <...>`, where the "..." part is not empty, and therefore it does
+ * not include:
  *
  *   1. Full specializations of template functions, as they have an empty
  *      template argument list.
@@ -1139,7 +1304,18 @@ class TemplateFunction extends Function {
 }
 
 /**
- * A function that is an instantiation of a template.
+ * A function that is an instantiation of a template. For example
+ * the instantiation `myTemplateFunction<int>` in the following code:
+ * ```
+ * template<class T>
+ * void myTemplateFunction(T t) {
+ *   ...
+ * }
+ *
+ * void caller(int i) {
+ *   myTemplateFunction<int>(i);
+ * }
+ * ```
  */
 class FunctionTemplateInstantiation extends Function {
   TemplateFunction tf;
@@ -1161,19 +1337,30 @@ class FunctionTemplateInstantiation extends Function {
 }
 
 /**
- * An explicit specialization of a C++ function template.
- * For example: `template <> void f<int*>(int *)`.
+ * An explicit specialization of a C++ function template. For example the
+ * function `myTemplateFunction<int>` in the following code:
+ * ```
+ * template<class T>
+ * void myTemplateFunction(T t) {
+ *   ...
+ * }
+ *
+ * template<>
+ * void myTemplateFunction<int>(int i) {
+ *   ...
+ * }
+ * ```
  *
  * Note that unlike classes, functions overload rather than specialize
  * partially. Therefore this only includes the last two of the following
  * four definitions, and in particular does not include the second one:
  *
- *   ```
- *   template <typename T> void f(T) {...}
- *   template <typename T> void f(T*) {...}
- *   template <> void f<int>(int *) {...}
- *   template <> void f<int*>(int *) {...}
- *   ```
+ * ```
+ * template <typename T> void f(T) {...}
+ * template <typename T> void f(T*) {...}
+ * template <> void f<int>(int *) {...}
+ * template <> void f<int*>(int *) {...}
+ * ```
  *
  * Furthermore, this does not include compiler-generated instantiations of
  * function templates.
