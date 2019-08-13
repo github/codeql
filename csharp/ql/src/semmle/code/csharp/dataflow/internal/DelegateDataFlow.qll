@@ -276,14 +276,14 @@ private predicate flowIntoDelegateCall(DelegateCall call, Callable c, Expr arg, 
 
 pragma[noinline]
 private predicate flowOutOfNonDelegateCall(NonDelegateCall call, NormalReturnNode ret) {
-  call.getARuntimeTarget() = ret.getEnclosingCallable()
+  call.getARuntimeTarget() = ret.getEnclosingCallable().getCallable()
 }
 
 pragma[noinline]
 private predicate flowOutOfDelegateCall(DelegateCall dc, NormalReturnNode ret, CallContext lastCall) {
   exists(DelegateFlowSource dfs, DelegateCallExpr dce, Callable c |
     flowsFrom(dce, dfs, _, lastCall) and
-    ret.getEnclosingCallable() = c and
+    ret.getEnclosingCallable().getCallable() = c and
     c = dfs.getCallable() and
     dc = dce.getDelegateCall()
   )

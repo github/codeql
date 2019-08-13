@@ -6,7 +6,7 @@ query predicate suppressNullableWarnings(SuppressNullableWarningExpr e, Expr op)
 }
 
 query predicate nullableDataFlow(DataFlow::Node src, DataFlow::Node sink) {
-  src.getEnclosingCallable().hasName("TestSuppressNullableWarningExpr") and
+  src.getEnclosingCallable().getCallable().hasName("TestSuppressNullableWarningExpr") and
   DataFlow::localFlowStep(src, sink)
 }
 
@@ -56,4 +56,3 @@ query predicate annotatedTypeConstraints(TypeParameter p, AnnotatedType t) {
   t = p.getConstraints().getAnAnnotatedTypeConstraint() and
   t.getLocation() instanceof SourceLocation
 }
-
