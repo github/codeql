@@ -3,6 +3,7 @@ private import cil
 private import dotnet
 private import DataFlowPrivate
 private import semmle.code.csharp.Caching
+private import semmle.code.csharp.controlflow.Guards
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -161,4 +162,23 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 abstract class NonLocalJumpNode extends Node {
   /** Gets a successor node that is potentially in another callable. */
   abstract Node getAJumpSuccessor(boolean preservesValue);
+}
+
+/**
+ * A guard that validates some expression.
+ *
+ * To use this in a configuration, extend the class and provide a
+ * characteristic predicate precisely specifying the guard, and override
+ * `checks` to specify what is being validated and in which branch.
+ *
+ * It is important that all extending classes in scope are disjoint.
+ */
+class BarrierGuard extends Internal::Guard {
+  /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `v`. */
+  abstract deprecated predicate checks(Expr e, AbstractValue v);
+
+  /** Gets a node guarded by this guard. */
+  final Node getAGuardedNode() {
+    none() // stub
+  }
 }

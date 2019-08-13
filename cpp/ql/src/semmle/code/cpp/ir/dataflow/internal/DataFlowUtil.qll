@@ -4,6 +4,7 @@
 
 private import cpp
 private import semmle.code.cpp.ir.IR
+private import semmle.code.cpp.controlflow.IRGuards
 
 /**
  * A node in a data flow graph.
@@ -166,3 +167,22 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
  * (intra-procedural) steps.
  */
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
+
+/**
+ * A guard that validates some expression.
+ *
+ * To use this in a configuration, extend the class and provide a
+ * characteristic predicate precisely specifying the guard, and override
+ * `checks` to specify what is being validated and in which branch.
+ *
+ * It is important that all extending classes in scope are disjoint.
+ */
+class BarrierGuard extends IRGuardCondition {
+  /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `b`. */
+  abstract deprecated predicate checks(Instruction e, boolean b);
+
+  /** Gets a node guarded by this guard. */
+  final Node getAGuardedNode() {
+    none() // stub
+  }
+}

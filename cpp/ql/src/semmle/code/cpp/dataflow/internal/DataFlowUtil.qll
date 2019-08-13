@@ -331,3 +331,22 @@ VariableAccess getAnAccessToAssignedVariable(Expr assign) {
     result = var.getAnAccess()
   )
 }
+
+/**
+ * A guard that validates some expression.
+ *
+ * To use this in a configuration, extend the class and provide a
+ * characteristic predicate precisely specifying the guard, and override
+ * `checks` to specify what is being validated and in which branch.
+ *
+ * It is important that all extending classes in scope are disjoint.
+ */
+class BarrierGuard extends Expr {
+  /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `branch`. */
+  abstract deprecated predicate checks(Expr e, boolean branch);
+
+  /** Gets a node guarded by this guard. */
+  final Node getAGuardedNode() {
+    none() // stub
+  }
+}
