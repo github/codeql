@@ -9,12 +9,10 @@
  
 import python
 
-from Raise raise, ClassObject ex
+from Raise raise, ClassValue ex
 where
     ex.getName() = "AnException" and
     (
-        raise.getException().refersTo(ex.getAnImproperSuperType())
-        or
-        raise.getException().refersTo(_, ex.getAnImproperSuperType(), _)
+        raise.getException().pointsTo(ex.getASuperType())
     )
 select raise, "Don't raise instances of 'AnException'"

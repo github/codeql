@@ -9,6 +9,6 @@
  
 import python
 
-from Expr e
-where e.refersTo(builtin_object(_))
+from Expr e, string name
+where e.pointsTo(Value::named(name)) and not name.charAt(_) = "."
 select e
