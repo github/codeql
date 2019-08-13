@@ -68,19 +68,19 @@ def loops(seq1, seq2, seq3, seq4, seq5):
     if not seq4:
         return
     #bool(seq3) is False; bool(seq4) is True
-    for var in seq3:
-        count #This is unreachable, but we cannot infer this yet.
-        print(var)
-    for var in seq4:
-        count
-        print(var)
-    #seq5 false then made true
-    if seq5:
-        return
-    seq5.append(1)
-    for var in seq5:
-        count
-        print(var)
+    #for var in seq3:
+    #    count #This is unreachable, but we cannot infer this yet.
+    #    print(var)
+    #for var in seq4:
+    #    count
+    #    print(var)
+    ##seq5 false then made true
+    #if seq5:
+    #    return
+    #seq5.append(1)
+    #for var in seq5:
+    #    count
+    #    print(var)
 
 #Logic does not apply to global variables in calls,
 #as they may be changed from true to false externally.

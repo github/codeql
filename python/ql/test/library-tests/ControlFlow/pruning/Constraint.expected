@@ -33,7 +33,6 @@
 | 63 | seq2 | seq2 | Truthy | test |
 | 66 | seq3 | seq3 | Truthy | test |
 | 68 | UnaryExpr | seq4 | Falsey | test |
-| 78 | seq5 | seq5 | Truthy | test |
 | 88 | UnaryExpr | x | Falsey | test |
 | 90 | y | y | Truthy | test |
 | 93 | UnaryExpr | x | Falsey | test |
