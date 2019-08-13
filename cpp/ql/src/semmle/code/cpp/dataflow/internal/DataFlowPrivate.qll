@@ -6,9 +6,7 @@ private import DataFlowDispatch
 private Node getInstanceArgument(Call call) {
   result.asExpr() = call.getQualifier()
   or
-  // For constructors, there is no qualifier, so we pretend the call itself
-  // is the instance argument.
-  result.asExpr() = call.(ConstructorCall)
+  result.(PreConstructorCallNode).getConstructorCall() = call
   // This does not include the implicit `this` argument on auto-generated
   // base class destructor calls as those do not have an AST element.
 }

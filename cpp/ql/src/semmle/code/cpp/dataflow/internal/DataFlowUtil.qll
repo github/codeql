@@ -10,7 +10,7 @@ cached
 private newtype TNode =
   TExprNode(Expr e) or
   TPartialDefinitionNode(PartialDefinition pd) or
-  TPostConstructorCallNode(ConstructorCall call) or
+  TPreConstructorCallNode(ConstructorCall call) or
   TExplicitParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
   TInstanceParameterNode(MemberFunction f) { exists(f.getBlock()) and not f.isStatic() } or
   TUninitializedNode(LocalVariable v) { not v.hasInitializer() }
@@ -48,8 +48,8 @@ class Node extends TNode {
    *
    * Partial definitions are created for field stores (`x.y = taint();` is a partial
    * definition of `x`), and for calls that may change the value of an object (so
-   * `x.set(taint())` is a partial definition of `x`, annd `transfer(&x, taint())` is
-   * a partial definition of `&x`).s
+   * `x.set(taint())` is a partial definition of `x`, and `transfer(&x, taint())` is
+   * a partial definition of `&x`).
    */
   Expr asPartialDefinition() {
     result = this.(PartialDefinitionNode).getPartialDefinition().getDefinedExpr()
@@ -239,8 +239,6 @@ abstract class PostUpdateNode extends Node {
   override Type getType() { result = getPreUpdateNode().getType() }
 
   override Location getLocation() { result = getPreUpdateNode().getLocation() }
-
-  override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
 class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
@@ -253,14 +251,36 @@ class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
   override Location getLocation() { result = pd.getLocation() }
 
   PartialDefinition getPartialDefinition() { result = pd }
+
+  override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
-class PostConstructorCallNode extends PostUpdateNode, TPostConstructorCallNode {
-  ConstructorCall call;
+private class PostConstructorCallNode extends PostUpdateNode, TExprNode {
+  PostConstructorCallNode() { this = TExprNode(any(ConstructorCall c)) }
 
-  PostConstructorCallNode() { this = TPostConstructorCallNode(call) }
+  override PreConstructorCallNode getPreUpdateNode() {
+    TExprNode(result.getConstructorCall()) = this
+  }
+}
 
-  override Node getPreUpdateNode() { result.asExpr() = call }
+/**
+ * INTERNAL: do not use.
+ *
+ * A synthetic data-flow node that plays the role of the qualifier (or
+ * `this`-argument) to a constructor call.
+ */
+class PreConstructorCallNode extends Node, TPreConstructorCallNode {
+  PreConstructorCallNode() { this = TPreConstructorCallNode(_) }
+
+  ConstructorCall getConstructorCall() { this = TPreConstructorCallNode(result) }
+
+  override Function getFunction() { result = getConstructorCall().getEnclosingFunction() }
+
+  override Type getType() { result = getConstructorCall().getType() }
+
+  override Location getLocation() { result = getConstructorCall().getLocation() }
+
+  override string toString() { result = getConstructorCall().toString() + " [pre constructor call]" }
 }
 
 /**
