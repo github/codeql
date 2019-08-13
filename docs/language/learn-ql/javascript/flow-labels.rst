@@ -393,6 +393,6 @@ string may be an absolute path and whether it may contain ``..`` components.
 What next?
 ----------
 
--  Learn about the QL standard libraries used to write queries for JavaScript in :doc:`Introducing the Javacript libraries <introduce-libraries-js>`.
+-  Learn about the QL standard libraries used to write queries for JavaScript in :doc:`Introducing the JavaScript libraries <introduce-libraries-js>`.
 -  Find out more about QL in the `QL language handbook <https://help.semmle.com/QL/ql-handbook/index.html>`__ and `QL language specification <https://help.semmle.com/QL/ql-spec/language.html>`__.
 -  Learn more about the query console in `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.
