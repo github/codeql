@@ -822,24 +822,3 @@ private predicate sequence_call(ControlFlowNode fromnode, CallNode tonode) {
     )
 }
 
-
-class LegacyConfiguration extends TaintTracking::Configuration {
-
-    LegacyConfiguration() { this = "Legacy configuration" }
-
-    override predicate isSource(DataFlow::Node source, TaintKind kind) {
-        exists(TaintSource src |
-            source.asCfgNode() = src and
-            src.isSourceOf(kind)
-        )
-    }
-
-    override predicate isSink(DataFlow::Node sink, TaintKind kind) {
-        exists(TaintSink snk |
-            sink.asCfgNode() = snk and
-            snk.sinks(kind)
-        )
-    }
-
-}
-

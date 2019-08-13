@@ -214,6 +214,11 @@ class TaintTrackingNode extends TTaintTrackingNode {
 
 class TaintTrackingImplementation extends string {
 
+
+    TaintTrackingImplementation() {
+        this instanceof TaintTracking::Configuration
+    }
+
     predicate hasFlowPath(TaintTrackingNode source, TaintTrackingNode sink) {
         this.isPathSource(source) and
         this.isPathSink(sink) and
@@ -221,25 +226,30 @@ class TaintTrackingImplementation extends string {
     }
 
     predicate flowSource(DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        this.(TaintTracking::Configuration).isSource(node, kind) and context = TNoParam() and path = TNoAttribute()
-        or
-        exists(TaintSource source |
-            this.(TaintTracking::Configuration).isSource(source) and
-            node.asCfgNode() = source and
-            source.isSourceOf(kind)
-        ) and
-        context = TNoParam() and path = TNoAttribute()
+        context = TNoParam() and path = TNoAttribute() and
+        (
+            this.(TaintTracking::Configuration).isSource(node, kind)
+            or
+            exists(TaintSource source |
+                this.(TaintTracking::Configuration).isSource(source) and
+                node.asCfgNode() = source and
+                source.isSourceOf(kind)
+            )
+        )
     }
 
 
     predicate flowSink(DataFlow::Node node, AttributePath path, TaintKind kind) {
-        this.(TaintTracking::Configuration).isSink(node, kind) and path = TNoAttribute()
-        or
-        exists(TaintSink sink |
-            this.(TaintTracking::Configuration).isSink(sink) and
-            node.asCfgNode() = sink and
-            sink.sinks(kind)
-        ) and path = TNoAttribute()
+        path = TNoAttribute() and
+        (
+            this.(TaintTracking::Configuration).isSink(node, kind)
+            or
+            exists(TaintSink sink |
+                this.(TaintTracking::Configuration).isSink(sink) and
+                node.asCfgNode() = sink and
+                sink.sinks(kind)
+            )
+        )
     }
 
     predicate isPathSource(TaintTrackingNode source) {
@@ -315,7 +325,8 @@ class TaintTrackingImplementation extends string {
         test.getAChild*() = use and
         not test.(UnaryExprNode).getNode().getOp() instanceof Not and
         not Filters::equality_test(test, use, _, _) and
-        not Filters::isinstance(test, _, use)
+        not Filters::isinstance(test, _, use) and
+        not test = use
         or
         testEvaluatesMaybe(not_operand(test), use)
     }
@@ -340,8 +351,6 @@ class TaintTrackingImplementation extends string {
             )
         )
     }
-
-    TaintTrackingImplementation() { this instanceof TaintTracking::Configuration }
 
     predicate flowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         this.unprunedStep(src, node, context, path, kind, edgeLabel) and
@@ -706,6 +715,41 @@ class TaintTrackingImplementation extends string {
             BaseFlow::reaches_exit(var) and
             var.getScope() = m.getScope()
         )
+    }
+
+}
+
+/* Backwards compatibility with config-less taint-tracking */
+private class LegacyConfiguration extends TaintTracking::Configuration {
+
+    LegacyConfiguration() {
+        /* A name that won't be accidentally chosen by users */
+        this = "Semmle: Internal legacy configuration"
+    }
+
+    override predicate isSource(DataFlow::Node source, TaintKind kind) {
+        isValid() and
+        exists(TaintSource src |
+            source.asCfgNode() = src and
+            src.isSourceOf(kind)
+        )
+    }
+
+    override predicate isSink(DataFlow::Node sink, TaintKind kind) {
+        isValid() and
+        exists(TaintSink snk |
+            sink.asCfgNode() = snk and
+            snk.sinks(kind)
+        )
+    }
+
+    override predicate isSanitizer(Sanitizer sanitizer) {
+        isValid() and
+        sanitizer = sanitizer
+    }
+
+    private predicate isValid() {
+        not exists(TaintTracking::Configuration config | config != this)
     }
 
 }

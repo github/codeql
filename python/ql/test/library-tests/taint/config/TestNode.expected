@@ -178,6 +178,10 @@
 | simple.test | test.py:148 | SOURCE | no attribute |  |
 | simple.test | test.py:148 | SSA variable t | no attribute |  |
 | simple.test | test.py:149 | t | no attribute |  |
+| simple.test | test.py:155 | GSSA Variable unsafe | no attribute |  |
+| simple.test | test.py:155 | ImportMember | no attribute |  |
+| simple.test | test.py:156 | GSSA Variable unsafe | no attribute |  |
+| simple.test | test.py:156 | unsafe | no attribute |  |
 | simple.test | test.py:159 | SOURCE | no attribute |  |
 | simple.test | test.py:163 | SOURCE | no attribute |  |
 | simple.test | test.py:163 | SSA variable s | no attribute |  |

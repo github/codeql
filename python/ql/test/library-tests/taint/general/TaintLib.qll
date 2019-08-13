@@ -385,4 +385,3 @@ class TaintIterableSource extends TaintSource {
     }
 
 }
-
