@@ -1059,7 +1059,7 @@ class CopyConstructor extends Constructor {
  * ```
  * class MyClass {
  * public:
- *   MyClass(const MyClass &&from) {
+ *   MyClass(MyClass &&from) {
  *     ...
  *   }
  * };
@@ -1236,7 +1236,7 @@ class CopyAssignmentOperator extends Operator {
  * ```
  * class MyClass {
  * public:
- *   MyClass &operator=(const MyClass &&other);
+ *   MyClass &operator=(MyClass &&other);
  * };
  * ```
  *
@@ -1267,8 +1267,9 @@ class MoveAssignmentOperator extends Operator {
  * }
  * ```
  *
- * This includes function declarations which are immediately preceded by
- * `template <...>`, where the "..." part is not empty, but does not include:
+ * This comprises function declarations which are immediately preceded by
+ * `template <...>`, where the "..." part is not empty, and therefore it does
+ * not include:
  *
  *   1. Full specializations of template functions, as they have an empty
  *      template argument list.
