@@ -834,6 +834,7 @@ private predicate localFlowExit(Node node, Configuration config) {
  * This is the transitive closure of `[additional]localFlowStep` beginning
  * at `localFlowEntry`.
  */
+pragma[nomagic]
 private predicate localFlowStepPlus(
   Node node1, Node node2, boolean preservesValue, Configuration config
 ) {
@@ -1094,28 +1095,44 @@ private predicate flowCand0(Node node, boolean toReturn, AccessPathFront apf, Co
     flowCandFwd(node, _, apf, config)
   )
   or
-  exists(Node mid, Content f, AccessPathFront apf0 |
-    store(node, f, mid) and
-    flowCand(mid, toReturn, apf0, config) and
+  exists(Content f, AccessPathFront apf0 |
+    flowCandStore(node, f, toReturn, apf0, config) and
     apf0.headUsesContent(f) and
     consCand(f, apf, unbind(config))
   )
   or
-  exists(Node mid, Content f, AccessPathFront apf0 |
-    read(node, f, mid) and
-    flowCand(mid, toReturn, apf0, config) and
+  exists(Content f, AccessPathFront apf0 |
+    flowCandRead(node, f, toReturn, apf0, config) and
     consCandFwd(f, apf0, unbind(config)) and
     apf.headUsesContent(f)
   )
 }
 
+pragma[nomagic]
+private predicate flowCandRead(
+  Node node, Content f, boolean toReturn, AccessPathFront apf0, Configuration config
+) {
+  exists(Node mid |
+    read(node, f, mid) and
+    flowCand(mid, toReturn, apf0, config)
+  )
+}
+
+private predicate flowCandStore(
+  Node node, Content f, boolean toReturn, AccessPathFront apf0, Configuration config
+) {
+  exists(Node mid |
+    store(node, f, mid) and
+    flowCand(mid, toReturn, apf0, config)
+  )
+}
+
 private predicate consCand(Content f, AccessPathFront apf, Configuration config) {
   consCandFwd(f, apf, config) and
-  exists(Node mid, Node n, AccessPathFront apf0 |
+  exists(Node n, AccessPathFront apf0 |
     flowCandFwd(n, _, apf0, config) and
     apf0.headUsesContent(f) and
-    read(n, f, mid) and
-    flowCand(mid, _, apf, config)
+    flowCandRead(n, f, _, apf, config)
   )
 }
 
