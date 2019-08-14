@@ -57,10 +57,19 @@
 | taint.cpp:84:10:84:12 | call to MyClass | taint.cpp:89:7:89:9 | mc1 |  |
 | taint.cpp:84:10:84:12 | call to MyClass | taint.cpp:90:7:90:9 | mc1 |  |
 | taint.cpp:84:10:84:12 | call to MyClass | taint.cpp:91:7:91:9 | mc1 |  |
+| taint.cpp:84:10:84:12 | call to MyClass [post constructor] | taint.cpp:86:2:86:4 | mc1 |  |
+| taint.cpp:84:10:84:12 | call to MyClass [post constructor] | taint.cpp:88:7:88:9 | mc1 |  |
+| taint.cpp:84:10:84:12 | call to MyClass [post constructor] | taint.cpp:89:7:89:9 | mc1 |  |
+| taint.cpp:84:10:84:12 | call to MyClass [post constructor] | taint.cpp:90:7:90:9 | mc1 |  |
+| taint.cpp:84:10:84:12 | call to MyClass [post constructor] | taint.cpp:91:7:91:9 | mc1 |  |
 | taint.cpp:84:15:84:17 | call to MyClass | taint.cpp:92:7:92:9 | mc2 |  |
 | taint.cpp:84:15:84:17 | call to MyClass | taint.cpp:93:7:93:9 | mc2 |  |
 | taint.cpp:84:15:84:17 | call to MyClass | taint.cpp:94:7:94:9 | mc2 |  |
 | taint.cpp:84:15:84:17 | call to MyClass | taint.cpp:95:7:95:9 | mc2 |  |
+| taint.cpp:84:15:84:17 | call to MyClass [post constructor] | taint.cpp:92:7:92:9 | mc2 |  |
+| taint.cpp:84:15:84:17 | call to MyClass [post constructor] | taint.cpp:93:7:93:9 | mc2 |  |
+| taint.cpp:84:15:84:17 | call to MyClass [post constructor] | taint.cpp:94:7:94:9 | mc2 |  |
+| taint.cpp:84:15:84:17 | call to MyClass [post constructor] | taint.cpp:95:7:95:9 | mc2 |  |
 | taint.cpp:86:2:86:4 | mc1 [post update] | taint.cpp:88:7:88:9 | mc1 |  |
 | taint.cpp:86:2:86:4 | mc1 [post update] | taint.cpp:89:7:89:9 | mc1 |  |
 | taint.cpp:86:2:86:4 | mc1 [post update] | taint.cpp:90:7:90:9 | mc1 |  |
