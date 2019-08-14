@@ -58,19 +58,21 @@ We can modify the query further to include only methods whose body consists of a
 Finding a call to a specific function
 -------------------------------------
 
-This query uses ``Call`` and ``Name`` to find calls to the function ``input`` - which might potentially be a security hazard (in Python 2).
+This query uses ``Call`` and ``Name`` to find calls to the function ``eval`` - which might potentially be a security hazard.
 
 .. code-block:: ql
 
    import python
 
    from Call call, Name name
-   where call.getFunc() = name and name.getId() = "input"
-   select call, "call to 'input'."
+   where call.getFunc() = name and name.getId() = "eval"
+   select call, "call to 'eval'."
 
-➤ `See this in the query console <https://lgtm.com/query/686330029/>`__. Some of the demo projects on LGTM.com use this function.
+➤ `See this in the query console <https://lgtm.com/query/6718356557331218618/>`__. Some of the demo projects on LGTM.com use this function.
 
-The ``Call`` class represents calls in Python. The ``Call.getFunc()`` predicate gets the expression being called. ``Name.getId()`` gets the identifier (as a string) of the ``Name`` expression. Due to the dynamic nature of Python, this query will select any call of the form ``input(...)`` regardless of whether it is a call to the built-in function ``input`` or not. In a later tutorial we will see how to use the type-inference library to find calls to the built-in function ``input`` regardless of name of the variable called.
+The ``Call`` class represents calls in Python. The ``Call.getFunc()`` predicate gets the expression being called. ``Name.getId()`` gets the identifier (as a string) of the ``Name`` expression.
+Due to the dynamic nature of Python, this query will select any call of the form ``eval(...)`` regardless of whether it is a call to the built-in function ``eval`` or not.
+In a later tutorial we will see how to use the type-inference library to find calls to the built-in function ``eval`` regardless of name of the variable called.
 
 What next?
 ----------

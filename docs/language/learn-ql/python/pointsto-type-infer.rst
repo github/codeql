@@ -3,21 +3,21 @@ Tutorial: Points-to analysis and type inference
 
 This topic contains worked examples of how to write queries using the standard QL library classes for Python type inference.
 
-The ``Object`` class
+The ``Value`` class
 --------------------
 
-The ``Object`` class and its subclasses ``FunctionObject``, ``ClassObject`` and ``ModuleObject`` represent the values an expression may hold at runtime.
+The ``Value`` class and its subclasses ``FunctionValue``, ``ClassValue`` and ``ModuleValue`` represent the values an expression may hold at runtime.
 
 Summary
 ~~~~~~~
 
-Class hierarchy for ``Object``:
+Class hierarchy for ``Value``:
 
--  `Object <https://help.semmle.com/qldoc/python/semmle/python/types/Object.qll/type.Object$Object.html>`__
+-  `Value <https://help.semmle.com/qldoc/python/semmle/python/objects/ObjectAPI.qll/type.ObjectAPI$Value.html>`__
 
-   -  ``ClassObject``
-   -  ``FunctionObject``
-   -  ``ModuleObject``
+   -  ``ClassValue``
+   -  ``FunctionValue``
+   -  ``ModuleValue``
 
 Points-to analysis and type inference
 -------------------------------------
@@ -26,31 +26,32 @@ Points-to analysis, sometimes known as `pointer analysis <http://en.wikipedia.or
 
 `Type inference <http://en.wikipedia.org/wiki/Type_inference>`__ allows us to infer what the types (classes) of an expression may be at runtime.
 
-The predicate ``ControlFlowNode.refersTo(...)`` shows which object a control flow node may "refer to" at runtime.
+The predicate ``ControlFlowNode.pointsTo(...)`` shows which object a control flow node may "point to" at runtime.
 
-``ControlFlowNode.refersTo(...)`` has three variants:
+``ControlFlowNode.pointsTo(...)`` has three variants:
 
 .. code-block:: ql
 
-   predicate refersTo(Object object)
-   predicate refersTo(Object object, ControlFlowNode origin)
-   predicate refersTo(Object object, ClassObject cls, ControlFlowNode origin)
+   predicate pointsTo(Value object)
+   predicate pointsTo(Value object, ControlFlowNode origin)
+   predicate pointsTo(Context context, Value object, ControlFlowNode origin)
 
-``object`` is an object that the control flow node refers to, ``origin`` is where the object comes from, which is useful for displaying meaningful results, and ``cls`` is the inferred class of the ``object``.
+``object`` is an object that the control flow node refers to, and ``origin`` is where the object comes from, which is useful for displaying meaningful results.
+ The third form includes the ``context`` in which the control flow node refers to the ``object``. This form can usually be ignored.
 
 .. pull-quote::
 
    Note
 
-   ``ControlFlowNode.refersTo()`` cannot find all objects that a control flow node might point to as it impossible to be accurate and find all possible values. We prefer precision (no incorrect values) over recall (finding as many values as possible). We do this because queries based on points-to analysis have fewer false positives and are thus more useful.
+   ``ControlFlowNode.pointsTo()`` cannot find all objects that a control flow node might point to as it is impossible to be accurate *and* to find all possible values. We prefer precision (no incorrect values) over recall (finding as many values as possible). We do this so that queries based on points-to analysis have fewer false positive results and are thus more useful.
 
-For complex data flow analyses, involving multiple stages, the ``ControlFlowNode`` version is more precise, but for simple use cases the ``Expr`` based version is easier to use. For convenience, the ``Expr`` class also has the same three predicates. ``Expr.refersTo(...)`` also has three variants:
+For complex data flow analyses, involving multiple stages, the ``ControlFlowNode`` version is more precise, but for simple use cases the ``Expr`` based version is easier to use. For convenience, the ``Expr`` class also has the same three predicates. ``Expr.pointsTo(...)`` also has three variants:
 
 .. code-block:: ql
 
-   predicate refersTo(Object object)
-   predicate refersTo(Object object, AstNode origin)
-   predicate refersTo(Object object, ClassObject cls, AstNode origin)
+   predicate pointsTo(Value object)
+   predicate pointsTo(Value object, AstNode origin)
+   predicate pointsTo(Context context, Value object, AstNode origin)
 
 Using points-to analysis
 ------------------------
@@ -84,9 +85,10 @@ The results of this query need to be filtered to return only results where ``ex1
 
 .. code-block:: ql
 
-   exists(ClassObject cls1, ClassObject cls2 |
-       ex1.getType().refersTo(cls1) and
-       ex2.getType().refersTo(cls2) |
+   exists(ClassValue cls1, ClassValue cls2 |
+       ex1.getType().pointsTo(cls1) and
+       ex2.getType().pointsTo(cls2) |
+       not cls1 = cls2 and
        cls1 = cls2.getASuperType()
    )
 
@@ -94,9 +96,9 @@ The line:
 
 ::
 
-   ex1.getType().refersTo(cls1)
+   ex1.getType().pointsTo(cls1)
 
-ensures that ``cls1`` is a ``ClassObject`` that the ``except`` block would handle.
+ensures that ``cls1`` is a ``ClassValue`` that the ``except`` block would handle.
 
 Combining the parts of the query we get this:
 
@@ -112,9 +114,10 @@ Combining the parts of the query we get this:
        ex1 = t.getHandler(i) and ex2 = t.getHandler(j) and i < j
    )
    and
-   exists(ClassObject cls1, ClassObject cls2 |
-       ex1.getType().refersTo(cls1) and
-       ex2.getType().refersTo(cls2) |
+   exists(ClassValue cls1, ClassValue cls2 |
+       ex1.getType().pointsTo(cls1) and
+       ex2.getType().pointsTo(cls2) |
+       not cls1 = cls2 and
        cls1 = cls2.getASuperType()
    )
    select t, ex1, ex2
@@ -136,26 +139,27 @@ First of all find what object is used in the ``for`` loop:
 
 .. code-block:: ql
 
-   from For loop, Object iter
-   where loop.getIter().refersTo(iter)
+   from For loop, Value iter
+   where loop.getIter().pointsTo(iter)
    select loop, iter
 
-Then we need to determine if a ``ClassObject`` is iterable. ``ClassObject`` provides the predicate ``isIterable()`` which we can combine with the longer form of ``ControlFlowNode.refersTo()`` to get the class of the loop iterator, giving us this:
+Then we need to determine if the object ``iter`` is iterable. We can test ``ClassValue`` to see if it has the ``__iter__`` attribute.
 
 **Find non-iterable object used as a loop iterator**
 
 .. code-block:: ql
 
-   import python
+    import python
 
-   from For loop, Object iter, ClassObject cls
-   where loop.getIter().refersTo(iter, cls, _)
-     and not cls.isIterable()
-   select loop, cls
+    from For loop, Value iter, ClassValue cls
+    where loop.getIter().getAFlowNode().pointsTo(iter) and
+      cls = iter.getClass() and
+      not exists(cls.lookup("__iter__"))
+    select loop, cls
+    
+➤ `See this in the query console <https://lgtm.com/query/5636475906111506420/>`__. Many projects use a non-iterable as a loop iterator.
 
-➤ `See this in the query console <https://lgtm.com/query/670720182/>`__. Many projects use a non-iterable as a loop iterator.
-
-Many of the results shown will have ``cls`` as ``NoneType``. It is more informative to show where these ``None`` values may come from. To do this we use the final field of ``refersTo``, as follows:
+Many of the results shown will have ``cls`` as ``NoneType``. It is more informative to show where these ``None`` values may come from. To do this we use the final field of ``pointsTo``, as follows:
 
 **Find non-iterable object used as a loop iterator 2**
 
@@ -163,21 +167,22 @@ Many of the results shown will have ``cls`` as ``NoneType``. It is more informat
 
    import python
 
-   from For loop, Object iter, ClassObject cls, AstNode origin
-   where loop.getIter().refersTo(iter, cls, origin)
-     and not cls.isIterable()
+   from For loop, Value iter, ClassValue cls, AstNode origin
+   where loop.getIter().pointsTo(iter, origin) and
+     cls = iter.getClass() and
+     not cls.hasAttribute("__iter__")
    select loop, cls, origin
 
-➤ `See this in the query console <https://lgtm.com/query/672230046/>`__. This reports the same results, but with a third column showing the source of the ``None`` values.
+➤ `See this in the query console <https://lgtm.com/query/6718356557331218618/>`__. This reports the same results, but with a third column showing the source of the ``None`` values.
 
-Finding calls to functions using call-graph analysis
+Finding calls using call-graph analysis
 ----------------------------------------------------
 
-The ``FunctionObject`` class is a subclass of ``Object`` and corresponds to function objects in Python, in much the same way as the ``ClassObject`` class corresponds to class objects in Python.
+The ``Value`` class has a method ``getACall()`` which allows us to find calls to a particular function (including builtin functions).
 
-The ``FunctionObject`` class has a method ``getACall()`` which allows us to find calls to a particular function (including builtin functions).
+If we wish to restrict the callables to actual functions we can use the ``FunctionValue`` class, which is a subclass of ``Value`` and corresponds to function objects in Python, in much the same way as the ``ClassValue`` class corresponds to class objects in Python.
 
-Returning to an example from :doc:`Tutorial: Functions <functions>`, we wish to find calls to the ``input`` function.
+Returning to an example from :doc:`Tutorial: Functions <functions>`, we wish to find calls to the ``eval`` function.
 
 The original query looked this:
 
@@ -186,38 +191,38 @@ The original query looked this:
    import python
 
    from Call call, Name name
-   where call.getFunc() = name and name.getId() = "input"
-   select call, "call to 'input'."
+   where call.getFunc() = name and name.getId() = "eval"
+   select call, "call to 'eval'."
 
-➤ `See this in the query console <https://lgtm.com/query/690010037/>`__. Two of the demo projects on LGTM.com have calls that match this pattern.
+➤ `See this in the query console <https://lgtm.com/query/6718356557331218618/>`__. Some of the demo projects on LGTM.com have calls that match this pattern.
 
 There are two problems with this query:
 
--  It assumes that any call to something named "input" is a call to the builtin ``input`` function, which may result in some false positive results.
--  It assumes that ``input`` cannot be referred to by any other name, which may result in some false negative results.
+-  It assumes that any call to something named "eval" is a call to the builtin ``eval`` function, which may result in some false positive results.
+-  It assumes that ``eval`` cannot be referred to by any other name, which may result in some false negative results.
 
-We can get much more accurate results using call-graph analysis. First, we can precisely identify the ``FunctionObject`` for the ``input`` function, by using the ``builtin_object`` QL predicate as follows:
-
-.. code-block:: ql
-
-   import python
-
-   from FunctionObject input
-   where input = builtin_object("input")
-   select input
-
-Then we can use ``FunctionObject.getACall()`` to identify calls to the ``input`` function, as follows:
+We can get much more accurate results using call-graph analysis. First, we can precisely identify the ``FunctionValue`` for the ``eval`` function, by using the ``Value::named`` QL predicate as follows:
 
 .. code-block:: ql
 
    import python
 
-   from ControlFlowNode call, FunctionObject input
-   where input = builtin_object("input") and
-         call = input.getACall()
-   select call, "call to 'input'."
+   from Value eval
+   where eval = Value::named("eval")
+   select eval
 
-➤ `See this in the query console <https://lgtm.com/query/670490037/>`__. This accurately identifies calls to the builtin ``input`` function even when they are referred to using an alternative name. Any false positive results with calls to other ``input`` functions, reported by the original query, have been eliminated. It finds one result in files referenced by the *saltstack/salt* project.
+Then we can use ``Value.getACall()`` to identify calls to the ``eval`` function, as follows:
+
+.. code-block:: ql
+
+   import python
+
+   from ControlFlowNode call, Value eval
+   where eval = Value::named("eval") and
+         call = eval.getACall()
+   select call, "call to 'eval'."
+
+➤ `See this in the query console <https://lgtm.com/query/535131812579637425/>`__. This accurately identifies calls to the builtin ``eval`` function even when they are referred to using an alternative name. Any false positive results with calls to other ``eval`` functions, reported by the original query, have been eliminated.
 
 What next?
 ----------
