@@ -26,9 +26,23 @@ class SQLInjectionConfiguration extends TaintTracking::Configuration {
 
     SQLInjectionConfiguration() { this = "SQL injection configuration" }
 
-    override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
+    override predicate isSource(TaintTracking::Source source) {
+        source instanceof HttpRequestTaintSource
+    }
 
     override predicate isSink(TaintTracking::Sink sink) { sink instanceof SqlInjectionSink }
+
+}
+
+/* Additional configuration to support tracking of DB objects. Connections, cursors, etc. */
+class DbConfiguration extends TaintTracking::Configuration {
+
+    DbConfiguration() { this = "DB configuration" }
+
+    override predicate isSource(TaintTracking::Source source) {
+        source instanceof DjangoModelObjects or
+        source instanceof DbConnectionSource
+    }
 
 }
 
