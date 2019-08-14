@@ -135,7 +135,7 @@ public class YAMLExtractor implements IExtractor {
     return parser.checkEvent(Event.ID.StreamEnd);
   }
 
-  /** Extract a complete YAML document; cf. {@link Composer#composeDocument}. */
+  /** Extract a complete YAML document; cf. {@link Composer#getNode}. */
   private void extractDocument(Label parent, int idx, int[] codepoints) {
     // Drop the DOCUMENT-START event
     parser.getEvent();
