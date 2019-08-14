@@ -1,5 +1,6 @@
 import default
 import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasAnalysis
+import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasConfiguration
 import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
 
 predicate shouldEscape(IRAutomaticUserVariable var) {
@@ -11,11 +12,12 @@ predicate shouldEscape(IRAutomaticUserVariable var) {
 
 from IRAutomaticUserVariable var
 where
-  exists(IRFunction irFunc |
-    irFunc = var.getEnclosingIRFunction() and
+  exists(VariableAddressInstruction instr, Allocation allocation |
+    instr.getVariable() = var and
+    allocation.getAnInstruction() = instr and
     (
-      (shouldEscape(var) and variableAddressEscapes(var)) or
-      (not shouldEscape(var) and not variableAddressEscapes(var))
+      (shouldEscape(var) and allocationEscapes(allocation)) or
+      (not shouldEscape(var) and not allocationEscapes(allocation))
     )
   )
 select var
