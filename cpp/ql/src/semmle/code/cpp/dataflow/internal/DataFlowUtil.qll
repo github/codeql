@@ -255,11 +255,19 @@ class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
+/**
+ * A node representing the object that was just constructed and is identified
+ * with the "return value" of the constructor call.
+ */
 private class PostConstructorCallNode extends PostUpdateNode, TExprNode {
   PostConstructorCallNode() { this = TExprNode(any(ConstructorCall c)) }
 
   override PreConstructorCallNode getPreUpdateNode() {
     TExprNode(result.getConstructorCall()) = this
+  }
+
+  override string toString() {
+    result = getPreUpdateNode().getConstructorCall().toString() + " [post constructor]"
   }
 }
 
@@ -270,8 +278,6 @@ private class PostConstructorCallNode extends PostUpdateNode, TExprNode {
  * `this`-argument) to a constructor call.
  */
 class PreConstructorCallNode extends Node, TPreConstructorCallNode {
-  PreConstructorCallNode() { this = TPreConstructorCallNode(_) }
-
   ConstructorCall getConstructorCall() { this = TPreConstructorCallNode(result) }
 
   override Function getFunction() { result = getConstructorCall().getEnclosingFunction() }
