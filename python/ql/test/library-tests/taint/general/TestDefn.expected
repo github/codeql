@@ -1,8 +1,14 @@
 | carrier.py:4 | ParameterDefinition | carrier.py:4 | Taint explicit.carrier | arg |
 | carrier.py:4 | ParameterDefinition | carrier.py:4 | Taint simple.test | arg |
+| carrier.py:10 | ParameterDefinition | carrier.py:10 | Taint .attr = simple.test | self |
+| carrier.py:13 | ParameterDefinition | carrier.py:13 | Taint .attr = simple.test | arg |
 | carrier.py:13 | ParameterDefinition | carrier.py:13 | Taint explicit.carrier | arg |
+| carrier.py:17 | ImplicitCarrier() | carrier.py:17 | Taint .attr = simple.test | c |
 | carrier.py:21 | TAINT_CARRIER_SOURCE | carrier.py:21 | Taint explicit.carrier | c |
+| carrier.py:25 | hub() | carrier.py:25 | Taint .attr = simple.test | c |
 | carrier.py:29 | hub() | carrier.py:29 | Taint explicit.carrier | c |
+| carrier.py:33 | ImplicitCarrier() | carrier.py:33 | Taint .attr = explicit.carrier | c |
+| carrier.py:34 | Attribute | carrier.py:34 | Taint explicit.carrier | x |
 | deep.py:2 | ParameterDefinition | deep.py:2 | Taint simple.test | arg |
 | deep.py:5 | ParameterDefinition | deep.py:5 | Taint simple.test | arg |
 | deep.py:8 | ParameterDefinition | deep.py:8 | Taint simple.test | arg |
@@ -37,16 +43,26 @@
 | sanitizer.py:31 | user_input() | sanitizer.py:31 | Taint SQL injection | x |
 | test.py:6 | SOURCE | test.py:6 | Taint simple.test | s |
 | test.py:12 | ParameterDefinition | test.py:12 | Taint simple.test | arg |
+| test.py:16 | source() | test.py:16 | Taint simple.test | t |
 | test.py:20 | SOURCE | test.py:20 | Taint simple.test | t |
+| test.py:24 | source() | test.py:24 | Taint simple.test | t |
 | test.py:31 | SOURCE | test.py:31 | Taint simple.test | t |
 | test.py:37 | SOURCE | test.py:37 | Taint simple.test | t |
+| test.py:46 | ParameterDefinition | test.py:46 | Taint simple.test | arg |
 | test.py:49 | ParameterDefinition | test.py:49 | Taint simple.test | arg |
+| test.py:54 | source2() | test.py:54 | Taint simple.test | t |
 | test.py:62 | SOURCE | test.py:62 | Taint simple.test | t |
 | test.py:67 | SOURCE | test.py:67 | Taint simple.test | t |
+| test.py:72 | ParameterDefinition | test.py:72 | Taint .x = simple.test | arg |
 | test.py:72 | ParameterDefinition | test.py:72 | Taint basic.custom | arg |
 | test.py:72 | ParameterDefinition | test.py:72 | Taint simple.test | arg |
 | test.py:76 | SOURCE | test.py:76 | Taint simple.test | t |
 | test.py:77 | hub() | test.py:77 | Taint simple.test | t |
+| test.py:85 | ImportExpr | test.py:85 | Taint .dangerous = simple.test | module |
+| test.py:88 | Attribute | test.py:88 | Taint simple.test | t |
+| test.py:100 | Attribute() | test.py:100 | Taint simple.test | t |
+| test.py:105 | ParameterDefinition | test.py:105 | Taint .x = simple.test | arg |
+| test.py:116 | hub() | test.py:116 | Taint .x = simple.test | t |
 | test.py:120 | CUSTOM_SOURCE | test.py:120 | Taint basic.custom | t |
 | test.py:121 | hub() | test.py:121 | Taint basic.custom | t |
 | test.py:126 | CUSTOM_SOURCE | test.py:126 | Taint basic.custom | t |
@@ -58,15 +74,15 @@
 | test.py:149 | TAINT_FROM_ARG() | test.py:149 | Taint basic.custom | t |
 | test.py:155 | ImportMember | test.py:155 | Taint simple.test | unsafe |
 | test.py:163 | SOURCE | test.py:163 | Taint simple.test | s |
-| test.py:168 | List | test.py:168 | Taint [simple.test] | l |
-| test.py:169 | Dict | test.py:169 | Taint {simple.test} | d |
-| test.py:174 | list() | test.py:174 | Taint [simple.test] | l2 |
-| test.py:175 | dict() | test.py:175 | Taint {simple.test} | d2 |
+| test.py:168 | List | test.py:168 | Taint sequence of simple.test | l |
+| test.py:169 | Dict | test.py:169 | Taint dict of simple.test | d |
+| test.py:174 | list() | test.py:174 | Taint sequence of simple.test | l2 |
+| test.py:175 | dict() | test.py:175 | Taint dict of simple.test | d2 |
 | test.py:178 | SOURCE | test.py:178 | Taint simple.test | t |
 | test.py:189 | FALSEY | test.py:189 | Taint falsey | t |
 | test.py:195 | SOURCE | test.py:195 | Taint simple.test | t |
 | test.py:202 | ITERABLE_SOURCE | test.py:202 | Taint iterable.simple | t |
 | test.py:203 | For | test.py:203 | Taint simple.test | i |
-| test.py:208 | List | test.py:208 | Taint [simple.test] | seq |
+| test.py:208 | List | test.py:208 | Taint sequence of simple.test | seq |
 | test.py:209 | For | test.py:209 | Taint simple.test | i |
 | test.py:213 | For | test.py:213 | Taint simple.test | x |

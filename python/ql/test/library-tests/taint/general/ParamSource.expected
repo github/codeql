@@ -1,4 +1,5 @@
 | test | carrier.py:4 | 18 | Attribute | test |
+| test | carrier.py:4 | 26 | Attribute() | test |
 | test | test.py:12 | 13 | arg | test |
 | test | test.py:46 | 13 | arg | test |
 | test | test.py:49 | 13 | arg | test |

@@ -1,25 +1,30 @@
 WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:6,6-17)
 WARNING: Type CallContext has been deprecated and may be removed in future (Contexts.ql:7,14-25)
-| Parameter 0(no attribute) is Command injection | Function isEscapedSql |
-| Parameter 0(no attribute) is Command injection | Function isValidCommand |
-| Parameter 0(no attribute) is SQL injection | Function isEscapedSql |
-| Parameter 0(no attribute) is SQL injection | Function isValidCommand |
-| Parameter 0(no attribute) is basic.custom | Function hub |
-| Parameter 0(no attribute) is explicit.carrier | Function hub |
-| Parameter 0(no attribute) is paper | Function paper |
-| Parameter 0(no attribute) is paper | Function scissors |
-| Parameter 0(no attribute) is rock | Function paper |
-| Parameter 0(no attribute) is scissors | Function paper |
-| Parameter 0(no attribute) is scissors | Function rock |
-| Parameter 0(no attribute) is scissors | Function scissors |
-| Parameter 0(no attribute) is simple.test | Function f1 |
-| Parameter 0(no attribute) is simple.test | Function f2 |
-| Parameter 0(no attribute) is simple.test | Function f3 |
-| Parameter 0(no attribute) is simple.test | Function f4 |
-| Parameter 0(no attribute) is simple.test | Function f5 |
-| Parameter 0(no attribute) is simple.test | Function f6 |
-| Parameter 0(no attribute) is simple.test | Function hub |
-| Parameter 0(no attribute) is simple.test | Function sink |
-| Parameter 1(no attribute) is explicit.carrier | Function __init__ |
-| Parameter 1(no attribute) is simple.test | Function __init__ |
-| Parameter 1(no attribute) is simple.test | Function sink3 |
+| p0 = Command injection | Function isEscapedSql |
+| p0 = Command injection | Function isValidCommand |
+| p0 = SQL injection | Function isEscapedSql |
+| p0 = SQL injection | Function isValidCommand |
+| p0 = basic.custom | Function hub |
+| p0 = explicit.carrier | Function hub |
+| p0 = paper | Function paper |
+| p0 = paper | Function scissors |
+| p0 = rock | Function paper |
+| p0 = scissors | Function paper |
+| p0 = scissors | Function rock |
+| p0 = scissors | Function scissors |
+| p0 = simple.test | Function f1 |
+| p0 = simple.test | Function f2 |
+| p0 = simple.test | Function f3 |
+| p0 = simple.test | Function f4 |
+| p0 = simple.test | Function f5 |
+| p0 = simple.test | Function f6 |
+| p0 = simple.test | Function hub |
+| p0 = simple.test | Function sink |
+| p0 = simple.test | Function sink2 |
+| p0.attr = simple.test | Function get_attr |
+| p0.attr = simple.test | Function hub |
+| p0.x = simple.test | Function hub |
+| p0.x = simple.test | Function x_sink |
+| p1 = explicit.carrier | Function __init__ |
+| p1 = simple.test | Function __init__ |
+| p1 = simple.test | Function sink3 |
