@@ -103,9 +103,9 @@ public class YAMLExtractor implements IExtractor {
     try {
       parser = new ParserImpl(new StreamReader(textualExtractor.getSource()));
       resolver = new Resolver();
-
       int idx = 0;
-      while (!atStreamEnd()) extractDocument(fileLabel, idx++);
+      while (!atStreamEnd())
+        extractDocument(fileLabel, idx++, textualExtractor.getSource().codePoints().toArray());
     } catch (MarkedYAMLException e) {
       int line = e.getProblemMark().getLine() + 1;
       int column = e.getProblemMark().getColumn() + 1;
@@ -135,17 +135,17 @@ public class YAMLExtractor implements IExtractor {
     return parser.checkEvent(Event.ID.StreamEnd);
   }
 
-  /** Extract a complete YAML document; cf. {@link Composer#composeDocument}. */
-  private void extractDocument(Label parent, int idx) {
+  /** Extract a complete YAML document; cf. {@link Composer#getNode}. */
+  private void extractDocument(Label parent, int idx, int[] codepoints) {
     // Drop the DOCUMENT-START event
     parser.getEvent();
-    extractNode(parent, idx);
+    extractNode(parent, idx, codepoints);
     // Drop the DOCUMENT-END event
     parser.getEvent();
   }
 
   /** Extract a single YAML node; cf. {@link Composer#composeNode}. */
-  private void extractNode(Label parent, int idx) {
+  private void extractNode(Label parent, int idx, int[] codepoints) {
     Label label = trapWriter.freshLabel();
     NodeKind kind;
     String tag = "";
@@ -169,15 +169,14 @@ public class YAMLExtractor implements IExtractor {
                 scalar.getImplicit().canOmitTagInPlainScalar());
         Character style = scalar.getStyle();
         int styleCode = style == null ? 0 : (int) style;
-        trapWriter.addTuple(
-            YAMLTables.YAML_SCALARS, label, styleCode, scalar.getValue());
+        trapWriter.addTuple(YAMLTables.YAML_SCALARS, label, styleCode, scalar.getValue());
       } else if (start.is(Event.ID.SequenceStart)) {
         kind = NodeKind.SEQUENCE;
         SequenceStartEvent sequenceStart = (SequenceStartEvent) start;
         tag = getTag(sequenceStart.getTag(), NodeId.sequence, null, sequenceStart.getImplicit());
 
         int childIdx = 0;
-        while (!parser.checkEvent(Event.ID.SequenceEnd)) extractNode(label, childIdx++);
+        while (!parser.checkEvent(Event.ID.SequenceEnd)) extractNode(label, childIdx++, codepoints);
 
         end = parser.getEvent();
       } else if (start.is(Event.ID.MappingStart)) {
@@ -187,8 +186,8 @@ public class YAMLExtractor implements IExtractor {
 
         int childIdx = 1;
         while (!parser.checkEvent(Event.ID.MappingEnd)) {
-          extractNode(label, childIdx);
-          extractNode(label, -childIdx);
+          extractNode(label, childIdx, codepoints);
+          extractNode(label, -childIdx, codepoints);
           ++childIdx;
         }
 
@@ -205,7 +204,7 @@ public class YAMLExtractor implements IExtractor {
         parent,
         idx,
         tag,
-        mkToString(start.getStartMark(), end.getEndMark()));
+        mkToString(start.getStartMark(), end.getEndMark(), codepoints));
     extractLocation(label, start.getStartMark(), end.getEndMark());
   }
 
@@ -216,33 +215,30 @@ public class YAMLExtractor implements IExtractor {
     return explicitTag;
   }
 
+  private static boolean isNewLine(int codePoint) {
+    switch (codePoint) {
+      case '\n':
+      case '\r':
+      case '\u0085':
+      case '\u2028':
+      case '\u2029':
+        return true;
+      default:
+        return false;
+    }
+  }
+
   /**
-   * SnakeYAML doesn't directly expose the source text of nodes, but we can get a decent
-   * approximation from the snippet associated with the node's start {@linkplain Mark}.
-   *
-   * <p>The snippet of a {@linkplain Mark} is meant to be used for diagnostic messages and consists
-   * of two lines: the first line contains some context around the source position represented by
-   * the mark, the second line contains a caret character positioned underneath the source position
-   * itself.
-   *
-   * <p>To approximate the source text, we take the text on the first line and strip off the first
-   * <i>n</i> characters, where <i>n</i> is the number of spaces preceding the caret character on
-   * the second line.
-   *
-   * <p>This is only an approximation, since the context is limited to relatively short strings that
-   * never extend across newlines, but it suffices for the purposes of <code>toString</code>.
+   * SnakeYAML doesn't directly expose the source text of nodes, but we also take the file contents
+   * as an array of Unicode code points. The start and end marks each contain an index into the code
+   * point stream (the end is exclusive), so we can reconstruct the snippet. For readability, we
+   * stop at the first encountered newline.
    */
-  private String mkToString(Mark startMark, Mark endMark) {
-    String snippet = startMark.get_snippet(0, Integer.MAX_VALUE);
-    int nl = snippet.indexOf('\n');
-    String context = snippet.substring(0, nl);
-    String src = context.substring(snippet.substring(nl + 1).indexOf('^'));
-    int desiredStringLength = endMark.getColumn() - startMark.getColumn();
-    boolean hasAccessToDesiredString = src.length() >= desiredStringLength;
-    boolean isSingleLine = endMark.getLine() == startMark.getLine();
-    if (isSingleLine && hasAccessToDesiredString)
-    	src = src.substring(0, desiredStringLength);
-    return TextualExtractor.sanitiseToString(src);
+  private static String mkToString(Mark startMark, Mark endMark, int[] codepoints) {
+    StringBuilder b = new StringBuilder();
+    for (int i = startMark.getIndex(); i < endMark.getIndex() && !isNewLine(codepoints[i]); i++)
+      b.appendCodePoint(codepoints[i]);
+    return TextualExtractor.sanitiseToString(b.toString());
   }
 
   /** Emit a source location for a YAML node. */

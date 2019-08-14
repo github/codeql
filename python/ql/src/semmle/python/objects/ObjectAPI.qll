@@ -384,6 +384,11 @@ class ClassValue extends Value {
         result = this.(PythonClassObjectInternal).getScope()
     }
 
+    /** Gets the attribute declared in this class */
+    Value declaredAttribute(string name) {
+        Types::declaredAttribute(this, name, result, _)
+    }
+
     /** Holds if this class has the attribute `name`, including
      * attributes declared by super classes.
      */

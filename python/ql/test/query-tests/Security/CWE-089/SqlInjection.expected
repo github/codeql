@@ -17,7 +17,6 @@ edges
 | sql_injection.py:23:76:23:79 | externally controlled string | sql_injection.py:23:26:23:79 | externally controlled string |
 | sql_injection.py:24:9:24:20 | django.db.models.Model.objects | sql_injection.py:24:9:24:82 | django.db.models.Model.objects |
 | sql_injection.py:24:78:24:81 | externally controlled string | sql_injection.py:24:28:24:81 | externally controlled string |
-parents
 #select
 | sql_injection.py:19:13:19:66 | db.connection.execute | sql_injection.py:9:15:9:21 | django.request.HttpRequest | sql_injection.py:19:13:19:66 | externally controlled string | This SQL query depends on $@. | sql_injection.py:9:15:9:21 | Django request source | a user-provided value |
 | sql_injection.py:22:38:22:91 | django.db.models.expressions.RawSQL(sink,...) | sql_injection.py:9:15:9:21 | django.request.HttpRequest | sql_injection.py:22:38:22:91 | externally controlled string | This SQL query depends on $@. | sql_injection.py:9:15:9:21 | Django request source | a user-provided value |

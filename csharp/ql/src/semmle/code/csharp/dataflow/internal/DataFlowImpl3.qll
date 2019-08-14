@@ -75,6 +75,9 @@ abstract class Configuration extends string {
   /** Holds if data flow out of `node` is prohibited. */
   predicate isBarrierOut(Node node) { none() }
 
+  /** Holds if data flow through nodes guarded by `guard` is prohibited. */
+  predicate isBarrierGuard(BarrierGuard guard) { none() }
+
   /**
    * Holds if the additional flow step from `node1` to `node2` must be taken
    * into account in the analysis.
@@ -136,6 +139,11 @@ private predicate fullBarrier(Node node, Configuration config) {
   or
   config.isBarrierOut(node) and
   not config.isSink(node)
+  or
+  exists(BarrierGuard g |
+    config.isBarrierGuard(g) and
+    node = g.getAGuardedNode()
+  )
 }
 
 private class AdditionalFlowStepSource extends Node {
@@ -826,6 +834,7 @@ private predicate localFlowExit(Node node, Configuration config) {
  * This is the transitive closure of `[additional]localFlowStep` beginning
  * at `localFlowEntry`.
  */
+pragma[nomagic]
 private predicate localFlowStepPlus(
   Node node1, Node node2, boolean preservesValue, Configuration config
 ) {
@@ -1086,28 +1095,44 @@ private predicate flowCand0(Node node, boolean toReturn, AccessPathFront apf, Co
     flowCandFwd(node, _, apf, config)
   )
   or
-  exists(Node mid, Content f, AccessPathFront apf0 |
-    store(node, f, mid) and
-    flowCand(mid, toReturn, apf0, config) and
+  exists(Content f, AccessPathFront apf0 |
+    flowCandStore(node, f, toReturn, apf0, config) and
     apf0.headUsesContent(f) and
     consCand(f, apf, unbind(config))
   )
   or
-  exists(Node mid, Content f, AccessPathFront apf0 |
-    read(node, f, mid) and
-    flowCand(mid, toReturn, apf0, config) and
+  exists(Content f, AccessPathFront apf0 |
+    flowCandRead(node, f, toReturn, apf0, config) and
     consCandFwd(f, apf0, unbind(config)) and
     apf.headUsesContent(f)
   )
 }
 
+pragma[nomagic]
+private predicate flowCandRead(
+  Node node, Content f, boolean toReturn, AccessPathFront apf0, Configuration config
+) {
+  exists(Node mid |
+    read(node, f, mid) and
+    flowCand(mid, toReturn, apf0, config)
+  )
+}
+
+private predicate flowCandStore(
+  Node node, Content f, boolean toReturn, AccessPathFront apf0, Configuration config
+) {
+  exists(Node mid |
+    store(node, f, mid) and
+    flowCand(mid, toReturn, apf0, config)
+  )
+}
+
 private predicate consCand(Content f, AccessPathFront apf, Configuration config) {
   consCandFwd(f, apf, config) and
-  exists(Node mid, Node n, AccessPathFront apf0 |
+  exists(Node n, AccessPathFront apf0 |
     flowCandFwd(n, _, apf0, config) and
     apf0.headUsesContent(f) and
-    read(n, f, mid) and
-    flowCand(mid, _, apf, config)
+    flowCandRead(n, f, _, apf, config)
   )
 }
 
@@ -1447,8 +1472,18 @@ abstract class PathNode extends TPathNode {
    */
   string toStringWithContext() { result = getNode().toString() + ppAp() + ppCtx() }
 
-  /** Gets the source location for this element. */
-  DataFlowLocation getLocation() { result = getNode().getLocation() }
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    getNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /** Gets the underlying `Node`. */
   abstract Node getNode();

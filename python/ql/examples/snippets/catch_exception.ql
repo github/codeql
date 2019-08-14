@@ -9,8 +9,8 @@
  
 import python
 
-from ExceptStmt ex, ClassObject cls
+from ExceptStmt ex, ClassValue cls
 where 
     cls.getName() = "MyExceptionClass" and
-    ex.getType().refersTo(cls)
+    ex.getType().pointsTo(cls)
 select ex

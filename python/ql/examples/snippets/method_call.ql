@@ -8,7 +8,7 @@
  
 import python
 
-from AstNode call, FunctionObject method
+from AstNode call, PythonFunctionValue method
 where 
     method.getQualifiedName() = "MyClass.methodName" and
     method.getACall().getNode() = call

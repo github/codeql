@@ -288,6 +288,7 @@
 | Switch.cs:14:18:14:20 | "a" | Switch.cs:27:13:27:39 | case ...: | false |
 | Switch.cs:14:18:14:20 | "a" | Switch.cs:27:32:27:38 | call to method Throw | false |
 | Switch.cs:14:18:14:20 | "a" | Switch.cs:30:13:30:20 | default: | false |
+| Switch.cs:16:18:16:18 | 0 | Switch.cs:17:23:17:37 | object creation of type Exception | true |
 | Switch.cs:16:18:16:18 | 0 | Switch.cs:18:13:18:22 | case ...: | false |
 | Switch.cs:16:18:16:18 | 0 | Switch.cs:19:17:19:29 | goto default; | false |
 | Switch.cs:16:18:16:18 | 0 | Switch.cs:20:13:20:23 | case ...: | false |
@@ -422,19 +423,9 @@
 | cflow.cs:28:22:28:31 | ... == ... | cflow.cs:33:17:33:37 | ...; | false |
 | cflow.cs:30:22:30:31 | ... == ... | cflow.cs:31:17:31:42 | ...; | true |
 | cflow.cs:30:22:30:31 | ... == ... | cflow.cs:33:17:33:37 | ...; | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:37:17:37:22 | exit Switch | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:44:13:44:19 | case ...: | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:47:13:47:19 | case ...: | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:48:17:48:39 | ...; | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:51:9:59:9 | switch (...) {...} | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:54:17:54:48 | ...; | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:56:13:56:20 | default: | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:60:9:66:9 | switch (...) {...} | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:63:17:64:55 | if (...) ... | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:64:27:64:54 | object creation of type NullReferenceException | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:65:17:65:22 | break; | false |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:67:16:67:16 | access to parameter a | false |
+| cflow.cs:41:18:41:18 | 1 | cflow.cs:42:17:42:39 | ...; | true |
 | cflow.cs:44:18:44:18 | 2 | cflow.cs:37:17:37:22 | exit Switch | false |
+| cflow.cs:44:18:44:18 | 2 | cflow.cs:45:17:45:39 | ...; | true |
 | cflow.cs:44:18:44:18 | 2 | cflow.cs:47:13:47:19 | case ...: | false |
 | cflow.cs:44:18:44:18 | 2 | cflow.cs:48:17:48:39 | ...; | false |
 | cflow.cs:44:18:44:18 | 2 | cflow.cs:51:9:59:9 | switch (...) {...} | false |

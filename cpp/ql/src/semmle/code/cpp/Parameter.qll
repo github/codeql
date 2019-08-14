@@ -3,7 +3,18 @@ import semmle.code.cpp.Declaration
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C/C++ function parameter or catch block parameter.
+ * A C/C++ function parameter or catch block parameter. For example the
+ * function parameter `p` and the catch block parameter `e` in the following
+ * code: 
+ * ```
+ * void myFunction(int p) {
+ *   try {
+ *     ...
+ *   } catch (const std::exception &e) {
+ *     ...
+ *   }
+ * }
+ * ```
  *
  * For catch block parameters, there is a one-to-one correspondence between
  * the `Parameter` and its `ParameterDeclarationEntry`.

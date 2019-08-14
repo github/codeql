@@ -56,6 +56,19 @@ class Node extends TNode {
   Location getLocation() { none() } // overridden by subclasses
 
   /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
+  /**
    * Gets an upper bound on the type of this node.
    */
   Type getTypeBound() { result = getType() }
@@ -317,4 +330,23 @@ VariableAccess getAnAccessToAssignedVariable(Expr assign) {
     var.definedByExpr(_, assign) and
     result = var.getAnAccess()
   )
+}
+
+/**
+ * A guard that validates some expression.
+ *
+ * To use this in a configuration, extend the class and provide a
+ * characteristic predicate precisely specifying the guard, and override
+ * `checks` to specify what is being validated and in which branch.
+ *
+ * It is important that all extending classes in scope are disjoint.
+ */
+class BarrierGuard extends Expr {
+  /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `branch`. */
+  abstract deprecated predicate checks(Expr e, boolean branch);
+
+  /** Gets a node guarded by this guard. */
+  final Node getAGuardedNode() {
+    none() // stub
+  }
 }

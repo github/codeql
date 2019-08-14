@@ -10,3 +10,9 @@ void f(void) {
     l = s.i;
 } 
 
+void myFunction()
+{ 
+  struct MyLocalStruct {
+    int x, y, z;
+  };
+}

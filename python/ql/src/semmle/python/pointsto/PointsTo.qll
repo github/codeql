@@ -1249,7 +1249,13 @@ module Expressions {
             not op instanceof BitOr and
             (operand = left or operand = right) and
             PointsToInternal::pointsTo(operand, context, opvalue, _) and
-            value = ObjectInternal::unknown()
+            (
+                op instanceof Add and
+                value = TUnknownInstance(opvalue.getClass())
+                or
+                not op instanceof Add and
+                value = ObjectInternal::unknown()
+            )
             or
             op instanceof BitOr and
             exists(ObjectInternal lobj, ObjectInternal robj |
@@ -1391,6 +1397,14 @@ module Expressions {
     }
 
     pragma [noinline]
+    private boolean comparesToUnknown(CompareNode comp, PointsToContext context, ControlFlowNode operand, ObjectInternal opvalue) {
+        (comp.operands(operand, _, _) or comp.operands(_, _, operand)) and
+        PointsToInternal::pointsTo(operand, context, opvalue, _) and
+        opvalue = ObjectInternal::unknown() and
+        result = maybe()
+    }
+
+    pragma [noinline]
     private predicate equalityTest(CompareNode comp, PointsToContext context, ControlFlowNode operand, ObjectInternal opvalue, ObjectInternal other, boolean sense) {
         exists(ControlFlowNode r |
             equality_test(comp, operand, sense, r) and
@@ -1519,6 +1533,8 @@ module Expressions {
         result = inequalityEvaluatesTo(expr, context, subexpr, subvalue)
         or
         result = containsComparisonEvaluatesTo(expr, context, subexpr, subvalue)
+        or
+        result = comparesToUnknown(expr, context, subexpr, subvalue)
         or
         result = isinstanceEvaluatesTo(expr, context, subexpr, subvalue)
         or

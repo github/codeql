@@ -497,7 +497,7 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   }
 
   final InstructionTag getFieldAddressTag() {
-    result = InitializerFieldAddressTag(field)
+    result = InitializerFieldAddressTag()
   }
 
   final Field getField() {
@@ -625,11 +625,11 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization, 
   }
 
   private InstructionTag getFieldDefaultValueTag() {
-    result = InitializerFieldDefaultValueTag(field)
+    result = InitializerFieldDefaultValueTag()
   }
 
   private InstructionTag getFieldDefaultValueStoreTag() {
-    result = InitializerFieldDefaultValueStoreTag(field)
+    result = InitializerFieldDefaultValueStoreTag()
   }
 }
 
@@ -699,11 +699,11 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   abstract int getElementIndex();
 
   final InstructionTag getElementAddressTag() {
-    result = InitializerElementAddressTag(getElementIndex())
+    result = InitializerElementAddressTag()
   }
 
   final InstructionTag getElementIndexTag() {
-    result = InitializerElementIndexTag(getElementIndex())
+    result = InitializerElementIndexTag()
   }
 
   final ArrayAggregateLiteral getInitList() {
@@ -861,11 +861,11 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
   }
   
   private InstructionTag getElementDefaultValueTag() {
-    result = InitializerElementDefaultValueTag(elementIndex)
+    result = InitializerElementDefaultValueTag()
   }
 
   private InstructionTag getElementDefaultValueStoreTag() {
-    result = InitializerElementDefaultValueStoreTag(elementIndex)
+    result = InitializerElementDefaultValueStoreTag()
   }
 
   private Type getDefaultValueType() {

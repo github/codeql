@@ -6,6 +6,7 @@ private import java
 private import DataFlowPrivate
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.TypeFlow
+private import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.InstanceAccess
 
 cached
@@ -89,6 +90,19 @@ class Node extends TNode {
     result = getImprovedTypeBound()
     or
     result = getType() and not exists(getImprovedTypeBound())
+  }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -402,4 +416,28 @@ Node getInstanceArgument(Call call) {
   result.(MallocNode).getClassInstanceExpr() = call or
   explicitInstanceArgument(call, result.asExpr()) or
   implicitInstanceArgument(call, result.(ImplicitInstanceAccess).getInstanceAccess())
+}
+
+/**
+ * A guard that validates some expression.
+ *
+ * To use this in a configuration, extend the class and provide a
+ * characteristic predicate precisely specifying the guard, and override
+ * `checks` to specify what is being validated and in which branch.
+ *
+ * It is important that all extending classes in scope are disjoint.
+ */
+class BarrierGuard extends Guard {
+  /** Holds if this guard validates `e` upon evaluating to `branch`. */
+  abstract predicate checks(Expr e, boolean branch);
+
+  /** Gets a node guarded by this guard. */
+  final Node getAGuardedNode() {
+    exists(SsaVariable v, boolean branch, RValue use |
+      this.checks(v.getAUse(), branch) and
+      use = v.getAUse() and
+      this.controls(use.getBasicBlock(), branch) and
+      result.asExpr() = use
+    )
+  }
 }

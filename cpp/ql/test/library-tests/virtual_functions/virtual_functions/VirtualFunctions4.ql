@@ -1,12 +1,15 @@
 import cpp
 
-from VirtualFunction f, string overriddenFunctionDeclaringType
-where if exists(f.getAnOverriddenFunction().getDeclaringType())
-      then overriddenFunctionDeclaringType = f.getAnOverriddenFunction().getDeclaringType().toString()
-      else overriddenFunctionDeclaringType = "<none>"
-select f,
-       f.getDeclaringType(),
-       count(f.getAnOverridingFunction()),
-       count(f.getAnOverriddenFunction()),
-       overriddenFunctionDeclaringType
+string describe(VirtualFunction f)
+{
+	f instanceof PureVirtualFunction and
+	result = "PureVirtualFunction"
+}
 
+from VirtualFunction f
+select
+	f,
+	f.getDeclaringType(),
+	concat(f.getAnOverridingFunction().getDeclaringType().toString(), ", "),
+	concat(f.getAnOverriddenFunction().getDeclaringType().toString(), ", "),
+	concat(describe(f), ", ")

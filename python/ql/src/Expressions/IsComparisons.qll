@@ -7,25 +7,31 @@ predicate comparison_using_is(Compare comp, ControlFlowNode left, Cmpop op, Cont
     )
 }
 
-predicate overrides_eq_or_cmp(ClassObject c) {
+predicate overrides_eq_or_cmp(ClassValue c) {
     major_version() = 2 and c.hasAttribute("__eq__")
     or
-    c.declaresAttribute("__eq__") and not c = theObjectType()
+    c.declaresAttribute("__eq__") and not c = Value::named("object")
     or
-    exists(ClassObject sup | 
-        sup = c.getASuperType() and not sup = theObjectType() |
+    exists(ClassValue sup | 
+        sup = c.getASuperType() and not sup = Value::named("object") |
         sup.declaresAttribute("__eq__")
     )
     or
     major_version() = 2 and c.hasAttribute("__cmp__")
 }
 
-predicate invalid_to_use_is_portably(ClassObject c) {
+predicate probablySingleton(ClassValue cls) {
+    strictcount(Value inst | inst.getClass() = cls) = 1
+    or
+    cls = Value::named("None").getClass()
+}
+
+predicate invalid_to_use_is_portably(ClassValue c) {
     overrides_eq_or_cmp(c) and
     /* Exclude type/builtin-function/bool as it is legitimate to compare them using 'is' but they implement __eq__ */
-    not c = theTypeType() and not c = theBuiltinFunctionType() and not c = theBoolType() and
+    not c = Value::named("type") and not c = ClassValue::builtinFunction() and not c = Value::named("bool") and
     /* OK to compare with 'is' if a singleton */
-    not exists(c.getProbableSingletonInstance())
+    not probablySingleton(c)
 }
 
 predicate simple_constant(ControlFlowNode f) {
@@ -72,30 +78,30 @@ predicate universally_interned_constant(Expr e) {
     )
 }
 
-private predicate comparison_both_types(Compare comp, Cmpop op, ClassObject cls1, ClassObject cls2) {
+private predicate comparison_both_types(Compare comp, Cmpop op, ClassValue cls1, ClassValue cls2) {
     exists(ControlFlowNode op1, ControlFlowNode op2 |
         comparison_using_is(comp, op1, op, op2) or comparison_using_is(comp, op2, op, op1) |
-        op1.refersTo(_, cls1, _) and
-        op2.refersTo(_, cls2, _)
+        op1.inferredValue().getClass() = cls1 and
+        op2.inferredValue().getClass() = cls2
     )
 }
 
-private predicate comparison_one_type(Compare comp, Cmpop op, ClassObject cls) {
+private predicate comparison_one_type(Compare comp, Cmpop op, ClassValue cls) {
     not comparison_both_types(comp, _, _, _) and
     exists(ControlFlowNode operand |
         comparison_using_is(comp, operand, op, _) or comparison_using_is(comp, _, op, operand) |
-        operand.refersTo(_, cls, _)
+        operand.inferredValue().getClass() = cls 
     )
 }
 
-predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassObject cls) {
+predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls) {
     /* OK to use 'is' when defining '__eq__' */
     not exists(Function eq | eq.getName() = "__eq__" or eq.getName() = "__ne__" | eq = comp.getScope().getScope*())
     and
     (
         comparison_one_type(comp, op, cls) and invalid_to_use_is_portably(cls)
         or
-        exists(ClassObject other | comparison_both_types(comp, op, cls, other) |
+        exists(ClassValue other | comparison_both_types(comp, op, cls, other) |
             invalid_to_use_is_portably(cls) and
             invalid_to_use_is_portably(other)
         )
@@ -123,9 +129,9 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassObject cls
 }
 
 private predicate enum_member(AstNode obj) {
-    exists(ClassObject cls, AssignStmt asgn |
+    exists(ClassValue cls, AssignStmt asgn |
         cls.getASuperType().getName() = "Enum" |
-        cls.getPyClass() = asgn.getScope() and
+        cls.getScope() = asgn.getScope() and
         asgn.getValue() = obj
     )
 }

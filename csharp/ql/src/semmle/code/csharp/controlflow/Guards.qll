@@ -1574,7 +1574,6 @@ module Internal {
    *
    * This predicate does not rely on the control flow graph.
    */
-  pragma[nomagic]
   predicate preImpliesSteps(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
     g1 = g2 and
     v1 = v2 and
@@ -1592,7 +1591,6 @@ module Internal {
    *
    * This predicate relies on the control flow graph.
    */
-  pragma[nomagic]
   predicate impliesSteps(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
     g1 = g2 and
     v1 = v2 and
