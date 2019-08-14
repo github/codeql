@@ -33,3 +33,6 @@ class StackTraceExposureConfiguration extends TaintTracking::Configuration {
 from StackTraceExposureConfiguration config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "$@ may be exposed to an external user", src.getSource(), "Error information"
+
+
+
