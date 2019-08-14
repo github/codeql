@@ -253,3 +253,36 @@ bindingset[a, b]
 predicate isGE(IntValue a, IntValue b) {
   hasValue(a) and hasValue(b) and a >= b
 }
+
+/**
+ * Converts the bit count in `bits` to a byte count and a bit count in the form
+ * "bytes:bits". If `bits` represents an integer number of bytes, the ":bits" section is omitted.
+ * If `bits` does not have a known value, the result is "?".
+ */
+bindingset[bits]
+string bitsToBytesAndBits(IntValue bits) {
+  exists(int bytes, int leftoverBits |
+    hasValue(bits) and
+    bytes = bits / 8 and
+    leftoverBits = bits % 8 and
+    if leftoverBits = 0 then
+      result = bytes.toString()
+    else
+      result = bytes + ":" + leftoverBits
+  ) or
+  not hasValue(bits) and result = "?"
+}
+
+/**
+ * Gets a printable string for a bit offset with possibly unknown value.
+ */
+bindingset[bitOffset]
+string getBitOffsetString(IntValue bitOffset) {
+  if hasValue(bitOffset) then
+    if bitOffset >= 0 then
+      result = "+" + bitsToBytesAndBits(bitOffset)
+    else
+      result = "-" + bitsToBytesAndBits(neg(bitOffset))
+  else
+    result = "+?"
+}
