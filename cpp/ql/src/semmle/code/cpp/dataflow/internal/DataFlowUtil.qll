@@ -313,17 +313,18 @@ DefinitionByReferenceNode definitionByReferenceNodeFromArgument(Expr argument) {
 UninitializedNode uninitializedNode(LocalVariable v) { result.getLocalVariable() = v }
 
 private module ThisFlow {
-  private Node thisAccessNode(ControlFlowNode cfn) {
-    result.(ImplicitParameterNode).getFunction().getBlock() = cfn or
-    result.asExpr().(ThisExpr) = cfn
-  }
-
   private int basicBlockThisIndex(BasicBlock b, Node thisNode) {
-    thisNode = thisAccessNode(b.getNode(result))
+    // The implicit `this` parameter node is given a very negative offset to
+    // make space for any `ConstructorFieldInit`s there may be between it and
+    // the block contents.
+    thisNode.(ImplicitParameterNode).getFunction().getBlock() = b and
+    result = -1000
+    or
+    b.getNode(result) = thisNode.asExpr().(ThisExpr)
   }
 
   private int thisRank(BasicBlock b, Node thisNode) {
-    thisNode = rank[result](thisAccessNode(_) as node order by basicBlockThisIndex(b, node))
+    thisNode = rank[result](Node n, int i | i = basicBlockThisIndex(b, n) | n order by i)
   }
 
   private int lastThisRank(BasicBlock b) { result = max(thisRank(b, _)) }
