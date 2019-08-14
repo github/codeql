@@ -1,64 +1,61 @@
 import AliasAnalysis
 private import cpp
+private import AliasConfiguration
 private import semmle.code.cpp.ir.implementation.raw.IR
-private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
-private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.Overlap
-
-private class IntValue = Ints::IntValue;
-
-private predicate hasResultMemoryAccess(Instruction instr, IRVariable var, Type type, IntValue bitOffset) {
-  resultPointsTo(instr.getResultAddressOperand().getAnyDef(), var, bitOffset) and
-  type = instr.getResultType()
-}
-
-private predicate hasOperandMemoryAccess(MemoryOperand operand, IRVariable var, Type type, IntValue bitOffset) {
-  resultPointsTo(operand.getAddressOperand().getAnyDef(), var, bitOffset) and
-  type = operand.getType()
-}
+private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 
 /**
- * Holds if the specified variable should be modeled in SSA form. For unaliased SSA, we only model a variable if its
- * address never escapes and all reads and writes of that variable access the entire variable using the original type
- * of the variable.
+ * Holds if the specified variable should be modeled in SSA form. For unaliased SSA, we only model a
+ * variable if its address never escapes and all reads and writes of that variable access the entire
+ * variable using the original type of the variable.
  */
-private predicate isVariableModeled(IRVariable var) {
-  not variableAddressEscapes(var) and
-  // There's no need to check for the right size. An `IRVariable` never has an `UnknownType`, so the test for
-  // `type = var.getType()` is sufficient.
-  forall(Instruction instr, Type type, IntValue bitOffset |
-    hasResultMemoryAccess(instr, var, type, bitOffset) |
-    bitOffset = 0 and
-    type = var.getType()
-  ) and
-  forall(MemoryOperand operand, Type type, IntValue bitOffset |
-    hasOperandMemoryAccess(operand, var, type, bitOffset) |
-    bitOffset = 0 and
-    type = var.getType()
+private predicate isVariableModeled(Allocation var) {
+  not allocationEscapes(var) and
+  forall(AddressOperand addrOperand, Type type |
+    (
+      exists(Instruction instr |
+        addrOperand = instr.getResultAddressOperand() and
+        type = instr.getResultType()
+      ) or
+      exists(MemoryOperand operand |
+        addrOperand = operand.getAddressOperand() and
+        type = operand.getType()
+      )
+    ) and
+    getAddressOperandAllocation(addrOperand) = var |
+    exists(Instruction constantBase, int bitOffset |
+      addressOperandBaseAndConstantOffset(addrOperand, constantBase, bitOffset) and
+      bitOffset = 0 and
+      constantBase = var.getABaseInstruction() and
+      // There's no need to check for the right size. An `IRVariable` never has an `UnknownType`, so
+      // the test for the right type is sufficient.
+      type = var.getType()
+    )
   )
 }
 
 private newtype TMemoryLocation =
-  MkMemoryLocation(IRVariable var) {
+  MkMemoryLocation(Allocation var) {
     isVariableModeled(var)
   }
 
-private MemoryLocation getMemoryLocation(IRVariable var) {
-  result.getIRVariable() = var
+private MemoryLocation getMemoryLocation(Allocation var) {
+  result.getAllocation() = var
 }
 
 class MemoryLocation extends TMemoryLocation {
-  IRVariable var;
+  Allocation var;
 
   MemoryLocation() {
     this = MkMemoryLocation(var)
   }
 
   final string toString() {
-    result = var.toString()
+    result = var.getAllocationString()
   }
 
-  final IRVariable getIRVariable() {
+  final Allocation getAllocation() {
     result = var
   }
 
@@ -85,15 +82,9 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
 }
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
-  exists(IRVariable var |
-    hasResultMemoryAccess(instr, var, _, _) and
-    result = getMemoryLocation(var)
-  )
+  result = getMemoryLocation(getAddressOperandAllocation(instr.getResultAddressOperand()))
 }
 
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
-  exists(IRVariable var |
-    hasOperandMemoryAccess(operand, var, _, _) and
-    result = getMemoryLocation(var)
-  )
+  result = getMemoryLocation(getAddressOperandAllocation(operand.getAddressOperand()))
 }
