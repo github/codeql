@@ -201,3 +201,21 @@ int PureFunctions(char *str1, char *str2, int x) {
   ret += abs(x);
   return ret;
 }
+
+void IndirectParams(int* pi, Point* ppt, Point* apt) {
+  int x = *pi;
+  *pi = 5;
+  int y = *pi;
+
+  x = ppt->x;
+  ppt->x = 2;
+  ppt->y = 4;
+  x = ppt->x;
+  y = ppt->y;
+
+  int i = *pi;
+  Point& pt = apt[i];
+  pt.x = 3;
+  pt.y = 7;
+  x = pt.x + pt.y;
+}
