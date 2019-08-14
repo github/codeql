@@ -1,5 +1,6 @@
 import SSAConstructionInternal
 private import cpp
+private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.Overlap
@@ -812,5 +813,18 @@ cached private module CachedForDebugging {
     result.getEnclosingFunction() = var.getEnclosingFunction() and
     result.getAST() = var.getAST() and
     result.getTag() = var.getTag()
+  }
+}
+
+module SSASanity {
+  query predicate multipleOperandMemoryLocations(OldIR::MemoryOperand operand, string message,
+      OldIR::IRFunction func, string funcText) {
+    exists(int locationCount |
+      locationCount = strictcount(Alias::getOperandMemoryLocation(operand)) and
+      locationCount > 1 and
+      func = operand.getEnclosingIRFunction() and
+      funcText = getIdentityString(func.getFunction()) and
+      message = "Operand has " + locationCount.toString() + " memory accesses in function '$@'."
+    )
   }
 }

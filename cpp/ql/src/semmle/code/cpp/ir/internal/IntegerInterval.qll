@@ -29,5 +29,5 @@ Overlap getOverlap(IntValue defStart, IntValue defEnd, IntValue useStart, IntVal
 bindingset[start, end]
 string getIntervalString(IntValue start, IntValue end) {
   // We represent an interval has half-open, so print it as "[start..end)".
-  result = "[" + intValueToString(start) + ".." + intValueToString(end) + ")"
+  result = "[" + bitsToBytesAndBits(start) + ".." + bitsToBytesAndBits(end) + ")"
 }

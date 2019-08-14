@@ -2,33 +2,9 @@ private import AliasAnalysisInternal
 private import cpp
 private import InputIR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
-
 private import semmle.code.cpp.models.interfaces.Alias
 
 private class IntValue = Ints::IntValue;
-
-/**
- * Converts the bit count in `bits` to a byte count and a bit count in the form
- * bytes:bits.
- */
-bindingset[bits]
-string bitsToBytesAndBits(int bits) {
-  result = (bits / 8).toString() + ":" + (bits % 8).toString()
-}
-
-/**
- * Gets a printable string for a bit offset with possibly unknown value.
- */
-bindingset[bitOffset]
-string getBitOffsetString(IntValue bitOffset) {
-  if Ints::hasValue(bitOffset) then
-    if bitOffset >= 0 then
-      result = "+" + bitsToBytesAndBits(bitOffset)
-    else
-      result = "-" + bitsToBytesAndBits(Ints::neg(bitOffset))
-  else
-    result = "+?"
-}
 
 /**
  * Gets the offset of field `field` in bits.
@@ -142,7 +118,11 @@ private predicate operandIsPropagated(Operand operand, IntValue bitOffset) {
       ) or
       // Adding an integer to or subtracting an integer from a pointer propagates
       // the address with an offset.
-      bitOffset = getPointerBitOffset(instr.(PointerOffsetInstruction)) or
+      exists(PointerOffsetInstruction ptrOffset |
+        ptrOffset = instr and
+        operand = ptrOffset.getLeftOperand() and
+        bitOffset = getPointerBitOffset(ptrOffset)
+      ) or
       // Computing a field address from a pointer propagates the address plus the
       // offset of the field.
       bitOffset = getFieldBitOffset(instr.(FieldAddressInstruction).getField()) or
@@ -278,52 +258,70 @@ private predicate resultEscapesNonReturn(Instruction instr) {
 }
 
 /**
- * Holds if the address of the specified local variable or parameter escapes the
- * domain of the analysis.
+ * Holds if the address of `allocation` escapes outside the domain of the analysis. This can occur
+ * either because the allocation's address is taken within the function and escapes, or because the
+ * allocation is marked as always escaping via `alwaysEscapes()`.
  */
-private predicate automaticVariableAddressEscapes(IRAutomaticVariable var) {
-  // The variable's address escapes if the result of any
-  // VariableAddressInstruction that computes the variable's address escapes.
-  exists(VariableAddressInstruction instr |
-    instr.getVariable() = var and
-    resultEscapesNonReturn(instr)
+predicate allocationEscapes(Configuration::Allocation allocation) {
+  allocation.alwaysEscapes() or
+  resultEscapesNonReturn(allocation.getABaseInstruction())
+}
+
+/**
+ * Equivalent to `operandIsPropagated()`, but includes interprocedural propagation.
+ */
+private predicate operandIsPropagatedIncludingByCall(Operand operand, IntValue bitOffset) {
+  operandIsPropagated(operand, bitOffset) or
+  exists(CallInstruction call, Instruction init |
+    isArgumentForParameter(call, operand, init) and
+    resultReturned(init, bitOffset)
   )
 }
 
 /**
- * Holds if the address of the specified variable escapes the domain of the
- * analysis.
+ * Holds if `addrOperand` is at offset `bitOffset` from the value of instruction `base`. The offset
+ * may be `unknown()`.
  */
-predicate variableAddressEscapes(IRVariable var) {
-  automaticVariableAddressEscapes(var.(IRAutomaticVariable)) or
-  // All variables with static storage duration have their address escape.
-  not var instanceof IRAutomaticVariable
+private predicate hasBaseAndOffset(AddressOperand addrOperand, Instruction base,
+    IntValue bitOffset) {
+  base = addrOperand.getDef() and bitOffset = 0 or  // Base case
+  exists(Instruction middle, int previousBitOffset, Operand middleOperand,
+      IntValue additionalBitOffset |
+    // We already have an offset from `middle`.
+    hasBaseAndOffset(addrOperand, middle, previousBitOffset) and
+    // `middle` is propagated from `base`.
+    middleOperand = middle.getAnOperand() and
+    operandIsPropagatedIncludingByCall(middleOperand, additionalBitOffset) and
+    base = middleOperand.getDef() and
+    bitOffset = Ints::add(previousBitOffset, additionalBitOffset)
+  )
 }
 
 /**
- * Holds if the result of instruction `instr` points within variable `var`, at
- * bit offset `bitOffset` within the variable. If the result points within
- * `var`, but at an unknown or non-constant offset, then `bitOffset` is unknown.
+ * Holds if `addrOperand` is at constant offset `bitOffset` from the value of instruction `base`.
+ * Only holds for the `base` with the longest chain of propagation to `addrOperand`.
  */
-predicate resultPointsTo(Instruction instr, IRVariable var, IntValue bitOffset) {
-  (
-    // The address of a variable points to that variable, at offset 0.
-    instr.(VariableAddressInstruction).getVariable() = var and
-    bitOffset = 0
-  ) or
-  exists(Operand operand, IntValue originalBitOffset, IntValue propagatedBitOffset |
-    operand = instr.getAnOperand() and
-    // If an operand is propagated, then the result points to the same variable,
-    // offset by the bit offset from the propagation.
-    resultPointsTo(operand.getAnyDef(), var, originalBitOffset) and
-    (
-      operandIsPropagated(operand, propagatedBitOffset)
-      or
-      exists(CallInstruction ci, Instruction init |
-        isArgumentForParameter(ci, operand, init) and
-        resultReturned(init, propagatedBitOffset)
-      )
-    ) and
-    bitOffset = Ints::add(originalBitOffset, propagatedBitOffset)
+predicate addressOperandBaseAndConstantOffset(AddressOperand addrOperand, Instruction base,
+    int bitOffset) {
+  hasBaseAndOffset(addrOperand, base, bitOffset) and
+  Ints::hasValue(bitOffset) and
+  not exists(Instruction previousBase, int previousBitOffset |
+    hasBaseAndOffset(addrOperand, previousBase, previousBitOffset) and
+    previousBase = base.getAnOperand().getDef() and
+    Ints::hasValue(previousBitOffset)
+  )
+}
+
+/**
+ * Gets the allocation into which `addrOperand` points, if known.
+ */
+Configuration::Allocation getAddressOperandAllocation(AddressOperand addrOperand) {
+  exists(Instruction base |
+    result.getABaseInstruction() = base and
+    hasBaseAndOffset(addrOperand, base, _) and
+    not exists(Instruction previousBase |
+      hasBaseAndOffset(addrOperand, previousBase, _) and
+      previousBase = base.getAnOperand().getDef()
+    )
   )
 }

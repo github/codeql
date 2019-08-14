@@ -1,49 +1,81 @@
 private import cpp
 import AliasAnalysis
 import semmle.code.cpp.ir.internal.Overlap
+private import AliasConfiguration
 private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 private import semmle.code.cpp.ir.internal.IntegerInterval as Interval
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
+private import semmle.code.cpp.ir.implementation.unaliased_ssa.gvn.ValueNumbering
 
 private class IntValue = Ints::IntValue;
 
-private predicate hasResultMemoryAccess(Instruction instr, IRVariable var, Type type, IntValue startBitOffset,
-    IntValue endBitOffset) {
-  resultPointsTo(instr.getResultAddress(), var, startBitOffset) and
-  type = instr.getResultType() and
-  if exists(instr.getResultSize()) then
-    endBitOffset = Ints::add(startBitOffset, Ints::mul(instr.getResultSize(), 8))
-  else
-    endBitOffset = Ints::unknown()
+/**
+ * Gets a printable string for the specified base address.
+ */
+private string getBaseAddressString(ValueNumber baseAddress) {
+  // If it's the value of a parameter, just use the parameter name.
+  result = baseAddress.getAnInstruction().(InitializeParameterInstruction).getParameter().toString() or
+  (
+    // Otherwise, use the `toString()` of the example instruction.
+    not exists(baseAddress.getAnInstruction().(InitializeParameterInstruction)) and
+    result = baseAddress.getExampleInstruction().toString()
+  )
 }
 
-private predicate hasOperandMemoryAccess(MemoryOperand operand, IRVariable var, Type type, IntValue startBitOffset,
-    IntValue endBitOffset) {
-  resultPointsTo(operand.getAddressOperand().getAnyDef(), var, startBitOffset) and
-  type = operand.getType() and
-  if exists(operand.getSize()) then
-    endBitOffset = Ints::add(startBitOffset, Ints::mul(operand.getSize(), 8))
-  else
-    endBitOffset = Ints::unknown()
+/**
+ * Holds if the indirect memory access via `addrOperand` has the specified type and size (in bytes).
+ */
+private predicate memoryAccessTypeAndSize(AddressOperand addrOperand, Type type,
+    IntValue byteSize) {
+  exists(Instruction instr |
+    instr = addrOperand.getUse() and
+    instr.getResultAddressOperand() = addrOperand and
+    type = instr.getResultType() and
+    (
+      byteSize = instr.getResultSize() or
+      not exists(instr.getResultSize()) and byteSize = Ints::unknown()
+    )
+  ) or
+  exists(MemoryOperand operand |
+    operand.getAddressOperand() = addrOperand and
+    type = operand.getType() and
+    (
+      byteSize = operand.getSize() or
+      not exists(operand.getSize()) and byteSize = Ints::unknown()
+    )
+  )
+}
+
+/**
+ * Holds if the indirect memory access via `addrOperand` has the specified type, base address, and
+ * offset interval.
+ */
+private predicate hasMemoryAccess(AddressOperand addrOperand, Type type, ValueNumber baseAddress,
+    IntValue startBitOffset, IntValue endBitOffset) {
+  exists(Instruction baseInstr, IntValue byteSize |
+    addressOperandBaseAndConstantOffset(addrOperand, baseInstr, startBitOffset) and
+    memoryAccessTypeAndSize(addrOperand, type, byteSize) and
+    endBitOffset = Ints::add(startBitOffset, Ints::mul(byteSize, 8)) and
+    baseAddress = valueNumber(baseInstr)
+  )
 }
 
 private newtype TMemoryLocation =
-  TVariableMemoryLocation(IRVariable var, Type type, IntValue startBitOffset, IntValue endBitOffset) {
-    hasResultMemoryAccess(_, var, type, startBitOffset, endBitOffset) or
-    hasOperandMemoryAccess(_, var, type, startBitOffset, endBitOffset)
+  TIndirectMemoryLocation(Type type, ValueNumber baseAddress, IntValue startBitOffset,
+      IntValue endBitOffset) {
+    hasMemoryAccess(_, type, baseAddress, startBitOffset, endBitOffset)
   }
   or
   TUnknownMemoryLocation(IRFunction irFunc) or
   TUnknownVirtualVariable(IRFunction irFunc)
 
 /**
- * Represents the memory location accessed by a memory operand or memory result. In this implementation, the location is
- * one of the following:
- * - `VariableMemoryLocation` - A location within a known `IRVariable`, at an offset that is either a constant or is
- * unknown.
- * - `UnknownMemoryLocation` - A location not known to be within a specific `IRVariable`.
+ * Represents the memory location accessed by a memory operand or memory result. In this
+ * implementation, the location is one of the following:
+ * - `IndirectMemoryLocation` - A location at a constant offset from a known base address.
+ * - `UnknownMemoryLocation` - A location in aliased memory, without a specific address.
  */
 abstract class MemoryLocation extends TMemoryLocation {
   abstract string toString();
@@ -52,6 +84,8 @@ abstract class MemoryLocation extends TMemoryLocation {
 
   abstract Type getType();
 
+  abstract Allocation getAllocation();
+
   abstract string getUniqueId();
 }
 
@@ -59,49 +93,102 @@ abstract class VirtualVariable extends MemoryLocation {
 }
 
 /**
- * An access to memory within a single known `IRVariable`. The variable may be either an unescaped variable
- * (with its own `VirtualIRVariable`) or an escaped variable (assigned to `UnknownVirtualVariable`).
+ * An access to memory at a constant offset from a known base address. The address may or may not be
+ * in a known allocation.
  */
-class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
-  IRVariable var;
+class IndirectMemoryLocation extends TIndirectMemoryLocation, MemoryLocation {
+  ValueNumber baseAddress;
   Type type;
   IntValue startBitOffset;
   IntValue endBitOffset;
 
-  VariableMemoryLocation() {
-    this = TVariableMemoryLocation(var, type, startBitOffset, endBitOffset)
+  IndirectMemoryLocation() {
+    this = TIndirectMemoryLocation(type, baseAddress, startBitOffset, endBitOffset)
+  }
+
+  private string getAllocationString() {
+    result = getAllocation().getAllocationString() or
+    not exists(getAllocation()) and result = "??"
+  }
+
+  private string getBaseAddressStringIfNeeded() {
+    if getAllocation() = baseAddress then
+      result = ""
+    else
+      result = "@'" + getBaseAddressString(baseAddress) + "'+"
+  }
+
+  private string getIntervalString() {
+    if coversEntireVariable() then
+      result = ""
+    else
+      result = Interval::getIntervalString(startBitOffset, endBitOffset)
+  }
+
+  private string getTypeString() {
+    if coversEntireVariable() and type = getAllocation().getType() then
+      result = ""
+    else
+      result = "<" + type.toString() + ">"
   }
 
   override final string toString() {
-    result = var.toString() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" + type.toString() + ">"
+    result = getAllocationString() + getBaseAddressStringIfNeeded() + getIntervalString() +
+      getTypeString()
   }
 
   override final Type getType() {
     result = type
   }
 
+  /**
+   * Gets the bit offset from the base address at which the access starts.
+   */
   final IntValue getStartBitOffset() {
     result = startBitOffset
   }
   
+  /**
+   * Gets the bit offset from the base address at which the access ends. This offset is one bit past
+   * the last bit actually accessed.
+   */
   final IntValue getEndBitOffset() {
     result = endBitOffset
   }
   
-  final IRVariable getVariable() {
-    result = var
+  /**
+   * Gets the base address to which the offsets are relative.
+   */
+  final ValueNumber getBaseAddress() {
+    result = baseAddress
+  }
+
+  override Allocation getAllocation() {
+    exists(AddressOperand addrOperand |
+      this = getMemoryLocation(addrOperand) and
+      result = getAddressOperandAllocation(addrOperand)
+    )
   }
 
   override final string getUniqueId() {
-    result = var.getUniqueId() + Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
+    result = baseAddress.getExampleInstruction().getUniqueId() +
+      Interval::getIntervalString(startBitOffset, endBitOffset) + "<" +
       getTypeIdentityString(type) + ">"
   }
 
   override final VirtualVariable getVirtualVariable() {
-    if variableAddressEscapes(var) then
-      result = TUnknownVirtualVariable(var.getEnclosingIRFunction())
-    else
-      result = TVariableMemoryLocation(var, var.getType(), 0, var.getType().getSize() * 8)
+    exists(Allocation allocation |
+      // In an unaliased allocation, get the memory access for the entire allocation.
+      allocation = getAllocation() and
+      allocation.isUnaliased() and
+      result = TIndirectMemoryLocation(allocation.getType(), allocation, 0,
+        allocation.getBitSize())
+    ) or
+    (
+      // All aliased allocations are grouped into the `UnknownVirtualVariable`.
+      not getAllocation().isUnaliased() and
+      result = TUnknownVirtualVariable(baseAddress.getAnInstruction().getEnclosingIRFunction())
+    )
   }
 
   /**
@@ -109,25 +196,28 @@ class VariableMemoryLocation extends TVariableMemoryLocation, MemoryLocation {
    */
   final predicate coversEntireVariable() {
     startBitOffset = 0 and
-    endBitOffset = var.getType().getSize() * 8
+    endBitOffset = getAllocation().getBitSize()
   }
 }
 
 /**
- * Represents the `MemoryLocation` for an `IRVariable` that acts as its own `VirtualVariable`. Includes any
- * `VariableMemoryLocation` that exactly overlaps its entire `IRVariable`, and only if that `IRVariable` does not
- * escape.
+ * Represents the `MemoryLocation` for an entire unaliased allocation. This is also the
+ * `IndirectMemoryLocation` for accesses that directly read or write the whole allocation with the
+ * correct type.
  */
-class VariableVirtualVariable extends VariableMemoryLocation, VirtualVariable {
-  VariableVirtualVariable() {
-    not variableAddressEscapes(var) and
-    type = var.getType() and
-    coversEntireVariable()
+class UnaliasedVirtualVariable extends IndirectMemoryLocation, VirtualVariable {
+  UnaliasedVirtualVariable() {
+    exists(Allocation allocation |
+      allocation = getAllocation() and
+      allocation.isUnaliased() and
+      type = allocation.getType() and
+      coversEntireVariable()
+    )
   }
 }
 
 /**
- * An access to memory that is not known to be confined to a specific `IRVariable`.
+ * An access to memory that is not known to be confined to a specific allocation.
  */
 class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
   IRFunction irFunc;
@@ -146,6 +236,10 @@ class UnknownMemoryLocation extends TUnknownMemoryLocation, MemoryLocation {
 
   override final Type getType() {
     result instanceof UnknownType
+  }
+
+  override final Allocation getAllocation() {
+    none()
   }
 
   override final string getUniqueId() {
@@ -171,6 +265,10 @@ class UnknownVirtualVariable extends TUnknownVirtualVariable, VirtualVariable {
     result instanceof UnknownType
   }
 
+  override final Allocation getAllocation() {
+    none()
+  }
+
   override final string getUniqueId() {
     result = " " + toString()
   }
@@ -191,19 +289,19 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
     def.getVirtualVariable() = use.getVirtualVariable() and
     def instanceof UnknownMemoryLocation and result instanceof MayPartiallyOverlap
     or
-    exists(VariableMemoryLocation defVariableLocation |
-      defVariableLocation = def and
+    exists(IndirectMemoryLocation defIndirectLocation |
+      defIndirectLocation = def and
       (
         (
-          // A VariableMemoryLocation may partially overlap an unknown location within the same virtual variable.
+          // An IndirectMemoryLocation may partially overlap an unknown location within the same virtual variable.
           def.getVirtualVariable() = use.getVirtualVariable() and
           ((use instanceof UnknownMemoryLocation) or (use instanceof UnknownVirtualVariable)) and
           result instanceof MayPartiallyOverlap
         ) or
-        // A VariableMemoryLocation overlaps another location within the same variable based on the relationship
-        // of the two offset intervals.
+        // An IndirectMemoryLocation overlaps another location with the same constant base address
+        // based on the relationship of the two offset intervals.
         exists(Overlap intervalOverlap |
-          intervalOverlap = getVariableMemoryLocationOverlap(def, use) and
+          intervalOverlap = getIndirectMemoryLocationOverlap(def, use) and
           if intervalOverlap instanceof MustExactlyOverlap then (
             if def.getType() = use.getType() then (
               // The def and use types match, so it's an exact overlap.
@@ -214,7 +312,7 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
               result instanceof MustTotallyOverlap
             )
           )
-          else if defVariableLocation.coversEntireVariable() then (
+          else if defIndirectLocation.coversEntireVariable() then (
             // The definition covers the entire variable, so assume that it totally overlaps the use, even if the
             // interval for the use is unknown or outside the bounds of the variable.
             result instanceof MustTotallyOverlap
@@ -230,24 +328,24 @@ Overlap getOverlap(MemoryLocation def, MemoryLocation use) {
 }
 
 /*
- * The following predicates compute the overlap relation between `VariableMemoryLocation`s in the
+ * The following predicates compute the overlap relation between `IndirectMemoryLocation`s in the
  * same `VirtualVariable` as follows:
  *   1. In `isRelevantOffset`, compute the set of offsets within each virtual variable (linear in
- *      the number of VMLs)
+ *      the number of IMLs)
  *   2. In `isCoveredOffset`, rank the offsets within each virtual variable (linear in the number
- *      of VMLs)
- *   3. In `isCoveredOffset`, compute the set of ranks that each VML with known start and end
+ *      of IMLs)
+ *   3. In `isCoveredOffset`, compute the set of ranks that each IML with known start and end
  *      offsets covers (linear in the size of the overlap set)
- *   4. In `overlappingVariableMemoryLocations`, compute the set of overlapping pairs of VMLs using a
+ *   4. In `overlappingIndirectMemoryLocations`, compute the set of overlapping pairs of IMLs using a
  *      join on `isCoveredOffset` (linear in the size of the overlap set)
- *   5. In `overlappingIRVariableMemoryLocations`, restrict to only the pairs that share an
- *      `IRVariable` (linear in the size of the overlap set)
- *   5. In `getVariableMemoryLocationOverlap`, compute the precise overlap relation for each
- *      overlapping pair of VMLs (linear in the size of the overlap set)
+ *   5. In `overlappingIndirectMemoryLocationsWithBase`, restrict to only the pairs that share the
+ *      same base address. (linear in the size of the overlap set)
+ *   6. In `getIndirectMemoryLocationOverlap`, compute the precise overlap relation for each
+ *      overlapping pair of IMLs (linear in the size of the overlap set)
  */
-private predicate isRelevantOffset(VirtualVariable vv, IntValue offset) {
-  exists(VariableMemoryLocation ml |
-    ml.getVirtualVariable() = vv
+private predicate isRelevantOffset(ValueNumber baseAddress, IntValue offset) {
+  exists(IndirectMemoryLocation ml |
+    ml.getBaseAddress() = baseAddress
     |
     ml.getStartBitOffset() = offset
     or
@@ -255,22 +353,23 @@ private predicate isRelevantOffset(VirtualVariable vv, IntValue offset) {
   )
 }
 
-private predicate isRelatableMemoryLocation(VariableMemoryLocation vml) {
+private predicate isRelatableMemoryLocation(IndirectMemoryLocation vml) {
   vml.getEndBitOffset() != Ints::unknown() and
   vml.getStartBitOffset() != Ints::unknown()
 }
 
-private predicate isCoveredOffset(VariableMemoryLocation vml, VirtualVariable vv, int offsetRank) {
+private predicate isCoveredOffset(IndirectMemoryLocation vml, ValueNumber baseAddress,
+    int offsetRank) {
   exists(int startRank, int endRank |
-    vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(vv, offset_)) and
-    vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(vv, offset_)) and
-    vv = vml.getVirtualVariable() and
+    vml.getStartBitOffset() = rank[startRank](IntValue offset_ | isRelevantOffset(baseAddress, offset_)) and
+    vml.getEndBitOffset() = rank[endRank](IntValue offset_ | isRelevantOffset(baseAddress, offset_)) and
+    baseAddress = vml.getBaseAddress() and
     isRelatableMemoryLocation(vml) and
     offsetRank in [startRank .. endRank]
   )
 }
 
-private predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable vv) {
+private predicate hasUnknownOffset(IndirectMemoryLocation vml, VirtualVariable vv) {
   vml.getVirtualVariable() = vv and
   (
     vml.getStartBitOffset() = Ints::unknown() or
@@ -278,8 +377,9 @@ private predicate hasUnknownOffset(VariableMemoryLocation vml, VirtualVariable v
   )
 }
 
-private predicate overlappingVariableMemoryLocations(VariableMemoryLocation def, VariableMemoryLocation use) {
-    exists(VirtualVariable vv, int offsetRank | isCoveredOffset(def, vv, offsetRank) and isCoveredOffset(use, vv, offsetRank))
+private predicate overlappingIndirectMemoryLocations(IndirectMemoryLocation def, IndirectMemoryLocation use) {
+    exists(ValueNumber baseAddress, int offsetRank |
+      isCoveredOffset(def, baseAddress, offsetRank) and isCoveredOffset(use, baseAddress, offsetRank))
     or
     hasUnknownOffset(def, use.getVirtualVariable())
     or
@@ -287,33 +387,39 @@ private predicate overlappingVariableMemoryLocations(VariableMemoryLocation def,
 }
 
 pragma[noopt] // Internal ticket: QL-937
-private predicate overlappingIRVariableMemoryLocations(VariableMemoryLocation def, VariableMemoryLocation use) {
-  overlappingVariableMemoryLocations(def, use) and
-  def.getVariable() = use.getVariable()
+private predicate overlappingIndirectMemoryLocationsWithBase(IndirectMemoryLocation def, IndirectMemoryLocation use) {
+  overlappingIndirectMemoryLocations(def, use) and
+  def.getBaseAddress() = use.getBaseAddress()
 }
 
-private Overlap getVariableMemoryLocationOverlap(VariableMemoryLocation def, VariableMemoryLocation use) {
-  overlappingIRVariableMemoryLocations(def, use) and
-  result = Interval::getOverlap(def.getStartBitOffset(), def.getEndBitOffset(), use.getStartBitOffset(), use.getEndBitOffset())
+private Overlap getIndirectMemoryLocationOverlap(IndirectMemoryLocation def, IndirectMemoryLocation use) {
+  (
+    // If the two locations have the same base address, they overlap based on their offset ranges.
+    overlappingIndirectMemoryLocationsWithBase(def, use) and
+    result = Interval::getOverlap(def.getStartBitOffset(), def.getEndBitOffset(), use.getStartBitOffset(), use.getEndBitOffset())
+  ) or
+  (
+    // If they do not share the same base address, then they may partially overlap unless they both
+    // have an allocation and the two allocations are different.
+    def.getVirtualVariable() = use.getVirtualVariable() and
+    def.getBaseAddress() != use.getBaseAddress() and
+    not (def.getAllocation() != use.getAllocation()) and
+    result instanceof MayPartiallyOverlap
+  )
 }
 
+private MemoryLocation getMemoryLocation(AddressOperand addrOperand) {
+  exists(Type type, ValueNumber baseAddress, IntValue startBitOffset, IntValue endBitOffset |
+    hasMemoryAccess(addrOperand, type, baseAddress, startBitOffset, endBitOffset) and
+    result = TIndirectMemoryLocation(type, baseAddress, startBitOffset, endBitOffset)
+  )
+}
 
 MemoryLocation getResultMemoryLocation(Instruction instr) {
+  result = getMemoryLocation(instr.getResultAddressOperand()) or
   exists(MemoryAccessKind kind |
     kind = instr.getResultMemoryAccess() and
     (
-      (
-        kind.usesAddressOperand() and
-        if hasResultMemoryAccess(instr, _, _, _, _) then (
-          exists(IRVariable var, Type type, IntValue startBitOffset, IntValue endBitOffset |
-            hasResultMemoryAccess(instr, var, type, startBitOffset, endBitOffset) and
-            result = TVariableMemoryLocation(var, type, startBitOffset, endBitOffset)
-          )
-        )
-        else (
-          result = TUnknownMemoryLocation(instr.getEnclosingIRFunction())
-        )
-      ) or
       (
         kind instanceof EscapedMemoryAccess and
         result = TUnknownVirtualVariable(instr.getEnclosingIRFunction())
@@ -327,21 +433,10 @@ MemoryLocation getResultMemoryLocation(Instruction instr) {
 }
 
 MemoryLocation getOperandMemoryLocation(MemoryOperand operand) {
+  result = getMemoryLocation(operand.getAddressOperand()) or
   exists(MemoryAccessKind kind |
     kind = operand.getMemoryAccess() and
     (
-      (
-        kind.usesAddressOperand() and
-        if hasOperandMemoryAccess(operand, _, _, _, _) then (
-          exists(IRVariable var, Type type, IntValue startBitOffset, IntValue endBitOffset |
-            hasOperandMemoryAccess(operand, var, type, startBitOffset, endBitOffset) and
-            result = TVariableMemoryLocation(var, type, startBitOffset, endBitOffset)
-          )
-        )
-        else (
-          result = TUnknownMemoryLocation(operand.getEnclosingIRFunction())
-        )
-      ) or
       (
         kind instanceof EscapedMemoryAccess and
         result = TUnknownVirtualVariable(operand.getEnclosingIRFunction())

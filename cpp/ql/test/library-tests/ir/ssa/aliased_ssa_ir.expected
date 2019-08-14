@@ -40,9 +40,11 @@ ssa.cpp:
 
 #   21|   Block 3
 #   21|     m3_0(unknown)     = Phi                     : from 1:~m1_7, from 2:~m2_7
-#   21|     r3_1(glval<bool>) = VariableAddress[which2] : 
-#   21|     r3_2(bool)        = Load                    : &:r3_1, m0_8
-#   21|     v3_3(void)        = ConditionalBranch       : r3_2
+#   21|     m3_1(int)         = Phi                     : from 1:m1_6, from 2:~m0_1
+#   21|     m3_2(int)         = Phi                     : from 1:~m0_1, from 2:m2_6
+#   21|     r3_3(glval<bool>) = VariableAddress[which2] : 
+#   21|     r3_4(bool)        = Load                    : &:r3_3, m0_8
+#   21|     v3_5(void)        = ConditionalBranch       : r3_4
 #-----|   False -> Block 5
 #-----|   True -> Block 4
 
@@ -50,7 +52,7 @@ ssa.cpp:
 #   22|     r4_0(glval<Point *>) = VariableAddress[p] : 
 #   22|     r4_1(Point *)        = Load               : &:r4_0, m0_4
 #   22|     r4_2(glval<int>)     = FieldAddress[x]    : r4_1
-#   22|     r4_3(int)            = Load               : &:r4_2, ~m3_0
+#   22|     r4_3(int)            = Load               : &:r4_2, m3_1
 #   22|     r4_4(int)            = Constant[1]        : 
 #   22|     r4_5(int)            = Add                : r4_3, r4_4
 #   22|     m4_6(int)            = Store              : &:r4_2, r4_5
@@ -61,7 +63,7 @@ ssa.cpp:
 #   25|     r5_0(glval<Point *>) = VariableAddress[p] : 
 #   25|     r5_1(Point *)        = Load               : &:r5_0, m0_4
 #   25|     r5_2(glval<int>)     = FieldAddress[y]    : r5_1
-#   25|     r5_3(int)            = Load               : &:r5_2, ~m3_0
+#   25|     r5_3(int)            = Load               : &:r5_2, m3_2
 #   25|     r5_4(int)            = Constant[1]        : 
 #   25|     r5_5(int)            = Add                : r5_3, r5_4
 #   25|     m5_6(int)            = Store              : &:r5_2, r5_5
@@ -70,21 +72,23 @@ ssa.cpp:
 
 #   28|   Block 6
 #   28|     m6_0(unknown)        = Phi                      : from 4:~m4_7, from 5:~m5_7
-#   28|     r6_1(glval<int>)     = VariableAddress[#return] : 
-#   28|     r6_2(glval<Point *>) = VariableAddress[p]       : 
-#   28|     r6_3(Point *)        = Load                     : &:r6_2, m0_4
-#   28|     r6_4(glval<int>)     = FieldAddress[x]          : r6_3
-#   28|     r6_5(int)            = Load                     : &:r6_4, ~m6_0
-#   28|     r6_6(glval<Point *>) = VariableAddress[p]       : 
-#   28|     r6_7(Point *)        = Load                     : &:r6_6, m0_4
-#   28|     r6_8(glval<int>)     = FieldAddress[y]          : r6_7
-#   28|     r6_9(int)            = Load                     : &:r6_8, ~m6_0
-#   28|     r6_10(int)           = Add                      : r6_5, r6_9
-#   28|     m6_11(int)           = Store                    : &:r6_1, r6_10
-#   13|     r6_12(glval<int>)    = VariableAddress[#return] : 
-#   13|     v6_13(void)          = ReturnValue              : &:r6_12, m6_11
-#   13|     v6_14(void)          = UnmodeledUse             : mu*
-#   13|     v6_15(void)          = ExitFunction             : 
+#   28|     m6_1(int)            = Phi                      : from 4:m4_6, from 5:m3_1
+#   28|     m6_2(int)            = Phi                      : from 4:m3_2, from 5:m5_6
+#   28|     r6_3(glval<int>)     = VariableAddress[#return] : 
+#   28|     r6_4(glval<Point *>) = VariableAddress[p]       : 
+#   28|     r6_5(Point *)        = Load                     : &:r6_4, m0_4
+#   28|     r6_6(glval<int>)     = FieldAddress[x]          : r6_5
+#   28|     r6_7(int)            = Load                     : &:r6_6, m6_1
+#   28|     r6_8(glval<Point *>) = VariableAddress[p]       : 
+#   28|     r6_9(Point *)        = Load                     : &:r6_8, m0_4
+#   28|     r6_10(glval<int>)    = FieldAddress[y]          : r6_9
+#   28|     r6_11(int)           = Load                     : &:r6_10, m6_2
+#   28|     r6_12(int)           = Add                      : r6_7, r6_11
+#   28|     m6_13(int)           = Store                    : &:r6_3, r6_12
+#   13|     r6_14(glval<int>)    = VariableAddress[#return] : 
+#   13|     v6_15(void)          = ReturnValue              : &:r6_14, m6_13
+#   13|     v6_16(void)          = UnmodeledUse             : mu*
+#   13|     v6_17(void)          = ExitFunction             : 
 
 #   31| int UnreachableViaGoto()
 #   31|   Block 0
@@ -807,3 +811,99 @@ ssa.cpp:
 #  198|     v0_43(void)           = ReturnValue               : &:r0_42, m0_41
 #  198|     v0_44(void)           = UnmodeledUse              : mu*
 #  198|     v0_45(void)           = ExitFunction              : 
+
+#  205| void IndirectParams(int*, Point*, Point*)
+#  205|   Block 0
+#  205|     v0_0(void)            = EnterFunction            : 
+#  205|     m0_1(unknown)         = AliasedDefinition        : 
+#  205|     mu0_2(unknown)        = UnmodeledDefinition      : 
+#  205|     r0_3(glval<int *>)    = VariableAddress[pi]      : 
+#  205|     m0_4(int *)           = InitializeParameter[pi]  : &:r0_3
+#  205|     r0_5(glval<Point *>)  = VariableAddress[ppt]     : 
+#  205|     m0_6(Point *)         = InitializeParameter[ppt] : &:r0_5
+#  205|     r0_7(glval<Point *>)  = VariableAddress[apt]     : 
+#  205|     m0_8(Point *)         = InitializeParameter[apt] : &:r0_7
+#  206|     r0_9(glval<int>)      = VariableAddress[x]       : 
+#  206|     r0_10(glval<int *>)   = VariableAddress[pi]      : 
+#  206|     r0_11(int *)          = Load                     : &:r0_10, m0_4
+#  206|     r0_12(int)            = Load                     : &:r0_11, ~m0_1
+#  206|     m0_13(int)            = Store                    : &:r0_9, r0_12
+#  207|     r0_14(int)            = Constant[5]              : 
+#  207|     r0_15(glval<int *>)   = VariableAddress[pi]      : 
+#  207|     r0_16(int *)          = Load                     : &:r0_15, m0_4
+#  207|     m0_17(int)            = Store                    : &:r0_16, r0_14
+#  207|     m0_18(unknown)        = Chi                      : total:m0_1, partial:m0_17
+#  208|     r0_19(glval<int>)     = VariableAddress[y]       : 
+#  208|     r0_20(glval<int *>)   = VariableAddress[pi]      : 
+#  208|     r0_21(int *)          = Load                     : &:r0_20, m0_4
+#  208|     r0_22(int)            = Load                     : &:r0_21, m0_17
+#  208|     m0_23(int)            = Store                    : &:r0_19, r0_22
+#  210|     r0_24(glval<Point *>) = VariableAddress[ppt]     : 
+#  210|     r0_25(Point *)        = Load                     : &:r0_24, m0_6
+#  210|     r0_26(glval<int>)     = FieldAddress[x]          : r0_25
+#  210|     r0_27(int)            = Load                     : &:r0_26, ~m0_18
+#  210|     r0_28(glval<int>)     = VariableAddress[x]       : 
+#  210|     m0_29(int)            = Store                    : &:r0_28, r0_27
+#  211|     r0_30(int)            = Constant[2]              : 
+#  211|     r0_31(glval<Point *>) = VariableAddress[ppt]     : 
+#  211|     r0_32(Point *)        = Load                     : &:r0_31, m0_6
+#  211|     r0_33(glval<int>)     = FieldAddress[x]          : r0_32
+#  211|     m0_34(int)            = Store                    : &:r0_33, r0_30
+#  211|     m0_35(unknown)        = Chi                      : total:m0_18, partial:m0_34
+#  212|     r0_36(int)            = Constant[4]              : 
+#  212|     r0_37(glval<Point *>) = VariableAddress[ppt]     : 
+#  212|     r0_38(Point *)        = Load                     : &:r0_37, m0_6
+#  212|     r0_39(glval<int>)     = FieldAddress[y]          : r0_38
+#  212|     m0_40(int)            = Store                    : &:r0_39, r0_36
+#  212|     m0_41(unknown)        = Chi                      : total:m0_35, partial:m0_40
+#  213|     r0_42(glval<Point *>) = VariableAddress[ppt]     : 
+#  213|     r0_43(Point *)        = Load                     : &:r0_42, m0_6
+#  213|     r0_44(glval<int>)     = FieldAddress[x]          : r0_43
+#  213|     r0_45(int)            = Load                     : &:r0_44, m0_34
+#  213|     r0_46(glval<int>)     = VariableAddress[x]       : 
+#  213|     m0_47(int)            = Store                    : &:r0_46, r0_45
+#  214|     r0_48(glval<Point *>) = VariableAddress[ppt]     : 
+#  214|     r0_49(Point *)        = Load                     : &:r0_48, m0_6
+#  214|     r0_50(glval<int>)     = FieldAddress[y]          : r0_49
+#  214|     r0_51(int)            = Load                     : &:r0_50, m0_40
+#  214|     r0_52(glval<int>)     = VariableAddress[y]       : 
+#  214|     m0_53(int)            = Store                    : &:r0_52, r0_51
+#  216|     r0_54(glval<int>)     = VariableAddress[i]       : 
+#  216|     r0_55(glval<int *>)   = VariableAddress[pi]      : 
+#  216|     r0_56(int *)          = Load                     : &:r0_55, m0_4
+#  216|     r0_57(int)            = Load                     : &:r0_56, ~m0_41
+#  216|     m0_58(int)            = Store                    : &:r0_54, r0_57
+#  217|     r0_59(glval<Point &>) = VariableAddress[pt]      : 
+#  217|     r0_60(glval<Point *>) = VariableAddress[apt]     : 
+#  217|     r0_61(Point *)        = Load                     : &:r0_60, m0_8
+#  217|     r0_62(glval<int>)     = VariableAddress[i]       : 
+#  217|     r0_63(int)            = Load                     : &:r0_62, m0_58
+#  217|     r0_64(Point *)        = PointerAdd[8]            : r0_61, r0_63
+#  217|     m0_65(Point &)        = Store                    : &:r0_59, r0_64
+#  218|     r0_66(int)            = Constant[3]              : 
+#  218|     r0_67(glval<Point &>) = VariableAddress[pt]      : 
+#  218|     r0_68(Point &)        = Load                     : &:r0_67, m0_65
+#  218|     r0_69(glval<int>)     = FieldAddress[x]          : r0_68
+#  218|     m0_70(int)            = Store                    : &:r0_69, r0_66
+#  218|     m0_71(unknown)        = Chi                      : total:m0_41, partial:m0_70
+#  219|     r0_72(int)            = Constant[7]              : 
+#  219|     r0_73(glval<Point &>) = VariableAddress[pt]      : 
+#  219|     r0_74(Point &)        = Load                     : &:r0_73, m0_65
+#  219|     r0_75(glval<int>)     = FieldAddress[y]          : r0_74
+#  219|     m0_76(int)            = Store                    : &:r0_75, r0_72
+#  219|     m0_77(unknown)        = Chi                      : total:m0_71, partial:m0_76
+#  220|     r0_78(glval<Point &>) = VariableAddress[pt]      : 
+#  220|     r0_79(Point &)        = Load                     : &:r0_78, m0_65
+#  220|     r0_80(glval<int>)     = FieldAddress[x]          : r0_79
+#  220|     r0_81(int)            = Load                     : &:r0_80, m0_70
+#  220|     r0_82(glval<Point &>) = VariableAddress[pt]      : 
+#  220|     r0_83(Point &)        = Load                     : &:r0_82, m0_65
+#  220|     r0_84(glval<int>)     = FieldAddress[y]          : r0_83
+#  220|     r0_85(int)            = Load                     : &:r0_84, m0_76
+#  220|     r0_86(int)            = Add                      : r0_81, r0_85
+#  220|     r0_87(glval<int>)     = VariableAddress[x]       : 
+#  220|     m0_88(int)            = Store                    : &:r0_87, r0_86
+#  221|     v0_89(void)           = NoOp                     : 
+#  205|     v0_90(void)           = ReturnVoid               : 
+#  205|     v0_91(void)           = UnmodeledUse             : mu*
+#  205|     v0_92(void)           = ExitFunction             : 
