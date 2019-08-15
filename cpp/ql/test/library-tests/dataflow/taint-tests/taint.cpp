@@ -230,7 +230,7 @@ void test_lambdas()
 		sink(u);
 		return t;
 	};
-	sink(a()); // tainted [NOT DETECTED]
+	sink(a()); // tainted
 
 	auto b = [&] {
 		sink(t); // tainted [NOT DETECTED]
