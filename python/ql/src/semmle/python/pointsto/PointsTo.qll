@@ -1229,6 +1229,13 @@ module Expressions {
         origin = subscr
     }
 
+    predicate subscriptPartsPointsTo(SubscriptNode subscr, PointsToContext context, ObjectInternal objvalue, ObjectInternal indexvalue) {
+        exists(ControlFlowNode index |
+            subscriptObjectAndIndex(subscr, context, _, objvalue, index) and
+            PointsToInternal::pointsTo(index, context, indexvalue, _)
+        )
+    }
+
     pragma [noinline]
     private predicate subscriptObjectAndIndex(SubscriptNode subscr, PointsToContext context, ControlFlowNode obj, ObjectInternal objvalue, ControlFlowNode index) {
         subscr.isLoad() and

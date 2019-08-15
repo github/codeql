@@ -14,7 +14,7 @@ private import ControlFlow
 private import SuccessorTypes
 
 /** The maximum number of splits allowed for a given node. */
-private int maxSplits() { result = 7 }
+private int maxSplits() { result = 5 }
 
 cached
 private module Cached {
@@ -46,13 +46,10 @@ private module Cached {
     TSplitsNil() or
     TSplitsCons(SplitInternal head, Splits tail) {
       exists(
-        ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk,
-        int numberOfSplits
+        ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Completion c, int rnk
       |
-        case2aFromRank(pred, predSplits, succ, tail, c, rnk + 1, numberOfSplits) and
+        case2aFromRank(pred, predSplits, succ, tail, c, rnk + 1) and
         head = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
-      |
-        numberOfSplits < maxSplits() or head.getKind().isMandatory()
       )
     }
 
@@ -87,6 +84,18 @@ class SplitImpl extends TSplit {
 }
 
 /**
+ * Holds if split kinds `sk1` and `sk2` may overlap. That is, they may apply
+ * to at least one common control flow element inside callable `c`.
+ */
+private predicate overlapping(Callable c, SplitKind sk1, SplitKind sk2) {
+  exists(ControlFlowElement cfe |
+    sk1.appliesTo(cfe) and
+    sk2.appliesTo(cfe) and
+    c = cfe.getEnclosingCallable()
+  )
+}
+
+/**
  * A split kind. Each control flow node can have at most one split of a
  * given kind.
  */
@@ -103,12 +112,17 @@ abstract class SplitKind extends TSplitKind {
    */
   abstract int getListOrder();
 
+  /** Gets the rank of this split kind among all overlapping kinds for `c`. */
+  private int getRank(Callable c) {
+    this = rank[result](SplitKind sk | overlapping(c, this, sk) | sk order by sk.getListOrder())
+  }
+
   /**
-   * Holds if a split of this kind is mandatory. That is, a split of this kind must
-   * be taken into account, regardless of whether we might exceed the maximum number
-   * of splits (`maxSplits()`).
+   * Holds if this split kind should be included when constructing the control
+   * flow graph for callable `c`. For performance reasons, the number of splits
+   * is restricted by the `maxSplits()` predicate.
    */
-  abstract predicate isMandatory();
+  private predicate isEnabled(Callable c) { this.getRank(c) <= maxSplits() }
 
   /**
    * Gets the rank of this split kind among all the split kinds that apply to
@@ -117,6 +131,7 @@ abstract class SplitKind extends TSplitKind {
    */
   int getListRank(ControlFlowElement cfe) {
     this.appliesTo(cfe) and
+    this.isEnabled(cfe.getEnclosingCallable()) and
     this = rank[result](SplitKind sk | sk.appliesTo(cfe) | sk order by sk.getListOrder())
   }
 
@@ -281,8 +296,6 @@ module FinallySplitting {
   private class FinallySplitKind extends SplitKind, TFinallySplitKind {
     override int getListOrder() { result = 0 }
 
-    override predicate isMandatory() { any() }
-
     override string toString() { result = "Finally" }
   }
 
@@ -433,8 +446,6 @@ module ExceptionHandlerSplitting {
 
   private class ExceptionHandlerSplitKind extends SplitKind, TExceptionHandlerSplitKind {
     override int getListOrder() { result = 1 }
-
-    override predicate isMandatory() { any() }
 
     override string toString() { result = "ExceptionHandler" }
   }
@@ -731,8 +742,6 @@ module BooleanSplitting {
           )
       )
     }
-
-    override predicate isMandatory() { none() }
 
     override string toString() { result = kind.toString() }
   }
@@ -1071,33 +1080,28 @@ private module SuccSplits {
    */
   predicate case2aFromRank(
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-    Completion c, int rnk, int numberOfSplits
+    Completion c, int rnk
   ) {
     case2aux(pred, predSplits, succ, c) and
     succSplits = TSplitsNil() and
-    rnk = max(any(SplitKind sk).getListRank(succ)) + 1 and
-    numberOfSplits = 0
+    rnk = max(any(SplitKind sk).getListRank(succ)) + 1
     or
-    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1, numberOfSplits) and
+    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1) and
     case2aNoneAtRank(pred, predSplits, succ, c, rnk)
     or
-    exists(Splits mid, SplitInternal split, int numberOfSplitsMid |
-      split = case2aCons(pred, predSplits, succ, mid, c, rnk, numberOfSplitsMid)
+    exists(Splits mid, SplitInternal split |
+      split = case2aCons(pred, predSplits, succ, mid, c, rnk)
     |
-      if numberOfSplitsMid < maxSplits() or split.getKind().isMandatory()
-      then succSplits = TSplitsCons(split, mid) and numberOfSplits = numberOfSplitsMid + 1
-      else (
-        succSplits = mid and numberOfSplits = numberOfSplitsMid
-      )
+      succSplits = TSplitsCons(split, mid)
     )
   }
 
   pragma[noinline]
   private SplitInternal case2aCons(
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
-    Completion c, int rnk, int numberOfSplits
+    Completion c, int rnk
   ) {
-    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1, numberOfSplits) and
+    case2aFromRank(pred, predSplits, succ, succSplits, c, rnk + 1) and
     result = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
   }
 
@@ -1131,7 +1135,7 @@ private module SuccSplits {
     ControlFlowElement pred, Splits predSplits, ControlFlowElement succ, Splits succSplits,
     Completion c
   ) {
-    case2aFromRank(pred, predSplits, succ, succSplits, c, 1, _)
+    case2aFromRank(pred, predSplits, succ, succSplits, c, 1)
     or
     case2bForall(pred, predSplits, succ, c, TSplitsNil()) and
     succSplits = TSplitsNil()

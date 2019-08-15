@@ -79,6 +79,7 @@
 | h_classes.py:0 | Module code.h_classes | f | Function f |
 | h_classes.py:0 | Module code.h_classes | k | Function k |
 | h_classes.py:0 | Module code.h_classes | sys | Module sys |
+| h_classes.py:0 | Module code.h_classes | thing | Base() |
 | h_classes.py:3 | Class C | __init__ | Function __init__ |
 | h_classes.py:3 | Class C | x | 'C_x' |
 | h_classes.py:23 | Class Base | __init__ | Function __init__ |

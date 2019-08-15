@@ -1,1 +1,0 @@
-static int two = __COUNTER__;
