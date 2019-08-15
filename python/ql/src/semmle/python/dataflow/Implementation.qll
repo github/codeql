@@ -194,11 +194,16 @@ class TaintTrackingNode extends TTaintTrackingNode {
     }
 
     TaintTrackingNode getASuccessor(string edgeLabel) {
+        this.isVisible() and
         result = this.unlabeledSuccessor*().labeledSuccessor(edgeLabel)
     }
 
     TaintTrackingNode getASuccessor() {
         result = this.getASuccessor(_)
+        or
+        this.isVisible() and
+        result = this.unlabeledSuccessor+() and
+        result.isSink()
     }
 
     private TaintTrackingNode unlabeledSuccessor() {
@@ -208,6 +213,12 @@ class TaintTrackingNode extends TTaintTrackingNode {
     private TaintTrackingNode labeledSuccessor(string label) {
         not label = "" and
         this.getConfiguration().(TaintTrackingImplementation).flowStep(this, result, label)
+    }
+
+    private predicate isVisible() {
+        any(TaintTrackingNode pred).labeledSuccessor(_) = this
+        or
+        this.isSource()
     }
 
 }
@@ -552,6 +563,33 @@ class TaintTrackingImplementation extends string {
         )
     }
 
+    predicate instantionStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
+        exists(PythonFunctionValue init, EssaVariable self, TaintTrackingContext callee |
+            instantionCall(node.asCfgNode(), src, init, context, callee) and
+            this.taintedDefinition(_, self.getDefinition(), callee, path, kind) and
+            self.getSourceVariable().(Variable).isSelf() and
+            BaseFlow::reaches_exit(self) and
+            self.getScope() = init.getScope()
+        ) and
+        edgeLabel = "instantiation"
+    }
+
+    predicate instantionCall(CallNode call, TaintTrackingNode argnode, PythonFunctionObjectInternal init, TaintTrackingContext caller, TaintTrackingContext callee) {
+        exists(ClassValue cls |
+            call.getFunction().pointsTo(cls) and
+            cls.lookup("__init__") = init
+            |
+            exists(int arg, TaintKind callerKind, AttributePath callerPath |
+                exists(DataFlow::Node argument |
+                    argnode = TTaintTrackingNode_(argument, caller, callerPath, callerKind, this) and
+                    call.getArg(arg-1) = argument.asCfgNode() and
+                    callee = TParamContext(callerKind, callerPath, arg)
+                )
+            )
+        )
+    }
+
+
     pragma [noinline]
     predicate callTaintStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(DataFlow::Node srcnode, CallNode call, TaintKind srckind, string name |
@@ -761,42 +799,6 @@ class TaintTrackingImplementation extends string {
             BaseFlow::reaches_exit(var) and
             var.getScope() = m.getScope()
         )
-    }
-
-    predicate instantionStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
-        exists(DataFlow::Node srcnode, PythonFunctionValue init, EssaVariable self, TaintTrackingContext callee |
-            instantionCall(node.asCfgNode(), init, context, callee) and
-            src = TTaintTrackingNode_(srcnode, callee, path, kind, this) and
-            srcnode.asVariable() = self and
-            self.getSourceVariable().(Variable).isSelf() and
-            BaseFlow::reaches_exit(self) and
-            self.getScope() = init.getScope()
-        ) and
-        edgeLabel = "instantiation"
-    }
-
-    predicate instantionCall(CallNode call, PythonFunctionObjectInternal init, TaintTrackingContext caller, TaintTrackingContext callee) {
-        exists(ClassValue cls |
-            call.getFunction().pointsTo(cls) and
-            cls.lookup("__init__") = init
-            |
-            exists(int arg, TaintKind callerKind, AttributePath callerPath |
-                exists(TaintTrackingNode tainted, DataFlow::Node argument |
-                    tainted = TTaintTrackingNode_(argument, caller, callerPath, callerKind, this) and
-                    call.getArg(arg-1) = argument.asCfgNode() and
-                    callee = TParamContext(callerKind, callerPath, arg)
-                )
-            )
-            or
-            callee = TNoParam() and
-            caller = TNoParam()
-        )
-    }
-
-    predicate crossCallFlow(TaintTrackingNode taintedArg, TaintTrackingNode call) {
-        this.parameterStep(taintedArg, _, _, _, _, _) and
-        this.flowReaches(taintedArg, call) and
-        call.getNode().asCfgNode().(CallNode).getArg(_) = taintedArg.getNode().asCfgNode()
     }
 
 }
