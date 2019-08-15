@@ -25,8 +25,8 @@ public:
 
 void bar(Foo &f)
 {
-    sink(f.a()); // flow (through `f` and `h`) [NOT DETECTED]
-    sink(f.b()); // flow (through `g` and `h`) [NOT DETECTED]
+    sink(f.a()); // flow (through `f` and `h`)
+    sink(f.b()); // flow (through `g` and `h`)
 }
 
 void foo()

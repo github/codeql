@@ -86,6 +86,22 @@ edges
 | C.cpp:24:16:24:25 | new [void] | C.cpp:24:5:24:25 | ... = ... [void] |
 | C.cpp:27:8:27:11 | `this` parameter in func [s1, ... (1)] | file://:0:0:0:0 | this [s1, ... (1)] |
 | C.cpp:27:8:27:11 | `this` parameter in func [s3, ... (1)] | file://:0:0:0:0 | this [s3, ... (1)] |
+| constructors.cpp:26:15:26:15 | f [a_, ... (1)] | constructors.cpp:28:10:28:10 | f [a_, ... (1)] |
+| constructors.cpp:26:15:26:15 | f [b_, ... (1)] | constructors.cpp:29:10:29:10 | f [b_, ... (1)] |
+| constructors.cpp:28:10:28:10 | f [a_, ... (1)] | constructors.cpp:28:12:28:12 | call to a |
+| constructors.cpp:29:10:29:10 | f [b_, ... (1)] | constructors.cpp:29:12:29:12 | call to b |
+| constructors.cpp:34:11:34:20 | call to user_input [void] | constructors.cpp:34:11:34:26 | call to Foo [a_, ... (1)] |
+| constructors.cpp:34:11:34:26 | call to Foo [a_, ... (1)] | constructors.cpp:40:9:40:9 | f [a_, ... (1)] |
+| constructors.cpp:35:11:35:26 | call to Foo [b_, ... (1)] | constructors.cpp:43:9:43:9 | g [b_, ... (1)] |
+| constructors.cpp:35:14:35:23 | call to user_input [void] | constructors.cpp:35:11:35:26 | call to Foo [b_, ... (1)] |
+| constructors.cpp:36:11:36:20 | call to user_input [void] | constructors.cpp:36:11:36:37 | call to Foo [a_, ... (1)] |
+| constructors.cpp:36:11:36:37 | call to Foo [a_, ... (1)] | constructors.cpp:46:9:46:9 | h [a_, ... (1)] |
+| constructors.cpp:36:11:36:37 | call to Foo [b_, ... (1)] | constructors.cpp:46:9:46:9 | h [b_, ... (1)] |
+| constructors.cpp:36:25:36:34 | call to user_input [void] | constructors.cpp:36:11:36:37 | call to Foo [b_, ... (1)] |
+| constructors.cpp:40:9:40:9 | f [a_, ... (1)] | constructors.cpp:26:15:26:15 | f [a_, ... (1)] |
+| constructors.cpp:43:9:43:9 | g [b_, ... (1)] | constructors.cpp:26:15:26:15 | f [b_, ... (1)] |
+| constructors.cpp:46:9:46:9 | h [a_, ... (1)] | constructors.cpp:26:15:26:15 | f [a_, ... (1)] |
+| constructors.cpp:46:9:46:9 | h [b_, ... (1)] | constructors.cpp:26:15:26:15 | f [b_, ... (1)] |
 | file://:0:0:0:0 | this [s1, ... (1)] | C.cpp:29:10:29:11 | s1 |
 | file://:0:0:0:0 | this [s3, ... (1)] | C.cpp:31:10:31:11 | s3 |
 | simple.cpp:26:15:26:15 | f [a_, ... (1)] | simple.cpp:28:10:28:10 | f [a_, ... (1)] |
@@ -124,6 +140,10 @@ edges
 | B.cpp:19:20:19:24 | elem2 | B.cpp:15:15:15:27 | new [void] | B.cpp:19:20:19:24 | elem2 | elem2 flows from $@ | B.cpp:15:15:15:27 | new [void] | new [void] |
 | C.cpp:29:10:29:11 | s1 | C.cpp:22:12:22:21 | new [void] | C.cpp:29:10:29:11 | s1 | s1 flows from $@ | C.cpp:22:12:22:21 | new [void] | new [void] |
 | C.cpp:31:10:31:11 | s3 | C.cpp:24:16:24:25 | new [void] | C.cpp:31:10:31:11 | s3 | s3 flows from $@ | C.cpp:24:16:24:25 | new [void] | new [void] |
+| constructors.cpp:28:12:28:12 | call to a | constructors.cpp:34:11:34:20 | call to user_input [void] | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:34:11:34:20 | call to user_input [void] | call to user_input [void] |
+| constructors.cpp:28:12:28:12 | call to a | constructors.cpp:36:11:36:20 | call to user_input [void] | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:36:11:36:20 | call to user_input [void] | call to user_input [void] |
+| constructors.cpp:29:12:29:12 | call to b | constructors.cpp:35:14:35:23 | call to user_input [void] | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:35:14:35:23 | call to user_input [void] | call to user_input [void] |
+| constructors.cpp:29:12:29:12 | call to b | constructors.cpp:36:25:36:34 | call to user_input [void] | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:36:25:36:34 | call to user_input [void] | call to user_input [void] |
 | simple.cpp:28:12:28:12 | call to a | simple.cpp:39:12:39:21 | call to user_input [void] | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:39:12:39:21 | call to user_input [void] | call to user_input [void] |
 | simple.cpp:28:12:28:12 | call to a | simple.cpp:41:12:41:21 | call to user_input [void] | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:41:12:41:21 | call to user_input [void] | call to user_input [void] |
 | simple.cpp:29:12:29:12 | call to b | simple.cpp:40:12:40:21 | call to user_input [void] | simple.cpp:29:12:29:12 | call to b | call to b flows from $@ | simple.cpp:40:12:40:21 | call to user_input [void] | call to user_input [void] |

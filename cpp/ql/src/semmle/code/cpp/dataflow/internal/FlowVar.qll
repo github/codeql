@@ -249,6 +249,9 @@ module FlowVar_internal {
           result = descendentDef.getAUse(v)
         )
       )
+      or
+      parameterUsedInConstructorFieldInit(v, result) and
+      def.definedByParameter(v)
     }
 
     override predicate definedByExpr(Expr e, ControlFlowNode node) {
@@ -314,6 +317,9 @@ module FlowVar_internal {
     override VariableAccess getAnAccess() {
       variableAccessInSBB(v, getAReachedBlockVarSBB(this), result) and
       result != sbb
+      or
+      parameterUsedInConstructorFieldInit(v, result) and
+      sbb = v.(Parameter).getFunction().getEntryPoint()
     }
 
     override predicate definedByInitialValue(LocalScopeVariable lsv) {
@@ -690,6 +696,21 @@ module FlowVar_internal {
   {
     v = init.getDeclaration() and
     assignedExpr = init.getExpr()
+  }
+
+  /**
+   * Holds if `p` is a parameter to a constructor that is used in a
+   * `ConstructorFieldInit` at `va`. This ignores the corner case that `p`
+   * might have been overwritten to have a different value before this happens.
+   */
+  predicate parameterUsedInConstructorFieldInit(Parameter p, VariableAccess va) {
+    exists(Constructor constructor |
+      constructor.getInitializer(_).(ConstructorFieldInit).getExpr().getAChild*() = va and
+      va = p.getAnAccess()
+      // We don't require that `constructor` has `p` as a parameter because
+      // that follows from the two other conditions and would likely just
+      // confuse the join orderer.
+    )
   }
 
   /**
