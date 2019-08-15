@@ -62,8 +62,12 @@
 | taint.cpp:37:12:37:20 | call to increment | taint.cpp:43:7:43:13 | global9 |  |
 | taint.cpp:38:13:38:16 | call to zero | taint.cpp:38:2:38:26 | ... = ... |  |
 | taint.cpp:38:13:38:16 | call to zero | taint.cpp:44:7:44:14 | global10 |  |
-| taint.cpp:71:2:71:8 | `this` parameter in MyClass | file://:0:0:0:0 | this |  |
+| taint.cpp:71:2:71:8 | `this` parameter in MyClass | taint.cpp:71:14:71:17 | constructor init of field a [pre-this] |  |
 | taint.cpp:71:14:71:17 | 0 | taint.cpp:71:14:71:17 | constructor init of field a | TAINT |
+| taint.cpp:71:14:71:17 | constructor init of field a [post-this] | taint.cpp:71:20:71:30 | constructor init of field b [pre-this] |  |
+| taint.cpp:71:14:71:17 | constructor init of field a [pre-this] | taint.cpp:71:20:71:30 | constructor init of field b [pre-this] |  |
+| taint.cpp:71:20:71:30 | constructor init of field b [post-this] | file://:0:0:0:0 | this |  |
+| taint.cpp:71:20:71:30 | constructor init of field b [pre-this] | file://:0:0:0:0 | this |  |
 | taint.cpp:71:22:71:27 | call to source | taint.cpp:71:20:71:30 | constructor init of field b | TAINT |
 | taint.cpp:72:3:72:3 | this [post update] | file://:0:0:0:0 | this |  |
 | taint.cpp:72:7:72:12 | call to source | taint.cpp:72:3:72:14 | ... = ... |  |
@@ -212,6 +216,8 @@
 | taint.cpp:226:9:226:10 | 0 | taint.cpp:261:7:261:7 | w |  |
 | taint.cpp:228:11:228:11 | Unknown literal | taint.cpp:228:11:228:11 | constructor init of field t | TAINT |
 | taint.cpp:228:11:228:11 | Unknown literal | taint.cpp:228:11:228:11 | constructor init of field u | TAINT |
+| taint.cpp:228:11:228:11 | `this` parameter in (constructor) | taint.cpp:228:11:228:11 | constructor init of field t [pre-this] |  |
+| taint.cpp:228:11:228:11 | `this` parameter in (constructor) | taint.cpp:243:11:243:11 | constructor init of field t [pre-this] |  |
 | taint.cpp:228:11:232:2 | [...](...){...} | taint.cpp:233:7:233:7 | a |  |
 | taint.cpp:228:11:232:2 | {...} | taint.cpp:228:11:232:2 | [...](...){...} | TAINT |
 | taint.cpp:228:12:228:12 | t | taint.cpp:228:11:232:2 | {...} | TAINT |
@@ -221,12 +227,19 @@
 | taint.cpp:235:11:235:11 | Unknown literal | taint.cpp:235:11:235:11 | constructor init of field t | TAINT |
 | taint.cpp:235:11:235:11 | Unknown literal | taint.cpp:235:11:235:11 | constructor init of field u | TAINT |
 | taint.cpp:235:11:235:11 | Unknown literal | taint.cpp:235:11:235:11 | constructor init of field v | TAINT |
+| taint.cpp:235:11:235:11 | `this` parameter in (constructor) | taint.cpp:235:11:235:11 | constructor init of field t [pre-this] |  |
+| taint.cpp:235:11:235:11 | constructor init of field t [post-this] | taint.cpp:235:11:235:11 | constructor init of field u [pre-this] |  |
+| taint.cpp:235:11:235:11 | constructor init of field t [pre-this] | taint.cpp:235:11:235:11 | constructor init of field u [pre-this] |  |
+| taint.cpp:235:11:235:11 | constructor init of field u [post-this] | taint.cpp:235:11:235:11 | constructor init of field v [pre-this] |  |
+| taint.cpp:235:11:235:11 | constructor init of field u [pre-this] | taint.cpp:235:11:235:11 | constructor init of field v [pre-this] |  |
 | taint.cpp:235:11:239:2 | [...](...){...} | taint.cpp:240:2:240:2 | b |  |
 | taint.cpp:235:11:239:2 | {...} | taint.cpp:235:11:239:2 | [...](...){...} | TAINT |
 | taint.cpp:235:15:235:15 | `this` parameter in operator() | file://:0:0:0:0 | this |  |
 | taint.cpp:238:7:238:12 | call to source | taint.cpp:238:3:238:14 | ... = ... |  |
 | taint.cpp:243:11:243:11 | Unknown literal | taint.cpp:243:11:243:11 | constructor init of field t | TAINT |
 | taint.cpp:243:11:243:11 | Unknown literal | taint.cpp:243:11:243:11 | constructor init of field u | TAINT |
+| taint.cpp:243:11:243:11 | `this` parameter in (constructor) | taint.cpp:228:11:228:11 | constructor init of field t [pre-this] |  |
+| taint.cpp:243:11:243:11 | `this` parameter in (constructor) | taint.cpp:243:11:243:11 | constructor init of field t [pre-this] |  |
 | taint.cpp:243:11:246:2 | [...](...){...} | taint.cpp:247:2:247:2 | c |  |
 | taint.cpp:243:11:246:2 | {...} | taint.cpp:243:11:246:2 | [...](...){...} | TAINT |
 | taint.cpp:243:15:243:15 | `this` parameter in operator() | file://:0:0:0:0 | this |  |
