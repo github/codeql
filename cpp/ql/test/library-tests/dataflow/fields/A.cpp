@@ -117,7 +117,7 @@ public:
     }
     if (C1 *c1 = dynamic_cast<C1 *>(cc))
     {
-      sink(c1->a); // no flow, stopped by cast to C2
+      sink(c1->a); // no flow, stopped by cast to C2 [FALSE POSITIVE]
     }
   }
 
@@ -129,7 +129,7 @@ public:
   {
     B *b = new B();
     f7(b);
-    sink(b->c); // flow
+    sink(b->c); // flow [NOT DETECTED]
   }
 
   class D
@@ -151,7 +151,7 @@ public:
     D *d = new D(b, r());
     sink(d->b);    // flow x2
     sink(d->b->c); // flow
-    sink(b->c);    // flow
+    sink(b->c);    // flow [NOT DETECTED]
   }
 
   void f10()
@@ -161,9 +161,9 @@ public:
     MyList *l2 = new MyList(nullptr, l1);
     MyList *l3 = new MyList(nullptr, l2);
     sink(l3->head);                   // no flow, b is nested beneath at least one ->next
-    sink(l3->next->head);             // flow, the precise nesting depth isn't tracked
+    sink(l3->next->head);             // no flow
     sink(l3->next->next->head);       // flow
-    sink(l3->next->next->next->head); // flow
+    sink(l3->next->next->next->head); // no flow
     for (MyList *l = l3; l != nullptr; l = l->next)
     {
       sink(l->head); // flow
