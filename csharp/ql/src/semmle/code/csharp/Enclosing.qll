@@ -54,11 +54,11 @@ module Internal {
     getAChildExpr+(s) = e
   }
 
-  private predicate childExprOfCallable(Callable parent, Expr child) {
+  private predicate childExprOfEntryElement(ControlFlowEntryElement parent, Expr child) {
     child = getAChildExpr(parent)
     or
-    exists(Expr mid | childExprOfCallable(parent, mid) |
-      not mid instanceof Callable and
+    exists(Expr mid | childExprOfEntryElement(parent, mid) |
+      not mid instanceof ControlFlowEntryElement and
       child = getAChildExpr(mid)
     )
   }
@@ -66,18 +66,18 @@ module Internal {
   /**
    * INTERNAL: Do not use.
    *
-   * Holds if `c` is the enclosing callable of expression `e`.
+   * Holds if `entry` is the enclosing entry element of expression `e`.
    */
   cached
-  predicate exprEnclosingCallable(Expr e, Callable c) {
+  predicate exprEnclosingEntryElement(Expr e, ControlFlowEntryElement entry) {
     // Compute the enclosing callable of an expression. Note that expressions in
     // lambda functions should have the lambdas as enclosing callables, and their
     // enclosing statement may be the same as the enclosing statement of the
     // lambda; thus, it is *not* safe to go up to the enclosing statement and
     // take its own enclosing callable.
-    childExprOfCallable(c, e)
+    childExprOfEntryElement(entry, e)
     or
-    not childExprOfCallable(_, e) and
-    exists(Stmt s | enclosingStmt(e, s) | enclosingCallable(s, c))
+    not childExprOfEntryElement(_, e) and
+    exists(Stmt s | enclosingStmt(e, s) | enclosingCallable(s, entry))
   }
 }

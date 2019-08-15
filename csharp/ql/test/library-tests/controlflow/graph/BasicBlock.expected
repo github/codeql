@@ -277,11 +277,11 @@
 | Foreach.cs:36:10:36:11 | exit M6 | Foreach.cs:36:10:36:11 | exit M6 | 1 |
 | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | 1 |
 | Foreach.cs:38:26:38:26 | String x | Foreach.cs:39:11:39:11 | ; | 4 |
-| Initializers.cs:3:9:3:9 | this access | Initializers.cs:3:9:3:17 | ... = ... | 5 |
-| Initializers.cs:4:9:4:9 | this access | Initializers.cs:4:25:4:31 | ... = ... | 6 |
+| Initializers.cs:3:9:3:9 | enter F | Initializers.cs:3:9:3:9 | exit F | 7 |
+| Initializers.cs:4:9:4:9 | enter G | Initializers.cs:4:9:4:9 | exit G | 8 |
 | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | exit Initializers | 3 |
 | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:8:10:8:10 | exit M | 20 |
-| Initializers.cs:14:20:14:20 | 1 | Initializers.cs:14:16:14:20 | ... = ... | 2 |
+| Initializers.cs:14:16:14:16 | enter H | Initializers.cs:14:16:14:16 | exit H | 4 |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:23 | access to parameter i | 3 |
 | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:9:3:10 | exit M1 | 1 |
 | NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:28:3:28 | 0 | 1 |
