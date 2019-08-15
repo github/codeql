@@ -50,7 +50,7 @@ ArrayToPointer.c:
 #    9|       0: [AssignExpr] ... = ...
 #    9|           Type = [CharPointerType] char *
 #    9|           ValueCategory = prvalue
-#    9|         0: [FieldAccess] name
+#    9|         0: [ValueFieldAccess] name
 #    9|             Type = [CharPointerType] char *
 #    9|             ValueCategory = lvalue
 #    9|           -1: [VariableAccess] s
@@ -957,7 +957,7 @@ macro_etc.c:
 #    9|       0: [AssignExpr] ... = ...
 #    9|           Type = [IntType] int
 #    9|           ValueCategory = prvalue
-#    9|         0: [FieldAccess] b
+#    9|         0: [ValueFieldAccess] b
 #    9|             Type = [IntType] int
 #    9|             ValueCategory = lvalue
 #    9|           -1: [VariableAccess] uu
@@ -969,7 +969,7 @@ macro_etc.c:
 #    9|           0: [VariableAccess] i
 #    9|               Type = [IntType] int
 #    9|               ValueCategory = prvalue(load)
-#    9|           1: [FieldAccess] a
+#    9|           1: [ValueFieldAccess] a
 #    9|               Type = [IntType] int
 #    9|               ValueCategory = prvalue(load)
 #    9|             -1: [VariableAccess] uu
@@ -982,7 +982,7 @@ macro_etc.c:
 #   10|         0: [AddExpr] ... + ...
 #   10|             Type = [IntType] int
 #   10|             ValueCategory = prvalue
-#   10|           0: [FieldAccess] b
+#   10|           0: [ValueFieldAccess] b
 #   10|               Type = [IntType] int
 #   10|               ValueCategory = prvalue(load)
 #   10|             -1: [VariableAccess] uu
@@ -1245,7 +1245,7 @@ union_etc.cpp:
 #    6|       0: [AssignExpr] ... = ...
 #    6|           Type = [IntType] int
 #    6|           ValueCategory = lvalue
-#    6|         0: [FieldAccess] x
+#    6|         0: [PointerFieldAccess] x
 #    6|             Type = [IntType] int
 #    6|             ValueCategory = lvalue
 #-----|           -1: [ThisExpr] this
@@ -1323,10 +1323,10 @@ union_etc.cpp:
 #   26|       0: [AssignExpr] ... = ...
 #   26|           Type = [IntType] int
 #   26|           ValueCategory = lvalue
-#   26|         0: [FieldAccess] a
+#   26|         0: [ValueFieldAccess] a
 #   26|             Type = [IntType] int
 #   26|             ValueCategory = lvalue
-#   26|           -1: [FieldAccess] u
+#   26|           -1: [ValueFieldAccess] u
 #   26|               Type = [NestedUnion] U
 #   26|               ValueCategory = lvalue
 #   26|             -1: [VariableAccess] s
@@ -1335,10 +1335,10 @@ union_etc.cpp:
 #   26|         1: [AssignExpr] ... = ...
 #   26|             Type = [IntType] int
 #   26|             ValueCategory = prvalue
-#   26|           0: [FieldAccess] e
+#   26|           0: [ValueFieldAccess] e
 #   26|               Type = [IntType] int
 #   26|               ValueCategory = lvalue
-#   26|             -1: [FieldAccess] s
+#   26|             -1: [ValueFieldAccess] s
 #   26|                 Type = [NestedStruct] S
 #   26|                 ValueCategory = lvalue
 #   26|               -1: [VariableAccess] c
@@ -1347,10 +1347,10 @@ union_etc.cpp:
 #   26|           1: [AssignExpr] ... = ...
 #   26|               Type = [IntType] int
 #   26|               ValueCategory = prvalue
-#   26|             0: [FieldAccess] i
+#   26|             0: [ValueFieldAccess] i
 #   26|                 Type = [IntType] int
 #   26|                 ValueCategory = lvalue
-#   26|               -1: [FieldAccess] c
+#   26|               -1: [ValueFieldAccess] c
 #   26|                   Type = [NestedClass] C
 #   26|                   ValueCategory = lvalue
 #   26|                 -1: [VariableAccess] u
@@ -1364,10 +1364,10 @@ union_etc.cpp:
 #   27|       0: [AssignAddExpr] ... += ...
 #   27|           Type = [IntType] int
 #   27|           ValueCategory = lvalue
-#   27|         0: [FieldAccess] b
+#   27|         0: [ValueFieldAccess] b
 #   27|             Type = [IntType] int
 #   27|             ValueCategory = lvalue
-#   27|           -1: [FieldAccess] u
+#   27|           -1: [ValueFieldAccess] u
 #   27|               Type = [NestedUnion] U
 #   27|               ValueCategory = lvalue
 #   27|             -1: [VariableAccess] s
@@ -1379,23 +1379,23 @@ union_etc.cpp:
 #   27|           expr: [AddExpr] ... + ...
 #   27|               Type = [IntType] int
 #   27|               ValueCategory = prvalue
-#   27|             0: [FieldAccess] i
+#   27|             0: [ValueFieldAccess] i
 #   27|                 Type = [IntType] int
 #   27|                 ValueCategory = prvalue(load)
-#   27|               -1: [FieldAccess] c
+#   27|               -1: [ValueFieldAccess] c
 #   27|                   Type = [NestedClass] C
 #   27|                   ValueCategory = lvalue
 #   27|                 -1: [VariableAccess] u
 #   27|                     Type = [Union] U
 #   27|                     ValueCategory = lvalue
-#   27|             1: [FieldAccess] j
+#   27|             1: [ValueFieldAccess] j
 #   27|                 Type = [IntType] int
 #   27|                 ValueCategory = prvalue(load)
 #   27|               -1: [VariableAccess] u
 #   27|                   Type = [Union] U
 #   27|                   ValueCategory = lvalue
 #   28|     5: [ReturnStmt] return ...
-#   28|       0: [FieldAccess] g
+#   28|       0: [ValueFieldAccess] g
 #   28|           Type = [IntType] int
 #   28|           ValueCategory = prvalue(load)
 #   28|         -1: [VariableAccess] c
@@ -1428,7 +1428,7 @@ union_etc.cpp:
 #   33|       0: [AssignExpr] ... = ...
 #   33|           Type = [IntType] int
 #   33|           ValueCategory = lvalue
-#   33|         0: [FieldAccess] q
+#   33|         0: [PointerFieldAccess] q
 #   33|             Type = [IntType] int
 #   33|             ValueCategory = lvalue
 #-----|           -1: [ThisExpr] this
@@ -1503,10 +1503,10 @@ union_etc.cpp:
 #   41|                   Type = [Class] C
 #   41|                   ValueCategory = lvalue
 #   42|     5: [ReturnStmt] return ...
-#   42|       0: [FieldAccess] b
+#   42|       0: [ValueFieldAccess] b
 #   42|           Type = [IntType] int
 #   42|           ValueCategory = prvalue(load)
-#   42|         -1: [FieldAccess] c
+#   42|         -1: [PointerFieldAccess] c
 #   42|             Type = [NestedClass] C
 #   42|             ValueCategory = lvalue
 #   42|           -1: [CStyleCast] (S *)...

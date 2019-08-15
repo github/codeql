@@ -82,7 +82,7 @@ bad_asts.cpp:
 #   10|           0: [Literal] Unknown literal
 #   10|               Type = [IntType] int
 #   10|               ValueCategory = prvalue
-#   10|           1: [FieldAccess] x
+#   10|           1: [PointerFieldAccess] x
 #   10|               Type = [IntType] int
 #   10|               ValueCategory = prvalue(load)
 #-----|             -1: [ThisExpr] this
@@ -107,7 +107,7 @@ bad_asts.cpp:
 #   10|               Type = [IntType] int
 #   10|               Value = [Literal] 6
 #   10|               ValueCategory = prvalue
-#   10|           1: [FieldAccess] x
+#   10|           1: [PointerFieldAccess] x
 #   10|               Type = [IntType] int
 #   10|               ValueCategory = prvalue(load)
 #-----|             -1: [ThisExpr] this
@@ -4081,7 +4081,7 @@ ir.cpp:
 #  643|       0: [AssignExpr] ... = ...
 #  643|           Type = [IntType] int
 #  643|           ValueCategory = lvalue
-#  643|         0: [FieldAccess] m_a
+#  643|         0: [PointerFieldAccess] m_a
 #  643|             Type = [IntType] int
 #  643|             ValueCategory = lvalue
 #  643|           -1: [ThisExpr] this
@@ -4115,7 +4115,7 @@ ir.cpp:
 #  645|       0: [AssignExpr] ... = ...
 #  645|           Type = [IntType] int
 #  645|           ValueCategory = lvalue
-#  645|         0: [FieldAccess] m_a
+#  645|         0: [PointerFieldAccess] m_a
 #  645|             Type = [IntType] int
 #  645|             ValueCategory = lvalue
 #-----|           -1: [ThisExpr] this
@@ -4135,7 +4135,7 @@ ir.cpp:
 #  647|         0: [VariableAccess] x
 #  647|             Type = [IntType] int
 #  647|             ValueCategory = lvalue
-#  647|         1: [FieldAccess] m_a
+#  647|         1: [PointerFieldAccess] m_a
 #  647|             Type = [IntType] int
 #  647|             ValueCategory = prvalue(load)
 #  647|           -1: [ThisExpr] this
@@ -4167,7 +4167,7 @@ ir.cpp:
 #  649|         0: [VariableAccess] x
 #  649|             Type = [IntType] int
 #  649|             ValueCategory = lvalue
-#  649|         1: [FieldAccess] m_a
+#  649|         1: [PointerFieldAccess] m_a
 #  649|             Type = [IntType] int
 #  649|             ValueCategory = prvalue(load)
 #-----|           -1: [ThisExpr] this
@@ -4673,7 +4673,7 @@ ir.cpp:
 #-----|           -1: [AddressOfExpr] & ...
 #-----|               Type = [PointerType] String *
 #-----|               ValueCategory = prvalue
-#-----|             0: [FieldAccess] base_s
+#-----|             0: [PointerFieldAccess] base_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ThisExpr] this
@@ -4787,7 +4787,7 @@ ir.cpp:
 #-----|           -1: [AddressOfExpr] & ...
 #-----|               Type = [PointerType] String *
 #-----|               ValueCategory = prvalue
-#-----|             0: [FieldAccess] middle_s
+#-----|             0: [PointerFieldAccess] middle_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ThisExpr] this
@@ -4898,7 +4898,7 @@ ir.cpp:
 #-----|           -1: [AddressOfExpr] & ...
 #-----|               Type = [PointerType] String *
 #-----|               ValueCategory = prvalue
-#-----|             0: [FieldAccess] derived_s
+#-----|             0: [PointerFieldAccess] derived_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ThisExpr] this
@@ -6669,6 +6669,7 @@ ir.cpp:
 #  988|               ValueCategory = prvalue(load)
 #  988|           1: [Literal] 0
 #  988|               Type = [IntType] int
+#  988|               Value = [Literal] 0
 #  988|               ValueCategory = prvalue
 #  988|         1: [VariableCall] call to expression
 #  988|             Type = [IntType] int
@@ -7307,7 +7308,7 @@ ir.cpp:
 # 1034|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1034|               Type = [SpecifiedType] const String
 # 1034|               ValueCategory = lvalue
-#-----|             expr: [FieldAccess] s
+#-----|             expr: [PointerFieldAccess] s
 #-----|                 Type = [LValueReferenceType] const String &
 #-----|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
@@ -7316,7 +7317,7 @@ ir.cpp:
 # 1034|         1: [ReferenceDereferenceExpr] (reference dereference)
 # 1034|             Type = [IntType] int
 # 1034|             ValueCategory = prvalue(load)
-#-----|           expr: [FieldAccess] x
+#-----|           expr: [PointerFieldAccess] x
 #-----|               Type = [LValueReferenceType] int &
 #-----|               ValueCategory = prvalue(load)
 #-----|             -1: [ThisExpr] this
@@ -7377,13 +7378,13 @@ ir.cpp:
 # 1036|         0: [FunctionCall] call to c_str
 # 1036|             Type = [PointerType] const char *
 # 1036|             ValueCategory = prvalue
-#-----|           -1: [FieldAccess] s
+#-----|           -1: [PointerFieldAccess] s
 #-----|               Type = [SpecifiedType] const String
 #-----|               ValueCategory = lvalue
 #-----|             -1: [ThisExpr] this
 #-----|                 Type = [PointerType] const lambda [] type at line 1036, col. 21 *
 #-----|                 ValueCategory = prvalue(load)
-#-----|         1: [FieldAccess] x
+#-----|         1: [PointerFieldAccess] x
 #-----|             Type = [IntType] int
 #-----|             ValueCategory = prvalue(load)
 #-----|           -1: [ThisExpr] this
@@ -7427,7 +7428,7 @@ ir.cpp:
 # 1038|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1038|               Type = [SpecifiedType] const String
 # 1038|               ValueCategory = lvalue
-#-----|             expr: [FieldAccess] s
+#-----|             expr: [PointerFieldAccess] s
 #-----|                 Type = [LValueReferenceType] const String &
 #-----|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
@@ -7486,7 +7487,7 @@ ir.cpp:
 # 1040|         0: [FunctionCall] call to c_str
 # 1040|             Type = [PointerType] const char *
 # 1040|             ValueCategory = prvalue
-#-----|           -1: [FieldAccess] s
+#-----|           -1: [PointerFieldAccess] s
 #-----|               Type = [SpecifiedType] const String
 #-----|               ValueCategory = lvalue
 #-----|             -1: [ThisExpr] this
@@ -7540,13 +7541,13 @@ ir.cpp:
 # 1042|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1042|               Type = [SpecifiedType] const String
 # 1042|               ValueCategory = lvalue
-#-----|             expr: [FieldAccess] s
+#-----|             expr: [PointerFieldAccess] s
 #-----|                 Type = [LValueReferenceType] const String &
 #-----|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
 #-----|                   Type = [PointerType] const lambda [] type at line 1042, col. 32 *
 #-----|                   ValueCategory = prvalue(load)
-#-----|         1: [FieldAccess] x
+#-----|         1: [PointerFieldAccess] x
 #-----|             Type = [IntType] int
 #-----|             ValueCategory = prvalue(load)
 #-----|           -1: [ThisExpr] this
@@ -7608,7 +7609,7 @@ ir.cpp:
 # 1045|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1045|               Type = [SpecifiedType] const String
 # 1045|               ValueCategory = lvalue
-#-----|             expr: [FieldAccess] s
+#-----|             expr: [PointerFieldAccess] s
 #-----|                 Type = [LValueReferenceType] const String &
 #-----|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
@@ -7620,13 +7621,13 @@ ir.cpp:
 # 1045|           0: [AddExpr] ... + ...
 # 1045|               Type = [IntType] int
 # 1045|               ValueCategory = prvalue
-#-----|             0: [FieldAccess] x
+#-----|             0: [PointerFieldAccess] x
 #-----|                 Type = [IntType] int
 #-----|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
 #-----|                   Type = [PointerType] const lambda [] type at line 1045, col. 23 *
 #-----|                   ValueCategory = prvalue(load)
-# 1045|             1: [FieldAccess] i
+# 1045|             1: [PointerFieldAccess] i
 # 1045|                 Type = [IntType] int
 # 1045|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
@@ -7635,7 +7636,7 @@ ir.cpp:
 # 1045|           1: [ReferenceDereferenceExpr] (reference dereference)
 # 1045|               Type = [IntType] int
 # 1045|               ValueCategory = prvalue(load)
-# 1045|             expr: [FieldAccess] j
+# 1045|             expr: [PointerFieldAccess] j
 # 1045|                 Type = [LValueReferenceType] int &
 # 1045|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
