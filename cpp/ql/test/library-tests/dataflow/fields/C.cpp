@@ -26,10 +26,10 @@ public:
 
   void func()
   {
-    sink(s1);
-    sink(s2);
-    sink(s3);
-    sink(s4);
+    sink(s1); // flow [NOT DETECTED] (in either place)
+    sink(s2); // flow [NOT DETECTED]
+    sink(s3); // flow
+    sink(s4); // flow [NOT DETECTED]
   }
 
   static void sink(const void *o) {}
