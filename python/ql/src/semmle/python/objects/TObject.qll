@@ -132,7 +132,7 @@ cached newtype TObject =
     /* An instance of `cls`, instantiated at `instantiation` given the `context`. */
     TSpecificInstance(ControlFlowNode instantiation, ClassObjectInternal cls, PointsToContext context) {
         PointsToInternal::pointsTo(instantiation.(CallNode).getFunction(), context, cls, _) and
-        cls.isSpecial() = false and cls.getClassDeclaration().callReturnsInstance()
+        cls.isSpecial() = false
         or
         literal_instantiation(instantiation, cls, context)
     }
@@ -236,6 +236,18 @@ cached newtype TObject =
     TDecoratedFunction(CallNode call) {
         call.isFunctionDecoratorCall()
     }
+    or
+    /* Represents a subscript operation applied to a type. For type-hint analysis */
+    TSubscriptedType(ObjectInternal generic, ObjectInternal index) {
+        isType(generic) and
+        Expressions::subscriptPartsPointsTo(_, _, generic, index)
+    }
+
+predicate isType(ObjectInternal t) {
+    t.isClass() = true
+    or
+    t.getOrigin().getEnclosingModule().getName().matches("%typing")
+}
 
 private predicate is_power_2(int n) {
     n = 1 or

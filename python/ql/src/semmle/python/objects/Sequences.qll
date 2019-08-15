@@ -49,7 +49,14 @@ abstract class TupleObjectInternal extends SequenceObjectInternal {
         or
         n = 3 and this.length() > 3 and result = (this.length()-3).toString() + " more..."
         or
-        result = this.getItem(n).toString() + ", " + this.contents(n+1)
+        result = this.item(n) + ", " + this.contents(n+1)
+    }
+
+    private string item(int n) {
+        result = this.getItem(n).toString()
+        or
+        n in [0..this.length()-1] and
+        not exists(this.getItem(n)) and result = "?"
     }
 
     /** Gets the class declaration for this object, if it is a declared class. */
