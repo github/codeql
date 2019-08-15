@@ -322,11 +322,7 @@ class ClassValue extends Value {
 
     /** Gets an improper super type of this class. */
     ClassValue getASuperType() {
-        result = this.getBaseType(_)
-        or
-        result = this.getASuperType().getBaseType(_)
-        or
-        result = this
+        result = this.getABaseType*()
     }
 
     /** Looks up the attribute `name` on this class.
@@ -369,6 +365,11 @@ class ClassValue extends Value {
     /** Gets the nth base class of this class */
     ClassValue getBaseType(int n) {
         result = Types::getBase(this, n)
+    }
+
+    /** Gets a base class of this class */
+    ClassValue getABaseType() {
+        result = Types::getBase(this, _)
     }
 
     /** Holds if this class is a new style class.
