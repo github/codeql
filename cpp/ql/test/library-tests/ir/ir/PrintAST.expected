@@ -8046,7 +8046,7 @@ perf-regression.cpp:
 #   10|                 Type = [VoidType] void
 #   10|                 ValueCategory = prvalue
 #   12|     1: [ReturnStmt] return ...
-#   12|       0: [Literal,Zero] 0
+#   12|       0: [Literal] 0
 #   12|           Type = [IntType] int
-#   12|           Value = [Literal,Zero] 0
+#   12|           Value = [Literal] 0
 #   12|           ValueCategory = prvalue
