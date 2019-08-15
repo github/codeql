@@ -1,3 +1,5 @@
+| Assignables.cs:5:9:5:17 | ... = ... | Assignables.cs:5:9:5:17 | ... = ... |
+| Assignables.cs:6:32:6:34 | ... = ... | Assignables.cs:6:32:6:34 | ... = ... |
 | Assignables.cs:9:18:9:18 | i | Assignables.cs:9:23:9:25 | enter get_Item |
 | Assignables.cs:9:18:9:18 | i | Assignables.cs:9:41:9:43 | enter set_Item |
 | Assignables.cs:9:41:9:43 | value | Assignables.cs:9:41:9:43 | enter set_Item |

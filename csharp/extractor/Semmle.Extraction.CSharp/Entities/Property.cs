@@ -1,5 +1,8 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.CSharp.Entities.Expressions;
+using Semmle.Extraction.Entities;
+using Semmle.Extraction.Kinds;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -69,12 +72,24 @@ namespace Semmle.Extraction.CSharp.Entities
                     Context.PopulateLater(() => Expression.Create(Context, expressionBody, this, 0));
                 }
 
+                int child = 1;
                 foreach (var initializer in declSyntaxReferences.
                     Select(n => n.Initializer).
-                    Where(i => i != null).
-                    Select(i => i.Value))
+                    Where(i => i != null))
                 {
-                    Context.PopulateLater(() => Expression.Create(Context, initializer, this, 1));
+                    Context.PopulateLater(() =>
+                    {
+                        var loc = Context.Create(initializer.GetLocation());
+                        var annotatedType = new AnnotatedType(type, TypeAnnotation.None);
+                        var simpleAssignExpr = new Expression(new ExpressionInfo(Context, annotatedType, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
+                        Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Value, simpleAssignExpr, 0));
+                        var access = new Expression(new ExpressionInfo(Context, annotatedType, Location, ExprKind.PROPERTY_ACCESS, simpleAssignExpr, 1, false, null));
+                        Context.Emit(Tuples.expr_access(access, this));
+                        if (!symbol.IsStatic)
+                        {
+                            This.CreateImplicit(Context, Type.Create(Context, symbol.ContainingType), Location, access, -1);
+                        }
+                    });
                 }
 
                 foreach (var syntax in declSyntaxReferences)

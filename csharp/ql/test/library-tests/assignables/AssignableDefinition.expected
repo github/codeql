@@ -1,4 +1,4 @@
-| Assignables.cs:5:9:5:13 | Field | Assignables.cs:5:17:5:17 | 0 | Assignables.cs:5:17:5:17 | <none> | Assignables.cs:5:17:5:17 | 0 | certain |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:5:9:5:17 | ... = ... | Assignables.cs:5:9:5:13 | access to field Field | Assignables.cs:5:17:5:17 | 0 | certain |
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:18:9:18:24 | ... = ... | Assignables.cs:18:9:18:13 | access to field Field | Assignables.cs:18:17:18:24 | access to property Property | certain |
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:19:9:19:15 | ...-- | Assignables.cs:19:9:19:13 | access to field Field | Assignables.cs:19:9:19:15 | <none> | certain |
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:29:17:29:21 | access to field Field | Assignables.cs:29:17:29:21 | access to field Field | Assignables.cs:29:17:29:21 | <none> | certain |
@@ -7,7 +7,7 @@
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:32:37:32:41 | access to field Field | Assignables.cs:32:37:32:41 | access to field Field | Assignables.cs:32:37:32:41 | <none> | uncertain |
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:34:29:34:33 | access to field Field | Assignables.cs:34:29:34:33 | access to field Field | Assignables.cs:34:29:34:33 | <none> | uncertain |
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:34:40:34:44 | access to field Field | Assignables.cs:34:40:34:44 | access to field Field | Assignables.cs:34:40:34:44 | <none> | uncertain |
-| Assignables.cs:6:9:6:16 | Property | Assignables.cs:6:34:6:34 | 1 | Assignables.cs:6:34:6:34 | <none> | Assignables.cs:6:34:6:34 | 1 | certain |
+| Assignables.cs:6:9:6:16 | Property | Assignables.cs:6:32:6:34 | ... = ... | Assignables.cs:6:9:6:16 | access to property Property | Assignables.cs:6:34:6:34 | 1 | certain |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:20:9:20:33 | ... = ... | Assignables.cs:20:9:20:16 | access to property Property | Assignables.cs:20:20:20:33 | access to indexer | certain |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:21:9:21:18 | ...++ | Assignables.cs:21:9:21:16 | access to property Property | Assignables.cs:21:9:21:18 | <none> | certain |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:96:9:96:36 | ... = ... | Assignables.cs:96:10:96:17 | access to property Property | Assignables.cs:96:32:96:32 | 2 | certain |

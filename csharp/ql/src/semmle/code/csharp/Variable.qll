@@ -365,7 +365,7 @@ class LocalConstant extends LocalVariable, @local_constant {
 class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent, DotNet::Field,
   @field {
   /** Gets the initializer of this field, if any. */
-  override Expr getInitializer() { result = this.getChildExpr(0) }
+  override Expr getInitializer() { result = this.getChildExpr(0).getChildExpr(0) }
 
   /** Holds if this field is `volatile`. */
   predicate isVolatile() { this.hasModifier("volatile") }
@@ -447,4 +447,6 @@ class EnumConstant extends MemberConstant {
    * ```
    */
   predicate hasExplicitValue() { exists(this.getInitializer()) }
+
+  override Expr getInitializer() { result = this.getChildExpr(0) }
 }

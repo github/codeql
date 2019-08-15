@@ -4,6 +4,8 @@ using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using Semmle.Extraction.Entities;
+using Semmle.Extraction.Kinds;
+using Semmle.Extraction.CSharp.Entities.Expressions;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -64,7 +66,15 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 Context.PopulateLater(() =>
                 {
-                    Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Initializer.Value, this, child++));
+                    var loc = Context.Create(initializer.GetLocation());
+                    var simpleAssignExpr = new Expression(new ExpressionInfo(Context, Type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
+                    Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Initializer.Value, simpleAssignExpr, 0));
+                    var access = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, null));
+                    Context.Emit(Tuples.expr_access(access, this));
+                    if (!symbol.IsStatic)
+                    {
+                        This.CreateImplicit(Context, Entities.Type.Create(Context, symbol.ContainingType), Location, access, -1);
+                    }
                 });
             }
 

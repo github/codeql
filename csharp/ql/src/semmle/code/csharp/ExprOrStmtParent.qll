@@ -15,7 +15,8 @@ import csharp
 predicate expr_parent_top_level_adjusted(Expr child, int i, @top_level_exprorstmt_parent parent) {
   expr_parent_top_level(child, i, parent)
   or
-  parent = any(Getter g | expr_parent_top_level(child, i, g.getDeclaration()))
+  parent = any(Getter g | expr_parent_top_level(child, i, g.getDeclaration())) and
+  i = 0
 }
 
 /**

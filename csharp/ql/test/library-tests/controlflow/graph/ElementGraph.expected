@@ -940,9 +940,14 @@
 | Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:38:18:38:34 | (..., ...) | semmle.label | successor |
 | Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | semmle.label | successor |
 | Foreach.cs:39:11:39:11 | ; | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | semmle.label | successor |
+| Initializers.cs:3:9:3:9 | this access | Initializers.cs:3:13:3:13 | access to field H | semmle.label | successor |
 | Initializers.cs:3:13:3:13 | access to field H | Initializers.cs:3:17:3:17 | 1 | semmle.label | successor |
+| Initializers.cs:3:13:3:17 | ... + ... | Initializers.cs:3:9:3:17 | ... = ... | semmle.label | successor |
 | Initializers.cs:3:17:3:17 | 1 | Initializers.cs:3:13:3:17 | ... + ... | semmle.label | successor |
+| Initializers.cs:4:9:4:9 | access to property G | Initializers.cs:4:25:4:31 | ... = ... | semmle.label | successor |
+| Initializers.cs:4:9:4:9 | this access | Initializers.cs:4:27:4:27 | access to field H | semmle.label | successor |
 | Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:4:31:4:31 | 2 | semmle.label | successor |
+| Initializers.cs:4:27:4:31 | ... + ... | Initializers.cs:4:9:4:9 | access to property G | semmle.label | successor |
 | Initializers.cs:4:31:4:31 | 2 | Initializers.cs:4:27:4:31 | ... + ... | semmle.label | successor |
 | Initializers.cs:9:5:12:5 | {...} | Initializers.cs:10:9:10:54 | ... ...; | semmle.label | successor |
 | Initializers.cs:10:9:10:54 | ... ...; | Initializers.cs:10:34:10:35 | "" | semmle.label | successor |
@@ -961,6 +966,7 @@
 | Initializers.cs:11:39:11:39 | access to local variable i | Initializers.cs:11:59:11:60 | "" | semmle.label | successor |
 | Initializers.cs:11:42:11:61 | object creation of type Initializers | Initializers.cs:11:37:11:63 | { ..., ... } | semmle.label | successor |
 | Initializers.cs:11:59:11:60 | "" | Initializers.cs:11:42:11:61 | object creation of type Initializers | semmle.label | successor |
+| Initializers.cs:14:20:14:20 | 1 | Initializers.cs:14:16:14:20 | ... = ... | semmle.label | successor |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:28:3:28 | 0 | semmle.label | null |
 | NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:23:3:23 | access to parameter i | semmle.label | successor |
 | NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | NullCoalescing.cs:5:25:5:34 | ... ?? ... | semmle.label | successor |

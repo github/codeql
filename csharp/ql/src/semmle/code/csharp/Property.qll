@@ -201,7 +201,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * }
    * ```
    */
-  Expr getInitializer() { result = this.getChildExpr(1) }
+  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(0) }
 
   /**
    * Gets the expression body of this property, if any. For example, the expression
