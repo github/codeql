@@ -18,6 +18,7 @@
 | test.cpp:126:8:126:19 | Convert: (const int *)... | test.cpp:120:9:120:20 | InitializeParameter: sourceArray1 |
 | test.cpp:126:8:126:19 | Load: sourceArray1 | test.cpp:120:9:120:20 | InitializeParameter: sourceArray1 |
 | test.cpp:145:10:145:11 | Load: m2 | test.cpp:142:32:142:37 | Call: call to source |
+| test.cpp:149:18:149:19 | Load: m2 | test.cpp:147:42:147:47 | Call: call to source |
 | test.cpp:153:17:153:18 | Load: m2 | test.cpp:151:35:151:40 | Call: call to source |
 | test.cpp:188:8:188:8 | Load: y | test.cpp:186:27:186:32 | Call: call to source |
 | test.cpp:192:8:192:8 | Load: s | test.cpp:199:33:199:38 | Call: call to source |
