@@ -1148,4 +1148,14 @@ void TryCatchNoCatchAny(bool b) {
   }
 }
 
-// semmle-extractor-options: -std=c++17
+#define vector(elcount, type)  __attribute__((vector_size((elcount)*sizeof(type)))) type
+
+void VectorTypes(int i) {
+  vector(4, int) vi4 = { 0, 1, 2, 3 };
+  int x = vi4[i];
+  vi4[i] = x;
+  vector(4, int) vi4_shuffle = __builtin_shufflevector(vi4, vi4, 3+0, 2, 1, 0);
+  vi4 = vi4 + vi4_shuffle;
+}
+
+// semmle-extractor-options: -std=c++17 --clang

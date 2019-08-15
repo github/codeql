@@ -274,7 +274,7 @@ newtype TTranslatedElement =
       exists(ClassAggregateLiteral initList |
         initList.getFieldExpr(_).getFullyConverted() = expr
       ) or
-      exists(ArrayAggregateLiteral initList |
+      exists(ArrayOrVectorAggregateLiteral initList |
         initList.getElementExpr(_).getFullyConverted() = expr
       ) or
       exists(ReturnStmt returnStmt |
@@ -320,13 +320,13 @@ newtype TTranslatedElement =
   } or
   // The initialization of an array element via a member of an initializer list.
   TTranslatedExplicitElementInitialization(
-      ArrayAggregateLiteral initList, int elementIndex) {
+      ArrayOrVectorAggregateLiteral initList, int elementIndex) {
     not ignoreExpr(initList) and
     exists(initList.getElementExpr(elementIndex))
   } or
   // The value initialization of a range of array elements that were omitted
   // from an initializer list.
-  TTranslatedElementValueInitialization(ArrayAggregateLiteral initList,
+  TTranslatedElementValueInitialization(ArrayOrVectorAggregateLiteral initList,
       int elementIndex, int elementCount) {
     not ignoreExpr(initList) and
     isFirstValueInitializedElementInRange(initList, elementIndex) and
@@ -412,12 +412,13 @@ newtype TTranslatedElement =
  * `initList`, the result is the total number of elements in the array being
  * initialized.
  */
-private int getEndOfValueInitializedRange(ArrayAggregateLiteral initList, int afterElementIndex) {
+private int getEndOfValueInitializedRange(ArrayOrVectorAggregateLiteral initList,
+    int afterElementIndex) {
   result = getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)
   or
   isFirstValueInitializedElementInRange(initList, afterElementIndex) and
   not exists(getNextExplicitlyInitializedElementAfter(initList, afterElementIndex)) and
-  result = initList.getUnspecifiedType().(ArrayType).getArraySize()
+  result = initList.getArraySize()
 }
 
 /**
@@ -427,7 +428,7 @@ private int getEndOfValueInitializedRange(ArrayAggregateLiteral initList, int af
  * `initList`.
  */
 private int getNextExplicitlyInitializedElementAfter(
-    ArrayAggregateLiteral initList, int afterElementIndex) {
+    ArrayOrVectorAggregateLiteral initList, int afterElementIndex) {
   isFirstValueInitializedElementInRange(initList, afterElementIndex) and
   result = min(int i | exists(initList.getElementExpr(i)) and i > afterElementIndex)
 }
@@ -437,7 +438,7 @@ private int getNextExplicitlyInitializedElementAfter(
  * range of one or more consecutive value-initialized elements in `initList`.
  */
 private predicate isFirstValueInitializedElementInRange(
-  ArrayAggregateLiteral initList, int elementIndex) {
+  ArrayOrVectorAggregateLiteral initList, int elementIndex) {
   initList.isValueInitialized(elementIndex) and
   (
     elementIndex = 0 or
@@ -631,6 +632,13 @@ abstract class TranslatedElement extends TTranslatedElement {
    * gets the `StringLiteral` for that instruction.
    */
   StringLiteral getInstructionStringLiteral(InstructionTag tag) {
+    none()
+  }
+
+  /**
+   * If the instruction specified by `tag` is a `BuiltInInstruction`, gets the built-in operation.
+   */
+  BuiltInOperation getInstructionBuiltInOperation(InstructionTag tag) {
     none()
   }
 

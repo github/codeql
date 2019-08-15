@@ -8005,6 +8005,117 @@ ir.cpp:
 # 1147|       2: [Handler] <handler>
 # 1147|         0: [CatchBlock] { ... }
 # 1149|     1: [ReturnStmt] return ...
+# 1153| [TopLevelFunction] void VectorTypes(int)
+# 1153|   params: 
+# 1153|     0: [Parameter] i
+# 1153|         Type = [IntType] int
+# 1153|   body: [Block] { ... }
+# 1154|     0: [DeclStmt] declaration
+# 1154|       0: [VariableDeclarationEntry] definition of vi4
+# 1154|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1154|         init: [Initializer] initializer for vi4
+# 1154|           expr: [VectorAggregateLiteral] {...}
+# 1154|               Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1154|               ValueCategory = prvalue
+# 1154|             0: [Literal,Zero] 0
+# 1154|                 Type = [IntType] int
+# 1154|                 Value = [Literal,Zero] 0
+# 1154|                 ValueCategory = prvalue
+# 1154|             1: [Literal] 1
+# 1154|                 Type = [IntType] int
+# 1154|                 Value = [Literal] 1
+# 1154|                 ValueCategory = prvalue
+# 1154|             2: [Literal] 2
+# 1154|                 Type = [IntType] int
+# 1154|                 Value = [Literal] 2
+# 1154|                 ValueCategory = prvalue
+# 1154|             3: [Literal] 3
+# 1154|                 Type = [IntType] int
+# 1154|                 Value = [Literal] 3
+# 1154|                 ValueCategory = prvalue
+# 1155|     1: [DeclStmt] declaration
+# 1155|       0: [VariableDeclarationEntry] definition of x
+# 1155|           Type = [IntType] int
+# 1155|         init: [Initializer] initializer for x
+# 1155|           expr: [ArrayExpr] access to array
+# 1155|               Type = [IntType] int
+# 1155|               ValueCategory = prvalue(load)
+# 1155|             0: [VariableAccess] vi4
+# 1155|                 Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1155|                 ValueCategory = lvalue
+# 1155|             1: [VariableAccess] i
+# 1155|                 Type = [IntType] int
+# 1155|                 ValueCategory = prvalue(load)
+# 1156|     2: [ExprStmt] ExprStmt
+# 1156|       0: [AssignExpr] ... = ...
+# 1156|           Type = [IntType] int
+# 1156|           ValueCategory = lvalue
+# 1156|         0: [ArrayExpr] access to array
+# 1156|             Type = [IntType] int
+# 1156|             ValueCategory = lvalue
+# 1156|           0: [VariableAccess] vi4
+# 1156|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1156|               ValueCategory = lvalue
+# 1156|           1: [VariableAccess] i
+# 1156|               Type = [IntType] int
+# 1156|               ValueCategory = prvalue(load)
+# 1156|         1: [VariableAccess] x
+# 1156|             Type = [IntType] int
+# 1156|             ValueCategory = prvalue(load)
+# 1157|     3: [DeclStmt] declaration
+# 1157|       0: [VariableDeclarationEntry] definition of vi4_shuffle
+# 1157|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1157|         init: [Initializer] initializer for vi4_shuffle
+# 1157|           expr: [BuiltInOperation] __builtin_shufflevector
+# 1157|               Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1157|               ValueCategory = prvalue
+# 1157|             0: [VariableAccess] vi4
+# 1157|                 Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1157|                 ValueCategory = prvalue(load)
+# 1157|             1: [VariableAccess] vi4
+# 1157|                 Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1157|                 ValueCategory = prvalue(load)
+#-----|             2: [AddExpr] ... + ...
+#-----|                 Type = [IntType] int
+#-----|                 Value = [AddExpr] 3
+#-----|                 ValueCategory = prvalue
+# 1157|               0: [Literal] 3
+# 1157|                   Type = [IntType] int
+# 1157|                   Value = [Literal] 3
+# 1157|                   ValueCategory = prvalue
+# 1157|               1: [Literal,Zero] 0
+# 1157|                   Type = [IntType] int
+# 1157|                   Value = [Literal,Zero] 0
+# 1157|                   ValueCategory = prvalue
+# 1157|             3: [Literal] 2
+# 1157|                 Type = [IntType] int
+# 1157|                 Value = [Literal] 2
+# 1157|                 ValueCategory = prvalue
+# 1157|             4: [Literal] 1
+# 1157|                 Type = [IntType] int
+# 1157|                 Value = [Literal] 1
+# 1157|                 ValueCategory = prvalue
+# 1157|             5: [Literal,Zero] 0
+# 1157|                 Type = [IntType] int
+# 1157|                 Value = [Literal,Zero] 0
+# 1157|                 ValueCategory = prvalue
+# 1158|     4: [ExprStmt] ExprStmt
+# 1158|       0: [AssignExpr] ... = ...
+# 1158|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1158|           ValueCategory = lvalue
+# 1158|         0: [VariableAccess] vi4
+# 1158|             Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1158|             ValueCategory = lvalue
+# 1158|         1: [AddExpr] ... + ...
+# 1158|             Type = [GNUVectorType] __attribute((vector_size(16))) int
+# 1158|             ValueCategory = prvalue
+# 1158|           0: [VariableAccess] vi4
+# 1158|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1158|               ValueCategory = prvalue(load)
+# 1158|           1: [VariableAccess] vi4_shuffle
+# 1158|               Type = [SpecifiedType] __attribute((vector_size(16UL))) int
+# 1158|               ValueCategory = prvalue(load)
+# 1159|     5: [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   params: 
