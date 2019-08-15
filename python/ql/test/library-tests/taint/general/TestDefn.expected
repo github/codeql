@@ -59,9 +59,15 @@
 | test.py:76 | SOURCE | test.py:76 | Taint simple.test | t |
 | test.py:77 | hub() | test.py:77 | Taint simple.test | t |
 | test.py:85 | ImportExpr | test.py:85 | Taint .dangerous = simple.test | module |
+| test.py:87 | ScopeEntryDefinition | test.py:87 | Taint .dangerous = simple.test | Function test13 |
 | test.py:88 | Attribute | test.py:88 | Taint simple.test | t |
+| test.py:91 | ScopeEntryDefinition | test.py:91 | Taint .dangerous = simple.test | Function test14 |
+| test.py:95 | ScopeEntryDefinition | test.py:95 | Taint .dangerous = simple.test | Function test15 |
+| test.py:99 | ScopeEntryDefinition | test.py:99 | Taint .dangerous = simple.test | Function test16 |
 | test.py:100 | Attribute() | test.py:100 | Taint simple.test | t |
 | test.py:105 | ParameterDefinition | test.py:105 | Taint .x = simple.test | arg |
+| test.py:108 | ScopeEntryDefinition | test.py:108 | Taint .dangerous = simple.test | Function test17 |
+| test.py:113 | ScopeEntryDefinition | test.py:113 | Taint .dangerous = simple.test | Function test18 |
 | test.py:116 | hub() | test.py:116 | Taint .x = simple.test | t |
 | test.py:120 | CUSTOM_SOURCE | test.py:120 | Taint basic.custom | t |
 | test.py:121 | hub() | test.py:121 | Taint basic.custom | t |
@@ -73,6 +79,7 @@
 | test.py:148 | SOURCE | test.py:148 | Taint simple.test | t |
 | test.py:149 | TAINT_FROM_ARG() | test.py:149 | Taint basic.custom | t |
 | test.py:155 | ImportMember | test.py:155 | Taint simple.test | unsafe |
+| test.py:159 | with | test.py:159 | Taint simple.test | t |
 | test.py:163 | SOURCE | test.py:163 | Taint simple.test | s |
 | test.py:168 | List | test.py:168 | Taint sequence of simple.test | l |
 | test.py:169 | Dict | test.py:169 | Taint dict of simple.test | d |

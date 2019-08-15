@@ -238,29 +238,13 @@ class TaintTrackingImplementation extends string {
 
     predicate flowSource(DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         context = TNoParam() and path = TNoAttribute() and
-        (
-            this.(TaintTracking::Configuration).isSource(node, kind)
-            or
-            exists(TaintSource source |
-                this.(TaintTracking::Configuration).isSource(source) and
-                node.asCfgNode() = source and
-                source.isSourceOf(kind)
-            )
-        )
+        this.(TaintTracking::Configuration).isSource(node, kind)
     }
 
 
     predicate flowSink(DataFlow::Node node, AttributePath path, TaintKind kind) {
         path = TNoAttribute() and
-        (
-            this.(TaintTracking::Configuration).isSink(node, kind)
-            or
-            exists(TaintSink sink |
-                this.(TaintTracking::Configuration).isSink(sink) and
-                node.asCfgNode() = sink and
-                sink.sinks(kind)
-            )
-        )
+        this.(TaintTracking::Configuration).isSink(node, kind)
     }
 
     predicate isPathSource(TaintTrackingNode source) {
@@ -293,28 +277,6 @@ class TaintTrackingImplementation extends string {
         )
     }
 
-    predicate flowBarrier(DataFlow::Node node, TaintKind kind) {
-        this.(TaintTracking::Configuration).isBarrier(node, kind)
-        or
-        exists(Sanitizer sanitizer |
-            this.(TaintTracking::Configuration).isSanitizer(sanitizer)
-            |
-            sanitizer.sanitizingNode(kind, node.asCfgNode())
-            or
-            sanitizer.sanitizingDefinition(kind, node.asVariable().getDefinition())
-            or
-            exists(MethodCallsiteRefinement call, FunctionObject callee |
-                call = node.asVariable().getDefinition() and
-                callee.getACall() = call.getCall() and
-                sanitizer.sanitizingCall(kind, callee)
-            )
-            or
-            sanitizer.sanitizingEdge(kind, node.asVariable().getDefinition())
-            or
-            sanitizer.sanitizingSingleEdge(kind, node.asVariable().getDefinition())
-        )
-    }
-
     /** Gets the boolean value that `test` evaluates to when `use` is tainted with `kind`
      * and `test` and `use` are part of a test in a branch.
      */
@@ -334,9 +296,14 @@ class TaintTrackingImplementation extends string {
             Filters::isinstance(test, c, use) and
             c.pointsTo(cls)
             |
-            kind.getType().getASuperType() = cls and result = true
+            exists(ClassValue scls |
+                scls = kind.getType() |
+                scls.getASuperType() = cls and result = true
+                or
+                not scls.getASuperType() = cls and result = false
+            )
             or
-            not kind.getType().getASuperType() = cls and result = false
+            not exists(kind.getType()) and result = maybe()
         )
     }
 
@@ -379,7 +346,7 @@ class TaintTrackingImplementation extends string {
         (
             not path = TNoAttribute()
             or
-            not this.flowBarrier(node, kind) and
+            not this.(TaintTracking::Configuration).isBarrier(node, kind) and
             exists(DataFlow::Node srcnode, TaintKind srckind |
                 src = TTaintTrackingNode_(srcnode, _, _, srckind, this) and
                 not this.prunedEdge(srcnode, node, srckind, kind)
@@ -687,15 +654,18 @@ class TaintTrackingImplementation extends string {
         this.taintedExceptionCapture(src, defn, context, path, kind)
         or
         this.taintedScopeEntryDefinition(src, defn, context, path, kind)
+        or
+        this.taintedWith(src, defn, context, path, kind)
     }
 
     pragma [noinline]
     predicate taintedPhi(TaintTrackingNode src, PhiFunction defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        exists(DataFlow::Node srcnode, BasicBlock pred, EssaVariable predvar |
+        exists(DataFlow::Node srcnode, BasicBlock pred, EssaVariable predvar, DataFlow::Node phi |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
+            defn = phi.asVariable().getDefinition() and
             predvar = defn.getInput(pred) and
             not pred.unlikelySuccessor(defn.getBasicBlock()) and
-            not predvar.(DataFlowExtension::DataFlowVariable).prunedSuccessor(defn.getVariable()) and
+            not this.(TaintTracking::Configuration).isBarrierEdge(srcnode, phi) and
             srcnode.asVariable() = predvar
         )
     }
@@ -791,6 +761,14 @@ class TaintTrackingImplementation extends string {
         )
     }
 
+    pragma [noinline]
+    predicate taintedWith(TaintTrackingNode src, WithDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+        exists(DataFlow::Node srcnode |
+            src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
+            with_flow(_, srcnode.asCfgNode(), defn.getDefiningNode())
+        )
+    }
+
     predicate moduleAttributeTainted(ModuleValue m, string name, TaintTrackingNode taint) {
         exists(DataFlow::Node srcnode, EssaVariable var |
             taint = TTaintTrackingNode_(srcnode, TNoParam(), _, _, this) and
@@ -803,6 +781,13 @@ class TaintTrackingImplementation extends string {
 
 }
 
+/* Helper predicate for tainted_with */
+private predicate with_flow(With with, ControlFlowNode contextManager, ControlFlowNode var) {
+    with.getContextExpr() = contextManager.getNode() and
+    with.getOptionalVars() = var.getNode() and
+    contextManager.strictlyDominates(var)
+}
+
 /* Backwards compatibility with config-less taint-tracking */
 private class LegacyConfiguration extends TaintTracking::Configuration {
 
@@ -811,20 +796,14 @@ private class LegacyConfiguration extends TaintTracking::Configuration {
         this = "Semmle: Internal legacy configuration"
     }
 
-    override predicate isSource(DataFlow::Node source, TaintKind kind) {
+    override predicate isSource(TaintSource src) {
         isValid() and
-        exists(TaintSource src |
-            source.asCfgNode() = src and
-            src.isSourceOf(kind)
-        )
+        src = src
     }
 
-    override predicate isSink(DataFlow::Node sink, TaintKind kind) {
+    override predicate isSink(TaintSink sink) {
         isValid() and
-        exists(TaintSink snk |
-            sink.asCfgNode() = snk and
-            snk.sinks(kind)
-        )
+        sink = sink
     }
 
     override predicate isSanitizer(Sanitizer sanitizer) {
@@ -834,6 +813,45 @@ private class LegacyConfiguration extends TaintTracking::Configuration {
 
     private predicate isValid() {
         not exists(TaintTracking::Configuration config | config != this)
+    }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dest) {
+        isValid() and
+        exists(DataFlowExtension::DataFlowNode legacyExtension |
+            src.asCfgNode() = legacyExtension
+            |
+            dest.asCfgNode() = legacyExtension.getASuccessorNode()
+            or
+            dest.asVariable() = legacyExtension.getASuccessorVariable()
+            or
+            dest.asCfgNode() = legacyExtension.getAReturnSuccessorNode(_)
+            or
+            dest.asCfgNode() = legacyExtension.getACalleeSuccessorNode(_)
+        )
+    }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dest, TaintKind srckind, TaintKind destkind) {
+        isValid() and
+        exists(DataFlowExtension::DataFlowNode legacyExtension |
+            src.asCfgNode() = legacyExtension
+            |
+            dest.asCfgNode() = legacyExtension.getASuccessorNode(srckind, destkind)
+        )
+    }
+
+    override predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node dest) {
+        isValid() and
+        (
+            exists(DataFlowExtension::DataFlowVariable legacyExtension |
+                src.asVariable() = legacyExtension and
+                legacyExtension.prunedSuccessor(dest.asVariable())
+            )
+            or
+            exists(DataFlowExtension::DataFlowNode legacyExtension |
+                src.asCfgNode() = legacyExtension and
+                legacyExtension.prunedSuccessor(dest.asCfgNode())
+            )
+        )
     }
 
 }

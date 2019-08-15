@@ -3,22 +3,29 @@
 | .attr = simple.test | carrier.py:10 | self | p0.attr = simple.test | --> | .attr = simple.test | carrier.py:11 | self | p0.attr = simple.test |
 | .attr = simple.test | carrier.py:11 | self | p0.attr = simple.test | --> | simple.test | carrier.py:11 | Attribute | p0.attr = simple.test |
 | .attr = simple.test | carrier.py:13 | arg | p0.attr = simple.test | --> | .attr = simple.test | carrier.py:14 | arg | p0.attr = simple.test |
-| .attr = simple.test | carrier.py:14 | arg | p0.attr = simple.test | --> | .attr = simple.test | carrier.py:25 | hub() |  |
 | .attr = simple.test | carrier.py:17 | ImplicitCarrier() |  | --> | .attr = simple.test | carrier.py:18 | c |  |
 | .attr = simple.test | carrier.py:18 | c |  | --> | simple.test | carrier.py:18 | Attribute |  |
 | .attr = simple.test | carrier.py:25 | ImplicitCarrier() |  | --> | .attr = simple.test | carrier.py:13 | arg | p0.attr = simple.test |
+| .attr = simple.test | carrier.py:25 | ImplicitCarrier() |  | --> | .attr = simple.test | carrier.py:25 | hub() |  |
 | .attr = simple.test | carrier.py:25 | hub() |  | --> | .attr = simple.test | carrier.py:26 | c |  |
 | .attr = simple.test | carrier.py:26 | c |  | --> | .attr = simple.test | carrier.py:10 | self | p0.attr = simple.test |
+| .attr = simple.test | carrier.py:26 | c |  | --> | simple.test | carrier.py:26 | Attribute() |  |
+| .dangerous = simple.test | test.py:85 | ImportExpr |  | --> | .dangerous = simple.test | test.py:88 | module |  |
+| .dangerous = simple.test | test.py:85 | ImportExpr |  | --> | .dangerous = simple.test | test.py:92 | module |  |
+| .dangerous = simple.test | test.py:85 | ImportExpr |  | --> | .dangerous = simple.test | test.py:96 | module |  |
+| .dangerous = simple.test | test.py:85 | ImportExpr |  | --> | .dangerous = simple.test | test.py:100 | module |  |
+| .dangerous = simple.test | test.py:85 | ImportExpr |  | --> | .dangerous = simple.test | test.py:110 | module |  |
+| .dangerous = simple.test | test.py:85 | ImportExpr |  | --> | .dangerous = simple.test | test.py:115 | module |  |
 | .dangerous = simple.test | test.py:88 | module |  | --> | simple.test | test.py:88 | Attribute |  |
 | .dangerous = simple.test | test.py:110 | module |  | --> | simple.test | test.py:110 | Attribute |  |
 | .dangerous = simple.test | test.py:115 | module |  | --> | simple.test | test.py:115 | Attribute |  |
 | .x = simple.test | test.py:72 | arg | p0.x = simple.test | --> | .x = simple.test | test.py:73 | arg | p0.x = simple.test |
-| .x = simple.test | test.py:73 | arg | p0.x = simple.test | --> | .x = simple.test | test.py:116 | hub() |  |
 | .x = simple.test | test.py:105 | arg | p0.x = simple.test | --> | .x = simple.test | test.py:106 | arg | p0.x = simple.test |
 | .x = simple.test | test.py:106 | arg | p0.x = simple.test | --> | simple.test | test.py:106 | Attribute | p0.x = simple.test |
 | .x = simple.test | test.py:111 | t |  | --> | simple.test | test.py:111 | Attribute |  |
 | .x = simple.test | test.py:116 | hub() |  | --> | .x = simple.test | test.py:117 | t |  |
 | .x = simple.test | test.py:116 | t |  | --> | .x = simple.test | test.py:72 | arg | p0.x = simple.test |
+| .x = simple.test | test.py:116 | t |  | --> | .x = simple.test | test.py:116 | hub() |  |
 | .x = simple.test | test.py:117 | t |  | --> | .x = simple.test | test.py:105 | arg | p0.x = simple.test |
 | Command injection | sanitizer.py:9 | user_input() |  | --> | Command injection | sanitizer.py:10 | x |  |
 | Command injection | sanitizer.py:9 | user_input() |  | --> | Command injection | sanitizer.py:11 | x |  |
@@ -47,9 +54,9 @@
 | SQL injection | sanitizer.py:31 | user_input() |  | --> | SQL injection | sanitizer.py:33 | x |  |
 | SQL injection | sanitizer.py:31 | user_input() |  | --> | SQL injection | sanitizer.py:35 | x |  |
 | basic.custom | test.py:72 | arg | p0 = basic.custom | --> | basic.custom | test.py:73 | arg | p0 = basic.custom |
-| basic.custom | test.py:73 | arg | p0 = basic.custom | --> | basic.custom | test.py:121 | hub() |  |
 | basic.custom | test.py:120 | CUSTOM_SOURCE |  | --> | basic.custom | test.py:121 | t |  |
 | basic.custom | test.py:121 | TAINT_FROM_ARG() |  | --> | basic.custom | test.py:72 | arg | p0 = basic.custom |
+| basic.custom | test.py:121 | TAINT_FROM_ARG() |  | --> | basic.custom | test.py:121 | hub() |  |
 | basic.custom | test.py:121 | hub() |  | --> | basic.custom | test.py:122 | t |  |
 | basic.custom | test.py:121 | t |  | --> | basic.custom | test.py:121 | TAINT_FROM_ARG() |  |
 | basic.custom | test.py:126 | CUSTOM_SOURCE |  | --> | basic.custom | test.py:130 | t |  |
@@ -59,16 +66,19 @@
 | basic.custom | test.py:149 | t |  | --> | basic.custom | test.py:149 | TAINT_FROM_ARG() |  |
 | dict of simple.test | test.py:169 | Dict |  | --> | dict of simple.test | test.py:171 | d |  |
 | dict of simple.test | test.py:169 | Dict |  | --> | dict of simple.test | test.py:175 | d |  |
+| dict of simple.test | test.py:171 | SSA variable y |  | --> | dict of simple.test | test.py:173 | y |  |
+| dict of simple.test | test.py:171 | d |  | --> | dict of simple.test | test.py:171 | SSA variable y |  |
+| dict of simple.test | test.py:173 | y |  | --> | simple.test | test.py:173 | Subscript |  |
 | dict of simple.test | test.py:175 | d |  | --> | dict of simple.test | test.py:175 | dict() |  |
 | explicit.carrier | carrier.py:4 | arg | p1 = explicit.carrier | --> | explicit.carrier | carrier.py:5 | arg | p1 = explicit.carrier |
-| explicit.carrier | carrier.py:5 | arg | p1 = explicit.carrier | --> | .attr = explicit.carrier | carrier.py:33 | ImplicitCarrier() |  |
 | explicit.carrier | carrier.py:13 | arg | p0 = explicit.carrier | --> | explicit.carrier | carrier.py:14 | arg | p0 = explicit.carrier |
-| explicit.carrier | carrier.py:14 | arg | p0 = explicit.carrier | --> | explicit.carrier | carrier.py:29 | hub() |  |
 | explicit.carrier | carrier.py:21 | TAINT_CARRIER_SOURCE |  | --> | explicit.carrier | carrier.py:22 | c |  |
 | explicit.carrier | carrier.py:22 | c |  | --> | simple.test | carrier.py:22 | Attribute() |  |
 | explicit.carrier | carrier.py:29 | TAINT_CARRIER_SOURCE |  | --> | explicit.carrier | carrier.py:13 | arg | p0 = explicit.carrier |
+| explicit.carrier | carrier.py:29 | TAINT_CARRIER_SOURCE |  | --> | explicit.carrier | carrier.py:29 | hub() |  |
 | explicit.carrier | carrier.py:29 | hub() |  | --> | explicit.carrier | carrier.py:30 | c |  |
 | explicit.carrier | carrier.py:30 | c |  | --> | simple.test | carrier.py:30 | Attribute() |  |
+| explicit.carrier | carrier.py:33 | TAINT_CARRIER_SOURCE |  | --> | .attr = explicit.carrier | carrier.py:33 | ImplicitCarrier() |  |
 | explicit.carrier | carrier.py:33 | TAINT_CARRIER_SOURCE |  | --> | explicit.carrier | carrier.py:4 | arg | p1 = explicit.carrier |
 | explicit.carrier | carrier.py:34 | Attribute |  | --> | explicit.carrier | carrier.py:35 | x |  |
 | explicit.carrier | carrier.py:35 | x |  | --> | simple.test | carrier.py:35 | Attribute() |  |
@@ -95,34 +105,36 @@
 | scissors | rockpaperscissors.py:31 | x |  | --> | scissors | rockpaperscissors.py:6 | arg | p0 = scissors |
 | sequence of simple.test | test.py:168 | List |  | --> | sequence of simple.test | test.py:170 | l |  |
 | sequence of simple.test | test.py:168 | List |  | --> | sequence of simple.test | test.py:174 | l |  |
+| sequence of simple.test | test.py:170 | SSA variable x |  | --> | sequence of simple.test | test.py:172 | x |  |
+| sequence of simple.test | test.py:170 | l |  | --> | sequence of simple.test | test.py:170 | SSA variable x |  |
+| sequence of simple.test | test.py:172 | x |  | --> | simple.test | test.py:172 | Subscript |  |
 | sequence of simple.test | test.py:174 | l |  | --> | sequence of simple.test | test.py:174 | list() |  |
 | sequence of simple.test | test.py:208 | List |  | --> | sequence of simple.test | test.py:209 | seq |  |
 | sequence of simple.test | test.py:209 | seq |  | --> | simple.test | test.py:209 | For |  |
 | sequence of simple.test | test.py:213 | flow_in_generator() |  | --> | simple.test | test.py:213 | For |  |
 | simple.test | carrier.py:4 | arg | p1 = simple.test | --> | simple.test | carrier.py:5 | arg | p1 = simple.test |
-| simple.test | carrier.py:5 | arg | p1 = simple.test | --> | .attr = simple.test | carrier.py:17 | ImplicitCarrier() |  |
-| simple.test | carrier.py:5 | arg | p1 = simple.test | --> | .attr = simple.test | carrier.py:25 | ImplicitCarrier() |  |
-| simple.test | carrier.py:11 | Attribute | p0.attr = simple.test | --> | simple.test | carrier.py:26 | Attribute() |  |
+| simple.test | carrier.py:17 | SOURCE |  | --> | .attr = simple.test | carrier.py:17 | ImplicitCarrier() |  |
 | simple.test | carrier.py:17 | SOURCE |  | --> | simple.test | carrier.py:4 | arg | p1 = simple.test |
+| simple.test | carrier.py:25 | SOURCE |  | --> | .attr = simple.test | carrier.py:25 | ImplicitCarrier() |  |
 | simple.test | carrier.py:25 | SOURCE |  | --> | simple.test | carrier.py:4 | arg | p1 = simple.test |
 | simple.test | deep.py:2 | arg | p0 = simple.test | --> | simple.test | deep.py:3 | arg | p0 = simple.test |
-| simple.test | deep.py:3 | arg | p0 = simple.test | --> | simple.test | deep.py:6 | f1() | p0 = simple.test |
 | simple.test | deep.py:5 | arg | p0 = simple.test | --> | simple.test | deep.py:6 | arg | p0 = simple.test |
 | simple.test | deep.py:6 | arg | p0 = simple.test | --> | simple.test | deep.py:2 | arg | p0 = simple.test |
-| simple.test | deep.py:6 | f1() | p0 = simple.test | --> | simple.test | deep.py:9 | f2() | p0 = simple.test |
+| simple.test | deep.py:6 | arg | p0 = simple.test | --> | simple.test | deep.py:6 | f1() | p0 = simple.test |
 | simple.test | deep.py:8 | arg | p0 = simple.test | --> | simple.test | deep.py:9 | arg | p0 = simple.test |
 | simple.test | deep.py:9 | arg | p0 = simple.test | --> | simple.test | deep.py:5 | arg | p0 = simple.test |
-| simple.test | deep.py:9 | f2() | p0 = simple.test | --> | simple.test | deep.py:12 | f3() | p0 = simple.test |
+| simple.test | deep.py:9 | arg | p0 = simple.test | --> | simple.test | deep.py:9 | f2() | p0 = simple.test |
 | simple.test | deep.py:11 | arg | p0 = simple.test | --> | simple.test | deep.py:12 | arg | p0 = simple.test |
 | simple.test | deep.py:12 | arg | p0 = simple.test | --> | simple.test | deep.py:8 | arg | p0 = simple.test |
-| simple.test | deep.py:12 | f3() | p0 = simple.test | --> | simple.test | deep.py:15 | f4() | p0 = simple.test |
+| simple.test | deep.py:12 | arg | p0 = simple.test | --> | simple.test | deep.py:12 | f3() | p0 = simple.test |
 | simple.test | deep.py:14 | arg | p0 = simple.test | --> | simple.test | deep.py:15 | arg | p0 = simple.test |
 | simple.test | deep.py:15 | arg | p0 = simple.test | --> | simple.test | deep.py:11 | arg | p0 = simple.test |
-| simple.test | deep.py:15 | f4() | p0 = simple.test | --> | simple.test | deep.py:18 | f5() | p0 = simple.test |
+| simple.test | deep.py:15 | arg | p0 = simple.test | --> | simple.test | deep.py:15 | f4() | p0 = simple.test |
 | simple.test | deep.py:17 | arg | p0 = simple.test | --> | simple.test | deep.py:18 | arg | p0 = simple.test |
 | simple.test | deep.py:18 | arg | p0 = simple.test | --> | simple.test | deep.py:14 | arg | p0 = simple.test |
-| simple.test | deep.py:18 | f5() | p0 = simple.test | --> | simple.test | deep.py:20 | f6() |  |
+| simple.test | deep.py:18 | arg | p0 = simple.test | --> | simple.test | deep.py:18 | f5() | p0 = simple.test |
 | simple.test | deep.py:20 | SOURCE |  | --> | simple.test | deep.py:17 | arg | p0 = simple.test |
+| simple.test | deep.py:20 | SOURCE |  | --> | simple.test | deep.py:20 | f6() |  |
 | simple.test | deep.py:20 | f6() |  | --> | simple.test | deep.py:22 | x |  |
 | simple.test | module.py:3 | SOURCE |  | --> | .dangerous = simple.test | test.py:85 | ImportExpr |  |
 | simple.test | module.py:3 | SOURCE |  | --> | .dangerous = simple.test | test.py:88 | module |  |
@@ -157,10 +169,10 @@
 | simple.test | test.py:67 | SOURCE |  | --> | simple.test | test.py:70 | t |  |
 | simple.test | test.py:70 | t |  | --> | simple.test | test.py:49 | arg | p1 = simple.test |
 | simple.test | test.py:72 | arg | p0 = simple.test | --> | simple.test | test.py:73 | arg | p0 = simple.test |
-| simple.test | test.py:73 | arg | p0 = simple.test | --> | simple.test | test.py:77 | hub() |  |
 | simple.test | test.py:76 | SOURCE |  | --> | simple.test | test.py:77 | t |  |
 | simple.test | test.py:77 | hub() |  | --> | simple.test | test.py:78 | t |  |
 | simple.test | test.py:77 | t |  | --> | simple.test | test.py:72 | arg | p0 = simple.test |
+| simple.test | test.py:77 | t |  | --> | simple.test | test.py:77 | hub() |  |
 | simple.test | test.py:88 | Attribute |  | --> | simple.test | test.py:89 | t |  |
 | simple.test | test.py:100 | Attribute() |  | --> | simple.test | test.py:101 | t |  |
 | simple.test | test.py:110 | Attribute |  | --> | .x = simple.test | test.py:111 | t |  |
@@ -169,8 +181,8 @@
 | simple.test | test.py:138 | SOURCE |  | --> | simple.test | test.py:140 | t |  |
 | simple.test | test.py:148 | SOURCE |  | --> | simple.test | test.py:149 | t |  |
 | simple.test | test.py:155 | ImportMember |  | --> | simple.test | test.py:156 | unsafe |  |
+| simple.test | test.py:159 | SOURCE |  | --> | simple.test | test.py:160 | t |  |
 | simple.test | test.py:163 | SOURCE |  | --> | simple.test | test.py:164 | s |  |
-| simple.test | test.py:163 | SOURCE |  | --> | simple.test | test.py:165 | s |  |
 | simple.test | test.py:168 | SOURCE |  | --> | sequence of simple.test | test.py:168 | List |  |
 | simple.test | test.py:169 | SOURCE |  | --> | dict of simple.test | test.py:169 | Dict |  |
 | simple.test | test.py:178 | SOURCE |  | --> | simple.test | test.py:179 | t |  |
@@ -178,6 +190,7 @@
 | simple.test | test.py:178 | SOURCE |  | --> | simple.test | test.py:183 | t |  |
 | simple.test | test.py:178 | SOURCE |  | --> | simple.test | test.py:186 | t |  |
 | simple.test | test.py:195 | SOURCE |  | --> | simple.test | test.py:196 | t |  |
+| simple.test | test.py:195 | SOURCE |  | --> | simple.test | test.py:197 | t |  |
 | simple.test | test.py:195 | SOURCE |  | --> | simple.test | test.py:199 | t |  |
 | simple.test | test.py:203 | For |  | --> | simple.test | test.py:204 | i |  |
 | simple.test | test.py:203 | For |  | --> | simple.test | test.py:205 | i |  |

@@ -37,13 +37,24 @@ module TaintTracking {
          * Holds if `source` is a source of taint of `kind` that is relevant
          * for this configuration.
          */
-        predicate isSource(DataFlow::Node source, TaintKind kind) { none() }
+        predicate isSource(DataFlow::Node node, TaintKind kind) {
+            exists(TaintSource source |
+                this.isSource(source) and
+                node.asCfgNode() = source and
+                source.isSourceOf(kind)
+            )
+        }
 
         /**
          * Holds if `sink` is a sink of taint of `kind` that is relevant
          * for this configuration.
          */
-        predicate isSink(DataFlow::Node sink, TaintKind kind) { none() }
+        predicate isSink(DataFlow::Node node, TaintKind kind) {
+            exists(TaintSink sink |
+                node.asCfgNode() = sink and
+                sink.sinks(kind)
+            )
+        }
 
         /**
          * Holds if `src -> dest` should be considered as a flow edge
@@ -60,12 +71,30 @@ module TaintTracking {
 
         predicate isBarrier(DataFlow::Node node) { none() }
 
-        predicate isBarrier(DataFlow::Node node, TaintKind kind) { none() }
+        predicate isBarrier(DataFlow::Node node, TaintKind kind) {
+            exists(Sanitizer sanitizer |
+                this.isSanitizer(sanitizer)
+                |
+                sanitizer.sanitizingNode(kind, node.asCfgNode())
+                or
+                sanitizer.sanitizingEdge(kind, node.asVariable())
+                or
+                sanitizer.sanitizingSingleEdge(kind, node.asVariable())
+                or
+                sanitizer.sanitizingDefinition(kind, node.asVariable())
+                or
+                exists(MethodCallsiteRefinement call, FunctionObject callee |
+                    call = node.asVariable().getDefinition() and
+                    callee.getACall() = call.getCall() and
+                    sanitizer.sanitizingCall(kind, callee)
+                )
+            )
+        }
 
         /**
          * Holds if flow from `src` to `dest` is prohibited.
          */
-        predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node trg) { none() }
+        predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node dest) { none() }
 
         /**
          * Holds if control flow from `test` along the `isTrue` edge is prohibited.

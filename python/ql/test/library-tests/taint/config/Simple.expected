@@ -72,9 +72,11 @@ edges
 | test.py:126:13:126:25 | simple.test | test.py:130:21:130:21 | simple.test |
 | test.py:128:13:128:18 | simple.test | test.py:132:14:132:14 | simple.test |
 | test.py:155:20:155:38 | simple.test | test.py:156:6:156:11 | simple.test |
+| test.py:159:10:159:15 | simple.test | test.py:160:14:160:14 | simple.test |
 | test.py:163:9:163:14 | simple.test | test.py:165:10:165:10 | simple.test |
 | test.py:178:9:178:14 | simple.test | test.py:180:14:180:14 | simple.test |
 | test.py:178:9:178:14 | simple.test | test.py:186:14:186:14 | simple.test |
+| test.py:195:9:195:14 | simple.test | test.py:197:14:197:14 | simple.test |
 | test.py:195:9:195:14 | simple.test | test.py:199:14:199:14 | simple.test |
 | test.py:208:11:208:18 | sequence of simple.test | test.py:209:14:209:16 | sequence of simple.test |
 | test.py:208:12:208:17 | simple.test | test.py:208:11:208:18 | sequence of simple.test |
@@ -104,8 +106,10 @@ edges
 | test.py:111:10:111:12 | Attribute | module.py:3:13:3:18 | simple.test | test.py:111:10:111:12 | simple.test | $@ flows to $@. | module.py:3:13:3:18 | SOURCE | simple.test | test.py:111:10:111:12 | Attribute | simple.test |
 | test.py:132:14:132:14 | t | test.py:128:13:128:18 | simple.test | test.py:132:14:132:14 | simple.test | $@ flows to $@. | test.py:128:13:128:18 | SOURCE | simple.test | test.py:132:14:132:14 | t | simple.test |
 | test.py:156:6:156:11 | unsafe | module.py:3:13:3:18 | simple.test | test.py:156:6:156:11 | simple.test | $@ flows to $@. | module.py:3:13:3:18 | SOURCE | simple.test | test.py:156:6:156:11 | unsafe | simple.test |
+| test.py:160:14:160:14 | t | test.py:159:10:159:15 | simple.test | test.py:160:14:160:14 | simple.test | $@ flows to $@. | test.py:159:10:159:15 | SOURCE | simple.test | test.py:160:14:160:14 | t | simple.test |
 | test.py:165:10:165:10 | s | test.py:163:9:163:14 | simple.test | test.py:165:10:165:10 | simple.test | $@ flows to $@. | test.py:163:9:163:14 | SOURCE | simple.test | test.py:165:10:165:10 | s | simple.test |
 | test.py:180:14:180:14 | t | test.py:178:9:178:14 | simple.test | test.py:180:14:180:14 | simple.test | $@ flows to $@. | test.py:178:9:178:14 | SOURCE | simple.test | test.py:180:14:180:14 | t | simple.test |
 | test.py:186:14:186:14 | t | test.py:178:9:178:14 | simple.test | test.py:186:14:186:14 | simple.test | $@ flows to $@. | test.py:178:9:178:14 | SOURCE | simple.test | test.py:186:14:186:14 | t | simple.test |
+| test.py:197:14:197:14 | t | test.py:195:9:195:14 | simple.test | test.py:197:14:197:14 | simple.test | $@ flows to $@. | test.py:195:9:195:14 | SOURCE | simple.test | test.py:197:14:197:14 | t | simple.test |
 | test.py:199:14:199:14 | t | test.py:195:9:195:14 | simple.test | test.py:199:14:199:14 | simple.test | $@ flows to $@. | test.py:195:9:195:14 | SOURCE | simple.test | test.py:199:14:199:14 | t | simple.test |
 | test.py:214:14:214:14 | x | test.py:208:12:208:17 | simple.test | test.py:214:14:214:14 | simple.test | $@ flows to $@. | test.py:208:12:208:17 | SOURCE | simple.test | test.py:214:14:214:14 | x | simple.test |
