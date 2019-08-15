@@ -10,7 +10,11 @@ cached
 private newtype TNode =
   TExprNode(Expr e) or
   TPartialDefinitionNode(PartialDefinition pd) or
-  TPreConstructorCallNode(ConstructorCall call) or
+  TPreObjectInitializerNode(Expr e) {
+    e instanceof ConstructorCall
+    or
+    e instanceof ClassAggregateLiteral
+  } or
   TExplicitParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
   TInstanceParameterNode(MemberFunction f) { exists(f.getBlock()) and not f.isStatic() } or
   TUninitializedNode(LocalVariable v) { not v.hasInitializer() }
@@ -243,15 +247,23 @@ class PartialDefinitionNode extends PostUpdateNode, TPartialDefinitionNode {
 }
 
 /**
- * A node representing the object that was just constructed and is identified
- * with the "return value" of the constructor call.
+ * A node representing the temporary value of an object that was just
+ * constructed by a constructor call or an aggregate initializer. This is only
+ * for objects, not for pointers to objects.
+ *
+ * These expressions are their own post-update nodes but instead have synthetic
+ * pre-update nodes.
  */
-private class PostConstructorCallNode extends PostUpdateNode, TExprNode {
-  PostConstructorCallNode() { this = TExprNode(any(ConstructorCall c)) }
+private class ObjectInitializerNode extends PostUpdateNode, TExprNode {
+  PreObjectInitializerNode pre;
 
-  override PreConstructorCallNode getPreUpdateNode() {
-    TExprNode(result.getConstructorCall()) = this
+  ObjectInitializerNode() {
+    // If a `Node` is associated with a `PreObjectInitializerNode`, then it's
+    // an `ObjectInitializerNode`.
+    pre.getExpr() = this.asExpr()
   }
+
+  override PreObjectInitializerNode getPreUpdateNode() { result = pre }
 
   // No override of `toString` since these nodes already have a `toString` from
   // their overlap with `ExprNode`.
@@ -260,19 +272,19 @@ private class PostConstructorCallNode extends PostUpdateNode, TExprNode {
 /**
  * INTERNAL: do not use.
  *
- * A synthetic data-flow node that plays the role of the qualifier (or
- * `this`-argument) to a constructor call.
+ * A synthetic data-flow node that plays the role of a temporary object that
+ * has not yet been initialized.
  */
-class PreConstructorCallNode extends Node, TPreConstructorCallNode {
-  ConstructorCall getConstructorCall() { this = TPreConstructorCallNode(result) }
+class PreObjectInitializerNode extends Node, TPreObjectInitializerNode {
+  Expr getExpr() { this = TPreObjectInitializerNode(result) }
 
-  override Function getFunction() { result = getConstructorCall().getEnclosingFunction() }
+  override Function getFunction() { result = getExpr().getEnclosingFunction() }
 
-  override Type getType() { result = getConstructorCall().getType() }
+  override Type getType() { result = getExpr().getType() }
 
-  override Location getLocation() { result = getConstructorCall().getLocation() }
+  override Location getLocation() { result = getExpr().getLocation() }
 
-  override string toString() { result = getConstructorCall().toString() + " [pre constructor call]" }
+  override string toString() { result = getExpr().toString() + " [pre init]" }
 }
 
 /**

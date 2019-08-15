@@ -19,7 +19,7 @@ void absink(struct AB *ab) {
 int struct_init(void) {
   struct AB ab = { user_input(), 0 };
 
-  sink(ab.a); // flow [NOT DETECTED]
+  sink(ab.a); // flow
   sink(ab.b); // no flow
   absink(&ab);
 
@@ -28,7 +28,7 @@ int struct_init(void) {
     &ab,
   };
 
-  sink(outer.nestedAB.a); // flow [NOT DETECTED]
+  sink(outer.nestedAB.a); // flow
   sink(outer.nestedAB.b); // no flow
   sink(outer.pointerAB->a); // flow [NOT DETECTED]
   sink(outer.pointerAB->b); // no flow
