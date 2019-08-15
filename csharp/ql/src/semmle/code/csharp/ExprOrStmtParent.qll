@@ -12,7 +12,7 @@ import csharp
  * The `expr_parent_top_level()` relation extended to include a relation
  * between getters and expression bodies in properties such as `int P => 0`.
  */
-predicate expr_parent_top_level_adjusted(Expr child, int i, @top_level_exprorstmt_parent parent) {
+predicate expr_parent_top_level_adjusted(Expr child, int i, ControlFlowEntryElement parent) {
   expr_parent_top_level(child, i, parent)
   or
   parent = any(Getter g | expr_parent_top_level(child, i, g.getDeclaration())) and
@@ -108,7 +108,7 @@ class ExprOrStmtParent extends Element, @exprorstmt_parent {
  *
  * An element that can have a child top-level expression.
  */
-class TopLevelExprParent extends Element, @top_level_expr_parent {
+class TopLevelExprParent extends ControlFlowEntryElement, @top_level_expr_parent {
   final override Expr getChild(int i) { result = this.getChildExpr(i) }
 
   /** Gets the `i`th child expression of this element (zero-based). */

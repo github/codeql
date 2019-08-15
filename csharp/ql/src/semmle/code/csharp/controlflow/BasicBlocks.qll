@@ -74,8 +74,13 @@ class BasicBlock extends TBasicBlockStart {
   /** Gets the last control flow node in this basic block. */
   ControlFlow::Node getLastNode() { result = getNode(length() - 1) }
 
-  /** Gets the callable that this basic block belongs to. */
-  Callable getCallable() { result = this.getAPredecessor().getCallable() }
+  /** Gets the callable that this basic block belongs to, if any. */
+  final Callable getCallable() { result = this.getEntryElement() }
+
+  /** Gets the entry element that this basic block belongs to. */
+  final ControlFlowEntryElement getEntryElement() {
+    result = this.getFirstNode().getEnclosingElement()
+  }
 
   /** Gets the length of this basic block. */
   int length() { result = strictcount(getANode()) }
@@ -342,12 +347,10 @@ private import Internal
 
 /**
  * An entry basic block, that is, a basic block whose first node is
- * the entry node of a callable.
+ * an entry node (`ControlFlow::Nodes::EntryNode`).
  */
 class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() { entryBB(this) }
-
-  override Callable getCallable() { result.getEntryPoint() = this.getFirstNode() }
 }
 
 /** Holds if `bb` is an entry basic block. */
@@ -357,7 +360,7 @@ private predicate entryBB(BasicBlock bb) {
 
 /**
  * An exit basic block, that is, a basic block whose last node is
- * the exit node of a callable.
+ * an exit node (`ControlFlow::Nodes::ExitNode`).
  */
 class ExitBasicBlock extends BasicBlock {
   ExitBasicBlock() { exitBB(this) }

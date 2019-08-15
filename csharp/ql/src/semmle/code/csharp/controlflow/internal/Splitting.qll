@@ -836,7 +836,7 @@ class Splits extends TSplits {
  */
 pragma[noinline]
 predicate succEntrySplits(
-  @top_level_exprorstmt_parent pred, ControlFlowElement succ, Splits succSplits, SuccessorType t
+  ControlFlowEntryElement pred, ControlFlowElement succ, Splits succSplits, SuccessorType t
 ) {
   succ = succEntry(pred) and
   t instanceof NormalSuccessor and
@@ -847,7 +847,9 @@ predicate succEntrySplits(
  * Holds if `pred` with splits `predSplits` can exit the enclosing callable
  * `succ` with type `t`.
  */
-predicate succExitSplits(ControlFlowElement pred, Splits predSplits, Callable succ, SuccessorType t) {
+predicate succExitSplits(
+  ControlFlowElement pred, Splits predSplits, ControlFlowEntryElement succ, SuccessorType t
+) {
   exists(Reachability::SameSplitsBlock b, Completion c | pred = b.getAnElement() |
     b.isReachable(predSplits) and
     t.matchesCompletion(c) and

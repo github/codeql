@@ -1203,11 +1203,15 @@
 | post | Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:38:26:38:26 | String x |
 | post | Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:37:5:40:5 | {...} |
 | post | Foreach.cs:39:11:39:11 | ; | Foreach.cs:38:18:38:34 | (..., ...) |
+| post | Initializers.cs:3:9:3:9 | exit F | Initializers.cs:3:9:3:17 | ... = ... |
+| post | Initializers.cs:3:9:3:9 | this access | Initializers.cs:3:9:3:9 | enter F |
 | post | Initializers.cs:3:9:3:17 | ... = ... | Initializers.cs:3:13:3:17 | ... + ... |
 | post | Initializers.cs:3:13:3:13 | access to field H | Initializers.cs:3:9:3:9 | this access |
 | post | Initializers.cs:3:13:3:17 | ... + ... | Initializers.cs:3:17:3:17 | 1 |
 | post | Initializers.cs:3:17:3:17 | 1 | Initializers.cs:3:13:3:13 | access to field H |
 | post | Initializers.cs:4:9:4:9 | access to property G | Initializers.cs:4:27:4:31 | ... + ... |
+| post | Initializers.cs:4:9:4:9 | exit G | Initializers.cs:4:25:4:31 | ... = ... |
+| post | Initializers.cs:4:9:4:9 | this access | Initializers.cs:4:9:4:9 | enter G |
 | post | Initializers.cs:4:25:4:31 | ... = ... | Initializers.cs:4:9:4:9 | access to property G |
 | post | Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:4:9:4:9 | this access |
 | post | Initializers.cs:4:27:4:31 | ... + ... | Initializers.cs:4:31:4:31 | 2 |
@@ -1233,7 +1237,9 @@
 | post | Initializers.cs:11:39:11:39 | access to local variable i | Initializers.cs:11:18:11:63 | array creation of type Initializers[] |
 | post | Initializers.cs:11:42:11:61 | object creation of type Initializers | Initializers.cs:11:59:11:60 | "" |
 | post | Initializers.cs:11:59:11:60 | "" | Initializers.cs:11:39:11:39 | access to local variable i |
+| post | Initializers.cs:14:16:14:16 | exit H | Initializers.cs:14:16:14:20 | ... = ... |
 | post | Initializers.cs:14:16:14:20 | ... = ... | Initializers.cs:14:20:14:20 | 1 |
+| post | Initializers.cs:14:20:14:20 | 1 | Initializers.cs:14:16:14:16 | enter H |
 | post | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:23:3:23 | access to parameter i |
 | post | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:28:3:28 | 0 |
 | post | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
@@ -3742,12 +3748,16 @@
 | pre | Foreach.cs:38:26:38:26 | String x | Foreach.cs:38:33:38:33 | Int32 y |
 | pre | Foreach.cs:38:33:38:33 | Int32 y | Foreach.cs:38:18:38:34 | (..., ...) |
 | pre | Foreach.cs:38:39:38:42 | access to parameter args | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |
+| pre | Initializers.cs:3:9:3:9 | enter F | Initializers.cs:3:9:3:9 | this access |
 | pre | Initializers.cs:3:9:3:9 | this access | Initializers.cs:3:13:3:13 | access to field H |
+| pre | Initializers.cs:3:9:3:17 | ... = ... | Initializers.cs:3:9:3:9 | exit F |
 | pre | Initializers.cs:3:13:3:13 | access to field H | Initializers.cs:3:17:3:17 | 1 |
 | pre | Initializers.cs:3:13:3:17 | ... + ... | Initializers.cs:3:9:3:17 | ... = ... |
 | pre | Initializers.cs:3:17:3:17 | 1 | Initializers.cs:3:13:3:17 | ... + ... |
 | pre | Initializers.cs:4:9:4:9 | access to property G | Initializers.cs:4:25:4:31 | ... = ... |
+| pre | Initializers.cs:4:9:4:9 | enter G | Initializers.cs:4:9:4:9 | this access |
 | pre | Initializers.cs:4:9:4:9 | this access | Initializers.cs:4:27:4:27 | access to field H |
+| pre | Initializers.cs:4:25:4:31 | ... = ... | Initializers.cs:4:9:4:9 | exit G |
 | pre | Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:4:31:4:31 | 2 |
 | pre | Initializers.cs:4:27:4:31 | ... + ... | Initializers.cs:4:9:4:9 | access to property G |
 | pre | Initializers.cs:4:31:4:31 | 2 | Initializers.cs:4:27:4:31 | ... + ... |
@@ -3772,6 +3782,8 @@
 | pre | Initializers.cs:11:39:11:39 | access to local variable i | Initializers.cs:11:59:11:60 | "" |
 | pre | Initializers.cs:11:42:11:61 | object creation of type Initializers | Initializers.cs:11:37:11:63 | { ..., ... } |
 | pre | Initializers.cs:11:59:11:60 | "" | Initializers.cs:11:42:11:61 | object creation of type Initializers |
+| pre | Initializers.cs:14:16:14:16 | enter H | Initializers.cs:14:20:14:20 | 1 |
+| pre | Initializers.cs:14:16:14:20 | ... = ... | Initializers.cs:14:16:14:16 | exit H |
 | pre | Initializers.cs:14:20:14:20 | 1 | Initializers.cs:14:16:14:20 | ... = ... |
 | pre | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
 | pre | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:9:3:10 | exit M1 |
