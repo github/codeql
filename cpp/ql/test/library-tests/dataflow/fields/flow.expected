@@ -8,10 +8,8 @@ edges
 | A.cpp:55:12:55:19 | new [void] | A.cpp:55:5:55:5 | b [post update] [c, ... (1)] |
 | A.cpp:56:10:56:10 | b [c, ... (1)] | A.cpp:56:13:56:15 | call to get |
 | A.cpp:57:11:57:24 | call to B [c, ... (1)] | A.cpp:57:11:57:24 | new [c, ... (1)] |
-| A.cpp:57:11:57:24 | call to B [post constructor] [c, ... (1)] | A.cpp:57:11:57:24 | new [c, ... (1)] |
 | A.cpp:57:11:57:24 | new [c, ... (1)] | A.cpp:57:28:57:30 | call to get |
 | A.cpp:57:17:57:23 | new [void] | A.cpp:57:11:57:24 | call to B [c, ... (1)] |
-| A.cpp:57:17:57:23 | new [void] | A.cpp:57:11:57:24 | call to B [post constructor] [c, ... (1)] |
 | A.cpp:64:10:64:15 | call to setOnB [c, ... (1)] | A.cpp:66:10:66:11 | b2 [c, ... (1)] |
 | A.cpp:64:21:64:28 | new [void] | A.cpp:64:10:64:15 | call to setOnB [c, ... (1)] |
 | A.cpp:66:10:66:11 | b2 [c, ... (1)] | A.cpp:66:14:66:14 | c |
@@ -30,37 +28,25 @@ edges
 | A.cpp:142:7:142:20 | ... = ... [void] | A.cpp:142:7:142:7 | b [post update] [c, ... (1)] |
 | A.cpp:142:14:142:20 | new [void] | A.cpp:142:7:142:20 | ... = ... [void] |
 | A.cpp:143:7:143:10 | this [post update] [b, ... (1)] | A.cpp:151:12:151:24 | call to D [b, ... (1)] |
-| A.cpp:143:7:143:10 | this [post update] [b, ... (1)] | A.cpp:151:12:151:24 | call to D [post constructor] [b, ... (1)] |
 | A.cpp:143:7:143:10 | this [post update] [b, ... (2)] | A.cpp:151:12:151:24 | call to D [b, ... (2)] |
-| A.cpp:143:7:143:10 | this [post update] [b, ... (2)] | A.cpp:151:12:151:24 | call to D [post constructor] [b, ... (2)] |
 | A.cpp:143:7:143:31 | ... = ... [c, ... (1)] | A.cpp:143:7:143:10 | this [post update] [b, ... (2)] |
 | A.cpp:143:7:143:31 | ... = ... [void] | A.cpp:143:7:143:10 | this [post update] [b, ... (1)] |
 | A.cpp:143:25:143:31 | new [void] | A.cpp:143:7:143:31 | ... = ... [void] |
 | A.cpp:150:12:150:18 | new [void] | A.cpp:151:18:151:18 | b [void] |
 | A.cpp:151:12:151:24 | call to D [b, ... (1)] | A.cpp:152:10:152:10 | d [b, ... (1)] |
 | A.cpp:151:12:151:24 | call to D [b, ... (2)] | A.cpp:153:10:153:10 | d [b, ... (2)] |
-| A.cpp:151:12:151:24 | call to D [post constructor] [b, ... (1)] | A.cpp:152:10:152:10 | d [b, ... (1)] |
-| A.cpp:151:12:151:24 | call to D [post constructor] [b, ... (2)] | A.cpp:153:10:153:10 | d [b, ... (2)] |
 | A.cpp:151:18:151:18 | b [void] | A.cpp:151:12:151:24 | call to D [b, ... (1)] |
-| A.cpp:151:18:151:18 | b [void] | A.cpp:151:12:151:24 | call to D [post constructor] [b, ... (1)] |
 | A.cpp:152:10:152:10 | d [b, ... (1)] | A.cpp:152:13:152:13 | b |
 | A.cpp:153:10:153:10 | d [b, ... (2)] | A.cpp:153:13:153:13 | b [c, ... (1)] |
 | A.cpp:153:13:153:13 | b [c, ... (1)] | A.cpp:153:16:153:16 | c |
 | A.cpp:159:12:159:18 | new [void] | A.cpp:160:29:160:29 | b [void] |
 | A.cpp:160:18:160:60 | call to MyList [head, ... (1)] | A.cpp:161:38:161:39 | l1 [head, ... (1)] |
-| A.cpp:160:18:160:60 | call to MyList [post constructor] [head, ... (1)] | A.cpp:161:38:161:39 | l1 [head, ... (1)] |
 | A.cpp:160:29:160:29 | b [void] | A.cpp:160:18:160:60 | call to MyList [head, ... (1)] |
-| A.cpp:160:29:160:29 | b [void] | A.cpp:160:18:160:60 | call to MyList [post constructor] [head, ... (1)] |
 | A.cpp:161:18:161:40 | call to MyList [next, ... (2)] | A.cpp:162:38:162:39 | l2 [next, ... (2)] |
-| A.cpp:161:18:161:40 | call to MyList [post constructor] [next, ... (2)] | A.cpp:162:38:162:39 | l2 [next, ... (2)] |
 | A.cpp:161:38:161:39 | l1 [head, ... (1)] | A.cpp:161:18:161:40 | call to MyList [next, ... (2)] |
-| A.cpp:161:38:161:39 | l1 [head, ... (1)] | A.cpp:161:18:161:40 | call to MyList [post constructor] [next, ... (2)] |
 | A.cpp:162:18:162:40 | call to MyList [next, ... (3)] | A.cpp:165:10:165:11 | l3 [next, ... (3)] |
 | A.cpp:162:18:162:40 | call to MyList [next, ... (3)] | A.cpp:167:44:167:44 | l [next, ... (3)] |
-| A.cpp:162:18:162:40 | call to MyList [post constructor] [next, ... (3)] | A.cpp:165:10:165:11 | l3 [next, ... (3)] |
-| A.cpp:162:18:162:40 | call to MyList [post constructor] [next, ... (3)] | A.cpp:167:44:167:44 | l [next, ... (3)] |
 | A.cpp:162:38:162:39 | l2 [next, ... (2)] | A.cpp:162:18:162:40 | call to MyList [next, ... (3)] |
-| A.cpp:162:38:162:39 | l2 [next, ... (2)] | A.cpp:162:18:162:40 | call to MyList [post constructor] [next, ... (3)] |
 | A.cpp:165:10:165:11 | l3 [next, ... (3)] | A.cpp:165:14:165:17 | next [next, ... (2)] |
 | A.cpp:165:14:165:17 | next [next, ... (2)] | A.cpp:165:20:165:23 | next [head, ... (1)] |
 | A.cpp:165:20:165:23 | next [head, ... (1)] | A.cpp:165:26:165:29 | head |
@@ -71,38 +57,26 @@ edges
 | A.cpp:169:12:169:12 | l [head, ... (1)] | A.cpp:169:15:169:18 | head |
 | B.cpp:6:15:6:24 | new [void] | B.cpp:7:25:7:25 | e [void] |
 | B.cpp:7:16:7:35 | call to Box1 [elem1, ... (1)] | B.cpp:8:25:8:26 | b1 [elem1, ... (1)] |
-| B.cpp:7:16:7:35 | call to Box1 [post constructor] [elem1, ... (1)] | B.cpp:8:25:8:26 | b1 [elem1, ... (1)] |
 | B.cpp:7:25:7:25 | e [void] | B.cpp:7:16:7:35 | call to Box1 [elem1, ... (1)] |
-| B.cpp:7:25:7:25 | e [void] | B.cpp:7:16:7:35 | call to Box1 [post constructor] [elem1, ... (1)] |
 | B.cpp:8:16:8:27 | call to Box2 [box1, ... (2)] | B.cpp:9:10:9:11 | b2 [box1, ... (2)] |
 | B.cpp:8:16:8:27 | call to Box2 [box1, ... (2)] | B.cpp:10:10:10:11 | b2 [box1, ... (2)] |
-| B.cpp:8:16:8:27 | call to Box2 [post constructor] [box1, ... (2)] | B.cpp:9:10:9:11 | b2 [box1, ... (2)] |
-| B.cpp:8:16:8:27 | call to Box2 [post constructor] [box1, ... (2)] | B.cpp:10:10:10:11 | b2 [box1, ... (2)] |
 | B.cpp:8:25:8:26 | b1 [elem1, ... (1)] | B.cpp:8:16:8:27 | call to Box2 [box1, ... (2)] |
-| B.cpp:8:25:8:26 | b1 [elem1, ... (1)] | B.cpp:8:16:8:27 | call to Box2 [post constructor] [box1, ... (2)] |
 | B.cpp:9:10:9:11 | b2 [box1, ... (2)] | B.cpp:9:14:9:17 | box1 [elem1, ... (1)] |
 | B.cpp:9:14:9:17 | box1 [elem1, ... (1)] | B.cpp:9:20:9:24 | elem1 |
 | B.cpp:10:10:10:11 | b2 [box1, ... (2)] | B.cpp:10:14:10:17 | box1 [elem2, ... (1)] |
 | B.cpp:10:14:10:17 | box1 [elem2, ... (1)] | B.cpp:10:20:10:24 | elem2 |
 | B.cpp:15:15:15:27 | new [void] | B.cpp:16:37:16:37 | e [void] |
 | B.cpp:16:16:16:38 | call to Box1 [elem2, ... (1)] | B.cpp:17:25:17:26 | b1 [elem2, ... (1)] |
-| B.cpp:16:16:16:38 | call to Box1 [post constructor] [elem2, ... (1)] | B.cpp:17:25:17:26 | b1 [elem2, ... (1)] |
 | B.cpp:16:37:16:37 | e [void] | B.cpp:16:16:16:38 | call to Box1 [elem2, ... (1)] |
-| B.cpp:16:37:16:37 | e [void] | B.cpp:16:16:16:38 | call to Box1 [post constructor] [elem2, ... (1)] |
 | B.cpp:17:16:17:27 | call to Box2 [box1, ... (2)] | B.cpp:18:10:18:11 | b2 [box1, ... (2)] |
 | B.cpp:17:16:17:27 | call to Box2 [box1, ... (2)] | B.cpp:19:10:19:11 | b2 [box1, ... (2)] |
-| B.cpp:17:16:17:27 | call to Box2 [post constructor] [box1, ... (2)] | B.cpp:18:10:18:11 | b2 [box1, ... (2)] |
-| B.cpp:17:16:17:27 | call to Box2 [post constructor] [box1, ... (2)] | B.cpp:19:10:19:11 | b2 [box1, ... (2)] |
 | B.cpp:17:25:17:26 | b1 [elem2, ... (1)] | B.cpp:17:16:17:27 | call to Box2 [box1, ... (2)] |
-| B.cpp:17:25:17:26 | b1 [elem2, ... (1)] | B.cpp:17:16:17:27 | call to Box2 [post constructor] [box1, ... (2)] |
 | B.cpp:18:10:18:11 | b2 [box1, ... (2)] | B.cpp:18:14:18:17 | box1 [elem1, ... (1)] |
 | B.cpp:18:14:18:17 | box1 [elem1, ... (1)] | B.cpp:18:20:18:24 | elem1 |
 | B.cpp:19:10:19:11 | b2 [box1, ... (2)] | B.cpp:19:14:19:17 | box1 [elem2, ... (1)] |
 | B.cpp:19:14:19:17 | box1 [elem2, ... (1)] | B.cpp:19:20:19:24 | elem2 |
-| C.cpp:18:12:18:18 | call to C [post constructor] [s3, ... (1)] | C.cpp:19:5:19:5 | c [s3, ... (1)] |
 | C.cpp:18:12:18:18 | call to C [s3, ... (1)] | C.cpp:19:5:19:5 | c [s3, ... (1)] |
 | C.cpp:19:5:19:5 | c [s3, ... (1)] | C.cpp:27:8:27:11 | `this` parameter in func [s3, ... (1)] |
-| C.cpp:24:5:24:8 | this [post update] [s3, ... (1)] | C.cpp:18:12:18:18 | call to C [post constructor] [s3, ... (1)] |
 | C.cpp:24:5:24:8 | this [post update] [s3, ... (1)] | C.cpp:18:12:18:18 | call to C [s3, ... (1)] |
 | C.cpp:24:5:24:25 | ... = ... [void] | C.cpp:24:5:24:8 | this [post update] [s3, ... (1)] |
 | C.cpp:24:16:24:25 | new [void] | C.cpp:24:5:24:25 | ... = ... [void] |

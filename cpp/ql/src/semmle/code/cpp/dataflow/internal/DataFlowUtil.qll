@@ -253,9 +253,8 @@ private class PostConstructorCallNode extends PostUpdateNode, TExprNode {
     TExprNode(result.getConstructorCall()) = this
   }
 
-  override string toString() {
-    result = getPreUpdateNode().getConstructorCall().toString() + " [post constructor]"
-  }
+  // No override of `toString` since these nodes already have a `toString` from
+  // their overlap with `ExprNode`.
 }
 
 /**
