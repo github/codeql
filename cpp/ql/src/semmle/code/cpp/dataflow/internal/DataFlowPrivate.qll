@@ -5,6 +5,8 @@ private import DataFlowDispatch
 /** Gets the instance argument of a non-static call. */
 private Node getInstanceArgument(Call call) {
   result.asExpr() = call.getQualifier()
+  or
+  result.(PreConstructorCallNode).getConstructorCall() = call
   // This does not include the implicit `this` argument on auto-generated
   // base class destructor calls as those do not have an AST element.
 }
@@ -167,7 +169,15 @@ private class ArrayContent extends Content, TArrayContent {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
-  none() // stub implementation
+  exists(FieldAccess fa |
+    exists(Assignment a |
+      node1.asExpr() = a and
+      a.getLValue() = fa
+    ) and
+    not fa.getTarget().isStatic() and
+    node2.getPreUpdateNode().asExpr() = fa.getQualifier() and
+    f.(FieldContent).getField() = fa.getTarget()
+  )
 }
 
 /**
@@ -176,7 +186,12 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
  * `node2`.
  */
 predicate readStep(Node node1, Content f, Node node2) {
-  none() // stub implementation
+  exists(FieldAccess fr |
+    node1.asExpr() = fr.getQualifier() and
+    fr.getTarget() = f.(FieldContent).getField() and
+    fr = node2.asExpr() and
+    not fr = any(AssignExpr a).getLValue()
+  )
 }
 
 /**

@@ -2,10 +2,13 @@
 | test.cpp:100:13:100:18 | test.cpp:103:10:103:12 | AST only |
 | test.cpp:109:9:109:14 | test.cpp:110:10:110:12 | IR only |
 | test.cpp:136:27:136:32 | test.cpp:137:27:137:28 | AST only |
+| test.cpp:136:27:136:32 | test.cpp:138:27:138:34 | AST only |
 | test.cpp:136:27:136:32 | test.cpp:140:22:140:23 | AST only |
 | test.cpp:142:32:142:37 | test.cpp:145:10:145:11 | IR only |
 | test.cpp:151:35:151:40 | test.cpp:153:17:153:18 | IR only |
 | test.cpp:395:17:395:22 | test.cpp:397:10:397:18 | AST only |
+| test.cpp:407:13:407:18 | test.cpp:413:10:413:14 | AST only |
+| test.cpp:421:13:421:18 | test.cpp:417:10:417:14 | AST only |
 | test.cpp:421:13:421:18 | test.cpp:423:10:423:14 | AST only |
 | test.cpp:430:48:430:54 | test.cpp:433:8:433:10 | AST only |
 | test.cpp:436:53:436:59 | test.cpp:440:8:440:10 | AST only |
