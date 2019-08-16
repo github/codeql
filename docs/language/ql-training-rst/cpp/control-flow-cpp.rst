@@ -79,7 +79,7 @@ Control flow graphs
 Modeling control flow
 =====================
 
-The control flow is modelled with a QL class, ``ControlFlowNode``. Examples of control flow nodes include statements and expressions.
+The control flow is modeled with a QL class, ``ControlFlowNode``. Examples of control flow nodes include statements and expressions.
 
 ``ControlFlowNode`` provides API for traversing the control flow graph:
 
@@ -88,7 +88,7 @@ The control flow is modelled with a QL class, ``ControlFlowNode``. Examples of c
 - ``ControlFlowNode ControlFlowNode.getATrueSuccessor()``
 - ``ControlFlowNode ControlFlowNode.getAFalseSuccessor()``
 
-The control-flow graph is *intra-procedural* - in other words, only models paths within a function. To find the associated function, use
+The control-flow graph is *intra-procedural*–in other words, only models paths within a function. To find the associated function, use
 
 - ``Function ControlFlowNode.getControlFlowScope()``
 
@@ -101,7 +101,7 @@ The control-flow graph is *intra-procedural* - in other words, only models paths
 Example: malloc/free pairs
 ==========================
 
-Find calls to free that are reachable from an allocation on the same variable:
+Find calls to ``free`` that are reachable from an allocation on the same variable:
 
 .. literalinclude:: ../query-examples/cpp/control-flow-cpp-1.ql 
    :language: ql
@@ -127,7 +127,7 @@ Based on this query, write a query that finds accesses to the variable that occu
 Utilizing recursion
 ===================
 
-The main problem we observed in the previous exercise was that the successors relation is unaware of changes to the variable that would invalidate our results.
+The main problem we observed in the previous exercise was that the successor's relation is unaware of changes to the variable that would invalidate our results.
 
 We can fix this by writing our own successor predicate that stops traversing the CFG if the variable is re-defined.
 
@@ -199,6 +199,21 @@ Write a query to find unreachable basic blocks.
 .. note::
 
    This query has a good number of false positives on Chakra, many of them to do with templating and macros.
+
+Guard conditions
+================
+
+A ``GuardCondition`` is a ``Boolean`` condition that controls one or more basic blocks in the sense that it is known to be true/false at the entry of those blocks.
+
+- ``GuardCondition.controls(BasicBlock bb, boolean outcome):`` the entry of bb can only be reached if the guard evaluates to outcome
+
+- ``GuardCondition.comparesLt, GuardCondition.ensuresLt, GuardCondition.comparesEq:`` auxiliary predicates to identify conditions that guarantee that one expression is less than/equal to another
+
+Further materials
+=================
+
+- QL for C/C++: https://help.semmle.com/QL/learn-ql/ql/cpp/ql-for-cpp.html 
+- API reference: https://help.semmle.com/qldoc/cpp 
 
 .. rst-class:: end-slide
 
@@ -274,7 +289,7 @@ Create a subclass of ``ExprCall`` that uses your query to implement ``getTarget`
      }
    }
 
-Control flow graph customizations
+Control-flow graph customizations
 =================================
 
 The default control-flow graph implementation recognizes a few common patterns for non-returning functions, but sometimes it fails to spot them, which can cause imprecision.

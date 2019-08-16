@@ -53,7 +53,7 @@ Global data flow and taint tracking
   - Local (“intra-procedural”) data flow models flow within one function; feasible to compute for all functions in a snapshot
   - Global (“inter-procedural”) data flow models flow across function calls; not feasible to compute for all functions in a snapshot
 
-- For global data flow (and taint tracking), we must therefore provided restrictions to ensure the problem is tractable.
+- For global data flow (and taint tracking), we must therefore provide restrictions to ensure the problem is tractable.
 - Typically, this involves specifying the *source* and *sink*.
 
 .. note::
@@ -113,7 +113,7 @@ The library class ``SecurityOptions`` provides a (configurable) model of what co
 
 .. note::
 
-  We first define what it means to be a *source* of tainted data for this particular problem. In this case, what we care about is whether the format string can be provided by an external user to our application or service. As there are many such ways external data could be introduced into the system, the standard QL libraries for C/C++ include an extensible API for modelling user input. In this case, we will simply use the predefined set of *user inputs*, which includes arguments provided to command line applications.
+  We first define what it means to be a *source* of tainted data for this particular problem. In this case, what we care about is whether the format string can be provided by an external user to our application or service. As there are many such ways external data could be introduced into the system, the standard QL libraries for C/C++ include an extensible API for modeling user input. In this case, we will simply use the predefined set of *user inputs*, which includes arguments provided to command line applications.
 
 
 Defining sinks (exercise)
@@ -157,7 +157,7 @@ Use the ``FormattingFunction`` class to fill in the definition of “isSink”
 
 .. note::
 
-  When we run this query, we should find a single result. However, it is tricky to determine whether this result is a true positive - a “real” result - because our query only reports the source and the sink, and not the path through the graph between the two.
+  When we run this query, we should find a single result. However, it is tricky to determine whether this result is a true positive (a “real” result) because our query only reports the source and the sink, and not the path through the graph between the two.
 
 Path queries
 ============
@@ -182,7 +182,7 @@ Use this template:
 
 .. note::
 
-  To see the paths between the source and the sinks, we can convert the query to a path problem query. There are a few minor changes that need to be made for this to work - we need an additional import, to specify ``PathNode`` rather than ``Node``, and to add the source/sink to the query output (so that we can automatically determine the paths).
+  To see the paths between the source and the sinks, we can convert the query to a path problem query. There are a few minor changes that need to be made for this to work–we need an additional import, to specify ``PathNode`` rather than ``Node``, and to add the source/sink to the query output (so that we can automatically determine the paths).
 
 Defining additional taint steps
 ===============================
@@ -250,7 +250,7 @@ Extra slides
 Exercise: How not to do global data flow
 ========================================
 
-Implement a flowStep predicate extending localFlowStep with steps through function calls and returns. Why might we not want to use this?
+Implement a ``flowStep`` predicate extending ``localFlowStep`` with steps through function calls and returns. Why might we not want to use this?
 
 .. code-block:: ql
 

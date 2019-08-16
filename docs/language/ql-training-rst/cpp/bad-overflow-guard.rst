@@ -43,7 +43,7 @@ Where might this go wrong?
   - In C/C++ we often need to check for whether an operation `overflows <https://en.wikipedia.org/wiki/Integer_overflow>`__.
   - An overflow is when an arithmetic operation, such as an addition, results in a number which is too large to be stored in the type.
   - When an operation overflows, the value “wraps” around.
-  - A typical way to check for overflow of an addition, therefore, is whether the result is less than one of the arguments - that is the result has **wrapped**.
+  - A typical way to check for overflow of an addition, therefore, is whether the result is less than one of the arguments–that is the result has **wrapped**.
 
 Integer promotion
 =================
@@ -139,13 +139,13 @@ Let’s look for overflow guards of the form ``v + b < v``, using the classes
 
   - When performing `variant analysis <https://semmle.com/variant-analysis>`__, it is usually helpful to write a simple query that finds the simple syntactic pattern, before trying to go on to describe the cases where it goes wrong.
   - In this case, we start by looking for all the *overflow* checks, before trying to refine the query to find all *bad overflow* checks.
-  - The select clause defines what this query is looking for:
+  - The ``select`` clause defines what this query is looking for:
 
     - an ``AddExpr``: the expression that is being checked for overflow.
     - a ``RelationalOperation``: the overflow comparison check.
     - a ``Variable``: used as an argument to both the addition and comparison.
 
-  - The where part of the query ties these three QL variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard QL for C/C++ library <https://help.semmle.com/qldoc/cpp/>`__.
+  - The ``where`` part of the query ties these three QL variables together using `predicates <https://help.semmle.com/QL/ql-handbook/predicates.html>`__ defined in the `standard QL for C/C++ library <https://help.semmle.com/qldoc/cpp/>`__.
 
 QL query: bad overflow guards
 =============================
@@ -197,14 +197,14 @@ Now our query becomes:
   - However, this is a little bit repetitive. What we really want to say is that: all the operands of the addition are small. Fortunately, QL provides a ``forall`` formula that we can use in these circumstances.
   - A ``forall`` has three parts:
 
-    - A declaration part, where we can introduce variables.
+    - A “declaration” part, where we can introduce variables.
     - A “range” part, which allows us to restrict those variables.
     - A “condition” part. The ``forall`` as a whole holds if the condition holds for each of the values in the range.
   - In our case:
 
     - The declaration introduces a variable for expressions, called ``op``. At this stage, this variable represents all the expressions in the program.
     - The “range” part, ``op = a.getAnOperand()``,  restricts ``op`` to being one of the two operands to the addition.
-    - The “condition” part, ``isSmall(op)``, says that the ``forall`` holds only if the condition - that the ``op`` is small - holds for everything in the range - that is both the arguments to the addition.
+    - The “condition” part, ``isSmall(op)``, says that the ``forall`` holds only if the condition (that the ``op`` is small) holds for everything in the range–that is, both the arguments to the addition.
 
 QL query: bad overflow guards
 =============================

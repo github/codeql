@@ -103,15 +103,18 @@ Find all instances!
 Analysis overview
 =================
 
-.. rst-class:: build
-
-- The database schema is (source) language specific, as are queries and libraries.
-- Multi-language code bases are analyzed one language at a time.
-
 .. container:: image-box
 
    .. image:: ../_static-training/analysis-overview.png
-       
+
+.. rst-class:: build
+
+
+
+- The database schema is (source) language specific, as are queries and libraries.
+
+- Multi-language code bases are analyzed one language at a time.
+
 
 .. note::
 

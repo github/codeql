@@ -52,13 +52,13 @@ RCE in rsyslog
 
 - Vulnerable code looked similar to this (`original <https://github.com/rsyslog/librelp/blob/532aa362f0f7a8d037505b0a27a1df452f9bac9e/src/tcp.c#L1195-L1211>`__):
 
-.. code-block:: cpp
-
-  char buf[1024];
-  int pos = 0;
-  for (int i = 0; i < n; i++) {
-    pos += snprintf(buf + pos, sizeof(buf) - pos, "%s", strs[i]);
-  }
+  .. code-block:: cpp
+  
+    char buf[1024];
+    int pos = 0;
+    for (int i = 0; i < n; i++) {
+      pos += snprintf(buf + pos, sizeof(buf) - pos, "%s", strs[i]);
+    }
 
 - Disclosed as `CVE-2018-1000140 <https://nvd.nist.gov/vuln/detail/CVE-2018-1000140>`__.
 - Blog post: `https://blog.semmle.com/librelp-buffer-overflow-cve-2018-1000140/ <https://blog.semmle.com/librelp-buffer-overflow-cve-2018-1000140/>`__.

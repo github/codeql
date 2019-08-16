@@ -60,14 +60,14 @@ The basic representation of an analyzed program is an *abstract syntax tree (AST
 
 .. note::
 
-  When writing queries in QL it is important to have in mind the underlying representation of the program which is stored in the database. Typically queries make use of the “AST” representation of the program - a tree structure where program elements are nested within other program elements.
+  When writing queries in QL it is important to have in mind the underlying representation of the program which is stored in the database. Typically queries make use of the “AST” representation of the program–a tree structure where program elements are nested within other program elements.
 
   The “Introducing the C/C++ libraries” help topic contains a more complete overview of important AST classes and the rest of the C++ QL libraries: https://help.semmle.com/QL/learn-ql/ql/cpp/introduce-libraries-cpp.html 
 
 Database representations of ASTs
 ================================
 
-AST nodes and other program elements are encoded in the database as *entity values*. Entities are implemented as integers, but in QL they are opaque - all one can do with them is to check their equality.
+AST nodes and other program elements are encoded in the database as *entity values*. Entities are implemented as integers, but in QL they are opaque–all one can do with them is to check their equality.
 
 Each entity belongs to an entity type. Entity types have names starting with “@” and are defined in the database schema (not in QL).
 
@@ -136,7 +136,7 @@ Working with functions
 
 Functions are represented by the Function QL class. Each declaration or definition of a function is represented by a ``FunctionDeclarationEntry``.
 
-Calls to functions are modelled by QL class Call and its subclasses:
+Calls to functions are modeled by QL class Call and its subclasses:
 
 - ``Call.getTarget()`` gets the declared target of the call; undefined for calls through function pointers
 - ``Function.getACallToThisFunction()`` gets a call to this function

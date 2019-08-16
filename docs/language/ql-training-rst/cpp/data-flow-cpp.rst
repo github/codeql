@@ -24,8 +24,8 @@ Alternatively, you can query the project in `the query console <https://lgtm.com
 
    Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
-Agenda
-======
+Overview
+========
 
 - Non-constant format string
 - Data flow
@@ -108,7 +108,7 @@ We need something better.
 
   Here, ``DMLOut`` and ``ExtOut`` are macros that expand to formatting calls. The format specifier is not constant, in the sense that the format argument is not a string literal. However, it is clearly one of two possible constants, both with the same number of format specifiers.
 
-  What we need is a way to determine whether the format argument is ever set to something that is, not constant.
+  What we need is a way to determine whether the format argument is ever set to something that is not constant.
 
 Data flow analysis
 ==================
@@ -127,7 +127,7 @@ Data flow analysis
 
   The solution here is to use *data flow*. Data flow is, as the name suggests, about tracking the flow of data through the program. It helps answers questions like: *does this expression ever hold a value that originates from a particular other place in the program*?
 
-  We can visualize the data flow problem as one of finding paths through a directed graph, where the nodes of the graph are elements in program, and the edges represent the flow of data between those elements. If a path exists, then the data flows between those two edges.
+  We can visualize the data flow problem as one of finding paths through a directed graph, where the nodes of the graph are elements in the program, and the edges represent the flow of data between those elements. If a path exists, then the data flows between those two edges.
 
 Data flow graphs
 ================
@@ -246,19 +246,22 @@ Data flow graph
 
   The data flow graph is separate from the `AST <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`__, to allow for flexibility in how data flow is modeled. There are a small number of data flow node types–expression nodes, parameter nodes, uninitialized variable nodes, and definition by reference nodes. Each node provides mapping functions to and from the relevant AST (for example ``Expr``, ``Parameter`` etc.) or symbol table (for example ``Variable``) classes.
 
-Taint-tracking
+Taint tracking
 ==============
 
 - Usually, we want to generalise slightly by not only considering plain data flow, but also “taint” propagation, that is, whether a value is influenced by or derived from another.
 
 - Examples:
 
-.. code-block:: cpp
+  .. code-block:: cpp
+  
+    sink = source;        // source -> sink: data and taint
+    strcat(sink, source); // source -> sink: taint, not data
 
-  sink = source;        // source -> sink: data and taint
-  strcat(sink, source); // source -> sink: taint, not data
+- Library ``semmle.code.cpp.dataflow.TaintTracking`` provides predicates for tracking taint:
 
-- Library ``semmle.code.cpp.dataflow.TaintTracking`` provides predicates for tracking taint; ``TaintTracking::localTaintStep`` represents one (local) taint step, ``TaintTracking::localTaint`` is its transitive closure.
+  - ``TaintTracking::localTaintStep`` represents one (local) taint step 
+  - ``TaintTracking::localTaint`` is its transitive closure.
 
 .. note::
 
@@ -304,8 +307,20 @@ Refine the query to find calls to ``printf``-like functions where the format arg
 
 .. rst-class:: build
 
-.. literalinclude:: ../query-examples/cpp/data-flow-cpp-2.ql
-  :language: ql
+.. code-block:: ql
+
+   import cpp
+   import semmle.code.cpp.dataflow.DataFlow
+   import semmle.code.cpp.commons.Printf
+   
+   class SourceNode extends DataFlow::Node { ... }
+   
+   from FormattingFunction f, Call c, SourceNode src, DataFlow::Node  arg
+   where c.getTarget() = f and
+         arg.asExpr() = c.getArgument(f.getFormatParameterIndex()) and
+         DataFlow::localFlow(src, arg) and
+         not src.asExpr() instanceof StringLiteral
+   select arg, "Non-constant format string."
 
 Refinements (take home exercise)
 ================================
@@ -325,4 +340,4 @@ Beyond local data flow
 - Results are still underwhelming.
 - Dealing with parameter passing becomes cumbersome.
 - Instead, let’s turn the problem around and find user-controlled data that flows into a ``printf`` format argument, potentially through calls.
-- This needs **global data flow**.
+- This needs :doc:`global data flow <global-data-flow-cpp>`.
