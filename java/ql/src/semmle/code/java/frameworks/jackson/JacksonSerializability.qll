@@ -7,6 +7,7 @@ import java
 import semmle.code.java.Serializability
 import semmle.code.java.Reflection
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.DataFlow5
 
 class JacksonJSONIgnoreAnnotation extends NonReflectiveAnnotation {
   JacksonJSONIgnoreAnnotation() {
@@ -52,7 +53,7 @@ library class FieldReferencedJacksonSerializableType extends JacksonSerializable
 
 abstract class JacksonDeserializableType extends Type { }
 
-private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow::Configuration {
+private class TypeLiteralToJacksonDatabindFlowConfiguration extends DataFlow5::Configuration {
   TypeLiteralToJacksonDatabindFlowConfiguration() {
     this = "TypeLiteralToJacksonDatabindFlowConfiguration"
   }
