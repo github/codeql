@@ -6,19 +6,17 @@ using the JavaScript type tracking library.
 
 The type tracking library makes it possible to track values through properties and function calls,
 usually to recognize method calls and properties accessed on a specific type of object.
-This can act as a substitute for static type information, so for TypeScript analysis, it may be easier to use the
-`static type system <https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-ts.html#static-type-information>`__.
-In this article we'll be working with plain untyped JavaScript.
 
 This is an advanced topic and is intended for readers already familiar with the
 `SourceNode <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#source-nodes>`__ class as well as
 `taint tracking <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#using-global-taint-tracking>`__.
+For TypeScript analysis also consider reading about `static type information <https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-ts.html#static-type-information>`__ first.
 
 
 The problem of recognizing method calls
 ---------------------------------------
 
-We'll start with a simple model of the Firebase API and gradually build on it to use type tracking.
+We'll start with a simple model of the `Firebase API <https://firebase.google.com/docs/reference/js/firebase.database>`__ and gradually build on it to use type tracking.
 Knowledge of Firebase is not required.
 
 Suppose we wish to find places where data is written to a Firebase database, as
@@ -129,7 +127,7 @@ Predicates that use type tracking usually conform to the following general patte
 
   SourceNode myType(TypeTracker t) {
     t.start() and
-    result = /* value to track */
+    result = /* SourceNode to track */
     or
     exists(TypeTracker t2 |
       result = myType(t2).track(t2, t)
@@ -276,7 +274,7 @@ For reference, here's our simple Firebase model with type tracking on every pred
     result = firebaseRef().getAMethodCall("set")
   }
 
-`Here <https://lgtm.com/query/1053770500827789481>`__ is a run of an example query using the model on one of the Firebase sample projects.
+`Here <https://lgtm.com/query/1053770500827789481>`__ is a run of an example query using the model to find `set` calls on one of the Firebase sample projects.
 It's been modified slightly to handle a bit more of the API, which is out of scope of this tutorial.
 
 Tracking associated data
@@ -391,7 +389,7 @@ Based on that we can track the ``snapshot`` value and find the ``val()`` call it
 
 With this addition, ``firebaseDatabaseRead("forecast")`` finds the call to ``snapshot.val()`` which contains the value of the forecast.
 
-`Here <https://lgtm.com/query/8761360814276109092>`__ is a run of an example query using the model.
+`Here <https://lgtm.com/query/8761360814276109092>`__ is a run of an example query using the model to find `val` calls.
 
 Summary
 -------
@@ -402,7 +400,7 @@ This covers the use of the type tracking library. To recap, use this template to
 
   SourceNode myType(TypeTracker t) {
     t.start() and
-    result = /* value to track */
+    result = /* SourceNode to track */
     or
     exists(TypeTracker t2 |
       result = myType(t2).track(t2, t)
@@ -430,6 +428,13 @@ Use this template to define backward type tracking predicates:
     result = myType(TypeBackTracker::end())
   }
 
+Note that these predicates all return ``SourceNode``,
+so attempts to track a non-source node, such as an identifier or string literal,
+will not work.
+
+Also note that the predicates taking a ``TypeTracker`` or ``TypeBackTracker`` can often be made ``private``,
+as they are typically only used as an intermediate result to compute the other predicate.
+
 Limitations
 -----------
 
@@ -453,7 +458,7 @@ This is an example of where `data flow configurations <https://help.semmle.com/Q
 When to use type tracking
 -------------------------
 
-Type tracking and data flow configurations are essentally competing solutions to the same
+Type tracking and data flow configurations are essentially competing solutions to the same
 problem, each with their own tradeoffs.
 
 Type tracking can be used in any number of predicates, which may depend on each other
@@ -461,7 +466,7 @@ in fairly unrestricted ways. The result of one predicate may be the starting
 point for another. Type tracking predicates may be mutually recursive.
 Type tracking predicates can have any number of extra parameters, making it possible, but optional,
 to construct source/sink pairs. Omitting source/sink pairs can be useful when there is a huge number
-of sources and the sinks are not known to the library model.
+of sources and sinks.
 
 Data flow configurations have more restricted dependencies but are more powerful in other ways.
 For performance reasons,
@@ -486,6 +491,15 @@ Prefer data flow configurations when:
 - Tracking transformations of a value through generic utility functions.
 - Tracking values through string manipulation.
 - Generating a path from source to sink -- see :doc:`constructing path queries <../writing-queries/path-queries>`.
+
+Lastly, depending on the code base being analyzed, some alternatives to consider are:
+
+- Using `static type information <https://help.semmle.com/QL/learn-ql/javascript/introduce-libraries-ts.html#static-type-information>`__,
+  if analyzing TypeScript code.
+
+- Relying on local data flow.
+
+- Relying on syntactic heuristics such as the name of a method, property, or variable.
 
 Type tracking in the standard libraries
 ---------------------------------------
