@@ -1,4 +1,5 @@
-| stl.cpp:67:7:67:7 | Load: a | stl.cpp:63:12:63:17 | Call: call to source |
+| stl.cpp:69:7:69:7 | Convert: (const char *)... | stl.cpp:65:12:65:17 | Call: call to source |
+| stl.cpp:69:7:69:7 | Load: a | stl.cpp:65:12:65:17 | Call: call to source |
 | taint.cpp:8:8:8:13 | Load: clean1 | taint.cpp:4:27:4:33 | InitializeParameter: source1 |
 | taint.cpp:16:8:16:14 | Load: source1 | taint.cpp:12:22:12:27 | Call: call to source |
 | taint.cpp:17:8:17:16 | Add: ++ ... | taint.cpp:12:22:12:27 | Call: call to source |

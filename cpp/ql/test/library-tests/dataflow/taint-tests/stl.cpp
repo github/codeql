@@ -1,7 +1,4 @@
 
-char *source();
-void sink(...) {};
-
 typedef unsigned long size_t;
 
 namespace std
@@ -57,6 +54,11 @@ namespace std
 
 	using stringstream = basic_stringstream<char>;
 }
+
+char *source();
+void sink(const char *s) {};
+void sink(const std::string &s) {};
+void sink(const std::stringstream &s) {};
 
 void test_string()
 {

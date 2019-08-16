@@ -1,28 +1,28 @@
-| stl.cpp:64:16:64:21 | call to basic_string | stl.cpp:22:3:22:14 | basic_string | dataflow | InParameter 0 | OutReturnValue |
-| stl.cpp:64:16:64:21 | call to basic_string | stl.cpp:22:3:22:14 | basic_string | dataflow | InParameter 1 | OutReturnValue |
-| stl.cpp:64:16:64:21 | call to basic_string | stl.cpp:22:3:22:14 | basic_string | dataflow | InParameter 2 | OutReturnValue |
-| stl.cpp:65:16:65:24 | call to basic_string | stl.cpp:22:3:22:14 | basic_string | dataflow | InParameter 0 | OutReturnValue |
-| stl.cpp:65:16:65:24 | call to basic_string | stl.cpp:22:3:22:14 | basic_string | dataflow | InParameter 1 | OutReturnValue |
-| stl.cpp:65:16:65:24 | call to basic_string | stl.cpp:22:3:22:14 | basic_string | dataflow | InParameter 2 | OutReturnValue |
-| stl.cpp:70:9:70:13 | call to c_str | stl.cpp:24:16:24:20 | c_str | dataflow | InQualifier | OutReturnValue |
-| stl.cpp:71:9:71:13 | call to c_str | stl.cpp:24:16:24:20 | c_str | dataflow | InQualifier | OutReturnValue |
-| stl.cpp:77:16:77:24 | call to basic_string | stl.cpp:22:3:22:14 | basic_string | dataflow | InParameter 0 | OutReturnValue |
-| stl.cpp:77:16:77:24 | call to basic_string | stl.cpp:22:3:22:14 | basic_string | dataflow | InParameter 1 | OutReturnValue |
-| stl.cpp:77:16:77:24 | call to basic_string | stl.cpp:22:3:22:14 | basic_string | dataflow | InParameter 2 | OutReturnValue |
-| stl.cpp:79:6:79:6 | call to operator<< | stl.cpp:42:67:42:76 | operator<< | taint | InParameterPointer 1 | OutReturnValue |
-| stl.cpp:79:6:79:6 | call to operator<< | stl.cpp:42:67:42:76 | operator<< | taint | InReturnValue | OutParameterPointer 0 |
-| stl.cpp:80:6:80:6 | call to operator<< | stl.cpp:42:67:42:76 | operator<< | taint | InParameterPointer 1 | OutReturnValue |
-| stl.cpp:80:6:80:6 | call to operator<< | stl.cpp:42:67:42:76 | operator<< | taint | InReturnValue | OutParameterPointer 0 |
-| stl.cpp:81:6:81:6 | call to operator<< | stl.cpp:42:67:42:76 | operator<< | taint | InParameterPointer 1 | OutReturnValue |
-| stl.cpp:81:6:81:6 | call to operator<< | stl.cpp:42:67:42:76 | operator<< | taint | InReturnValue | OutParameterPointer 0 |
-| stl.cpp:81:15:81:15 | call to operator<< | stl.cpp:42:67:42:76 | operator<< | taint | InParameterPointer 1 | OutReturnValue |
-| stl.cpp:81:15:81:15 | call to operator<< | stl.cpp:42:67:42:76 | operator<< | taint | InReturnValue | OutParameterPointer 0 |
-| stl.cpp:82:6:82:6 | call to operator<< | stl.cpp:43:85:43:94 | operator<< | taint | InParameterPointer 1 | OutReturnValue |
-| stl.cpp:82:6:82:6 | call to operator<< | stl.cpp:43:85:43:94 | operator<< | taint | InReturnValue | OutParameterPointer 0 |
-| stl.cpp:88:11:88:13 | call to str | stl.cpp:55:42:55:44 | str | taint | InQualifier | OutReturnValue |
-| stl.cpp:89:11:89:13 | call to str | stl.cpp:55:42:55:44 | str | taint | InQualifier | OutReturnValue |
-| stl.cpp:90:11:90:13 | call to str | stl.cpp:55:42:55:44 | str | taint | InQualifier | OutReturnValue |
-| stl.cpp:91:11:91:13 | call to str | stl.cpp:55:42:55:44 | str | taint | InQualifier | OutReturnValue |
+| stl.cpp:66:16:66:21 | call to basic_string | stl.cpp:19:3:19:14 | basic_string | dataflow | InParameter 0 | OutReturnValue |
+| stl.cpp:66:16:66:21 | call to basic_string | stl.cpp:19:3:19:14 | basic_string | dataflow | InParameter 1 | OutReturnValue |
+| stl.cpp:66:16:66:21 | call to basic_string | stl.cpp:19:3:19:14 | basic_string | dataflow | InParameter 2 | OutReturnValue |
+| stl.cpp:67:16:67:24 | call to basic_string | stl.cpp:19:3:19:14 | basic_string | dataflow | InParameter 0 | OutReturnValue |
+| stl.cpp:67:16:67:24 | call to basic_string | stl.cpp:19:3:19:14 | basic_string | dataflow | InParameter 1 | OutReturnValue |
+| stl.cpp:67:16:67:24 | call to basic_string | stl.cpp:19:3:19:14 | basic_string | dataflow | InParameter 2 | OutReturnValue |
+| stl.cpp:72:9:72:13 | call to c_str | stl.cpp:21:16:21:20 | c_str | dataflow | InQualifier | OutReturnValue |
+| stl.cpp:73:9:73:13 | call to c_str | stl.cpp:21:16:21:20 | c_str | dataflow | InQualifier | OutReturnValue |
+| stl.cpp:79:16:79:24 | call to basic_string | stl.cpp:19:3:19:14 | basic_string | dataflow | InParameter 0 | OutReturnValue |
+| stl.cpp:79:16:79:24 | call to basic_string | stl.cpp:19:3:19:14 | basic_string | dataflow | InParameter 1 | OutReturnValue |
+| stl.cpp:79:16:79:24 | call to basic_string | stl.cpp:19:3:19:14 | basic_string | dataflow | InParameter 2 | OutReturnValue |
+| stl.cpp:81:6:81:6 | call to operator<< | stl.cpp:39:67:39:76 | operator<< | taint | InParameterPointer 1 | OutReturnValue |
+| stl.cpp:81:6:81:6 | call to operator<< | stl.cpp:39:67:39:76 | operator<< | taint | InReturnValue | OutParameterPointer 0 |
+| stl.cpp:82:6:82:6 | call to operator<< | stl.cpp:39:67:39:76 | operator<< | taint | InParameterPointer 1 | OutReturnValue |
+| stl.cpp:82:6:82:6 | call to operator<< | stl.cpp:39:67:39:76 | operator<< | taint | InReturnValue | OutParameterPointer 0 |
+| stl.cpp:83:6:83:6 | call to operator<< | stl.cpp:39:67:39:76 | operator<< | taint | InParameterPointer 1 | OutReturnValue |
+| stl.cpp:83:6:83:6 | call to operator<< | stl.cpp:39:67:39:76 | operator<< | taint | InReturnValue | OutParameterPointer 0 |
+| stl.cpp:83:15:83:15 | call to operator<< | stl.cpp:39:67:39:76 | operator<< | taint | InParameterPointer 1 | OutReturnValue |
+| stl.cpp:83:15:83:15 | call to operator<< | stl.cpp:39:67:39:76 | operator<< | taint | InReturnValue | OutParameterPointer 0 |
+| stl.cpp:84:6:84:6 | call to operator<< | stl.cpp:40:85:40:94 | operator<< | taint | InParameterPointer 1 | OutReturnValue |
+| stl.cpp:84:6:84:6 | call to operator<< | stl.cpp:40:85:40:94 | operator<< | taint | InReturnValue | OutParameterPointer 0 |
+| stl.cpp:90:11:90:13 | call to str | stl.cpp:52:42:52:44 | str | taint | InQualifier | OutReturnValue |
+| stl.cpp:91:11:91:13 | call to str | stl.cpp:52:42:52:44 | str | taint | InQualifier | OutReturnValue |
+| stl.cpp:92:11:92:13 | call to str | stl.cpp:52:42:52:44 | str | taint | InQualifier | OutReturnValue |
+| stl.cpp:93:11:93:13 | call to str | stl.cpp:52:42:52:44 | str | taint | InQualifier | OutReturnValue |
 | taint.cpp:170:3:170:8 | call to strcpy | taint.cpp:156:7:156:12 | strcpy | dataflow | InParameter 0 | OutReturnValue |
 | taint.cpp:170:3:170:8 | call to strcpy | taint.cpp:156:7:156:12 | strcpy | dataflow | InParameterPointer 1 | OutParameterPointer 0 |
 | taint.cpp:170:3:170:8 | call to strcpy | taint.cpp:156:7:156:12 | strcpy | dataflow | InParameterPointer 1 | OutReturnPointer |
