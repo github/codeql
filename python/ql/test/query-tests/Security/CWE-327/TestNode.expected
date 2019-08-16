@@ -1,4 +1,3 @@
-WARNING: Predicate getNode has been deprecated and may be removed in future (TestNode.ql:9,25-32)
 | Taint Crypto.Cipher.ARC4 | test_pycrypto.py:5:14:5:27 | test_pycrypto.py:5 | test_pycrypto.py:5:14:5:27 | Attribute() |  |
 | Taint Crypto.Cipher.ARC4 | test_pycrypto.py:6:12:6:17 | test_pycrypto.py:6 | test_pycrypto.py:6:12:6:17 | cipher |  |
 | Taint cryptography.Cipher.RC4 | test_cryptography.py:5:14:5:47 | test_cryptography.py:5 | test_cryptography.py:5:14:5:47 | Cipher() |  |
