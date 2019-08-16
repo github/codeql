@@ -26,9 +26,7 @@ class SQLInjectionConfiguration extends TaintTracking::Configuration {
 
     SQLInjectionConfiguration() { this = "SQL injection configuration" }
 
-    override predicate isSource(TaintTracking::Source source) {
-        source instanceof HttpRequestTaintSource
-    }
+    override predicate isSource(TaintTracking::Source source) { source instanceof HttpRequestTaintSource }
 
     override predicate isSink(TaintTracking::Sink sink) { sink instanceof SqlInjectionSink }
 

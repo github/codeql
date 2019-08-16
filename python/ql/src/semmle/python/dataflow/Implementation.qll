@@ -2,7 +2,6 @@ import python
 import semmle.python.security.TaintTracking
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.Filters as Filters
-private import semmle.python.dataflow.Presentation
 
 newtype TTaintTrackingContext =
     TNoParam()

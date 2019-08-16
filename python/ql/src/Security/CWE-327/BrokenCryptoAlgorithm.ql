@@ -16,9 +16,7 @@ class BrokenCryptoConfiguration extends TaintTracking::Configuration {
 
     BrokenCryptoConfiguration() { this = "Broken crypto configuration" }
 
-    override predicate isSource(TaintTracking::Source source) { 
-        source instanceof SensitiveDataSource
-    }
+    override predicate isSource(TaintTracking::Source source) { source instanceof SensitiveDataSource }
 
     override predicate isSink(TaintTracking::Sink sink) {
         sink instanceof WeakCryptoSink
