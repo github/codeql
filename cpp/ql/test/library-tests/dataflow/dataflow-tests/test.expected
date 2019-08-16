@@ -1,4 +1,6 @@
 | acrossLinkTargets.cpp:12:8:12:8 | x | acrossLinkTargets.cpp:19:27:19:32 | call to source |
+| lambdas.cpp:35:8:35:8 | a | lambdas.cpp:8:10:8:15 | call to source |
+| lambdas.cpp:41:8:41:8 | a | lambdas.cpp:8:10:8:15 | call to source |
 | test.cpp:7:8:7:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:9:8:9:9 | t1 | test.cpp:6:12:6:17 | call to source |
 | test.cpp:10:8:10:9 | t2 | test.cpp:6:12:6:17 | call to source |

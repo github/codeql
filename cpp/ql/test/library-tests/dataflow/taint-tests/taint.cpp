@@ -215,3 +215,48 @@ void test_swap() {
 	sink(x); // [FALSE POSITIVE]
 	sink(y); // tainted
 }
+
+// --- lambdas ---
+
+void test_lambdas()
+{
+	int t = source();
+	int u = 0;
+	int v = 0;
+	int w = 0;
+
+	auto a = [t, u]() -> int {
+		sink(t); // tainted [NOT DETECTED]
+		sink(u);
+		return t;
+	};
+	sink(a()); // tainted
+
+	auto b = [&] {
+		sink(t); // tainted [NOT DETECTED]
+		sink(u);
+		v = source(); // (v is reference captured)
+	};
+	b();
+	sink(v); // tainted [NOT DETECTED]
+
+	auto c = [=] {
+		sink(t); // tainted [NOT DETECTED]
+		sink(u);
+	};
+	c();
+
+	auto d = [](int a, int b) {
+		sink(a); // tainted
+		sink(b);
+	};
+	d(t, u);
+
+	auto e = [](int &a, int &b, int &c) {
+		sink(a); // tainted
+		sink(b);
+		c = source();
+	};
+	e(t, u, w);
+	sink(w); // tainted [NOT DETECTED]
+}
