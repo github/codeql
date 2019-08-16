@@ -1,5 +1,5 @@
-Advanced data-flow analysis using flow labels
-=============================================
+Tutorial: Precise data-flow analysis using flow labels
+======================================================
 
 You can use basic inter-procedural data-flow analysis and taint tracking as described in
 :doc:`Analyzing data flow in JavaScript/TypeScript <dataflow>` to check whether there is a path in

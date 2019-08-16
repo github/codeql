@@ -1,5 +1,5 @@
-Tutorial: API modelling with type tracking
-==========================================
+Tutorial: API modelling using type tracking
+===========================================
 
 This tutorial demonstrates how to build a simple model of the Firebase API in QL
 using the JavaScript type tracking library.
