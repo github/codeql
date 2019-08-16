@@ -25,6 +25,10 @@
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll"
   ],
+  "Taint tracking C/C++": [
+    "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
+    "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll"
+  ],
   "IR Instruction": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/Instruction.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/Instruction.qll",
