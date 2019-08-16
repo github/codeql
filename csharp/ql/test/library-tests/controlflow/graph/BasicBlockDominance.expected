@@ -564,10 +564,11 @@
 | post | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |
 | post | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:26:38:26 | String x |
 | post | Foreach.cs:38:26:38:26 | String x | Foreach.cs:38:26:38:26 | String x |
-| post | Initializers.cs:3:13:3:13 | access to field H | Initializers.cs:3:13:3:13 | access to field H |
-| post | Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:4:27:4:27 | access to field H |
+| post | Initializers.cs:3:9:3:9 | this access | Initializers.cs:3:9:3:9 | this access |
+| post | Initializers.cs:4:9:4:9 | this access | Initializers.cs:4:9:4:9 | this access |
 | post | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | enter Initializers |
 | post | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:8:10:8:10 | enter M |
+| post | Initializers.cs:14:20:14:20 | 1 | Initializers.cs:14:20:14:20 | 1 |
 | post | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | enter M1 |
 | post | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:9:3:10 | enter M1 |
 | post | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:9:3:10 | exit M1 |
@@ -2110,10 +2111,11 @@
 | pre | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... |
 | pre | Foreach.cs:38:9:39:11 | foreach (... ... in ...) ... | Foreach.cs:38:26:38:26 | String x |
 | pre | Foreach.cs:38:26:38:26 | String x | Foreach.cs:38:26:38:26 | String x |
-| pre | Initializers.cs:3:13:3:13 | access to field H | Initializers.cs:3:13:3:13 | access to field H |
-| pre | Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:4:27:4:27 | access to field H |
+| pre | Initializers.cs:3:9:3:9 | this access | Initializers.cs:3:9:3:9 | this access |
+| pre | Initializers.cs:4:9:4:9 | this access | Initializers.cs:4:9:4:9 | this access |
 | pre | Initializers.cs:6:5:6:16 | enter Initializers | Initializers.cs:6:5:6:16 | enter Initializers |
 | pre | Initializers.cs:8:10:8:10 | enter M | Initializers.cs:8:10:8:10 | enter M |
+| pre | Initializers.cs:14:20:14:20 | 1 | Initializers.cs:14:20:14:20 | 1 |
 | pre | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | enter M1 |
 | pre | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | exit M1 |
 | pre | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:28:3:28 | 0 |

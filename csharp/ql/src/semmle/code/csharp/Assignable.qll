@@ -315,11 +315,7 @@ module AssignableInternal {
         )
       } or
       TAddressOfDefinition(AddressOfExpr aoe) or
-      TPatternDefinition(TopLevelPatternDecl tlpd) or
-      TInitializer(Assignable a, Expr e) {
-        e = a.(Field).getInitializer() or
-        e = a.(Property).getInitializer()
-      }
+      TPatternDefinition(TopLevelPatternDecl tlpd)
 
     /**
      * Gets the source expression assigned in tuple definition `def`, if any.
@@ -727,20 +723,12 @@ module AssignableDefinitions {
    * }
    * ```
    */
-  class InitializerDefinition extends AssignableDefinition, TInitializer {
-    Assignable a;
+  class InitializerDefinition extends AssignmentDefinition {
+    private Assignable fieldOrProp;
 
-    Expr e;
-
-    InitializerDefinition() { this = TInitializer(a, e) }
+    InitializerDefinition() { this.getAssignment().getParent() = fieldOrProp}
 
     /** Gets the assignable (field or property) being initialized. */
-    Assignable getAssignable() { result = a }
-
-    override Expr getSource() { result = e }
-
-    override string toString() { result = e.toString() }
-
-    override Location getLocation() { result = e.getLocation() }
+    Assignable getAssignable() { result = fieldOrProp }
   }
 }

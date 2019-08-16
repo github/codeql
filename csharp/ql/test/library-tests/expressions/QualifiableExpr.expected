@@ -3,6 +3,7 @@
 | MethodAccess.cs:12:13:12:27 | access to method M3 | MethodAccess.cs:12:13:12:24 | access to type MethodAccess |
 | Qualifiers.cs:7:21:7:35 | call to method Instance | Qualifiers.cs:7:21:7:35 | this access |
 | Qualifiers.cs:9:22:9:42 | call to method Instance | Qualifiers.cs:9:22:9:25 | this access |
+| expressions.cs:45:20:45:20 | access to field f | expressions.cs:45:20:45:20 | this access |
 | expressions.cs:51:13:51:34 | access to field name | expressions.cs:51:13:51:29 | access to type Class |
 | expressions.cs:52:13:52:23 | call to method Foo | expressions.cs:52:13:52:17 | access to type Class |
 | expressions.cs:64:20:64:27 | access to property Length | expressions.cs:64:20:64:20 | access to parameter s |
@@ -53,8 +54,11 @@
 | expressions.cs:355:52:355:53 | access to field p1 | expressions.cs:355:52:355:53 | this access |
 | expressions.cs:356:40:356:41 | access to field p2 | expressions.cs:356:40:356:41 | this access |
 | expressions.cs:356:52:356:53 | access to field p2 | expressions.cs:356:52:356:53 | this access |
+| expressions.cs:363:15:363:16 | access to field p1 | expressions.cs:363:15:363:16 | this access |
+| expressions.cs:364:15:364:16 | access to field p2 | expressions.cs:364:15:364:16 | this access |
 | expressions.cs:366:40:366:41 | access to field p1 | expressions.cs:366:40:366:41 | this access |
 | expressions.cs:367:40:367:41 | access to field p2 | expressions.cs:367:40:367:41 | this access |
+| expressions.cs:375:22:375:33 | access to field phoneNumbers | expressions.cs:375:22:375:33 | this access |
 | expressions.cs:377:43:377:46 | access to field name | expressions.cs:377:43:377:46 | this access |
 | expressions.cs:377:57:377:60 | access to field name | expressions.cs:377:57:377:60 | this access |
 | expressions.cs:378:57:378:68 | access to field phoneNumbers | expressions.cs:378:57:378:68 | this access |
