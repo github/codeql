@@ -1058,8 +1058,10 @@ module Internal {
       conditionalAssign(guard, vGuard, def, vDef.getAnExpr())
     }
 
-    private predicate relevantEq(PreSsa::Definition def, AbstractValue v) {
-      conditionalAssignVal(_, _, def, v)
+    pragma[noinline]
+    private predicate relevantEq(PreSsa::Definition def, AbstractValue v, AssignableRead ar) {
+      conditionalAssignVal(_, _, def, v) and
+      ar = def.getARead()
     }
 
     /**
@@ -1156,8 +1158,7 @@ module Internal {
     private predicate guardImpliesNotEqual(
       Expr guard, AbstractValue vGuard, PreSsa::Definition def, AbstractValue vDef
     ) {
-      relevantEq(def, vDef) and
-      exists(AssignableRead ar | ar = def.getARead() |
+      exists(AssignableRead ar | relevantEq(def, vDef, ar) |
         // For example:
         //   if (de == null); vGuard = TBooleanValue(false); vDef = TNullValue(true)
         // but not
