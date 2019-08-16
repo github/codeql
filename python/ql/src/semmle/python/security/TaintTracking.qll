@@ -665,6 +665,11 @@ class TaintedNode extends TTaintedNode {
         this = TTaintedNode_(_, _, result)
     }
 
+    /** Get the AST node for this node. */
+    AstNode getAstNode() {
+        result = this.getNode().getNode()
+    }
+
     /** Gets the data-flow context for this node. */
     CallContext getContext() {
         this = TTaintedNode_(_, result, _)
