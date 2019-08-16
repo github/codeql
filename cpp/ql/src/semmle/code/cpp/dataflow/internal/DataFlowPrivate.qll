@@ -6,7 +6,7 @@ private import DataFlowDispatch
 private Node getInstanceArgument(Call call) {
   result.asExpr() = call.getQualifier()
   or
-  result.(PreConstructorCallNode).getConstructorCall() = call
+  result.(PreObjectInitializerNode).getExpr().(ConstructorCall) = call
   // This does not include the implicit `this` argument on auto-generated
   // base class destructor calls as those do not have an AST element.
 }
@@ -169,6 +169,14 @@ private class ArrayContent extends Content, TArrayContent {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
+  exists(ClassAggregateLiteral aggr, Field field |
+    // The following line requires `node2` to be both an `ExprNode` and a
+    // `PostUpdateNode`, which means it must be an `ObjectInitializerNode`.
+    node2.asExpr() = aggr and
+    f.(FieldContent).getField() = field and
+    aggr.getFieldExpr(field) = node1.asExpr()
+  )
+  or
   exists(FieldAccess fa |
     exists(Assignment a |
       node1.asExpr() = a and
