@@ -2,6 +2,7 @@ import python
 import semmle.python.security.TaintTracking
 private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.Filters as Filters
+import semmle.python.dataflow.Legacy
 
 newtype TTaintTrackingContext =
     TNoParam()
@@ -10,6 +11,12 @@ newtype TTaintTrackingContext =
         any(TaintTrackingImplementation impl).callWithTaintedArgument(_, _, _, _, n, path, param)
     }
 
+/** The context for taint-tracking.
+ *  There are two types of contexts:
+ *  * No context; the context at a source.
+ *  * Tainted parameter; tracks the taint and attribute-path for a parameter
+ *    Used to track taint through calls accurately and reasonably efficiently.
+ */
 class TaintTrackingContext extends TTaintTrackingContext {
 
     string toString()  {
@@ -48,28 +55,6 @@ class TaintTrackingContext extends TTaintTrackingContext {
 
 }
 
-/* For backwards compatibility -- Use `TaintTrackingContext` instead. */
-deprecated
-class CallContext extends TaintTrackingContext {
-
-    TaintTrackingContext getCallee(CallNode call) {
-        result.getCaller(call) = this
-    }
-
-    predicate appliesToScope(Scope s) {
-        exists(PythonFunctionObjectInternal func, TaintKind param, AttributePath path, int n |
-            this = TParamContext(param, path, n) and
-            exists(TaintTrackingImplementation impl |
-                impl.callWithTaintedArgument(_, _, _, func, n, path, param) and
-                s = func.getScope()
-            )
-        )
-        or
-        this.isTop()
-    }
-
-}
-
 private newtype TAttributePath =
     TNoAttribute()
     or
@@ -81,6 +66,10 @@ private newtype TAttributePath =
         none()
     }
 
+/** The attribute of the tracked value holding the taint.
+ * This is usually "no attribute".
+ * Used for tracking tainted attributes of objects.
+ */
 abstract class AttributePath extends TAttributePath {
 
     abstract string toString();
@@ -99,7 +88,7 @@ abstract class AttributePath extends TAttributePath {
 
 }
 
-
+/** AttributePath for no attribute. */
 class NoAttribute extends TNoAttribute, AttributePath {
 
     override string toString() { result = "no attribute" }
@@ -112,6 +101,7 @@ class NoAttribute extends TNoAttribute, AttributePath {
 
 }
 
+/** AttributePath for an attribute. */
 class NamedAttributePath extends TAttribute, AttributePath {
 
     override string toString() {
@@ -134,6 +124,9 @@ class NamedAttributePath extends TAttribute, AttributePath {
 
 }
 
+/** Type representing the (node, context, path, kind) tuple.
+ * Construction of this type is mutually recursive with `TaintTrackingImplementation.flowStep(...)` 
+ */
 newtype TTaintTrackingNode =
     TTaintTrackingNode_(DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, TaintTracking::Configuration config) {
         config.(TaintTrackingImplementation).flowSource(node, context, path, kind)
@@ -141,6 +134,9 @@ newtype TTaintTrackingNode =
         config.(TaintTrackingImplementation).flowStep(_, node, context, path, kind, _)
     }
 
+/** Class representing the (node, context, path, kind) tuple.
+ *  Used for context-sensitive path-aware taint-tracking.
+ */
 class TaintTrackingNode extends TTaintTrackingNode {
 
     string toString() {
@@ -151,18 +147,22 @@ class TaintTrackingNode extends TTaintTrackingNode {
         )
     }
 
+    /** Gets the data flow node for this taint-tracking node */
     DataFlow::Node getNode() {
         this = TTaintTrackingNode_(result, _, _, _, _)
     }
 
+    /** Gets the taint kind for this taint-tracking node */
     TaintKind getTaintKind() {
         this = TTaintTrackingNode_(_, _, _, result, _)
     }
 
+    /** Gets the taint-tracking context for this taint-tracking node */
     TaintTrackingContext getContext() {
         this = TTaintTrackingNode_(_, result, _, _, _)
     }
 
+    /** Gets the attribute path context for this taint-tracking node */
     AttributePath getPath() {
         this = TTaintTrackingNode_(_, _, result, _, _)
     }
@@ -222,6 +222,11 @@ class TaintTrackingNode extends TTaintTrackingNode {
 
 }
 
+/** The implementation of taint-tracking
+ * Each `TaintTrackingImplementation` is also a `TaintTracking::Configuration`
+ * It is implemented as a separate class for clarity and to keep the code
+ * in `TaintTracking::Configuration` simpler.
+ */
 class TaintTrackingImplementation extends string {
 
 
@@ -229,23 +234,23 @@ class TaintTrackingImplementation extends string {
         this instanceof TaintTracking::Configuration
     }
 
+    /** Hold if there is a flow from `source`, which is a taint source, to 
+     * `sink`, which is a taint sink, with this configuration.
+     */
     predicate hasFlowPath(TaintTrackingNode source, TaintTrackingNode sink) {
         this.isPathSource(source) and
         this.isPathSink(sink) and
         this.flowReaches(source, sink)
     }
 
+    /** Hold if `node` is a source of taint `kind` with context `context` and attribute path `path`.
+     */
     predicate flowSource(DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         context = TNoParam() and path = TNoAttribute() and
         this.(TaintTracking::Configuration).isSource(node, kind)
     }
 
-
-    predicate flowSink(DataFlow::Node node, AttributePath path, TaintKind kind) {
-        path = TNoAttribute() and
-        this.(TaintTracking::Configuration).isSink(node, kind)
-    }
-
+    /** Hold if `source` is a source of taint. */
     predicate isPathSource(TaintTrackingNode source) {
         exists(DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind |
             source = TTaintTrackingNode_(node, context, path, kind, this) and
@@ -253,13 +258,18 @@ class TaintTrackingImplementation extends string {
         )
     }
 
+    /** Hold if `sink` is a taint sink. */
     predicate isPathSink(TaintTrackingNode sink) {
         exists(DataFlow::Node node, AttributePath path, TaintKind kind |
             sink = TTaintTrackingNode_(node, _, path, kind, this) and
-            this.flowSink(node, path, kind)
+            path = TNoAttribute() and
+            this.(TaintTracking::Configuration).isSink(node, kind)
         )
     }
 
+    /** Hold if taint flows to `src` to `dest` in a single step, labelled with `egdeLabel`
+     * `edgeLabel` is purely informative.
+     */
     predicate flowStep(TaintTrackingNode src, TaintTrackingNode dest, string edgeLabel) {
         exists(DataFlow::Node node, TaintTrackingContext ctx, AttributePath path, TaintKind kind |
             dest = TTaintTrackingNode_(node, ctx, path, kind, this) and
@@ -267,6 +277,8 @@ class TaintTrackingImplementation extends string {
         )
     }
 
+    /** Hold if taint reaches `dest` from `src` with this configuration.
+     */
     predicate flowReaches(TaintTrackingNode src, TaintTrackingNode dest) {
         this = src.getConfiguration() and dest = src
         or
@@ -276,68 +288,9 @@ class TaintTrackingImplementation extends string {
         )
     }
 
-    /** Gets the boolean value that `test` evaluates to when `use` is tainted with `kind`
-     * and `test` and `use` are part of a test in a branch.
+    /** Hold if taint flows to `src` to `(node, context, path, kind)` in a single step, labelled with `egdeLabel` with this configuration.
+     * `edgeLabel` is purely informative.
      */
-    boolean testEvaluates(ControlFlowNode test, ControlFlowNode use, TaintKind kind) {
-        boolean_filter(_, use) and
-        kind.taints(use) and
-        test = use and result = kind.booleanValue()
-        or
-        result = testEvaluates(not_operand(test), use, kind).booleanNot()
-        or
-        exists(ControlFlowNode const |
-            Filters::equality_test(test, use, result.booleanNot(), const) and
-            const.getNode() instanceof ImmutableLiteral
-        )
-        or
-        exists(ControlFlowNode c, ClassValue cls |
-            Filters::isinstance(test, c, use) and
-            c.pointsTo(cls)
-            |
-            exists(ClassValue scls |
-                scls = kind.getType() |
-                scls.getASuperType() = cls and result = true
-                or
-                not scls.getASuperType() = cls and result = false
-            )
-            or
-            not exists(kind.getType()) and result = maybe()
-        )
-    }
-
-    predicate testEvaluatesMaybe(ControlFlowNode test, ControlFlowNode use) {
-        any(PyEdgeRefinement ref).getTest().getAChild*() = test and
-        test.getAChild*() = use and
-        not test.(UnaryExprNode).getNode().getOp() instanceof Not and
-        not Filters::equality_test(test, use, _, _) and
-        not Filters::isinstance(test, _, use) and
-        not test = use
-        or
-        testEvaluatesMaybe(not_operand(test), use)
-    }
-
-    /** Gets the operand of a unary `not` expression. */
-    private ControlFlowNode not_operand(ControlFlowNode expr) {
-        expr.(UnaryExprNode).getNode().getOp() instanceof Not and
-        result = expr.(UnaryExprNode).getOperand()
-    }
-
-    /** Holds if `test` is the test in a branch and `use` is that test
-     * with all the `not` prefixes removed.
-     */
-    private predicate boolean_filter(ControlFlowNode test, ControlFlowNode use) {
-        any(PyEdgeRefinement ref).getTest() = test and
-        (
-            use = test
-            or
-            exists(ControlFlowNode notuse |
-                boolean_filter(test, notuse) and
-                use = not_operand(notuse)
-            )
-        )
-    }
-
     predicate flowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         this.unprunedStep(src, node, context, path, kind, edgeLabel) and
         node.getBasicBlock().likelyReachable() and
@@ -353,13 +306,13 @@ class TaintTrackingImplementation extends string {
         )
     }
 
-    predicate prunedEdge(DataFlow::Node srcnode, DataFlow::Node destnode, TaintKind srckind, TaintKind destkind) {
+    private predicate prunedEdge(DataFlow::Node srcnode, DataFlow::Node destnode, TaintKind srckind, TaintKind destkind) {
         this.(TaintTracking::Configuration).isBarrierEdge(srcnode, destnode, srckind, destkind)
         or
         srckind = destkind and this.(TaintTracking::Configuration).isBarrierEdge(srcnode, destnode)
     }
 
-    predicate unprunedStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
+    private predicate unprunedStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         this.importStep(src, node, context, path, kind, edgeLabel)
         or
         this.fromImportStep(src, node, context, path, kind, edgeLabel)
@@ -384,9 +337,9 @@ class TaintTrackingImplementation extends string {
         or
         this.ifExpStep(src, node, context, path, kind, edgeLabel)
         or
-        this.essaFlowStep(src, node, context, path, kind) and edgeLabel = ""
+        this.essaFlowStep(src, node, context, path, kind, edgeLabel)
         or
-        this.instantionStep(src, node, context, path, kind, edgeLabel)
+        this.instantiationStep(src, node, context, path, kind, edgeLabel)
         or
         this.legacyExtensionStep(src, node, context, path, kind, edgeLabel)
         or
@@ -477,16 +430,6 @@ class TaintTrackingImplementation extends string {
         ) and edgeLabel = "use"
     }
 
-    //pragma [noinline]
-    //predicate argumentFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
-    //    exists(CallNode call, PythonFunctionObjectInternal pyfunc, int arg |
-    //        this.callWithTaintedArgument(src, call, _, pyfunc, arg, path, kind) and
-    //        node.asCfgNode() = pyfunc.getParameter(arg) and
-    //        context = TParamContext(kind, arg)
-    //    )
-    //    // TO DO... named parameters
-    //}
-
     /* If the return value is tainted without context, then it always flows back to the caller */
     pragma [noinline]
     predicate returnFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
@@ -529,10 +472,10 @@ class TaintTrackingImplementation extends string {
         )
     }
 
-    predicate instantionStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
+    predicate instantiationStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
         exists(PythonFunctionValue init, EssaVariable self, TaintTrackingContext callee |
-            instantionCall(node.asCfgNode(), src, init, context, callee) and
-            this.taintedDefinition(_, self.getDefinition(), callee, path, kind) and
+            instantiationCall(node.asCfgNode(), src, init, context, callee) and
+            this.(EssaTaintTracking).taintedDefinition(_, self.getDefinition(), callee, path, kind) and
             self.getSourceVariable().(Variable).isSelf() and
             BaseFlow::reaches_exit(self) and
             self.getScope() = init.getScope()
@@ -540,7 +483,7 @@ class TaintTrackingImplementation extends string {
         edgeLabel = "instantiation"
     }
 
-    predicate instantionCall(CallNode call, TaintTrackingNode argnode, PythonFunctionObjectInternal init, TaintTrackingContext caller, TaintTrackingContext callee) {
+    predicate instantiationCall(CallNode call, TaintTrackingNode argnode, PythonFunctionObjectInternal init, TaintTrackingContext caller, TaintTrackingContext callee) {
         exists(ClassValue cls |
             call.getFunction().pointsTo(cls) and
             cls.lookup("__init__") = init
@@ -554,7 +497,6 @@ class TaintTrackingImplementation extends string {
             )
         )
     }
-
 
     pragma [noinline]
     predicate callTaintStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
@@ -611,8 +553,8 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate essaFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        this.taintedDefinition(src, node.asVariable().getDefinition(), context, path, kind)
+    predicate essaFlowStep(TaintTrackingNode src, DataFlow::Node node, TaintTrackingContext context, AttributePath path, TaintKind kind, string edgeLabel) {
+        this.(EssaTaintTracking).taintedDefinition(src, node.asVariable().getDefinition(), context, path, kind) and edgeLabel = ""
     }
 
     pragma [noinline]
@@ -630,6 +572,25 @@ class TaintTrackingImplementation extends string {
         ) and edgeLabel = "legacy extension"
     }
 
+    predicate moduleAttributeTainted(ModuleValue m, string name, TaintTrackingNode taint) {
+        exists(DataFlow::Node srcnode, EssaVariable var |
+            taint = TTaintTrackingNode_(srcnode, TNoParam(), _, _, this) and
+            var = srcnode.asVariable() and
+            var.getName() = name and
+            BaseFlow::reaches_exit(var) and
+            var.getScope() = m.getScope()
+        )
+    }
+
+}
+
+/** Another taint-tracking class to help partition the code for clarity
+ * This class handle tracking of ESSA variables. */
+private class EssaTaintTracking extends string {
+
+    EssaTaintTracking() {
+        this instanceof TaintTracking::Configuration
+    }
     pragma [noinline]
     predicate taintedDefinition(TaintTrackingNode src, EssaDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         this.taintedPhi(src, defn, context, path, kind)
@@ -658,7 +619,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedPhi(TaintTrackingNode src, PhiFunction defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedPhi(TaintTrackingNode src, PhiFunction defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode, BasicBlock pred, EssaVariable predvar, DataFlow::Node phi |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             defn = phi.asVariable().getDefinition() and
@@ -670,7 +631,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedAssignment(TaintTrackingNode src, AssignmentDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedAssignment(TaintTrackingNode src, AssignmentDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             defn.getValue() = srcnode.asCfgNode()
@@ -678,7 +639,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedAttributeAssignment(TaintTrackingNode src, AttributeAssignment defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedAttributeAssignment(TaintTrackingNode src, AttributeAssignment defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode, AttributePath srcpath, string attrname |
             src = TTaintTrackingNode_(srcnode, context, srcpath, kind, this) and
             defn.getValue() = srcnode.asCfgNode() and
@@ -688,7 +649,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedParameterDefinition(TaintTrackingNode src, ParameterDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedParameterDefinition(TaintTrackingNode src, ParameterDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             srcnode.asCfgNode() = defn.getDefiningNode()
@@ -696,7 +657,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedCallsite(TaintTrackingNode src, CallsiteRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedCallsite(TaintTrackingNode src, CallsiteRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         /* In the interest of simplicity and performance we assume that tainted escaping variables remain tainted across calls.
          * In the cases were this assumption is false, it is easy enough to add an additional barrier.
          */
@@ -707,7 +668,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedMethodCallsite(TaintTrackingNode src, MethodCallsiteRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedMethodCallsite(TaintTrackingNode src, MethodCallsiteRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             srcnode.asVariable() = defn.getInput()
@@ -715,7 +676,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedUniEdge(TaintTrackingNode src, SingleSuccessorGuard defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedUniEdge(TaintTrackingNode src, SingleSuccessorGuard defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             srcnode.asVariable() = defn.getInput() and
@@ -724,7 +685,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedPiNode(TaintTrackingNode src, PyEdgeRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedPiNode(TaintTrackingNode src, PyEdgeRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             srcnode.asVariable() = defn.getInput() and
@@ -737,7 +698,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedArgument(TaintTrackingNode src, ArgumentRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedArgument(TaintTrackingNode src, ArgumentRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             defn.getInput() = srcnode.asVariable()
@@ -745,7 +706,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedExceptionCapture(TaintTrackingNode src, ExceptionCapture defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedExceptionCapture(TaintTrackingNode src, ExceptionCapture defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             srcnode.asCfgNode() = defn.getDefiningNode()
@@ -753,7 +714,7 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedScopeEntryDefinition(TaintTrackingNode src, ScopeEntryDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedScopeEntryDefinition(TaintTrackingNode src, ScopeEntryDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(EssaVariable var |
             BaseFlow::scope_entry_value_transfer_from_earlier(var, _, defn, _) and
             this.taintedDefinition(src, var.getDefinition(), context, path, kind)
@@ -761,20 +722,72 @@ class TaintTrackingImplementation extends string {
     }
 
     pragma [noinline]
-    predicate taintedWith(TaintTrackingNode src, WithDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+    private predicate taintedWith(TaintTrackingNode src, WithDefinition defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
         exists(DataFlow::Node srcnode |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
             with_flow(_, srcnode.asCfgNode(), defn.getDefiningNode())
         )
     }
 
-    predicate moduleAttributeTainted(ModuleValue m, string name, TaintTrackingNode taint) {
-        exists(DataFlow::Node srcnode, EssaVariable var |
-            taint = TTaintTrackingNode_(srcnode, TNoParam(), _, _, this) and
-            var = srcnode.asVariable() and
-            var.getName() = name and
-            BaseFlow::reaches_exit(var) and
-            var.getScope() = m.getScope()
+    /** Gets the boolean value that `test` evaluates to when `use` is tainted with `kind`
+     * and `test` and `use` are part of a test in a branch.
+     */
+    private boolean testEvaluates(ControlFlowNode test, ControlFlowNode use, TaintKind kind) {
+        boolean_filter(_, use) and
+        kind.taints(use) and
+        test = use and result = kind.booleanValue()
+        or
+        result = testEvaluates(not_operand(test), use, kind).booleanNot()
+        or
+        exists(ControlFlowNode const |
+            Filters::equality_test(test, use, result.booleanNot(), const) and
+            const.getNode() instanceof ImmutableLiteral
+        )
+        or
+        exists(ControlFlowNode c, ClassValue cls |
+            Filters::isinstance(test, c, use) and
+            c.pointsTo(cls)
+            |
+            exists(ClassValue scls |
+                scls = kind.getType() |
+                scls.getASuperType() = cls and result = true
+                or
+                not scls.getASuperType() = cls and result = false
+            )
+            or
+            not exists(kind.getType()) and result = maybe()
+        )
+    }
+
+    private predicate testEvaluatesMaybe(ControlFlowNode test, ControlFlowNode use) {
+        any(PyEdgeRefinement ref).getTest().getAChild*() = test and
+        test.getAChild*() = use and
+        not test.(UnaryExprNode).getNode().getOp() instanceof Not and
+        not Filters::equality_test(test, use, _, _) and
+        not Filters::isinstance(test, _, use) and
+        not test = use
+        or
+        testEvaluatesMaybe(not_operand(test), use)
+    }
+
+    /** Gets the operand of a unary `not` expression. */
+    private ControlFlowNode not_operand(ControlFlowNode expr) {
+        expr.(UnaryExprNode).getNode().getOp() instanceof Not and
+        result = expr.(UnaryExprNode).getOperand()
+    }
+
+    /** Holds if `test` is the test in a branch and `use` is that test
+     * with all the `not` prefixes removed.
+     */
+    private predicate boolean_filter(ControlFlowNode test, ControlFlowNode use) {
+        any(PyEdgeRefinement ref).getTest() = test and
+        (
+            use = test
+            or
+            exists(ControlFlowNode notuse |
+                boolean_filter(test, notuse) and
+                use = not_operand(notuse)
+            )
         )
     }
 
@@ -785,74 +798,6 @@ private predicate with_flow(With with, ControlFlowNode contextManager, ControlFl
     with.getContextExpr() = contextManager.getNode() and
     with.getOptionalVars() = var.getNode() and
     contextManager.strictlyDominates(var)
-}
-
-/* Backwards compatibility with config-less taint-tracking */
-private class LegacyConfiguration extends TaintTracking::Configuration {
-
-    LegacyConfiguration() {
-        /* A name that won't be accidentally chosen by users */
-        this = "Semmle: Internal legacy configuration"
-    }
-
-    override predicate isSource(TaintSource src) {
-        isValid() and
-        src = src
-    }
-
-    override predicate isSink(TaintSink sink) {
-        isValid() and
-        sink = sink
-    }
-
-    override predicate isSanitizer(Sanitizer sanitizer) {
-        isValid() and
-        sanitizer = sanitizer
-    }
-
-    private predicate isValid() {
-        not exists(TaintTracking::Configuration config | config != this)
-    }
-
-    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dest) {
-        isValid() and
-        exists(DataFlowExtension::DataFlowNode legacyExtension |
-            src.asCfgNode() = legacyExtension
-            |
-            dest.asCfgNode() = legacyExtension.getASuccessorNode()
-            or
-            dest.asVariable() = legacyExtension.getASuccessorVariable()
-            or
-            dest.asCfgNode() = legacyExtension.getAReturnSuccessorNode(_)
-            or
-            dest.asCfgNode() = legacyExtension.getACalleeSuccessorNode(_)
-        )
-    }
-
-    override predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node dest, TaintKind srckind, TaintKind destkind) {
-        isValid() and
-        exists(DataFlowExtension::DataFlowNode legacyExtension |
-            src.asCfgNode() = legacyExtension
-            |
-            dest.asCfgNode() = legacyExtension.getASuccessorNode(srckind, destkind)
-        )
-    }
-
-    override predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node dest) {
-        isValid() and
-        (
-            exists(DataFlowExtension::DataFlowVariable legacyExtension |
-                src.asVariable() = legacyExtension and
-                legacyExtension.prunedSuccessor(dest.asVariable())
-            )
-            or
-            exists(DataFlowExtension::DataFlowNode legacyExtension |
-                src.asCfgNode() = legacyExtension and
-                legacyExtension.prunedSuccessor(dest.asCfgNode())
-            )
-        )
-    }
-
 }
 
 module Implementation {
