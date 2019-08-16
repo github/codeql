@@ -104,7 +104,7 @@ class InvokeNode extends DataFlow::SourceNode {
   }
 
   /** Gets an abstract value representing possible callees of this call site. */
-  AbstractValue getACalleeValue() { result = InvokeNode::getACalleeValue(this) }
+  final AbstractValue getACalleeValue() { result = getCalleeNode().analyze().getAValue() }
 
   /**
    * Gets a potential callee of this call site.
@@ -112,7 +112,7 @@ class InvokeNode extends DataFlow::SourceNode {
    * To alter the call graph as seen by the interprocedural data flow libraries, override
    * the `getACallee(int imprecision)` predicate instead.
    */
-  Function getACallee() { result = InvokeNode::getACallee(this) }
+  final Function getACallee() { result = getACallee(_) }
 
   /**
    * Gets a callee of this call site where `imprecision` is a heuristic measure of how
@@ -125,7 +125,20 @@ class InvokeNode extends DataFlow::SourceNode {
    * This predicate can be overridden to alter the call graph used by the interprocedural
    * data flow libraries.
    */
-  Function getACallee(int imprecision) { result = InvokeNode::getACallee(this, imprecision) }
+  cached
+  Function getACallee(int imprecision) {
+    result.flow() = getCalleeNode().getAFunctionValue(imprecision)
+    or
+    imprecision = 0 and
+    exists(InvokeExpr expr | expr = this.(DataFlow::Impl::ExplicitInvokeNode).asExpr() |
+      result = expr.getResolvedCallee()
+      or
+      exists(DataFlow::ClassNode cls |
+        expr.(SuperCall).getBinder() = cls.getAnInstanceMethodOrConstructor().getFunction() and
+        result = cls.getADirectSuperClass().getConstructor().getFunction()
+      )
+    )
+  }
 
   /**
    * Holds if the approximation of possible callees for this call site is
@@ -170,60 +183,6 @@ class InvokeNode extends DataFlow::SourceNode {
    */
   DataFlow::ExceptionalInvocationReturnNode getExceptionalReturn() {
     DataFlow::exceptionalInvocationReturnNode(result, asExpr())
-  }
-}
-
-/** Auxiliary module used to cache a few related predicates together. */
-cached
-private module InvokeNode {
-  /** Gets an abstract value representing possible callees of `invk`. */
-  cached
-  AbstractValue getACalleeValue(InvokeNode invk) {
-    result = invk.getCalleeNode().analyze().getAValue()
-  }
-
-  /** Gets a potential callee of `invk` based on dataflow analysis results. */
-  private Function getACalleeFromDataflow(InvokeNode invk) {
-    result = getACalleeValue(invk).(AbstractCallable).getFunction()
-  }
-
-  /** Gets a potential callee of `invk`. */
-  cached
-  Function getACallee(InvokeNode invk) {
-    result = getACalleeFromDataflow(invk)
-    or
-    not exists(getACalleeFromDataflow(invk)) and
-    result = invk.(DataFlow::Impl::ExplicitInvokeNode).asExpr().(InvokeExpr).getResolvedCallee()
-  }
-
-  /**
-   * Gets a callee of `invk` where `imprecision` is a heuristic measure of how
-   * likely it is that `callee` is only suggested as a potential callee due to
-   * imprecise analysis of global variables and is not, in fact, a viable callee at all.
-   *
-   * Callees with imprecision zero, in particular, have either been derived without
-   * considering global variables, or are calls to a global variable within the same file.
-   */
-  cached
-  Function getACallee(InvokeNode invk, int imprecision) {
-    result = getACallee(invk) and
-    (
-      // if global flow was used to derive the callee, we may be imprecise
-      if invk.isIndefinite("global")
-      then
-        // callees within the same file are probably genuine
-        result.getFile() = invk.getFile() and imprecision = 0
-        or
-        // calls to global functions declared in an externs file are fairly
-        // safe as well
-        result.inExternsFile() and imprecision = 1
-        or
-        // otherwise we make worst-case assumptions
-        imprecision = 2
-      else
-        // no global flow, so no imprecision
-        imprecision = 0
-    )
   }
 }
 
@@ -657,6 +616,8 @@ class ClassNode extends DataFlow::SourceNode {
 
   /**
    * Gets a direct super class of this class.
+   *
+   * This predicate can be overridden to customize the class hierarchy.
    */
   ClassNode getADirectSuperClass() { result.getAClassReference().flowsTo(getASuperClassNode()) }
 
@@ -686,8 +647,10 @@ class ClassNode extends DataFlow::SourceNode {
 
   /**
    * Gets a dataflow node that refers to this class object.
+   *
+   * This predicate can be overridden to customize the tracking of class objects.
    */
-  private DataFlow::SourceNode getAClassReference(DataFlow::TypeTracker t) {
+  DataFlow::SourceNode getAClassReference(DataFlow::TypeTracker t) {
     t.start() and
     result.(AnalyzedNode).getAValue() = getAbstractClassValue()
     or
@@ -698,14 +661,16 @@ class ClassNode extends DataFlow::SourceNode {
    * Gets a dataflow node that refers to this class object.
    */
   cached
-  DataFlow::SourceNode getAClassReference() {
+  final DataFlow::SourceNode getAClassReference() {
     result = getAClassReference(DataFlow::TypeTracker::end())
   }
 
   /**
    * Gets a dataflow node that refers to an instance of this class.
+   *
+   * This predicate can be overridden to customize the tracking of class instances.
    */
-  private DataFlow::SourceNode getAnInstanceReference(DataFlow::TypeTracker t) {
+  DataFlow::SourceNode getAnInstanceReference(DataFlow::TypeTracker t) {
     result = getAClassReference(t.continue()).getAnInstantiation()
     or
     t.start() and
@@ -740,8 +705,32 @@ class ClassNode extends DataFlow::SourceNode {
    * Gets a dataflow node that refers to an instance of this class.
    */
   cached
-  DataFlow::SourceNode getAnInstanceReference() {
+  final DataFlow::SourceNode getAnInstanceReference() {
     result = getAnInstanceReference(DataFlow::TypeTracker::end())
+  }
+
+  /**
+   * Gets a property read that accesses the property `name` on an instance of this class.
+   *
+   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
+   *
+   * This predicate may be overridden to customize the class hierarchy analysis.
+   */
+  DataFlow::PropRead getAnInstanceMemberAccess(string name) {
+    result = getAnInstanceReference().getAPropertyRead(name)
+    or
+    exists(DataFlow::ClassNode subclass |
+      result = subclass.getAnInstanceMemberAccess(name) and
+      not exists(subclass.getAnInstanceMember(name)) and
+      subclass = getADirectSubClass()
+    )
+  }
+
+  /**
+   * Gets an access to a static member of this class.
+   */
+  DataFlow::PropRead getAStaticMemberAccess(string name) {
+    result = getAClassReference().getAPropertyRead(name)
   }
 
   /**

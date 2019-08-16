@@ -117,13 +117,57 @@ module DataFlow {
     int getIntValue() { result = asExpr().getIntValue() }
 
     /** Gets a function value that may reach this node. */
-    FunctionNode getAFunctionValue() {
-      result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction()
+    final FunctionNode getAFunctionValue() {
+      result = getAFunctionValue(_)
+    }
+
+    /**
+     * Gets a function value that may reach this node.
+     *
+     * This predicate may be overridden to customize the call graph.
+     *
+     * Note that any additional values added by overiding predicates will not
+     * be propagated along data flow edges.
+     *
+     * `imprecision` is a heuristic measure of how likely it is that `callee`
+     * is only suggested as a potential callee due to
+     * imprecise analysis of global variables and is not, in fact, a viable callee at all.
+     */
+    cached
+    FunctionNode getAFunctionValue(int imprecision) {
+      exists(Function fun |
+        result = fun.flow() and
+        fun = analyze().getAValue().(AbstractCallable).getFunction()
+      |
+        if analyze().getAValue().isIndefinite("global") then
+          fun.getFile() = getFile() and imprecision = 0
+          or
+          fun.inExternsFile() and imprecision = 1
+          or
+          imprecision = 2
+        else
+          imprecision = 0
+      )
       or
+      imprecision = 0 and
       exists(string name |
         GlobalAccessPath::isAssignedInUniqueFile(name) and
         GlobalAccessPath::fromRhs(result) = name and
         GlobalAccessPath::fromReference(this) = name
+      )
+      or
+      imprecision = 0 and
+      exists(DataFlow::ClassNode cls |
+        exists(string name |
+          cls.getAnInstanceMemberAccess(name).flowsTo(this) and
+          result = cls.getInstanceMethod(name)
+          or
+          cls.getAStaticMemberAccess(name).flowsTo(this) and
+          result = cls.getStaticMethod(name)
+        )
+        or
+        cls.getAClassReference().flowsTo(this) and
+        result = cls.getConstructor()
       )
     }
 
