@@ -14,7 +14,7 @@ class Literal extends Expr, @literal {
   }
 
   override string getCanonicalQLClass() { result = "Literal" }
-  
+
   override predicate mayBeImpure() {
     none()
   }
@@ -40,6 +40,8 @@ class LabelLiteral extends Literal {
   LabelLiteral() {
     jumpinfo(underlyingElement(this),_,_)
   }
+
+  override string getCanonicalQLClass() { result = "LabelLiteral" }
 
   /** Gets the corresponding label statement. */
   LabelStmt getLabel() {
@@ -123,7 +125,7 @@ class StringLiteral extends TextLiteral
   }
 
   override string getCanonicalQLClass() { result = "StringLiteral" }
-  
+
 }
 
 /**
@@ -133,7 +135,7 @@ class OctalLiteral extends Literal {
   OctalLiteral() {
     super.getValueText().regexpMatch("\\s*0[0-7]+[uUlL]*\\s*")
   }
-  
+
   override string getCanonicalQLClass() { result = "OctalLiteral" }
 }
 
@@ -144,7 +146,7 @@ class HexLiteral extends Literal {
   HexLiteral() {
     super.getValueText().regexpMatch("\\s*0[xX][0-9a-fA-F]+[uUlL]*\\s*")
   }
-  
+
   override string getCanonicalQLClass() { result = "HexLiteral" }
 }
 
@@ -153,6 +155,8 @@ class HexLiteral extends Literal {
 */
 class AggregateLiteral extends Expr, @aggregateliteral {
   // if this is turned into a Literal we need to change mayBeImpure
+
+  override string getCanonicalQLClass() { result = "AggregateLiteral" }
 
   /**
    * DEPRECATED: Use ClassAggregateLiteral.getFieldExpr() instead.

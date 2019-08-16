@@ -13,6 +13,8 @@ class Specifier extends Element, @specifier {
     result instanceof UnknownDefaultLocation
   }
 
+  override string getCanonicalQLClass() { result = "Specifier" }
+  
   /** Gets the name of this specifier. */
   string getName() { specifiers(underlyingElement(this),result) }
 
@@ -31,6 +33,7 @@ class FunctionSpecifier extends Specifier {
     this.hasName("virtual") or
     this.hasName("explicit")
   }
+  override string getCanonicalQLClass() { result = "FunctionSpecifier)" }
 }
 
 /**
@@ -45,6 +48,7 @@ class StorageClassSpecifier extends Specifier {
     this.hasName("extern") or
     this.hasName("mutable")
   }
+  override string getCanonicalQLClass() { result = "StorageClassSpecifier" }
 }
 
 /**
@@ -96,6 +100,7 @@ class AccessSpecifier extends Specifier {
       baseAccess.getName() >= this.getName() and result = this
     )
   }
+  override string getCanonicalQLClass() { result = "AccessSpecifier" }
 }
 
 /**
@@ -237,6 +242,7 @@ class FormatAttribute extends GnuAttribute {
       not val = 0 // indicates a `vprintf` style format function with arguments not directly available.
     )
   }
+  override string getCanonicalQLClass() { result = "FormatAttribute" }
 }
 
 /**
