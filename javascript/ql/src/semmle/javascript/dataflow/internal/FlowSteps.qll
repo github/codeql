@@ -119,12 +119,23 @@ private module CachedSteps {
   predicate calls(DataFlow::InvokeNode invk, Function f) {
     f = invk.getACallee(0)
     or
-    exists(DataFlow::ClassNode cls, string name |
-      callResolvesToMember(invk, cls, name) and
-      f = cls.getInstanceMethod(name).getFunction()
+    exists(DataFlow::ClassNode cls |
+      // Call to class member
+      exists(string name |
+        callResolvesToMember(invk, cls, name) and
+        f = cls.getInstanceMethod(name).getFunction()
+        or
+        invk = cls.getAClassReference().getAMethodCall(name) and
+        f = cls.getStaticMethod(name).getFunction()
+      )
       or
-      invk = cls.getAClassReference().getAMethodCall(name) and
-      f = cls.getStaticMethod(name).getFunction()
+      // Call to constructor
+      invk = cls.getAClassReference().getAnInvocation() and
+      f = cls.getConstructor().getFunction()
+      or
+      // Super call to constructor
+      invk.asExpr().(SuperCall).getBinder() = cls.getConstructor().getFunction() and
+      f = cls.getADirectSuperClass().getConstructor().getFunction()
     )
     or
     // Call from `foo.bar.baz()` to `foo.bar.baz = function()`
