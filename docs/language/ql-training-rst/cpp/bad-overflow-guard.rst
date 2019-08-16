@@ -1,3 +1,4 @@
+===========================
 Example: Bad overflow guard
 ===========================
 
@@ -5,20 +6,21 @@ Example: Bad overflow guard
 
    Semmle :sup:`TM`
 
-.. Include information slides here
+.. rst-class:: setup
 
-.. include:: ../slide-snippets/info.rst
+Setup
+=====
 
-QL snapshot
-===========
+For this example you should download:
 
-For the examples in this presentation, we will be analyzing `ChakraCore <https://github.com/microsoft/ChakraCore>`__.
-
-We recommend you download `this historic snapshot <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__ to analyze in QL for Eclipse.
-
-Alternatively, you can query the project in `the query console <https://lgtm.com/query/project:2034240708/lang:cpp/>`__ on LGTM.com.
+- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `ChakraCore snapshot <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__
 
 .. note::
+
+   For the examples in this presentation, we will be analyzing `ChakraCore <https://github.com/microsoft/ChakraCore>`__.
+
+   You can query the project in `the query console <https://lgtm.com/query/project:2034240708/lang:cpp/>`__ on LGTM.com.
 
    Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
@@ -28,15 +30,15 @@ Checking for overflow in C
 - Arithmetic operations overflow if the result is too large for their type.
 - Developers sometimes exploit this to write overflow checks:
 
-.. code-block:: cpp
+   .. code-block:: cpp
 
-  if (v + b < v) {
-      handle_error("overflow");
-  } else {
-      result = v + b;
-  }
-
-Where might this go wrong?
+      if (v + b < v) {
+          handle_error("overflow");
+      } else {
+          result = v + b;
+      }
+    
+   Where might this go wrong?
 
 .. note::
 
@@ -54,12 +56,12 @@ From `https://en.cppreference.com/w/c/language/conversion <https://en.cppreferen
 
   Integer promotion is the implicit conversion of a value of any integer type with rank less or equal to rank of ``int`` ... to the value of type ``int`` or ``unsigned int``.
 
-The arguments of the following arithmetic operators undergo implicit conversions:
+- The arguments of the following arithmetic operators undergo implicit conversions:
 
-- binary arithmetic: ``* / % + -``
-- relational operators: ``< > <= >= == !=``
-- binary bitwise operators: ``& ^ |``
-- the conditional operator: ``?:``
+  - binary arithmetic ``* / % + -``
+  - relational operators ``< > <= >= == !=``
+  - binary bitwise operators ``& ^ |``
+  - the conditional operator ``?:``
 
 .. note::
 
@@ -72,17 +74,17 @@ Checking for overflow in C revisited
 
 Which branch gets executed in this example? What is the value of ``result``?
 
-.. code-block:: cpp
-
-  uint16_t v = 65535;
-  uint16_t b = 1;
-  uint16_t result;
-  if (v + b < v) {
-      handle_error("overflow");
-  } else {
-      result = v + b;
-  }
-
+   .. code-block:: cpp
+   
+     uint16_t v = 65535;
+     uint16_t b = 1;
+     uint16_t result;
+     if (v + b < v) {
+         handle_error("overflow");
+     } else {
+         result = v + b;
+     }
+   
 .. note::
 
   In this example the second branch is executed, even though there is a 16-bit overflow, and ``result`` is set to zero.
@@ -92,18 +94,18 @@ Checking for overflow in C revisited
 
 Here is the example again, with the conversions made explicit:
 
-.. code-block:: cpp
-  :emphasize-lines: 4,7
-
-  uint16_t v = 65535;
-  uint16_t b = 1;
-  uint16_t result;
-  if ((int)v + (int)b < (int)v) {
-      handle_error("overflow");
-  } else {
-      result = (uint16_t)((int)v + (int)b);
-  }
-
+   .. code-block:: cpp
+     :emphasize-lines: 4,7
+   
+     uint16_t v = 65535;
+     uint16_t b = 1;
+     uint16_t result;
+     if ((int)v + (int)b < (int)v) {
+         handle_error("overflow");
+     } else {
+         result = (uint16_t)((int)v + (int)b);
+     }
+   
 .. note::
 
   In this example the second branch is executed, even though there is a 16-bit overflow, and result is set to zero.
@@ -176,7 +178,9 @@ QL query: bad overflow guards
 =============================
 
 We can ensure the operands being added have size less than 4 bytes, using our new predicate.
+
 QL has logical quantifiers like ``exists`` and ``forall``, allowing us to declare variables and enforce a certain condition on them.
+
 Now our query becomes:
 
 .. rst-class:: build

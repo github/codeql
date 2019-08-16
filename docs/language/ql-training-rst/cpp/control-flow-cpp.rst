@@ -1,3 +1,4 @@
+================================
 Analyzing control flow for C/C++
 ================================
 
@@ -7,20 +8,26 @@ Analyzing control flow for C/C++
 
 .. Include information slides here
 
-.. include:: ../slide-snippets/info.rst
+.. rst-class:: setup
 
-QL snapshot
-===========
+Setup
+=====
 
-For the examples in this presentation, we will be analyzing `ChakraCore <https://github.com/microsoft/ChakraCore>`__.
+For this example you should download:
 
-We recommend you download `this historic snapshot <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__ to analyze in QL for Eclipse.
-
-Alternatively, you can query the project in `the query console <https://lgtm.com/query/project:2034240708/lang:cpp/>`__ on LGTM.com.
+- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `ChakraCore snapshot <https://downloads.lgtm.com/snapshots/cpp/microsoft/chakracore/ChakraCore-revision-2017-April-12--18-13-26.zip>`__
 
 .. note::
 
+   For the examples in this presentation, we will be analyzing `ChakraCore <https://github.com/microsoft/ChakraCore>`__.
+
+   You can query the project in `the query console <https://lgtm.com/query/project:2034240708/lang:cpp/>`__ on LGTM.com.
+
    Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+
+
+.. rst-class:: agenda
 
 Agenda
 ======
@@ -37,6 +44,7 @@ Control flow graphs
 .. container:: column-left
 
    We frequently want to ask questions about the possible *order of execution* for a program.
+
    Example:
 
    .. code-block:: cpp
@@ -81,12 +89,12 @@ Modeling control flow
 
 The control flow is modeled with a QL class, ``ControlFlowNode``. Examples of control flow nodes include statements and expressions.
 
-``ControlFlowNode`` provides API for traversing the control flow graph:
+- ``ControlFlowNode`` provides API for traversing the control flow graph:
 
-- ``ControlFlowNode ControlFlowNode.getASuccessor()``
-- ``ControlFlowNode ControlFlowNode.getAPredecessor()``
-- ``ControlFlowNode ControlFlowNode.getATrueSuccessor()``
-- ``ControlFlowNode ControlFlowNode.getAFalseSuccessor()``
+  - ``ControlFlowNode ControlFlowNode.getASuccessor()``
+  - ``ControlFlowNode ControlFlowNode.getAPredecessor()``
+  - ``ControlFlowNode ControlFlowNode.getATrueSuccessor()``
+  - ``ControlFlowNode ControlFlowNode.getAFalseSuccessor()``
 
 The control-flow graph is *intra-procedural*–in other words, only models paths within a function. To find the associated function, use
 
@@ -119,10 +127,10 @@ Based on this query, write a query that finds accesses to the variable that occu
   
 - What do you find? What problems occur with this approach to detecting use-after-free vulnerabilities?
 
-.. rst-class:: build
+  .. rst-class:: build
 
-   .. literalinclude:: ../query-examples/cpp/control-flow-cpp-2.ql 
-      :language: ql
+      .. literalinclude:: ../query-examples/cpp/control-flow-cpp-2.ql 
+         :language: ql
 
 Utilizing recursion
 ===================

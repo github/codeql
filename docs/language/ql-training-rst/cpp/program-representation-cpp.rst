@@ -1,7 +1,6 @@
-QL for C/C++
-============
-
-Program representation
+======================================
+Program representation in QL for C/C++
+======================================
 
 .. container:: semmle-logo
 

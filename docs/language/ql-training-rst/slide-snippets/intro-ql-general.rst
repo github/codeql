@@ -15,8 +15,8 @@ Patching is still possible mid-flight, but what if there are more such issues?
 
    The bug, which had gone undetected by traditional solutions, was likely to prevent the capsule’s parachutes from opening, resulting in the Rover crashing onto the red planet’s rocky surface.
    
-Zoom in on the code
-===================
+Zoom in on the code...
+======================
 
 (For illustration only, not actually NASA code!)
 

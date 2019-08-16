@@ -1,3 +1,4 @@
+==========================================
 Introduction to variant analysis for C/C++
 ==========================================
 
@@ -5,22 +6,21 @@ Introduction to variant analysis for C/C++
 
    Semmle :sup:`TM`
 
-.. Include information slides here
+.. rst-class:: setup
 
-.. include:: ../slide-snippets/info.rst
+Setup
+=====
 
-.. Include details of project to analyze here
+For this example you should download:
 
-QL snapshot
-===========
-
-For the examples in this presentation, we will be analyzing `exiv2 <https://github.com/Exiv2/exiv2>`__.
-
-We recommend you download `this historic snapshot <https://www.google.com/url?q=http://downloads.lgtm.com/snapshots/cpp/exiv2/Exiv2_exiv2_b090f4d.zip&sa=D&ust=1558103276046000&   usg=AFQjCNFOJMgAMNChZHpMO9QEY62W-mYI1Q>`__ to analyze in QL for Eclipse.
-
-Alternatively, you can query the project in `the query console <https://lgtm.com/query/project:1506532406873/lang:cpp/>`__ on LGTM.com.
+- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `exiv2 snapshot <http://downloads.lgtm.com/snapshots/cpp/exiv2/Exiv2_exiv2_b090f4d.zip>`__
 
 .. note::
+
+   For this example, we will be analyzing `exiv2 <https://github.com/Exiv2/exiv2>`__.
+
+   You can also query the project in `the query console <https://lgtm.com/query/project:1506532406873/lang:cpp/>`__ on LGTM.com.
 
    Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 

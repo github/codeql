@@ -17,7 +17,6 @@ time, mark, audio, video {
   padding: 0;
   border: 0;
   font: inherit;
-  font-size: 100%;
   vertical-align: baseline;
 }
 
@@ -27,9 +26,9 @@ html {
 }
 
 /* line 24, ../../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
-ol, ul {
+/*ol, ul {
   list-style: none;
-}
+}*/
 
 /* line 26, ../../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 table {
@@ -45,8 +44,10 @@ caption, th, td {
 }
 
 /* line 30, ../../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
-q, blockquote {
+q {
   quotes: none;
+  margin-left: 2%;
+  margin-right:2%;
 }
 /* line 103, ../../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
@@ -95,6 +96,7 @@ body {
   -webkit-transition: opacity 800ms ease-in;
   -webkit-transition-delay: 100ms;
   transition: opacity 800ms ease-in 100ms;
+  /*font-size: 2.2vmin;*/
 }
 /* line 73, ../scss/_base.scss */
 body.loaded {
@@ -113,11 +115,23 @@ slides > slide[hidden] {
 
 /* line 86, ../scss/_base.scss */
 slides {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 56.25vw;
+  max-height: 100vh;
+  max-width: 177.78vh;
+  /*width: 1200px;
+  height: 675px;
+  left: 50%;
+  top: 50%;*/
+  bottom: auto;
+  right: auto;
+  transform: translate(-50%, -50%);
   position: absolute;
   left: 0;
   top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
   -moz-transform: translate3d(0, 0, 0);
   -ms-transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
@@ -133,6 +147,7 @@ slides {
   -webkit-transition: opacity 800ms ease-in;
   -webkit-transition-delay: 100ms;
   transition: opacity 800ms ease-in 100ms;
+  font-size: 14px;
 }
 
 /* line 98, ../scss/_base.scss */
@@ -240,15 +255,12 @@ slides > slide {
   font-family: 'Lato', sans-serif;
   font-size: 2em;
   color: #797979;
-  padding: 40px 60px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
+  padding: 5%;
   -moz-transition: all 0.6s ease-in-out;
   -o-transition: all 0.6s ease-in-out;
-  -webkit-transition: all 0.6s ease-in-out;
-  transition: all 0.6s ease-in-out;
-  overflow: auto;
+  /*-webkit-transition: all 0.6s ease-in-out;
+  transition: all 0.6s ease-in-out;*/
+  /*overflow: auto;*/
 }
 /* line 83, ../scss/default.scss */
 slides > slide.far-past {
@@ -306,7 +318,7 @@ slides > slide:not(.nobackground):before {
 }
 /* line 147, ../scss/default.scss */
 slides > slide:not(.nobackground):after {
-  font-size: 1em;
+  font-size: 0.5em;
   content: attr(data-slide-num) "/" attr(data-total-slides);
   position: fixed;
   bottom: 20px;
@@ -338,16 +350,16 @@ slides > slide.backdrop:after, slides > slide.backdrop:before {
   display: none;
 }
 /* line 180, ../scss/default.scss */
-slides > slide > hgroup + article {
+/*slides > slide > hgroup + article {
   margin-top: 45px;
-}
+}*/
 /* line 184, ../scss/default.scss */
 slides > slide > hgroup + article.flexbox.vcenter, slides > slide > hgroup + article.flexbox.vleft, slides > slide > hgroup + article.flexbox.vright {
   height: 80%;
 }
 /* line 189, ../scss/default.scss */
 slides > slide > hgroup + article p {
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
   line-height: initial;
 }
 /* line 194, ../scss/default.scss */
@@ -368,7 +380,7 @@ slides.layout-faux-widescreen > slide {
 slides.layout-widescreen > slide,
 slides.layout-faux-widescreen > slide {
   width: 100%;
-  overflow: auto;
+  /*overflow: auto;*/
 }
 /* line 217, ../scss/default.scss */
 slides.layout-widescreen > slide.far-past,
@@ -450,16 +462,17 @@ h1, h2, h3 {
   color: #5c31ff;
 }
 
-h1 {
-  font-size: 3em;
+h1, h2 {
+  font-size: 1.5em;
+  font-family: 'Work Sans', sans-serif; 
 }
 /* line 280, ../scss/default.scss */
-h2 {
+/*h2 {
   font-size: 2em;
   line-height: 45px;
   letter-spacing: -2px;
   color: #515151;
-}
+}*/
 
 /* line 287, ../scss/default.scss */
 h3 {
@@ -472,15 +485,15 @@ h3 {
 
 /* line 295, ../scss/default.scss */
 ul {
-  margin-left: 1.2em;
+  margin-left: 2.2em;
   margin-bottom: 1em;
   position: relative;
 }
 /* line 300, ../scss/default.scss */
 ul li {
   margin-bottom: 0.5em;
-  color: #2c2a8a;
-   line-height: 1.3em;
+  color: black;
+  line-height: 1.4em;
 }
 /* line 303, ../scss/default.scss */
 ul li ul {
@@ -488,22 +501,22 @@ ul li ul {
   margin-bottom: 0;
 }
 /* line 307, ../scss/default.scss */
-ul li ul li:before {
+/*ul li ul li:before {
   content: '-';
   font-weight: 600;
-}
+}*/
 /* line 314, ../scss/default.scss */
-ul > li:before {
+/*ul > li:before {
   content: '\00B7';
   margin-left: -0.5em;
   position: absolute;
   font-weight: 600;
   font-size: 2em;
-}
+}*/
 /* line 321, ../scss/default.scss */
-ul ul {
+/*ul ul {
   margin-top: .5em;
-}
+}*/
 
 /* line 328, ../scss/default.scss */
 .highlight-code slide.current pre > * {
@@ -521,11 +534,11 @@ ul ul {
 /* line 337, ../scss/default.scss */
 pre {
   font-family: 'consolas', 'Courier New', monospace;
-  font-size: 1em;
+  font-size: 0.8em;
   line-height: 1.2em;
-  padding: 10px 10px 10px 10px;
-  margin-bottom: 20px;
-  background-color: #e6e6e6;
+  /*padding: 0.8em;*/
+  margin-bottom: 0.5em;
+  /*background-color: #e6e6e6;*/
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -534,7 +547,7 @@ pre {
 /* line 351, ../scss/default.scss */
 pre[data-lang]:after {
   content: attr(data-lang);
-  background-color: #a9a9a9;
+  /*background-color: #a9a9a9;*/
   right: 0;
   top: 0;
   position: absolute;
@@ -552,7 +565,7 @@ pre[data-lang="go"] {
 /* line 368, ../scss/default.scss */
 code {
   font-size: 95%;
-  font-family: 'Source Code Pro', 'Courier New', monospace;
+  font-family: 'Consolas', 'Courier New', monospace;
   color: black;
 }
 
@@ -1189,7 +1202,7 @@ article.smaller q:before, article.smaller q:after {
 
 /* line 809, ../scss/default.scss */
 .segue {
-  padding: 60px 120px;
+  padding: 5%;
 }
 /* line 812, ../scss/default.scss */
 .segue h2 {
@@ -1291,16 +1304,20 @@ aside.gdbar img {
 
 /* line 888, ../scss/default.scss */
 .title-slide hgroup {
-  margin-top: 200px;
+  margin-top: 20%;
 }
 /* line 891, ../scss/default.scss */
 .title-slide hgroup h1 {
-  font-size: 3em;
+  font-size: 2em;
   line-height: 1.4;
-  letter-spacing: -3px;
+  /*letter-spacing: -3px;*/
   color: white;
   margin: auto;
   display: block;
+  position: absolute;
+  top: 0;
+  bottom: 10%;
+  height: 0;
 }
 /* line 898, ../scss/default.scss */
 .title-slide hgroup h2 {
@@ -1320,7 +1337,8 @@ aside.gdbar img {
 .quote {
   color: black;
   font-style: italic;
-  font-size: 1.2em;
+  font-size: 1em;
+  padding: 0.5em;
 }
 /* line 916, ../scss/default.scss */
 .quote .author {
@@ -1404,6 +1422,7 @@ slide {
   width: 100%;
   height: 100%;
   overflow: auto;
+  transform: scale(1);
 }   
 
 .end-slide {
@@ -1417,32 +1436,72 @@ slide {
   background-size: cover;
 }
 
+.setup, .agenda {
+  background-image: url("../../setup-slide.svg");
+  background-size: cover;
+}
 
-/* Custom slide styles */
+.setup article, .agenda article {
+  margin-top: 3%;
+  border-left: 1px  solid #5c31ff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  margin: auto;
+  width: 50%;
+  height: fit-content;
+  padding: 2%;
+}
+
+.setup li {
+  line-height: 1.5em;
+  margin-top: 1.5em;
+}
+
+.agenda li {
+  margin:0;
+}
+
+.setup ul, .agenda ul {
+  padding: 0;
+}
+
+.setup hgroup, .agenda hgroup {
+  position: relative;
+  margin: 7% 0 0 17%;
+}
+
+/*custom slide styles */
 
 .semmle-logo sup {
   vertical-align: super;
-  font-size: 0.4em;
+  font-size: 0.3em;
+  font-weight: 100;
 }
 
 .title-slide .semmle-logo {
   color: white;
   font-size: 1.2em;
   position: absolute;
-  top: 125px;
+  top: 10%;
 }
 
 .title-slide p {
   color: white;
-  font-size: 1.2em;
+  font-size: 1em;
+  position: absolute;
+  bottom: 30%;
 }
 
-.agenda-slide h1 {
-  padding:0;
-}
-
-.background2 h1, .background2 p {
+.background2 h2 { 
   color: white;
+}
+
+.background2 p {
+  color: #5c31ff;
+  font-size: 1.5em;
 }
 
 hgroup .pre {
@@ -1467,10 +1526,10 @@ hgroup .pre {
   padding: 0px;
   width: 45%;
   line-height: 1.2em;
+  color: black;
 }
 
 .column-right img,  .column-left img {
-  max-height: 60vh;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -1482,17 +1541,12 @@ hgroup .pre {
 
 .highlight {
   width: auto;
-}
-
-.set-up {
-  margin-left: 240px;
-  margin-top: 150px;
-  color: #2c2a8a;
-  font-size: xx-large;
+  background: transparent !important;
+  margin-bottom: 2%;
 }
 
 p {
-  color: #2c2a8a;
+  color: black;
   font-size: 1em;
 }
 
@@ -1504,7 +1558,7 @@ p.first.admonition-title {
 
 .admonition.note {
   text-align: left;
-  font-size: initial;
+  font-size: 0.8em;
   width: 100%;
   overflow: scroll;
   border: 1px solid black;
@@ -1513,7 +1567,6 @@ p.first.admonition-title {
 .admonition.note pre {
   font-family: 'consolas', 'Courier New', monospace;
   background-color: white;
-  font-size: initial;
   padding: 0;
   margin-bottom: 10px;
 }
@@ -1531,6 +1584,20 @@ p.first.admonition-title {
   width: inherit;
 }
 
+/* more custom styles */
+
+span.n, span.p {
+  color: grey;
+}
+
+ol {
+  color: black;
+}
+
+li > ul > li {
+  margin-bottom: 0;
+}
+
 /* scale and centre images*/
 
 .image-box {
@@ -1539,11 +1606,13 @@ p.first.admonition-title {
 }
 
 img {
-  max-width: 100%;
-  max-height: 100vh;
+  max-width: 50%;
   margin: auto;
 }
 
+article {
+  margin-top: 3%;
+}
 
 @media print {
   /* line 978, ../scss/default.scss */
@@ -1562,13 +1631,15 @@ img {
     transform: none !important;
     width: 100%;
     height: 100%;
-    page-break-after: always;
+    page-break-after: always !important;
     top: auto !important;
     left: auto !important;
+    bottom: unset;
     margin-top: 0 !important;
     margin-left: 0 !important;
     opacity: 1 !important;
     color: #555;
+    font-size: 100%;
   }
   /* line 993, ../scss/default.scss */
   slides slide.far-past, slides slide.past, slides slide.next, slides slide.far-next, slides slide.far-past, slides slide.current {
@@ -1641,68 +1712,63 @@ img {
   slides > slide:not(.nobackground):after {
     display: none;
   }
+
+  slides {
+    bottom: unset;
+  }
   
 }
-
-@media screen and (max-width: 480px) { 
-  html {
-    height: 100%;
-    overflow: auto;
-    position: fixed;
-    width: 100%;
-    font-size: 45%;
+/*
+@media screen and (max-width: 450px) { 
+  slides {
+    font-size: 1.2vmin;
   }
+}
 
-  body {
-    margin: 0;
-    padding: 0;
+@media screen and (min-width: 451px) and (max-width: 767px) { 
+  slides {
+    font-size: 2.5vmin;
   }
+}
 
-  .column-left, .column-right {
-    width: 100%;
-    height: auto;
+@media screen and (min-width: 451px) and (orientation : portrait) { 
+  slides {
+    font-size: 1.2vmin;
   }
+}
 
-  article {
-    top: 20%;
-    left: 10%;
-    right: 10%; 
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) { 
+  slides {
+    font-size: 1.2vmin;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 812px) and (orientation: landscape) { 
+  slides {
+    font-size: 2.2vmin;
   }
 }
 
 
-@media screen and (min-width: 481px) and (max-width: 1024px) { 
-  html {
-    height: 100%;
-    overflow: auto;
-    position: fixed;
-    width: 100%;
-    font-size: 70%;
+@media screen and (min-width: 813px) and (max-width: 1024px) and (orientation: landscape) { 
+  slides {
+    font-size: 1.8vmin;
   }
-
-  body {
-    margin: 0;
-    padding: 0;
-  }
-
-  .column-left, .column-right {
-    width: 100%;
-    height: auto;
-  }
-
 }
 
-@media screen and (min-width: 1025px) and (max-width: 1800px) { 
-  html {
-    height: 100%;
-    overflow: auto;
-    position: fixed;
-    width: 100%;
-    font-size: 80%;
+@media screen and (min-width: 1025px) and (orientation: landscape){
+  slides {
+    font-size: 2vmin;
   }
+}
 
-  body {
-    margin: 0;
-    padding: 0;
+@media screen and (min-width: 1025px) and (orientation: portrait){
+  slides {
+    font-size: 1.2vmin;
   }
+}
+*/
+.wrapper {
+  height: 675px;
+  resize: both;
 }

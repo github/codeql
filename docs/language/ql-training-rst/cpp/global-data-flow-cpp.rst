@@ -1,27 +1,30 @@
-Introduction to global data flow
-================================
+========================================
+Introduction to global data flow for C++
+========================================
 
 .. container:: semmle-logo
 
    Semmle :sup:`TM`
-
-.. Include information slides here
-
-.. include:: ../slide-snippets/info.rst
    
-QL snapshot
-===========
+.. rst-class:: setup
 
-For the examples in this presentation, we will be analyzing `dotnet/coreclr <https://github.com/dotnet/coreclr>`__.
+Setup
+=====
 
-We recommend you download `this historic snapshot <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__ to analyze in QL for Eclipse.
+For this example you should download:
 
-Alternatively, you can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
+- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `dotnet/coreclr snapshot <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__
 
 .. note::
 
+   For the examples in this presentation, we will be analyzing `dotnet/coreclr <https://github.com/dotnet/coreclr>`__.
+
+   You can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
+
    Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
+.. rst-class:: agenda
 
 Agenda
 ======
@@ -139,7 +142,7 @@ Use the ``FormattingFunction`` class to fill in the definition of ``isSink``.
 Defining sinks (answer)
 =======================
 
-Use the ``FormattingFunction`` class to fill in the definition of “isSink”
+Use the ``FormattingFunction`` class, we can write the sink as:
 
 .. code-block:: ql
 
@@ -197,7 +200,7 @@ Add an additional taint step that (heuristically) taints a local variable if it 
       exists (Call c, Expr arg, LocalVariable lv |
         arg = c.getAnArgument() and
         arg = pred.asExpr() and
-        arg.getFullyConverted().getUnderlyingType() instanceof PointerType   and
+        arg.getFullyConverted().getUnderlyingType() instanceof PointerType and
         arg = lv.getAnAccess() and
         succ.asUninitialized() = lv
       )
@@ -231,12 +234,12 @@ Data flow models
 
    .. code-block:: ql
    
-     class MemcpyFunction extends TaintFunction {
-           MemcpyFunction() { this.hasName("memcpy") }
-           override predicate hasTaintFlow(FunctionInput i,    FunctionOutput o) 
-               i.isInParameter(2) and o.isOutParameterPointer(0)
-           }
-       }
+      class MemcpyFunction extends TaintFunction {
+            MemcpyFunction() { this.hasName("memcpy") }
+            override predicate hasTaintFlow(FunctionInput i, FunctionOutput o) 
+                i.isInParameter(2) and o.isOutParameterPointer(0)
+            }
+      }
    
 .. note::
 
@@ -300,33 +303,33 @@ Balancing calls and returns
 
 - Instead, make sure that matching ``stepIn``/``stepOut`` pairs talk about the same call site:
 
-.. code-block:: ql
-
-   predicate balancedPath(DataFlow::Node src, DataFlow::Node snk) {
-     src = snk or DataFlow::localFlowStep(src, snk) or
-     exists(DataFlow::Node m | balancedPath(src, m) | balancedPath(m, snk)) or
-     exists(Call c, DataFlow::Node parm, DataFlow::Node ret |
-       stepIn(c, src, parm) and
-       balancedPath(parm, ret) and
-       stepOut(c, ret, snk)
-     )
-   }
-
+  .. code-block:: ql
+  
+     predicate balancedPath(DataFlow::Node src, DataFlow::Node snk) {
+       src = snk or DataFlow::localFlowStep(src, snk) or
+       exists(DataFlow::Node m | balancedPath(src, m) | balancedPath(m, snk)) or
+       exists(Call c, DataFlow::Node parm, DataFlow::Node ret |
+         stepIn(c, src, parm) and
+         balancedPath(parm, ret) and
+         stepOut(c, ret, snk)
+       )
+     }
+  
 Summary-based global data flow
 ==============================
 
-- To avoid traversing the same paths many times, we compute function summaries that record if a function parameter flows into a return value:
+- To avoid traversing the same paths many times, we compute *function summaries* that record if a function parameter flows into a return value:
 
-.. code-block:: ql
-
-   predicate returnsParameter(Function f, int i) {
-     exists (Parameter p, ReturnStmt retStmt, Expr ret |
-       p = f.getParameter(i) and
-       retStmt.getEnclosingFunction() = f and
-       ret = retStmt.getExpr() and
-       balancedPath(DataFlow::parameterNode(p), DataFlow::exprNode(ret))
-     )
-   }
+  .. code-block:: ql
+  
+     predicate returnsParameter(Function f, int i) {
+       exists (Parameter p, ReturnStmt retStmt, Expr ret |
+         p = f.getParameter(i) and
+         retStmt.getEnclosingFunction() = f and
+         ret = retStmt.getExpr() and
+         balancedPath(DataFlow::parameterNode(p), DataFlow::exprNode(ret))
+       )
+     }
 
 - Use this predicate in balancedPath instead of ``stepIn``/``stepOut`` pairs.
 

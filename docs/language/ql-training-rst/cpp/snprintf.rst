@@ -1,3 +1,4 @@
+===============================
 Exercise: ``snprintf`` overflow
 ===============================
 
@@ -5,20 +6,21 @@ Exercise: ``snprintf`` overflow
 
    Semmle :sup:`TM`
 
-.. Include information slides here
+.. rst-class:: setup
 
-.. include:: ../slide-snippets/info.rst
+Setup
+=====
 
-QL snapshot
-===========
+For this example you should download:
 
-For this examples in this presentation, we will be analyzing `rsyslog <https://github.com/rsyslog/rsyslog>`__.
-
-We recommend you download `this historic snapshot <https://downloads.lgtm.com/snapshots/cpp/rsyslog/rsyslog/rsyslog-all-revision-2018-April-27--14-12-31.zip>`__ to analyze in QL for Eclipse.
-
-Alternatively, you can query the project in `the query console <https://lgtm.com/query/project:1506087977050/lang:cpp/>`__ on LGTM.com.
+- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `rsyslog snapshot <https://downloads.lgtm.com/snapshots/cpp/rsyslog/rsyslog/rsyslog-all-revision-2018-April-27--14-12-31.zip>`__
 
 .. note::
+
+   For this example, we will be analyzing `rsyslog <https://github.com/rsyslog/rsyslog>`__.
+
+   You can also query the project in `the query console <https://lgtm.com/query/project:1506087977050/lang:cpp/>`__ on LGTM.com.
 
    Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 

@@ -1,5 +1,6 @@
-Introduction to data flow
-=========================
+===================================
+Introduction to data flow for C/C++
+===================================
 
 .. container:: semmle-logo
 
@@ -7,25 +8,28 @@ Introduction to data flow
 
 Finding string formatting vulnerabilities in C/C++
 
-.. Include information slides here
+.. rst-class:: setup
 
-.. include:: ../slide-snippets/info.rst
+Setup
+=====
 
-QL snapshot
-===========
+For this example you should download:
 
-For the examples in this presentation, we will be analyzing `dotnet/coreclr <https://github.com/dotnet/coreclr>`__.
-
-We recommend you download `this historic snapshot <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__ to analyze in QL for Eclipse.
-
-Alternatively, you can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
+- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `dotnet/coreclr snapshot <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__
 
 .. note::
 
+   For the examples in this presentation, we will be analyzing `dotnet/coreclr <https://github.com/dotnet/coreclr>`__.
+
+   You can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
+
    Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 
-Overview
-========
+.. rst-class:: agenda
+
+Agenda
+======
 
 - Non-constant format string
 - Data flow
@@ -152,8 +156,6 @@ Data flow graphs
 .. container:: column-right
 
   Data flow graph:
-
-   .. container:: image-box
    
       .. graphviz::
          
@@ -326,6 +328,7 @@ Refinements (take home exercise)
 ================================
 
 Audit the results and apply any refinements you deem necessary.
+
 Suggestions:
 
 - Replace ``DataFlow::localFlowStep`` with a custom predicate that includes steps through global variable definitions.
