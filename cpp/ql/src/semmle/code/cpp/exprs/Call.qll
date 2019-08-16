@@ -456,6 +456,7 @@ class VacuousDestructorCall extends Expr, @vacuous_destructor_call {
  * of a constructor's explicit initializer list or implicit actions.
  */
 class ConstructorInit extends Expr, @ctorinit {
+  override string getCanonicalQLClass() { result = "ConstructorInit" }
 }
 
 /**
@@ -463,6 +464,7 @@ class ConstructorInit extends Expr, @ctorinit {
  * initializer list or compiler-generated actions.
  */
 class ConstructorBaseInit extends ConstructorInit, ConstructorCall {
+  override string getCanonicalQLClass() { result = "ConstructorBaseInit" }
 }
 
 /**
@@ -470,6 +472,7 @@ class ConstructorBaseInit extends ConstructorInit, ConstructorCall {
  * constructor's initializer list or compiler-generated actions.
  */
 class ConstructorDirectInit extends ConstructorBaseInit, @ctordirectinit {
+  override string getCanonicalQLClass() { result = "ConstructorDirectInit" }
 }
 
 /**
@@ -480,6 +483,7 @@ class ConstructorDirectInit extends ConstructorBaseInit, @ctordirectinit {
  * call won't be performed.
  */
 class ConstructorVirtualInit extends ConstructorBaseInit, @ctorvirtualinit {
+  override string getCanonicalQLClass() { result = "ConstructorVirtualInit" }
 }
 
 /**
@@ -487,6 +491,7 @@ class ConstructorVirtualInit extends ConstructorBaseInit, @ctorvirtualinit {
  * initializer list, which delegates object construction (C++11 only).
  */
 class ConstructorDelegationInit extends ConstructorBaseInit, @ctordelegatinginit {
+  override string getCanonicalQLClass() { result = "ConstructorDelegationInit" }
 }
 
 /**
@@ -524,6 +529,7 @@ class ConstructorFieldInit extends ConstructorInit, @ctorfieldinit {
  * compiler-generated actions.
  */
 class DestructorDestruction extends Expr, @dtordestruct {
+  override string getCanonicalQLClass() { result = "DestructorDestruction" }
 }
 
 /**
@@ -531,6 +537,7 @@ class DestructorDestruction extends Expr, @dtordestruct {
  * compiler-generated actions.
  */
 class DestructorBaseDestruction extends DestructorCall, DestructorDestruction {
+  override string getCanonicalQLClass() { result = "DestructorBaseDestruction" }
 }
 
 /**
@@ -538,6 +545,7 @@ class DestructorBaseDestruction extends DestructorCall, DestructorDestruction {
  * destructor's compiler-generated actions.
  */
 class DestructorDirectDestruction extends DestructorBaseDestruction, @dtordirectdestruct {
+  override string getCanonicalQLClass() { result = "DestructorDirectDestruction" }
 }
 
 /**
@@ -548,6 +556,7 @@ class DestructorDirectDestruction extends DestructorBaseDestruction, @dtordirect
  * in the corresponding constructor, then this call won't be performed.
  */
 class DestructorVirtualDestruction extends DestructorBaseDestruction, @dtorvirtualdestruct {
+  override string getCanonicalQLClass() { result = "DestructorVirtualDestruction" }
 }
 
 /**

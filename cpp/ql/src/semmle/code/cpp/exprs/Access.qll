@@ -150,6 +150,7 @@ class FieldAccess extends VariableAccess {
  * so this is equivalent to `(*obj).field`.
  */
 class PointerFieldAccess extends FieldAccess {
+  override string getCanonicalQLClass() { result = "PointerFieldAccess" }
   PointerFieldAccess() {
     exists (PointerType t
     | t = getQualifier().getFullyConverted().getUnspecifiedType() and
@@ -164,6 +165,7 @@ class PointerFieldAccess extends FieldAccess {
  * distinguish whether or not the type of `obj` is a reference type.
  */
 class DotFieldAccess extends FieldAccess {
+  override string getCanonicalQLClass() { result = "DotFieldAccess" }
   DotFieldAccess() {
     exists (Class c
     | c = getQualifier().getFullyConverted().getUnspecifiedType())
@@ -175,6 +177,7 @@ class DotFieldAccess extends FieldAccess {
  * reference to a class/struct/union.
  */
 class ReferenceFieldAccess extends DotFieldAccess {
+  override string getCanonicalQLClass() { result = "ReferenceFieldAccess" }
   ReferenceFieldAccess() {
     exprHasReferenceConversion(this.getQualifier())
   }
@@ -185,6 +188,7 @@ class ReferenceFieldAccess extends DotFieldAccess {
  * class/struct/union (and not a reference).
  */
 class ValueFieldAccess extends DotFieldAccess {
+  override string getCanonicalQLClass() { result = "ValueFieldAccess" }
   ValueFieldAccess() {
     not exprHasReferenceConversion(this.getQualifier())
   }
@@ -226,6 +230,7 @@ private predicate exprHasReferenceConversion(Expr e) {
  * `ImplicitThisFieldAccess`.
  */
 class ImplicitThisFieldAccess extends FieldAccess {
+  override string getCanonicalQLClass() { result = "ImplicitThisFieldAccess" }
   ImplicitThisFieldAccess() {
     not exists (this.getQualifier())
   }
@@ -277,6 +282,7 @@ class ParamAccessForType extends Expr, @param_ref {
  * works on types directly rather than variables, expressions etc.
  */
 class TypeName extends Expr, @type_operand {
+  override string getCanonicalQLClass() { result = "TypeName" }
   override string toString() {
     result = this.getType().getName()
   }

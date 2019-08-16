@@ -798,6 +798,8 @@ class Decltype extends Type, @decltype {
     decltypes(underlyingElement(this), _, unresolveElement(result), _)
   }
 
+  override string getCanonicalQLClass() { result = "Decltype" }
+
   /**
    * Whether an extra pair of parentheses around the expression would change the semantics of this decltype.
    *
@@ -1063,6 +1065,8 @@ class GNUVectorType extends DerivedType {
    * of a single element.
    */
   int getNumElements() { arraysizes(underlyingElement(this),result,_,_) }
+
+  override string getCanonicalQLClass() { result = "GNUVectorType" }
 
   /**
    * Gets the size, in bytes, of this vector type.
