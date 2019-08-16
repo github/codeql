@@ -91,8 +91,8 @@ definition.
 In addition to regular definitions corresponding to assignments and increment/decrement expressions,
 the SSA form also introduces pseudo-definitions such as
 
-  - `phi nodes` where multiple possible values for a variable are merged
-  - `refinement nodes` (also known as `pi nodes`) marking program points where additional information about a variable becomes available that may restrict its possible set of values.
+  - *phi nodes*, where multiple possible values for a variable are merged
+  - *refinement nodes* (also known as *pi nodes*) marking program points where additional information about a variable becomes available that may restrict its possible set of values.
 
 Local data flow
 ~~~~~~~~~~~~~~~
@@ -186,7 +186,7 @@ Type inference
 
 You can override ``AnalyzedNode::getAValue`` to customize the type inference. Note that the type
 inference is expected to be sound, that is (as far as practical), the abstract values inferred for a
-data-flow nodes should cover all possible concrete values this node may take on at runtime.
+data-flow node should cover all possible concrete values this node may take on at runtime.
 
 You can also extend the set of abstract values. To add individual abstract values that are
 independent of the program being analyzed, define a subclass of ``CustomAbstractValueTag``
@@ -232,7 +232,7 @@ Most security queries consist of:
 
   - one QL file defining the query
   - one configuration module defining the taint-tracking configuration
-  - one customization module defining sources, sinks and sanitizers
+  - one customization module defining sources, sinks, and sanitizers
 
 For example, ``Security/CWE-078/CommandInjection.ql`` defines the command-injection query. It
 imports the module ``semmle.javascript.security.dataflow.CommandInjection``, which defines the
