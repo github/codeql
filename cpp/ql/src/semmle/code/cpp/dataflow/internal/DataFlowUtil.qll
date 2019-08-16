@@ -364,7 +364,7 @@ private module ThisFlow {
     // make space for any `ConstructorFieldInit`s there may be between it and
     // the block contents.
     thisNode.(ImplicitParameterNode).getFunction().getBlock() = b and
-    result = -1000
+    result = -2147483648
     or
     // Place the synthetic `this` node for a `ConstructorFieldInit` at a
     // negative offset in the first basic block, between the
@@ -372,7 +372,7 @@ private module ThisFlow {
     exists(Constructor constructor, int i |
       thisNode.(PreConstructorInitThis).getConstructorFieldInit() =
         constructor.getInitializer(i) and
-      result = -999 + i and
+      result = -2147483648 + 1 + i and
       b = thisNode.getFunction().getBlock()
     )
     or
