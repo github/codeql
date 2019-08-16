@@ -208,11 +208,11 @@ void test_swap() {
 	y = 0;
 
 	sink(x); // tainted
-	sink(y);
+	sink(y); // clean
 
 	std::swap(x, y);
 
-	sink(x); // [FALSE POSITIVE]
+	sink(x); // clean [FALSE POSITIVE]
 	sink(y); // tainted
 }
 
@@ -226,35 +226,35 @@ void test_lambdas()
 	int w = 0;
 
 	auto a = [t, u]() -> int {
-		sink(t); // tainted [NOT DETECTED]
-		sink(u);
+		sink(t); // tainted
+		sink(u); // clean [FALSE POSITIVE]
 		return t;
 	};
 	sink(a()); // tainted
 
 	auto b = [&] {
-		sink(t); // tainted [NOT DETECTED]
-		sink(u);
+		sink(t); // tainted
+		sink(u); // clean [FALSE POSITIVE]
 		v = source(); // (v is reference captured)
 	};
 	b();
 	sink(v); // tainted [NOT DETECTED]
 
 	auto c = [=] {
-		sink(t); // tainted [NOT DETECTED]
-		sink(u);
+		sink(t); // tainted
+		sink(u); // clean [FALSE POSITIVE]
 	};
 	c();
 
 	auto d = [](int a, int b) {
 		sink(a); // tainted
-		sink(b);
+		sink(b); // clean
 	};
 	d(t, u);
 
 	auto e = [](int &a, int &b, int &c) {
 		sink(a); // tainted
-		sink(b);
+		sink(b); // clean
 		c = source();
 	};
 	e(t, u, w);
