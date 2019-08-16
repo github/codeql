@@ -11,14 +11,14 @@ void test_lambdas()
 	int w = 0;
 
 	auto a = [t, u]() -> int {
-		sink(t); // flow from source() [NOT DETECTED]
+		sink(t); // flow from source()
 		sink(u);
 		return t;
 	};
-	sink(a()); // flow from source() [NOT DETECTED]
+	sink(a()); // flow from source()
 
 	auto b = [&] {
-		sink(t); // flow from source() [NOT DETECTED]
+		sink(t); // flow from source()
 		sink(u);
 		v = source(); // (v is reference captured)
 	};
@@ -26,7 +26,7 @@ void test_lambdas()
 	sink(v); // flow from source() [NOT DETECTED]
 
 	auto c = [=] {
-		sink(t); // flow from source() [NOT DETECTED]
+		sink(t); // flow from source()
 		sink(u);
 	};
 	c();

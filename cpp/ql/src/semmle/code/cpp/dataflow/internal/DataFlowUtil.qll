@@ -452,6 +452,11 @@ private predicate exprToExprStep_nocfg(Expr fromExpr, Expr toExpr) {
   // initializer `(x)`.
   toExpr.(NewExpr).getInitializer() = fromExpr
   or
+  // A lambda expression (`[captures](params){body}`) is just a thin wrapper
+  // around the desugared closure creation in the form of a
+  // `ClassAggregateLiteral` (`{ capture1, ..., captureN }`).
+  toExpr.(LambdaExpression).getInitializer() = fromExpr
+  or
   toExpr = any(Call call |
       exists(DataFlowFunction f, FunctionInput inModel, FunctionOutput outModel, int iIn |
         call.getTarget() = f and
