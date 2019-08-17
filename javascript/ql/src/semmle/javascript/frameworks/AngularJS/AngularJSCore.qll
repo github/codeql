@@ -1080,3 +1080,24 @@ private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedVa
     result = service.getALocalValue()
   }
 }
+
+/**
+ * A call to `angular.bind`, as a partial function invocation.
+ */
+private class BindCall extends DataFlow::PartialInvokeNode::Range, DataFlow::CallNode {
+  BindCall() { this = angular().getAMemberCall("bind") }
+
+  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+    index >= 0 and
+    callback = getArgument(1) and
+    argument = getArgument(index + 2)
+  }
+
+  override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+    callback = getArgument(1) and
+    boundArgs = getNumArgument() - 2 and
+    result = this
+  }
+
+  override DataFlow::Node getBoundReceiver() { result = getArgument(0) }
+}
