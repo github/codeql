@@ -983,73 +983,132 @@ module ClassNode {
 }
 
 /**
+ * A data flow node that performs a partial function application.
+ *
+ * Examples:
+ * ```
+ * fn.bind(this)
+ * x.method.bind(x)
+ * _.partial(fn, x, y, z)
+ * ```
+ */
+class PartialInvokeNode extends DataFlow::Node {
+  PartialInvokeNode::Range range;
+
+  PartialInvokeNode() { this = range }
+
+  /**
+   * Holds if `argument` is passed as argument `index` to the function in `callback`.
+   */
+  predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+    range.isPartialArgument(callback, argument, index)
+  }
+
+  /**
+   * Gets a node referring to a bound version of `callback` with `boundArgs` arguments bound.
+   */
+  DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+    result = range.getBoundFunction(callback, boundArgs)
+  }
+
+  /**
+   * Gets the node holding the receiver to be passed to the bound function, if specified.
+   */
+  DataFlow::Node getBoundReceiver() { result = range.getBoundReceiver() }
+}
+
+module PartialInvokeNode {
+  /**
+   * A data flow node that performs a partial function application.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Holds if `argument` is passed as argument `index` to the function in `callback`.
+     */
+    predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) { none() }
+
+    /**
+     * Gets a node referring to a bound version of `callback` with `boundArgs` arguments bound.
+     */
+    DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) { none() }
+
+    /**
+     * Gets the node holding the receiver to be passed to the bound function, if specified.
+     */
+    DataFlow::Node getBoundReceiver() { none() }
+  }
+
+  /**
+  * A partial call through the built-in `Function.prototype.bind`.
+  */
+  private class BindPartialCall extends PartialInvokeNode::Range, DataFlow::MethodCallNode {
+    BindPartialCall() { getMethodName() = "bind" }
+
+    override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+      index >= 0 and
+      callback = getReceiver() and
+      argument = getArgument(index + 1)
+    }
+
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      callback = getReceiver() and
+      boundArgs = getNumArgument() - 1 and
+      result = this
+    }
+
+    override DataFlow::Node getBoundReceiver() {
+      result = getArgument(0)
+    }
+  }
+
+  /**
+  * A partial call through `_.partial`.
+  */
+  private class LodashPartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
+    LodashPartialCall() { this = LodashUnderscore::member("partial").getACall() }
+
+    override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+      index >= 0 and
+      callback = getArgument(0) and
+      argument = getArgument(index + 1)
+    }
+
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      callback = getReceiver() and
+      boundArgs = getNumArgument() - 1 and
+      result = this
+    }
+  }
+
+  /**
+   * A partial call through `ramda.partial`.
+   */
+  private class RamdaPartialCall extends PartialInvokeNode::Range, DataFlow::CallNode {
+    RamdaPartialCall() { this = DataFlow::moduleMember("ramda", "partial").getACall() }
+
+    private DataFlow::ArrayCreationNode getArgumentsArray() {
+      result.flowsTo(getArgument(1))
+    }
+
+    override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
+      callback = getArgument(0) and
+      argument = getArgumentsArray().getElement(index)
+    }
+
+    override DataFlow::SourceNode getBoundFunction(DataFlow::Node callback, int boundArgs) {
+      callback = getArgument(0) and
+      boundArgs = getArgumentsArray().getSize() and
+      result = this
+    }
+  }
+}
+
+/**
+ * DEPRECATED. Subclasses should extend `PartialInvokeNode::Range` instead,
+ * and predicates should use `PartialInvokeNode` instead.
+ *
  * An invocation that is modeled as a partial function application.
  *
  * This contributes additional argument-passing flow edges that should be added to all data flow configurations.
  */
-abstract class AdditionalPartialInvokeNode extends DataFlow::InvokeNode {
-  /**
-   * Holds if `argument` is passed as argument `index` to the function in `callback`.
-   */
-  abstract predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index);
-
-  /** Gets the data flow node referring to the bound function, if such a node exists. */
-  DataFlow::SourceNode getBoundFunction(int boundArgs) { none() }
-}
-
-/**
- * A partial call through the built-in `Function.prototype.bind`.
- */
-private class BindPartialCall extends AdditionalPartialInvokeNode, DataFlow::MethodCallNode {
-  BindPartialCall() { getMethodName() = "bind" }
-
-  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
-    index >= 0 and
-    callback = getReceiver() and
-    argument = getArgument(index + 1)
-  }
-
-  override DataFlow::SourceNode getBoundFunction(int boundArgs) {
-    boundArgs = getNumArgument() - 1 and
-    result = this
-  }
-}
-
-/**
- * A partial call through `_.partial`.
- */
-private class LodashPartialCall extends AdditionalPartialInvokeNode {
-  LodashPartialCall() { this = LodashUnderscore::member("partial").getACall() }
-
-  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
-    index >= 0 and
-    callback = getArgument(0) and
-    argument = getArgument(index + 1)
-  }
-
-  override DataFlow::SourceNode getBoundFunction(int boundArgs) {
-    boundArgs = getNumArgument() - 1 and
-    result = this
-  }
-}
-
-/**
- * A partial call through `ramda.partial`.
- */
-private class RamdaPartialCall extends AdditionalPartialInvokeNode {
-  RamdaPartialCall() { this = DataFlow::moduleMember("ramda", "partial").getACall() }
-
-  private DataFlow::ArrayCreationNode getArgumentsArray() {
-    result.flowsTo(getArgument(1))
-  }
-
-  override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
-    callback = getArgument(0) and
-    argument = getArgumentsArray().getElement(index)
-  }
-
-  override DataFlow::SourceNode getBoundFunction(int boundArgs) {
-    boundArgs = getArgumentsArray().getSize() and
-    result = this
-  }
-}
+deprecated class AdditionalPartialInvokeNode = PartialInvokeNode::Range;

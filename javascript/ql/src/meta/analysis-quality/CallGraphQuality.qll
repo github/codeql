@@ -76,7 +76,7 @@ SourceNode nodeLeadingToInvocation() {
     result.flowsTo(arg)
   )
   or
-  exists(AdditionalPartialInvokeNode invoke, Node arg |
+  exists(PartialInvokeNode invoke, Node arg |
     invoke.isPartialArgument(arg, _, _) and
     result.flowsTo(arg)
   )
