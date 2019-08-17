@@ -1,6 +1,7 @@
 import java
 import semmle.code.java.Serializability
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.DataFlow5
 
 /** The method `parseAs` in `com.google.api.client.http.HttpResponse`. */
 private class ParseAsMethod extends Method {
@@ -10,7 +11,7 @@ private class ParseAsMethod extends Method {
   }
 }
 
-private class TypeLiteralToParseAsFlowConfiguration extends DataFlow::Configuration {
+private class TypeLiteralToParseAsFlowConfiguration extends DataFlow5::Configuration {
   TypeLiteralToParseAsFlowConfiguration() {
     this = "GoogleHttpClientApi::TypeLiteralToParseAsFlowConfiguration"
   }
