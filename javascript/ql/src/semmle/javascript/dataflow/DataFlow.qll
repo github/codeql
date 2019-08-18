@@ -127,6 +127,8 @@ module DataFlow {
      * possibly derived from a partial function invocation.
      */
     final FunctionNode getABoundFunctionValue(int boundArgs) {
+      result = getAFunctionValue() and boundArgs = 0
+      or
       CallGraph::getABoundFunctionReference(result, boundArgs).flowsTo(this)
     }
 
