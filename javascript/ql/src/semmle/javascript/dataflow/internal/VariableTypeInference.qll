@@ -33,31 +33,44 @@ private class AnalyzedCapturedVariable extends @variable {
 /**
  * Flow analysis for accesses to SSA variables.
  */
-private class SsaVarAccessAnalysis extends DataFlow::AnalyzedValueNode {
-  AnalyzedSsaDefinition def;
-
-  SsaVarAccessAnalysis() { astNode = def.getVariable().getAUse() }
-
-  override AbstractValue getALocalValue() { result = def.getAnRhsValue() }
+private class AnalyzedSsaDefinitionNode extends AnalyzedNode, DataFlow::SsaDefinitionNode {
+  override AbstractValue getALocalValue() { result = ssa.(AnalyzedSsaDefinition).getAnRhsValue() }
 }
 
 /**
  * Flow analysis for accesses to SSA variables.
  *
- * Unlike `SsaVarAccessAnalysis`, this only contributes to `getAValue()`, not `getALocalValue()`.
+ * Unlike `AnalyzedSsaDefinitionNode`, this only contributes to `getAValue()`, not `getALocalValue()`.
  */
-private class SsaVarAccessWithNonLocalAnalysis extends SsaVarAccessAnalysis {
+private class AnalyzedSsaDefinitionNodeWithNonLocalAnalysis extends AnalyzedSsaDefinitionNode {
   DataFlow::AnalyzedValueNode src;
 
-  SsaVarAccessWithNonLocalAnalysis() {
+  AnalyzedSsaDefinitionNodeWithNonLocalAnalysis() {
     exists(VarDef varDef |
-      varDef = def.(SsaExplicitDefinition).getDef() and
+      varDef = ssa.(SsaExplicitDefinition).getDef() and
       varDef.getSource().flow() = src and
       src instanceof CallWithNonLocalAnalyzedReturnFlow
     )
   }
 
   override AbstractValue getAValue() { result = src.getAValue() }
+}
+
+/**
+ * Flow analysis for SSA variable uses.
+ *
+ * Ensures that `getAValue` propagates from the SSA definition to its use.
+ */
+private class AnalyzedSsaVariableUse extends AnalyzedValueNode {
+  AnalyzedSsaVariableUse() {
+    this = DataFlow::valueNode(any(SsaVariable v).getAUse())
+  }
+
+  override AbstractValue getAValue() {
+    result = AnalyzedValueNode.super.getAValue()
+    or
+    result = localFlowPred().getAValue()
+  }
 }
 
 /**
