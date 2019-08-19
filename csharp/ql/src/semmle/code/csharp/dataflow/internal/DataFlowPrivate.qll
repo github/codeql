@@ -608,6 +608,16 @@ private module ParameterNodes {
 }
 import ParameterNodes
 
+/** A data flow node that represents a call argument. */
+abstract class ArgumentNode extends Node {
+  /** Holds if this argument occurs at the given position in the given call. */
+  cached
+  abstract predicate argumentOf(DataFlowCall call, int pos);
+
+  /** Gets the call in which this node is an argument. */
+  final DataFlowCall getCall() { this.argumentOf(result, _) }
+}
+
 private module ArgumentNodes {
   class DelegateArgumentConfiguration extends ControlFlowReachabilityConfiguration {
     DelegateArgumentConfiguration() { this = "DelegateArgumentConfiguration" }
@@ -625,9 +635,9 @@ private module ArgumentNodes {
   }
 
   /**
-   * Holds if `arg` is an argument of the call `call`, which resolves to a
-   * library callable that is known to forward `arg` into the `i`th parameter
-   * of a supplied delegate `delegate`.
+   * Holds if `arg` is an argument of a call, which resolves to a library callable
+   * that is known to forward `arg` into the `i`th parameter of a supplied
+   * delegate `delegate`.
    *
    * For example, in
    *
@@ -638,9 +648,9 @@ private module ArgumentNodes {
    * `arg = x`, `i = 0`, `call = x.Select(Foo)`, and `delegate = Foo`.
    */
   private predicate flowIntoCallableLibraryCall(
-    DataFlowCall call, Node arg, ImplicitDelegateDataFlowCall delegate, int i
+    ExplicitArgumentNode arg, ImplicitDelegateDataFlowCall delegate, int i
   ) {
-    exists(int j, boolean preservesValue |
+    exists(DataFlowCall call, int j, boolean preservesValue |
       preservesValue = true and i = j
       or
       preservesValue = false and i = j + delegate.getNumberOfDelegateParameters()
@@ -678,43 +688,34 @@ private module ArgumentNodes {
     }
   }
 
-  /** A data flow node that represents a call argument. */
-  abstract class ArgumentNode extends Node {
-    /** Holds if this argument occurs at the given position in the given call. */
-    cached
-    abstract predicate argumentOf(DataFlowCall call, int pos);
-
-    /** Gets the call in which this node is an argument. */
-    final DataFlowCall getCall() { this.argumentOf(result, _) }
-  }
-
   /** A data flow node that represents an explicit call argument. */
   private class ExplicitArgumentNode extends ArgumentNode {
-    private DataFlowCall c;
-
-    private int i;
-
     ExplicitArgumentNode() {
-      exists(ArgumentConfiguration x, Expr call, Argument arg |
-        arg = this.asExpr() and
-        call = c.getExpr() and
-        arg.isArgumentOf(call, i) and
-        x.hasExprPath(_, this.getControlFlowNode(), _, c.getControlFlowNode())
-      )
+      this.asExpr() instanceof Argument
       or
-      exists(CIL::Call call, CIL::Expr arg |
-        arg = this.asExpr() and
-        call = c.getExpr() and
-        arg = call.getArgument(i)
-      )
+      this.asExpr() = any(CIL::Call call).getAnArgument()
       or
-      flowIntoCallableLibraryCall(_, this, c, i)
+      libraryFlowDelegateCallIn(_, _, this.asExpr(), _, _, _)
+      or
+      this.(ImplicitDelegateOutNode).isArgumentOf(_, _)
     }
 
     override predicate argumentOf(DataFlowCall call, int pos) {
       Stages::DataFlowStage::forceCachingInSameStage() and
-      call = c and
-      pos = i
+      exists(ArgumentConfiguration x, Expr c, Argument arg |
+        arg = this.asExpr() and
+        c = call.getExpr() and
+        arg.isArgumentOf(c, pos) and
+        x.hasExprPath(_, this.getControlFlowNode(), _, call.getControlFlowNode())
+      )
+      or
+      exists(CIL::Call c, CIL::Expr arg |
+        arg = this.asExpr() and
+        c = call.getExpr() and
+        arg = c.getArgument(pos)
+      )
+      or
+      flowIntoCallableLibraryCall(this, call, pos)
     }
   }
 
@@ -849,13 +850,13 @@ private module ArgumentNodes {
 }
 import ArgumentNodes
 
-private module ReturnNodes {
-  /** A data flow node that represents a value returned by a callable. */
-  abstract class ReturnNode extends Node {
-    /** Gets the kind of this return node. */
-    abstract ReturnKind getKind();
-  }
+/** A data flow node that represents a value returned by a callable. */
+abstract class ReturnNode extends Node {
+  /** Gets the kind of this return node. */
+  abstract ReturnKind getKind();
+}
 
+private module ReturnNodes {
   /**
    * A data flow node that represents an expression returned by a callable,
    * either using a (`yield`) `return` statement or an expression body (`=>`).
@@ -962,14 +963,14 @@ private module ReturnNodes {
 }
 import ReturnNodes
 
-private module OutNodes {
-  /** A data flow node that represents the output of a call. */
-  abstract class OutNode extends Node {
-    /** Gets the underlying call. */
-    cached
-    abstract DataFlowCall getCall();
-  }
+/** A data flow node that represents the output of a call. */
+abstract class OutNode extends Node {
+  /** Gets the underlying call. */
+  cached
+  abstract DataFlowCall getCall();
+}
 
+private module OutNodes {
   private DataFlowCall csharpCall(Expr e, ControlFlow::Node cfn) {
     e = any(DispatchCall dc | result = TNonDelegateCall(cfn, dc)).getCall() or
     result = TExplicitDelegateCall(cfn, e)
