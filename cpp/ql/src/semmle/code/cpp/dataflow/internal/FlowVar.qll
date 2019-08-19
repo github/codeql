@@ -212,6 +212,7 @@ module FlowVar_internal {
     or
     TBlockVar(SubBasicBlock sbb, Variable v) {
       not fullySupportedSsaVariable(v) and
+      not v instanceof Field and // Fields are interprocedural data flow, not local
       reachable(sbb) and
       (
         initializer(sbb.getANode(), v, _)

@@ -35,24 +35,24 @@ void assignAfterAlias() {
   S s1 = { 0, 0 };
   S &ref1 = s1;
   ref1.m1 = user_input();
-  sink(s1.m1); // flow
+  sink(s1.m1); // flow [NOT DETECTED]
 
   S s2 = { 0, 0 };
   S &ref2 = s2;
   s2.m1 = user_input();
-  sink(ref2.m1); // flow
+  sink(ref2.m1); // flow [NOT DETECTED]
 }
 
 void assignAfterCopy() {
   S s1 = { 0, 0 };
   S copy1 = s1;
   copy1.m1 = user_input();
-  sink(s1.m1); // no flow [FALSE POSITIVE]
+  sink(s1.m1); // no flow
 
   S s2 = { 0, 0 };
   S copy2 = s2;
   s2.m1 = user_input();
-  sink(copy2.m1); // no flow [FALSE POSITIVE]
+  sink(copy2.m1); // no flow
 }
 
 void assignBeforeCopy() {
