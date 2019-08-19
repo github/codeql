@@ -82,7 +82,7 @@ bad_asts.cpp:
 #   10|           0: [Literal] Unknown literal
 #   10|               Type = [IntType] int
 #   10|               ValueCategory = prvalue
-#   10|           1: [FieldAccess] x
+#   10|           1: [PointerFieldAccess] x
 #   10|               Type = [IntType] int
 #   10|               ValueCategory = prvalue(load)
 #-----|             -1: [ThisExpr] this
@@ -107,7 +107,7 @@ bad_asts.cpp:
 #   10|               Type = [IntType] int
 #   10|               Value = [Literal] 6
 #   10|               ValueCategory = prvalue
-#   10|           1: [FieldAccess] x
+#   10|           1: [PointerFieldAccess] x
 #   10|               Type = [IntType] int
 #   10|               ValueCategory = prvalue(load)
 #-----|             -1: [ThisExpr] this
@@ -441,9 +441,9 @@ ir.cpp:
 #   26|       0: [VariableDeclarationEntry] definition of b_f
 #   26|           Type = [BoolType] bool
 #   26|         init: [Initializer] initializer for b_f
-#   26|           expr: [Literal,Zero] 0
+#   26|           expr: [Literal] 0
 #   26|               Type = [BoolType] bool
-#   26|               Value = [Literal,Zero] 0
+#   26|               Value = [Literal] 0
 #   26|               ValueCategory = prvalue
 #   28|     18: [DeclStmt] declaration
 #   28|       0: [VariableDeclarationEntry] definition of wc_i
@@ -2206,9 +2206,9 @@ ir.cpp:
 #  254|         0: [VariableAccess] n
 #  254|             Type = [IntType] int
 #  254|             ValueCategory = prvalue(load)
-#  254|         1: [Literal,Zero] 0
+#  254|         1: [Literal] 0
 #  254|             Type = [IntType] int
-#  254|             Value = [Literal,Zero] 0
+#  254|             Value = [Literal] 0
 #  254|             ValueCategory = prvalue
 #  254|       1: [Block] { ... }
 #  255|         0: [ExprStmt] ExprStmt
@@ -2235,9 +2235,9 @@ ir.cpp:
 #  262|         0: [VariableAccess] n
 #  262|             Type = [IntType] int
 #  262|             ValueCategory = prvalue(load)
-#  262|         1: [Literal,Zero] 0
+#  262|         1: [Literal] 0
 #  262|             Type = [IntType] int
-#  262|             Value = [Literal,Zero] 0
+#  262|             Value = [Literal] 0
 #  262|             ValueCategory = prvalue
 #  260|       1: [Block] { ... }
 #  261|         0: [ExprStmt] ExprStmt
@@ -2269,9 +2269,9 @@ ir.cpp:
 #  273|         0: [VariableDeclarationEntry] definition of i
 #  273|             Type = [IntType] int
 #  273|           init: [Initializer] initializer for i
-#  273|             expr: [Literal,Zero] 0
+#  273|             expr: [Literal] 0
 #  273|                 Type = [IntType] int
-#  273|                 Value = [Literal,Zero] 0
+#  273|                 Value = [Literal] 0
 #  273|                 ValueCategory = prvalue
 #  273|       3: [Block] { ... }
 #  274|         0: [EmptyStmt] ;
@@ -2282,9 +2282,9 @@ ir.cpp:
 #  279|       0: [VariableDeclarationEntry] definition of i
 #  279|           Type = [IntType] int
 #  279|         init: [Initializer] initializer for i
-#  279|           expr: [Literal,Zero] 0
+#  279|           expr: [Literal] 0
 #  279|               Type = [IntType] int
-#  279|               Value = [Literal,Zero] 0
+#  279|               Value = [Literal] 0
 #  279|               ValueCategory = prvalue
 #  280|     1: [ForStmt] for(...;...;...) ...
 #  280|       1: [LTExpr] ... < ...
@@ -2307,9 +2307,9 @@ ir.cpp:
 #  286|       0: [VariableDeclarationEntry] definition of i
 #  286|           Type = [IntType] int
 #  286|         init: [Initializer] initializer for i
-#  286|           expr: [Literal,Zero] 0
+#  286|           expr: [Literal] 0
 #  286|               Type = [IntType] int
-#  286|               Value = [Literal,Zero] 0
+#  286|               Value = [Literal] 0
 #  286|               ValueCategory = prvalue
 #  287|     1: [ForStmt] for(...;...;...) ...
 #  287|       2: [AssignAddExpr] ... += ...
@@ -2332,9 +2332,9 @@ ir.cpp:
 #  293|         0: [VariableDeclarationEntry] definition of i
 #  293|             Type = [IntType] int
 #  293|           init: [Initializer] initializer for i
-#  293|             expr: [Literal,Zero] 0
+#  293|             expr: [Literal] 0
 #  293|                 Type = [IntType] int
-#  293|                 Value = [Literal,Zero] 0
+#  293|                 Value = [Literal] 0
 #  293|                 ValueCategory = prvalue
 #  293|       1: [LTExpr] ... < ...
 #  293|           Type = [BoolType] bool
@@ -2357,9 +2357,9 @@ ir.cpp:
 #  299|         0: [VariableDeclarationEntry] definition of i
 #  299|             Type = [IntType] int
 #  299|           init: [Initializer] initializer for i
-#  299|             expr: [Literal,Zero] 0
+#  299|             expr: [Literal] 0
 #  299|                 Type = [IntType] int
-#  299|                 Value = [Literal,Zero] 0
+#  299|                 Value = [Literal] 0
 #  299|                 ValueCategory = prvalue
 #  299|       2: [AssignAddExpr] ... += ...
 #  299|           Type = [IntType] int
@@ -2380,9 +2380,9 @@ ir.cpp:
 #  305|       0: [VariableDeclarationEntry] definition of i
 #  305|           Type = [IntType] int
 #  305|         init: [Initializer] initializer for i
-#  305|           expr: [Literal,Zero] 0
+#  305|           expr: [Literal] 0
 #  305|               Type = [IntType] int
-#  305|               Value = [Literal,Zero] 0
+#  305|               Value = [Literal] 0
 #  305|               ValueCategory = prvalue
 #  306|     1: [ForStmt] for(...;...;...) ...
 #  306|       1: [LTExpr] ... < ...
@@ -2416,9 +2416,9 @@ ir.cpp:
 #  312|         0: [VariableDeclarationEntry] definition of i
 #  312|             Type = [IntType] int
 #  312|           init: [Initializer] initializer for i
-#  312|             expr: [Literal,Zero] 0
+#  312|             expr: [Literal] 0
 #  312|                 Type = [IntType] int
-#  312|                 Value = [Literal,Zero] 0
+#  312|                 Value = [Literal] 0
 #  312|                 ValueCategory = prvalue
 #  312|       1: [LTExpr] ... < ...
 #  312|           Type = [BoolType] bool
@@ -2451,9 +2451,9 @@ ir.cpp:
 #  318|         0: [VariableDeclarationEntry] definition of i
 #  318|             Type = [IntType] int
 #  318|           init: [Initializer] initializer for i
-#  318|             expr: [Literal,Zero] 0
+#  318|             expr: [Literal] 0
 #  318|                 Type = [IntType] int
-#  318|                 Value = [Literal,Zero] 0
+#  318|                 Value = [Literal] 0
 #  318|                 ValueCategory = prvalue
 #  318|       1: [LTExpr] ... < ...
 #  318|           Type = [BoolType] bool
@@ -2499,9 +2499,9 @@ ir.cpp:
 #  326|         0: [VariableDeclarationEntry] definition of i
 #  326|             Type = [IntType] int
 #  326|           init: [Initializer] initializer for i
-#  326|             expr: [Literal,Zero] 0
+#  326|             expr: [Literal] 0
 #  326|                 Type = [IntType] int
-#  326|                 Value = [Literal,Zero] 0
+#  326|                 Value = [Literal] 0
 #  326|                 ValueCategory = prvalue
 #  326|       1: [LTExpr] ... < ...
 #  326|           Type = [BoolType] bool
@@ -2547,9 +2547,9 @@ ir.cpp:
 #  334|         0: [VariableDeclarationEntry] definition of i
 #  334|             Type = [IntType] int
 #  334|           init: [Initializer] initializer for i
-#  334|             expr: [Literal,Zero] 0
+#  334|             expr: [Literal] 0
 #  334|                 Type = [IntType] int
-#  334|                 Value = [Literal,Zero] 0
+#  334|                 Value = [Literal] 0
 #  334|                 ValueCategory = prvalue
 #  334|       1: [LTExpr] ... < ...
 #  334|           Type = [BoolType] bool
@@ -2625,9 +2625,9 @@ ir.cpp:
 #  353|         0: [VariableAccess] n
 #  353|             Type = [IntType] int
 #  353|             ValueCategory = prvalue(load)
-#  353|         1: [Literal,Zero] 0
+#  353|         1: [Literal] 0
 #  353|             Type = [IntType] int
-#  353|             Value = [Literal,Zero] 0
+#  353|             Value = [Literal] 0
 #  353|             ValueCategory = prvalue
 #  353|       1: [Block] { ... }
 #  354|         0: [IfStmt] if (...) ... 
@@ -2667,9 +2667,9 @@ ir.cpp:
 #  366|         0: [VariableAccess] n
 #  366|             Type = [IntType] int
 #  366|             ValueCategory = prvalue(load)
-#  366|         1: [Literal,Zero] 0
+#  366|         1: [Literal] 0
 #  366|             Type = [IntType] int
-#  366|             Value = [Literal,Zero] 0
+#  366|             Value = [Literal] 0
 #  366|             ValueCategory = prvalue
 #  361|       1: [Block] { ... }
 #  362|         0: [IfStmt] if (...) ... 
@@ -2866,9 +2866,9 @@ ir.cpp:
 #  405|             0: [VariableAccess] y
 #  405|                 Type = [IntType] int
 #  405|                 ValueCategory = lvalue
-#  405|             1: [Literal,Zero] 0
+#  405|             1: [Literal] 0
 #  405|                 Type = [IntType] int
-#  405|                 Value = [Literal,Zero] 0
+#  405|                 Value = [Literal] 0
 #  405|                 ValueCategory = prvalue
 #  406|         15: [BreakStmt] break;
 #  408|         16: [ExprStmt] ExprStmt
@@ -2919,7 +2919,7 @@ ir.cpp:
 #  428|       0: [AssignExpr] ... = ...
 #  428|           Type = [IntType] int
 #  428|           ValueCategory = lvalue
-#  428|         0: [FieldAccess] x
+#  428|         0: [ValueFieldAccess] x
 #  428|             Type = [IntType] int
 #  428|             ValueCategory = lvalue
 #  428|           -1: [VariableAccess] pt
@@ -2933,13 +2933,13 @@ ir.cpp:
 #  429|       0: [AssignExpr] ... = ...
 #  429|           Type = [IntType] int
 #  429|           ValueCategory = lvalue
-#  429|         0: [FieldAccess] y
+#  429|         0: [ValueFieldAccess] y
 #  429|             Type = [IntType] int
 #  429|             ValueCategory = lvalue
 #  429|           -1: [VariableAccess] pt
 #  429|               Type = [Struct] Point
 #  429|               ValueCategory = lvalue
-#  429|         1: [FieldAccess] x
+#  429|         1: [ValueFieldAccess] x
 #  429|             Type = [IntType] int
 #  429|             ValueCategory = prvalue(load)
 #  429|           -1: [VariableAccess] pt
@@ -2952,7 +2952,7 @@ ir.cpp:
 #  430|           expr: [AddressOfExpr] & ...
 #  430|               Type = [IntPointerType] int *
 #  430|               ValueCategory = prvalue
-#  430|             0: [FieldAccess] y
+#  430|             0: [ValueFieldAccess] y
 #  430|                 Type = [IntType] int
 #  430|                 ValueCategory = lvalue
 #  430|               -1: [VariableAccess] pt
@@ -3320,9 +3320,9 @@ ir.cpp:
 #  497|               Type = [IntPointerType] int *
 #  497|               Value = [CStyleCast] 0
 #  497|               ValueCategory = prvalue
-#  497|             expr: [Literal,Zero] 0
+#  497|             expr: [Literal] 0
 #  497|                 Type = [NullPointerType] decltype(nullptr)
-#  497|                 Value = [Literal,Zero] 0
+#  497|                 Value = [Literal] 0
 #  497|                 ValueCategory = prvalue
 #  498|     1: [DeclStmt] declaration
 #  498|       0: [VariableDeclarationEntry] definition of q
@@ -3333,9 +3333,9 @@ ir.cpp:
 #  498|               Type = [IntPointerType] int *
 #  498|               Value = [CStyleCast] 0
 #  498|               ValueCategory = prvalue
-#  498|             expr: [Literal,Zero] 0
+#  498|             expr: [Literal] 0
 #  498|                 Type = [IntType] int
-#  498|                 Value = [Literal,Zero] 0
+#  498|                 Value = [Literal] 0
 #  498|                 ValueCategory = prvalue
 #  499|     2: [ExprStmt] ExprStmt
 #  499|       0: [AssignExpr] ... = ...
@@ -3349,9 +3349,9 @@ ir.cpp:
 #  499|             Type = [IntPointerType] int *
 #  499|             Value = [CStyleCast] 0
 #  499|             ValueCategory = prvalue
-#  499|           expr: [Literal,Zero] 0
+#  499|           expr: [Literal] 0
 #  499|               Type = [NullPointerType] decltype(nullptr)
-#  499|               Value = [Literal,Zero] 0
+#  499|               Value = [Literal] 0
 #  499|               ValueCategory = prvalue
 #  500|     3: [ExprStmt] ExprStmt
 #  500|       0: [AssignExpr] ... = ...
@@ -3365,9 +3365,9 @@ ir.cpp:
 #  500|             Type = [IntPointerType] int *
 #  500|             Value = [CStyleCast] 0
 #  500|             ValueCategory = prvalue
-#  500|           expr: [Literal,Zero] 0
+#  500|           expr: [Literal] 0
 #  500|               Type = [IntType] int
-#  500|               Value = [Literal,Zero] 0
+#  500|               Value = [Literal] 0
 #  500|               ValueCategory = prvalue
 #  501|     4: [ReturnStmt] return ...
 #  503| [TopLevelFunction] void InitList(int, float)
@@ -3423,9 +3423,9 @@ ir.cpp:
 #  509|       0: [VariableDeclarationEntry] definition of x2
 #  509|           Type = [IntType] int
 #  509|         init: [Initializer] initializer for x2
-#  509|           expr: [Literal,Zero] 0
+#  509|           expr: [Literal] 0
 #  509|               Type = [IntType] int
-#  509|               Value = [Literal,Zero] 0
+#  509|               Value = [Literal] 0
 #  509|               ValueCategory = prvalue
 #  510|     5: [ReturnStmt] return ...
 #  512| [TopLevelFunction] void NestedInitList(int, float)
@@ -3546,9 +3546,9 @@ ir.cpp:
 #  521|               expr: [VariableAccess] f
 #  521|                   Type = [FloatType] float
 #  521|                   ValueCategory = prvalue(load)
-#  521|             [2]: [Literal,Zero] 0
+#  521|             [2]: [Literal] 0
 #  521|                 Type = [IntType] int
-#  521|                 Value = [Literal,Zero] 0
+#  521|                 Value = [Literal] 0
 #  521|                 ValueCategory = prvalue
 #  522|     2: [DeclStmt] declaration
 #  522|       0: [VariableDeclarationEntry] definition of a3
@@ -3694,9 +3694,9 @@ ir.cpp:
 #  562|                 Value = [EnumConstantAccess] 0
 #  562|                 ValueCategory = prvalue
 #  563|         1: [ReturnStmt] return ...
-#  563|           0: [Literal,Zero] 0
+#  563|           0: [Literal] 0
 #  563|               Type = [IntType] int
-#  563|               Value = [Literal,Zero] 0
+#  563|               Value = [Literal] 0
 #  563|               ValueCategory = prvalue
 #  564|         2: [SwitchCase] case ...:
 #  564|           0: [CStyleCast] (int)...
@@ -3772,9 +3772,9 @@ ir.cpp:
 #  577|                 Type = [PlainCharType] char
 #  577|                 Value = [CStyleCast] 0
 #  577|                 ValueCategory = prvalue
-#  577|               expr: [Literal,Zero] 0
+#  577|               expr: [Literal] 0
 #  577|                   Type = [IntType] int
-#  577|                   Value = [Literal,Zero] 0
+#  577|                   Value = [Literal] 0
 #  577|                   ValueCategory = prvalue
 #  578|     6: [DeclStmt] declaration
 #  578|       0: [VariableDeclarationEntry] definition of e
@@ -3788,9 +3788,9 @@ ir.cpp:
 #  578|                 Type = [PlainCharType] char
 #  578|                 Value = [CStyleCast] 0
 #  578|                 ValueCategory = prvalue
-#  578|               expr: [Literal,Zero] 0
+#  578|               expr: [Literal] 0
 #  578|                   Type = [IntType] int
-#  578|                   Value = [Literal,Zero] 0
+#  578|                   Value = [Literal] 0
 #  578|                   ValueCategory = prvalue
 #  578|             [1]: [CStyleCast] (char)...
 #  578|                 Conversion = [IntegralConversion] integral conversion
@@ -3813,9 +3813,9 @@ ir.cpp:
 #  579|                 Type = [PlainCharType] char
 #  579|                 Value = [CStyleCast] 0
 #  579|                 ValueCategory = prvalue
-#  579|               expr: [Literal,Zero] 0
+#  579|               expr: [Literal] 0
 #  579|                   Type = [IntType] int
-#  579|                   Value = [Literal,Zero] 0
+#  579|                   Value = [Literal] 0
 #  579|                   ValueCategory = prvalue
 #  580|     8: [ReturnStmt] return ...
 #  582| [TopLevelFunction] void VarArgFunction(char const*)
@@ -4081,21 +4081,21 @@ ir.cpp:
 #  643|       0: [AssignExpr] ... = ...
 #  643|           Type = [IntType] int
 #  643|           ValueCategory = lvalue
-#  643|         0: [FieldAccess] m_a
+#  643|         0: [PointerFieldAccess] m_a
 #  643|             Type = [IntType] int
 #  643|             ValueCategory = lvalue
 #  643|           -1: [ThisExpr] this
 #  643|               Type = [PointerType] C *
 #  643|               ValueCategory = prvalue(load)
-#  643|         1: [Literal,Zero] 0
+#  643|         1: [Literal] 0
 #  643|             Type = [IntType] int
-#  643|             Value = [Literal,Zero] 0
+#  643|             Value = [Literal] 0
 #  643|             ValueCategory = prvalue
 #  644|     1: [ExprStmt] ExprStmt
 #  644|       0: [AssignExpr] ... = ...
 #  644|           Type = [IntType] int
 #  644|           ValueCategory = lvalue
-#  644|         0: [FieldAccess] m_a
+#  644|         0: [ValueFieldAccess] m_a
 #  644|             Type = [IntType] int
 #  644|             ValueCategory = lvalue
 #  644|           -1: [ParenthesisExpr] (...)
@@ -4115,7 +4115,7 @@ ir.cpp:
 #  645|       0: [AssignExpr] ... = ...
 #  645|           Type = [IntType] int
 #  645|           ValueCategory = lvalue
-#  645|         0: [FieldAccess] m_a
+#  645|         0: [PointerFieldAccess] m_a
 #  645|             Type = [IntType] int
 #  645|             ValueCategory = lvalue
 #-----|           -1: [ThisExpr] this
@@ -4135,7 +4135,7 @@ ir.cpp:
 #  647|         0: [VariableAccess] x
 #  647|             Type = [IntType] int
 #  647|             ValueCategory = lvalue
-#  647|         1: [FieldAccess] m_a
+#  647|         1: [PointerFieldAccess] m_a
 #  647|             Type = [IntType] int
 #  647|             ValueCategory = prvalue(load)
 #  647|           -1: [ThisExpr] this
@@ -4148,7 +4148,7 @@ ir.cpp:
 #  648|         0: [VariableAccess] x
 #  648|             Type = [IntType] int
 #  648|             ValueCategory = lvalue
-#  648|         1: [FieldAccess] m_a
+#  648|         1: [ValueFieldAccess] m_a
 #  648|             Type = [IntType] int
 #  648|             ValueCategory = prvalue(load)
 #  648|           -1: [ParenthesisExpr] (...)
@@ -4167,7 +4167,7 @@ ir.cpp:
 #  649|         0: [VariableAccess] x
 #  649|             Type = [IntType] int
 #  649|             ValueCategory = lvalue
-#  649|         1: [FieldAccess] m_a
+#  649|         1: [PointerFieldAccess] m_a
 #  649|             Type = [IntType] int
 #  649|             ValueCategory = prvalue(load)
 #-----|           -1: [ThisExpr] this
@@ -4184,9 +4184,9 @@ ir.cpp:
 #  653|         -1: [ThisExpr] this
 #  653|             Type = [PointerType] C *
 #  653|             ValueCategory = prvalue(load)
-#  653|         0: [Literal,Zero] 0
+#  653|         0: [Literal] 0
 #  653|             Type = [IntType] int
-#  653|             Value = [Literal,Zero] 0
+#  653|             Value = [Literal] 0
 #  653|             ValueCategory = prvalue
 #  654|     1: [ExprStmt] ExprStmt
 #  654|       0: [FunctionCall] call to InstanceMemberFunction
@@ -4248,9 +4248,9 @@ ir.cpp:
 #  661|     3: [ConstructorFieldInit] constructor init of field m_e
 #  661|         Type = [VoidPointerType] void *
 #  661|         ValueCategory = prvalue
-#  661|       0: [Literal,Zero] 0
+#  661|       0: [Literal] 0
 #  661|           Type = [VoidPointerType] void *
-#  661|           Value = [Literal,Zero] 0
+#  661|           Value = [Literal] 0
 #  661|           ValueCategory = prvalue
 #  662|     4: [ConstructorFieldInit] constructor init of field m_f
 #  662|         Type = [Struct] String
@@ -4507,9 +4507,9 @@ ir.cpp:
 #  715|         Type = [TemplateParameter] V
 #  715|   body: [Block] { ... }
 #  716|     0: [ReturnStmt] return ...
-#  716|       0: [Literal,Zero] 0
+#  716|       0: [Literal] 0
 #  716|           Type = [TemplateParameter] T
-#  716|           Value = [Literal,Zero] 0
+#  716|           Value = [Literal] 0
 #  716|           ValueCategory = prvalue
 #  715| [MemberFunction,TemplateFunction] long Outer<long>::Func<U, V>(U, V)
 #  715|   params: 
@@ -4525,9 +4525,9 @@ ir.cpp:
 #  715|         Type = [PlainCharType] char
 #  715|   body: [Block] { ... }
 #  716|     0: [ReturnStmt] return ...
-#  716|       0: [Literal,Zero] 0
+#  716|       0: [Literal] 0
 #  716|           Type = [LongType] long
-#  716|           Value = [Literal,Zero] 0
+#  716|           Value = [Literal] 0
 #  716|           ValueCategory = prvalue
 #  720| [TopLevelFunction] double CallNestedTemplateFunc()
 #  720|   params: 
@@ -4545,9 +4545,9 @@ ir.cpp:
 #  721|               Type = [VoidPointerType] void *
 #  721|               Value = [CStyleCast] 0
 #  721|               ValueCategory = prvalue
-#  721|             expr: [Literal,Zero] 0
+#  721|             expr: [Literal] 0
 #  721|                 Type = [NullPointerType] decltype(nullptr)
-#  721|                 Value = [Literal,Zero] 0
+#  721|                 Value = [Literal] 0
 #  721|                 ValueCategory = prvalue
 #  721|           1: [CharLiteral] 111
 #  721|               Type = [PlainCharType] char
@@ -4673,7 +4673,7 @@ ir.cpp:
 #-----|           -1: [AddressOfExpr] & ...
 #-----|               Type = [PointerType] String *
 #-----|               ValueCategory = prvalue
-#-----|             0: [FieldAccess] base_s
+#-----|             0: [PointerFieldAccess] base_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ThisExpr] this
@@ -4682,7 +4682,7 @@ ir.cpp:
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const String &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [FieldAccess] base_s
+#-----|             expr: [ReferenceFieldAccess] base_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ReferenceDereferenceExpr] (reference dereference)
@@ -4736,7 +4736,7 @@ ir.cpp:
 #  751|       0: [DestructorCall] call to ~String
 #  751|           Type = [VoidType] void
 #  751|           ValueCategory = prvalue
-#  751|         -1: [FieldAccess] base_s
+#  751|         -1: [ImplicitThisFieldAccess] base_s
 #  751|             Type = [Struct] String
 #  751|             ValueCategory = lvalue
 #  754| [CopyAssignmentOperator] Middle& Middle::operator=(Middle const&)
@@ -4787,7 +4787,7 @@ ir.cpp:
 #-----|           -1: [AddressOfExpr] & ...
 #-----|               Type = [PointerType] String *
 #-----|               ValueCategory = prvalue
-#-----|             0: [FieldAccess] middle_s
+#-----|             0: [PointerFieldAccess] middle_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ThisExpr] this
@@ -4796,7 +4796,7 @@ ir.cpp:
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const String &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [FieldAccess] middle_s
+#-----|             expr: [ReferenceFieldAccess] middle_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ReferenceDereferenceExpr] (reference dereference)
@@ -4822,7 +4822,7 @@ ir.cpp:
 #  757| [Constructor] void Middle::Middle()
 #  757|   params: 
 #  757|   initializations: 
-#  757|     0: [ConstructorCall] call to Base
+#  757|     0: [ConstructorDirectInit] call to Base
 #  757|         Type = [VoidType] void
 #  757|         ValueCategory = prvalue
 #  757|     1: [ConstructorFieldInit] constructor init of field middle_s
@@ -4844,10 +4844,10 @@ ir.cpp:
 #  760|       0: [DestructorCall] call to ~String
 #  760|           Type = [VoidType] void
 #  760|           ValueCategory = prvalue
-#  760|         -1: [FieldAccess] middle_s
+#  760|         -1: [ImplicitThisFieldAccess] middle_s
 #  760|             Type = [Struct] String
 #  760|             ValueCategory = lvalue
-#  760|     1: [DestructorCall] call to ~Base
+#  760|     1: [DestructorDirectDestruction] call to ~Base
 #  760|         Type = [VoidType] void
 #  760|         ValueCategory = prvalue
 #  763| [CopyAssignmentOperator] Derived& Derived::operator=(Derived const&)
@@ -4898,7 +4898,7 @@ ir.cpp:
 #-----|           -1: [AddressOfExpr] & ...
 #-----|               Type = [PointerType] String *
 #-----|               ValueCategory = prvalue
-#-----|             0: [FieldAccess] derived_s
+#-----|             0: [PointerFieldAccess] derived_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ThisExpr] this
@@ -4907,7 +4907,7 @@ ir.cpp:
 #-----|           0: [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const String &
 #-----|               ValueCategory = prvalue
-#-----|             expr: [FieldAccess] derived_s
+#-----|             expr: [ReferenceFieldAccess] derived_s
 #-----|                 Type = [Struct] String
 #-----|                 ValueCategory = lvalue
 #-----|               -1: [ReferenceDereferenceExpr] (reference dereference)
@@ -4933,7 +4933,7 @@ ir.cpp:
 #  766| [Constructor] void Derived::Derived()
 #  766|   params: 
 #  766|   initializations: 
-#  766|     0: [ConstructorCall] call to Middle
+#  766|     0: [ConstructorDirectInit] call to Middle
 #  766|         Type = [VoidType] void
 #  766|         ValueCategory = prvalue
 #  766|     1: [ConstructorFieldInit] constructor init of field derived_s
@@ -4955,10 +4955,10 @@ ir.cpp:
 #  769|       0: [DestructorCall] call to ~String
 #  769|           Type = [VoidType] void
 #  769|           ValueCategory = prvalue
-#  769|         -1: [FieldAccess] derived_s
+#  769|         -1: [ImplicitThisFieldAccess] derived_s
 #  769|             Type = [Struct] String
 #  769|             ValueCategory = lvalue
-#  769|     1: [DestructorCall] call to ~Middle
+#  769|     1: [DestructorDirectDestruction] call to ~Middle
 #  769|         Type = [VoidType] void
 #  769|         ValueCategory = prvalue
 #  772| [CopyAssignmentOperator] MiddleVB1& MiddleVB1::operator=(MiddleVB1 const&)
@@ -4972,7 +4972,7 @@ ir.cpp:
 #  775| [Constructor] void MiddleVB1::MiddleVB1()
 #  775|   params: 
 #  775|   initializations: 
-#  775|     0: [ConstructorCall] call to Base
+#  775|     0: [ConstructorVirtualInit] call to Base
 #  775|         Type = [VoidType] void
 #  775|         ValueCategory = prvalue
 #  775|     1: [ConstructorFieldInit] constructor init of field middlevb1_s
@@ -4994,10 +4994,10 @@ ir.cpp:
 #  778|       0: [DestructorCall] call to ~String
 #  778|           Type = [VoidType] void
 #  778|           ValueCategory = prvalue
-#  778|         -1: [FieldAccess] middlevb1_s
+#  778|         -1: [ImplicitThisFieldAccess] middlevb1_s
 #  778|             Type = [Struct] String
 #  778|             ValueCategory = lvalue
-#  778|     1: [DestructorCall] call to ~Base
+#  778|     1: [DestructorVirtualDestruction] call to ~Base
 #  778|         Type = [VoidType] void
 #  778|         ValueCategory = prvalue
 #  781| [CopyAssignmentOperator] MiddleVB2& MiddleVB2::operator=(MiddleVB2 const&)
@@ -5011,7 +5011,7 @@ ir.cpp:
 #  784| [Constructor] void MiddleVB2::MiddleVB2()
 #  784|   params: 
 #  784|   initializations: 
-#  784|     0: [ConstructorCall] call to Base
+#  784|     0: [ConstructorVirtualInit] call to Base
 #  784|         Type = [VoidType] void
 #  784|         ValueCategory = prvalue
 #  784|     1: [ConstructorFieldInit] constructor init of field middlevb2_s
@@ -5033,10 +5033,10 @@ ir.cpp:
 #  787|       0: [DestructorCall] call to ~String
 #  787|           Type = [VoidType] void
 #  787|           ValueCategory = prvalue
-#  787|         -1: [FieldAccess] middlevb2_s
+#  787|         -1: [ImplicitThisFieldAccess] middlevb2_s
 #  787|             Type = [Struct] String
 #  787|             ValueCategory = lvalue
-#  787|     1: [DestructorCall] call to ~Base
+#  787|     1: [DestructorVirtualDestruction] call to ~Base
 #  787|         Type = [VoidType] void
 #  787|         ValueCategory = prvalue
 #  790| [CopyAssignmentOperator] DerivedVB& DerivedVB::operator=(DerivedVB const&)
@@ -5050,13 +5050,13 @@ ir.cpp:
 #  793| [Constructor] void DerivedVB::DerivedVB()
 #  793|   params: 
 #  793|   initializations: 
-#  793|     0: [ConstructorCall] call to Base
+#  793|     0: [ConstructorVirtualInit] call to Base
 #  793|         Type = [VoidType] void
 #  793|         ValueCategory = prvalue
-#  793|     1: [ConstructorCall] call to MiddleVB1
+#  793|     1: [ConstructorDirectInit] call to MiddleVB1
 #  793|         Type = [VoidType] void
 #  793|         ValueCategory = prvalue
-#  793|     2: [ConstructorCall] call to MiddleVB2
+#  793|     2: [ConstructorDirectInit] call to MiddleVB2
 #  793|         Type = [VoidType] void
 #  793|         ValueCategory = prvalue
 #  793|     3: [ConstructorFieldInit] constructor init of field derivedvb_s
@@ -5078,16 +5078,16 @@ ir.cpp:
 #  796|       0: [DestructorCall] call to ~String
 #  796|           Type = [VoidType] void
 #  796|           ValueCategory = prvalue
-#  796|         -1: [FieldAccess] derivedvb_s
+#  796|         -1: [ImplicitThisFieldAccess] derivedvb_s
 #  796|             Type = [Struct] String
 #  796|             ValueCategory = lvalue
-#  796|     1: [DestructorCall] call to ~MiddleVB2
+#  796|     1: [DestructorDirectDestruction] call to ~MiddleVB2
 #  796|         Type = [VoidType] void
 #  796|         ValueCategory = prvalue
-#  796|     2: [DestructorCall] call to ~MiddleVB1
+#  796|     2: [DestructorDirectDestruction] call to ~MiddleVB1
 #  796|         Type = [VoidType] void
 #  796|         ValueCategory = prvalue
-#  796|     3: [DestructorCall] call to ~Base
+#  796|     3: [DestructorVirtualDestruction] call to ~Base
 #  796|         Type = [VoidType] void
 #  796|         ValueCategory = prvalue
 #  799| [TopLevelFunction] void HierarchyConversions()
@@ -5645,9 +5645,9 @@ ir.cpp:
 #  836|               Type = [PointerType] MiddleVB1 *
 #  836|               Value = [CStyleCast] 0
 #  836|               ValueCategory = prvalue
-#  836|             expr: [Literal,Zero] 0
+#  836|             expr: [Literal] 0
 #  836|                 Type = [NullPointerType] decltype(nullptr)
-#  836|                 Value = [Literal,Zero] 0
+#  836|                 Value = [Literal] 0
 #  836|                 ValueCategory = prvalue
 #  837|     31: [DeclStmt] declaration
 #  837|       0: [VariableDeclarationEntry] definition of pdv
@@ -5658,9 +5658,9 @@ ir.cpp:
 #  837|               Type = [PointerType] DerivedVB *
 #  837|               Value = [CStyleCast] 0
 #  837|               ValueCategory = prvalue
-#  837|             expr: [Literal,Zero] 0
+#  837|             expr: [Literal] 0
 #  837|                 Type = [NullPointerType] decltype(nullptr)
-#  837|                 Value = [Literal,Zero] 0
+#  837|                 Value = [Literal] 0
 #  837|                 ValueCategory = prvalue
 #  838|     32: [ExprStmt] ExprStmt
 #  838|       0: [AssignExpr] ... = ...
@@ -5717,7 +5717,7 @@ ir.cpp:
 #  846| [Constructor] void PolymorphicDerived::PolymorphicDerived()
 #  846|   params: 
 #  846|   initializations: 
-#  846|     0: [ConstructorCall] call to PolymorphicBase
+#  846|     0: [ConstructorDirectInit] call to PolymorphicBase
 #  846|         Type = [VoidType] void
 #  846|         ValueCategory = prvalue
 #  846|   body: [Block] { ... }
@@ -5735,7 +5735,7 @@ ir.cpp:
 #-----|   body: [Block] { ... }
 #-----|     0: [ReturnStmt] return ...
 #  846|   destructions: 
-#  846|     0: [DestructorCall] call to ~PolymorphicBase
+#  846|     0: [DestructorDirectDestruction] call to ~PolymorphicBase
 #  846|         Type = [VoidType] void
 #  846|         ValueCategory = prvalue
 #  849| [TopLevelFunction] void DynamicCast()
@@ -5857,7 +5857,7 @@ ir.cpp:
 #  867| [Constructor] void String::String()
 #  867|   params: 
 #  867|   initializations: 
-#  868|     0: [ConstructorCall] call to String
+#  868|     0: [ConstructorDelegationInit] call to String
 #  868|         Type = [VoidType] void
 #  868|         ValueCategory = prvalue
 #  868|       0: [ArrayToPointerConversion] array to pointer conversion
@@ -5926,9 +5926,9 @@ ir.cpp:
 #  875|                 expr: [VariableAccess] a
 #  875|                     Type = [ArrayType] char[5]
 #  875|                     ValueCategory = lvalue
-#  875|               1: [Literal,Zero] 0
+#  875|               1: [Literal] 0
 #  875|                   Type = [IntType] int
-#  875|                   Value = [Literal,Zero] 0
+#  875|                   Value = [Literal] 0
 #  875|                   ValueCategory = prvalue
 #  876|     4: [ExprStmt] ExprStmt
 #  876|       0: [AssignExpr] ... = ...
@@ -5950,9 +5950,9 @@ ir.cpp:
 #  876|                   Type = [ArrayType] const char[5]
 #  876|                   Value = [StringLiteral] "test"
 #  876|                   ValueCategory = lvalue
-#  876|             1: [Literal,Zero] 0
+#  876|             1: [Literal] 0
 #  876|                 Type = [IntType] int
-#  876|                 Value = [Literal,Zero] 0
+#  876|                 Value = [Literal] 0
 #  876|                 ValueCategory = prvalue
 #  877|     5: [DeclStmt] declaration
 #  877|       0: [VariableDeclarationEntry] definition of ra
@@ -6325,9 +6325,9 @@ ir.cpp:
 #  943|       0: [NewExpr] new
 #  943|           Type = [IntPointerType] int *
 #  943|           ValueCategory = prvalue
-#  943|         1: [Literal,Zero] 0
+#  943|         1: [Literal] 0
 #  943|             Type = [IntType] int
-#  943|             Value = [Literal,Zero] 0
+#  943|             Value = [Literal] 0
 #  943|             ValueCategory = prvalue
 #  944|     3: [ExprStmt] ExprStmt
 #  944|       0: [NewExpr] new
@@ -6386,9 +6386,9 @@ ir.cpp:
 #  947|               Type = [FloatType] float
 #  947|               Value = [Literal] 1.0
 #  947|               ValueCategory = prvalue
-#  947|         1: [Literal,Zero] 0
+#  947|         1: [Literal] 0
 #  947|             Type = [Struct] Overaligned
-#  947|             Value = [Literal,Zero] 0
+#  947|             Value = [Literal] 0
 #  947|             ValueCategory = prvalue
 #  948|     7: [ReturnStmt] return ...
 #  950| [TopLevelFunction] void OperatorNewArray(int)
@@ -6486,9 +6486,9 @@ ir.cpp:
 #  958|         1: [ArrayAggregateLiteral] {...}
 #  958|             Type = [ArrayType] int[3]
 #  958|             ValueCategory = prvalue
-#  958|           [0]: [Literal,Zero] 0
+#  958|           [0]: [Literal] 0
 #  958|               Type = [IntType] int
-#  958|               Value = [Literal,Zero] 0
+#  958|               Value = [Literal] 0
 #  958|               ValueCategory = prvalue
 #  958|           [1]: [Literal] 1
 #  958|               Type = [IntType] int
@@ -6667,9 +6667,9 @@ ir.cpp:
 #  988|           0: [VariableAccess] a
 #  988|               Type = [IntPointerType] int *
 #  988|               ValueCategory = prvalue(load)
-#  988|           1: [Literal,Zero] 0
+#  988|           1: [Literal] 0
 #  988|               Type = [IntType] int
-#  988|               Value = [Literal,Zero] 0
+#  988|               Value = [Literal] 0
 #  988|               ValueCategory = prvalue
 #  988|         1: [VariableCall] call to expression
 #  988|             Type = [IntType] int
@@ -6718,9 +6718,9 @@ ir.cpp:
 # 1007|             Type = [IntPointerType] int *
 # 1007|             Value = [StaticCast] 0
 # 1007|             ValueCategory = prvalue
-# 1007|           expr: [Literal,Zero] 0
+# 1007|           expr: [Literal] 0
 # 1007|               Type = [NullPointerType] decltype(nullptr)
-# 1007|               Value = [Literal,Zero] 0
+# 1007|               Value = [Literal] 0
 # 1007|               ValueCategory = prvalue
 # 1008|     1: [ExprStmt] ExprStmt
 # 1008|       0: [DeleteExpr] delete
@@ -6734,9 +6734,9 @@ ir.cpp:
 # 1008|               Type = [PointerType] String *
 # 1008|               Value = [StaticCast] 0
 # 1008|               ValueCategory = prvalue
-# 1008|             expr: [Literal,Zero] 0
+# 1008|             expr: [Literal] 0
 # 1008|                 Type = [NullPointerType] decltype(nullptr)
-# 1008|                 Value = [Literal,Zero] 0
+# 1008|                 Value = [Literal] 0
 # 1008|                 ValueCategory = prvalue
 # 1009|     2: [ExprStmt] ExprStmt
 # 1009|       0: [DeleteExpr] delete
@@ -6750,9 +6750,9 @@ ir.cpp:
 # 1009|             Type = [PointerType] SizedDealloc *
 # 1009|             Value = [StaticCast] 0
 # 1009|             ValueCategory = prvalue
-# 1009|           expr: [Literal,Zero] 0
+# 1009|           expr: [Literal] 0
 # 1009|               Type = [NullPointerType] decltype(nullptr)
-# 1009|               Value = [Literal,Zero] 0
+# 1009|               Value = [Literal] 0
 # 1009|               ValueCategory = prvalue
 # 1010|     3: [ExprStmt] ExprStmt
 # 1010|       0: [DeleteExpr] delete
@@ -6763,9 +6763,9 @@ ir.cpp:
 # 1010|             Type = [PointerType] Overaligned *
 # 1010|             Value = [StaticCast] 0
 # 1010|             ValueCategory = prvalue
-# 1010|           expr: [Literal,Zero] 0
+# 1010|           expr: [Literal] 0
 # 1010|               Type = [NullPointerType] decltype(nullptr)
-# 1010|               Value = [Literal,Zero] 0
+# 1010|               Value = [Literal] 0
 # 1010|               ValueCategory = prvalue
 # 1011|     4: [ExprStmt] ExprStmt
 # 1011|       0: [DeleteExpr] delete
@@ -6779,9 +6779,9 @@ ir.cpp:
 # 1011|               Type = [PointerType] PolymorphicBase *
 # 1011|               Value = [StaticCast] 0
 # 1011|               ValueCategory = prvalue
-# 1011|             expr: [Literal,Zero] 0
+# 1011|             expr: [Literal] 0
 # 1011|                 Type = [NullPointerType] decltype(nullptr)
-# 1011|                 Value = [Literal,Zero] 0
+# 1011|                 Value = [Literal] 0
 # 1011|                 ValueCategory = prvalue
 # 1012|     5: [ReturnStmt] return ...
 # 1015| [TopLevelFunction] void OperatorDeleteArray()
@@ -6796,9 +6796,9 @@ ir.cpp:
 # 1016|             Type = [IntPointerType] int *
 # 1016|             Value = [StaticCast] 0
 # 1016|             ValueCategory = prvalue
-# 1016|           expr: [Literal,Zero] 0
+# 1016|           expr: [Literal] 0
 # 1016|               Type = [NullPointerType] decltype(nullptr)
-# 1016|               Value = [Literal,Zero] 0
+# 1016|               Value = [Literal] 0
 # 1016|               ValueCategory = prvalue
 # 1017|     1: [ExprStmt] ExprStmt
 # 1017|       0: [DeleteArrayExpr] delete[]
@@ -6812,9 +6812,9 @@ ir.cpp:
 # 1017|               Type = [PointerType] String *
 # 1017|               Value = [StaticCast] 0
 # 1017|               ValueCategory = prvalue
-# 1017|             expr: [Literal,Zero] 0
+# 1017|             expr: [Literal] 0
 # 1017|                 Type = [NullPointerType] decltype(nullptr)
-# 1017|                 Value = [Literal,Zero] 0
+# 1017|                 Value = [Literal] 0
 # 1017|                 ValueCategory = prvalue
 # 1018|     2: [ExprStmt] ExprStmt
 # 1018|       0: [DeleteArrayExpr] delete[]
@@ -6828,9 +6828,9 @@ ir.cpp:
 # 1018|             Type = [PointerType] SizedDealloc *
 # 1018|             Value = [StaticCast] 0
 # 1018|             ValueCategory = prvalue
-# 1018|           expr: [Literal,Zero] 0
+# 1018|           expr: [Literal] 0
 # 1018|               Type = [NullPointerType] decltype(nullptr)
-# 1018|               Value = [Literal,Zero] 0
+# 1018|               Value = [Literal] 0
 # 1018|               ValueCategory = prvalue
 # 1019|     3: [ExprStmt] ExprStmt
 # 1019|       0: [DeleteArrayExpr] delete[]
@@ -6841,9 +6841,9 @@ ir.cpp:
 # 1019|             Type = [PointerType] Overaligned *
 # 1019|             Value = [StaticCast] 0
 # 1019|             ValueCategory = prvalue
-# 1019|           expr: [Literal,Zero] 0
+# 1019|           expr: [Literal] 0
 # 1019|               Type = [NullPointerType] decltype(nullptr)
-# 1019|               Value = [Literal,Zero] 0
+# 1019|               Value = [Literal] 0
 # 1019|               ValueCategory = prvalue
 # 1020|     4: [ExprStmt] ExprStmt
 # 1020|       0: [DeleteArrayExpr] delete[]
@@ -6857,9 +6857,9 @@ ir.cpp:
 # 1020|               Type = [PointerType] PolymorphicBase *
 # 1020|               Value = [StaticCast] 0
 # 1020|               ValueCategory = prvalue
-# 1020|             expr: [Literal,Zero] 0
+# 1020|             expr: [Literal] 0
 # 1020|                 Type = [NullPointerType] decltype(nullptr)
-# 1020|                 Value = [Literal,Zero] 0
+# 1020|                 Value = [Literal] 0
 # 1020|                 ValueCategory = prvalue
 # 1021|     5: [ReturnStmt] return ...
 # 1023| [CopyAssignmentOperator] EmptyStruct& EmptyStruct::operator=(EmptyStruct const&)
@@ -6942,9 +6942,9 @@ ir.cpp:
 # 1033|             Type = [FloatType] float
 # 1033|             Value = [CStyleCast] 0.0
 # 1033|             ValueCategory = prvalue
-# 1033|           expr: [Literal,Zero] 0
+# 1033|           expr: [Literal] 0
 # 1033|               Type = [IntType] int
-# 1033|               Value = [Literal,Zero] 0
+# 1033|               Value = [Literal] 0
 # 1033|               ValueCategory = prvalue
 # 1034|     2: [DeclStmt] declaration
 # 1034|       0: [VariableDeclarationEntry] definition of lambda_ref
@@ -7308,7 +7308,7 @@ ir.cpp:
 # 1034|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1034|               Type = [SpecifiedType] const String
 # 1034|               ValueCategory = lvalue
-#-----|             expr: [FieldAccess] s
+#-----|             expr: [PointerFieldAccess] s
 #-----|                 Type = [LValueReferenceType] const String &
 #-----|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
@@ -7317,7 +7317,7 @@ ir.cpp:
 # 1034|         1: [ReferenceDereferenceExpr] (reference dereference)
 # 1034|             Type = [IntType] int
 # 1034|             ValueCategory = prvalue(load)
-#-----|           expr: [FieldAccess] x
+#-----|           expr: [PointerFieldAccess] x
 #-----|               Type = [LValueReferenceType] int &
 #-----|               ValueCategory = prvalue(load)
 #-----|             -1: [ThisExpr] this
@@ -7363,7 +7363,7 @@ ir.cpp:
 # 1036|       0: [DestructorCall] call to ~String
 # 1036|           Type = [VoidType] void
 # 1036|           ValueCategory = prvalue
-# 1036|         -1: [FieldAccess] s
+# 1036|         -1: [ImplicitThisFieldAccess] s
 # 1036|             Type = [SpecifiedType] const String
 # 1036|             ValueCategory = lvalue
 # 1036| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1036, col. 21)::operator()(float) const
@@ -7378,13 +7378,13 @@ ir.cpp:
 # 1036|         0: [FunctionCall] call to c_str
 # 1036|             Type = [PointerType] const char *
 # 1036|             ValueCategory = prvalue
-#-----|           -1: [FieldAccess] s
+#-----|           -1: [PointerFieldAccess] s
 #-----|               Type = [SpecifiedType] const String
 #-----|               ValueCategory = lvalue
 #-----|             -1: [ThisExpr] this
 #-----|                 Type = [PointerType] const lambda [] type at line 1036, col. 21 *
 #-----|                 ValueCategory = prvalue(load)
-#-----|         1: [FieldAccess] x
+#-----|         1: [PointerFieldAccess] x
 #-----|             Type = [IntType] int
 #-----|             ValueCategory = prvalue(load)
 #-----|           -1: [ThisExpr] this
@@ -7428,15 +7428,15 @@ ir.cpp:
 # 1038|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1038|               Type = [SpecifiedType] const String
 # 1038|               ValueCategory = lvalue
-#-----|             expr: [FieldAccess] s
+#-----|             expr: [PointerFieldAccess] s
 #-----|                 Type = [LValueReferenceType] const String &
 #-----|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
 #-----|                   Type = [PointerType] const lambda [] type at line 1038, col. 30 *
 #-----|                   ValueCategory = prvalue(load)
-# 1038|         1: [Literal,Zero] 0
+# 1038|         1: [Literal] 0
 # 1038|             Type = [IntType] int
-# 1038|             Value = [Literal,Zero] 0
+# 1038|             Value = [Literal] 0
 # 1038|             ValueCategory = prvalue
 # 1040| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)& (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30) const&)
 # 1040|   params: 
@@ -7472,7 +7472,7 @@ ir.cpp:
 # 1040|       0: [DestructorCall] call to ~String
 # 1040|           Type = [VoidType] void
 # 1040|           ValueCategory = prvalue
-# 1040|         -1: [FieldAccess] s
+# 1040|         -1: [ImplicitThisFieldAccess] s
 # 1040|             Type = [SpecifiedType] const String
 # 1040|             ValueCategory = lvalue
 # 1040| [ConstMemberFunction] char (void Lambda(int, String const&))::(lambda [] type at line 1040, col. 30)::operator()(float) const
@@ -7487,15 +7487,15 @@ ir.cpp:
 # 1040|         0: [FunctionCall] call to c_str
 # 1040|             Type = [PointerType] const char *
 # 1040|             ValueCategory = prvalue
-#-----|           -1: [FieldAccess] s
+#-----|           -1: [PointerFieldAccess] s
 #-----|               Type = [SpecifiedType] const String
 #-----|               ValueCategory = lvalue
 #-----|             -1: [ThisExpr] this
 #-----|                 Type = [PointerType] const lambda [] type at line 1040, col. 30 *
 #-----|                 ValueCategory = prvalue(load)
-# 1040|         1: [Literal,Zero] 0
+# 1040|         1: [Literal] 0
 # 1040|             Type = [IntType] int
-# 1040|             Value = [Literal,Zero] 0
+# 1040|             Value = [Literal] 0
 # 1040|             ValueCategory = prvalue
 # 1042| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)& (void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1042, col. 32) const&)
 # 1042|   params: 
@@ -7541,13 +7541,13 @@ ir.cpp:
 # 1042|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1042|               Type = [SpecifiedType] const String
 # 1042|               ValueCategory = lvalue
-#-----|             expr: [FieldAccess] s
+#-----|             expr: [PointerFieldAccess] s
 #-----|                 Type = [LValueReferenceType] const String &
 #-----|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
 #-----|                   Type = [PointerType] const lambda [] type at line 1042, col. 32 *
 #-----|                   ValueCategory = prvalue(load)
-#-----|         1: [FieldAccess] x
+#-----|         1: [PointerFieldAccess] x
 #-----|             Type = [IntType] int
 #-----|             ValueCategory = prvalue(load)
 #-----|           -1: [ThisExpr] this
@@ -7609,7 +7609,7 @@ ir.cpp:
 # 1045|           -1: [ReferenceDereferenceExpr] (reference dereference)
 # 1045|               Type = [SpecifiedType] const String
 # 1045|               ValueCategory = lvalue
-#-----|             expr: [FieldAccess] s
+#-----|             expr: [PointerFieldAccess] s
 #-----|                 Type = [LValueReferenceType] const String &
 #-----|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
@@ -7621,13 +7621,13 @@ ir.cpp:
 # 1045|           0: [AddExpr] ... + ...
 # 1045|               Type = [IntType] int
 # 1045|               ValueCategory = prvalue
-#-----|             0: [FieldAccess] x
+#-----|             0: [PointerFieldAccess] x
 #-----|                 Type = [IntType] int
 #-----|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
 #-----|                   Type = [PointerType] const lambda [] type at line 1045, col. 23 *
 #-----|                   ValueCategory = prvalue(load)
-# 1045|             1: [FieldAccess] i
+# 1045|             1: [PointerFieldAccess] i
 # 1045|                 Type = [IntType] int
 # 1045|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
@@ -7636,7 +7636,7 @@ ir.cpp:
 # 1045|           1: [ReferenceDereferenceExpr] (reference dereference)
 # 1045|               Type = [IntType] int
 # 1045|               ValueCategory = prvalue(load)
-# 1045|             expr: [FieldAccess] j
+# 1045|             expr: [PointerFieldAccess] j
 # 1045|                 Type = [LValueReferenceType] int &
 # 1045|                 ValueCategory = prvalue(load)
 #-----|               -1: [ThisExpr] this
@@ -7733,9 +7733,9 @@ ir.cpp:
 # 1070|             0: [VariableAccess] e
 # 1070|                 Type = [IntType] int
 # 1070|                 ValueCategory = prvalue(load)
-# 1070|             1: [Literal,Zero] 0
+# 1070|             1: [Literal] 0
 # 1070|                 Type = [IntType] int
-# 1070|                 Value = [Literal,Zero] 0
+# 1070|                 Value = [Literal] 0
 # 1070|                 ValueCategory = prvalue
 # 1070|           1: [Block] { ... }
 # 1071|             0: [ContinueStmt] continue;
@@ -7880,9 +7880,9 @@ ir.cpp:
 # 1130|         0: [VariableDeclarationEntry] definition of i
 # 1130|             Type = [IntType] int
 # 1130|           init: [Initializer] initializer for i
-# 1130|             expr: [Literal,Zero] 0
+# 1130|             expr: [Literal] 0
 # 1130|                 Type = [IntType] int
-# 1130|                 Value = [Literal,Zero] 0
+# 1130|                 Value = [Literal] 0
 # 1130|                 ValueCategory = prvalue
 # 1130|       1: [LTExpr] ... < ...
 # 1130|           Type = [BoolType] bool
@@ -8047,7 +8047,7 @@ perf-regression.cpp:
 #   10|                 Type = [VoidType] void
 #   10|                 ValueCategory = prvalue
 #   12|     1: [ReturnStmt] return ...
-#   12|       0: [Literal,Zero] 0
+#   12|       0: [Literal] 0
 #   12|           Type = [IntType] int
-#   12|           Value = [Literal,Zero] 0
+#   12|           Value = [Literal] 0
 #   12|           ValueCategory = prvalue

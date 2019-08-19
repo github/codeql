@@ -602,7 +602,7 @@ class BreakStmt extends JumpStmt, @stmt_break {
 
   override predicate mayBeImpure() { none() }
   override predicate mayBeGloballyImpure() { none() }
-  
+
   /**
    * Gets the loop or switch statement that this break statement will exit.
    */
@@ -1149,11 +1149,11 @@ class SwitchCase extends Stmt, @stmt_switch_case {
 
   /**
    * DEPRECATED: use `SwitchCase.getAStmt` or `ControlFlowNode.getASuccessor`
-   * rather than this predicate. 
+   * rather than this predicate.
    *
    * Gets the `Block` statement immediately following this 'switch case'
    * statement, if any.
-   * 
+   *
    * For example, for
    * ```
    * switch (i) {
@@ -1845,6 +1845,8 @@ class MicrosoftTryExceptStmt extends MicrosoftTryStmt {
 
   /** Gets the `__except` statement (usually a `Block`). */
   Stmt getExcept() { result = getChild(2) }
+
+  override string getCanonicalQLClass() { result = "MicrosoftTryExceptStmt" }
 }
 
 /**
@@ -1860,6 +1862,8 @@ class MicrosoftTryFinallyStmt extends MicrosoftTryStmt {
 
   /** Gets the `__finally` statement (usually a `Block`). */
   Stmt getFinally() { result = getChild(1) }
+
+  override string getCanonicalQLClass() { result = "MicrosoftTryFinallyStmt" }
 }
 
 /**

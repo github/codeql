@@ -132,6 +132,8 @@ class NamespaceDeclarationEntry extends Locatable, @namespace_decl {
    * example: the "{ ... }" in "namespace N { ... }".
    */
   Location getBodyLocation() { namespace_decls(underlyingElement(this),_,_,result) }
+
+  override string getCanonicalQLClass() { result = "NamespaceDeclarationEntry" }
 }
 
 /**

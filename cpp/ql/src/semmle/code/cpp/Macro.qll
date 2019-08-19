@@ -82,6 +82,8 @@ class MacroAccess extends Locatable, @macroinvocation {
     result = this.getOutermostMacroAccess().getActualLocation()
   }
 
+  override string getCanonicalQLClass() { result = "MacroAccess" }
+
   /**
    * Gets the location of this macro access. For a nested access, where
    * `exists(this.getParentInvocation())`, this yields a location either inside
@@ -158,6 +160,8 @@ class MacroInvocation extends MacroAccess {
     macroinvocations(underlyingElement(this),_,_,1)
   }
 
+  override string getCanonicalQLClass() { result = "MacroInvocation" }
+  
   /**
    * Gets an element that occurs in this macro invocation or a nested macro
    * invocation.
