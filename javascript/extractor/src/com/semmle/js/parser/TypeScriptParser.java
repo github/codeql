@@ -98,6 +98,16 @@ public class TypeScriptParser {
    */
   public static final String TYPESCRIPT_RAM_RESERVE_SUFFIX = "TYPESCRIPT_RAM_RESERVE";
 
+  /**
+   * An environment variable which, if set, allows a debugger to be attached to the Node.js
+   * process. Remote debugging will not be enabled.
+   * <p>
+   * If set to <code>break</code> the Node.js process will pause on entry waiting for the
+   * debugger to attach (<code>--inspect-brk</code>). If set to any other non-empty value,
+   * it will just enable debugging (<code>--inspect</code>).
+   */
+  public static final String TYPESCRIPT_ATTACH_DEBUGGER = "SEMMLE_TYPESCRIPT_ATTACH_DEBUGGER";
+
   /** The Node.js parser wrapper process, if it has been started already. */
   private Process parserWrapperProcess;
 
@@ -203,7 +213,9 @@ public class TypeScriptParser {
     result.add(nodeJsRuntime);
     result.addAll(nodeJsRuntimeExtraArgs);
     for(String arg : args) {
-      result.add(arg);
+      if (arg.length() > 0) {
+        result.add(arg);
+      }
     }
     return result;
   }
@@ -236,9 +248,20 @@ public class TypeScriptParser {
     int reserveMemoryMb = getMegabyteCountFromPrefixedEnv(TYPESCRIPT_RAM_RESERVE_SUFFIX, 400);
 
     File parserWrapper = getParserWrapper();
-    
+
+    String debuggerFlag = Env.systemEnv().get(TYPESCRIPT_ATTACH_DEBUGGER);
+    String inspectArg = "";
+    if (debuggerFlag != null && debuggerFlag.length() > 0) {
+      if (debuggerFlag.equalsIgnoreCase("break")) {
+        inspectArg = "--inspect-brk";
+      } else {
+        inspectArg = "--inspect";
+      }
+    }
+
     List<String> cmd = getNodeJsRuntimeInvocation(
         "--max_old_space_size=" + (mainMemoryMb + reserveMemoryMb),
+        inspectArg,
         parserWrapper.getAbsolutePath()
     );
     ProcessBuilder pb = new ProcessBuilder(cmd);
