@@ -31,45 +31,49 @@ private class AnalyzedCapturedVariable extends @variable {
 }
 
 /**
- * Flow analysis for accesses to SSA variables.
+ * Flow analysis for SSA nodes.
  */
 private class AnalyzedSsaDefinitionNode extends AnalyzedNode, DataFlow::SsaDefinitionNode {
   override AbstractValue getALocalValue() { result = ssa.(AnalyzedSsaDefinition).getAnRhsValue() }
 }
 
 /**
- * Flow analysis for accesses to SSA variables.
- *
- * Unlike `AnalyzedSsaDefinitionNode`, this only contributes to `getAValue()`, not `getALocalValue()`.
+ * An SSA definition whose right-hand side is a call with non-local data flow.
  */
-private class AnalyzedSsaDefinitionNodeWithNonLocalAnalysis extends AnalyzedSsaDefinitionNode {
-  DataFlow::AnalyzedValueNode src;
+private class SsaDefinitionWithNonLocalFlow extends SsaExplicitDefinition {
+  CallWithNonLocalAnalyzedReturnFlow source;
 
-  AnalyzedSsaDefinitionNodeWithNonLocalAnalysis() {
-    exists(VarDef varDef |
-      varDef = ssa.(SsaExplicitDefinition).getDef() and
-      varDef.getSource().flow() = src and
-      src instanceof CallWithNonLocalAnalyzedReturnFlow
-    )
+  SsaDefinitionWithNonLocalFlow() {
+    source = getDef().getSource().flow()
   }
 
-  override AbstractValue getAValue() { result = src.getAValue() }
+  CallWithNonLocalAnalyzedReturnFlow getSource() { result = source }
 }
 
 /**
- * Flow analysis for SSA variable uses.
- *
- * Ensures that `getAValue` propagates from the SSA definition to its use.
+ * Flow analysis for SSA nodes corresponding to `SsaDefinitionWithNonLocalFlow`.
  */
-private class AnalyzedSsaVariableUse extends AnalyzedValueNode {
-  AnalyzedSsaVariableUse() {
-    this = DataFlow::valueNode(any(SsaVariable v).getAUse())
+private class AnalyzedSsaDefinitionNodeWithNonLocalAnalysis extends AnalyzedSsaDefinitionNode {
+  override SsaDefinitionWithNonLocalFlow ssa;
+
+  override AbstractValue getAValue() {
+    result = ssa.getSource().getAValue()
+  }
+}
+
+/**
+ * Flow analysis for uses of an SSA variable corresponding to `SsaDefinitionWithNonLocalFlow`.
+ */
+private class AnalyzedSsaVariableUseWithNonLocalFlow extends AnalyzedValueNode {
+  SsaDefinitionWithNonLocalFlow ssaDef;
+
+  AnalyzedSsaVariableUseWithNonLocalFlow() {
+    this = DataFlow::valueNode(ssaDef.getVariable().getAUse())
   }
 
   override AbstractValue getAValue() {
-    result = AnalyzedValueNode.super.getAValue()
-    or
-    result = localFlowPred().getAValue()
+    // Block indefinite values coming from getALocalValue()
+    result = ssaDef.getSource().getAValue()
   }
 }
 
