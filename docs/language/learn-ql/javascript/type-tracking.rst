@@ -431,6 +431,8 @@ Use this template to define backward type tracking predicates:
 Note that these predicates all return ``SourceNode``,
 so attempts to track a non-source node, such as an identifier or string literal,
 will not work.
+If this becomes an issue, see
+`TypeTracker.smallstep <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/TypeTracking.qll/predicate.TypeTracking$TypeTracker$smallstep.2.html>`__.
 
 Also note that the predicates taking a ``TypeTracker`` or ``TypeBackTracker`` can often be made ``private``,
 as they are typically only used as an intermediate result to compute the other predicate.
@@ -441,7 +443,7 @@ Limitations
 As mentioned, type tracking will track values in and out of function calls and properties,
 but only within some limits.
 
-Type tracking does not always track *through* functions, that is, if a value flows into a parameter
+For example, type tracking does not always track *through* functions, that is, if a value flows into a parameter
 and back out of the return value, it might not be tracked back out to the call site again.
 Here's an example that the model from this tutorial won't find:
 
@@ -458,7 +460,7 @@ This is an example of where `data flow configurations <https://help.semmle.com/Q
 When to use type tracking
 -------------------------
 
-Type tracking and data flow configurations are essentially competing solutions to the same
+Type tracking and data flow configurations are different solutions to the same
 problem, each with their own tradeoffs.
 
 Type tracking can be used in any number of predicates, which may depend on each other
