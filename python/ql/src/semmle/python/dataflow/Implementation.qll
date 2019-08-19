@@ -684,18 +684,34 @@ private class EssaTaintTracking extends string {
         )
     }
 
-    pragma [noinline]
     private predicate taintedPiNode(TaintTrackingNode src, PyEdgeRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        exists(DataFlow::Node srcnode |
+        taintedPiNodeOneway(src, defn, context, path, kind)
+        or
+        taintedPiNodeBothways(src, defn, context, path, kind)
+    }
+
+    pragma [noinline]
+    private predicate taintedPiNodeOneway(TaintTrackingNode src, PyEdgeRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+        exists(DataFlow::Node srcnode, ControlFlowNode test, ControlFlowNode use |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
+            piNodeTestAndUse(defn, test, use) and
             srcnode.asVariable() = defn.getInput() and
-            not this.(TaintTracking::Configuration).isBarrierTest(defn.getTest(), defn.getSense())
-            |
-            defn.getSense() = testEvaluates(defn.getTest(), defn.getInput().getSourceVariable().getAUse(), kind)
-            or
-            testEvaluatesMaybe(defn.getTest(), defn.getInput().getSourceVariable().getAUse())
+            not this.(TaintTracking::Configuration).isBarrierTest(test, defn.getSense()) and
+            defn.getSense() = testEvaluates(test, use, kind)
         )
     }
+
+    pragma [noinline]
+    private predicate taintedPiNodeBothways(TaintTrackingNode src, PyEdgeRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
+        exists(DataFlow::Node srcnode, ControlFlowNode test, ControlFlowNode use |
+            src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
+            piNodeTestAndUse(defn, test, use) and
+            srcnode.asVariable() = defn.getInput() and
+            not this.(TaintTracking::Configuration).isBarrierTest(test, defn.getSense()) and
+            testEvaluatesMaybe(test, use)
+        )
+    }
+
 
     pragma [noinline]
     private predicate taintedArgument(TaintTrackingNode src, ArgumentRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
@@ -759,23 +775,6 @@ private class EssaTaintTracking extends string {
         )
     }
 
-    private predicate testEvaluatesMaybe(ControlFlowNode test, ControlFlowNode use) {
-        any(PyEdgeRefinement ref).getTest().getAChild*() = test and
-        test.getAChild*() = use and
-        not test.(UnaryExprNode).getNode().getOp() instanceof Not and
-        not Filters::equality_test(test, use, _, _) and
-        not Filters::isinstance(test, _, use) and
-        not test = use
-        or
-        testEvaluatesMaybe(not_operand(test), use)
-    }
-
-    /** Gets the operand of a unary `not` expression. */
-    private ControlFlowNode not_operand(ControlFlowNode expr) {
-        expr.(UnaryExprNode).getNode().getOp() instanceof Not and
-        result = expr.(UnaryExprNode).getOperand()
-    }
-
     /** Holds if `test` is the test in a branch and `use` is that test
      * with all the `not` prefixes removed.
      */
@@ -793,11 +792,34 @@ private class EssaTaintTracking extends string {
 
 }
 
+private predicate testEvaluatesMaybe(ControlFlowNode test, ControlFlowNode use) {
+    any(PyEdgeRefinement ref).getTest().getAChild*() = test and
+    test.getAChild*() = use and
+    not test.(UnaryExprNode).getNode().getOp() instanceof Not and
+    not Filters::equality_test(test, use, _, _) and
+    not Filters::isinstance(test, _, use) and
+    not test = use
+    or
+    testEvaluatesMaybe(not_operand(test), use)
+}
+
+/** Gets the operand of a unary `not` expression. */
+private ControlFlowNode not_operand(ControlFlowNode expr) {
+    expr.(UnaryExprNode).getNode().getOp() instanceof Not and
+    result = expr.(UnaryExprNode).getOperand()
+}
+
 /* Helper predicate for tainted_with */
 private predicate with_flow(With with, ControlFlowNode contextManager, ControlFlowNode var) {
     with.getContextExpr() = contextManager.getNode() and
     with.getOptionalVars() = var.getNode() and
     contextManager.strictlyDominates(var)
+}
+
+/* Helper predicate for taintedPiNode */
+pragma [noinline]
+private predicate piNodeTestAndUse(PyEdgeRefinement defn, ControlFlowNode test, ControlFlowNode use) {
+    test = defn.getTest() and use = defn.getInput().getASourceUse() and test.getAChild*() = use
 }
 
 module Implementation {
