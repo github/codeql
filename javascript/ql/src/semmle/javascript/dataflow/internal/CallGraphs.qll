@@ -2,17 +2,30 @@ private import javascript
 
 cached
 module CallGraph {
+  /** Gets the function referenced by `node`, as determined by the type inference. */
+  cached
+  Function getAFunctionValue(AnalyzedNode node) {
+    result = node.getAValue().(AbstractCallable).getFunction()
+  }
+
+  /** Holds if the type inferred for `node` is indefinite due to global flow. */
+  cached
+  predicate isIndefiniteGlobal(AnalyzedNode node) {
+    node.analyze().getAValue().isIndefinite("global")
+  }
+
   /**
    * Gets a data flow node that refers to the given function.
    */
+  pragma[nomagic]
   private
   DataFlow::SourceNode getAFunctionReference(DataFlow::FunctionNode function, int imprecision, DataFlow::TypeTracker t) {
     t.start() and
     exists(Function fun |
       fun = function.getFunction() and
-      fun = result.analyze().getAValue().(AbstractCallable).getFunction()
+      fun = getAFunctionValue(result)
     |
-      if result.analyze().getAValue().isIndefinite("global") then
+      if isIndefiniteGlobal(result) then
         fun.getFile() = result.getFile() and imprecision = 0
         or
         fun.inExternsFile() and imprecision = 1
@@ -57,6 +70,7 @@ module CallGraph {
    * Gets a data flow node that refers to the result of the given partial function invocation,
    * with `function` as the underlying function.
    */
+  pragma[nomagic]
   private
   DataFlow::SourceNode getABoundFunctionReference(DataFlow::FunctionNode function, int boundArgs, DataFlow::TypeTracker t) {
     exists(DataFlow::PartialInvokeNode partial, DataFlow::Node callback |
@@ -95,6 +109,7 @@ module CallGraph {
    *
    * This predicate may be overridden to customize the class hierarchy analysis.
    */
+  pragma[nomagic]
   private
   DataFlow::PropRead getAnInstanceMemberAccess(DataFlow::ClassNode cls, string name, DataFlow::TypeTracker t) {
     result = cls.getAnInstanceReference(t.continue()).getAPropertyRead(name)
