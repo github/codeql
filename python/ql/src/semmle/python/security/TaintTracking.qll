@@ -126,12 +126,6 @@ abstract class TaintKind extends string {
         result = this.getTaintForFlowStep(fromnode, tonode) and edgeLabel = "custom taint flow step for " + this
     }
 
-    predicate isResultOfStep(TaintKind fromkind, ControlFlowNode fromnode, ControlFlowNode tonode) { none() }
-
-    predicate isResultOfStep(TaintKind fromkind, ControlFlowNode fromnode, ControlFlowNode tonode, string edgeLabel) {
-        this.isResultOfStep(fromkind, fromnode, tonode) and edgeLabel = "custom taint reverse flow step for " + this
-    }
-
     /** DEPRECATED -- Use `TaintFlow.additionalFlowStepVar(EssaVariable fromvar, EssaVariable tovar, TaintKind kind)` instead.
      *
      * Holds if this kind of taint passes from variable `fromvar` to  variable `tovar`
@@ -179,6 +173,10 @@ abstract class TaintKind extends string {
      */
     TaintKind getTaintForIteration() { none() }
 
+    predicate flowStep(DataFlow::Node fromnode, DataFlow::Node tonode, string edgeLabel) {
+        this.additionalFlowStepVar(fromnode.asVariable(), tonode.asVariable()) and
+        edgeLabel = "custom taint variable step"
+    }
 }
 
 /**
@@ -202,6 +200,11 @@ abstract class CollectionKind extends TaintKind {
         not this.charAt(2) = "[" and not this.charAt(2) = "{"
     }
 
+    abstract TaintKind getMember();
+
+    abstract predicate flowFromMember(DataFlow::Node fromnode, DataFlow::Node tonode);
+
+    abstract predicate flowToMember(DataFlow::Node fromnode, DataFlow::Node tonode);
 }
 
 /** A taint kind representing a flat collections of kinds.
@@ -227,8 +230,6 @@ class SequenceKind extends CollectionKind {
             result = this.getItem() and
             result.getType() = ObjectInternal::builtin("str")
         )
-        or
-        result = this.getItem() and SequenceKind::itemFlowStep(fromnode, tonode)
     }
 
     override TaintKind getTaintOfMethodResult(string name) {
@@ -243,10 +244,16 @@ class SequenceKind extends CollectionKind {
         result = itemKind
     }
 
-    override predicate isResultOfStep(TaintKind fromkind, ControlFlowNode fromnode, ControlFlowNode tonode) {
-        SequenceKind::flowStep(fromnode, tonode) and this = fromkind
-        or
-        sequence_construct(fromnode, tonode) and this.getItem() = fromkind
+    override TaintKind getMember() {
+        result = itemKind
+    }
+
+    override predicate flowFromMember(DataFlow::Node fromnode, DataFlow::Node tonode) {
+        sequence_construct(fromnode.asCfgNode(), tonode.asCfgNode())
+    }
+
+    override predicate flowToMember(DataFlow::Node fromnode, DataFlow::Node tonode) {
+        SequenceKind::itemFlowStep(fromnode.asCfgNode(), tonode.asCfgNode())
     }
 
 }
@@ -254,20 +261,32 @@ class SequenceKind extends CollectionKind {
 
 module SequenceKind {
 
-    predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        tonode.(BinaryExprNode).getAnOperand() = fromnode
+    predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode, string edgeLabel) {
+        tonode.(BinaryExprNode).getAnOperand() = fromnode and edgeLabel = "binary operation"
         or
-        Implementation::copyCall(fromnode, tonode)
+        Implementation::copyCall(fromnode, tonode) and
+        edgeLabel = "dict copy"
         or
-        sequence_call(fromnode, tonode)
+        sequence_call(fromnode, tonode) and edgeLabel = "sequence construction"
         or
-        subscript_slice(fromnode, tonode)
+        subscript_slice(fromnode, tonode) and edgeLabel = "slicing"
     }
 
     predicate itemFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
         subscript_index(fromnode, tonode)
     }
 
+}
+
+module DictKind {
+     predicate flowStep(ControlFlowNode fromnode, ControlFlowNode tonode, string edgeLabel) {
+        Implementation::copyCall(fromnode, tonode) and
+        edgeLabel = "dict copy"
+        or
+        tonode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
+        tonode.(CallNode).getArg(0) = fromnode and
+        edgeLabel = "dict() call"
+    }
 }
 
 
@@ -314,17 +333,16 @@ class DictKind extends CollectionKind {
         result = "dict of " + valueKind
     }
 
-    override predicate isResultOfStep(TaintKind fromkind, ControlFlowNode fromnode, ControlFlowNode tonode) {
-        Implementation::copyCall(fromnode, tonode) and this = fromkind
-        or
-        tonode.(CallNode).getFunction().pointsTo(ObjectInternal::builtin("dict")) and
-        tonode.(CallNode).getArg(0) = fromnode and this = fromkind
-        or
-        dict_construct(fromnode, tonode) and this.getValue() = fromkind
+    override TaintKind getMember() {
+        result = valueKind
     }
 
-    override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        subscript_index(fromnode, tonode) and result = this.getValue()
+    override predicate flowFromMember(DataFlow::Node fromnode, DataFlow::Node tonode) {
+        dict_construct(fromnode.asCfgNode(), tonode.asCfgNode())
+    }
+
+    override predicate flowToMember(DataFlow::Node fromnode, DataFlow::Node tonode) {
+        subscript_index(fromnode.asCfgNode(), tonode.asCfgNode())
     }
 
 }

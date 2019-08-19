@@ -361,7 +361,19 @@ class TaintTrackingImplementation extends string {
             |
             kind = srckind.getTaintForFlowStep(srcnode.asCfgNode(), node.asCfgNode(), edgeLabel)
             or
-            kind.isResultOfStep(srckind, srcnode.asCfgNode(), node.asCfgNode(), edgeLabel)
+            kind = srckind.(CollectionKind).getMember() and
+            srckind.(CollectionKind).flowToMember(srcnode, node) and
+            edgeLabel = "to member"
+            or
+            srckind = kind.(CollectionKind).getMember() and
+            kind.(CollectionKind).flowFromMember(srcnode, node) and
+            edgeLabel = "from member"
+            or
+            kind = srckind and srckind.flowStep(srcnode, node, edgeLabel)
+            or
+            kind = srckind and srckind instanceof DictKind and DictKind::flowStep(srcnode.asCfgNode(), node.asCfgNode(), edgeLabel)
+            or
+            kind = srckind and srckind instanceof SequenceKind and SequenceKind::flowStep(srcnode.asCfgNode(), node.asCfgNode(), edgeLabel)
         )
     }
 
@@ -755,11 +767,13 @@ private class EssaTaintTracking extends string {
         or
         result = testEvaluates(not_operand(test), use, kind).booleanNot()
         or
+        kind.taints(use) and
         exists(ControlFlowNode const |
             Filters::equality_test(test, use, result.booleanNot(), const) and
             const.getNode() instanceof ImmutableLiteral
         )
         or
+        kind.taints(use) and
         exists(ControlFlowNode c, ClassValue cls |
             Filters::isinstance(test, c, use) and
             c.pointsTo(cls)
