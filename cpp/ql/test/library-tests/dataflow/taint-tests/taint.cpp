@@ -86,11 +86,11 @@ void class_field_test() {
 	mc1.myMethod();
 
 	sink(mc1.a);
-	sink(mc1.b); // tainted [NOT DETECTED]
+	sink(mc1.b); // tainted [NOT DETECTED with IR]
 	sink(mc1.c); // tainted [NOT DETECTED with IR]
 	sink(mc1.d); // tainted [NOT DETECTED with IR]
 	sink(mc2.a);
-	sink(mc2.b); // tainted [NOT DETECTED]
+	sink(mc2.b); // tainted [NOT DETECTED with IR]
 	sink(mc2.c); // tainted [NOT DETECTED with IR]
 	sink(mc2.d);
 }

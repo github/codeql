@@ -186,6 +186,12 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
     node2.getPreUpdateNode().asExpr() = fa.getQualifier() and
     f.(FieldContent).getField() = fa.getTarget()
   )
+  or
+  exists(ConstructorFieldInit cfi |
+    node2.getPreUpdateNode().(PreConstructorInitThis).getConstructorFieldInit() = cfi and
+    f.(FieldContent).getField() = cfi.getTarget() and
+    node1.asExpr() = cfi.getExpr()
+  )
 }
 
 /**
