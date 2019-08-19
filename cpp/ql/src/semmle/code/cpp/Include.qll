@@ -2,7 +2,14 @@ import semmle.code.cpp.Preprocessor
 
 /**
  * A C/C++ `#include`, `#include_next`, or `#import` preprocessor
- * directive.
+ * directive. The following example contains four different `Include`
+ * directives:
+ * ```
+ * #include "header.h"
+ * #include <string>
+ * #include_next <header2.h>
+ * #import <header3.h>
+ * ```
  */
 class Include extends PreprocessorDirective, @ppd_include {
   override string toString() { result = "#include " + this.getIncludeText() }
@@ -37,7 +44,10 @@ class Include extends PreprocessorDirective, @ppd_include {
 
 /**
  * A `#include_next` preprocessor directive (a non-standard extension to
- * C/C++).
+ * C/C++). For example the following code contains one `IncludeNext` directive:
+ * ```
+ * #include_next <header2.h>
+ * ```
  */
 class IncludeNext extends Include, @ppd_include_next {
   override string toString() {
@@ -47,7 +57,11 @@ class IncludeNext extends Include, @ppd_include_next {
 
 /**
  * A `#import` preprocessor directive (used heavily in Objective C, and
- * supported by GCC as an extension in C).
+ * supported by GCC as an extension in C). For example the following code
+ * contains one `Import` directive:
+ * ```
+ * #import <header3.h>
+ * ```
  */
 class Import extends Include, @ppd_objc_import {
   override string toString() {
