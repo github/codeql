@@ -15,4 +15,5 @@
   targets for `Object.toString()` calls. This affects all security queries and
   removes false positives that arose from paths through impossible `toString()`
   calls.
+* The library `VCS.qll` and all queries that imported it have been removed.
 
