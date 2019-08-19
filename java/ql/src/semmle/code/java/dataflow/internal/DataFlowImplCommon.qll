@@ -215,12 +215,14 @@ private module ImplCommon {
 
   /*
    * Calculation of `predicate store(Node node1, Content f, Node node2)`:
-   * There are three cases:
+   * There are four cases:
    * - The base case: A direct local assignment given by `storeStep`.
    * - A call to a method or constructor with two arguments, `arg1` and `arg2`,
-   *   such the call has the side-effect `arg2.f = arg1`.
+   *   such that the call has the side-effect `arg2.f = arg1`.
    * - A call to a method that returns an object in which an argument has been
    *   stored.
+   * - A reverse step through a read when the result of the read has been
+   *   stored into. This handles cases like `x.f1.f2 = y`.
    * `storeViaSideEffect` covers the first two cases, and `storeReturn` covers
    * the third case.
    */
@@ -232,7 +234,8 @@ private module ImplCommon {
   cached
   predicate store(Node node1, Content f, Node node2) {
     storeViaSideEffect(node1, f, node2) or
-    storeReturn(node1, f, node2)
+    storeReturn(node1, f, node2) or
+    read(node2.(PostUpdateNode).getPreUpdateNode(), f, node1.(PostUpdateNode).getPreUpdateNode())
   }
 
   private predicate storeViaSideEffect(Node node1, Content f, PostUpdateNode node2) {

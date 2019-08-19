@@ -19,3 +19,8 @@
 | C.java:4:27:4:36 | new Elem(...) | C.java:19:10:19:11 | s2 |
 | C.java:6:28:6:37 | new Elem(...) | C.java:21:10:21:11 | s4 |
 | C.java:14:15:14:24 | new Elem(...) | C.java:20:10:20:11 | s3 |
+| D.java:5:14:5:23 | new Elem(...) | D.java:33:10:33:31 | getElem(...) |
+| D.java:12:14:12:23 | new Elem(...) | D.java:33:10:33:31 | getElem(...) |
+| D.java:19:14:19:23 | new Elem(...) | D.java:33:10:33:31 | getElem(...) |
+| D.java:26:14:26:23 | new Elem(...) | D.java:33:10:33:31 | getElem(...) |
+| D.java:37:14:37:23 | new Elem(...) | D.java:44:10:44:26 | boxfield.box.elem |
