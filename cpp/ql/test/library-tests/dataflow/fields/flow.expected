@@ -86,6 +86,25 @@ edges
 | C.cpp:24:16:24:25 | new [void] | C.cpp:24:5:24:25 | ... = ... [void] |
 | C.cpp:27:8:27:11 | `this` parameter in func [s1, ... (1)] | file://:0:0:0:0 | this [s1, ... (1)] |
 | C.cpp:27:8:27:11 | `this` parameter in func [s3, ... (1)] | file://:0:0:0:0 | this [s3, ... (1)] |
+| aliasing.cpp:9:3:9:3 | s [post update] [m1, ... (1)] | aliasing.cpp:25:17:25:19 | ref arg & ... [m1, ... (1)] |
+| aliasing.cpp:9:3:9:22 | ... = ... [void] | aliasing.cpp:9:3:9:3 | s [post update] [m1, ... (1)] |
+| aliasing.cpp:9:11:9:20 | call to user_input [void] | aliasing.cpp:9:3:9:22 | ... = ... [void] |
+| aliasing.cpp:13:3:13:3 | s [post update] [m1, ... (1)] | aliasing.cpp:26:19:26:20 | ref arg s2 [m1, ... (1)] |
+| aliasing.cpp:13:3:13:21 | ... = ... [void] | aliasing.cpp:13:3:13:3 | s [post update] [m1, ... (1)] |
+| aliasing.cpp:13:10:13:19 | call to user_input [void] | aliasing.cpp:13:3:13:21 | ... = ... [void] |
+| aliasing.cpp:25:17:25:19 | ref arg & ... [m1, ... (1)] | aliasing.cpp:29:8:29:9 | s1 [m1, ... (1)] |
+| aliasing.cpp:26:19:26:20 | ref arg s2 [m1, ... (1)] | aliasing.cpp:30:8:30:9 | s2 [m1, ... (1)] |
+| aliasing.cpp:29:8:29:9 | s1 [m1, ... (1)] | aliasing.cpp:29:11:29:12 | m1 |
+| aliasing.cpp:30:8:30:9 | s2 [m1, ... (1)] | aliasing.cpp:30:11:30:12 | m1 |
+| aliasing.cpp:37:13:37:22 | call to user_input [void] | aliasing.cpp:38:11:38:12 | m1 |
+| aliasing.cpp:42:11:42:20 | call to user_input [void] | aliasing.cpp:43:13:43:14 | m1 |
+| aliasing.cpp:49:14:49:23 | call to user_input [void] | aliasing.cpp:50:11:50:12 | m1 |
+| aliasing.cpp:54:11:54:20 | call to user_input [void] | aliasing.cpp:55:14:55:15 | m1 |
+| aliasing.cpp:60:3:60:4 | s2 [post update] [m1, ... (1)] | aliasing.cpp:62:8:62:12 | copy2 [m1, ... (1)] |
+| aliasing.cpp:60:3:60:22 | ... = ... [void] | aliasing.cpp:60:3:60:4 | s2 [post update] [m1, ... (1)] |
+| aliasing.cpp:60:11:60:20 | call to user_input [void] | aliasing.cpp:60:3:60:22 | ... = ... [void] |
+| aliasing.cpp:60:11:60:20 | call to user_input [void] | aliasing.cpp:62:14:62:15 | m1 |
+| aliasing.cpp:62:8:62:12 | copy2 [m1, ... (1)] | aliasing.cpp:62:14:62:15 | m1 |
 | constructors.cpp:26:15:26:15 | f [a_, ... (1)] | constructors.cpp:28:10:28:10 | f [a_, ... (1)] |
 | constructors.cpp:26:15:26:15 | f [b_, ... (1)] | constructors.cpp:29:10:29:10 | f [b_, ... (1)] |
 | constructors.cpp:28:10:28:10 | f [a_, ... (1)] | constructors.cpp:28:12:28:12 | call to a |
@@ -148,6 +167,13 @@ edges
 | B.cpp:19:20:19:24 | elem2 | B.cpp:15:15:15:27 | new [void] | B.cpp:19:20:19:24 | elem2 | elem2 flows from $@ | B.cpp:15:15:15:27 | new [void] | new [void] |
 | C.cpp:29:10:29:11 | s1 | C.cpp:22:12:22:21 | new [void] | C.cpp:29:10:29:11 | s1 | s1 flows from $@ | C.cpp:22:12:22:21 | new [void] | new [void] |
 | C.cpp:31:10:31:11 | s3 | C.cpp:24:16:24:25 | new [void] | C.cpp:31:10:31:11 | s3 | s3 flows from $@ | C.cpp:24:16:24:25 | new [void] | new [void] |
+| aliasing.cpp:29:11:29:12 | m1 | aliasing.cpp:9:11:9:20 | call to user_input [void] | aliasing.cpp:29:11:29:12 | m1 | m1 flows from $@ | aliasing.cpp:9:11:9:20 | call to user_input [void] | call to user_input [void] |
+| aliasing.cpp:30:11:30:12 | m1 | aliasing.cpp:13:10:13:19 | call to user_input [void] | aliasing.cpp:30:11:30:12 | m1 | m1 flows from $@ | aliasing.cpp:13:10:13:19 | call to user_input [void] | call to user_input [void] |
+| aliasing.cpp:38:11:38:12 | m1 | aliasing.cpp:37:13:37:22 | call to user_input [void] | aliasing.cpp:38:11:38:12 | m1 | m1 flows from $@ | aliasing.cpp:37:13:37:22 | call to user_input [void] | call to user_input [void] |
+| aliasing.cpp:43:13:43:14 | m1 | aliasing.cpp:42:11:42:20 | call to user_input [void] | aliasing.cpp:43:13:43:14 | m1 | m1 flows from $@ | aliasing.cpp:42:11:42:20 | call to user_input [void] | call to user_input [void] |
+| aliasing.cpp:50:11:50:12 | m1 | aliasing.cpp:49:14:49:23 | call to user_input [void] | aliasing.cpp:50:11:50:12 | m1 | m1 flows from $@ | aliasing.cpp:49:14:49:23 | call to user_input [void] | call to user_input [void] |
+| aliasing.cpp:55:14:55:15 | m1 | aliasing.cpp:54:11:54:20 | call to user_input [void] | aliasing.cpp:55:14:55:15 | m1 | m1 flows from $@ | aliasing.cpp:54:11:54:20 | call to user_input [void] | call to user_input [void] |
+| aliasing.cpp:62:14:62:15 | m1 | aliasing.cpp:60:11:60:20 | call to user_input [void] | aliasing.cpp:62:14:62:15 | m1 | m1 flows from $@ | aliasing.cpp:60:11:60:20 | call to user_input [void] | call to user_input [void] |
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:34:11:34:20 | call to user_input [void] | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:34:11:34:20 | call to user_input [void] | call to user_input [void] |
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:36:11:36:20 | call to user_input [void] | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:36:11:36:20 | call to user_input [void] | call to user_input [void] |
 | constructors.cpp:29:12:29:12 | call to b | constructors.cpp:35:14:35:23 | call to user_input [void] | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:35:14:35:23 | call to user_input [void] | call to user_input [void] |
