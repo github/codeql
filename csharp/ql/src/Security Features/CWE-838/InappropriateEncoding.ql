@@ -62,6 +62,8 @@ abstract class RequiresEncodingConfiguration extends TaintTracking2::Configurati
   override predicate isSink(Node sink) { this.requiresEncoding(sink) }
 
   override predicate isSanitizer(Node sanitizer) { this.isPossibleEncodedValue(sanitizer.asExpr()) }
+
+  override int fieldFlowBranchLimit() { result = 0 }
 }
 
 /** An encoded value, for example a call to `HttpServerUtility.HtmlEncode`. */
