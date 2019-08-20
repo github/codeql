@@ -37,13 +37,10 @@ edges
 | A.cs:98:30:98:36 | object creation of type B | A.cs:98:22:98:36 | ... ? ... : ... |
 | A.cs:104:17:104:23 | object creation of type B | A.cs:105:23:105:23 | access to local variable b |
 | A.cs:105:17:105:29 | object creation of type D [b, ... (1)] | A.cs:106:14:106:14 | access to local variable d [b, ... (1)] |
-| A.cs:105:17:105:29 | object creation of type D [b, ... (2)] | A.cs:106:14:106:14 | access to local variable d [b, ... (2)] |
 | A.cs:105:17:105:29 | object creation of type D [b, ... (2)] | A.cs:107:14:107:14 | access to local variable d [b, ... (2)] |
 | A.cs:105:23:105:23 | [post] access to local variable b [c, ... (1)] | A.cs:108:14:108:14 | access to local variable b [c, ... (1)] |
 | A.cs:105:23:105:23 | access to local variable b | A.cs:105:17:105:29 | object creation of type D [b, ... (1)] |
 | A.cs:106:14:106:14 | access to local variable d [b, ... (1)] | A.cs:106:14:106:16 | access to field b |
-| A.cs:106:14:106:14 | access to local variable d [b, ... (2)] | A.cs:106:14:106:16 | access to field b [c, ... (1)] |
-| A.cs:106:14:106:16 | access to field b [c, ... (1)] | A.cs:107:14:107:16 | access to field b [c, ... (1)] |
 | A.cs:107:14:107:14 | access to local variable d [b, ... (2)] | A.cs:107:14:107:16 | access to field b [c, ... (1)] |
 | A.cs:107:14:107:16 | access to field b [c, ... (1)] | A.cs:107:14:107:18 | access to field c |
 | A.cs:108:14:108:14 | access to local variable b [c, ... (1)] | A.cs:108:14:108:16 | access to field c |
@@ -52,12 +49,9 @@ edges
 | A.cs:114:29:114:29 | access to local variable b | A.cs:114:18:114:54 | object creation of type MyList [head, ... (1)] |
 | A.cs:115:18:115:37 | object creation of type MyList [next, ... (2)] | A.cs:116:35:116:36 | access to local variable l2 [next, ... (2)] |
 | A.cs:115:35:115:36 | access to local variable l1 [head, ... (1)] | A.cs:115:18:115:37 | object creation of type MyList [next, ... (2)] |
-| A.cs:116:18:116:37 | object creation of type MyList [next, ... (3)] | A.cs:118:14:118:15 | access to local variable l3 [next, ... (3)] |
 | A.cs:116:18:116:37 | object creation of type MyList [next, ... (3)] | A.cs:119:14:119:15 | access to local variable l3 [next, ... (3)] |
 | A.cs:116:18:116:37 | object creation of type MyList [next, ... (3)] | A.cs:121:41:121:41 | access to local variable l [next, ... (3)] |
 | A.cs:116:35:116:36 | access to local variable l2 [next, ... (2)] | A.cs:116:18:116:37 | object creation of type MyList [next, ... (3)] |
-| A.cs:118:14:118:15 | access to local variable l3 [next, ... (3)] | A.cs:118:14:118:20 | access to field next [next, ... (2)] |
-| A.cs:118:14:118:20 | access to field next [next, ... (2)] | A.cs:119:14:119:20 | access to field next [next, ... (2)] |
 | A.cs:119:14:119:15 | access to local variable l3 [next, ... (3)] | A.cs:119:14:119:20 | access to field next [next, ... (2)] |
 | A.cs:119:14:119:20 | access to field next [next, ... (2)] | A.cs:119:14:119:25 | access to field next [head, ... (1)] |
 | A.cs:119:14:119:25 | access to field next [head, ... (1)] | A.cs:119:14:119:30 | access to field head |
@@ -73,9 +67,7 @@ edges
 | B.cs:7:18:7:29 | object creation of type Box2 [box1, ... (2)] | B.cs:9:14:9:15 | access to local variable b2 [box1, ... (2)] |
 | B.cs:7:27:7:28 | access to local variable b1 [elem1, ... (1)] | B.cs:7:18:7:29 | object creation of type Box2 [box1, ... (2)] |
 | B.cs:8:14:8:15 | access to local variable b2 [box1, ... (2)] | B.cs:8:14:8:20 | access to field box1 [elem1, ... (1)] |
-| B.cs:8:14:8:15 | access to local variable b2 [box1, ... (2)] | B.cs:8:14:8:20 | access to field box1 [elem2, ... (1)] |
 | B.cs:8:14:8:20 | access to field box1 [elem1, ... (1)] | B.cs:8:14:8:26 | access to field elem1 |
-| B.cs:8:14:8:20 | access to field box1 [elem2, ... (1)] | B.cs:9:14:9:20 | access to field box1 [elem2, ... (1)] |
 | B.cs:9:14:9:15 | access to local variable b2 [box1, ... (2)] | B.cs:9:14:9:20 | access to field box1 [elem2, ... (1)] |
 | B.cs:9:14:9:20 | access to field box1 [elem2, ... (1)] | B.cs:9:14:9:26 | access to field elem2 |
 | B.cs:14:17:14:26 | object creation of type Elem | B.cs:15:33:15:33 | access to local variable e |
@@ -85,9 +77,7 @@ edges
 | B.cs:16:18:16:29 | object creation of type Box2 [box1, ... (2)] | B.cs:18:14:18:15 | access to local variable b2 [box1, ... (2)] |
 | B.cs:16:27:16:28 | access to local variable b1 [elem2, ... (1)] | B.cs:16:18:16:29 | object creation of type Box2 [box1, ... (2)] |
 | B.cs:17:14:17:15 | access to local variable b2 [box1, ... (2)] | B.cs:17:14:17:20 | access to field box1 [elem1, ... (1)] |
-| B.cs:17:14:17:15 | access to local variable b2 [box1, ... (2)] | B.cs:17:14:17:20 | access to field box1 [elem2, ... (1)] |
 | B.cs:17:14:17:20 | access to field box1 [elem1, ... (1)] | B.cs:17:14:17:26 | access to field elem1 |
-| B.cs:17:14:17:20 | access to field box1 [elem2, ... (1)] | B.cs:18:14:18:20 | access to field box1 [elem2, ... (1)] |
 | B.cs:18:14:18:15 | access to local variable b2 [box1, ... (2)] | B.cs:18:14:18:20 | access to field box1 [elem2, ... (1)] |
 | B.cs:18:14:18:20 | access to field box1 [elem2, ... (1)] | B.cs:18:14:18:26 | access to field elem2 |
 | C.cs:3:18:3:19 | [post] this access [s1, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s1, ... (1)] |
@@ -96,8 +86,6 @@ edges
 | C.cs:4:32:4:41 | object creation of type Elem | C.cs:4:27:4:28 | [post] this access [s2, ... (1)] |
 | C.cs:6:30:6:39 | object creation of type Elem | C.cs:26:14:26:15 | access to field s4 |
 | C.cs:7:18:7:19 | [post] this access [s5, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s5, ... (1)] |
-| C.cs:7:18:7:19 | [post] this access [s5, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s5, ... (1)] |
-| C.cs:7:37:7:46 | object creation of type Elem | C.cs:7:18:7:19 | [post] this access [s5, ... (1)] |
 | C.cs:7:37:7:46 | object creation of type Elem | C.cs:7:18:7:19 | [post] this access [s5, ... (1)] |
 | C.cs:8:30:8:39 | object creation of type Elem | C.cs:28:14:28:15 | access to property s6 |
 | C.cs:12:15:12:21 | object creation of type C [s1, ... (1)] | C.cs:13:9:13:9 | access to local variable c [s1, ... (1)] |
@@ -158,6 +146,39 @@ edges
 | F.cs:23:13:23:34 | object creation of type F [Field2, ... (1)] | F.cs:25:14:25:14 | access to local variable f [Field2, ... (1)] |
 | F.cs:23:32:23:32 | access to local variable o | F.cs:23:13:23:34 | object creation of type F [Field2, ... (1)] |
 | F.cs:25:14:25:14 | access to local variable f [Field2, ... (1)] | F.cs:25:14:25:21 | access to field Field2 |
+| G.cs:7:18:7:27 | object creation of type Elem | G.cs:9:23:9:23 | access to local variable e |
+| G.cs:9:9:9:9 | [post] access to local variable b [Box1, ... (2)] | G.cs:10:18:10:18 | access to local variable b [Box1, ... (2)] |
+| G.cs:9:9:9:14 | [post] access to field Box1 [Elem, ... (1)] | G.cs:9:9:9:9 | [post] access to local variable b [Box1, ... (2)] |
+| G.cs:9:23:9:23 | access to local variable e | G.cs:9:9:9:14 | [post] access to field Box1 [Elem, ... (1)] |
+| G.cs:10:18:10:18 | access to local variable b [Box1, ... (2)] | G.cs:37:38:37:39 | b2 [Box1, ... (2)] |
+| G.cs:15:18:15:27 | object creation of type Elem | G.cs:17:24:17:24 | access to local variable e |
+| G.cs:17:9:17:9 | [post] access to local variable b [Box1, ... (2)] | G.cs:18:18:18:18 | access to local variable b [Box1, ... (2)] |
+| G.cs:17:9:17:14 | [post] access to field Box1 [Elem, ... (1)] | G.cs:17:9:17:9 | [post] access to local variable b [Box1, ... (2)] |
+| G.cs:17:24:17:24 | access to local variable e | G.cs:17:9:17:14 | [post] access to field Box1 [Elem, ... (1)] |
+| G.cs:18:18:18:18 | access to local variable b [Box1, ... (2)] | G.cs:37:38:37:39 | b2 [Box1, ... (2)] |
+| G.cs:23:18:23:27 | object creation of type Elem | G.cs:25:28:25:28 | access to local variable e |
+| G.cs:25:9:25:9 | [post] access to local variable b [Box1, ... (2)] | G.cs:26:18:26:18 | access to local variable b [Box1, ... (2)] |
+| G.cs:25:9:25:19 | [post] call to method GetBox1 [Elem, ... (1)] | G.cs:25:9:25:9 | [post] access to local variable b [Box1, ... (2)] |
+| G.cs:25:28:25:28 | access to local variable e | G.cs:25:9:25:19 | [post] call to method GetBox1 [Elem, ... (1)] |
+| G.cs:26:18:26:18 | access to local variable b [Box1, ... (2)] | G.cs:37:38:37:39 | b2 [Box1, ... (2)] |
+| G.cs:31:18:31:27 | object creation of type Elem | G.cs:33:29:33:29 | access to local variable e |
+| G.cs:33:9:33:9 | [post] access to local variable b [Box1, ... (2)] | G.cs:34:18:34:18 | access to local variable b [Box1, ... (2)] |
+| G.cs:33:9:33:19 | [post] call to method GetBox1 [Elem, ... (1)] | G.cs:33:9:33:9 | [post] access to local variable b [Box1, ... (2)] |
+| G.cs:33:29:33:29 | access to local variable e | G.cs:33:9:33:19 | [post] call to method GetBox1 [Elem, ... (1)] |
+| G.cs:34:18:34:18 | access to local variable b [Box1, ... (2)] | G.cs:37:38:37:39 | b2 [Box1, ... (2)] |
+| G.cs:37:38:37:39 | b2 [Box1, ... (2)] | G.cs:39:14:39:15 | access to parameter b2 [Box1, ... (2)] |
+| G.cs:39:14:39:15 | access to parameter b2 [Box1, ... (2)] | G.cs:39:14:39:25 | call to method GetBox1 [Elem, ... (1)] |
+| G.cs:39:14:39:25 | call to method GetBox1 [Elem, ... (1)] | G.cs:39:14:39:35 | call to method GetElem |
+| G.cs:44:18:44:27 | object creation of type Elem | G.cs:46:30:46:30 | access to local variable e |
+| G.cs:46:9:46:16 | [post] access to field boxfield [Box1, ... (2)] | G.cs:46:9:46:16 | [post] this access [boxfield, ... (3)] |
+| G.cs:46:9:46:16 | [post] this access [boxfield, ... (3)] | G.cs:47:9:47:13 | this access [boxfield, ... (3)] |
+| G.cs:46:9:46:21 | [post] access to field Box1 [Elem, ... (1)] | G.cs:46:9:46:16 | [post] access to field boxfield [Box1, ... (2)] |
+| G.cs:46:30:46:30 | access to local variable e | G.cs:46:9:46:21 | [post] access to field Box1 [Elem, ... (1)] |
+| G.cs:47:9:47:13 | this access [boxfield, ... (3)] | G.cs:50:18:50:20 | this [boxfield, ... (3)] |
+| G.cs:50:18:50:20 | this [boxfield, ... (3)] | G.cs:52:14:52:21 | this access [boxfield, ... (3)] |
+| G.cs:52:14:52:21 | access to field boxfield [Box1, ... (2)] | G.cs:52:14:52:26 | access to field Box1 [Elem, ... (1)] |
+| G.cs:52:14:52:21 | this access [boxfield, ... (3)] | G.cs:52:14:52:21 | access to field boxfield [Box1, ... (2)] |
+| G.cs:52:14:52:26 | access to field Box1 [Elem, ... (1)] | G.cs:52:14:52:31 | access to field Elem |
 #select
 | A.cs:7:14:7:16 | access to field c | A.cs:5:17:5:23 | object creation of type C | A.cs:7:14:7:16 | access to field c | $@ | A.cs:5:17:5:23 | object creation of type C | object creation of type C |
 | A.cs:14:14:14:20 | call to method Get | A.cs:13:15:13:22 | object creation of type C1 | A.cs:14:14:14:20 | call to method Get | $@ | A.cs:13:15:13:22 | object creation of type C1 | object creation of type C1 |
@@ -195,3 +216,8 @@ edges
 | F.cs:17:14:17:21 | access to field Field2 | F.cs:10:17:10:28 | object creation of type Object | F.cs:17:14:17:21 | access to field Field2 | $@ | F.cs:10:17:10:28 | object creation of type Object | object creation of type Object |
 | F.cs:20:14:20:21 | access to field Field1 | F.cs:10:17:10:28 | object creation of type Object | F.cs:20:14:20:21 | access to field Field1 | $@ | F.cs:10:17:10:28 | object creation of type Object | object creation of type Object |
 | F.cs:25:14:25:21 | access to field Field2 | F.cs:10:17:10:28 | object creation of type Object | F.cs:25:14:25:21 | access to field Field2 | $@ | F.cs:10:17:10:28 | object creation of type Object | object creation of type Object |
+| G.cs:39:14:39:35 | call to method GetElem | G.cs:7:18:7:27 | object creation of type Elem | G.cs:39:14:39:35 | call to method GetElem | $@ | G.cs:7:18:7:27 | object creation of type Elem | object creation of type Elem |
+| G.cs:39:14:39:35 | call to method GetElem | G.cs:15:18:15:27 | object creation of type Elem | G.cs:39:14:39:35 | call to method GetElem | $@ | G.cs:15:18:15:27 | object creation of type Elem | object creation of type Elem |
+| G.cs:39:14:39:35 | call to method GetElem | G.cs:23:18:23:27 | object creation of type Elem | G.cs:39:14:39:35 | call to method GetElem | $@ | G.cs:23:18:23:27 | object creation of type Elem | object creation of type Elem |
+| G.cs:39:14:39:35 | call to method GetElem | G.cs:31:18:31:27 | object creation of type Elem | G.cs:39:14:39:35 | call to method GetElem | $@ | G.cs:31:18:31:27 | object creation of type Elem | object creation of type Elem |
+| G.cs:52:14:52:31 | access to field Elem | G.cs:44:18:44:27 | object creation of type Elem | G.cs:52:14:52:31 | access to field Elem | $@ | G.cs:44:18:44:27 | object creation of type Elem | object creation of type Elem |
