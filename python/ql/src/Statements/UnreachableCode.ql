@@ -13,6 +13,18 @@
 
 import python
 
+private Name variableInvolvedInComparison (Compare c) {
+    result = c.getLeft().getASubExpression*() or
+    result = c.getAComparator().getASubExpression*()
+}
+
+private predicate allInvolvedVariablesAreInvolvedInPrevious(Compare c, Compare prevc) {
+    forall (Name n | 
+        n = variableInvolvedInComparison(c) | 
+        (exists (Name n2, Variable v | 
+            n2 = variableInvolvedInComparison(prevc) and n2.uses(v) and n.uses(v))))
+}
+
 predicate typing_import(ImportingStmt is) {
     exists(Module m |
         is.getScope() = m and
@@ -20,6 +32,15 @@ predicate typing_import(ImportingStmt is) {
             tc.getLocation().getFile() = m.getFile()
         )
     )
+}
+
+/* This predicate holds when a previous complex comparison occured before 
+ * on the same variables, and then might break the control flow */
+private predicate previousComparisonMightBreakControlFlow(If s, If prev) {
+    s.getEnclosingModule() = prev.getEnclosingModule() and
+    prev.getLocation().getStartLine() < s.getLocation().getStartLine() and
+    prev.getTest().isAComplexComparison() and
+    allInvolvedVariablesAreInvolvedInPrevious(s.getTest().(Compare), prev.getTest().(Compare))
 }
 
 /** Holds if `s` contains the only `yield` in scope */
@@ -41,7 +62,8 @@ predicate reportable_unreachable(Stmt s) {
             l.getItem(i) = other and l.getItem(j) = s and i < j
         )
     ) and
-    not unique_yield(s)
+    not unique_yield(s) and
+    not exists(If prev | previousComparisonMightBreakControlFlow(s.(If), prev))
 }
 
 from Stmt s

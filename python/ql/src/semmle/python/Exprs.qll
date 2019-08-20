@@ -126,6 +126,15 @@ class Expr extends Expr_, AstNode {
         this.pointsTo(value, _)
     }
 
+    /* Holds if this expression is a comparison of the complex form `a op b op c` and not of
+    * the simple form `a op b`.
+    */
+    predicate isAComplexComparison() {
+        exists(this.(Compare).getOp(1))
+        or
+        this.(UnaryExpr).getOperand().isAComplexComparison()
+    }
+
 }
 
 /** An attribute expression, such as `value.attr` */

@@ -119,4 +119,9 @@ def foo(x):
         if x == 0:
             print(x, "== 0")
 
+def with_chained_comparisons(v1, v2):
+    if v1 >= 0 > v2:
+        return 0
+    if v1 > v2:
+        pass
 
