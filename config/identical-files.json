@@ -29,6 +29,10 @@
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll"
   ],
+  "Taint tracking Java": [
+    "java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
+    "java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll"
+  ],
   "IR Instruction": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/Instruction.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/Instruction.qll",
