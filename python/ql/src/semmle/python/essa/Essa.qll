@@ -496,7 +496,7 @@ class EssaNodeDefinition extends EssaDefinition, TEssaNodeDefinition {
     }
 
     override string getRepresentation() {
-        result = this.getDefiningNode().toString()
+        result = this.getAQlClass()
     }
 
     override Scope getScope() {
@@ -560,6 +560,9 @@ class EssaNodeRefinement extends EssaDefinition, TEssaNodeRefinement {
 
     override string getRepresentation() {
         result = this.getAQlClass() + "(" + this.getInput().getRepresentation() + ")"
+        or
+        not exists(this.getInput()) and
+        result = this.getAQlClass() + "(" + this.getSourceVariable().getName() + "??)"
     }
 
     override Scope getScope() {
@@ -591,30 +594,14 @@ private EssaVariable potential_input(EssaNodeRefinement ref) {
     )
 }
 
+/* For backwards compatibility */
+deprecated class PyNodeDefinition = EssaNodeDefinition;
 
-
-/** Python specific sub-class of generic EssaNodeDefinition */
-class PyNodeDefinition extends EssaNodeDefinition {
-
-    override string getRepresentation() {
-        result = this.getAQlClass()
-    }
-
-}
-
-/** Python specific sub-class of generic EssaNodeRefinement */
-class PyNodeRefinement extends EssaNodeRefinement {
-
-    override string getRepresentation() {
-        result = this.getAQlClass() + "(" + this.getInput().getRepresentation() + ")"
-        or
-        not exists(this.getInput()) and
-        result = this.getAQlClass() + "(" + this.getSourceVariable().getName() + "??)"
-    }
-}
+/* For backwards compatibility */
+deprecated class PyNodeRefinement = EssaNodeRefinement;
 
 /** An assignment to a variable `v = val` */
-class AssignmentDefinition extends PyNodeDefinition {
+class AssignmentDefinition extends EssaNodeDefinition {
 
     AssignmentDefinition() {
         SsaSource::assignment_definition(this.getSourceVariable(), this.getDefiningNode(), _)
@@ -631,7 +618,7 @@ class AssignmentDefinition extends PyNodeDefinition {
 }
 
 /** Capture of a raised exception `except ExceptionType ex:` */
-class ExceptionCapture  extends PyNodeDefinition {
+class ExceptionCapture  extends EssaNodeDefinition {
 
     ExceptionCapture() {
         SsaSource::exception_capture(this.getSourceVariable(), this.getDefiningNode())
@@ -651,7 +638,7 @@ class ExceptionCapture  extends PyNodeDefinition {
 }
 
 /** An assignment to a variable as part of a multiple assignment `..., v, ... = val` */
-class MultiAssignmentDefinition extends PyNodeDefinition {
+class MultiAssignmentDefinition extends EssaNodeDefinition {
 
     MultiAssignmentDefinition() {
         SsaSource::multi_assignment_definition(this.getSourceVariable(), this.getDefiningNode(), _, _)
@@ -672,7 +659,7 @@ class MultiAssignmentDefinition extends PyNodeDefinition {
 }
 
 /** A definition of a variable in a `with` statement */
-class WithDefinition extends PyNodeDefinition {
+class WithDefinition extends EssaNodeDefinition {
 
     WithDefinition  () {
         SsaSource::with_definition(this.getSourceVariable(), this.getDefiningNode())
@@ -685,7 +672,7 @@ class WithDefinition extends PyNodeDefinition {
 }
 
 /** A definition of a variable by declaring it as a parameter */
-class ParameterDefinition extends PyNodeDefinition {
+class ParameterDefinition extends EssaNodeDefinition {
 
     ParameterDefinition() {
         SsaSource::parameter_definition(this.getSourceVariable(), this.getDefiningNode())
@@ -729,7 +716,7 @@ class ParameterDefinition extends PyNodeDefinition {
 
 
 /** A deletion of a variable `del v` */
-class DeletionDefinition extends PyNodeDefinition {
+class DeletionDefinition extends EssaNodeDefinition {
 
     DeletionDefinition() {
         SsaSource::deletion_definition(this.getSourceVariable(), this.getDefiningNode())
@@ -740,7 +727,7 @@ class DeletionDefinition extends PyNodeDefinition {
 /** Definition of variable at the entry of a scope. Usually this represents the transfer of
  * a global or non-local variable from one scope to another.
  */
-class ScopeEntryDefinition extends PyNodeDefinition {
+class ScopeEntryDefinition extends EssaNodeDefinition {
 
     ScopeEntryDefinition() {
         this.getDefiningNode() = this.getSourceVariable().(PythonSsaSourceVariable).getScopeEntryDefinition() and
@@ -754,7 +741,7 @@ class ScopeEntryDefinition extends PyNodeDefinition {
 }
 
 /** Possible redefinition of variable via `from ... import *` */
-class ImportStarRefinement extends PyNodeRefinement {
+class ImportStarRefinement extends EssaNodeRefinement {
 
     ImportStarRefinement() {
         SsaSource::import_star_refinement(this.getSourceVariable(), _, this.getDefiningNode())
@@ -763,7 +750,7 @@ class ImportStarRefinement extends PyNodeRefinement {
 }
 
 /** Assignment of an attribute `obj.attr = val` */
-class AttributeAssignment extends PyNodeRefinement {
+class AttributeAssignment extends EssaNodeRefinement {
 
     AttributeAssignment() {
         SsaSource::attribute_assignment_refinement(this.getSourceVariable(), _, this.getDefiningNode())
@@ -787,7 +774,7 @@ class AttributeAssignment extends PyNodeRefinement {
 }
 
 /** A use of a variable as an argument, `foo(v)`, which might modify the object referred to. */
-class ArgumentRefinement extends PyNodeRefinement {
+class ArgumentRefinement extends EssaNodeRefinement {
 
     ControlFlowNode argument;
 
@@ -801,7 +788,7 @@ class ArgumentRefinement extends PyNodeRefinement {
 }
 
 /** Deletion of an attribute `del obj.attr`. */
-class EssaAttributeDeletion extends PyNodeRefinement {
+class EssaAttributeDeletion extends EssaNodeRefinement {
 
     EssaAttributeDeletion() {
         SsaSource::attribute_deletion_refinement(this.getSourceVariable(), _, this.getDefiningNode())
@@ -814,7 +801,7 @@ class EssaAttributeDeletion extends PyNodeRefinement {
 }
 
 /** A pi-node (guard) with only one successor. */
-class SingleSuccessorGuard extends PyNodeRefinement {
+class SingleSuccessorGuard extends EssaNodeRefinement {
 
     SingleSuccessorGuard() {
         SsaSource::test_refinement(this.getSourceVariable(), _, this.getDefiningNode())
@@ -827,10 +814,10 @@ class SingleSuccessorGuard extends PyNodeRefinement {
     }
 
     override string getRepresentation() {
-        result = PyNodeRefinement.super.getRepresentation() + " [" + this.getSense().toString() + "]"
+        result = EssaNodeRefinement.super.getRepresentation() + " [" + this.getSense().toString() + "]"
         or
         not exists(this.getSense()) and
-        result = PyNodeRefinement.super.getRepresentation() + " [??]"
+        result = EssaNodeRefinement.super.getRepresentation() + " [??]"
     }
 
     ControlFlowNode getTest() {
@@ -848,7 +835,7 @@ class SingleSuccessorGuard extends PyNodeRefinement {
  * Although the interpreter does not pre-define these names, merely populating them
  * as they are imported, this is a good approximation for static analysis.
  */
-class ImplicitSubModuleDefinition extends PyNodeDefinition {
+class ImplicitSubModuleDefinition extends EssaNodeDefinition {
 
     ImplicitSubModuleDefinition() {
         SsaSource::init_module_submodule_defn(this.getSourceVariable(), this.getDefiningNode())
@@ -857,7 +844,7 @@ class ImplicitSubModuleDefinition extends PyNodeDefinition {
 }
 
 /** An implicit (possible) definition of an escaping variable at a call-site */
-class CallsiteRefinement extends PyNodeRefinement {
+class CallsiteRefinement extends EssaNodeRefinement {
 
     override string toString() {
         result = "CallsiteRefinement"
@@ -880,7 +867,7 @@ class CallsiteRefinement extends PyNodeRefinement {
 }
 
 /** An implicit (possible) modification of the object referred at a method call */
-class MethodCallsiteRefinement extends PyNodeRefinement {
+class MethodCallsiteRefinement extends EssaNodeRefinement {
 
     MethodCallsiteRefinement() {
         SsaSource::method_call_refinement(this.getSourceVariable(), _, this.getDefiningNode())
