@@ -20,13 +20,19 @@ private newtype TNode =
   TInstanceParameterNode(Callable c) { exists(c.getBody()) and not c.isStatic() } or
   TImplicitInstanceAccess(InstanceAccessExt ia) { not ia.isExplicit(_) } or
   TMallocNode(ClassInstanceExpr cie) or
-  TExplicitArgPostCall(Expr e) { explicitInstanceArgument(_, e) or e instanceof Argument } or
-  TImplicitArgPostCall(InstanceAccessExt ia) { implicitInstanceArgument(_, ia) } or
-  TExplicitStoreTarget(Expr e) {
-    exists(FieldAccess fa | instanceFieldAssign(_, fa) and e = fa.getQualifier())
+  TExplicitExprPostUpdate(Expr e) {
+    explicitInstanceArgument(_, e)
+    or
+    e instanceof Argument
+    or
+    exists(FieldAccess fa | fa.getField() instanceof InstanceField and e = fa.getQualifier())
   } or
-  TImplicitStoreTarget(InstanceAccessExt ia) {
-    exists(FieldAccess fa | instanceFieldAssign(_, fa) and ia.isImplicitFieldQualifier(fa))
+  TImplicitExprPostUpdate(InstanceAccessExt ia) {
+    implicitInstanceArgument(_, ia)
+    or
+    exists(FieldAccess fa |
+      fa.getField() instanceof InstanceField and ia.isImplicitFieldQualifier(fa)
+    )
   }
 
 /**
@@ -257,23 +263,13 @@ abstract private class ImplicitPostUpdateNode extends PostUpdateNode {
   override string toString() { result = getPreUpdateNode().toString() + " [post update]" }
 }
 
-private class ExplicitArgPostCall extends ImplicitPostUpdateNode, TExplicitArgPostCall {
-  override Node getPreUpdateNode() { this = TExplicitArgPostCall(result.asExpr()) }
+private class ExplicitExprPostUpdate extends ImplicitPostUpdateNode, TExplicitExprPostUpdate {
+  override Node getPreUpdateNode() { this = TExplicitExprPostUpdate(result.asExpr()) }
 }
 
-private class ImplicitArgPostCall extends ImplicitPostUpdateNode, TImplicitArgPostCall {
+private class ImplicitExprPostUpdate extends ImplicitPostUpdateNode, TImplicitExprPostUpdate {
   override Node getPreUpdateNode() {
-    this = TImplicitArgPostCall(result.(ImplicitInstanceAccess).getInstanceAccess())
-  }
-}
-
-private class ExplicitStoreTarget extends ImplicitPostUpdateNode, TExplicitStoreTarget {
-  override Node getPreUpdateNode() { this = TExplicitStoreTarget(result.asExpr()) }
-}
-
-private class ImplicitStoreTarget extends ImplicitPostUpdateNode, TImplicitStoreTarget {
-  override Node getPreUpdateNode() {
-    this = TImplicitStoreTarget(result.(ImplicitInstanceAccess).getInstanceAccess())
+    this = TImplicitExprPostUpdate(result.(ImplicitInstanceAccess).getInstanceAccess())
   }
 }
 
