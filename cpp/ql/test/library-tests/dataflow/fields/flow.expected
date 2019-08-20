@@ -84,8 +84,10 @@ edges
 | C.cpp:24:5:24:8 | this [post update] [s3, ... (1)] | C.cpp:18:12:18:18 | call to C [s3, ... (1)] |
 | C.cpp:24:5:24:25 | ... = ... [void] | C.cpp:24:5:24:8 | this [post update] [s3, ... (1)] |
 | C.cpp:24:16:24:25 | new [void] | C.cpp:24:5:24:25 | ... = ... [void] |
-| C.cpp:27:8:27:11 | `this` parameter in func [s1, ... (1)] | file://:0:0:0:0 | this [s1, ... (1)] |
-| C.cpp:27:8:27:11 | `this` parameter in func [s3, ... (1)] | file://:0:0:0:0 | this [s3, ... (1)] |
+| C.cpp:27:8:27:11 | `this` parameter in func [s1, ... (1)] | C.cpp:29:10:29:11 | this [s1, ... (1)] |
+| C.cpp:27:8:27:11 | `this` parameter in func [s3, ... (1)] | C.cpp:31:10:31:11 | this [s3, ... (1)] |
+| C.cpp:29:10:29:11 | this [s1, ... (1)] | C.cpp:29:10:29:11 | s1 |
+| C.cpp:31:10:31:11 | this [s3, ... (1)] | C.cpp:31:10:31:11 | s3 |
 | constructors.cpp:26:15:26:15 | f [a_, ... (1)] | constructors.cpp:28:10:28:10 | f [a_, ... (1)] |
 | constructors.cpp:26:15:26:15 | f [b_, ... (1)] | constructors.cpp:29:10:29:10 | f [b_, ... (1)] |
 | constructors.cpp:28:10:28:10 | f [a_, ... (1)] | constructors.cpp:28:12:28:12 | call to a |
@@ -102,8 +104,6 @@ edges
 | constructors.cpp:43:9:43:9 | g [b_, ... (1)] | constructors.cpp:26:15:26:15 | f [b_, ... (1)] |
 | constructors.cpp:46:9:46:9 | h [a_, ... (1)] | constructors.cpp:26:15:26:15 | f [a_, ... (1)] |
 | constructors.cpp:46:9:46:9 | h [b_, ... (1)] | constructors.cpp:26:15:26:15 | f [b_, ... (1)] |
-| file://:0:0:0:0 | this [s1, ... (1)] | C.cpp:29:10:29:11 | s1 |
-| file://:0:0:0:0 | this [s3, ... (1)] | C.cpp:31:10:31:11 | s3 |
 | simple.cpp:26:15:26:15 | f [a_, ... (1)] | simple.cpp:28:10:28:10 | f [a_, ... (1)] |
 | simple.cpp:26:15:26:15 | f [b_, ... (1)] | simple.cpp:29:10:29:10 | f [b_, ... (1)] |
 | simple.cpp:28:10:28:10 | f [a_, ... (1)] | simple.cpp:28:12:28:12 | call to a |
