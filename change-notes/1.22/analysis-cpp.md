@@ -24,6 +24,7 @@
 
 - The predicate `Variable.getAnAssignedValue()` now reports assignments to fields resulting from aggregate initialization (` = {...}`).
 - The predicate `TypeMention.toString()` has been simplified to always return the string "`type mention`".  This may improve performance when using `Element.toString()` or its descendants.
+- The `DataFlow::DefinitionByReferenceNode` class now considers `f(x)` to be a definition of `x` when `x` is a variable of pointer type. It no longer considers deep paths such as `f(&x.myField)` to be definitions of `x`. These changes are in line with the user expectations we've observed.
 - The `semmle.code.cpp.security.TaintTracking` library now considers a pointer difference calculation as blocking taint flow.
 - Fixed the `LocalScopeVariableReachability.qll` library's handling of loops with an entry condition is both always true upon first entry, and where there is more than one control flow path through the loop condition.  This change increases the accuracy of the `LocalScopeVariableReachability.qll` library and queries which depend on it.
 - The `semmle.code.cpp.models` library now models data flow through `std::swap`.
