@@ -12,6 +12,9 @@ import semmle.code.cpp.exprs.Access
  *   static int s;
  * };
  * ```
+ *
+ * This does not include static member variables in C++. To include static member
+ * variables, use `MemberVariable` instead of `Field`.
  */
 class Field extends MemberVariable {
 
