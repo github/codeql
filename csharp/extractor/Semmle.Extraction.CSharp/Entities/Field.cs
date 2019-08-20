@@ -71,7 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     var simpleAssignExpr = new Expression(new ExpressionInfo(Context, Type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
                     Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Initializer.Value, simpleAssignExpr, 0));
                     var access = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, null));
-                    Context.Emit(Tuples.expr_access(access, this));
+                    trapFile.expr_access(access, this);
                     if (!symbol.IsStatic)
                     {
                         This.CreateImplicit(Context, Entities.Type.Create(Context, symbol.ContainingType), Location, access, -1);
