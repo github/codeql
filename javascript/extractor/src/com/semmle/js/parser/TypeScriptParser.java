@@ -1,6 +1,21 @@
 package com.semmle.js.parser;
 
-import ch.qos.logback.classic.Level;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.lang.ProcessBuilder.Redirect;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -21,21 +36,8 @@ import com.semmle.util.logging.LogbackUtils;
 import com.semmle.util.process.AbstractProcessBuilder;
 import com.semmle.util.process.Builder;
 import com.semmle.util.process.Env;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.lang.ProcessBuilder.Redirect;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
+import ch.qos.logback.classic.Level;
 
 /**
  * The Java half of our wrapper for invoking the TypeScript parser.
@@ -104,14 +106,6 @@ public class TypeScriptParser {
    * Only <code>--inspect</code> or <code>--inspect-brk</code> may be used at the moment.
    */
   public static final String TYPESCRIPT_NODE_FLAGS = "SEMMLE_TYPESCRIPT_NODE_FLAGS";
-
-  /**
-   * Flags that may be passed using {@link #TYPESCRIPT_NODE_FLAGS}
-   */
-  private static final Set<String> allowedDebugNodeFlags = new HashSet<String>(Arrays.fromList(
-    "--inspect",
-    "--inspect-brk"
-  ));
 
   /** The Node.js parser wrapper process, if it has been started already. */
   private Process parserWrapperProcess;
@@ -253,8 +247,16 @@ public class TypeScriptParser {
     File parserWrapper = getParserWrapper();
 
     String debugFlagString = Env.systemEnv().getNonEmpty(TYPESCRIPT_NODE_FLAGS);
-    List<String> debugFlags = debugFlagString == null ? new ArrayList<>() : debugFlagString.split(" ");
-    debugFlags.retainAll(allowedDebugNodeFlags);
+    List<String> debugFlags = new ArrayList<>();
+    if (debugFlagString != null) {
+      for (String flag : debugFlagString.split(" ")) {
+        if (!flag.startsWith("--inspect") || flag.contains(":")) {
+          System.err.println("Ignoring unrecognized Node flag: '" + flag + "'");
+        } else {
+          debugFlags.add(flag);
+        }
+      }
+    }
 
     List<String> cmd = getNodeJsRuntimeInvocation();
     cmd.add("--max_old_space_size=" + (mainMemoryMb + reserveMemoryMb));
