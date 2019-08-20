@@ -20,6 +20,8 @@
 | test.cpp:90:8:90:14 | source1 | test.cpp:89:28:89:34 | source1 |
 | test.cpp:103:10:103:12 | ref | test.cpp:100:13:100:18 | call to source |
 | test.cpp:126:8:126:19 | sourceArray1 | test.cpp:120:9:120:20 | sourceArray1 |
+| test.cpp:129:8:129:20 | * ... | test.cpp:120:9:120:20 | sourceArray1 |
+| test.cpp:130:8:130:20 | & ... | test.cpp:120:9:120:20 | sourceArray1 |
 | test.cpp:137:27:137:28 | m1 | test.cpp:136:27:136:32 | call to source |
 | test.cpp:138:27:138:34 | call to getFirst | test.cpp:136:27:136:32 | call to source |
 | test.cpp:140:22:140:23 | m1 | test.cpp:136:27:136:32 | call to source |
@@ -50,10 +52,14 @@
 | test.cpp:472:8:472:12 | local | test.cpp:471:20:471:25 | ref arg & ... |
 | test.cpp:478:8:478:12 | local | test.cpp:476:7:476:11 | local |
 | test.cpp:478:8:478:12 | local | test.cpp:477:20:477:24 | ref arg local |
+| test.cpp:479:8:479:13 | * ... | test.cpp:476:7:476:11 | local |
+| test.cpp:479:8:479:13 | * ... | test.cpp:477:20:477:24 | ref arg local |
 | test.cpp:485:8:485:12 | local | test.cpp:483:7:483:11 | local |
 | test.cpp:485:8:485:12 | local | test.cpp:484:18:484:23 | ref arg & ... |
 | test.cpp:491:8:491:12 | local | test.cpp:489:7:489:11 | local |
 | test.cpp:491:8:491:12 | local | test.cpp:490:18:490:22 | ref arg local |
+| test.cpp:492:8:492:13 | * ... | test.cpp:489:7:489:11 | local |
+| test.cpp:492:8:492:13 | * ... | test.cpp:490:18:490:22 | ref arg local |
 | test.cpp:498:9:498:22 | (statement expression) | test.cpp:497:26:497:32 | source1 |
 | test.cpp:509:8:509:12 | local | test.cpp:497:26:497:32 | source1 |
 | true_upon_entry.cpp:21:8:21:8 | x | true_upon_entry.cpp:17:11:17:16 | call to source |

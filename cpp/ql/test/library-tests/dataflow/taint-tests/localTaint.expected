@@ -131,26 +131,26 @@
 | taint.cpp:121:10:121:11 | 1 | taint.cpp:124:13:124:14 | t2 |  |
 | taint.cpp:122:10:122:11 | 1 | taint.cpp:125:13:125:14 | t3 |  |
 | taint.cpp:123:12:123:14 | & ... | taint.cpp:129:8:129:9 | p1 |  |
-| taint.cpp:123:13:123:14 | t1 | taint.cpp:123:12:123:14 | & ... | TAINT |
+| taint.cpp:123:13:123:14 | t1 | taint.cpp:123:12:123:14 | & ... |  |
 | taint.cpp:124:12:124:14 | & ... | taint.cpp:127:3:127:4 | p2 |  |
 | taint.cpp:124:12:124:14 | & ... | taint.cpp:130:8:130:9 | p2 |  |
-| taint.cpp:124:13:124:14 | t2 | taint.cpp:124:12:124:14 | & ... | TAINT |
+| taint.cpp:124:13:124:14 | t2 | taint.cpp:124:12:124:14 | & ... |  |
 | taint.cpp:125:12:125:14 | & ... | taint.cpp:131:8:131:9 | p3 |  |
-| taint.cpp:125:13:125:14 | t3 | taint.cpp:125:12:125:14 | & ... | TAINT |
-| taint.cpp:127:3:127:4 | p2 | taint.cpp:127:2:127:4 | * ... | TAINT |
+| taint.cpp:125:13:125:14 | t3 | taint.cpp:125:12:125:14 | & ... |  |
+| taint.cpp:127:3:127:4 | p2 | taint.cpp:127:2:127:4 | * ... |  |
 | taint.cpp:127:8:127:13 | call to source | taint.cpp:127:2:127:15 | ... = ... |  |
-| taint.cpp:129:8:129:9 | p1 | taint.cpp:129:7:129:9 | * ... | TAINT |
-| taint.cpp:130:8:130:9 | p2 | taint.cpp:130:7:130:9 | * ... | TAINT |
-| taint.cpp:131:8:131:9 | p3 | taint.cpp:131:7:131:9 | * ... | TAINT |
+| taint.cpp:129:8:129:9 | p1 | taint.cpp:129:7:129:9 | * ... |  |
+| taint.cpp:130:8:130:9 | p2 | taint.cpp:130:7:130:9 | * ... |  |
+| taint.cpp:131:8:131:9 | p3 | taint.cpp:131:7:131:9 | * ... |  |
 | taint.cpp:133:7:133:9 | & ... | taint.cpp:133:2:133:9 | ... = ... |  |
 | taint.cpp:133:7:133:9 | & ... | taint.cpp:134:8:134:9 | p3 |  |
 | taint.cpp:133:7:133:9 | & ... | taint.cpp:136:3:136:4 | p3 |  |
 | taint.cpp:133:7:133:9 | & ... | taint.cpp:137:8:137:9 | p3 |  |
-| taint.cpp:133:8:133:9 | t1 | taint.cpp:133:7:133:9 | & ... | TAINT |
-| taint.cpp:134:8:134:9 | p3 | taint.cpp:134:7:134:9 | * ... | TAINT |
-| taint.cpp:136:3:136:4 | p3 | taint.cpp:136:2:136:4 | * ... | TAINT |
+| taint.cpp:133:8:133:9 | t1 | taint.cpp:133:7:133:9 | & ... |  |
+| taint.cpp:134:8:134:9 | p3 | taint.cpp:134:7:134:9 | * ... |  |
+| taint.cpp:136:3:136:4 | p3 | taint.cpp:136:2:136:4 | * ... |  |
 | taint.cpp:136:8:136:8 | 0 | taint.cpp:136:2:136:8 | ... = ... |  |
-| taint.cpp:137:8:137:9 | p3 | taint.cpp:137:7:137:9 | * ... | TAINT |
+| taint.cpp:137:8:137:9 | p3 | taint.cpp:137:7:137:9 | * ... |  |
 | taint.cpp:142:16:142:16 | i | taint.cpp:143:6:143:6 | i |  |
 | taint.cpp:142:23:142:23 | a | taint.cpp:144:10:144:10 | a |  |
 | taint.cpp:142:30:142:30 | b | taint.cpp:146:10:146:10 | b |  |
@@ -177,15 +177,17 @@
 | taint.cpp:172:10:172:15 | ref arg buffer | taint.cpp:173:8:173:13 | buffer |  |
 | taint.cpp:172:18:172:24 | tainted | taint.cpp:172:10:172:15 | ref arg buffer | TAINT |
 | taint.cpp:180:19:180:19 | p | taint.cpp:181:9:181:9 | p |  |
-| taint.cpp:181:9:181:9 | p | taint.cpp:181:8:181:9 | * ... | TAINT |
+| taint.cpp:181:9:181:9 | p | taint.cpp:181:8:181:9 | * ... |  |
 | taint.cpp:185:11:185:16 | call to source | taint.cpp:186:11:186:11 | x |  |
-| taint.cpp:186:11:186:11 | x | taint.cpp:186:10:186:11 | & ... | TAINT |
+| taint.cpp:186:10:186:11 | ref arg & ... | taint.cpp:186:10:186:11 | & ... |  |
+| taint.cpp:186:11:186:11 | x | taint.cpp:186:10:186:11 | & ... |  |
 | taint.cpp:192:23:192:28 | source | taint.cpp:194:13:194:18 | source |  |
 | taint.cpp:193:6:193:6 | x | taint.cpp:194:10:194:10 | x |  |
 | taint.cpp:193:6:193:6 | x | taint.cpp:195:7:195:7 | x |  |
 | taint.cpp:194:9:194:10 | & ... | taint.cpp:194:2:194:7 | call to memcpy |  |
+| taint.cpp:194:9:194:10 | ref arg & ... | taint.cpp:194:9:194:10 | & ... |  |
 | taint.cpp:194:9:194:10 | ref arg & ... | taint.cpp:195:7:195:7 | x |  |
-| taint.cpp:194:10:194:10 | x | taint.cpp:194:9:194:10 | & ... | TAINT |
+| taint.cpp:194:10:194:10 | x | taint.cpp:194:9:194:10 | & ... |  |
 | taint.cpp:194:13:194:18 | source | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
 | taint.cpp:194:21:194:31 | sizeof(int) | taint.cpp:194:9:194:10 | ref arg & ... | TAINT |
 | taint.cpp:207:6:207:11 | call to source | taint.cpp:207:2:207:13 | ... = ... |  |
