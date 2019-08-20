@@ -1040,9 +1040,8 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
     apf.headUsesContent(f)
   )
   or
-  exists(Content f, AccessPathFront apf0 |
-    flowCandFwdRead(f, node, fromArg, apf0, config) and
-    apf0.headUsesContent(f) and
+  exists(Content f |
+    flowCandFwdRead(f, node, fromArg, config) and
     consCandFwd(f, apf, config)
   )
 }
@@ -1059,12 +1058,11 @@ private predicate consCandFwd(Content f, AccessPathFront apf, Configuration conf
 }
 
 pragma[nomagic]
-private predicate flowCandFwdRead(
-  Content f, Node node, boolean fromArg, AccessPathFront apf, Configuration config
-) {
-  exists(Node mid |
+private predicate flowCandFwdRead(Content f, Node node, boolean fromArg, Configuration config) {
+  exists(Node mid, AccessPathFront apf |
     flowCandFwd(mid, fromArg, apf, config) and
     read(mid, f, node) and
+    apf.headUsesContent(f) and
     nodeCand(node, unbind(config))
   )
 }
