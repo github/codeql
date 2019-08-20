@@ -4,77 +4,8 @@
 
 import python
 private import SsaCompute
+import semmle.python.essa.Definitions
 
-/* The general intent of this code is to assume only the following interfaces,
- * although several Python-specific parts may have crept in.
- * 
- * SsaSourceVariable { ... }  // See interface below
- * 
- * 
- * BasicBlock {
- * 
- *    ControlFlowNode getNode(int n);
- * 
- *    BasicBlock getImmediateDominator();
- * 
- *    BasicBlock getAPredecessor();
- * 
- *    BasicBlock getATrueSuccessor();
- * 
- *    BasicBlock getAFalseSuccessor();
- * 
- *    predicate dominanceFrontier(BasicBlock other);
- * 
- *    predicate strictlyDominates(BasicBlock other);
- * 
- *    predicate hasLocationInfo(string f, int bl, int bc, int el, int ec);
- * 
- * }
- * 
- * ControlFlowNode {
- * 
- *    Location getLocation();
- * 
- *    BasicBlock getBasicBlock();
- * 
- * }
- * 
- */
-
-
- /** A source language variable, to be converted into a set of SSA variables. */
-abstract class SsaSourceVariable extends @py_variable {
-
-    /** Gets the name of this variable */
-    abstract string getName();
-
-    string toString() {
-        result = "SsaSourceVariable " + this.getName()
-    }
-
-    /** Gets a use of this variable, either explicit or implicit. */
-    abstract ControlFlowNode getAUse();
-
-    /** Holds if `def` defines an ESSA variable for this variable. */
-    abstract predicate hasDefiningNode(ControlFlowNode def);
-
-    /** Holds if the edge `pred`->`succ` defines an ESSA variable for this variable. */
-    abstract predicate hasDefiningEdge(BasicBlock pred, BasicBlock succ);
-
-    /** Holds if `def` defines an ESSA variable for this variable in such a way
-     * that the new variable is a refinement in some way of the variable used at `use`.
-     */
-    abstract predicate hasRefinement(ControlFlowNode use, ControlFlowNode def);
-
-    /** Holds if the edge `pred`->`succ` defines an ESSA variable for this variable in such a way
-     * that the new variable is a refinement in some way of the variable used at `use`.
-     */
-    abstract predicate hasRefinementEdge(ControlFlowNode use, BasicBlock pred, BasicBlock succ);
-
-    /** Gets a use of this variable that corresponds to an explicit use in the source. */
-    abstract ControlFlowNode getASourceUse();
-
-}
 
 /** An (enhanced) SSA variable derived from `SsaSourceVariable`. */
 class EssaVariable extends TEssaDefinition {
@@ -730,7 +661,7 @@ class DeletionDefinition extends EssaNodeDefinition {
 class ScopeEntryDefinition extends EssaNodeDefinition {
 
     ScopeEntryDefinition() {
-        this.getDefiningNode() = this.getSourceVariable().(PythonSsaSourceVariable).getScopeEntryDefinition() and
+        this.getDefiningNode() = this.getSourceVariable().getScopeEntryDefinition() and
         not this instanceof ImplicitSubModuleDefinition
     }
 
@@ -851,7 +782,7 @@ class CallsiteRefinement extends EssaNodeRefinement {
     }
 
     CallsiteRefinement() {
-        exists(PythonSsaSourceVariable var, ControlFlowNode defn |
+        exists(SsaSourceVariable var, ControlFlowNode defn |
             defn = var.redefinedAtCallSite() and
             this.definedBy(var, defn) and
             not this instanceof ArgumentRefinement and
