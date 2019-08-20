@@ -4,7 +4,20 @@ import semmle.code.cpp.Initializer
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C/C++ variable.
+ * A C/C++ variable. For example in the following code there are four
+ * variables, `a`, `b`, `c` and `d`:
+ * ```
+ * extern int a;
+ * int a;
+ *
+ * void myFunction(int b) {
+ *   int c;
+ * }
+ *
+ * namespace N {
+ *   int d;
+ * }
+ * ```
  *
  * For local variables, there is a one-to-one correspondence between
  * `Variable` and `VariableDeclarationEntry`.
@@ -162,7 +175,21 @@ class Variable extends Declaration, @variable {
 }
 
 /**
- * A particular declaration or definition of a C/C++ variable.
+ * A particular declaration or definition of a C/C++ variable. For example in
+ * the following code there are five variable declaration entries - two for
+ * `a`, and one each for `b`, `c` and `d`:
+ * ```
+ * extern int a;
+ * int a;
+ *
+ * void myFunction(int b) {
+ *   int c;
+ * }
+ *
+ * namespace N {
+ *   int d;
+ * }
+ * ```
  */
 class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
   override Variable getDeclaration() { result = getVariable() }
@@ -183,13 +210,13 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
    * because the parameter may have a different name in the declaration
    * than in the definition. For example:
    *
-   *    ```
-   *    // Declaration. Parameter is named "x".
-   *    int f(int x);
+   * ```
+   * // Declaration. Parameter is named "x".
+   * int f(int x);
    *
-   *    // Definition. Parameter is named "y".
-   *    int f(int y) { return y; }
-   *    ```
+   * // Definition. Parameter is named "y".
+   * int f(int y) { return y; }
+   * ```
    */
   override string getName() { var_decls(underlyingElement(this), _, _, result, _) and result != "" }
 
@@ -215,7 +242,13 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
 
 /**
  * A parameter as described within a particular declaration or definition
- * of a C/C++ function.
+ * of a C/C++ function. For example the declaration of `a` in the following
+ * code:
+ * ```
+ * void myFunction(int a) {
+ *   int b;
+ * }
+ * ```
  */
 class ParameterDeclarationEntry extends VariableDeclarationEntry {
   ParameterDeclarationEntry() { param_decl_bind(underlyingElement(this), _, _) }
@@ -272,8 +305,16 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
 
 /**
  * A C/C++ variable with block scope [N4140 3.3.3]. In other words, a local
- * variable or a function parameter. Local variables can be static; use the
- * `isStatic` member predicate to detect those.
+ * variable or a function parameter. For example, the variables `a` and `b` in
+ * the following code:
+ * ```
+ * void myFunction(int a) {
+ *   int b;
+ * }
+ * ```
+ * 
+ * Local variables can be static; use the `isStatic` member predicate to
+ * detect those.
  */
 class LocalScopeVariable extends Variable, @localscopevariable {
   /** Gets the function to which this variable belongs. */
@@ -292,6 +333,13 @@ deprecated class StackVariable extends Variable {
 /**
  * A C/C++ local variable. In other words, any variable that has block
  * scope [N4140 3.3.3], but is not a parameter of a `Function` or `CatchBlock`.
+ * For example the variable `b` in the following code:
+ * ```
+ * void myFunction(int a) {
+ *   int b;
+ * }
+ * ```
+ * 
  * Local variables can be static; use the `isStatic` member predicate to detect
  * those.
  *
@@ -310,7 +358,15 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
 }
 
 /**
- * A C/C++ variable which has global scope or namespace scope.
+ * A C/C++ variable which has global scope or namespace scope. For example the
+ * variables `a` and `b` in the following code:
+ * ```
+ * int a;
+ *
+ * namespace N {
+ *   int b;
+ * }
+ * ```
  */
 class GlobalOrNamespaceVariable extends Variable, @globalvariable {
   override string getName() { globalvariables(underlyingElement(this), _, result) }
@@ -321,7 +377,15 @@ class GlobalOrNamespaceVariable extends Variable, @globalvariable {
 }
 
 /**
- * A C/C++ variable which has namespace scope.
+ * A C/C++ variable which has namespace scope. For example the variable `b`
+ * in the following code:
+ * ```
+ * int a;
+ *
+ * namespace N {
+ *   int b;
+ * }
+ * ```
  */
 class NamespaceVariable extends GlobalOrNamespaceVariable {
   NamespaceVariable() {
@@ -330,7 +394,15 @@ class NamespaceVariable extends GlobalOrNamespaceVariable {
 }
 
 /**
- * A C/C++ variable which has global scope.
+ * A C/C++ variable which has global scope. For example the variable `a`
+ * in the following code:
+ * ```
+ * int a;
+ *
+ * namespace N {
+ *   int b;
+ * }
+ * ```
  *
  * Note that variables declared in anonymous namespaces have namespace scope,
  * even though they are accessed in the same manner as variables declared in
@@ -341,7 +413,15 @@ class GlobalVariable extends GlobalOrNamespaceVariable {
 }
 
 /**
- * A C structure member or C++ member variable.
+ * A C structure member or C++ member variable. For example the member
+ * variables `m` and `s` in the following code:
+ * ```
+ * class MyClass {
+ * public:
+ *   int m;
+ *   static int s;
+ * };
+ * ```
  *
  * This includes static member variables in C++. To exclude static member
  * variables, use `Field` instead of `MemberVariable`.
@@ -395,7 +475,12 @@ deprecated class FunctionPointerMemberVariable extends MemberVariable {
 }
 
 /**
- * A C++14 variable template.
+ * A C++14 variable template. For example, in the following code the variable
+ * template `v` defines a family of variables:
+ * ```
+ * template<class T>
+ * T v;
+ * ```
  */
 class TemplateVariable extends Variable {
   TemplateVariable() { is_variable_template(underlyingElement(this)) }
@@ -410,7 +495,24 @@ class TemplateVariable extends Variable {
  * A non-static local variable or parameter that is not part of an
  * uninstantiated template. Uninstantiated templates are purely syntax, and
  * only on instantiation will they be complete with information about types,
- * conversions, call targets, etc.
+ * conversions, call targets, etc. For example in the following code, the
+ * variables `a` in `myFunction` and `b` in the instantiation
+ * `myTemplateFunction<int>`, but not `b` in the template
+ * `myTemplateFunction<T>`:
+ * ```
+ * void myFunction() {
+ *   T a;
+ * }
+ *
+ * template<type T>
+ * void myTemplateFunction() {
+ *   T b;
+ * }
+ * 
+ * ...
+ * 
+ * myTemplateFunction<int>();
+ * ```
  */
 class SemanticStackVariable extends LocalScopeVariable {
   SemanticStackVariable() {
