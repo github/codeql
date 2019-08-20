@@ -90,8 +90,13 @@ cached class FlowVar extends TFlowVar {
 private module PartialDefinitions {
   private newtype TPartialDefinition =
     TExplicitFieldStoreQualifier(Expr qualifier, ControlFlowNode node) {
-      exists(FieldAccess fa |
-        isInstanceFieldWrite(fa, node) and qualifier = fa.getQualifier()
+      exists(FieldAccess fa | qualifier = fa.getQualifier() |
+        isInstanceFieldWrite(fa, node)
+        or
+        exists(PartialDefinition pd |
+          node = pd.getSubBasicBlockStart() and
+          fa = pd.getDefinedExpr()
+        )
       )
     } or
     TExplicitCallQualifier(Expr qualifier, Call call) { qualifier = call.getQualifier() } or
