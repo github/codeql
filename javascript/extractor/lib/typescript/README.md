@@ -11,11 +11,8 @@ Debugging
 
 To debug the parser script:
 
-1. Launch an extraction process with the environment variable `SEMMLE_TYPESCRIPT_ATTACH_DEBUGGER`
-   set to `break`.
+1. Launch an extraction process with the environment variable `SEMMLE_TYPESCRIPT_NODE_FLAGS`
+   set to `--inspect`, or `--inspect-brk` if you wish to pause on entry.
 
 2. Open VSCode and choose "Debug: Attach to Node process" from the command palette, and
    choose the process that looks like the parser-wrapper.
-
-If you don't wish to pause on entry, instead set `SEMMLE_TYPESCRIPT_ATTACH_DEBUGGER` to
-any non-empty value.

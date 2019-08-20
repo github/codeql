@@ -99,14 +99,19 @@ public class TypeScriptParser {
   public static final String TYPESCRIPT_RAM_RESERVE_SUFFIX = "TYPESCRIPT_RAM_RESERVE";
 
   /**
-   * An environment variable which, if set, allows a debugger to be attached to the Node.js
-   * process. Remote debugging will not be enabled.
+   * An environment variable with additional VM arguments to pass to the Node process.
    * <p>
-   * If set to <code>break</code> the Node.js process will pause on entry waiting for the
-   * debugger to attach (<code>--inspect-brk</code>). If set to any other non-empty value,
-   * it will just enable debugging (<code>--inspect</code>).
+   * Only <code>--inspect</code> or <code>--inspect-brk</code> may be used at the moment.
    */
-  public static final String TYPESCRIPT_ATTACH_DEBUGGER = "SEMMLE_TYPESCRIPT_ATTACH_DEBUGGER";
+  public static final String TYPESCRIPT_NODE_FLAGS = "SEMMLE_TYPESCRIPT_NODE_FLAGS";
+
+  /**
+   * Flags that may be passed using {@link #TYPESCRIPT_NODE_FLAGS}
+   */
+  private static final Set<String> allowedDebugNodeFlags = new HashSet<String>(Arrays.fromList(
+    "--inspect",
+    "--inspect-brk"
+  ));
 
   /** The Node.js parser wrapper process, if it has been started already. */
   private Process parserWrapperProcess;
@@ -213,9 +218,7 @@ public class TypeScriptParser {
     result.add(nodeJsRuntime);
     result.addAll(nodeJsRuntimeExtraArgs);
     for(String arg : args) {
-      if (arg.length() > 0) {
-        result.add(arg);
-      }
+      result.add(arg);
     }
     return result;
   }
@@ -249,21 +252,15 @@ public class TypeScriptParser {
 
     File parserWrapper = getParserWrapper();
 
-    String debuggerFlag = Env.systemEnv().get(TYPESCRIPT_ATTACH_DEBUGGER);
-    String inspectArg = "";
-    if (debuggerFlag != null && debuggerFlag.length() > 0) {
-      if (debuggerFlag.equalsIgnoreCase("break")) {
-        inspectArg = "--inspect-brk";
-      } else {
-        inspectArg = "--inspect";
-      }
-    }
+    String debugFlagString = Env.systemEnv().getNonEmpty(TYPESCRIPT_NODE_FLAGS);
+    List<String> debugFlags = debugFlagString == null ? new ArrayList<>() : debugFlagString.split(" ");
+    debugFlags.retainAll(allowedDebugNodeFlags);
 
-    List<String> cmd = getNodeJsRuntimeInvocation(
-        "--max_old_space_size=" + (mainMemoryMb + reserveMemoryMb),
-        inspectArg,
-        parserWrapper.getAbsolutePath()
-    );
+    List<String> cmd = getNodeJsRuntimeInvocation();
+    cmd.add("--max_old_space_size=" + (mainMemoryMb + reserveMemoryMb));
+    cmd.addAll(debugFlags);
+    cmd.add(parserWrapper.getAbsolutePath());
+
     ProcessBuilder pb = new ProcessBuilder(cmd);
     parserWrapperCommand = StringUtil.glue(" ", cmd);
     pb.environment().put("SEMMLE_TYPESCRIPT_MEMORY_THRESHOLD", "" + mainMemoryMb);
