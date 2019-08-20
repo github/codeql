@@ -259,7 +259,7 @@ private predicate nodeCandFwd1(Node node, boolean stored, Configuration config) 
     // read
     exists(Content f |
       nodeCandFwd1Read(f, node, config) and
-      storeCandFwd1(f, unbind(config)) and
+      storeCandFwd1(f, config) and
       (stored = false or stored = true) and
       not inBarrier(node, config)
     )
@@ -286,7 +286,7 @@ private predicate nodeCandFwd1(Node node, boolean stored, Configuration config) 
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate nodeCandFwd1Read(Content f, Node node, Configuration config) {
   exists(Node mid |
     nodeCandFwd1(mid, true, config) and
@@ -347,7 +347,7 @@ private predicate nodeCand1(Node node, boolean stored, Configuration config) {
     // store
     exists(Content f |
       nodeCand1Store(f, node, config) and
-      readCand1(f, unbind(config)) and
+      readCand1(f, config) and
       (stored = false or stored = true)
     )
     or
@@ -395,7 +395,7 @@ private predicate readCand1(Content f, Configuration config) {
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate nodeCand1Store(Content f, Node node, Configuration config) {
   exists(Node mid |
     nodeCand1(mid, true, config) and
@@ -667,7 +667,7 @@ private predicate nodeCandFwd2(Node node, boolean fromArg, boolean stored, Confi
     // read
     exists(Content f |
       nodeCandFwd2Read(f, node, fromArg, config) and
-      storeCandFwd2(f, unbind(config)) and
+      storeCandFwd2(f, config) and
       (stored = false or stored = true)
     )
     or
@@ -701,7 +701,7 @@ private predicate storeCandFwd2(Content f, Configuration config) {
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate nodeCandFwd2Read(Content f, Node node, boolean fromArg, Configuration config) {
   exists(Node mid |
     nodeCandFwd2(mid, fromArg, true, config) and
@@ -749,7 +749,7 @@ private predicate nodeCand2(Node node, boolean toReturn, boolean stored, Configu
     // store
     exists(Content f |
       nodeCand2Store(f, node, toReturn, config) and
-      readCand2(f, unbind(config)) and
+      readCand2(f, config) and
       (stored = false or stored = true)
     )
     or
@@ -803,7 +803,7 @@ pragma[nomagic]
 private predicate storeCand(Content f, Configuration conf) {
   exists(Node node |
     nodeCand2Store(f, node, _, conf) and
-    nodeCand2(node, _, _, unbind(conf))
+    nodeCand2(node, _, _, conf)
   )
 }
 
@@ -1041,9 +1041,9 @@ private predicate flowCandFwd0(Node node, boolean fromArg, AccessPathFront apf, 
   )
   or
   exists(Content f, AccessPathFront apf0 |
-    flowCandFwdRead(f, node, apf0, fromArg, config) and
+    flowCandFwdRead(f, node, fromArg, apf0, config) and
     apf0.headUsesContent(f) and
-    consCandFwd(f, apf, unbind(config))
+    consCandFwd(f, apf, config)
   )
 }
 
@@ -1058,9 +1058,9 @@ private predicate consCandFwd(Content f, AccessPathFront apf, Configuration conf
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate flowCandFwdRead(
-  Content f, Node node, AccessPathFront apf, boolean fromArg, Configuration config
+  Content f, Node node, boolean fromArg, AccessPathFront apf, Configuration config
 ) {
   exists(Node mid |
     flowCandFwd(mid, fromArg, apf, config) and
@@ -1159,7 +1159,7 @@ private predicate flowCandRead(
   )
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate flowCandStore(
   Node node, Content f, boolean toReturn, AccessPathFront apf0, Configuration config
 ) {
@@ -1694,6 +1694,7 @@ private predicate pathStep(PathNodeMid mid, Node node, CallContext cc, AccessPat
   valuePathThroughCallable(mid, node, cc) and ap = mid.getAp()
 }
 
+pragma[noinline]
 private predicate contentReadStep(PathNodeMid mid, Node node, AccessPath ap) {
   exists(Content f, AccessPath ap0 |
     ap0 = mid.getAp() and
