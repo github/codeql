@@ -860,13 +860,15 @@ module Ssa {
       }
 
       /**
-       * Holds if the read at `cfn2` is a read of the same SSA definition as the
-       * read at `cfn1`, and `cfn2` can be reached from `cfn1` without passing
-       * through another read.
+       * Holds if the read at `cfn2` is a read of the same SSA definition `def`
+       * as the read at `cfn1`, and `cfn2` can be reached from `cfn1` without
+       * passing through another read.
        */
       cached
-      predicate adjacentReadPairSameVar(ControlFlow::Node cfn1, ControlFlow::Node cfn2) {
-        exists(TrackedDefinition def, BasicBlock bb1, int i1 |
+      predicate adjacentReadPairSameVar(
+        TrackedDefinition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2
+      ) {
+        exists(BasicBlock bb1, int i1 |
           variableRead(bb1, i1, _, cfn1, _) and
           adjacentVarRead(def, bb1, i1, cfn2)
         )
@@ -1115,9 +1117,7 @@ module Ssa {
       }
 
       /** Gets a run-time target for the delegate call `c`. */
-      Callable getARuntimeDelegateTarget(Call c) {
-        delegateCall(c, delegateCallSource(result))
-      }
+      Callable getARuntimeDelegateTarget(Call c) { delegateCall(c, delegateCallSource(result)) }
     }
 
     /** Holds if `(c1,c2)` is an edge in the call graph. */
