@@ -42,7 +42,6 @@
 | test.cpp:431:12:431:13 | 0 | test.cpp:432:33:432:35 | tmp |
 | test.cpp:431:12:431:13 | 0 | test.cpp:433:8:433:10 | tmp |
 | test.cpp:432:10:432:13 | & ... | test.cpp:432:3:432:8 | call to memcpy |
-| test.cpp:432:10:432:13 | ref arg & ... | test.cpp:432:3:432:8 | call to memcpy |
 | test.cpp:432:10:432:13 | ref arg & ... | test.cpp:432:33:432:35 | tmp |
 | test.cpp:432:10:432:13 | ref arg & ... | test.cpp:433:8:433:10 | tmp |
 | test.cpp:432:17:432:23 | source1 | test.cpp:432:10:432:13 | ref arg & ... |
@@ -54,7 +53,6 @@
 | test.cpp:437:12:437:13 | 0 | test.cpp:440:8:440:10 | tmp |
 | test.cpp:437:12:437:13 | 0 | test.cpp:442:10:442:12 | tmp |
 | test.cpp:439:10:439:13 | & ... | test.cpp:439:3:439:8 | call to memcpy |
-| test.cpp:439:10:439:13 | ref arg & ... | test.cpp:439:3:439:8 | call to memcpy |
 | test.cpp:439:10:439:13 | ref arg & ... | test.cpp:439:33:439:35 | tmp |
 | test.cpp:439:10:439:13 | ref arg & ... | test.cpp:440:8:440:10 | tmp |
 | test.cpp:439:10:439:13 | ref arg & ... | test.cpp:442:10:442:12 | tmp |

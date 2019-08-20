@@ -170,14 +170,13 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
  */
 class DefinitionByReferenceNode extends PartialDefinitionNode {
   VariableAccess va;
-
   Expr argument;
 
   DefinitionByReferenceNode() {
     exists(DefinitionByReference def |
       def = this.getPartialDefinition() and
-      argument = def.getDefinedExpr() and
-      va = def.getVariableAccess()
+      argument = def.getArgument() and
+      va = def.getDefinedExpr()
     )
   }
 

@@ -95,7 +95,7 @@ private module PartialDefinitions {
       )
     } or
     TExplicitCallQualifier(Expr qualifier, Call call) { qualifier = call.getQualifier() } or
-    TReferenceArgument(Expr arg, VariableAccess va) { referenceArgument(va, arg) }
+    TReferenceArgument(Expr arg, VariableAccess va) { referenceArgument(arg, va) }
 
   private predicate isInstanceFieldWrite(FieldAccess fa, ControlFlowNode node) {
     not fa.getTarget().isStatic() and
@@ -109,7 +109,7 @@ private module PartialDefinitions {
     PartialDefinition() {
       this = TExplicitFieldStoreQualifier(definedExpr, node) or
       this = TExplicitCallQualifier(definedExpr, _) and node = definedExpr or
-      this = TReferenceArgument(definedExpr, node)
+      this = TReferenceArgument(_, definedExpr) and node = definedExpr
     }
 
     predicate partiallyDefines(Variable v) { definedExpr = v.getAnAccess() }
@@ -136,16 +136,10 @@ private module PartialDefinitions {
    * A partial definition that's a definition by reference.
    */
   class DefinitionByReference extends PartialDefinition, TReferenceArgument {
-    VariableAccess va;
-
-    DefinitionByReference() { referenceArgument(va, definedExpr) }
-
-    VariableAccess getVariableAccess() { result = va }
-
-    override predicate partiallyDefines(Variable v) { va = v.getAnAccess() }
+    Expr getArgument() { this = TReferenceArgument(result, _) }
   }
 
-  private predicate referenceArgument(VariableAccess va, Expr argument) {
+  private predicate referenceArgument(Expr argument, VariableAccess va) {
     argument = any(Call c).getAnArgument() and
     exists(Type argumentType |
       argumentType = argument.getFullyConverted().getType().stripTopLevelSpecifiers()
