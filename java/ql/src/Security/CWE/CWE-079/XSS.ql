@@ -12,10 +12,11 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.security.XSS
 import DataFlow2::PathGraph
 
-class XSSConfig extends TaintTracking::Configuration2 {
+class XSSConfig extends TaintTracking2::Configuration {
   XSSConfig() { this = "XSSConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
