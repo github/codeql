@@ -220,6 +220,9 @@ class TaintTrackingNode extends TTaintTrackingNode {
         this.isSource()
     }
 
+    predicate flowsTo(TaintTrackingNode other) {
+        this.getASuccessor*() = other
+    }
 }
 
 /** The implementation of taint-tracking
@@ -240,7 +243,7 @@ class TaintTrackingImplementation extends string {
     predicate hasFlowPath(TaintTrackingNode source, TaintTrackingNode sink) {
         this.isPathSource(source) and
         this.isPathSink(sink) and
-        this.flowReaches(source, sink)
+        source.flowsTo(sink)
     }
 
     /** Hold if `node` is a source of taint `kind` with context `context` and attribute path `path`.
@@ -274,17 +277,6 @@ class TaintTrackingImplementation extends string {
         exists(DataFlow::Node node, TaintTrackingContext ctx, AttributePath path, TaintKind kind |
             dest = TTaintTrackingNode_(node, ctx, path, kind, this) and
             this.flowStep(src, node, ctx, path, kind, edgeLabel)
-        )
-    }
-
-    /** Hold if taint reaches `dest` from `src` with this configuration.
-     */
-    predicate flowReaches(TaintTrackingNode src, TaintTrackingNode dest) {
-        this = src.getConfiguration() and dest = src
-        or
-        exists(TaintTrackingNode mid |
-            this.flowReaches(src, mid) and
-            this.flowStep(mid, dest, _)
         )
     }
 
@@ -704,12 +696,10 @@ private class EssaTaintTracking extends string {
 
     pragma [noinline]
     private predicate taintedPiNodeOneway(TaintTrackingNode src, PyEdgeRefinement defn, TaintTrackingContext context, AttributePath path, TaintKind kind) {
-        exists(DataFlow::Node srcnode, ControlFlowNode test, ControlFlowNode use |
+        exists(DataFlow::Node srcnode, ControlFlowNode use |
             src = TTaintTrackingNode_(srcnode, context, path, kind, this) and
-            piNodeTestAndUse(defn, test, use) and
-            srcnode.asVariable() = defn.getInput() and
-            not this.(TaintTracking::Configuration).isBarrierTest(test, defn.getSense()) and
-            defn.getSense() = testEvaluates(test, use, kind)
+            not this.(TaintTracking::Configuration).isBarrierTest(defn.getTest(), defn.getSense()) and
+            defn.getSense() = testEvaluates(defn, defn.getTest(), use, src)
         )
     }
 
@@ -760,33 +750,36 @@ private class EssaTaintTracking extends string {
     /** Gets the boolean value that `test` evaluates to when `use` is tainted with `kind`
      * and `test` and `use` are part of a test in a branch.
      */
-    private boolean testEvaluates(ControlFlowNode test, ControlFlowNode use, TaintKind kind) {
-        boolean_filter(_, use) and
-        kind.taints(use) and
-        test = use and result = kind.booleanValue()
-        or
-        result = testEvaluates(not_operand(test), use, kind).booleanNot()
-        or
-        kind.taints(use) and
-        exists(ControlFlowNode const |
-            Filters::equality_test(test, use, result.booleanNot(), const) and
-            const.getNode() instanceof ImmutableLiteral
-        )
-        or
-        kind.taints(use) and
-        exists(ControlFlowNode c, ClassValue cls |
-            Filters::isinstance(test, c, use) and
-            c.pointsTo(cls)
+    private boolean testEvaluates(PyEdgeRefinement defn, ControlFlowNode test, ControlFlowNode use, TaintTrackingNode src) {
+        defn.getTest().getAChild*() = use and
+        exists(DataFlow::Node srcnode, TaintKind kind |
+            srcnode.asVariable() = defn.getInput() and
+            srcnode.asVariable().getASourceUse() = use and
+            src = TTaintTrackingNode_(srcnode, _, TNoAttribute(), kind, this)
             |
-            exists(ClassValue scls |
-                scls = kind.getType() |
-                scls.getASuperType() = cls and result = true
-                or
-                not scls.getASuperType() = cls and result = false
+            test = use and result = kind.booleanValue()
+            or
+            exists(ControlFlowNode const |
+                Filters::equality_test(test, use, result.booleanNot(), const) and
+                const.getNode() instanceof ImmutableLiteral
             )
             or
-            not exists(kind.getType()) and result = maybe()
+            exists(ControlFlowNode c, ClassValue cls |
+                Filters::isinstance(test, c, use) and
+                c.pointsTo(cls)
+                |
+                exists(ClassValue scls |
+                    scls = kind.getType() |
+                    scls.getASuperType() = cls and result = true
+                    or
+                    not scls.getASuperType() = cls and result = false
+                )
+                or
+                not exists(kind.getType()) and result = maybe()
+            )
         )
+        or
+        result = testEvaluates(defn, not_operand(test), use, src).booleanNot()
     }
 
     /** Holds if `test` is the test in a branch and `use` is that test

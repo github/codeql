@@ -449,7 +449,7 @@ abstract class TaintSource extends @py_flow_node {
         exists(TaintedNode src, TaintedNode tsink |
             src = this.getATaintNode() and
             src.getTaintKind() = srckind and
-            src.getConfiguration().(TaintTrackingImplementation).flowReaches(src, tsink) and
+            src.flowsTo(tsink) and
             this.isSourceOf(srckind, _) and
             sink = tsink.getCfgNode() and
             sink.sinks(tsink.getTaintKind()) and
@@ -640,11 +640,6 @@ class TaintedPathSource extends TaintTrackingNode {
         this.isSource()
     }
 
-    /** Holds if taint can flow from this source to sink `sink` */
-    final predicate flowsTo(TaintedPathSink sink) {
-        this.getConfiguration().(TaintTrackingImplementation).flowReaches(this, sink)
-    }
-
     DataFlow::Node getSource() {
         result = this.getNode()
     }
@@ -692,9 +687,10 @@ module DataFlow {
         abstract predicate isSink(ControlFlowNode sink);
 
         private predicate hasFlowPath(TaintedNode source, TaintedNode sink) {
+            source.getConfiguration() = this and
             this.isSource(source.getCfgNode()) and
             this.isSink(sink.getCfgNode()) and
-            source.getConfiguration().(TaintTrackingImplementation).flowReaches(source, sink)
+            source.flowsTo(sink)
         }
 
         predicate hasFlow(ControlFlowNode source, ControlFlowNode sink) {
