@@ -3,6 +3,8 @@ import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.dataflow.DataFlow2
 import semmle.code.cpp.dataflow.DataFlow3
 import semmle.code.cpp.dataflow.DataFlow4
+import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.dataflow.TaintTracking2
 import semmle.code.cpp.dataflow.RecursionPrevention
 
 class TestConf1 extends DataFlow::Configuration {
