@@ -1,6 +1,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import DataFlow
+import PartialPathGraph
 
 class Conf extends Configuration {
   Conf() { this = "partial flow" }
