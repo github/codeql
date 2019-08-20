@@ -8,7 +8,7 @@
  * This file contains non-layered parts of the points-to analysis.
  */
 import python
-import semmle.python.dataflow.SsaDefinitions
+import semmle.python.essa.SsaDefinitions
 private import semmle.python.types.Builtins
 
 module BasePointsTo {

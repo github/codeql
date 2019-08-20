@@ -66,7 +66,7 @@
  * ## The implementation
  *
  * The data-flow graph used by the taint-tracking library is the one created by the points-to analysis,
- * and consists of the base data-flow graph produced by `semmle/python/data-flow/SsaDefinitions.qll`
+ * and consists of the base data-flow graph defined in `semmle/python/essa/Essa.qll`
  * enhanced with precise variable flows, call graph and type information.
  * This graph is then enhanced with additional flows as specified above.
  * Since the call graph and points-to information is context sensitive, the taint graph must also be context sensitive.
