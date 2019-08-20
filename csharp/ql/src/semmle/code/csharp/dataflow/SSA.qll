@@ -1096,29 +1096,27 @@ module Ssa {
         )
       }
 
-      private predicate reachableFromDelegateCreation(Expr e) {
-        delegateCreation(e, _, _)
+      private predicate reachesDelegateCall(Expr e) {
+        delegateCall(_, e)
         or
-        exists(Expr mid | reachableFromDelegateCreation(mid) | delegateFlowStep(mid, e))
+        exists(Expr mid | reachesDelegateCall(mid) | delegateFlowStep(e, mid))
       }
 
       pragma[noinline]
-      private predicate delegateFlowStepReachable(Expr pred, Expr succ) {
+      private predicate delegateFlowStepReaches(Expr pred, Expr succ) {
         delegateFlowStep(pred, succ) and
-        reachableFromDelegateCreation(pred)
+        reachesDelegateCall(succ)
       }
 
-      private Expr delegateCallSource(Call c) {
-        // Base case
-        delegateCall(c, result)
+      private Expr delegateCallSource(Callable c) {
+        delegateCreation(result, c, _)
         or
-        // Recursive case
-        delegateFlowStepReachable(result, delegateCallSource(c))
+        delegateFlowStepReaches(delegateCallSource(c), result)
       }
 
       /** Gets a run-time target for the delegate call `c`. */
       Callable getARuntimeDelegateTarget(Call c) {
-        delegateCreation(delegateCallSource(c), result, _)
+        delegateCall(c, delegateCallSource(result))
       }
     }
 
