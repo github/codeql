@@ -100,7 +100,7 @@ private module PartialDefinitions {
       )
     } or
     TExplicitCallQualifier(Expr qualifier, Call call) { qualifier = call.getQualifier() } or
-    TReferenceArgument(Expr arg, VariableAccess va) { definitionByReference(va, arg) }
+    TReferenceArgument(Expr arg, VariableAccess va) { referenceArgument(va, arg) }
 
   private predicate isInstanceFieldWrite(FieldAccess fa, ControlFlowNode node) {
     not fa.getTarget().isStatic() and
@@ -138,17 +138,41 @@ private module PartialDefinitions {
   }
 
   /**
-   * A partial definition that's a definition by reference (in the sense of the
-   * `definitionByReference` predicate).
+   * A partial definition that's a definition by reference.
    */
   class DefinitionByReference extends PartialDefinition, TReferenceArgument {
     VariableAccess va;
 
-    DefinitionByReference() { definitionByReference(va, definedExpr) }
+    DefinitionByReference() { referenceArgument(va, definedExpr) }
 
     VariableAccess getVariableAccess() { result = va }
 
     override predicate partiallyDefines(Variable v) { va = v.getAnAccess() }
+  }
+
+  private predicate referenceArgument(VariableAccess va, Expr argument) {
+    argument = any(Call c).getAnArgument() and
+    exists(Type argumentType |
+      argumentType = argument.getFullyConverted().getType().stripTopLevelSpecifiers()
+    |
+      argumentType instanceof ReferenceType and
+      not argumentType.(ReferenceType).getBaseType().isConst() and
+      va = argument
+      or
+      argumentType instanceof PointerType and
+      not argumentType.(PointerType).getBaseType().isConst() and
+      (
+        // f(variable)
+        va = argument
+        or
+        // f(&variable)
+        va = argument.(AddressOfExpr).getOperand()
+        or
+        // f(&array[0])
+        va.getType().getUnspecifiedType() instanceof ArrayType and
+        va = argument.(AddressOfExpr).getOperand().(ArrayExpr).getArrayBase()
+      )
+    )
   }
 }
 import PartialDefinitions

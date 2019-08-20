@@ -16,15 +16,12 @@ edges
 | A.cpp:73:10:73:19 | call to setOnBWrap [c, ... (1)] | A.cpp:75:10:75:11 | b2 [c, ... (1)] |
 | A.cpp:73:25:73:32 | new [void] | A.cpp:73:10:73:19 | call to setOnBWrap [c, ... (1)] |
 | A.cpp:75:10:75:11 | b2 [c, ... (1)] | A.cpp:75:14:75:14 | c |
-| A.cpp:98:12:98:18 | new [void] | A.cpp:100:5:100:13 | ... = ... [void] |
-| A.cpp:100:5:100:6 | c1 [post update] [a, ... (1)] | A.cpp:101:8:101:9 | c1 [a, ... (1)] |
-| A.cpp:100:5:100:13 | ... = ... [void] | A.cpp:100:5:100:6 | c1 [post update] [a, ... (1)] |
-| A.cpp:101:8:101:9 | c1 [a, ... (1)] | A.cpp:103:14:103:14 | c [a, ... (1)] |
-| A.cpp:103:14:103:14 | c [a, ... (1)] | A.cpp:107:12:107:13 | c1 [a, ... (1)] |
-| A.cpp:103:14:103:14 | c [a, ... (1)] | A.cpp:120:12:120:13 | c1 [a, ... (1)] |
-| A.cpp:107:12:107:13 | c1 [a, ... (1)] | A.cpp:107:16:107:16 | a |
-| A.cpp:120:12:120:13 | c1 [a, ... (1)] | A.cpp:120:16:120:16 | a |
+| A.cpp:126:5:126:5 | b [post update] [c, ... (1)] | A.cpp:131:8:131:8 | ref arg b [c, ... (1)] |
+| A.cpp:126:12:126:18 | new [void] | A.cpp:126:5:126:5 | b [post update] [c, ... (1)] |
+| A.cpp:131:8:131:8 | ref arg b [c, ... (1)] | A.cpp:132:10:132:10 | b [c, ... (1)] |
+| A.cpp:132:10:132:10 | b [c, ... (1)] | A.cpp:132:13:132:13 | c |
 | A.cpp:142:7:142:7 | b [post update] [c, ... (1)] | A.cpp:143:7:143:31 | ... = ... [c, ... (1)] |
+| A.cpp:142:7:142:7 | b [post update] [c, ... (1)] | A.cpp:151:18:151:18 | ref arg b [c, ... (1)] |
 | A.cpp:142:7:142:20 | ... = ... [void] | A.cpp:142:7:142:7 | b [post update] [c, ... (1)] |
 | A.cpp:142:14:142:20 | new [void] | A.cpp:142:7:142:20 | ... = ... [void] |
 | A.cpp:143:7:143:10 | this [post update] [b, ... (1)] | A.cpp:151:12:151:24 | call to D [b, ... (1)] |
@@ -36,9 +33,11 @@ edges
 | A.cpp:151:12:151:24 | call to D [b, ... (1)] | A.cpp:152:10:152:10 | d [b, ... (1)] |
 | A.cpp:151:12:151:24 | call to D [b, ... (2)] | A.cpp:153:10:153:10 | d [b, ... (2)] |
 | A.cpp:151:18:151:18 | b [void] | A.cpp:151:12:151:24 | call to D [b, ... (1)] |
+| A.cpp:151:18:151:18 | ref arg b [c, ... (1)] | A.cpp:154:10:154:10 | b [c, ... (1)] |
 | A.cpp:152:10:152:10 | d [b, ... (1)] | A.cpp:152:13:152:13 | b |
 | A.cpp:153:10:153:10 | d [b, ... (2)] | A.cpp:153:13:153:13 | b [c, ... (1)] |
 | A.cpp:153:13:153:13 | b [c, ... (1)] | A.cpp:153:16:153:16 | c |
+| A.cpp:154:10:154:10 | b [c, ... (1)] | A.cpp:154:13:154:13 | c |
 | A.cpp:159:12:159:18 | new [void] | A.cpp:160:29:160:29 | b [void] |
 | A.cpp:160:18:160:60 | call to MyList [head, ... (1)] | A.cpp:161:38:161:39 | l1 [head, ... (1)] |
 | A.cpp:160:29:160:29 | b [void] | A.cpp:160:18:160:60 | call to MyList [head, ... (1)] |
@@ -170,11 +169,11 @@ edges
 | A.cpp:57:28:57:30 | call to get | A.cpp:57:17:57:23 | new [void] | A.cpp:57:28:57:30 | call to get | call to get flows from $@ | A.cpp:57:17:57:23 | new [void] | new [void] |
 | A.cpp:66:14:66:14 | c | A.cpp:64:21:64:28 | new [void] | A.cpp:66:14:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new [void] | new [void] |
 | A.cpp:75:14:75:14 | c | A.cpp:73:25:73:32 | new [void] | A.cpp:75:14:75:14 | c | c flows from $@ | A.cpp:73:25:73:32 | new [void] | new [void] |
-| A.cpp:107:16:107:16 | a | A.cpp:98:12:98:18 | new [void] | A.cpp:107:16:107:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new [void] | new [void] |
-| A.cpp:120:16:120:16 | a | A.cpp:98:12:98:18 | new [void] | A.cpp:120:16:120:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new [void] | new [void] |
+| A.cpp:132:13:132:13 | c | A.cpp:126:12:126:18 | new [void] | A.cpp:132:13:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new [void] | new [void] |
 | A.cpp:152:13:152:13 | b | A.cpp:143:25:143:31 | new [void] | A.cpp:152:13:152:13 | b | b flows from $@ | A.cpp:143:25:143:31 | new [void] | new [void] |
 | A.cpp:152:13:152:13 | b | A.cpp:150:12:150:18 | new [void] | A.cpp:152:13:152:13 | b | b flows from $@ | A.cpp:150:12:150:18 | new [void] | new [void] |
 | A.cpp:153:16:153:16 | c | A.cpp:142:14:142:20 | new [void] | A.cpp:153:16:153:16 | c | c flows from $@ | A.cpp:142:14:142:20 | new [void] | new [void] |
+| A.cpp:154:13:154:13 | c | A.cpp:142:14:142:20 | new [void] | A.cpp:154:13:154:13 | c | c flows from $@ | A.cpp:142:14:142:20 | new [void] | new [void] |
 | A.cpp:165:26:165:29 | head | A.cpp:159:12:159:18 | new [void] | A.cpp:165:26:165:29 | head | head flows from $@ | A.cpp:159:12:159:18 | new [void] | new [void] |
 | A.cpp:169:15:169:18 | head | A.cpp:159:12:159:18 | new [void] | A.cpp:169:15:169:18 | head | head flows from $@ | A.cpp:159:12:159:18 | new [void] | new [void] |
 | B.cpp:9:20:9:24 | elem1 | B.cpp:6:15:6:24 | new [void] | B.cpp:9:20:9:24 | elem1 | elem1 flows from $@ | B.cpp:6:15:6:24 | new [void] | new [void] |

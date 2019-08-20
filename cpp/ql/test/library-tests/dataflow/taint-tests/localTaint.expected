@@ -133,6 +133,7 @@
 | taint.cpp:165:22:165:25 | {...} | taint.cpp:172:10:172:15 | buffer |  |
 | taint.cpp:165:22:165:25 | {...} | taint.cpp:173:8:173:13 | buffer |  |
 | taint.cpp:165:24:165:24 | 0 | taint.cpp:165:22:165:25 | {...} | TAINT |
+| taint.cpp:168:8:168:14 | ref arg tainted | taint.cpp:172:18:172:24 | tainted |  |
 | taint.cpp:170:10:170:15 | buffer | taint.cpp:170:3:170:8 | call to strcpy |  |
 | taint.cpp:170:10:170:15 | ref arg buffer | taint.cpp:170:3:170:8 | call to strcpy |  |
 | taint.cpp:170:10:170:15 | ref arg buffer | taint.cpp:171:8:171:13 | buffer |  |
