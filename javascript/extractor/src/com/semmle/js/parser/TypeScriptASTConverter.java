@@ -2220,7 +2220,7 @@ public class TypeScriptASTConverter {
    * ObjectExpression} with {@link ObjectPattern} and {@link SpreadElement} with {@link
    * RestElement}.
    */
-  private Expression convertLValue(Expression e) {
+  private Expression convertLValue(Expression e) throws ParseError {
     if (e == null) return null;
 
     SourceLocation loc = e.getLoc();
@@ -2249,8 +2249,14 @@ public class TypeScriptASTConverter {
     if (e instanceof ParenthesizedExpression)
       return new ParenthesizedExpression(
           loc, convertLValue(((ParenthesizedExpression) e).getExpression()));
-    if (e instanceof SpreadElement)
-      return new RestElement(e.getLoc(), convertLValue(((SpreadElement) e).getArgument()));
+    if (e instanceof SpreadElement) {
+      Expression argument = convertLValue(((SpreadElement) e).getArgument());
+      if (argument instanceof AssignmentPattern) {
+        throw new ParseError(
+            "Rest patterns cannot have a default value", argument.getLoc().getStart());
+      }
+      return new RestElement(e.getLoc(), argument);
+    }
     return e;
   }
 
