@@ -11,8 +11,9 @@
 {%- extends "alabaster/layout.html" %}
 
 {%- block extrahead %}
-  <script async="" src="https://www.google-analytics.com/analytics.js"></script>
-  <script src="https://help.semmle.com/GAtracking.js"></script>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i) {w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var  f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true; j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);}) (window,document,'script','dataLayer','GTM-5Q9DBRM');</script>
+  <!-- End Google Tag Manager -->
   {{ super() }}
   <link rel="stylesheet" href="{{ pathto('_static/custom.css_t', 1) }}" type="text/css" />
   {% if theme_touch_icon %}
@@ -25,6 +26,9 @@
 {% endblock %}
 
 {%- block content %}
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5Q9DBRM" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div id="siteBanner">
         <div class="textContainer">
             <div class="logocontainer">
@@ -101,10 +105,6 @@
     </div>
     
 </div>
-
-<!-- Start of HubSpot Embed Code -->
-<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/4758889.js"></script>
-<!-- End of HubSpot Embed Code --> 
 
 {% endblock %}
 
