@@ -6,7 +6,7 @@ query predicate suppressNullableWarnings(SuppressNullableWarningExpr e, Expr op)
 }
 
 query predicate nullableDataFlow(DataFlow::Node src, DataFlow::Node sink) {
-  src.getEnclosingCallable().getCallable().hasName("TestSuppressNullableWarningExpr") and
+  src.getEnclosingCallable().hasName("TestSuppressNullableWarningExpr") and
   DataFlow::localFlowStep(src, sink)
 }
 

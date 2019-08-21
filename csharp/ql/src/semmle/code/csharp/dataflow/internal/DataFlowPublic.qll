@@ -91,7 +91,7 @@ class ExprNode extends Node {
 
   override DataFlowCallable getEnclosingCallable() {
     Stages::DataFlowStage::forceCachingInSameStage() and
-    result.getCallable() = this.getExpr().getEnclosingCallable()
+    result = this.getExpr().getEnclosingCallable()
   }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() {

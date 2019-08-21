@@ -1016,27 +1016,36 @@
 | Initializers.cs:4:27:4:27 | access to field H | Initializers.cs:4:27:4:27 | access to field H |
 | Initializers.cs:4:27:4:31 | ... + ... | Initializers.cs:4:27:4:27 | access to field H |
 | Initializers.cs:4:31:4:31 | 2 | Initializers.cs:4:31:4:31 | 2 |
-| Initializers.cs:6:28:6:30 | {...} | Initializers.cs:6:28:6:30 | {...} |
-| Initializers.cs:9:5:12:5 | {...} | Initializers.cs:9:5:12:5 | {...} |
-| Initializers.cs:10:9:10:54 | ... ...; | Initializers.cs:10:9:10:54 | ... ...; |
-| Initializers.cs:10:13:10:53 | Initializers i = ... | Initializers.cs:10:34:10:35 | "" |
-| Initializers.cs:10:17:10:53 | object creation of type Initializers | Initializers.cs:10:34:10:35 | "" |
-| Initializers.cs:10:34:10:35 | "" | Initializers.cs:10:34:10:35 | "" |
-| Initializers.cs:10:38:10:53 | { ..., ... } | Initializers.cs:10:44:10:44 | 0 |
-| Initializers.cs:10:40:10:44 | ... = ... | Initializers.cs:10:44:10:44 | 0 |
-| Initializers.cs:10:44:10:44 | 0 | Initializers.cs:10:44:10:44 | 0 |
-| Initializers.cs:10:47:10:51 | ... = ... | Initializers.cs:10:51:10:51 | 1 |
-| Initializers.cs:10:51:10:51 | 1 | Initializers.cs:10:51:10:51 | 1 |
-| Initializers.cs:11:9:11:64 | ... ...; | Initializers.cs:11:9:11:64 | ... ...; |
-| Initializers.cs:11:13:11:63 | Initializers[] iz = ... | Initializers.cs:11:18:11:63 | array creation of type Initializers[] |
-| Initializers.cs:11:18:11:63 | 2 | Initializers.cs:11:18:11:63 | 2 |
-| Initializers.cs:11:18:11:63 | array creation of type Initializers[] | Initializers.cs:11:18:11:63 | array creation of type Initializers[] |
-| Initializers.cs:11:37:11:63 | { ..., ... } | Initializers.cs:11:39:11:39 | access to local variable i |
-| Initializers.cs:11:39:11:39 | access to local variable i | Initializers.cs:11:39:11:39 | access to local variable i |
-| Initializers.cs:11:42:11:61 | object creation of type Initializers | Initializers.cs:11:59:11:60 | "" |
-| Initializers.cs:11:59:11:60 | "" | Initializers.cs:11:59:11:60 | "" |
-| Initializers.cs:14:16:14:20 | ... = ... | Initializers.cs:14:20:14:20 | 1 |
-| Initializers.cs:14:20:14:20 | 1 | Initializers.cs:14:20:14:20 | 1 |
+| Initializers.cs:6:20:6:22 | {...} | Initializers.cs:6:20:6:22 | {...} |
+| Initializers.cs:8:28:8:30 | {...} | Initializers.cs:8:28:8:30 | {...} |
+| Initializers.cs:11:5:14:5 | {...} | Initializers.cs:11:5:14:5 | {...} |
+| Initializers.cs:12:9:12:54 | ... ...; | Initializers.cs:12:9:12:54 | ... ...; |
+| Initializers.cs:12:13:12:53 | Initializers i = ... | Initializers.cs:12:34:12:35 | "" |
+| Initializers.cs:12:17:12:53 | object creation of type Initializers | Initializers.cs:12:34:12:35 | "" |
+| Initializers.cs:12:34:12:35 | "" | Initializers.cs:12:34:12:35 | "" |
+| Initializers.cs:12:38:12:53 | { ..., ... } | Initializers.cs:12:44:12:44 | 0 |
+| Initializers.cs:12:40:12:44 | ... = ... | Initializers.cs:12:44:12:44 | 0 |
+| Initializers.cs:12:44:12:44 | 0 | Initializers.cs:12:44:12:44 | 0 |
+| Initializers.cs:12:47:12:51 | ... = ... | Initializers.cs:12:51:12:51 | 1 |
+| Initializers.cs:12:51:12:51 | 1 | Initializers.cs:12:51:12:51 | 1 |
+| Initializers.cs:13:9:13:64 | ... ...; | Initializers.cs:13:9:13:64 | ... ...; |
+| Initializers.cs:13:13:13:63 | Initializers[] iz = ... | Initializers.cs:13:18:13:63 | array creation of type Initializers[] |
+| Initializers.cs:13:18:13:63 | 2 | Initializers.cs:13:18:13:63 | 2 |
+| Initializers.cs:13:18:13:63 | array creation of type Initializers[] | Initializers.cs:13:18:13:63 | array creation of type Initializers[] |
+| Initializers.cs:13:37:13:63 | { ..., ... } | Initializers.cs:13:39:13:39 | access to local variable i |
+| Initializers.cs:13:39:13:39 | access to local variable i | Initializers.cs:13:39:13:39 | access to local variable i |
+| Initializers.cs:13:42:13:61 | object creation of type Initializers | Initializers.cs:13:59:13:60 | "" |
+| Initializers.cs:13:59:13:60 | "" | Initializers.cs:13:59:13:60 | "" |
+| Initializers.cs:16:16:16:20 | ... = ... | Initializers.cs:16:20:16:20 | 1 |
+| Initializers.cs:16:20:16:20 | 1 | Initializers.cs:16:20:16:20 | 1 |
+| Initializers.cs:20:13:20:13 | access to field F | Initializers.cs:20:13:20:13 | this access |
+| Initializers.cs:20:13:20:13 | this access | Initializers.cs:20:13:20:13 | this access |
+| Initializers.cs:20:13:20:17 | ... = ... | Initializers.cs:20:13:20:13 | this access |
+| Initializers.cs:20:17:20:17 | 0 | Initializers.cs:20:17:20:17 | 0 |
+| Initializers.cs:21:13:21:13 | access to field G | Initializers.cs:21:13:21:13 | this access |
+| Initializers.cs:21:13:21:13 | this access | Initializers.cs:21:13:21:13 | this access |
+| Initializers.cs:21:13:21:17 | ... = ... | Initializers.cs:21:13:21:13 | this access |
+| Initializers.cs:21:17:21:17 | 1 | Initializers.cs:21:17:21:17 | 1 |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:23:3:23 | access to parameter i |
 | NullCoalescing.cs:3:23:3:28 | ... ?? ... | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
 | NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:28:3:28 | 0 |
