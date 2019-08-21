@@ -2,9 +2,9 @@
  * Provides classes for performing local (intra-procedural) and
  * global (inter-procedural) taint-tracking analyses.
  */
+
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow2
-
 import semmle.code.java.dataflow.internal.TaintTrackingUtil::StringBuilderVarModule
 
 module TaintTracking {
@@ -14,6 +14,5 @@ module TaintTracking {
   /**
    * DEPRECATED: Use TaintTracking2::Configuration instead.
    */
-  deprecated
-  class Configuration2 = TaintTracking2::Configuration;
+  deprecated class Configuration2 = TaintTracking2::Configuration;
 }
