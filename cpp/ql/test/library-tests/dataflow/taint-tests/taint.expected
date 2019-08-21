@@ -1,9 +1,6 @@
 | file://:0:0:0:0 | t | taint.cpp:223:10:223:15 | call to source |
 | file://:0:0:0:0 | t | taint.cpp:223:10:223:15 | call to source |
 | file://:0:0:0:0 | t | taint.cpp:223:10:223:15 | call to source |
-| file://:0:0:0:0 | u | taint.cpp:223:10:223:15 | call to source |
-| file://:0:0:0:0 | u | taint.cpp:223:10:223:15 | call to source |
-| file://:0:0:0:0 | u | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |

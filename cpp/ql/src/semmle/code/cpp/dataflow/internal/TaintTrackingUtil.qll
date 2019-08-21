@@ -86,6 +86,10 @@ private predicate noFlowFromChildExpr(Expr e) {
   e instanceof SizeofOperator
   or
   e instanceof AlignofOperator
+  or
+  e instanceof ClassAggregateLiteral
+  or
+  e instanceof FieldAccess
 }
 
 private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
