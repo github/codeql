@@ -347,7 +347,7 @@ all functions that flow into the ``once()`` call.
 Backwards type tracking is not too different from forwards type tracking. The differences are:
 
 - The ``TypeTracker`` parameter instead has type ``TypeBackTracker``.
-- The call to ``.track()`` is instead a call to ``.backtrack()``
+- The call to ``.track()`` is instead a call to ``.backtrack()``.
 - To ensure the initial value is a source node, a call to ``getALocalSource()`` is usually required.
 
 .. code-block:: ql
