@@ -9,6 +9,7 @@
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
     "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImpl4.qll",
+    "cpp/ql/src/semmle/code/cpp/dataflow/internal/DataFlowImplLocal.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl3.qll",
