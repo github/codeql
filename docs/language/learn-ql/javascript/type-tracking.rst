@@ -121,7 +121,7 @@ all of these steps are included in a single predicate,
 to be used with the companion class
 `TypeTracker <https://help.semmle.com/qldoc/javascript/semmle/javascript/dataflow/TypeTracking.qll/type.TypeTracking$TypeTracker.html>`__.
 
-Predicates that use type tracking usually conform to the following general pattern (explanation follows below):
+Predicates that use type tracking usually conform to the following general pattern, which we explain below:
 
 .. code-block:: ql
 
@@ -175,7 +175,7 @@ this is the starting point of type tracking:
   t.start() and
   result = firebase().getAMethodCall("database")
 
-In the recursive case, we apply the ``track`` predicate on a previously-found firebase database node, such as ``firebase.database()``.
+In the recursive case, we apply the ``track`` predicate on a previously-found Firebase database node, such as ``firebase.database()``.
 The ``track`` predicate maps this to a successor of that node, such as ``getDatabase()``, and
 binds ``t`` to the continuation of ``t2`` with this extra step included:
 
@@ -186,8 +186,8 @@ binds ``t`` to the continuation of ``t2`` with this extra step included:
   )
 
 To understand the role of ``t`` here, note that type tracking can step *into* a property, which means
-the data flow node returned from ``track`` is not necessarily a firebase database instance, it could be
-an object *containing* a firebase database in one of its properties.
+the data flow node returned from ``track`` is not necessarily a Firebase database instance, it could be
+an object *containing* a Firebase database in one of its properties.
 
 For example, in the program below, the ``firebaseDatabase(t)`` predicate includes the ``obj`` node in its result,
 but with ``t`` recording the fact that the actual value being tracked is inside the ``DB`` property:
@@ -198,7 +198,7 @@ but with ``t`` recording the fact that the actual value being tracked is inside 
   let db = obj.DB;
 
 This brings us to the last predicate. This uses ``TypeTracker::end()`` to filter out
-the paths where the firebase database instance ended up inside a property of another object,
+the paths where the Firebase database instance ended up inside a property of another object,
 so it includes ``db`` but not ``obj``:
 
 .. code-block:: ql
@@ -275,12 +275,12 @@ For reference, here's our simple Firebase model with type tracking on every pred
   }
 
 `Here <https://lgtm.com/query/1053770500827789481>`__ is a run of an example query using the model to find `set` calls on one of the Firebase sample projects.
-It's been modified slightly to handle a bit more of the API, which is out of scope of this tutorial.
+It's been modified slightly to handle a bit more of the API, which is beyond the scope of this tutorial.
 
 Tracking associated data
 ------------------------
 
-By adding extra parameters to the type-tracking predicate we can carry along
+By adding extra parameters to the type-tracking predicate, we can carry along
 extra bits of information about the result.
 
 For example, here's a type-tracking version of ``firebaseRef()``, which
@@ -339,12 +339,12 @@ Reading is an asynchronous operation and the result is obtained through a callba
 The actual forecast is obtained by the call to ``snapshot.val()``.
 
 Looking for all method calls named ``val`` will in practice find many unrelated methods,
-so we'll use type tracking again in order to take the receiver type into account.
+so we'll use type tracking again to take the receiver type into account.
 
 The receiver ``snapshot`` is a parameter to a callback function, which ultimately escapes
 into the ``once()`` call. We'll extend our model from above to use back-tracking to find
-all functions that flow into the ``once()`` call. Type tracking backwards is not much
-different from forwards; the differences are:
+all functions that flow into the ``once()`` call.
+Backwards type tracking is not too different from forwards type tracking. The differences are:
 
 - The ``TypeTracker`` parameter instead has type ``TypeBackTracker``.
 - The call to ``.track()`` is instead a call to ``.backtrack()``
@@ -387,14 +387,14 @@ Based on that we can track the ``snapshot`` value and find the ``val()`` call it
     result = firebaseSnapshot(refName).getAMethodCall("val")
   }
 
-With this addition, ``firebaseDatabaseRead("forecast")`` finds the call to ``snapshot.val()`` which contains the value of the forecast.
+With this addition, ``firebaseDatabaseRead("forecast")`` finds the call to ``snapshot.val()`` that contains the value of the forecast.
 
 `Here <https://lgtm.com/query/8761360814276109092>`__ is a run of an example query using the model to find `val` calls.
 
 Summary
 -------
 
-This covers the use of the type-tracking library. To recap, use this template to define forward type-tracking predicates:
+We have covered how to use the type-tracking library. To recap, use this template to define forward type-tracking predicates:
 
 .. code-block:: ql
 
@@ -443,7 +443,7 @@ Limitations
 As mentioned, type tracking will track values in and out of function calls and properties,
 but only within some limits.
 
-For example, type tracking does not always track *through* functions, that is, if a value flows into a parameter
+For example, type tracking does not always track *through* functions. That is, if a value flows into a parameter
 and back out of the return value, it might not be tracked back out to the call site again.
 Here's an example that the model from this tutorial won't find:
 
@@ -455,12 +455,12 @@ Here's an example that the model from this tutorial won't find:
   let wrapper = wrapDB(firebase.database())
   wrapper.db.ref("forecast"); // <-- not found
 
-This is an example of where `data flow configurations <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#global-data-flow>`__ are more powerful.
+This is an example of where `data-flow configurations <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#global-data-flow>`__ are more powerful.
 
 When to use type tracking
 -------------------------
 
-Type tracking and data flow configurations are different solutions to the same
+Type tracking and data-flow configurations are different solutions to the same
 problem, each with their own tradeoffs.
 
 Type tracking can be used in any number of predicates, which may depend on each other
@@ -470,23 +470,23 @@ Type-tracking predicates can have any number of extra parameters, making it poss
 to construct source/sink pairs. Omitting source/sink pairs can be useful when there is a huge number
 of sources and sinks.
 
-Data flow configurations have more restricted dependencies but are more powerful in other ways.
+Data-flow configurations have more restricted dependencies but are more powerful in other ways.
 For performance reasons,
 the sources, sinks, and steps of a configuration should not depend on whether a flow path has been found using
 that configuration or any other configuration.
 In that sense, the sources, sinks, and steps must be configured "up front" and can't be discovered on-the-fly.
 The upside is that they track flow through functions and callbacks in some ways that type tracking doesn't,
 which is particularly important for security queries.
-Also, path queries can only be defined using data flow configurations.
+Also, path queries can only be defined using data-flow configurations.
 
 Prefer type tracking when:
 
 - Disambiguating generically named methods or properties.
 - Making reusable library components to be shared between queries.
 - The set of source/sink pairs is too large to compute or has insufficient information.
-- The information is needed as input to a data flow configuration.
+- The information is needed as input to a data-flow configuration.
 
-Prefer data flow configurations when:
+Prefer data-flow configurations when:
 
 - Tracking user-controlled data -- use `taint tracking <https://help.semmle.com/QL/learn-ql/javascript/dataflow.html#using-global-taint-tracking>`__.
 - Differentiating between different kinds of user-controlled data -- use :doc:`flow labels <flow-labels>`.
