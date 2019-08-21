@@ -187,13 +187,29 @@ class TypeTracker extends TTypeTracker {
     )
   }
 
-   /**
+  /**
    * Gets the summary that corresponds to having taken a forwards
    * local, heap and/or inter-procedural step from `pred` to `succ`.
    *
    * Unlike `TypeTracker::step`, this predicate exposes all edges
    * in the flow graph, and not just the edges between `SourceNode`s.
    * It may therefore be less performant.
+   *
+   * Type tracking predicates using small steps typically take the following form:
+   * ```ql
+   * DataFlow::Node myType(DataFlow::TypeTracker t) {
+   *   t.start() and
+   *   result = < source of myType >
+   *   or
+   *   exists (DataFlow::TypeTracker t2 |
+   *     t = t2.smallstep(myType(t2), result)
+   *   )
+   * }
+   *
+   * DataFlow::Node myType() {
+   *   result = myType(DataFlow::TypeTracker::end())
+   * }
+   * ```
    */
   pragma[inline]
   TypeTracker smallstep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -319,6 +335,22 @@ class TypeBackTracker extends TTypeBackTracker {
    * Unlike `TypeBackTracker::step`, this predicate exposes all edges
    * in the flowgraph, and not just the edges between
    * `SourceNode`s. It may therefore be less performant.
+   *
+   * Type tracking predicates using small steps typically take the following form:
+   * ```ql
+   * DataFlow::Node myType(DataFlow::TypeBackTracker t) {
+   *   t.start() and
+   *   result = < some API call >.getArgument(< n >)
+   *   or
+   *   exists (DataFlow::TypeTracker t2 |
+   *     t = t2.smallstep(result, myType(t2))
+   *   )
+   * }
+   *
+   * DataFlow::Node myType() {
+   *   result = myType(DataFlow::TypeBackTracker::end())
+   * }
+   * ```
    */
   pragma[inline]
   TypeBackTracker smallstep(DataFlow::Node pred, DataFlow::Node succ) {
