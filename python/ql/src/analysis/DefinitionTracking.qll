@@ -1,9 +1,8 @@
 /**
  * Definition tracking for jump-to-defn query.
  */
- import python
+import python
 
-import semmle.dataflow.SSA
 import semmle.python.pointsto.PointsTo
 
 private newtype TDefinition =
