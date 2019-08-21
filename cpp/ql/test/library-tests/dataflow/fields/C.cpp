@@ -26,7 +26,7 @@ public:
 
   void func()
   {
-    sink(s1); // flow [NOT DETECTED] (in either place)
+    sink(s1); // flow
     sink(s2); // flow [NOT DETECTED]
     sink(s3); // flow
     sink(s4); // flow [NOT DETECTED]

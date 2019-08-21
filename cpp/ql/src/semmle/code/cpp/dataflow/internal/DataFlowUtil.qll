@@ -17,6 +17,8 @@ private newtype TNode =
   } or
   TExplicitParameterNode(Parameter p) { exists(p.getFunction().getBlock()) } or
   TInstanceParameterNode(MemberFunction f) { exists(f.getBlock()) and not f.isStatic() } or
+  TPreConstructorInitThis(ConstructorFieldInit cfi) or
+  TPostConstructorInitThis(ConstructorFieldInit cfi) or
   TUninitializedNode(LocalVariable v) { not v.hasInitializer() }
 
 /**
@@ -301,6 +303,44 @@ class PreObjectInitializerNode extends Node, TPreObjectInitializerNode {
 }
 
 /**
+ * A synthetic data-flow node that plays the role of the post-update `this`
+ * pointer in a `ConstructorFieldInit`. For example, the `x(1)` in
+ * `C() : x(1) { }` is roughly equivalent to `this.x = 1`, and this node is
+ * equivalent to the `this` _after_ the field has been assigned.
+ */
+private class PostConstructorInitThis extends PostUpdateNode, TPostConstructorInitThis {
+  override PreConstructorInitThis getPreUpdateNode() {
+    this = TPostConstructorInitThis(result.getConstructorFieldInit())
+  }
+
+  override string toString() {
+    result = getPreUpdateNode().getConstructorFieldInit().toString() + " [post-this]"
+  }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A synthetic data-flow node that plays the role of the pre-update `this`
+ * pointer in a `ConstructorFieldInit`. For example, the `x(1)` in
+ * `C() : x(1) { }` is roughly equivalent to `this.x = 1`, and this node is
+ * equivalent to the `this` _before_ the field has been assigned.
+ */
+class PreConstructorInitThis extends Node, TPreConstructorInitThis {
+  ConstructorFieldInit getConstructorFieldInit() { this = TPreConstructorInitThis(result) }
+
+  override Constructor getFunction() { result = getConstructorFieldInit().getEnclosingFunction() }
+
+  override PointerType getType() {
+    result.getBaseType() = getConstructorFieldInit().getEnclosingFunction().getDeclaringType()
+  }
+
+  override Location getLocation() { result = getConstructorFieldInit().getLocation() }
+
+  override string toString() { result = getConstructorFieldInit().toString() + " [pre-this]" }
+}
+
+/**
  * Gets the `Node` corresponding to `e`.
  */
 ExprNode exprNode(Expr e) { result.getExpr() = e }
@@ -325,17 +365,34 @@ DefinitionByReferenceNode definitionByReferenceNodeFromArgument(Expr argument) {
 UninitializedNode uninitializedNode(LocalVariable v) { result.getLocalVariable() = v }
 
 private module ThisFlow {
-  private Node thisAccessNode(ControlFlowNode cfn) {
-    result.(ImplicitParameterNode).getFunction().getBlock() = cfn or
-    result.asExpr().(ThisExpr) = cfn
-  }
-
+  /**
+   * Gets the 0-based index of `thisNode` in `b`, where `thisNode` is an access
+   * to `this` that may or may not have an associated `PostUpdateNode`. To make
+   * room for synthetic nodes that access `this`, the index may not correspond
+   * to an actual `ControlFlowNode`.
+   */
   private int basicBlockThisIndex(BasicBlock b, Node thisNode) {
-    thisNode = thisAccessNode(b.getNode(result))
+    // The implicit `this` parameter node is given a very negative offset to
+    // make space for any `ConstructorFieldInit`s there may be between it and
+    // the block contents.
+    thisNode.(ImplicitParameterNode).getFunction().getBlock() = b and
+    result = -2147483648
+    or
+    // Place the synthetic `this` node for a `ConstructorFieldInit` at a
+    // negative offset in the first basic block, between the
+    // `ImplicitParameterNode` and the first statement.
+    exists(Constructor constructor, int i |
+      thisNode.(PreConstructorInitThis).getConstructorFieldInit() =
+        constructor.getInitializer(i) and
+      result = -2147483648 + 1 + i and
+      b = thisNode.getFunction().getBlock()
+    )
+    or
+    b.getNode(result) = thisNode.asExpr().(ThisExpr)
   }
 
   private int thisRank(BasicBlock b, Node thisNode) {
-    thisNode = rank[result](thisAccessNode(_) as node order by basicBlockThisIndex(b, node))
+    thisNode = rank[result](Node n, int i | i = basicBlockThisIndex(b, n) | n order by i)
   }
 
   private int lastThisRank(BasicBlock b) { result = max(thisRank(b, _)) }
