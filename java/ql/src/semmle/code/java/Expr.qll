@@ -1117,9 +1117,7 @@ class SwitchExpr extends Expr, @switchexpr {
   Expr getAResult() {
     result = getACase().getRuleExpression()
     or
-    exists(BreakStmt break |
-      break.(JumpStmt).getTarget() = this and result = break.getValue()
-    )
+    exists(BreakStmt break | break.(JumpStmt).getTarget() = this and result = break.getValue())
   }
 
   /** Gets a printable representation of this expression. */

@@ -252,9 +252,7 @@ private predicate taintPreservingQualifierToMethod(Method m) {
     m.getName() = "trim"
   )
   or
-  exists(Class c | c.getQualifiedName() = "java.lang.Number" |
-    hasSubtype*(c, m.getDeclaringType())
-  ) and
+  exists(Class c | c.getQualifiedName() = "java.lang.Number" | hasSubtype*(c, m.getDeclaringType())) and
   (
     m.getName().matches("to%String") or
     m.getName() = "toByteArray" or
@@ -555,8 +553,8 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getMethod().hasName("writeObject")
   }
 }
-
 private import StringBuilderVarModule
+
 module StringBuilderVarModule {
   /**
    * A local variable that is initialized to a `StringBuilder`

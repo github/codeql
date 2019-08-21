@@ -85,4 +85,3 @@ abstract class Configuration extends DataFlow::Configuration {
     super.hasFlow(source, sink)
   }
 }
-
