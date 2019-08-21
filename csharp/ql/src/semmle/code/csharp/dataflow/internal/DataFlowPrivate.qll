@@ -220,6 +220,14 @@ module LocalFlow {
   }
 }
 
+/**
+ * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+ * (intra-procedural) step.
+ */
+predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStep(nodeFrom, nodeTo)
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -248,15 +256,6 @@ private module Cached {
       any(DelegateArgumentConfiguration x).hasExprPath(_, cfn, _, call)
     } or
     TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation }
-
-  /**
-   * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
-   * (intra-procedural) step.
-   */
-  cached
-  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
-    simpleLocalFlowStep(nodeFrom, nodeTo)
-  }
 
   /**
    * INTERNAL: do not use.
