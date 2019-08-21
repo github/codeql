@@ -147,7 +147,11 @@ ExprNode exprNode(DotNet::Expr e) { result.getExpr() = e }
  */
 ParameterNode parameterNode(DotNet::Parameter p) { result.getParameter() = p }
 
-predicate localFlowStep = localFlowStepImpl/2;
+/**
+ * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+ * (intra-procedural) step.
+ */
+predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local
