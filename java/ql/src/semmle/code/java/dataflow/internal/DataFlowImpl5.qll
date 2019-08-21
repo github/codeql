@@ -162,7 +162,7 @@ private predicate isAdditionalFlowStep(
  * Holds if data can flow in one local step from `node1` to `node2`.
  */
 private predicate localFlowStep(Node node1, Node node2, Configuration config) {
-  localFlowStep(node1, node2) and
+  simpleLocalFlowStep(node1, node2) and
   not outBarrier(node1, config) and
   not inBarrier(node2, config) and
   not fullBarrier(node1, config) and
