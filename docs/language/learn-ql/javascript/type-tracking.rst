@@ -2,9 +2,9 @@ Tutorial: API modelling using type tracking
 ===========================================
 
 This tutorial demonstrates how to build a simple model of the Firebase API in QL
-using the JavaScript type tracking library.
+using the JavaScript type-tracking library.
 
-The type tracking library makes it possible to track values through properties and function calls,
+The type-tracking library makes it possible to track values through properties and function calls,
 usually to recognize method calls and properties accessed on a specific type of object.
 
 This is an advanced topic and is intended for readers already familiar with the
@@ -280,10 +280,10 @@ It's been modified slightly to handle a bit more of the API, which is out of sco
 Tracking associated data
 ------------------------
 
-By adding extra parameters to the type tracking predicate we can carry along
+By adding extra parameters to the type-tracking predicate we can carry along
 extra bits of information about the result.
 
-For example, here's a type tracking version of ``firebaseRef()``, which
+For example, here's a type-tracking version of ``firebaseRef()``, which
 tracks the string that was passed to the ``ref`` call:
 
 .. code-block:: ql
@@ -314,7 +314,7 @@ So now we can use ``firebaseSetterCall("forecast")`` to find assignments to the 
 Back-tracking callbacks
 -----------------------
 
-The type tracking predicates we've seen above all use *forward* tracking.
+The type-tracking predicates we've seen above all use *forward* tracking.
 That is, they all start with some value of interest and ask "where does this flow?".
 
 Sometimes it's more useful to work backwards, starting at the desired end-point and asking "what flows to here?".
@@ -394,7 +394,7 @@ With this addition, ``firebaseDatabaseRead("forecast")`` finds the call to ``sna
 Summary
 -------
 
-This covers the use of the type tracking library. To recap, use this template to define forward type tracking predicates:
+This covers the use of the type-tracking library. To recap, use this template to define forward type-tracking predicates:
 
 .. code-block:: ql
 
@@ -411,7 +411,7 @@ This covers the use of the type tracking library. To recap, use this template to
     result = myType(TypeTracker::end())
   }
 
-Use this template to define backward type tracking predicates:
+Use this template to define backward type-tracking predicates:
 
 .. code-block:: ql
 
@@ -465,8 +465,8 @@ problem, each with their own tradeoffs.
 
 Type tracking can be used in any number of predicates, which may depend on each other
 in fairly unrestricted ways. The result of one predicate may be the starting
-point for another. Type tracking predicates may be mutually recursive.
-Type tracking predicates can have any number of extra parameters, making it possible, but optional,
+point for another. Type-tracking predicates may be mutually recursive.
+Type-tracking predicates can have any number of extra parameters, making it possible, but optional,
 to construct source/sink pairs. Omitting source/sink pairs can be useful when there is a huge number
 of sources and sinks.
 
