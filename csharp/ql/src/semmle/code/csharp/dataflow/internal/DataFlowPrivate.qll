@@ -250,11 +250,11 @@ private module Cached {
     TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation }
 
   /**
-   * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
-   * (intra-procedural) step.
+   * This is the local flow predicate that's used as a building block in global
+   * data flow. It may have less flow than the `localFlowStep` predicate.
    */
   cached
-  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     any(LocalFlow::LocalExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
     or
     // Flow from SSA definition to first read

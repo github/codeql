@@ -350,8 +350,18 @@ predicate hasNonlocalValue(FieldRead fr) {
 /**
  * Holds if data can flow from `node1` to `node2` in one local step.
  */
-cached
 predicate localFlowStep(Node node1, Node node2) {
+  simpleLocalFlowStep(node1, node2)
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * This is the local flow predicate that's used as a building block in global
+ * data flow. It may have less flow than the `localFlowStep` predicate.
+ */
+cached
+predicate simpleLocalFlowStep(Node node1, Node node2) {
   // Variable flow steps through adjacent def-use and use-use pairs.
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or

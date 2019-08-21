@@ -35,7 +35,7 @@ private module ImplCommon {
     or
     exists(Node mid |
       parameterValueFlowNoCtx(p, mid) and
-      localFlowStep(mid, node) and
+      simpleLocalFlowStep(mid, node) and
       compatibleTypes(p.getType(), node.getType())
     )
     or
@@ -152,7 +152,7 @@ private module ImplCommon {
     or
     exists(Node mid |
       parameterValueFlow(p, mid, cc) and
-      localFlowStep(mid, node) and
+      simpleLocalFlowStep(mid, node) and
       compatibleTypes(p.getType(), node.getType())
     )
     or
@@ -209,7 +209,7 @@ private module ImplCommon {
    * through a value-preserving method.
    */
   private predicate localValueStep(Node node1, Node node2) {
-    localFlowStep(node1, node2) or
+    simpleLocalFlowStep(node1, node2) or
     argumentValueFlowsThrough(node1, node2, _)
   }
 
