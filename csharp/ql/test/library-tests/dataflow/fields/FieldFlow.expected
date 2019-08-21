@@ -90,13 +90,13 @@ edges
 | B.cs:17:14:17:20 | access to field box1 [elem2, ... (1)] | B.cs:18:14:18:20 | access to field box1 [elem2, ... (1)] |
 | B.cs:18:14:18:15 | access to local variable b2 [box1, ... (2)] | B.cs:18:14:18:20 | access to field box1 [elem2, ... (1)] |
 | B.cs:18:14:18:20 | access to field box1 [elem2, ... (1)] | B.cs:18:14:18:26 | access to field elem2 |
-| C.cs:3:18:3:19 | [post] this access [s1, ... (1)] | C.cs:16:13:16:13 | [post implicit] this access [s1, ... (1)] |
+| C.cs:3:18:3:19 | [post] this access [s1, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s1, ... (1)] |
 | C.cs:3:23:3:32 | object creation of type Elem | C.cs:3:18:3:19 | [post] this access [s1, ... (1)] |
-| C.cs:4:27:4:28 | [post] this access [s2, ... (1)] | C.cs:16:13:16:13 | [post implicit] this access [s2, ... (1)] |
+| C.cs:4:27:4:28 | [post] this access [s2, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s2, ... (1)] |
 | C.cs:4:32:4:41 | object creation of type Elem | C.cs:4:27:4:28 | [post] this access [s2, ... (1)] |
 | C.cs:6:30:6:39 | object creation of type Elem | C.cs:26:14:26:15 | access to field s4 |
-| C.cs:7:18:7:19 | [post] this access [s5, ... (1)] | C.cs:16:13:16:13 | [post implicit] this access [s5, ... (1)] |
-| C.cs:7:18:7:19 | [post] this access [s5, ... (1)] | C.cs:16:13:16:13 | [post implicit] this access [s5, ... (1)] |
+| C.cs:7:18:7:19 | [post] this access [s5, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s5, ... (1)] |
+| C.cs:7:18:7:19 | [post] this access [s5, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s5, ... (1)] |
 | C.cs:7:37:7:46 | object creation of type Elem | C.cs:7:18:7:19 | [post] this access [s5, ... (1)] |
 | C.cs:7:37:7:46 | object creation of type Elem | C.cs:7:18:7:19 | [post] this access [s5, ... (1)] |
 | C.cs:8:30:8:39 | object creation of type Elem | C.cs:28:14:28:15 | access to property s6 |
@@ -108,9 +108,6 @@ edges
 | C.cs:13:9:13:9 | access to local variable c [s2, ... (1)] | C.cs:21:17:21:18 | this [s2, ... (1)] |
 | C.cs:13:9:13:9 | access to local variable c [s3, ... (1)] | C.cs:21:17:21:18 | this [s3, ... (1)] |
 | C.cs:13:9:13:9 | access to local variable c [s5, ... (1)] | C.cs:21:17:21:18 | this [s5, ... (1)] |
-| C.cs:16:13:16:13 | [post implicit] this access [s1, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s1, ... (1)] |
-| C.cs:16:13:16:13 | [post implicit] this access [s2, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s2, ... (1)] |
-| C.cs:16:13:16:13 | [post implicit] this access [s5, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s5, ... (1)] |
 | C.cs:18:9:18:12 | [post] this access [s3, ... (1)] | C.cs:12:15:12:21 | object creation of type C [s3, ... (1)] |
 | C.cs:18:19:18:28 | object creation of type Elem | C.cs:18:9:18:12 | [post] this access [s3, ... (1)] |
 | C.cs:21:17:21:18 | this [s1, ... (1)] | C.cs:23:14:23:15 | this access [s1, ... (1)] |

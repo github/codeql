@@ -19,16 +19,11 @@ private module ThisFlow {
 
   /** Holds if the `i`th node `n` of basic block `bb` is a `this` access. */
   private predicate thisAccess(Node n, BasicBlock bb, int i) {
-    bb.getNode(i + 1) = any(ControlFlow::Nodes::EntryNode en |
-        n.(InstanceParameterNode).getCallable().getElement() = en.getEnclosingElement()
+    bb.getNode(i) = any(ControlFlow::Nodes::EntryNode en |
+        n.(InstanceParameterNode).getCallable() = en.getEnclosingCallable()
       )
     or
     n.asExprAtNode(bb.getNode(i)) = any(Expr e | e instanceof ThisAccess or e instanceof BaseAccess)
-    or
-    bb = any(ControlFlow::BasicBlocks::EntryBlock eb |
-        eb.getCallable() = n.(SynthesizedThisArgumentNode).getEnclosingCallable().getCallable() and
-        i = 0
-      )
   }
 
   private predicate thisRank(Node n, BasicBlock bb, int rankix) {
@@ -284,11 +279,7 @@ private module Cached {
     } or
     TCilExprNode(CIL::Expr e) { e.getImplementation() instanceof CIL::BestImplementation } or
     TSsaDefinitionNode(Ssa::Definition def) or
-    TInstanceParameterNode(DataFlowCallable dfc) {
-      exists(Callable c | c = dfc.getCallable() | c.hasBody() and not c.(Modifiable).isStatic())
-      or
-      dfc = any(SynthesizedCallable c | not c.getElement().(Modifiable).isStatic())
-    } or
+    TInstanceParameterNode(Callable c) { c.hasBody() and not c.(Modifiable).isStatic() } or
     TCilParameterNode(CIL::Parameter p) { p.getMethod().hasBody() } or
     TTaintedParameterNode(Parameter p) { p.getCallable().hasBody() } or
     TTaintedReturnNode(ControlFlow::Nodes::ElementNode cfn) {
@@ -306,8 +297,6 @@ private module Cached {
       any(DelegateArgumentConfiguration x).hasExprPath(_, cfn, _, call)
     } or
     TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation } or
-    TSynthesizedThisArgumentNode(SynthesizedCall sc) or
-    TSynthesizedThisArgumentPostCallNode(SynthesizedCall sc) or
     TArgumentPostCallNode(ControlFlow::Nodes::ElementNode cfn) {
       exists(Argument a, Type t |
         a = cfn.getElement() and
@@ -429,9 +418,7 @@ class SsaDefinitionNode extends Node, TSsaDefinitionNode {
   /** Gets the underlying SSA definition. */
   Ssa::Definition getDefinition() { result = def }
 
-  override DotNetCallable getEnclosingCallable() {
-    result.getCallable() = def.getEnclosingCallable()
-  }
+  override Callable getEnclosingCallable() { result = def.getEnclosingCallable() }
 
   override Type getType() { result = def.getSourceVariable().getType() }
 
@@ -470,13 +457,9 @@ private module ParameterNodes {
 
     override DotNet::Parameter getParameter() { result = parameter }
 
-    override predicate isParameterOf(DataFlowCallable c, int i) {
-      c.getCallable().getParameter(i) = parameter
-    }
+    override predicate isParameterOf(DataFlowCallable c, int i) { c.getParameter(i) = parameter }
 
-    override DotNetCallable getEnclosingCallable() {
-      result.getCallable() = parameter.getCallable()
-    }
+    override DotNet::Callable getEnclosingCallable() { result = parameter.getCallable() }
 
     override DotNet::Type getType() { result = parameter.getType() }
 
@@ -522,15 +505,13 @@ private module ParameterNodes {
     // as that would otherwise enable tainted parameters to accidentally be
     // used by users of the library
     override predicate isParameterOf(DataFlowCallable c, int i) {
-      exists(DotNet::Callable dnc | dnc = c.getCallable() |
-        dnc = parameter.getCallable() and
-        // we model tainted parameters as if they had been extra parameters after
-        // the actual parameters
-        i = parameter.getPosition() + dnc.getNumberOfParameters()
-      )
+      c = parameter.getCallable() and
+      // we model tainted parameters as if they had been extra parameters after
+      // the actual parameters
+      i = parameter.getPosition() + c.getNumberOfParameters()
     }
 
-    override DotNetCallable getEnclosingCallable() {
+    override DotNet::Callable getEnclosingCallable() {
       result = this.getUnderlyingNode().getEnclosingCallable()
     }
 
@@ -774,9 +755,7 @@ private module ArgumentNodes {
       )
     }
 
-    override DotNetCallable getEnclosingCallable() {
-      result.getCallable() = cfn.getEnclosingCallable()
-    }
+    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
     override Type getType() { result = v.getType() }
 
@@ -801,51 +780,13 @@ private module ArgumentNodes {
 
     override ControlFlow::Node getControlFlowNode() { result = cfn }
 
-    override DotNetCallable getEnclosingCallable() {
-      result.getCallable() = cfn.getEnclosingCallable()
-    }
+    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
     override Type getType() { result = cfn.getElement().(Expr).getType() }
 
     override Location getLocation() { result = cfn.getLocation() }
 
     override string toString() { result = "malloc" }
-  }
-
-  /**
-   * A synthesized `this` argument in a synthesized call. For example, in
-   *
-   * ```
-   * class C
-   * {
-   *     int Field = 0;
-   *     C() { }
-   * }
-   * ```
-   *
-   * we synthesize a `this` argument for the synthesized call from the
-   * constructor `C` to the (synthesized) callable for the initializer
-   * expression `Field = 0`.
-   */
-  class SynthesizedThisArgumentNode extends ArgumentNode, TSynthesizedThisArgumentNode {
-    private SynthesizedCall sc;
-
-    SynthesizedThisArgumentNode() { this = TSynthesizedThisArgumentNode(sc) }
-
-    override predicate argumentOf(DataFlowCall call, int pos) {
-      call = sc and
-      pos = -1
-    }
-
-    override ControlFlow::Node getControlFlowNode() { none() }
-
-    override DotNetCallable getEnclosingCallable() { result = sc.getEnclosingCallable() }
-
-    override Type getType() { result = sc.getConstructor().getDeclaringType() }
-
-    override Location getLocation() { result = sc.getLocation() }
-
-    override string toString() { result = "[implicit] this access" }
   }
 }
 import ArgumentNodes
@@ -911,7 +852,7 @@ private module ReturnNodes {
 
     override YieldReturnKind getKind() { any() }
 
-    override DotNetCallable getEnclosingCallable() {
+    override DotNet::Callable getEnclosingCallable() {
       result = this.getUnderlyingNode().getEnclosingCallable()
     }
 
@@ -1060,9 +1001,7 @@ private module OutNodes {
 
     override ImplicitDelegateDataFlowCall getCall() { result.getNode() = this }
 
-    override DotNetCallable getEnclosingCallable() {
-      result.getCallable() = cfn.getEnclosingCallable()
-    }
+    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
     override Type getType() { result = cfn.getElement().(Expr).getType() }
 
@@ -1311,21 +1250,14 @@ private module PostUpdateNodes {
     override MallocNode getPreUpdateNode() { this = TExprNode(result.getControlFlowNode()) }
   }
 
-  /** A `PostUpdateNode` that is not an `ObjectCreation`. */
-  abstract private class ImplicitPostUpdateNode extends PostUpdateNode { }
-
-  private class ArgumentPostCallNode extends ImplicitPostUpdateNode, TArgumentPostCallNode {
+  private class ArgumentPostCallNode extends PostUpdateNode, TArgumentPostCallNode {
     private ControlFlow::Nodes::ElementNode cfn;
 
     ArgumentPostCallNode() { this = TArgumentPostCallNode(cfn) }
 
     override ExprNode getPreUpdateNode() { cfn = result.getControlFlowNode() }
 
-    override DataFlowCallable getEnclosingCallable() {
-      result.(DotNetCallable).getCallable() = cfn.getEnclosingCallable()
-      or
-      result.(SynthesizedCallable).getElement() = cfn.getEnclosingElement()
-    }
+    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
     override Type getType() { result = cfn.getElement().(Expr).getType() }
 
@@ -1334,39 +1266,14 @@ private module PostUpdateNodes {
     override string toString() { result = "[post] " + cfn.toString() }
   }
 
-  private class SynthesizedThisArgumentPostCallNode extends PostUpdateNode,
-    TSynthesizedThisArgumentPostCallNode {
-    private SynthesizedCall sc;
-
-    SynthesizedThisArgumentPostCallNode() { this = TSynthesizedThisArgumentPostCallNode(sc) }
-
-    override SynthesizedThisArgumentNode getPreUpdateNode() {
-      result = TSynthesizedThisArgumentNode(sc)
-    }
-
-    override DataFlowCallable getEnclosingCallable() {
-      result = this.getPreUpdateNode().getEnclosingCallable()
-    }
-
-    override Type getType() { result = this.getPreUpdateNode().getType() }
-
-    override Location getLocation() { result = this.getPreUpdateNode().getLocation() }
-
-    override string toString() { result = "[post implicit] this access" }
-  }
-
-  private class StoreTargetNode extends ImplicitPostUpdateNode, TStoreTargetNode {
+  private class StoreTargetNode extends PostUpdateNode, TStoreTargetNode {
     private ControlFlow::Nodes::ElementNode cfn;
 
     StoreTargetNode() { this = TStoreTargetNode(cfn) }
 
     override ExprNode getPreUpdateNode() { cfn = result.getControlFlowNode() }
 
-    override DataFlowCallable getEnclosingCallable() {
-      result.getCallable() = cfn.getEnclosingCallable()
-      or
-      result.(SynthesizedCallable).getElement() = cfn.getEnclosingElement()
-    }
+    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
     override Type getType() { result = cfn.getElement().(Expr).getType() }
 

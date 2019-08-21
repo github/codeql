@@ -287,7 +287,11 @@ module ControlFlow {
 
       ElementNode() { this = TElementNode(cfe, splits) }
 
-      override Callable getEnclosingCallable() { result = cfe.getEnclosingCallable() }
+      override Callable getEnclosingCallable() {
+        result = cfe.getEnclosingCallable()
+        or
+        result = this.getASplit().(InitializerSplitting::InitializerSplitImpl).getConstructor()
+      }
 
       override ControlFlowElement getElement() { result = cfe }
 
@@ -1756,6 +1760,22 @@ module ControlFlow {
             result = first(ci.getConstructor().getBody())
           )
         or
+        exists(Constructor con, InitializerSplitting::InitializedInstanceMember m, int i |
+          cfe = last(m.getInitializer(), c) and
+          c instanceof NormalCompletion and
+          InitializerSplitting::constructorInitializeOrder(con, m, i)
+        |
+          // Flow from one member initializer to the next
+          exists(InitializerSplitting::InitializedInstanceMember next |
+            InitializerSplitting::constructorInitializeOrder(con, next, i + 1) and
+            result = first(next.getInitializer())
+          )
+          or
+          // Flow from last member initializer to constructor body
+          m = InitializerSplitting::lastConstructorInitializer(con) and
+          result = first(con.getBody())
+        )
+        or
         // Flow from element with `goto` completion to first element of relevant
         // target
         c = any(GotoCompletion gc |
@@ -1831,11 +1851,18 @@ module ControlFlow {
         p = any(Callable c |
             if exists(c.(Constructor).getInitializer())
             then result = first(c.(Constructor).getInitializer())
-            else result = first(c.getBody())
+            else
+              if InitializerSplitting::constructorInitializes(c, _)
+              then
+                result = first(any(InitializerSplitting::InitializedInstanceMember m |
+                      InitializerSplitting::constructorInitializeOrder(c, m, 0)
+                    ).getInitializer())
+              else result = first(c.getBody())
           )
         or
         expr_parent_top_level_adjusted(any(Expr e | result = first(e)), _, p) and
-        not p instanceof Callable
+        not p instanceof Callable and
+        not p instanceof InitializerSplitting::InitializedInstanceMember
       }
 
       /**
@@ -1845,6 +1872,12 @@ module ControlFlow {
       Callable succExit(ControlFlowElement cfe, Completion c) {
         cfe = last(result.getBody(), c) and
         not c instanceof GotoCompletion
+        or
+        exists(InitializerSplitting::InitializedInstanceMember m |
+          m = InitializerSplitting::lastConstructorInitializer(result) and
+          cfe = last(m.getInitializer(), c) and
+          not result.hasBody()
+        )
       }
     }
     import Successor
