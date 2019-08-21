@@ -403,14 +403,14 @@
 | f_finally.py:1 | Queue_0 = ClassExpr |
 | f_finally.py:3 | close_0 = FunctionExpr |
 | f_finally.py:3 | close_4 = Pi(close_0) [false] |
-| f_finally.py:3 | close_5 = phi(close_3, close_4) |
+| f_finally.py:3 | close_5 = phi(close_2, close_4) |
 | f_finally.py:3 | self_0 = ParameterDefinition |
 | f_finally.py:3 | self_3 = phi(self_1, self_2) |
 | f_finally.py:4 | self_1 = AttributeAssignment '_closed'(self_0) |
 | f_finally.py:8 | close_0 = Attribute |
 | f_finally.py:8 | close_1 = Attribute |
-| f_finally.py:9 | close_2 = SingleSuccessorGuard(close_1) [true] |
-| f_finally.py:10 | close_3 = Pi(close_0) [true] |
+| f_finally.py:10 | close_2 = Pi(close_0) [true] |
+| f_finally.py:10 | close_3 = Pi(close_1) [true] |
 | f_finally.py:10 | self_2 = AttributeAssignment '_close'(self_1) |
 | g_class_init.py:0 | __name___0 = ScopeEntryDefinition |
 | g_class_init.py:0 | __package___0 = ScopeEntryDefinition |
@@ -699,7 +699,7 @@
 | r_regressions.py:13 | self_2 = AttributeAssignment '_close'(self_1) |
 | r_regressions.py:15 | close_0 = FunctionExpr |
 | r_regressions.py:15 | close_4 = Pi(close_0) [false] |
-| r_regressions.py:15 | close_5 = phi(close_3, close_4) |
+| r_regressions.py:15 | close_5 = phi(close_2, close_4) |
 | r_regressions.py:15 | gv_8 = ScopeEntryDefinition |
 | r_regressions.py:15 | gv_33 = phi(gv_9, gv_11) |
 | r_regressions.py:15 | self_0 = ParameterDefinition |
@@ -709,8 +709,8 @@
 | r_regressions.py:20 | close_0 = Attribute |
 | r_regressions.py:20 | close_1 = Attribute |
 | r_regressions.py:20 | gv_10 = phi(gv_8, gv_9) |
-| r_regressions.py:21 | close_2 = SingleSuccessorGuard(close_1) [true] |
-| r_regressions.py:22 | close_3 = Pi(close_0) [true] |
+| r_regressions.py:22 | close_2 = Pi(close_0) [true] |
+| r_regressions.py:22 | close_3 = Pi(close_1) [true] |
 | r_regressions.py:22 | self_2 = AttributeAssignment '_close'(self_1) |
 | r_regressions.py:23 | gv_11 = CallsiteRefinement(gv_9) |
 | r_regressions.py:27 | f_0 = FunctionExpr |

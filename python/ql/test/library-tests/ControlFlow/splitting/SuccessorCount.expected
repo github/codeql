@@ -81,6 +81,7 @@
 | 225 | split13 | test.py:225:12:225:14 | ControlFlowNode for var | 1 |
 | 225 | split13 | test.py:225:12:225:14 | ControlFlowNode for var | 1 |
 | 225 | split13 | test.py:225:12:225:14 | ControlFlowNode for var | 1 |
+| 225 | split13 | test.py:225:12:225:14 | ControlFlowNode for var | 1 |
 | 236 | split14 | test.py:236:8:236:15 | ControlFlowNode for UnaryExpr | 1 |
 | 236 | split14 | test.py:236:8:236:15 | ControlFlowNode for UnaryExpr | 1 |
 | 241 | split15 | test.py:241:8:241:10 | ControlFlowNode for var | 2 |
