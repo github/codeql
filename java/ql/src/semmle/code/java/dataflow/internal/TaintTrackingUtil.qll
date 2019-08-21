@@ -41,6 +41,12 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 /**
+ * Holds if the additional step from `src` to `sink` should be included in all
+ * global taint flow configurations but not in local taint.
+ */
+predicate globalAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) { none() }
+
+/**
  * Holds if `node` should be a barrier in all global taint flow configurations
  * but not in local taint.
  */
@@ -555,8 +561,8 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getMethod().hasName("writeObject")
   }
 }
-
 private import StringBuilderVarModule
+
 module StringBuilderVarModule {
   /**
    * A local variable that is initialized to a `StringBuilder`

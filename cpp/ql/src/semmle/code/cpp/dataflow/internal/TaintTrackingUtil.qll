@@ -18,10 +18,29 @@ private module DataFlow {
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  // Taint can flow into using ordinary data flow.
-  DataFlow::localFlowStep(nodeFrom, nodeTo)
-  or
+predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+  DataFlow::localFlowStep(src, sink) or
+  localAdditionalTaintStep(src, sink)
+}
+
+/**
+ * Holds if the additional step from `src` to `sink` should be included in all
+ * global taint flow configurations but not in local taint.
+ */
+predicate globalAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) { none() }
+
+/**
+ * Holds if `node` should be a barrier in all global taint flow configurations
+ * but not in local taint.
+ */
+predicate defaultTaintBarrier(DataFlow::Node node) { none() }
+
+/**
+ * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
+ * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
+ * different objects.
+ */
+predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // Taint can flow through expressions that alter the value but preserve
   // more than one bit of it _or_ expressions that follow data through
   // pointer indirections.
