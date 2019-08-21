@@ -127,8 +127,7 @@ abstract class Configuration extends string {
  * Good performance cannot be guaranteed in the presence of such recursion, so
  * it should be replaced by using more than one copy of the data flow library.
  */
-private abstract
-class ConfigurationRecursionPrevention extends Configuration {
+abstract private class ConfigurationRecursionPrevention extends Configuration {
   bindingset[this]
   ConfigurationRecursionPrevention() { any() }
 
