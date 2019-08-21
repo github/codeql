@@ -1,4 +1,5 @@
 import myapi from "@test/myapi";
+import config from "@test/myconfig";
 
 let api = new myapi();
 
@@ -49,3 +50,10 @@ identity(fakeGetDataCallback);
 
 function realGetDataCallback(data) {}    // not found due to missing summarization
 function fakeGetDataCallback(notData) {} // should not be found
+
+config.setConfigValue('connection', getConnection());
+
+function getFromConfigFramework() {
+  let conn = config.getConfigValue('connection');
+  conn.getData(x => {});
+}
