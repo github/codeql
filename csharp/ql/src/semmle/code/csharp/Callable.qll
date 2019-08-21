@@ -19,8 +19,7 @@ private import semmle.code.csharp.metrics.Complexity
  * an anonymous function (`AnonymousFunctionExpr`), or a local function
  * (`LocalFunction`).
  */
-class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, ControlFlowEntryElement,
-  @callable {
+class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @callable {
   override Type getReturnType() { none() }
 
   /** Gets the annotated return type of this callable. */

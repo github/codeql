@@ -239,55 +239,38 @@ module ControlFlow {
     /** Holds if this node has more than one successor. */
     predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
 
-    /** Gets the enclosing callable of this control flow node, if any. */
+    /** Gets the enclosing callable of this control flow node. */
     Callable getEnclosingCallable() { none() }
-
-    /** Gets the enclosing entry element of this control flow node. */
-    ControlFlowEntryElement getEnclosingElement() { none() }
   }
 
   /** Provides different types of control flow nodes. */
   module Nodes {
-    private import semmle.code.csharp.Enclosing::Internal
-
-    /** An entry node, for example a callable or a field initializer. */
+    /** A node for a callable entry point. */
     class EntryNode extends Node, TEntryNode {
-      private ControlFlowEntryElement e;
-
-      EntryNode() { this = TEntryNode(e) }
-
-      /** Gets the callable that this entry applies to, if any. */
-      Callable getCallable() { result = e }
+      /** Gets the callable that this entry applies to. */
+      Callable getCallable() { this = TEntryNode(result) }
 
       override BasicBlocks::EntryBlock getBasicBlock() { result = Node.super.getBasicBlock() }
 
       override Callable getEnclosingCallable() { result = this.getCallable() }
 
-      override ControlFlowEntryElement getEnclosingElement() { result = e }
+      override Location getLocation() { result = getCallable().getLocation() }
 
-      override Location getLocation() { result = this.getEnclosingElement().getLocation() }
-
-      override string toString() { result = "enter " + this.getEnclosingElement().toString() }
+      override string toString() { result = "enter " + getCallable().toString() }
     }
 
-    /** An exit node, for example a callable or a field initializer. */
+    /** A node for a callable exit point. */
     class ExitNode extends Node, TExitNode {
-      private ControlFlowEntryElement e;
-
-      ExitNode() { this = TExitNode(e) }
-
-      /** Gets the callable that this exit applies to, if any. */
-      Callable getCallable() { result = e }
+      /** Gets the callable that this exit applies to. */
+      Callable getCallable() { this = TExitNode(result) }
 
       override BasicBlocks::ExitBlock getBasicBlock() { result = Node.super.getBasicBlock() }
 
       override Callable getEnclosingCallable() { result = this.getCallable() }
 
-      override ControlFlowEntryElement getEnclosingElement() { result = e }
+      override Location getLocation() { result = getCallable().getLocation() }
 
-      override Location getLocation() { result = this.getEnclosingElement().getLocation() }
-
-      override string toString() { result = "exit " + this.getEnclosingElement().toString() }
+      override string toString() { result = "exit " + getCallable().toString() }
     }
 
     /**
@@ -305,10 +288,6 @@ module ControlFlow {
       ElementNode() { this = TElementNode(cfe, splits) }
 
       override Callable getEnclosingCallable() { result = cfe.getEnclosingCallable() }
-
-      override ControlFlowEntryElement getEnclosingElement() {
-        exprEnclosingEntryElement(cfe, result)
-      }
 
       override ControlFlowElement getElement() { result = cfe }
 
@@ -1845,32 +1824,27 @@ module ControlFlow {
       }
 
       /**
-       * Gets the control flow element that is first executed when entering `e`.
+       * Gets the control flow element that is first executed when entering
+       * callable `c`.
        */
-      ControlFlowElement succEntry(ControlFlowEntryElement e) {
-        e = any(Callable c |
+      ControlFlowElement succEntry(@top_level_exprorstmt_parent p) {
+        p = any(Callable c |
             if exists(c.(Constructor).getInitializer())
             then result = first(c.(Constructor).getInitializer())
             else result = first(c.getBody())
           )
         or
-        expr_parent_top_level_adjusted(any(Expr e0 | result = first(e0)), _, e) and
-        not e instanceof Callable
+        expr_parent_top_level_adjusted(any(Expr e | result = first(e)), _, p) and
+        not p instanceof Callable
       }
 
       /**
-       * Gets the element that is exited when `cfe` finishes with completion `c`,
+       * Gets the callable that is exited when `cfe` finishes with completion `c`,
        * if any.
        */
-      ControlFlowEntryElement succExit(ControlFlowElement cfe, Completion c) {
-        cfe = last(result.(Callable).getBody(), c) and
+      Callable succExit(ControlFlowElement cfe, Completion c) {
+        cfe = last(result.getBody(), c) and
         not c instanceof GotoCompletion
-        or
-        exists(Expr e |
-          expr_parent_top_level_adjusted(e, _, result) and
-          cfe = last(e, c) and
-          not result instanceof Callable
-        )
       }
     }
     import Successor
@@ -1885,13 +1859,13 @@ module ControlFlow {
        */
       cached
       newtype TNode =
-        TEntryNode(ControlFlowEntryElement e) {
+        TEntryNode(Callable c) {
           Stages::ControlFlowStage::forceCachingInSameStage() and
-          succEntrySplits(e, _, _, _)
+          succEntrySplits(c, _, _, _)
         } or
-        TExitNode(ControlFlowEntryElement e) {
+        TExitNode(Callable c) {
           exists(Reachability::SameSplitsBlock b | b.isReachable(_) |
-            succExitSplits(b.getAnElement(), _, e, _)
+            succExitSplits(b.getAnElement(), _, c, _)
           )
         } or
         TElementNode(ControlFlowElement cfe, Splits splits) {
@@ -1901,20 +1875,18 @@ module ControlFlow {
       /** Gets a successor node of a given flow type, if any. */
       cached
       Node getASuccessorByType(Node pred, SuccessorType t) {
-        // Entry node -> body
-        exists(ControlFlowElement succElement, Splits succSplits, ControlFlowEntryElement e |
-          result = TElementNode(succElement, succSplits) and
-          pred = TEntryNode(e) and
-          succEntrySplits(e, succElement, succSplits, t)
+        // Callable entry node -> callable body
+        exists(ControlFlowElement succElement, Splits succSplits |
+          result = TElementNode(succElement, succSplits)
+        |
+          succEntrySplits(pred.(Nodes::EntryNode).getCallable(), succElement, succSplits, t)
         )
         or
         exists(ControlFlowElement predElement, Splits predSplits |
           pred = TElementNode(predElement, predSplits)
         |
-          // Element node -> exit node
-          exists(ControlFlowEntryElement e | result = TExitNode(e) |
-            succExitSplits(predElement, predSplits, e, t)
-          )
+          // Element node -> callable exit
+          succExitSplits(predElement, predSplits, result.(Nodes::ExitNode).getCallable(), t)
           or
           // Element node -> element node
           exists(ControlFlowElement succElement, Splits succSplits, Completion c |
