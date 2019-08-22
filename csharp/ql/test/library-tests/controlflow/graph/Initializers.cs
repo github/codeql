@@ -17,7 +17,19 @@ class Initializers
 
     class NoConstructor
     {
-        int F = 0;
-        int G = 1;
+        protected int F = 0;
+        protected int G = 1;
+    }
+
+    class Sub : NoConstructor
+    {
+        int H = 2;
+        int I;
+
+        Sub() : base() { I = 3; }
+
+        Sub(int i) : this() { I = i; }
+
+        Sub(int i, int j) { I = i + j; }
     }
 }

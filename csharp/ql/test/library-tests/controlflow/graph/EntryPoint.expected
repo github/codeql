@@ -82,7 +82,10 @@
 | Initializers.cs:6:5:6:16 | Initializers | Initializers.cs:3:9:3:9 | this access |
 | Initializers.cs:8:5:8:16 | Initializers | Initializers.cs:3:9:3:9 | this access |
 | Initializers.cs:10:10:10:10 | M | Initializers.cs:11:5:14:5 | {...} |
-| Initializers.cs:18:11:18:23 | NoConstructor | Initializers.cs:20:13:20:13 | this access |
+| Initializers.cs:18:11:18:23 | NoConstructor | Initializers.cs:20:23:20:23 | this access |
+| Initializers.cs:29:9:29:11 | Sub | Initializers.cs:29:17:29:20 | call to constructor NoConstructor |
+| Initializers.cs:31:9:31:11 | Sub | Initializers.cs:31:22:31:25 | call to constructor Sub |
+| Initializers.cs:33:9:33:11 | Sub | Initializers.cs:20:23:20:23 | this access |
 | NullCoalescing.cs:3:9:3:10 | M1 | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
 | NullCoalescing.cs:5:9:5:10 | M2 | NullCoalescing.cs:5:24:5:43 | ... ? ... : ... |
 | NullCoalescing.cs:7:12:7:13 | M3 | NullCoalescing.cs:7:40:7:53 | ... ?? ... |

@@ -1754,11 +1754,22 @@ module ControlFlow {
         cfe = last(result.(JumpStmt).getChild(0), c) and
         c instanceof NormalCompletion
         or
-        // Flow from constructor initializer to first element of constructor body
-        cfe = any(ConstructorInitializer ci |
-            c instanceof SimpleCompletion and
-            result = first(ci.getConstructor().getBody())
+        exists(ConstructorInitializer ci, Constructor con |
+          cfe = last(ci, c) and
+          con = ci.getConstructor() and
+          c instanceof NormalCompletion
+        |
+          // Flow from constructor initializer to first member initializer
+          exists(InitializerSplitting::InitializedInstanceMember m |
+            InitializerSplitting::constructorInitializeOrder(con, m, 0)
+          |
+            result = first(m.getInitializer())
           )
+          or
+          // Flow from constructor initializer to first element of constructor body
+          not InitializerSplitting::constructorInitializeOrder(con, _, _) and
+          result = first(con.getBody())
+        )
         or
         exists(Constructor con, InitializerSplitting::InitializedInstanceMember m, int i |
           cfe = last(m.getInitializer(), c) and

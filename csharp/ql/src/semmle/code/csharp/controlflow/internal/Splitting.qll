@@ -210,9 +210,7 @@ module InitializerSplitting {
 
     InitializedInstanceMember() {
       not this.isStatic() and
-      if this instanceof Property
-      then expr_parent_top_level_adjusted(ae, 1, this)
-      else expr_parent_top_level_adjusted(ae, 0, this)
+      expr_parent_top_level_adjusted(ae, _, this)
     }
 
     /** Gets the initializer expression. */
@@ -235,9 +233,16 @@ module InitializerSplitting {
    */
   predicate constructorInitializes(Constructor c, InitializedInstanceMember m) {
     c = c.getSourceDeclaration() and
-    not c.hasInitializer() and
     not c.isStatic() and
-    c.getDeclaringType().hasMember(m)
+    c.getDeclaringType().hasMember(m) and
+    (
+      not c.hasInitializer()
+      or
+      // Members belonging to the base class are initialized via calls to the
+      // base constructor
+      c.getInitializer().isBase() and
+      m.getDeclaringType() = c.getDeclaringType()
+    )
   }
 
   /**
@@ -337,7 +342,12 @@ module InitializerSplitting {
     override InitializerSplitKind getKind() { any() }
 
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      none()
+      exists(ConstructorInitializer ci |
+        pred = last(ci, c) and
+        succ = succ(pred, c) and
+        succ = any(InitializedInstanceMember m).getAnInitializerDescendant() and
+        this.getConstructor() = ci.getConstructor()
+      )
     }
 
     override predicate hasEntry(Callable c, ControlFlowElement succ) {
@@ -362,7 +372,8 @@ module InitializerSplitting {
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       this.appliesTo(pred) and
       succ = succ(pred, c) and
-      succ = any(InitializedInstanceMember m).getAnInitializerDescendant()
+      succ = any(InitializedInstanceMember m | constructorInitializes(this.getConstructor(), m))
+            .getAnInitializerDescendant()
     }
   }
 }

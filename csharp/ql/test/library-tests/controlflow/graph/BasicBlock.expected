@@ -282,6 +282,9 @@
 | Initializers.cs:10:10:10:10 | enter M | Initializers.cs:10:10:10:10 | exit M | 20 |
 | Initializers.cs:16:20:16:20 | 1 | Initializers.cs:16:16:16:20 | ... = ... | 2 |
 | Initializers.cs:18:11:18:23 | enter NoConstructor | Initializers.cs:18:11:18:23 | exit NoConstructor | 8 |
+| Initializers.cs:29:9:29:11 | enter Sub | Initializers.cs:29:9:29:11 | exit Sub | 11 |
+| Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | exit Sub | 8 |
+| Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | exit Sub | 18 |
 | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:23 | access to parameter i | 3 |
 | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:9:3:10 | exit M1 | 1 |
 | NullCoalescing.cs:3:28:3:28 | 0 | NullCoalescing.cs:3:28:3:28 | 0 | 1 |
