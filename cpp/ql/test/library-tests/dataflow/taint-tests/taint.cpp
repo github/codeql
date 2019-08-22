@@ -227,14 +227,14 @@ void test_lambdas()
 
 	auto a = [t, u]() -> int {
 		sink(t); // tainted
-		sink(u); // clean [FALSE POSITIVE]
+		sink(u); // clean
 		return t;
 	};
 	sink(a()); // tainted
 
 	auto b = [&] {
 		sink(t); // tainted
-		sink(u); // clean [FALSE POSITIVE]
+		sink(u); // clean
 		v = source(); // (v is reference captured)
 	};
 	b();
@@ -242,7 +242,7 @@ void test_lambdas()
 
 	auto c = [=] {
 		sink(t); // tainted
-		sink(u); // clean [FALSE POSITIVE]
+		sink(u); // clean
 	};
 	c();
 
