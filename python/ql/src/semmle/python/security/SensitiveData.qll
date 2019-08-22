@@ -110,12 +110,12 @@ module SensitiveData {
         override string repr() { result = "a certificate or key" }
     }
 
-    private SensitiveData fromFunction(FunctionObject f) {
-        result = HeuristicNames::getSensitiveDataForName(f.getName())
+    private SensitiveData fromFunction(Value func) {
+        result = HeuristicNames::getSensitiveDataForName(func.getName())
         or
         // This is particularly to pick up methods with an argument like "password", which
         // may indicate a lookup.
-        exists(string name | name = f.getFunction().getAnArg().asName().getId() |
+        exists(string name | name = func.(PythonFunctionValue).getScope().getAnArg().asName().getId() |
             result = HeuristicNames::getSensitiveDataForName(name)
         )
     }
@@ -131,7 +131,7 @@ module SensitiveData {
         SensitiveData data;
 
         SensitiveCallSource() {
-            exists(FunctionObject callee |
+            exists(Value callee |
                 callee.getACall() = this |
                 data = fromFunction(callee)
             )
