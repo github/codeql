@@ -18,9 +18,11 @@ predicate defaultTaintBarrier(DataFlow::Node node) { none() }
 
 /**
  * Holds if the additional step from `src` to `sink` should be included in all
- * global taint flow configurations but not in local taint.
+ * global taint flow configurations.
  */
-predicate globalAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+predicate defaultAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  localAdditionalTaintStep(pred, succ)
+  or
   succ = pred.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
 }
 
