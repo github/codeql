@@ -1,4 +1,4 @@
-import logging
+#Don't import logging; it transitively imports a lot of stuff
 
 def get_password():
     pass

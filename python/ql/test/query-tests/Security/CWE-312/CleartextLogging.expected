@@ -1,6 +1,8 @@
 edges
+| password_in_cookie.py:7:16:7:27 | dict of externally controlled string | password_in_cookie.py:7:16:7:43 | externally controlled string |
+| password_in_cookie.py:7:16:7:43 | a password | password_in_cookie.py:9:33:9:40 | a password |
+| password_in_cookie.py:7:16:7:43 | externally controlled string | password_in_cookie.py:9:33:9:40 | externally controlled string |
 | test.py:7:16:7:29 | a password | test.py:8:35:8:42 | a password |
-parents
 #select
-| test.py:8:35:8:42 | Taint sink | test.py:7:16:7:29 | a password | test.py:8:35:8:42 | a password | Sensitive data returned by $@ is stored here. | test.py:7:16:7:29 | Taint source | Call returning a password |
-| test.py:14:30:14:39 | Taint sink | test.py:14:30:14:39 | a certificate or key | test.py:14:30:14:39 | a certificate or key | Sensitive data returned by $@ is stored here. | test.py:14:30:14:39 | Taint source | Call returning a certificate or key |
+| test.py:8:35:8:42 | Taint sink | test.py:7:16:7:29 | a password | test.py:8:35:8:42 | a password | Sensitive data returned by $@ is stored here. | test.py:7:16:7:29 | Taint source | a call returning a password |
+| test.py:14:30:14:39 | Taint sink | test.py:14:30:14:39 | a certificate or key | test.py:14:30:14:39 | a certificate or key | Sensitive data returned by $@ is stored here. | test.py:14:30:14:39 | Taint source | a call returning a certificate or key |
