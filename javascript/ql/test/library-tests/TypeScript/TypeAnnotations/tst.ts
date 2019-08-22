@@ -135,3 +135,6 @@ let emptyTuple: [];
 let tupleWithRestElement: [number, ...string[]];
 let tupleWithOptionalAndRestElements: [number, string?, ...number[]];
 let unknownType: unknown;
+
+let taggedTemplateLiteralTypeArg1 = someTag<number>`Hello`;
+let taggedTemplateLiteralTypeArg2 = someTag<number, string>`Hello`;
