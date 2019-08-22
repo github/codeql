@@ -30,3 +30,7 @@
 - The `semmle.code.cpp.models` library now models data flow through `std::swap`.
 - There is a new `Variable.isThreadLocal()` predicate. It can be used to tell whether a variable is `thread_local`.
 - Recursion through the `DataFlow` library is now always a compile error. Such recursion has been deprecated since release 1.16. If one `DataFlow::Configuration` needs to depend on the results of another, switch one of them to use one of the `DataFlow2` through `DataFlow4` libraries.
+- The possibility of specifying barrier edges in data-flow configurations has
+  been replaced with the option of specifying in- and out-barriers on nodes.
+  This should be simpler to use effectively, as it does not require knowledge
+  about the actual edges used internally by the library.

@@ -41,5 +41,9 @@
   - The new predicate `ConstructedGeneric.getAnnotatedTypeArgument()` gets the annotated type of a type argument
   - The new predicate `TypeParameterConstraints.getAnAnnotatedTypeConstraint()` gets a type constraint with type annotations
 * The new class `SuppressNullableWarningExpr` models suppress-nullable-warning expressions such as `x!`
+* The possibility of specifying barrier edges in data-flow configurations has
+  been replaced with the option of specifying in- and out-barriers on nodes.
+  This should be simpler to use effectively, as it does not require knowledge
+  about the actual edges used internally by the library.
 
 ## Changes to autobuilder
