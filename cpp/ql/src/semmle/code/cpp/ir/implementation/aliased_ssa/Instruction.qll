@@ -71,7 +71,7 @@ module InstructionSanity {
       operand.getOperandTag() = tag) and
     not expectsOperand(instr, tag) and
     not (instr instanceof CallInstruction and tag instanceof ArgumentOperandTag) and
-    not (instr instanceof BuiltInInstruction and tag instanceof PositionalArgumentOperandTag) and
+    not (instr instanceof BuiltInOperationInstruction and tag instanceof PositionalArgumentOperandTag) and
     not (instr instanceof InlineAsmInstruction and tag instanceof AsmOperandTag)
   }
 
@@ -1831,8 +1831,29 @@ class UnreachedInstruction extends Instruction {
  * An instruction representing a built-in operation. This is used to represent
  * operations such as access to variable argument lists.
  */
-class BuiltInInstruction extends Instruction {
+class BuiltInOperationInstruction extends Instruction {
+  Language::BuiltInOperation operation;
+
+  BuiltInOperationInstruction() {
+    getOpcode() instanceof BuiltInOperationOpcode and
+    operation = Construction::getInstructionBuiltInOperation(this)
+  }
+
+  final Language::BuiltInOperation getBuiltInOperation() {
+    result = operation
+  }
+}
+
+/**
+ * An instruction representing a built-in operation that does not have a specific opcode. The
+ * actual operation is specified by the `getBuiltInOperation()` predicate.
+ */
+class BuiltInInstruction extends BuiltInOperationInstruction {
   BuiltInInstruction() {
-    getOpcode() instanceof BuiltInOpcode
+    getOpcode() instanceof Opcode::BuiltIn
+  }
+
+  override final string getImmediateString() {
+    result = getBuiltInOperation().toString()
   }
 }

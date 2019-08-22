@@ -612,10 +612,15 @@ class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
   }
 }
 
+/**
+ * IR translation of an array access expression (e.g. `a[i]`). The array being accessed will either
+ * be a prvalue of pointer type (possibly due to an implicit array-to-pointer conversion), or a
+ * glvalue of a GNU vector type.
+ */
 class TranslatedArrayExpr extends TranslatedNonConstantExpr {
   override ArrayExpr expr;
 
-  override Instruction getFirstInstruction() {
+  override final Instruction getFirstInstruction() {
     result = getBaseOperand().getFirstInstruction()
   }
 
@@ -650,8 +655,8 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
     Type resultType, boolean isGLValue) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::PointerAdd and
-    resultType = getBaseOperand().getResultType() and
-    isGLValue = false
+    resultType = getResultType() and
+    isGLValue = true
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
@@ -671,7 +676,7 @@ class TranslatedArrayExpr extends TranslatedNonConstantExpr {
 
   override int getInstructionElementSize(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = max(getBaseOperand().getResultType().(PointerType).getBaseType().getSize())
+    result = max(getResultType().getSize())
   }
 
   private TranslatedExpr getBaseOperand() {
@@ -2373,7 +2378,13 @@ class TranslatedReThrowExpr extends TranslatedThrowExpr {
  * The IR translation of a built-in operation (i.e. anything that extends
  * `BuiltInOperation`).
  */
-abstract class TranslatedBuiltInOperation extends TranslatedNonConstantExpr {
+class TranslatedBuiltInOperation extends TranslatedNonConstantExpr {
+  override BuiltInOperation expr;
+
+  TranslatedBuiltInOperation() {
+    not expr instanceof BuiltInOperationBuiltInAddressOf  // Handled specially
+  }
+
   override final Instruction getResult() {
     result = getInstruction(OnlyInstructionTag())
   }
@@ -2423,7 +2434,14 @@ abstract class TranslatedBuiltInOperation extends TranslatedNonConstantExpr {
     )
   }
 
-  abstract Opcode getOpcode();
+  Opcode getOpcode() {
+    result instanceof Opcode::BuiltIn
+  }
+
+  override final BuiltInOperation getInstructionBuiltInOperation(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = expr
+  }
 }
 
 /**

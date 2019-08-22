@@ -1,6 +1,4 @@
 missingOperand
-| builtin.c:15:25:15:71 | Store: __builtin_shufflevector | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:18:3:18:80 | Convert: (void)... | Instruction 'Convert' is missing an expected operand with tag 'Unary' in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
 | condition_decls.cpp:16:6:16:20 | ConditionalBranch: (condition decl) | Instruction 'ConditionalBranch' is missing an expected operand with tag 'Condition' in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
 | condition_decls.cpp:26:3:36:3 | Switch: switch (...) ...  | Instruction 'Switch' is missing an expected operand with tag 'Condition' in function '$@'. | condition_decls.cpp:25:6:25:21 | IR: switch_decl_bind | void switch_decl_bind(int) |
 | condition_decls.cpp:41:9:41:23 | ConditionalBranch: (condition decl) | Instruction 'ConditionalBranch' is missing an expected operand with tag 'Condition' in function '$@'. | condition_decls.cpp:40:6:40:20 | IR: while_decl_bind | void while_decl_bind(int) |
@@ -27,18 +25,6 @@ instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:4:3:4:3 | Load: y |
 | assume0.cpp:7:2:7:2 | CallSideEffect: call to f |
 | assume0.cpp:9:11:9:11 | Constant: (bool)... |
-| builtin.c:14:26:14:26 | Constant: 0 |
-| builtin.c:14:29:14:29 | Constant: 1 |
-| builtin.c:14:32:14:32 | Constant: 2 |
-| builtin.c:14:35:14:35 | Constant: 3 |
-| builtin.c:15:18:15:21 | VariableAddress: definition of vec2 |
-| builtin.c:15:25:15:71 | Store: __builtin_shufflevector |
-| builtin.c:15:49:15:51 | Load: vec |
-| builtin.c:15:54:15:56 | Load: vec |
-| builtin.c:15:64:15:64 | Constant: 2 |
-| builtin.c:15:67:15:67 | Constant: 1 |
-| builtin.c:15:70:15:70 | Constant: 0 |
-| builtin.c:18:33:18:35 | Load: vec |
 | condition_decls.cpp:16:19:16:20 | CallSideEffect: call to BoxedInt |
 | condition_decls.cpp:26:19:26:19 | CallSideEffect: call to operator int |
 | condition_decls.cpp:26:23:26:24 | CallSideEffect: call to BoxedInt |
@@ -48,7 +34,6 @@ instructionWithoutSuccessor
 | file://:0:0:0:0 | CompareNE: (bool)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
 | file://:0:0:0:0 | CompareNE: (bool)... |
-| file://:0:0:0:0 | Constant: ... + ... |
 | misc.c:171:10:171:13 | Uninitialized: definition of str2 |
 | misc.c:171:15:171:31 | Add: ... + ... |
 | misc.c:173:14:173:26 | Mul: ... * ... |
@@ -625,48 +610,6 @@ backEdgeCountMismatch
 useNotDominatedByDefinition
 | VacuousDestructorCall.cpp:4:3:4:3 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | IR: CallDestructor | void CallDestructor<int>(int, int*) |
 | assume0.cpp:11:2:11:2 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | assume0.cpp:5:6:5:6 | IR: h | void h() |
-| builtin.c:5:5:5:11 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:15:25:15:71 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:15:49:15:51 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:15:54:15:56 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:18:33:18:35 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:20:3:20:36 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:20:10:20:31 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:20:33:20:33 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:21:3:21:39 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:21:10:21:31 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:21:33:21:33 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:21:38:21:38 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:22:3:22:40 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:22:10:22:32 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:22:34:22:34 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:22:39:22:39 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:24:7:24:7 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:25:5:25:25 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:28:7:28:29 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:28:31:28:33 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:29:12:29:14 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:34:3:34:35 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:34:10:34:20 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:34:34:34:34 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:39:3:39:46 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:39:10:39:23 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:39:25:39:25 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:39:30:39:30 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:43:3:43:24 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:43:26:43:26 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:43:37:43:37 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:45:3:45:42 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:45:10:45:31 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:47:7:47:22 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:48:2:48:6 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:51:3:51:47 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:51:10:51:27 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:51:41:51:41 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:51:43:51:43 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:54:3:54:42 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:54:10:54:26 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
-| builtin.c:56:10:56:12 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | builtin.c:5:5:5:11 | IR: builtin | int builtin(int, int) |
 | condition_decls.cpp:16:15:16:15 | Operand | Operand 'Operand' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
 | condition_decls.cpp:16:15:16:16 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |
 | condition_decls.cpp:17:5:17:15 | Load | Operand 'Load' is not dominated by its definition in function '$@'. | condition_decls.cpp:15:6:15:17 | IR: if_decl_bind | void if_decl_bind(int) |

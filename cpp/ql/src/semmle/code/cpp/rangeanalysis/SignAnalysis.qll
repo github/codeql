@@ -207,7 +207,7 @@ private predicate unknownSign(Instruction i) {
     or
     i instanceof InitializeParameterInstruction
     or
-    i instanceof BuiltInInstruction
+    i instanceof BuiltInOperationInstruction
     or
     i instanceof CallInstruction
     or

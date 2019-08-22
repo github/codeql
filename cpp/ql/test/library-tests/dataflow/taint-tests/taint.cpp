@@ -106,7 +106,7 @@ void array_test(int i) {
 	arr2[i] = source();
 	arr3[5] = 0;
 
-	sink(arr1[5]); // tainted [NOT DETECTED]
+	sink(arr1[5]); // tainted
 	sink(arr1[i]); // tainted [NOT DETECTED]
 	sink(arr2[5]); // tainted [NOT DETECTED]
 	sink(arr2[i]); // tainted [NOT DETECTED]

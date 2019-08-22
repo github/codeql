@@ -6,6 +6,7 @@
 | taint.cpp:91:11:91:11 | taint.cpp:77:7:77:12 | AST only |
 | taint.cpp:93:11:93:11 | taint.cpp:71:22:71:27 | AST only |
 | taint.cpp:94:11:94:11 | taint.cpp:72:7:72:12 | AST only |
+| taint.cpp:109:7:109:13 | taint.cpp:105:12:105:17 | IR only |
 | taint.cpp:130:7:130:9 | taint.cpp:127:8:127:13 | IR only |
 | taint.cpp:137:7:137:9 | taint.cpp:120:11:120:16 | AST only |
 | taint.cpp:173:8:173:13 | taint.cpp:164:19:164:24 | AST only |

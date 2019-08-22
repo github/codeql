@@ -146,7 +146,7 @@ void following_pointers(
 
   twoIntFields sArray[1] = { { source(), source() } };
   // TODO: fix this like above
-  sink(sArray[0].m2); // no flow (due to limitations of the analysis)
+  sink(sArray[0].m2); // flow (AST dataflow misses this due to limitations of the analysis)
 
   twoIntFields sSwapped = { .m2 = source(), .m1 = 0 };
 
