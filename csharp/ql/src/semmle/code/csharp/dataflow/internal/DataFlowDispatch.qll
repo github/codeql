@@ -334,7 +334,7 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override DotNet::Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
   override string toString() { result = cfn.toString() }
 
@@ -365,7 +365,7 @@ class ExplicitDelegateDataFlowCall extends DelegateDataFlowCall, TExplicitDelega
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
-  override DotNet::Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
   override string toString() { result = cfn.toString() }
 
@@ -404,7 +404,7 @@ class ImplicitDelegateDataFlowCall extends DelegateDataFlowCall, TImplicitDelega
 
   override ImplicitDelegateOutNode getNode() { result.getControlFlowNode() = cfn }
 
-  override DotNet::Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
   override string toString() { result = "[implicit call] " + cfn.toString() }
 
@@ -421,13 +421,13 @@ class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCa
 
   TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn) }
 
-  override DotNet::Callable getARuntimeTarget() { transitiveCapturedCallTarget(cfn, result) }
+  override Callable getARuntimeTarget() { transitiveCapturedCallTarget(cfn, result) }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
   override DataFlow::ExprNode getNode() { none() }
 
-  override DotNet::Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
+  override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
 
   override string toString() { result = "[transitive] " + cfn.toString() }
 
@@ -449,7 +449,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
 
   override DataFlow::ExprNode getNode() { result.getExpr() = call }
 
-  override DotNet::Callable getEnclosingCallable() { result = call.getEnclosingCallable() }
+  override CIL::Callable getEnclosingCallable() { result = call.getEnclosingCallable() }
 
   override string toString() { result = call.toString() }
 
