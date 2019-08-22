@@ -40,7 +40,7 @@ The following example code stores user credentials (in this case, their password
 <sample src="examples/password_in_cookie.py"/>
 <p>
 Instead, the credentials should be encrypted, for instance by using the <code>cryptography</code> module, or not stored at all.
-
+</p>
 </example>
 
 <references>
