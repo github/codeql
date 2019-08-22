@@ -41,11 +41,25 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 /**
+ * A `DataFlow::Node` that is the origin of a taint step.
+ *
+ * Extend this class to add additional taint steps that should apply to all
+ * taint configurations.
+ */
+abstract class AdditionalTaintStepNode extends DataFlow::Node {
+  /**
+   * Gets a `DataFlow::Node` that this node can step to in one taint step.
+   */
+  abstract DataFlow::Node step();
+}
+
+/**
  * Holds if the additional step from `src` to `sink` should be included in all
  * global taint flow configurations.
  */
 predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalTaintStep(src, sink)
+  localAdditionalTaintStep(src, sink) or
+  src.(AdditionalTaintStepNode).step() = sink
 }
 
 /**
