@@ -1,6 +1,3 @@
-| file://:0:0:0:0 | t | taint.cpp:223:10:223:15 | call to source |
-| file://:0:0:0:0 | t | taint.cpp:223:10:223:15 | call to source |
-| file://:0:0:0:0 | t | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |
@@ -25,6 +22,9 @@
 | taint.cpp:210:7:210:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:215:7:215:7 | x | taint.cpp:207:6:207:11 | call to source |
 | taint.cpp:216:7:216:7 | y | taint.cpp:207:6:207:11 | call to source |
+| taint.cpp:229:3:229:6 | t | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:233:8:233:8 | call to operator() | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:236:3:236:6 | t | taint.cpp:223:10:223:15 | call to source |
+| taint.cpp:244:3:244:6 | t | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:250:8:250:8 | a | taint.cpp:223:10:223:15 | call to source |
 | taint.cpp:256:8:256:8 | a | taint.cpp:223:10:223:15 | call to source |
