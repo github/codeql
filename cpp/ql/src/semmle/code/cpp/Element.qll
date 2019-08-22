@@ -206,7 +206,8 @@ class Element extends ElementBase {
     namequalifiers(underlyingElement(this), unresolveElement(result), _, _) or
     initialisers(underlyingElement(this), unresolveElement(result), _, _) or
     exprconv(unresolveElement(result), underlyingElement(this)) or
-    param_decl_bind(underlyingElement(this),_,unresolveElement(result))
+    param_decl_bind(underlyingElement(this),_,unresolveElement(result)) or
+    using_container(unresolveElement(result),underlyingElement(this))
   }
 
   /** Gets the closest `Element` enclosing this one. */
