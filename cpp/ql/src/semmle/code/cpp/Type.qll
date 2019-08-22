@@ -1055,8 +1055,6 @@ class GNUVectorType extends DerivedType {
 
   GNUVectorType() { derivedtypes(underlyingElement(this),_,5,_) }
 
-  override string getCanonicalQLClass() { result = "GNUVectorType" }
-
   /**
    * Get the number of elements in this vector type.
    *

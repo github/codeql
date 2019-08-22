@@ -8017,9 +8017,9 @@ ir.cpp:
 # 1154|           expr: [VectorAggregateLiteral] {...}
 # 1154|               Type = [GNUVectorType] __attribute((vector_size(16))) int
 # 1154|               ValueCategory = prvalue
-# 1154|             0: [Literal,Zero] 0
+# 1154|             0: [Literal] 0
 # 1154|                 Type = [IntType] int
-# 1154|                 Value = [Literal,Zero] 0
+# 1154|                 Value = [Literal] 0
 # 1154|                 ValueCategory = prvalue
 # 1154|             1: [Literal] 1
 # 1154|                 Type = [IntType] int
@@ -8066,7 +8066,7 @@ ir.cpp:
 # 1157|       0: [VariableDeclarationEntry] definition of vi4_shuffle
 # 1157|           Type = [SpecifiedType] __attribute((vector_size(16UL))) int
 # 1157|         init: [Initializer] initializer for vi4_shuffle
-# 1157|           expr: [BuiltInOperation] __builtin_shufflevector
+# 1157|           expr: [BuiltInOperationBuiltInShuffleVector] __builtin_shufflevector
 # 1157|               Type = [GNUVectorType] __attribute((vector_size(16))) int
 # 1157|               ValueCategory = prvalue
 # 1157|             0: [VariableAccess] vi4
@@ -8083,9 +8083,9 @@ ir.cpp:
 # 1157|                   Type = [IntType] int
 # 1157|                   Value = [Literal] 3
 # 1157|                   ValueCategory = prvalue
-# 1157|               1: [Literal,Zero] 0
+# 1157|               1: [Literal] 0
 # 1157|                   Type = [IntType] int
-# 1157|                   Value = [Literal,Zero] 0
+# 1157|                   Value = [Literal] 0
 # 1157|                   ValueCategory = prvalue
 # 1157|             3: [Literal] 2
 # 1157|                 Type = [IntType] int
@@ -8095,9 +8095,9 @@ ir.cpp:
 # 1157|                 Type = [IntType] int
 # 1157|                 Value = [Literal] 1
 # 1157|                 ValueCategory = prvalue
-# 1157|             5: [Literal,Zero] 0
+# 1157|             5: [Literal] 0
 # 1157|                 Type = [IntType] int
-# 1157|                 Value = [Literal,Zero] 0
+# 1157|                 Value = [Literal] 0
 # 1157|                 ValueCategory = prvalue
 # 1158|     4: [ExprStmt] ExprStmt
 # 1158|       0: [AssignExpr] ... = ...
