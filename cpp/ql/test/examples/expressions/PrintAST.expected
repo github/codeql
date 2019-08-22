@@ -917,7 +917,7 @@ Varargs.c:
 #    8|   body: [Block] { ... }
 #    9|     0: [DeclStmt] declaration
 #    9|       0: [VariableDeclarationEntry] definition of args
-#    9|           Type = [TypedefType] va_list
+#    9|           Type = [CTypedefType] va_list
 #   10|     1: [ExprStmt] ExprStmt
 #   10|       0: [BuiltInVarArgsStart] __builtin_va_start
 #   10|           Type = [VoidType] void
@@ -926,7 +926,7 @@ Varargs.c:
 #   10|             Type = [PointerType] __va_list_tag *
 #   10|             ValueCategory = prvalue
 #   10|           expr: [VariableAccess] args
-#   10|               Type = [TypedefType] va_list
+#   10|               Type = [CTypedefType] va_list
 #   10|               ValueCategory = lvalue
 #   10|         1: [VariableAccess] text
 #   10|             Type = [PointerType] const char *
@@ -939,7 +939,7 @@ Varargs.c:
 #   11|             Type = [PointerType] __va_list_tag *
 #   11|             ValueCategory = prvalue
 #   11|           expr: [VariableAccess] args
-#   11|               Type = [TypedefType] va_list
+#   11|               Type = [CTypedefType] va_list
 #   11|               ValueCategory = lvalue
 #   12|     3: [ReturnStmt] return ...
 macro_etc.c:
