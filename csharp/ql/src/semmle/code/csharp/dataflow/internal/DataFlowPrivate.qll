@@ -17,14 +17,14 @@ private import semmle.code.csharp.frameworks.NHibernate
 private module ThisFlow {
   private class BasicBlock = ControlFlow::BasicBlock;
 
-  /** Holds if the `i`th node `n` of basic block `bb` is a `this` access. */
-  private predicate thisAccess(Node n, BasicBlock bb, int i) {
-    bb.getNode(i) = any(ControlFlow::Nodes::EntryNode en |
-        n.(InstanceParameterNode).getCallable() = en.getEnclosingCallable()
-      )
+  /** Holds if `n` is a `this` access at control flow node `cfn`. */
+  private predicate thisAccess(Node n, ControlFlow::Node cfn) {
+    n.(InstanceParameterNode).getCallable() = cfn.(ControlFlow::Nodes::EntryNode).getCallable()
     or
-    n.asExprAtNode(bb.getNode(i)) = any(Expr e | e instanceof ThisAccess or e instanceof BaseAccess)
+    n.asExprAtNode(cfn) = any(Expr e | e instanceof ThisAccess or e instanceof BaseAccess)
   }
+
+  private predicate thisAccess(Node n, BasicBlock bb, int i) { thisAccess(n, bb.getNode(i)) }
 
   private predicate thisRank(Node n, BasicBlock bb, int rankix) {
     exists(int i |
@@ -470,16 +470,16 @@ private module ParameterNodes {
 
   /** An implicit instance (`this`) parameter. */
   class InstanceParameterNode extends ParameterNode, TInstanceParameterNode {
-    private DataFlowCallable callable;
+    private Callable callable;
 
     InstanceParameterNode() { this = TInstanceParameterNode(callable) }
 
     /** Gets the callable containing this implicit instance parameter. */
-    DataFlowCallable getCallable() { result = callable }
+    Callable getCallable() { result = callable }
 
     override predicate isParameterOf(DataFlowCallable c, int pos) { callable = c and pos = -1 }
 
-    override DataFlowCallable getEnclosingCallable() { result = callable }
+    override Callable getEnclosingCallable() { result = callable }
 
     override Type getType() { result = callable.getDeclaringType() }
 
@@ -511,7 +511,7 @@ private module ParameterNodes {
       i = parameter.getPosition() + c.getNumberOfParameters()
     }
 
-    override DotNet::Callable getEnclosingCallable() {
+    override Callable getEnclosingCallable() {
       result = this.getUnderlyingNode().getEnclosingCallable()
     }
 
@@ -852,7 +852,7 @@ private module ReturnNodes {
 
     override YieldReturnKind getKind() { any() }
 
-    override DotNet::Callable getEnclosingCallable() {
+    override Callable getEnclosingCallable() {
       result = this.getUnderlyingNode().getEnclosingCallable()
     }
 
