@@ -6,10 +6,8 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.internal.Completion
-private import semmle.code.csharp.controlflow.internal.PreBasicBlocks
 private import semmle.code.csharp.controlflow.internal.PreSsa as PreSsa
 private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow::Internal::Successor
-private import semmle.code.csharp.controlflow.Guards as Guards
 private import ControlFlow
 private import SuccessorTypes
 
@@ -28,12 +26,14 @@ private module Cached {
 
   cached
   newtype TSplitKind =
+    TInitializerSplitKind() or
     TFinallySplitKind() or
     TExceptionHandlerSplitKind() or
     TBooleanSplitKind(BooleanSplitting::BooleanSplitSubKind kind) { kind.startsSplit(_) }
 
   cached
   newtype TSplit =
+    TInitializerSplit(Constructor c) { InitializerSplitting::constructorInitializes(c, _) } or
     TFinallySplit(FinallySplitting::FinallySplitType type) or
     TExceptionHandlerSplit(ExceptionClass ec) or
     TBooleanSplit(BooleanSplitting::BooleanSplitSubKind kind, boolean branch) {
@@ -51,6 +51,8 @@ private module Cached {
         case2aFromRank(pred, predSplits, succ, tail, c, rnk + 1) and
         head = case2aSomeAtRank(pred, predSplits, succ, c, rnk)
       )
+      or
+      succEntrySplitsCons(_, _, head, tail, _)
     }
 
   cached
@@ -118,11 +120,14 @@ abstract class SplitKind extends TSplitKind {
   }
 
   /**
-   * Holds if this split kind should be included when constructing the control
-   * flow graph for callable `c`. For performance reasons, the number of splits
-   * is restricted by the `maxSplits()` predicate.
+   * Holds if this split kind is enabled for control flow element `cfe`. For
+   * performance reasons, the number of splits is restricted by the `maxSplits()`
+   * predicate.
    */
-  private predicate isEnabled(Callable c) { this.getRank(c) <= maxSplits() }
+  predicate isEnabled(ControlFlowElement cfe) {
+    this.appliesTo(cfe) and
+    this.getRank(cfe.getEnclosingCallable()) <= maxSplits()
+  }
 
   /**
    * Gets the rank of this split kind among all the split kinds that apply to
@@ -130,8 +135,7 @@ abstract class SplitKind extends TSplitKind {
    * `getListOrder()`.
    */
   int getListRank(ControlFlowElement cfe) {
-    this.appliesTo(cfe) and
-    this.isEnabled(cfe.getEnclosingCallable()) and
+    this.isEnabled(cfe) and
     this = rank[result](SplitKind sk | sk.appliesTo(cfe) | sk order by sk.getListOrder())
   }
 
@@ -154,6 +158,14 @@ abstract class SplitInternal extends SplitImpl {
   abstract predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c);
 
   /**
+   * Holds if this split is entered when control passes from `c` to the entry point
+   * `succ`.
+   *
+   * Invariant: `hasEntry(c, succ) implies succ = Successor::succEntry(c)`.
+   */
+  abstract predicate hasEntry(Callable c, ControlFlowElement succ);
+
+  /**
    * Holds if this split is left when control passes from `pred` to `succ` with
    * completion `c`.
    *
@@ -163,11 +175,11 @@ abstract class SplitInternal extends SplitImpl {
 
   /**
    * Holds if this split is left when control passes from `pred` out of the enclosing
-   * callable with completion `c`.
+   * callable `result` with completion `c`.
    *
-   * Invariant: `hasExit(pred, c) implies pred.getEnclosingCallable() = Successor::succExit(pred, c)`
+   * Invariant: `succ = hasExit(pred, c) implies succ = Successor::succExit(pred, c)`
    */
-  abstract predicate hasExit(ControlFlowElement pred, Completion c);
+  abstract Callable hasExit(ControlFlowElement pred, Completion c);
 
   /**
    * Holds if this split is maintained when control passes from `pred` to `succ` with
@@ -181,8 +193,195 @@ abstract class SplitInternal extends SplitImpl {
   final predicate appliesTo(ControlFlowElement cfe) {
     this.hasEntry(_, cfe, _)
     or
+    this.hasEntry(_, cfe)
+    or
     exists(ControlFlowElement pred | this.appliesTo(pred) | this.hasSuccessor(pred, cfe, _))
   }
+}
+
+module InitializerSplitting {
+  private import semmle.code.csharp.ExprOrStmtParent
+
+  /**
+   * A non-static member with an initializer, for example a field `int Field = 0`.
+   */
+  class InitializedInstanceMember extends Member {
+    private AssignExpr ae;
+
+    InitializedInstanceMember() {
+      not this.isStatic() and
+      expr_parent_top_level_adjusted(ae, _, this)
+    }
+
+    /** Gets the initializer expression. */
+    AssignExpr getInitializer() { result = ae }
+
+    /**
+     * Gets a control flow element that is a syntactic descendant of the
+     * initializer expression.
+     */
+    ControlFlowElement getAnInitializerDescendant() {
+      result = ae
+      or
+      result = this.getAnInitializerDescendant().getAChild()
+    }
+  }
+
+  /**
+   * Holds if `c` is a non-static constructor that performs the initialization
+   * of member `m`.
+   */
+  predicate constructorInitializes(Constructor c, InitializedInstanceMember m) {
+    c = c.getSourceDeclaration() and
+    not c.isStatic() and
+    c.getDeclaringType().hasMember(m) and
+    (
+      not c.hasInitializer()
+      or
+      // Members belonging to the base class are initialized via calls to the
+      // base constructor
+      c.getInitializer().isBase() and
+      m.getDeclaringType() = c.getDeclaringType()
+    )
+  }
+
+  /**
+   * Holds if `m` is the `i`th member initialized by non-static constructor `c`.
+   */
+  predicate constructorInitializeOrder(Constructor c, InitializedInstanceMember m, int i) {
+    constructorInitializes(c, m) and
+    m = rank[i + 1](InitializedInstanceMember m0 |
+        constructorInitializes(c, m0)
+      |
+        m0
+        order by
+          m0.getLocation().getStartLine(), m0.getLocation().getStartColumn(),
+          m0.getLocation().getFile().getAbsolutePath()
+      )
+  }
+
+  /** Gets the last member initialized by non-static constructor `c`. */
+  InitializedInstanceMember lastConstructorInitializer(Constructor c) {
+    exists(int i |
+      constructorInitializeOrder(c, result, i) and
+      not constructorInitializeOrder(c, _, i + 1)
+    )
+  }
+
+  /**
+   * A split for non-static member initializers belonging to a given non-static
+   * constructor. For example, in
+   *
+   * ```
+   * class C
+   * {
+   *     int Field1 = 0;
+   *     int Field2 = Field1 + 1;
+   *     int Field3;
+   *
+   *     public C()
+   *     {
+   *         Field3 = 2;
+   *     }
+   *
+   *     public C(int i)
+   *     {
+   *         Field3 = 3;
+   *     }
+   * }
+   * ```
+   *
+   * the initializer expressions `Field1 = 0` and `Field2 = Field1 + 1` are split
+   * on the two constructors. This is in order to generate CFGs for the two
+   * constructors that mimic
+   *
+   * ```
+   * public C()
+   * {
+   *     Field1 = 0;
+   *     Field2 = Field1 + 1;
+   *     Field3 = 2;
+   * }
+   * ```
+   *
+   * and
+   *
+   * ```
+   * public C()
+   * {
+   *     Field1 = 0;
+   *     Field2 = Field1 + 1;
+   *     Field3 = 3;
+   * }
+   * ```
+   *
+   * respectively.
+   */
+  class InitializerSplitImpl extends SplitImpl, TInitializerSplit {
+    private Constructor c;
+
+    InitializerSplitImpl() { this = TInitializerSplit(c) }
+
+    /** Gets the constructor. */
+    Constructor getConstructor() { result = c }
+
+    override string toString() { result = "" }
+  }
+
+  private class InitializerSplitKind extends SplitKind, TInitializerSplitKind {
+    override int getListOrder() { result = 0 }
+
+    override predicate isEnabled(ControlFlowElement cfe) { this.appliesTo(cfe) }
+
+    override string toString() { result = "Initializer" }
+  }
+
+  int getNextListOrder() { result = 1 }
+
+  private class InitializerSplitInternal extends SplitInternal, InitializerSplitImpl {
+    override InitializerSplitKind getKind() { any() }
+
+    override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      exists(ConstructorInitializer ci |
+        pred = last(ci, c) and
+        succ = succ(pred, c) and
+        succ = any(InitializedInstanceMember m).getAnInitializerDescendant() and
+        this.getConstructor() = ci.getConstructor()
+      )
+    }
+
+    override predicate hasEntry(Callable c, ControlFlowElement succ) {
+      succ = succEntry(c) and
+      c = this.getConstructor() and
+      succ = any(InitializedInstanceMember m).getAnInitializerDescendant()
+    }
+
+    override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesTo(pred) and
+      succ = succ(pred, c) and
+      not succ = any(InitializedInstanceMember m).getAnInitializerDescendant() and
+      succ.getEnclosingCallable() = this.getConstructor()
+    }
+
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
+      this.appliesTo(pred) and
+      result = succExit(pred, c) and
+      result = this.getConstructor()
+    }
+
+    override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+      this.appliesTo(pred) and
+      succ = succ(pred, c) and
+      succ = any(InitializedInstanceMember m | constructorInitializes(this.getConstructor(), m))
+            .getAnInitializerDescendant()
+    }
+  }
+}
+
+pragma[noinline]
+private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
+  result = cfe.getAChild() and
+  c = result.getEnclosingCallable()
 }
 
 module FinallySplitting {
@@ -206,12 +405,6 @@ module FinallySplitting {
         this instanceof NormalSuccessor
       else this.matchesCompletion(c)
     }
-  }
-
-  pragma[noinline]
-  private ControlFlowElement getAChild(ControlFlowElement cfe, Callable c) {
-    result = cfe.getAChild() and
-    c = result.getEnclosingCallable()
   }
 
   /**
@@ -294,10 +487,12 @@ module FinallySplitting {
   }
 
   private class FinallySplitKind extends SplitKind, TFinallySplitKind {
-    override int getListOrder() { result = 0 }
+    override int getListOrder() { result = InitializerSplitting::getNextListOrder() }
 
     override string toString() { result = "Finally" }
   }
+
+  int getNextListOrder() { result = InitializerSplitting::getNextListOrder() + 1 }
 
   private class FinallySplitInternal extends SplitInternal, FinallySplitImpl {
     override FinallySplitKind getKind() { any() }
@@ -315,6 +510,8 @@ module FinallySplitting {
         pred instanceof NonFinallyControlFlowElement
       )
     }
+
+    override predicate hasEntry(Callable c, ControlFlowElement succ) { none() }
 
     /**
      * Holds if this split applies to control flow element `pred`, where `pred`
@@ -366,8 +563,8 @@ module FinallySplitting {
       )
     }
 
-    override predicate hasExit(ControlFlowElement pred, Completion c) {
-      exists(succExit(pred, c)) and
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
+      result = succExit(pred, c) and
       (
         exit(pred, c)
         or
@@ -445,10 +642,12 @@ module ExceptionHandlerSplitting {
   }
 
   private class ExceptionHandlerSplitKind extends SplitKind, TExceptionHandlerSplitKind {
-    override int getListOrder() { result = 1 }
+    override int getListOrder() { result = FinallySplitting::getNextListOrder() }
 
     override string toString() { result = "ExceptionHandler" }
   }
+
+  int getNextListOrder() { result = FinallySplitting::getNextListOrder() + 1 }
 
   private class ExceptionHandlerSplitInternal extends SplitInternal, ExceptionHandlerSplitImpl {
     override ExceptionHandlerSplitKind getKind() { any() }
@@ -460,6 +659,8 @@ module ExceptionHandlerSplitting {
         succ = ts.getCatchClause(0).(SpecificCatchClause)
       )
     }
+
+    override predicate hasEntry(Callable c, ControlFlowElement succ) { none() }
 
     /**
      * Holds if this split applies to catch clause `scc`. The parameter `match`
@@ -539,10 +740,10 @@ module ExceptionHandlerSplitting {
       )
     }
 
-    override predicate hasExit(ControlFlowElement pred, Completion c) {
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
       // Exit out from last `catch` clause (no catch clauses match)
       this.hasLastExit(pred, c) and
-      exists(succExit(pred, c))
+      result = succExit(pred, c)
     }
 
     override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
@@ -720,6 +921,27 @@ module BooleanSplitting {
     }
   }
 
+  private int getListOrder(BooleanSplitSubKind kind) {
+    exists(Callable c, int r | c = kind.getEnclosingCallable() |
+      result = r + ExceptionHandlerSplitting::getNextListOrder() - 1 and
+      kind = rank[r](BooleanSplitSubKind kind0 |
+          kind0.getEnclosingCallable() = c and
+          kind0.startsSplit(_)
+        |
+          kind0
+          order by
+            kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn(),
+            kind0.toString()
+        )
+    )
+  }
+
+  int getNextListOrder() {
+    result = max(int i |
+        i = getListOrder(_) + 1 or i = ExceptionHandlerSplitting::getNextListOrder()
+      )
+  }
+
   private class BooleanSplitKind extends SplitKind, TBooleanSplitKind {
     private BooleanSplitSubKind kind;
 
@@ -728,20 +950,7 @@ module BooleanSplitting {
     /** Gets the sub kind of this Boolean split kind. */
     BooleanSplitSubKind getSubKind() { result = kind }
 
-    override int getListOrder() {
-      exists(Callable c, int r | c = kind.getEnclosingCallable() |
-        result = r + 1 and // start the ordering from 2
-        kind = rank[r](BooleanSplitSubKind kind0 |
-            kind0.getEnclosingCallable() = c and
-            kind0.startsSplit(_)
-          |
-            kind0
-            order by
-              kind0.getLocation().getStartLine(), kind0.getLocation().getStartColumn(),
-              kind0.toString()
-          )
-      )
-    }
+    override int getListOrder() { result = getListOrder(kind) }
 
     override string toString() { result = kind.toString() }
   }
@@ -754,6 +963,8 @@ module BooleanSplitting {
       this.getSubKind().startsSplit(pred) and
       this.getBranch() = c.getInnerCompletion().(BooleanCompletion).getValue()
     }
+
+    override predicate hasEntry(Callable c, ControlFlowElement succ) { none() }
 
     private ConditionBlock getACorrelatedCondition(boolean inverted) {
       this.getSubKind().correlatesConditions(_, result, inverted)
@@ -787,10 +998,10 @@ module BooleanSplitting {
       )
     }
 
-    override predicate hasExit(ControlFlowElement pred, Completion c) {
+    override Callable hasExit(ControlFlowElement pred, Completion c) {
       exists(PreBasicBlock bb | this.appliesToBlock(bb, c) |
         pred = bb.getLastElement() and
-        exists(succExit(pred, c))
+        result = succExit(pred, c)
       )
     }
 
@@ -830,6 +1041,26 @@ class Splits extends TSplits {
   }
 }
 
+private predicate succEntrySplitsFromRank(
+  @top_level_exprorstmt_parent pred, ControlFlowElement succ, Splits splits, int rnk
+) {
+  splits = TSplitsNil() and
+  succ = succEntry(pred) and
+  rnk = 0
+  or
+  exists(SplitInternal head, Splits tail | succEntrySplitsCons(pred, succ, head, tail, rnk) |
+    splits = TSplitsCons(head, tail)
+  )
+}
+
+private predicate succEntrySplitsCons(
+  Callable pred, ControlFlowElement succ, SplitInternal head, Splits tail, int rnk
+) {
+  succEntrySplitsFromRank(pred, succ, tail, rnk - 1) and
+  head.hasEntry(pred, succ) and
+  rnk = head.getKind().getListRank(succ)
+}
+
 /**
  * Holds if `succ` with splits `succSplits` is the first element that is executed
  * when entering callable `pred`.
@@ -838,9 +1069,16 @@ pragma[noinline]
 predicate succEntrySplits(
   @top_level_exprorstmt_parent pred, ControlFlowElement succ, Splits succSplits, SuccessorType t
 ) {
-  succ = succEntry(pred) and
-  t instanceof NormalSuccessor and
-  succSplits = TSplitsNil() // initially no splits
+  exists(int rnk |
+    succ = succEntry(pred) and
+    t instanceof NormalSuccessor and
+    succEntrySplitsFromRank(pred, succ, succSplits, rnk)
+  |
+    rnk = 0 and
+    not any(SplitInternal split).hasEntry(pred, succ)
+    or
+    rnk = max(SplitInternal split | split.hasEntry(pred, succ) | split.getKind().getListRank(succ))
+  )
 }
 
 /**
@@ -853,7 +1091,7 @@ predicate succExitSplits(ControlFlowElement pred, Splits predSplits, Callable su
     t.matchesCompletion(c) and
     succ = succExit(pred, c) and
     forall(SplitInternal predSplit | predSplit = predSplits.getASplit() |
-      predSplit.hasExit(pred, c)
+      succ = predSplit.hasExit(pred, c)
     )
   )
 }

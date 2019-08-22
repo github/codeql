@@ -364,8 +364,29 @@ class LocalConstant extends LocalVariable, @local_constant {
  */
 class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent, DotNet::Field,
   @field {
-  /** Gets the initializer of this field, if any. */
+  /**
+   * Gets the initial value of this field, if any. For example, the initial
+   * value of `F` on line 2 is `20` in
+   *
+   * ```
+   * class C {
+   *   public int F = 20;
+   * }
+   * ```
+   */
   override Expr getInitializer() { result = this.getChildExpr(0).getChildExpr(0) }
+
+  /**
+   * Holds if this field has an initial value. For example, the initial
+   * value of `F` on line 2 is `20` in
+   *
+   * ```
+   * class C {
+   *   public int F = 20;
+   * }
+   * ```
+   */
+  predicate hasInitializer() { exists(this.getInitializer()) }
 
   /** Holds if this field is `volatile`. */
   predicate isVolatile() { this.hasModifier("volatile") }

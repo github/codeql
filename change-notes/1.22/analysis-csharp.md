@@ -41,5 +41,6 @@
   - The new predicate `ConstructedGeneric.getAnnotatedTypeArgument()` gets the annotated type of a type argument
   - The new predicate `TypeParameterConstraints.getAnAnnotatedTypeConstraint()` gets a type constraint with type annotations
 * The new class `SuppressNullableWarningExpr` models suppress-nullable-warning expressions such as `x!`
+* The data-flow library (and taint-tracking library) now supports flow through fields. All existing configurations will have field-flow enabled by default, but it can be disabled by adding `override int fieldFlowBranchLimit() { result = 0 }` to the configuration class. Field assignments, `this.Foo = x`, object initializers, `new C() { Foo = x }`, and field initializers `int Foo = 0` are supported.
 
 ## Changes to autobuilder

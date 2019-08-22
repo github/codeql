@@ -726,7 +726,7 @@ module AssignableDefinitions {
   class InitializerDefinition extends AssignmentDefinition {
     private Assignable fieldOrProp;
 
-    InitializerDefinition() { this.getAssignment().getParent() = fieldOrProp}
+    InitializerDefinition() { this.getAssignment().getParent() = fieldOrProp }
 
     /** Gets the assignable (field or property) being initialized. */
     Assignable getAssignable() { result = fieldOrProp }
