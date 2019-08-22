@@ -444,7 +444,8 @@ class InvalidOverride extends MethodViolation {
 
   InvalidOverride() {
     base = getMethod().getOverriddenMethod() and
-    not getMethod().getDeclaringType().getABaseType+() = base.getDeclaringType()
+    not getMethod().getDeclaringType().getABaseType+() = base.getDeclaringType() and
+    base.getDeclaringType().isSourceDeclaration() // Bases classes of constructed types aren't extracted properly.
   }
 
   override string getMessage() {

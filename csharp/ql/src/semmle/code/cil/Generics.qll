@@ -40,6 +40,4 @@ class ConstructedType extends ConstructedGeneric, Type { }
 /** A constructed generic method. */
 class ConstructedMethod extends ConstructedGeneric, Method {
   final override UnboundGenericMethod getUnboundGeneric() { result = getUnboundMethod() }
-
-  final override Location getLocation() { result = getUnboundGeneric().getLocation() }
 }

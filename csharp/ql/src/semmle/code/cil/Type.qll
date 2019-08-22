@@ -57,10 +57,10 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
     qualifier = this.getParent().getQualifiedName()
   }
 
-  override Location getLocation() {
+  override Location getALocation() {
     cil_type_location(this, result)
     or
-    result = getUnboundType().getLocation()
+    result = getSourceDeclaration().getALocation()
   }
 
   /** Holds if this type is a class. */
@@ -115,4 +115,6 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
    * of a higher index.
    */
   int getConversionIndex() { result = 0 }
+
+  override Type getSourceDeclaration() { cil_type(this, _, _, _, result) }
 }

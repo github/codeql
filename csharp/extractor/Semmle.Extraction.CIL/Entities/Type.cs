@@ -57,11 +57,6 @@ namespace Semmle.Extraction.CIL.Entities
 
         public abstract void WriteId(TextWriter trapFile);
 
-        /// <summary>
-        /// For debugging purposes.
-        /// </summary>
-        string DebugId => this.GetDebugLabel();
-
         public void WriteQuotedId(TextWriter trapFile)
         {
             trapFile.Write("@\"");
@@ -508,11 +503,10 @@ namespace Semmle.Extraction.CIL.Entities
                 if (td.Attributes.HasFlag(TypeAttributes.Abstract))
                     yield return Tuples.cil_abstract(this);
 
-                if (td.Attributes.HasFlag(TypeAttributes.Class))
-                    yield return Tuples.cil_class(this);
-
                 if (td.Attributes.HasFlag(TypeAttributes.Interface))
                     yield return Tuples.cil_interface(this);
+                else
+                    yield return Tuples.cil_class(this);
 
                 if (td.Attributes.HasFlag(TypeAttributes.Public))
                     yield return Tuples.cil_public(this);
