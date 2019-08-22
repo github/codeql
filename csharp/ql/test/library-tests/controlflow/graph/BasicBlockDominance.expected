@@ -569,6 +569,9 @@
 | post | Initializers.cs:10:10:10:10 | enter M | Initializers.cs:10:10:10:10 | enter M |
 | post | Initializers.cs:16:20:16:20 | 1 | Initializers.cs:16:20:16:20 | 1 |
 | post | Initializers.cs:18:11:18:23 | enter NoConstructor | Initializers.cs:18:11:18:23 | enter NoConstructor |
+| post | Initializers.cs:29:9:29:11 | enter Sub | Initializers.cs:29:9:29:11 | enter Sub |
+| post | Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | enter Sub |
+| post | Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | enter Sub |
 | post | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | enter M1 |
 | post | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:9:3:10 | enter M1 |
 | post | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:9:3:10 | exit M1 |
@@ -2116,6 +2119,9 @@
 | pre | Initializers.cs:10:10:10:10 | enter M | Initializers.cs:10:10:10:10 | enter M |
 | pre | Initializers.cs:16:20:16:20 | 1 | Initializers.cs:16:20:16:20 | 1 |
 | pre | Initializers.cs:18:11:18:23 | enter NoConstructor | Initializers.cs:18:11:18:23 | enter NoConstructor |
+| pre | Initializers.cs:29:9:29:11 | enter Sub | Initializers.cs:29:9:29:11 | enter Sub |
+| pre | Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:9:31:11 | enter Sub |
+| pre | Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:33:9:33:11 | enter Sub |
 | pre | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | enter M1 |
 | pre | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:9:3:10 | exit M1 |
 | pre | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:28:3:28 | 0 |

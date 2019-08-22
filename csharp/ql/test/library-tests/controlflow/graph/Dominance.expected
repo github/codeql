@@ -1249,13 +1249,47 @@
 | post | Initializers.cs:13:42:13:61 | object creation of type Initializers | Initializers.cs:13:59:13:60 | "" |
 | post | Initializers.cs:13:59:13:60 | "" | Initializers.cs:13:39:13:39 | access to local variable i |
 | post | Initializers.cs:16:16:16:20 | ... = ... | Initializers.cs:16:20:16:20 | 1 |
-| post | Initializers.cs:18:11:18:23 | exit NoConstructor | Initializers.cs:21:13:21:17 | ... = ... |
-| post | Initializers.cs:20:13:20:13 | this access | Initializers.cs:18:11:18:23 | enter NoConstructor |
-| post | Initializers.cs:20:13:20:17 | ... = ... | Initializers.cs:20:17:20:17 | 0 |
-| post | Initializers.cs:20:17:20:17 | 0 | Initializers.cs:20:13:20:13 | this access |
-| post | Initializers.cs:21:13:21:13 | this access | Initializers.cs:20:13:20:17 | ... = ... |
-| post | Initializers.cs:21:13:21:17 | ... = ... | Initializers.cs:21:17:21:17 | 1 |
-| post | Initializers.cs:21:17:21:17 | 1 | Initializers.cs:21:13:21:13 | this access |
+| post | Initializers.cs:18:11:18:23 | exit NoConstructor | Initializers.cs:21:23:21:27 | ... = ... |
+| post | Initializers.cs:20:23:20:23 | this access | Initializers.cs:18:11:18:23 | enter NoConstructor |
+| post | Initializers.cs:20:23:20:23 | this access | Initializers.cs:33:9:33:11 | enter Sub |
+| post | Initializers.cs:20:23:20:27 | ... = ... | Initializers.cs:20:27:20:27 | 0 |
+| post | Initializers.cs:20:23:20:27 | ... = ... | Initializers.cs:20:27:20:27 | 0 |
+| post | Initializers.cs:20:27:20:27 | 0 | Initializers.cs:20:23:20:23 | this access |
+| post | Initializers.cs:20:27:20:27 | 0 | Initializers.cs:20:23:20:23 | this access |
+| post | Initializers.cs:21:23:21:23 | this access | Initializers.cs:20:23:20:27 | ... = ... |
+| post | Initializers.cs:21:23:21:23 | this access | Initializers.cs:20:23:20:27 | ... = ... |
+| post | Initializers.cs:21:23:21:27 | ... = ... | Initializers.cs:21:27:21:27 | 1 |
+| post | Initializers.cs:21:23:21:27 | ... = ... | Initializers.cs:21:27:21:27 | 1 |
+| post | Initializers.cs:21:27:21:27 | 1 | Initializers.cs:21:23:21:23 | this access |
+| post | Initializers.cs:21:27:21:27 | 1 | Initializers.cs:21:23:21:23 | this access |
+| post | Initializers.cs:26:13:26:13 | this access | Initializers.cs:21:23:21:27 | ... = ... |
+| post | Initializers.cs:26:13:26:13 | this access | Initializers.cs:29:17:29:20 | call to constructor NoConstructor |
+| post | Initializers.cs:26:13:26:17 | ... = ... | Initializers.cs:26:17:26:17 | 2 |
+| post | Initializers.cs:26:13:26:17 | ... = ... | Initializers.cs:26:17:26:17 | 2 |
+| post | Initializers.cs:26:17:26:17 | 2 | Initializers.cs:26:13:26:13 | this access |
+| post | Initializers.cs:26:17:26:17 | 2 | Initializers.cs:26:13:26:13 | this access |
+| post | Initializers.cs:29:9:29:11 | exit Sub | Initializers.cs:29:26:29:30 | ... = ... |
+| post | Initializers.cs:29:17:29:20 | call to constructor NoConstructor | Initializers.cs:29:9:29:11 | enter Sub |
+| post | Initializers.cs:29:24:29:33 | {...} | Initializers.cs:26:13:26:17 | ... = ... |
+| post | Initializers.cs:29:26:29:26 | this access | Initializers.cs:29:26:29:31 | ...; |
+| post | Initializers.cs:29:26:29:30 | ... = ... | Initializers.cs:29:30:29:30 | 3 |
+| post | Initializers.cs:29:26:29:31 | ...; | Initializers.cs:29:24:29:33 | {...} |
+| post | Initializers.cs:29:30:29:30 | 3 | Initializers.cs:29:26:29:26 | this access |
+| post | Initializers.cs:31:9:31:11 | exit Sub | Initializers.cs:31:31:31:35 | ... = ... |
+| post | Initializers.cs:31:22:31:25 | call to constructor Sub | Initializers.cs:31:9:31:11 | enter Sub |
+| post | Initializers.cs:31:29:31:38 | {...} | Initializers.cs:31:22:31:25 | call to constructor Sub |
+| post | Initializers.cs:31:31:31:31 | this access | Initializers.cs:31:31:31:36 | ...; |
+| post | Initializers.cs:31:31:31:35 | ... = ... | Initializers.cs:31:35:31:35 | access to parameter i |
+| post | Initializers.cs:31:31:31:36 | ...; | Initializers.cs:31:29:31:38 | {...} |
+| post | Initializers.cs:31:35:31:35 | access to parameter i | Initializers.cs:31:31:31:31 | this access |
+| post | Initializers.cs:33:9:33:11 | exit Sub | Initializers.cs:33:29:33:37 | ... = ... |
+| post | Initializers.cs:33:27:33:40 | {...} | Initializers.cs:26:13:26:17 | ... = ... |
+| post | Initializers.cs:33:29:33:29 | this access | Initializers.cs:33:29:33:38 | ...; |
+| post | Initializers.cs:33:29:33:37 | ... = ... | Initializers.cs:33:33:33:37 | ... + ... |
+| post | Initializers.cs:33:29:33:38 | ...; | Initializers.cs:33:27:33:40 | {...} |
+| post | Initializers.cs:33:33:33:33 | access to parameter i | Initializers.cs:33:29:33:29 | this access |
+| post | Initializers.cs:33:33:33:37 | ... + ... | Initializers.cs:33:37:33:37 | access to parameter j |
+| post | Initializers.cs:33:37:33:37 | access to parameter j | Initializers.cs:33:33:33:33 | access to parameter i |
 | post | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:23:3:23 | access to parameter i |
 | post | NullCoalescing.cs:3:9:3:10 | exit M1 | NullCoalescing.cs:3:28:3:28 | 0 |
 | post | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
@@ -3810,13 +3844,47 @@
 | pre | Initializers.cs:13:42:13:61 | object creation of type Initializers | Initializers.cs:13:37:13:63 | { ..., ... } |
 | pre | Initializers.cs:13:59:13:60 | "" | Initializers.cs:13:42:13:61 | object creation of type Initializers |
 | pre | Initializers.cs:16:20:16:20 | 1 | Initializers.cs:16:16:16:20 | ... = ... |
-| pre | Initializers.cs:18:11:18:23 | enter NoConstructor | Initializers.cs:20:13:20:13 | this access |
-| pre | Initializers.cs:20:13:20:13 | this access | Initializers.cs:20:17:20:17 | 0 |
-| pre | Initializers.cs:20:13:20:17 | ... = ... | Initializers.cs:21:13:21:13 | this access |
-| pre | Initializers.cs:20:17:20:17 | 0 | Initializers.cs:20:13:20:17 | ... = ... |
-| pre | Initializers.cs:21:13:21:13 | this access | Initializers.cs:21:17:21:17 | 1 |
-| pre | Initializers.cs:21:13:21:17 | ... = ... | Initializers.cs:18:11:18:23 | exit NoConstructor |
-| pre | Initializers.cs:21:17:21:17 | 1 | Initializers.cs:21:13:21:17 | ... = ... |
+| pre | Initializers.cs:18:11:18:23 | enter NoConstructor | Initializers.cs:20:23:20:23 | this access |
+| pre | Initializers.cs:20:23:20:23 | this access | Initializers.cs:20:27:20:27 | 0 |
+| pre | Initializers.cs:20:23:20:23 | this access | Initializers.cs:20:27:20:27 | 0 |
+| pre | Initializers.cs:20:23:20:27 | ... = ... | Initializers.cs:21:23:21:23 | this access |
+| pre | Initializers.cs:20:23:20:27 | ... = ... | Initializers.cs:21:23:21:23 | this access |
+| pre | Initializers.cs:20:27:20:27 | 0 | Initializers.cs:20:23:20:27 | ... = ... |
+| pre | Initializers.cs:20:27:20:27 | 0 | Initializers.cs:20:23:20:27 | ... = ... |
+| pre | Initializers.cs:21:23:21:23 | this access | Initializers.cs:21:27:21:27 | 1 |
+| pre | Initializers.cs:21:23:21:23 | this access | Initializers.cs:21:27:21:27 | 1 |
+| pre | Initializers.cs:21:23:21:27 | ... = ... | Initializers.cs:18:11:18:23 | exit NoConstructor |
+| pre | Initializers.cs:21:23:21:27 | ... = ... | Initializers.cs:26:13:26:13 | this access |
+| pre | Initializers.cs:21:27:21:27 | 1 | Initializers.cs:21:23:21:27 | ... = ... |
+| pre | Initializers.cs:21:27:21:27 | 1 | Initializers.cs:21:23:21:27 | ... = ... |
+| pre | Initializers.cs:26:13:26:13 | this access | Initializers.cs:26:17:26:17 | 2 |
+| pre | Initializers.cs:26:13:26:13 | this access | Initializers.cs:26:17:26:17 | 2 |
+| pre | Initializers.cs:26:13:26:17 | ... = ... | Initializers.cs:29:24:29:33 | {...} |
+| pre | Initializers.cs:26:13:26:17 | ... = ... | Initializers.cs:33:27:33:40 | {...} |
+| pre | Initializers.cs:26:17:26:17 | 2 | Initializers.cs:26:13:26:17 | ... = ... |
+| pre | Initializers.cs:26:17:26:17 | 2 | Initializers.cs:26:13:26:17 | ... = ... |
+| pre | Initializers.cs:29:9:29:11 | enter Sub | Initializers.cs:29:17:29:20 | call to constructor NoConstructor |
+| pre | Initializers.cs:29:17:29:20 | call to constructor NoConstructor | Initializers.cs:26:13:26:13 | this access |
+| pre | Initializers.cs:29:24:29:33 | {...} | Initializers.cs:29:26:29:31 | ...; |
+| pre | Initializers.cs:29:26:29:26 | this access | Initializers.cs:29:30:29:30 | 3 |
+| pre | Initializers.cs:29:26:29:30 | ... = ... | Initializers.cs:29:9:29:11 | exit Sub |
+| pre | Initializers.cs:29:26:29:31 | ...; | Initializers.cs:29:26:29:26 | this access |
+| pre | Initializers.cs:29:30:29:30 | 3 | Initializers.cs:29:26:29:30 | ... = ... |
+| pre | Initializers.cs:31:9:31:11 | enter Sub | Initializers.cs:31:22:31:25 | call to constructor Sub |
+| pre | Initializers.cs:31:22:31:25 | call to constructor Sub | Initializers.cs:31:29:31:38 | {...} |
+| pre | Initializers.cs:31:29:31:38 | {...} | Initializers.cs:31:31:31:36 | ...; |
+| pre | Initializers.cs:31:31:31:31 | this access | Initializers.cs:31:35:31:35 | access to parameter i |
+| pre | Initializers.cs:31:31:31:35 | ... = ... | Initializers.cs:31:9:31:11 | exit Sub |
+| pre | Initializers.cs:31:31:31:36 | ...; | Initializers.cs:31:31:31:31 | this access |
+| pre | Initializers.cs:31:35:31:35 | access to parameter i | Initializers.cs:31:31:31:35 | ... = ... |
+| pre | Initializers.cs:33:9:33:11 | enter Sub | Initializers.cs:20:23:20:23 | this access |
+| pre | Initializers.cs:33:27:33:40 | {...} | Initializers.cs:33:29:33:38 | ...; |
+| pre | Initializers.cs:33:29:33:29 | this access | Initializers.cs:33:33:33:33 | access to parameter i |
+| pre | Initializers.cs:33:29:33:37 | ... = ... | Initializers.cs:33:9:33:11 | exit Sub |
+| pre | Initializers.cs:33:29:33:38 | ...; | Initializers.cs:33:29:33:29 | this access |
+| pre | Initializers.cs:33:33:33:33 | access to parameter i | Initializers.cs:33:37:33:37 | access to parameter j |
+| pre | Initializers.cs:33:33:33:37 | ... + ... | Initializers.cs:33:29:33:37 | ... = ... |
+| pre | Initializers.cs:33:37:33:37 | access to parameter j | Initializers.cs:33:33:33:37 | ... + ... |
 | pre | NullCoalescing.cs:3:9:3:10 | enter M1 | NullCoalescing.cs:3:23:3:28 | ... ?? ... |
 | pre | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:9:3:10 | exit M1 |
 | pre | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:28:3:28 | 0 |
