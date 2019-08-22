@@ -6,22 +6,21 @@ Introduction to variant analysis for Java
 
    Semmle :sup:`TM`
 
-.. Include information slides here
+.. rst-class:: setup
 
-.. include:: ../slide-snippets/info.rst
+Setup
+=====
 
-.. Include details of project to analyze here
+For this example you should download:
 
-QL snapshot
-===========
-
-For the examples in this presentation, we will be analyzing `Apache Struts <https://github.com/apache/struts>`__.
-
-We recommend you download `this historic snapshot <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__ to analyze in QL for Eclipse.
-
-Alternatively, you can query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java//>`__ on LGTM.com.
+- `QL for Eclipse <https://help.semmle.com/ql-for-eclipse/Content/WebHelp/install-plugin-free.html>`__
+- `Apache Struts snapshot <https://downloads.lgtm.com/snapshots/java/apache/struts/apache-struts-7fd1622-CVE-2018-11776.zip>`__
 
 .. note::
+
+   For this example, we will be analyzing `Apache Struts <https://github.com/apache/struts>`__.
+
+   You can also query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java/>`__ on LGTM.com.
 
    Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
 

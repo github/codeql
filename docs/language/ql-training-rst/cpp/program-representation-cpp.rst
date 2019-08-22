@@ -6,9 +6,7 @@ Program representation in QL for C/C++
 
    Semmle :sup:`TM`
 
-.. Include information slides here
-
-.. include:: ../slide-snippets/info.rst
+.. rst-class:: agenda
 
 Agenda
 ======

@@ -45,12 +45,6 @@ Zoom in on the code...
   However, there’s no sanity checking, and a developer might call it with an array that’s too short, holding direction information for only one of the thrusters. 
   The function will then read past the end of the array, and unpredictable results occur.
 
-.. rst-class:: background2
-
-How it all works
-================
-
-
 Write a query...
 ================
 
@@ -87,18 +81,18 @@ Find all instances!
 
 - All were fixed with a mid-flight patch.
 
-.. container:: image-box
-
-   .. image:: ../_static-training/curiosity2.png
-    
+- For more detail on the collaboration between Semmle and NASA, see our case study: `Semmle at NASA: Landing Curiosity safely on Mars <https://semmle.com/case-studies/semmle-nasa-landing-curiosity-safely-mars>`__.
 
 .. note::
 
   The JPL team ran the query across the full Curiosity control software–it identified the original problem, and more than 30 other variants, of which three were in the critical Entry, Descent, and Landing module. 
 
   The team addressed all issues, and patched the firmware remotely. Not long after, the Curiosity Rover landed safely on Mars.
-  
-  For more detail on the collaboration between Semmle and NASA, see our case study: `Semmle at NASA: Landing Curiosity safely on Mars <https://semmle.com/case-studies/semmle-nasa-landing-curiosity-safely-mars>`__.
+
+.. rst-class:: background2
+
+How it all works
+================
 
 Analysis overview
 =================
