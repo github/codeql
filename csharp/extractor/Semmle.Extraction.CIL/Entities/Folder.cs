@@ -16,7 +16,6 @@ namespace Semmle.Extraction.CIL.Entities
             this.path = path;
         }
 
-
         public override void WriteId(TextWriter trapFile)
         {
             trapFile.Write(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));

@@ -25,7 +25,7 @@ namespace Semmle.Extraction
         }
 
         /// <summary>
-        ///     Whether one Location ends before another starts.
+        /// Whether one Location ends before another starts.
         /// </summary>
         /// <param name="before">The Location coming before</param>
         /// <param name="after">The Location coming after</param>

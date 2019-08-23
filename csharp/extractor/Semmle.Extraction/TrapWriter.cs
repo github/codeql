@@ -10,7 +10,7 @@ namespace Semmle.Extraction
 {
     public interface ITrapEmitter
     {
-        void EmitToTrapBuilder(TextWriter tw);
+        void EmitToTrapBuilder(TextWriter trapFile);
     }
 
     public sealed class TrapWriter : IDisposable
@@ -88,7 +88,6 @@ namespace Semmle.Extraction
                         compressionStream = fileStream;
                         break;
                     default:
-                        // Dead code
                         throw new ArgumentException(nameof(trapCompression));
                 }
 

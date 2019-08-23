@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A property.
     /// </summary>
-    interface IProperty : ILabelledEntity
+    interface IProperty : IExtractedEntity
     {
     }
 
@@ -42,11 +42,12 @@ namespace Semmle.Extraction.CIL.Entities
             var signature = pd.DecodeSignature(new SignatureDecoder(), gc);
             foreach (var param in signature.ParameterTypes)
             {
-                trapFile.WriteSeparator(",", index++);
+                trapFile.WriteSeparator(",", ref index);
                 param.WriteId(trapFile, gc);
             }
             trapFile.Write(")");
         }
+
         public override bool Equals(object obj)
         {
             return obj is Property property && Equals(handle, property.handle);

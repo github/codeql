@@ -6,7 +6,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A parameter entity.
     /// </summary>
-    interface IParameter : ILabelledEntity
+    interface IParameter : IExtractedEntity
     {
     }
 

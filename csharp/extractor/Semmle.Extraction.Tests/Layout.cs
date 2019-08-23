@@ -178,9 +178,9 @@ namespace Semmle.Extraction.Tests
 
     static class TrapWriterTestExtensions
     {
-        public static void Emit(this TrapWriter tw, string s)
+        public static void Emit(this TrapWriter trapFile, string s)
         {
-            tw.Emit(new StringTrapEmitter(s));
+            trapFile.Emit(new StringTrapEmitter(s));
         }
 
         class StringTrapEmitter : ITrapEmitter
@@ -191,9 +191,9 @@ namespace Semmle.Extraction.Tests
                 Content = content;
             }
 
-            public void EmitToTrapBuilder(TextWriter tb)
+            public void EmitToTrapBuilder(TextWriter trapFile)
             {
-                tb.Write(Content);
+                trapFile.Write(Content);
             }
         }
     }

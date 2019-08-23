@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CIL
     {
         readonly Dictionary<object, Label> ids = new Dictionary<object, Label>();
 
-        public T Populate<T>(T e) where T : ILabelledEntity
+        public T Populate<T>(T e) where T : IExtractedEntity
         {
             if(e.Label.Valid)
             {
@@ -41,7 +41,7 @@ namespace Semmle.Extraction.CIL
                     e.WriteId(writer);
                     var id = writer.ToString();
 
-                    if (debugLabels.TryGetValue(id, out ILabelledEntity previousEntity))
+                    if (debugLabels.TryGetValue(id, out IExtractedEntity previousEntity))
                     {
                         cx.Extractor.Message(new Message("Duplicate trap ID", id, null, severity: Util.Logging.Severity.Warning));
                     }
@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CIL
         }
 
 #if DEBUG_LABELS
-        private readonly Dictionary<string, ILabelledEntity> debugLabels = new Dictionary<string, ILabelledEntity>();
+        private readonly Dictionary<string, IExtractedEntity> debugLabels = new Dictionary<string, IExtractedEntity>();
 #endif
 
         public IExtractedEntity Create(Handle h)
@@ -95,13 +95,13 @@ namespace Semmle.Extraction.CIL
         /// <param name="h">The handle of the entity.</param>
         /// <param name="genericContext">The generic context.</param>
         /// <returns></returns>
-        public ILabelledEntity CreateGeneric(GenericContext genericContext, Handle h) => genericHandleFactory[genericContext, h];
+        public IExtractedEntity CreateGeneric(GenericContext genericContext, Handle h) => genericHandleFactory[genericContext, h];
 
         readonly GenericContext defaultGenericContext;
 
-        ILabelledEntity CreateGenericHandle(GenericContext gc, Handle handle)
+        IExtractedEntity CreateGenericHandle(GenericContext gc, Handle handle)
         {
-            ILabelledEntity entity;
+            IExtractedEntity entity;
             switch (handle.Kind)
             {
                 case HandleKind.MethodDefinition:
@@ -118,7 +118,8 @@ namespace Semmle.Extraction.CIL
                     break;
                 case HandleKind.TypeReference:
                     var tr = new TypeReferenceType(this, (TypeReferenceHandle)handle);
-                    if (tr.TryGetPrimitiveType(gc.cx, out var pt))
+                    if (tr.TryGetPrimitiveType(out var pt))
+                        // Map special names like `System.Int32` to `int`
                         return pt;
                     entity = tr;
                     break;
@@ -135,7 +136,7 @@ namespace Semmle.Extraction.CIL
             return entity;
         }
 
-        ILabelledEntity Create(GenericContext gc, MemberReferenceHandle handle)
+        IExtractedEntity Create(GenericContext gc, MemberReferenceHandle handle)
         {
             var mr = mdReader.GetMemberReference(handle);
             switch (mr.GetKind())
@@ -226,7 +227,7 @@ namespace Semmle.Extraction.CIL
 
 #endregion
 
-        readonly CachedFunction<GenericContext, Handle, ILabelledEntity> genericHandleFactory;
+        readonly CachedFunction<GenericContext, Handle, IExtractedEntity> genericHandleFactory;
 
         /// <summary>
         /// Gets the short name of a member, without the preceding interface qualifier.

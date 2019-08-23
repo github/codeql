@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// An event.
     /// </summary>
-    interface IEvent : ILabelledEntity
+    interface IEvent : IExtractedEntity
     {
     }
 

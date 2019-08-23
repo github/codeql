@@ -22,10 +22,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(TextWriter tw)
+        public override void WriteId(TextWriter trapFile)
         {
-            tw.WriteSubId(Context.Create(symbol.Location));
-            tw.Write(";commentblock");
+            trapFile.WriteSubId(Context.Create(symbol.Location));
+            trapFile.Write(";commentblock");
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => symbol.Location;

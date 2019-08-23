@@ -17,7 +17,7 @@ namespace Semmle.Extraction
         /// <summary>
         /// Appends this ID to the supplied trap builder.
         /// </summary>
-        void AppendTo(TextWriter tw);
+        void AppendTo(TextWriter trapFile);
     }
 
     /// <summary>
@@ -38,9 +38,9 @@ namespace Semmle.Extraction
 
         public override int GetHashCode() => 0;
 
-        public void AppendTo(System.IO.TextWriter tw)
+        public void AppendTo(TextWriter trapFile)
         {
-            tw.Write('*');
+            trapFile.Write('*');
         }
     }
 
@@ -97,11 +97,11 @@ namespace Semmle.Extraction
 
         public override int GetHashCode() => TrapBuilder.ToString().GetHashCode();
 
-        public void AppendTo(TextWriter tb)
+        public void AppendTo(TextWriter trapFile)
         {
-            tb.Write("@\"");
-            tb.Write(TrapBuilder.ToString());
-            tb.Write("\"");
+            trapFile.Write("@\"");
+            trapFile.Write(TrapBuilder.ToString());
+            trapFile.Write("\"");
         }
     }
 
@@ -143,14 +143,14 @@ namespace Semmle.Extraction
         /// <summary>
         /// Constructs a unique string for this label.
         /// </summary>
-        /// <param name="tb">The trap builder used to store the result.</param>
-        public void AppendTo(System.IO.TextWriter tw)
+        /// <param name="trapFile">The trap builder used to store the result.</param>
+        public void AppendTo(System.IO.TextWriter trapFile)
         {
             if (!Valid)
                 throw new NullReferenceException("Attempt to use an invalid label");
 
-            tw.Write('#');
-            tw.Write(Value);
+            trapFile.Write('#');
+            trapFile.Write(Value);
         }
     }
 }

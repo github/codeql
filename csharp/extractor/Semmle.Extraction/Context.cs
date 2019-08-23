@@ -54,24 +54,26 @@ namespace Semmle.Extraction
             return init == null ? CreateEntity2(factory, init) : CreateNonNullEntity(factory, init);
         }
 
-        bool DefiningLabel = false;
+        // A recursion guard against writing to the trap file whilst writing an id to the trap file.
+        bool WritingLabel = false;
 
         public void DefineLabel(IEntity entity, TextWriter trapFile)
         {
-            if (DefiningLabel)
+            if (WritingLabel)
             {
+                // Don't define a label whilst writing a label.
                 PopulateLater(() => DefineLabel(entity, trapFile));
             }
             else
             {
                 try
                 {
-                    DefiningLabel = true;
+                    WritingLabel = true;
                     entity.DefineLabel(trapFile);
                 }
                 finally
                 {
-                    DefiningLabel = false;
+                    WritingLabel = false;
                 }
             }
         }
@@ -330,19 +332,19 @@ namespace Semmle.Extraction
                 Key = key;
             }
 
-            public void EmitToTrapBuilder(TextWriter tw)
+            public void EmitToTrapBuilder(TextWriter trapFile)
             {
-                tw.Write(".push ");
-                Key.AppendTo(tw);
-                tw.WriteLine();
+                trapFile.Write(".push ");
+                Key.AppendTo(trapFile);
+                trapFile.WriteLine();
             }
         }
 
         class PopEmitter : ITrapEmitter
         {
-            public void EmitToTrapBuilder(TextWriter tw)
+            public void EmitToTrapBuilder(TextWriter trapFile)
             {
-                tw.WriteLine(".pop");
+                trapFile.WriteLine(".pop");
             }
         }
 
@@ -356,7 +358,7 @@ namespace Semmle.Extraction
         /// <exception cref="InternalError">Thrown on invalid trap stack behaviour.</exception>
         public void Populate(ISymbol optionalSymbol, ICachedEntity entity)
         {
-            if (DefiningLabel)
+            if (WritingLabel)
             {
                 // Don't write tuples etc if we're currently defining a label
                 PopulateLater(() => Populate(optionalSymbol, entity));

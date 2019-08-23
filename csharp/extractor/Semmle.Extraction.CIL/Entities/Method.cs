@@ -64,7 +64,7 @@ namespace Semmle.Extraction.CIL.Entities
             int index = 0;
             foreach (var param in signature.ParameterTypes)
             {
-                trapFile.WriteSeparator(",", index++);
+                trapFile.WriteSeparator(",", ref index);
                 param.WriteId(trapFile, this);
             }
             trapFile.Write(')');
@@ -503,7 +503,7 @@ namespace Semmle.Extraction.CIL.Entities
             int index = 0;
             foreach(var param in typeParams)
             {
-                trapFile.WriteSeparator(",", index++);
+                trapFile.WriteSeparator(",", ref index);
                 trapFile.WriteSubId(param);
             }
             trapFile.Write('>');
@@ -516,10 +516,7 @@ namespace Semmle.Extraction.CIL.Entities
             return obj is MethodSpecificationMethod method && handle.Equals(method.handle) && typeParams.SequenceEqual(method.typeParams);
         }
 
-        public override int GetHashCode()
-        {
-            return handle.GetHashCode() * 11 + typeParams.SequenceHash();
-        }
+        public override int GetHashCode() => handle.GetHashCode() * 11 + typeParams.SequenceHash();
 
         public override Method SourceDeclaration => unboundMethod;
 

@@ -123,10 +123,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override bool NeedsPopulation => true;
 
-        public override void WriteId(TextWriter tw)
+        public override void WriteId(TextWriter trapFile)
         {
-            tw.WriteSubId(Context.Create(Location));
-            tw.Write(";commentline");
+            trapFile.WriteSubId(Context.Create(Location));
+            trapFile.Write(";commentline");
         }
 
         static CommentLine Create(Context cx, Microsoft.CodeAnalysis.Location loc, CommentLineType type, string text, string raw) => CommentLineFactory.Instance.CreateEntity(cx, loc, type, text, raw);

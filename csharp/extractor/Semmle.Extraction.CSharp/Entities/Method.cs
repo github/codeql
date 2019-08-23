@@ -106,54 +106,54 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         ///  Factored out to share logic between `Method` and `UserOperator`.
         /// </summary>
-        protected static void BuildMethodId(Method m, TextWriter tw)
+        protected static void BuildMethodId(Method m, TextWriter trapFile)
         {
-            tw.WriteSubId(m.ContainingType);
+            trapFile.WriteSubId(m.ContainingType);
 
-            AddExplicitInterfaceQualifierToId(m.Context, tw, m.symbol.ExplicitInterfaceImplementations);
+            AddExplicitInterfaceQualifierToId(m.Context, trapFile, m.symbol.ExplicitInterfaceImplementations);
 
-            tw.Write(".");
-            tw.Write(m.symbol.Name);
+            trapFile.Write(".");
+            trapFile.Write(m.symbol.Name);
 
             if (m.symbol.IsGenericMethod)
             {
                 if (Equals(m.symbol, m.symbol.OriginalDefinition))
                 {
-                    tw.Write('`');
-                    tw.Write(m.symbol.TypeParameters.Length);
+                    trapFile.Write('`');
+                    trapFile.Write(m.symbol.TypeParameters.Length);
                 }
                 else
                 {
-                    tw.Write('<');
+                    trapFile.Write('<');
                     // Encode the nullability of the type arguments in the label.
                     // Type arguments with different nullability can result in 
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    tw.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); tw.Write((int)ta.Nullability); });
-                    tw.Write('>');
+                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); trapFile.Write((int)ta.Nullability); });
+                    trapFile.Write('>');
                 }
             }
 
-            AddParametersToId(m.Context, tw, m.symbol);
+            AddParametersToId(m.Context, trapFile, m.symbol);
             switch (m.symbol.MethodKind)
             {
                 case MethodKind.PropertyGet:
-                    tw.Write(";getter");
+                    trapFile.Write(";getter");
                     break;
                 case MethodKind.PropertySet:
-                    tw.Write(";setter");
+                    trapFile.Write(";setter");
                     break;
                 case MethodKind.EventAdd:
-                    tw.Write(";adder");
+                    trapFile.Write(";adder");
                     break;
                 case MethodKind.EventRaise:
-                    tw.Write(";raiser");
+                    trapFile.Write(";raiser");
                     break;
                 case MethodKind.EventRemove:
-                    tw.Write(";remover");
+                    trapFile.Write(";remover");
                     break;
                 default:
-                    tw.Write(";method");
+                    trapFile.Write(";method");
                     break;
             }
         }
@@ -164,7 +164,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
-        /// Adds an appropriate label ID to the trap builder <paramref name="tb"/>
+        /// Adds an appropriate label ID to the trap builder <paramref name="trapFile"/>
         /// for the type <paramref name="type"/> belonging to the signature of method
         /// <paramref name="method"/>.
         ///
@@ -199,54 +199,54 @@ namespace Semmle.Extraction.CSharp.Entities
         /// to make the reference to <code>#3</code> in the label definition <code>#4</code> for
         /// <code>T</code> valid.
         /// </summary>
-        protected static void AddSignatureTypeToId(Context cx, TextWriter tb, IMethodSymbol method, ITypeSymbol type)
+        protected static void AddSignatureTypeToId(Context cx, TextWriter trapFile, IMethodSymbol method, ITypeSymbol type)
         {
             if (type.ContainsTypeParameters(cx, method))
-                type.BuildTypeId(cx, tb, (cx0, tb0, type0) => AddSignatureTypeToId(cx, tb0, method, type0));
+                type.BuildTypeId(cx, trapFile, (cx0, tb0, type0) => AddSignatureTypeToId(cx, tb0, method, type0));
             else
-                tb.WriteSubId(Type.Create(cx, type));
+                trapFile.WriteSubId(Type.Create(cx, type));
         }
 
-        protected static void AddParametersToId(Context cx, TextWriter tb, IMethodSymbol method)
+        protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
         {
-            tb.Write('(');
+            trapFile.Write('(');
             int index = 0;
 
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
-                tb.WriteSeparator(",", index++);
-                AddSignatureTypeToId(cx, tb, method, method.ReceiverType);
+                trapFile.WriteSeparator(",", ref index);
+                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType);
             }
 
             foreach (var param in method.Parameters)
             {
-                tb.WriteSeparator(",", index++);
-                AddSignatureTypeToId(cx, tb, method, param.Type);
+                trapFile.WriteSeparator(",", ref index);
+                AddSignatureTypeToId(cx, trapFile, method, param.Type);
                 switch (param.RefKind)
                 {
                     case RefKind.Out:
-                        tb.Write(" out");
+                        trapFile.Write(" out");
                         break;
                     case RefKind.Ref:
-                        tb.Write(" ref");
+                        trapFile.Write(" ref");
                         break;
                 }
             }
 
             if (method.IsVararg)
             {
-                tb.WriteSeparator(",", index);
-                tb.Write("__arglist");
+                trapFile.WriteSeparator(",", ref index);
+                trapFile.Write("__arglist");
             }
 
-            tb.Write(')');
+            trapFile.Write(')');
         }
 
-        public static void AddExplicitInterfaceQualifierToId(Context cx, System.IO.TextWriter tw, IEnumerable<ISymbol> explicitInterfaceImplementations)
+        public static void AddExplicitInterfaceQualifierToId(Context cx, System.IO.TextWriter trapFile, IEnumerable<ISymbol> explicitInterfaceImplementations)
         {
             if (explicitInterfaceImplementations.Any())
             {
-                tw.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
+                trapFile.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
             }
         }
 

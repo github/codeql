@@ -520,7 +520,7 @@ class KindViolation extends TypeViolation {
   }
 
   override string getMessage() {
-    result = "Incorrect class/interface on type: " + concat(typeKind(this.getType()), " ")
+    result = "Invalid kinds on type: " + concat(typeKind(this.getType()), " ")
   }
 }
 

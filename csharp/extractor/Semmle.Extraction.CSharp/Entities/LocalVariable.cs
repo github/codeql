@@ -19,12 +19,12 @@ namespace Semmle.Extraction.CSharp.Entities
         readonly bool IsVar;
         readonly Extraction.Entities.Location DeclLocation;
 
-        public override void WriteId(TextWriter tw)
+        public override void WriteId(TextWriter trapFile)
         {
-            tw.WriteSubId(Parent);
-            tw.Write('_');
-            tw.Write(symbol.Name);
-            tw.Write(";localvar");
+            trapFile.WriteSubId(Parent);
+            trapFile.Write('_');
+            trapFile.Write(symbol.Name);
+            trapFile.Write(";localvar");
         }
 
         public override void Populate(TextWriter trapFile)

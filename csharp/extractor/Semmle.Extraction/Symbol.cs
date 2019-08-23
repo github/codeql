@@ -22,7 +22,10 @@ namespace Semmle.Extraction
 
         public abstract void Populate(TextWriter trapFile);
 
-        public string DebugTrapContents
+        /// <summary>
+        /// For debugging.
+        /// </summary>
+        public string DebugContents
         {
             get
             {

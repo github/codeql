@@ -39,7 +39,10 @@ namespace Semmle.Extraction
             cx.Try(null, null, () => Populate(cx.TrapWriter.Writer));
         }
 
-        public string DebugTuples
+        /// <summary>
+        /// For debugging.
+        /// </summary>
+        public string DebugContents
         {
             get
             {

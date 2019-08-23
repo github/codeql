@@ -4,42 +4,36 @@ namespace Semmle.Extraction
 {
     public static class TrapExtensions
     {
-        public static void WriteLabel(this TextWriter writer, int value)
+        public static void WriteLabel(this TextWriter trapFile, int value)
         {
-            writer.Write('#');
-            writer.Write(value);
+            trapFile.Write('#');
+            trapFile.Write(value);
         }
 
-        public static void WriteLabel(this TextWriter writer, IEntity entity)
+        public static void WriteLabel(this TextWriter trapFile, IEntity entity)
         {
-            writer.WriteLabel(entity.Label.Value);
+            trapFile.WriteLabel(entity.Label.Value);
         }
 
-        public static void WriteSubId(this TextWriter writer, IEntity entity)
+        public static void WriteSubId(this TextWriter trapFile, IEntity entity)
         {
-            writer.Write('{');
-            writer.WriteLabel(entity);
-            writer.Write('}');
+            trapFile.Write('{');
+            trapFile.WriteLabel(entity);
+            trapFile.Write('}');
         }
 
-        public static void WriteSeparator(this TextWriter writer, string separator, int index)
+        public static void WriteSeparator(this TextWriter trapFile, string separator, ref int index)
         {
-            if (index > 0) writer.Write(separator);
-        }
-
-        // This is temporary and we can get rid of IId entirely
-        public static void WriteIId(this TextWriter writer, IId iid)
-        {
-            iid.AppendTo(writer);
+            if (index++ > 0) trapFile.Write(separator);
         }
 
         public struct FirstParam
         {
             private readonly TextWriter Writer;
 
-            public FirstParam(TextWriter writer)
+            public FirstParam(TextWriter trapFile)
             {
-                Writer = writer;
+                Writer = trapFile;
             }
 
             public NextParam Param(IEntity entity)
@@ -64,9 +58,9 @@ namespace Semmle.Extraction
         {
             private readonly TextWriter Writer;
 
-            public NextParam(TextWriter writer)
+            public NextParam(TextWriter trapFile)
             {
-                Writer = writer;
+                Writer = trapFile;
             }
 
             private void WriteComma()
@@ -126,7 +120,7 @@ namespace Semmle.Extraction
                 encoding.GetByteCount(s) > maxStringBytes;
         }
 
-        private static void WriteString(TextWriter writer, string s) => writer.Write(EncodeString(s));
+        private static void WriteString(TextWriter trapFile, string s) => trapFile.Write(EncodeString(s));
 
         /// <summary>
         /// Truncates a string such that the output UTF8 does not exceed <paramref name="bytesRemaining"/> bytes.
@@ -161,104 +155,96 @@ namespace Semmle.Extraction
         /// Output a string to the trap file, such that the encoded output does not exceed
         /// <paramref name="bytesRemaining"/> bytes.
         /// </summary>
-        /// <param name="writer">The trapbuilder</param>
+        /// <param name="trapFile">The trapbuilder</param>
         /// <param name="s">The string to output.</param>
         /// <param name="bytesRemaining">The remaining bytes available to output.</param>
-        private static void WriteTruncatedString(TextWriter writer, string s, ref int bytesRemaining)
+        private static void WriteTruncatedString(TextWriter trapFile, string s, ref int bytesRemaining)
         {
-            WriteString(writer, TruncateString(s, ref bytesRemaining));
+            WriteString(trapFile, TruncateString(s, ref bytesRemaining));
         }
 
-        public static void WriteTrapString(this TextWriter writer, string s)
+        public static void WriteTrapString(this TextWriter trapFile, string s)
         {
-            writer.Write('\"');
+            trapFile.Write('\"');
             if (NeedsTruncation(s))
             {
                 // Slow path
                 int remaining = maxStringBytes;
-                WriteTruncatedString(writer, s, ref remaining);
+                WriteTruncatedString(trapFile, s, ref remaining);
             }
             else
             {
                 // Fast path
-                WriteString(writer, s);
+                WriteString(trapFile, s);
             }
-            writer.Write('\"');
+            trapFile.Write('\"');
         }
 
-        public static void WriteTrapFloat(this TextWriter writer, float f)
+        public static void WriteTrapFloat(this TextWriter trapFile, float f)
         {
-            writer.Write(f.ToString("0.#####e0"));  // Trap importer won't accept ints
+            trapFile.Write(f.ToString("0.#####e0"));  // Trap importer won't accept ints
         }
 
-
-        public static FirstParam BeginTuple(this TextWriter writer, string name)
+        public static FirstParam BeginTuple(this TextWriter trapFile, string name)
         {
-            writer.Write(name);
-            writer.Write('(');
-            return new FirstParam(writer);
+            trapFile.Write(name);
+            trapFile.Write('(');
+            return new FirstParam(trapFile);
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1)
         {
-            writer.BeginTuple(name).Param(p1).EndTuple();
+            trapFile.BeginTuple(name).Param(p1).EndTuple();
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1, IEntity p2)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, IEntity p2)
         {
-            writer.BeginTuple(name).Param(p1).Param(p2).EndTuple();
+            trapFile.BeginTuple(name).Param(p1).Param(p2).EndTuple();
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1, string p2, IEntity p3, IEntity p4)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, string p2, IEntity p3, IEntity p4)
         {
-            writer.BeginTuple(name).Param(p1).Param(p2).Param(p3).Param(p4).EndTuple();
+            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).Param(p4).EndTuple();
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1, string p2, IEntity p3)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, string p2, IEntity p3)
         {
-            writer.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
+            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1, int p2, IEntity p3)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, int p2, IEntity p3)
         {
-            writer.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
+            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1, int p2, int p3)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, int p2, int p3)
         {
-            writer.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
+            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1, IEntity p2, int p3)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, IEntity p2, int p3)
         {
-            writer.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
+            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1, IEntity p2, IEntity p3)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, IEntity p2, IEntity p3)
         {
-            writer.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
+            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1, string p2, IEntity p3, IEntity p4, IEntity p5)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, string p2, IEntity p3, IEntity p4, IEntity p5)
         {
-            writer.BeginTuple(name).Param(p1).Param(p2).Param(p3).Param(p4).Param(p5).EndTuple();
+            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).Param(p4).Param(p5).EndTuple();
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1, int p2)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, int p2)
         {
-            writer.BeginTuple(name).Param(p1).Param(p2).EndTuple();
+            trapFile.BeginTuple(name).Param(p1).Param(p2).EndTuple();
         }
 
-        public static void WriteTuple(this TextWriter writer, string name, IEntity p1, string p2)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, string p2)
         {
-            writer.BeginTuple(name).Param(p1).Param(p2).EndTuple();
-        }
-
-
-        // DELETEME
-        public static void Emit(this TextWriter writer, Tuple t)
-        {
-            t.EmitToTrapBuilder(writer);
+            trapFile.BeginTuple(name).Param(p1).Param(p2).EndTuple();
         }
     }
 }

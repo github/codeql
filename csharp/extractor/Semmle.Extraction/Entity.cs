@@ -28,15 +28,15 @@ namespace Semmle.Extraction
         /// <summary>
         /// Writes the unique identifier of this entitiy to a trap file.
         /// </summary>
-        /// <param name="writer"></param>
-        void WriteId(TextWriter writer);
+        /// <param name="trapFile">The trapfile to write to.</param>
+        void WriteId(TextWriter writrapFileter);
 
         /// <summary>
         /// Writes the quoted identifier of this entity,
         /// which could be @"..." or *
         /// </summary>
-        /// <param name="writer"></param>
-        void WriteQuotedId(TextWriter writer);
+        /// <param name="trapFile">The trapfile to write to.</param>
+        void WriteQuotedId(TextWriter trapFile);
 
         /// <summary>
         /// The location for reporting purposes.

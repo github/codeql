@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
-    interface ILocal : ILabelledEntity
+    interface ILocal : IExtractedEntity
     {
     }
 

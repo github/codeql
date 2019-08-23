@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CIL
     /// The extraction algorithm proceeds as follows:
     /// - Construct entity
     /// - Call Extract()
-    /// - ILabelledEntity check if already extracted
+    /// - IExtractedEntity check if already extracted
     /// - Enumerate Contents to produce more extraction products
     /// - Extract these until there is nothing left to extract
     /// </remarks>
@@ -78,7 +78,7 @@ namespace Semmle.Extraction.CIL
     /// An entity that needs to be populated during extraction.
     /// This assigns a key and optionally extracts its contents.
     /// </summary>
-    public abstract class LabelledEntity : ILabelledEntity
+    public abstract class LabelledEntity : IExtractedEntity
     {
         public abstract IEnumerable<IExtractionProduct> Contents { get; }
         public Label Label { get; set; }
@@ -118,13 +118,6 @@ namespace Semmle.Extraction.CIL
         }
 
         TrapStackBehaviour IEntity.TrapStackBehaviour => TrapStackBehaviour.NoLabel;
-    }
-
-    /// <summary>
-    /// An entity with a defined ID.
-    /// </summary>
-    public interface ILabelledEntity : IExtractedEntity
-    {
     }
 
     /// <summary>

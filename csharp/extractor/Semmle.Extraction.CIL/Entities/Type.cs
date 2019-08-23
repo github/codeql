@@ -39,7 +39,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// A type container (namespace/types/method).
     /// </summary>
-    interface ITypeContainer : ILabelledEntity
+    interface ITypeContainer : IExtractedEntity
     {
     }
 
@@ -231,10 +231,9 @@ namespace Semmle.Extraction.CIL.Entities
         /// <summary>
         /// Gets the primitive type corresponding to this type, if possible.
         /// </summary>
-        /// <param name="cx">Extraction context.</param>
-        /// <param name="t">The resulting primitive type.</param>
+        /// <param name="t">The resulting primitive type, or null.</param>
         /// <returns>True if this type is a primitive type.</returns>
-        public bool TryGetPrimitiveType(Context cx, out PrimitiveType t)
+        public bool TryGetPrimitiveType(out PrimitiveType t)
         {
             if (TryGetPrimitiveTypeCode(out var code))
             {
@@ -830,7 +829,7 @@ namespace Semmle.Extraction.CIL.Entities
                 int index = 0;
                 foreach (var t in thisTypeArguments)
                 {
-                    trapFile.WriteSeparator(",", index++);
+                    trapFile.WriteSeparator(",", ref index);
                     t.WriteId(trapFile);
                 }
                 trapFile.Write('>');
@@ -1253,7 +1252,7 @@ namespace Semmle.Extraction.CIL.Entities
                 int index = 0;
                 foreach(var arg in typeArguments)
                 {
-                    trapFile.WriteSeparator(",", index++);
+                    trapFile.WriteSeparator(",", ref index);
                     arg.WriteId(trapFile, gc);
                 }
                 trapFile.Write('>');
