@@ -103,34 +103,6 @@ namespace Semmle.Extraction
             tb.Write(TrapBuilder.ToString());
             tb.Write("\"");
         }
-
-        class IdTrapBuilder
-        {
-            public readonly List<string> Fragments = new List<string>();
-
-            public void Append(object arg)
-            {
-                if (arg is IEntity)
-                {
-                    var key = ((IEntity)arg).Label;
-                    Fragments.Add("{#");
-                    Fragments.Add(key.Value.ToString());
-                    Fragments.Add("}");
-                }
-                else
-                    Fragments.Add(arg.ToString());
-            }
-
-            public void Append(string arg)
-            {
-                Fragments.Add(arg);
-            }
-
-            public void AppendLine()
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 
     /// <summary>

@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CIL
         }
 
 #if DEBUG_LABELS
-        Dictionary<string, ILabelledEntity> debugLabels = new Dictionary<string, ILabelledEntity>();
+        private readonly Dictionary<string, ILabelledEntity> debugLabels = new Dictionary<string, ILabelledEntity>();
 #endif
 
         public IExtractedEntity Create(Handle h)
@@ -66,7 +66,7 @@ namespace Semmle.Extraction.CIL
         }
 
         // Lazily cache primitive types.
-        PrimitiveType[] primitiveTypes = new PrimitiveType[(int)PrimitiveTypeCode.Object + 1];
+        private readonly PrimitiveType[] primitiveTypes = new PrimitiveType[(int)PrimitiveTypeCode.Object + 1];
 
         public PrimitiveType Create(PrimitiveTypeCode code)
         {
