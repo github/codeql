@@ -1,5 +1,10 @@
 import csharp
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
+private import DataFlow::BarrierGuards
+
+private class NullBarrierGuard extends ValueBarrierGuard {
+  NullBarrierGuard() { val = any(NullValue nv | not nv.isNull()) }
+}
 
 class MyFlowSource extends DataFlow::Node {
   MyFlowSource() {
@@ -20,7 +25,5 @@ class MyFlowSource extends DataFlow::Node {
 }
 
 class MyNullGuardedDataFlowNode extends DataFlow::Node {
-  MyNullGuardedDataFlowNode() {
-    this = any(DataFlow::BarrierGuards::NullGuard ng).getAGuardedNode()
-  }
+  MyNullGuardedDataFlowNode() { this = any(NullBarrierGuard ng).getAGuardedNode() }
 }

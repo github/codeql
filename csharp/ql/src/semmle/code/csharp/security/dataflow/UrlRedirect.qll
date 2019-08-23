@@ -30,7 +30,7 @@ module UrlRedirect {
   /**
    * A guard for unvalidated URL redirect vulnerabilities.
    */
-  abstract class BarrierGuard extends DataFlow::BarrierGuard { }
+  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A taint-tracking configuration for reasoning about unvalidated URL redirect vulnerabilities.
@@ -45,7 +45,7 @@ module UrlRedirect {
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
     override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof BarrierGuard
+      guard instanceof SanitizerGuard
     }
   }
 
@@ -107,7 +107,7 @@ module UrlRedirect {
   /**
    * A URL argument to a call to `UrlHelper.isLocalUrl()` that is a sanitizer for URL redirects.
    */
-  class IsLocalUrlSanitizer extends BarrierGuard, MethodCall {
+  class IsLocalUrlSanitizer extends SanitizerGuard, MethodCall {
     IsLocalUrlSanitizer() { this.getTarget().hasName("IsLocalUrl") }
 
     override predicate checks(Expr e, AbstractValue v) {

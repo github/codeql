@@ -1,5 +1,9 @@
 import csharp
-import semmle.code.csharp.controlflow.Guards
+private import DataFlow::BarrierGuards
+
+private class AntiNullBarrierGuard extends ValueBarrierGuard {
+  AntiNullBarrierGuard() { val.(NullValue).isNull() }
+}
 
 class Configuration extends DataFlow::Configuration {
   Configuration() { this = "Configuration" }
@@ -9,7 +13,7 @@ class Configuration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) { any() }
 
   override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof DataFlow::BarrierGuards::AntiNullGuard
+    guard instanceof AntiNullBarrierGuard
   }
 }
 

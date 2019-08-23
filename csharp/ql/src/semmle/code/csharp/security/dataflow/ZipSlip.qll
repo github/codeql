@@ -25,7 +25,7 @@ module ZipSlip {
   /**
    * A guard for unsafe zip extraction.
    */
-  abstract class BarrierGuard extends DataFlow::BarrierGuard { }
+  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A taint tracking configuration for Zip Slip */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
@@ -38,7 +38,7 @@ module ZipSlip {
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
     override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof BarrierGuard
+      guard instanceof SanitizerGuard
     }
   }
 
@@ -132,7 +132,7 @@ module ZipSlip {
    * A call to `String.StartsWith()` that indicates that the tainted path value is being
    * validated to ensure that it occurs within a permitted output path.
    */
-  class StringCheckGuard extends BarrierGuard, MethodCall {
+  class StringCheckGuard extends SanitizerGuard, MethodCall {
     private Expr q;
 
     StringCheckGuard() {

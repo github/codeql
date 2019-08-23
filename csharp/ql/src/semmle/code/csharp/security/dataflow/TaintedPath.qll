@@ -30,7 +30,7 @@ module TaintedPath {
   /**
    * A guard for uncontrolled data in path expression vulnerabilities.
    */
-  abstract class BarrierGuard extends DataFlow::BarrierGuard { }
+  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
@@ -45,7 +45,7 @@ module TaintedPath {
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
     override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof BarrierGuard
+      guard instanceof SanitizerGuard
     }
   }
 
@@ -102,12 +102,16 @@ module TaintedPath {
     }
   }
 
+  class NullBarrierGuard extends DataFlow::BarrierGuards::ValueBarrierGuard {
+    NullBarrierGuard() { val instanceof DataFlow::BarrierGuards::NullValue }
+  }
+
   /**
    * A conditional involving the path, that is not considered to be a weak check.
    *
    * A weak check is one that is insufficient to prevent path tampering.
    */
-  class PathCheck extends BarrierGuard {
+  class PathCheck extends SanitizerGuard {
     PathCheck() {
       // None of these are sufficient to guarantee that a string is safe.
       not this.(MethodCall).getTarget() = any(Method m |
@@ -119,8 +123,7 @@ module TaintedPath {
           m = any(SystemIODirectoryClass f).getAMethod("Exists")
         ) and
       // Checking against `null` has no bearing on path traversal.
-      not this instanceof DataFlow::BarrierGuards::NullGuard and
-      not this instanceof DataFlow::BarrierGuards::AntiNullGuard
+      not this instanceof NullBarrierGuard
     }
 
     override predicate checks(Expr e, AbstractValue v) { this.controlsNode(_, e, v) }
