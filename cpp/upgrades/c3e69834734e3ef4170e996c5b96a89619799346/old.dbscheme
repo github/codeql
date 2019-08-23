@@ -1026,8 +1026,7 @@ frienddecls(
          | @namequalifier
          | @specialnamequalifyingelement
          | @static_assert
-         | @type_mention
-         | @lambdacapture;
+         | @type_mention;
 
 @exprparent = @element;
 
