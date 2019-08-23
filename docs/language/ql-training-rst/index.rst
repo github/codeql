@@ -11,3 +11,4 @@ QL training and variant analysis examples
    :hidden:
 
    ./**/*
+   template
