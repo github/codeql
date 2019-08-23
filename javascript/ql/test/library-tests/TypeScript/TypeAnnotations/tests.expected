@@ -257,3 +257,7 @@ test_ReturnTypes
 test_KeyofTypeExpr
 | tst.ts:49:16:49:30 | keyof Interface | tst.ts:49:22:49:30 | Interface |
 | tst.ts:113:26:113:35 | keyof Node | tst.ts:113:32:113:35 | Node |
+test_TaggedTemplateLiteralTypeArgument
+| tst.ts:139:37:139:58 | someTag ... `Hello` | 0 | tst.ts:139:45:139:50 | number |
+| tst.ts:140:37:140:66 | someTag ... `Hello` | 0 | tst.ts:140:45:140:50 | number |
+| tst.ts:140:37:140:66 | someTag ... `Hello` | 1 | tst.ts:140:53:140:58 | string |

@@ -1,5 +1,11 @@
 package com.semmle.js.extractor;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+
 import com.semmle.js.ast.AClass;
 import com.semmle.js.ast.AFunction;
 import com.semmle.js.ast.AFunctionExpression;
@@ -125,7 +131,6 @@ import com.semmle.ts.ast.InterfaceDeclaration;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
 import com.semmle.ts.ast.IsTypeExpr;
-import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.NamespaceDeclaration;
@@ -139,15 +144,11 @@ import com.semmle.ts.ast.TypeAssertion;
 import com.semmle.ts.ast.TypeExpression;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
+import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.collections.CollectionUtil;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
 
 /** Extractor for AST-based information; invoked by the {@link JSExtractor}. */
 public class ASTExtractor {
@@ -1120,6 +1121,7 @@ public class ASTExtractor {
       Label key = super.visit(nd, c);
       visit(nd.getTag(), key, 0);
       visit(nd.getQuasi(), key, 1);
+      visitAll(nd.getTypeArguments(), key, IdContext.typeBind, 2);
       return key;
     }
 
