@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id py/clear-text-logging
+ * @id py/clear-text-storage-sensitive-data
  * @tags security
  *       external/cwe/cwe-312
  *       external/cwe/cwe-315

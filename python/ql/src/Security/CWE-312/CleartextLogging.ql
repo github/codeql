@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id py/clear-text-storage-of-sensitive-data
+ * @id py/clear-text-logging-sensitive-data
  * @tags security
  *       external/cwe/cwe-312
  *       external/cwe/cwe-315
@@ -37,5 +37,5 @@ class CleartextLoggingConfiguration extends TaintTracking::Configuration {
 
 from CleartextLoggingConfiguration config, TaintedPathSource source, TaintedPathSink sink
 where config.hasFlowPath(source, sink)
-select sink.getSink(), source, sink, "Sensitive data returned by $@ is stored here.",
+select sink.getSink(), source, sink, "Sensitive data returned by $@ is logged here.",
   source.getSource(), source.getNode().(SensitiveData::Source).repr()
