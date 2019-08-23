@@ -22,6 +22,11 @@ module ZipSlip {
    */
   abstract class Sanitizer extends DataFlow::ExprNode { }
 
+  /**
+   * A guard for unsafe zip extraction.
+   */
+  abstract class BarrierGuard extends DataFlow::BarrierGuard { }
+
   /** A taint tracking configuration for Zip Slip */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
     TaintTrackingConfiguration() { this = "ZipSlipTaintTracking" }
@@ -31,6 +36,10 @@ module ZipSlip {
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof BarrierGuard
+    }
   }
 
   /** An access to the `FullName` property of a `ZipArchiveEntry`. */
@@ -120,27 +129,26 @@ module ZipSlip {
   }
 
   /**
-   * An expression which is guarded by a call to `String.StartsWith`.
-   *
-   * A call to the method `String.StartsWith` can indicate the the tainted path value is being
+   * A call to `String.StartsWith()` that indicates that the tainted path value is being
    * validated to ensure that it occurs within a permitted output path.
    */
-  class StringCheckSanitizer extends Sanitizer {
-    StringCheckSanitizer() {
-      exists(MethodCall mc, Expr startsWithQualifier, AbstractValues::BooleanValue v |
-        mc = this.(GuardedDataFlowNode).getAGuard(startsWithQualifier, v)
-      |
-        v.getValue() = true and
-        mc.getTarget().hasQualifiedName("System.String", "StartsWith") and
-        mc.getQualifier() = startsWithQualifier and
-        // A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
-        // not yet been resolved.
-        not exists(MethodCall combineCall |
-          combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
-          DataFlow::localFlow(DataFlow::exprNode(combineCall),
-            DataFlow::exprNode(startsWithQualifier))
-        )
+  class StringCheckGuard extends BarrierGuard, MethodCall {
+    private Expr q;
+
+    StringCheckGuard() {
+      this.getTarget().hasQualifiedName("System.String", "StartsWith") and
+      this.getQualifier() = q and
+      // A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
+      // not yet been resolved.
+      not exists(MethodCall combineCall |
+        combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
+        DataFlow::localFlow(DataFlow::exprNode(combineCall), DataFlow::exprNode(q))
       )
+    }
+
+    override predicate checks(Expr e, AbstractValue v) {
+      e = q and
+      v.(AbstractValues::BooleanValue).getValue() = true
     }
   }
 }

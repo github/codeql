@@ -28,6 +28,11 @@ module TaintedPath {
   abstract class Sanitizer extends DataFlow::ExprNode { }
 
   /**
+   * A guard for uncontrolled data in path expression vulnerabilities.
+   */
+  abstract class BarrierGuard extends DataFlow::BarrierGuard { }
+
+  /**
    * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
    */
   class TaintTrackingConfiguration extends TaintTracking::Configuration {
@@ -38,6 +43,10 @@ module TaintedPath {
     override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+
+    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+      guard instanceof BarrierGuard
+    }
   }
 
   /** A source of remote user input. */
@@ -94,43 +103,27 @@ module TaintedPath {
   }
 
   /**
-   * Holds if this expression is part of a check that is insufficient to prevent path tampering.
-   */
-  private predicate inWeakCheck(Expr e) {
-    // None of these are sufficient to guarantee that a string is safe.
-    exists(MethodCall m, Method def | m.getTarget() = def |
-      m.getQualifier() = e and
-      (
-        def.getName() = "StartsWith" or
-        def.getName() = "EndsWith"
-      )
-      or
-      m.getArgument(0) = e and
-      (
-        def.getName() = "IsNullOrEmpty" or
-        def.getName() = "IsNullOrWhitespace" or
-        def = any(SystemIOFileClass f).getAMethod("Exists") or
-        def = any(SystemIODirectoryClass f).getAMethod("Exists")
-      )
-    )
-    or
-    // Checking against `null` has no bearing on path traversal.
-    exists(EqualityOperation b | b.getAnOperand() = e | b.getAnOperand() instanceof NullLiteral)
-  }
-
-  /**
    * A conditional involving the path, that is not considered to be a weak check.
    *
    * A weak check is one that is insufficient to prevent path tampering.
    */
-  class PathCheck extends Sanitizer {
+  class PathCheck extends BarrierGuard {
     PathCheck() {
-      // This expression is structurally replicated in a dominating guard which is not a "weak" check
-      exists(Expr e, AbstractValues::BooleanValue v |
-        exists(this.(GuardedDataFlowNode).getAGuard(e, v)) and
-        not inWeakCheck(e)
-      )
+      // None of these are sufficient to guarantee that a string is safe.
+      not this.(MethodCall).getTarget() = any(Method m |
+          m.getName() = "StartsWith" or
+          m.getName() = "EndsWith" or
+          m.getName() = "IsNullOrEmpty" or
+          m.getName() = "IsNullOrWhitespace" or
+          m = any(SystemIOFileClass f).getAMethod("Exists") or
+          m = any(SystemIODirectoryClass f).getAMethod("Exists")
+        ) and
+      // Checking against `null` has no bearing on path traversal.
+      not this instanceof DataFlow::BarrierGuards::NullGuard and
+      not this instanceof DataFlow::BarrierGuards::AntiNullGuard
     }
+
+    override predicate checks(Expr e, AbstractValue v) { this.controlsNode(_, e, v) }
   }
 
   /**

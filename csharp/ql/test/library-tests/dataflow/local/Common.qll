@@ -18,3 +18,9 @@ class MyFlowSource extends DataFlow::Node {
     )
   }
 }
+
+class MyNullGuardedDataFlowNode extends DataFlow::Node {
+  MyNullGuardedDataFlowNode() {
+    this = any(DataFlow::BarrierGuards::NullGuard ng).getAGuardedNode()
+  }
+}

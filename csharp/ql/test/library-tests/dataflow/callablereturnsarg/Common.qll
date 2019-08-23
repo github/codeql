@@ -8,14 +8,8 @@ class Configuration extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { any() }
 
-  override predicate isBarrier(DataFlow::Node node) {
-    exists(EQExpr eq, Expr e, AbstractValues::BooleanValue v |
-      eq = node.(GuardedDataFlowNode).getAGuard(e, v)
-    |
-      v.getValue() = true and
-      eq.getAnOperand() = e and
-      eq.getAnOperand() instanceof NullLiteral
-    )
+  override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
+    guard instanceof DataFlow::BarrierGuards::AntiNullGuard
   }
 }
 

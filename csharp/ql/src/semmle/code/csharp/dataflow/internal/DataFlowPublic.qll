@@ -178,12 +178,51 @@ abstract class NonLocalJumpNode extends Node {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends Internal::Guard {
-  /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `v`. */
-  abstract deprecated predicate checks(Expr e, AbstractValue v);
+class BarrierGuard extends Guard {
+  /** Holds if this guard validates `e` upon evaluating to `v`. */
+  abstract predicate checks(Expr e, AbstractValue v);
 
   /** Gets a node guarded by this guard. */
-  final Node getAGuardedNode() {
-    none() // stub
+  final ExprNode getAGuardedNode() {
+    exists(Expr e, AbstractValue v |
+      this.checks(e, v) and
+      this.controlsNode(result.getControlFlowNode(), e, v)
+    )
+  }
+}
+
+module BarrierGuards {
+  /** A simple guard that checks that this expression has an abstract value. */
+  class ValueBarrierGuard extends BarrierGuard {
+    private AbstractValue v0;
+
+    ValueBarrierGuard() { this.controlsNode(_, this, v0) }
+
+    /**
+     * Gets the abstract value that this expression is checked against.
+     *
+     * For example, in
+     *
+     * ```
+     * if (x == null)
+     *    ...
+     * ```
+     *
+     * `x == null` is checked against an abstract Boolean value (`BooleanValue`),
+     * and `x` is checked against an abstract nullness value (`NullValue`).
+     */
+    AbstractValue getCheckedValue() { result = v0 }
+
+    final override predicate checks(Expr e, AbstractValue v) { e = this and v = v0 }
+  }
+
+  /** A guard that checks if this expression is non-`null`. */
+  class NullGuard extends DataFlow::BarrierGuards::ValueBarrierGuard {
+    NullGuard() { this.getCheckedValue() = any(AbstractValues::NullValue nv | not nv.isNull()) }
+  }
+
+  /** A guard that checks if this expression is `null`. */
+  class AntiNullGuard extends DataFlow::BarrierGuards::ValueBarrierGuard {
+    AntiNullGuard() { this.getCheckedValue().(AbstractValues::NullValue).isNull() }
   }
 }

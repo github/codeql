@@ -1,10 +1,9 @@
 import csharp
 import Common
-import semmle.code.csharp.controlflow.Guards
 
 predicate step(DataFlow::Node pred, DataFlow::Node succ) {
   TaintTracking::localTaintStep(pred, succ) and
-  not succ instanceof NullGuardedDataFlowNode
+  not succ instanceof MyNullGuardedDataFlowNode
 }
 
 from MyFlowSource source, DataFlow::Node sink, Access target
