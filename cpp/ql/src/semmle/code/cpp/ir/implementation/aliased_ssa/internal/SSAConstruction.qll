@@ -325,6 +325,10 @@ cached private module Cached {
     result = getOldInstruction(instruction).(OldIR::StringConstantInstruction).getValue()
   }
 
+  cached BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
+    result = getOldInstruction(instruction).(OldIR::BuiltInOperationInstruction).getBuiltInOperation()
+  }
+
   cached Type getInstructionExceptionType(Instruction instruction) {
     result = getOldInstruction(instruction).(OldIR::CatchByTypeInstruction).getExceptionType()
   }

@@ -1,4 +1,4 @@
-import csharp
+private import csharp
 private import TaintTrackingPrivate
 
 /**

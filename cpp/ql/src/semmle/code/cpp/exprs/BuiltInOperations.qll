@@ -4,6 +4,7 @@ import semmle.code.cpp.exprs.Expr
  * A C/C++ builtin operation.
  */
 abstract class BuiltInOperation extends Expr {
+  override string getCanonicalQLClass() { result = "BuiltInOperation" }
 }
 
 /**

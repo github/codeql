@@ -1,6 +1,7 @@
 private import csharp
 private import cil
 private import dotnet
+private import DataFlowDispatch
 private import DataFlowPrivate
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.controlflow.Guards
@@ -34,7 +35,7 @@ class Node extends TNode {
 
   /** Gets the enclosing callable of this node. */
   cached
-  DotNet::Callable getEnclosingCallable() { none() }
+  DataFlowCallable getEnclosingCallable() { none() }
 
   /** Gets the control flow node corresponding to this node, if any. */
   cached
@@ -88,7 +89,7 @@ class ExprNode extends Node {
     result = cfn.getElement()
   }
 
-  override DotNet::Callable getEnclosingCallable() {
+  override DataFlowCallable getEnclosingCallable() {
     Stages::DataFlowStage::forceCachingInSameStage() and
     result = this.getExpr().getEnclosingCallable()
   }
@@ -136,7 +137,7 @@ class ParameterNode extends Node {
    * Holds if this node is the parameter of callable `c` at the specified
    * (zero-based) position.
    */
-  predicate isParameterOf(DotNet::Callable c, int i) { none() }
+  predicate isParameterOf(DataFlowCallable c, int i) { none() }
 }
 
 /** Gets a node corresponding to expression `e`. */
@@ -147,7 +148,11 @@ ExprNode exprNode(DotNet::Expr e) { result.getExpr() = e }
  */
 ParameterNode parameterNode(DotNet::Parameter p) { result.getParameter() = p }
 
-predicate localFlowStep = localFlowStepImpl/2;
+/**
+ * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
+ * (intra-procedural) step.
+ */
+predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local

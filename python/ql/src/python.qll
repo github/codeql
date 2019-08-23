@@ -32,7 +32,7 @@ import semmle.python.Assigns
 import semmle.python.SelfAttribute
 import semmle.python.types.Properties
 import semmle.python.xml.XML
-import semmle.dataflow.SSA
+import semmle.python.essa.Essa
 import semmle.python.pointsto.Base
 import semmle.python.pointsto.Context
 import semmle.python.pointsto.CallGraph

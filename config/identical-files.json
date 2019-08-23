@@ -25,6 +25,17 @@
     "cpp/ql/src/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "csharp/ql/src/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll"
   ],
+  "TaintTracking::Configuration Java/C++/C#": [
+    "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
+    "cpp/ql/src/semmle/code/cpp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking4/TaintTrackingImpl.qll",
+    "csharp/ql/src/semmle/code/csharp/dataflow/internal/tainttracking5/TaintTrackingImpl.qll",
+    "java/ql/src/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
+    "java/ql/src/semmle/code/java/dataflow/internal/tainttracking2/TaintTrackingImpl.qll"
+  ],
   "IR Instruction": [
     "cpp/ql/src/semmle/code/cpp/ir/implementation/raw/Instruction.qll",
     "cpp/ql/src/semmle/code/cpp/ir/implementation/unaliased_ssa/Instruction.qll",

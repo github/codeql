@@ -160,6 +160,49 @@ String matching
 -  x.\ `regexpMatch <https://help.semmle.com/qldoc/javascript/predicate.string$regexpMatch.1.html>`__\ ("(?i).*escape.*") -- holds if x contains
    "escape" (case insensitive)
 
+Type tracking
+-------------
+
+See also: :doc:`Type tracking tutorial <type-tracking>`.
+
+Use the following template to define forward type tracking predicates:
+
+.. code-block:: ql
+
+  import DataFlow
+
+  SourceNode myType(TypeTracker t) {
+    t.start() and
+    result = /* SourceNode to track */
+    or
+    exists(TypeTracker t2 |
+      result = myType(t2).track(t2, t)
+    )
+  }
+
+  SourceNode myType() {
+    result = myType(TypeTracker::end())
+  }
+
+Use the following template to define backward type tracking predicates:
+
+.. code-block:: ql
+
+  import DataFlow
+
+  SourceNode myType(TypeBackTracker t) {
+    t.start() and
+    result = (/* argument to track */).getALocalSource()
+    or
+    exists(TypeBackTracker t2 |
+      result = myType(t2).backtrack(t2, t)
+    )
+  }
+
+  SourceNode myType() {
+    result = myType(TypeBackTracker::end())
+  }
+
 Troubleshooting
 ---------------
 

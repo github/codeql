@@ -156,6 +156,16 @@ UninitializedNode uninitializedNode(LocalVariable v) { result.getLocalVariable()
  * (intra-procedural) step.
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStep(nodeFrom, nodeTo)
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * This is the local flow predicate that's used as a building block in global
+ * data flow. It may have less flow than the `localFlowStep` predicate.
+ */
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   nodeTo.(CopyInstruction).getSourceValue() = nodeFrom or
   nodeTo.(PhiInstruction).getAnOperand().getDef() = nodeFrom or
   // Treat all conversions as flow, even conversions between different numeric types.

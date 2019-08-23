@@ -25,6 +25,8 @@
 - The predicate `Variable.getAnAssignedValue()` now reports assignments to fields resulting from aggregate initialization (` = {...}`).
 - The predicate `TypeMention.toString()` has been simplified to always return the string "`type mention`".  This may improve performance when using `Element.toString()` or its descendants.
 - The `semmle.code.cpp.security.TaintTracking` library now considers a pointer difference calculation as blocking taint flow.
+- The second copy of the interprocedural `TaintTracking` library has been renamed from `TaintTracking::Configuration2` to `TaintTracking2::Configuration`, and the old name is now deprecated. Import `semmle.code.cpp.dataflow.TaintTracking2` to access the new name.
 - Fixed the `LocalScopeVariableReachability.qll` library's handling of loops with an entry condition is both always true upon first entry, and where there is more than one control flow path through the loop condition.  This change increases the accuracy of the `LocalScopeVariableReachability.qll` library and queries which depend on it.
 - The `semmle.code.cpp.models` library now models data flow through `std::swap`.
 - There is a new `Variable.isThreadLocal()` predicate. It can be used to tell whether a variable is `thread_local`.
+- Recursion through the `DataFlow` library is now always a compile error. Such recursion has been deprecated since release 1.16. If one `DataFlow::Configuration` needs to depend on the results of another, switch one of them to use one of the `DataFlow2` through `DataFlow4` libraries.

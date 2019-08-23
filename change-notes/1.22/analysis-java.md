@@ -16,4 +16,4 @@
   removes false positives that arose from paths through impossible `toString()`
   calls.
 * The library `VCS.qll` and all queries that imported it have been removed.
-
+* The second copy of the interprocedural `TaintTracking` library has been renamed from `TaintTracking::Configuration2` to `TaintTracking2::Configuration`, and the old name is now deprecated. Import `semmle.code.java.dataflow.TaintTracking2` to access the new name.

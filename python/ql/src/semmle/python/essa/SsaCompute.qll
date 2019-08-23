@@ -91,7 +91,6 @@
 
 
 import python
-import semmle.dataflow.SSA
 
 
 private cached module SsaComputeImpl {

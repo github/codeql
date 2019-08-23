@@ -525,6 +525,7 @@ module Pruner {
     }
 
     /** Holds if `cond` holds for `var` on conditional edge `pred` -> `succ` as a result of the test for that edge */
+    pragma [nomagic]
     predicate constraintOnBranch(UnprunedBasicBlock pred, UnprunedBasicBlock succ, Constraint cond, SsaVariable var) {
         cond = constraintFromTest(var, pred.last()) and
         succ = pred.getATrueSuccessor()

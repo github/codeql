@@ -18,7 +18,6 @@ missingOperandType
 instructionWithoutSuccessor
 | VacuousDestructorCall.cpp:2:29:2:29 | InitializeParameter: y |
 | assume0.cpp:7:2:7:2 | CallSideEffect: call to f |
-| builtin.c:15:18:15:21 | VariableAddress: definition of vec2 |
 | condition_decls.cpp:16:19:16:20 | CallSideEffect: call to BoxedInt |
 | condition_decls.cpp:26:23:26:24 | CallSideEffect: call to BoxedInt |
 | condition_decls.cpp:41:22:41:23 | CallSideEffect: call to BoxedInt |

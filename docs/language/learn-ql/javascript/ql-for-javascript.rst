@@ -9,6 +9,7 @@ QL for JavaScript
    introduce-libraries-ts
    dataflow
    flow-labels
+   type-tracking
    ast-class-reference
    dataflow-cheat-sheet
 

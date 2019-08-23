@@ -1,4 +1,4 @@
-import csharp
+private import csharp
 private import TaintTrackingPublic
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
@@ -9,6 +9,22 @@ private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.frameworks.JsonNET
 private import cil
 private import dotnet
+
+/**
+ * Holds if `node` should be a barrier in all global taint flow configurations
+ * but not in local taint.
+ */
+predicate defaultTaintBarrier(DataFlow::Node node) { none() }
+
+/**
+ * Holds if the additional step from `src` to `sink` should be included in all
+ * global taint flow configurations.
+ */
+predicate defaultAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  localAdditionalTaintStep(pred, succ)
+  or
+  succ = pred.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
+}
 
 private CIL::DataFlowNode asCilDataFlowNode(DataFlow::Node node) {
   result = node.asParameter() or

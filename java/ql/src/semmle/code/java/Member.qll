@@ -120,9 +120,7 @@ class Callable extends StmtParent, Member, @callable {
    *
    * This includes both static call targets and dynamic dispatch targets.
    */
-  predicate polyCalls(Callable m) {
-    this.calls(m) or this.callsImpl(m)
-  }
+  predicate polyCalls(Callable m) { this.calls(m) or this.callsImpl(m) }
 
   /**
    * Holds if `c` is a viable implementation of a callable called by this

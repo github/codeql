@@ -134,7 +134,7 @@ class TranslatedClassListInitialization extends TranslatedListInitialization
  * initializer list.
  */
 class TranslatedArrayListInitialization extends TranslatedListInitialization {
-  override ArrayAggregateLiteral expr;
+  override ArrayOrVectorAggregateLiteral expr;
 
   override TranslatedElement getChild(int id) {
     // The children are in initialization order
@@ -364,6 +364,11 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
         )
       )
     )
+  }
+
+  override int getInstructionElementSize(InstructionTag tag) {
+    tag = ZeroPadStringElementAddressTag() and
+    result = max(getElementType().getSize())
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
@@ -638,7 +643,7 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization, 
  * an element of an initializer list.
  */
 abstract class TranslatedElementInitialization extends TranslatedElement {
-  ArrayAggregateLiteral initList;
+  ArrayOrVectorAggregateLiteral initList;
 
   override final string toString() {
     result = initList.toString() + "[" + getElementIndex().toString() + "]"
@@ -691,6 +696,11 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     )
   }
 
+  override int getInstructionElementSize(InstructionTag tag) {
+    tag = getElementAddressTag() and
+    result = max(getElementType().getSize())
+  }
+
   override string getInstructionConstantValue(InstructionTag tag) {
     tag = getElementIndexTag() and
     result = getElementIndex().toString()
@@ -706,13 +716,12 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = InitializerElementIndexTag()
   }
 
-  final ArrayAggregateLiteral getInitList() {
+  final ArrayOrVectorAggregateLiteral getInitList() {
     result = initList
   }
 
   final Type getElementType() {
-    result = initList.getUnspecifiedType().(ArrayType).
-      getBaseType().getUnspecifiedType()
+    result = initList.getElementType().getUnspecifiedType()
   }
 }
 

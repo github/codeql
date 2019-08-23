@@ -250,6 +250,12 @@ cached private module Cached {
         getInstructionTag(instruction))
   }
 
+  cached BuiltInOperation getInstructionBuiltInOperation(Instruction instruction) {
+    result =
+      getInstructionTranslatedElement(instruction).getInstructionBuiltInOperation(
+        getInstructionTag(instruction))
+  }
+
   cached Type getInstructionExceptionType(Instruction instruction) {
     result =
       getInstructionTranslatedElement(instruction).getInstructionExceptionType(

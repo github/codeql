@@ -13,9 +13,10 @@
 import java
 import XmlParsers
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking2
 import DataFlow::PathGraph
 
-class SafeSAXSourceFlowConfig extends TaintTracking::Configuration2 {
+class SafeSAXSourceFlowConfig extends TaintTracking2::Configuration {
   SafeSAXSourceFlowConfig() { this = "XmlParsers::SafeSAXSourceFlowConfig" }
 
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSAXSource }

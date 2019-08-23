@@ -27,3 +27,4 @@ import RestTypeExpr
 import Containers
 import ReturnTypes
 import KeyofTypeExpr
+import TemplateLiterals

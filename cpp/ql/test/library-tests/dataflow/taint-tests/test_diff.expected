@@ -1,4 +1,3 @@
-| file://:0:0:0:0 | taint.cpp:223:10:223:15 | AST only |
 | taint.cpp:41:7:41:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:42:7:42:13 | taint.cpp:35:12:35:17 | AST only |
 | taint.cpp:43:7:43:13 | taint.cpp:37:22:37:27 | AST only |
@@ -7,6 +6,7 @@
 | taint.cpp:91:11:91:11 | taint.cpp:77:7:77:12 | AST only |
 | taint.cpp:93:11:93:11 | taint.cpp:71:22:71:27 | AST only |
 | taint.cpp:94:11:94:11 | taint.cpp:72:7:72:12 | AST only |
+| taint.cpp:109:7:109:13 | taint.cpp:105:12:105:17 | IR only |
 | taint.cpp:130:7:130:9 | taint.cpp:127:8:127:13 | IR only |
 | taint.cpp:137:7:137:9 | taint.cpp:120:11:120:16 | AST only |
 | taint.cpp:173:8:173:13 | taint.cpp:164:19:164:24 | AST only |
@@ -15,6 +15,9 @@
 | taint.cpp:195:7:195:7 | taint.cpp:193:6:193:6 | AST only |
 | taint.cpp:215:7:215:7 | taint.cpp:207:6:207:11 | AST only |
 | taint.cpp:216:7:216:7 | taint.cpp:207:6:207:11 | AST only |
+| taint.cpp:229:3:229:6 | taint.cpp:223:10:223:15 | AST only |
 | taint.cpp:233:8:233:8 | taint.cpp:223:10:223:15 | AST only |
+| taint.cpp:236:3:236:6 | taint.cpp:223:10:223:15 | AST only |
+| taint.cpp:244:3:244:6 | taint.cpp:223:10:223:15 | AST only |
 | taint.cpp:250:8:250:8 | taint.cpp:223:10:223:15 | AST only |
 | taint.cpp:256:8:256:8 | taint.cpp:223:10:223:15 | AST only |
