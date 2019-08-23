@@ -16,4 +16,18 @@
   removes false positives that arose from paths through impossible `toString()`
   calls.
 * The library `VCS.qll` and all queries that imported it have been removed.
-* The second copy of the interprocedural `TaintTracking` library has been renamed from `TaintTracking::Configuration2` to `TaintTracking2::Configuration`, and the old name is now deprecated. Import `semmle.code.java.dataflow.TaintTracking2` to access the new name.
+* The second copy of the interprocedural `TaintTracking` library has been
+  renamed from `TaintTracking::Configuration2` to
+  `TaintTracking2::Configuration`, and the old name is now deprecated. Import
+  `semmle.code.java.dataflow.TaintTracking2` to access the new name.
+* The data-flow library now makes it easier to specify barriers/sanitizers
+  arising from guards by overriding the predicate
+  `isBarrierGuard`/`isSanitizerGuard` on data-flow and taint-tracking
+  configurations respectively.
+* The possibility of specifying barrier edges using
+  `isBarrierEdge`/`isSanitizerEdge` in data-flow and taint-tracking
+  configurations has been replaced with the option of specifying in- and
+  out-barriers on nodes by overriding `isBarrierIn`/`isSanitizerIn` and
+  `isBarrierOut`/`isSanitizerOut`. This should be simpler to use effectively,
+  as it does not require knowledge about the actual edges used internally by
+  the library.

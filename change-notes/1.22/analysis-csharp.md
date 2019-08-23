@@ -42,5 +42,12 @@
   - The new predicate `TypeParameterConstraints.getAnAnnotatedTypeConstraint()` gets a type constraint with type annotations
 * The new class `SuppressNullableWarningExpr` models suppress-nullable-warning expressions such as `x!`
 * The data-flow library (and taint-tracking library) now supports flow through fields. All existing configurations will have field-flow enabled by default, but it can be disabled by adding `override int fieldFlowBranchLimit() { result = 0 }` to the configuration class. Field assignments, `this.Foo = x`, object initializers, `new C() { Foo = x }`, and field initializers `int Foo = 0` are supported.
+* The possibility of specifying barrier edges using
+  `isBarrierEdge`/`isSanitizerEdge` in data-flow and taint-tracking
+  configurations has been replaced with the option of specifying in- and
+  out-barriers on nodes by overriding `isBarrierIn`/`isSanitizerIn` and
+  `isBarrierOut`/`isSanitizerOut`. This should be simpler to use effectively,
+  as it does not require knowledge about the actual edges used internally by
+  the library.
 
 ## Changes to autobuilder
