@@ -179,11 +179,27 @@ private predicate isAdditionalFlowStep(
   callable1 = node1.getEnclosingCallable()
 }
 
+// This predicate guides the optimizer to select the optimal column order in
+// the body of `localFlowStep`. Without pulling out this predicate, the
+// optimizer will at the time of writing do a SCAN to put the `Configuration`
+// column on the very left in the intermediate results and later `SCAN` to move
+// it to the very right. This is very slow when there is a single
+// `Configuration` that uses both full barriers and out-barriers.
+//
+// With this predicate added, the RA contains only a single SCAN that adds the
+// `Configuration` on the right from the beginning. This speeds up the
+// predicate(s) by up to 10x.
+pragma[noinline]
+private predicate localFlowStep0(Node node1, Node node2, Configuration config) {
+  simpleLocalFlowStep(node1, node2) and
+  config = config
+}
+
 /**
  * Holds if data can flow in one local step from `node1` to `node2`.
  */
 private predicate localFlowStep(Node node1, Node node2, Configuration config) {
-  simpleLocalFlowStep(node1, node2) and
+  localFlowStep0(node1, node2, config) and
   not outBarrier(node1, config) and
   not inBarrier(node2, config) and
   not fullBarrier(node1, config) and
