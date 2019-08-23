@@ -2,6 +2,8 @@
 Exercise: ``snprintf`` overflow
 ===============================
 
+QL for C/C++
+
 .. container:: semmle-logo
 
    Semmle :sup:`TM`

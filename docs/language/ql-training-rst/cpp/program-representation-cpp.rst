@@ -1,6 +1,8 @@
-======================================
-Program representation in QL for C/C++
-======================================
+======================
+Program representation 
+======================
+
+QL for C/C++
 
 .. container:: semmle-logo
 
@@ -31,9 +33,7 @@ The basic representation of an analyzed program is an *abstract syntax tree (AST
      } catch (AnException e) {
      }
 
-.. container:: column-right
-  
-   .. container:: image-box
+.. container:: ast-graph
    
       .. graphviz::
          
@@ -47,7 +47,7 @@ The basic representation of an analyzed program is an *abstract syntax tree (AST
             e [label=<...>,color=white,fontcolor=black]
             f [label=<...>,color=white,fontcolor=black]
             g [label=<...>,color=white,fontcolor=black]
-   
+    
             a -> {b, c}
             b -> {d, e}
             d -> {f, g}

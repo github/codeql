@@ -1,12 +1,12 @@
-===================================
-Introduction to data flow for C/C++
-===================================
+=========================
+Introduction to data flow
+=========================
+
+Finding string formatting vulnerabilities in C/C++
 
 .. container:: semmle-logo
 
    Semmle :sup:`TM`
-
-Finding string formatting vulnerabilities in C/C++
 
 .. rst-class:: setup
 

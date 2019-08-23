@@ -2,6 +2,8 @@
 Example: Bad overflow guard
 ===========================
 
+QL for C/C++
+
 .. container:: semmle-logo
 
    Semmle :sup:`TM`

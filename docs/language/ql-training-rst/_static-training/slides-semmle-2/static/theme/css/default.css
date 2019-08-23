@@ -119,10 +119,6 @@ slides {
   height: 56.25vw;
   max-height: 100vh;
   max-width: 177.78vh;
-  /*width: 1200px;
-  height: 675px;
-  left: 50%;
-  top: 50%;*/
   bottom: auto;
   right: auto;
   transform: translate(-50%, -50%);
@@ -543,7 +539,9 @@ pre {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   overflow: auto;
+  white-space: pre-wrap;
 }
+
 /* line 351, ../scss/default.scss */
 pre[data-lang]:after {
   content: attr(data-lang);
@@ -1394,7 +1392,9 @@ aside.gdbar img {
   display: none;
 }
 
-/* James rst markup */
+/****** Semmle-specific styles *********/
+
+/* rst markup */
 strong {
   font-weight: bold;
 }
@@ -1408,14 +1408,8 @@ sup {
   font-size: 0.5em;
 }
 
-
-/* James slide backgrounds */
-
-.title-slide {
-  background-image: url("../../title-slide.svg");
-  background-size: cover;
-}
-
+/*custom slide styles */
+/* general */
 slide {
   background-image: url("../../normal-slide.svg");
   background-size: cover;
@@ -1423,18 +1417,75 @@ slide {
   height: 100%;
   overflow: auto;
   transform: scale(1);
-}   
+}  
 
-.end-slide {
-  background-image: url("../../end-slide.svg");
-  background-size: 100% 100%;
-  background-color: #5c31ff;
-} 
+.highlight {
+  width: auto;
+  background: transparent !important;
+  margin-bottom: 2%;
+}
+
+p {
+  color: black;
+  font-size: 1em;
+}
+
+article {
+  margin-top: 3%;
+}
+
+hgroup .pre {
+  color: #5c31ff;
+}
+
+/* title slide (deck title, subtitle, semmle logo)*/
+
+.title-slide {
+  background-image: url("../../title-slide.svg");
+  background-size: cover;
+}
+
+.semmle-logo sup {
+  vertical-align: super;
+  font-size: 0.3em;
+  font-weight: 100;
+}
+
+.title-slide .semmle-logo {
+  color: white;
+  font-size: 1.2em;
+  position: absolute;
+  top: 10%;
+}
+
+.title-slide p {
+  color: white;
+  font-size: 1em;
+  position: absolute;
+  bottom: 30%;
+}
+
+.title-slide hgroup .pre {
+  color: white;
+}
+
+/* purple background slides (new section)*/
 
 .background2 {  
   background-image: url("../../alternative-slide.svg");
   background-size: cover;
 }
+
+.background2 h2 { 
+  color: white;
+}
+
+.background2 p {
+  color: #5c31ff;
+  font-size: 1.5em;
+}
+
+/* setup and agenda slides */
 
 .setup, .agenda {
   background-image: url("../../setup-slide.svg");
@@ -1473,46 +1524,15 @@ slide {
   margin: 7% 0 0 17%;
 }
 
-/*custom slide styles */
+/* end slide */
 
-.semmle-logo sup {
-  vertical-align: super;
-  font-size: 0.3em;
-  font-weight: 100;
-}
+.end-slide {
+  background-image: url("../../end-slide.svg");
+  background-size: 100% 100%;
+  background-color: #5c31ff;
+} 
 
-.title-slide .semmle-logo {
-  color: white;
-  font-size: 1.2em;
-  position: absolute;
-  top: 10%;
-}
-
-.title-slide p {
-  color: white;
-  font-size: 1em;
-  position: absolute;
-  bottom: 30%;
-}
-
-.background2 h2 { 
-  color: white;
-}
-
-.background2 p {
-  color: #5c31ff;
-  font-size: 1.5em;
-}
-
-hgroup .pre {
-  color: #5c31ff;
-}
-
-.title-slide hgroup .pre {
-  color: white;
-}
-
-/* James column experiments */
+/* styles for side by side columns */
 
 .column-left {
   float: left;
@@ -1539,18 +1559,7 @@ hgroup .pre {
   max-width: 100%;
 }
 
-.highlight {
-  width: auto;
-  background: transparent !important;
-  margin-bottom: 2%;
-}
-
-p {
-  color: black;
-  font-size: 1em;
-}
-
-/* James admonition changes */
+/* admonition (speaker notes) styles */
 
 p.first.admonition-title {
   display: none;
@@ -1584,11 +1593,33 @@ p.first.admonition-title {
   width: inherit;
 }
 
-/* more custom styles */
+/* images */
+/* general styles to scale and centre images*/
 
-span.n, span.p {
-  color: grey;
+.image-box {
+  display: grid;
+  height: 100%;
 }
+
+img {
+  width: 50%;
+  margin: auto;
+}
+
+/* deck-specific styles for individual images*/
+/* intro to ql */
+img.analysis {
+  width: 90%;
+}
+
+/* program representation*/
+.ast-graph {
+  width: 66%;
+  position: absolute;
+  right: -10%;
+}
+
+/* custom styles for lists*/
 
 ol {
   color: black;
@@ -1598,21 +1629,25 @@ li > ul > li {
   margin-bottom: 0;
 }
 
-/* scale and centre images*/
+/*
+ * extra styles for more appropriate for syntax highlighting
+ *
+ */
 
-.image-box {
-  display: grid;
-  height: 100%;
-}
+ span.n, span.p, span.o {
+  color: black !important;
+ }
 
-img {
-  max-width: 50%;
-  margin: auto;
-}
+ .highlight { color: #333 !important} /* default */ 
+ .highlight .s { color: #06994a !important} /* strings */
+ .highlight .m { color: #333 } /* numbers (no special highlighting) */
+ .highlight .c1 { color: #007020 !important; font-style: italic !important} /* one-line comments */
+ .highlight .cm { color: #007020 !important; font-style: italic !important} /* multiline comments */
+ .highlight .cp { color: #2F1695 !important; font-style: italic !important} /* QLDoc comments */
+ .highlight .k { color: #7a65cd !important; font-weight: bold !important} /* keywords */
+ .highlight .kt { color: #7a65cd !important; font-weight: bold !important} /* built-in type keywords */
+ .highlight .kr { color: #333 !important; font-style: italic !important} /* annotations */
 
-article {
-  margin-top: 3%;
-}
 
 @media print {
   /* line 978, ../scss/default.scss */
@@ -1716,59 +1751,4 @@ article {
   slides {
     bottom: unset;
   }
-  
-}
-/*
-@media screen and (max-width: 450px) { 
-  slides {
-    font-size: 1.2vmin;
-  }
-}
-
-@media screen and (min-width: 451px) and (max-width: 767px) { 
-  slides {
-    font-size: 2.5vmin;
-  }
-}
-
-@media screen and (min-width: 451px) and (orientation : portrait) { 
-  slides {
-    font-size: 1.2vmin;
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) { 
-  slides {
-    font-size: 1.2vmin;
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 812px) and (orientation: landscape) { 
-  slides {
-    font-size: 2.2vmin;
-  }
-}
-
-
-@media screen and (min-width: 813px) and (max-width: 1024px) and (orientation: landscape) { 
-  slides {
-    font-size: 1.8vmin;
-  }
-}
-
-@media screen and (min-width: 1025px) and (orientation: landscape){
-  slides {
-    font-size: 2vmin;
-  }
-}
-
-@media screen and (min-width: 1025px) and (orientation: portrait){
-  slides {
-    font-size: 1.2vmin;
-  }
-}
-*/
-.wrapper {
-  height: 675px;
-  resize: both;
 }

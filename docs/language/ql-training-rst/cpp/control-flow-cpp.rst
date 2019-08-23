@@ -1,6 +1,8 @@
-================================
-Analyzing control flow for C/C++
-================================
+======================
+Analyzing control flow
+======================
+
+QL for C/C++
 
 .. container:: semmle-logo
 

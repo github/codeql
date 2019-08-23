@@ -1,6 +1,8 @@
-========================================
-Introduction to global data flow for C++
-========================================
+================================
+Introduction to global data flow
+================================
+
+QL for C/C++
 
 .. container:: semmle-logo
 

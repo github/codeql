@@ -7,7 +7,7 @@ Patching is still possible mid-flight, but what if there are more such issues?
 
 .. container:: image-box
 
-   .. image:: ../_static-training/curiosity.png
+   .. image:: ../_static-training/curiosity2.png
    
 .. note::
 
@@ -97,24 +97,15 @@ How it all works
 Analysis overview
 =================
 
-.. container:: image-box
+.. rst-class:: analysis
 
    .. image:: ../_static-training/analysis-overview.png
-
-.. rst-class:: build
-
-
-
-- The database schema is (source) language specific, as are queries and libraries.
-
-- Multi-language code bases are analyzed one language at a time.
-
-
+         
 .. note::
 
-  Semmle’s analysis works by extracting a queryable database from your project. For compiled languages, Semmle’s tools observe an ordinary build of the source code. Each time a compiler is invoked to process a source file, a copy of that file is made, and all relevant information about the source code (syntactic data about the abstract syntax tree, semantic data like name binding and type information, data on the operation of the C preprocessor, etc.) is collected. For interpreted languages, the extractor gathers similar information by running directly on the source code.
+  Semmle’s analysis works by extracting a queryable database from your project. For compiled languages, Semmle’s tools observe an ordinary build of the source code. Each time a compiler is invoked to process a source file, a copy of that file is made, and all relevant information about the source code (syntactic data about the abstract syntax tree, semantic data like name binding and type information, data on the operation of the C preprocessor, etc.) is collected. For interpreted languages, the extractor gathers similar information by running directly on the source code. Multi-language code bases are analyzed one language at a time.
 
-  Once the extraction finishes, all this information is collected into a single `snapshot database <https://help.semmle.com/QL/learn-ql/ql/snapshot.html>`__, which is then ready to query, possibly on a different machine. A copy of the source files, made at the time the database was created, is also included in the snapshot so analysis results can be displayed at the correct location in the code.
+  Once the extraction finishes, all this information is collected into a single `snapshot database <https://help.semmle.com/QL/learn-ql/ql/snapshot.html>`__, which is then ready to query, possibly on a different machine. A copy of the source files, made at the time the database was created, is also included in the snapshot so analysis results can be displayed at the correct location in the code. The database schema is (source) language specific.
 
   Queries are written in `QL <https://semmle.com/ql>`__ and usually depend on one or more of the `standard QL libraries <https://github.com/semmle/ql>`__ (and of course you can write your own custom libraries). They are compiled into an efficiently executable format by the QL compiler and then run on a snapshot database by the QL evaluator, either on a remote worker machine or locally on a developer’s machine.
 

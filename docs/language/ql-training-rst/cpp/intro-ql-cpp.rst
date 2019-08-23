@@ -1,6 +1,8 @@
-==========================================
-Introduction to variant analysis for C/C++
-==========================================
+================================
+Introduction to variant analysis
+================================
+
+QL for C/C++
 
 .. container:: semmle-logo
 

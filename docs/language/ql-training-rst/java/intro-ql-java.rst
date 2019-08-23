@@ -1,6 +1,8 @@
-=========================================
-Introduction to variant analysis for Java
-=========================================
+================================
+Introduction to variant analysis 
+================================
+
+QL for Java
 
 .. container:: semmle-logo
 
