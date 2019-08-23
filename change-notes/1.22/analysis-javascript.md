@@ -31,6 +31,7 @@
 | Shift out of range | Fewer false positive results | This rule now correctly handles BigInt shift operands. |
 | Conflicting HTML element attributes | Fewer results | Results are no longer shown on LGTM by default. |
 | Superfluous trailing arguments | Fewer false-positive results. | This rule no longer flags calls to placeholder functions that trivially throw an exception. |
+| Undocumented parameter | No changes to results | This rule is now run on LGTM, although its results are still not shown by default. |
 
 ## Changes to QL libraries
 
