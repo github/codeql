@@ -97,6 +97,12 @@ abstract class ClassObjectInternal extends ObjectInternal {
     /* Classes aren't usually iterable, but can e.g. Enums */
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
 
+    override predicate hasAttribute(string name) {
+        this.getClassDeclaration().declaresAttribute(name)
+        or
+        Types::getBase(this, _).hasAttribute(name)
+    }
+
 }
 
 /** Class representing Python source classes */

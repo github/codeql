@@ -51,11 +51,8 @@ abstract class ModuleObject extends Object {
         result = this.getAttribute(name)
     }
 
-
     predicate hasAttribute(string name) {
-        exists(theModule().attr(name))
-        or
-        exists(SsaVariable var | name = var.getId() and var.getAUse() = this.getModule().getANormalExit())
+        theModule().hasAttribute(name)
     }
 
     predicate attributeRefersTo(string name, Object obj, ControlFlowNode origin) {
