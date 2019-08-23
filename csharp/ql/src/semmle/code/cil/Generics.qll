@@ -35,7 +35,13 @@ class UnboundGenericType extends UnboundGeneric, Type { }
 class UnboundGenericMethod extends UnboundGeneric, Method { }
 
 /** A constructed generic type. */
-class ConstructedType extends ConstructedGeneric, Type { }
+class ConstructedType extends ConstructedGeneric, Type {
+  final override UnboundGenericType getUnboundGeneric() { result = this.getUnboundType() }
+
+  override predicate isInterface() { this.getUnboundType().isInterface() }
+
+  override predicate isClass() { this.getUnboundType().isClass() }
+}
 
 /** A constructed generic method. */
 class ConstructedMethod extends ConstructedGeneric, Method {
