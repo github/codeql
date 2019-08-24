@@ -1,5 +1,7 @@
 # Improvements to Java analysis
 
+The following changes in version 1.22 affect Java analysis in all applications.
+
 ## Changes to existing queries
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
@@ -13,7 +15,7 @@
 
 * The virtual dispatch library has been updated to give more precise dispatch
   targets for `Object.toString()` calls. This affects all security queries and
-  removes false positives that arose from paths through impossible `toString()`
+  removes false positive results that arose from paths through impossible `toString()`
   calls.
 * The library `VCS.qll` and all queries that imported it have been removed.
 * The second copy of the interprocedural `TaintTracking` library has been
