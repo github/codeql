@@ -28,14 +28,14 @@
 
 | **Query**                      | **Expected impact**          | **Change**                                                                |
 |--------------------------------|------------------------------|---------------------------------------------------------------------------|
-| Shift out of range | Fewer false positive results | This rule now correctly handles BigInt shift operands. |
-| Conflicting HTML element attributes | Fewer results | Results are no longer shown on LGTM by default. |
-| Superfluous trailing arguments | Fewer false-positive results. | This rule no longer flags calls to placeholder functions that trivially throw an exception. |
-| Undocumented parameter | No changes to results | This rule is now run on LGTM, although its results are still not shown by default. |
+| Conflicting HTML element attributes (`js/conflicting-html-attribute`) | No changes to results | Results are no longer shown on LGTM by default. |
+| Shift out of range (`js/shift-out-of-range`| Fewer false positive results | This rule now correctly handles BigInt shift operands. |
+| Superfluous trailing arguments (`js/superfluous-trailing-arguments`) | Fewer false-positive results. | This rule no longer flags calls to placeholder functions that trivially throw an exception. |
+| Undocumented parameter (`js/jsdoc/missing-parameter`) | No changes to results | This rule is now run on LGTM, although its results are still not shown by default. |
 
 ## Changes to QL libraries
 
-- The `getName()` predicate on functions and classes now gets a name
+- The `getName()` predicate on functions and classes now gets a name that is
   inferred from the context if the function or class was not declared with a name.
 - The two-argument and three-argument variants of `DataFlow::Configuration::isBarrier` and
   `TaintTracking::Configuration::isSanitizer` have been deprecated. Overriding them no
