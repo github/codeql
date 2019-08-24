@@ -1,12 +1,5 @@
 # Improvements to C/C++ analysis
 
-## General improvements
-
-## New queries
-
-| **Query**                   | **Tags**  | **Purpose**                                                        |
-|-----------------------------|-----------|--------------------------------------------------------------------|
-
 ## Changes to existing queries
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
@@ -15,9 +8,9 @@
 | Continue statement that does not continue (`cpp/continue-in-false-loop`) | Fewer false positive results | Analysis is now restricted to `do`-`while` loops. This query is now run and displayed by default on LGTM. |
 | Expression has no effect (`cpp/useless-expression`) | Fewer false positive results | Calls to functions with the `weak` attribute are no longer considered to be side effect free, because they could be overridden with a different implementation at link time. |
 | No space for zero terminator (`cpp/no-space-for-terminator`) | Fewer false positive results | False positives involving strings that are not null-terminated have been excluded. |
+| Non-constant format string (`cpp/non-constant-format`) | Fewer false positive results | Rewritten using the taint-tracking library. |
 | Sign check of bitwise operation (`cpp/bitwise-sign-check`) | Fewer false positive results and more true positive results | The query now understands the direction of each comparison, making it more accurate. |
 | Suspicious pointer scaling (`cpp/suspicious-pointer-scaling`) | Lower precision | The precision of this query has been reduced to "medium". This coding pattern is used intentionally and safely in a number of real-world projects. Results are no longer displayed on LGTM unless you choose to display them. |
-| Non-constant format string (`cpp/non-constant-format`) | Fewer false positive results | Rewritten using the taint-tracking library. |
 | Variable used in its own initializer (`cpp/use-in-own-initializer`) | Fewer false positive results | False positives for constant variables with the same name in different namespaces have been removed. |
 
 ## Changes to QL libraries
