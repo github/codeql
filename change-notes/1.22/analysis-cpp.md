@@ -37,3 +37,4 @@
   `isBarrierOut`/`isSanitizerOut`. This should be simpler to use effectively,
   as it does not require knowledge about the actual edges used internally by
   the library.
+- Added C/C++ code examples to QLDoc comments on many more classes in the QL libraries.
