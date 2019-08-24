@@ -20,6 +20,9 @@ The following changes in version 1.22 affect C/C++ analysis in all applications.
 - The data flow library (`semmle.code.cpp.dataflow.DataFlow`) has had the
   following improvements, all of which benefit the taint tracking library
   (`semmle.code.cpp.dataflow.TaintTracking`) as well.
+  - This release includes preliminary support for flow interprocedural through
+    fields (non-static data members). In some cases, data stored in a field in
+    one function can flow to a read of the same field in a different function.
   - The possibility of specifying barrier edges using
     `isBarrierEdge`/`isSanitizerEdge` in data-flow and taint-tracking
     configurations has been replaced with the option of specifying in- and
