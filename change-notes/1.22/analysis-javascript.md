@@ -16,7 +16,9 @@
 * Support for tracking data flow and taint through getter functions (that is, functions that return a property of one of their arguments) and through the receiver object of method calls has been improved. This may produce more security alerts.
 
 * Taint tracking through object property names has been made more precise, resulting in fewer false positive results.
-  
+
+* Method calls are now resolved in more cases, due to improved class hierarchy analysis. This may produce more security alerts.
+
 ## New queries
 
 | **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
