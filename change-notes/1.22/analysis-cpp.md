@@ -32,3 +32,4 @@ The following changes in version 1.22 affect C/C++ analysis in all applications.
   `isBarrierOut`/`isSanitizerOut`. This should be simpler to use effectively,
   as it does not require knowledge about the actual edges used internally by
   the library.
+- C/C++ code examples have been added to QLDoc comments on many more classes in the QL libraries.
