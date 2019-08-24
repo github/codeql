@@ -86,6 +86,9 @@ module StepSummary {
       basicLoadStep(pred, succ, prop) and
       summary = LoadStep(prop)
     )
+    or
+    any(AdditionalTypeTrackingStep st).step(pred, succ) and
+    summary = LevelStep()
   }
 }
 
@@ -369,4 +372,21 @@ module TypeBackTracker {
    * Gets a valid end point of type back-tracking.
    */
   TypeBackTracker end() { result.end() }
+}
+
+/**
+ * A data flow edge that should be followed by type tracking.
+ *
+ * Unlike `AdditionalFlowStep`, this type of edge does not affect
+ * the local data flow graph, and is not used by data-flow configurations.
+ *
+ * Note: For performance reasons, all subclasses of this class should be part
+ * of the standard library. For query-specific steps, consider including the
+ * custom steps in the type-tracking predicate itself.
+ */
+abstract class AdditionalTypeTrackingStep extends DataFlow::Node {
+  /**
+   * Holds if type-tracking should step from `pred` to `succ`.
+   */
+  abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
 }
