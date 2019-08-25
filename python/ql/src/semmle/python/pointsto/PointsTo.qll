@@ -1244,37 +1244,61 @@ module Expressions {
         index = subscr.getIndex()
     }
 
-    /** Track bitwise expressions so we can handle integer flags and enums.
-     * Tracking too many binary expressions is likely to kill performance.
+    /** Tracking too many binary expressions is likely to kill performance, so just say anything other than addition or bitwise or is 'unknown'.
      */
     pragma [noinline]
     predicate binaryPointsTo(BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode operand, ObjectInternal opvalue) {
         origin = b and
-        exists(ControlFlowNode left, Operator op, ControlFlowNode right |
-            b.operands(left, op, right)
+        operand = genericBinaryOperand(b) and
+        PointsToInternal::pointsTo(operand, context, opvalue, _) and
+        value = ObjectInternal::unknown()
+    }
+
+    private ControlFlowNode genericBinaryOperand(BinaryExprNode b) {
+        exists(Operator op |
+            b.operands(result, op, _)
+            or
+            b.operands(_, op, result)
             |
             not op instanceof BitOr and
-            (operand = left or operand = right) and
-            PointsToInternal::pointsTo(operand, context, opvalue, _) and
-            (
-                op instanceof Add and
-                value = TUnknownInstance(opvalue.getClass())
-                or
-                not op instanceof Add and
-                value = ObjectInternal::unknown()
-            )
+            not op instanceof Add
+        )
+    }
+
+    pragma [noinline]
+    predicate addPointsTo(BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode operand, ObjectInternal opvalue) {
+        origin = b and
+        exists(Operator op |
+            b.operands(operand, op, _)
             or
+            b.operands(_, op, operand)
+            |
+            op instanceof Add and
+            PointsToInternal::pointsTo(operand, context, opvalue, _) and
+            value = TUnknownInstance(opvalue.getClass())
+        )
+    }
+
+    pragma [noinline]
+    predicate bitOrPointsTo(BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin, ControlFlowNode operand, ObjectInternal opvalue) {
+        origin = b and
+        exists(Operator op, ControlFlowNode other |
+            b.operands(operand, op, other)
+            or
+            b.operands(other, op, operand)
+            |
             op instanceof BitOr and
-            exists(ObjectInternal lobj, ObjectInternal robj |
-                PointsToInternal::pointsTo(left, context, lobj, _) and
-                PointsToInternal::pointsTo(right, context, robj, _) and
-                value = TInt(lobj.intValue().bitOr(robj.intValue()))
-                |
-                left = operand and opvalue = lobj
-                or
-                right = operand and opvalue = robj
+            exists(ObjectInternal obj, int i1, int i2 |
+                pointsToInt(operand, context, opvalue, i1) and
+                pointsToInt(other, context, obj, i2) and
+                value = TInt(i1.bitOr(i2))
             )
         )
+    }
+
+    predicate pointsToInt(ControlFlowNode n, PointsToContext context, ObjectInternal obj, int value) {
+        PointsToInternal::pointsTo(n, context, obj, _) and
+        value = obj.intValue()
     }
 
     pragma [noinline]
@@ -1517,6 +1541,10 @@ module Expressions {
         attributePointsTo(expr, context, value, origin, subexpr, subvalue)
         or
         subscriptPointsTo(expr, context, value, origin, subexpr, subvalue)
+        or
+        addPointsTo(expr, context, value, origin, subexpr, subvalue)
+        or
+        bitOrPointsTo(expr, context, value, origin, subexpr, subvalue)
         or
         binaryPointsTo(expr, context, value, origin, subexpr, subvalue)
         or
