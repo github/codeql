@@ -37,6 +37,9 @@ The following changes in version 1.22 affect C/C++ analysis in all applications.
 - The `semmle.code.cpp.security.TaintTracking` library now considers a pointer difference calculation as blocking taint flow.
 - The predicate `Variable.getAnAssignedValue()` now reports assignments to fields resulting from aggregate initialization (` = {...}`).
 - The predicate `TypeMention.toString()` has been simplified to always return the string "`type mention`".  This may improve performance when using `Element.toString()` or its descendants.
+- The `Expr.getValueText()` predicate now sees through macros. If the source
+  text of the expression involves a macro invocation, the predicate will now get
+  the macro-expanded and constant-folded value of the expression.
 - Fixed the `LocalScopeVariableReachability.qll` library's handling of loops where the entry condition is always true on first entry, and where there is more than one control flow path through the loop condition. This change increases the accuracy of the `LocalScopeVariableReachability.qll` library and queries that depend on it.
 - There is a new `Variable.isThreadLocal()` predicate. It can be used to tell whether a variable is `thread_local`.
 - C/C++ code examples have been added to QLDoc comments on many more classes in the QL libraries.
