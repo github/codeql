@@ -75,11 +75,16 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * `bb`, where `bb` is equal to `getBasicBlock()`.
    */
   int getPosInBasicBlock(BasicBlock bb) {
-    exists(int nodePos, int rnk |
-      this = bb.getNode(nodePos) and
-      nodePos = rank[rnk](int i | exists(SubBasicBlock n | n = bb.getNode(i))) and
+    exists(int thisIndexInBB, int rnk |
+      thisIndexInBB = this.getIndexInBasicBlock(bb) and
+      thisIndexInBB = rank[rnk](int i | i = any(SubBasicBlock n).getIndexInBasicBlock(bb)) and
       result = rnk - 1
     )
+  }
+
+  pragma[noinline]
+  private int getIndexInBasicBlock(BasicBlock bb) {
+    this = bb.getNode(result)
   }
 
   /** Gets a successor in the control-flow graph of `SubBasicBlock`s. */
@@ -109,10 +114,8 @@ class SubBasicBlock extends ControlFlowNodeBase {
 
   pragma[nomagic]
   private int outerPosToInnerPos(BasicBlock bb, int posInBB) {
-    exists(int thisPosInBB | this = bb.getNode(thisPosInBB) |
-      posInBB = result + thisPosInBB and
-      result = [ 0 .. this.getNumberOfNodes() - 1 ]
-    )
+    posInBB = result + this.getIndexInBasicBlock(bb) and
+    result = [ 0 .. this.getNumberOfNodes() - 1 ]
   }
 
   /** Gets a control-flow node in this `SubBasicBlock`. */
