@@ -1,11 +1,11 @@
+// NOTE: There are two copies of this file, and they must be kept identical:
+// - semmle/code/cpp/controlflow/SubBasicBlocks.qll
+// - semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll
 //
-// NOTE: Maintain this file in synchrony with
-// semmlecode-cpp-queries/semmle/code/cpp/controlflow/SubBasicBlocks.qll
-//
-// This is a private copy of the `SubBasicBlocks` library for internal use by
-// the data flow library. Having an extra copy can prevent non-monotonic
-// recursion errors in queries that use both the data flow library and the
-// `SubBasicBlocks` library.
+// The second one is a private copy of the `SubBasicBlocks` library for
+// internal use by the data flow library. Having an extra copy prevents
+// non-monotonic recursion errors in queries that use both the data flow
+// library and the `SubBasicBlocks` library.
 
 /**
  * Provides the `SubBasicBlock` class, used for partitioning basic blocks in
