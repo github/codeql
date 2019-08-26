@@ -156,24 +156,11 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * Gets the number of control-flow nodes in this `SubBasicBlock`. There is
    * always at least one.
    */
-  pragma[noopt]
   int getNumberOfNodes() {
-    exists(BasicBlock bb | bb = this.getBasicBlock() |
-      exists(int thisPos | this = bb.getNode(thisPos) |
-        exists(int bbLength |
-          this.lastInBB() and
-          bbLength = bb.length() and
-          result = bbLength - thisPos
-        )
-        or
-        exists(SubBasicBlock succ, int succPos, int thisRank, int succRank |
-          thisRank = this.getRankInBasicBlock(bb) and
-          succRank = thisRank + 1 and
-          succRank = succ.getRankInBasicBlock(bb) and
-          bb.getNode(succPos) = succ and
-          result = succPos - thisPos
-        )
-      )
+    exists(BasicBlock bb |
+      if this.lastInBB()
+      then result = bb.length() - this.getIndexInBasicBlock(bb)
+      else result = this.getASuccessor().getIndexInBasicBlock(bb) - this.getIndexInBasicBlock(bb)
     )
   }
 
