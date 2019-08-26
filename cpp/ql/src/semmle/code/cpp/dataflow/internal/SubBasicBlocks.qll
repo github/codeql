@@ -75,12 +75,16 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * `bb`, where `bb` is equal to `getBasicBlock()`.
    */
   int getPosInBasicBlock(BasicBlock bb) {
-    exists(int nodePos, int rnk |
-      bb = this.(ControlFlowNode).getBasicBlock() and
-      this = bb.getNode(nodePos) and
-      nodePos = rank[rnk](int i | exists(SubBasicBlock n | n = bb.getNode(i))) and
+    exists(int thisIndexInBB, int rnk |
+      thisIndexInBB = this.getIndexInBasicBlock(bb) and
+      thisIndexInBB = rank[rnk](int i | i = any(SubBasicBlock n).getIndexInBasicBlock(bb)) and
       result = rnk - 1
     )
+  }
+
+  pragma[noinline]
+  private int getIndexInBasicBlock(BasicBlock bb) {
+    this = bb.getNode(result)
   }
 
   /** Gets a successor in the control-flow graph of `SubBasicBlock`s. */
@@ -98,14 +102,20 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * start from 0, and the node at position 0 always exists and compares equal
    * to `this`.
    */
+  pragma[nomagic]
   ControlFlowNode getNode(int pos) {
-    exists(BasicBlock bb | bb = this.getBasicBlock() |
-      exists(int thisPos | this = bb.getNode(thisPos) |
-        result = bb.getNode(thisPos + pos) and
-        pos >= 0 and
-        pos < this.getNumberOfNodes()
+    exists(BasicBlock bb |
+      exists(int outerPos |
+        result = bb.getNode(outerPos) and
+        pos = outerPosToInnerPos(bb, outerPos)
       )
     )
+  }
+
+  pragma[nomagic]
+  private int outerPosToInnerPos(BasicBlock bb, int posInBB) {
+    posInBB = result + this.getIndexInBasicBlock(bb) and
+    result = [ 0 .. this.getNumberOfNodes() - 1 ]
   }
 
   /** Gets a control-flow node in this `SubBasicBlock`. */
@@ -147,14 +157,20 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * Gets the number of control-flow nodes in this `SubBasicBlock`. There is
    * always at least one.
    */
+  pragma[noopt]
   int getNumberOfNodes() {
     exists(BasicBlock bb | bb = this.getBasicBlock() |
       exists(int thisPos | this = bb.getNode(thisPos) |
-        this.lastInBB() and
-        result = bb.length() - thisPos
+        exists(int bbLength |
+          this.lastInBB() and
+          bbLength = bb.length() and
+          result = bbLength - thisPos
+        )
         or
-        exists(SubBasicBlock succ, int succPos |
-          succ.getPosInBasicBlock(bb) = this.getPosInBasicBlock(bb) + 1 and
+        exists(SubBasicBlock succ, int succPos, int thisRank, int succRank |
+          thisRank = this.getPosInBasicBlock(bb) and
+          succRank = thisRank + 1 and
+          succRank = succ.getPosInBasicBlock(bb) and
           bb.getNode(succPos) = succ and
           result = succPos - thisPos
         )
