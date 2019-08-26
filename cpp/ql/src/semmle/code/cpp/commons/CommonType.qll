@@ -177,10 +177,10 @@ class MicrosoftInt64Type extends IntegralType {
  * This is a complement to the `__builtin_va_start`, `__builtin_va_end`,
  * `__builtin_va_copy` and `__builtin_va_arg` expressions.
  */
-class BuiltInVarList extends Type {
+class BuiltInVarArgsList extends Type {
   BuiltInVarList() {
     this.hasName("__builtin_va_list")
   }
 
-  override string getCanonicalQLClass() { result = "BuiltInVarList" }
+  override string getCanonicalQLClass() { result = "BuiltInVarArgsList" }
 }
