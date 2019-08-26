@@ -178,7 +178,7 @@ class MicrosoftInt64Type extends IntegralType {
  * `__builtin_va_copy` and `__builtin_va_arg` expressions.
  */
 class BuiltInVarArgsList extends Type {
-  BuiltInVarList() {
+  BuiltInVarArgsList() {
     this.hasName("__builtin_va_list")
   }
 
