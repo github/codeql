@@ -3,8 +3,8 @@
  * @description Recursively merging a user-controlled object into another object
  *              can allow an attacker to modify the built-in Object prototype. 
  * @kind path-problem
- * @problem.severity warning
- * @precision medium
+ * @problem.severity error
+ * @precision high
  * @id js/prototype-pollution
  * @tags security
  *       external/cwe/cwe-250
