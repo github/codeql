@@ -208,5 +208,13 @@ Top definitionOf(Top e, string kind) {
     // It's possible we could allow a subset of these dependencies
     // in future, if we're careful to ensure the above don't apply.
     not e.isFromTemplateInstantiation(_)
+  ) and (
+    // Some entities have many locations. This can arise for an external
+    // function that is frequently declared but not defined, or perhaps
+    // for a struct type that is declared in many places. Rather than
+    // letting the result set explode, we just exclude results that are
+    // "too ambiguous" -- we could also arbitrarily pick one location
+    // later on.
+    strictcount(result.getLocation()) < 10
   )
 }
