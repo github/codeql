@@ -2,16 +2,17 @@ import semmle.code.cpp.Declaration
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C++ friend declaration [N4140 11.3].
- * For example:
+ * A C++ friend declaration [N4140 11.3]. For example the two friend
+ * declarations in class `A` of the following code:
+ * ```
+ * class A {
+ *   friend void f(int);
+ *   friend class X;
+ * };
  *
- *   class A {
- *     friend void f(int);
- *     friend class X;
- *   };
- *
- *   void f(int x) { ... }
- *   class X { ... };
+ * void f(int x) { ... }
+ * class X { ... };
+ * ```
  */
 class FriendDecl extends Declaration, @frienddecl {
   /**

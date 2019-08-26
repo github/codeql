@@ -2,7 +2,11 @@ import semmle.code.cpp.Location
 import semmle.code.cpp.Element
 
 /**
- * A C/C++ comment.
+ * A C/C++ comment. For example the comment in the following code:
+ * ```
+ * // C++ style single-line comment
+ * ```
+ * or a C style comment (which starts with `/*`).
  */
 class Comment extends Locatable, @comment {
   override string toString() { result = this.getContents() }
@@ -21,7 +25,10 @@ class CStyleComment extends Comment {
 }
 
 /**
- * A CPP style comment (one which starts with `//`).
+ * A CPP style comment. For example the comment in the following code:
+ * ```
+ * // C++ style single-line comment
+ * ```
  */
 class CppStyleComment extends Comment {
   CppStyleComment() {
