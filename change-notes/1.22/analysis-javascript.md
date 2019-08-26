@@ -44,7 +44,7 @@
 - The two-argument and three-argument variants of `DataFlow::Configuration::isBarrier` and
   `TaintTracking::Configuration::isSanitizer` have been deprecated. Overriding them no
   longer has any effect. Use `isBarrierEdge` and `isSanitizerEdge` instead.
-- The QLDoc for most AST classes have expanded with concrete syntax examples.
+- The QLDoc for most AST classes have been expanded with concrete syntax examples.
 - Tutorials on how to use [flow labels](https://help.semmle.com/QL/learn-ql/javascript/flow-labels.html)
   and [type tracking](https://help.semmle.com/QL/learn-ql/javascript/type-tracking.html) have been published,
   as well as a [data flow cheat sheet](https://help.semmle.com/QL/learn-ql/javascript/dataflow-cheat-sheet.html) for quick reference.
