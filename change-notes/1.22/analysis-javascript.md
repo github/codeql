@@ -19,6 +19,8 @@
 
 * Method calls are now resolved in more cases, due to improved class hierarchy analysis. This may produce more security alerts.
 
+* Jump-to-definition now resolves calls to their definition in more cases, and supports jumping from a JSDoc type annotation to its definition.
+
 ## New queries
 
 | **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
@@ -42,3 +44,7 @@
 - The two-argument and three-argument variants of `DataFlow::Configuration::isBarrier` and
   `TaintTracking::Configuration::isSanitizer` have been deprecated. Overriding them no
   longer has any effect. Use `isBarrierEdge` and `isSanitizerEdge` instead.
+- The QLDoc for most AST classes have expanded with concrete syntax examples.
+- Tutorials on how to use [flow labels](https://help.semmle.com/QL/learn-ql/javascript/flow-labels.html)
+  and [type tracking](https://help.semmle.com/QL/learn-ql/javascript/type-tracking.html) have been published,
+  as well as a [data flow cheat sheet](https://help.semmle.com/QL/learn-ql/javascript/dataflow-cheat-sheet.html) for quick reference.
