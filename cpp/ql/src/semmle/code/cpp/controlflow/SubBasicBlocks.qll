@@ -57,7 +57,7 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * predecessors.
    */
   predicate firstInBB() {
-    exists(BasicBlock bb | this.getPosInBasicBlock(bb) = 0)
+    exists(BasicBlock bb | this.getRankInBasicBlock(bb) = 1)
   }
 
   /**
@@ -66,19 +66,18 @@ class SubBasicBlock extends ControlFlowNodeBase {
    */
   predicate lastInBB() {
     exists(BasicBlock bb |
-      this.getPosInBasicBlock(bb) = countSubBasicBlocksInBasicBlock(bb) - 1
+      this.getRankInBasicBlock(bb) = countSubBasicBlocksInBasicBlock(bb)
     )
   }
 
   /**
-   * Gets the position of this `SubBasicBlock` in its containing basic block
-   * `bb`, where `bb` is equal to `getBasicBlock()`.
+   * Gets the rank of this `SubBasicBlock` among the other `SubBasicBlock`s in
+   * its containing basic block `bb`, where `bb` is equal to `getBasicBlock()`.
    */
-  int getPosInBasicBlock(BasicBlock bb) {
-    exists(int thisIndexInBB, int rnk |
+  int getRankInBasicBlock(BasicBlock bb) {
+    exists(int thisIndexInBB |
       thisIndexInBB = this.getIndexInBasicBlock(bb) and
-      thisIndexInBB = rank[rnk](int i | i = any(SubBasicBlock n).getIndexInBasicBlock(bb)) and
-      result = rnk - 1
+      thisIndexInBB = rank[result](int i | i = any(SubBasicBlock n).getIndexInBasicBlock(bb))
     )
   }
 
@@ -93,7 +92,7 @@ class SubBasicBlock extends ControlFlowNodeBase {
     result = this.getBasicBlock().getASuccessor()
     or
     exists(BasicBlock bb |
-      result.getPosInBasicBlock(bb) = this.getPosInBasicBlock(bb) + 1
+      result.getRankInBasicBlock(bb) = this.getRankInBasicBlock(bb) + 1
     )
   }
 
@@ -168,9 +167,9 @@ class SubBasicBlock extends ControlFlowNodeBase {
         )
         or
         exists(SubBasicBlock succ, int succPos, int thisRank, int succRank |
-          thisRank = this.getPosInBasicBlock(bb) and
+          thisRank = this.getRankInBasicBlock(bb) and
           succRank = thisRank + 1 and
-          succRank = succ.getPosInBasicBlock(bb) and
+          succRank = succ.getRankInBasicBlock(bb) and
           bb.getNode(succPos) = succ and
           result = succPos - thisPos
         )
