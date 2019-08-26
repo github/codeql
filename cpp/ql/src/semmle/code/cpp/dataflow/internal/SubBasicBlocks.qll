@@ -97,13 +97,21 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * start from 0, and the node at position 0 always exists and compares equal
    * to `this`.
    */
+  pragma[nomagic]
   ControlFlowNode getNode(int pos) {
-    exists(BasicBlock bb | bb = this.getBasicBlock() |
-      exists(int thisPos | this = bb.getNode(thisPos) |
-        result = bb.getNode(thisPos + pos) and
-        pos >= 0 and
-        pos < this.getNumberOfNodes()
+    exists(BasicBlock bb |
+      exists(int outerPos |
+        result = bb.getNode(outerPos) and
+        pos = outerPosToInnerPos(bb, outerPos)
       )
+    )
+  }
+
+  pragma[nomagic]
+  private int outerPosToInnerPos(BasicBlock bb, int posInBB) {
+    exists(int thisPosInBB | this = bb.getNode(thisPosInBB) |
+      posInBB = result + thisPosInBB and
+      result = [ 0 .. this.getNumberOfNodes() - 1 ]
     )
   }
 
