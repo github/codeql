@@ -5,6 +5,8 @@ private import semmle.code.cpp.internal.ResolveClass
 
 /**
  * A C/C++ type.
+ *
+ * This QL class represents the root of the C/C++ type hierarchy.
  */
 class Type extends Locatable, @type {
   Type() { isType(underlyingElement(this)) }
@@ -289,6 +291,13 @@ class Type extends Locatable, @type {
 
 /**
  * A C/C++ built-in primitive type (int, float, void, and so on). See 4.1.1.
+ * In the following example, `unsigned int` and `double` denote primitive
+ * built-in types:
+ * ```
+ * double a;
+ * unsigned int ua[40];
+ * typedef double LargeFloat;
+ * ```
  */
 class BuiltInType extends Type, @builtintype {
   override string toString() { result = this.getName() }
