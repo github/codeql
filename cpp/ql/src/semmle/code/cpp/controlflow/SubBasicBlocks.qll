@@ -101,7 +101,6 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * start from 0, and the node at index 0 always exists and compares equal
    * to `this`.
    */
-  pragma[nomagic]
   ControlFlowNode getNode(int index) {
     exists(BasicBlock bb |
       exists(int outerIndex |
@@ -115,6 +114,10 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * Gets the index of the node in this `SubBasicBlock` that has `indexInBB` in
    * `bb`, where `bb` is equal to `getBasicBlock()`.
    */
+  // This predicate is factored out of `getNode` to ensure a good join order.
+  // It's sensitive to bad magic, so it has `pragma[nomagic]` on it. For
+  // example, it can get very slow if `getNode` is pragma[nomagic], which could
+  // mean it might get very slow if `getNode` is used in the wrong context.
   pragma[nomagic]
   private int outerToInnerIndex(BasicBlock bb, int indexInBB) {
     indexInBB = result + this.getIndexInBasicBlock(bb) and
