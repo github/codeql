@@ -55,6 +55,14 @@ class ExprOrType extends @exprortype, Documentable {
       exists(DotExpr dot | this = dot.getProperty() |
         result = dot.getDocumentation()
       )
+      or
+      exists(AssignExpr e | this = e.getRhs() |
+        result = e.getDocumentation()
+      )
+      or
+      exists(ParExpr p | this = p.getExpression() |
+        result = p.getDocumentation()
+      )
     )
   }
 
