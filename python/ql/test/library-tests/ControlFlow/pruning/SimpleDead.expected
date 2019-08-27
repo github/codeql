@@ -1,8 +1,0 @@
-| 130 | None | 131 | count |
-| 132 | UnaryExpr | 134 | False |
-| 134 | False | 135 | count |
-| 138 | True | 141 | count |
-| 142 | IntegerLiteral | 143 | count |
-| 146 | UnaryExpr | 149 | count |
-| 151 | UnaryExpr | 152 | count |
-| 153 | UnaryExpr | 129 | Function prune_const_branches |
