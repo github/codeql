@@ -7,7 +7,7 @@ Patching is still possible mid-flight, but what if there are more such issues?
 
 .. container:: image-box
 
-   .. image:: ../_static-training/curiosity.png
+   .. image:: ../_static-training/curiosity2.png
    
 .. note::
 
@@ -15,12 +15,13 @@ Patching is still possible mid-flight, but what if there are more such issues?
 
    The bug, which had gone undetected by traditional solutions, was likely to prevent the capsule’s parachutes from opening, resulting in the Rover crashing onto the red planet’s rocky surface.
    
-Zoom in on the code
-===================
+Zoom in on the code...
+======================
 
 (For illustration only, not actually NASA code!)
 
 .. code-block:: cpp
+   :emphasize-lines: 1,7
 
    void fire_thrusters(double vectors[12]) {
      for (int i = 0; i < 12 i++) {
@@ -80,18 +81,13 @@ Find all instances!
 
 - All were fixed with a mid-flight patch.
 
-.. container:: image-box
-
-   .. image:: ../_static-training/curiosity2.png
-    
+- For more detail on the collaboration between Semmle and NASA, see our case study: `Semmle at NASA: Landing Curiosity safely on Mars <https://semmle.com/case-studies/semmle-nasa-landing-curiosity-safely-mars>`__.
 
 .. note::
 
-  The JPL team ran the query across the full Curiosity control software–it identified the original problem, and more than 30 other variants, of which three were in the critical Entry, Descent and Landing module. 
+  The JPL team ran the query across the full Curiosity control software–it identified the original problem, and more than 30 other variants, of which three were in the critical Entry, Descent, and Landing module. 
 
-  The team addressed all issues, and patched the firmware remotely. Not long after, the Curiosity Rover   landed safely on Mars.
-  
-  For more detail on the collaboration between Semmle and NASA, see our case study: `Semmle at NASA: Landing Curiosity safely on Mars <https://semmle.com/case-studies/semmle-nasa-landing-curiosity-safely-mars>`__.
+  The team addressed all issues, and patched the firmware remotely. Not long after, the Curiosity Rover landed safely on Mars.
 
 .. rst-class:: background2
 
@@ -101,19 +97,15 @@ How it all works
 Analysis overview
 =================
 
-- The database schema is (source) language specific, as are queries and libraries.
-- Multi-language code bases are analyzed one language at a time.
-
-.. container:: image-box
+.. rst-class:: analysis
 
    .. image:: ../_static-training/analysis-overview.png
-       
-
+         
 .. note::
 
-  Semmle’s analysis works by extracting a queryable database from your project. For compiled languages, Semmle’s tools observe an ordinary build of the source code. Each time a compiler is invoked to process a source file, a copy of that file is made, and all relevant information about the source code (syntactic data about the abstract syntax tree, semantic data like name binding and type information, data on the operation of the C preprocessor, etc.) is collected. For interpreted languages, the extractor gathers similar information by running directly on the source code.
+  Semmle’s analysis works by extracting a queryable database from your project. For compiled languages, Semmle’s tools observe an ordinary build of the source code. Each time a compiler is invoked to process a source file, a copy of that file is made, and all relevant information about the source code (syntactic data about the abstract syntax tree, semantic data like name binding and type information, data on the operation of the C preprocessor, etc.) is collected. For interpreted languages, the extractor gathers similar information by running directly on the source code. Multi-language code bases are analyzed one language at a time.
 
-  Once the extraction finishes, all this information is collected into a single `snapshot database <https://help.semmle.com/QL/learn-ql/ql/snapshot.html>`__, which is then ready to query, possibly on a different machine. A copy of the source files, made at the time the database was created, is also included in the snapshot so analysis results can be displayed at the correct location in the code.
+  Once the extraction finishes, all this information is collected into a single `snapshot database <https://help.semmle.com/QL/learn-ql/ql/snapshot.html>`__, which is then ready to query, possibly on a different machine. A copy of the source files, made at the time the database was created, is also included in the snapshot so analysis results can be displayed at the correct location in the code. The database schema is (source) language specific.
 
   Queries are written in `QL <https://semmle.com/ql>`__ and usually depend on one or more of the `standard QL libraries <https://github.com/semmle/ql>`__ (and of course you can write your own custom libraries). They are compiled into an efficiently executable format by the QL compiler and then run on a snapshot database by the QL evaluator, either on a remote worker machine or locally on a developer’s machine.
 
@@ -137,7 +129,7 @@ QL is:
   QL is the high-level, object-oriented logic language that underpins all of Semmle’s libraries and analyses. You can learn lots more about QL by visiting `Introduction to the QL language <https://help.semmle.com/QL/learn-ql/ql/introduction-to-ql.html>`__ and `About QL <https://help.semmle.com/QL/learn-ql/ql/about-ql.html>`__.
   The key features of QL are:
   
-  - All common logic connectives are available, including quantifiers like “exists”, which can also introduce new variables. 
+  - All common logic connectives are available, including quantifiers like ``exist``, which can also introduce new variables. 
   - The language is declarative–the user focuses on stating what they would like to find, and leaves the details of how to evaluate the query to the engine. 
   - The object-oriented layer allows Semmle to distribute rich standard libraries for program analysis. These model the common AST node types, control flow and name lookup, and define further layers on top–for example control flow or data flow analysis. The `standard QL libraries and queries <https://github.com/semmle/ql>`__ ship as source and can be inspected by the user, and new abstractions are readily defined.
   - The database generated by Semmle’s tools is treated as read-only; queries cannot insert new data into it, though they can inspect its contents in various ways.

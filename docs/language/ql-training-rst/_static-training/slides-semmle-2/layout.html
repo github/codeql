@@ -32,15 +32,15 @@ URL: https://code.google.com/p/io-2012-slides
 {%- macro script() %}
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '{{ url_root }}',
-        VERSION:     '{{ release|e }}',
+        URL_ROOT:    '../',
+        VERSION:     '1.21',
         COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '{{ '' if no_search_suffix else file_suffix }}',
-        HAS_SOURCE:  {{ has_source|lower }}
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
       };
     </script>
 
-    <script data-main="{{ pathto('_static/js/slides', 1) }}"
+<script data-main="{{ pathto('_static/js/slides', 1) }}"
             src="{{ pathto('_static/js/require-1.0.8.min.js', 1) }}"></script>
 
     {%- for scriptfile in script_files %}
@@ -80,8 +80,8 @@ URL: https://code.google.com/p/io-2012-slides
   {{ metatags }}
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <!-- comment -->
-  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
   <!--This one seems to work all the time, but really small on ipad-->
   <!--<meta name="viewport" content="initial-scale=0.4">-->
   <!-- end comment -->
@@ -128,11 +128,14 @@ URL: https://code.google.com/p/io-2012-slides
     <link rel="prev" title="{{ prev.title|striptags|e }}" href="{{ prev.link|e }}" />
     {%- endif %}
 {%- endblock %}
-{%- block extrahead %} {% endblock %}
+{%- block extrahead %} 
+<link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Work+Sans&display=swap' rel='stylesheet'>
+{% endblock %}
 </head>
 <body style="opacity: 0">
-
-<slides class="layout-widescreen">
+  <div class="wrapper" id="wrapper">
+<slides class="layout-widescreen" id="slides">
 
 <!--  {% include "title_slide.html" %} -->
 
@@ -143,10 +146,30 @@ URL: https://code.google.com/p/io-2012-slides
   <slide class="backdrop"></slide>
 
 </slides>
+</div>
+
 
 <!--[if IE]>
   <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
   <script>CFInstall.check({mode: 'overlay'});</script>
 <![endif]-->
+<script type="text/javascript">
+
+//assigns font-size when document is ready
+document.onreadystatechange = () => {
+  if (document.readyState === 'complete') {
+    var wrapperHeight = document.getElementById('slides').clientHeight;
+    var relativeFontSize = wrapperHeight / 45 + 'px'; //change integer to set desired font size
+    document.getElementById("slides").style.fontSize = relativeFontSize;
+  }
+};
+//then on window resize
+window.onresize = function(event) {
+  var wrapperHeight = document.getElementById('slides').clientHeight;
+  var relativeFontSize = wrapperHeight / 45 + 'px'; //change integer to set for desired font size
+  document.getElementById("slides").style.fontSize = relativeFontSize;
+};
+</script>
+
 </body>
 </html>
