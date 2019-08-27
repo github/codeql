@@ -14,7 +14,12 @@ pragma[noinline]
 private predicate existsCompleteWithName(string name, @usertype d) {
   is_complete(d) and
   name = getTopLevelClassName(d) and
-  strictcount(@usertype other | is_complete(other) and getTopLevelClassName(other) = name) = 1
+  onlyOneCompleteClassExistsWithName(name)
+}
+
+pragma[noinline]
+private predicate onlyOneCompleteClassExistsWithName(string name) {
+  strictcount(@usertype c | is_complete(c) and getTopLevelClassName(c) = name) = 1
 }
 
 /** Holds if `c` is an incomplete class named `name`. */
