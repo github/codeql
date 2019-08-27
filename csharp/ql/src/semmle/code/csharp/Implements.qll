@@ -65,6 +65,7 @@ predicate implements(Virtualizable m1, Virtualizable m2, ValueOrRefType t) {
  * `I.M()` is compatible with `A.M()` for types `A` and `B`, but not
  * for type `C`, because `C.M()` conflicts.
  */
+pragma[nomagic]
 private Virtualizable getAnImplementedInterfaceMemberForSubType(Virtualizable m, ValueOrRefType t) {
   result = getACompatibleInterfaceMember(m) and
   t = m.getDeclaringType()
@@ -86,6 +87,7 @@ private predicate hasMemberCompatibleWithInterfaceMember(ValueOrRefType t, Virtu
  * signature, and where `m` can potentially be accessed when
  * the interface member is accessed.
  */
+pragma[nomagic]
 private Virtualizable getACompatibleInterfaceMember(Virtualizable m) {
   result = getACompatibleInterfaceMemberAux(m) and
   (
@@ -97,12 +99,14 @@ private Virtualizable getACompatibleInterfaceMember(Virtualizable m) {
   )
 }
 
+pragma[nomagic]
 private Virtualizable getACompatibleExplicitInterfaceMember(Virtualizable m, ValueOrRefType declType) {
   result = getACompatibleInterfaceMemberAux(m) and
   declType = m.getDeclaringType() and
   m.implementsExplicitInterface()
 }
 
+pragma[nomagic]
 private Virtualizable getACompatibleInterfaceMemberAux(Virtualizable m) {
   result = getACompatibleInterfaceAccessor(m) or
   result = getACompatibleInterfaceIndexer(m) or
