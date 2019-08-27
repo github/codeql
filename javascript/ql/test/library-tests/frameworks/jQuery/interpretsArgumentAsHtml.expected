@@ -1,3 +1,4 @@
+WARNING: Type JQueryMethodCall has been deprecated and may be removed in future (interpretsArgumentAsHtml.ql:3,6-22)
 | tracking.js:7:5:7:24 | this.elm.html('foo') | tracking.js:7:19:7:23 | 'foo' |
 | tracking.js:14:5:14:17 | e.html('foo') | tracking.js:14:12:14:16 | 'foo' |
 | tracking.js:18:7:18:15 | $('#foo') | tracking.js:18:9:18:14 | '#foo' |
