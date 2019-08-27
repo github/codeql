@@ -365,13 +365,25 @@ module JQuery {
     }
   }
 
+  /** A source of jQuery objects from the AST-based `JQueryObject` class. */
+  private DataFlow::Node legacyObjectSource() {
+    result = any(JQueryObjectInternal e).flow()
+  }
+
   /** Gets a source of jQuery objects. */
-  private DataFlow::SourceNode objectSource() { result instanceof ObjectSource::Range }
+  private DataFlow::SourceNode objectSource(DataFlow::TypeTracker t) {
+    t.start() and
+    result instanceof ObjectSource::Range
+    or
+    exists(DataFlow::TypeTracker init |
+      init.start() and
+      t = init.smallstep(legacyObjectSource(), result)
+    )
+  }
 
   /** Gets a data flow node referring to a jQuery object. */
   private DataFlow::SourceNode objectRef(DataFlow::TypeTracker t) {
-    t.start() and
-    result = objectSource()
+    result = objectSource(t)
     or
     exists(DataFlow::TypeTracker t2 | result = objectRef(t2).track(t2, t))
   }
@@ -394,6 +406,10 @@ module JQuery {
       this = dollar().getAMemberCall(name)
       or
       this = objectRef().getAMethodCall(name)
+      or
+      // Handle contributed JQuery objects that aren't source nodes (usually parameter uses)
+      getReceiver() = legacyObjectSource() and
+      this.(DataFlow::MethodCallNode).getMethodName() = name
     }
 
     /**
