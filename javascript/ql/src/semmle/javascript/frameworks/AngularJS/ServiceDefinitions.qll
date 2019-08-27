@@ -35,6 +35,13 @@ abstract class ServiceReference extends TServiceReference {
   abstract string getName();
 
   /**
+   * Gets a data flow node that may refer to this service.
+   */
+  DataFlow::SourceNode getAReference() {
+    result = DataFlow::parameterNode(any(ServiceRequest request).getDependencyParameter(this))
+  }
+
+  /**
    * Gets an access to the referenced service.
    */
   Expr getAnAccess() {
