@@ -297,28 +297,28 @@ The ``SsaVariable`` class represents `static single assignment form <http://en.w
 Type-inference classes
 ----------------------
 
-The QL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Object`` and ``ClassObject`` allow you to query the possible classes that an expression may have at runtime. For example, which ``ClassObjects`` are iterable can be determined using the query:
+The QL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. For example, which ``ClassValue``\ s are iterable can be determined using the query:
 
-**Find iterable ``ClassObjects``**
+**Find iterable ``ClassValue``\ s**
 
 .. code-block:: ql
 
    import python
 
-   from ClassObject cls
+   from ClassValue cls
    where cls.hasAttribute("__iter__")
    select cls
 
-➤ `See this in the query console <https://lgtm.com/query/688180005/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for `builtin classes <http://docs.python.org/library/stdtypes.html>`__, which do not have any Python source code, show the non-source results.
+➤ `See this in the query console <https://lgtm.com/query/5151030165280978402/>`__ This query returns a list of classes for the projects analyzed. If you want to include the results for `builtin classes <http://docs.python.org/library/stdtypes.html>`__, which do not have any Python source code, show the non-source results.
 
 Summary
 ~~~~~~~
 
--  `Object <https://help.semmle.com/qldoc/python/semmle/python/types/Object.qll/type.Object$Object.html>`__
+-  `Value <https://help.semmle.com/qldoc/python/semmle/python/objects/ObjectAPI.qll/type.ObjectAPI$Value.html>`__
 
-   -  ``ClassObject``
-   -  ``FunctionObject``
-   -  ``ModuleObject``
+   -  ``ClassValue``
+   -  ``CallableValue``
+   -  ``ModuleValue``
 
 These classes are explained in more detail in :doc:`Tutorial: Points-to analysis and type inference <pointsto-type-infer>`.
 
