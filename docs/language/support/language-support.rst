@@ -17,10 +17,11 @@ with any questions you have about language and compiler support.
 
 .. container:: footnote-group
 
-    .. [1] Support for the Arm Compiler (armcc) is preliminary.
-    .. [2] In addition, support is included for the preview features of C# 8.0 and .NET Core 3.0.
-    .. [3] The best results are achieved with COBOL code that stays close to the ANSI 85 standard.  
-    .. [4] Builds that execute on Java 6 to 12 can be analyzed. The analysis understands Java 12 language features.
-    .. [5] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
-    .. [6] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files. 
-    .. [7] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.   
+    .. [1] Support for the clang-cl compiler is preliminary.
+    .. [2] Support for the Arm Compiler (armcc) is preliminary.
+    .. [3] In addition, support is included for the preview features of C# 8.0 and .NET Core 3.0.
+    .. [4] The best results are achieved with COBOL code that stays close to the ANSI 85 standard.  
+    .. [5] Builds that execute on Java 6 to 12 can be analyzed. The analysis understands Java 12 language features.
+    .. [6] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
+    .. [7] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files. 
+    .. [8] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.   
