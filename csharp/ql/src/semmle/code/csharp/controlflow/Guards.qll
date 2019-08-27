@@ -498,7 +498,7 @@ class GuardedExpr extends AccessOrCallExpr {
    * left-most qualifier, then so must the other (accessing the same SSA
    * variable).
    */
-  Expr getAGuard(Expr sub, AbstractValue v) {
+  Guard getAGuard(Expr sub, AbstractValue v) {
     result = g and
     sub = sub0 and
     v = v0
@@ -509,7 +509,7 @@ class GuardedExpr extends AccessOrCallExpr {
    * expression is guarded by a structurally equal expression having abstract
    * value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) { exists(Expr e | e = this.getAGuard(e, v)) }
+  predicate mustHaveValue(AbstractValue v) { g = this.getAGuard(g, v) }
 
   /**
    * Holds if this expression is guarded by expression `cond`, which must
@@ -563,7 +563,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
    * left-most qualifier, then so must the other (accessing the same SSA
    * variable).
    */
-  Expr getAGuard(Expr sub, AbstractValue v) {
+  Guard getAGuard(Expr sub, AbstractValue v) {
     result = g and
     sub = sub0 and
     v = v0
@@ -574,12 +574,10 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
    * control flow node is guarded by a structurally equal expression having
    * abstract value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) { exists(Expr e | e = this.getAGuard(e, v)) }
+  predicate mustHaveValue(AbstractValue v) { g = this.getAGuard(g, v) }
 }
 
 /**
- * DEPRECATED: Use `DataFlow::BarrierGuard` instead.
- *
  * A guarded data flow node. A guarded data flow node is like a guarded expression
  * (`GuardedExpr`), except control flow graph splitting is taken into account. That
  * is, one data flow node belonging to an expression may be guarded, while another
@@ -597,7 +595,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
  * In the example above, the node for `x.ToString()` is null-guarded in the
  * split `b == true`, but not in the split `b == false`.
  */
-deprecated class GuardedDataFlowNode extends DataFlow::ExprNode {
+class GuardedDataFlowNode extends DataFlow::ExprNode {
   private Guard g;
 
   private AccessOrCallExpr sub0;
@@ -621,7 +619,7 @@ deprecated class GuardedDataFlowNode extends DataFlow::ExprNode {
    * left-most qualifier, then so must the other (accessing the same SSA
    * variable).
    */
-  Expr getAGuard(Expr sub, AbstractValue v) {
+  Guard getAGuard(Expr sub, AbstractValue v) {
     result = g and
     sub = sub0 and
     v = v0
@@ -632,7 +630,7 @@ deprecated class GuardedDataFlowNode extends DataFlow::ExprNode {
    * data flow node is guarded by a structurally equal expression having
    * abstract value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) { exists(Expr e | e = this.getAGuard(e, v)) }
+  predicate mustHaveValue(AbstractValue v) { g = this.getAGuard(g, v) }
 }
 
 /** An expression guarded by a `null` check. */
@@ -640,12 +638,8 @@ class NullGuardedExpr extends GuardedExpr {
   NullGuardedExpr() { this.mustHaveValue(any(NullValue v | not v.isNull())) }
 }
 
-/**
- * DEPRECATED: Use `DataFlow::BarrierGuard` instead.
- *
- * A data flow node guarded by a `null` check.
- */
-deprecated class NullGuardedDataFlowNode extends GuardedDataFlowNode {
+/** A data flow node guarded by a `null` check. */
+class NullGuardedDataFlowNode extends GuardedDataFlowNode {
   NullGuardedDataFlowNode() { this.mustHaveValue(any(NullValue v | not v.isNull())) }
 }
 

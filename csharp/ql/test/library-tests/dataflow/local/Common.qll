@@ -1,10 +1,6 @@
 import csharp
+import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-private import DataFlow::BarrierGuards
-
-private class NullBarrierGuard extends ValueBarrierGuard {
-  NullBarrierGuard() { val = any(NullValue nv | not nv.isNull()) }
-}
 
 class MyFlowSource extends DataFlow::Node {
   MyFlowSource() {
@@ -22,8 +18,4 @@ class MyFlowSource extends DataFlow::Node {
       e.(LambdaExpr).getExpressionBody().(StringLiteral).getValue() = "taint source"
     )
   }
-}
-
-class MyNullGuardedDataFlowNode extends DataFlow::Node {
-  MyNullGuardedDataFlowNode() { this = any(NullBarrierGuard ng).getAGuardedNode() }
 }

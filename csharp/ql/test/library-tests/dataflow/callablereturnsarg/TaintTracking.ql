@@ -10,7 +10,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { c.isSink(sink) }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { c.isBarrierGuard(guard) }
+  override predicate isSanitizer(DataFlow::Node node) { c.isBarrier(node) }
 }
 
 from TaintTrackingConfiguration c, Parameter p, int outRefArg

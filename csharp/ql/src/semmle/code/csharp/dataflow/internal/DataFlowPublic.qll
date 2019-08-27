@@ -190,31 +190,3 @@ class BarrierGuard extends Guard {
     )
   }
 }
-
-module BarrierGuards {
-  import AbstractValues
-
-  /** A simple guard that checks that this expression has an abstract value. */
-  abstract class ValueBarrierGuard extends BarrierGuard {
-    AbstractValue val;
-
-    ValueBarrierGuard() { this.controlsNode(_, this, val) }
-
-    /**
-     * Gets the abstract value that this expression is checked against.
-     *
-     * For example, in
-     *
-     * ```
-     * if (x == null)
-     *    ...
-     * ```
-     *
-     * `x == null` is checked against an abstract Boolean value (`BooleanValue`),
-     * and `x` is checked against an abstract nullness value (`NullValue`).
-     */
-    AbstractValue getCheckedValue() { result = val }
-
-    final override predicate checks(Expr e, AbstractValue v) { e = this and v = val }
-  }
-}

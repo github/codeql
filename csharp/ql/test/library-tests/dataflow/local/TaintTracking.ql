@@ -3,7 +3,7 @@ import Common
 
 predicate step(DataFlow::Node pred, DataFlow::Node succ) {
   TaintTracking::localTaintStep(pred, succ) and
-  not succ instanceof MyNullGuardedDataFlowNode
+  not succ instanceof NullGuardedDataFlowNode
 }
 
 from MyFlowSource source, DataFlow::Node sink, Access target
