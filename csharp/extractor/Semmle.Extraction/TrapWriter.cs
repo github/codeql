@@ -10,7 +10,7 @@ namespace Semmle.Extraction
 {
     public interface ITrapEmitter
     {
-        void EmitToTrapBuilder(TextWriter trapFile);
+        void EmitTrap(TextWriter trapFile);
     }
 
     public sealed class TrapWriter : IDisposable
@@ -202,7 +202,7 @@ namespace Semmle.Extraction
 
         public void Emit(ITrapEmitter emitter)
         {
-            emitter.EmitToTrapBuilder(Writer);
+            emitter.EmitTrap(Writer);
         }
 
         /// <summary>

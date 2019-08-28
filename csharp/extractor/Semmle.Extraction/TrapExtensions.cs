@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Semmle.Extraction
 {
@@ -27,85 +29,57 @@ namespace Semmle.Extraction
             if (index++ > 0) trapFile.Write(separator);
         }
 
-        public struct FirstParam
+
+        public static TextWriter WriteColumn(this TextWriter trapFile, int i)
         {
-            private readonly TextWriter Writer;
-
-            public FirstParam(TextWriter trapFile)
-            {
-                Writer = trapFile;
-            }
-
-            public NextParam Param(IEntity entity)
-            {
-                Writer.WriteLabel(entity.Label.Value);
-                return new NextParam(Writer);
-            }
-
-            public NextParam Param(Label label)
-            {
-                Writer.WriteLabel(label.Value);
-                return new NextParam(Writer);
-            }
-
-            public void EndTuple()
-            {
-                Writer.WriteLine(')');
-            }
+            trapFile.Write(i);
+            return trapFile;
         }
 
-        public struct NextParam
+        public static TextWriter WriteColumn(this TextWriter trapFile, string s)
         {
-            private readonly TextWriter Writer;
+            trapFile.WriteTrapString(s);
+            return trapFile;
+        }
 
-            public NextParam(TextWriter trapFile)
-            {
-                Writer = trapFile;
-            }
+        public static TextWriter WriteColumn(this TextWriter trapFile, IEntity entity)
+        {
+            trapFile.WriteLabel(entity.Label.Value);
+            return trapFile;
+        }
 
-            private void WriteComma()
-            {
-                Writer.Write(", ");
-            }
+        public static TextWriter WriteColumn(this TextWriter trapFile, Label label)
+        {
+            trapFile.WriteLabel(label.Value);
+            return trapFile;
+        }
 
-            public NextParam Param(string str)
-            {
-                WriteComma();
-                Writer.WriteTrapString(str);
-                return this;
-            }
 
-            public NextParam Param(float f)
-            {
-                WriteComma();
-                Writer.WriteTrapFloat(f);
-                return this;
-            }
+        public static TextWriter WriteColumn(this TextWriter trapFile, float f)
+        {
+            trapFile.WriteTrapFloat(f);
+            return trapFile;
+        }
 
-            public NextParam Param(Label label)
-            {
-                WriteComma();
-                Writer.WriteLabel(label.Value);
-                return this;
-            }
 
-            public NextParam Param(int i)
+        public static TextWriter WriteColumn(this TextWriter trapFile, object o)
+        {
+            switch (o)
             {
-                WriteComma();
-                Writer.Write(i);
-                return this;
-            }
-
-            public NextParam Param(IEntity e)
-            {
-                WriteComma();
-                Writer.WriteLabel(e.Label.Value);
-                return this;
-            }
-
-            public void EndTuple()
-            {
-                Writer.WriteLine(')');
+                case int i:
+                    return trapFile.WriteColumn(i);
+                case float f:
+                    return trapFile.WriteColumn(f);
+                case string s:
+                    return trapFile.WriteColumn(s);
+                case IEntity e:
+                    return trapFile.WriteColumn(e);
+                case Label l:
+                    return trapFile.WriteColumn(l);
+                case Enum _:
+                    return trapFile.WriteColumn((int)o);
+                default:
+                    throw new ArgumentException(nameof(o));
             }
         }
 
@@ -185,66 +159,94 @@ namespace Semmle.Extraction
             trapFile.Write(f.ToString("0.#####e0"));  // Trap importer won't accept ints
         }
 
-        public static FirstParam BeginTuple(this TextWriter trapFile, string name)
+        public static void WriteTuple(this TextWriter trapFile, string name, params object[] @params)
         {
             trapFile.Write(name);
             trapFile.Write('(');
-            return new FirstParam(trapFile);
+            int index = 0;
+            foreach (var p in @params)
+            {
+                trapFile.WriteSeparator(",", ref index);
+                trapFile.WriteColumn(p);
+            }
+            trapFile.WriteLine(')');
         }
 
         public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1)
         {
-            trapFile.BeginTuple(name).Param(p1).EndTuple();
+            trapFile.Write(name);
+            trapFile.Write('(');
+            trapFile.WriteColumn(p1);
+            trapFile.WriteLine(')');
         }
 
-        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, IEntity p2)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, object p2)
         {
-            trapFile.BeginTuple(name).Param(p1).Param(p2).EndTuple();
+            trapFile.Write(name);
+            trapFile.Write('(');
+            trapFile.WriteColumn(p1);
+            trapFile.Write(',');
+            trapFile.WriteColumn(p2);
+            trapFile.WriteLine(')');
         }
 
-        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, string p2, IEntity p3, IEntity p4)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, object p2, object p3)
         {
-            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).Param(p4).EndTuple();
+            trapFile.Write(name);
+            trapFile.Write('(');
+            trapFile.WriteColumn(p1);
+            trapFile.Write(',');
+            trapFile.WriteColumn(p2);
+            trapFile.Write(',');
+            trapFile.WriteColumn(p3);
+            trapFile.WriteLine(')');
         }
 
-        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, string p2, IEntity p3)
+        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, object p2, object p3, object p4)
         {
-            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
+            trapFile.Write(name);
+            trapFile.Write('(');
+            trapFile.WriteColumn(p1);
+            trapFile.Write(',');
+            trapFile.WriteColumn(p2);
+            trapFile.Write(',');
+            trapFile.WriteColumn(p3);
+            trapFile.Write(',');
+            trapFile.WriteColumn(p4);
+            trapFile.WriteLine(')');
         }
 
-        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, int p2, IEntity p3)
+        /// <summary>
+        /// Appends a [comma] separated list to a trap builder.
+        /// </summary>
+        /// <typeparam name="T">The type of the list.</typeparam>
+        /// <param name="trapFile">The trap builder to append to.</param>
+        /// <param name="separator">The separator string (e.g. ",")</param>
+        /// <param name="items">The list of items.</param>
+        /// <returns>The original trap builder (fluent interface).</returns>
+        public static TextWriter AppendList<T>(this TextWriter trapFile, string separator, IEnumerable<T> items) where T : IEntity
         {
-            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
+            return trapFile.BuildList(separator, items, (x, tb0) => { tb0.WriteSubId(x); });
         }
 
-        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, int p2, int p3)
+        /// <summary>
+        /// Builds a trap builder using a separator and an action for each item in the list.
+        /// </summary>
+        /// <typeparam name="T">The type of the items.</typeparam>
+        /// <param name="trapFile">The trap builder to append to.</param>
+        /// <param name="separator">The separator string (e.g. ",")</param>
+        /// <param name="items">The list of items.</param>
+        /// <param name="action">The action on each item.</param>
+        /// <returns>The original trap builder (fluent interface).</returns>
+        public static TextWriter BuildList<T>(this TextWriter trapFile, string separator, IEnumerable<T> items, Action<T, TextWriter> action)
         {
-            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
-        }
-
-        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, IEntity p2, int p3)
-        {
-            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
-        }
-
-        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, IEntity p2, IEntity p3)
-        {
-            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).EndTuple();
-        }
-
-        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, string p2, IEntity p3, IEntity p4, IEntity p5)
-        {
-            trapFile.BeginTuple(name).Param(p1).Param(p2).Param(p3).Param(p4).Param(p5).EndTuple();
-        }
-
-        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, int p2)
-        {
-            trapFile.BeginTuple(name).Param(p1).Param(p2).EndTuple();
-        }
-
-        public static void WriteTuple(this TextWriter trapFile, string name, IEntity p1, string p2)
-        {
-            trapFile.BeginTuple(name).Param(p1).Param(p2).EndTuple();
+            bool first = true;
+            foreach (var item in items)
+            {
+                if (first) first = false; else trapFile.Write(separator);
+                action(item, trapFile);
+            }
+            return trapFile;
         }
     }
 }

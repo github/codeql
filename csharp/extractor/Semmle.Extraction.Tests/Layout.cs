@@ -191,7 +191,7 @@ namespace Semmle.Extraction.Tests
                 Content = content;
             }
 
-            public void EmitToTrapBuilder(TextWriter trapFile)
+            public void EmitTrap(TextWriter trapFile)
             {
                 trapFile.Write(Content);
             }

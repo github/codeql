@@ -332,7 +332,7 @@ namespace Semmle.Extraction
                 Key = key;
             }
 
-            public void EmitToTrapBuilder(TextWriter trapFile)
+            public void EmitTrap(TextWriter trapFile)
             {
                 trapFile.Write(".push ");
                 Key.AppendTo(trapFile);
@@ -342,7 +342,7 @@ namespace Semmle.Extraction
 
         class PopEmitter : ITrapEmitter
         {
-            public void EmitToTrapBuilder(TextWriter trapFile)
+            public void EmitTrap(TextWriter trapFile)
             {
                 trapFile.WriteLine(".pop");
             }

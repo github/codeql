@@ -15,7 +15,7 @@ namespace Semmle.Extraction.CIL
 
         public T Populate<T>(T e) where T : IExtractedEntity
         {
-            if(e.Label.Valid)
+            if (e.Label.Valid)
             {
                 return e;   // Already populated
             }
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CIL
         {
             PrimitiveType e = primitiveTypes[(int)code];
 
-            if(e is null)
+            if (e is null)
             {
                 e = new PrimitiveType(this, code);
                 e.Label = cx.GetNewLabel();
@@ -157,7 +157,7 @@ namespace Semmle.Extraction.CIL
         /// <returns>The string.</returns>
         public string GetString(StringHandle h) => mdReader.GetString(h);
 
-#region Namespaces
+        #region Namespaces
 
         readonly CachedFunction<StringHandle, Namespace> namespaceFactory;
 
@@ -197,9 +197,9 @@ namespace Semmle.Extraction.CIL
             NamespaceDefinition nd = mdReader.GetNamespaceDefinition(handle);
             return Populate(new Namespace(this, GetString(nd.Name), Create(nd.Parent)));
         }
-#endregion
+        #endregion
 
-#region Locations
+        #region Locations
         readonly CachedFunction<PDB.ISourceFile, PdbSourceFile> sourceFiles;
         readonly CachedFunction<string, Folder> folders;
         readonly CachedFunction<PDB.Location, PdbSourceLocation> sourceLocations;
@@ -225,7 +225,7 @@ namespace Semmle.Extraction.CIL
         /// <returns>A source location entity.</returns>
         public PdbSourceLocation CreateSourceLocation(PDB.Location loc) => sourceLocations[loc];
 
-#endregion
+        #endregion
 
         readonly CachedFunction<GenericContext, Handle, IExtractedEntity> genericHandleFactory;
 

@@ -247,7 +247,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public bool TryGetPrimitiveTypeCode(out PrimitiveTypeCode code)
+        private bool TryGetPrimitiveTypeCode(out PrimitiveTypeCode code)
         {
             if (ContainingType == null && Namespace.Name == cx.SystemNamespace.Name)
             {
@@ -314,7 +314,7 @@ namespace Semmle.Extraction.CIL.Entities
             return false;
         }
 
-        public bool IsPrimitiveType => TryGetPrimitiveTypeCode(out _);
+        protected bool IsPrimitiveType => TryGetPrimitiveTypeCode(out _);
 
         public static Type DecodeType(GenericContext gc, TypeSpecificationHandle handle) =>
             gc.cx.mdReader.GetTypeSpecification(handle).DecodeSignature(gc.cx.TypeSignatureDecoder, gc);

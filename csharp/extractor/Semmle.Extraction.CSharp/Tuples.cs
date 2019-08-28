@@ -23,12 +23,12 @@ namespace Semmle.Extraction.CSharp
 
         internal static void accessors(this TextWriter trapFile, Accessor accessorKey, int kind, string name, Property propKey, Accessor unboundAccessor)
         {
-            trapFile.BeginTuple("accessors").Param(accessorKey).Param(kind).Param(name).Param(propKey).Param(unboundAccessor).EndTuple();
+            trapFile.WriteTuple("accessors", accessorKey, kind, name, propKey, unboundAccessor);
         }
 
         internal static void array_element_type(this TextWriter trapFile, ArrayType array, int dimension, int rank, Type elementType)
         {
-            trapFile.BeginTuple("array_element_type").Param(array).Param(dimension).Param(rank).Param(elementType).EndTuple();
+            trapFile.WriteTuple("array_element_type", array, dimension, rank, elementType);
         }
 
         internal static void attributes(this TextWriter trapFile, Attribute attribute, Type attributeType, IEntity entity)
@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void catch_type(this TextWriter trapFile, Entities.Statements.Catch @catch, Type type, bool explicityCaught)
         {
-            trapFile.BeginTuple("catch_type").Param(@catch).Param(type).Param(explicityCaught ? 1 : 2).EndTuple();
+            trapFile.WriteTuple("catch_type", @catch, type, explicityCaught ? 1 : 2);
         }
 
         internal static void commentblock(this TextWriter trapFile, CommentBlock k)
@@ -53,12 +53,12 @@ namespace Semmle.Extraction.CSharp
 
         internal static void commentblock_binding(this TextWriter trapFile, CommentBlock commentBlock, Label entity, CommentBinding binding)
         {
-            trapFile.BeginTuple("commentblock_binding").Param(commentBlock).Param(entity).Param((int)binding).EndTuple();
+            trapFile.WriteTuple("commentblock_binding", commentBlock, entity, (int)binding);
         }
 
         internal static void commentblock_child(this TextWriter trapFile, CommentBlock commentBlock, CommentLine commentLine, int child)
         {
-            trapFile.BeginTuple("commentblock_child").Param(commentBlock).Param(commentLine).Param(child).EndTuple();
+            trapFile.WriteTuple("commentblock_child", commentBlock, commentLine, child);
         }
 
         internal static void commentblock_location(this TextWriter trapFile, CommentBlock k, Location l)
@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void commentline(this TextWriter trapFile, CommentLine commentLine, CommentLineType type, string text, string rawtext)
         {
-            trapFile.BeginTuple("commentline").Param(commentLine).Param((int)type).Param(text).Param(rawtext).EndTuple();
+            trapFile.WriteTuple("commentline", commentLine, (int)type, text, rawtext);
         }
 
         internal static void commentline_location(this TextWriter trapFile, CommentLine commentLine, Location location)
@@ -78,32 +78,32 @@ namespace Semmle.Extraction.CSharp
 
         internal static void compilation_args(this TextWriter trapFile, Compilation compilation, int index, string arg)
         {
-            trapFile.BeginTuple("compilation_args").Param(compilation).Param(index).Param(arg).EndTuple();
+            trapFile.WriteTuple("compilation_args", compilation, index, arg);
         }
 
         internal static void compilation_compiling_files(this TextWriter trapFile, Compilation compilation, int index, Extraction.Entities.File file)
         {
-            trapFile.BeginTuple("compilation_compiling_files").Param(compilation).Param(index).Param(file).EndTuple();
+            trapFile.WriteTuple("compilation_compiling_files", compilation, index, file);
         }
 
         internal static void compilation_referencing_files(this TextWriter trapFile, Compilation compilation, int index, Extraction.Entities.File file)
         {
-            trapFile.BeginTuple("compilation_referencing_files").Param(compilation).Param(index).Param(file).EndTuple();
+            trapFile.WriteTuple("compilation_referencing_files", compilation, index, file);
         }
 
         internal static void compilation_finished(this TextWriter trapFile, Compilation compilation, float cpuSeconds, float elapsedSeconds)
         {
-            trapFile.BeginTuple("compilation_finished").Param(compilation).Param(cpuSeconds).Param(elapsedSeconds).EndTuple();
+            trapFile.WriteTuple("compilation_finished", compilation, cpuSeconds, elapsedSeconds);
         }
 
         internal static void compilation_time(this TextWriter trapFile, Compilation compilation, int num, int index, float metric)
         {
-            trapFile.BeginTuple("compilation_time").Param(compilation).Param(num).Param(index).Param(metric).EndTuple();
+            trapFile.WriteTuple("compilation_time", compilation, num, index, metric);
         }
 
         internal static void compilations(this TextWriter trapFile, Compilation compilation, string cwd)
         {
-            trapFile.BeginTuple("compilations").Param(compilation).Param(cwd).EndTuple();
+            trapFile.WriteTuple("compilations", compilation, cwd);
         }
 
         internal static void compiler_generated(this TextWriter trapFile, IEntity entity)
@@ -118,7 +118,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void constant_value(this TextWriter trapFile, IEntity field, string value)
         {
-            trapFile.BeginTuple("constant_value").Param(field).Param(value).EndTuple();
+            trapFile.WriteTuple("constant_value", field, value);
         }
 
         internal static void constructed_generic(this TextWriter trapFile, IEntity constructedTypeOrMethod, IEntity unboundTypeOrMethod)
@@ -153,17 +153,17 @@ namespace Semmle.Extraction.CSharp
 
         internal static void diagnostic_for(this TextWriter trapFile, Diagnostic diag, Compilation comp, int fileNo, int index)
         {
-            trapFile.BeginTuple("diagnostic_for").Param(diag).Param(comp).Param(fileNo).Param(index).EndTuple();
+            trapFile.WriteTuple("diagnostic_for", diag, comp, fileNo, index);
         }
 
         internal static void diagnostics(this TextWriter trapFile, Diagnostic diag, int severity, string errorTag, string errorMessage, string fullErrorMessage, Location location)
         {
-            trapFile.BeginTuple("diagnostics").Param(diag).Param(severity).Param(errorTag).Param(errorMessage).Param(fullErrorMessage).Param(location).EndTuple();
+            trapFile.WriteTuple("diagnostics", diag, severity, errorTag, errorMessage, fullErrorMessage, location);
         }
 
         internal static void dynamic_member_name(this TextWriter trapFile, Expression e, string name)
         {
-            trapFile.BeginTuple("dynamic_member_name").Param(e).Param(name).EndTuple();
+            trapFile.WriteTuple("dynamic_member_name", e, name);
         }
 
         internal static void enum_underlying_type(this TextWriter trapFile, Type @enum, Type type)
@@ -178,7 +178,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void event_accessors(this TextWriter trapFile, EventAccessor accessorKey, int type, string name, Event eventKey, EventAccessor unboundAccessor)
         {
-            trapFile.BeginTuple("event_accessors").Param(accessorKey).Param(type).Param(name).Param(eventKey).Param(unboundAccessor).EndTuple();
+            trapFile.WriteTuple("event_accessors", accessorKey, type, name, eventKey, unboundAccessor);
         }
 
         internal static void event_location(this TextWriter trapFile, Event eventKey, Location locationKey)
@@ -268,7 +268,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void fields(this TextWriter trapFile, Field field, int @const, string name, Type declaringType, Type fieldType, Field unboundKey)
         {
-            trapFile.BeginTuple("fields").Param(field).Param(@const).Param(name).Param(declaringType).Param(fieldType).Param(unboundKey).EndTuple();
+            trapFile.WriteTuple("fields", field, @const, name, declaringType, fieldType, unboundKey);
         }
 
         internal static void general_type_parameter_constraints(this TextWriter trapFile, TypeParameterConstraints constraints, int hasKind)
@@ -328,7 +328,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void localvars(this TextWriter trapFile, LocalVariable key, int @const, string name, int @var, Type type, Expression expr)
         {
-            trapFile.BeginTuple("localvars").Param(key).Param(@const).Param(name).Param(@var).Param(type).Param(expr).EndTuple();
+            trapFile.WriteTuple("localvars", key, @const, name, @var, type, expr);
         }
 
         public static void metadata_handle(this TextWriter trapFile, IEntity entity, Location assembly, int handleValue)
@@ -348,7 +348,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void modifiers(this TextWriter trapFile, Label entity, string modifier)
         {
-            trapFile.BeginTuple("modifiers").Param(entity).Param(modifier).EndTuple();
+            trapFile.WriteTuple("modifiers", entity, modifier);
         }
 
         internal static void mutator_invocation_mode(this TextWriter trapFile, Expression expr, int mode)
@@ -383,7 +383,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void numlines(this TextWriter trapFile, IEntity label, LineCounts lineCounts)
         {
-            trapFile.BeginTuple("numlines").Param(label).Param(lineCounts.Total).Param(lineCounts.Code).Param(lineCounts.Comment).EndTuple();
+            trapFile.WriteTuple("numlines", label, lineCounts.Total, lineCounts.Code, lineCounts.Comment);
         }
 
         internal static void operator_location(this TextWriter trapFile, UserOperator @operator, Location location)
@@ -393,7 +393,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void operators(this TextWriter trapFile, UserOperator method, string methodName, string symbol, Type classKey, Type returnType, UserOperator originalDefinition)
         {
-            trapFile.BeginTuple("operators").Param(method).Param(methodName).Param(symbol).Param(classKey).Param(returnType).Param(originalDefinition).EndTuple();
+            trapFile.WriteTuple("operators", method, methodName, symbol, classKey, returnType, originalDefinition);
         }
 
         internal static void overrides(this TextWriter trapFile, Method overriding, Method overridden)
@@ -408,7 +408,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void @params(this TextWriter trapFile, Parameter param, string name, Type type, int child, Parameter.Kind mode, IEntity method, Parameter originalDefinition)
         {
-            trapFile.BeginTuple("params").Param(param).Param(name).Param(type).Param(child).Param((int)mode).Param(method).Param(originalDefinition).EndTuple();
+            trapFile.WriteTuple("params", param, name, type, child, (int)mode, method, originalDefinition);
         }
 
         internal static void parent_namespace(this TextWriter trapFile, IEntity type, Namespace parent)
@@ -513,7 +513,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void type_parameters(this TextWriter trapFile, TypeParameter param, int child, IEntity typeOrMethod)
         {
-            trapFile.BeginTuple("type_parameters").Param(param).Param(child).Param(typeOrMethod).Param((int)param.Variance).EndTuple();
+            trapFile.WriteTuple("type_parameters", param, child, typeOrMethod, (int)param.Variance);
         }
 
         internal static void typeref_type(this TextWriter trapFile, NamedTypeRef typeref, Type type)
@@ -528,7 +528,7 @@ namespace Semmle.Extraction.CSharp
 
         internal static void types(this TextWriter trapFile, Type type, TypeKind kind, string name)
         {
-            trapFile.BeginTuple("types").Param(type).Param((int)kind).Param(name).EndTuple();
+            trapFile.WriteTuple("types", type, (int)kind, name);
         }
 
         internal static void using_namespace_directives(this TextWriter trapFile, UsingDirective @using, Namespace ns)
