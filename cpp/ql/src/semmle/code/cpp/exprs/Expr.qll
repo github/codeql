@@ -85,10 +85,10 @@ class Expr extends StmtParent, @expr {
   override string toString() { none() }
 
   /** Gets the value of this expression, if it is a constant. */
-  string getValue() { exists(@value v | values(v,result,_) and valuebind(v,underlyingElement(this))) }
+  string getValue() { exists(@value v | values(v,result) and valuebind(v,underlyingElement(this))) }
 
   /** Gets the source text for the value of this expression, if it is a constant. */
-  string getValueText() { exists(@value v | values(v,_,result) and valuebind(v,underlyingElement(this))) }
+  string getValueText() { exists(@value v | valuetext(v,result) and valuebind(v,underlyingElement(this))) }
   
   /** Holds if this expression has a value that can be determined at compile time. */
   cached
