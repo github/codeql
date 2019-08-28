@@ -58,6 +58,7 @@ private newtype TOpcode =
   TUnmodeledUse() or
   TAliasedDefinition() or
   TPhi() or
+  TBuiltIn() or
   TVarArgsStart() or
   TVarArgsEnd() or
   TVarArg() or
@@ -117,7 +118,7 @@ abstract class CatchOpcode extends Opcode {}
 
 abstract class OpcodeWithCondition extends Opcode {}
 
-abstract class BuiltInOpcode extends Opcode {}
+abstract class BuiltInOperationOpcode extends Opcode {}
 
 abstract class SideEffectOpcode extends Opcode {}
 
@@ -207,10 +208,11 @@ module Opcode {
   class UnmodeledUse extends Opcode, TUnmodeledUse { override final string toString() { result = "UnmodeledUse" } }
   class AliasedDefinition extends Opcode, TAliasedDefinition { override final string toString() { result = "AliasedDefinition" } }
   class Phi extends Opcode, TPhi { override final string toString() { result = "Phi" } }
-  class VarArgsStart extends BuiltInOpcode, TVarArgsStart { override final string toString() { result = "VarArgsStart" } }
-  class VarArgsEnd extends BuiltInOpcode, TVarArgsEnd { override final string toString() { result = "VarArgsEnd" } }
-  class VarArg extends BuiltInOpcode, TVarArg { override final string toString() { result = "VarArg" } }
-  class VarArgCopy extends BuiltInOpcode, TVarArgCopy { override final string toString() { result = "VarArgCopy" } }
+  class BuiltIn extends BuiltInOperationOpcode, TBuiltIn { override final string toString() { result = "BuiltIn" } }
+  class VarArgsStart extends BuiltInOperationOpcode, TVarArgsStart { override final string toString() { result = "VarArgsStart" } }
+  class VarArgsEnd extends BuiltInOperationOpcode, TVarArgsEnd { override final string toString() { result = "VarArgsEnd" } }
+  class VarArg extends BuiltInOperationOpcode, TVarArg { override final string toString() { result = "VarArg" } }
+  class VarArgCopy extends BuiltInOperationOpcode, TVarArgCopy { override final string toString() { result = "VarArgCopy" } }
   class CallSideEffect extends MayWriteSideEffectOpcode, TCallSideEffect { override final string toString() { result = "CallSideEffect" } }
   class CallReadSideEffect extends ReadSideEffectOpcode, TCallReadSideEffect { override final string toString() { result = "CallReadSideEffect" } }
   class IndirectReadSideEffect extends ReadSideEffectOpcode, MemoryAccessOpcode, TIndirectReadSideEffect { override final string toString() { result = "IndirectReadSideEffect" } }
