@@ -71,7 +71,7 @@ class SubBasicBlock extends ControlFlowNodeBase {
   }
 
   /**
-   * Gets the rank of this `SubBasicBlock` among the other `SubBasicBlock`s in
+   * Gets the (1-based) rank of this `SubBasicBlock` among the other `SubBasicBlock`s in
    * its containing basic block `bb`, where `bb` is equal to `getBasicBlock()`.
    */
   int getRankInBasicBlock(BasicBlock bb) {
@@ -79,6 +79,15 @@ class SubBasicBlock extends ControlFlowNodeBase {
       thisIndexInBB = this.getIndexInBasicBlock(bb) and
       thisIndexInBB = rank[result](int i | i = any(SubBasicBlock n).getIndexInBasicBlock(bb))
     )
+  }
+
+  /**
+   * DEPRECATED: use `getRankInBasicBlock` instead. Note that this predicate
+   * returns a 0-based position, while `getRankInBasicBlock` returns a 1-based
+   * position.
+   */
+  deprecated int getPosInBasicBlock(BasicBlock bb) {
+    result = getRankInBasicBlock(bb) - 1
   }
 
   pragma[noinline]
