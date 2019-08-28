@@ -17,6 +17,15 @@ private newtype TClassDerivation =
     derived.getABaseType() = base
   }
 
+private newtype TBuiltInOperation = 
+  NoOp()
+  
+class BuiltInOperation extends TBuiltInOperation {
+  string toString() {
+    result = "BuiltInOp"
+  }
+}
+  
 class ClassDerivation extends MkClassDerivation {
   Class baseClass;
   Class derivedClass;

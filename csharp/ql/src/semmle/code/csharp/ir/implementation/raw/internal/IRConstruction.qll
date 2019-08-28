@@ -277,6 +277,10 @@ cached private module Cached {
       result = element.getPrimaryInstructionForSideEffect(tag)
     )
   }
+  
+  cached Language::BuiltInOperation getInstructionBuiltInOperation(Instruction instr) {
+    none() 
+  }
 }
 
 import CachedForDebugging
