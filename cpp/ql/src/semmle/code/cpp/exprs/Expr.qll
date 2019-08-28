@@ -88,7 +88,13 @@ class Expr extends StmtParent, @expr {
   string getValue() { exists(@value v | values(v,result) and valuebind(v,underlyingElement(this))) }
 
   /** Gets the source text for the value of this expression, if it is a constant. */
-  string getValueText() { exists(@value v | valuetext(v,result) and valuebind(v,underlyingElement(this))) }
+  string getValueText() {
+    exists(@value v |
+           valuebind(v,underlyingElement(this)) and
+           if valuetext(v, _)
+           then valuetext(v, result)
+           else values(v, result))
+  }
   
   /** Holds if this expression has a value that can be determined at compile time. */
   cached
