@@ -11,7 +11,6 @@ import semmle.python.Stmts
 import semmle.python.Exprs
 import semmle.python.Keywords
 import semmle.python.Comprehensions
-import semmle.python.Lists
 import semmle.python.Flow
 import semmle.python.Metrics
 import semmle.python.Constants
