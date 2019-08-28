@@ -55,17 +55,6 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
-  // The `DestructorCall` node for a `DestructorFieldDestruction` has a `FieldAccess`
-  // node as its qualifier, but that `FieldAccess` does not have a child of its own.
-  // We'll ignore that `FieldAccess`, and supply the receiver as part of the calling
-  // context, much like we do with constructor calls.
-  // TODO: Deal with C# finalizers and Dispose methods at some point
-  //  expr.getParent().(DestructorCall).getParent() instanceof DestructorFieldDestruction or
-  //  exists(NewArrayExpr newExpr |
-  //    // REVIEW: Ignore initializers for `NewArrayExpr` until we determine how to
-  //    // represent them.
-  //    newExpr.getInitializer().getFullyConverted() = expr
-  //  ) or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
 }
 
@@ -74,11 +63,6 @@ private predicate ignoreExprAndDescendants(Expr expr) {
  * purposes of IR generation.
  */
 private predicate ignoreExprOnly(Expr expr) {
-  //  exists(NewOrNewArrayExpr newExpr |
-  //    // Ignore the allocator call, because we always synthesize it. Don't ignore
-  //    // its arguments, though, because we use them as part of the synthesis.
-  //    newExpr.getAllocatorCall() = expr
-  //  ) or
   not translateFunction(expr.getEnclosingCallable())
   or
   // Ignore size of arrays when translating
@@ -95,30 +79,6 @@ private predicate ignoreExpr(Expr expr) {
   ignoreExprAndDescendants(expr)
 }
 
-// TODO: Probably ok to ignore for now
-///**
-// * Holds if `func` contains an AST that cannot be translated into IR. This is mostly used to work
-// * around extractor bugs. Once the relevant extractor bugs are fixed, this predicate can be removed.
-// */
-//private predicate isInvalidFunction(Callable callable) {
-//  exists(Literal literal |
-//    // Constructor field inits within a compiler-generated copy constructor have a source expression
-//    // that is a `Literal` with no value.
-//    literal = callable.(Constructor).getInitializer().(ConstructorFieldInit).getExpr() and
-//    not exists(literal.getValue())
-//  ) or
-//  exists(ThisExpr thisExpr |
-//    // An instantiation of a member function template is not treated as a `MemberFunction` if it has
-//    // only non-type template arguments.
-//    thisExpr.getEnclosingFunction() = callable and
-//    not callable instanceof Member
-//  ) or
-//  exists(Expr expr |
-//    // Expression missing a type.
-//    expr.getEnclosingFunction() = callable and
-//    not exists(expr.getType())
-//  )
-//}
 /**
  * Holds if `func` should be translated to IR.
  */
@@ -245,23 +205,23 @@ newtype TTranslatedElement =
       )
       or
       // Then treat more complex ones
-      exists(ObjectCreation objCreation | objCreation = expr)
+      expr instanceof ObjectCreation
       or
-      exists(ArrayInitializer arrInit | arrInit = expr)
+      expr instanceof ArrayInitializer
       or
-      exists(ObjectInitializer objInit | objInit = expr)
+      expr instanceof ObjectInitializer
       or
-      exists(CollectionInitializer colInit | colInit.getAnElementInitializer() = expr)
+      expr = any(ThrowExpr throw).getExpr()
       or
-      exists(ReturnStmt returnStmt | returnStmt.getExpr() = expr)
+      expr = any(CollectionInitializer colInit).getAnElementInitializer()
       or
-      exists(ThrowExpr throw | throw.getExpr() = expr)
+      expr = any(ReturnStmt returnStmt).getExpr()
       or
-      exists(ArrayInitializer arrInit | arrInit.getAnElement() = expr)
+      expr = any(ArrayInitializer arrInit).getAnElement()
       or
-      exists(LambdaExpr lambda | lambda.getSourceDeclaration() = expr)
+      expr = any(LambdaExpr lambda).getSourceDeclaration()
       or
-      exists(AnonymousMethodExpr anonMethExpr | anonMethExpr.getSourceDeclaration() = expr)
+      expr = any(AnonymousMethodExpr anonMethExpr).getSourceDeclaration()
     )
   } or
   // The initialization of an array element via a member of an initializer list.
@@ -294,7 +254,7 @@ newtype TTranslatedElement =
     )
   } or
   // A local declaration
-  TTranslatedDeclarationEntry(LocalVariableDeclExpr entry)
+  TTranslatedDeclaration(LocalVariableDeclExpr entry)
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
@@ -361,7 +321,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Get the immediate child elements of this element.
    */
-  final TranslatedElement getAChild() { result = getChild(_) }
+  final TranslatedElement getAChild() { result = this.getChild(_) }
 
   /**
    * Gets the immediate child element of this element. The `id` is unique
@@ -374,11 +334,11 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the an identifier string for the element. This string is unique within
    * the scope of the element's function.
    */
-  final string getId() { result = getUniqueId().toString() }
+  final string getId() { result = this.getUniqueId().toString() }
 
   private TranslatedElement getChildByRank(int rankIndex) {
     result = rank[rankIndex + 1](TranslatedElement child, int id |
-        child = getChild(id)
+        child = this.getChild(id)
       |
         child order by id
       )
@@ -387,15 +347,15 @@ abstract class TranslatedElement extends TTranslatedElement {
   language[monotonicAggregates]
   private int getDescendantCount() {
     result = 1 +
-        sum(TranslatedElement child | child = getChildByRank(_) | child.getDescendantCount())
+        sum(TranslatedElement child | child = this.getChildByRank(_) | child.getDescendantCount())
   }
 
   private int getUniqueId() {
-    if not exists(getParent())
+    if not exists(this.getParent())
     then result = 0
     else
       exists(TranslatedElement parent |
-        parent = getParent() and
+        parent = this.getParent() and
         if this = parent.getChildByRank(0)
         then result = 1 + parent.getUniqueId()
         else
@@ -553,7 +513,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   final IRTempVariable getTempVariable(TempVariableTag tag) {
     result.getAST() = getAST() and
     result.getTag() = tag and
-    hasTempVariable(tag, _)
+    this.hasTempVariable(tag, _)
   }
 
   /**

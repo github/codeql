@@ -69,7 +69,8 @@ cached private module Cached {
       getInstructionTag(instruction), tag)
   }
 
-  cached Instruction getMemoryOperandDefinition(Instruction instruction, MemoryOperandTag tag, MustTotallyOverlap overlap) {
+  cached Instruction getMemoryOperandDefinition(Instruction instruction, MemoryOperandTag tag, Overlap overlap) {
+    overlap instanceof MustTotallyOverlap and 
     result = getInstructionTranslatedElement(instruction).getInstructionOperand(
       getInstructionTag(instruction), tag)
   }

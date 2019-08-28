@@ -78,10 +78,10 @@ newtype TInstructionTag =
   NewObjTag() or
   // TODO: remove the need for indexing
   PointerAddTag(int index) {
-  	index in [0 .. 255]
+    index in [0 .. 255]
   } or
   ElementsAddressTag(int index) {
-  	index in [0 .. 255]
+    index in [0 .. 255]
   } or
   ConvertTag() or
   GeneratedNEQTag() or

@@ -1,24 +1,32 @@
-class Geeks {
-    private int roll_no;
+class PropClass 
+{
+    private int prop;
 
-    public int Roll_no
+    public int Prop
     { 
         get 
         {
-            return roll_no;
+            return func();
         }
 
         set 
         {
-            roll_no = value;
+            prop = value;
         }
+    }
+
+    private int func() 
+    {
+        return 0;
     }
 }
 
-class Prog {
-    public static void Main() {
-        Geeks obj = new Geeks();
-        obj.Roll_no = 5;
-        int x = obj.Roll_no;
+class Prog 
+{
+    public static void Main() 
+    {
+        PropClass obj = new PropClass();
+        obj.Prop = 5;
+        int x = obj.Prop;
     }
 }

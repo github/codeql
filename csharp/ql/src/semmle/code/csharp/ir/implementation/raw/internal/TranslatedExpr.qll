@@ -5,7 +5,7 @@ private import semmle.code.csharp.ir.internal.TempVariableTag
 private import semmle.code.csharp.ir.internal.IRUtilities
 private import InstructionTag
 private import TranslatedCondition
-private import TranslatedDeclarationEntry
+private import TranslatedDeclaration
 private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
@@ -124,7 +124,7 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
    * `boolean` value.
    */
   final boolean isResultLValue() {
-    if(not producesExprResult()) then
+    if(not this.producesExprResult()) then
       result = true
     else
       result = false
@@ -138,11 +138,11 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
   }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getCondition()
+    id = 0 and result = this.getCondition()
   }
 
   override Instruction getFirstInstruction() {
-    result = getCondition().getFirstInstruction()
+    result = this.getCondition().getFirstInstruction()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -154,7 +154,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
         tag = ConditionValueResultTempAddressTag()
       ) and
       opcode instanceof Opcode::VariableAddress and
-      resultType = getResultType() and
+      resultType = this.getResultType() and
       isLValue = true
     ) or
     (
@@ -163,8 +163,8 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
         tag = ConditionValueFalseConstantTag()
       ) and
       opcode instanceof Opcode::Constant and
-      resultType = getResultType() and
-      isLValue = isResultLValue()
+      resultType = this.getResultType() and
+      isLValue = this.isResultLValue()
     ) or
     (
       (
@@ -172,14 +172,14 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
         tag = ConditionValueFalseStoreTag()
       ) and
       opcode instanceof Opcode::Store and
-      resultType = getResultType() and
-      isLValue = isResultLValue()
+      resultType = this.getResultType() and
+      isLValue = this.isResultLValue()
     ) or
     (
       tag = ConditionValueResultLoadTag() and
       opcode instanceof Opcode::Load and
-      resultType = getResultType() and
-      isLValue = isResultLValue()
+      resultType = this.getResultType() and
+      isLValue = this.isResultLValue()
     )
   }
 
@@ -189,35 +189,35 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
     (
       (
         tag = ConditionValueTrueTempAddressTag() and
-        result = getInstruction(ConditionValueTrueConstantTag())
+        result = this.getInstruction(ConditionValueTrueConstantTag())
       ) or
       (
         tag = ConditionValueTrueConstantTag() and
-        result = getInstruction(ConditionValueTrueStoreTag())
+        result = this.getInstruction(ConditionValueTrueStoreTag())
       ) or
       (
         tag = ConditionValueTrueStoreTag() and
-        result = getInstruction(ConditionValueResultTempAddressTag())
+        result = this.getInstruction(ConditionValueResultTempAddressTag())
       ) or
       (
         tag = ConditionValueFalseTempAddressTag() and
-        result = getInstruction(ConditionValueFalseConstantTag())
+        result = this.getInstruction(ConditionValueFalseConstantTag())
       ) or
       (
         tag = ConditionValueFalseConstantTag() and
-        result = getInstruction(ConditionValueFalseStoreTag())
+        result = this.getInstruction(ConditionValueFalseStoreTag())
       ) or
       (
         tag = ConditionValueFalseStoreTag() and
-        result = getInstruction(ConditionValueResultTempAddressTag())
+        result = this.getInstruction(ConditionValueResultTempAddressTag())
       ) or
       (
         tag = ConditionValueResultTempAddressTag() and
-        result = getInstruction(ConditionValueResultLoadTag())
+        result = this.getInstruction(ConditionValueResultLoadTag())
       ) or
       (
         tag = ConditionValueResultLoadTag() and
-        result = getParent().getChildSuccessor(this)
+        result = this.getParent().getChildSuccessor(this)
       )
     )
   }
@@ -229,11 +229,11 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       (
         (
           operandTag instanceof AddressOperandTag and
-          result = getInstruction(ConditionValueTrueTempAddressTag())
+          result = this.getInstruction(ConditionValueTrueTempAddressTag())
         ) or
         (
           operandTag instanceof StoreValueOperandTag and
-          result = getInstruction(ConditionValueTrueConstantTag())
+          result = this.getInstruction(ConditionValueTrueConstantTag())
         )
       )
     ) or
@@ -242,11 +242,11 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       (
         (
           operandTag instanceof AddressOperandTag and
-          result = getInstruction(ConditionValueFalseTempAddressTag())
+          result = this.getInstruction(ConditionValueFalseTempAddressTag())
         ) or
         (
           operandTag instanceof StoreValueOperandTag and
-          result = getInstruction(ConditionValueFalseConstantTag())
+          result = this.getInstruction(ConditionValueFalseConstantTag())
         )
       )
     ) or
@@ -255,11 +255,11 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       (
         (
           operandTag instanceof AddressOperandTag and
-          result = getInstruction(ConditionValueResultTempAddressTag())
+          result = this.getInstruction(ConditionValueResultTempAddressTag())
         ) or
         (
           operandTag instanceof LoadOperandTag and
-          result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+          result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
     )
@@ -267,7 +267,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
 
   override predicate hasTempVariable(TempVariableTag tag, Type type) {
     tag = ConditionValueTempVar() and
-    type = getResultType()
+    type = this.getResultType()
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -276,7 +276,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
       tag = ConditionValueFalseTempAddressTag() or
       tag = ConditionValueResultTempAddressTag()
     ) and
-    result = getTempVariable(ConditionValueTempVar())
+    result = this.getTempVariable(ConditionValueTempVar())
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
@@ -285,7 +285,7 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
   }
 
   override Instruction getResult() {
-    result = getInstruction(ConditionValueResultLoadTag())
+    result = this.getInstruction(ConditionValueResultLoadTag())
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -293,13 +293,13 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
   }
 
   override Instruction getChildTrueSuccessor(TranslatedCondition child) {
-    child = getCondition() and
-    result = getInstruction(ConditionValueTrueTempAddressTag())
+    child = this.getCondition() and
+    result = this.getInstruction(ConditionValueTrueTempAddressTag())
   }
 
   override Instruction getChildFalseSuccessor(TranslatedCondition child) {
-    child = getCondition() and
-    result = getInstruction(ConditionValueFalseTempAddressTag())
+    child = this.getCondition() and
+    result = this.getInstruction(ConditionValueFalseTempAddressTag())
   }
   
   private TranslatedCondition getCondition() {
@@ -321,11 +321,11 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
   }
 
   override Instruction getFirstInstruction() {
-    result = getOperand().getFirstInstruction()
+    result = this.getOperand().getFirstInstruction()
   }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getOperand()
+    id = 0 and result = this.getOperand()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -333,7 +333,7 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     tag = LoadTag() and
     opcode instanceof Opcode::Load and
     resultType = expr.getType() and
-    if not producesExprResult() then
+    if not this.producesExprResult() then
       isLValue = true
     else
       isLValue = false
@@ -342,16 +342,16 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
   override Instruction getInstructionSuccessor(InstructionTag tag,
       EdgeKind kind) {
     tag = LoadTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getOperand() and result = getInstruction(LoadTag())
+    child = this.getOperand() and result = this.getInstruction(LoadTag())
   }
 
   override Instruction getResult() {
-    result = getInstruction(LoadTag())
+    result = this.getInstruction(LoadTag())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
@@ -360,11 +360,11 @@ class TranslatedLoad extends TranslatedExpr, TTranslatedLoad {
     (
       (
         operandTag instanceof AddressOperandTag and
-        result = getOperand().getResult()
+        result = this.getOperand().getResult()
       ) or
       (
         operandTag instanceof LoadOperandTag and
-        result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+        result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
       )
     )
   }
@@ -383,13 +383,13 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
   override MutatorOperation expr;
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getOperand()
+    id = 0 and result = this.getOperand()
   }
 
   override final string getInstructionConstantValue(InstructionTag tag) {
     tag = CrementConstantTag() and
     exists(Type resultType |
-      resultType = getResultType() and
+      resultType = this.getResultType() and
       (
         resultType instanceof IntegralType and result = "1" or
         resultType instanceof FloatingPointType and result = "1.0" or
@@ -400,10 +400,10 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
 
   private Type getConstantType() {
     exists(Type resultType |
-      resultType = getResultType() and
+      resultType = this.getResultType() and
       (
-        resultType instanceof IntegralType and result = getResultType() or
-        resultType instanceof FloatingPointType and result = getResultType() or
+        resultType instanceof IntegralType and result = this.getResultType() or
+        resultType instanceof FloatingPointType and result = this.getResultType() or
         resultType instanceof PointerType and result = getIntType()
       )
     )
@@ -416,22 +416,22 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
       (
         tag = CrementLoadTag() and
         opcode instanceof Opcode::Load and
-        resultType = getResultType()
+        resultType = this.getResultType()
       ) or
       (
         tag = CrementConstantTag() and
         opcode instanceof Opcode::Constant and
-        resultType = getConstantType()
+        resultType = this.getConstantType()
       ) or
       (
         tag = CrementOpTag() and
-        opcode = getOpcode() and
-        resultType = getResultType()
+        opcode = this.getOpcode() and
+        resultType = this.getResultType()
       ) or
       (
         tag = CrementStoreTag() and
         opcode instanceof Opcode::Store and
-        resultType = getResultType()
+        resultType = this.getResultType()
       )
     )
   }
@@ -443,11 +443,11 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
       (
         (
           operandTag instanceof AddressOperandTag and
-          result = getOperand().getResult()
+          result = this.getOperand().getResult()
         ) or
         (
           operandTag instanceof LoadOperandTag and
-          result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+          result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
     ) or
@@ -456,11 +456,11 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
       (
         (
           operandTag instanceof LeftOperandTag and
-          result = getInstruction(CrementLoadTag())
+          result = this.getInstruction(CrementLoadTag())
         ) or
         (
           operandTag instanceof RightOperandTag and
-          result = getInstruction(CrementConstantTag())
+          result = this.getInstruction(CrementConstantTag())
         )
       )
     ) or
@@ -469,18 +469,18 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
       (
         (
           operandTag instanceof AddressOperandTag and
-          result = getOperand().getResult()
+          result = this.getOperand().getResult()
         ) or
         (
           operandTag instanceof StoreValueOperandTag and
-          result = getInstruction(CrementOpTag())
+          result = this.getInstruction(CrementOpTag())
         )
       )
     )
   }
 
   override final Instruction getFirstInstruction() {
-    result = getOperand().getFirstInstruction()
+    result = this.getOperand().getFirstInstruction()
   }
 
   override final Instruction getInstructionSuccessor(InstructionTag tag,
@@ -489,32 +489,32 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
     (
       (
         tag = CrementLoadTag() and
-        result = getInstruction(CrementConstantTag())
+        result = this.getInstruction(CrementConstantTag())
       ) or
       (
         tag = CrementConstantTag() and
-        result = getInstruction(CrementOpTag())
+        result = this.getInstruction(CrementOpTag())
       ) or
       (
         tag = CrementOpTag() and
-        result = getInstruction(CrementStoreTag())
+        result = this.getInstruction(CrementStoreTag())
       ) or
       (
         tag = CrementStoreTag() and
-        result = getParent().getChildSuccessor(this)
+        result = this.getParent().getChildSuccessor(this)
       )
     )
   }
 
   override final Instruction getChildSuccessor(TranslatedElement child) {
-    child = getOperand() and result = getInstruction(CrementLoadTag())
+    child = this.getOperand() and result = this.getInstruction(CrementLoadTag())
   }
 
   override final int getInstructionElementSize(InstructionTag tag) {
     tag = CrementOpTag() and
     (
-      getOpcode() instanceof Opcode::PointerAdd or
-      getOpcode() instanceof Opcode::PointerSub
+      this.getOpcode() instanceof Opcode::PointerAdd or
+      this.getOpcode() instanceof Opcode::PointerSub
     ) and
     result = 4 //max(getResultType().(PointerType).getSize())
   }
@@ -525,7 +525,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
 
   final Opcode getOpcode() {
     exists(Type resultType |
-      resultType = getResultType() and
+      resultType = this.getResultType() and
       (
         (
           expr instanceof IncrementOperation and
@@ -553,18 +553,7 @@ class TranslatedPrefixCrementOperation extends TranslatedCrementOperation {
   }
 
   override Instruction getResult() {
-//    if expr.isPRValueCategory() then (
-//      // If this is C, then the result of a prefix crement is a prvalue for the
-//      // new value assigned to the operand. If this is C++, then the result is
-//      // an lvalue, but that lvalue is being loaded as part of this expression.
-//      // EDG doesn't mark this as a load.
-      result = getInstruction(CrementOpTag())
-//    )
-//    else (
-//      // This is C++, where the result is an lvalue for the operand, and that
-//      // lvalue is not being loaded as part of this expression.
-//      result = getOperand().getResult()
-//    )
+    result = this.getInstruction(CrementOpTag())
   }
 }
 
@@ -575,7 +564,7 @@ class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
   }
 
   override Instruction getResult() {
-    result = getInstruction(CrementLoadTag())
+    result = this.getInstruction(CrementLoadTag())
   }
 }
 
@@ -587,7 +576,7 @@ class TranslatedObjectInitializerExpr extends TranslatedNonConstantExpr, Initial
   }
   
   override Instruction getFirstInstruction() {
-    result = getChild(0).getFirstInstruction()
+    result = this.getChild(0).getFirstInstruction()
   }
   
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -610,15 +599,15 @@ class TranslatedObjectInitializerExpr extends TranslatedNonConstantExpr, Initial
   
   override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int index |
-      child = getChild(index) and
-      if exists(getChild(index + 1))
-      then result = getChild(index + 1).getFirstInstruction()
-      else result = getParent().getChildSuccessor(this)
+      child = this.getChild(index) and
+      if exists(this.getChild(index + 1))
+      then result = this.getChild(index + 1).getFirstInstruction()
+      else result = this.getParent().getChildSuccessor(this)
     )
   }
   
   override Instruction getTargetAddress() {
-    result = getParent().getInstruction(NewObjTag())
+    result = this.getParent().getInstruction(NewObjTag())
   }
   
   override Type getTargetType() {
@@ -648,41 +637,41 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
   override ArrayAccess expr;
 
   override Instruction getFirstInstruction() {
-    result = getBaseOperand().getFirstInstruction()
+    result = this.getBaseOperand().getFirstInstruction()
   }
 
   override final TranslatedElement getChild(int id) {
     id = -1 and result = getBaseOperand() or
-    result = getOffsetOperand(id)
+    result = this.getOffsetOperand(id)
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
       exists (int index | 
-        inBounds(index) and
+        this.inBounds(index) and
         kind instanceof GotoEdge and 
-      	(
-      	 // The successor of a `PointerAdd` is an `ElementsAddress` if
-      	 // that `PointerAdd` is not the last `PointerAdd` instruction.
-      	 (
-      	   index < getRank() - 1 and
-      	   tag = PointerAddTag(index) and
-      	   result = getInstruction(ElementsAddressTag(index + 1))
-      	 )
-      	 // The successor of the last `PointerAdd` instruction is
-      	 // the successor of the `TranslatedArrayAccess`.
-      	 or
-      	 (
-      	   tag = PointerAddTag(getRank() - 1) and
-      	   result = getParent().getChildSuccessor(this)
-      	 )
-      	 or
+        (
+         // The successor of a `PointerAdd` is an `ElementsAddress` if
+         // that `PointerAdd` is not the last `PointerAdd` instruction.
+         (
+           index < getRank() - 1 and
+           tag = PointerAddTag(index) and
+           result = this.getInstruction(ElementsAddressTag(index + 1))
+         )
+         // The successor of the last `PointerAdd` instruction is
+         // the successor of the `TranslatedArrayAccess`.
+         or
+         (
+           tag = PointerAddTag(getRank() - 1) and
+           result = this.getParent().getChildSuccessor(this)
+         )
+         or
          // The successor of an `ElementsAddress` instruction is
          // an offset expression.
-      	 (
-      	   tag = ElementsAddressTag(index) and
-      	   result = getOffsetOperand(index).getFirstInstruction()
-      	 )
+         (
+           tag = ElementsAddressTag(index) and
+           result = this.getOffsetOperand(index).getFirstInstruction()
+         )
       )
     )
   }
@@ -691,19 +680,19 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
     // The base address of the array is followed by the first
     // `ElementsAddress` instruction.
     (
-      child = getBaseOperand() and
-      result = getInstruction(ElementsAddressTag(0))
+      child = this.getBaseOperand() and
+      result = this.getInstruction(ElementsAddressTag(0))
     ) or
     // The successor of an offset expression is a `PointerAdd` expression.
     (
-      child = getOffsetOperand(child.getAST().getIndex()) and
+      child = this.getOffsetOperand(child.getAST().getIndex()) and
       child.getAST().getIndex() >= 0 and
-      result = getInstruction(PointerAddTag(child.getAST().getIndex()))
+      result = this.getInstruction(PointerAddTag(child.getAST().getIndex()))
     )
   }
 
   override Instruction getResult() {
-    result = getInstruction(PointerAddTag(getRank() - 1)) //and
+    result = this.getInstruction(PointerAddTag(getRank() - 1)) //and
     //result.getResultType() = expr.getType()
   }
 
@@ -713,9 +702,9 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
       inBounds(index) and
       tag = PointerAddTag(index) and
       opcode instanceof Opcode::PointerAdd and
-      resultType = getInstruction(ElementsAddressTag(index)).getResultType() and
+      resultType = this.getInstruction(ElementsAddressTag(index)).getResultType() and
       isLValue = false
-	  )
+  )
     or
     exists(int index |
       inBounds(index) and
@@ -730,31 +719,31 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
     OperandTag operandTag) {
     exists(int index |
       inBounds(index) and
-	    tag = PointerAddTag(index) and
-	    (
-	      (
-	        operandTag instanceof LeftOperandTag and
-	        result = getInstruction(ElementsAddressTag(index))
-	      ) or
-	      (
-	        operandTag instanceof RightOperandTag and
-	        result = getOffsetOperand(index).getResult()
-	      )    
+      tag = PointerAddTag(index) and
+      (
+        (
+          operandTag instanceof LeftOperandTag and
+          result = this.getInstruction(ElementsAddressTag(index))
+        ) or
+        (
+          operandTag instanceof RightOperandTag and
+          result = this.getOffsetOperand(index).getResult()
+        )    
       )
     )
     or
     tag = ElementsAddressTag(0) and 
     (
       operandTag instanceof UnaryOperandTag and
-      result = getBaseOperand().getResult()
+      result = this.getBaseOperand().getResult()
     )
     or
     exists(int index |
-      inBounds(index) and index > 0 and
-	    tag = ElementsAddressTag(index) and
-	    (
-	      operandTag instanceof UnaryOperandTag and
-	      result = getInstruction(PointerAddTag(index - 1))
+      this.inBounds(index) and index > 0 and
+      tag = ElementsAddressTag(index) and
+      (
+        operandTag instanceof UnaryOperandTag and
+        result = this.getInstruction(PointerAddTag(index - 1))
       )
     )
   }
@@ -766,30 +755,30 @@ class TranslatedArrayAccess extends TranslatedNonConstantExpr {
   }
 
   private TranslatedExpr getBaseOperand() {
-  	result = getTranslatedExpr(expr.getChild(-1))
+    result = getTranslatedExpr(expr.getChild(-1))
   }
 
   private TranslatedExpr getOffsetOperand(int index) {
-    inBounds(index) and
+    this.inBounds(index) and
     result = getTranslatedExpr(expr.getChild(index))
   }
   
   private predicate inBounds(int index) {
-  	index in [0 .. getRank() - 1]
+    index in [0 .. this.getRank() - 1]
   }
   
   private int getRank() {
-  	result = count(expr.getIndex(_))
+    result = count(expr.getIndex(_))
   }
 }
 
 abstract class TranslatedTransparentExpr extends TranslatedNonConstantExpr {
   override final Instruction getFirstInstruction() {
-    result = getOperand().getFirstInstruction()
+    result = this.getOperand().getFirstInstruction()
   }
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getOperand()
+    id = 0 and result = this.getOperand()
   }
 
   override final Instruction getInstructionSuccessor(InstructionTag tag,
@@ -798,7 +787,7 @@ abstract class TranslatedTransparentExpr extends TranslatedNonConstantExpr {
   }
 
   override final Instruction getChildSuccessor(TranslatedElement child) {
-    child = getOperand() and result = getParent().getChildSuccessor(this)
+    child = this.getOperand() and result = this.getParent().getChildSuccessor(this)
   }
 
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -807,7 +796,7 @@ abstract class TranslatedTransparentExpr extends TranslatedNonConstantExpr {
   }
 
   override final Instruction getResult() {
-    result = getOperand().getResult()
+    result = this.getOperand().getResult()
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
@@ -834,18 +823,18 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
   }
 
   override final Instruction getResult() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 
   override final Instruction getFirstInstruction() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 
   override final Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     kind instanceof GotoEdge and
     tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this)
+    result = this.getParent().getChildSuccessor(this)
   }
 
   override final Instruction getChildSuccessor(TranslatedElement child) {
@@ -856,7 +845,7 @@ class TranslatedThisExpr extends TranslatedNonConstantExpr {
       OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
-    result = getInitializeThisInstruction()
+    result = this.getInitializeThisInstruction()
   }
 
   private Instruction getInitializeThisInstruction() {
@@ -868,7 +857,7 @@ abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {
   override VariableAccess expr;
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getQualifier()  // Might not exist
+    id = 0 and result = this.getQualifier()  // Might not exist
   }
 
   final TranslatedExpr getQualifier() {
@@ -877,18 +866,18 @@ abstract class TranslatedVariableAccess extends TranslatedNonConstantExpr {
   }
 
   override Instruction getResult() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 
   override final Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
   override final Instruction getChildSuccessor(TranslatedElement child) {
-    child = getQualifier() and result = getInstruction(OnlyInstructionTag())
+    child = this.getQualifier() and result = this.getInstruction(OnlyInstructionTag())
   }
 }
 
@@ -904,10 +893,10 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
   }
 
   override Instruction getFirstInstruction() {
-    if exists(getQualifier()) then
-      result = getQualifier().getFirstInstruction()
+    if exists(this.getQualifier()) then
+      result = this.getQualifier().getFirstInstruction()
     else
-      result = getInstruction(OnlyInstructionTag())
+      result = this.getInstruction(OnlyInstructionTag())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
@@ -919,7 +908,7 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
     Type resultType, boolean isLValue) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getResultType() and
+    resultType = this.getResultType() and
     isLValue = true
   }
 
@@ -935,12 +924,12 @@ class TranslatedFieldAccess extends TranslatedVariableAccess {
   
   override Instruction getFirstInstruction() {
     // If there is a qualifier
-    if (exists(getQualifier())) then
-      result = getQualifier().getFirstInstruction()
+    if (exists(this.getQualifier())) then
+      result = this.getQualifier().getFirstInstruction()
     else
       // it means that the access is part of an `ObjectInitializer` expression
       // so the instructions for the qualifier have been generated previously.
-      result = getInstruction(OnlyInstructionTag())
+      result = this.getInstruction(OnlyInstructionTag())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
@@ -948,21 +937,21 @@ class TranslatedFieldAccess extends TranslatedVariableAccess {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
     // A normal field access always has a qualifier
-    if (exists(getQualifier())) then
-      result = getQualifier().getResult()
+    if (exists(this.getQualifier())) then
+      result = this.getQualifier().getResult()
     else
       // This field access is part of an `ObjectInitializer`
       // so the translated element of the initializer
       // (which is the parent of the parent of the translated field access),
       // being an `InitializationContext`, knows the target address of this field access.
-      result = getParent().getParent().(InitializationContext).getTargetAddress()
+      result = this.getParent().getParent().(InitializationContext).getTargetAddress()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::FieldAddress and
-    resultType = getResultType() and
+    resultType = this.getResultType() and
     isLValue = true
   }
 
@@ -980,17 +969,17 @@ class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
   }
 
   override Instruction getFirstInstruction() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 
   override Instruction getResult() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 
   override final Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
@@ -1034,7 +1023,7 @@ abstract class TranslatedConstantExpr extends TranslatedCoreExpr, TTranslatedVal
   }
 
   override final Instruction getFirstInstruction() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 
   override final TranslatedElement getChild(int id) {
@@ -1042,7 +1031,7 @@ abstract class TranslatedConstantExpr extends TranslatedCoreExpr, TTranslatedVal
   }
 
   override final Instruction getResult() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
@@ -1053,20 +1042,15 @@ abstract class TranslatedConstantExpr extends TranslatedCoreExpr, TTranslatedVal
   override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
     tag = OnlyInstructionTag() and
-    opcode = getOpcode() and
-    resultType = getResultType() and
-    // TODO: Fix lvalue stuff here
-//    if(expr.Category() or expr.hasLValueToRValueConversion()) then
-//      isLValue = true
-//    else
-//      isLValue = false
+    opcode = this.getOpcode() and
+    resultType = this.getResultType() and
     isLValue = false
   }
 
   override final Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
@@ -1120,12 +1104,12 @@ abstract class TranslatedSingleInstructionExpr extends
     Type resultType, boolean isLValue) {
     opcode = getOpcode() and
     tag = OnlyInstructionTag() and
-    resultType = getResultType() and
-    isLValue = isResultLValue()
+    resultType = this.getResultType() and
+    isLValue = this.isResultLValue()
   }
 
   override final Instruction getResult() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 }
 
@@ -1138,28 +1122,28 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
   }
 
   override final Instruction getFirstInstruction() {
-    result = getOperand().getFirstInstruction()
+    result = this.getOperand().getFirstInstruction()
   }
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getOperand()
+    id = 0 and result = this.getOperand()
   }
 
   override final Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
   override final Instruction getChildSuccessor(TranslatedElement child) {
-    child = getOperand() and result = getInstruction(OnlyInstructionTag())
+    child = this.getOperand() and result = this.getInstruction(OnlyInstructionTag())
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
       OperandTag operandTag) {
     tag = OnlyInstructionTag() and
-    result = getOperand().getResult() and
+    result = this.getOperand().getResult() and
     operandTag instanceof UnaryOperandTag
   }
 
@@ -1185,36 +1169,36 @@ class TranslatedCast extends TranslatedNonConstantExpr {
   override Cast expr;
   
   override Instruction getFirstInstruction() {
-    result = getOperand().getFirstInstruction()
+    result = this.getOperand().getFirstInstruction()
   } 
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getOperand()
+    id = 0 and result = this.getOperand()
   }
   
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     tag = ConvertTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getOperand() and result = getInstruction(ConvertTag())
+    child = this.getOperand() and result = this.getInstruction(ConvertTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
     (
       tag = ConvertTag() and
-      opcode = getOpcode() and
-      resultType = getResultType() and
+      opcode = this.getOpcode() and
+      resultType = this.getResultType() and
       isLValue = false
     )
   }
 
   override Instruction getResult() {
-    result = getInstruction(ConvertTag())
+    result = this.getInstruction(ConvertTag())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
@@ -1222,7 +1206,7 @@ class TranslatedCast extends TranslatedNonConstantExpr {
     (
       tag = ConvertTag() and
       operandTag instanceof UnaryOperandTag and
-      result = getOperand().getResult()
+      result = this.getOperand().getResult()
     )
   }
   
@@ -1234,7 +1218,7 @@ class TranslatedCast extends TranslatedNonConstantExpr {
     expr instanceof CastExpr and result instanceof Opcode::CheckedConvertOrThrow or
     expr instanceof AsExpr and result instanceof Opcode::CheckedConvertOrNull
   }
- }
+}
 
 
 private Opcode binaryBitwiseOpcode(BinaryBitwiseOperation expr) {
@@ -1273,35 +1257,35 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   }
 
   override Instruction getFirstInstruction() {
-    result = getLeftOperand().getFirstInstruction()
+    result = this.getLeftOperand().getFirstInstruction()
   }
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getLeftOperand() or
-    id = 1 and result = getRightOperand()
+    id = 0 and result = this.getLeftOperand() or
+    id = 1 and result = this.getRightOperand()
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
     OperandTag operandTag) {
     tag = OnlyInstructionTag() and
-    if swapOperandsOnOp() then (
+    if this.swapOperandsOnOp() then (
       (
         operandTag instanceof RightOperandTag and
-        result = getLeftOperand().getResult()
+        result = this.getLeftOperand().getResult()
       ) or
       (
         operandTag instanceof LeftOperandTag and
-        result = getRightOperand().getResult()
+        result = this.getRightOperand().getResult()
       )
     )
     else (
       (
         operandTag instanceof LeftOperandTag and
-        result = getLeftOperand().getResult()
+        result = this.getLeftOperand().getResult()
       ) or
       (
         operandTag instanceof RightOperandTag and
-        result = getRightOperand().getResult()
+        result = this.getRightOperand().getResult()
       )
     )
   }
@@ -1309,18 +1293,18 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
   
   override Instruction getChildSuccessor(TranslatedElement child) {
     (
-      child = getLeftOperand() and
-      result = getRightOperand().getFirstInstruction()
+      child = this.getLeftOperand() and
+      result = this.getRightOperand().getFirstInstruction()
     ) or
     (
-      child = getRightOperand() and
-      result = getInstruction(OnlyInstructionTag())
+      child = this.getRightOperand() and
+      result = this.getInstruction(OnlyInstructionTag())
     )
   }
 
@@ -1341,12 +1325,12 @@ class TranslatedBinaryOperation extends TranslatedSingleInstructionExpr {
     )
   }
 
-  private TranslatedExpr getPointerOperand() {
-    if swapOperandsOnOp() then
-      result = getRightOperand()
-    else
-      result = getLeftOperand()
-  }
+//  private TranslatedExpr getPointerOperand() {
+//    if swapOperandsOnOp() then
+//      result = this.getRightOperand()
+//    else
+//      result = this.getLeftOperand()
+//  }
 
   private predicate swapOperandsOnOp() {
     // Swap the operands on a pointer add 'i + p', so that the pointer operand
@@ -1376,19 +1360,19 @@ abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
   override Assignment expr;
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getLeftOperand() or
-    id = 1 and result = getRightOperand()
+    id = 0 and result = this.getLeftOperand() or
+    id = 1 and result = this.getRightOperand()
   }
 
   override final Instruction getFirstInstruction() {
     // Evaluation is right-to-left
-    result = getRightOperand().getFirstInstruction()
+    result = this.getRightOperand().getFirstInstruction()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
     (
-      needsConversion() and
+      this.needsConversion() and
       tag = AssignmentConvertRightTag() and
       // For now only use `Opcode::Convert` to
       // crudely represent conversions. Could
@@ -1400,7 +1384,7 @@ abstract class TranslatedAssignment extends TranslatedNonConstantExpr {
   }
   
   override final Instruction getResult() {
-      result = getStoredValue()
+      result = this.getStoredValue()
   }
 
   abstract Instruction getStoredValue();
@@ -1430,13 +1414,13 @@ class TranslatedAssignExpr extends TranslatedAssignment {
     EdgeKind kind) {
     (
       tag = AssignmentStoreTag() and
-      result = getParent().getChildSuccessor(this) and
+      result = this.getParent().getChildSuccessor(this) and
       kind instanceof GotoEdge
     ) or 
     (
-      needsConversion() and
+      this.needsConversion() and
       tag = AssignmentConvertRightTag() and
-      result = getLeftOperand().getFirstInstruction() and
+      result = this.getLeftOperand().getFirstInstruction() and
       kind instanceof GotoEdge
     )
   }
@@ -1444,15 +1428,15 @@ class TranslatedAssignExpr extends TranslatedAssignment {
   override Instruction getChildSuccessor(TranslatedElement child) {
     // Operands are evaluated right-to-left.
     (
-      child = getRightOperand() and
-      if (needsConversion()) then
-        result = getInstruction(AssignmentConvertRightTag())
+      child = this.getRightOperand() and
+      if this.needsConversion() then
+        result = this.getInstruction(AssignmentConvertRightTag())
       else
-        result = getLeftOperand().getFirstInstruction()
+        result = this.getLeftOperand().getFirstInstruction()
     ) or
     (
-      child = getLeftOperand() and
-      result = getInstruction(AssignmentStoreTag())
+      child = this.getLeftOperand() and
+      result = this.getInstruction(AssignmentStoreTag())
     )
   }
 
@@ -1462,7 +1446,7 @@ class TranslatedAssignExpr extends TranslatedAssignment {
     (
       tag = AssignmentStoreTag() and
       opcode instanceof Opcode::Store and
-      resultType = getResultType() and
+      resultType = this.getResultType() and
       isLValue = false
     )
   }
@@ -1474,26 +1458,26 @@ class TranslatedAssignExpr extends TranslatedAssignment {
       (
         (
           operandTag instanceof AddressOperandTag and
-          result = getLeftOperand().getResult()
+          result = this.getLeftOperand().getResult()
         ) or
         (
           operandTag instanceof StoreValueOperandTag and
-          if (needsConversion()) then
-            result = getInstruction(AssignmentConvertRightTag())
+          if this.needsConversion() then
+            result = this.getInstruction(AssignmentConvertRightTag())
           else
-            result = getRightOperand().getResult()
+            result = this.getRightOperand().getResult()
         )
       ) 
     ) or
     (
       tag = AssignmentConvertRightTag() and
       operandTag instanceof UnaryOperandTag and
-      result = getRightOperand().getResult()
+      result = this.getRightOperand().getResult()
     )
   }
 
   override Instruction getStoredValue() {
-    result = getRightOperand().getResult()
+    result = this.getRightOperand().getResult()
   }
 }
 
@@ -1506,29 +1490,29 @@ class TranslatedAssignOperation extends TranslatedAssignment {
     (
       (
         tag = AssignOperationLoadTag() and
-        if leftOperandNeedsConversion() then
-          result = getInstruction(AssignOperationConvertLeftTag())
+        if this.leftOperandNeedsConversion() then
+          result = this.getInstruction(AssignOperationConvertLeftTag())
         else
-          result = getInstruction(AssignOperationOpTag())
+          result = this.getInstruction(AssignOperationOpTag())
       ) or
       (
         tag = AssignOperationConvertLeftTag() and
-        result = getInstruction(AssignOperationOpTag())
+        result = this.getInstruction(AssignOperationOpTag())
       ) or
       (
         tag = AssignOperationOpTag() and
-        if leftOperandNeedsConversion() then
-          result = getInstruction(AssignOperationConvertResultTag())
+        if this.leftOperandNeedsConversion() then
+          result = this.getInstruction(AssignOperationConvertResultTag())
         else
-          result = getInstruction(AssignmentStoreTag())
+          result = this.getInstruction(AssignmentStoreTag())
       ) or
       (
         tag = AssignOperationConvertResultTag() and
-        result = getInstruction(AssignmentStoreTag())
+        result = this.getInstruction(AssignmentStoreTag())
       ) or
       (
         tag = AssignmentStoreTag() and
-        result = getParent().getChildSuccessor(this)
+        result = this.getParent().getChildSuccessor(this)
       )
     )
   }
@@ -1536,34 +1520,34 @@ class TranslatedAssignOperation extends TranslatedAssignment {
   override Instruction getChildSuccessor(TranslatedElement child) {
     // Operands are evaluated right-to-left.
     (
-      child = getRightOperand() and
-      result = getLeftOperand().getFirstInstruction()
+      child = this.getRightOperand() and
+      result = this.getLeftOperand().getFirstInstruction()
     ) or
     (
-      child = getLeftOperand() and
-      result = getInstruction(AssignOperationLoadTag())
+      child = this.getLeftOperand() and
+      result = this.getInstruction(AssignOperationLoadTag())
     )
   }
 
   override Instruction getStoredValue() {
-    if leftOperandNeedsConversion() then
-      result = getInstruction(AssignOperationConvertResultTag())
+    if this.leftOperandNeedsConversion() then
+      result = this.getInstruction(AssignOperationConvertResultTag())
     else
-      result = getInstruction(AssignOperationOpTag())
+      result = this.getInstruction(AssignOperationOpTag())
   }
 
   private Type getConvertedLeftOperandType() {
     if(expr instanceof AssignLShiftExpr or
       expr instanceof AssignRShiftExpr) then (
-      result = getLeftOperand().getResultType()
+      result = this.getLeftOperand().getResultType()
     ) else (
       // The right operand has already been converted to the type of the op.
-      result = getRightOperand().getResultType()
+      result = this.getRightOperand().getResultType()
     )
   }
 
   private predicate leftOperandNeedsConversion() {
-    getConvertedLeftOperandType() != getLeftOperand().getResultType()
+    this.getConvertedLeftOperandType() != this.getLeftOperand().getResultType()
   }
 
   private Opcode getOpcode() {
@@ -1589,29 +1573,29 @@ class TranslatedAssignOperation extends TranslatedAssignment {
       (
         tag = AssignOperationLoadTag() and
         opcode instanceof Opcode::Load and
-        resultType = getLeftOperand().getResultType()
+        resultType = this.getLeftOperand().getResultType()
       ) or
       (
         tag = AssignOperationOpTag() and
         opcode = getOpcode() and
-        resultType = getConvertedLeftOperandType()
+        resultType = this.getConvertedLeftOperandType()
       ) or
       (
         tag = AssignmentStoreTag() and
         opcode instanceof Opcode::Store and
-        resultType = getResultType()
+        resultType = this.getResultType()
       ) or
       (
-        leftOperandNeedsConversion() and
+        this.leftOperandNeedsConversion() and
         opcode instanceof Opcode::Convert and
         (
           (
             tag = AssignOperationConvertLeftTag() and
-            resultType = getConvertedLeftOperandType()
+            resultType = this.getConvertedLeftOperandType()
           ) or
           (
             tag = AssignOperationConvertResultTag() and
-            resultType = getLeftOperand().getResultType()
+            resultType = this.getLeftOperand().getResultType()
           )
         )
       )
@@ -1635,282 +1619,57 @@ class TranslatedAssignOperation extends TranslatedAssignment {
       (
         (
           operandTag instanceof AddressOperandTag and
-          result = getLeftOperand().getResult()
+          result = this.getLeftOperand().getResult()
         ) or
         (
           operandTag instanceof LoadOperandTag and
-          result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+          result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
     ) or
     (
-      leftOperandNeedsConversion() and
+      this.leftOperandNeedsConversion() and
       tag = AssignOperationConvertLeftTag() and
       operandTag instanceof UnaryOperandTag and
-      result = getInstruction(AssignOperationLoadTag())
+      result = this.getInstruction(AssignOperationLoadTag())
     ) or
     (
       tag = AssignOperationOpTag() and
       (
         (
           operandTag instanceof LeftOperandTag and
-          if leftOperandNeedsConversion() then
-            result = getInstruction(AssignOperationConvertLeftTag())
+          if this.leftOperandNeedsConversion() then
+            result = this.getInstruction(AssignOperationConvertLeftTag())
           else
-            result = getInstruction(AssignOperationLoadTag())
+            result = this.getInstruction(AssignOperationLoadTag())
         ) or
         (
           operandTag instanceof RightOperandTag and
-          result = getRightOperand().getResult()
+          result = this.getRightOperand().getResult()
         )
       )
     ) or
     (
-      leftOperandNeedsConversion() and
+      this.leftOperandNeedsConversion() and
       tag = AssignOperationConvertResultTag() and
       operandTag instanceof UnaryOperandTag and
-      result = getInstruction(AssignOperationOpTag())
+      result = this.getInstruction(AssignOperationOpTag())
     ) or
     (
       tag = AssignmentStoreTag() and
       (
         (
           operandTag instanceof AddressOperandTag and
-          result = getLeftOperand().getResult()
+          result = this.getLeftOperand().getResult()
         ) or
         (
           operandTag instanceof StoreValueOperandTag and
-          result = getStoredValue()
+          result = this.getStoredValue()
         )
       )
     )
   }
 }
-
-// TODO: Do we need to care about object sizes / how much we allocate
-//       Revisit after compatibility layer is done and we have a type system
-
-///**
-// * The IR translation of the allocation size argument passed to `operator new`
-// * in a `new` expression.
-// *
-// * We have to synthesize this because not all `NewExpr` nodes have an allocator
-// * call, and even the ones that do pass an `ErrorExpr` as the argument.
-// */
-//abstract class TranslatedAllocationSize extends TranslatedExpr,
-//    TTranslatedAllocationSize {
-//  override NewOrNewArrayExpr expr;
-//  
-//  TranslatedAllocationSize() {
-//    this = TTranslatedAllocationSize(expr)
-//  }
-//
-//  override final string toString() {
-//    result = "Allocation size for " + expr.toString()
-//  }
-//
-//  override final predicate producesExprResult() {
-//    none()
-//  }
-//
-//  override final Instruction getResult() {
-//    result = getInstruction(AllocationSizeTag())
-//  }
-//}
-//
-//TranslatedAllocationSize getTranslatedAllocationSize(NewOrNewArrayExpr newExpr) {
-//  result.getAST() = newExpr
-//}
-
-///**
-// * The IR translation of a constant allocation size.
-// *
-// * The allocation size for a `new` expression is always a constant. The
-// * allocation size for a `new[]` expression is a constant if the array extent
-// * is a compile-time constant.
-// */
-//class TranslatedConstantAllocationSize extends TranslatedAllocationSize {
-//  TranslatedConstantAllocationSize() {
-//    not exists(expr.(NewArrayExpr).getExtent())
-//  }
-//
-//  override final Instruction getFirstInstruction() {
-//    result = getInstruction(AllocationSizeTag())
-//  }
-//
-//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//      Type resultType, boolean ) {
-//    tag = AllocationSizeTag() and
-//    opcode instanceof Opcode::Constant and
-//    resultType = expr.getAllocator().getParameter(0).getUnspecifiedType() and
-//     = false
-//  }
-//
-//  override final Instruction getInstructionSuccessor(InstructionTag tag,
-//      EdgeKind kind) {
-//    tag = AllocationSizeTag() and
-//    kind instanceof GotoEdge and
-//    result = getParent().getChildSuccessor(this)
-//  }
-//
-//  override final TranslatedElement getChild(int id) {
-//    none()
-//  }
-//
-//  override final Instruction getChildSuccessor(TranslatedElement child) {
-//    none()
-//  }
-//
-//  override final string getInstructionConstantValue(InstructionTag tag) {
-//    tag = AllocationSizeTag() and
-//    result = expr.getAllocatedType().getSize().toString()
-//  }
-//}
-
-///**
-// * The IR translation of a non-constant allocation size.
-// *
-// * This class is used for the allocation size of a `new[]` expression where the
-// * array extent is not known at compile time. It performs the multiplication of
-// * the extent by the element size.
-// */
-//class TranslatedNonConstantAllocationSize extends TranslatedAllocationSize {
-//  override NewArrayExpr expr;
-//
-//  TranslatedNonConstantAllocationSize() {
-//    exists(expr.getExtent())
-//  }
-//
-//  override final Instruction getFirstInstruction() {
-//    result = getExtent().getFirstInstruction()
-//  }
-//
-//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//      Type resultType, boolean ) {
-//     = false and
-//    resultType = expr.getAllocator().getParameter(0).getUnspecifiedType() and
-//    (
-//      // Convert the extent to `size_t`, because the AST doesn't do this already.
-//      tag = AllocationExtentConvertTag() and opcode instanceof Opcode::Convert or
-//      tag = AllocationElementSizeTag() and opcode instanceof Opcode::Constant or
-//      tag = AllocationSizeTag() and opcode instanceof Opcode::Mul // REVIEW: Overflow?
-//    )
-//  }
-//
-//  override final Instruction getInstructionSuccessor(InstructionTag tag,
-//      EdgeKind kind) {
-//    kind instanceof GotoEdge and
-//    (
-//      (
-//        tag = AllocationExtentConvertTag() and
-//        result = getInstruction(AllocationElementSizeTag())
-//      ) or
-//      (
-//        tag = AllocationElementSizeTag() and
-//        result = getInstruction(AllocationSizeTag())
-//      ) or
-//      (
-//        tag = AllocationSizeTag() and
-//        result = getParent().getChildSuccessor(this)
-//      )
-//    )
-//  }
-//
-//  override final TranslatedElement getChild(int id) {
-//    id = 0 and result = getExtent()
-//  }
-//
-//  override final Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getExtent() and
-//    result = getInstruction(AllocationExtentConvertTag())
-//  }
-//
-//  override final string getInstructionConstantValue(InstructionTag tag) {
-//    tag = AllocationElementSizeTag() and
-//    result = expr.getAllocatedElementType().getSize().toString()
-//  }
-//
-//  override final Instruction getInstructionOperand(InstructionTag tag,
-//      OperandTag operandTag) {
-//    (
-//      tag = AllocationSizeTag() and
-//      (
-//        operandTag instanceof LeftOperandTag and result = getInstruction(AllocationExtentConvertTag()) or
-//        operandTag instanceof RightOperandTag and result = getInstruction(AllocationElementSizeTag())
-//      )
-//    ) or
-//    (
-//      tag = AllocationExtentConvertTag() and
-//      operandTag instanceof UnaryOperandTag and
-//      result = getExtent().getResult()
-//    )
-//  }
-//
-//  private TranslatedExpr getExtent() {
-//    result = getTranslatedExpr(expr.getExtent().getFullyConverted())
-//  }
-//}
-
-///**
-// * The IR translation of an object creation expression.
-// * Eg. Point a = new Point(1, 2);
-// */
-//class TranslatedObjectCreationExpr extends TranslatedNonConstantExpr,
-//    InitializationContext {
-//  override ObjectCreation expr;
-//
-//  override final TranslatedElement getChild(int id) {
-//    id = 0 and result = getTranslatedExpr(expr) and
-//    getTranslatedExpr(expr) instanceof TranslatedConstructorCall
-//  }
-//
-//  override final predicate hasInstruction(Opcode opcode, InstructionTag tag,
-//      Type resultType, boolean isLValue) {
-//      tag = NewObjTag() and
-//      opcode instanceof Opcode::NewObj and 
-//      resultType = expr.getType() and
-//      isLValue = false
-//  }
-//
-//  override final Instruction getFirstInstruction() {
-//    result = getInstruction(NewObjTag())
-//  }
-//
-//  override final Instruction getResult() {
-//    result = getInstruction(NewObjTag())
-//  }
-//
-//  override final Instruction getInstructionSuccessor(InstructionTag tag,
-//      EdgeKind kind) {
-//    kind instanceof GotoEdge and
-//    tag = NewObjTag() and
-//    if exists(getInitialization()) then
-//      result = getInitialization().getFirstInstruction()
-//    else
-//      result = getParent().getChildSuccessor(this)
-//  }
-//
-//  override final Instruction getChildSuccessor(TranslatedElement child) {
-//    child = getInitialization() and result = getParent().getChildSuccessor(this)
-//  }
-//
-//  override final Instruction getInstructionOperand(InstructionTag tag,
-//      OperandTag operandTag) {
-//    none()
-//  }
-//  
-//  override final Instruction getTargetAddress() {
-//    result = getInstruction(NewObjTag())
-//  }
-//
-//  override final Type getTargetType() {
-//    result = expr.getType()
-//  }
-//
-//  final TranslatedInitialization getInitialization() {
-//    result = getTranslatedInitialization(expr)
-//  }
-//}
 
 /**
  * Abstract class implemented by any `TranslatedElement` that has a child
@@ -1930,118 +1689,118 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
   override ConditionalExpr expr;
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getCondition() or
-    id = 1 and result = getThen() or
-    id = 2 and result = getElse()
+    id = 0 and result = this.getCondition() or
+    id = 1 and result = this.getThen() or
+    id = 2 and result = this.getElse()
   }
 
   override Instruction getFirstInstruction() {
-    result = getCondition().getFirstInstruction()
+    result = this.getCondition().getFirstInstruction()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
-    not resultIsVoid() and
+    not this.resultIsVoid() and
     (
       (
         (
-          (not thenIsVoid() and (tag = ConditionValueTrueTempAddressTag())) or
-          (not elseIsVoid() and (tag = ConditionValueFalseTempAddressTag())) or
+          (not this.thenIsVoid() and (tag = ConditionValueTrueTempAddressTag())) or
+          (not this.elseIsVoid() and (tag = ConditionValueFalseTempAddressTag())) or
           tag = ConditionValueResultTempAddressTag()
         ) and
         opcode instanceof Opcode::VariableAddress and
-        resultType = getResultType() and
+        resultType = this.getResultType() and
         isLValue = true
       ) or
       (
         (
-          (not thenIsVoid() and (tag = ConditionValueTrueStoreTag())) or
-          (not elseIsVoid() and (tag = ConditionValueFalseStoreTag()))
+          (not this.thenIsVoid() and (tag = ConditionValueTrueStoreTag())) or
+          (not this.elseIsVoid() and (tag = ConditionValueFalseStoreTag()))
         ) and
         opcode instanceof Opcode::Store and
-        resultType = getResultType() and
+        resultType = this.getResultType() and
         isLValue = false
       ) or
       (
         tag = ConditionValueResultLoadTag() and
         opcode instanceof Opcode::Load and
-        resultType = getResultType() and
-        isLValue = isResultLValue()
+        resultType = this.getResultType() and
+        isLValue = this.isResultLValue()
       )
     )
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
-    not resultIsVoid() and
+    not this.resultIsVoid() and
     kind instanceof GotoEdge and
     (
       (
-        not thenIsVoid() and
+        not this.thenIsVoid() and
         (
           (
             tag = ConditionValueTrueTempAddressTag() and
-            result = getInstruction(ConditionValueTrueStoreTag())
+            result = this.getInstruction(ConditionValueTrueStoreTag())
           ) or
           (
             tag = ConditionValueTrueStoreTag() and
-            result = getInstruction(ConditionValueResultTempAddressTag())
+            result = this.getInstruction(ConditionValueResultTempAddressTag())
           )
         )
       ) or
       (
-        not elseIsVoid() and
+        not this.elseIsVoid() and
         (
           (
             tag = ConditionValueFalseTempAddressTag() and
-            result = getInstruction(ConditionValueFalseStoreTag())
+            result = this.getInstruction(ConditionValueFalseStoreTag())
           ) or
           (
             tag = ConditionValueFalseStoreTag() and
-            result = getInstruction(ConditionValueResultTempAddressTag())
+            result = this.getInstruction(ConditionValueResultTempAddressTag())
           )
         )
       ) or
       (
         tag = ConditionValueResultTempAddressTag() and
-        result = getInstruction(ConditionValueResultLoadTag())
+        result = this.getInstruction(ConditionValueResultLoadTag())
       ) or
       (
         tag = ConditionValueResultLoadTag() and
-        result = getParent().getChildSuccessor(this)
+        result = this.getParent().getChildSuccessor(this)
       )
     )
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
       OperandTag operandTag) {
-    not resultIsVoid() and
+    not this.resultIsVoid() and
     (
       (
-        not thenIsVoid() and
+        not this.thenIsVoid() and
         tag = ConditionValueTrueStoreTag() and
         (
           (
             operandTag instanceof AddressOperandTag and
-            result = getInstruction(ConditionValueTrueTempAddressTag())
+            result = this.getInstruction(ConditionValueTrueTempAddressTag())
           ) or
           (
             operandTag instanceof StoreValueOperandTag and
-            result = getThen().getResult()
+            result = this.getThen().getResult()
           )
         )
       ) or
       (
-        not elseIsVoid() and
+        not this.elseIsVoid() and
         tag = ConditionValueFalseStoreTag() and
         (
           (
             operandTag instanceof AddressOperandTag and
-            result = getInstruction(ConditionValueFalseTempAddressTag())
+            result = this.getInstruction(ConditionValueFalseTempAddressTag())
           ) or
           (
             operandTag instanceof StoreValueOperandTag and
-            result = getElse().getResult()
+            result = this.getElse().getResult()
           )
         )
       ) or
@@ -2050,11 +1809,11 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
         (
           (
             operandTag instanceof AddressOperandTag and
-            result = getInstruction(ConditionValueResultTempAddressTag())
+            result = this.getInstruction(ConditionValueResultTempAddressTag())
           ) or
           (
             operandTag instanceof LoadOperandTag and
-            result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+            result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
           )
         )
       )
@@ -2062,51 +1821,51 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
   }
 
   override predicate hasTempVariable(TempVariableTag tag, Type type) {
-    not resultIsVoid() and
+    not this.resultIsVoid() and
     tag = ConditionValueTempVar() and
-    type = getResultType()
+    type = this.getResultType()
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
-    not resultIsVoid() and
+    not this.resultIsVoid() and
     (
       tag = ConditionValueTrueTempAddressTag() or
       tag = ConditionValueFalseTempAddressTag() or
       tag = ConditionValueResultTempAddressTag()
     ) and
-    result = getTempVariable(ConditionValueTempVar())
+    result = this.getTempVariable(ConditionValueTempVar())
   }
 
   override Instruction getResult() {
-    not resultIsVoid() and
-    result = getInstruction(ConditionValueResultLoadTag())
+    not this.resultIsVoid() and
+    result = this.getInstruction(ConditionValueResultLoadTag())
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     (
-      child = getThen() and
-      if thenIsVoid() then
-        result = getParent().getChildSuccessor(this)
+      child = this.getThen() and
+      if this.thenIsVoid() then
+        result = this.getParent().getChildSuccessor(this)
       else
-        result = getInstruction(ConditionValueTrueTempAddressTag())
+        result = this.getInstruction(ConditionValueTrueTempAddressTag())
     ) or
     (
-      child = getElse() and
-      if elseIsVoid() then
-        result = getParent().getChildSuccessor(this)
+      child = this.getElse() and
+      if this.elseIsVoid() then
+        result = this.getParent().getChildSuccessor(this)
       else
-        result = getInstruction(ConditionValueFalseTempAddressTag())
+        result = this.getInstruction(ConditionValueFalseTempAddressTag())
     )
   }
 
   override Instruction getChildTrueSuccessor(TranslatedCondition child) {
-    child = getCondition() and
-    result = getThen().getFirstInstruction()
+    child = this.getCondition() and
+    result = this.getThen().getFirstInstruction()
   }
 
   override Instruction getChildFalseSuccessor(TranslatedCondition child) {
-    child = getCondition() and
-    result = getElse().getFirstInstruction()
+    child = this.getCondition() and
+    result = this.getElse().getFirstInstruction()
   }
   
   private TranslatedCondition getCondition() {
@@ -2122,21 +1881,21 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr,
   }
 
   private predicate thenIsVoid() {
-    getThen().getResultType() instanceof VoidType or
+    this.getThen().getResultType() instanceof VoidType or
     // A `ThrowExpr.getType()` incorrectly returns the type of exception being
     // thrown, rather than `void`. Handle that case here.
     expr.getThen() instanceof ThrowExpr
   }
 
   private predicate elseIsVoid() {
-    getElse().getResultType() instanceof VoidType or
+    this.getElse().getResultType() instanceof VoidType or
     // A `ThrowExpr.getType()` incorrectly returns the type of exception being
     // thrown, rather than `void`. Handle that case here.
     expr.getElse() instanceof ThrowExpr
   }
 
   private predicate resultIsVoid() {
-    getResultType() instanceof VoidType
+    this.getResultType() instanceof VoidType
   }
 }
 
@@ -2150,12 +1909,12 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
   override IsExpr expr;
   
   override Instruction getFirstInstruction() {
-      result = getIsExpr().getFirstInstruction()
+      result = this.getIsExpr().getFirstInstruction()
   }
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getIsExpr() or
-    id = 1 and result = getPatternVarDecl()
+    id = 0 and result = this.getIsExpr() or
+    id = 1 and result = this.getPatternVarDecl()
   }
   
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -2163,26 +1922,26 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     (
       tag = ConvertTag() and
       kind instanceof GotoEdge and
-      result = getInstruction(GeneratedConstantTag())
+      result = this.getInstruction(GeneratedConstantTag())
     ) or
     (
-      hasVar() and
+      this.hasVar() and
       tag = InitializerStoreTag() and
       kind instanceof GotoEdge and
-      result = getParent().getChildSuccessor(this)
+      result = this.getParent().getChildSuccessor(this)
     ) or
     (
       tag = GeneratedNEQTag() and
       kind instanceof GotoEdge and
-      if hasVar() then
-        result = getInstruction(GeneratedBranchTag())
+      if this.hasVar() then
+        result = this.getInstruction(GeneratedBranchTag())
       else
-        result = getParent().getChildSuccessor(this)
+        result = this.getParent().getChildSuccessor(this)
     ) or
     (
       // If a var is declared, we only do the initialization
       // if the `IsExpr` is evaluated to `true`.
-      hasVar() and 
+      this.hasVar() and 
       tag = GeneratedBranchTag() and (
         (
           tag = GeneratedBranchTag() and
@@ -2192,33 +1951,33 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
         (
           tag = GeneratedBranchTag() and
           kind instanceof FalseEdge and
-          result = getParent().getChildSuccessor(this)
+          result = this.getParent().getChildSuccessor(this)
         )
       )
     ) or
     (
       tag = GeneratedConstantTag() and
       kind instanceof GotoEdge and
-      result = getInstruction(GeneratedNEQTag())
+      result = this.getInstruction(GeneratedNEQTag())
     )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     (
-      child = getIsExpr() and
-      result = getInstruction(ConvertTag())
+      child = this.getIsExpr() and
+      result = this.getInstruction(ConvertTag())
     ) or
     (
-      hasVar() and 
+      this.hasVar() and 
       child = getPatternVarDecl() and
-      result = getInstruction(InitializerStoreTag())
+      result = this.getInstruction(InitializerStoreTag())
     )
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
     (
-      hasVar() and
+      this.hasVar() and
       tag = InitializerStoreTag() and
       opcode instanceof Opcode::Store and
       resultType = expr.getPattern().getType() and
@@ -2243,7 +2002,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
       isLValue = false
     ) or
     (
-      hasVar() and 
+      this.hasVar() and 
       tag = GeneratedBranchTag() and
       opcode instanceof Opcode::ConditionalBranch and
       resultType = expr.getType() and
@@ -2258,7 +2017,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
   }
   
   override Instruction getResult() {
-    result = getInstruction(GeneratedNEQTag())
+    result = this.getInstruction(GeneratedNEQTag())
   }
 
   override Instruction getInstructionOperand(InstructionTag tag,
@@ -2266,19 +2025,19 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     (
       tag = ConvertTag() and
       operandTag instanceof UnaryOperandTag and
-      result = getIsExpr().getResult()
+      result = this.getIsExpr().getResult()
     ) or
     (
-      hasVar() and
+      this.hasVar() and
       tag = InitializerStoreTag() and
       (
         (
           operandTag instanceof StoreValueOperandTag and
-          result = getInstruction(ConvertTag())
+          result = this.getInstruction(ConvertTag())
         ) or
         (
           operandTag instanceof AddressOperandTag and
-          result = getPatternVarDecl().getTargetAddress()
+          result = this.getPatternVarDecl().getTargetAddress()
         )
       )
     ) or
@@ -2287,19 +2046,19 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
       (
         (
           operandTag instanceof LeftOperandTag and
-          result = getInstruction(ConvertTag())
+          result = this.getInstruction(ConvertTag())
         ) or
         (
           operandTag instanceof RightOperandTag and
-          result = getInstruction(GeneratedConstantTag())
+          result = this.getInstruction(GeneratedConstantTag())
         )
       )
     ) or
     (
       hasVar() and
       tag = GeneratedBranchTag() and
-      operandTag instanceof UnaryOperandTag and
-      result = getInstruction(GeneratedNEQTag())
+      operandTag instanceof ConditionOperandTag and
+      result = this.getInstruction(GeneratedNEQTag())
     )
   }
   
@@ -2308,7 +2067,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
   }
   
   private predicate hasVar() {
-    exists(getPatternVarDecl()) 
+    exists(this.getPatternVarDecl()) 
   }
   
   private TranslatedLocalVariableDeclaration getPatternVarDecl() {
@@ -2324,41 +2083,41 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
   override LambdaExpr expr;
 
   override final Instruction getFirstInstruction() {
-    result = getInstruction(InitializerVariableAddressTag())
+    result = this.getInstruction(InitializerVariableAddressTag())
   }
 
   override final TranslatedElement getChild(int id) {
-    id = 0 and result = getInitialization()
+    id = 0 and result = this.getInitialization()
   }
 
   override Instruction getResult() {
-    result = getInstruction(LoadTag())
+    result = this.getInstruction(LoadTag())
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     (
       tag = InitializerVariableAddressTag() and
       kind instanceof GotoEdge and
-      result = getInstruction(InitializerStoreTag())
+      result = this.getInstruction(InitializerStoreTag())
     ) or
     (
       tag = InitializerStoreTag() and
       kind instanceof GotoEdge and
       (
-        result = getInitialization().getFirstInstruction() or
-        not hasInitializer() and result = getInstruction(LoadTag())
+        result = this.getInitialization().getFirstInstruction() or
+        not this.hasInitializer() and result = this.getInstruction(LoadTag())
       )
     ) or
     (
       tag = LoadTag() and
       kind instanceof GotoEdge and
-      result = getParent().getChildSuccessor(this)
+      result = this.getParent().getChildSuccessor(this)
     )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     child = getInitialization() and
-    result = getInstruction(LoadTag())
+    result = this.getInstruction(LoadTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType,
@@ -2366,19 +2125,19 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
     (
       tag = InitializerVariableAddressTag() and
       opcode instanceof Opcode::VariableAddress and
-      resultType = getResultType() and
+      resultType = this.getResultType() and
       isLValue = true
     ) or
     (
       tag = InitializerStoreTag() and
       opcode instanceof Opcode::Uninitialized and
-      resultType = getResultType() and
+      resultType = this.getResultType() and
       isLValue = false
     ) or
     (
       tag = LoadTag() and
       opcode instanceof Opcode::Load and
-      resultType = getResultType() and
+      resultType = this.getResultType() and
       isLValue = false
     )
   }
@@ -2388,18 +2147,18 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
     (
       tag = InitializerStoreTag() and
       operandTag instanceof AddressOperandTag and
-      result = getInstruction(InitializerVariableAddressTag())
+      result = this.getInstruction(InitializerVariableAddressTag())
     ) or
     (
       tag = LoadTag() and
       (
         (
           operandTag instanceof AddressOperandTag and
-          result = getInstruction(InitializerVariableAddressTag())
+          result = this.getInstruction(InitializerVariableAddressTag())
         ) or
         (
           operandTag instanceof LoadOperandTag and
-          result = getEnclosingFunction().getUnmodeledDefinitionInstruction()
+          result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
         )
       )
     )
@@ -2410,24 +2169,24 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
       tag = InitializerVariableAddressTag() or
       tag = InitializerStoreTag()
     ) and
-    result = getTempVariable(LambdaTempVar())
+    result =  this.getTempVariable(LambdaTempVar())
   }
 
   override predicate hasTempVariable(TempVariableTag tag, Type type) {
     tag = LambdaTempVar() and
-    type = getResultType()
+    type = this.getResultType()
   }
 
   override final Instruction getTargetAddress() {
-    result = getInstruction(InitializerVariableAddressTag())
+    result = this.getInstruction(InitializerVariableAddressTag())
   }
 
   override final Type getTargetType() {
-    result = getResultType()
+    result = this.getResultType()
   }
 
   private predicate hasInitializer() {
-    exists(getInitialization())
+    exists(this.getInitialization())
   }
 
   private TranslatedInitialization getInitialization() {

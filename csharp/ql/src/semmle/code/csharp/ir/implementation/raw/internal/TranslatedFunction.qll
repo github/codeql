@@ -19,7 +19,7 @@ TranslatedFunction getTranslatedFunction(Callable callable) {
 }
 
 /**
- * Represents the IR translation of a function. This is the root elements for
+ * Represents the IR translation of a function. This is the root element for
  * all other elements associated with this function.
  */
 class TranslatedFunction extends TranslatedElement,
@@ -46,9 +46,9 @@ class TranslatedFunction extends TranslatedElement,
   }
 
   override final TranslatedElement getChild(int id) {
-    id = -2 and result = getConstructorInitializer() or
-    id = -1 and result = getBody() or
-    id >= 0 and result = getParameter(id)
+    id = -2 and result = this.getConstructorInitializer() or
+    id = -1 and result = this.getBody() or
+    result = this.getParameter(id)
   }
 
   private final TranslatedConstructorInitializer getConstructorInitializer() {
@@ -66,7 +66,7 @@ class TranslatedFunction extends TranslatedElement,
   }
 
   override final Instruction getFirstInstruction() {
-    result = getInstruction(EnterFunctionTag())
+    result = this.getInstruction(EnterFunctionTag())
   }
 
   override final Instruction getInstructionSuccessor(InstructionTag tag,
@@ -75,67 +75,67 @@ class TranslatedFunction extends TranslatedElement,
     (
       (
         tag = EnterFunctionTag() and
-        result = getInstruction(AliasedDefinitionTag())
+        result = this.getInstruction(AliasedDefinitionTag())
       ) or (
         tag = AliasedDefinitionTag() and
-        result = getInstruction(UnmodeledDefinitionTag())
+        result = this.getInstruction(UnmodeledDefinitionTag())
       ) or
       (
         tag = UnmodeledDefinitionTag() and
         if exists(getThisType()) then
-          result = getInstruction(InitializeThisTag())
+          result = this.getInstruction(InitializeThisTag())
         else if exists(getParameter(0)) then
-          result = getParameter(0).getFirstInstruction()
+          result = this.getParameter(0).getFirstInstruction()
         else
-          result = getBody().getFirstInstruction()
+          result = this.getBody().getFirstInstruction()
       ) or
       (
         tag = InitializeThisTag() and
         if exists(getParameter(0)) then
-          result = getParameter(0).getFirstInstruction()
+          result = this.getParameter(0).getFirstInstruction()
         else
           if (exists(getConstructorInitializer())) then
-            result = getConstructorInitializer().getFirstInstruction()
+            result = this.getConstructorInitializer().getFirstInstruction()
           else
-            result = getBody().getFirstInstruction()
+            result = this.getBody().getFirstInstruction()
       ) or
       (
         tag = ReturnValueAddressTag() and
-        result = getInstruction(ReturnTag())
+        result = this.getInstruction(ReturnTag())
       ) or
       (
         tag = ReturnTag() and
-        result = getInstruction(UnmodeledUseTag())
+        result = this.getInstruction(UnmodeledUseTag())
       ) or
       (
         tag = UnwindTag() and
-        result = getInstruction(UnmodeledUseTag())
+        result = this.getInstruction(UnmodeledUseTag())
       ) or
       (
         tag = UnmodeledUseTag() and
-        result = getInstruction(ExitFunctionTag())
+        result = this.getInstruction(ExitFunctionTag())
       )
     )
   }
 
   override final Instruction getChildSuccessor(TranslatedElement child) {
     exists(int paramIndex |
-      child = getParameter(paramIndex) and
+      child = this.getParameter(paramIndex) and
       if exists(callable.getParameter(paramIndex + 1)) then
-        result = getParameter(paramIndex + 1).getFirstInstruction()
+        result = this.getParameter(paramIndex + 1).getFirstInstruction()
       else
         if (exists(getConstructorInitializer())) then
-          result = getConstructorInitializer().getFirstInstruction()
+          result = this.getConstructorInitializer().getFirstInstruction()
         else
-          result = getBody().getFirstInstruction()
+          result = this.getBody().getFirstInstruction()
     ) or
     (
-      child = getConstructorInitializer() and
-      result = getBody().getFirstInstruction()
+      child = this.getConstructorInitializer() and
+      result = this.getBody().getFirstInstruction()
     ) or 
     (
-      child = getBody() and
-      result = getReturnSuccessorInstruction()
+      child = this.getBody() and
+      result = this.getReturnSuccessorInstruction()
     )
   }
 
@@ -169,7 +169,7 @@ class TranslatedFunction extends TranslatedElement,
       (
         tag = ReturnValueAddressTag() and
         opcode instanceof Opcode::VariableAddress and
-        resultType = getReturnType() and
+        resultType = this.getReturnType() and
         not resultType instanceof VoidType and
         isLValue = true
       ) or
@@ -177,7 +177,7 @@ class TranslatedFunction extends TranslatedElement,
         tag = ReturnTag() and
         resultType instanceof VoidType and
         isLValue = false and
-        if getReturnType() instanceof VoidType then
+        if this.getReturnType() instanceof VoidType then
           opcode instanceof Opcode::ReturnVoid
         else
           opcode instanceof Opcode::ReturnValue
@@ -214,7 +214,7 @@ class TranslatedFunction extends TranslatedElement,
   }
 
   override final Instruction getExceptionSuccessorInstruction() {
-    result = getInstruction(UnwindTag()) 
+    result = this.getInstruction(UnwindTag()) 
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
@@ -232,11 +232,11 @@ class TranslatedFunction extends TranslatedElement,
     ) or
     (
       tag = ReturnTag() and
-      not getReturnType() instanceof VoidType and
+      not this.getReturnType() instanceof VoidType and
       (
         (
           operandTag instanceof AddressOperandTag and
-          result = getInstruction(ReturnValueAddressTag())
+          result = this.getInstruction(ReturnValueAddressTag())
         ) or
         (
           operandTag instanceof LoadOperandTag and
@@ -249,19 +249,19 @@ class TranslatedFunction extends TranslatedElement,
   override final Type getInstructionOperandType(InstructionTag tag,
       TypedOperandTag operandTag) {
     tag = ReturnTag() and
-    not getReturnType() instanceof VoidType and
+    not this.getReturnType() instanceof VoidType and
     operandTag instanceof LoadOperandTag and
-    result = getReturnType()
+    result = this.getReturnType()
   }
   
   override final IRVariable getInstructionVariable(InstructionTag tag) {
     tag = ReturnValueAddressTag() and
-    result = getReturnVariable()
+    result = this.getReturnVariable()
   }
 
   override final predicate hasTempVariable(TempVariableTag tag, Type type) {
     tag = ReturnValueTempVar() and
-    type = getReturnType() and
+    type = this.getReturnType() and
     not type instanceof VoidType
   }
 
@@ -270,10 +270,10 @@ class TranslatedFunction extends TranslatedElement,
    * statement. In C#, this should be the instruction which generates `VariableAddress[#return]`.
    */
   final Instruction getReturnSuccessorInstruction() {
-      if getReturnType() instanceof VoidType then
-        result = getInstruction(ReturnTag())
+      if this.getReturnType() instanceof VoidType then
+        result = this.getInstruction(ReturnTag())
       else
-        result = getInstruction(ReturnValueAddressTag())
+        result = this.getInstruction(ReturnValueAddressTag())
   }
 
   /**
@@ -287,7 +287,7 @@ class TranslatedFunction extends TranslatedElement,
    * Gets the single `UnmodeledDefinition` instruction for this function.
    */
   final Instruction getUnmodeledDefinitionInstruction() {
-    result = getInstruction(UnmodeledDefinitionTag())
+    result = this.getInstruction(UnmodeledDefinitionTag())
   }
 
   /**
@@ -295,7 +295,7 @@ class TranslatedFunction extends TranslatedElement,
    * if the function is an instance member function, constructor, or destructor.
    */
   final Instruction getInitializeThisInstruction() {
-    result = getInstruction(InitializeThisTag())
+    result = this.getInstruction(InitializeThisTag())
   }
   
   /**
@@ -303,7 +303,18 @@ class TranslatedFunction extends TranslatedElement,
    * Holds only if the function is an instance member function, constructor, or destructor.
    */
   final Type getThisType() {
-    result = callable.getDeclaringType()
+    // `callable` is a user declared member and it is not static
+    (
+      callable instanceof Member and
+      not callable.(Member).isStatic() and
+      result = callable.getDeclaringType()
+    ) or 
+    // `callable` is a compiler generated accessor
+    (
+      callable instanceof Accessor and
+      not callable.(Accessor).isStatic() and
+      result = callable.getDeclaringType()
+    )
   }
 
   /**
@@ -361,7 +372,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
   }
 
   override final Instruction getFirstInstruction() {
-    result = getInstruction(InitializerVariableAddressTag())
+    result = this.getInstruction(InitializerVariableAddressTag())
   }
 
   override final TranslatedElement getChild(int id) {
@@ -374,11 +385,11 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     (
       (
         tag = InitializerVariableAddressTag() and
-        result = getInstruction(InitializerStoreTag())
+        result = this.getInstruction(InitializerStoreTag())
       ) or
       (
         tag = InitializerStoreTag() and
-        result = getParent().getChildSuccessor(this)
+        result = this.getParent().getChildSuccessor(this)
       )
     )
   }
@@ -417,7 +428,7 @@ class TranslatedParameter extends TranslatedElement, TTranslatedParameter {
     (
       (
         operandTag instanceof AddressOperandTag and
-        result = getInstruction(InitializerVariableAddressTag())
+        result = this.getInstruction(InitializerVariableAddressTag())
       )
     )
   }

@@ -28,7 +28,7 @@ public class DerivedClass : BaseClass
 
     static void Main()
     {
-        DerivedClass obj1= new DerivedClass();
+        DerivedClass obj1 = new DerivedClass();
         DerivedClass obj2 = new DerivedClass(1);
         DerivedClass obj3 = new DerivedClass(1, 2);
     }

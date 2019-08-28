@@ -3,7 +3,7 @@ private import semmle.code.csharp.ir.internal.TempVariableTag
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
 private import InstructionTag
 private import TranslatedCondition
-private import TranslatedDeclarationEntry
+private import TranslatedDeclaration
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
@@ -47,7 +47,7 @@ class TranslatedEmptyStmt extends TranslatedStmt {
   }
 
   override Instruction getFirstInstruction() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -61,7 +61,7 @@ class TranslatedEmptyStmt extends TranslatedStmt {
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
@@ -74,7 +74,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
   override LocalVariableDeclStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    result = getLocalDeclaration(id)
+    result = this.getLocalDeclaration(id)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -83,7 +83,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
   }
 
   override Instruction getFirstInstruction() {
-    result = getLocalDeclaration(0).getFirstInstruction() //REVIEW: Empty?
+    result = this.getLocalDeclaration(0).getFirstInstruction()
   }
 
   private int getChildCount() {
@@ -101,11 +101,11 @@ class TranslatedDeclStmt extends TranslatedStmt {
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int index |
-      child = getLocalDeclaration(index) and
+      child = this.getLocalDeclaration(index) and
       if index = (getChildCount() - 1) then
-        result = getParent().getChildSuccessor(this)
+        result = this.getParent().getChildSuccessor(this)
       else
-        result = getLocalDeclaration(index + 1).getFirstInstruction()
+        result = this.getLocalDeclaration(index + 1).getFirstInstruction()
     )
   }
 }
@@ -118,7 +118,7 @@ class TranslatedExprStmt extends TranslatedStmt {
   }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getExpr()
+    id = 0 and result = this.getExpr()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -127,7 +127,7 @@ class TranslatedExprStmt extends TranslatedStmt {
   }
 
   override Instruction getFirstInstruction() {
-    result = getExpr().getFirstInstruction()
+    result = this.getExpr().getFirstInstruction()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -136,8 +136,8 @@ class TranslatedExprStmt extends TranslatedStmt {
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getExpr() and
-    result = getParent().getChildSuccessor(this)
+    child = this.getExpr() and
+    result = this.getParent().getChildSuccessor(this)
   }
 }
 
@@ -161,11 +161,11 @@ class TranslatedExprStmtAccessorSet extends TranslatedExprStmt {
   }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getExpr()
+    id = 0 and result = this.getExpr()
   }
 
   override Instruction getFirstInstruction() {
-    result = getExpr().getFirstInstruction()
+    result = this.getExpr().getFirstInstruction()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -174,8 +174,8 @@ class TranslatedExprStmtAccessorSet extends TranslatedExprStmt {
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getExpr() and
-    result = getParent().getChildSuccessor(this)
+    child = this.getExpr() and
+    result = this.getParent().getChildSuccessor(this)
   }
 }
 
@@ -194,44 +194,44 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt,
   }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getInitialization()
+    id = 0 and result = this.getInitialization()
   }
 
   override Instruction getFirstInstruction() {
-    result = getInstruction(InitializerVariableAddressTag())
+    result = this.getInstruction(InitializerVariableAddressTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
     Type resultType, boolean isLValue) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
-    resultType = getEnclosingFunction().getReturnVariable().getType() and
+    resultType = this.getEnclosingFunction().getReturnVariable().getType() and
     isLValue = true
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     tag = InitializerVariableAddressTag() and
-    result = getInitialization().getFirstInstruction() and
+    result = this.getInitialization().getFirstInstruction() and
     kind instanceof GotoEdge
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitialization() and
-    result = getEnclosingFunction().getReturnSuccessorInstruction()
+    child = this.getInitialization() and
+    result = this.getEnclosingFunction().getReturnSuccessorInstruction()
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = InitializerVariableAddressTag() and
-    result = getEnclosingFunction().getReturnVariable()
+    result = this.getEnclosingFunction().getReturnVariable()
   }
 
   override Instruction getTargetAddress() {
-    result = getInstruction(InitializerVariableAddressTag())
+    result = this.getInstruction(InitializerVariableAddressTag())
   }
 
   override Type getTargetType() {
-    result = getEnclosingFunction().getReturnVariable().getType()
+    result = this.getEnclosingFunction().getReturnVariable().getType()
   }
 
   TranslatedInitialization getInitialization() {
@@ -250,7 +250,7 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
   }
 
   override Instruction getFirstInstruction() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -264,7 +264,7 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = getEnclosingFunction().getReturnSuccessorInstruction() and
+    result = this.getEnclosingFunction().getReturnSuccessorInstruction() and
     kind instanceof GotoEdge
   }
 
@@ -282,9 +282,9 @@ class TranslatedTryStmt extends TranslatedStmt {
   override TryStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getBody() or
-    id = 1 and result = getFinally() or
-    result = getCatchClause(id - 2)
+    id = 0 and result = this.getBody() or
+    id = 1 and result = this.getFinally() or
+    result = this.getCatchClause(id - 2)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -298,31 +298,31 @@ class TranslatedTryStmt extends TranslatedStmt {
   }
 
   override Instruction getFirstInstruction() {
-    result = getBody().getFirstInstruction()
+    result = this.getBody().getFirstInstruction()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getCatchClause(_) and result = getFinally().getFirstInstruction() or
-    child = getBody() and result = getFinally().getFirstInstruction() or
-    child = getFinally() and result = getParent().getChildSuccessor(this)
+    child = this.getCatchClause(_) and result = this.getFinally().getFirstInstruction() or
+    child = this.getBody() and result = this.getFinally().getFirstInstruction() or
+    child = this.getFinally() and result = this.getParent().getChildSuccessor(this)
   }
 
   final Instruction getNextHandler(TranslatedClause clause) {
     exists(int index |
-      clause = getCatchClause(index) and
-      result = getCatchClause(index + 1).getFirstInstruction()
+      clause = this.getCatchClause(index) and
+      result = this.getCatchClause(index + 1).getFirstInstruction()
     ) or
     (
       // The last catch clause flows to the exception successor of the parent
       // of the `try`, because the exception successor of the `try` itself is
       // the first catch clause.
-      clause = getCatchClause(count(stmt.getACatchClause()) - 1) and
-      result = getParent().getExceptionSuccessorInstruction()
+      clause = this.getCatchClause(count(stmt.getACatchClause()) - 1) and
+      result = this.getParent().getExceptionSuccessorInstruction()
     )
   }
 
   override final Instruction getExceptionSuccessorInstruction() {
-    result = getCatchClause(0).getFirstInstruction()
+    result = this.getCatchClause(0).getFirstInstruction()
   }
 
   private TranslatedClause getCatchClause(int index) {
@@ -342,7 +342,7 @@ class TranslatedBlock extends TranslatedStmt {
   override BlockStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    result = getStmt(id)
+    result = this.getStmt(id)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -356,13 +356,13 @@ class TranslatedBlock extends TranslatedStmt {
 
   override Instruction getFirstInstruction() {
     if isEmpty() then
-      result = getInstruction(OnlyInstructionTag())
+      result = this.getInstruction(OnlyInstructionTag())
     else
-      result = getStmt(0).getFirstInstruction()
+      result = this.getStmt(0).getFirstInstruction()
   }
 
   private predicate isEmpty() {
-    not exists(stmt.getStmt(0))
+    stmt.isEmpty()
   }
 
   private TranslatedStmt getStmt(int index) {
@@ -376,17 +376,17 @@ class TranslatedBlock extends TranslatedStmt {
   override Instruction getInstructionSuccessor(InstructionTag tag,
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     exists(int index |
-      child = getStmt(index) and
+      child = this.getStmt(index) and
       if index = (getStmtCount() - 1) then
-        result = getParent().getChildSuccessor(this)
+        result = this.getParent().getChildSuccessor(this)
       else
-        result = getStmt(index + 1).getFirstInstruction()
+        result = this.getStmt(index + 1).getFirstInstruction()
     )
   }
 }
@@ -398,21 +398,21 @@ abstract class TranslatedClause extends TranslatedStmt {
   override CatchClause stmt;
 
   override TranslatedElement getChild(int id) {
-    id = 1 and result = getBlock()
+    id = 1 and result = this.getBlock()
   }
 
   override Instruction getFirstInstruction() {
-    result = getInstruction(CatchTag())
+    result = this.getInstruction(CatchTag())
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getBlock() and result = getParent().getChildSuccessor(this)
+    child = this.getBlock() and result = this.getParent().getChildSuccessor(this)
   }
 
   override Instruction getExceptionSuccessorInstruction() {
     // A throw from within a `catch` block flows to the handler for the parent of
     // the `try`.
-    result = getParent().getParent().getExceptionSuccessorInstruction()
+    result = this.getParent().getParent().getExceptionSuccessorInstruction()
   }
 
   TranslatedStmt getBlock() {
@@ -444,7 +444,7 @@ class TranslatedCatchByTypeClause extends TranslatedClause {
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     result = super.getChildSuccessor(child) or
-    child = getParameter() and result = getBlock().getFirstInstruction()
+    child = getParameter() and result = this.getBlock().getFirstInstruction()
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag,
@@ -457,7 +457,7 @@ class TranslatedCatchByTypeClause extends TranslatedClause {
       ) or
       (
         kind instanceof ExceptionEdge and
-        result = getParent().(TranslatedTryStmt).getNextHandler(this)
+        result = this.getParent().(TranslatedTryStmt).getNextHandler(this)
       )
     )
   }
@@ -492,7 +492,7 @@ class TranslatedGeneralCatchClause extends TranslatedClause {
     EdgeKind kind) {
     tag = CatchTag() and
     kind instanceof GotoEdge and
-    result = getBlock().getFirstInstruction()
+    result = this.getBlock().getFirstInstruction()
   }
 }
 
@@ -509,11 +509,11 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
   }
   
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getInitialization()
+    id = 0 and result = this.getInitialization()
   }
 
   override Instruction getFirstInstruction() {
-    result = getInstruction(InitializerVariableAddressTag())
+    result = this.getInstruction(InitializerVariableAddressTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -528,7 +528,7 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
     (
       tag = InitializerVariableAddressTag() and
       opcode instanceof Opcode::VariableAddress and
-      resultType = getExceptionType() and
+      resultType = this.getExceptionType() and
       isLValue = true
     )
   }
@@ -538,19 +538,19 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
     (
       tag = ThrowTag() and
       kind instanceof ExceptionEdge and
-      result = getParent().getExceptionSuccessorInstruction()
+      result = this.getParent().getExceptionSuccessorInstruction()
     )
     or
     (
       tag = InitializerVariableAddressTag() and
-      result = getInitialization().getFirstInstruction() and
+      result = this.getInitialization().getFirstInstruction() and
       kind instanceof GotoEdge
     )
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInitialization() and
-    result = getInstruction(ThrowTag())
+    child = this.getInitialization() and
+    result = this.getInstruction(ThrowTag())
   }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
@@ -561,7 +561,7 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
   
   override final predicate hasTempVariable(TempVariableTag tag, Type type) {
     tag = ThrowTempVar() and
-    type = getExceptionType()
+    type = this.getExceptionType()
   }
 
   override final Instruction getInstructionOperand(InstructionTag tag,
@@ -570,7 +570,7 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
     (
       (
         operandTag instanceof AddressOperandTag and
-        result = getInstruction(InitializerVariableAddressTag())
+        result = this.getInstruction(InitializerVariableAddressTag())
       ) or
       (
         operandTag instanceof LoadOperandTag and
@@ -583,15 +583,15 @@ class TranslatedThrowExceptionStmt extends TranslatedStmt, InitializationContext
       TypedOperandTag operandTag) {
     tag = ThrowTag() and
     operandTag instanceof LoadOperandTag and
-    result = getExceptionType()
+    result = this.getExceptionType()
   }
 
   override Instruction getTargetAddress() {
-    result = getInstruction(InitializerVariableAddressTag())
+    result = this.getInstruction(InitializerVariableAddressTag())
   }
 
   override Type getTargetType() {
-    result = getExceptionType()
+    result = this.getExceptionType()
   }
 
   TranslatedInitialization getInitialization() {
@@ -619,7 +619,7 @@ class TranslatedEmptyThrowStmt extends TranslatedStmt {
   }
 
   override Instruction getFirstInstruction() {
-    result = getInstruction(ThrowTag())
+    result = this.getInstruction(ThrowTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -634,7 +634,7 @@ class TranslatedEmptyThrowStmt extends TranslatedStmt {
       EdgeKind kind) {
     tag = ThrowTag() and
     kind instanceof ExceptionEdge and
-    result = getParent().getExceptionSuccessorInstruction()
+    result = this.getParent().getExceptionSuccessorInstruction()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -647,13 +647,13 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
 
 
   override Instruction getFirstInstruction() {
-    result = getCondition().getFirstInstruction()
+    result = this.getCondition().getFirstInstruction()
   }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getCondition() or
-    id = 1 and result = getThen() or
-    id = 2 and result = getElse()
+    id = 0 and result = this.getCondition() or
+    id = 1 and result = this.getThen() or
+    id = 2 and result = this.getElse()
   }
 
   private TranslatedCondition getCondition() {
@@ -678,21 +678,21 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
   }
 
   override Instruction getChildTrueSuccessor(TranslatedCondition child) {
-    child = getCondition() and
-    result = getThen().getFirstInstruction()
+    child = this.getCondition() and
+    result = this.getThen().getFirstInstruction()
   }
 
   override Instruction getChildFalseSuccessor(TranslatedCondition child) {
-    child = getCondition() and
-    if hasElse() then
-      result = getElse().getFirstInstruction()
+    child = this.getCondition() and
+    if this.hasElse() then
+      result = this.getElse().getFirstInstruction()
     else
-      result = getParent().getChildSuccessor(this)
+      result = this.getParent().getChildSuccessor(this)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    (child = getThen() or child = getElse()) and
-    result = getParent().getChildSuccessor(this)
+    (child = this.getThen() or child = this.getElse()) and
+    result = this.getParent().getChildSuccessor(this)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -716,7 +716,7 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
     if hasCondition() then
       result = getCondition().getFirstInstruction()
     else
-      result = getBody().getFirstInstruction()
+      result = this.getBody().getFirstInstruction()
   }
 
   final predicate hasCondition() {
@@ -724,8 +724,8 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
   }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getCondition() or
-    id = 1 and result = getBody()
+    id = 0 and result = this.getCondition() or
+    id = 1 and result = this.getBody()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag,
@@ -739,11 +739,11 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
   }
 
   override final Instruction getChildTrueSuccessor(TranslatedCondition child) {
-    child = getCondition() and result = getBody().getFirstInstruction()
+    child = this.getCondition() and result = this.getBody().getFirstInstruction()
   }
 
   override final Instruction getChildFalseSuccessor(TranslatedCondition child) {
-    child = getCondition() and result = getParent().getChildSuccessor(this)
+    child = this.getCondition() and result = this.getParent().getChildSuccessor(this)
   }
 }
 
@@ -753,11 +753,11 @@ class TranslatedWhileStmt extends TranslatedLoop {
   }
 
   override Instruction getFirstInstruction() {
-    result = getFirstConditionInstruction()
+    result = this.getFirstConditionInstruction()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getBody() and result = getFirstConditionInstruction()
+    child = this.getBody() and result = this.getFirstConditionInstruction()
   }
 }
 
@@ -767,11 +767,11 @@ class TranslatedDoStmt extends TranslatedLoop {
   }
 
   override Instruction getFirstInstruction() {
-    result = getBody().getFirstInstruction()
+    result = this.getBody().getFirstInstruction()
   }
   
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getBody() and result = getFirstConditionInstruction()
+    child = this.getBody() and result = this.getFirstConditionInstruction()
   }
 }
 
@@ -779,10 +779,10 @@ class TranslatedForStmt extends TranslatedLoop {
   override ForStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getDeclAndInit() or
-    id = 1 and result = getCondition() or
-    id = 2 and result = getUpdate() or
-    id = 3 and result = getBody()
+    id = 0 and result = this.getDeclAndInit() or
+    id = 1 and result = this.getCondition() or
+    id = 2 and result = this.getUpdate() or
+    id = 3 and result = this.getBody()
   }
 
   private TranslatedLocalDeclaration getDeclAndInit() {
@@ -802,25 +802,25 @@ class TranslatedForStmt extends TranslatedLoop {
   }
 
   override Instruction getFirstInstruction() {
-    if hasInitialization() then
-      result = getDeclAndInit().getFirstInstruction()
+    if this.hasInitialization() then
+      result = this.getDeclAndInit().getFirstInstruction()
     else
-      result = getFirstConditionInstruction()
+      result = this.getFirstConditionInstruction()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
     (
-      child = getDeclAndInit() and
-      result = getFirstConditionInstruction()
+      child = this.getDeclAndInit() and
+      result = this.getFirstConditionInstruction()
     ) or
     (
-      child = getBody() and
-      if hasUpdate() then
-        result = getUpdate().getFirstInstruction()
+      child = this.getBody() and
+      if this.hasUpdate() then
+        result = this.getUpdate().getFirstInstruction()
       else
-        result = getFirstConditionInstruction()
+        result = this.getFirstConditionInstruction()
     ) or
-    child = getUpdate() and result = getFirstConditionInstruction()
+    child = this.getUpdate() and result = this.getFirstConditionInstruction()
   }
 }
 
@@ -829,7 +829,7 @@ class TranslatedForStmt extends TranslatedLoop {
  */
 abstract class TranslatedSpecificJump extends TranslatedStmt {
   override Instruction getFirstInstruction() {
-    result = getInstruction(OnlyInstructionTag())
+    result = this.getInstruction(OnlyInstructionTag())
   }
 
   override TranslatedElement getChild(int id) {
@@ -861,14 +861,14 @@ class TranslatedBreakStmt extends TranslatedSpecificJump {
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
     kind instanceof GotoEdge and
-    result = getEnclosingLoopOrSwitchNextInstr(stmt)
+    result = this.getEnclosingLoopOrSwitchNextInstr(stmt)
   }
   
   private Instruction getEnclosingLoopOrSwitchNextInstr(Stmt crtStmt) {
     if (crtStmt instanceof LoopStmt or crtStmt instanceof SwitchStmt) then
       result = getTranslatedStmt(crtStmt).getParent().getChildSuccessor(getTranslatedStmt(crtStmt))
     else
-      result = getEnclosingLoopOrSwitchNextInstr(crtStmt.getParent())
+      result = this.getEnclosingLoopOrSwitchNextInstr(crtStmt.getParent())
   }
 }
 
@@ -890,7 +890,7 @@ class TranslatedGotoCaseStmt extends TranslatedSpecificJump {
     EdgeKind kind) {
     tag = OnlyInstructionTag() and
     kind instanceof GotoEdge and
-    result = getCase(stmt, stmt.getExpr()).getFirstInstruction()
+    result = this.getCase(stmt, stmt.getExpr()).getFirstInstruction()
   }
   
   private TranslatedStmt getCase(Stmt crtStmt, Expr expr) {
@@ -903,7 +903,7 @@ class TranslatedGotoCaseStmt extends TranslatedSpecificJump {
         result = getTranslatedStmt(caseStmt)
       )
     else
-      result = getCase(crtStmt.getParent(), expr)
+      result = this.getCase(crtStmt.getParent(), expr)
   }
 }
 
@@ -924,7 +924,7 @@ class TranslatedGotoDefaultStmt extends TranslatedSpecificJump {
         result = getTranslatedStmt(caseStmt)
       )
     else
-      result = getDefaultCase(crtStmt.getParent())
+      result = this.getDefaultCase(crtStmt.getParent())
   }
 }
 
@@ -936,7 +936,7 @@ class TranslatedSwitchStmt extends TranslatedStmt {
   }
 
   override Instruction getFirstInstruction() {
-    result = getSwitchExpr().getFirstInstruction()
+    result = this.getSwitchExpr().getFirstInstruction()
   }
 
   override TranslatedElement getChild(int id) {
@@ -963,9 +963,19 @@ class TranslatedSwitchStmt extends TranslatedStmt {
       OperandTag operandTag) {
     tag = SwitchBranchTag() and
     operandTag instanceof ConditionOperandTag and
-    result = getSwitchExpr().getResult()
+    result = this.getSwitchExpr().getResult()
   }
 
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+    EdgeKind kind) {
+    tag = SwitchBranchTag() and
+    exists(CaseStmt caseStmt |
+      caseStmt = stmt.getACase() and
+      kind = this.getCaseEdge(caseStmt) and
+      result = getTranslatedStmt(caseStmt).getFirstInstruction()
+    )
+  }
+  
   private EdgeKind getCaseEdge(CaseStmt caseStmt) {
     if caseStmt instanceof DefaultCase then 
       result instanceof DefaultEdge
@@ -975,24 +985,14 @@ class TranslatedSwitchStmt extends TranslatedStmt {
         hasCaseEdge(caseStmt, edge.getMinValue(), edge.getMinValue())
       ) 
   }
-  
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
-    tag = SwitchBranchTag() and
-    exists(CaseStmt caseStmt |
-      caseStmt = stmt.getACase() and
-      kind = getCaseEdge(caseStmt) and
-      result = getTranslatedStmt(caseStmt).getFirstInstruction()
-    )
-  }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getSwitchExpr() and result = getInstruction(SwitchBranchTag()) or
+    child = this.getSwitchExpr() and result = this.getInstruction(SwitchBranchTag()) or
     exists(int index, int numStmts |
       numStmts = count(stmt.getAChild()) and
       child = getTranslatedStmt(stmt.getChild(index)) and
       if index = (numStmts - 1) then
-        result = getParent().getChildSuccessor(this)
+        result = this.getParent().getChildSuccessor(this)
       else
         result = getTranslatedStmt(stmt.getChild(index + 1)).getFirstInstruction()
     )

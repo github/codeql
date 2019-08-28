@@ -1,5 +1,7 @@
-class CrementOpsTest {
-    public static void Main() {
+class CrementOpsTest 
+{
+    public static void Main() 
+    {
         int x = 10;
         int a = x++;
         int b = --x;

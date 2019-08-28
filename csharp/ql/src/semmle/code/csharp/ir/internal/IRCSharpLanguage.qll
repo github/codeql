@@ -6,7 +6,6 @@ class Location = CSharp::Location;
 class AST = CSharp::Element;
 
 class Type = CSharp::Type;
-//REVIEW: This might not exist in the database. 
 class UnknownType = CSharp::NullType;
 class VoidType = CSharp::VoidType;
 class IntegralType = CSharp::IntegralType;
@@ -54,12 +53,10 @@ class Field = CSharp::Field;
 
 // TODO: Remove necessity for these.
 class Expr = CSharp::Expr;
-class Class = CSharp::RefType;  // Used for inheritance conversions
+class Class = CSharp::ValueOrRefType;  // Used for inheritance conversions
 
 string getIdentityString(Function func) {
-  // REVIEW: Is this enough to make it unique?
-//  result = func.getQualifiedName()
-  result = func.getName()
+  result = func.getLabel()
 }
 
 predicate hasCaseEdge(string minValue, string maxValue) {

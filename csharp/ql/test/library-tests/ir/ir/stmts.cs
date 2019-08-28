@@ -1,21 +1,26 @@
 using System;
 
-public class test_stmts {
-    public static int ifStmt(int x) {
+public class test_stmts 
+{
+    public static int ifStmt(int x) 
+    {
         if (x == 5)
             return 0;
         else
             return 1;
     }
 
-    public static void whileStmt(int x) {
+    public static void whileStmt(int x) 
+    {
         int i = 0;
-        while (i < 10) {
+        while (i < 10) 
+        {
             x = x + 1;
         }
     }
 
-    public static int switchStmt() {
+    public static int switchStmt() 
+    {
         object caseSwitch = new object();
         int select = 0;
 
@@ -38,7 +43,8 @@ public class test_stmts {
     }
 
 
-    public static void tryCatchFinally() {
+    public static void tryCatchFinally() 
+    {
         int x = 5;
         try
         {
@@ -59,16 +65,20 @@ public class test_stmts {
         }
     }
     
-    public static void forStmt() {
+    public static void forStmt() 
+    {
         int x = 0;
-        for (int i = 0; i <= 10; i++) {
+        for (int i = 0; i <= 10; i++) 
+        {
             x = x - 1;
         }
     }    
     
-    public static void doWhile() {
+    public static void doWhile() 
+    {
         int x = 0;
-        do {
+        do
+        {
             x = x + 1;
         }
         while (x < 10);
