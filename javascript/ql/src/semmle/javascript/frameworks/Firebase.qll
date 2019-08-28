@@ -27,7 +27,11 @@ module Firebase {
 
   /** Gets a reference to a Firebase app created with `initializeApp`. */
   private DataFlow::SourceNode initApp(DataFlow::TypeTracker t) {
-    result = firebase().getAMethodCall("initializeApp") and t.start()
+    t.start() and
+    result = firebase().getAMethodCall("initializeApp")
+    or
+    t.start() and
+    result.hasUnderlyingType("firebase", "app.App")
     or
     exists (DataFlow::TypeTracker t2 |
       result = initApp(t2).track(t2, t)
@@ -47,6 +51,9 @@ module Firebase {
     /** Gets a reference to a Firebase database object, such as `firebase.database()`. */
     private DataFlow::SourceNode database(DataFlow::TypeTracker t) {
       result = app().getAMethodCall("database") and t.start()
+      or
+      t.start() and
+      result.hasUnderlyingType("firebase", "database.Database")
       or
       exists (DataFlow::TypeTracker t2 |
         result = database(t2).track(t2, t)
@@ -78,6 +85,8 @@ module Firebase {
         )
         or
         result = snapshot().getAPropertyRead("ref")
+        or
+        result.hasUnderlyingType("firebase", "database.Reference")
       )
       or
       exists (DataFlow::TypeTracker t2 |
@@ -102,6 +111,8 @@ module Firebase {
           name = "orderBy" + any(string s) or
           name = "startAt"
         )
+        or
+        result.hasUnderlyingType("firebase", "database.Query")
       )
       or
       exists (DataFlow::TypeTracker t2 |
@@ -293,6 +304,8 @@ module Firebase {
         prop = "before" or // only defined on Change objects
         prop = "after"
       )
+      or
+      result.hasUnderlyingType("firebase", "database.DataSnapshot")
     )
     or
     promiseTaintStep(snapshot(t), result)
