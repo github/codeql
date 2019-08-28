@@ -1,6 +1,7 @@
 | complexcondition2.h:0:0:0:0 | complexcondition2.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
 | complexcondition.h:0:0:0:0 | complexcondition.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
 | fundecl.h:0:0:0:0 | fundecl.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
+| items3.h:0:0:0:0 | items3.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
 | multipleguards.h:0:0:0:0 | multipleguards.h | This header file should contain a header guard to prevent multiple inclusion ($@ matching $@ occurs before the end of the file). | multipleguards.h:7:1:7:6 | #endif | #endif | multipleguards.h:2:1:2:24 | #ifndef MULTIPLEGUARDS_H | #ifndef MULTIPLEGUARDS_H |
 | namespace1.h:0:0:0:0 | namespace1.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
 | namespace2.h:0:0:0:0 | namespace2.h | This header file should contain a header guard to prevent multiple inclusion. | file://:0:0:0:0 |  |  | file://:0:0:0:0 |  |  |
