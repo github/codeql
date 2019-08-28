@@ -94,6 +94,11 @@ class Value extends TObject {
         result = this.(ObjectInternal).getName()
     }
 
+    /** Holds if this value has the attribute `name` */
+    predicate hasAttribute(string name) {
+        this.(ObjectInternal).hasAttribute(name)
+    }
+
 }
 
 /** Class representing modules in the Python program
@@ -111,10 +116,7 @@ class ModuleValue extends Value {
      * This is the set of names imported by `from ... import *`.
      */
     predicate exports(string name) {
-        not this.(ModuleObjectInternal).attribute("__all__", _, _) and exists(this.attr(name))
-        and not name.charAt(0) = "_"
-        or
-        py_exports(this.getScope(), name)
+        PointsTo::moduleExports(this, name)
     }
 
     /** Gets the scope for this module, provided that it is a Python module. */

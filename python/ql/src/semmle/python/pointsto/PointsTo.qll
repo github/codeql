@@ -166,6 +166,10 @@ module PointsTo {
         )
     }
 
+    cached predicate moduleExports(ModuleObjectInternal mod, string name) {
+        InterModulePointsTo::moduleExportsBoolean(mod, name) = true
+    }
+
 }
 
 cached module PointsToInternal {

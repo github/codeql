@@ -182,6 +182,11 @@ class ObjectInternal extends TObject {
      */
     abstract ObjectInternal getIterNext();
 
+    /** Holds if this value has the attribute `name` */
+    predicate hasAttribute(string name) {
+        this.(ObjectInternal).attribute(name, _, _)
+    }
+
 }
 
 
