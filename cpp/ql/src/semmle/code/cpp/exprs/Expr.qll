@@ -87,13 +87,23 @@ class Expr extends StmtParent, @expr {
   /** Gets the value of this expression, if it is a constant. */
   string getValue() { exists(@value v | values(v,result) and valuebind(v,underlyingElement(this))) }
 
+  private string getValueTextFollowingConversions(Expr e) {
+    e.getValue() = this.getValue()
+    and
+    (if exists(@value v |
+               valuebind(v,underlyingElement(e)) and
+               valuetext(v, _))
+     then exists(@value v |
+                 valuebind(v,underlyingElement(e)) and
+                 valuetext(v, result))
+     else result = this.getValueTextFollowingConversions(e.getConversion()))
+  }
+
   /** Gets the source text for the value of this expression, if it is a constant. */
   string getValueText() {
-    exists(@value v |
-           valuebind(v,underlyingElement(this)) and
-           if valuetext(v, _)
-           then valuetext(v, result)
-           else values(v, result))
+    if exists(this.getValueTextFollowingConversions(this))
+    then result = this.getValueTextFollowingConversions(this)
+    else result = this.getValue()
   }
   
   /** Holds if this expression has a value that can be determined at compile time. */
