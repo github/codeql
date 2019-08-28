@@ -2,9 +2,9 @@ import csharp
 import semmle.code.csharp.ir.Util
 
 
-private predicate fieldIsInitialized(Field field) {
-  exists(field.getInitializer())
-}
+//private predicate fieldIsInitialized(Field field) {
+//  exists(field.getInitializer())
+//}
 
 private predicate elementIsInitialized(int elementIndex) {
   exists(ArrayInitWithMod initList |
