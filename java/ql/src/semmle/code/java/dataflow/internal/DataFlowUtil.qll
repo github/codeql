@@ -335,6 +335,12 @@ private module ThisFlow {
 predicate localFlow(Node node1, Node node2) { localFlowStep*(node1, node2) }
 
 /**
+ * Holds if data can flow from `e1` to `e2` in zero or more
+ * local (intra-procedural) steps.
+ */
+predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
+
+/**
  * Holds if the `FieldRead` is not completely determined by explicit SSA
  * updates.
  */
