@@ -37,7 +37,14 @@ class CanonicalName extends @symbol {
   /**
    * Gets the name of the external module represented by this canonical name, if any.
    */
-  string getExternalModuleName() { symbol_module(this, result) }
+  string getExternalModuleName() {
+    symbol_module(this, result)
+    or
+    exists(PackageJSON pkg |
+      getModule() = pkg.getMainModule() and
+      result = pkg.getPackageName()
+    )
+  }
 
   /**
    * Gets the name of the global variable represented by this canonical name, if any.
