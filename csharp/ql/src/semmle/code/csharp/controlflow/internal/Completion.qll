@@ -54,6 +54,28 @@ private newtype TCompletion =
     exists(boolean b | inner = TBooleanCompletion(b) and outer = TBooleanCompletion(b.booleanNot()))
   }
 
+pragma[noinline]
+private predicate completionIsValidForStmt(Stmt s, Completion c) {
+  s instanceof BreakStmt and
+  c = TBreakCompletion()
+  or
+  s instanceof ContinueStmt and
+  c = TContinueCompletion()
+  or
+  s instanceof GotoStmt and
+  c = TGotoCompletion(s.(GotoStmt).getLabel())
+  or
+  s instanceof ReturnStmt and
+  c = TReturnCompletion()
+  or
+  s instanceof YieldBreakStmt and
+  // `yield break` behaves like a return statement
+  c = TReturnCompletion()
+  or
+  mustHaveEmptinessCompletion(s) and
+  c = TEmptinessCompletion(_)
+}
+
 /**
  * A completion of a statement or an expression.
  */
@@ -68,76 +90,59 @@ class Completion extends TCompletion {
    * otherwise it is a normal non-Boolean completion.
    */
   predicate isValidFor(ControlFlowElement cfe) {
-    if cfe instanceof NonReturningCall
-    then this = cfe.(NonReturningCall).getACompletion()
-    else (
-      this = TThrowCompletion(cfe.(TriedControlFlowElement).getAThrownException())
+    cfe instanceof NonReturningCall and
+    this = cfe.(NonReturningCall).getACompletion()
+    or
+    this = TThrowCompletion(cfe.(TriedControlFlowElement).getAThrownException())
+    or
+    cfe instanceof ThrowElement and
+    this = TThrowCompletion(cfe.(ThrowElement).getThrownExceptionType())
+    or
+    completionIsValidForStmt(cfe, this)
+    or
+    mustHaveBooleanCompletion(cfe) and
+    (
+      exists(boolean value | isBooleanConstant(cfe, value) | this = TBooleanCompletion(value))
       or
-      cfe instanceof ThrowElement and
-      this = TThrowCompletion(cfe.(ThrowElement).getThrownExceptionType())
+      not isBooleanConstant(cfe, _) and
+      this = TBooleanCompletion(_)
       or
-      cfe instanceof BreakStmt and
-      this = TBreakCompletion()
-      or
-      cfe instanceof ContinueStmt and
-      this = TContinueCompletion()
-      or
-      cfe instanceof GotoStmt and
-      this = TGotoCompletion(cfe.(GotoStmt).getLabel())
-      or
-      cfe instanceof ReturnStmt and
-      this = TReturnCompletion()
-      or
-      cfe instanceof YieldBreakStmt and
-      // `yield break` behaves like a return statement
-      this = TReturnCompletion()
-      or
-      mustHaveBooleanCompletion(cfe) and
-      (
-        exists(boolean value | isBooleanConstant(cfe, value) | this = TBooleanCompletion(value))
-        or
-        not isBooleanConstant(cfe, _) and
-        this = TBooleanCompletion(_)
-        or
-        // Corner case: In `if (x ?? y) { ... }`, `x` must have both a `true`
-        // completion, a `false` completion, and a `null` completion (but not a
-        // non-`null` completion)
-        mustHaveNullnessCompletion(cfe) and
-        this = TNullnessCompletion(true)
-      )
-      or
+      // Corner case: In `if (x ?? y) { ... }`, `x` must have both a `true`
+      // completion, a `false` completion, and a `null` completion (but not a
+      // non-`null` completion)
       mustHaveNullnessCompletion(cfe) and
-      not mustHaveBooleanCompletion(cfe) and
-      (
-        exists(boolean value | isNullnessConstant(cfe, value) | this = TNullnessCompletion(value))
-        or
-        not isNullnessConstant(cfe, _) and
-        this = TNullnessCompletion(_)
-      )
-      or
-      mustHaveMatchingCompletion(cfe) and
-      (
-        exists(boolean value | isMatchingConstant(cfe, value) | this = TMatchingCompletion(value))
-        or
-        not isMatchingConstant(cfe, _) and
-        this = TMatchingCompletion(_)
-      )
-      or
-      mustHaveEmptinessCompletion(cfe) and
-      this = TEmptinessCompletion(_)
-      or
-      not cfe instanceof ThrowElement and
-      not cfe instanceof BreakStmt and
-      not cfe instanceof ContinueStmt and
-      not cfe instanceof GotoStmt and
-      not cfe instanceof ReturnStmt and
-      not cfe instanceof YieldBreakStmt and
-      not mustHaveBooleanCompletion(cfe) and
-      not mustHaveNullnessCompletion(cfe) and
-      not mustHaveMatchingCompletion(cfe) and
-      not mustHaveEmptinessCompletion(cfe) and
-      this = TNormalCompletion()
+      this = TNullnessCompletion(true)
     )
+    or
+    mustHaveNullnessCompletion(cfe) and
+    not mustHaveBooleanCompletion(cfe) and
+    (
+      exists(boolean value | isNullnessConstant(cfe, value) | this = TNullnessCompletion(value))
+      or
+      not isNullnessConstant(cfe, _) and
+      this = TNullnessCompletion(_)
+    )
+    or
+    mustHaveMatchingCompletion(cfe) and
+    (
+      exists(boolean value | isMatchingConstant(cfe, value) | this = TMatchingCompletion(value))
+      or
+      not isMatchingConstant(cfe, _) and
+      this = TMatchingCompletion(_)
+    )
+    or
+    not cfe instanceof NonReturningCall and
+    not cfe instanceof ThrowElement and
+    not cfe instanceof BreakStmt and
+    not cfe instanceof ContinueStmt and
+    not cfe instanceof GotoStmt and
+    not cfe instanceof ReturnStmt and
+    not cfe instanceof YieldBreakStmt and
+    not mustHaveBooleanCompletion(cfe) and
+    not mustHaveNullnessCompletion(cfe) and
+    not mustHaveMatchingCompletion(cfe) and
+    not mustHaveEmptinessCompletion(cfe) and
+    this = TNormalCompletion()
   }
 
   /**
@@ -264,7 +269,10 @@ private predicate assemblyCompiledWithCoreLib(Assembly a, CoreLib core) {
 private class TriedControlFlowElement extends ControlFlowElement {
   TryStmt try;
 
-  TriedControlFlowElement() { this = try.getATriedElement() }
+  TriedControlFlowElement() {
+    this = try.getATriedElement() and
+    not this instanceof NonReturningCall
+  }
 
   /**
    * Gets an exception class that is potentially thrown by this element, if any.
@@ -372,7 +380,8 @@ private predicate invalidCastCandidate(CastExpr ce) {
  */
 private predicate mustHaveBooleanCompletion(Expr e) {
   inBooleanContext(e, _) and
-  not inBooleanContext(e.getAChildExpr(), true)
+  not inBooleanContext(e.getAChildExpr(), true) and
+  not e instanceof NonReturningCall
 }
 
 /**
@@ -442,7 +451,8 @@ private predicate inBooleanContext(Expr e, boolean isBooleanCompletionForParent)
  */
 private predicate mustHaveNullnessCompletion(Expr e) {
   inNullnessContext(e, _) and
-  not inNullnessContext(e.getAChildExpr(), true)
+  not inNullnessContext(e.getAChildExpr(), true) and
+  not e instanceof NonReturningCall
 }
 
 /**
