@@ -7,29 +7,36 @@ import javascript
 /**
  * Gets a data flow node that may refer to the jQuery `$` function.
  */
-DataFlow::SourceNode jquery() {
-  // either a reference to a global variable `$` or `jQuery`
-  result = DataFlow::globalVarRef(any(string jq | jq = "$" or jq = "jQuery"))
-  or
-  // or imported from a module named `jquery`
-  result = DataFlow::moduleImport("jquery")
-}
+predicate jquery = JQuery::dollar/0;
 
 /**
+ * DEPRECATED. In most cases, `JQuery::Object` should be used instead.
+ * Alternatively, if used as a base class, and the intent is to extend the model of
+ * jQuery objects with more nodes, extend `JQuery::ObjectSource::Range` instead.
+ *
  * An expression that may refer to a jQuery object.
  *
  * Note that this class is an over-approximation: `nd instanceof JQueryObject`
  * may hold for nodes `nd` that cannot, in fact, refer to a jQuery object.
  */
-abstract class JQueryObject extends Expr { }
+deprecated class JQueryObject = JQueryObjectInternal;
+
+/**
+ * An internal version of `JQueryObject` that may be used to retain
+ * backwards compatibility without triggering a deprecation warning.
+ */
+abstract private class JQueryObjectInternal extends Expr { }
 
 /**
  * A jQuery object created from a jQuery method.
+ *
+ * This class is defined using the legacy API in order to retain the
+ * behavior of `JQueryObject`.
  */
-private class OrdinaryJQueryObject extends JQueryObject {
+private class OrdinaryJQueryObject extends JQueryObjectInternal {
   OrdinaryJQueryObject() {
-    exists(JQueryMethodCall jq |
-      this.flow().getALocalSource().asExpr() = jq and
+    exists(JQuery::MethodCall jq |
+      this.flow().getALocalSource() = jq and
       // `jQuery.val()` does _not_ return a jQuery object
       jq.getMethodName() != "val"
     )
@@ -37,20 +44,14 @@ private class OrdinaryJQueryObject extends JQueryObject {
 }
 
 /**
+ * DEPRECATED. Use `JQuery::MethodCall` instead.
+ *
  * A (possibly chained) call to a jQuery method.
  */
-class JQueryMethodCall extends CallExpr {
+deprecated class JQueryMethodCall extends CallExpr {
   string name;
 
-  JQueryMethodCall() {
-    this = jquery().getACall().asExpr() and name = "$"
-    or
-    // initial call
-    this = jquery().getAMemberCall(name).asExpr()
-    or
-    // chained call
-    this.(MethodCallExpr).calls(any(JQueryObject jq), name)
-  }
+  JQueryMethodCall() { name = this.flow().(JQuery::MethodCall).getMethodName() }
 
   /**
    * Gets the name of the jQuery method this call invokes.
@@ -65,13 +66,7 @@ class JQueryMethodCall extends CallExpr {
    * `interpretsArgumentAsSelector` below overlap.
    */
   predicate interpretsArgumentAsHtml(Expr e) {
-    // some methods interpret all their arguments as (potential) HTML
-    JQuery::isMethodArgumentInterpretedAsHtml(name) and
-    e = getAnArgument()
-    or
-    // for `$, it's only the first one
-    name = "$" and
-    e = getArgument(0)
+    this.flow().(JQuery::MethodCall).interpretsArgumentAsHtml(e.flow())
   }
 
   /**
@@ -82,13 +77,7 @@ class JQueryMethodCall extends CallExpr {
    * `interpretsArgumentAsHtml` above overlap.
    */
   predicate interpretsArgumentAsSelector(Expr e) {
-    // some methods interpret all their arguments as (potential) selectors
-    JQuery::isMethodArgumentInterpretedAsSelector(name) and
-    e = getAnArgument()
-    or
-    // for `$, it's only the first one
-    name = "$" and
-    e = getArgument(0)
+    this.flow().(JQuery::MethodCall).interpretsArgumentAsSelector(e.flow())
   }
 }
 
@@ -96,7 +85,7 @@ class JQueryMethodCall extends CallExpr {
  * A call to `jQuery.parseXML`.
  */
 private class JQueryParseXmlCall extends XML::ParserInvocation {
-  JQueryParseXmlCall() { this.(JQueryMethodCall).getMethodName() = "parseXML" }
+  JQueryParseXmlCall() { flow().(JQuery::MethodCall).getMethodName() = "parseXML" }
 
   override Expr getSourceArgument() { result = getArgument(0) }
 
@@ -249,13 +238,12 @@ private class JQueryAttr3Call extends JQueryAttributeDefinition, @callexpr {
  * For example, the call `$("<script/>").attr("src", mySource)` returns
  * the DOM element constructed by `$("<script/>")`.
  */
-private class JQueryChainedElement extends DOM::Element {
+private class JQueryChainedElement extends DOM::Element, InvokeExpr {
   DOM::Element inner;
 
   JQueryChainedElement() {
-    exists(JQueryMethodCall jqmc | this = jqmc |
-      jqmc.(MethodCallExpr).getReceiver() = inner and
-      this instanceof JQueryObject and
+    exists(JQuery::MethodCall call | this = call.asExpr() |
+      call.getReceiver().asExpr() = inner and
       defn = inner.getDefinition()
     )
   }
@@ -317,5 +305,134 @@ module JQuery {
     name = "wrap" or
     name = "wrapAll" or
     name = "wrapInner"
+  }
+
+  module DollarSource {
+    /** A data flow node that may refer to the jQuery `$` function. */
+    abstract class Range extends DataFlow::Node { }
+
+    private class DefaultRange extends Range {
+      DefaultRange() {
+        // either a reference to a global variable `$` or `jQuery`
+        this = DataFlow::globalVarRef(any(string jq | jq = "$" or jq = "jQuery"))
+        or
+        // or imported from a module named `jquery`
+        this = DataFlow::moduleImport("jquery")
+        or
+        this.hasUnderlyingType("JQueryStatic")
+      }
+    }
+  }
+
+  /**
+   * Gets a data flow node that may refer to the jQuery `$` function.
+   */
+  DataFlow::SourceNode dollarSource() { result instanceof DollarSource::Range }
+
+  /** Gets a data flow node referring to the jQuery `$` function. */
+  private DataFlow::SourceNode dollar(DataFlow::TypeTracker t) {
+    t.start() and
+    result = dollarSource()
+    or
+    exists(DataFlow::TypeTracker t2 | result = dollar(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node referring to the jQuery `$` function. */
+  DataFlow::SourceNode dollar() { result = dollar(DataFlow::TypeTracker::end()) }
+
+  /** Gets an invocation of the jQuery `$` function. */
+  DataFlow::CallNode dollarCall() { result = dollar().getACall() }
+
+  /** A call to the jQuery `$` function. */
+  class DollarCall extends DataFlow::CallNode {
+    DollarCall() { this = dollarCall() }
+  }
+
+  module ObjectSource {
+    /**
+     * A data flow node that should be considered a source of jQuery objects.
+     */
+    abstract class Range extends DataFlow::Node { }
+
+    private class DefaultRange extends Range {
+      DefaultRange() {
+        this.asExpr() instanceof JQueryObjectInternal
+        or
+        hasUnderlyingType("JQuery")
+        or
+        hasUnderlyingType("jQuery")
+      }
+    }
+  }
+
+  /** Gets a source of jQuery objects. */
+  private DataFlow::SourceNode objectSource() { result instanceof ObjectSource::Range }
+
+  /** Gets a data flow node referring to a jQuery object. */
+  private DataFlow::SourceNode objectRef(DataFlow::TypeTracker t) {
+    t.start() and
+    result = objectSource()
+    or
+    exists(DataFlow::TypeTracker t2 | result = objectRef(t2).track(t2, t))
+  }
+
+  /** Gets a data flow node referring to a jQuery object. */
+  DataFlow::SourceNode objectRef() { result = objectRef(DataFlow::TypeTracker::end()) }
+
+  /** A data flow node that refers to a jQuery object. */
+  class Object extends DataFlow::SourceNode {
+    Object() { this = objectRef() }
+  }
+
+  /** A call to a method on a jQuery object or the jQuery dollar function. */
+  class MethodCall extends DataFlow::CallNode {
+    string name;
+
+    MethodCall() {
+      this = dollarCall() and name = "$"
+      or
+      this = dollar().getAMemberCall(name)
+      or
+      this = objectRef().getAMethodCall(name)
+    }
+
+    /**
+     * Gets the name of the jQuery method this call invokes.
+     */
+    string getMethodName() { result = name }
+
+    /**
+     * Holds if `node` is an argument that this method may interpret as HTML.
+     *
+     * Note that some jQuery methods decide whether to interpret an argument
+     * as HTML based on its syntactic shape, so this predicate and
+     * `interpretsArgumentAsSelector` below overlap.
+     */
+    predicate interpretsArgumentAsHtml(DataFlow::Node node) {
+      // some methods interpret all their arguments as (potential) HTML
+      JQuery::isMethodArgumentInterpretedAsHtml(name) and
+      node = getAnArgument()
+      or
+      // for `$, it's only the first one
+      name = "$" and
+      node = getArgument(0)
+    }
+
+    /**
+     * Holds if `node` is an argument that this method may interpret as a selector.
+     *
+     * Note that some jQuery methods decide whether to interpret an argument
+     * as a selector based on its syntactic shape, so this predicate and
+     * `interpretsArgumentAsHtml` above overlap.
+     */
+    predicate interpretsArgumentAsSelector(DataFlow::Node node) {
+      // some methods interpret all their arguments as (potential) selectors
+      JQuery::isMethodArgumentInterpretedAsSelector(name) and
+      node = getAnArgument()
+      or
+      // for `$, it's only the first one
+      name = "$" and
+      node = getArgument(0)
+    }
   }
 }

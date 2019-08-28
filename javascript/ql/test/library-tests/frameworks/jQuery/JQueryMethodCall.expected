@@ -1,3 +1,9 @@
+| tracking.js:7:5:7:24 | this.elm.html('foo') | html |
+| tracking.js:14:5:14:17 | e.html('foo') | html |
+| tracking.js:18:7:18:15 | $('#foo') | $ |
+| ts_global_types.ts:3:5:3:17 | e.html('foo') | html |
+| ts_global_types.ts:7:1:7:9 | $('#foo') | $ |
+| ts_import.ts:5:5:5:17 | e.html('foo') | html |
 | tst2.js:2:1:2:7 | jq("a") | $ |
 | tst.js:1:1:1:3 | $() | $ |
 | tst.js:2:1:2:8 | jQuery() | $ |
