@@ -705,6 +705,24 @@ module DataFlow {
 
     }
 
+    private class ConfigurationAdapter extends TaintTracking::Configuration {
+
+        ConfigurationAdapter() {
+            this instanceof Configuration
+        }
+
+        override predicate isSource(DataFlow::Node node, TaintKind kind) {
+            this.(Configuration).isSource(node.asCfgNode()) and
+            kind instanceof DataFlowType
+        }
+
+        override predicate isSink(DataFlow::Node node, TaintKind kind) {
+            this.(Configuration).isSink(node.asCfgNode()) and
+            kind instanceof DataFlowType
+        }
+
+    }
+
     private newtype TDataFlowNode =
         TEssaNode(EssaVariable var)
         or
