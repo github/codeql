@@ -4,6 +4,12 @@ private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.Filters as Filters
 import semmle.python.dataflow.Legacy
 
+/* See tests/library-tests/taint/examples
+ * For examples of taint sources, sinks and flow,
+ * including attribute paths, contexts and edges.
+ */
+
+
 newtype TTaintTrackingContext =
     TNoParam()
     or
