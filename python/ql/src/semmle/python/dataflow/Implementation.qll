@@ -61,10 +61,9 @@ private newtype TAttributePath =
     TAttribute(string name) {
         exists(Attribute a | a.getName() = name)
     }
-    or
-    TAttributeAttribute(string name1, string name2) {
-        none()
-    }
+    /* It might make sense to add another level, attribute of attribute.
+     * But some experimentation would be needed.
+     */
 
 /** The attribute of the tracked value holding the taint.
  * This is usually "no attribute".
@@ -270,7 +269,7 @@ class TaintTrackingImplementation extends string {
         )
     }
 
-    /** Hold if taint flows to `src` to `dest` in a single step, labelled with `egdeLabel`
+    /** Hold if taint flows to `src` to `dest` in a single step, labeled with `edgeLabel`
      * `edgeLabel` is purely informative.
      */
     predicate flowStep(TaintTrackingNode src, TaintTrackingNode dest, string edgeLabel) {
@@ -492,12 +491,10 @@ class TaintTrackingImplementation extends string {
             call.getFunction().pointsTo(cls) and
             cls.lookup("__init__") = init
             |
-            exists(int arg, TaintKind callerKind, AttributePath callerPath |
-                exists(DataFlow::Node argument |
-                    argnode = TTaintTrackingNode_(argument, caller, callerPath, callerKind, this) and
-                    call.getArg(arg-1) = argument.asCfgNode() and
-                    callee = TParamContext(callerKind, callerPath, arg)
-                )
+            exists(int arg, TaintKind callerKind, AttributePath callerPath, DataFlow::Node argument |
+                argnode = TTaintTrackingNode_(argument, caller, callerPath, callerKind, this) and
+                call.getArg(arg-1) = argument.asCfgNode() and
+                callee = TParamContext(callerKind, callerPath, arg)
             )
         )
     }

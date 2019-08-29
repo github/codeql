@@ -69,8 +69,14 @@ module TaintTracking {
             none()
         }
 
+        /**
+         * Holds if `node` should be considered as a barrier to flow of any kind.
+         */
         predicate isBarrier(DataFlow::Node node) { none() }
 
+        /**
+         * Holds if `node` should be considered as a barrier to flow of `kind`.
+         */
         predicate isBarrier(DataFlow::Node node, TaintKind kind) {
             exists(Sanitizer sanitizer |
                 this.isSanitizer(sanitizer)
@@ -127,7 +133,6 @@ module TaintTracking {
         /* New query API */
 
         predicate hasSimpleFlow(DataFlow::Node source, DataFlow::Node sink) {
-            /* TO DO */
             exists(PathSource psource, PathSink psink |
                 this.hasFlowPath(psource, psink) and
                 source = psource.getNode() and
