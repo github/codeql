@@ -304,11 +304,12 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
 
 /**
  * A C/C++ variable with block scope [N4140 3.3.3]. In other words, a local
- * variable or a function parameter. For example, the variables `a` and `b` in
- * the following code:
+ * variable or a function parameter. For example, the variables `a`, `b` and
+ * `c` in the following code:
  * ```
  * void myFunction(int a) {
  *   int b;
+ *   static int c;
  * }
  * ```
  * 
@@ -332,10 +333,11 @@ deprecated class StackVariable extends Variable {
 /**
  * A C/C++ local variable. In other words, any variable that has block
  * scope [N4140 3.3.3], but is not a parameter of a `Function` or `CatchBlock`.
- * For example the variable `b` in the following code:
+ * For example the variables `b` and `c` in the following code:
  * ```
  * void myFunction(int a) {
  *   int b;
+ *   static int c;
  * }
  * ```
  * 
