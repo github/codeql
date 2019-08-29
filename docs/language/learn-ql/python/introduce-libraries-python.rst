@@ -295,7 +295,7 @@ Type-inference classes
 
 The QL library for Python also supplies some classes for accessing the inferred types of values. The classes ``Value`` and ``ClassValue`` allow you to query the possible classes that an expression may have at runtime. For example, which ``ClassValue``\ s are iterable can be determined using the query:
 
-**Find iterable ``ClassValue``\ s**
+**Find iterable "ClassValue"s**
 
 .. code-block:: ql
 
@@ -321,7 +321,7 @@ These classes are explained in more detail in :doc:`Tutorial: Points-to analysis
 Taint-tracking classes
 ----------------------
 
-The QL library for Python also supplies classes to specify taint-tracking analyses. The ``Configuration`` class can be overrridden to specify a taint-tracking analysis, by specifying source, sinks, sanitizers adn additional flwo steps. For those analyses that require additional types of taint to be tracked the ``TaintKind`` class can be overridden.
+The QL library for Python also supplies classes to specify taint-tracking analyses. The ``Configuration`` class can be overrridden to specify a taint-tracking analysis, by specifying source, sinks, sanitizers and additional flow steps. For those analyses that require additional types of taint to be tracked the ``TaintKind`` class can be overridden.
 
 
 Summary
