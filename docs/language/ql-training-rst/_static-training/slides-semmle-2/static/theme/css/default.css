@@ -285,7 +285,8 @@ slides > slide.current .gdbar {
 }
 /* line 112, ../scss/default.scss */
 slides > slide.next {
-  display: block;
+  /*display: block;*/
+  display: none;
   opacity: 0;
   pointer-events: none;
 }
@@ -407,7 +408,7 @@ slides.layout-faux-widescreen > slide.current {
 /* line 238, ../scss/default.scss */
 slides.layout-widescreen > slide.next,
 slides.layout-faux-widescreen > slide.next {
-  display: block;
+  /*display: block;*/
   opacity: 0;
   pointer-events: none;
 }
@@ -1009,17 +1010,17 @@ article.smaller q:before, article.smaller q:after {
   background-image: radial-gradient(50% 50%, #b1dfff 0%, #4387fd 600px);
 }
 /* line 684, ../scss/default.scss */
-.with-notes.popup slide.next {
+/*.with-notes.popup slide.next {
   -moz-transform: translate3d(570px, 80px, 0) scale(0.35);
   -ms-transform: translate3d(570px, 80px, 0) scale(0.35);
   -webkit-transform: translate3d(570px, 80px, 0) scale(0.35);
   transform: translate3d(570px, 80px, 0) scale(0.35);
   opacity: 1 !important;
-}
+}*/
 /* line 688, ../scss/default.scss */
-.with-notes.popup slide.next .note {
+/*.with-notes.popup slide.next .note {
   display: none !important;
-}
+}*/
 /* line 694, ../scss/default.scss */
 .with-notes.popup .note {
   width: 109%;
@@ -1163,7 +1164,7 @@ article.smaller q:before, article.smaller q:after {
 
 /* Clickable/tappable areas */
 /* line 773, ../scss/default.scss */
-.slide-area {
+/*.slide-area {
   z-index: 1000;
   position: absolute;
   left: 0;
@@ -1174,7 +1175,7 @@ article.smaller q:before, article.smaller q:after {
   top: 50%;
   cursor: pointer;
   margin-top: -350px;
-}
+}*/
 
 /* line 790, ../scss/default.scss */
 #prev-slide-area {
