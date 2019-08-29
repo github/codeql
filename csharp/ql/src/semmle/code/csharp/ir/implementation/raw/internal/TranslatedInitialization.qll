@@ -12,6 +12,7 @@ private import TranslatedExpr
 private import TranslatedFunction
 private import semmle.code.csharp.ir.Util
 private import IRInternal
+private import desugar.Delegate
 
 /**
  * Gets the `TranslatedInitialization` for the expression `expr`.
@@ -125,9 +126,10 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
     // TODO: Make sure this is complete and correct
     not expr instanceof ArrayInitializer and
     not expr instanceof ObjectInitializer and
+    not expr instanceof DelegateCreation and
     not expr instanceof CollectionInitializer and
     not expr instanceof ObjectCreation and
-    not expr instanceof StringLiteral
+    not expr instanceof StringLiteral 
   }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getInitializer() }
@@ -467,5 +469,77 @@ class TranslatedConstructorInitializer extends TranslatedConstructorCallFromCons
     tag = OnlyInstructionTag() and
     baseClass = call.getTarget().getDeclaringType() and
     derivedClass = this.getFunction().getDeclaringType()
+  }
+}
+
+/**
+ * Represents the IR translation of a delegate creation.
+ */
+class TranslatedDelegateCreation extends TranslatedInitialization, ConstructorCallContext {
+  override DelegateCreation expr;
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and result = getConstructorCall()
+  }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
+      (
+        tag = NewObjTag() and
+        opcode instanceof Opcode::NewObj and
+        resultType = expr.getType() and
+        isLValue = false
+      )
+      or
+      (
+        tag = InitializerStoreTag() and
+        opcode instanceof Opcode::Store and
+        resultType = expr.getType() and
+        isLValue = false
+      )
+  }
+
+  override final Instruction getFirstInstruction() {
+    result = getInstruction(NewObjTag())
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    (
+      tag = NewObjTag() and
+      result = getConstructorCall().getFirstInstruction() and
+      kind instanceof GotoEdge
+    ) or
+    (
+      tag = InitializerStoreTag() and
+      result = getParent().getChildSuccessor(this) and
+      kind instanceof GotoEdge
+    )
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getConstructorCall() and
+    result = getInstruction(InitializerStoreTag())
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = InitializerStoreTag() and 
+    (
+      ( 
+        operandTag instanceof AddressOperandTag and
+        result = getParent().(InitializationContext).getTargetAddress()
+      ) or
+      ( 
+        operandTag instanceof StoreValueOperandTag and
+        result = getInstruction(NewObjTag())
+      )
+    )
+  }
+
+  TranslatedElement getConstructorCall() {
+    result = DelegateElements::getConstructor(expr)
+  }
+
+  override Instruction getReceiver() { 
+    result = getInstruction(NewObjTag())
   }
 }

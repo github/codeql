@@ -61,6 +61,13 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
+  // Ignore the local declaration done by a `ForeachStmt`
+  // since we desugar it
+  (
+    expr instanceof LocalVariableDeclExpr and
+    expr.getParent().getParent() instanceof ForeachStmt
+  )
+  or
   ignoreExprAndDescendants(getRealParent(expr)) // recursive case
 }
 
@@ -208,11 +215,14 @@ newtype TTranslatedElement =
       exists(LocalVariableDeclAndInitExpr lvInit |
         lvInit.getInitializer() = expr and
         not expr instanceof ArrayCreation and
-        not expr instanceof ObjectCreation
+        not expr instanceof ObjectCreation and
+        not expr instanceof DelegateCreation
       )
       or
       // Then treat more complex ones
       expr instanceof ObjectCreation
+      or
+      expr instanceof DelegateCreation
       or
       expr instanceof ArrayInitializer
       or

@@ -12,6 +12,8 @@ private import TranslatedInitialization
 private import common.TranslatedConditionBlueprint
 private import common.TranslatedCallBlueprint
 private import common.TranslatedExprBlueprint
+private import desugar.Delegate
+private import desugar.internal.TranslatedCompilerGeneratedCall
 import TranslatedCall
 private import semmle.code.csharp.ir.Util
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
@@ -1877,5 +1879,49 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
 
   private TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(expr.getChild(0))
+  }
+}
+
+/**
+ * The translation of a `DelegateCall`. Since this type of call needs
+ * desugaring, we treat it as a special case. The AST node of the
+ * call expression will be the parent to a compiler generated call.
+ */
+class TranslatedDelegateCall extends TranslatedNonConstantExpr {
+  override DelegateCall expr;
+
+  override final Instruction getFirstInstruction() {
+    result = getInovkeCall().getFirstInstruction()
+  }
+
+  override final TranslatedElement getChild(int id) {
+    id = 0 and result = getInovkeCall()
+  }
+
+  override Instruction getResult() {
+    result = getInovkeCall().getResult()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = getInovkeCall() and
+    result = getParent().getChildSuccessor(this)
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType,
+      boolean isLValue) {
+    none()
+  }
+
+  override Instruction getInstructionOperand(InstructionTag tag,
+      OperandTag operandTag) {
+    none()
+  }
+
+  private TranslatedCompilerGeneratedCall getInovkeCall() {
+    result = DelegateElements::getInvoke(expr)
   }
 }

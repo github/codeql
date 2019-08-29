@@ -315,6 +315,45 @@ crement.cs:
 #    3|     v0_35(Void)         = UnmodeledUse        : mu*
 #    3|     v0_36(Void)         = ExitFunction        : 
 
+delegates.cs:
+#    6| System.Int32 Delegates.returns(System.Int32)
+#    6|   Block 0
+#    6|     v0_0(Void)         = EnterFunction            : 
+#    6|     mu0_1(null)        = AliasedDefinition        : 
+#    6|     mu0_2(null)        = UnmodeledDefinition      : 
+#    6|     r0_3(glval<Int32>) = VariableAddress[ret]     : 
+#    6|     mu0_4(Int32)       = InitializeParameter[ret] : &:r0_3
+#    8|     r0_5(glval<Int32>) = VariableAddress[#return] : 
+#    8|     r0_6(glval<Int32>) = VariableAddress[ret]     : 
+#    8|     r0_7(Int32)        = Load                     : &:r0_6, ~mu0_2
+#    8|     mu0_8(Int32)       = Store                    : &:r0_5, r0_7
+#    6|     r0_9(glval<Int32>) = VariableAddress[#return] : 
+#    6|     v0_10(Void)        = ReturnValue              : &:r0_9, ~mu0_2
+#    6|     v0_11(Void)        = UnmodeledUse             : mu*
+#    6|     v0_12(Void)        = ExitFunction             : 
+
+#   11| System.Void Delegates.Main()
+#   11|   Block 0
+#   11|     v0_0(Void)         = EnterFunction            : 
+#   11|     mu0_1(null)        = AliasedDefinition        : 
+#   11|     mu0_2(null)        = UnmodeledDefinition      : 
+#   12|     r0_3(glval<Del>)   = VariableAddress[del1]    : 
+#   12|     r0_4(Del)          = NewObj                   : 
+#   12|     r0_5(glval<null>)  = FunctionAddress[Del]     : 
+#   12|     r0_6(glval<Del>)   = FunctionAddress[returns] : 
+#   12|     v0_7(Void)         = Call                     : func:r0_5, this:r0_4, 0:r0_6
+#   12|     mu0_8(null)        = ^CallSideEffect          : ~mu0_2
+#   12|     mu0_9(Del)         = Store                    : &:r0_3, r0_4
+#   13|     r0_10(glval<Del>)  = VariableAddress[del1]    : 
+#   13|     r0_11(Del)         = Load                     : &:r0_10, ~mu0_2
+#   13|     r0_12(glval<null>) = FunctionAddress[Invoke]  : 
+#   13|     r0_13(Int32)       = Constant[5]              : 
+#   13|     v0_14(Void)        = Call                     : func:r0_12, this:r0_11, 0:r0_13
+#   13|     mu0_15(null)       = ^CallSideEffect          : ~mu0_2
+#   11|     v0_16(Void)        = ReturnVoid               : 
+#   11|     v0_17(Void)        = UnmodeledUse             : mu*
+#   11|     v0_18(Void)        = ExitFunction             : 
+
 func_with_param_call.cs:
 #    5| System.Int32 test_call_with_param.f(System.Int32,System.Int32)
 #    5|   Block 0
