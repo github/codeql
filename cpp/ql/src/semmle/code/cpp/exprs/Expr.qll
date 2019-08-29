@@ -87,7 +87,16 @@ class Expr extends StmtParent, @expr {
   /** Gets the value of this expression, if it is a constant. */
   string getValue() { exists(@value v | values(v,result) and valuebind(v,underlyingElement(this))) }
 
+  /**
+   * Walk along the sequence of `getConversion()s` until we reach
+   * one with a valuetext, and then return that valuetext, if any.
+   * For example, in an invocation of `#define THREE (1+2)`, there
+   * will not be a valuetext for `1+2`, but the conversion `(1+2)`
+   * will have valuetext `THREE`.
+   */
   private string getValueTextFollowingConversions(Expr e) {
+    e = this.getConversion*()
+    and
     e.getValue() = this.getValue()
     and
     (if exists(@value v |
