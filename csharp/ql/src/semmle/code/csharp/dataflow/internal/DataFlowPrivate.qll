@@ -171,12 +171,57 @@ module LocalFlow {
    * Either an SSA definition node for `def` when there is no read of `def`,
    * or a last read of `def`.
    */
-  predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def) {
+  private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def) {
     def = nodeFrom.(SsaDefinitionNode).getDefinition() and
     not exists(def.getARead())
     or
     exists(AssignableRead read, ControlFlow::Node cfn | read = nodeFrom.asExprAtNode(cfn) |
       def.getALastReadAtNode(cfn) = read
+    )
+  }
+
+  /**
+   * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
+   * SSA definition `def.
+   */
+  predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
+    // Flow from SSA definition to first read
+    exists(ControlFlow::Node cfn |
+      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
+      nodeTo.asExprAtNode(cfn) = def.getAFirstReadAtNode(cfn)
+    )
+    or
+    // Flow from read to next read
+    exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
+      Ssa::Internal::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
+      nodeTo = TExprNode(cfnTo)
+    |
+      nodeFrom = TExprNode(cfnFrom)
+      or
+      cfnFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().getControlFlowNode()
+    )
+    or
+    // Flow into SSA pseudo definition
+    exists(Ssa::PseudoDefinition pseudo |
+      localFlowSsaInput(nodeFrom, def) and
+      pseudo = nodeTo.(SsaDefinitionNode).getDefinition() and
+      def = pseudo.getAnInput()
+    )
+    or
+    // Flow into uncertain SSA definition
+    exists(LocalFlow::UncertainExplicitSsaDefinition uncertain |
+      localFlowSsaInput(nodeFrom, def) and
+      uncertain = nodeTo.(SsaDefinitionNode).getDefinition() and
+      def = uncertain.getPriorDefinition()
+    )
+  }
+
+  /**
+   * Holds if the source variable of SSA definition `def` is an instance field.
+   */
+  predicate usesInstanceField(Ssa::Definition def) {
+    exists(Ssa::SourceVariables::FieldOrPropSourceVariable fp | fp = def.getSourceVariable() |
+      not fp.getAssignable().isStatic()
     )
   }
 
@@ -315,68 +360,43 @@ private module Cached {
       )
     }
 
-  private predicate usesInstanceField(Ssa::Definition def) {
-    exists(Ssa::SourceVariables::FieldOrPropSourceVariable fp | fp = def.getSourceVariable() |
-      not fp.getAssignable().isStatic()
+  /**
+   * This is the local flow predicate that is used as a building block in global
+   * data flow. It is a strict subset of the `localFlowStep` predicate, as it
+   * excludes SSA flow through instance fields.
+   */
+  cached
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(Ssa::Definition def |
+      LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
+      not LocalFlow::usesInstanceField(def)
     )
+    or
+    any(LocalFlow::LocalExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
+    or
+    ThisFlow::adjacentThisRefs(nodeFrom, nodeTo)
+    or
+    ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+    or
+    LocalFlow::localFlowCapturedVarStep(nodeFrom, nodeTo)
+    or
+    flowOutOfDelegateLibraryCall(nodeFrom, nodeTo, true)
+    or
+    flowThroughLibraryCallableOutRef(_, nodeFrom, nodeTo, true)
+    or
+    LocalFlow::localFlowStepCil(nodeFrom, nodeTo)
   }
 
+  /**
+   * This is the extension of the predicate `simpleLocalFlowStep` that is exposed
+   * as the `localFlowStep` predicate. It includes SSA flow through instance fields.
+   */
   cached
-  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo, boolean simple) {
-    any(LocalFlow::LocalExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo) and
-    simple = true
-    or
-    // Flow from SSA definition to first read
-    exists(Ssa::Definition def, ControlFlow::Node cfn |
-      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
-      nodeTo.asExprAtNode(cfn) = def.getAFirstReadAtNode(cfn) and
-      if usesInstanceField(def) then simple = false else simple = true
+  predicate extendedLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(Ssa::Definition def |
+      LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
+      LocalFlow::usesInstanceField(def)
     )
-    or
-    // Flow from read to next read
-    exists(Ssa::Definition def, ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
-      Ssa::Internal::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
-      nodeTo = TExprNode(cfnTo) and
-      if usesInstanceField(def) then simple = false else simple = true
-    |
-      nodeFrom = TExprNode(cfnFrom)
-      or
-      cfnFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().getControlFlowNode()
-    )
-    or
-    ThisFlow::adjacentThisRefs(nodeFrom, nodeTo) and
-    simple = true
-    or
-    ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo) and
-    simple = true
-    or
-    // Flow into SSA pseudo definition
-    exists(Ssa::Definition def, Ssa::PseudoDefinition pseudo |
-      LocalFlow::localFlowSsaInput(nodeFrom, def) and
-      pseudo = nodeTo.(SsaDefinitionNode).getDefinition() and
-      def = pseudo.getAnInput() and
-      if usesInstanceField(def) then simple = false else simple = true
-    )
-    or
-    // Flow into uncertain SSA definition
-    exists(Ssa::Definition def, LocalFlow::UncertainExplicitSsaDefinition uncertain |
-      LocalFlow::localFlowSsaInput(nodeFrom, def) and
-      uncertain = nodeTo.(SsaDefinitionNode).getDefinition() and
-      def = uncertain.getPriorDefinition() and
-      if usesInstanceField(def) then simple = false else simple = true
-    )
-    or
-    LocalFlow::localFlowCapturedVarStep(nodeFrom, nodeTo) and
-    simple = true
-    or
-    flowOutOfDelegateLibraryCall(nodeFrom, nodeTo, true) and
-    simple = true
-    or
-    flowThroughLibraryCallableOutRef(_, nodeFrom, nodeTo, true) and
-    simple = true
-    or
-    LocalFlow::localFlowStepCil(nodeFrom, nodeTo) and
-    simple = true
   }
 
   /**
@@ -423,15 +443,6 @@ private module Cached {
   }
 }
 import Cached
-
-/**
- * This is the local flow predicate that is used as a building block in global
- * data flow. It is a strict subset of the `localFlowStep` predicate, as it
- * excludes SSA flow through instance fields.
- */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-  localFlowStepImpl(nodeFrom, nodeTo, true)
-}
 
 /** An SSA definition, viewed as a node in a data flow graph. */
 class SsaDefinitionNode extends Node, TSsaDefinitionNode {

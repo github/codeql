@@ -152,7 +152,11 @@ ParameterNode parameterNode(DotNet::Parameter p) { result.getParameter() = p }
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep(Node nodeFrom, Node nodeTo) { localFlowStepImpl(nodeFrom, nodeTo, _) }
+predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStep(nodeFrom, nodeTo)
+  or
+  extendedLocalFlowStep(nodeFrom, nodeTo)
+}
 
 /**
  * Holds if data flows from `source` to `sink` in zero or more local
