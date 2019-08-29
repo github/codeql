@@ -85,10 +85,32 @@ class Expr extends StmtParent, @expr {
   override string toString() { none() }
 
   /** Gets the value of this expression, if it is a constant. */
-  string getValue() { exists(@value v | values(v,result,_) and valuebind(v,underlyingElement(this))) }
+  string getValue() { exists(@value v | values(v,result) and valuebind(v,underlyingElement(this))) }
+
+  /** Gets the value text of this expression that's in the database. */
+  private string getDbValueText() {
+    exists(@value v | valuebind(v,underlyingElement(this)) and valuetext(v, result))
+  }
+
+  /**
+   * Gets the value text of `this`. If it doesn't have one, then instead
+   * gets the value text is `this`'s nearest compatible conversion, if any.
+   */
+  private string getValueTextFollowingConversions() {
+    if exists(this.getDbValueText())
+    then result = this.getDbValueText()
+    else exists(Expr e |
+                e = this.getConversion() and
+                e.getValue() = this.getValue() and
+                result = e.getValueTextFollowingConversions())
+  }
 
   /** Gets the source text for the value of this expression, if it is a constant. */
-  string getValueText() { exists(@value v | values(v,_,result) and valuebind(v,underlyingElement(this))) }
+  string getValueText() {
+    if exists(this.getValueTextFollowingConversions())
+    then result = this.getValueTextFollowingConversions()
+    else result = this.getValue()
+  }
   
   /** Holds if this expression has a value that can be determined at compile time. */
   cached

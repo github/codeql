@@ -1237,15 +1237,11 @@ expr_cond_false(
     int false: @expr ref
 );
 
-/** A string representation of the value. */
+// the second field is a string representation of the value
+// the third field is the actual text in the source or the same as the second field
 values(
     unique int id: @value,
-    string str: string ref
-);
-
-/** The actual text in the source code for the value, if any. */
-valuetext(
-    unique int id: @value ref,
+    string str: string ref,
     string text: string ref
 );
 
