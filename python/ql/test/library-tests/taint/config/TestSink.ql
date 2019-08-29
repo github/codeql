@@ -5,4 +5,4 @@ import TaintLib
 from TestConfig config, DataFlow::Node sink, TaintKind kind
 
 where config.isSink(sink, kind)
-select config, sink.getLocation().toString(), sink.getLocation().getStartLine(), sink.toString(), kind
+select sink.getLocation().toString(), config, sink.toString(), kind
