@@ -47,12 +47,12 @@ RCE in Apache Struts
 
 - Vulnerable code looked like this (`original <https://lgtm.com/projects/g/apache/struts/snapshot/b434c23f95e0f9d5bde789bfa07f8fc1d5a8951d/files/plugins/rest/src/main/java/org/apache/struts2/rest/handler/XStreamHandler.java?sort=name&dir=ASC&mode=heatmap#L45>`__):
 
-.. code-block:: java
-
-   public void toObject(Reader in, Object target) {
-     XStream xstream = createXStream();
-     xstream.fromXML(in, target);
-   }
+   .. code-block:: java
+   
+      public void toObject(Reader in, Object target) {
+        XStream xstream = createXStream();
+        xstream.fromXML(in, target);
+      }
 
 - Xstream allows deserialization of **dynamic proxies**, which permit remote code execution.
 
