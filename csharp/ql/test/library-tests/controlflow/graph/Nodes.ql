@@ -1,7 +1,10 @@
 import csharp
 import ControlFlow
+import Common
 import Internal
 import Nodes
+
+query predicate booleanNode(ElementNode e, BooleanSplit split) { split = e.getASplit() }
 
 class MyFinallySplitControlFlowNode extends ElementNode {
   MyFinallySplitControlFlowNode() {
@@ -15,5 +18,8 @@ class MyFinallySplitControlFlowNode extends ElementNode {
   TryStmt getTryStmt() { this.getElement() = FinallySplitting::getAFinallyDescendant(result) }
 }
 
-from MyFinallySplitControlFlowNode f
-select f.getTryStmt(), f
+query predicate finallyNode(MyFinallySplitControlFlowNode f, TryStmt try) { try = f.getTryStmt() }
+
+query predicate entryPoint(Callable c, SourceControlFlowElement cfn) {
+  c.getEntryPoint().getASuccessor().getElement() = cfn
+}
