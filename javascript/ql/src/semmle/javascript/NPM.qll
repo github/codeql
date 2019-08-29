@@ -8,7 +8,7 @@ private import NodeModuleResolutionImpl
 /** A `package.json` configuration object. */
 class PackageJSON extends JSONObject {
   PackageJSON() {
-    getFile().getBaseName() = "package.json" and
+    getJsonFile().getBaseName() = "package.json" and
     isTopLevel()
   }
 
@@ -274,7 +274,7 @@ class NPMPackage extends @folder {
   /** The `package.json` file of this package. */
   PackageJSON pkg;
 
-  NPMPackage() { pkg.getFile().getParentContainer() = this }
+  NPMPackage() { pkg.getJsonFile().getParentContainer() = this }
 
   /** Gets a textual representation of this package. */
   string toString() { result = this.(Folder).toString() }

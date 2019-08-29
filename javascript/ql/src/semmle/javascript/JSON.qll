@@ -32,6 +32,14 @@ class JSONValue extends @json_value, Locatable {
   predicate isTopLevel() { not exists(getParent()) }
 
   override string toString() { json(this, _, _, _, result) }
+
+  /** Gets the JSON file containing this value. */
+  File getJsonFile() {
+    exists(Location loc |
+      json_locations(this, loc) and
+      result = loc.getFile()
+    )
+  }
 }
 
 /**
