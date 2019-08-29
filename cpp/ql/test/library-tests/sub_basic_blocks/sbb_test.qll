@@ -6,7 +6,7 @@ string subBasicBlockDebugInfo(SubBasicBlock sbb) {
     " [line " + sbb.getStart().getLocation().getStartLine() + "-" +
                 sbb.getEnd().getLocation().getEndLine() + ", " +
     sbb.getNumberOfNodes() + " nodes, " +
-    "pos " + sbb.getPosInBasicBlock(_) +
+    "pos " + (sbb.getRankInBasicBlock(_) - 1) +
     any(string s | if sbb.firstInBB() then s = " (first in BB)" else s = "") +
     any(string s | if sbb.lastInBB() then s = " (last in BB)" else s = "") +
     ", " +
