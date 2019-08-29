@@ -9,8 +9,9 @@ private import TranslatedDeclaration
 private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
-private import TranslatedFunction
-private import TranslatedStmt
+private import common.TranslatedConditionBlueprint
+private import common.TranslatedCallBlueprint
+private import common.TranslatedExprBlueprint
 import TranslatedCall
 private import semmle.code.csharp.ir.Util
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
@@ -35,13 +36,8 @@ TranslatedExpr getTranslatedExpr(Expr expr) {
  * as the `TranslatedAllocatorCall` and `TranslatedAllocationSize` within the
  * translation of a `NewExpr`.
  */
-abstract class TranslatedExpr extends TranslatedElement {
+abstract class TranslatedExpr extends TranslatedExprBlueprint {
   Expr expr;
-
-  /**
-   * Gets the instruction that produces the result of the expression.
-   */
-  abstract Instruction getResult();
 
   /**
    * Holds if this `TranslatedExpr` produces the final result of the original
@@ -243,12 +239,12 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(ConditionBlueprint child) {
     child = this.getCondition() and
     result = this.getInstruction(ConditionValueTrueTempAddressTag())
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(ConditionBlueprint child) {
     child = this.getCondition() and
     result = this.getInstruction(ConditionValueFalseTempAddressTag())
   }
@@ -746,8 +742,7 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
     // and not the LHS (the address of the LHS is generated during
     // the translation of the initialization).
     (
-      expr.getParent() instanceof LocalVariableDeclAndInitExpr
-      implies
+      expr.getParent() instanceof LocalVariableDeclAndInitExpr implies
       expr = expr.getParent().(LocalVariableDeclAndInitExpr).getInitializer()
     )
   }
@@ -1452,13 +1447,13 @@ class TranslatedAssignOperation extends TranslatedAssignment {
 
 /**
  * Abstract class implemented by any `TranslatedElement` that has a child
- * expression that is a call to a constructor or destructor, in order to
- * provide a pointer to the object being constructed or destroyed.
+ * expression that is a call to a constructor, in order to
+ * provide a pointer to the object being constructed.
  */
-abstract class StructorCallContext extends TranslatedElement {
+abstract class ConstructorCallContext extends TranslatedElement {
   /**
    * Gets the instruction whose result value is the address of the object to be
-   * constructed or destroyed.
+   * constructed.
    */
   abstract Instruction getReceiver();
 }
@@ -1609,12 +1604,12 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr, ConditionCont
     )
   }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(ConditionBlueprint child) {
     child = this.getCondition() and
     result = this.getThen().getFirstInstruction()
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(ConditionBlueprint child) {
     child = this.getCondition() and
     result = this.getElse().getFirstInstruction()
   }

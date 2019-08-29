@@ -54,6 +54,7 @@ newtype TInstructionTag =
   BoolConversionConstantTag() or
   BoolConversionCompareTag() or
   LoadTag() or // Implicit load due to lvalue-to-rvalue conversion
+  AddressTag() or
   CatchTag() or
   ThrowTag() or
   UnwindTag() or
@@ -192,16 +193,8 @@ string getInstructionTagId(TInstructionTag tag) {
   or
   tag = GeneratedBranchTag() and result = "GeneratedBranchTag"
   or
-  // TODO: Reread
-  //  exists(Field field, Class cls, int index, string tagName |
-  //    field = cls.getCanonicalMember(index) and
-  //    (
-  //      tag = InitializerFieldAddressTag(field) and tagName = "InitFieldAddr" or
-  //      tag = InitializerFieldDefaultValueTag(field) and tagName = "InitFieldDefVal" or
-  //      tag = InitializerFieldDefaultValueStoreTag(field) and tagName = "InitFieldDefValStore"
-  //    ) and
-  //    result = tagName + "(" + index + ")"
-  //  ) or
+  tag = AddressTag() and result = "AddressTag"
+  or
   exists(int index, string tagName |
     (
       tag = InitializerElementIndexTag(index) and tagName = "InitElemIndex"

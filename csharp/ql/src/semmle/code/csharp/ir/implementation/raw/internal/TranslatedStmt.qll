@@ -8,6 +8,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
 private import TranslatedInitialization
+private import common.TranslatedConditionBlueprint
 private import IRInternal
 private import semmle.code.csharp.ir.internal.IRUtilities
 
@@ -243,10 +244,14 @@ class TranslatedTryStmt extends TranslatedStmt {
     none()
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
-
-  override Instruction getFirstInstruction() { result = this.getBody().getFirstInstruction() }
-
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
+  
+  override Instruction getFirstInstruction() {
+    result = this.getBody().getFirstInstruction()
+  }
+  
   override Instruction getChildSuccessor(TranslatedElement child) {
     child = this.getCatchClause(_) and result = this.getFinally().getFirstInstruction()
     or
@@ -562,12 +567,12 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(ConditionBlueprint child) {
     child = this.getCondition() and
     result = this.getThen().getFirstInstruction()
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(ConditionBlueprint child) {
     child = this.getCondition() and
     if this.hasElse()
     then result = this.getElse().getFirstInstruction()
@@ -615,11 +620,11 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  final override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override final Instruction getChildTrueSuccessor(ConditionBlueprint child) {
     child = this.getCondition() and result = this.getBody().getFirstInstruction()
   }
 
-  final override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override final Instruction getChildFalseSuccessor(ConditionBlueprint child) {
     child = this.getCondition() and result = this.getParent().getChildSuccessor(this)
   }
 }

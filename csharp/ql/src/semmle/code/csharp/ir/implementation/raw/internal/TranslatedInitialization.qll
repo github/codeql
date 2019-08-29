@@ -175,7 +175,7 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
  * object of type `expr.getType()` is allocated, which is then initialized by the
  * constructor.
  */
-class TranslatedObjectInitialization extends TranslatedInitialization, StructorCallContext {
+class TranslatedObjectInitialization extends TranslatedInitialization, ConstructorCallContext {
   override ObjectCreation expr;
 
   override TranslatedElement getChild(int id) {
@@ -389,8 +389,7 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
 }
 
 // TODO: Possibly refactor into something simpler
-abstract class TranslatedConstructorCallFromConstructor extends TranslatedElement,
-  StructorCallContext {
+abstract class TranslatedConstructorCallFromConstructor extends TranslatedElement, ConstructorCallContext {
   Call call;
 
   final override Language::AST getAST() { result = call }
