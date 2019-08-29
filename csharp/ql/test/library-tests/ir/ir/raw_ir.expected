@@ -354,6 +354,85 @@ delegates.cs:
 #   11|     v0_17(Void)        = UnmodeledUse             : mu*
 #   11|     v0_18(Void)        = ExitFunction             : 
 
+foreach.cs:
+#    4| System.Void ForEach.Main()
+#    4|   Block 0
+#    4|     v0_0(Void)                = EnterFunction                  : 
+#    4|     mu0_1(null)               = AliasedDefinition              : 
+#    4|     mu0_2(null)               = UnmodeledDefinition            : 
+#    5|     r0_3(glval<Int32[]>)      = VariableAddress[a_array]       : 
+#    5|     mu0_4(Int32[])            = Uninitialized[a_array]         : &:r0_3
+#    5|     r0_5(Int32)               = Constant[0]                    : 
+#    5|     r0_6(glval<Int32>)        = PointerAdd                     : r0_3, r0_5
+#    5|     r0_7(Int32)               = Constant[1]                    : 
+#    5|     mu0_8(Int32)              = Store                          : &:r0_6, r0_7
+#    5|     r0_9(Int32)               = Constant[1]                    : 
+#    5|     r0_10(glval<Int32>)       = PointerAdd                     : r0_3, r0_9
+#    5|     r0_11(Int32)              = Constant[2]                    : 
+#    5|     mu0_12(Int32)             = Store                          : &:r0_10, r0_11
+#    5|     r0_13(Int32)              = Constant[2]                    : 
+#    5|     r0_14(glval<Int32>)       = PointerAdd                     : r0_3, r0_13
+#    5|     r0_15(Int32)              = Constant[3]                    : 
+#    5|     mu0_16(Int32)             = Store                          : &:r0_14, r0_15
+#    5|     r0_17(Int32)              = Constant[3]                    : 
+#    5|     r0_18(glval<Int32>)       = PointerAdd                     : r0_3, r0_17
+#    5|     r0_19(Int32)              = Constant[4]                    : 
+#    5|     mu0_20(Int32)             = Store                          : &:r0_18, r0_19
+#    5|     r0_21(Int32)              = Constant[4]                    : 
+#    5|     r0_22(glval<Int32>)       = PointerAdd                     : r0_3, r0_21
+#    5|     r0_23(Int32)              = Constant[5]                    : 
+#    5|     mu0_24(Int32)             = Store                          : &:r0_22, r0_23
+#    5|     r0_25(Int32)              = Constant[5]                    : 
+#    5|     r0_26(glval<Int32>)       = PointerAdd                     : r0_3, r0_25
+#    5|     r0_27(Int32)              = Constant[6]                    : 
+#    5|     mu0_28(Int32)             = Store                          : &:r0_26, r0_27
+#    5|     r0_29(Int32)              = Constant[6]                    : 
+#    5|     r0_30(glval<Int32>)       = PointerAdd                     : r0_3, r0_29
+#    5|     r0_31(Int32)              = Constant[7]                    : 
+#    5|     mu0_32(Int32)             = Store                          : &:r0_30, r0_31
+#    7|     r0_33(glval<IEnumerator>) = VariableAddress[#temp7:9]      : 
+#    7|     r0_34(glval<Int32[]>)     = VariableAddress[a_array]       : 
+#    7|     r0_35(Int32[])            = Load                           : &:r0_34, ~mu0_2
+#    7|     r0_36(glval<null>)        = FunctionAddress[GetEnumerator] : 
+#    7|     r0_37(IEnumerator)        = Call                           : func:r0_36, this:r0_35
+#    7|     mu0_38(null)              = ^CallSideEffect                : ~mu0_2
+#    7|     mu0_39(IEnumerator)       = Store                          : &:r0_33, r0_37
+#-----|   Goto -> Block 1
+
+#    7|   Block 1
+#    7|     r1_0(glval<Boolean>) = VariableAddress[#temp7:9] : 
+#    7|     r1_1(Boolean)        = Load                      : &:r1_0, ~mu0_2
+#    7|     r1_2(glval<null>)    = FunctionAddress[MoveNext] : 
+#    7|     r1_3(Boolean)        = Call                      : func:r1_2, this:r1_1
+#    7|     mu1_4(null)          = ^CallSideEffect           : ~mu0_2
+#    7|     v1_5(Void)           = ConditionalBranch         : r1_3
+#-----|   False (back edge) -> Block 3
+#-----|   True (back edge) -> Block 2
+
+#    7|   Block 2
+#    7|     r2_0(glval<Int32>)   = VariableAddress[items]       : 
+#    7|     r2_1(glval<Boolean>) = VariableAddress[#temp7:9]    : 
+#    7|     r2_2(Boolean)        = Load                         : &:r2_1, ~mu0_2
+#    7|     r2_3(glval<null>)    = FunctionAddress[get_Current] : 
+#    7|     r2_4(Int32)          = Call                         : func:r2_3, this:r2_2
+#    7|     mu2_5(null)          = ^CallSideEffect              : ~mu0_2
+#    7|     mu2_6(Int32)         = Store                        : &:r2_0, r2_4
+#    9|     r2_7(glval<Int32>)   = VariableAddress[x]           : 
+#    9|     r2_8(glval<Int32>)   = VariableAddress[items]       : 
+#    9|     r2_9(Int32)          = Load                         : &:r2_8, ~mu0_2
+#    9|     mu2_10(Int32)        = Store                        : &:r2_7, r2_9
+#-----|   Goto (back edge) -> Block 1
+
+#    7|   Block 3
+#    7|     r3_0(glval<Boolean>) = VariableAddress[#temp7:9] : 
+#    7|     r3_1(Boolean)        = Load                      : &:r3_0, ~mu0_2
+#    7|     r3_2(glval<null>)    = FunctionAddress[Dispose]  : 
+#    7|     v3_3(Void)           = Call                      : func:r3_2, this:r3_1
+#    7|     mu3_4(null)          = ^CallSideEffect           : ~mu0_2
+#    4|     v3_5(Void)           = ReturnVoid                : 
+#    4|     v3_6(Void)           = UnmodeledUse              : mu*
+#    4|     v3_7(Void)           = ExitFunction              : 
+
 func_with_param_call.cs:
 #    5| System.Int32 test_call_with_param.f(System.Int32,System.Int32)
 #    5|   Block 0

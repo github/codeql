@@ -11,6 +11,7 @@ private import TranslatedInitialization
 private import common.TranslatedConditionBlueprint
 private import IRInternal
 private import semmle.code.csharp.ir.internal.IRUtilities
+private import desugar.Foreach
 
 TranslatedStmt getTranslatedStmt(Stmt stmt) { result.getAST() = stmt }
 
@@ -851,5 +852,37 @@ class TranslatedSwitchStmt extends TranslatedStmt {
       then result = this.getParent().getChildSuccessor(this)
       else result = getTranslatedStmt(stmt.getChild(index + 1)).getFirstInstruction()
     )
+  }
+}
+
+class TranslatedEnumeratorForeach extends TranslatedLoop {
+  override ForeachStmt stmt;
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and result = getTempEnumDecl() or
+    id = 1 and result = getTry()
+  }
+
+  override Instruction getFirstInstruction() {
+    result = getTempEnumDecl().getFirstInstruction()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    (
+      child = getTempEnumDecl() and
+      result = getTry().getFirstInstruction()
+    ) or
+    (
+      child = getTry() and
+      result = getParent().getChildSuccessor(this)
+    )
+  }
+
+  private TranslatedElement getTry() {
+    result = ForeachElements::getTry(stmt)
+  }
+
+  private TranslatedElement getTempEnumDecl() {
+    result = ForeachElements::getEnumDecl(stmt)
   }
 }
