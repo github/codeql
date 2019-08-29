@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-            ExtractModifiers(trapFile);
+            PopulateModifiers(trapFile);
 
             var returnType = Type.Create(Context, symbol.ReturnType);
             trapFile.operators(this,
@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     TypeMention.Create(Context, declaration.Type, this, returnType);
             }
 
-            ContainingType.ExtractGenerics();
+            ContainingType.PopulateGenerics();
         }
 
         public override bool NeedsPopulation => Context.Defines(symbol) || IsImplicitOperator(out _);

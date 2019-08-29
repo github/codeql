@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        protected void ExtractParameters(TextWriter trapFile)
+        protected void PopulateParameters(TextWriter trapFile)
         {
             var originalMethod = OriginalDefinition;
             IEnumerable<IParameterSymbol> parameters = symbol.Parameters;
@@ -62,7 +62,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // so there's nothing to extract.
         }
 
-        void ExtractMethodBody(TextWriter trapFile)
+        void PopulateMethodBody(TextWriter trapFile)
         {
             if (!IsSourceDeclaration)
                 return;
@@ -330,7 +330,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IStatementParentEntity.IsTopLevelParent => true;
 
-        protected void ExtractGenerics(TextWriter trapFile)
+        protected void PopulateGenerics(TextWriter trapFile)
         {
             var isFullyConstructed = IsBoundGeneric;
 
@@ -375,12 +375,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             // Common population code for all callables
             BindComments();
-            ExtractAttributes();
-            ExtractParameters(trapFile);
-            ExtractMethodBody(trapFile);
-            ExtractGenerics(trapFile);
-            ExtractMetadataHandle(trapFile);
-            ExtractNullability(trapFile, symbol.ReturnNullableAnnotation);
+            PopulateAttributes();
+            PopulateParameters(trapFile);
+            PopulateMethodBody(trapFile);
+            PopulateGenerics(trapFile);
+            PopulateMetadataHandle(trapFile);
+            PopulateNullability(trapFile, symbol.ReturnNullableAnnotation);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

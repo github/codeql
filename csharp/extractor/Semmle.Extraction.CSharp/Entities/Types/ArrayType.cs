@@ -26,8 +26,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             trapFile.array_element_type(this, Dimension, Rank, element.Type.TypeRef);
-            ExtractType(trapFile);
-            ExtractNullability(trapFile, symbol.ElementNullableAnnotation);
+            PopulateType(trapFile);
+            PopulateNullability(trapFile, symbol.ElementNullableAnnotation);
         }
 
         public override void WriteId(TextWriter trapFile)

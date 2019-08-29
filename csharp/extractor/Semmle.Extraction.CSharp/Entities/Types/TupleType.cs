@@ -38,8 +38,8 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            ExtractType(trapFile);
-            ExtractGenerics();
+            PopulateType(trapFile);
+            PopulateGenerics();
 
             var underlyingType = NamedType.Create(Context, symbol.TupleUnderlyingType);
             trapFile.tuple_underlying_type(this, underlyingType);

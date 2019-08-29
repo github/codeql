@@ -78,16 +78,18 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        protected void ExtractType(TextWriter trapFile)
+        protected void PopulateType(TextWriter trapFile)
         {
-            ExtractMetadataHandle(trapFile);
-            ExtractAttributes();
+            PopulateMetadataHandle(trapFile);
+            PopulateAttributes();
 
-            using (var tb = new StringWriter())
-            {
-                symbol.BuildDisplayName(Context, tb);
-                trapFile.types(this, GetClassType(Context, symbol), tb.ToString());
-            }
+            trapFile.Write("types(");
+            trapFile.WriteColumn(this);
+            trapFile.Write(',');
+            trapFile.WriteColumn((int)GetClassType(Context, symbol));
+            trapFile.Write(",\"");
+            symbol.BuildDisplayName(Context, trapFile);
+            trapFile.WriteLine("\")");
 
             // Visit base types
             var baseTypes = new List<Type>();
@@ -214,7 +216,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Extracts all members and nested types of this type.
         /// </summary>
-        public void ExtractGenerics()
+        public void PopulateGenerics()
         {
             if (symbol == null || !NeedsPopulation || !Context.ExtractGenerics(this))
                 return;
@@ -245,11 +247,11 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             if (symbol.BaseType != null)
-                Create(Context, symbol.BaseType).ExtractGenerics();
+                Create(Context, symbol.BaseType).PopulateGenerics();
 
             foreach (var i in symbol.Interfaces)
             {
-                Create(Context, i).ExtractGenerics();
+                Create(Context, i).PopulateGenerics();
             }
         }
 

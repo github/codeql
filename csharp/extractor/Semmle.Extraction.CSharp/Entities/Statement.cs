@@ -59,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities
             cx.BindComments(this, location.symbol);
         }
 
-        protected override void Populate(TextWriter trapFile)
+        protected sealed override void Populate(TextWriter trapFile)
         {
             trapFile.statements(this, Kind);
             if (Parent.IsTopLevelParent)

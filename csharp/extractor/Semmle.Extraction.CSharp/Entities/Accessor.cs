@@ -34,8 +34,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-            ExtractModifiers(trapFile);
-            ContainingType.ExtractGenerics();
+            PopulateModifiers(trapFile);
+            ContainingType.PopulateGenerics();
 
             var prop = PropertySymbol;
             if (prop == null)

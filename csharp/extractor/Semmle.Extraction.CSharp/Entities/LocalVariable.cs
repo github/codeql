@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (symbol is ILocalSymbol local)
             {
-                ExtractNullability(trapFile, local.NullableAnnotation);
+                PopulateNullability(trapFile, local.NullableAnnotation);
                 if (local.IsRef)
                     trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
             }

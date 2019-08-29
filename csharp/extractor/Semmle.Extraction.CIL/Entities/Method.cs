@@ -43,11 +43,11 @@ namespace Semmle.Extraction.CIL.Entities
         public virtual IList<LocalVariable> LocalVariables => throw new NotImplementedException();
         public IList<Parameter> Parameters { get; private set; }
 
-        public override void WriteId(TextWriter trapFile) => MakeMethodId(trapFile, DeclaringType, NameLabel);
+        public override void WriteId(TextWriter trapFile) => WriteMethodId(trapFile, DeclaringType, NameLabel);
 
         public abstract string NameLabel { get; }
 
-        internal protected void MakeMethodId(TextWriter trapFile, Type parent, string methodName)
+        internal protected void WriteMethodId(TextWriter trapFile, Type parent, string methodName)
         {
             signature.ReturnType.WriteId(trapFile, this);
             trapFile.Write(' ');

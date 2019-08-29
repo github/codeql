@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            ExtractType(trapFile);
+            PopulateType(trapFile);
 
             if (symbol.EnumUnderlyingType != null)
             {

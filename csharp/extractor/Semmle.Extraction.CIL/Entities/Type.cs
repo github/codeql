@@ -131,12 +131,12 @@ namespace Semmle.Extraction.CIL.Entities
         }
 
         /// <summary>
-        /// Gets the assembly identifier of this type.
+        /// Writes the assembly identifier of this type.
         /// </summary>
         public abstract void WriteAssemblyPrefix(TextWriter trapFile);
 
         /// <summary>
-        /// Gets the ID part to be used in a method.
+        /// Writes the ID part to be used in a method ID.
         /// </summary>
         /// <param name="inContext">
         /// Whether we should output the context prefix of type parameters.

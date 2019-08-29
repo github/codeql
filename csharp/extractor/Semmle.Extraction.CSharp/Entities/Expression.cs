@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (Info.ExprValue is string value)
                 trapFile.expr_value(this, value);
 
-            Type.Type.ExtractGenerics();
+            Type.Type.PopulateGenerics();
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Location.symbol;

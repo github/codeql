@@ -16,7 +16,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-            ContainingType.ExtractGenerics();
+            ContainingType.PopulateGenerics();
 
             var @event = EventSymbol;
             if (@event == null)

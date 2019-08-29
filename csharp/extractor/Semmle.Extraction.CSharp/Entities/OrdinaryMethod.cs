@@ -27,8 +27,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-            ExtractModifiers(trapFile);
-            ContainingType.ExtractGenerics();
+            PopulateModifiers(trapFile);
+            ContainingType.PopulateGenerics();
 
             var returnType = Type.Create(Context, symbol.ReturnType);
             trapFile.methods(this, Name, ContainingType, returnType.TypeRef, OriginalDefinition);
@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CSharp.Entities
             foreach (var l in Locations)
                 trapFile.method_location(this, l);
 
-            ExtractGenerics(trapFile);
+            PopulateGenerics(trapFile);
             Overrides(trapFile);
             ExtractRefReturn(trapFile);
             ExtractCompilerGenerated(trapFile);

@@ -17,8 +17,8 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
-            ExtractModifiers(trapFile);
-            ContainingType.ExtractGenerics();
+            PopulateModifiers(trapFile);
+            ContainingType.PopulateGenerics();
 
             trapFile.constructors(this, symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
             trapFile.constructor_location(this, Location);

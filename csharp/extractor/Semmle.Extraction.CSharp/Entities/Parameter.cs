@@ -102,9 +102,9 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            ExtractAttributes();
-            ExtractNullability(trapFile, symbol.NullableAnnotation);
-            ExtractRefKind(trapFile, symbol.RefKind);
+            PopulateAttributes();
+            PopulateNullability(trapFile, symbol.NullableAnnotation);
+            PopulateRefKind(trapFile, symbol.RefKind);
 
             if (symbol.Name != Original.symbol.Name)
                 Context.ModelError(symbol, "Inconsistent parameter declaration");

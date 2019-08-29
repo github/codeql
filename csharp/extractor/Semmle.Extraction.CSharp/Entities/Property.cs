@@ -24,12 +24,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            ExtractMetadataHandle(trapFile);
-            ExtractAttributes();
-            ExtractModifiers(trapFile);
+            PopulateMetadataHandle(trapFile);
+            PopulateAttributes();
+            PopulateModifiers(trapFile);
             BindComments();
-            ExtractNullability(trapFile, symbol.NullableAnnotation);
-            ExtractRefKind(trapFile, symbol.RefKind);
+            PopulateNullability(trapFile, symbol.NullableAnnotation);
+            PopulateRefKind(trapFile, symbol.RefKind);
 
             var type = Type.Create(Context, symbol.Type);
             trapFile.properties(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition));

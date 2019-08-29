@@ -16,26 +16,26 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public virtual Type ContainingType => symbol.ContainingType != null ? Type.Create(Context, symbol.ContainingType) : null;
 
-        public void ExtractModifiers(TextWriter trapFile)
+        public void PopulateModifiers(TextWriter trapFile)
         {
             Modifier.ExtractModifiers(Context, trapFile, this, symbol);
         }
 
-        protected void ExtractAttributes()
+        protected void PopulateAttributes()
         {
             // Only extract attributes for source declarations
             if (ReferenceEquals(symbol, symbol.OriginalDefinition))
                 Attribute.ExtractAttributes(Context, symbol, this);
         }
 
-        protected void ExtractNullability(TextWriter trapFile, NullableAnnotation annotation)
+        protected void PopulateNullability(TextWriter trapFile, NullableAnnotation annotation)
         {
             var ta = annotation.GetTypeAnnotation();
             if (ta != Kinds.TypeAnnotation.None)
                 trapFile.type_annotation(this, ta);
         }
 
-        protected void ExtractRefKind(TextWriter trapFile, RefKind kind)
+        protected void PopulateRefKind(TextWriter trapFile, RefKind kind)
         {
             switch (kind)
             {
@@ -125,7 +125,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public Extraction.Entities.Location Location => Context.Create(ReportingLocation);
 
-        protected void ExtractMetadataHandle(TextWriter trapFile)
+        protected void PopulateMetadataHandle(TextWriter trapFile)
         {
             var handle = MetadataHandle;
 

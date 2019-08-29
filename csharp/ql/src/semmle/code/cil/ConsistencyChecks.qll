@@ -377,7 +377,6 @@ class TypeIsBothConstructedAndUnbound extends TypeViolation {
  */
 class InconsistentTypeLocation extends TypeViolation {
   InconsistentTypeLocation() {
-    exists(this.getType().getLocation()) and
     this.getType().getLocation() != this.getType().getSourceDeclaration().getLocation()
   }
 
@@ -422,7 +421,6 @@ class MethodViolation extends ConsistencyViolation, DeclarationCheck {
  */
 class InconsistentMethodLocation extends MethodViolation {
   InconsistentMethodLocation() {
-    exists(this.getMethod().getLocation()) and
     this.getMethod().getLocation() != this.getMethod().getSourceDeclaration().getLocation()
   }
 

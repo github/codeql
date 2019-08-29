@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            ExtractNullability(trapFile, symbol.NullableAnnotation);
+            PopulateNullability(trapFile, symbol.NullableAnnotation);
 
             var type = Type.Create(Context, symbol.Type);
             trapFile.events(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition));
@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities
             if (!(remover is null))
                 Method.Create(Context, remover);
 
-            ExtractModifiers(trapFile);
+            PopulateModifiers(trapFile);
             BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration

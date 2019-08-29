@@ -24,7 +24,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void Populate(TextWriter trapFile)
         {
             trapFile.pointer_referent_type(this, PointedAtType.TypeRef);
-            ExtractType(trapFile);
+            PopulateType(trapFile);
         }
 
         public Type PointedAtType { get; private set; }

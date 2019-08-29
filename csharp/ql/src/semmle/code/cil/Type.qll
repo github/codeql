@@ -58,9 +58,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
   }
 
   override Location getALocation() {
-    cil_type_location(this, result)
-    or
-    result = getSourceDeclaration().getALocation()
+    cil_type_location(this.getSourceDeclaration(), result)
   }
 
   /** Holds if this type is a class. */

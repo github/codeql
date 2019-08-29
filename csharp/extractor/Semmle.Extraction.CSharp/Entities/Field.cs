@@ -27,15 +27,15 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            ExtractMetadataHandle(trapFile);
-            ExtractAttributes();
-            ContainingType.ExtractGenerics();
-            ExtractNullability(trapFile, symbol.NullableAnnotation);
+            PopulateMetadataHandle(trapFile);
+            PopulateAttributes();
+            ContainingType.PopulateGenerics();
+            PopulateNullability(trapFile, symbol.NullableAnnotation);
 
             Field unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
             trapFile.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey);
 
-            ExtractModifiers(trapFile);
+            PopulateModifiers(trapFile);
 
             if (symbol.IsVolatile)
                 Modifier.HasModifier(Context, trapFile, this, "volatile");
