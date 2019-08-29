@@ -56,4 +56,3 @@ query predicate annotatedTypeConstraints(TypeParameter p, AnnotatedType t) {
   t = p.getConstraints().getAnAnnotatedTypeConstraint() and
   t.getLocation() instanceof SourceLocation
 }
-

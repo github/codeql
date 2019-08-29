@@ -95,17 +95,28 @@ predicate usesMacro(HeaderFile hf, string macroName) {
   )
 }
 
+/** File `f` defines a macro called `macroName`. */
+predicate definesMacro(File f, string macroName) {
+  exists(Macro m |
+    m.getFile() = f and
+    m.getName() = macroName
+  )
+}
+
+/** File `f` un-defines a macro called `macroName`. */
+predicate undefinesMacro(File f, string macroName) {
+  exists(PreprocessorUndef ud |
+    ud.getFile() = f and
+    ud.getName() = macroName
+  )
+}
+
 /**
  * File `f` both defines and un-defines a macro called `macroName`.
  */
 predicate defUndef(File f, string macroName) {
-  exists(Macro m |
-    m.getFile() = f and
-    m.getName() = macroName
-  ) and exists(PreprocessorUndef ud |
-    ud.getFile() = f and
-    ud.getName() = macroName
-  )
+  definesMacro(f, macroName) and
+  undefinesMacro(f, macroName)
 }
 
 /**
@@ -115,10 +126,22 @@ predicate defUndef(File f, string macroName) {
  * and undefined immediately afterwards.
  */
 predicate hasXMacro(HeaderFile hf) {
+  // Every header that includes `hf` both defines and undefines a macro that's
+  // used in `hf`.
   exists(string macroName |
     usesMacro(hf, macroName) and
     forex(File f | f.getAnIncludedFile() = hf |
       defUndef(f, macroName)
+    )
+  )
+  or
+  // Every header that includes `hf` defines a macro that's used in `hf`, and
+  // `hf` itself undefines it.
+  exists(string macroName |
+    usesMacro(hf, macroName) and
+    undefinesMacro(hf, macroName) and
+    forex(File f | f.getAnIncludedFile() = hf |
+      definesMacro(f, macroName)
     )
   )
 }

@@ -1,11 +1,11 @@
+// NOTE: There are two copies of this file, and they must be kept identical:
+// - semmle/code/cpp/controlflow/SubBasicBlocks.qll
+// - semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll
 //
-// NOTE: Maintain this file in synchrony with
-// semmlecode-cpp-queries/semmle/code/cpp/controlflow/SubBasicBlocks.qll
-//
-// This is a private copy of the `SubBasicBlocks` library for internal use by
-// the data flow library. Having an extra copy can prevent non-monotonic
-// recursion errors in queries that use both the data flow library and the
-// `SubBasicBlocks` library.
+// The second one is a private copy of the `SubBasicBlocks` library for
+// internal use by the data flow library. Having an extra copy prevents
+// non-monotonic recursion errors in queries that use both the data flow
+// library and the `SubBasicBlocks` library.
 
 /**
  * Provides the `SubBasicBlock` class, used for partitioning basic blocks in
@@ -57,7 +57,7 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * predecessors.
    */
   predicate firstInBB() {
-    exists(BasicBlock bb | this.getPosInBasicBlock(bb) = 0)
+    exists(BasicBlock bb | this.getRankInBasicBlock(bb) = 1)
   }
 
   /**
@@ -66,21 +66,33 @@ class SubBasicBlock extends ControlFlowNodeBase {
    */
   predicate lastInBB() {
     exists(BasicBlock bb |
-      this.getPosInBasicBlock(bb) = countSubBasicBlocksInBasicBlock(bb) - 1
+      this.getRankInBasicBlock(bb) = countSubBasicBlocksInBasicBlock(bb)
     )
   }
 
   /**
-   * Gets the position of this `SubBasicBlock` in its containing basic block
-   * `bb`, where `bb` is equal to `getBasicBlock()`.
+   * Gets the (1-based) rank of this `SubBasicBlock` among the other `SubBasicBlock`s in
+   * its containing basic block `bb`, where `bb` is equal to `getBasicBlock()`.
    */
-  int getPosInBasicBlock(BasicBlock bb) {
-    exists(int nodePos, int rnk |
-      bb = this.(ControlFlowNode).getBasicBlock() and
-      this = bb.getNode(nodePos) and
-      nodePos = rank[rnk](int i | exists(SubBasicBlock n | n = bb.getNode(i))) and
-      result = rnk - 1
+  int getRankInBasicBlock(BasicBlock bb) {
+    exists(int thisIndexInBB |
+      thisIndexInBB = this.getIndexInBasicBlock(bb) and
+      thisIndexInBB = rank[result](int i | i = any(SubBasicBlock n).getIndexInBasicBlock(bb))
     )
+  }
+
+  /**
+   * DEPRECATED: use `getRankInBasicBlock` instead. Note that this predicate
+   * returns a 0-based position, while `getRankInBasicBlock` returns a 1-based
+   * position.
+   */
+  deprecated int getPosInBasicBlock(BasicBlock bb) {
+    result = getRankInBasicBlock(bb) - 1
+  }
+
+  pragma[noinline]
+  private int getIndexInBasicBlock(BasicBlock bb) {
+    this = bb.getNode(result)
   }
 
   /** Gets a successor in the control-flow graph of `SubBasicBlock`s. */
@@ -89,23 +101,36 @@ class SubBasicBlock extends ControlFlowNodeBase {
     result = this.getBasicBlock().getASuccessor()
     or
     exists(BasicBlock bb |
-      result.getPosInBasicBlock(bb) = this.getPosInBasicBlock(bb) + 1
+      result.getRankInBasicBlock(bb) = this.getRankInBasicBlock(bb) + 1
     )
   }
 
   /**
-   * Gets the `pos`th control-flow node in this `SubBasicBlock`. Positions
-   * start from 0, and the node at position 0 always exists and compares equal
+   * Gets the `index`th control-flow node in this `SubBasicBlock`. Indexes
+   * start from 0, and the node at index 0 always exists and compares equal
    * to `this`.
    */
-  ControlFlowNode getNode(int pos) {
-    exists(BasicBlock bb | bb = this.getBasicBlock() |
-      exists(int thisPos | this = bb.getNode(thisPos) |
-        result = bb.getNode(thisPos + pos) and
-        pos >= 0 and
-        pos < this.getNumberOfNodes()
+  ControlFlowNode getNode(int index) {
+    exists(BasicBlock bb |
+      exists(int outerIndex |
+        result = bb.getNode(outerIndex) and
+        index = outerToInnerIndex(bb, outerIndex)
       )
     )
+  }
+
+  /**
+   * Gets the index of the node in this `SubBasicBlock` that has `indexInBB` in
+   * `bb`, where `bb` is equal to `getBasicBlock()`.
+   */
+  // This predicate is factored out of `getNode` to ensure a good join order.
+  // It's sensitive to bad magic, so it has `pragma[nomagic]` on it. For
+  // example, it can get very slow if `getNode` is pragma[nomagic], which could
+  // mean it might get very slow if `getNode` is used in the wrong context.
+  pragma[nomagic]
+  private int outerToInnerIndex(BasicBlock bb, int indexInBB) {
+    indexInBB = result + this.getIndexInBasicBlock(bb) and
+    result = [ 0 .. this.getNumberOfNodes() - 1 ]
   }
 
   /** Gets a control-flow node in this `SubBasicBlock`. */
@@ -148,17 +173,10 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * always at least one.
    */
   int getNumberOfNodes() {
-    exists(BasicBlock bb | bb = this.getBasicBlock() |
-      exists(int thisPos | this = bb.getNode(thisPos) |
-        this.lastInBB() and
-        result = bb.length() - thisPos
-        or
-        exists(SubBasicBlock succ, int succPos |
-          succ.getPosInBasicBlock(bb) = this.getPosInBasicBlock(bb) + 1 and
-          bb.getNode(succPos) = succ and
-          result = succPos - thisPos
-        )
-      )
+    exists(BasicBlock bb |
+      if this.lastInBB()
+      then result = bb.length() - this.getIndexInBasicBlock(bb)
+      else result = this.getASuccessor().getIndexInBasicBlock(bb) - this.getIndexInBasicBlock(bb)
     )
   }
 

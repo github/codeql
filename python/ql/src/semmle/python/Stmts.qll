@@ -95,6 +95,18 @@ class Assign extends Assign_ {
     }
 }
 
+/** An assignment statement */
+class AssignStmt extends Assign {
+
+    AssignStmt() {
+        not this instanceof FunctionDef and not this instanceof ClassDef
+    }
+
+    override string toString() {
+        result = "AssignStmt"
+    }
+}
+
 /** An augmented assignment statement, such as `x += y` */
 class AugAssign extends AugAssign_ {
 

@@ -2,19 +2,44 @@ import TaintTrackingParameter::Public
 private import TaintTrackingParameter::Private
 
 /**
- * A taint tracking configuration.
+ * A configuration of interprocedural taint tracking analysis. This defines
+ * sources, sinks, and any other configurable aspect of the analysis. Each
+ * use of the taint tracking library must define its own unique extension of
+ * this abstract class.
  *
- * A taint tracking configuration is a special dataflow configuration
+ * A taint-tracking configuration is a special data flow configuration
  * (`DataFlow::Configuration`) that allows for flow through nodes that do not
- * necessarily preserve values, but are still relevant from a taint tracking
+ * necessarily preserve values but are still relevant from a taint tracking
  * perspective. (For example, string concatenation, where one of the operands
  * is tainted.)
  *
- * Each use of the taint tracking library must define its own unique extension
- * of this abstract class. A configuration defines a set of relevant sources
- * (`isSource`) and sinks (`isSink`), and may additionally treat intermediate
- * nodes as "sanitizers" (`isSanitizer`) as well as add custom taint flow steps
- * (`isAdditionalTaintStep()`).
+ * To create a configuration, extend this class with a subclass whose
+ * characteristic predicate is a unique singleton string. For example, write
+ *
+ * ```
+ * class MyAnalysisConfiguration extends TaintTracking::Configuration {
+ *   MyAnalysisConfiguration() { this = "MyAnalysisConfiguration" }
+ *   // Override `isSource` and `isSink`.
+ *   // Optionally override `isSanitizer`.
+ *   // Optionally override `isSanitizerIn`.
+ *   // Optionally override `isSanitizerOut`.
+ *   // Optionally override `isSanitizerGuard`.
+ *   // Optionally override `isAdditionalTaintStep`.
+ * }
+ * ```
+ *
+ * Then, to query whether there is flow between some `source` and `sink`,
+ * write
+ *
+ * ```
+ * exists(MyAnalysisConfiguration cfg | cfg.hasFlow(source, sink))
+ * ```
+ *
+ * Multiple configurations can coexist, but it is unsupported to depend on
+ * another `TaintTracking::Configuration` or a `DataFlow::Configuration` in the
+ * overridden predicates that define sources, sinks, or additional steps.
+ * Instead, the dependency should go to a `TaintTracking2::Configuration` or a
+ * `DataFlow2::Configuration`, `DataFlow3::Configuration`, etc.
  */
 abstract class Configuration extends DataFlow::Configuration {
   bindingset[this]
@@ -74,7 +99,7 @@ abstract class Configuration extends DataFlow::Configuration {
 
   final override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     isAdditionalTaintStep(node1, node2) or
-    localAdditionalTaintStep(node1, node2)
+    defaultAdditionalTaintStep(node1, node2)
   }
 
   /**

@@ -59,6 +59,18 @@ abstract class ModuleObjectInternal extends ObjectInternal {
     /* Modules aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
+    /** Holds if this module "exports" name.
+     * That is, does it define `name` in `__all__` or is
+     * `__all__` not defined and `name` a global variable that does not start with "_"
+     * This is the set of names imported by `from ... import *`.
+     */
+    predicate exports(string name) {
+        not this.(ModuleObjectInternal).attribute("__all__", _, _) and this.hasAttribute(name)
+        and not name.charAt(0) = "_"
+        or
+        py_exports(this.getSourceModule(), name)
+    }
+
 }
 
 /** A class representing built-in modules */
@@ -209,6 +221,13 @@ class PackageObjectInternal extends ModuleObjectInternal, TPackageObject {
         )
     }
 
+    /** Holds if this value has the attribute `name` */
+    override predicate hasAttribute(string name) {
+        this.getInitModule().hasAttribute(name)
+        or
+        exists(this.submodule(name))
+    }
+
 }
 
 /** A class representing Python modules */
@@ -259,6 +278,24 @@ class PythonModuleObjectInternal extends ModuleObjectInternal, TPythonModule {
 
     override ControlFlowNode getOrigin() {
         result = this.getSourceModule().getEntryNode()
+    }
+
+    /** Holds if this value has the attribute `name` */
+    override predicate hasAttribute(string name) {
+        name = "__name__"
+        or
+        this.getSourceModule().(ImportTimeScope).definesName(name)
+        or
+        exists(ModuleObjectInternal mod, ImportStarNode imp |
+            PointsToInternal::pointsTo(imp, _, mod, _) and
+            imp.getScope() = this.getSourceModule() and
+            mod.exports(name)
+        )
+        or
+        exists(ObjectInternal defined |
+            this.attribute(name, defined, _) and
+            not defined instanceof UndefinedInternal
+        )
     }
 
 }

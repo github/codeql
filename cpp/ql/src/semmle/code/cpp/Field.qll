@@ -3,7 +3,18 @@ import semmle.code.cpp.Enum
 import semmle.code.cpp.exprs.Access
 
 /**
- * A C structure member or C++ non-static member variable.
+ * A C structure member or C++ non-static member variable. For example the
+ * member variable `m` in the following code (but not `s`):
+ * ```
+ * class MyClass {
+ * public:
+ *   int m;
+ *   static int s;
+ * };
+ * ```
+ *
+ * This does not include static member variables in C++. To include static member
+ * variables, use `MemberVariable` instead of `Field`.
  */
 class Field extends MemberVariable {
 
@@ -33,12 +44,13 @@ class Field extends MemberVariable {
   /**
    * Holds if the field can be initialized as part of an initializer list. For
    * example, in:
-   *
+   * ```
    * struct S {
    *   unsigned int a : 5;
    *   unsigned int : 5;
    *   unsigned int b : 5; 
    * };
+   * ```
    *
    * Fields `a` and `b` are initializable, but the unnamed bitfield is not.
    */
@@ -65,9 +77,13 @@ class Field extends MemberVariable {
 }
 
 /**
- * A C structure member or C++ member variable declared with an explicit size in bits.
- *
- * Syntactically, this looks like `int x : 3` in `struct S { int x : 3; };`.
+ * A C structure member or C++ member variable declared with an explicit size
+ * in bits. For example the member variable `x` in the following code:
+ * ```
+ * struct MyStruct {
+ *   int x : 3;
+ * };
+ * ```
  */
 class BitField extends Field {
   BitField() { bitfield(underlyingElement(this),_,_) }

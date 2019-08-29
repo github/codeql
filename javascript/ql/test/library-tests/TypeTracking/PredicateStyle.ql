@@ -1,4 +1,5 @@
 import javascript
+import CustomStep
 
 string chainableMethod() {
   result = "chain1" or

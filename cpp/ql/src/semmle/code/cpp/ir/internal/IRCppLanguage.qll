@@ -23,6 +23,8 @@ class StaticVariable = Cpp::Variable;
 class Parameter = Cpp::Parameter;
 class Field = Cpp::Field;
 
+class BuiltInOperation = Cpp::BuiltInOperation;
+
 // TODO: Remove necessity for these.
 class Expr = Cpp::Expr;
 class Class = Cpp::Class;  // Used for inheritance conversions
@@ -48,6 +50,10 @@ predicate hasAsmOperandIndex(int operandIndex) {
   exists(Cpp::AsmStmt asm |
     exists(asm.getChild(operandIndex))
   )
+}
+
+int getTypeSize(Type type) {
+  result = type.getSize()
 }
 
 int getPointerSize() {

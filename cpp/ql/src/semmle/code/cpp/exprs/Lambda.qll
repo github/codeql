@@ -2,7 +2,13 @@ import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.Class
 
 /**
- * A C++11 lambda expression, such as `[&amp;, =y](int x) mutable -> double {return z = (y += x);}`.
+ * A C++11 lambda expression, for example the expression initializing `a` in
+ * the following code:
+ * ```
+ * auto a = [x, y](int z) -> int {
+ *   return x + y + z;
+ * };
+ * ```
  *
  * The type given by `getType()` will be an instance of `Closure`.
  */
@@ -71,6 +77,12 @@ class LambdaExpression extends Expr, @lambdaexpr {
 
 /**
  * A class written by the compiler to be the type of a C++11 lambda expression.
+ * For example the variable `a` in the following code has a closure type:
+ * ```
+ * auto a = [x, y](int z) -> int {
+ *   return x + y + z;
+ * };
+ * ```
  */
 class Closure extends Class {
   Closure() {
@@ -96,14 +108,20 @@ class Closure extends Class {
 }
 
 /**
- * Information about a value captured as part of a lambda expression.
+ * Information about a value captured as part of a lambda expression.  For
+ * example in the following code, information about `x` and `y` is captured:
+ * ```
+ * auto a = [x, y](int z) -> int {
+ *   return x + y + z;
+ * };
+ * ```
  */
-class LambdaCapture extends @lambdacapture {
-  string toString() {
+class LambdaCapture extends Locatable, @lambdacapture {
+  override string toString() {
     result = getField().toString()
   }
 
-  string getCanonicalQLClass() { result = "LambdaCapture" }
+  override string getCanonicalQLClass() { result = "LambdaCapture" }
 
   /**
    * Holds if this capture was made implicitly.
@@ -133,7 +151,7 @@ class LambdaCapture extends @lambdacapture {
    * For implicit captures, this is the first location within the "{...}" part of the lambda
    * expression which accesses the captured variable.
    */
-  Location getLocation() {
+  override Location getLocation() {
     lambda_capture(this, _, _, _, _, _, result)
   }
 

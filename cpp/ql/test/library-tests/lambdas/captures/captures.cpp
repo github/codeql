@@ -17,3 +17,11 @@ struct foo {
     };
   }
 };
+
+int d(int x, int y) {
+  auto myLambda = [&, x](int z) -> int {
+    return x + y + z;
+  };
+
+  return myLambda(1000);
+}

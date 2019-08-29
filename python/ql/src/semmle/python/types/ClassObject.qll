@@ -151,7 +151,7 @@ class ClassObject extends Object {
 
     /** Whether this class has a attribute named `name`, either declared or inherited.*/
     predicate hasAttribute(string name) {
-        Types::getMro(theClass()).getAnItem().getClassDeclaration().declaresAttribute(name)
+        theClass().hasAttribute(name)
     }
 
     /** Whether it is impossible to know all the attributes of this class. Usually because it is

@@ -18,6 +18,14 @@ private import semmle.code.java.dataflow.internal.ContainerFlow
 predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
 /**
+ * Holds if taint can flow from `src` to `sink` in zero or more
+ * local (intra-procedural) steps.
+ */
+predicate localExprTaint(Expr src, Expr sink) {
+  localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
+}
+
+/**
  * Holds if taint can flow in one local step from `src` to `sink`.
  */
 predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
@@ -38,6 +46,14 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
     arg.isVararg() and
     sink.(DataFlow::ImplicitVarargsArray).getCall() = arg.getCall()
   )
+}
+
+/**
+ * Holds if the additional step from `src` to `sink` should be included in all
+ * global taint flow configurations.
+ */
+predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+  localAdditionalTaintStep(src, sink)
 }
 
 /**

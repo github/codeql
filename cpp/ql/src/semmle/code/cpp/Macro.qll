@@ -1,7 +1,10 @@
 import cpp
 
 /**
- * A macro.
+ * A macro. For example, the macro `MYMACRO` in the following code:
+ * ```
+ * #define MYMACRO 1
+ * ```
  */
 class Macro extends PreprocessorDirective, @ppd_define {
 

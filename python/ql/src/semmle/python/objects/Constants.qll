@@ -78,6 +78,7 @@ abstract class ConstantObjectInternal extends ObjectInternal {
 
 }
 
+pragma[nomagic]
 private boolean callToBool(CallNode call, PointsToContext context) {
     PointsToInternal::pointsTo(call.getFunction(), context, ClassValue::bool(), _) and
     exists(ObjectInternal arg |

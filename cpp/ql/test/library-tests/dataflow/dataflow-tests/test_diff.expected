@@ -1,5 +1,7 @@
-| lambdas.cpp:8:10:8:15 | file://:0:0:0:0 | AST only |
+| lambdas.cpp:8:10:8:15 | lambdas.cpp:14:3:14:6 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:18:8:18:8 | AST only |
+| lambdas.cpp:8:10:8:15 | lambdas.cpp:21:3:21:6 | AST only |
+| lambdas.cpp:8:10:8:15 | lambdas.cpp:29:3:29:6 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:35:8:35:8 | AST only |
 | lambdas.cpp:8:10:8:15 | lambdas.cpp:41:8:41:8 | AST only |
 | test.cpp:89:28:89:34 | test.cpp:92:8:92:14 | IR only |
@@ -8,6 +10,7 @@
 | test.cpp:136:27:136:32 | test.cpp:137:27:137:28 | AST only |
 | test.cpp:136:27:136:32 | test.cpp:138:27:138:34 | AST only |
 | test.cpp:136:27:136:32 | test.cpp:140:22:140:23 | AST only |
+| test.cpp:147:42:147:47 | test.cpp:149:18:149:19 | IR only |
 | test.cpp:395:17:395:22 | test.cpp:397:10:397:18 | AST only |
 | test.cpp:407:13:407:18 | test.cpp:413:10:413:14 | AST only |
 | test.cpp:421:13:421:18 | test.cpp:417:10:417:14 | AST only |

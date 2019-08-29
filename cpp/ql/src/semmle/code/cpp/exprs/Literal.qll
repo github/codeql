@@ -234,16 +234,33 @@ class ClassAggregateLiteral extends AggregateLiteral {
 }
 
 /**
- * A C/C++ aggregate literal that initializes an array
+ * A C/C++ aggregate literal that initializes an array or a GNU vector type.
  */
-class ArrayAggregateLiteral extends AggregateLiteral {
-  ArrayType arrayType;
-
-  ArrayAggregateLiteral() {
-    arrayType = this.getUnspecifiedType()
+class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
+  ArrayOrVectorAggregateLiteral() {
+    exists(DerivedType type |
+      type = this.getUnspecifiedType() and
+      (
+        type instanceof ArrayType or
+        type instanceof GNUVectorType
+      )
+    )
   }
 
-  override string getCanonicalQLClass() { result = "ArrayAggregateLiteral" }
+  /**
+   * Gets the number of elements initialized by this initializer list, either explicitly with an
+   * expression, or by implicit value initialization.
+   */
+  int getArraySize() {
+    none()
+  }
+
+  /**
+   * Gets the type of the elements in the initializer list.
+   */
+  Type getElementType() {
+    none()
+  }
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize
@@ -262,7 +279,7 @@ class ArrayAggregateLiteral extends AggregateLiteral {
   bindingset[elementIndex]
   predicate isInitialized(int elementIndex) {
     elementIndex >= 0 and
-    elementIndex < arrayType.getArraySize()
+    elementIndex < getArraySize()
   }
 
   /**
@@ -277,5 +294,47 @@ class ArrayAggregateLiteral extends AggregateLiteral {
   predicate isValueInitialized(int elementIndex) {
     isInitialized(elementIndex) and
     not exists(getElementExpr(elementIndex))
+  }
+}
+
+/**
+ * A C/C++ aggregate literal that initializes an array
+ */
+class ArrayAggregateLiteral extends ArrayOrVectorAggregateLiteral {
+  ArrayType arrayType;
+
+  ArrayAggregateLiteral() {
+    arrayType = this.getUnspecifiedType()
+  }
+
+  override string getCanonicalQLClass() { result = "ArrayAggregateLiteral" }
+
+  override int getArraySize() {
+    result = arrayType.getArraySize()
+  }
+
+  override Type getElementType() {
+    result = arrayType.getBaseType()
+  }
+}
+
+/**
+ * A C/C++ aggregate literal that initializes a GNU vector type.
+ */
+class VectorAggregateLiteral extends ArrayOrVectorAggregateLiteral {
+  GNUVectorType vectorType;
+
+  VectorAggregateLiteral() {
+    vectorType = this.getUnspecifiedType()
+  }
+
+  override string getCanonicalQLClass() { result = "VectorAggregateLiteral" }
+
+  override int getArraySize() {
+    result = vectorType.getNumElements()
+  }
+
+  override Type getElementType() {
+    result = vectorType.getBaseType()
   }
 }
