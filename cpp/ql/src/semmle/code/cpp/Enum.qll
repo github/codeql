@@ -2,10 +2,15 @@ import semmle.code.cpp.Type
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C/C++ enum [N4140 7.2]. For example, the type `MyEnum` in:
+ * A C/C++ enum [N4140 7.2]. For example, the types `MyEnum` and
+ * `MyScopedEnum` in:
  * ```
  * enum MyEnum {
  *   MyEnumConstant
+ * };
+ *
+ * enum class MyScopedEnum {
+ *   MyScopedEnumConstant
  * };
  * ```
  * This includes C++ scoped enums, see the `ScopedEnum` QL class.
