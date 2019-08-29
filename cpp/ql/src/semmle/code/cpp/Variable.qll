@@ -4,10 +4,9 @@ import semmle.code.cpp.Initializer
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C/C++ variable. For example in the following code there are four
+ * A C/C++ variable. For example, in the following code there are four
  * variables, `a`, `b`, `c` and `d`:
  * ```
- * extern int a;
  * int a;
  *
  * void myFunction(int b) {
