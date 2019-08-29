@@ -1,7 +1,18 @@
 import cpp
 
 /**
- * A C++ name qualifier, for example `N::`.
+ * A C++ name qualifier, for example `N::` in the following code:
+ * ```
+ * namespace N {
+ *   int f() {
+ *     ...
+ *   }
+ * }
+ *
+ * int g() {
+ *   return N::f();
+ * }
+ * ```
  */
 class NameQualifier extends NameQualifiableElement, @namequalifier {
   /**
@@ -61,10 +72,21 @@ class NameQualifier extends NameQualifiableElement, @namequalifier {
 
 /**
  * A C++ element that can be qualified with a name. This is in practice
- * either an expression or a name qualifier. For instance, in
- * `N1::N2::f()`, there are two name-qualifiable elements: the expression
- * `f()` and the name qualifier `N2::`. The former is qualified by `N2` and
- * the latter is qualified by `N1`.
+ * either an expression or a name qualifier. For example, there are two
+ * name-qualifiable elements in the following code, the expression `f()`
+ * (which is qualified by `N::`), and the qualifier `N::` (which is not
+ * itself qualified in this example):
+ * ```
+ * namespace N {
+ *   int f() {
+ *     ...
+ *   }
+ * }
+ *
+ * int g() {
+ *   return N::f();
+ * }
+ * ```
  */
 class NameQualifiableElement extends Element, @namequalifiableelement {
   /**
@@ -99,8 +121,19 @@ class NameQualifiableElement extends Element, @namequalifiableelement {
 }
 
 /**
- * A C++ element that can qualify a name. For example, `N` in `N::f()`.  A
- * name-qualifying element is either a namespace or a user-defined type.
+ * A C++ element that can qualify a name. For example, the namespaces `A` and
+ * `A::B` and the class `A::C` in the following code:
+ * ```
+ * namespace A {
+ *   namespace B {
+ *     ...
+ *   }
+ * 
+ *   class C {
+ *     ...
+ *   };
+ * }
+ * ```
  */
 class NameQualifyingElement extends Element, @namequalifyingelement {
   /**
