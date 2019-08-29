@@ -40,17 +40,24 @@ predicate localAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   )
 }
 
+private newtype TUnit = TMkUnit()
+
+class Unit extends TUnit {
+  string toString() { result = "unit" }
+}
+
 /**
- * A `DataFlow::Node` that is the origin of a taint step.
+ * A unit class for adding additional taint steps.
  *
  * Extend this class to add additional taint steps that should apply to all
  * taint configurations.
  */
-abstract class AdditionalTaintStepNode extends DataFlow::Node {
+class AdditionalTaintStep extends Unit {
   /**
-   * Gets a `DataFlow::Node` that this node can step to in one taint step.
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for all configurations.
    */
-  abstract DataFlow::Node step();
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
 /**
@@ -59,7 +66,7 @@ abstract class AdditionalTaintStepNode extends DataFlow::Node {
  */
 predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintStep(src, sink) or
-  src.(AdditionalTaintStepNode).step() = sink
+  any(AdditionalTaintStep a).step(src, sink)
 }
 
 /**
