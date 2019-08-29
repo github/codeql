@@ -1,5 +1,5 @@
 /**
- * @name Hard-coded Japanese era start date
+ * @name Hard-coded Japanese era start date in struct
  * @description Japanese era changes can lead to code behaving differently. Avoid hard-coding Japanese era start dates.
  * @kind problem
  * @problem.severity warning
