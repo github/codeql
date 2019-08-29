@@ -7,6 +7,8 @@
  * @precision medium
  * @tags reliability
  *       japanese-era
+ * @deprecated This query is deprecated, use
+ *             Best Practices/Magic Constants/JapaneseEraDate.ql instead.
  */
 
 import cpp
