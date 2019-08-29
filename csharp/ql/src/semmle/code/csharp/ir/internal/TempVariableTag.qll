@@ -5,7 +5,9 @@ newtype TTempVariableTag =
   ReturnValueTempVar() or
   ThrowTempVar() or
   LambdaTempVar() or
-  ForeachEnumTempVar()
+  ForeachEnumTempVar() or
+  LockedVarTemp() or
+  LockWasTakenTemp()
   
 
 string getTempVariableTagId(TTempVariableTag tag) {
@@ -13,5 +15,7 @@ string getTempVariableTagId(TTempVariableTag tag) {
   tag = ReturnValueTempVar() and result = "Ret" or
   tag = ThrowTempVar() and result = "Throw" or
   tag = LambdaTempVar() and result = "Lambda" or
-  tag = ForeachEnumTempVar() and result = "ForeachEnum"
+  tag = ForeachEnumTempVar() and result = "ForeachEnum" or
+  tag = LockedVarTemp() and result = "LockedVarTemp" or
+  tag = LockWasTakenTemp() and result = "LockWasTakenTemp"
 }

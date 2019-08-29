@@ -603,6 +603,58 @@ isexpr.cs:
 #   18|     v6_0(Void) = NoOp : 
 #-----|   Goto -> Block 1
 
+lock.cs:
+#    5| System.Void LockTest.A()
+#    5|   Block 0
+#    5|     v0_0(Void)            = EnterFunction              : 
+#    5|     mu0_1(null)           = AliasedDefinition          : 
+#    5|     mu0_2(null)           = UnmodeledDefinition        : 
+#    7|     r0_3(glval<Object>)   = VariableAddress[_object]   : 
+#    7|     r0_4(Object)          = NewObj                     : 
+#    7|     r0_5(glval<null>)     = FunctionAddress[Object]    : 
+#    7|     v0_6(Void)            = Call                       : func:r0_5, this:r0_4
+#    7|     mu0_7(null)           = ^CallSideEffect            : ~mu0_2
+#    7|     mu0_8(Object)         = Store                      : &:r0_3, r0_4
+#    8|     r0_9(glval<Object>)   = VariableAddress[#temp8:9]  : 
+#    8|     r0_10(glval<Object>)  = VariableAddress[_object]   : 
+#    8|     r0_11(Object)         = Load                       : &:r0_10, ~mu0_2
+#    8|     mu0_12(Object)        = Store                      : &:r0_9, r0_11
+#    8|     r0_13(glval<Boolean>) = VariableAddress[#temp8:9]  : 
+#    8|     r0_14(Boolean)        = Constant[false]            : 
+#    8|     mu0_15(Boolean)       = Store                      : &:r0_13, r0_14
+#    8|     r0_16(glval<null>)    = FunctionAddress[Enter]     : 
+#    8|     r0_17(glval<Object>)  = VariableAddress[#temp8:9]  : 
+#    8|     r0_18(Object)         = Load                       : &:r0_17, ~mu0_2
+#    8|     r0_19(glval<Boolean>) = VariableAddress[#temp8:9]  : 
+#    8|     v0_20(Void)           = Call                       : func:r0_16, 0:r0_18, 1:r0_19
+#    8|     mu0_21(null)          = ^CallSideEffect            : ~mu0_2
+#   10|     r0_22(glval<null>)    = FunctionAddress[WriteLine] : 
+#   10|     r0_23(glval<Object>)  = VariableAddress[_object]   : 
+#   10|     r0_24(Object)         = Load                       : &:r0_23, ~mu0_2
+#   10|     r0_25(glval<null>)    = FunctionAddress[ToString]  : 
+#   10|     r0_26(String)         = Call                       : func:r0_25, this:r0_24
+#   10|     mu0_27(null)          = ^CallSideEffect            : ~mu0_2
+#   10|     v0_28(Void)           = Call                       : func:r0_22, 0:r0_26
+#   10|     mu0_29(null)          = ^CallSideEffect            : ~mu0_2
+#    8|     r0_30(glval<Boolean>) = VariableAddress[#temp8:9]  : 
+#    8|     r0_31(Boolean)        = Load                       : &:r0_30, ~mu0_2
+#    8|     v0_32(Void)           = ConditionalBranch          : r0_31
+#-----|   False -> Block 1
+#-----|   True -> Block 2
+
+#    5|   Block 1
+#    5|     v1_0(Void) = ReturnVoid   : 
+#    5|     v1_1(Void) = UnmodeledUse : mu*
+#    5|     v1_2(Void) = ExitFunction : 
+
+#    8|   Block 2
+#    8|     r2_0(glval<null>)   = FunctionAddress[Exit]     : 
+#    8|     r2_1(glval<Object>) = VariableAddress[#temp8:9] : 
+#    8|     r2_2(Object)        = Load                      : &:r2_1, ~mu0_2
+#    8|     v2_3(Void)          = Call                      : func:r2_0, 0:r2_2
+#    8|     mu2_4(null)         = ^CallSideEffect           : ~mu0_2
+#-----|   Goto -> Block 1
+
 obj_creation.cs:
 #    7| System.Void ObjCreation.MyClass..ctor()
 #    7|   Block 0

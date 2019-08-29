@@ -12,6 +12,7 @@ private import common.TranslatedConditionBlueprint
 private import IRInternal
 private import semmle.code.csharp.ir.internal.IRUtilities
 private import desugar.Foreach
+private import desugar.Lock
 
 TranslatedStmt getTranslatedStmt(Stmt stmt) { result.getAST() = stmt }
 
@@ -884,5 +885,56 @@ class TranslatedEnumeratorForeach extends TranslatedLoop {
 
   private TranslatedElement getTempEnumDecl() {
     result = ForeachElements::getEnumDecl(stmt)
+  }
+}
+
+class TranslatedLockStmt extends TranslatedStmt {
+  override LockStmt stmt;
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and result = getLockedVarDecl() or
+    id = 1 and result = getLockWasTakenDecl() or
+    id = 2 and result = getTry()
+  }
+
+  override Instruction getFirstInstruction() {
+    result = getLockedVarDecl().getFirstInstruction()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    (
+      child = getLockedVarDecl() and
+      result = getLockWasTakenDecl().getFirstInstruction()
+    ) or
+    (
+      child = getLockWasTakenDecl() and
+      result = getTry().getFirstInstruction()
+    ) or
+    (
+      child = getTry() and
+      result = getParent().getChildSuccessor(this)
+    )
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
+      Type resultType, boolean isLValue) {
+    none()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag,
+      EdgeKind kind) {
+    none()
+  }
+  
+  private TranslatedElement getTry() {
+    result = LockElements::getTry(stmt)
+  }
+
+  private TranslatedElement getLockedVarDecl() {
+    result = LockElements::getLockedVarDecl(stmt)
+  }
+  
+  private TranslatedElement getLockWasTakenDecl() {
+    result = LockElements::getLockWasTakenDecl(stmt)
   }
 }
