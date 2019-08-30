@@ -23,12 +23,13 @@ class CleartextStorageConfiguration extends TaintTracking::Configuration {
 
     CleartextStorageConfiguration() {  this = "ClearTextStorage" }
 
-    override predicate isSource(TaintSource src) {
-        src instanceof SensitiveData::Source
+    override predicate isSource(DataFlow::Node src, TaintKind kind) {
+        src.asCfgNode().(SensitiveData::Source).isSourceOf(kind)
     }
 
-    override predicate isSink(TaintSink sink) {
-        sink instanceof ClearTextStorage::Sink
+    override predicate isSink(DataFlow::Node sink, TaintKind kind) {
+        sink.asCfgNode() instanceof ClearTextStorage::Sink and
+        kind instanceof SensitiveData
     }
 
 }

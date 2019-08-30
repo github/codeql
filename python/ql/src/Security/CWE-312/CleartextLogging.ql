@@ -24,12 +24,13 @@ class CleartextLoggingConfiguration extends TaintTracking::Configuration {
 
     CleartextLoggingConfiguration() {  this = "ClearTextLogging" }
 
-    override predicate isSource(TaintSource src) {
-        src instanceof SensitiveData::Source
+    override predicate isSource(DataFlow::Node src, TaintKind kind) {
+        src.asCfgNode().(SensitiveData::Source).isSourceOf(kind)
     }
 
-    override predicate isSink(TaintSink sink) {
-        sink instanceof ClearTextLogging::Sink
+    override predicate isSink(DataFlow::Node sink, TaintKind kind) {
+        sink.asCfgNode() instanceof ClearTextLogging::Sink and
+        kind instanceof SensitiveData
     }
 
 }

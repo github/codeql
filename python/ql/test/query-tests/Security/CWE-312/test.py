@@ -13,3 +13,10 @@ def get_cert():
 def log_cert():
     logging.debug("Cert=%s", get_cert())
 
+def print_password():
+    print(get_password())
+
+def write_cert(filename):
+    cert = get_cert()
+    with open(filename, "w") as file:
+        file.write(cert)

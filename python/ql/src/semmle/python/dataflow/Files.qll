@@ -10,15 +10,17 @@ class OpenFile extends TaintKind {
 
 }
 
+class OpenFileConfiguration extends TaintTracking::Configuration {
 
-class OpenFileSource extends TaintSource {
+    OpenFileConfiguration() {  this = "Open file configuration" }
 
-    OpenFileSource() {
-        theOpenFunction().(FunctionObject).getACall() = this
+    override predicate isSource(DataFlow::Node src, TaintKind kind) {
+        theOpenFunction().(FunctionObject).getACall() = src.asCfgNode() and
+        kind instanceof OpenFile
     }
 
-    override predicate isSourceOf(TaintKind kind) {
-        kind instanceof OpenFile
+    override predicate isSink(DataFlow::Node sink, TaintKind kind) {
+        none()
     }
 
 }
