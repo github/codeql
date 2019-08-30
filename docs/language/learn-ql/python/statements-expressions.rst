@@ -101,12 +101,10 @@ Each kind of Python expression has its own class. Here is the full class hierarc
    -  ``BoolExpr`` – Short circuit logical operations, ``x and y``, ``x or y``
    -  ``Bytes`` – A bytes literal, ``b"x"`` or (in Python 2) ``"x"``
    -  ``Call`` – A function call, ``f(arg)``
-   -  ``ClassExpr`` – An artificial expression representing the right hand side a ``ClassDef`` assignment
    -  ``Compare`` – A comparison operation, ``0 < x < 10``
    -  ``Dict`` – A dictionary literal, ``{'a': 2}``
    -  ``DictComp`` – A dictionary comprehension, ``{k: v for ...}``
    -  ``Ellipsis`` – An ellipsis expression, ``...``
-   -  ``FunctionExpr`` – An artificial expression representing the right hand side a ``FunctionDef`` assignment
    -  ``GeneratorExp`` – A generator expression
    -  ``IfExp`` – A conditional expression, ``x if cond else y``
    -  ``ImportExpr`` – An artificial expression representing the module imported
@@ -255,9 +253,9 @@ checks that the value of the attribute (the expression to the left of the dot in
 Class and function definitions
 ------------------------------
 
-As Python is a dynamically typed language, class, and function definitions are executable statements. This means that a class statement is both a statement and a scope containing statements. To represent this cleanly the class definition is broken into a number of parts. At runtime, when a class definition is executed a class object is created and then assigned to a variable of the same name in the scope enclosing the class. This class is created from a code-object representing the source code for the body of the class. To represent this the ``ClassDef`` class (which represents a ``class`` statement) subclasses ``Assign``. The right hand side of the ``ClassDef`` is a ``ClassExpr`` representing the creation of the class. The ``Class`` class, which represents the body of the class, can be accessed via the ``ClassExpr.getInnerScope()``
+As Python is a dynamically typed language, class, and function definitions are executable statements. This means that a class statement is both a statement and a scope containing statements. To represent this cleanly the class definition is broken into a number of parts. At runtime, when a class definition is executed a class object is created and then assigned to a variable of the same name in the scope enclosing the class. This class is created from a code-object representing the source code for the body of the class. To represent this the ``ClassDef`` class (which represents a ``class`` statement) subclasses ``Assign``. The ``Class`` class, which represents the body of the class, can be accessed via the ``ClassDef.getDefinedClass()``
 
-``FunctionDef``, ``FunctionExpr`` and ``Function`` are handled similarly.
+``FunctionDef``, ``Function`` are handled similarly.
 
 Here is the relevant part of the class hierarchy:
 
@@ -267,12 +265,6 @@ Here is the relevant part of the class hierarchy:
 
       -  ``ClassDef``
       -  ``FunctionDef``
-
--  ``Expr``
-
-   -  ``ClassExp``
-
-      -  ``FunctionExpr``
 
 -  ``Scope``
 
