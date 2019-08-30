@@ -131,7 +131,6 @@ class Expr extends Expr_, AstNode {
 /** An attribute expression, such as `value.attr` */
 class Attribute extends Attribute_ {
 
-    /* Special comment for documentation generation */
     /* syntax: Expr.name */
 
     override Expr getASubExpression() {
@@ -481,7 +480,6 @@ class FloatLiteral extends Num {
 class ImaginaryLiteral extends Num {
     private float value;
 
-    /* Special comment for documentation generation */
     /* syntax: 1.0j */
 
     ImaginaryLiteral() {
@@ -541,7 +539,6 @@ class NegativeIntegerLiteral extends ImmutableLiteral, UnaryExpr {
    "hello" are treated as Bytes for Python2, but Unicode for Python3. */
 class Unicode extends StrConst {
 
-    /* Special comment for documentation generation */
     /* syntax: "hello" */
 
     Unicode() {
@@ -572,7 +569,6 @@ class Unicode extends StrConst {
 /** A dictionary expression, such as `{'key':'value'}` */
 class Dict extends Dict_ {
 
-    /* Special comment for documentation generation */
     /* syntax: {Expr: Expr, ...} */
 
     /** Gets the value of an item of this dict display */
@@ -600,7 +596,6 @@ class Dict extends Dict_ {
 /** A list expression, such as `[ 1, 3, 5, 7, 9 ]` */
 class List extends List_ {
 
-    /* Special comment for documentation generation */
     /* syntax: [Expr, ...] */
 
     override Expr getASubExpression() {
@@ -612,7 +607,6 @@ class List extends List_ {
 /** A set expression such as `{ 1, 3, 5, 7, 9 }` */
 class Set extends Set_ {
 
-    /* Special comment for documentation generation */
     /* syntax: {Expr, ...} */
 
     override Expr getASubExpression() {
@@ -749,7 +743,6 @@ class Slice extends Slice_ {
 /** A string constant. */
 class StrConst extends Str_, ImmutableLiteral {
 
-    /* Special comment for documentation generation */
     /* syntax: "hello" */
 
     predicate isUnicode() {
@@ -837,7 +830,6 @@ abstract class BooleanLiteral extends NameConstant {
 /** The boolean named constant `True` */
 class True extends BooleanLiteral {
 
-    /* Special comment for documentation generation */
     /* syntax: True */
 
     True() {
@@ -857,7 +849,6 @@ class True extends BooleanLiteral {
 /** The boolean named constant `False` */
 class False extends BooleanLiteral {
 
-    /* Special comment for documentation generation */
     /* syntax: False */
 
     False() {
@@ -877,7 +868,6 @@ class False extends BooleanLiteral {
 /** `None` */
 class None extends NameConstant {
 
-    /* Special comment for documentation generation */
     /* syntax: None */
 
     None() {
@@ -896,7 +886,6 @@ class None extends NameConstant {
 /** An await expression such as `await coro`. */
 class Await extends Await_ {
 
-    /* Special comment for documentation generation */
     /* syntax: await Expr */
 
     override Expr getASubExpression() {

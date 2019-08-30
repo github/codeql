@@ -98,7 +98,6 @@ class Assign extends Assign_ {
 /** An assignment statement */
 class AssignStmt extends Assign {
 
-    /* Special comment for documentation generation */
     /* syntax: Expr, ... = Expr */
 
     AssignStmt() {
@@ -281,7 +280,7 @@ class ExprStmt extends ExprStmt_ {
 /** A for statement, such as `for x in y: print(x)` */
 class For extends For_ {
 
-    /* syntax: for varname in Expr: */
+    /* syntax: for varname in Expr: ... */
 
     override Stmt getASubStatement() {
         result = this.getAStmt() or
@@ -569,7 +568,7 @@ class TemplateWrite extends TemplateWrite_ {
 
 class AsyncFor extends For {
 
-    /* syntax: async for varname in Expr: */
+    /* syntax: async for varname in Expr: ... */
 
     AsyncFor() {
         this.isAsync()
