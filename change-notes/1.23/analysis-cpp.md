@@ -18,4 +18,10 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 
 ## Changes to QL libraries
 
-- bullet list
+* The data-flow library has been extended with a new feature to aid debugging.
+  Instead of specifying `isSink(Node n) { any() }` on a configuration to
+  explore the possible flow from a source, it is recommended to use the new
+  `Configuration::hasPartialFlow` predicate, as this gives a more complete
+  picture of the partial flow paths from a given source. The feature is
+  disabled by default and can be enabled for individual configurations by
+  overriding `int explorationLimit()`.
