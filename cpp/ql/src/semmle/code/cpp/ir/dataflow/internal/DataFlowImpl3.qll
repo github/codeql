@@ -1217,8 +1217,8 @@ private predicate consCand(Content f, AccessPathFront apf, Configuration config)
 
 private newtype TAccessPath =
   TNil(DataFlowType t) or
-  TOne(Content f, DataFlowType t) { consCand(f, TFrontNil(t), _) } or
-  TTwo(Content f1, Content f2, int len) { consCand(f1, TFrontHead(f2), _) and len in [2 .. 5] }
+  TConsNil(Content f, DataFlowType t) { consCand(f, TFrontNil(t), _) } or
+  TConsCons(Content f1, Content f2, int len) { consCand(f1, TFrontHead(f2), _) and len in [2 .. 5] }
 
 /**
  * Conceptually a list of `Content`s followed by a `Type`, but only the first
@@ -1231,17 +1231,17 @@ private class AccessPath extends TAccessPath {
   abstract string toString();
 
   Content getHead() {
-    this = TOne(result, _)
+    this = TConsNil(result, _)
     or
-    this = TTwo(result, _, _)
+    this = TConsCons(result, _, _)
   }
 
   int len() {
     this = TNil(_) and result = 0
     or
-    this = TOne(_, _) and result = 1
+    this = TConsNil(_, _) and result = 1
     or
-    this = TTwo(_, _, result)
+    this = TConsCons(_, _, result)
   }
 
   DataFlowType getType() {
@@ -1268,47 +1268,45 @@ private class AccessPathNil extends AccessPath, TNil {
   override predicate pop(Content head, AccessPath tail) { none() }
 }
 
-private class AccessPathOne extends AccessPath, TOne {
+private class AccessPathConsNil extends AccessPath, TConsNil {
   override string toString() {
-    exists(Content f, DataFlowType t | this = TOne(f, t) |
+    exists(Content f, DataFlowType t | this = TConsNil(f, t) |
       result = f.toString() + " : " + ppReprType(t)
     )
   }
 
   override AccessPathFront getFront() {
-    exists(Content f | this = TOne(f, _) | result = TFrontHead(f))
+    exists(Content f | this = TConsNil(f, _) | result = TFrontHead(f))
   }
 
   override predicate pop(Content head, AccessPath tail) {
-    exists(DataFlowType t | this = TOne(head, t) and tail = TNil(t))
+    exists(DataFlowType t | this = TConsNil(head, t) and tail = TNil(t))
   }
 }
 
-private class AccessPathTwo extends AccessPath, TTwo {
+private class AccessPathConsCons extends AccessPath, TConsCons {
   override string toString() {
-    exists(Content f1, Content f2, int len | this = TTwo(f1, f2, len) |
+    exists(Content f1, Content f2, int len | this = TConsCons(f1, f2, len) |
       result = f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")"
     )
   }
 
   override AccessPathFront getFront() {
-    exists(Content f | this = TTwo(f, _, _) | result = TFrontHead(f))
+    exists(Content f | this = TConsCons(f, _, _) | result = TFrontHead(f))
   }
 
   override predicate pop(Content head, AccessPath tail) {
-    exists(int len, Content next | this = TTwo(head, next, len) |
-      tail = TTwo(next, _, len - 1)
+    exists(int len, Content next | this = TConsCons(head, next, len) |
+      tail = TConsCons(next, _, len - 1)
       or
       len = 2 and
-      tail = TOne(next, _)
+      tail = TConsNil(next, _)
     )
   }
 }
 
 /** Holds if `ap0` corresponds to the cons of `f` and `ap`. */
-private predicate pop(AccessPath ap0, Content f, AccessPath ap) {
-  ap0.pop(f, ap)
-}
+private predicate pop(AccessPath ap0, Content f, AccessPath ap) { ap0.pop(f, ap) }
 
 /** Holds if `ap0` corresponds to the cons of `f` and `ap` and `apf` is the front of `ap`. */
 pragma[noinline]
@@ -1851,9 +1849,9 @@ private predicate pathIntoArg(
   |
     ap instanceof AccessPathNil and emptyAp = true
     or
-    ap instanceof AccessPathOne and emptyAp = false
+    ap instanceof AccessPathConsNil and emptyAp = false
     or
-    ap instanceof AccessPathTwo and emptyAp = false
+    ap instanceof AccessPathConsCons and emptyAp = false
   )
 }
 
