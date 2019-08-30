@@ -12,5 +12,6 @@ where
    */
 
   s2 != "FormatParam" and
-  s2 != "StringOrCharArray"
+  s2 != "StringOrCharArray" and
+  s2 != "EventSourceActivity"
 select s1, s2 order by s1, s2
