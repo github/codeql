@@ -98,6 +98,8 @@ class Assign extends Assign_ {
 /** An assignment statement */
 class AssignStmt extends Assign {
 
+    /* syntax: Expr, ... = Expr */
+
     AssignStmt() {
         not this instanceof FunctionDef and not this instanceof ClassDef
     }
@@ -109,6 +111,8 @@ class AssignStmt extends Assign {
 
 /** An augmented assignment statement, such as `x += y` */
 class AugAssign extends AugAssign_ {
+
+    /* syntax: Expr += Expr */
 
     override Expr getASubExpression() {
         result = this.getOperation()
@@ -129,6 +133,8 @@ class AugAssign extends AugAssign_ {
 
 /** An annotated assignment statement, such as `x: int = 0` */
 class AnnAssign extends AnnAssign_ {
+
+    /* syntax: Expr: Expr = Expr */
 
     override Expr getASubExpression() {
         result = this.getAnnotation() or
@@ -156,6 +162,8 @@ class AnnAssign extends AnnAssign_ {
 /** An exec statement */
 class Exec extends Exec_ {
 
+    /* syntax: exec Expr */
+
     override Expr getASubExpression() {
         result = this.getBody() or
         result = this.getGlobals() or
@@ -170,6 +178,8 @@ class Exec extends Exec_ {
 
 /** An except statement (part of a `try` statement), such as `except IOError as err:` */
 class ExceptStmt extends ExceptStmt_ {
+
+    /* syntax: except Expr [ as Expr ]: */
 
     /** Gets the immediately enclosing try statement */
     Try getTry() {
@@ -195,6 +205,8 @@ class ExceptStmt extends ExceptStmt_ {
 /** An assert statement, such as `assert a == b, "A is not equal to b"` */
 class Assert extends Assert_ {
 
+    /* syntax: assert Expr [, Expr] */
+
     override Expr getASubExpression() {
         result = this.getMsg() or result = this.getTest()
     }
@@ -207,6 +219,8 @@ class Assert extends Assert_ {
 
 /** A break statement */
 class Break extends Break_ {
+
+    /* syntax: assert Expr [, Expr] */
 
     override Expr getASubExpression() {
         none()
@@ -221,6 +235,8 @@ class Break extends Break_ {
 /** A continue statement */
 class Continue extends Continue_ {
 
+    /* syntax: continue */
+
     override Expr getASubExpression() {
         none()
     }
@@ -233,6 +249,8 @@ class Continue extends Continue_ {
 
 /** A delete statement, such as `del x[-1]` */
 class Delete extends Delete_ {
+
+    /* syntax: del Expr, ... */
 
     override Expr getASubExpression() {
         result = this.getATarget()
@@ -247,6 +265,8 @@ class Delete extends Delete_ {
 /** An expression statement, such as `len(x)` or `yield y` */
 class ExprStmt extends ExprStmt_ {
 
+    /* syntax: Expr */
+
     override Expr getASubExpression() {
         result = this.getValue()
     }
@@ -259,6 +279,8 @@ class ExprStmt extends ExprStmt_ {
 
 /** A for statement, such as `for x in y: print(x)` */
 class For extends For_ {
+
+    /* syntax: for varname in Expr: ... */
 
     override Stmt getASubStatement() {
         result = this.getAStmt() or
@@ -279,6 +301,8 @@ class For extends For_ {
 /** A global statement, such as `global var` */
 class Global extends Global_ {
 
+    /* syntax: global varname */
+
     override Expr getASubExpression() {
         none()
     }
@@ -290,6 +314,8 @@ class Global extends Global_ {
 
 /** An if statement, such as `if eggs: print("spam")` */
 class If extends If_ {
+
+    /* syntax: if Expr: ... */
 
     override Stmt getASubStatement() {
         result = this.getAStmt() or
@@ -345,6 +371,8 @@ class If extends If_ {
 /** A nonlocal statement, such as `nonlocal var` */
 class Nonlocal extends Nonlocal_ {
 
+    /* syntax: nonlocal varname */
+
     override Stmt getASubStatement() {
         none()
     }
@@ -363,6 +391,8 @@ class Nonlocal extends Nonlocal_ {
 /** A pass statement */
 class Pass extends Pass_ {
 
+    /* syntax: pass */
+
     override Stmt getASubStatement() {
         none()
     }
@@ -375,6 +405,8 @@ class Pass extends Pass_ {
 
 /** A print statement (Python 2 only), such as `print 0` */
 class Print extends Print_ {
+
+    /* syntax: print Expr, ... */
 
     override Stmt getASubStatement() {
         none()
@@ -389,6 +421,8 @@ class Print extends Print_ {
 
 /** A raise statement, such as `raise CompletelyDifferentException()` */
 class Raise extends Raise_ {
+
+    /* syntax: raise Expr */
 
     override Stmt getASubStatement() {
         none()
@@ -424,6 +458,8 @@ class Raise extends Raise_ {
 /** A return statement, such as return None */
 class Return extends Return_ {
 
+    /* syntax: return Expr */
+
     override Stmt getASubStatement() {
         none()
     }
@@ -436,6 +472,8 @@ class Return extends Return_ {
 
 /** A try statement */
 class Try extends Try_ {
+
+    /* syntax: try: ... */
 
     override Expr getASubExpression() {
         none()
@@ -475,6 +513,8 @@ class Try extends Try_ {
 /** A while statement, such as `while parrot_resting():` */
 class While extends While_ {
 
+    /* syntax: while Expr: ... */
+
     override Expr getASubExpression() {
         result = this.getTest()
     }
@@ -495,6 +535,8 @@ class While extends While_ {
 
 /** A with statement such as `with f as open("file"): text = f.read()` */
 class With extends With_ {
+
+    /* syntax: with Expr as varname: ... */
 
     override Expr getASubExpression() {
         result = this.getContextExpr() or
@@ -526,6 +568,8 @@ class TemplateWrite extends TemplateWrite_ {
 
 class AsyncFor extends For {
 
+    /* syntax: async for varname in Expr: ... */
+
     AsyncFor() {
         this.isAsync()
     }
@@ -533,6 +577,8 @@ class AsyncFor extends For {
 }
 
 class AsyncWith extends With {
+
+    /* syntax: async with Expr as varname: ... */
 
     AsyncWith() {
         this.isAsync()

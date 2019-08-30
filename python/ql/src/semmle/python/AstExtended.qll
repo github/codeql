@@ -3,6 +3,11 @@ import python
 /** Syntactic node (Class, Function, Module, Expr, Stmt or Comprehension) corresponding to a flow node */
 abstract class AstNode extends AstNode_ {
 
+    /* Special comment for documentation generation.
+     * All subclasses of `AstNode` that represent concrete syntax should have
+     * a comment of the form: */
+    /* syntax: ... */
+
     /** Gets the scope that this node occurs in */
     abstract Scope getScope();
 
@@ -205,6 +210,8 @@ class ComprehensionList extends ComprehensionList_ {
 
 /** A list of expressions */
 class ExprList extends ExprList_ {
+
+    /* syntax: Expr, ... */
 
 }
 

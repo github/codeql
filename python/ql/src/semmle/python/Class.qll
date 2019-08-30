@@ -63,6 +63,8 @@ class ClassExpr extends ClassExpr_ {
 /** A class statement. Note that ClassDef extends Assign as a class definition binds the newly created class */
 class ClassDef extends Assign {
 
+    /* syntax: class name(...): ... */
+
     ClassDef() {
         /* This is an artificial assignment the rhs of which is a (possibly decorated) ClassExpr */
         exists(ClassExpr c | this.getValue() = c or this.getValue() = c.getADecoratorCall())
