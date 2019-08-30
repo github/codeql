@@ -19,19 +19,20 @@ private Type getDecayedType(Type type) {
 Type getVariableType(Variable v) {
   exists(Type declaredType |
     declaredType = v.getType() and
-    if v instanceof Parameter then (
-      result = getDecayedType(declaredType) or
+    if v instanceof Parameter
+    then
+      result = getDecayedType(declaredType)
+      or
       not exists(getDecayedType(declaredType)) and result = declaredType
-    )
-    else if declaredType instanceof ArrayType then (
-      // TODO: Arrays have a declared dimension in C#, so this should not be needed
-      // and not declaredType.(ArrayType).hasArraySize()
-      result = v.getInitializer().getType() or
-      not exists(v.getInitializer()) and result = declaredType
-    )
-    else (
-      result = declaredType
-    )
+    else
+      if declaredType instanceof ArrayType
+      then
+        // TODO: Arrays have a declared dimension in C#, so this should not be needed
+        // and not declaredType.(ArrayType).hasArraySize()
+        result = v.getInitializer().getType()
+        or
+        not exists(v.getInitializer()) and result = declaredType
+      else result = declaredType
   )
 }
 

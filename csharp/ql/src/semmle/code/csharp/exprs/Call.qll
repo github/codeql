@@ -425,9 +425,7 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
    * }
    * ```
    */
-  predicate isThis() {
-    this.getTargetType() = this.getConstructorType()
-  }
+  predicate isThis() { this.getTargetType() = this.getConstructorType() }
 
   /**
    * Holds if this initialier is a `base` initializer, for example `base(0)`
@@ -445,9 +443,7 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
    * }
    * ```
    */
-  predicate isBase() {
-    this.getTargetType() != this.getConstructorType()
-  }
+  predicate isBase() { this.getTargetType() != this.getConstructorType() }
 
   /**
    * Gets the constructor that this initializer call belongs to. For example,

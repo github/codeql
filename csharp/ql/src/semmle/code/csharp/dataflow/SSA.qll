@@ -1115,9 +1115,7 @@ module Ssa {
       }
 
       /** Gets a run-time target for the delegate call `c`. */
-      Callable getARuntimeDelegateTarget(Call c) {
-        delegateCall(c, delegateCallSource(result))
-      }
+      Callable getARuntimeDelegateTarget(Call c) { delegateCall(c, delegateCallSource(result)) }
     }
 
     /** Holds if `(c1,c2)` is an edge in the call graph. */
