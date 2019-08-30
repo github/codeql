@@ -5,10 +5,3 @@
 | Taint cryptography.encryptor.RC4 | test_cryptography.py:6:17:6:34 | test_cryptography.py:6 | test_cryptography.py:6:17:6:34 | Attribute() |  |
 | Taint cryptography.encryptor.RC4 | test_cryptography.py:7:12:7:20 | test_cryptography.py:7 | test_cryptography.py:7:12:7:20 | encryptor |  |
 | Taint cryptography.encryptor.RC4 | test_cryptography.py:7:42:7:50 | test_cryptography.py:7 | test_cryptography.py:7:42:7:50 | encryptor |  |
-| Taint sensitive.data | test_cryptography.py:4:17:4:28 | test_cryptography.py:4 | test_cryptography.py:4:17:4:28 | get_password |  |
-| Taint sensitive.data | test_cryptography.py:4:17:4:30 | test_cryptography.py:4 | test_cryptography.py:4:17:4:30 | get_password() |  |
-| Taint sensitive.data | test_cryptography.py:7:29:7:37 | test_cryptography.py:7 | test_cryptography.py:7:29:7:37 | dangerous |  |
-| Taint sensitive.data | test_cryptography.py:7:42:7:50 | test_cryptography.py:7 | test_cryptography.py:7:42:7:50 | encryptor |  |
-| Taint sensitive.data | test_pycrypto.py:4:17:4:28 | test_pycrypto.py:4 | test_pycrypto.py:4:17:4:28 | get_password |  |
-| Taint sensitive.data | test_pycrypto.py:4:17:4:30 | test_pycrypto.py:4 | test_pycrypto.py:4:17:4:30 | get_password() |  |
-| Taint sensitive.data | test_pycrypto.py:6:27:6:35 | test_pycrypto.py:6 | test_pycrypto.py:6:27:6:35 | dangerous |  |

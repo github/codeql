@@ -8,6 +8,6 @@ where n.getLocation().getFile().getName().matches("%test.py") and
 s.getLocation().getFile().getName().matches("%test.py") and
 s = n.getASuccessor()
 select 
-    n.getTrackedValue(), n.getLocation().toString(), n.getAstNode(), n.getContext(), 
+    "Taint " + n.getTaintKind(), n.getLocation().toString(), n.getAstNode(), n.getContext(),
     " --> ",
-    s.getTrackedValue(), s.getLocation().toString(), s.getAstNode(), s.getContext()
+    "Taint " + s.getTaintKind(), s.getLocation().toString(), s.getAstNode(), s.getContext()

@@ -192,4 +192,16 @@ module Cryptography {
 
 }
 
+private class CipherConfig extends TaintTracking::Configuration {
+
+    CipherConfig() { this = "Crypto cipher config" }
+
+    override predicate isSource(TaintTracking::Source source) {
+        source instanceof Pycrypto::CipherInstanceSource
+        or
+        source instanceof Cryptography::CipherSource
+    }
+
+}
+
 

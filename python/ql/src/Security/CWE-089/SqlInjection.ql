@@ -32,6 +32,18 @@ class SQLInjectionConfiguration extends TaintTracking::Configuration {
 
 }
 
+/* Additional configuration to support tracking of DB objects. Connections, cursors, etc. */
+class DbConfiguration extends TaintTracking::Configuration {
+
+    DbConfiguration() { this = "DB configuration" }
+
+    override predicate isSource(TaintTracking::Source source) {
+        source instanceof DjangoModelObjects or
+        source instanceof DbConnectionSource
+    }
+
+}
+
 from SQLInjectionConfiguration config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
 select sink.getSink(), src, sink, "This SQL query depends on $@.", src.getSource(), "a user-provided value"

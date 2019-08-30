@@ -1,9 +1,20 @@
-import python
+import semmle.python.dataflow.Implementation
 
-import semmle.python.security.TaintTracking
+module TaintTrackingPaths {
 
-query predicate edges(TaintedNode fromnode, TaintedNode tonode) {
-    fromnode.getASuccessor() = tonode and
-    /* Don't record flow past sinks */
-    not fromnode.isSink()
+
+    predicate edge(TaintTrackingNode src, TaintTrackingNode dest, string label) {
+        exists(TaintTrackingNode source, TaintTrackingNode sink |
+            source.getConfiguration().hasFlowPath(source, sink) and
+            source.getASuccessor*() = src and
+            src.getASuccessor(label) = dest and
+            dest.getASuccessor*() = sink
+        )
+    }
+
+}
+
+
+query predicate edges(TaintTrackingNode fromnode, TaintTrackingNode tonode) {
+    TaintTrackingPaths::edge(fromnode, tonode, _)
 }
