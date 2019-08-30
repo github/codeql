@@ -1268,7 +1268,9 @@ private class AccessPathNil extends AccessPath, TNil {
   override predicate pop(Content head, AccessPath tail) { none() }
 }
 
-private class AccessPathConsNil extends AccessPath, TConsNil {
+abstract private class AccessPathCons extends AccessPath { }
+
+private class AccessPathConsNil extends AccessPathCons, TConsNil {
   override string toString() {
     exists(Content f, DataFlowType t | this = TConsNil(f, t) |
       result = f.toString() + " : " + ppReprType(t)
@@ -1284,7 +1286,7 @@ private class AccessPathConsNil extends AccessPath, TConsNil {
   }
 }
 
-private class AccessPathConsCons extends AccessPath, TConsCons {
+private class AccessPathConsCons extends AccessPathCons, TConsCons {
   override string toString() {
     exists(Content f1, Content f2, int len | this = TConsCons(f1, f2, len) |
       result = f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")"
@@ -1849,9 +1851,7 @@ private predicate pathIntoArg(
   |
     ap instanceof AccessPathNil and emptyAp = true
     or
-    ap instanceof AccessPathConsNil and emptyAp = false
-    or
-    ap instanceof AccessPathConsCons and emptyAp = false
+    ap instanceof AccessPathCons and emptyAp = false
   )
 }
 
