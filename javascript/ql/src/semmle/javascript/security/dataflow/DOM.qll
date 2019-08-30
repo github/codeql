@@ -81,9 +81,16 @@ class DomMethodCallExpr extends MethodCallExpr {
       or
       name = "appendChild" and argPos = 0
       or
-      name = "setAttribute" and argPos = 1
-      or
-      name = "setAttributeNS" and argPos = 2
+      (
+        name = "setAttribute" and argPos = 1
+        or
+        name = "setAttributeNS" and argPos = 2
+      ) and
+      // restrict to potentially dangerous attributes
+      exists(string attr |
+        attr = "action" or attr = "formaction" or attr = "href" or attr = "src" |
+        getArgument(argPos-1).getStringValue().toLowerCase() = attr
+      )
     )
   }
 }
