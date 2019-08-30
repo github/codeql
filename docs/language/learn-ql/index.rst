@@ -46,6 +46,16 @@ For more information on writing QL to query code written in a specific language 
    javascript/ql-for-javascript
    python/ql-for-python
 
+QL training and variant analysis examples
+******************************************
+
+To start learning how to use QL in variant analysis for a specific language, see:
+
+.. toctree::
+   :maxdepth: -1
+
+   ql-training
+
 Advanced QL and technical information
 *************************************
 
