@@ -1,4 +1,5 @@
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms
+from secrets_store import get_password
 
 def get_badly_encrypted_password():
     dangerous = get_password()

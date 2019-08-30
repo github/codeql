@@ -3,6 +3,7 @@ import python
 
 import semmle.python.security.TaintTracking
 import semmle.python.security.strings.Basic
+import semmle.python.web.Http
 
 private import semmle.python.web.pyramid.View
 private import semmle.python.web.Http
@@ -25,5 +26,23 @@ class PyramidRoutedResponse extends HttpResponseTaintSink {
     override string toString() {
         result = "pyramid.routed.response"
     }
+
+}
+
+
+class PyramidCookieSet extends CookieSet, CallNode {
+
+    PyramidCookieSet() {
+        exists(ControlFlowNode f |
+            f = this.getFunction().(AttrNode).getObject("set_cookie") and
+            f.refersTo(_, ModuleObject::named("pyramid").attr("Response"), _)
+        )
+    }
+
+    override string toString() { result = this.(CallNode).toString() }
+
+    override ControlFlowNode getKey() { result = this.getArg(0) }
+
+    override ControlFlowNode getValue() { result = this.getArg(1) }
 
 }

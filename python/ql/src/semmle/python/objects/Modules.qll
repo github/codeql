@@ -435,8 +435,11 @@ class AbsentModuleAttributeObjectInternal extends ObjectInternal, TAbsentModuleA
 
     override predicate subscriptUnknown() { any() }
 
-    /* We know what this is called, but not its innate name */
-    override string getName() { none() }
+    /* We know what this is called, but not its innate name.
+     * However, if we are looking for things by name, this is a reasonable approximation */
+    override string getName() {
+        this = TAbsentModuleAttribute(_, result)
+    }
 
     override predicate contextSensitiveCallee() { none() }
 
