@@ -2,6 +2,9 @@
 
 ## General improvements
 
+* Support for the following frameworks and libraries has been improved:
+  - [firebase](https://www.npmjs.com/package/firebase)
+
 ## New queries
 
 | **Query**                                                                 | **Tags**                                                          | **Purpose**                                                                                                                                                                            |
