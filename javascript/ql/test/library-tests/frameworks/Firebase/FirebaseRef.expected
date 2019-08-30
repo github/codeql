@@ -1,3 +1,6 @@
+| src/import_assign.ts:4:3:4:17 | db.ref("hello") |
+| src/import_named.ts:4:3:4:17 | db.ref("hello") |
+| src/import_star.ts:4:3:4:17 | db.ref("hello") |
 | tst.js:5:1:5:22 | fb.data ... ef('x') |
 | tst.js:7:3:7:7 | x.ref |
 | tst.js:7:3:7:14 | x.ref.parent |

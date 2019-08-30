@@ -193,6 +193,62 @@ module DataFlow {
         not fun.getExit().isJoin() // can only reach exit by the return statement
       )
     }
+
+    /**
+     * Gets the static type of this node as determined by the TypeScript type system.
+     */
+    private Type getType() {
+      exists(AST::ValueNode node |
+        this = TValueNode(node) and
+        ast_node_type(node, result)
+      )
+      or
+      exists(BindingPattern pattern |
+        this = lvalueNode(pattern) and
+        ast_node_type(pattern, result)
+      )
+      or
+      exists(MethodDefinition def |
+        this = TThisNode(def.getInit()) and
+        ast_node_type(def.getDeclaringClass(), result)
+      )
+    }
+
+    /**
+     * Gets the type annotation describing the type of this node,
+     * provided that a static type could not be found.
+     *
+     * Doesn't take field types and function return types into account.
+     */
+    private JSDocTypeExpr getFallbackTypeAnnotation() {
+      exists(BindingPattern pattern |
+        this = lvalueNode(pattern) and
+        not ast_node_type(pattern, _) and
+        result = pattern.getTypeAnnotation()
+      )
+      or
+      result = getAPredecessor().getFallbackTypeAnnotation()
+    }
+
+    /**
+     * Holds if this node is annotated with the given named type,
+     * or is declared as a subtype thereof, or is a union or intersection containing such a type.
+     */
+    predicate hasUnderlyingType(string globalName) {
+      getType().hasUnderlyingType(globalName)
+      or
+      getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(globalName)
+    }
+
+    /**
+     * Holds if this node is annotated with the given named type,
+     * or is declared as a subtype thereof, or is a union or intersection containing such a type.
+     */
+    predicate hasUnderlyingType(string moduleName, string typeName) {
+      getType().hasUnderlyingType(moduleName, typeName)
+      or
+      getFallbackTypeAnnotation().getAnUnderlyingType().hasQualifiedName(moduleName, typeName)
+    }
   }
 
   /**

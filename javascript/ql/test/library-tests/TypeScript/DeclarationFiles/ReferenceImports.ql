@@ -1,4 +1,4 @@
 import javascript
 
 from ReferenceImport comment
-select comment, comment.getAttributeName(), comment.getAttributeValue(), comment.getImportedFile()
+select comment, comment.getAttributeName(), comment.getAttributeValue()
