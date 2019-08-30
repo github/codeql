@@ -37,27 +37,21 @@ abstract class IRVariable extends TIRVariable {
    * within the function.
    */
   abstract string getUniqueId();
-  
+
   /**
    * Gets the source location of this variable.
    */
-  final Language::Location getLocation() {
-    result = getAST().getLocation()
-  }
+  final Language::Location getLocation() { result = getAST().getLocation() }
 
   /**
    * Gets the IR for the function that references this variable.
    */
-  final IRFunction getEnclosingIRFunction() {
-    result.getFunction() = func
-  }
+  final IRFunction getEnclosingIRFunction() { result.getFunction() = func }
 
   /**
    * Gets the function that references this variable.
    */
-  final Language::Function getEnclosingFunction() {
-    result = func
-  }
+  final Language::Function getEnclosingFunction() { result = func }
 }
 
 /**
@@ -65,34 +59,25 @@ abstract class IRVariable extends TIRVariable {
  */
 class IRUserVariable extends IRVariable, TIRUserVariable {
   Language::Variable var;
+
   Language::Type type;
 
-  IRUserVariable() {
-    this = TIRUserVariable(var, type, func)
-  }
+  IRUserVariable() { this = TIRUserVariable(var, type, func) }
 
-  override final string toString() {
-    result = getVariable().toString()
-  }
+  final override string toString() { result = getVariable().toString() }
 
-  override final Language::AST getAST() {
-    result = var
-  }
+  final override Language::AST getAST() { result = var }
 
-  override final string getUniqueId() {
+  final override string getUniqueId() {
     result = getVariable().toString() + " " + getVariable().getLocation().toString()
   }
 
-  override final Language::Type getType() {
-    result = type
-  }
+  final override Language::Type getType() { result = type }
 
   /**
    * Gets the original user-declared variable.
    */
-  Language::Variable getVariable() {
-    result = var
-  }
+  Language::Variable getVariable() { result = var }
 }
 
 /**
@@ -100,31 +85,22 @@ class IRUserVariable extends IRVariable, TIRUserVariable {
  * stack. This includes all parameters, non-static local variables, and
  * temporary variables.
  */
-abstract class IRAutomaticVariable extends IRVariable {
-}
+abstract class IRAutomaticVariable extends IRVariable { }
 
 class IRAutomaticUserVariable extends IRUserVariable, IRAutomaticVariable {
   override Language::AutomaticVariable var;
 
-  IRAutomaticUserVariable() {
-    Language::isVariableAutomatic(var)
-  }
+  IRAutomaticUserVariable() { Language::isVariableAutomatic(var) }
 
-  final override Language::AutomaticVariable getVariable() {
-    result = var
-  }
+  final override Language::AutomaticVariable getVariable() { result = var }
 }
 
 class IRStaticUserVariable extends IRUserVariable {
   override Language::StaticVariable var;
 
-  IRStaticUserVariable() {
-    not Language::isVariableAutomatic(var)
-  }
+  IRStaticUserVariable() { not Language::isVariableAutomatic(var) }
 
-  final override Language::StaticVariable getVariable() {
-    result = var
-  }
+  final override Language::StaticVariable getVariable() { result = var }
 }
 
 IRTempVariable getIRTempVariable(Language::AST ast, TempVariableTag tag) {
@@ -134,55 +110,39 @@ IRTempVariable getIRTempVariable(Language::AST ast, TempVariableTag tag) {
 
 class IRTempVariable extends IRVariable, IRAutomaticVariable, TIRTempVariable {
   Language::AST ast;
+
   TempVariableTag tag;
+
   Language::Type type;
 
-  IRTempVariable() {
-    this = TIRTempVariable(func, ast, tag, type)
-  }
+  IRTempVariable() { this = TIRTempVariable(func, ast, tag, type) }
 
-  override final Language::Type getType() {
-    result = type
-  }
+  final override Language::Type getType() { result = type }
 
-  override final Language::AST getAST() {
-    result = ast
-  }
+  final override Language::AST getAST() { result = ast }
 
-  override final string getUniqueId() {
+  final override string getUniqueId() {
     result = "Temp: " + Construction::getTempVariableUniqueId(this)
   }
 
-  final TempVariableTag getTag() {
-    result = tag
-  }
+  final TempVariableTag getTag() { result = tag }
 
   override string toString() {
     result = getBaseString() + ast.getLocation().getStartLine().toString() + ":" +
-      ast.getLocation().getStartColumn().toString()
+        ast.getLocation().getStartColumn().toString()
   }
 
-  string getBaseString() {
-    result = "#temp"
-  }
+  string getBaseString() { result = "#temp" }
 }
 
 class IRReturnVariable extends IRTempVariable {
-  IRReturnVariable() {
-    tag = ReturnValueTempVar()
-  }
+  IRReturnVariable() { tag = ReturnValueTempVar() }
 
-  override final string toString() {
-    result = "#return"
-  }
+  final override string toString() { result = "#return" }
 }
 
 class IRThrowVariable extends IRTempVariable {
-  IRThrowVariable() {
-    tag = ThrowTempVar()
-  }
+  IRThrowVariable() { tag = ThrowTempVar() }
 
-  override string getBaseString() {
-    result = "#throw"
-  }
+  override string getBaseString() { result = "#throw" }
 }
