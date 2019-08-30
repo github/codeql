@@ -13,6 +13,7 @@ connection
 | type tracker with call steps | tst.js:7:15:7:18 | conn |
 | type tracker with call steps | tst.js:11:5:11:19 | this.connection |
 | type tracker with call steps with property connection | tst.js:7:14:7:13 | this |
+| type tracker without call steps | client.js:1:10:1:27 | exportedConnection |
 | type tracker without call steps | tst.js:16:10:16:49 | api.cha ... ction() |
 | type tracker without call steps | tst.js:19:7:19:21 | getConnection() |
 | type tracker without call steps | tst.js:31:9:31:23 | getConnection() |
@@ -23,12 +24,14 @@ connection
 | type tracker without call steps | tst.js:62:40:62:79 | api.cha ... ction() |
 | type tracker without call steps | tst.js:63:38:63:77 | api.cha ... ction() |
 | type tracker without call steps | tst.js:67:14:67:47 | MyAppli ... nection |
+| type tracker without call steps | tst.js:78:35:78:49 | getConnection() |
 | type tracker without call steps | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
 | type tracker without call steps with property MyApplication.namespace.connection | file://:0:0:0:0 | global access path |
 | type tracker without call steps with property conflict | tst.js:63:3:63:25 | MyAppli ... mespace |
 | type tracker without call steps with property conflict | tst_conflict.js:6:3:6:25 | MyAppli ... mespace |
 | type tracker without call steps with property connection | tst.js:62:3:62:25 | MyAppli ... mespace |
 dataCallback
+| client.js:3:28:3:34 | x => {} |
 | tst.js:10:11:10:12 | cb |
 | tst.js:21:1:23:1 | functio ... ata);\\n} |
 | tst.js:30:26:30:27 | cb |
@@ -40,6 +43,7 @@ dataCallback
 | tst.js:58:16:58:22 | x => {} |
 | tst.js:68:16:70:3 | data => ... a);\\n  } |
 dataValue
+| client.js:3:28:3:28 | x |
 | tst.js:21:18:21:21 | data |
 | tst.js:25:19:25:22 | data |
 | tst.js:33:17:33:20 | data |
