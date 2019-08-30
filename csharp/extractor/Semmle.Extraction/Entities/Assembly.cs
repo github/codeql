@@ -36,7 +36,7 @@ namespace Semmle.Extraction.Entities
         }
 
         public override bool NeedsPopulation =>
-            assembly != Context.Compilation.Assembly || !Context.IsGlobalContext;
+            !Equals(assembly, Context.Compilation.Assembly) || !Context.IsGlobalContext;
 
         public override int GetHashCode() =>
             symbol == null ? 91187354 : symbol.GetHashCode();
