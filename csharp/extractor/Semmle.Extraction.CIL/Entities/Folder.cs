@@ -7,17 +7,21 @@ namespace Semmle.Extraction.CIL.Entities
     {
     }
 
-    public class Folder : LabelledEntity, IFolder
+    public sealed class Folder : LabelledEntity, IFolder
     {
         readonly string path;
 
         public Folder(Context cx, string path) : base(cx)
         {
             this.path = path;
-            ShortId = new StringId(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));
         }
 
-        static readonly Id suffix = new StringId(";folder");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.Write(Semmle.Extraction.Entities.File.PathAsDatabaseId(path));
+        }
+
+        public override string IdSuffix => ";folder";
 
         public override IEnumerable<IExtractionProduct> Contents
         {
@@ -37,6 +41,11 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override Id IdSuffix => suffix;
+        public override bool Equals(object obj)
+        {
+            return obj is Folder folder && path == folder.path;
+        }
+
+        public override int GetHashCode() => path.GetHashCode();
     }
 }

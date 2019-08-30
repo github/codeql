@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Semmle.Extraction
 {
     /// <summary>
@@ -18,7 +20,22 @@ namespace Semmle.Extraction
 
         public override string ToString() => Label.ToString();
 
-        public abstract void Populate();
+        public abstract void Populate(TextWriter trapFile);
+
+        /// <summary>
+        /// For debugging.
+        /// </summary>
+        public string DebugContents
+        {
+            get
+            {
+                using (var trap = new StringWriter())
+                {
+                    Populate(trap);
+                    return trap.ToString();
+                }
+            }
+        }
 
         public Context Context
         {
@@ -34,9 +51,13 @@ namespace Semmle.Extraction
 
         public Initializer UnderlyingObject => symbol;
 
-        public abstract IId Id
+        public abstract void WriteId(System.IO.TextWriter trapFile);
+
+        public void WriteQuotedId(TextWriter trapFile)
         {
-            get;
+            trapFile.Write("@\"");
+            WriteId(trapFile);
+            trapFile.Write('\"');
         }
 
         public abstract bool NeedsPopulation

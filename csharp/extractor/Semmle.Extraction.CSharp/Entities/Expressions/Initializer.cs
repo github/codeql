@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -18,7 +19,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new ArrayInitializer(info).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             var child = 0;
             foreach (var e in Syntax.Expressions)
@@ -44,10 +45,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new ImplicitArrayInitializer(info).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             ArrayInitializer.Create(new ExpressionNodeInfo(cx, Syntax, this, -1));
-            cx.Emit(Tuples.implicitly_typed_array_creation(this));
+            trapFile.implicitly_typed_array_creation(this);
         }
     }
 
@@ -58,7 +59,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new ObjectInitializer(info).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             var child = 0;
 
@@ -98,19 +99,19 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new CollectionInitializer(info).TryPopulate();
 
-        protected override void Populate()
+        protected override void PopulateExpression(TextWriter trapFile)
         {
             var child = 0;
             foreach (var i in Syntax.Expressions)
             {
-                var collectionInfo = cx.Model(Syntax).GetCollectionInitializerSymbolInfo(i);
+                var collectionInfo = cx.GetModel(Syntax).GetCollectionInitializerSymbolInfo(i);
                 var addMethod = Method.Create(cx, collectionInfo.Symbol as IMethodSymbol);
                 var voidType = Entities.Type.Create(cx, new AnnotatedTypeSymbol(cx.Compilation.GetSpecialType(SpecialType.System_Void), NullableAnnotation.NotApplicable));
 
                 var invocation = new Expression(new ExpressionInfo(cx, voidType, cx.Create(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
 
                 if (addMethod != null)
-                    cx.Emit(Tuples.expr_call(invocation, addMethod));
+                    trapFile.expr_call(invocation, addMethod);
                 else
                     cx.ModelError(Syntax, "Unable to find an Add() method for collection initializer");
 

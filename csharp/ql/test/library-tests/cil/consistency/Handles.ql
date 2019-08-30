@@ -27,12 +27,6 @@ query predicate missingCil(Element e) {
   not exists(CIL::Element ce | ce.(MetadataEntity).matchesHandle(e))
 }
 
-query predicate cilLocationViolation(CIL::Element e) {
-  e instanceof MetadataEntity and
-  exists(e.getALocation()) and
-  not e.getALocation() = e.(MetadataEntity).getAssembly()
-}
-
 query predicate csharpLocationViolation(Element e) {
   e.fromLibrary() and
   e.(MetadataEntity).hasHandle() and

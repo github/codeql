@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
 using Microsoft.CodeAnalysis.CSharp;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
@@ -30,17 +31,17 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             return ret;
         }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
             switch (GetKind(Stmt))
             {
                 case StmtKind.GOTO:
                     var target = ((IdentifierNameSyntax)Stmt.Expression).Identifier.Text;
-                    cx.Emit(Tuples.exprorstmt_name(this, target));
+                    trapFile.exprorstmt_name(this, target);
                     break;
                 case StmtKind.GOTO_CASE:
                     Expr = Expression.Create(cx, Stmt.Expression, this, 0);
-                    ConstantValue = Switch.LabelForValue(cx.Model(Stmt).GetConstantValue(Stmt.Expression).Value);
+                    ConstantValue = Switch.LabelForValue(cx.GetModel(Stmt).GetConstantValue(Stmt.Expression).Value);
                     break;
                 case StmtKind.GOTO_DEFAULT:
                     ConstantValue = Switch.DefaultLabel;

@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -30,11 +31,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public new Accessor OriginalDefinition => Create(Context, symbol.OriginalDefinition);
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            PopulateMethod();
-            ExtractModifiers();
-            ContainingType.ExtractGenerics();
+            PopulateMethod(trapFile);
+            PopulateModifiers(trapFile);
+            ContainingType.PopulateGenerics();
 
             var prop = PropertySymbol;
             if (prop == null)
@@ -62,16 +63,16 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            Context.Emit(Tuples.accessors(this, kind, symbol.Name, parent, unboundAccessor));
+            trapFile.accessors(this, kind, symbol.Name, parent, unboundAccessor);
 
             foreach (var l in Locations)
-                Context.Emit(Tuples.accessor_location(this, l));
+                trapFile.accessor_location(this, l);
 
-            Overrides();
+            Overrides(trapFile);
 
             if (symbol.FromSource() && Block == null)
             {
-                Context.Emit(Tuples.compiler_generated(this));
+                trapFile.compiler_generated(this);
             }
         }
 

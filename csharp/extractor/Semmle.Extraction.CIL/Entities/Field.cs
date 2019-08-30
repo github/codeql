@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using System.Reflection.Metadata;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
+using System.IO;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -12,7 +13,7 @@ namespace Semmle.Extraction.CIL.Entities
     /// An entity represting a member.
     /// Used to type tuples correctly.
     /// </summary>
-    interface IMember : ILabelledEntity
+    interface IMember : IExtractedEntity
     {
     }
 
@@ -36,18 +37,24 @@ namespace Semmle.Extraction.CIL.Entities
 
         public Label Label { get; set; }
 
-        public IId Id => ShortId + IdSuffix;
-
-        public Id IdSuffix => fieldSuffix;
-
-        static readonly StringId fieldSuffix = new StringId(";cil-field");
-
-        public Id ShortId
+        public void WriteId(TextWriter trapFile)
         {
-            get; set;
+            trapFile.WriteSubId(DeclaringType);
+            trapFile.Write('.');
+            trapFile.Write(Name);
         }
 
-        public abstract Id Name { get; }
+        public void WriteQuotedId(TextWriter trapFile)
+        {
+            trapFile.Write("@\"");
+            WriteId(trapFile);
+            trapFile.Write(IdSuffix);
+            trapFile.Write('\"');
+        }
+
+        public string IdSuffix => ";cil-field";
+
+        public abstract string Name { get; }
 
         public abstract Type DeclaringType { get; }
 
@@ -59,7 +66,7 @@ namespace Semmle.Extraction.CIL.Entities
         {
             get
             {
-                yield return Tuples.cil_field(this, DeclaringType, Name.Value, Type);
+                yield return Tuples.cil_field(this, DeclaringType, Name, Type);
             }
         }
 
@@ -82,8 +89,14 @@ namespace Semmle.Extraction.CIL.Entities
             this.handle = handle;
             this.gc = gc;
             fd = cx.mdReader.GetFieldDefinition(handle);
-            ShortId = DeclaringType.ShortId + cx.Dot + Name;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is DefinitionField field && handle.Equals(field.handle);
+        }
+
+        public override int GetHashCode() => handle.GetHashCode();
 
         public override IEnumerable<IExtractionProduct> Contents
         {
@@ -114,7 +127,7 @@ namespace Semmle.Extraction.CIL.Entities
             }
         }
 
-        public override Id Name => cx.GetId(fd.Name);
+        public override string Name => cx.GetString(fd.Name);
 
         public override Type DeclaringType => (Type)cx.Create(fd.GetDeclaringType());
 
@@ -127,19 +140,30 @@ namespace Semmle.Extraction.CIL.Entities
 
     sealed class MemberReferenceField : Field
     {
+        readonly MemberReferenceHandle Handle;
         readonly MemberReference mr;
         readonly GenericContext gc;
         readonly Type declType;
 
         public MemberReferenceField(GenericContext gc, MemberReferenceHandle handle) : base(gc.cx)
         {
+            Handle = handle;
             this.gc = gc;
             mr = cx.mdReader.GetMemberReference(handle);
             declType = (Type)cx.CreateGeneric(gc, mr.Parent);
-            ShortId = declType.ShortId + cx.Dot + Name;
         }
 
-        public override Id Name => cx.GetId(mr.Name);
+        public override bool Equals(object obj)
+        {
+            return obj is MemberReferenceField field && Handle.Equals(field.Handle);
+        }
+
+        public override int GetHashCode()
+        {
+            return Handle.GetHashCode();
+        }
+
+        public override string Name => cx.GetString(mr.Name);
 
         public override Type DeclaringType => declType;
 

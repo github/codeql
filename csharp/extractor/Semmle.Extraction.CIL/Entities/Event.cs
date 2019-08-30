@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection.Metadata;
 
 namespace Semmle.Extraction.CIL.Entities
@@ -6,25 +7,41 @@ namespace Semmle.Extraction.CIL.Entities
     /// <summary>
     /// An event.
     /// </summary>
-    interface IEvent : ILabelledEntity
+    interface IEvent : IExtractedEntity
     {
     }
 
     /// <summary>
     /// An event entity.
     /// </summary>
-    class Event : LabelledEntity, IEvent
+    sealed class Event : LabelledEntity, IEvent
     {
+        readonly EventDefinitionHandle handle;
         readonly Type parent;
         readonly EventDefinition ed;
-        static readonly Id suffix = CIL.Id.Create(";cil-event");
 
         public Event(Context cx, Type parent, EventDefinitionHandle handle) : base(cx)
         {
+            this.handle = handle;
             this.parent = parent;
             ed = cx.mdReader.GetEventDefinition(handle);
-            ShortId = parent.ShortId + cx.Dot + cx.ShortName(ed.Name) + suffix;
         }
+
+        public override void WriteId(TextWriter trapFile)
+        {
+            parent.WriteId(trapFile);
+            trapFile.Write('.');
+            trapFile.Write(cx.ShortName(ed.Name));
+        }
+
+        public override string IdSuffix => ";cil-event";
+
+        public override bool Equals(object obj)
+        {
+            return obj is Event e && handle.Equals(e.handle);
+        }
+
+        public override int GetHashCode() => handle.GetHashCode();
 
         public override IEnumerable<IExtractionProduct> Contents
         {
@@ -61,7 +78,5 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return c;
             }
         }
-
-        public override Id IdSuffix => suffix;
     }
 }

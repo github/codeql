@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.Entities;
 
@@ -18,28 +19,34 @@ namespace Semmle.Extraction.CSharp.Entities
         readonly bool IsVar;
         readonly Extraction.Entities.Location DeclLocation;
 
-        public override IId Id => new Key(Parent, "_", symbol.Name, ";localvar");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.WriteSubId(Parent);
+            trapFile.Write('_');
+            trapFile.Write(symbol.Name);
+            trapFile.Write(";localvar");
+        }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
             if (symbol is ILocalSymbol local)
             {
-                ExtractNullability(local.NullableAnnotation);
+                PopulateNullability(trapFile, local.NullableAnnotation);
                 if (local.IsRef)
-                    Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
+                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
             }
 
-            Context.Emit(Tuples.localvars(
+            trapFile.localvars(
                 this,
                 IsRef ? 3 : IsConst ? 2 : 1,
                 symbol.Name,
                 IsVar ? 1 : 0,
                 Type.Type.TypeRef,
-                Parent));
+                Parent);
 
-            Context.Emit(Tuples.localvar_location(this, DeclLocation));
+            trapFile.localvar_location(this, DeclLocation);
 
-            DefineConstantValue();
+            DefineConstantValue(trapFile);
         }
 
         public static LocalVariable Create(Context cx, ISymbol local, Expression parent, bool isVar, Extraction.Entities.Location declLocation)
@@ -80,12 +87,12 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        void DefineConstantValue()
+        void DefineConstantValue(TextWriter trapFile)
         {
             var local = symbol as ILocalSymbol;
             if (local != null && local.HasConstantValue)
             {
-                Context.Emit(Tuples.constant_value(this, Expression.ValueAsString(local.ConstantValue)));
+                trapFile.constant_value(this, Expression.ValueAsString(local.ConstantValue));
             }
         }
 

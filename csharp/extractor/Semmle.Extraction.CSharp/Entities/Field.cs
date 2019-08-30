@@ -6,6 +6,7 @@ using System;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
 using Semmle.Extraction.CSharp.Entities.Expressions;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -24,33 +25,33 @@ namespace Semmle.Extraction.CSharp.Entities
         public override bool NeedsPopulation =>
             (base.NeedsPopulation && !symbol.IsImplicitlyDeclared) || symbol.ContainingType.IsTupleType;
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            ExtractMetadataHandle();
-            ExtractAttributes();
-            ContainingType.ExtractGenerics();
-            ExtractNullability(symbol.NullableAnnotation);
+            PopulateMetadataHandle(trapFile);
+            PopulateAttributes();
+            ContainingType.PopulateGenerics();
+            PopulateNullability(trapFile, symbol.NullableAnnotation);
 
             Field unboundFieldKey = Field.Create(Context, symbol.OriginalDefinition);
-            Context.Emit(Tuples.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey));
+            trapFile.fields(this, (symbol.IsConst ? 2 : 1), symbol.Name, ContainingType, Type.Type.TypeRef, unboundFieldKey);
 
-            ExtractModifiers();
+            PopulateModifiers(trapFile);
 
             if (symbol.IsVolatile)
-                Modifier.HasModifier(Context, this, "volatile");
+                Modifier.HasModifier(Context, trapFile, this, "volatile");
 
             if (symbol.IsConst)
             {
-                Modifier.HasModifier(Context, this, "const");
+                Modifier.HasModifier(Context, trapFile, this, "const");
 
                 if (symbol.HasConstantValue)
                 {
-                    Context.Emit(Tuples.constant_value(this, Expression.ValueAsString(symbol.ConstantValue)));
+                    trapFile.constant_value(this, Expression.ValueAsString(symbol.ConstantValue));
                 }
             }
 
             foreach (var l in Locations)
-                Context.Emit(Tuples.field_location(this, l));
+                trapFile.field_location(this, l);
 
             if (!IsSourceDeclaration || !symbol.FromSource())
                 return;
@@ -70,7 +71,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     var simpleAssignExpr = new Expression(new ExpressionInfo(Context, Type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
                     Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Initializer.Value, simpleAssignExpr, 0));
                     var access = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, false, null));
-                    Context.Emit(Tuples.expr_access(access, this));
+                    trapFile.expr_access(access, this);
                     if (!symbol.IsStatic)
                     {
                         This.CreateImplicit(Context, Entities.Type.Create(Context, symbol.ContainingType), Location, access, -1);
@@ -85,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 // Mark fields that have explicit initializers.
                 var expr = new Expression(new ExpressionInfo(Context, Type, Context.Create(initializer.EqualsValue.Value.FixedLocation()), Kinds.ExprKind.FIELD_ACCESS, this, child++, false, null));
-                Context.Emit(Tuples.expr_access(expr, this));
+                trapFile.expr_access(expr, this);
             }
 
             if (IsSourceDeclaration)
@@ -98,7 +99,13 @@ namespace Semmle.Extraction.CSharp.Entities
         readonly Lazy<AnnotatedType> type;
         public AnnotatedType Type => type.Value;
 
-        public override IId Id => new Key(ContainingType, ".", symbol.Name, ";field");
+        public override void WriteId(TextWriter trapFile)
+        {
+            trapFile.WriteSubId(ContainingType);
+            trapFile.Write('.');
+            trapFile.Write(symbol.Name);
+            trapFile.Write(";field");
+        }
 
         bool IExpressionParentEntity.IsTopLevelParent => true;
 

@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
@@ -32,11 +33,11 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         CaseLabel(Context cx, CaseSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
             var value = Stmt.Value;
             Expression.Create(cx, value, this, 0);
-            Switch.LabelForValue(cx.Model(Stmt).GetConstantValue(value).Value);
+            Switch.LabelForValue(cx.GetModel(Stmt).GetConstantValue(value).Value);
         }
 
         public static CaseLabel Create(Context cx, CaseSwitchLabelSyntax node, Switch parent, int child)
@@ -52,7 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
         CaseDefault(Context cx, DefaultSwitchLabelSyntax node, Switch parent, int child)
             : base(cx, node, parent, child) { }
 
-        protected override void Populate() { }
+        protected override void PopulateStatement(TextWriter trapFile) { }
 
         public static CaseDefault Create(Context cx, DefaultSwitchLabelSyntax node, Switch parent, int child)
         {
@@ -73,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             switch (designation)
             {
                 case SingleVariableDesignationSyntax _:
-                    if (cx.Model(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+                    if (cx.GetModel(pattern).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
                     {
                         var type = Type.Create(cx, symbol.GetAnnotatedType());
                         Expressions.VariableDeclaration.Create(cx, symbol, type, optionalType, cx.Create(pattern.GetLocation()), cx.Create(designation.GetLocation()), isVar, this, 0);
@@ -95,7 +96,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             }
         }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
             switch (Stmt.Pattern)
             {

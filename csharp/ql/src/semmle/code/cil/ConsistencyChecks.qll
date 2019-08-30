@@ -372,6 +372,18 @@ class TypeIsBothConstructedAndUnbound extends TypeViolation {
 }
 
 /**
+ * The location of a constructed generic type should be the same
+ * as the location of its unbound generic type.
+ */
+class InconsistentTypeLocation extends TypeViolation {
+  InconsistentTypeLocation() {
+    this.getType().getLocation() != this.getType().getSourceDeclaration().getLocation()
+  }
+
+  override string getMessage() { result = "Inconsistent constructed type location" }
+}
+
+/**
  * A constructed type that does not match its unbound generic type.
  */
 class TypeParameterMismatch extends TypeViolation {
@@ -404,6 +416,18 @@ class MethodViolation extends ConsistencyViolation, DeclarationCheck {
 }
 
 /**
+ * The location of a constructed method should be equal to the
+ * location of its unbound generic.
+ */
+class InconsistentMethodLocation extends MethodViolation {
+  InconsistentMethodLocation() {
+    this.getMethod().getLocation() != this.getMethod().getSourceDeclaration().getLocation()
+  }
+
+  override string getMessage() { result = "Inconsistent constructed method location" }
+}
+
+/**
  * A constructed method that does not match its unbound method.
  */
 class ConstructedMethodTypeParams extends MethodViolation {
@@ -431,7 +455,10 @@ abstract class MissingEntityViolation extends ConsistencyViolation, MissingEntit
  * The type `object` is missing from the database.
  */
 class MissingObjectViolation extends MissingEntityViolation {
-  MissingObjectViolation() { not exists(ObjectType o) }
+  MissingObjectViolation() {
+    exists(this) and
+    not exists(ObjectType o)
+  }
 
   override string getMessage() { result = "Object missing" }
 }
@@ -444,7 +471,8 @@ class InvalidOverride extends MethodViolation {
 
   InvalidOverride() {
     base = getMethod().getOverriddenMethod() and
-    not getMethod().getDeclaringType().getABaseType+() = base.getDeclaringType()
+    not getMethod().getDeclaringType().getABaseType+() = base.getDeclaringType() and
+    base.getDeclaringType().isSourceDeclaration() // Bases classes of constructed types aren't extracted properly.
   }
 
   override string getMessage() {
@@ -477,6 +505,43 @@ class ArrayTypeInvalidRank extends TypeViolation {
   ArrayTypeInvalidRank() { exists(ArrayType t | t = getType() | not t.getRank() > 0) }
 
   override string getMessage() { result = "Invalid ArrayType.getRank()" }
+}
+
+/**
+ * A type should have at most one kind, except for missing referenced types
+ * where the interface/class is unknown.
+ */
+class KindViolation extends TypeViolation {
+  KindViolation() {
+    count(typeKind(this.getType())) != 1 and
+    exists(this.getType().getLocation())
+  }
+
+  override string getMessage() {
+    result = "Invalid kinds on type: " + concat(typeKind(this.getType()), " ")
+  }
+}
+
+/**
+ * The type of a kind must be consistent between a constructed generic and its
+ * unbound generic.
+ */
+class InconsistentKind extends TypeViolation {
+  InconsistentKind() { typeKind(this.getType()) != typeKind(this.getType().getSourceDeclaration()) }
+
+  override string getMessage() { result = "Inconsistent type kind of source declaration" }
+}
+
+private string typeKind(Type t) {
+  t instanceof Interface and result = "interface"
+  or
+  t instanceof Class and result = "class"
+  or
+  t instanceof TypeParameter and result = "type parameter"
+  or
+  t instanceof ArrayType and result = "array"
+  or
+  t instanceof PointerType and result = "pointer"
 }
 
 /**

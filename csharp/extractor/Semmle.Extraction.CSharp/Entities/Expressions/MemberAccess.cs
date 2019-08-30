@@ -8,8 +8,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
     class MemberAccess : Expression
     {
+        readonly IEntity Target;
+
         private MemberAccess(ExpressionNodeInfo info, ExpressionSyntax qualifier, ISymbol target) : base(info)
         {
+            var trapFile = info.Context.TrapWriter.Writer;
             Qualifier = Create(cx, qualifier, this, -1);
 
             if (target == null)
@@ -19,7 +22,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
             else
             {
-                cx.Emit(Tuples.expr_access(this, cx.CreateEntity(target)));
+                Target = cx.CreateEntity(target);
+                trapFile.expr_access(this, Target);
             }
         }
 
@@ -31,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression Create(ExpressionNodeInfo info, MemberBindingExpressionSyntax node)
         {
             var expr = Create(info, FindConditionalQualifier(node), node.Name);
-            expr.MakeConditional();
+            expr.MakeConditional(info.Context.TrapWriter.Writer);
             return expr;
         }
 
@@ -43,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (IsDynamic(info.Context, expression))
             {
                 var expr = new MemberAccess(info.SetKind(ExprKind.DYNAMIC_MEMBER_ACCESS), expression, null);
-                info.Context.Emit(Tuples.dynamic_member_name(expr, name.Identifier.Text));
+                info.Context.TrapWriter.Writer.dynamic_member_name(expr, name.Identifier.Text);
                 return expr;
             }
 

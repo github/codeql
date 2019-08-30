@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
@@ -27,7 +28,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             return ret;
         }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
             Expression.Create(cx, Stmt.Expression, this, 0);
             int childIndex = 0;

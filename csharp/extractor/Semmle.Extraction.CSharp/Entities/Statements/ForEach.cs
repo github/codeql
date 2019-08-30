@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
 using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Extraction.Entities;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Statements
 {
@@ -17,11 +18,11 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             return ret;
         }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter _)
         {
             Expression.Create(cx, Stmt.Expression, this, 1);
 
-            var typeSymbol = cx.Model(Stmt).GetDeclaredSymbol(Stmt);
+            var typeSymbol = cx.GetModel(Stmt).GetDeclaredSymbol(Stmt);
             var type = Type.Create(cx, typeSymbol.GetAnnotatedType());
 
             var location = cx.Create(Stmt.Identifier.GetLocation());
@@ -44,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             return ret;
         }
 
-        protected override void Populate()
+        protected override void PopulateStatement(TextWriter trapFile)
         {
             Expression.Create(cx, Stmt.Variable, this, 0);
             Expression.Create(cx, Stmt.Expression, this, 1);

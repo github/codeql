@@ -2,6 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Populators;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -11,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public Method(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
-        protected void ExtractParameters()
+        protected void PopulateParameters(TextWriter trapFile)
         {
             var originalMethod = OriginalDefinition;
             IEnumerable<IParameterSymbol> parameters = symbol.Parameters;
@@ -55,13 +56,13 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <summary>
         /// Extracts constructor initializers.
         /// </summary>
-        protected virtual void ExtractInitializers()
+        protected virtual void ExtractInitializers(TextWriter trapFile)
         {
             // Normal methods don't have initializers,
             // so there's nothing to extract.
         }
 
-        void ExtractMethodBody()
+        void PopulateMethodBody(TextWriter trapFile)
         {
             if (!IsSourceDeclaration)
                 return;
@@ -73,23 +74,23 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.PopulateLater(
                     () =>
                     {
-                        ExtractInitializers();
+                        ExtractInitializers(trapFile);
                         if (block != null)
                             Statements.Block.Create(Context, block, this, 0);
                         else
                             Expression.Create(Context, expr, this, 0);
 
-                        Context.NumberOfLines(symbol, this);
+                        Context.NumberOfLines(trapFile, symbol, this);
                     });
         }
 
-        public void Overrides()
+        public void Overrides(TextWriter trapFile)
         {
             foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.
                 Where(sym => sym.MethodKind == MethodKind.Ordinary).
                 Select(impl => Type.Create(Context, impl.ContainingType)))
             {
-                Context.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
+                trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 if (IsSourceDeclaration)
                     foreach (var syntax in symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).OfType<MethodDeclarationSyntax>())
@@ -98,67 +99,72 @@ namespace Semmle.Extraction.CSharp.Entities
 
             if (symbol.OverriddenMethod != null)
             {
-                Context.Emit(Tuples.overrides(this, Method.Create(Context, symbol.OverriddenMethod)));
+                trapFile.overrides(this, Method.Create(Context, symbol.OverriddenMethod));
             }
         }
 
         /// <summary>
         ///  Factored out to share logic between `Method` and `UserOperator`.
         /// </summary>
-        protected static void BuildMethodId(Method m, ITrapBuilder tb)
+        protected static void BuildMethodId(Method m, TextWriter trapFile)
         {
-            tb.Append(m.ContainingType);
+            trapFile.WriteSubId(m.ContainingType);
 
-            AddExplicitInterfaceQualifierToId(m.Context, tb, m.symbol.ExplicitInterfaceImplementations);
+            AddExplicitInterfaceQualifierToId(m.Context, trapFile, m.symbol.ExplicitInterfaceImplementations);
 
-            tb.Append(".").Append(m.symbol.Name);
+            trapFile.Write(".");
+            trapFile.Write(m.symbol.Name);
 
             if (m.symbol.IsGenericMethod)
             {
                 if (Equals(m.symbol, m.symbol.OriginalDefinition))
                 {
-                    tb.Append("`").Append(m.symbol.TypeParameters.Length);
+                    trapFile.Write('`');
+                    trapFile.Write(m.symbol.TypeParameters.Length);
                 }
                 else
                 {
-                    tb.Append("<");
+                    trapFile.Write('<');
                     // Encode the nullability of the type arguments in the label.
                     // Type arguments with different nullability can result in 
                     // a constructed method with different nullability of its parameters and return type,
                     // so we need to create a distinct database entity for it.
-                    tb.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); tb.Append((int)ta.Nullability); });
-                    tb.Append(">");
+                    trapFile.BuildList(",", m.symbol.GetAnnotatedTypeArguments(), (ta, tb0) => { AddSignatureTypeToId(m.Context, tb0, m.symbol, ta.Symbol); trapFile.Write((int)ta.Nullability); });
+                    trapFile.Write('>');
                 }
             }
 
-            AddParametersToId(m.Context, tb, m.symbol);
+            AddParametersToId(m.Context, trapFile, m.symbol);
             switch (m.symbol.MethodKind)
             {
                 case MethodKind.PropertyGet:
-                    tb.Append(";getter");
+                    trapFile.Write(";getter");
                     break;
                 case MethodKind.PropertySet:
-                    tb.Append(";setter");
+                    trapFile.Write(";setter");
                     break;
                 case MethodKind.EventAdd:
-                    tb.Append(";adder");
+                    trapFile.Write(";adder");
                     break;
                 case MethodKind.EventRaise:
-                    tb.Append(";raiser");
+                    trapFile.Write(";raiser");
                     break;
                 case MethodKind.EventRemove:
-                    tb.Append(";remover");
+                    trapFile.Write(";remover");
                     break;
                 default:
-                    tb.Append(";method");
+                    trapFile.Write(";method");
                     break;
             }
         }
 
-        public override IId Id => new Key(tb => BuildMethodId(this, tb));
+        public override void WriteId(TextWriter trapFile)
+        {
+            BuildMethodId(this, trapFile);
+        }
 
         /// <summary>
-        /// Adds an appropriate label ID to the trap builder <paramref name="tb"/>
+        /// Adds an appropriate label ID to the trap builder <paramref name="trapFile"/>
         /// for the type <paramref name="type"/> belonging to the signature of method
         /// <paramref name="method"/>.
         ///
@@ -193,58 +199,54 @@ namespace Semmle.Extraction.CSharp.Entities
         /// to make the reference to <code>#3</code> in the label definition <code>#4</code> for
         /// <code>T</code> valid.
         /// </summary>
-        protected static void AddSignatureTypeToId(Context cx, ITrapBuilder tb, IMethodSymbol method, ITypeSymbol type)
+        protected static void AddSignatureTypeToId(Context cx, TextWriter trapFile, IMethodSymbol method, ITypeSymbol type)
         {
             if (type.ContainsTypeParameters(cx, method))
-                type.BuildTypeId(cx, tb, (cx0, tb0, type0) => AddSignatureTypeToId(cx, tb0, method, type0));
+                type.BuildTypeId(cx, trapFile, (cx0, tb0, type0) => AddSignatureTypeToId(cx, tb0, method, type0));
             else
-                tb.Append(Type.Create(cx, type));
+                trapFile.WriteSubId(Type.Create(cx, type));
         }
 
-        protected static void AddParametersToId(Context cx, ITrapBuilder tb, IMethodSymbol method)
+        protected static void AddParametersToId(Context cx, TextWriter trapFile, IMethodSymbol method)
         {
-            tb.Append("(");
-            tb.AppendList(",", AddParameterPartsToId(cx, tb, method));
-            tb.Append(")");
-        }
+            trapFile.Write('(');
+            int index = 0;
 
-        // This is a slight abuse of ITrapBuilder.AppendList().
-        // yield return "" is used to insert a list separator
-        // at the desired location.
-        static IEnumerable<object> AddParameterPartsToId(Context cx, ITrapBuilder tb, IMethodSymbol method)
-        {
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
-                AddSignatureTypeToId(cx, tb, method, method.ReceiverType);
-                yield return "";    // The next yield return outputs a ","
+                trapFile.WriteSeparator(",", ref index);
+                AddSignatureTypeToId(cx, trapFile, method, method.ReceiverType);
             }
 
             foreach (var param in method.Parameters)
             {
-                yield return "";    // Maybe print ","
-                AddSignatureTypeToId(cx, tb, method, param.Type);
+                trapFile.WriteSeparator(",", ref index);
+                AddSignatureTypeToId(cx, trapFile, method, param.Type);
                 switch (param.RefKind)
                 {
                     case RefKind.Out:
-                        yield return " out";
+                        trapFile.Write(" out");
                         break;
                     case RefKind.Ref:
-                        yield return " ref";
+                        trapFile.Write(" ref");
                         break;
                 }
             }
 
             if (method.IsVararg)
             {
-                yield return "__arglist";
+                trapFile.WriteSeparator(",", ref index);
+                trapFile.Write("__arglist");
             }
+
+            trapFile.Write(')');
         }
 
-        public static void AddExplicitInterfaceQualifierToId(Context cx, ITrapBuilder tb, IEnumerable<ISymbol> explicitInterfaceImplementations)
+        public static void AddExplicitInterfaceQualifierToId(Context cx, System.IO.TextWriter trapFile, IEnumerable<ISymbol> explicitInterfaceImplementations)
         {
             if (explicitInterfaceImplementations.Any())
             {
-                tb.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
+                trapFile.AppendList(",", explicitInterfaceImplementations.Select(impl => cx.CreateEntity(impl.ContainingType)));
             }
         }
 
@@ -328,7 +330,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         bool IStatementParentEntity.IsTopLevelParent => true;
 
-        protected void ExtractGenerics()
+        protected void PopulateGenerics(TextWriter trapFile)
         {
             var isFullyConstructed = IsBoundGeneric;
 
@@ -338,47 +340,47 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 if (isFullyConstructed)
                 {
-                    Context.Emit(Tuples.is_constructed(this));
-                    Context.Emit(Tuples.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol)));
+                    trapFile.is_constructed(this);
+                    trapFile.constructed_generic(this, Method.Create(Context, ConstructedFromSymbol));
                     foreach (var tp in symbol.GetAnnotatedTypeArguments())
                     {
-                        Context.Emit(Tuples.type_arguments(Type.Create(Context, tp.Symbol), child, this));
+                        trapFile.type_arguments(Type.Create(Context, tp.Symbol), child, this);
                         var ta = tp.Nullability.GetTypeAnnotation();
                         if (ta != Kinds.TypeAnnotation.None)
-                            Context.Emit(Tuples.type_argument_annotation(this, child, ta));
+                            trapFile.type_argument_annotation(this, child, ta);
                         child++;
                     }
                 }
                 else
                 {
-                    Context.Emit(Tuples.is_generic(this));
+                    trapFile.is_generic(this);
                     foreach (var typeParam in symbol.TypeParameters.Select(tp => TypeParameter.Create(Context, tp)))
                     {
-                        Context.Emit(Tuples.type_parameters(typeParam, child, this));
+                        trapFile.type_parameters(typeParam, child, this);
                         child++;
                     }
                 }
             }
         }
 
-        protected void ExtractRefReturn()
+        protected void ExtractRefReturn(TextWriter trapFile)
         {
             if (symbol.ReturnsByRef)
-                Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.Ref));
+                trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
             if (symbol.ReturnsByRefReadonly)
-                Context.Emit(Tuples.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef));
+                trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
         }
 
-        protected void PopulateMethod()
+        protected void PopulateMethod(TextWriter trapFile)
         {
             // Common population code for all callables
             BindComments();
-            ExtractAttributes();
-            ExtractParameters();
-            ExtractMethodBody();
-            ExtractGenerics();
-            ExtractMetadataHandle();
-            ExtractNullability(symbol.ReturnNullableAnnotation);
+            PopulateAttributes();
+            PopulateParameters(trapFile);
+            PopulateMethodBody(trapFile);
+            PopulateGenerics(trapFile);
+            PopulateMetadataHandle(trapFile);
+            PopulateNullability(trapFile, symbol.ReturnNullableAnnotation);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.PushesLabel;

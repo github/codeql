@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.CSharp.Entities.Expressions;
 using Semmle.Extraction.Entities;
 using Semmle.Extraction.Kinds;
+using System.IO;
 using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Entities
@@ -12,32 +13,26 @@ namespace Semmle.Extraction.CSharp.Entities
         protected Property(Context cx, IPropertySymbol init)
             : base(cx, init) { }
 
-        public override IId Id
+        public override void WriteId(TextWriter trapFile)
         {
-            get
-            {
-                return new Key(tb =>
-                {
-                    tb.Append(ContainingType);
-                    tb.Append(".");
-                    Method.AddExplicitInterfaceQualifierToId(Context, tb, symbol.ExplicitInterfaceImplementations);
-                    tb.Append(symbol.Name);
-                    tb.Append(";property");
-                });
-            }
+            trapFile.WriteSubId(ContainingType);
+            trapFile.Write('.');
+            Method.AddExplicitInterfaceQualifierToId(Context, trapFile, symbol.ExplicitInterfaceImplementations);
+            trapFile.Write(symbol.Name);
+            trapFile.Write(";property");
         }
 
-        public override void Populate()
+        public override void Populate(TextWriter trapFile)
         {
-            ExtractMetadataHandle();
-            ExtractAttributes();
-            ExtractModifiers();
+            PopulateMetadataHandle(trapFile);
+            PopulateAttributes();
+            PopulateModifiers(trapFile);
             BindComments();
-            ExtractNullability(symbol.NullableAnnotation);
-            ExtractRefKind(symbol.RefKind);
+            PopulateNullability(trapFile, symbol.NullableAnnotation);
+            PopulateRefKind(trapFile, symbol.RefKind);
 
             var type = Type.Create(Context, symbol.Type);
-            Context.Emit(Tuples.properties(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition)));
+            trapFile.properties(this, symbol.GetName(), ContainingType, type.TypeRef, Create(Context, symbol.OriginalDefinition));
 
             var getter = symbol.GetMethod;
             var setter = symbol.SetMethod;
@@ -55,14 +50,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
             foreach (var explicitInterface in symbol.ExplicitInterfaceImplementations.Select(impl => Type.Create(Context, impl.ContainingType)))
             {
-                Context.Emit(Tuples.explicitly_implements(this, explicitInterface.TypeRef));
+                trapFile.explicitly_implements(this, explicitInterface.TypeRef);
 
                 foreach (var syntax in declSyntaxReferences)
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier.Name, this, explicitInterface);
             }
 
             foreach (var l in Locations)
-                Context.Emit(Tuples.property_location(this, l));
+                trapFile.property_location(this, l);
 
             if (IsSourceDeclaration && symbol.FromSource())
             {
@@ -84,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         var simpleAssignExpr = new Expression(new ExpressionInfo(Context, annotatedType, loc, ExprKind.SIMPLE_ASSIGN, this, child++, false, null));
                         Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Value, simpleAssignExpr, 0));
                         var access = new Expression(new ExpressionInfo(Context, annotatedType, Location, ExprKind.PROPERTY_ACCESS, simpleAssignExpr, 1, false, null));
-                        Context.Emit(Tuples.expr_access(access, this));
+                        trapFile.expr_access(access, this);
                         if (!symbol.IsStatic)
                         {
                             This.CreateImplicit(Context, Type.Create(Context, symbol.ContainingType), Location, access, -1);

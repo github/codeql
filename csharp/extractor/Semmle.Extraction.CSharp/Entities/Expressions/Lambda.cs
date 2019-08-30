@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using Semmle.Util;
 using System.Linq;
+using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -12,11 +13,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     {
         bool IStatementParentEntity.IsTopLevelParent => false;
 
-        protected override void Populate() { }
+        protected override void PopulateExpression(TextWriter trapFile) { }
 
         void VisitParameter(ParameterSyntax p)
         {
-            var symbol = cx.Model(p).GetDeclaredSymbol(p);
+            var symbol = cx.GetModel(p).GetDeclaredSymbol(p);
             Parameter.Create(cx, symbol, this);
         }
 

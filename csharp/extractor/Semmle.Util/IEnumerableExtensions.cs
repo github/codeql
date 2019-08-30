@@ -86,5 +86,19 @@ namespace Semmle.Util
         {
             items.ForEach(_ => { });
         }
+
+        /// <summary>
+        /// Computes a hash of a sequence.
+        /// </summary>
+        /// <typeparam name="T">The type of the item.</typeparam>
+        /// <param name="items">The list of items to hash.</param>
+        /// <returns>The hash code.</returns>
+        public static int SequenceHash<T>(this IEnumerable<T> items)
+        {
+            int h = 0;
+            foreach (var i in items)
+                h = h * 7 + i.GetHashCode();
+            return h;
+        }
     }
 }
