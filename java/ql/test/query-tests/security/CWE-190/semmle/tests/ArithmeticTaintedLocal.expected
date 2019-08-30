@@ -8,9 +8,9 @@ edges
 | ArithmeticTainted.java:17:46:17:54 | System.in [InputStream] | ArithmeticTainted.java:119:10:119:13 | data [Number] |
 | ArithmeticTainted.java:17:46:17:54 | System.in [InputStream] | ArithmeticTainted.java:120:10:120:13 | data [Number] |
 | ArithmeticTainted.java:17:46:17:54 | System.in [InputStream] | ArithmeticTainted.java:121:10:121:13 | data [Number] |
-| ArithmeticTainted.java:64:4:64:10 | tainted [post update] [dat, ... (1)] | ArithmeticTainted.java:66:18:66:24 | tainted [dat, ... (1)] |
-| ArithmeticTainted.java:64:20:64:23 | data [Number] | ArithmeticTainted.java:64:4:64:10 | tainted [post update] [dat, ... (1)] |
-| ArithmeticTainted.java:66:18:66:24 | tainted [dat, ... (1)] | ArithmeticTainted.java:66:18:66:34 | getData(...) [Number] |
+| ArithmeticTainted.java:64:4:64:10 | tainted [post update] [dat : Number] | ArithmeticTainted.java:66:18:66:24 | tainted [dat : Number] |
+| ArithmeticTainted.java:64:20:64:23 | data [Number] | ArithmeticTainted.java:64:4:64:10 | tainted [post update] [dat : Number] |
+| ArithmeticTainted.java:66:18:66:24 | tainted [dat : Number] | ArithmeticTainted.java:66:18:66:34 | getData(...) [Number] |
 | ArithmeticTainted.java:66:18:66:34 | getData(...) [Number] | ArithmeticTainted.java:71:17:71:23 | herring |
 | ArithmeticTainted.java:118:9:118:12 | data [Number] | ArithmeticTainted.java:125:26:125:33 | data [Number] |
 | ArithmeticTainted.java:119:10:119:13 | data [Number] | ArithmeticTainted.java:129:27:129:34 | data [Number] |
