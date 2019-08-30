@@ -127,7 +127,7 @@ private predicate dereferenceAt(BasicBlock bb, int i, Ssa::Definition def, Deref
 private predicate exprImpliesSsaDef(
   Expr e, G::AbstractValue vExpr, Ssa::Definition def, G::AbstractValue vDef
 ) {
-  exists(G::Internal::Guard g | G::Internal::impliesSteps(e, vExpr, g, vDef) |
+  exists(G::Guard g | G::Internal::impliesSteps(e, vExpr, g, vDef) |
     g = def.getARead()
     or
     g = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess()

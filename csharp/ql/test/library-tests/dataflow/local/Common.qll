@@ -1,4 +1,5 @@
 import csharp
+import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 
 class MyFlowSource extends DataFlow::Node {

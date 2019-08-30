@@ -182,12 +182,15 @@ abstract class NonLocalJumpNode extends Node {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends Internal::Guard {
-  /** NOT YET SUPPORTED. Holds if this guard validates `e` upon evaluating to `v`. */
-  abstract deprecated predicate checks(Expr e, AbstractValue v);
+class BarrierGuard extends Guard {
+  /** Holds if this guard validates `e` upon evaluating to `v`. */
+  abstract predicate checks(Expr e, AbstractValue v);
 
   /** Gets a node guarded by this guard. */
-  final Node getAGuardedNode() {
-    none() // stub
+  final ExprNode getAGuardedNode() {
+    exists(Expr e, AbstractValue v |
+      this.checks(e, v) and
+      this.controlsNode(result.getControlFlowNode(), e, v)
+    )
   }
 }

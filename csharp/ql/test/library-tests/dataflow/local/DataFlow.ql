@@ -1,6 +1,5 @@
 import csharp
 import Common
-import semmle.code.csharp.controlflow.Guards
 
 predicate step(DataFlow::Node pred, DataFlow::Node succ) {
   DataFlow::localFlowStep(pred, succ) and

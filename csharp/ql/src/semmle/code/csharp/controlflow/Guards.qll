@@ -13,6 +13,23 @@ private import semmle.code.csharp.controlflow.BasicBlocks
 private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.frameworks.System
 
+/** An expression whose value may control the execution of another element. */
+class Guard extends Expr {
+  Guard() { isGuard(this, _) }
+
+  /**
+   * Holds if `cfn` is guarded by this expression having value `v`, where `sub` is
+   * a sub expression of this expression that is structurally equal to the expression
+   * belonging to `cfn`.
+   *
+   * In case `cfn` or `sub` access an SSA variable in their left-most qualifier, then
+   * so must the other (accessing the same SSA variable).
+   */
+  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AccessOrCallExpr sub, AbstractValue v) {
+    isGuardedByNode(cfn, this, sub, v)
+  }
+}
+
 /** An abstract value. */
 abstract class AbstractValue extends TAbstractValue {
   /** Holds if the `s` branch out of `cfe` is taken iff `e` has this value. */
@@ -481,7 +498,7 @@ class GuardedExpr extends AccessOrCallExpr {
    * left-most qualifier, then so must the other (accessing the same SSA
    * variable).
    */
-  Expr getAGuard(Expr sub, AbstractValue v) {
+  Guard getAGuard(Expr sub, AbstractValue v) {
     result = g and
     sub = sub0 and
     v = v0
@@ -492,7 +509,7 @@ class GuardedExpr extends AccessOrCallExpr {
    * expression is guarded by a structurally equal expression having abstract
    * value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) { exists(Expr e | e = this.getAGuard(e, v)) }
+  predicate mustHaveValue(AbstractValue v) { g = this.getAGuard(g, v) }
 
   /**
    * Holds if this expression is guarded by expression `cond`, which must
@@ -533,7 +550,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
 
   private AbstractValue v0;
 
-  GuardedControlFlowNode() { isGuardedByNode(this, g, sub0, v0) }
+  GuardedControlFlowNode() { g.controlsNode(this, sub0, v0) }
 
   /**
    * Gets an expression that guards this control flow node. That is, this control
@@ -546,7 +563,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
    * left-most qualifier, then so must the other (accessing the same SSA
    * variable).
    */
-  Expr getAGuard(Expr sub, AbstractValue v) {
+  Guard getAGuard(Expr sub, AbstractValue v) {
     result = g and
     sub = sub0 and
     v = v0
@@ -557,7 +574,7 @@ class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
    * control flow node is guarded by a structurally equal expression having
    * abstract value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) { exists(Expr e | e = this.getAGuard(e, v)) }
+  predicate mustHaveValue(AbstractValue v) { g = this.getAGuard(g, v) }
 }
 
 /**
@@ -587,7 +604,7 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
 
   GuardedDataFlowNode() {
     exists(ControlFlow::Nodes::ElementNode cfn | exists(this.getExprAtNode(cfn)) |
-      isGuardedByNode(cfn, g, sub0, v0)
+      g.controlsNode(cfn, sub0, v0)
     )
   }
 
@@ -602,7 +619,7 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
    * left-most qualifier, then so must the other (accessing the same SSA
    * variable).
    */
-  Expr getAGuard(Expr sub, AbstractValue v) {
+  Guard getAGuard(Expr sub, AbstractValue v) {
     result = g and
     sub = sub0 and
     v = v0
@@ -613,7 +630,7 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
    * data flow node is guarded by a structurally equal expression having
    * abstract value `v`.
    */
-  predicate mustHaveValue(AbstractValue v) { exists(Expr e | e = this.getAGuard(e, v)) }
+  predicate mustHaveValue(AbstractValue v) { g = this.getAGuard(g, v) }
 }
 
 /** An expression guarded by a `null` check. */
@@ -761,72 +778,49 @@ module Internal {
     e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand())
   }
 
-  /** An expression whose value may control the execution of another element. */
-  class Guard extends Expr {
-    private AbstractValue val;
+  /** Holds if basic block `bb` only is reached when guard `g` has abstract value `v`. */
+  private predicate guardControls(Guard g, BasicBlock bb, AbstractValue v) {
+    exists(ControlFlowElement cfe, ConditionalSuccessor s, AbstractValue v0, Guard g0 |
+      cfe.controlsBlock(bb, s)
+    |
+      v0.branch(cfe, s, g0) and
+      impliesSteps(g0, v0, g, v)
+    )
+  }
 
-    Guard() {
-      this.getType() instanceof BoolType and
-      not this instanceof BoolLiteral and
-      not this instanceof SwitchCaseExpr and
-      not this instanceof PatternExpr and
-      val = TBooleanValue(_)
+  /**
+   * Holds if control flow node `cfn` only is reached when guard `g` evaluates to `v`,
+   * because of an assertion.
+   */
+  private predicate guardAssertionControlsNode(Guard g, ControlFlow::Node cfn, AbstractValue v) {
+    exists(Assertion a, Guard g0, AbstractValue v0 |
+      asserts(a, g0, v0) and
+      impliesSteps(g0, v0, g, v)
+    |
+      a.strictlyDominates(cfn.getBasicBlock())
       or
-      this instanceof DereferenceableExpr and
-      val = TNullValue(_)
-      or
-      val.branch(_, _, this)
-      or
-      asserts(_, this, val)
-    }
-
-    /** Gets an abstract value that this guard may have. */
-    AbstractValue getAValue() { result = val }
-
-    /** Holds if basic block `bb` only is reached when this guard has abstract value `v`. */
-    predicate controls(BasicBlock bb, AbstractValue v) {
-      exists(ControlFlowElement cfe, ConditionalSuccessor s, AbstractValue v0, Guard g |
-        cfe.controlsBlock(bb, s)
-      |
-        v0.branch(cfe, s, g) and
-        impliesSteps(g, v0, this, v)
+      exists(BasicBlock bb, int i, int j | bb.getNode(i) = a.getAControlFlowNode() |
+        bb.getNode(j) = cfn and
+        j > i
       )
-    }
+    )
+  }
 
-    /**
-     * Holds if control flow node `cfn` only is reached when this guard evaluates to `v`,
-     * because of an assertion.
-     */
-    predicate assertionControlsNode(ControlFlow::Node cfn, AbstractValue v) {
-      exists(Assertion a, Guard g, AbstractValue v0 |
-        asserts(a, g, v0) and
-        impliesSteps(g, v0, this, v)
-      |
-        a.strictlyDominates(cfn.getBasicBlock())
-        or
-        exists(BasicBlock bb, int i, int j | bb.getNode(i) = a.getAControlFlowNode() |
-          bb.getNode(j) = cfn and
-          j > i
-        )
-      )
-    }
+  /**
+   * Holds if control flow element `cfe` only is reached when guard `g` evaluates to `v`,
+   * because of an assertion.
+   */
+  private predicate guardAssertionControlsElement(Guard g, ControlFlowElement cfe, AbstractValue v) {
+    forex(ControlFlow::Node cfn | cfn = cfe.getAControlFlowNode() |
+      guardAssertionControlsNode(g, cfn, v)
+    )
+  }
 
-    /**
-     * Holds if control flow element `cfe` only is reached when this guard evaluates to `v`,
-     * because of an assertion.
-     */
-    predicate assertionControlsElement(ControlFlowElement cfe, AbstractValue v) {
-      forex(ControlFlow::Node cfn | cfn = cfe.getAControlFlowNode() |
-        this.assertionControlsNode(cfn, v)
-      )
-    }
-
-    /** Same as `this.getAChildExpr*()`, but avoids `fastTC`. */
-    Expr getAChildExprStar() {
-      result = this
-      or
-      result = this.getAChildExprStar().getAChildExpr()
-    }
+  /** Same as `this.getAChildExpr*()`, but avoids `fastTC`. */
+  private Expr getAChildExprStar(Guard g) {
+    result = g
+    or
+    result = getAChildExprStar(g).getAChildExpr()
   }
 
   /**
@@ -1273,8 +1267,24 @@ module Internal {
       private import semmle.code.csharp.Caching
 
       cached
-      predicate isCustomNullCheck(Call call, Expr arg, BooleanValue v, boolean isNull) {
+      predicate isGuard(Expr e, AbstractValue val) {
         Stages::ControlFlowStage::forceCachingInSameStage() and
+        e.getType() instanceof BoolType and
+        not e instanceof BoolLiteral and
+        not e instanceof SwitchCaseExpr and
+        not e instanceof PatternExpr and
+        val = TBooleanValue(_)
+        or
+        e instanceof DereferenceableExpr and
+        val = TNullValue(_)
+        or
+        val.branch(_, _, e)
+        or
+        asserts(_, e, val)
+      }
+
+      cached
+      predicate isCustomNullCheck(Call call, Expr arg, BooleanValue v, boolean isNull) {
         exists(Callable callable, Parameter p |
           arg = call.getArgumentForParameter(any(Parameter p0 | p0.getSourceDeclaration() = p)) and
           call.getTarget().getSourceDeclaration() = callable and
@@ -1355,7 +1365,7 @@ module Internal {
           )
         )
         or
-        v1 = g1.getAValue() and
+        isGuard(g1, v1) and
         v1 = any(MatchValue mv |
             mv.isMatch() and
             g2 = g1 and
@@ -1379,20 +1389,20 @@ module Internal {
         v2 = v1
         or
         g2 = g1.(AssignExpr).getRValue() and
-        v1 = g1.getAValue() and
+        isGuard(g1, v1) and
         v2 = v1
         or
         g2 = g1.(Assignment).getLValue() and
-        v1 = g1.getAValue() and
+        isGuard(g1, v1) and
         v2 = v1
         or
         g2 = g1.(CastExpr).getExpr() and
-        v1 = g1.getAValue() and
+        isGuard(g1, v1) and
         v2 = v1.(NullValue)
         or
         exists(PreSsa::Definition def | def.getDefinition().getSource() = g2 |
           g1 = def.getARead() and
-          v1 = g1.getAValue() and
+          isGuard(g1, v1) and
           v2 = v1
         )
         or
@@ -1473,10 +1483,10 @@ module Internal {
     pragma[noinline]
     private predicate candidateAux(AccessOrCallExpr e, Declaration target, BasicBlock bb) {
       target = e.getTarget() and
-      exists(Guard g | e = g.getAChildExprStar() |
-        g.controls(bb, _)
+      exists(Guard g | e = getAChildExprStar(g) |
+        guardControls(g, bb, _)
         or
-        g.assertionControlsNode(bb.getANode(), _)
+        guardAssertionControlsNode(g, bb.getANode(), _)
       )
     }
   }
@@ -1492,7 +1502,7 @@ module Internal {
     ) {
       Stages::GuardsStage::forceCachingInSameStage() and
       cfn = guarded.getAControlFlowNode() and
-      g.controls(cfn.getBasicBlock(), v) and
+      guardControls(g, cfn.getBasicBlock(), v) and
       exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
     }
 
@@ -1504,7 +1514,7 @@ module Internal {
         isGuardedByNode0(cfn, guarded, g, sub, v)
       )
       or
-      g.assertionControlsElement(guarded, v) and
+      guardAssertionControlsElement(g, guarded, v) and
       exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded))
     }
 
@@ -1513,7 +1523,7 @@ module Internal {
       AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
     ) {
       isGuardedByExpr1(guarded, g, sub, v) and
-      sub = g.getAChildExprStar() and
+      sub = getAChildExprStar(g) and
       forall(Ssa::Definition def | def = sub.getAnSsaQualifier(_) |
         def = guarded.getAnSsaQualifier(_)
       )
@@ -1525,7 +1535,7 @@ module Internal {
     ) {
       isGuardedByNode0(guarded, _, g, sub, v)
       or
-      g.assertionControlsNode(guarded, v) and
+      guardAssertionControlsNode(g, guarded, v) and
       exists(ConditionOnExprComparisonConfig c | c.same(sub, guarded.getElement()))
     }
 
@@ -1542,7 +1552,7 @@ module Internal {
       ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, AbstractValue v
     ) {
       isGuardedByNode1(guarded, g, sub, v) and
-      sub = g.getAChildExprStar() and
+      sub = getAChildExprStar(g) and
       forall(Ssa::Definition def | def = sub.getAnSsaQualifier(_) | isGuardedByNode2(guarded, def))
     }
 
@@ -1560,7 +1570,7 @@ module Internal {
       forex(ControlFlow::Node cfn | cfn = g1.getAControlFlowNode() |
         exists(Ssa::ExplicitDefinition def | def.getADefinition().getSource() = g2 |
           g1 = def.getAReadAtNode(cfn) and
-          v1 = g1.getAValue() and
+          isGuard(g1, v1) and
           v2 = v1
         )
       )
@@ -1578,7 +1588,7 @@ module Internal {
   predicate preImpliesSteps(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
     g1 = g2 and
     v1 = v2 and
-    v1 = g1.getAValue()
+    isGuard(g1, v1)
     or
     exists(Expr mid, AbstractValue vMid | preImpliesSteps(g1, v1, mid, vMid) |
       preImpliesStep(mid, vMid, g2, v2)
@@ -1595,7 +1605,7 @@ module Internal {
   predicate impliesSteps(Guard g1, AbstractValue v1, Guard g2, AbstractValue v2) {
     g1 = g2 and
     v1 = v2 and
-    v1 = g1.getAValue()
+    isGuard(g1, v1)
     or
     exists(Expr mid, AbstractValue vMid | impliesSteps(g1, v1, mid, vMid) |
       impliesStep(mid, vMid, g2, v2)
