@@ -462,7 +462,7 @@ private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn, boolean
   (always = true or always = false)
   or
   exists(ControlFlow::Node mid | defReaches(def, mid, always) |
-    Ssa::Internal::adjacentReadPairSameVar(mid, cfn) and
+    Ssa::Internal::adjacentReadPairSameVar(_, mid, cfn) and
     not mid = any(Dereference d |
         if always = true
         then d.isAlwaysNull(def.getSourceVariable())

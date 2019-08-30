@@ -81,7 +81,7 @@ class AssignableRead extends AssignableAccess {
 
   pragma[noinline]
   private ControlFlow::Node getAnAdjacentReadSameVar() {
-    Ssa::Internal::adjacentReadPairSameVar(this.getAControlFlowNode(), result)
+    Ssa::Internal::adjacentReadPairSameVar(_, this.getAControlFlowNode(), result)
   }
 
   /**

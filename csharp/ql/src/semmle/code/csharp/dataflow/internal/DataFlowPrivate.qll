@@ -171,12 +171,57 @@ module LocalFlow {
    * Either an SSA definition node for `def` when there is no read of `def`,
    * or a last read of `def`.
    */
-  predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def) {
+  private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def) {
     def = nodeFrom.(SsaDefinitionNode).getDefinition() and
     not exists(def.getARead())
     or
     exists(AssignableRead read, ControlFlow::Node cfn | read = nodeFrom.asExprAtNode(cfn) |
       def.getALastReadAtNode(cfn) = read
+    )
+  }
+
+  /**
+   * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
+   * SSA definition `def.
+   */
+  predicate localSsaFlowStep(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
+    // Flow from SSA definition to first read
+    exists(ControlFlow::Node cfn |
+      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
+      nodeTo.asExprAtNode(cfn) = def.getAFirstReadAtNode(cfn)
+    )
+    or
+    // Flow from read to next read
+    exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
+      Ssa::Internal::adjacentReadPairSameVar(def, cfnFrom, cfnTo) and
+      nodeTo = TExprNode(cfnTo)
+    |
+      nodeFrom = TExprNode(cfnFrom)
+      or
+      cfnFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().getControlFlowNode()
+    )
+    or
+    // Flow into SSA pseudo definition
+    exists(Ssa::PseudoDefinition pseudo |
+      localFlowSsaInput(nodeFrom, def) and
+      pseudo = nodeTo.(SsaDefinitionNode).getDefinition() and
+      def = pseudo.getAnInput()
+    )
+    or
+    // Flow into uncertain SSA definition
+    exists(LocalFlow::UncertainExplicitSsaDefinition uncertain |
+      localFlowSsaInput(nodeFrom, def) and
+      uncertain = nodeTo.(SsaDefinitionNode).getDefinition() and
+      def = uncertain.getPriorDefinition()
+    )
+  }
+
+  /**
+   * Holds if the source variable of SSA definition `def` is an instance field.
+   */
+  predicate usesInstanceField(Ssa::Definition def) {
+    exists(Ssa::SourceVariables::FieldOrPropSourceVariable fp | fp = def.getSourceVariable() |
+      not fp.getAssignable().isStatic()
     )
   }
 
@@ -297,7 +342,7 @@ private module Cached {
       any(DelegateArgumentConfiguration x).hasExprPath(_, cfn, _, call)
     } or
     TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getElement() instanceof ObjectCreation } or
-    TArgumentPostCallNode(ControlFlow::Nodes::ElementNode cfn) {
+    TExprPostUpdateNode(ControlFlow::Nodes::ElementNode cfn) {
       exists(Argument a, Type t |
         a = cfn.getElement() and
         t = a.stripCasts().getType()
@@ -305,55 +350,33 @@ private module Cached {
         t instanceof RefType or
         t = any(TypeParameter tp | not tp.isValueType())
       )
-    } or
-    TStoreTargetNode(ControlFlow::Nodes::ElementNode cfn) {
+      or
       instanceFieldLikeAssign(_, _, _, cfn.getElement())
+      or
+      exists(TExprPostUpdateNode upd, FieldLikeAccess fla |
+        upd = TExprPostUpdateNode(fla.getAControlFlowNode())
+      |
+        cfn.getElement() = fla.getQualifier()
+      )
     }
 
   /**
-   * This is the local flow predicate that's used as a building block in global
-   * data flow. It may have less flow than the `localFlowStep` predicate.
+   * This is the local flow predicate that is used as a building block in global
+   * data flow. It is a strict subset of the `localFlowStep` predicate, as it
+   * excludes SSA flow through instance fields.
    */
   cached
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(Ssa::Definition def |
+      LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
+      not LocalFlow::usesInstanceField(def)
+    )
+    or
     any(LocalFlow::LocalExprStepConfiguration x).hasNodePath(nodeFrom, nodeTo)
-    or
-    // Flow from SSA definition to first read
-    exists(Ssa::Definition def, ControlFlow::Node cfn |
-      def = nodeFrom.(SsaDefinitionNode).getDefinition()
-    |
-      nodeTo.asExprAtNode(cfn) = def.getAFirstReadAtNode(cfn)
-    )
-    or
-    // Flow from read to next read
-    exists(ControlFlow::Node cfnFrom, ControlFlow::Node cfnTo |
-      Ssa::Internal::adjacentReadPairSameVar(cfnFrom, cfnTo) and
-      nodeTo = TExprNode(cfnTo)
-    |
-      nodeFrom = TExprNode(cfnFrom)
-      or
-      cfnFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().getControlFlowNode()
-    )
     or
     ThisFlow::adjacentThisRefs(nodeFrom, nodeTo)
     or
     ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
-    or
-    // Flow into SSA pseudo definition
-    exists(Ssa::Definition def, Ssa::PseudoDefinition pseudo |
-      LocalFlow::localFlowSsaInput(nodeFrom, def)
-    |
-      pseudo = nodeTo.(SsaDefinitionNode).getDefinition() and
-      def = pseudo.getAnInput()
-    )
-    or
-    // Flow into uncertain SSA definition
-    exists(Ssa::Definition def, LocalFlow::UncertainExplicitSsaDefinition uncertain |
-      LocalFlow::localFlowSsaInput(nodeFrom, def)
-    |
-      uncertain = nodeTo.(SsaDefinitionNode).getDefinition() and
-      def = uncertain.getPriorDefinition()
-    )
     or
     LocalFlow::localFlowCapturedVarStep(nodeFrom, nodeTo)
     or
@@ -362,6 +385,18 @@ private module Cached {
     flowThroughLibraryCallableOutRef(_, nodeFrom, nodeTo, true)
     or
     LocalFlow::localFlowStepCil(nodeFrom, nodeTo)
+  }
+
+  /**
+   * This is the extension of the predicate `simpleLocalFlowStep` that is exposed
+   * as the `localFlowStep` predicate. It includes SSA flow through instance fields.
+   */
+  cached
+  predicate extendedLocalFlowStep(Node nodeFrom, Node nodeTo) {
+    exists(Ssa::Definition def |
+      LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and
+      LocalFlow::usesInstanceField(def)
+    )
   }
 
   /**
@@ -1250,26 +1285,10 @@ private module PostUpdateNodes {
     override MallocNode getPreUpdateNode() { this = TExprNode(result.getControlFlowNode()) }
   }
 
-  private class ArgumentPostCallNode extends PostUpdateNode, TArgumentPostCallNode {
+  private class ExprPostUpdateNode extends PostUpdateNode, TExprPostUpdateNode {
     private ControlFlow::Nodes::ElementNode cfn;
 
-    ArgumentPostCallNode() { this = TArgumentPostCallNode(cfn) }
-
-    override ExprNode getPreUpdateNode() { cfn = result.getControlFlowNode() }
-
-    override Callable getEnclosingCallable() { result = cfn.getEnclosingCallable() }
-
-    override Type getType() { result = cfn.getElement().(Expr).getType() }
-
-    override Location getLocation() { result = cfn.getLocation() }
-
-    override string toString() { result = "[post] " + cfn.toString() }
-  }
-
-  private class StoreTargetNode extends PostUpdateNode, TStoreTargetNode {
-    private ControlFlow::Nodes::ElementNode cfn;
-
-    StoreTargetNode() { this = TStoreTargetNode(cfn) }
+    ExprPostUpdateNode() { this = TExprPostUpdateNode(cfn) }
 
     override ExprNode getPreUpdateNode() { cfn = result.getControlFlowNode() }
 
