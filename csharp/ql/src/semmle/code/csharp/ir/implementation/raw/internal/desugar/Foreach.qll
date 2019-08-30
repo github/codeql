@@ -117,8 +117,10 @@ private class TranslatedForeachFinally extends TranslatedCompilerGeneratedBlock,
 
 /**
  * The compiler generated while loop.
+ * Note that this class is not private since it is needed in `IRConstruction.qll`,
+ * to correctly mark which edges should be back edges. 
  */
-private class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, ConditionContext, 
+class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, ConditionContext, 
                                              TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
   
@@ -159,18 +161,18 @@ private class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, Co
     child = getCondition() and result = getParent().getChildSuccessor(this)
   }
   
-  private TranslatedStmt getBody() {
+  TranslatedStmt getBody() {
     result = getTranslatedStmt(generatedBy.getBody())
   }
   
-  private TranslatedElement getInit() {
+  TranslatedElement getInit() {
     exists(TranslatedForeachIterVar iv |
       iv.getAST() = generatedBy and
       result = iv
     )
   }
   
-  private ValueConditionBlueprint getCondition() {
+  ValueConditionBlueprint getCondition() {
     exists(TranslatedForeachWhileCondition cond |
       cond.getAST() = generatedBy and
       result = cond

@@ -7,6 +7,7 @@ private import TranslatedCondition
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedStmt
+private import desugar.Foreach
 private import TranslatedFunction
 private import semmle.code.csharp.ir.Util
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
@@ -128,6 +129,18 @@ private module Cached {
     exists(TranslatedWhileStmt s |
       s instanceof TranslatedWhileStmt and
       result = s.getFirstConditionInstruction() and
+      exists(TranslatedElement inBody, InstructionTag tag |
+        result = inBody.getInstructionSuccessor(tag, kind) and
+        exists(TranslatedElement body | body = s.getBody() | inBody = body.getAChild*()) and
+        instruction = inBody.getInstruction(tag)
+      )
+    )
+    or
+    // Compiler generated foreach while loop:
+    // Same as above
+    exists(TranslatedForeachWhile s |
+      s instanceof TranslatedForeachWhile and
+      result = s.getFirstInstruction() and
       exists(TranslatedElement inBody, InstructionTag tag |
         result = inBody.getInstructionSuccessor(tag, kind) and
         exists(TranslatedElement body | body = s.getBody() | inBody = body.getAChild*()) and

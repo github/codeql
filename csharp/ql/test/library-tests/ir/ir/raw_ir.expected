@@ -406,8 +406,8 @@ foreach.cs:
 #    7|     r1_3(Boolean)        = Call                      : func:r1_2, this:r1_1
 #    7|     mu1_4(null)          = ^CallSideEffect           : ~mu0_2
 #    7|     v1_5(Void)           = ConditionalBranch         : r1_3
-#-----|   False (back edge) -> Block 3
-#-----|   True (back edge) -> Block 2
+#-----|   False -> Block 3
+#-----|   True -> Block 2
 
 #    7|   Block 2
 #    7|     r2_0(glval<Int32>)   = VariableAddress[items]       : 
