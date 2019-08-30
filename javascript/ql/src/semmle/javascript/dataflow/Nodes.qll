@@ -710,6 +710,9 @@ class ClassNode extends DataFlow::SourceNode {
     t.start() and
     result = getAReceiverNode()
     or
+    // Use a parameter type as starting point of type tracking.
+    // Use `t.call()` to emulate the value being passed in through an unseen
+    // call site, but not out of the call again.
     t.call() and
     exists(Parameter param |
       this = param.getTypeAnnotation().getClass() and
