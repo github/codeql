@@ -18,4 +18,4 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 
 ## Changes to QL libraries
 
-- bullet list
+- The library now models data flow through `std::string` and `std::stringstream`.
