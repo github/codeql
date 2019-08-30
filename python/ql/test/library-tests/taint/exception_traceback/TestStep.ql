@@ -4,11 +4,11 @@ import semmle.python.security.Exceptions
 import semmle.python.web.HttpResponse
 
 from TaintedNode n, TaintedNode s
-where 
+where
     s = n.getASuccessor() and
     not n.getLocation().getFile().inStdlib() and
     not s.getLocation().getFile().inStdlib()
 select 
-    n.getTrackedValue(), n.getLocation().toString(), n.getNode().getNode().toString(), n.getContext(),
+    "Taint " + n.getTaintKind(), n.getLocation().toString(), n.getNode().toString(), n.getContext(),
     " --> ",
-    s.getTrackedValue(), s.getLocation().toString(), s.getNode().getNode().toString(), s.getContext()
+    "Taint " + s.getTaintKind(), s.getLocation().toString(), s.getNode().toString(), s.getContext()

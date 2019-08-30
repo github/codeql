@@ -4,6 +4,6 @@ import TaintLib
 
 
 from EssaVariable var, TaintedNode n
-where TaintFlowTest::tainted_var(var, _, n)
+where n.getNode().asVariable() = var
 select 
-    var.getDefinition().getLocation().toString(), var.getRepresentation(), n.getLocation().toString(), n.getTrackedValue(), n.getNode().getNode().toString()
+    var.getDefinition().getLocation().toString(), var.getRepresentation(), n.getLocation().toString(), "Taint " + n.toString()

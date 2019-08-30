@@ -856,8 +856,9 @@ dominance
 | Conditions.cs:73:9:73:18 | ... ...; | Conditions.cs:73:17:73:17 | 0 |
 | Conditions.cs:73:13:73:17 | Int32 x = ... | Conditions.cs:74:27:74:28 | access to parameter ss |
 | Conditions.cs:73:17:73:17 | 0 | Conditions.cs:73:13:73:17 | Int32 x = ... |
-| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:75:9:80:9 | {...} |
+| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:22:74:22 | String _ |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:81:9:82:16 | if (...) ... |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:75:9:80:9 | {...} |
 | Conditions.cs:74:27:74:28 | access to parameter ss | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
 | Conditions.cs:75:9:80:9 | {...} | Conditions.cs:76:13:77:20 | if (...) ... |
 | Conditions.cs:76:13:77:20 | if (...) ... | Conditions.cs:76:17:76:17 | access to local variable b |
@@ -889,8 +890,9 @@ dominance
 | Conditions.cs:89:9:89:18 | ... ...; | Conditions.cs:89:17:89:17 | 0 |
 | Conditions.cs:89:13:89:17 | Int32 x = ... | Conditions.cs:90:27:90:28 | access to parameter ss |
 | Conditions.cs:89:17:89:17 | 0 | Conditions.cs:89:13:89:17 | Int32 x = ... |
-| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:91:9:98:9 | {...} |
+| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:22:90:22 | String _ |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:99:16:99:16 | access to local variable x |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:91:9:98:9 | {...} |
 | Conditions.cs:90:27:90:28 | access to parameter ss | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... |
 | Conditions.cs:91:9:98:9 | {...} | Conditions.cs:92:13:93:20 | if (...) ... |
 | Conditions.cs:92:13:93:20 | if (...) ... | Conditions.cs:92:17:92:17 | access to local variable b |
@@ -1186,7 +1188,8 @@ dominance
 | Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:13:5:16:5 | {...} |
 | Foreach.cs:13:5:16:5 | {...} | Foreach.cs:14:27:14:30 | access to parameter args |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | exit M2 |
-| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:15:13:15:13 | ; |
+| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:22:14:22 | String _ |
+| Foreach.cs:14:22:14:22 | String _ | Foreach.cs:15:13:15:13 | ; |
 | Foreach.cs:14:27:14:30 | access to parameter args | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:19:5:22:5 | {...} |
 | Foreach.cs:19:5:22:5 | {...} | Foreach.cs:20:27:20:68 | ... ?? ... |
@@ -3497,6 +3500,7 @@ postDominance
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:78:17:78:21 | ... > ... |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:79:17:79:25 | ... = ... |
 | Conditions.cs:74:27:74:28 | access to parameter ss | Conditions.cs:73:13:73:17 | Int32 x = ... |
+| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:74:22:74:22 | String _ |
 | Conditions.cs:76:13:77:20 | if (...) ... | Conditions.cs:75:9:80:9 | {...} |
 | Conditions.cs:76:17:76:17 | access to local variable b | Conditions.cs:76:13:77:20 | if (...) ... |
 | Conditions.cs:77:17:77:17 | access to local variable x | Conditions.cs:77:17:77:20 | ...; |
@@ -3530,6 +3534,7 @@ postDominance
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:96:17:96:17 | access to local variable b |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:97:17:97:19 | ...++ |
 | Conditions.cs:90:27:90:28 | access to parameter ss | Conditions.cs:89:13:89:17 | Int32 x = ... |
+| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:90:22:90:22 | String _ |
 | Conditions.cs:92:13:93:20 | if (...) ... | Conditions.cs:91:9:98:9 | {...} |
 | Conditions.cs:92:17:92:17 | access to local variable b | Conditions.cs:92:13:93:20 | if (...) ... |
 | Conditions.cs:93:17:93:17 | access to local variable x | Conditions.cs:93:17:93:20 | ...; |
@@ -3821,6 +3826,7 @@ postDominance
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:27:14:30 | access to parameter args |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:15:13:15:13 | ; |
 | Foreach.cs:14:27:14:30 | access to parameter args | Foreach.cs:13:5:16:5 | {...} |
+| Foreach.cs:15:13:15:13 | ; | Foreach.cs:14:22:14:22 | String _ |
 | Foreach.cs:18:10:18:11 | exit M3 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... |
 | Foreach.cs:19:5:22:5 | {...} | Foreach.cs:18:10:18:11 | enter M3 |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:29:20:38 | call to method ToArray |
@@ -5698,7 +5704,7 @@ blockDominance
 | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:67:16:67:16 | access to local variable y |
 | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:70:9:70:10 | enter M6 |
 | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
-| Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:75:9:80:9 | {...} |
+| Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:74:22:74:22 | String _ |
 | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:77:17:77:20 | ...; |
 | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:78:13:79:26 | if (...) ... |
 | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:79:17:79:26 | ...; |
@@ -5706,17 +5712,17 @@ blockDominance
 | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:82:13:82:16 | ...; |
 | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:83:16:83:16 | access to local variable x |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
-| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:75:9:80:9 | {...} |
+| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:22:74:22 | String _ |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:77:17:77:20 | ...; |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:79:17:79:26 | ...; |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:81:9:82:16 | if (...) ... |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:82:13:82:16 | ...; |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:83:16:83:16 | access to local variable x |
-| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:75:9:80:9 | {...} |
-| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:77:17:77:20 | ...; |
-| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:78:13:79:26 | if (...) ... |
-| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:79:17:79:26 | ...; |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:74:22:74:22 | String _ |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:77:17:77:20 | ...; |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:78:13:79:26 | if (...) ... |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:79:17:79:26 | ...; |
 | Conditions.cs:77:17:77:20 | ...; | Conditions.cs:77:17:77:20 | ...; |
 | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
 | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:79:17:79:26 | ...; |
@@ -5728,7 +5734,7 @@ blockDominance
 | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:83:16:83:16 | access to local variable x |
 | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:86:9:86:10 | enter M7 |
 | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... |
-| Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:91:9:98:9 | {...} |
+| Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:90:22:90:22 | String _ |
 | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:93:17:93:20 | ...; |
 | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:94:13:95:26 | if (...) ... |
 | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:95:17:95:26 | ...; |
@@ -5736,19 +5742,19 @@ blockDominance
 | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:97:17:97:20 | ...; |
 | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:99:16:99:16 | access to local variable x |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... |
-| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:91:9:98:9 | {...} |
+| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:22:90:22 | String _ |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:93:17:93:20 | ...; |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:95:17:95:26 | ...; |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:96:13:97:20 | if (...) ... |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:97:17:97:20 | ...; |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:99:16:99:16 | access to local variable x |
-| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:91:9:98:9 | {...} |
-| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:93:17:93:20 | ...; |
-| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:94:13:95:26 | if (...) ... |
-| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:95:17:95:26 | ...; |
-| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:96:13:97:20 | if (...) ... |
-| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:97:17:97:20 | ...; |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:90:22:90:22 | String _ |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:93:17:93:20 | ...; |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:94:13:95:26 | if (...) ... |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:95:17:95:26 | ...; |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:96:13:97:20 | if (...) ... |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:97:17:97:20 | ...; |
 | Conditions.cs:93:17:93:20 | ...; | Conditions.cs:93:17:93:20 | ...; |
 | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
 | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:95:17:95:26 | ...; |
@@ -5874,12 +5880,12 @@ blockDominance
 | Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:12:10:12:11 | enter M2 |
 | Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:12:10:12:11 | exit M2 |
 | Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... |
-| Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:15:13:15:13 | ; |
+| Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:14:22:14:22 | String _ |
 | Foreach.cs:12:10:12:11 | exit M2 | Foreach.cs:12:10:12:11 | exit M2 |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | exit M2 |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... |
-| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:15:13:15:13 | ; |
-| Foreach.cs:15:13:15:13 | ; | Foreach.cs:15:13:15:13 | ; |
+| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:22:14:22 | String _ |
+| Foreach.cs:14:22:14:22 | String _ | Foreach.cs:14:22:14:22 | String _ |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:18:10:18:11 | enter M3 |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:18:10:18:11 | exit M3 |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... |
@@ -7804,19 +7810,19 @@ postBlockDominance
 | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:70:9:70:10 | enter M6 |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:70:9:70:10 | enter M6 |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
-| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:75:9:80:9 | {...} |
+| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:22:74:22 | String _ |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:77:17:77:20 | ...; |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:79:17:79:26 | ...; |
-| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:75:9:80:9 | {...} |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:74:22:74:22 | String _ |
 | Conditions.cs:77:17:77:20 | ...; | Conditions.cs:77:17:77:20 | ...; |
-| Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:75:9:80:9 | {...} |
+| Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:74:22:74:22 | String _ |
 | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:77:17:77:20 | ...; |
 | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
 | Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:26 | ...; |
 | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:70:9:70:10 | enter M6 |
 | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
-| Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:75:9:80:9 | {...} |
+| Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:74:22:74:22 | String _ |
 | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:77:17:77:20 | ...; |
 | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:78:13:79:26 | if (...) ... |
 | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:79:17:79:26 | ...; |
@@ -7824,7 +7830,7 @@ postBlockDominance
 | Conditions.cs:82:13:82:16 | ...; | Conditions.cs:82:13:82:16 | ...; |
 | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:70:9:70:10 | enter M6 |
 | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... |
-| Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:75:9:80:9 | {...} |
+| Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:74:22:74:22 | String _ |
 | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:77:17:77:20 | ...; |
 | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:78:13:79:26 | if (...) ... |
 | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:79:17:79:26 | ...; |
@@ -7834,19 +7840,19 @@ postBlockDominance
 | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:86:9:86:10 | enter M7 |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:86:9:86:10 | enter M7 |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... |
-| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:91:9:98:9 | {...} |
+| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:22:90:22 | String _ |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:93:17:93:20 | ...; |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:95:17:95:26 | ...; |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:96:13:97:20 | if (...) ... |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:97:17:97:20 | ...; |
-| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:91:9:98:9 | {...} |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:90:22:90:22 | String _ |
 | Conditions.cs:93:17:93:20 | ...; | Conditions.cs:93:17:93:20 | ...; |
-| Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:91:9:98:9 | {...} |
+| Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:90:22:90:22 | String _ |
 | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:93:17:93:20 | ...; |
 | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
 | Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:17:95:26 | ...; |
-| Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:91:9:98:9 | {...} |
+| Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:90:22:90:22 | String _ |
 | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:93:17:93:20 | ...; |
 | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:94:13:95:26 | if (...) ... |
 | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:95:17:95:26 | ...; |
@@ -7854,7 +7860,7 @@ postBlockDominance
 | Conditions.cs:97:17:97:20 | ...; | Conditions.cs:97:17:97:20 | ...; |
 | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:86:9:86:10 | enter M7 |
 | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... |
-| Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:91:9:98:9 | {...} |
+| Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:90:22:90:22 | String _ |
 | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:93:17:93:20 | ...; |
 | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:94:13:95:26 | if (...) ... |
 | Conditions.cs:99:16:99:16 | access to local variable x | Conditions.cs:95:17:95:26 | ...; |
@@ -7969,11 +7975,11 @@ postBlockDominance
 | Foreach.cs:12:10:12:11 | exit M2 | Foreach.cs:12:10:12:11 | enter M2 |
 | Foreach.cs:12:10:12:11 | exit M2 | Foreach.cs:12:10:12:11 | exit M2 |
 | Foreach.cs:12:10:12:11 | exit M2 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... |
-| Foreach.cs:12:10:12:11 | exit M2 | Foreach.cs:15:13:15:13 | ; |
+| Foreach.cs:12:10:12:11 | exit M2 | Foreach.cs:14:22:14:22 | String _ |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | enter M2 |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... |
-| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:15:13:15:13 | ; |
-| Foreach.cs:15:13:15:13 | ; | Foreach.cs:15:13:15:13 | ; |
+| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:22:14:22 | String _ |
+| Foreach.cs:14:22:14:22 | String _ | Foreach.cs:14:22:14:22 | String _ |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:18:10:18:11 | enter M3 |
 | Foreach.cs:18:10:18:11 | exit M3 | Foreach.cs:18:10:18:11 | enter M3 |
 | Foreach.cs:18:10:18:11 | exit M3 | Foreach.cs:18:10:18:11 | exit M3 |

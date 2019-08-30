@@ -1,5 +1,5 @@
 import python
-import semmle.python.security.TaintTracking
+import semmle.python.dataflow.Implementation
 import semmle.python.security.strings.External
 import HttpConstants
 
@@ -16,7 +16,7 @@ class WsgiEnvironment extends TaintKind {
     WsgiEnvironment() { this = "wsgi.environment" }
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-        result = this and TaintFlowImplementation::copyCall(fromnode, tonode)
+        result = this and Implementation::copyCall(fromnode, tonode)
         or
         result = this and
         tonode.(CallNode).getFunction().refersTo(theDictType()) and

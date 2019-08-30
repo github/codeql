@@ -159,4 +159,25 @@ namespace NoPia
     }
 }
 
+unsafe class ArrayTypesTest
+{
+    int*[][] field;
+}
+
+class NameofNamespace
+{
+    string s = nameof(System);
+}
+
+class UsingDiscard
+{
+    void F()
+    {
+        foreach(var _ in new IDisposable[] { })
+            using(_)
+            {
+            }
+    }
+}
+
 // semmle-extractor-options: /r:System.Dynamic.Runtime.dll

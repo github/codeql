@@ -1,6 +1,8 @@
 /**
- * @name Year field changed using an arithmetic operation is used on an unchecked time conversion function
- * @description A year field changed using an arithmetic operation is used on a time conversion function, but the return value of the function is not checked for success or failure
+ * @name Unchecked return value for time conversion function
+ * @description When the return value of a fallible time conversion function is
+ *              not checked for failure, its output parameters may contain
+ *              invalid dates.
  * @kind problem
  * @problem.severity warning
  * @id cpp/leap-year/unchecked-return-value-for-time-conversion-function

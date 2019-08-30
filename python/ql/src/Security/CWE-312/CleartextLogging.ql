@@ -38,4 +38,4 @@ class CleartextLoggingConfiguration extends TaintTracking::Configuration {
 from CleartextLoggingConfiguration config, TaintedPathSource source, TaintedPathSink sink
 where config.hasFlowPath(source, sink)
 select sink.getSink(), source, sink, "Sensitive data returned by $@ is logged here.",
-  source.getSource(), source.getNode().(SensitiveData::Source).repr()
+  source.getSource(), source.getCfgNode().(SensitiveData::Source).repr()

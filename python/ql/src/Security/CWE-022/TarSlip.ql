@@ -187,6 +187,18 @@ class TarSlipConfiguration extends TaintTracking::Configuration {
         sanitizer instanceof ExcludeTarFilePy
     }
 
+    override predicate isBarrier(DataFlow::Node node) {
+        // Avoid flow into the tarfile module
+        exists(ParameterDefinition def |
+            node.asVariable().getDefinition() = def
+            or
+            node.asCfgNode() = def.getDefiningNode()
+            |
+            def.getScope() = Value::named("tarfile.open").(CallableValue).getScope()
+            or
+            def.isSelf() and def.getScope().getEnclosingModule().getName() = "tarfile"
+        )
+    }
 }
 
 

@@ -176,7 +176,7 @@
 | Conditions.cs:67:16:67:16 | access to local variable y | Conditions.cs:57:9:57:10 | exit M5 | 3 |
 | Conditions.cs:70:9:70:10 | enter M6 | Conditions.cs:74:27:74:28 | access to parameter ss | 12 |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | 1 |
-| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:76:17:76:17 | access to local variable b | 3 |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:76:17:76:17 | access to local variable b | 4 |
 | Conditions.cs:77:17:77:20 | ...; | Conditions.cs:77:17:77:19 | ...++ | 3 |
 | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:78:17:78:21 | ... > ... | 4 |
 | Conditions.cs:79:17:79:26 | ...; | Conditions.cs:79:17:79:25 | ... = ... | 3 |
@@ -185,7 +185,7 @@
 | Conditions.cs:83:16:83:16 | access to local variable x | Conditions.cs:70:9:70:10 | exit M6 | 3 |
 | Conditions.cs:86:9:86:10 | enter M7 | Conditions.cs:90:27:90:28 | access to parameter ss | 12 |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | 1 |
-| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:92:17:92:17 | access to local variable b | 3 |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:92:17:92:17 | access to local variable b | 4 |
 | Conditions.cs:93:17:93:20 | ...; | Conditions.cs:93:17:93:19 | ...++ | 3 |
 | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:94:17:94:21 | ... > ... | 4 |
 | Conditions.cs:95:17:95:26 | ...; | Conditions.cs:95:17:95:25 | ... = ... | 3 |
@@ -258,7 +258,7 @@
 | Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:14:27:14:30 | access to parameter args | 3 |
 | Foreach.cs:12:10:12:11 | exit M2 | Foreach.cs:12:10:12:11 | exit M2 | 1 |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | 1 |
-| Foreach.cs:15:13:15:13 | ; | Foreach.cs:15:13:15:13 | ; | 1 |
+| Foreach.cs:14:22:14:22 | String _ | Foreach.cs:15:13:15:13 | ; | 2 |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:27:20:27 | access to parameter e | 4 |
 | Foreach.cs:18:10:18:11 | exit M3 | Foreach.cs:18:10:18:11 | exit M3 | 1 |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | 1 |

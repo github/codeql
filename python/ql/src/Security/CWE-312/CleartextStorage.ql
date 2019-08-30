@@ -37,4 +37,4 @@ class CleartextStorageConfiguration extends TaintTracking::Configuration {
 from CleartextStorageConfiguration config, TaintedPathSource source, TaintedPathSink sink
 where config.hasFlowPath(source, sink)
 select sink.getSink(), source, sink, "Sensitive data from $@ is stored here.",
-  source.getSource(), source.getNode().(SensitiveData::Source).repr()
+  source.getSource(), source.getCfgNode().(SensitiveData::Source).repr()

@@ -170,6 +170,8 @@ abstract class EssaDefinition extends TEssaDefinition {
         result.getDefinition() = this
     }
 
+    abstract BasicBlock getBasicBlock();
+
 }
 
 /** An ESSA definition corresponding to an edge refinement of the underlying variable. 
@@ -231,6 +233,10 @@ class EssaEdgeRefinement extends EssaDefinition, TEssaEdgeDefinition {
     /** Gets the scope of the variable defined by this definition. */
     override Scope getScope() {
         result = this.getPredecessor().getScope()
+    }
+
+    override BasicBlock getBasicBlock(){
+        result = this.getSuccessor()
     }
 
 }
@@ -295,7 +301,7 @@ class PhiFunction extends EssaDefinition, TPhiFunction {
     }
 
     /** Gets the basic block that succeeds this phi node. */
-    BasicBlock getBasicBlock() {
+    override BasicBlock getBasicBlock() {
         this = TPhiFunction(_, result)
     }
 
@@ -446,6 +452,10 @@ class EssaNodeDefinition extends EssaDefinition, TEssaNodeDefinition {
         )
     }
 
+    override BasicBlock getBasicBlock(){
+        result = this.getDefiningNode().getBasicBlock()
+    }
+
 }
 
 /** A definition of an ESSA variable that takes another ESSA variable as an input.
@@ -510,6 +520,10 @@ class EssaNodeRefinement extends EssaDefinition, TEssaNodeRefinement {
             or
             this = TEssaNodeRefinement(v, b, i+i+1)
         )
+    }
+
+    override BasicBlock getBasicBlock(){
+        result = this.getDefiningNode().getBasicBlock()
     }
 
 }

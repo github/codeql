@@ -1,0 +1,11 @@
+| file://:0:0:0:0 | (global namespace) | NameQualifyingElement |
+| file://:0:0:0:0 | B | NameQualifyingElement |
+| namespaces.cpp:1:11:1:11 | A | NameQualifyingElement |
+| namespaces.cpp:9:11:9:11 | C | NameQualifyingElement |
+| namespaces.cpp:11:13:11:13 | C::D | NameQualifyingElement |
+| namespaces.cpp:13:30:13:30 | 0 | NameQualifiableElement |
+| namespaces.cpp:15:12:15:12 | E | NameQualifyingElement |
+| namespaces.cpp:32:11:32:13 | C:: | NameQualifiableElement |
+| namespaces.cpp:32:11:32:17 | call to f | NameQualifiableElement |
+| namespaces.cpp:32:14:32:16 | D:: | NameQualifiableElement |
+| namespaces.cpp:36:11:36:13 | std | NameQualifyingElement |

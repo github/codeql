@@ -114,6 +114,7 @@ namespace Semmle.Extraction.Kinds
         POSITIONAL_PATTERN = 117,
         SWITCH_CASE = 118,
         ASSIGN_COALESCE = 119,
-        SUPPRESS_NULLABLE_WARNING = 120
+        SUPPRESS_NULLABLE_WARNING = 120,
+        NAMESPACE_ACCESS = 121
     }
 }

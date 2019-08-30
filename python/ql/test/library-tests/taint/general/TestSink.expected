@@ -14,6 +14,7 @@
 | rock | rockpaperscissors.py:24 | 26 | y | paper |
 | scissors | rockpaperscissors.py:13 | 13 | SCISSORS | scissors |
 | simple.test | carrier.py:17 | 18 | Attribute | simple.test |
+| simple.test | carrier.py:25 | 26 | Attribute() | simple.test |
 | simple.test | module.py:3 | 89 | t | simple.test |
 | simple.test | module.py:3 | 106 | Attribute | simple.test |
 | simple.test | module.py:3 | 111 | Attribute | simple.test |

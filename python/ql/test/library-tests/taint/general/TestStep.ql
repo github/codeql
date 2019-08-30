@@ -4,8 +4,9 @@ import TaintLib
 
 
 from TaintedNode n, TaintedNode s
-where s = n.getASuccessor()
-select 
-    n.getTrackedValue(), n.getLocation().toString(), n.getNode().getNode().toString(), n.getContext(), 
-    " --> ",
-    s.getTrackedValue(), s.getLocation().toString(), s.getNode().getNode().toString(), s.getContext()
+where
+    s = n.getASuccessor()
+select
+    n.toString(), n.getLocation().toString(), n.getNode().toString(), n.getContext(),
+    "-->",
+    s.toString(), s.getLocation().toString(), s.getNode().toString(), s.getContext()

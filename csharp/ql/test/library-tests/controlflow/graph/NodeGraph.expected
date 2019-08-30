@@ -954,8 +954,9 @@
 | Conditions.cs:73:9:73:18 | ... ...; | Conditions.cs:73:17:73:17 | 0 | semmle.label | successor |
 | Conditions.cs:73:13:73:17 | Int32 x = ... | Conditions.cs:74:27:74:28 | access to parameter ss | semmle.label | successor |
 | Conditions.cs:73:17:73:17 | 0 | Conditions.cs:73:13:73:17 | Int32 x = ... | semmle.label | successor |
-| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:75:9:80:9 | {...} | semmle.label | non-empty |
+| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:22:74:22 | String _ | semmle.label | non-empty |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:81:9:82:16 | if (...) ... | semmle.label | empty |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:75:9:80:9 | {...} | semmle.label | successor |
 | Conditions.cs:74:27:74:28 | access to parameter ss | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | semmle.label | successor |
 | Conditions.cs:75:9:80:9 | {...} | Conditions.cs:76:13:77:20 | if (...) ... | semmle.label | successor |
 | Conditions.cs:76:13:77:20 | if (...) ... | Conditions.cs:76:17:76:17 | access to local variable b | semmle.label | successor |
@@ -991,8 +992,9 @@
 | Conditions.cs:89:9:89:18 | ... ...; | Conditions.cs:89:17:89:17 | 0 | semmle.label | successor |
 | Conditions.cs:89:13:89:17 | Int32 x = ... | Conditions.cs:90:27:90:28 | access to parameter ss | semmle.label | successor |
 | Conditions.cs:89:17:89:17 | 0 | Conditions.cs:89:13:89:17 | Int32 x = ... | semmle.label | successor |
-| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:91:9:98:9 | {...} | semmle.label | non-empty |
+| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:22:90:22 | String _ | semmle.label | non-empty |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:99:16:99:16 | access to local variable x | semmle.label | empty |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:91:9:98:9 | {...} | semmle.label | successor |
 | Conditions.cs:90:27:90:28 | access to parameter ss | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | semmle.label | successor |
 | Conditions.cs:91:9:98:9 | {...} | Conditions.cs:92:13:93:20 | if (...) ... | semmle.label | successor |
 | Conditions.cs:92:13:93:20 | if (...) ... | Conditions.cs:92:17:92:17 | access to local variable b | semmle.label | successor |
@@ -1315,7 +1317,8 @@
 | Foreach.cs:12:10:12:11 | enter M2 | Foreach.cs:13:5:16:5 | {...} | semmle.label | successor |
 | Foreach.cs:13:5:16:5 | {...} | Foreach.cs:14:27:14:30 | access to parameter args | semmle.label | successor |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | exit M2 | semmle.label | empty |
-| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:15:13:15:13 | ; | semmle.label | non-empty |
+| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:22:14:22 | String _ | semmle.label | non-empty |
+| Foreach.cs:14:22:14:22 | String _ | Foreach.cs:15:13:15:13 | ; | semmle.label | successor |
 | Foreach.cs:14:27:14:30 | access to parameter args | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | semmle.label | successor |
 | Foreach.cs:15:13:15:13 | ; | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | semmle.label | successor |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:19:5:22:5 | {...} | semmle.label | successor |
