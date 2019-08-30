@@ -1,5 +1,4 @@
 import python
-import semmle.python.security.TaintTest
 import TaintLib
 
 
