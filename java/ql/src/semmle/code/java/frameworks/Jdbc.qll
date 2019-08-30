@@ -34,6 +34,14 @@ class ConnectionPrepareStatement extends Method {
   }
 }
 
+/** A method with the name `prepareCall` declared in `java.sql.Connection`. */
+class ConnectionPrepareCall extends Method {
+  ConnectionPrepareCall() {
+    getDeclaringType() instanceof TypeConnection and
+    hasName("prepareCall")
+  }
+}
+
 /** A method with the name `executeQuery` declared in `java.sql.Statement`. */
 class StatementExecuteQuery extends Method {
   StatementExecuteQuery() {
@@ -55,6 +63,14 @@ class MethodStatementExecuteUpdate extends Method {
   MethodStatementExecuteUpdate() {
     getDeclaringType() instanceof TypeStatement and
     hasName("executeUpdate")
+  }
+}
+
+/** A method with the name `executeLargeUpdate` declared in `java.sql.Statement`. */
+class MethodStatementExecuteLargeUpdate extends Method {
+  MethodStatementExecuteLargeUpdate() {
+    getDeclaringType() instanceof TypeStatement and
+    hasName("executeLargeUpdate")
   }
 }
 
@@ -87,9 +103,11 @@ class SqlExpr extends Expr {
       method = call.getMethod() and
       (
         method instanceof ConnectionPrepareStatement or
+        method instanceof ConnectionPrepareCall or
         method instanceof StatementExecuteQuery or
         method instanceof MethodStatementExecute or
         method instanceof MethodStatementExecuteUpdate or
+        method instanceof MethodStatementExecuteLargeUpdate or
         method instanceof MethodStatementAddBatch
       )
     )
