@@ -167,24 +167,24 @@ conditionBlock
 | Conditions.cs:61:9:64:9 | {...} | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | true |
 | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | Conditions.cs:61:9:64:9 | [b (line 57): true] {...} | true |
 | Conditions.cs:63:17:63:20 | [b (line 57): true] ...; | Conditions.cs:65:9:66:16 | [b (line 57): true] if (...) ... | false |
-| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:75:9:80:9 | {...} | false |
+| Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:74:22:74:22 | String _ | false |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:77:17:77:20 | ...; | false |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:78:13:79:26 | if (...) ... | false |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:79:17:79:26 | ...; | false |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:81:9:82:16 | if (...) ... | true |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:82:13:82:16 | ...; | true |
 | Conditions.cs:74:9:80:9 | foreach (... ... in ...) ... | Conditions.cs:83:16:83:16 | access to local variable x | true |
-| Conditions.cs:75:9:80:9 | {...} | Conditions.cs:77:17:77:20 | ...; | true |
+| Conditions.cs:74:22:74:22 | String _ | Conditions.cs:77:17:77:20 | ...; | true |
 | Conditions.cs:78:13:79:26 | if (...) ... | Conditions.cs:79:17:79:26 | ...; | true |
 | Conditions.cs:81:9:82:16 | if (...) ... | Conditions.cs:82:13:82:16 | ...; | true |
-| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:91:9:98:9 | {...} | false |
+| Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:90:22:90:22 | String _ | false |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:93:17:93:20 | ...; | false |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:94:13:95:26 | if (...) ... | false |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:95:17:95:26 | ...; | false |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:96:13:97:20 | if (...) ... | false |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:97:17:97:20 | ...; | false |
 | Conditions.cs:90:9:98:9 | foreach (... ... in ...) ... | Conditions.cs:99:16:99:16 | access to local variable x | true |
-| Conditions.cs:91:9:98:9 | {...} | Conditions.cs:93:17:93:20 | ...; | true |
+| Conditions.cs:90:22:90:22 | String _ | Conditions.cs:93:17:93:20 | ...; | true |
 | Conditions.cs:94:13:95:26 | if (...) ... | Conditions.cs:95:17:95:26 | ...; | true |
 | Conditions.cs:96:13:97:20 | if (...) ... | Conditions.cs:97:17:97:20 | ...; | true |
 | Conditions.cs:102:12:102:13 | enter M8 | Conditions.cs:106:13:106:20 | [b (line 102): true] ...; | true |
@@ -217,7 +217,7 @@ conditionBlock
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:6:10:6:11 | exit M1 | true |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:22:8:24 | String arg | false |
 | Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | exit M2 | true |
-| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:15:13:15:13 | ; | false |
+| Foreach.cs:14:9:15:13 | foreach (... ... in ...) ... | Foreach.cs:14:22:14:22 | String _ | false |
 | Foreach.cs:18:10:18:11 | enter M3 | Foreach.cs:20:29:20:38 | call to method ToArray | false |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:18:10:18:11 | exit M3 | true |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:22:20:22 | String x | false |

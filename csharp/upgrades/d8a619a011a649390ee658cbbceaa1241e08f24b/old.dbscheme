@@ -214,7 +214,7 @@ tokens(
          | @using_directive | @type_parameter_constraints | @external_element
          | @xmllocatable | @asp_element | @namespace;
 
-@declaration = @callable | @generic | @assignable | @namespace;
+@declaration = @callable | @generic | @assignable;
 
 @named_element = @namespace | @declaration;
 
@@ -982,7 +982,6 @@ case @expr.kind of
 | 118 = @switch_case_expr
 | 119 = @assign_coalesce_expr
 | 120 = @suppress_nullable_warning_expr
-| 121 = @namespace_access_expr
 ;
 
 @switch = @switch_stmt | @switch_expr;
@@ -1005,7 +1004,7 @@ case @expr.kind of
 
 @member_access_expr = @field_access_expr | @property_access_expr | @indexer_access_expr | @event_access_expr
                     | @method_access_expr | @type_access_expr | @dynamic_member_access_expr;
-@access_expr = @member_access_expr | @this_access_expr | @base_access_expr | @assignable_access_expr | @namespace_access_expr;
+@access_expr = @member_access_expr | @this_access_expr | @base_access_expr | @assignable_access_expr;
 @element_access_expr = @indexer_access_expr | @array_access_expr | @dynamic_element_access_expr;
 
 @local_variable_access = @local_variable_access_expr | @local_var_decl_expr;
@@ -1085,7 +1084,7 @@ expr_access(
   unique int accesser_id: @access_expr ref,
   int target_id: @accessible ref);
 
-@accessible = @method | @assignable | @local_function | @namespace;
+@accessible = @method | @assignable | @local_function;
 
 expr_location(
   unique int id: @expr ref,

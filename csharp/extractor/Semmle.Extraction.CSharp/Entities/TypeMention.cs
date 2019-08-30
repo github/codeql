@@ -22,15 +22,39 @@ namespace Semmle.Extraction.CSharp.Entities
             Loc = loc;
         }
 
+        static TypeSyntax GetElementType(TypeSyntax type)
+        {
+            switch (type)
+            {
+                case ArrayTypeSyntax ats:
+                    return GetElementType(ats.ElementType);
+                case NullableTypeSyntax nts:
+                    return GetElementType(nts.ElementType);
+                default:
+                    return type;
+            }
+        }
+
+        static Type GetElementType(Type type)
+        {
+            switch (type)
+            {
+                case ArrayType at:
+                    return GetElementType(at.ElementType.Type);
+                case NamedType nt when nt.symbol.IsBoundNullable():
+                    return nt.TypeArguments.Single();
+                default:
+                    return type;
+            }
+        }
+
         void Populate()
         {
             switch (Syntax.Kind())
             {
                 case SyntaxKind.ArrayType:
-                    var ats = (ArrayTypeSyntax)Syntax;
-                    var at = (ArrayType)Type;
                     Emit(Loc ?? Syntax.GetLocation(), Parent, Type);
-                    Create(cx, ats.ElementType, this, at.ElementType);
+                    Create(cx, GetElementType(Syntax), this, GetElementType(Type));
                     return;
                 case SyntaxKind.NullableType:
                     var nts = (NullableTypeSyntax)Syntax;
