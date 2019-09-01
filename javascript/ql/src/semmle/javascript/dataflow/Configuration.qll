@@ -611,18 +611,8 @@ private predicate callInputStep(
   Function f, DataFlow::Node invk, DataFlow::Node pred, DataFlow::Node succ,
   DataFlow::Configuration cfg
 ) {
-  (
-    isRelevant(pred, cfg) and
-    argumentPassing(invk, pred, f, succ)
-    or
-    isRelevant(pred, cfg) and
-    exists(SsaDefinition prevDef, SsaDefinition def |
-      pred = DataFlow::ssaDefinitionNode(prevDef) and
-      calls(invk, f) and
-      captures(f, prevDef, def) and
-      succ = DataFlow::ssaDefinitionNode(def)
-    )
-  ) and
+  isRelevant(pred, cfg) and
+  argumentPassing(invk, pred, f, succ) and
   not cfg.isBarrier(succ) and
   not cfg.isBarrierEdge(pred, succ)
 }
