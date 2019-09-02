@@ -16,32 +16,25 @@ private import Cached
  * Most consumers should use the class `IRBlock`.
  */
 class IRBlockBase extends TIRBlock {
-  final string toString() {
-    result = getFirstInstruction(this).toString()
-  }
+  final string toString() { result = getFirstInstruction(this).toString() }
 
-  final Language::Location getLocation() {
-    result = getFirstInstruction().getLocation()
-  }
-  
-  final string getUniqueId() {
-    result = getFirstInstruction(this).getUniqueId()
-  }
-  
+  final Language::Location getLocation() { result = getFirstInstruction().getLocation() }
+
+  final string getUniqueId() { result = getFirstInstruction(this).getUniqueId() }
+
   /**
    * Gets the zero-based index of the block within its function. This is used
    * by debugging and printing code only.
    */
   int getDisplayIndex() {
     this = rank[result + 1](IRBlock funcBlock |
-      funcBlock.getEnclosingFunction() = getEnclosingFunction() |
-      funcBlock order by funcBlock.getUniqueId()
-    )
+        funcBlock.getEnclosingFunction() = getEnclosingFunction()
+      |
+        funcBlock order by funcBlock.getUniqueId()
+      )
   }
 
-  final Instruction getInstruction(int index) {
-    result = getInstruction(this, index)
-  }
+  final Instruction getInstruction(int index) { result = getInstruction(this, index) }
 
   final PhiInstruction getAPhiInstruction() {
     Construction::getPhiInstructionBlockStart(result) = getFirstInstruction()
@@ -52,17 +45,11 @@ class IRBlockBase extends TIRBlock {
     result = getAPhiInstruction()
   }
 
-  final Instruction getFirstInstruction() {
-    result = getFirstInstruction(this)
-  }
+  final Instruction getFirstInstruction() { result = getFirstInstruction(this) }
 
-  final Instruction getLastInstruction() {
-    result = getInstruction(getInstructionCount() - 1)
-  }
+  final Instruction getLastInstruction() { result = getInstruction(getInstructionCount() - 1) }
 
-  final int getInstructionCount() {
-    result = getInstructionCount(this)
-  }
+  final int getInstructionCount() { result = getInstructionCount(this) }
 
   final IRFunction getEnclosingIRFunction() {
     result = getFirstInstruction(this).getEnclosingIRFunction()
@@ -79,40 +66,26 @@ class IRBlockBase extends TIRBlock {
  * instruction of another block.
  */
 class IRBlock extends IRBlockBase {
-  final IRBlock getASuccessor() {
-    blockSuccessor(this, result)
-  }
+  final IRBlock getASuccessor() { blockSuccessor(this, result) }
 
-  final IRBlock getAPredecessor() {
-    blockSuccessor(result, this)
-  }
+  final IRBlock getAPredecessor() { blockSuccessor(result, this) }
 
-  final IRBlock getSuccessor(EdgeKind kind) {
-    blockSuccessor(this, result, kind)
-  }
+  final IRBlock getSuccessor(EdgeKind kind) { blockSuccessor(this, result, kind) }
 
-  final IRBlock getBackEdgeSuccessor(EdgeKind kind) {
-    backEdgeSuccessor(this, result, kind)
-  }
+  final IRBlock getBackEdgeSuccessor(EdgeKind kind) { backEdgeSuccessor(this, result, kind) }
 
-  final predicate immediatelyDominates(IRBlock block) {
-    blockImmediatelyDominates(this, block)
-  }
+  final predicate immediatelyDominates(IRBlock block) { blockImmediatelyDominates(this, block) }
 
-  final predicate strictlyDominates(IRBlock block) {
-    blockImmediatelyDominates+(this, block)
-  }
+  final predicate strictlyDominates(IRBlock block) { blockImmediatelyDominates+(this, block) }
 
-  final predicate dominates(IRBlock block) {
-    strictlyDominates(block) or this = block
-  }
+  final predicate dominates(IRBlock block) { strictlyDominates(block) or this = block }
 
   pragma[noinline]
   final IRBlock dominanceFrontier() {
     dominates(result.getAPredecessor()) and
     not strictlyDominates(result)
   }
-  
+
   /**
    * Holds if this block is reachable from the entry point of its function
    */
@@ -125,22 +98,21 @@ class IRBlock extends IRBlockBase {
 private predicate startsBasicBlock(Instruction instr) {
   not instr instanceof PhiInstruction and
   (
-    count(Instruction predecessor |
-      instr = predecessor.getASuccessor()
-    ) != 1 or  // Multiple predecessors or no predecessor
+    count(Instruction predecessor | instr = predecessor.getASuccessor()) != 1 // Multiple predecessors or no predecessor
+    or
     exists(Instruction predecessor |
       instr = predecessor.getASuccessor() and
-      strictcount(Instruction other |
-        other = predecessor.getASuccessor()
-      ) > 1
-    ) or  // Predecessor has multiple successors
+      strictcount(Instruction other | other = predecessor.getASuccessor()) > 1
+    ) // Predecessor has multiple successors
+    or
     exists(Instruction predecessor, EdgeKind kind |
       instr = predecessor.getSuccessor(kind) and
       not kind instanceof GotoEdge
-    ) or  // Incoming edge is not a GotoEdge
+    ) // Incoming edge is not a GotoEdge
+    or
     exists(Instruction predecessor |
       instr = Construction::getInstructionBackEdgeSuccessor(predecessor, _)
-    )  // A back edge enters this instruction
+    ) // A back edge enters this instruction
   )
 }
 
@@ -148,11 +120,10 @@ private predicate isEntryBlock(TIRBlock block) {
   block = MkIRBlock(any(EnterFunctionInstruction enter))
 }
 
-private cached module Cached {
-  cached newtype TIRBlock =
-    MkIRBlock(Instruction firstInstr) {
-      startsBasicBlock(firstInstr)
-    }
+cached
+private module Cached {
+  cached
+  newtype TIRBlock = MkIRBlock(Instruction firstInstr) { startsBasicBlock(firstInstr) }
 
   /** Holds if `i2` follows `i1` in a `IRBlock`. */
   private predicate adjacentInBlock(Instruction i1, Instruction i2) {
@@ -165,15 +136,16 @@ private cached module Cached {
     shortestDistances(startsBasicBlock/1, adjacentInBlock/2)(first, result, index)
 
   /** Holds if `i` is the `index`th instruction in `block`. */
-  cached Instruction getInstruction(TIRBlock block, int index) {
+  cached
+  Instruction getInstruction(TIRBlock block, int index) {
     result = getInstructionFromFirst(getFirstInstruction(block), index)
   }
 
-  cached int getInstructionCount(TIRBlock block) {
-    result = strictcount(getInstruction(block, _))
-  }
+  cached
+  int getInstructionCount(TIRBlock block) { result = strictcount(getInstruction(block, _)) }
 
-  cached predicate blockSuccessor(TIRBlock pred, TIRBlock succ, EdgeKind kind) {
+  cached
+  predicate blockSuccessor(TIRBlock pred, TIRBlock succ, EdgeKind kind) {
     exists(Instruction predLast, Instruction succFirst |
       predLast = getInstruction(pred, getInstructionCount(pred) - 1) and
       succFirst = predLast.getSuccessor(kind) and
@@ -185,7 +157,8 @@ private cached module Cached {
   private predicate blockIdentity(TIRBlock b1, TIRBlock b2) { b1 = b2 }
 
   pragma[noopt]
-  cached predicate backEdgeSuccessor(TIRBlock pred, TIRBlock succ, EdgeKind kind) {
+  cached
+  predicate backEdgeSuccessor(TIRBlock pred, TIRBlock succ, EdgeKind kind) {
     backEdgeSuccessorRaw(pred, succ, kind)
     or
     // See the QLDoc on `backEdgeSuccessorRaw`.
@@ -226,14 +199,12 @@ private cached module Cached {
     )
   }
 
-  cached predicate blockSuccessor(TIRBlock pred, TIRBlock succ) {
-    blockSuccessor(pred, succ, _)
-  }
+  cached
+  predicate blockSuccessor(TIRBlock pred, TIRBlock succ) { blockSuccessor(pred, succ, _) }
 
-  cached predicate blockImmediatelyDominates(TIRBlock dominator, TIRBlock block) =
+  cached
+  predicate blockImmediatelyDominates(TIRBlock dominator, TIRBlock block) =
     idominance(isEntryBlock/1, blockSuccessor/2)(_, dominator, block)
 }
 
-Instruction getFirstInstruction(TIRBlock block) {
-  block = MkIRBlock(result)
-}
+Instruction getFirstInstruction(TIRBlock block) { block = MkIRBlock(result) }

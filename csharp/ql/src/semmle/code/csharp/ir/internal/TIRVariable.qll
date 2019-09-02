@@ -12,4 +12,3 @@ newtype TIRVariable =
   TIRTempVariable(Callable callable, Language::AST ast, TempVariableTag tag, Type type) {
     Construction::hasTempVariable(callable, ast, tag, type)
   }
-

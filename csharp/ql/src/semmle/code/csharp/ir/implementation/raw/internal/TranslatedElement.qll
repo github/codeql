@@ -66,9 +66,10 @@ private predicate ignoreExprOnly(Expr expr) {
   not translateFunction(expr.getEnclosingCallable())
   or
   // Ignore size of arrays when translating
-  (expr.getParent() instanceof ArrayCreation and expr.hasValue()) or
+  expr.getParent() instanceof ArrayCreation and expr.hasValue()
+  or
   // Ignore the child expression of a goto case stmt
-  (expr.getParent() instanceof GotoCaseStmt)
+  expr.getParent() instanceof GotoCaseStmt
 }
 
 /**
@@ -156,7 +157,7 @@ newtype TTranslatedElement =
     expr instanceof AssignableRead and
     not expr.getParent() instanceof ArrayAccess and
     not (
-      expr.getParent() instanceof Assignment and 
+      expr.getParent() instanceof Assignment and
       expr.getType() instanceof RefType
     ) and
     // Ignore loads for reads in `++` and `--` since their
@@ -238,10 +239,8 @@ newtype TTranslatedElement =
     isFirstValueInitializedElementInRange(initList, elementIndex) and
     elementCount = getEndOfValueInitializedRange(initList, elementIndex) - elementIndex
   } or
-   // The initialization of a base class from within a constructor.
-  TTranslatedConstructorInitializer(ConstructorInitializer init) {
-    not ignoreExpr(init)
-  } or
+  // The initialization of a base class from within a constructor.
+  TTranslatedConstructorInitializer(ConstructorInitializer init) { not ignoreExpr(init) } or
   // A statement
   TTranslatedStmt(Stmt stmt) { translateStmt(stmt) } or
   // A function

@@ -15,17 +15,13 @@ private newtype TMemoryAccessKind =
  * memory result.
  */
 class MemoryAccessKind extends TMemoryAccessKind {
-  string toString() {
-    none()
-  }
+  string toString() { none() }
 
   /**
    * Holds if the operand or result accesses memory pointed to by the `AddressOperand` on the
    * same instruction.
    */
-  predicate usesAddressOperand() {
-    none()
-  }
+  predicate usesAddressOperand() { none() }
 }
 
 /**
@@ -33,13 +29,9 @@ class MemoryAccessKind extends TMemoryAccessKind {
  * same instruction.
  */
 class IndirectMemoryAccess extends MemoryAccessKind, TIndirectMemoryAccess {
-  override string toString() {
-    result = "indirect"
-  }
-  
-  override final predicate usesAddressOperand() {
-    any()
-  }
+  override string toString() { result = "indirect" }
+
+  final override predicate usesAddressOperand() { any() }
 }
 
 /**
@@ -47,13 +39,9 @@ class IndirectMemoryAccess extends MemoryAccessKind, TIndirectMemoryAccess {
  * `AddressOperand` on the same instruction.
  */
 class IndirectMayMemoryAccess extends MemoryAccessKind, TIndirectMayMemoryAccess {
-  override string toString() {
-    result = "indirect(may)"
-  }
+  override string toString() { result = "indirect(may)" }
 
-  override final predicate usesAddressOperand() {
-    any()
-  }
+  final override predicate usesAddressOperand() { any() }
 }
 
 /**
@@ -62,13 +50,9 @@ class IndirectMayMemoryAccess extends MemoryAccessKind, TIndirectMayMemoryAccess
  * `BufferSizeOperand`.
  */
 class BufferMemoryAccess extends MemoryAccessKind, TBufferMemoryAccess {
-  override string toString() {
-    result = "buffer"
-  }
+  override string toString() { result = "buffer" }
 
-  override final predicate usesAddressOperand() {
-    any()
-  }
+  final override predicate usesAddressOperand() { any() }
 }
 
 /**
@@ -77,31 +61,23 @@ class BufferMemoryAccess extends MemoryAccessKind, TBufferMemoryAccess {
  * elements given by the `BufferSizeOperand`.
  */
 class BufferMayMemoryAccess extends MemoryAccessKind, TBufferMayMemoryAccess {
-  override string toString() {
-    result = "buffer(may)"
-  }
+  override string toString() { result = "buffer(may)" }
 
-  override final predicate usesAddressOperand() {
-    any()
-  }
+  final override predicate usesAddressOperand() { any() }
 }
 
 /**
  * The operand or result accesses all memory whose address has escaped.
  */
 class EscapedMemoryAccess extends MemoryAccessKind, TEscapedMemoryAccess {
-  override string toString() {
-    result = "escaped"
-  }
+  override string toString() { result = "escaped" }
 }
 
 /**
  * The operand or result may access all memory whose address has escaped.
  */
 class EscapedMayMemoryAccess extends MemoryAccessKind, TEscapedMayMemoryAccess {
-  override string toString() {
-    result = "escaped(may)"
-  }
+  override string toString() { result = "escaped(may)" }
 }
 
 /**
@@ -109,9 +85,7 @@ class EscapedMayMemoryAccess extends MemoryAccessKind, TEscapedMayMemoryAccess {
  * definition.
  */
 class PhiMemoryAccess extends MemoryAccessKind, TPhiMemoryAccess {
-  override string toString() {
-    result = "phi"
-  }
+  override string toString() { result = "phi" }
 }
 
 /**
@@ -119,9 +93,7 @@ class PhiMemoryAccess extends MemoryAccessKind, TPhiMemoryAccess {
  * definition.
  */
 class ChiTotalMemoryAccess extends MemoryAccessKind, TChiTotalMemoryAccess {
-  override string toString() {
-    result = "chi(total)"
-  }
+  override string toString() { result = "chi(total)" }
 }
 
 /**
@@ -129,9 +101,7 @@ class ChiTotalMemoryAccess extends MemoryAccessKind, TChiTotalMemoryAccess {
  * definition.
  */
 class ChiPartialMemoryAccess extends MemoryAccessKind, TChiPartialMemoryAccess {
-  override string toString() {
-    result = "chi(partial)"
-  }
+  override string toString() { result = "chi(partial)" }
 }
 
 /**
@@ -139,7 +109,5 @@ class ChiPartialMemoryAccess extends MemoryAccessKind, TChiPartialMemoryAccess {
  * `UnmodeledDefinition` and on the operands of `UnmodeledUse`.
  */
 class UnmodeledMemoryAccess extends MemoryAccessKind, TUnmodeledMemoryAccess {
-  override string toString() {
-    result = "unmodeled"
-  }
+  override string toString() { result = "unmodeled" }
 }

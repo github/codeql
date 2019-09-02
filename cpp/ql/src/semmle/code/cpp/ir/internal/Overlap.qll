@@ -8,19 +8,13 @@ abstract class Overlap extends TOverlap {
 }
 
 class MayPartiallyOverlap extends Overlap, TMayPartiallyOverlap {
-  override final string toString() {
-    result = "MayPartiallyOverlap"
-  }
+  final override string toString() { result = "MayPartiallyOverlap" }
 }
 
 class MustTotallyOverlap extends Overlap, TMustTotallyOverlap {
-  override final string toString() {
-    result = "MustTotallyOverlap"
-  }
+  final override string toString() { result = "MustTotallyOverlap" }
 }
 
 class MustExactlyOverlap extends Overlap, TMustExactlyOverlap {
-  override final string toString() {
-    result = "MustExactlyOverlap"
-  }
+  final override string toString() { result = "MustExactlyOverlap" }
 }

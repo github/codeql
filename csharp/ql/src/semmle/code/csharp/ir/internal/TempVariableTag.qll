@@ -8,8 +8,11 @@ newtype TTempVariableTag =
   LambdaTempVar()
 
 string getTempVariableTagId(TTempVariableTag tag) {
-  tag = ConditionValueTempVar() and result = "CondVal" or
-  tag = ReturnValueTempVar() and result = "Ret" or
-  tag = ThrowTempVar() and result = "Throw" or
+  tag = ConditionValueTempVar() and result = "CondVal"
+  or
+  tag = ReturnValueTempVar() and result = "Ret"
+  or
+  tag = ThrowTempVar() and result = "Throw"
+  or
   tag = LambdaTempVar() and result = "Lambda"
 }

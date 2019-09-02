@@ -22,82 +22,66 @@ TranslatedLocalDeclaration getTranslatedLocalDeclaration(LocalVariableDeclExpr d
 abstract class TranslatedLocalDeclaration extends TranslatedElement, TTranslatedDeclaration {
   LocalVariableDeclExpr expr;
 
-  TranslatedLocalDeclaration() {
-    this = TTranslatedDeclaration(expr)
-  }
+  TranslatedLocalDeclaration() { this = TTranslatedDeclaration(expr) }
 
-  override final Callable getFunction() {
-    result = expr.getEnclosingCallable()
-  }
+  final override Callable getFunction() { result = expr.getEnclosingCallable() }
 
-  override final string toString() {
-    result = expr.toString()
-  }
+  final override string toString() { result = expr.toString() }
 
-  override final Language::AST getAST() {
-    result = expr
-  }
+  final override Language::AST getAST() { result = expr }
 }
 
 /**
  * Represents the IR translation of the declaration of a local variable,
  * including its initialization, if any.
  */
-class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration, 
-    InitializationContext {
+class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration, InitializationContext {
   LocalVariable var;
-  
-  TranslatedLocalVariableDeclaration() {
-    var = expr.getVariable()
-  }
 
-  override TranslatedElement getChild(int id) {
-    id = 0 and result = this.getInitialization()
-  }
+  TranslatedLocalVariableDeclaration() { var = expr.getVariable() }
+
+  override TranslatedElement getChild(int id) { id = 0 and result = this.getInitialization() }
 
   override Instruction getFirstInstruction() {
     result = this.getInstruction(InitializerVariableAddressTag())
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isLValue) {
-    (
-      tag = InitializerVariableAddressTag() and
-      opcode instanceof Opcode::VariableAddress and
-      resultType = getVariableType(var) and
-      isLValue = true
-    ) or
-    (
-      this.hasUninitializedInstruction() and
-      tag = InitializerStoreTag() and
-      opcode instanceof Opcode::Uninitialized and
-      resultType = getVariableType(var) and
-      isLValue = false
-    )
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    tag = InitializerVariableAddressTag() and
+    opcode instanceof Opcode::VariableAddress and
+    resultType = getVariableType(var) and
+    isLValue = true
+    or
+    this.hasUninitializedInstruction() and
+    tag = InitializerStoreTag() and
+    opcode instanceof Opcode::Uninitialized and
+    resultType = getVariableType(var) and
+    isLValue = false
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     (
       tag = InitializerVariableAddressTag() and
       kind instanceof GotoEdge and
-      if this.hasUninitializedInstruction() then
-        result = this.getInstruction(InitializerStoreTag())
+      if this.hasUninitializedInstruction()
+      then result = this.getInstruction(InitializerStoreTag())
       else
-        if this.isInitializedByExpr() then
+        if this.isInitializedByExpr()
+        then
           // initialization is done by the expression
           result = this.getParent().getChildSuccessor(this)
-        else
-          result = this.getInitialization().getFirstInstruction()
-    ) or
+        else result = this.getInitialization().getFirstInstruction()
+    )
+    or
+    this.hasUninitializedInstruction() and
+    kind instanceof GotoEdge and
+    tag = InitializerStoreTag() and
     (
-      this.hasUninitializedInstruction() and
-      kind instanceof GotoEdge and
-      tag = InitializerStoreTag() and
-      (
-        result = this.getInitialization().getFirstInstruction() or
-        not exists(this.getInitialization()) and result = this.getParent().getChildSuccessor(this)
-      )
+      result = this.getInitialization().getFirstInstruction()
+      or
+      not exists(this.getInitialization()) and result = this.getParent().getChildSuccessor(this)
     )
   }
 
@@ -107,7 +91,8 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     (
-      tag = InitializerVariableAddressTag() or
+      tag = InitializerVariableAddressTag()
+      or
       this.hasUninitializedInstruction() and tag = InitializerStoreTag()
     ) and
     result = getIRUserVariable(getFunction(), var)
@@ -124,18 +109,18 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
     result = this.getInstruction(InitializerVariableAddressTag())
   }
 
-  override Type getTargetType() {
-    result = getVariableType(var)
-  }
+  override Type getTargetType() { result = getVariableType(var) }
 
   private TranslatedInitialization getInitialization() {
     // First complex initializations
-    if (var.getInitializer() instanceof ArrayCreation) then
-      result = getTranslatedInitialization(var.getInitializer().(ArrayCreation).getInitializer())
-    else if (var.getInitializer() instanceof ObjectCreation) then
-      result = getTranslatedInitialization(var.getInitializer())   
-    else // then the simple variable initialization
-      result = getTranslatedInitialization(var.getInitializer())
+    if var.getInitializer() instanceof ArrayCreation
+    then result = getTranslatedInitialization(var.getInitializer().(ArrayCreation).getInitializer())
+    else
+      if var.getInitializer() instanceof ObjectCreation
+      then result = getTranslatedInitialization(var.getInitializer())
+      else
+        // then the simple variable initialization
+        result = getTranslatedInitialization(var.getInitializer())
   }
 
   private predicate hasUninitializedInstruction() {
@@ -145,12 +130,10 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
     ) and
     not this.isInitializedByExpr()
   }
-  
+
   /**
    * Predicate that holds if a declaration is not explicitly initialized,
    * but will be initialized as part of an expression.
    */
-  private predicate isInitializedByExpr() {
-    expr.getParent() instanceof IsExpr
-  }
+  private predicate isInitializedByExpr() { expr.getParent() instanceof IsExpr }
 }

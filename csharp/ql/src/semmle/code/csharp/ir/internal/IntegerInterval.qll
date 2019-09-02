@@ -13,14 +13,15 @@ private import IntegerConstant
  */
 bindingset[defStart, defEnd, useStart, useEnd]
 Overlap getOverlap(IntValue defStart, IntValue defEnd, IntValue useStart, IntValue useEnd) {
-  if isEQ(defStart, useStart) and isEQ(defEnd, useEnd) then
-    result instanceof MustExactlyOverlap
-  else if isLE(defStart, useStart) and isGE(defEnd, useEnd) then
-    result instanceof MustTotallyOverlap
-  else if isLE(defEnd, useStart) or isGE(defStart, useEnd) then
-    none()
+  if isEQ(defStart, useStart) and isEQ(defEnd, useEnd)
+  then result instanceof MustExactlyOverlap
   else
-    result instanceof MayPartiallyOverlap
+    if isLE(defStart, useStart) and isGE(defEnd, useEnd)
+    then result instanceof MustTotallyOverlap
+    else
+      if isLE(defEnd, useStart) or isGE(defStart, useEnd)
+      then none()
+      else result instanceof MayPartiallyOverlap
 }
 
 /**

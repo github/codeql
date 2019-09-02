@@ -77,152 +77,382 @@ private newtype TOpcode =
   TNewObj()
 
 class Opcode extends TOpcode {
-  string toString() {
-    result = "UnknownOpcode"
-  }
+  string toString() { result = "UnknownOpcode" }
 }
 
-abstract class UnaryOpcode extends Opcode {}
+abstract class UnaryOpcode extends Opcode { }
 
-abstract class BinaryOpcode extends Opcode {}
+abstract class BinaryOpcode extends Opcode { }
 
-abstract class PointerArithmeticOpcode extends BinaryOpcode {}
+abstract class PointerArithmeticOpcode extends BinaryOpcode { }
 
-abstract class PointerOffsetOpcode extends PointerArithmeticOpcode {}
+abstract class PointerOffsetOpcode extends PointerArithmeticOpcode { }
 
-abstract class ArithmeticOpcode extends Opcode {}
+abstract class ArithmeticOpcode extends Opcode { }
 
-abstract class BinaryArithmeticOpcode extends BinaryOpcode, ArithmeticOpcode {}
+abstract class BinaryArithmeticOpcode extends BinaryOpcode, ArithmeticOpcode { }
 
-abstract class UnaryArithmeticOpcode extends UnaryOpcode, ArithmeticOpcode {}
+abstract class UnaryArithmeticOpcode extends UnaryOpcode, ArithmeticOpcode { }
 
-abstract class BitwiseOpcode extends Opcode {}
+abstract class BitwiseOpcode extends Opcode { }
 
-abstract class BinaryBitwiseOpcode extends BinaryOpcode, BitwiseOpcode {}
+abstract class BinaryBitwiseOpcode extends BinaryOpcode, BitwiseOpcode { }
 
-abstract class UnaryBitwiseOpcode extends UnaryOpcode, BitwiseOpcode {}
+abstract class UnaryBitwiseOpcode extends UnaryOpcode, BitwiseOpcode { }
 
-abstract class CompareOpcode extends BinaryOpcode {}
+abstract class CompareOpcode extends BinaryOpcode { }
 
-abstract class RelationalOpcode extends CompareOpcode {}
+abstract class RelationalOpcode extends CompareOpcode { }
 
-abstract class CopyOpcode extends Opcode {}
+abstract class CopyOpcode extends Opcode { }
 
-abstract class MemoryAccessOpcode extends Opcode {}
+abstract class MemoryAccessOpcode extends Opcode { }
 
-abstract class ReturnOpcode extends Opcode {}
+abstract class ReturnOpcode extends Opcode { }
 
-abstract class ThrowOpcode extends Opcode {}
+abstract class ThrowOpcode extends Opcode { }
 
-abstract class CatchOpcode extends Opcode {}
+abstract class CatchOpcode extends Opcode { }
 
-abstract class OpcodeWithCondition extends Opcode {}
+abstract class OpcodeWithCondition extends Opcode { }
 
-abstract class BuiltInOperationOpcode extends Opcode {}
+abstract class BuiltInOperationOpcode extends Opcode { }
 
-abstract class SideEffectOpcode extends Opcode {}
+abstract class SideEffectOpcode extends Opcode { }
 
 /**
  * An opcode that reads a value from memory.
  */
-abstract class OpcodeWithLoad extends MemoryAccessOpcode {}
+abstract class OpcodeWithLoad extends MemoryAccessOpcode { }
 
 /**
  * An opcode that reads from a set of memory locations as a side effect.
  */
-abstract class ReadSideEffectOpcode extends SideEffectOpcode {}
+abstract class ReadSideEffectOpcode extends SideEffectOpcode { }
 
 /**
  * An opcode that writes to a set of memory locations as a side effect.
  */
-abstract class WriteSideEffectOpcode extends SideEffectOpcode {}
+abstract class WriteSideEffectOpcode extends SideEffectOpcode { }
 
 /**
  * An opcode that may overwrite some, all, or none of an existing set of memory locations. Modeled
  * as a read of the original contents, plus a "may" write of the new contents.
  */
-abstract class MayWriteSideEffectOpcode extends SideEffectOpcode {}
+abstract class MayWriteSideEffectOpcode extends SideEffectOpcode { }
 
 /**
  * An opcode that accesses a buffer via an `AddressOperand` and a `BufferSizeOperand`.
  */
-abstract class BufferAccessOpcode extends MemoryAccessOpcode {}
+abstract class BufferAccessOpcode extends MemoryAccessOpcode { }
 
 module Opcode {
-  class NoOp extends Opcode, TNoOp { override final string toString() { result = "NoOp" } }
-  class Uninitialized extends MemoryAccessOpcode, TUninitialized { override final string toString() { result = "Uninitialized" } }
-  class Error extends Opcode, TError { override final string toString() { result = "Error" } }
-  class InitializeParameter extends MemoryAccessOpcode, TInitializeParameter { override final string toString() { result = "InitializeParameter" } }
-  class InitializeThis extends Opcode, TInitializeThis { override final string toString() { result = "InitializeThis" } }
-  class EnterFunction extends Opcode, TEnterFunction { override final string toString() { result = "EnterFunction" } }
-  class ExitFunction extends Opcode, TExitFunction { override final string toString() { result = "ExitFunction" } }
-  class ReturnValue extends ReturnOpcode, OpcodeWithLoad, TReturnValue { override final string toString() { result = "ReturnValue" } }
-  class ReturnVoid extends ReturnOpcode, TReturnVoid { override final string toString() { result = "ReturnVoid" } }
-  class CopyValue extends UnaryOpcode, CopyOpcode, TCopyValue { override final string toString() { result = "CopyValue" } }
-  class Load extends CopyOpcode, OpcodeWithLoad, TLoad { override final string toString() { result = "Load" } }
-  class Store extends CopyOpcode, MemoryAccessOpcode, TStore { override final string toString() { result = "Store" } }
-  class Add extends BinaryArithmeticOpcode, TAdd { override final string toString() { result = "Add" } }
-  class Sub extends BinaryArithmeticOpcode, TSub { override final string toString() { result = "Sub" } }
-  class Mul extends BinaryArithmeticOpcode, TMul { override final string toString() { result = "Mul" } }
-  class Div extends BinaryArithmeticOpcode, TDiv { override final string toString() { result = "Div" } }
-  class Rem extends BinaryArithmeticOpcode, TRem { override final string toString() { result = "Rem" } }
-  class Negate extends UnaryArithmeticOpcode, TNegate { override final string toString() { result = "Negate" } }
-  class ShiftLeft extends BinaryBitwiseOpcode, TShiftLeft { override final string toString() { result = "ShiftLeft" } }
-  class ShiftRight extends BinaryBitwiseOpcode, TShiftRight { override final string toString() { result = "ShiftRight" } }
-  class BitAnd extends BinaryBitwiseOpcode, TBitAnd { override final string toString() { result = "BitAnd" } }
-  class BitOr extends BinaryBitwiseOpcode, TBitOr { override final string toString() { result = "BitOr" } }
-  class BitXor extends BinaryBitwiseOpcode, TBitXor { override final string toString() { result = "BitXor" } }
-  class BitComplement extends UnaryBitwiseOpcode, TBitComplement { override final string toString() { result = "BitComplement" } }
-  class LogicalNot extends UnaryOpcode, TLogicalNot { override final string toString() { result = "LogicalNot" } }
-  class CompareEQ extends CompareOpcode, TCompareEQ { override final string toString() { result = "CompareEQ" } }
-  class CompareNE extends CompareOpcode, TCompareNE { override final string toString() { result = "CompareNE" } }
-  class CompareLT extends RelationalOpcode, TCompareLT { override final string toString() { result = "CompareLT" } }
-  class CompareGT extends RelationalOpcode, TCompareGT { override final string toString() { result = "CompareGT" } }
-  class CompareLE extends RelationalOpcode, TCompareLE { override final string toString() { result = "CompareLE" } }
-  class CompareGE extends RelationalOpcode, TCompareGE { override final string toString() { result = "CompareGE" } }
-  class PointerAdd extends PointerOffsetOpcode, TPointerAdd { override final string toString() { result = "PointerAdd" } }
-  class PointerSub extends PointerOffsetOpcode, TPointerSub { override final string toString() { result = "PointerSub" } }
-  class PointerDiff extends PointerArithmeticOpcode, TPointerDiff { override final string toString() { result = "PointerDiff" } }
-  class Convert extends UnaryOpcode, TConvert { override final string toString() { result = "Convert" } }
-  class ConvertToBase extends UnaryOpcode, TConvertToBase { override final string toString() { result = "ConvertToBase" } }
-  class ConvertToVirtualBase extends UnaryOpcode, TConvertToVirtualBase { override final string toString() { result = "ConvertToVirtualBase" } }
-  class ConvertToDerived extends UnaryOpcode, TConvertToDerived { override final string toString() { result = "ConvertToDerived" } }
-  class CheckedConvertOrNull extends UnaryOpcode, TCheckedConvertOrNull { override final string toString() { result = "CheckedConvertOrNull" } }
-  class CheckedConvertOrThrow extends UnaryOpcode, TCheckedConvertOrThrow { override final string toString() { result = "CheckedConvertOrThrow" } }
-  class DynamicCastToVoid extends UnaryOpcode, TDynamicCastToVoid { override final string toString() { result = "DynamicCastToVoid" } }
-  class VariableAddress extends Opcode, TVariableAddress { override final string toString() { result = "VariableAddress" } }
-  class FieldAddress extends UnaryOpcode, TFieldAddress { override final string toString() { result = "FieldAddress" } }
-  class ElementsAddress extends UnaryOpcode, TElementsAddress { override final string toString() { result = "ElementsAddress" } }
-  class FunctionAddress extends Opcode, TFunctionAddress { override final string toString() { result = "FunctionAddress" } }
-  class Constant extends Opcode, TConstant { override final string toString() { result = "Constant" } }
-  class StringConstant extends Opcode, TStringConstant { override final string toString() { result = "StringConstant" } }
-  class ConditionalBranch extends OpcodeWithCondition, TConditionalBranch { override final string toString() { result = "ConditionalBranch" } }
-  class Switch extends OpcodeWithCondition, TSwitch { override final string toString() { result = "Switch" } }
-  class Call extends Opcode, TCall { override final string toString() { result = "Call" } }
-  class CatchByType extends CatchOpcode, TCatchByType { override final string toString() { result = "CatchByType" } }
-  class CatchAny extends CatchOpcode, TCatchAny { override final string toString() { result = "CatchAny" } }
-  class ThrowValue extends ThrowOpcode, OpcodeWithLoad, TThrowValue { override final string toString() { result = "ThrowValue" } }
-  class ReThrow extends ThrowOpcode, TReThrow { override final string toString() { result = "ReThrow" } }
-  class Unwind extends Opcode, TUnwind { override final string toString() { result = "Unwind" } }
-  class UnmodeledDefinition extends Opcode, TUnmodeledDefinition { override final string toString() { result = "UnmodeledDefinition" } }
-  class UnmodeledUse extends Opcode, TUnmodeledUse { override final string toString() { result = "UnmodeledUse" } }
-  class AliasedDefinition extends Opcode, TAliasedDefinition { override final string toString() { result = "AliasedDefinition" } }
-  class Phi extends Opcode, TPhi { override final string toString() { result = "Phi" } }
-  class BuiltIn extends BuiltInOperationOpcode, TBuiltIn { override final string toString() { result = "BuiltIn" } }
-  class VarArgsStart extends BuiltInOperationOpcode, TVarArgsStart { override final string toString() { result = "VarArgsStart" } }
-  class VarArgsEnd extends BuiltInOperationOpcode, TVarArgsEnd { override final string toString() { result = "VarArgsEnd" } }
-  class VarArg extends BuiltInOperationOpcode, TVarArg { override final string toString() { result = "VarArg" } }
-  class VarArgCopy extends BuiltInOperationOpcode, TVarArgCopy { override final string toString() { result = "VarArgCopy" } }
-  class CallSideEffect extends MayWriteSideEffectOpcode, TCallSideEffect { override final string toString() { result = "CallSideEffect" } }
-  class CallReadSideEffect extends ReadSideEffectOpcode, TCallReadSideEffect { override final string toString() { result = "CallReadSideEffect" } }
-  class IndirectReadSideEffect extends ReadSideEffectOpcode, MemoryAccessOpcode, TIndirectReadSideEffect { override final string toString() { result = "IndirectReadSideEffect" } }
-  class IndirectWriteSideEffect extends WriteSideEffectOpcode, MemoryAccessOpcode, TIndirectWriteSideEffect { override final string toString() { result = "IndirectWriteSideEffect" } }
-  class IndirectMayWriteSideEffect extends MayWriteSideEffectOpcode, MemoryAccessOpcode, TIndirectMayWriteSideEffect { override final string toString() { result = "IndirectMayWriteSideEffect" } }
-  class BufferReadSideEffect extends ReadSideEffectOpcode, BufferAccessOpcode, TBufferReadSideEffect { override final string toString() { result = "BufferReadSideEffect" } }
-  class BufferWriteSideEffect extends WriteSideEffectOpcode, BufferAccessOpcode, TBufferWriteSideEffect { override final string toString() { result = "BufferWriteSideEffect" } }
-  class BufferMayWriteSideEffect extends MayWriteSideEffectOpcode, BufferAccessOpcode, TBufferMayWriteSideEffect { override final string toString() { result = "BufferMayWriteSideEffect" } }
-  class Chi extends Opcode, TChi { override final string toString() { result = "Chi" } }
-  class InlineAsm extends Opcode, TInlineAsm { override final string toString() { result = "InlineAsm" } }
-  class Unreached extends Opcode, TUnreached { override final string toString() { result = "Unreached" } }
-  class NewObj extends Opcode, TNewObj { override final string toString() { result = "NewObj" } }
+  class NoOp extends Opcode, TNoOp {
+    final override string toString() { result = "NoOp" }
+  }
+
+  class Uninitialized extends MemoryAccessOpcode, TUninitialized {
+    final override string toString() { result = "Uninitialized" }
+  }
+
+  class Error extends Opcode, TError {
+    final override string toString() { result = "Error" }
+  }
+
+  class InitializeParameter extends MemoryAccessOpcode, TInitializeParameter {
+    final override string toString() { result = "InitializeParameter" }
+  }
+
+  class InitializeThis extends Opcode, TInitializeThis {
+    final override string toString() { result = "InitializeThis" }
+  }
+
+  class EnterFunction extends Opcode, TEnterFunction {
+    final override string toString() { result = "EnterFunction" }
+  }
+
+  class ExitFunction extends Opcode, TExitFunction {
+    final override string toString() { result = "ExitFunction" }
+  }
+
+  class ReturnValue extends ReturnOpcode, OpcodeWithLoad, TReturnValue {
+    final override string toString() { result = "ReturnValue" }
+  }
+
+  class ReturnVoid extends ReturnOpcode, TReturnVoid {
+    final override string toString() { result = "ReturnVoid" }
+  }
+
+  class CopyValue extends UnaryOpcode, CopyOpcode, TCopyValue {
+    final override string toString() { result = "CopyValue" }
+  }
+
+  class Load extends CopyOpcode, OpcodeWithLoad, TLoad {
+    final override string toString() { result = "Load" }
+  }
+
+  class Store extends CopyOpcode, MemoryAccessOpcode, TStore {
+    final override string toString() { result = "Store" }
+  }
+
+  class Add extends BinaryArithmeticOpcode, TAdd {
+    final override string toString() { result = "Add" }
+  }
+
+  class Sub extends BinaryArithmeticOpcode, TSub {
+    final override string toString() { result = "Sub" }
+  }
+
+  class Mul extends BinaryArithmeticOpcode, TMul {
+    final override string toString() { result = "Mul" }
+  }
+
+  class Div extends BinaryArithmeticOpcode, TDiv {
+    final override string toString() { result = "Div" }
+  }
+
+  class Rem extends BinaryArithmeticOpcode, TRem {
+    final override string toString() { result = "Rem" }
+  }
+
+  class Negate extends UnaryArithmeticOpcode, TNegate {
+    final override string toString() { result = "Negate" }
+  }
+
+  class ShiftLeft extends BinaryBitwiseOpcode, TShiftLeft {
+    final override string toString() { result = "ShiftLeft" }
+  }
+
+  class ShiftRight extends BinaryBitwiseOpcode, TShiftRight {
+    final override string toString() { result = "ShiftRight" }
+  }
+
+  class BitAnd extends BinaryBitwiseOpcode, TBitAnd {
+    final override string toString() { result = "BitAnd" }
+  }
+
+  class BitOr extends BinaryBitwiseOpcode, TBitOr {
+    final override string toString() { result = "BitOr" }
+  }
+
+  class BitXor extends BinaryBitwiseOpcode, TBitXor {
+    final override string toString() { result = "BitXor" }
+  }
+
+  class BitComplement extends UnaryBitwiseOpcode, TBitComplement {
+    final override string toString() { result = "BitComplement" }
+  }
+
+  class LogicalNot extends UnaryOpcode, TLogicalNot {
+    final override string toString() { result = "LogicalNot" }
+  }
+
+  class CompareEQ extends CompareOpcode, TCompareEQ {
+    final override string toString() { result = "CompareEQ" }
+  }
+
+  class CompareNE extends CompareOpcode, TCompareNE {
+    final override string toString() { result = "CompareNE" }
+  }
+
+  class CompareLT extends RelationalOpcode, TCompareLT {
+    final override string toString() { result = "CompareLT" }
+  }
+
+  class CompareGT extends RelationalOpcode, TCompareGT {
+    final override string toString() { result = "CompareGT" }
+  }
+
+  class CompareLE extends RelationalOpcode, TCompareLE {
+    final override string toString() { result = "CompareLE" }
+  }
+
+  class CompareGE extends RelationalOpcode, TCompareGE {
+    final override string toString() { result = "CompareGE" }
+  }
+
+  class PointerAdd extends PointerOffsetOpcode, TPointerAdd {
+    final override string toString() { result = "PointerAdd" }
+  }
+
+  class PointerSub extends PointerOffsetOpcode, TPointerSub {
+    final override string toString() { result = "PointerSub" }
+  }
+
+  class PointerDiff extends PointerArithmeticOpcode, TPointerDiff {
+    final override string toString() { result = "PointerDiff" }
+  }
+
+  class Convert extends UnaryOpcode, TConvert {
+    final override string toString() { result = "Convert" }
+  }
+
+  class ConvertToBase extends UnaryOpcode, TConvertToBase {
+    final override string toString() { result = "ConvertToBase" }
+  }
+
+  class ConvertToVirtualBase extends UnaryOpcode, TConvertToVirtualBase {
+    final override string toString() { result = "ConvertToVirtualBase" }
+  }
+
+  class ConvertToDerived extends UnaryOpcode, TConvertToDerived {
+    final override string toString() { result = "ConvertToDerived" }
+  }
+
+  class CheckedConvertOrNull extends UnaryOpcode, TCheckedConvertOrNull {
+    final override string toString() { result = "CheckedConvertOrNull" }
+  }
+
+  class CheckedConvertOrThrow extends UnaryOpcode, TCheckedConvertOrThrow {
+    final override string toString() { result = "CheckedConvertOrThrow" }
+  }
+
+  class DynamicCastToVoid extends UnaryOpcode, TDynamicCastToVoid {
+    final override string toString() { result = "DynamicCastToVoid" }
+  }
+
+  class VariableAddress extends Opcode, TVariableAddress {
+    final override string toString() { result = "VariableAddress" }
+  }
+
+  class FieldAddress extends UnaryOpcode, TFieldAddress {
+    final override string toString() { result = "FieldAddress" }
+  }
+
+  class ElementsAddress extends UnaryOpcode, TElementsAddress {
+    final override string toString() { result = "ElementsAddress" }
+  }
+
+  class FunctionAddress extends Opcode, TFunctionAddress {
+    final override string toString() { result = "FunctionAddress" }
+  }
+
+  class Constant extends Opcode, TConstant {
+    final override string toString() { result = "Constant" }
+  }
+
+  class StringConstant extends Opcode, TStringConstant {
+    final override string toString() { result = "StringConstant" }
+  }
+
+  class ConditionalBranch extends OpcodeWithCondition, TConditionalBranch {
+    final override string toString() { result = "ConditionalBranch" }
+  }
+
+  class Switch extends OpcodeWithCondition, TSwitch {
+    final override string toString() { result = "Switch" }
+  }
+
+  class Call extends Opcode, TCall {
+    final override string toString() { result = "Call" }
+  }
+
+  class CatchByType extends CatchOpcode, TCatchByType {
+    final override string toString() { result = "CatchByType" }
+  }
+
+  class CatchAny extends CatchOpcode, TCatchAny {
+    final override string toString() { result = "CatchAny" }
+  }
+
+  class ThrowValue extends ThrowOpcode, OpcodeWithLoad, TThrowValue {
+    final override string toString() { result = "ThrowValue" }
+  }
+
+  class ReThrow extends ThrowOpcode, TReThrow {
+    final override string toString() { result = "ReThrow" }
+  }
+
+  class Unwind extends Opcode, TUnwind {
+    final override string toString() { result = "Unwind" }
+  }
+
+  class UnmodeledDefinition extends Opcode, TUnmodeledDefinition {
+    final override string toString() { result = "UnmodeledDefinition" }
+  }
+
+  class UnmodeledUse extends Opcode, TUnmodeledUse {
+    final override string toString() { result = "UnmodeledUse" }
+  }
+
+  class AliasedDefinition extends Opcode, TAliasedDefinition {
+    final override string toString() { result = "AliasedDefinition" }
+  }
+
+  class Phi extends Opcode, TPhi {
+    final override string toString() { result = "Phi" }
+  }
+
+  class BuiltIn extends BuiltInOperationOpcode, TBuiltIn {
+    final override string toString() { result = "BuiltIn" }
+  }
+
+  class VarArgsStart extends BuiltInOperationOpcode, TVarArgsStart {
+    final override string toString() { result = "VarArgsStart" }
+  }
+
+  class VarArgsEnd extends BuiltInOperationOpcode, TVarArgsEnd {
+    final override string toString() { result = "VarArgsEnd" }
+  }
+
+  class VarArg extends BuiltInOperationOpcode, TVarArg {
+    final override string toString() { result = "VarArg" }
+  }
+
+  class VarArgCopy extends BuiltInOperationOpcode, TVarArgCopy {
+    final override string toString() { result = "VarArgCopy" }
+  }
+
+  class CallSideEffect extends MayWriteSideEffectOpcode, TCallSideEffect {
+    final override string toString() { result = "CallSideEffect" }
+  }
+
+  class CallReadSideEffect extends ReadSideEffectOpcode, TCallReadSideEffect {
+    final override string toString() { result = "CallReadSideEffect" }
+  }
+
+  class IndirectReadSideEffect extends ReadSideEffectOpcode, MemoryAccessOpcode,
+    TIndirectReadSideEffect {
+    final override string toString() { result = "IndirectReadSideEffect" }
+  }
+
+  class IndirectWriteSideEffect extends WriteSideEffectOpcode, MemoryAccessOpcode,
+    TIndirectWriteSideEffect {
+    final override string toString() { result = "IndirectWriteSideEffect" }
+  }
+
+  class IndirectMayWriteSideEffect extends MayWriteSideEffectOpcode, MemoryAccessOpcode,
+    TIndirectMayWriteSideEffect {
+    final override string toString() { result = "IndirectMayWriteSideEffect" }
+  }
+
+  class BufferReadSideEffect extends ReadSideEffectOpcode, BufferAccessOpcode, TBufferReadSideEffect {
+    final override string toString() { result = "BufferReadSideEffect" }
+  }
+
+  class BufferWriteSideEffect extends WriteSideEffectOpcode, BufferAccessOpcode,
+    TBufferWriteSideEffect {
+    final override string toString() { result = "BufferWriteSideEffect" }
+  }
+
+  class BufferMayWriteSideEffect extends MayWriteSideEffectOpcode, BufferAccessOpcode,
+    TBufferMayWriteSideEffect {
+    final override string toString() { result = "BufferMayWriteSideEffect" }
+  }
+
+  class Chi extends Opcode, TChi {
+    final override string toString() { result = "Chi" }
+  }
+
+  class InlineAsm extends Opcode, TInlineAsm {
+    final override string toString() { result = "InlineAsm" }
+  }
+
+  class Unreached extends Opcode, TUnreached {
+    final override string toString() { result = "Unreached" }
+  }
+
+  class NewObj extends Opcode, TNewObj {
+    final override string toString() { result = "NewObj" }
+  }
 }

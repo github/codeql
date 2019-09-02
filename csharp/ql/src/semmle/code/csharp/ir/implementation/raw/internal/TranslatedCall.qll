@@ -18,60 +18,54 @@ abstract class TranslatedCall extends TranslatedExpr {
     // The qualifier is evaluated before the call target, because the value of
     // the call target may depend on the value of the qualifier for virtual
     // calls.
-    id = -2 and result = this.getQualifier() or
-    id = -1 and result = this.getCallTarget() or
+    id = -2 and result = this.getQualifier()
+    or
+    id = -1 and result = this.getCallTarget()
+    or
     result = this.getArgument(id)
   }
 
-  override final Instruction getFirstInstruction() {
-    if exists(this.getQualifier()) then
-      result = this.getQualifier().getFirstInstruction()
-    else
-      result = this.getFirstCallTargetInstruction()
+  final override Instruction getFirstInstruction() {
+    if exists(this.getQualifier())
+    then result = this.getQualifier().getFirstInstruction()
+    else result = this.getFirstCallTargetInstruction()
   }
 
   override predicate hasInstruction(
     Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
   ) {
-    (
-      tag = CallTag() and
-      opcode instanceof Opcode::Call and
-      resultType = getCallResultType() and
-      isLValue = false
-    )
+    tag = CallTag() and
+    opcode instanceof Opcode::Call and
+    resultType = getCallResultType() and
+    isLValue = false
     or
+    hasSideEffect() and
+    tag = CallSideEffectTag() and
     (
-      hasSideEffect() and
-      tag = CallSideEffectTag() and
-      (
-        if hasWriteSideEffect() then (
-          opcode instanceof Opcode::CallSideEffect and
-          resultType instanceof Language::UnknownType
-        )
-        else (
-          opcode instanceof Opcode::CallReadSideEffect and
-          resultType instanceof Language::UnknownType
-        )
-      ) and
-      isLValue = false
-    )
+      if hasWriteSideEffect()
+      then (
+        opcode instanceof Opcode::CallSideEffect and
+        resultType instanceof Language::UnknownType
+      ) else (
+        opcode instanceof Opcode::CallReadSideEffect and
+        resultType instanceof Language::UnknownType
+      )
+    ) and
+    isLValue = false
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    (
-      child = this.getQualifier() and
-      result = this.getFirstCallTargetInstruction()
-    ) or
-    (
-      child = this.getCallTarget() and
-      result = this.getFirstArgumentOrCallInstruction()
-    ) or
+    child = this.getQualifier() and
+    result = this.getFirstCallTargetInstruction()
+    or
+    child = this.getCallTarget() and
+    result = this.getFirstArgumentOrCallInstruction()
+    or
     exists(int argIndex |
       child = this.getArgument(argIndex) and
-      if exists(this.getArgument(argIndex + 1)) then
-        result = this.getArgument(argIndex + 1).getFirstInstruction()
-      else
-        result = this.getInstruction(CallTag())
+      if exists(this.getArgument(argIndex + 1))
+      then result = this.getArgument(argIndex + 1).getFirstInstruction()
+      else result = this.getInstruction(CallTag())
     )
   }
 
@@ -80,16 +74,14 @@ abstract class TranslatedCall extends TranslatedExpr {
     (
       (
         tag = CallTag() and
-        if this.hasSideEffect() then
-          result = this.getInstruction(CallSideEffectTag())
-        else
-          result = this.getParent().getChildSuccessor(this)
-      ) or
-      (
-        this.hasSideEffect() and
-        tag = CallSideEffectTag() and
-        result = this.getParent().getChildSuccessor(this)
+        if this.hasSideEffect()
+        then result = this.getInstruction(CallSideEffectTag())
+        else result = this.getParent().getChildSuccessor(this)
       )
+      or
+      this.hasSideEffect() and
+      tag = CallSideEffectTag() and
+      result = this.getParent().getChildSuccessor(this)
     )
   }
 
@@ -98,26 +90,23 @@ abstract class TranslatedCall extends TranslatedExpr {
     (
       tag = CallTag() and
       (
-        (
-          operandTag instanceof CallTargetOperandTag and
-          result = this.getCallTargetResult()
-        ) or
-        (
-          operandTag instanceof ThisArgumentOperandTag and
-          result = this.getQualifierResult()
-        ) or
+        operandTag instanceof CallTargetOperandTag and
+        result = this.getCallTargetResult()
+        or
+        operandTag instanceof ThisArgumentOperandTag and
+        result = this.getQualifierResult()
+        or
         exists(PositionalArgumentOperandTag argTag |
           argTag = operandTag and
           result = this.getArgument(argTag.getArgIndex()).getResult()
         )
       )
-    ) or
-    (
-      tag = CallSideEffectTag() and
-      this.hasSideEffect() and
-      operandTag instanceof SideEffectOperandTag and
-      result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
     )
+    or
+    tag = CallSideEffectTag() and
+    this.hasSideEffect() and
+    operandTag instanceof SideEffectOperandTag and
+    result = this.getEnclosingFunction().getUnmodeledDefinitionInstruction()
     or
     tag = CallSideEffectTag() and
     hasSideEffect() and
@@ -132,9 +121,7 @@ abstract class TranslatedCall extends TranslatedExpr {
     result instanceof Language::UnknownType
   }
 
-  override final Instruction getResult() {
-    result = this.getInstruction(CallTag())
-  }
+  final override Instruction getResult() { result = this.getInstruction(CallTag()) }
 
   /**
    * Gets the result type of the call.
@@ -144,9 +131,7 @@ abstract class TranslatedCall extends TranslatedExpr {
   /**
    * Holds if the call has a `this` argument.
    */
-  predicate hasQualifier() {
-    exists(this.getQualifier())
-  }
+  predicate hasQualifier() { exists(this.getQualifier()) }
 
   /**
    * Gets the `TranslatedExpr` for the indirect target of the call, if any.
@@ -169,9 +154,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    * overridden by a subclass for cases where there is a call target that is not
    * computed from an expression (e.g. a direct call).
    */
-  Instruction getCallTargetResult() {
-    result = this.getCallTarget().getResult()
-  }
+  Instruction getCallTargetResult() { result = this.getCallTarget().getResult() }
 
   /**
    * Gets the `TranslatedExpr` for the qualifier of the call (i.e. the value
@@ -185,9 +168,7 @@ abstract class TranslatedCall extends TranslatedExpr {
    * overridden by a subclass for cases where there is a `this` argument that is
    * not computed from a child expression (e.g. a constructor call).
    */
-  Instruction getQualifierResult() {
-    result = this.getQualifier().getResult()
-  }
+  Instruction getQualifierResult() { result = this.getQualifier().getResult() }
 
   /**
    * Gets the argument with the specified `index`. Does not include the `this`
@@ -200,10 +181,9 @@ abstract class TranslatedCall extends TranslatedExpr {
    * argument. Otherwise, returns the call instruction.
    */
   final Instruction getFirstArgumentOrCallInstruction() {
-    if this.hasArguments() then
-      result = this.getArgument(0).getFirstInstruction()
-    else
-      result = this.getInstruction(CallTag())
+    if this.hasArguments()
+    then result = this.getArgument(0).getFirstInstruction()
+    else result = this.getInstruction(CallTag())
   }
 
   /**
@@ -219,9 +199,9 @@ abstract class TranslatedCall extends TranslatedExpr {
   private predicate hasSideEffect() { hasReadSideEffect() or hasWriteSideEffect() }
 
   override Instruction getPrimaryInstructionForSideEffect(InstructionTag tag) {
-      this.hasSideEffect() and
-      tag = CallSideEffectTag() and
-      result = this.getResult()
+    this.hasSideEffect() and
+    tag = CallSideEffectTag() and
+    result = this.getResult()
   }
 }
 
@@ -268,7 +248,7 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
 
   final override TranslatedExpr getQualifier() {
     expr instanceof QualifiableExpr and
-    result = getTranslatedExpr(expr.(QualifiableExpr).getQualifier()) 
+    result = getTranslatedExpr(expr.(QualifiableExpr).getQualifier())
   }
 
   final override TranslatedExpr getArgument(int index) {
@@ -301,7 +281,7 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
  * the constructor call, address will be passed to a variable declaration.
  */
 class TranslatedConstructorCall extends TranslatedFunctionCall {
-  TranslatedConstructorCall() { 
+  TranslatedConstructorCall() {
     expr instanceof ObjectCreation or
     expr instanceof ConstructorInitializer
   }
@@ -314,7 +294,7 @@ class TranslatedConstructorCall extends TranslatedFunctionCall {
       result = context.getReceiver()
     )
   }
-  
+
   override Type getCallResultType() { result instanceof VoidType }
 
   override predicate hasQualifier() { any() }
