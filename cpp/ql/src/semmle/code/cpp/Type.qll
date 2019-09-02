@@ -310,7 +310,7 @@ class BuiltInType extends Type, @builtintype {
 }
 
 /**
- * An erroneous type.
+ * An erroneous type.  This type has no corresponding C/C++ syntax.
  */
 class ErroneousType extends BuiltInType {
   ErroneousType() { builtintypes(underlyingElement(this), _, 1, _, _, _) }
@@ -319,7 +319,7 @@ class ErroneousType extends BuiltInType {
 }
 
 /**
- * The unknown type.
+ * The unknown type.  This type has no corresponding C/C++ syntax.
  */
 class UnknownType extends BuiltInType {
   UnknownType() { builtintypes(underlyingElement(this), _, 2, _, _, _) }
@@ -335,6 +335,10 @@ private predicate isArithmeticType(@builtintype type, int kind) {
 
 /**
  * The C/C++ arithmetic types. See 4.1.1.
+ *
+ * This includes primitive types on which arithmetic, bitwise or logical
+ * operations may be performed.  Examples of arithmetic types include
+ * `char`, `int`, `float` and `bool`.
  */
 class ArithmeticType extends BuiltInType {
   ArithmeticType() { isArithmeticType(underlyingElement(this), _) }
@@ -359,10 +363,19 @@ private predicate isIntegralType(@builtintype type, int kind) {
 
 /**
  * A C/C++ integral or enum type.
- * The definition of "integral type" in the C++ Standard excludes enum types,
- * but because an enum type holds a value of its underlying integral type,
+ *
+ * The definition of "integral type" in the C++ Standard excludes `enum` types,
+ * but because an `enum` type holds a value of its underlying integral type,
  * it is often useful to have a common category that includes both integral
- * and enum types.
+ * and `enum` types.
+ *
+ * In the following example, `a`, `b` and `c` are all declared with an
+ * integral or `enum` type:
+ * ```
+ * unsigned long a;
+ * enum e1 { val1, val2 } b;
+ * enum class e2: short { val3, val4 } c;
+ * ```
  */
 class IntegralOrEnumType extends Type {
   IntegralOrEnumType() {
@@ -435,7 +448,17 @@ private predicate integralTypeMapping(int original, int canonical, int unsigned,
 }
 
 /**
- * The C/C++ integral types. See 4.1.1.
+ * The C/C++ integral types. See 4.1.1.  These are types that are represented
+ * as integers of varying sizes.  Both `enum` types and floating-point types
+ * are excluded.
+ *
+ * In the following examples, `a`, `b` and `c` are declared using integral
+ * types:
+ * ```
+ * unsigned int a;
+ * long long b;
+ * char c;
+ * ```
  */
 class IntegralType extends ArithmeticType, IntegralOrEnumType {
   int kind;
@@ -506,7 +529,12 @@ class IntegralType extends ArithmeticType, IntegralOrEnumType {
 }
 
 /**
- * The C/C++ boolean type. See 4.2.
+ * The C/C++ boolean type. See 4.2.  This is the C `_Bool` type
+ * or the C++ `bool` type.  For example,
+ * ```
+ * extern bool a, b;   // C++
+ * _Bool c, d;         // C
+ * ```
  */
 class BoolType extends IntegralType {
   BoolType() { builtintypes(underlyingElement(this), _, 4, _, _, _) }
@@ -515,12 +543,23 @@ class BoolType extends IntegralType {
 }
 
 /**
- * The C/C++ character types. See 4.3.
+ * The C/C++ character types. See 4.3.  This includes the `char`,
+ * `signed char` and `unsigned char` types, all of which are
+ * distinct from one another.  For example,
+ * ```
+ * char a, b;
+ * signed char c, d;
+ * unsigned char e, f;
+ * ```
  */
 abstract class CharType extends IntegralType { }
 
 /**
- * The C/C++ char type (which is different to signed char and unsigned char).
+ * The C/C++ `char` type (which is distinct from `signed char` and
+ * `unsigned char`).  For example,
+ * ```
+ * char a, b;
+ * ```
  */
 class PlainCharType extends CharType {
   PlainCharType() { builtintypes(underlyingElement(this), _, 5, _, _, _) }
@@ -529,7 +568,11 @@ class PlainCharType extends CharType {
 }
 
 /**
- * The C/C++ unsigned char type (which is different to plain char, even when chars are unsigned by default).
+ * The C/C++ `unsigned char` type (which is distinct from plain `char`
+ * even when `char` is unsigned by default).
+ * ```
+ * unsigned char e, f;
+ * ```
  */
 class UnsignedCharType extends CharType {
   UnsignedCharType() { builtintypes(underlyingElement(this), _, 6, _, _, _) }
@@ -538,7 +581,11 @@ class UnsignedCharType extends CharType {
 }
 
 /**
- * The C/C++ signed char type (which is different to plain char, even when chars are signed by default).
+ * The C/C++ `signed char` type (which is distinct from plain `char`
+ * even when `char` is signed by default).
+ * ```
+ * signed char c, d;
+ * ```
  */
 class SignedCharType extends CharType {
   SignedCharType() { builtintypes(underlyingElement(this), _, 7, _, _, _) }
@@ -547,7 +594,11 @@ class SignedCharType extends CharType {
 }
 
 /**
- * The C/C++ short types. See 4.3.
+ * The C/C++ short types. See 4.3.  This includes `short`, `signed short`
+ * and `unsigned short`; `short` and `signed short` are equivalent.
+ * ```
+ * signed short ss;
+ * ```
  */
 class ShortType extends IntegralType {
   ShortType() {
@@ -560,7 +611,11 @@ class ShortType extends IntegralType {
 }
 
 /**
- * The C/C++ integer types. See 4.4.
+ * The C/C++ integer types. See 4.4.  This includes `int`, `signed int`
+ * and `unsigned int`; `int` and `signed int` are equivalent.
+ * ```
+ * unsigned int ui;
+ * ```
  */
 class IntType extends IntegralType {
   IntType() {
@@ -573,7 +628,11 @@ class IntType extends IntegralType {
 }
 
 /**
- * The C/C++ long types. See 4.4.
+ * The C/C++ long types. See 4.4.  This includes `long`, `signed long`
+ * and `unsigned long`; `long` and `signed long` are equivalent.
+ * ```
+ * long l;
+ * ```
  */
 class LongType extends IntegralType {
   LongType() {
@@ -586,7 +645,11 @@ class LongType extends IntegralType {
 }
 
 /**
- * The C/C++ long long types. See 4.4.
+ * The C/C++ long long types. See 4.4.  This includes `long long`, `signed long long`
+ * and `unsigned long long`; `long long` and `signed long long` are equivalent.
+ * ```
+ * signed long long sll;
+ * ```
  */
 class LongLongType extends IntegralType {
   LongLongType() {
@@ -599,7 +662,13 @@ class LongLongType extends IntegralType {
 }
 
 /**
- * The GNU C __int128 types.
+ * The GNU C __int128 primitive types.  They are not part of standard C/C++.
+ *
+ * This includes `__int128`, `signed __int128`
+ * and `unsigned __int128`; `__int128` and `signed __int128` are equivalent.
+ * ```
+ * unsigned __int128 ui128;
+ * ```
  */
 class Int128Type extends IntegralType {
   Int128Type() {
@@ -607,10 +676,18 @@ class Int128Type extends IntegralType {
     builtintypes(underlyingElement(this), _, 36, _, _, _) or
     builtintypes(underlyingElement(this), _, 37, _, _, _)
   }
+
+  override string getCanonicalQLClass() { result = "Int128Type" }
 }
 
 /**
- * The C/C++ floating point types. See 4.5.
+ * The C/C++ floating point types. See 4.5.  This includes `float`,
+ * `double` and `long double` types.
+ * ```
+ * float f;
+ * double d;
+ * long double ld;
+ * ```
  */
 class FloatingPointType extends ArithmeticType {
   FloatingPointType() {
@@ -626,7 +703,10 @@ class FloatingPointType extends ArithmeticType {
 }
 
 /**
- * The C/C++ float type.
+ * The C/C++ `float` type.
+ * ```
+ * float f;
+ * ```
  */
 class FloatType extends FloatingPointType {
   FloatType() { builtintypes(underlyingElement(this), _, 24, _, _, _) }
@@ -635,7 +715,10 @@ class FloatType extends FloatingPointType {
 }
 
 /**
- * The C/C++ double type.
+ * The C/C++ `double` type.
+ * ```
+ * double d;
+ * ```
  */
 class DoubleType extends FloatingPointType {
   DoubleType() { builtintypes(underlyingElement(this), _, 25, _, _, _) }
@@ -644,7 +727,10 @@ class DoubleType extends FloatingPointType {
 }
 
 /**
- * The C/C++ long double type.
+ * The C/C++ `long double` type.
+ * ```
+ * long double ld;
+ * ```
  */
 class LongDoubleType extends FloatingPointType {
   LongDoubleType() { builtintypes(underlyingElement(this), _, 26, _, _, _) }
@@ -653,35 +739,58 @@ class LongDoubleType extends FloatingPointType {
 }
 
 /**
- * The GNU C __float128 type.
+ * The GNU C `__float128` primitive type.  This is not standard C/C++.
+ * ```
+ * __float128 f128;
+ * ```
  */
 class Float128Type extends FloatingPointType {
   Float128Type() { builtintypes(underlyingElement(this), _, 38, _, _, _) }
+
+  override string getCanonicalQLClass() { result = "Float128Type" }
 }
 
 /**
- * The GNU C _Decimal32 type.
+ * The GNU C `_Decimal32` primitive type.  This is not standard C/C++.
+ * ```
+ * _Decimal32 d32;
+ * ```
  */
 class Decimal32Type extends FloatingPointType {
   Decimal32Type() { builtintypes(underlyingElement(this), _, 40, _, _, _) }
+
+  override string getCanonicalQLClass() { result = "Decimal32Type" }
 }
 
 /**
- * The GNU C _Decimal64 type.
+ * The GNU C `_Decimal64` primitive type.  This is not standard C/C++.
+ * ```
+ * _Decimal64 d64;
+ * ```
  */
 class Decimal64Type extends FloatingPointType {
   Decimal64Type() { builtintypes(underlyingElement(this), _, 41, _, _, _) }
+
+  override string getCanonicalQLClass() { result = "Decimal64Type" }
 }
 
 /**
- * The GNU C _Decimal128 type.
+ * The GNU C `_Decimal128` primitive type.  This is not standard C/C++.
+ * ```
+ * _Decimal128 d128;
+ * ```
  */
 class Decimal128Type extends FloatingPointType {
   Decimal128Type() { builtintypes(underlyingElement(this), _, 42, _, _, _) }
+
+  override string getCanonicalQLClass() { result = "Decimal128Type" }
 }
 
 /**
- * The C/C++ void type. See 4.7.
+ * The C/C++ `void` type. See 4.7.
+ * ```
+ * const void *cvp;
+ * ```
  */
 class VoidType extends BuiltInType {
   VoidType() { builtintypes(underlyingElement(this), _, 3, _, _, _) }
@@ -695,6 +804,9 @@ class VoidType extends BuiltInType {
  * Note that on some platforms `wchar_t` doesn't exist as a built-in
  * type but a typedef is provided.  Consider using the `Wchar_t` QL
  * class to include these types.
+ * ```
+ * wchar_t wc;
+ * ```
  */
 class WideCharType extends IntegralType {
   WideCharType() { builtintypes(underlyingElement(this), _, 33, _, _, _) }
@@ -703,7 +815,10 @@ class WideCharType extends IntegralType {
 }
 
 /**
- * The C/C++ `char16_t` type.
+ * The C/C++ `char16_t` type.  This is available starting with C11 and C++11.
+ * ```
+ * char16_t c16;
+ * ```
  */
 class Char16Type extends IntegralType {
   Char16Type() { builtintypes(underlyingElement(this), _, 43, _, _, _) }
@@ -712,7 +827,10 @@ class Char16Type extends IntegralType {
 }
 
 /**
- * The C/C++ `char32_t` type.
+ * The C/C++ `char32_t` type.  This is available starting with C11 and C++11.
+ * ```
+ * char32_t c32;
+ * ```
  */
 class Char32Type extends IntegralType {
   Char32Type() { builtintypes(underlyingElement(this), _, 44, _, _, _) }
@@ -721,13 +839,11 @@ class Char32Type extends IntegralType {
 }
 
 /**
- * The type of the C++11 nullptr constant.
- *
- * Note that this is not `nullptr_t`, as `nullptr_t` is defined as:
+ * The (primitive) type of the C++11 `nullptr` constant. It is the
+ * unspeakable type given by `decltype(nullptr)`.
  * ```
- *  typedef decltype(nullptr) nullptr_t;
+ * typedef decltype(nullptr) nullptr_t;
  * ```
- * Instead, this is the unspeakable type given by `decltype(nullptr)`.
  */
 class NullPointerType extends BuiltInType {
   NullPointerType() { builtintypes(underlyingElement(this), _, 34, _, _, _) }
@@ -738,8 +854,14 @@ class NullPointerType extends BuiltInType {
 /**
  * A C/C++ derived type.
  *
- * These are pointer and reference types, array and vector types, and const and volatile types.
- * In all cases, the type is formed from a single base type.
+ * These are pointer and reference types, array and GNU vector types, and `const` and `volatile` types.
+ * In all cases, the type is formed from a single base type.  For example,
+ * ```
+ * int *pi;
+ * int &ri = *pi;
+ * const float fa[40];
+ * decltype(pi) dpi;
+ * ```
  */
 class DerivedType extends Type, @derivedtype {
   override string toString() { result = this.getName() }
@@ -784,9 +906,16 @@ class DerivedType extends Type, @derivedtype {
 }
 
 /**
- * An instance of the C++11 decltype operator.
+ * An instance of the C++11 `decltype` operator.  For example,
+ * ```
+ * int a;
+ * decltype(a) b;
+ * ```
  */
 class Decltype extends Type, @decltype {
+
+  override string getCanonicalQLClass() { result = "Decltype" }
+
   /**
    * The expression whose type is being obtained by this decltype.
    */
@@ -850,6 +979,10 @@ class Decltype extends Type, @decltype {
 
 /**
  * A C/C++ pointer type. See 4.9.1.
+ * ```
+ * void *ptr;
+ * void **ptr2 = &ptr;
+ * ```
  */
 class PointerType extends DerivedType {
   PointerType() { derivedtypes(underlyingElement(this), _, 1, _) }
@@ -872,7 +1005,7 @@ class PointerType extends DerivedType {
 /**
  * A C++ reference type. See 4.9.1.
  *
- * For C++11 code bases, this includes both lvalue references (&amp;) and rvalue references (&amp;&amp;).
+ * For C++11 code bases, this includes both _lvalue_ references (&amp;) and _rvalue_ references (&amp;&amp;).
  * To distinguish between them, use the LValueReferenceType and RValueReferenceType classes.
  */
 class ReferenceType extends DerivedType {
@@ -898,7 +1031,11 @@ class ReferenceType extends DerivedType {
 }
 
 /**
- * A C++11 lvalue reference type (e.g. int&amp;).
+ * A C++11 lvalue reference type (e.g. `int&amp;`).
+ * ```
+ * int a;
+ * int& b = a;
+ * ```
  */
 class LValueReferenceType extends ReferenceType {
   LValueReferenceType() { derivedtypes(underlyingElement(this), _, 2, _) }
@@ -907,7 +1044,14 @@ class LValueReferenceType extends ReferenceType {
 }
 
 /**
- * A C++11 rvalue reference type (e.g. int&amp;&amp;).
+ * A C++11 rvalue reference type (e.g. `int&amp;&amp;`).  It is used to
+ * implement "move" semantics for object construction and assignments.
+ * ```
+ * class C {
+ *   E e;
+ *   C(C&& from): e(from.e) { }
+ * };
+ * ```
  */
 class RValueReferenceType extends ReferenceType {
   RValueReferenceType() { derivedtypes(underlyingElement(this), _, 8, _) }
@@ -919,6 +1063,10 @@ class RValueReferenceType extends ReferenceType {
 
 /**
  * A type with specifiers.
+ * ```
+ * const int a;
+ * volatile char v;
+ * ```
  */
 class SpecifiedType extends DerivedType {
   SpecifiedType() { derivedtypes(underlyingElement(this), _, 3, _) }
@@ -964,6 +1112,9 @@ class SpecifiedType extends DerivedType {
 
 /**
  * A C/C++ array type. See 4.9.1.
+ * ```
+ * char table[32];
+ * ```
  */
 class ArrayType extends DerivedType {
   ArrayType() { derivedtypes(underlyingElement(this), _, 4, _) }
@@ -1010,10 +1161,16 @@ class ArrayType extends DerivedType {
  * A GNU/Clang vector type.
  *
  * In both Clang and GNU compilers, vector types can be introduced using the
- * __attribute__((vector_size(byte_size))) syntax. The Clang compiler also
- * allows vector types to be introduced using the ext_vector_type,
- * neon_vector_type, and neon_polyvector_type attributes (all of which take
+ * `__attribute__((vector_size(byte_size)))` syntax. The Clang compiler also
+ * allows vector types to be introduced using the `ext_vector_type`,
+ * `neon_vector_type`, and `neon_polyvector_typ`e attributes (all of which take
  * an element type rather than a byte size).
+ * ```
+ * typedef int v4si __attribute__ (( vector_size(4*sizeof(int)) ));
+ * v4si v = { 1, 2, 3, 4 };
+ * typedef float float4 __attribute__((ext_vector_type(4)));
+ * float4 vf = (float4)(1.0f, 2.0f, 3.0f, 4.0f);
+ * ```
  */
 class GNUVectorType extends DerivedType {
   GNUVectorType() { derivedtypes(underlyingElement(this), _, 5, _) }
@@ -1052,7 +1209,10 @@ class GNUVectorType extends DerivedType {
 }
 
 /**
- * A C/C++ pointer to function. See 7.7.
+ * A C/C++ pointer to a function. See 7.7.
+ * ```
+ * int(* pointer)(const void *element1, const void *element2);
+ * ```
  */
 class FunctionPointerType extends FunctionPointerIshType {
   FunctionPointerType() { derivedtypes(underlyingElement(this), _, 6, _) }
@@ -1067,12 +1227,19 @@ class FunctionPointerType extends FunctionPointerIshType {
 }
 
 /**
- * A C/C++ reference to function.
+ * A C++ reference to a function.
+ * ```
+ * int(& reference)(const void *element1, const void *element2);
+ * ```
  */
 class FunctionReferenceType extends FunctionPointerIshType {
   FunctionReferenceType() { derivedtypes(underlyingElement(this), _, 7, _) }
 
   override string getCanonicalQLClass() { result = "FunctionReferenceType" }
+
+  override int getPointerIndirectionLevel() {
+    result = getBaseType().getPointerIndirectionLevel()
+  }
 
   override int getPointerIndirectionLevel() { result = getBaseType().getPointerIndirectionLevel() }
 
@@ -1086,6 +1253,10 @@ class FunctionReferenceType extends FunctionPointerIshType {
  *
  * Block types (along with blocks themselves) are a language extension
  * supported by Clang, and by Apple's branch of GCC.
+ * ```
+ * int(^ block)(const char *element1, const char *element2)
+ *   = ^int (const char *element1, const char *element2) { return element1 - element 2; }
+ * ```
  */
 class BlockType extends FunctionPointerIshType {
   BlockType() { derivedtypes(underlyingElement(this), _, 10, _) }
@@ -1098,7 +1269,9 @@ class BlockType extends FunctionPointerIshType {
 }
 
 /**
- * A C/C++ pointer to function, or a block.
+ * A C/C++ pointer to a function, a C++ function reference, or a clang/Apple block.
+ *
+ * See FunctionPointerType, FunctionReferenceType and BlockType for more information.
  */
 class FunctionPointerIshType extends DerivedType {
   FunctionPointerIshType() {
@@ -1143,7 +1316,14 @@ class FunctionPointerIshType extends DerivedType {
 }
 
 /**
- * A C++ pointer to member. See 15.5.
+ * A C++ pointer to data member. See 15.5.
+ * ```
+ * class C { int m; };
+ * int C::* p = &C::m;          // pointer to data member m of class C
+ * class C *;
+ * int val = c.*p;              // access data member
+ *
+ * ```
  */
 class PointerToMemberType extends Type, @ptrtomember {
   /** a printable representation of this named element */
@@ -1180,7 +1360,9 @@ class PointerToMemberType extends Type, @ptrtomember {
 }
 
 /**
- * A C/C++ routine type. This is what results from stripping away the pointer from a function pointer type.
+ * A C/C++ routine type. Conceptually, this is what results from stripping away the pointer from a function pointer type.
+ * It has no corresponding syntax in C/C++.
+ *
  */
 class RoutineType extends Type, @routinetype {
   /** a printable representation of this named element */
@@ -1241,6 +1423,12 @@ class RoutineType extends Type, @routinetype {
 
 /**
  * A C++ typename template parameter.
+ *
+ * In the example below, `T` is a template parameter:
+ * ```
+ * template <typename T>
+ * class C { };
+ * ```
  */
 class TemplateParameter extends UserType {
   TemplateParameter() {
@@ -1252,15 +1440,29 @@ class TemplateParameter extends UserType {
   override predicate involvesTemplateParameter() { any() }
 }
 
-/** A C++ template template parameter, e.g. template &lt;template &lt;typename,typename> class T>. */
-class TemplateTemplateParameter extends TemplateParameter {
-  TemplateTemplateParameter() { usertypes(underlyingElement(this), _, 8) }
+/** A C++ template template parameter.
+ *
+ * In the example below, `T` is a template template parameter (although its name
+ * may be omitted):
+ * ```
+ * template <template <typename T> class H, class S>
+ * void f(const H<S> &value) { }
+ * ```
+ */
+class TemplateTemplateParameter extends TemplateParameter
+{
+  TemplateTemplateParameter() {
+    usertypes(underlyingElement(this), _, 8)
+  }
 
   override string getCanonicalQLClass() { result = "TemplateTemplateParameter" }
 }
 
 /**
- * A type representing the use of the C++11 auto keyword.
+ * A type representing the use of the C++11 `auto` keyword.
+ * ```
+ * auto val = some_typed_expr();
+ * ```
  */
 class AutoType extends TemplateParameter {
   AutoType() { usertypes(underlyingElement(this), "auto", 7) }
