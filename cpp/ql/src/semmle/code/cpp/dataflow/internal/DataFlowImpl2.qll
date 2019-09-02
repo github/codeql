@@ -1260,7 +1260,7 @@ abstract private class AccessPath extends TAccessPath {
 
 private class AccessPathNil extends AccessPath, TNil {
   override string toString() {
-    exists(DataFlowType t | this = TNil(t) | result = concat(ppReprType(t)))
+    exists(DataFlowType t | this = TNil(t) | result = concat(" : " + ppReprType(t)))
   }
 
   override AccessPathFront getFront() {
@@ -2081,7 +2081,7 @@ private module FlowExploration {
 
   private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
     override string toString() {
-      exists(DataFlowType t | this = TPartialNil(t) | result = concat(ppReprType(t)))
+      exists(DataFlowType t | this = TPartialNil(t) | result = concat(" : " + ppReprType(t)))
     }
 
     override AccessPathFront getFront() {
