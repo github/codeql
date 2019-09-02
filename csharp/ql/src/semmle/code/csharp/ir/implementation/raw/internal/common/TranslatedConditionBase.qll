@@ -11,7 +11,6 @@ private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedCondition
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
-
 /**
  * Represents the context of the condition, ie. provides
  * information about the instruction that follows a conditional branch.
@@ -23,30 +22,25 @@ abstract class ConditionContext extends TranslatedElement {
 }
 
 /**
- * Abstract class that serves as a Base for the classes that deal with both the AST generated conditions 
+ * Abstract class that serves as a Base for the classes that deal with both the AST generated conditions
  * and the compiler generated ones (captures the common patterns).
  */
 abstract class ConditionBase extends TranslatedElement {
-  final ConditionContext getConditionContext() {
-    result = getParent()
-  }
+  final ConditionContext getConditionContext() { result = getParent() }
 }
 
 /**
- * Abstract class that serves as a Base for the classes that deal with both the AST generated _value_ conditions 
+ * Abstract class that serves as a Base for the classes that deal with both the AST generated _value_ conditions
  * and the compiler generated ones (captures the common patterns).
  */
 abstract class ValueConditionBase extends ConditionBase {
-  override TranslatedElement getChild(int id) {
-    id = 0 and result = getValueExpr()
-  }
+  override TranslatedElement getChild(int id) { id = 0 and result = getValueExpr() }
 
-  override Instruction getFirstInstruction() {
-    result = getValueExpr().getFirstInstruction()
-  }
+  override Instruction getFirstInstruction() { result = getValueExpr().getFirstInstruction() }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isLValue) {
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
     tag = ValueConditionConditionalBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
     resultType instanceof VoidType and
@@ -58,23 +52,18 @@ abstract class ValueConditionBase extends ConditionBase {
     result = getInstruction(ValueConditionConditionalBranchTag())
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = ValueConditionConditionalBranchTag() and
     (
-      (
-        kind instanceof TrueEdge and
-        result = getConditionContext().getChildTrueSuccessor(this)
-      ) or
-      (
-        kind instanceof FalseEdge and
-        result = getConditionContext().getChildFalseSuccessor(this)
-      )
+      kind instanceof TrueEdge and
+      result = getConditionContext().getChildTrueSuccessor(this)
+      or
+      kind instanceof FalseEdge and
+      result = getConditionContext().getChildFalseSuccessor(this)
     )
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = ValueConditionConditionalBranchTag() and
     operandTag instanceof ConditionOperandTag and
     result = valueExprResult()
@@ -84,8 +73,8 @@ abstract class ValueConditionBase extends ConditionBase {
    * Gets the instruction that represents the result of the value expression.
    */
   abstract Instruction valueExprResult();
-  
-  /** 
+
+  /**
    * Gets the `TranslatedElements that represents the value expression.
    */
   abstract TranslatedElement getValueExpr();

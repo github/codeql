@@ -1,5 +1,5 @@
 /**
- * Contains an abstract class that serves as a Base for the classes that deal with both the AST 
+ * Contains an abstract class that serves as a Base for the classes that deal with both the AST
  * generated declarations and the compiler generated ones (captures the common patterns).
  */
 
@@ -13,55 +13,47 @@ private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedInitialization
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
-
 abstract class LocalVariableDeclarationBase extends TranslatedElement {
-  override TranslatedElement getChild(int id) {
-    id = 0 and result = getInitialization()
+  override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
+
+  override Instruction getFirstInstruction() { result = getVarAddress() }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    tag = InitializerVariableAddressTag() and
+    opcode instanceof Opcode::VariableAddress and
+    resultType = getVarType() and
+    isLValue = true
+    or
+    hasUninitializedInstruction() and
+    tag = InitializerStoreTag() and
+    opcode instanceof Opcode::Uninitialized and
+    resultType = getVarType() and
+    isLValue = false
   }
 
-  override Instruction getFirstInstruction() {
-    result = getVarAddress()
-  }
-
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isLValue) {
-    (
-      tag = InitializerVariableAddressTag() and
-      opcode instanceof Opcode::VariableAddress and
-      resultType = getVarType() and
-      isLValue = true
-    ) or
-    (
-      hasUninitializedInstruction() and
-      tag = InitializerStoreTag() and
-      opcode instanceof Opcode::Uninitialized and
-      resultType = getVarType() and
-      isLValue = false
-    )
-  }
-
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     (
       tag = InitializerVariableAddressTag() and
       kind instanceof GotoEdge and
-      if hasUninitializedInstruction() then
-        result = getInstruction(InitializerStoreTag())
+      if hasUninitializedInstruction()
+      then result = getInstruction(InitializerStoreTag())
       else
-        if isInitializedByElement() then
+        if isInitializedByElement()
+        then
           // initialization is done by an element
           result = getParent().getChildSuccessor(this)
-        else
-          result = getInitialization().getFirstInstruction()
-    ) or
+        else result = getInitialization().getFirstInstruction()
+    )
+    or
+    hasUninitializedInstruction() and
+    kind instanceof GotoEdge and
+    tag = InitializerStoreTag() and
     (
-      hasUninitializedInstruction() and
-      kind instanceof GotoEdge and
-      tag = InitializerStoreTag() and
-      (
-        result = getInitialization().getFirstInstruction() or
-        not exists(getInitialization()) and result = getParent().getChildSuccessor(this)
-      )
+      result = getInitialization().getFirstInstruction()
+      or
+      not exists(getInitialization()) and result = getParent().getChildSuccessor(this)
     )
   }
 
@@ -75,11 +67,11 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
     operandTag instanceof AddressOperandTag and
     result = getVarAddress()
   }
-  
+
   /**
    * Holds if the declaration should have an `Uninitialized` instruction.
    * Compiler generated elements should override this predicate and
-   * make it empty, since we always initialize the vars declared during the 
+   * make it empty, since we always initialize the vars declared during the
    * desugaring process.
    */
   predicate hasUninitializedInstruction() {
@@ -89,29 +81,27 @@ abstract class LocalVariableDeclarationBase extends TranslatedElement {
     ) and
     not isInitializedByElement()
   }
-  
-  Instruction getVarAddress() {
-    result = getInstruction(InitializerVariableAddressTag())
-  }
-  
+
+  Instruction getVarAddress() { result = getInstruction(InitializerVariableAddressTag()) }
+
   /**
-   * Gets the declared variable. For compiler generated elements, this 
+   * Gets the declared variable. For compiler generated elements, this
    * should be empty (since we treat temp vars differently).
    */
   abstract LocalVariable getDeclVar();
-  
+
   /**
    * Gets the type of the declared variable.
    */
   abstract Type getVarType();
-  
+
   /**
    * Gets the initialization, if there is one.
    * For compiler generated elements we don't treat the initialization
    * as a different step, but do it during the declaration.
    */
   abstract TranslatedElement getInitialization();
-  
+
   /**
    * Holds if a declaration is not explicitly initialized,
    * but will be implicitly initialized by an element.

@@ -651,43 +651,70 @@ class TranslatedForStmt extends TranslatedLoop {
   override ForStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = this.getDeclAndInit()
+    initializerIndices(id) and result = this.getDeclAndInit(id)
     or
-    id = 1 and result = this.getCondition()
+    updateIndices(id) and result = this.getUpdate(id - initializersNo())
     or
-    id = 2 and result = this.getUpdate()
+    id = initializersNo() + updatesNo() and result = this.getCondition()
     or
-    id = 3 and result = this.getBody()
+    id = initializersNo() + updatesNo() + 1 and result = this.getBody()
   }
 
-  private TranslatedLocalDeclaration getDeclAndInit() {
-    result = getTranslatedLocalDeclaration(stmt.getAnInitializer())
+  private TranslatedLocalDeclaration getDeclAndInit(int index) {
+    result = getTranslatedLocalDeclaration(stmt.getInitializer(index))
   }
 
   private predicate hasInitialization() { exists(stmt.getAnInitializer()) }
 
-  TranslatedExpr getUpdate() { result = getTranslatedExpr(stmt.getAnUpdate()) }
+  TranslatedExpr getUpdate(int index) { result = getTranslatedExpr(stmt.getUpdate(index)) }
 
   private predicate hasUpdate() { exists(stmt.getAnUpdate()) }
 
+  private int initializersNo() { result = count(stmt.getAnInitializer()) }
+
+  private int updatesNo() { result = count(stmt.getAnUpdate()) }
+
+  private predicate initializerIndices(int index) { index in [0 .. initializersNo() - 1] }
+
+  private predicate updateIndices(int index) {
+    index in [initializersNo() .. initializersNo() + updatesNo() - 1]
+  }
+
   override Instruction getFirstInstruction() {
     if this.hasInitialization()
-    then result = this.getDeclAndInit().getFirstInstruction()
+    then result = this.getDeclAndInit(0).getFirstInstruction()
     else result = this.getFirstConditionInstruction()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getDeclAndInit() and
+    exists(int index |
+      this.hasInitialization() and
+      child = this.getDeclAndInit(index) and
+      index < initializersNo() - 1 and
+      result = this.getDeclAndInit(index + 1).getFirstInstruction()
+    )
+    or
+    this.hasInitialization() and
+    child = this.getDeclAndInit(initializersNo() - 1) and
     result = this.getFirstConditionInstruction()
     or
     (
       child = this.getBody() and
       if this.hasUpdate()
-      then result = this.getUpdate().getFirstInstruction()
+      then result = this.getUpdate(0).getFirstInstruction()
       else result = this.getFirstConditionInstruction()
     )
     or
-    child = this.getUpdate() and result = this.getFirstConditionInstruction()
+    exists(int index |
+      this.hasUpdate() and
+      child = this.getUpdate(index) and
+      index < updatesNo() - 1 and
+      result = this.getUpdate(index + 1).getFirstInstruction()
+    )
+    or
+    this.hasUpdate() and
+    child = this.getUpdate(updatesNo() - 1) and
+    result = this.getFirstConditionInstruction()
   }
 }
 

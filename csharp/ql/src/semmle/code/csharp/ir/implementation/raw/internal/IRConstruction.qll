@@ -179,7 +179,7 @@ private module Cached {
         exists(TranslatedElement bodyOrUpdate |
           bodyOrUpdate = s.getBody()
           or
-          bodyOrUpdate = s.getUpdate()
+          bodyOrUpdate = s.getUpdate(_)
         |
           inLoop = bodyOrUpdate.getAChild*()
         ) and
