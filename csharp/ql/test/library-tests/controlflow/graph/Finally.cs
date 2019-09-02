@@ -191,4 +191,25 @@ public class Finally
             }
         }
     }
+
+    void M10(bool b1, bool b2, bool b3)
+    {
+        try
+        {
+            if (b1) throw new ExceptionA();
+        }
+        finally
+        {
+            try
+            {
+                if (b2) throw new ExceptionB();
+            }
+            finally
+            {
+                if (b3) throw new ExceptionC();
+            }
+            this.Field = "0";
+        }
+        this.Field = "1";
+    }
 }

@@ -1590,6 +1590,68 @@
 | Finally.cs:190:21:190:22 | access to parameter b1 | Finally.cs:190:21:190:22 | access to parameter b1 | true |
 | Finally.cs:190:25:190:47 | throw ...; | Finally.cs:190:25:190:47 | throw ...; | throw(ExceptionC) |
 | Finally.cs:190:31:190:46 | object creation of type ExceptionC | Finally.cs:190:31:190:46 | object creation of type ExceptionC | normal |
+| Finally.cs:196:5:214:5 | {...} | Finally.cs:209:21:209:22 | access to parameter b3 | throw(Exception) [false] |
+| Finally.cs:196:5:214:5 | {...} | Finally.cs:209:21:209:22 | access to parameter b3 | throw(ExceptionB) [false] |
+| Finally.cs:196:5:214:5 | {...} | Finally.cs:209:25:209:47 | throw ...; | throw(ExceptionC) |
+| Finally.cs:196:5:214:5 | {...} | Finally.cs:211:13:211:28 | ... = ... | throw(Exception) [normal] |
+| Finally.cs:196:5:214:5 | {...} | Finally.cs:211:13:211:28 | ... = ... | throw(ExceptionA) [normal] |
+| Finally.cs:196:5:214:5 | {...} | Finally.cs:213:9:213:24 | ... = ... | normal |
+| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:209:21:209:22 | access to parameter b3 | throw(Exception) [false] |
+| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:209:21:209:22 | access to parameter b3 | throw(ExceptionB) [false] |
+| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:209:25:209:47 | throw ...; | throw(ExceptionC) |
+| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:211:13:211:28 | ... = ... | normal |
+| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:211:13:211:28 | ... = ... | throw(Exception) [normal] |
+| Finally.cs:197:9:212:9 | try {...} ... | Finally.cs:211:13:211:28 | ... = ... | throw(ExceptionA) [normal] |
+| Finally.cs:198:9:200:9 | {...} | Finally.cs:199:17:199:18 | access to parameter b1 | false |
+| Finally.cs:198:9:200:9 | {...} | Finally.cs:199:21:199:43 | throw ...; | throw(ExceptionA) |
+| Finally.cs:198:9:200:9 | {...} | Finally.cs:199:27:199:42 | object creation of type ExceptionA | throw(Exception) |
+| Finally.cs:199:13:199:43 | if (...) ... | Finally.cs:199:17:199:18 | access to parameter b1 | false |
+| Finally.cs:199:13:199:43 | if (...) ... | Finally.cs:199:21:199:43 | throw ...; | throw(ExceptionA) |
+| Finally.cs:199:13:199:43 | if (...) ... | Finally.cs:199:27:199:42 | object creation of type ExceptionA | throw(Exception) |
+| Finally.cs:199:17:199:18 | access to parameter b1 | Finally.cs:199:17:199:18 | access to parameter b1 | false |
+| Finally.cs:199:17:199:18 | access to parameter b1 | Finally.cs:199:17:199:18 | access to parameter b1 | true |
+| Finally.cs:199:21:199:43 | throw ...; | Finally.cs:199:21:199:43 | throw ...; | throw(ExceptionA) |
+| Finally.cs:199:21:199:43 | throw ...; | Finally.cs:199:27:199:42 | object creation of type ExceptionA | throw(Exception) |
+| Finally.cs:199:27:199:42 | object creation of type ExceptionA | Finally.cs:199:27:199:42 | object creation of type ExceptionA | normal |
+| Finally.cs:199:27:199:42 | object creation of type ExceptionA | Finally.cs:199:27:199:42 | object creation of type ExceptionA | throw(Exception) |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:209:21:209:22 | access to parameter b3 | throw(Exception) [false] |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:209:21:209:22 | access to parameter b3 | throw(ExceptionB) [false] |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:209:25:209:47 | throw ...; | throw(ExceptionC) |
+| Finally.cs:202:9:212:9 | {...} | Finally.cs:211:13:211:28 | ... = ... | normal |
+| Finally.cs:203:13:210:13 | try {...} ... | Finally.cs:209:21:209:22 | access to parameter b3 | false |
+| Finally.cs:203:13:210:13 | try {...} ... | Finally.cs:209:21:209:22 | access to parameter b3 | throw(Exception) [false] |
+| Finally.cs:203:13:210:13 | try {...} ... | Finally.cs:209:21:209:22 | access to parameter b3 | throw(ExceptionB) [false] |
+| Finally.cs:203:13:210:13 | try {...} ... | Finally.cs:209:25:209:47 | throw ...; | throw(ExceptionC) |
+| Finally.cs:204:13:206:13 | {...} | Finally.cs:205:21:205:22 | access to parameter b2 | false |
+| Finally.cs:204:13:206:13 | {...} | Finally.cs:205:25:205:47 | throw ...; | throw(ExceptionB) |
+| Finally.cs:204:13:206:13 | {...} | Finally.cs:205:31:205:46 | object creation of type ExceptionB | throw(Exception) |
+| Finally.cs:205:17:205:47 | if (...) ... | Finally.cs:205:21:205:22 | access to parameter b2 | false |
+| Finally.cs:205:17:205:47 | if (...) ... | Finally.cs:205:25:205:47 | throw ...; | throw(ExceptionB) |
+| Finally.cs:205:17:205:47 | if (...) ... | Finally.cs:205:31:205:46 | object creation of type ExceptionB | throw(Exception) |
+| Finally.cs:205:21:205:22 | access to parameter b2 | Finally.cs:205:21:205:22 | access to parameter b2 | false |
+| Finally.cs:205:21:205:22 | access to parameter b2 | Finally.cs:205:21:205:22 | access to parameter b2 | true |
+| Finally.cs:205:25:205:47 | throw ...; | Finally.cs:205:25:205:47 | throw ...; | throw(ExceptionB) |
+| Finally.cs:205:25:205:47 | throw ...; | Finally.cs:205:31:205:46 | object creation of type ExceptionB | throw(Exception) |
+| Finally.cs:205:31:205:46 | object creation of type ExceptionB | Finally.cs:205:31:205:46 | object creation of type ExceptionB | normal |
+| Finally.cs:205:31:205:46 | object creation of type ExceptionB | Finally.cs:205:31:205:46 | object creation of type ExceptionB | throw(Exception) |
+| Finally.cs:208:13:210:13 | {...} | Finally.cs:209:21:209:22 | access to parameter b3 | false |
+| Finally.cs:208:13:210:13 | {...} | Finally.cs:209:25:209:47 | throw ...; | throw(ExceptionC) |
+| Finally.cs:209:17:209:47 | if (...) ... | Finally.cs:209:21:209:22 | access to parameter b3 | false |
+| Finally.cs:209:17:209:47 | if (...) ... | Finally.cs:209:25:209:47 | throw ...; | throw(ExceptionC) |
+| Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:209:21:209:22 | access to parameter b3 | false |
+| Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:209:21:209:22 | access to parameter b3 | true |
+| Finally.cs:209:25:209:47 | throw ...; | Finally.cs:209:25:209:47 | throw ...; | throw(ExceptionC) |
+| Finally.cs:209:31:209:46 | object creation of type ExceptionC | Finally.cs:209:31:209:46 | object creation of type ExceptionC | normal |
+| Finally.cs:211:13:211:16 | this access | Finally.cs:211:13:211:16 | this access | normal |
+| Finally.cs:211:13:211:22 | access to field Field | Finally.cs:211:13:211:16 | this access | normal |
+| Finally.cs:211:13:211:28 | ... = ... | Finally.cs:211:13:211:28 | ... = ... | normal |
+| Finally.cs:211:13:211:29 | ...; | Finally.cs:211:13:211:28 | ... = ... | normal |
+| Finally.cs:211:26:211:28 | "0" | Finally.cs:211:26:211:28 | "0" | normal |
+| Finally.cs:213:9:213:12 | this access | Finally.cs:213:9:213:12 | this access | normal |
+| Finally.cs:213:9:213:18 | access to field Field | Finally.cs:213:9:213:12 | this access | normal |
+| Finally.cs:213:9:213:24 | ... = ... | Finally.cs:213:9:213:24 | ... = ... | normal |
+| Finally.cs:213:9:213:25 | ...; | Finally.cs:213:9:213:24 | ... = ... | normal |
+| Finally.cs:213:22:213:24 | "1" | Finally.cs:213:22:213:24 | "1" | normal |
 | Foreach.cs:7:5:10:5 | {...} | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | empty |
 | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | Foreach.cs:8:9:9:13 | foreach (... ... in ...) ... | empty |
 | Foreach.cs:8:22:8:24 | String arg | Foreach.cs:8:22:8:24 | String arg | normal |
