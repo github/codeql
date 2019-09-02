@@ -8,7 +8,8 @@
  * @tags reliability
  *       japanese-era
  * @deprecated This query is deprecated, use
- *             Best Practices/Magic Constants/JapaneseEraDate.ql instead.
+ *             Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`)
+ *             instead.
  */
 
 import cpp

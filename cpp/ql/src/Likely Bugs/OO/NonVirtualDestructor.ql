@@ -8,8 +8,8 @@
  * @problem.severity warning
  * @tags reliability
  * @deprecated This query is deprecated, and replaced by
- *             jsf/4.10 Classes/AV Rule 78.ql, which has far fewer false
- *             positives on typical code.
+ *             No virtual destructor (`cpp/jsf/av-rule-78`), which has far
+ *             fewer false positives on typical code.
  */
 
 import cpp
