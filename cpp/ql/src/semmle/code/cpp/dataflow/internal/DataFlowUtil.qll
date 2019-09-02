@@ -443,8 +443,14 @@ private module ThisFlow {
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
+cached
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   simpleLocalFlowStep(nodeFrom, nodeTo)
+  or
+  // Field flow is not strictly a "step" but covers the whole function
+  // transitively. There's no way to get a step-like relation out of the global
+  // data flow library, so we just have to accept some big steps here.
+  FieldFlow::fieldFlow(nodeFrom, nodeTo)
 }
 
 /**
@@ -569,6 +575,51 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
       exprIn = call.getArgument(argInIndex)
     )
   )
+}
+
+private module FieldFlow {
+  private import DataFlowImplLocal
+  private import DataFlowPrivate
+
+  /**
+   * A configuration for finding local-only flow through fields. This uses the
+   * `Configuration` class in the dedicated `DataFlowImplLocal` copy of the
+   * shared library that's not user-exposed directly.
+   *
+   * To keep the flow local to a single function, we put barriers on parameters
+   * and return statements. Sources and sinks are the values that go into and
+   * out of fields, respectively.
+   */
+  private class FieldConfiguration extends Configuration {
+    FieldConfiguration() { this = "FieldConfiguration" }
+
+    override predicate isSource(Node source) {
+      storeStep(source, _, _)
+    }
+
+    override predicate isSink(Node sink) {
+      readStep(_, _, sink)
+    }
+
+    override predicate isBarrier(Node node) {
+      node instanceof ParameterNode
+    }
+
+    override predicate isBarrierOut(Node node) {
+      node.asExpr().getParent() instanceof ReturnStmt
+      or
+      node.asExpr().getParent() instanceof ThrowExpr
+    }
+  }
+
+  predicate fieldFlow(Node node1, Node node2) {
+    exists(FieldConfiguration cfg |
+      cfg.hasFlow(node1, node2)
+    ) and
+    // This configuration should not be able to cross function boundaries, but
+    // we double-check here just to be sure.
+    node1.getFunction() = node2.getFunction()
+  }
 }
 
 VariableAccess getAnAccessToAssignedVariable(Expr assign) {

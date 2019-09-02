@@ -137,7 +137,7 @@ void following_pointers(
   sink(sourceStruct1_ptr->m1); // flow
   sink(sourceStruct1_ptr->getFirst()); // flow [NOT DETECTED with IR]
   sink(sourceStruct1_ptr->m2); // no flow
-  sink(sourceStruct1.m1); // flow (due to lack of no-alias tracking)
+  sink(sourceStruct1.m1); // no flow
 
   twoIntFields s = { source(), source() };
 
