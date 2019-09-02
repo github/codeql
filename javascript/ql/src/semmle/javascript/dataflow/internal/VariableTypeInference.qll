@@ -637,7 +637,11 @@ private class ReflectiveVarFlow extends DataFlow::AnalyzedValueNode {
     )
   }
 
-  override AbstractValue getALocalValue() { result = TIndefiniteAbstractValue("eval") }
+  override AbstractValue getALocalValue() {
+    result = TIndefiniteAbstractValue("eval")
+    or
+    result = AnalyzedValueNode.super.getALocalValue()
+  }
 }
 
 /**
@@ -649,7 +653,11 @@ private class ReflectiveVarFlow extends DataFlow::AnalyzedValueNode {
 private class NamespaceExportVarFlow extends DataFlow::AnalyzedValueNode {
   NamespaceExportVarFlow() { astNode.(VarAccess).getVariable().isNamespaceExport() }
 
-  override AbstractValue getALocalValue() { result = TIndefiniteAbstractValue("namespace") }
+  override AbstractValue getALocalValue() {
+    result = TIndefiniteAbstractValue("namespace")
+    or
+    result = AnalyzedValueNode.super.getALocalValue()
+  }
 }
 
 /**
