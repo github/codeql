@@ -219,7 +219,7 @@ Type getErasedRepr(Type t) {
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(Type t) { result = t.toString() }
+string ppReprType(Type t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from

@@ -1247,8 +1247,7 @@ DotNet::Type getErasedRepr(DotNet::Type t) {
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-bindingset[t]
-string ppReprType(DotNet::Type t) { suppressUnusedType(t) and result = "" } // stub implementation
+string ppReprType(DotNet::Type t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from

@@ -1253,13 +1253,15 @@ private class AccessPath extends TAccessPath {
   abstract AccessPathFront getFront();
 
   /**
-   * Holds if `this` has `head` at the front and may be followed by `tail`.
+   * Holds if this access path has `head` at the front and may be followed by `tail`.
    */
   abstract predicate pop(Content head, AccessPath tail);
 }
 
 private class AccessPathNil extends AccessPath, TNil {
-  override string toString() { exists(DataFlowType t | this = TNil(t) | result = ppReprType(t)) }
+  override string toString() {
+    exists(DataFlowType t | this = TNil(t) | result = concat(ppReprType(t)))
+  }
 
   override AccessPathFront getFront() {
     exists(DataFlowType t | this = TNil(t) | result = TFrontNil(t))
@@ -1273,7 +1275,8 @@ abstract private class AccessPathCons extends AccessPath { }
 private class AccessPathConsNil extends AccessPathCons, TConsNil {
   override string toString() {
     exists(Content f, DataFlowType t | this = TConsNil(f, t) |
-      result = f.toString() + " : " + ppReprType(t)
+      // The `concat` becomes "" if `ppReprType` has no result.
+      result = f.toString() + concat(" : " + ppReprType(t))
     )
   }
 
@@ -1289,7 +1292,9 @@ private class AccessPathConsNil extends AccessPathCons, TConsNil {
 private class AccessPathConsCons extends AccessPathCons, TConsCons {
   override string toString() {
     exists(Content f1, Content f2, int len | this = TConsCons(f1, f2, len) |
-      result = f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")"
+      if len = 2
+      then result = f1.toString() + ", " + f2.toString()
+      else result = f1.toString() + ", " + f2.toString() + ", ... (" + len.toString() + ")"
     )
   }
 
