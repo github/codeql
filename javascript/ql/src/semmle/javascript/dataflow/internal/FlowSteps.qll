@@ -109,7 +109,7 @@ private module CachedSteps {
    * This only holds for explicitly modeled partial calls.
    */
   private predicate partiallyCalls(
-    DataFlow::AdditionalPartialInvokeNode invk, DataFlow::AnalyzedNode callback, Function f
+    DataFlow::PartialInvokeNode invk, DataFlow::AnalyzedNode callback, Function f
   ) {
     invk.isPartialArgument(callback, _, _) and
     exists(AbstractFunction callee | callee = callback.getAValue() |

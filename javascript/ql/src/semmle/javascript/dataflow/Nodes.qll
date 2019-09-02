@@ -6,6 +6,7 @@
 
 private import javascript
 private import semmle.javascript.dependencies.Dependencies
+private import internal.CallGraphs
 
 /** A data flow node corresponding to an expression. */
 class ExprNode extends DataFlow::ValueNode {
@@ -89,8 +90,23 @@ class InvokeNode extends DataFlow::SourceNode {
 
   Function getEnclosingFunction() { result = getBasicBlock().getContainer() }
 
-  /** Gets a function passed as the `i`th argument of this invocation. */
+  /**
+   * Gets a function passed as the `i`th argument of this invocation.
+   *
+   * This predicate only performs local data flow tracking.
+   * Use `getACallbackSource` to handle interprocedural flow of callback functions.
+   */
   FunctionNode getCallback(int i) { result.flowsTo(getArgument(i)) }
+
+  /**
+   * Gets a function passed as the `i`th argument of this invocation,
+   * possibly through non-local data flow and bound by partial function invocations.
+   */
+  ParameterNode getABoundCallbackParameter(int callback, int param) {
+    exists(int boundArgs |
+      result = getArgument(callback).getABoundFunctionValue(boundArgs).getParameter(param + boundArgs)
+    )
+  }
 
   /**
    * Holds if the `i`th argument of this invocation is an object literal whose property
@@ -127,14 +143,14 @@ class InvokeNode extends DataFlow::SourceNode {
    */
   cached
   Function getACallee(int imprecision) {
-    result.flow() = getCalleeNode().getAFunctionValue(imprecision)
+    CallGraph::getAFunctionReference(result.flow(), imprecision).flowsTo(getCalleeNode())
     or
     imprecision = 0 and
     exists(InvokeExpr expr | expr = this.(DataFlow::Impl::ExplicitInvokeNode).asExpr() |
       result = expr.getResolvedCallee()
       or
       exists(DataFlow::ClassNode cls |
-        expr.(SuperCall).getBinder() = cls.getAnInstanceMethodOrConstructor().getFunction() and
+        expr.(SuperCall).getBinder() = cls.getConstructor().getFunction() and
         result = cls.getADirectSuperClass().getConstructor().getFunction()
       )
     )
@@ -727,23 +743,6 @@ class ClassNode extends DataFlow::SourceNode {
   }
 
   /**
-   * Gets a property read that accesses the property `name` on an instance of this class.
-   *
-   * Concretely, this holds when the base is an instance of this class or a subclass thereof.
-   *
-   * This predicate may be overridden to customize the class hierarchy analysis.
-   */
-  DataFlow::PropRead getAnInstanceMemberAccess(string name) {
-    result = getAnInstanceReference().getAPropertyRead(name)
-    or
-    exists(DataFlow::ClassNode subclass |
-      result = subclass.getAnInstanceMemberAccess(name) and
-      not exists(subclass.getAnInstanceMember(name)) and
-      subclass = getADirectSubClass()
-    )
-  }
-
-  /**
    * Gets an access to a static member of this class.
    */
   DataFlow::PropRead getAStaticMemberAccess(string name) {
@@ -986,7 +985,7 @@ module ClassNode {
  * A data flow node that performs a partial function application.
  *
  * Examples:
- * ```
+ * ```js
  * fn.bind(this)
  * x.method.bind(x)
  * _.partial(fn, x, y, z)
