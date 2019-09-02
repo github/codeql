@@ -1296,37 +1296,49 @@
 | Finally.cs:92:30:92:30 | [finally: break] 3 | Finally.cs:92:25:92:30 | [finally: break] ... == ... | semmle.label | successor |
 | Finally.cs:92:30:92:30 | [finally: continue] 3 | Finally.cs:92:25:92:30 | [finally: continue] ... == ... | semmle.label | successor |
 | Finally.cs:92:30:92:30 | [finally: return] 3 | Finally.cs:92:25:92:30 | [finally: return] ... == ... | semmle.label | successor |
-| Finally.cs:93:25:93:46 | [finally: break] throw ...; | Finally.cs:96:17:98:17 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
-| Finally.cs:93:25:93:46 | [finally: continue] throw ...; | Finally.cs:96:17:98:17 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
-| Finally.cs:93:25:93:46 | [finally: return] throw ...; | Finally.cs:96:17:98:17 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
-| Finally.cs:93:25:93:46 | throw ...; | Finally.cs:96:17:98:17 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:93:25:93:46 | [finally: break] throw ...; | Finally.cs:96:17:98:17 | [finally: break, finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:93:25:93:46 | [finally: continue] throw ...; | Finally.cs:96:17:98:17 | [finally: continue, finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:93:25:93:46 | [finally: return] throw ...; | Finally.cs:96:17:98:17 | [finally: return, finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:93:25:93:46 | throw ...; | Finally.cs:96:17:98:17 | [finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
 | Finally.cs:93:31:93:45 | [finally: break] object creation of type Exception | Finally.cs:93:25:93:46 | [finally: break] throw ...; | semmle.label | successor |
-| Finally.cs:93:31:93:45 | [finally: break] object creation of type Exception | Finally.cs:96:17:98:17 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:93:31:93:45 | [finally: break] object creation of type Exception | Finally.cs:96:17:98:17 | [finally: break, finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
 | Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | Finally.cs:93:25:93:46 | [finally: continue] throw ...; | semmle.label | successor |
-| Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | Finally.cs:96:17:98:17 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:93:31:93:45 | [finally: continue] object creation of type Exception | Finally.cs:96:17:98:17 | [finally: continue, finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
 | Finally.cs:93:31:93:45 | [finally: return] object creation of type Exception | Finally.cs:93:25:93:46 | [finally: return] throw ...; | semmle.label | successor |
-| Finally.cs:93:31:93:45 | [finally: return] object creation of type Exception | Finally.cs:96:17:98:17 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:93:31:93:45 | [finally: return] object creation of type Exception | Finally.cs:96:17:98:17 | [finally: return, finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
 | Finally.cs:93:31:93:45 | object creation of type Exception | Finally.cs:93:25:93:46 | throw ...; | semmle.label | successor |
-| Finally.cs:93:31:93:45 | object creation of type Exception | Finally.cs:96:17:98:17 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:93:31:93:45 | object creation of type Exception | Finally.cs:96:17:98:17 | [finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:96:17:98:17 | [finally(2): exception(Exception)] {...} | Finally.cs:97:21:97:24 | [finally(2): exception(Exception)] ...; | semmle.label | successor |
+| Finally.cs:96:17:98:17 | [finally: break, finally(2): exception(Exception)] {...} | Finally.cs:97:21:97:24 | [finally: break, finally(2): exception(Exception)] ...; | semmle.label | successor |
 | Finally.cs:96:17:98:17 | [finally: break] {...} | Finally.cs:97:21:97:24 | [finally: break] ...; | semmle.label | successor |
+| Finally.cs:96:17:98:17 | [finally: continue, finally(2): exception(Exception)] {...} | Finally.cs:97:21:97:24 | [finally: continue, finally(2): exception(Exception)] ...; | semmle.label | successor |
 | Finally.cs:96:17:98:17 | [finally: continue] {...} | Finally.cs:97:21:97:24 | [finally: continue] ...; | semmle.label | successor |
-| Finally.cs:96:17:98:17 | [finally: exception(Exception)] {...} | Finally.cs:97:21:97:24 | [finally: exception(Exception)] ...; | semmle.label | successor |
+| Finally.cs:96:17:98:17 | [finally: return, finally(2): exception(Exception)] {...} | Finally.cs:97:21:97:24 | [finally: return, finally(2): exception(Exception)] ...; | semmle.label | successor |
 | Finally.cs:96:17:98:17 | [finally: return] {...} | Finally.cs:97:21:97:24 | [finally: return] ...; | semmle.label | successor |
 | Finally.cs:96:17:98:17 | {...} | Finally.cs:97:21:97:24 | ...; | semmle.label | successor |
+| Finally.cs:97:21:97:21 | [finally(2): exception(Exception)] access to local variable i | Finally.cs:97:21:97:23 | [finally(2): exception(Exception)] ...-- | semmle.label | successor |
+| Finally.cs:97:21:97:21 | [finally: break, finally(2): exception(Exception)] access to local variable i | Finally.cs:97:21:97:23 | [finally: break, finally(2): exception(Exception)] ...-- | semmle.label | successor |
 | Finally.cs:97:21:97:21 | [finally: break] access to local variable i | Finally.cs:97:21:97:23 | [finally: break] ...-- | semmle.label | successor |
+| Finally.cs:97:21:97:21 | [finally: continue, finally(2): exception(Exception)] access to local variable i | Finally.cs:97:21:97:23 | [finally: continue, finally(2): exception(Exception)] ...-- | semmle.label | successor |
 | Finally.cs:97:21:97:21 | [finally: continue] access to local variable i | Finally.cs:97:21:97:23 | [finally: continue] ...-- | semmle.label | successor |
-| Finally.cs:97:21:97:21 | [finally: exception(Exception)] access to local variable i | Finally.cs:97:21:97:23 | [finally: exception(Exception)] ...-- | semmle.label | successor |
+| Finally.cs:97:21:97:21 | [finally: return, finally(2): exception(Exception)] access to local variable i | Finally.cs:97:21:97:23 | [finally: return, finally(2): exception(Exception)] ...-- | semmle.label | successor |
 | Finally.cs:97:21:97:21 | [finally: return] access to local variable i | Finally.cs:97:21:97:23 | [finally: return] ...-- | semmle.label | successor |
 | Finally.cs:97:21:97:21 | access to local variable i | Finally.cs:97:21:97:23 | ...-- | semmle.label | successor |
 | Finally.cs:97:21:97:23 | ...-- | Finally.cs:77:16:77:16 | access to local variable i | semmle.label | successor |
+| Finally.cs:97:21:97:23 | [finally(2): exception(Exception)] ...-- | Finally.cs:74:10:74:11 | exit M4 | semmle.label | exception(Exception) |
+| Finally.cs:97:21:97:23 | [finally: break, finally(2): exception(Exception)] ...-- | Finally.cs:74:10:74:11 | exit M4 | semmle.label | exception(Exception) |
 | Finally.cs:97:21:97:23 | [finally: break] ...-- | Finally.cs:74:10:74:11 | exit M4 | semmle.label | break |
+| Finally.cs:97:21:97:23 | [finally: continue, finally(2): exception(Exception)] ...-- | Finally.cs:74:10:74:11 | exit M4 | semmle.label | exception(Exception) |
 | Finally.cs:97:21:97:23 | [finally: continue] ...-- | Finally.cs:77:16:77:16 | access to local variable i | semmle.label | continue |
-| Finally.cs:97:21:97:23 | [finally: exception(Exception)] ...-- | Finally.cs:74:10:74:11 | exit M4 | semmle.label | exception(Exception) |
+| Finally.cs:97:21:97:23 | [finally: return, finally(2): exception(Exception)] ...-- | Finally.cs:74:10:74:11 | exit M4 | semmle.label | exception(Exception) |
 | Finally.cs:97:21:97:23 | [finally: return] ...-- | Finally.cs:74:10:74:11 | exit M4 | semmle.label | return |
 | Finally.cs:97:21:97:24 | ...; | Finally.cs:97:21:97:21 | access to local variable i | semmle.label | successor |
+| Finally.cs:97:21:97:24 | [finally(2): exception(Exception)] ...; | Finally.cs:97:21:97:21 | [finally(2): exception(Exception)] access to local variable i | semmle.label | successor |
+| Finally.cs:97:21:97:24 | [finally: break, finally(2): exception(Exception)] ...; | Finally.cs:97:21:97:21 | [finally: break, finally(2): exception(Exception)] access to local variable i | semmle.label | successor |
 | Finally.cs:97:21:97:24 | [finally: break] ...; | Finally.cs:97:21:97:21 | [finally: break] access to local variable i | semmle.label | successor |
+| Finally.cs:97:21:97:24 | [finally: continue, finally(2): exception(Exception)] ...; | Finally.cs:97:21:97:21 | [finally: continue, finally(2): exception(Exception)] access to local variable i | semmle.label | successor |
 | Finally.cs:97:21:97:24 | [finally: continue] ...; | Finally.cs:97:21:97:21 | [finally: continue] access to local variable i | semmle.label | successor |
-| Finally.cs:97:21:97:24 | [finally: exception(Exception)] ...; | Finally.cs:97:21:97:21 | [finally: exception(Exception)] access to local variable i | semmle.label | successor |
+| Finally.cs:97:21:97:24 | [finally: return, finally(2): exception(Exception)] ...; | Finally.cs:97:21:97:21 | [finally: return, finally(2): exception(Exception)] access to local variable i | semmle.label | successor |
 | Finally.cs:97:21:97:24 | [finally: return] ...; | Finally.cs:97:21:97:21 | [finally: return] access to local variable i | semmle.label | successor |
 | Finally.cs:103:10:103:11 | enter M5 | Finally.cs:104:5:119:5 | {...} | semmle.label | successor |
 | Finally.cs:104:5:119:5 | {...} | Finally.cs:105:9:118:9 | try {...} ... | semmle.label | successor |
@@ -1727,63 +1739,81 @@
 | Finally.cs:205:21:205:22 | [finally: exception(ExceptionA)] access to parameter b2 | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | semmle.label | false |
 | Finally.cs:205:21:205:22 | access to parameter b2 | Finally.cs:205:31:205:46 | object creation of type ExceptionB | semmle.label | true |
 | Finally.cs:205:21:205:22 | access to parameter b2 | Finally.cs:208:13:210:13 | {...} | semmle.label | false |
-| Finally.cs:205:25:205:47 | [finally: exception(Exception)] throw ...; | Finally.cs:208:13:210:13 | [finally: exception(ExceptionB)] {...} | semmle.label | exception(ExceptionB) |
-| Finally.cs:205:25:205:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:208:13:210:13 | [finally: exception(ExceptionB)] {...} | semmle.label | exception(ExceptionB) |
-| Finally.cs:205:25:205:47 | throw ...; | Finally.cs:208:13:210:13 | [finally: exception(ExceptionB)] {...} | semmle.label | exception(ExceptionB) |
+| Finally.cs:205:25:205:47 | [finally: exception(Exception)] throw ...; | Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(2): exception(ExceptionB)] {...} | semmle.label | exception(ExceptionB) |
+| Finally.cs:205:25:205:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] {...} | semmle.label | exception(ExceptionB) |
+| Finally.cs:205:25:205:47 | throw ...; | Finally.cs:208:13:210:13 | [finally(2): exception(ExceptionB)] {...} | semmle.label | exception(ExceptionB) |
 | Finally.cs:205:31:205:46 | [finally: exception(Exception)] object creation of type ExceptionB | Finally.cs:205:25:205:47 | [finally: exception(Exception)] throw ...; | semmle.label | successor |
-| Finally.cs:205:31:205:46 | [finally: exception(Exception)] object creation of type ExceptionB | Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:205:31:205:46 | [finally: exception(Exception)] object creation of type ExceptionB | Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
 | Finally.cs:205:31:205:46 | [finally: exception(ExceptionA)] object creation of type ExceptionB | Finally.cs:205:25:205:47 | [finally: exception(ExceptionA)] throw ...; | semmle.label | successor |
-| Finally.cs:205:31:205:46 | [finally: exception(ExceptionA)] object creation of type ExceptionB | Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:205:31:205:46 | [finally: exception(ExceptionA)] object creation of type ExceptionB | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
 | Finally.cs:205:31:205:46 | object creation of type ExceptionB | Finally.cs:205:25:205:47 | throw ...; | semmle.label | successor |
-| Finally.cs:205:31:205:46 | object creation of type ExceptionB | Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:205:31:205:46 | object creation of type ExceptionB | Finally.cs:208:13:210:13 | [finally(2): exception(Exception)] {...} | semmle.label | exception(Exception) |
+| Finally.cs:208:13:210:13 | [finally(2): exception(Exception)] {...} | Finally.cs:209:17:209:47 | [finally(2): exception(Exception)] if (...) ... | semmle.label | successor |
+| Finally.cs:208:13:210:13 | [finally(2): exception(ExceptionB)] {...} | Finally.cs:209:17:209:47 | [finally(2): exception(ExceptionB)] if (...) ... | semmle.label | successor |
+| Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(2): exception(Exception)] {...} | Finally.cs:209:17:209:47 | [finally: exception(Exception), finally(2): exception(Exception)] if (...) ... | semmle.label | successor |
+| Finally.cs:208:13:210:13 | [finally: exception(Exception), finally(2): exception(ExceptionB)] {...} | Finally.cs:209:17:209:47 | [finally: exception(Exception), finally(2): exception(ExceptionB)] if (...) ... | semmle.label | successor |
 | Finally.cs:208:13:210:13 | [finally: exception(Exception)] {...} | Finally.cs:209:17:209:47 | [finally: exception(Exception)] if (...) ... | semmle.label | successor |
+| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(2): exception(Exception)] {...} | Finally.cs:209:17:209:47 | [finally: exception(ExceptionA), finally(2): exception(Exception)] if (...) ... | semmle.label | successor |
+| Finally.cs:208:13:210:13 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] {...} | Finally.cs:209:17:209:47 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] if (...) ... | semmle.label | successor |
 | Finally.cs:208:13:210:13 | [finally: exception(ExceptionA)] {...} | Finally.cs:209:17:209:47 | [finally: exception(ExceptionA)] if (...) ... | semmle.label | successor |
-| Finally.cs:208:13:210:13 | [finally: exception(ExceptionB)] {...} | Finally.cs:209:17:209:47 | [finally: exception(ExceptionB)] if (...) ... | semmle.label | successor |
 | Finally.cs:208:13:210:13 | {...} | Finally.cs:209:17:209:47 | if (...) ... | semmle.label | successor |
+| Finally.cs:209:17:209:47 | [finally(2): exception(Exception)] if (...) ... | Finally.cs:209:21:209:22 | [finally(2): exception(Exception)] access to parameter b3 | semmle.label | successor |
+| Finally.cs:209:17:209:47 | [finally(2): exception(ExceptionB)] if (...) ... | Finally.cs:209:21:209:22 | [finally(2): exception(ExceptionB)] access to parameter b3 | semmle.label | successor |
+| Finally.cs:209:17:209:47 | [finally: exception(Exception), finally(2): exception(Exception)] if (...) ... | Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(2): exception(Exception)] access to parameter b3 | semmle.label | successor |
+| Finally.cs:209:17:209:47 | [finally: exception(Exception), finally(2): exception(ExceptionB)] if (...) ... | Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(2): exception(ExceptionB)] access to parameter b3 | semmle.label | successor |
 | Finally.cs:209:17:209:47 | [finally: exception(Exception)] if (...) ... | Finally.cs:209:21:209:22 | [finally: exception(Exception)] access to parameter b3 | semmle.label | successor |
+| Finally.cs:209:17:209:47 | [finally: exception(ExceptionA), finally(2): exception(Exception)] if (...) ... | Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(2): exception(Exception)] access to parameter b3 | semmle.label | successor |
+| Finally.cs:209:17:209:47 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] if (...) ... | Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] access to parameter b3 | semmle.label | successor |
 | Finally.cs:209:17:209:47 | [finally: exception(ExceptionA)] if (...) ... | Finally.cs:209:21:209:22 | [finally: exception(ExceptionA)] access to parameter b3 | semmle.label | successor |
-| Finally.cs:209:17:209:47 | [finally: exception(ExceptionB)] if (...) ... | Finally.cs:209:21:209:22 | [finally: exception(ExceptionB)] access to parameter b3 | semmle.label | successor |
 | Finally.cs:209:17:209:47 | if (...) ... | Finally.cs:209:21:209:22 | access to parameter b3 | semmle.label | successor |
-| Finally.cs:209:21:209:22 | [finally: exception(Exception)] access to parameter b3 | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(Exception) |
+| Finally.cs:209:21:209:22 | [finally(2): exception(Exception)] access to parameter b3 | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(Exception) |
+| Finally.cs:209:21:209:22 | [finally(2): exception(Exception)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally(2): exception(Exception)] object creation of type ExceptionC | semmle.label | true |
+| Finally.cs:209:21:209:22 | [finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionB) |
+| Finally.cs:209:21:209:22 | [finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally(2): exception(ExceptionB)] object creation of type ExceptionC | semmle.label | true |
+| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(2): exception(Exception)] access to parameter b3 | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(Exception) |
+| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(2): exception(Exception)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(Exception)] object creation of type ExceptionC | semmle.label | true |
+| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionB) |
+| Finally.cs:209:21:209:22 | [finally: exception(Exception), finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(ExceptionB)] object creation of type ExceptionC | semmle.label | true |
 | Finally.cs:209:21:209:22 | [finally: exception(Exception)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(Exception)] object creation of type ExceptionC | semmle.label | true |
 | Finally.cs:209:21:209:22 | [finally: exception(Exception)] access to parameter b3 | Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; | semmle.label | false |
+| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(2): exception(Exception)] access to parameter b3 | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(Exception) |
+| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(2): exception(Exception)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(Exception)] object creation of type ExceptionC | semmle.label | true |
+| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionB) |
+| Finally.cs:209:21:209:22 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] object creation of type ExceptionC | semmle.label | true |
 | Finally.cs:209:21:209:22 | [finally: exception(ExceptionA)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | semmle.label | true |
 | Finally.cs:209:21:209:22 | [finally: exception(ExceptionA)] access to parameter b3 | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | semmle.label | false |
-| Finally.cs:209:21:209:22 | [finally: exception(ExceptionB)] access to parameter b3 | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionB) |
-| Finally.cs:209:21:209:22 | [finally: exception(ExceptionB)] access to parameter b3 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionB)] object creation of type ExceptionC | semmle.label | true |
-| Finally.cs:209:21:209:22 | [finally: exception(ExceptionB)] access to parameter b3 | Finally.cs:211:13:211:29 | [finally: exception(ExceptionB)] ...; | semmle.label | false |
 | Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:209:31:209:46 | object creation of type ExceptionC | semmle.label | true |
 | Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:211:13:211:29 | ...; | semmle.label | false |
-| Finally.cs:209:21:209:22 | access to parameter b3 | Finally.cs:211:13:211:29 | ...; | semmle.label | false |
+| Finally.cs:209:25:209:47 | [finally(2): exception(Exception)] throw ...; | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionC) |
+| Finally.cs:209:25:209:47 | [finally(2): exception(ExceptionB)] throw ...; | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionC) |
+| Finally.cs:209:25:209:47 | [finally: exception(Exception), finally(2): exception(Exception)] throw ...; | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionC) |
+| Finally.cs:209:25:209:47 | [finally: exception(Exception), finally(2): exception(ExceptionB)] throw ...; | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionC) |
 | Finally.cs:209:25:209:47 | [finally: exception(Exception)] throw ...; | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionC) |
+| Finally.cs:209:25:209:47 | [finally: exception(ExceptionA), finally(2): exception(Exception)] throw ...; | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionC) |
+| Finally.cs:209:25:209:47 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] throw ...; | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionC) |
 | Finally.cs:209:25:209:47 | [finally: exception(ExceptionA)] throw ...; | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionC) |
-| Finally.cs:209:25:209:47 | [finally: exception(ExceptionB)] throw ...; | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionC) |
 | Finally.cs:209:25:209:47 | throw ...; | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionC) |
+| Finally.cs:209:31:209:46 | [finally(2): exception(Exception)] object creation of type ExceptionC | Finally.cs:209:25:209:47 | [finally(2): exception(Exception)] throw ...; | semmle.label | successor |
+| Finally.cs:209:31:209:46 | [finally(2): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:209:25:209:47 | [finally(2): exception(ExceptionB)] throw ...; | semmle.label | successor |
+| Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(Exception)] object creation of type ExceptionC | Finally.cs:209:25:209:47 | [finally: exception(Exception), finally(2): exception(Exception)] throw ...; | semmle.label | successor |
+| Finally.cs:209:31:209:46 | [finally: exception(Exception), finally(2): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:209:25:209:47 | [finally: exception(Exception), finally(2): exception(ExceptionB)] throw ...; | semmle.label | successor |
 | Finally.cs:209:31:209:46 | [finally: exception(Exception)] object creation of type ExceptionC | Finally.cs:209:25:209:47 | [finally: exception(Exception)] throw ...; | semmle.label | successor |
+| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(Exception)] object creation of type ExceptionC | Finally.cs:209:25:209:47 | [finally: exception(ExceptionA), finally(2): exception(Exception)] throw ...; | semmle.label | successor |
+| Finally.cs:209:31:209:46 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:209:25:209:47 | [finally: exception(ExceptionA), finally(2): exception(ExceptionB)] throw ...; | semmle.label | successor |
 | Finally.cs:209:31:209:46 | [finally: exception(ExceptionA)] object creation of type ExceptionC | Finally.cs:209:25:209:47 | [finally: exception(ExceptionA)] throw ...; | semmle.label | successor |
-| Finally.cs:209:31:209:46 | [finally: exception(ExceptionB)] object creation of type ExceptionC | Finally.cs:209:25:209:47 | [finally: exception(ExceptionB)] throw ...; | semmle.label | successor |
 | Finally.cs:209:31:209:46 | object creation of type ExceptionC | Finally.cs:209:25:209:47 | throw ...; | semmle.label | successor |
 | Finally.cs:211:13:211:16 | [finally: exception(Exception)] this access | Finally.cs:211:26:211:28 | [finally: exception(Exception)] "0" | semmle.label | successor |
 | Finally.cs:211:13:211:16 | [finally: exception(ExceptionA)] this access | Finally.cs:211:26:211:28 | [finally: exception(ExceptionA)] "0" | semmle.label | successor |
-| Finally.cs:211:13:211:16 | [finally: exception(ExceptionB)] this access | Finally.cs:211:26:211:28 | [finally: exception(ExceptionB)] "0" | semmle.label | successor |
 | Finally.cs:211:13:211:16 | this access | Finally.cs:211:26:211:28 | "0" | semmle.label | successor |
-| Finally.cs:211:13:211:16 | this access | Finally.cs:211:26:211:28 | "0" | semmle.label | successor |
-| Finally.cs:211:13:211:28 | ... = ... | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(Exception) |
-| Finally.cs:211:13:211:28 | ... = ... | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionA) |
-| Finally.cs:211:13:211:28 | ... = ... | Finally.cs:213:9:213:25 | ...; | semmle.label | successor |
 | Finally.cs:211:13:211:28 | ... = ... | Finally.cs:213:9:213:25 | ...; | semmle.label | successor |
 | Finally.cs:211:13:211:28 | [finally: exception(Exception)] ... = ... | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(Exception) |
 | Finally.cs:211:13:211:28 | [finally: exception(ExceptionA)] ... = ... | Finally.cs:195:10:195:12 | exit M10 | semmle.label | exception(ExceptionA) |
 | Finally.cs:211:13:211:29 | ...; | Finally.cs:211:13:211:16 | this access | semmle.label | successor |
-| Finally.cs:211:13:211:29 | ...; | Finally.cs:211:13:211:16 | this access | semmle.label | successor |
 | Finally.cs:211:13:211:29 | [finally: exception(Exception)] ...; | Finally.cs:211:13:211:16 | [finally: exception(Exception)] this access | semmle.label | successor |
 | Finally.cs:211:13:211:29 | [finally: exception(ExceptionA)] ...; | Finally.cs:211:13:211:16 | [finally: exception(ExceptionA)] this access | semmle.label | successor |
-| Finally.cs:211:13:211:29 | [finally: exception(ExceptionB)] ...; | Finally.cs:211:13:211:16 | [finally: exception(ExceptionB)] this access | semmle.label | successor |
-| Finally.cs:211:26:211:28 | "0" | Finally.cs:211:13:211:28 | ... = ... | semmle.label | successor |
 | Finally.cs:211:26:211:28 | "0" | Finally.cs:211:13:211:28 | ... = ... | semmle.label | successor |
 | Finally.cs:211:26:211:28 | [finally: exception(Exception)] "0" | Finally.cs:211:13:211:28 | [finally: exception(Exception)] ... = ... | semmle.label | successor |
 | Finally.cs:211:26:211:28 | [finally: exception(ExceptionA)] "0" | Finally.cs:211:13:211:28 | [finally: exception(ExceptionA)] ... = ... | semmle.label | successor |
-| Finally.cs:211:26:211:28 | [finally: exception(ExceptionB)] "0" | Finally.cs:211:13:211:28 | [finally: exception(ExceptionB)] ... = ... | semmle.label | successor |
 | Finally.cs:213:9:213:12 | this access | Finally.cs:213:22:213:24 | "1" | semmle.label | successor |
 | Finally.cs:213:9:213:24 | ... = ... | Finally.cs:195:10:195:12 | exit M10 | semmle.label | successor |
 | Finally.cs:213:9:213:25 | ...; | Finally.cs:213:9:213:12 | this access | semmle.label | successor |

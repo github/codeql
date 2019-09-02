@@ -1,10 +1,6 @@
 preBasicBlockConsistency
 nonUniqueSetRepresentation
 breakInvariant2
-| Finally.cs:209:21:209:22 | access to parameter b3 |  | Finally.cs:211:13:211:29 | ...; |  |  | false |
 breakInvariant3
-| Finally.cs:205:31:205:46 | object creation of type ExceptionB | finally: exception(Exception) | Finally.cs:208:13:210:13 | {...} | finally: exception(Exception) | finally: exception(Exception) | throw(Exception) |
-| Finally.cs:209:21:209:22 | access to parameter b3 |  | Finally.cs:211:13:211:29 | ...; |  |  | false |
 breakInvariant4
 breakInvariant5
-| Finally.cs:205:31:205:46 | object creation of type ExceptionB | finally: exception(Exception) | Finally.cs:208:13:210:13 | {...} | finally: exception(Exception) | finally: exception(Exception) | throw(Exception) |
