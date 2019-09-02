@@ -799,21 +799,21 @@ module DataFlow {
   /**
    * A named import specifier seen as a property read on the imported module.
    */
-  private class ImportSpecifierAsPropRead extends PropRead {
+  private class ImportSpecifierAsPropRead extends PropRead, ValueNode {
+    override ImportSpecifier astNode;
+
     ImportDeclaration imprt;
-    ImportSpecifier spec;
 
     ImportSpecifierAsPropRead() {
-      spec = imprt.getASpecifier() and
-      exists(spec.getImportedName()) and
-      this = ssaDefinitionNode(SSA::definition(spec))
+      astNode = imprt.getASpecifier() and
+      exists(astNode.getImportedName())
     }
 
     override Node getBase() { result = TDestructuredModuleImportNode(imprt) }
 
-    override Expr getPropertyNameExpr() { result = spec.getImported() }
+    override Expr getPropertyNameExpr() { result = astNode.getImported() }
 
-    override string getPropertyName() { result = spec.getImportedName() }
+    override string getPropertyName() { result = astNode.getImportedName() }
   }
 
   /**

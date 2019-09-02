@@ -234,10 +234,13 @@ module SourceNode {
         astNode instanceof AwaitExpr or
         astNode instanceof FunctionSentExpr or
         astNode instanceof FunctionBindExpr or
-        astNode instanceof DynamicImportExpr
+        astNode instanceof DynamicImportExpr or
+        astNode instanceof NamedImportSpecifier
       )
       or
-      this = DataFlow::ssaDefinitionNode(SSA::definition(any(ImportSpecifier imp)))
+      this = DataFlow::ssaDefinitionNode(SSA::definition(any(ImportNamespaceSpecifier imp)))
+      or
+      this = DataFlow::ssaDefinitionNode(SSA::definition(any(ImportDefaultSpecifier imp)))
       or
       DataFlow::parameterNode(this, _)
       or
