@@ -77,6 +77,18 @@ private module MongoDB {
     }
   }
 
+  /**
+   * A collection based on the type `mongodb.Collection`.
+   *
+   * Note that this also covers `mongoose` models since they are subtypes
+   * of `mongodb.Collection`.
+   */
+  private class CollectionFromType extends Collection {
+    CollectionFromType() {
+      hasUnderlyingType("mongodb", "Collection")
+    }
+  }
+
   /** Gets a data flow node referring to a MongoDB collection. */
   private DataFlow::SourceNode getACollection(DataFlow::TypeTracker t) {
     t.start() and

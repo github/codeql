@@ -63,6 +63,12 @@ nodes
 | tst4.js:8:46:8:60 | $routeParams.id |
 | tst.js:10:10:10:64 | 'SELECT ... d + '"' |
 | tst.js:10:46:10:58 | req.params.id |
+| typedClient.ts:13:7:13:32 | v |
+| typedClient.ts:13:11:13:32 | JSON.pa ... body.x) |
+| typedClient.ts:13:22:13:29 | req.body |
+| typedClient.ts:13:22:13:31 | req.body.x |
+| typedClient.ts:14:24:14:32 | { id: v } |
+| typedClient.ts:14:30:14:30 | v |
 edges
 | mongodb.js:12:11:12:20 | query | mongodb.js:14:59:14:58 | query |
 | mongodb.js:12:11:12:20 | query | mongodb.js:18:16:18:20 | query |
@@ -156,6 +162,11 @@ edges
 | tst.js:10:10:10:58 | 'SELECT ... rams.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' |
 | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:58 | 'SELECT ... rams.id |
 | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' |
+| typedClient.ts:13:7:13:32 | v | typedClient.ts:14:30:14:30 | v |
+| typedClient.ts:13:11:13:32 | JSON.pa ... body.x) | typedClient.ts:13:7:13:32 | v |
+| typedClient.ts:13:22:13:29 | req.body | typedClient.ts:13:22:13:31 | req.body.x |
+| typedClient.ts:13:22:13:31 | req.body.x | typedClient.ts:13:11:13:32 | JSON.pa ... body.x) |
+| typedClient.ts:14:30:14:30 | v | typedClient.ts:14:24:14:32 | { id: v } |
 #select
 | mongodb.js:18:16:18:20 | query | mongodb.js:13:19:13:26 | req.body | mongodb.js:18:16:18:20 | query | This query depends on $@. | mongodb.js:13:19:13:26 | req.body | a user-provided value |
 | mongodb.js:32:18:32:45 | { title ... itle) } | mongodb.js:26:19:26:26 | req.body | mongodb.js:32:18:32:45 | { title ... itle) } | This query depends on $@. | mongodb.js:26:19:26:26 | req.body | a user-provided value |
@@ -182,3 +193,4 @@ edges
 | tst3.js:10:14:10:19 | query1 | tst3.js:9:16:9:34 | req.params.category | tst3.js:10:14:10:19 | query1 | This query depends on $@. | tst3.js:9:16:9:34 | req.params.category | a user-provided value |
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | This query depends on $@. | tst4.js:8:46:8:60 | $routeParams.id | a user-provided value |
 | tst.js:10:10:10:64 | 'SELECT ... d + '"' | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | This query depends on $@. | tst.js:10:46:10:58 | req.params.id | a user-provided value |
+| typedClient.ts:14:24:14:32 | { id: v } | typedClient.ts:13:22:13:29 | req.body | typedClient.ts:14:24:14:32 | { id: v } | This query depends on $@. | typedClient.ts:13:22:13:29 | req.body | a user-provided value |
