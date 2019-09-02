@@ -1,2 +1,3 @@
 | partialdefinitions.cpp:14:2:14:2 | partial def of s | partialdefinitions.cpp:14:2:14:2 | s | partialdefinitions.cpp:14:2:14:8 | ... = ... |
+| partialdefinitions.cpp:15:2:15:2 | partial def of s | partialdefinitions.cpp:15:2:15:2 | s | partialdefinitions.cpp:15:2:15:10 | ... = ... |
 | partialdefinitions.cpp:15:4:15:4 | partial def of y | partialdefinitions.cpp:15:4:15:4 | y | partialdefinitions.cpp:15:2:15:10 | ... = ... |
