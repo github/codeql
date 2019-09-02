@@ -2081,7 +2081,7 @@ private module FlowExploration {
 
   private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
     override string toString() {
-      exists(DataFlowType t | this = TPartialNil(t) | result = ppReprType(t))
+      exists(DataFlowType t | this = TPartialNil(t) | result = concat(ppReprType(t)))
     }
 
     override AccessPathFront getFront() {
@@ -2092,7 +2092,9 @@ private module FlowExploration {
   private class PartialAccessPathCons extends PartialAccessPath, TPartialCons {
     override string toString() {
       exists(Content f, int len | this = TPartialCons(f, len) |
-        result = f.toString() + ", ... (" + len.toString() + ")"
+        if len = 1
+        then result = f.toString()
+        else result = f.toString() + ", ... (" + len.toString() + ")"
       )
     }
 
