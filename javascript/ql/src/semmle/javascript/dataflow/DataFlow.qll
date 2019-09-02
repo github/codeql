@@ -43,7 +43,8 @@ module DataFlow {
     } or
     THtmlAttributeNode(HTML::Attribute attr) or
     TExceptionalFunctionReturnNode(Function f) or
-    TExceptionalInvocationReturnNode(InvokeExpr e)
+    TExceptionalInvocationReturnNode(InvokeExpr e) or
+    TGlobalAccessPathRoot()
 
   /**
    * A node in the data flow graph.
@@ -120,6 +121,12 @@ module DataFlow {
     /** Gets a function value that may reach this node. */
     FunctionNode getAFunctionValue() {
       result.getAstNode() = analyze().getAValue().(AbstractCallable).getFunction()
+      or
+      exists(string name |
+        GlobalAccessPath::isAssignedInUniqueFile(name) and
+        GlobalAccessPath::fromRhs(result) = name and
+        GlobalAccessPath::fromReference(this) = name
+      )
     }
 
     /**
@@ -911,6 +918,20 @@ module DataFlow {
      */
     DataFlow::InvokeNode getInvocation() { result = invoke.flow() }
   }
+
+  /**
+   * A pseudo-node representing the root of a global access path.
+   */
+  private class GlobalAccessPathRoot extends TGlobalAccessPathRoot, DataFlow::Node {
+    override string toString() { result = "global access path" }
+  }
+
+  /**
+   * INTERNAL. DO NOT USE.
+   *
+   * Gets a pseudo-node representing the root of a global access path.
+   */
+  DataFlow::Node globalAccessPathRootPseudoNode() { result instanceof TGlobalAccessPathRoot }
 
   /**
    * Provides classes representing various kinds of calls.

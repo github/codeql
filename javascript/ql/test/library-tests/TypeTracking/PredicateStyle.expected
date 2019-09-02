@@ -2,6 +2,13 @@ apiObject
 | tst.js:4:11:4:21 | new myapi() |
 | tst.js:16:10:16:21 | api.chain1() |
 | tst.js:16:10:16:30 | api.cha ... hain2() |
+| tst.js:62:40:62:51 | api.chain1() |
+| tst.js:62:40:62:60 | api.cha ... hain2() |
+| tst.js:63:38:63:49 | api.chain1() |
+| tst.js:63:38:63:58 | api.cha ... hain2() |
+| tst_conflict.js:3:11:3:21 | new myapi() |
+| tst_conflict.js:6:38:6:49 | api.chain1() |
+| tst_conflict.js:6:38:6:58 | api.cha ... hain2() |
 connection
 | type tracker with call steps | tst.js:7:15:7:18 | conn |
 | type tracker with call steps | tst.js:11:5:11:19 | this.connection |
@@ -13,6 +20,14 @@ connection
 | type tracker without call steps | tst.js:48:7:48:21 | getConnection() |
 | type tracker without call steps | tst.js:54:37:54:51 | getConnection() |
 | type tracker without call steps | tst.js:57:14:57:48 | config. ... ction') |
+| type tracker without call steps | tst.js:62:40:62:79 | api.cha ... ction() |
+| type tracker without call steps | tst.js:63:38:63:77 | api.cha ... ction() |
+| type tracker without call steps | tst.js:67:14:67:47 | MyAppli ... nection |
+| type tracker without call steps | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
+| type tracker without call steps with property MyApplication.namespace.connection | file://:0:0:0:0 | global access path |
+| type tracker without call steps with property conflict | tst.js:63:3:63:25 | MyAppli ... mespace |
+| type tracker without call steps with property conflict | tst_conflict.js:6:3:6:25 | MyAppli ... mespace |
+| type tracker without call steps with property connection | tst.js:62:3:62:25 | MyAppli ... mespace |
 dataCallback
 | tst.js:10:11:10:12 | cb |
 | tst.js:21:1:23:1 | functio ... ata);\\n} |
@@ -23,9 +38,11 @@ dataCallback
 | tst.js:45:19:45:20 | cb |
 | tst.js:48:32:48:60 | identit ... llback) |
 | tst.js:58:16:58:22 | x => {} |
+| tst.js:68:16:70:3 | data => ... a);\\n  } |
 dataValue
 | tst.js:21:18:21:21 | data |
 | tst.js:25:19:25:22 | data |
 | tst.js:33:17:33:20 | data |
 | tst.js:38:10:38:13 | data |
 | tst.js:58:16:58:16 | x |
+| tst.js:68:16:68:19 | data |

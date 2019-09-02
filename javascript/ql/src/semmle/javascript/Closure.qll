@@ -212,45 +212,34 @@ module Closure {
       or
       name = namespace
     )
+    or
+    name = "goog" // The closure libraries themselves use the "goog" namespace
+  }
+
+  /**
+   * Holds if a prefix of `name` is a closure namespace.
+   */
+  bindingset[name]
+  private predicate hasClosureNamespacePrefix(string name) {
+    isClosureNamespace(name.substring(0, name.indexOf(".")))
+    or
+    isClosureNamespace(name)
   }
 
   /**
    * Gets the closure namespace path addressed by the given data flow node, if any.
    */
   string getClosureNamespaceFromSourceNode(DataFlow::SourceNode node) {
-    isClosureNamespace(result) and
-    node = DataFlow::globalVarRef(result)
-    or
-    exists(DataFlow::SourceNode base, string basePath, string prop |
-      basePath = getClosureNamespaceFromSourceNode(base) and
-      node = base.getAPropertyRead(prop) and
-      result = basePath + "." + prop and
-      // ensure finiteness
-      (
-        isClosureNamespace(basePath)
-        or
-        // direct access, no indirection
-        node.(DataFlow::PropRead).getBase() = base
-      )
-    )
-    or
-    // Associate an access path with the immediate RHS of a store on a closure namespace.
-    // This is to support patterns like:
-    // foo.bar = { baz() {} }
-    exists(DataFlow::PropWrite write |
-      node = write.getRhs() and
-      result = getWrittenClosureNamespace(write)
-    )
-    or
-    result = node.(ClosureNamespaceAccess).getClosureNamespace()
+    result = GlobalAccessPath::getAccessPath(node) and
+    hasClosureNamespacePrefix(result)
   }
 
   /**
    * Gets the closure namespace path written to by the given property write, if any.
    */
   string getWrittenClosureNamespace(DataFlow::PropWrite node) {
-    result = getClosureNamespaceFromSourceNode(node.getBase().getALocalSource()) + "." +
-        node.getPropertyName()
+    result = GlobalAccessPath::fromRhs(node.getRhs()) and
+    hasClosureNamespacePrefix(result)
   }
 
   /**

@@ -250,6 +250,8 @@ module SourceNode {
       DataFlow::thisNode(this, _)
       or
       this = DataFlow::destructuredModuleImportNode(_)
+      or
+      this = DataFlow::globalAccessPathRootPseudoNode()
     }
   }
 }

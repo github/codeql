@@ -10,7 +10,11 @@ private import javascript
 private import internal.FlowSteps
 
 private class PropertyName extends string {
-  PropertyName() { this = any(DataFlow::PropRef pr).getPropertyName() }
+  PropertyName() {
+    this = any(DataFlow::PropRef pr).getPropertyName()
+    or
+    GlobalAccessPath::isAssignedInUniqueFile(this)
+  }
 }
 
 private class OptionalPropertyName extends string {
@@ -89,6 +93,20 @@ module StepSummary {
     or
     any(AdditionalTypeTrackingStep st).step(pred, succ) and
     summary = LevelStep()
+    or
+    exists(string name |
+      name = GlobalAccessPath::fromRhs(pred) and
+      GlobalAccessPath::isAssignedInUniqueFile(name) and
+      succ = DataFlow::globalAccessPathRootPseudoNode() and
+      summary = StoreStep(name)
+    )
+    or
+    exists(string name |
+      name = GlobalAccessPath::fromReference(succ) and
+      GlobalAccessPath::isAssignedInUniqueFile(name) and
+      pred = DataFlow::globalAccessPathRootPseudoNode() and
+      summary = LoadStep(name)
+    )
   }
 }
 
@@ -157,6 +175,12 @@ class TypeTracker extends TTypeTracker {
    * Holds if this is the starting point of type tracking.
    */
   predicate start() { hasCall = false and prop = "" }
+
+  /**
+   * Holds if this is the starting point of type tracking
+   * when tracking a parameter into a call, but not out of it.
+   */
+  predicate call() { hasCall = true and prop = "" }
 
   /**
    * Holds if this is the end point of type tracking.

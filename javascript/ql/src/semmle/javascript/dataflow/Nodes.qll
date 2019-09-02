@@ -693,6 +693,7 @@ class ClassNode extends DataFlow::SourceNode {
   /**
    * Gets a dataflow node that refers to this class object.
    */
+  cached
   DataFlow::SourceNode getAClassReference() {
     result = getAClassReference(DataFlow::TypeTracker::end())
   }
@@ -709,6 +710,15 @@ class ClassNode extends DataFlow::SourceNode {
     t.start() and
     result = getAReceiverNode()
     or
+    // Use a parameter type as starting point of type tracking.
+    // Use `t.call()` to emulate the value being passed in through an unseen
+    // call site, but not out of the call again.
+    t.call() and
+    exists(Parameter param |
+      this = param.getTypeAnnotation().getClass() and
+      result = DataFlow::parameterNode(param)
+    )
+    or
     result = getAnInstanceReferenceAux(t) and
     // Avoid tracking into the receiver of other classes.
     // Note that this also blocks flows into a property of the receiver,
@@ -724,6 +734,7 @@ class ClassNode extends DataFlow::SourceNode {
   /**
    * Gets a dataflow node that refers to an instance of this class.
    */
+  cached
   DataFlow::SourceNode getAnInstanceReference() {
     result = getAnInstanceReference(DataFlow::TypeTracker::end())
   }
@@ -844,6 +855,12 @@ module ClassNode {
     override DataFlow::Node getASuperClassNode() { result = astNode.getSuperClass().flow() }
   }
 
+  private DataFlow::PropRef getAPrototypeReferenceInFile(string name, File f) {
+    GlobalAccessPath::getAccessPath(result.getBase()) = name and
+    result.getPropertyName() = "prototype" and
+    result.getFile() = f
+  }
+
   /**
    * A function definition with prototype manipulation as a `ClassNode` instance.
    */
@@ -854,9 +871,16 @@ module ClassNode {
 
     FunctionStyleClass() {
       function.getFunction() = astNode and
-      exists(DataFlow::PropRef read |
-        read.getPropertyName() = "prototype" and
-        read.getBase().analyze().getAValue() = function
+      (
+        exists (DataFlow::PropRef read |
+          read.getPropertyName() = "prototype" and
+          read.getBase().analyze().getAValue() = function
+        )
+        or
+        exists(string name |
+          name = GlobalAccessPath::fromRhs(this) and
+          exists(getAPrototypeReferenceInFile(name, getFile()))
+        )
       )
     }
 
@@ -916,11 +940,16 @@ module ClassNode {
         result = base.getAPropertyRead("prototype")
         or
         result = base.getAPropertySource("prototype")
-        or
-        exists(ExtendCall call |
-          call.getDestinationOperand() = base.getAPropertyRead("prototype") and
-          result = call.getASourceOperand()
-        )
+      )
+      or
+      exists(string name |
+        GlobalAccessPath::fromRhs(this) = name and
+        result = getAPrototypeReferenceInFile(name, getFile())
+      )
+      or
+      exists(ExtendCall call |
+        call.getDestinationOperand() = getAPrototypeReference() and
+        result = call.getASourceOperand()
       )
     }
 
