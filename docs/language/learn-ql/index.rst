@@ -10,6 +10,8 @@ QL queries are easy to write and share–visit the topics below and `our open so
 You can also try out QL in the `query console <https://lgtm.com/query>`__ on `LGTM.com <https://lgtm.com>`__. 
 Here, you can write QL code to query open source projects directly, without having to download snapshots and libraries. 
 
+.. _getting-started:
+
 Getting started
 ***************
 
@@ -21,6 +23,18 @@ If you are new to QL, start by looking at the following topics:
    introduction-to-ql
    about-ql
    beginner/ql-tutorials
+
+QL training and variant analysis examples
+******************************************
+
+To start learning how to use QL in variant analysis for a specific language, see:
+
+.. toctree::
+   :maxdepth: -1
+
+   ql-training
+
+.. _writing-ql-queries:
 
 Writing QL queries
 ******************
@@ -45,16 +59,6 @@ For more information on writing QL to query code written in a specific language 
    java/ql-for-java
    javascript/ql-for-javascript
    python/ql-for-python
-
-QL training and variant analysis examples
-******************************************
-
-To start learning how to use QL in variant analysis for a specific language, see:
-
-.. toctree::
-   :maxdepth: -1
-
-   ql-training
 
 Advanced QL and technical information
 *************************************
