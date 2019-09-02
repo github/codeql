@@ -1,7 +1,7 @@
 import * as mongodb from "mongodb";
 
-import express from 'express';
-import bodyParser from 'body-parser';
+const express = require('express') as any;
+const bodyParser = require('body-parser') as any;
 
 declare function getCollection(): mongodb.Collection;
 
