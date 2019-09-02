@@ -36,23 +36,23 @@ We recommend that you download `QL for Eclipse <https://help.semmle.com/ql-for-e
 QL and variant analysis for C/C++
 ---------------------------------
 
-- `Introduction to variant analysis: QL for C/C++ <../ql-training-rst/cpp/intro-ql-cpp.html>`__–an introduction to variant analysis and QL for C/C++ programmers.
-- `Example: Bad overflow guard <../ql-training-rst/cpp/bad-overflow-guard.html>`__–an example of iterative query development to find bad overflow guards in a C++ project.
-- `Program representation: QL for C/C++ <../ql-training-rst/cpp/program-representation-cpp.html>`__–information on how QL analysis represents C/C++ programs. 
-- `Introduction to local data flow <../ql-training-rst/cpp/local-data-flow-cpp.html>`__–an introduction to analyzing local data flow in C/C++ using QL, including an example demonstrating how to develop a query to find a real CVE.
-- `Exercise: snprintf overflow <../ql-training-rst/cpp/snprintf.html>`__–an example demonstrating how to develop a data flow query.
-- `Introduction to global data flow <../ql-training-rst/cpp/global-data-flow-cpp.html>`__–an introduction to analyzing global data flow in C/C++ using QL.
-- `Analyzing control flow: QL for C/C++  <../ql-training-rst/cpp/control-flow-cpp.html>`__–an introduction to analyzing control flow in C/C++ using QL.
+- `Introduction to variant analysis: QL for C/C++ <../ql-training/cpp/intro-ql-cpp.html>`__–an introduction to variant analysis and QL for C/C++ programmers.
+- `Example: Bad overflow guard <../ql-training/cpp/bad-overflow-guard.html>`__–an example of iterative query development to find bad overflow guards in a C++ project.
+- `Program representation: QL for C/C++ <../ql-training/cpp/program-representation-cpp.html>`__–information on how QL analysis represents C/C++ programs. 
+- `Introduction to local data flow <../ql-training/cpp/data-flow-cpp.html>`__–an introduction to analyzing local data flow in C/C++ using QL, including an example demonstrating how to develop a query to find a real CVE.
+- `Exercise: snprintf overflow <../ql-training/cpp/snprintf.html>`__–an example demonstrating how to develop a data flow query.
+- `Introduction to global data flow <../ql-training/cpp/global-data-flow-cpp.html>`__–an introduction to analyzing global data flow in C/C++ using QL.
+- `Analyzing control flow: QL for C/C++  <../ql-training/cpp/control-flow-cpp.html>`__–an introduction to analyzing control flow in C/C++ using QL.
 
 QL and variant analysis for Java
 --------------------------------
 
-- `Introduction to variant analysis: QL for Java <../ql-training-rst/java/intro-ql-java.html>`__–an introduction to variant analysis and QL for Java programmers.
-- `Example: Query injection <../ql-training-rst/java/query-injection.html>`__–
-- `Program representation: QL for Java <../ql-training-rst/java/program-representation-java.html>`__–information on how QL analysis represents Java programs. 
-- `Introduction to local data flow <../ql-training-rst/java/local-data-flow-java.html>`__–an introduction to analyzing local data flow in Java using QL, including an example demonstrating how to develop a query to find a real CVE.
-- `Exercise: Apache Struts <../ql-training-rst/java/apache-struts-java.html>`__–an example demonstrating how to develop a data flow query.
-- `Introduction to global data flow <../ql-training-rst/java/global-data-flow-java.html>`__–an introduction to analyzing global data flow in Java using QL.
+- `Introduction to variant analysis: QL for Java <../ql-training/java/intro-ql-java.html>`__–an introduction to variant analysis and QL for Java programmers.
+- `Example: Query injection <../ql-training/java/query-injection-java.html>`__–an example of iterative query development to find unsanitized SPARQL injection in a Java project.
+- `Program representation: QL for Java <../ql-training/java/program-representation-java.html>`__–information on how QL analysis represents Java programs. 
+- `Introduction to local data flow <../ql-training/java/data-flow-java.html>`__–an introduction to analyzing local data flow in Java using QL, including an example demonstrating how to develop a query to find a real CVE.
+- `Exercise: Apache Struts <../ql-training/java/apache-struts-java.html>`__–an example demonstrating how to develop a data flow query.
+- `Introduction to global data flow <../ql-training/java/global-data-flow-java.html>`__–an introduction to analyzing global data flow in Java using QL.
 
 More resources
 --------------
