@@ -731,17 +731,24 @@ abstract class TranslatedSpecificJump extends TranslatedStmt {
     isLValue = false
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge and
+    result = getTargetInstruction()
+  }
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
+
+  /**
+   * The instruction that is the target of the jump.
+   */
+  abstract Instruction getTargetInstruction();
 }
 
 class TranslatedBreakStmt extends TranslatedSpecificJump {
   override BreakStmt stmt;
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge and
+  override Instruction getTargetInstruction() {
     result = this.getEnclosingLoopOrSwitchNextInstr(stmt)
   }
 
@@ -753,12 +760,28 @@ class TranslatedBreakStmt extends TranslatedSpecificJump {
   }
 }
 
+class TranslatedContinueStmt extends TranslatedSpecificJump {
+  override ContinueStmt stmt;
+
+  override Instruction getTargetInstruction() {
+    result = this.getEnclosingLoopTargetInstruction(stmt)
+  }
+
+  private Instruction getEnclosingLoopTargetInstruction(Stmt crtStmt) {
+    if crtStmt instanceof LoopStmt
+    then
+      if crtStmt instanceof ForStmt
+      then
+        result = getTranslatedStmt(crtStmt).(TranslatedForStmt).getUpdate(0).getFirstInstruction()
+      else result = getTranslatedStmt(crtStmt).getFirstInstruction()
+    else result = this.getEnclosingLoopTargetInstruction(crtStmt.getParent())
+  }
+}
+
 class TranslatedGotoLabelStmt extends TranslatedSpecificJump {
   override GotoLabelStmt stmt;
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge and
+  override Instruction getTargetInstruction() {
     result = getTranslatedStmt(stmt.getTarget()).getFirstInstruction()
   }
 }
@@ -766,9 +789,7 @@ class TranslatedGotoLabelStmt extends TranslatedSpecificJump {
 class TranslatedGotoCaseStmt extends TranslatedSpecificJump {
   override GotoCaseStmt stmt;
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge and
+  override Instruction getTargetInstruction() {
     result = this.getCase(stmt, stmt.getExpr()).getFirstInstruction()
   }
 
@@ -789,9 +810,7 @@ class TranslatedGotoCaseStmt extends TranslatedSpecificJump {
 class TranslatedGotoDefaultStmt extends TranslatedSpecificJump {
   override GotoDefaultStmt stmt;
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge and
+  override Instruction getTargetInstruction() {
     result = getDefaultCase(stmt).getFirstInstruction()
   }
 
