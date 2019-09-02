@@ -1944,6 +1944,7 @@ public class Parser {
     this.parsePropertyName(pi);
     if (!isPattern && this.options.ecmaVersion() >= 8 && !isGenerator && this.isAsyncProp(pi)) {
       pi.isAsync = true;
+      pi.isGenerator = this.eat(TokenType.star);
       this.parsePropertyName(pi);
     } else {
       pi.isAsync = false;
@@ -1964,6 +1965,7 @@ public class Parser {
             || this.type == TokenType.num
             || this.type == TokenType.string
             || this.type == TokenType.bracketL
+            || this.type == TokenType.star
             || this.type.keyword != null)
         && !this.canInsertSemicolon();
   }
@@ -3166,6 +3168,7 @@ public class Parser {
     }
     if (this.options.ecmaVersion() >= 8 && !isGenerator && this.isAsyncProp(pi)) {
       pi.isAsync = true;
+      pi.isGenerator = this.eat(TokenType.star);
       this.parsePropertyName(pi);
     }
     return parseClassPropertyBody(pi, hadConstructor, isStatic);

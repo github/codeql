@@ -57,3 +57,10 @@
 | es2018.js:18:1:20:1 | async f ... / ...\\n} | 2015 | generators |
 | es2018.js:18:1:20:1 | async f ... / ...\\n} | 2017 | async/await |
 | es2018.js:18:1:20:1 | async f ... / ...\\n} | 2018 | asynchronous iteration |
+| es2018.js:22:1:25:1 | class C ... () {}\\n} | 2015 | class |
+| es2018.js:23:19:23:23 | () {} | 2015 | generators |
+| es2018.js:23:19:23:23 | () {} | 2017 | async/await |
+| es2018.js:23:19:23:23 | () {} | 2018 | asynchronous iteration |
+| es2018.js:24:32:24:36 | () {} | 2015 | generators |
+| es2018.js:24:32:24:36 | () {} | 2017 | async/await |
+| es2018.js:24:32:24:36 | () {} | 2018 | asynchronous iteration |
