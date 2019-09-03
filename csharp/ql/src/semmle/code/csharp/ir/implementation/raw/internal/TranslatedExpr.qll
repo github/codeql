@@ -24,7 +24,11 @@ private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
  */
 TranslatedExpr getTranslatedExpr(Expr expr) {
   result.getExpr() = expr and
-  result.producesExprResult()
+  result.producesExprResult() and
+  // When a constructor call is needed, we fetch it manually.
+  // This is because of how we translate object creations: the translated expression
+  // and the translated constructor call are attached to the same element.
+  (expr instanceof ObjectCreation implies not result instanceof TranslatedConstructorCall)
 }
 
 /**
@@ -1916,5 +1920,93 @@ class TranslatedDelegateCall extends TranslatedNonConstantExpr {
 
   private TranslatedCompilerGeneratedCall getInvokeCall() {
     result = DelegateElements::getInvoke(expr)
+  }
+}
+
+/**
+ * Represents the IR translation of creation expression. Can be the translation of an
+ * `ObjectCreation` or a `DelegateCreation`.
+ * The `NewObj` instruction denotes the fact that during initialization a new
+ * object is allocated, which is then initialized by the constructor.
+ */
+abstract class TranslatedCreation extends TranslatedCoreExpr, TTranslatedCreationExpr,
+  ConstructorCallContext {
+  TranslatedCreation() { this = TTranslatedCreationExpr(expr) }
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and result = this.getConstructorCall()
+    or
+    id = 1 and result = this.getInitializerExpr()
+  }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    // Instruction that allocated space for a new object,
+    // and returns its address
+    tag = NewObjTag() and
+    opcode instanceof Opcode::NewObj and
+    resultType = expr.getType() and
+    isLValue = false
+  }
+
+  final override Instruction getFirstInstruction() { result = this.getInstruction(NewObjTag()) }
+
+  override Instruction getResult() { result = getInstruction(NewObjTag()) }
+
+  override Instruction getReceiver() { result = getInstruction(NewObjTag()) }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    kind instanceof GotoEdge and
+    tag = NewObjTag() and
+    result = this.getConstructorCall().getFirstInstruction()
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    (
+      child = this.getConstructorCall() and
+      if exists(this.getInitializerExpr())
+      then result = this.getInitializerExpr().getFirstInstruction()
+      else result = this.getParent().getChildSuccessor(this)
+    )
+    or
+    child = this.getInitializerExpr() and
+    result = this.getParent().getChildSuccessor(this)
+  }
+
+  abstract TranslatedElement getConstructorCall();
+
+  abstract TranslatedExpr getInitializerExpr();
+}
+
+/**
+ * Represents the IR translation of an `ObjectCreation`.
+ */
+class TranslatedObjectCreation extends TranslatedCreation {
+  override ObjectCreation expr;
+
+  override TranslatedExpr getInitializerExpr() { result = getTranslatedExpr(expr.getInitializer()) }
+
+  override TranslatedExpr getConstructorCall() {
+    // Since calls are also expressions, we can't
+    // use the predicate getTranslatedExpr (since that would
+    // also return `this`).
+    exists(TranslatedConstructorCall cc |
+      cc.getAST() = this.getAST() and
+      result = cc
+    )
+  }
+}
+
+/**
+ * Represents the IR translation of a `DelegateCreation`.
+ */
+class TranslatedDelegateCreation extends TranslatedCreation {
+  override DelegateCreation expr;
+
+  override TranslatedExpr getInitializerExpr() { none() }
+
+  override TranslatedElement getConstructorCall() {
+    result = DelegateElements::getConstructor(expr)
   }
 }
