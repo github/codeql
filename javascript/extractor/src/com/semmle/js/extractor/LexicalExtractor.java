@@ -4,6 +4,7 @@ import com.semmle.js.ast.Comment;
 import com.semmle.js.ast.Position;
 import com.semmle.js.ast.SourceElement;
 import com.semmle.js.ast.Token;
+import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
 import java.util.List;
@@ -40,9 +41,16 @@ public class LexicalExtractor {
     return comments;
   }
 
+  public ExtractionMetrics getMetrics() {
+    return textualExtractor.getMetrics();
+  }
+
   public LoCInfo extractLines(String src, Label toplevelKey) {
+    textualExtractor.getMetrics().startPhase(ExtractionPhase.LexicalExtractor_extractLines);
     Position end = textualExtractor.extractLines(src, toplevelKey);
-    return emitNumlines(toplevelKey, new Position(1, 0, 0), end);
+    LoCInfo info = emitNumlines(toplevelKey, new Position(1, 0, 0), end);
+    textualExtractor.getMetrics().stopPhase(ExtractionPhase.LexicalExtractor_extractLines);
+    return info;
   }
 
   /**
@@ -112,11 +120,11 @@ public class LexicalExtractor {
   }
 
   public void extractTokens(Label toplevelKey) {
+    textualExtractor.getMetrics().startPhase(ExtractionPhase.LexicalExtractor_extractTokens);
     int j = 0;
     for (int i = 0, n = tokens.size(), idx = 0; i < n; ++i) {
       Token token = tokens.get(i);
       if (token == null) continue;
-
       Label key = trapwriter.freshLabel();
       int kind = -1;
       switch (token.getType()) {
@@ -164,6 +172,7 @@ public class LexicalExtractor {
         if (token.getLoc().equals(next.getLoc())) tokens.set(i + 1, null);
       }
     }
+    textualExtractor.getMetrics().stopPhase(ExtractionPhase.LexicalExtractor_extractTokens);
   }
 
   public void extractComments(Label toplevelKey) {

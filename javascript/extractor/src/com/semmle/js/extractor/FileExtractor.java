@@ -1,5 +1,6 @@
 package com.semmle.js.extractor;
 
+import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.trapcache.CachingTrapWriter;
 import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.util.data.StringUtil;
@@ -386,6 +387,7 @@ public class FileExtractor {
 
   /** @return the number of lines of code extracted, or {@code null} if the file was cached */
   public Integer extract(File f, ExtractorState state) throws IOException {
+
     // populate source archive
     String source = new WholeIO(config.getDefaultEncoding()).strictread(f);
     outputConfig.getSourceArchive().add(f, source);
@@ -393,6 +395,7 @@ public class FileExtractor {
     // extract language-independent bits
     TrapWriter trapwriter = outputConfig.getTrapWriterFactory().mkTrapWriter(f);
     Label fileLabel = trapwriter.populateFile(f);
+
     LocationManager locationManager = new LocationManager(f, trapwriter, fileLabel);
     locationManager.emitFileLocation(fileLabel, 0, 0, 0, 0);
 
@@ -424,23 +427,37 @@ public class FileExtractor {
   private Integer extractContents(
       File f, Label fileLabel, String source, LocationManager locationManager, ExtractorState state)
       throws IOException {
+    ExtractionMetrics metrics = new ExtractionMetrics();
+    metrics.startPhase(ExtractionPhase.FileExtractor_extractContents);
+    metrics.setLength(source.length());
+    metrics.setFileLabel(fileLabel);
     TrapWriter trapwriter = locationManager.getTrapWriter();
     FileType fileType = getFileType(f);
 
     File cacheFile = null, // the cache file for this extraction
         resultFile = null; // the final result TRAP file for this extraction
 
-    // check whether we can perform caching
-    if (bumpIdCounter(trapwriter) && fileType.isTrapCachingAllowed()) {
+    if (bumpIdCounter(trapwriter)) {
       resultFile = outputConfig.getTrapWriterFactory().getTrapFileFor(f);
-      if (resultFile != null) cacheFile = trapCache.lookup(source, config, fileType);
+    }
+    // check whether we can perform caching
+    if (resultFile != null && fileType.isTrapCachingAllowed()) {
+      cacheFile = trapCache.lookup(source, config, fileType);
     }
 
-    if (cacheFile != null) {
+    boolean canUseCacheFile = cacheFile != null;
+    boolean canReuseCacheFile = canUseCacheFile && cacheFile.exists();
+
+    metrics.setCacheFile(cacheFile);
+    metrics.setCanReuseCacheFile(canReuseCacheFile);
+
+    if (canUseCacheFile) {
       FileUtil.close(trapwriter);
 
-      if (cacheFile.exists()) {
+      if (canReuseCacheFile) {
         FileUtil.append(cacheFile, resultFile);
+        metrics.stopPhase(ExtractionPhase.FileExtractor_extractContents);
+        metrics.appendToTrapFile(resultFile);
         return null;
       }
 
@@ -457,7 +474,8 @@ public class FileExtractor {
     try {
       IExtractor extractor = fileType.mkExtractor(config, state);
       TextualExtractor textualExtractor =
-          new TextualExtractor(trapwriter, locationManager, source, config.getExtractLines());
+          new TextualExtractor(
+              trapwriter, locationManager, source, config.getExtractLines(), metrics);
       LoCInfo loc = extractor.extract(textualExtractor);
       int numLines = textualExtractor.getNumLines();
       int linesOfCode = loc.getLinesOfCode(), linesOfComments = loc.getLinesOfComments();
@@ -468,8 +486,9 @@ public class FileExtractor {
     } finally {
       if (!successful && trapwriter instanceof CachingTrapWriter)
         ((CachingTrapWriter) trapwriter).discard();
-
       FileUtil.close(trapwriter);
+      metrics.stopPhase(ExtractionPhase.FileExtractor_extractContents);
+      metrics.appendToTrapFile(resultFile);
     }
   }
 

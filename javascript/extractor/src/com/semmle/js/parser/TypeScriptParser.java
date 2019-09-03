@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.semmle.js.extractor.ExtractionMetrics;
 import com.semmle.js.parser.JSParser.Result;
 import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
@@ -362,17 +363,22 @@ public class TypeScriptParser {
    *
    * <p>If the file is not part of a project, only syntactic information will be extracted.
    */
-  public Result parse(File sourceFile, String source) {
+  public Result parse(File sourceFile, String source, ExtractionMetrics metrics) {
     JsonObject request = new JsonObject();
     request.add("command", new JsonPrimitive("parse"));
     request.add("filename", new JsonPrimitive(sourceFile.getAbsolutePath()));
+    metrics.startPhase(ExtractionMetrics.ExtractionPhase.TypeScriptParser_talkToParserWrapper);
     JsonObject response = talkToParserWrapper(request);
+    metrics.stopPhase(ExtractionMetrics.ExtractionPhase.TypeScriptParser_talkToParserWrapper);
     try {
       checkResponseType(response, "ast");
       JsonObject nodeFlags = response.get("nodeFlags").getAsJsonObject();
       JsonObject syntaxKinds = response.get("syntaxKinds").getAsJsonObject();
       JsonObject ast = response.get("ast").getAsJsonObject();
-      return new TypeScriptASTConverter(nodeFlags, syntaxKinds).convertAST(ast, source);
+      metrics.startPhase(ExtractionMetrics.ExtractionPhase.TypeScriptASTConverter_convertAST);
+      Result converted = new TypeScriptASTConverter(nodeFlags, syntaxKinds).convertAST(ast, source);
+      metrics.stopPhase(ExtractionMetrics.ExtractionPhase.TypeScriptASTConverter_convertAST);
+      return converted;
     } catch (IllegalStateException e) {
       throw new CatastrophicError(
           "TypeScript parser wrapper sent unexpected response: " + response, e);

@@ -191,7 +191,12 @@ public class HTMLExtractor implements IExtractor {
     JSExtractor extractor = new JSExtractor(config);
     try {
       TextualExtractor tx =
-          new TextualExtractor(trapwriter, scriptLocationManager, source, config.getExtractLines());
+          new TextualExtractor(
+              trapwriter,
+              scriptLocationManager,
+              source,
+              config.getExtractLines(),
+              textualExtractor.getMetrics());
       return extractor.extract(tx, source, toplevelKind, scopeManager).snd();
     } catch (ParseError e) {
       e.setPosition(scriptLocationManager.translatePosition(e.getPosition()));

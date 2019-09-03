@@ -98,6 +98,7 @@ import com.semmle.js.ast.jsx.JSXMemberExpression;
 import com.semmle.js.ast.jsx.JSXNamespacedName;
 import com.semmle.js.ast.jsx.JSXOpeningElement;
 import com.semmle.js.ast.jsx.JSXSpreadAttribute;
+import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.extractor.ScopeManager.DeclKind;
@@ -190,6 +191,10 @@ public class ASTExtractor {
 
   public ScopeManager getScopeManager() {
     return scopeManager;
+  }
+
+  public ExtractionMetrics getMetrics() {
+    return lexicalExtractor.getMetrics();
   }
 
   /**
@@ -1945,9 +1950,11 @@ public class ASTExtractor {
   }
 
   public void extract(Node root, Platform platform, SourceType sourceType, int toplevelKind) {
+    lexicalExtractor.getMetrics().startPhase(ExtractionPhase.ASTExtractor_extract);
     trapwriter.addTuple("toplevels", toplevelLabel, toplevelKind);
     locationManager.emitNodeLocation(root, toplevelLabel);
 
     root.accept(new V(platform, sourceType), null);
+    lexicalExtractor.getMetrics().stopPhase(ExtractionPhase.ASTExtractor_extract);
   }
 }

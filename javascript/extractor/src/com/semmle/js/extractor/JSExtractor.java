@@ -3,6 +3,7 @@ package com.semmle.js.extractor;
 import com.semmle.js.ast.Comment;
 import com.semmle.js.ast.Node;
 import com.semmle.js.ast.Token;
+import com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase;
 import com.semmle.js.extractor.ExtractorConfig.ECMAVersion;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
@@ -52,7 +53,8 @@ public class JSExtractor {
 
     SourceType sourceType = establishSourceType(source, true);
 
-    JSParser.Result parserRes = JSParser.parse(config, sourceType, source);
+    JSParser.Result parserRes =
+        JSParser.parse(config, sourceType, source, textualExtractor.getMetrics());
     return extract(textualExtractor, source, toplevelKind, scopeManager, sourceType, parserRes);
   }
 
@@ -87,6 +89,7 @@ public class JSExtractor {
       SourceType sourceType,
       JSParser.Result parserRes)
       throws ParseError {
+    textualExtractor.getMetrics().startPhase(ExtractionPhase.JSExtractor_extract);
     Label toplevelLabel;
     TrapWriter trapwriter = textualExtractor.getTrapwriter();
     LocationManager locationManager = textualExtractor.getLocationManager();
@@ -104,7 +107,6 @@ public class JSExtractor {
           new LexicalExtractor(textualExtractor, parserRes.getTokens(), parserRes.getComments());
       ASTExtractor scriptExtractor = new ASTExtractor(lexicalExtractor, scopeManager);
       toplevelLabel = scriptExtractor.getToplevelLabel();
-
       lexicalExtractor.extractComments(toplevelLabel);
       loc = lexicalExtractor.extractLines(parserRes.getSource(), toplevelLabel);
       lexicalExtractor.extractTokens(toplevelLabel);
@@ -126,7 +128,6 @@ public class JSExtractor {
 
     for (ParseError parseError : parserRes.getErrors()) {
       if (!config.isTolerateParseErrors()) throw parseError;
-
       Label key = trapwriter.freshLabel();
       String errorLine = textualExtractor.getLine(parseError.getPosition().getLine());
       trapwriter.addTuple("jsParseErrors", key, toplevelLabel, "Error: " + parseError, errorLine);
@@ -138,6 +139,8 @@ public class JSExtractor {
     if (config.isExterns()) textualExtractor.getTrapwriter().addTuple("isExterns", toplevelLabel);
     if (platform == Platform.NODE && sourceType == SourceType.COMMONJS_MODULE)
       textualExtractor.getTrapwriter().addTuple("isNodejs", toplevelLabel);
+
+    textualExtractor.getMetrics().stopPhase(ExtractionPhase.JSExtractor_extract);
 
     return Pair.make(toplevelLabel, loc);
   }
