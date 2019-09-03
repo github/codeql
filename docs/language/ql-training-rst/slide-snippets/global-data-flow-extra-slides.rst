@@ -1,7 +1,7 @@
 Exercise: How not to do global data flow
 ========================================
 
-Implement a flowStep predicate extending localFlowStep with steps through function calls and returns. Why might we not want to use this?
+Implement a ``flowStep`` predicate extending ``localFlowStep`` with steps through function calls and returns. Why might we not want to use this?
 
 .. code-block:: ql
 

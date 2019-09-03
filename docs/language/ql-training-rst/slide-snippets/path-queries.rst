@@ -1,7 +1,7 @@
 Path queries
 ============
 
-Path queries provide information about the identified paths from sources to sinks. Paths can be examined in Path Explorer view.
+Path queries provide information about the identified paths from sources to sinks. Paths can be examined in the Path Explorer view.
 
 Use this template:
 
