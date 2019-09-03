@@ -52,9 +52,17 @@ module PrototypePollution {
     abstract DataFlow::FlowLabel getAFlowLabel();
 
     /**
-     * Gets the dependency that defines this sink.
+     * DEPRECATED. Override `dependencyInfo` instead.
      */
-    abstract Dependency getDependency();
+    deprecated Dependency getDependency() { none() }
+
+    /**
+     * Holds if `moduleName` is the name of the module that defines this sink,
+     * and `location` is the declaration of that dependency.
+     *
+     * If no meaningful `location` exists, it should be bound to the sink itself.
+     */
+    abstract predicate dependencyInfo(string moduleName, Locatable location);
   }
 
   /**
@@ -80,12 +88,21 @@ module PrototypePollution {
 
   class DeepExtendSink extends Sink {
     ExtendCall call;
-
-    Dependency dependency;
+    string moduleName;
+    Locatable location;
 
     DeepExtendSink() {
       this = call.getASourceOperand() and
-      isVulnerableDeepExtendCall(call, dependency)
+      (
+        exists(Dependency dep |
+          isVulnerableVersionOfDeepExtendCall(call, dep) and
+          dep = location and
+          dep.info(moduleName, _)
+        )
+        or
+        isVulnerableDeepExtendCallAllVersions(call, moduleName) and
+        location = call.asExpr()
+      )
     }
 
     override DataFlow::FlowLabel getAFlowLabel() {
@@ -94,13 +111,16 @@ module PrototypePollution {
       result = TaintedObjectWrapper::label()
     }
 
-    override Dependency getDependency() { result = dependency }
+    override predicate dependencyInfo(string moduleName_, Locatable loc) {
+      moduleName = moduleName_ and
+      location = loc
+    }
   }
 
   /**
    * Holds if `call` is vulnerable to prototype pollution because the callee is defined by `dep`.
    */
-  predicate isVulnerableDeepExtendCall(ExtendCall call, Dependency dep) {
+  predicate isVulnerableVersionOfDeepExtendCall(ExtendCall call, Dependency dep) {
     call.isDeep() and
     (
       call = DataFlow::dependencyModuleImport(dep).getAMemberCall(_) or
@@ -109,8 +129,6 @@ module PrototypePollution {
     exists(DependencySemVer version, string id | dep.info(id, version) |
       id = "assign-deep" and
       version.maybeBefore("0.4.7")
-      or
-      id = "deep"
       or
       id = "deep-extend" and
       version.maybeBefore("0.5.1")
@@ -121,12 +139,11 @@ module PrototypePollution {
       id = "extend" and
       (version.maybeBefore("2.0.2") or version.maybeBetween("3.0.0", "3.0.2"))
       or
-      id = "extend2"
-      or
-      id = "js-extend"
-      or
       id = "just-extend" and
       version.maybeBefore("4.0.1")
+      or
+      id = "jquery" and
+      version.maybeBefore("3.4.0")
       or
       id = "lodash" + any(string s) and
       version.maybeBefore("4.17.12")
@@ -142,8 +159,31 @@ module PrototypePollution {
       or
       id = "node.extend" and
       (version.maybeBefore("1.1.7") or version.maybeBetween("2.0.0", "2.0.1"))
+    )
+  }
+
+  /**
+   * Holds if `call` comes from a package named `id` and is vulnerable to prototype pollution
+   * in every version of that package.
+   */
+  predicate isVulnerableDeepExtendCallAllVersions(ExtendCall call, string id) {
+    call.isDeep() and
+    (
+      call = DataFlow::moduleImport(id).getACall() or
+      call = DataFlow::moduleImport(id).getAMemberCall(_)
+    ) and
+    (
+      id = "deep"
+      or
+      id = "extend2"
+      or
+      id = "js-extend"
       or
       id = "smart-extend"
     )
+    or
+    call.isDeep() and
+    call = AngularJS::angular().getAMemberCall("merge") and
+    id = "angular"
   }
 }
