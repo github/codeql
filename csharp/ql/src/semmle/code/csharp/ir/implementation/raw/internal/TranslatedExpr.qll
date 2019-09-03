@@ -485,11 +485,7 @@ class TranslatedObjectInitializerExpr extends TranslatedNonConstantExpr, Initial
   }
 
   override TranslatedElement getChild(int id) {
-    exists(AssignExpr assign |
-      result = getTranslatedExpr(expr.getChild(id)) and
-      expr.getAChild() = assign and
-      assign.getIndex() = id
-    )
+    result = getTranslatedExpr(expr.getMemberInitializer(id))
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
@@ -503,9 +499,54 @@ class TranslatedObjectInitializerExpr extends TranslatedNonConstantExpr, Initial
     )
   }
 
-  override Instruction getTargetAddress() { result = this.getParent().getInstruction(NewObjTag()) }
+  override Instruction getTargetAddress() {
+    // The target address is the address of the newly allocated object,
+    // which can be retrieved from the parent `TranslatedObjectCreation`.
+    result = this.getParent().getInstruction(NewObjTag())
+  }
 
-  override Type getTargetType() { none() }
+  override Type getTargetType() {
+    result = this.getParent().getInstruction(NewObjTag()).getResultType()
+  }
+}
+
+class TranslatedCollectionInitializer extends TranslatedNonConstantExpr, InitializationContext {
+  override CollectionInitializer expr;
+
+  override Instruction getResult() { none() }
+
+  override Instruction getFirstInstruction() { result = this.getChild(0).getFirstInstruction() }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    none()
+  }
+
+  override TranslatedElement getChild(int id) {
+    result = getTranslatedExpr(expr.getElementInitializer(id))
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    exists(int index |
+      child = this.getChild(index) and
+      if exists(this.getChild(index + 1))
+      then result = this.getChild(index + 1).getFirstInstruction()
+      else result = this.getParent().getChildSuccessor(this)
+    )
+  }
+
+  override Instruction getTargetAddress() {
+    // The target address is the address of the newly allocated object,
+    // which can be retrieved from the parent `TranslatedObjectCreation`.
+    result = this.getParent().getInstruction(NewObjTag())
+  }
+
+  override Type getTargetType() {
+    result = this.getParent().getInstruction(NewObjTag()).getResultType()
+  }
 }
 
 /**

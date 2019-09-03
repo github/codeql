@@ -4,6 +4,7 @@ private import semmle.code.csharp.ir.implementation.internal.OperandTag
 private import InstructionTag
 private import TranslatedElement
 private import TranslatedExpr
+private import TranslatedInitialization
 private import semmle.code.csharp.ir.Util
 private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedCallBase
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
@@ -50,7 +51,13 @@ class TranslatedFunctionCall extends TranslatedNonConstantExpr, TranslatedCall {
     result = getTranslatedExpr(expr.(QualifiableExpr).getQualifier())
   }
 
-  override Instruction getQualifierResult() { result = this.getQualifier().getResult() }
+  override Instruction getQualifierResult() {
+    // since `ElementInitializer`s do not have a qualifier, the qualifier's result is retrieved
+    // from the enclosing initialization context
+    if expr.getParent() instanceof CollectionInitializer
+    then result = getTranslatedExpr(expr.getParent()).(InitializationContext).getTargetAddress()
+    else result = this.getQualifier().getResult()
+  }
 
   override Type getCallResultType() { result = expr.getTarget().getReturnType() }
 
