@@ -37,15 +37,6 @@ module Express {
    */
   private predicate isRouter(Expr e, RouterDefinition router) {
     router.flowsTo(e)
-    or
-    exists(DataFlow::MethodCallNode chain, DataFlow::Node base, string name |
-      name = "route" or
-      name = routeSetupMethodName()
-    |
-      chain.calls(base, name) and
-      isRouter(base.asExpr(), router) and
-      chain.flowsToExpr(e)
-    )
   }
 
   /**
@@ -707,6 +698,13 @@ module Express {
     private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
       t.start() and
       result = DataFlow::exprNode(this)
+      or
+      exists(string name |
+        result = ref(t.continue()).getAMethodCall(name)
+      |
+        name = "route" or
+        name = routeSetupMethodName()
+      )
       or
       exists(DataFlow::TypeTracker t2 | result = ref(t2).track(t2, t))
     }

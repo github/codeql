@@ -26,6 +26,7 @@ test_RouteSetup
 | src/csurf-example.js:39:1:39:48 | app.get ... es) {}) | src/csurf-example.js:7:11:7:19 | express() | false |
 | src/csurf-example.js:40:1:40:49 | app.pos ... es) {}) | src/csurf-example.js:7:11:7:19 | express() | false |
 | src/express2.js:3:1:3:56 | router. ...  res }) | src/express2.js:5:11:5:13 | e() | false |
+| src/express2.js:3:1:4:77 | router. ... sult }) | src/express2.js:5:11:5:13 | e() | false |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:2:11:2:19 | express() | false |
 | src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:2:11:2:19 | express() | false |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() | false |
@@ -245,6 +246,7 @@ test_StandardRouteHandler
 | src/csurf-example.js:39:26:39:47 | functio ... res) {} | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:39:36:39:38 | req | src/csurf-example.js:39:41:39:43 | res |
 | src/csurf-example.js:40:27:40:48 | functio ... res) {} | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:40:37:40:39 | req | src/csurf-example.js:40:42:40:44 | res |
 | src/express2.js:3:25:3:55 | functio ... , res } | src/express2.js:5:11:5:13 | e() | src/express2.js:3:34:3:36 | req | src/express2.js:3:39:3:41 | res |
+| src/express2.js:4:32:4:76 | functio ... esult } | src/express2.js:5:11:5:13 | e() | src/express2.js:4:41:4:47 | request | src/express2.js:4:50:4:55 | result |
 | src/express3.js:4:23:7:1 | functio ... al");\\n} | src/express3.js:2:11:2:19 | express() | src/express3.js:4:32:4:34 | req | src/express3.js:4:37:4:39 | res |
 | src/express4.js:4:23:6:1 | functio ... uery;\\n} | src/express4.js:2:11:2:19 | express() | src/express4.js:4:32:4:34 | req | src/express4.js:4:37:4:39 | res |
 | src/express.js:4:23:9:1 | functio ... res);\\n} | src/express.js:2:11:2:19 | express() | src/express.js:4:32:4:34 | req | src/express.js:4:37:4:39 | res |
@@ -395,6 +397,7 @@ test_RouterDefinition_getARouteHandler
 | src/csurf-example.js:7:11:7:19 | express() | src/csurf-example.js:40:27:40:48 | functio ... res) {} |
 | src/csurf-example.js:30:16:30:35 | new express.Router() | src/csurf-example.js:32:30:34:3 | functio ... e')\\n  } |
 | src/express2.js:2:14:2:23 | e.Router() | src/express2.js:3:25:3:55 | functio ... , res } |
+| src/express2.js:2:14:2:23 | e.Router() | src/express2.js:4:32:4:76 | functio ... esult } |
 | src/express3.js:2:11:2:19 | express() | src/express3.js:4:23:7:1 | functio ... al");\\n} |
 | src/express4.js:2:11:2:19 | express() | src/express4.js:4:23:6:1 | functio ... uery;\\n} |
 | src/express.js:2:11:2:19 | express() | src/express.js:4:23:9:1 | functio ... res);\\n} |
@@ -407,6 +410,7 @@ test_RouterDefinition_getARouteHandler
 | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:10:23:12:1 | functio ... res3;\\n} |
 | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:13:23:15:1 | functio ... res4;\\n} |
 | src/responseExprs.js:2:11:2:19 | express() | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+| src/route.js:2:14:2:29 | express.Router() | src/route.js:5:12:5:38 | functio ... ext) {} |
 test_CookieMiddlewareInstance
 | src/cookie-parser.js:3:1:3:23 | session ... key-1") | src/cookie-parser.js:3:9:3:22 | "secret-key-1" |
 | src/cookie-parser.js:5:1:5:41 | session ... ey-3"]) | src/cookie-parser.js:5:10:5:23 | "secret-key-2" |
@@ -451,6 +455,7 @@ test_RouteSetup_getServer
 | src/csurf-example.js:39:1:39:48 | app.get ... es) {}) | src/csurf-example.js:7:11:7:19 | express() |
 | src/csurf-example.js:40:1:40:49 | app.pos ... es) {}) | src/csurf-example.js:7:11:7:19 | express() |
 | src/express2.js:3:1:3:56 | router. ...  res }) | src/express2.js:5:11:5:13 | e() |
+| src/express2.js:3:1:4:77 | router. ... sult }) | src/express2.js:5:11:5:13 | e() |
 | src/express3.js:4:1:7:2 | app.get ... l");\\n}) | src/express3.js:2:11:2:19 | express() |
 | src/express4.js:4:1:6:2 | app.get ... ery;\\n}) | src/express4.js:2:11:2:19 | express() |
 | src/express.js:4:1:9:2 | app.get ... es);\\n}) | src/express.js:2:11:2:19 | express() |
