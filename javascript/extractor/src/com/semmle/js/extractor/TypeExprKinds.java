@@ -17,7 +17,6 @@ import com.semmle.ts.ast.InferTypeExpr;
 import com.semmle.ts.ast.InterfaceTypeExpr;
 import com.semmle.ts.ast.IntersectionTypeExpr;
 import com.semmle.ts.ast.IsTypeExpr;
-import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.KeywordTypeExpr;
 import com.semmle.ts.ast.MappedTypeExpr;
 import com.semmle.ts.ast.OptionalTypeExpr;
@@ -26,6 +25,7 @@ import com.semmle.ts.ast.RestTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
+import com.semmle.ts.ast.UnaryTypeExpr;
 import com.semmle.ts.ast.UnionTypeExpr;
 import com.semmle.util.exception.CatastrophicError;
 
@@ -129,8 +129,10 @@ public class TypeExprKinds {
               @Override
               public Integer visit(UnaryTypeExpr nd, Void c) {
                 switch (nd.getKind()) {
-                  case Keyof: return keyofTypeExpr;
-                  case Readonly: return readonlyTypeExpr;
+                  case Keyof:
+                    return keyofTypeExpr;
+                  case Readonly:
+                    return readonlyTypeExpr;
                 }
                 throw new CatastrophicError("Unhandled UnaryTypeExpr kind: " + nd.getKind());
               }

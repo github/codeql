@@ -384,9 +384,7 @@ public class FileExtractor {
     return config.hasFileType() || FileType.forFile(f, config) != null;
   }
 
-  /**
-   * @return the number of lines of code extracted, or {@code null} if the file was cached
-   */
+  /** @return the number of lines of code extracted, or {@code null} if the file was cached */
   public Integer extract(File f, ExtractorState state) throws IOException {
     // populate source archive
     String source = new WholeIO(config.getDefaultEncoding()).strictread(f);

@@ -47,9 +47,8 @@ public class JSDocParser {
     // This occurs before the start of 'source', so the lineStart is negative.
     int firstLineStart = -(startPos.getColumn() + "/**".length() - 1);
     this.absoluteOffset = startPos.getOffset();
-    Pair<String, List<JSDocTagParser.Tag>> r = p.new TagParser(null).parseComment(
-        startPos.getLine() - 1,
-        firstLineStart);
+    Pair<String, List<JSDocTagParser.Tag>> r =
+        p.new TagParser(null).parseComment(startPos.getLine() - 1, firstLineStart);
     List<JSDocTag> tags = new ArrayList<>();
     for (JSDocTagParser.Tag tag : r.snd()) {
       String title = tag.title;
@@ -269,21 +268,21 @@ public class JSDocParser {
       return new SourceLocation(pos());
     }
 
-    /**
-     * Returns the absolute position of the start of the current token.
-     */
+    /** Returns the absolute position of the start of the current token. */
     private Position pos() {
-      return new Position(this.lineNumber + 1, startOfCurToken - lineStart, startOfCurToken + absoluteOffset);
+      return new Position(
+          this.lineNumber + 1, startOfCurToken - lineStart, startOfCurToken + absoluteOffset);
     }
 
     /**
      * Returns the absolute position of the end of the previous token.
      *
-     * This can differ from the start of the current token in case the two tokens
-     * are separated by whitespace.
+     * <p>This can differ from the start of the current token in case the two tokens are separated
+     * by whitespace.
      */
     private Position endPos() {
-      return new Position(this.lineNumber + 1, endOfPrevToken - lineStart, endOfPrevToken + absoluteOffset);
+      return new Position(
+          this.lineNumber + 1, endOfPrevToken - lineStart, endOfPrevToken + absoluteOffset);
     }
 
     private <T extends JSDocTypeExpression> T finishNode(T node) {
@@ -306,7 +305,8 @@ public class JSDocParser {
       if (index >= source.length()) return -1;
       int ch = source.charAt(index);
       ++index;
-      if (isLineTerminator(ch) && !(ch == '\r' && index < endIndex && source.charAt(index) == '\n')) {
+      if (isLineTerminator(ch)
+          && !(ch == '\r' && index < endIndex && source.charAt(index) == '\n')) {
         lineNumber += 1;
         lineStart = index;
         index = skipStars(index, endIndex);
@@ -950,7 +950,10 @@ public class JSDocParser {
           consume(Token.COLON);
           expr =
               finishNode(
-                  new ParameterType(new SourceLocation(loc), ((NameExpression) expr).getName(), parseTypeExpression()));
+                  new ParameterType(
+                      new SourceLocation(loc),
+                      ((NameExpression) expr).getName(),
+                      parseTypeExpression()));
         }
         if (token == Token.EQUAL) {
           consume(Token.EQUAL);
@@ -1125,8 +1128,7 @@ public class JSDocParser {
         consume(Token.RBRACK, "expected an array-style type declaration (' + value + '[])");
         List<JSDocTypeExpression> expressions = new ArrayList<>();
         expressions.add(expr);
-        NameExpression nameExpr =
-            finishNode(new NameExpression(new SourceLocation(loc), "Array"));
+        NameExpression nameExpr = finishNode(new NameExpression(new SourceLocation(loc), "Array"));
         return finishNode(new TypeApplication(loc, nameExpr, expressions));
       }
 
@@ -1183,7 +1185,8 @@ public class JSDocParser {
       return expr;
     }
 
-    private JSDocTypeExpression parseType(int startIndex, int endIndex, int lineStart, int lineNumber) throws ParseError {
+    private JSDocTypeExpression parseType(
+        int startIndex, int endIndex, int lineStart, int lineNumber) throws ParseError {
       JSDocTypeExpression expr;
 
       this.lineNumber = lineNumber;
@@ -1202,7 +1205,8 @@ public class JSDocParser {
       return expr;
     }
 
-    private JSDocTypeExpression parseParamType(int startIndex, int endIndex, int lineStart, int lineNumber) throws ParseError {
+    private JSDocTypeExpression parseParamType(
+        int startIndex, int endIndex, int lineStart, int lineNumber) throws ParseError {
       JSDocTypeExpression expr;
 
       this.lineNumber = lineNumber;
