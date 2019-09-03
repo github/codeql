@@ -10,5 +10,5 @@ QL training and variant analysis examples
    :maxdepth: 1
    :hidden:
 
-   ./**/*
-   template
+   *
+   */**
