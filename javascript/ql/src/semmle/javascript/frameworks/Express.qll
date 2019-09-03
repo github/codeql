@@ -340,14 +340,18 @@ module Express {
     )
   }
 
+  /** An Express response source. */
+  abstract private class ResponseSource extends HTTP::Servers::ResponseSource {
+  }
+
   /**
    * An Express response source, that is, the response parameter of a
    * route handler, or a chained method call on a response.
    */
-  private class ResponseSource extends HTTP::Servers::ResponseSource {
+  private class ExplicitResponseSource extends ResponseSource {
     RouteHandler rh;
 
-    ResponseSource() {
+    ExplicitResponseSource() {
       this = DataFlow::parameterNode(rh.getResponseParameter())
       or
       isChainableResponseMethodCall(rh, this.asExpr())
@@ -360,18 +364,44 @@ module Express {
   }
 
   /**
+   * An Express response source, based on static type information.
+   */
+  private class TypedResponseSource extends ResponseSource {
+    TypedResponseSource() {
+      hasUnderlyingType("express-serve-static-core", "Response") // super type of 'express'.Response
+    }
+
+    override RouteHandler getRouteHandler() { none() } // Not known.
+  }
+
+  /** An Express request source. */
+  abstract private class RequestSource extends HTTP::Servers::RequestSource {
+  }
+
+  /**
    * An Express request source, that is, the request parameter of a
    * route handler.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource {
+  private class ExplicitRequestSource extends RequestSource {
     RouteHandler rh;
 
-    RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
+    ExplicitRequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
 
     /**
      * Gets the route handler that handles this request.
      */
     override RouteHandler getRouteHandler() { result = rh }
+  }
+
+  /**
+   * An Express request source, based on static type information.
+   */
+  private class TypedRequestSource extends RequestSource {
+    TypedRequestSource() {
+      hasUnderlyingType("express-serve-static-core", "Request") // super type of 'express'.Request
+    }
+
+    override RouteHandler getRouteHandler() { none() } // Not known.
   }
 
   /**
