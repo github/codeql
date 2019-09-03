@@ -53,7 +53,7 @@ int main()
     st1.wYear = 1990;
 
 
-    // BAD: Creation of SYSTEMTIME stuct corresponding to the beginning of Reiwa era [NOT DETECTED]
+    // BAD: Creation of SYSTEMTIME stuct corresponding to the beginning of Reiwa era
     SYSTEMTIME st2;
     st2.wDay = 1;
     st2.wMonth = 5;

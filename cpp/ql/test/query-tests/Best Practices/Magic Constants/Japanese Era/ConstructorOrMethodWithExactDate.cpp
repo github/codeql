@@ -38,6 +38,6 @@ int Main()
     // GOOD: method call with the same parameters in a different order (we only track year, month, day)
     EraInfo * pDateTimeUtil4 = EraInfo::EraInfoFromDate(1, 2, 8, 1, 1989, L"\u5e73\u6210");
 
-    // BAD: constructor creating a EraInfo with exact Reiwa era start date [NOT DETECTED]
+    // BAD: constructor creating a EraInfo with exact Reiwa era start date
     EraInfo * pDateTimeUtil5 = new EraInfo(2019, 5, 1);
 }
