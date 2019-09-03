@@ -102,6 +102,27 @@ edges
 | aliasing.cpp:60:3:60:22 | ... = ... [void] | aliasing.cpp:60:3:60:4 | s2 [post update] [m1, ... (1)] |
 | aliasing.cpp:60:11:60:20 | call to user_input [void] | aliasing.cpp:60:3:60:22 | ... = ... [void] |
 | aliasing.cpp:62:8:62:12 | copy2 [m1, ... (1)] | aliasing.cpp:62:14:62:15 | m1 |
+| complex.cpp:34:15:34:15 | b [f, ... (2)] | complex.cpp:44:8:44:8 | b [f, ... (2)] |
+| complex.cpp:34:15:34:15 | b [f, ... (2)] | complex.cpp:45:8:45:8 | b [f, ... (2)] |
+| complex.cpp:44:8:44:8 | b [f, ... (2)] | complex.cpp:44:10:44:10 | f [a_, ... (1)] |
+| complex.cpp:44:10:44:10 | f [a_, ... (1)] | complex.cpp:44:12:44:12 | call to a |
+| complex.cpp:45:8:45:8 | b [f, ... (2)] | complex.cpp:45:10:45:10 | f [b_, ... (1)] |
+| complex.cpp:45:10:45:10 | f [b_, ... (1)] | complex.cpp:45:12:45:12 | call to b |
+| complex.cpp:55:3:55:4 | b1 [post update] [f, ... (2)] | complex.cpp:61:7:61:8 | b1 [f, ... (2)] |
+| complex.cpp:55:6:55:6 | f [post update] [a_, ... (1)] | complex.cpp:55:3:55:4 | b1 [post update] [f, ... (2)] |
+| complex.cpp:55:13:55:22 | call to user_input [void] | complex.cpp:55:6:55:6 | f [post update] [a_, ... (1)] |
+| complex.cpp:56:3:56:4 | b2 [post update] [f, ... (2)] | complex.cpp:64:7:64:8 | b2 [f, ... (2)] |
+| complex.cpp:56:6:56:6 | f [post update] [b_, ... (1)] | complex.cpp:56:3:56:4 | b2 [post update] [f, ... (2)] |
+| complex.cpp:56:13:56:22 | call to user_input [void] | complex.cpp:56:6:56:6 | f [post update] [b_, ... (1)] |
+| complex.cpp:57:3:57:4 | b3 [post update] [f, ... (2)] | complex.cpp:67:7:67:8 | b3 [f, ... (2)] |
+| complex.cpp:57:6:57:6 | f [post update] [a_, ... (1)] | complex.cpp:57:3:57:4 | b3 [post update] [f, ... (2)] |
+| complex.cpp:57:13:57:22 | call to user_input [void] | complex.cpp:57:6:57:6 | f [post update] [a_, ... (1)] |
+| complex.cpp:58:3:58:4 | b3 [post update] [f, ... (2)] | complex.cpp:67:7:67:8 | b3 [f, ... (2)] |
+| complex.cpp:58:6:58:6 | f [post update] [b_, ... (1)] | complex.cpp:58:3:58:4 | b3 [post update] [f, ... (2)] |
+| complex.cpp:58:13:58:22 | call to user_input [void] | complex.cpp:58:6:58:6 | f [post update] [b_, ... (1)] |
+| complex.cpp:61:7:61:8 | b1 [f, ... (2)] | complex.cpp:34:15:34:15 | b [f, ... (2)] |
+| complex.cpp:64:7:64:8 | b2 [f, ... (2)] | complex.cpp:34:15:34:15 | b [f, ... (2)] |
+| complex.cpp:67:7:67:8 | b3 [f, ... (2)] | complex.cpp:34:15:34:15 | b [f, ... (2)] |
 | constructors.cpp:26:15:26:15 | f [a_, ... (1)] | constructors.cpp:28:10:28:10 | f [a_, ... (1)] |
 | constructors.cpp:26:15:26:15 | f [b_, ... (1)] | constructors.cpp:29:10:29:10 | f [b_, ... (1)] |
 | constructors.cpp:28:10:28:10 | f [a_, ... (1)] | constructors.cpp:28:12:28:12 | call to a |
@@ -165,6 +186,14 @@ edges
 | aliasing.cpp:29:11:29:12 | m1 | aliasing.cpp:9:11:9:20 | call to user_input [void] | aliasing.cpp:29:11:29:12 | m1 | m1 flows from $@ | aliasing.cpp:9:11:9:20 | call to user_input [void] | call to user_input [void] |
 | aliasing.cpp:30:11:30:12 | m1 | aliasing.cpp:13:10:13:19 | call to user_input [void] | aliasing.cpp:30:11:30:12 | m1 | m1 flows from $@ | aliasing.cpp:13:10:13:19 | call to user_input [void] | call to user_input [void] |
 | aliasing.cpp:62:14:62:15 | m1 | aliasing.cpp:60:11:60:20 | call to user_input [void] | aliasing.cpp:62:14:62:15 | m1 | m1 flows from $@ | aliasing.cpp:60:11:60:20 | call to user_input [void] | call to user_input [void] |
+| complex.cpp:44:12:44:12 | call to a | complex.cpp:55:13:55:22 | call to user_input [void] | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:55:13:55:22 | call to user_input [void] | call to user_input [void] |
+| complex.cpp:44:12:44:12 | call to a | complex.cpp:56:13:56:22 | call to user_input [void] | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:56:13:56:22 | call to user_input [void] | call to user_input [void] |
+| complex.cpp:44:12:44:12 | call to a | complex.cpp:57:13:57:22 | call to user_input [void] | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:57:13:57:22 | call to user_input [void] | call to user_input [void] |
+| complex.cpp:44:12:44:12 | call to a | complex.cpp:58:13:58:22 | call to user_input [void] | complex.cpp:44:12:44:12 | call to a | call to a flows from $@ | complex.cpp:58:13:58:22 | call to user_input [void] | call to user_input [void] |
+| complex.cpp:45:12:45:12 | call to b | complex.cpp:55:13:55:22 | call to user_input [void] | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:55:13:55:22 | call to user_input [void] | call to user_input [void] |
+| complex.cpp:45:12:45:12 | call to b | complex.cpp:56:13:56:22 | call to user_input [void] | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:56:13:56:22 | call to user_input [void] | call to user_input [void] |
+| complex.cpp:45:12:45:12 | call to b | complex.cpp:57:13:57:22 | call to user_input [void] | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:57:13:57:22 | call to user_input [void] | call to user_input [void] |
+| complex.cpp:45:12:45:12 | call to b | complex.cpp:58:13:58:22 | call to user_input [void] | complex.cpp:45:12:45:12 | call to b | call to b flows from $@ | complex.cpp:58:13:58:22 | call to user_input [void] | call to user_input [void] |
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:34:11:34:20 | call to user_input [void] | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:34:11:34:20 | call to user_input [void] | call to user_input [void] |
 | constructors.cpp:28:12:28:12 | call to a | constructors.cpp:36:11:36:20 | call to user_input [void] | constructors.cpp:28:12:28:12 | call to a | call to a flows from $@ | constructors.cpp:36:11:36:20 | call to user_input [void] | call to user_input [void] |
 | constructors.cpp:29:12:29:12 | call to b | constructors.cpp:35:14:35:23 | call to user_input [void] | constructors.cpp:29:12:29:12 | call to b | call to b flows from $@ | constructors.cpp:35:14:35:23 | call to user_input [void] | call to user_input [void] |
