@@ -1136,32 +1136,3 @@ configLocations(
 );
 
 @configLocatable = @config | @configName | @configValue;
-
-/**
- * The time taken for the extraction of a file.
- * This table contains non-deternistic content.
- *
- * The sum of the `time` column for each (`file`, `timerKind`) pair
- * is the total time taken for extraction of `file`.  The `extractionPhase`
- * column provides a granular view of the extraction time of the file.
- */
-extraction_time(
-   int file : @file ref,
-   // see `com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase`.
-   int extractionPhase: int ref,
-   // 0 for the elapsed CPU time in nanoseconds, 1 for the wall elapsed wallclock time in nanoseconds
-   int timerKind: int ref,
-   float time: float ref
-)
-
-/**
- * Non-timing related data for the extraction of a single file.
- * This table contains non-deternistic content.
- */
-extraction_data(
-   int file : @file ref,
-   // the absolute path to the cache file
-   varchar(900) cacheFile: string ref,
-   boolean fromCache: boolean ref,
-   int length: int ref
-)
