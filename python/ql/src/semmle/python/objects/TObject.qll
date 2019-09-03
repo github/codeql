@@ -240,6 +240,8 @@ cached newtype TObject =
     /* Represents a subscript operation applied to a type. For type-hint analysis */
     TSubscriptedType(ObjectInternal generic, ObjectInternal index) {
         isType(generic) and
+        generic.isNotSubscriptedType() and
+        index.isNotSubscriptedType() and
         Expressions::subscriptPartsPointsTo(_, _, generic, index)
     }
 

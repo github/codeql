@@ -103,6 +103,8 @@ abstract class ClassObjectInternal extends ObjectInternal {
         Types::getBase(this, _).hasAttribute(name)
     }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 /** Class representing Python source classes */
@@ -444,6 +446,8 @@ class SubscriptedTypeInternal extends ObjectInternal, TSubscriptedType {
 
     /* Classes aren't usually iterable, but can e.g. Enums */
     override ObjectInternal getIterNext() { result = ObjectInternal::unknown() }
+
+    override predicate isNotSubscriptedType() { none() }
 
 }
 

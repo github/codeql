@@ -101,6 +101,8 @@ class PropertyInternal extends ObjectInternal, TProperty {
     /* Properties aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 private class PropertySetterOrDeleter extends ObjectInternal, TPropertySetterOrDeleter {
@@ -173,6 +175,8 @@ private class PropertySetterOrDeleter extends ObjectInternal, TPropertySetterOrD
     override predicate descriptorGetInstance(ObjectInternal instance, ObjectInternal value, CfgOrigin origin) { none() }
 
     override predicate useOriginAsLegacyObject() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
 
@@ -267,6 +271,8 @@ class ClassMethodObjectInternal extends ObjectInternal, TClassMethod {
     /* Classmethods aren't iterable */
     override ObjectInternal getIterNext() { none() }
 
+    override predicate isNotSubscriptedType() { any() }
+
 }
 
 class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
@@ -344,5 +350,7 @@ class StaticMethodObjectInternal extends ObjectInternal, TStaticMethod {
 
     /* Staticmethods aren't iterable */
     override ObjectInternal getIterNext() { none() }
+
+    override predicate isNotSubscriptedType() { any() }
 
 }
