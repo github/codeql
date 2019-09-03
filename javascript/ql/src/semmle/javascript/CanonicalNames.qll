@@ -210,7 +210,9 @@ class CanonicalName extends @symbol {
 class TypeName extends CanonicalName {
   TypeName() {
     exists(TypeReference ref | type_symbol(ref, this)) or
-    exists(TypeDefinition def | ast_node_symbol(def, this))
+    exists(TypeDefinition def | ast_node_symbol(def, this)) or
+    base_type_names(_, this) or
+    base_type_names(this, _)
   }
 
   /**
