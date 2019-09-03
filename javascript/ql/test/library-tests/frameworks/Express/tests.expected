@@ -1024,6 +1024,8 @@ test_RequestExpr
 | src/express.js:50:3:50:5 | req | src/express.js:46:22:51:1 | functio ... ame];\\n} |
 | src/inheritedFromNode.js:7:2:7:4 | req | src/inheritedFromNode.js:4:15:8:1 | functio ... .url;\\n} |
 | src/responseExprs.js:17:5:17:7 | req | src/responseExprs.js:16:30:42:1 | functio ...     }\\n} |
+test_RequestExprStandalone
+| typed_src/tst.ts:6:3:6:3 | x |
 test_RouteHandlerExpr_getAsSubRouter
 | src/csurf-example.js:13:17:13:19 | api | src/csurf-example.js:30:16:30:35 | new express.Router() |
 | src/express2.js:6:9:6:14 | router | src/express2.js:2:14:2:23 | e.Router() |
