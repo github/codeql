@@ -1009,6 +1009,12 @@ article.smaller q:before, article.smaller q:after {
   background-image: -webkit-radial-gradient(50% 50%, #b1dfff 0%, #4387fd 600px);
   background-image: radial-gradient(50% 50%, #b1dfff 0%, #4387fd 600px);
 }
+
+/* the popup class is used to display the speaker notes when 'presenter' view 
+   is enabled. This view is not currently optimal, so certain selectors have been commented-out,
+   with a view to improving the styles at a later date */
+
+
 /* line 684, ../scss/default.scss */
 /*.with-notes.popup slide.next {
   -moz-transform: translate3d(570px, 80px, 0) scale(0.35);

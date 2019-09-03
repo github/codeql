@@ -28,19 +28,23 @@ For this example you should download:
 
    You can also query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java/>`__ on LGTM.com.
 
-   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+
+   .. include:: ../slide-snippets/snapshot-note.rst
+
+   .. resume slides
 
 Unsafe deserialization in Struts
 ================================
 
-Apache Struts provides a ContentTypeHandler interface, which can be implemented for specific content types. It defines the following interface method:
+Apache Struts provides a ``ContentTypeHandler`` interface, which can be implemented for specific content types. It defines the following interface method:
 
 .. code-block:: java
 
   void toObject(Reader in, Object target);
 
 
-which is intended to populate the “target” object with data from the reader, usually through deserialization. However, the in parameter should be considered untrusted, and should not be deserialized without sanitization.
+which is intended to populate the ``target`` object with data from the reader, usually through deserialization. However, the ``in`` parameter should be considered untrusted, and should not be deserialized without sanitization.
 
 RCE in Apache Struts
 ====================
@@ -85,6 +89,7 @@ Model answer, step 1
   import java
 
   /** The interface `org.apache.struts2.rest.handler.ContentTypeHandler`. */
+
   class ContentTypeHandler extends RefType {
     ContentTypeHandler() {
       this.hasQualifiedName("org.apache.struts2.rest.handler", "ContentTypeHandler")

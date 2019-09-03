@@ -24,7 +24,11 @@ For this example you should download:
 
    You can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
 
-   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+
+   .. include:: ../slide-snippets/snapshot-note.rst
+
+   .. resume slides
 
 .. rst-class:: agenda
 

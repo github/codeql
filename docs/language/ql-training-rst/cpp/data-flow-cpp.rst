@@ -24,7 +24,11 @@ For this example you should download:
 
    You can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
 
-   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+
+   .. include:: ../slide-snippets/snapshot-note.rst
+
+   .. resume slides
 
 .. rst-class:: agenda
 
@@ -112,7 +116,7 @@ We need something better.
 
   Here, ``DMLOut`` and ``ExtOut`` are macros that expand to formatting calls. The format specifier is not constant, in the sense that the format argument is not a string literal. However, it is clearly one of two possible constants, both with the same number of format specifiers.
 
-  What we need is a way to determine whether the format argument is ever set to something that is, not constant.
+  What we need is a way to determine whether the format argument is ever set to something that is not constant.
 
 .. include general data flow slides
 

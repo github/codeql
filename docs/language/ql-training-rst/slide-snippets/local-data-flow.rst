@@ -64,7 +64,7 @@ Local vs global data flow
 - Local (“intra-procedural”) data flow models flow within one function; feasible to compute for all functions in a snapshot
 - Global (“inter-procedural”) data flow models flow across function calls; not feasible to compute for all functions in a snapshot
 - Different APIs, so discussed separately
-- This slide deck focuses on the former.
+- This slide deck focuses on the former
 
 .. note::
 

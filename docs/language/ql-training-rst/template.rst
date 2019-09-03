@@ -6,7 +6,10 @@
    - The default slide style is a plain white-ish background with minimal company branding
    - Different slide designs have been preconfigured. To choose a different layout
      use the appropriate .. rst-class:: directive. For examples of the different designs, 
-     see the template below. 
+     see the template below. This directive can also be used to create custom classes for individual 
+     images and slide backgrounds if necessary. Additional CSS styles may also be required when using custom 
+     class directives. Search for 'deck-specific styles for individual images` in default.css for examples
+     of how to implement custom class styles.
    - Additional notes can be added to a slide using a .. note:: directive
    - Press P to access the additional notes on the rendered slides.
    - Press F is go into full screen mode when viewing the rendered slides.

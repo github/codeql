@@ -24,7 +24,11 @@ For this example you should download:
 
    You can also query the project in `the query console <https://lgtm.com/query/project:14040005/lang:java/>`__ on LGTM.com.
 
-   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+
+   .. include:: ../slide-snippets/snapshot-note.rst
+
+   .. resume slides
 
 .. rst-class:: agenda
 
@@ -54,7 +58,7 @@ Motivation
 
   If you have completed the “Example: Query injection” slide deck which was part of the previous course, this example will look familiar to you.
 
-  To understand the scope of this vulnerability, consider what would happen if a malicious user could provide the following as the content of the individualURI variable:
+  To understand the scope of this vulnerability, consider what would happen if a malicious user could provide the following as the content of the ``individualURI`` variable:
 
   ``“http://vivoweb.org/ontology/core#FacultyMember> ?p ?o . FILTER regex("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!", "(.*a){50}") } #``
 
@@ -62,7 +66,7 @@ Motivation
 Example: SPARQL injection
 =========================
 
-We can write a simple query that finds string concatenations that occur in calls SPARQL query APIs.
+We can write a simple query that finds string concatenations that occur in calls to SPARQL query APIs.
 
 .. rst-class:: build
 
@@ -80,7 +84,7 @@ Query finds a CVE reported by Semmle (CVE-2019-6986), plus one other result, but
 
   - String concatenation occurs on a different line in the same method.
   - String concatenation occurs in a different method.
-  - String concatenation occurs through StringBuilders or similar.
+  - String concatenation occurs through ``StringBuilders`` or similar.
   - Entirety of user input is provided as the query.
 
 We want to improve our query to catch more of these cases.

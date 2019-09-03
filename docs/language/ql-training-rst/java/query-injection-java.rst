@@ -23,8 +23,12 @@ For this example you should download:
    For this example, we will be analyzing `VIVO Vitro <https://github.com/vivo-project/Vitro>`__.
 
    You can also query the project in `the query console <https://lgtm.com/query/project:14040005/lang:java/>`__ on LGTM.com.
+   
+   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
 
-   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+   .. include:: ../slide-snippets/snapshot-note.rst
+
+   .. resume slides
 
 SQL injection
 =============
@@ -89,11 +93,11 @@ Let’s start by looking for calls to methods with names of the form ``sparql*Qu
 QL query: find string concatenation
 ===================================
 
-We now need to define what would make these API calls unsafe.
+- We now need to define what would make these API calls unsafe.
+- A simple heuristic would be to look for string concatenation used in the query argument. 
+- We may want to reuse this logic, so let us create a separate predicate.
 
-A simple heuristic would be to look for string concatenation used in the query argument. We may want to reuse this logic, so let us create a separate predicate.
-
-Looking at autocomplete suggestions, we see that we can get the type of an expression using the getType() method.
+Looking at autocomplete suggestions, we see that we can get the type of an expression using the ``getType()`` method.
 
 .. rst-class:: build
 
@@ -106,8 +110,8 @@ Looking at autocomplete suggestions, we see that we can get the type of an expre
 .. note::
 
   - An important part of the query is to determine whether a given expression is string concatenation.
-  - We therefore write a helper predicate for finding string   concatenation.
-  - This predicate effectively represents the set of all add expressions in the database where the type of the expression is ``TypeString`` - that is, the addition produces a ``String``   value.
+  - We therefore write a helper predicate for finding string concatenation.
+  - This predicate effectively represents the set of all ``add`` expressions in the database where the type of the expression is ``TypeString`` - that is, the addition produces a ``String``   value.
 
 QL query: SPARQL injection
 ==========================

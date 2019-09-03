@@ -24,7 +24,11 @@ For this example you should download:
 
    You can also query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java/>`__ on LGTM.com.
 
-   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+
+   .. include:: ../slide-snippets/snapshot-note.rst
+
+   .. resume slides
 
 .. rst-class:: agenda
 
@@ -99,7 +103,7 @@ Exercise: Defining sinks
 
 Fill in the definition of ``isSink``.
 
-**Hint**: We want to find the first argument of calls to the method compileAndExecute.
+**Hint**: We want to find the first argument of calls to the method ``compileAndExecute``.
 
 .. code-block:: ql
 
@@ -114,7 +118,7 @@ Fill in the definition of ``isSink``.
 
 .. note::
 
-  The second part is to define what it means to be a sink for this particular problem. The queries from the previous slide deck will be useful for this exercise.
+  The second part is to define what it means to be a sink for this particular problem. The queries from an :doc:`Introduction to data flow <data-flow-java>`  will be useful for this exercise.
 
 Solution: Defining sinks
 ========================
