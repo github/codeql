@@ -40,15 +40,22 @@ module Express {
   }
 
   /**
+   * Holds if `e` may refer to a router object.
+   */
+  private predicate isRouter(Expr e) {
+    isRouter(e, _)
+    or
+    e.getType().hasUnderlyingType("express-serve-static-core", "Router")
+  }
+
+  /**
    * An expression that refers to a route.
    */
   class RouteExpr extends MethodCallExpr {
-    RouterDefinition router;
+    RouteExpr() { isRouter(this) }
 
-    RouteExpr() { isRouter(this, router) }
-
-    /** Gets the router from which this route was created. */
-    RouterDefinition getRouter() { result = router }
+    /** Gets the router from which this route was created, if it is known. */
+    RouterDefinition getRouter() { isRouter(this, result) }
   }
 
   /**
@@ -68,10 +75,8 @@ module Express {
    * A call to an Express router method that sets up a route.
    */
   class RouteSetup extends HTTP::Servers::StandardRouteSetup, MethodCallExpr {
-    RouterDefinition router;
-
     RouteSetup() {
-      isRouter(getReceiver(), router) and
+      isRouter(getReceiver()) and
       getMethodName() = routeSetupMethodName()
     }
 
@@ -79,7 +84,7 @@ module Express {
     string getPath() { getArgument(0).mayHaveStringValue(result) }
 
     /** Gets the router on which handlers are being registered. */
-    RouterDefinition getRouter() { result = router }
+    RouterDefinition getRouter() { isRouter(getReceiver(), result) }
 
     /** Holds if this is a call `use`, such as `app.use(handler)`. */
     predicate isUseCall() { getMethodName() = "use" }
