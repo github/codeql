@@ -15,7 +15,9 @@
  */
 import semmle.code.cpp.security.BufferWrite
 
-// see CWE-120UnboundedWrite.ql for a summary of CWE-120 violation cases
+/*
+ * See CWE-120/UnboundedWrite.ql for a summary of CWE-120 alert cases.
+ */
 
 from BufferWrite bw, int destSize
 where (not bw.hasExplicitLimit())                // has no explicit size limit

@@ -10,16 +10,18 @@
  */
 import cpp
 
-// The rule applies in an almost completely global way since that is the way it appears to be phrased, and
-// it may be sufficiently rare to be okay that way. We make a small exception: two locals in separate scopes
-// cannot trigger the rule
-
-// Note: rule (a) interferes with the others, since H=h by (a) and h=n by (g) but surely H != n
-// For implementation it's important that this can be viewed as canonicalisation of names to avoid a quadratic
-// test but that would imply transitivity
-// To resolve this we interpret the rule as: it is a violation if
-//   - a combination of (a)-(b) makes the names identical OR
-//   - a combination of (b)-(g) makes the names identical
+/*
+ * The rule applies in an almost completely global way since that is the way it appears to be phrased, and
+ * it may be sufficiently rare to be okay that way. We make a small exception: two locals in separate scopes
+ * cannot trigger the rule
+ *
+ * Note: rule (a) interferes with the others, since H=h by (a) and h=n by (g) but surely H != n
+ * For implementation it's important that this can be viewed as canonicalisation of names to avoid a quadratic
+ * test but that would imply transitivity
+ * To resolve this we interpret the rule as: it is a violation if
+ *   - a combination of (a)-(b) makes the names identical OR
+ *   - a combination of (b)-(g) makes the names identical
+ */
 
 // Implement rules (a) and (b)
 predicate canonicalName1(Declaration d, string canonical) {

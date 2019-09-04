@@ -95,8 +95,8 @@ predicate useOfHardCodedAddressOrIP(Expr use) {
     definitionUsePair(v, def, use))
 }
 
-/*
- * Find IfStmts that have a hard-coded IP or web address in
+/**
+ * Find `IfStmt`s that have a hard-coded IP or web address in
  * their condition. If the condition also depends on an
  * untrusted input then it might be vulnerable to a spoofing
  * attack.

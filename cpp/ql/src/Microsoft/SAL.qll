@@ -25,8 +25,9 @@ class SALAnnotation extends MacroInvocation {
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Particular SAL annotations of interest
+/*
+ * Particular SAL annotations of interest
+ */
 
 class SALCheckReturn extends SALAnnotation {
   SALCheckReturn() {
@@ -66,8 +67,9 @@ class SALMaybeNull extends SALAnnotation {
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Implementation details
+/*
+ * Implementation details
+ */
 
 private predicate annotatesAt(SALAnnotation a, DeclarationEntry e,
                               File file, int idx) {

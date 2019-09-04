@@ -11,9 +11,9 @@
 import cpp
 import Naming
 
-// //
-// // CUSTOMIZATION: see Naming to add custom acronyms
-// //
+/*
+ * CUSTOMIZATION: see the `Naming.qll` file for how to add custom acronyms.
+ */
 
 from Declaration d, Name n, Word w
 where d.fromSource() and

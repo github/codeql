@@ -11,10 +11,10 @@
  */
 import cpp
 
-/* We look for code that converts between function pointers and non-function, non-void
-   pointers. This will obviously not catch code that uses inline assembly to achieve
-   self-modification, nor will it spot the use of OS mechanisms to write into process
-   memory (such as WriteProcessMemory under Windows). */
+// We look for code that converts between function pointers and non-function, non-void
+// pointers. This will obviously not catch code that uses inline assembly to achieve
+// self-modification, nor will it spot the use of OS mechanisms to write into process
+// memory (such as WriteProcessMemory under Windows).
 predicate maybeSMCConversion(Type t1, Type t2) {
      t1 instanceof FunctionPointerType and
      t2 instanceof PointerType and

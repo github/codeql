@@ -10,9 +10,11 @@
  */
 import cpp
 
-// This is a bit off, because the two nameables could be in different scopes
-// or in different name ranges entirely. However it is infrequent enough to
-// require > 64 chars significance, and it would be bad practice in any case
+/*
+ * This is a bit off, because the two nameables could be in different scopes
+ * or in different name ranges entirely. However it is infrequent enough to
+ * require > 64 chars significance, and it would be bad practice in any case
+ */
 
 predicate longNameSignificance(Element e, string significance) {
   exists(string name |

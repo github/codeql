@@ -81,11 +81,11 @@ class OperatorRShiftCall extends FunctionCall {
   }
 
   /*
-     This is complicated by the fact this overload can be made
-     in two ways:
-      - as a member of the `std::istream` class, with one parameter.
-      - as an independent function, with two parameters.
-  */
+   * This is complicated by the fact this overload can be made
+   * in two ways:
+   *  - as a member of the `std::istream` class, with one parameter.
+   *  - as an independent function, with two parameters.
+   */
 
   Expr getSource() {
     if (getTarget() instanceof MemberFunction) then (

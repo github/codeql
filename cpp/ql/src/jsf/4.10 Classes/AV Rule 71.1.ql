@@ -23,7 +23,10 @@ predicate virtualThisCall(FunctionCall c, Function overridingFunction) {
   overridingFunction = c.getTarget().(VirtualFunction).getAnOverridingFunction()
 }
 
-// Catch most cases: go into functions in the same class, but only catch direct references to "this"
+/*
+ * Catch most cases: go into functions in the same class, but only catch direct
+ * references to "this".
+ */
 
 predicate nonVirtualMember(MemberFunction mf, Class c) {
   mf = c.getAMemberFunction() and

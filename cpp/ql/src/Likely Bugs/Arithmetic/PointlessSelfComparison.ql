@@ -1,8 +1,8 @@
 /**
  * @name Self comparison
  * @description Comparing a variable to itself always produces the
-                same result, unless the purpose is to check for
-                integer overflow or floating point NaN.
+ *              same result, unless the purpose is to check for
+ *              integer overflow or floating point NaN.
  * @kind problem
  * @problem.severity warning
  * @precision high

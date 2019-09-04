@@ -25,13 +25,11 @@ cached private predicate twiceLocked(
   lockedInCall(a, call)
 }
 
-/*
- * When this query finds a result, there are often multiple call sites
- * associated with one instance of the problem. For this reason, we do not
- * include `call` in the result. However, it is sometimes helpful to
- * include `call.getLocation()` in the result, because it can help to find
- * the control flow path which might be responsible.
- */
+// When this query finds a result, there are often multiple call sites
+// associated with one instance of the problem. For this reason, we do not
+// include `call` in the result. However, it is sometimes helpful to
+// include `call.getLocation()` in the result, because it can help to find
+// the control flow path which might be responsible.
 from FunctionCall call, Variable v, VariableAccess access2
 where
   twiceLocked(call, v, access2) and

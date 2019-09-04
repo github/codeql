@@ -23,7 +23,10 @@ import cpp
  * except inside the constructor itself
  */
 
-// Part 1: call chains of public/protected member functions and the variables they need
+/*
+ * Part 1: call chains of public/protected member functions and the variables
+ * they need
+ */
 
 predicate memberDirectlyNeedsVariable(MemberFunction mf, Class c, MemberVariable mv) {
   (mf.isPublic() or mf.isProtected()) and
@@ -44,7 +47,10 @@ predicate memberNeedsVariable(MemberFunction mf, Class c, MemberVariable mv) {
   )
 }
 
-// Part 2: call chains of members of the class and the variables they initialise (include private members)
+/*
+ * Part 2: call chains of members of the class and the variables they
+ * initialise (include private members)
+ */
 
 predicate memberDirectlyInitialisesVariable(MemberFunction mf, Class c, MemberVariable mv) {
   c = mf.getDeclaringType() and
@@ -62,7 +68,10 @@ predicate memberInitialisesVariable(MemberFunction mf, Class c, MemberVariable m
   )
 }
 
-// Part 3: which variable a constructor initialises through assignment, calls or initialisers
+/*
+ * Part 3: which variable a constructor initialises through assignment, calls
+ * or initialisers
+ */
 
 predicate preInitialises(Constructor c, MemberVariable mv) {
   exists(ConstructorFieldInit cfi | cfi = c.getAnInitializer() | cfi.getTarget() = mv)
@@ -86,8 +95,11 @@ predicate doesNotInitialise(Constructor c, MemberVariable mv) {
   not initialises(c, mv)
 }
 
-// Part 4: flow-sensitive analysis of the constructor (only) to check the order: only make public/protected
-// calls that require the value of a variable after it has been initialised.
+/*
+ * Part 4: flow-sensitive analysis of the constructor (only) to check the
+ * order: only make public/protected calls that require the value of a variable
+ * after it has been initialised.
+ */
 
 predicate reachableWithoutInitialising(Constructor c, ControlFlowNode cf, MemberVariable mv) {
   not (preInitialises(c, mv))
@@ -107,9 +119,9 @@ predicate badCall(Constructor c, FunctionCall call, MemberVariable mv) {
   memberNeedsVariable(call.getTarget(), c.getDeclaringType(), mv)
 }
 
-//
-// Query
-//
+/*
+ * Query
+ */
 
 from Element e, MemberVariable mv, string message
 where (doesNotInitialise(e, mv) and message = "Constructor does not initialize member variable " + mv.getName() + ".") or

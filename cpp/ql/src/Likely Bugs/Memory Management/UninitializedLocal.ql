@@ -72,15 +72,14 @@ predicate containsInlineAssembly(Function f) {
  * for this check to exclude them.
  */
 VariableAccess commonException() {
-  /* If the uninitialized use we've found is in a macro expansion, it's
-   * typically something like va_start(), and we don't want to complain.
-   */
-  result.getParent().isInMacroExpansion() or
-  result.getParent() instanceof BuiltInOperation or
-  /*
-   * Finally, exclude functions that contain assembly blocks. It's
-   * anyone's guess what happens in those.
-   */
+  // If the uninitialized use we've found is in a macro expansion, it's
+  // typically something like va_start(), and we don't want to complain.
+  result.getParent().isInMacroExpansion()
+  or
+  result.getParent() instanceof BuiltInOperation
+  or
+  // Finally, exclude functions that contain assembly blocks. It's
+  // anyone's guess what happens in those.
   containsInlineAssembly(result.getEnclosingFunction())
 }
 

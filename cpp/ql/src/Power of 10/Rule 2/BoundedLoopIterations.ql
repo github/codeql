@@ -1,7 +1,7 @@
 /**
  * @name Unbounded loop
  * @description All loops should have a fixed upper bound; the counter should also be incremented along all paths within the loop.
-                This check excludes loops that are meant to be nonterminating (like schedulers).
+ *              This check excludes loops that are meant to be nonterminating (like schedulers).
  * @kind problem
  * @id cpp/power-of-10/bounded-loop-iterations
  * @problem.severity recommendation

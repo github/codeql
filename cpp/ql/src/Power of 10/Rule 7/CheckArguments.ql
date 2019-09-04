@@ -4,8 +4,8 @@
  * @kind problem
  * @id cpp/power-of-10/check-arguments
  * @problem.severity warning
-+ * @tags correctness
-+ *       reliability
+ * @tags correctness
+ *       reliability
  *       external/powerof10
  */
 
