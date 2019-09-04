@@ -1,9 +1,9 @@
 /**
  * File that provides the desugaring of a `Foreach` stmt.
  * Since Roslyn rewrites it in quite a few ways,
- * for now I will only desugar it to a "canonical" form.
+ * for now only desugar it to a "canonical" form.
  * Also we only deal with foreach stmts where there is only
- * one declaration (see bellow). 
+ * one declaration (see below). 
  * For example the code:
  *    ```
  *      foreach(var item in some_enumerable) {
@@ -58,18 +58,12 @@ private import internal.TranslatedCompilerGeneratedElement
  * Module that exposes the functions needed for the translation of the `foreach` stmt.
  */
 module ForeachElements {
- TranslatedForeachTry getTry(ForeachStmt generatedBy) {
-     exists(TranslatedForeachTry try |
-      try.getAST() = generatedBy and
-      result = try
-    )
+  TranslatedForeachTry getTry(ForeachStmt generatedBy) {
+    result.getAST() = generatedBy
   }
   
   TranslatedForeachEnum getEnumDecl(ForeachStmt generatedBy) {
-    exists(TranslatedForeachEnum enum |
-      enum.getAST() = generatedBy and
-      result = enum
-    )
+    result.getAST() = generatedBy
   }
 }
 

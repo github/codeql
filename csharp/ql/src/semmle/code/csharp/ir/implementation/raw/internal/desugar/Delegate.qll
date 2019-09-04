@@ -29,17 +29,11 @@ private import semmle.code.csharp.ir.implementation.raw.internal.common.Translat
  */
 module DelegateElements {
   TranslatedDelegateConstructorCall getConstructor(DelegateCreation generatedBy) {
-     exists(TranslatedDelegateConstructorCall cons |
-      cons.getAST() = generatedBy and
-      result = cons
-    )
+    result.getAST() = generatedBy
   }
   
   TranslatedDelegateInvokeCall getInvoke(DelegateCall generatedBy) {
-     exists(TranslatedDelegateInvokeCall invoke |
-      invoke.getAST() = generatedBy and
-      result = invoke
-    )
+    result.getAST() = generatedBy
   }
 }
 

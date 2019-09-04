@@ -28,7 +28,7 @@ abstract class TranslatedCall extends TranslatedExpr, TranslatedCallBlueprint {
 /**
  * Represents the IR translation of a direct function call. The call can be one of the following:
  * `MethodCall`, `LocalFunctionCall`, `AccessorCall`, `OperatorCall`.
- * Note that `DelegateCall`s are not treated here since they need
+ * Note that `DelegateCall`s are not treated here since they need to be desugared.
  */
 
 class TranslatedFunctionCall extends TranslatedNonConstantExpr, TranslatedCall {
