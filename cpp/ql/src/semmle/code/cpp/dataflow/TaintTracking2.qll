@@ -1,11 +1,14 @@
 /**
- * Provides classes for performing local (intra-procedural) and
- * global (inter-procedural) taint-tracking analyses.
+ * Provides a `TaintTracking2` module, which is a copy of the `TaintTracking`
+ * module. Use this class when data-flow configurations or taint-tracking
+ * configurations must depend on each other. Two classes extending
+ * `DataFlow::Configuration` should never depend on each other, but one of them
+ * should instead depend on a `DataFlow2::Configuration`, a
+ * `DataFlow3::Configuration`, or a `DataFlow4::Configuration`. The
+ * `TaintTracking::Configuration` class extends `DataFlow::Configuration`, and
+ * `TaintTracking2::Configuration` extends `DataFlow2::Configuration`.
  *
- * We define _taint propagation_ informally to mean that a substantial part of
- * the information from the source is preserved at the sink. For example, taint
- * propagates from `x` to `x + 100`, but it does not propagate from `x` to `x >
- * 100` since we consider a single bit of information to be too little.
+ * See `semmle.code.cpp.dataflow.TaintTracking` for the full documentation.
  */
 module TaintTracking2 {
   import semmle.code.cpp.dataflow.internal.tainttracking2.TaintTrackingImpl
