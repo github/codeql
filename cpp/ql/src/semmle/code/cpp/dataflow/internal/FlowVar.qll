@@ -84,8 +84,13 @@ cached class FlowVar extends TFlowVar {
  *
  * In contrast to a normal "definition", which provides a new value for
  * something, a partial definition is an expression that may affect a
- * value, but does not necessarily replace it entirely. For example,
- * `x.y = 1;` is a partial definition of the object `x`.
+ * value, but does not necessarily replace it entirely. For example:
+ * ```
+ * x.y = 1; // a partial definition of the object `x`.
+ * x.y.z = 1; // a partial definition of the objects `x` and `x.y`.
+ * x.setY(1); // a partial definition of the object `x`.
+ * setY(&x); // a partial definition of the object `x`.
+ * ```
  */
 private module PartialDefinitions {
   private newtype TPartialDefinition =
@@ -121,8 +126,19 @@ private module PartialDefinitions {
 
     predicate partiallyDefinesThis(ThisExpr e) { definedExpr = e }
 
+    /**
+     * Gets the subBasicBlock where this `PartialDefinition` is defined.
+     */
     ControlFlowNode getSubBasicBlockStart() { result = node }
 
+    /**
+     * Gets the expression that is being partially defined. For example in the
+     * following code:
+     * ```
+     * x.y = 1;
+     * ```
+     * The expression `x` is being partially defined.
+     */
     Expr getDefinedExpr() { result = definedExpr }
 
     Location getLocation() {
