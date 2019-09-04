@@ -244,7 +244,7 @@ module FlowVar_internal {
       not v instanceof Field and // Fields are interprocedural data flow, not local
       reachable(sbb) and
       (
-        initializer(sbb.getANode(), v, _)
+        initializer(v, sbb.getANode())
         or
         assignmentLikeOperation(sbb, v, _, _)
         or
@@ -361,7 +361,12 @@ module FlowVar_internal {
       assignmentLikeOperation(node, v, _, e) and
       node = sbb
       or
-      initializer(node, v, e) and
+      // We pick the defining `ControlFlowNode` of an `Initializer` to be its
+      // expression rather than the `Initializer` itself. That's because the
+      // `Initializer` of a `ConditionDeclExpr` is for historical reasons not
+      // part of the CFG and therefore ends up in the wrong basic block.
+      initializer(v, e) and
+      node = e and
       node = sbb.getANode()
     }
 
@@ -719,13 +724,11 @@ module FlowVar_internal {
   }
 
   /**
-   * Holds if `v` is initialized by `init` to have value `assignedExpr`.
+   * Holds if `v` is initialized to have value `assignedExpr`.
    */
-  predicate initializer(
-      Initializer init, LocalVariable v, Expr assignedExpr)
+  predicate initializer(LocalVariable v, Expr assignedExpr)
   {
-    v = init.getDeclaration() and
-    assignedExpr = init.getExpr()
+    assignedExpr = v.getInitializer().getExpr()
   }
 
   /**
