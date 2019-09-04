@@ -1,7 +1,9 @@
 import cpp
 import semmle.code.cpp.controlflow.Dominance
 
-/* Guarding */
+/*
+ * Guarding
+ */
 
 /** is the size of this use guarded using 'abs'? */
 predicate guardedAbs(Operation e, Expr use) {

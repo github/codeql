@@ -11,14 +11,16 @@
  */
 import cpp
 
-// see MISRA Rule 7-5-2
-// TODO: this catches only the most obvious cases
-
-// Current caught cases: assignment x = &y (literally) where
-//   - y is a local
-//   - EITHER x is a nonlocal
-//   - OR x is a local defined in an enclosing scope
-//   - OR x has static storage duration
+/*
+ * see MISRA Rule 7-5-2
+ * TODO: this catches only the most obvious cases
+ *
+ * Current caught cases: assignment x = &y (literally) where
+ *   - y is a local
+ *   - EITHER x is a nonlocal
+ *   - OR x is a local defined in an enclosing scope
+ *   - OR x has static storage duration
+ */
 
 from Assignment a, Variable global, Variable local
 where a.fromSource() and

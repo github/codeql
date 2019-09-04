@@ -1,4 +1,4 @@
-/* Definitions related to execution of commands */
+/** Provides definitions related to execution of commands */
 
 import cpp
 

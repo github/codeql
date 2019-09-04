@@ -12,6 +12,10 @@
  */
 import cpp
 
+/*
+ * Applies to all assignment operators, not just the copy assignment operator.
+ */
+
 predicate callOnThis(FunctionCall fc) {
   // `this->f(...)`
   fc.getQualifier() instanceof ThisExpr or
@@ -87,8 +91,6 @@ predicate assignOperatorWithWrongResult(Operator op, string msg) {
   and not assignOperatorWithWrongType(op, _)
   and msg = "Assignment operator in class " + op.getDeclaringType().getName() + " does not return a reference to *this."
 }
-
-// Applies to all assignment operators, not just a copy assignment operator
 
 from Operator op, string msg
 where assignOperatorWithWrongType(op, msg)

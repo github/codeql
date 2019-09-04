@@ -11,8 +11,10 @@
  */
 import cpp
 
-// find classes with virtual functions that have a destructor that is not virtual and for which there exists a derived class
-// when calling the destructor of a derived class the destructor in the base class may not be called
+/*
+ * Find classes with virtual functions that have a destructor that is not virtual and for which there exists a derived class
+ * when calling the destructor of a derived class the destructor in the base class may not be called
+ */
 
 from Class c
 where exists(VirtualFunction f | f.getDeclaringType() = c)

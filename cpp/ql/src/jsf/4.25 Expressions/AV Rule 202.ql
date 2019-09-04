@@ -9,7 +9,9 @@
  */
 import cpp
 
-// see MISRA 6-2-2
+/*
+ * See MISRA 6-2-2
+ */
 
 from EqualityOperation e
 where e.fromSource() and

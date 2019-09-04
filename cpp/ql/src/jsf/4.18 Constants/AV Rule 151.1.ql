@@ -9,12 +9,15 @@
  */
 import cpp
 
-// Interpretation (from the example in AV151.1):
-//   rather than doing points-to to find writes into string literals, the
-//   check forbids assigning to non-const string variables, which prevents it.
-// Casting the const-ness of the variable away is still possible; ideally it
-// should be prevented but it doesn't seem worth the effort since it will likely
-// flag another rule.
+/*
+ * Interpretation (from the example in AV151.1):
+ *   rather than doing points-to to find writes into string literals, the
+ *   check forbids assigning to non-const string variables, which prevents it.
+ *
+ * Casting the const-ness of the variable away is still possible; ideally it
+ * should be prevented but it doesn't seem worth the effort since it will likely
+ * flag another rule.
+ */
 
 class NonConstStringType extends DerivedType {
   NonConstStringType() {

@@ -11,7 +11,9 @@
  */
 import cpp
 
-/* We check for the use of the "a + b < a" idiom. */
+/*
+ * This query checks for the use of the "a + b < a" idiom.
+ */
 
 predicate isNonNegative(Expr e) {
      e.getUnderlyingType().(IntegralType).isUnsigned()

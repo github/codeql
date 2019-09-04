@@ -10,7 +10,9 @@
  */
 import cpp
 
-// see MISRA Rule 5-18-1
+/*
+ * See MISRA Rule 5-18-1
+ */
 
 from CommaExpr ce
 where ce.fromSource()

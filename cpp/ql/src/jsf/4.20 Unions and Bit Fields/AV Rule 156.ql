@@ -11,9 +11,11 @@
  */
 import cpp
 
-// TODO: what about the "shall only be accessed" part?
-// TODO: implement better check for namelessness (at the moment we rely on the fact
-//       that the frontend creates dummy names of the form "(unnamed X)" for nameless members)
+/*
+ * TODO: what about the "shall only be accessed" part?
+ * TODO: implement better check for namelessness (at the moment we rely on the fact
+ *       that the frontend creates dummy names of the form "(unnamed X)" for nameless members)
+ */
 
 from Declaration m
 where m.isMember() and m.getName().matches("(%") and

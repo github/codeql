@@ -10,8 +10,10 @@
  */
 import cpp
 
-// INTERPRETATION: just check for the absence of camel-case, ie
-// forbid 'aB' in identifier names
+/*
+ * INTERPRETATION: just check for the absence of camel-case, ie
+ * forbid 'aB' in identifier names
+ */
 
 from Declaration d, string name, string lowerCase, string upperCase, int pos
 where name = d.getName() and

@@ -7,8 +7,11 @@
  * @tags correctness
  *       external/jsf
  */
-// See More Effective C++ item 7
-// Note: Meyers allows unary & to be overloaded but not comma
+
+/*
+ * See More Effective C++ item 7.
+ * Note: Meyers allows unary & to be overloaded but not comma
+ */
 
 import cpp
 

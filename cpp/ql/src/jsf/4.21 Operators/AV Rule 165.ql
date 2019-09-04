@@ -11,7 +11,9 @@
  */
 import cpp
 
-// see MISRA Rule 5-3-2
+/*
+ * See MISRA Rule 5-3-2
+ */
 
 from UnaryMinusExpr ume
 where ume.getOperand().getExplicitlyConverted().getUnderlyingType().(IntegralType).isUnsigned()

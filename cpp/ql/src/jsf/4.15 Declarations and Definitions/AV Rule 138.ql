@@ -22,9 +22,11 @@ import cpp
  * NOTE: only applies to C++; rules for C are different.
  */
 
-// FOR FUTURE REFERENCE ONLY - CURRENTLY USELESS BECAUSE OF POPULATOR LIMITATIONS
-// We need to have all the declarations of a variable to make this work; the extractor
-// does not currently provide that.
+/*
+ * FOR FUTURE REFERENCE ONLY - CURRENTLY USELESS BECAUSE OF POPULATOR LIMITATIONS
+ * We need to have all the declarations of a variable to make this work; the extractor
+ * does not currently provide that.
+ */
 
 predicate externalLinkage(Variable v) {
      v.getADeclarationEntry().hasSpecifier("extern")

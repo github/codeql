@@ -10,7 +10,10 @@
  */
 import cpp
 
-// Interpretation: use .h, never .H, .hpp or other variants. What else could be meant by 'header file'?
+/*
+ * Interpretation: use .h, never .H, .hpp or other variants. What else could be
+ * meant by 'header file'?
+ */
 
 from File f
 where (f.getExtension().toLowerCase() = "h" or f.getExtension().toLowerCase() = "hpp")

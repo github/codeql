@@ -109,10 +109,10 @@ private predicate is_condition(Expr guard) {
 }
 
 
- /* Simplify conditions in the source to the canonical form l op r + k.
+/*
+ * Simplification of equality expressions:
+ * Simplify conditions in the source to the canonical form l op r + k.
  */
-
-/* Simplification of equality expressions */
 
 /**
  * Holds if `left == right + k` is `areEqual` given that test is `testIsTrue`.
@@ -196,7 +196,8 @@ private predicate add_eq(ComparisonOperation cmp, Expr left, Expr right, int k, 
     )
 }
 
-/* Simplification of inequality expressions
+/*
+ * Simplification of inequality expressions:
  * Simplify conditions in the source to the canonical form l < r + k.
  */
 

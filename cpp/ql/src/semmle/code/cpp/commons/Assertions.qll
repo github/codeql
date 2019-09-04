@@ -70,4 +70,6 @@ class RecoverableAssert extends MacroInvocation, Assertion {
   }
 }
 
-/* More assertion definitions go here. */
+/*
+ * More assertion definitions go here.
+ */

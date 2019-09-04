@@ -11,7 +11,9 @@
  */
 import cpp
 
-// see MISRA Rule 5-14-1
+/*
+ * See MISRA Rule 5-14-1
+ */
 
 from BinaryLogicalOperation blo
 where blo.fromSource() and

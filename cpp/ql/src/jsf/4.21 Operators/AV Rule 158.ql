@@ -11,7 +11,9 @@
  */
 import cpp
 
-// NB: we only check if the immediate operands are (unparenthesised) binary operations
+/*
+ * NB: we only check if the immediate operands are (unparenthesised) binary operations
+ */
 
 from BinaryLogicalOperation blo, BinaryOperation bo
 where blo.fromSource() and
