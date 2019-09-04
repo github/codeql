@@ -118,6 +118,11 @@ module PrototypePollution {
   }
 
   /**
+   * DEPRECATED. Use `isVulnerableVersionOfDeepExtendCall` or `isVulnerableDeepExtendCallAllVersions` instead.
+   */
+  deprecated predicate isVulnerableDeepExtendCall = isVulnerableVersionOfDeepExtendCall/2;
+
+  /**
    * Holds if `call` is vulnerable to prototype pollution because the callee is defined by `dep`.
    */
   predicate isVulnerableVersionOfDeepExtendCall(ExtendCall call, Dependency dep) {
