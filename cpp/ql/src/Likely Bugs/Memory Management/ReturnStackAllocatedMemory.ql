@@ -16,13 +16,11 @@ import semmle.code.cpp.dataflow.EscapesTree
 import semmle.code.cpp.dataflow.DataFlow
 
 /**
- * Holds if `n1` may flow to `n2`, ignoring flow through fields because these
- * are currently modeled as an overapproximation that assumes all objects may
- * alias.
+ * Holds if `n1` may flow to `n2` without passing through conversions that
+ * perform dereferences or address-of operations.
  */
 predicate conservativeDataFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
   DataFlow::localFlowStep(n1, n2) and
-  not n2.asExpr() instanceof FieldAccess and
   not hasNontrivialConversion(n2.asExpr())
 }
 
