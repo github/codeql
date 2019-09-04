@@ -24,7 +24,11 @@ For this example you should download:
 
    You can also query the project in `the query console <https://lgtm.com/query/project:1878521151/lang:java/>`__ on LGTM.com.
 
-   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+
+   .. include:: ../slide-snippets/snapshot-note.rst
+
+   .. resume slides
 
 .. Include language-agnostic section here
 
@@ -47,7 +51,7 @@ Oops
   }
 
 - The return statement has been commented out (during debugging?)
-- The if statement is now dead code
+- The ``if`` statement is now dead code
 - No explicit bounds checking, will throw ``ArrayIndexOutOfbounds``
 
 .. note::
@@ -182,7 +186,7 @@ Iterative query refinement
 
 - **Common workflow**: Start with a simple query, inspect a few results, refine, repeat.
 
-- For example, empty then branches are not a problem if there is an else.
+- For example, empty ``then`` branches are not a problem if there is an ``else``.
 
 - **Exercise**: How can we refine the query to take this into account?
 

@@ -285,7 +285,8 @@ slides > slide.current .gdbar {
 }
 /* line 112, ../scss/default.scss */
 slides > slide.next {
-  display: block;
+  /*display: block;*/
+  display: none;
   opacity: 0;
   pointer-events: none;
 }
@@ -407,7 +408,7 @@ slides.layout-faux-widescreen > slide.current {
 /* line 238, ../scss/default.scss */
 slides.layout-widescreen > slide.next,
 slides.layout-faux-widescreen > slide.next {
-  display: block;
+  /*display: block;*/
   opacity: 0;
   pointer-events: none;
 }
@@ -744,11 +745,7 @@ table tr:nth-child(odd) {
 table th {
   color: white;
   font-size: 1em;
-  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSI0MCUiIHN0b3AtY29sb3I9IiM0Mzg3ZmQiLz48c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iIzJhN2NkZiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==') no-repeat;
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(40%, #4387fd), color-stop(80%, #2a7cdf)) no-repeat;
-  background: -moz-linear-gradient(top, #4387fd 40%, #2a7cdf 80%) no-repeat;
-  background: -webkit-linear-gradient(top, #4387fd 40%, #2a7cdf 80%) no-repeat;
-  background: linear-gradient(to bottom, #4387fd 40%, #2a7cdf 80%) no-repeat;
+  background: grey;
 }
 /* line 494, ../scss/default.scss */
 table td, table th {
@@ -758,16 +755,15 @@ table td, table th {
 /* line 499, ../scss/default.scss */
 table td.highlight {
   color: #515151;
-  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSI0MCUiIHN0b3AtY29sb3I9IiNmZmQxNGQiLz48c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iI2Y2YzAwMCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==') no-repeat;
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(40%, #ffd14d), color-stop(80%, #f6c000)) no-repeat;
-  background: -moz-linear-gradient(top, #ffd14d 40%, #f6c000 80%) no-repeat;
-  background: -webkit-linear-gradient(top, #ffd14d 40%, #f6c000 80%) no-repeat;
-  background: linear-gradient(to bottom, #ffd14d 40%, #f6c000 80%) no-repeat;
+  background: grey;
 }
 /* line 504, ../scss/default.scss */
 table.rows {
   border-bottom: none;
   border-right: 1px solid #797979;
+}
+table td {
+  background: white;
 }
 
 /* line 510, ../scss/default.scss */
@@ -1013,18 +1009,24 @@ article.smaller q:before, article.smaller q:after {
   background-image: -webkit-radial-gradient(50% 50%, #b1dfff 0%, #4387fd 600px);
   background-image: radial-gradient(50% 50%, #b1dfff 0%, #4387fd 600px);
 }
+
+/* the popup class is used to display the speaker notes when 'presenter' view 
+   is enabled. This view is not currently optimal, so certain selectors have been commented-out,
+   with a view to improving the styles at a later date */
+
+
 /* line 684, ../scss/default.scss */
-.with-notes.popup slide.next {
+/*.with-notes.popup slide.next {
   -moz-transform: translate3d(570px, 80px, 0) scale(0.35);
   -ms-transform: translate3d(570px, 80px, 0) scale(0.35);
   -webkit-transform: translate3d(570px, 80px, 0) scale(0.35);
   transform: translate3d(570px, 80px, 0) scale(0.35);
   opacity: 1 !important;
-}
+}*/
 /* line 688, ../scss/default.scss */
-.with-notes.popup slide.next .note {
+/*.with-notes.popup slide.next .note {
   display: none !important;
-}
+}*/
 /* line 694, ../scss/default.scss */
 .with-notes.popup .note {
   width: 109%;
@@ -1168,7 +1170,7 @@ article.smaller q:before, article.smaller q:after {
 
 /* Clickable/tappable areas */
 /* line 773, ../scss/default.scss */
-.slide-area {
+/*.slide-area {
   z-index: 1000;
   position: absolute;
   left: 0;
@@ -1179,7 +1181,7 @@ article.smaller q:before, article.smaller q:after {
   top: 50%;
   cursor: pointer;
   margin-top: -350px;
-}
+}*/
 
 /* line 790, ../scss/default.scss */
 #prev-slide-area {
@@ -1469,6 +1471,15 @@ hgroup .pre {
   color: white;
 }
 
+.subheading {
+  position: absolute;
+  top: 62.5%;
+}
+
+.subheading p {
+  position: relative;
+}
+
 /* purple background slides (new section)*/
 
 .background2 {  
@@ -1593,7 +1604,7 @@ p.first.admonition-title {
   width: inherit;
 }
 
-/* images */
+/********* images ************/
 /* general styles to scale and centre images*/
 
 .image-box {
@@ -1606,7 +1617,7 @@ img {
   margin: auto;
 }
 
-/* deck-specific styles for individual images*/
+/********* deck-specific styles for individual images *********/
 /* intro to ql */
 img.analysis {
   width: 90%;
@@ -1619,6 +1630,26 @@ img.analysis {
   right: -10%;
 }
 
+.java-expression-ast {
+  background-image: url("../../java-expression-ast.svg");
+  background-size: cover;
+}
+
+/* java data flow code example */
+
+.java-data-flow-code-example {
+  background-image: url("../../java-data-flow-code-example.svg");
+  background-size: cover;
+}
+
+/* extra global data flow slies*/
+
+.mismatched-calls-and-returns {
+  background-image: url("../../mismatched-calls-and-returns.svg");
+  background-size: cover;
+}
+
+/******* Other custom styles *******/
 /* custom styles for lists*/
 
 ol {

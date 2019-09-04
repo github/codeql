@@ -24,7 +24,11 @@ For this example you should download:
 
    You can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
 
-   Note that results generated in the query console are likely to differ to those generated in the QL plugin as LGTM.com analyzes the most recent revisions of each project that has been added–the snapshot available to download above is based on an historical version of the code base.
+   .. insert snapshot-note.rst to explain differences between snapshot available to download and the version available in the query console.
+
+   .. include:: ../slide-snippets/snapshot-note.rst
+
+   .. resume slides
 
 .. rst-class:: agenda
 
@@ -36,57 +40,12 @@ Agenda
 - Path queries
 - Data flow models
 
-Information flow
-================
+.. insert common global data flow slides
 
-- Many security problems can be phrased as an information flow problem:
+.. include:: ../slide-snippets/global-data-flow.rst
 
-  Given a (problem-specific) set of sources and sinks, is there a path in the data flow graph from some source to some sink?
+.. resume language-specific global data flow slides
 
-- Some examples:
-
-  - SQL injection: sources are user-input, sinks are SQL queries
-  - Reflected XSS: sources are HTTP requests, sinks are HTTP responses
-
-- We can solve such problems using the data flow and taint tracking libraries.
-
-Global data flow and taint tracking
-===================================
-
-- Recap:
-
-  - Local (“intra-procedural”) data flow models flow within one function; feasible to compute for all functions in a snapshot
-  - Global (“inter-procedural”) data flow models flow across function calls; not feasible to compute for all functions in a snapshot
-
-- For global data flow (and taint tracking), we must therefore provide restrictions to ensure the problem is tractable.
-- Typically, this involves specifying the *source* and *sink*.
-
-.. note::
-
-  As we mentioned in the previous slide deck, while local data flow is feasible to compute for all functions in a snapshot, global data flow is not. This is because the number of paths becomes exponentially larger for global data flow.
-
-  The global data flow (and taint tracking) avoids this problem by requiring that the query author specifies which ``sources`` and ``sinks`` are applicable. This allows the implementation to compute paths between the restricted set of nodes, rather than the full graph.
-
-Global taint tracking library
-=============================
-
-The ``semmle.code.cpp.dataflow.TaintTracking`` library provides a framework for implementing solvers for global taint tracking problems:
-
-  #. Subclass ``TaintTracking::Configuration`` following this template:
-
-     .. code-block:: ql
-    
-       class Config extends TaintTracking::Configuration {
-         Config() { this = "<some unique identifier>" }
-         override predicate isSource(DataFlow::Node nd) { ... }
-         override predicate isSink(DataFlow::Node nd) { ... }
-       }
-
-  #. Use ``Config.hasFlow(source, sink)`` to find inter-procedural paths.
-
-.. note::
-
-  In addition to the taint tracking configuration described here, there is also an equivalent *data flow* configuration in ``semmle.code.cpp.dataflow.DataFlow``, ``DataFlow::Configuration``. Data flow configurations are used to track whether the exact value produced by a source is used by a sink, whereas taint tracking configurations are used to determine whether the source may influence the value used at the sink. Whether you use taint tracking or data flow depends on the analysis problem you are trying to solve.
 
 Finding tainted format strings (outline)
 ========================================
@@ -164,30 +123,11 @@ Use the ``FormattingFunction`` class, we can write the sink as:
 
   When we run this query, we should find a single result. However, it is tricky to determine whether this result is a true positive (a “real” result) because our query only reports the source and the sink, and not the path through the graph between the two.
 
-Path queries
-============
+.. insert path queries slides
 
-Path queries provide information about the identified paths from sources to sinks. Paths can be examined in Path Explorer view.
+.. include:: ../slide-snippets/path-queries.rst
 
-Use this template:
-
-.. code-block:: ql
-
-   /**
-    * ... 
-    * @kind path-problem
-    */
-   
-   import semmle.code.cpp.dataflow.TaintTracking
-   import DataFlow::PathGraph
-   ...
-   from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-   where cfg.hasFlowPath(source, sink)
-   select sink, source, sink, "<message>"
-
-.. note::
-
-  To see the paths between the source and the sinks, we can convert the query to a path problem query. There are a few minor changes that need to be made for this to work–we need an additional import, to specify ``PathNode`` rather than ``Node``, and to add the source/sink to the query output (so that we can automatically determine the paths).
+.. resume language-specific global data flow slides
 
 Defining additional taint steps
 ===============================
@@ -252,86 +192,4 @@ Data flow models
 Extra slides
 ============
 
-Exercise: How not to do global data flow
-========================================
-
-Implement a ``flowStep`` predicate extending ``localFlowStep`` with steps through function calls and returns. Why might we not want to use this?
-
-.. code-block:: ql
-
-   predicate stepIn(Call c, DataFlow::Node arg, DataFlow::ParameterNode parm) {
-     exists(int i | arg.asExpr() = c.getArgument(i) |
-       parm.asParameter() = c.getTarget().getParameter(i))
-   }
-   
-   predicate stepOut(Call c, DataFlow::Node ret, DataFlow::Node res) {
-     exists(ReturnStmt retStmt | retStmt.getEnclosingFunction() = c.getTarget() |
-       ret.asExpr() = retStmt.getExpr() and res.asExpr() = c)
-   }
-   
-   predicate flowStep(DataFlow::Node pred, DataFlow::Node succ) {
-     DataFlow::localFlowStep(pred, succ) or
-     stepIn(_, pred, succ) or
-     stepOut(_, pred, succ)
-   }
-
-Mismatched calls and returns
-============================
-
-.. container:: column-left
-
-   .. code-block:: ql
-
-      char *logFormat(char *fmt) {
-        log("Observed format string %s.", fmt);
-        return fmt;
-      }
-      
-      ...
-      char *dangerousFmt = unvalidatedUserData();
-      printf(logFormat(dangerousFmt), args);
-      ...
-      char *safeFmt = "Hello %s!";
-      printf(logFormat(safeFmt), name);
-
-.. container:: column-right
-
-  Infeasible path due to mismatched call/return pair!
-
-Balancing calls and returns
-===========================
-
-- If we simply take ``flowStep*``, we might mismatch calls and returns, causing imprecision, which in turn may cause false positives.
-
-- Instead, make sure that matching ``stepIn``/``stepOut`` pairs talk about the same call site:
-
-  .. code-block:: ql
-  
-     predicate balancedPath(DataFlow::Node src, DataFlow::Node snk) {
-       src = snk or DataFlow::localFlowStep(src, snk) or
-       exists(DataFlow::Node m | balancedPath(src, m) | balancedPath(m, snk)) or
-       exists(Call c, DataFlow::Node parm, DataFlow::Node ret |
-         stepIn(c, src, parm) and
-         balancedPath(parm, ret) and
-         stepOut(c, ret, snk)
-       )
-     }
-  
-Summary-based global data flow
-==============================
-
-- To avoid traversing the same paths many times, we compute *function summaries* that record if a function parameter flows into a return value:
-
-  .. code-block:: ql
-  
-     predicate returnsParameter(Function f, int i) {
-       exists (Parameter p, ReturnStmt retStmt, Expr ret |
-         p = f.getParameter(i) and
-         retStmt.getEnclosingFunction() = f and
-         ret = retStmt.getExpr() and
-         balancedPath(DataFlow::parameterNode(p), DataFlow::exprNode(ret))
-       )
-     }
-
-- Use this predicate in balancedPath instead of ``stepIn``/``stepOut`` pairs.
-
+.. include:: ../slide-snippets/global-data-flow-extra-slides.rst
