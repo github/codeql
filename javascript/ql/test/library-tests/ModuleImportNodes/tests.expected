@@ -5,10 +5,10 @@ test_ModuleImportNode
 | client1.ts:6:9:6:11 | net | net | client1.ts:6:9:6:11 | net | net |
 | client2.ts:4:28:4:29 | F2 | framework2 | client2.ts:4:28:4:29 | F2 | F2 |
 | client2_lazy.ts:4:28:4:29 | F2 | framework2 | client2_lazy.ts:4:28:4:29 | F2 | F2 |
-| instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:2:1:2:35 | myDefau ... nceName | myDefaultImportedModuleInstanceName |
-| instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:4:5:4:39 | myDefau ... nceName | myDefaultImportedModuleInstanceName |
-| instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:2:1:2:37 | myNames ... nceName | myNamespaceImportedModuleInstanceName |
-| instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:4:5:4:41 | myNames ... nceName | myNamespaceImportedModuleInstanceName |
+| instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:2:1:2:35 | myDefau ... nceName | myDefaultImportedModuleInstanceName |
+| instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:4:5:4:39 | myDefau ... nceName | myDefaultImportedModuleInstanceName |
+| instanceThroughNamespaceImport.js:1:8:1:49 | * as my ... nceName | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:2:1:2:37 | myNames ... nceName | myNamespaceImportedModuleInstanceName |
+| instanceThroughNamespaceImport.js:1:8:1:49 | * as my ... nceName | myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:4:5:4:41 | myNames ... nceName | myNamespaceImportedModuleInstanceName |
 | instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance | instanceThroughRequire.js:2:1:2:28 | myRequi ... nceName | myRequiredModuleInstanceName |
 | instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance | instanceThroughRequire.js:4:5:4:32 | myRequi ... nceName | myRequiredModuleInstanceName |
 | moduleUses.js:1:11:1:24 | require('mod') | mod | moduleUses.js:3:1:3:3 | mod | mod |
@@ -31,22 +31,27 @@ test_moduleImport
 | foo | declare-module-client2.ts:3:1:3:22 | import  ...  'foo'; |
 | foo | declare-module-client.ts:3:1:3:22 | import  ...  'foo'; |
 | framework1 | client1.ts:4:28:4:29 | F1 |
+| framework1 | decls.ts:2:8:2:20 | * as F1_outer |
 | framework2 | client2.ts:4:28:4:29 | F2 |
 | framework2 | client2_lazy.ts:4:28:4:29 | F2 |
+| framework2 | decls.ts:3:8:3:20 | * as F2_outer |
 | fs | amd1.js:1:25:1:26 | fs |
 | fs | amd2.js:2:12:2:24 | require('fs') |
 | fs | process2.js:1:1:1:13 | require('fs') |
 | mod | moduleUses.js:1:11:1:24 | require('mod') |
 | myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:1:1:1:82 | import  ... tance'; |
-| myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName |
-| myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName |
+| myDefaultImportedModuleInstance | instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName |
+| myNamespaceImportedModuleInstance | instanceThroughNamespaceImport.js:1:8:1:49 | * as my ... nceName |
 | myRequiredModuleInstance | instanceThroughRequire.js:1:36:1:70 | require ... tance') |
 | net | client1.ts:6:9:6:11 | net |
+| net | decls.ts:4:8:4:21 | * as net_outer |
 | process | process2.js:2:10:2:16 | process |
 | process | process.js:1:10:1:27 | require('process') |
 test_moduleMember
 | electron | BrowserWindow | destructuringES6.js:1:10:1:22 | BrowserWindow |
 | electron | BrowserWindow | destructuringRequire.js:1:9:1:21 | BrowserWindow |
+| foo | C | declare-module-client2.ts:3:9:3:9 | C |
+| foo | C | declare-module-client.ts:3:9:3:9 | C |
 | framework1 | Component | client1.ts:4:28:4:39 | F1.Component |
 | framework2 | Component | client2.ts:4:28:4:39 | F2.Component |
 | framework2 | Component | client2_lazy.ts:4:28:4:39 | F2.Component |
@@ -56,7 +61,7 @@ test_moduleMember
 | mod | moduleField | moduleUses.js:11:1:11:15 | mod.moduleField |
 | mod | moduleFunction | moduleUses.js:5:9:5:26 | mod.moduleFunction |
 | mod | moduleMethod | moduleUses.js:3:1:3:16 | mod.moduleMethod |
-| myDefaultImportedModuleInstance | default | instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName |
+| myDefaultImportedModuleInstance | default | instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName |
 | net | createServer | client1.ts:6:9:6:24 | net.createServer |
 test_ModuleImportNode_getPath
 | amd1.js:1:25:1:26 | fs | fs |
@@ -67,11 +72,14 @@ test_ModuleImportNode_getPath
 | client2_lazy.ts:4:28:4:29 | F2 | framework2 |
 | declare-module-client2.ts:3:1:3:22 | import  ...  'foo'; | foo |
 | declare-module-client.ts:3:1:3:22 | import  ...  'foo'; | foo |
+| decls.ts:2:8:2:20 | * as F1_outer | framework1 |
+| decls.ts:3:8:3:20 | * as F2_outer | framework2 |
+| decls.ts:4:8:4:21 | * as net_outer | net |
 | destructuringES6.js:1:1:1:41 | import  ... ctron'; | electron |
 | destructuringRequire.js:1:27:1:45 | require('electron') | electron |
 | instanceThroughDefaultImport.js:1:1:1:82 | import  ... tance'; | myDefaultImportedModuleInstance |
-| instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName | myDefaultImportedModuleInstance |
-| instanceThroughNamespaceImport.js:1:8:1:49 | myNamespaceImportedModuleInstanceName | myNamespaceImportedModuleInstance |
+| instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName | myDefaultImportedModuleInstance |
+| instanceThroughNamespaceImport.js:1:8:1:49 | * as my ... nceName | myNamespaceImportedModuleInstance |
 | instanceThroughRequire.js:1:36:1:70 | require ... tance') | myRequiredModuleInstance |
 | moduleUses.js:1:11:1:24 | require('mod') | mod |
 | process2.js:1:1:1:13 | require('fs') | fs |
@@ -97,6 +105,8 @@ test_ModuleImportNode_getAMemberInvocation
 test_moduleImportProp
 | electron | BrowserWindow | destructuringES6.js:1:10:1:22 | BrowserWindow |
 | electron | BrowserWindow | destructuringRequire.js:1:9:1:21 | BrowserWindow |
+| foo | C | declare-module-client2.ts:3:9:3:9 | C |
+| foo | C | declare-module-client.ts:3:9:3:9 | C |
 | framework1 | Component | client1.ts:4:28:4:39 | F1.Component |
 | framework2 | Component | client2.ts:4:28:4:39 | F2.Component |
 | framework2 | Component | client2_lazy.ts:4:28:4:39 | F2.Component |
@@ -106,7 +116,7 @@ test_moduleImportProp
 | mod | moduleField | moduleUses.js:11:1:11:15 | mod.moduleField |
 | mod | moduleFunction | moduleUses.js:5:9:5:26 | mod.moduleFunction |
 | mod | moduleMethod | moduleUses.js:3:1:3:16 | mod.moduleMethod |
-| myDefaultImportedModuleInstance | default | instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName |
+| myDefaultImportedModuleInstance | default | instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName |
 | net | createServer | client1.ts:6:9:6:24 | net.createServer |
 test_ModuleImportNode_getAMemberCall
 | amd1.js:1:25:1:26 | fs | amd1.js:2:3:2:29 | fs.read ... a.txt") |
@@ -121,9 +131,11 @@ test_ModuleImportNode_getAPropertyRead
 | client1.ts:6:9:6:11 | net | client1.ts:6:9:6:24 | net.createServer |
 | client2.ts:4:28:4:29 | F2 | client2.ts:4:28:4:39 | F2.Component |
 | client2_lazy.ts:4:28:4:29 | F2 | client2_lazy.ts:4:28:4:39 | F2.Component |
+| declare-module-client2.ts:3:1:3:22 | import  ...  'foo'; | declare-module-client2.ts:3:9:3:9 | C |
+| declare-module-client.ts:3:1:3:22 | import  ...  'foo'; | declare-module-client.ts:3:9:3:9 | C |
 | destructuringES6.js:1:1:1:41 | import  ... ctron'; | destructuringES6.js:1:10:1:22 | BrowserWindow |
 | destructuringRequire.js:1:27:1:45 | require('electron') | destructuringRequire.js:1:9:1:21 | BrowserWindow |
-| instanceThroughDefaultImport.js:1:1:1:82 | import  ... tance'; | instanceThroughDefaultImport.js:1:8:1:42 | myDefaultImportedModuleInstanceName |
+| instanceThroughDefaultImport.js:1:1:1:82 | import  ... tance'; | instanceThroughDefaultImport.js:1:8:1:42 | myDefau ... nceName |
 | moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:3:1:3:16 | mod.moduleMethod |
 | moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:5:9:5:26 | mod.moduleFunction |
 | moduleUses.js:1:11:1:24 | require('mod') | moduleUses.js:8:9:8:31 | mod.con ... unction |
