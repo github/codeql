@@ -5,3 +5,11 @@ def foo(x:Optional[int]) -> int:
 
 def bar(s:set)->Set:
     pass
+
+
+# ODASA-8075
+class baz():
+    pass
+
+while True:
+    baz = baz[baz]
