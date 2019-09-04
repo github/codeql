@@ -36,6 +36,11 @@ where
   exists(v.getAnAccess()) and
   // don't flag ambient variable definitions
   not dead.(ASTNode).isAmbient() and
+  // don't flag variables with ambient uses
+  not exists(LexicalAccess access |
+    access.getALexicalName() = v.getADeclaration().getALexicalName() and
+    access.isAmbient()
+  ) and
   // don't flag function expressions
   not exists(FunctionExpr fe | dead = fe.getId()) and
   // don't flag function declarations nested inside blocks or other compound statements;
