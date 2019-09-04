@@ -2,7 +2,7 @@ Data flow analysis
 ==================
 
 - Models flow of data through the program.
-- Implemented in the module ``semmle.code.<language>.dataflow.DataFlow``.
+- Implemented in the module ``semmle.code.<lang>.dataflow.DataFlow``.
 - Class ``DataFlow::Node`` represents program elements that have a value, such as expressions and function parameters.
 
   - Nodes of the data flow graph.
