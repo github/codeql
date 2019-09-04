@@ -125,7 +125,7 @@ private class JQueryDomElementDefinition extends DOM::ElementDefinition, @callex
 /**
  * An attribute defined using jQuery APIs.
  */
-abstract private class JQueryAttributeDefinition extends DOM::AttributeDefinition { }
+abstract private class JQueryAttributeDefinition extends DOM::AttributeDefinition {}
 
 /**
  * An attribute definition supplied when constructing a DOM element using `$(...)`.
@@ -149,18 +149,20 @@ private class JQueryAttributeDefinitionInElement extends JQueryAttributeDefiniti
   override DOM::ElementDefinition getElement() { result = elt }
 }
 
+/** Gets the `attr` or `prop` string. */
+private string attrOrProp() {
+  result = "attr" or result = "prop"
+}
+
 /**
  * An attribute definition using `elt.attr(name, value)` or `elt.prop(name, value)`
  * where `elt` is a wrapped set.
  */
 private class JQueryAttr2Call extends JQueryAttributeDefinition, @callexpr {
-  JQueryDomElementDefinition elt;
-
   JQueryAttr2Call() {
-    exists(MethodCallExpr mce | this = mce |
-      mce.getReceiver().(DOM::Element).getDefinition() = elt and
-      (mce.getMethodName() = "attr" or mce.getMethodName() = "prop") and
-      mce.getNumArgument() = 2
+    exists(DataFlow::MethodCallNode call | this = call.asExpr() |
+      call = JQuery::objectRef().getAMethodCall(attrOrProp()) and
+      call.getNumArgument() = 2
     )
   }
 
@@ -170,34 +172,37 @@ private class JQueryAttr2Call extends JQueryAttributeDefinition, @callexpr {
     result = DataFlow::valueNode(this.(CallExpr).getArgument(1))
   }
 
-  override DOM::ElementDefinition getElement() { result = elt }
+  override DOM::ElementDefinition getElement() {
+    exists(DataFlow::MethodCallNode call | this = call.asExpr() |
+      result = call.getReceiver().getALocalSource().asExpr().(DOM::Element).getDefinition()
+    )
+  }
 }
 
 /**
  * Holds if `mce` is a call to `elt.attr(attributes)` or `elt.prop(attributes)`.
  */
-private predicate bulkAttributeInit(
-  MethodCallExpr mce, JQueryDomElementDefinition elt, DataFlow::SourceNode attributes
-) {
-  mce.getReceiver().(DOM::Element).getDefinition() = elt and
-  (mce.getMethodName() = "attr" or mce.getMethodName() = "prop") and
+private predicate bulkAttributeInit(DataFlow::MethodCallNode mce, DataFlow::SourceNode attributes) {
+  mce = JQuery::objectRef().getAMethodCall(attrOrProp()) and
   mce.getNumArgument() = 1 and
-  attributes.flowsToExpr(mce.getArgument(0))
+  attributes.flowsTo(mce.getArgument(0))
 }
 
 /**
- * An attribute definition using `elt.attr(attributes)` or `elt.prop(attributes)`
- * where `elt` is a wrapped set and `attributes` is an object of attribute-value pairs
- * to set.
+ * A property stored on an object flowing to `elt.attr(attributes)` or `elt.prop(attributes)`
+ * where `elt` is a wrapped set.
+ *
+ * To avoid spurious combinations of `getName()` and `getValueNode()`,
+ * this class is tied to an individual property write, as opposed to the call itself.
  */
-private class JQueryAttrCall extends JQueryAttributeDefinition, @callexpr {
-  JQueryDomElementDefinition elt;
+private class JQueryBulkAttributeProp extends JQueryAttributeDefinition {
   DataFlow::PropWrite pwn;
 
-  JQueryAttrCall() {
+  JQueryBulkAttributeProp() {
     exists(DataFlow::SourceNode attributes |
-      bulkAttributeInit(this, elt, attributes) and
-      attributes.flowsTo(pwn.getBase())
+      bulkAttributeInit(_, attributes) and
+      pwn = attributes.getAPropertyWrite() and
+      this = pwn.getAstNode()
     )
   }
 
@@ -205,7 +210,12 @@ private class JQueryAttrCall extends JQueryAttributeDefinition, @callexpr {
 
   override DataFlow::Node getValueNode() { result = pwn.getRhs() }
 
-  override DOM::ElementDefinition getElement() { result = elt }
+  override DOM::ElementDefinition getElement() {
+    exists(DataFlow::MethodCallNode mce |
+      bulkAttributeInit(mce, pwn.getBase().getALocalSource()) and
+      result = mce.getReceiver().asExpr().(DOM::Element).getDefinition()
+    )
+  }
 }
 
 /**
@@ -213,14 +223,12 @@ private class JQueryAttrCall extends JQueryAttributeDefinition, @callexpr {
  * where `elt` is a wrapped set or a plain DOM element.
  */
 private class JQueryAttr3Call extends JQueryAttributeDefinition, @callexpr {
-  DOM::ElementDefinition elt;
+  MethodCallExpr mce;
 
   JQueryAttr3Call() {
-    exists(MethodCallExpr mce | this = mce |
-      mce = jquery().getAMemberCall(any(string m | m = "attr" or m = "prop")).asExpr() and
-      mce.getArgument(0).(DOM::Element).getDefinition() = elt and
-      mce.getNumArgument() = 3
-    )
+    this = mce and
+    mce = jquery().getAMemberCall(attrOrProp()).asExpr() and
+    mce.getNumArgument() = 3
   }
 
   override string getName() { result = this.(CallExpr).getArgument(1).getStringValue() }
@@ -229,7 +237,9 @@ private class JQueryAttr3Call extends JQueryAttributeDefinition, @callexpr {
     result = DataFlow::valueNode(this.(CallExpr).getArgument(2))
   }
 
-  override DOM::ElementDefinition getElement() { result = elt }
+  override DOM::ElementDefinition getElement() {
+    result = mce.getArgument(0).(DOM::Element).getDefinition()
+  }
 }
 
 /**

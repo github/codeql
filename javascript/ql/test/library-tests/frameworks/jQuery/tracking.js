@@ -12,6 +12,11 @@ class C {
    */
   doSomethingWithTypes(e) {
     e.html('foo');
+    e.attr('class', 'foo');
+    e.attr({
+      color: 'red',
+      size: '12pt',
+    });
   }
 }
 

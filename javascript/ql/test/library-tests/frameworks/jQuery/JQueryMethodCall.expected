@@ -1,7 +1,9 @@
 WARNING: Type JQueryMethodCall has been deprecated and may be removed in future (JQueryMethodCall.ql:3,6-22)
 | tracking.js:7:5:7:24 | this.elm.html('foo') | html |
 | tracking.js:14:5:14:17 | e.html('foo') | html |
-| tracking.js:18:7:18:15 | $('#foo') | $ |
+| tracking.js:15:5:15:26 | e.attr( ...  'foo') | attr |
+| tracking.js:16:5:19:6 | e.attr( ... \\n    }) | attr |
+| tracking.js:23:7:23:15 | $('#foo') | $ |
 | ts_global_types.ts:3:5:3:17 | e.html('foo') | html |
 | ts_global_types.ts:7:1:7:9 | $('#foo') | $ |
 | ts_import.ts:5:5:5:17 | e.html('foo') | html |
