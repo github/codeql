@@ -8,7 +8,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
 private import TranslatedInitialization
-private import common.TranslatedConditionBlueprint
+private import common.TranslatedConditionBase
 private import IRInternal
 private import semmle.code.csharp.ir.internal.IRUtilities
 private import desugar.Foreach
@@ -246,14 +246,10 @@ class TranslatedTryStmt extends TranslatedStmt {
     none()
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    none()
-  }
-  
-  override Instruction getFirstInstruction() {
-    result = this.getBody().getFirstInstruction()
-  }
-  
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getFirstInstruction() { result = this.getBody().getFirstInstruction() }
+
   override Instruction getChildSuccessor(TranslatedElement child) {
     child = this.getCatchClause(_) and result = this.getFinally().getFirstInstruction()
     or
@@ -569,12 +565,12 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  override Instruction getChildTrueSuccessor(ConditionBlueprint child) {
+  override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = this.getCondition() and
     result = this.getThen().getFirstInstruction()
   }
 
-  override Instruction getChildFalseSuccessor(ConditionBlueprint child) {
+  override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getCondition() and
     if this.hasElse()
     then result = this.getElse().getFirstInstruction()
@@ -622,11 +618,11 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  override final Instruction getChildTrueSuccessor(ConditionBlueprint child) {
+  final override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = this.getCondition() and result = this.getBody().getFirstInstruction()
   }
 
-  override final Instruction getChildFalseSuccessor(ConditionBlueprint child) {
+  final override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getCondition() and result = this.getParent().getChildSuccessor(this)
   }
 }
@@ -860,80 +856,62 @@ class TranslatedEnumeratorForeach extends TranslatedLoop {
   override ForeachStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getTempEnumDecl() or
+    id = 0 and result = getTempEnumDecl()
+    or
     id = 1 and result = getTry()
   }
 
-  override Instruction getFirstInstruction() {
-    result = getTempEnumDecl().getFirstInstruction()
-  }
+  override Instruction getFirstInstruction() { result = getTempEnumDecl().getFirstInstruction() }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    (
-      child = getTempEnumDecl() and
-      result = getTry().getFirstInstruction()
-    ) or
-    (
-      child = getTry() and
-      result = getParent().getChildSuccessor(this)
-    )
+    child = getTempEnumDecl() and
+    result = getTry().getFirstInstruction()
+    or
+    child = getTry() and
+    result = getParent().getChildSuccessor(this)
   }
 
-  private TranslatedElement getTry() {
-    result = ForeachElements::getTry(stmt)
-  }
+  private TranslatedElement getTry() { result = ForeachElements::getTry(stmt) }
 
-  private TranslatedElement getTempEnumDecl() {
-    result = ForeachElements::getEnumDecl(stmt)
-  }
+  private TranslatedElement getTempEnumDecl() { result = ForeachElements::getEnumDecl(stmt) }
 }
 
 class TranslatedLockStmt extends TranslatedStmt {
   override LockStmt stmt;
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getLockedVarDecl() or
-    id = 1 and result = getLockWasTakenDecl() or
+    id = 0 and result = getLockedVarDecl()
+    or
+    id = 1 and result = getLockWasTakenDecl()
+    or
     id = 2 and result = getTry()
   }
 
-  override Instruction getFirstInstruction() {
-    result = getLockedVarDecl().getFirstInstruction()
-  }
+  override Instruction getFirstInstruction() { result = getLockedVarDecl().getFirstInstruction() }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    (
-      child = getLockedVarDecl() and
-      result = getLockWasTakenDecl().getFirstInstruction()
-    ) or
-    (
-      child = getLockWasTakenDecl() and
-      result = getTry().getFirstInstruction()
-    ) or
-    (
-      child = getTry() and
-      result = getParent().getChildSuccessor(this)
-    )
+    child = getLockedVarDecl() and
+    result = getLockWasTakenDecl().getFirstInstruction()
+    or
+    child = getLockWasTakenDecl() and
+    result = getTry().getFirstInstruction()
+    or
+    child = getTry() and
+    result = getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isLValue) {
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
     none()
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
-    none()
-  }
-  
-  private TranslatedElement getTry() {
-    result = LockElements::getTry(stmt)
-  }
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  private TranslatedElement getLockedVarDecl() {
-    result = LockElements::getLockedVarDecl(stmt)
-  }
-  
+  private TranslatedElement getTry() { result = LockElements::getTry(stmt) }
+
+  private TranslatedElement getLockedVarDecl() { result = LockElements::getLockedVarDecl(stmt) }
+
   private TranslatedElement getLockWasTakenDecl() {
     result = LockElements::getLockWasTakenDecl(stmt)
   }

@@ -7,7 +7,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedInitialization
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
-private import common.TranslatedDeclarationBlueprint
+private import common.TranslatedDeclarationBase
 
 /**
  * Gets the `TranslatedDeclaration` that represents the declaration
@@ -36,29 +36,21 @@ abstract class TranslatedLocalDeclaration extends TranslatedElement, TTranslated
  * Represents the IR translation of the declaration of a local variable,
  * including its initialization, if any.
  */
-class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration, LocalVariableDeclarationBlueprint,
-                                                 InitializationContext {
+class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
+  LocalVariableDeclarationBase, InitializationContext {
   LocalVariable var;
-  
-  TranslatedLocalVariableDeclaration() {
-    var = expr.getVariable()
-  }
-  
+
+  TranslatedLocalVariableDeclaration() { var = expr.getVariable() }
+
   override Instruction getTargetAddress() {
     result = this.getInstruction(InitializerVariableAddressTag())
   }
 
-  override LocalVariable getDeclVar() {
-    result = var
-  }
+  override LocalVariable getDeclVar() { result = var }
 
-  override Type getVarType() {
-    result = getVariableType(getDeclVar()) 
-  }
+  override Type getVarType() { result = getVariableType(getDeclVar()) }
 
-  override Type getTargetType() {
-    result = getVariableType(var)
-  }
+  override Type getTargetType() { result = getVariableType(var) }
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     (
@@ -68,7 +60,7 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration, Loc
     ) and
     result = getIRUserVariable(getFunction(), getDeclVar())
   }
-  
+
   override TranslatedInitialization getInitialization() {
     // First complex initializations
     if var.getInitializer() instanceof ArrayCreation
@@ -81,7 +73,5 @@ class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration, Loc
         result = getTranslatedInitialization(var.getInitializer())
   }
 
-  override predicate isInitializedByElement() {
-    expr.getParent() instanceof IsExpr
-  }
+  override predicate isInitializedByElement() { expr.getParent() instanceof IsExpr }
 }

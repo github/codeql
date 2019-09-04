@@ -1,5 +1,5 @@
 /**
-* Contains an abstract class that serves as a blueprint for classes that deal with the translation of calls 
+* Contains an abstract class that serves as a Base for classes that deal with the translation of calls 
 * (both AST generated and compiler generated).
 */
 
@@ -12,9 +12,9 @@ private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedEleme
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.csharp.ir.Util
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
-private import TranslatedExprBlueprint
+private import TranslatedExprBase
 
-abstract class TranslatedCallBlueprint extends TranslatedElement {
+abstract class TranslatedCallBase extends TranslatedElement {
   override final TranslatedElement getChild(int id) {
     // We choose the child's id in the order of evaluation.
     // Note: some calls do need qualifiers, though instructions for them have already
@@ -163,7 +163,7 @@ abstract class TranslatedCallBlueprint extends TranslatedElement {
   /**
    * Gets the expr for the qualifier of the call. 
    */
-  abstract TranslatedExprBlueprint getQualifier();
+  abstract TranslatedExprBase getQualifier();
 
   /**
    * Gets the instruction whose result value is the `this` argument of the call.
@@ -175,11 +175,11 @@ abstract class TranslatedCallBlueprint extends TranslatedElement {
 
   /**
    * Gets the argument with the specified `index`. Does not include the `this`
-   * argument. We use `TranslatedExprBlueprint` so that we can give both `TranslatedExpr` args,
+   * argument. We use `TranslatedExprBase` so that we can give both `TranslatedExpr` args,
    * in the case of AST generated arguments, or `TranslatedCompilerElement` args in the case of
    * compiler generated arguments.
    */
-  abstract TranslatedExprBlueprint getArgument(int index);
+  abstract TranslatedExprBase getArgument(int index);
 
   /**
    * If there are any arguments, gets the first instruction of the first
@@ -195,7 +195,9 @@ abstract class TranslatedCallBlueprint extends TranslatedElement {
   /**
    * Holds if the call has any arguments, not counting the `this` argument.
    */
-  abstract predicate hasArguments();
+  final predicate hasArguments() {
+    exists(getArgument(0))
+  }
 
   predicate hasReadSideEffect() {
     any()

@@ -4,13 +4,13 @@
 
 import csharp
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedConditionBlueprint
+private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedConditionBase
 private import TranslatedCompilerGeneratedElement
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedValueCondition extends TranslatedCompilerGeneratedElement,
-                                                                 ValueConditionBlueprint {
-  override final string toString() {
+  ValueConditionBase {
+  final override string toString() {
     result = "compiler generated condition (" + generatedBy.toString() + ")"
   }
 }

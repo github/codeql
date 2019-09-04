@@ -139,7 +139,6 @@ private module Cached {
     // Compiler generated foreach while loop:
     // Same as above
     exists(TranslatedForeachWhile s |
-      s instanceof TranslatedForeachWhile and
       result = s.getFirstInstruction() and
       exists(TranslatedElement inBody, InstructionTag tag |
         result = inBody.getInstructionSuccessor(tag, kind) and

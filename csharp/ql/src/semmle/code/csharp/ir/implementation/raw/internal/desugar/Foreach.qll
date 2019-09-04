@@ -3,7 +3,7 @@
  * Since Roslyn rewrites it in quite a few ways,
  * for now only desugar it to a "canonical" form.
  * Also we only deal with foreach stmts where there is only
- * one declaration (see below). 
+ * one declaration (see below).
  * For example the code:
  *    ```
  *      foreach(var item in some_enumerable) {
@@ -38,14 +38,11 @@ private import semmle.code.csharp.ir.implementation.Opcode
 private import semmle.code.csharp.ir.implementation.internal.OperandTag
 private import semmle.code.csharp.ir.internal.TempVariableTag
 private import semmle.code.csharp.ir.implementation.raw.internal.InstructionTag
-
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedStmt
-
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedConditionBlueprint
-private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedExprBlueprint
-
+private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedConditionBase
+private import semmle.code.csharp.ir.implementation.raw.internal.common.TranslatedExprBase
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 private import Common
 private import internal.TranslatedCompilerGeneratedStmt
@@ -58,21 +55,16 @@ private import internal.TranslatedCompilerGeneratedElement
  * Module that exposes the functions needed for the translation of the `foreach` stmt.
  */
 module ForeachElements {
-  TranslatedForeachTry getTry(ForeachStmt generatedBy) {
-    result.getAST() = generatedBy
-  }
-  
-  TranslatedForeachEnum getEnumDecl(ForeachStmt generatedBy) {
-    result.getAST() = generatedBy
-  }
+  TranslatedForeachTry getTry(ForeachStmt generatedBy) { result.getAST() = generatedBy }
+
+  TranslatedForeachEnumerator getEnumDecl(ForeachStmt generatedBy) { result.getAST() = generatedBy }
 }
 
-private class TranslatedForeachTry extends TranslatedCompilerGeneratedTry, TTranslatedCompilerGeneratedElement {
+private class TranslatedForeachTry extends TranslatedCompilerGeneratedTry,
+  TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
 
-  TranslatedForeachTry() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 0)
-  }
+  TranslatedForeachTry() { this = TTranslatedCompilerGeneratedElement(generatedBy, 0) }
 
   override TranslatedElement getFinally() {
     exists(TranslatedForeachFinally ff |
@@ -92,14 +84,12 @@ private class TranslatedForeachTry extends TranslatedCompilerGeneratedTry, TTran
 /**
  * The translation of the finally block.
  */
-private class TranslatedForeachFinally extends TranslatedCompilerGeneratedBlock, 
-                                               TTranslatedCompilerGeneratedElement {
+private class TranslatedForeachFinally extends TranslatedCompilerGeneratedBlock,
+  TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachFinally() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 1)
-  }
-  
+
+  TranslatedForeachFinally() { this = TTranslatedCompilerGeneratedElement(generatedBy, 1) }
+
   override TranslatedElement getStmt(int index) {
     index = 0 and
     exists(TranslatedForeachDispose fd |
@@ -112,61 +102,56 @@ private class TranslatedForeachFinally extends TranslatedCompilerGeneratedBlock,
 /**
  * The compiler generated while loop.
  * Note that this class is not private since it is needed in `IRConstruction.qll`,
- * to correctly mark which edges should be back edges. 
+ * to correctly mark which edges should be back edges.
  */
-class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, ConditionContext, 
-                                             TTranslatedCompilerGeneratedElement {
+class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, ConditionContext,
+  TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachWhile() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 2)
-  } 
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-    Type resultType, boolean isLValue) {
+  TranslatedForeachWhile() { this = TTranslatedCompilerGeneratedElement(generatedBy, 2) }
+
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
     none()
   }
-  
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-    EdgeKind kind) {
-    none()  
-  }
-  
-  override Instruction getFirstInstruction() {
-     result = getCondition().getFirstInstruction()
-  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getFirstInstruction() { result = getCondition().getFirstInstruction() }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInit() and result = getBody().getFirstInstruction() or
+    child = getInit() and result = getBody().getFirstInstruction()
+    or
     child = getBody() and result = getCondition().getFirstInstruction()
   }
 
   override TranslatedElement getChild(int id) {
-    id = 0 and result = getCondition() or
-    id = 1 and result = getInit() or
+    id = 0 and result = getCondition()
+    or
+    id = 1 and result = getInit()
+    or
     id = 2 and result = getBody()
   }
-  
-  override final Instruction getChildTrueSuccessor(ConditionBlueprint child) {
+
+  final override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = getCondition() and result = getInit().getFirstInstruction()
   }
 
-  override final Instruction getChildFalseSuccessor(ConditionBlueprint child) {
+  final override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = getCondition() and result = getParent().getChildSuccessor(this)
   }
-  
-  TranslatedStmt getBody() {
-    result = getTranslatedStmt(generatedBy.getBody())
-  }
-  
+
+  TranslatedStmt getBody() { result = getTranslatedStmt(generatedBy.getBody()) }
+
   TranslatedElement getInit() {
     exists(TranslatedForeachIterVar iv |
       iv.getAST() = generatedBy and
       result = iv
     )
   }
-  
-  ValueConditionBlueprint getCondition() {
+
+  ValueConditionBase getCondition() {
     exists(TranslatedForeachWhileCondition cond |
       cond.getAST() = generatedBy and
       result = cond
@@ -177,64 +162,55 @@ class TranslatedForeachWhile extends TranslatedCompilerGeneratedStmt, ConditionC
 /**
  * The translation of the call to the `MoveNext` method, used as a condition for the while.
  */
-private class TranslatedForeachMoveNext extends TranslatedCompilerGeneratedCall, 
-                                                TTranslatedCompilerGeneratedElement {
+private class TranslatedForeachMoveNext extends TranslatedCompilerGeneratedCall,
+  TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachMoveNext() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 3)
-  }
-  
+
+  TranslatedForeachMoveNext() { this = TTranslatedCompilerGeneratedElement(generatedBy, 3) }
+
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
-    exists(Callable internal | 
+    exists(Callable internal |
       internal.getName() = "MoveNext" and
-      internal.getReturnType() instanceof BoolType and result = internal
+      internal.getReturnType() instanceof BoolType and
+      result = internal
     )
   }
-  
-  override Type getCallResultType() { 
-    result instanceof BoolType
-  }
-  
+
+  override Type getCallResultType() { result instanceof BoolType }
+
   override TranslatedExpr getArgument(int id) { none() }
 
-  override predicate hasArguments() { none() }
-  
-  override TranslatedExprBlueprint getQualifier() { 
+  override TranslatedExprBase getQualifier() {
     exists(TranslatedMoveNextEnumAcc acc |
       acc.getAST() = generatedBy and
       result = acc
     )
   }
-  
-  override Instruction getQualifierResult() {
-    result = getQualifier().getResult()
-  }
+
+  override Instruction getQualifierResult() { result = getQualifier().getResult() }
 }
 
 /**
  * The translation of the call to retrieve the enumerator.
  */
-private class TranslatedForeachGetEnumerator extends TranslatedCompilerGeneratedCall, 
-                                                     TTranslatedCompilerGeneratedElement {
+private class TranslatedForeachGetEnumerator extends TranslatedCompilerGeneratedCall,
+  TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachGetEnumerator() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 4)
-  }
-  
-  final override Type getCallResultType() { 
+
+  TranslatedForeachGetEnumerator() { this = TTranslatedCompilerGeneratedElement(generatedBy, 4) }
+
+  final override Type getCallResultType() {
     result = getInstructionFunction(CallTargetTag()).getReturnType()
   }
-  
+
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
     exists(Callable internal |
       internal.getName() = "GetEnumerator" and
       // TODO: For now ignore the possibility that the
       //       foreach variable can have a generic type.
-      //       The type of the callable will need to be fabricated, 
+      //       The type of the callable will need to be fabricated,
       //       since we might not find the correct callable in the DB.
       //       Probably will have change the way the immediate
       //       operand of `FunctionAddress` is calculated.
@@ -245,51 +221,39 @@ private class TranslatedForeachGetEnumerator extends TranslatedCompilerGenerated
 
   override TranslatedExpr getArgument(int id) { none() }
 
-  override predicate hasArguments() { none() }
-  
-  override TranslatedExprBlueprint getQualifier() { 
+  override TranslatedExprBase getQualifier() {
     result = getTranslatedExpr(generatedBy.getIterableExpr())
   }
-  
-  override Instruction getQualifierResult() {
-    result = getQualifier().getResult()
-  }
+
+  override Instruction getQualifierResult() { result = getQualifier().getResult() }
 }
 
 /**
  * The translation of the call to the getter method of the `Current` property of the enumerator.
  */
-private class TranslatedForeachCurrent extends TranslatedCompilerGeneratedCall, 
-                                               TTranslatedCompilerGeneratedElement {
+private class TranslatedForeachCurrent extends TranslatedCompilerGeneratedCall,
+  TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachCurrent() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 5)
-  }
-  
-  override Type getCallResultType() { 
-    result = generatedBy.getAVariable().getType()
-  }
-  
+
+  TranslatedForeachCurrent() { this = TTranslatedCompilerGeneratedElement(generatedBy, 5) }
+
+  override Type getCallResultType() { result = generatedBy.getAVariable().getType() }
+
   override TranslatedExpr getArgument(int id) { none() }
 
-  override predicate hasArguments() { none() }
-  
-  override TranslatedExprBlueprint getQualifier() { 
+  override TranslatedExprBase getQualifier() {
     exists(TranslatedForeachCurrentEnumAcc acc |
       acc.getAST() = generatedBy and
       result = acc
     )
   }
-  
-  override Instruction getQualifierResult() {
-    result = getQualifier().getResult()
-  }
-  
+
+  override Instruction getQualifierResult() { result = getQualifier().getResult() }
+
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
-    exists(Property prop | 
-      prop.getName() = "Current" and 
+    exists(Property prop |
+      prop.getName() = "Current" and
       result = prop.getGetter()
     )
   }
@@ -298,86 +262,72 @@ private class TranslatedForeachCurrent extends TranslatedCompilerGeneratedCall,
 /**
  * The translation of the call to dispose (inside the finally block)
  */
-private class TranslatedForeachDispose extends TranslatedCompilerGeneratedCall, 
-                                               TTranslatedCompilerGeneratedElement {
+private class TranslatedForeachDispose extends TranslatedCompilerGeneratedCall,
+  TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachDispose() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 6)
-  }
-  
+
+  TranslatedForeachDispose() { this = TTranslatedCompilerGeneratedElement(generatedBy, 6) }
+
   override Callable getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and
-    exists(Callable dispose | 
-      dispose.getName() = "Dispose" and 
+    exists(Callable dispose |
+      dispose.getName() = "Dispose" and
       result = dispose
     )
   }
-  
-  final override Type getCallResultType() { 
-    result instanceof VoidType
-  }
-  
+
+  final override Type getCallResultType() { result instanceof VoidType }
+
   override TranslatedExpr getArgument(int id) { none() }
-  
-  override predicate hasArguments() { none() }
-  
-  override TranslatedExprBlueprint getQualifier() { 
+
+  override TranslatedExprBase getQualifier() {
     exists(TranslatedForeachDisposeEnumAcc acc |
       acc.getAST() = generatedBy and
       result = acc
     )
   }
-  
-  override Instruction getQualifierResult() {
-    result = getQualifier().getResult()
-  }
+
+  override Instruction getQualifierResult() { result = getQualifier().getResult() }
 }
 
 /**
  * The condition for the while, ie. a call to MoveNext.
  */
-private class TranslatedForeachWhileCondition extends TranslatedCompilerGeneratedValueCondition, 
-                                                      TTranslatedCompilerGeneratedElement {
+private class TranslatedForeachWhileCondition extends TranslatedCompilerGeneratedValueCondition,
+  TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachWhileCondition() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 7)
-  }
-  
+
+  TranslatedForeachWhileCondition() { this = TTranslatedCompilerGeneratedElement(generatedBy, 7) }
+
   override TranslatedCompilerGeneratedCall getValueExpr() {
     exists(TranslatedForeachMoveNext mn |
       mn.getAST() = generatedBy and
       result = mn
     )
   }
-  
-  override Instruction valueExprResult() {
-    result = getValueExpr().getResult()
-  }
+
+  override Instruction valueExprResult() { result = getValueExpr().getResult() }
 }
 
 /**
  * Class that represents that translation of the declaration that happens before the `try ... finally` block (the
  * declaration of the `temporary` enumerator variable)
  */
-private class TranslatedForeachEnum extends TranslatedCompilerGeneratedDeclaration, 
-                                            TTranslatedCompilerGeneratedElement {
+private class TranslatedForeachEnumerator extends TranslatedCompilerGeneratedDeclaration,
+  TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachEnum() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 8) 
-  }
-  
+
+  TranslatedForeachEnumerator() { this = TTranslatedCompilerGeneratedElement(generatedBy, 8) }
+
   override predicate hasTempVariable(TempVariableTag tag, Type type) {
     tag = ForeachEnumTempVar() and
     type = getInitialization().getCallResultType()
   }
-  
+
   override IRTempVariable getIRVariable() {
     result = getIRTempVariable(generatedBy, ForeachEnumTempVar())
   }
-  
+
   override TranslatedCompilerGeneratedCall getInitialization() {
     exists(TranslatedForeachGetEnumerator ge |
       ge.getAST() = generatedBy and
@@ -385,31 +335,27 @@ private class TranslatedForeachEnum extends TranslatedCompilerGeneratedDeclarati
     )
   }
 
-  override Instruction getInitializationResult() {
-    result = getInitialization().getResult()
-  }
+  override Instruction getInitializationResult() { result = getInitialization().getResult() }
 }
 
 /**
  * Class that represents that translation of the declaration that's happening inside the body of the while.
  */
-private class TranslatedForeachIterVar extends TranslatedCompilerGeneratedDeclaration, 
-                                               TTranslatedCompilerGeneratedElement {
+private class TranslatedForeachIterVar extends TranslatedCompilerGeneratedDeclaration,
+  TTranslatedCompilerGeneratedElement {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachIterVar() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 9) 
-  }
-  
-  override IRVariable getInstructionVariable(InstructionTag tag) { 
-    tag = InitializerVariableAddressTag() and 
+
+  TranslatedForeachIterVar() { this = TTranslatedCompilerGeneratedElement(generatedBy, 9) }
+
+  override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = InitializerVariableAddressTag() and
     result = getIRVariable()
   }
-  
+
   override IRVariable getIRVariable() {
     result = getIRUserVariable(getFunction(), generatedBy.getAVariable())
   }
-  
+
   override TranslatedCompilerGeneratedCall getInitialization() {
     exists(TranslatedForeachCurrent crtProp |
       crtProp.getAST() = generatedBy and
@@ -417,9 +363,7 @@ private class TranslatedForeachIterVar extends TranslatedCompilerGeneratedDeclar
     )
   }
 
-  override Instruction getInitializationResult() {
-    result = getInitialization().getResult()
-  }
+  override Instruction getInitializationResult() { result = getInitialization().getResult() }
 }
 
 /**
@@ -427,27 +371,23 @@ private class TranslatedForeachIterVar extends TranslatedCompilerGeneratedDeclar
  * for the call to `MoveNext`.
  */
 private class TranslatedMoveNextEnumAcc extends TTranslatedCompilerGeneratedElement,
-                                                TranslatedCompilerGeneratedVariableAccess {
+  TranslatedCompilerGeneratedVariableAccess {
   override ForeachStmt generatedBy;
-  
-  TranslatedMoveNextEnumAcc() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 10)
-  }
-  
-  override Type getResultType() {
-    result instanceof BoolType
-  }
-  
+
+  TranslatedMoveNextEnumAcc() { this = TTranslatedCompilerGeneratedElement(generatedBy, 10) }
+
+  override Type getResultType() { result instanceof BoolType }
+
   override predicate hasTempVariable(TempVariableTag tag, Type type) {
     tag = ForeachEnumTempVar() and
     type = getResultType()
   }
-  
+
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = AddressTag() and
     result = getTempVariable(ForeachEnumTempVar())
   }
-  
+
   override predicate needsLoad() { any() }
 }
 
@@ -456,27 +396,23 @@ private class TranslatedMoveNextEnumAcc extends TTranslatedCompilerGeneratedElem
  * for the call to the getter of the property `Current`.
  */
 private class TranslatedForeachCurrentEnumAcc extends TTranslatedCompilerGeneratedElement,
-                                                      TranslatedCompilerGeneratedVariableAccess {
+  TranslatedCompilerGeneratedVariableAccess {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachCurrentEnumAcc() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 11)
-  }
-  
-  override Type getResultType() {
-    result instanceof BoolType
-  }
-  
+
+  TranslatedForeachCurrentEnumAcc() { this = TTranslatedCompilerGeneratedElement(generatedBy, 11) }
+
+  override Type getResultType() { result instanceof BoolType }
+
   override predicate hasTempVariable(TempVariableTag tag, Type type) {
     tag = ForeachEnumTempVar() and
     type = getResultType()
   }
-  
+
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = AddressTag() and
     result = getTempVariable(ForeachEnumTempVar())
   }
-  
+
   override predicate needsLoad() { any() }
 }
 
@@ -485,26 +421,22 @@ private class TranslatedForeachCurrentEnumAcc extends TTranslatedCompilerGenerat
  * for the call to `Dispose`.
  */
 private class TranslatedForeachDisposeEnumAcc extends TTranslatedCompilerGeneratedElement,
-                                                      TranslatedCompilerGeneratedVariableAccess {
+  TranslatedCompilerGeneratedVariableAccess {
   override ForeachStmt generatedBy;
-  
-  TranslatedForeachDisposeEnumAcc() {
-    this = TTranslatedCompilerGeneratedElement(generatedBy, 12)
-  }
-  
-  override Type getResultType() {
-    result instanceof BoolType
-  }
-  
+
+  TranslatedForeachDisposeEnumAcc() { this = TTranslatedCompilerGeneratedElement(generatedBy, 12) }
+
+  override Type getResultType() { result instanceof BoolType }
+
   override predicate hasTempVariable(TempVariableTag tag, Type type) {
     tag = ForeachEnumTempVar() and
     type = getResultType()
   }
-  
+
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = AddressTag() and
     result = getTempVariable(ForeachEnumTempVar())
   }
-  
+
   override predicate needsLoad() { any() }
 }

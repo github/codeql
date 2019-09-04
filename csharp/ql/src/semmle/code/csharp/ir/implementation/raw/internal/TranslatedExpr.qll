@@ -9,9 +9,9 @@ private import TranslatedDeclaration
 private import TranslatedElement
 private import TranslatedFunction
 private import TranslatedInitialization
-private import common.TranslatedConditionBlueprint
-private import common.TranslatedCallBlueprint
-private import common.TranslatedExprBlueprint
+private import common.TranslatedConditionBase
+private import common.TranslatedCallBase
+private import common.TranslatedExprBase
 private import desugar.Delegate
 private import desugar.internal.TranslatedCompilerGeneratedCall
 import TranslatedCall
@@ -38,7 +38,7 @@ TranslatedExpr getTranslatedExpr(Expr expr) {
  * as the `TranslatedAllocatorCall` and `TranslatedAllocationSize` within the
  * translation of a `NewExpr`.
  */
-abstract class TranslatedExpr extends TranslatedExprBlueprint {
+abstract class TranslatedExpr extends TranslatedExprBase {
   Expr expr;
 
   /**
@@ -241,12 +241,12 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
 
   override Instruction getChildSuccessor(TranslatedElement child) { none() }
 
-  override Instruction getChildTrueSuccessor(ConditionBlueprint child) {
+  override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = this.getCondition() and
     result = this.getInstruction(ConditionValueTrueTempAddressTag())
   }
 
-  override Instruction getChildFalseSuccessor(ConditionBlueprint child) {
+  override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getCondition() and
     result = this.getInstruction(ConditionValueFalseTempAddressTag())
   }
@@ -744,7 +744,8 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
     // and not the LHS (the address of the LHS is generated during
     // the translation of the initialization).
     (
-      expr.getParent() instanceof LocalVariableDeclAndInitExpr implies
+      expr.getParent() instanceof LocalVariableDeclAndInitExpr
+      implies
       expr = expr.getParent().(LocalVariableDeclAndInitExpr).getInitializer()
     )
   }
@@ -1606,12 +1607,12 @@ class TranslatedConditionalExpr extends TranslatedNonConstantExpr, ConditionCont
     )
   }
 
-  override Instruction getChildTrueSuccessor(ConditionBlueprint child) {
+  override Instruction getChildTrueSuccessor(ConditionBase child) {
     child = this.getCondition() and
     result = this.getThen().getFirstInstruction()
   }
 
-  override Instruction getChildFalseSuccessor(ConditionBlueprint child) {
+  override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getCondition() and
     result = this.getElse().getFirstInstruction()
   }
@@ -1890,38 +1891,30 @@ class TranslatedLambdaExpr extends TranslatedNonConstantExpr, InitializationCont
 class TranslatedDelegateCall extends TranslatedNonConstantExpr {
   override DelegateCall expr;
 
-  override final Instruction getFirstInstruction() {
-    result = getInovkeCall().getFirstInstruction()
+  final override Instruction getFirstInstruction() {
+    result = this.getInvokeCall().getFirstInstruction()
   }
 
-  override final TranslatedElement getChild(int id) {
-    id = 0 and result = getInovkeCall()
-  }
+  final override TranslatedElement getChild(int id) { id = 0 and result = this.getInvokeCall() }
 
-  override Instruction getResult() {
-    result = getInovkeCall().getResult()
-  }
+  override Instruction getResult() { result = this.getInvokeCall().getResult() }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    none()
-  }
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getInovkeCall() and
+    child = this.getInvokeCall() and
     result = getParent().getChildSuccessor(this)
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag, Type resultType,
-      boolean isLValue) {
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
     none()
   }
 
-  override Instruction getInstructionOperand(InstructionTag tag,
-      OperandTag operandTag) {
-    none()
-  }
+  override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) { none() }
 
-  private TranslatedCompilerGeneratedCall getInovkeCall() {
+  private TranslatedCompilerGeneratedCall getInvokeCall() {
     result = DelegateElements::getInvoke(expr)
   }
 }

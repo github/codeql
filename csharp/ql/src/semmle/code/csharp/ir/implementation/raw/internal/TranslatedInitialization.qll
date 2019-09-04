@@ -129,7 +129,7 @@ class TranslatedDirectInitialization extends TranslatedInitialization {
     not expr instanceof DelegateCreation and
     not expr instanceof CollectionInitializer and
     not expr instanceof ObjectCreation and
-    not expr instanceof StringLiteral 
+    not expr instanceof StringLiteral
   }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getInitializer() }
@@ -268,9 +268,9 @@ class TranslatedObjectInitialization extends TranslatedInitialization, Construct
     result = this.getInstruction(NewObjTag())
   }
 
-  TranslatedExpr getConstructorCall() { result = getTranslatedExpr(expr) }
+  private TranslatedExpr getConstructorCall() { result = getTranslatedExpr(expr) }
 
-  TranslatedExpr getInitializerExpr() { result = getTranslatedExpr(expr.getInitializer()) }
+  private TranslatedExpr getInitializerExpr() { result = getTranslatedExpr(expr.getInitializer()) }
 
   override Instruction getReceiver() {
     // The newly allocated object will be the target of the constructor call
@@ -391,7 +391,8 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
 }
 
 // TODO: Possibly refactor into something simpler
-abstract class TranslatedConstructorCallFromConstructor extends TranslatedElement, ConstructorCallContext {
+abstract class TranslatedConstructorCallFromConstructor extends TranslatedElement,
+  ConstructorCallContext {
   Call call;
 
   final override Language::AST getAST() { result = call }
@@ -478,42 +479,32 @@ class TranslatedConstructorInitializer extends TranslatedConstructorCallFromCons
 class TranslatedDelegateCreation extends TranslatedInitialization, ConstructorCallContext {
   override DelegateCreation expr;
 
-  override TranslatedElement getChild(int id) {
-    id = 0 and result = getConstructorCall()
-  }
+  override TranslatedElement getChild(int id) { id = 0 and result = getConstructorCall() }
 
   override predicate hasInstruction(
-    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue) {
-      (
-        tag = NewObjTag() and
-        opcode instanceof Opcode::NewObj and
-        resultType = expr.getType() and
-        isLValue = false
-      )
-      or
-      (
-        tag = InitializerStoreTag() and
-        opcode instanceof Opcode::Store and
-        resultType = expr.getType() and
-        isLValue = false
-      )
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isLValue
+  ) {
+    tag = NewObjTag() and
+    opcode instanceof Opcode::NewObj and
+    resultType = expr.getType() and
+    isLValue = false
+    or
+    tag = InitializerStoreTag() and
+    opcode instanceof Opcode::Store and
+    resultType = expr.getType() and
+    isLValue = false
   }
 
-  override final Instruction getFirstInstruction() {
-    result = getInstruction(NewObjTag())
-  }
+  final override Instruction getFirstInstruction() { result = getInstruction(NewObjTag()) }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    (
-      tag = NewObjTag() and
-      result = getConstructorCall().getFirstInstruction() and
-      kind instanceof GotoEdge
-    ) or
-    (
-      tag = InitializerStoreTag() and
-      result = getParent().getChildSuccessor(this) and
-      kind instanceof GotoEdge
-    )
+    tag = NewObjTag() and
+    result = getConstructorCall().getFirstInstruction() and
+    kind instanceof GotoEdge
+    or
+    tag = InitializerStoreTag() and
+    result = getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -522,24 +513,17 @@ class TranslatedDelegateCreation extends TranslatedInitialization, ConstructorCa
   }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
-    tag = InitializerStoreTag() and 
+    tag = InitializerStoreTag() and
     (
-      ( 
-        operandTag instanceof AddressOperandTag and
-        result = getParent().(InitializationContext).getTargetAddress()
-      ) or
-      ( 
-        operandTag instanceof StoreValueOperandTag and
-        result = getInstruction(NewObjTag())
-      )
+      operandTag instanceof AddressOperandTag and
+      result = getParent().(InitializationContext).getTargetAddress()
+      or
+      operandTag instanceof StoreValueOperandTag and
+      result = getInstruction(NewObjTag())
     )
   }
 
-  TranslatedElement getConstructorCall() {
-    result = DelegateElements::getConstructor(expr)
-  }
+  private TranslatedElement getConstructorCall() { result = DelegateElements::getConstructor(expr) }
 
-  override Instruction getReceiver() { 
-    result = getInstruction(NewObjTag())
-  }
+  override Instruction getReceiver() { result = getInstruction(NewObjTag()) }
 }

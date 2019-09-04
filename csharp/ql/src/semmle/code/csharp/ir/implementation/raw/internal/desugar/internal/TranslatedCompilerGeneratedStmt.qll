@@ -1,14 +1,14 @@
 /**
-* Contains an abstract class, which is the super class  of all the classes that represent compiler 
-* generated statements.
-*/
+ * Contains an abstract class, which is the super class  of all the classes that represent compiler
+ * generated statements.
+ */
 
 import csharp
 private import TranslatedCompilerGeneratedElement
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedStmt extends TranslatedCompilerGeneratedElement {
-  override final string toString() {
+  final override string toString() {
     result = "compiler generated stmt (" + generatedBy.toString() + ")"
   }
 }

@@ -7,7 +7,8 @@ import csharp
 private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedElement
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
-abstract class TranslatedCompilerGeneratedElement extends TranslatedElement {
+abstract class TranslatedCompilerGeneratedElement extends TranslatedElement,
+  TTranslatedCompilerGeneratedElement {
   // The element that generates generated the compiler element can
   // only be a stmt or an expr
   ControlFlowElement generatedBy;
@@ -16,11 +17,7 @@ abstract class TranslatedCompilerGeneratedElement extends TranslatedElement {
     result = "compiler generated element (" + generatedBy.toString() + ")"
   }
 
-  override final Callable getFunction() {
-    result = generatedBy.getEnclosingCallable() 
-  }
-  
-  override final Language::AST getAST() {
-    result = generatedBy
-  }
+  final override Callable getFunction() { result = generatedBy.getEnclosingCallable() }
+
+  final override Language::AST getAST() { result = generatedBy }
 }

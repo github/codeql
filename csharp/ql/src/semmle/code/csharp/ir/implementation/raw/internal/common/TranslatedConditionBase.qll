@@ -1,5 +1,5 @@
 /**
- * Contains several abstract classes that serve as blueprints.
+ * Contains several abstract classes that serve as Bases.
  */
 
 import csharp
@@ -17,26 +17,26 @@ private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
  * information about the instruction that follows a conditional branch.
  */
 abstract class ConditionContext extends TranslatedElement {
-  abstract Instruction getChildTrueSuccessor(ConditionBlueprint child);
+  abstract Instruction getChildTrueSuccessor(ConditionBase child);
 
-  abstract Instruction getChildFalseSuccessor(ConditionBlueprint child);
+  abstract Instruction getChildFalseSuccessor(ConditionBase child);
 }
 
 /**
- * Abstract class that serves as a blueprint for the classes that deal with both the AST generated conditions 
+ * Abstract class that serves as a Base for the classes that deal with both the AST generated conditions 
  * and the compiler generated ones (captures the common patterns).
  */
-abstract class ConditionBlueprint extends TranslatedElement {
+abstract class ConditionBase extends TranslatedElement {
   final ConditionContext getConditionContext() {
     result = getParent()
   }
 }
 
 /**
- * Abstract class that serves as a blueprint for the classes that deal with both the AST generated _value_ conditions 
+ * Abstract class that serves as a Base for the classes that deal with both the AST generated _value_ conditions 
  * and the compiler generated ones (captures the common patterns).
  */
-abstract class ValueConditionBlueprint extends ConditionBlueprint {
+abstract class ValueConditionBase extends ConditionBase {
   override TranslatedElement getChild(int id) {
     id = 0 and result = getValueExpr()
   }

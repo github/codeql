@@ -1,5 +1,5 @@
 /**
- * Contains an abstract class that serves as a blueprint for the classes that deal with both the AST 
+ * Contains an abstract class that serves as a Base for the classes that deal with both the AST 
  * generated declarations and the compiler generated ones (captures the common patterns).
  */
 
@@ -14,7 +14,7 @@ private import semmle.code.csharp.ir.implementation.raw.internal.TranslatedIniti
 private import semmle.code.csharp.ir.internal.IRCSharpLanguage as Language
 
 
-abstract class LocalVariableDeclarationBlueprint extends TranslatedElement {
+abstract class LocalVariableDeclarationBase extends TranslatedElement {
   override TranslatedElement getChild(int id) {
     id = 0 and result = getInitialization()
   }
