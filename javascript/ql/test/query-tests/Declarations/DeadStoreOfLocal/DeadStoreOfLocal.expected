@@ -1,3 +1,7 @@
+| computedInterfaceProperty.ts:1:10:1:12 | Foo | This definition of Foo is useless, since its value is never read. |
+| computedInterfaceProperty.ts:7:7:7:17 | Bar = "Bar" | The initial value of Bar is unused, since it is always overwritten. |
+| computedInterfaceProperty.ts:13:7:13:17 | Baz = "Baz" | The initial value of Baz is unused, since it is always overwritten. |
+| computedInterfaceProperty.ts:21:1:21:10 | class C {} | This definition of C is useless, since its value is never read. |
 | overload.ts:10:12:10:14 | baz | This definition of baz is useless, since its value is never read. |
 | tst2.js:26:9:26:14 | x = 23 | The initial value of x is unused, since it is always overwritten. |
 | tst2.js:28:9:28:14 | x = 42 | This definition of x is useless, since its value is never read. |
