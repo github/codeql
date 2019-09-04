@@ -74,19 +74,22 @@ class NestedTypedefType extends TypedefType {
   override string getCanonicalQLClass() { result = "NestedTypedefType" }
 
   /**
-   * DEPRECATED
+   * DEPRECATED: use `.hasSpecifier("private")` instead.
+   *
    * Holds if this member is private.
    */
   deprecated predicate isPrivate() { this.hasSpecifier("private") }
 
   /**
-   * DEPRECATED
+   * DEPRECATED: `.hasSpecifier("protected")` instead.
+   *
    * Holds if this member is protected.
    */
   deprecated predicate isProtected() { this.hasSpecifier("protected") }
 
   /**
-   * DEPRECATED
+   * DEPRECATED: use `.hasSpecifier("public")` instead.
+   *
    * Holds if this member is public.
    */
   deprecated predicate isPublic() { this.hasSpecifier("public") }

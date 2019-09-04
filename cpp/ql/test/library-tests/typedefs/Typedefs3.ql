@@ -8,13 +8,13 @@ string describe(TypedefType t) {
     t instanceof NestedTypedefType and
     result = "NestedTypedefType"
   ) or (
-    t.(NestedTypedefType).isPrivate() and
+    t.(NestedTypedefType).hasSpecifier("private") and
     result = "(NestedTypedefType).isPrivate()"
   ) or (
-    t.(NestedTypedefType).isProtected() and
+    t.(NestedTypedefType).hasSpecifier("protected") and
     result = "(NestedTypedefType).isProtected()"
   ) or (
-    t.(NestedTypedefType).isPublic() and
+    t.(NestedTypedefType).hasSpecifier("public") and
     result = "(NestedTypedefType).isPublic()"
   ) or exists(Type base |
     base = t.getBaseType() and
