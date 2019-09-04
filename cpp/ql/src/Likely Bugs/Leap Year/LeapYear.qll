@@ -4,7 +4,6 @@
 
 import cpp
 import semmle.code.cpp.dataflow.DataFlow
-import semmle.code.cpp.controlflow.Guards
 import semmle.code.cpp.commons.DateTime
 
 /**
