@@ -61,3 +61,34 @@ void assignBeforeCopy() {
   S copy2 = s2;
   sink(copy2.m1); // flow
 }
+
+struct Wrapper {
+  S s;
+};
+
+void copyIntermediate() {
+  Wrapper w = { { 0, 0 } };
+  S s = w.s;
+  s.m1 = user_input();
+  sink(w.s.m1); // no flow
+}
+
+void pointerIntermediate() {
+  Wrapper w = { { 0, 0 } };
+  S *s = &w.s;
+  s->m1 = user_input();
+  sink(w.s.m1); // flow [FALSE NEGATIVE]
+}
+
+void referenceIntermediate() {
+  Wrapper w = { { 0, 0 } };
+  S &s = w.s;
+  s.m1 = user_input();
+  sink(w.s.m1); // flow [FALSE NEGATIVE]
+}
+
+void nestedAssign() {
+  Wrapper w = { { 0, 0 } };
+  w.s.m1 = user_input();
+  sink(w.s.m1); // flow
+}
