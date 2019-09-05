@@ -72,6 +72,12 @@ predicate hasCaseEdge(string minValue, string maxValue) {
 
 predicate hasPositionalArgIndex(int argIndex) {
   exists(CSharp::MethodCall call | exists(call.getArgument(argIndex)))
+  or
+  // Quick fix so that generated calls (`Invoke` etc) will have the
+  // correct number of parameters; it is an overestimation,
+  // since we don't care about all the callables, so it
+  // should be restricted more
+  exists(CSharp::Callable callable | callable.getNumberOfParameters() = argIndex)
 }
 
 predicate hasAsmOperandIndex(int operandIndex) { none() }
