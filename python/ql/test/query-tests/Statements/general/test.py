@@ -165,4 +165,7 @@ def no_with():
 def assert_ok(seq):
     assert all(isinstance(element, (str, unicode)) for element in seq)
 
+# False positive. ODASA-8042
+class false_positive:
+    e = (x for x in [])
 

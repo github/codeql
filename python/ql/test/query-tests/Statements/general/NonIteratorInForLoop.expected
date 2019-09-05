@@ -1,1 +1,2 @@
 | test.py:50:1:50:23 | For | $@ of class '$@' may be used in for-loop. | test.py:50:10:50:22 | ControlFlowNode for NonIterator() | Non-iterator | test.py:45:1:45:26 | class NonIterator | NonIterator |
+| test.py:170:10:170:22 | For | $@ of class '$@' may be used in for-loop. | test.py:170:10:170:22 | ControlFlowNode for .0 | Non-iterator | test.py:169:1:169:21 | class false_positive | false_positive |
