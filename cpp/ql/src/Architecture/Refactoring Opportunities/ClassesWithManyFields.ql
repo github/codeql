@@ -42,9 +42,7 @@ newtype TVariableDeclarationInfo =
  */
 class VariableDeclarationLine extends TVariableDeclarationInfo {
   Class c;
-
   File f;
-
   int line;
 
   VariableDeclarationLine() {

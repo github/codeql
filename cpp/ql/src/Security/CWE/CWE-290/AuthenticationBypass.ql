@@ -14,11 +14,9 @@
 import semmle.code.cpp.security.TaintTracking
 
 predicate hardCodedAddressOrIP(StringLiteral txt) {
-  exists(string s
-  | s = txt.getValueText()
-  | // Hard-coded ip addresses, such as 127.0.0.1
+  exists(string s | s = txt.getValueText() |
+    // Hard-coded ip addresses, such as 127.0.0.1
     s.regexpMatch("\"[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+\"") or
-
     // Hard-coded addresses such as www.mycompany.com
     s.matches("\"www.%\"") or
     s.matches("\"http:%\"") or
@@ -84,15 +82,18 @@ predicate hardCodedAddressOrIP(StringLiteral txt) {
     s.matches("\"%.sg\"") or
     s.matches("\"%.io\"") or
     s.matches("\"%.edu\"") or
-    s.matches("\"%.gov\""))
+    s.matches("\"%.gov\"")
+  )
 }
 
 predicate useOfHardCodedAddressOrIP(Expr use) {
-  hardCodedAddressOrIP(use) or
-  exists(Expr def, Expr src, Variable v
-  | useOfHardCodedAddressOrIP(src) and
+  hardCodedAddressOrIP(use)
+  or
+  exists(Expr def, Expr src, Variable v |
+    useOfHardCodedAddressOrIP(src) and
     exprDefinition(v, def, src) and
-    definitionUsePair(v, def, use))
+    definitionUsePair(v, def, use)
+  )
 }
 
 /**
@@ -103,22 +104,14 @@ predicate useOfHardCodedAddressOrIP(Expr use) {
  */
 predicate hardCodedAddressInCondition(Expr source, Expr condition) {
   // One of the sub-expressions of the condition is tainted.
-  exists(Expr taintedExpr
-  | taintedExpr.getParent+() = condition
-  | tainted(source, taintedExpr)) and
-
+  exists(Expr taintedExpr | taintedExpr.getParent+() = condition | tainted(source, taintedExpr)) and
   // One of the sub-expressions of the condition is a hard-coded
   // IP or web-address.
-  exists(Expr use
-  | use.getParent+() = condition
-  | useOfHardCodedAddressOrIP(use)) and
-
+  exists(Expr use | use.getParent+() = condition | useOfHardCodedAddressOrIP(use)) and
   condition = any(IfStmt ifStmt).getCondition()
 }
 
 from Expr source, Expr condition
 where hardCodedAddressInCondition(source, condition)
-select
-  condition,
-  "Untrusted input $@ might be vulnerable to a spoofing attack.",
-  source, source.toString()
+select condition, "Untrusted input $@ might be vulnerable to a spoofing attack.", source,
+  source.toString()

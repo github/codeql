@@ -16,6 +16,7 @@
  * (intraprocedural) data flow, invoke `DataFlow::localFlow` or
  * `DataFlow::LocalFlowStep` with arguments of type `DataFlow::Node`.
  */
+
 import cpp
 
 module DataFlow {

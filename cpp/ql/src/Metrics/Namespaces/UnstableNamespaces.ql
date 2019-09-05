@@ -6,11 +6,12 @@
  * @chart.type bar
  * @tags maintainability
  */
+
 import cpp
 
 from Namespace n, float c
-where n.fromSource()
-  and c = n.getMetrics().getInstability()
-  and c > 0.8
-select n as Package, c as Instability
-order by Instability desc
+where
+  n.fromSource() and
+  c = n.getMetrics().getInstability() and
+  c > 0.8
+select n as Package, c as Instability order by Instability desc

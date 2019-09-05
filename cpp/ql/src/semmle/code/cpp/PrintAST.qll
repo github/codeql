@@ -75,9 +75,7 @@ private Function getEnclosingFunction(Locatable ast) {
  * nodes for things like parameter lists and constructor init lists.
  */
 private newtype TPrintASTNode =
-  TASTNode(Locatable ast) {
-    shouldPrintFunction(getEnclosingFunction(ast))
-  } or
+  TASTNode(Locatable ast) { shouldPrintFunction(getEnclosingFunction(ast)) } or
   TDeclarationEntryNode(DeclStmt stmt, DeclarationEntry entry) {
     // We create a unique node for each pair of (stmt, entry), to avoid having one node with
     // multiple parents due to extractor bug CPP-413.
@@ -160,7 +158,6 @@ private string qlClass(ElementBase el) {
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
   //result = "["+ concat(el.getAQlClass(), ",") + "] "
 }
-
 
 /**
  * A node representing an AST node.
@@ -263,9 +260,7 @@ class DeclarationEntryNode extends BaseASTNode, TDeclarationEntryNode {
   override DeclarationEntry ast;
   DeclStmt declStmt;
 
-  DeclarationEntryNode() {
-    this = TDeclarationEntryNode(declStmt, ast)
-  }
+  DeclarationEntryNode() { this = TDeclarationEntryNode(declStmt, ast) }
 
   override PrintASTNode getChild(int childIndex) { none() }
 
@@ -319,7 +314,7 @@ class DeclStmtNode extends StmtNode {
   DeclStmtNode() { declStmt = stmt }
 
   override DeclarationEntryNode getChild(int childIndex) {
-    exists (DeclarationEntry entry |
+    exists(DeclarationEntry entry |
       declStmt.getDeclarationEntry(childIndex) = entry and
       result = TDeclarationEntryNode(declStmt, entry)
     )

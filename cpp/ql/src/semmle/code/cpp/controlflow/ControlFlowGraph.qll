@@ -66,13 +66,11 @@ class ControlFlowNode extends Locatable, ControlFlowNodeBase {
    * taken when this expression is false.
    */
   ControlFlowNode getAFalseSuccessor() {
-    falsecond_base(this,result) and
+    falsecond_base(this, result) and
     result = getASuccessor()
   }
 
-  BasicBlock getBasicBlock() {
-    result.getANode() = this
-  }
+  BasicBlock getBasicBlock() { result.getANode() = this }
 }
 
 import ControlFlowGraphPublic
@@ -85,8 +83,7 @@ import ControlFlowGraphPublic
  * This class can be used as base class for classes that want to inherit the
  * extent of `ControlFlowNode` without inheriting its public member predicates.
  */
-class ControlFlowNodeBase extends ElementBase, @cfgnode {
-}
+class ControlFlowNodeBase extends ElementBase, @cfgnode { }
 
 predicate truecond_base(ControlFlowNodeBase n1, ControlFlowNodeBase n2) {
   truecond(unresolveElement(n1), unresolveElement(n2))
@@ -122,8 +119,7 @@ abstract class AdditionalControlFlowEdge extends ControlFlowNodeBase {
  * the extractor-generated control-flow graph or in a subclass of
  * `AdditionalControlFlowEdge`. Use this relation instead of `successors`.
  */
-predicate successors_extended(
-    ControlFlowNodeBase source, ControlFlowNodeBase target) {
+predicate successors_extended(ControlFlowNodeBase source, ControlFlowNodeBase target) {
   successors(unresolveElement(source), unresolveElement(target))
   or
   source.(AdditionalControlFlowEdge).getAnEdgeTarget() = target

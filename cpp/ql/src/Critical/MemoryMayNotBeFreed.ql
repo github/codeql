@@ -18,20 +18,18 @@ import semmle.code.cpp.controlflow.LocalScopeVariableReachability
  */
 predicate mayCallFunction(Expr call, Function f) {
   call.(FunctionCall).getTarget() = f or
-  call.(VariableCall).getVariable().getAnAssignedValue().
-    getAChild*().(FunctionAccess).getTarget() = f
+  call.(VariableCall).getVariable().getAnAssignedValue().getAChild*().(FunctionAccess).getTarget() =
+    f
 }
 
 predicate allocCallOrIndirect(Expr e) {
   // direct alloc call
   isAllocationExpr(e) and
-
   // We are only interested in alloc calls that are
   // actually freed somehow, as MemoryNeverFreed
   // will catch those that aren't.
   allocMayBeFreed(e)
   or
-
   exists(ReturnStmt rtn |
     // indirect alloc call
     mayCallFunction(e, rtn.getEnclosingFunction()) and
@@ -64,7 +62,6 @@ predicate verifiedRealloc(FunctionCall reallocCall, Variable v, ControlFlowNode 
       newV.getAnAssignedValue() = reallocCall and
       node.(AnalysedExpr).getNonNullSuccessor(newV) = verified and
       // note: this case uses naive flow logic (getAnAssignedValue).
-
       // special case: if the result of the 'realloc' is assigned to the
       // same variable, we don't descriminate properly between the old
       // and the new allocation; better to not consider this a free at
@@ -116,7 +113,6 @@ class AllocVariableReachability extends LocalScopeVariableReachabilityWithReassi
     exists(node.(AnalysedExpr).getNullSuccessor(v)) or
     freeCallOrIndirect(node, v) or
     assignedToFieldOrGlobal(v, node) or
-
     // node may be used directly in query
     v.getFunction() = node.(ReturnStmt).getEnclosingFunction()
   }
@@ -152,12 +148,10 @@ class AllocReachability extends LocalScopeVariableReachabilityExt {
   }
 
   override predicate isBarrier(
-    ControlFlowNode source, ControlFlowNode node, ControlFlowNode next,
-    LocalScopeVariable v)
-  {
+    ControlFlowNode source, ControlFlowNode node, ControlFlowNode next, LocalScopeVariable v
+  ) {
     isSource(source, v) and
     next = node.getASuccessor() and
-
     // the memory (stored in any variable `v0`) allocated at `source` is freed or
     // assigned to a global at node, or NULL checked on the edge node -> next.
     exists(LocalScopeVariable v0 | allocatedVariableReaches(v0, source, node) |
@@ -202,6 +196,4 @@ where
     allocatedVariableReaches(v, def, ret) and
     ret.getAChild*() = v.getAnAccess()
   )
-select
-  def, "The memory allocated here may not be released at $@.",
-  ret, "this exit point"
+select def, "The memory allocated here may not be released at $@.", ret, "this exit point"

@@ -11,7 +11,6 @@
  *       external/cwe/cwe-190
  *       external/cwe/cwe-197
  *       external/cwe/cwe-835
- * 
  */
 
 import cpp
@@ -29,41 +28,40 @@ int getComparisonSize(Expr e) {
   else result = e.getType().getSize()
 }
 
-
 predicate loopVariant(VariableAccess e, Loop loop) {
-  exists (SsaDefinition d
-    | d.getAUse(e.getTarget()) = e
-    | d.getAnUltimateDefiningValue(e.getTarget()) = loop.getCondition().getAChild*()
-    or d.getAnUltimateDefiningValue(e.getTarget()).getEnclosingStmt().getParent*()
-      = loop.getStmt()
-    or d.getAnUltimateDefiningValue(e.getTarget())
-      = loop.(ForStmt).getUpdate().getAChild*())
+  exists(SsaDefinition d | d.getAUse(e.getTarget()) = e |
+    d.getAnUltimateDefiningValue(e.getTarget()) = loop.getCondition().getAChild*() or
+    d.getAnUltimateDefiningValue(e.getTarget()).getEnclosingStmt().getParent*() = loop.getStmt() or
+    d.getAnUltimateDefiningValue(e.getTarget()) = loop.(ForStmt).getUpdate().getAChild*()
+  )
 }
 
 Element friendlyLoc(Expr e) {
-  result = e.(Access).getTarget() or
-  result = e.(Call).getTarget() or
+  result = e.(Access).getTarget()
+  or
+  result = e.(Call).getTarget()
+  or
   not e instanceof Access and not e instanceof Call and result = e
 }
 
 from Loop l, RelationalOperation rel, Expr small, Expr large
-where small = rel.getLesserOperand()
-  and large = rel.getGreaterOperand()
-  and rel = l.getCondition().getAChild*()
-  and upperBound(large).log2() > getComparisonSize(small) * 8
+where
+  small = rel.getLesserOperand() and
+  large = rel.getGreaterOperand() and
+  rel = l.getCondition().getAChild*() and
+  upperBound(large).log2() > getComparisonSize(small) * 8 and
   // Ignore cases where the smaller type is int or larger
   // These are still bugs, but you should need a very large string or array to
   // trigger them. We will want to disable this for some applications, but it's
   // very noisy on codebases that started as 32-bit
-  and small.getExplicitlyConverted().getType().getSize() < 4
+  small.getExplicitlyConverted().getType().getSize() < 4 and
   // Ignore cases where integer promotion has occurred on /, -, or >> expressions.
-  and not getComparisonSize(large.(DivExpr).getLeftOperand()
-    .getExplicitlyConverted()) <= getComparisonSize(small)
-  and not getComparisonSize(large.(SubExpr).getLeftOperand()
-    .getExplicitlyConverted()) <= getComparisonSize(small)
-  and not getComparisonSize(large.(RShiftExpr).getLeftOperand()
-    .getExplicitlyConverted()) <= getComparisonSize(small)
+  not getComparisonSize(large.(DivExpr).getLeftOperand().getExplicitlyConverted()) <= getComparisonSize(small) and
+  not getComparisonSize(large.(SubExpr).getLeftOperand().getExplicitlyConverted()) <= getComparisonSize(small) and
+  not getComparisonSize(large.(RShiftExpr).getLeftOperand().getExplicitlyConverted()) <= getComparisonSize(small) and
   // ignore loop-invariant smaller variables
-  and loopVariant(small.getAChild*(), l)
-select rel, "Comparison between $@ of type " + small.getType().getName() + " and $@ of wider type " + large.getType().getName() + ".", 
-  friendlyLoc(small), small.toString(), friendlyLoc(large), large.toString()
+  loopVariant(small.getAChild*(), l)
+select rel,
+  "Comparison between $@ of type " + small.getType().getName() + " and $@ of wider type " +
+    large.getType().getName() + ".", friendlyLoc(small), small.toString(), friendlyLoc(large),
+  large.toString()

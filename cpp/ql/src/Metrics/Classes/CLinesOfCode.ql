@@ -8,13 +8,12 @@
  * @metricAggregate avg sum max
  * @tags maintainability
  */
+
 import cpp
 
 from Class c, int n
-where c.fromSource()
-  and n = c.getMetrics().getNumberOfMembers()
-        + sum(Function f |
-              c.getACanonicalMemberFunction() = f |
-              f.getMetrics().getNumberOfLinesOfCode())
-select c, n
-order by n desc
+where
+  c.fromSource() and
+  n = c.getMetrics().getNumberOfMembers() +
+      sum(Function f | c.getACanonicalMemberFunction() = f | f.getMetrics().getNumberOfLinesOfCode())
+select c, n order by n desc

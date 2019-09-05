@@ -9,6 +9,7 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -18,6 +19,9 @@ import cpp
  */
 
 from Declaration m
-where m.isMember() and m.getName().matches("(%") and
-      not m.(BitField).getDeclaredNumBits() = 0
-select m, "AV Rule 156: All the members of a structure (or class) shall be named and shall only be accessed via their names."
+where
+  m.isMember() and
+  m.getName().matches("(%") and
+  not m.(BitField).getDeclaredNumBits() = 0
+select m,
+  "AV Rule 156: All the members of a structure (or class) shall be named and shall only be accessed via their names."

@@ -24,24 +24,18 @@ TranslatedDeclarationEntry getTranslatedDeclarationEntry(DeclarationEntry entry)
 abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslatedDeclarationEntry {
   DeclarationEntry entry;
 
-  TranslatedDeclarationEntry() {
-    this = TTranslatedDeclarationEntry(entry)
-  }
+  TranslatedDeclarationEntry() { this = TTranslatedDeclarationEntry(entry) }
 
-  override final Function getFunction() {
+  final override Function getFunction() {
     exists(DeclStmt stmt |
       stmt.getADeclarationEntry() = entry and
       result = stmt.getEnclosingFunction()
     )
   }
 
-  override final string toString() {
-    result = entry.toString()
-  }
+  final override string toString() { result = entry.toString() }
 
-  override final Locatable getAST() {
-    result = entry
-  }
+  final override Locatable getAST() { result = entry }
 }
 
 /**
@@ -54,49 +48,43 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
    */
   abstract LocalVariable getVariable();
 
-  override TranslatedElement getChild(int id) {
-    id = 0 and result = getInitialization()
-  }
+  override TranslatedElement getChild(int id) { id = 0 and result = getInitialization() }
 
   override Instruction getFirstInstruction() {
     result = getInstruction(InitializerVariableAddressTag())
   }
 
-  override predicate hasInstruction(Opcode opcode, InstructionTag tag,
-      Type resultType, boolean isGLValue) {
-    (
-      tag = InitializerVariableAddressTag() and
-      opcode instanceof Opcode::VariableAddress and
-      resultType = getVariableType(getVariable()) and
-      isGLValue = true
-    ) or
-    (
-      hasUninitializedInstruction() and
-      tag = InitializerStoreTag() and
-      opcode instanceof Opcode::Uninitialized and
-      resultType = getVariableType(getVariable()) and
-      isGLValue = false
-    )
+  override predicate hasInstruction(
+    Opcode opcode, InstructionTag tag, Type resultType, boolean isGLValue
+  ) {
+    tag = InitializerVariableAddressTag() and
+    opcode instanceof Opcode::VariableAddress and
+    resultType = getVariableType(getVariable()) and
+    isGLValue = true
+    or
+    hasUninitializedInstruction() and
+    tag = InitializerStoreTag() and
+    opcode instanceof Opcode::Uninitialized and
+    resultType = getVariableType(getVariable()) and
+    isGLValue = false
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag,
-      EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     (
       tag = InitializerVariableAddressTag() and
       kind instanceof GotoEdge and
-      if hasUninitializedInstruction() then
-        result = getInstruction(InitializerStoreTag())
-      else
-        result = getInitialization().getFirstInstruction()
-    ) or
+      if hasUninitializedInstruction()
+      then result = getInstruction(InitializerStoreTag())
+      else result = getInitialization().getFirstInstruction()
+    )
+    or
+    hasUninitializedInstruction() and
+    kind instanceof GotoEdge and
+    tag = InitializerStoreTag() and
     (
-      hasUninitializedInstruction() and
-      kind instanceof GotoEdge and
-      tag = InitializerStoreTag() and
-      (
-        result = getInitialization().getFirstInstruction() or
-        not exists(getInitialization()) and result = getParent().getChildSuccessor(this)
-      )
+      result = getInitialization().getFirstInstruction()
+      or
+      not exists(getInitialization()) and result = getParent().getChildSuccessor(this)
     )
   }
 
@@ -106,7 +94,8 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     (
-      tag = InitializerVariableAddressTag() or
+      tag = InitializerVariableAddressTag()
+      or
       hasUninitializedInstruction() and tag = InitializerStoreTag()
     ) and
     result = getIRUserVariable(getFunction(), getVariable())
@@ -123,12 +112,13 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
     result = getInstruction(InitializerVariableAddressTag())
   }
 
-  override Type getTargetType() {
-    result = getVariableType(getVariable())
-  }
+  override Type getTargetType() { result = getVariableType(getVariable()) }
 
   private TranslatedInitialization getInitialization() {
-    result = getTranslatedInitialization(getVariable().getInitializer().getExpr().getFullyConverted())
+    result = getTranslatedInitialization(getVariable()
+            .getInitializer()
+            .getExpr()
+            .getFullyConverted())
   }
 
   private predicate hasUninitializedInstruction() {
@@ -141,16 +131,12 @@ abstract class TranslatedVariableDeclaration extends TranslatedElement, Initiali
  * Represents the IR translation of a local variable declaration within a declaration statement.
  */
 class TranslatedVariableDeclarationEntry extends TranslatedVariableDeclaration,
-    TranslatedDeclarationEntry {
+  TranslatedDeclarationEntry {
   LocalVariable var;
 
-  TranslatedVariableDeclarationEntry() {
-    var = entry.getDeclaration()
-  }
+  TranslatedVariableDeclarationEntry() { var = entry.getDeclaration() }
 
-  override LocalVariable getVariable() {
-    result = var
-  }
+  override LocalVariable getVariable() { result = var }
 }
 
 /**
@@ -158,7 +144,8 @@ class TranslatedVariableDeclarationEntry extends TranslatedVariableDeclaration,
  * `var`.
  */
 TranslatedRangeBasedForVariableDeclaration getTranslatedRangeBasedForVariableDeclaration(
-    LocalVariable var) {
+  LocalVariable var
+) {
   result.getVariable() = var
 }
 
@@ -166,7 +153,7 @@ TranslatedRangeBasedForVariableDeclaration getTranslatedRangeBasedForVariableDec
  * Represents the IR translation of a compiler-generated variable in a range-based `for` loop.
  */
 class TranslatedRangeBasedForVariableDeclaration extends TranslatedVariableDeclaration,
-    TTranslatedRangeBasedForVariableDeclaration {
+  TTranslatedRangeBasedForVariableDeclaration {
   RangeBasedForStmt forStmt;
   LocalVariable var;
 
@@ -174,21 +161,13 @@ class TranslatedRangeBasedForVariableDeclaration extends TranslatedVariableDecla
     this = TTranslatedRangeBasedForVariableDeclaration(forStmt, var)
   }
 
-  override string toString() {
-    result = var.toString()
-  }
+  override string toString() { result = var.toString() }
 
-  override Locatable getAST() {
-    result = var
-  }
+  override Locatable getAST() { result = var }
 
-  override Function getFunction() {
-    result = forStmt.getEnclosingFunction()
-  }
+  override Function getFunction() { result = forStmt.getEnclosingFunction() }
 
-  override LocalVariable getVariable() {
-    result = var
-  }
+  override LocalVariable getVariable() { result = var }
 }
 
 TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
@@ -206,23 +185,13 @@ TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
 class TranslatedConditionDecl extends TranslatedVariableDeclaration, TTranslatedConditionDecl {
   ConditionDeclExpr conditionDeclExpr;
 
-  TranslatedConditionDecl() {
-    this = TTranslatedConditionDecl(conditionDeclExpr)
-  }
+  TranslatedConditionDecl() { this = TTranslatedConditionDecl(conditionDeclExpr) }
 
-  override string toString() {
-    result = "decl: " + conditionDeclExpr.toString()
-  }
+  override string toString() { result = "decl: " + conditionDeclExpr.toString() }
 
-  override Locatable getAST() {
-    result = conditionDeclExpr
-  }
+  override Locatable getAST() { result = conditionDeclExpr }
 
-  override Function getFunction() {
-    result = conditionDeclExpr.getEnclosingFunction()
-  }
+  override Function getFunction() { result = conditionDeclExpr.getEnclosingFunction() }
 
-  override LocalVariable getVariable() {
-    result = conditionDeclExpr.getVariable()
-  }
+  override LocalVariable getVariable() { result = conditionDeclExpr.getVariable() }
 }

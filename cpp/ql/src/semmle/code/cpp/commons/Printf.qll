@@ -67,7 +67,7 @@ predicate variadicFormatter(Function f, int formatParamIndex) {
  */
 class UserDefinedFormattingFunction extends FormattingFunction {
   override string getCanonicalQLClass() { result = "UserDefinedFormattingFunction" }
-  
+
   UserDefinedFormattingFunction() { isVarargs() and callsVariadicFormatter(this, _) }
 
   override int getFormatParameterIndex() { callsVariadicFormatter(this, result) }
@@ -80,7 +80,7 @@ class FormattingFunctionCall extends Expr {
   FormattingFunctionCall() { this.(Call).getTarget() instanceof FormattingFunction }
 
   override string getCanonicalQLClass() { result = "FormattingFunctionCall" }
-  
+
   /**
    * Gets the formatting function being called.
    */

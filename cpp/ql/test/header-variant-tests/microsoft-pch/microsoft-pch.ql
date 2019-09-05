@@ -1,4 +1,4 @@
 import cpp
 
 from ReturnStmt rs
-select rs.getEnclosingFunction().getName(), ((Literal)rs.getExpr()).getValue()
+select rs.getEnclosingFunction().getName(), rs.getExpr().(Literal).getValue()

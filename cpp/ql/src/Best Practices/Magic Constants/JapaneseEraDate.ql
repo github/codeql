@@ -42,7 +42,6 @@ predicate eraDate(int year, int month, int day) {
   year = 2019 and month = 5 and day = 1
 }
 
-
 predicate badStructInitialization(Element target, string message) {
   exists(
     StructLikeClass s, YearFieldAccess year, MonthFieldAccess month, DayFieldAccess day,

@@ -9,6 +9,7 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -16,7 +17,9 @@ import cpp
  */
 
 from BinaryLogicalOperation blo, BinaryOperation bo
-where blo.fromSource() and
-      bo = blo.getAnOperand() and
-      not bo.isParenthesised()
-select blo, "AV Rule 158: The operands of a logical && or || operator shall be parenthesized if the operands contain binary operators."
+where
+  blo.fromSource() and
+  bo = blo.getAnOperand() and
+  not bo.isParenthesised()
+select blo,
+  "AV Rule 158: The operands of a logical && or || operator shall be parenthesized if the operands contain binary operators."

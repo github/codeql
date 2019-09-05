@@ -8,9 +8,11 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 from GotoStmt s
-where s.fromSource() and
-      not s.breaksFromNestedLoops()
+where
+  s.fromSource() and
+  not s.breaksFromNestedLoops()
 select s, "AV Rule 189: The goto statement shall not be used."

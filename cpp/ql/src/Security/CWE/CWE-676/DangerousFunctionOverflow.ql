@@ -9,6 +9,7 @@
  *       security
  *       external/cwe/cwe-242
  */
+
 import cpp
 
 from FunctionCall call, Function target

@@ -8,6 +8,7 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -15,6 +16,7 @@ import cpp
  */
 
 from CommaExpr ce
-where ce.fromSource()
-      and not exists (MacroInvocation me | ce = me.getAnAffectedElement())
+where
+  ce.fromSource() and
+  not exists(MacroInvocation me | ce = me.getAnAffectedElement())
 select ce, "AV Rule 168: The comma operator shall not be used."

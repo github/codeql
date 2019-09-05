@@ -1,14 +1,11 @@
 import cpp
 
-string describe(Struct s)
-{
-  (
-    s instanceof LocalStruct and
-    result = "LocalStruct"
-  ) or (
-    s instanceof NestedStruct and
-    result = "NestedStruct"
-  )
+string describe(Struct s) {
+  s instanceof LocalStruct and
+  result = "LocalStruct"
+  or
+  s instanceof NestedStruct and
+  result = "NestedStruct"
 }
 
 query predicate structs(Struct s, string descStr) {

@@ -9,9 +9,11 @@
  *       readability
  *       language-features
  */
+
 import ReturnConstTypeCommon
 
 from Function f
-where hasSuperfluousConstReturn(f)
-  and not f instanceof MemberFunction
+where
+  hasSuperfluousConstReturn(f) and
+  not f instanceof MemberFunction
 select f, "The 'const' modifier has no effect on a return type and can be removed."

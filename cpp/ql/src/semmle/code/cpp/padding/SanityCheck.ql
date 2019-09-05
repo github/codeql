@@ -1,6 +1,6 @@
 /**
  * @name Padding Sanity Check
- * @description Performs sanity checks for the padding library. This query should have no results. 
+ * @description Performs sanity checks for the padding library. This query should have no results.
  * @kind table
  * @id cpp/padding-sanity-check
  */
@@ -33,4 +33,3 @@ import Padding
 from PaddedType t, LP64 a
 where a.wastedSpace(t) != 0
 select t, a.paddedSize(t) as size, a.wastedSpace(t) as waste order by waste desc
-

@@ -10,14 +10,15 @@
  *       external/cwe/cwe-190
  *       external/cwe/cwe-191
  */
-import cpp
 
+import cpp
 import semmle.code.cpp.security.Overflow
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking
 
 predicate isRandValue(Expr e) {
-  e.(FunctionCall).getTarget().getName() = "rand" or
+  e.(FunctionCall).getTarget().getName() = "rand"
+  or
   exists(MacroInvocation mi |
     e = mi.getExpr() and
     e.getAChild*().(FunctionCall).getTarget().getName() = "rand"
@@ -26,8 +27,9 @@ predicate isRandValue(Expr e) {
 
 class SecurityOptionsArith extends SecurityOptions {
   override predicate isUserInput(Expr expr, string cause) {
-    isRandValue(expr) and cause = "rand"
-    and not expr.getParent*() instanceof DivExpr
+    isRandValue(expr) and
+    cause = "rand" and
+    not expr.getParent*() instanceof DivExpr
   }
 }
 
@@ -42,18 +44,18 @@ predicate taintedVarAccess(Expr origin, VariableAccess va) {
  */
 predicate guardedByAssignDiv(Expr origin) {
   isUserInput(origin, _) and
-  exists(AssignDivExpr div, VariableAccess va |
-         tainted(origin, va) and div.getLValue() = va)
+  exists(AssignDivExpr div, VariableAccess va | tainted(origin, va) and div.getLValue() = va)
 }
 
 from Expr origin, Operation op, VariableAccess va, string effect
-where taintedVarAccess(origin, va)
-  and op.getAnOperand() = va
-  and
+where
+  taintedVarAccess(origin, va) and
+  op.getAnOperand() = va and
   (
-    (missingGuardAgainstUnderflow(op, va) and effect = "underflow") or
-    (missingGuardAgainstOverflow(op, va) and effect = "overflow")
-  )
-  and not guardedByAssignDiv(origin)
+    missingGuardAgainstUnderflow(op, va) and effect = "underflow"
+    or
+    missingGuardAgainstOverflow(op, va) and effect = "overflow"
+  ) and
+  not guardedByAssignDiv(origin)
 select va, "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
   origin, "Uncontrolled value"

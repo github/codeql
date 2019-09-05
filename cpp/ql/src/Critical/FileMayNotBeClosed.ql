@@ -26,20 +26,18 @@ class MinusOne extends NullValue {
  */
 predicate mayCallFunction(Expr call, Function f) {
   call.(FunctionCall).getTarget() = f or
-  call.(VariableCall).getVariable().getAnAssignedValue().
-    getAChild*().(FunctionAccess).getTarget() = f
+  call.(VariableCall).getVariable().getAnAssignedValue().getAChild*().(FunctionAccess).getTarget() =
+    f
 }
 
 predicate fopenCallOrIndirect(Expr e) {
   // direct fopen call
   fopenCall(e) and
-
   // We are only interested in fopen calls that are
   // actually closed somehow, as FileNeverClosed
   // will catch those that aren't.
   fopenCallMayBeClosed(e)
   or
-
   exists(ReturnStmt rtn |
     // indirect fopen call
     mayCallFunction(e, rtn.getEnclosingFunction()) and
@@ -86,7 +84,6 @@ class FOpenVariableReachability extends LocalScopeVariableReachabilityWithReassi
     exists(node.(AnalysedExpr).getNullSuccessor(v)) or
     fcloseCallOrIndirect(node, v) or
     assignedToFieldOrGlobal(v, node) or
-
     // node may be used directly in query
     v.getFunction() = node.(ReturnStmt).getEnclosingFunction()
   }
@@ -122,12 +119,10 @@ class FOpenReachability extends LocalScopeVariableReachabilityExt {
   }
 
   override predicate isBarrier(
-    ControlFlowNode source, ControlFlowNode node, ControlFlowNode next,
-    LocalScopeVariable v)
-  {
+    ControlFlowNode source, ControlFlowNode node, ControlFlowNode next, LocalScopeVariable v
+  ) {
     isSource(source, v) and
     next = node.getASuccessor() and
-
     // the file (stored in any variable `v0`) opened at `source` is closed or
     // assigned to a global at node, or NULL checked on the edge node -> next.
     exists(LocalScopeVariable v0 | fopenVariableReaches(v0, source, node) |
@@ -172,6 +167,4 @@ where
     fopenVariableReaches(v, def, ret) and
     ret.getAChild*() = v.getAnAccess()
   )
-select
-  def, "The file opened here may not be closed at $@.",
-  ret, "this exit point"
+select def, "The file opened here may not be closed at $@.", ret, "this exit point"

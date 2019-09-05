@@ -10,14 +10,17 @@
  * @tags external-data
  * @deprecated
  */
+
 import cpp
 import external.VCS
 
 from File f, int n
-where n = sum(Commit entry, int churn |
-              churn = entry.getRecentChurnForFile(f) and
-              not artificialChange(entry) |
-              churn)
-  and exists(f.getMetrics().getNumberOfLinesOfCode())
-select f, n
-order by n desc
+where
+  n = sum(Commit entry, int churn |
+      churn = entry.getRecentChurnForFile(f) and
+      not artificialChange(entry)
+    |
+      churn
+    ) and
+  exists(f.getMetrics().getNumberOfLinesOfCode())
+select f, n order by n desc

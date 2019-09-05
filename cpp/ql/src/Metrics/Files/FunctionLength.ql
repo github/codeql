@@ -9,11 +9,15 @@
  * @tags maintainability
  *       readability
  */
+
 import cpp
 
 from File f
 where f.fromSource()
-select f, avg(MetricFunction fn |
-              fn.getFile() = f
-              and not fn instanceof MemberFunction |
-              fn.getNumberOfLinesOfCode())
+select f,
+  avg(MetricFunction fn |
+    fn.getFile() = f and
+    not fn instanceof MemberFunction
+  |
+    fn.getNumberOfLinesOfCode()
+  )

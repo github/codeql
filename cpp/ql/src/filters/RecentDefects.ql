@@ -10,15 +10,14 @@
  *       external-data
  * @deprecated
  */
+
 import cpp
 import external.DefectFilter
 import external.VCS
 
-private pragma[noopt]
-predicate recent(File file) {
-  exists(Commit e | file = e.getAnAffectedFile() |
-    e.isRecent() and not artificialChange(e)
-  )
+pragma[noopt]
+private predicate recent(File file) {
+  exists(Commit e | file = e.getAnAffectedFile() | e.isRecent() and not artificialChange(e))
 }
 
 from DefectResult res

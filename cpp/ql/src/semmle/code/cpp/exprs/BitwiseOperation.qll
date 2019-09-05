@@ -3,8 +3,7 @@ import semmle.code.cpp.exprs.Expr
 /**
  * A C/C++ unary bitwise operation.
  */
-abstract class UnaryBitwiseOperation extends UnaryOperation {
-}
+abstract class UnaryBitwiseOperation extends UnaryOperation { }
 
 /**
  * A C/C++ complement expression.
@@ -20,9 +19,7 @@ class ComplementExpr extends UnaryBitwiseOperation, @complementexpr {
 /**
  * A C/C++ binary bitwise operation.
  */
-abstract class BinaryBitwiseOperation extends BinaryOperation {
-}
-
+abstract class BinaryBitwiseOperation extends BinaryOperation { }
 
 /**
  * A C/C++ left shift expression.
@@ -75,6 +72,6 @@ class BitwiseXorExpr extends BinaryBitwiseOperation, @xorexpr {
   override string getOperator() { result = "^" }
 
   override int getPrecedence() { result = 7 }
-  
+
   override string getCanonicalQLClass() { result = "BitwiseXorExpr" }
 }

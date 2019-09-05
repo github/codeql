@@ -13,6 +13,7 @@
  *       external/cwe/cwe-787
  *       external/cwe/cwe-805
  */
+
 import semmle.code.cpp.security.BufferWrite
 
 /*
@@ -20,8 +21,13 @@ import semmle.code.cpp.security.BufferWrite
  */
 
 from BufferWrite bw, int destSize
-where (not bw.hasExplicitLimit())                // has no explicit size limit
-  and destSize = getBufferSize(bw.getDest(), _)
-  and (bw.getMaxData() > destSize)               // and we can deduce that too much data may be copied
-  and (bw.getMaxDataLimited() <= destSize)       // but it would fit without long '%f' conversions
-select bw, "This '" + bw.getBWDesc() + "' operation may require " + bw.getMaxData() + " bytes because of float conversions, but the target is only " + destSize + " bytes."
+where
+  not bw.hasExplicitLimit() and
+  // has no explicit size limit
+  destSize = getBufferSize(bw.getDest(), _) and
+  bw.getMaxData() > destSize and
+  // and we can deduce that too much data may be copied
+  bw.getMaxDataLimited() <= destSize // but it would fit without long '%f' conversions
+select bw,
+  "This '" + bw.getBWDesc() + "' operation may require " + bw.getMaxData() +
+    " bytes because of float conversions, but the target is only " + destSize + " bytes."

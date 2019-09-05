@@ -9,9 +9,9 @@
 import cpp
 
 from Parameter p, Assignment assign
-where assign = p.getAnAssignment()
-  and not assign.getASuccessor+() = p.getAnAccess()
-  and not p.getType() instanceof ReferenceType
-select assign, "Assignment of '"+ assign.getRValue() +
-               "' to parameter '$@' has no effect.",
-  p, p.getName()
+where
+  assign = p.getAnAssignment() and
+  not assign.getASuccessor+() = p.getAnAccess() and
+  not p.getType() instanceof ReferenceType
+select assign, "Assignment of '" + assign.getRValue() + "' to parameter '$@' has no effect.", p,
+  p.getName()

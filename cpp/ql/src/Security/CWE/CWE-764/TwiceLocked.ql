@@ -10,6 +10,7 @@
  *       external/cwe/cwe-764
  *       external/cwe/cwe-833
  */
+
 import cpp
 import semmle.code.cpp.commons.Synchronization
 import LockFlow
@@ -19,8 +20,8 @@ import LockFlow
  * be locked when we reach `call`. The access `a` might be in a function
  * which is called indirectly from `call`.
  */
-cached private predicate twiceLocked(
-  FunctionCall call, Variable v, VariableAccess a) {
+cached
+private predicate twiceLocked(FunctionCall call, Variable v, VariableAccess a) {
   lockedOnEntry(v.getAnAccess(), call) and
   lockedInCall(a, call)
 }
@@ -34,7 +35,6 @@ from FunctionCall call, Variable v, VariableAccess access2
 where
   twiceLocked(call, v, access2) and
   v = access2.getTarget() and
-
   // If the second lock is a `try_lock` then it won't cause a deadlock.
   // We want to be extra sure that the second lock is not a `try_lock`
   // to make sure that we don't generate too many false positives, so
@@ -46,7 +46,9 @@ where
   //  3. The call is a condition. Because the analysis is interprocedural,
   //     `call` might be an indirect call to `lock`, so this heuristic
   //     catches some cases which the second heuristic does not.
-  not (trylockCall(access2, _) or
-       tryLockCondition(access2, _, _) or
-       call.isCondition())
+  not (
+    trylockCall(access2, _) or
+    tryLockCondition(access2, _, _) or
+    call.isCondition()
+  )
 select access2, "Mutex " + v + " might be locked already, which could cause a deadlock."

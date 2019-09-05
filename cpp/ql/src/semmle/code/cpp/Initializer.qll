@@ -16,35 +16,29 @@ import semmle.code.cpp.controlflow.ControlFlowGraph
  * ```
  */
 class Initializer extends ControlFlowNode, @initialiser {
-  override Location getLocation() { initialisers(underlyingElement(this),_,_,result) }
+  override Location getLocation() { initialisers(underlyingElement(this), _, _, result) }
 
   override string getCanonicalQLClass() { result = "Initializer" }
-  
+
   /** Holds if this initializer is explicit in the source. */
-  override predicate fromSource() {
-    not (this.getLocation() instanceof UnknownLocation)
-  }
+  override predicate fromSource() { not this.getLocation() instanceof UnknownLocation }
 
   override string toString() {
-    if exists(getDeclaration()) then (
-      result = "initializer for " + max(getDeclaration().getName())
-    ) else (
-      result = "initializer"
-    )
+    if exists(getDeclaration())
+    then result = "initializer for " + max(getDeclaration().getName())
+    else result = "initializer"
   }
 
   /** Gets the variable or enum constant being initialized. */
-  Declaration getDeclaration() { initialisers(underlyingElement(this),unresolveElement(result),_,_) }
+  Declaration getDeclaration() {
+    initialisers(underlyingElement(this), unresolveElement(result), _, _)
+  }
 
   /** Gets the initializing expression. */
-  Expr getExpr() { initialisers(underlyingElement(this),_,unresolveElement(result),_) }
+  Expr getExpr() { initialisers(underlyingElement(this), _, unresolveElement(result), _) }
 
   /** Gets the function containing this control-flow node. */
-  override Function getControlFlowScope() {
-    result = this.getExpr().getEnclosingFunction()
-  }
+  override Function getControlFlowScope() { result = this.getExpr().getEnclosingFunction() }
 
-  override Stmt getEnclosingStmt() {
-    result = this.getExpr().getEnclosingStmt()
-  }
+  override Stmt getEnclosingStmt() { result = this.getExpr().getEnclosingStmt() }
 }

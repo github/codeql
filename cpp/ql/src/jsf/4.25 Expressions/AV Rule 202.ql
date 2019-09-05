@@ -7,6 +7,7 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -14,6 +15,8 @@ import cpp
  */
 
 from EqualityOperation e
-where e.fromSource() and
-      e.getAnOperand().getType() instanceof FloatingPointType
-select e, "AV Rule 202: Floating point variables shall not be tested for exact equality or inequality."
+where
+  e.fromSource() and
+  e.getAnOperand().getType() instanceof FloatingPointType
+select e,
+  "AV Rule 202: Floating point variables shall not be tested for exact equality or inequality."

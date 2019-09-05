@@ -9,6 +9,7 @@
  *       duplicate-code
  *       non-attributable
  */
+
 import cpp
 import CodeDuplication
 
@@ -22,6 +23,8 @@ where
   not m.getFunction().isConstructedFrom(_) and
   not other.getFunction().isConstructedFrom(_) and
   not duplicateMethod(m, other) and
-  not classLevelDuplication(m.getFunction().getDeclaringType(), other.getFunction().getDeclaringType()) and
+  not classLevelDuplication(m.getFunction().getDeclaringType(),
+    other.getFunction().getDeclaringType()) and
   not fileLevelDuplication(m.getFile(), other.getFile())
-select m, percent + "% of the statements in " + m.getName() + " are duplicated in $@.", other, other.getFunction().getQualifiedName()
+select m, percent + "% of the statements in " + m.getName() + " are duplicated in $@.", other,
+  other.getFunction().getQualifiedName()

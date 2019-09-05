@@ -41,9 +41,7 @@ class Namespace extends @namespace {
   string getAQualifierForMembers() {
     if namespacembrs(_, this)
     then
-      exists(Namespace ns |
-        namespacembrs(ns, this)
-      |
+      exists(Namespace ns | namespacembrs(ns, this) |
         result = ns.getAQualifierForMembers() + "::" + this.getName()
         or
         // If this is an inline namespace, its members are also visible in any
@@ -108,15 +106,11 @@ abstract class Declaration extends @declaration {
       this.canHaveQualifiedName()
     |
       exists(string t | t = this.getTypeQualifierWithArgs() |
-        if ns != ""
-        then result = ns + "::" + t + "::" + name
-        else result = t + "::" + name
+        if ns != "" then result = ns + "::" + t + "::" + name else result = t + "::" + name
       )
       or
       not hasTypeQualifier(this) and
-      if ns != ""
-      then result = ns + "::" + name
-      else result = name
+      if ns != "" then result = ns + "::" + name else result = name
     )
   }
 
@@ -171,8 +165,7 @@ class TemplateVariable extends Variable {
 
 class LocalScopeVariable extends Variable, @localscopevariable { }
 
-class LocalVariable extends LocalScopeVariable, @localvariable {
-}
+class LocalVariable extends LocalScopeVariable, @localvariable { }
 
 /**
  * A particular declaration or definition of a C/C++ variable.
@@ -194,14 +187,12 @@ class VariableDeclarationEntry extends @var_decl {
 
 class Parameter extends LocalScopeVariable, @parameter {
   @functionorblock function;
-
   int index;
 
   Parameter() { params(this, function, index, _) }
 }
 
-class GlobalOrNamespaceVariable extends Variable, @globalvariable {
-}
+class GlobalOrNamespaceVariable extends Variable, @globalvariable { }
 
 // Unlike the usual `EnumConstant`, this one doesn't have a
 // `getDeclaringType()`. This simplifies the recursive computation of type

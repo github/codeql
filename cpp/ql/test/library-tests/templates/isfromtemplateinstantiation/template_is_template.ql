@@ -17,11 +17,16 @@ predicate isTemplate(Declaration d) {
 }
 
 from Element e, string msg
-where canBeTemplate(e)
-  and ( isTemplate(e) and
-        not e.isFromUninstantiatedTemplate(_) and
-        msg = "only isTemplate" )
-  and ( e.isFromUninstantiatedTemplate(_) and
-        not isTemplate(e) and
-        msg = "only isFromUninstantiatedTemplate" )
+where
+  canBeTemplate(e) and
+  (
+    isTemplate(e) and
+    not e.isFromUninstantiatedTemplate(_) and
+    msg = "only isTemplate"
+  ) and
+  (
+    e.isFromUninstantiatedTemplate(_) and
+    not isTemplate(e) and
+    msg = "only isFromUninstantiatedTemplate"
+  )
 select e, msg

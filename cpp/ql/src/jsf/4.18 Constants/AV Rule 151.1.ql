@@ -7,6 +7,7 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -28,4 +29,5 @@ class NonConstStringType extends DerivedType {
 
 from StringLiteral l
 where l.getFullyConverted().getType().getUnderlyingType() instanceof NonConstStringType
-select l, "A string literal must not be used as a non-const value: modifying string literals leads to undefined behavior."
+select l,
+  "A string literal must not be used as a non-const value: modifying string literals leads to undefined behavior."

@@ -6,11 +6,11 @@
 // internal use by the data flow library. Having an extra copy prevents
 // non-monotonic recursion errors in queries that use both the data flow
 // library and the `SubBasicBlocks` library.
-
 /**
  * Provides the `SubBasicBlock` class, used for partitioning basic blocks in
  * smaller pieces.
  */
+
 import cpp
 
 /**
@@ -47,27 +47,21 @@ class SubBasicBlock extends ControlFlowNodeBase {
   }
 
   /** Gets the basic block in which this `SubBasicBlock` is contained. */
-  BasicBlock getBasicBlock() {
-    result = this.(ControlFlowNode).getBasicBlock()
-  }
+  BasicBlock getBasicBlock() { result = this.(ControlFlowNode).getBasicBlock() }
 
   /**
    * Holds if this `SubBasicBlock` comes first in its basic block. This is the
    * only condition under which a `SubBasicBlock` may have multiple
    * predecessors.
    */
-  predicate firstInBB() {
-    exists(BasicBlock bb | this.getRankInBasicBlock(bb) = 1)
-  }
+  predicate firstInBB() { exists(BasicBlock bb | this.getRankInBasicBlock(bb) = 1) }
 
   /**
    * Holds if this `SubBasicBlock` comes last in its basic block. This is the
    * only condition under which a `SubBasicBlock` may have multiple successors.
    */
   predicate lastInBB() {
-    exists(BasicBlock bb |
-      this.getRankInBasicBlock(bb) = countSubBasicBlocksInBasicBlock(bb)
-    )
+    exists(BasicBlock bb | this.getRankInBasicBlock(bb) = countSubBasicBlocksInBasicBlock(bb))
   }
 
   /**
@@ -86,23 +80,17 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * returns a 0-based position, while `getRankInBasicBlock` returns a 1-based
    * position.
    */
-  deprecated int getPosInBasicBlock(BasicBlock bb) {
-    result = getRankInBasicBlock(bb) - 1
-  }
+  deprecated int getPosInBasicBlock(BasicBlock bb) { result = getRankInBasicBlock(bb) - 1 }
 
   pragma[noinline]
-  private int getIndexInBasicBlock(BasicBlock bb) {
-    this = bb.getNode(result)
-  }
+  private int getIndexInBasicBlock(BasicBlock bb) { this = bb.getNode(result) }
 
   /** Gets a successor in the control-flow graph of `SubBasicBlock`s. */
   SubBasicBlock getASuccessor() {
     this.lastInBB() and
     result = this.getBasicBlock().getASuccessor()
     or
-    exists(BasicBlock bb |
-      result.getRankInBasicBlock(bb) = this.getRankInBasicBlock(bb) + 1
-    )
+    exists(BasicBlock bb | result.getRankInBasicBlock(bb) = this.getRankInBasicBlock(bb) + 1)
   }
 
   /**
@@ -130,23 +118,17 @@ class SubBasicBlock extends ControlFlowNodeBase {
   pragma[nomagic]
   private int outerToInnerIndex(BasicBlock bb, int indexInBB) {
     indexInBB = result + this.getIndexInBasicBlock(bb) and
-    result = [ 0 .. this.getNumberOfNodes() - 1 ]
+    result = [0 .. this.getNumberOfNodes() - 1]
   }
 
   /** Gets a control-flow node in this `SubBasicBlock`. */
-  ControlFlowNode getANode() {
-    result = this.getNode(_)
-  }
+  ControlFlowNode getANode() { result = this.getNode(_) }
 
   /** Holds if `this` contains `node`. */
-  predicate contains(ControlFlowNode node) {
-    node = this.getANode()
-  }
+  predicate contains(ControlFlowNode node) { node = this.getANode() }
 
   /** Gets a predecessor in the control-flow graph of `SubBasicBlock`s. */
-  SubBasicBlock getAPredecessor() {
-    result.getASuccessor() = this
-  }
+  SubBasicBlock getAPredecessor() { result.getASuccessor() = this }
 
   /**
    * Gets a node such that the control-flow edge `(this, result)` may be taken
@@ -181,19 +163,13 @@ class SubBasicBlock extends ControlFlowNodeBase {
   }
 
   /** Gets the last control-flow node in this `SubBasicBlock`. */
-  ControlFlowNode getEnd() {
-    result = this.getNode(this.getNumberOfNodes() - 1)
-  }
+  ControlFlowNode getEnd() { result = this.getNode(this.getNumberOfNodes() - 1) }
 
   /** Gets the first control-flow node in this `SubBasicBlock`. */
-  ControlFlowNode getStart() {
-    result = this
-  }
+  ControlFlowNode getStart() { result = this }
 
   pragma[noinline]
-  Function getEnclosingFunction() {
-    result = this.getStart().getControlFlowScope()
-  }
+  Function getEnclosingFunction() { result = this.getStart().getControlFlowScope() }
 }
 
 /** Gets the number of `SubBasicBlock`s in the given basic block. */

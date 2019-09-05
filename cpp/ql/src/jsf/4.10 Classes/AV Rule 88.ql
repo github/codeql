@@ -9,6 +9,7 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 /**
@@ -24,35 +25,62 @@ import cpp
  */
 class InterfaceClass extends Class {
   InterfaceClass() {
-     exists(MemberFunction m | m.getDeclaringType() = this and not compgenerated(unresolveElement(m)))
-    and
-     forall(MemberFunction m | m.getDeclaringType() = this and not compgenerated(unresolveElement(m)) | m instanceof PureVirtualFunction)
-    and
-     count(MemberVariable v | v.getDeclaringType() = this) < 3
+    exists(MemberFunction m |
+      m.getDeclaringType() = this and not compgenerated(unresolveElement(m))
+    ) and
+    forall(MemberFunction m |
+      m.getDeclaringType() = this and not compgenerated(unresolveElement(m))
+    |
+      m instanceof PureVirtualFunction
+    ) and
+    count(MemberVariable v | v.getDeclaringType() = this) < 3
   }
 }
 
 class InterfaceImplementor extends Class {
   InterfaceImplementor() {
-    exists(ClassDerivation d | d.getDerivedClass() = this and d.getBaseClass() instanceof InterfaceClass)
+    exists(ClassDerivation d |
+      d.getDerivedClass() = this and d.getBaseClass() instanceof InterfaceClass
+    )
   }
+
   int getNumInterfaces() {
-    result = count(ClassDerivation d | d.getDerivedClass() = this and d.getBaseClass() instanceof InterfaceClass)
+    result = count(ClassDerivation d |
+        d.getDerivedClass() = this and d.getBaseClass() instanceof InterfaceClass
+      )
   }
+
   int getNumProtectedImplementations() {
-    result = count(ClassDerivation d | d.hasSpecifier("protected") and d.getDerivedClass() = this and not d.getBaseClass() instanceof InterfaceClass)
+    result = count(ClassDerivation d |
+        d.hasSpecifier("protected") and
+        d.getDerivedClass() = this and
+        not d.getBaseClass() instanceof InterfaceClass
+      )
   }
+
   int getNumPrivateImplementations() {
-    result = count(ClassDerivation d | d.hasSpecifier("private") and d.getDerivedClass() = this and not d.getBaseClass() instanceof InterfaceClass)
+    result = count(ClassDerivation d |
+        d.hasSpecifier("private") and
+        d.getDerivedClass() = this and
+        not d.getBaseClass() instanceof InterfaceClass
+      )
   }
+
   int getNumPublicImplementations() {
-    result = count(ClassDerivation d | d.hasSpecifier("public") and d.getDerivedClass() = this and not d.getBaseClass() instanceof InterfaceClass)
+    result = count(ClassDerivation d |
+        d.hasSpecifier("public") and
+        d.getDerivedClass() = this and
+        not d.getBaseClass() instanceof InterfaceClass
+      )
   }
 }
 
 from InterfaceImplementor d
-where d.getNumPublicImplementations() > 0
-  or d.getNumProtectedImplementations() > 1
-select d, "Multiple inheritance should not be used with " + d.getNumInterfaces().toString()
-   + " interfaces, " + d.getNumPrivateImplementations().toString() + " private implementations, " + d.getNumProtectedImplementations().toString() + " protected implementations, and "
-   + d.getNumPublicImplementations().toString() + " public implementations."
+where
+  d.getNumPublicImplementations() > 0 or
+  d.getNumProtectedImplementations() > 1
+select d,
+  "Multiple inheritance should not be used with " + d.getNumInterfaces().toString() +
+    " interfaces, " + d.getNumPrivateImplementations().toString() + " private implementations, " +
+    d.getNumProtectedImplementations().toString() + " protected implementations, and " +
+    d.getNumPublicImplementations().toString() + " public implementations."

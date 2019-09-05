@@ -30,16 +30,14 @@ class Include extends PreprocessorDirective, @ppd_include {
    * translation unit, it is often a slight over-approximation.
    */
   predicate provides(File l) {
-      exists(Include i | this.getAnInclude*() = i and i.getIncludedFile() = l)
+    exists(Include i | this.getAnInclude*() = i and i.getIncludedFile() = l)
   }
 
   /**
    * A `#include` which appears in the file directly included by this
    * `#include`.
    */
-  Include getAnInclude() {
-      this.getIncludedFile() = result.getFile()
-  }
+  Include getAnInclude() { this.getIncludedFile() = result.getFile() }
 }
 
 /**
@@ -50,9 +48,7 @@ class Include extends PreprocessorDirective, @ppd_include {
  * ```
  */
 class IncludeNext extends Include, @ppd_include_next {
-  override string toString() {
-    result = "#include_next " + getIncludeText()
-  }
+  override string toString() { result = "#include_next " + getIncludeText() }
 }
 
 /**
@@ -64,7 +60,5 @@ class IncludeNext extends Include, @ppd_include_next {
  * ```
  */
 class Import extends Include, @ppd_objc_import {
-  override string toString() {
-    result = "#import " + getIncludeText()
-  }
+  override string toString() { result = "#import " + getIncludeText() }
 }

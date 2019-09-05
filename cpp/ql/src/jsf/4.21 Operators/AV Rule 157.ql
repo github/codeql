@@ -9,6 +9,7 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -16,6 +17,8 @@ import cpp
  */
 
 from BinaryLogicalOperation blo
-where blo.fromSource() and
-      not blo.getRightOperand().isPure()
-select blo, "AV Rule 157: The right hand operand of a && or || operator shall not contain side effects."
+where
+  blo.fromSource() and
+  not blo.getRightOperand().isPure()
+select blo,
+  "AV Rule 157: The right hand operand of a && or || operator shall not contain side effects."

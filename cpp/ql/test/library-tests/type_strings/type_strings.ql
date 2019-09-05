@@ -1,12 +1,9 @@
 import cpp
 
 Type getDeclType(Declaration d) {
-    result = ((GlobalVariable)d).getType() or
-    result = ((Function      )d).getType()
+  result = d.(GlobalVariable).getType() or
+  result = d.(Function).getType()
 }
 
 from Declaration d
-select d,
-       getDeclType(d).toString(),
-       getDeclType(d).explain()
-
+select d, getDeclType(d).toString(), getDeclType(d).explain()

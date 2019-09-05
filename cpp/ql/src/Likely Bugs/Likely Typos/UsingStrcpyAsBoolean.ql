@@ -70,10 +70,8 @@ predicate isStringCopyUsedInLogicalOperationOrCondition(FunctionCall func, Expr 
 
 from FunctionCall func, Expr expr1, string msg
 where
-  (
-    isStringCopyCastedAsBoolean(func, expr1, msg) and
-    not isStringCopyUsedInLogicalOperationOrCondition(func, _, _)
-  )
+  isStringCopyCastedAsBoolean(func, expr1, msg) and
+  not isStringCopyUsedInLogicalOperationOrCondition(func, _, _)
   or
   isStringCopyUsedInLogicalOperationOrCondition(func, expr1, msg)
 select expr1, msg

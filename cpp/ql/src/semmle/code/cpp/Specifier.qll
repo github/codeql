@@ -6,7 +6,6 @@ private import semmle.code.cpp.internal.ResolveClass
  * `mutable`, `inline`, `virtual`, or `explicit`.
  */
 class Specifier extends Element, @specifier {
-
   /** Gets a dummy location for the specifier. */
   override Location getLocation() {
     suppressUnusedThis(this) and
@@ -14,9 +13,9 @@ class Specifier extends Element, @specifier {
   }
 
   override string getCanonicalQLClass() { result = "Specifier" }
-  
+
   /** Gets the name of this specifier. */
-  string getName() { specifiers(underlyingElement(this),result) }
+  string getName() { specifiers(underlyingElement(this), result) }
 
   /** Holds if the name of this specifier is `name`. */
   predicate hasName(string name) { name = this.getName() }
@@ -33,6 +32,7 @@ class FunctionSpecifier extends Specifier {
     this.hasName("virtual") or
     this.hasName("explicit")
   }
+
   override string getCanonicalQLClass() { result = "FunctionSpecifier)" }
 }
 
@@ -48,6 +48,7 @@ class StorageClassSpecifier extends Specifier {
     this.hasName("extern") or
     this.hasName("mutable")
   }
+
   override string getCanonicalQLClass() { result = "StorageClassSpecifier" }
 }
 
@@ -65,7 +66,7 @@ class AccessSpecifier extends Specifier {
    * Gets the visibility of a field with access specifier `this` if it is
    * directly inherited with access specifier `baseAccess`. For example:
    *
-   * ``` 
+   * ```
    * class A { protected int f; };
    * class B : private A {};
    * ```
@@ -92,14 +93,17 @@ class AccessSpecifier extends Specifier {
    * ```
    */
   AccessSpecifier accessInDirectDerived(AccessSpecifier baseAccess) {
-    this.getName() != "private" and (
+    this.getName() != "private" and
+    (
       // Alphabetically, "private" < "protected" < "public". This disjunction
       // encodes that `result` is the minimum access of `this` and
       // `baseAccess`.
-      baseAccess.getName() <  this.getName() and result = baseAccess or
+      baseAccess.getName() < this.getName() and result = baseAccess
+      or
       baseAccess.getName() >= this.getName() and result = this
     )
   }
+
   override string getCanonicalQLClass() { result = "AccessSpecifier" }
 }
 
@@ -129,22 +133,17 @@ class Attribute extends Element, @attribute {
   override string toString() { result = this.getName() }
 
   /** Gets the `i`th argument of the attribute. */
-  AttributeArgument getArgument(int i) {
-    result.getAttribute() = this and result.getIndex() = i
-  }
+  AttributeArgument getArgument(int i) { result.getAttribute() = this and result.getIndex() = i }
 
   /** Gets an argument of the attribute. */
-  AttributeArgument getAnArgument() {
-    result = getArgument(_)
-  }
+  AttributeArgument getAnArgument() { result = getArgument(_) }
 }
 
 /**
  * An attribute introduced by GNU's `__attribute__((name))` syntax, for
  * example: `__attribute__((__noreturn__))`.
  */
-class GnuAttribute extends Attribute, @gnuattribute {
-}
+class GnuAttribute extends Attribute, @gnuattribute { }
 
 /**
  * An attribute introduced by the C++11 standard `[[name]]` syntax, for
@@ -171,8 +170,7 @@ class StdAttribute extends Attribute, @stdattribute {
  * An attribute introduced by Microsoft's `__declspec(name)` syntax, for
  * example: `__declspec(dllimport)`.
  */
-class Declspec extends Attribute, @declspec {
-}
+class Declspec extends Attribute, @declspec { }
 
 /**
  * An attribute introduced by Microsoft's "[name]" syntax, for example "[SA_Pre(Deref=1,Access=SA_Read)]".
@@ -198,38 +196,31 @@ class AlignAs extends Attribute, @alignas {
  * that declares a function to accept a `printf` style format string.
  */
 class FormatAttribute extends GnuAttribute {
-  FormatAttribute() {
-    getName() = "format"
-  }
+  FormatAttribute() { getName() = "format" }
 
   /**
    * Gets the archetype of this format attribute, for example
    * `"printf"`.
    */
-  string getArchetype() {
-    result = getArgument(0).getValueText()
-  }
+  string getArchetype() { result = getArgument(0).getValueText() }
 
   /**
    * Gets the index in (1-based) format attribute notation associated
    * with the first argument of the function.
    */
   private int firstArgumentNumber() {
-    if exists(MemberFunction f | f.getAnAttribute() = this and not f.isStatic()) then (
+    if exists(MemberFunction f | f.getAnAttribute() = this and not f.isStatic())
+    then
       // 1 is `this`, so the first parameter is 2
       result = 2
-    ) else (
-      result = 1
-    )
+    else result = 1
   }
 
   /**
    * Gets the (0-based) index of the format string,
    * according to this attribute.
    */
-  int getFormatIndex() {
-    result = getArgument(1).getValueInt() - firstArgumentNumber()
-  }
+  int getFormatIndex() { result = getArgument(1).getValueInt() - firstArgumentNumber() }
 
   /**
    * Gets the (0-based) index of the first format argument (if any),
@@ -242,6 +233,7 @@ class FormatAttribute extends GnuAttribute {
       not val = 0 // indicates a `vprintf` style format function with arguments not directly available.
     )
   }
+
   override string getCanonicalQLClass() { result = "FormatAttribute" }
 }
 
@@ -254,31 +246,23 @@ class AttributeArgument extends Element, @attribute_arg {
    * arguments are a Microsoft feature, so only a `MicrosoftAttribute` can
    * have a named argument.
    */
-  string getName() {
-    attribute_arg_name(underlyingElement(this), result)
-  }
+  string getName() { attribute_arg_name(underlyingElement(this), result) }
 
   /**
    * Gets the text for the value of this argument, if its value is
    * a string or a number.
    */
-  string getValueText() {
-    attribute_arg_value(underlyingElement(this), result)
-  }
+  string getValueText() { attribute_arg_value(underlyingElement(this), result) }
 
   /**
    * Gets the value of this argument, if its value is integral.
    */
-  int getValueInt() {
-    result = getValueText().toInt()
-  }
+  int getValueInt() { result = getValueText().toInt() }
 
   /**
    * Gets the value of this argument, if its value is a type.
    */
-  Type getValueType() {
-    attribute_arg_type(underlyingElement(this), unresolveElement(result))
-  }
+  Type getValueType() { attribute_arg_type(underlyingElement(this), unresolveElement(result)) }
 
   /**
    * Gets the attribute to which this is an argument.
@@ -291,25 +275,23 @@ class AttributeArgument extends Element, @attribute_arg {
    * Gets the zero-based index of this argument in the containing
    * attribute's argument list.
    */
-  int getIndex() {
-    attribute_args(underlyingElement(this), _, _, result, _)
-  }
+  int getIndex() { attribute_args(underlyingElement(this), _, _, result, _) }
 
-  override Location getLocation() {
-    attribute_args(underlyingElement(this), _, _, _, result)
-  }
+  override Location getLocation() { attribute_args(underlyingElement(this), _, _, _, result) }
 
   override string toString() {
-    if exists (@attribute_arg_empty self | self = underlyingElement(this))
-      then result = "empty argument"
-      else exists (string prefix, string tail
-           | (if exists(getName())
-                then prefix = getName() + "="
-                else prefix = "") and
-             (if exists (@attribute_arg_type self | self = underlyingElement(this))
-                then tail = getValueType().getName()
-                else tail = getValueText()) and
-             result = prefix + tail)
+    if exists(@attribute_arg_empty self | self = underlyingElement(this))
+    then result = "empty argument"
+    else
+      exists(string prefix, string tail |
+        (if exists(getName()) then prefix = getName() + "=" else prefix = "") and
+        (
+          if exists(@attribute_arg_type self | self = underlyingElement(this))
+          then tail = getValueType().getName()
+          else tail = getValueText()
+        ) and
+        result = prefix + tail
+      )
   }
 }
 

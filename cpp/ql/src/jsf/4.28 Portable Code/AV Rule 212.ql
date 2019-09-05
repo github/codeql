@@ -9,6 +9,7 @@
  *       portability
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -16,12 +17,12 @@ import cpp
  */
 
 predicate isNonNegative(Expr e) {
-     e.getUnderlyingType().(IntegralType).isUnsigned()
-  or e.getValue().toInt() >= 0
+  e.getUnderlyingType().(IntegralType).isUnsigned() or
+  e.getValue().toInt() >= 0
 }
 
 predicate sameExpr(Expr e, Expr f) {
-     e.(VariableAccess).getTarget() = f.(VariableAccess).getTarget()
+  e.(VariableAccess).getTarget() = f.(VariableAccess).getTarget()
   // adding the following disjunct OOMs on non-trivial databases
   //or e.getValue() = f.getValue()
 }
@@ -33,8 +34,12 @@ class UnreliableOverflowTest extends LTExpr {
       a = l.getLeftOperand() and
       b = l.getRightOperand() and
       r = super.getRightOperand() and
-      (   sameExpr(a, r) and isNonNegative(b)
-       or sameExpr(b, r) and isNonNegative(a)))
+      (
+        sameExpr(a, r) and isNonNegative(b)
+        or
+        sameExpr(b, r) and isNonNegative(a)
+      )
+    )
   }
 }
 

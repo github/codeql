@@ -16,8 +16,8 @@ import cpp
  * Gets a `do` ... `while` loop with a constant false condition.
  */
 DoStmt getAFalseLoop() {
-  result.getControllingExpr().getValue() = "0"
-  and not result.getControllingExpr().isAffectedByMacro()
+  result.getControllingExpr().getValue() = "0" and
+  not result.getControllingExpr().isAffectedByMacro()
 }
 
 /**
@@ -30,22 +30,19 @@ DoStmt enclosingLoop(Stmt s) {
   exists(Stmt parent |
     parent = s.getParent() and
     (
-      (
-        parent instanceof Loop and
-        result = parent
-      ) or (
-        not parent instanceof Loop and
-        not parent instanceof SwitchStmt and
-        result = enclosingLoop(parent)
-      )
+      parent instanceof Loop and
+      result = parent
+      or
+      not parent instanceof Loop and
+      not parent instanceof SwitchStmt and
+      result = enclosingLoop(parent)
     )
   )
 }
 
 from DoStmt loop, ContinueStmt continue
-where loop = getAFalseLoop()
-  and loop = enclosingLoop(continue)
-select continue,
-  "This 'continue' never re-runs the loop - the $@ is always false.",
-  loop.getControllingExpr(),
-  "loop condition"
+where
+  loop = getAFalseLoop() and
+  loop = enclosingLoop(continue)
+select continue, "This 'continue' never re-runs the loop - the $@ is always false.",
+  loop.getControllingExpr(), "loop condition"

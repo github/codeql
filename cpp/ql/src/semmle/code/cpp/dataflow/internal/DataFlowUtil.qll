@@ -191,7 +191,6 @@ class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
  */
 class DefinitionByReferenceNode extends PartialDefinitionNode {
   VariableAccess va;
-
   Expr argument;
 
   DefinitionByReferenceNode() {
@@ -300,7 +299,6 @@ private class ObjectInitializerNode extends PostUpdateNode, TExprNode {
   }
 
   override PreObjectInitializerNode getPreUpdateNode() { result = pre }
-
   // No override of `toString` since these nodes already have a `toString` from
   // their overlap with `ExprNode`.
 }
@@ -403,8 +401,7 @@ private module ThisFlow {
     // negative offset in the first basic block, between the
     // `ImplicitParameterNode` and the first statement.
     exists(Constructor constructor, int i |
-      thisNode.(PreConstructorInitThis).getConstructorFieldInit() =
-        constructor.getInitializer(i) and
+      thisNode.(PreConstructorInitThis).getConstructorFieldInit() = constructor.getInitializer(i) and
       result = -2147483648 + 1 + i and
       b = thisNode.getFunction().getBlock()
     )
@@ -599,17 +596,11 @@ private module FieldFlow {
   private class FieldConfiguration extends Configuration {
     FieldConfiguration() { this = "FieldConfiguration" }
 
-    override predicate isSource(Node source) {
-      storeStep(source, _, _)
-    }
+    override predicate isSource(Node source) { storeStep(source, _, _) }
 
-    override predicate isSink(Node sink) {
-      readStep(_, _, sink)
-    }
+    override predicate isSink(Node sink) { readStep(_, _, sink) }
 
-    override predicate isBarrier(Node node) {
-      node instanceof ParameterNode
-    }
+    override predicate isBarrier(Node node) { node instanceof ParameterNode }
 
     override predicate isBarrierOut(Node node) {
       node.asExpr().getParent() instanceof ReturnStmt
@@ -619,9 +610,7 @@ private module FieldFlow {
   }
 
   predicate fieldFlow(Node node1, Node node2) {
-    exists(FieldConfiguration cfg |
-      cfg.hasFlow(node1, node2)
-    ) and
+    exists(FieldConfiguration cfg | cfg.hasFlow(node1, node2)) and
     // This configuration should not be able to cross function boundaries, but
     // we double-check here just to be sure.
     node1.getFunction() = node2.getFunction()

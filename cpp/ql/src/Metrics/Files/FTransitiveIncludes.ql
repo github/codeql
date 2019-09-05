@@ -12,9 +12,11 @@
  * @tags maintainability
  *       modularity
  */
+
 import cpp
 
 from File f, int n
-where f.fromSource()
-  and n = count(File g | g = f.getAnIncludedFile+())
+where
+  f.fromSource() and
+  n = count(File g | g = f.getAnIncludedFile+())
 select f, n

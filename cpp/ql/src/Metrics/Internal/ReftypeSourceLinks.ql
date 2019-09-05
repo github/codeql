@@ -4,6 +4,7 @@
  * @id cpp/reference-type-source-links
  * @metricType reftype
  */
+
 import cpp
 
 from Class c

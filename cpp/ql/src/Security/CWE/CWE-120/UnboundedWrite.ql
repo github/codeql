@@ -12,6 +12,7 @@
  *       external/cwe/cwe-787
  *       external/cwe/cwe-805
  */
+
 import semmle.code.cpp.security.BufferWrite
 import semmle.code.cpp.security.Security
 import semmle.code.cpp.security.TaintTracking
@@ -40,8 +41,8 @@ import semmle.code.cpp.security.TaintTracking
  */
 
 predicate isUnboundedWrite(BufferWrite bw) {
-  not bw.hasExplicitLimit()                           // has no explicit size limit
-  and (not exists(bw.getMaxData()))                   // and we can't deduce an upper bound to the amount copied
+  not bw.hasExplicitLimit() and // has no explicit size limit
+  not exists(bw.getMaxData()) // and we can't deduce an upper bound to the amount copied
 }
 
 /*
@@ -63,10 +64,10 @@ predicate isUnboundedWrite(BufferWrite bw) {
  * TaintTracking library.
  */
 predicate tainted2(Expr expr, Expr inputSource, string inputCause) {
-  (
-    taintedIncludingGlobalVars(inputSource, expr, _) and
-    inputCause = inputSource.toString()
-  ) or exists(Expr e | tainted2(e, inputSource, inputCause) |
+  taintedIncludingGlobalVars(inputSource, expr, _) and
+  inputCause = inputSource.toString()
+  or
+  exists(Expr e | tainted2(e, inputSource, inputCause) |
     // field accesses of a tainted struct are tainted
     e = expr.(FieldAccess).getQualifier()
   )
@@ -77,6 +78,8 @@ predicate tainted2(Expr expr, Expr inputSource, string inputCause) {
  */
 
 from BufferWrite bw, Expr inputSource, string inputCause
-where isUnboundedWrite(bw)
-  and tainted2(bw.getASource(), inputSource, inputCause)
-select bw,  "This '" + bw.getBWDesc() + "' with input from $@ may overflow the destination.", inputSource, inputCause
+where
+  isUnboundedWrite(bw) and
+  tainted2(bw.getASource(), inputSource, inputCause)
+select bw, "This '" + bw.getBWDesc() + "' with input from $@ may overflow the destination.",
+  inputSource, inputCause

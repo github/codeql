@@ -33,11 +33,9 @@ predicate flowsToExpr(Expr source, Expr sink, boolean pathMightOverflow) {
  * checking whether the current expression might overflow.
  */
 predicate flowsToExprImpl(Expr source, Expr sink, boolean pathMightOverflow) {
-  (
-    source = sink and
-    pathMightOverflow = false and
-    source.(FunctionCall).getTarget().(Snprintf).returnsFullFormatLength()
-  )
+  source = sink and
+  pathMightOverflow = false and
+  source.(FunctionCall).getTarget().(Snprintf).returnsFullFormatLength()
   or
   exists(RangeSsaDefinition def, LocalScopeVariable v |
     flowsToDef(source, def, v, pathMightOverflow) and

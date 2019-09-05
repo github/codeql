@@ -4,7 +4,6 @@ import semmle.code.cpp.Type
  * The C/C++ `char*` type.
  */
 class CharPointerType extends PointerType {
-
   CharPointerType() { this.getBaseType() instanceof CharType }
 
   override string getCanonicalQLClass() { result = "CharPointerType" }
@@ -14,18 +13,15 @@ class CharPointerType extends PointerType {
  * The C/C++ `int*` type.
  */
 class IntPointerType extends PointerType {
-
   IntPointerType() { this.getBaseType() instanceof IntType }
 
   override string getCanonicalQLClass() { result = "IntPointerType" }
 }
 
-
 /**
  * The C/C++ `void*` type.
  */
 class VoidPointerType extends PointerType {
-
   VoidPointerType() { this.getBaseType() instanceof VoidType }
 
   override string getCanonicalQLClass() { result = "VoidPointerType" }
@@ -112,7 +108,7 @@ class Wchar_t extends Type {
  * synonym for.  Note that since `__int8` is not a distinct type,
  * `MicrosoftInt8Type` corresponds to an existing `IntegralType` as
  * well.
- * 
+ *
  * This class is meaningless if a Microsoft compiler was not used.
  */
 class MicrosoftInt8Type extends IntegralType {
@@ -128,7 +124,7 @@ class MicrosoftInt8Type extends IntegralType {
  * synonym for.  Note that since `__int16` is not a distinct type,
  * `MicrosoftInt16Type` corresponds to an existing `IntegralType` as
  * well.
- * 
+ *
  * This class is meaningless if a Microsoft compiler was not used.
  */
 class MicrosoftInt16Type extends IntegralType {
@@ -144,7 +140,7 @@ class MicrosoftInt16Type extends IntegralType {
  * synonym for.  Note that since `__int32` is not a distinct type,
  * `MicrosoftInt32Type` corresponds to an existing `IntegralType` as
  * well.
- * 
+ *
  * This class is meaningless if a Microsoft compiler was not used.
  */
 class MicrosoftInt32Type extends IntegralType {
@@ -160,7 +156,7 @@ class MicrosoftInt32Type extends IntegralType {
  * synonym for.  Note that since `__int64` is not a distinct type,
  * `MicrosoftInt64Type` corresponds to an existing `IntegralType` as
  * well.
- * 
+ *
  * This class is meaningless if a Microsoft compiler was not used.
  */
 class MicrosoftInt64Type extends IntegralType {

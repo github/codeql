@@ -12,16 +12,14 @@ abstract class Call extends Expr, NameQualifiableElement {
    * retrieve actuals.
    */
   int getNumberOfArguments() { result = count(this.getAnArgument()) }
- 
+
   /**
    * Holds if this call has a qualifier.
    *
    * For example, `ptr->f()` has a qualifier, whereas plain `f()` does not.
    */
-  predicate hasQualifier() {
-    exists(Expr e | this.getChild(-1) = e)
-  }
- 
+  predicate hasQualifier() { exists(Expr e | this.getChild(-1) = e) }
+
   /**
    * Gets the expression to the left of the function name or function pointer variable name.
    *
@@ -29,26 +27,20 @@ abstract class Call extends Expr, NameQualifiableElement {
    *  For the call to `f` in `ptr->f()`, this gives `ptr`.
    *  For the call to `f` in `(*ptr).f()`, this gives `(*ptr)`.
    */
-  Expr getQualifier() {
-    result = this.getChild(-1)
-  }
+  Expr getQualifier() { result = this.getChild(-1) }
 
   /**
    * Gets an argument for this call.
    */
-  Expr getAnArgument() {
-    exists(int i | result = this.getChild(i) and i >= 0)
-  }
+  Expr getAnArgument() { exists(int i | result = this.getChild(i) and i >= 0) }
 
   /**
    * Gets the nth argument for this call.
    *
    * The range of `n` is from `0` to `getNumberOfArguments() - 1`.
    */
-  Expr getArgument(int n) {
-    result = this.getChild(n) and n >= 0
-  }
- 
+  Expr getArgument(int n) { result = this.getChild(n) and n >= 0 }
+
   /**
    * Gets a sub expression of the argument at position `index`. If the
    * argument itself contains calls, such calls will be considered
@@ -62,10 +54,10 @@ abstract class Call extends Expr, NameQualifiableElement {
     result = getArgument(index)
     or
     exists(Expr mid |
-      mid = getAnArgumentSubExpr(index)
-      and not mid instanceof Call
-      and not mid instanceof SizeofOperator
-      and result = mid.getAChild()
+      mid = getAnArgumentSubExpr(index) and
+      not mid instanceof Call and
+      not mid instanceof SizeofOperator and
+      result = mid.getAChild()
     )
   }
 
@@ -81,9 +73,9 @@ abstract class Call extends Expr, NameQualifiableElement {
   abstract Function getTarget();
 
   override int getPrecedence() { result = 16 }
- 
+
   override string toString() { none() }
- 
+
   /**
    * Holds if this call passes the variable accessed by `va` by
    * reference as the `i`th argument.
@@ -127,10 +119,7 @@ abstract class Call extends Expr, NameQualifiableElement {
    * by reference to const.
    */
   predicate passesByReferenceNonConst(int i, VariableAccess va) {
-    variableAddressEscapesTreeNonConst(
-      va,
-      this.getArgument(i).getFullyConverted()
-    )
+    variableAddressEscapesTreeNonConst(va, this.getArgument(i).getFullyConverted())
   }
 }
 
@@ -145,67 +134,53 @@ abstract class Call extends Expr, NameQualifiableElement {
  *  5. Base class initializers in constructors.
  */
 class FunctionCall extends Call, @funbindexpr {
-  FunctionCall() {
-    iscall(underlyingElement(this),_)
-  }
+  FunctionCall() { iscall(underlyingElement(this), _) }
 
   override string getCanonicalQLClass() { result = "FunctionCall" }
-  
+
   /** Gets an explicit template argument for this call. */
-  Type getAnExplicitTemplateArgument() {
-    result = getExplicitTemplateArgument(_)
-  }
+  Type getAnExplicitTemplateArgument() { result = getExplicitTemplateArgument(_) }
 
   /** Gets a template argument for this call. */
-  Type getATemplateArgument() {
-    result = getTarget().getATemplateArgument()
-  }
+  Type getATemplateArgument() { result = getTarget().getATemplateArgument() }
 
   /** Gets the nth explicit template argument for this call. */
   Type getExplicitTemplateArgument(int n) {
-    n < getNumberOfExplicitTemplateArguments()
-    and result = getTemplateArgument(n)
+    n < getNumberOfExplicitTemplateArguments() and
+    result = getTemplateArgument(n)
   }
 
   /** Gets the number of explicit template arguments for this call. */
   int getNumberOfExplicitTemplateArguments() {
-    if numtemplatearguments(underlyingElement(this),_) then
-      numtemplatearguments(underlyingElement(this),result)
-    else
-      result = 0
+    if numtemplatearguments(underlyingElement(this), _)
+    then numtemplatearguments(underlyingElement(this), result)
+    else result = 0
   }
 
   /** Gets the number of template arguments for this call. */
-  int getNumberOfTemplateArguments() {
-    result = count(int i | exists(getTemplateArgument(i)))
-  }
+  int getNumberOfTemplateArguments() { result = count(int i | exists(getTemplateArgument(i))) }
 
   /** Gets the nth template argument for this call (indexed from 0). */
-  Type getTemplateArgument(int n) {
-    result = getTarget().getTemplateArgument(n)
-  }
+  Type getTemplateArgument(int n) { result = getTarget().getTemplateArgument(n) }
 
   /** Holds if any template arguments for this call are implicit / deduced. */
   predicate hasImplicitTemplateArguments() {
     exists(int i |
-      exists(getTemplateArgument(i))
-      and not exists(getExplicitTemplateArgument(i))
+      exists(getTemplateArgument(i)) and
+      not exists(getExplicitTemplateArgument(i))
     )
   }
 
   /** Holds if a template argument list was provided for this call. */
-  predicate hasTemplateArgumentList() {
-    numtemplatearguments(underlyingElement(this),_)
-  }
+  predicate hasTemplateArgumentList() { numtemplatearguments(underlyingElement(this), _) }
 
   /**
    * Gets the `RoutineType` of the call target as visible at the call site.  For
    * constructor calls, this predicate instead gets the `Class` of the constructor
    * being called.
    */
-  private
-  Type getTargetType() { result = Call.super.getType().stripType() }
- 
+  private Type getTargetType() { result = Call.super.getType().stripType() }
+
   /**
    * Gets the expected return type of the function called by this call.
    *
@@ -215,12 +190,11 @@ class FunctionCall extends Call, @funbindexpr {
    * visible at the call site.
    */
   Type getExpectedReturnType() {
-    if getTargetType() instanceof RoutineType then
-      result = getTargetType().(RoutineType).getReturnType()
-    else
-      result = getTarget().getType()
+    if getTargetType() instanceof RoutineType
+    then result = getTargetType().(RoutineType).getReturnType()
+    else result = getTarget().getType()
   }
- 
+
   /**
    * Gets the expected type of the nth parameter of the function called by this call.
    *
@@ -230,10 +204,9 @@ class FunctionCall extends Call, @funbindexpr {
    * was visible at the call site.
    */
   Type getExpectedParameterType(int n) {
-    if getTargetType() instanceof RoutineType then
-      result = getTargetType().(RoutineType).getParameterType(n)
-    else
-      result = getTarget().getParameter(n).getType()
+    if getTargetType() instanceof RoutineType
+    then result = getTargetType().(RoutineType).getParameterType(n)
+    else result = getTarget().getParameter(n).getType()
   }
 
   /**
@@ -242,8 +215,8 @@ class FunctionCall extends Call, @funbindexpr {
    * In the case of virtual function calls, the result is the most-specific function in the override tree (as
    * determined by the compiler) such that the target at runtime will be one of result.getAnOverridingFunction*().
    */
-  override Function getTarget() { funbind(underlyingElement(this),unresolveElement(result)) }
- 
+  override Function getTarget() { funbind(underlyingElement(this), unresolveElement(result)) }
+
   /**
    * Gets the type of this expression, that is, the return type of the function being called.
    */
@@ -254,24 +227,19 @@ class FunctionCall extends Call, @funbindexpr {
    *
    * Note that this holds even in cases where a sufficiently clever compiler could perform static dispatch.
    */
-  predicate isVirtual() {
-    iscall(underlyingElement(this),1)
-  }
+  predicate isVirtual() { iscall(underlyingElement(this), 1) }
 
   /**
    * Holds if the target of this function call was found by argument-dependent lookup and wouldn't have been
    * found by any other means.
    */
-  predicate isOnlyFoundByADL() {
-    iscall(underlyingElement(this),2)
-  }
+  predicate isOnlyFoundByADL() { iscall(underlyingElement(this), 2) }
 
   /** Gets a textual representation of this function call. */
   override string toString() {
-    if exists(getTarget()) then
-      result = "call to " + this.getTarget().getName()
-    else
-      result = "call to unknown function"
+    if exists(getTarget())
+    then result = "call to " + this.getTarget().getName()
+    else result = "call to unknown function"
   }
 
   override predicate mayBeImpure() {
@@ -280,6 +248,7 @@ class FunctionCall extends Call, @funbindexpr {
     isVirtual() or
     getTarget().getAnAttribute().getName() = "weak"
   }
+
   override predicate mayBeGloballyImpure() {
     this.getChild(_).mayBeGloballyImpure() or
     this.getTarget().mayHaveSideEffects() or
@@ -293,8 +262,8 @@ class FunctionCall extends Call, @funbindexpr {
  */
 class OverloadedPointerDereferenceExpr extends FunctionCall {
   OverloadedPointerDereferenceExpr() {
-    getTarget().hasName("operator*")
-    and getTarget().getEffectiveNumberOfParameters() = 1
+    getTarget().hasName("operator*") and
+    getTarget().getEffectiveNumberOfParameters() = 1
   }
 
   /**
@@ -307,17 +276,28 @@ class OverloadedPointerDereferenceExpr extends FunctionCall {
 
   override predicate mayBeImpure() {
     FunctionCall.super.mayBeImpure() and
-    (this.getExpr().mayBeImpure() or
-     not exists(Class declaring |
-            this.getTarget().getDeclaringType().isConstructedFrom*(declaring) |
-            declaring.getNamespace() instanceof StdNamespace))
+    (
+      this.getExpr().mayBeImpure()
+      or
+      not exists(Class declaring |
+        this.getTarget().getDeclaringType().isConstructedFrom*(declaring)
+      |
+        declaring.getNamespace() instanceof StdNamespace
+      )
+    )
   }
+
   override predicate mayBeGloballyImpure() {
     FunctionCall.super.mayBeGloballyImpure() and
-    (this.getExpr().mayBeGloballyImpure() or
-     not exists(Class declaring |
-            this.getTarget().getDeclaringType().isConstructedFrom*(declaring) |
-            declaring.getNamespace() instanceof StdNamespace))
+    (
+      this.getExpr().mayBeGloballyImpure()
+      or
+      not exists(Class declaring |
+        this.getTarget().getDeclaringType().isConstructedFrom*(declaring)
+      |
+        declaring.getNamespace() instanceof StdNamespace
+      )
+    )
   }
 }
 
@@ -325,19 +305,21 @@ class OverloadedPointerDereferenceExpr extends FunctionCall {
  * An instance of operator [] applied to a user-defined type.
  */
 class OverloadedArrayExpr extends FunctionCall {
-  OverloadedArrayExpr() {
-    getTarget().hasName("operator[]")
-  }
- 
+  OverloadedArrayExpr() { getTarget().hasName("operator[]") }
+
   /**
    * Gets the expression being subscripted.
    */
-  Expr getArrayBase() { if exists(this.getQualifier()) then result = this.getQualifier() else result = this.getChild(0) }
+  Expr getArrayBase() {
+    if exists(this.getQualifier()) then result = this.getQualifier() else result = this.getChild(0)
+  }
 
   /**
    * Gets the expression giving the index.
    */
-  Expr getArrayOffset() { if exists(this.getQualifier()) then result = this.getChild(0) else result = this.getChild(1) }
+  Expr getArrayOffset() {
+    if exists(this.getQualifier()) then result = this.getChild(0) else result = this.getChild(1)
+  }
 }
 
 /**
@@ -348,21 +330,18 @@ class ExprCall extends Call, @callexpr {
    * Gets the expression which yields the function pointer to call.
    */
   Expr getExpr() { result = this.getChild(0) }
- 
+
   override string getCanonicalQLClass() { result = "ExprCall" }
 
-  override Expr getAnArgument() {
-    exists(int i | result = this.getChild(i) and i >= 1)
-  }
+  override Expr getAnArgument() { exists(int i | result = this.getChild(i) and i >= 1) }
+
   override Expr getArgument(int index) {
-    result = this.getChild(index+1) and index in [0..this.getNumChild()-2]
+    result = this.getChild(index + 1) and index in [0 .. this.getNumChild() - 2]
   }
 
   override string toString() { result = "call to expression" }
 
-  override Function getTarget() {
-    none()
-  }
+  override Function getTarget() { none() }
 }
 
 /**
@@ -376,9 +355,7 @@ class VariableCall extends ExprCall {
   /**
    * Gets the variable which yields the function pointer to call.
    */
-  Variable getVariable() {
-    this.getExpr().(VariableAccess).getTarget() = result
-  }
+  Variable getVariable() { this.getExpr().(VariableAccess).getTarget() = result }
 }
 
 /**
@@ -386,7 +363,7 @@ class VariableCall extends ExprCall {
  */
 class ConstructorCall extends FunctionCall {
   ConstructorCall() { super.getTarget() instanceof Constructor }
- 
+
   override string getCanonicalQLClass() { result = "ConstructorCall" }
 
   /** Gets the constructor being called. */
@@ -426,7 +403,7 @@ class ReThrowExpr extends ThrowExpr {
  */
 class DestructorCall extends FunctionCall {
   DestructorCall() { super.getTarget() instanceof Destructor }
- 
+
   override string getCanonicalQLClass() { result = "DestructorCall" }
 
   /** Gets the destructor being called. */
@@ -500,8 +477,8 @@ class ConstructorDelegationInit extends ConstructorBaseInit, @ctordelegatinginit
  */
 class ConstructorFieldInit extends ConstructorInit, @ctorfieldinit {
   /** Gets the field being initialized. */
-  Field getTarget() { varbind(underlyingElement(this),unresolveElement(result)) }
- 
+  Field getTarget() { varbind(underlyingElement(this), unresolveElement(result)) }
+
   override string getCanonicalQLClass() { result = "ConstructorFieldInit" }
 
   /**
@@ -511,17 +488,12 @@ class ConstructorFieldInit extends ConstructorInit, @ctorfieldinit {
    * constructor, but more complex expressions can also occur.
    */
   Expr getExpr() { result = this.getChild(0) }
- 
-  override string toString() {
-    result = "constructor init of field " + getTarget().getName()
-  }
 
-  override predicate mayBeImpure() {
-    this.getExpr().mayBeImpure()
-  }
-  override predicate mayBeGloballyImpure() {
-    this.getExpr().mayBeGloballyImpure()
-  }
+  override string toString() { result = "constructor init of field " + getTarget().getName() }
+
+  override predicate mayBeImpure() { this.getExpr().mayBeImpure() }
+
+  override predicate mayBeGloballyImpure() { this.getExpr().mayBeGloballyImpure() }
 }
 
 /**
@@ -565,15 +537,14 @@ class DestructorVirtualDestruction extends DestructorBaseDestruction, @dtorvirtu
  */
 class DestructorFieldDestruction extends DestructorDestruction, @dtorfielddestruct {
   /** Gets the field being destructed. */
-  Field getTarget() { varbind(underlyingElement(this),unresolveElement(result)) }
- 
+  Field getTarget() { varbind(underlyingElement(this), unresolveElement(result)) }
+
   override string getCanonicalQLClass() { result = "DestructorFieldDestruction" }
 
   /** Gets the compiler-generated call to the variable's destructor. */
   DestructorCall getExpr() { result = this.getChild(0) }
- 
+
   override string toString() {
-    result = "destructor field destruction of "
-      + this.getTarget().getName()
+    result = "destructor field destruction of " + this.getTarget().getName()
   }
 }

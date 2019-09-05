@@ -14,29 +14,25 @@
  *             Potentially overrunning write with float to string conversion
  *             (`cpp/overrunning-write-with-float) instead.
  */
+
 import cpp
 import semmle.code.cpp.commons.Buffer
 
 class SprintfCall extends FunctionCall {
-  SprintfCall() {
-    this.getTarget().hasName("sprintf") or this.getTarget().hasName("vsprintf")
-  }
+  SprintfCall() { this.getTarget().hasName("sprintf") or this.getTarget().hasName("vsprintf") }
 
-  int getBufferSize() {
-    result = getBufferSize(this.getArgument(0), _)
-  }
+  int getBufferSize() { result = getBufferSize(this.getArgument(0), _) }
 
   int getMaxConvertedLength() {
     result = this.getArgument(1).(FormatLiteral).getMaxConvertedLength()
   }
 
-  predicate isDangerous() {
-    this.getMaxConvertedLength() > this.getBufferSize()
-  }
+  predicate isDangerous() { this.getMaxConvertedLength() > this.getBufferSize() }
 
   string getDescription() {
-    result = "This conversion may yield a string of length "+this.getMaxConvertedLength().toString()+
-             ", which exceeds the allocated buffer size of "+this.getBufferSize().toString()
+    result = "This conversion may yield a string of length " +
+        this.getMaxConvertedLength().toString() + ", which exceeds the allocated buffer size of " +
+        this.getBufferSize().toString()
   }
 }
 

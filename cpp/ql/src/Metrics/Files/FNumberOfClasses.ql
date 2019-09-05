@@ -8,10 +8,11 @@
  * @tags maintainability
  *       modularity
  */
+
 import cpp
 
 from File f, int n
-where f.fromSource()
-  and n = count(Class c | c.getAFile() = f)
-select f, n
-order by n desc
+where
+  f.fromSource() and
+  n = count(Class c | c.getAFile() = f)
+select f, n order by n desc

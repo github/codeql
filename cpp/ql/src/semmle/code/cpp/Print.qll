@@ -4,20 +4,24 @@ import cpp
  * Gets a string containing the scope in which this declaration is declared.
  */
 private string getScopePrefix(Declaration decl) {
-  decl.isMember() and result = decl.getDeclaringType().(UserDumpType).getIdentityString() + "::" or
-  (
-    decl.isTopLevel() and 
-    exists (string parentName |
-      parentName = decl.getNamespace().getQualifiedName() and
-      (
-        parentName != "" and result = parentName + "::" or
-        parentName = "" and result = ""
-      )
+  decl.isMember() and result = decl.getDeclaringType().(UserDumpType).getIdentityString() + "::"
+  or
+  decl.isTopLevel() and
+  exists(string parentName |
+    parentName = decl.getNamespace().getQualifiedName() and
+    (
+      parentName != "" and result = parentName + "::"
+      or
+      parentName = "" and result = ""
     )
-  ) or
+  )
+  or
   exists(UserType type |
-    type = decl and type.isLocal() and result = "(" + type.getEnclosingFunction().(DumpFunction).getIdentityString() + ")::"
-  ) or
+    type = decl and
+    type.isLocal() and
+    result = "(" + type.getEnclosingFunction().(DumpFunction).getIdentityString() + ")::"
+  )
+  or
   decl instanceof TemplateParameter and result = ""
 }
 
@@ -26,16 +30,15 @@ private string getScopePrefix(Declaration decl) {
  * it returns `...` for `UnknownType`, which is used to represent variable arguments.
  */
 private string getParameterTypeString(Type parameterType) {
-  if parameterType instanceof UnknownType then
-    result = "..."
-  else
-    result = parameterType.(DumpType).getTypeIdentityString()
+  if parameterType instanceof UnknownType
+  then result = "..."
+  else result = parameterType.(DumpType).getTypeIdentityString()
 }
 
 /**
  * A `Declaration` extended to add methods for generating strings useful only for dumps and debugging.
  */
-private abstract class DumpDeclaration extends Declaration {
+abstract private class DumpDeclaration extends Declaration {
   /**
    * Gets a string that uniquely identifies this declaration, suitable for use when debugging queries. Only holds for
    * functions, user-defined types, global and namespace-scope variables, and member variables.
@@ -43,29 +46,26 @@ private abstract class DumpDeclaration extends Declaration {
    * This operation is very expensive, and should not be used in production queries. Consider using
    * `hasQualifiedName()` for identifying known declarations in production queries.
    */
-  string getIdentityString() {
-    none()
-  }
+  string getIdentityString() { none() }
 
   language[monotonicAggregates]
   final string getTemplateArgumentsString() {
-    if exists(this.getATemplateArgument()) then (
+    if exists(this.getATemplateArgument())
+    then
       result = "<" +
-        strictconcat(int i |
-          exists(this.getTemplateArgument(i)) |
+          strictconcat(int i |
+            exists(this.getTemplateArgument(i))
+          |
             this.getTemplateArgument(i).(DumpType).getTypeIdentityString(), ", " order by i
-        ) + ">"
-    )
-    else
-      result = ""
+          ) + ">"
+    else result = ""
   }
 }
 
 /**
  * A `Type` extended to add methods for generating strings useful only for dumps and debugging.
  */
-private class DumpType extends Type
-{
+private class DumpType extends Type {
   /**
    * Gets a string that uniquely identifies this type, suitable for use when debugging queries. All typedefs and
    * decltypes are expanded, and all symbol names are fully qualified.
@@ -79,7 +79,8 @@ private class DumpType extends Type
     // and `getDeclaratorSuffixBeforeQualifiers()`. To create the type identity
     // for a `SpecifiedType`, insert the qualifiers after
     // `getDeclaratorSuffixBeforeQualifiers()`.
-    result = getTypeSpecifier() + getDeclaratorPrefix() + getDeclaratorSuffixBeforeQualifiers() + getDeclaratorSuffix()
+    result = getTypeSpecifier() + getDeclaratorPrefix() + getDeclaratorSuffixBeforeQualifiers() +
+        getDeclaratorSuffix()
   }
 
   /**
@@ -93,18 +94,14 @@ private class DumpType extends Type
    *
    * This predicate is intended to be used only by the implementation of `getTypeIdentityString`.
    */
-  string getTypeSpecifier() {
-    result = ""
-  }
+  string getTypeSpecifier() { result = "" }
 
   /**
    * Gets the portion of this type's declarator that comes before the declarator for any derived type.
    *
    * This predicate is intended to be used only by the implementation of `getTypeIdentityString`.
    */
-  string getDeclaratorPrefix() {
-    result = ""
-  }
+  string getDeclaratorPrefix() { result = "" }
 
   /**
    * Gets the portion of this type's declarator that comes after the declarator for any derived type, but before any
@@ -112,9 +109,7 @@ private class DumpType extends Type
    *
    * This predicate is intended to be used only by the implementation of `getTypeIdentityString`.
    */
-  string getDeclaratorSuffixBeforeQualifiers() {
-    result = ""
-  }
+  string getDeclaratorSuffixBeforeQualifiers() { result = "" }
 
   /**
    * Gets the portion of this type's declarator that comes after the declarator for any derived type and after any
@@ -122,49 +117,33 @@ private class DumpType extends Type
    *
    * This predicate is intended to be used only by the implementation of `getTypeIdentityString`.
    */
-  string getDeclaratorSuffix() {
-    result = ""
-  }
+  string getDeclaratorSuffix() { result = "" }
 }
 
 private class BuiltInDumpType extends DumpType, BuiltInType {
-  override string getTypeSpecifier() {
-    result = toString()
-  }
+  override string getTypeSpecifier() { result = toString() }
 }
 
 private class IntegralDumpType extends BuiltInDumpType, IntegralType {
-  override string getTypeSpecifier() {
-    result = getCanonicalArithmeticType().toString()
-  }
+  override string getTypeSpecifier() { result = getCanonicalArithmeticType().toString() }
 }
 
 private class DerivedDumpType extends DumpType, DerivedType {
-  override string getTypeSpecifier() {
-    result = getBaseType().(DumpType).getTypeSpecifier()
-  }
+  override string getTypeSpecifier() { result = getBaseType().(DumpType).getTypeSpecifier() }
 
   override string getDeclaratorSuffixBeforeQualifiers() {
     result = getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
   }
 
-  override string getDeclaratorSuffix() {
-    result = getBaseType().(DumpType).getDeclaratorSuffix()
-  }
+  override string getDeclaratorSuffix() { result = getBaseType().(DumpType).getDeclaratorSuffix() }
 }
 
 private class DecltypeDumpType extends DumpType, Decltype {
-  override string getTypeSpecifier() {
-    result = getBaseType().(DumpType).getTypeSpecifier()
-  }
+  override string getTypeSpecifier() { result = getBaseType().(DumpType).getTypeSpecifier() }
 
-  override string getDeclaratorPrefix() {
-    result = getBaseType().(DumpType).getDeclaratorPrefix()
-  }
+  override string getDeclaratorPrefix() { result = getBaseType().(DumpType).getDeclaratorPrefix() }
 
-  override string getDeclaratorSuffix() {
-    result = getBaseType().(DumpType).getDeclaratorSuffix()
-  }
+  override string getDeclaratorSuffix() { result = getBaseType().(DumpType).getDeclaratorSuffix() }
 }
 
 private class PointerIshDumpType extends DerivedDumpType {
@@ -176,81 +155,65 @@ private class PointerIshDumpType extends DerivedDumpType {
   override string getDeclaratorPrefix() {
     exists(string declarator |
       result = getBaseType().(DumpType).getDeclaratorPrefix() + declarator and
-      if getBaseType().getUnspecifiedType() instanceof ArrayType then
-        declarator = "(" + getDeclaratorToken() + ")"
-      else
-        declarator = getDeclaratorToken()
+      if getBaseType().getUnspecifiedType() instanceof ArrayType
+      then declarator = "(" + getDeclaratorToken() + ")"
+      else declarator = getDeclaratorToken()
     )
   }
 
   /**
    * Gets the token used when declaring this kind of type (e.g. `*`, `&`, `&&`)/
    */
-  string getDeclaratorToken() {
-    result = ""
-  }
+  string getDeclaratorToken() { result = "" }
 }
 
 private class PointerDumpType extends PointerIshDumpType, PointerType {
-  override string getDeclaratorToken() {
-    result = "*"
-  }
+  override string getDeclaratorToken() { result = "*" }
 }
 
 private class LValueReferenceDumpType extends PointerIshDumpType, LValueReferenceType {
-  override string getDeclaratorToken() {
-    result = "&"
-  }
+  override string getDeclaratorToken() { result = "&" }
 }
 
 private class RValueReferenceDumpType extends PointerIshDumpType, RValueReferenceType {
-  override string getDeclaratorToken() {
-    result = "&&"
-  }
+  override string getDeclaratorToken() { result = "&&" }
 }
 
 private class PointerToMemberDumpType extends DumpType, PointerToMemberType {
-  override string getTypeSpecifier() {
-    result = getBaseType().(DumpType).getTypeSpecifier()
-  }
+  override string getTypeSpecifier() { result = getBaseType().(DumpType).getTypeSpecifier() }
 
   override string getDeclaratorPrefix() {
     exists(string declarator, string parenDeclarator, Type baseType |
       declarator = getClass().(DumpType).getTypeIdentityString() + "::*" and
       result = getBaseType().(DumpType).getDeclaratorPrefix() + " " + parenDeclarator and
       baseType = getBaseType().getUnspecifiedType() and
-      if (baseType instanceof ArrayType) or (baseType instanceof RoutineType) then
-        parenDeclarator = "(" + declarator
-      else
-        parenDeclarator = declarator
+      if baseType instanceof ArrayType or baseType instanceof RoutineType
+      then parenDeclarator = "(" + declarator
+      else parenDeclarator = declarator
     )
   }
 
   override string getDeclaratorSuffixBeforeQualifiers() {
     exists(Type baseType |
       baseType = getBaseType().getUnspecifiedType() and
-      if (baseType instanceof ArrayType) or (baseType instanceof RoutineType) then
-        result = ")" + getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
-      else
-        result = getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
+      if baseType instanceof ArrayType or baseType instanceof RoutineType
+      then result = ")" + getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
+      else result = getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
     )
   }
 
-  override string getDeclaratorSuffix() {
-    result = getBaseType().(DumpType).getDeclaratorSuffix()
-  }
+  override string getDeclaratorSuffix() { result = getBaseType().(DumpType).getDeclaratorSuffix() }
 }
 
 private class ArrayDumpType extends DerivedDumpType, ArrayType {
-  override string getDeclaratorPrefix() {
-    result = getBaseType().(DumpType).getDeclaratorPrefix()
-  }
+  override string getDeclaratorPrefix() { result = getBaseType().(DumpType).getDeclaratorPrefix() }
 
   override string getDeclaratorSuffixBeforeQualifiers() {
-    if exists(getArraySize()) then
-      result = "[" + getArraySize().toString() + "]" + getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
-    else
-      result = "[]" + getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
+    if exists(getArraySize())
+    then
+      result = "[" + getArraySize().toString() + "]" +
+          getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
+    else result = "[]" + getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
   }
 }
 
@@ -259,9 +222,7 @@ private class FunctionPointerIshDumpType extends DerivedDumpType, FunctionPointe
     result = ")" + getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers()
   }
 
-  override string getDeclaratorSuffix() {
-    result = getBaseType().(DumpType).getDeclaratorSuffix()
-  }
+  override string getDeclaratorSuffix() { result = getBaseType().(DumpType).getDeclaratorSuffix() }
 
   override string getDeclaratorPrefix() {
     result = getBaseType().(DumpType).getDeclaratorPrefix() + "(" + getDeclaratorToken()
@@ -270,33 +231,23 @@ private class FunctionPointerIshDumpType extends DerivedDumpType, FunctionPointe
   /**
    * Gets the token used when declaring this kind of type (e.g. `*`, `&`, `^`)/
    */
-  string getDeclaratorToken() {
-    result = ""
-  }
+  string getDeclaratorToken() { result = "" }
 }
 
 private class FunctionPointerDumpType extends FunctionPointerIshDumpType, FunctionPointerType {
-  override string getDeclaratorToken() {
-    result = "*"
-  }
+  override string getDeclaratorToken() { result = "*" }
 }
 
 private class FunctionReferenceDumpType extends FunctionPointerIshDumpType, FunctionReferenceType {
-  override string getDeclaratorToken() {
-    result = "&"
-  }
+  override string getDeclaratorToken() { result = "&" }
 }
 
 private class BlockDumpType extends FunctionPointerIshDumpType, BlockType {
-  override string getDeclaratorToken() {
-    result = "^"
-  }
+  override string getDeclaratorToken() { result = "^" }
 }
 
 private class RoutineDumpType extends DumpType, RoutineType {
-  override string getTypeSpecifier() {
-    result = getReturnType().(DumpType).getTypeSpecifier()
-  }
+  override string getTypeSpecifier() { result = getReturnType().(DumpType).getTypeSpecifier() }
 
   override string getDeclaratorPrefix() {
     result = getReturnType().(DumpType).getDeclaratorPrefix()
@@ -305,14 +256,16 @@ private class RoutineDumpType extends DumpType, RoutineType {
   language[monotonicAggregates]
   override string getDeclaratorSuffixBeforeQualifiers() {
     result = "(" +
-      concat(int i |
-        exists(getParameterType(i)) |
-        getParameterTypeString(getParameterType(i)), ", " order by i
-      ) + ")"
+        concat(int i |
+          exists(getParameterType(i))
+        |
+          getParameterTypeString(getParameterType(i)), ", " order by i
+        ) + ")"
   }
 
   override string getDeclaratorSuffix() {
-    result = getReturnType().(DumpType).getDeclaratorSuffixBeforeQualifiers() + getReturnType().(DumpType).getDeclaratorSuffix()
+    result = getReturnType().(DumpType).getDeclaratorSuffixBeforeQualifiers() +
+        getReturnType().(DumpType).getDeclaratorSuffix()
   }
 }
 
@@ -320,55 +273,46 @@ private class SpecifiedDumpType extends DerivedDumpType, SpecifiedType {
   override string getDeclaratorPrefix() {
     exists(string basePrefix |
       basePrefix = getBaseType().(DumpType).getDeclaratorPrefix() and
-      if getBaseType().getUnspecifiedType() instanceof RoutineType then
-        result = basePrefix
-      else
-        result = basePrefix + " " + getSpecifierString().trim()
+      if getBaseType().getUnspecifiedType() instanceof RoutineType
+      then result = basePrefix
+      else result = basePrefix + " " + getSpecifierString().trim()
     )
   }
 
   override string getDeclaratorSuffixBeforeQualifiers() {
     exists(string baseSuffix |
       baseSuffix = getBaseType().(DumpType).getDeclaratorSuffixBeforeQualifiers() and
-      if getBaseType().getUnspecifiedType() instanceof RoutineType then
-        result = baseSuffix + " " + getSpecifierString().trim()
-      else
-        result = baseSuffix
+      if getBaseType().getUnspecifiedType() instanceof RoutineType
+      then result = baseSuffix + " " + getSpecifierString().trim()
+      else result = baseSuffix
     )
   }
 
-  override string getDeclaratorSuffix() {
-    result = getBaseType().(DumpType).getDeclaratorSuffix()
-  }
+  override string getDeclaratorSuffix() { result = getBaseType().(DumpType).getDeclaratorSuffix() }
 }
 
 private class UserDumpType extends DumpType, DumpDeclaration, UserType {
   override string getIdentityString() {
     exists(string simpleName |
       (
-        if this instanceof Closure then (
+        if this instanceof Closure
+        then
           // Parenthesize the name of the lambda because it's freeform text similar to
           // "lambda [] type at line 12, col. 40"
           // Use `min(getSimpleName())` to work around an extractor bug where a lambda can have different names
           // from different compilation units.
           simpleName = "(" + min(getSimpleName()) + ")"
-        )
-        else
-          simpleName = getSimpleName()
+        else simpleName = getSimpleName()
       ) and
       result = getScopePrefix(this) + simpleName + getTemplateArgumentsString()
     )
   }
 
-  override string getTypeSpecifier() {
-    result = getIdentityString()
-  }
+  override string getTypeSpecifier() { result = getIdentityString() }
 }
 
 private class DumpProxyClass extends UserDumpType, ProxyClass {
-  override string getIdentityString() {
-    result = getName()
-  }
+  override string getIdentityString() { result = getName() }
 }
 
 private class DumpVariable extends DumpDeclaration, Variable {
@@ -376,30 +320,35 @@ private class DumpVariable extends DumpDeclaration, Variable {
     exists(DumpType type |
       (this instanceof MemberVariable or this instanceof GlobalOrNamespaceVariable) and
       type = this.getType() and
-      result = type.getTypeSpecifier() + type.getDeclaratorPrefix() + " " + getScopePrefix(this) + this.getName() + this.getTemplateArgumentsString() + type.getDeclaratorSuffixBeforeQualifiers() + type.getDeclaratorSuffix()
+      result = type.getTypeSpecifier() + type.getDeclaratorPrefix() + " " + getScopePrefix(this) +
+          this.getName() + this.getTemplateArgumentsString() +
+          type.getDeclaratorSuffixBeforeQualifiers() + type.getDeclaratorSuffix()
     )
   }
 }
 
 private class DumpFunction extends DumpDeclaration, Function {
   override string getIdentityString() {
-    result = getType().(DumpType).getTypeSpecifier() + getType().(DumpType).getDeclaratorPrefix() + " " + getScopePrefix(this) + getName() + getTemplateArgumentsString() + getDeclaratorSuffixBeforeQualifiers() + getDeclaratorSuffix()
+    result = getType().(DumpType).getTypeSpecifier() + getType().(DumpType).getDeclaratorPrefix() +
+        " " + getScopePrefix(this) + getName() + getTemplateArgumentsString() +
+        getDeclaratorSuffixBeforeQualifiers() + getDeclaratorSuffix()
   }
 
   language[monotonicAggregates]
   private string getDeclaratorSuffixBeforeQualifiers() {
     result = "(" +
-      concat(int i |
-        exists(getParameter(i).getType()) |
-        getParameterTypeString(getParameter(i).getType()), ", " order by i
-      ) + ")" + getQualifierString()
+        concat(int i |
+          exists(getParameter(i).getType())
+        |
+          getParameterTypeString(getParameter(i).getType()), ", " order by i
+        ) + ")" + getQualifierString()
   }
 
   private string getQualifierString() {
-    if exists(getACVQualifier()) then
+    if exists(getACVQualifier())
+    then
       result = " " + strictconcat(string qualifier | qualifier = getACVQualifier() | qualifier, " ")
-    else
-      result = ""
+    else result = ""
   }
 
   private string getACVQualifier() {
@@ -408,27 +357,24 @@ private class DumpFunction extends DumpDeclaration, Function {
   }
 
   private string getDeclaratorSuffix() {
-    result = getType().(DumpType).getDeclaratorSuffixBeforeQualifiers() + getType().(DumpType).getDeclaratorSuffix()
+    result = getType().(DumpType).getDeclaratorSuffixBeforeQualifiers() +
+        getType().(DumpType).getDeclaratorSuffix()
   }
 }
 
 /**
-  * Gets a string that uniquely identifies this declaration, suitable for use when debugging queries. Only holds for
-  * functions, user-defined types, global and namespace-scope variables, and member variables.
-  *
-  * This operation is very expensive, and should not be used in production queries. Consider using `hasName()` or
-  * `hasQualifiedName()` for identifying known declarations in production queries.
-  */
-string getIdentityString(Declaration decl) {
-  result = decl.(DumpDeclaration).getIdentityString()
-}
+ * Gets a string that uniquely identifies this declaration, suitable for use when debugging queries. Only holds for
+ * functions, user-defined types, global and namespace-scope variables, and member variables.
+ *
+ * This operation is very expensive, and should not be used in production queries. Consider using `hasName()` or
+ * `hasQualifiedName()` for identifying known declarations in production queries.
+ */
+string getIdentityString(Declaration decl) { result = decl.(DumpDeclaration).getIdentityString() }
 
 /**
-  * Gets a string that uniquely identifies this type, suitable for use when debugging queries. All typedefs and
-  * decltypes are expanded, and all symbol names are fully qualified.
-  *
-  * This operation is very expensive, and should not be used in production queries.
-  */
-string getTypeIdentityString(Type type) {
-  result = type.(DumpType).getTypeIdentityString()
-}
+ * Gets a string that uniquely identifies this type, suitable for use when debugging queries. All typedefs and
+ * decltypes are expanded, and all symbol names are fully qualified.
+ *
+ * This operation is very expensive, and should not be used in production queries.
+ */
+string getTypeIdentityString(Type type) { result = type.(DumpType).getTypeIdentityString() }

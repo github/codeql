@@ -13,6 +13,7 @@
  *       external/cwe/cwe-787
  *       external/cwe/cwe-805
  */
+
 import semmle.code.cpp.security.BufferWrite
 
 /*
@@ -20,7 +21,10 @@ import semmle.code.cpp.security.BufferWrite
  */
 
 from BufferWrite bw, int destSize
-where bw.hasExplicitLimit()                     // has an explicit size limit
-  and destSize = getBufferSize(bw.getDest(), _)
-  and (bw.getExplicitLimit() > destSize)        // but it's larger than the destination
-select bw, "This '" + bw.getBWDesc() + "' operation is limited to " + bw.getExplicitLimit() + " bytes but the destination is only " + destSize + " bytes."
+where
+  bw.hasExplicitLimit() and // has an explicit size limit
+  destSize = getBufferSize(bw.getDest(), _) and
+  bw.getExplicitLimit() > destSize // but it's larger than the destination
+select bw,
+  "This '" + bw.getBWDesc() + "' operation is limited to " + bw.getExplicitLimit() +
+    " bytes but the destination is only " + destSize + " bytes."

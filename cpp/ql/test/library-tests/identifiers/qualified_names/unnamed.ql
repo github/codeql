@@ -1,5 +1,4 @@
 // This query lists the declarations that don't have a qualified name
-
 import cpp
 
 from Declaration d

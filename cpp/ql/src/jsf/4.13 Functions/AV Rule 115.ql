@@ -8,6 +8,7 @@
  * @tags correctness
  *       external/jsf
  */
+
 import cpp
 
 // a return statement that looks like it returns an error code
@@ -19,9 +20,12 @@ class ErrorReturn extends ReturnStmt {
   ErrorReturn() {
     exists(Expr e |
       e = super.getExpr() and
-      (e instanceof Literal
-       or e.(VariableAccess).getTarget().isConst()) and
-      not (e.getValue() = "0" and e.getActualType() instanceof IntegralType))
+      (
+        e instanceof Literal or
+        e.(VariableAccess).getTarget().isConst()
+      ) and
+      not (e.getValue() = "0" and e.getActualType() instanceof IntegralType)
+    )
   }
 }
 
@@ -31,11 +35,13 @@ class FunctionReturningErrorCode extends Function {
     exists(ErrorReturn er, ReturnStmt nr |
       er.getEnclosingFunction() = this and
       nr.getEnclosingFunction() = this and
-      not nr instanceof ErrorReturn)
+      not nr instanceof ErrorReturn
+    )
   }
 }
 
 from FunctionReturningErrorCode frec, Call c
-where c = frec.getACallToThisFunction() and
-      c instanceof ExprInVoidContext
+where
+  c = frec.getACallToThisFunction() and
+  c instanceof ExprInVoidContext
 select c, "AV Rule 115: If a function returns error information, it will be tested."

@@ -1,6 +1,7 @@
 /**
  * Provides a class for handling variables in the data flow analysis.
  */
+
 import cpp
 private import semmle.code.cpp.controlflow.SSA
 private import semmle.code.cpp.dataflow.internal.SubBasicBlocks
@@ -18,7 +19,8 @@ private import semmle.code.cpp.dataflow.internal.SubBasicBlocks
  * member predicates explains how a `FlowVar` relates to syntactic constructs of
  * the language.
  */
-cached class FlowVar extends TFlowVar {
+cached
+class FlowVar extends TFlowVar {
   /**
    * Gets a `VariableAccess` that _may_ take its value from `this`. Consider
    * the following snippet.
@@ -35,7 +37,8 @@ cached class FlowVar extends TFlowVar {
    * corresponding to `x = 1`. The `x` in `x = 1` is not considered to be an
    * access.
    */
-  cached abstract VariableAccess getAnAccess();
+  cached
+  abstract VariableAccess getAnAccess();
 
   /**
    * Holds if this `FlowVar` corresponds to a modification occurring when `node` is
@@ -49,15 +52,18 @@ cached class FlowVar extends TFlowVar {
    *   `node instanceof PostCrementOperation` is an exception to the rule that
    *   `this` contains the value of `e` after the evaluation of `node`.
    */
-  cached abstract predicate definedByExpr(Expr e, ControlFlowNode node);
+  cached
+  abstract predicate definedByExpr(Expr e, ControlFlowNode node);
 
   /**
    * Holds if this `FlowVar` corresponds to the data written by a call that
    * passes a variable as argument `arg`.
    */
-  cached abstract predicate definedByReference(Expr arg);
+  cached
+  abstract predicate definedByReference(Expr arg);
 
-  cached abstract predicate definedPartiallyAt(Expr e);
+  cached
+  abstract predicate definedPartiallyAt(Expr e);
 
   /**
    * Holds if this `FlowVar` corresponds to the initial value of `v`. The following
@@ -70,13 +76,16 @@ cached class FlowVar extends TFlowVar {
    *   local variable is always overwritten before it is used, there is no
    *   `FlowVar` instance for the uninitialized value of that variable.
    */
-  cached abstract predicate definedByInitialValue(LocalScopeVariable v);
+  cached
+  abstract predicate definedByInitialValue(LocalScopeVariable v);
 
   /** Gets a textual representation of this element. */
-  cached abstract string toString();
+  cached
+  abstract string toString();
 
   /** Gets the location of this element. */
-  cached abstract Location getLocation();
+  cached
+  abstract Location getLocation();
 }
 
 /**
@@ -117,8 +126,10 @@ private module PartialDefinitions {
     ControlFlowNode node;
 
     PartialDefinition() {
-      this = TExplicitFieldStoreQualifier(definedExpr, node) or
-      this = TExplicitCallQualifier(definedExpr, _) and node = definedExpr or
+      this = TExplicitFieldStoreQualifier(definedExpr, node)
+      or
+      this = TExplicitCallQualifier(definedExpr, _) and node = definedExpr
+      or
       this = TReferenceArgument(definedExpr, node)
     }
 
@@ -197,6 +208,7 @@ private module PartialDefinitions {
     )
   }
 }
+
 import PartialDefinitions
 private import FlowVar_internal
 
@@ -230,9 +242,7 @@ module FlowVar_internal {
     // always executes at least once, we give it special treatment in
     // `BlockVar`, somewhat analogous to unrolling the first iteration of the
     // loop.
-    not exists(AlwaysTrueUponEntryLoop loop |
-      loop.alwaysAssignsBeforeLeavingCondition(_, _, v)
-    ) and
+    not exists(AlwaysTrueUponEntryLoop loop | loop.alwaysAssignsBeforeLeavingCondition(_, _, v)) and
     // The SSA library has a theoretically accurate treatment of reference types,
     // treating them as immutable, but for data flow it gives better results in
     // practice to make the variable synonymous with its contents.
@@ -243,9 +253,7 @@ module FlowVar_internal {
    * Holds if `sbb` is the `SubBasicBlock` where `v` receives its initial value.
    * See the documentation for `FlowVar.definedByInitialValue`.
    */
-  predicate blockVarDefinedByVariable(
-      SubBasicBlock sbb, LocalScopeVariable v)
-  {
+  predicate blockVarDefinedByVariable(SubBasicBlock sbb, LocalScopeVariable v) {
     sbb = v.(Parameter).getFunction().getEntryPoint()
     or
     exists(DeclStmt declStmt |
@@ -259,8 +267,7 @@ module FlowVar_internal {
     TSsaVar(SsaDefinition def, LocalScopeVariable v) {
       fullySupportedSsaVariable(v) and
       v = def.getAVariable()
-    }
-    or
+    } or
     TBlockVar(SubBasicBlock sbb, Variable v) {
       not fullySupportedSsaVariable(v) and
       not v instanceof Field and // Fields are interprocedural data flow, not local
@@ -281,7 +288,6 @@ module FlowVar_internal {
    */
   class SsaVar extends TSsaVar, FlowVar {
     SsaDefinition def;
-
     LocalScopeVariable v;
 
     SsaVar() { this = TSsaVar(def, v) }
@@ -291,7 +297,8 @@ module FlowVar_internal {
       // the data flow library will never see those, and the `FlowVar` library
       // is only meant to be used by the data flow library.
       this.isNonPhi() and
-      ( // This base case could be included in the transitive case by changing
+      (
+        // This base case could be included in the transitive case by changing
         // `+` to `*`, but that's slower because it goes through the `TSsaVar`
         // indirection.
         result = def.getAUse(v)
@@ -308,9 +315,11 @@ module FlowVar_internal {
 
     override predicate definedByExpr(Expr e, ControlFlowNode node) {
       e = def.getDefiningValue(v) and
-      (if def.getDefinition() = v.getInitializer().getExpr()
-       then node = v.getInitializer()
-       else node = def.getDefinition())
+      (
+        if def.getDefinition() = v.getInitializer().getExpr()
+        then node = v.getInitializer()
+        else node = def.getDefinition()
+      )
     }
 
     override predicate definedByReference(Expr arg) {
@@ -361,7 +370,6 @@ module FlowVar_internal {
    */
   class BlockVar extends TBlockVar, FlowVar {
     SubBasicBlock sbb;
-
     Variable v;
 
     BlockVar() { this = TBlockVar(sbb, v) }
@@ -411,15 +419,15 @@ module FlowVar_internal {
     override string toString() {
       exists(Expr e |
         this.definedByExpr(e, _) and
-        result = "assignment to "+ v
+        result = "assignment to " + v
       )
       or
       this.definedByInitialValue(_) and
-      result = "initial value of "+ v
+      result = "initial value of " + v
       or
       exists(Expr arg |
         this.definedByReference(arg) and
-        result = "definition by reference of "+ v
+        result = "definition by reference of " + v
       )
       or
       exists(Expr partialDef |
@@ -432,16 +440,14 @@ module FlowVar_internal {
       not this.definedByInitialValue(_) and
       not this.definedByReference(_) and
       not this.definedPartiallyAt(_) and
-      result = "undefined "+ v
+      result = "undefined " + v
     }
 
     override Location getLocation() { result = sbb.getStart().getLocation() }
   }
 
   /** Type-specialized version of `getEnclosingElement`. */
-  private ControlFlowNode getCFNParent(ControlFlowNode node) {
-    result = node.getEnclosingElement()
-  }
+  private ControlFlowNode getCFNParent(ControlFlowNode node) { result = node.getEnclosingElement() }
 
   /**
    * A for-loop or while-loop whose condition is always true upon entry but not
@@ -532,11 +538,9 @@ module FlowVar_internal {
    * be used outside the loop.
    */
   predicate skipLoop(
-    SubBasicBlock sbbInside, SubBasicBlock sbbOutside,
-    SubBasicBlock sbbDef, Variable v
+    SubBasicBlock sbbInside, SubBasicBlock sbbOutside, SubBasicBlock sbbDef, Variable v
   ) {
-    exists(AlwaysTrueUponEntryLoop loop,
-           BasicBlock bbInside, BasicBlock bbOutside |
+    exists(AlwaysTrueUponEntryLoop loop, BasicBlock bbInside, BasicBlock bbOutside |
       loop.alwaysAssignsBeforeLeavingCondition(bbInside, bbOutside, v) and
       bbInside = sbbInside.getBasicBlock() and
       bbOutside = sbbOutside.getBasicBlock() and
@@ -661,18 +665,18 @@ module FlowVar_internal {
     forall(VariableAccess va |
       va.getTarget() = v and
       readAccess(va)
-    | dominatedByOverwrite(v, va)
+    |
+      dominatedByOverwrite(v, va)
     )
   }
 
   /** Holds if `va` accesses `v` and is dominated by an overwrite of `v`. */
-  predicate dominatedByOverwrite(UninitializedLocalVariable v,
-                                 VariableAccess va)
-  {
+  predicate dominatedByOverwrite(UninitializedLocalVariable v, VariableAccess va) {
     exists(BasicBlock bb, int vaIndex |
       va = bb.getNode(vaIndex) and
       va.getTarget() = v
-    | vaIndex > indexOfFirstOverwriteInBB(v, bb)
+    |
+      vaIndex > indexOfFirstOverwriteInBB(v, bb)
       or
       bbStrictlyDominates(getAnOverwritingBB(v), bb)
     )
@@ -721,35 +725,34 @@ module FlowVar_internal {
   ) {
     // Together, the two following cases cover `Assignment`
     node = any(AssignExpr ae |
-      va = ae.getLValue() and
-      v = va.getTarget() and
-      assignedExpr = ae.getRValue()
-    )
+        va = ae.getLValue() and
+        v = va.getTarget() and
+        assignedExpr = ae.getRValue()
+      )
     or
     node = any(AssignOperation ao |
-      va = ao.getLValue() and
-      v = va.getTarget() and
-      // Here and in the `PrefixCrementOperation` case, we say that the assigned
-      // expression is the operation itself. For example, we say that `x += 1`
-      // assigns `x += 1` to `x`. The justification is that after this operation,
-      // `x` will contain the same value that `x += 1` evaluated to.
-      assignedExpr = ao
-    )
+        va = ao.getLValue() and
+        v = va.getTarget() and
+        // Here and in the `PrefixCrementOperation` case, we say that the assigned
+        // expression is the operation itself. For example, we say that `x += 1`
+        // assigns `x += 1` to `x`. The justification is that after this operation,
+        // `x` will contain the same value that `x += 1` evaluated to.
+        assignedExpr = ao
+      )
     or
     // This case does not add further data flow paths, except if a
     // `PrefixCrementOperation` is itself a source
     node = any(CrementOperation op |
-      va = op.getOperand() and
-      v = va.getTarget() and
-      assignedExpr = op
-    )
+        va = op.getOperand() and
+        v = va.getTarget() and
+        assignedExpr = op
+      )
   }
 
   /**
    * Holds if `v` is initialized to have value `assignedExpr`.
    */
-  predicate initializer(LocalVariable v, Expr assignedExpr)
-  {
+  predicate initializer(LocalVariable v, Expr assignedExpr) {
     assignedExpr = v.getInitializer().getExpr()
   }
 
@@ -776,9 +779,7 @@ module FlowVar_internal {
    */
   class DataFlowSubBasicBlockCutNode extends SubBasicBlockCutNode {
     DataFlowSubBasicBlockCutNode() {
-      exists(Variable v |
-        not fullySupportedSsaVariable(v)
-      |
+      exists(Variable v | not fullySupportedSsaVariable(v) |
         assignmentLikeOperation(this, v, _, _)
         or
         this = any(PartialDefinition p | p.partiallyDefines(v)).getSubBasicBlockStart()
@@ -790,4 +791,5 @@ module FlowVar_internal {
       )
     }
   }
-} /* module FlowVar_internal */
+}
+/* module FlowVar_internal */

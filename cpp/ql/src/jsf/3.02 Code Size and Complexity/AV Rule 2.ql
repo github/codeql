@@ -9,6 +9,7 @@
  *       testability
  *       external/jsf
  */
+
 import cpp
 
 // We look for code that converts between function pointers and non-function, non-void
@@ -16,14 +17,16 @@ import cpp
 // self-modification, nor will it spot the use of OS mechanisms to write into process
 // memory (such as WriteProcessMemory under Windows).
 predicate maybeSMCConversion(Type t1, Type t2) {
-     t1 instanceof FunctionPointerType and
-     t2 instanceof PointerType and
-     not t2 instanceof FunctionPointerType and
-     not t2 instanceof VoidPointerType
-  or maybeSMCConversion(t2, t1)
+  t1 instanceof FunctionPointerType and
+  t2 instanceof PointerType and
+  not t2 instanceof FunctionPointerType and
+  not t2 instanceof VoidPointerType
+  or
+  maybeSMCConversion(t2, t1)
 }
 
 from Expr e
-where e.fromSource() and
-      maybeSMCConversion(e.getUnderlyingType(), e.getActualType())
+where
+  e.fromSource() and
+  maybeSMCConversion(e.getUnderlyingType(), e.getActualType())
 select e, "AV Rule 2: There shall not be any self-modifying code."

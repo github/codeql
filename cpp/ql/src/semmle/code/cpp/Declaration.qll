@@ -33,11 +33,9 @@ abstract class Declaration extends Locatable, @declaration {
   Namespace getNamespace() {
     result = underlyingElement(this).(Q::Declaration).getNamespace()
     or
-    exists (Parameter p
-    | p = this and result = p.getFunction().getNamespace())
+    exists(Parameter p | p = this and result = p.getFunction().getNamespace())
     or
-    exists (LocalVariable v
-    | v = this and result = v.getFunction().getNamespace())
+    exists(LocalVariable v | v = this and result = v.getFunction().getNamespace())
   }
 
   /**
@@ -52,9 +50,7 @@ abstract class Declaration extends Locatable, @declaration {
    * Example: `getQualifiedName() =
    * "namespace1::namespace2::TemplateClass1<int>::Class2::memberName"`.
    */
-  string getQualifiedName() {
-    result = underlyingElement(this).(Q::Declaration).getQualifiedName()
-  }
+  string getQualifiedName() { result = underlyingElement(this).(Q::Declaration).getQualifiedName() }
 
   /**
    * DEPRECATED: Prefer `hasGlobalName` or the 2-argument or 3-argument
@@ -64,9 +60,7 @@ abstract class Declaration extends Locatable, @declaration {
    * Holds if this declaration has the fully-qualified name `qualifiedName`.
    * See `getQualifiedName`.
    */
-  predicate hasQualifiedName(string qualifiedName) {
-    this.getQualifiedName() = qualifiedName
-  }
+  predicate hasQualifiedName(string qualifiedName) { this.getQualifiedName() = qualifiedName }
 
   /**
    * Holds if this declaration has a fully-qualified name with a name-space
@@ -84,8 +78,9 @@ abstract class Declaration extends Locatable, @declaration {
    * `hasQualifiedName("std", "vector", "size")`.
    */
   predicate hasQualifiedName(string namespaceQualifier, string typeQualifier, string baseName) {
-    underlyingElement(this).(Q::Declaration)
-      .hasQualifiedName(namespaceQualifier, typeQualifier, baseName)
+    underlyingElement(this)
+        .(Q::Declaration)
+        .hasQualifiedName(namespaceQualifier, typeQualifier, baseName)
   }
 
   /**
@@ -122,26 +117,20 @@ abstract class Declaration extends Locatable, @declaration {
   predicate hasName(string name) { name = this.getName() }
 
   /** Holds if this declaration has the given name in the global namespace. */
-  predicate hasGlobalName(string name) {
-    this.hasQualifiedName("", "", name)
-  }
+  predicate hasGlobalName(string name) { this.hasQualifiedName("", "", name) }
 
   /** Gets a specifier of this declaration. */
   abstract Specifier getASpecifier();
 
   /** Holds if this declaration has a specifier with the given name. */
-  predicate hasSpecifier(string name) {
-    this.getASpecifier().hasName(name)
-  }
+  predicate hasSpecifier(string name) { this.getASpecifier().hasName(name) }
 
   /**
    * Gets a declaration entry corresponding to this declaration. See the
    * comment above this class for an explanation of the relationship
    * between `Declaration` and `DeclarationEntry`.
    */
-  DeclarationEntry getADeclarationEntry() {
-    none()
-  }
+  DeclarationEntry getADeclarationEntry() { none() }
 
   /**
    * Gets the location of a declaration entry corresponding to this
@@ -153,34 +142,33 @@ abstract class Declaration extends Locatable, @declaration {
    * Gets the declaration entry corresponding to this declaration that is a
    * definition, if any.
    */
-  DeclarationEntry getDefinition() {
-    none()
-  }
+  DeclarationEntry getDefinition() { none() }
 
   /** Gets the location of the definition, if any. */
   abstract Location getDefinitionLocation();
 
   /** Holds if the declaration has a definition. */
   predicate hasDefinition() { exists(this.getDefinition()) }
+
   predicate isDefined() { hasDefinition() }
 
   /** Gets the preferred location of this declaration, if any. */
-  override Location getLocation() {
-    none()
-  }
+  override Location getLocation() { none() }
 
   /** Gets a file where this element occurs. */
   File getAFile() { result = this.getADeclarationLocation().getFile() }
 
   /** Holds if this declaration is a top-level declaration. */
   predicate isTopLevel() {
-    not (this.isMember() or
-         this instanceof EnumConstant or
-         this instanceof Parameter or
-         this instanceof ProxyClass or
-         this instanceof LocalVariable or
-         this instanceof TemplateParameter or
-         this.(UserType).isLocal())
+    not (
+      this.isMember() or
+      this instanceof EnumConstant or
+      this instanceof Parameter or
+      this instanceof ProxyClass or
+      this instanceof LocalVariable or
+      this instanceof TemplateParameter or
+      this.(UserType).isLocal()
+    )
   }
 
   /** Holds if this declaration is static. */
@@ -190,34 +178,26 @@ abstract class Declaration extends Locatable, @declaration {
   predicate isMember() { hasDeclaringType() }
 
   /** Holds if this declaration is a member of a class/struct/union. */
-  predicate hasDeclaringType() {
-    exists(this.getDeclaringType())
-  }
+  predicate hasDeclaringType() { exists(this.getDeclaringType()) }
 
   /**
    * Gets the class where this member is declared, if it is a member.
    * For templates, both the template itself and all instantiations of
    * the template are considered to have the same declaring class.
    */
-  Class getDeclaringType() {
-    this = result.getAMember()
-  }
+  Class getDeclaringType() { this = result.getAMember() }
 
   /**
    * Gets a template argument used to instantiate this declaration from a template.
    * When called on a template, this will return a template parameter.
    */
-  final Type getATemplateArgument() {
-    result = getTemplateArgument(_)
-  }
+  final Type getATemplateArgument() { result = getTemplateArgument(_) }
 
   /**
    * Gets the `i`th template argument used to instantiate this declaration from a
    * template. When called on a template, this will return the `i`th template parameter.
    */
-  Type getTemplateArgument(int index) {
-    none()
-  }
+  Type getTemplateArgument(int index) { none() }
 
   /** Gets the number of template arguments for this declaration. */
   final int getNumberOfTemplateArguments() {
@@ -239,10 +219,9 @@ abstract class DeclarationEntry extends Locatable {
    * available), or the name declared by this entry otherwise.
    */
   string getCanonicalName() {
-    if getDeclaration().isDefined() then
-      result = getDeclaration().getDefinition().getName()
-    else
-      result = getName()
+    if getDeclaration().isDefined()
+    then result = getDeclaration().getDefinition().getName()
+    else result = getName()
   }
 
   /**
@@ -283,23 +262,20 @@ abstract class DeclarationEntry extends Locatable {
   /**
    * Holds if this declaration entry has a specifier with the given name.
    */
-  predicate hasSpecifier(string specifier) {
-    getASpecifier() = specifier
-  }
+  predicate hasSpecifier(string specifier) { getASpecifier() = specifier }
 
   /** Holds if this declaration entry is a definition. */
   abstract predicate isDefinition();
 
   override string toString() {
-    if isDefinition() then
-      result = "definition of " + getName()
-    else if getName() = getCanonicalName() then
-      result = "declaration of " + getName()
+    if isDefinition()
+    then result = "definition of " + getName()
     else
-      result = "declaration of " + getCanonicalName() + " as " + getName()
+      if getName() = getCanonicalName()
+      then result = "declaration of " + getName()
+      else result = "declaration of " + getCanonicalName() + " as " + getName()
   }
 }
-
 
 /**
  * A declaration that can potentially have more C++ access rights than its
@@ -319,12 +295,10 @@ abstract class AccessHolder extends Declaration {
    * repeated many times in the C++14 standard, section 11.2.
    */
   predicate inMemberOrFriendOf(Class c) {
-    (
-      this.getEnclosingAccessHolder*() = c
-    ) or (
-      exists(FriendDecl fd | fd.getDeclaringClass() = c |
-        this.getEnclosingAccessHolder*() = fd.getFriend()
-      )
+    this.getEnclosingAccessHolder*() = c
+    or
+    exists(FriendDecl fd | fd.getDeclaringClass() = c |
+      this.getEnclosingAccessHolder*() = fd.getFriend()
     )
   }
 
@@ -356,13 +330,11 @@ abstract class AccessHolder extends Declaration {
     // This predicate is marked `inline` and implemented in a very particular
     // way. If we allowed this predicate to be fully computed, it would relate
     // all `AccessHolder`s to all classes, which would be too much.
-
     // There are four rules in N4140 11.2/4. Only the one named (4.4) is
     // recursive, and it describes a transitive closure: intuitively, if A can
     // be converted to B, and B can be converted to C, then A can be converted
     // to C. To limit the number of tuples in the non-inline helper predicates,
     // we first separate the derivation of 11.2/4 into two cases:
-
     // Derivations using only (4.1) and (4.4). Note that these derivations are
     // independent of `this`, which is why users of this predicate must take
     // care to avoid a combinatorial explosion.
@@ -397,11 +369,9 @@ abstract class AccessHolder extends Declaration {
    */
   pragma[inline]
   predicate canAccessMember(Declaration member, Class derived) {
-    this.couldAccessMember(
-      member.getDeclaringType(),
-      member.getASpecifier().(AccessSpecifier),
-      derived
-    )
+    this
+        .couldAccessMember(member.getDeclaringType(), member.getASpecifier().(AccessSpecifier),
+          derived)
   }
 
   /**
@@ -425,13 +395,10 @@ abstract class AccessHolder extends Declaration {
    * `memberAccess` is public.
    */
   pragma[inline]
-  predicate couldAccessMember(Class memberClass, AccessSpecifier memberAccess,
-                              Class derived)
-  {
+  predicate couldAccessMember(Class memberClass, AccessSpecifier memberAccess, Class derived) {
     // There are four rules in N4140 11.2/5. To limit the number of tuples in
     // the non-inline helper predicates, we first separate the derivation of
     // 11.2/5 into two cases:
-
     // Rule (5.1) directly: the member is public, and `derived` uses public
     // inheritance all the way up to `memberClass`. Note that these derivations
     // are independent of `this`, which is why users of this predicate must
@@ -486,7 +453,6 @@ private class DirectAccessHolder extends Element {
       isDirectPublicBaseOf(between, derived) or
       this.thisCanAccessClassStep(between, derived)
     )
-
     // It is possible that this predicate could be computed faster for deep
     // hierarchies if we can prove and utilize that all derivations of 11.2/4
     // can be broken down into steps where `base` is a _direct_ base of
@@ -526,17 +492,13 @@ private class DirectAccessHolder extends Element {
    * part of (5.3), since this further limits the number of tuples produced by
    * this predicate.
    */
-  predicate thisCouldAccessMember(Class memberClass,
-                                  AccessSpecifier memberAccess,
-                                  Class derived)
-  {
+  predicate thisCouldAccessMember(Class memberClass, AccessSpecifier memberAccess, Class derived) {
     // Only (5.4) is recursive, and chains of invocations of (5.4) can always
     // be collapsed to one invocation by the transitivity of 11.2/4.
     // Derivations not using (5.4) can always be rewritten to have a (5.4) rule
     // in front because our encoding of 11.2/4 in `canAccessClass` is
     // reflexive. Thus, we only need to consider three cases: rule (5.4)
     // followed by either (5.1), (5.2) or (5.3).
-
     // Rule (5.4), using a non-trivial derivation of 11.2/4, followed by (5.1).
     // If the derivation of 11.2/4 is trivial (only uses (4.1) and (4.4)), this
     // case can be replaced with purely (5.1) and thus does not need to be in
@@ -547,16 +509,14 @@ private class DirectAccessHolder extends Element {
     or
     // Rule (5.4) followed by Rule (5.2)
     exists(Class between | this.(AccessHolder).canAccessClass(between, derived) |
-        between.accessOfBaseMember(memberClass, memberAccess)
-               .hasName("private") and
-        this.isFriendOfOrEqualTo(between)
+      between.accessOfBaseMember(memberClass, memberAccess).hasName("private") and
+      this.isFriendOfOrEqualTo(between)
     )
     or
     // Rule (5.4) followed by Rule (5.3), integrating 11.4. We integrate 11.4
     // here because we would otherwise generate too many tuples. This code is
     // very performance-sensitive, and any changes should be benchmarked on
     // LibreOffice.
-
     // Rule (5.4) requires that `this.canAccessClass(between, derived)`
     // (implying that `derived <= between` in the class hierarchy) and that
     // `p <= between`. Rule 11.4 additionally requires `derived <= p`, but
@@ -573,8 +533,7 @@ private class DirectAccessHolder extends Element {
     //    bypasses `p`. Then that path must be public, or we are in case 2.
     exists(AccessSpecifier public | public.hasName("public") |
       exists(Class between, Class p |
-        between.accessOfBaseMember(memberClass, memberAccess)
-               .hasName("protected") and
+        between.accessOfBaseMember(memberClass, memberAccess).hasName("protected") and
         this.isFriendOfOrEqualTo(p) and
         (
           // This is case 1 from above. If `p` derives privately from `between`
@@ -623,9 +582,8 @@ private predicate isDirectPublicBaseOf(Class base, Class derived) {
  * `memberAccess` would be public when named as a member of `derived`.
  * This encodes N4140 11.2/5 case (5.1).
  */
-private predicate everyoneCouldAccessMember(Class memberClass,
-                                            AccessSpecifier memberAccess,
-                                            Class derived)
-{
+private predicate everyoneCouldAccessMember(
+  Class memberClass, AccessSpecifier memberAccess, Class derived
+) {
   derived.accessOfBaseMember(memberClass, memberAccess).hasName("public")
 }

@@ -30,38 +30,31 @@ class FileFunction extends FunctionWithWrappers {
       nme = "open" or
       nme = "_open" or
       nme = "_wopen" or
-
       // create file function on windows
       nme.matches("CreateFile%")
     )
     or
-    (
-      // on any of the fstream classes, or filebuf
-      exists(string nme | this.getDeclaringType().getSimpleName() = nme |
-        nme = "basic_fstream" or
-        nme = "basic_ifstream" or
-        nme = "basic_ofstream" or
-        nme = "basic_filebuf"
-      )
-      and
-      // we look for either the open method or the constructor
-      (this.getName() = "open" or this instanceof Constructor)
-    )
+    // on any of the fstream classes, or filebuf
+    exists(string nme | this.getDeclaringType().getSimpleName() = nme |
+      nme = "basic_fstream" or
+      nme = "basic_ifstream" or
+      nme = "basic_ofstream" or
+      nme = "basic_filebuf"
+    ) and
+    // we look for either the open method or the constructor
+    (this.getName() = "open" or this instanceof Constructor)
   }
 
   // conveniently, all of these functions take the path as the first parameter!
-  override predicate interestingArg(int arg) {
-    arg = 0
-  }
+  override predicate interestingArg(int arg) { arg = 0 }
 }
 
-from FileFunction fileFunction,
-     Expr taintedArg, Expr taintSource, string taintCause, string callChain
+from
+  FileFunction fileFunction, Expr taintedArg, Expr taintSource, string taintCause, string callChain
 where
   fileFunction.outermostWrapperFunctionCall(taintedArg, callChain) and
   tainted(taintSource, taintedArg) and
   isUserInput(taintSource, taintCause)
-select
-  taintedArg,
+select taintedArg,
   "This argument to a file access function is derived from $@ and then passed to " + callChain,
   taintSource, "user input (" + taintCause + ")"

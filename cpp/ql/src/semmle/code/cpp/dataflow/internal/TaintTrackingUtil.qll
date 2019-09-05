@@ -7,6 +7,7 @@
  * propagates from `x` to `x + 100`, but it does not propagate from `x` to `x >
  * 100` since we consider a single bit of information to be too little.
  */
+
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.Taint
 
@@ -63,9 +64,7 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
     // computes a different value, so we have to add that ourselves for taint
     // tracking. The flow from expression `x` into `x++` etc. is handled in the
     // case above.
-    exprTo = DataFlow::getAnAccessToAssignedVariable(
-      exprFrom.(PostfixCrementOperation)
-    )
+    exprTo = DataFlow::getAnAccessToAssignedVariable(exprFrom.(PostfixCrementOperation))
   )
   or
   // Taint can flow through modeled functions
@@ -76,9 +75,7 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
  * Holds if taint may propagate from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
-predicate localTaint(DataFlow::Node source, DataFlow::Node sink) {
-  localTaintStep*(source, sink)
-}
+predicate localTaint(DataFlow::Node source, DataFlow::Node sink) { localTaintStep*(source, sink) }
 
 /**
  * Holds if taint can flow from `e1` to `e2` in zero or more
@@ -126,9 +123,7 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
     call.getTarget() = f and
     argOut = call.getArgument(argOutIndex) and
     outModel.isOutParameterPointer(argOutIndex) and
-    exists(int argInIndex, FunctionInput inModel |
-      f.hasDataFlow(inModel, outModel)
-    |
+    exists(int argInIndex, FunctionInput inModel | f.hasDataFlow(inModel, outModel) |
       // Taint flows from a pointer to a dereference, which DataFlow does not handle
       // memcpy(&dest_var, tainted_ptr, len)
       inModel.isInParameterPointer(argInIndex) and
@@ -140,9 +135,7 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
     call.getTarget() = f and
     argOut = call.getArgument(argOutIndex) and
     outModel.isOutParameterPointer(argOutIndex) and
-    exists(int argInIndex, FunctionInput inModel |
-      f.hasTaintFlow(inModel, outModel)
-    |
+    exists(int argInIndex, FunctionInput inModel | f.hasTaintFlow(inModel, outModel) |
       inModel.isInParameterPointer(argInIndex) and
       exprIn = call.getArgument(argInIndex)
       or

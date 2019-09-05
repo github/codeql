@@ -10,9 +10,11 @@
  * @metricAggregate avg sum max
  * @tags maintainability
  */
+
 import cpp
 
 from Class c, int n
-where c.fromSource()
-  and n = count(Stmt s | s.getEnclosingFunction() = c.getACanonicalMemberFunction())
+where
+  c.fromSource() and
+  n = count(Stmt s | s.getEnclosingFunction() = c.getACanonicalMemberFunction())
 select c, n

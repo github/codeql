@@ -6,9 +6,9 @@
  *              prepended to the message.
  * @tags filter
  */
+
 import cpp
 import external.DefectFilter
 
 from DefectResult res
-select res,
-       "Filtered query result: " + res.getMessage()
+select res, "Filtered query result: " + res.getMessage()

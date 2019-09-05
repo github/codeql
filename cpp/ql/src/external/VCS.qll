@@ -1,7 +1,6 @@
 import cpp
 
 class Commit extends @svnentry {
-
   Commit() {
     svnaffectedfiles(this, _, _) and
     exists(date svnDate, date snapshotDate |
@@ -34,9 +33,9 @@ class Commit extends @svnentry {
   File getAnAffectedFile(string action) {
     // Workaround for incorrect keys in SVN data
     exists(File svnFile | svnFile.getAbsolutePath() = result.getAbsolutePath() |
-      svnaffectedfiles(this,unresolveElement(svnFile),action)
-    )
-    and exists(result.getMetrics().getNumberOfLinesOfCode())
+      svnaffectedfiles(this, unresolveElement(svnFile), action)
+    ) and
+    exists(result.getMetrics().getNumberOfLinesOfCode())
   }
 
   File getAnAffectedFile() { exists(string action | result = this.getAnAffectedFile(action)) }
@@ -44,40 +43,32 @@ class Commit extends @svnentry {
   private predicate churnForFile(File f, int added, int deleted) {
     // Workaround for incorrect keys in SVN data
     exists(File svnFile | svnFile.getAbsolutePath() = f.getAbsolutePath() |
-      svnchurn(this,unresolveElement(svnFile),added,deleted)
-    )
-    and exists(f.getMetrics().getNumberOfLinesOfCode())
+      svnchurn(this, unresolveElement(svnFile), added, deleted)
+    ) and
+    exists(f.getMetrics().getNumberOfLinesOfCode())
   }
 
   int getRecentChurnForFile(File f) {
-    exists (int added, int deleted | churnForFile(f, added, deleted) and result = added + deleted)
+    exists(int added, int deleted | churnForFile(f, added, deleted) and result = added + deleted)
   }
 
-  int getRecentAdditionsForFile(File f) {
-    churnForFile(f, result, _)
-  }
+  int getRecentAdditionsForFile(File f) { churnForFile(f, result, _) }
 
-  int getRecentDeletionsForFile(File f) {
-    churnForFile(f, _, result)
-  }
+  int getRecentDeletionsForFile(File f) { churnForFile(f, _, result) }
 
   predicate isRecent() { recentCommit(this) }
 
   int daysToNow() {
-    exists(date now | snapshotDate(now) |
-      result = getDate().daysTo(now) and result >= 0
-    )
+    exists(date now | snapshotDate(now) | result = getDate().daysTo(now) and result >= 0)
   }
-
 }
 
 class Author extends string {
-   Author() { exists(Commit e | this = e.getAuthor()) }
+  Author() { exists(Commit e | this = e.getAuthor()) }
 
-   Commit getACommit() { result.getAuthor() = this }
+  Commit getACommit() { result.getAuthor() = this }
 
-   File getAnEditedFile() { result = this.getACommit().getAnAffectedFile() }
-
+  File getAnEditedFile() { result = this.getACommit().getAnAffectedFile() }
 }
 
 predicate recentCommit(Commit e) {
@@ -85,20 +76,17 @@ predicate recentCommit(Commit e) {
     snapshotDate(snapshotDate) and
     e.getDate() = commitDate and
     days = commitDate.daysTo(snapshotDate) and
-    days >= 0 and days <= 60
+    days >= 0 and
+    days <= 60
   )
 }
 
 date firstChange(File f) {
-  result = min(Commit e, date toMin | (f = e.getAnAffectedFile()) and (toMin = e.getDate()) | toMin)
+  result = min(Commit e, date toMin | f = e.getAnAffectedFile() and toMin = e.getDate() | toMin)
 }
 
 predicate firstCommit(Commit e) {
-  not exists(File f | f = e.getAnAffectedFile() |
-    firstChange(f) < e.getDate()
-  )
+  not exists(File f | f = e.getAnAffectedFile() | firstChange(f) < e.getDate())
 }
 
-predicate artificialChange(Commit e) {
-   firstCommit(e) or e.getChangeSize() >= 50000
-}
+predicate artificialChange(Commit e) { firstCommit(e) or e.getChangeSize() >= 50000 }

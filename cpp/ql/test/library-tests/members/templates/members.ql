@@ -8,4 +8,3 @@ string mem(Class c) {
 
 from Class c
 select c, mem(c)
-

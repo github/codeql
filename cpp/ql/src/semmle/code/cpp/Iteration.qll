@@ -5,9 +5,7 @@ import semmle.code.cpp.Variable
  * mutated within the update expression of the same 'for' loop.
  */
 class LoopCounter extends Variable {
-  LoopCounter() {
-    exists(ForStmt f | f.getAnIterationVariable() = this)
-  }
+  LoopCounter() { exists(ForStmt f | f.getAnIterationVariable() = this) }
 
   // Gets an access of this variable within loop `f`.
   VariableAccess getVariableAccessInLoop(ForStmt f) {
@@ -17,9 +15,7 @@ class LoopCounter extends Variable {
   }
 
   // Gets a loop which uses this variable as its counter.
-  ForStmt getALoop() {
-    result.getAnIterationVariable() = this
-  }
+  ForStmt getALoop() { result.getAnIterationVariable() = this }
 }
 
 /**
@@ -27,9 +23,7 @@ class LoopCounter extends Variable {
  * update expression of a 'for' loop.
  */
 class LoopControlVariable extends Variable {
-  LoopControlVariable() {
-    this = loopControlVariable(_)
-  }
+  LoopControlVariable() { this = loopControlVariable(_) }
 
   // Gets an access of this variable within loop `f`.
   VariableAccess getVariableAccessInLoop(ForStmt f) {
@@ -39,18 +33,16 @@ class LoopControlVariable extends Variable {
   }
 
   // Gets a loop which uses this variable as its control variable.
-  ForStmt getALoop() {
-    this = loopControlVariable(result)
-  }
+  ForStmt getALoop() { this = loopControlVariable(result) }
 }
 
 /**
  * Gets a control variable of loop `f`.
  */
 private Variable loopControlVariable(ForStmt f) {
-  exists(Expr e
-  | result.getAnAccess().getParent*() = e
-  | e = f.getControllingExpr() or
+  exists(Expr e | result.getAnAccess().getParent*() = e |
+    e = f.getControllingExpr() or
     e = f.getInitialization().(ExprStmt).getExpr() or
-    e = f.getUpdate())
+    e = f.getUpdate()
+  )
 }

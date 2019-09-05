@@ -8,6 +8,7 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -25,8 +26,8 @@ predicate longNameSignificance(Element e, string significance) {
 }
 
 predicate elementName(Element e, string name) {
-   name = e.(Declaration).getName() or name = e.(Namespace).getName()
- }
+  name = e.(Declaration).getName() or name = e.(Namespace).getName()
+}
 
 predicate clash(Element e1, Element e2) {
   exists(string significance, string n1, string n2 |
@@ -39,6 +40,7 @@ predicate clash(Element e1, Element e2) {
 }
 
 from Element e1, Element e2, string name
-where clash(e1, e2)
-  and elementName(e2, name)
+where
+  clash(e1, e2) and
+  elementName(e2, name)
 select e1, "AV Rule 46: relies on more than 64 characters to separate from " + name

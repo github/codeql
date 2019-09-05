@@ -4,6 +4,7 @@
  * @kind problem
  * @problem.severity recommendation
  */
+
 import cpp
 import semmle.code.cpp.commons.Alloc
 import semmle.code.cpp.commons.Buffer
@@ -17,7 +18,7 @@ import semmle.code.cpp.models.implementations.Strcat
 /**
  * An operation that writes a variable amount of data to a buffer
  * (strcpy, strncat, sprintf etc).
- * 
+ *
  * Note that there are two related class frameworks:
  *  - BufferWrite provides detailed coverage of null-terminated
  *    buffer write operations.
@@ -27,8 +28,7 @@ import semmle.code.cpp.models.implementations.Strcat
  * This design has some overlaps between the two classes, for example
  * the write of a 'strncpy'.
  */
-abstract class BufferWrite extends Expr
-{
+abstract class BufferWrite extends Expr {
   /*
    * --- derived classes override these ---
    */
@@ -57,13 +57,13 @@ abstract class BufferWrite extends Expr
    * though it's value is unknown.
    */
   predicate hasExplicitLimit() { none() }
-  
+
   /**
    * Gets the explicit limit of bytes copied by this operation, if it exists
    * and it's value can be determined.
    */
   int getExplicitLimit() { none() }
-  
+
   /**
    * Gets an upper bound to the amount of data that's being written (if one
    * can be found).
@@ -82,8 +82,7 @@ abstract class BufferWrite extends Expr
    * Gets the size of a single character of the type this
    * operation works with, in bytes.
    */
-  int getCharSize()
-  {
+  int getCharSize() {
     result = getBufferType().(PointerType).getBaseType().getSize() or
     result = getBufferType().(ArrayType).getBaseType().getSize()
   }
@@ -91,30 +90,23 @@ abstract class BufferWrite extends Expr
   /**
    * Gets a description of this buffer write.
    */
-  string getBWDesc()
-  {
-    result = toString()
-  }
+  string getBWDesc() { result = toString() }
 }
 
 /**
  * A `BufferWrite` that is also a `FunctionCall` (most cases).
  */
-abstract class BufferWriteCall extends BufferWrite, FunctionCall
-{
-}
+abstract class BufferWriteCall extends BufferWrite, FunctionCall { }
 
 /*
  * --- BufferWrite classes ---
  */
 
 /**
- * A call to a variant of `strcpy`. 
+ * A call to a variant of `strcpy`.
  */
-class StrCopyBW extends BufferWriteCall
-{
-  StrCopyBW()
-  {
+class StrCopyBW extends BufferWriteCall {
+  StrCopyBW() {
     exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
       // strcpy(dst, src)
       name = "strcpy"
@@ -154,123 +146,82 @@ class StrCopyBW extends BufferWriteCall
     )
   }
 
-  int getParamSize()
-  {
-    exists(TopLevelFunction fn, string name | (fn = getTarget()) and (name = fn.getName()) and (
-      if (name.suffix(name.length() - 2) = "_s") then (
-        result = 1
-      ) else if exists(name.indexOf("ncpy")) then (
-        result = 2
-      ) else (
-        none()
+  int getParamSize() {
+    exists(TopLevelFunction fn, string name |
+      fn = getTarget() and
+      name = fn.getName() and
+      (
+        if name.suffix(name.length() - 2) = "_s"
+        then result = 1
+        else
+          if exists(name.indexOf("ncpy"))
+          then result = 2
+          else none()
       )
-    ))
-  }
-  
-  int getParamSrc()
-  {
-    exists(TopLevelFunction fn, string name | (fn = getTarget()) and (name = fn.getName()) and (
-      if (name.suffix(name.length() - 2) = "_s") then (
-        result = 2
-      ) else (
-        result = 1
-      )
-    ))
-  }
-
-  override Type getBufferType()
-  {
-    result = this.getTarget().getParameter(getParamSrc()).getUnspecifiedType()
-  }
-
-  override Expr getASource()
-  {
-    result = getArgument(getParamSrc())
-  }
-
-  override Expr getDest()
-  {
-    result = getArgument(0)
-  }
-
-  override predicate hasExplicitLimit()
-  {
-    exists(getParamSize())
-  }
-
-  override int getExplicitLimit()
-  {
-    result = getArgument(getParamSize()).getValue().toInt() * getCharSize()
-  }
-
-  override int getMaxData()
-  {
-    result = getArgument(getParamSrc()).(AnalysedString).getMaxLength() * getCharSize()
-  }
-}
-
-/**
- * A call to a variant of `strcat`. 
- */
-class StrCatBW extends BufferWriteCall
-{
-  StrCatBW()
-  {
-    exists(TopLevelFunction fn | fn = getTarget() and fn instanceof StrcatFunction)
-  }
-  
-  int getParamSize()
-  {
-    if exists(getArgument(2)) then (
-      result = 2
-    ) else (
-      none()
     )
   }
-  
-  int getParamSrc()
-  {
-    result = 1
+
+  int getParamSrc() {
+    exists(TopLevelFunction fn, string name |
+      fn = getTarget() and
+      name = fn.getName() and
+      (if name.suffix(name.length() - 2) = "_s" then result = 2 else result = 1)
+    )
   }
 
-  override Type getBufferType()
-  {
+  override Type getBufferType() {
     result = this.getTarget().getParameter(getParamSrc()).getUnspecifiedType()
   }
 
-  override Expr getASource()
-  {
-    result = getArgument(getParamSrc())
-  }
+  override Expr getASource() { result = getArgument(getParamSrc()) }
 
-  override Expr getDest()
-  {
-    result = getArgument(0)
-  }
+  override Expr getDest() { result = getArgument(0) }
 
-  override predicate hasExplicitLimit()
-  {
-    exists(getParamSize())
-  }
+  override predicate hasExplicitLimit() { exists(getParamSize()) }
 
-  override int getExplicitLimit()
-  {
+  override int getExplicitLimit() {
     result = getArgument(getParamSize()).getValue().toInt() * getCharSize()
   }
 
-  override int getMaxData()
-  {
+  override int getMaxData() {
     result = getArgument(getParamSrc()).(AnalysedString).getMaxLength() * getCharSize()
   }
 }
 
 /**
- * A call to a variant of `sprintf`. 
+ * A call to a variant of `strcat`.
  */
-class SprintfBW extends BufferWriteCall
-{
-  SprintfBW()
-  {
+class StrCatBW extends BufferWriteCall {
+  StrCatBW() { exists(TopLevelFunction fn | fn = getTarget() and fn instanceof StrcatFunction) }
+
+  int getParamSize() { if exists(getArgument(2)) then result = 2 else none() }
+
+  int getParamSrc() { result = 1 }
+
+  override Type getBufferType() {
+    result = this.getTarget().getParameter(getParamSrc()).getUnspecifiedType()
+  }
+
+  override Expr getASource() { result = getArgument(getParamSrc()) }
+
+  override Expr getDest() { result = getArgument(0) }
+
+  override predicate hasExplicitLimit() { exists(getParamSize()) }
+
+  override int getExplicitLimit() {
+    result = getArgument(getParamSize()).getValue().toInt() * getCharSize()
+  }
+
+  override int getMaxData() {
+    result = getArgument(getParamSrc()).(AnalysedString).getMaxLength() * getCharSize()
+  }
+}
+
+/**
+ * A call to a variant of `sprintf`.
+ */
+class SprintfBW extends BufferWriteCall {
+  SprintfBW() {
     exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
       /*
        * C sprintf variants:
@@ -306,50 +257,41 @@ class SprintfBW extends BufferWriteCall
     )
   }
 
-  override Type getBufferType()
-  {
+  override Type getBufferType() {
     exists(FormattingFunction f |
       f = this.getTarget() and
       result = f.getParameter(f.getFormatParameterIndex()).getUnspecifiedType()
     )
   }
 
-  override Expr getASource()
-  {
-    (result = this.(FormattingFunctionCall).getFormat())
+  override Expr getASource() {
+    result = this.(FormattingFunctionCall).getFormat()
     or
-    (result = this.(FormattingFunctionCall).getFormatArgument(_))
+    result = this.(FormattingFunctionCall).getFormatArgument(_)
   }
 
-  override Expr getDest()
-  {
-    result = getArgument(0)
-  }
+  override Expr getDest() { result = getArgument(0) }
 
-  override int getMaxData()
-  {
+  override int getMaxData() {
     exists(FormatLiteral fl |
-      (fl = this.(FormattingFunctionCall).getFormat())
-      and (result = fl.getMaxConvertedLength() * getCharSize())
-    ) 
+      fl = this.(FormattingFunctionCall).getFormat() and
+      result = fl.getMaxConvertedLength() * getCharSize()
+    )
   }
 
-  override int getMaxDataLimited()
-  {
+  override int getMaxDataLimited() {
     exists(FormatLiteral fl |
-      (fl = this.(FormattingFunctionCall).getFormat())
-      and (result = fl.getMaxConvertedLengthLimited() * getCharSize())
+      fl = this.(FormattingFunctionCall).getFormat() and
+      result = fl.getMaxConvertedLengthLimited() * getCharSize()
     )
   }
 }
 
 /**
- * A call to a variant of `snprintf`. 
+ * A call to a variant of `snprintf`.
  */
-class SnprintfBW extends BufferWriteCall
-{
-  SnprintfBW()
-  {
+class SnprintfBW extends BufferWriteCall {
+  SnprintfBW() {
     exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
       /*
        * C snprintf variants:
@@ -406,89 +348,62 @@ class SnprintfBW extends BufferWriteCall
       not this instanceof SprintfBW
     )
   }
-  
-  int getParamSize()
-  {
-    result = 1
-  }
 
-  override Type getBufferType()
-  {
+  int getParamSize() { result = 1 }
+
+  override Type getBufferType() {
     exists(FormattingFunction f |
       f = this.getTarget() and
       result = f.getParameter(f.getFormatParameterIndex()).getUnspecifiedType()
     )
   }
 
-  override Expr getASource()
-  {
-    (result = this.(FormattingFunctionCall).getFormat())
+  override Expr getASource() {
+    result = this.(FormattingFunctionCall).getFormat()
     or
-    (result = this.(FormattingFunctionCall).getFormatArgument(_))
+    result = this.(FormattingFunctionCall).getFormatArgument(_)
   }
 
-  override Expr getDest()
-  {
-    result = getArgument(0)
-  }
+  override Expr getDest() { result = getArgument(0) }
 
-  override predicate hasExplicitLimit()
-  {
-    exists(getParamSize())
-  }
+  override predicate hasExplicitLimit() { exists(getParamSize()) }
 
-  override int getExplicitLimit()
-  {
+  override int getExplicitLimit() {
     result = getArgument(getParamSize()).getValue().toInt() * getCharSize()
   }
 
-  override int getMaxData()
-  {
+  override int getMaxData() {
     exists(FormatLiteral fl |
-      (fl = this.(FormattingFunctionCall).getFormat())
-      and (result = fl.getMaxConvertedLength() * getCharSize())
+      fl = this.(FormattingFunctionCall).getFormat() and
+      result = fl.getMaxConvertedLength() * getCharSize()
     )
   }
 
-  override int getMaxDataLimited()
-  {
+  override int getMaxDataLimited() {
     exists(FormatLiteral fl |
-      (fl = this.(FormattingFunctionCall).getFormat())
-      and (result = fl.getMaxConvertedLengthLimited() * getCharSize())
+      fl = this.(FormattingFunctionCall).getFormat() and
+      result = fl.getMaxConvertedLengthLimited() * getCharSize()
     )
   }
 }
 
 /**
- * A call to a variant of `gets`. 
+ * A call to a variant of `gets`.
  */
-class GetsBW extends BufferWriteCall
-{
-  GetsBW()
-  {
+class GetsBW extends BufferWriteCall {
+  GetsBW() {
     exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
       name = "gets" or // gets(dst)
       name = "fgets" or // fgets(dst, max_amount, src_stream)
-      name = "fgetws"  // fgetws(dst, max_amount, src_stream)
+      name = "fgetws" // fgetws(dst, max_amount, src_stream)
     )
   }
 
-  int getParamSize()
-  {
-    if exists(getArgument(1)) then (
-      result = 1
-    ) else (
-      none()
-    )
-  }
+  int getParamSize() { if exists(getArgument(1)) then result = 1 else none() }
 
-  override Type getBufferType()
-  {
-    result = this.getTarget().getParameter(0).getUnspecifiedType()
-  }
+  override Type getBufferType() { result = this.getTarget().getParameter(0).getUnspecifiedType() }
 
-  override Expr getASource()
-  {
+  override Expr getASource() {
     if exists(getArgument(2))
     then result = getArgument(2)
     else
@@ -496,18 +411,11 @@ class GetsBW extends BufferWriteCall
       result = this
   }
 
-  override Expr getDest()
-  {
-    result = getArgument(0)
-  }
+  override Expr getDest() { result = getArgument(0) }
 
-  override predicate hasExplicitLimit()
-  {
-    exists(getParamSize())
-  }
+  override predicate hasExplicitLimit() { exists(getParamSize()) }
 
-  override int getExplicitLimit()
-  {
+  override int getExplicitLimit() {
     result = getArgument(getParamSize()).getValue().toInt() * getCharSize()
   }
 }
@@ -515,28 +423,25 @@ class GetsBW extends BufferWriteCall
 /**
  * A string that is written by a `scanf`-like function.
  */
-class ScanfBW extends BufferWrite
-{
-  ScanfBW()
-  {
+class ScanfBW extends BufferWrite {
+  ScanfBW() {
     exists(ScanfFunctionCall fc, ScanfFormatLiteral fl, int arg, int args_pos |
-      (this = fc.getArgument(arg))
-      and (args_pos = fc.getTarget().getNumberOfParameters())
-      and (arg >= args_pos)
-      and (fl = fc.getFormat())
-      and (fl.getConversionChar(arg - args_pos) = "s")
+      this = fc.getArgument(arg) and
+      args_pos = fc.getTarget().getNumberOfParameters() and
+      arg >= args_pos and
+      fl = fc.getFormat() and
+      fl.getConversionChar(arg - args_pos) = "s"
     )
   }
 
-  int getParamArgs()
-  {
-    exists(FunctionCall fc | this = fc.getArgument(_)
-      and (result = fc.getTarget().getNumberOfParameters())
+  int getParamArgs() {
+    exists(FunctionCall fc |
+      this = fc.getArgument(_) and
+      result = fc.getTarget().getNumberOfParameters()
     )
   }
 
-  override Type getBufferType()
-  {
+  override Type getBufferType() {
     exists(ScanfFunction f, ScanfFunctionCall fc |
       this = fc.getArgument(_) and
       f = fc.getTarget() and
@@ -544,36 +449,34 @@ class ScanfBW extends BufferWrite
     )
   }
 
-  override Expr getASource()
-  {
+  override Expr getASource() {
     exists(ScanfFunctionCall fc |
-      (this = fc.getArgument(_)) and (
-        // inputs are: the format string, input or the argument itself (if there's no explicit input) 
-        (result = fc.getFormat()) or
-        (result = fc.getArgument(fc.getInputParameterIndex())) or
-        (not exists(fc.getInputParameterIndex()) and (result = this))
+      this = fc.getArgument(_) and
+      (
+        // inputs are: the format string, input or the argument itself (if there's no explicit input)
+        result = fc.getFormat()
+        or
+        result = fc.getArgument(fc.getInputParameterIndex())
+        or
+        not exists(fc.getInputParameterIndex()) and result = this
       )
     )
   }
 
-  override Expr getDest()
-  {
-    result = this
-  }
+  override Expr getDest() { result = this }
 
-  override int getMaxData()
-  {
+  override int getMaxData() {
     exists(ScanfFunctionCall fc, ScanfFormatLiteral fl, int arg |
-      (this = fc.getArgument(arg))
-      and (fl = fc.getFormat())
-      and (result = (fl.getMaxConvertedLength(arg - getParamArgs()) + 1) * getCharSize()) // +1 is for the terminating null
+      this = fc.getArgument(arg) and
+      fl = fc.getFormat() and
+      result = (fl.getMaxConvertedLength(arg - getParamArgs()) + 1) * getCharSize() // +1 is for the terminating null
     )
   }
 
-  override string getBWDesc()
-  {
-    exists(FunctionCall fc | (this = fc.getArgument(_))
-      and (result = fc.getTarget().getName() + " string argument")
+  override string getBWDesc() {
+    exists(FunctionCall fc |
+      this = fc.getArgument(_) and
+      result = fc.getTarget().getName() + " string argument"
     )
   }
 }
@@ -582,13 +485,11 @@ class ScanfBW extends BufferWrite
  * A detected definition of PATH_MAX
  */
 private int path_max() {
-  result = max(Macro macro |
-    macro.getName() = "PATH_MAX"
-    | macro.getBody().toInt())
+  result = max(Macro macro | macro.getName() = "PATH_MAX" | macro.getBody().toInt())
 }
 
 /**
- * A call to `realpath`. 
+ * A call to `realpath`.
  */
 class RealpathBW extends BufferWriteCall {
   RealpathBW() {
@@ -596,16 +497,14 @@ class RealpathBW extends BufferWriteCall {
     getTarget().hasGlobalName("realpath") // realpath(path, resolved_path);
   }
 
-  override Type getBufferType()
-  {
-    result = this.getTarget().getParameter(0).getUnspecifiedType()
-  }
-  
+  override Type getBufferType() { result = this.getTarget().getParameter(0).getUnspecifiedType() }
+
   override Expr getDest() { result = getArgument(1) }
+
   override Expr getASource() { result = getArgument(0) }
-  
+
   override int getMaxData() {
-    result = path_max()
-    and this = this // Suppress a compiler warning
+    result = path_max() and
+    this = this // Suppress a compiler warning
   }
 }

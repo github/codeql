@@ -9,6 +9,7 @@
  *       reliability
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -16,6 +17,7 @@ import cpp
  */
 
 from UnaryMinusExpr ume
-where ume.getOperand().getExplicitlyConverted().getUnderlyingType().(IntegralType).isUnsigned()
-      and not ume.getOperand() instanceof Literal
+where
+  ume.getOperand().getExplicitlyConverted().getUnderlyingType().(IntegralType).isUnsigned() and
+  not ume.getOperand() instanceof Literal
 select ume, "The unary minus operator should not be applied to an unsigned expression."

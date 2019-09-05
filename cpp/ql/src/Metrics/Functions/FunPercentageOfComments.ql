@@ -10,6 +10,7 @@
  * @tags maintainability
  *       documentation
  */
+
 import cpp
 
 from MetricFunction f

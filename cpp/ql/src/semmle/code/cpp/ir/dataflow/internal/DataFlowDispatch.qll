@@ -59,7 +59,9 @@ private predicate functionSignature(Function f, string qualifiedName, int nparam
  * Holds if the call context `ctx` reduces the set of viable dispatch
  * targets of `ma` in `c`.
  */
-predicate reducedViableImplInCallContext(CallInstruction call, Function f, CallInstruction ctx) { none() }
+predicate reducedViableImplInCallContext(CallInstruction call, Function f, CallInstruction ctx) {
+  none()
+}
 
 /**
  * Gets a viable dispatch target of `ma` in the context `ctx`. This is

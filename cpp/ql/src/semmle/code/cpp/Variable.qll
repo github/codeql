@@ -14,7 +14,6 @@ private import semmle.code.cpp.internal.ResolveClass
  * can have multiple declarations.
  */
 class Variable extends Declaration, @variable {
-
   /** Gets the initializer of this variable, if any. */
   Initializer getInitializer() { result.getDeclaration() = this }
 
@@ -30,10 +29,12 @@ class Variable extends Declaration, @variable {
    * this variable, such as `const` and `volatile`, are instead accessed
    * through `this.getType().getASpecifier()`.
    */
-  override Specifier getASpecifier() { varspecifiers(underlyingElement(this),unresolveElement(result)) }
+  override Specifier getASpecifier() {
+    varspecifiers(underlyingElement(this), unresolveElement(result))
+  }
 
   /** Gets an attribute of this variable. */
-  Attribute getAnAttribute() { varattributes(underlyingElement(this),unresolveElement(result)) }
+  Attribute getAnAttribute() { varattributes(underlyingElement(this), unresolveElement(result)) }
 
   /** Holds if this variable is `const`. */
   predicate isConst() { this.getType().isConst() }
@@ -50,7 +51,7 @@ class Variable extends Declaration, @variable {
   /** Gets the type of this variable, after typedefs have been resolved. */
   Type getUnderlyingType() { result = this.getType().getUnderlyingType() }
 
-  /** 
+  /**
    * Gets the type of this variable, after specifiers have been deeply
    * stripped and typedefs have been resolved.
    */
@@ -81,28 +82,21 @@ class Variable extends Declaration, @variable {
    */
   predicate declaredUsingAutoType() { autoderivation(underlyingElement(this), _) }
 
-  override VariableDeclarationEntry getADeclarationEntry() {
-    result.getDeclaration() = this
-  }
+  override VariableDeclarationEntry getADeclarationEntry() { result.getDeclaration() = this }
 
-  override Location getADeclarationLocation() {
-    result = getADeclarationEntry().getLocation()
-  }
+  override Location getADeclarationLocation() { result = getADeclarationEntry().getLocation() }
 
   override VariableDeclarationEntry getDefinition() {
     result = getADeclarationEntry() and
     result.isDefinition()
   }
 
-  override Location getDefinitionLocation() {
-    result = getDefinition().getLocation()
-  }
+  override Location getDefinitionLocation() { result = getDefinition().getLocation() }
 
   override Location getLocation() {
-    if exists(getDefinition()) then
-      result = this.getDefinitionLocation()
-    else
-      result = this.getADeclarationLocation()
+    if exists(getDefinition())
+    then result = this.getDefinitionLocation()
+    else result = this.getADeclarationLocation()
   }
 
   /**
@@ -112,11 +106,9 @@ class Variable extends Declaration, @variable {
   Expr getAnAssignedValue() {
     result = this.getInitializer().getExpr()
     or
-    exists (ConstructorFieldInit cfi
-    | cfi.getTarget() = this and result = cfi.getExpr())
+    exists(ConstructorFieldInit cfi | cfi.getTarget() = this and result = cfi.getExpr())
     or
-    exists (AssignExpr ae
-    | ae.getLValue().(Access).getTarget() = this and result = ae.getRValue())
+    exists(AssignExpr ae | ae.getLValue().(Access).getTarget() = this and result = ae.getRValue())
     or
     exists(AggregateLiteral l |
       this.getDeclaringType() = l.getType() and
@@ -128,23 +120,17 @@ class Variable extends Declaration, @variable {
    * Gets an assignment expression that assigns to this variable.
    * For example: `x=...` or `x+=...`.
    */
-  Assignment getAnAssignment() {
-    result.getLValue() = this.getAnAccess()
-  }
+  Assignment getAnAssignment() { result.getLValue() = this.getAnAccess() }
 
   /**
    * Holds if this variable is `constexpr`.
    */
-  predicate isConstexpr() {
-    this.hasSpecifier("is_constexpr")
-  }
+  predicate isConstexpr() { this.hasSpecifier("is_constexpr") }
 
   /**
    * Holds if this variable is `thread_local`.
    */
-  predicate isThreadLocal() {
-    this.hasSpecifier("is_thread_local")
-  }
+  predicate isThreadLocal() { this.hasSpecifier("is_thread_local") }
 
   /**
    * Holds if this variable is constructed from `v` as a result
@@ -182,11 +168,11 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
   override Variable getDeclaration() { result = getVariable() }
 
   override string getCanonicalQLClass() { result = "VariableDeclarationEntry" }
-  
+
   /**
    * Gets the variable which is being declared or defined.
    */
-  Variable getVariable() { var_decls(underlyingElement(this),unresolveElement(result),_,_,_) }
+  Variable getVariable() { var_decls(underlyingElement(this), unresolveElement(result), _, _, _) }
 
   /**
    * Gets the name, if any, used for the variable at this declaration or
@@ -205,14 +191,14 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
    *    int f(int y) { return y; }
    *    ```
    */
-  override string getName() { var_decls(underlyingElement(this),_,_,result,_) and result != "" }
+  override string getName() { var_decls(underlyingElement(this), _, _, result, _) and result != "" }
 
   /**
    * Gets the type of the variable which is being declared or defined.
    */
-  override Type getType() { var_decls(underlyingElement(this),_,unresolveElement(result),_,_) }
+  override Type getType() { var_decls(underlyingElement(this), _, unresolveElement(result), _, _) }
 
-  override Location getLocation() { var_decls(underlyingElement(this),_,_,_,result) }
+  override Location getLocation() { var_decls(underlyingElement(this), _, _, _, result) }
 
   /**
    * Holds if this is a definition of a variable.
@@ -224,7 +210,7 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
    */
   override predicate isDefinition() { var_def(underlyingElement(this)) }
 
-  override string getASpecifier() { var_decl_specifiers(underlyingElement(this),result) }
+  override string getASpecifier() { var_decl_specifiers(underlyingElement(this), result) }
 }
 
 /**
@@ -232,8 +218,8 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
  * of a C/C++ function.
  */
 class ParameterDeclarationEntry extends VariableDeclarationEntry {
-  ParameterDeclarationEntry() { param_decl_bind(underlyingElement(this),_,_) }
-  
+  ParameterDeclarationEntry() { param_decl_bind(underlyingElement(this), _, _) }
+
   override string getCanonicalQLClass() { result = "ParameterDeclarationEntry" }
 
   /**
@@ -241,29 +227,31 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
    * description is part of.
    */
   FunctionDeclarationEntry getFunctionDeclarationEntry() {
-    param_decl_bind(underlyingElement(this),_,unresolveElement(result))
+    param_decl_bind(underlyingElement(this), _, unresolveElement(result))
   }
 
   /**
    * Gets the zero-based index of this parameter.
    */
-  int getIndex() { param_decl_bind(underlyingElement(this),result,_) }
+  int getIndex() { param_decl_bind(underlyingElement(this), result, _) }
 
   override string toString() {
     if exists(getName())
-      then result = super.toString()
-      else exists (string idx
-           | idx = ((getIndex() + 1).toString() + "th")
-                 .replaceAll("1th","1st")
-                 .replaceAll("2th","2nd")
-                 .replaceAll("3th","3rd")
-                 .replaceAll("11st","11th")
-                 .replaceAll("12nd","12th")
-                 .replaceAll("13rd","13th")
-           | if exists(getCanonicalName())
-               then result = "declaration of " + getCanonicalName() +
-                             " as anonymous " + idx + " parameter"
-               else result = "declaration of " + idx + " parameter")
+    then result = super.toString()
+    else
+      exists(string idx |
+        idx = ((getIndex() + 1).toString() + "th")
+              .replaceAll("1th", "1st")
+              .replaceAll("2th", "2nd")
+              .replaceAll("3th", "3rd")
+              .replaceAll("11st", "11th")
+              .replaceAll("12nd", "12th")
+              .replaceAll("13rd", "13th")
+      |
+        if exists(getCanonicalName())
+        then result = "declaration of " + getCanonicalName() + " as anonymous " + idx + " parameter"
+        else result = "declaration of " + idx + " parameter"
+      )
   }
 
   /**
@@ -273,13 +261,11 @@ class ParameterDeclarationEntry extends VariableDeclarationEntry {
    */
   string getTypedName() {
     exists(string typeString, string nameString |
-      if exists(getType().getName()) then typeString = getType().getName() else typeString = "" and
-      if exists(getName()) then nameString = getName() else nameString = "" and
-      if (typeString != "" and nameString != "") then (
-        result = typeString + " " + nameString
-      ) else (
-        result = typeString + nameString
-      )
+      (if exists(getType().getName()) then typeString = getType().getName() else typeString = "") and
+      (if exists(getName()) then nameString = getName() else nameString = "") and
+      if typeString != "" and nameString != ""
+      then result = typeString + " " + nameString
+      else result = typeString + nameString
     )
   }
 }
@@ -299,9 +285,8 @@ class LocalScopeVariable extends Variable, @localscopevariable {
  */
 deprecated class StackVariable extends Variable {
   StackVariable() { this instanceof LocalScopeVariable }
-  Function getFunction() {
-    result = this.(LocalScopeVariable).getFunction()
-  }
+
+  Function getFunction() { result = this.(LocalScopeVariable).getFunction() }
 }
 
 /**
@@ -313,12 +298,13 @@ deprecated class StackVariable extends Variable {
  * A local variable can be declared by a `DeclStmt` or a `ConditionDeclExpr`.
  */
 class LocalVariable extends LocalScopeVariable, @localvariable {
-  override string getName() { localvariables(underlyingElement(this),_,result) }
+  override string getName() { localvariables(underlyingElement(this), _, result) }
 
-  override Type getType() { localvariables(underlyingElement(this),unresolveElement(result),_) }
+  override Type getType() { localvariables(underlyingElement(this), unresolveElement(result), _) }
 
   override Function getFunction() {
-    exists(DeclStmt s | s.getADeclaration() = this and s.getEnclosingFunction() = result) or
+    exists(DeclStmt s | s.getADeclaration() = this and s.getEnclosingFunction() = result)
+    or
     exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
   }
 }
@@ -327,9 +313,9 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
  * A C/C++ variable which has global scope or namespace scope.
  */
 class GlobalOrNamespaceVariable extends Variable, @globalvariable {
-  override string getName() { globalvariables(underlyingElement(this),_,result) }
+  override string getName() { globalvariables(underlyingElement(this), _, result) }
 
-  override Type getType() { globalvariables(underlyingElement(this),unresolveElement(result),_) }
+  override Type getType() { globalvariables(underlyingElement(this), unresolveElement(result), _) }
 
   override Element getEnclosingElement() { none() }
 }
@@ -351,9 +337,7 @@ class NamespaceVariable extends GlobalOrNamespaceVariable {
  * the enclosing scope of said namespace (which may be the global scope).
  */
 class GlobalVariable extends GlobalOrNamespaceVariable {
-  GlobalVariable() {
-    not this instanceof NamespaceVariable
-  }
+  GlobalVariable() { not this instanceof NamespaceVariable }
 }
 
 /**
@@ -363,9 +347,7 @@ class GlobalVariable extends GlobalOrNamespaceVariable {
  * variables, use `Field` instead of `MemberVariable`.
  */
 class MemberVariable extends Variable, @membervariable {
-  MemberVariable() {
-    this.isMember()
-  }
+  MemberVariable() { this.isMember() }
 
   /** Holds if this member is private. */
   predicate isPrivate() { this.hasSpecifier("private") }
@@ -376,36 +358,31 @@ class MemberVariable extends Variable, @membervariable {
   /** Holds if this member is public. */
   predicate isPublic() { this.hasSpecifier("public") }
 
-  override string getName() { membervariables(underlyingElement(this),_,result) }
+  override string getName() { membervariables(underlyingElement(this), _, result) }
 
   override Type getType() {
-    if (strictcount(this.getAType()) = 1) then (
-       result = this.getAType()
-     ) else (
-       // In rare situations a member variable may have multiple types in
-       // different translation units. In that case, we return the unspecified
-       // type.
-       result = this.getAType().getUnspecifiedType()
-    )
+    if strictcount(this.getAType()) = 1
+    then result = this.getAType()
+    else
+      // In rare situations a member variable may have multiple types in
+      // different translation units. In that case, we return the unspecified
+      // type.
+      result = this.getAType().getUnspecifiedType()
   }
 
   /** Holds if this member is mutable. */
-  predicate isMutable() {
-    getADeclarationEntry().hasSpecifier("mutable")
-  }
+  predicate isMutable() { getADeclarationEntry().hasSpecifier("mutable") }
 
-  private Type getAType() { membervariables(underlyingElement(this),unresolveElement(result),_) }
+  private Type getAType() { membervariables(underlyingElement(this), unresolveElement(result), _) }
 }
 
 /**
  * A C/C++ function pointer variable.
  *
- * DEPRECATED: use `Variable.getType() instanceof FunctionPointerType` instead. 
+ * DEPRECATED: use `Variable.getType() instanceof FunctionPointerType` instead.
  */
 deprecated class FunctionPointerVariable extends Variable {
-  FunctionPointerVariable() {
-    this.getType() instanceof FunctionPointerType
-  }
+  FunctionPointerVariable() { this.getType() instanceof FunctionPointerType }
 }
 
 /**
@@ -414,9 +391,7 @@ deprecated class FunctionPointerVariable extends Variable {
  * DEPRECATED: use `MemberVariable.getType() instanceof FunctionPointerType` instead.
  */
 deprecated class FunctionPointerMemberVariable extends MemberVariable {
-  FunctionPointerMemberVariable() {
-    this instanceof FunctionPointerVariable
-  }
+  FunctionPointerMemberVariable() { this instanceof FunctionPointerVariable }
 }
 
 /**

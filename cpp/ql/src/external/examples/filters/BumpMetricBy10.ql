@@ -5,9 +5,9 @@
  *              example the value is increased by 10.
  * @tags filter
  */
+
 import cpp
 import external.MetricFilter
 
 from MetricResult res
-select res,
-       res.getValue() + 10
+select res, res.getValue() + 10

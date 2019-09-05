@@ -12,12 +12,13 @@
 import cpp
 
 from PreprocessorDirective p
-where not p instanceof Include and
-      not p instanceof Macro and
-      not p instanceof PreprocessorIf and
-      not p instanceof PreprocessorElif and
-      not p instanceof PreprocessorElse and
-      not p instanceof PreprocessorIfdef and
-      not p instanceof PreprocessorIfndef and
-      not p instanceof PreprocessorEndif
+where
+  not p instanceof Include and
+  not p instanceof Macro and
+  not p instanceof PreprocessorIf and
+  not p instanceof PreprocessorElif and
+  not p instanceof PreprocessorElse and
+  not p instanceof PreprocessorIfdef and
+  not p instanceof PreprocessorIfndef and
+  not p instanceof PreprocessorEndif
 select p, "This preprocessor directive is not allowed."

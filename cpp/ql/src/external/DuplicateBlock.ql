@@ -10,15 +10,17 @@
  *       duplicate-code
  *       non-attributable
  */
+
 import CodeDuplication
 
 from DuplicateBlock d, DuplicateBlock other, int lines, File otherFile, int otherLine
-where lines = d.sourceLines() and
-      lines > 10 and
-      other.getEquivalenceClass() = d.getEquivalenceClass() and 
-      other != d and
-      otherFile = other.sourceFile() and
-      otherLine = other.sourceStartLine()
-select 
-   d, 
-   "Duplicate code: " + lines + " lines are duplicated at " + otherFile.getBaseName() + ":" + otherLine
+where
+  lines = d.sourceLines() and
+  lines > 10 and
+  other.getEquivalenceClass() = d.getEquivalenceClass() and
+  other != d and
+  otherFile = other.sourceFile() and
+  otherLine = other.sourceStartLine()
+select d,
+  "Duplicate code: " + lines + " lines are duplicated at " + otherFile.getBaseName() + ":" +
+    otherLine

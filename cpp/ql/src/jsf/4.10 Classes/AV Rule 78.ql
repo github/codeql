@@ -9,6 +9,7 @@
  *       language-features
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -17,10 +18,13 @@ import cpp
  */
 
 from Class c
-where exists(VirtualFunction f | f.getDeclaringType() = c)
-  and exists(Destructor d | d.getDeclaringType() = c and
-                            not d.isVirtual() and
-                            not d.isDeleted() and
-                            not d.isCompilerGenerated())
-  and exists(ClassDerivation d | d.getBaseClass() = c)
+where
+  exists(VirtualFunction f | f.getDeclaringType() = c) and
+  exists(Destructor d |
+    d.getDeclaringType() = c and
+    not d.isVirtual() and
+    not d.isDeleted() and
+    not d.isCompilerGenerated()
+  ) and
+  exists(ClassDerivation d | d.getBaseClass() = c)
 select c, "Base classes with a virtual function must define a virtual destructor."

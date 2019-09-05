@@ -13,14 +13,11 @@ private import Options as CustomOptions
 
 /**
  * Default predicates that specify information about the behavior of
- * the program being analyzed. 
+ * the program being analyzed.
  */
-class Options extends string
-{
-  Options() {
-    this = "Options"
-  }
-  
+class Options extends string {
+  Options() { this = "Options" }
+
   /**
    * Holds if we wish to override the "may return NULL" inference for this
    * call. If this holds, then rather than trying to infer whether this
@@ -60,7 +57,8 @@ class Options extends string
    * `noreturn` attribute.
    */
   predicate exits(Function f) {
-    f.getAnAttribute().hasName("noreturn") or
+    f.getAnAttribute().hasName("noreturn")
+    or
     exists(string name | f.hasGlobalName(name) |
       name = "exit" or
       name = "_exit" or
@@ -68,7 +66,8 @@ class Options extends string
       name = "__assert_fail" or
       name = "longjmp" or
       name = "__builtin_unreachable"
-    ) or
+    )
+    or
     CustomOptions::exits(f) // old Options.qll
   }
 
@@ -108,14 +107,11 @@ class Options extends string
     fc.isInMacroExpansion()
     or
     // common way of sleeping using select:
-    (fc.getTarget().hasGlobalName("select") and
-     fc.getArgument(0).getValue() = "0")
+    fc.getTarget().hasGlobalName("select") and
+    fc.getArgument(0).getValue() = "0"
     or
     CustomOptions::okToIgnoreReturnValue(fc) // old Options.qll
   }
 }
 
-Options getOptions()
-{
-  any()
-}
+Options getOptions() { any() }

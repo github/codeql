@@ -10,10 +10,12 @@
  *       correctness
  *       external/cwe/cwe-482
  */
+
 import cpp
 
 from ExprInVoidContext op
-where op instanceof EQExpr
-      or
-      op.(FunctionCall).getTarget().hasName("operator==")
+where
+  op instanceof EQExpr
+  or
+  op.(FunctionCall).getTarget().hasName("operator==")
 select op, "This '==' operator has no effect. The assignment ('=') operator was probably intended."

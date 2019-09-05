@@ -11,8 +11,10 @@
 import semmle.code.cpp.padding.Padding
 
 from PaddedType t, ILP32 ilp32, LP64 lp64, int w32, int w64
-where w32 = t.wastedSpace(ilp32) - t.trailingPadding(ilp32) and
+where
+  w32 = t.wastedSpace(ilp32) - t.trailingPadding(ilp32) and
   w64 = t.wastedSpace(lp64) - t.trailingPadding(lp64) and
   w64 > w32 and
   t.isPrecise()
-select t, t.getName() + " includes " + w32 + " bits of padding on ILP32, but " + w64 + " bits on LP64."
+select t,
+  t.getName() + " includes " + w32 + " bits of padding on ILP32, but " + w64 + " bits on LP64."

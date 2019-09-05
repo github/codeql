@@ -10,12 +10,16 @@
  *       language-features
  *       external/jsf
  */
+
 import cpp
 
 // flag switch statements where every non-default case dispatches on an integer constant
 from SwitchStmt s
-where forex(SwitchCase sc | sc = s.getASwitchCase() and not sc instanceof DefaultCase |
-             sc.getExpr().(VariableAccess).getTarget().isConst())
-      // Allow switch on character types
-      and not (s.getExpr().getUnspecifiedType() instanceof CharType)
-select s, "Enumeration types should be used instead of integers to select from a limited series of choices."
+where
+  forex(SwitchCase sc | sc = s.getASwitchCase() and not sc instanceof DefaultCase |
+    sc.getExpr().(VariableAccess).getTarget().isConst()
+  ) and
+  // Allow switch on character types
+  not s.getExpr().getUnspecifiedType() instanceof CharType
+select s,
+  "Enumeration types should be used instead of integers to select from a limited series of choices."

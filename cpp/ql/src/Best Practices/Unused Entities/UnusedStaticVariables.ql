@@ -14,9 +14,7 @@
 import cpp
 
 predicate declarationHasSideEffects(Variable v) {
-  exists(Class c | c = v.getUnspecifiedType() |
-    c.hasConstructor() or c.hasDestructor()
-  )
+  exists(Class c | c = v.getUnspecifiedType() | c.hasConstructor() or c.hasDestructor())
 }
 
 from Variable v

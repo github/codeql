@@ -26,6 +26,7 @@ string paramWarning(Function f) {
 }
 
 from Function f, string msg
-where msg = lengthWarning(f) or
-      msg = paramWarning(f)
+where
+  msg = lengthWarning(f) or
+  msg = paramWarning(f)
 select f, msg

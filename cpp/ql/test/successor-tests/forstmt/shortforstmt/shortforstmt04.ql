@@ -8,9 +8,9 @@ import cpp
 
 from ForStmt fs, ExprStmt last, Expr succ
 where
-	fs.getEnclosingFunction().hasName("normal")
-	and last = ((Block)fs.getStmt()).getLastStmt()
-	and succ = fs.getCondition().getAChild*()
-	and succ = last.getExpr().getASuccessor()
-	and count(last.getExpr().getASuccessor()) = 1
+  fs.getEnclosingFunction().hasName("normal") and
+  last = fs.getStmt().(Block).getLastStmt() and
+  succ = fs.getCondition().getAChild*() and
+  succ = last.getExpr().getASuccessor() and
+  count(last.getExpr().getASuccessor()) = 1
 select fs, last.getExpr(), succ

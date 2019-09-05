@@ -8,6 +8,7 @@
  *       readability
  *       external/jsf
  */
+
 import cpp
 
 /*
@@ -16,6 +17,7 @@ import cpp
  */
 
 from File f
-where (f.getExtension().toLowerCase() = "h" or f.getExtension().toLowerCase() = "hpp")
-      and f.getExtension() != "h"
+where
+  (f.getExtension().toLowerCase() = "h" or f.getExtension().toLowerCase() = "hpp") and
+  f.getExtension() != "h"
 select f, "AV Rule 53: Header files will always have a file name extension of .h."

@@ -11,10 +11,8 @@ private import semmle.code.cpp.dataflow.EscapesTree
  */
 predicate definitionUsePair(SemanticStackVariable var, Expr def, Expr use) {
   exists(Use u |
-    u = use
-    and
-    def.(Def).reaches(true, var, u)
-    and
+    u = use and
+    def.(Def).reaches(true, var, u) and
     u.getVariable(false) = var
   )
 }
@@ -23,9 +21,7 @@ predicate definitionUsePair(SemanticStackVariable var, Expr def, Expr use) {
  * Holds if the definition `def` of some stack variable can reach `node`, which
  * is a definition or use, without crossing definitions of the same variable.
  */
-predicate definitionReaches(Expr def, Expr node) {
-  def.(Def).reaches(true, _, (DefOrUse)node)
-}
+predicate definitionReaches(Expr def, Expr node) { def.(Def).reaches(true, _, node.(DefOrUse)) }
 
 private predicate hasAddressOfAccess(SemanticStackVariable var) {
   var.getAnAccess().isAddressOfAccessNonConst()
@@ -39,7 +35,8 @@ private predicate hasAddressOfAccess(SemanticStackVariable var) {
  */
 predicate useUsePair(SemanticStackVariable var, Expr first, Expr second) {
   (
-    /* If the address of `var` is used anywhere, we require that
+    /*
+     * If the address of `var` is used anywhere, we require that
      * a definition of `var` can reach the first use. This is to
      * rule out examples such as this:
      * ```
@@ -50,21 +47,16 @@ predicate useUsePair(SemanticStackVariable var, Expr first, Expr second) {
      * use(x); // not a use-use pair with the use above
      * ```
      */
-    hasAddressOfAccess(var)
-    implies
-    definitionUsePair(var, _, first)
-  )
-  and
+
+    hasAddressOfAccess(var) implies definitionUsePair(var, _, first)
+  ) and
   // If `first` is both a def and a use, like `x` in `f(x)` when `f` takes a
   // reference parameter, it'll play the role of a use first and a def second.
   // We are not interested in uses that follow its role as a def.
-  not definition(var, first)
-  and
+  not definition(var, first) and
   exists(Use u |
-    u = second
-    and
-    first.(Use).reaches(false, var, u)
-    and
+    u = second and
+    first.(Use).reaches(false, var, u) and
     u.getVariable(false) = var
   )
 }
@@ -76,14 +68,13 @@ predicate useUsePair(SemanticStackVariable var, Expr first, Expr second) {
 predicate parameterUsePair(Parameter p, VariableAccess va) {
   not parameterIsOverwritten(_, p) and va.getTarget() = p
   or
-  exists(ParameterDef pd | pd.reaches(true, p, (Use)va))
+  exists(ParameterDef pd | pd.reaches(true, p, va.(Use)))
 }
 
 /**
  * Utility class: A definition or use of a stack variable.
  */
-library
-class DefOrUse extends ControlFlowNodeBase {
+library class DefOrUse extends ControlFlowNodeBase {
   DefOrUse() {
     // Uninstantiated templates are purely syntax, and only on instantiation
     // will they be complete with information about types, conversions, call
@@ -114,20 +105,19 @@ class DefOrUse extends ControlFlowNodeBase {
    */
   cached
   predicate reaches(boolean isDef, SemanticStackVariable v, DefOrUse defOrUse) {
-    /* Implementation detail: this predicate and its private auxiliary
+    /*
+     * Implementation detail: this predicate and its private auxiliary
      * predicates are instances of the more general predicates in
      * LocalScopeVariableReachability.qll, and should be kept in sync.
      *
      * Unfortunately, caching of abstract predicates does not work well, so the
      * predicates are duplicated for now.
      */
-    exists(BasicBlock bb, int i |
-      reaches_helper(isDef, v, bb, i) |
+
+    exists(BasicBlock bb, int i | reaches_helper(isDef, v, bb, i) |
       exists(int j |
-        j > i
-        and
-        (bbDefAt(bb, j, v, defOrUse) or bbUseAt(bb, j, v, defOrUse))
-        and
+        j > i and
+        (bbDefAt(bb, j, v, defOrUse) or bbUseAt(bb, j, v, defOrUse)) and
         not exists(int k | firstBarrierAfterThis(isDef, k, v) and k < j)
       )
       or
@@ -138,20 +128,15 @@ class DefOrUse extends ControlFlowNodeBase {
 
   private predicate firstBarrierAfterThis(boolean isDef, int j, SemanticStackVariable v) {
     exists(BasicBlock bb, int i |
-      getVariable(isDef) = v
-      and
-      bb.getNode(i) = this
-      and
+      getVariable(isDef) = v and
+      bb.getNode(i) = this and
       j = min(int k | bbBarrierAt(bb, k, v, _) and k > i)
     )
   }
 }
 
-library
-class Def extends DefOrUse {
-  Def() {
-    definition(_, this)
-  }
+library class Def extends DefOrUse {
+  Def() { definition(_, this) }
 
   override SemanticStackVariable getVariable(boolean isDef) {
     definition(result, this) and isDef = true
@@ -164,8 +149,7 @@ private predicate parameterIsOverwritten(Function f, Parameter p) {
   definitionBarrier(p, _)
 }
 
-library
-class ParameterDef extends DefOrUse {
+library class ParameterDef extends DefOrUse {
   ParameterDef() {
     // Optimization: parameters that are not overwritten do not require
     // reachability analysis
@@ -173,17 +157,13 @@ class ParameterDef extends DefOrUse {
   }
 
   override SemanticStackVariable getVariable(boolean isDef) {
-    exists(Function f | parameterIsOverwritten(f, result) | this = f.getEntryPoint())
-    and
+    exists(Function f | parameterIsOverwritten(f, result) | this = f.getEntryPoint()) and
     isDef = true
   }
 }
 
-library
-class Use extends DefOrUse {
-  Use() {
-    useOfVar(_, this)
-  }
+library class Use extends DefOrUse {
+  Use() { useOfVar(_, this) }
 
   override SemanticStackVariable getVariable(boolean isDef) {
     useOfVar(result, this) and isDef = false
@@ -191,20 +171,17 @@ class Use extends DefOrUse {
 }
 
 private predicate bbUseAt(BasicBlock bb, int i, SemanticStackVariable v, Use use) {
-  bb.getNode(i) = use
-  and
+  bb.getNode(i) = use and
   use.getVariable(false) = v
 }
 
 private predicate bbDefAt(BasicBlock bb, int i, SemanticStackVariable v, Def def) {
-  bb.getNode(i) = def
-  and
+  bb.getNode(i) = def and
   def.getVariable(true) = v
 }
 
 private predicate bbBarrierAt(BasicBlock bb, int i, SemanticStackVariable v, ControlFlowNode node) {
-  bb.getNode(i) = node
-  and
+  bb.getNode(i) = node and
   definitionBarrier(v, node)
 }
 
@@ -219,9 +196,14 @@ private predicate bbBarrierAt(BasicBlock bb, int i, SemanticStackVariable v, Con
  * true upon entry, is skipped (including the step from `bb` to the
  * successor).
  */
-private predicate bbSuccessorEntryReachesDefOrUse(BasicBlock bb, SemanticStackVariable v, DefOrUse defOrUse, boolean skipsFirstLoopAlwaysTrueUponEntry) {
+private predicate bbSuccessorEntryReachesDefOrUse(
+  BasicBlock bb, SemanticStackVariable v, DefOrUse defOrUse,
+  boolean skipsFirstLoopAlwaysTrueUponEntry
+) {
   exists(BasicBlock succ, boolean succSkipsFirstLoopAlwaysTrueUponEntry |
-    bbSuccessorEntryReachesLoopInvariant(bb, succ, skipsFirstLoopAlwaysTrueUponEntry, succSkipsFirstLoopAlwaysTrueUponEntry) |
+    bbSuccessorEntryReachesLoopInvariant(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
+      succSkipsFirstLoopAlwaysTrueUponEntry)
+  |
     bbEntryReachesDefOrUseLocally(succ, v, defOrUse) and
     succSkipsFirstLoopAlwaysTrueUponEntry = false and
     not excludeReachesFunction(bb.getEnclosingFunction())
@@ -231,9 +213,10 @@ private predicate bbSuccessorEntryReachesDefOrUse(BasicBlock bb, SemanticStackVa
   )
 }
 
-private predicate bbEntryReachesDefOrUseLocally(BasicBlock bb, SemanticStackVariable v, DefOrUse defOrUse) {
-  exists(int n |
-    bbDefAt(bb, n, v, defOrUse) or bbUseAt(bb, n, v, defOrUse) |
+private predicate bbEntryReachesDefOrUseLocally(
+  BasicBlock bb, SemanticStackVariable v, DefOrUse defOrUse
+) {
+  exists(int n | bbDefAt(bb, n, v, defOrUse) or bbUseAt(bb, n, v, defOrUse) |
     not exists(int m | m < n | bbBarrierAt(bb, m, v, _))
   )
 }
@@ -270,15 +253,14 @@ predicate definitionBarrier(SemanticStackVariable v, ControlFlowNode barrier) {
 predicate definition(SemanticStackVariable v, Expr def) {
   def = v.getInitializer().getExpr()
   or
-  variableAccessedAsValue(
-    v.getAnAccess(), def.(Assignment).getLValue().getFullyConverted())
+  variableAccessedAsValue(v.getAnAccess(), def.(Assignment).getLValue().getFullyConverted())
   or
-  variableAccessedAsValue(
-    v.getAnAccess(), def.(CrementOperation).getOperand().getFullyConverted())
+  variableAccessedAsValue(v.getAnAccess(), def.(CrementOperation).getOperand().getFullyConverted())
   or
   exists(AsmStmt asmStmt |
     def = asmStmt.getAChild() and
-    def = v.getAnAccess().getParent*())
+    def = v.getAnAccess().getParent*()
+  )
   or
   definitionByReference(v.getAnAccess(), def)
 }
@@ -288,11 +270,9 @@ predicate definition(SemanticStackVariable v, Expr def) {
  * the assigned expression.
  */
 predicate exprDefinition(SemanticStackVariable v, ControlFlowNode def, Expr e) {
-  (
-    def = v.getInitializer().getExpr() and
-    def = e and
-    not v.getType() instanceof ReferenceType
-  )
+  def = v.getInitializer().getExpr() and
+  def = e and
+  not v.getType() instanceof ReferenceType
   or
   exists(AssignExpr assign |
     def = assign and
@@ -302,9 +282,7 @@ predicate exprDefinition(SemanticStackVariable v, ControlFlowNode def, Expr e) {
 }
 
 pragma[noinline]
-private predicate containsAssembly(Function f) {
-  f = any(AsmStmt s).getEnclosingFunction()
-}
+private predicate containsAssembly(Function f) { f = any(AsmStmt s).getEnclosingFunction() }
 
 /**
  * Holds if `va` is a variable passed by reference as argument `def`, where the
@@ -320,12 +298,9 @@ private predicate containsAssembly(Function f) {
  */
 predicate definitionByReference(VariableAccess va, Expr def) {
   exists(Call c, int i |
-    c.passesByReferenceNonConst(i, va)
-    and
-    def = c.getArgument(i)
-    and
-    forall(Function f |
-      f = c.getTarget() and f.hasEntryPoint() |
+    c.passesByReferenceNonConst(i, va) and
+    def = c.getArgument(i) and
+    forall(Function f | f = c.getTarget() and f.hasEntryPoint() |
       exists(f.getParameter(i).getAnAccess())
       or
       f.isVarargs() and i >= f.getNumberOfParameters()
@@ -348,9 +323,7 @@ predicate definitionByReference(VariableAccess va, Expr def) {
   )
 }
 
-private predicate accessInSizeof(VariableAccess use) {
-  use.getParent+() instanceof SizeofOperator
-}
+private predicate accessInSizeof(VariableAccess use) { use.getParent+() instanceof SizeofOperator }
 
 /**
  * Holds if `use` is a non-definition use of stack variable `v`. This will not
@@ -375,9 +348,7 @@ predicate useOfVarActual(SemanticStackVariable v, VariableAccess use) {
   useOfVar(v, use) and
   exists(Expr e |
     variableAccessedAsValue(use, e) and
-    not exists(AssignExpr assign |
-      e = assign.getLValue().getFullyConverted()
-    )
+    not exists(AssignExpr assign | e = assign.getLValue().getFullyConverted())
   ) and
   // A call to a function that does not use the relevant parameter
   not exists(Call c, int i |
@@ -389,7 +360,7 @@ predicate useOfVarActual(SemanticStackVariable v, VariableAccess use) {
 
 /**
  * A function that should be excluded from 'reaches' analysis.
- * 
+ *
  * The current implementation performs badly in some cases where a
  * function has both a huge number of def/uses and a huge number of
  * basic blocks, typically in generated code.  We exclude these
@@ -397,9 +368,8 @@ predicate useOfVarActual(SemanticStackVariable v, VariableAccess use) {
  */
 private predicate excludeReachesFunction(Function f) {
   exists(int defOrUses |
-    defOrUses =
-      count(Def def | def.(ControlFlowNode).getControlFlowScope() = f) +
-      count(Use use | use.(ControlFlowNode).getControlFlowScope() = f) and
+    defOrUses = count(Def def | def.(ControlFlowNode).getControlFlowScope() = f) +
+        count(Use use | use.(ControlFlowNode).getControlFlowScope() = f) and
     defOrUses >= 13000
   )
 }

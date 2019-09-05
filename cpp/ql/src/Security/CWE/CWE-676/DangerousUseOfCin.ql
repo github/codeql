@@ -10,6 +10,7 @@
  *       security
  *       external/cwe/cwe-676
  */
+
 import cpp
 
 /**
@@ -88,19 +89,15 @@ class OperatorRShiftCall extends FunctionCall {
    */
 
   Expr getSource() {
-    if (getTarget() instanceof MemberFunction) then (
-      result = getQualifier()
-    ) else (
-      result = getArgument(0)
-    )
+    if getTarget() instanceof MemberFunction
+    then result = getQualifier()
+    else result = getArgument(0)
   }
 
   Expr getDest() {
-    if (getTarget() instanceof MemberFunction) then (
-      result = getArgument(0)
-    ) else (
-      result = getArgument(1)
-    )
+    if getTarget() instanceof MemberFunction
+    then result = getArgument(0)
+    else result = getArgument(1)
   }
 }
 
@@ -124,9 +121,7 @@ abstract class PotentiallyDangerousInput extends Expr {
    * Gets the width restriction that applies to the input stream
    * for this expression, if any.
    */
-  Expr getWidth() {
-    result = getPreviousAccess().getWidthAfter()
-  }
+  Expr getWidth() { result = getPreviousAccess().getWidthAfter() }
 
   private Expr getWidthSetHere() {
     exists(FunctionCall widthCall |
@@ -134,7 +129,9 @@ abstract class PotentiallyDangerousInput extends Expr {
       widthCall.getQualifier() = this and
       widthCall.getTarget().getName() = "width" and
       result = widthCall.getArgument(0)
-    ) or exists(FunctionCall setwCall, Function setw |
+    )
+    or
+    exists(FunctionCall setwCall, Function setw |
       // >> std::setw
       setwCall = this.(OperatorRShiftCall).getDest() and
       setw = setwCall.getTarget() and
@@ -147,11 +144,11 @@ abstract class PotentiallyDangerousInput extends Expr {
   private predicate isWidthConsumedHere() {
     // std::cin >> s, where s is a char*, char[] or std::string type
     // or wide character equivalent
-    exists(Type t |
-           t = this.(OperatorRShiftCall).getDest().getUnderlyingType() |
-           t instanceof AnyCharPointerType or
-           t instanceof AnyCharArrayType or
-           t instanceof AnyStdStringType)
+    exists(Type t | t = this.(OperatorRShiftCall).getDest().getUnderlyingType() |
+      t instanceof AnyCharPointerType or
+      t instanceof AnyCharArrayType or
+      t instanceof AnyStdStringType
+    )
   }
 
   /**
@@ -161,37 +158,31 @@ abstract class PotentiallyDangerousInput extends Expr {
   Expr getWidthAfter() {
     result = getWidthSetHere()
     or
-    (
-      not exists(getWidthSetHere()) and
-      not isWidthConsumedHere() and
-      result = getWidth()
-    )
+    not exists(getWidthSetHere()) and
+    not isWidthConsumedHere() and
+    result = getWidth()
   }
 }
 
-predicate nextPotentiallyDangerousInput(ControlFlowNode cfn, PotentiallyDangerousInput next, Variable streamVariable) {
-  (
-    // this node
-    next = cfn and
-    next.getStreamVariable() = streamVariable
-  ) or (
-    // flow
-    not cfn.(PotentiallyDangerousInput).getStreamVariable() = streamVariable and
-    nextPotentiallyDangerousInput(cfn.getASuccessor(), next, streamVariable)
-  )
+predicate nextPotentiallyDangerousInput(
+  ControlFlowNode cfn, PotentiallyDangerousInput next, Variable streamVariable
+) {
+  // this node
+  next = cfn and
+  next.getStreamVariable() = streamVariable
+  or
+  // flow
+  not cfn.(PotentiallyDangerousInput).getStreamVariable() = streamVariable and
+  nextPotentiallyDangerousInput(cfn.getASuccessor(), next, streamVariable)
 }
 
 /**
  * A direct access to `std::cin` or `std::wcin`.
  */
 class CinAccess extends PotentiallyDangerousInput {
-  CinAccess() {
-    this.(VariableAccess).getTarget() instanceof CinVariable
-  }
+  CinAccess() { this.(VariableAccess).getTarget() instanceof CinVariable }
 
-  override Variable getStreamVariable() {
-    result = this.(VariableAccess).getTarget()
-  }
+  override Variable getStreamVariable() { result = this.(VariableAccess).getTarget() }
 
   override PotentiallyDangerousInput getPreviousAccess() {
     nextPotentiallyDangerousInput(result.getASuccessor(), this, result.getStreamVariable())
@@ -202,13 +193,9 @@ class CinAccess extends PotentiallyDangerousInput {
  * A direct access to a variable of type `std::ifstream` or `std::wifstream`.
  */
 class IFStreamAccess extends PotentiallyDangerousInput {
-  IFStreamAccess() {
-    this.(VariableAccess).getTarget().getUnderlyingType() instanceof IFStream
-  }
+  IFStreamAccess() { this.(VariableAccess).getTarget().getUnderlyingType() instanceof IFStream }
 
-  override Variable getStreamVariable() {
-    result = this.(VariableAccess).getTarget()
-  }
+  override Variable getStreamVariable() { result = this.(VariableAccess).getTarget() }
 
   override PotentiallyDangerousInput getPreviousAccess() {
     nextPotentiallyDangerousInput(result.getASuccessor(), this, result.getStreamVariable())
@@ -219,9 +206,7 @@ class IFStreamAccess extends PotentiallyDangerousInput {
  * A chained call to `std::operator>>` on a potentially dangerous input.
  */
 class ChainedInput extends PotentiallyDangerousInput {
-  ChainedInput() {
-    this.(OperatorRShiftCall).getSource() instanceof PotentiallyDangerousInput
-  }
+  ChainedInput() { this.(OperatorRShiftCall).getSource() instanceof PotentiallyDangerousInput }
 
   override Variable getStreamVariable() {
     result = this.(OperatorRShiftCall).getSource().(PotentiallyDangerousInput).getStreamVariable()
@@ -238,21 +223,17 @@ where
   input = rshift.getSource() and
   dest = rshift.getDest() and
   (
-    (
-      // destination is char* or wchar_t*
-      dest.getUnderlyingType() instanceof AnyCharPointerType and
-
-      // assume any width setting makes this safe
-      not exists(input.getWidthAfter())
-    ) or exists(int arraySize |
+    // destination is char* or wchar_t*
+    dest.getUnderlyingType() instanceof AnyCharPointerType and
+    // assume any width setting makes this safe
+    not exists(input.getWidthAfter())
+    or
+    exists(int arraySize |
       // destination is char[] or wchar_t* or a wide character equivalent.
       arraySize = dest.getUnderlyingType().(AnyCharArrayType).getArraySize() and
-
       // assume any width setting makes this safe, unless we know
       // it to be larger than the array.
-      forall(Expr w | w = input.getWidthAfter() |
-        w.getValue().toInt() > arraySize
-      )
+      forall(Expr w | w = input.getWidthAfter() | w.getValue().toInt() > arraySize)
     )
   )
 select rshift, "Use of 'cin' without specifying the length of the input may be dangerous."

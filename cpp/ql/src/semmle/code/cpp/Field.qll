@@ -17,16 +17,13 @@ import semmle.code.cpp.exprs.Access
  * variables, use `MemberVariable` instead of `Field`.
  */
 class Field extends MemberVariable {
-
-  Field() {
-    fieldoffsets(underlyingElement(this),_,_)
-  }
+  Field() { fieldoffsets(underlyingElement(this), _, _) }
 
   /**
    * Gets the offset of this field in bytes from the start of its declaring
    * type (on the machine where facts were extracted).
    */
-  int getByteOffset() { fieldoffsets(underlyingElement(this),result,_) }
+  int getByteOffset() { fieldoffsets(underlyingElement(this), result, _) }
 
   /**
    * Gets the byte offset within `mostDerivedClass` of each occurence of this
@@ -37,8 +34,7 @@ class Field extends MemberVariable {
    * complete most-derived object.
    */
   int getAByteOffsetIn(Class mostDerivedClass) {
-    result = mostDerivedClass.getABaseClassByteOffset(getDeclaringType()) +
-      getByteOffset()
+    result = mostDerivedClass.getABaseClassByteOffset(getDeclaringType()) + getByteOffset()
   }
 
   /**
@@ -48,7 +44,7 @@ class Field extends MemberVariable {
    * struct S {
    *   unsigned int a : 5;
    *   unsigned int : 5;
-   *   unsigned int b : 5; 
+   *   unsigned int b : 5;
    * };
    * ```
    *
@@ -66,12 +62,13 @@ class Field extends MemberVariable {
    * which the field will be initialized, whether by an initializer list or in a
    * constructor.
    */
-  final pragma[nomagic] int getInitializationOrder() {
-    exists(Class cls, int memberIndex | 
+  pragma[nomagic]
+  final int getInitializationOrder() {
+    exists(Class cls, int memberIndex |
       this = cls.getCanonicalMember(memberIndex) and
       memberIndex = rank[result + 1](int index |
-        cls.getCanonicalMember(index).(Field).isInitializable()
-      )
+          cls.getCanonicalMember(index).(Field).isInitializable()
+        )
     )
   }
 }
@@ -86,13 +83,13 @@ class Field extends MemberVariable {
  * ```
  */
 class BitField extends Field {
-  BitField() { bitfield(underlyingElement(this),_,_) }
+  BitField() { bitfield(underlyingElement(this), _, _) }
 
   /**
    * Gets the size of this bitfield in bits (on the machine where facts
    * were extracted).
    */
-  int getNumBits() { bitfield(underlyingElement(this),result,_) }
+  int getNumBits() { bitfield(underlyingElement(this), result, _) }
 
   /**
    * Gets the value which appeared after the colon in the bitfield
@@ -104,18 +101,16 @@ class BitField extends Field {
    * `getNumBits` will give 32, whereas `getDeclaredNumBits` will give
    * 1234.
    */
-  int getDeclaredNumBits() { bitfield(underlyingElement(this),_,result) }
+  int getDeclaredNumBits() { bitfield(underlyingElement(this), _, result) }
 
   /**
    * Gets the offset of this bitfield in bits from the byte identified by
    * getByteOffset (on the machine where facts were extracted).
    */
-  int getBitOffset() { fieldoffsets(underlyingElement(this),_,result) }
+  int getBitOffset() { fieldoffsets(underlyingElement(this), _, result) }
 
   /** Holds if this bitfield is anonymous. */
-  predicate isAnonymous() {
-    hasName("(unnamed bitfield)")
-  }
+  predicate isAnonymous() { hasName("(unnamed bitfield)") }
 
   override predicate isInitializable() {
     // Anonymous bitfields are not initializable.

@@ -11,20 +11,20 @@ import semmle.code.cpp.Function
 import semmle.code.cpp.models.Models
 
 /**
-  * Models the side effects of a library function.
-  */
+ * Models the side effects of a library function.
+ */
 abstract class SideEffectFunction extends Function {
   /**
-    * Holds if the function never reads from memory that was defined before entry to the function.
-    * This memory could be from global variables, or from other memory that was reachable from a
-    * pointer that was passed into the function.
-    */
+   * Holds if the function never reads from memory that was defined before entry to the function.
+   * This memory could be from global variables, or from other memory that was reachable from a
+   * pointer that was passed into the function.
+   */
   abstract predicate neverReadsMemory();
 
   /**
-    * Holds if the function never writes to memory that remains allocated after the function
-    * returns. This memory could be from global variables, or from other memory that was reachable
-    * from a pointer that was passed into the function.
-    */
+   * Holds if the function never writes to memory that remains allocated after the function
+   * returns. This memory could be from global variables, or from other memory that was reachable
+   * from a pointer that was passed into the function.
+   */
   abstract predicate neverWritesMemory();
 }

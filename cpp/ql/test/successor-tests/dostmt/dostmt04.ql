@@ -7,9 +7,9 @@ import cpp
 
 from DoStmt ds, ExprStmt last, Expr succ
 where
-	ds.getEnclosingFunction().hasName("normal")
-	and last = ((Block)ds.getStmt()).getLastStmt()
-	and succ = last.getExpr().getASuccessor()
-	and succ = ds.getCondition().getAChild*()
-	and count(last.getExpr().getASuccessor()) = 1
+  ds.getEnclosingFunction().hasName("normal") and
+  last = ds.getStmt().(Block).getLastStmt() and
+  succ = last.getExpr().getASuccessor() and
+  succ = ds.getCondition().getAChild*() and
+  count(last.getExpr().getASuccessor()) = 1
 select last.getExpr(), succ

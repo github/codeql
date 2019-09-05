@@ -8,11 +8,10 @@
  * @tags maintainability
  *       readability
  */
+
 import cpp
 
-predicate short(Variable v) {
-  v.getName().length() = 1
-}
+predicate short(Variable v) { v.getName().length() = 1 }
 
 predicate forStmtAncestor(Stmt child, ForStmt parent) {
   child.getParent() = parent or forStmtAncestor(child.getParent(), parent)
@@ -21,9 +20,7 @@ predicate forStmtAncestor(Stmt child, ForStmt parent) {
 /**
  * Gets an `ArrayExpr` that's nested directly inside `ArrayExpr ae`.
  */
-ArrayExpr getANestedArrayExpr(ArrayExpr ae) {
-  result.getArrayBase() = ae
-}
+ArrayExpr getANestedArrayExpr(ArrayExpr ae) { result.getArrayBase() = ae }
 
 /**
  * Holds if variables `a` and `b` are accessed in a way that looks like they
@@ -42,12 +39,14 @@ predicate coordinatePair(Variable a, Variable b) {
 }
 
 from ForStmt outer, ForStmt inner, Variable iterationVar, Variable innerVar
-where forStmtAncestor(inner, outer) and short(innerVar)
-  and iterationVar = outer.getAnIterationVariable()
-  and innerVar = inner.getAnIterationVariable()
-  and short(iterationVar)
-  and not coordinatePair(iterationVar, innerVar)
+where
+  forStmtAncestor(inner, outer) and
+  short(innerVar) and
+  iterationVar = outer.getAnIterationVariable() and
+  innerVar = inner.getAnIterationVariable() and
+  short(iterationVar) and
+  not coordinatePair(iterationVar, innerVar)
 select iterationVar,
-       "Iteration variable " + iterationVar.getName() + " for $@ should have a descriptive name, since there is $@.",
-       outer, "this loop",
-       inner, "a nested loop"
+  "Iteration variable " + iterationVar.getName() +
+    " for $@ should have a descriptive name, since there is $@.", outer, "this loop", inner,
+  "a nested loop"

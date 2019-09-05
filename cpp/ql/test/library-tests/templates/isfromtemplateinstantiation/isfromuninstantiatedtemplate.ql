@@ -4,9 +4,11 @@ string knownKind(Element e) {
   e instanceof Expr and result = "Expr"
   or
   e instanceof DeclarationEntry and
-  ( if e.(DeclarationEntry).isDefinition()
+  (
+    if e.(DeclarationEntry).isDefinition()
     then result = "Definition"
-    else result = "DeclarationEntry" )
+    else result = "DeclarationEntry"
+  )
   or
   e instanceof Declaration and result = "Declaration"
   or
@@ -38,7 +40,8 @@ predicate hasTwin(Element e) {
 predicate isInteresting(Element el) {
   not el.getLocation() instanceof UnknownLocation and
   exists(el.getLocation()) and
-  ( el instanceof Class
+  (
+    el instanceof Class
     or
     el instanceof Function
   )
@@ -52,8 +55,7 @@ string conversionString(Element el) {
     if el.(VariableAccess).getConversion+() instanceof ReferenceToExpr
     then result = "Ref"
     else result = "Not ref"
-  else
-    result = ""
+  else result = ""
 }
 
 query predicate isFromUninstantiatedTemplate(Element e, Element template) {
@@ -62,9 +64,6 @@ query predicate isFromUninstantiatedTemplate(Element e, Element template) {
 
 from Element el
 where (hasTwin(el) or isInteresting(el))
-select
-  el,
-  any(string s | if el.isFromTemplateInstantiation(_) then s="I" else s=""),
-  any(string s | if el.isFromUninstantiatedTemplate(_) then s="T" else s=""),
-  kind(el),
+select el, any(string s | if el.isFromTemplateInstantiation(_) then s = "I" else s = ""),
+  any(string s | if el.isFromUninstantiatedTemplate(_) then s = "T" else s = ""), kind(el),
   conversionString(el)

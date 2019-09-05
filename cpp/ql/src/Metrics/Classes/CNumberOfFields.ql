@@ -8,9 +8,9 @@
  * @metricAggregate avg sum max
  * @tags maintainability
  */
+
 import cpp
 
 from Class c
-where c.fromSource() 
-select c, c.getMetrics().getNumberOfFields() as n
-order by n desc
+where c.fromSource()
+select c, c.getMetrics().getNumberOfFields() as n order by n desc
