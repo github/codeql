@@ -5,8 +5,14 @@ import semmle.code.cpp.Function
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C/C++ user-defined type. Examples include `Class`, `Struct`, `Union`,
- * `Enum`, and `TypedefType`.
+ * A C/C++ user-defined type. Examples include `class`, `struct`, `union`,
+ * `enum` and `typedef` types.
+ * ```
+ * enum e1 { val1, val2 } b;
+ * enum class e2: short { val3, val4 } c;
+ * typedef int my_int;
+ * class C { int a, b; };
+ * ```
  */
 class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @usertype {
   /**
@@ -88,6 +94,11 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
 
 /**
  * A particular definition or forward declaration of a C/C++ user-defined type.
+ * ```
+ * class C;
+ * typedef int ti;
+ * extern void foo(int);
+ * ```
  */
 class TypeDeclarationEntry extends DeclarationEntry, @type_decl {
   override UserType getDeclaration() { result = getType() }

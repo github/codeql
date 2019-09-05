@@ -2,7 +2,10 @@ import semmle.code.cpp.Type
 private import semmle.code.cpp.internal.ResolveClass
 
 /**
- * A C/C++ typedef type. See 4.9.1.
+ * A C/C++ `typedef` type. See 4.9.1.
+ * ```
+ * typedef int my_int;
+ * ```
  */
 class TypedefType extends UserType {
   TypedefType() { usertypes(underlyingElement(this), _, 5) }
@@ -46,7 +49,10 @@ class TypedefType extends UserType {
 }
 
 /**
- * A C++ typedef type that is directly enclosed by a function.
+ * A C++ `typedef` type that is directly enclosed by a function.
+ * ```
+ * int foo(void) { typedef int local; }
+ * ```
  */
 class LocalTypedefType extends TypedefType {
   LocalTypedefType() { isLocal() }
@@ -55,7 +61,10 @@ class LocalTypedefType extends TypedefType {
 }
 
 /**
- * A C++ typedef type that is directly enclosed by a class, struct or union.
+ * A C++ `typedef` type that is directly enclosed by a `class`, `struct` or `union`.
+ * ```
+ * class C { typedef int nested; };
+ * ```
  */
 class NestedTypedefType extends TypedefType {
   NestedTypedefType() { this.isMember() }

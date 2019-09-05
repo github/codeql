@@ -362,7 +362,7 @@ private predicate isIntegralType(@builtintype type, int kind) {
 }
 
 /**
- * A C/C++ integral or enum type.
+ * A C/C++ integral or `enum` type.
  *
  * The definition of "integral type" in the C++ Standard excludes `enum` types,
  * but because an `enum` type holds a value of its underlying integral type,
@@ -569,7 +569,7 @@ class PlainCharType extends CharType {
 
 /**
  * The C/C++ `unsigned char` type (which is distinct from plain `char`
- * even when `char` is unsigned by default).
+ * even when `char` is `unsigned` by default).
  * ```
  * unsigned char e, f;
  * ```
@@ -582,7 +582,7 @@ class UnsignedCharType extends CharType {
 
 /**
  * The C/C++ `signed char` type (which is distinct from plain `char`
- * even when `char` is signed by default).
+ * even when `char` is `signed` by default).
  * ```
  * signed char c, d;
  * ```
@@ -926,17 +926,17 @@ class Decltype extends Type, @decltype {
    */
   Type getBaseType() { decltypes(underlyingElement(this), _, unresolveElement(result), _) }
 
-  override string getCanonicalQLClass() { result = "Decltype" }
-
   /**
    * Whether an extra pair of parentheses around the expression would change the semantics of this decltype.
    *
    * The following example shows the effect of an extra pair of parentheses:
-   *   struct A { double x; };
-   *   const A* a = new A();
-   *   decltype( a->x ); // type is double
-   *   decltype((a->x)); // type is const double&amp;
-   * Consult the C++11 standard for more details.
+   * ```
+   * struct A { double x; };
+   * const A* a = new A();
+   * decltype( a->x ); // type is double
+   * decltype((a->x)); // type is const double&amp;
+   * ```
+   * Please consult the C++11 standard for more details.
    */
   predicate parenthesesWouldChangeMeaning() { decltypes(underlyingElement(this), _, _, true) }
 
@@ -1005,7 +1005,7 @@ class PointerType extends DerivedType {
 /**
  * A C++ reference type. See 4.9.1.
  *
- * For C++11 code bases, this includes both _lvalue_ references (&amp;) and _rvalue_ references (&amp;&amp;).
+ * For C++11 code bases, this includes both _lvalue_ references (`&`) and _rvalue_ references (`&&`).
  * To distinguish between them, use the LValueReferenceType and RValueReferenceType classes.
  */
 class ReferenceType extends DerivedType {
@@ -1031,7 +1031,7 @@ class ReferenceType extends DerivedType {
 }
 
 /**
- * A C++11 lvalue reference type (e.g. `int&amp;`).
+ * A C++11 lvalue reference type (e.g. `int &`).
  * ```
  * int a;
  * int& b = a;
@@ -1044,8 +1044,8 @@ class LValueReferenceType extends ReferenceType {
 }
 
 /**
- * A C++11 rvalue reference type (e.g. `int&amp;&amp;`).  It is used to
- * implement "move" semantics for object construction and assignments.
+ * A C++11 rvalue reference type (e.g., `int &&`).  It is used to
+ * implement "move" semantics for object construction and assignment.
  * ```
  * class C {
  *   E e;
@@ -1249,7 +1249,7 @@ class FunctionReferenceType extends FunctionPointerIshType {
 }
 
 /**
- * A block type, for example int(^)(char, float).
+ * A block type, for example, `int(^)(char, float)`.
  *
  * Block types (along with blocks themselves) are a language extension
  * supported by Clang, and by Apple's branch of GCC.
