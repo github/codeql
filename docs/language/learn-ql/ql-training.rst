@@ -48,7 +48,7 @@ QL and variant analysis for Java
 --------------------------------
 
 - `Introduction to variant analysis: QL for Java <../ql-training/java/intro-ql-java.html>`__–an introduction to variant analysis and QL for Java programmers.
-- `Example: Query injection <../ql-training/java/query-injection-java.html>`__–an example of iterative query development to find unsanitized SPARQL injection in a Java project.
+- `Example: Query injection <../ql-training/java/query-injection-java.html>`__–an example of iterative query development to find unsanitized SPARQL injections in a Java project.
 - `Program representation: QL for Java <../ql-training/java/program-representation-java.html>`__–information on how QL analysis represents Java programs. 
 - `Introduction to local data flow <../ql-training/java/data-flow-java.html>`__–an introduction to analyzing local data flow in Java using QL, including an example demonstrating how to develop a query to find a real CVE.
 - `Exercise: Apache Struts <../ql-training/java/apache-struts-java.html>`__–an example demonstrating how to develop a data flow query.
