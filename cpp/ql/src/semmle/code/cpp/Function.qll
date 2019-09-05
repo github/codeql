@@ -979,19 +979,11 @@ class ConversionConstructor extends Constructor, ImplicitConversionFunction {
 }
 
 private predicate hasCopySignature(MemberFunction f) {
-  f.getParameter(0).getType()
-    .getUnderlyingType()                 // resolve typedefs
-    .(LValueReferenceType).getBaseType() // step through lvalue reference type
-    .getUnspecifiedType() =              // resolve typedefs, strip const/volatile
-  f.getDeclaringType()
+  f.getParameter(0).getUnspecifiedType().(LValueReferenceType).getBaseType() = f.getDeclaringType()
 }
 
 private predicate hasMoveSignature(MemberFunction f) {
-  f.getParameter(0).getType()
-    .getUnderlyingType()                 // resolve typedefs
-    .(RValueReferenceType).getBaseType() // step through rvalue reference type
-    .getUnspecifiedType() =              // resolve typedefs, strip const/volatile
-  f.getDeclaringType()
+  f.getParameter(0).getUnspecifiedType().(RValueReferenceType).getBaseType() = f.getDeclaringType()
 }
 
 /**
