@@ -8,13 +8,16 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
 
 | **Query**                   | **Tags**  | **Purpose**                                                        |
 |-----------------------------|-----------|--------------------------------------------------------------------|
-| Query name (`query id`) | tags | Message. |
+| Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) | reliability, japanese-era | This query is a combination of two old queries that were identical in purpose but separate as an implementation detail.  This new query replaces Hard-coded Japanese era start date in call (`cpp/japanese-era/constructor-or-method-with-exact-era-date`) and Hard-coded Japanese era start date in struct (`cpp/japanese-era/struct-with-exact-era-date`). |
 
 ## Changes to existing queries
 
 | **Query**                  | **Expected impact**    | **Change**                                                       |
 |----------------------------|------------------------|------------------------------------------------------------------|
 | Query name (`query id`) | Expected impact | Message. |
+| Hard-coded Japanese era start date in call (`cpp/japanese-era/constructor-or-method-with-exact-era-date`) | Deprecated | This query has been deprecated.  Use the new combined query Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) instead. |
+| Hard-coded Japanese era start date in struct (`cpp/japanese-era/struct-with-exact-era-date`) | Deprecated | This query has been deprecated.  Use the new combined query Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) instead. |
+| Hard-coded Japanese era start date (`cpp/japanese-era/exact-era-date`) | More correct results | This query now checks for the beginning date of the Reiwa era (1st May 2019). |
 
 ## Changes to QL libraries
 
@@ -29,3 +32,6 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   definition of `x` when `x` is a variable of pointer type. It no longer
   considers deep paths such as `f(&x.myField)` to be definitions of `x`. These
   changes are in line with the user expectations we've observed.
+* There is now a `DataFlow::localExprFlow` predicate and a
+  `TaintTracking::localExprTaint` predicate to make it easy to use the most
+  common case of local data flow and taint: from one `Expr` to another.

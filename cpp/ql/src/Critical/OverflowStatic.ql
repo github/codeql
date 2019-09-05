@@ -95,7 +95,7 @@ class CallWithBufferSize extends FunctionCall {
 
   int statedSizeValue() {
     exists(Expr statedSizeSrc |
-      DataFlow::localFlow(DataFlow::exprNode(statedSizeSrc), DataFlow::exprNode(statedSizeExpr())) and
+      DataFlow::localExprFlow(statedSizeSrc, statedSizeExpr()) and
       result = statedSizeSrc.getValue().toInt()
     )
   }

@@ -36,12 +36,10 @@ class MallocCall extends FunctionCall
 
 predicate terminationProblem(MallocCall malloc, string msg) {
   malloc.getAllocatedSize() instanceof StrlenCall and
-  not exists(DataFlow::Node def, DataFlow::Node use, FunctionCall fc, MemcpyFunction memcpy, int ix |
-    DataFlow::localFlow(def, use) and
-    def.asExpr() = malloc and
+  not exists(FunctionCall fc, MemcpyFunction memcpy, int ix |
+    DataFlow::localExprFlow(malloc, fc.getArgument(ix)) and
     fc.getTarget() = memcpy and
-    memcpy.hasArrayOutput(ix) and
-    use.asExpr() = fc.getArgument(ix)
+    memcpy.hasArrayOutput(ix)
   ) and
   msg = "This allocation does not include space to null-terminate the string."
 }
