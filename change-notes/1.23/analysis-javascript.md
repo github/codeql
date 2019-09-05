@@ -23,6 +23,8 @@
 | Incomplete string escaping or encoding (`js/incomplete-sanitization`) | Fewer false-positive results | This rule now recognizes additional ways delimiters can be stripped away. |
 | Client-side cross-site scripting (`js/xss`) | More results | More potential vulnerabilities involving functions that manipulate DOM attributes are now recognized. |
 | Code injection (`js/code-injection`) | More results | More potential vulnerabilities involving functions that manipulate DOM event handler attributes are now recognized. |
+| Hard-coded credentials (`js/hardcoded-credentials`) | Fewer false-positive results | This rule now flags fewer password examples. |
+| Password in configuration file (`js/password-in-configuration-file`) | Fewer false-positive results | This rule now flags fewer password examples. |
 | Prototype pollution (`js/prototype-pollution`) | More results | The query now highlights vulnerable uses of jQuery and Angular, and the results are shown on LGTM by default. |
 | Incorrect suffix check (`js/incorrect-suffix-check`) | Fewer false-positive results | The query recognizes valid checks in more cases. |
 
