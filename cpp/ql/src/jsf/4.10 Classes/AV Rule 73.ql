@@ -11,10 +11,10 @@
 import cpp
 
 /* bug finding approach: look for no-argument constructors that set a certain field x,
-   such that every member function reading x also contains a comparison involving x as
-   part of an if statement; the host class should not be used in an array type or as
-   part of an array new, it should not be used in a template instantiation, and it should
-   not be a virtual base class */
+ * such that every member function reading x also contains a comparison involving x as
+ * part of an if statement; the host class should not be used in an array type or as
+ * part of an array new, it should not be used in a template instantiation, and it should
+ * not be a virtual base class */
 
 from Constructor c, MemberVariable f
 where c.fromSource() and

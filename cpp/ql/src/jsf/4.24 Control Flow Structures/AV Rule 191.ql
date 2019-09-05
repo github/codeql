@@ -10,8 +10,8 @@
 import cpp
 
 /* TODO: "The break statement may be used to break out of a single loop provided
-          the alternative would obscure or otherwise significantly complicate the
-          control logic." */
+ *        the alternative would obscure or otherwise significantly complicate the
+ *        control logic." */
 
 // whether t is the last statement of s, possibly peeling off blocks
 predicate isTerminatingStmt(Stmt s, Stmt t) {

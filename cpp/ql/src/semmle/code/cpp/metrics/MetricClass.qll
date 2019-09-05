@@ -76,36 +76,37 @@ class MetricClass extends Class  {
     dependsOnClassSimple(this, result)
   }
 
-  /* -------- HENDERSON-SELLERS LACK OF COHESION IN METHODS -------- */
+  /*
+   * -------- HENDERSON-SELLERS LACK OF COHESION IN METHODS --------
 
-  /* The aim of this metric is to try and determine whether a class
-     represents one abstraction (good) or multiple abstractions (bad).
-     If a class represents multiple abstractions, it should be split
-     up into multiple classes.
+   * The aim of this metric is to try and determine whether a class
+   * represents one abstraction (good) or multiple abstractions (bad).
+   * If a class represents multiple abstractions, it should be split
+   * up into multiple classes.
 
-     In the Henderson-Sellers method, this is measured as follows:
-        M = set of methods in class
-        F = set of fields in class
-        r(f) = number of methods that access field f
-        <r> = mean of r(f) over f in F
-     The lack of cohesion is then given by
+   * In the Henderson-Sellers method, this is measured as follows:
+   *    M = set of methods in class
+   *    F = set of fields in class
+   *    r(f) = number of methods that access field f
+   *    <r> = mean of r(f) over f in F
+   * The lack of cohesion is then given by
 
-        <r> - |M|
-        ---------
-          1 - |M|
+   *    <r> - |M|
+   *    ---------
+   *      1 - |M|
 
-     We follow the Eclipse metrics plugin by restricting M to methods
-     that access some field in the same class, and restrict F to
-     fields that are read by methods in the same class.
+   * We follow the Eclipse metrics plugin by restricting M to methods
+   * that access some field in the same class, and restrict F to
+   * fields that are read by methods in the same class.
 
-     Classes where the value of this metric is higher than 0.9 ought
-     to be scrutinised for possible splitting. Here is a query
-     to find such classes:
+   * Classes where the value of this metric is higher than 0.9 ought
+   * to be scrutinised for possible splitting. Here is a query
+   * to find such classes:
 
-            from MetricRefType t, float loc
-            where loc = t.getLackOfCohesionHS() and loc > 0.9
-            select t, loc order by loc desc
-  */
+   *        from MetricRefType t, float loc
+   *        where loc = t.getLackOfCohesionHS() and loc > 0.9
+   *        select t, loc order by loc desc
+   */
 
   /** Holds if `func` accesses field `f` defined in the same type. */
   predicate accessesLocalField(Function func, Field f) {
@@ -143,23 +144,23 @@ class MetricClass extends Class  {
      )
   }
 
-  /* -------- CHIDAMBER AND KEMERER LACK OF COHESION IN METHODS ------------ */
+  /*
+   * -------- CHIDAMBER AND KEMERER LACK OF COHESION IN METHODS ------------
 
-  /* The aim of this metric is to try and determine whether a class
-     represents one abstraction (good) or multiple abstractions (bad).
-     If a class represents multiple abstractions, it should be split
-     up into multiple classes.
+   * The aim of this metric is to try and determine whether a class
+   * represents one abstraction (good) or multiple abstractions (bad).
+   * If a class represents multiple abstractions, it should be split
+   * up into multiple classes.
 
-     In the Chidamber and Kemerer method, this is measured as follows:
-        n1 = number of pairs of distinct methods in a class that do *not*
-             have at least one commonly accessed field
-        n2 = number of pairs of distinct methods in a class that do
-             have at least one commonly accessed field
-        lcom = ((n1 - n2)/2 max 0)
+   * In the Chidamber and Kemerer method, this is measured as follows:
+   *    n1 = number of pairs of distinct methods in a class that do *not*
+   *         have at least one commonly accessed field
+   *    n2 = number of pairs of distinct methods in a class that do
+   *         have at least one commonly accessed field
+   *    lcom = ((n1 - n2)/2 max 0)
 
-    We divide by 2 because each pair (m1,m2) is counted twice in n1 and n2.
-
-  */
+   * We divide by 2 because each pair (m1,m2) is counted twice in n1 and n2.
+   */
 
   /** Holds if `f` should be excluded from the CK cohesion computation. */
   predicate ignoreLackOfCohesionCK(Function f) {
@@ -206,7 +207,9 @@ class MetricClass extends Class  {
       )
    }
 
-   /* ----------------- RESPONSE FOR A CLASS --------------------------------- */
+   /*
+    * ----------------- RESPONSE FOR A CLASS ---------------------------------
+    */
 
    /**
     * Gets the _response_ for this class. This estimates the number of
@@ -217,7 +220,9 @@ class MetricClass extends Class  {
       result = sum(MemberFunction f | f.getDeclaringType()=this | count(Call call | call.getEnclosingFunction() = f))
    }
 
-   /* ----------------- SPECIALIZATION INDEX -------------------------------- */
+   /*
+    * ----------------- SPECIALIZATION INDEX --------------------------------
+    */
 
    /**
     * Gets a function that should be excluded when reporting the number of
@@ -259,7 +264,7 @@ class MetricClass extends Class  {
    }
 
    /*
-    * HALSTEAD METRICS
+    * ----------------- HALSTEAD METRICS ------------------------------------
     */
 
    /**

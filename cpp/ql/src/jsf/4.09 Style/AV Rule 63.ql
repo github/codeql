@@ -47,7 +47,7 @@ predicate diffBeginBegin(Expr lhs, Expr rhs, int length) {
 /*
  * Unary postfix operations: PostfixDecrExpr, PostfixIncrExpr
  * Unary prefix operations: PrefixIncrExpr, PrefixDecrExpr, ComplementExpr, NotExpr,
-          UnaryMinusExpr, UnaryPlusExpr, AddressOfExpr, PointerDereferenceExpr
+ *        UnaryMinusExpr, UnaryPlusExpr, AddressOfExpr, PointerDereferenceExpr
  */
 
 from Expr err
