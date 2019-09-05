@@ -141,19 +141,8 @@ class InvokeNode extends DataFlow::SourceNode {
    * This predicate can be overridden to alter the call graph used by the interprocedural
    * data flow libraries.
    */
-  cached
   Function getACallee(int imprecision) {
-    CallGraph::getAFunctionReference(result.flow(), imprecision).flowsTo(getCalleeNode())
-    or
-    imprecision = 0 and
-    exists(InvokeExpr expr | expr = this.(DataFlow::Impl::ExplicitInvokeNode).asExpr() |
-      result = expr.getResolvedCallee()
-      or
-      exists(DataFlow::ClassNode cls |
-        expr.(SuperCall).getBinder() = cls.getConstructor().getFunction() and
-        result = cls.getADirectSuperClass().getConstructor().getFunction()
-      )
-    )
+    result = CallGraph::getACallee(this, imprecision).getFunction()
   }
 
   /**

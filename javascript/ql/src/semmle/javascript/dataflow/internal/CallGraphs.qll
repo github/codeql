@@ -19,6 +19,9 @@ module CallGraph {
 
   /**
    * Gets a data flow node that refers to the given function.
+   *
+   * Note that functions are not currently type-tracked, but this exposes the type-tracker `t`
+   * from underlying class tracking if the function came from a class or instance.
    */
   pragma[nomagic]
   private
@@ -119,8 +122,28 @@ module CallGraph {
     or
     exists(DataFlow::ClassNode subclass |
       result = getAnInstanceMemberAccess(subclass, name, t) and
-      not exists(subclass.getAnInstanceMember(name)) and
+      not exists(subclass.getInstanceMember(name, _)) and
       cls = subclass.getADirectSuperClass()
+    )
+  }
+
+  /**
+   * Gets a possible callee of `node` with the given `imprecision`.
+   *
+   * Does not include custom call edges.
+   */
+  cached
+  DataFlow::FunctionNode getACallee(DataFlow::InvokeNode node, int imprecision) {
+    getAFunctionReference(result, imprecision).flowsTo(node.getCalleeNode())
+    or
+    imprecision = 0 and
+    exists(InvokeExpr expr | expr = node.(DataFlow::Impl::ExplicitInvokeNode).asExpr() |
+      result.getFunction() = expr.getResolvedCallee()
+      or
+      exists(DataFlow::ClassNode cls |
+        expr.(SuperCall).getBinder() = cls.getConstructor().getFunction() and
+        result = cls.getADirectSuperClass().getConstructor()
+      )
     )
   }
 }
