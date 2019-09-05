@@ -4,7 +4,7 @@ QL training and variant analysis examples
 QL and variant analysis
 =======================
 
-`Variant analysis <https://semmle.com/variant-analysis>`__ is the process of using a known vulnerability as a seed to find similar problems in your code. Security engineers typically perform variant analysis to identify possible vulnerabilities and to ensure these threats are properly fixed across multiple code bases.
+`Variant analysis <https://semmle.com/variant-analysis>`__ is the process of using a known vulnerability as a seed to find similar problems in your code. Security engineers typically perform variant analysis to identify possible vulnerabilities and to ensure that these threats are properly fixed across multiple code bases.
 
 `QL <https://semmle.com/ql>`__ is Semmle's variant analysis engine, and it is also the technology that underpins LGTM, Semmle's community driven security analysis platform. Together, QL and LGTM provide continuous monitoring and scalable variant analysis for your projects, even if you don’t have your own team of dedicated security engineers. You can read more about using QL and LGTM in variant analysis in the `Semmle blog <https://blog.semmle.com/tags/variant-analysis>`__.
 
@@ -48,7 +48,7 @@ QL and variant analysis for Java
 --------------------------------
 
 - `Introduction to variant analysis: QL for Java <../ql-training/java/intro-ql-java.html>`__–an introduction to variant analysis and QL for Java programmers.
-- `Example: Query injection <../ql-training/java/query-injection-java.html>`__–an example of iterative query development to find unsanitized SPARQL injection in a Java project.
+- `Example: Query injection <../ql-training/java/query-injection-java.html>`__–an example of iterative query development to find unsanitized SPARQL injections in a Java project.
 - `Program representation: QL for Java <../ql-training/java/program-representation-java.html>`__–information on how QL analysis represents Java programs. 
 - `Introduction to local data flow <../ql-training/java/data-flow-java.html>`__–an introduction to analyzing local data flow in Java using QL, including an example demonstrating how to develop a query to find a real CVE.
 - `Exercise: Apache Struts <../ql-training/java/apache-struts-java.html>`__–an example demonstrating how to develop a data flow query.
