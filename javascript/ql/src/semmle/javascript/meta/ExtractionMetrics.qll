@@ -94,7 +94,6 @@ module ExtractionMetrics {
    * The name of a phase of the extraction.
    */
   class PhaseName extends string {
-    bindingset[this]
     PhaseName() { this = getExtractionPhaseName(_) }
   }
 
@@ -118,7 +117,6 @@ module ExtractionMetrics {
      * Gets the total CPU time spent in phase `phaseName` of the extraction.
      */
     float getCpuTime(PhaseName phaseName) {
-      /* bind */ phaseName = getExtractionPhaseName(_) and
       result = strictsum(any(FileWithExtractionMetrics f).getCpuTime(phaseName))
     }
 
@@ -126,16 +124,7 @@ module ExtractionMetrics {
      * Gets the total wallclock time spent in phase `phaseName` of the extraction.
      */
     float getWallclockTime(PhaseName phaseName) {
-      /* bind */ phaseName = getExtractionPhaseName(_) and
       result = strictsum(any(FileWithExtractionMetrics f).getWallclockTime(phaseName))
     }
-  }
-
-  /**
-   * Gets `nanoseconds` formatted as a whole number of milliseconds.
-   */
-  bindingset[nanoSeconds]
-  string formatAsMilliSeconds(float nanoSeconds) {
-    result = (nanoSeconds / (1000 * 1000)).ceil() + ""
   }
 }

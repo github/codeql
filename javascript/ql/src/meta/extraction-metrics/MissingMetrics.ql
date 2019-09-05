@@ -1,9 +1,11 @@
 /**
  * @name File with missing extraction metrics
  * @description A file missing extraction metrics is indicative of a faulty extractor.
- * @kind table
- * @problem.severity error
+ * @kind problem
+ * @problem.severity warning
+ * @precision low
  * @id js/meta/extraction/missing-metrics
+ * @tags meta
  */
 
 import javascript

@@ -1,8 +1,9 @@
 /**
- * @name File correlations
- * @description
+ * @name Extraction metrics file data
+ * @description Extraction metrics and related information for profiling the extraction of individual files.
  * @kind table
  * @id js/meta/extraction/file-data
+ * @tags meta
  */
 
 import javascript
