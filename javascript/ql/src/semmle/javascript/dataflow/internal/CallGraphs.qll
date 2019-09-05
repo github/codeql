@@ -1,3 +1,6 @@
+/**
+ * Internal predicates for computing the call graph.
+ */
 private import javascript
 
 cached
