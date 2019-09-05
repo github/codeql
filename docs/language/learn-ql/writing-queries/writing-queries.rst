@@ -27,14 +27,6 @@ Visit `Learning QL <https://help.semmle.com/QL/learn-ql/>`__ to find basic infor
 -  :doc:`Locations and strings for QL entities <../locations>`–further detail on providing location information in query results. 
 -  `QL style guide on GitHub <https://github.com/Semmle/ql/blob/master/docs/ql-style-guide.md>`__–a guide to formatting QL for consistency and clarity.
 
-QL for variant analysis
-***********************
-
-Exploring code using QL is the most efficient way to perform `variant analysis <https://semmle.com/variant-analysis>`__. 
-There is QL training material available to help you learn QL for variant analysis. Get started by visiting `QL training <https://help.semmle.com/QL/ql-training/training-index.html>`__.
-For more information on performing variant analysis with QL, see `the Semmle blog <https://blog.semmle.com/intro_to_variant_analysis_part_1>`__ .
-
-
 Viewing the built-in QL queries
 *******************************
 
