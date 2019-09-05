@@ -71,7 +71,7 @@ From `https://en.cppreference.com/w/c/language/conversion <https://en.cppreferen
 
 .. note::
 
-  - Most of the time integer conversion works fine. However, the rules governing addition in C/C++ are complex, and it easy to get bitten.
+  - Most of the time integer conversion works fine. However, the rules governing addition in C/C++ are complex, and it's easy to get bitten.
   - CPUs generally prefer to perform arithmetic operations on 32-bit or larger integers, as the architectures are optimized to perform those efficiently.
   - The compiler therefore performs “integer promotion” for arguments to arithmetic operations that are smaller than 32-bit.
 
