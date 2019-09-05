@@ -8,8 +8,9 @@ def bar(s:set)->Set:
 
 
 # ODASA-8075
-class baz():
-    pass
-
-while True:
-    baz = baz[baz]
+# Commented out until the fix has been pushed to LGTM.com
+#class baz():
+#    pass
+#
+#while True:
+#    baz = baz[baz]

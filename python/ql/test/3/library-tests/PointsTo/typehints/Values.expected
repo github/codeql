@@ -10,10 +10,3 @@
 | test.py:6:1:6:20 | test.py:6 | ControlFlowNode for FunctionExpr | import | test.py:6:1:6:20 | Function bar |
 | test.py:6:11:6:13 | test.py:6 | ControlFlowNode for set | import | file://:0:0:0:0 | builtin-class set |
 | test.py:6:17:6:19 | test.py:6 | ControlFlowNode for Set | import | ../../lib/typing.py:23:1:23:23 | class Set |
-| test.py:11:1:11:12 | test.py:11 | ControlFlowNode for ClassExpr | import | test.py:11:1:11:12 | class baz |
-| test.py:14:7:14:10 | test.py:14 | ControlFlowNode for True | import | file://:0:0:0:0 | bool True |
-| test.py:15:11:15:13 | test.py:15 | ControlFlowNode for baz | import | file://:0:0:0:0 | class baz[class baz] |
-| test.py:15:11:15:13 | test.py:15 | ControlFlowNode for baz | import | test.py:11:1:11:12 | class baz |
-| test.py:15:11:15:18 | test.py:15 | ControlFlowNode for Subscript | import | file://:0:0:0:0 | class baz[class baz] |
-| test.py:15:15:15:17 | test.py:15 | ControlFlowNode for baz | import | file://:0:0:0:0 | class baz[class baz] |
-| test.py:15:15:15:17 | test.py:15 | ControlFlowNode for baz | import | test.py:11:1:11:12 | class baz |
