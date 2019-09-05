@@ -45,7 +45,7 @@ module Express {
   private predicate isRouter(Expr e) {
     isRouter(e, _)
     or
-    e.getType().hasUnderlyingType("express-serve-static-core", "Router")
+    e.getType().hasUnderlyingType("express", "Router")
   }
 
   /**
@@ -364,7 +364,7 @@ module Express {
    */
   private class TypedResponseSource extends ResponseSource {
     TypedResponseSource() {
-      hasUnderlyingType("express-serve-static-core", "Response") // super type of 'express'.Response
+      hasUnderlyingType("express", "Response")
     }
 
     override RouteHandler getRouteHandler() { none() } // Not known.
@@ -394,7 +394,7 @@ module Express {
    */
   private class TypedRequestSource extends RequestSource {
     TypedRequestSource() {
-      hasUnderlyingType("express-serve-static-core", "Request") // super type of 'express'.Request
+      hasUnderlyingType("express", "Request")
     }
 
     override RouteHandler getRouteHandler() { none() } // Not known.
