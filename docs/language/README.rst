@@ -48,8 +48,11 @@ For more information, see
 Building and previewing the QL language documentation
 *****************************************************
 
-To build and preview the QL documentation locally, you need to install Sphinx. 
+To build and preview the QL documentation and QL training presentations locally, you need to 
+install Sphinx 1.7.9. More recent versions of Sphinx do not work with hieoroglyph, 
+the Sphinx extension that we use to generate HTML slides, as explained below. 
 For installation options, see https://github.com/sphinx-doc/sphinx.
+
 
 Using ``sphinx-build``
 ----------------------
