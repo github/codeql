@@ -359,6 +359,9 @@ class ArrayLiteralNode extends DataFlow::ValueNode, DataFlow::SourceNode {
 
   /** Gets an element of this array literal. */
   DataFlow::ValueNode getAnElement() { result = DataFlow::valueNode(astNode.getAnElement()) }
+
+  /** Gets the initial size of this array. */
+  int getSize() { result = astNode.getSize() }
 }
 
 /** A data flow node corresponding to a `new Array()` or `Array()` invocation. */
@@ -375,6 +378,14 @@ class ArrayConstructorInvokeNode extends DataFlow::InvokeNode {
   DataFlow::ValueNode getAnElement() {
     getNumArgument() > 1 and
     result = getAnArgument()
+  }
+
+  /** Gets the initial size of the created array, if it can be determined. */
+  int getSize() {
+    if getNumArgument() = 1 then
+      result = getArgument(0).getIntValue()
+    else
+      result = count(getAnElement())
   }
 }
 
@@ -396,6 +407,12 @@ class ArrayCreationNode extends DataFlow::ValueNode, DataFlow::SourceNode {
 
   /** Gets an initial element of this array, if one if provided. */
   DataFlow::ValueNode getAnElement() { result = getElement(_) }
+
+  /** Gets the initial size of the created array, if it can be determined. */
+  int getSize() {
+    result = this.(ArrayLiteralNode).getSize() or
+    result = this.(ArrayConstructorInvokeNode).getSize()
+  }
 }
 
 /**
@@ -991,6 +1008,11 @@ private class BindPartialCall extends AdditionalPartialInvokeNode, DataFlow::Met
     callback = getReceiver() and
     argument = getArgument(index + 1)
   }
+
+  override DataFlow::SourceNode getBoundFunction(int boundArgs) {
+    boundArgs = getNumArgument() - 1 and
+    result = this
+  }
 }
 
 /**
@@ -1003,6 +1025,11 @@ private class LodashPartialCall extends AdditionalPartialInvokeNode {
     index >= 0 and
     callback = getArgument(0) and
     argument = getArgument(index + 1)
+  }
+
+  override DataFlow::SourceNode getBoundFunction(int boundArgs) {
+    boundArgs = getNumArgument() - 1 and
+    result = this
   }
 }
 
@@ -1019,5 +1046,10 @@ private class RamdaPartialCall extends AdditionalPartialInvokeNode {
   override predicate isPartialArgument(DataFlow::Node callback, DataFlow::Node argument, int index) {
     callback = getArgument(0) and
     argument = getArgumentsArray().getElement(index)
+  }
+
+  override DataFlow::SourceNode getBoundFunction(int boundArgs) {
+    boundArgs = getArgumentsArray().getSize() and
+    result = this
   }
 }
