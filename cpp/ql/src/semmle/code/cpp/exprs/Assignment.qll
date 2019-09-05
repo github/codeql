@@ -98,8 +98,8 @@ class AssignRemExpr extends AssignArithmeticOperation, @assignremexpr {
 }
 
 /**
- * A non-overloaded bitwise assignment operation.
-   `&=`, `|=`, `^=`, `<<=` and `>>=`
+ * A non-overloaded bitwise assignment operation:
+ * `&=`, `|=`, `^=`, `<<=`, and `>>=`.
  */
 abstract class AssignBitwiseOperation extends AssignOperation {
 }

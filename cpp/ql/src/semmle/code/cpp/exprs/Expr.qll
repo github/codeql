@@ -285,33 +285,61 @@ class Expr extends StmtParent, @expr {
    * Using the C++11 terminology, this predicate selects expressions whose value category is lvalue.
    */
   predicate isLValue() {
-    this instanceof StringLiteral /* C++ n3337 - 5.1.1 clause 1 */
-    or this.(ParenthesisExpr).getExpr().isLValue() /* C++ n3337 - 5.1.1 clause 6 */
-    or (this instanceof VariableAccess and not this instanceof FieldAccess) /* C++ n3337 - 5.1.1 clauses 8 and 9, variables and data members */
-    or exists(FunctionAccess fa | fa = this | /* C++ n3337 - 5.1.1 clauses 8 and 9, functions */
+    // C++ n3337 - 5.1.1 clause 1
+    this instanceof StringLiteral
+    or
+    // C++ n3337 - 5.1.1 clause 6
+    this.(ParenthesisExpr).getExpr().isLValue()
+    or
+    // C++ n3337 - 5.1.1 clauses 8 and 9, variables and data members
+    (this instanceof VariableAccess and not this instanceof FieldAccess)
+    or
+    // C++ n3337 - 5.1.1 clauses 8 and 9, functions
+    exists(FunctionAccess fa | fa = this |
       fa.getTarget().isStatic()
-      or not fa.getTarget().isMember()
+      or
+      not fa.getTarget().isMember()
     )
-    or this instanceof ArrayExpr /* C++ n3337 - 5.2.1 clause 1 */
-    or this.getType() instanceof ReferenceType /* C++ n3337 - 5.2.2 clause 10
-                                                              5.2.5 clause 4, no bullet point
-                                                              5.2.7 clauses 2 and 5
-                                                              5.2.9 clause 1
-                                                              5.2.10 clause 1
-                                                              5.2.11 clause 1
-                                                              5.4 clause 1 */
-    or this.(FieldAccess).getQualifier().isLValue() /* C++ n3337 - 5.2.5 clause 4, 2nd bullet point */
-    or this instanceof TypeidOperator /* C++ n3337 - 5.2.8 clause 1 */
-    or this instanceof PointerDereferenceExpr /* C++ n3337 - 5.3.1 clause 1 */
-    or this instanceof PrefixIncrExpr /* C++ n3337 - 5.3.2 clause 1 */
-    or this instanceof PrefixDecrExpr /* C++ n3337 - 5.3.2 clause 2 */
-    or exists(ConditionalExpr ce | ce = this | /* C++ n3337 - 5.16 clause 4 */
+    or
+    // C++ n3337 - 5.2.1 clause 1
+    this instanceof ArrayExpr
+    or
+    // C++ n3337 - 5.2.2 clause 10
+    //             5.2.5 clause 4, no bullet point
+    //             5.2.7 clauses 2 and 5
+    //             5.2.9 clause 1
+    //             5.2.10 clause 1
+    //             5.2.11 clause 1
+    //             5.4 clause 1
+    this.getType() instanceof ReferenceType
+    or
+    // C++ n3337 - 5.2.5 clause 4, 2nd bullet point
+    this.(FieldAccess).getQualifier().isLValue()
+    or
+    // C++ n3337 - 5.2.8 clause 1
+    this instanceof TypeidOperator
+    or
+    // C++ n3337 - 5.3.1 clause 1
+    this instanceof PointerDereferenceExpr
+    or
+    // C++ n3337 - 5.3.2 clause 1
+    this instanceof PrefixIncrExpr
+    or
+    // C++ n3337 - 5.3.2 clause 2
+    this instanceof PrefixDecrExpr
+    or
+    // C++ n3337 - 5.16 clause 4
+    exists(ConditionalExpr ce | ce = this |
       ce.getThen().isLValue() and
       ce.getElse().isLValue() and
       ce.getThen().getType() = ce.getElse().getType()
     )
-    or this instanceof Assignment /* C++ n3337 - 5.17 clause 1 */
-    or this.(CommaExpr).getRightOperand().isLValue() /* C++ n3337 - 5.18 clause 1 */
+    or
+    // C++ n3337 - 5.17 clause 1
+    this instanceof Assignment
+    or
+    // C++ n3337 - 5.18 clause 1
+    this.(CommaExpr).getRightOperand().isLValue()
   }
 
   /**

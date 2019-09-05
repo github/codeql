@@ -1,4 +1,3 @@
-private import semmle.code.cpp.Declaration as D
 /**
  * INTERNAL: Do not use. Provides classes and predicates for getting names of
  * declarations, especially qualified names. Import this library `private` and
@@ -11,6 +10,8 @@ private import semmle.code.cpp.Declaration as D
  * implementation of `ResolveClass.qll`, allowing it to match up classes when
  * their qualified names and parameters match.
  */
+
+private import semmle.code.cpp.Declaration as D
 
 class Namespace extends @namespace {
   string toString() { result = "QualifiedName Namespace" }
