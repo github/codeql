@@ -10,7 +10,7 @@
 import cpp
 
 
-/*
+/**
  * In rare cases, the same node is used in multiple control-flow scopes. This
  * confuses the dominance analysis, so this predicate is used to exclude them.
  */

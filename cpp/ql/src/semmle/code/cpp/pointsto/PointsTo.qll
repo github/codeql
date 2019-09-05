@@ -375,7 +375,7 @@ predicate flowFromCompound(Element parent, string label, Element dest)
   //
 }
 
-/*
+/**
  * The values stored in src point to the compounds (destParent, destLabel).
  */ 
 predicate pointerToCompound(Element destParent, string destLabel, Element src)
@@ -624,7 +624,7 @@ predicate setlocations(int set, @element location)
 
 class PointsToExpr extends Expr
 {
-  /*
+  /**
    * This predicate is empty by default. It should be overridden and defined to
    * include just those expressions for which points-to information is desired.
    */
@@ -645,10 +645,8 @@ class PointsToExpr extends Expr
   float confidence() { result = 1.0 / count(this.pointsTo()) }
 }
 
-/*
- * This is used above in a `pragma[noopt]` context, which prevents its
- * customary inlining. We materialise it explicitly here.
- */
+// This is used above in a `pragma[noopt]` context, which prevents its
+// customary inlining. We materialise it explicitly here.
 private @element localUnresolveElement(Element e) {
   result = unresolveElement(e)
 }

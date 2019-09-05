@@ -579,7 +579,7 @@ private predicate mk_ArgConsInner(HashCons head, HC_Args tail, int i, HC_Args li
   mk_ArgCons(head, i, tail, c)
 }
 
-/* 
+/**
  * The 0th argument of an allocator call in a new expression is always an error expression;
  * this works around it 
  */

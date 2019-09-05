@@ -356,7 +356,7 @@ private predicate mk_PointerFieldAccess(
   qualifier = globalValueNumber(access.getQualifier().getFullyConverted())
 }
 
-/*
+/**
  * `obj->field` is equivalent to `(*obj).field`, so we need to wrap an
  * extra `GVN_Deref` around the qualifier.
  */
