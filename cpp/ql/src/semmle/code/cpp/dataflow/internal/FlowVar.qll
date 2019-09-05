@@ -159,7 +159,13 @@ private module PartialDefinitions {
   class DefinitionByReference extends PartialDefinition, TReferenceArgument {
     VariableAccess va;
 
-    DefinitionByReference() { referenceArgument(va, definedExpr) }
+    DefinitionByReference() {
+      // `this` is not restricted in this charpred. That's because the full
+      // extent of this class includes the charpred of the superclass, which
+      // relates `this` to `definedExpr`, and `va` is functionally determined
+      // by `definedExpr`.
+      referenceArgument(va, definedExpr)
+    }
 
     VariableAccess getVariableAccess() { result = va }
 
