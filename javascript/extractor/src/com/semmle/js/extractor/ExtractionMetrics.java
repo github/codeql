@@ -1,19 +1,11 @@
 package com.semmle.js.extractor;
 
-import com.semmle.util.exception.Exceptions;
-import com.semmle.util.files.FileUtil;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
-import com.semmle.util.trap.pathtransformers.PathTransformer;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
-import java.nio.charset.Charset;
 import java.util.Stack;
-import java.util.zip.GZIPOutputStream;
 
 /** Metrics for the (single-threaded) extraction of a single file. */
 public class ExtractionMetrics {
@@ -79,55 +71,39 @@ public class ExtractionMetrics {
   private boolean timingsFailed;
 
   /**
-   * Appends these metrics to a trap file. Note that this makes the resulting trap file content
+   * Writes the data metrics to a trap file. Note that this makes the resulting trap file content
    * non-deterministic.
    */
-  public void appendToTrapFile(File trapFileToAppendTo) {
-    if (trapFileToAppendTo == null) {
-      return;
+  public void writeDataToTrap(TrapWriter trapwriter) {
+    trapwriter.addTuple(
+        "extraction_data",
+        fileLabel,
+        cacheFile != null ? cacheFile.getAbsolutePath() : "",
+        canReuseCacheFile,
+        length);
+  }
+
+  /**
+   * Writes the timing metrics to a trap file. Note that this makes the resulting trap file content
+   * non-deterministic.
+   */
+  public void writeTimingsToTrap(TrapWriter trapwriter) {
+    if (!stack.isEmpty()) {
+      failTimings(
+          String.format(
+              "Could not properly record extraction times for %s. (stack = %s)%n",
+              fileLabel, stack.toString()));
     }
-
-    BufferedWriter out = null;
-    FileOutputStream fos = null;
-    GZIPOutputStream gzip = null;
-    TrapWriter trapwriter = null;
-    try {
-      fos = new FileOutputStream(trapFileToAppendTo, true);
-      gzip = new GZIPOutputStream(fos);
-      out = new BufferedWriter(new OutputStreamWriter(gzip, Charset.forName("UTF-8")));
-
-      trapwriter = new TrapWriter(out, PathTransformer.std());
-      trapwriter.addTuple(
-          "extraction_data",
-          fileLabel,
-          cacheFile != null ? cacheFile.getAbsolutePath() : "",
-          canReuseCacheFile,
-          length);
-
-      if (!stack.isEmpty()) {
-        failTimings(
-            String.format(
-                "Could not properly record extraction times for %s. (stack = %s)%n",
-                fileLabel, stack.toString()));
+    if (!timingsFailed) {
+      for (int i = 0; i < ExtractionPhase.values().length; i++) {
+        trapwriter.addTuple("extraction_time", fileLabel, i, 0, (float) cpuTimes[i]);
+        trapwriter.addTuple("extraction_time", fileLabel, i, 1, (float) wallclockTimes[i]);
       }
-      if (!timingsFailed) {
-        for (int i = 0; i < ExtractionPhase.values().length; i++) {
-          trapwriter.addTuple("extraction_time", fileLabel, i, 0, (float) cpuTimes[i]);
-          trapwriter.addTuple("extraction_time", fileLabel, i, 1, (float) wallclockTimes[i]);
-        }
-      }
-      FileUtil.close(trapwriter);
-    } catch (Exception e) {
-      FileUtil.close(fos);
-      FileUtil.close(gzip);
-      FileUtil.close(out);
-      FileUtil.close(trapwriter);
-      Exceptions.ignore(e, "Ignoring exception for extraction metrics writing");
     }
   }
 
   private void failTimings(String msg) {
-    System.err.printf(msg);
+    System.err.println(msg);
     System.err.flush();
     this.timingsFailed = true;
   }

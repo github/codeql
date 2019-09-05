@@ -10,8 +10,9 @@ module ExtractionMetrics {
    * A file with extraction metrics.
    */
   class FileWithExtractionMetrics extends File {
-
-    FileWithExtractionMetrics() { extraction_data(this, _, _, _) and extraction_time(this, _, _, _)}
+    FileWithExtractionMetrics() {
+      extraction_data(this, _, _, _) and extraction_time(this, _, _, _)
+    }
 
     /**
      * Gets the CPU time in nanoseconds it took to extract this file.
@@ -49,13 +50,18 @@ module ExtractionMetrics {
     int getLength() { extraction_data(this, _, _, result) }
 
     private float getTime(PhaseName phaseName, int timerKind) {
-      // note that we use strictsum to make it clear if data is missing because it comes from an upgraded database.
-      strictsum(int phaseId, float r |
-        phaseName = getExtractionPhaseName(phaseId) and
-        extraction_time(this, phaseId, timerKind, r)
+      exists(float time |
+        // note that we use strictsum to make it clear if data is missing because it comes from an upgraded database.
+        strictsum(int phaseId, float r |
+          phaseName = getExtractionPhaseName(phaseId) and
+          extraction_time(this, phaseId, timerKind, r)
+        |
+          r
+        ) = time
       |
-        r
-      ) = result
+        // assume the cache-lookup was for free
+        if isFromCache() then result = 0 else result = time
+      )
     }
   }
 
@@ -84,7 +90,6 @@ module ExtractionMetrics {
     "TypeScriptParser_talkToParserWrapper" = result and 8 = phaseId
   }
 
-
   /**
    * The name of a phase of the extraction.
    */
@@ -105,7 +110,9 @@ module ExtractionMetrics {
     /**
      * Gets the total wallclock time spent on extraction.
      */
-    float getWallclockTime() { result = strictsum(any(FileWithExtractionMetrics f).getWallclockTime()) }
+    float getWallclockTime() {
+      result = strictsum(any(FileWithExtractionMetrics f).getWallclockTime())
+    }
 
     /**
      * Gets the total CPU time spent in phase `phaseName` of the extraction.

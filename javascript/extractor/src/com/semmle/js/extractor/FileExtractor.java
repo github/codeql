@@ -450,14 +450,12 @@ public class FileExtractor {
 
     metrics.setCacheFile(cacheFile);
     metrics.setCanReuseCacheFile(canReuseCacheFile);
-
+    metrics.writeDataToTrap(trapwriter);
     if (canUseCacheFile) {
       FileUtil.close(trapwriter);
 
       if (canReuseCacheFile) {
         FileUtil.append(cacheFile, resultFile);
-        metrics.stopPhase(ExtractionPhase.FileExtractor_extractContents);
-        metrics.appendToTrapFile(resultFile);
         return null;
       }
 
@@ -481,14 +479,14 @@ public class FileExtractor {
       int linesOfCode = loc.getLinesOfCode(), linesOfComments = loc.getLinesOfComments();
       trapwriter.addTuple("numlines", fileLabel, numLines, linesOfCode, linesOfComments);
       trapwriter.addTuple("filetype", fileLabel, fileType.toString());
+      metrics.stopPhase(ExtractionPhase.FileExtractor_extractContents);
+      metrics.writeTimingsToTrap(trapwriter);
       successful = true;
       return linesOfCode;
     } finally {
       if (!successful && trapwriter instanceof CachingTrapWriter)
         ((CachingTrapWriter) trapwriter).discard();
       FileUtil.close(trapwriter);
-      metrics.stopPhase(ExtractionPhase.FileExtractor_extractContents);
-      metrics.appendToTrapFile(resultFile);
     }
   }
 

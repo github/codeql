@@ -166,6 +166,16 @@ public class TrapTests {
                         String expected = new WholeIO().strictreadText(trap);
                         expectedVsActual.add(Pair.make(expected, actual));
                       }
+
+                      @Override
+                      public void addTuple(String tableName, Object... values) {
+                        if ("extraction_data".equals(tableName)
+                            || "extraction_time".equals(tableName)) {
+                          // ignore non-deterministic tables
+                          return;
+                        }
+                        super.addTuple(tableName, values);
+                      }
                     };
                   }
 
