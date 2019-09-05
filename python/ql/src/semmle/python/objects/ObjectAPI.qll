@@ -83,7 +83,7 @@ class Value extends TObject {
         this.(ObjectInternal).getOrigin().getLocation().hasLocationInfo(filepath, bl, bc, el, ec)
         or
         not exists(this.(ObjectInternal).getOrigin()) and
-        filepath = "" and bl = 0 and bc = 0 and el = 0 and ec = 0
+        filepath = ":Compiled Code" and bl = 0 and bc = 0 and el = 0 and ec = 0
     }
 
     /** Gets the name of this value, if it has one.
