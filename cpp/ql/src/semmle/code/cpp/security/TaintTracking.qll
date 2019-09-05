@@ -376,7 +376,7 @@ predicate tainted(Expr source, Element tainted) {
  * This version gives the same results as tainted but also includes
  * data flow through global variables.
  *
- * @param globalVar the name of the last global variable used to move the
+ * The parameter `globalVar` is the name of the last global variable used to move the
  * value from source to tainted.
  */
 predicate taintedIncludingGlobalVars(Expr source, Element tainted, string globalVar) {

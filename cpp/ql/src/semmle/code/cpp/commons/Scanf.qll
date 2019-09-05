@@ -227,12 +227,14 @@ class ScanfFormatLiteral extends Expr {
   }
 
   /**
-   * Holds if the arguments are a parsing of a conversion specifier to this format string.
-   *  @param n     which conversion specifier to parse
-   *  @param spec  the whole conversion specifier
-   *  @param width the maximum width option of this input (empty string if none is given)
-   *  @param len   the length flag of this input (empty string if none is given)
-   *  @param conv  the conversion character of this input
+   * Holds if the arguments are a parsing of a conversion specifier to this
+   * format string, where `n` is which conversion specifier to parse, `spec` is
+   * the whole conversion specifier, `width` is the maximum width option of
+   * this input, `len` is the length flag of this input, and `conv` is the
+   * conversion character of this input.
+   *
+   * Each parameter is the empty string if no value is given by the conversion
+   * specifier.
    */
   predicate parseConvSpec(int n, string spec, string width, string len, string conv) {
     exists(int offset, string fmt, string rst, string regexp |

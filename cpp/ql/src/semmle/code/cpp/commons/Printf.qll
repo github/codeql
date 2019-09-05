@@ -296,9 +296,15 @@ class FormatLiteral extends Literal {
   }
 
   /**
-   * Holds if the arguments are a parsing of a conversion specifier to this format string.
+   * Holds if the arguments are a parsing of a conversion specifier to this
+   * format string, where `n` is which conversion specifier to parse, `spec` is
+   * the whole conversion specifier, `params` is the argument to be converted
+   * in case it's not positional, `flags` contains additional format flags,
+   * `width` is the maximum width option of this input, `len` is the length
+   * flag of this input, and `conv` is the conversion character of this input.
    *
-   * @param n which conversion specifier to parse
+   * Each parameter is the empty string if no value is given by the conversion
+   * specifier.
    */
   predicate parseConvSpec(
     int n, string spec, string params, string flags, string width, string prec, string len,
