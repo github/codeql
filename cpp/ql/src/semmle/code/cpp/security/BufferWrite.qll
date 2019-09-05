@@ -109,26 +109,43 @@ class StrCopyBW extends BufferWriteCall
 {
   StrCopyBW()
   {
-    exists(TopLevelFunction fn, string name | (fn = getTarget()) and (name = fn.getName()) and (
-      (name = "strcpy")                       // strcpy(dst, src)
-      or (name = "wcscpy")                    // wcscpy(dst, src)
-      or (name = "_mbscpy")                   // _mbscpy(dst, src)
-      or (
-        (
-          name = "strcpy_s" or                // strcpy_s(dst, max_amount, src)
-          name = "wcscpy_s" or                // wcscpy_s(dst, max_amount, src)
-          name = "_mbscpy_s"                  // _mbscpy_s(dst, max_amount, src)
-        ) and
-        fn.getNumberOfParameters() = 3        // exclude the 2-parameter template versions
-                                              // that find the size of a fixed size destination buffer.
-      )
-      or (name = "strncpy")                   // strncpy(dst, src, max_amount)
-      or (name = "strncpy_l")                 // strncpy_l(dst, src, max_amount, locale)
-      or (name = "wcsncpy")                   // wcsncpy(dst, src, max_amount)
-      or (name = "_wcsncpy_l")                // _wcsncpy_l(dst, src, max_amount, locale)
-      or (name = "_mbsncpy")                  // _mbsncpy(dst, src, max_amount)
-      or (name = "_mbsncpy_l")                // _mbsncpy_l(dst, src, max_amount, locale)
-    ))
+    exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
+      // strcpy(dst, src)
+      name = "strcpy"
+      or
+      // wcscpy(dst, src)
+      name = "wcscpy"
+      or
+      // _mbscpy(dst, src)
+      name = "_mbscpy"
+      or
+      (
+        name = "strcpy_s" or // strcpy_s(dst, max_amount, src)
+        name = "wcscpy_s" or // wcscpy_s(dst, max_amount, src)
+        name = "_mbscpy_s" // _mbscpy_s(dst, max_amount, src)
+      ) and
+      // exclude the 2-parameter template versions
+      // that find the size of a fixed size destination buffer.
+      fn.getNumberOfParameters() = 3
+      or
+      // strncpy(dst, src, max_amount)
+      name = "strncpy"
+      or
+      // strncpy_l(dst, src, max_amount, locale)
+      name = "strncpy_l"
+      or
+      // wcsncpy(dst, src, max_amount)
+      name = "wcsncpy"
+      or
+      // _wcsncpy_l(dst, src, max_amount, locale)
+      name = "_wcsncpy_l"
+      or
+      // _mbsncpy(dst, src, max_amount)
+      name = "_mbsncpy"
+      or
+      // _mbsncpy_l(dst, src, max_amount, locale)
+      name = "_mbsncpy_l"
+    )
   }
 
   int getParamSize()
@@ -248,19 +265,39 @@ class SprintfBW extends BufferWriteCall
 {
   SprintfBW()
   {
-    exists(TopLevelFunction fn, string name | (fn = getTarget()) and (name = fn.getName()) and (
-      // C sprintf variants
-      (name = "sprintf")                      // sprintf(dst, format, args...)
-      or (name = "vsprintf")                  // vsprintf(dst, format, va_list)
-      or (name = "wsprintf")                  // wsprintf(dst, format, args...)
-      or (name = "vwsprintf")                 // vwsprintf(dst, format, va_list)
-  
-      // Microsoft sprintf variants
-      or (name.regexpMatch("_sprintf_l"))     //  _sprintf_l(dst, format, locale, args...)
-      or (name.regexpMatch("_vsprintf_l"))    //  _vsprintf_l(dst, format, locale, va_list))
-      or (name.regexpMatch("__swprintf_l"))   // __swprintf_l(dst, format, locale, args...)
-      or (name.regexpMatch("__vswprintf_l"))  // __vswprintf_l(dst, format, locale, va_list)
-    ))
+    exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
+      /*
+       * C sprintf variants
+       */
+
+      // sprintf(dst, format, args...)
+      name = "sprintf"
+      or
+      // vsprintf(dst, format, va_list)
+      name = "vsprintf"
+      or
+      // wsprintf(dst, format, args...)
+      name = "wsprintf"
+      or
+      // vwsprintf(dst, format, va_list)
+      name = "vwsprintf"
+      or
+      /*
+       * Microsoft sprintf variants
+       */
+
+      //  _sprintf_l(dst, format, locale, args...)
+      name.regexpMatch("_sprintf_l")
+      or
+      //  _vsprintf_l(dst, format, locale, va_list))
+      name.regexpMatch("_vsprintf_l")
+      or
+      // __swprintf_l(dst, format, locale, args...)
+      name.regexpMatch("__swprintf_l")
+      or
+      // __vswprintf_l(dst, format, locale, va_list)
+      name.regexpMatch("__vswprintf_l")
+    )
   }
 
   override Type getBufferType()
@@ -307,24 +344,40 @@ class SnprintfBW extends BufferWriteCall
 {
   SnprintfBW()
   {
-    exists(TopLevelFunction fn, string name | (fn = getTarget()) and (name = fn.getName()) and (
-      // C snprintf variants
-      (name = "snprintf")                     // snprintf(dst, max_amount, format, args...)
-      or (name = "vsnprintf")                 // vsnprintf(dst, max_amount, format, va_list)
-      or (name = "swprintf")                  // swprintf(dst, max_amount, format, args...)
-      or (name = "vswprintf")                 // vswprintf(dst, max_amount, format, va_list)
-    
-      // Microsoft snprintf variants
-      or (name = "sprintf_s")                 // sprintf_s(dst, max_amount, format, locale, args...)
-      or (name = "vsprintf_s")                // vsprintf_s(dst, max_amount, format, va_list)
-      or (name = "swprintf_s")                // swprintf_s(dst, max_amount, format, args...)
-      or (name = "vswprintf_s")               // vswprintf_s(dst, max_amount, format, va_list)
-  
-      // Microsoft snprintf variants with '_'
-      or (
-        (name.regexpMatch("_v?sn?w?printf(_s)?(_p)?(_l)?"))
-        and (not this instanceof SprintfBW)
-      )
+    exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
+      /*
+       * C snprintf variants
+       */
+
+      // snprintf(dst, max_amount, format, args...)
+      name = "snprintf"
+      or
+      // vsnprintf(dst, max_amount, format, va_list)
+      name = "vsnprintf"
+      or
+      // swprintf(dst, max_amount, format, args...)
+      name = "swprintf"
+      or
+      // vswprintf(dst, max_amount, format, va_list)
+      name = "vswprintf"
+      or
+      /*
+       * Microsoft snprintf variants
+       */
+
+      // sprintf_s(dst, max_amount, format, locale, args...)
+      name = "sprintf_s"
+      or
+      // vsprintf_s(dst, max_amount, format, va_list)
+      name = "vsprintf_s"
+      or
+      // swprintf_s(dst, max_amount, format, args...)
+      name = "swprintf_s"
+      or
+      // vswprintf_s(dst, max_amount, format, va_list)
+      name = "vswprintf_s"
+      or
+      // Microsoft snprintf variants with '_':
       // _sprintf_s_l(dst, max_amount, format, locale, args...)
       // _swprintf_l(dst, max_amount, format, locale, args...)
       // _swprintf_s_l(dst, max_amount, format, locale, args...)
@@ -343,7 +396,9 @@ class SnprintfBW extends BufferWriteCall
       // _vsnprintf_l(dst, max_amount, format, locale, va_list)
       // _vsnwprintf(dst, max_amount, format, va_list)
       // _vsnwprintf_l(dst, max_amount, format, locale, va_list)
-    ))
+      name.regexpMatch("_v?sn?w?printf(_s)?(_p)?(_l)?") and
+      not this instanceof SprintfBW
+    )
   }
   
   int getParamSize()
@@ -405,11 +460,11 @@ class GetsBW extends BufferWriteCall
 {
   GetsBW()
   {
-    exists(TopLevelFunction fn, string name | (fn = getTarget()) and (name = fn.getName()) and (
-      (name = "gets")                         // gets(dst)
-      or (name = "fgets")                     // fgets(dst, max_amount, src_stream)
-      or (name = "fgetws")                    // fgetws(dst, max_amount, src_stream)
-    ))
+    exists(TopLevelFunction fn, string name | fn = getTarget() and name = fn.getName() |
+      name = "gets" or // gets(dst)
+      name = "fgets" or // fgets(dst, max_amount, src_stream)
+      name = "fgetws"  // fgetws(dst, max_amount, src_stream)
+    )
   }
 
   int getParamSize()
@@ -428,11 +483,11 @@ class GetsBW extends BufferWriteCall
 
   override Expr getASource()
   {
-    if exists(getArgument(2)) then (
-      result = getArgument(2)
-    ) else (
-      result = this // the source is input inside the 'gets' call itself
-    )
+    if exists(getArgument(2))
+    then result = getArgument(2)
+    else
+      // the source is input inside the 'gets' call itself
+      result = this
   }
 
   override Expr getDest()
