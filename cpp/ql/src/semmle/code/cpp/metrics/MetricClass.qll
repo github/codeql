@@ -274,9 +274,10 @@ class MetricClass extends Class  {
     */
    int getHalsteadN1() {
      result =
-       1 + // account for the class itself
+       // account for the class itself
+       1 +
        sum(MetricFunction mf, int toSum | (mf.(MemberFunction).getDeclaringType() = this) and (toSum = mf.getHalsteadN1()) | toSum) +
-        // Each member variable declaration counts once as an operator
+       // Each member variable declaration counts once as an operator
        count(MemberVariable mv | mv.getDeclaringType() = this) +
        // Friend declarations
        count(FriendDecl f | f.getDeclaringClass() = this)
@@ -288,9 +289,10 @@ class MetricClass extends Class  {
     */
    int getHalsteadN2() {
      result =
-       1 + // the class itself
+       // the class itself
+       1 +
        sum(MetricFunction mf, int toSum | (mf.(MemberFunction).getDeclaringType() = this) and (toSum = mf.getHalsteadN2()) | toSum) +
-        // Each variable declaration that is not in a function counts once as an operand
+       // Each variable declaration that is not in a function counts once as an operand
        count(MemberVariable mv | mv.getDeclaringType() = this)
    }
 
@@ -342,7 +344,8 @@ class MetricClass extends Class  {
     */
    int getHalsteadN1Distinct() {
      result =
-       1 + // avoid 0 values
+       // avoid 0 values
+       1 +
        count(string s | exists(Operation op | op = this.getAnEnclosedExpression() and s = op.getOperator())) +
        count(string s | s = getAUsedHalsteadN1Operator())
    }
@@ -353,7 +356,8 @@ class MetricClass extends Class  {
     */
    int getHalsteadN2Distinct() {
      result =
-       1 + // avoid 0 values
+       // avoid 0 values
+       1 +
        count(string s | exists(Access a | a = this.getAnEnclosedExpression() and s = a.getTarget().getName())) +
        count(Function f | exists(FunctionCall fc | fc = this.getAnEnclosedExpression() and f = fc.getTarget())) +
        // Approximate: count declarations once more to account for the type name

@@ -103,8 +103,9 @@ class MetricFunction extends Function {
     * (`+`, `*`, `&`, `->`, `=`, ...) as well as most statements.
     */
    int getHalsteadN1() {
+     // The `1 +` is to account for the function itself
      result =
-       1 + // account for the function itself
+       1 +
        count(Operation op | op.getEnclosingFunction() = this) +
        count(CommaExpr e | e.getEnclosingFunction() = this) +
        count(ReferenceToExpr e | e.getEnclosingFunction() = this) +
@@ -125,8 +126,9 @@ class MetricFunction extends Function {
     * function. An operand is either a variable, constant, type name, or function name.
     */
    int getHalsteadN2() {
+     // The `1 +` is to account for the function itself
      result =
-       1 + // account for the function itself
+       1 +
        count(Access a | a.getEnclosingFunction() = this) +
        count(FunctionCall fc | fc.getEnclosingFunction() = this) +
        // Approximate: count declarations twice to account for the type name
@@ -167,8 +169,9 @@ class MetricFunction extends Function {
        (if exists(SwitchCase e | e.getEnclosingFunction() = this) then caseVal = 1 else caseVal = 0) and
        (if exists(IfStmt s | s.getEnclosingFunction() = this and s.hasElse()) then elseVal = 1 else elseVal = 0)
      and
+     // The `1 +` is to account for the function itself
      result =
-       1 + // account for the function itself
+       1 +
        count(string s | exists(Operation op | op.getEnclosingFunction() = this and s = op.getOperator())) +
        comma +
        refTo +
@@ -188,8 +191,9 @@ class MetricFunction extends Function {
     * function. An operand is either a variable, constant, type name, or function name.
     */
    int getHalsteadN2Distinct() {
+     // The `1 +` is to account for the function itself
      result =
-       1 + // account for the function itself
+       1 +
        count(string s | exists(Access a | a.getEnclosingFunction() = this and s = a.getTarget().getName())) +
        count(Function f | exists(FunctionCall fc | fc.getEnclosingFunction() = this and f = fc.getTarget())) +
        // Approximate: count declarations once more to account for the type name

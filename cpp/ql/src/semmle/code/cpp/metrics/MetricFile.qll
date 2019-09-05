@@ -57,8 +57,9 @@ class MetricFile extends File {
    int getHalsteadN1() {
      result =
        sum(MetricFunction mf, int toSum | (mf.getFile() = this) and (toSum = mf.getHalsteadN1()) | toSum) +
-       count(Class c | c.getFile() = this) + // Each class counts once as an operator
-        // Each variable declaration that is not in a function counts once as an operator
+       // Each class counts once as an operator
+       count(Class c | c.getFile() = this) +
+       // Each variable declaration that is not in a function counts once as an operator
        count(GlobalVariable gv | gv.getFile() = this) +
        count(MemberVariable mv | mv.getFile() = this) +
        // Type declarations - to count the definition tokens
@@ -74,8 +75,9 @@ class MetricFile extends File {
    int getHalsteadN2() {
      result =
        sum(MetricFunction mf, int toSum | (mf.getFile() = this) and (toSum = mf.getHalsteadN2()) | toSum) +
-       count(Class c | c.getFile() = this) + // Each class counts once as an operand
-        // Each variable declaration that is not in a function counts once as an operand
+       // Each class counts once as an operand
+       count(Class c | c.getFile() = this) +
+       // Each variable declaration that is not in a function counts once as an operand
        count(GlobalVariable gv | gv.getFile() = this) +
        count(MemberVariable mv | mv.getFile() = this) +
        // Type declarations - to count the type names
@@ -118,7 +120,8 @@ class MetricFile extends File {
     */
    int getHalsteadN1Distinct() {
      result =
-       1 + // avoid 0 values
+       // avoid 0 values
+       1 +
        count(string s | exists(Operation op | op.getFile() = this and s = op.getOperator())) +
        count(string s | s = getAUsedHalsteadN1Operator())
    }
@@ -129,7 +132,8 @@ class MetricFile extends File {
     */
    int getHalsteadN2Distinct() {
      result =
-       1 + // avoid 0 values
+       // avoid 0 values
+       1 +
        count(string s | exists(Access a | a.getFile() = this and s = a.getTarget().getName())) +
        count(Function f | exists(FunctionCall fc | fc.getFile() = this and f = fc.getTarget())) +
        // Approximate: count declarations once more to account for the type name
