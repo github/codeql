@@ -55,32 +55,29 @@ private predicate oldHasCompleteTwin(@usertype c, @usertype d) {
 }
 
 pragma[noinline]
-private @mangledname getTopLevelClassMangledName(@usertype c) {
+private @mangledname getClassMangledName(@usertype c) {
   isClass(c) and
-  mangled_name(c, result) and
-  not namespacembrs(_, c) and // not in a namespace
-  not member(_, _, c) and // not in some structure
-  not class_instantiation(c, _) // not a template instantiation
+  mangled_name(c, result)
 }
 
 /** Holds if `d` is a unique complete class named `name`. */
 pragma[noinline]
 private predicate existsCompleteWithMangledName(@mangledname name, @usertype d) {
   is_complete(d) and
-  name = getTopLevelClassMangledName(d) and
+  name = getClassMangledName(d) and
   onlyOneCompleteClassExistsWithMangledName(name)
 }
 
 pragma[noinline]
 private predicate onlyOneCompleteClassExistsWithMangledName(@mangledname name) {
-  strictcount(@usertype c | is_complete(c) and getTopLevelClassMangledName(c) = name) = 1
+  strictcount(@usertype c | is_complete(c) and getClassMangledName(c) = name) = 1
 }
 
 /** Holds if `c` is an incomplete class named `name`. */
 pragma[noinline]
 private predicate existsIncompleteWithMangledName(@mangledname name, @usertype c) {
   not is_complete(c) and
-  name = getTopLevelClassMangledName(c)
+  name = getClassMangledName(c)
 }
 
 /**
