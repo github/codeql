@@ -157,5 +157,9 @@
 })();
 
 (function(){
-	require("cookie-session")({ secret: "change_me" });
+	require("cookie-session")({ secret: "change_me" }); // NOT OK
+	require('crypto').createHmac('sha256', 'change_me'); // NOT OK
+
+	var basicAuth = require('express-basic-auth');
+	basicAuth({users: { [adminName]: 'change_me' }});  // OK
 })();

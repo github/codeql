@@ -22,18 +22,11 @@ where
   // use source value in message if it's available
   if source.getNode().asExpr() instanceof ConstantString
   then
-    exists(string val, Sink sinkNode |
-      sinkNode = sink.getNode().(Sink) and
-      val = source.getNode().getStringValue()
-    |
-      (
-        (
-          sinkNode.(DefaultCredentialsSink).getKind() = "password" or
-          sinkNode.(DefaultCredentialsSink).getKind() = "key"
-        )
-        implies
-        // exclude dummy passwords
-        not PasswordHeuristics::isDummyPassword(val)
+    exists(string val | val = source.getNode().getStringValue() |
+      // exclude dummy passwords
+      not (
+        sink.getNode().(Sink).(DefaultCredentialsSink).getKind() = "password" and
+        PasswordHeuristics::isDummyPassword(val)
       ) and
       value = "The hard-coded value \"" + val + "\""
     )
