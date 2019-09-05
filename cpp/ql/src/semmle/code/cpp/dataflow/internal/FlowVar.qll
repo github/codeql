@@ -105,7 +105,7 @@ private module PartialDefinitions {
       )
     } or
     TExplicitCallQualifier(Expr qualifier, Call call) { qualifier = call.getQualifier() } or
-    TReferenceArgument(Expr arg, VariableAccess va) { definitionByReference(va, arg) }
+    TReferenceArgument(Expr arg, VariableAccess va) { referenceArgument(va, arg) }
 
   private predicate isInstanceFieldWrite(FieldAccess fa, ControlFlowNode node) {
     not fa.getTarget().isStatic() and
@@ -154,17 +154,47 @@ private module PartialDefinitions {
   }
 
   /**
-   * A partial definition that's a definition by reference (in the sense of the
-   * `definitionByReference` predicate).
+   * A partial definition that's a definition by reference.
    */
   class DefinitionByReference extends PartialDefinition, TReferenceArgument {
     VariableAccess va;
 
-    DefinitionByReference() { definitionByReference(va, definedExpr) }
+    DefinitionByReference() {
+      // `this` is not restricted in this charpred. That's because the full
+      // extent of this class includes the charpred of the superclass, which
+      // relates `this` to `definedExpr`, and `va` is functionally determined
+      // by `definedExpr`.
+      referenceArgument(va, definedExpr)
+    }
 
     VariableAccess getVariableAccess() { result = va }
 
     override predicate partiallyDefines(Variable v) { va = v.getAnAccess() }
+  }
+
+  private predicate referenceArgument(VariableAccess va, Expr argument) {
+    argument = any(Call c).getAnArgument() and
+    exists(Type argumentType |
+      argumentType = argument.getFullyConverted().getType().stripTopLevelSpecifiers()
+    |
+      argumentType instanceof ReferenceType and
+      not argumentType.(ReferenceType).getBaseType().isConst() and
+      va = argument
+      or
+      argumentType instanceof PointerType and
+      not argumentType.(PointerType).getBaseType().isConst() and
+      (
+        // f(variable)
+        va = argument
+        or
+        // f(&variable)
+        va = argument.(AddressOfExpr).getOperand()
+        or
+        // f(&array[0])
+        va.getType().getUnspecifiedType() instanceof ArrayType and
+        va = argument.(AddressOfExpr).getOperand().(ArrayExpr).getArrayBase()
+      )
+    )
   }
 }
 import PartialDefinitions
@@ -236,7 +266,7 @@ module FlowVar_internal {
       not v instanceof Field and // Fields are interprocedural data flow, not local
       reachable(sbb) and
       (
-        initializer(sbb.getANode(), v, _)
+        initializer(v, sbb.getANode())
         or
         assignmentLikeOperation(sbb, v, _, _)
         or
@@ -353,7 +383,12 @@ module FlowVar_internal {
       assignmentLikeOperation(node, v, _, e) and
       node = sbb
       or
-      initializer(node, v, e) and
+      // We pick the defining `ControlFlowNode` of an `Initializer` to be its
+      // expression rather than the `Initializer` itself. That's because the
+      // `Initializer` of a `ConditionDeclExpr` is for historical reasons not
+      // part of the CFG and therefore ends up in the wrong basic block.
+      initializer(v, e) and
+      node = e and
       node = sbb.getANode()
     }
 
@@ -711,13 +746,11 @@ module FlowVar_internal {
   }
 
   /**
-   * Holds if `v` is initialized by `init` to have value `assignedExpr`.
+   * Holds if `v` is initialized to have value `assignedExpr`.
    */
-  predicate initializer(
-      Initializer init, LocalVariable v, Expr assignedExpr)
+  predicate initializer(LocalVariable v, Expr assignedExpr)
   {
-    v = init.getDeclaration() and
-    assignedExpr = init.getExpr()
+    assignedExpr = v.getInitializer().getExpr()
   }
 
   /**

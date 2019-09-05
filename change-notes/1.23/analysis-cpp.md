@@ -28,6 +28,10 @@ The following changes in version 1.23 affect C/C++ analysis in all applications.
   picture of the partial flow paths from a given source. The feature is
   disabled by default and can be enabled for individual configurations by
   overriding `int explorationLimit()`.
+* The `DataFlow::DefinitionByReferenceNode` class now considers `f(x)` to be a
+  definition of `x` when `x` is a variable of pointer type. It no longer
+  considers deep paths such as `f(&x.myField)` to be definitions of `x`. These
+  changes are in line with the user expectations we've observed.
 * There is now a `DataFlow::localExprFlow` predicate and a
   `TaintTracking::localExprTaint` predicate to make it easy to use the most
   common case of local data flow and taint: from one `Expr` to another.

@@ -129,7 +129,7 @@ public:
   {
     B *b = new B();
     f7(b);
-    sink(b->c); // flow [NOT DETECTED]
+    sink(b->c); // flow
   }
 
   class D
@@ -151,7 +151,7 @@ public:
     D *d = new D(b, r());
     sink(d->b);    // flow x2
     sink(d->b->c); // flow
-    sink(b->c);    // flow [NOT DETECTED]
+    sink(b->c);    // flow
   }
 
   void f10()
